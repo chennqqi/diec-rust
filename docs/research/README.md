@@ -10,6 +10,7 @@ Phase 0 计划形成：
 - [`rule-compatibility.md`](rule-compatibility.md)：规则语法、内建函数和宿主 API（Draft）。
 - [`cli-dependency-and-license.md`](cli-dependency-and-license.md)：CLI 源码/链接依赖闭包与许可证初审（Draft）。
 - [`upstream-build-baseline.md`](upstream-build-baseline.md)：固定 Linux Qt5/qmake CLI 构建与行为实验（Draft）。
+- [`upstream-cmake-differential.md`](upstream-cmake-differential.md)：官方 CMake CLI 构建及与 qmake 的原始输出差分（Draft）。
 - [`data/cli-dependencies.toml`](data/cli-dependencies.toml)：固定组件依赖边、LICENSE blob 和 bundled code 证据。
 - `behavior-baseline.md`：样本、上游原始输出和平台差异。
 

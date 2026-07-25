@@ -12,10 +12,10 @@ Last updated: 2026-07-25
 保存该环境，并在镜像内保留包版本、submodule 状态、qmake 配置、链接参数、
 ELF 动态段和二进制哈希等证据。
 
-本次产物是 **qmake CLI 候选 oracle**，不是已经证明与官方 Ubuntu release
-等价的最终 oracle。固定版本的 Ubuntu workflow 调用 `build_dpkg.sh`，该脚本使用
-CMake Release 和 C++17；本次实验使用上游仍维护的 qmake 工程、Release 和
-C++11。必须完成 CMake 产物构建及两者差分后才能关闭这一差距。
+本次产物是 **qmake CLI 候选 oracle**。固定版本的 Ubuntu workflow 调用
+`build_dpkg.sh`，该脚本使用 CMake Release 和 C++17；本次实验使用上游仍维护的
+qmake 工程、Release 和 C++11。CMake 产物及两条路径的首轮原始输出差分已记录在
+[`upstream-cmake-differential.md`](upstream-cmake-differential.md)。
 
 ## 固定输入
 
@@ -181,17 +181,16 @@ environment 的字节级复现：
   相同，即使工作树内容相同。
 - GCC/linker 是否对所有中间产物完全确定尚未用两个独立 clean builder 验证。
 - 当前只覆盖 Linux amd64/Qt5/qmake。
-- 默认顶层 qmake 构建和官方 CMake release 路径尚未成功完成并互相比较。
+- 默认顶层 qmake 全目标构建和官方 CMake 全目标/install 路径尚未完成；两个
+  CLI-only 产物已完成首轮差分，但语料覆盖仍很小。
 
 因此当前状态保持 Draft。下一步应：
 
 1. 固定 Ubuntu snapshot 或构建依赖镜像 digest，并移除最终镜像中的 Git 元数据。
-2. 按 `build_dpkg.sh` 构建 CMake Release 产物。
-3. 对 qmake/CMake 两个 `diec` 的 `--help`、数据库计数、固定输入 JSON、退出码和
-   性能进行差分。
-4. 在独立 clean builder 上重复两次并比较 `diec` 哈希；若不能相同，定位
+2. 扩大 qmake/CMake 差分语料和扫描模式，并采集可重复性能数据。
+3. 在独立 clean builder 上重复两次并比较 `diec` 哈希；若不能相同，定位
    build-id、时间戳或生成代码中的非确定输入。
-5. 分别建立 Windows 和 macOS 的固定构建记录。
+4. 分别建立 Windows 和 macOS 的固定构建记录。
 
 ## 上游证据
 
