@@ -1,0 +1,58 @@
+// Detect It Easy: detection rule file
+
+// Author: DosX
+// E-Mail: collab@kay-software.ru
+// GitHub: https://github.com/DosX-dev
+// Telegram: @DosX_dev
+
+function detect() {
+    if (Binary.isHeuristicScan()) {
+        switch (Binary.getFileSuffix().toLowerCase()) {
+            case "bat":
+            case "cmd":
+                main();
+        }
+    }
+}
+
+function main() {
+    var options = String();
+
+
+    var isUtf16LeObfuscationPresent = false;
+
+    if (Binary.compare("FF FE")) {
+        isUtf16LeObfuscationPresent = true;
+    }
+
+    if (isUtf16LeObfuscationPresent) options = "UTF-16LE Obfuscation";
+
+
+    var isNonTextualContentPresent = false;
+
+    if (!isUtf16LeObfuscationPresent && !Binary.isPlainText()) {
+        isNonTextualContentPresent = true;
+    }
+
+    if (isNonTextualContentPresent) options = addOption(options, "Non-Textual Content");
+
+
+    if (options) {
+        _setResult("~protection", "Generic", String(), options);
+    }
+}
+
+
+
+/**
+ * Adds a new option to the existing options text, separated by " + " if optionsText is not empty.
+ *
+ * @param {string} optionsText - The current options text.
+ * @param {string} newOptionText - The new option to add.
+ * @returns {string} The updated options text with the new option appended.
+ */
+function addOption(optionsText, newOptionText) {
+    if (optionsText) optionsText += " + ";
+    optionsText += newOptionText;
+    return optionsText;
+}

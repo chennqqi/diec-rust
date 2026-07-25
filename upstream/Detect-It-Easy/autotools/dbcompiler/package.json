@@ -1,0 +1,10 @@
+{
+    "name": "dbcompiler",
+    "version": "1.0.0",
+    "main": "task.js",
+    "author": "DosX",
+    "dependencies": {
+        "archiver": "^5.3.2",
+        "uglify-js": "^3.19.3"
+    }
+}

@@ -1,0 +1,1 @@
+function detect(){return"Xpat Runtime Engine"===PE.getVersionStringInfo("FileDescription")&&(sVersion=File.cleanString(PE.getFileVersion()),sOptions="1995",bDetected=1),result()}meta("game engine","XPAT")
