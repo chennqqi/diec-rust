@@ -26,6 +26,13 @@ upstream/DIE-engine/
 upstream-die -> https://github.com/horsicq/DIE-engine.git
 ```
 
+新 clone 需要执行：
+
+```sh
+git remote add upstream-die https://github.com/horsicq/DIE-engine.git
+git remote set-url --push upstream-die DISABLED
+```
+
 初始 subtree 固定到：
 
 ```text
@@ -33,6 +40,16 @@ upstream-die -> https://github.com/horsicq/DIE-engine.git
 ```
 
 subtree 内容仅作为上游参考与变更跟踪来源，不直接成为 diec-rust 的编译输入。
+
+当前导入提交记录：
+
+| Item | Value |
+| --- | --- |
+| Local merge commit | `5f39bfba` |
+| Squashed subtree commit | `438a02af` |
+| `git-subtree-split` | `74eaf505c250ab47e709024e9dc41657cd8f2254` |
+| Tree entries | 621 |
+| Nested gitlinks | 58 |
 
 ## 重要限制
 
@@ -121,4 +138,3 @@ git subtree pull \
 - 避免导入全部上游提交历史。
 
 代价是不能在本仓库直接逐提交遍历上游历史；需要时通过 `upstream-die` remote 查询。
-
