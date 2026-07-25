@@ -1,0 +1,756 @@
+name: Build DIE-engine
+
+on:
+  workflow_dispatch:
+  release:
+    types: [created]
+  schedule:
+    - cron: '0 0 * * *'
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+env:
+  SRC_PATH: ${{ github.workspace }}/src
+  SRC_PATH_WIN: ${{ github.workspace }}\src
+  RELEASE_PATH: ${{ github.workspace }}/src/release
+
+# the jobs are based on these notes:
+# https://github.com/horsicq/Detect-It-Easy/blob/master/docs/BUILD.md
+jobs:
+  build-ubuntu-24:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+        with:
+         submodules: 'recursive'
+         path: ${{ env.SRC_PATH }}
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install qtbase5-dev qtscript5-dev qttools5-dev qttools5-dev-tools libqt5svg5-dev qtchooser qt5-qmake build-essential -y
+
+      - name: Build
+        working-directory: ${{ env.SRC_PATH }}
+        run: |
+          bash -ex build_dpkg.sh
+
+      - name: Upload Release as Download
+        if: github.event_name != 'pull_request'
+        uses: softprops/action-gh-release@v3
+        env:
+          RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        with:
+          tag_name: Beta
+          draft: false
+          prerelease: true
+          files: |
+            ${{ env.RELEASE_PATH }}/*.deb
+            
+  build-ubuntu-24-arm:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v6
+        with:
+         submodules: 'recursive'
+         path: ${{ env.SRC_PATH }}
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install qtbase5-dev qtscript5-dev qttools5-dev qttools5-dev-tools libqt5svg5-dev qtchooser qt5-qmake build-essential -y
+
+      - name: Build
+        working-directory: ${{ env.SRC_PATH }}
+        run: |
+          bash -ex build_dpkg.sh
+
+      - name: Upload Release as Download
+        if: github.event_name != 'pull_request'
+        uses: softprops/action-gh-release@v3
+        env:
+          RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        with:
+          tag_name: Beta
+          draft: false
+          prerelease: true
+          files: |
+            ${{ env.RELEASE_PATH }}/*.deb
+
+  build-ubuntu-22:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v6
+        with:
+         submodules: 'recursive'
+         path: ${{ env.SRC_PATH }}
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install qtbase5-dev qtscript5-dev qttools5-dev qttools5-dev-tools libqt5svg5-dev qtchooser qt5-qmake build-essential -y
+
+      - name: Build
+        working-directory: ${{ env.SRC_PATH }}
+        run: |
+          bash -ex build_dpkg.sh
+
+      - name: Upload Release as Download
+        if: github.event_name != 'pull_request'
+        uses: softprops/action-gh-release@v3
+        env:
+          RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        with:
+          tag_name: Beta
+          draft: false
+          prerelease: true
+          files: |
+            ${{ env.RELEASE_PATH }}/*.deb
+            
+
+  build-appimage:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v6
+        with:
+         submodules: 'recursive'
+         path: ${{ env.SRC_PATH }}
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install qtbase5-dev qtscript5-dev qttools5-dev qttools5-dev-tools libqt5svg5-dev qtchooser qt5-qmake build-essential -y
+          wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+          chmod +x linuxdeploy-x86_64.AppImage
+          sudo mv linuxdeploy-x86_64.AppImage /usr/local/bin/linuxdeploy
+          sudo chmod +x /usr/local/bin/linuxdeploy
+          wget https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage
+          chmod +x linuxdeploy-plugin-qt-x86_64.AppImage
+          sudo mv linuxdeploy-plugin-qt-x86_64.AppImage /usr/local/bin/linuxdeploy-plugin-qt
+
+
+      - name: Build
+        working-directory: ${{ env.SRC_PATH }}
+        run: |
+          chmod a+x configure
+          ./configure
+          make -j$(nproc)
+          chmod a+x create_appimage.sh
+          ./create_appimage.sh
+
+      - name: Upload Release as Download
+        if: github.event_name != 'pull_request'
+        uses: softprops/action-gh-release@v3
+        env:
+          RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        with:
+          tag_name: Beta
+          draft: false
+          prerelease: true
+          files: |
+            ${{ env.RELEASE_PATH }}/*.AppImage
+
+  build-windows-32:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v6
+        with:
+         submodules: 'recursive'
+         path: ${{ env.SRC_PATH }}
+
+      - name: Setup MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+         arch: x86
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '5.15.2'
+          host: 'windows'
+          target: 'desktop'
+          arch: 'win32_msvc2019'
+          dir: ${{ github.workspace }}
+          modules: qtscript
+
+      - name: Build
+        shell: cmd
+        working-directory: ${{ env.SRC_PATH }}
+        run: |
+          set VSVARS_PATH="C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars32.bat"
+          set QMAKE_PATH="${{ github.workspace }}\Qt\5.15.2\msvc2019\bin\qmake.exe"
+          set SEVENZIP_PATH="C:\Program Files\7-Zip\7z.exe"
+          set INNOSETUP_PATH="C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+
+          set X_BUILD_NAME=die
+          set X_BUILD_PREFIX=win32
+          set X_SOURCE_PATH=${{ env.SRC_PATH_WIN }}
+          for /f "delims=" %%x in ('type "%X_SOURCE_PATH%\release_version.txt"') do set X_RELEASE_VERSION=%%x
+
+          echo on
+          call "%X_SOURCE_PATH%\build_win_generic_check.cmd"
+
+          dir "%X_SOURCE_PATH%\release\*.zip" >nul 2>&1
+          if %ERRORLEVEL% neq 0 (
+            echo "ZIP file does not exist"
+            exit /b 1
+          )
+
+      - name: Upload Release as Download
+        if: github.event_name != 'pull_request'
+        uses: softprops/action-gh-release@v3
+        env:
+          RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        with:
+          tag_name: Beta
+          draft: false
+          prerelease: true
+          files: |
+            ${{ env.RELEASE_PATH }}/*.zip
+
+  build-windows-64:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v6
+        with:
+         submodules: 'recursive'
+         path: ${{ env.SRC_PATH }}
+
+      - name: Setup MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+         arch: x64
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '5.15.2'
+          host: 'windows'
+          target: 'desktop'
+          arch: 'win64_msvc2019_64'
+          dir: ${{ github.workspace }}
+          modules: qtscript
+
+      - name: Build
+        shell: cmd
+        working-directory: ${{ env.SRC_PATH }}
+        run: |
+          set VSVARS_PATH="C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+          set QMAKE_PATH="${{ github.workspace }}\Qt\5.15.2\msvc2019_64\bin\qmake.exe"
+          set SEVENZIP_PATH="C:\Program Files\7-Zip\7z.exe"
+          set INNOSETUP_PATH="C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+
+          set X_BUILD_NAME=die
+          set X_BUILD_PREFIX=win64
+          set X_SOURCE_PATH=${{ env.SRC_PATH_WIN }}
+          for /f "delims=" %%x in ('type "%X_SOURCE_PATH%\release_version.txt"') do set X_RELEASE_VERSION=%%x
+
+          echo on
+          call "%X_SOURCE_PATH%\build_win_generic_check.cmd"
+
+          dir "%X_SOURCE_PATH%\release\*.zip" >nul 2>&1
+          if %ERRORLEVEL% neq 0 (
+            echo "ZIP file does not exist"
+            exit /b 1
+          )
+
+      - name: Upload Release as Download
+        if: github.event_name != 'pull_request'
+        uses: softprops/action-gh-release@v3
+        env:
+          RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        with:
+          tag_name: Beta
+          draft: false
+          prerelease: true
+          files: |
+            ${{ env.RELEASE_PATH }}/*.zip
+            
+  build-windows-64-qt6:
+    runs-on: windows-2025
+    steps:
+      - uses: actions/checkout@v6
+        with:
+         submodules: 'recursive'
+         path: ${{ env.SRC_PATH }}
+
+      - name: Setup MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+         arch: x64
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.10.2'
+          host: 'windows'
+          target: 'desktop'
+          arch: 'win64_msvc2022_64'
+          dir: ${{ github.workspace }}
+          modules: qt5compat
+
+      - name: Build
+        shell: cmd
+        working-directory: ${{ env.SRC_PATH }}
+        run: |
+          set VSVARS_PATH="C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+          set QMAKE_PATH="${{ github.workspace }}\Qt\6.10.2\msvc2022_64\bin\qmake.exe"
+          set SEVENZIP_PATH="C:\Program Files\7-Zip\7z.exe"
+          set INNOSETUP_PATH="C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+
+          set X_BUILD_NAME=die
+          set X_BUILD_PREFIX=win64_qt6
+          set X_SOURCE_PATH=${{ env.SRC_PATH_WIN }}
+          for /f "delims=" %%x in ('type "%X_SOURCE_PATH%\release_version.txt"') do set X_RELEASE_VERSION=%%x
+
+          echo on
+          call "%X_SOURCE_PATH%\build_win_generic_qt6.cmd"
+
+          dir "%X_SOURCE_PATH%\release\*.zip" >nul 2>&1
+          if %ERRORLEVEL% neq 0 (
+            echo "ZIP file does not exist"
+            exit /b 1
+          )
+
+      - name: Upload Release as Download
+        if: github.event_name != 'pull_request'
+        uses: softprops/action-gh-release@v3
+        env:
+          RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        with:
+          tag_name: Beta
+          draft: false
+          prerelease: true
+          files: |
+            ${{ env.RELEASE_PATH }}/*.zip
+            
+            
+  build-arch:
+    runs-on: ubuntu-latest
+    container: archlinux:base-devel
+    steps:
+      - name: Install dependencies
+        run: |
+          pacman -Syu --noconfirm
+          pacman -S --noconfirm qt5-base qt5-script qt5-svg qt5-tools base-devel git
+          pacman -S --noconfirm imagemagick
+
+      - name: Create user
+        run: |
+          useradd builduser -m 
+          passwd -d builduser 
+          echo 'builduser ALL=(ALL) ALL' | tee -a /etc/sudoers 
+
+      - name: Clone DIE-engine
+        run: |
+          cd $HOME
+          pwd
+          git clone --recursive https://github.com/horsicq/DIE-engine
+          
+      - name: Build
+        run: |
+          sudo chown -R builduser /__w/DIE-engine/DIE-engine
+          sudo chown -R builduser /github/home/DIE-engine
+          cd /github/home/DIE-engine
+          pwd
+          sudo -u builduser bash -c 'bash -ex build_archpkg.sh'
+          rm -Rf /__w/DIE-engine/DIE-engine/release/*debug*
+          rm -Rf /github/home/DIE-engine/release/*debug*
+
+          if ! ls /github/home/DIE-engine/release/*.pkg.tar.zst >/dev/null 2>&1; then
+            echo "Package file does not exist"
+            exit 1
+          fi
+
+      - name: Upload Release as Download
+        if: github.event_name != 'pull_request'
+        uses: softprops/action-gh-release@v3
+        env:
+          RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        with:
+          tag_name: Beta
+          draft: false
+          prerelease: true
+          files: |
+            /github/home/DIE-engine/release/*.pkg.tar.zst
+
+# build-osx:
+#   runs-on: macos-latest
+#   steps:
+#     - uses: actions/checkout@v6
+#       with:
+#        submodules: 'recursive'
+#        path: ${{ env.SRC_PATH }}
+
+#     - name: Install Qt
+#       uses: jurplel/install-qt-action@v4
+#       with:
+#         version: '5.15.2'
+#         host: 'mac'
+#         target: 'desktop'
+#         arch: 'clang_64'
+#         # I make it match what build_mac.sh expects. Although I could also use Qt5_DIR
+#         #dir: ${{ env.HOME }}
+#         dir: /Users/runner
+#         modules: qtscript
+
+#     - name: Build
+#       working-directory: ${{ env.SRC_PATH }}
+#       run: |
+#         bash -x build_mac.sh
+
+#build-alpine:
+ #   runs-on: ubuntu-latest
+
+#    container:
+ #     image: alpine:latest
+
+#    steps:
+ #     - name: Install dependencies
+  #      run: |
+   #       apk update
+    #      apk add \
+     #       alpine-sdk \
+      #      sudo \
+       #     bash \
+        #    git \
+         #   cmake \
+          #  pkgconf \
+           # qt5-qtbase-dev \
+            #qt5-qtscript-dev \
+            #qt5-qttools-dev \
+            #qt5-qtsvg-dev
+
+      #- name: Create build user
+       # run: |
+        #  adduser -D builduser
+         # adduser builduser abuild
+          #echo "builduser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+ #     - name: Clone DIE-engine
+  #      run: |
+   #       git clone --recursive https://github.com/horsicq/DIE-engine.git /home/builduser/DIE-engine
+    #      chown -R builduser:abuild /home/builduser/DIE-engine
+
+     # - name: Prepare abuild directory
+      #  run: |
+       #   mkdir -p /home/builduser/.abuild
+        #  chown -R builduser:abuild /home/builduser/.abuild
+
+      #- name: Build Alpine APK
+       # run: |
+        #  sudo -u builduser bash -c "
+         #   cd /home/builduser/DIE-engine
+          #  chmod +x build_alpinepkg.sh
+           # bash -x build_alpinepkg.sh
+          #"
+
+      #- name: Verify APK
+       # run: |
+        #  if ! ls /home/builduser/DIE-engine/release/*.apk >/dev/null 2>&1; then
+         #   echo "APK file does not exist"
+          #  exit 1
+          #fi
+
+          #ls -lah /home/builduser/DIE-engine/release/
+
+   #   - name: Upload Release APK
+    #    if: github.event_name != 'pull_request'
+     #   uses: softprops/action-gh-release@v3
+      #  with:
+       #   tag_name: Beta
+        #  draft: false
+         # prerelease: true
+          ##files: |
+            #/home/builduser/DIE-engine/release/*.apk
+
+  build-fedora:
+    runs-on: ubuntu-latest
+
+    container:
+      image: fedora:latest
+
+    steps:
+      - name: Install dependencies
+        run: |
+          dnf update -y
+          dnf install -y \
+            git \
+            cmake \
+            gcc-c++ \
+            make \
+            rpm-build \
+            rpmdevtools \
+            qt5-qtbase-devel \
+            qt5-qtscript-devel \
+            qt5-qtsvg-devel \
+            qt5-qttools-devel
+
+      - name: Create build user
+        run: |
+          useradd -m builduser
+
+      - name: Clone DIE-engine
+        run: |
+          git clone --recursive https://github.com/horsicq/DIE-engine.git /home/builduser/DIE-engine
+          chown -R builduser:builduser /home/builduser/DIE-engine
+
+      - name: Build Release and RPM
+        run: |
+          sudo -u builduser bash -c "
+            set -ex
+
+            cd /home/builduser/DIE-engine
+
+            mkdir -p build
+
+            cmake \
+              -B build \
+              -DCMAKE_BUILD_TYPE=Release \
+              -DCMAKE_INSTALL_PREFIX=/usr
+
+            cmake --build build -j\$(nproc)
+
+            cd build
+
+            cpack -G RPM
+          "
+
+      - name: Collect RPM
+        run: |
+          mkdir -p /home/builduser/DIE-engine/release
+
+          find /home/builduser/DIE-engine/build \
+            -name "*.rpm" \
+            -exec cp {} /home/builduser/DIE-engine/release/ \;
+
+          ls -lah /home/builduser/DIE-engine/release
+
+      - name: Verify RPM
+        run: |
+          if ! ls /home/builduser/DIE-engine/release/*.rpm >/dev/null 2>&1; then
+            echo "RPM package missing"
+            exit 1
+          fi
+
+      - name: Upload RPM Release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: Beta
+          draft: false
+          prerelease: true
+          files: |
+            /home/builduser/DIE-engine/release/*.rpm
+
+  build-fedora-arm64:
+    runs-on: ubuntu-24.04-arm
+
+    container:
+      image: fedora:latest
+
+    steps:
+      - name: Install dependencies
+        run: |
+          dnf update -y
+          dnf install -y \
+            git \
+            cmake \
+            gcc-c++ \
+            make \
+            rpm-build \
+            rpmdevtools \
+            qt5-qtbase-devel \
+            qt5-qtscript-devel \
+            qt5-qtsvg-devel \
+            qt5-qttools-devel
+
+      - name: Clone DIE-engine
+        run: |
+          git clone --recursive \
+            https://github.com/horsicq/DIE-engine.git \
+            /opt/DIE-engine
+
+      - name: Build Release and RPM
+        run: |
+          cd /opt/DIE-engine
+
+          cmake \
+            -S . \
+            -B build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=/usr
+
+          cmake --build build -j$(nproc)
+
+          cd build
+
+          cpack -G RPM
+
+      - name: Collect RPM
+        run: |
+          mkdir -p release
+
+          RPM=$(find /opt/DIE-engine/build \
+            -name "*.rpm" | head -n1)
+
+          if [ -z "$RPM" ]; then
+            echo "No RPM package found"
+            exit 1
+          fi
+
+          cp "$RPM" \
+            release/DetectItEasy-fedora-qt5-aarch64.rpm
+
+          ls -lah release
+
+      - name: Verify RPM
+        run: |
+          test -f release/DetectItEasy-fedora-qt5-aarch64.rpm
+
+      - name: Upload RPM Release
+        if: github.event_name != 'pull_request'
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: Beta
+          draft: false
+          prerelease: true
+          files: |
+            release/*.rpm
+
+  build-opensuse:
+    runs-on: ubuntu-latest
+
+    container:
+      image: opensuse/leap:latest
+
+    steps:
+      - name: Install dependencies
+        run: |
+          zypper refresh
+          zypper install -y \
+            git \
+            cmake \
+            gcc-c++ \
+            make \
+            rpm-build \
+            rpmdevtools \
+            libqt5-qtbase-devel \
+            libqt5-qttools-devel \
+            libqt5-qtsvg-devel \
+            libqt5-qtscript-devel
+
+      - name: Clone DIE-engine
+        run: |
+          cd $HOME 
+          git clone --recursive https://github.com/horsicq/DIE-engine
+          cd DIE-engine
+
+      - name: Build RPM
+        run: |
+          cd $HOME/DIE-engine
+
+          cmake \
+          -S . \
+          -B build \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_INSTALL_PREFIX=/usr
+
+          cmake --build build -j$(nproc)
+
+          cd build
+          cpack -G RPM
+
+
+      - name: Collect RPM
+        run: |
+          mkdir -p release
+
+          find $HOME/DIE-engine/build \
+          -name '*.rpm' \
+          -exec cp {} release/DIE-engine-opensuse-qt5-x86_64.rpm \;
+
+          ls -lah release
+
+          ls -lah release
+
+      - name: Verify RPM
+        run: |
+          test -f release/DIE-engine-opensuse-qt5-x86_64.rpm
+
+      - name: Upload RPM Release
+        if: github.event_name != 'pull_request'
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: Beta
+          draft: false
+          prerelease: true
+          files: |
+            release/*.rpm
+
+  build-opensuse-arm64:
+    runs-on: ubuntu-24.04-arm
+
+    container:
+      image: opensuse/leap:latest
+
+    steps:
+      - name: Install dependencies
+        run: |
+          zypper refresh
+          zypper install -y \
+            git \
+            cmake \
+            gcc-c++ \
+            make \
+            rpm-build \
+            rpmdevtools \
+            libqt5-qtbase-devel \
+            libqt5-qttools-devel \
+            libqt5-qtsvg-devel \
+            libqt5-qtscript-devel
+
+      - name: Clone DIE-engine
+        run: |
+          git clone --recursive \
+            https://github.com/horsicq/DIE-engine \
+            $HOME/DIE-engine
+
+      - name: Build RPM
+        run: |
+          cd $HOME/DIE-engine
+
+          cmake \
+            -S . \
+            -B build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=/usr
+
+          cmake --build build -j$(nproc)
+
+          cd build
+
+          cpack -G RPM
+
+      - name: Collect RPM
+        run: |
+          mkdir -p release
+
+          find $HOME/DIE-engine/build \
+            -name '*.rpm' \
+            -exec cp {} release/DIE-engine-opensuse-qt5-aarch64.rpm \;
+
+          ls -lah release
+
+      - name: Verify RPM
+        run: |
+          test -f release/DIE-engine-opensuse-qt5-aarch64.rpm
+
+      - name: Upload RPM Release
+        if: github.event_name != 'pull_request'
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: Beta
+          draft: false
+          prerelease: true
+          files: |
+            release/*.rpm
