@@ -8,4 +8,8 @@ corpus and runtime fixtures used by `spikes/boa-rule-runtime`. It also probes
 the native engine's interrupt and memory limits and records the Windows MSVC
 build cost.
 
-The spike must not modify or normalize any upstream rule bytes.
+The spike must not modify or normalize any upstream rule file. The optional
+`eval-isolated-compat` experiment applies one length-preserving, source-identity
+guarded in-memory overlay after reading the original Nintendo rule. It reports
+the expected source SHA-256 and refuses size/declaration drift. This is a
+feasibility probe, not a production rule transformer or a runtime decision.

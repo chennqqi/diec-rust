@@ -38,6 +38,12 @@ vendored C、MSVC/clang/gcc 构建链及 native 安全边界。当前仍不冻�
 runtime；需要先验证按真实上游生命周期执行、legacy compatibility patch/
 受控转换的可维护性，以及 Linux/macOS/Windows 静态链接和 fuzz 行为。
 
+后续最小实验确认：对唯一失败规则应用 source-identity 约束、等长且不落盘的
+compatibility overlay 后，QuickJS 接受该规则；同一 overlay 在 2235 个文件中
+恰好命中一次，isolated eval 错误由 1 降为 0。该结果只证明受控兼容层可行，
+尚未证明 `detect()` 与 Qt 5/Qt 6 等价，也未解决真实 context 生命周期和 338 个
+宿主方法，因此候选状态不变。
+
 ## 实验边界
 
 验证程序位于
@@ -71,7 +77,7 @@ proxy 只用于语法/顶层执行覆盖，不代表宿主 API 兼容，也不�
 | Lockfile packages | 23 |
 | 当前 target packages | 18 |
 | Clean release build | 13,258 ms，本机已缓存下载、空 target |
-| Release executable | 1,392,128 bytes |
+| Release executable | 1,410,560 bytes（加入 compatibility overlay probe 后） |
 
 `cargo +1.86.0 check --locked` 明确报告
 `rquickjs@0.12.1 requires rustc 1.87`。本实验继续复用已安装的 1.88 工具链。
@@ -140,6 +146,9 @@ context”。
 - `_runtime_helpers` 返回 `a, b/c|007`；
 - `Binary/audio.1.sg` sloppy eval 成功；
 - Nintendo 规则 eval 失败；
+- Nintendo 原始文件保持 SHA-256
+  `1f7485b8b0c9c211932fdcc31529ea37588c176e46a1ff06230fc376df5ad0f5`，
+  compatibility overlay 后 eval 成功且 evaluated length 不变；
 - 两次 eval 同名 `const` 时第二次失败；
 - 17 次 handler callback 后无限循环返回 `Error: interrupted`；
 - 4 MiB runtime limit 拒绝 16 MiB `ArrayBuffer`，返回 `out of memory`。
@@ -147,6 +156,45 @@ context”。
 内存限制使用 rquickjs 默认 libc allocator。官方 API 说明使用 `rust-alloc` 或
 自定义 allocator 时 `set_memory_limit` 是 no-op，因此未来不能在未验证的情况
 下同时启用这两个选项。
+
+## Nintendo compatibility overlay 实验
+
+唯一失败规则长 1994 bytes，原始 SHA-256 如上。问题声明是：
+
+```javascript
+var tp, e;
+// ...
+const attr = X.U16(8, e), tp = X.U16(0xA, e), /* ... */;
+```
+
+静态检查确认第一个 `tp` 在 lexical `const tp` 之前没有读取。spike 新增
+`nintendo-unused-var-tp-v1`，只在 normalized path、1994-byte 长度和唯一精确
+declaration 同时匹配时，把传给 runtime 的等长副本改为：
+
+```javascript
+var     e;
+```
+
+上游文件不写入、不格式化；测试从固定 subtree 重新计算原始 SHA-256。命令自身还
+检查 path、size 和唯一 declaration，任何漂移都拒绝 overlay。正式实现若采用类似
+方案，必须在加载 manifest 时先做 cryptographic hash check，不能只依赖字符串
+匹配。
+
+结果：
+
+| 模式 | Files | Bytes | Overlay 命中 | Errors |
+| --- | ---: | ---: | ---: | ---: |
+| 原始 isolated eval | 2235 | 2,902,881 | 0 | 1 |
+| isolated + overlay | 2235 | 2,902,881 | 1 | 0 |
+
+这个 overlay 删除未使用的 function-scoped `var tp`，没有改 lexical `const tp`
+及后续引用。它仍只是语法/顶层 eval 证据。关闭兼容门禁还需要：
+
+- 生成能触发各 `switch(tp)` 分支的安全输入；
+- 在固定 Qt 5/Qt 6 oracle 和 QuickJS host adapter 中比较 detect/result；
+- 证明 source location/diagnostic mapping 在等长 overlay 后保持准确；
+- 验证真实规则加载生命周期中 overlay 只应用一次；
+- 用 ADR 决定 runtime patch、source overlay 或其他方案。
 
 ## 与 Boa 首轮结果对比
 
@@ -183,19 +231,27 @@ cargo +1.88.0 run --release --locked -- eval-isolated \
   ../../upstream/Detect-It-Easy/db \
   ../../upstream/Detect-It-Easy/db_extra
 
+cargo +1.88.0 run --release --locked -- eval-isolated-compat \
+  ../../upstream/Detect-It-Easy/db \
+  ../../upstream/Detect-It-Easy/db_extra
+
 cargo +1.88.0 run --release --locked -- eval-shared \
   ../../upstream/Detect-It-Easy/db \
   ../../upstream/Detect-It-Easy/db_extra
 ```
 
-`fixture` 预期退出 0；两个全库命令因已记录差异预期退出 1，但仍向 stdout 输出
-完整 JSON。`elapsed_ms` 只用于本机观察，不做跨机器精确断言。
+`fixture` 和 `eval-isolated-compat` 预期退出 0；原始 isolated 与 shared 命令因
+已记录差异预期退出 1，但仍向 stdout 输出完整 JSON。运行前先执行
+`tools/verify_upstream.py` 和 Python 清单测试，确保 cryptographic source identity。
+`elapsed_ms` 只用于本机观察，不做跨机器精确断言。
 
 ## 对设计的约束
 
 - runtime adapter 必须显式设置 sloppy/global script 语义。
 - 原始规则字节、执行前兼容转换和 runtime patch 必须分层，任何转换都要保留
   原始哈希、源码位置和 Qt oracle 回归。
+- compatibility overlay 必须绑定规则 commit/path/hash，拒绝未知 source；
+  transformed bytes/hash 和 applied diagnostics 必须进入 scan/database metadata。
 - 选择 rquickjs 意味着引入 native build、安全审计和 C toolchain CI，不能将
   “静态链接”误写为“纯 Rust”。
 - context 生命周期必须从上游加载顺序推导，不能从 shared-path 实验猜测。
@@ -206,7 +262,7 @@ cargo +1.88.0 run --release --locked -- eval-shared \
 
 - 按上游 file type、priority、database、init/include 顺序执行全库。
 - 338 个直接宿主方法及继承方法的行为 fixture。
-- Nintendo legacy 语义的最小 runtime patch 或受控转换验证。
+- Nintendo overlay 的真实 `detect()` Qt 5/Qt 6 等价验证；当前只有顶层 eval。
 - Qt 5/Qt 6 与 QuickJS 的整数、字符串、数组、异常和 RegExp 差分。
 - Linux/macOS/Windows GNU/MSVC 静态链接、ASan/UBSan 和 fuzz。
 - 并行 runtime/context 的吞吐、峰值内存和取消延迟。

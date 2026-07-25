@@ -39,6 +39,13 @@ const HOST_SHIM: &[u8] = br#"
     var bBorlandC = 0;
 "#;
 
+const NINTENDO_RULE_SUFFIX: &str = "Binary/format_bin.Nintendo-certified-file.1.sg";
+const NINTENDO_RULE_BYTES: usize = 1_994;
+const NINTENDO_RULE_SHA256: &str =
+    "1f7485b8b0c9c211932fdcc31529ea37588c176e46a1ff06230fc376df5ad0f5";
+const NINTENDO_VAR_DECLARATION: &[u8] = b"        var tp, e;";
+const NINTENDO_COMPAT_DECLARATION: &[u8] = b"        var     e;";
+
 fn collect_rule_files(root: &Path, output: &mut Vec<PathBuf>) -> Result<(), String> {
     let entries =
         fs::read_dir(root).map_err(|error| format!("cannot read {}: {error}", root.display()))?;
@@ -63,6 +70,39 @@ fn collect_rule_files(root: &Path, output: &mut Vec<PathBuf>) -> Result<(), Stri
 
 fn normalized_path(path: &Path) -> String {
     path.to_string_lossy().replace('\\', "/")
+}
+
+fn apply_compatibility_overlay(path: &Path, source: &[u8]) -> Result<(Vec<u8>, bool), String> {
+    let normalized = normalized_path(path);
+    if !normalized.ends_with(NINTENDO_RULE_SUFFIX) {
+        return Ok((source.to_vec(), false));
+    }
+    if source.len() != NINTENDO_RULE_BYTES {
+        return Err(format!(
+            "refusing Nintendo compatibility overlay: expected {NINTENDO_RULE_BYTES} bytes, got {}",
+            source.len()
+        ));
+    }
+    let matches = source
+        .windows(NINTENDO_VAR_DECLARATION.len())
+        .enumerate()
+        .filter_map(|(offset, window)| (window == NINTENDO_VAR_DECLARATION).then_some(offset))
+        .collect::<Vec<_>>();
+    if matches.len() != 1 {
+        return Err(format!(
+            "refusing Nintendo compatibility overlay: expected one declaration, got {}",
+            matches.len()
+        ));
+    }
+    debug_assert_eq!(
+        NINTENDO_VAR_DECLARATION.len(),
+        NINTENDO_COMPAT_DECLARATION.len()
+    );
+    let mut transformed = source.to_vec();
+    let start = matches[0];
+    let end = start + NINTENDO_VAR_DECLARATION.len();
+    transformed[start..end].copy_from_slice(NINTENDO_COMPAT_DECLARATION);
+    Ok((transformed, true))
 }
 
 fn new_runtime() -> Result<Runtime, String> {
@@ -97,7 +137,11 @@ fn eval_string(context: &Context, source: &[u8]) -> Result<String, String> {
     })
 }
 
-fn evaluate_corpus(roots: &[PathBuf], shared_realm: bool) -> Result<bool, String> {
+fn evaluate_corpus(
+    roots: &[PathBuf],
+    shared_realm: bool,
+    compatibility_overlay: bool,
+) -> Result<bool, String> {
     let mut files = Vec::new();
     for root in roots {
         collect_rule_files(root, &mut files)?;
@@ -119,14 +163,23 @@ fn evaluate_corpus(roots: &[PathBuf], shared_realm: bool) -> Result<bool, String
         None
     };
     let mut errors = Vec::new();
+    let mut overlays_applied = Vec::new();
     let mut total_bytes = 0_u64;
 
     for path in &files {
-        let bytes =
+        let original_bytes =
             fs::read(path).map_err(|error| format!("cannot read {}: {error}", path.display()))?;
         total_bytes = total_bytes
-            .checked_add(bytes.len() as u64)
+            .checked_add(original_bytes.len() as u64)
             .ok_or_else(|| "rule byte count overflow".to_owned())?;
+        let (evaluated_bytes, overlay_applied) = if compatibility_overlay {
+            apply_compatibility_overlay(path, &original_bytes)?
+        } else {
+            (original_bytes, false)
+        };
+        if overlay_applied {
+            overlays_applied.push(normalized_path(path));
+        }
         interrupt_ticks.store(0, Ordering::Relaxed);
         let isolated_context;
         let context = if let Some(context) = &shared_context {
@@ -136,7 +189,7 @@ fn evaluate_corpus(roots: &[PathBuf], shared_realm: bool) -> Result<bool, String
             install_host_shim(&isolated_context)?;
             &isolated_context
         };
-        if let Err(error) = eval_unit(context, &bytes) {
+        if let Err(error) = eval_unit(context, &evaluated_bytes) {
             errors.push(json!({
                 "path": normalized_path(path),
                 "error": error,
@@ -154,7 +207,20 @@ fn evaluate_corpus(roots: &[PathBuf], shared_realm: bool) -> Result<bool, String
             "engine": "QuickJS-NG",
         },
         "realm_mode": if shared_realm { "shared" } else { "isolated" },
-        "operation": "sloppy eval with explicit host proxy",
+        "operation": if compatibility_overlay {
+            "sloppy eval with explicit host proxy and manifest-pinned compatibility overlay"
+        } else {
+            "sloppy eval with explicit host proxy"
+        },
+        "compatibility_overlay": {
+            "enabled": compatibility_overlay,
+            "id": "nintendo-unused-var-tp-v1",
+            "expected_source_sha256": NINTENDO_RULE_SHA256,
+            "expected_source_bytes": NINTENDO_RULE_BYTES,
+            "preserves_source_file": true,
+            "preserves_evaluated_length": true,
+            "applied_paths": overlays_applied,
+        },
         "interrupt_handler_call_limit_per_file": 1_000_000,
         "selection": "recursive files with .sg or no extension",
         "roots": roots
@@ -236,6 +302,12 @@ fn run_fixture(rule_root: &Path) -> Result<bool, String> {
     let nintendo_bytes = fs::read(&nintendo_path)
         .map_err(|error| format!("cannot read {}: {error}", nintendo_path.display()))?;
     let nintendo_eval = eval_unit(&nintendo_context, &nintendo_bytes);
+    let (nintendo_compat_bytes, nintendo_overlay_applied) =
+        apply_compatibility_overlay(&nintendo_path, &nintendo_bytes)?;
+    let nintendo_compat_runtime = new_runtime()?;
+    let nintendo_compat_context = new_context(&nintendo_compat_runtime)?;
+    install_host_shim(&nintendo_compat_context)?;
+    let nintendo_compat_eval = eval_unit(&nintendo_compat_context, &nintendo_compat_bytes);
 
     let interrupt_count = Arc::new(AtomicUsize::new(0));
     let interrupt_count_for_handler = Arc::clone(&interrupt_count);
@@ -262,6 +334,8 @@ fn run_fixture(rule_root: &Path) -> Result<bool, String> {
         && invalid_redeclaration.is_err()
         && shared_lexical_redeclaration.is_err()
         && nintendo_eval.is_err()
+        && nintendo_overlay_applied
+        && nintendo_compat_eval.is_ok()
         && interrupt_error.is_some()
         && memory_limit_error.is_some();
     let compatible = nintendo_eval.is_ok();
@@ -298,6 +372,14 @@ fn run_fixture(rule_root: &Path) -> Result<bool, String> {
                 .len(),
             "eval_accepted": nintendo_eval.is_ok(),
             "eval_error": nintendo_eval.err(),
+            "source_sha256": NINTENDO_RULE_SHA256,
+            "compatibility_overlay": {
+                "id": "nintendo-unused-var-tp-v1",
+                "applied": nintendo_overlay_applied,
+                "evaluated_length_unchanged": nintendo_compat_bytes.len() == nintendo_bytes.len(),
+                "eval_accepted": nintendo_compat_eval.is_ok(),
+                "eval_error": nintendo_compat_eval.err(),
+            },
         },
         "interrupt": {
             "handler_calls": interrupt_count.load(Ordering::Relaxed),
@@ -322,7 +404,7 @@ fn run_fixture(rule_root: &Path) -> Result<bool, String> {
 fn usage() -> ExitCode {
     eprintln!(
         "usage: diec-rquickjs-rule-runtime-spike \
-         <eval-isolated|eval-shared> <rule-root>...\n       \
+         <eval-isolated|eval-isolated-compat|eval-shared> <rule-root>...\n       \
          diec-rquickjs-rule-runtime-spike fixture <main-rule-root>"
     );
     ExitCode::from(2)
@@ -340,9 +422,11 @@ fn main() -> ExitCode {
     }
 
     let result = if command == "eval-isolated" {
-        evaluate_corpus(&roots, false)
+        evaluate_corpus(&roots, false, false)
+    } else if command == "eval-isolated-compat" {
+        evaluate_corpus(&roots, false, true)
     } else if command == "eval-shared" {
-        evaluate_corpus(&roots, true)
+        evaluate_corpus(&roots, true, false)
     } else if command == "fixture" && roots.len() == 1 {
         run_fixture(&roots[0])
     } else {
@@ -360,7 +444,10 @@ fn main() -> ExitCode {
 
 #[cfg(test)]
 mod tests {
-    use super::{collect_rule_files, normalized_path};
+    use super::{
+        NINTENDO_COMPAT_DECLARATION, NINTENDO_RULE_BYTES, NINTENDO_VAR_DECLARATION,
+        apply_compatibility_overlay, collect_rule_files, normalized_path,
+    };
     use std::fs;
     use std::path::PathBuf;
     use std::time::{SystemTime, UNIX_EPOCH};
@@ -408,5 +495,35 @@ mod tests {
             normalized_path(&PathBuf::from(r"db\Binary\audio.1.sg")),
             "db/Binary/audio.1.sg"
         );
+    }
+
+    #[test]
+    fn compatibility_overlay_is_exact_and_length_preserving() {
+        let mut source = vec![b' '; NINTENDO_RULE_BYTES];
+        let offset = 100;
+        source[offset..offset + NINTENDO_VAR_DECLARATION.len()]
+            .copy_from_slice(NINTENDO_VAR_DECLARATION);
+        let path = PathBuf::from("db/Binary/format_bin.Nintendo-certified-file.1.sg");
+        let (transformed, applied) =
+            apply_compatibility_overlay(&path, &source).expect("known rule shape should transform");
+        assert!(applied);
+        assert_eq!(transformed.len(), source.len());
+        assert_eq!(
+            &transformed[offset..offset + NINTENDO_COMPAT_DECLARATION.len()],
+            NINTENDO_COMPAT_DECLARATION
+        );
+        assert_eq!(
+            &transformed[..offset],
+            &source[..offset],
+            "prefix must remain byte-identical"
+        );
+    }
+
+    #[test]
+    fn compatibility_overlay_refuses_drift() {
+        let path = PathBuf::from("db/Binary/format_bin.Nintendo-certified-file.1.sg");
+        let error = apply_compatibility_overlay(&path, b"var tp, e;")
+            .expect_err("unexpected source identity must be rejected");
+        assert!(error.contains("expected 1994 bytes"));
     }
 }

@@ -12,14 +12,14 @@
   },
   "dependency_footprint": {
     "lockfile_packages": 23,
-    "release_executable_bytes": 1392128,
+    "release_executable_bytes": 1410560,
     "target": "x86_64-pc-windows-msvc",
     "target_packages": 18
   },
   "experiment": {
     "cargo_lock_sha256": "aa7cd4c42e1f3429f45ec31e05e41862abe6156bdbe351eeacc507673f237232",
     "cargo_toml_sha256": "875730b205ca351b4bc0f830a1896fb6ad777c46046e6f26c9c368849614be16",
-    "source_sha256": "ef69f3923e43510c9f6ae7ec731b14ccbafab733fb822827462f871bb52c9c45",
+    "source_sha256": "c2f7fefddeb2d3df17701d10e69a96930909f1dc1508b2c534e82749b9f6f045",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -31,6 +31,13 @@
     "memory_limit_bytes": 4194304,
     "memory_limit_observed": true,
     "nintendo_rule_eval_accepted": false,
+    "nintendo_compatibility_overlay": {
+      "eval_accepted": true,
+      "evaluated_length_unchanged": true,
+      "id": "nintendo-unused-var-tp-v1",
+      "source_bytes": 1994,
+      "source_sha256": "1f7485b8b0c9c211932fdcc31529ea37588c176e46a1ff06230fc376df5ad0f5"
+    },
     "runtime_helpers_result": "a, b/c|007",
     "shared_const_second_eval_accepted": false,
     "sloppy_script_required": true
@@ -41,6 +48,14 @@
     "error_path": "db/Binary/format_bin.Nintendo-certified-file.1.sg",
     "files": 2235,
     "operation": "sloppy eval with explicit host proxy"
+  },
+  "isolated_eval_with_compatibility_overlay": {
+    "bytes": 2902881,
+    "error_count": 0,
+    "files": 2235,
+    "overlay_applied_count": 1,
+    "overlay_id": "nintendo-unused-var-tp-v1",
+    "preserves_source_file": true
   },
   "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
   "schema_version": 1,

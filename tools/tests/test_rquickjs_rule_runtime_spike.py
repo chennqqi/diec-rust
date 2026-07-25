@@ -97,6 +97,35 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
         self.assertTrue(fixture["memory_limit_observed"])
         self.assertEqual(fixture["memory_limit_bytes"], 4 * 1024 * 1024)
 
+    def test_reference_records_manifest_pinned_compatibility_overlay(self):
+        overlay = self.reference["fixture"][
+            "nintendo_compatibility_overlay"
+        ]
+        self.assertEqual(overlay["id"], "nintendo-unused-var-tp-v1")
+        self.assertTrue(overlay["eval_accepted"])
+        self.assertTrue(overlay["evaluated_length_unchanged"])
+        rule = (
+            ROOT
+            / "upstream"
+            / "Detect-It-Easy"
+            / "db"
+            / "Binary"
+            / "format_bin.Nintendo-certified-file.1.sg"
+        )
+        self.assertEqual(rule.stat().st_size, overlay["source_bytes"])
+        self.assertEqual(
+            hashlib.sha256(rule.read_bytes()).hexdigest(),
+            overlay["source_sha256"],
+        )
+        corpus = self.reference[
+            "isolated_eval_with_compatibility_overlay"
+        ]
+        self.assertEqual(corpus["files"], 2235)
+        self.assertEqual(corpus["bytes"], 2_902_881)
+        self.assertEqual(corpus["overlay_applied_count"], 1)
+        self.assertEqual(corpus["error_count"], 0)
+        self.assertTrue(corpus["preserves_source_file"])
+
 
 if __name__ == "__main__":
     unittest.main()
