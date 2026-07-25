@@ -1,0 +1,13 @@
+// Detect It Easy: detection rule file
+// Author: horsicq <horsicq@gmail.com>
+
+// https://webkit.org/
+meta("library", "WebKit");
+
+function detect() {
+    if (MACH.isLibraryPresent("WebKit")) {
+        bDetected = true;
+    }
+
+    return result();
+}

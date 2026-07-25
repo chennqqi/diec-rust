@@ -1,0 +1,32 @@
+// Detect It Easy: detection rule file
+// Author: horsicq <horsicq@gmail.com>
+// Improved by: BJNFNE
+
+// https://en.wikipedia.org/wiki/GNU_Compiler_Collection
+meta("compiler", "gcc");
+
+function detect() {
+    /* if(MACH.isLibraryPresent("libstdc++.6.dylib"))
+    {
+        sOptions="libstdc++";
+        bDetected = true;
+    }
+    else if(MACH.isLibraryPresent("libc++.1.dylib"))
+    {
+        sOptions="C++";
+        bDetected = true;
+    }
+    else if(MACH.isLibraryPresent("libobjc.A.dylib"))
+    {
+        sOptions="Objective-C";
+        bDetected = true;
+    } */
+
+    if (MACH.isLibraryPresent("libgcc_s.1.dylib")) {
+        bDetected = true;
+    }
+
+    sLang = "C/C++";
+
+    return result();
+}

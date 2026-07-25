@@ -1,0 +1,1 @@
+function detect(){return 0===PE.getDosStubSize()&&PE.isSignaturePresent(0,128,"'[LordPE]'")&&(sOptions="rebuilded",bDetected=1),result()}meta("tool","LordPE")

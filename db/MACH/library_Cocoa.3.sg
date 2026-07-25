@@ -1,0 +1,13 @@
+// Detect It Easy: detection rule file
+// Author: horsicq <horsicq@gmail.com>
+
+// https://en.wikipedia.org/wiki/Cocoa_(API)
+meta("library", "Cocoa");
+
+function detect() {
+    if (MACH.isLibraryPresent("Cocoa")) {
+        bDetected = true;
+    }
+
+    return result();
+}
