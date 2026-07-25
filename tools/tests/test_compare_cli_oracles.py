@@ -126,6 +126,31 @@ class CompareObservationsTests(unittest.TestCase):
         self.assertIn("show_structs", case_names)
         self.assertIn("show_structs_with_target", case_names)
 
+    def test_path_cases_cover_recursive_and_mixed_target_behavior(self):
+        case_names = [case.name for case in MODULE.PATH_CASES]
+        self.assertIn("tree_json", case_names)
+        self.assertIn("tree_recursive_json", case_names)
+        self.assertIn("missing_and_existing_json", case_names)
+        self.assertIn("directory_plus_duplicate_json", case_names)
+
+    def test_document_validation_preserves_invalid_aggregate_behavior(self):
+        self.assertTrue(MODULE.document_is_valid(b'{"value": 1}', "json"))
+        self.assertFalse(
+            MODULE.document_is_valid(b"/paths/a:\n{\"value\": 1}", "json")
+        )
+        self.assertTrue(MODULE.document_is_valid(b"<root/>", "xml"))
+        self.assertFalse(
+            MODULE.document_is_valid(b"<root/><root/>", "xml")
+        )
+
+    def test_extracts_only_path_filename_prefix_lines(self):
+        self.assertEqual(
+            MODULE.filename_prefixes(
+                b"/paths/a:\n{\n  \"value\": \"text:\"\n}\n/paths/b:\n"
+            ),
+            ["/paths/a", "/paths/b"],
+        )
+
 
 class LoadCorpusTests(unittest.TestCase):
     def test_loads_and_verifies_manifest(self):
@@ -200,6 +225,60 @@ class LoadCorpusTests(unittest.TestCase):
 
             with self.assertRaisesRegex(ValueError, "does not match"):
                 MODULE.load_corpus(root)
+
+
+class LoadPathCorpusTests(unittest.TestCase):
+    def test_loads_and_verifies_nested_tree(self):
+        data = b"sample"
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            nested = root / "tree" / "nested"
+            nested.mkdir(parents=True)
+            (nested / "sample.bin").write_bytes(data)
+            (root / "manifest.json").write_text(
+                json.dumps(
+                    {
+                        "schema_version": 1,
+                        "directories": ["tree", "tree/nested"],
+                        "entries": [
+                            {
+                                "path": "tree/nested/sample.bin",
+                                "source": "sample.bin",
+                                "size": len(data),
+                                "sha256": (
+                                    "af2bdbe1aa9b6ec1e2ade1d694f41fc71a831d02"
+                                    "68e9891562113d8a62add1bf"
+                                ),
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            manifest = MODULE.load_path_corpus(root)
+
+        self.assertEqual(
+            manifest["entries"][0]["path"],
+            "tree/nested/sample.bin",
+        )
+
+    def test_rejects_path_escape(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            (root / "manifest.json").write_text(
+                json.dumps(
+                    {
+                        "schema_version": 1,
+                        "directories": ["../escape"],
+                        "entries": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(ValueError, "unsafe"):
+                MODULE.load_path_corpus(root)
 
 
 if __name__ == "__main__":

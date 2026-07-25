@@ -12,9 +12,9 @@ Last updated: 2026-07-25
 | 能力 | 上游入口 | 状态 | 备注 |
 | --- | --- | --- | --- |
 | 单文件扫描 | positional `target` | Observed | 15 个确定性样本；见 `behavior-baseline.md` |
-| 多目标扫描 | 多个 positional `target` | Source only | 汇总后逐文件扫描 |
-| 目录枚举 | positional directory | Source only | `XBinary::findFiles()` |
-| 递归目录 | `-r`, `--recursivescan` | Source only | 实际目录深度行为待实验 |
+| 多目标扫描 | 多个 positional `target` | Observed | 保持参数顺序、不去重；结构化输出不是有效聚合文档 |
+| 目录枚举 | positional directory | Observed | 无条件 depth-first 递归；Linux 当前语料按 name 排序 |
+| 单文件目录/空目录 | positional directory | Observed | 单文件不加 prefix；空目录退出 0 且无输出 |
 | 内存扫描 | engine `scanMemory()` | Source only | CLI 不直接暴露 |
 | device/subdevice 扫描 | engine API | Source only | 是嵌套扫描基础 |
 
@@ -24,7 +24,7 @@ CLI 主入口为 [`src/console/main_console.cpp`](https://github.com/horsicq/DIE
 
 | Short | Long | 上游描述 | 代码映射 | 状态 |
 | --- | --- | --- | --- | --- |
-| `-r` | `--recursivescan` | Scan directories recursively | `bIsRecursiveScan` | Source only |
+| `-r` | `--recursivescan` | Scan directories recursively | `bIsRecursiveScan` | Observed + source；不控制目录枚举，启用 resource/overlay 内部递归 |
 | `-d` | `--deepscan` | Enable deep scanning for thorough analysis | `bIsDeepScan` | Observed；15 个基线样本 |
 | `-u` | `--heuristicscan` | Enable heuristic scanning methods | `bIsHeuristicScan` | Observed；PE32 protection 及 BMP/WAV 扩展名 heuristic |
 | `-b` | `--verbose` | Show verbose output with detailed information | `bIsVerbose` | Source only |
@@ -64,6 +64,10 @@ CLI 主入口为 [`src/console/main_console.cpp`](https://github.com/horsicq/DIE
 entropy/info/struct 不使用普通扫描 formatter，组合优先级、schema、空文件 hash
 边界和复现命令见
 [`cli-special-modes.md`](cli-special-modes.md)。
+
+多目标 filename prefix、目录顺序、重复 target、部分失败和无效 JSON/XML 聚合
+行为见
+[`cli-path-behavior.md`](cli-path-behavior.md)。
 
 ## 规则与扫描能力
 
@@ -109,6 +113,8 @@ hideunknown 的可观察增量。完整输入哈希和输出见
 
 静态源码显示：
 
+- CLI 顶层目录枚举始终递归；`--recursivescan` 的“递归”指文件内部
+  resource/overlay，不是目录深度。
 - `scanProcess()` 对可扫描 archive 解包记录后递归调用自身。
 - archive 默认处理限制为 20，aggressive 模式将限制提高到 100000。
 - overlay、resources 和其他 file parts 也可形成 subdevice 并递归扫描。
@@ -135,9 +141,9 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
 ## 待实验矩阵
 
 - 尚未实验的 CLI 选项及专用模式剩余 struct/阈值边界。
-- 无效路径、空文件、不可读文件、缺失/损坏数据库。
-- 多文件与目录输出中的 filename 包装格式。
-- JSON/XML/CSV/TSV 的转义、排序和多目标有效性。
+- 不可读文件、缺失/损坏数据库；缺失路径和空文件已覆盖。
+- Unicode/特殊 filename 及 Windows/macOS 的路径和枚举差异。
+- JSON/XML/CSV/TSV 的转义和嵌套排序。
 - deep/aggressive 在能触发增量行为的样本上的效果。
 - archive/resource/overlay 的默认状态、递归深度和限制。
 - Qt 5 与 Qt 6 输出差异。

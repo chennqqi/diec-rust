@@ -9,6 +9,7 @@ import json
 import pathlib
 import subprocess
 import sys
+import xml.etree.ElementTree as ElementTree
 from dataclasses import dataclass
 from typing import Sequence
 
@@ -161,12 +162,83 @@ SPECIAL_MATRIX = (
     ),
 )
 
+PATH_CASES = (
+    Case(
+        "single_file_json",
+        ("--json", *DATABASE_ARGS, "/paths/tree/a-first.pdf"),
+    ),
+    Case(
+        "two_files_json",
+        (
+            "--json",
+            *DATABASE_ARGS,
+            "/paths/tree/z-last.txt",
+            "/paths/tree/a-first.pdf",
+        ),
+    ),
+    Case(
+        "duplicate_file_json",
+        (
+            "--json",
+            *DATABASE_ARGS,
+            "/paths/tree/a-first.pdf",
+            "/paths/tree/a-first.pdf",
+        ),
+    ),
+    Case("tree_json", ("--json", *DATABASE_ARGS, "/paths/tree")),
+    Case(
+        "tree_recursive_json",
+        ("--json", "--recursivescan", *DATABASE_ARGS, "/paths/tree"),
+    ),
+    Case("tree_xml", ("--xml", *DATABASE_ARGS, "/paths/tree")),
+    Case("tree_csv", ("--csv", *DATABASE_ARGS, "/paths/tree")),
+    Case(
+        "tree_plaintext",
+        ("--plaintext", *DATABASE_ARGS, "/paths/tree"),
+    ),
+    Case(
+        "tree_entropy_json",
+        ("--entropy", "--json", *DATABASE_ARGS, "/paths/tree"),
+    ),
+    Case(
+        "tree_info_json",
+        ("--info", "--json", *DATABASE_ARGS, "/paths/tree"),
+    ),
+    Case(
+        "single_directory_json",
+        ("--json", *DATABASE_ARGS, "/paths/single"),
+    ),
+    Case(
+        "empty_directory_json",
+        ("--json", *DATABASE_ARGS, "/paths/empty-dir"),
+    ),
+    Case(
+        "missing_and_existing_json",
+        (
+            "--json",
+            *DATABASE_ARGS,
+            "/paths/does-not-exist",
+            "/paths/tree/a-first.pdf",
+        ),
+    ),
+    Case(
+        "directory_plus_duplicate_json",
+        (
+            "--json",
+            *DATABASE_ARGS,
+            "/paths/tree",
+            "/paths/tree/a-first.pdf",
+        ),
+    ),
+)
+
 
 def observe(
     image: str,
     binary: str,
     arguments: Sequence[str],
     corpus_dir: pathlib.Path | None = None,
+    mount_target: str = "/corpus",
 ) -> Observation:
     # The symlink gives both programs the same argv[0], making the Usage line
     # comparable even though their build-tree paths differ.
@@ -179,7 +251,10 @@ def observe(
         command.extend(
             [
                 "--mount",
-                f"type=bind,source={corpus_dir},target=/corpus,readonly",
+                (
+                    f"type=bind,source={corpus_dir},"
+                    f"target={mount_target},readonly"
+                ),
             ]
         )
     command.extend(
@@ -274,6 +349,124 @@ def load_corpus(corpus_dir: pathlib.Path) -> list[dict[str, object]]:
     return validated
 
 
+def _safe_relative_path(value: object) -> pathlib.PurePosixPath:
+    if not isinstance(value, str) or "\\" in value:
+        raise ValueError(f"unsafe path corpus entry: {value!r}")
+    path = pathlib.PurePosixPath(value)
+    if (
+        path.is_absolute()
+        or not path.parts
+        or any(part in {"", ".", ".."} for part in path.parts)
+    ):
+        raise ValueError(f"unsafe path corpus entry: {value!r}")
+    return path
+
+
+def load_path_corpus(path_corpus_dir: pathlib.Path) -> dict[str, object]:
+    manifest_path = path_corpus_dir / "manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if manifest.get("schema_version") != 1:
+        raise ValueError("unsupported path corpus manifest schema")
+
+    directories = manifest.get("directories")
+    entries = manifest.get("entries")
+    if not isinstance(directories, list) or not isinstance(entries, list):
+        raise ValueError("path corpus manifest is missing layout")
+
+    declared_directories = set()
+    for value in directories:
+        path = _safe_relative_path(value)
+        if path.as_posix() in declared_directories:
+            raise ValueError(f"duplicate path corpus directory: {value}")
+        declared_directories.add(path.as_posix())
+        actual = path_corpus_dir / pathlib.Path(*path.parts)
+        if not actual.is_dir() or actual.is_symlink():
+            raise ValueError(f"path corpus directory mismatch: {value}")
+
+    declared_files = set()
+    for entry in entries:
+        if not isinstance(entry, dict):
+            raise ValueError("path corpus entry must be an object")
+        path = _safe_relative_path(entry.get("path"))
+        relative_path = path.as_posix()
+        if relative_path in declared_files:
+            raise ValueError(f"duplicate path corpus file: {relative_path}")
+        declared_files.add(relative_path)
+
+        expected_size = entry.get("size")
+        expected_sha256 = entry.get("sha256")
+        source = entry.get("source")
+        if (
+            not isinstance(source, str)
+            or pathlib.PurePath(source).name != source
+            or source in {".", ".."}
+        ):
+            raise ValueError(f"invalid path corpus source: {relative_path}")
+        if not isinstance(expected_size, int) or expected_size < 0:
+            raise ValueError(f"invalid path corpus size: {relative_path}")
+        if (
+            not isinstance(expected_sha256, str)
+            or len(expected_sha256) != 64
+            or any(
+                character not in "0123456789abcdef"
+                for character in expected_sha256
+            )
+        ):
+            raise ValueError(f"invalid path corpus SHA-256: {relative_path}")
+
+        actual = path_corpus_dir / pathlib.Path(*path.parts)
+        if actual.is_symlink():
+            raise ValueError(
+                f"path corpus symlink is not allowed: {relative_path}"
+            )
+        data = actual.read_bytes()
+        if (
+            len(data) != expected_size
+            or hashlib.sha256(data).hexdigest() != expected_sha256
+        ):
+            raise ValueError(f"path corpus file mismatch: {relative_path}")
+
+    actual_files = set()
+    actual_directories = set()
+    for path in path_corpus_dir.rglob("*"):
+        relative_path = path.relative_to(path_corpus_dir).as_posix()
+        if path.is_symlink():
+            raise ValueError(
+                f"path corpus symlink is not allowed: {relative_path}"
+            )
+        if path.is_dir():
+            actual_directories.add(relative_path)
+        elif path.is_file() and path != manifest_path:
+            actual_files.add(relative_path)
+
+    if actual_directories != declared_directories:
+        raise ValueError("path corpus contains undeclared or missing directories")
+    if actual_files != declared_files:
+        raise ValueError("path corpus contains undeclared or missing files")
+    return manifest
+
+
+def document_is_valid(data: bytes, kind: str) -> bool:
+    try:
+        if kind == "json":
+            json.loads(data)
+        elif kind == "xml":
+            ElementTree.fromstring(data)
+        else:
+            raise ValueError(f"unsupported document kind: {kind}")
+    except (UnicodeDecodeError, json.JSONDecodeError, ElementTree.ParseError):
+        return False
+    return True
+
+
+def filename_prefixes(data: bytes) -> list[str]:
+    return [
+        line[:-1]
+        for line in data.decode("utf-8", errors="replace").splitlines()
+        if line.startswith("/paths/") and line.endswith(":")
+    ]
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--left-image", required=True)
@@ -282,6 +475,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--right-binary", required=True)
     parser.add_argument("--expected-revision", required=True)
     parser.add_argument("--corpus-dir", type=pathlib.Path)
+    parser.add_argument(
+        "--path-corpus-dir",
+        type=pathlib.Path,
+        help="Generated path corpus used for multi-target/directory cases",
+    )
     parser.add_argument(
         "--matrix-sample",
         action="append",
@@ -315,6 +513,9 @@ def main() -> int:
     }
     failures = []
     corpus_dir = args.corpus_dir.resolve() if args.corpus_dir else None
+    path_corpus_dir = (
+        args.path_corpus_dir.resolve() if args.path_corpus_dir else None
+    )
 
     for side, image in (
         ("left", args.left_image),
@@ -502,6 +703,72 @@ def main() -> int:
                         )
     elif args.matrix_sample or args.matrix_all:
         raise ValueError("matrix options require --corpus-dir")
+
+    if path_corpus_dir is not None:
+        path_manifest = load_path_corpus(path_corpus_dir)
+        path_report = {}
+        report["path_corpus"] = {
+            "generator": path_manifest.get("generator"),
+            "directories": path_manifest["directories"],
+            "entries": path_manifest["entries"],
+            "cases": path_report,
+        }
+        path_observations = {}
+        for case in PATH_CASES:
+            left = observe(
+                args.left_image,
+                args.left_binary,
+                case.arguments,
+                path_corpus_dir,
+                "/paths",
+            )
+            right = observe(
+                args.right_image,
+                args.right_binary,
+                case.arguments,
+                path_corpus_dir,
+                "/paths",
+            )
+            differences = compare_observations(left, right)
+            path_observations[case.name] = (left, right)
+            entry: dict[str, object] = {
+                "arguments": list(case.arguments),
+                "left": left.summary(),
+                "right": right.summary(),
+                "differences": differences,
+                "left_filename_prefixes": filename_prefixes(left.stdout),
+                "right_filename_prefixes": filename_prefixes(right.stdout),
+            }
+            if case.name.endswith("_json"):
+                entry["left_valid_json"] = document_is_valid(
+                    left.stdout, "json"
+                )
+                entry["right_valid_json"] = document_is_valid(
+                    right.stdout, "json"
+                )
+            elif case.name.endswith("_xml"):
+                entry["left_valid_xml"] = document_is_valid(
+                    left.stdout, "xml"
+                )
+                entry["right_valid_xml"] = document_is_valid(
+                    right.stdout, "xml"
+                )
+            path_report[case.name] = entry
+            failures.extend(
+                f"path_corpus.{case.name}.{item}" for item in differences
+            )
+
+        default_left, default_right = path_observations["tree_json"]
+        recursive_entry = path_report["tree_recursive_json"]
+        recursive_left, recursive_right = path_observations[
+            "tree_recursive_json"
+        ]
+        recursive_entry["left_changes"] = compare_observations(
+            default_left, recursive_left
+        )
+        recursive_entry["right_changes"] = compare_observations(
+            default_right, recursive_right
+        )
 
     report["equal"] = not failures
     report["failures"] = failures

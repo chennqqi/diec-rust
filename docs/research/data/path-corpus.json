@@ -1,0 +1,44 @@
+{
+  "directories": [
+    "empty-dir",
+    "single",
+    "tree",
+    "tree/b-dir",
+    "tree/b-dir/c-deep"
+  ],
+  "entries": [
+    {
+      "path": "single/only.elf",
+      "sha256": "e717b57a377ce3486a932130454ee070fdd495d3c23a9d5a8a446ad32772e704",
+      "size": 64,
+      "source": "minimal.elf"
+    },
+    {
+      "path": "tree/a-first.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331,
+      "source": "minimal.pdf"
+    },
+    {
+      "path": "tree/b-dir/a-child.exe",
+      "sha256": "afb1bcd812caa45095075a60ff49599c7d5e767c7732226c3e0007708cb198a2",
+      "size": 512,
+      "source": "minimal.exe"
+    },
+    {
+      "path": "tree/b-dir/c-deep/z-child.zip",
+      "sha256": "c29a3445c289e061a11d4675b36763657d4e550c4941821ea74905593a29acfe",
+      "size": 151,
+      "source": "payload.zip"
+    },
+    {
+      "path": "tree/z-last.txt",
+      "sha256": "22b217bfba5795d402092bf48bfb28146c0ee4dd0036fd4d0c93e25bbe65e998",
+      "size": 31,
+      "source": "plain.txt"
+    }
+  ],
+  "generator": "tools/corpus/generate_path_corpus.py",
+  "license": "project-generated layout; baseline corpus bytes only",
+  "schema_version": 1
+}

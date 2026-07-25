@@ -36,7 +36,7 @@ signatures/*                     binary crypto/junk signatures
 2. 把选项转换为 `XScanEngine::SCAN_OPTIONS`。
 3. 默认启用 main、extra 和 custom database 路径。
 4. 根据模式进入 database listing、struct listing、未完成的 test/create-test，或目标扫描。
-5. 对目标调用 `XBinary::findFiles()`。
+5. 对目标调用 `XBinary::findFiles()`；目录在 CLI 中无条件递归展开。
 6. entropy 和 file-info 走独立处理器；普通扫描调用 `DiE_Script::scanFile()`。
 7. 使用 `ScanItemModel` 输出 text/JSON/XML/CSV/TSV。
 8. 追加打印脚本错误，返回 `XOptions::CR`。
@@ -44,6 +44,10 @@ signatures/*                     binary crypto/junk signatures
 重要观察：CLI 不是单纯的扫描引擎包装。entropy、file info 和普通规则扫描有
 三条不同路径，且 formatter 优先级不同。专用路径的固定 oracle 实验见
 [`cli-special-modes.md`](cli-special-modes.md)。
+
+`--recursivescan` 不控制第 5 步的目录枚举，而是控制单个文件内部的
+resource/overlay 递归。多目标顺序、filename prefix 和结构化输出有效性见
+[`cli-path-behavior.md`](cli-path-behavior.md)。
 
 ## 扫描主流程
 
@@ -169,6 +173,7 @@ archive 扫描源码包含：
 | 格式宿主 API 面积未知 | 工作量和漏报风险 | 自动提取所有 exposed method/property |
 | 多候选格式的优先顺序 | 分类结果偏差 | 建立分派顺序表和多义样本 |
 | archive/resource/overlay 递归 | 安全、性能和层级差异 | 固定嵌套语料并记录限制 |
+| 目录枚举无深度/循环保护 | symlink loop、栈/时间耗尽 | 隔离测试并为 Rust 设计资源限制 |
 | formatter 分散 | JSON/XML 契约不明确 | 逐格式保存 schema 和 escaping 样本 |
 | database cache | 启动性能与兼容性 | 分析 cache header/失效逻辑 |
 | CLI 部分选项有 `TODO` | “能力相同”范围争议 | 构建并运行确认真实行为 |

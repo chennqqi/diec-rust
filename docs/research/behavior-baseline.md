@@ -195,13 +195,17 @@ stderr 逐字节相同，均退出 `0` 且 stderr 为空。
 - deep 和 aggressive 在全部 15 个输入上都没有改变输出；这只能证明它们在
   当前语料上无增量，不能推断开关未生效。
 
+多目标、目录、重复 target、缺失+存在 partial result，以及结构化输出的
+filename prefix 行为单独记录在
+[`cli-path-behavior.md`](cli-path-behavior.md)。
+
 ## 尚未覆盖
 
 - PE64、ELF32、Mach-O32/FAT、APK/JAR/IPA、RAR、ISO9660、PYC、JPEG 等格式。
 - profiling、verbose 和 messages。
-- 输出格式的转义边界、多目标 schema，以及专用 struct/entropy 阈值边界。
+- 输出格式的转义边界、特殊 filename，以及专用 struct/entropy 阈值边界。
 - 能实际触发 deep/aggressive 增量的嵌套、overlay 或大 archive 样本。
-- 目录、递归、archive 内部成员、overlay/resource 和最大深度。
+- archive 内部成员、overlay/resource 和最大深度。
 - 缺失、空、损坏和含未知语法的规则数据库。
 - 系统化畸形/截断矩阵、资源限制、超时、内存峰值和 fuzz seeds。
 - Windows/macOS oracle 以及路径编码差异。
