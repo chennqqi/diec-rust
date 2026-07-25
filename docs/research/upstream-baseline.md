@@ -124,7 +124,8 @@ python3 tools/verify_upstream.py
 
 ## 尚未完成
 
-- 各直接组件内部的递归 submodule SHA manifest。
+- [`cli-dependency-and-license.md`](cli-dependency-and-license.md) 已确认 CLI 核心范围
+  16 个组件均无嵌套 `.gitmodules`；其余 42 个直接组件仍待检查。
 - 三个平台的可重复构建和运行记录。
 - release workflow、预编译包与源码构建之间的数据资产差异。
 - 所有 submodule 和规则文件的许可证审计。

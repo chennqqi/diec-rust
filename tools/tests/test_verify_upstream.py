@@ -147,5 +147,68 @@ class ValidateLockTests(unittest.TestCase):
         self.assertIn("duplicate component local_path: upstream/child", errors)
 
 
+class ValidateCliDependencyTests(unittest.TestCase):
+    def lock_data(self) -> dict:
+        return {
+            "baseline": {"commit": "a" * 40},
+            "gitlink": {
+                "parent": {"commit": "b" * 40},
+                "child": {"commit": "c" * 40},
+            },
+        }
+
+    def valid_data(self) -> dict:
+        return {
+            "schema": 1,
+            "baseline_commit": "a" * 40,
+            "component": [
+                {
+                    "name": "parent",
+                    "commit": "b" * 40,
+                    "dependencies": ["child"],
+                    "license_blob": "d" * 40,
+                },
+                {
+                    "name": "child",
+                    "commit": "c" * 40,
+                    "dependencies": [],
+                    "license_blob": "e" * 40,
+                },
+            ],
+            "bundled_code": [
+                {
+                    "name": "library",
+                    "owner": "parent",
+                    "evidence_blob": "f" * 40,
+                }
+            ],
+        }
+
+    def test_accepts_manifest_matching_component_lock(self) -> None:
+        self.assertEqual(
+            VERIFY_UPSTREAM.validate_cli_dependency_data(
+                self.valid_data(),
+                self.lock_data(),
+            ),
+            [],
+        )
+
+    def test_rejects_unknown_dependency_and_commit_mismatch(self) -> None:
+        data = self.valid_data()
+        data["component"][0]["commit"] = "0" * 40
+        data["component"][0]["dependencies"] = ["missing"]
+
+        errors = VERIFY_UPSTREAM.validate_cli_dependency_data(
+            data,
+            self.lock_data(),
+        )
+
+        self.assertIn("component[0].commit differs from component lock", errors)
+        self.assertIn(
+            "component[0].dependencies contains unknown component: missing",
+            errors,
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

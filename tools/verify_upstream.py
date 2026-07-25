@@ -201,6 +201,80 @@ def validate_lock_data(data: dict[str, Any]) -> list[str]:
     return errors
 
 
+def validate_cli_dependency_data(
+    data: dict[str, Any],
+    lock_data: dict[str, Any],
+) -> list[str]:
+    errors: list[str] = []
+    if data.get("schema") != 1:
+        errors.append("schema must be 1")
+    if data.get("baseline_commit") != lock_data["baseline"]["commit"]:
+        errors.append("baseline_commit differs from component lock")
+
+    locked_gitlinks = lock_data["gitlink"]
+    components = data.get("component")
+    if not isinstance(components, list) or not components:
+        errors.append("at least one [[component]] is required")
+        components = []
+
+    names: set[str] = set()
+    for index, component in enumerate(components):
+        prefix = f"component[{index}]"
+        if not isinstance(component, dict):
+            errors.append(f"{prefix} must be a table")
+            continue
+        name = str(component.get("name", ""))
+        if not name:
+            errors.append(f"{prefix}.name is required")
+        elif name in names:
+            errors.append(f"duplicate component name: {name}")
+        names.add(name)
+
+        locked = locked_gitlinks.get(name)
+        if locked is None:
+            errors.append(f"{prefix}.name is not present in component lock: {name}")
+        elif component.get("commit") != locked.get("commit"):
+            errors.append(f"{prefix}.commit differs from component lock")
+
+        license_blob = str(component.get("license_blob", ""))
+        if not SHA1_RE.fullmatch(license_blob):
+            errors.append(f"{prefix}.license_blob must be a lowercase 40-character SHA-1")
+        dependencies = component.get("dependencies")
+        if not isinstance(dependencies, list):
+            errors.append(f"{prefix}.dependencies must be an array")
+
+    for index, component in enumerate(components):
+        if not isinstance(component, dict):
+            continue
+        for dependency in component.get("dependencies", []):
+            if dependency not in names:
+                errors.append(
+                    f"component[{index}].dependencies contains unknown component: "
+                    f"{dependency}"
+                )
+
+    bundled_code = data.get("bundled_code")
+    if not isinstance(bundled_code, list) or not bundled_code:
+        errors.append("at least one [[bundled_code]] is required")
+        bundled_code = []
+    for index, bundled in enumerate(bundled_code):
+        prefix = f"bundled_code[{index}]"
+        if not isinstance(bundled, dict):
+            errors.append(f"{prefix} must be a table")
+            continue
+        if bundled.get("owner") not in names:
+            errors.append(f"{prefix}.owner is not a manifest component")
+        evidence_blob = bundled.get("evidence_blob")
+        if evidence_blob:
+            for blob in str(evidence_blob).split(";"):
+                if not SHA1_RE.fullmatch(blob.strip()):
+                    errors.append(
+                        f"{prefix}.evidence_blob contains an invalid SHA-1"
+                    )
+
+    return errors
+
+
 def verify_gitlink_inventory(
     repo: Path,
     reporter: Reporter,
@@ -341,6 +415,22 @@ def verify_repository(repo: Path, lock_path: Path, data: dict[str, Any]) -> Repo
         baseline_commit=baseline_commit,
         locked_gitlinks=data["gitlink"],
     )
+
+    dependency_path = repo / "docs" / "research" / "data" / "cli-dependencies.toml"
+    try:
+        dependency_data = load_lock(dependency_path)
+    except VerificationError as error:
+        reporter.fail(f"CLI dependency manifest: {error}")
+    else:
+        dependency_errors = validate_cli_dependency_data(dependency_data, data)
+        for error in dependency_errors:
+            reporter.fail(f"CLI dependency manifest: {error}")
+        if not dependency_errors:
+            reporter.pass_(
+                "CLI dependency manifest matches component lock: "
+                f"{len(dependency_data['component'])} components, "
+                f"{len(dependency_data['bundled_code'])} bundled-code records"
+            )
 
     for component in data["component"]:
         name = str(component["name"])
