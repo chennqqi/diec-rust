@@ -89,6 +89,12 @@ Extra database 为 Amiga 2、COM 2、ELF 1、MSDOS 2、PE 131。
 
 例如 `compiler_Foo.4.sg` 的优先级来自 `"4"`。比较是字符串比较，不应未经实验改成数值比较。文件重命名可能改变执行顺序和最终结果，因此文件名也是规则协议的一部分。
 
+后续固定源码复核发现，优先级仅在比较双方都至少包含两个点时启用。Binary
+现有文件名可构造非传递比较环，违反 `std::sort` 的 strict weak ordering
+前置条件；各数据库又是分别排序后 append，而非 main/extra/custom 全局排序。
+完整证据和 Rust 端门禁见
+[`binary-rule-lifecycle.md`](binary-rule-lifecycle.md)。
+
 ## 执行生命周期
 
 每个扫描对象创建一个 `DiE_ScriptEngine`：
@@ -317,6 +323,11 @@ rquickjs 0.12.1 的同语料 eval、sloppy-script 要求、interrupt/heap limit 
 native 构建成本见
 [`rquickjs-rule-runtime-spike.md`](rquickjs-rule-runtime-spike.md)。它拒绝与
 Boa 相同的 Nintendo legacy 规则，因此两个候选都未通过零差异门禁。
+
+固定 Binary 生命周期、init/include 首个命中规则、共享 global scope 和上游
+排序比较器缺陷见
+[`binary-rule-lifecycle.md`](binary-rule-lifecycle.md)。该证据排除了
+“每条规则一个 context”作为兼容执行模型。
 
 ## 尚未完成
 

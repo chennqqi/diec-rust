@@ -15,8 +15,9 @@ the expected source SHA-256 and refuses size/declaration drift. This is a
 feasibility probe, not a production rule transformer or a runtime decision.
 
 `detect-nintendo` goes one step further: it registers the minimal Rust byte
-HostApi used by the fixed Nintendo rule, evaluates the upstream
-`_runtime_helpers`, `read`, and `_init` helpers unchanged, applies the
-compatibility overlay in memory, and compares all 14 generated PS3/PS Vita
+HostApi used by the fixed Nintendo rule, then uses one shared context to
+evaluate the real global `_init`, Binary `_init`, and their `_debug`,
+`_runtime_helpers`, `language`, and `read` includes unchanged. It applies the
+compatibility overlay in memory and compares all 14 generated PS3/PS Vita
 fixtures with the versioned Qt oracle baseline. It does not execute the full
 Binary rule set.

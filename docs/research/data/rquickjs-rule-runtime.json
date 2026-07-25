@@ -12,14 +12,14 @@
   },
   "dependency_footprint": {
     "lockfile_packages": 23,
-    "release_executable_bytes": 1513472,
+    "release_executable_bytes": 1556480,
     "target": "x86_64-pc-windows-msvc",
     "target_packages": 18
   },
   "experiment": {
     "cargo_lock_sha256": "aa7cd4c42e1f3429f45ec31e05e41862abe6156bdbe351eeacc507673f237232",
     "cargo_toml_sha256": "875730b205ca351b4bc0f830a1896fb6ad777c46046e6f26c9c368849614be16",
-    "source_sha256": "347d5e6af0216d5191e702b4f93ac4dc81aa0315a3b6a923f440674e107ee29c",
+    "source_sha256": "bd711377f7455b3f2a195ca06b302b16b26910a1e35c1d49aca0707c6aa1f633",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -60,10 +60,15 @@
   "nintendo_detect": {
     "all_match": true,
     "baseline": "docs/research/data/nintendo-certified-baseline.json",
-    "helpers_evaluated_unchanged": [
+    "include_trace": [
+      "_debug",
       "_runtime_helpers",
-      "read",
-      "_init"
+      "language",
+      "read"
+    ],
+    "init_sequence": [
+      "_init",
+      "Binary/_init"
     ],
     "host_methods": [
       "X.c",

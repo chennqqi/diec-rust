@@ -97,6 +97,16 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
         self.assertTrue(fixture["memory_limit_observed"])
         self.assertEqual(fixture["memory_limit_bytes"], 4 * 1024 * 1024)
 
+    def test_nintendo_probe_uses_real_init_and_include_sequence(self):
+        detection = self.reference["nintendo_detect"]
+        self.assertEqual(detection["init_sequence"], ["_init", "Binary/_init"])
+        self.assertEqual(
+            detection["include_trace"],
+            ["_debug", "_runtime_helpers", "language", "read"],
+        )
+        self.assertTrue(detection["all_match"])
+        self.assertEqual(detection["matched_count"], 14)
+
     def test_reference_records_manifest_pinned_compatibility_overlay(self):
         overlay = self.reference["fixture"][
             "nintendo_compatibility_overlay"

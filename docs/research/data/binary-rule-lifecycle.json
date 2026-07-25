@@ -1,0 +1,2586 @@
+{
+  "binary": {
+    "executable_count_by_database": {
+      "db": 292,
+      "db_custom": 0,
+      "db_extra": 0
+    },
+    "literal_include_call_count": 23,
+    "literal_include_calls": [
+      {
+        "caller": "db/_init",
+        "resolved_path": "db/_debug",
+        "target": "_debug"
+      },
+      {
+        "caller": "db/_init",
+        "resolved_path": "db/_runtime_helpers",
+        "target": "_runtime_helpers"
+      },
+      {
+        "caller": "db/_init",
+        "resolved_path": "db/language",
+        "target": "language"
+      },
+      {
+        "caller": "db/Binary/_init",
+        "resolved_path": "db/read",
+        "target": "read"
+      },
+      {
+        "caller": "db/Binary/archive_ACE.1.sg",
+        "resolved_path": "db/ACE",
+        "target": "ACE"
+      },
+      {
+        "caller": "db/Binary/archive_AR.1.sg",
+        "resolved_path": "db/archive-file",
+        "target": "archive-file"
+      },
+      {
+        "caller": "db/Binary/archive_ARJ.1.sg",
+        "resolved_path": "db/arj",
+        "target": "arj"
+      },
+      {
+        "caller": "db/Binary/archive_Cab.1.sg",
+        "resolved_path": "db/cab",
+        "target": "cab"
+      },
+      {
+        "caller": "db/Binary/archive_RAR.1.sg",
+        "resolved_path": "db/rar-file",
+        "target": "rar-file"
+      },
+      {
+        "caller": "db/Binary/archive_ZIP.1.sg",
+        "resolved_path": "db/zip-file",
+        "target": "zip-file"
+      },
+      {
+        "caller": "db/Binary/archive_ZLIB.1.sg",
+        "resolved_path": "db/zlib",
+        "target": "zlib"
+      },
+      {
+        "caller": "db/Binary/audio.1.sg",
+        "resolved_path": "db/chunkparsers",
+        "target": "chunkparsers"
+      },
+      {
+        "caller": "db/Binary/audio.1.sg",
+        "resolved_path": "db/soundchips",
+        "target": "soundchips"
+      },
+      {
+        "caller": "db/Binary/audio.1.sg",
+        "resolved_path": "db/bytecodeparsers",
+        "target": "bytecodeparsers"
+      },
+      {
+        "caller": "db/Binary/audio_WEM.1.sg",
+        "resolved_path": "db/vgmcodingutils",
+        "target": "vgmcodingutils"
+      },
+      {
+        "caller": "db/Binary/audio_mp3.2.sg",
+        "resolved_path": "db/duration",
+        "target": "duration"
+      },
+      {
+        "caller": "db/Binary/bin.IDA.1.sg",
+        "resolved_path": "db/zlib",
+        "target": "zlib"
+      },
+      {
+        "caller": "db/Binary/format_bin.SWF.1.sg",
+        "resolved_path": "db/zlib",
+        "target": "zlib"
+      },
+      {
+        "caller": "db/Binary/formats.1.sg",
+        "resolved_path": "db/zlib",
+        "target": "zlib"
+      },
+      {
+        "caller": "db/Binary/image_CUR.1.sg",
+        "resolved_path": "db/CurIcoBPP",
+        "target": "CurIcoBPP"
+      },
+      {
+        "caller": "db/Binary/image_ICO.1.sg",
+        "resolved_path": "db/CurIcoBPP",
+        "target": "CurIcoBPP"
+      },
+      {
+        "caller": "db/Binary/script_text.Shell.1.sg",
+        "resolved_path": "db/shell-script",
+        "target": "shell-script"
+      },
+      {
+        "caller": "db/Binary/text.script.2.sg",
+        "resolved_path": "db/shell-script",
+        "target": "shell-script"
+      }
+    ],
+    "missing_literal_includes": [],
+    "non_literal_include_sites": [],
+    "records_by_database": {
+      "db": [
+        {
+          "database": "db",
+          "name": "Certificate_cert.WinAuth.1.sg",
+          "path": "db/Binary/Certificate_cert.WinAuth.1.sg",
+          "priority_candidate": "1",
+          "sha256": "f5010012722ebbd6b275b7323b44f38ef573a194c36f88e7450be5fec0b0f0a9",
+          "size": 302
+        },
+        {
+          "database": "db",
+          "name": "ROM_1.sg",
+          "path": "db/Binary/ROM_1.sg",
+          "priority_candidate": null,
+          "sha256": "ebf638e6d98c526ccb624d9acc2c6e590d2ec281689d7f9f8de01f91454be32e",
+          "size": 92951
+        },
+        {
+          "database": "db",
+          "name": "__MiniBatchHeuristic_By_DosX.7.sg",
+          "path": "db/Binary/__MiniBatchHeuristic_By_DosX.7.sg",
+          "priority_candidate": "7",
+          "sha256": "41f942978401bbe77d549577693cf6f8bd8858f62f2281dcc2d135c52a913936",
+          "size": 1409
+        },
+        {
+          "database": "db",
+          "name": "__MiniExtensionsHeuristic_By_DosX.7.sg",
+          "path": "db/Binary/__MiniExtensionsHeuristic_By_DosX.7.sg",
+          "priority_candidate": "7",
+          "sha256": "e8eac22087d7814bdb6c80fd3626b1dbad721c16a5ce4ab290b9eedcc165c12d",
+          "size": 21958
+        },
+        {
+          "database": "db",
+          "name": "__MiniJavaScriptHeuristic_By_DosX.7.sg",
+          "path": "db/Binary/__MiniJavaScriptHeuristic_By_DosX.7.sg",
+          "priority_candidate": "7",
+          "sha256": "c1b1f60514feb0dcee3b6b59beb60638b73baab613b7728d28ec8bde9c912698",
+          "size": 7548
+        },
+        {
+          "database": "db",
+          "name": "_init",
+          "path": "db/Binary/_init",
+          "priority_candidate": null,
+          "sha256": "9d01d09408e209e1742a1289193a60728b6ad82f50f419a811cb032b905b80db",
+          "size": 168
+        },
+        {
+          "database": "db",
+          "name": "archive_7z.1.sg",
+          "path": "db/Binary/archive_7z.1.sg",
+          "priority_candidate": "1",
+          "sha256": "aacce9f854496639bb8e6d98b16ba4234bcd95fdd339712d00c8515d2a3d0bf0",
+          "size": 359
+        },
+        {
+          "database": "db",
+          "name": "archive_ACE.1.sg",
+          "path": "db/Binary/archive_ACE.1.sg",
+          "priority_candidate": "1",
+          "sha256": "c22eb9c1a69de0097fb683c0339c6e22859de8cbe268ced222b88e1c04fb0760",
+          "size": 169
+        },
+        {
+          "database": "db",
+          "name": "archive_ANC-Cruncher.1.sg",
+          "path": "db/Binary/archive_ANC-Cruncher.1.sg",
+          "priority_candidate": "1",
+          "sha256": "93ccd0f6ca1436f125c39ad271e2953ec3cf3e42dd8db001b6e2abf6bc521803",
+          "size": 382
+        },
+        {
+          "database": "db",
+          "name": "archive_AR.1.sg",
+          "path": "db/Binary/archive_AR.1.sg",
+          "priority_candidate": "1",
+          "sha256": "094aefff3e0d7883bd8fac3428a591345304b28671d8187d5a7656d2565e5091",
+          "size": 2440
+        },
+        {
+          "database": "db",
+          "name": "archive_ARC.1.sg",
+          "path": "db/Binary/archive_ARC.1.sg",
+          "priority_candidate": "1",
+          "sha256": "da5842f6c2d161592075a5def55d7bf9746c2d46656d2ed9a95681dd897dc8f3",
+          "size": 285
+        },
+        {
+          "database": "db",
+          "name": "archive_ARJ.1.sg",
+          "path": "db/Binary/archive_ARJ.1.sg",
+          "priority_candidate": "1",
+          "sha256": "09d9383f48f364bbe1954e4976506319b73d2530ddffe610351f197ee9706e61",
+          "size": 164
+        },
+        {
+          "database": "db",
+          "name": "archive_ASAR.1.sg",
+          "path": "db/Binary/archive_ASAR.1.sg",
+          "priority_candidate": "1",
+          "sha256": "ee945a833b75df111e4f7c0399b6b2bcfb8c9a387af7e712a033ea1836e49d50",
+          "size": 455
+        },
+        {
+          "database": "db",
+          "name": "archive_BCSAR.1.sg",
+          "path": "db/Binary/archive_BCSAR.1.sg",
+          "priority_candidate": "1",
+          "sha256": "b5d0ad068120a63587d44a726dafcb102d9d155a6a6a777b09376ab6496dc209",
+          "size": 797
+        },
+        {
+          "database": "db",
+          "name": "archive_BZip.1.sg",
+          "path": "db/Binary/archive_BZip.1.sg",
+          "priority_candidate": "1",
+          "sha256": "851dc804f94c52dcde308884d864d1879865dea17d08ec94dc2983648a6d8a33",
+          "size": 741
+        },
+        {
+          "database": "db",
+          "name": "archive_CCA.1.sg",
+          "path": "db/Binary/archive_CCA.1.sg",
+          "priority_candidate": "1",
+          "sha256": "4854b8ef11cf19366a09f66ee0c09bf8367cfb6a424a496630e466f03541d2d0",
+          "size": 294
+        },
+        {
+          "database": "db",
+          "name": "archive_CFL3.1.sg",
+          "path": "db/Binary/archive_CFL3.1.sg",
+          "priority_candidate": "1",
+          "sha256": "159fb06b09bb9e813ab1e91d4673aae8bec29e53efba4cedda509428359fabcb",
+          "size": 775
+        },
+        {
+          "database": "db",
+          "name": "archive_CKP.1.sg",
+          "path": "db/Binary/archive_CKP.1.sg",
+          "priority_candidate": "1",
+          "sha256": "beca85fd60a031fc3f8f88d14a2e3c97d80f63bab3f458c5b9c46baec2d5d8bf",
+          "size": 324
+        },
+        {
+          "database": "db",
+          "name": "archive_Cab.1.sg",
+          "path": "db/Binary/archive_Cab.1.sg",
+          "priority_candidate": "1",
+          "sha256": "c41a6ae2778bf872c2c6d5aa4c73f8bde9da0ef5b4537fe95f5dc36219b8e905",
+          "size": 686
+        },
+        {
+          "database": "db",
+          "name": "archive_DAA.1.sg",
+          "path": "db/Binary/archive_DAA.1.sg",
+          "priority_candidate": "1",
+          "sha256": "3e69710a84ff709b34c1caceb1c5abe62d777e969dd169c7bc10136ab15f7a37",
+          "size": 391
+        },
+        {
+          "database": "db",
+          "name": "archive_DCP.1.sg",
+          "path": "db/Binary/archive_DCP.1.sg",
+          "priority_candidate": "1",
+          "sha256": "f697703c5ddab54296cfed38f4e7282c24c9a0a08024d86372177c9356e37f52",
+          "size": 467
+        },
+        {
+          "database": "db",
+          "name": "archive_DEFLATE.1.sg",
+          "path": "db/Binary/archive_DEFLATE.1.sg",
+          "priority_candidate": "1",
+          "sha256": "a6adc1d7e753d16f03efbbbf1fe4843223cbde991d2d422f3781c00dc9306440",
+          "size": 7183
+        },
+        {
+          "database": "db",
+          "name": "archive_DXA.1.sg",
+          "path": "db/Binary/archive_DXA.1.sg",
+          "priority_candidate": "1",
+          "sha256": "68457543ca8e3e7fe55b9d1a7dffda42c86ba2f0697535e6ff8751d5987e36e5",
+          "size": 579
+        },
+        {
+          "database": "db",
+          "name": "archive_DatPack.1.sg",
+          "path": "db/Binary/archive_DatPack.1.sg",
+          "priority_candidate": "1",
+          "sha256": "557e71b86a048ff8224e473adb58417770069737ed069330e4b2bad8d01305f2",
+          "size": 307
+        },
+        {
+          "database": "db",
+          "name": "archive_DotBundle.sg",
+          "path": "db/Binary/archive_DotBundle.sg",
+          "priority_candidate": null,
+          "sha256": "eb561a20d12418788ebe8294cfe8e9ed8db339ff0894a93a885d3379e5cc4cee",
+          "size": 286
+        },
+        {
+          "database": "db",
+          "name": "archive_EdgeDataPak.1.sg",
+          "path": "db/Binary/archive_EdgeDataPak.1.sg",
+          "priority_candidate": "1",
+          "sha256": "377b1d5c6deef537f436aabe81a538ca129db2be91cc3945da5d2a3f8fcf37e1",
+          "size": 402
+        },
+        {
+          "database": "db",
+          "name": "archive_Flatpak.1.sg",
+          "path": "db/Binary/archive_Flatpak.1.sg",
+          "priority_candidate": "1",
+          "sha256": "4c9306524b475a4fe6a628eb3c228d22804a3f22eac264fb4ce8e781c1c48ec5",
+          "size": 444
+        },
+        {
+          "database": "db",
+          "name": "archive_GhidraZipFile.1.sg",
+          "path": "db/Binary/archive_GhidraZipFile.1.sg",
+          "priority_candidate": "1",
+          "sha256": "87ab9f9eb28d918b9b9fb221b81281c809fabec3d4f2a72eadaf63547b1a3beb",
+          "size": 373
+        },
+        {
+          "database": "db",
+          "name": "archive_GodotPCK.1.sg",
+          "path": "db/Binary/archive_GodotPCK.1.sg",
+          "priority_candidate": "1",
+          "sha256": "f807baadf3877a4aae815027f0b2febaa6c74c0d71683d688901a80bf5be3ff0",
+          "size": 319
+        },
+        {
+          "database": "db",
+          "name": "archive_HIP.1.sg",
+          "path": "db/Binary/archive_HIP.1.sg",
+          "priority_candidate": "1",
+          "sha256": "29acb8cfbf97c36277e9d838524606408f47626793b7eccfab3c789fc3a86cb5",
+          "size": 537
+        },
+        {
+          "database": "db",
+          "name": "archive_IFP.1.sg",
+          "path": "db/Binary/archive_IFP.1.sg",
+          "priority_candidate": "1",
+          "sha256": "d48f61792fabe2452f1ef088fa8439619eecd6c4a7901d0119f424578b724c33",
+          "size": 471
+        },
+        {
+          "database": "db",
+          "name": "archive_IPW.1.sg",
+          "path": "db/Binary/archive_IPW.1.sg",
+          "priority_candidate": "1",
+          "sha256": "bb6efab60e9df1e25b694e3be6db3722ab9c0278e336b33bea9d6833ef30fd08",
+          "size": 278
+        },
+        {
+          "database": "db",
+          "name": "archive_InnoSetup.1.sg",
+          "path": "db/Binary/archive_InnoSetup.1.sg",
+          "priority_candidate": "1",
+          "sha256": "c9d9ae85e0de46fbfcfb2f42effc4703eb8213f990eb078a92f48c83e941638e",
+          "size": 291
+        },
+        {
+          "database": "db",
+          "name": "archive_JAM.1.sg",
+          "path": "db/Binary/archive_JAM.1.sg",
+          "priority_candidate": "1",
+          "sha256": "754c89c2bcde59d200ff76dd3993b7143b1662f120a53d6407aef465f07f63b3",
+          "size": 280
+        },
+        {
+          "database": "db",
+          "name": "archive_LAB.1.sg",
+          "path": "db/Binary/archive_LAB.1.sg",
+          "priority_candidate": "1",
+          "sha256": "bc96c381df5541d72db0bde7f298294c1fbaa4fcd1886fd2ad0610d3a0ed4b80",
+          "size": 305
+        },
+        {
+          "database": "db",
+          "name": "archive_LRZ.1.sg",
+          "path": "db/Binary/archive_LRZ.1.sg",
+          "priority_candidate": "1",
+          "sha256": "a96d3ee58a4d5e37388b8804935a7ec90e62f63fbdf29400e6353cf80fc2fc9a",
+          "size": 1106
+        },
+        {
+          "database": "db",
+          "name": "archive_LZ4.1.sg",
+          "path": "db/Binary/archive_LZ4.1.sg",
+          "priority_candidate": "1",
+          "sha256": "3392306a3d1d46c490ae7eb558d436996319d36a4b535fbc3d2bde29df300324",
+          "size": 1291
+        },
+        {
+          "database": "db",
+          "name": "archive_LZOP.1.sg",
+          "path": "db/Binary/archive_LZOP.1.sg",
+          "priority_candidate": "1",
+          "sha256": "b21832eb5efeb96ace8124dd62ccab2f1ec3507f384ed0c1ff783240a2c74db1",
+          "size": 285
+        },
+        {
+          "database": "db",
+          "name": "archive_MCS.1.sg",
+          "path": "db/Binary/archive_MCS.1.sg",
+          "priority_candidate": "1",
+          "sha256": "89849a4b2e5e145044400c0fe45785a6594c5c8bfd213fdbab92282f3d7d36f5",
+          "size": 428
+        },
+        {
+          "database": "db",
+          "name": "archive_MS-WIM.1.sg",
+          "path": "db/Binary/archive_MS-WIM.1.sg",
+          "priority_candidate": "1",
+          "sha256": "a7638b8b488369ccd8291575e849b49ff2f30bad7319db55993f66ab669d7e79",
+          "size": 1086
+        },
+        {
+          "database": "db",
+          "name": "archive_MS_Compound.1.sg",
+          "path": "db/Binary/archive_MS_Compound.1.sg",
+          "priority_candidate": "1",
+          "sha256": "d9558a03bd372335aa98a86e998918e051b54e7b1bd92ab82727d76e0f8f22e3",
+          "size": 703
+        },
+        {
+          "database": "db",
+          "name": "archive_MWD.1.sg",
+          "path": "db/Binary/archive_MWD.1.sg",
+          "priority_candidate": "1",
+          "sha256": "1664574ee07f51f8b632d2d6048fedcad906b446d9dd52e876a35d3e2abcafcf",
+          "size": 541
+        },
+        {
+          "database": "db",
+          "name": "archive_P2L.1.sg",
+          "path": "db/Binary/archive_P2L.1.sg",
+          "priority_candidate": "1",
+          "sha256": "59734db929b930c939037f3c70046c15d5e1fb5d02b7327c9b00a73aac908f0f",
+          "size": 450
+        },
+        {
+          "database": "db",
+          "name": "archive_PAK.1.sg",
+          "path": "db/Binary/archive_PAK.1.sg",
+          "priority_candidate": "1",
+          "sha256": "19e607b42494f79d524cfed1578eb6cf11c4a93214f0c135be3d9070d622693a",
+          "size": 1254
+        },
+        {
+          "database": "db",
+          "name": "archive_PBP.1.sg",
+          "path": "db/Binary/archive_PBP.1.sg",
+          "priority_candidate": "1",
+          "sha256": "84042034ccd33eb5c64cd6b902aec662e212da9f162468bd16dcd26a6aeacd84",
+          "size": 424
+        },
+        {
+          "database": "db",
+          "name": "archive_PC_Secure.sg",
+          "path": "db/Binary/archive_PC_Secure.sg",
+          "priority_candidate": null,
+          "sha256": "0ae2c250383b31c2e2e46ef69c2fa6b0fbe757056c6ad5c6f738a168fed5178a",
+          "size": 252
+        },
+        {
+          "database": "db",
+          "name": "archive_PEA.1.sg",
+          "path": "db/Binary/archive_PEA.1.sg",
+          "priority_candidate": "1",
+          "sha256": "93adca7f67d2f006f56ea1fb0b6369acd181ec55f3298e14f96f91c9b16eabdb",
+          "size": 1403
+        },
+        {
+          "database": "db",
+          "name": "archive_PKG.1.sg",
+          "path": "db/Binary/archive_PKG.1.sg",
+          "priority_candidate": "1",
+          "sha256": "72c1e4df1ba175e82962a05bac01d2be3c321cf9b59c72b7d72828883b18e99e",
+          "size": 507
+        },
+        {
+          "database": "db",
+          "name": "archive_PSARC.1.sg",
+          "path": "db/Binary/archive_PSARC.1.sg",
+          "priority_candidate": "1",
+          "sha256": "d9b48f314bcef7f969b72d34d9a531f3f030fd20689e600a5eff7cb9155e0f50",
+          "size": 344
+        },
+        {
+          "database": "db",
+          "name": "archive_PUP.1.sg",
+          "path": "db/Binary/archive_PUP.1.sg",
+          "priority_candidate": "1",
+          "sha256": "49929e3e12044b431dc987748db9919c1bdafc3db8b4ea65353e0887afef0a7a",
+          "size": 465
+        },
+        {
+          "database": "db",
+          "name": "archive_RAR.1.sg",
+          "path": "db/Binary/archive_RAR.1.sg",
+          "priority_candidate": "1",
+          "sha256": "b6f5177d0ce830caa9a5d65de19117cb492100019c1c2ad15bff1b0895cd0188",
+          "size": 169
+        },
+        {
+          "database": "db",
+          "name": "archive_RVZ.1.sg",
+          "path": "db/Binary/archive_RVZ.1.sg",
+          "priority_candidate": "1",
+          "sha256": "c23d5688654ff6c3fc6528c358ccca5ba064d945a0580d09e31de6e2be409385",
+          "size": 490
+        },
+        {
+          "database": "db",
+          "name": "archive_STK.1.sg",
+          "path": "db/Binary/archive_STK.1.sg",
+          "priority_candidate": "1",
+          "sha256": "0a3e3bbda741eb6f82eecbf0e25354be92e8379034fa6cf7778de8fdc61450e8",
+          "size": 784
+        },
+        {
+          "database": "db",
+          "name": "archive_Shaped.1.sg",
+          "path": "db/Binary/archive_Shaped.1.sg",
+          "priority_candidate": "1",
+          "sha256": "0ed2480a50e6be10b7131d190e4b95bab3556cf64ec07d63b5786f5b5d751b8a",
+          "size": 452
+        },
+        {
+          "database": "db",
+          "name": "archive_TRE.1.sg",
+          "path": "db/Binary/archive_TRE.1.sg",
+          "priority_candidate": "1",
+          "sha256": "1ceaf674d428dc19d01724eebd88d0a9abb3de2f58b73c3b0923b25f4260895d",
+          "size": 285
+        },
+        {
+          "database": "db",
+          "name": "archive_Unity.1.sg",
+          "path": "db/Binary/archive_Unity.1.sg",
+          "priority_candidate": "1",
+          "sha256": "72a96ef426f4ee722f88c67bb634a9a4d95a8d8b4f082fc43349c1fe3f64009e",
+          "size": 2964
+        },
+        {
+          "database": "db",
+          "name": "archive_UnrealEngine.1.sg",
+          "path": "db/Binary/archive_UnrealEngine.1.sg",
+          "priority_candidate": "1",
+          "sha256": "95c48e802f1bccfd97f418f907c71c17a9b27483b9e9603a14fc2072529c4030",
+          "size": 1069
+        },
+        {
+          "database": "db",
+          "name": "archive_ViseInstaller.1.sg",
+          "path": "db/Binary/archive_ViseInstaller.1.sg",
+          "priority_candidate": "1",
+          "sha256": "02f9a03bc78a9795245cefa81ab355577f13a1856fe7d9323b8379c31e089dbb",
+          "size": 308
+        },
+        {
+          "database": "db",
+          "name": "archive_XZP.1.sg",
+          "path": "db/Binary/archive_XZP.1.sg",
+          "priority_candidate": "1",
+          "sha256": "02fce6c50d897e3e129b830261471f21582b3a785ca153d99adfa7b6c5a5dce5",
+          "size": 317
+        },
+        {
+          "database": "db",
+          "name": "archive_ZIP.1.sg",
+          "path": "db/Binary/archive_ZIP.1.sg",
+          "priority_candidate": "1",
+          "sha256": "6cdff2c6141a2c581240d43019977986d51913156fbbc760266395c57307bba3",
+          "size": 174
+        },
+        {
+          "database": "db",
+          "name": "archive_ZLIB.1.sg",
+          "path": "db/Binary/archive_ZLIB.1.sg",
+          "priority_candidate": "1",
+          "sha256": "abc7e56d36dc55162d455e1d76ce02b479583cc8925170309c206369ad19707c",
+          "size": 233
+        },
+        {
+          "database": "db",
+          "name": "archive_ZPAQ.1.sg",
+          "path": "db/Binary/archive_ZPAQ.1.sg",
+          "priority_candidate": "1",
+          "sha256": "ce337cd2cc9217e4f5b403e0925f0fc56cbdb88386ce7081bb4e52fc70651272",
+          "size": 320
+        },
+        {
+          "database": "db",
+          "name": "archive_archives.1.sg",
+          "path": "db/Binary/archive_archives.1.sg",
+          "priority_candidate": "1",
+          "sha256": "b148ae0ba8e64f58f5285c16b0812dd014cb6230550bf9df9bdc290387802255",
+          "size": 11435
+        },
+        {
+          "database": "db",
+          "name": "archive_archives.ancient.sg",
+          "path": "db/Binary/archive_archives.ancient.sg",
+          "priority_candidate": "ancient",
+          "sha256": "8e526be36c1a517e98204cc6fbf57270818acd220c7b096a8c40c23cb7729b87",
+          "size": 23054
+        },
+        {
+          "database": "db",
+          "name": "archive_btoa.1.sg",
+          "path": "db/Binary/archive_btoa.1.sg",
+          "priority_candidate": "1",
+          "sha256": "1a9408f099527c93df9b165370756e991d12179e9023ac381d3b4c38d024249d",
+          "size": 250
+        },
+        {
+          "database": "db",
+          "name": "archive_cad.DWG.1.sg",
+          "path": "db/Binary/archive_cad.DWG.1.sg",
+          "priority_candidate": "1",
+          "sha256": "782a4849676a1be852306b482acdcc9c14a544ea27512e89290ab2406766c429",
+          "size": 1242
+        },
+        {
+          "database": "db",
+          "name": "archive_gp7bank.1.sg",
+          "path": "db/Binary/archive_gp7bank.1.sg",
+          "priority_candidate": "1",
+          "sha256": "2713831024bf5fe2646706d8eec3f4828bf2c72e667f63f7545514c4ace1745b",
+          "size": 508
+        },
+        {
+          "database": "db",
+          "name": "audio.1.sg",
+          "path": "db/Binary/audio.1.sg",
+          "priority_candidate": "1",
+          "sha256": "998c2476ddc07a88c83598192faf1ffb4b35d60c4b2d6c1fafcfa4b153a9892f",
+          "size": 603640
+        },
+        {
+          "database": "db",
+          "name": "audio.AIFF.1.sg",
+          "path": "db/Binary/audio.AIFF.1.sg",
+          "priority_candidate": "1",
+          "sha256": "b7ccbed927f348e2f5e8a217b041f0d215d254ade807b4f450fc589eea63f819",
+          "size": 2111
+        },
+        {
+          "database": "db",
+          "name": "audio_8svx.1.sg",
+          "path": "db/Binary/audio_8svx.1.sg",
+          "priority_candidate": "1",
+          "sha256": "1335e7c2b139a3d8d9b0936b7624fbc06d25f1d4c26a3125c90dcb11fb2a899a",
+          "size": 394
+        },
+        {
+          "database": "db",
+          "name": "audio_ACM.1.sg",
+          "path": "db/Binary/audio_ACM.1.sg",
+          "priority_candidate": "1",
+          "sha256": "e478162d551ae50550a2d6ac9a1e266bc8172f409ab7bd4cb51b0a6876699221",
+          "size": 720
+        },
+        {
+          "database": "db",
+          "name": "audio_ADX.1.sg",
+          "path": "db/Binary/audio_ADX.1.sg",
+          "priority_candidate": "1",
+          "sha256": "39a1438be894c6f65b0a8df9f128dca4ad2e505c507101a80e080a4463c3a2c3",
+          "size": 1277
+        },
+        {
+          "database": "db",
+          "name": "audio_AHX.1.sg",
+          "path": "db/Binary/audio_AHX.1.sg",
+          "priority_candidate": "1",
+          "sha256": "9c7a970ba501e0b7908d8d7e1cbb4ba67b2f588de5dea380077a0655adf982d6",
+          "size": 1028
+        },
+        {
+          "database": "db",
+          "name": "audio_AU.1.sg",
+          "path": "db/Binary/audio_AU.1.sg",
+          "priority_candidate": "1",
+          "sha256": "c83fcee6e67a87e1c8eea7bd038ab1fff6b3f58e6364eafb1219103f232f7035",
+          "size": 2441
+        },
+        {
+          "database": "db",
+          "name": "audio_BCSTM.1.sg",
+          "path": "db/Binary/audio_BCSTM.1.sg",
+          "priority_candidate": "1",
+          "sha256": "e0562b443cabc5f0eff1bd24e21be4a457408cc4a16a184aade2a08fe3d0b008",
+          "size": 987
+        },
+        {
+          "database": "db",
+          "name": "audio_BCWAV.1.sg",
+          "path": "db/Binary/audio_BCWAV.1.sg",
+          "priority_candidate": "1",
+          "sha256": "a42b9ea97c199613d881eb2893b7aa6d83b287ceff3b7ec3b3408a03b6a96c0d",
+          "size": 1151
+        },
+        {
+          "database": "db",
+          "name": "audio_CXT.1.sg",
+          "path": "db/Binary/audio_CXT.1.sg",
+          "priority_candidate": "1",
+          "sha256": "7e092ff73f1f1314cdc0db1b57dc77fafd9de642bb0857de6287eced8ac9b8bd",
+          "size": 1521
+        },
+        {
+          "database": "db",
+          "name": "audio_DSS.1.sg",
+          "path": "db/Binary/audio_DSS.1.sg",
+          "priority_candidate": "1",
+          "sha256": "adcb8e89da34c87fc66689ac5a8e7800c7d4158b9b48c5c234ff4b5edbd8452b",
+          "size": 2537
+        },
+        {
+          "database": "db",
+          "name": "audio_EXA.1.sg",
+          "path": "db/Binary/audio_EXA.1.sg",
+          "priority_candidate": "1",
+          "sha256": "c6f02f5fa87cbd08ef23dded5e4e8c5bf609c58514b5b9a7282029656f01a195",
+          "size": 6373
+        },
+        {
+          "database": "db",
+          "name": "audio_FLAC.1.sg",
+          "path": "db/Binary/audio_FLAC.1.sg",
+          "priority_candidate": "1",
+          "sha256": "11fda75be1fbe181ae2771bb67e4cf32398e495e166bc15ae02ae98cd481722b",
+          "size": 4752
+        },
+        {
+          "database": "db",
+          "name": "audio_FSB.1.sg",
+          "path": "db/Binary/audio_FSB.1.sg",
+          "priority_candidate": "1",
+          "sha256": "4409cd39f175722e5b8edd6fc83e0884328ba21b343d8ee223a6b4264102879b",
+          "size": 4027
+        },
+        {
+          "database": "db",
+          "name": "audio_HMI.1.sg",
+          "path": "db/Binary/audio_HMI.1.sg",
+          "priority_candidate": "1",
+          "sha256": "53dde13e16d233f90601364b2a7a1b8b53c2a833da1eaaa8be9bb8c0ccb486a2",
+          "size": 429
+        },
+        {
+          "database": "db",
+          "name": "audio_OGG.1.sg",
+          "path": "db/Binary/audio_OGG.1.sg",
+          "priority_candidate": "1",
+          "sha256": "e1dd74cf536eb31225cb47bd9099c1383064afd96e25fbf3141a0990261d52bc",
+          "size": 285
+        },
+        {
+          "database": "db",
+          "name": "audio_PAF.1.sg",
+          "path": "db/Binary/audio_PAF.1.sg",
+          "priority_candidate": "1",
+          "sha256": "c6dfa3639c833bf430fb9b8335c50727f0257a565013daec4457ca2f06a1fd96",
+          "size": 325
+        },
+        {
+          "database": "db",
+          "name": "audio_PVF.1.sg",
+          "path": "db/Binary/audio_PVF.1.sg",
+          "priority_candidate": "1",
+          "sha256": "1bf5d64799f77b4d0bbba90aa91628dff952b30bc20f3d0d45257573a6bea3df",
+          "size": 448
+        },
+        {
+          "database": "db",
+          "name": "audio_RIFF-IMA.1.sg",
+          "path": "db/Binary/audio_RIFF-IMA.1.sg",
+          "priority_candidate": "1",
+          "sha256": "54750801fcb84918bc0d7820919b0bbee2678b80ca05a3911a4364673d656e74",
+          "size": 720
+        },
+        {
+          "database": "db",
+          "name": "audio_SOU.1.sg",
+          "path": "db/Binary/audio_SOU.1.sg",
+          "priority_candidate": "1",
+          "sha256": "ac0b20f53795c79e710426bae3a6962ac12ad6852d71993cb486b2a581c78bb8",
+          "size": 317
+        },
+        {
+          "database": "db",
+          "name": "audio_STRM.1.sg",
+          "path": "db/Binary/audio_STRM.1.sg",
+          "priority_candidate": "1",
+          "sha256": "0b25673c1f44387d78c9f30baba6f9bb6f5ef24ebb180a2fdc5d821431bd4656",
+          "size": 1023
+        },
+        {
+          "database": "db",
+          "name": "audio_STRM.2.sg",
+          "path": "db/Binary/audio_STRM.2.sg",
+          "priority_candidate": "2",
+          "sha256": "bccd7ecf00ae2dbd4ceaa428fd5cc2e1fb123c3db3f6cccbf66ef3f09b5d99e8",
+          "size": 919
+        },
+        {
+          "database": "db",
+          "name": "audio_ShockwaveAudio.1.sg",
+          "path": "db/Binary/audio_ShockwaveAudio.1.sg",
+          "priority_candidate": "1",
+          "sha256": "3cf52722c1b4d3dfb3bc0bbe0301c6486d980efbf3c365404f24d0e50a962e5e",
+          "size": 300
+        },
+        {
+          "database": "db",
+          "name": "audio_TUN.1.sg",
+          "path": "db/Binary/audio_TUN.1.sg",
+          "priority_candidate": "1",
+          "sha256": "a8dff5797f7e8d9860005c085cef1d1a9427eb6ebb4b1a34e480a42f4965ee24",
+          "size": 441
+        },
+        {
+          "database": "db",
+          "name": "audio_VOC.1.sg",
+          "path": "db/Binary/audio_VOC.1.sg",
+          "priority_candidate": "1",
+          "sha256": "9824d2bb70b920bc7b0cca4c11bd47de058eeec9b4935e832f10120fa341be61",
+          "size": 3957
+        },
+        {
+          "database": "db",
+          "name": "audio_WAV.1.sg",
+          "path": "db/Binary/audio_WAV.1.sg",
+          "priority_candidate": "1",
+          "sha256": "18a5d32abd6d82413134526ee666146300796400cebad0beca6e3838983f0375",
+          "size": 22411
+        },
+        {
+          "database": "db",
+          "name": "audio_WEM.1.sg",
+          "path": "db/Binary/audio_WEM.1.sg",
+          "priority_candidate": "1",
+          "sha256": "3ea818a39cf03337249883771a55cd1acacdecd3097f79edb85bce6b9bd85d94",
+          "size": 5127
+        },
+        {
+          "database": "db",
+          "name": "audio_mp3.2.sg",
+          "path": "db/Binary/audio_mp3.2.sg",
+          "priority_candidate": "2",
+          "sha256": "336fd207a907d082779697620e58ee9de409f48dfa06cf4047c28962426ea6de",
+          "size": 6115
+        },
+        {
+          "database": "db",
+          "name": "backup_images.1.sg",
+          "path": "db/Binary/backup_images.1.sg",
+          "priority_candidate": "1",
+          "sha256": "2d49365fd3e53d530e91a8e4eac1de8257586f51209f8cc699e161857939455b",
+          "size": 683
+        },
+        {
+          "database": "db",
+          "name": "bin.Atari_ST.1.sg",
+          "path": "db/Binary/bin.Atari_ST.1.sg",
+          "priority_candidate": "1",
+          "sha256": "1280af7fd18d8c1673a8c01863f76824dcb337b77500fbc00d8d060384a6b74d",
+          "size": 254
+        },
+        {
+          "database": "db",
+          "name": "bin.IDA.1.sg",
+          "path": "db/Binary/bin.IDA.1.sg",
+          "priority_candidate": "1",
+          "sha256": "2781169e5cd74a3552b95476d405bdfe0fc4cc89c3bc6c1ee4eaff996a63a21c",
+          "size": 2653
+        },
+        {
+          "database": "db",
+          "name": "bin.ISO_9660.1.sg",
+          "path": "db/Binary/bin.ISO_9660.1.sg",
+          "priority_candidate": "1",
+          "sha256": "29ff2c4bc8bd7d13f25cffcb613ba410a3073493a046df892af7898d98089b75",
+          "size": 382
+        },
+        {
+          "database": "db",
+          "name": "bin.RPGMaker2Kdata.1.sg",
+          "path": "db/Binary/bin.RPGMaker2Kdata.1.sg",
+          "priority_candidate": "1",
+          "sha256": "39b9a0dc956e7377acbe424c698f96b84aba462c35e50f1ac6984fcafbc0b7f0",
+          "size": 13143
+        },
+        {
+          "database": "db",
+          "name": "data_overlay_null_padding.1.sg",
+          "path": "db/Binary/data_overlay_null_padding.1.sg",
+          "priority_candidate": "1",
+          "sha256": "11c1a3f3a9ad0b5aaab4ce2d1e0e75e16865638162da97649c5cc1f1870a9f81",
+          "size": 527
+        },
+        {
+          "database": "db",
+          "name": "data_overlays.6.sg",
+          "path": "db/Binary/data_overlays.6.sg",
+          "priority_candidate": "6",
+          "sha256": "eb28fd4cea21f625b641c310c1b411f0b4267a826fe5733d2e15bda919d6af0a",
+          "size": 17605
+        },
+        {
+          "database": "db",
+          "name": "debug_data_debugData.1.sg",
+          "path": "db/Binary/debug_data_debugData.1.sg",
+          "priority_candidate": "1",
+          "sha256": "381b6259b239f2633b92fbd84fd0d99b972751e20cab12b6e09139a260f1f47d",
+          "size": 2471
+        },
+        {
+          "database": "db",
+          "name": "font.ADOBE.1.sg",
+          "path": "db/Binary/font.ADOBE.1.sg",
+          "priority_candidate": "1",
+          "sha256": "dec8363c1160f90f7d02cca2a476af3adec5d5bc0a84ca74caa49bc814996b50",
+          "size": 1221
+        },
+        {
+          "database": "db",
+          "name": "font_BMF.1.sg",
+          "path": "db/Binary/font_BMF.1.sg",
+          "priority_candidate": "1",
+          "sha256": "302cbc8d5422231374024c36d3ebfdd7d45c2706b7b6a25e762c82bb3cded17d",
+          "size": 2479
+        },
+        {
+          "database": "db",
+          "name": "font_FFN.1.sg",
+          "path": "db/Binary/font_FFN.1.sg",
+          "priority_candidate": "1",
+          "sha256": "72e57c0bb6b5a96d434d532d15063cd989bb51bde094d1e3edd64e9d125bc47f",
+          "size": 284
+        },
+        {
+          "database": "db",
+          "name": "font_TFM.1.sg",
+          "path": "db/Binary/font_TFM.1.sg",
+          "priority_candidate": "1",
+          "sha256": "4bbffe4e5dffc99d12ffba7e06a7d2a0a5d12f72f97e3392f4926328dcbc8cdd",
+          "size": 296
+        },
+        {
+          "database": "db",
+          "name": "font_VTF.1.sg",
+          "path": "db/Binary/font_VTF.1.sg",
+          "priority_candidate": "1",
+          "sha256": "da261d1102d08f199a9dd378adb5b9632839a5add7c7e9b26a4590a3c4fcc1c9",
+          "size": 181
+        },
+        {
+          "database": "db",
+          "name": "font_XTT.1.sg",
+          "path": "db/Binary/font_XTT.1.sg",
+          "priority_candidate": "1",
+          "sha256": "65853b2f87414141f7c66d4b0d6bc101ce11e5d7d75100a479396fbc80c844d9",
+          "size": 444
+        },
+        {
+          "database": "db",
+          "name": "format_AS.1.sg",
+          "path": "db/Binary/format_AS.1.sg",
+          "priority_candidate": "1",
+          "sha256": "38a6e272968e882d246d87cd0dfd54bb14f42a676af89882b13b2fa619ead593",
+          "size": 366
+        },
+        {
+          "database": "db",
+          "name": "format_AmigaIcon.1.sg",
+          "path": "db/Binary/format_AmigaIcon.1.sg",
+          "priority_candidate": "1",
+          "sha256": "0becc1e32dfb4f63290613d76315d191b053a928e9cf905880c7424888f9d490",
+          "size": 3913
+        },
+        {
+          "database": "db",
+          "name": "format_Amiga_loadable.1.sg",
+          "path": "db/Binary/format_Amiga_loadable.1.sg",
+          "priority_candidate": "1",
+          "sha256": "d201ec062539e72ddb6d13a24d080a33a6c7b9a7ee1b4c61a1ea8752244c2a69",
+          "size": 413
+        },
+        {
+          "database": "db",
+          "name": "format_BCD1.1.sg",
+          "path": "db/Binary/format_BCD1.1.sg",
+          "priority_candidate": "1",
+          "sha256": "8bd1c2ce9deae54c3fb01ed1f948cbce4a321e211fe86496600431c77777faf0",
+          "size": 762
+        },
+        {
+          "database": "db",
+          "name": "format_BOU.1.sg",
+          "path": "db/Binary/format_BOU.1.sg",
+          "priority_candidate": "1",
+          "sha256": "775e59a9623c31bde7429b18699f470293c56ffd84dc8b53b79f7f5f5fac7d0d",
+          "size": 445
+        },
+        {
+          "database": "db",
+          "name": "format_BSP.1.sg",
+          "path": "db/Binary/format_BSP.1.sg",
+          "priority_candidate": "1",
+          "sha256": "3832eb61d86d835cf91c15c38ae333f8259c6cbcd95ea4b84b72fa846b577c3f",
+          "size": 274
+        },
+        {
+          "database": "db",
+          "name": "format_BTF.1.sg",
+          "path": "db/Binary/format_BTF.1.sg",
+          "priority_candidate": "1",
+          "sha256": "20c63091f1e998104b458e317dd08dd19c0cc243c19c011c5a72759a56466d0b",
+          "size": 239
+        },
+        {
+          "database": "db",
+          "name": "format_BackupMii.1.sg",
+          "path": "db/Binary/format_BackupMii.1.sg",
+          "priority_candidate": "1",
+          "sha256": "4366377d11c8892e0d40b44539b2573d61aff057880336be88d65d2f4c26fad6",
+          "size": 635
+        },
+        {
+          "database": "db",
+          "name": "format_CCD.1.sg",
+          "path": "db/Binary/format_CCD.1.sg",
+          "priority_candidate": "1",
+          "sha256": "8782e3e371dfb366a180a4afa7b9556c9487e1c37da3ff55ec704d7eb37fb5a2",
+          "size": 436
+        },
+        {
+          "database": "db",
+          "name": "format_CSO.1.sg",
+          "path": "db/Binary/format_CSO.1.sg",
+          "priority_candidate": "1",
+          "sha256": "e6ab9463cac6eacb3f0424070fe6b6706306b093e989846444868a882de7a7a5",
+          "size": 294
+        },
+        {
+          "database": "db",
+          "name": "format_CTRK.1.sg",
+          "path": "db/Binary/format_CTRK.1.sg",
+          "priority_candidate": "1",
+          "sha256": "c77f18cfb3aa6df9ba2600d20eadbdad2c71d874d40b59a3beab1ab95716de02",
+          "size": 369
+        },
+        {
+          "database": "db",
+          "name": "format_CURE.1.sg",
+          "path": "db/Binary/format_CURE.1.sg",
+          "priority_candidate": "1",
+          "sha256": "718fb72b7dc77412ad4e87e247cb4ec7769a122a95ef55897c74b29cc7f25140",
+          "size": 469
+        },
+        {
+          "database": "db",
+          "name": "format_CVM.1.sg",
+          "path": "db/Binary/format_CVM.1.sg",
+          "priority_candidate": "1",
+          "sha256": "a8e07d76d7dd90ffb172e49debc6dfb20ccd6d3cb4cb92c60fef4c0dcbe113cf",
+          "size": 1274
+        },
+        {
+          "database": "db",
+          "name": "format_DESKTOP.1.sg",
+          "path": "db/Binary/format_DESKTOP.1.sg",
+          "priority_candidate": "1",
+          "sha256": "9318de29fa4b3ea3c36f0fb286dc70fd77020cde092e1cf078aa57dc21562ff3",
+          "size": 434
+        },
+        {
+          "database": "db",
+          "name": "format_DSW.1.sg",
+          "path": "db/Binary/format_DSW.1.sg",
+          "priority_candidate": "1",
+          "sha256": "5afdbc098fe2aaccfe05ebd2260b3fb6a1f2f5fa07a19efe285a5f4ad1939393",
+          "size": 539
+        },
+        {
+          "database": "db",
+          "name": "format_DTA.1.sg",
+          "path": "db/Binary/format_DTA.1.sg",
+          "priority_candidate": "1",
+          "sha256": "fd6f7ab245191dd79abd4f5c1bef49407a901d0eb948469827f2c8a6d17171d5",
+          "size": 422
+        },
+        {
+          "database": "db",
+          "name": "format_Director.1.sg",
+          "path": "db/Binary/format_Director.1.sg",
+          "priority_candidate": "1",
+          "sha256": "373adc8a62821b10be03bee82f6dd90137c3a5bb18862b9ffe73caf6543fb021",
+          "size": 857
+        },
+        {
+          "database": "db",
+          "name": "format_DunkleSchattenConfig.1.sg",
+          "path": "db/Binary/format_DunkleSchattenConfig.1.sg",
+          "priority_candidate": "1",
+          "sha256": "aeb2f38ac62129552815e8a7620cdaee914399c5b985096a9e58c488a3fb7ac3",
+          "size": 301
+        },
+        {
+          "database": "db",
+          "name": "format_DunkleSchattenSave.1.sg",
+          "path": "db/Binary/format_DunkleSchattenSave.1.sg",
+          "priority_candidate": "1",
+          "sha256": "a097e24248bc2aaccc33e23972eb7b111c9ea6148f314622d2b71117e45d441d",
+          "size": 299
+        },
+        {
+          "database": "db",
+          "name": "format_Empty.1.sg",
+          "path": "db/Binary/format_Empty.1.sg",
+          "priority_candidate": "1",
+          "sha256": "e0724e17d103cd3873271a9001427caa15d80330992ae2ccf9bf4cec2b4c073f",
+          "size": 229
+        },
+        {
+          "database": "db",
+          "name": "format_FAS.1.sg",
+          "path": "db/Binary/format_FAS.1.sg",
+          "priority_candidate": "1",
+          "sha256": "1bc89be36697281e371f765e64a0f45f690ddeda7c525f2df54f276754064dad",
+          "size": 328
+        },
+        {
+          "database": "db",
+          "name": "format_FLDB.1.sg",
+          "path": "db/Binary/format_FLDB.1.sg",
+          "priority_candidate": "1",
+          "sha256": "0324aa0f4fc5ea4a1156601227cd1adac2f7e289812b90dd3f6af7aa3bbf985e",
+          "size": 248
+        },
+        {
+          "database": "db",
+          "name": "format_FNX.1.sg",
+          "path": "db/Binary/format_FNX.1.sg",
+          "priority_candidate": "1",
+          "sha256": "f7c7f929a8f0c0730c95423f4d2f7e1c7d143eac9aeb603a0bda8a934300c70f",
+          "size": 396
+        },
+        {
+          "database": "db",
+          "name": "format_FST.1.sg",
+          "path": "db/Binary/format_FST.1.sg",
+          "priority_candidate": "1",
+          "sha256": "60022b3ce97e7fb0f2d34553f4f2f6ba98f3d99d2f615f36a131c6842e775e68",
+          "size": 231
+        },
+        {
+          "database": "db",
+          "name": "format_GAL.1.sg",
+          "path": "db/Binary/format_GAL.1.sg",
+          "priority_candidate": "1",
+          "sha256": "2871fceeb4246c40520942eab2d6eaa8a88099c15a6c3b7e29c1cbb53125945b",
+          "size": 433
+        },
+        {
+          "database": "db",
+          "name": "format_GBI.1.sg",
+          "path": "db/Binary/format_GBI.1.sg",
+          "priority_candidate": "1",
+          "sha256": "aa9b7f694b846b192d2abb3273db13e8f9370b5f88f237e9f7aebca89e433565",
+          "size": 281
+        },
+        {
+          "database": "db",
+          "name": "format_GME.1.sg",
+          "path": "db/Binary/format_GME.1.sg",
+          "priority_candidate": "1",
+          "sha256": "4d3940f230b8b8271e487ea036f569bca608502c3cb1943a7567f9e00d1553c3",
+          "size": 394
+        },
+        {
+          "database": "db",
+          "name": "format_GameMaps.1.sg",
+          "path": "db/Binary/format_GameMaps.1.sg",
+          "priority_candidate": "1",
+          "sha256": "751b1190b6a9e17fda89be74a3a8d0935b679197d93affdfffe061e80383ddb4",
+          "size": 365
+        },
+        {
+          "database": "db",
+          "name": "format_GamingRoot.1.sg",
+          "path": "db/Binary/format_GamingRoot.1.sg",
+          "priority_candidate": "1",
+          "sha256": "5fec0ebc8bf49fa7e0c2cbe6bd705fb2d21ee2f0d25924bc62d8b555a34a24dc",
+          "size": 439
+        },
+        {
+          "database": "db",
+          "name": "format_HIV.1.sg",
+          "path": "db/Binary/format_HIV.1.sg",
+          "priority_candidate": "1",
+          "sha256": "0514e6b6dfbf0963cfdc01737578c7c5386a5ff75f1ccb15f03d31362bb0aeaa",
+          "size": 324
+        },
+        {
+          "database": "db",
+          "name": "format_HNM.1.sg",
+          "path": "db/Binary/format_HNM.1.sg",
+          "priority_candidate": "1",
+          "sha256": "78fdbdc7c03ed32866da3f58fb634ebc055fd6e439ebdd3106afb2e13beeb68c",
+          "size": 302
+        },
+        {
+          "database": "db",
+          "name": "format_HSM.1.sg",
+          "path": "db/Binary/format_HSM.1.sg",
+          "priority_candidate": "1",
+          "sha256": "3bcafc38571ca6b0aff33eeccc9a8f28d9c92b701932ed06502eeda35f1ce5bf",
+          "size": 361
+        },
+        {
+          "database": "db",
+          "name": "format_ILK.1.sg",
+          "path": "db/Binary/format_ILK.1.sg",
+          "priority_candidate": "1",
+          "sha256": "83fb03dec834af8cb058cf80b3c3d1a4355df735d39eb8128c2d00bb62b42db9",
+          "size": 364
+        },
+        {
+          "database": "db",
+          "name": "format_IPCH.1.sg",
+          "path": "db/Binary/format_IPCH.1.sg",
+          "priority_candidate": "1",
+          "sha256": "b41cdbf1b34d1559821e79e4115ea99d9e18faa7f8866404d47875fa15042807",
+          "size": 460
+        },
+        {
+          "database": "db",
+          "name": "format_ITL.1.sg",
+          "path": "db/Binary/format_ITL.1.sg",
+          "priority_candidate": "1",
+          "sha256": "f4eb02c8e84e5d1ca798362aa6331252086f7415cd2e3201199f68bb5c1b7801",
+          "size": 469
+        },
+        {
+          "database": "db",
+          "name": "format_IVF.1.sg",
+          "path": "db/Binary/format_IVF.1.sg",
+          "priority_candidate": "1",
+          "sha256": "e9bb176d3e737c8ad1ff2de8417e9ca2a2339dd00f204cff810592e579957545",
+          "size": 452
+        },
+        {
+          "database": "db",
+          "name": "format_Img.UDIF.1.sg",
+          "path": "db/Binary/format_Img.UDIF.1.sg",
+          "priority_candidate": "1",
+          "sha256": "76aa4eb0d75e0e22f3cd86025b7b73b9d7888ed531bd1da0c58bcdcb106bc050",
+          "size": 512
+        },
+        {
+          "database": "db",
+          "name": "format_InnoSetupUninstall.1.sg",
+          "path": "db/Binary/format_InnoSetupUninstall.1.sg",
+          "priority_candidate": "1",
+          "sha256": "3eb8313bad4271813dd12d5b98a45a46c1ebe2cbce34b5bd4a6c2c49070d3e7f",
+          "size": 573
+        },
+        {
+          "database": "db",
+          "name": "format_InterleafFile.1.sg",
+          "path": "db/Binary/format_InterleafFile.1.sg",
+          "priority_candidate": "1",
+          "sha256": "9723a976f94806163b35cc9dd277ffeaa841d723a1a95bfa2686103f7549782e",
+          "size": 454
+        },
+        {
+          "database": "db",
+          "name": "format_LCA.1.sg",
+          "path": "db/Binary/format_LCA.1.sg",
+          "priority_candidate": "1",
+          "sha256": "4bc862e5316315a740980227de7c67c9ea2921fa3d78c6706ab83f7f18af324d",
+          "size": 428
+        },
+        {
+          "database": "db",
+          "name": "format_LGX.1.sg",
+          "path": "db/Binary/format_LGX.1.sg",
+          "priority_candidate": "1",
+          "sha256": "57962efab40778e8f5eaa1c9dcd2864003f155fa8c2d7094317c3b6957c2c649",
+          "size": 481
+        },
+        {
+          "database": "db",
+          "name": "format_LIXS.1.sg",
+          "path": "db/Binary/format_LIXS.1.sg",
+          "priority_candidate": "1",
+          "sha256": "860071045260447686e452e76f8d58cdb3ff40b57c65fb18607e83554bef0077",
+          "size": 459
+        },
+        {
+          "database": "db",
+          "name": "format_LVL.1.sg",
+          "path": "db/Binary/format_LVL.1.sg",
+          "priority_candidate": "1",
+          "sha256": "df7c524b870bb840a54285b0d57578e8fcb0fdee0d92ee7516ffa4e8bc4821df",
+          "size": 482
+        },
+        {
+          "database": "db",
+          "name": "format_MAT.1.sg",
+          "path": "db/Binary/format_MAT.1.sg",
+          "priority_candidate": "1",
+          "sha256": "29f825193e7d93ad0bc957b7781cf25c21810686cb9b75a7854d916a5ccf79e0",
+          "size": 435
+        },
+        {
+          "database": "db",
+          "name": "format_MDL.1.sg",
+          "path": "db/Binary/format_MDL.1.sg",
+          "priority_candidate": "1",
+          "sha256": "8abb71b2c20bf94c9ad9d9a60d82edfee9d1d99f6ea1ef624583285d756ab786",
+          "size": 429
+        },
+        {
+          "database": "db",
+          "name": "format_MDS.1.sg",
+          "path": "db/Binary/format_MDS.1.sg",
+          "priority_candidate": "1",
+          "sha256": "4a4aaec2de897e2f543bfb85d5e340e54090215ca1025918b96b39f6280364f7",
+          "size": 722
+        },
+        {
+          "database": "db",
+          "name": "format_MS-DBG.1.sg",
+          "path": "db/Binary/format_MS-DBG.1.sg",
+          "priority_candidate": "1",
+          "sha256": "960a0ec06231d6b245e4b0ea1c196d6dedfbd95a87674bfa7695146cb12956c1",
+          "size": 364
+        },
+        {
+          "database": "db",
+          "name": "format_MS-PST.sg",
+          "path": "db/Binary/format_MS-PST.sg",
+          "priority_candidate": null,
+          "sha256": "e47a67a1b1c3e2b99a4969553657127d8c71a5c22b511b1d24df0d5c5df251be",
+          "size": 404
+        },
+        {
+          "database": "db",
+          "name": "format_MS-VHD.1.sg",
+          "path": "db/Binary/format_MS-VHD.1.sg",
+          "priority_candidate": "1",
+          "sha256": "f4342b77c4d006ac790b4f62da3c7ad08095d42f989620f100bbe9b8db53c5f3",
+          "size": 2220
+        },
+        {
+          "database": "db",
+          "name": "format_MS-VHDX.sg",
+          "path": "db/Binary/format_MS-VHDX.sg",
+          "priority_candidate": null,
+          "sha256": "6588771ddb7338c89b23582c25b8f4a0539d5fc19bf3f7ce3487438cdf0401a6",
+          "size": 485
+        },
+        {
+          "database": "db",
+          "name": "format_MS-XNA.1.sg",
+          "path": "db/Binary/format_MS-XNA.1.sg",
+          "priority_candidate": "1",
+          "sha256": "3a958d0999dc2be5c4d1a6f1db4082d5dd22707d58ce2427785f6b4f79adb702",
+          "size": 2598
+        },
+        {
+          "database": "db",
+          "name": "format_OBC.1.sg",
+          "path": "db/Binary/format_OBC.1.sg",
+          "priority_candidate": "1",
+          "sha256": "ff6d91d25354502a5f9dcc800fc8b53a97a4faae2e4edb311616ac8e0e024547",
+          "size": 894
+        },
+        {
+          "database": "db",
+          "name": "format_OpenSSH.1.sg",
+          "path": "db/Binary/format_OpenSSH.1.sg",
+          "priority_candidate": "1",
+          "sha256": "0b448986013b300bf8765d0c373ace2fcc2c7d56a22140211668e8ea7512e088",
+          "size": 530
+        },
+        {
+          "database": "db",
+          "name": "format_P7X.1.sg",
+          "path": "db/Binary/format_P7X.1.sg",
+          "priority_candidate": "1",
+          "sha256": "f5ed1817bb2d5e9c135102aacd6aaa738ad6ad93bdd0ef9d2179abe3dad42db7",
+          "size": 331
+        },
+        {
+          "database": "db",
+          "name": "format_PAT.1.sg",
+          "path": "db/Binary/format_PAT.1.sg",
+          "priority_candidate": "1",
+          "sha256": "51ff8ad928d74a652c0627dad9833fb65cbc17860fe2f2a676234afe6669a80c",
+          "size": 257
+        },
+        {
+          "database": "db",
+          "name": "format_PDB.1.sg",
+          "path": "db/Binary/format_PDB.1.sg",
+          "priority_candidate": "1",
+          "sha256": "b991a941a5c7acb7210e31b5524ffc36b1a93671ab8ea1ac0e47edb06e6306f7",
+          "size": 1180
+        },
+        {
+          "database": "db",
+          "name": "format_PEM.1.sg",
+          "path": "db/Binary/format_PEM.1.sg",
+          "priority_candidate": "1",
+          "sha256": "01cc30517a339b70ab32b62f96bb4435df56a5a64794dba4278d6e85ffc26af4",
+          "size": 1431
+        },
+        {
+          "database": "db",
+          "name": "format_PGP.1.sg",
+          "path": "db/Binary/format_PGP.1.sg",
+          "priority_candidate": "1",
+          "sha256": "27d5530fb8bbb7937f90789e7acfed8f374881b2af0235d4bbaa4ef9efef9e13",
+          "size": 286
+        },
+        {
+          "database": "db",
+          "name": "format_POL.1.sg",
+          "path": "db/Binary/format_POL.1.sg",
+          "priority_candidate": "1",
+          "sha256": "653badc281fcfdd3de242edd502de0c28f40aa29f4374631de6f8177f6d17f7d",
+          "size": 342
+        },
+        {
+          "database": "db",
+          "name": "format_PRI.1.sg",
+          "path": "db/Binary/format_PRI.1.sg",
+          "priority_candidate": "1",
+          "sha256": "595dd4db77675f8511455bf3ec88314d510b2940850b91b341d7b45dca7945b8",
+          "size": 302
+        },
+        {
+          "database": "db",
+          "name": "format_PS-X.1.sg",
+          "path": "db/Binary/format_PS-X.1.sg",
+          "priority_candidate": "1",
+          "sha256": "4bffc1f80190c731727baee3f01554dafe24ef253cbcef6f024b1496b776e94c",
+          "size": 491
+        },
+        {
+          "database": "db",
+          "name": "format_PSM2CFG.1.sg",
+          "path": "db/Binary/format_PSM2CFG.1.sg",
+          "priority_candidate": "1",
+          "sha256": "a95934a7ee694dc2c70c2292f28d7e4b87dfd0d1d3b263de56202abe11a8eab4",
+          "size": 458
+        },
+        {
+          "database": "db",
+          "name": "format_PlayStation1BIOS.1.sg",
+          "path": "db/Binary/format_PlayStation1BIOS.1.sg",
+          "priority_candidate": "1",
+          "sha256": "ad28269e6ec47876fbfb646035264959981eb41bfd73bc054859340cbf2a853d",
+          "size": 425
+        },
+        {
+          "database": "db",
+          "name": "format_RARREG.1.sg",
+          "path": "db/Binary/format_RARREG.1.sg",
+          "priority_candidate": "1",
+          "sha256": "31847a158407165d0f93c28de8c82571f02dec57079dd9dfc7c4da63b0d05dc6",
+          "size": 306
+        },
+        {
+          "database": "db",
+          "name": "format_RCK.1.sg",
+          "path": "db/Binary/format_RCK.1.sg",
+          "priority_candidate": "1",
+          "sha256": "0a3c4ef5eb7491f476710006d79e2ec79d6d10267641bf986e2cb9ae510d2953",
+          "size": 298
+        },
+        {
+          "database": "db",
+          "name": "format_RCO.1.sg",
+          "path": "db/Binary/format_RCO.1.sg",
+          "priority_candidate": "1",
+          "sha256": "d068a62668685166c646e91062109851fbd6f5c4d17cca870b4c970555c4671f",
+          "size": 241
+        },
+        {
+          "database": "db",
+          "name": "format_RGS.1.sg",
+          "path": "db/Binary/format_RGS.1.sg",
+          "priority_candidate": "1",
+          "sha256": "4b9914b000dcd09683e530ea20b923d0f7b15fdcdefbccc140cb09a9f2ab665f",
+          "size": 349
+        },
+        {
+          "database": "db",
+          "name": "format_RIFF.1.sg",
+          "path": "db/Binary/format_RIFF.1.sg",
+          "priority_candidate": "1",
+          "sha256": "e213e920eadf8b35a88cabca861eed4351f4f27d5e39ea48014174676774cb5e",
+          "size": 475
+        },
+        {
+          "database": "db",
+          "name": "format_RedShirt.1.sg",
+          "path": "db/Binary/format_RedShirt.1.sg",
+          "priority_candidate": "1",
+          "sha256": "c43393847270880fb34be873ed65f5f95b2dc1d57e68237e78553e721a42d080",
+          "size": 402
+        },
+        {
+          "database": "db",
+          "name": "format_SDI.1.sg",
+          "path": "db/Binary/format_SDI.1.sg",
+          "priority_candidate": "1",
+          "sha256": "1a8f51481f0068a19f73e2b4bc97b2058ce652c633841294127d58d6743984c1",
+          "size": 313
+        },
+        {
+          "database": "db",
+          "name": "format_SFK.1.sg",
+          "path": "db/Binary/format_SFK.1.sg",
+          "priority_candidate": "1",
+          "sha256": "65c0ea5d1d1dd067174b31a78063297d0561b8f8b627c22a4d9fbb2ce72e4814",
+          "size": 328
+        },
+        {
+          "database": "db",
+          "name": "format_SHBIN.1.sg",
+          "path": "db/Binary/format_SHBIN.1.sg",
+          "priority_candidate": "1",
+          "sha256": "987f4e3548d6e82f86114c82380d7a1ee839ed8057286de8ed74f95ba03b19c4",
+          "size": 408
+        },
+        {
+          "database": "db",
+          "name": "format_SLN.1.sg",
+          "path": "db/Binary/format_SLN.1.sg",
+          "priority_candidate": "1",
+          "sha256": "00fe5eaa20fb816dc7f809b872bd72b15096f816a44c1b89a79050f50a9c5776",
+          "size": 537
+        },
+        {
+          "database": "db",
+          "name": "format_SLNX.1.sg",
+          "path": "db/Binary/format_SLNX.1.sg",
+          "priority_candidate": "1",
+          "sha256": "7c749638dd75c8dbf7515d982e7a75ddc8293510fff635c9da5de60c2384f2dd",
+          "size": 302
+        },
+        {
+          "database": "db",
+          "name": "format_SystemErr.1.sg",
+          "path": "db/Binary/format_SystemErr.1.sg",
+          "priority_candidate": "1",
+          "sha256": "1c17ab6ac12fff0c5dfa6d99d4d21412b4b5ae37ee9637008960813e29f343bf",
+          "size": 517
+        },
+        {
+          "database": "db",
+          "name": "format_TLB.1.sg",
+          "path": "db/Binary/format_TLB.1.sg",
+          "priority_candidate": "1",
+          "sha256": "e3d55d082440156daff2e0de69175026ff5415c1a7ff8a3c349e501206fda976",
+          "size": 316
+        },
+        {
+          "database": "db",
+          "name": "format_TOT.1.sg",
+          "path": "db/Binary/format_TOT.1.sg",
+          "priority_candidate": "1",
+          "sha256": "6223a5ee2f21d23418e2ef09ba6a2ff9d5d4bb4d57bd7661f45e44f90798751e",
+          "size": 904
+        },
+        {
+          "database": "db",
+          "name": "format_TPU.1.sg",
+          "path": "db/Binary/format_TPU.1.sg",
+          "priority_candidate": "1",
+          "sha256": "62d2d9988d965fb94277f8272cc8a1453b8bb8b88396980fc7d351a89c06c8b0",
+          "size": 290
+        },
+        {
+          "database": "db",
+          "name": "format_Torrent.1.sg",
+          "path": "db/Binary/format_Torrent.1.sg",
+          "priority_candidate": "1",
+          "sha256": "4063c09f2d6bc7c9907d21229ddac1826db2e54e48a71ab843319d862a304b9b",
+          "size": 411
+        },
+        {
+          "database": "db",
+          "name": "format_U-Boot.1.sg",
+          "path": "db/Binary/format_U-Boot.1.sg",
+          "priority_candidate": "1",
+          "sha256": "b0a0c87e7b1750f96a0b81aee8277f741afc0c99dea39caad76c15d480c4c072",
+          "size": 6258
+        },
+        {
+          "database": "db",
+          "name": "format_UCM.1.sg",
+          "path": "db/Binary/format_UCM.1.sg",
+          "priority_candidate": "1",
+          "sha256": "809e9f81b95fbb28abb18752d94850ff6e032c0e906a2c844a4d7f5fe7a51a4f",
+          "size": 323
+        },
+        {
+          "database": "db",
+          "name": "format_UPC.1.sg",
+          "path": "db/Binary/format_UPC.1.sg",
+          "priority_candidate": "1",
+          "sha256": "0a1c244a3984e9f647105ac7db8ce6382cda83548151ee92c6b5a5d26da49fc9",
+          "size": 503
+        },
+        {
+          "database": "db",
+          "name": "format_UPF.1.sg",
+          "path": "db/Binary/format_UPF.1.sg",
+          "priority_candidate": "1",
+          "sha256": "a04225b8d12a4a62c33ba2d2eb09031d26be97dd5681fb186175b12f4af17b91",
+          "size": 503
+        },
+        {
+          "database": "db",
+          "name": "format_UPI.1.sg",
+          "path": "db/Binary/format_UPI.1.sg",
+          "priority_candidate": "1",
+          "sha256": "f3974fb8a786c813aad31a6ae7ad82e472ff71e1a4624160f3c5513cb1642137",
+          "size": 503
+        },
+        {
+          "database": "db",
+          "name": "format_VDI.1.sg",
+          "path": "db/Binary/format_VDI.1.sg",
+          "priority_candidate": "1",
+          "sha256": "0ea63e191ffc13f984190bda6ea3a5c5a2fe917b2eeb94ddf88692ddf93df9fc",
+          "size": 1214
+        },
+        {
+          "database": "db",
+          "name": "format_VM2.1.sg",
+          "path": "db/Binary/format_VM2.1.sg",
+          "priority_candidate": "1",
+          "sha256": "8b3f71a7145927c46871660db8f774a427417d506cbeb5bb5296464fc4db5f2e",
+          "size": 463
+        },
+        {
+          "database": "db",
+          "name": "format_VTF.1.sg",
+          "path": "db/Binary/format_VTF.1.sg",
+          "priority_candidate": "1",
+          "sha256": "bcdb25d3ae0ec6740e5cb33b1effc21d044fc1fc931442ff18c708ef0c483224",
+          "size": 341
+        },
+        {
+          "database": "db",
+          "name": "format_VVD.1.sg",
+          "path": "db/Binary/format_VVD.1.sg",
+          "priority_candidate": "1",
+          "sha256": "acd7389fe2d3f0000f33093530aa2203d7ef130700c7acb9cde213a2553a1146",
+          "size": 265
+        },
+        {
+          "database": "db",
+          "name": "format_W3D.1.sg",
+          "path": "db/Binary/format_W3D.1.sg",
+          "priority_candidate": "1",
+          "sha256": "7834b7c0f028b431c5ef883688b96be98ec492c3c9b8e28e7362b72b8ec93233",
+          "size": 299
+        },
+        {
+          "database": "db",
+          "name": "format_WASM.1.sg",
+          "path": "db/Binary/format_WASM.1.sg",
+          "priority_candidate": "1",
+          "sha256": "7646b168decd5ea1625f4912f69cda779cc1605459152d26b7843b419d9f86f4",
+          "size": 280
+        },
+        {
+          "database": "db",
+          "name": "format_WBFS.1.sg",
+          "path": "db/Binary/format_WBFS.1.sg",
+          "priority_candidate": "1",
+          "sha256": "eef75f2e619b7a8a85090cef292a3273f1b1cafe3182460f28a54d4ad1a966a9",
+          "size": 363
+        },
+        {
+          "database": "db",
+          "name": "format_XBE.1.sg",
+          "path": "db/Binary/format_XBE.1.sg",
+          "priority_candidate": "1",
+          "sha256": "bbf3ca57a4376dc288604f943a1b445ef7b978dd9f5457dbe0eac0f6d74e643d",
+          "size": 314
+        },
+        {
+          "database": "db",
+          "name": "format_XBF.1.sg",
+          "path": "db/Binary/format_XBF.1.sg",
+          "priority_candidate": "1",
+          "sha256": "8f9f9f5657ef453f4bc019c5bbca4f5a334db404897f6fca9141b122ffad0b6d",
+          "size": 461
+        },
+        {
+          "database": "db",
+          "name": "format_XCG.1.sg",
+          "path": "db/Binary/format_XCG.1.sg",
+          "priority_candidate": "1",
+          "sha256": "61ba29dd15f0760cb0906a0b3c4eb4b6f39ee5b51bad5a8b443c69906b27c2fb",
+          "size": 465
+        },
+        {
+          "database": "db",
+          "name": "format_XCI.1.sg",
+          "path": "db/Binary/format_XCI.1.sg",
+          "priority_candidate": "1",
+          "sha256": "68bf218a8b0e6fb6e7f01d729a0958f91f77faa2e2f5be605eaf437980205cc6",
+          "size": 454
+        },
+        {
+          "database": "db",
+          "name": "format_XCR.1.sg",
+          "path": "db/Binary/format_XCR.1.sg",
+          "priority_candidate": "1",
+          "sha256": "cab9030069bc383c0f25587baca3678a8f38629d433b26817c0388f0aa61f572",
+          "size": 454
+        },
+        {
+          "database": "db",
+          "name": "format_XCS.1.sg",
+          "path": "db/Binary/format_XCS.1.sg",
+          "priority_candidate": "1",
+          "sha256": "285bf2b6346e64c3278025c3de55837b95183290b9eb2555908d4798b7865cf5",
+          "size": 437
+        },
+        {
+          "database": "db",
+          "name": "format_XDelta.1.sg",
+          "path": "db/Binary/format_XDelta.1.sg",
+          "priority_candidate": "1",
+          "sha256": "8fb9c6bca5ff5b9be7dbfee49723fe0bc68d9dd1f167a60ed33b580e26ab6681",
+          "size": 258
+        },
+        {
+          "database": "db",
+          "name": "format_XEX.1.sg",
+          "path": "db/Binary/format_XEX.1.sg",
+          "priority_candidate": "1",
+          "sha256": "0b5f07ac6f13c22e01c59266ad28753a249d39a4d789e2c9fd5165a80f2470e8",
+          "size": 294
+        },
+        {
+          "database": "db",
+          "name": "format_ZZDATA.1.sg",
+          "path": "db/Binary/format_ZZDATA.1.sg",
+          "priority_candidate": "1",
+          "sha256": "bbc596fe05b96f516fe8a8f70143fa33fca886699393b10e169bc5d04d21714b",
+          "size": 336
+        },
+        {
+          "database": "db",
+          "name": "format_ZinsSAV.1.sg",
+          "path": "db/Binary/format_ZinsSAV.1.sg",
+          "priority_candidate": "1",
+          "sha256": "41892929dd41c8fd707375c0c9aa6b71de1f607cc9d054cfceef3d7e5748e1c9",
+          "size": 285
+        },
+        {
+          "database": "db",
+          "name": "format_bin.AAALogo.1.sg",
+          "path": "db/Binary/format_bin.AAALogo.1.sg",
+          "priority_candidate": "1",
+          "sha256": "810ce939199903b8d9abb7d17d39e38c7a8d3956a7abff6aaedec23c4348197b",
+          "size": 310
+        },
+        {
+          "database": "db",
+          "name": "format_bin.COL.1.sg",
+          "path": "db/Binary/format_bin.COL.1.sg",
+          "priority_candidate": "1",
+          "sha256": "19b8d563aa5e4c8343f9c1738e23769f6f110e1047eb8bd4d3e225d5b5e2ac3d",
+          "size": 1208
+        },
+        {
+          "database": "db",
+          "name": "format_bin.GuitarPro.1.sg",
+          "path": "db/Binary/format_bin.GuitarPro.1.sg",
+          "priority_candidate": "1",
+          "sha256": "9c22581b0ce1664e451bfa183b9cace6c1f20927c4eef55537a90e18bf8f363b",
+          "size": 6371
+        },
+        {
+          "database": "db",
+          "name": "format_bin.Hermes.1.sg",
+          "path": "db/Binary/format_bin.Hermes.1.sg",
+          "priority_candidate": "1",
+          "sha256": "6d63447550c20e304ca1f92afa9f54bce999fbb15ac80c920e85fed1b190b955",
+          "size": 417
+        },
+        {
+          "database": "db",
+          "name": "format_bin.JMDL.1.sg",
+          "path": "db/Binary/format_bin.JMDL.1.sg",
+          "priority_candidate": "1",
+          "sha256": "07efd411a516ecd97f612e8ef3a307bce7264ef4c6e8e06a4881bc8e312c18e6",
+          "size": 919
+        },
+        {
+          "database": "db",
+          "name": "format_bin.JSC.1.sg",
+          "path": "db/Binary/format_bin.JSC.1.sg",
+          "priority_candidate": "1",
+          "sha256": "b4c98489920d1db63d2681bfd28a16074683535db4ec657d78a9710ebf6010c9",
+          "size": 3408
+        },
+        {
+          "database": "db",
+          "name": "format_bin.Java.1.sg",
+          "path": "db/Binary/format_bin.Java.1.sg",
+          "priority_candidate": "1",
+          "sha256": "55b5c74216188670bdedb58276b87e7f81d1c681bc294f69d597f6489fd73096",
+          "size": 5216
+        },
+        {
+          "database": "db",
+          "name": "format_bin.KeePass.1.sg",
+          "path": "db/Binary/format_bin.KeePass.1.sg",
+          "priority_candidate": "1",
+          "sha256": "59b72e793dff1bd50056d3504d59baf289186ec7c7c651da378b06b563eebf09",
+          "size": 777
+        },
+        {
+          "database": "db",
+          "name": "format_bin.LUA.1.sg",
+          "path": "db/Binary/format_bin.LUA.1.sg",
+          "priority_candidate": "1",
+          "sha256": "4676255346d861f3d5ff5e46bb0f31695bca0b64c33caa616bb0b2fef132601a",
+          "size": 973
+        },
+        {
+          "database": "db",
+          "name": "format_bin.NVA.1.sg",
+          "path": "db/Binary/format_bin.NVA.1.sg",
+          "priority_candidate": "1",
+          "sha256": "eaf26617ef091a158d7e22dbe27fff5ef0a63f59d94e488c2aa7dd8786e4be52",
+          "size": 349
+        },
+        {
+          "database": "db",
+          "name": "format_bin.Nintendo-certified-file.1.sg",
+          "path": "db/Binary/format_bin.Nintendo-certified-file.1.sg",
+          "priority_candidate": "1",
+          "sha256": "1f7485b8b0c9c211932fdcc31529ea37588c176e46a1ff06230fc376df5ad0f5",
+          "size": 1994
+        },
+        {
+          "database": "db",
+          "name": "format_bin.PEFF.1.sg",
+          "path": "db/Binary/format_bin.PEFF.1.sg",
+          "priority_candidate": "1",
+          "sha256": "1db3fab0725711cbbb1dea4a667b02f83b942c1a67429fe6fdf0effac18dfe5d",
+          "size": 521
+        },
+        {
+          "database": "db",
+          "name": "format_bin.PalmFile.1.sg",
+          "path": "db/Binary/format_bin.PalmFile.1.sg",
+          "priority_candidate": "1",
+          "sha256": "694f734cf367acf47e1db3301eec48460493ff2048f18445de72b6c9328aa28d",
+          "size": 6266
+        },
+        {
+          "database": "db",
+          "name": "format_bin.Python.1.sg",
+          "path": "db/Binary/format_bin.Python.1.sg",
+          "priority_candidate": "1",
+          "sha256": "179cfcced156ee32431af6fb2a72b25a63052d2a955dff7be8375fd63dc3a94a",
+          "size": 13467
+        },
+        {
+          "database": "db",
+          "name": "format_bin.SWF.1.sg",
+          "path": "db/Binary/format_bin.SWF.1.sg",
+          "priority_candidate": "1",
+          "sha256": "a6711ddcbb23d7018938298afd01ca1ff28cf226b533c3f457c0325fc46e2e93",
+          "size": 827
+        },
+        {
+          "database": "db",
+          "name": "format_bin.VCF.1.sg",
+          "path": "db/Binary/format_bin.VCF.1.sg",
+          "priority_candidate": "1",
+          "sha256": "24e86058204f3bdd747b5dd33751f2babce9b17723a4d8a22415a99780938a7c",
+          "size": 1829
+        },
+        {
+          "database": "db",
+          "name": "format_bin.WindowsIconCacheDB.1.sg",
+          "path": "db/Binary/format_bin.WindowsIconCacheDB.1.sg",
+          "priority_candidate": "1",
+          "sha256": "d93f4a164733d9b7f900f2e09d087dd9f40e4b9d8c6c6d18e651dd6435e02b71",
+          "size": 729
+        },
+        {
+          "database": "db",
+          "name": "format_database.SQLite.1.sg",
+          "path": "db/Binary/format_database.SQLite.1.sg",
+          "priority_candidate": "1",
+          "sha256": "8351038ff1d5f696519115208129f32ccfe68192f214c882b4171e659de259bc",
+          "size": 1177
+        },
+        {
+          "database": "db",
+          "name": "format_databases.1.sg",
+          "path": "db/Binary/format_databases.1.sg",
+          "priority_candidate": "1",
+          "sha256": "d80e46ef6a2be09d7fa6298bde8417c8933fa1679164123e4110b1d1f7f9760a",
+          "size": 6920
+        },
+        {
+          "database": "db",
+          "name": "format_doc.CHM.1.sg",
+          "path": "db/Binary/format_doc.CHM.1.sg",
+          "priority_candidate": "1",
+          "sha256": "fe0dc15b128c8d0085aeb0e1e9377c699bbce60f65df135916531a73b6b24326",
+          "size": 508
+        },
+        {
+          "database": "db",
+          "name": "format_doc.DJVU.1.sg",
+          "path": "db/Binary/format_doc.DJVU.1.sg",
+          "priority_candidate": "1",
+          "sha256": "8724008de552d45e6be21e0a39ad4aa44819590db22e2a272f462aa84a02761e",
+          "size": 4915
+        },
+        {
+          "database": "db",
+          "name": "format_doc.HLP.1.sg",
+          "path": "db/Binary/format_doc.HLP.1.sg",
+          "priority_candidate": "1",
+          "sha256": "2e6608d694e632f522a20c236824b47e61dfc4a2ca314b638a53f3c4f4c3c4be",
+          "size": 273
+        },
+        {
+          "database": "db",
+          "name": "format_doc.PDF.1.sg",
+          "path": "db/Binary/format_doc.PDF.1.sg",
+          "priority_candidate": "1",
+          "sha256": "0f8cabe4b781ce4ef160b1660f249278c652b9fa00a1e370a2262fa401815b35",
+          "size": 481
+        },
+        {
+          "database": "db",
+          "name": "format_doc.RTF.1.sg",
+          "path": "db/Binary/format_doc.RTF.1.sg",
+          "priority_candidate": "1",
+          "sha256": "509cf42e39b50cb831720258cb7db41df9797d5d152de443e4d3c60cd9431749",
+          "size": 419
+        },
+        {
+          "database": "db",
+          "name": "format_iCalender.1.sg",
+          "path": "db/Binary/format_iCalender.1.sg",
+          "priority_candidate": "1",
+          "sha256": "4e8e414a9077ce1774a6165e0016cbdcdc38b5d0ccfbd53fb452dd9d2ace6dd8",
+          "size": 441
+        },
+        {
+          "database": "db",
+          "name": "format_img.VM.1.sg",
+          "path": "db/Binary/format_img.VM.1.sg",
+          "priority_candidate": "1",
+          "sha256": "e04fec2bfe6e99e3255dca924921863ff28131cfe30da5a217d7cd50c76a3d66",
+          "size": 348
+        },
+        {
+          "database": "db",
+          "name": "format_text.RegistryFile.sg",
+          "path": "db/Binary/format_text.RegistryFile.sg",
+          "priority_candidate": "RegistryFile",
+          "sha256": "6e181c2fa776fc019f019564e731e9734fbb95ffdb695f918d54a809a6ede998",
+          "size": 752
+        },
+        {
+          "database": "db",
+          "name": "format_text.pdb.1.sg",
+          "path": "db/Binary/format_text.pdb.1.sg",
+          "priority_candidate": "1",
+          "sha256": "dcca7e4a3535820072986eb1773eb5ae76029fea432fb203ec93952797b9b88f",
+          "size": 1494
+        },
+        {
+          "database": "db",
+          "name": "format_text.plaintext.3.sg",
+          "path": "db/Binary/format_text.plaintext.3.sg",
+          "priority_candidate": "3",
+          "sha256": "75287e4e63cbf3f45dcc2718936c45dc5fa53ff7b1d0a879d23448c51217c346",
+          "size": 818
+        },
+        {
+          "database": "db",
+          "name": "format_video.BIK.1.sg",
+          "path": "db/Binary/format_video.BIK.1.sg",
+          "priority_candidate": "1",
+          "sha256": "ab3bdbd6a2d87a1744a457516adf304c270a0d90ffd354b1b60f3f95566215bf",
+          "size": 292
+        },
+        {
+          "database": "db",
+          "name": "format_video.BK2.1.sg",
+          "path": "db/Binary/format_video.BK2.1.sg",
+          "priority_candidate": "1",
+          "sha256": "e9625904effce969e0c6613b02ee957feb031c5dc8985eb834ff6b510fd7415f",
+          "size": 327
+        },
+        {
+          "database": "db",
+          "name": "format_video.FLV.1.sg",
+          "path": "db/Binary/format_video.FLV.1.sg",
+          "priority_candidate": "1",
+          "sha256": "5fdd414146eb78b9d54af21360f6b9b96d4f0c5df558ae5c898524501bddecdb",
+          "size": 347
+        },
+        {
+          "database": "db",
+          "name": "format_video.MOV.1.sg",
+          "path": "db/Binary/format_video.MOV.1.sg",
+          "priority_candidate": "1",
+          "sha256": "14219e70ea789b438432ceca57fcb3e54390583c30335682d861cee30aa16290",
+          "size": 622
+        },
+        {
+          "database": "db",
+          "name": "format_video.MP4.1.sg",
+          "path": "db/Binary/format_video.MP4.1.sg",
+          "priority_candidate": "1",
+          "sha256": "6827bfaa1728e699c7e9f03f43660b4e1efc246404bb27b7302deba47ae9f0b2",
+          "size": 421
+        },
+        {
+          "database": "db",
+          "name": "format_video.Matroska.1.sg",
+          "path": "db/Binary/format_video.Matroska.1.sg",
+          "priority_candidate": "1",
+          "sha256": "cdd45287a610ac102b749868babfc33220187c995dd67baca7561f6807c9c877",
+          "size": 328
+        },
+        {
+          "database": "db",
+          "name": "format_video.RobotAnimation.1.sg",
+          "path": "db/Binary/format_video.RobotAnimation.1.sg",
+          "priority_candidate": "1",
+          "sha256": "df711f17bbabc4ad6d4e59d0462ea84aa19cc2a2e67e6d5a1edb96aeef3c883a",
+          "size": 283
+        },
+        {
+          "database": "db",
+          "name": "format_video.Smacker.1.sg",
+          "path": "db/Binary/format_video.Smacker.1.sg",
+          "priority_candidate": "1",
+          "sha256": "4c0aaa29c1c5f1d5faa6441a7e07b53746197e039e97bcd243ea54ad42ed9bcf",
+          "size": 275
+        },
+        {
+          "database": "db",
+          "name": "format_video.VMD.1.sg",
+          "path": "db/Binary/format_video.VMD.1.sg",
+          "priority_candidate": "1",
+          "sha256": "21829e6551bbe497b83e17cdaa5f1650f541626e8c3d472af77c7b79a6a008d4",
+          "size": 2419
+        },
+        {
+          "database": "db",
+          "name": "formats.1.sg",
+          "path": "db/Binary/formats.1.sg",
+          "priority_candidate": "1",
+          "sha256": "a3d2fcaa56c27c87d1d80857bb4673557d5b2c9451a8091a2acbb7e5421de727",
+          "size": 3164
+        },
+        {
+          "database": "db",
+          "name": "graphics.1.sg",
+          "path": "db/Binary/graphics.1.sg",
+          "priority_candidate": "1",
+          "sha256": "4851f5ec207158a9c62c1d3db8a4b37890d6823868d3bb9fc2cb0cf631772e5d",
+          "size": 1299
+        },
+        {
+          "database": "db",
+          "name": "image.PNG.1.sg",
+          "path": "db/Binary/image.PNG.1.sg",
+          "priority_candidate": "1",
+          "sha256": "c40779c0289498bcd5352120bd166b2d60c8a05a713ac2da0e386372a2747e41",
+          "size": 7118
+        },
+        {
+          "database": "db",
+          "name": "image_ANI.1.sg",
+          "path": "db/Binary/image_ANI.1.sg",
+          "priority_candidate": "1",
+          "sha256": "4f044ac42a222d5a3f7e2a30bd979f1c7465d78aeb2de19d1c93648829c2d31a",
+          "size": 1046
+        },
+        {
+          "database": "db",
+          "name": "image_BMP.1.sg",
+          "path": "db/Binary/image_BMP.1.sg",
+          "priority_candidate": "1",
+          "sha256": "1b324f479b731669b1b19b779c837560360da285fd7a59f6381fb6c63f3fe804",
+          "size": 1493
+        },
+        {
+          "database": "db",
+          "name": "image_CUR.1.sg",
+          "path": "db/Binary/image_CUR.1.sg",
+          "priority_candidate": "1",
+          "sha256": "9871c0f3cb15cb001625e8230de9b7f55105e4be46092a89f7193815f2e82ac7",
+          "size": 1944
+        },
+        {
+          "database": "db",
+          "name": "image_DDS.1.sg",
+          "path": "db/Binary/image_DDS.1.sg",
+          "priority_candidate": "1",
+          "sha256": "76087d542ac163d0b8bfd22263ebfb3aa35e4239d649a9f357e2e33cfc5cf448",
+          "size": 802
+        },
+        {
+          "database": "db",
+          "name": "image_EPS.1.sg",
+          "path": "db/Binary/image_EPS.1.sg",
+          "priority_candidate": "1",
+          "sha256": "2394436b2565f1caa9cb6415107ca550865f5ec08a6651037fc3c39b5ac85705",
+          "size": 963
+        },
+        {
+          "database": "db",
+          "name": "image_FSH.1.sg",
+          "path": "db/Binary/image_FSH.1.sg",
+          "priority_candidate": "1",
+          "sha256": "a7e8777b478aeb0476e9197fddb6c5d4cd0446722458cdbe84704bee13e73c68",
+          "size": 374
+        },
+        {
+          "database": "db",
+          "name": "image_GIF.1.sg",
+          "path": "db/Binary/image_GIF.1.sg",
+          "priority_candidate": "1",
+          "sha256": "cfd75c40a57faf736ee6bcc9c86e872baeca8310852332e85a7af0ec3b5fe075",
+          "size": 3736
+        },
+        {
+          "database": "db",
+          "name": "image_ICNS.sg",
+          "path": "db/Binary/image_ICNS.sg",
+          "priority_candidate": null,
+          "sha256": "d9db4c87a73a8d1f740c9b11561ab0d92b21ba471487c132aa808475ca3618c4",
+          "size": 280
+        },
+        {
+          "database": "db",
+          "name": "image_ICO.1.sg",
+          "path": "db/Binary/image_ICO.1.sg",
+          "priority_candidate": "1",
+          "sha256": "57640f5ad0f441afb014e0b068a0cb104d5bf65f90b710ce55d15e097c61cb91",
+          "size": 2337
+        },
+        {
+          "database": "db",
+          "name": "image_IMG.1.sg",
+          "path": "db/Binary/image_IMG.1.sg",
+          "priority_candidate": "1",
+          "sha256": "587a6e35f3661bb641a21a27b9d96ad1d227c27336e4e2ab67226a9f7769d0ce",
+          "size": 505
+        },
+        {
+          "database": "db",
+          "name": "image_JNG.1.sg",
+          "path": "db/Binary/image_JNG.1.sg",
+          "priority_candidate": "1",
+          "sha256": "c26cba237ae4180d35be29c1fddeda9d1c85a85144cb21add97b7580aefae584",
+          "size": 825
+        },
+        {
+          "database": "db",
+          "name": "image_JPEG.1.sg",
+          "path": "db/Binary/image_JPEG.1.sg",
+          "priority_candidate": "1",
+          "sha256": "46915209f563af9c78cfc670ac14d3d63ca10596b272a327d0c4b346241618ce",
+          "size": 1752
+        },
+        {
+          "database": "db",
+          "name": "image_JPEGXL.1.sg",
+          "path": "db/Binary/image_JPEGXL.1.sg",
+          "priority_candidate": "1",
+          "sha256": "5b7084d6e65aaa17779436c21ab9751aaf8f02e616d3ab8dc51954045e0ae3a0",
+          "size": 508
+        },
+        {
+          "database": "db",
+          "name": "image_KTX.1.sg",
+          "path": "db/Binary/image_KTX.1.sg",
+          "priority_candidate": "1",
+          "sha256": "dde09dc0a68c1cee288a4bba2c1aa10eab95d0393a55a9c8eb88e3ce5ec8add0",
+          "size": 1584
+        },
+        {
+          "database": "db",
+          "name": "image_LBM.1.sg",
+          "path": "db/Binary/image_LBM.1.sg",
+          "priority_candidate": "1",
+          "sha256": "1b1acb3f82c1df5a3ee9713b8183879e558a6c1ef7491bf12be952b73e2c25de",
+          "size": 2646
+        },
+        {
+          "database": "db",
+          "name": "image_MNG.1.sg",
+          "path": "db/Binary/image_MNG.1.sg",
+          "priority_candidate": "1",
+          "sha256": "fba0d15f0b7ac23c70831babf5ab2ca6f792f8fcf97ae6663526e44739d91f6a",
+          "size": 565
+        },
+        {
+          "database": "db",
+          "name": "image_PCX.1.sg",
+          "path": "db/Binary/image_PCX.1.sg",
+          "priority_candidate": "1",
+          "sha256": "e321c2b75c5f459704beb9e322f3da1dbd87f50291cc9b524435bd9a23ef9fe9",
+          "size": 2978
+        },
+        {
+          "database": "db",
+          "name": "image_PSD.1.sg",
+          "path": "db/Binary/image_PSD.1.sg",
+          "priority_candidate": "1",
+          "sha256": "7a94178e45bbb225502e6d5fee51fa13b9ddace309273af968e3d777b433e2e5",
+          "size": 1698
+        },
+        {
+          "database": "db",
+          "name": "image_PVR.1.sg",
+          "path": "db/Binary/image_PVR.1.sg",
+          "priority_candidate": "1",
+          "sha256": "559df25eb22d153b808d881cc3eb6bf6ee4fa5d698217d96eb4751b30c1015b4",
+          "size": 1453
+        },
+        {
+          "database": "db",
+          "name": "image_QOI.1.sg",
+          "path": "db/Binary/image_QOI.1.sg",
+          "priority_candidate": "1",
+          "sha256": "2ab39d0b08a382a0adead0390c29591801d8c59e908ea0af61733c1f92efeb65",
+          "size": 837
+        },
+        {
+          "database": "db",
+          "name": "image_SMDH.1.sg",
+          "path": "db/Binary/image_SMDH.1.sg",
+          "priority_candidate": "1",
+          "sha256": "0eb3d554f6e6ab3ffc56bdb4ea9a2834dbd94f55adb8b1520e3e55ea1b1ae464",
+          "size": 253
+        },
+        {
+          "database": "db",
+          "name": "image_TGA.1.sg",
+          "path": "db/Binary/image_TGA.1.sg",
+          "priority_candidate": "1",
+          "sha256": "db16254a3d93fcdeca30f62c7a7c150c2a50571ca6ba32f7a7c3268a119214fc",
+          "size": 7453
+        },
+        {
+          "database": "db",
+          "name": "image_TIFF.1.sg",
+          "path": "db/Binary/image_TIFF.1.sg",
+          "priority_candidate": "1",
+          "sha256": "9fbebd9796a072634d7dc442c975614b72aaf24c4c9b6cc7c158cc7686fe819a",
+          "size": 4389
+        },
+        {
+          "database": "db",
+          "name": "image_XAR.1.sg",
+          "path": "db/Binary/image_XAR.1.sg",
+          "priority_candidate": "1",
+          "sha256": "05ecbd3a383002445489632d55309c8552781babde908d5b805e4dcd5332dcc4",
+          "size": 1012
+        },
+        {
+          "database": "db",
+          "name": "image_XCF.1.sg",
+          "path": "db/Binary/image_XCF.1.sg",
+          "priority_candidate": "1",
+          "sha256": "56beab8f8c1c9ed9ae1c15694c367de4610cbfe0bccf6404d302eae11ab01830",
+          "size": 473
+        },
+        {
+          "database": "db",
+          "name": "image_bin.ZBMP.1.sg",
+          "path": "db/Binary/image_bin.ZBMP.1.sg",
+          "priority_candidate": "1",
+          "sha256": "e2023f731b188a23c2c289447ec50ed49ef7872c6af0b4b2219ebdf7f9133849",
+          "size": 485
+        },
+        {
+          "database": "db",
+          "name": "image_heuristic.image.HDR.1.sg",
+          "path": "db/Binary/image_heuristic.image.HDR.1.sg",
+          "priority_candidate": "1",
+          "sha256": "941e91bf2daaf6bf9b73f97984d3dc91ed70d094e02690ed6debebfbbef2224f",
+          "size": 417
+        },
+        {
+          "database": "db",
+          "name": "media_ASF_WMA_WMV.1.sg",
+          "path": "db/Binary/media_ASF_WMA_WMV.1.sg",
+          "priority_candidate": "1",
+          "sha256": "66b84cb8cca65f4f94551d3f1fd5d641850a378a89716fc8972fd2d8a875b439",
+          "size": 5785
+        },
+        {
+          "database": "db",
+          "name": "protector_javascript-obfuscator.2.sg",
+          "path": "db/Binary/protector_javascript-obfuscator.2.sg",
+          "priority_candidate": "2",
+          "sha256": "bda659fe0af21582046d9a925265eab8928dcfbb3aa149bf2112a2826176e30a",
+          "size": 1780
+        },
+        {
+          "database": "db",
+          "name": "rom_32X.1.sg",
+          "path": "db/Binary/rom_32X.1.sg",
+          "priority_candidate": "1",
+          "sha256": "76165f85ed54c3b602b0f086a11690d572119f6b2666bf7d54f40f0a03eed9fe",
+          "size": 289
+        },
+        {
+          "database": "db",
+          "name": "script_text.Shell.1.sg",
+          "path": "db/Binary/script_text.Shell.1.sg",
+          "priority_candidate": "1",
+          "sha256": "50bfc161f8e838348d17cae7e4885825cc9361f51ee2e7e196bdf507d37b6138",
+          "size": 248
+        },
+        {
+          "database": "db",
+          "name": "sfx_Makeself.1.sg",
+          "path": "db/Binary/sfx_Makeself.1.sg",
+          "priority_candidate": "1",
+          "sha256": "6bb1576e7199963f7b2c2d83bb2634bd2280478fe8b7e9b49fc96a6065dd4932",
+          "size": 1375
+        },
+        {
+          "database": "db",
+          "name": "shellcode_donut.1.sg",
+          "path": "db/Binary/shellcode_donut.1.sg",
+          "priority_candidate": "1",
+          "sha256": "6d906f7012a293b1d0b64dc642eb13dec024bb174612543e041de6779fafab54",
+          "size": 1387
+        },
+        {
+          "database": "db",
+          "name": "shellcode_pe_to_shellcode.1.sg",
+          "path": "db/Binary/shellcode_pe_to_shellcode.1.sg",
+          "priority_candidate": "1",
+          "sha256": "9017a49cf137fe3d541bbb13766b5afc7af5ab67123bbbd3ec2a2e11125b1b36",
+          "size": 6399
+        },
+        {
+          "database": "db",
+          "name": "shellcode_srdi-monoxgas.1.sg",
+          "path": "db/Binary/shellcode_srdi-monoxgas.1.sg",
+          "priority_candidate": "1",
+          "sha256": "14f06db0056ef79ebefa89a37d4c95eb4112659f64677188c5ec20d84d213cf8",
+          "size": 948
+        },
+        {
+          "database": "db",
+          "name": "source_text.HTML.1.sg",
+          "path": "db/Binary/source_text.HTML.1.sg",
+          "priority_candidate": "1",
+          "sha256": "8e8c0fc2966f28edad24d6dbe6e67574e1acfc330985e4368c57f02ffc280e27",
+          "size": 353
+        },
+        {
+          "database": "db",
+          "name": "source_text.Pascal.1.sg",
+          "path": "db/Binary/source_text.Pascal.1.sg",
+          "priority_candidate": "1",
+          "sha256": "ea0d66850b09bf57aad0e26d8504f2bf13916194fe9add12c7fcd846bea7e367",
+          "size": 449
+        },
+        {
+          "database": "db",
+          "name": "source_text.XML.1.sg",
+          "path": "db/Binary/source_text.XML.1.sg",
+          "priority_candidate": "1",
+          "sha256": "00b16be7979e2cca5bd367ccda46897286d9658c5a98518e653cd575e18c2d2f",
+          "size": 481
+        },
+        {
+          "database": "db",
+          "name": "source_text.c.1.sg",
+          "path": "db/Binary/source_text.c.1.sg",
+          "priority_candidate": "1",
+          "sha256": "e627da3d9028a0d33d1a0b8f24d91fed068158052c7e91e2aebce4d8f146e1f4",
+          "size": 1078
+        },
+        {
+          "database": "db",
+          "name": "source_text.python.1.sg",
+          "path": "db/Binary/source_text.python.1.sg",
+          "priority_candidate": "1",
+          "sha256": "151669a8fea2ca5a3a48a9742e634b6f593ce8122b65b9402524f259311a5719",
+          "size": 430
+        },
+        {
+          "database": "db",
+          "name": "text.script.2.sg",
+          "path": "db/Binary/text.script.2.sg",
+          "priority_candidate": "2",
+          "sha256": "04aed2ed23e23736eeb1f79cb4ce717db6facdf189eaa71d3f2a10c212049839",
+          "size": 400
+        },
+        {
+          "database": "db",
+          "name": "win_resources.1.sg",
+          "path": "db/Binary/win_resources.1.sg",
+          "priority_candidate": "1",
+          "sha256": "2fdad41d666d32467cabe83dae7d16625ade5935e3061c58dfefeb1fb7b99db7",
+          "size": 1041
+        }
+      ],
+      "db_custom": [],
+      "db_extra": []
+    },
+    "selected_global_init": {
+      "database": "db",
+      "name": "_init",
+      "path": "db/_init",
+      "priority_candidate": null,
+      "sha256": "3acd5ff4ed5de0cec325af37e3793ce49179fc7d58bfb6a3fcce0684b7d94777",
+      "size": 2667
+    },
+    "selected_type_init": {
+      "database": "db",
+      "name": "_init",
+      "path": "db/Binary/_init",
+      "priority_candidate": null,
+      "sha256": "9d01d09408e209e1742a1289193a60728b6ad82f50f419a811cb032b905b80db",
+      "size": 168
+    }
+  },
+  "generator": "tools/rules/analyze_binary_lifecycle.py",
+  "load_protocol": {
+    "database_append_order": [
+      "db",
+      "db_extra",
+      "db_custom"
+    ],
+    "engine_scope": "one shared script engine per processDetect call",
+    "include_lookup": "first case-insensitive name match among FT_UNKNOWN records",
+    "signature_filter": "regular file with .sg or no extension",
+    "sort_scope": "each database independently before append"
+  },
+  "ordering_risk": {
+    "comparison_is_lexicographic": true,
+    "consequence": "std::sort ordering is not portable when cycle witnesses exist",
+    "cycle_witnesses": [
+      [
+        "archive_DotBundle.sg",
+        "archive_EdgeDataPak.1.sg",
+        "__MiniBatchHeuristic_By_DosX.7.sg"
+      ],
+      [
+        "archive_DotBundle.sg",
+        "archive_EdgeDataPak.1.sg",
+        "__MiniExtensionsHeuristic_By_DosX.7.sg"
+      ],
+      [
+        "archive_DotBundle.sg",
+        "archive_EdgeDataPak.1.sg",
+        "__MiniJavaScriptHeuristic_By_DosX.7.sg"
+      ],
+      [
+        "archive_DotBundle.sg",
+        "archive_Flatpak.1.sg",
+        "__MiniBatchHeuristic_By_DosX.7.sg"
+      ],
+      [
+        "archive_DotBundle.sg",
+        "archive_Flatpak.1.sg",
+        "__MiniExtensionsHeuristic_By_DosX.7.sg"
+      ],
+      [
+        "archive_DotBundle.sg",
+        "archive_Flatpak.1.sg",
+        "__MiniJavaScriptHeuristic_By_DosX.7.sg"
+      ],
+      [
+        "archive_DotBundle.sg",
+        "archive_GhidraZipFile.1.sg",
+        "__MiniBatchHeuristic_By_DosX.7.sg"
+      ],
+      [
+        "archive_DotBundle.sg",
+        "archive_GhidraZipFile.1.sg",
+        "__MiniExtensionsHeuristic_By_DosX.7.sg"
+      ],
+      [
+        "archive_DotBundle.sg",
+        "archive_GhidraZipFile.1.sg",
+        "__MiniJavaScriptHeuristic_By_DosX.7.sg"
+      ],
+      [
+        "archive_DotBundle.sg",
+        "archive_GodotPCK.1.sg",
+        "__MiniBatchHeuristic_By_DosX.7.sg"
+      ]
+    ],
+    "default_priority": "9",
+    "priority_is_compared_only_when_both_names_have_more_than_one_dot": true,
+    "strict_weak_ordering_satisfied": false
+  },
+  "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+  "schema_version": 1,
+  "source_evidence": {
+    "die_script.cpp": {
+      "commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+      "sha256": "588da8f383725795c600bfe2a91a9649bdd5cefb9bfa294379752bfa132dab67",
+      "url": "https://github.com/horsicq/die_script/blob/5d82316c110abf0eb863b50bc679d330e05067b6/die_script.cpp"
+    },
+    "die_scriptengine.cpp": {
+      "commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+      "sha256": "f9b9d69a17dc930556c7308fce46d3287d18dd9f927c91d6733ce994594fcb72",
+      "url": "https://github.com/horsicq/die_script/blob/5d82316c110abf0eb863b50bc679d330e05067b6/die_scriptengine.cpp"
+    },
+    "xscanengine.cpp": {
+      "commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83",
+      "sha256": "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498",
+      "url": "https://github.com/horsicq/XScanEngine/blob/dfe4a419e4f491bb23688ba03c5a5bf39e34da83/xscanengine.cpp"
+    }
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

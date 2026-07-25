@@ -8,7 +8,7 @@ Rules: `horsicq/Detect-It-Easy@c2c17dfa5ea4e078ba31eab55d87430c96622fb6`
 
 Candidate: `rquickjs@0.12.1` / vendored QuickJS-NG 0.15.1
 
-Last updated: 2026-07-25
+Last updated: 2026-07-26
 
 ## 结论
 
@@ -41,9 +41,10 @@ runtime；需要先验证按真实上游生命周期执行、legacy compatibilit
 后续最小实验确认：对唯一失败规则应用 source-identity 约束、等长且不落盘的
 compatibility overlay 后，QuickJS 接受该规则；同一 overlay 在 2235 个文件中
 恰好命中一次，isolated eval 错误由 1 降为 0。该结果只证明受控兼容层可行，
-随后使用 Rust 最小 Byte HostApi、上游原始 helpers 和 14 个项目生成样本执行
-`detect()`，目标 Nintendo detection 与 Qt 5 baseline 14/14 匹配。实验仍未解决
-完整 Binary 生命周期、EA-XA 邻接规则、Qt 6 和其余 338 个宿主方法，因此候选
+随后使用 Rust 最小 Byte HostApi，在每个 scan context 中按真实顺序执行 global
+`_init`、Binary `_init` 及四个 include，再用 14 个项目生成样本执行
+`detect()`；目标 Nintendo detection 与 Qt 5 baseline 14/14 匹配。实验仍未执行
+完整 Binary 签名序列、EA-XA 邻接规则、Qt 6 和其余 338 个宿主方法，因此候选
 状态不变。
 
 ## 实验边界
@@ -79,7 +80,7 @@ proxy 只用于语法/顶层执行覆盖，不代表宿主 API 兼容，也不�
 | Lockfile packages | 23 |
 | 当前 target packages | 18 |
 | Clean release build | 13,258 ms，本机已缓存下载、空 target |
-| Release executable | 1,513,472 bytes（加入 overlay 与 Nintendo HostApi probe 后） |
+| Release executable | 1,556,480 bytes（加入真实 init/include registry 后） |
 
 `cargo +1.86.0 check --locked` 明确报告
 `rquickjs@0.12.1 requires rustc 1.87`。本实验继续复用已安装的 1.88 工具链。
@@ -210,8 +211,9 @@ X.c U16 U32 U64 Sz isHeuristicScan isVerbose
 _setResult
 ```
 
-随后原样 eval `_runtime_helpers`、`read`、`_init`，再 eval overlay 后的 Nintendo
-规则并调用 `detect()`。它从
+随后在同一 context 中原样 eval root `_init`，由真实 `includeScript()` registry
+依次求值 `_debug`、`_runtime_helpers`、`language`；再 eval Binary `_init` 并
+include `read`。最后 eval overlay 后的 Nintendo 规则并调用 `detect()`。它从
 [`nintendo-certified-baseline.json`](data/nintendo-certified-baseline.json)
 读取 Qt 期望的第一条 detection，并额外固定 `info = fSELF`。
 
@@ -224,9 +226,10 @@ _setResult
 - PS3/PSVita version。
 
 专项 runtime 只支持规则实际请求的四种 `X.c` pattern，未知 pattern 明确返回
-false；read helper 仍是上游原始 JavaScript。该结果没有执行 `audio.1.sg`，所以
-不应与完整 Qt detection list 混淆：PS Vita 的 EA-XA 第二条记录仍需真实 Binary
-生命周期实验复现。
+false；init 和 helper 都是上游原始 JavaScript。该结果证明了 init/include
+生命周期的最小可行路径，但没有执行完整 Binary signature sequence，尤其没有
+执行 `audio.1.sg` 和 `audio_EXA.1.sg`。因此不应与完整 Qt detection list 混淆：
+PS Vita 的 EA-XA 第二条记录仍需全签名生命周期实验复现。
 
 ## 与 Boa 首轮结果对比
 
@@ -238,7 +241,7 @@ false；read helper 仍是上游原始 JavaScript。该结果没有执行 `audio
 | 外部 interrupt | 未发现公开接口 | 支持 |
 | Heap limit | 未发现公开接口 | 支持默认 allocator |
 | Windows target packages | 126 | 18 |
-| Release spike | 11,784,192 bytes | 1,392,128 bytes |
+| Release spike | 11,784,192 bytes | 1,556,480 bytes |
 | 实现语言 | 纯 Rust | Rust wrapper + vendored C |
 | 本轮工具链 | Rust 1.88 | 最低 1.87，本轮 1.88 |
 
@@ -291,13 +294,16 @@ cargo +1.88.0 run --release --locked -- detect-nintendo \
   transformed bytes/hash 和 applied diagnostics 必须进入 scan/database metadata。
 - 选择 rquickjs 意味着引入 native build、安全审计和 C toolchain CI，不能将
   “静态链接”误写为“纯 Rust”。
-- context 生命周期必须从上游加载顺序推导，不能从 shared-path 实验猜测。
+- 每个 scan 必须使用共享 context，按 global init、type init、signature 顺序
+  执行；include 必须在该 context 立即求值。固定证据见
+  [`binary-rule-lifecycle.md`](binary-rule-lifecycle.md)。
 - interrupt、memory、stack 和 wall-clock deadline 应进入统一资源预算模型。
 - 若使用自定义 allocator，必须重新实现或验证 heap limit。
 
 ## 尚未完成
 
-- 按上游 file type、priority、database、init/include 顺序执行全库。
+- 按上游 file type、priority、database 顺序执行完整 signature 列表；init/include
+  的 Nintendo 最小路径已完成。
 - 338 个直接宿主方法及继承方法的行为 fixture。
 - Nintendo 已完成最小 HostApi 下 Qt 5 target detection 对照；仍缺 Qt 6 和完整
   Binary 规则列表（包括 PS Vita 的 EA-XA 邻接命中）。

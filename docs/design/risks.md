@@ -19,6 +19,7 @@ Last updated: 2026-07-26
 - [`rule-compatibility.md`](../research/rule-compatibility.md)
 - [`rule-runtime-spike.md`](../research/rule-runtime-spike.md)
 - [`rquickjs-rule-runtime-spike.md`](../research/rquickjs-rule-runtime-spike.md)
+- [`binary-rule-lifecycle.md`](../research/binary-rule-lifecycle.md)
 - [`nested-scan-behavior.md`](../research/nested-scan-behavior.md)
 - [`cli-dependency-and-license.md`](../research/cli-dependency-and-license.md)
 - [`upstream-build-baseline.md`](../research/upstream-build-baseline.md)
@@ -79,7 +80,9 @@ baseline 的变更都要检查本表。
 - **当前证据**：Boa 与原始 QuickJS 都拒绝 Nintendo 规则；QuickJS 的单点、等长、
   manifest-pinned overlay 已让 2235 文件 isolated eval 达到 0 错误；最小 Rust
   Byte HostApi 的 Nintendo target detection 在 Qt 5 baseline 上 14/14 匹配，但
-  尚未验证真实 Binary 生命周期、EA-XA 邻接结果、Qt 6 或完整 HostApi。
+  尚未验证完整 Binary signature sequence、EA-XA 邻接结果、Qt 6 或完整 HostApi。
+  固定源码已确认一次 scan 共享一个 script engine；QuickJS probe 已按真实顺序
+  执行 global/Binary init 和四个 include，每规则独立 context 不兼容。
 - **缓解**：保持 `RuleRuntime`/`HostApi` port；建立全规则 inventory、最小失败
   fixture、host call trace；基于证据选 runtime，禁止静默转换规则。
 - **验证**：固定规则 100% discovered/parsed/loaded，zero silent unsupported；
@@ -157,7 +160,9 @@ baseline 的变更都要检查本表。
 ### R-009：跨平台兼容结论过度外推
 
 - **触发**：用 Linux Qt5 结果代表 Windows/macOS；忽略 native path、locale、
-  line ending、filesystem ordering 和 system dependencies。
+  line ending、filesystem ordering 和 system dependencies。上游 Binary 固定
+  文件名已使 `sort_signature_prio()` 产生非传递比较环，`std::sort` 结果不能
+  外推到另一 STL/编译器。
 - **缓解**：报告按 platform 分层；未固定 oracle 标记 missing；不允许跨平台
   blanket normalization。
 - **验证**：Windows/macOS 固定 upstream oracle、path/encoding corpus 和 Rust

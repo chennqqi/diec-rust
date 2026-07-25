@@ -219,19 +219,35 @@ fn install_nintendo_host(
             Function::new(ctx.clone(), || false).map_err(|error| error.to_string())?,
         )
         .map_err(|error| error.to_string())?;
+        globals
+            .set("Binary", x.clone())
+            .map_err(|error| error.to_string())?;
         globals.set("X", x).map_err(|error| error.to_string())?;
-
         globals
             .set(
-                "includeScript",
-                Function::new(ctx.clone(), |_name: String| {})
+                "_log",
+                Function::new(ctx.clone(), |_message: String| {})
                     .map_err(|error| error.to_string())?,
             )
             .map_err(|error| error.to_string())?;
         globals
             .set(
-                "_debug",
-                Function::new(ctx.clone(), |_message: String| {})
+                "_isResultPresent",
+                Function::new(ctx.clone(), |_kind: String, _name: String| false)
+                    .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        globals
+            .set(
+                "_getNumberOfResults",
+                Function::new(ctx.clone(), |_kind: Opt<String>| 0_i32)
+                    .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        globals
+            .set(
+                "_removeResult",
+                Function::new(ctx.clone(), |_kind: String, _name: String| {})
                     .map_err(|error| error.to_string())?,
             )
             .map_err(|error| error.to_string())?;
@@ -262,18 +278,68 @@ fn install_nintendo_host(
     })
 }
 
+fn install_main_include_registry(context: &Context, rule_root: &Path) -> Result<(), String> {
+    let mut helpers = serde_json::Map::new();
+    let entries = fs::read_dir(rule_root)
+        .map_err(|error| format!("cannot read {}: {error}", rule_root.display()))?;
+    for entry in entries {
+        let entry =
+            entry.map_err(|error| format!("cannot enumerate {}: {error}", rule_root.display()))?;
+        let path = entry.path();
+        let file_type = entry
+            .file_type()
+            .map_err(|error| format!("cannot inspect {}: {error}", path.display()))?;
+        if !file_type.is_file()
+            || !(path.extension().is_none()
+                || path.extension().is_some_and(|extension| extension == "sg"))
+        {
+            continue;
+        }
+        let name = path
+            .file_name()
+            .and_then(|name| name.to_str())
+            .ok_or_else(|| format!("non-UTF-8 helper name: {}", path.display()))?
+            .to_uppercase();
+        let source = fs::read_to_string(&path)
+            .map_err(|error| format!("cannot read {}: {error}", path.display()))?;
+        helpers.entry(name).or_insert(Value::String(source));
+    }
+    let registry = serde_json::to_string(&helpers)
+        .map_err(|error| format!("cannot serialize include registry: {error}"))?;
+    let program = format!(
+        r#"
+        globalThis.__helperSources = {registry};
+        globalThis.__includeTrace = [];
+        function includeScript(name) {{
+            var key = String(name).toUpperCase();
+            if (!Object.prototype.hasOwnProperty.call(__helperSources, key)) {{
+                throw new Error("Cannot find: " + name);
+            }}
+            __includeTrace.push(String(name));
+            (0, eval)(__helperSources[key]);
+        }}
+        "#
+    );
+    eval_unit(context, program.as_bytes())
+}
+
 fn run_nintendo_rule(rule_root: &Path, data: Vec<u8>) -> Result<Vec<Detection>, String> {
     let runtime = new_runtime()?;
     let context = new_context(&runtime)?;
     let detections = Arc::new(Mutex::new(Vec::new()));
     install_nintendo_host(&context, Arc::new(data), Arc::clone(&detections))?;
+    install_main_include_registry(&context, rule_root)?;
 
-    for helper in ["_runtime_helpers", "read", "_init"] {
-        let path = rule_root.join(helper);
+    for relative in ["_init", "Binary/_init"] {
+        let path = rule_root.join(relative);
         let bytes =
             fs::read(&path).map_err(|error| format!("cannot read {}: {error}", path.display()))?;
         eval_unit(&context, &bytes)
             .map_err(|error| format!("cannot eval {}: {error}", path.display()))?;
+    }
+    let include_trace = eval_string(&context, b"JSON.stringify(__includeTrace)")?;
+    if include_trace != r#"["_debug","_runtime_helpers","language","read"]"# {
+        return Err(format!("unexpected init include trace: {include_trace}"));
     }
 
     let rule_path = rule_root
@@ -367,7 +433,8 @@ fn run_nintendo_corpus(
             "operation": "Nintendo rule detect with Rust byte HostApi",
             "runtime": "rquickjs 0.12.1 / QuickJS-NG 0.15.1",
             "compatibility_overlay": "nintendo-unused-var-tp-v1",
-            "helpers": ["_runtime_helpers", "read", "_init"],
+            "init_sequence": ["_init", "Binary/_init"],
+            "include_trace": ["_debug", "_runtime_helpers", "language", "read"],
             "host_methods": [
                 "X.c", "X.U16", "X.U32", "X.U64", "X.Sz",
                 "X.isHeuristicScan", "X.isVerbose", "_setResult"
