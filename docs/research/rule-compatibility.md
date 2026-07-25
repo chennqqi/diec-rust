@@ -244,7 +244,7 @@ project-generated 最小规则实验已经分别触发 Qt Script parse error 和
 | Candidate | 优点 | 风险/代价 | 当前结论 |
 | --- | --- | --- | --- |
 | [Boa](https://github.com/boa-dev/boa) | JavaScript engine 以 Rust 实现；可注册 native class/function | 0.21.1 拒绝 1 条 Qt 接受的固定规则；shared lexical semantics 不同；MSRV 1.88、Windows spike 126 个 target packages | 保留为需 patch/上游修复的候选，不能原样采用 |
-| [rquickjs](https://github.com/DelSkayn/rquickjs) | QuickJS-NG 高层绑定、启动快、宿主类型转换成熟 | 编译 C library；平台支持有限，Windows MSVC 标为 experimental | 进入 spike，但违背“尽量纯 Rust”的偏好 |
+| [rquickjs](https://github.com/DelSkayn/rquickjs) | 0.12.1 的 interrupt/heap limit 可用；Windows spike 18 个 target packages、约 1.39 MiB | 同样拒绝 1 条 Qt 接受的规则；必须显式 sloppy eval；编译 vendored QuickJS-NG C，MSVC 仍属 engine experimental | 保留为需 legacy compatibility 层的候选，不能原样采用 |
 | [rusty_v8](https://github.com/denoland/rusty_v8) | ECMAScript 兼容性高、成熟宿主 API | V8 很大；默认下载预编译静态库或源码构建成本高，不符合轻依赖目标 | 仅作兼容性上界/备选 |
 | 自研 interpreter/transpiler | 可精确控制行为和资源限制 | 语法、RegExp、prototype、异常和动态特性成本极高 | 不作为首选 |
 
@@ -313,6 +313,11 @@ Boa 0.21.1 的首轮实际构建、2235 文件 parse 和 runtime fixture 见
 prototype helper、复杂规则和 loop budget 可用，也确认了必须解决的语法/realm
 差异。
 
+rquickjs 0.12.1 的同语料 eval、sloppy-script 要求、interrupt/heap limit 和
+native 构建成本见
+[`rquickjs-rule-runtime-spike.md`](rquickjs-rule-runtime-spike.md)。它拒绝与
+Boa 相同的 Nintendo legacy 规则，因此两个候选都未通过零差异门禁。
+
 ## 尚未完成
 
 - 对所有规则进行 AST 级语法统计。
@@ -321,7 +326,7 @@ prototype helper、复杂规则和 loop budget 可用，也确认了必须解决
 - include 同名、重复、循环和异常实验。
 - database cache 与 ZIP database 行为。
 - `dbs_min` 生成逻辑。
-- 按真实生命周期的全库 eval、QuickJS 对照和跨 runtime 性能比较。
+- 按真实生命周期的全库 eval、legacy compatibility 方案和跨 runtime 性能比较。
 
 ## 主要证据
 

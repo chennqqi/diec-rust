@@ -1,0 +1,53 @@
+{
+  "candidate": {
+    "crate": "rquickjs",
+    "default_features": false,
+    "engine": "QuickJS-NG",
+    "engine_version": "0.15.1",
+    "features": [
+      "std"
+    ],
+    "rquickjs_sys_checksum": "eef73520804cf5aa4876097ac5733058d628c769eba9678e0f4dba5a4ef79703",
+    "version": "0.12.1"
+  },
+  "dependency_footprint": {
+    "lockfile_packages": 23,
+    "release_executable_bytes": 1392128,
+    "target": "x86_64-pc-windows-msvc",
+    "target_packages": 18
+  },
+  "experiment": {
+    "cargo_lock_sha256": "aa7cd4c42e1f3429f45ec31e05e41862abe6156bdbe351eeacc507673f237232",
+    "cargo_toml_sha256": "875730b205ca351b4bc0f830a1896fb6ad777c46046e6f26c9c368849614be16",
+    "source_sha256": "ef69f3923e43510c9f6ae7ec731b14ccbafab733fb822827462f871bb52c9c45",
+    "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
+  },
+  "fixture": {
+    "audio_rule_bytes": 603640,
+    "candidate_compatible_with_fixed_rules": false,
+    "host_function_result": "42",
+    "interrupt_handler_calls": 17,
+    "interrupt_observed": true,
+    "memory_limit_bytes": 4194304,
+    "memory_limit_observed": true,
+    "nintendo_rule_eval_accepted": false,
+    "runtime_helpers_result": "a, b/c|007",
+    "shared_const_second_eval_accepted": false,
+    "sloppy_script_required": true
+  },
+  "isolated_eval": {
+    "bytes": 2902881,
+    "error_count": 1,
+    "error_path": "db/Binary/format_bin.Nintendo-certified-file.1.sg",
+    "files": 2235,
+    "operation": "sloppy eval with explicit host proxy"
+  },
+  "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+  "schema_version": 1,
+  "shared_eval": {
+    "error_count": 3,
+    "files": 2235,
+    "ordering": "normalized path; diagnostic signal, not upstream execution order"
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

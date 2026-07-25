@@ -26,8 +26,11 @@ Boa 0.21.1 能解析绝大多数固定上游规则、执行 603,640 字节的真
   因而不能以单独 parse 结果替代全生命周期 conformance。
 
 因此 Boa 保留为“需要上游修复或项目维护补丁后再评估”的候选，不进入设计决策。
-规则文件仍必须保持原始字节，不能通过改写问题规则来掩盖差异。下一步应建立
-QuickJS-NG 对照，并向 Boa 缩小/报告 parser-eval 一致性及 legacy Qt semantics
+规则文件仍必须保持原始字节，不能通过改写问题规则来掩盖差异。QuickJS-NG
+对照见
+[`rquickjs-rule-runtime-spike.md`](rquickjs-rule-runtime-spike.md)；它拒绝同一
+条 legacy 规则，但提供更完整的 interrupt/heap limit。下一步应按真实上游
+生命周期验证两者，并向 Boa 缩小/报告 parser-eval 一致性及 legacy Qt semantics
 问题。
 
 ## 实验边界
@@ -165,7 +168,7 @@ JSON 报告写到 stdout。报告包含环境无关的计数和错误列表，�
 - 按上游 file type、priority、database、init/include 顺序做全库 eval。
 - 338 个直接宿主方法及继承方法的参数/返回类型 fixture。
 - Qt 5 与 Qt 6 的 64 位整数、字符串、数组、默认参数和异常 oracle。
-- QuickJS-NG/rquickjs 同一语料对照。
+- QuickJS-NG/rquickjs 同一语料对照已完成；真实生命周期对照仍未完成。
 - Boa heap、wall-clock cancellation、panic 隔离和多线程性能。
 - PE/.NET、ELF、APK/DEX、PDF 等真实阳性/阴性检测。
 
