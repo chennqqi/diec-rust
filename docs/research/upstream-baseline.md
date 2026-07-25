@@ -30,7 +30,10 @@ git -C DIE-engine submodule update --init --recursive
 git -C DIE-engine submodule status --recursive
 ```
 
-当前本地调研使用了浅克隆，并只初始化与无 GUI 扫描直接相关的子模块。完整可重复构建尚未执行，因此本文件当前为 Draft。
+仓库中的 subtree 只物化主仓库和规则数据；Linux qmake CLI 实验会在隔离容器中
+从固定 SHA 初始化全部 58 个直接 submodule。构建、产物和可重复性边界见
+[`upstream-build-baseline.md`](upstream-build-baseline.md)。该实验尚未覆盖官方
+CMake release 路径及 Windows/macOS，因此本文件仍为 Draft。
 
 本仓库目前还物化了两个可审计快照：
 
@@ -126,11 +129,13 @@ python3 tools/verify_upstream.py
 
 - [`cli-dependency-and-license.md`](cli-dependency-and-license.md) 已确认 CLI 核心范围
   16 个组件均无嵌套 `.gitmodules`；其余 42 个直接组件仍待检查。
-- 三个平台的可重复构建和运行记录。
+- Linux qmake CLI 候选 oracle 已构建；官方 CMake release 路径以及 Windows、
+  macOS 的可重复构建和运行记录仍待完成。
 - release workflow、预编译包与源码构建之间的数据资产差异。
 - 所有 submodule 和规则文件的许可证审计。
-- 构建产物的动态/静态依赖清单。
-- 固定样本的 CLI 原始输出与退出码。
+- 已采集 Linux qmake 产物的动态/静态链接清单；其他构建路径仍待采集。
+- 已完成无外部样本的自扫描 smoke baseline；代表性固定语料的完整原始输出和
+  退出码仍待采集。
 
 ## 主要证据
 

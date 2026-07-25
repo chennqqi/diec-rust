@@ -1,0 +1,61 @@
+FROM ubuntu@sha256:4fbb8e6a8395de5a7550b33509421a2bafbc0aab6c06ba2cef9ebffbc7092d90
+
+ARG DEBIAN_FRONTEND=noninteractive
+ARG DIE_COMMIT=74eaf505c250ab47e709024e9dc41657cd8f2254
+
+RUN apt-get update \
+    && apt-get install --yes --no-install-recommends \
+        build-essential \
+        ca-certificates \
+        file \
+        git \
+        libqt5svg5-dev \
+        qt5-qmake \
+        qtbase5-dev \
+        qtscript5-dev \
+        qttools5-dev \
+        qttools5-dev-tools \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /opt/die-source
+
+RUN git init \
+    && git remote add origin https://github.com/horsicq/DIE-engine.git \
+    && git fetch --depth 1 origin "${DIE_COMMIT}" \
+    && git checkout --detach FETCH_HEAD \
+    && test "$(git rev-parse HEAD)" = "${DIE_COMMIT}" \
+    && git submodule update --init --recursive --depth 1 \
+    && test "$(git submodule status | wc -l)" -eq 58 \
+    && ! git submodule status --recursive | grep -E '^[-+U]'
+
+RUN mkdir -p /opt/die-evidence \
+    && git submodule status --recursive > /opt/die-evidence/submodules.txt \
+    && dpkg-query --show \
+        build-essential \
+        ca-certificates \
+        file \
+        git \
+        libqt5svg5-dev \
+        qt5-qmake \
+        qtbase5-dev \
+        qtscript5-dev \
+        qttools5-dev \
+        qttools5-dev-tools \
+        > /opt/die-evidence/packages.tsv \
+    && qmake -query > /opt/die-evidence/qmake-query.txt \
+    && qmake die_source.pro \
+        "CONFIG+=release" \
+        "DEFINES+=QT_NO_DEBUG_OUTPUT" \
+    && make --jobs="$(nproc)" sub-build_libs-make_first \
+    && make --jobs="$(nproc)" sub-console_source-make_first \
+    && grep '^LIBS ' console_source/Makefile > /opt/die-evidence/diec-libs.txt \
+    && grep '^LFLAGS ' console_source/Makefile > /opt/die-evidence/diec-lflags.txt
+
+RUN file build/release/diec > /opt/die-evidence/file.txt \
+    && sha256sum build/release/diec > /opt/die-evidence/sha256.txt \
+    && ldd build/release/diec > /opt/die-evidence/ldd.txt \
+    && readelf --dynamic build/release/diec > /opt/die-evidence/dynamic.txt
+
+LABEL org.opencontainers.image.source="https://github.com/horsicq/DIE-engine" \
+      org.opencontainers.image.revision="${DIE_COMMIT}" \
+      org.opencontainers.image.description="Phase 0 Qt 5 upstream oracle build"
