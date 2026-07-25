@@ -41,7 +41,7 @@
 - [`docs/design/architecture.md`](docs/design/architecture.md) — Draft
   - Cargo workspace、模块职责、依赖方向和数据流。
   - 可扩展点、资源限制与明确非目标。
-- `docs/design/api.md`
+- [`docs/design/api.md`](docs/design/api.md) — Draft
   - 纯 Rust API、CLI 契约、结果及错误模型。
   - 取消、超时、并发和资源限制。
 - [`docs/design/c-abi.md`](docs/design/c-abi.md) — Draft
