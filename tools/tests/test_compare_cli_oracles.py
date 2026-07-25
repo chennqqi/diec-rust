@@ -1,6 +1,8 @@
 import importlib.util
+import json
 import pathlib
 import sys
+import tempfile
 import unittest
 
 
@@ -51,6 +53,81 @@ class CompareObservationsTests(unittest.TestCase):
                 ),
             },
         )
+
+
+class LoadCorpusTests(unittest.TestCase):
+    def test_loads_and_verifies_manifest(self):
+        data = b"sample"
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            (root / "sample.bin").write_bytes(data)
+            (root / "manifest.json").write_text(
+                json.dumps(
+                    {
+                        "schema_version": 1,
+                        "samples": [
+                            {
+                                "name": "sample.bin",
+                                "size": len(data),
+                                "sha256": (
+                                    "af2bdbe1aa9b6ec1e2ade1d694f41fc71a831d02"
+                                    "68e9891562113d8a62add1bf"
+                                ),
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            samples = MODULE.load_corpus(root)
+
+        self.assertEqual(samples[0]["name"], "sample.bin")
+
+    def test_rejects_path_escape(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            (root / "manifest.json").write_text(
+                json.dumps(
+                    {
+                        "schema_version": 1,
+                        "samples": [
+                            {
+                                "name": "../escape",
+                                "size": 0,
+                                "sha256": "0" * 64,
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(ValueError, "unsafe"):
+                MODULE.load_corpus(root)
+
+    def test_rejects_hash_mismatch(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            (root / "sample.bin").write_bytes(b"sample")
+            (root / "manifest.json").write_text(
+                json.dumps(
+                    {
+                        "schema_version": 1,
+                        "samples": [
+                            {
+                                "name": "sample.bin",
+                                "size": 6,
+                                "sha256": "0" * 64,
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(ValueError, "does not match"):
+                MODULE.load_corpus(root)
 
 
 if __name__ == "__main__":

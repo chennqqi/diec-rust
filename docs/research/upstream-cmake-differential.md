@@ -22,7 +22,8 @@ Qt 5.15.13 环境中不修改源码地构建了 CMake `diec` 目标，并与先�
 - 不存在路径的错误行为。
 
 这支持将 CMake 产物作为 Linux 上游 oracle 的首选候选，并把 qmake 产物作为
-交叉检查。当前语料过小且构建环境仍非 hermetic，因此文档保持 Draft。
+交叉检查。当前语料已扩展到 15 个确定性样本，但扫描模式和平台覆盖仍很小，
+且构建环境非 hermetic，因此文档保持 Draft。
 
 ## 上游发布路径
 
@@ -163,7 +164,9 @@ JSON 中只有输入二进制的 `size` 不同。
 
 ## 限制与下一步
 
-- 当前只有一个固定 ELF 样本，尚不能证明所有格式、规则和扫描模式等价。
+- 当前覆盖 15 个固定安全样本；结果见
+  [`behavior-baseline.md`](behavior-baseline.md)。这仍不能证明所有格式、规则和
+  扫描模式等价。
 - `build_dpkg.sh` 的全目标 build、install 和 Debian staging 尚未完整执行。
 - APT repository 未固定 snapshot，clean build 尚未证明 bit-for-bit reproducible。
 - GitHub TLS 中断曾触发 submodule 自身重试；构建入口尚未提供显式、有界重试。
@@ -171,8 +174,8 @@ JSON 中只有输入二进制的 `size` 不同。
 - 自动差分目前比较原始 stdout/stderr/exit code，但尚未保存带 provenance 的
   版本化 baseline 文件。
 
-下一步应把差分工具扩展到可重复生成的 PE、ELF、Mach-O、DEX 和 archive
-安全语料，保存原始输出与输入哈希，并覆盖全部输出格式和扫描开关。
+下一步应继续补充尚未覆盖的格式、畸形变体、archive 递归和扫描开关，并保存
+带 provenance 的版本化原始 baseline。
 
 ## 源码证据
 

@@ -135,8 +135,8 @@ python3 tools/verify_upstream.py
 - release workflow、预编译包与源码构建之间的数据资产差异。
 - 所有 submodule 和规则文件的许可证审计。
 - 已采集 Linux qmake 产物的动态/静态链接清单；其他构建路径仍待采集。
-- 已完成无外部样本的自扫描 smoke baseline；代表性固定语料的完整原始输出和
-  退出码仍待采集。
+- 已完成自扫描 smoke baseline 和 15 个项目生成安全样本的 JSON/退出码差分；
+  其他输出格式、扫描模式、畸形矩阵和跨平台原始输出仍待采集。
 
 ## 主要证据
 

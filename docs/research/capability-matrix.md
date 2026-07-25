@@ -4,13 +4,14 @@ Status: Draft
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`  
 Last updated: 2026-07-25
 
-本矩阵当前只记录静态源码能够证明的入口。`Observed` 表示已用固定二进制和样本验证；本轮尚未完成上游构建，因此所有项目均为 `Source only` 或 `Pending`。
+本矩阵同时记录源码证据和固定 Linux oracle 实验。`Observed` 表示已用固定
+二进制、规则和输入验证；未标记为 Observed 的能力仍不能从相邻实验外推。
 
 ## CLI 输入
 
 | 能力 | 上游入口 | 状态 | 备注 |
 | --- | --- | --- | --- |
-| 单文件扫描 | positional `target` | Source only | `scanFile()` |
+| 单文件扫描 | positional `target` | Observed | 15 个确定性样本；见 `behavior-baseline.md` |
 | 多目标扫描 | 多个 positional `target` | Source only | 汇总后逐文件扫描 |
 | 目录枚举 | positional directory | Source only | `XBinary::findFiles()` |
 | 递归目录 | `-r`, `--recursivescan` | Source only | 实际目录深度行为待实验 |
@@ -45,14 +46,14 @@ CLI 主入口为 [`src/console/main_console.cpp`](https://github.com/horsicq/DIE
 | `-S` | `--struct <value>` | 特定结构信息，如 `Hash` / `Hash#MD5` | Source only |
 | `-w` | `--showstructs` | 列出可用结构方法 | Source only |
 | `-x` | `--xml` | XML | Source only |
-| `-j` | `--json` | JSON | Source only |
+| `-j` | `--json` | JSON | Observed；15 个样本原始输出已固定哈希 |
 | `-c` | `--csv` | CSV | Source only |
 | `-t` | `--tsv` | TSV | Source only |
 | `-p` | `--plaintext` | plain text | Source only |
-| `-D` | `--database <path>` | 主数据库路径 | Source only |
-| `-E` | `--extradatabase <path>` | extra 数据库路径 | Source only |
-| `-C` | `--customdatabase <path>` | custom 数据库路径 | Source only |
-| `-s` | `--showdatabase` | 显示路径及各文件类型规则数量 | Source only |
+| `-D` | `--database <path>` | 主数据库路径 | Observed |
+| `-E` | `--extradatabase <path>` | extra 数据库路径 | Observed |
+| `-C` | `--customdatabase <path>` | custom 数据库路径 | Observed |
+| `-s` | `--showdatabase` | 显示路径及各文件类型规则数量 | Observed；27 类型、2172 条 |
 | — | `--test <directory>` | 规则测试入口 | Source only; 实现含 `TODO` |
 | — | `--createtest <filename>` | 创建测试入口 | Source only; 实现含 `TODO` |
 
@@ -64,7 +65,7 @@ CLI 主入口为 [`src/console/main_console.cpp`](https://github.com/horsicq/DIE
 
 | 能力 | 源码证据 | 状态 |
 | --- | --- | --- |
-| main/extra/custom 三层规则库 | `XScanEngine::loadDatabase()` | Source only |
+| main/extra/custom 三层规则库 | `XScanEngine::loadDatabase()` | Observed；固定目录加载成功 |
 | 规则优先级排序 | `sort_signature_prio` | Source only |
 | global/type Init 规则 | `findInitSignatures()` + `_executeInitSignature()` | Source only |
 | 按文件类型过滤规则 | `_shouldExecuteSignature()` | Source only |
@@ -92,6 +93,12 @@ CLI 主入口为 [`src/console/main_console.cpp`](https://github.com/horsicq/DIE
 - Binary fallback。
 
 `Formats` 子模块还包含更多探测/信息解析类，不等于它们都有 DIE 规则目录或完整扫描结果。最终“支持格式”必须以格式探测、规则数据库、扫描分派和样本输出四者交叉验证。
+
+首批运行实验已观察到专用顶层类型 PE32、ELF64、Mach-O64、DEX、Java Class、
+PNG、PDF、CFBF 和 ZIP。BMP、WAV、TAR、GZIP 由外部 `file(1)` 验证结构，
+但 DIE 顶层类型为 Binary；其中 BMP、WAV、TAR 仍通过 value 报告具体格式，
+GZIP 返回 Unknown。完整输入哈希和输出见
+[`behavior-baseline.md`](behavior-baseline.md)。
 
 ## 嵌套与递归
 
@@ -138,4 +145,3 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
 - [XScanEngine result/options model](https://github.com/horsicq/XScanEngine/blob/dfe4a419e4f491bb23688ba03c5a5bf39e34da83/xscanengine.h#L996)
 - [XScanEngine scan process](https://github.com/horsicq/XScanEngine/blob/dfe4a419e4f491bb23688ba03c5a5bf39e34da83/xscanengine.cpp#L2606)
 - [DiE script filtering/execution](https://github.com/horsicq/die_script/blob/5d82316c110abf0eb863b50bc679d330e05067b6/die_script.cpp#L109)
-
