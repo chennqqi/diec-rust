@@ -41,10 +41,10 @@ CLI 主入口为 [`src/console/main_console.cpp`](https://github.com/horsicq/DIE
 
 | Short | Long | 能力 | 状态 |
 | --- | --- | --- | --- |
-| `-e` | `--entropy` | 输出分区/区域熵信息 | Source only |
-| `-i` | `--info` | 输出文件信息模型 | Source only |
-| `-S` | `--struct <value>` | 特定结构信息，如 `Hash` / `Hash#MD5` | Source only |
-| `-w` | `--showstructs` | 列出可用结构方法 | Source only |
+| `-e` | `--entropy` | 输出分区/区域熵信息 | Observed；5 个代表样本、6 种 formatter |
+| `-i` | `--info` | 输出文件信息模型 | Observed；5 个代表样本、6 种 formatter |
+| `-S` | `--struct <value>` | 特定结构信息，如 `Hash` / `Hash#MD5` | Observed；Hash、子字段和未知方法 |
+| `-w` | `--showstructs` | 列出可用结构方法 | Observed；仅列 4 个通用方法，target 被忽略 |
 | `-x` | `--xml` | XML | Observed；5 个代表样本 |
 | `-j` | `--json` | JSON | Observed；15 个样本原始输出已固定哈希 |
 | `-c` | `--csv` | CSV | Observed；5 个代表样本；normal scan 多格式开关中优先级最高 |
@@ -60,6 +60,10 @@ CLI 主入口为 [`src/console/main_console.cpp`](https://github.com/horsicq/DIE
 同时注册 Qt 自带 `--help` 和 `--version`。无 target 且没有 `--showdatabase` 时调用 `showHelp()`。
 
 默认规则路径为 `$data/db`、`$data/db_extra`、`$data/db_custom`；extra 和 custom 在 CLI 中默认启用。数据库加载失败的最终返回码行为需要实际运行确认。
+
+entropy/info/struct 不使用普通扫描 formatter，组合优先级、schema、空文件 hash
+边界和复现命令见
+[`cli-special-modes.md`](cli-special-modes.md)。
 
 ## 规则与扫描能力
 
@@ -130,7 +134,7 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
 
 ## 待实验矩阵
 
-- 尚未实验的 CLI 选项及 entropy/info 分支的 stdout、stderr、退出码和组合优先级。
+- 尚未实验的 CLI 选项及专用模式剩余 struct/阈值边界。
 - 无效路径、空文件、不可读文件、缺失/损坏数据库。
 - 多文件与目录输出中的 filename 包装格式。
 - JSON/XML/CSV/TSV 的转义、排序和多目标有效性。

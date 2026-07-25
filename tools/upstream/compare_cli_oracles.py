@@ -46,6 +46,8 @@ class Case:
 CASES = (
     Case("version", ("--version",)),
     Case("help", ("--help",)),
+    Case("show_structs", ("--showstructs",)),
+    Case("show_structs_with_target", ("--showstructs", "/usr/bin/true")),
     Case("database", ("--showdatabase", *DATABASE_ARGS)),
     Case("true_json", ("--json", *DATABASE_ARGS, "/usr/bin/true")),
     Case("no_args", ()),
@@ -90,6 +92,72 @@ SCAN_MATRIX = (
             "--alltypes",
             *DATABASE_ARGS,
         ),
+    ),
+)
+
+SPECIAL_MATRIX = (
+    Case("entropy_text", ("--entropy", *DATABASE_ARGS)),
+    Case(
+        "entropy_plaintext",
+        ("--entropy", "--plaintext", *DATABASE_ARGS),
+    ),
+    Case("entropy_json", ("--entropy", "--json", *DATABASE_ARGS)),
+    Case("entropy_xml", ("--entropy", "--xml", *DATABASE_ARGS)),
+    Case("entropy_csv", ("--entropy", "--csv", *DATABASE_ARGS)),
+    Case("entropy_tsv", ("--entropy", "--tsv", *DATABASE_ARGS)),
+    Case(
+        "entropy_all_output_flags",
+        (
+            "--entropy",
+            "--xml",
+            "--json",
+            "--csv",
+            "--tsv",
+            "--plaintext",
+            *DATABASE_ARGS,
+        ),
+    ),
+    Case("info_text", ("--info", *DATABASE_ARGS)),
+    Case("info_plaintext", ("--info", "--plaintext", *DATABASE_ARGS)),
+    Case("info_json", ("--info", "--json", *DATABASE_ARGS)),
+    Case("info_xml", ("--info", "--xml", *DATABASE_ARGS)),
+    Case("info_csv", ("--info", "--csv", *DATABASE_ARGS)),
+    Case("info_tsv", ("--info", "--tsv", *DATABASE_ARGS)),
+    Case(
+        "info_all_output_flags",
+        (
+            "--info",
+            "--xml",
+            "--json",
+            "--csv",
+            "--tsv",
+            "--plaintext",
+            *DATABASE_ARGS,
+        ),
+    ),
+    Case("struct_hash_json", ("--struct", "Hash", "--json", *DATABASE_ARGS)),
+    Case(
+        "struct_hash_md5_json",
+        ("--struct", "Hash#MD5", "--json", *DATABASE_ARGS),
+    ),
+    Case(
+        "struct_unknown_json",
+        ("--struct", "NoSuchMethod", "--json", *DATABASE_ARGS),
+    ),
+    Case(
+        "entropy_over_info_struct_json",
+        (
+            "--entropy",
+            "--info",
+            "--struct",
+            "Hash",
+            "--json",
+            *DATABASE_ARGS,
+        ),
+    ),
+    Case(
+        "struct_over_info_json",
+        ("--info", "--struct", "Hash", "--json", *DATABASE_ARGS),
     ),
 )
 
@@ -218,7 +286,7 @@ def parse_args() -> argparse.Namespace:
         "--matrix-sample",
         action="append",
         default=[],
-        help="Corpus sample to include in output/scan option matrices",
+        help="Corpus sample to include in the selected option matrix",
     )
     parser.add_argument(
         "--matrix-all",
@@ -227,8 +295,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--matrix-kind",
-        choices=("both", "output", "scan"),
+        choices=("both", "all", "output", "scan", "special"),
         default="both",
+        help=(
+            "'both' preserves the output+scan matrix; 'all' also includes "
+            "special modes"
+        ),
     )
     return parser.parse_args()
 
@@ -330,7 +402,7 @@ def main() -> int:
                 matrix_report[name] = sample_report
                 container_path = f"/corpus/{name}"
 
-                if args.matrix_kind in {"both", "output"}:
+                if args.matrix_kind in {"both", "all", "output"}:
                     output_report = {}
                     sample_report["output"] = output_report
                     for case in OUTPUT_MATRIX:
@@ -349,6 +421,7 @@ def main() -> int:
                         )
                         differences = compare_observations(left, right)
                         output_report[case.name] = {
+                            "arguments": list(arguments),
                             "left": left.summary(),
                             "right": right.summary(),
                             "differences": differences,
@@ -358,7 +431,7 @@ def main() -> int:
                             for item in differences
                         )
 
-                if args.matrix_kind in {"both", "scan"}:
+                if args.matrix_kind in {"both", "all", "scan"}:
                     scan_report = {}
                     sample_report["scan"] = scan_report
                     scan_observations = {}
@@ -379,6 +452,7 @@ def main() -> int:
                         differences = compare_observations(left, right)
                         scan_observations[case.name] = (left, right)
                         scan_report[case.name] = {
+                            "arguments": list(arguments),
                             "left": left.summary(),
                             "right": right.summary(),
                             "differences": differences,
@@ -396,6 +470,35 @@ def main() -> int:
                         )
                         entry["right_changes"] = compare_observations(
                             default_right, right
+                        )
+
+                if args.matrix_kind in {"all", "special"}:
+                    special_report = {}
+                    sample_report["special"] = special_report
+                    for case in SPECIAL_MATRIX:
+                        arguments = (*case.arguments, container_path)
+                        left = observe(
+                            args.left_image,
+                            args.left_binary,
+                            arguments,
+                            corpus_dir,
+                        )
+                        right = observe(
+                            args.right_image,
+                            args.right_binary,
+                            arguments,
+                            corpus_dir,
+                        )
+                        differences = compare_observations(left, right)
+                        special_report[case.name] = {
+                            "arguments": list(arguments),
+                            "left": left.summary(),
+                            "right": right.summary(),
+                            "differences": differences,
+                        }
+                        failures.extend(
+                            f"matrix.{name}.special.{case.name}.{item}"
+                            for item in differences
                         )
     elif args.matrix_sample or args.matrix_all:
         raise ValueError("matrix options require --corpus-dir")

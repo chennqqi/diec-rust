@@ -41,7 +41,9 @@ signatures/*                     binary crypto/junk signatures
 7. 使用 `ScanItemModel` 输出 text/JSON/XML/CSV/TSV。
 8. 追加打印脚本错误，返回 `XOptions::CR`。
 
-重要观察：CLI 不是单纯的扫描引擎包装。entropy、file info 和普通规则扫描有三条不同路径，兼容矩阵应分别覆盖。
+重要观察：CLI 不是单纯的扫描引擎包装。entropy、file info 和普通规则扫描有
+三条不同路径，且 formatter 优先级不同。专用路径的固定 oracle 实验见
+[`cli-special-modes.md`](cli-special-modes.md)。
 
 ## 扫描主流程
 
@@ -176,5 +178,5 @@ archive 扫描源码包含：
 1. 建立完整规则目录和语法统计。
 2. 提取 `Binary_Script` 及每个派生宿主类的公开 API。
 3. 读取 archive/resource/overlay 的剩余递归代码和限制。
-4. 分析 `ScanItemModel` 的全部输出 schema。
-5. 构建固定上游并采集首批行为基线。
+4. 补齐 `ScanItemModel` 的转义、多目标和嵌套输出 schema。
+5. 建立 Windows/macOS oracle 并与当前 Linux 行为基线差分。

@@ -151,9 +151,10 @@ python3 tools/upstream/compare_cli_oracles.py \
 - CSV 和 TSV 均逐条输出规则记录；字段为 type、name、version、info 和
   完整显示字符串。
 
-该优先级只适用于普通扫描。源码中的 entropy/info 专用分支按
-`JSON > XML > CSV > TSV > formatted text` 选择 formatter，尚未运行验证，
-Rust CLI 不能把两条路径误合并为一个全局优先级。
+该优先级只适用于普通扫描。entropy/info 专用分支已验证按
+`JSON > XML > CSV > TSV > formatted text` 选择 formatter；详见
+[`cli-special-modes.md`](cli-special-modes.md)。Rust CLI 不能把两条路径误
+合并为一个全局优先级。
 
 ## 扫描开关矩阵
 
@@ -197,8 +198,8 @@ stderr 逐字节相同，均退出 `0` 且 stderr 为空。
 ## 尚未覆盖
 
 - PE64、ELF32、Mach-O32/FAT、APK/JAR/IPA、RAR、ISO9660、PYC、JPEG 等格式。
-- entropy、info、struct、profiling、verbose 和 messages。
-- 输出格式的转义边界、多目标 schema，以及 entropy/info formatter 优先级。
+- profiling、verbose 和 messages。
+- 输出格式的转义边界、多目标 schema，以及专用 struct/entropy 阈值边界。
 - 能实际触发 deep/aggressive 增量的嵌套、overlay 或大 archive 样本。
 - 目录、递归、archive 内部成员、overlay/resource 和最大深度。
 - 缺失、空、损坏和含未知语法的规则数据库。

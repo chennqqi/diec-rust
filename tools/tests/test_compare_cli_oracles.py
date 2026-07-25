@@ -95,6 +95,37 @@ class CompareObservationsTests(unittest.TestCase):
             ],
         )
 
+    def test_special_matrix_covers_formatters_structs_and_precedence(self):
+        self.assertEqual(
+            [case.name for case in MODULE.SPECIAL_MATRIX],
+            [
+                "entropy_text",
+                "entropy_plaintext",
+                "entropy_json",
+                "entropy_xml",
+                "entropy_csv",
+                "entropy_tsv",
+                "entropy_all_output_flags",
+                "info_text",
+                "info_plaintext",
+                "info_json",
+                "info_xml",
+                "info_csv",
+                "info_tsv",
+                "info_all_output_flags",
+                "struct_hash_json",
+                "struct_hash_md5_json",
+                "struct_unknown_json",
+                "entropy_over_info_struct_json",
+                "struct_over_info_json",
+            ],
+        )
+
+    def test_general_cases_include_structure_inventory(self):
+        case_names = [case.name for case in MODULE.CASES]
+        self.assertIn("show_structs", case_names)
+        self.assertIn("show_structs_with_target", case_names)
+
 
 class LoadCorpusTests(unittest.TestCase):
     def test_loads_and_verifies_manifest(self):
