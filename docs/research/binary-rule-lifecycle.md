@@ -188,6 +188,11 @@ Nintendo function 内重定义，以及跨 rule eval 的 `const detect`、`const
 和源 hash 见
 [`rquickjs-rule-runtime.json`](data/rquickjs-rule-runtime.json)。
 
+专用跨规则 fixture 已进一步证明，Qt 5 的可观察契约不会把前一规则的 lexical
+`const` 作为后一规则的只读或重声明冲突，同时仍能在每次求值后调用本次 lexical
+`detect`。QuickJS 单一 global context 与此不等价；详见
+[`script-scope-semantics.md`](script-scope-semantics.md)。
+
 下一轮完整 signature lifecycle probe 仍至少要满足：
 
 - 逐条调用已固定 Linux 顺序中的 `detect`，再补齐 Windows/macOS 顺序；

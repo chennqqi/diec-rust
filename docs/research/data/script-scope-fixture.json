@@ -1,0 +1,79 @@
+{
+  "directories": [
+    "main",
+    "main/Binary",
+    "extra",
+    "custom",
+    "input"
+  ],
+  "entries": [
+    {
+      "path": "input/probe.bin",
+      "purpose": "benign scan input",
+      "sha256": "ebe89a81c2356e41bf26b62d5ebabc53f17084ed0b8546863dd4ea867c345395",
+      "size": 29,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/scope_const_define.1.sg",
+      "purpose": "define a top-level const and observe it from detect",
+      "sha256": "f798d0256ac0dd5c7b8f2013bb4b7e6a30bd67ab50caf55951bf2d5996236ce2",
+      "size": 133,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/scope_const_assign.2.sg",
+      "purpose": "assign a name declared const by the preceding evaluate",
+      "sha256": "0853eb34ac2bfe83a9a989e958f1160c5c090ea357d3261992c85c9b29a978b6",
+      "size": 131,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/scope_function_detect.3.sg",
+      "purpose": "establish a function declaration named detect",
+      "sha256": "f746727a226ec4c4a91f78c39962815b33468b81837832728aa809eefe241074",
+      "size": 98,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/scope_const_detect.4.sg",
+      "purpose": "bind const detect after a preceding function declaration",
+      "sha256": "f88fa755d0700013df4ebee1db0657b455b0edfeafbe6c7c9409e8e9f9279d1b",
+      "size": 114,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/scope_after_const_detect.5.sg",
+      "purpose": "declare function detect after a preceding const detect",
+      "sha256": "2989858b8e13d15512b814d3946b6ded803240ffbabf47bf3004497cd156b8c6",
+      "size": 101,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/scope_debug_const.6.sg",
+      "purpose": "define a second top-level const used by a later rule",
+      "sha256": "c00c84ce95f7a5a242aad346fb2e2d11700d903d7195af2214718c1154216cc8",
+      "size": 122,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/scope_debug_assign.7.sg",
+      "purpose": "assign the second name declared const by a preceding evaluate",
+      "sha256": "dc9ff2aa11ff9d2bf4695d34771762943e4823e2615db859679a6ef167612c72",
+      "size": 121,
+      "source": "project-generated"
+    }
+  ],
+  "generator": "tools/corpus/generate_script_scope_fixture.py",
+  "license": "project-generated; no third-party sample or rule bytes",
+  "rule_order": [
+    "scope_const_define.1.sg",
+    "scope_const_assign.2.sg",
+    "scope_function_detect.3.sg",
+    "scope_const_detect.4.sg",
+    "scope_after_const_detect.5.sg",
+    "scope_debug_const.6.sg",
+    "scope_debug_assign.7.sg"
+  ],
+  "schema_version": 1
+}

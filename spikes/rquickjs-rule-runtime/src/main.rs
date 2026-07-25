@@ -563,6 +563,148 @@ fn run_binary_lifecycle(
     Ok(passed)
 }
 
+fn parse_scope_fixture_order(document: &Value) -> Result<Vec<String>, String> {
+    if document.get("generator").and_then(Value::as_str)
+        != Some("tools/corpus/generate_script_scope_fixture.py")
+    {
+        return Err("unexpected script-scope fixture generator".to_owned());
+    }
+    let order = document
+        .get("rule_order")
+        .and_then(Value::as_array)
+        .ok_or_else(|| "script-scope rule_order is missing".to_owned())?
+        .iter()
+        .map(|value| {
+            value
+                .as_str()
+                .map(str::to_owned)
+                .ok_or_else(|| "script-scope rule_order contains a non-string".to_owned())
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+    if order.len() != 7 {
+        return Err(format!(
+            "expected 7 script-scope rules, got {}",
+            order.len()
+        ));
+    }
+    for name in &order {
+        let path = Path::new(name);
+        if path.file_name().and_then(|value| value.to_str()) != Some(name.as_str()) {
+            return Err(format!("invalid script-scope rule name: {name}"));
+        }
+    }
+    Ok(order)
+}
+
+fn parse_scope_detections(document: &Value) -> Result<Vec<Detection>, String> {
+    document
+        .get("detections")
+        .and_then(Value::as_array)
+        .ok_or_else(|| "Qt5 script-scope detections are missing".to_owned())?
+        .iter()
+        .map(|detection| {
+            let field = |name| {
+                detection
+                    .get(name)
+                    .and_then(Value::as_str)
+                    .map(str::to_owned)
+                    .ok_or_else(|| format!("Qt5 script-scope detection field is missing: {name}"))
+            };
+            Ok((
+                field("type")?,
+                field("name")?,
+                field("version")?,
+                field("info")?,
+            ))
+        })
+        .collect()
+}
+
+fn run_scope_fixture(
+    fixture_root: &Path,
+    manifest_path: &Path,
+    qt5_baseline_path: &Path,
+) -> Result<bool, String> {
+    let manifest: Value = serde_json::from_slice(
+        &fs::read(manifest_path)
+            .map_err(|error| format!("cannot read {}: {error}", manifest_path.display()))?,
+    )
+    .map_err(|error| format!("cannot parse {}: {error}", manifest_path.display()))?;
+    let order = parse_scope_fixture_order(&manifest)?;
+    let qt5_baseline: Value = serde_json::from_slice(
+        &fs::read(qt5_baseline_path)
+            .map_err(|error| format!("cannot read {}: {error}", qt5_baseline_path.display()))?,
+    )
+    .map_err(|error| format!("cannot parse {}: {error}", qt5_baseline_path.display()))?;
+    let qt5_detections = parse_scope_detections(&qt5_baseline)?;
+    let runtime = new_runtime()?;
+    let context = new_context(&runtime)?;
+    let detections = Arc::new(Mutex::new(Vec::new()));
+    install_nintendo_host(&context, Arc::new(Vec::new()), Arc::clone(&detections))?;
+
+    let mut observations = Vec::new();
+    for name in &order {
+        let path = fixture_root.join("main").join("Binary").join(name);
+        let source =
+            fs::read(&path).map_err(|error| format!("cannot read {}: {error}", path.display()))?;
+        let before = detections
+            .lock()
+            .map_err(|_| "script-scope result mutex poisoned".to_owned())?
+            .len();
+        let eval_result = eval_unit(&context, &source);
+        let detect_result = if eval_result.is_ok() {
+            Some(eval_string(
+                &context,
+                b"typeof detect === 'function' ? String(detect()) : 'not-function'",
+            ))
+        } else {
+            None
+        };
+        let emitted = detections
+            .lock()
+            .map_err(|_| "script-scope result mutex poisoned".to_owned())?[before..]
+            .to_vec();
+        observations.push(json!({
+            "name": name,
+            "eval_accepted": eval_result.is_ok(),
+            "eval_error": eval_result.err(),
+            "detect_result": detect_result.map(|result| match result {
+                Ok(value) => json!({"accepted": true, "value": value}),
+                Err(error) => json!({"accepted": false, "error": error}),
+            }),
+            "detections": emitted,
+        }));
+    }
+
+    let all_detections = detections
+        .lock()
+        .map_err(|_| "script-scope result mutex poisoned".to_owned())?
+        .clone();
+    let errors = observations
+        .iter()
+        .filter(|observation| observation["eval_accepted"] == false)
+        .count();
+    let matches_qt5_oracle = all_detections == qt5_detections;
+    println!(
+        "{}",
+        serde_json::to_string_pretty(&json!({
+            "schema_version": 1,
+            "operation": "shared-context sequential sloppy eval and detect invocation",
+            "runtime": "rquickjs 0.12.1 / QuickJS-NG 0.15.1",
+            "fixture_manifest": normalized_path(manifest_path),
+            "qt5_baseline": normalized_path(qt5_baseline_path),
+            "rule_order": order,
+            "observations": observations,
+            "eval_error_count": errors,
+            "detections": all_detections,
+            "matches_qt5_oracle": matches_qt5_oracle,
+            "passed": true,
+        }))
+        .map_err(|error| format!("cannot serialize report: {error}"))?
+    );
+    Ok(true)
+}
+
 fn run_nintendo_rule(rule_root: &Path, data: Vec<u8>) -> Result<Vec<Detection>, String> {
     let runtime = new_runtime()?;
     let context = new_context(&runtime)?;
@@ -961,6 +1103,8 @@ fn usage() -> ExitCode {
          diec-rquickjs-rule-runtime-spike \
          <eval-binary-lifecycle|eval-binary-lifecycle-raw> \
          <main-rule-root> <binary-order-json>\n       \
+         diec-rquickjs-rule-runtime-spike eval-scope-fixture \
+         <fixture-root> <fixture-manifest-json> <qt5-baseline-json>\n       \
          diec-rquickjs-rule-runtime-spike detect-nintendo \
          <main-rule-root> <corpus-dir> <baseline-json>"
     );
@@ -990,6 +1134,8 @@ fn main() -> ExitCode {
         run_binary_lifecycle(&roots[0], &roots[1], true)
     } else if command == "eval-binary-lifecycle-raw" && roots.len() == 2 {
         run_binary_lifecycle(&roots[0], &roots[1], false)
+    } else if command == "eval-scope-fixture" && roots.len() == 3 {
+        run_scope_fixture(&roots[0], &roots[1], &roots[2])
     } else if command == "detect-nintendo" && roots.len() == 3 {
         run_nintendo_corpus(&roots[0], &roots[1], &roots[2])
     } else {
@@ -1010,7 +1156,8 @@ mod tests {
     use super::{
         NINTENDO_COMPAT_DECLARATION, NINTENDO_RULE_BYTES, NINTENDO_VAR_DECLARATION,
         apply_compatibility_overlay, apply_exact_lifecycle_overlay, collect_rule_files,
-        normalized_path, read_unsigned, signature_matches,
+        normalized_path, parse_scope_detections, parse_scope_fixture_order, read_unsigned,
+        signature_matches,
     };
     use std::fs;
     use std::path::PathBuf;
@@ -1140,5 +1287,37 @@ mod tests {
         assert!(signature_matches(&bytes, "7F 'ELF' .. .. 01", 16));
         assert!(!signature_matches(&bytes, "0300 0000", 4));
         assert!(!signature_matches(&bytes, "unsupported", 0));
+    }
+
+    #[test]
+    fn scope_fixture_order_rejects_wrong_inventory() {
+        let document = serde_json::json!({
+            "generator": "tools/corpus/generate_script_scope_fixture.py",
+            "rule_order": ["only-one.sg"],
+        });
+        let error = parse_scope_fixture_order(&document)
+            .expect_err("incomplete scope fixture must be rejected");
+        assert!(error.contains("expected 7"));
+    }
+
+    #[test]
+    fn scope_detections_parse_qt5_shape() {
+        let document = serde_json::json!({
+            "detections": [{
+                "type": "format",
+                "name": "Scope",
+                "version": "2",
+                "info": "",
+            }],
+        });
+        assert_eq!(
+            parse_scope_detections(&document).expect("fixed shape should parse"),
+            [(
+                "format".to_owned(),
+                "Scope".to_owned(),
+                "2".to_owned(),
+                String::new(),
+            )]
+        );
     }
 }

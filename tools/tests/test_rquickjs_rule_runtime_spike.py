@@ -178,6 +178,28 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
         self.assertEqual(corpus["error_count"], 0)
         self.assertTrue(corpus["preserves_source_file"])
 
+    def test_script_scope_probe_records_qt5_incompatibility(self):
+        scope = self.reference["script_scope"]
+        self.assertEqual(scope["rule_count"], 7)
+        self.assertEqual(scope["qt5_detection_count"], 7)
+        self.assertEqual(scope["quickjs_detection_count"], 4)
+        self.assertEqual(scope["quickjs_eval_error_count"], 3)
+        self.assertFalse(scope["matches_qt5_oracle"])
+        self.assertEqual(
+            [error["name"] for error in scope["quickjs_errors"]],
+            [
+                "scope_const_assign.2.sg",
+                "scope_const_detect.4.sg",
+                "scope_debug_assign.7.sg",
+            ],
+        )
+        for field in ("fixture_manifest", "qt5_baseline"):
+            path = ROOT / scope[field]
+            self.assertEqual(
+                hashlib.sha256(path.read_bytes()).hexdigest(),
+                scope[f"{field}_sha256"],
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -12,14 +12,14 @@
   },
   "dependency_footprint": {
     "lockfile_packages": 23,
-    "release_executable_bytes": 1602560,
+    "release_executable_bytes": 1630720,
     "target": "x86_64-pc-windows-msvc",
     "target_packages": 18
   },
   "experiment": {
     "cargo_lock_sha256": "aa7cd4c42e1f3429f45ec31e05e41862abe6156bdbe351eeacc507673f237232",
     "cargo_toml_sha256": "875730b205ca351b4bc0f830a1896fb6ad777c46046e6f26c9c368849614be16",
-    "source_sha256": "3823b6b5e5b946f0cedf724547a6e48dacce8a0a4dd5d08bca0d58abcdaaff8d",
+    "source_sha256": "99b3271ac3a4b7a86a2bbc3ad4614be66c94014079431b96bda01c0c96e64de6",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -149,6 +149,31 @@
     "matched_count": 14,
     "sample_count": 14,
     "scope": "target Nintendo rule only; not the complete Binary rule set"
+  },
+  "script_scope": {
+    "fixture_manifest": "docs/research/data/script-scope-fixture.json",
+    "fixture_manifest_sha256": "bd5ce6ad5859ed4b11426a943b109159d240bea23b332dd3fae4275f4909d460",
+    "qt5_baseline": "docs/research/data/script-scope-qt5.json",
+    "qt5_baseline_sha256": "789762bf7fb2072ca8abbff386b87b09461941f005f965312b6b6d36c4b1754b",
+    "rule_count": 7,
+    "qt5_detection_count": 7,
+    "quickjs_detection_count": 4,
+    "quickjs_eval_error_count": 3,
+    "quickjs_errors": [
+      {
+        "category": "assignment to lexical const from prior evaluate",
+        "name": "scope_const_assign.2.sg"
+      },
+      {
+        "category": "const detect conflicts with function from prior evaluate",
+        "name": "scope_const_detect.4.sg"
+      },
+      {
+        "category": "assignment to lexical const from prior evaluate",
+        "name": "scope_debug_assign.7.sg"
+      }
+    ],
+    "matches_qt5_oracle": false
   },
   "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
   "schema_version": 1,

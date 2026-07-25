@@ -1,0 +1,212 @@
+{
+  "arguments": [
+    "--profiling",
+    "--messages",
+    "--json",
+    "--database",
+    "/scope/main",
+    "--extradatabase",
+    "/scope/extra",
+    "--customdatabase",
+    "/scope/custom",
+    "/scope/input/probe.bin"
+  ],
+  "detections": [
+    {
+      "info": "",
+      "name": "Scope const define",
+      "type": "format",
+      "version": "1"
+    },
+    {
+      "info": "",
+      "name": "Scope const assignment",
+      "type": "format",
+      "version": "2"
+    },
+    {
+      "info": "",
+      "name": "Scope function detect",
+      "type": "format",
+      "version": ""
+    },
+    {
+      "info": "",
+      "name": "Scope const detect",
+      "type": "format",
+      "version": ""
+    },
+    {
+      "info": "",
+      "name": "Scope after const detect",
+      "type": "format",
+      "version": ""
+    },
+    {
+      "info": "",
+      "name": "Scope debug const",
+      "type": "format",
+      "version": "1"
+    },
+    {
+      "info": "",
+      "name": "Scope debug assignment",
+      "type": "format",
+      "version": "2"
+    }
+  ],
+  "fixture_manifest": {
+    "path": "docs/research/data/script-scope-fixture.json",
+    "sha256": "bd5ce6ad5859ed4b11426a943b109159d240bea23b332dd3fae4275f4909d460"
+  },
+  "generator": "tools/upstream/probe_script_scope.py",
+  "normalized_outputs_equal": true,
+  "oracles": [
+    {
+      "binary": "/opt/die-source/build/release/diec",
+      "detections": [
+        {
+          "info": "",
+          "name": "Scope const define",
+          "type": "format",
+          "version": "1"
+        },
+        {
+          "info": "",
+          "name": "Scope const assignment",
+          "type": "format",
+          "version": "2"
+        },
+        {
+          "info": "",
+          "name": "Scope function detect",
+          "type": "format",
+          "version": ""
+        },
+        {
+          "info": "",
+          "name": "Scope const detect",
+          "type": "format",
+          "version": ""
+        },
+        {
+          "info": "",
+          "name": "Scope after const detect",
+          "type": "format",
+          "version": ""
+        },
+        {
+          "info": "",
+          "name": "Scope debug const",
+          "type": "format",
+          "version": "1"
+        },
+        {
+          "info": "",
+          "name": "Scope debug assignment",
+          "type": "format",
+          "version": "2"
+        }
+      ],
+      "exit_code": 0,
+      "image": "diec-rust/upstream-oracle:74eaf505-repro",
+      "image_id": "sha256:cc5561a5d256c7912227a8ecf4ba9c6b9178c99911e471017d3c3988bac964ab",
+      "name": "linux-qt5-qmake",
+      "raw_stderr_bytes": 0,
+      "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_stdout_bytes": 2450,
+      "raw_stdout_sha256": "de0907c5c41418b508b56a37a94260c1339d22d06931ff4ff89502133bf7995a",
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+      "rule_order": [
+        "scope_const_define.1.sg",
+        "scope_const_assign.2.sg",
+        "scope_function_detect.3.sg",
+        "scope_const_detect.4.sg",
+        "scope_after_const_detect.5.sg",
+        "scope_debug_const.6.sg",
+        "scope_debug_assign.7.sg"
+      ]
+    },
+    {
+      "binary": "/opt/die-build/src/console/diec",
+      "detections": [
+        {
+          "info": "",
+          "name": "Scope const define",
+          "type": "format",
+          "version": "1"
+        },
+        {
+          "info": "",
+          "name": "Scope const assignment",
+          "type": "format",
+          "version": "2"
+        },
+        {
+          "info": "",
+          "name": "Scope function detect",
+          "type": "format",
+          "version": ""
+        },
+        {
+          "info": "",
+          "name": "Scope const detect",
+          "type": "format",
+          "version": ""
+        },
+        {
+          "info": "",
+          "name": "Scope after const detect",
+          "type": "format",
+          "version": ""
+        },
+        {
+          "info": "",
+          "name": "Scope debug const",
+          "type": "format",
+          "version": "1"
+        },
+        {
+          "info": "",
+          "name": "Scope debug assignment",
+          "type": "format",
+          "version": "2"
+        }
+      ],
+      "exit_code": 0,
+      "image": "diec-rust/upstream-oracle-cmake:74eaf505",
+      "image_id": "sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040",
+      "name": "linux-qt5-cmake",
+      "raw_stderr_bytes": 0,
+      "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_stdout_bytes": 2450,
+      "raw_stdout_sha256": "de0907c5c41418b508b56a37a94260c1339d22d06931ff4ff89502133bf7995a",
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+      "rule_order": [
+        "scope_const_define.1.sg",
+        "scope_const_assign.2.sg",
+        "scope_function_detect.3.sg",
+        "scope_const_detect.4.sg",
+        "scope_after_const_detect.5.sg",
+        "scope_debug_const.6.sg",
+        "scope_debug_assign.7.sg"
+      ]
+    }
+  ],
+  "platform": "linux-amd64-qt5",
+  "raw_artifacts": {
+    "profiling_times_are_nondeterministic": true,
+    "storage": "untracked external directory selected by --raw-dir"
+  },
+  "rule_order": [
+    "scope_const_define.1.sg",
+    "scope_const_assign.2.sg",
+    "scope_function_detect.3.sg",
+    "scope_const_detect.4.sg",
+    "scope_after_const_detect.5.sg",
+    "scope_debug_const.6.sg",
+    "scope_debug_assign.7.sg"
+  ],
+  "schema_version": 1,
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

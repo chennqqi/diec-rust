@@ -261,8 +261,14 @@ Phase 0 feasibility probe 增加三个内存 overlay：
 
 三者都绑定 path、size、唯一声明和源 SHA-256，不写回规则；替换前后字节数相同。
 应用后 292/292 顶层 eval 通过，overlay 恰好命中 3 次。这仍不是 production
-转换方案：Qt Script 对跨 evaluate lexical binding 的精确模型还需专用 fixture，
-最终策略必须由 runtime ADR 决定。
+转换方案。
+
+专用 7 规则 fixture 随后确认 Qt 5 qmake/CMake 都允许前一 `evaluate()` 的顶层
+`const` 名称在后一 `evaluate()` 中赋值，也允许 `function detect`、
+`const detect`、`function detect` 连续出现；每次求值后的本次 `detect` 均可被
+宿主调用。相同顺序的 QuickJS 产生 3 个错误，只得到 4/7 detection。完整证据与
+边界解释见
+[`script-scope-semantics.md`](script-scope-semantics.md)。
 
 ## 与 Boa 首轮结果对比
 
@@ -314,6 +320,11 @@ cargo +1.88.0 run --release --locked -- eval-binary-lifecycle-raw \
 cargo +1.88.0 run --release --locked -- eval-binary-lifecycle \
   ../../upstream/Detect-It-Easy/db \
   ../../docs/research/data/binary-rule-order-linux-qt5.json
+
+cargo +1.88.0 run --release --locked -- eval-scope-fixture \
+  /tmp/diec-rust-script-scope-fixture \
+  ../../docs/research/data/script-scope-fixture.json \
+  ../../docs/research/data/script-scope-qt5.json
 
 cargo +1.88.0 run --release --locked -- detect-nintendo \
   ../../upstream/Detect-It-Easy/db \
