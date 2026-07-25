@@ -43,6 +43,8 @@ GUI 不在当前交付范围内，作为未来计划保留。
 - `docs/research/`：上游事实与实验结果。
 - `docs/design/`：架构、API、ABI、测试方案与决策记录。
 - `upstream/DIE-engine/`：固定 SHA 的上游主仓库 subtree，仅用于参考和变更跟踪。
+- `upstream/Detect-It-Easy/`：与主仓库 gitlink 一致的规则/发布数据 sibling subtree。
+- `upstream/components.lock.toml`：主仓库与关键组件的 SHA、角色和物化方式。
 
 ## 上游与许可证
 

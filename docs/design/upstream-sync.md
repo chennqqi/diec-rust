@@ -78,6 +78,13 @@ local materialization strategy
 
 Phase 0 期间继续以 [`../research/upstream-baseline.md`](../research/upstream-baseline.md) 记录核心组件 SHA。正式同步工具建立后，文档引用生成的 lock manifest，不再人工重复全部 SHA。
 
+当前机器可读清单位于 [`../../upstream/components.lock.toml`](../../upstream/components.lock.toml)。其中：
+
+- `subtree-squash` 表示内容已进入本仓库。
+- `external-research-checkout` 表示目前只锁定 SHA，内容尚未物化。
+- 每个 component commit 必须与 baseline commit 中对应 `gitlink_path` 的 gitlink SHA 一致。
+- 清单当前优先覆盖无 GUI CLI 调研直接涉及的组件；同步工具完成后扩展到全部 58 个直接 submodule。
+
 ## 更新流程
 
 更新前先只获取远端：
@@ -117,7 +124,8 @@ git subtree pull \
 
 以下方案留待 Phase 0 评审：
 
-- 对 `Detect-It-Easy`、`XScanEngine`、`Formats`、`die_script` 等关键仓库分别建立 sibling subtree。
+- `Detect-It-Easy` 使用 `upstream/Detect-It-Easy/` sibling subtree，完整保存规则与发布数据。
+- 对 `XScanEngine`、`Formats`、`die_script` 等其他关键仓库分别建立 sibling subtree。
 - 仅 vendor 运行所需规则，并用同步工具从固定 component SHA 复制和校验。
 - 将完整 recursive checkout 保留在 CI/cache 外部，只在本仓库提交 lock manifest。
 

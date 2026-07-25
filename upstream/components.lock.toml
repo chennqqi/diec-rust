@@ -1,0 +1,84 @@
+schema = 1
+generated_at = "2026-07-25"
+
+[baseline]
+name = "DIE-engine"
+repository = "https://github.com/horsicq/DIE-engine.git"
+commit = "74eaf505c250ab47e709024e9dc41657cd8f2254"
+local_path = "upstream/DIE-engine"
+materialization = "subtree-squash"
+
+[[component]]
+name = "Detect-It-Easy"
+role = "rules-and-release-data"
+repository = "https://github.com/horsicq/Detect-It-Easy.git"
+commit = "c2c17dfa5ea4e078ba31eab55d87430c96622fb6"
+gitlink_path = "Detect-It-Easy"
+local_path = "upstream/Detect-It-Easy"
+materialization = "subtree-squash"
+license = "MIT"
+tracked_content = ["db", "db_extra", "db_custom", "dbs_min", "dbs_special", "yara_rules", "peid_rules"]
+
+[[component]]
+name = "Formats"
+role = "format-detection-and-parsing"
+repository = "https://github.com/horsicq/Formats.git"
+commit = "1151e7254fdee3c0294ff7095edbdd7bfccf8201"
+gitlink_path = "Formats"
+materialization = "external-research-checkout"
+license = "MIT"
+
+[[component]]
+name = "XScanEngine"
+role = "scan-orchestration-and-host-api"
+repository = "https://github.com/horsicq/XScanEngine.git"
+commit = "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+gitlink_path = "XScanEngine"
+materialization = "external-research-checkout"
+license = "MIT"
+
+[[component]]
+name = "die_script"
+role = "die-javascript-runtime"
+repository = "https://github.com/horsicq/die_script.git"
+commit = "5d82316c110abf0eb863b50bc679d330e05067b6"
+gitlink_path = "die_script"
+materialization = "external-research-checkout"
+license = "MIT"
+
+[[component]]
+name = "XOptions"
+role = "cli-option-definitions"
+repository = "https://github.com/horsicq/XOptions.git"
+commit = "810d78d0654f45d39bf07bcda5dc92ce287a4aeb"
+gitlink_path = "XOptions"
+materialization = "external-research-checkout"
+license = "MIT"
+
+[[component]]
+name = "XFileInfo"
+role = "file-information"
+repository = "https://github.com/horsicq/XFileInfo.git"
+commit = "88b8e2821f86d309f141b38c4d46fa0b000aa74b"
+gitlink_path = "XFileInfo"
+materialization = "external-research-checkout"
+license = "MIT"
+
+[[component]]
+name = "XEntropyWidget"
+role = "entropy-processing"
+repository = "https://github.com/horsicq/XEntropyWidget.git"
+commit = "d2bf95b1019e21e5a5ae71f55fcd6c12349c3030"
+gitlink_path = "XEntropyWidget"
+materialization = "external-research-checkout"
+license = "MIT"
+
+[[component]]
+name = "signatures"
+role = "crypto-and-junk-binary-signatures"
+repository = "https://github.com/horsicq/signatures.git"
+commit = "5d80fb2863d02e9366aee7b3ade6abb7d6598dbb"
+gitlink_path = "signatures"
+materialization = "external-research-checkout"
+license = "MIT"
+
