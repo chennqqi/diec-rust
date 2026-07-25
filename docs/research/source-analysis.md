@@ -99,6 +99,11 @@ Rust 设计前必须把完整分派顺序提取为测试表，并用多义样本
 
 数据库规则被解析为 `SIGNATURE_RECORD`，汇总后按优先级排序。加载支持目录/归档和 cache；cache 格式、失效条件及是否需要兼容尚未分析。
 
+运行实验还确认：函数返回值只反映 main；extra/custom 失败被忽略；空目录被视为
+成功；CLI positional target 分支漏设 `bIsDbUsed`，使 main 加载失败不改变
+普通扫描退出码。完整错误矩阵见
+[`database-error-behavior.md`](database-error-behavior.md)。
+
 `DiE_Script::_shouldExecuteSignature()` 过滤条件包括：
 
 - signature file type 与当前 file type 匹配。
@@ -176,6 +181,7 @@ archive 扫描源码包含：
 | 目录枚举无深度/循环保护 | symlink loop、栈/时间耗尽 | 隔离测试并为 Rust 设计资源限制 |
 | formatter 分散 | JSON/XML 契约不明确 | 逐格式保存 schema 和 escaping 样本 |
 | database cache | 启动性能与兼容性 | 分析 cache header/失效逻辑 |
+| 数据库/输入错误语义随入口变化 | 静默漏报、无效 JSON、调用方误判 | 核心 typed error + CLI compatibility ADR |
 | CLI 部分选项有 `TODO` | “能力相同”范围争议 | 构建并运行确认真实行为 |
 
 ## 后续调研

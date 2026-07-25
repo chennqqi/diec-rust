@@ -233,6 +233,198 @@ PATH_CASES = (
 )
 
 
+def fixture_database_args(main_path: str) -> tuple[str, ...]:
+    return (
+        "--database",
+        main_path,
+        "--extradatabase",
+        "/dbfx/empty-extra",
+        "--customdatabase",
+        "/dbfx/empty-custom",
+    )
+
+
+DATABASE_CASES = (
+    Case(
+        "show_database_missing_main",
+        ("--showdatabase", *fixture_database_args("/dbfx/missing-main")),
+    ),
+    Case(
+        "show_database_missing_main_messages",
+        (
+            "--showdatabase",
+            "--messages",
+            *fixture_database_args("/dbfx/missing-main"),
+        ),
+    ),
+    Case(
+        "show_database_empty_main",
+        ("--showdatabase", *fixture_database_args("/dbfx/empty-main")),
+    ),
+    Case(
+        "show_database_invalid_archive",
+        (
+            "--showdatabase",
+            *fixture_database_args("/dbfx/not-a-database.bin"),
+        ),
+    ),
+    Case(
+        "show_database_invalid_archive_messages",
+        (
+            "--showdatabase",
+            "--messages",
+            *fixture_database_args("/dbfx/not-a-database.bin"),
+        ),
+    ),
+    Case(
+        "show_database_malformed_main",
+        ("--showdatabase", *fixture_database_args("/dbfx/malformed-main")),
+    ),
+    Case(
+        "scan_missing_main_json",
+        (
+            "--json",
+            *fixture_database_args("/dbfx/missing-main"),
+            "/dbfx/input/plain.txt",
+        ),
+    ),
+    Case(
+        "scan_missing_main_messages_json",
+        (
+            "--json",
+            "--messages",
+            *fixture_database_args("/dbfx/missing-main"),
+            "/dbfx/input/plain.txt",
+        ),
+    ),
+    Case(
+        "scan_empty_main_json",
+        (
+            "--json",
+            *fixture_database_args("/dbfx/empty-main"),
+            "/dbfx/input/plain.txt",
+        ),
+    ),
+    Case(
+        "scan_invalid_archive_json",
+        (
+            "--json",
+            *fixture_database_args("/dbfx/not-a-database.bin"),
+            "/dbfx/input/plain.txt",
+        ),
+    ),
+    Case(
+        "scan_invalid_archive_messages_json",
+        (
+            "--json",
+            "--messages",
+            *fixture_database_args("/dbfx/not-a-database.bin"),
+            "/dbfx/input/plain.txt",
+        ),
+    ),
+    Case(
+        "scan_malformed_main_json",
+        (
+            "--json",
+            *fixture_database_args("/dbfx/malformed-main"),
+            "/dbfx/input/plain.txt",
+        ),
+    ),
+    Case(
+        "scan_throwing_main_json",
+        (
+            "--json",
+            *fixture_database_args("/dbfx/throwing-main"),
+            "/dbfx/input/plain.txt",
+        ),
+    ),
+    Case(
+        "scan_valid_main_json",
+        (
+            "--json",
+            *fixture_database_args("/dbfx/valid-main"),
+            "/dbfx/input/plain.txt",
+        ),
+    ),
+    Case(
+        "entropy_missing_main_messages_json",
+        (
+            "--entropy",
+            "--json",
+            "--messages",
+            *fixture_database_args("/dbfx/missing-main"),
+            "/dbfx/input/plain.txt",
+        ),
+    ),
+    Case(
+        "info_missing_main_messages_json",
+        (
+            "--info",
+            "--json",
+            "--messages",
+            *fixture_database_args("/dbfx/missing-main"),
+            "/dbfx/input/plain.txt",
+        ),
+    ),
+    Case(
+        "scan_valid_main_missing_extra_json",
+        (
+            "--json",
+            "--messages",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/dbfx/missing-extra",
+            "--customdatabase",
+            "/dbfx/missing-custom",
+            "/dbfx/input/plain.txt",
+        ),
+    ),
+    Case(
+        "show_database_valid_main_missing_extra",
+        (
+            "--showdatabase",
+            "--messages",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/dbfx/missing-extra",
+            "--customdatabase",
+            "/dbfx/missing-custom",
+        ),
+    ),
+)
+
+UNREADABLE_CASES = (
+    Case(
+        "scan_json",
+        ("--json", *DATABASE_ARGS, "/tmp/unreadable-fixture"),
+    ),
+    Case(
+        "scan_messages_json",
+        (
+            "--json",
+            "--messages",
+            *DATABASE_ARGS,
+            "/tmp/unreadable-fixture",
+        ),
+    ),
+    Case(
+        "info_json",
+        ("--info", "--json", *DATABASE_ARGS, "/tmp/unreadable-fixture"),
+    ),
+    Case(
+        "entropy_json",
+        (
+            "--entropy",
+            "--json",
+            *DATABASE_ARGS,
+            "/tmp/unreadable-fixture",
+        ),
+    ),
+)
+
+
 def observe(
     image: str,
     binary: str,
@@ -268,6 +460,30 @@ def observe(
             *arguments,
         ]
     )
+    result = subprocess.run(command, check=False, capture_output=True)
+    return Observation(result.returncode, result.stdout, result.stderr)
+
+
+def observe_unreadable(
+    image: str,
+    binary: str,
+    arguments: Sequence[str],
+) -> Observation:
+    command = [
+        "docker",
+        "run",
+        "--rm",
+        image,
+        "sh",
+        "-c",
+        (
+            "install -m 000 /dev/null /tmp/unreadable-fixture"
+            ' && exec runuser -u nobody -- "$@"'
+        ),
+        "sh",
+        binary,
+        *arguments,
+    ]
     result = subprocess.run(command, check=False, capture_output=True)
     return Observation(result.returncode, result.stdout, result.stderr)
 
@@ -446,6 +662,18 @@ def load_path_corpus(path_corpus_dir: pathlib.Path) -> dict[str, object]:
     return manifest
 
 
+def load_database_fixture(
+    database_fixture_dir: pathlib.Path,
+) -> dict[str, object]:
+    manifest = load_path_corpus(database_fixture_dir)
+    if (
+        manifest.get("generator")
+        != "tools/corpus/generate_database_fixture.py"
+    ):
+        raise ValueError("unexpected database fixture generator")
+    return manifest
+
+
 def document_is_valid(data: bytes, kind: str) -> bool:
     try:
         if kind == "json":
@@ -479,6 +707,11 @@ def parse_args() -> argparse.Namespace:
         "--path-corpus-dir",
         type=pathlib.Path,
         help="Generated path corpus used for multi-target/directory cases",
+    )
+    parser.add_argument(
+        "--database-fixture-dir",
+        type=pathlib.Path,
+        help="Generated database fixture used for load/error cases",
     )
     parser.add_argument(
         "--matrix-sample",
@@ -516,6 +749,11 @@ def main() -> int:
     path_corpus_dir = (
         args.path_corpus_dir.resolve() if args.path_corpus_dir else None
     )
+    database_fixture_dir = (
+        args.database_fixture_dir.resolve()
+        if args.database_fixture_dir
+        else None
+    )
 
     for side, image in (
         ("left", args.left_image),
@@ -549,6 +787,32 @@ def main() -> int:
             "differences": differences,
         }
         failures.extend(f"{case.name}.{item}" for item in differences)
+
+    unreadable_report = {}
+    report["unreadable_input"] = unreadable_report
+    for case in UNREADABLE_CASES:
+        left = observe_unreadable(
+            args.left_image,
+            args.left_binary,
+            case.arguments,
+        )
+        right = observe_unreadable(
+            args.right_image,
+            args.right_binary,
+            case.arguments,
+        )
+        differences = compare_observations(left, right)
+        unreadable_report[case.name] = {
+            "arguments": list(case.arguments),
+            "left": left.summary(),
+            "right": right.summary(),
+            "differences": differences,
+            "left_valid_json": document_is_valid(left.stdout, "json"),
+            "right_valid_json": document_is_valid(right.stdout, "json"),
+        }
+        failures.extend(
+            f"unreadable_input.{case.name}.{item}" for item in differences
+        )
 
     if corpus_dir is not None:
         corpus_report = {}
@@ -769,6 +1033,56 @@ def main() -> int:
         recursive_entry["right_changes"] = compare_observations(
             default_right, recursive_right
         )
+
+    if database_fixture_dir is not None:
+        database_manifest = load_database_fixture(database_fixture_dir)
+        database_report = {}
+        report["database_fixture"] = {
+            "generator": database_manifest["generator"],
+            "directories": database_manifest["directories"],
+            "entries": database_manifest["entries"],
+            "cases": database_report,
+        }
+        for case in DATABASE_CASES:
+            left = observe(
+                args.left_image,
+                args.left_binary,
+                case.arguments,
+                database_fixture_dir,
+                "/dbfx",
+            )
+            right = observe(
+                args.right_image,
+                args.right_binary,
+                case.arguments,
+                database_fixture_dir,
+                "/dbfx",
+            )
+            differences = compare_observations(left, right)
+            entry: dict[str, object] = {
+                "arguments": list(case.arguments),
+                "left": left.summary(),
+                "right": right.summary(),
+                "differences": differences,
+                "left_reports_load_error": (
+                    b"Cannot load database:" in left.stdout
+                ),
+                "right_reports_load_error": (
+                    b"Cannot load database:" in right.stdout
+                ),
+            }
+            if case.name.endswith("_json"):
+                entry["left_valid_json"] = document_is_valid(
+                    left.stdout, "json"
+                )
+                entry["right_valid_json"] = document_is_valid(
+                    right.stdout, "json"
+                )
+            database_report[case.name] = entry
+            failures.extend(
+                f"database_fixture.{case.name}.{item}"
+                for item in differences
+            )
 
     report["equal"] = not failures
     report["failures"] = failures

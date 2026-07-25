@@ -1,0 +1,54 @@
+{
+  "directories": [
+    "empty-main",
+    "empty-extra",
+    "empty-custom",
+    "malformed-main",
+    "malformed-main/Binary",
+    "throwing-main",
+    "throwing-main/Binary",
+    "valid-main",
+    "valid-main/Binary",
+    "input"
+  ],
+  "entries": [
+    {
+      "path": "input/plain.txt",
+      "purpose": "benign scan input",
+      "sha256": "22b217bfba5795d402092bf48bfb28146c0ee4dd0036fd4d0c93e25bbe65e998",
+      "size": 31,
+      "source": "project-generated"
+    },
+    {
+      "path": "not-a-database.bin",
+      "purpose": "invalid database archive",
+      "sha256": "9c77bc4db8b86e78cab9e99000dcec5616618d690311a7ec43a1a4e9affe5987",
+      "size": 19,
+      "source": "project-generated"
+    },
+    {
+      "path": "malformed-main/Binary/broken.1.sg",
+      "purpose": "JavaScript syntax error",
+      "sha256": "669f79431d84c5bda53be5dd121c2d46dae60830c5fa684f9384c49882aecf6c",
+      "size": 19,
+      "source": "project-generated"
+    },
+    {
+      "path": "throwing-main/Binary/throw.1.sg",
+      "purpose": "JavaScript runtime error",
+      "sha256": "9d19269590aa6a4cdaf8b8171613d8a71c11a80c9f06317b17d3888dd683f883",
+      "size": 63,
+      "source": "project-generated"
+    },
+    {
+      "path": "valid-main/Binary/fixture.1.sg",
+      "purpose": "deterministic successful detection",
+      "sha256": "488529e3e364d33a69f776872f4ec785756c043dadfd7d6a58d4a824d449f364",
+      "size": 85,
+      "source": "project-generated"
+    }
+  ],
+  "generator": "tools/corpus/generate_database_fixture.py",
+  "license": "project-generated; no third-party sample or rule bytes",
+  "schema_version": 1
+}

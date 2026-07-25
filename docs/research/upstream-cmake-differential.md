@@ -170,13 +170,16 @@ JSON 中只有输入二进制的 `size` 不同。
 - 15 个样本 × 8 个扫描模式，240 次 oracle 执行。
 - 5 个代表样本 × 19 个 entropy/info/struct 模式，190 次 oracle 执行。
 - 14 个多目标/目录/错误路径 case，28 次 oracle 执行。
+- 18 个数据库状态 case，36 次 oracle 执行。
+- 4 个不可读输入 case，8 次 oracle 执行。
 
-四组实验均未发现退出码、原始 stdout 或原始 stderr 差异。输出优先级、schema
+六组实验均未发现退出码、原始 stdout 或原始 stderr 差异。输出优先级、schema
 和各扫描开关的具体增量记录在
 [`behavior-baseline.md`](behavior-baseline.md) 和
 [`cli-special-modes.md`](cli-special-modes.md)，路径聚合行为见
-[`cli-path-behavior.md`](cli-path-behavior.md)。无差异只证明当前固定环境和
-输入范围，不等于 CMake 与 qmake 在所有行为上等价。
+[`cli-path-behavior.md`](cli-path-behavior.md)，错误路径见
+[`database-error-behavior.md`](database-error-behavior.md)。无差异只证明
+当前固定环境和输入范围，不等于 CMake 与 qmake 在所有行为上等价。
 
 ## 限制与下一步
 

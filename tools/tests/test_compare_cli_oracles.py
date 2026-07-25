@@ -133,6 +133,26 @@ class CompareObservationsTests(unittest.TestCase):
         self.assertIn("missing_and_existing_json", case_names)
         self.assertIn("directory_plus_duplicate_json", case_names)
 
+    def test_database_cases_cover_load_and_script_failures(self):
+        case_names = [case.name for case in MODULE.DATABASE_CASES]
+        self.assertIn("show_database_missing_main", case_names)
+        self.assertIn("show_database_empty_main", case_names)
+        self.assertIn("scan_invalid_archive_json", case_names)
+        self.assertIn("scan_malformed_main_json", case_names)
+        self.assertIn("scan_throwing_main_json", case_names)
+        self.assertIn("scan_valid_main_missing_extra_json", case_names)
+
+    def test_unreadable_cases_cover_each_cli_processing_path(self):
+        self.assertEqual(
+            [case.name for case in MODULE.UNREADABLE_CASES],
+            [
+                "scan_json",
+                "scan_messages_json",
+                "info_json",
+                "entropy_json",
+            ],
+        )
+
     def test_document_validation_preserves_invalid_aggregate_behavior(self):
         self.assertTrue(MODULE.document_is_valid(b'{"value": 1}', "json"))
         self.assertFalse(
@@ -279,6 +299,24 @@ class LoadPathCorpusTests(unittest.TestCase):
 
             with self.assertRaisesRegex(ValueError, "unsafe"):
                 MODULE.load_path_corpus(root)
+
+    def test_database_fixture_rejects_unexpected_generator(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            (root / "manifest.json").write_text(
+                json.dumps(
+                    {
+                        "schema_version": 1,
+                        "generator": "unexpected",
+                        "directories": [],
+                        "entries": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(ValueError, "generator"):
+                MODULE.load_database_fixture(root)
 
 
 if __name__ == "__main__":

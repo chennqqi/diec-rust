@@ -220,6 +220,23 @@ Qt 通过 `newQObject()` 暴露 slots。替换运行时必须逐项定义：
 
 这些细节必须转为 conformance fixtures，而不能只靠 API 名称匹配。
 
+## 已观测错误传播
+
+project-generated 最小规则实验已经分别触发 Qt Script parse error 和
+`detect()` runtime error。两者都：
+
+- 在 database load 阶段被当作一个有效 signature 计数；
+- 到实际扫描该 filetype 时才执行并失败；
+- 仍产生 Unknown detection；
+- 把错误文本追加到结构化 stdout；
+- 返回 CLI exit code 0。
+
+该行为及缺失/空/无效 database、不读 input 的对照见
+[`database-error-behavior.md`](database-error-behavior.md)。这是上游 CLI
+兼容证据，不改变本项目“未知或不支持语法必须明确诊断并计入兼容失败”的门禁。
+未来 runtime conformance 需要同时比较错误阶段、文件/行号、后续 signature 是否
+继续执行、结果保留和结构化诊断；不能只比较异常类型。
+
 ## 候选运行时初筛
 
 本节只记录候选，不作设计决定：
@@ -309,4 +326,3 @@ Qt 通过 `newQObject()` 暴露 slots。替换运行时必须逐项定义：
 - [Binary host API](https://github.com/horsicq/XScanEngine/blob/dfe4a419e4f491bb23688ba03c5a5bf39e34da83/modules/binary_script.h)
 - [PE host API](https://github.com/horsicq/XScanEngine/blob/dfe4a419e4f491bb23688ba03c5a5bf39e34da83/modules/pe_script.h)
 - [Database loading and ordering](https://github.com/horsicq/XScanEngine/blob/dfe4a419e4f491bb23688ba03c5a5bf39e34da83/xscanengine.cpp#L1284)
-

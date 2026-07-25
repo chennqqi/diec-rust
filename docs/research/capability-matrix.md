@@ -59,7 +59,10 @@ CLI 主入口为 [`src/console/main_console.cpp`](https://github.com/horsicq/DIE
 
 同时注册 Qt 自带 `--help` 和 `--version`。无 target 且没有 `--showdatabase` 时调用 `showHelp()`。
 
-默认规则路径为 `$data/db`、`$data/db_extra`、`$data/db_custom`；extra 和 custom 在 CLI 中默认启用。数据库加载失败的最终返回码行为需要实际运行确认。
+默认规则路径为 `$data/db`、`$data/db_extra`、`$data/db_custom`；extra 和
+custom 在 CLI 中默认启用。main/extra/custom 返回值不对称、入口相关退出码及
+错误输出见
+[`database-error-behavior.md`](database-error-behavior.md)。
 
 entropy/info/struct 不使用普通扫描 formatter，组合优先级、schema、空文件 hash
 边界和复现命令见
@@ -81,7 +84,7 @@ entropy/info/struct 不使用普通扫描 formatter，组合优先级、schema�
 | 自定义单条 signature/file 过滤 | `sSignatureName`, `sSignatureFilePath` | Source only |
 | 未命中时产生 Unknown | `DiE_Script::processDetect()` | Source only |
 | 检测结果稳定排序选项 | `bIsSort` + `sortRecords()` | Source only |
-| 脚本错误收集 | `SCAN_RESULT.listErrors` | Source only |
+| 脚本错误收集 | `SCAN_RESULT.listErrors` | Observed；parse/runtime error 追加到 stdout，退出 0 |
 | 脚本 profiling | `listDebugRecords` / messages | Source only |
 | 取消/停止 | `PDSTRUCT`, callback, `breakScan()` | Source only |
 
@@ -141,7 +144,7 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
 ## 待实验矩阵
 
 - 尚未实验的 CLI 选项及专用模式剩余 struct/阈值边界。
-- 不可读文件、缺失/损坏数据库；缺失路径和空文件已覆盖。
+- database cache、权限失败、合法/损坏 ZIP database 边界。
 - Unicode/特殊 filename 及 Windows/macOS 的路径和枚举差异。
 - JSON/XML/CSV/TSV 的转义和嵌套排序。
 - deep/aggressive 在能触发增量行为的样本上的效果。
