@@ -8,7 +8,7 @@ Last updated: 2026-07-25
 
 固定上游的官方 Ubuntu 发布脚本使用 CMake Release。实验在 Linux amd64 和
 Qt 5.15.13 环境中不修改源码地构建了 CMake `diec` 目标，并与先前的 qmake
-产物执行六组逐字节 CLI 差分。
+产物执行七组逐字节 CLI 差分。
 
 两个产物的文件哈希、大小、Build ID 和优化参数不同，但下列可观察结果完全相同：
 
@@ -172,13 +172,15 @@ JSON 中只有输入二进制的 `size` 不同。
 - 14 个多目标/目录/错误路径 case，28 次 oracle 执行。
 - 18 个数据库状态 case，36 次 oracle 执行。
 - 4 个不可读输入 case，8 次 oracle 执行。
+- 5 个 archive/resource/overlay 样本 × 4 个模式，40 次 oracle 执行。
 
-六组实验均未发现退出码、原始 stdout 或原始 stderr 差异。输出优先级、schema
+七组实验均未发现退出码、原始 stdout 或原始 stderr 差异。输出优先级、schema
 和各扫描开关的具体增量记录在
 [`behavior-baseline.md`](behavior-baseline.md) 和
 [`cli-special-modes.md`](cli-special-modes.md)，路径聚合行为见
 [`cli-path-behavior.md`](cli-path-behavior.md)，错误路径见
-[`database-error-behavior.md`](database-error-behavior.md)。无差异只证明
+[`database-error-behavior.md`](database-error-behavior.md)，嵌套扫描见
+[`nested-scan-behavior.md`](nested-scan-behavior.md)。无差异只证明
 当前固定环境和输入范围，不等于 CMake 与 qmake 在所有行为上等价。
 
 ## 限制与下一步
@@ -193,8 +195,9 @@ JSON 中只有输入二进制的 `size` 不同。
 - 自动差分目前比较原始 stdout/stderr/exit code，并输出可保存的 JSON 报告，
   但尚未提交带 provenance 的版本化原始 baseline 文件。
 
-下一步应继续补充尚未覆盖的格式、畸形变体、archive 递归，以及能触发
-deep/aggressive 增量的样本，并保存带 provenance 的版本化原始 baseline。
+下一步应继续补充尚未覆盖的格式、畸形变体、engine archive harness，以及能
+触发 deep/aggressive 上限增量的样本，并保存带 provenance 的版本化原始
+baseline。
 
 ## 源码证据
 

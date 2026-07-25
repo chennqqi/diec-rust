@@ -122,7 +122,9 @@ python3 tools/upstream/compare_cli_oracles.py \
 - BMP、WAV 和 TAR 由 Binary 顶层类型报告更具体的 value；不能把
   `detects[].filetype` 直接等同于所有受支持格式。
 - `payload.zip` 默认扫描只返回顶层 ZIP Unknown，没有报告内部 `payload.txt`。
-  是否需要 deep/aggressive 或引擎内部 archive 选项才能递归，仍待组合实验。
+  后续组合实验确认 deep/aggressive/recursive 均不会使发布 CLI 解包 archive；
+  archive 需要发布入口未暴露的独立 engine 选项。详见
+  [`nested-scan-behavior.md`](nested-scan-behavior.md)。
 - GZIP 被独立工具识别为有效 archive，但默认 DIE JSON 是 Binary/Unknown。
   这一区别必须保留为兼容基线，不能按扩展名“修正”。
 - PDF 规则原样输出拼写 `Complier`；Rust 兼容实现默认也必须保留该可观察字符串。
@@ -202,13 +204,16 @@ filename prefix 行为单独记录在
 数据库缺失/空/无效 ZIP、规则 parse/runtime error 和不可读输入行为见
 [`database-error-behavior.md`](database-error-behavior.md)。
 
+resource、overlay 和 archive 嵌套行为已用 5 个独立样本验证，见
+[`nested-scan-behavior.md`](nested-scan-behavior.md)。
+
 ## 尚未覆盖
 
 - PE64、ELF32、Mach-O32/FAT、APK/JAR/IPA、RAR、ISO9660、PYC、JPEG 等格式。
 - profiling、verbose 和 messages。
 - 输出格式的转义边界、特殊 filename，以及专用 struct/entropy 阈值边界。
-- 能实际触发 deep/aggressive 增量的嵌套、overlay 或大 archive 样本。
-- archive 内部成员、overlay/resource 和最大深度。
+- 能实际触发 deep 增量或 aggressive 过滤/上限差异的样本。
+- engine `bIsArchivesScan` 的成员提取、20/21 边界和最大嵌套深度。
 - 规则数据库 cache、ZIP 边界、权限和同名规则覆盖。
 - 系统化畸形/截断矩阵、资源限制、超时、内存峰值和 fuzz seeds。
 - Windows/macOS oracle 以及路径编码差异。

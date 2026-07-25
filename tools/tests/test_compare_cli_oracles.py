@@ -81,6 +81,17 @@ class CompareObservationsTests(unittest.TestCase):
             ],
         )
 
+    def test_nested_matrix_separates_recursive_and_aggressive_flags(self):
+        self.assertEqual(
+            [case.name for case in MODULE.NESTED_MATRIX],
+            [
+                "default",
+                "recursive",
+                "aggressive",
+                "recursive_aggressive",
+            ],
+        )
+
     def test_output_matrix_has_each_supported_normal_scan_formatter(self):
         self.assertEqual(
             [case.name for case in MODULE.OUTPUT_MATRIX],
@@ -171,6 +182,53 @@ class CompareObservationsTests(unittest.TestCase):
             ["/paths/a", "/paths/b"],
         )
 
+    def test_json_detect_tree_keeps_nested_scan_identity_fields(self):
+        data = json.dumps(
+            {
+                "detects": [
+                    {
+                        "filetype": "PE32",
+                        "info": "ignored",
+                        "offset": "0",
+                        "parentfilepart": "Header",
+                        "size": "10",
+                        "values": [
+                            {
+                                "info": "ignored",
+                                "name": "PDF",
+                                "string": "ignored",
+                                "type": "format",
+                                "version": "1.4",
+                            }
+                        ],
+                    }
+                ]
+            }
+        ).encode()
+
+        self.assertEqual(
+            MODULE.json_detect_tree(data),
+            [
+                {
+                    "filetype": "PE32",
+                    "offset": "0",
+                    "parentfilepart": "Header",
+                    "size": "10",
+                    "values": [
+                        {
+                            "name": "PDF",
+                            "type": "format",
+                            "version": "1.4",
+                        }
+                    ],
+                }
+            ],
+        )
+
+    def test_json_detect_tree_rejects_non_scan_output(self):
+        self.assertIsNone(MODULE.json_detect_tree(b"not json"))
+        self.assertIsNone(MODULE.json_detect_tree(b"[]"))
+
 
 class LoadCorpusTests(unittest.TestCase):
     def test_loads_and_verifies_manifest(self):
@@ -245,6 +303,33 @@ class LoadCorpusTests(unittest.TestCase):
 
             with self.assertRaisesRegex(ValueError, "does not match"):
                 MODULE.load_corpus(root)
+
+    def test_nested_corpus_rejects_unexpected_generator(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            (root / "sample.bin").write_bytes(b"")
+            (root / "manifest.json").write_text(
+                json.dumps(
+                    {
+                        "schema_version": 1,
+                        "generator": "unexpected",
+                        "samples": [
+                            {
+                                "name": "sample.bin",
+                                "size": 0,
+                                "sha256": (
+                                    "e3b0c44298fc1c149afbf4c8996fb924"
+                                    "27ae41e4649b934ca495991b7852b855"
+                                ),
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(ValueError, "generator"):
+                MODULE.load_nested_corpus(root)
 
 
 class LoadPathCorpusTests(unittest.TestCase):

@@ -1,0 +1,62 @@
+{
+  "generator": "tools/corpus/generate_nested_corpus.py",
+  "license": "project-generated; no third-party sample bytes",
+  "samples": [
+    {
+      "intended_structure": "ZIP containing a PDF member",
+      "layers": [
+        "archive",
+        "pdf"
+      ],
+      "name": "pdf-member.zip",
+      "sha256": "508af7b74ab36708e185da3a60c6e8307a39424b10b534e1165ad11bd0a665e0",
+      "size": 453
+    },
+    {
+      "intended_structure": "ZIP containing a ZIP containing a PDF",
+      "layers": [
+        "archive",
+        "archive",
+        "pdf"
+      ],
+      "name": "nested-zip.zip",
+      "sha256": "812f26268314d51a47dd7a9aa97d20398d48f464740f4157dd916e4d85172149",
+      "size": 569
+    },
+    {
+      "intended_structure": "PE32 with a PDF overlay",
+      "layers": [
+        "pe",
+        "overlay",
+        "pdf"
+      ],
+      "name": "pe-pdf-overlay.exe",
+      "sha256": "315f3a0e55ef32aed2d03b5330602dd45cbd81c50db527a68bdd65d8a6475f7b",
+      "size": 843
+    },
+    {
+      "intended_structure": "PE32 with a PDF RCDATA resource",
+      "layers": [
+        "pe",
+        "resource",
+        "pdf"
+      ],
+      "name": "pe-pdf-resource.exe",
+      "sha256": "679124ef09b88eeb9edc29e2ee7165f3dbaf4e17b9d988b548c51cf8d4d1482b",
+      "size": 1024
+    },
+    {
+      "intended_structure": "PE32 with a ZIP overlay containing a PDF",
+      "layers": [
+        "pe",
+        "overlay",
+        "archive",
+        "pdf"
+      ],
+      "name": "pe-zip-overlay.exe",
+      "sha256": "5e2b2da6d29fb18b638dc696524b1a045bd1748a59944cf2f97c388e2e0c3075",
+      "size": 965
+    }
+  ],
+  "schema_version": 1
+}

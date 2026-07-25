@@ -114,16 +114,22 @@ hideunknown 的可观察增量。完整输入哈希和输出见
 
 ## 嵌套与递归
 
-静态源码显示：
+源码与固定 oracle 共同确认：
 
 - CLI 顶层目录枚举始终递归；`--recursivescan` 的“递归”指文件内部
   resource/overlay，不是目录深度。
-- `scanProcess()` 对可扫描 archive 解包记录后递归调用自身。
-- archive 默认处理限制为 20，aggressive 模式将限制提高到 100000。
-- overlay、resources 和其他 file parts 也可形成 subdevice 并递归扫描。
-- 结果通过 `SCANID` / `parentId` 表达父子关系，包含文件类型、file part、大小、偏移和原始名称。
-
-这些路径的默认启用状态、最大深度、防压缩炸弹策略和跨平台差异尚未完成运行验证。
+- 发布 CLI 的 recursive 会启用 resource 和 overlay；默认及单独 aggressive
+  不启用。PE PDF resource/overlay 已 Observed。
+- archive 解包由独立 `bIsArchivesScan` 控制，发布 CLI 不设置它；ZIP 和
+  ZIP→ZIP 样本在 recursive/aggressive 组合下均不解包。
+- archive 源码 `nLimit` 为 20/100000，但默认 `>` 判断实际允许第 21 个
+  scanable member；resource 的 `<=` 判断也允许第 21 个，aggressive limit
+  为 2000。边界数值尚未运行验证。
+- overlay 始终作为 subdevice 扫描；非 aggressive resource 仅在探测为
+  scanable 类型时扫描。
+- JSON 结果通过父 detection 的 `values` 表达树，并保留 file part、size 和
+  offset。详见 [`nested-scan-behavior.md`](nested-scan-behavior.md)。
+- 源码未见独立嵌套深度和 archive 总解压字节限制；跨平台和资源耗尽行为待验证。
 
 ## 结果模型
 
@@ -147,8 +153,8 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
 - database cache、权限失败、合法/损坏 ZIP database 边界。
 - Unicode/特殊 filename 及 Windows/macOS 的路径和枚举差异。
 - JSON/XML/CSV/TSV 的转义和嵌套排序。
-- deep/aggressive 在能触发增量行为的样本上的效果。
-- archive/resource/overlay 的默认状态、递归深度和限制。
+- deep 以及 aggressive resource 过滤/计数上限的增量样本。
+- engine archive scan harness、20/21 边界、最大深度和总解压资源限制。
 - Qt 5 与 Qt 6 输出差异。
 - Linux、Windows、macOS 路径与编码差异。
 

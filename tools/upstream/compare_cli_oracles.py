@@ -96,6 +96,27 @@ SCAN_MATRIX = (
     ),
 )
 
+NESTED_MATRIX = (
+    Case("default", ("--json", *DATABASE_ARGS)),
+    Case(
+        "recursive",
+        ("--json", "--recursivescan", *DATABASE_ARGS),
+    ),
+    Case(
+        "aggressive",
+        ("--json", "--aggressivecscan", *DATABASE_ARGS),
+    ),
+    Case(
+        "recursive_aggressive",
+        (
+            "--json",
+            "--recursivescan",
+            "--aggressivecscan",
+            *DATABASE_ARGS,
+        ),
+    ),
+)
+
 SPECIAL_MATRIX = (
     Case("entropy_text", ("--entropy", *DATABASE_ARGS)),
     Case(
@@ -565,6 +586,21 @@ def load_corpus(corpus_dir: pathlib.Path) -> list[dict[str, object]]:
     return validated
 
 
+def load_nested_corpus(
+    nested_corpus_dir: pathlib.Path,
+) -> list[dict[str, object]]:
+    samples = load_corpus(nested_corpus_dir)
+    manifest = json.loads(
+        (nested_corpus_dir / "manifest.json").read_text(encoding="utf-8")
+    )
+    if (
+        manifest.get("generator")
+        != "tools/corpus/generate_nested_corpus.py"
+    ):
+        raise ValueError("unexpected nested corpus generator")
+    return samples
+
+
 def _safe_relative_path(value: object) -> pathlib.PurePosixPath:
     if not isinstance(value, str) or "\\" in value:
         raise ValueError(f"unsafe path corpus entry: {value!r}")
@@ -695,6 +731,36 @@ def filename_prefixes(data: bytes) -> list[str]:
     ]
 
 
+def json_detect_tree(data: bytes) -> object:
+    """Return only stable nested-result fields from a normal JSON scan."""
+    try:
+        document = json.loads(data)
+    except (UnicodeDecodeError, json.JSONDecodeError):
+        return None
+    if not isinstance(document, dict):
+        return None
+    detects = document.get("detects")
+    if not isinstance(detects, list):
+        return None
+
+    def summarize(detect: object) -> object:
+        if not isinstance(detect, dict):
+            return None
+        is_nested_detect = "parentfilepart" in detect
+        keys = (
+            ("filetype", "offset", "parentfilepart", "size")
+            if is_nested_detect
+            else ("name", "type", "version")
+        )
+        result = {key: detect[key] for key in keys if key in detect}
+        values = detect.get("values")
+        if isinstance(values, list):
+            result["values"] = [summarize(value) for value in values]
+        return result
+
+    return [summarize(detect) for detect in detects]
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--left-image", required=True)
@@ -712,6 +778,11 @@ def parse_args() -> argparse.Namespace:
         "--database-fixture-dir",
         type=pathlib.Path,
         help="Generated database fixture used for load/error cases",
+    )
+    parser.add_argument(
+        "--nested-corpus-dir",
+        type=pathlib.Path,
+        help="Generated archive/overlay corpus used for nested scan cases",
     )
     parser.add_argument(
         "--matrix-sample",
@@ -752,6 +823,11 @@ def main() -> int:
     database_fixture_dir = (
         args.database_fixture_dir.resolve()
         if args.database_fixture_dir
+        else None
+    )
+    nested_corpus_dir = (
+        args.nested_corpus_dir.resolve()
+        if args.nested_corpus_dir
         else None
     )
 
@@ -1083,6 +1159,63 @@ def main() -> int:
                 f"database_fixture.{case.name}.{item}"
                 for item in differences
             )
+
+    if nested_corpus_dir is not None:
+        samples = load_nested_corpus(nested_corpus_dir)
+        nested_report = {}
+        report["nested_corpus"] = {
+            "generator": "tools/corpus/generate_nested_corpus.py",
+            "samples": samples,
+            "cases": nested_report,
+        }
+        for sample in samples:
+            name = str(sample["name"])
+            sample_report = {}
+            nested_report[name] = sample_report
+            observations = {}
+            for case in NESTED_MATRIX:
+                arguments = (
+                    *case.arguments,
+                    f"/nested/{name}",
+                )
+                left = observe(
+                    args.left_image,
+                    args.left_binary,
+                    arguments,
+                    nested_corpus_dir,
+                    "/nested",
+                )
+                right = observe(
+                    args.right_image,
+                    args.right_binary,
+                    arguments,
+                    nested_corpus_dir,
+                    "/nested",
+                )
+                differences = compare_observations(left, right)
+                observations[case.name] = (left, right)
+                sample_report[case.name] = {
+                    "arguments": list(arguments),
+                    "left": left.summary(),
+                    "right": right.summary(),
+                    "differences": differences,
+                    "left_detect_tree": json_detect_tree(left.stdout),
+                    "right_detect_tree": json_detect_tree(right.stdout),
+                }
+                failures.extend(
+                    f"nested_corpus.{name}.{case.name}.{item}"
+                    for item in differences
+                )
+
+            default_left, default_right = observations["default"]
+            for case_name, (left, right) in observations.items():
+                entry = sample_report[case_name]
+                entry["left_changes"] = compare_observations(
+                    default_left, left
+                )
+                entry["right_changes"] = compare_observations(
+                    default_right, right
+                )
 
     report["equal"] = not failures
     report["failures"] = failures
