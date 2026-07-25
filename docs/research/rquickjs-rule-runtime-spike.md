@@ -41,8 +41,10 @@ runtime；需要先验证按真实上游生命周期执行、legacy compatibilit
 后续最小实验确认：对唯一失败规则应用 source-identity 约束、等长且不落盘的
 compatibility overlay 后，QuickJS 接受该规则；同一 overlay 在 2235 个文件中
 恰好命中一次，isolated eval 错误由 1 降为 0。该结果只证明受控兼容层可行，
-尚未证明 `detect()` 与 Qt 5/Qt 6 等价，也未解决真实 context 生命周期和 338 个
-宿主方法，因此候选状态不变。
+随后使用 Rust 最小 Byte HostApi、上游原始 helpers 和 14 个项目生成样本执行
+`detect()`，目标 Nintendo detection 与 Qt 5 baseline 14/14 匹配。实验仍未解决
+完整 Binary 生命周期、EA-XA 邻接规则、Qt 6 和其余 338 个宿主方法，因此候选
+状态不变。
 
 ## 实验边界
 
@@ -77,7 +79,7 @@ proxy 只用于语法/顶层执行覆盖，不代表宿主 API 兼容，也不�
 | Lockfile packages | 23 |
 | 当前 target packages | 18 |
 | Clean release build | 13,258 ms，本机已缓存下载、空 target |
-| Release executable | 1,410,560 bytes（加入 compatibility overlay probe 后） |
+| Release executable | 1,513,472 bytes（加入 overlay 与 Nintendo HostApi probe 后） |
 
 `cargo +1.86.0 check --locked` 明确报告
 `rquickjs@0.12.1 requires rustc 1.87`。本实验继续复用已安装的 1.88 工具链。
@@ -198,6 +200,34 @@ var     e;
 - 验证真实规则加载生命周期中 overlay 只应用一次；
 - 用 ADR 决定 runtime patch、source overlay 或其他方案。
 
+### Rust Byte HostApi detect 对照
+
+spike 的 `detect-nintendo` 命令为每个样本创建独立 QuickJS runtime/context，
+用 Rust 注册：
+
+```text
+X.c U16 U32 U64 Sz isHeuristicScan isVerbose
+_setResult
+```
+
+随后原样 eval `_runtime_helpers`、`read`、`_init`，再 eval overlay 后的 Nintendo
+规则并调用 `detect()`。它从
+[`nintendo-certified-baseline.json`](data/nintendo-certified-baseline.json)
+读取 Qt 期望的第一条 detection，并额外固定 `info = fSELF`。
+
+14 个样本的 type/name/version/info 全部匹配，包括：
+
+- big/little endian；
+- type 1 ELF/headerless；
+- type 2–6；
+- U+014D 名称；
+- PS3/PSVita version。
+
+专项 runtime 只支持规则实际请求的四种 `X.c` pattern，未知 pattern 明确返回
+false；read helper 仍是上游原始 JavaScript。该结果没有执行 `audio.1.sg`，所以
+不应与完整 Qt detection list 混淆：PS Vita 的 EA-XA 第二条记录仍需真实 Binary
+生命周期实验复现。
+
 ## 与 Boa 首轮结果对比
 
 | 维度 | Boa 0.21.1 | rquickjs 0.12.1 |
@@ -240,6 +270,11 @@ cargo +1.88.0 run --release --locked -- eval-isolated-compat \
 cargo +1.88.0 run --release --locked -- eval-shared \
   ../../upstream/Detect-It-Easy/db \
   ../../upstream/Detect-It-Easy/db_extra
+
+cargo +1.88.0 run --release --locked -- detect-nintendo \
+  ../../upstream/Detect-It-Easy/db \
+  /tmp/diec-nintendo-certified-corpus \
+  ../../docs/research/data/nintendo-certified-baseline.json
 ```
 
 `fixture` 和 `eval-isolated-compat` 预期退出 0；原始 isolated 与 shared 命令因
@@ -264,7 +299,8 @@ cargo +1.88.0 run --release --locked -- eval-shared \
 
 - 按上游 file type、priority、database、init/include 顺序执行全库。
 - 338 个直接宿主方法及继承方法的行为 fixture。
-- Nintendo overlay 的真实 `detect()` Qt 5/Qt 6 等价验证；当前只有顶层 eval。
+- Nintendo 已完成最小 HostApi 下 Qt 5 target detection 对照；仍缺 Qt 6 和完整
+  Binary 规则列表（包括 PS Vita 的 EA-XA 邻接命中）。
 - Qt 5/Qt 6 与 QuickJS 的整数、字符串、数组、异常和 RegExp 差分。
 - Linux/macOS/Windows GNU/MSVC 静态链接、ASan/UBSan 和 fuzz。
 - 并行 runtime/context 的吞吐、峰值内存和取消延迟。

@@ -77,8 +77,9 @@ baseline 的变更都要检查本表。
 - **触发**：任一固定规则无法 parse/load；sloppy JS、global/type init、include、
   host object、exception 或函数抽取与上游不同。
 - **当前证据**：Boa 与原始 QuickJS 都拒绝 Nintendo 规则；QuickJS 的单点、等长、
-  manifest-pinned overlay 已让 2235 文件 isolated eval 达到 0 错误，但尚未验证
-  `detect()`、Qt 等价、真实生命周期或完整 HostApi。
+  manifest-pinned overlay 已让 2235 文件 isolated eval 达到 0 错误；最小 Rust
+  Byte HostApi 的 Nintendo target detection 在 Qt 5 baseline 上 14/14 匹配，但
+  尚未验证真实 Binary 生命周期、EA-XA 邻接结果、Qt 6 或完整 HostApi。
 - **缓解**：保持 `RuleRuntime`/`HostApi` port；建立全规则 inventory、最小失败
   fixture、host call trace；基于证据选 runtime，禁止静默转换规则。
 - **验证**：固定规则 100% discovered/parsed/loaded，zero silent unsupported；

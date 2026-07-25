@@ -3,11 +3,14 @@ use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 use std::sync::Arc;
+use std::sync::Mutex;
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::time::Instant;
 
-use rquickjs::{CatchResultExt, Context, Function, Runtime, context::EvalOptions};
-use serde_json::json;
+use rquickjs::{
+    CatchResultExt, Context, Function, Object, Runtime, context::EvalOptions, function::Opt,
+};
+use serde_json::{Value, json};
 
 const HOST_SHIM: &[u8] = br#"
     var included = [];
@@ -45,6 +48,9 @@ const NINTENDO_RULE_SHA256: &str =
     "1f7485b8b0c9c211932fdcc31529ea37588c176e46a1ff06230fc376df5ad0f5";
 const NINTENDO_VAR_DECLARATION: &[u8] = b"        var tp, e;";
 const NINTENDO_COMPAT_DECLARATION: &[u8] = b"        var     e;";
+
+type Detection = (String, String, String, String);
+type SharedDetections = Arc<Mutex<Vec<Detection>>>;
 
 fn collect_rule_files(root: &Path, output: &mut Vec<PathBuf>) -> Result<(), String> {
     let entries =
@@ -135,6 +141,245 @@ fn eval_string(context: &Context, source: &[u8]) -> Result<String, String> {
             .catch(&ctx)
             .map_err(|error| error.to_string())
     })
+}
+
+fn read_unsigned(data: &[u8], offset: usize, width: usize, big_endian: bool) -> f64 {
+    let Some(bytes) = data.get(offset..offset.saturating_add(width)) else {
+        return 0.0;
+    };
+    let value = if big_endian {
+        bytes
+            .iter()
+            .fold(0_u64, |value, byte| (value << 8) | u64::from(*byte))
+    } else {
+        bytes
+            .iter()
+            .rev()
+            .fold(0_u64, |value, byte| (value << 8) | u64::from(*byte))
+    };
+    value as f64
+}
+
+fn signature_matches(data: &[u8], pattern: &str, offset: usize) -> bool {
+    match pattern {
+        "'SCE'00" => data.get(offset..offset.saturating_add(4)) == Some(b"SCE\0"),
+        "0000 0002" => data.get(offset..offset.saturating_add(4)) == Some(b"\0\0\0\x02"),
+        "0300 0000" => data.get(offset..offset.saturating_add(4)) == Some(b"\x03\0\0\0"),
+        "7F 'ELF' .. .. 01" => data
+            .get(offset..offset.saturating_add(7))
+            .is_some_and(|bytes| bytes[0] == 0x7f && &bytes[1..4] == b"ELF" && bytes[6] == 1),
+        _ => false,
+    }
+}
+
+fn install_nintendo_host(
+    context: &Context,
+    data: Arc<Vec<u8>>,
+    detections: SharedDetections,
+) -> Result<(), String> {
+    context.with(|ctx| {
+        let globals = ctx.globals();
+        let x = Object::new(ctx.clone()).map_err(|error| error.to_string())?;
+
+        let c_data = Arc::clone(&data);
+        x.set(
+            "c",
+            Function::new(ctx.clone(), move |pattern: String, offset: Opt<usize>| {
+                signature_matches(&c_data, &pattern, offset.0.unwrap_or(0))
+            })
+            .map_err(|error| error.to_string())?,
+        )
+        .map_err(|error| error.to_string())?;
+
+        for (name, width) in [("U16", 2_usize), ("U32", 4), ("U64", 8)] {
+            let integer_data = Arc::clone(&data);
+            x.set(
+                name,
+                Function::new(ctx.clone(), move |offset: usize, big_endian: bool| {
+                    read_unsigned(&integer_data, offset, width, big_endian)
+                })
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        }
+
+        let size = data.len() as f64;
+        x.set(
+            "Sz",
+            Function::new(ctx.clone(), move || size).map_err(|error| error.to_string())?,
+        )
+        .map_err(|error| error.to_string())?;
+        x.set(
+            "isHeuristicScan",
+            Function::new(ctx.clone(), || false).map_err(|error| error.to_string())?,
+        )
+        .map_err(|error| error.to_string())?;
+        x.set(
+            "isVerbose",
+            Function::new(ctx.clone(), || false).map_err(|error| error.to_string())?,
+        )
+        .map_err(|error| error.to_string())?;
+        globals.set("X", x).map_err(|error| error.to_string())?;
+
+        globals
+            .set(
+                "includeScript",
+                Function::new(ctx.clone(), |_name: String| {})
+                    .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        globals
+            .set(
+                "_debug",
+                Function::new(ctx.clone(), |_message: String| {})
+                    .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        globals
+            .set(
+                "_setLang",
+                Function::new(ctx.clone(), |_language: String, _version: Opt<String>| {})
+                    .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        let result_detections = Arc::clone(&detections);
+        globals
+            .set(
+                "_setResult",
+                Function::new(
+                    ctx.clone(),
+                    move |kind: String, name: String, version: String, info: String| {
+                        result_detections
+                            .lock()
+                            .expect("Nintendo fixture result mutex poisoned")
+                            .push((kind, name, version, info));
+                    },
+                )
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        Ok(())
+    })
+}
+
+fn run_nintendo_rule(rule_root: &Path, data: Vec<u8>) -> Result<Vec<Detection>, String> {
+    let runtime = new_runtime()?;
+    let context = new_context(&runtime)?;
+    let detections = Arc::new(Mutex::new(Vec::new()));
+    install_nintendo_host(&context, Arc::new(data), Arc::clone(&detections))?;
+
+    for helper in ["_runtime_helpers", "read", "_init"] {
+        let path = rule_root.join(helper);
+        let bytes =
+            fs::read(&path).map_err(|error| format!("cannot read {}: {error}", path.display()))?;
+        eval_unit(&context, &bytes)
+            .map_err(|error| format!("cannot eval {}: {error}", path.display()))?;
+    }
+
+    let rule_path = rule_root
+        .join("Binary")
+        .join("format_bin.Nintendo-certified-file.1.sg");
+    let source = fs::read(&rule_path)
+        .map_err(|error| format!("cannot read {}: {error}", rule_path.display()))?;
+    let (transformed, applied) = apply_compatibility_overlay(&rule_path, &source)?;
+    if !applied {
+        return Err("Nintendo compatibility overlay was not applied".to_owned());
+    }
+    eval_unit(&context, &transformed)?;
+    let detected = eval_string(&context, b"String(detect())")?;
+    if detected != "true" {
+        let probe = eval_string(
+            &context,
+            br#"JSON.stringify([
+                X.c("'SCE'00"),
+                X.U16(8, X.c("0000 0002", 4) ? _BE : _LE),
+                X.U16(0xA, X.c("0000 0002", 4) ? _BE : _LE),
+                X.U64(0x10, X.c("0000 0002", 4) ? _BE : _LE),
+                X.Sz()
+            ])"#,
+        )?;
+        return Err(format!(
+            "Nintendo detect returned {detected}; probe={probe}"
+        ));
+    }
+
+    let result = detections
+        .lock()
+        .map_err(|_| "Nintendo fixture result mutex poisoned".to_owned())?
+        .clone();
+    Ok(result)
+}
+
+fn run_nintendo_corpus(
+    rule_root: &Path,
+    corpus_root: &Path,
+    baseline_path: &Path,
+) -> Result<bool, String> {
+    let baseline: Value = serde_json::from_slice(
+        &fs::read(baseline_path)
+            .map_err(|error| format!("cannot read {}: {error}", baseline_path.display()))?,
+    )
+    .map_err(|error| format!("cannot parse {}: {error}", baseline_path.display()))?;
+    let samples = baseline
+        .get("samples")
+        .and_then(Value::as_object)
+        .ok_or_else(|| "Nintendo baseline has no samples object".to_owned())?;
+    let mut names = samples.keys().cloned().collect::<Vec<_>>();
+    names.sort();
+    let mut reports = Vec::new();
+    let mut all_match = true;
+
+    for name in names {
+        let sample = &samples[&name];
+        let expected = sample
+            .get("detections")
+            .and_then(Value::as_array)
+            .and_then(|detections| detections.first())
+            .and_then(Value::as_array)
+            .ok_or_else(|| format!("Nintendo baseline sample {name} has no detection"))?;
+        let expected_tuple = (
+            expected[0].as_str().unwrap_or_default().to_owned(),
+            expected[1].as_str().unwrap_or_default().to_owned(),
+            expected[2].as_str().unwrap_or_default().to_owned(),
+            "fSELF".to_owned(),
+        );
+        let input_path = corpus_root.join(&name);
+        let actual = run_nintendo_rule(
+            rule_root,
+            fs::read(&input_path)
+                .map_err(|error| format!("cannot read {}: {error}", input_path.display()))?,
+        )
+        .map_err(|error| format!("{name}: {error}"))?;
+        let matches = actual == [expected_tuple.clone()];
+        all_match &= matches;
+        reports.push(json!({
+            "name": name,
+            "expected": expected_tuple,
+            "actual": actual,
+            "matches": matches,
+        }));
+    }
+
+    println!(
+        "{}",
+        serde_json::to_string_pretty(&json!({
+            "schema_version": 1,
+            "operation": "Nintendo rule detect with Rust byte HostApi",
+            "runtime": "rquickjs 0.12.1 / QuickJS-NG 0.15.1",
+            "compatibility_overlay": "nintendo-unused-var-tp-v1",
+            "helpers": ["_runtime_helpers", "read", "_init"],
+            "host_methods": [
+                "X.c", "X.U16", "X.U32", "X.U64", "X.Sz",
+                "X.isHeuristicScan", "X.isVerbose", "_setResult"
+            ],
+            "samples": reports,
+            "sample_count": samples.len(),
+            "matched_count": reports.iter().filter(|item| item["matches"] == true).count(),
+            "all_match": all_match,
+        }))
+        .map_err(|error| format!("cannot serialize report: {error}"))?
+    );
+    Ok(all_match)
 }
 
 fn evaluate_corpus(
@@ -405,7 +650,9 @@ fn usage() -> ExitCode {
     eprintln!(
         "usage: diec-rquickjs-rule-runtime-spike \
          <eval-isolated|eval-isolated-compat|eval-shared> <rule-root>...\n       \
-         diec-rquickjs-rule-runtime-spike fixture <main-rule-root>"
+         diec-rquickjs-rule-runtime-spike fixture <main-rule-root>\n       \
+         diec-rquickjs-rule-runtime-spike detect-nintendo \
+         <main-rule-root> <corpus-dir> <baseline-json>"
     );
     ExitCode::from(2)
 }
@@ -429,6 +676,8 @@ fn main() -> ExitCode {
         evaluate_corpus(&roots, true, false)
     } else if command == "fixture" && roots.len() == 1 {
         run_fixture(&roots[0])
+    } else if command == "detect-nintendo" && roots.len() == 3 {
+        run_nintendo_corpus(&roots[0], &roots[1], &roots[2])
     } else {
         return usage();
     };
@@ -446,7 +695,8 @@ fn main() -> ExitCode {
 mod tests {
     use super::{
         NINTENDO_COMPAT_DECLARATION, NINTENDO_RULE_BYTES, NINTENDO_VAR_DECLARATION,
-        apply_compatibility_overlay, collect_rule_files, normalized_path,
+        apply_compatibility_overlay, collect_rule_files, normalized_path, read_unsigned,
+        signature_matches,
     };
     use std::fs;
     use std::path::PathBuf;
@@ -525,5 +775,26 @@ mod tests {
         let error = apply_compatibility_overlay(&path, b"var tp, e;")
             .expect_err("unexpected source identity must be rejected");
         assert!(error.contains("expected 1994 bytes"));
+    }
+
+    #[test]
+    fn nintendo_host_reads_both_endiannesses() {
+        let bytes = [0x12, 0x34, 0x56, 0x78];
+        assert_eq!(read_unsigned(&bytes, 0, 2, true), 0x1234 as f64);
+        assert_eq!(read_unsigned(&bytes, 0, 2, false), 0x3412 as f64);
+        assert_eq!(read_unsigned(&bytes, 0, 4, true), 0x12345678 as f64);
+        assert_eq!(read_unsigned(&bytes, 3, 2, true), 0.0);
+    }
+
+    #[test]
+    fn nintendo_host_matches_only_supported_signatures() {
+        let mut bytes = vec![0_u8; 32];
+        bytes[0..8].copy_from_slice(b"SCE\0\0\0\0\x02");
+        bytes[16..23].copy_from_slice(b"\x7fELF\0\0\x01");
+        assert!(signature_matches(&bytes, "'SCE'00", 0));
+        assert!(signature_matches(&bytes, "0000 0002", 4));
+        assert!(signature_matches(&bytes, "7F 'ELF' .. .. 01", 16));
+        assert!(!signature_matches(&bytes, "0300 0000", 4));
+        assert!(!signature_matches(&bytes, "unsupported", 0));
     }
 }

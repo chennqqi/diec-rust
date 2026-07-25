@@ -108,14 +108,14 @@ JSON decode 的 code point 是 U+014D。差分以 raw bytes/code point 为准，
 ## 与 runtime overlay 的关系
 
 [`rquickjs-rule-runtime-spike.md`](rquickjs-rule-runtime-spike.md) 已证明
-`nintendo-unused-var-tp-v1` 可以让规则在 QuickJS 顶层 eval 成功。本语料把下一
-门禁具体化为 14 个完整结果：
+`nintendo-unused-var-tp-v1` 可以让规则在 QuickJS 顶层 eval 成功，并已用 Rust
+最小 Byte HostApi 让目标 Nintendo detection 在 14 个样本上与 Qt baseline
+逐字段匹配。剩余门禁是：
 
-- overlay 后原样 eval 目标规则；
-- 实现 `X.c/U16/U32/U64/Sz/isHeuristicScan`、`isWithin`、`Hex`、`sOption/outSz`
-  和 result globals；
-- 同 Qt oracle 比较名称、version、info、type、顺序和未命中行为；
-- 随后放入真实 Binary 规则生命周期，保留 EA-XA 等相邻规则结果。
+- 扩大 invalid/heuristic 边界；
+- Qt 6 对照；
+- 放入真实 Binary 规则生命周期，保留 EA-XA 等相邻规则结果；
+- 扩展至完整 HostApi，而不是保留 Nintendo 专项方法集合。
 
 只让目标规则返回正确值仍不能证明完整 Binary rule set 兼容。
 
@@ -125,6 +125,6 @@ JSON decode 的 code point 是 U+014D。差分以 raw bytes/code point 为准，
 - invalid endian、header size、pointer relationship、offset/size 边界。
 - `attr != 0x8000` 和 `fofs/fsz` 的显示/拒绝边界。
 - Qt 6 oracle。
-- QuickJS HostApi 下的真实 detect/result。
+- QuickJS 完整 Binary 生命周期；目标 Nintendo rule 的最小 HostApi detect 已完成。
 - 完整扫描选项矩阵；一次全矩阵运行超过本轮 120 秒执行窗口，未将超时计为行为
   结果。

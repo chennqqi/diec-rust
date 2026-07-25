@@ -12,14 +12,14 @@
   },
   "dependency_footprint": {
     "lockfile_packages": 23,
-    "release_executable_bytes": 1410560,
+    "release_executable_bytes": 1513472,
     "target": "x86_64-pc-windows-msvc",
     "target_packages": 18
   },
   "experiment": {
     "cargo_lock_sha256": "aa7cd4c42e1f3429f45ec31e05e41862abe6156bdbe351eeacc507673f237232",
     "cargo_toml_sha256": "875730b205ca351b4bc0f830a1896fb6ad777c46046e6f26c9c368849614be16",
-    "source_sha256": "c2f7fefddeb2d3df17701d10e69a96930909f1dc1508b2c534e82749b9f6f045",
+    "source_sha256": "347d5e6af0216d5191e702b4f93ac4dc81aa0315a3b6a923f440674e107ee29c",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -56,6 +56,28 @@
     "overlay_applied_count": 1,
     "overlay_id": "nintendo-unused-var-tp-v1",
     "preserves_source_file": true
+  },
+  "nintendo_detect": {
+    "all_match": true,
+    "baseline": "docs/research/data/nintendo-certified-baseline.json",
+    "helpers_evaluated_unchanged": [
+      "_runtime_helpers",
+      "read",
+      "_init"
+    ],
+    "host_methods": [
+      "X.c",
+      "X.U16",
+      "X.U32",
+      "X.U64",
+      "X.Sz",
+      "X.isHeuristicScan",
+      "X.isVerbose",
+      "_setResult"
+    ],
+    "matched_count": 14,
+    "sample_count": 14,
+    "scope": "target Nintendo rule only; not the complete Binary rule set"
   },
   "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
   "schema_version": 1,
