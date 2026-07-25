@@ -38,7 +38,7 @@
 
 ### 设计交付物
 
-- `docs/design/architecture.md`
+- [`docs/design/architecture.md`](docs/design/architecture.md) — Draft
   - Cargo workspace、模块职责、依赖方向和数据流。
   - 可扩展点、资源限制与明确非目标。
 - `docs/design/api.md`

@@ -15,3 +15,5 @@
 
 - [`0001-c-abi-opaque-ownership.md`](0001-c-abi-opaque-ownership.md)：
   C ABI 不透明句柄、配对释放、one-shot 与 reusable scanner（Proposed）。
+- [`0002-layered-workspace.md`](0002-layered-workspace.md)：
+  向内依赖 workspace、ports/adapters 与有界嵌套队列（Proposed）。

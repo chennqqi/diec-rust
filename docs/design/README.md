@@ -4,7 +4,7 @@
 
 Phase 0 计划形成：
 
-- `architecture.md`：workspace、模块边界、依赖方向和数据流。
+- [`architecture.md`](architecture.md)：workspace、模块边界、依赖方向和数据流（Draft）。
 - `api.md`：Rust API、CLI 契约、结果及错误模型。
 - [`c-abi.md`](c-abi.md)：C ABI、所有权、线程安全和静态链接（Draft）。
 - `testing.md`：语料、oracle、差分、fuzz、benchmark 和 CI。
