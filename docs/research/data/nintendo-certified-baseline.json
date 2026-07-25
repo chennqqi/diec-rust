@@ -1,0 +1,104 @@
+{
+  "expected_revision": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "generator": "tools/corpus/generate_nintendo_certified_corpus.py",
+  "oracles": [
+    "diec-rust/upstream-oracle:74eaf505-repro",
+    "diec-rust/upstream-oracle-cmake:74eaf505"
+  ],
+  "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+  "samples": {
+    "ps3-type-1-elf.self": {
+      "detections": [
+        ["format", "Nintend\u014d signed ELF/PRX (.SELF,.SPRX)", "PS3"]
+      ],
+      "stdout_sha256": "7539bc4f70ebea211b01ed9137029b92bf636eaa95ab1d72f286bc0c24e05838"
+    },
+    "ps3-type-1-headerless.self": {
+      "detections": [
+        ["format", "Nintend\u014d signed ELF/PRX, headerless (.SELF,.SPRX)", "PS3"]
+      ],
+      "stdout_sha256": "1c8ec6e268f7f817652e0661979d4726c8c9d51f0796a7ab7fa3e296d8a725be"
+    },
+    "ps3-type-2-revoke-list.self": {
+      "detections": [
+        ["format", "Nintend\u014d signed revoke list (.SRVK)", "PS3"]
+      ],
+      "stdout_sha256": "ca1cbc11a85c5c5888991bf1aa9167114d35141879d02cd0a3e227fb2918fac7"
+    },
+    "ps3-type-3-package.self": {
+      "detections": [
+        ["format", "Nintend\u014d signed package (.SPKG)", "PS3"]
+      ],
+      "stdout_sha256": "4d93d70c1d8e0fbf99e0a9f403e6fff39c02d2bcb489b64878349c2c5d0f655c"
+    },
+    "ps3-type-4-security-policy-profile.self": {
+      "detections": [
+        ["format", "Nintend\u014d signed security policy profile (.SSPP)", "PS3"]
+      ],
+      "stdout_sha256": "faaf7c9bedc5341bccece0666612a595e66588c5d55181ed1c61d2eb997a94f9"
+    },
+    "ps3-type-5-diff.self": {
+      "detections": [
+        ["format", "Nintend\u014d signed diff (.SDIFF)", "PS3"]
+      ],
+      "stdout_sha256": "8b36984146712ebbc33f03bbf13209a4571708b1a4a5395fa77967883e54a886"
+    },
+    "ps3-type-6-param-sfo.self": {
+      "detections": [
+        ["format", "Nintend\u014d signed param.sfo", "PS3"]
+      ],
+      "stdout_sha256": "df2268afa6af5e4b8bacb8e18b26518c3534e77aa8afe73ac06ff12da259d72b"
+    },
+    "vita-type-1-elf.self": {
+      "detections": [
+        ["format", "Nintend\u014d signed ELF/PRX (.SELF,.SPRX)", "PSVita"],
+        ["audio", "Electronic Arts' EA-XA stream (.EXA)", "v0#unk.platform/le"]
+      ],
+      "stdout_sha256": "8c2662e250a54523488d462e7c35299a90431987236914a9adca1c5d301fd45a"
+    },
+    "vita-type-1-headerless.self": {
+      "detections": [
+        ["format", "Nintend\u014d signed ELF/PRX, headerless (.SELF,.SPRX)", "PSVita"],
+        ["audio", "Electronic Arts' EA-XA stream (.EXA)", "v0#unk.platform/le"]
+      ],
+      "stdout_sha256": "565c48e983a9f590cc2564d0e7240b90aa65c32f677c41efe6a54154fee10cad"
+    },
+    "vita-type-2-revoke-list.self": {
+      "detections": [
+        ["format", "Nintend\u014d signed revoke list (.SRVK)", "PSVita"],
+        ["audio", "Electronic Arts' EA-XA stream (.EXA)", "v0#unk.platform/le"]
+      ],
+      "stdout_sha256": "5b7a742bbf624342e7b82cf9c62f5791dca5133e6bd51b5b08986cfd776cb3da"
+    },
+    "vita-type-3-package.self": {
+      "detections": [
+        ["format", "Nintend\u014d signed package (.SPKG)", "PSVita"],
+        ["audio", "Electronic Arts' EA-XA stream (.EXA)", "v0#unk.platform/le"]
+      ],
+      "stdout_sha256": "053dcde6763d5f3a3c2576c1c7a2730de21a0504c40c0ca2f505b5b34f2b2d23"
+    },
+    "vita-type-4-security-policy-profile.self": {
+      "detections": [
+        ["format", "Nintend\u014d signed security policy profile (.SSPP)", "PSVita"],
+        ["audio", "Electronic Arts' EA-XA stream (.EXA)", "v0#unk.platform/le"]
+      ],
+      "stdout_sha256": "97f4d153a99822c66a7cc0dbca5a8efaaeae80eff42abee8cdad29e198651322"
+    },
+    "vita-type-5-diff.self": {
+      "detections": [
+        ["format", "Nintend\u014d signed diff (.SDIFF)", "PSVita"],
+        ["audio", "Electronic Arts' EA-XA stream (.EXA)", "v0#unk.platform/le"]
+      ],
+      "stdout_sha256": "64f9e0ce6bd697bc42605e03960b6d8d9792b1f2b19fe80da190810fe8cddd39"
+    },
+    "vita-type-6-param-sfo.self": {
+      "detections": [
+        ["format", "Nintend\u014d signed param.sfo", "PSVita"],
+        ["audio", "Electronic Arts' EA-XA stream (.EXA)", "v0#unk.platform/le"]
+      ],
+      "stdout_sha256": "40729c0cee2c5a19014207f99804a312eb62ca2c192d62b0ddc97e2e777e4af4"
+    }
+  },
+  "schema_version": 1,
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

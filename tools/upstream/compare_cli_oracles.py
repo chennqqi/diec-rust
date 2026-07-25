@@ -917,6 +917,8 @@ def main() -> int:
                 "sha256": sample["sha256"],
                 "left": left.summary(),
                 "right": right.summary(),
+                "left_detect_tree": json_detect_tree(left.stdout),
+                "right_detect_tree": json_detect_tree(right.stdout),
                 "differences": differences,
             }
             failures.extend(f"corpus.{name}.{item}" for item in differences)

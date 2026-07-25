@@ -1,0 +1,91 @@
+{
+  "generator": "tools/corpus/generate_nintendo_certified_corpus.py",
+  "license": "project-generated; no third-party sample bytes",
+  "samples": [
+    {
+      "intended_format": "PS3 certified type 1 with ELF header",
+      "name": "ps3-type-1-elf.self",
+      "sha256": "201eaef05a793f1877a7b4a00bf5662cc817a750186783d282db49d442e7c4ed",
+      "size": 512
+    },
+    {
+      "intended_format": "PS3 certified type 1 without ELF header",
+      "name": "ps3-type-1-headerless.self",
+      "sha256": "fc72d1a0a7efd41014b1583cb376766a36874aeb1da16b2c021be1d66bd53845",
+      "size": 512
+    },
+    {
+      "intended_format": "PS3 certified type 2",
+      "name": "ps3-type-2-revoke-list.self",
+      "sha256": "499c269ca6a0be20f48480b1ed766e5d8f448c5a4a8facdff9335b7c1b0a994e",
+      "size": 128
+    },
+    {
+      "intended_format": "PS3 certified type 3",
+      "name": "ps3-type-3-package.self",
+      "sha256": "fa05383c419c5b3a2cfcc38ce0d3435e82dc136751d4069bcde88d8d754ac2c8",
+      "size": 128
+    },
+    {
+      "intended_format": "PS3 certified type 4",
+      "name": "ps3-type-4-security-policy-profile.self",
+      "sha256": "a1a4d77d71a88104416d737a730dd2ddecf2fc3e187e55c12e9a27454797a66c",
+      "size": 128
+    },
+    {
+      "intended_format": "PS3 certified type 5",
+      "name": "ps3-type-5-diff.self",
+      "sha256": "325fe6273da057457db038ef03102f0eba5a538a62bfd885da5b9a34ee761d1e",
+      "size": 128
+    },
+    {
+      "intended_format": "PS3 certified type 6",
+      "name": "ps3-type-6-param-sfo.self",
+      "sha256": "9e71d4bc212bc2597e30fabc35f3e4f5efc726a034c7c41617d3ae11350d144c",
+      "size": 128
+    },
+    {
+      "intended_format": "PS Vita certified type 1 with ELF header",
+      "name": "vita-type-1-elf.self",
+      "sha256": "e2e00abc2fa4b31779374f02ae4c3c37685db97a7c9df061539e1181ef3c8bac",
+      "size": 512
+    },
+    {
+      "intended_format": "PS Vita certified type 1 without ELF header",
+      "name": "vita-type-1-headerless.self",
+      "sha256": "03569f9737e73ed30802848a957ed08d862e410ade04dca6f0ff76eab0f0ebb8",
+      "size": 512
+    },
+    {
+      "intended_format": "PS Vita certified type 2",
+      "name": "vita-type-2-revoke-list.self",
+      "sha256": "14a694572e64cc29ef73f2a550e7e77a8e820bee30f66ca41dcc7c3cfd9b4cf9",
+      "size": 128
+    },
+    {
+      "intended_format": "PS Vita certified type 3",
+      "name": "vita-type-3-package.self",
+      "sha256": "f2666b8601030f595337cceb57add45995c9dc235e77e8d293997685daa1a5d6",
+      "size": 128
+    },
+    {
+      "intended_format": "PS Vita certified type 4",
+      "name": "vita-type-4-security-policy-profile.self",
+      "sha256": "153e8416959c37156857b55cce8f1373b69e7a5c31eaebe8a5f5a94ab2f19911",
+      "size": 128
+    },
+    {
+      "intended_format": "PS Vita certified type 5",
+      "name": "vita-type-5-diff.self",
+      "sha256": "dae9c36f07d015d00ae29f25652ef070c7bff88840386530dec2185a2ee96d36",
+      "size": 128
+    },
+    {
+      "intended_format": "PS Vita certified type 6",
+      "name": "vita-type-6-param-sfo.self",
+      "sha256": "c80469649835dfb1401cdaab25fcd3d46ef547de61d05719418400f17dd7a3ee",
+      "size": 128
+    }
+  ],
+  "schema_version": 1
+}

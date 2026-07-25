@@ -190,7 +190,9 @@ var     e;
 这个 overlay 删除未使用的 function-scoped `var tp`，没有改 lexical `const tp`
 及后续引用。它仍只是语法/顶层 eval 证据。关闭兼容门禁还需要：
 
-- 生成能触发各 `switch(tp)` 分支的安全输入；
+- 使用已建立的
+  [`Nintendo Certified File 行为基线`](nintendo-certified-rule.md)
+  覆盖各 `switch(tp)` 分支；
 - 在固定 Qt 5/Qt 6 oracle 和 QuickJS host adapter 中比较 detect/result；
 - 证明 source location/diagnostic mapping 在等长 overlay 后保持准确；
 - 验证真实规则加载生命周期中 overlay 只应用一次；
