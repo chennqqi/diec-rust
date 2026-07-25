@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import configparser
 import re
 import subprocess
 import sys
@@ -96,6 +97,30 @@ def find_subtree_record(repo: Path, local_path: str) -> SubtreeRecord | None:
     return None
 
 
+def parse_gitlink_tree(output: str) -> dict[str, str]:
+    gitlinks: dict[str, str] = {}
+    for line in output.splitlines():
+        match = re.fullmatch(r"160000 commit ([0-9a-f]{40})\t(.+)", line)
+        if match:
+            commit, path = match.groups()
+            gitlinks[path] = commit
+    return gitlinks
+
+
+def parse_gitmodules(output: str) -> dict[str, str]:
+    parser = configparser.ConfigParser(interpolation=None)
+    parser.read_string(output)
+    repositories: dict[str, str] = {}
+    for section in parser.sections():
+        if not section.startswith('submodule "'):
+            continue
+        path = parser.get(section, "path", fallback="").strip()
+        repository = parser.get(section, "url", fallback="").strip()
+        if path and repository:
+            repositories[path] = repository
+    return repositories
+
+
 def validate_lock_data(data: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     if data.get("schema") != 1:
@@ -111,6 +136,23 @@ def validate_lock_data(data: dict[str, Any]) -> list[str]:
             errors.append(f"baseline.{field} is required")
     if baseline.get("commit") and not SHA1_RE.fullmatch(str(baseline["commit"])):
         errors.append("baseline.commit must be a lowercase 40-character SHA-1")
+
+    gitlinks = data.get("gitlink")
+    if not isinstance(gitlinks, dict) or not gitlinks:
+        errors.append("gitlink table is required")
+        gitlinks = {}
+    for path, gitlink in gitlinks.items():
+        prefix = f"gitlink.{path}"
+        if not isinstance(gitlink, dict):
+            errors.append(f"{prefix} must be an inline table")
+            continue
+        if not gitlink.get("repository"):
+            errors.append(f"{prefix}.repository is required")
+        commit = str(gitlink.get("commit", ""))
+        if not commit:
+            errors.append(f"{prefix}.commit is required")
+        elif not SHA1_RE.fullmatch(commit):
+            errors.append(f"{prefix}.commit must be a lowercase 40-character SHA-1")
 
     components = data.get("component")
     if not isinstance(components, list) or not components:
@@ -139,6 +181,15 @@ def validate_lock_data(data: dict[str, Any]) -> list[str]:
 
         materialization = component.get("materialization")
         local_path = component.get("local_path")
+        gitlink_path = str(component.get("gitlink_path", ""))
+        locked_gitlink = gitlinks.get(gitlink_path)
+        if gitlink_path and locked_gitlink is None:
+            errors.append(f"{prefix}.gitlink_path is not present in gitlink table")
+        elif isinstance(locked_gitlink, dict):
+            if component.get("repository") != locked_gitlink.get("repository"):
+                errors.append(f"{prefix}.repository differs from gitlink table")
+            if component.get("commit") != locked_gitlink.get("commit"):
+                errors.append(f"{prefix}.commit differs from gitlink table")
         if materialization == "subtree-squash" and not local_path:
             errors.append(f"{prefix}.local_path is required for subtree-squash")
         if local_path:
@@ -148,6 +199,62 @@ def validate_lock_data(data: dict[str, Any]) -> list[str]:
             seen_local_paths.add(local_path)
 
     return errors
+
+
+def verify_gitlink_inventory(
+    repo: Path,
+    reporter: Reporter,
+    *,
+    baseline_commit: str,
+    locked_gitlinks: dict[str, dict[str, str]],
+) -> None:
+    try:
+        tree_gitlinks = parse_gitlink_tree(
+            run_git(repo, "ls-tree", baseline_commit)
+        )
+        module_repositories = parse_gitmodules(
+            run_git(repo, "show", f"{baseline_commit}:.gitmodules")
+        )
+    except (VerificationError, configparser.Error) as error:
+        reporter.fail(f"gitlink inventory: {error}")
+        return
+
+    locked_paths = set(locked_gitlinks)
+    tree_paths = set(tree_gitlinks)
+    module_paths = set(module_repositories)
+    if locked_paths == tree_paths == module_paths:
+        reporter.pass_(f"gitlink inventory is complete: {len(locked_paths)} entries")
+    else:
+        for path in sorted(tree_paths - locked_paths):
+            reporter.fail(f"gitlink inventory: baseline path is not locked: {path}")
+        for path in sorted(locked_paths - tree_paths):
+            reporter.fail(f"gitlink inventory: lock path is not in baseline tree: {path}")
+        for path in sorted(module_paths - tree_paths):
+            reporter.fail(f"gitlink inventory: .gitmodules path is not a gitlink: {path}")
+        for path in sorted(tree_paths - module_paths):
+            reporter.fail(f"gitlink inventory: gitlink is absent from .gitmodules: {path}")
+
+    commit_mismatches = 0
+    repository_mismatches = 0
+    for path in sorted(locked_paths & tree_paths & module_paths):
+        locked = locked_gitlinks[path]
+        if locked["commit"] != tree_gitlinks[path]:
+            commit_mismatches += 1
+            reporter.fail(
+                f"gitlink inventory: {path} commit is {tree_gitlinks[path]}, "
+                f"lock expects {locked['commit']}"
+            )
+        if locked["repository"] != module_repositories[path]:
+            repository_mismatches += 1
+            reporter.fail(
+                f"gitlink inventory: {path} repository is "
+                f"{module_repositories[path]}, lock expects {locked['repository']}"
+            )
+
+    if not commit_mismatches and locked_paths == tree_paths:
+        reporter.pass_("all locked gitlink commits match the baseline tree")
+    if not repository_mismatches and locked_paths == module_paths:
+        reporter.pass_("all locked repositories match baseline .gitmodules")
 
 
 def load_lock(lock_path: Path) -> dict[str, Any]:
@@ -227,6 +334,12 @@ def verify_repository(repo: Path, lock_path: Path, data: dict[str, Any]) -> Repo
         label=str(baseline["name"]),
         commit=baseline_commit,
         local_path=str(baseline["local_path"]),
+    )
+    verify_gitlink_inventory(
+        repo,
+        reporter,
+        baseline_commit=baseline_commit,
+        locked_gitlinks=data["gitlink"],
     )
 
     for component in data["component"]:

@@ -43,6 +43,29 @@ class ParseSubtreeRecordsTests(unittest.TestCase):
         self.assertEqual(VERIFY_UPSTREAM.parse_subtree_records(output), [])
 
 
+class ParseGitMetadataTests(unittest.TestCase):
+    def test_parses_direct_gitlinks(self) -> None:
+        output = (
+            "100644 blob " + "a" * 40 + "\tREADME.md\n"
+            "160000 commit " + "b" * 40 + "\tchild\n"
+        )
+        self.assertEqual(
+            VERIFY_UPSTREAM.parse_gitlink_tree(output),
+            {"child": "b" * 40},
+        )
+
+    def test_parses_gitmodule_paths_and_repositories(self) -> None:
+        output = (
+            '[submodule "child"]\n'
+            "\tpath = child\n"
+            "\turl = https://example.invalid/child.git\n"
+        )
+        self.assertEqual(
+            VERIFY_UPSTREAM.parse_gitmodules(output),
+            {"child": "https://example.invalid/child.git"},
+        )
+
+
 class ValidateLockTests(unittest.TestCase):
     def valid_lock(self) -> dict:
         return {
@@ -53,6 +76,12 @@ class ValidateLockTests(unittest.TestCase):
                 "commit": "a" * 40,
                 "local_path": "upstream/parent",
                 "materialization": "subtree-squash",
+            },
+            "gitlink": {
+                "child": {
+                    "repository": "https://example.invalid/child.git",
+                    "commit": "b" * 40,
+                }
             },
             "component": [
                 {
@@ -72,6 +101,18 @@ class ValidateLockTests(unittest.TestCase):
             [],
         )
 
+    def test_rejects_missing_gitlink_inventory(self) -> None:
+        data = self.valid_lock()
+        del data["gitlink"]
+
+        errors = VERIFY_UPSTREAM.validate_lock_data(data)
+
+        self.assertIn("gitlink table is required", errors)
+        self.assertIn(
+            "component[0].gitlink_path is not present in gitlink table",
+            errors,
+        )
+
     def test_rejects_invalid_sha_and_missing_subtree_path(self) -> None:
         data = self.valid_lock()
         data["component"][0]["commit"] = "not-a-sha"
@@ -87,6 +128,14 @@ class ValidateLockTests(unittest.TestCase):
             "component[0].local_path is required for subtree-squash",
             errors,
         )
+
+    def test_rejects_component_that_differs_from_gitlink_inventory(self) -> None:
+        data = self.valid_lock()
+        data["gitlink"]["child"]["commit"] = "c" * 40
+
+        errors = VERIFY_UPSTREAM.validate_lock_data(data)
+
+        self.assertIn("component[0].commit differs from gitlink table", errors)
 
     def test_rejects_duplicate_component_names_and_paths(self) -> None:
         data = self.valid_lock()

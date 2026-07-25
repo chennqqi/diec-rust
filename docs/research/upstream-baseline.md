@@ -81,13 +81,15 @@ XDisasmCore XRegionsWidget XStaticUnpacker XPEID build_tools peid_widget
 | `XFileInfo` | `88b8e2821f86d309f141b38c4d46fa0b000aa74b` | `--info` 和 `--struct` 信息输出 |
 | `XEntropyWidget` | `d2bf95b1019e21e5a5ae71f55fcd6c12349c3030` | `--entropy` 的非 UI 处理代码 |
 
-完整 gitlink SHA 可由以下命令重复生成：
+全部 58 个直接 gitlink 的 repository URL 和 commit SHA 已记录在
+[`../../upstream/components.lock.toml`](../../upstream/components.lock.toml) 的
+`[gitlink]` 表中，可通过以下命令与基线重复核对：
 
 ```sh
-git -C DIE-engine submodule status
+python3 tools/verify_upstream.py
 ```
 
-在设计评审前应将完整、递归的机器可读 submodule manifest 纳入调研附件，避免只依赖本表的人工分类。
+该清单覆盖主仓库的直接 submodule。各组件自身的递归 submodule 尚待在物化组件和许可证审计时继续展开。
 
 ## 构建系统静态分析
 
@@ -122,7 +124,7 @@ git -C DIE-engine submodule status
 
 ## 尚未完成
 
-- 完整 `--recursive` submodule 初始化与递归 SHA manifest。
+- 各直接组件内部的递归 submodule SHA manifest。
 - 三个平台的可重复构建和运行记录。
 - release workflow、预编译包与源码构建之间的数据资产差异。
 - 所有 submodule 和规则文件的许可证审计。

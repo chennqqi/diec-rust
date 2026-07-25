@@ -4,7 +4,7 @@
 
 - `DIE-engine/`：主仓库 squash subtree。
 - `Detect-It-Easy/`：规则和发布数据 sibling squash subtree。
-- `components.lock.toml`：基线及关键组件 SHA、角色和物化方式。
+- `components.lock.toml`：全部 58 个直接 gitlink，以及关键组件的角色和物化方式。
 
 离线验证：
 
@@ -21,7 +21,8 @@ python tools/verify_upstream.py
 校验器验证：
 
 - lock 格式及 SHA。
-- component SHA 与 DIE-engine gitlink 一致。
+- lock、DIE-engine gitlink 与 `.gitmodules` 的路径集合完全一致。
+- 全部 gitlink commit 和 repository URL 一致。
 - subtree tree 与固定上游 commit 一致。
 - `git-subtree-split` 元数据。
 - 规则及相关目录 tree SHA。

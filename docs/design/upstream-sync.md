@@ -78,26 +78,20 @@ DIE-engine 使用 58 个 git submodule。Git subtree 导入主仓库时：
 
 ## 组件锁定清单
 
-后续同步工具应生成机器可读 lock manifest，至少记录：
+机器可读 lock manifest 分为两层：
 
 ```text
-component
-repository URL
-commit SHA
-upstream gitlink path
-content role
-license
-local materialization strategy
+gitlink inventory: upstream path + repository URL + commit SHA
+component policy: gitlink path + content role + license + local materialization strategy
 ```
-
-Phase 0 期间继续以 [`../research/upstream-baseline.md`](../research/upstream-baseline.md) 记录核心组件 SHA。正式同步工具建立后，文档引用生成的 lock manifest，不再人工重复全部 SHA。
 
 当前机器可读清单位于 [`../../upstream/components.lock.toml`](../../upstream/components.lock.toml)。其中：
 
+- `[gitlink]` 完整锁定 baseline 的全部 58 个直接 submodule，包括上游路径、repository URL 和 commit SHA。
+- `[[component]]` 只为已物化或当前调研直接涉及的组件补充角色、许可证和物化策略，不替代完整 gitlink 清单。
 - `subtree-squash` 表示内容已进入本仓库。
 - `external-research-checkout` 表示目前只锁定 SHA，内容尚未物化。
 - 每个 component commit 必须与 baseline commit 中对应 `gitlink_path` 的 gitlink SHA 一致。
-- 清单当前优先覆盖无 GUI CLI 调研直接涉及的组件；同步工具完成后扩展到全部 58 个直接 submodule。
 
 离线一致性校验：
 
@@ -105,7 +99,7 @@ Phase 0 期间继续以 [`../research/upstream-baseline.md`](../research/upstrea
 python3 tools/verify_upstream.py
 ```
 
-校验器不会 fetch 或修改工作树。它检查 lock、DIE-engine gitlink、subtree tree、`git-subtree-split` 以及规则目录 tree；失败时返回非零退出码。工具当前要求 Python 3.11+（使用标准库 `tomllib`），未来可在 Rust workspace 建立后迁移为 `xtask`。
+校验器不会 fetch 或修改工作树。它检查 lock 与 baseline 顶层 gitlink 及 `.gitmodules` 是否形成完全相同的 58 项集合，并验证全部 commit 和 repository URL；同时检查 subtree tree、`git-subtree-split` 以及规则目录 tree。失败时返回非零退出码。工具当前要求 Python 3.11+（使用标准库 `tomllib`），未来可在 Rust workspace 建立后迁移为 `xtask`。
 
 ## 更新流程
 
