@@ -48,7 +48,7 @@
   - ABI 版本、导出函数和结构布局。
   - 不透明句柄状态机、内存所有权和线程安全。
   - panic 隔离、allocator 和静态链接策略。
-- `docs/design/testing.md`
+- [`docs/design/testing.md`](docs/design/testing.md) — Draft
   - 测试语料、上游 oracle 和差分算法。
   - 已知差异 allowlist 规则。
   - fuzz、benchmark 和 CI 平台矩阵。

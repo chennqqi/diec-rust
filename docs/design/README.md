@@ -7,7 +7,7 @@ Phase 0 计划形成：
 - [`architecture.md`](architecture.md)：workspace、模块边界、依赖方向和数据流（Draft）。
 - [`api.md`](api.md)：Rust API、CLI 契约、结果及错误模型（Draft）。
 - [`c-abi.md`](c-abi.md)：C ABI、所有权、线程安全和静态链接（Draft）。
-- `testing.md`：语料、oracle、差分、fuzz、benchmark 和 CI。
+- [`testing.md`](testing.md)：语料、oracle、差分、fuzz、benchmark 和 CI（Draft）。
 - [`upstream-sync.md`](upstream-sync.md)：DIE-engine subtree 和组件锁定策略（Accepted）。
 - [`decisions/`](decisions/)：重大决策的 ADR。
 

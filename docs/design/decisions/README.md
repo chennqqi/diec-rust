@@ -19,3 +19,5 @@
   向内依赖 workspace、ports/adapters 与有界嵌套队列（Proposed）。
 - [`0003-dual-output-contract.md`](0003-dual-output-contract.md)：
   分离上游兼容输出与 canonical API/CLI 输出（Proposed）。
+- [`0004-evidence-bound-difference-waivers.md`](0004-evidence-bound-difference-waivers.md)：
+  默认拒绝、精确 fingerprint 且有期限的兼容差异 waiver（Proposed）。

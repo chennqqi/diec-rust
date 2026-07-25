@@ -1,0 +1,572 @@
+# 测试、差分与发布验证设计
+
+Status: Draft
+
+Last updated: 2026-07-26
+
+## 1. 状态与证据
+
+本文定义 Phase 0 的测试设计，不表示当前兼容性已经得到证明。正式实现开始后，
+测试工具和 manifest 可以演进，但不得削弱原始证据保存、默认拒绝差异、语料溯源、
+资源安全和跨平台门禁。
+
+依据：
+
+- [`upstream-baseline.md`](../research/upstream-baseline.md) 与
+  [`upstream-build-baseline.md`](../research/upstream-build-baseline.md)：
+  固定上游、构建环境和 binary 证据；
+- [`upstream-cmake-differential.md`](../research/upstream-cmake-differential.md)：
+  qmake/CMake 双 oracle；
+- [`behavior-baseline.md`](../research/behavior-baseline.md)：
+  生成语料、原始输出哈希和扫描矩阵；
+- [`cli-path-behavior.md`](../research/cli-path-behavior.md)、
+  [`cli-special-modes.md`](../research/cli-special-modes.md) 与
+  [`database-error-behavior.md`](../research/database-error-behavior.md)：
+  CLI、特殊模式和失败行为；
+- [`nested-scan-behavior.md`](../research/nested-scan-behavior.md)：
+  resource/overlay/archive harness；
+- [`rule-compatibility.md`](../research/rule-compatibility.md)：
+  规则语法、host API 和结果要求；
+- [`c-static-link-spike.md`](../research/c-static-link-spike.md)：
+  C static linking、生命周期和 panic 验证；
+- [`architecture.md`](architecture.md)、[`api.md`](api.md) 和
+  [`c-abi.md`](c-abi.md)：被验证的架构及契约。
+
+已存在的 `tools/corpus/`、`tools/upstream/`、`tools/tests/` 和
+`docs/research/data/*.json|toml` 是 Phase 0 基础设施，不等于完整测试覆盖。
+
+## 2. 质量目标
+
+测试必须分别证明：
+
+1. **能力完整性**：能力矩阵中的每个承诺都有至少一个 positive 和必要的 negative
+   case。
+2. **上游兼容性**：固定输入、规则、选项和平台下，可观察结果达到声明的兼容级别。
+3. **规则完整性**：固定规则集全部被发现、解析、加载和执行；unknown syntax 不会
+   静默消失。
+4. **内存与资源安全**：畸形输入不 panic、越界、无限循环或无界分配。
+5. **确定性**：相同 case 重复执行和并行执行产生相同 canonical bytes。
+6. **ABI 正确性**：layout、ownership、线程、panic 和语言绑定符合 C ABI。
+7. **可移植性**：目标平台上构建、测试及可观察平台差异均有证据。
+8. **性能可解释性**：优化和回归由稳定 benchmark/profiling 证明。
+
+测试通过不能只表示“进程退出 0”。测试必须检查与该能力相关的结构、顺序、错误、
+资源使用和 provenance。
+
+## 3. 测试层级
+
+| 层级 | 主要对象 | 典型断言 |
+| --- | --- | --- |
+| Unit | checked input、parser helper、budget、arena、排序 | 边界值、错误类型、不变量 |
+| Property | offset/length、round-trip、排序、预算 | 任意输入满足代数/安全性质 |
+| Format integration | 单个格式 module + fixture | probe、字段、截断、unsupported |
+| Rule conformance | parser/runtime/HostApi | 全库覆盖、生命周期、函数与异常 |
+| Engine integration | scan pipeline/work queue | tree、顺序、partial、取消、limits |
+| Output golden | canonical/legacy renderer | schema、逐字节、escaping、稳定顺序 |
+| CLI system | binary + database + filesystem | args、路径、stdout/stderr、exit |
+| Differential | Rust 与固定 upstream oracle | raw 与 semantic report |
+| FFI/language | staticlib + C/Go/Python | layout、ownership、thread、panic |
+| Fuzz | parser/runtime host/engine/FFI | no crash、no hang、bounded allocation |
+| Performance | database/scan/output/end-to-end | latency、throughput、peak RSS、size |
+
+低层 fake 不能代替高层真实规则和真实 parser 的 system test。每个缺陷修复先增加能
+失败的最小回归用例，再修复并将用例保留。
+
+## 4. 能力追踪
+
+能力矩阵为每个条目分配稳定 `CAP-*` 标识，例如：
+
+```text
+CAP-CLI-INPUT-SINGLE
+CAP-CLI-PATH-DIRECTORY
+CAP-FORMAT-PE32
+CAP-RULE-HOST-READ-U32
+CAP-NESTED-RESOURCE
+CAP-ABI-C-LIFETIME
+```
+
+测试 case manifest 的 `capabilities` 是非空数组。CI 生成 traceability report：
+
+- capability -> source evidence；
+- capability -> Rust tests；
+- capability -> oracle/differential cases；
+- capability -> 支持平台；
+- capability -> unresolved gaps/waivers。
+
+`Observed` 能力没有 Rust case、或已承诺能力只在 mock 中覆盖时，Phase 对应门禁失败。
+新增能力必须先更新矩阵和 case，再宣称支持。
+
+## 5. Case 身份与 manifest
+
+每个可重复 case 使用稳定 ID，不依赖测试函数名：
+
+```json
+{
+  "schema": 1,
+  "id": "cli.scan.minimal-pdf.json.default",
+  "capabilities": ["CAP-CLI-INPUT-SINGLE", "CAP-FORMAT-PDF"],
+  "input": {
+    "manifest": "baseline-corpus.json",
+    "entry": "minimal.pdf",
+    "sha256": "..."
+  },
+  "database": {
+    "component": "Detect-It-Easy",
+    "commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6"
+  },
+  "upstream": {
+    "commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "oracle": "cmake-qt5"
+  },
+  "args": ["--json", "{input}"],
+  "environment": {"LC_ALL": "C", "TZ": "UTC"},
+  "expected_profile": "Exact"
+}
+```
+
+manifest 规则：
+
+- ID 全局唯一且一旦发布不复用；语义变化创建新 ID/version。
+- input、database、binary、container/Dockerfile 和 generator 都用 SHA-256 或
+  commit 标识。
+- argv 是数组，不保存 shell command string。
+- cwd、locale、timezone、platform、architecture 和 path mapping 显式记录。
+- 未列入 allowlist 的环境变量不传入 oracle。
+- case 不引用开发者绝对路径、当前时间或“latest”。
+- manifest schema 有 JSON Schema 和拒绝未知字段的 validator。
+
+测试开始前验证全部 identity；不匹配时是 infrastructure failure，不能运行后再把
+新输出当作 baseline。
+
+## 6. 语料分类与来源
+
+语料分为：
+
+### Tier A：项目生成
+
+首选。生成器只用代码内常量或已验证 Tier A 输入，写出 deterministic manifest。
+现有 baseline、path、database 和 nested generators 属于该层。测试要求：
+
+- 两次生成逐字节相同；
+- 目录无额外文件、symlink 或 path escape；
+- 每个文件 size/SHA-256 与版本化 manifest 一致；
+- generator 自身 hash/version 进入运行报告。
+
+### Tier B：可公开再分发的良性语料
+
+只在生成器无法表达真实格式边界时使用。每个样本记录来源 URL、下载日期、上游
+版本、许可证、归属、原始/仓库 hash 和最小化过程。导入前完成许可证评审。
+
+### Tier C：隔离/受限语料
+
+恶意、客户、来源不明或不可再分发样本不提交到 Git。隔离系统只保存 hash inventory
+和访问策略，CI 使用受控 runner，artifact 禁止上传原始 bytes。测试报告用 opaque
+sample ID 和 hash，不含客户/本机路径。
+
+任意 fuzz crash 如含第三方字节，先最小化并完成来源审查；不能合法提交时保存
+生成 recipe 或受限 hash。
+
+## 7. 上游 oracle
+
+primary oracle 固定为官方 CMake 路径构建的 upstream CLI；qmake oracle 用于发现
+构建系统/Qt 差异。两者都必须固定：
+
+- DIE-engine commit 和全部 gitlinks；
+- Detect-It-Easy rules commit；
+- base image digest、Dockerfile hash、工具链/包 inventory；
+- binary hash、link metadata 和启动命令。
+
+现有 `compare_cli_oracles.py` 在 Phase 1 扩展为可比较 upstream 与 Rust binary，
+但不得让 Rust 进程参与生成 upstream expected 值。archive-only engine 能力继续
+使用固定 harness；harness 源码/binary hash 是 case identity 的组成部分，并与发布
+CLI 做无 archive flag 的等价自检。
+
+oracle image 只读挂载语料，禁用网络，设置 CPU/memory/pid/time limits。每个 case
+在独立临时目录执行；timeout 后终止整个 process tree。oracle crash、timeout 或
+identity mismatch 是 `ORACLE_ERROR`，不是 Rust pass。
+
+升级上游时创建新的 baseline namespace；旧 baseline 不就地覆盖。先运行
+upstream-old vs upstream-new 报告，再决定 Rust compatibility target。
+
+## 8. 原始执行记录
+
+每次 system/differential 执行保存：
+
+- run/case/schema version；
+- source、rules、binary、container 和 generator identities；
+- platform、architecture、toolchain、locale/timezone；
+- argv、受控 environment 和逻辑 cwd；
+- exit reason/code、signal/exception、timeout 和 wall duration；
+- stdout/stderr 原始 bytes 的 SHA-256、length 和 artifact reference；
+- parsed output 或 parse failure；
+- peak RSS/commit、CPU time 和预算计数（可获得时）；
+- harness/tool version。
+
+stdout/stderr 是 byte stream，不先 decode；小型基线可以直接保存，较大内容使用
+content-addressed artifact。报告时间戳不参与 equality。任何 sanitizer/runtime
+日志都作为独立 stream，不能混入程序 stdout。
+
+CI 失败报告默认显示结构化 diff 和有限上下文，不把受限语料、全部二进制或巨量
+输出写入日志。
+
+## 9. 差分算法
+
+差分按固定顺序执行：
+
+1. 验证 case、输入、数据库和 oracle identity。
+2. 在等价隔离环境运行 upstream，保存 raw record。
+3. 运行 Rust，保存 raw record。
+4. 比较 termination：exit/signal/timeout。
+5. 对 legacy profile 逐字节比较 stdout 和 stderr。
+6. 独立解析两侧已声明格式；parse failure 本身是结果。
+7. 投影为 versioned semantic model。
+8. 按字段、数组顺序和 tree relation 比较。
+9. 应用精确 waiver，生成 applied/unmatched/stale 清单。
+10. 输出 machine-readable report，保留两侧 raw hashes。
+
+semantic model 至少比较：
+
+- 根类型、format candidates 和 all-types 顺序；
+- detection 的 type/name/version/info/display、heuristic/unknown；
+- rule identity/priority（上游能观察时）；
+- parent/child、file-part、offset、size 和 child order；
+- script/parser/database errors 的类型、位置、规则和顺序；
+- handlers/debug/profiling（启用相应模式时）；
+- entropy/info/struct 的字段、数值和顺序；
+- CLI path expansion、filename prefix、stdout/stderr 与 exit；
+- completion/limit/cancel metadata。
+
+数组默认有序比较。只有源码或实验明确证明集合语义的字段才可先按冻结 key 排序。
+不能用“排序后相同”隐藏上游优先级差异。
+
+## 10. 规范化
+
+原始记录永不修改；规范化产生新的派生 artifact，并记录 normalizer 名称、版本和
+输入/输出 hash。
+
+允许候选仅包括：
+
+- 已证明无语义的固定临时根目录替换为 token；
+- 明确标为 non-canonical 的 wall-clock/profile timing；
+- 平台 oracle 已证明不同但等价的 path separator/line ending；
+- 上游生成且无业务语义的地址或随机标识（目前尚未批准任何此类字段）。
+
+禁止规范化：
+
+- detection/tree/array 顺序；
+- rule 字符串、拼写、大小写或空白；
+- offset、size、file-part、parent relation；
+- unknown、error、exit code 或 missing field；
+- 浮点精度，除非专项实验冻结 tolerance；
+- 把 crash、timeout、invalid JSON 或 unsupported 转成空成功。
+
+normalizer 的每条变换有 unit/golden test。新增变换按兼容策略变更评审。
+
+## 11. 差异分类与 waiver
+
+未匹配差异默认失败。分类采用 `Exact`、`Semantic`、`SafetyDeviation` 和
+`Unsupported`，含义与 [`api.md`](api.md) 一致。
+
+waiver 是精确、有期限的审计记录，不是宽泛 allowlist。格式至少包含：
+
+```toml
+id = "DIFF-0001"
+status = "proposed"
+case_ids = ["cli.path.symlink-cycle"]
+platforms = ["linux-x86_64"]
+upstream_commit = "74eaf505c250ab47e709024e9dc41657cd8f2254"
+rust_schema = 1
+json_paths = ["/items/0/error/code"]
+classification = "SafetyDeviation"
+evidence = "docs/research/..."
+decision = "docs/design/decisions/....md"
+owner = "compatibility"
+expires = "before-v1.0"
+removal_condition = "..."
+```
+
+约束：
+
+- 不允许 `*` case、全部平台、整份 stdout 或根 JSON path 的 blanket waiver。
+- 必须固定 upstream/schema/platform 和精确 case/field。
+- 必须包含原始两侧 hash/diff fingerprint，防止差异扩大后仍匹配。
+- `SafetyDeviation` 必须链接 ADR、威胁和回归测试。
+- `Unsupported` 必须有 roadmap phase 和实现退出条件。
+- crash、memory safety、data race、panic、hang、unbounded allocation、silent
+  unknown syntax 和 ABI UB 永远不可 waiver。
+- expired、unmatched 或意外不再需要的 waiver 都使 CI 失败。
+- waiver 增改要求 compatibility owner review。
+
+该策略由 [`ADR 0004`](decisions/0004-evidence-bound-difference-waivers.md) 记录。
+
+## 12. Unit、property 与 integration
+
+最低测试要求：
+
+- checked input：`0`、边界、`u64::MAX`、checked add/mul、short read、32-bit
+  `usize` 转换和 allocation failure；
+- parsers：每个字段的最小合法、截断、冲突长度、重叠、极大计数和 unsupported；
+- budget：`limit-1/limit/limit+1`、子任务累计、diagnostic cap 和 queue cap；
+- arena：parent/child 一致、stable ID、无 cycle 和 deterministic finalize；
+- rules：发现/排序/init/include、全部语法节点、host API 类型/边界及异常；
+- engine：candidate 顺序、all-types、unknown、heuristic、嵌套、partial 和 cancel；
+- output：UTF-8 escaping、整数、float、optional/null、key/array order；
+- database：三层顺序、空/缺失/损坏、duplicate、hash mismatch 和事务失败。
+
+property test 的随机 seed、case count 和 shrink result 进入失败输出；修复后的最小
+case 晋升为命名 regression，不只依赖随机重现。
+
+## 13. Rule conformance
+
+规则门禁针对 manifest 中每一个固定上游规则，而不是少量代表文件：
+
+- inventory 数、相对路径和 hash 与 upstream manifest 完全相同；
+- parser 对每个文件返回 success 或明确 unsupported/error；
+- zero silently skipped files/statements/functions；
+- init/include/detect 生命周期和 priority/filter 顺序有 instrumentation；
+- 每个 host function 有参数类型、边界、错误、返回值和副作用测试；
+- Boa/QuickJS/最终 backend 使用同一 conformance cases；
+- runtime heap/stack/fuel/deadline/cancel 都有硬失败测试；
+- runtime exception 不污染下一规则、下一 node 或下一次 scanner 调用。
+
+全库“可解析”不等于行为兼容。必须同时通过代表性输入 differential 和 host call
+trace；选定 runtime 前保留失败规则清单及最小重现。
+
+## 14. Fuzz 设计
+
+初始 fuzz targets：
+
+- `ByteView` subview/read/LE-BE integer；
+- 每个 format probe/parser；
+- database archive/manifest/rule parser；
+- rule host API argument conversion；
+- canonical/legacy serializer；
+- nested archive/resource extractor 与 work queue；
+- engine single input with synthetic bounded database；
+- C ABI bytes/options/lifecycle state machine。
+
+每个 target 设置输入大小、总 allocation、depth、instruction 和 wall timeout。
+fuzz invariant：
+
+- 无 panic/abort/native crash、越界、UB、leak 和 data race；
+- 超限在规定时间内返回 typed limit；
+- 相同输入 deterministic；
+- parser 不接受相互矛盾的 range；
+- result arena 和 JSON schema 始终自洽。
+
+PR 运行小型固定 seed smoke；nightly 持续更长时间；release 前运行累计 corpus。
+使用 `cargo-fuzz`/libFuzzer，纯 Rust unsafe 边界补 Miri；native/FFI 在可用平台使用
+ASan/UBSan/LSan，Windows 使用对应 sanitizer/Verifier。并发 scheduler 若引入共享
+状态，增加 Loom 或等价模型测试。
+
+crash triage 保存 target、toolchain、seed/input hash、stack、limit 和首次发现 commit。
+修复 SLA 在项目治理文档冻结前为开放项，但 release blocker 不得 quarantine。
+
+## 15. FFI 与语言集成
+
+C header 与 Rust 导出通过生成/校验脚本保持一致：
+
+- symbol inventory、calling convention、visibility；
+- `sizeof/alignof/offsetof`、enum/status/flag 数值；
+- null、zero length、invalid UTF-8、reserved/struct_size；
+- builder/scanner/result/error/cancel 状态机；
+- free null/idempotent、double-free misuse、borrow-after-free contract；
+- 1000+ lifecycle loop、allocation failure 和 panic containment；
+- wrong-thread、busy、cancel race 和 scanner-per-worker；
+- static `.a`/`.lib` 的最终 undefined/system libraries。
+
+平台至少运行 C 编译/链接/执行。Go 运行 cgo one-shot、locked OS-thread reusable、
+cancel 和 race detector。Python 测试 CPython extension/static link、bytes copy、
+exception mapping 和 repeated import/use/free；不声称 `.a` 可被 `ctypes` 直接加载。
+
+debug 与 release、Windows `/MD`/`/MT` 支持矩阵按 [`c-abi.md`](c-abi.md) 执行。
+
+## 16. 性能与资源 benchmark
+
+性能比较固定：
+
+- hardware/VM、CPU model/core、RAM、OS/kernel、filesystem；
+- Rust/upstream commit、rules/database hash、toolchain/profile/features；
+- power governor、worker count、CPU affinity（可控制时）；
+- corpus manifest、每个输入 size 和运行顺序；
+- warm/cold cache 条件、预热次数、样本次数和统计方法。
+
+分开测量：
+
+1. database load/validate 与 runtime/session creation；
+2. borrowed bytes 单文件 scan；
+3. path I/O + scan；
+4. nested/decompression；
+5. canonical serialization；
+6. batch single-thread 与 bounded parallel；
+7. staticlib C call overhead；
+8. peak RSS/commit、allocation count/bytes、output size。
+
+报告 median、p95、MAD/置信区间、throughput 和 peak memory，不只报告最好一次。
+upstream 与 Rust 使用相同 bytes/options/database；无法等价的 case 不用于“更快”
+结论。冷 cache 如果不能可靠清除，明确标为 uncontrolled。
+
+回归阈值在 runner noise calibration 和首个 Rust vertical slice 后冻结。阈值必须
+同时约束 latency、throughput 和 peak memory，不能用速度提升掩盖内存失控。显著
+变化先保存 profiler/trace，再优化；benchmark 不是普通 CI 的 correctness oracle。
+
+## 17. CI 矩阵
+
+### Pull request
+
+- formatting、clippy `-D warnings`、unit/property smoke、doc contract；
+- Linux/Windows/macOS stable Rust 的 workspace tests；
+- corpus/manifest/upstream lock verifier；
+- generated corpus reproducibility；
+- 快速 canonical/legacy golden 和最小 differential（oracle 可用 runner）；
+- C static-link smoke；依赖/license/unsafe policy；
+- 固定 seed fuzz smoke。
+
+### Nightly/scheduled
+
+- 全 capability differential matrix；
+- full rules conformance；
+- 长时间 fuzz、sanitizers、Miri 和并发模型测试；
+- Go/Python integrations 与 race checks；
+- x86_64 + aarch64、必要的 32-bit checked-input build/test；
+- deterministic repeat/parallel stress；
+- benchmark trend 和 artifact retention。
+
+### Release
+
+- clean checkout 重建所有发布产物；
+- 三大桌面平台目标架构 static-link system tests；
+- 完整 differential、waiver audit、schema/header/symbol audit；
+- rules/source/license/SBOM/provenance；
+- fuzz corpus replay、零未分类 crash；
+- benchmark 与 size/resource gate；
+- release binary/library hash、依赖和签名清单。
+
+最低平台表：
+
+| OS | Architecture | Rust | C link | Differential | Go/Python |
+| --- | --- | --- | --- | --- | --- |
+| Linux | x86_64 | stable + MSRV | required | required | required |
+| Windows | x86_64 MSVC | stable + MSRV | required | required when oracle fixed | required |
+| macOS | x86_64 | stable | required | required when oracle fixed | required |
+| macOS | aarch64 | stable | required | required when oracle fixed | required |
+
+Linux aarch64、Windows aarch64 和 32-bit 是扩展门禁；宣称支持前必须升为 required。
+不得用 Linux oracle 证明 Windows/macOS CLI 路径和编码完全兼容。
+
+## 18. Flake、失败与 quarantine
+
+- correctness/differential test 不自动 retry 后转绿；可重跑用于诊断，但保留首次失败。
+- flaky case 有 issue、owner、首次/最近失败、seed 和解除条件。
+- security、ABI、规则静默跳过和 release differential 不可 quarantine。
+- infrastructure failure 与 product failure 分开，二者都不能算 pass。
+- 同一 case 在 clean runner 三次不同输出立即视为 determinism defect。
+- 更新 golden 必须展示 old/new semantic diff，禁止无审查批量重录。
+
+## 19. Artifact 与保留
+
+提交到 Git：
+
+- 小型文本 manifest/schema；
+- 项目生成器和合法的小型 golden；
+- normalizer/validator；
+- 非敏感最小 regression。
+
+不提交：
+
+- build target、完整 Docker layer、临时扫描输出；
+- 未知/恶意/客户样本；
+- 本机绝对路径、credential、环境 dump；
+- 无界 stdout/stderr 或 profiler data。
+
+CI artifact 使用 content hash、访问控制和保留期。release compatibility report 长期
+保留 manifest、summary、waiver 和 raw hash；受限 raw bytes 留在隔离存储。
+
+## 20. 机器可读报告
+
+差分报告 schema 至少包含：
+
+```text
+report_schema
+run_identity
+case_identity
+oracle_execution
+rust_execution
+raw_comparison
+semantic_comparison
+normalizations_applied
+waivers_applied
+unmatched_differences
+result
+```
+
+`result` 只能是 `pass`、`fail` 或 `infrastructure_error`。没有“warning 即 pass”
+的隐式状态。summary 按 capability、platform、classification 和 waiver 聚合，并
+链接精确 case，不只提供总百分比。
+
+## 21. Phase 门禁
+
+### Phase 1
+
+- workspace CI、manifest validator 和依赖 DAG 检查存在；
+- 最小 corpus 可重复生成；
+- Rust placeholder/vertical slice 能被 differential harness 调用并产生可审计失败；
+- C smoke 和 canonical schema golden 基础设施存在。
+
+### Phase 2
+
+- 每个实现格式有 positive/truncated/malformed/fuzz/differential cases；
+- 范围内能力矩阵 100% traceable；
+- 零 panic、hang、unbounded allocation 和未解释 semantic diff。
+
+### Phase 3
+
+- 固定规则 inventory 100% discovered/parsed/loaded；
+- zero silent unsupported syntax；
+- host API/lifecycle conformance 完整；
+- 代表语料规则结果达到批准阈值，剩余差异都有精确 waiver。
+
+### Phase 4
+
+- legacy CLI raw matrix 和 modern schema matrix通过；
+- path/special/database/nested/error/exit 全覆盖；
+- 三平台差异已分类，无无效 structured modern output。
+
+### Phase 5
+
+- C/Go/Python ownership、thread、cancel、panic 和 static-link matrix 通过；
+- header/symbol/layout 与 canonical bytes 一致；
+- sanitizer/race 生命周期测试无问题。
+
+### Phase 6/release
+
+- 全范围 capability traceability 无 missing；
+- 全 differential 无 unmatched/expired/stale waiver；
+- fuzz/security、performance、license/SBOM 和跨平台 release gates 全通过；
+- compatibility report 随版本发布。
+
+“100% traceable”不等于“100% compatible”；report 必须分别展示 implemented、
+tested、exact、semantic、waived 和 unsupported 数量。
+
+## 22. 风险与开放门禁
+
+- Windows/macOS upstream oracle 尚未固定，不能声称跨平台 exact。
+- 当前 corpus 的格式覆盖仍不足以满足 capability matrix。
+- 完整规则 runtime 尚未选定，全库 execution conformance 未通过。
+- normalizer schema、semantic projection 和 waiver validator 尚未实现。
+- benchmark runner/noise/阈值和默认资源 limits 尚未冻结。
+- archive/decompression sanitizer 与恶意语料隔离设施尚未建立。
+- CI provider、artifact retention 和 restricted corpus 权限尚未决定。
+
+这些项目关闭前本文保持 Draft。
+
+## 23. 测试设计验收条件
+
+- case、execution、semantic report、normalizer 和 waiver 都有 versioned schema。
+- 固定 upstream/rules/binary/corpus identity 失败时拒绝运行或报告
+  `infrastructure_error`。
+- raw stdout/stderr 与规范化结果同时保留且 hash 可追溯。
+- 差分默认失败；waiver 精确、有证据、有到期/移除条件。
+- capability matrix 可机器追踪到 tests/platform/result。
+- fuzz、FFI、性能和三平台 CI 有可执行 target 与明确门禁。
+- `testing.md`、ADR 0004 和风险清单完成评审后才能满足 Phase 0 测试方案门禁。
