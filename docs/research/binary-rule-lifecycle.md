@@ -127,6 +127,54 @@ archive_DotBundle.sg
 间不同，本项目需要 ADR 明确选择逐平台复刻、固定一种顺序，或把该差异作为有界
 compatibility waiver；在此之前顺序策略不能冻结。
 
+### Linux Qt5 实测顺序
+
+[`probe_binary_rule_order.py`](../../tools/upstream/probe_binary_rule_order.py)
+使用项目生成的 `ps3-type-1-elf.self`，对固定 qmake/CMake Docker oracle 运行：
+
+```sh
+python3 tools/upstream/probe_binary_rule_order.py \
+  --corpus-dir /tmp/diec-nintendo-certified-corpus \
+  --raw-dir /tmp/diec-binary-order-raw \
+  --output docs/research/data/binary-rule-order-linux-qt5.json
+```
+
+实际传给两个 `diec` 的扫描参数为：
+
+```text
+--profiling --messages --json --deepscan --heuristicscan
+--database /opt/die-source/Detect-It-Easy/db
+--extradatabase /opt/die-source/Detect-It-Easy/db_extra
+--customdatabase /opt/die-source/Detect-It-Easy/db_custom
+```
+
+采集器只接受 stdout 中与固定 Binary inventory 完全相等的独立行，拒绝缺失、
+重复或意外名称。结果见
+[`binary-rule-order-linux-qt5.json`](data/binary-rule-order-linux-qt5.json)：
+
+- qmake、CMake 均 exit 0、stderr 为空；
+- 两侧都恰好提取 292 条且逐项相等；
+- canonical UTF-8/LF 顺序 SHA-256 为
+  `27138d68ed788dd2609b7c533fecf540593fa2e4ddb7195adc26b1a9ff0e1ff3`；
+- 连续重复两次实验，四次序列 hash 相同；
+- profiling 毫秒数会改变原始 stdout hash，因此原始 hash 只标识当次 artifact，
+  不作为重跑时必须逐字节相等的断言。
+
+没有标准优先级段的六条可执行规则实际位置为：
+
+| Index（0-based） | Signature |
+| ---: | --- |
+| 1 | `ROM_1.sg` |
+| 20 | `archive_DotBundle.sg` |
+| 41 | `archive_PC_Secure.sg` |
+| 148 | `format_MS-PST.sg` |
+| 150 | `format_MS-VHDX.sg` |
+| 248 | `image_ICNS.sg` |
+
+该清单可以驱动 Linux QuickJS lifecycle probe，但只能证明这两个 GCC/libstdc++
+构建在固定输入上的顺序。Windows MSVC、macOS libc++ 仍必须分别采集，不能从
+Linux 一致性推断。
+
 ## 对 runtime spike 的门禁
 
 QuickJS Nintendo probe 已经在每个共享 context 中执行真实 global/Binary init，
@@ -135,7 +183,8 @@ manifest-pinned overlay 后 14/14 target detection 匹配。
 
 下一轮完整 signature lifecycle probe 仍至少要满足：
 
-- 按上游数据库层和实测顺序运行完整 Binary signature sequence；
+- 先按已固定的 Linux Qt5 实测顺序运行完整 Binary signature sequence，再补齐
+  Windows/macOS 顺序；
 - Nintendo overlay 只在 manifest-pinned 目标规则求值前应用；
 - 同一 context 中运行 `audio.1.sg`、Nintendo 规则和 `audio_EXA.1.sg` 所需依赖；
 - 对 14 个 Nintendo 样本比较完整有序结果，包括 Vita 的 EA-XA 邻接结果；
