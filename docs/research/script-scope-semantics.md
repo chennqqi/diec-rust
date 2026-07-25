@@ -80,9 +80,29 @@ CMake oracle 使用同一只读 fixture。完整机器证据见
 
 这与完整 Binary 顶层 lifecycle 中的 `const detect`、`const debug` 两类错误直接
 对应。因而那两个等长 overlay 只是 feasibility workaround，不是已证明等价的
-生产方案。更接近 Qt 契约的候选方向是为每条规则提供隔离的 lexical 环境，同时
-共享宿主对象、init/include 产生的持久状态，并在环境销毁前提取和调用本次
-`detect`；该方向仍需 spike 和全规则差分，不能在 Phase 0 直接定案。
+生产方案。
+
+## Per-rule lexical wrapper 验证
+
+后续 spike 将每条规则包装在非 strict function lexical scope 中，在同一个
+QuickJS context 中共享宿主/global 状态，并在 wrapper 返回前解析和调用本次
+`detect`。同一 7 规则 fixture 的结果为：
+
+- 0 个 eval error；
+- 7/7 detection；
+- detection 的 type、name、version、info 和顺序均与 Qt 5 基线相同。
+
+再按固定 Qt 顺序运行全部 292 条 Binary 规则：
+
+- global `_init`、Binary `_init` 和 30 次 include 保持不变；
+- 292/292 规则成功求值并解析出 function 类型的 `detect`；
+- `audio.1.sg` 和 MiniExtensions 不再需要跨规则 overlay；
+- 仅 Nintendo 规则仍需要绑定 path/size/hash 的单脚本语法 overlay。
+
+这证明 per-rule lexical wrapper 是比“单一 global eval + 三个 overlay”更接近
+Qt 可观察契约的候选方案，但仍不是 runtime 选型结论：完整规则的 `detect` 尚未
+逐条调用，wrapper 对 `this`、direct eval、top-level `var`、异常栈和 helper
+可见性的差分也需继续验证。
 
 Nintendo 规则内部同一函数的 `var`/`const` 重定义属于单脚本语法差异，不由本
 实验解释，仍需独立 compatibility 决策。
@@ -103,6 +123,18 @@ cargo +1.88.0 run --release --locked `
   eval-scope-fixture $fixture `
   docs/research/data/script-scope-fixture.json `
   docs/research/data/script-scope-qt5.json
+
+cargo +1.88.0 run --release --locked `
+  --manifest-path spikes/rquickjs-rule-runtime/Cargo.toml -- `
+  eval-scope-fixture-lexical $fixture `
+  docs/research/data/script-scope-fixture.json `
+  docs/research/data/script-scope-qt5.json
+
+cargo +1.88.0 run --release --locked `
+  --manifest-path spikes/rquickjs-rule-runtime/Cargo.toml -- `
+  eval-binary-lifecycle-lexical `
+  upstream/Detect-It-Easy/db `
+  docs/research/data/binary-rule-order-linux-qt5.json
 ```
 
 profiling 毫秒值不是确定性数据；报告保留每个 oracle 的原始 stdout 哈希，但双

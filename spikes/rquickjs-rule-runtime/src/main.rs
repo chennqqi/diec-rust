@@ -228,6 +228,30 @@ fn eval_string(context: &Context, source: &[u8]) -> Result<String, String> {
     })
 }
 
+fn eval_rule_lexical(
+    context: &Context,
+    source: &[u8],
+    invoke_detect: bool,
+) -> Result<String, String> {
+    let suffix = if invoke_detect {
+        b"\nreturn typeof detect === 'function' ? String(detect()) : 'not-function';\n}).call(globalThis)\n"
+            .as_slice()
+    } else {
+        b"\nreturn typeof detect;\n}).call(globalThis)\n".as_slice()
+    };
+    let prefix = b"(function () {\n";
+    let capacity = prefix
+        .len()
+        .checked_add(source.len())
+        .and_then(|size| size.checked_add(suffix.len()))
+        .ok_or_else(|| "lexical wrapper size overflow".to_owned())?;
+    let mut wrapped = Vec::with_capacity(capacity);
+    wrapped.extend_from_slice(prefix);
+    wrapped.extend_from_slice(source);
+    wrapped.extend_from_slice(suffix);
+    eval_string(context, &wrapped)
+}
+
 fn read_unsigned(data: &[u8], offset: usize, width: usize, big_endian: bool) -> f64 {
     let Some(bytes) = data.get(offset..offset.saturating_add(width)) else {
         return 0.0;
@@ -455,6 +479,7 @@ fn run_binary_lifecycle(
     rule_root: &Path,
     order_path: &Path,
     compatibility_overlays: bool,
+    lexical_wrapper: bool,
 ) -> Result<bool, String> {
     let order_document: Value = serde_json::from_slice(
         &fs::read(order_path)
@@ -482,6 +507,7 @@ fn run_binary_lifecycle(
     }
 
     let mut errors = Vec::new();
+    let mut non_function_detects = Vec::new();
     let mut total_bytes = 0_u64;
     let mut overlay_paths = Vec::new();
     for (index, name) in order.iter().enumerate() {
@@ -491,7 +517,10 @@ fn run_binary_lifecycle(
         total_bytes = total_bytes
             .checked_add(source.len() as u64)
             .ok_or_else(|| "Binary rule byte count overflow".to_owned())?;
-        let (evaluated, overlay_id) = if compatibility_overlays {
+        let (evaluated, overlay_id) = if lexical_wrapper {
+            let (evaluated, applied) = apply_compatibility_overlay(&path, &source)?;
+            (evaluated, applied.then_some("nintendo-unused-var-tp-v1"))
+        } else if compatibility_overlays {
             apply_binary_lifecycle_overlay(&path, &source)?
         } else {
             (source, None)
@@ -503,18 +532,29 @@ fn run_binary_lifecycle(
             }));
         }
         interrupt_ticks.store(0, Ordering::Relaxed);
-        if let Err(error) = eval_unit(&context, &evaluated) {
-            errors.push(json!({
-                "index": index,
-                "name": name,
-                "error": error,
-            }));
+        let eval_result = if lexical_wrapper {
+            eval_rule_lexical(&context, &evaluated, false).map(|detect_type| {
+                if detect_type != "function" {
+                    non_function_detects.push(json!({
+                        "index": index,
+                        "name": name,
+                        "type": detect_type,
+                    }));
+                }
+            })
+        } else {
+            eval_unit(&context, &evaluated)
+        };
+        if let Err(error) = eval_result {
+            errors.push(json!({"index": index, "name": name, "error": error}));
         }
     }
     let include_trace_text = eval_string(&context, b"JSON.stringify(__includeTrace)")?;
     let include_trace: Value = serde_json::from_str(&include_trace_text)
         .map_err(|error| format!("cannot parse include trace: {error}"))?;
-    let overlay_ok = if compatibility_overlays {
+    let overlay_ok = if lexical_wrapper {
+        overlay_paths.len() == 1 && overlay_paths[0]["id"] == "nintendo-unused-var-tp-v1"
+    } else if compatibility_overlays {
         overlay_paths.len() == 3
             && overlay_paths[0]["id"] == "audio-global-const-debug-v1"
             && overlay_paths[1]["id"] == "nintendo-unused-var-tp-v1"
@@ -522,12 +562,14 @@ fn run_binary_lifecycle(
     } else {
         overlay_paths.is_empty()
     };
-    let passed = errors.is_empty() && overlay_ok;
+    let passed = errors.is_empty() && non_function_detects.is_empty() && overlay_ok;
     println!(
         "{}",
         serde_json::to_string_pretty(&json!({
             "schema_version": 1,
-            "operation": if compatibility_overlays {
+            "operation": if lexical_wrapper {
+                "fixed Linux Qt5 Binary lifecycle eval with per-rule lexical wrapper and Nintendo overlay"
+            } else if compatibility_overlays {
                 "fixed Linux Qt5 Binary top-level lifecycle eval with compatibility overlays"
             } else {
                 "fixed Linux Qt5 Binary top-level lifecycle eval without compatibility overlays"
@@ -542,9 +584,15 @@ fn run_binary_lifecycle(
             "files": order.len(),
             "bytes": total_bytes,
             "compatibility_overlay": {
-                "enabled": compatibility_overlays,
+                "enabled": compatibility_overlays || lexical_wrapper,
                 "applied_paths": overlay_paths,
-                "expected_count": if compatibility_overlays { 3 } else { 0 },
+                "expected_count": if lexical_wrapper {
+                    1
+                } else if compatibility_overlays {
+                    3
+                } else {
+                    0
+                },
                 "applied_exactly": overlay_ok,
                 "source_sha256": {
                     "audio-global-const-debug-v1": AUDIO_RULE_SHA256,
@@ -554,9 +602,15 @@ fn run_binary_lifecycle(
             },
             "eval_errors": errors,
             "eval_error_count": errors.len(),
+            "detect_function_count": order.len() - non_function_detects.len(),
+            "non_function_detects": non_function_detects,
             "elapsed_ms": started.elapsed().as_millis(),
             "passed": passed,
-            "scope": "top-level eval only; detect functions are not called",
+            "scope": if lexical_wrapper {
+                "per-rule function lexical wrapper; detect is resolved but not called"
+            } else {
+                "top-level eval only; detect functions are not called"
+            },
         }))
         .map_err(|error| format!("cannot serialize report: {error}"))?
     );
@@ -624,6 +678,7 @@ fn run_scope_fixture(
     fixture_root: &Path,
     manifest_path: &Path,
     qt5_baseline_path: &Path,
+    lexical_wrapper: bool,
 ) -> Result<bool, String> {
     let manifest: Value = serde_json::from_slice(
         &fs::read(manifest_path)
@@ -651,8 +706,24 @@ fn run_scope_fixture(
             .lock()
             .map_err(|_| "script-scope result mutex poisoned".to_owned())?
             .len();
-        let eval_result = eval_unit(&context, &source);
-        let detect_result = if eval_result.is_ok() {
+        let lexical_result = if lexical_wrapper {
+            Some(eval_rule_lexical(&context, &source, true))
+        } else {
+            None
+        };
+        let eval_result = if lexical_wrapper {
+            lexical_result
+                .as_ref()
+                .expect("lexical result should be present")
+                .as_ref()
+                .map(|_| ())
+                .map_err(Clone::clone)
+        } else {
+            eval_unit(&context, &source)
+        };
+        let detect_result = if lexical_wrapper {
+            lexical_result
+        } else if eval_result.is_ok() {
             Some(eval_string(
                 &context,
                 b"typeof detect === 'function' ? String(detect()) : 'not-function'",
@@ -689,7 +760,11 @@ fn run_scope_fixture(
         "{}",
         serde_json::to_string_pretty(&json!({
             "schema_version": 1,
-            "operation": "shared-context sequential sloppy eval and detect invocation",
+            "operation": if lexical_wrapper {
+                "shared host/global context with per-rule lexical wrapper and immediate detect invocation"
+            } else {
+                "shared-context sequential sloppy eval and detect invocation"
+            },
             "runtime": "rquickjs 0.12.1 / QuickJS-NG 0.15.1",
             "fixture_manifest": normalized_path(manifest_path),
             "qt5_baseline": normalized_path(qt5_baseline_path),
@@ -1101,9 +1176,10 @@ fn usage() -> ExitCode {
          <eval-isolated|eval-isolated-compat|eval-shared> <rule-root>...\n       \
          diec-rquickjs-rule-runtime-spike fixture <main-rule-root>\n       \
          diec-rquickjs-rule-runtime-spike \
-         <eval-binary-lifecycle|eval-binary-lifecycle-raw> \
+         <eval-binary-lifecycle|eval-binary-lifecycle-raw|eval-binary-lifecycle-lexical> \
          <main-rule-root> <binary-order-json>\n       \
-         diec-rquickjs-rule-runtime-spike eval-scope-fixture \
+         diec-rquickjs-rule-runtime-spike \
+         <eval-scope-fixture|eval-scope-fixture-lexical> \
          <fixture-root> <fixture-manifest-json> <qt5-baseline-json>\n       \
          diec-rquickjs-rule-runtime-spike detect-nintendo \
          <main-rule-root> <corpus-dir> <baseline-json>"
@@ -1131,11 +1207,15 @@ fn main() -> ExitCode {
     } else if command == "fixture" && roots.len() == 1 {
         run_fixture(&roots[0])
     } else if command == "eval-binary-lifecycle" && roots.len() == 2 {
-        run_binary_lifecycle(&roots[0], &roots[1], true)
+        run_binary_lifecycle(&roots[0], &roots[1], true, false)
     } else if command == "eval-binary-lifecycle-raw" && roots.len() == 2 {
-        run_binary_lifecycle(&roots[0], &roots[1], false)
+        run_binary_lifecycle(&roots[0], &roots[1], false, false)
+    } else if command == "eval-binary-lifecycle-lexical" && roots.len() == 2 {
+        run_binary_lifecycle(&roots[0], &roots[1], false, true)
     } else if command == "eval-scope-fixture" && roots.len() == 3 {
-        run_scope_fixture(&roots[0], &roots[1], &roots[2])
+        run_scope_fixture(&roots[0], &roots[1], &roots[2], false)
+    } else if command == "eval-scope-fixture-lexical" && roots.len() == 3 {
+        run_scope_fixture(&roots[0], &roots[1], &roots[2], true)
     } else if command == "detect-nintendo" && roots.len() == 3 {
         run_nintendo_corpus(&roots[0], &roots[1], &roots[2])
     } else {
@@ -1156,8 +1236,8 @@ mod tests {
     use super::{
         NINTENDO_COMPAT_DECLARATION, NINTENDO_RULE_BYTES, NINTENDO_VAR_DECLARATION,
         apply_compatibility_overlay, apply_exact_lifecycle_overlay, collect_rule_files,
-        normalized_path, parse_scope_detections, parse_scope_fixture_order, read_unsigned,
-        signature_matches,
+        eval_rule_lexical, new_context, new_runtime, normalized_path, parse_scope_detections,
+        parse_scope_fixture_order, read_unsigned, signature_matches,
     };
     use std::fs;
     use std::path::PathBuf;
@@ -1318,6 +1398,44 @@ mod tests {
                 "2".to_owned(),
                 String::new(),
             )]
+        );
+    }
+
+    #[test]
+    fn lexical_wrapper_isolates_rule_bindings_and_returns_detect() {
+        let runtime = new_runtime().expect("runtime should be created");
+        let context = new_context(&runtime).expect("context should be created");
+        assert_eq!(
+            eval_rule_lexical(
+                &context,
+                b"const value = 1; function detect() { return value; }",
+                true,
+            )
+            .expect("first rule should evaluate"),
+            "1"
+        );
+        assert_eq!(
+            eval_rule_lexical(
+                &context,
+                b"value = 2; function detect() { return value; }",
+                true,
+            )
+            .expect("prior const must not make this assignment read-only"),
+            "2"
+        );
+        assert_eq!(
+            eval_rule_lexical(&context, b"function detect() { return 'function'; }", true,)
+                .expect("function detect should evaluate"),
+            "function"
+        );
+        assert_eq!(
+            eval_rule_lexical(
+                &context,
+                b"const detect = main; function main() { return 'const'; }",
+                true,
+            )
+            .expect("const detect must not conflict with the prior rule"),
+            "const"
         );
     }
 }

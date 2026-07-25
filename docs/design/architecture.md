@@ -159,10 +159,11 @@ unknown syntax、include 失败和数据库冲突必须成为明确错误或兼�
 `diec-rules` 定义，由 `diec-engine` 的 adapter 实现，因而规则层无需依赖
 `diec-formats`。
 
-Boa 与 QuickJS spike 均尚未通过完整规则库求值门禁，因此本文不选择 runtime。
-后续 ADR 必须基于固定规则集、宿主 API、资源中断、static link、许可证和跨平台
-实验选型。native runtime、FFI glue、runtime-specific handles 只存在于
-`diec-rules` backend 私有模块。
+Boa 尚未通过全库求值；QuickJS 的 per-rule lexical wrapper 已让固定 292 条
+Binary 规则解析出 `detect`，但完整 HostApi 下逐条调用、其他 file type 和跨平台
+门禁仍未通过，因此本文不选择 runtime。后续 ADR 必须基于固定规则集、宿主
+API、资源中断、static link、许可证和跨平台实验选型。native runtime、FFI
+glue、runtime-specific handles 只存在于 `diec-rules` backend 私有模块。
 
 数据库完成校验后形成 immutable snapshot。scanner/session 引用 snapshot，不在扫描
 期间修改规则。main、extra、custom 数据库的合并顺序是请求契约的一部分。

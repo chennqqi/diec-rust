@@ -85,7 +85,9 @@ baseline 的变更都要检查本表。
   执行 global/Binary init、30 次 include 和 292 条 Binary 顶层程序。原始规则有
   3 个 lexical 差异，三个精确等长 overlay 后为 0；专用 7 规则 fixture 已确认
   Qt 5 的跨 `evaluate()` lexical 环境与 QuickJS 单一 global context 不等价，
-  后者仅得到 4/7 detection；尚未逐条调用完整规则库的 `detect`。
+  后者仅得到 4/7 detection。per-rule lexical wrapper 已达到 fixture 7/7，并让
+  292/292 Binary 规则以仅一个 Nintendo 单脚本 overlay 解析出 `detect`；
+  尚未逐条调用完整规则库的 `detect`。
 - **缓解**：保持 `RuleRuntime`/`HostApi` port；建立全规则 inventory、最小失败
   fixture、host call trace；基于证据选 runtime，禁止静默转换规则。
 - **验证**：固定规则 100% discovered/parsed/loaded，zero silent unsupported；

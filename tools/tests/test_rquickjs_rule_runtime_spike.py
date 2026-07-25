@@ -130,6 +130,14 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
             ],
             3,
         )
+        lexical = lifecycle["per_rule_lexical_wrapper"]
+        self.assertEqual(lexical["error_count"], 0)
+        self.assertEqual(lexical["detect_function_count"], 292)
+        self.assertEqual(lexical["non_function_detect_count"], 0)
+        self.assertEqual(lexical["overlay_applied_count"], 1)
+        self.assertEqual(
+            lexical["overlay_id"], "nintendo-unused-var-tp-v1"
+        )
         for overlay in lifecycle["compatibility_overlays"]:
             with self.subTest(overlay=overlay["id"]):
                 rule = ROOT / "upstream" / "Detect-It-Easy" / overlay["path"]
@@ -185,6 +193,18 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
         self.assertEqual(scope["quickjs_detection_count"], 4)
         self.assertEqual(scope["quickjs_eval_error_count"], 3)
         self.assertFalse(scope["matches_qt5_oracle"])
+        self.assertEqual(
+            scope["lexical_wrapper"],
+            {
+                "detection_count": 7,
+                "eval_error_count": 0,
+                "matches_qt5_oracle": True,
+                "operation": (
+                    "shared host/global context with per-rule function "
+                    "lexical wrapper and immediate detect invocation"
+                ),
+            },
+        )
         self.assertEqual(
             [error["name"] for error in scope["quickjs_errors"]],
             [

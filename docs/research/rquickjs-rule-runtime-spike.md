@@ -270,6 +270,13 @@ Phase 0 feasibility probe 增加三个内存 overlay：
 边界解释见
 [`script-scope-semantics.md`](script-scope-semantics.md)。
 
+per-rule non-strict function lexical wrapper 随后在相同 fixture 上达到 0 error、
+7/7 detection，并与 Qt 5 结构化结果完全一致。固定 292 条 Binary 顺序下，
+wrapper 也让 292/292 规则成功求值并解析出 function 类型的 `detect`；只需保留
+Nintendo 的单脚本语法 overlay，`audio` 和 MiniExtensions 的跨规则 overlay
+均不再需要。该结果把 wrapper 提升为优先候选，但尚未证明完整 detect/HostApi
+等价。
+
 ## 与 Boa 首轮结果对比
 
 | 维度 | Boa 0.21.1 | rquickjs 0.12.1 |
@@ -326,15 +333,25 @@ cargo +1.88.0 run --release --locked -- eval-scope-fixture \
   ../../docs/research/data/script-scope-fixture.json \
   ../../docs/research/data/script-scope-qt5.json
 
+cargo +1.88.0 run --release --locked -- eval-scope-fixture-lexical \
+  /tmp/diec-rust-script-scope-fixture \
+  ../../docs/research/data/script-scope-fixture.json \
+  ../../docs/research/data/script-scope-qt5.json
+
+cargo +1.88.0 run --release --locked -- eval-binary-lifecycle-lexical \
+  ../../upstream/Detect-It-Easy/db \
+  ../../docs/research/data/binary-rule-order-linux-qt5.json
+
 cargo +1.88.0 run --release --locked -- detect-nintendo \
   ../../upstream/Detect-It-Easy/db \
   /tmp/diec-nintendo-certified-corpus \
   ../../docs/research/data/nintendo-certified-baseline.json
 ```
 
-`fixture`、`eval-isolated-compat` 和 `eval-binary-lifecycle` 预期退出 0；原始
-isolated、shared 和 `eval-binary-lifecycle-raw` 因已记录差异预期退出 1，但仍向
-stdout 输出完整 JSON。运行前先执行
+`fixture`、`eval-isolated-compat`、`eval-binary-lifecycle`、两个 lexical
+fixture/lifecycle 命令预期退出 0；原始 isolated、shared 和
+`eval-binary-lifecycle-raw` 因已记录差异预期退出 1，但仍向 stdout 输出完整
+JSON。运行前先执行
 `tools/verify_upstream.py` 和 Python 清单测试，确保 cryptographic source identity。
 `elapsed_ms` 只用于本机观察，不做跨机器精确断言。
 

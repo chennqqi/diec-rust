@@ -165,10 +165,12 @@ JSON 报告写到 stdout。报告包含环境无关的计数和错误列表，�
 
 ## 尚未完成
 
-- 按上游 file type、priority、database、init/include 顺序做全库 eval。
+- Boa 尚未按上游 file type、priority、database、init/include 顺序做全库 eval；
+  QuickJS 已完成固定 Binary 顶层顺序，其他 file type 仍未完成。
 - 338 个直接宿主方法及继承方法的参数/返回类型 fixture。
 - Qt 5 与 Qt 6 的 64 位整数、字符串、数组、默认参数和异常 oracle。
-- QuickJS-NG/rquickjs 同一语料对照已完成；真实生命周期对照仍未完成。
+- QuickJS-NG/rquickjs 的固定 Binary 顶层生命周期已完成；完整 HostApi 下逐规则
+  detect 生命周期仍未完成。
 - Boa heap、wall-clock cancellation、panic 隔离和多线程性能。
 - PE/.NET、ELF、APK/DEX、PDF 等真实阳性/阴性检测。
 

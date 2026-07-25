@@ -12,14 +12,14 @@
   },
   "dependency_footprint": {
     "lockfile_packages": 23,
-    "release_executable_bytes": 1630720,
+    "release_executable_bytes": 1636864,
     "target": "x86_64-pc-windows-msvc",
     "target_packages": 18
   },
   "experiment": {
     "cargo_lock_sha256": "aa7cd4c42e1f3429f45ec31e05e41862abe6156bdbe351eeacc507673f237232",
     "cargo_toml_sha256": "875730b205ca351b4bc0f830a1896fb6ad777c46046e6f26c9c368849614be16",
-    "source_sha256": "99b3271ac3a4b7a86a2bbc3ad4614be66c94014079431b96bda01c0c96e64de6",
+    "source_sha256": "a5a1aaf61519da91c94a610a99c2c66b46e71c5b34501d690e2d0a735b602498",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -73,6 +73,15 @@
       ]
     },
     "scope": "shared-context top-level eval; detect functions are not called",
+    "per_rule_lexical_wrapper": {
+      "detect_function_count": 292,
+      "error_count": 0,
+      "non_function_detect_count": 0,
+      "overlay_applied_count": 1,
+      "overlay_id": "nintendo-unused-var-tp-v1",
+      "preserves_source_files": true,
+      "scope": "shared host/global context; per-rule function lexical wrapper; detect resolved but not called"
+    },
     "with_compatibility_overlays": {
       "error_count": 0,
       "overlay_applied_count": 3,
@@ -173,6 +182,12 @@
         "name": "scope_debug_assign.7.sg"
       }
     ],
+    "lexical_wrapper": {
+      "detection_count": 7,
+      "eval_error_count": 0,
+      "matches_qt5_oracle": true,
+      "operation": "shared host/global context with per-rule function lexical wrapper and immediate detect invocation"
+    },
     "matches_qt5_oracle": false
   },
   "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
