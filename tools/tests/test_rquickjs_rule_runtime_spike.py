@@ -107,6 +107,48 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
         self.assertTrue(detection["all_match"])
         self.assertEqual(detection["matched_count"], 14)
 
+    def test_binary_lifecycle_uses_fixed_order_and_exact_overlays(self):
+        lifecycle = self.reference["binary_lifecycle"]
+        self.assertEqual(lifecycle["files"], 292)
+        self.assertEqual(lifecycle["bytes"], 1_122_477)
+        self.assertEqual(lifecycle["include_call_count"], 30)
+        self.assertEqual(
+            lifecycle["order_sha256"],
+            "27138d68ed788dd2609b7c533fecf540593fa2e4ddb7195adc26b1a9ff0e1ff3",
+        )
+        self.assertEqual(lifecycle["raw"]["error_count"], 3)
+        self.assertEqual(
+            [error["index"] for error in lifecycle["raw"]["errors"]],
+            [212, 288, 291],
+        )
+        self.assertEqual(
+            lifecycle["with_compatibility_overlays"]["error_count"], 0
+        )
+        self.assertEqual(
+            lifecycle["with_compatibility_overlays"][
+                "overlay_applied_count"
+            ],
+            3,
+        )
+        for overlay in lifecycle["compatibility_overlays"]:
+            with self.subTest(overlay=overlay["id"]):
+                rule = ROOT / "upstream" / "Detect-It-Easy" / overlay["path"]
+                self.assertEqual(rule.stat().st_size, overlay["source_bytes"])
+                self.assertEqual(
+                    hashlib.sha256(rule.read_bytes()).hexdigest(),
+                    overlay["source_sha256"],
+                )
+                self.assertEqual(
+                    len(overlay["declaration"].encode()),
+                    len(overlay["replacement"].encode()),
+                )
+                self.assertEqual(
+                    rule.read_bytes().count(
+                        overlay["declaration"].encode()
+                    ),
+                    1,
+                )
+
     def test_reference_records_manifest_pinned_compatibility_overlay(self):
         overlay = self.reference["fixture"][
             "nintendo_compatibility_overlay"

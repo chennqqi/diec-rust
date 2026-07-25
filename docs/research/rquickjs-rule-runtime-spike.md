@@ -43,8 +43,10 @@ compatibility overlay 后，QuickJS 接受该规则；同一 overlay 在 2235 �
 恰好命中一次，isolated eval 错误由 1 降为 0。该结果只证明受控兼容层可行，
 随后使用 Rust 最小 Byte HostApi，在每个 scan context 中按真实顺序执行 global
 `_init`、Binary `_init` 及四个 include，再用 14 个项目生成样本执行
-`detect()`；目标 Nintendo detection 与 Qt 5 baseline 14/14 匹配。实验仍未执行
-完整 Binary 签名序列、EA-XA 邻接规则、Qt 6 和其余 338 个宿主方法，因此候选
+`detect()`；目标 Nintendo detection 与 Qt 5 baseline 14/14 匹配。进一步按固定
+Linux Qt5 oracle 顺序在一个 context 中求值 292 条 Binary 顶层代码：原始规则
+出现 3 个 legacy lexical 差异，三个精确、等长 overlay 后为 0。实验仍未逐条
+调用 `detect`、复现 EA-XA 邻接结果、覆盖 Qt 6 和其余 338 个宿主方法，因此候选
 状态不变。
 
 ## 实验边界
@@ -80,7 +82,7 @@ proxy 只用于语法/顶层执行覆盖，不代表宿主 API 兼容，也不�
 | Lockfile packages | 23 |
 | 当前 target packages | 18 |
 | Clean release build | 13,258 ms，本机已缓存下载、空 target |
-| Release executable | 1,556,480 bytes（加入真实 init/include registry 后） |
+| Release executable | 1,602,560 bytes（加入固定顺序 Binary lifecycle probe 后） |
 
 `cargo +1.86.0 check --locked` 明确报告
 `rquickjs@0.12.1 requires rustc 1.87`。本实验继续复用已安装的 1.88 工具链。
@@ -231,6 +233,37 @@ false；init 和 helper 都是上游原始 JavaScript。该结果证明了 init/
 执行 `audio.1.sg` 和 `audio_EXA.1.sg`。因此不应与完整 Qt detection list 混淆：
 PS Vita 的 EA-XA 第二条记录仍需全签名生命周期实验复现。
 
+## Binary 顶层生命周期实验
+
+`eval-binary-lifecycle-raw` 读取固定
+[`binary-rule-order-linux-qt5.json`](data/binary-rule-order-linux-qt5.json)，
+在一个 QuickJS context 中依次执行 global `_init`、Binary `_init` 和 292 条
+Binary 规则。init 与规则共触发 30 次真实 include。规则总字节数为 1,122,477。
+
+原始规则产生 3 个错误：
+
+| Index | Rule | QuickJS 差异 |
+| ---: | --- | --- |
+| 212 | `format_bin.Nintendo-certified-file.1.sg` | function 内 `var tp` 与 `const tp` 重定义 |
+| 288 | `__MiniExtensionsHeuristic_By_DosX.7.sg` | `const detect` 与前序 global function 冲突 |
+| 291 | `archive_archives.ancient.sg` | 给 `audio.1.sg` 留下的 global `const debug` 赋值 |
+
+固定 Qt5 qmake/CMake profiling 均执行到这三条规则并继续完成，未输出对应 error。
+后两个差异只有在真实共享 context 和固定顺序下才出现，isolated eval 无法发现。
+
+Phase 0 feasibility probe 增加三个内存 overlay：
+
+| ID | Fixed rule | Equal-length change |
+| --- | --- | --- |
+| `audio-global-const-debug-v1` | `audio.1.sg` | `const debug` → `var   debug` |
+| `nintendo-unused-var-tp-v1` | Nintendo rule | 删除未使用的 function-scoped `tp` |
+| `extensions-global-const-detect-v1` | MiniExtensions rule | `const detect` → `var   detect` |
+
+三者都绑定 path、size、唯一声明和源 SHA-256，不写回规则；替换前后字节数相同。
+应用后 292/292 顶层 eval 通过，overlay 恰好命中 3 次。这仍不是 production
+转换方案：Qt Script 对跨 evaluate lexical binding 的精确模型还需专用 fixture，
+最终策略必须由 runtime ADR 决定。
+
 ## 与 Boa 首轮结果对比
 
 | 维度 | Boa 0.21.1 | rquickjs 0.12.1 |
@@ -241,7 +274,7 @@ PS Vita 的 EA-XA 第二条记录仍需全签名生命周期实验复现。
 | 外部 interrupt | 未发现公开接口 | 支持 |
 | Heap limit | 未发现公开接口 | 支持默认 allocator |
 | Windows target packages | 126 | 18 |
-| Release spike | 11,784,192 bytes | 1,556,480 bytes |
+| Release spike | 11,784,192 bytes | 1,602,560 bytes |
 | 实现语言 | 纯 Rust | Rust wrapper + vendored C |
 | 本轮工具链 | Rust 1.88 | 最低 1.87，本轮 1.88 |
 
@@ -274,14 +307,23 @@ cargo +1.88.0 run --release --locked -- eval-shared \
   ../../upstream/Detect-It-Easy/db \
   ../../upstream/Detect-It-Easy/db_extra
 
+cargo +1.88.0 run --release --locked -- eval-binary-lifecycle-raw \
+  ../../upstream/Detect-It-Easy/db \
+  ../../docs/research/data/binary-rule-order-linux-qt5.json
+
+cargo +1.88.0 run --release --locked -- eval-binary-lifecycle \
+  ../../upstream/Detect-It-Easy/db \
+  ../../docs/research/data/binary-rule-order-linux-qt5.json
+
 cargo +1.88.0 run --release --locked -- detect-nintendo \
   ../../upstream/Detect-It-Easy/db \
   /tmp/diec-nintendo-certified-corpus \
   ../../docs/research/data/nintendo-certified-baseline.json
 ```
 
-`fixture` 和 `eval-isolated-compat` 预期退出 0；原始 isolated 与 shared 命令因
-已记录差异预期退出 1，但仍向 stdout 输出完整 JSON。运行前先执行
+`fixture`、`eval-isolated-compat` 和 `eval-binary-lifecycle` 预期退出 0；原始
+isolated、shared 和 `eval-binary-lifecycle-raw` 因已记录差异预期退出 1，但仍向
+stdout 输出完整 JSON。运行前先执行
 `tools/verify_upstream.py` 和 Python 清单测试，确保 cryptographic source identity。
 `elapsed_ms` 只用于本机观察，不做跨机器精确断言。
 
@@ -302,8 +344,8 @@ cargo +1.88.0 run --release --locked -- detect-nintendo \
 
 ## 尚未完成
 
-- 按上游 file type、priority、database 顺序执行完整 signature 列表；init/include
-  的 Nintendo 最小路径已完成。
+- Binary 已按固定 Linux 顺序完成 292 条顶层 eval；尚未逐条调用 `detect`，也未
+  完成其他 file type 和 Windows/macOS 顺序。
 - 338 个直接宿主方法及继承方法的行为 fixture。
 - Nintendo 已完成最小 HostApi 下 Qt 5 target detection 对照；仍缺 Qt 6 和完整
   Binary 规则列表（包括 PS Vita 的 EA-XA 邻接命中）。

@@ -82,7 +82,8 @@ baseline 的变更都要检查本表。
   Byte HostApi 的 Nintendo target detection 在 Qt 5 baseline 上 14/14 匹配，但
   尚未验证完整 Binary signature sequence、EA-XA 邻接结果、Qt 6 或完整 HostApi。
   固定源码已确认一次 scan 共享一个 script engine；QuickJS probe 已按真实顺序
-  执行 global/Binary init 和四个 include，每规则独立 context 不兼容。
+  执行 global/Binary init、30 次 include 和 292 条 Binary 顶层程序。原始规则有
+  3 个 lexical 差异，三个精确等长 overlay 后为 0；尚未逐条调用 `detect`。
 - **缓解**：保持 `RuleRuntime`/`HostApi` port；建立全规则 inventory、最小失败
   fixture、host call trace；基于证据选 runtime，禁止静默转换规则。
 - **验证**：固定规则 100% discovered/parsed/loaded，zero silent unsupported；

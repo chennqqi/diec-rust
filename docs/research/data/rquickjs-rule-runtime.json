@@ -12,14 +12,14 @@
   },
   "dependency_footprint": {
     "lockfile_packages": 23,
-    "release_executable_bytes": 1556480,
+    "release_executable_bytes": 1602560,
     "target": "x86_64-pc-windows-msvc",
     "target_packages": 18
   },
   "experiment": {
     "cargo_lock_sha256": "aa7cd4c42e1f3429f45ec31e05e41862abe6156bdbe351eeacc507673f237232",
     "cargo_toml_sha256": "875730b205ca351b4bc0f830a1896fb6ad777c46046e6f26c9c368849614be16",
-    "source_sha256": "bd711377f7455b3f2a195ca06b302b16b26910a1e35c1d49aca0707c6aa1f633",
+    "source_sha256": "3823b6b5e5b946f0cedf724547a6e48dacce8a0a4dd5d08bca0d58abcdaaff8d",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -41,6 +41,72 @@
     "runtime_helpers_result": "a, b/c|007",
     "shared_const_second_eval_accepted": false,
     "sloppy_script_required": true
+  },
+  "binary_lifecycle": {
+    "bytes": 1122477,
+    "files": 292,
+    "include_call_count": 30,
+    "init_sequence": [
+      "_init",
+      "Binary/_init"
+    ],
+    "order_manifest": "docs/research/data/binary-rule-order-linux-qt5.json",
+    "order_sha256": "27138d68ed788dd2609b7c533fecf540593fa2e4ddb7195adc26b1a9ff0e1ff3",
+    "raw": {
+      "error_count": 3,
+      "errors": [
+        {
+          "category": "invalid function-local var/const redefinition",
+          "index": 212,
+          "name": "format_bin.Nintendo-certified-file.1.sg"
+        },
+        {
+          "category": "global const detect conflicts with prior function declaration",
+          "index": 288,
+          "name": "__MiniExtensionsHeuristic_By_DosX.7.sg"
+        },
+        {
+          "category": "assignment to prior global const debug",
+          "index": 291,
+          "name": "archive_archives.ancient.sg"
+        }
+      ]
+    },
+    "scope": "shared-context top-level eval; detect functions are not called",
+    "with_compatibility_overlays": {
+      "error_count": 0,
+      "overlay_applied_count": 3,
+      "preserves_source_files": true
+    },
+    "compatibility_overlays": [
+      {
+        "declaration": "const debug = 0;",
+        "evaluated_length_unchanged": true,
+        "id": "audio-global-const-debug-v1",
+        "path": "db/Binary/audio.1.sg",
+        "replacement": "var   debug = 0;",
+        "source_bytes": 603640,
+        "source_sha256": "998c2476ddc07a88c83598192faf1ffb4b35d60c4b2d6c1fafcfa4b153a9892f"
+      },
+      {
+        "declaration": "        var tp, e;",
+        "evaluated_length_unchanged": true,
+        "id": "nintendo-unused-var-tp-v1",
+        "path": "db/Binary/format_bin.Nintendo-certified-file.1.sg",
+        "replacement": "        var     e;",
+        "source_bytes": 1994,
+        "source_sha256": "1f7485b8b0c9c211932fdcc31529ea37588c176e46a1ff06230fc376df5ad0f5"
+      },
+      {
+        "declaration": "const detect = main;",
+        "evaluated_length_unchanged": true,
+        "id": "extensions-global-const-detect-v1",
+        "path": "db/Binary/__MiniExtensionsHeuristic_By_DosX.7.sg",
+        "replacement": "var   detect = main;",
+        "source_bytes": 21958,
+        "source_sha256": "e8eac22087d7814bdb6c80fd3626b1dbad721c16a5ce4ab290b9eedcc165c12d"
+      }
+    ]
   },
   "isolated_eval": {
     "bytes": 2902881,

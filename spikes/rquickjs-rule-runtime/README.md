@@ -21,3 +21,10 @@ evaluate the real global `_init`, Binary `_init`, and their `_debug`,
 compatibility overlay in memory and compares all 14 generated PS3/PS Vita
 fixtures with the versioned Qt oracle baseline. It does not execute the full
 Binary rule set.
+
+`eval-binary-lifecycle` consumes the versioned Linux Qt5 profiling order,
+evaluates the real init/include chain and all 292 Binary rule programs in one
+context, and applies three path/size/declaration-pinned, length-preserving
+legacy overlays. `eval-binary-lifecycle-raw` runs the same sequence unchanged
+and intentionally reports the three known modern-JavaScript failures. These
+commands evaluate top-level rule code only; they do not call every `detect`.

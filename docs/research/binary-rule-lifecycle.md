@@ -181,10 +181,16 @@ QuickJS Nintendo probe 已经在每个共享 context 中执行真实 global/Bina
 include trace 固定为 `_debug`、`_runtime_helpers`、`language`、`read`，且
 manifest-pinned overlay 后 14/14 target detection 匹配。
 
+固定 Linux 顺序的完整顶层 eval 进一步发现 3 个 modern-JavaScript 差异：
+Nintendo function 内重定义，以及跨 rule eval 的 `const detect`、`const debug`
+绑定冲突。三个 path/size/declaration/hash-pinned 等长 overlay 后，292/292 顶层
+程序在同一 QuickJS context 中通过，共执行 30 次 include。详细错误、overlay
+和源 hash 见
+[`rquickjs-rule-runtime.json`](data/rquickjs-rule-runtime.json)。
+
 下一轮完整 signature lifecycle probe 仍至少要满足：
 
-- 先按已固定的 Linux Qt5 实测顺序运行完整 Binary signature sequence，再补齐
-  Windows/macOS 顺序；
+- 逐条调用已固定 Linux 顺序中的 `detect`，再补齐 Windows/macOS 顺序；
 - Nintendo overlay 只在 manifest-pinned 目标规则求值前应用；
 - 同一 context 中运行 `audio.1.sg`、Nintendo 规则和 `audio_EXA.1.sg` 所需依赖；
 - 对 14 个 Nintendo 样本比较完整有序结果，包括 Vita 的 EA-XA 邻接结果；

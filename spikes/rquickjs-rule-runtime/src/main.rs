@@ -48,6 +48,22 @@ const NINTENDO_RULE_SHA256: &str =
     "1f7485b8b0c9c211932fdcc31529ea37588c176e46a1ff06230fc376df5ad0f5";
 const NINTENDO_VAR_DECLARATION: &[u8] = b"        var tp, e;";
 const NINTENDO_COMPAT_DECLARATION: &[u8] = b"        var     e;";
+const AUDIO_RULE_SUFFIX: &str = "Binary/audio.1.sg";
+const AUDIO_RULE_BYTES: usize = 603_640;
+const AUDIO_RULE_SHA256: &str = "998c2476ddc07a88c83598192faf1ffb4b35d60c4b2d6c1fafcfa4b153a9892f";
+const AUDIO_CONST_DEBUG_DECLARATION: &[u8] = b"const debug = 0;";
+const AUDIO_COMPAT_DEBUG_DECLARATION: &[u8] = b"var   debug = 0;";
+const EXTENSIONS_RULE_SUFFIX: &str = "Binary/__MiniExtensionsHeuristic_By_DosX.7.sg";
+const EXTENSIONS_RULE_BYTES: usize = 21_958;
+const EXTENSIONS_RULE_SHA256: &str =
+    "e8eac22087d7814bdb6c80fd3626b1dbad721c16a5ce4ab290b9eedcc165c12d";
+const EXTENSIONS_CONST_DETECT_DECLARATION: &[u8] = b"const detect = main;";
+const EXTENSIONS_COMPAT_DETECT_DECLARATION: &[u8] = b"var   detect = main;";
+const UPSTREAM_COMMIT: &str = "74eaf505c250ab47e709024e9dc41657cd8f2254";
+const RULES_COMMIT: &str = "c2c17dfa5ea4e078ba31eab55d87430c96622fb6";
+const LINUX_QT5_BINARY_ORDER_SHA256: &str =
+    "27138d68ed788dd2609b7c533fecf540593fa2e4ddb7195adc26b1a9ff0e1ff3";
+const BINARY_SIGNATURE_COUNT: usize = 292;
 
 type Detection = (String, String, String, String);
 type SharedDetections = Arc<Mutex<Vec<Detection>>>;
@@ -109,6 +125,75 @@ fn apply_compatibility_overlay(path: &Path, source: &[u8]) -> Result<(Vec<u8>, b
     let end = start + NINTENDO_VAR_DECLARATION.len();
     transformed[start..end].copy_from_slice(NINTENDO_COMPAT_DECLARATION);
     Ok((transformed, true))
+}
+
+fn apply_exact_lifecycle_overlay(
+    path: &Path,
+    source: &[u8],
+    suffix: &str,
+    expected_bytes: usize,
+    declaration: &[u8],
+    replacement: &[u8],
+    id: &'static str,
+) -> Result<(Vec<u8>, Option<&'static str>), String> {
+    if !normalized_path(path).ends_with(suffix) {
+        return Ok((source.to_vec(), None));
+    }
+    if source.len() != expected_bytes {
+        return Err(format!(
+            "refusing {id} overlay: expected {expected_bytes} bytes, got {}",
+            source.len()
+        ));
+    }
+    if declaration.len() != replacement.len() {
+        return Err(format!("invalid {id} overlay: replacement length differs"));
+    }
+    let matches = source
+        .windows(declaration.len())
+        .enumerate()
+        .filter_map(|(offset, window)| (window == declaration).then_some(offset))
+        .collect::<Vec<_>>();
+    if matches.len() != 1 {
+        return Err(format!(
+            "refusing {id} overlay: expected one declaration, got {}",
+            matches.len()
+        ));
+    }
+    let mut transformed = source.to_vec();
+    let start = matches[0];
+    transformed[start..start + declaration.len()].copy_from_slice(replacement);
+    Ok((transformed, Some(id)))
+}
+
+fn apply_binary_lifecycle_overlay(
+    path: &Path,
+    source: &[u8],
+) -> Result<(Vec<u8>, Option<&'static str>), String> {
+    let (transformed, nintendo_applied) = apply_compatibility_overlay(path, source)?;
+    if nintendo_applied {
+        return Ok((transformed, Some("nintendo-unused-var-tp-v1")));
+    }
+    let (transformed, audio_id) = apply_exact_lifecycle_overlay(
+        path,
+        source,
+        AUDIO_RULE_SUFFIX,
+        AUDIO_RULE_BYTES,
+        AUDIO_CONST_DEBUG_DECLARATION,
+        AUDIO_COMPAT_DEBUG_DECLARATION,
+        "audio-global-const-debug-v1",
+    )?;
+    if audio_id.is_some() {
+        return Ok((transformed, audio_id));
+    }
+    apply_exact_lifecycle_overlay(
+        path,
+        source,
+        EXTENSIONS_RULE_SUFFIX,
+        EXTENSIONS_RULE_BYTES,
+        EXTENSIONS_CONST_DETECT_DECLARATION,
+        EXTENSIONS_COMPAT_DETECT_DECLARATION,
+        "extensions-global-const-detect-v1",
+    )
 }
 
 fn new_runtime() -> Result<Runtime, String> {
@@ -321,6 +406,161 @@ fn install_main_include_registry(context: &Context, rule_root: &Path) -> Result<
         "#
     );
     eval_unit(context, program.as_bytes())
+}
+
+fn parse_binary_order(document: &Value) -> Result<Vec<String>, String> {
+    if document.get("upstream_commit").and_then(Value::as_str) != Some(UPSTREAM_COMMIT) {
+        return Err("Binary order upstream commit mismatch".to_owned());
+    }
+    if document.get("rules_commit").and_then(Value::as_str) != Some(RULES_COMMIT) {
+        return Err("Binary order rules commit mismatch".to_owned());
+    }
+    if document.get("order_sha256").and_then(Value::as_str) != Some(LINUX_QT5_BINARY_ORDER_SHA256) {
+        return Err("Binary order SHA-256 mismatch".to_owned());
+    }
+    let order = document
+        .get("order")
+        .and_then(Value::as_array)
+        .ok_or_else(|| "Binary order array is missing".to_owned())?
+        .iter()
+        .map(|value| {
+            value
+                .as_str()
+                .map(str::to_owned)
+                .ok_or_else(|| "Binary order contains a non-string".to_owned())
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+    if order.len() != BINARY_SIGNATURE_COUNT {
+        return Err(format!(
+            "expected {BINARY_SIGNATURE_COUNT} Binary signatures, got {}",
+            order.len()
+        ));
+    }
+    let mut unique = order.clone();
+    unique.sort();
+    unique.dedup();
+    if unique.len() != order.len() {
+        return Err("Binary order contains duplicate names".to_owned());
+    }
+    for name in &order {
+        let path = Path::new(name);
+        if path.file_name().and_then(|value| value.to_str()) != Some(name.as_str()) {
+            return Err(format!("invalid Binary signature name: {name}"));
+        }
+    }
+    Ok(order)
+}
+
+fn run_binary_lifecycle(
+    rule_root: &Path,
+    order_path: &Path,
+    compatibility_overlays: bool,
+) -> Result<bool, String> {
+    let order_document: Value = serde_json::from_slice(
+        &fs::read(order_path)
+            .map_err(|error| format!("cannot read {}: {error}", order_path.display()))?,
+    )
+    .map_err(|error| format!("cannot parse {}: {error}", order_path.display()))?;
+    let order = parse_binary_order(&order_document)?;
+    let started = Instant::now();
+    let runtime = new_runtime()?;
+    let interrupt_ticks = Arc::new(AtomicUsize::new(0));
+    let interrupt_ticks_for_handler = Arc::clone(&interrupt_ticks);
+    runtime.set_interrupt_handler(Some(Box::new(move || {
+        interrupt_ticks_for_handler.fetch_add(1, Ordering::Relaxed) >= 1_000_000
+    })));
+    let context = new_context(&runtime)?;
+    install_host_shim(&context)?;
+    install_main_include_registry(&context, rule_root)?;
+
+    for relative in ["_init", "Binary/_init"] {
+        let path = rule_root.join(relative);
+        let source =
+            fs::read(&path).map_err(|error| format!("cannot read {}: {error}", path.display()))?;
+        eval_unit(&context, &source)
+            .map_err(|error| format!("cannot eval {}: {error}", path.display()))?;
+    }
+
+    let mut errors = Vec::new();
+    let mut total_bytes = 0_u64;
+    let mut overlay_paths = Vec::new();
+    for (index, name) in order.iter().enumerate() {
+        let path = rule_root.join("Binary").join(name);
+        let source =
+            fs::read(&path).map_err(|error| format!("cannot read {}: {error}", path.display()))?;
+        total_bytes = total_bytes
+            .checked_add(source.len() as u64)
+            .ok_or_else(|| "Binary rule byte count overflow".to_owned())?;
+        let (evaluated, overlay_id) = if compatibility_overlays {
+            apply_binary_lifecycle_overlay(&path, &source)?
+        } else {
+            (source, None)
+        };
+        if let Some(id) = overlay_id {
+            overlay_paths.push(json!({
+                "id": id,
+                "path": normalized_path(&path),
+            }));
+        }
+        interrupt_ticks.store(0, Ordering::Relaxed);
+        if let Err(error) = eval_unit(&context, &evaluated) {
+            errors.push(json!({
+                "index": index,
+                "name": name,
+                "error": error,
+            }));
+        }
+    }
+    let include_trace_text = eval_string(&context, b"JSON.stringify(__includeTrace)")?;
+    let include_trace: Value = serde_json::from_str(&include_trace_text)
+        .map_err(|error| format!("cannot parse include trace: {error}"))?;
+    let overlay_ok = if compatibility_overlays {
+        overlay_paths.len() == 3
+            && overlay_paths[0]["id"] == "audio-global-const-debug-v1"
+            && overlay_paths[1]["id"] == "nintendo-unused-var-tp-v1"
+            && overlay_paths[2]["id"] == "extensions-global-const-detect-v1"
+    } else {
+        overlay_paths.is_empty()
+    };
+    let passed = errors.is_empty() && overlay_ok;
+    println!(
+        "{}",
+        serde_json::to_string_pretty(&json!({
+            "schema_version": 1,
+            "operation": if compatibility_overlays {
+                "fixed Linux Qt5 Binary top-level lifecycle eval with compatibility overlays"
+            } else {
+                "fixed Linux Qt5 Binary top-level lifecycle eval without compatibility overlays"
+            },
+            "runtime": "rquickjs 0.12.1 / QuickJS-NG 0.15.1",
+            "upstream_commit": UPSTREAM_COMMIT,
+            "rules_commit": RULES_COMMIT,
+            "order_manifest": normalized_path(order_path),
+            "order_sha256": LINUX_QT5_BINARY_ORDER_SHA256,
+            "init_sequence": ["_init", "Binary/_init"],
+            "include_trace": include_trace,
+            "files": order.len(),
+            "bytes": total_bytes,
+            "compatibility_overlay": {
+                "enabled": compatibility_overlays,
+                "applied_paths": overlay_paths,
+                "expected_count": if compatibility_overlays { 3 } else { 0 },
+                "applied_exactly": overlay_ok,
+                "source_sha256": {
+                    "audio-global-const-debug-v1": AUDIO_RULE_SHA256,
+                    "nintendo-unused-var-tp-v1": NINTENDO_RULE_SHA256,
+                    "extensions-global-const-detect-v1": EXTENSIONS_RULE_SHA256,
+                },
+            },
+            "eval_errors": errors,
+            "eval_error_count": errors.len(),
+            "elapsed_ms": started.elapsed().as_millis(),
+            "passed": passed,
+            "scope": "top-level eval only; detect functions are not called",
+        }))
+        .map_err(|error| format!("cannot serialize report: {error}"))?
+    );
+    Ok(passed)
 }
 
 fn run_nintendo_rule(rule_root: &Path, data: Vec<u8>) -> Result<Vec<Detection>, String> {
@@ -718,6 +958,9 @@ fn usage() -> ExitCode {
         "usage: diec-rquickjs-rule-runtime-spike \
          <eval-isolated|eval-isolated-compat|eval-shared> <rule-root>...\n       \
          diec-rquickjs-rule-runtime-spike fixture <main-rule-root>\n       \
+         diec-rquickjs-rule-runtime-spike \
+         <eval-binary-lifecycle|eval-binary-lifecycle-raw> \
+         <main-rule-root> <binary-order-json>\n       \
          diec-rquickjs-rule-runtime-spike detect-nintendo \
          <main-rule-root> <corpus-dir> <baseline-json>"
     );
@@ -743,6 +986,10 @@ fn main() -> ExitCode {
         evaluate_corpus(&roots, true, false)
     } else if command == "fixture" && roots.len() == 1 {
         run_fixture(&roots[0])
+    } else if command == "eval-binary-lifecycle" && roots.len() == 2 {
+        run_binary_lifecycle(&roots[0], &roots[1], true)
+    } else if command == "eval-binary-lifecycle-raw" && roots.len() == 2 {
+        run_binary_lifecycle(&roots[0], &roots[1], false)
     } else if command == "detect-nintendo" && roots.len() == 3 {
         run_nintendo_corpus(&roots[0], &roots[1], &roots[2])
     } else {
@@ -762,8 +1009,8 @@ fn main() -> ExitCode {
 mod tests {
     use super::{
         NINTENDO_COMPAT_DECLARATION, NINTENDO_RULE_BYTES, NINTENDO_VAR_DECLARATION,
-        apply_compatibility_overlay, collect_rule_files, normalized_path, read_unsigned,
-        signature_matches,
+        apply_compatibility_overlay, apply_exact_lifecycle_overlay, collect_rule_files,
+        normalized_path, read_unsigned, signature_matches,
     };
     use std::fs;
     use std::path::PathBuf;
@@ -842,6 +1089,36 @@ mod tests {
         let error = apply_compatibility_overlay(&path, b"var tp, e;")
             .expect_err("unexpected source identity must be rejected");
         assert!(error.contains("expected 1994 bytes"));
+    }
+
+    #[test]
+    fn exact_lifecycle_overlay_is_path_size_and_declaration_guarded() {
+        let path = PathBuf::from("db/Binary/example.sg");
+        let source = b"const value = 1;";
+        let (transformed, id) = apply_exact_lifecycle_overlay(
+            &path,
+            source,
+            "Binary/example.sg",
+            source.len(),
+            b"const",
+            b"var  ",
+            "example-v1",
+        )
+        .expect("exact overlay should apply");
+        assert_eq!(id, Some("example-v1"));
+        assert_eq!(transformed, b"var   value = 1;");
+
+        let error = apply_exact_lifecycle_overlay(
+            &path,
+            source,
+            "Binary/example.sg",
+            source.len() + 1,
+            b"const",
+            b"var  ",
+            "example-v1",
+        )
+        .expect_err("size drift must be rejected");
+        assert!(error.contains("expected 17 bytes"));
     }
 
     #[test]
