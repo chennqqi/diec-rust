@@ -10,9 +10,10 @@ Last updated: 2026-07-25
 `diec` 候选 oracle 分别扫描。比较保留原始 stdout、stderr 和退出码，不解析后
 再重排 JSON。
 
-15 个样本在两个 oracle 上均返回退出码 `0`、空 stderr，JSON stdout
-逐字节相同。该结论只覆盖默认扫描加 JSON 输出，不代表其他开关、输出格式、
-畸形变体或平台已经兼容。
+15 个样本在两个 oracle 上均返回退出码 `0`、空 stderr，默认 JSON stdout
+逐字节相同。扫描开关矩阵进一步覆盖全部 15 个样本；输出格式矩阵覆盖
+`empty.bin`、`minimal.exe`、`minimal.pdf`、`payload.zip` 和 `plain.txt`。
+这些结论不代表其他选项组合、畸形变体或平台已经兼容。
 
 ## 语料来源与安全
 
@@ -60,7 +61,7 @@ python3 tools/corpus/generate_baseline_corpus.py /tmp/diec-baseline-corpus
 
 ```sh
 python3 tools/upstream/compare_cli_oracles.py \
-  --left-image diec-rust/upstream-oracle:74eaf505 \
+  --left-image diec-rust/upstream-oracle:74eaf505-repro \
   --left-binary /opt/die-source/build/release/diec \
   --right-image diec-rust/upstream-oracle-cmake:74eaf505 \
   --right-binary /opt/die-build/src/console/diec \
@@ -70,6 +71,25 @@ python3 tools/upstream/compare_cli_oracles.py \
 
 工具先校验两个 image revision、语料清单、文件大小和哈希，再将同一 host 目录
 以只读方式挂载到 `/corpus`。任何输入身份或输出差异都会令命令非零退出。
+
+扫描所有样本的开关矩阵使用：
+
+```sh
+python3 tools/upstream/compare_cli_oracles.py \
+  --left-image diec-rust/upstream-oracle:74eaf505-repro \
+  --left-binary /opt/die-source/build/release/diec \
+  --right-image diec-rust/upstream-oracle-cmake:74eaf505 \
+  --right-binary /opt/die-build/src/console/diec \
+  --expected-revision 74eaf505c250ab47e709024e9dc41657cd8f2254 \
+  --corpus-dir /tmp/diec-baseline-corpus \
+  --matrix-all \
+  --matrix-kind scan
+```
+
+输出格式实验将 `--matrix-kind` 改为 `output`，并用重复的
+`--matrix-sample <name>` 选择上述 5 个代表样本。报告为 JSON，保存两侧每次
+运行的退出码及原始 stdout/stderr SHA-256；`left_changes` 和
+`right_changes` 分别指出相对默认 JSON 的可观察变化。
 
 ## 观测结果
 
@@ -108,11 +128,78 @@ python3 tools/upstream/compare_cli_oracles.py \
 - PDF 规则原样输出拼写 `Complier`；Rust 兼容实现默认也必须保留该可观察字符串。
 - CFBF 截断到 header 仍正常退出且产生版本/Office 规则结果，没有 stderr 或 panic。
 
+## 输出格式矩阵
+
+5 个代表样本分别运行默认彩色文本、plain text、JSON、XML、CSV、TSV，以及
+同时传入全部 5 个格式开关。共 35 种输入/模式组合、70 次 oracle 执行；
+两侧退出码、stdout 和 stderr 全部逐字节相同，均退出 `0` 且 stderr 为空。
+
+固定上游
+[`main_console.cpp`](https://github.com/horsicq/DIE-engine/blob/74eaf505c250ab47e709024e9dc41657cd8f2254/src/console/main_console.cpp)
+对普通扫描使用固定优先级
+`CSV > JSON > TSV > XML > plain text > colored text`，与命令行参数顺序无关。
+实验中依次传入 `--xml --json --csv --tsv --plaintext`，5 个样本的输出都与
+单独 `--csv` 逐字节相同。
+
+以 `minimal.pdf` 为例：
+
+- 默认文本在 stdout 被重定向时仍包含 ANSI SGR 转义；`--plaintext` 保留相同
+  层级文本但不含颜色控制序列。
+- JSON 是带缩进的对象，顶层为 `detects`；详细默认结果哈希见上表。
+- XML 顶层为 `Result`，每个 filetype 是子元素，规则命中为 `detect` 子元素。
+- CSV 使用分号分隔且没有 header；TSV 使用 tab 分隔且没有 header。
+- CSV 和 TSV 均逐条输出规则记录；字段为 type、name、version、info 和
+  完整显示字符串。
+
+该优先级只适用于普通扫描。源码中的 entropy/info 专用分支按
+`JSON > XML > CSV > TSV > formatted text` 选择 formatter，尚未运行验证，
+Rust CLI 不能把两条路径误合并为一个全局优先级。
+
+## 扫描开关矩阵
+
+每个样本分别运行默认 JSON、deep、heuristic、aggressive、alltypes、format、
+hideunknown，以及 deep/heuristic/aggressive/alltypes 组合模式。完整矩阵包含
+120 种输入/模式组合、240 次 oracle 执行；两套上游构建的退出码、stdout 和
+stderr 逐字节相同，均退出 `0` 且 stderr 为空。
+
+相对默认 JSON，发生 stdout 变化的样本如下；未列出的模式/样本逐字节不变：
+
+| 模式 | stdout 变化的样本 |
+| --- | --- |
+| deep | 无 |
+| heuristic | `minimal.exe`、`pixel.bmp`、`tone.wav` |
+| aggressive | 无 |
+| alltypes | `minimal.exe` |
+| format | `Minimal.class`、`minimal.cfbf`、`minimal.dex`、`minimal.pdf`、`pixel.bmp`、`pixel.png`、`plain.txt`、`tone.wav` |
+| hideunknown | `minimal.elf`、`minimal.exe`、`minimal.macho`、`payload.txt.gz`、`payload.zip` |
+| combined | `minimal.exe`、`pixel.bmp`、`tone.wav` |
+
+代表性的可观察增量为：
+
+- `minimal.exe` 的 heuristic 把 `Unknown: Unknown` 变为
+  `(Heur)Protection: Generic`，记录 type 为 `~protection`。
+- `pixel.bmp` 和 `tone.wav` 的 heuristic 分别增加根据扩展名产生的
+  `(Heur)Format: Bitmap Image[by extension]` 和
+  `(Heur)Format: Waveform Audio[by extension]`；组合模式的输出与各自
+  heuristic 输出逐字节相同。
+- `minimal.exe` 的 alltypes 在 PE32 之前额外报告 MSDOS Unknown；组合模式同时
+  保留 MSDOS 结果和 PE32 heuristic protection。
+- hideunknown 不会产生空 `detects`，而是把 Unknown filetype 折叠为一个
+  `name`、`type`、`version`、`info` 为空的顶层 value；`string` 保留
+  `ELF64`、`PE32`、`Mach-O64`、`Binary` 或 `ZIP`。这是需要原样兼容的
+  schema 变化。
+- format 不改变结构化字段，只重排完整显示字符串中的空格。例如
+  `PDF(1.4)` 变为 `PDF (1.4)`，`Plain text[LF]` 变为
+  `Plain text [LF]`，PNG 的名称与方括号信息之间也增加空格。
+- deep 和 aggressive 在全部 15 个输入上都没有改变输出；这只能证明它们在
+  当前语料上无增量，不能推断开关未生效。
+
 ## 尚未覆盖
 
 - PE64、ELF32、Mach-O32/FAT、APK/JAR/IPA、RAR、ISO9660、PYC、JPEG 等格式。
-- deep、heuristic、aggressive、alltypes、entropy、info、struct 和 profiling。
-- XML、CSV、TSV、plain text 以及多目标输出 schema。
+- entropy、info、struct、profiling、verbose 和 messages。
+- 输出格式的转义边界、多目标 schema，以及 entropy/info formatter 优先级。
+- 能实际触发 deep/aggressive 增量的嵌套、overlay 或大 archive 样本。
 - 目录、递归、archive 内部成员、overlay/resource 和最大深度。
 - 缺失、空、损坏和含未知语法的规则数据库。
 - 系统化畸形/截断矩阵、资源限制、超时、内存峰值和 fuzz seeds。

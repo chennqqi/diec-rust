@@ -54,6 +54,47 @@ class CompareObservationsTests(unittest.TestCase):
             },
         )
 
+    def test_output_precedence_case_lists_all_flags(self):
+        case = next(
+            item
+            for item in MODULE.OUTPUT_MATRIX
+            if item.name == "all_output_flags"
+        )
+
+        self.assertEqual(
+            case.arguments[:5],
+            ("--xml", "--json", "--csv", "--tsv", "--plaintext"),
+        )
+
+    def test_scan_matrix_has_default_and_combined_cases(self):
+        self.assertEqual(
+            [case.name for case in MODULE.SCAN_MATRIX],
+            [
+                "default",
+                "deep",
+                "heuristic",
+                "aggressive",
+                "alltypes",
+                "format",
+                "hideunknown",
+                "combined",
+            ],
+        )
+
+    def test_output_matrix_has_each_supported_normal_scan_formatter(self):
+        self.assertEqual(
+            [case.name for case in MODULE.OUTPUT_MATRIX],
+            [
+                "text",
+                "plaintext",
+                "json",
+                "xml",
+                "csv",
+                "tsv",
+                "all_output_flags",
+            ],
+        )
+
 
 class LoadCorpusTests(unittest.TestCase):
     def test_loads_and_verifies_manifest(self):

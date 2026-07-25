@@ -23,7 +23,8 @@ Qt 5.15.13 环境中不修改源码地构建了 CMake `diec` 目标，并与先�
 
 这支持将 CMake 产物作为 Linux 上游 oracle 的首选候选，并把 qmake 产物作为
 交叉检查。当前语料已扩展到 15 个确定性样本，但扫描模式和平台覆盖仍很小，
-且构建环境非 hermetic，因此文档保持 Draft。
+且构建环境非 hermetic，因此文档保持 Draft。随后增加的输出/扫描开关矩阵也未
+发现两种构建之间的差异。
 
 ## 上游发布路径
 
@@ -162,6 +163,17 @@ Cannot find: /does-not-exist
 两个产物各自扫描自身时，都按相同顺序报告 GCC、GLIBC、Qt、FLEXlm 和 UPX；
 JSON 中只有输入二进制的 `size` 不同。
 
+差分工具还支持 `--matrix-sample` / `--matrix-all` 与
+`--matrix-kind output|scan|both`。固定安全语料上的扩展实验包括：
+
+- 5 个代表样本 × 7 个输出模式，70 次 oracle 执行；
+- 15 个样本 × 8 个扫描模式，240 次 oracle 执行。
+
+两组实验均未发现退出码、原始 stdout 或原始 stderr 差异。输出优先级、schema
+和各扫描开关的具体增量记录在
+[`behavior-baseline.md`](behavior-baseline.md)；无差异只证明当前固定环境和
+输入范围，不等于 CMake 与 qmake 在所有行为上等价。
+
 ## 限制与下一步
 
 - 当前覆盖 15 个固定安全样本；结果见
@@ -171,11 +183,11 @@ JSON 中只有输入二进制的 `size` 不同。
 - APT repository 未固定 snapshot，clean build 尚未证明 bit-for-bit reproducible。
 - GitHub TLS 中断曾触发 submodule 自身重试；构建入口尚未提供显式、有界重试。
 - Windows 和 macOS oracle 尚未建立。
-- 自动差分目前比较原始 stdout/stderr/exit code，但尚未保存带 provenance 的
-  版本化 baseline 文件。
+- 自动差分目前比较原始 stdout/stderr/exit code，并输出可保存的 JSON 报告，
+  但尚未提交带 provenance 的版本化原始 baseline 文件。
 
-下一步应继续补充尚未覆盖的格式、畸形变体、archive 递归和扫描开关，并保存
-带 provenance 的版本化原始 baseline。
+下一步应继续补充尚未覆盖的格式、畸形变体、archive 递归，以及能触发
+deep/aggressive 增量的样本，并保存带 provenance 的版本化原始 baseline。
 
 ## 源码证据
 

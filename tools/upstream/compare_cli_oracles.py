@@ -52,6 +52,47 @@ CASES = (
     Case("missing", ("/does-not-exist",)),
 )
 
+OUTPUT_MATRIX = (
+    Case("text", DATABASE_ARGS),
+    Case("plaintext", ("--plaintext", *DATABASE_ARGS)),
+    Case("json", ("--json", *DATABASE_ARGS)),
+    Case("xml", ("--xml", *DATABASE_ARGS)),
+    Case("csv", ("--csv", *DATABASE_ARGS)),
+    Case("tsv", ("--tsv", *DATABASE_ARGS)),
+    Case(
+        "all_output_flags",
+        (
+            "--xml",
+            "--json",
+            "--csv",
+            "--tsv",
+            "--plaintext",
+            *DATABASE_ARGS,
+        ),
+    ),
+)
+
+SCAN_MATRIX = (
+    Case("default", ("--json", *DATABASE_ARGS)),
+    Case("deep", ("--json", "--deepscan", *DATABASE_ARGS)),
+    Case("heuristic", ("--json", "--heuristicscan", *DATABASE_ARGS)),
+    Case("aggressive", ("--json", "--aggressivecscan", *DATABASE_ARGS)),
+    Case("alltypes", ("--json", "--alltypes", *DATABASE_ARGS)),
+    Case("format", ("--json", "--format", *DATABASE_ARGS)),
+    Case("hideunknown", ("--json", "--hideunknown", *DATABASE_ARGS)),
+    Case(
+        "combined",
+        (
+            "--json",
+            "--deepscan",
+            "--heuristicscan",
+            "--aggressivecscan",
+            "--alltypes",
+            *DATABASE_ARGS,
+        ),
+    ),
+)
+
 
 def observe(
     image: str,
@@ -173,6 +214,22 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--right-binary", required=True)
     parser.add_argument("--expected-revision", required=True)
     parser.add_argument("--corpus-dir", type=pathlib.Path)
+    parser.add_argument(
+        "--matrix-sample",
+        action="append",
+        default=[],
+        help="Corpus sample to include in output/scan option matrices",
+    )
+    parser.add_argument(
+        "--matrix-all",
+        action="store_true",
+        help="Include every corpus sample in the selected matrices",
+    )
+    parser.add_argument(
+        "--matrix-kind",
+        choices=("both", "output", "scan"),
+        default="both",
+    )
     return parser.parse_args()
 
 
@@ -223,7 +280,9 @@ def main() -> int:
     if corpus_dir is not None:
         corpus_report = {}
         report["corpus"] = corpus_report
-        for sample in load_corpus(corpus_dir):
+        samples = load_corpus(corpus_dir)
+        samples_by_name = {str(sample["name"]): sample for sample in samples}
+        for sample in samples:
             name = str(sample["name"])
             arguments = ("--json", *DATABASE_ARGS, f"/corpus/{name}")
             left = observe(
@@ -248,6 +307,98 @@ def main() -> int:
                 "differences": differences,
             }
             failures.extend(f"corpus.{name}.{item}" for item in differences)
+
+        matrix_names = (
+            list(samples_by_name)
+            if args.matrix_all
+            else list(dict.fromkeys(args.matrix_sample))
+        )
+        if matrix_names:
+            unknown_samples = sorted(
+                set(matrix_names) - samples_by_name.keys()
+            )
+            if unknown_samples:
+                raise ValueError(
+                    "matrix samples are not in corpus: "
+                    + ", ".join(unknown_samples)
+                )
+
+            matrix_report = {}
+            report["matrix"] = matrix_report
+            for name in matrix_names:
+                sample_report = {}
+                matrix_report[name] = sample_report
+                container_path = f"/corpus/{name}"
+
+                if args.matrix_kind in {"both", "output"}:
+                    output_report = {}
+                    sample_report["output"] = output_report
+                    for case in OUTPUT_MATRIX:
+                        arguments = (*case.arguments, container_path)
+                        left = observe(
+                            args.left_image,
+                            args.left_binary,
+                            arguments,
+                            corpus_dir,
+                        )
+                        right = observe(
+                            args.right_image,
+                            args.right_binary,
+                            arguments,
+                            corpus_dir,
+                        )
+                        differences = compare_observations(left, right)
+                        output_report[case.name] = {
+                            "left": left.summary(),
+                            "right": right.summary(),
+                            "differences": differences,
+                        }
+                        failures.extend(
+                            f"matrix.{name}.output.{case.name}.{item}"
+                            for item in differences
+                        )
+
+                if args.matrix_kind in {"both", "scan"}:
+                    scan_report = {}
+                    sample_report["scan"] = scan_report
+                    scan_observations = {}
+                    for case in SCAN_MATRIX:
+                        arguments = (*case.arguments, container_path)
+                        left = observe(
+                            args.left_image,
+                            args.left_binary,
+                            arguments,
+                            corpus_dir,
+                        )
+                        right = observe(
+                            args.right_image,
+                            args.right_binary,
+                            arguments,
+                            corpus_dir,
+                        )
+                        differences = compare_observations(left, right)
+                        scan_observations[case.name] = (left, right)
+                        scan_report[case.name] = {
+                            "left": left.summary(),
+                            "right": right.summary(),
+                            "differences": differences,
+                        }
+                        failures.extend(
+                            f"matrix.{name}.scan.{case.name}.{item}"
+                            for item in differences
+                        )
+
+                    default_left, default_right = scan_observations["default"]
+                    for case_name, (left, right) in scan_observations.items():
+                        entry = scan_report[case_name]
+                        entry["left_changes"] = compare_observations(
+                            default_left, left
+                        )
+                        entry["right_changes"] = compare_observations(
+                            default_right, right
+                        )
+    elif args.matrix_sample or args.matrix_all:
+        raise ValueError("matrix options require --corpus-dir")
 
     report["equal"] = not failures
     report["failures"] = failures

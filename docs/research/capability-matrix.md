@@ -25,15 +25,15 @@ CLI 主入口为 [`src/console/main_console.cpp`](https://github.com/horsicq/DIE
 | Short | Long | 上游描述 | 代码映射 | 状态 |
 | --- | --- | --- | --- | --- |
 | `-r` | `--recursivescan` | Scan directories recursively | `bIsRecursiveScan` | Source only |
-| `-d` | `--deepscan` | Enable deep scanning for thorough analysis | `bIsDeepScan` | Source only |
-| `-u` | `--heuristicscan` | Enable heuristic scanning methods | `bIsHeuristicScan` | Source only |
+| `-d` | `--deepscan` | Enable deep scanning for thorough analysis | `bIsDeepScan` | Observed；15 个基线样本 |
+| `-u` | `--heuristicscan` | Enable heuristic scanning methods | `bIsHeuristicScan` | Observed；PE32 protection 及 BMP/WAV 扩展名 heuristic |
 | `-b` | `--verbose` | Show verbose output with detailed information | `bIsVerbose` | Source only |
-| `-g` | `--aggressivecscan` | Enable aggressive scanning mode | `bIsAggressiveScan` | Source only; long name含额外 `c` |
-| `-a` | `--alltypes` | Scan all file types | `bIsAllTypesScan` | Source only |
-| `-f` | `--format` | Format the output result | `bFormatResult` | Source only |
+| `-g` | `--aggressivecscan` | Enable aggressive scanning mode | `bIsAggressiveScan` | Observed；15 个基线样本；long name含额外 `c` |
+| `-a` | `--alltypes` | Scan all file types | `bIsAllTypesScan` | Observed；最小 PE32 额外报告 MSDOS |
+| `-f` | `--format` | Format the output result | `bFormatResult` | Observed；8 个样本的显示字符串空格发生变化 |
 | `-l` | `--profiling` | Profile signatures during scan | `bLogProfiling` | Source only |
 | `-M` | `--messages` | Display scan messages and warnings | Qt signal output | Source only |
-| `-U` | `--hideunknown` | Hide unknown file types from results | `bHideUnknown` | Source only |
+| `-U` | `--hideunknown` | Hide unknown file types from results | `bHideUnknown` | Observed；5 个 Unknown filetype 被折叠为顶层字符串 |
 
 注意：`XScanEngine::SCAN_OPTIONS` 还定义 resource、archive 和 overlay scan，但当前顶层 `src/console/main_console.cpp` 没有注册相应 CLI 选项。这是“引擎能力”和“当前 CLI 能力”必须分开比较的实例。
 
@@ -45,11 +45,11 @@ CLI 主入口为 [`src/console/main_console.cpp`](https://github.com/horsicq/DIE
 | `-i` | `--info` | 输出文件信息模型 | Source only |
 | `-S` | `--struct <value>` | 特定结构信息，如 `Hash` / `Hash#MD5` | Source only |
 | `-w` | `--showstructs` | 列出可用结构方法 | Source only |
-| `-x` | `--xml` | XML | Source only |
+| `-x` | `--xml` | XML | Observed；5 个代表样本 |
 | `-j` | `--json` | JSON | Observed；15 个样本原始输出已固定哈希 |
-| `-c` | `--csv` | CSV | Source only |
-| `-t` | `--tsv` | TSV | Source only |
-| `-p` | `--plaintext` | plain text | Source only |
+| `-c` | `--csv` | CSV | Observed；5 个代表样本；normal scan 多格式开关中优先级最高 |
+| `-t` | `--tsv` | TSV | Observed；5 个代表样本 |
+| `-p` | `--plaintext` | plain text | Observed；5 个代表样本 |
 | `-D` | `--database <path>` | 主数据库路径 | Observed |
 | `-E` | `--extradatabase <path>` | extra 数据库路径 | Observed |
 | `-C` | `--customdatabase <path>` | custom 数据库路径 | Observed |
@@ -97,7 +97,8 @@ CLI 主入口为 [`src/console/main_console.cpp`](https://github.com/horsicq/DIE
 首批运行实验已观察到专用顶层类型 PE32、ELF64、Mach-O64、DEX、Java Class、
 PNG、PDF、CFBF 和 ZIP。BMP、WAV、TAR、GZIP 由外部 `file(1)` 验证结构，
 但 DIE 顶层类型为 Binary；其中 BMP、WAV、TAR 仍通过 value 报告具体格式，
-GZIP 返回 Unknown。完整输入哈希和输出见
+GZIP 返回 Unknown。扫描开关矩阵还验证了 heuristic、alltypes、format 和
+hideunknown 的可观察增量。完整输入哈希和输出见
 [`behavior-baseline.md`](behavior-baseline.md)。
 
 ## 嵌套与递归
@@ -129,11 +130,11 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
 
 ## 待实验矩阵
 
-- 每个 CLI 选项的 stdout、stderr、退出码和组合优先级。
+- 尚未实验的 CLI 选项及 entropy/info 分支的 stdout、stderr、退出码和组合优先级。
 - 无效路径、空文件、不可读文件、缺失/损坏数据库。
 - 多文件与目录输出中的 filename 包装格式。
-- JSON/XML/CSV/TSV 的 schema、转义、排序和多目标有效性。
-- deep、heuristic、aggressive、alltypes 的实际增量结果。
+- JSON/XML/CSV/TSV 的转义、排序和多目标有效性。
+- deep/aggressive 在能触发增量行为的样本上的效果。
 - archive/resource/overlay 的默认状态、递归深度和限制。
 - Qt 5 与 Qt 6 输出差异。
 - Linux、Windows、macOS 路径与编码差异。
