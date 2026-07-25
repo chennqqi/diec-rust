@@ -11,3 +11,7 @@
 
 已接受的 ADR 不直接改写历史；需要改变决策时新增 ADR，并将旧 ADR 标记为 `Superseded`。
 
+当前 ADR：
+
+- [`0001-c-abi-opaque-ownership.md`](0001-c-abi-opaque-ownership.md)：
+  C ABI 不透明句柄、配对释放、one-shot 与 reusable scanner（Proposed）。

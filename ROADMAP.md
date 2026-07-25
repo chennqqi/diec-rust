@@ -44,7 +44,7 @@
 - `docs/design/api.md`
   - 纯 Rust API、CLI 契约、结果及错误模型。
   - 取消、超时、并发和资源限制。
-- `docs/design/c-abi.md`
+- [`docs/design/c-abi.md`](docs/design/c-abi.md) — Draft
   - ABI 版本、导出函数和结构布局。
   - 不透明句柄状态机、内存所有权和线程安全。
   - panic 隔离、allocator 和静态链接策略。
