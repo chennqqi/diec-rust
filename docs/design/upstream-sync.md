@@ -31,6 +31,9 @@ upstream-die -> https://github.com/horsicq/DIE-engine.git
 ```sh
 git remote add upstream-die https://github.com/horsicq/DIE-engine.git
 git remote set-url --push upstream-die DISABLED
+
+git remote add upstream-detect-it-easy https://github.com/horsicq/Detect-It-Easy.git
+git remote set-url --push upstream-detect-it-easy DISABLED
 ```
 
 初始 subtree 固定到：
@@ -50,6 +53,17 @@ subtree 内容仅作为上游参考与变更跟踪来源，不直接成为 diec-
 | `git-subtree-split` | `74eaf505c250ab47e709024e9dc41657cd8f2254` |
 | Tree entries | 621 |
 | Nested gitlinks | 58 |
+
+规则/发布数据 sibling subtree：
+
+| Item | Value |
+| --- | --- |
+| Local path | `upstream/Detect-It-Easy/` |
+| Local merge commit | `e0bcca00` |
+| Squashed subtree commit | `dcf687c8` |
+| `git-subtree-split` | `c2c17dfa5ea4e078ba31eab55d87430c96622fb6` |
+| Tree entries | 5024 |
+| Nested gitlinks | 0 |
 
 ## 重要限制
 
@@ -117,6 +131,26 @@ git subtree pull \
 4. 更新 `docs/research/upstream-baseline.md`。
 5. 运行规则完整性、构建和差分测试。
 6. 以独立提交记录上游升级，禁止混入功能修改。
+
+当 DIE-engine 的 `Detect-It-Easy` gitlink 变化时，在完成候选规则差异审计后同步 sibling subtree：
+
+```sh
+git fetch upstream-detect-it-easy <new-component-sha>
+
+git subtree pull \
+  --prefix=upstream/Detect-It-Easy \
+  upstream-detect-it-easy <new-component-sha> \
+  --squash
+```
+
+同步后必须验证：
+
+```sh
+git rev-parse <new-component-sha>:db
+git rev-parse HEAD:upstream/Detect-It-Easy/db
+```
+
+两个 tree object SHA 必须相同；`db_extra`、`db_custom`、`dbs_min`、`dbs_special`、`yara_rules` 和 `peid_rules` 同样检查。
 
 禁止直接对 `upstream/DIE-engine/` 做项目实现修改。若需要研究性注释，写入 `docs/research/`；若必须维护上游补丁，将补丁保存为独立、可重放的 patch，并记录原因。
 

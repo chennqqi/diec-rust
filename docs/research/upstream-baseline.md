@@ -32,6 +32,13 @@ git -C DIE-engine submodule status --recursive
 
 当前本地调研使用了浅克隆，并只初始化与无 GUI 扫描直接相关的子模块。完整可重复构建尚未执行，因此本文件当前为 Draft。
 
+本仓库目前还物化了两个可审计快照：
+
+- `upstream/DIE-engine/`：主仓库 squash subtree。
+- `upstream/Detect-It-Easy/`：与主仓库 gitlink 一致的规则/发布数据 squash subtree。
+
+其他核心 submodule 目前只在 `upstream/components.lock.toml` 锁定 SHA，源码分析使用外部临时 checkout。该状态不等同于完整 recursive build checkout。
+
 ## 完整性记录
 
 | 文件 | SHA-256 |
@@ -128,4 +135,3 @@ git -C DIE-engine submodule status
 - [`.gitmodules`](https://github.com/horsicq/DIE-engine/blob/74eaf505c250ab47e709024e9dc41657cd8f2254/.gitmodules)
 - [`LICENSE`](https://github.com/horsicq/DIE-engine/blob/74eaf505c250ab47e709024e9dc41657cd8f2254/LICENSE)
 - [`release_version.txt`](https://github.com/horsicq/DIE-engine/blob/74eaf505c250ab47e709024e9dc41657cd8f2254/release_version.txt)
-
