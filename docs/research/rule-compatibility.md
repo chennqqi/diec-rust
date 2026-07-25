@@ -243,7 +243,7 @@ project-generated 最小规则实验已经分别触发 Qt Script parse error 和
 
 | Candidate | 优点 | 风险/代价 | 当前结论 |
 | --- | --- | --- | --- |
-| [Boa](https://github.com/boa-dev/boa) | JavaScript engine 以 Rust 实现；可注册 native class/function | 官方仍称 experimental；需验证规则、性能、资源限制和宿主绑定 | 进入 spike |
+| [Boa](https://github.com/boa-dev/boa) | JavaScript engine 以 Rust 实现；可注册 native class/function | 0.21.1 拒绝 1 条 Qt 接受的固定规则；shared lexical semantics 不同；MSRV 1.88、Windows spike 126 个 target packages | 保留为需 patch/上游修复的候选，不能原样采用 |
 | [rquickjs](https://github.com/DelSkayn/rquickjs) | QuickJS-NG 高层绑定、启动快、宿主类型转换成熟 | 编译 C library；平台支持有限，Windows MSVC 标为 experimental | 进入 spike，但违背“尽量纯 Rust”的偏好 |
 | [rusty_v8](https://github.com/denoland/rusty_v8) | ECMAScript 兼容性高、成熟宿主 API | V8 很大；默认下载预编译静态库或源码构建成本高，不符合轻依赖目标 | 仅作兼容性上界/备选 |
 | 自研 interpreter/transpiler | 可精确控制行为和资源限制 | 语法、RegExp、prototype、异常和动态特性成本极高 | 不作为首选 |
@@ -308,6 +308,11 @@ project-generated 最小规则实验已经分别触发 Qt Script parse error 和
 
 在 spike 完成前，不冻结 JavaScript engine、宿主 trait 或 cache 格式。
 
+Boa 0.21.1 的首轮实际构建、2235 文件 parse 和 runtime fixture 见
+[`rule-runtime-spike.md`](rule-runtime-spike.md)。它证明 native binding、
+prototype helper、复杂规则和 loop budget 可用，也确认了必须解决的语法/realm
+差异。
+
 ## 尚未完成
 
 - 对所有规则进行 AST 级语法统计。
@@ -316,7 +321,7 @@ project-generated 最小规则实验已经分别触发 Qt Script parse error 和
 - include 同名、重复、循环和异常实验。
 - database cache 与 ZIP database 行为。
 - `dbs_min` 生成逻辑。
-- candidate runtime 的实际构建、全库 parse/eval 和性能比较。
+- 按真实生命周期的全库 eval、QuickJS 对照和跨 runtime 性能比较。
 
 ## 主要证据
 

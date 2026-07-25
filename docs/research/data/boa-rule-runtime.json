@@ -1,0 +1,37 @@
+{
+  "candidate": {
+    "crate": "boa_engine",
+    "default_features": false,
+    "version": "0.21.1"
+  },
+  "experiment": {
+    "cargo_lock_sha256": "a5ec9db4c7333152928b54084573f6cfab95abaa54b456b8d21cf0f310d33569",
+    "cargo_toml_sha256": "ef471bf7a75e0f51bab184ebd001b7aa10e32e4964b6e2aa38fa70a9e9db5df5",
+    "source_sha256": "422482d8818d4eef4c24d4940ec62edf90cd6be664928c370be6ac9304e93c47",
+    "target": "x86_64-pc-windows-msvc",
+    "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
+  },
+  "fixture": {
+    "audio_rule_bytes": 603640,
+    "candidate_compatible_with_fixed_rules": false,
+    "host_function_result": "42",
+    "loop_limit_observed": true,
+    "nintendo_rule_eval_accepted": false,
+    "runtime_helpers_result": "a, b/c|007",
+    "shared_const_second_eval_accepted": false
+  },
+  "isolated_parse": {
+    "bytes": 2902881,
+    "error_count": 1,
+    "error_path": "db/Binary/format_bin.Nintendo-certified-file.1.sg",
+    "files": 2235
+  },
+  "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+  "schema_version": 1,
+  "shared_parse": {
+    "error_count": 2021,
+    "files": 2235,
+    "ordering": "normalized path; diagnostic signal, not upstream execution order"
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

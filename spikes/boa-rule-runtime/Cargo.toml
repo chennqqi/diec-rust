@@ -1,0 +1,10 @@
+[package]
+name = "diec-boa-rule-runtime-spike"
+version = "0.0.0"
+edition = "2024"
+license = "MIT"
+publish = false
+
+[dependencies]
+boa_engine = { version = "=0.21.1", default-features = false }
+serde_json = "=1.0.145"
