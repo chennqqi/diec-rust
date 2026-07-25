@@ -124,7 +124,7 @@ hideunknown 的可观察增量。完整输入哈希和输出见
   ZIP→ZIP 样本在 recursive/aggressive 组合下均不解包。
 - archive 源码 `nLimit` 为 20/100000，但默认 `>` 判断实际允许第 21 个
   scanable member；resource 的 `<=` 判断也允许第 21 个，aggressive limit
-  为 2000。边界数值尚未运行验证。
+  为 2000。两条默认 21、aggressive 至少 22 的边界均已 Observed。
 - overlay 始终作为 subdevice 扫描；非 aggressive resource 仅在探测为
   scanable 类型时扫描。
 - JSON 结果通过父 detection 的 `values` 表达树，并保留 file part、size 和
@@ -154,7 +154,7 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
 - Unicode/特殊 filename 及 Windows/macOS 的路径和枚举差异。
 - JSON/XML/CSV/TSV 的转义和嵌套排序。
 - deep 以及 aggressive resource 过滤/计数上限的增量样本。
-- engine archive scan harness、20/21 边界、最大深度和总解压资源限制。
+- 其他 archive 格式、aggressive 高上限、最大深度和总解压资源限制。
 - Qt 5 与 Qt 6 输出差异。
 - Linux、Windows、macOS 路径与编码差异。
 

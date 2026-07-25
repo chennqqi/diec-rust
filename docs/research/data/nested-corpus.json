@@ -24,6 +24,16 @@
       "size": 569
     },
     {
+      "intended_structure": "ZIP containing 22 PDF members",
+      "layers": [
+        "archive",
+        "pdf x22"
+      ],
+      "name": "many-pdf-members.zip",
+      "sha256": "65ecf2baaecc114a11c2a76cbbd0a42d909ca274a506bc1793673a3144740b9b",
+      "size": 9548
+    },
+    {
       "intended_structure": "PE32 with a PDF overlay",
       "layers": [
         "pe",
@@ -44,6 +54,17 @@
       "name": "pe-pdf-resource.exe",
       "sha256": "679124ef09b88eeb9edc29e2ee7165f3dbaf4e17b9d988b548c51cf8d4d1482b",
       "size": 1024
+    },
+    {
+      "intended_structure": "PE32 with 22 PDF RCDATA resources",
+      "layers": [
+        "pe",
+        "resource x22",
+        "pdf x22"
+      ],
+      "name": "pe-many-pdf-resources.exe",
+      "sha256": "1eea60ef127f55f19a82568262ed14098972c7f50f462448eb209106592cf568",
+      "size": 9216
     },
     {
       "intended_structure": "PE32 with a ZIP overlay containing a PDF",

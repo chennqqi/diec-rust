@@ -146,13 +146,15 @@ Rust 设计前必须把完整分派顺序提取为测试表，并用多义样本
 archive 扫描源码包含：
 
 - 只由 `bIsArchivesScan` 启用；发布 `diec` CLI 不设置该选项。
-- 默认 `nLimit` 为 20，但扫描后的 `>` 判断可允许第 21 个符合条件的成员。
+- 默认 `nLimit` 为 20，但扫描后的 `>` 判断允许第 21 个符合条件的成员；
+  22 个 PDF 成员实验已确认。
 - aggressive 模式限制 100000。
 - 循环硬上限 100000。
 - 为每个 entry 创建按 uncompressed size 定义的 file buffer，再决定是否递归扫描。
 
 resource/overlay 由 `bIsRecursiveScan` 或各自独立选项启用。resource 枚举上限
-10000、扫描 `nLimit` 为 20/2000，默认条件同样可允许第 21 个；overlay
+10000、扫描 `nLimit` 为 20/2000，22 个 PDF resource 实验确认默认扫描 21
+个、aggressive 扫描 22 个；overlay
 每层最多取 1 个且无条件扫描。递归复制完整 options，源码路径未见独立深度或
 总解压字节限制。固定 PE resource/overlay 和 archive 不可达实验见
 [`nested-scan-behavior.md`](nested-scan-behavior.md)。
@@ -184,7 +186,7 @@ resource/overlay 由 `bIsRecursiveScan` 或各自独立选项启用。resource �
 | Qt Script 与 QJSEngine 方言/行为差异 | 规则无法 1:1 复用 | 统计语法并选复杂规则做双引擎实验 |
 | 格式宿主 API 面积未知 | 工作量和漏报风险 | 自动提取所有 exposed method/property |
 | 多候选格式的优先顺序 | 分类结果偏差 | 建立分派顺序表和多义样本 |
-| archive/resource/overlay 递归 | 无深度/总解压限制；CLI 与 engine 可达性不同 | engine archive harness、计数边界和资源耗尽实验 |
+| archive/resource/overlay 递归 | 无深度/总解压限制；CLI 与 engine 可达性不同 | 其他格式、高上限和资源耗尽实验 |
 | 目录枚举无深度/循环保护 | symlink loop、栈/时间耗尽 | 隔离测试并为 Rust 设计资源限制 |
 | formatter 分散 | JSON/XML 契约不明确 | 逐格式保存 schema 和 escaping 样本 |
 | database cache | 启动性能与兼容性 | 分析 cache header/失效逻辑 |
@@ -195,6 +197,6 @@ resource/overlay 由 `bIsRecursiveScan` 或各自独立选项启用。resource �
 
 1. 建立完整规则目录和语法统计。
 2. 提取 `Binary_Script` 及每个派生宿主类的公开 API。
-3. 建立 engine archive harness，验证解包格式、计数边界和资源限制。
+3. 扩展 engine archive harness，验证其他格式、高上限和资源限制。
 4. 补齐 `ScanItemModel` 的转义、多目标和嵌套输出 schema。
 5. 建立 Windows/macOS oracle 并与当前 Linux 行为基线差分。

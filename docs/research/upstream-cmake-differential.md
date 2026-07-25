@@ -172,7 +172,7 @@ JSON 中只有输入二进制的 `size` 不同。
 - 14 个多目标/目录/错误路径 case，28 次 oracle 执行。
 - 18 个数据库状态 case，36 次 oracle 执行。
 - 4 个不可读输入 case，8 次 oracle 执行。
-- 5 个 archive/resource/overlay 样本 × 4 个模式，40 次 oracle 执行。
+- 7 个 archive/resource/overlay 样本 × 4 个模式，56 次 oracle 执行。
 
 七组实验均未发现退出码、原始 stdout 或原始 stderr 差异。输出优先级、schema
 和各扫描开关的具体增量记录在
@@ -195,9 +195,9 @@ JSON 中只有输入二进制的 `size` 不同。
 - 自动差分目前比较原始 stdout/stderr/exit code，并输出可保存的 JSON 报告，
   但尚未提交带 provenance 的版本化原始 baseline 文件。
 
-下一步应继续补充尚未覆盖的格式、畸形变体、engine archive harness，以及能
-触发 deep/aggressive 上限增量的样本，并保存带 provenance 的版本化原始
-baseline。
+下一步应继续补充尚未覆盖的格式、畸形变体，将已建立的 engine archive
+harness 扩展到其他 archive 格式及高上限，并保存带 provenance 的版本化
+原始 baseline。
 
 ## 源码证据
 

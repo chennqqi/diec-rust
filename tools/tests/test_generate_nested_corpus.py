@@ -55,6 +55,23 @@ class GenerateNestedCorpusTests(unittest.TestCase):
                 self.assertEqual(inner.namelist(), ["embedded.pdf"])
                 self.assertTrue(inner.read("embedded.pdf").startswith(b"%PDF"))
 
+    def test_many_member_zip_has_exactly_22_stored_pdfs(self):
+        with tempfile.TemporaryDirectory() as output_dir:
+            root = pathlib.Path(output_dir)
+            MODULE.generate(root)
+
+            with zipfile.ZipFile(root / "many-pdf-members.zip") as archive:
+                infos = archive.infolist()
+                self.assertEqual(len(infos), 22)
+                self.assertTrue(
+                    all(
+                        info.compress_type == zipfile.ZIP_STORED
+                        for info in infos
+                    )
+                )
+                self.assertEqual(infos[0].filename, "member-00.pdf")
+                self.assertEqual(infos[-1].filename, "member-21.pdf")
+
     def test_overlay_begins_at_pe_size_of_headers(self):
         with tempfile.TemporaryDirectory() as output_dir:
             root = pathlib.Path(output_dir)
@@ -74,6 +91,16 @@ class GenerateNestedCorpusTests(unittest.TestCase):
 
         self.assertEqual(resource_pe[0x260:0x265], b"%PDF-")
         self.assertEqual(resource_pe[0x178:0x180], b".rsrc\0\0\0")
+
+    def test_many_resource_pe_contains_22_pdf_payloads(self):
+        with tempfile.TemporaryDirectory() as output_dir:
+            root = pathlib.Path(output_dir)
+            MODULE.generate(root)
+            resource_pe = (
+                root / "pe-many-pdf-resources.exe"
+            ).read_bytes()
+
+        self.assertEqual(resource_pe.count(b"%PDF-1.4"), 22)
 
     def test_matches_versioned_reference_manifest(self):
         reference_path = (

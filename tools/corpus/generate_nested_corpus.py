@@ -32,63 +32,79 @@ def _load_baseline_module():
 BASELINE = _load_baseline_module()
 
 
-def make_stored_zip(name: str, payload: bytes) -> bytes:
-    """Create a single-member ZIP without timestamps or compression."""
-    encoded_name = name.encode("utf-8")
-    crc = binascii.crc32(payload)
-    local = (
-        struct.pack(
-            "<IHHHHHIIIHH",
-            0x04034B50,
-            20,
-            0,
-            0,
-            0,
-            0x0021,
-            crc,
-            len(payload),
-            len(payload),
-            len(encoded_name),
-            0,
+def make_stored_zip_entries(entries: tuple[tuple[str, bytes], ...]) -> bytes:
+    """Create a deterministic store-only ZIP with no optional metadata."""
+    if not entries:
+        raise ValueError("ZIP fixture requires at least one member")
+
+    local = bytearray()
+    central = bytearray()
+    names = set()
+    for name, payload in entries:
+        if name in names:
+            raise ValueError(f"duplicate ZIP member: {name}")
+        names.add(name)
+        encoded_name = name.encode("utf-8")
+        crc = binascii.crc32(payload)
+        local_offset = len(local)
+        local.extend(
+            struct.pack(
+                "<IHHHHHIIIHH",
+                0x04034B50,
+                20,
+                0,
+                0,
+                0,
+                0x0021,
+                crc,
+                len(payload),
+                len(payload),
+                len(encoded_name),
+                0,
+            )
+            + encoded_name
+            + payload
         )
-        + encoded_name
-        + payload
-    )
-    central = (
-        struct.pack(
-            "<IHHHHHHIIIHHHHHII",
-            0x02014B50,
-            0x0314,
-            20,
-            0,
-            0,
-            0,
-            0x0021,
-            crc,
-            len(payload),
-            len(payload),
-            len(encoded_name),
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
+        central.extend(
+            struct.pack(
+                "<IHHHHHHIIIHHHHHII",
+                0x02014B50,
+                0x0314,
+                20,
+                0,
+                0,
+                0,
+                0x0021,
+                crc,
+                len(payload),
+                len(payload),
+                len(encoded_name),
+                0,
+                0,
+                0,
+                0,
+                0,
+                local_offset,
+            )
+            + encoded_name
         )
-        + encoded_name
-    )
+
     end = struct.pack(
         "<IHHHHIIH",
         0x06054B50,
         0,
         0,
-        1,
-        1,
+        len(entries),
+        len(entries),
         len(central),
         len(local),
         0,
     )
-    return local + central + end
+    return bytes(local + central + end)
+
+
+def make_stored_zip(name: str, payload: bytes) -> bytes:
+    return make_stored_zip_entries(((name, payload),))
 
 
 def make_pdf_member_zip() -> bytes:
@@ -97,6 +113,13 @@ def make_pdf_member_zip() -> bytes:
 
 def make_nested_zip() -> bytes:
     return make_stored_zip("inner.zip", make_pdf_member_zip())
+
+
+def make_many_pdf_member_zip() -> bytes:
+    payload = BASELINE.make_pdf()
+    return make_stored_zip_entries(
+        tuple((f"member-{index:02d}.pdf", payload) for index in range(22))
+    )
 
 
 def make_pe_pdf_overlay() -> bytes:
@@ -111,12 +134,23 @@ def _align_up(value: int, alignment: int) -> int:
     return (value + alignment - 1) // alignment * alignment
 
 
-def make_pe_pdf_resource() -> bytes:
-    """Create a PE32 with one RT_RCDATA resource containing a PDF."""
+def make_pe_pdf_resources(count: int) -> bytes:
+    """Create a PE32 with ``count`` RT_RCDATA resources containing PDFs."""
+    if count < 1:
+        raise ValueError("PE resource fixture requires at least one resource")
     payload = BASELINE.make_pdf()
-    resource_payload_offset = 0x60
+    root_directory_offset = 0
+    type_directory_offset = 0x18
+    language_directories_offset = (
+        type_directory_offset + 0x10 + count * 8
+    )
+    data_entries_offset = language_directories_offset + count * 0x18
+    resource_payload_offset = _align_up(
+        data_entries_offset + count * 0x10,
+        0x10,
+    )
     resource_virtual_address = 0x1000
-    resource_size = resource_payload_offset + len(payload)
+    resource_size = resource_payload_offset + count * len(payload)
     raw_size = _align_up(resource_size, 0x200)
     image = bytearray(0x200 + raw_size)
 
@@ -168,31 +202,95 @@ def make_pe_pdf_resource() -> bytes:
         0x40000040,
     )
 
+    struct.pack_into(
+        "<I", image, optional + 56, _align_up(0x1000 + resource_size, 0x1000)
+    )
+
     resource = 0x200
-    struct.pack_into("<IIHHHH", image, resource, 0, 0, 0, 0, 0, 1)
-    struct.pack_into("<II", image, resource + 0x10, 10, 0x80000018)
     struct.pack_into(
-        "<IIHHHH", image, resource + 0x18, 0, 0, 0, 0, 0, 1
-    )
-    struct.pack_into("<II", image, resource + 0x28, 1, 0x80000030)
-    struct.pack_into(
-        "<IIHHHH", image, resource + 0x30, 0, 0, 0, 0, 0, 1
-    )
-    struct.pack_into("<II", image, resource + 0x40, 0x409, 0x48)
-    struct.pack_into(
-        "<IIII",
+        "<IIHHHH",
         image,
-        resource + 0x48,
-        resource_virtual_address + resource_payload_offset,
-        len(payload),
+        resource + root_directory_offset,
         0,
         0,
+        0,
+        0,
+        0,
+        1,
     )
-    image[
-        resource + resource_payload_offset :
-        resource + resource_payload_offset + len(payload)
-    ] = payload
+    struct.pack_into(
+        "<II",
+        image,
+        resource + 0x10,
+        10,
+        0x80000000 | type_directory_offset,
+    )
+    struct.pack_into(
+        "<IIHHHH",
+        image,
+        resource + type_directory_offset,
+        0,
+        0,
+        0,
+        0,
+        0,
+        count,
+    )
+
+    for index in range(count):
+        language_directory_offset = (
+            language_directories_offset + index * 0x18
+        )
+        data_entry_offset = data_entries_offset + index * 0x10
+        payload_offset = resource_payload_offset + index * len(payload)
+
+        struct.pack_into(
+            "<II",
+            image,
+            resource + type_directory_offset + 0x10 + index * 8,
+            index + 1,
+            0x80000000 | language_directory_offset,
+        )
+        struct.pack_into(
+            "<IIHHHH",
+            image,
+            resource + language_directory_offset,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+        )
+        struct.pack_into(
+            "<II",
+            image,
+            resource + language_directory_offset + 0x10,
+            0x409,
+            data_entry_offset,
+        )
+        struct.pack_into(
+            "<IIII",
+            image,
+            resource + data_entry_offset,
+            resource_virtual_address + payload_offset,
+            len(payload),
+            0,
+            0,
+        )
+        image[
+            resource + payload_offset :
+            resource + payload_offset + len(payload)
+        ] = payload
     return bytes(image)
+
+
+def make_pe_pdf_resource() -> bytes:
+    return make_pe_pdf_resources(1)
+
+
+def make_pe_many_pdf_resources() -> bytes:
+    return make_pe_pdf_resources(22)
 
 
 GENERATORS: tuple[
@@ -211,6 +309,12 @@ GENERATORS: tuple[
         make_nested_zip,
     ),
     (
+        "many-pdf-members.zip",
+        "ZIP containing 22 PDF members",
+        ("archive", "pdf x22"),
+        make_many_pdf_member_zip,
+    ),
+    (
         "pe-pdf-overlay.exe",
         "PE32 with a PDF overlay",
         ("pe", "overlay", "pdf"),
@@ -221,6 +325,12 @@ GENERATORS: tuple[
         "PE32 with a PDF RCDATA resource",
         ("pe", "resource", "pdf"),
         make_pe_pdf_resource,
+    ),
+    (
+        "pe-many-pdf-resources.exe",
+        "PE32 with 22 PDF RCDATA resources",
+        ("pe", "resource x22", "pdf x22"),
+        make_pe_many_pdf_resources,
     ),
     (
         "pe-zip-overlay.exe",

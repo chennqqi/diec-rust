@@ -204,7 +204,7 @@ filename prefix 行为单独记录在
 数据库缺失/空/无效 ZIP、规则 parse/runtime error 和不可读输入行为见
 [`database-error-behavior.md`](database-error-behavior.md)。
 
-resource、overlay 和 archive 嵌套行为已用 5 个独立样本验证，见
+resource、overlay 和 archive 嵌套行为已用 7 个独立样本验证，见
 [`nested-scan-behavior.md`](nested-scan-behavior.md)。
 
 ## 尚未覆盖
@@ -213,7 +213,7 @@ resource、overlay 和 archive 嵌套行为已用 5 个独立样本验证，见
 - profiling、verbose 和 messages。
 - 输出格式的转义边界、特殊 filename，以及专用 struct/entropy 阈值边界。
 - 能实际触发 deep 增量或 aggressive 过滤/上限差异的样本。
-- engine `bIsArchivesScan` 的成员提取、20/21 边界和最大嵌套深度。
+- 其他 archive 格式、aggressive 高上限和最大嵌套深度。
 - 规则数据库 cache、ZIP 边界、权限和同名规则覆盖。
 - 系统化畸形/截断矩阵、资源限制、超时、内存峰值和 fuzz seeds。
 - Windows/macOS oracle 以及路径编码差异。
