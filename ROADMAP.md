@@ -54,7 +54,7 @@
   - fuzz、benchmark 和 CI 平台矩阵。
 - `docs/design/decisions/`
   - 记录影响长期兼容性、依赖或公共接口的 ADR。
-- 风险清单
+- [`docs/design/risks.md`](docs/design/risks.md) — Draft
   - 每项风险包含处理策略、触发条件和验证方式。
 
 ### 必须回答的问题
