@@ -42,6 +42,36 @@ const HOST_SHIM: &[u8] = br#"
     var bBorlandC = 0;
 "#;
 
+const HOST_FALLBACK_SHIM: &[u8] = br#"
+    globalThis.__fallbackCalls = [];
+    function __makeFallback(path) {
+        var stub;
+        stub = new Proxy(function () {
+            __fallbackCalls.push(path);
+            return stub;
+        }, {
+            get: function (_target, property) {
+                if (property === Symbol.toPrimitive) return function () { return 0; };
+                return __makeFallback(path + "." + String(property));
+            }
+        });
+        return stub;
+    }
+    Binary = new Proxy(Binary, {
+        get: function (target, property) {
+            if (property in target) return target[property];
+            return __makeFallback("Binary." + String(property));
+        }
+    });
+    X = Binary;
+    Util = new Proxy(Util, {
+        get: function (target, property) {
+            if (property in target) return target[property];
+            return __makeFallback("Util." + String(property));
+        }
+    });
+"#;
+
 const NINTENDO_RULE_SUFFIX: &str = "Binary/format_bin.Nintendo-certified-file.1.sg";
 const NINTENDO_RULE_BYTES: usize = 1_994;
 const NINTENDO_RULE_SHA256: &str =
@@ -66,6 +96,7 @@ const LINUX_QT5_BINARY_ORDER_SHA256: &str =
 const BINARY_SIGNATURE_COUNT: usize = 292;
 
 type Detection = (String, String, String, String);
+type NintendoLifecycleResult = (Vec<Detection>, Vec<String>, usize, Vec<String>);
 type SharedDetections = Arc<Mutex<Vec<Detection>>>;
 
 fn collect_rule_files(root: &Path, output: &mut Vec<PathBuf>) -> Result<(), String> {
@@ -218,6 +249,29 @@ fn install_host_shim(context: &Context) -> Result<(), String> {
     eval_unit(context, HOST_SHIM)
 }
 
+fn install_host_fallbacks(context: &Context) -> Result<(), String> {
+    eval_unit(context, HOST_FALLBACK_SHIM)
+}
+
+fn install_selected_host_trace(context: &Context) -> Result<(), String> {
+    eval_unit(
+        context,
+        br#"
+        globalThis.__selectedHostTrace = [];
+        ["c", "U8", "U16", "U32", "U64", "SA", "Sz", "isDeepScan", "isHeuristicScan", "isVerbose"]
+            .forEach(function (name) {
+                var original = X[name];
+                X[name] = function () {
+                    var args = Array.prototype.slice.call(arguments);
+                    var value = original.apply(X, args);
+                    __selectedHostTrace.push([name, args, value]);
+                    return value;
+                };
+            });
+        "#,
+    )
+}
+
 fn eval_string(context: &Context, source: &[u8]) -> Result<String, String> {
     context.with(|ctx| {
         let mut options = EvalOptions::default();
@@ -269,8 +323,21 @@ fn read_unsigned(data: &[u8], offset: usize, width: usize, big_endian: bool) -> 
     value as f64
 }
 
+fn read_ascii(data: &[u8], offset: usize, size: usize) -> String {
+    data.get(offset..offset.saturating_add(size))
+        .map(|bytes| {
+            bytes
+                .iter()
+                .take_while(|byte| **byte != 0)
+                .map(|byte| char::from(*byte))
+                .collect()
+        })
+        .unwrap_or_default()
+}
+
 fn signature_matches(data: &[u8], pattern: &str, offset: usize) -> bool {
     match pattern {
+        "'SC'" => data.get(offset..offset.saturating_add(2)) == Some(b"SC"),
         "'SCE'00" => data.get(offset..offset.saturating_add(4)) == Some(b"SCE\0"),
         "0000 0002" => data.get(offset..offset.saturating_add(4)) == Some(b"\0\0\0\x02"),
         "0300 0000" => data.get(offset..offset.saturating_add(4)) == Some(b"\x03\0\0\0"),
@@ -304,13 +371,31 @@ fn install_nintendo_host(
             let integer_data = Arc::clone(&data);
             x.set(
                 name,
-                Function::new(ctx.clone(), move |offset: usize, big_endian: bool| {
-                    read_unsigned(&integer_data, offset, width, big_endian)
+                Function::new(ctx.clone(), move |offset: usize, big_endian: Opt<bool>| {
+                    read_unsigned(&integer_data, offset, width, big_endian.0.unwrap_or(false))
                 })
                 .map_err(|error| error.to_string())?,
             )
             .map_err(|error| error.to_string())?;
         }
+        let byte_data = Arc::clone(&data);
+        x.set(
+            "U8",
+            Function::new(ctx.clone(), move |offset: usize| {
+                byte_data.get(offset).copied().unwrap_or(0)
+            })
+            .map_err(|error| error.to_string())?,
+        )
+        .map_err(|error| error.to_string())?;
+        let string_data = Arc::clone(&data);
+        x.set(
+            "SA",
+            Function::new(ctx.clone(), move |offset: usize, size: usize| {
+                read_ascii(&string_data, offset, size)
+            })
+            .map_err(|error| error.to_string())?,
+        )
+        .map_err(|error| error.to_string())?;
 
         let size = data.len() as f64;
         x.set(
@@ -324,6 +409,11 @@ fn install_nintendo_host(
         )
         .map_err(|error| error.to_string())?;
         x.set(
+            "isDeepScan",
+            Function::new(ctx.clone(), || false).map_err(|error| error.to_string())?,
+        )
+        .map_err(|error| error.to_string())?;
+        x.set(
             "isVerbose",
             Function::new(ctx.clone(), || false).map_err(|error| error.to_string())?,
         )
@@ -332,6 +422,18 @@ fn install_nintendo_host(
             .set("Binary", x.clone())
             .map_err(|error| error.to_string())?;
         globals.set("X", x).map_err(|error| error.to_string())?;
+        let util = Object::new(ctx.clone()).map_err(|error| error.to_string())?;
+        util.set(
+            "shlu64",
+            Function::new(ctx.clone(), |value: f64, bits: u32| {
+                value * 2_f64.powi(i32::try_from(bits).unwrap_or(i32::MAX))
+            })
+            .map_err(|error| error.to_string())?,
+        )
+        .map_err(|error| error.to_string())?;
+        globals
+            .set("Util", util)
+            .map_err(|error| error.to_string())?;
         globals
             .set(
                 "_log",
@@ -911,6 +1013,209 @@ fn run_nintendo_corpus(
     Ok(all_match)
 }
 
+fn run_nintendo_lifecycle_rule(
+    rule_root: &Path,
+    order: &[String],
+    data: Vec<u8>,
+) -> Result<NintendoLifecycleResult, String> {
+    let expect_ea_xa = data.get(4..8) == Some(b"\x03\0\0\0");
+    let runtime = new_runtime()?;
+    let context = new_context(&runtime)?;
+    let detections = Arc::new(Mutex::new(Vec::new()));
+    install_nintendo_host(&context, Arc::new(data), Arc::clone(&detections))?;
+    install_host_fallbacks(&context)?;
+    install_main_include_registry(&context, rule_root)?;
+    for relative in ["_init", "Binary/_init"] {
+        let path = rule_root.join(relative);
+        let source =
+            fs::read(&path).map_err(|error| format!("cannot read {}: {error}", path.display()))?;
+        eval_unit(&context, &source)
+            .map_err(|error| format!("cannot eval {}: {error}", path.display()))?;
+    }
+    install_selected_host_trace(&context)?;
+
+    let selected = [
+        "archive_DEFLATE.1.sg",
+        "audio_EXA.1.sg",
+        "format_bin.Nintendo-certified-file.1.sg",
+    ];
+    let mut invoked = Vec::new();
+    let mut overlay_count = 0;
+    for name in order {
+        let path = rule_root.join("Binary").join(name);
+        let source =
+            fs::read(&path).map_err(|error| format!("cannot read {}: {error}", path.display()))?;
+        let (evaluated, applied) = apply_compatibility_overlay(&path, &source)?;
+        overlay_count += usize::from(applied);
+        let invoke = selected.contains(&name.as_str());
+        let fallback_before = if invoke {
+            eval_unit(&context, b"__selectedHostTrace = [];")?;
+            Some(eval_string(&context, b"String(__fallbackCalls.length)")?)
+        } else {
+            None
+        };
+        let detect_result = eval_rule_lexical(&context, &evaluated, invoke)
+            .map_err(|error| format!("cannot eval {name}: {error}"))?;
+        if invoke {
+            let fallback_after = eval_string(&context, b"String(__fallbackCalls.length)")?;
+            if fallback_before.as_deref() != Some(fallback_after.as_str()) {
+                let calls = eval_string(&context, b"JSON.stringify(__fallbackCalls)")?;
+                return Err(format!(
+                    "{name}: selected detect used fallback HostApi: {calls}"
+                ));
+            }
+            if name == "audio_EXA.1.sg" && (detect_result == "true") != expect_ea_xa {
+                let trace = eval_string(&context, b"JSON.stringify(__selectedHostTrace)")?;
+                return Err(format!(
+                    "{name}: expected detect={expect_ea_xa}, got {detect_result}; trace={trace}"
+                ));
+            }
+            invoked.push(name.clone());
+        }
+    }
+    if invoked != selected {
+        return Err(format!("unexpected selected rule order: {invoked:?}"));
+    }
+    let include_trace_text = eval_string(&context, b"JSON.stringify(__includeTrace)")?;
+    let include_trace: Vec<String> = serde_json::from_str(&include_trace_text)
+        .map_err(|error| format!("cannot parse include trace: {error}"))?;
+    let result = detections
+        .lock()
+        .map_err(|_| "Nintendo lifecycle result mutex poisoned".to_owned())?
+        .clone();
+    let fallback_calls_text = eval_string(&context, b"JSON.stringify(__fallbackCalls)")?;
+    let fallback_calls = serde_json::from_str(&fallback_calls_text)
+        .map_err(|error| format!("cannot parse fallback calls: {error}"))?;
+    Ok((result, include_trace, overlay_count, fallback_calls))
+}
+
+fn run_nintendo_lifecycle_corpus(
+    rule_root: &Path,
+    corpus_root: &Path,
+    baseline_path: &Path,
+    order_path: &Path,
+) -> Result<bool, String> {
+    let baseline: Value = serde_json::from_slice(
+        &fs::read(baseline_path)
+            .map_err(|error| format!("cannot read {}: {error}", baseline_path.display()))?,
+    )
+    .map_err(|error| format!("cannot parse {}: {error}", baseline_path.display()))?;
+    let order_document: Value = serde_json::from_slice(
+        &fs::read(order_path)
+            .map_err(|error| format!("cannot read {}: {error}", order_path.display()))?,
+    )
+    .map_err(|error| format!("cannot parse {}: {error}", order_path.display()))?;
+    let order = parse_binary_order(&order_document)?;
+    let samples = baseline
+        .get("samples")
+        .and_then(Value::as_object)
+        .ok_or_else(|| "Nintendo baseline has no samples object".to_owned())?;
+    let mut names = samples.keys().cloned().collect::<Vec<_>>();
+    names.sort();
+    let mut reports = Vec::new();
+    let mut all_match = true;
+    let mut common_include_trace: Option<Vec<String>> = None;
+
+    for name in names {
+        let expected = samples[&name]
+            .get("detections")
+            .and_then(Value::as_array)
+            .ok_or_else(|| format!("Nintendo baseline sample {name} has no detections"))?
+            .iter()
+            .map(|detection| {
+                let fields = detection
+                    .as_array()
+                    .ok_or_else(|| format!("invalid baseline detection for {name}"))?;
+                Ok((
+                    fields[0].as_str().unwrap_or_default().to_owned(),
+                    fields[1].as_str().unwrap_or_default().to_owned(),
+                    fields[2].as_str().unwrap_or_default().to_owned(),
+                ))
+            })
+            .collect::<Result<Vec<_>, String>>()?;
+        let input_path = corpus_root.join(&name);
+        let (actual, include_trace, overlay_count, fallback_calls) = run_nintendo_lifecycle_rule(
+            rule_root,
+            &order,
+            fs::read(&input_path)
+                .map_err(|error| format!("cannot read {}: {error}", input_path.display()))?,
+        )
+        .map_err(|error| format!("{name}: {error}"))?;
+        if include_trace.len() != 30 {
+            return Err(format!(
+                "{name}: expected 30 includes, got {}",
+                include_trace.len()
+            ));
+        }
+        if let Some(common) = &common_include_trace {
+            if common != &include_trace {
+                return Err(format!("{name}: include trace differs between samples"));
+            }
+        } else {
+            common_include_trace = Some(include_trace);
+        }
+        if overlay_count != 1 {
+            return Err(format!(
+                "{name}: expected one Nintendo overlay, got {overlay_count}"
+            ));
+        }
+        let execution_order = actual
+            .iter()
+            .map(|(kind, detection_name, version, _)| {
+                (kind.clone(), detection_name.clone(), version.clone())
+            })
+            .collect::<Vec<_>>();
+        let mut output_order = execution_order.clone();
+        output_order.sort_by_key(|(kind, _, _)| match kind.as_str() {
+            "format" => 0,
+            "audio" => 1,
+            _ => 2,
+        });
+        let nintendo_info_ok = actual
+            .iter()
+            .filter(|(kind, _, _, _)| kind == "format")
+            .all(|(_, _, _, info)| info == "fSELF");
+        let matches = output_order == expected && nintendo_info_ok;
+        all_match &= matches;
+        reports.push(json!({
+            "name": name,
+            "expected_output_order": expected,
+            "actual_execution_order": execution_order,
+            "actual_output_order": output_order,
+            "nintendo_info_ok": nintendo_info_ok,
+            "non_target_top_level_fallback_calls": fallback_calls,
+            "matches": matches,
+        }));
+    }
+    let include_trace = common_include_trace.unwrap_or_default();
+    println!(
+        "{}",
+        serde_json::to_string_pretty(&json!({
+            "schema_version": 1,
+            "operation": "fixed 292-rule Binary load with selected shared-state, EA-XA, and Nintendo detect invocation",
+            "runtime": "rquickjs 0.12.1 / QuickJS-NG 0.15.1",
+            "compatibility_overlay": "nintendo-unused-var-tp-v1",
+            "order_manifest": normalized_path(order_path),
+            "order_sha256": LINUX_QT5_BINARY_ORDER_SHA256,
+            "rule_count": order.len(),
+            "selected_rules": [
+                "archive_DEFLATE.1.sg",
+                "audio_EXA.1.sg",
+                "format_bin.Nintendo-certified-file.1.sg"
+            ],
+            "include_trace": include_trace,
+            "include_call_count": include_trace.len(),
+            "output_projection": "target-only type order: format, audio",
+            "samples": reports,
+            "sample_count": samples.len(),
+            "matched_count": reports.iter().filter(|item| item["matches"] == true).count(),
+            "all_match": all_match,
+        }))
+        .map_err(|error| format!("cannot serialize report: {error}"))?
+    );
+    Ok(all_match)
+}
+
 fn evaluate_corpus(
     roots: &[PathBuf],
     shared_realm: bool,
@@ -1187,7 +1492,9 @@ fn usage() -> ExitCode {
          <eval-scope-fixture|eval-scope-fixture-lexical> \
          <fixture-root> <fixture-manifest-json> <qt5-baseline-json>\n       \
          diec-rquickjs-rule-runtime-spike detect-nintendo \
-         <main-rule-root> <corpus-dir> <baseline-json>"
+         <main-rule-root> <corpus-dir> <baseline-json>\n       \
+         diec-rquickjs-rule-runtime-spike detect-nintendo-lifecycle \
+         <main-rule-root> <corpus-dir> <baseline-json> <binary-order-json>"
     );
     ExitCode::from(2)
 }
@@ -1223,6 +1530,8 @@ fn main() -> ExitCode {
         run_scope_fixture(&roots[0], &roots[1], &roots[2], true)
     } else if command == "detect-nintendo" && roots.len() == 3 {
         run_nintendo_corpus(&roots[0], &roots[1], &roots[2])
+    } else if command == "detect-nintendo-lifecycle" && roots.len() == 4 {
+        run_nintendo_lifecycle_corpus(&roots[0], &roots[1], &roots[2], &roots[3])
     } else {
         return usage();
     };
@@ -1242,7 +1551,7 @@ mod tests {
         NINTENDO_COMPAT_DECLARATION, NINTENDO_RULE_BYTES, NINTENDO_VAR_DECLARATION,
         apply_compatibility_overlay, apply_exact_lifecycle_overlay, collect_rule_files,
         eval_rule_lexical, new_context, new_runtime, normalized_path, parse_scope_detections,
-        parse_scope_fixture_order, read_unsigned, signature_matches,
+        parse_scope_fixture_order, read_ascii, read_unsigned, signature_matches,
     };
     use std::fs;
     use std::path::PathBuf;
@@ -1367,11 +1676,20 @@ mod tests {
         let mut bytes = vec![0_u8; 32];
         bytes[0..8].copy_from_slice(b"SCE\0\0\0\0\x02");
         bytes[16..23].copy_from_slice(b"\x7fELF\0\0\x01");
+        assert!(signature_matches(&bytes, "'SC'", 0));
         assert!(signature_matches(&bytes, "'SCE'00", 0));
         assert!(signature_matches(&bytes, "0000 0002", 4));
         assert!(signature_matches(&bytes, "7F 'ELF' .. .. 01", 16));
         assert!(!signature_matches(&bytes, "0300 0000", 4));
         assert!(!signature_matches(&bytes, "unsupported", 0));
+    }
+
+    #[test]
+    fn ascii_host_read_is_nul_terminated_and_bounds_checked() {
+        let bytes = b"SC\0trailing";
+        assert_eq!(read_ascii(bytes, 0, bytes.len()), "SC");
+        assert_eq!(read_ascii(bytes, 3, 4), "trai");
+        assert_eq!(read_ascii(bytes, bytes.len(), 1), "");
     }
 
     #[test]

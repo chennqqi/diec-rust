@@ -106,6 +106,29 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
         )
         self.assertTrue(detection["all_match"])
         self.assertEqual(detection["matched_count"], 14)
+        lifecycle = detection["selected_lifecycle"]
+        self.assertTrue(lifecycle["all_match"])
+        self.assertEqual(lifecycle["rule_count"], 292)
+        self.assertEqual(lifecycle["include_call_count"], 30)
+        self.assertEqual(lifecycle["sample_count"], 14)
+        self.assertEqual(lifecycle["matched_count"], 14)
+        self.assertEqual(
+            lifecycle["selected_rules"],
+            [
+                "archive_DEFLATE.1.sg",
+                "audio_EXA.1.sg",
+                "format_bin.Nintendo-certified-file.1.sg",
+            ],
+        )
+        self.assertEqual(lifecycle["selected_detect_fallback_call_count"], 0)
+        self.assertEqual(
+            lifecycle["non_target_top_level_fallback_calls"],
+            [
+                "Binary.getString",
+                "Binary.getString.replace",
+                "Binary.getString.replace.match",
+            ],
+        )
 
     def test_binary_lifecycle_uses_fixed_order_and_exact_overlays(self):
         lifecycle = self.reference["binary_lifecycle"]

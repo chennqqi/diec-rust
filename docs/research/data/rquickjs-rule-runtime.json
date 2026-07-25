@@ -12,14 +12,14 @@
   },
   "dependency_footprint": {
     "lockfile_packages": 23,
-    "release_executable_bytes": 1636864,
+    "release_executable_bytes": 1716224,
     "target": "x86_64-pc-windows-msvc",
     "target_packages": 18
   },
   "experiment": {
     "cargo_lock_sha256": "aa7cd4c42e1f3429f45ec31e05e41862abe6156bdbe351eeacc507673f237232",
     "cargo_toml_sha256": "875730b205ca351b4bc0f830a1896fb6ad777c46046e6f26c9c368849614be16",
-    "source_sha256": "7b9986647edd2216e1f140e7bdca37f95e1c46447fd2fa52ad4f5ca230d250ac",
+    "source_sha256": "8680e478a69b2b927e8784478a75eb92f97d88d3507c4ae6e1320b7342990647",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -157,7 +157,51 @@
     ],
     "matched_count": 14,
     "sample_count": 14,
-    "scope": "target Nintendo rule only; not the complete Binary rule set"
+    "scope": "target Nintendo rule only; not the complete Binary rule set",
+    "selected_lifecycle": {
+      "all_match": true,
+      "compatibility_overlay_count_per_sample": 1,
+      "include_call_count": 30,
+      "matched_count": 14,
+      "implemented_host_methods": [
+        "X.c",
+        "X.U8",
+        "X.U16",
+        "X.U32",
+        "X.U64",
+        "X.SA",
+        "X.Sz",
+        "X.isDeepScan",
+        "X.isHeuristicScan",
+        "X.isVerbose",
+        "Util.shlu64",
+        "_setResult"
+      ],
+      "non_target_top_level_fallback_calls": [
+        "Binary.getString",
+        "Binary.getString.replace",
+        "Binary.getString.replace.match"
+      ],
+      "order_sha256": "27138d68ed788dd2609b7c533fecf540593fa2e4ddb7195adc26b1a9ff0e1ff3",
+      "output_projection": "target-only type order: format, audio",
+      "rule_count": 292,
+      "sample_count": 14,
+      "selected_detect_fallback_call_count": 0,
+      "selected_rules": [
+        "archive_DEFLATE.1.sg",
+        "audio_EXA.1.sg",
+        "format_bin.Nintendo-certified-file.1.sg"
+      ],
+      "shared_state_dependency": "archive_DEFLATE initializes implicit global bad before audio_EXA",
+      "vita_execution_order": [
+        "audio",
+        "format"
+      ],
+      "vita_output_order": [
+        "format",
+        "audio"
+      ]
+    }
   },
   "script_scope": {
     "fixture_manifest": "docs/research/data/script-scope-fixture.json",

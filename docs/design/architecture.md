@@ -162,8 +162,11 @@ unknown syntax、include 失败和数据库冲突必须成为明确错误或兼�
 Boa 尚未通过全库求值；QuickJS 的 per-rule lexical wrapper 已让固定 292 条
 Binary 规则解析出 `detect`，但完整 HostApi 下逐条调用、其他 file type 和跨平台
 门禁仍未通过；wrapper 还会隔离 Qt 本应跨规则保留的顶层 var/function，当前
-固定 Binary 仅由静态零候选审计降低该风险。因此本文不选择 runtime。后续 ADR
-必须基于固定规则集、宿主 API、资源中断、static link、许可证和跨平台实验选型。
+固定 Binary 的静态审计未发现显式依赖。selected lifecycle 又发现前一
+`detect` 动态创建的隐式全局 `bad` 是后一 EA-XA 规则的前置状态，说明 runtime
+抽象必须保留跨规则动态状态，不能把静态零候选当作隔离依据。因此本文不选择 runtime。
+后续 ADR 必须基于固定规则集、宿主 API、资源中断、static link、许可证和跨平台
+实验选型。
 native runtime、FFI glue、runtime-specific handles 只存在于 `diec-rules`
 backend 私有模块。
 

@@ -322,7 +322,11 @@ prototype helper、复杂规则和 loop budget 可用，也确认了必须解决
 rquickjs 0.12.1 的同语料 eval、sloppy-script 要求、interrupt/heap limit 和
 native 构建成本见
 [`rquickjs-rule-runtime-spike.md`](rquickjs-rule-runtime-spike.md)。它拒绝与
-Boa 相同的 Nintendo legacy 规则，因此两个候选都未通过零差异门禁。
+Boa 相同的 Nintendo legacy 规则，因此两个候选都未通过零差异门禁。精确等长
+overlay 加 per-rule lexical wrapper 已让固定 292 条 Binary 规则全部加载；在该
+环境中选定调用 archive_DEFLATE、EA-XA 和 Nintendo `detect` 后，Qt 5 目标结果
+14/14 匹配，并发现由前一 `detect` 动态建立隐式全局 `bad` 的跨规则依赖。其余
+289 个 `detect` 与完整 HostApi 尚未验证。
 
 固定 Binary 生命周期、init/include 首个命中规则、共享 global scope 和上游
 排序比较器缺陷见
@@ -337,7 +341,8 @@ Boa 相同的 Nintendo legacy 规则，因此两个候选都未通过零差异�
 - include 同名、重复、循环和异常实验。
 - database cache 与 ZIP database 行为。
 - `dbs_min` 生成逻辑。
-- 按真实生命周期的全库 eval、legacy compatibility 方案和跨 runtime 性能比较。
+- 按真实生命周期逐条调用全库 `detect`、冻结 legacy compatibility 方案和跨
+  runtime 性能比较。
 
 ## 主要证据
 

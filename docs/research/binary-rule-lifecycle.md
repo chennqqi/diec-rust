@@ -202,17 +202,27 @@ host/global context 中按本清单重跑：292/292 规则均成功求值并解�
 完整规则库的 detect，不能据此接受 runtime ADR。详见
 [`script-state-semantics.md`](script-state-semantics.md)。
 
+后续 selected lifecycle probe 已在同一固定 292 条加载环境中完成：
+
+- Nintendo overlay 每个样本只在 manifest-pinned 目标规则求值前应用一次；
+- 按固定顺序调用 `archive_DEFLATE.1.sg`、`audio_EXA.1.sg` 和 Nintendo 规则；
+- 对 14 个 Nintendo 样本比较目标完整有序结果，Qt 5 baseline 14/14 匹配；
+- Vita 的 EA-XA 邻接结果已复现，选定 `detect` 的 fallback HostApi 增量为零；
+- 发现 `archive_DEFLATE.detect()` 动态创建隐式全局 `bad`，是
+  `audio_EXA.detect()` 的前置状态。
+
+这项动态依赖不在此前顶层 AST 审计范围内，证明完整生命周期不能只依赖静态
+wrapper-loss 零候选。非目标规则只执行了顶层代码，未调用 `detect`。
+
 下一轮完整 signature lifecycle probe 仍至少要满足：
 
 - 逐条调用已固定 Linux 顺序中的 `detect`，再补齐 Windows/macOS 顺序；
-- Nintendo overlay 只在 manifest-pinned 目标规则求值前应用；
-- 同一 context 中运行 `audio.1.sg`、Nintendo 规则和 `audio_EXA.1.sg` 所需依赖；
-- 对 14 个 Nintendo 样本比较完整有序结果，包括 Vita 的 EA-XA 邻接结果；
 - 保存每条 rule eval、include、host call、result/error 的 trace；
 - 单条失败后验证后续规则是否继续且 metadata 已切换；
+- 以完整上游结果排序逻辑代替当前仅用于 Nintendo/EA-XA 的目标类型投影；
 - 不把静态分析器的任意排序结果当作上游 oracle。
 
-在该门禁通过前，R-001 仍为 Open，也不能据 Nintendo 单规则 14/14 结果接受
+在该门禁通过前，R-001 仍为 Open，也不能据 selected lifecycle 14/14 结果接受
 QuickJS ADR。
 
 ## 固定源码证据

@@ -79,8 +79,7 @@ baseline 的变更都要检查本表。
   host object、exception 或函数抽取与上游不同。
 - **当前证据**：Boa 与原始 QuickJS 都拒绝 Nintendo 规则；QuickJS 的单点、等长、
   manifest-pinned overlay 已让 2235 文件 isolated eval 达到 0 错误；最小 Rust
-  Byte HostApi 的 Nintendo target detection 在 Qt 5 baseline 上 14/14 匹配，但
-  尚未验证完整 Binary signature sequence、EA-XA 邻接结果、Qt 6 或完整 HostApi。
+  Byte HostApi 的 Nintendo target detection 在 Qt 5 baseline 上 14/14 匹配。
   固定源码已确认一次 scan 共享一个 script engine；QuickJS probe 已按真实顺序
   执行 global/Binary init、30 次 include 和 292 条 Binary 顶层程序。原始规则有
   3 个 lexical 差异，三个精确等长 overlay 后为 0；专用 7 规则 fixture 已确认
@@ -89,7 +88,12 @@ baseline 的变更都要检查本表。
   292/292 Binary 规则以仅一个 Nintendo 单脚本 overlay 解析出 `detect`；
   但状态 fixture 证明 wrapper 会丢失 Qt 持久化的顶层 var/function（5/7）。
   固定 Binary AST 审计的 wrapper-loss candidate 为 0，但尚未逐条调用完整规则库
-  的 `detect`，静态零候选不能视为动态等价。
+  的 `detect`，静态零候选不能视为动态等价。选定生命周期 probe 已在全 292 条
+  规则加载环境中依次调用 archive_DEFLATE、EA-XA 和 Nintendo `detect`，目标调用
+  未使用 fallback HostApi，PS3/Vita 完整目标结果与 Qt 5 baseline 14/14 匹配；
+  同时发现 archive_DEFLATE 动态初始化隐式全局 `bad` 是 EA-XA 的前置依赖。
+  非目标规则尚未调用 `detect`，顶层加载仍有三次来自 `shell-script` include 的
+  可追踪 HostApi fallback，Qt 6 和完整 HostApi 也尚未验证。
 - **缓解**：保持 `RuleRuntime`/`HostApi` port；建立全规则 inventory、最小失败
   fixture、host call trace；基于证据选 runtime，禁止静默转换规则。
 - **验证**：固定规则 100% discovered/parsed/loaded，zero silent unsupported；
