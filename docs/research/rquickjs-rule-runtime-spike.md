@@ -274,8 +274,14 @@ per-rule non-strict function lexical wrapper 随后在相同 fixture 上达到 0
 7/7 detection，并与 Qt 5 结构化结果完全一致。固定 292 条 Binary 顺序下，
 wrapper 也让 292/292 规则成功求值并解析出 function 类型的 `detect`；只需保留
 Nintendo 的单脚本语法 overlay，`audio` 和 MiniExtensions 的跨规则 overlay
-均不再需要。该结果把 wrapper 提升为优先候选，但尚未证明完整 detect/HostApi
-等价。
+均不再需要。
+
+后续 persistent-state fixture 同时证明了 wrapper 的边界：Qt 会让顶层 `var` 和
+普通函数跨规则持久化；raw QuickJS 7/7 匹配，wrapper 因隔离这两类 binding 只有
+5/7。固定 Binary AST 审计在 302 个 persistent 声明中未发现后序规则依赖前序
+显式 var/function 的候选，因此当前规则集仍可继续验证 wrapper，但不能把它当作
+通用 Qt 等价模型。详见
+[`script-state-semantics.md`](script-state-semantics.md)。
 
 ## 与 Boa 首轮结果对比
 
@@ -341,6 +347,17 @@ cargo +1.88.0 run --release --locked -- eval-scope-fixture-lexical \
 cargo +1.88.0 run --release --locked -- eval-binary-lifecycle-lexical \
   ../../upstream/Detect-It-Easy/db \
   ../../docs/research/data/binary-rule-order-linux-qt5.json
+
+# Use the generated script-state fixture and its fixed Qt5 baseline.
+cargo +1.88.0 run --release --locked -- eval-scope-fixture \
+  /tmp/diec-rust-script-state-fixture \
+  ../../docs/research/data/script-state-fixture.json \
+  ../../docs/research/data/script-state-qt5.json
+
+cargo +1.88.0 run --release --locked -- eval-scope-fixture-lexical \
+  /tmp/diec-rust-script-state-fixture \
+  ../../docs/research/data/script-state-fixture.json \
+  ../../docs/research/data/script-state-qt5.json
 
 cargo +1.88.0 run --release --locked -- detect-nintendo \
   ../../upstream/Detect-It-Easy/db \

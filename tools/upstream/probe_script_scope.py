@@ -42,15 +42,14 @@ def sha256(data: bytes) -> str:
 
 
 def load_and_verify_fixture(
-    fixture_dir: pathlib.Path, manifest_path: pathlib.Path
+    fixture_dir: pathlib.Path,
+    manifest_path: pathlib.Path,
+    expected_generator: str = "tools/corpus/generate_script_scope_fixture.py",
 ) -> tuple[dict[str, Any], str]:
     manifest_bytes = manifest_path.read_bytes()
     manifest = json.loads(manifest_bytes)
-    if (
-        manifest.get("generator")
-        != "tools/corpus/generate_script_scope_fixture.py"
-    ):
-        raise ValueError("unexpected script-scope fixture generator")
+    if manifest.get("generator") != expected_generator:
+        raise ValueError("unexpected script semantics fixture generator")
 
     declared = set()
     for entry in manifest["entries"]:
@@ -138,7 +137,11 @@ def parse_stdout(
     ]
     if len(json_offsets) != 1:
         raise ValueError("expected exactly one JSON document")
-    document = json.loads("\n".join(lines[json_offsets[0] :]))
+    json_text = "\n".join(lines[json_offsets[0] :])
+    document, end = json.JSONDecoder().raw_decode(json_text)
+    trailing = json_text[end:].strip()
+    if trailing:
+        raise ValueError(f"oracle emitted trailing diagnostics: {trailing}")
     values = [
         value
         for detection in document["detects"]
@@ -160,9 +163,17 @@ def build_report(
     fixture_dir: pathlib.Path,
     manifest_path: pathlib.Path,
     raw_dir: pathlib.Path,
+    *,
+    expected_generator: str = (
+        "tools/corpus/generate_script_scope_fixture.py"
+    ),
+    report_generator: str = "tools/upstream/probe_script_scope.py",
+    manifest_report_path: str = (
+        "docs/research/data/script-scope-fixture.json"
+    ),
 ) -> dict[str, Any]:
     manifest, manifest_sha256 = load_and_verify_fixture(
-        fixture_dir, manifest_path
+        fixture_dir, manifest_path, expected_generator
     )
     expected_order = manifest["rule_order"]
     raw_dir.mkdir(parents=True, exist_ok=True)
@@ -206,11 +217,11 @@ def build_report(
         raise ValueError("qmake and CMake normalized observations differ")
     return {
         "schema_version": 1,
-        "generator": "tools/upstream/probe_script_scope.py",
+        "generator": report_generator,
         "upstream_commit": UPSTREAM_COMMIT,
         "platform": "linux-amd64-qt5",
         "fixture_manifest": {
-            "path": "docs/research/data/script-scope-fixture.json",
+            "path": manifest_report_path,
             "sha256": manifest_sha256,
         },
         "arguments": [

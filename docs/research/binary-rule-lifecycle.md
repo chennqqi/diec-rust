@@ -197,7 +197,10 @@ Nintendo function 内重定义，以及跨 rule eval 的 `const detect`、`const
 host/global context 中按本清单重跑：292/292 规则均成功求值并解析出 function
 类型的 `detect`，30 次 include trace 不变，只保留 Nintendo 单脚本语法 overlay。
 这消除了 `audio const debug` 和 MiniExtensions `const detect` 的跨规则改写需求，
-但尚未调用完整规则库的 detect，不能据此接受 runtime ADR。
+但 persistent-state fixture 证明 wrapper 会隔离 Qt 本应保留的顶层 var/function。
+固定 Binary 静态审计虽未发现后一规则依赖前一规则显式声明的候选，仍尚未调用
+完整规则库的 detect，不能据此接受 runtime ADR。详见
+[`script-state-semantics.md`](script-state-semantics.md)。
 
 下一轮完整 signature lifecycle probe 仍至少要满足：
 

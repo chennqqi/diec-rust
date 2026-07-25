@@ -59,6 +59,15 @@ class ProbeScriptScopeTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "profiling order"):
             MODULE.parse_stdout(stdout, ["one.1.sg", "two.2.sg"])
 
+    def test_rejects_trailing_oracle_diagnostics(self):
+        stdout = (
+            b"one.1.sg\n"
+            b'{"detects":[{"values":[]}]}\n'
+            b"one.1.sg: ReferenceError\n"
+        )
+        with self.assertRaisesRegex(ValueError, "trailing diagnostics"):
+            MODULE.parse_stdout(stdout, ["one.1.sg"])
+
     def test_fixture_verification_rejects_undeclared_file(self):
         generator_path = (
             ROOT / "tools" / "corpus" / "generate_script_scope_fixture.py"

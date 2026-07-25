@@ -220,6 +220,42 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
                 scope[f"{field}_sha256"],
             )
 
+    def test_script_state_probe_bounds_lexical_wrapper(self):
+        state = self.reference["script_state"]
+        self.assertEqual(state["rule_count"], 7)
+        self.assertEqual(state["qt5_detection_count"], 7)
+        self.assertEqual(
+            state["raw_shared_context"],
+            {
+                "detection_count": 7,
+                "eval_error_count": 0,
+                "matches_qt5_oracle": True,
+            },
+        )
+        self.assertEqual(state["lexical_wrapper"]["detection_count"], 5)
+        self.assertEqual(state["lexical_wrapper"]["eval_error_count"], 2)
+        self.assertFalse(state["lexical_wrapper"]["matches_qt5_oracle"])
+        self.assertEqual(
+            state["lexical_wrapper"]["error_rules"],
+            ["state_var_update.2.sg", "state_function_read.4.sg"],
+        )
+        for field in ("fixture_manifest", "qt5_baseline"):
+            path = ROOT / state[field]
+            self.assertEqual(
+                hashlib.sha256(path.read_bytes()).hexdigest(),
+                state[f"{field}_sha256"],
+            )
+        audit_path = ROOT / state["fixed_binary_static_audit"]
+        self.assertEqual(
+            hashlib.sha256(audit_path.read_bytes()).hexdigest(),
+            state["fixed_binary_static_audit_sha256"],
+        )
+        audit = json.loads(audit_path.read_text(encoding="utf-8"))
+        self.assertEqual(
+            audit["wrapper_loss_candidate_count"],
+            state["fixed_binary_wrapper_loss_candidate_count"],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

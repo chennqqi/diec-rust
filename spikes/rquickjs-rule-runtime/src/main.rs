@@ -618,10 +618,15 @@ fn run_binary_lifecycle(
 }
 
 fn parse_scope_fixture_order(document: &Value) -> Result<Vec<String>, String> {
-    if document.get("generator").and_then(Value::as_str)
-        != Some("tools/corpus/generate_script_scope_fixture.py")
-    {
-        return Err("unexpected script-scope fixture generator".to_owned());
+    let generator = document.get("generator").and_then(Value::as_str);
+    if !matches!(
+        generator,
+        Some(
+            "tools/corpus/generate_script_scope_fixture.py"
+                | "tools/corpus/generate_script_state_fixture.py"
+        )
+    ) {
+        return Err("unexpected script semantics fixture generator".to_owned());
     }
     let order = document
         .get("rule_order")

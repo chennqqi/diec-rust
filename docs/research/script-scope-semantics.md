@@ -99,10 +99,11 @@ QuickJS context 中共享宿主/global 状态，并在 wrapper 返回前解析�
 - `audio.1.sg` 和 MiniExtensions 不再需要跨规则 overlay；
 - 仅 Nintendo 规则仍需要绑定 path/size/hash 的单脚本语法 overlay。
 
-这证明 per-rule lexical wrapper 是比“单一 global eval + 三个 overlay”更接近
-Qt 可观察契约的候选方案，但仍不是 runtime 选型结论：完整规则的 `detect` 尚未
-逐条调用，wrapper 对 `this`、direct eval、top-level `var`、异常栈和 helper
-可见性的差分也需继续验证。
+这证明 per-rule lexical wrapper 能处理本 fixture 的 lexical 冲突，但后续
+[`script-state-semantics.md`](script-state-semantics.md) 已确认它不是通用 Qt
+等价模型：Qt 持久化顶层 `var` 和普通函数，而 wrapper 会隔离它们。固定 Binary
+静态审计暂未发现实际跨规则依赖候选；完整规则的 `detect`、direct eval、异常栈
+和 helper 可见性仍需继续验证。
 
 Nintendo 规则内部同一函数的 `var`/`const` 重定义属于单脚本语法差异，不由本
 实验解释，仍需独立 compatibility 决策。

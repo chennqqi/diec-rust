@@ -1,0 +1,79 @@
+{
+  "directories": [
+    "main",
+    "main/Binary",
+    "extra",
+    "custom",
+    "input"
+  ],
+  "entries": [
+    {
+      "path": "input/probe.bin",
+      "purpose": "benign scan input",
+      "sha256": "4af07f9393efdcfdd307aeb6e105fc342349145c68a66a5ca9052489a4f94009",
+      "size": 29,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/state_var_define.1.sg",
+      "purpose": "define and observe a top-level var",
+      "sha256": "a4f60682f7ae9bc034cd732cd6e95c233fda1445523b85ae45c650e27e4eed29",
+      "size": 128,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/state_var_update.2.sg",
+      "purpose": "read and update a var from the preceding evaluate",
+      "sha256": "c6bbcc7692959d71d2d49d6ab9eaf3bba4e1e95b8699aa17dd3b3178291f85be",
+      "size": 124,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/state_function_define.3.sg",
+      "purpose": "define and observe a top-level helper function",
+      "sha256": "2064c730e9df7ade731e49ab07a2a395fa196b9a20e9718fa463ee1c9be20917",
+      "size": 161,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/state_function_read.4.sg",
+      "purpose": "call a helper function from the preceding evaluate",
+      "sha256": "39696d2ed94dc8031923b15b64994767963e76a41c9a8da8f4e3b89653a7ff18",
+      "size": 118,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/state_implicit_define.5.sg",
+      "purpose": "create an implicit global in sloppy mode",
+      "sha256": "2225e7d3e159bffd21759560f84294b2d09ab910d61f4434155aea226847522a",
+      "size": 138,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/state_implicit_read.6.sg",
+      "purpose": "read an implicit global from the preceding evaluate",
+      "sha256": "dca9ebb7f746604d4d0ba642698f664f00373eca5608fd5440a3d5de899b6a61",
+      "size": 116,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/state_this.7.sg",
+      "purpose": "observe top-level this identity without modern globalThis",
+      "sha256": "b21df79100843cb5baf92610d56e7f3d90288e73fde9dd39f2d1c534117a487a",
+      "size": 208,
+      "source": "project-generated"
+    }
+  ],
+  "generator": "tools/corpus/generate_script_state_fixture.py",
+  "license": "project-generated; no third-party sample or rule bytes",
+  "rule_order": [
+    "state_var_define.1.sg",
+    "state_var_update.2.sg",
+    "state_function_define.3.sg",
+    "state_function_read.4.sg",
+    "state_implicit_define.5.sg",
+    "state_implicit_read.6.sg",
+    "state_this.7.sg"
+  ],
+  "schema_version": 1
+}

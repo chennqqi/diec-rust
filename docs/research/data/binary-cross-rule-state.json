@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "generator": "tools/upstream/audit_binary_cross_rule_state.js",
+  "method": "UglifyJS scope analysis; candidate dependency means a later rule has an unresolved global access to a name previously provided by a top-level var/function declaration or global write",
+  "limitations": [
+    "static candidate analysis does not prove the access executes",
+    "dynamic property names and eval-generated bindings are not resolved",
+    "init/include-provided names are outside the cross-rule provider set"
+  ],
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+  "order_manifest": "docs/research/data/binary-rule-order-linux-qt5.json",
+  "order_manifest_sha256": "fcf03009df3f51e0d210d3d02fe19eef417dcb1b95127786ff8ed151a8b3e3d4",
+  "order_sha256": "27138d68ed788dd2609b7c533fecf540593fa2e4ddb7195adc26b1a9ff0e1ff3",
+  "parser": {
+    "name": "uglify-js",
+    "version": "3.19.3",
+    "license": "BSD-2-Clause",
+    "package_json_sha256": "4e7908267a1b0dfd5af0004dba63e8392ffc509ae986d5931017a55d7d65167d",
+    "source": "fixed upstream bundled node_modules"
+  },
+  "file_count": 292,
+  "analyzed_source_bytes": 1122477,
+  "persistent_declaration_count": 302,
+  "lexical_declaration_count": 2,
+  "distinct_global_access_count": 3347,
+  "prior_state_access_candidate_count": 1085,
+  "wrapper_loss_candidate_count": 0,
+  "wrapper_loss_candidates": []
+}

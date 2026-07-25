@@ -19,7 +19,7 @@
   "experiment": {
     "cargo_lock_sha256": "aa7cd4c42e1f3429f45ec31e05e41862abe6156bdbe351eeacc507673f237232",
     "cargo_toml_sha256": "875730b205ca351b4bc0f830a1896fb6ad777c46046e6f26c9c368849614be16",
-    "source_sha256": "a5a1aaf61519da91c94a610a99c2c66b46e71c5b34501d690e2d0a735b602498",
+    "source_sha256": "7b9986647edd2216e1f140e7bdca37f95e1c46447fd2fa52ad4f5ca230d250ac",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -189,6 +189,31 @@
       "operation": "shared host/global context with per-rule function lexical wrapper and immediate detect invocation"
     },
     "matches_qt5_oracle": false
+  },
+  "script_state": {
+    "fixture_manifest": "docs/research/data/script-state-fixture.json",
+    "fixture_manifest_sha256": "6b45b1034096fc8b2a7932bb528cbb9bbb0e25d246183be05f08d02b2d127de6",
+    "qt5_baseline": "docs/research/data/script-state-qt5.json",
+    "qt5_baseline_sha256": "f1641f56c9b72a48e7dceecc43ee9c095941d8899cecb03e7f5e3e28ef97a16a",
+    "rule_count": 7,
+    "qt5_detection_count": 7,
+    "raw_shared_context": {
+      "detection_count": 7,
+      "eval_error_count": 0,
+      "matches_qt5_oracle": true
+    },
+    "lexical_wrapper": {
+      "detection_count": 5,
+      "eval_error_count": 2,
+      "error_rules": [
+        "state_var_update.2.sg",
+        "state_function_read.4.sg"
+      ],
+      "matches_qt5_oracle": false
+    },
+    "fixed_binary_static_audit": "docs/research/data/binary-cross-rule-state.json",
+    "fixed_binary_static_audit_sha256": "d969344f42ed48cbb3f3d0024f8df6bb24e58b6c2da6442766edac4cc85725a5",
+    "fixed_binary_wrapper_loss_candidate_count": 0
   },
   "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
   "schema_version": 1,

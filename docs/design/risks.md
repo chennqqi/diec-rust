@@ -87,7 +87,9 @@ baseline 的变更都要检查本表。
   Qt 5 的跨 `evaluate()` lexical 环境与 QuickJS 单一 global context 不等价，
   后者仅得到 4/7 detection。per-rule lexical wrapper 已达到 fixture 7/7，并让
   292/292 Binary 规则以仅一个 Nintendo 单脚本 overlay 解析出 `detect`；
-  尚未逐条调用完整规则库的 `detect`。
+  但状态 fixture 证明 wrapper 会丢失 Qt 持久化的顶层 var/function（5/7）。
+  固定 Binary AST 审计的 wrapper-loss candidate 为 0，但尚未逐条调用完整规则库
+  的 `detect`，静态零候选不能视为动态等价。
 - **缓解**：保持 `RuleRuntime`/`HostApi` port；建立全规则 inventory、最小失败
   fixture、host call trace；基于证据选 runtime，禁止静默转换规则。
 - **验证**：固定规则 100% discovered/parsed/loaded，zero silent unsupported；
