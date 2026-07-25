@@ -99,6 +99,14 @@ Phase 0 期间继续以 [`../research/upstream-baseline.md`](../research/upstrea
 - 每个 component commit 必须与 baseline commit 中对应 `gitlink_path` 的 gitlink SHA 一致。
 - 清单当前优先覆盖无 GUI CLI 调研直接涉及的组件；同步工具完成后扩展到全部 58 个直接 submodule。
 
+离线一致性校验：
+
+```sh
+python3 tools/verify_upstream.py
+```
+
+校验器不会 fetch 或修改工作树。它检查 lock、DIE-engine gitlink、subtree tree、`git-subtree-split` 以及规则目录 tree；失败时返回非零退出码。工具当前要求 Python 3.11+（使用标准库 `tomllib`），未来可在 Rust workspace 建立后迁移为 `xtask`。
+
 ## 更新流程
 
 更新前先只获取远端：
