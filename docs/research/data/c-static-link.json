@@ -1,0 +1,114 @@
+{
+  "abi": {
+    "exports": [
+      "diec_spike_abi_version",
+      "diec_spike_scan",
+      "diec_spike_result_json",
+      "diec_spike_result_free",
+      "diec_spike_status_message",
+      "diec_spike_force_panic"
+    ],
+    "max_input_bytes": 16777216,
+    "status_codes": {
+      "input_too_large": 2,
+      "invalid_argument": 1,
+      "ok": 0,
+      "panic": 3
+    },
+    "version": 1
+  },
+  "experiment": {
+    "hashes": {
+      "Cargo.lock": "29d5824964d0249951f9568a80501e665934788834ab01767beacb6331727fd0",
+      "Cargo.toml": "94b10a03295f4d6c38c114f317381e9964b228c07b22425ead2eab3a69173708",
+      "c/smoke.c": "9e70deb13e007358fc6b1dc0aec908331b0fc6d355e5e766c7d77b0f5eb68807",
+      "include/diec_spike.h": "6b21c707fb39d81ce9c79a52a561508950790b7afe66dbffd94c78e791cf27f5",
+      "run-linux-gnu.sh": "d2bc95e648d5f3ccbb4a7528272f9dd3711dedd089d4701e2a28409874f0574f",
+      "run-windows-msvc.cmd": "0a097764b24f8dc0e2784650ef2c5f5c4b2fadd63899aa9c6adcb80f05b30167",
+      "src/lib.rs": "2a37c663701af5c29bd1dab0e5952e7324d5023862bb8e1d3f6725b562d9f806"
+    },
+    "rust": "rustc 1.88.0 (6b00bc388 2025-06-23)"
+  },
+  "fixture": {
+    "empty_input_json": "{\"schema_version\":1,\"size\":0,\"sum\":0}",
+    "input_json": "{\"schema_version\":1,\"size\":4,\"sum\":10}",
+    "lifecycle_iterations": 1000,
+    "panic_contained": true,
+    "panic_hook_stderr_observed": true,
+    "result_free_nulls_handle": true,
+    "second_free_same_variable_succeeds": true
+  },
+  "linux_gnu": {
+    "archive_bytes": 20339232,
+    "c_compiler": "gcc 12.2.0",
+    "container_digest": "sha256:38bc5a86d998772d4aec2348656ed21438d20fcdce2795b56ca434cf21430d89",
+    "container_image": "rust:1.88.0-slim-bookworm",
+    "dynamic_dependencies": [
+      "libgcc_s.so.1",
+      "libc.so.6",
+      "ld-linux-x86-64.so.2"
+    ],
+    "executable_bytes": 4570200,
+    "native_static_libs": [
+      "-lgcc_s",
+      "-lutil",
+      "-lrt",
+      "-lpthread",
+      "-lm",
+      "-ldl",
+      "-lc"
+    ],
+    "smoke_exit_code": 0,
+    "target": "x86_64-unknown-linux-gnu"
+  },
+  "schema_version": 1,
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "windows_msvc": {
+    "c_compiler": "MSVC 19.44.35207.1",
+    "dynamic_crt": {
+      "dynamic_dependencies": [
+        "api-ms-win-core-synch-l1-2-0.dll",
+        "VCRUNTIME140.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-locale-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "KERNEL32.dll",
+        "ntdll.dll"
+      ],
+      "executable_bytes": 125952,
+      "native_static_libs": [
+        "kernel32.lib",
+        "ntdll.lib",
+        "userenv.lib",
+        "ws2_32.lib",
+        "dbghelp.lib",
+        "/defaultlib:msvcrt"
+      ],
+      "smoke_exit_code": 0,
+      "staticlib_bytes": 14552206
+    },
+    "linker": "MSVC link.exe 14.44.35207.1",
+    "static_crt": {
+      "dynamic_dependencies": [
+        "api-ms-win-core-synch-l1-2-0.dll",
+        "KERNEL32.dll",
+        "ntdll.dll"
+      ],
+      "executable_bytes": 257024,
+      "native_static_libs": [
+        "kernel32.lib",
+        "ntdll.lib",
+        "userenv.lib",
+        "ws2_32.lib",
+        "dbghelp.lib",
+        "/defaultlib:libcmt"
+      ],
+      "smoke_exit_code": 0,
+      "staticlib_bytes": 14552206
+    },
+    "target": "x86_64-pc-windows-msvc"
+  }
+}

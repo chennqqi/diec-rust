@@ -72,7 +72,10 @@
 ### 技术验证
 
 - 规则运行时 spike：执行覆盖复杂语法的代表性上游规则。
-- C 静态链接 spike：从 C 调用 Rust，获得扫描结果并正确释放内存。
+- C 静态链接 spike：Windows/Linux x64 的 `.lib`/`.a`、C 调用、结果读取、
+  正确释放、panic containment 和 CRT 依赖已完成首轮验证，见
+  [`docs/research/c-static-link-spike.md`](docs/research/c-static-link-spike.md)；
+  正式 ABI 及其他平台仍待设计和验证。
 - 上游 oracle：自动运行固定版本上游并保存原始及结构化基线。
 
 ### 退出条件
