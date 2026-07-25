@@ -326,7 +326,9 @@ Boa 相同的 Nintendo legacy 规则，因此两个候选都未通过零差异�
 overlay 加 per-rule lexical wrapper 已让固定 292 条 Binary 规则全部加载；在该
 环境中选定调用 archive_DEFLATE、EA-XA 和 Nintendo `detect` 后，Qt 5 目标结果
 14/14 匹配，并发现由前一 `detect` 动态建立隐式全局 `bad` 的跨规则依赖。其余
-289 个 `detect` 与完整 HostApi 尚未验证。
+289 个 `detect` 随后也已由 fallback-tolerant diagnostic 逐条尝试；该实验发现
+253 条规则调用 34 类缺失路径，代理制造的结果不具兼容意义。完整 HostApi 与逐条
+Qt oracle 尚未验证。
 
 固定 Binary 生命周期、init/include 首个命中规则、共享 global scope 和上游
 排序比较器缺陷见
@@ -341,8 +343,8 @@ overlay 加 per-rule lexical wrapper 已让固定 292 条 Binary 规则全部加
 - include 同名、重复、循环和异常实验。
 - database cache 与 ZIP database 行为。
 - `dbs_min` 生成逻辑。
-- 按真实生命周期逐条调用全库 `detect`、冻结 legacy compatibility 方案和跨
-  runtime 性能比较。
+- 用真实 HostApi 和 Qt oracle 逐条验证全库 `detect`、冻结 legacy compatibility
+  方案和跨 runtime 性能比较。
 
 ## 主要证据
 

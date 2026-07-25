@@ -165,6 +165,8 @@ Binary 规则解析出 `detect`，但完整 HostApi 下逐条调用、其他 fil
 固定 Binary 的静态审计未发现显式依赖。selected lifecycle 又发现前一
 `detect` 动态创建的隐式全局 `bad` 是后一 EA-XA 规则的前置状态，说明 runtime
 抽象必须保留跨规则动态状态，不能把静态零候选当作隔离依据。因此本文不选择 runtime。
+全 292 条 fallback-tolerant 调用进一步显示 253 条规则会触及尚未实现的 HostApi，
+所以“脚本无异常返回”也不得成为 backend 验收指标。
 后续 ADR 必须基于固定规则集、宿主 API、资源中断、static link、许可证和跨平台
 实验选型。
 native runtime、FFI glue、runtime-specific handles 只存在于 `diec-rules`

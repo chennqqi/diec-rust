@@ -212,11 +212,18 @@ host/global context 中按本清单重跑：292/292 规则均成功求值并解�
   `audio_EXA.detect()` 的前置状态。
 
 这项动态依赖不在此前顶层 AST 审计范围内，证明完整生命周期不能只依赖静态
-wrapper-loss 零候选。非目标规则只执行了顶层代码，未调用 `detect`。
+wrapper-loss 零候选。在该 selected probe 中，非目标规则只执行了顶层代码，未
+调用 `detect`。
+
+全 Binary diagnostic probe 又按该顺序逐条尝试了 292 个 `detect`，并在单条异常
+后继续执行。它得到 281 条无异常、11 条异常，但 253 条规则实际调用了缺失
+HostApi 的 fallback；代理还制造了 122 条无效 detection。因此该实验完成的是
+动态缺口 inventory，不是完整 signature compatibility。
 
 下一轮完整 signature lifecycle probe 仍至少要满足：
 
-- 逐条调用已固定 Linux 顺序中的 `detect`，再补齐 Windows/macOS 顺序；
+- 以真实 HostApi 逐项替换 34 条动态 fallback 路径，并补齐 Windows/macOS 顺序；
+- 给 39 条未记录 fallback 的规则建立对应 Qt oracle，而不是按“无异常”计 pass；
 - 保存每条 rule eval、include、host call、result/error 的 trace；
 - 单条失败后验证后续规则是否继续且 metadata 已切换；
 - 以完整上游结果排序逻辑代替当前仅用于 Nintendo/EA-XA 的目标类型投影；

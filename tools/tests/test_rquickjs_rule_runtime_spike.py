@@ -130,6 +130,43 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
             ],
         )
 
+    def test_full_binary_detect_diagnostic_is_scoped_as_gap_inventory(self):
+        diagnostic = self.reference["full_binary_detect_diagnostic"]
+        self.assertTrue(diagnostic["completed"])
+        self.assertEqual(diagnostic["attempted_detect_count"], 292)
+        self.assertEqual(diagnostic["accepted_detect_count"], 281)
+        self.assertEqual(diagnostic["detect_error_count"], 11)
+        self.assertEqual(diagnostic["include_call_count"], 30)
+        self.assertEqual(diagnostic["compatibility_overlay_count"], 1)
+        self.assertEqual(diagnostic["fallback_rule_count"], 253)
+        self.assertEqual(diagnostic["fallback_call_total"], 496)
+        self.assertEqual(diagnostic["fallback_truncated_rule_count"], 0)
+        self.assertEqual(diagnostic["zero_recorded_fallback_rule_count"], 39)
+        self.assertEqual(diagnostic["zero_recorded_fallback_error_count"], 0)
+        self.assertFalse(diagnostic["detection_evidence_valid"])
+        self.assertEqual(len(diagnostic["fallback_paths"]), 34)
+        self.assertEqual(len(diagnostic["error_rules"]), 11)
+        self.assertEqual(
+            diagnostic["error_categories"],
+            {
+                "fallback_proxy_reached_string_result_boundary": 10,
+                "no_input_detection_name": 1,
+            },
+        )
+        manifest = json.loads(
+            (
+                ROOT
+                / diagnostic["input"]["generator_manifest"]
+            ).read_text(encoding="utf-8")
+        )
+        sample = next(
+            sample
+            for sample in manifest["samples"]
+            if sample["name"] == diagnostic["input"]["name"]
+        )
+        self.assertEqual(sample["size"], diagnostic["input"]["bytes"])
+        self.assertEqual(sample["sha256"], diagnostic["input"]["sha256"])
+
     def test_binary_lifecycle_uses_fixed_order_and_exact_overlays(self):
         lifecycle = self.reference["binary_lifecycle"]
         self.assertEqual(lifecycle["files"], 292)

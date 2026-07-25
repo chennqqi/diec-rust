@@ -1,3 +1,4 @@
+use std::collections::BTreeSet;
 use std::env;
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -68,6 +69,38 @@ const HOST_FALLBACK_SHIM: &[u8] = br#"
         get: function (target, property) {
             if (property in target) return target[property];
             return __makeFallback("Util." + String(property));
+        }
+    });
+"#;
+
+const DIAGNOSTIC_HOST_FALLBACK_SHIM: &[u8] = br#"
+    globalThis.__fallbackCalls = [];
+    globalThis.__fallbackTotal = 0;
+    function __makeDiagnosticFallback(path) {
+        var stub;
+        stub = new Proxy(function () {
+            __fallbackTotal++;
+            if (__fallbackCalls.length < 256) __fallbackCalls.push(path);
+            return stub;
+        }, {
+            get: function (_target, property) {
+                if (property === Symbol.toPrimitive) return function () { return 0; };
+                return __makeDiagnosticFallback(path + "." + String(property));
+            }
+        });
+        return stub;
+    }
+    Binary = new Proxy(Binary, {
+        get: function (target, property) {
+            if (property in target) return target[property];
+            return __makeDiagnosticFallback("Binary." + String(property));
+        }
+    });
+    X = Binary;
+    Util = new Proxy(Util, {
+        get: function (target, property) {
+            if (property in target) return target[property];
+            return __makeDiagnosticFallback("Util." + String(property));
         }
     });
 "#;
@@ -253,6 +286,10 @@ fn install_host_fallbacks(context: &Context) -> Result<(), String> {
     eval_unit(context, HOST_FALLBACK_SHIM)
 }
 
+fn install_diagnostic_host_fallbacks(context: &Context) -> Result<(), String> {
+    eval_unit(context, DIAGNOSTIC_HOST_FALLBACK_SHIM)
+}
+
 fn install_selected_host_trace(context: &Context) -> Result<(), String> {
     eval_unit(
         context,
@@ -323,6 +360,10 @@ fn read_unsigned(data: &[u8], offset: usize, width: usize, big_endian: bool) -> 
     value as f64
 }
 
+fn nonnegative_index(value: i64) -> Option<usize> {
+    usize::try_from(value).ok()
+}
+
 fn read_ascii(data: &[u8], offset: usize, size: usize) -> String {
     data.get(offset..offset.saturating_add(size))
         .map(|bytes| {
@@ -360,8 +401,13 @@ fn install_nintendo_host(
         let c_data = Arc::clone(&data);
         x.set(
             "c",
-            Function::new(ctx.clone(), move |pattern: String, offset: Opt<usize>| {
-                signature_matches(&c_data, &pattern, offset.0.unwrap_or(0))
+            Function::new(ctx.clone(), move |pattern: String, offset: Opt<i64>| {
+                offset
+                    .0
+                    .unwrap_or(0)
+                    .try_into()
+                    .ok()
+                    .is_some_and(|offset| signature_matches(&c_data, &pattern, offset))
             })
             .map_err(|error| error.to_string())?,
         )
@@ -371,8 +417,10 @@ fn install_nintendo_host(
             let integer_data = Arc::clone(&data);
             x.set(
                 name,
-                Function::new(ctx.clone(), move |offset: usize, big_endian: Opt<bool>| {
-                    read_unsigned(&integer_data, offset, width, big_endian.0.unwrap_or(false))
+                Function::new(ctx.clone(), move |offset: i64, big_endian: Opt<bool>| {
+                    nonnegative_index(offset).map_or(0.0, |offset| {
+                        read_unsigned(&integer_data, offset, width, big_endian.0.unwrap_or(false))
+                    })
                 })
                 .map_err(|error| error.to_string())?,
             )
@@ -381,8 +429,11 @@ fn install_nintendo_host(
         let byte_data = Arc::clone(&data);
         x.set(
             "U8",
-            Function::new(ctx.clone(), move |offset: usize| {
-                byte_data.get(offset).copied().unwrap_or(0)
+            Function::new(ctx.clone(), move |offset: i64| {
+                nonnegative_index(offset)
+                    .and_then(|offset| byte_data.get(offset))
+                    .copied()
+                    .unwrap_or(0)
             })
             .map_err(|error| error.to_string())?,
         )
@@ -390,8 +441,12 @@ fn install_nintendo_host(
         let string_data = Arc::clone(&data);
         x.set(
             "SA",
-            Function::new(ctx.clone(), move |offset: usize, size: usize| {
-                read_ascii(&string_data, offset, size)
+            Function::new(ctx.clone(), move |offset: i64, size: i64| {
+                nonnegative_index(offset)
+                    .zip(nonnegative_index(size))
+                    .map_or_else(String::new, |(offset, size)| {
+                        read_ascii(&string_data, offset, size)
+                    })
             })
             .map_err(|error| error.to_string())?,
         )
@@ -1216,6 +1271,149 @@ fn run_nintendo_lifecycle_corpus(
     Ok(all_match)
 }
 
+fn trace_binary_detects(
+    rule_root: &Path,
+    input_path: &Path,
+    order_path: &Path,
+) -> Result<bool, String> {
+    let order_document: Value = serde_json::from_slice(
+        &fs::read(order_path)
+            .map_err(|error| format!("cannot read {}: {error}", order_path.display()))?,
+    )
+    .map_err(|error| format!("cannot parse {}: {error}", order_path.display()))?;
+    let order = parse_binary_order(&order_document)?;
+    let data = fs::read(input_path)
+        .map_err(|error| format!("cannot read {}: {error}", input_path.display()))?;
+    let input_size = data.len();
+    let runtime = new_runtime()?;
+    let interrupt_ticks = Arc::new(AtomicUsize::new(0));
+    let interrupt_ticks_for_handler = Arc::clone(&interrupt_ticks);
+    runtime.set_interrupt_handler(Some(Box::new(move || {
+        interrupt_ticks_for_handler.fetch_add(1, Ordering::Relaxed) >= 1_000_000
+    })));
+    let context = new_context(&runtime)?;
+    let detections = Arc::new(Mutex::new(Vec::new()));
+    install_nintendo_host(&context, Arc::new(data), Arc::clone(&detections))?;
+    install_diagnostic_host_fallbacks(&context)?;
+    install_main_include_registry(&context, rule_root)?;
+    for relative in ["_init", "Binary/_init"] {
+        let path = rule_root.join(relative);
+        let source =
+            fs::read(&path).map_err(|error| format!("cannot read {}: {error}", path.display()))?;
+        eval_unit(&context, &source)
+            .map_err(|error| format!("cannot eval {}: {error}", path.display()))?;
+    }
+
+    let started = Instant::now();
+    let mut observations = Vec::with_capacity(order.len());
+    let mut overlay_count = 0;
+    let mut error_count = 0;
+    let mut fallback_rule_count = 0;
+    let mut fallback_call_total = 0_u64;
+    let mut fallback_paths = BTreeSet::new();
+    for (index, name) in order.iter().enumerate() {
+        let path = rule_root.join("Binary").join(name);
+        let source =
+            fs::read(&path).map_err(|error| format!("cannot read {}: {error}", path.display()))?;
+        let (evaluated, applied) = apply_compatibility_overlay(&path, &source)?;
+        overlay_count += usize::from(applied);
+        eval_unit(&context, b"__fallbackCalls = []; __fallbackTotal = 0;")?;
+        let detections_before = detections
+            .lock()
+            .map_err(|_| "Binary trace result mutex poisoned".to_owned())?
+            .len();
+        interrupt_ticks.store(0, Ordering::Relaxed);
+        let detect_result = eval_rule_lexical(&context, &evaluated, true);
+        let interrupt_handler_calls = interrupt_ticks.load(Ordering::Relaxed);
+        let fallback_text = eval_string(
+            &context,
+            b"JSON.stringify({calls: __fallbackCalls, total: __fallbackTotal})",
+        )?;
+        let fallback: Value = serde_json::from_str(&fallback_text)
+            .map_err(|error| format!("cannot parse fallback report for {name}: {error}"))?;
+        let fallback_total = fallback
+            .get("total")
+            .and_then(Value::as_u64)
+            .ok_or_else(|| format!("fallback total is missing for {name}"))?;
+        let calls = fallback
+            .get("calls")
+            .and_then(Value::as_array)
+            .ok_or_else(|| format!("fallback calls are missing for {name}"))?;
+        for call in calls {
+            if let Some(path) = call.as_str() {
+                fallback_paths.insert(path.to_owned());
+            }
+        }
+        fallback_call_total = fallback_call_total
+            .checked_add(fallback_total)
+            .ok_or_else(|| "fallback call total overflow".to_owned())?;
+        fallback_rule_count += usize::from(fallback_total != 0);
+        let detect_accepted = detect_result.is_ok();
+        error_count += usize::from(!detect_accepted);
+        let (detect_value, detect_error) = match detect_result {
+            Ok(value) => (Some(value), None),
+            Err(error) => (None, Some(error)),
+        };
+        let emitted = detections
+            .lock()
+            .map_err(|_| "Binary trace result mutex poisoned".to_owned())?[detections_before..]
+            .to_vec();
+        observations.push(json!({
+            "index": index,
+            "name": name,
+            "accepted": detect_accepted,
+            "detect_result": detect_value,
+            "error": detect_error,
+            "fallback_call_count": fallback_total,
+            "fallback_calls": calls,
+            "fallback_calls_truncated": fallback_total > calls.len() as u64,
+            "interrupt_handler_calls": interrupt_handler_calls,
+            "detections": emitted,
+        }));
+    }
+    let all_detections = detections
+        .lock()
+        .map_err(|_| "Binary trace result mutex poisoned".to_owned())?
+        .clone();
+    let include_trace_text = eval_string(&context, b"JSON.stringify(__includeTrace)")?;
+    let include_trace: Value = serde_json::from_str(&include_trace_text)
+        .map_err(|error| format!("cannot parse include trace: {error}"))?;
+    let include_call_count = include_trace.as_array().map_or(0, Vec::len);
+    println!(
+        "{}",
+        serde_json::to_string_pretty(&json!({
+            "schema_version": 1,
+            "operation": "diagnostic invocation of all fixed-order Binary detect functions",
+            "scope": "fallback-tolerant gap inventory; detections are not compatibility evidence",
+            "runtime": "rquickjs 0.12.1 / QuickJS-NG 0.15.1",
+            "input": {
+                "path": normalized_path(input_path),
+                "bytes": input_size,
+            },
+            "order_manifest": normalized_path(order_path),
+            "order_sha256": LINUX_QT5_BINARY_ORDER_SHA256,
+            "rule_count": order.len(),
+            "attempted_detect_count": observations.len(),
+            "accepted_detect_count": observations.len() - error_count,
+            "detect_error_count": error_count,
+            "compatibility_overlay_count": overlay_count,
+            "include_trace": include_trace,
+            "include_call_count": include_call_count,
+            "fallback_rule_count": fallback_rule_count,
+            "fallback_call_total": fallback_call_total,
+            "fallback_paths": fallback_paths,
+            "detection_count": all_detections.len(),
+            "detections": all_detections,
+            "observations": observations,
+            "interrupt_handler_call_limit_per_rule": 1_000_000,
+            "elapsed_ms": started.elapsed().as_millis(),
+            "completed": true,
+        }))
+        .map_err(|error| format!("cannot serialize report: {error}"))?
+    );
+    Ok(true)
+}
+
 fn evaluate_corpus(
     roots: &[PathBuf],
     shared_realm: bool,
@@ -1494,7 +1692,9 @@ fn usage() -> ExitCode {
          diec-rquickjs-rule-runtime-spike detect-nintendo \
          <main-rule-root> <corpus-dir> <baseline-json>\n       \
          diec-rquickjs-rule-runtime-spike detect-nintendo-lifecycle \
-         <main-rule-root> <corpus-dir> <baseline-json> <binary-order-json>"
+         <main-rule-root> <corpus-dir> <baseline-json> <binary-order-json>\n       \
+         diec-rquickjs-rule-runtime-spike trace-binary-detects \
+         <main-rule-root> <input-file> <binary-order-json>"
     );
     ExitCode::from(2)
 }
@@ -1532,6 +1732,8 @@ fn main() -> ExitCode {
         run_nintendo_corpus(&roots[0], &roots[1], &roots[2])
     } else if command == "detect-nintendo-lifecycle" && roots.len() == 4 {
         run_nintendo_lifecycle_corpus(&roots[0], &roots[1], &roots[2], &roots[3])
+    } else if command == "trace-binary-detects" && roots.len() == 3 {
+        trace_binary_detects(&roots[0], &roots[1], &roots[2])
     } else {
         return usage();
     };
@@ -1550,7 +1752,8 @@ mod tests {
     use super::{
         NINTENDO_COMPAT_DECLARATION, NINTENDO_RULE_BYTES, NINTENDO_VAR_DECLARATION,
         apply_compatibility_overlay, apply_exact_lifecycle_overlay, collect_rule_files,
-        eval_rule_lexical, new_context, new_runtime, normalized_path, parse_scope_detections,
+        eval_rule_lexical, eval_string, eval_unit, install_diagnostic_host_fallbacks, new_context,
+        new_runtime, nonnegative_index, normalized_path, parse_scope_detections,
         parse_scope_fixture_order, read_ascii, read_unsigned, signature_matches,
     };
     use std::fs;
@@ -1690,6 +1893,32 @@ mod tests {
         assert_eq!(read_ascii(bytes, 0, bytes.len()), "SC");
         assert_eq!(read_ascii(bytes, 3, 4), "trai");
         assert_eq!(read_ascii(bytes, bytes.len(), 1), "");
+    }
+
+    #[test]
+    fn host_offsets_reject_negative_values_without_conversion_errors() {
+        assert_eq!(nonnegative_index(-1), None);
+        assert_eq!(nonnegative_index(0), Some(0));
+        assert_eq!(nonnegative_index(128), Some(128));
+    }
+
+    #[test]
+    fn diagnostic_fallback_counts_all_calls_and_caps_captured_paths() {
+        let runtime = new_runtime().expect("runtime should be created");
+        let context = new_context(&runtime).expect("context should be created");
+        eval_unit(&context, b"var Binary = {}; var Util = {};")
+            .expect("fallback globals should be initialized");
+        install_diagnostic_host_fallbacks(&context).expect("fallback should be installed");
+        eval_unit(&context, b"for (var i = 0; i < 300; i++) Binary.missing();")
+            .expect("fallback calls should complete");
+        assert_eq!(
+            eval_string(
+                &context,
+                b"String(__fallbackTotal) + '|' + String(__fallbackCalls.length)",
+            )
+            .expect("fallback counters should be readable"),
+            "300|256"
+        );
     }
 
     #[test]

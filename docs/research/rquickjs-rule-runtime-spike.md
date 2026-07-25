@@ -52,8 +52,9 @@ selected lifecycle probe 随后在同一固定全库加载环境中依次调用
 `archive_DEFLATE`、`audio_EXA` 和 Nintendo `detect`。它发现前者通过隐式全局
 `bad` 为 EA-XA 建立动态前置状态；补齐该调用及目标所需 Byte HostApi 后，PS3 和
 PS Vita 的目标完整有序结果与 Qt 5 baseline 14/14 匹配，三个目标调用均未使用
-fallback HostApi。实验仍未逐条调用其余 289 个 `detect`，也未覆盖 Qt 6 和其余
-宿主方法，因此候选状态不变。
+fallback HostApi。全 Binary diagnostic probe 随后逐条尝试了 292 个 `detect`，
+但 253 条规则使用了缺失 HostApi 的代理，因此该结果只用于形成缺口清单，不能
+作为兼容率。Qt 6 和完整宿主方法仍未覆盖，候选状态不变。
 
 ## 实验边界
 
@@ -88,7 +89,7 @@ proxy 只用于语法/顶层执行覆盖，不代表宿主 API 兼容，也不�
 | Lockfile packages | 23 |
 | 当前 target packages | 18 |
 | Clean release build | 13,258 ms，本机已缓存下载、空 target |
-| Release executable | 1,716,224 bytes（加入 selected lifecycle probe 后） |
+| Release executable | 1,753,088 bytes（加入全 Binary detect diagnostic 后） |
 
 `cargo +1.86.0 check --locked` 明确报告
 `rquickjs@0.12.1 requires rustc 1.87`。本实验继续复用已安装的 1.88 工具链。
@@ -278,6 +279,53 @@ Binary.getString.replace.match
 本实验加载了全 292 条规则，但只执行三个 `detect`；它不等同于“完整 Binary
 signature sequence 通过”。
 
+### 全 Binary detect 缺口诊断
+
+`trace-binary-detects` 在同样的固定 Linux Qt 5 顺序、共享 host/global context
+和 per-rule lexical wrapper 下逐条调用全部 292 个 `detect`。输入固定为项目
+生成的 128-byte `ps3-type-2-revoke-list.self`：
+
+```text
+SHA-256 499c269ca6a0be20f48480b1ed766e5d8f448c5a4a8facdff9335b7c1b0a994e
+```
+
+诊断代理会记录缺失 `Binary`/`Util` 方法的实际调用路径，每条规则最多保存 256
+条路径，同时单独累计总调用数；本次没有规则触发截断。每条规则还独立记录异常、
+interrupt handler 调用、返回值和新增 detection，异常后继续下一条。
+
+首次执行暴露了 Rust 绑定自身的边界错误：`format_bin.COL.1.sg` 在 `p == 0` 时
+按规则设计调用 `X.U8(p - 1)`，原来的 `usize` 参数在进入 HostApi 前产生
+Underflow。将字节读取偏移改为有符号输入，并让负值安全返回越界默认值后，该规则
+不再异常；这也是“不可信 offset 必须在宿主内部验证，不能依赖 Rust 参数转换”的
+直接证据。
+
+最终摘要：
+
+| 指标 | 值 |
+| --- | ---: |
+| Attempted `detect` | 292 |
+| 无异常返回 | 281 |
+| 异常 | 11 |
+| 调用 fallback 的规则 | 253 |
+| Fallback 调用 | 496 |
+| 唯一 fallback 路径 | 34 |
+| 未记录 fallback 的规则 | 39 |
+| 未记录 fallback 且异常 | 0 |
+| 代理驱动产生的 detections | 122 |
+
+11 个异常全部发生在调用 fallback 的规则中：10 个是代理值最终进入字符串结果边界
+后无法转换，1 个是 `text.script.2.sg` 在代理驱动路径中抛出
+`No input detection name`。34 条路径集中在基础读取/搜索/上下文方法，例如
+`Binary.compare`、`getSize`、`getString`、`readByte`、`readBytes`、
+`findSignature`、`isPlainText` 和 `Util.div64`；完整清单和 39 条规则名保存在
+[`rquickjs-rule-runtime.json`](data/rquickjs-rule-runtime.json)。
+
+281 条“无异常”及 122 条 detection 都不能作为兼容证据：代理返回的 callable
+object 在 JavaScript 条件中可能为 truthy，已明显制造大量 false positive。即使
+39 条规则没有记录 fallback 调用，本轮也没有逐条 Qt oracle 结果，且代理只记录
+实际 function application，不能把“未记录”扩大解释为 HostApi 完整。该 probe
+的有效产物是可重复的缺口优先级和失败隔离机制。
+
 ## Binary 顶层生命周期实验
 
 `eval-binary-lifecycle-raw` 读取固定
@@ -338,7 +386,7 @@ Nintendo 的单脚本语法 overlay，`audio` 和 MiniExtensions 的跨规则 ov
 | 外部 interrupt | 未发现公开接口 | 支持 |
 | Heap limit | 未发现公开接口 | 支持默认 allocator |
 | Windows target packages | 126 | 18 |
-| Release spike | 11,784,192 bytes | 1,716,224 bytes |
+| Release spike | 11,784,192 bytes | 1,753,088 bytes |
 | 实现语言 | 纯 Rust | Rust wrapper + vendored C |
 | 本轮工具链 | Rust 1.88 | 最低 1.87，本轮 1.88 |
 
@@ -414,6 +462,11 @@ cargo +1.88.0 run --release --locked -- detect-nintendo-lifecycle \
   /tmp/diec-nintendo-certified-corpus \
   ../../docs/research/data/nintendo-certified-baseline.json \
   ../../docs/research/data/binary-rule-order-linux-qt5.json
+
+cargo +1.88.0 run --release --locked -- trace-binary-detects \
+  ../../upstream/Detect-It-Easy/db \
+  /tmp/diec-nintendo-certified-corpus/ps3-type-2-revoke-list.self \
+  ../../docs/research/data/binary-rule-order-linux-qt5.json
 ```
 
 `fixture`、`eval-isolated-compat`、`eval-binary-lifecycle`、两个 lexical
@@ -440,11 +493,12 @@ JSON。运行前先执行
 
 ## 尚未完成
 
-- Binary 已按固定 Linux 顺序完成 292 条顶层 eval；尚未逐条调用 `detect`，也未
-  完成其他 file type 和 Windows/macOS 顺序。
+- Binary 已按固定 Linux 顺序完成 292 条顶层 eval 和 fallback-tolerant
+  `detect` 缺口采集；尚未用完整 HostApi/Qt oracle 逐条验证，也未完成其他 file
+  type 和 Windows/macOS 顺序。
 - 338 个直接宿主方法及继承方法的行为 fixture。
 - Nintendo/EA-XA 已在固定 292 条加载环境中完成三个 selected `detect` 的 Qt 5
-  14/14 对照；仍缺 Qt 6、其余 289 个 `detect` 和完整 HostApi。
+  14/14 对照；仍缺 Qt 6、其余 289 个 `detect` 的真实 HostApi/Qt oracle。
 - Qt 5/Qt 6 与 QuickJS 的整数、字符串、数组、异常和 RegExp 差分。
 - Linux/macOS/Windows GNU/MSVC 静态链接、ASan/UBSan 和 fuzz。
 - 并行 runtime/context 的吞吐、峰值内存和取消延迟。
