@@ -178,9 +178,9 @@ JSON 报告写到 stdout。报告包含环境无关的计数和错误列表，�
 - Qt 5 与 Qt 6 的 64 位整数、字符串、数组、默认参数和异常 oracle。
 - QuickJS-NG/rquickjs 的固定 Binary 顶层生命周期已完成；完整 HostApi 下逐规则
   detect 生命周期仍未完成。
-- Boa heap/外部取消，以及两个候选的 wall-clock deadline、真实 HostApi
-  checkpoint 密度、不可分割阻塞调用、panic 隔离和多线程性能；QuickJS 的
-  synthetic native loop 已完成合作取消可行性验证。
+- Boa heap/外部取消/deadline，以及两个候选的真实 HostApi checkpoint 密度、
+  不可分割阻塞调用、panic 隔离和多线程性能；QuickJS 的 synthetic VM/native
+  cancel 与 monotonic deadline 已完成可行性验证。
 - PE/.NET、ELF、APK/DEX、PDF 等真实阳性/阴性检测。
 
 ## 外部候选资料

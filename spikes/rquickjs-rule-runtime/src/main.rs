@@ -7,7 +7,7 @@ use std::sync::Arc;
 use std::sync::Mutex;
 use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 use std::thread;
-use std::time::Instant;
+use std::time::{Duration, Instant};
 
 use rquickjs::{
     CatchResultExt, Context, Function, Object, Runtime, context::EvalOptions, function::Opt,
@@ -1848,6 +1848,81 @@ fn run_fixture(rule_root: &Path) -> Result<bool, String> {
     let native_cancel_hard_stop_reached =
         native_cancel_iterations == Some(NATIVE_CANCEL_HARD_STOP_ITERATIONS);
 
+    const WALL_CLOCK_DEADLINE_MS: u64 = 25;
+    const WALL_CLOCK_DEADLINE_HARD_STOP_CALLS: usize = 1_000_000;
+    let wall_clock_deadline_started = Arc::new(Mutex::new(None::<Instant>));
+    let wall_clock_deadline_calls = Arc::new(AtomicUsize::new(0));
+    let wall_clock_deadline_started_for_handler = Arc::clone(&wall_clock_deadline_started);
+    let wall_clock_deadline_calls_for_handler = Arc::clone(&wall_clock_deadline_calls);
+    let wall_clock_deadline_runtime = new_runtime()?;
+    wall_clock_deadline_runtime.set_interrupt_handler(Some(Box::new(move || {
+        let calls = wall_clock_deadline_calls_for_handler.fetch_add(1, Ordering::Relaxed) + 1;
+        let now = Instant::now();
+        let expired = match wall_clock_deadline_started_for_handler.lock() {
+            Ok(mut started) => {
+                let started = *started.get_or_insert(now);
+                now.duration_since(started) >= Duration::from_millis(WALL_CLOCK_DEADLINE_MS)
+            }
+            Err(_) => true,
+        };
+        expired || calls >= WALL_CLOCK_DEADLINE_HARD_STOP_CALLS
+    })));
+    let wall_clock_deadline_context = new_context(&wall_clock_deadline_runtime)?;
+    let wall_clock_deadline_error = eval_unit(&wall_clock_deadline_context, b"for (;;) {}").err();
+    let wall_clock_deadline_calls_observed = wall_clock_deadline_calls.load(Ordering::Relaxed);
+    let wall_clock_deadline_hard_stop_reached =
+        wall_clock_deadline_calls_observed >= WALL_CLOCK_DEADLINE_HARD_STOP_CALLS;
+    let wall_clock_deadline_expired = wall_clock_deadline_started
+        .lock()
+        .map_err(|_| "wall-clock deadline state mutex poisoned".to_owned())?
+        .is_some_and(|started| started.elapsed() >= Duration::from_millis(WALL_CLOCK_DEADLINE_MS));
+    wall_clock_deadline_runtime.set_interrupt_handler(None);
+    let wall_clock_deadline_recovery = eval_string(&wall_clock_deadline_context, b"String(21 * 2)");
+
+    const NATIVE_DEADLINE_HARD_STOP_ITERATIONS: i32 = 10_000_000;
+    let native_deadline = Arc::new(Mutex::new(None::<Instant>));
+    let native_deadline_for_host = Arc::clone(&native_deadline);
+    let native_deadline_runtime = new_runtime()?;
+    let native_deadline_context = new_context(&native_deadline_runtime)?;
+    native_deadline_context.with(|ctx| {
+        let deadline_host_loop = Function::new(ctx.clone(), move || {
+            let deadline = native_deadline_for_host
+                .lock()
+                .ok()
+                .and_then(|deadline| *deadline);
+            let Some(deadline) = deadline else {
+                return -1;
+            };
+            let mut iterations = 0;
+            loop {
+                iterations += 1;
+                if Instant::now() >= deadline || iterations >= NATIVE_DEADLINE_HARD_STOP_ITERATIONS
+                {
+                    return iterations;
+                }
+                thread::yield_now();
+            }
+        })
+        .map_err(|error| error.to_string())?;
+        ctx.globals()
+            .set("deadlineHostLoop", deadline_host_loop)
+            .map_err(|error| error.to_string())
+    })?;
+    let native_deadline_at = Instant::now() + Duration::from_millis(WALL_CLOCK_DEADLINE_MS);
+    *native_deadline
+        .lock()
+        .map_err(|_| "native deadline state mutex poisoned".to_owned())? = Some(native_deadline_at);
+    let native_deadline_result =
+        eval_string(&native_deadline_context, b"String(deadlineHostLoop())");
+    let native_deadline_iterations = native_deadline_result
+        .as_deref()
+        .ok()
+        .and_then(|value| value.parse::<i32>().ok());
+    let native_deadline_expired = Instant::now() >= native_deadline_at;
+    let native_deadline_hard_stop_reached =
+        native_deadline_iterations == Some(NATIVE_DEADLINE_HARD_STOP_ITERATIONS);
+    let native_deadline_recovery = eval_string(&native_deadline_context, b"String(21 * 2)");
+
     let memory_runtime = new_runtime()?;
     memory_runtime.set_memory_limit(4 * 1024 * 1024);
     let memory_context = new_context(&memory_runtime)?;
@@ -1876,6 +1951,16 @@ fn run_fixture(rule_root: &Path) -> Result<bool, String> {
             (1..NATIVE_CANCEL_HARD_STOP_ITERATIONS).contains(&iterations)
         })
         && !native_cancel_hard_stop_reached
+        && wall_clock_deadline_error.is_some()
+        && wall_clock_deadline_expired
+        && !wall_clock_deadline_hard_stop_reached
+        && wall_clock_deadline_recovery.as_deref() == Ok("42")
+        && native_deadline_iterations.is_some_and(|iterations| {
+            (1..NATIVE_DEADLINE_HARD_STOP_ITERATIONS).contains(&iterations)
+        })
+        && native_deadline_expired
+        && !native_deadline_hard_stop_reached
+        && native_deadline_recovery.as_deref() == Ok("42")
         && memory_limit_error.is_some();
     let compatible = nintendo_eval.is_ok();
     let report = json!({
@@ -1943,6 +2028,31 @@ fn run_fixture(rule_root: &Path) -> Result<bool, String> {
             "iterations": native_cancel_iterations,
             "hard_stop_iteration_limit": NATIVE_CANCEL_HARD_STOP_ITERATIONS,
             "hard_stop_reached": native_cancel_hard_stop_reached,
+        },
+        "wall_clock_deadline": {
+            "milliseconds": WALL_CLOCK_DEADLINE_MS,
+            "handler_calls": wall_clock_deadline_calls_observed,
+            "expired": wall_clock_deadline_expired,
+            "hard_stop_handler_call_limit": WALL_CLOCK_DEADLINE_HARD_STOP_CALLS,
+            "hard_stop_reached": wall_clock_deadline_hard_stop_reached,
+            "error": wall_clock_deadline_error,
+            "same_context_recovery": {
+                "result": wall_clock_deadline_recovery.as_deref().ok(),
+                "error": wall_clock_deadline_recovery.as_ref().err(),
+            },
+        },
+        "native_host_cooperative_deadline": {
+            "milliseconds": WALL_CLOCK_DEADLINE_MS,
+            "expired": native_deadline_expired,
+            "result": native_deadline_result.as_deref().ok(),
+            "error": native_deadline_result.as_ref().err(),
+            "iterations": native_deadline_iterations,
+            "hard_stop_iteration_limit": NATIVE_DEADLINE_HARD_STOP_ITERATIONS,
+            "hard_stop_reached": native_deadline_hard_stop_reached,
+            "same_context_recovery": {
+                "result": native_deadline_recovery.as_deref().ok(),
+                "error": native_deadline_recovery.as_ref().err(),
+            },
         },
         "memory_limit": {
             "bytes": 4 * 1024 * 1024,

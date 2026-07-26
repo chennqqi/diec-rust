@@ -378,6 +378,12 @@ rquickjs spike 已用项目生成的 cooperative loop 验证可行性；正式�
 signature/search/decompression 循环分别覆盖取消前、精确 checkpoint 和硬上限，
 并测试不可分割阻塞调用不会被误报为可取消。
 
+wall-clock fixture 的 VM 计时从首次 interrupt callback 开始，native 计时使用调用
+前配置的绝对 monotonic deadline；两者另设硬上限并验证同 context 恢复。测试固定
+到期/终止/恢复，不固定 callback 数、checkpoint 数或产品默认时长。正式 timeout
+测试必须注入 clock 验证 cancel/deadline 竞争顺序，并在真实时钟 system test 中
+只设置有依据的最大延迟上界。
+
 ## 14. Fuzz 设计
 
 初始 fuzz targets：

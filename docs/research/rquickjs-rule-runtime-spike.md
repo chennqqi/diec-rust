@@ -21,6 +21,7 @@ QuickJS-NG C 源码编译成静态 archive。它能够：
 - 通过 interrupt handler 中断无限循环；
 - 由另一个线程通过原子取消令牌中断无限循环，并在同一 context 中恢复执行；
 - Rust native HostApi 长循环通过显式检查同一类 token 合作退出；
+- QuickJS VM 与 Rust native HostApi 均可检查 monotonic wall-clock deadline；
 - 通过 runtime memory limit 拒绝超限分配。
 
 但它不能原样作为 DIE 兼容运行时。显式使用 sloppy-script 模式并为语法覆盖提供
@@ -93,7 +94,7 @@ proxy 只用于语法/顶层执行覆盖，不代表宿主 API 兼容，也不�
 | Lockfile packages | 23 |
 | 当前 target packages | 18 |
 | Clean release build | 13,258 ms，本机已缓存下载、空 target |
-| Release executable | 1,826,304 bytes（加入 VM/native 合作取消 fixture 后） |
+| Release executable | 1,847,808 bytes（加入 VM/native deadline fixture 后） |
 
 `cargo +1.86.0 check --locked` 明确报告
 `rquickjs@0.12.1 requires rustc 1.87`。本实验继续复用已安装的 1.88 工具链。
@@ -172,6 +173,8 @@ context”。
 - 重置取消标志后，同一 runtime/context 求值 `String(40 + 2)` 返回 `"42"`；
 - `cooperativeHostLoop()` 在外部 token 请求后正常返回，未达到 1,000,000 次
   native 检查点硬上限；
+- QuickJS VM 与 native HostApi 的 25ms deadline 均到期、未触发各自硬上限，
+  清理后各自 context 都返回 `"42"`；
 - 4 MiB runtime limit 拒绝 16 MiB `ArrayBuffer`，返回 `out of memory`。
 
 内存限制使用 rquickjs 默认 libc allocator。官方 API 说明使用 `rust-alloc` 或
@@ -224,6 +227,28 @@ hard-stop=false，迭代数为 200..1,511。迭代数由调度决定，不进入
 问题，但不允许把所有 native 调用视为天然可取消。正式 HostApi 必须把
 token/deadline 传入可能长时间运行的 signature、字符串搜索、解压和遍历循环；
 一次不可分割的阻塞系统/native 调用仍不能由 QuickJS interrupt 抢占。
+
+### Monotonic wall-clock deadline
+
+VM fixture 不从 runtime/context 创建时开始计时，而是在 interrupt handler 首次
+真正被调用时记录 `Instant`，25ms 后返回 interrupt。这样初始化开销不会制造
+“进入脚本前已超时”的假阳性。handler 仍有 1,000,000 次回调硬停止；deadline
+退出后移除 handler，同一 context 求值返回 `"42"`。
+
+native fixture 在调用前配置绝对 `Instant`，`deadlineHostLoop()` 每个检查点比较
+`Instant::now()`，同时保留 10,000,000 次迭代硬上限。到期返回后，同一 context
+也能继续求值。首次 VM/native 分别观察到 1,453 次 handler callback 和 238,867
+次 native checkpoint。随后重复 10 次：
+
+| 路径 | deadline | 观察范围 | deadline 到期 | 硬上限触发 | 恢复 |
+| --- | ---: | ---: | --- | --- | --- |
+| QuickJS VM | 25ms | 969..1,449 callbacks | 10/10 | 0/10 | 10/10 |
+| Rust native HostApi | 25ms | 135,108..253,895 checkpoints | 10/10 | 0/10 | 10/10 |
+
+callback/checkpoint 数量取决于 CPU 和调度，不进入稳定机器契约。稳定断言只固定
+deadline duration、确实到期、预期 interrupt/return、硬上限未触发和 context
+恢复。该实验证明 monotonic deadline 接线可行，不冻结 25ms 为产品默认值，也不
+证明任意平台的最大取消延迟；真实方法的 checkpoint 密度仍需逐项 benchmark。
 
 ## Nintendo compatibility overlay 实验
 
@@ -475,7 +500,7 @@ Nintendo 的单脚本语法 overlay，`audio` 和 MiniExtensions 的跨规则 ov
 | 外部 interrupt | 未发现公开接口 | 跨线程 token 已中断并同 context 恢复 |
 | Heap limit | 未发现公开接口 | 支持默认 allocator |
 | Windows target packages | 126 | 18 |
-| Release spike | 11,784,192 bytes | 1,826,304 bytes |
+| Release spike | 11,784,192 bytes | 1,847,808 bytes |
 | 实现语言 | 纯 Rust | Rust wrapper + vendored C |
 | 本轮工具链 | Rust 1.88 | 最低 1.87，本轮 1.88 |
 
@@ -597,9 +622,9 @@ JSON。运行前先执行
   14/14 对照；仍缺 Qt 6、其余 289 个 `detect` 的真实 HostApi/Qt oracle。
 - Qt 5/Qt 6 与 QuickJS 的整数、字符串、数组、异常和 RegExp 差分。
 - Linux/macOS/Windows GNU/MSVC 静态链接、ASan/UBSan 和 fuzz。
-- wall-clock deadline 精度、真实 signature/search/decompression HostApi 的
-  checkpoint 密度、不可分割阻塞调用，以及并行 runtime/context 的吞吐、
-  峰值内存和取消延迟。
+- 真实 signature/search/decompression HostApi 的 deadline/cancel checkpoint
+  密度、不可分割阻塞调用、typed timeout 映射、跨平台最大延迟，以及并行
+  runtime/context 的吞吐和峰值内存。
 
 ## 外部候选资料
 

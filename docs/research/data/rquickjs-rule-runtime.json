@@ -12,14 +12,14 @@
   },
   "dependency_footprint": {
     "lockfile_packages": 23,
-    "release_executable_bytes": 1826304,
+    "release_executable_bytes": 1847808,
     "target": "x86_64-pc-windows-msvc",
     "target_packages": 18
   },
   "experiment": {
     "cargo_lock_sha256": "aa7cd4c42e1f3429f45ec31e05e41862abe6156bdbe351eeacc507673f237232",
     "cargo_toml_sha256": "875730b205ca351b4bc0f830a1896fb6ad777c46046e6f26c9c368849614be16",
-    "source_sha256": "996c2181cf2512bc47930b0dcf979c78ee542a2401a2b083aa9ae6026dc6002a",
+    "source_sha256": "c08cfd9a70ad38f56dfc392563531e816298c7d360ee0061427d41b583f380d1",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -45,6 +45,15 @@
       "requested": true,
       "returned": true
     },
+    "native_host_cooperative_deadline": {
+      "deadline_expired": true,
+      "deadline_milliseconds": 25,
+      "hard_stop_iteration_limit": 10000000,
+      "hard_stop_reached": false,
+      "iteration_count_positive": true,
+      "returned": true,
+      "same_context_recovered": true
+    },
     "nintendo_rule_eval_accepted": false,
     "nintendo_compatibility_overlay": {
       "eval_accepted": true,
@@ -55,7 +64,15 @@
     },
     "runtime_helpers_result": "a, b/c|007",
     "shared_const_second_eval_accepted": false,
-    "sloppy_script_required": true
+    "sloppy_script_required": true,
+    "wall_clock_deadline": {
+      "deadline_expired": true,
+      "deadline_milliseconds": 25,
+      "hard_stop_handler_call_limit": 1000000,
+      "hard_stop_reached": false,
+      "interrupt_observed": true,
+      "same_context_recovered": true
+    }
   },
   "binary_lifecycle": {
     "bytes": 1122477,

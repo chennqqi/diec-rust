@@ -117,6 +117,29 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
                 "returned": True,
             },
         )
+        self.assertEqual(
+            fixture["wall_clock_deadline"],
+            {
+                "deadline_expired": True,
+                "deadline_milliseconds": 25,
+                "hard_stop_handler_call_limit": 1_000_000,
+                "hard_stop_reached": False,
+                "interrupt_observed": True,
+                "same_context_recovered": True,
+            },
+        )
+        self.assertEqual(
+            fixture["native_host_cooperative_deadline"],
+            {
+                "deadline_expired": True,
+                "deadline_milliseconds": 25,
+                "hard_stop_iteration_limit": 10_000_000,
+                "hard_stop_reached": False,
+                "iteration_count_positive": True,
+                "returned": True,
+                "same_context_recovered": True,
+            },
+        )
 
     def test_nintendo_probe_uses_real_init_and_include_sequence(self):
         detection = self.reference["nintendo_detect"]
