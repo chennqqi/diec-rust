@@ -612,6 +612,26 @@
       ]
     }
   ],
+  "finite_adjacent_assignments": [
+    {
+      "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+      "function": "scanForMaliciousCode_NET_and_Native",
+      "function_line": 6178,
+      "symbol": "importSignature",
+      "assignment_line": 6219,
+      "use_lines": [
+        6220
+      ],
+      "invalidation_line": 6222,
+      "static_values": [
+        "00'System.Diagnostics'00",
+        "00'System.IO.Compression'00",
+        "00'kernel32'00",
+        "00'ntdll'00",
+        "00'user32'00"
+      ]
+    }
+  ],
   "static_transform_verification_failures": [],
   "parser": {
     "name": "uglify-js",
@@ -684,11 +704,11 @@
     "isSignaturePresent": 72
   },
   "argument_kind_counts": {
-    "dynamic": 13,
+    "dynamic": 12,
     "literal": 5855,
-    "static_expression": 100
+    "static_expression": 101
   },
-  "static_pattern_count": 5569,
+  "static_pattern_count": 5573,
   "static_patterns": [
     "$$$$$$$$5589e557565383ec..8b7d..8b75..8b5d..b8........85c00f84........a1........85c00f94c025........a3",
     "$$$$$$$$55b8........57565383ec..85c08b7c24..8bb424........8b9c24........0f84........8b15........31c085d20f94c08b5424..8b4c24..a3........8d44....8b9424........a3........8915........6690",
@@ -2055,6 +2075,7 @@
     "00'Rijndael'00",
     "00'ST-Module.'",
     "00'Shlwapi.dll'00",
+    "00'System.Diagnostics'00",
     "00'System.IO.Compression'",
     "00'System.IO.Compression'00",
     "00'System.Net.Sockets'00",
@@ -2071,7 +2092,10 @@
     "00'asm'010000000",
     "00'crypt'",
     "00'ds.'",
+    "00'kernel32'00",
     "00'm_1'",
+    "00'ntdll'00",
+    "00'user32'00",
     "00'ustar'",
     "00********00********00********00",
     "00******00******00******00",
@@ -6260,10 +6284,10 @@
     "fff589e566f7c6....80c3..80eb..81ec........66c1eb..6689ed",
     "fffe2a002a002a006d0065007300730061006700650073002a002a002a00"
   ],
-  "dynamic_call_site_count": 13,
+  "dynamic_call_site_count": 12,
   "dynamic_expression_type_counts": {
     "Binary": 3,
-    "SymbolRef": 10
+    "SymbolRef": 9
   },
   "dynamic_calls": [
     {
@@ -6334,20 +6358,6 @@
       "argument_kind": "dynamic",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "byteCode",
-      "static_patterns": []
-    },
-    {
-      "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
-      "line": 6220,
-      "column": 16,
-      "receiver": "PE",
-      "receiver_root": "PE",
-      "known_host_receiver": true,
-      "method": "isSignatureInSectionPresent",
-      "argument_index": 1,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "importSignature",
       "static_patterns": []
     },
     {
@@ -6454,10 +6464,10 @@
     "path": "docs/research/data/signature-pattern-inventory.json",
     "sha256": "15a80990b981d6588d59818c4e6bc1947f35d076dd3dae468a1beaf8f8b27731",
     "dynamic_pattern_count": 317,
-    "static_pattern_count": 5569,
+    "static_pattern_count": 5573,
     "intersection_count": 317,
     "dynamic_only_count": 0,
-    "static_only_count": 5252,
+    "static_only_count": 5256,
     "dynamic_only_patterns": []
   },
   "calls": [
@@ -69845,10 +69855,16 @@
       "known_host_receiver": true,
       "method": "isSignatureInSectionPresent",
       "argument_index": 1,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "importSignature",
-      "static_patterns": []
+      "static_patterns": [
+        "00'System.Diagnostics'00",
+        "00'System.IO.Compression'00",
+        "00'kernel32'00",
+        "00'ntdll'00",
+        "00'user32'00"
+      ]
     },
     {
       "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
@@ -102310,6 +102326,7 @@
     "function-scoped assignment values require one direct first-statement write and expire at the first direct symbol call",
     "for-in keys are enumerated only for same-block non-escaping string-valued object literals under a corpus-wide plain-object prototype safety audit",
     "loop accumulation requires an adjacent initializer and canonical finite for-loop with one string += body",
+    "an uncaptured assignment target with a static string value reaches only an immediately following statement containing a known-host signature use and no unknown call or target write",
     "static expression enumeration is limited to literals, finite non-escaping arrays with statically enumerable elements, single-initializer unmodified symbol references, +, conditionals, and sequences",
     "expressions exceeding the fixed static-value budget remain dynamic",
     "same-named methods on unknown receivers are retained as audit candidates"

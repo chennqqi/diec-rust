@@ -159,13 +159,13 @@ pattern 仍可能缺失。
 | **总计** | **5968** |
 
 5968 个调用点分布在 1615 个文件，receiver 均落在已知格式宿主集合；同名未知
-receiver 候选为 0。参数分类为 5855 个直接字符串、100 个可保守枚举的静态表达式
+receiver 候选为 0。参数分类为 5855 个直接字符串、101 个可保守枚举的静态表达式
 （字符串拼接、条件分支、sequence，或只有一次初始化且未检测到写入的变量引用）
-和 13 个动态表达式。有限、非逃逸且元素可静态枚举的数组，其动态下标采用全部元素
+和 12 个动态表达式。有限、非逃逸且元素可静态枚举的数组，其动态下标采用全部元素
 并集；数组只允许下标和 `length` 读取，发生方法调用、传参、别名或其他逃逸即保持
-动态。每个表达式最多枚举 4096 个值，超限也保持动态。静态可枚举得到 5569 个唯一
+动态。每个表达式最多枚举 4096 个值，超限也保持动态。静态可枚举得到 5573 个唯一
 pattern：包含动态样本观察到的全部 317 个，另有
-5252 个未被该样本执行的 pattern。
+5256 个未被该样本执行的 pattern。
 
 另有三个纯字符串转换只有在规则路径、函数名及函数源码 SHA-256 全部匹配时才允许
 静态执行：`convertStringToUnicodeSignature`、`generateUnicodeSignatureMask`
@@ -227,6 +227,17 @@ docker run --rm -v "${PWD}/tools/upstream:/src:ro" \
    ./qtscript-object-enumeration-probe'
 ```
 
+块内相邻赋值传播只接受函数局部字符串 binding 的简单 `=`：右值必须可静态枚举，
+下一条语句必须直接包含使用该 binding 的已知识别宿主 signature 调用，且该语句中
+不得出现未知/直接函数调用或对目标的再次写入，目标也不得被嵌套 lambda 捕获。
+值域仅从赋值结束持续到下一条语句结束；跨语句间隔、条件单语句赋值、目标重写和
+未知调用 fixture 均保持动态；精确
+`x = x` 由独立无操作规则处理，不重复记账。全库恰好产生一条记录：
+`__GenericHeuristicAnalysis_By_DosX.7.sg:6219` 对有限
+`requiredDotNetImports` 数组构造五个 `importSignature` 值，并闭合 6220 行调用；
+其中四个是新增唯一 pattern。6368 行的第二处赋值依赖对象数组、对象属性和嵌套
+数组，仍保持动态。
+
 确定性循环仅在可证明的 canonical 形态下折叠：目标必须由紧邻循环的单变量
 声明初始化；循环必须是固定安全整数范围的
 `for (var i = start; i < limit; i++)`；循环体只能有一条
@@ -243,8 +254,8 @@ pattern。
 `X.c(p+o, "'PACK'FFFF")` 和 `X.c(p+8, "'PACK'FFFF")` 仍按 Qt 参数转换保留为
 输入依赖调用，不能把第二参数改当 signature。
 
-“包含动态 317/317”证明动态清单是静态清单的子集，不证明 5569 是完整运行时值域。
-剩余 13 个调用仍依赖其他循环、数组/可变变量或输入数据流；非静态 computed
+“包含动态 317/317”证明动态清单是静态清单的子集，不证明 5573 是完整运行时值域。
+剩余 12 个调用仍依赖其他循环、数组/可变变量或输入数据流；非静态 computed
 method name 也不能仅凭 AST 属性名归因。当前可以把具名 signature API 的语法调用
 点范围视为完整，但运行时 pattern value 范围仍未闭合。
 
@@ -393,8 +404,8 @@ oracle schema v2 允许每个项目自有向量显式注入 `_MEMORY_MAP`，但�
 
 ## 下一步门禁
 
-1. 对 13 个动态 signature 参数做 scope/data-flow 或受控 runtime-assisted
-   求值，并审计 computed method name；不得把 5569 个静态值当作完整值域。
+1. 对 12 个动态 signature 参数做 scope/data-flow 或受控 runtime-assisted
+   求值，并审计 computed method name；不得把 5573 个静态值当作完整值域。
 2. 扩展现有 XBinary oracle，覆盖更多畸形组合、buffer boundary 和取消行为。
 3. 补齐畸形/重叠/virtual-only map 的项目生成文件，端到端验证各格式
    `getMemoryMap` 边界。

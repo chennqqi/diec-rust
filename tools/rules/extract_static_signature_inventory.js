@@ -431,9 +431,33 @@ function staticValues(
         return [expression.value];
     }
     if (expression instanceof uglify.AST_SymbolRef) {
+        const reachingSymbolValues =
+            constantInitializers.reaching_symbol_values;
         const scopedSymbolValues =
             constantInitializers.scoped_symbol_values;
         const currentLambda = constantInitializers.current_lambda;
+        if (
+            reachingSymbolValues &&
+            currentLambda &&
+            expression.thedef &&
+            reachingSymbolValues.has(currentLambda)
+        ) {
+            const intervals =
+                reachingSymbolValues
+                    .get(currentLambda)
+                    .get(expression.thedef.id) || [];
+            for (let index = intervals.length - 1; index >= 0; index--) {
+                const interval = intervals[index];
+                if (
+                    expression.start.pos >=
+                        interval.assignment_end_position &&
+                    expression.start.pos <
+                        interval.invalidation_position
+                ) {
+                    return interval.static_values;
+                }
+            }
+        }
         if (
             scopedSymbolValues &&
             currentLambda &&
@@ -981,6 +1005,7 @@ function inspectFile(
         }
     }
     const scopedWrites = new Map();
+    const capturedDefinitions = new Set();
     function addScopedWrite(lambda, definitionId, write) {
         if (!lambda || !definitionId) {
             return;
@@ -996,6 +1021,21 @@ function inspectFile(
     }
     ast.walk(
         new uglify.TreeWalker(function (node) {
+            if (
+                node instanceof uglify.AST_SymbolRef &&
+                node.thedef &&
+                node.thedef.scope instanceof uglify.AST_Lambda
+            ) {
+                const referenceLambda = this.find_parent(
+                    uglify.AST_Lambda,
+                );
+                if (
+                    referenceLambda &&
+                    referenceLambda !== node.thedef.scope
+                ) {
+                    capturedDefinitions.add(node.thedef.id);
+                }
+            }
             const lambda = this.find_parent(uglify.AST_Lambda);
             if (
                 node instanceof uglify.AST_Assign &&
@@ -1463,6 +1503,164 @@ function inspectFile(
             });
         }),
     );
+    const reachingSymbolValues = new Map();
+    const finiteAdjacentAssignments = [];
+    constantInitializers.reaching_symbol_values =
+        reachingSymbolValues;
+    ast.walk(
+        new uglify.TreeWalker(function (node) {
+            if (
+                !(node instanceof uglify.AST_Assign) ||
+                node.operator !== "=" ||
+                isExactSelfAssignment(uglify, node) ||
+                !(node.left instanceof uglify.AST_SymbolRef) ||
+                !node.left.thedef ||
+                !(this.parent() instanceof
+                    uglify.AST_SimpleStatement)
+            ) {
+                return;
+            }
+            const lambda = this.find_parent(uglify.AST_Lambda);
+            if (
+                !lambda ||
+                node.left.thedef.scope !== lambda ||
+                capturedDefinitions.has(node.left.thedef.id)
+            ) {
+                return;
+            }
+            const statement = this.parent();
+            const statementContainer = parentByNode.get(statement);
+            const statements =
+                statementContainer instanceof
+                uglify.AST_BlockStatement
+                    ? statementContainer.body
+                    : statementContainer === lambda
+                      ? lambda.body
+                      : null;
+            if (!statements) {
+                return;
+            }
+            const statementIndex = statements.indexOf(statement);
+            const nextStatement = statements[statementIndex + 1];
+            if (statementIndex < 0 || !nextStatement) {
+                return;
+            }
+            let unsafeCall = false;
+            let targetWrite = false;
+            const signatureUseLines = [];
+            nextStatement.walk(
+                new uglify.TreeWalker(function (candidate) {
+                    if (candidate instanceof uglify.AST_Lambda) {
+                        return true;
+                    }
+                    if (
+                        candidate instanceof uglify.AST_Assign &&
+                        candidate.left instanceof
+                            uglify.AST_SymbolRef &&
+                        candidate.left.thedef &&
+                        candidate.left.thedef.id ===
+                            node.left.thedef.id
+                    ) {
+                        targetWrite = true;
+                    }
+                    if (
+                        (candidate instanceof
+                            uglify.AST_UnaryPrefix ||
+                            candidate instanceof
+                                uglify.AST_UnaryPostfix) &&
+                        (candidate.operator === "++" ||
+                            candidate.operator === "--") &&
+                        candidate.expression instanceof
+                            uglify.AST_SymbolRef &&
+                        candidate.expression.thedef &&
+                        candidate.expression.thedef.id ===
+                            node.left.thedef.id
+                    ) {
+                        targetWrite = true;
+                    }
+                    if (!(candidate instanceof uglify.AST_Call)) {
+                        return;
+                    }
+                    const member = memberName(
+                        uglify,
+                        candidate.expression,
+                    );
+                    const root =
+                        member &&
+                        receiverRoot(uglify, member.receiver);
+                    if (!root || !KNOWN_HOST_RECEIVERS.has(root)) {
+                        unsafeCall = true;
+                        return;
+                    }
+                    const argumentIndex =
+                        METHOD_ARGUMENT_INDEX.get(member.method);
+                    const argument =
+                        argumentIndex === undefined
+                            ? null
+                            : candidate.args[argumentIndex];
+                    if (
+                        argument instanceof
+                            uglify.AST_SymbolRef &&
+                        argument.thedef &&
+                        argument.thedef.id ===
+                            node.left.thedef.id
+                    ) {
+                        signatureUseLines.push(
+                            candidate.start.line,
+                        );
+                    }
+                }),
+            );
+            if (
+                unsafeCall ||
+                targetWrite ||
+                signatureUseLines.length === 0
+            ) {
+                return;
+            }
+            constantInitializers.current_lambda = lambda;
+            const values = staticValues(
+                uglify,
+                node.right,
+                constantInitializers,
+                new Set(),
+                node.start.pos,
+                staticTransforms,
+            );
+            constantInitializers.current_lambda = null;
+            if (
+                !values ||
+                values.some((value) => typeof value !== "string")
+            ) {
+                return;
+            }
+            if (!reachingSymbolValues.has(lambda)) {
+                reachingSymbolValues.set(lambda, new Map());
+            }
+            const byDefinition = reachingSymbolValues.get(lambda);
+            if (!byDefinition.has(node.left.thedef.id)) {
+                byDefinition.set(node.left.thedef.id, []);
+            }
+            byDefinition.get(node.left.thedef.id).push({
+                assignment_end_position: node.end.endpos,
+                invalidation_position:
+                    nextStatement.end.endpos,
+                static_values: values,
+            });
+            finiteAdjacentAssignments.push({
+                function:
+                    lambda.name && lambda.name.name
+                        ? lambda.name.name
+                        : "<anonymous>",
+                function_line: lambda.start.line,
+                symbol: node.left.name,
+                assignment_line: node.start.line,
+                use_lines: signatureUseLines,
+                invalidation_line: nextStatement.end.line,
+                static_values: values,
+            });
+        }),
+    );
     const calls = [];
     ast.walk(
         new uglify.TreeWalker(function (node) {
@@ -1534,6 +1732,7 @@ function inspectFile(
         finite_scoped_assignments: finiteScopedAssignments,
         finite_object_key_iterations: finiteObjectKeyIterations,
         finite_loop_accumulations: finiteLoopAccumulations,
+        finite_adjacent_assignments: finiteAdjacentAssignments,
         verified_static_transforms: verifiedStaticTransforms,
         static_transform_verification_failures:
             staticTransformVerificationFailures,
@@ -1880,6 +2079,12 @@ function buildInventory(options) {
                 ...item,
             })),
         ),
+        finite_adjacent_assignments: fileResults.flatMap((result) =>
+            result.finite_adjacent_assignments.map((item) => ({
+                path: result.path,
+                ...item,
+            })),
+        ),
         static_transform_verification_failures: fileResults.flatMap(
             (result) =>
                 result.static_transform_verification_failures,
@@ -1928,6 +2133,7 @@ function buildInventory(options) {
             "function-scoped assignment values require one direct first-statement write and expire at the first direct symbol call",
             "for-in keys are enumerated only for same-block non-escaping string-valued object literals under a corpus-wide plain-object prototype safety audit",
             "loop accumulation requires an adjacent initializer and canonical finite for-loop with one string += body",
+            "an uncaptured assignment target with a static string value reaches only an immediately following statement containing a known-host signature use and no unknown call or target write",
             "static expression enumeration is limited to literals, finite non-escaping arrays with statically enumerable elements, single-initializer unmodified symbol references, +, conditionals, and sequences",
             "expressions exceeding the fixed static-value budget remain dynamic",
             "same-named methods on unknown receivers are retained as audit candidates",

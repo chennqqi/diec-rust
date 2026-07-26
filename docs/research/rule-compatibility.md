@@ -334,8 +334,8 @@ oracle 尚未验证。signature 的固定源码文法、实现怪癖、动态及
 inventory 和纯 Rust parser spike 见
 [`signature-language.md`](signature-language.md)；兼容模式已解析动态 317/317，
 固定 AST inventory 已解析 `db`/`db_extra` 2175/2175 文件并保存 5968 个具名
-signature API 调用点：5855 个 literal、100 个可枚举静态表达式、13 个动态表达式，
-得到 5569 个静态 pattern，包含动态样本的 317/317。固定 oracle 已运行 63 个
+signature API 调用点：5855 个 literal、101 个可枚举静态表达式、12 个动态表达式，
+得到 5573 个静态 pattern，包含动态样本的 317/317。固定 oracle 已运行 63 个
 compare/find/边界向量，Rust context-free
 compare 差分 16/16、六类合成 memory-map 差分 7/7、PE32/ELF64/Mach-O64/
 COM/MS-DOS/AmigaHunk 加上 PE64/ELF32/Mach-O32 parser-derived map 差分
@@ -345,7 +345,7 @@ header fast path 的字符/字节混合计算和严格 `<` 分界会改变 inval
 结果；`compareEP` 与 `compareOverlay` 又各有 5/5 向量确认 256-byte cache 被按
 512 个 hex 字符计数、原始 pattern 长度参与分支，能让 cache 外合法 literal
 误报 false。畸形 map、find 的畸形/穷举边界、无效/短小 wrapper 上下文，以及
-13 个动态参数的运行时值域仍未完成。
+12 个动态参数的运行时值域仍未完成。
 
 固定 Binary 生命周期、init/include 首个命中规则、共享 global scope 和上游
 排序比较器缺陷见

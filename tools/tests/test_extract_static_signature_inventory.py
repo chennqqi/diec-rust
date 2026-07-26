@@ -574,6 +574,7 @@ function safe() {
 function differentSymbol() {
     var signature = "61", replacement = "62";
     signature = replacement;
+    X.isVerbose();
     X.compare(signature);
 }
 
@@ -587,6 +588,7 @@ function laterWrite() {
     var signature = "64";
     signature = signature;
     signature = "65";
+    X.isVerbose();
     X.compare(signature);
 }
 
@@ -640,9 +642,9 @@ X.compare(globalSignature);
                     {
                         "path": "db/self_assignment.sg",
                         "function": "laterWrite",
-                        "function_line": 19,
+                        "function_line": 20,
                         "symbol": "signature",
-                        "assignment_line": 21,
+                        "assignment_line": 22,
                     },
                 ],
             )
@@ -774,6 +776,110 @@ function poisoned() {
                 2,
             )
 
+    def test_adjacent_assignment_is_limited_to_next_safe_statement(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            rules = root / "rules"
+            (rules / "db").mkdir(parents=True)
+            (rules / "db_extra").mkdir()
+            (rules / "db" / "adjacent.sg").write_text(
+                """
+function safe(index) {
+    var patterns = ["60", "61"];
+    var signature;
+    signature = "00" + patterns[index];
+    if (X.compare(signature)) {
+    }
+    X.compare(signature);
+}
+
+function unknownCall() {
+    var signature;
+    signature = "62";
+    if (touch() && X.compare(signature)) {
+    }
+}
+
+function gap() {
+    var signature;
+    signature = "63";
+    X.isVerbose();
+    X.compare(signature);
+}
+
+function targetWrite() {
+    var signature;
+    signature = "64";
+    if ((signature = "65") && X.compare(signature)) {
+    }
+}
+
+function conditionalWrite(flag) {
+    var signature;
+    if (flag) signature = "66";
+    X.compare(signature);
+}
+
+function capturedByHostCallback() {
+    var signature;
+    signature = "67";
+    if (PE.callback(function () {
+        signature = "68";
+    }) && X.compare(signature)) {
+    }
+}
+""".lstrip(),
+                encoding="utf-8",
+            )
+            dynamic = root / "dynamic.json"
+            dynamic.write_text(
+                json.dumps(
+                    {
+                        "upstream_commit": UPSTREAM_COMMIT,
+                        "patterns": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            output = root / "inventory.json"
+            self.run_extractor(rules, dynamic, output)
+            inventory = json.loads(output.read_text(encoding="utf-8"))
+
+            self.assertEqual(
+                [
+                    call["argument_kind"]
+                    for call in inventory["calls"]
+                ],
+                [
+                    "static_expression",
+                    "dynamic",
+                    "dynamic",
+                    "dynamic",
+                    "dynamic",
+                    "dynamic",
+                    "dynamic",
+                ],
+            )
+            self.assertEqual(
+                inventory["calls"][0]["static_patterns"],
+                ["0060", "0061"],
+            )
+            self.assertEqual(
+                inventory["finite_adjacent_assignments"],
+                [
+                    {
+                        "path": "db/adjacent.sg",
+                        "function": "safe",
+                        "function_line": 1,
+                        "symbol": "signature",
+                        "assignment_line": 4,
+                        "use_lines": [5],
+                        "invalidation_line": 6,
+                        "static_values": ["0060", "0061"],
+                    }
+                ],
+            )
+
     def test_committed_inventory_matches_fixed_rules(self):
         with tempfile.TemporaryDirectory() as directory:
             output = pathlib.Path(directory) / "inventory.json"
@@ -899,6 +1005,32 @@ function poisoned() {
                 ],
             )
             self.assertEqual(
+                inventory["finite_adjacent_assignments"],
+                [
+                    {
+                        "path": (
+                            "db/PE/"
+                            "__GenericHeuristicAnalysis_By_DosX.7.sg"
+                        ),
+                        "function": (
+                            "scanForMaliciousCode_NET_and_Native"
+                        ),
+                        "function_line": 6178,
+                        "symbol": "importSignature",
+                        "assignment_line": 6219,
+                        "use_lines": [6220],
+                        "invalidation_line": 6222,
+                        "static_values": [
+                            "00'System.Diagnostics'00",
+                            "00'System.IO.Compression'00",
+                            "00'kernel32'00",
+                            "00'ntdll'00",
+                            "00'user32'00",
+                        ],
+                    }
+                ],
+            )
+            self.assertEqual(
                 [
                     (
                         item["path"],
@@ -948,23 +1080,23 @@ function poisoned() {
             self.assertEqual(
                 inventory["argument_kind_counts"],
                 {
-                    "dynamic": 13,
+                    "dynamic": 12,
                     "literal": 5855,
-                    "static_expression": 100,
+                    "static_expression": 101,
                 },
             )
             self.assertEqual(
                 inventory["dynamic_expression_type_counts"],
                 {
                     "Binary": 3,
-                    "SymbolRef": 10,
+                    "SymbolRef": 9,
                 },
             )
-            self.assertEqual(inventory["static_pattern_count"], 5569)
+            self.assertEqual(inventory["static_pattern_count"], 5573)
             comparison = inventory["dynamic_inventory_comparison"]
             self.assertEqual(comparison["intersection_count"], 317)
             self.assertEqual(comparison["dynamic_only_count"], 0)
-            self.assertEqual(comparison["static_only_count"], 5252)
+            self.assertEqual(comparison["static_only_count"], 5256)
 
 
 if __name__ == "__main__":
