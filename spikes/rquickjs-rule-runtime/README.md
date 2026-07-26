@@ -7,7 +7,8 @@ It evaluates a pinned rquickjs/QuickJS-NG release against the same fixed rule
 corpus and runtime fixtures used by `spikes/boa-rule-runtime`. It also probes
 the native engine's counted interrupt, cross-thread cancellation, same-context
 recovery, cooperative native HostApi cancellation, monotonic VM/native
-deadlines, and memory limits, and records the Windows MSVC build cost.
+deadlines, focused Qt-oracle-backed `U24`/`shru64` behavior, and memory
+limits, and records the Windows MSVC build cost.
 
 The spike must not modify or normalize any upstream rule file. The optional
 `eval-isolated-compat` experiment applies one length-preserving, source-identity

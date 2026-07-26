@@ -174,7 +174,9 @@ Qt 6 则拒绝两者。完整身份、复现命令、stderr 和边界见
 
 - 337 个 C++ slot 的参数/返回 Qt 类型转换和异常行为 fixture；
 - 继承 override 和其余默认参数的完整 Qt 5/Qt 6 对照；本节四个静态缺口及
-  代表性 `qint64`/`QString` 边界已完成首轮对照；
+  代表性 `qint64`/`QString` 边界已完成首轮对照；`U24`/`read_uint24` 端序、
+  别名与 `shru64` 的 0/4/32 位移也已有双 runtime oracle，但 `quint64` 转换
+  边界仍未闭合；
 - `File`/`X` 在每种 file type/init/include 生命周期中的精确 identity；
 - `PE.getEPSignature` 所在分支的可达样本及上层异常传播/报告行为；
 - 16 个非格式 native global 和根规则函数清单已单独闭合，见

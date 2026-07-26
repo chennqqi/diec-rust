@@ -297,7 +297,10 @@ normalizer 的每条变换有 unit/golden test。新增变换按兼容策略变�
 format HostApi 的 argument conformance case 必须同时断言语义返回、异常四元组
 （name/message/line/backtrace）和 stderr。特别覆盖 Qt 5/Qt 6 对 extra arguments、
 缺少必需参数、C++ 默认参数，以及 `qint64` 的 string/boolean/null/undefined
-转换；不能因返回值相同而忽略 Qt 6 的 extra-argument diagnostics。
+转换；不能因返回值相同而忽略 Qt 6 的 extra-argument diagnostics。整数读取还要
+按宽度/端序/别名覆盖 unsigned 24-bit；`quint64` 位移分别覆盖 0、合法最大边界、
+负数/fraction/safe-integer 外转换，并把 shift >= 64 的上游 C++ 未定义范围作为
+显式 safety-deviation 决策，不能从单机结果冻结契约。
 
 ## 11. 差异分类与 waiver
 

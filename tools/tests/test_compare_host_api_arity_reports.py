@@ -52,7 +52,7 @@ EXPECTED_PATHS = {
     "$.observation.qt_version",
     "$.stderr.bytes",
     "$.stderr.sha256",
-    *{f"$.stderr.utf8_lines[{index}]" for index in range(10)},
+    *{f"$.stderr.utf8_lines[{index}]" for index in range(14)},
 }
 
 
@@ -65,7 +65,7 @@ class CompareHostApiArityReportsTests(unittest.TestCase):
 
     def test_committed_report_has_exact_runtime_differences(self):
         self.assertFalse(self.report["equal"])
-        self.assertEqual(self.report["difference_count"], 41)
+        self.assertEqual(self.report["difference_count"], 45)
         self.assertEqual(
             {item["path"] for item in self.report["differences"]},
             EXPECTED_PATHS,

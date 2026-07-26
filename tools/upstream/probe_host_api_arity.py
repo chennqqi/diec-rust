@@ -27,9 +27,13 @@ QT6_STDERR = (
     b'\t "%entry@file:u8-null.js:1"\n'
     b'"Could not convert argument 0 at"\n'
     b'\t "%entry@file:u8-undefined.js:1"\n'
+    b"%entry@file:u24-extra.js:1\n"
+    b"Too many arguments, ignoring 1\n"
     b"%entry@file:sa-extra.js:1\n"
     b"Too many arguments, ignoring 1\n"
     b"%entry@file:sc-extra.js:1\n"
+    b"Too many arguments, ignoring 1\n"
+    b"%entry@file:shru64-extra.js:1\n"
     b"Too many arguments, ignoring 1\n"
 )
 
@@ -119,6 +123,17 @@ def validate_observation(
         if not length["is_number"] or length.get("number") != 0:
             raise ValueError(f"{name} wrapper length is not zero")
 
+    for name in ("u24",):
+        exact = binary[f"{name}_big_endian"]
+        extra = binary[f"{name}_extra"]
+        if exact["is_error"] or extra["is_error"]:
+            raise ValueError(f"{name} invocation raised an exception")
+        if _semantic_value(exact) != _semantic_value(extra):
+            raise ValueError(f"{name} extra arguments changed the result")
+        length = binary[f"{name}_function_length"]
+        if not length["is_number"] or length.get("number") != 0:
+            raise ValueError(f"{name} wrapper length is not zero")
+
     for key in (
         "u8_exact",
         "u8_extra",
@@ -126,6 +141,13 @@ def validate_observation(
         "u8_boolean",
     ):
         expect_value(binary[key], "number", 65)
+    expect_value(binary["u24_little_endian"], "number", 0x563412)
+    for key in (
+        "u24_big_endian",
+        "read_uint24_big_endian",
+        "u24_extra",
+    ):
+        expect_value(binary[key], "number", 0x123456)
     if runtime == "qt5":
         expect_value(binary["u8_null"], "number", 65)
         expect_value(binary["u8_undefined"], "number", 65)
@@ -196,6 +218,29 @@ def validate_observation(
         expected_error_sources |= {"X.U8(null)", "X.U8(undefined)"}
     if observed_error_sources != expected_error_sources:
         raise ValueError("unexpected QObject error set")
+
+    util = observation["util"]
+    length = util["shru64_function_length"]
+    if (
+        not length["is_number"]
+        or length.get("number") != 0
+    ):
+        raise ValueError("shru64 wrapper length is not zero")
+    expect_value(util["shru64_zero"], "number", 0xFFFFFFFF)
+    expect_value(util["shru64_four"], "number", 0x0FFFFFFF)
+    expect_value(util["shru64_thirty_two"], "number", 0)
+    if (
+        util["shru64_extra"]["is_error"]
+        or _semantic_value(util["shru64_four"])
+        != _semantic_value(util["shru64_extra"])
+    ):
+        raise ValueError("shru64 extra arguments changed the result")
+    if any(
+        value.get("is_error")
+        for value in util.values()
+        if isinstance(value, dict)
+    ):
+        raise ValueError("shru64 invocation raised an exception")
 
     pe = observation["pe"]
     if pe["init_evaluation"]["is_error"]:

@@ -1,16 +1,26 @@
 {
   "binary": {
     "path": "/opt/die-build/src/console/diec-host-api-arity-harness",
-    "sha256": "1ebe7d03ccdb05489b033a2d079d603382618d81900c90d0f07088f70d7d89bc"
+    "sha256": "8036ea7f05dc65d912bbd4889fc1016a7bef650ffd2b4b0b52a917516777942d"
   },
   "generator": "tools/upstream/probe_host_api_arity.py",
   "image": {
-    "id": "sha256:0db880fc25300a5eae56650798863e3c8edd85e31d3aeefc85ce18a595267a52",
+    "id": "sha256:301912a7270dfb28f76ffd8279db7e56e057ee5beb2c3e9aee329914fa39a120",
     "name": "diec-rust/upstream-host-api-arity-harness:74eaf505",
     "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
   },
   "observation": {
     "binary": {
+      "read_uint24_big_endian": {
+        "is_boolean": false,
+        "is_error": false,
+        "is_null": false,
+        "is_number": true,
+        "is_string": false,
+        "is_undefined": false,
+        "number": 1193046,
+        "source": "X.read_uint24(4, true)"
+      },
       "sa_exact": {
         "is_boolean": false,
         "is_error": false,
@@ -136,6 +146,46 @@
         "is_undefined": false,
         "source": "X.SC(0, 1, 42)",
         "string": ""
+      },
+      "u24_big_endian": {
+        "is_boolean": false,
+        "is_error": false,
+        "is_null": false,
+        "is_number": true,
+        "is_string": false,
+        "is_undefined": false,
+        "number": 1193046,
+        "source": "X.U24(4, true)"
+      },
+      "u24_extra": {
+        "is_boolean": false,
+        "is_error": false,
+        "is_null": false,
+        "is_number": true,
+        "is_string": false,
+        "is_undefined": false,
+        "number": 1193046,
+        "source": "X.U24(4, true, 99)"
+      },
+      "u24_function_length": {
+        "is_boolean": false,
+        "is_error": false,
+        "is_null": false,
+        "is_number": true,
+        "is_string": false,
+        "is_undefined": false,
+        "number": 0,
+        "source": "X.U24.length"
+      },
+      "u24_little_endian": {
+        "is_boolean": false,
+        "is_error": false,
+        "is_null": false,
+        "is_number": true,
+        "is_string": false,
+        "is_undefined": false,
+        "number": 5649426,
+        "source": "X.U24(4)"
       },
       "u8_boolean": {
         "is_boolean": false,
@@ -301,6 +351,58 @@
     "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
     "schema_version": 1,
     "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "util": {
+      "shru64_extra": {
+        "is_boolean": false,
+        "is_error": false,
+        "is_null": false,
+        "is_number": true,
+        "is_string": false,
+        "is_undefined": false,
+        "number": 268435455,
+        "source": "Util.shru64(4294967295, 4, 99)"
+      },
+      "shru64_four": {
+        "is_boolean": false,
+        "is_error": false,
+        "is_null": false,
+        "is_number": true,
+        "is_string": false,
+        "is_undefined": false,
+        "number": 268435455,
+        "source": "Util.shru64(4294967295, 4)"
+      },
+      "shru64_function_length": {
+        "is_boolean": false,
+        "is_error": false,
+        "is_null": false,
+        "is_number": true,
+        "is_string": false,
+        "is_undefined": false,
+        "number": 0,
+        "source": "Util.shru64.length"
+      },
+      "shru64_thirty_two": {
+        "is_boolean": false,
+        "is_error": false,
+        "is_null": false,
+        "is_number": true,
+        "is_string": false,
+        "is_undefined": false,
+        "number": 0,
+        "source": "Util.shru64(4294967295, 32)"
+      },
+      "shru64_zero": {
+        "is_boolean": false,
+        "is_error": false,
+        "is_null": false,
+        "is_number": true,
+        "is_string": false,
+        "is_undefined": false,
+        "number": 4294967295,
+        "source": "Util.shru64(4294967295, 0)"
+      }
+    },
     "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
   },
   "runtime_profile": "qt5",
@@ -311,12 +413,12 @@
       "sha256": "f655c9e53990244d377c0de7b75f06680dba30ba6f6ee004531921144af138ad"
     },
     "tools/upstream/host_api_arity_harness_main.cpp": {
-      "bytes": 10108,
-      "sha256": "911cb47fc70cb02eddc2b48ef3202571d025b6df56944b875c4e6fd218da83e9"
+      "bytes": 12113,
+      "sha256": "4b05c16abe860187d5f41d9ded889e0cc6c53f3cd35cf2bbfc0d142581acb183"
     },
     "tools/upstream/probe_host_api_arity.py": {
-      "bytes": 11465,
-      "sha256": "4cc0701b62a93c8a440051a8b4301ec8aa1b838db4dde5a9fd2962c90dff2fd5"
+      "bytes": 13207,
+      "sha256": "59149cf4c5f9057e41b45f0b679fea692ee283328d89703d8d0e73b7d72b2427"
     }
   },
   "stderr": {

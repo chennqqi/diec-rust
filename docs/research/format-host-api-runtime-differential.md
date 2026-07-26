@@ -13,7 +13,8 @@ Last updated: 2026-07-26
 ## 结论
 
 共享 harness 在固定 Linux Qt 5.15.13 `QScriptEngine` 和 Qt 6.4.2
-`QJSEngine` 中直接注册未修改的上游 `Binary_Script`/`PE_Script`。实验关闭了
+`QJSEngine` 中直接注册未修改的上游
+`Binary_Script`/`PE_Script`/`Util_script`。实验关闭了
 [`host-api-inventory.md`](host-api-inventory.md) 静态声明无法解释的四个规则
 调用形状：
 
@@ -33,10 +34,12 @@ Last updated: 2026-07-26
   则抛出 incompatible-arguments `TypeError` 并写 stderr；
 - `X.SA(0)`、`X.SC(0)` 和 `X.SC(0, 1)` 的 C++ 默认参数在两侧均生效；
 - 缺少必需参数时，两侧的异常类型、消息和 backtrace 不同。
+- `U24` little/big-endian、`read_uint24` 别名以及 `shru64` 的 0/4/32 位
+  定义良好位移在两侧返回相同精确数值；对应额外实参也不改变返回值。
 
-这些结论只覆盖 `Binary_Script`/`PE_Script` 的代表性 `qint64`、`QString`、
-默认/额外参数和未知方法边界，不证明 30 个格式类、337 个直接 slot 的完整转换、
-返回值和副作用兼容。
+这些结论只覆盖三个对象的代表性 `qint64`、`quint64`、`QString`、默认/额外参数
+和未知方法边界，不证明 30 个格式类、337 个直接 slot 的完整转换、返回值和
+副作用兼容。
 
 ## 共享 harness 与所有权
 
@@ -48,7 +51,8 @@ Last updated: 2026-07-26
 - [`Dockerfile.host-api-arity-harness-qt5`](../../tools/upstream/Dockerfile.host-api-arity-harness-qt5)；
 - [`Dockerfile.host-api-arity-harness-qt6`](../../tools/upstream/Dockerfile.host-api-arity-harness-qt6)。
 
-项目生成的 fixture 把 `Binary_Script` 和 `PE_Script` 放在栈上。Qt 6 harness
+项目生成的 fixture 把 `Binary_Script`、`PE_Script` 和 `Util_script` 放在栈上。
+Qt 6 harness
 必须显式设置 `QJSEngine::CppOwnership`，否则引擎会尝试释放栈对象。初版 Qt 6
 harness 因缺少该设置在退出时触发 `free(): invalid pointer`；这是 harness
 生命周期错误，不能写成上游扫描行为。当前设置只约束项目生成 fixture，不对
@@ -66,16 +70,16 @@ Qt 6 的未知 QObject 方法消息包含进程地址。harness 仅在 JSON erro
 | --- | --- | --- |
 | Runtime | Qt Script 5.15.13 | QJSEngine 6.4.2 |
 | Base oracle | `upstream-oracle-cmake:74eaf505` | `upstream-oracle-cmake-qt6:74eaf505` |
-| Harness image ID | `sha256:0db880fc25300a5eae56650798863e3c8edd85e31d3aeefc85ce18a595267a52` | `sha256:e88739194238e805e769338c5ddbc08bbccc1a7d9b78332e2b746762a6d2593d` |
-| Harness binary SHA-256 | `1ebe7d03ccdb05489b033a2d079d603382618d81900c90d0f07088f70d7d89bc` | `6970f3f61a3399f63e44058e08ed6b93ba9cccce03f89222e7a396a94699997b` |
+| Harness image ID | `sha256:301912a7270dfb28f76ffd8279db7e56e057ee5beb2c3e9aee329914fa39a120` | `sha256:209642cd5dee31030ed059785d0f63d336939bae1fa5efc8e4ca2edc802e9bcf` |
+| Harness binary SHA-256 | `8036ea7f05dc65d912bbd4889fc1016a7bef650ffd2b4b0b52a917516777942d` | `1d09864ada652c87001ae0467c30249eea20276a865fda920798acc3287a8fd6` |
 | Report | [`host-api-arity-qt5.json`](data/host-api-arity-qt5.json) | [`host-api-arity-qt6.json`](data/host-api-arity-qt6.json) |
-| Report SHA-256 | `e5f7108a55f9af59e6c07c1362cf59297f7c5f0e95d2bfff76ed1a305b7e2a46` | `cd4262afa0acaf96f38d42be0383050e6d5053995f55a48f3f8c427fc5a58994` |
+| Report SHA-256 | `ba26cf199228aa4a4e109f897776fd4787ba88e6f468e341e12cfce3a7409f53` | `9e287ceda0c9f8904f3cb40263ec114f5c31c2b33fe4a3c7e3daf7c3bc3eaed5` |
 
 逐字段比较报告
 [`host-api-arity-qt5-qt6.json`](data/host-api-arity-qt5-qt6.json)
 SHA-256 为
-`d82d88a91ffe9fe54c93483c45b4f30b8b5ba213773b860f97eb4899ad7bd459`，
-记录 41 个差异路径。比较器同时验证两个输入 report、stderr 和生成器源码哈希；
+`96d0b0023dd08ec1e45bc0c1059cf5801837496e09143acff6ffa0120328fa73`，
+记录 45 个差异路径。比较器同时验证两个输入 report、stderr 和生成器源码哈希；
 数值、布尔值、null、缺失字段按类型比较。
 
 ## 复现
@@ -113,6 +117,8 @@ exit code 或 runtime-specific stderr；不把意外诊断当成成功。
 | `X.SC(0, 1, "System")` | `""` | `""` |
 | `X.SC(0)` / `X.SC(0, 1)` | `""` / `""` | `""` / `""` |
 | `X.SC(0, 1, "System", 99)` | `""`，空 stderr | `""`，两行 extra-argument stderr |
+| `X.U24(4, true, 99)` | `0x123456`，空 stderr | `0x123456`，两行 extra-argument stderr |
+| `Util.shru64(0xFFFFFFFF, 4, 99)` | `0x0FFFFFFF`，空 stderr | `0x0FFFFFFF`，两行 extra-argument stderr |
 
 因此额外实参的语义返回在本 fixture 中相同，但 raw 可观察行为不同；Rust 的 Qt 5
 legacy profile 不应输出 Qt 6 warning，Qt 6 profile 也不能丢弃这些 warning。
@@ -135,6 +141,23 @@ offset 0。
 代表值没有触发错误。空字符串结果不能证明转换后的精确字符串内容；需要带有可区分
 编码结果的后续 fixture 才能关闭该项。
 
+## 24 位读取与无符号位移
+
+fixture 的 offset 4..6 为 `12 34 56`。两侧都得到：
+
+| 调用 | 返回值 |
+| --- | ---: |
+| `X.U24(4)` | `0x563412` |
+| `X.U24(4, true)` | `0x123456` |
+| `X.read_uint24(4, true)` | `0x123456` |
+| `Util.shru64(0xFFFFFFFF, 0)` | `0xFFFFFFFF` |
+| `Util.shru64(0xFFFFFFFF, 4)` | `0x0FFFFFFF` |
+| `Util.shru64(0xFFFFFFFF, 32)` | `0` |
+
+这些值独立验证别名、端序和定义良好的位移。fixture 刻意不调用 shift >= 64，因为
+固定 C++ 实现直接执行 `quint64 >> nShift`，该范围不能作为可移植契约；也尚未
+覆盖负数、fraction、字符串、超过 JavaScript safe integer 的转换。
+
 ## 缺参和未知方法异常
 
 | 表达式 | Qt 5 | Qt 6 |
@@ -154,14 +177,14 @@ Qt 5 backtrace 使用 `<global>() at ...`，Qt 6 使用 `%entry@file:...`。异�
 
 ## stderr
 
-Qt 5 stderr 为 0 字节。Qt 6 stderr 为 302 字节、10 行，SHA-256：
+Qt 5 stderr 为 0 字节。Qt 6 stderr 为 421 字节、14 行，SHA-256：
 
 ```text
-e0310923c499e07d496a16fa9e9050185d71144cf113642560e08697a9e67bac
+56fdc7d1a243f908651e3d03f1fc6b057f9ed0b9d4fbec616989acbd90c9bab7
 ```
 
-其中三个 extra-argument 调用各产生两行，两个 `qint64` 转换失败各产生两行。
-顺序与表达式执行顺序一致。探针逐字节验证该记录，比较报告仍把 10 行分别列为
+其中五个 extra-argument 调用各产生两行，两个 `qint64` 转换失败各产生两行。
+顺序与表达式执行顺序一致。探针逐字节验证该记录，比较报告仍把 14 行分别列为
 差异，不通过语义结果相同隐藏 diagnostics。
 
 ## 对 Rust 实现与测试的约束
@@ -181,7 +204,8 @@ e0310923c499e07d496a16fa9e9050185d71144cf113642560e08697a9e67bac
 
 - 337 个直接 C++ slot 的完整参数/返回类型、overload、继承 override 和副作用；
 - `QString` 转换后的精确内容，以及 arrays、objects、NaN、Infinity、整数边界、
-  invalid UTF-16、QVariant/QByteArray 等 Qt 类型；
+  invalid UTF-16、QVariant/QByteArray 等 Qt 类型；`quint64` 仍缺负数、fraction、
+  字符串、safe-integer 外和 shift >= 64 的明确 profile；
 - 13 个公共脚本扩展的 shadowing、默认/额外参数和异常；
 - `File`/`X` 对各 file type 的真实绑定和 init/include 生命周期；
 - `PE.getEPSignature` 分支的可达输入及上层扫描器对异常的传播/报告；

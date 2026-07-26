@@ -10,7 +10,7 @@ use std::thread;
 use std::time::{Duration, Instant};
 
 use rquickjs::{
-    CatchResultExt, Context, Function, Object, Runtime, context::EvalOptions, function::Opt,
+    CatchResultExt, Context, Error, Function, Object, Runtime, context::EvalOptions, function::Opt,
 };
 use serde_json::{Value, json};
 
@@ -390,6 +390,25 @@ fn read_signed(data: &[u8], offset: usize, width: usize, big_endian: bool) -> f6
     ((unsigned << shift) as i64 >> shift) as f64
 }
 
+fn shift_right_unsigned(value: f64, bits: u32) -> rquickjs::Result<f64> {
+    const MAX_SAFE_INTEGER: f64 = 9_007_199_254_740_991.0;
+    if !value.is_finite() || value < 0.0 || value.fract() != 0.0 || value > MAX_SAFE_INTEGER {
+        return Err(Error::new_from_js_message(
+            "number",
+            "quint64",
+            "shru64 spike accepts only non-negative safe integers",
+        ));
+    }
+    if bits >= 64 {
+        return Err(Error::new_from_js_message(
+            "number",
+            "quint64 shift",
+            "shru64 shift must be less than 64",
+        ));
+    }
+    Ok(((value as u64) >> bits) as f64)
+}
+
 fn nonnegative_index(value: i64) -> Option<usize> {
     usize::try_from(value).ok()
 }
@@ -471,6 +490,8 @@ fn install_nintendo_host(
             ("U16", 2_usize),
             ("readWord", 2),
             ("read_uint16", 2),
+            ("U24", 3),
+            ("read_uint24", 3),
             ("U32", 4),
             ("readDword", 4),
             ("read_uint32", 4),
@@ -594,6 +615,11 @@ fn install_nintendo_host(
                 value * 2_f64.powi(i32::try_from(bits).unwrap_or(i32::MAX))
             })
             .map_err(|error| error.to_string())?,
+        )
+        .map_err(|error| error.to_string())?;
+        util.set(
+            "shru64",
+            Function::new(ctx.clone(), shift_right_unsigned).map_err(|error| error.to_string())?,
         )
         .map_err(|error| error.to_string())?;
         util.set(
@@ -1923,6 +1949,35 @@ fn run_fixture(rule_root: &Path) -> Result<bool, String> {
         native_deadline_iterations == Some(NATIVE_DEADLINE_HARD_STOP_ITERATIONS);
     let native_deadline_recovery = eval_string(&native_deadline_context, b"String(21 * 2)");
 
+    let numeric_runtime = new_runtime()?;
+    let numeric_context = new_context(&numeric_runtime)?;
+    install_nintendo_host(
+        &numeric_context,
+        Arc::new(vec![b'A', b'B', b'C', 0, 0x12, 0x34, 0x56]),
+        Arc::new(Mutex::new(Vec::new())),
+    )?;
+    let numeric_result_text = eval_string(
+        &numeric_context,
+        br#"JSON.stringify([
+            X.U24(4),
+            X.U24(4, true),
+            X.read_uint24(4, true),
+            Util.shru64(4294967295, 0),
+            Util.shru64(4294967295, 4),
+            Util.shru64(4294967295, 32)
+        ])"#,
+    )?;
+    let numeric_result: Value = serde_json::from_str(&numeric_result_text)
+        .map_err(|error| format!("cannot parse numeric HostApi fixture: {error}"))?;
+    let numeric_expected = json!([
+        0x563412_u64,
+        0x123456_u64,
+        0x123456_u64,
+        0xFFFFFFFF_u64,
+        0x0FFFFFFF_u64,
+        0_u64,
+    ]);
+
     let memory_runtime = new_runtime()?;
     memory_runtime.set_memory_limit(4 * 1024 * 1024);
     let memory_context = new_context(&memory_runtime)?;
@@ -1961,6 +2016,7 @@ fn run_fixture(rule_root: &Path) -> Result<bool, String> {
         && native_deadline_expired
         && !native_deadline_hard_stop_reached
         && native_deadline_recovery.as_deref() == Ok("42")
+        && numeric_result == numeric_expected
         && memory_limit_error.is_some();
     let compatible = nintendo_eval.is_ok();
     let report = json!({
@@ -2053,6 +2109,12 @@ fn run_fixture(rule_root: &Path) -> Result<bool, String> {
                 "result": native_deadline_recovery.as_deref().ok(),
                 "error": native_deadline_recovery.as_ref().err(),
             },
+        },
+        "numeric_host_api": {
+            "methods": ["X.U24", "X.read_uint24", "Util.shru64"],
+            "result": numeric_result,
+            "expected": numeric_expected,
+            "matches_qt5_qt6_oracle": numeric_result == numeric_expected,
         },
         "memory_limit": {
             "bytes": 4 * 1024 * 1024,
@@ -2147,7 +2209,7 @@ mod tests {
         eval_rule_lexical, eval_string, eval_unit, install_diagnostic_host_fallbacks, new_context,
         new_runtime, nonnegative_index, normalized_path, parse_scope_detections,
         parse_scope_fixture_order, read_ascii, read_byte_array, read_signed, read_unsigned,
-        signature_matches,
+        shift_right_unsigned, signature_matches,
     };
     use std::fs;
     use std::path::PathBuf;
@@ -2263,8 +2325,30 @@ mod tests {
         let bytes = [0x12, 0x34, 0x56, 0x78];
         assert_eq!(read_unsigned(&bytes, 0, 2, true), 0x1234 as f64);
         assert_eq!(read_unsigned(&bytes, 0, 2, false), 0x3412 as f64);
+        assert_eq!(read_unsigned(&bytes, 0, 3, true), 0x123456 as f64);
+        assert_eq!(read_unsigned(&bytes, 0, 3, false), 0x563412 as f64);
         assert_eq!(read_unsigned(&bytes, 0, 4, true), 0x12345678 as f64);
         assert_eq!(read_unsigned(&bytes, 3, 2, true), 0.0);
+    }
+
+    #[test]
+    fn unsigned_shift_accepts_defined_safe_integer_range() {
+        assert_eq!(
+            shift_right_unsigned(0xFFFFFFFF_u64 as f64, 0).expect("zero shift should succeed"),
+            0xFFFFFFFF_u64 as f64
+        );
+        assert_eq!(
+            shift_right_unsigned(0xFFFFFFFF_u64 as f64, 4).expect("four-bit shift should succeed"),
+            0x0FFFFFFF_u64 as f64
+        );
+        assert_eq!(
+            shift_right_unsigned(0xFFFFFFFF_u64 as f64, 32).expect("32-bit shift should succeed"),
+            0.0
+        );
+        assert!(shift_right_unsigned(-1.0, 1).is_err());
+        assert!(shift_right_unsigned(1.5, 1).is_err());
+        assert!(shift_right_unsigned(f64::NAN, 1).is_err());
+        assert!(shift_right_unsigned(1.0, 64).is_err());
     }
 
     #[test]

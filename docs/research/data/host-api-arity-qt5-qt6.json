@@ -1,5 +1,5 @@
 {
-  "difference_count": 41,
+  "difference_count": 45,
   "differences": [
     {
       "kind": "value",
@@ -171,13 +171,13 @@
       "kind": "value",
       "left": 0,
       "path": "$.stderr.bytes",
-      "right": 302
+      "right": 421
     },
     {
       "kind": "value",
       "left": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "path": "$.stderr.sha256",
-      "right": "e0310923c499e07d496a16fa9e9050185d71144cf113642560e08697a9e67bac"
+      "right": "56fdc7d1a243f908651e3d03f1fc6b057f9ed0b9d4fbec616989acbd90c9bab7"
     },
     {
       "kind": "missing_left",
@@ -212,7 +212,7 @@
     {
       "kind": "missing_left",
       "path": "$.stderr.utf8_lines[6]",
-      "right": "%entry@file:sa-extra.js:1"
+      "right": "%entry@file:u24-extra.js:1"
     },
     {
       "kind": "missing_left",
@@ -222,11 +222,31 @@
     {
       "kind": "missing_left",
       "path": "$.stderr.utf8_lines[8]",
-      "right": "%entry@file:sc-extra.js:1"
+      "right": "%entry@file:sa-extra.js:1"
     },
     {
       "kind": "missing_left",
       "path": "$.stderr.utf8_lines[9]",
+      "right": "Too many arguments, ignoring 1"
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.stderr.utf8_lines[10]",
+      "right": "%entry@file:sc-extra.js:1"
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.stderr.utf8_lines[11]",
+      "right": "Too many arguments, ignoring 1"
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.stderr.utf8_lines[12]",
+      "right": "%entry@file:shru64-extra.js:1"
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.stderr.utf8_lines[13]",
       "right": "Too many arguments, ignoring 1"
     }
   ],
@@ -236,28 +256,28 @@
     "qt5": {
       "binary": {
         "path": "/opt/die-build/src/console/diec-host-api-arity-harness",
-        "sha256": "1ebe7d03ccdb05489b033a2d079d603382618d81900c90d0f07088f70d7d89bc"
+        "sha256": "8036ea7f05dc65d912bbd4889fc1016a7bef650ffd2b4b0b52a917516777942d"
       },
       "image": {
-        "id": "sha256:0db880fc25300a5eae56650798863e3c8edd85e31d3aeefc85ce18a595267a52",
+        "id": "sha256:301912a7270dfb28f76ffd8279db7e56e057ee5beb2c3e9aee329914fa39a120",
         "name": "diec-rust/upstream-host-api-arity-harness:74eaf505",
         "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
       },
       "path": "docs/research/data/host-api-arity-qt5.json",
-      "sha256": "e5f7108a55f9af59e6c07c1362cf59297f7c5f0e95d2bfff76ed1a305b7e2a46"
+      "sha256": "ba26cf199228aa4a4e109f897776fd4787ba88e6f468e341e12cfce3a7409f53"
     },
     "qt6": {
       "binary": {
         "path": "/opt/die-build/src/console/diec-host-api-arity-harness",
-        "sha256": "6970f3f61a3399f63e44058e08ed6b93ba9cccce03f89222e7a396a94699997b"
+        "sha256": "1d09864ada652c87001ae0467c30249eea20276a865fda920798acc3287a8fd6"
       },
       "image": {
-        "id": "sha256:e88739194238e805e769338c5ddbc08bbccc1a7d9b78332e2b746762a6d2593d",
+        "id": "sha256:209642cd5dee31030ed059785d0f63d336939bae1fa5efc8e4ca2edc802e9bcf",
         "name": "diec-rust/upstream-host-api-arity-harness-qt6:74eaf505",
         "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
       },
       "path": "docs/research/data/host-api-arity-qt6.json",
-      "sha256": "cd4262afa0acaf96f38d42be0383050e6d5053995f55a48f3f8c427fc5a58994"
+      "sha256": "9e287ceda0c9f8904f3cb40263ec114f5c31c2b33fe4a3c7e3daf7c3bc3eaed5"
     }
   },
   "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
@@ -272,8 +292,8 @@
       "sha256": "ebf91827d2c5230d5c473e2f65877bafcba83d48c2568580345643befaa85bc6"
     },
     "tools/upstream/probe_host_api_arity.py": {
-      "bytes": 11465,
-      "sha256": "4cc0701b62a93c8a440051a8b4301ec8aa1b838db4dde5a9fd2962c90dff2fd5"
+      "bytes": 13207,
+      "sha256": "59149cf4c5f9057e41b45f0b679fea692ee283328d89703d8d0e73b7d72b2427"
     }
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",

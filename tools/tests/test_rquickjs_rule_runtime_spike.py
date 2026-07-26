@@ -140,6 +140,33 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
                 "same_context_recovered": True,
             },
         )
+        self.assertEqual(
+            fixture["numeric_host_api"],
+            {
+                "expected": [
+                    0x563412,
+                    0x123456,
+                    0x123456,
+                    0xFFFFFFFF,
+                    0x0FFFFFFF,
+                    0,
+                ],
+                "matches_qt5_qt6_oracle": True,
+                "methods": [
+                    "X.U24",
+                    "X.read_uint24",
+                    "Util.shru64",
+                ],
+                "result": [
+                    0x563412,
+                    0x123456,
+                    0x123456,
+                    0xFFFFFFFF,
+                    0x0FFFFFFF,
+                    0,
+                ],
+            },
+        )
 
     def test_nintendo_probe_uses_real_init_and_include_sequence(self):
         detection = self.reference["nintendo_detect"]
@@ -213,15 +240,27 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
 
     def test_basic_host_api_increment_records_remaining_dynamic_gaps(self):
         increment = self.reference["basic_host_api_increment"]
+        numeric_oracle = increment["numeric_oracle"]
+        for profile in ("qt5", "qt6"):
+            path = ROOT / numeric_oracle[f"{profile}_report"]
+            self.assertEqual(
+                hashlib.sha256(path.read_bytes()).hexdigest(),
+                numeric_oracle[f"{profile}_report_sha256"],
+            )
+        comparison = ROOT / numeric_oracle["comparison_report"]
+        self.assertEqual(
+            hashlib.sha256(comparison.read_bytes()).hexdigest(),
+            numeric_oracle["comparison_report_sha256"],
+        )
         after = increment["after"]
         self.assertEqual(after["attempted_detect_count"], 292)
         self.assertEqual(after["accepted_detect_count"], 285)
         self.assertEqual(after["detect_error_count"], 7)
         self.assertEqual(after["include_call_count"], 30)
         self.assertEqual(after["fallback_rule_count"], 233)
-        self.assertEqual(after["fallback_call_total"], 387)
+        self.assertEqual(after["fallback_call_total"], 365)
         self.assertEqual(after["fallback_truncated_rule_count"], 0)
-        self.assertEqual(len(after["fallback_paths"]), 19)
+        self.assertEqual(len(after["fallback_paths"]), 17)
         self.assertEqual(after["zero_recorded_fallback_rule_count"], 59)
         self.assertEqual(after["zero_recorded_fallback_error_count"], 0)
         self.assertEqual(after["unsupported_signature_rule_count"], 32)
@@ -246,7 +285,8 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
         )
         self.assertFalse(after["detection_evidence_valid"])
         self.assertEqual(len(after["error_rules"]), 7)
-        self.assertIn("Binary.read_uint24", after["fallback_paths"])
+        self.assertNotIn("Binary.read_uint24", after["fallback_paths"])
+        self.assertNotIn("Util.shru64", after["fallback_paths"])
         self.assertNotIn("Binary.read_uint32", after["fallback_paths"])
 
     def test_binary_lifecycle_uses_fixed_order_and_exact_overlays(self):

@@ -223,9 +223,14 @@ HostApi。按固定上游契约补入基础整数、字符串、字节数组、s
 未支持的签名 pattern。因此该实验完成的是动态缺口 inventory，不是完整
 signature compatibility。
 
+后续固定 Qt 5/Qt 6 numeric oracle 又闭合 `U24`/`read_uint24` 的端序、别名及
+`Util.shru64` 的 0/4/32 位移。Rust fixture 精确匹配后，全库 fallback 调用由
+387 降到 365、唯一路径由 19 降到 17；触发规则仍为 233，不能据此声称新增规则
+兼容。
+
 下一轮完整 signature lifecycle probe 仍至少要满足：
 
-- 以真实 HostApi 逐项替换剩余 19 条动态 fallback 路径，并补齐
+- 以真实 HostApi 逐项替换剩余 17 条动态 fallback 路径，并补齐
   Windows/macOS 顺序；
 - 实现完整 signature parser 及独立 compare/find matcher，以固定 317-pattern
   缺口清单和上游差分验证，不得对未知 pattern 静默返回 false；

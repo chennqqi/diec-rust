@@ -166,9 +166,11 @@ Binary 规则解析出 `detect`，但完整 HostApi 下逐条调用、其他 fil
 `detect` 动态创建的隐式全局 `bad` 是后一 EA-XA 规则的前置状态，说明 runtime
 抽象必须保留跨规则动态状态，不能把静态零候选当作隔离依据。因此本文不选择 runtime。
 全 292 条 fallback-tolerant 调用首轮显示 253 条规则会触及 34 类未实现 HostApi；
-补入基础读取方法后仍有 233 条规则触及 19 类 fallback，32 条规则还调用 317 种
-未支持 signature pattern。所以“脚本无异常返回”也不得成为 backend 验收指标，
-signature parser 也不得把未知语法静默折叠为 false。固定文法与纯 Rust spike 见
+补入基础读取方法后仍有 233 条规则触及 19 类 fallback；经固定 Qt 5/Qt 6 oracle
+闭合 `U24`/`read_uint24` 与 `shru64` 后仍为 233 条规则、365 次调用和 17 类
+路径，32 条规则还调用 317 种未支持 signature pattern。所以“脚本无异常返回”
+也不得成为 backend 验收指标，signature parser 也不得把未知语法静默折叠为
+false。固定文法与纯 Rust spike 见
 [`signature-language.md`](../research/signature-language.md)：parser 与
 context-free matcher 可以保持纯 Rust，但 relative/address 操作必须通过显式
 memory-map port 获得上下文，不能回读 runtime 或 CLI 状态。`compare_at` 与

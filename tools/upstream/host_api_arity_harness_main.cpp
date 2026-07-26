@@ -3,6 +3,7 @@
 
 #include "binary_script.h"
 #include "pe_script.h"
+#include "util_script.h"
 #include "xbinary.h"
 #include "xpe.h"
 
@@ -127,7 +128,7 @@ QJsonObject evaluate(
 
 QJsonObject binaryObservations()
 {
-    QByteArray bytes("ABC\0", 4);
+    QByteArray bytes = QByteArray::fromHex("41424300123456");
     QBuffer buffer(&bytes);
     buffer.open(QIODevice::ReadOnly);
     XBinary binary(&buffer);
@@ -177,6 +178,34 @@ QJsonObject binaryObservations()
     output.insert(
         "u8_boolean",
         evaluate(&engine, "X.U8(false)", "u8-boolean.js")
+    );
+    output.insert(
+        "u24_function_length",
+        evaluate(&engine, "X.U24.length", "u24-function-length.js")
+    );
+    output.insert(
+        "u24_little_endian",
+        evaluate(&engine, "X.U24(4)", "u24-little-endian.js")
+    );
+    output.insert(
+        "u24_big_endian",
+        evaluate(&engine, "X.U24(4, true)", "u24-big-endian.js")
+    );
+    output.insert(
+        "read_uint24_big_endian",
+        evaluate(
+            &engine,
+            "X.read_uint24(4, true)",
+            "read-uint24-big-endian.js"
+        )
+    );
+    output.insert(
+        "u24_extra",
+        evaluate(
+            &engine,
+            "X.U24(4, true, 99)",
+            "u24-extra.js"
+        )
     );
     output.insert(
         "sa_function_length",
@@ -240,6 +269,62 @@ QJsonObject binaryObservations()
             &engine,
             "X.SC(0, 1, 'System', 99)",
             "sc-extra.js"
+        )
+    );
+    return output;
+}
+
+QJsonObject utilObservations()
+{
+    Util_script script;
+    ScriptEngine engine;
+#ifndef QT_SCRIPT_LIB
+    QJSEngine::setObjectOwnership(&script, QJSEngine::CppOwnership);
+#endif
+    engine.globalObject().setProperty(
+        "Util",
+        engine.newQObject(&script)
+    );
+
+    QJsonObject output;
+    output.insert(
+        "shru64_function_length",
+        evaluate(
+            &engine,
+            "Util.shru64.length",
+            "shru64-function-length.js"
+        )
+    );
+    output.insert(
+        "shru64_zero",
+        evaluate(
+            &engine,
+            "Util.shru64(4294967295, 0)",
+            "shru64-zero.js"
+        )
+    );
+    output.insert(
+        "shru64_four",
+        evaluate(
+            &engine,
+            "Util.shru64(4294967295, 4)",
+            "shru64-four.js"
+        )
+    );
+    output.insert(
+        "shru64_thirty_two",
+        evaluate(
+            &engine,
+            "Util.shru64(4294967295, 32)",
+            "shru64-thirty-two.js"
+        )
+    );
+    output.insert(
+        "shru64_extra",
+        evaluate(
+            &engine,
+            "Util.shru64(4294967295, 4, 99)",
+            "shru64-extra.js"
         )
     );
     return output;
@@ -363,6 +448,7 @@ int main(int argc, char *argv[])
         }
     );
     output.insert("binary", binaryObservations());
+    output.insert("util", utilObservations());
     output.insert("pe", peObservations(&error));
     if (!error.isEmpty()) {
         std::fprintf(stderr, "%s\n", error.toUtf8().constData());

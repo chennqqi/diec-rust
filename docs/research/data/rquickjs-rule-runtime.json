@@ -12,14 +12,14 @@
   },
   "dependency_footprint": {
     "lockfile_packages": 23,
-    "release_executable_bytes": 1847808,
+    "release_executable_bytes": 1858560,
     "target": "x86_64-pc-windows-msvc",
     "target_packages": 18
   },
   "experiment": {
     "cargo_lock_sha256": "aa7cd4c42e1f3429f45ec31e05e41862abe6156bdbe351eeacc507673f237232",
     "cargo_toml_sha256": "875730b205ca351b4bc0f830a1896fb6ad777c46046e6f26c9c368849614be16",
-    "source_sha256": "c08cfd9a70ad38f56dfc392563531e816298c7d360ee0061427d41b583f380d1",
+    "source_sha256": "892573a71d7e4f4f2b589627cf56d087c54d25049a5c6e0dfb92c444b63a0d35",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -53,6 +53,30 @@
       "iteration_count_positive": true,
       "returned": true,
       "same_context_recovered": true
+    },
+    "numeric_host_api": {
+      "expected": [
+        5649426,
+        1193046,
+        1193046,
+        4294967295,
+        268435455,
+        0
+      ],
+      "matches_qt5_qt6_oracle": true,
+      "methods": [
+        "X.U24",
+        "X.read_uint24",
+        "Util.shru64"
+      ],
+      "result": [
+        5649426,
+        1193046,
+        1193046,
+        4294967295,
+        268435455,
+        0
+      ]
     },
     "nintendo_rule_eval_accepted": false,
     "nintendo_compatibility_overlay": {
@@ -273,19 +297,30 @@
       "signature_grammar": "horsicq/Formats@1151e7254fdee3c0294ff7095edbdd7bfccf8201/xbinary.h",
       "util_script": "horsicq/die_script@5d82316c110abf0eb863b50bc679d330e05067b6/util_script.cpp"
     },
+    "numeric_oracle": {
+      "comparison_report": "docs/research/data/host-api-arity-qt5-qt6.json",
+      "comparison_report_sha256": "96d0b0023dd08ec1e45bc0c1059cf5801837496e09143acff6ffa0120328fa73",
+      "qt5_report": "docs/research/data/host-api-arity-qt5.json",
+      "qt5_report_sha256": "ba26cf199228aa4a4e109f897776fd4787ba88e6f468e341e12cfce3a7409f53",
+      "qt6_report": "docs/research/data/host-api-arity-qt6.json",
+      "qt6_report_sha256": "9e287ceda0c9f8904f3cb40263ec114f5c31c2b33fe4a3c7e3daf7c3bc3eaed5",
+      "scope": "U24/read_uint24 exact endian values and shru64 shifts 0/4/32; not a complete quint64 conversion profile"
+    },
     "implemented_methods": [
       "Binary.Sz/getSize",
       "Binary.U8/readByte/read_uint8",
       "Binary.I8/readSByte/read_int8",
       "Binary.U16/readWord/read_uint16",
       "Binary.I16/readSWord/read_int16",
+      "Binary.U24/read_uint24",
       "Binary.U32/readDword/read_uint32",
       "Binary.I32/readSDword/read_int32",
       "Binary.U64/readQword/read_uint64",
       "Binary.I64/readSQword/read_int64",
       "Binary.SA/getString/read_ansiString",
       "Binary.BA/readBytes",
-      "Util.div64"
+      "Util.div64",
+      "Util.shru64"
     ],
     "after": {
       "accepted_detect_count": 285,
@@ -309,7 +344,7 @@
         "format_bin.Hermes.1.sg",
         "format_doc.CHM.1.sg"
       ],
-      "fallback_call_total": 387,
+      "fallback_call_total": 365,
       "fallback_paths": [
         "Binary.cleanString",
         "Binary.compare",
@@ -327,9 +362,7 @@
         "Binary.isResource",
         "Binary.isSignaturePresent",
         "Binary.isText",
-        "Binary.isZeroFilled",
-        "Binary.read_uint24",
-        "Util.shru64"
+        "Binary.isZeroFilled"
       ],
       "fallback_rule_count": 233,
       "fallback_truncated_rule_count": 0,

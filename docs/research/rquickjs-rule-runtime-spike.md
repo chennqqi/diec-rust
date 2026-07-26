@@ -22,6 +22,8 @@ QuickJS-NG C 源码编译成静态 archive。它能够：
 - 由另一个线程通过原子取消令牌中断无限循环，并在同一 context 中恢复执行；
 - Rust native HostApi 长循环通过显式检查同一类 token 合作退出；
 - QuickJS VM 与 Rust native HostApi 均可检查 monotonic wall-clock deadline；
+- Rust `U24`/`read_uint24` 与 `shru64` 聚焦数值 fixture 匹配固定 Qt 5/Qt 6
+  上游 oracle；
 - 通过 runtime memory limit 拒绝超限分配。
 
 但它不能原样作为 DIE 兼容运行时。显式使用 sloppy-script 模式并为语法覆盖提供
@@ -57,9 +59,11 @@ selected lifecycle probe 随后在同一固定全库加载环境中依次调用
 PS Vita 的目标完整有序结果与 Qt 5 baseline 14/14 匹配，三个目标调用均未使用
 fallback HostApi。全 Binary diagnostic probe 随后逐条尝试了 292 个 `detect`，
 首轮有 253 条规则使用缺失 HostApi 代理。按固定上游实现补入基础整数、字符串、
-字节数组、size 与 `Util.div64` 后，仍有 233 条规则触发 19 类 fallback；另有
-32 条规则调用 317 种当前简化 `X.c` 不支持的签名模式。该结果只用于形成缺口
-清单，不能作为兼容率。Qt 6 和完整宿主方法仍未覆盖，候选状态不变。
+字节数组、size 与 `Util.div64` 后，仍有 233 条规则触发 19 类 fallback；再以
+Qt 5/Qt 6 oracle 闭合 `U24`/`read_uint24` 与 `shru64` 后，调用从 387 降至
+365、路径从 19 降至 17，但触发规则仍为 233。另有 32 条规则调用 317 种当前
+简化 `X.c` 不支持的签名模式。该结果只用于形成缺口清单，不能作为兼容率；
+完整宿主方法和跨平台 oracle 仍未覆盖，候选状态不变。
 
 ## 实验边界
 
@@ -94,7 +98,7 @@ proxy 只用于语法/顶层执行覆盖，不代表宿主 API 兼容，也不�
 | Lockfile packages | 23 |
 | 当前 target packages | 18 |
 | Clean release build | 13,258 ms，本机已缓存下载、空 target |
-| Release executable | 1,847,808 bytes（加入 VM/native deadline fixture 后） |
+| Release executable | 1,858,560 bytes（加入 numeric HostApi fixture 后） |
 
 `cargo +1.86.0 check --locked` 明确报告
 `rquickjs@0.12.1 requires rustc 1.87`。本实验继续复用已安装的 1.88 工具链。
@@ -380,9 +384,11 @@ interrupt handler 调用、返回值和新增 detection，异常后继续下一�
 [`binary_script.h`](https://github.com/horsicq/XScanEngine/blob/dfe4a419e4f491bb23688ba03c5a5bf39e34da83/modules/binary_script.h)；
 `Util.div64` 的零除数 `-1` 行为来自固定
 [`util_script.cpp`](https://github.com/horsicq/die_script/blob/5d82316c110abf0eb863b50bc679d330e05067b6/util_script.cpp)。
-本轮实现 `Sz/getSize`，8/16/32/64-bit 有/无符号读取及其上游别名，
-`SA/getString/read_ansiString`、`BA/readBytes` 和 `Util.div64`。越界字符串和
-字节数组按可用输入截短；负 offset/size 安全返回空值或零。
+本轮实现 `Sz/getSize`，8/16/32/64-bit 有/无符号读取、unsigned 24-bit 读取及
+其上游别名，
+`SA/getString/read_ansiString`、`BA/readBytes`、`Util.div64` 和聚焦范围的
+`Util.shru64`。越界字符串和字节数组按可用输入截短；负 offset/size 安全返回
+空值或零。
 
 首次执行暴露了 Rust 绑定自身的边界错误：`format_bin.COL.1.sg` 在 `p == 0` 时
 按规则设计调用 `X.U8(p - 1)`，原来的 `usize` 参数在进入 HostApi 前产生
@@ -390,23 +396,41 @@ Underflow。将字节读取偏移改为有符号输入，并让负值安全返�
 不再异常；这也是“不可信 offset 必须在宿主内部验证，不能依赖 Rust 参数转换”的
 直接证据。
 
-基础方法补入前后的摘要：
+基础方法及 numeric oracle 增量前后的摘要：
 
-| 指标 | 补入前 | 补入后 |
-| --- | ---: | ---: |
-| Attempted `detect` | 292 | 292 |
-| 无异常返回 | 281 | 285 |
-| 异常 | 11 | 7 |
-| 调用 fallback 的规则 | 253 | 233 |
-| Fallback 调用 | 496 | 387 |
-| 唯一 fallback 路径 | 34 | 19 |
-| 未记录 fallback 的规则 | 39 | 59 |
-| 未记录 fallback 且异常 | 0 | 0 |
-| 代理驱动产生的 detections | 122 | 153 |
+| 指标 | 补入前 | 基础读取后 | `U24`/`shru64` 后 |
+| --- | ---: | ---: | ---: |
+| Attempted `detect` | 292 | 292 | 292 |
+| 无异常返回 | 281 | 285 | 285 |
+| 异常 | 11 | 7 | 7 |
+| 调用 fallback 的规则 | 253 | 233 | 233 |
+| Fallback 调用 | 496 | 387 | 365 |
+| 唯一 fallback 路径 | 34 | 19 | 17 |
+| 未记录 fallback 的规则 | 39 | 59 | 59 |
+| 未记录 fallback 且异常 | 0 | 0 | 0 |
+| 代理驱动产生的 detections | 122 | 153 | 153 |
 
 补入后 7 个异常仍是诊断代理值或非字符串值进入结果边界，完整规则名和分类保存在
-[`rquickjs-rule-runtime.json`](data/rquickjs-rule-runtime.json)。剩余 19 条路径
-集中在签名/搜索、输入上下文和文本判断，另有 `read_uint24` 与 `Util.shru64`。
+[`rquickjs-rule-runtime.json`](data/rquickjs-rule-runtime.json)。剩余 17 条路径
+集中在签名/搜索、输入上下文和文本判断。
+
+### `U24` 与 `shru64` Qt oracle
+
+共享上游 harness 直接注册未修改的 `Binary_Script` 与 `Util_script`。固定
+Qt Script 5.15.13 和 QJSEngine 6.4.2 都确认：
+
+- bytes `12 34 56` 的 little-endian `U24` 为 `0x563412`，big-endian `U24` 与
+  `read_uint24` 都为 `0x123456`；
+- `shru64(0xFFFFFFFF, 0/4/32)` 分别为
+  `0xFFFFFFFF`、`0x0FFFFFFF`、`0`；
+- 额外实参不改变值；Qt 5 静默，Qt 6 每个调用发出两行 warning。
+
+Rust fixture 对同一六值序列逐项匹配，并在 292 条 diagnostic `detect` 中让两个
+fallback 路径消失。`shru64` spike 只接受非负 safe integer 与 shift < 64，
+其他输入明确抛错；这不是完整 Qt `quint64` conversion profile。固定 C++ 对
+shift >= 64 直接使用 `>>`，本实验不把未定义范围冻结成兼容行为。完整 oracle
+身份、stderr 和未覆盖边界见
+[`format-host-api-runtime-differential.md`](format-host-api-runtime-differential.md)。
 
 此前简化的 `X.c` 只识别 Nintendo spike 使用的 5 个固定 pattern，并对其他
 pattern 静默返回 false。这不符合“不支持语法必须显式诊断”的兼容门禁。本轮在
@@ -500,7 +524,7 @@ Nintendo 的单脚本语法 overlay，`audio` 和 MiniExtensions 的跨规则 ov
 | 外部 interrupt | 未发现公开接口 | 跨线程 token 已中断并同 context 恢复 |
 | Heap limit | 未发现公开接口 | 支持默认 allocator |
 | Windows target packages | 126 | 18 |
-| Release spike | 11,784,192 bytes | 1,847,808 bytes |
+| Release spike | 11,784,192 bytes | 1,858,560 bytes |
 | 实现语言 | 纯 Rust | Rust wrapper + vendored C |
 | 本轮工具链 | Rust 1.88 | 最低 1.87，本轮 1.88 |
 

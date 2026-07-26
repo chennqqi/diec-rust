@@ -272,7 +272,7 @@ format HostApi 行为仍不能外推。
 | Candidate | 优点 | 风险/代价 | 当前结论 |
 | --- | --- | --- | --- |
 | [Boa](https://github.com/boa-dev/boa) | JavaScript engine 以 Rust 实现；可注册 native class/function | 0.21.1 拒绝 1 条 Qt 接受的固定规则；shared lexical semantics 不同；MSRV 1.88、Windows spike 126 个 target packages | 保留为需 patch/上游修复的候选，不能原样采用 |
-| [rquickjs](https://github.com/DelSkayn/rquickjs) | 0.12.1 的 interrupt/heap limit 可用，跨线程 token 可中断并同 context 恢复，synthetic native HostApi 已合作取消，VM/native monotonic deadline 已到期；Windows spike 18 个 target packages、约 1.76 MiB | 同样拒绝 1 条 Qt 接受的规则；必须显式 sloppy eval；编译 vendored QuickJS-NG C，MSVC 仍属 engine experimental；真实长调用的 checkpoint 密度与跨平台最大延迟仍须验证 | 保留为需 legacy compatibility 层的候选，不能原样采用 |
+| [rquickjs](https://github.com/DelSkayn/rquickjs) | 0.12.1 的 interrupt/heap limit 可用，跨线程 token 可中断并同 context 恢复，synthetic native HostApi 已合作取消，VM/native monotonic deadline 已到期；Windows spike 18 个 target packages、约 1.77 MiB | 同样拒绝 1 条 Qt 接受的规则；必须显式 sloppy eval；编译 vendored QuickJS-NG C，MSVC 仍属 engine experimental；真实长调用的 checkpoint 密度与跨平台最大延迟仍须验证 | 保留为需 legacy compatibility 层的候选，不能原样采用 |
 | [rusty_v8](https://github.com/denoland/rusty_v8) | ECMAScript 兼容性高、成熟宿主 API | V8 很大；默认下载预编译静态库或源码构建成本高，不符合轻依赖目标 | 仅作兼容性上界/备选 |
 | 自研 interpreter/transpiler | 可精确控制行为和资源限制 | 语法、RegExp、prototype、异常和动态特性成本极高 | 不作为首选 |
 
@@ -351,9 +351,11 @@ overlay 加 per-rule lexical wrapper 已让固定 292 条 Binary 规则全部加
 14/14 匹配，并发现由前一 `detect` 动态建立隐式全局 `bad` 的跨规则依赖。其余
 `detect` 随后也已由 fallback-tolerant diagnostic 逐条尝试。首轮发现
 253 条规则调用 34 类缺失路径；按固定上游契约补入基础读取方法后降为 233 条规则、
-19 类路径，但又显式识别出 32 条规则调用 317 种当前简化 `X.c` 不支持的 signature
-pattern。代理制造的结果不具兼容意义，完整 signature parser、HostApi 与逐条 Qt
-oracle 尚未验证。signature 的固定源码文法、实现怪癖、动态及静态 pattern
+19 类路径；固定 Qt 5/Qt 6 numeric oracle 闭合 `U24`/`read_uint24` 和
+`shru64` 后仍为 233 条规则，但调用由 387 降为 365、路径降为 17。另有 32 条
+规则调用 317 种当前简化 `X.c` 不支持的 signature pattern。代理制造的结果不具
+兼容意义，完整 signature parser、HostApi 与逐条 Qt oracle 尚未验证。signature
+的固定源码文法、实现怪癖、动态及静态 pattern
 inventory 和纯 Rust parser spike 见
 [`signature-language.md`](signature-language.md)；兼容模式已解析动态 317/317，
 固定 AST inventory 已解析 `db`/`db_extra` 2175/2175 文件并保存 5968 个具名

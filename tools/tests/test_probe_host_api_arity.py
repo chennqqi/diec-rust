@@ -57,6 +57,29 @@ class HostApiArityProbeTests(unittest.TestCase):
         self.assertEqual(qt5["u8_missing"]["error_name"], "SyntaxError")
         self.assertEqual(qt6["u8_missing"]["error_name"], "Error")
 
+    def test_u24_and_unsigned_shift_match_both_runtimes(self):
+        for observation in (self.observation, self.qt6_observation):
+            binary = observation["binary"]
+            self.assertEqual(
+                binary["u24_little_endian"]["number"],
+                0x563412,
+            )
+            for key in (
+                "u24_big_endian",
+                "read_uint24_big_endian",
+                "u24_extra",
+            ):
+                self.assertEqual(binary[key]["number"], 0x123456)
+
+            util = observation["util"]
+            self.assertEqual(util["shru64_zero"]["number"], 0xFFFFFFFF)
+            self.assertEqual(util["shru64_four"]["number"], 0x0FFFFFFF)
+            self.assertEqual(util["shru64_thirty_two"]["number"], 0)
+            self.assertEqual(
+                util["shru64_extra"]["number"],
+                0x0FFFFFFF,
+            )
+
     def test_qt6_extra_arguments_emit_exact_stderr(self):
         self.assertEqual(
             self.qt6_report["stderr"],
