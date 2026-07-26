@@ -33,6 +33,14 @@ EXPECTED_OBSERVATIONS = {
         "compare": True,
         "binary_script_compare_result": True,
     },
+    "binary_script_negative_offset_clamps_to_header_start": {
+        "compare": False,
+        "binary_script_compare_result": True,
+    },
+    "binary_script_negative_offset_clamp_can_mismatch": {
+        "compare": False,
+        "binary_script_compare_result": False,
+    },
     "binary_script_ep_fast_path_invalid_suffix": {
         "binary_script_parser_valid": True,
         "binary_script_entry_point_offset": 512,

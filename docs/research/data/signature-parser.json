@@ -175,7 +175,7 @@
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)",
     "cargo_toml_sha256": "492a5c5521a832006771de28eff65052ef8475d693bfb8ca61ba150eea965b64",
     "cargo_lock_sha256": "2985224550a817be8fe4dea19a12c2db06cc21f199b985fba12fc23dedfa9279",
-    "source_sha256": "d2c2606c82bbfc8da570d335682463aebd4d23e731869427742d15cfac4f0016",
+    "source_sha256": "6424487aa2e3fd2581de0f2412a4a30f8a96086d808e46d37750fe80e631c306",
     "runtime_dependencies": 0,
     "strict_parse_count": 312,
     "compatible_parse_count": 317,
@@ -210,9 +210,10 @@
       ]
     },
     "pinned_binary_script_compare_differential": {
-      "case_count": 5,
-      "matched_count": 5,
+      "case_count": 7,
+      "matched_count": 7,
       "header_fast_path_observed": true,
+      "negative_offset_qstring_mid_clamp_observed": true,
       "strict_boundary_observed": true
     },
     "pinned_binary_script_compare_ep_differential": {
@@ -286,13 +287,13 @@
     "binary_sha256": "7256a58eff8a6f325a12b273e730c3c3e7addb0f2a4aca5be1357aa96bc4da67",
     "dockerfile_sha256": "c9c28565e2d3274edbc72d54e3bcf1b3edc0b2707749707718fcbafbf9430aa8",
     "harness_source_sha256": "9fc1f812c6b46b1bf5f0172385e42d6a19aa871937a17545c939b39f014bbcc1",
-    "probe_sha256": "7fa242d6f695a364378b36ba418c25c36cf918f604290d4987ec7a030e29a244",
-    "vector_generator_sha256": "87776b5bc3734ed6c4682034034c2bce0a1209561170d0516fdf8d94de57c58f",
+    "probe_sha256": "2f4393373853df9007ed1eda62b85b29118b090697079b738271bae87195b969",
+    "vector_generator_sha256": "00faa5c810bebd24b09329a15cc8271505d903a501a7f679951752541f31dea9",
     "vectors": "docs/research/data/signature-oracle-vectors.json",
-    "vectors_sha256": "88dbf9e980cc4058ca04800924102764cf8bd827f66e9fb391ed2b57528b9547",
+    "vectors_sha256": "36c2079f3d001191364eea8ca38ae71f36e9fd4766d9ccc39ea579ca4ccff149",
     "baseline": "docs/research/data/signature-oracle-qt5.json",
-    "baseline_sha256": "fd8dc107545ea5eac4383af72f449617c556a679d8c7e74b844f77b39b04f222",
-    "case_count": 63,
+    "baseline_sha256": "c514f12ad6b34bf18300befbea386ee9704bb0ba7790db66e5eb5a55cd52d736",
+    "case_count": 65,
     "probe_passed": true,
     "compare_find_divergences": [
       "%& accepts only digits in compare records but letters and digits in SigBytes find",
@@ -306,6 +307,6 @@
     "generated PE32/64, ELF32/64, Mach-O32/64, COM, MS-DOS, and AmigaHunk files cover real parser memory-map construction, but malformed map variants remain untested",
     "Binary_Script wrapper fast paths are verified with one generated PE32 entry point and overlay, but absent, short, invalid, and non-PE contexts remain untested",
     "the independent find_signature spike covers 19 focused cases across all three branches, but malformed partial-parse and exhaustive optimization combinations remain untested",
-    "the 63 focused vectors do not yet exhaust malformed partial-parse combinations"
+    "the 65 focused vectors do not yet exhaust malformed partial-parse combinations"
   ]
 }

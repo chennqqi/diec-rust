@@ -176,6 +176,13 @@ context-free matcher 可以保持纯 Rust，但 relative/address 操作必须通
 memory-map port 获得上下文，不能回读 runtime 或 CLI 状态。`compare_at` 与
 `find_signature` 是两个独立兼容 operation；后者的 control-record、SigByte 和
 plain-hex 分支不得由前者循环模拟。
+
+Phase 0 diagnostic 已把 pure-Rust parser/matcher 接入 generic Binary
+`c`/`compare`：固定样本执行 799 次、0 adapter error，fallback 降为 16 条规则、
+58 次和 18 类路径。但 header wrapper 必须保留 Qt 5 的严格边界、invalid suffix
+分支和负 offset `QString::mid` clamp；generic 未知语法才产生诊断。该 spike
+通过相邻 path dependency 复用代码不等于正式 crate 边界已确定，Phase 1 必须按
+本架构重新落位，并为 `fSig`/find/presence 与格式专用 memory map 单独建模。
 后续 ADR 必须基于固定规则集、宿主 API、资源中断、static link、许可证和跨平台
 实验选型。
 native runtime、FFI glue、runtime-specific handles 只存在于 `diec-rules`

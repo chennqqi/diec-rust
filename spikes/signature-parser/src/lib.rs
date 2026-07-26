@@ -61,6 +61,13 @@ pub struct FindResult {
     pub size: usize,
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct BinaryCompareReport {
+    pub matched: bool,
+    pub header_fast_path: bool,
+    pub quirks: Vec<CompatibilityQuirk>,
+}
+
 impl MemoryMap {
     fn offset_to_address(&self, offset: u64) -> Option<u64> {
         self.records.iter().rev().find_map(|record| {
@@ -189,6 +196,13 @@ impl Pattern {
                     index += consumed;
                 }
                 byte => {
+                    if upstream_compatible && !operations.is_empty() {
+                        quirks.push(CompatibilityQuirk::TrailingUnexpectedCharacter {
+                            position: index,
+                            character: char::from(byte),
+                        });
+                        break;
+                    }
                     return Err(ParseError::new(
                         index,
                         ParseErrorKind::UnexpectedCharacter(char::from(byte)),
@@ -211,6 +225,69 @@ impl Pattern {
 
     pub fn operations(&self) -> &[Operation] {
         &self.operations
+    }
+
+    pub fn compare_binary_wrapper(
+        source: &str,
+        data: &[u8],
+        offset: i64,
+    ) -> Result<BinaryCompareReport, BinaryCompareError> {
+        let mut normalization_quirks = Vec::new();
+        let normalized = normalize(source, true, &mut normalization_quirks)?;
+        let header_size = data.len().min(256);
+        let header_fast_path = i128::try_from(normalized.len())
+            .ok()
+            .and_then(|length| length.checked_add(i128::from(offset)))
+            .is_some_and(|end| end < header_size as i128)
+            && !normalized
+                .iter()
+                .any(|byte| matches!(byte, b'$' | b'#' | b'+' | b'%' | b'*'));
+        if header_fast_path {
+            return Ok(BinaryCompareReport {
+                matched: compare_header_nibbles(
+                    &normalized,
+                    data,
+                    usize::try_from(offset).unwrap_or(0),
+                ),
+                header_fast_path: true,
+                quirks: normalization_quirks,
+            });
+        }
+
+        let parsed = Self::parse_upstream_compatible(source)?;
+        if offset < 0 {
+            return Ok(BinaryCompareReport {
+                matched: false,
+                header_fast_path: false,
+                quirks: parsed.quirks,
+            });
+        }
+        let Ok(offset) = usize::try_from(offset) else {
+            return Ok(BinaryCompareReport {
+                matched: false,
+                header_fast_path: false,
+                quirks: parsed.quirks,
+            });
+        };
+        let memory_map = MemoryMap {
+            file_type: FileType::Binary,
+            endian: Endian::Little,
+            code_base: 0,
+            start_load_offset: 0,
+            records: vec![MemoryRecord {
+                offset: 0,
+                address: 0,
+                size: data.len() as u64,
+            }],
+        };
+        let matched = parsed
+            .pattern
+            .matches_with_memory_map(data, offset, &memory_map)?;
+        Ok(BinaryCompareReport {
+            matched,
+            header_fast_path: false,
+            quirks: parsed.quirks,
+        })
     }
 
     pub fn matches_raw(&self, data: &[u8], offset: usize) -> Result<bool, MatchError> {
@@ -987,6 +1064,29 @@ fn hex_digit(value: u8) -> u8 {
     }
 }
 
+fn compare_header_nibbles(normalized: &[u8], data: &[u8], offset: usize) -> bool {
+    if normalized.is_empty() {
+        return false;
+    }
+    normalized.iter().enumerate().all(|(index, expected)| {
+        let Some(nibble_index) = offset
+            .checked_mul(2)
+            .and_then(|base| base.checked_add(index))
+        else {
+            return false;
+        };
+        let Some(byte) = data.get(nibble_index / 2) else {
+            return false;
+        };
+        let actual = if nibble_index % 2 == 0 {
+            hex_digit(byte >> 4)
+        } else {
+            hex_digit(byte & 0x0f)
+        };
+        *expected == b'.' || *expected == actual
+    })
+}
+
 fn bounded_slice(data: &[u8], offset: usize, size: usize) -> Option<&[u8]> {
     let end = offset.checked_add(size)?;
     data.get(offset..end)
@@ -1055,6 +1155,39 @@ pub enum CompatibilityQuirk {
         token: &'static str,
         length: usize,
     },
+    TrailingUnexpectedCharacter {
+        position: usize,
+        character: char,
+    },
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub enum BinaryCompareError {
+    Parse(ParseError),
+    Match(MatchError),
+}
+
+impl fmt::Display for BinaryCompareError {
+    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Parse(error) => error.fmt(formatter),
+            Self::Match(error) => error.fmt(formatter),
+        }
+    }
+}
+
+impl std::error::Error for BinaryCompareError {}
+
+impl From<ParseError> for BinaryCompareError {
+    fn from(error: ParseError) -> Self {
+        Self::Parse(error)
+    }
+}
+
+impl From<MatchError> for BinaryCompareError {
+    fn from(error: MatchError) -> Self {
+        Self::Match(error)
+    }
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -1484,6 +1617,59 @@ mod tests {
             compared += 1;
         }
         assert_eq!(compared, selected.len());
+    }
+
+    #[test]
+    fn binary_wrapper_matches_pinned_qt5_oracle() {
+        let oracle: Value = serde_json::from_str(include_str!(
+            "../../../docs/research/data/signature-oracle-qt5.json"
+        ))
+        .expect("oracle baseline should be valid JSON");
+        let cases = oracle["cases"]
+            .as_array()
+            .expect("oracle cases should be an array");
+        let mut compared = 0;
+        let mut fast_paths = 0;
+        let mut generic_quirks = 0;
+        for case in cases {
+            if case["binary_script_compare"].as_bool() != Some(true) {
+                continue;
+            }
+            let id = case["id"].as_str().expect("case id should be a string");
+            let source = case["pattern"]
+                .as_str()
+                .expect("pattern should be a string");
+            let data = decode_hex(
+                case["data_hex"]
+                    .as_str()
+                    .expect("data should be a hex string"),
+            );
+            let offset = case["offset"]
+                .as_i64()
+                .expect("offset should be an integer");
+            let expected = case["binary_script_compare_result"]
+                .as_bool()
+                .expect("wrapper result should be boolean");
+            let actual = Pattern::compare_binary_wrapper(source, &data, offset)
+                .unwrap_or_else(|error| panic!("cannot compare {id}: {error}"));
+            assert_eq!(actual.matched, expected, "wrapper mismatch for {id}");
+            fast_paths += usize::from(actual.header_fast_path);
+            generic_quirks += usize::from(!actual.quirks.is_empty());
+            compared += 1;
+        }
+        assert_eq!(compared, 7);
+        assert_eq!(fast_paths, 5);
+        assert_eq!(generic_quirks, 1);
+        let mut negative_header = vec![0_u8; 256];
+        negative_header[..4].copy_from_slice(b"COLL");
+        let negative_fast = Pattern::compare_binary_wrapper("'COLL'", &negative_header, -1)
+            .expect("Qt5 header fast path should clamp a negative mid position");
+        assert!(negative_fast.header_fast_path);
+        assert!(negative_fast.matched);
+        let negative_generic = Pattern::compare_binary_wrapper("**", b"A", -1)
+            .expect("generic matcher should reject a negative offset without an adapter error");
+        assert!(!negative_generic.header_fast_path);
+        assert!(!negative_generic.matched);
     }
 
     #[test]

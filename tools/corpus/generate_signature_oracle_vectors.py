@@ -10,7 +10,7 @@ from pathlib import Path
 
 
 SCHEMA_VERSION = 2
-GENERATOR_VERSION = 8
+GENERATOR_VERSION = 9
 UPSTREAM_COMMIT = "74eaf505c250ab47e709024e9dc41657cd8f2254"
 FORMATS_COMMIT = "1151e7254fdee3c0294ff7095edbdd7bfccf8201"
 
@@ -650,6 +650,20 @@ def vectors() -> list[dict[str, object]]:
             "pattern": "41",
             "data_hex": ("00" * 252) + "41414100",
             "offset": 254,
+            "binary_script_compare": True,
+        },
+        {
+            "id": "binary_script_negative_offset_clamps_to_header_start",
+            "pattern": "'COLL'",
+            "data_hex": "434f4c4c" + ("00" * 252),
+            "offset": -1,
+            "binary_script_compare": True,
+        },
+        {
+            "id": "binary_script_negative_offset_clamp_can_mismatch",
+            "pattern": "'COLL'",
+            "data_hex": "00434f4c4c" + ("00" * 251),
+            "offset": -1,
             "binary_script_compare": True,
         },
         {

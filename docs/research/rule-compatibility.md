@@ -360,19 +360,28 @@ inventory 和纯 Rust parser spike 见
 [`signature-language.md`](signature-language.md)；兼容模式已解析动态 317/317，
 固定 AST inventory 已解析 `db`/`db_extra` 2175/2175 文件并保存 5968 个具名
 signature API 调用点：5855 个 literal、109 个可枚举静态表达式、4 个动态表达式，
-得到 5628 个静态 pattern，包含动态样本的 317/317。固定 oracle 已运行 63 个
+得到 5628 个静态 pattern，包含动态样本的 317/317。固定 oracle 已运行 65 个
 compare/find/边界向量，Rust context-free
 compare 差分 16/16、六类合成 memory-map 差分 7/7、PE32/ELF64/Mach-O64/
 COM/MS-DOS/AmigaHunk 加上 PE64/ELF32/Mach-O32 parser-derived map 差分
 9/9，独立 find 三分支聚焦差分 19/19；同时确认 compare 与 find 的
-byte-class/search 语义不同。另有 5/5 `Binary_Script::compare` 向量端到端确认
+byte-class/search 语义不同。另有 7/7 `Binary_Script::compare` 向量端到端确认
 header fast path 的字符/字节混合计算和严格 `<` 分界会改变 invalid signature
-结果；`compareEP` 与 `compareOverlay` 又各有 5/5 向量确认 256-byte cache 被按
+结果，并固定 Qt 5 对负 offset 的 `QString::mid` 起点 clamp；`compareEP` 与
+`compareOverlay` 又各有 5/5 向量确认 256-byte cache 被按
 512 个 hex 字符计数、原始 pattern 长度参与分支，能让 cache 外合法 literal
 误报 false。畸形 map、find 的畸形/穷举边界和无效/短小 wrapper 上下文仍未完成。
 四个保守动态参数中的 `byteCode` 已通过固定整文件哈希的受限 AST 求值闭合：
 33 个真实调用点有限展开为 97 个唯一 pattern；其余 3 个是上游参数次序导致的
 输入相关 Number→QString 调用，跨所有输入的运行时值域仍未完成。
+
+rquickjs diagnostic 随后复用该 pure-Rust spike 替换五-pattern `X.c` 特判。
+固定 128-byte 样本和 292-rule 顺序下，`Binary.c`/`compare` 共执行 799 次：
+776 次 header fast path、23 次 generic、5 次显式兼容 quirk、0 adapter error。
+292/292 个 `detect` 无异常完成，fallback 降为 16 条规则、58 次、18 条路径。
+该结果仍是缺口 inventory：剩余 proxy 会改变控制流，10 条 detection 不具
+兼容意义；`fSig`、`findSignature`、`isSignaturePresent` 和格式专用 memory map
+尚未接入。
 
 固定 Binary 生命周期、init/include 首个命中规则、共享 global scope 和上游
 排序比较器缺陷见

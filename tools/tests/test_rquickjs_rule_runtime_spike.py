@@ -289,6 +289,38 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
         self.assertNotIn("Util.shru64", after["fallback_paths"])
         self.assertNotIn("Binary.read_uint32", after["fallback_paths"])
 
+    def test_binary_compare_increment_records_wrapper_and_remaining_gaps(self):
+        increment = self.reference["binary_compare_increment"]
+        oracle = increment["oracle"]
+        baseline = ROOT / oracle["baseline"]
+        self.assertEqual(
+            hashlib.sha256(baseline.read_bytes()).hexdigest(),
+            oracle["baseline_sha256"],
+        )
+        self.assertEqual(oracle["case_count"], 65)
+        self.assertEqual(oracle["wrapper_case_count"], 7)
+        self.assertEqual(oracle["wrapper_matched_count"], 7)
+        self.assertTrue(oracle["negative_offset_qstring_mid_clamp_observed"])
+        after = increment["after"]
+        self.assertEqual(after["attempted_detect_count"], 292)
+        self.assertEqual(after["accepted_detect_count"], 292)
+        self.assertEqual(after["detect_error_count"], 0)
+        self.assertEqual(after["include_call_count"], 30)
+        self.assertEqual(after["fallback_rule_count"], 16)
+        self.assertEqual(after["fallback_call_total"], 58)
+        self.assertEqual(sum(after["fallback_path_counts"].values()), 58)
+        self.assertEqual(len(after["fallback_path_counts"]), 18)
+        self.assertEqual(after["zero_recorded_fallback_rule_count"], 276)
+        self.assertEqual(after["signature_calling_rule_count"], 255)
+        self.assertEqual(after["signature_compare_call_total"], 799)
+        self.assertEqual(after["signature_compare_fast_path_total"], 776)
+        self.assertEqual(after["signature_compare_generic_path_total"], 23)
+        self.assertEqual(after["signature_compare_quirk_total"], 5)
+        self.assertEqual(after["signature_compare_error_total"], 0)
+        self.assertEqual(after["signature_compare_unique_errors"], [])
+        self.assertFalse(after["detection_evidence_valid"])
+        self.assertNotIn("Binary.compare", after["fallback_path_counts"])
+
     def test_binary_lifecycle_uses_fixed_order_and_exact_overlays(self):
         lifecycle = self.reference["binary_lifecycle"]
         self.assertEqual(lifecycle["files"], 292)

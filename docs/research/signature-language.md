@@ -337,13 +337,13 @@ API 的语法调用点范围和 `byteCode` 有限值域视为闭合；跨所有�
 
 输入由
 [`generate_signature_oracle_vectors.py`](../../tools/corpus/generate_signature_oracle_vectors.py)
-生成，共 63 个项目自有向量。原始输出保存为
+生成，共 65 个项目自有向量。原始输出保存为
 [`signature-oracle-qt5.json`](data/signature-oracle-qt5.json)，自动探针
 [`probe_signature_harness.py`](../../tools/upstream/probe_signature_harness.py)
 在禁网、512 MiB、1 CPU、128 PID 限制下验证 image revision、binary hash、
-输入 identity 及 baseline 原始 bytes。当前结果 63/63，stdout/baseline
+输入 identity 及 baseline 原始 bytes。当前结果 65/65，stdout/baseline
 SHA-256 均为
-`fd8dc107545ea5eac4383af72f449617c556a679d8c7e74b844f77b39b04f222`。
+`c514f12ad6b34bf18300befbea386ee9704bb0ba7790db66e5eb5a55cd52d736`。
 
 构建与复现：
 
@@ -376,7 +376,7 @@ python tools/upstream/probe_signature_harness.py \
 - `$`、`#`、`+`、`%` 或 `*` 强制进入通用 matcher；
 - 通过判定后调用 `compareSignatureStrings`，否则调用 `compareSignature`。
 
-这不只是性能分支。5 个项目向量已端到端构造 `Binary_Script` 并调用 `compare`：
+这不只是性能分支。7 个项目向量已端到端构造 `Binary_Script` 并调用 `compare`：
 
 - 对 256-byte 输入和 invalid suffix `41x`，XBinary record matcher 会用已经形成的
   `41` record 返回 true；offset 0 和 252 满足 fast-path 条件，
@@ -385,9 +385,15 @@ python tools/upstream/probe_signature_harness.py \
   true，同时保留 `Invalid signature: 41x` diagnostic；
 - 普通 `41` 在 offset 253（fast path）和 254（严格边界回退）均返回 true，
   证明差异来自 matcher 选择而非输入字节。
+- offset `-1` 与合法 `'COLL'` 仍满足 fast-path 条件；Qt 5
+  `QString::mid(-2, ...)` 从字符串起点取值，因此 header 以 `COLL` 开头时
+  wrapper 返回 true，不匹配时返回 false。相同负偏移若被控制 token 强制送入
+  record matcher，则底层范围检查返回 false。
 
 因此 Rust Host API 不能把 `X.c` 无条件简化为 record matcher；至少 legacy
-compatibility profile 必须保留这一 wrapper-level 可观察行为。
+compatibility profile 必须保留这一 wrapper-level 可观察行为。未知字符在
+header fast path 中也只会形成 string mismatch；只有进入 generic parser 后才有
+结构化语法诊断，二者不能被合并。
 
 `compareEP` 和 `compareOverlay` 的实现又有两处不同：
 
@@ -463,8 +469,9 @@ oracle schema v2 允许每个项目自有向量显式注入 `_MEMORY_MAP`，但�
 - 独立 `find_signature` 实现覆盖 plain-hex、SigByte、control-record 三条路径，
   包括范围截断、固定/最长/类锚点和无锚点回退；19 个聚焦向量与固定 oracle
   19/19 一致，未以循环调用 raw matcher 代替搜索算法；
-- wrapper-level oracle 对 header `compare`、`compareEP`、`compareOverlay` 各覆盖
-  5 个向量并全部通过，固定了三种 cache-size/边界行为。
+- wrapper-level oracle 对 header `compare` 覆盖 7 个向量，对 `compareEP`、
+  `compareOverlay` 各覆盖 5 个向量并全部通过，固定了 cache-size、严格边界和
+  Qt 5 负位置 clamp 行为。
 
 机器摘要见
 [`signature-parser.json`](data/signature-parser.json)。
@@ -481,5 +488,6 @@ oracle schema v2 允许每个项目自有向量显式注入 `_MEMORY_MAP`，但�
    和非 PE parser，确认错误与 fallback 行为。
 5. 扩展 `find_signature` 差分到 malformed partial-parse、更多 buffer boundary
    和锚点优化组合，并验证取消行为；现有 19-case spike 不作为完整性证明。
-6. 只有 parser、matcher 和 `find_signature` 差分门禁通过后，才能替换当前
-   rquickjs spike 中的五-pattern 特判。
+6. rquickjs diagnostic 已用本 spike 替换五-pattern 特判；下一步分别实现
+   `fSig`、`findSignature`、`isSignaturePresent`，并在接入非 Binary identity
+   memory map 前保持显式诊断。

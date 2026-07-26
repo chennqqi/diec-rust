@@ -11,15 +11,15 @@
     "version": "0.12.1"
   },
   "dependency_footprint": {
-    "lockfile_packages": 23,
-    "release_executable_bytes": 1858560,
+    "lockfile_packages": 24,
+    "release_executable_bytes": 1882112,
     "target": "x86_64-pc-windows-msvc",
-    "target_packages": 18
+    "target_packages": 19
   },
   "experiment": {
-    "cargo_lock_sha256": "aa7cd4c42e1f3429f45ec31e05e41862abe6156bdbe351eeacc507673f237232",
-    "cargo_toml_sha256": "875730b205ca351b4bc0f830a1896fb6ad777c46046e6f26c9c368849614be16",
-    "source_sha256": "892573a71d7e4f4f2b589627cf56d087c54d25049a5c6e0dfb92c444b63a0d35",
+    "cargo_lock_sha256": "e03ce821c4a4c0f362d417d84752ed9ef1f775377ef9042306397aca39d21836",
+    "cargo_toml_sha256": "3a40e231c4f71f7e4e3ea1362f2dc256852b4e9201f5a2f3da41f443cdcbbfbf",
+    "source_sha256": "12f81bb615bc3e4763662843c2e938d7082b8ddb131622f67a121bb0db45ddd8",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -377,6 +377,82 @@
       "zero_recorded_fallback_rule_count": 59
     },
     "scope": "incremental HostApi gap measurement; accepted calls and detections are not compatibility evidence"
+  },
+  "binary_compare_increment": {
+    "adapter": {
+      "methods": [
+        "Binary.c",
+        "Binary.compare",
+        "X.c",
+        "X.compare"
+      ],
+      "signature_spike_path": "spikes/signature-parser",
+      "scope": "generic Binary identity memory map plus Binary_Script::compare Qt5 header wrapper; not fSig/findSignature/isSignaturePresent or format-specific memory maps",
+      "unknown_generic_syntax_is_diagnostic": true
+    },
+    "oracle": {
+      "baseline": "docs/research/data/signature-oracle-qt5.json",
+      "baseline_sha256": "c514f12ad6b34bf18300befbea386ee9704bb0ba7790db66e5eb5a55cd52d736",
+      "case_count": 65,
+      "wrapper_case_count": 7,
+      "wrapper_matched_count": 7,
+      "negative_offset_qstring_mid_clamp_observed": true,
+      "strict_header_boundary_observed": true
+    },
+    "after": {
+      "accepted_detect_count": 292,
+      "attempted_detect_count": 292,
+      "compatibility_overlay_count": 1,
+      "completed": true,
+      "detect_error_count": 0,
+      "detection_count": 10,
+      "detection_evidence_valid": false,
+      "fallback_call_total": 58,
+      "fallback_path_counts": {
+        "Binary.fSig": 3,
+        "Binary.findByte": 1,
+        "Binary.findSignature": 1,
+        "Binary.find_utf8String": 3,
+        "Binary.getFileSuffix": 7,
+        "Binary.getFileSuffix.toLowerCase": 7,
+        "Binary.getHeaderString": 5,
+        "Binary.getHeaderString.match": 1,
+        "Binary.getOverlayOffset": 1,
+        "Binary.getOverlaySize": 1,
+        "Binary.getScanID": 1,
+        "Binary.isDebugData": 1,
+        "Binary.isOverlay": 2,
+        "Binary.isPlainText": 2,
+        "Binary.isResource": 1,
+        "Binary.isSignaturePresent": 19,
+        "Binary.isText": 1,
+        "Binary.isZeroFilled": 1
+      },
+      "fallback_rule_count": 16,
+      "fallback_truncated_rule_count": 0,
+      "include_call_count": 30,
+      "signature_calling_rule_count": 255,
+      "signature_compare_call_total": 799,
+      "signature_compare_error_total": 0,
+      "signature_compare_fast_path_total": 776,
+      "signature_compare_generic_path_total": 23,
+      "signature_compare_quirk_total": 5,
+      "signature_compare_quirk_rules": {
+        "archive_CFL3.1.sg": 1,
+        "audio.1.sg": 3,
+        "format_TOT.1.sg": 1
+      },
+      "signature_compare_unique_errors": [],
+      "signature_compare_unique_quirks": [
+        "UnterminatedQuotedString { position: 5 }",
+        "UnterminatedQuotedString { position: 9 }",
+        "UnterminatedQuotedString { position: 12 }"
+      ],
+      "zero_recorded_fallback_error_count": 0,
+      "zero_recorded_fallback_rule_count": 276
+    },
+    "before_snapshot": "basic_host_api_increment.after",
+    "scope": "incremental Binary.c/compare gap measurement on the fixed 128-byte sample; accepted calls and detections are not compatibility evidence"
   },
   "isolated_eval": {
     "bytes": 2902881,

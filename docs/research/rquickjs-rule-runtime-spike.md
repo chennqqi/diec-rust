@@ -65,6 +65,15 @@ Qt 5/Qt 6 oracle 闭合 `U24`/`read_uint24` 与 `shru64` 后，调用从 387 降
 简化 `X.c` 不支持的签名模式。该结果只用于形成缺口清单，不能作为兼容率；
 完整宿主方法和跨平台 oracle 仍未覆盖，候选状态不变。
 
+随后 diagnostic HostApi 直接复用隔离的纯 Rust signature spike，实现
+`Binary.c`/`compare` 与 `X.c`/`compare`。固定 65-case Qt 5 oracle 中 wrapper
+路径 7/7 一致，包含严格 `<`、invalid suffix 和负 offset 经
+`QString::mid` clamp 到 header 起点的行为。在同一 292-rule probe 中，799 次
+compare 均返回或产生已记录 quirk：776 次 header fast path、23 次 generic、
+5 次未闭合引号 quirk、0 adapter error；292/292 个 `detect` 无异常完成。
+fallback 降到 16 条规则、58 次调用、18 条路径。代理仍可制造真假分支，因此
+10 条 detection 仍不是兼容证据。
+
 ## 实验边界
 
 验证程序位于
@@ -95,10 +104,10 @@ proxy 只用于语法/顶层执行覆盖，不代表宿主 API 兼容，也不�
 | rquickjs | 0.12.1，`default-features = false`，仅 `std` |
 | rquickjs-sys | 0.12.1，crate checksum 固定于 `Cargo.lock` |
 | Vendored engine | QuickJS-NG 0.15.1 |
-| Lockfile packages | 23 |
-| 当前 target packages | 18 |
-| Clean release build | 13,258 ms，本机已缓存下载、空 target |
-| Release executable | 1,858,560 bytes（加入 numeric HostApi fixture 后） |
+| Lockfile packages | 24 |
+| 当前 target packages | 19（`cargo metadata --filter-platform x86_64-pc-windows-msvc`） |
+| Clean release build | 13,258 ms（adapter 前记录，本机已缓存下载、空 target） |
+| Release executable | 1,882,112 bytes（接入 signature adapter 后） |
 
 `cargo +1.86.0 check --locked` 明确报告
 `rquickjs@0.12.1 requires rustc 1.87`。本实验继续复用已安装的 1.88 工具链。
@@ -107,7 +116,7 @@ proxy 只用于语法/顶层执行覆盖，不代表宿主 API 兼容，也不�
 和 `dtoa.c` 为 `libquickjs.a`；Windows MSVC 不需要运行时 QuickJS DLL，但
 构建不再是纯 Rust。crate 内含 QuickJS-NG 的 MIT `LICENSE` 和 MSVC patch。
 
-当前 Windows target 的 18 个 package 都有许可证表达式，涉及 MIT、
+当前 Windows target 的 19 个 package 都有许可证表达式，涉及 MIT、
 Apache-2.0、BSL-1.0、Unlicense 和 Zlib 组合。这是 metadata 初筛，不替代
 发布前的源码、patch、NOTICE 和二进制归属审计。
 
@@ -398,21 +407,21 @@ Underflow。将字节读取偏移改为有符号输入，并让负值安全返�
 
 基础方法及 numeric oracle 增量前后的摘要：
 
-| 指标 | 补入前 | 基础读取后 | `U24`/`shru64` 后 |
-| --- | ---: | ---: | ---: |
-| Attempted `detect` | 292 | 292 | 292 |
-| 无异常返回 | 281 | 285 | 285 |
-| 异常 | 11 | 7 | 7 |
-| 调用 fallback 的规则 | 253 | 233 | 233 |
-| Fallback 调用 | 496 | 387 | 365 |
-| 唯一 fallback 路径 | 34 | 19 | 17 |
-| 未记录 fallback 的规则 | 39 | 59 | 59 |
-| 未记录 fallback 且异常 | 0 | 0 | 0 |
-| 代理驱动产生的 detections | 122 | 153 | 153 |
+| 指标 | 补入前 | 基础读取后 | `U24`/`shru64` 后 | `c`/`compare` 后 |
+| --- | ---: | ---: | ---: | ---: |
+| Attempted `detect` | 292 | 292 | 292 | 292 |
+| 无异常返回 | 281 | 285 | 285 | 292 |
+| 异常 | 11 | 7 | 7 | 0 |
+| 调用 fallback 的规则 | 253 | 233 | 233 | 16 |
+| Fallback 调用 | 496 | 387 | 365 | 58 |
+| 唯一 fallback 路径 | 34 | 19 | 17 | 18 |
+| 未记录 fallback 的规则 | 39 | 59 | 59 | 276 |
+| 未记录 fallback 且异常 | 0 | 0 | 0 | 0 |
+| 代理驱动产生的 detections | 122 | 153 | 153 | 10 |
 
-补入后 7 个异常仍是诊断代理值或非字符串值进入结果边界，完整规则名和分类保存在
-[`rquickjs-rule-runtime.json`](data/rquickjs-rule-runtime.json)。剩余 17 条路径
-集中在签名/搜索、输入上下文和文本判断。
+`U24`/`shru64` 后的 7 个异常仍是诊断代理值或非字符串值进入结果边界；接入
+compare 后这些分支不再触发异常。完整历史快照和剩余 18 条路径保存在
+[`rquickjs-rule-runtime.json`](data/rquickjs-rule-runtime.json)。
 
 ### `U24` 与 `shru64` Qt oracle
 
@@ -443,13 +452,20 @@ pattern 静默返回 false。这不符合“不支持语法必须显式诊断”
 覆盖该动态清单，固定 XBinary oracle 又确认 `compare` 与 `fSig/find_signature`
 存在 class 和 search 分支差异。独立 Rust find 已覆盖 control-record、SigByte、
 plain-hex 三分支的 19 个聚焦差分并全部一致。`Binary_Script::compare` 的
-wrapper-level header fast path 又以 5/5 端到端向量确认：不能把 `X.c` 无条件
+wrapper-level header fast path 又以 7/7 端到端向量确认：不能把 `X.c` 无条件
 映射到 record matcher；EP 与 overlay wrapper 各 5/5 又确认 cache 长度单位和
 原始 pattern 长度都会改变结果。合成 memory-map matcher 已覆盖六类 file type，
 并与固定 oracle 7/7 一致；PE32/ELF64/Mach-O64 parser-derived map 又达到
 3/3，COM/MS-DOS/AmigaHunk 及 PE64/ELF32/Mach-O32 再达到 6/6。畸形 map、
-find 的畸形/穷举边界、无效/短小 wrapper 上下文和全调用点差分尚未完成，当前
-运行时仍不替换五-pattern 特判。
+find 的畸形/穷举边界、无效/短小 wrapper 上下文和全调用点差分尚未完成。
+
+当前 diagnostic runtime 已用这个 pure-Rust parser/matcher 替换五-pattern
+特判，并单独记录 fast/generic/quirk/error。固定样本得到 799 次 compare、
+0 error；其中 5 次未闭合引号兼容 quirk 来自 `archive_CFL3.1.sg`、`audio.1.sg`
+和 `format_TOT.1.sg`。header fast path 对未知字符仍按上游 string matcher
+返回 false；generic parser 才产生显式诊断。此接入只覆盖 generic Binary
+identity memory map，不代表 `fSig`、`findSignature`、`isSignaturePresent`
+或 PE/ELF/Mach-O 等格式专用 map。
 
 后续静态 AST inventory 已把范围从单一样本扩大到固定 `db`/`db_extra`：
 2175/2175 文件解析成功，5968 个具名 signature API 调用点中有 5855 个 literal、
@@ -458,9 +474,10 @@ find 的畸形/穷举边界、无效/短小 wrapper 上下文和全调用点差�
 97 个唯一 pattern；其余 3 个仍是输入相关 Number→QString 值域，因此仍不能据此
 替换 HostApi。
 
-285 条“无异常”及 153 条 detection 都不能作为兼容证据：代理返回的 callable
+历史快照的 285 条“无异常”及 153 条 detection，以及当前 292 条“无异常”和
+10 条 detection，都不能作为兼容证据：代理返回的 callable
 object 在 JavaScript 条件中可能为 truthy，已明显制造大量 false positive。即使
-59 条规则没有记录 fallback 调用，本轮也没有逐条 Qt oracle 结果，且代理只记录
+当前 276 条规则没有记录 fallback 调用，本轮也没有逐条 Qt oracle 结果，且代理只记录
 实际 function application，不能把“未记录”扩大解释为 HostApi 完整。该 probe
 的有效产物是可重复的缺口优先级和失败隔离机制。
 

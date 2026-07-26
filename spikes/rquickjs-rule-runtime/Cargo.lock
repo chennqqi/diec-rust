@@ -22,9 +22,14 @@ dependencies = [
 name = "diec-rquickjs-rule-runtime-spike"
 version = "0.0.0"
 dependencies = [
+ "diec-signature-parser-spike",
  "rquickjs",
  "serde_json",
 ]
+
+[[package]]
+name = "diec-signature-parser-spike"
+version = "0.0.0"
 
 [[package]]
 name = "equivalent"

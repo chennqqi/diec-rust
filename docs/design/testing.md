@@ -204,7 +204,10 @@ identity mismatch 是 `ORACLE_ERROR`，不是 Rust pass。
 初始 offset、file type/memory map、返回值/最终 offset 或错误。至少覆盖 literal、
 quoted Latin-1、wildcard、五类 byte predicate、bounded find、relative offset、
 absolute address、奇数 token、未闭合 quote、无效后缀和所有 bounds。header
-signature fast path 与通用 matcher 分开跑同一向量，差异不得被规范化隐藏。动态
+signature fast path 与通用 matcher 分开跑同一向量，覆盖严格边界、负 offset
+的 Qt 5 `QString::mid` clamp 和无效后缀；差异不得被规范化隐藏。未知语法诊断
+只适用于实际进入 generic parser 的路径，不能覆盖 header string matcher 的
+上游 false 结果。动态
 317-pattern 清单只证明一个固定样本的已执行路径，不替代全调用点 inventory。
 `compareSignature` 与 `find_signature` 必须作为两个 operation 比较；固定 oracle
 已证明 record/SigByte class table 和 search anchor 会产生不同结果，禁止用一侧

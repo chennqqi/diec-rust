@@ -33,7 +33,9 @@ commands evaluate top-level rule code only; they do not call every `detect`.
 
 `trace-binary-detects` invokes all 292 `detect` functions in that fixed order
 with a bounded diagnostic fallback. The implemented byte/string/size methods
-follow pinned XScanEngine and die_script contracts. Unknown signature patterns
-are counted explicitly rather than silently treated as a mismatch. Its
-accepted calls and emitted detections are gap-inventory data, not compatibility
-evidence.
+follow pinned XScanEngine and die_script contracts. `Binary.c`/`compare` use
+the adjacent pure-Rust signature spike and preserve the pinned Qt 5 header
+fast path, strict boundary, and negative-offset clamp; generic unknown syntax
+is an explicit diagnostic. Signature quirks and errors are counted separately.
+Its accepted calls and emitted detections are gap-inventory data, not
+compatibility evidence.

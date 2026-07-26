@@ -228,13 +228,20 @@ signature compatibility。
 387 降到 365、唯一路径由 19 降到 17；触发规则仍为 233，不能据此声称新增规则
 兼容。
 
+随后以固定 65-case Qt 5 oracle 验证的 pure-Rust adapter 替换五-pattern
+`X.c` 特判，并同时注册 `Binary.c`/`compare` 与 `X.c`/`compare`。固定样本上
+共执行 799 次 compare（776 fast、23 generic、5 个显式 quirk、0 error），
+292/292 个 `detect` 无异常完成；fallback 降为 16 条规则、58 次、18 条路径，
+未记录 fallback 的规则增至 276。代理仍会影响控制流，当前 10 条 detection
+不是兼容证据。
+
 下一轮完整 signature lifecycle probe 仍至少要满足：
 
-- 以真实 HostApi 逐项替换剩余 17 条动态 fallback 路径，并补齐
+- 以真实 HostApi 逐项替换剩余 18 条动态 fallback 路径，并补齐
   Windows/macOS 顺序；
-- 实现完整 signature parser 及独立 compare/find matcher，以固定 317-pattern
-  缺口清单和上游差分验证，不得对未知 pattern 静默返回 false；
-- 给 59 条未记录 fallback 的规则建立对应 Qt oracle，而不是按“无异常”计 pass；
+- 把已验证的独立 find matcher 接入 `fSig`/`findSignature`/
+  `isSignaturePresent`，并为格式专用 memory map 建立端到端差分；
+- 给 276 条未记录 fallback 的规则建立对应 Qt oracle，而不是按“无异常”计 pass；
 - 保存每条 rule eval、include、host call、result/error 的 trace；
 - 单条失败后验证后续规则是否继续且 metadata 已切换；
 - 以完整上游结果排序逻辑代替当前仅用于 Nintendo/EA-XA 的目标类型投影；

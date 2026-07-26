@@ -9,6 +9,7 @@ use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 use std::thread;
 use std::time::{Duration, Instant};
 
+use diec_signature_parser_spike::Pattern;
 use rquickjs::{
     CatchResultExt, Context, Error, Function, Object, Runtime, context::EvalOptions, function::Opt,
 };
@@ -77,15 +78,6 @@ const HOST_FALLBACK_SHIM: &[u8] = br#"
 const DIAGNOSTIC_HOST_FALLBACK_SHIM: &[u8] = br#"
     globalThis.__fallbackCalls = [];
     globalThis.__fallbackTotal = 0;
-    globalThis.__unsupportedSignatureCalls = [];
-    globalThis.__unsupportedSignatureTotal = 0;
-    globalThis.__supportedSignaturePatterns = [
-        "'SC'",
-        "'SCE'00",
-        "0000 0002",
-        "0300 0000",
-        "7F 'ELF' .. .. 01"
-    ];
     function __makeDiagnosticFallback(path) {
         var stub;
         stub = new Proxy(function () {
@@ -100,17 +92,6 @@ const DIAGNOSTIC_HOST_FALLBACK_SHIM: &[u8] = br#"
         });
         return stub;
     }
-    var __realSignatureCompare = Binary.c;
-    Binary.c = function (pattern) {
-        pattern = String(pattern);
-        if (__supportedSignaturePatterns.indexOf(pattern) < 0) {
-            __unsupportedSignatureTotal++;
-            if (__unsupportedSignatureCalls.length < 256) {
-                __unsupportedSignatureCalls.push(pattern);
-            }
-        }
-        return __realSignatureCompare.apply(Binary, arguments);
-    };
     Binary = new Proxy(Binary, {
         get: function (target, property) {
             if (property in target) return target[property];
@@ -152,6 +133,18 @@ const BINARY_SIGNATURE_COUNT: usize = 292;
 type Detection = (String, String, String, String);
 type NintendoLifecycleResult = (Vec<Detection>, Vec<String>, usize, Vec<String>);
 type SharedDetections = Arc<Mutex<Vec<Detection>>>;
+type SharedSignatureTrace = Arc<SignatureTrace>;
+
+#[derive(Default)]
+struct SignatureTrace {
+    calls: AtomicUsize,
+    fast_paths: AtomicUsize,
+    generic_paths: AtomicUsize,
+    quirks: AtomicUsize,
+    errors: AtomicUsize,
+    unique_quirks: Mutex<BTreeSet<String>>,
+    unique_errors: Mutex<BTreeSet<String>>,
+}
 
 fn collect_rule_files(root: &Path, output: &mut Vec<PathBuf>) -> Result<(), String> {
     let entries =
@@ -449,42 +442,78 @@ fn read_byte_array(data: &[u8], offset: i64, size: i64, replace_zero: bool) -> V
         .collect()
 }
 
-fn signature_matches(data: &[u8], pattern: &str, offset: usize) -> bool {
-    match pattern {
-        "'SC'" => data.get(offset..offset.saturating_add(2)) == Some(b"SC"),
-        "'SCE'00" => data.get(offset..offset.saturating_add(4)) == Some(b"SCE\0"),
-        "0000 0002" => data.get(offset..offset.saturating_add(4)) == Some(b"\0\0\0\x02"),
-        "0300 0000" => data.get(offset..offset.saturating_add(4)) == Some(b"\x03\0\0\0"),
-        "7F 'ELF' .. .. 01" => data
-            .get(offset..offset.saturating_add(7))
-            .is_some_and(|bytes| bytes[0] == 0x7f && &bytes[1..4] == b"ELF" && bytes[6] == 1),
-        _ => false,
-    }
-}
-
 fn install_nintendo_host(
     context: &Context,
     data: Arc<Vec<u8>>,
     detections: SharedDetections,
-) -> Result<(), String> {
+) -> Result<SharedSignatureTrace, String> {
+    let signature_trace = Arc::new(SignatureTrace::default());
+    let signature_trace_for_context = Arc::clone(&signature_trace);
     context.with(|ctx| {
         let globals = ctx.globals();
         let x = Object::new(ctx.clone()).map_err(|error| error.to_string())?;
 
-        let c_data = Arc::clone(&data);
-        x.set(
-            "c",
-            Function::new(ctx.clone(), move |pattern: String, offset: Opt<i64>| {
-                offset
-                    .0
-                    .unwrap_or(0)
-                    .try_into()
-                    .ok()
-                    .is_some_and(|offset| signature_matches(&c_data, &pattern, offset))
-            })
-            .map_err(|error| error.to_string())?,
-        )
-        .map_err(|error| error.to_string())?;
+        for name in ["c", "compare"] {
+            let compare_data = Arc::clone(&data);
+            let compare_trace = Arc::clone(&signature_trace_for_context);
+            x.set(
+                name,
+                Function::new(ctx.clone(), move |pattern: String, offset: Opt<i64>| {
+                    compare_trace.calls.fetch_add(1, Ordering::Relaxed);
+                    match Pattern::compare_binary_wrapper(
+                        &pattern,
+                        &compare_data,
+                        offset.0.unwrap_or(0),
+                    ) {
+                        Ok(report) => {
+                            if report.header_fast_path {
+                                compare_trace.fast_paths.fetch_add(1, Ordering::Relaxed);
+                            } else {
+                                compare_trace.generic_paths.fetch_add(1, Ordering::Relaxed);
+                            }
+                            compare_trace
+                                .quirks
+                                .fetch_add(report.quirks.len(), Ordering::Relaxed);
+                            if !report.quirks.is_empty() {
+                                let mut unique =
+                                    compare_trace.unique_quirks.lock().map_err(|_| {
+                                        Error::new_from_js_message(
+                                            "Binary.compare",
+                                            "boolean",
+                                            "signature quirk mutex poisoned",
+                                        )
+                                    })?;
+                                unique
+                                    .extend(report.quirks.iter().map(|quirk| format!("{quirk:?}")));
+                            }
+                            Ok(report.matched)
+                        }
+                        Err(error) => {
+                            compare_trace.errors.fetch_add(1, Ordering::Relaxed);
+                            let message = error.to_string();
+                            compare_trace
+                                .unique_errors
+                                .lock()
+                                .map_err(|_| {
+                                    Error::new_from_js_message(
+                                        "Binary.compare",
+                                        "boolean",
+                                        "signature error mutex poisoned",
+                                    )
+                                })?
+                                .insert(message.clone());
+                            Err(Error::new_from_js_message(
+                                "Binary.compare",
+                                "boolean",
+                                message,
+                            ))
+                        }
+                    }
+                })
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        }
 
         for (name, width) in [
             ("U16", 2_usize),
@@ -688,8 +717,9 @@ fn install_nintendo_host(
                 .map_err(|error| error.to_string())?,
             )
             .map_err(|error| error.to_string())?;
-        Ok(())
-    })
+        Ok::<(), String>(())
+    })?;
+    Ok(signature_trace)
 }
 
 fn install_main_include_registry(context: &Context, rule_root: &Path) -> Result<(), String> {
@@ -1441,7 +1471,7 @@ fn trace_binary_detects(
     })));
     let context = new_context(&runtime)?;
     let detections = Arc::new(Mutex::new(Vec::new()));
-    install_nintendo_host(&context, Arc::new(data), Arc::clone(&detections))?;
+    let signature_trace = install_nintendo_host(&context, Arc::new(data), Arc::clone(&detections))?;
     install_diagnostic_host_fallbacks(&context)?;
     install_main_include_registry(&context, rule_root)?;
     for relative in ["_init", "Binary/_init"] {
@@ -1459,26 +1489,44 @@ fn trace_binary_detects(
     let mut fallback_rule_count = 0;
     let mut fallback_call_total = 0_u64;
     let mut fallback_paths = BTreeSet::new();
-    let mut unsupported_signature_rule_count = 0;
-    let mut unsupported_signature_call_total = 0_u64;
-    let mut unsupported_signature_patterns = BTreeSet::new();
     for (index, name) in order.iter().enumerate() {
         let path = rule_root.join("Binary").join(name);
         let source =
             fs::read(&path).map_err(|error| format!("cannot read {}: {error}", path.display()))?;
         let (evaluated, applied) = apply_compatibility_overlay(&path, &source)?;
         overlay_count += usize::from(applied);
-        eval_unit(
-            &context,
-            b"__fallbackCalls = []; __fallbackTotal = 0; \
-              __unsupportedSignatureCalls = []; __unsupportedSignatureTotal = 0;",
-        )?;
+        eval_unit(&context, b"__fallbackCalls = []; __fallbackTotal = 0;")?;
         let detections_before = detections
             .lock()
             .map_err(|_| "Binary trace result mutex poisoned".to_owned())?
             .len();
+        let signature_calls_before = signature_trace.calls.load(Ordering::Relaxed);
+        let signature_fast_paths_before = signature_trace.fast_paths.load(Ordering::Relaxed);
+        let signature_generic_paths_before = signature_trace.generic_paths.load(Ordering::Relaxed);
+        let signature_quirks_before = signature_trace.quirks.load(Ordering::Relaxed);
+        let signature_errors_before = signature_trace.errors.load(Ordering::Relaxed);
         interrupt_ticks.store(0, Ordering::Relaxed);
         let detect_result = eval_rule_lexical(&context, &evaluated, true);
+        let signature_call_count = signature_trace
+            .calls
+            .load(Ordering::Relaxed)
+            .saturating_sub(signature_calls_before);
+        let signature_fast_path_count = signature_trace
+            .fast_paths
+            .load(Ordering::Relaxed)
+            .saturating_sub(signature_fast_paths_before);
+        let signature_generic_path_count = signature_trace
+            .generic_paths
+            .load(Ordering::Relaxed)
+            .saturating_sub(signature_generic_paths_before);
+        let signature_quirk_count = signature_trace
+            .quirks
+            .load(Ordering::Relaxed)
+            .saturating_sub(signature_quirks_before);
+        let signature_error_count = signature_trace
+            .errors
+            .load(Ordering::Relaxed)
+            .saturating_sub(signature_errors_before);
         let interrupt_handler_calls = interrupt_ticks.load(Ordering::Relaxed);
         let fallback_text = eval_string(
             &context,
@@ -1503,32 +1551,6 @@ fn trace_binary_detects(
             .checked_add(fallback_total)
             .ok_or_else(|| "fallback call total overflow".to_owned())?;
         fallback_rule_count += usize::from(fallback_total != 0);
-        let unsupported_signature_text = eval_string(
-            &context,
-            b"JSON.stringify({calls: __unsupportedSignatureCalls, \
-              total: __unsupportedSignatureTotal})",
-        )?;
-        let unsupported_signature: Value = serde_json::from_str(&unsupported_signature_text)
-            .map_err(|error| {
-                format!("cannot parse unsupported signature report for {name}: {error}")
-            })?;
-        let unsupported_signature_total = unsupported_signature
-            .get("total")
-            .and_then(Value::as_u64)
-            .ok_or_else(|| format!("unsupported signature total is missing for {name}"))?;
-        let signature_patterns = unsupported_signature
-            .get("calls")
-            .and_then(Value::as_array)
-            .ok_or_else(|| format!("unsupported signature calls are missing for {name}"))?;
-        for pattern in signature_patterns {
-            if let Some(pattern) = pattern.as_str() {
-                unsupported_signature_patterns.insert(pattern.to_owned());
-            }
-        }
-        unsupported_signature_call_total = unsupported_signature_call_total
-            .checked_add(unsupported_signature_total)
-            .ok_or_else(|| "unsupported signature call total overflow".to_owned())?;
-        unsupported_signature_rule_count += usize::from(unsupported_signature_total != 0);
         let detect_accepted = detect_result.is_ok();
         error_count += usize::from(!detect_accepted);
         let (detect_value, detect_error) = match detect_result {
@@ -1548,10 +1570,11 @@ fn trace_binary_detects(
             "fallback_call_count": fallback_total,
             "fallback_calls": calls,
             "fallback_calls_truncated": fallback_total > calls.len() as u64,
-            "unsupported_signature_call_count": unsupported_signature_total,
-            "unsupported_signature_patterns": signature_patterns,
-            "unsupported_signature_patterns_truncated":
-                unsupported_signature_total > signature_patterns.len() as u64,
+            "signature_compare_call_count": signature_call_count,
+            "signature_compare_fast_path_count": signature_fast_path_count,
+            "signature_compare_generic_path_count": signature_generic_path_count,
+            "signature_compare_quirk_count": signature_quirk_count,
+            "signature_compare_error_count": signature_error_count,
             "interrupt_handler_calls": interrupt_handler_calls,
             "detections": emitted,
         }));
@@ -1564,6 +1587,16 @@ fn trace_binary_detects(
     let include_trace: Value = serde_json::from_str(&include_trace_text)
         .map_err(|error| format!("cannot parse include trace: {error}"))?;
     let include_call_count = include_trace.as_array().map_or(0, Vec::len);
+    let signature_unique_quirks = signature_trace
+        .unique_quirks
+        .lock()
+        .map_err(|_| "signature quirk mutex poisoned".to_owned())?
+        .clone();
+    let signature_unique_errors = signature_trace
+        .unique_errors
+        .lock()
+        .map_err(|_| "signature error mutex poisoned".to_owned())?
+        .clone();
     println!(
         "{}",
         serde_json::to_string_pretty(&json!({
@@ -1587,10 +1620,15 @@ fn trace_binary_detects(
             "fallback_rule_count": fallback_rule_count,
             "fallback_call_total": fallback_call_total,
             "fallback_paths": fallback_paths,
-            "unsupported_signature_rule_count": unsupported_signature_rule_count,
-            "unsupported_signature_call_total": unsupported_signature_call_total,
-            "unsupported_signature_pattern_count": unsupported_signature_patterns.len(),
-            "unsupported_signature_patterns": unsupported_signature_patterns,
+            "signature_compare_call_total": signature_trace.calls.load(Ordering::Relaxed),
+            "signature_compare_fast_path_total":
+                signature_trace.fast_paths.load(Ordering::Relaxed),
+            "signature_compare_generic_path_total":
+                signature_trace.generic_paths.load(Ordering::Relaxed),
+            "signature_compare_quirk_total": signature_trace.quirks.load(Ordering::Relaxed),
+            "signature_compare_error_total": signature_trace.errors.load(Ordering::Relaxed),
+            "signature_compare_unique_quirks": signature_unique_quirks,
+            "signature_compare_unique_errors": signature_unique_errors,
             "detection_count": all_detections.len(),
             "detections": all_detections,
             "observations": observations,
@@ -2206,13 +2244,15 @@ mod tests {
     use super::{
         NINTENDO_COMPAT_DECLARATION, NINTENDO_RULE_BYTES, NINTENDO_VAR_DECLARATION,
         apply_compatibility_overlay, apply_exact_lifecycle_overlay, collect_rule_files,
-        eval_rule_lexical, eval_string, eval_unit, install_diagnostic_host_fallbacks, new_context,
-        new_runtime, nonnegative_index, normalized_path, parse_scope_detections,
-        parse_scope_fixture_order, read_ascii, read_byte_array, read_signed, read_unsigned,
-        shift_right_unsigned, signature_matches,
+        eval_rule_lexical, eval_string, eval_unit, install_diagnostic_host_fallbacks,
+        install_nintendo_host, new_context, new_runtime, nonnegative_index, normalized_path,
+        parse_scope_detections, parse_scope_fixture_order, read_ascii, read_byte_array,
+        read_signed, read_unsigned, shift_right_unsigned,
     };
     use std::fs;
     use std::path::PathBuf;
+    use std::sync::atomic::Ordering;
+    use std::sync::{Arc, Mutex};
     use std::time::{SystemTime, UNIX_EPOCH};
 
     fn temporary_directory() -> PathBuf {
@@ -2352,16 +2392,33 @@ mod tests {
     }
 
     #[test]
-    fn nintendo_host_matches_only_supported_signatures() {
-        let mut bytes = vec![0_u8; 32];
+    fn signature_adapter_exposes_binary_compare_and_explicit_diagnostics() {
+        let runtime = new_runtime().expect("runtime should be created");
+        let context = new_context(&runtime).expect("context should be created");
+        let mut bytes = vec![0_u8; 300];
         bytes[0..8].copy_from_slice(b"SCE\0\0\0\0\x02");
         bytes[16..23].copy_from_slice(b"\x7fELF\0\0\x01");
-        assert!(signature_matches(&bytes, "'SC'", 0));
-        assert!(signature_matches(&bytes, "'SCE'00", 0));
-        assert!(signature_matches(&bytes, "0000 0002", 4));
-        assert!(signature_matches(&bytes, "7F 'ELF' .. .. 01", 16));
-        assert!(!signature_matches(&bytes, "0300 0000", 4));
-        assert!(!signature_matches(&bytes, "unsupported", 0));
+        bytes[253] = b'A';
+        let trace =
+            install_nintendo_host(&context, Arc::new(bytes), Arc::new(Mutex::new(Vec::new())))
+                .expect("host should be installed");
+
+        assert_eq!(
+            eval_string(
+                &context,
+                br#"String(X.c("'SCE'00", 0)) + "|" +
+                    String(Binary.compare("41x", 253))"#,
+            )
+            .expect("supported signatures should be evaluated"),
+            "true|true"
+        );
+        eval_unit(&context, b"Binary.compare('unsupported', 253)")
+            .expect_err("unknown syntax must be an explicit diagnostic");
+        assert_eq!(trace.calls.load(Ordering::Relaxed), 3);
+        assert_eq!(trace.fast_paths.load(Ordering::Relaxed), 1);
+        assert_eq!(trace.generic_paths.load(Ordering::Relaxed), 1);
+        assert_eq!(trace.quirks.load(Ordering::Relaxed), 1);
+        assert_eq!(trace.errors.load(Ordering::Relaxed), 1);
     }
 
     #[test]
@@ -2403,26 +2460,12 @@ mod tests {
         install_diagnostic_host_fallbacks(&context).expect("fallback should be installed");
         eval_unit(&context, b"for (var i = 0; i < 300; i++) Binary.missing();")
             .expect("fallback calls should complete");
-        eval_unit(
-            &context,
-            b"for (var i = 0; i < 300; i++) Binary.c('unknown-' + String(i));",
-        )
-        .expect("unsupported signature calls should complete");
         assert_eq!(
             eval_string(
                 &context,
                 b"String(__fallbackTotal) + '|' + String(__fallbackCalls.length)",
             )
             .expect("fallback counters should be readable"),
-            "300|256"
-        );
-        assert_eq!(
-            eval_string(
-                &context,
-                b"String(__unsupportedSignatureTotal) + '|' + \
-                  String(__unsupportedSignatureCalls.length)",
-            )
-            .expect("unsupported signature counters should be readable"),
             "300|256"
         );
     }
