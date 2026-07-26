@@ -467,6 +467,96 @@ function reassigned() {
                 ],
             )
 
+    def test_loop_accumulation_requires_canonical_adjacent_finite_loop(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            rules = root / "rules"
+            (rules / "db").mkdir(parents=True)
+            (rules / "db_extra").mkdir()
+            (rules / "db" / "loops.sg").write_text(
+                """
+function safe() {
+    var signature = "60";
+    for (var i = 0; i < 3; i++) {
+        signature += "61";
+    }
+    X.compare(signature);
+}
+
+function dynamicLimit(limit) {
+    var signature = "62";
+    for (var i = 0; i < limit; i++) {
+        signature += "63";
+    }
+    X.compare(signature);
+}
+
+function extraBody() {
+    var signature = "64";
+    for (var i = 0; i < 2; i++) {
+        signature += "65";
+        touch();
+    }
+    X.compare(signature);
+}
+
+function nonAdjacent() {
+    var signature = "66";
+    touch();
+    for (var i = 0; i < 2; i++) {
+        signature += "67";
+    }
+    X.compare(signature);
+}
+""".lstrip(),
+                encoding="utf-8",
+            )
+            dynamic = root / "dynamic.json"
+            dynamic.write_text(
+                json.dumps(
+                    {
+                        "upstream_commit": UPSTREAM_COMMIT,
+                        "patterns": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            output = root / "inventory.json"
+            self.run_extractor(rules, dynamic, output)
+            inventory = json.loads(output.read_text(encoding="utf-8"))
+
+            self.assertEqual(
+                [
+                    call["argument_kind"]
+                    for call in inventory["calls"]
+                ],
+                [
+                    "static_expression",
+                    "dynamic",
+                    "dynamic",
+                    "dynamic",
+                ],
+            )
+            self.assertEqual(
+                inventory["calls"][0]["static_patterns"],
+                ["60616161"],
+            )
+            self.assertEqual(
+                inventory["finite_loop_accumulations"],
+                [
+                    {
+                        "path": "db/loops.sg",
+                        "function": "safe",
+                        "function_line": 1,
+                        "symbol": "signature",
+                        "loop_line": 3,
+                        "iterations": 3,
+                        "invalidation_line": None,
+                        "static_values": ["60616161"],
+                    }
+                ],
+            )
+
     def test_committed_inventory_matches_fixed_rules(self):
         with tempfile.TemporaryDirectory() as directory:
             output = pathlib.Path(directory) / "inventory.json"
@@ -536,6 +626,34 @@ function reassigned() {
                 len(inventory["finite_scoped_assignments"]),
                 5,
             )
+            self.assertEqual(
+                [
+                    (
+                        item["path"],
+                        item["symbol"],
+                        item["iterations"],
+                        item["loop_line"],
+                        item["invalidation_line"],
+                    )
+                    for item in inventory["finite_loop_accumulations"]
+                ],
+                [
+                    (
+                        "db/PE/protector_NetReactor.2.sg",
+                        "signatureToScan",
+                        5,
+                        50,
+                        83,
+                    ),
+                    (
+                        "db/PE/protector_VMProtect_NET.2.sg",
+                        "globalBigPattern",
+                        12,
+                        27,
+                        41,
+                    ),
+                ],
+            )
             self.assertIn(
                 {
                     "path": "db/Binary/audio.1.sg",
@@ -558,23 +676,23 @@ function reassigned() {
             self.assertEqual(
                 inventory["argument_kind_counts"],
                 {
-                    "dynamic": 17,
+                    "dynamic": 15,
                     "literal": 5855,
-                    "static_expression": 96,
+                    "static_expression": 98,
                 },
             )
             self.assertEqual(
                 inventory["dynamic_expression_type_counts"],
                 {
                     "Binary": 3,
-                    "SymbolRef": 14,
+                    "SymbolRef": 12,
                 },
             )
-            self.assertEqual(inventory["static_pattern_count"], 5562)
+            self.assertEqual(inventory["static_pattern_count"], 5564)
             comparison = inventory["dynamic_inventory_comparison"]
             self.assertEqual(comparison["intersection_count"], 317)
             self.assertEqual(comparison["dynamic_only_count"], 0)
-            self.assertEqual(comparison["static_only_count"], 5245)
+            self.assertEqual(comparison["static_only_count"], 5247)
 
 
 if __name__ == "__main__":

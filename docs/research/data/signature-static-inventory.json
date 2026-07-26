@@ -554,6 +554,32 @@
       ]
     }
   ],
+  "finite_loop_accumulations": [
+    {
+      "path": "db/PE/protector_NetReactor.2.sg",
+      "function": "detect",
+      "function_line": 13,
+      "symbol": "signatureToScan",
+      "loop_line": 50,
+      "iterations": 5,
+      "invalidation_line": 83,
+      "static_values": [
+        "'m_'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%00'm_'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%00'm_'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%00'm_'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%00'm_'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%00"
+      ]
+    },
+    {
+      "path": "db/PE/protector_VMProtect_NET.2.sg",
+      "function": "detect",
+      "function_line": 11,
+      "symbol": "globalBigPattern",
+      "loop_line": 27,
+      "iterations": 12,
+      "invalidation_line": 41,
+      "static_values": [
+        "00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00"
+      ]
+    }
+  ],
   "static_transform_verification_failures": [],
   "parser": {
     "name": "uglify-js",
@@ -626,11 +652,11 @@
     "isSignaturePresent": 72
   },
   "argument_kind_counts": {
-    "dynamic": 17,
+    "dynamic": 15,
     "literal": 5855,
-    "static_expression": 96
+    "static_expression": 98
   },
-  "static_pattern_count": 5562,
+  "static_pattern_count": 5564,
   "static_patterns": [
     "$$$$$$$$5589e557565383ec..8b7d..8b75..8b5d..b8........85c00f84........a1........85c00f94c025........a3",
     "$$$$$$$$55b8........57565383ec..85c08b7c24..8bb424........8b9c24........0f84........8b15........31c085d20f94c08b5424..8b4c24..a3........8d44....8b9424........a3........8915........6690",
@@ -1798,6 +1824,7 @@
     "'inst'",
     "'lock_text'00",
     "'lsfx'..02",
+    "'m_'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%00'm_'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%00'm_'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%00'm_'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%00'm_'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%00",
     "'mdt'",
     "'mflh'0100",
     "'mingw'",
@@ -1942,6 +1969,7 @@
     "00 52 53 44 53",
     "00 E2 80 ** E2 80 ** E2 80 ** E2 80 ** E2 80 ** E2 80 ** E2 80 ** E2 80 ** E2 80 ** E2 80 **",
     "00 FF00FF00 9100FF00 FF008000 92..00967F 01",
+    "00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00",
     "00'#Blob'00",
     "00'#GUID'00",
     "00'#Strings'00",
@@ -6195,10 +6223,10 @@
     "fff589e566f7c6....80c3..80eb..81ec........66c1eb..6689ed",
     "fffe2a002a002a006d0065007300730061006700650073002a002a002a00"
   ],
-  "dynamic_call_site_count": 17,
+  "dynamic_call_site_count": 15,
   "dynamic_expression_type_counts": {
     "Binary": 3,
-    "SymbolRef": 14
+    "SymbolRef": 12
   },
   "dynamic_calls": [
     {
@@ -6384,34 +6412,6 @@
       "static_patterns": []
     },
     {
-      "path": "db/PE/protector_NetReactor.2.sg",
-      "line": 54,
-      "column": 12,
-      "receiver": "PE",
-      "receiver_root": "PE",
-      "known_host_receiver": true,
-      "method": "isSignatureInSectionPresent",
-      "argument_index": 1,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "signatureToScan",
-      "static_patterns": []
-    },
-    {
-      "path": "db/PE/protector_VMProtect_NET.2.sg",
-      "line": 34,
-      "column": 12,
-      "receiver": "PE",
-      "receiver_root": "PE",
-      "known_host_receiver": true,
-      "method": "isSignaturePresent",
-      "argument_index": 2,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "globalBigPattern",
-      "static_patterns": []
-    },
-    {
       "path": "db_extra/PE/cryptor_njCrypter.2.sg",
       "line": 37,
       "column": 17,
@@ -6445,10 +6445,10 @@
     "path": "docs/research/data/signature-pattern-inventory.json",
     "sha256": "15a80990b981d6588d59818c4e6bc1947f35d076dd3dae468a1beaf8f8b27731",
     "dynamic_pattern_count": 317,
-    "static_pattern_count": 5562,
+    "static_pattern_count": 5564,
     "intersection_count": 317,
     "dynamic_only_count": 0,
-    "static_only_count": 5245,
+    "static_only_count": 5247,
     "dynamic_only_patterns": []
   },
   "calls": [
@@ -89993,10 +89993,12 @@
       "known_host_receiver": true,
       "method": "isSignatureInSectionPresent",
       "argument_index": 1,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "signatureToScan",
-      "static_patterns": []
+      "static_patterns": [
+        "'m_'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%00'm_'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%00'm_'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%00'm_'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%00'm_'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%00"
+      ]
     },
     {
       "path": "db/PE/protector_NetReactor.2.sg",
@@ -94215,10 +94217,12 @@
       "known_host_receiver": true,
       "method": "isSignaturePresent",
       "argument_index": 2,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "globalBigPattern",
-      "static_patterns": []
+      "static_patterns": [
+        "00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00%% %% %% %% %% %% %% %% 00"
+      ]
     },
     {
       "path": "db/PE/protector_VMProtect_NET.2.sg",
@@ -102287,6 +102291,7 @@
     "only path/name/source-hash verified pure string transforms are evaluated",
     "function parameters are enumerated only when a named function does not escape and every direct call argument is static",
     "function-scoped assignment values require one direct first-statement write and expire at the first direct symbol call",
+    "loop accumulation requires an adjacent initializer and canonical finite for-loop with one string += body",
     "static expression enumeration is limited to literals, finite non-escaping arrays with statically enumerable elements, single-initializer unmodified symbol references, +, conditionals, and sequences",
     "expressions exceeding the fixed static-value budget remain dynamic",
     "same-named methods on unknown receivers are retained as audit candidates"

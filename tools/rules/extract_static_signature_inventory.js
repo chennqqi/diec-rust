@@ -650,6 +650,12 @@ function inspectFile(
     const relativePath = toPosix(path.relative(rulesRoot, file));
     const ast = uglify.parse(source, { filename: relativePath });
     ast.figure_out_scope();
+    const parentByNode = new WeakMap();
+    ast.walk(
+        new uglify.TreeWalker(function (node) {
+            parentByNode.set(node, this.parent());
+        }),
+    );
     const staticTransforms = new Map();
     const verifiedStaticTransforms = [];
     const staticTransformVerificationFailures = [];
@@ -719,6 +725,7 @@ function inspectFile(
                     mutatedDefinitions.add(definitionId);
                 } else {
                     initializerCandidates.set(definitionId, {
+                        node,
                         value: node.value,
                         position: node.end.endpos,
                     });
@@ -1071,6 +1078,210 @@ function inspectFile(
             });
         }
     }
+    const finiteLoopAccumulations = [];
+    ast.walk(
+        new uglify.TreeWalker(function (node) {
+            if (!(node instanceof uglify.AST_For)) {
+                return;
+            }
+            const lambda = this.find_parent(uglify.AST_Lambda);
+            if (
+                !lambda ||
+                !(node.init instanceof uglify.AST_Var) ||
+                node.init.definitions.length !== 1 ||
+                !(node.condition instanceof uglify.AST_Binary) ||
+                node.condition.operator !== "<" ||
+                !(
+                    node.condition.left instanceof
+                    uglify.AST_SymbolRef
+                ) ||
+                !(
+                    node.step instanceof uglify.AST_UnaryPostfix
+                ) ||
+                node.step.operator !== "++" ||
+                !(
+                    node.step.expression instanceof
+                    uglify.AST_SymbolRef
+                ) ||
+                !(node.body instanceof uglify.AST_BlockStatement) ||
+                node.body.body.length !== 1 ||
+                !(
+                    node.body.body[0] instanceof
+                    uglify.AST_SimpleStatement
+                ) ||
+                !(node.body.body[0].body instanceof uglify.AST_Assign)
+            ) {
+                return;
+            }
+            const loopVariable = node.init.definitions[0];
+            const append = node.body.body[0].body;
+            if (
+                !loopVariable.name ||
+                !loopVariable.name.thedef ||
+                !loopVariable.value ||
+                !node.condition.left.thedef ||
+                node.condition.left.thedef.id !==
+                    loopVariable.name.thedef.id ||
+                !node.step.expression.thedef ||
+                node.step.expression.thedef.id !==
+                    loopVariable.name.thedef.id ||
+                append.operator !== "+=" ||
+                !(append.left instanceof uglify.AST_SymbolRef) ||
+                !append.left.thedef
+            ) {
+                return;
+            }
+            const targetDefinitionId = append.left.thedef.id;
+            const initializer = initializerCandidates.get(
+                targetDefinitionId,
+            );
+            const writes =
+                scopedWrites.get(lambda) &&
+                scopedWrites.get(lambda).get(targetDefinitionId);
+            if (
+                !initializer ||
+                !writes ||
+                writes.length !== 1 ||
+                writes[0].node !== append
+            ) {
+                return;
+            }
+            const declaration = parentByNode.get(initializer.node);
+            const statementContainer = parentByNode.get(node);
+            const statements =
+                statementContainer instanceof
+                uglify.AST_BlockStatement
+                    ? statementContainer.body
+                    : statementContainer === lambda
+                      ? lambda.body
+                      : null;
+            if (
+                !(declaration instanceof uglify.AST_Var) ||
+                declaration.definitions.length !== 1 ||
+                declaration.definitions[0] !== initializer.node ||
+                !statements ||
+                parentByNode.get(declaration) !==
+                    statementContainer
+            ) {
+                return;
+            }
+            const declarationIndex = statements.indexOf(declaration);
+            if (
+                declarationIndex < 0 ||
+                statements[declarationIndex + 1] !== node
+            ) {
+                return;
+            }
+            constantInitializers.current_lambda = lambda;
+            const startValues = staticValues(
+                uglify,
+                loopVariable.value,
+                constantInitializers,
+                new Set(),
+                node.start.pos,
+                staticTransforms,
+            );
+            const limitValues = staticValues(
+                uglify,
+                node.condition.right,
+                constantInitializers,
+                new Set(),
+                node.start.pos,
+                staticTransforms,
+            );
+            const initialValues = staticValues(
+                uglify,
+                initializer.value,
+                constantInitializers,
+                new Set(),
+                node.start.pos,
+                staticTransforms,
+            );
+            const appendValues = staticValues(
+                uglify,
+                append.right,
+                constantInitializers,
+                new Set(),
+                append.start.pos,
+                staticTransforms,
+            );
+            constantInitializers.current_lambda = null;
+            if (
+                !startValues ||
+                startValues.length !== 1 ||
+                !limitValues ||
+                limitValues.length !== 1 ||
+                !initialValues ||
+                !appendValues ||
+                initialValues.some(
+                    (value) => typeof value !== "string",
+                ) ||
+                appendValues.some(
+                    (value) => typeof value !== "string",
+                )
+            ) {
+                return;
+            }
+            const start = startValues[0];
+            const limit = limitValues[0];
+            if (
+                !Number.isSafeInteger(start) ||
+                !Number.isSafeInteger(limit) ||
+                start < 0 ||
+                limit < start ||
+                limit - start >
+                    MAX_STATIC_VALUES_PER_EXPRESSION ||
+                initialValues.length * appendValues.length >
+                    MAX_STATIC_VALUES_PER_EXPRESSION
+            ) {
+                return;
+            }
+            const iterations = limit - start;
+            const values = boundedUniqueSorted(
+                initialValues.flatMap((initialValue) =>
+                    appendValues.map(
+                        (appendValue) =>
+                            initialValue +
+                            appendValue.repeat(iterations),
+                    ),
+                ),
+            );
+            if (!values) {
+                return;
+            }
+            const calls = directSymbolCallsByLambda.get(lambda) || [];
+            const barrier = calls
+                .filter((call) => call.start.pos > node.end.endpos)
+                .reduce(
+                    (position, call) =>
+                        Math.min(position, call.start.pos),
+                    Number.POSITIVE_INFINITY,
+                );
+            if (!scopedSymbolValues.has(lambda)) {
+                scopedSymbolValues.set(lambda, new Map());
+            }
+            scopedSymbolValues.get(lambda).set(targetDefinitionId, {
+                assignment_end_position: node.end.endpos,
+                invalidation_position: barrier,
+                static_values: values,
+            });
+            finiteLoopAccumulations.push({
+                function:
+                    lambda.name && lambda.name.name
+                        ? lambda.name.name
+                        : "<anonymous>",
+                function_line: lambda.start.line,
+                symbol: append.left.name,
+                loop_line: node.start.line,
+                iterations,
+                invalidation_line: Number.isFinite(barrier)
+                    ? calls.find((call) => call.start.pos === barrier)
+                          .start.line
+                    : null,
+                static_values: values,
+            });
+        }),
+    );
     const calls = [];
     ast.walk(
         new uglify.TreeWalker(function (node) {
@@ -1138,6 +1349,7 @@ function inspectFile(
         calls,
         finite_parameter_values: [...finiteParameterValues.values()],
         finite_scoped_assignments: finiteScopedAssignments,
+        finite_loop_accumulations: finiteLoopAccumulations,
         verified_static_transforms: verifiedStaticTransforms,
         static_transform_verification_failures:
             staticTransformVerificationFailures,
@@ -1338,6 +1550,12 @@ function buildInventory(options) {
                 ...item,
             })),
         ),
+        finite_loop_accumulations: fileResults.flatMap((result) =>
+            result.finite_loop_accumulations.map((item) => ({
+                path: result.path,
+                ...item,
+            })),
+        ),
         static_transform_verification_failures: fileResults.flatMap(
             (result) =>
                 result.static_transform_verification_failures,
@@ -1383,6 +1601,7 @@ function buildInventory(options) {
             "only path/name/source-hash verified pure string transforms are evaluated",
             "function parameters are enumerated only when a named function does not escape and every direct call argument is static",
             "function-scoped assignment values require one direct first-statement write and expire at the first direct symbol call",
+            "loop accumulation requires an adjacent initializer and canonical finite for-loop with one string += body",
             "static expression enumeration is limited to literals, finite non-escaping arrays with statically enumerable elements, single-initializer unmodified symbol references, +, conditionals, and sequences",
             "expressions exceeding the fixed static-value budget remain dynamic",
             "same-named methods on unknown receivers are retained as audit candidates",
