@@ -5,7 +5,7 @@ Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
 Rules: `horsicq/Detect-It-Easy@c2c17dfa5ea4e078ba31eab55d87430c96622fb6`  
 Runtime: `horsicq/die_script@5d82316c110abf0eb863b50bc679d330e05067b6`  
 Host API: `horsicq/XScanEngine@dfe4a419e4f491bb23688ba03c5a5bf39e34da83`  
-Last updated: 2026-07-25
+Last updated: 2026-07-26
 
 ## 结论摘要
 
@@ -333,7 +333,9 @@ pattern。代理制造的结果不具兼容意义，完整 signature parser、Ho
 oracle 尚未验证。signature 的固定源码文法、实现怪癖、动态 pattern inventory 和
 纯 Rust parser spike 见
 [`signature-language.md`](signature-language.md)；兼容模式已解析动态 317/317，
-但 context-dependent matcher 与全调用点 inventory 仍未完成。
+固定 XBinary oracle 已运行 27 个 compare/find/边界向量，Rust context-free
+compare 差分 16/16；同时确认 compare 与 find 的 byte-class/search 语义不同。
+context-dependent matcher、完整 find 与全调用点 inventory 仍未完成。
 
 固定 Binary 生命周期、init/include 首个命中规则、共享 global scope 和上游
 排序比较器缺陷见

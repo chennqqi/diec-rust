@@ -171,7 +171,9 @@ Binary 规则解析出 `detect`，但完整 HostApi 下逐条调用、其他 fil
 signature parser 也不得把未知语法静默折叠为 false。固定文法与纯 Rust spike 见
 [`signature-language.md`](../research/signature-language.md)：parser 与
 context-free matcher 可以保持纯 Rust，但 relative/address 操作必须通过显式
-memory-map port 获得上下文，不能回读 runtime 或 CLI 状态。
+memory-map port 获得上下文，不能回读 runtime 或 CLI 状态。`compare_at` 与
+`find_signature` 是两个独立兼容 operation；后者的 control-record、SigByte 和
+plain-hex 分支不得由前者循环模拟。
 后续 ADR 必须基于固定规则集、宿主 API、资源中断、static link、许可证和跨平台
 实验选型。
 native runtime、FFI glue、runtime-specific handles 只存在于 `diec-rules`

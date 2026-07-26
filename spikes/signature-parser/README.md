@@ -10,11 +10,16 @@ classes, bounded find, relative-offset and absolute-address records. Unknown,
 odd-width, unbalanced, and unsupported input returns a structured error instead
 of silently becoming a mismatch.
 
-The raw matcher intentionally refuses relative-offset and absolute-address
-records because their behavior depends on the upstream format memory map,
-endianness, and file type. Those operations are parsed losslessly and require a
-future context-aware differential harness.
+The raw matcher models `compareSignature` only. It intentionally refuses
+relative-offset and absolute-address records because their behavior depends on
+the upstream format memory map, endianness, and file type. Those operations are
+parsed losslessly and require a future context-aware differential harness.
+`find_signature` is a separate operation with control-record, SigByte, and
+plain-hex branches; this spike does not approximate it by looping the raw
+matcher.
 
 Tests consume
 `docs/research/data/signature-pattern-inventory.json`, a deterministic
 inventory generated from the fixed 292-rule runtime trace.
+Additional tests compare 16 context-free cases directly with the pinned Qt 5
+XBinary harness baseline.

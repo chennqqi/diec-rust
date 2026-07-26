@@ -100,6 +100,53 @@ class SignatureParserSpikeTests(unittest.TestCase):
             "relative offset",
             spike["context_required_operations"],
         )
+        self.assertEqual(
+            spike["pinned_xbinary_compare_differential"],
+            {"case_count": 16, "matched_count": 16},
+        )
+
+    def test_signature_oracle_provenance_matches_files(self):
+        oracle = self.evidence["signature_oracle"]
+        paths = {
+            "dockerfile_sha256": (
+                ROOT
+                / "tools"
+                / "upstream"
+                / "Dockerfile.signature-harness-qt5"
+            ),
+            "harness_source_sha256": (
+                ROOT
+                / "tools"
+                / "upstream"
+                / "signature_harness_main.cpp"
+            ),
+            "probe_sha256": (
+                ROOT
+                / "tools"
+                / "upstream"
+                / "probe_signature_harness.py"
+            ),
+            "vector_generator_sha256": (
+                ROOT
+                / "tools"
+                / "corpus"
+                / "generate_signature_oracle_vectors.py"
+            ),
+            "vectors_sha256": ROOT / oracle["vectors"],
+            "baseline_sha256": ROOT / oracle["baseline"],
+        }
+        for field, path in paths.items():
+            with self.subTest(field=field):
+                self.assertEqual(
+                    hashlib.sha256(path.read_bytes()).hexdigest(),
+                    oracle[field],
+                )
+        baseline = json.loads(
+            (ROOT / oracle["baseline"]).read_text(encoding="utf-8")
+        )
+        self.assertEqual(baseline["case_count"], oracle["case_count"])
+        self.assertTrue(oracle["probe_passed"])
+        self.assertEqual(len(oracle["compare_find_divergences"]), 4)
 
 
 if __name__ == "__main__":

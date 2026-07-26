@@ -573,6 +573,24 @@ impl std::error::Error for MatchError {}
 mod tests {
     use super::{CompatibilityQuirk, MatchError, Operation, ParseErrorKind, Pattern};
     use serde_json::Value;
+    use std::collections::BTreeSet;
+
+    fn decode_hex(source: &str) -> Vec<u8> {
+        assert_eq!(source.len() % 2, 0);
+        source
+            .as_bytes()
+            .chunks_exact(2)
+            .map(|pair| (hex_test_value(pair[0]) << 4) | hex_test_value(pair[1]))
+            .collect()
+    }
+
+    fn hex_test_value(byte: u8) -> u8 {
+        match byte {
+            b'0'..=b'9' => byte - b'0',
+            b'a'..=b'f' => byte - b'a' + 10,
+            _ => panic!("invalid fixture hex byte"),
+        }
+    }
 
     #[test]
     fn parses_normalization_literals_and_wildcards() {
@@ -751,5 +769,65 @@ mod tests {
                 .count(),
             1
         );
+    }
+
+    #[test]
+    fn context_free_matches_agree_with_pinned_xbinary_oracle() {
+        let selected = BTreeSet::from([
+            "quoted_literal_and_wildcard_match",
+            "literal_mismatch",
+            "exact_match_at_eof",
+            "truncated_literal",
+            "all_byte_classes_match",
+            "decimal_class_rejects_letter",
+            "ansi_del_compare_find_divergence",
+            "not_ansi_del_compare_find_divergence",
+            "find_at_window_end",
+            "find_outside_window",
+            "odd_hex_qbytearray_behavior",
+            "unterminated_quote_behavior",
+            "odd_hex_and_zero_width_wildcard",
+            "single_wildcard_is_zero_width",
+            "single_not_null_is_zero_width_but_fails",
+            "non_latin1_quote_becomes_zero",
+        ]);
+        let oracle: Value = serde_json::from_str(include_str!(
+            "../../../docs/research/data/signature-oracle-qt5.json"
+        ))
+        .expect("oracle baseline should be valid JSON");
+        let cases = oracle["cases"]
+            .as_array()
+            .expect("oracle cases should be an array");
+        let mut compared = 0;
+        for case in cases {
+            let id = case["id"].as_str().expect("case id should be a string");
+            if !selected.contains(id) {
+                continue;
+            }
+            let source = case["pattern"]
+                .as_str()
+                .expect("pattern should be a string");
+            let data = decode_hex(
+                case["data_hex"]
+                    .as_str()
+                    .expect("data should be a hex string"),
+            );
+            let offset = case["offset"]
+                .as_u64()
+                .and_then(|value| usize::try_from(value).ok())
+                .expect("offset should fit usize");
+            let expected = case["compare"]
+                .as_bool()
+                .expect("compare result should be boolean");
+            let report = Pattern::parse_upstream_compatible(source)
+                .unwrap_or_else(|error| panic!("cannot parse {id}: {error}"));
+            assert_eq!(
+                report.pattern.matches_raw(&data, offset),
+                Ok(expected),
+                "differential mismatch for {id}"
+            );
+            compared += 1;
+        }
+        assert_eq!(compared, selected.len());
     }
 }

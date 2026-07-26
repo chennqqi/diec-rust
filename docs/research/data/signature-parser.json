@@ -36,6 +36,17 @@
         7278,
         7317
       ]
+    },
+    "find_signature": {
+      "path": "xbinary.cpp",
+      "symbols": [
+        "XBinary::_signatureToSigBytes",
+        "XBinary::find_signature"
+      ],
+      "lines": [
+        4391,
+        4658
+      ]
     }
   },
   "language": {
@@ -79,7 +90,7 @@
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)",
     "cargo_toml_sha256": "492a5c5521a832006771de28eff65052ef8475d693bfb8ca61ba150eea965b64",
     "cargo_lock_sha256": "2985224550a817be8fe4dea19a12c2db06cc21f199b985fba12fc23dedfa9279",
-    "source_sha256": "a1c6149ef1b7a8b60be3b3866dcd2aace4cf402b0fa31a0f531a80a6402f2019",
+    "source_sha256": "336c6d054f4604a31d2063928e97ed4b36c1d76c4a4c384985652d8b64e92ffa",
     "runtime_dependencies": 0,
     "strict_parse_count": 312,
     "compatible_parse_count": 317,
@@ -99,7 +110,11 @@
       "relative offset",
       "absolute address"
     ],
-    "unknown_syntax_is_diagnostic": true
+    "unknown_syntax_is_diagnostic": true,
+    "pinned_xbinary_compare_differential": {
+      "case_count": 16,
+      "matched_count": 16
+    }
   },
   "qt5_oracle": {
     "image": "diec-rust/upstream-oracle:74eaf505",
@@ -107,10 +122,37 @@
     "expression": "QByteArray::fromHex(\"abc\").toHex()",
     "result": "0abc"
   },
+  "signature_oracle": {
+    "base_image": "diec-rust/upstream-oracle-cmake:74eaf505",
+    "base_image_id": "sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040",
+    "image": "diec-rust/upstream-signature-harness:74eaf505",
+    "image_id": "sha256:2fcd4856192220fdcb3a7fb6aa797279119dda406272cfb2bd0871b724af8c2d",
+    "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "qt_version": "5.15.13",
+    "binary": "/opt/die-build/src/console/diec-signature-harness",
+    "binary_sha256": "7ac54bbb69b8167e768c394c11b0a1c733a711e476c4a594aee879749e0982ce",
+    "dockerfile_sha256": "c9c28565e2d3274edbc72d54e3bcf1b3edc0b2707749707718fcbafbf9430aa8",
+    "harness_source_sha256": "25a3a802430f0ece24caa2c23d23854a9f71c70bfca7b9cd0e359e0d684250fb",
+    "probe_sha256": "6c4d3bcfa837676109819b0b47df10a1854493c495be5f6c57f727a55ef517b8",
+    "vector_generator_sha256": "05ed0be997eea76a6368f18e7242c52dff43f227904cf9dffec4a10ac9a36880",
+    "vectors": "docs/research/data/signature-oracle-vectors.json",
+    "vectors_sha256": "96e08fddb393f8bedbf4d08c92a5038db7e513b7f7fdd5e89f3f9f8d2d55673e",
+    "baseline": "docs/research/data/signature-oracle-qt5.json",
+    "baseline_sha256": "892708c4b2b62be84ace76943f251e2c982f361224fb58b271f9eaf0fcaf6a5c",
+    "case_count": 27,
+    "probe_passed": true,
+    "compare_find_divergences": [
+      "%& accepts only digits in compare records but letters and digits in SigBytes find",
+      "compare treats 0x7f as ANSI while SigBytes find treats it as non-ANSI",
+      "a leading + record can compare at offset zero but fail find_signature anchor search",
+      "invalid hex suffixes can make validity false while compare and plain find still succeed on the parsed prefix"
+    ]
+  },
   "limitations": [
     "the 317-pattern inventory is dynamic coverage for one fixed generated sample, not a complete static corpus inventory",
-    "relative-offset and absolute-address matching requires a format memory-map differential harness",
-    "XScanEngine header-signature fast-path boundary behavior is not yet implemented or compared",
-    "all malformed-pattern compatibility quirks still require focused XBinary oracle vectors"
+    "relative-offset and absolute-address Rust matching requires format-specific memory-map vectors beyond the generic identity-map oracle cases",
+    "XScanEngine Binary_Script header-signature fast-path boundary behavior is not yet invoked end-to-end",
+    "find_signature has separate optimization branches and is not yet implemented in the Rust spike",
+    "the 27 focused vectors do not yet exhaust malformed partial-parse combinations"
   ]
 }

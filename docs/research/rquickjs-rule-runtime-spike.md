@@ -337,8 +337,9 @@ pattern 静默返回 false。这不符合“不支持语法必须显式诊断”
 还定义通配、ASCII、相对跳转等组合语法，因此不能用若干字符串特判近似
 `compare`/`fSig`；固定语法审计、317-pattern inventory 与纯 Rust parser spike
 见 [`signature-language.md`](signature-language.md)。compatibility parser 已
-覆盖该动态清单，但 memory-map matcher 和全调用点差分尚未完成，当前运行时仍不
-替换五-pattern 特判。
+覆盖该动态清单，固定 XBinary oracle 又确认 `compare` 与 `fSig/find_signature`
+存在 class 和 search 分支差异；memory-map matcher、完整 find 和全调用点差分
+尚未完成，当前运行时仍不替换五-pattern 特判。
 
 285 条“无异常”及 153 条 detection 都不能作为兼容证据：代理返回的 callable
 object 在 JavaScript 条件中可能为 truthy，已明显制造大量 false positive。即使

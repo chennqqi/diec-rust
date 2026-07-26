@@ -192,6 +192,9 @@ quoted Latin-1、wildcard、五类 byte predicate、bounded find、relative offs
 absolute address、奇数 token、未闭合 quote、无效后缀和所有 bounds。header
 signature fast path 与通用 matcher 分开跑同一向量，差异不得被规范化隐藏。动态
 317-pattern 清单只证明一个固定样本的已执行路径，不替代全调用点 inventory。
+`compareSignature` 与 `find_signature` 必须作为两个 operation 比较；固定 oracle
+已证明 record/SigByte class table 和 search anchor 会产生不同结果，禁止用一侧
+结果推断另一侧。
 
 升级上游时创建新的 baseline namespace；旧 baseline 不就地覆盖。先运行
 upstream-old vs upstream-new 报告，再决定 Rust compatibility target。

@@ -227,8 +227,8 @@ signature compatibility。
 
 - 以真实 HostApi 逐项替换剩余 19 条动态 fallback 路径，并补齐
   Windows/macOS 顺序；
-- 实现完整 signature parser，以固定 317-pattern 缺口清单和上游差分验证，不得
-  对未知 pattern 静默返回 false；
+- 实现完整 signature parser 及独立 compare/find matcher，以固定 317-pattern
+  缺口清单和上游差分验证，不得对未知 pattern 静默返回 false；
 - 给 59 条未记录 fallback 的规则建立对应 Qt oracle，而不是按“无异常”计 pass；
 - 保存每条 rule eval、include、host call、result/error 的 trace；
 - 单条失败后验证后续规则是否继续且 metadata 已切换；
