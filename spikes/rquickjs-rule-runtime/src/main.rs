@@ -133,10 +133,10 @@ const BINARY_SIGNATURE_COUNT: usize = 292;
 type Detection = (String, String, String, String);
 type NintendoLifecycleResult = (Vec<Detection>, Vec<String>, usize, Vec<String>);
 type SharedDetections = Arc<Mutex<Vec<Detection>>>;
-type SharedSignatureTrace = Arc<SignatureTrace>;
+type SharedHostTrace = Arc<HostTrace>;
 
 #[derive(Default)]
-struct SignatureTrace {
+struct HostTrace {
     calls: AtomicUsize,
     fast_paths: AtomicUsize,
     generic_paths: AtomicUsize,
@@ -153,6 +153,57 @@ struct SignatureTrace {
     search_errors: AtomicUsize,
     search_unique_quirks: Mutex<BTreeSet<String>>,
     search_unique_errors: Mutex<BTreeSet<String>>,
+    is_overlay_calls: AtomicUsize,
+    get_overlay_offset_calls: AtomicUsize,
+    get_overlay_size_calls: AtomicUsize,
+    is_overlay_present_calls: AtomicUsize,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+enum HostFilePart {
+    Header,
+    Overlay,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+struct BinaryHostContext {
+    file_part: HostFilePart,
+    overlay_offset: i64,
+    overlay_size: i64,
+}
+
+impl BinaryHostContext {
+    fn new(
+        file_part: HostFilePart,
+        overlay_offset: i64,
+        overlay_size: i64,
+    ) -> Result<Self, String> {
+        if overlay_size < 0 {
+            return Err("Binary overlay size must be non-negative".to_owned());
+        }
+        Ok(Self {
+            file_part,
+            overlay_offset,
+            overlay_size,
+        })
+    }
+
+    fn identity_header(data_len: usize) -> Result<Self, String> {
+        Self::new(
+            HostFilePart::Header,
+            i64::try_from(data_len)
+                .map_err(|_| "Binary input length does not fit qint64".to_owned())?,
+            0,
+        )
+    }
+
+    fn is_overlay(self) -> bool {
+        self.file_part == HostFilePart::Overlay
+    }
+
+    fn is_overlay_present(self) -> bool {
+        self.overlay_size != 0
+    }
 }
 
 fn collect_rule_files(root: &Path, output: &mut Vec<PathBuf>) -> Result<(), String> {
@@ -453,7 +504,7 @@ fn read_byte_array(data: &[u8], offset: i64, size: i64, replace_zero: bool) -> V
 
 fn search_signature(
     data: &[u8],
-    trace: &SignatureTrace,
+    trace: &HostTrace,
     host_name: &'static str,
     offset: i64,
     size: i64,
@@ -510,8 +561,18 @@ fn install_nintendo_host(
     context: &Context,
     data: Arc<Vec<u8>>,
     detections: SharedDetections,
-) -> Result<SharedSignatureTrace, String> {
-    let signature_trace = Arc::new(SignatureTrace::default());
+) -> Result<SharedHostTrace, String> {
+    let host_context = BinaryHostContext::identity_header(data.len())?;
+    install_nintendo_host_with_context(context, data, detections, host_context)
+}
+
+fn install_nintendo_host_with_context(
+    context: &Context,
+    data: Arc<Vec<u8>>,
+    detections: SharedDetections,
+    host_context: BinaryHostContext,
+) -> Result<SharedHostTrace, String> {
+    let signature_trace = Arc::new(HostTrace::default());
     let signature_trace_for_context = Arc::clone(&signature_trace);
     context.with(|ctx| {
         let globals = ctx.globals();
@@ -659,6 +720,63 @@ fn install_nintendo_host(
                         .map(|found| found.is_some())
                     },
                 )
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        }
+
+        {
+            let overlay_trace = Arc::clone(&signature_trace_for_context);
+            x.set(
+                "isOverlay",
+                Function::new(ctx.clone(), move || {
+                    overlay_trace
+                        .is_overlay_calls
+                        .fetch_add(1, Ordering::Relaxed);
+                    host_context.is_overlay()
+                })
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        }
+        {
+            let overlay_trace = Arc::clone(&signature_trace_for_context);
+            x.set(
+                "getOverlayOffset",
+                Function::new(ctx.clone(), move || {
+                    overlay_trace
+                        .get_overlay_offset_calls
+                        .fetch_add(1, Ordering::Relaxed);
+                    host_context.overlay_offset
+                })
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        }
+        {
+            let overlay_trace = Arc::clone(&signature_trace_for_context);
+            x.set(
+                "getOverlaySize",
+                Function::new(ctx.clone(), move || {
+                    overlay_trace
+                        .get_overlay_size_calls
+                        .fetch_add(1, Ordering::Relaxed);
+                    host_context.overlay_size
+                })
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        }
+        {
+            let overlay_trace = Arc::clone(&signature_trace_for_context);
+            x.set(
+                "isOverlayPresent",
+                Function::new(ctx.clone(), move || {
+                    overlay_trace
+                        .is_overlay_present_calls
+                        .fetch_add(1, Ordering::Relaxed);
+                    host_context.is_overlay_present()
+                })
                 .map_err(|error| error.to_string())?,
             )
             .map_err(|error| error.to_string())?;
@@ -1665,6 +1783,16 @@ fn trace_binary_detects(
             signature_trace.search_matches.load(Ordering::Relaxed);
         let signature_search_quirks_before = signature_trace.search_quirks.load(Ordering::Relaxed);
         let signature_search_errors_before = signature_trace.search_errors.load(Ordering::Relaxed);
+        let is_overlay_calls_before = signature_trace.is_overlay_calls.load(Ordering::Relaxed);
+        let get_overlay_offset_calls_before = signature_trace
+            .get_overlay_offset_calls
+            .load(Ordering::Relaxed);
+        let get_overlay_size_calls_before = signature_trace
+            .get_overlay_size_calls
+            .load(Ordering::Relaxed);
+        let is_overlay_present_calls_before = signature_trace
+            .is_overlay_present_calls
+            .load(Ordering::Relaxed);
         interrupt_ticks.store(0, Ordering::Relaxed);
         let detect_result = eval_rule_lexical(&context, &evaluated, true);
         let signature_call_count = signature_trace
@@ -1715,6 +1843,22 @@ fn trace_binary_detects(
             .search_errors
             .load(Ordering::Relaxed)
             .saturating_sub(signature_search_errors_before);
+        let is_overlay_call_count = signature_trace
+            .is_overlay_calls
+            .load(Ordering::Relaxed)
+            .saturating_sub(is_overlay_calls_before);
+        let get_overlay_offset_call_count = signature_trace
+            .get_overlay_offset_calls
+            .load(Ordering::Relaxed)
+            .saturating_sub(get_overlay_offset_calls_before);
+        let get_overlay_size_call_count = signature_trace
+            .get_overlay_size_calls
+            .load(Ordering::Relaxed)
+            .saturating_sub(get_overlay_size_calls_before);
+        let is_overlay_present_call_count = signature_trace
+            .is_overlay_present_calls
+            .load(Ordering::Relaxed)
+            .saturating_sub(is_overlay_present_calls_before);
         let interrupt_handler_calls = interrupt_ticks.load(Ordering::Relaxed);
         let fallback_text = eval_string(
             &context,
@@ -1771,6 +1915,12 @@ fn trace_binary_detects(
             "signature_search_match_count": signature_search_match_count,
             "signature_search_quirk_count": signature_search_quirk_count,
             "signature_search_error_count": signature_search_error_count,
+            "overlay_host_calls": {
+                "is_overlay": is_overlay_call_count,
+                "get_overlay_offset": get_overlay_offset_call_count,
+                "get_overlay_size": get_overlay_size_call_count,
+                "is_overlay_present": is_overlay_present_call_count,
+            },
             "interrupt_handler_calls": interrupt_handler_calls,
             "detections": emitted,
         }));
@@ -1849,6 +1999,15 @@ fn trace_binary_detects(
                 signature_trace.search_errors.load(Ordering::Relaxed),
             "signature_search_unique_quirks": signature_search_unique_quirks,
             "signature_search_unique_errors": signature_search_unique_errors,
+            "overlay_host_call_totals": {
+                "is_overlay": signature_trace.is_overlay_calls.load(Ordering::Relaxed),
+                "get_overlay_offset":
+                    signature_trace.get_overlay_offset_calls.load(Ordering::Relaxed),
+                "get_overlay_size":
+                    signature_trace.get_overlay_size_calls.load(Ordering::Relaxed),
+                "is_overlay_present":
+                    signature_trace.is_overlay_present_calls.load(Ordering::Relaxed),
+            },
             "detection_count": all_detections.len(),
             "detections": all_detections,
             "observations": observations,
@@ -2462,12 +2621,13 @@ fn main() -> ExitCode {
 #[cfg(test)]
 mod tests {
     use super::{
-        NINTENDO_COMPAT_DECLARATION, NINTENDO_RULE_BYTES, NINTENDO_VAR_DECLARATION,
-        apply_compatibility_overlay, apply_exact_lifecycle_overlay, collect_rule_files,
-        eval_rule_lexical, eval_string, eval_unit, install_diagnostic_host_fallbacks,
-        install_nintendo_host, new_context, new_runtime, nonnegative_index, normalized_path,
-        parse_scope_detections, parse_scope_fixture_order, read_ascii, read_byte_array,
-        read_signed, read_unsigned, shift_right_unsigned,
+        BinaryHostContext, HostFilePart, NINTENDO_COMPAT_DECLARATION, NINTENDO_RULE_BYTES,
+        NINTENDO_VAR_DECLARATION, apply_compatibility_overlay, apply_exact_lifecycle_overlay,
+        collect_rule_files, eval_rule_lexical, eval_string, eval_unit,
+        install_diagnostic_host_fallbacks, install_nintendo_host,
+        install_nintendo_host_with_context, new_context, new_runtime, nonnegative_index,
+        normalized_path, parse_scope_detections, parse_scope_fixture_order, read_ascii,
+        read_byte_array, read_signed, read_unsigned, shift_right_unsigned,
     };
     use std::fs;
     use std::path::PathBuf;
@@ -2651,6 +2811,57 @@ mod tests {
         assert_eq!(trace.search_matches.load(Ordering::Relaxed), 2);
         assert_eq!(trace.search_quirks.load(Ordering::Relaxed), 0);
         assert_eq!(trace.search_errors.load(Ordering::Relaxed), 1);
+    }
+
+    #[test]
+    fn overlay_host_context_keeps_file_part_and_nested_overlay_independent() {
+        let cases = [
+            (
+                vec![0_u8; 256],
+                BinaryHostContext::new(HostFilePart::Header, 256, 0)
+                    .expect("fixed context should be valid"),
+                "false|256|0|false",
+            ),
+            (
+                vec![0_u8; 1],
+                BinaryHostContext::new(HostFilePart::Overlay, 1, 0)
+                    .expect("fixed context should be valid"),
+                "true|1|0|false",
+            ),
+            (
+                vec![0_u8; 2048],
+                BinaryHostContext::new(HostFilePart::Header, 1536, 512)
+                    .expect("fixed context should be valid"),
+                "false|1536|512|true",
+            ),
+        ];
+        for (bytes, host_context, expected) in cases {
+            let runtime = new_runtime().expect("runtime should be created");
+            let context = new_context(&runtime).expect("context should be created");
+            let trace = install_nintendo_host_with_context(
+                &context,
+                Arc::new(bytes),
+                Arc::new(Mutex::new(Vec::new())),
+                host_context,
+            )
+            .expect("host should be installed");
+            assert_eq!(
+                eval_string(
+                    &context,
+                    br#"String(Binary.isOverlay()) + "|" +
+                        String(Binary.getOverlayOffset()) + "|" +
+                        String(Binary.getOverlaySize()) + "|" +
+                        String(Binary.isOverlayPresent())"#,
+                )
+                .expect("overlay HostApi should be callable"),
+                expected
+            );
+            assert_eq!(trace.is_overlay_calls.load(Ordering::Relaxed), 1);
+            assert_eq!(trace.get_overlay_offset_calls.load(Ordering::Relaxed), 1);
+            assert_eq!(trace.get_overlay_size_calls.load(Ordering::Relaxed), 1);
+            assert_eq!(trace.is_overlay_present_calls.load(Ordering::Relaxed), 1);
+        }
+        assert!(BinaryHostContext::new(HostFilePart::Header, 0, -1).is_err());
     }
 
     #[test]

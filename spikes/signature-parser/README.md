@@ -38,3 +38,7 @@ branches. Twenty-one wrapper-level cases invoke pinned
 fast paths from the record matcher at strict boundaries, including Qt 5's
 negative-position `QString::mid` clamp, and verify search range clamping plus
 the `size == -1` convention.
+The shared harness also has three overlay-context cases proving that the
+current `FILEPART_OVERLAY` state is independent from nested-overlay
+offset/size/presence. That context model belongs to the host/runtime spike,
+not this signature parser.

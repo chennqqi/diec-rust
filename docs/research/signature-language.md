@@ -337,13 +337,13 @@ API 的语法调用点范围和 `byteCode` 有限值域视为闭合；跨所有�
 
 输入由
 [`generate_signature_oracle_vectors.py`](../../tools/corpus/generate_signature_oracle_vectors.py)
-生成，共 66 个项目自有向量。原始输出保存为
+生成，共 67 个项目自有向量。原始输出保存为
 [`signature-oracle-qt5.json`](data/signature-oracle-qt5.json)，自动探针
 [`probe_signature_harness.py`](../../tools/upstream/probe_signature_harness.py)
 在禁网、512 MiB、1 CPU、128 PID 限制下验证 image revision、binary hash、
-输入 identity 及 baseline 原始 bytes。当前结果 66/66，stdout/baseline
+输入 identity 及 baseline 原始 bytes。当前结果 67/67，stdout/baseline
 SHA-256 均为
-`93689464adcf255e399623c9a672abb5def8b8c28fa840d4a7a2481237b478a5`。
+`b36b38ff3abe8224c79e2ff3b2804dde137ddf059ff1699b36c47a1634937d12`。
 
 构建与复现：
 
@@ -409,6 +409,26 @@ header fast path 中也只会形成 string mismatch；只有进入 generic parse
 memory map 调用独立 `find_signature` 实现，三个 JS HostApi 共享这一实现。负
 offset、其他负 size、零 size 和不可表示范围安全返回“未找到”，不会 panic；
 这些额外防御边界尚未作为上游兼容事实冻结。
+
+### Overlay file-part 与 nested overlay
+
+`Binary_Script::isOverlay()` 只比较构造器传入的
+`XBinary::FILEPART_OVERLAY`，表示“当前扫描对象本身是否来自 overlay”。
+`getOverlayOffset()`、`getOverlaySize()` 和 `isOverlayPresent()` 则在构造器中
+从当前 parser 的 memory map 缓存，表示“当前对象内部是否还有 nested overlay”。
+两组状态不能合并为一个布尔值。
+
+新增 3/3 个固定 wrapper 向量确认：
+
+- 256-byte 通用 Binary header：offset 256、size 0、present false、isOverlay false；
+- 1-byte 通用 Binary overlay file-part：offset 1、size 0、present false，但
+  isOverlay true；
+- 带 512-byte overlay 的 PE header：offset 1536、size 512、present true，
+  但 isOverlay false。
+
+因此 `getOverlayOffset()` 在“没有 overlay”时仍可能返回 EOF，而不是 `-1`；
+presence 必须由 size 判断。当前 rquickjs spike 用显式 `BinaryHostContext`
+分别保存 file-part、offset 和 size；正式格式 parser 仍需负责构造这些 facts。
 
 `compareEP` 和 `compareOverlay` 的实现又有两处不同：
 

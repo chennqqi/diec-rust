@@ -360,7 +360,7 @@ inventory 和纯 Rust parser spike 见
 [`signature-language.md`](signature-language.md)；兼容模式已解析动态 317/317，
 固定 AST inventory 已解析 `db`/`db_extra` 2175/2175 文件并保存 5968 个具名
 signature API 调用点：5855 个 literal、109 个可枚举静态表达式、4 个动态表达式，
-得到 5628 个静态 pattern，包含动态样本的 317/317。固定 oracle 已运行 66 个
+得到 5628 个静态 pattern，包含动态样本的 317/317。固定 oracle 已运行 67 个
 compare/find/边界向量，Rust context-free
 compare 差分 16/16、六类合成 memory-map 差分 7/7、PE32/ELF64/Mach-O64/
 COM/MS-DOS/AmigaHunk 加上 PE64/ELF32/Mach-O32 parser-derived map 差分
@@ -384,8 +384,11 @@ rquickjs diagnostic 随后复用该 pure-Rust spike 替换五-pattern `X.c` 特�
 继续接入三个 search/presence API 后实际执行 11 次搜索、1 quirk、0 error；
 真实 `false/-1` 改变后续分支，compare 增至 1179 次，291/292 个 `detect`
 无异常，fallback 为 14 条规则、39 次、15 条路径。唯一异常是随后暴露的 overlay
-API 缺口。两轮结果都只是缺口 inventory：剩余 proxy 会改变控制流，当前 5 条
-detection 不具兼容意义；格式专用 memory map 尚未接入。
+API 缺口。再用 3/3 个 wrapper 向量区分 file-part 与 nested overlay，并接入
+四个 overlay context API 后，2 次 `isOverlay=false` 短路相应规则，得到
+1109 次 compare、292/292 无异常、12 条规则 34 次 fallback 和 11 条路径。
+这些结果都只是缺口 inventory：剩余 proxy 会改变控制流，当前 4 条 detection
+不具兼容意义；格式专用 context/memory map 尚未接入。
 
 固定 Binary 生命周期、init/include 首个命中规则、共享 global scope 和上游
 排序比较器缺陷见

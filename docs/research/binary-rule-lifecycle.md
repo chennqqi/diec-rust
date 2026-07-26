@@ -228,7 +228,7 @@ signature compatibility。
 387 降到 365、唯一路径由 19 降到 17；触发规则仍为 233，不能据此声称新增规则
 兼容。
 
-随后以固定 66-case Qt 5 oracle 验证的 pure-Rust adapter 替换五-pattern
+随后以固定 67-case Qt 5 oracle 验证的 pure-Rust adapter 替换五-pattern
 `X.c` 特判，并同时注册 `Binary.c`/`compare` 与 `X.c`/`compare`。固定样本上
 共执行 799 次 compare（776 fast、23 generic、5 个显式 quirk、0 error），
 292/292 个 `detect` 无异常完成；fallback 降为 16 条规则、58 次、18 条路径，
@@ -242,13 +242,19 @@ signature compatibility。
 的规则为 278。`data_overlays.6.sg` 的唯一异常来自随后抵达的
 `isOverlay/getOverlayOffset/getOverlaySize` 缺口，不是签名搜索错误。
 
+固定 oracle 的 3/3 个 overlay HostApi 向量随后确认“当前 file-part 是 overlay”
+与“当前对象含 nested overlay”相互独立。显式 `BinaryHostContext` 接入后，两条
+规则各调用一次 `isOverlay` 并得到 false，offset/size/presence 因短路未调用；
+compare 变为 1109 次，292/292 个 `detect` 无异常，fallback 降为 12 条规则、
+34 次、11 条路径，未记录 fallback 的规则为 280。该单一 header 输入仍不能证明
+格式 parser 或实际 overlay subdevice 的 context 构造。
+
 下一轮完整 signature lifecycle probe 仍至少要满足：
 
-- 以真实 HostApi 逐项替换剩余 15 条动态 fallback 路径，优先闭合 overlay
-  offset/size/presence，并补齐
+- 以真实 HostApi 逐项替换剩余 11 条动态 fallback 路径，并补齐
   Windows/macOS 顺序；
 - 为格式专用 signature receiver 和 memory map 建立端到端差分；
-- 给 278 条未记录 fallback 的规则建立对应 Qt oracle，而不是按“无异常”计 pass；
+- 给 280 条未记录 fallback 的规则建立对应 Qt oracle，而不是按“无异常”计 pass；
 - 保存每条 rule eval、include、host call、result/error 的 trace；
 - 单条失败后验证后续规则是否继续且 metadata 已切换；
 - 以完整上游结果排序逻辑代替当前仅用于 Nintendo/EA-XA 的目标类型投影；

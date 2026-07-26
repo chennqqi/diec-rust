@@ -364,13 +364,16 @@ QJsonObject runCase(const QJsonObject &input, QString *error)
         input.value("binary_script_f_sig").toBool();
     bool invokeScriptIsSignaturePresent =
         input.value("binary_script_is_signature_present").toBool();
+    bool invokeScriptOverlayInfo =
+        input.value("binary_script_overlay_info").toBool();
     if (
         invokeScriptCompare ||
         invokeScriptCompareEp ||
         invokeScriptCompareOverlay ||
         invokeScriptFindSignature ||
         invokeScriptFSig ||
-        invokeScriptIsSignaturePresent
+        invokeScriptIsSignaturePresent ||
+        invokeScriptOverlayInfo
     ) {
         std::unique_ptr<XBinary> parsedBinary;
         XBinary *scriptBinary = &binary;
@@ -388,9 +391,24 @@ QJsonObject runCase(const QJsonObject &input, QString *error)
 
         Binary_Script::OPTIONS options = {};
         XBinary::PDSTRUCT scriptState = XBinary::createPdStruct();
+        QString scriptFilePartName =
+            input.value("binary_script_file_part").toString("header");
+        XBinary::FILEPART scriptFilePart = XBinary::FILEPART_HEADER;
+        if (scriptFilePartName == "overlay") {
+            scriptFilePart = XBinary::FILEPART_OVERLAY;
+        } else if (scriptFilePartName == "resource") {
+            scriptFilePart = XBinary::FILEPART_RESOURCE;
+        } else if (scriptFilePartName == "debugdata") {
+            scriptFilePart = XBinary::FILEPART_DEBUGDATA;
+        } else if (scriptFilePartName != "header") {
+            *error = QString(
+                "unsupported binary_script_file_part: %1"
+            ).arg(scriptFilePartName);
+            return result;
+        }
         Binary_Script script(
             scriptBinary,
-            XBinary::FILEPART_HEADER,
+            scriptFilePart,
             options,
             &scriptState
         );
@@ -485,6 +503,29 @@ QJsonObject runCase(const QJsonObject &input, QString *error)
             result.insert(
                 "binary_script_is_signature_present_result",
                 script.isSignaturePresent(findOffset, findSize, pattern)
+            );
+        }
+        if (invokeScriptOverlayInfo) {
+            result.insert("binary_script_overlay_info", true);
+            result.insert(
+                "binary_script_file_part",
+                scriptFilePartName
+            );
+            result.insert(
+                "binary_script_get_overlay_offset_result",
+                script.getOverlayOffset()
+            );
+            result.insert(
+                "binary_script_get_overlay_size_result",
+                script.getOverlaySize()
+            );
+            result.insert(
+                "binary_script_is_overlay_present_result",
+                script.isOverlayPresent()
+            );
+            result.insert(
+                "binary_script_is_overlay_result",
+                script.isOverlay()
             );
         }
         result.insert(

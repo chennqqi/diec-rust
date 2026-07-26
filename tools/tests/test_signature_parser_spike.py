@@ -429,7 +429,8 @@ class SignatureParserSpikeTests(unittest.TestCase):
         )
         self.assertEqual(baseline["case_count"], oracle["case_count"])
         self.assertTrue(oracle["probe_passed"])
-        self.assertEqual(oracle["case_count"], 66)
+        self.assertEqual(oracle["case_count"], 67)
+        self.assertEqual(oracle["binary_script_overlay_host_case_count"], 3)
         self.assertEqual(len(oracle["compare_find_divergences"]), 4)
 
 

@@ -209,7 +209,9 @@ signature fast path 与通用 matcher 分开跑同一向量，覆盖严格边界
 只适用于实际进入 generic parser 的路径，不能覆盖 header string matcher 的
 上游 false 结果。`findSignature`、`fSig` 和 `isSignaturePresent` 还需共享同一
 搜索向量，比较超长范围裁剪、`size == -1`、未找到 offset 与布尔投影，防止三个
-adapter 漂移。动态
+adapter 漂移。overlay context 向量必须正交组合当前 file-part 与当前 parser
+内部 nested overlay，分别比较 `isOverlay`、offset、size 和 presence，禁止用
+单一 `has_overlay` 标志代替。动态
 317-pattern 清单只证明一个固定样本的已执行路径，不替代全调用点 inventory。
 `compareSignature` 与 `find_signature` 必须作为两个 operation 比较；固定 oracle
 已证明 record/SigByte class table 和 search anchor 会产生不同结果，禁止用一侧

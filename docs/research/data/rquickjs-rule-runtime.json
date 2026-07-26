@@ -12,14 +12,14 @@
   },
   "dependency_footprint": {
     "lockfile_packages": 24,
-    "release_executable_bytes": 1908224,
+    "release_executable_bytes": 1916928,
     "target": "x86_64-pc-windows-msvc",
     "target_packages": 19
   },
   "experiment": {
     "cargo_lock_sha256": "e03ce821c4a4c0f362d417d84752ed9ef1f775377ef9042306397aca39d21836",
     "cargo_toml_sha256": "3a40e231c4f71f7e4e3ea1362f2dc256852b4e9201f5a2f3da41f443cdcbbfbf",
-    "source_sha256": "caa1e5f6f1d9941e12e30fa30af8fdd3797ebba399269e99ebf57926b6703a16",
+    "source_sha256": "c5ec12a7efe09e3636dbd39b6068b920da2d71ec711b3f1b48cdef655a519ebf",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -392,8 +392,8 @@
     },
     "oracle": {
       "baseline": "docs/research/data/signature-oracle-qt5.json",
-      "baseline_sha256": "93689464adcf255e399623c9a672abb5def8b8c28fa840d4a7a2481237b478a5",
-      "case_count": 66,
+      "baseline_sha256": "b36b38ff3abe8224c79e2ff3b2804dde137ddf059ff1699b36c47a1634937d12",
+      "case_count": 67,
       "wrapper_case_count": 7,
       "wrapper_matched_count": 7,
       "negative_offset_qstring_mid_clamp_observed": true,
@@ -470,8 +470,8 @@
     },
     "oracle": {
       "baseline": "docs/research/data/signature-oracle-qt5.json",
-      "baseline_sha256": "93689464adcf255e399623c9a672abb5def8b8c28fa840d4a7a2481237b478a5",
-      "case_count": 66,
+      "baseline_sha256": "b36b38ff3abe8224c79e2ff3b2804dde137ddf059ff1699b36c47a1634937d12",
+      "case_count": 67,
       "wrapper_case_count": 4,
       "wrapper_matched_count": 4,
       "oversized_range_clamp_observed": true,
@@ -542,6 +542,92 @@
     "branch_effect": "real false/-1 search results replace truthy fallback proxies, so later compare/fallback/detection counts are a new execution path and are not an arithmetic subtraction from the prior snapshot",
     "remaining_error": "data_overlays.6.sg reaches unimplemented Binary.isOverlay/getOverlayOffset/getOverlaySize; this is an overlay HostApi gap, not a signature adapter error",
     "scope": "incremental Binary fSig/findSignature/isSignaturePresent gap measurement on the fixed 128-byte sample; accepted calls and detections are not compatibility evidence"
+  },
+  "overlay_host_increment": {
+    "adapter": {
+      "context_model": "BinaryHostContext",
+      "file_part_is_independent_from_nested_overlay": true,
+      "methods": [
+        "Binary.getOverlayOffset",
+        "Binary.getOverlaySize",
+        "Binary.isOverlay",
+        "Binary.isOverlayPresent",
+        "X.getOverlayOffset",
+        "X.getOverlaySize",
+        "X.isOverlay",
+        "X.isOverlayPresent"
+      ]
+    },
+    "oracle": {
+      "baseline": "docs/research/data/signature-oracle-qt5.json",
+      "baseline_sha256": "b36b38ff3abe8224c79e2ff3b2804dde137ddf059ff1699b36c47a1634937d12",
+      "case_count": 67,
+      "overlay_host_case_count": 3,
+      "overlay_host_matched_count": 3,
+      "contexts": [
+        "generic Binary header without nested overlay",
+        "generic Binary overlay file-part without nested overlay",
+        "PE header with a 512-byte nested overlay"
+      ]
+    },
+    "after": {
+      "accepted_detect_count": 292,
+      "attempted_detect_count": 292,
+      "compatibility_overlay_count": 1,
+      "completed": true,
+      "detect_error_count": 0,
+      "detection_count": 4,
+      "detection_evidence_valid": false,
+      "error_rules": [],
+      "fallback_call_total": 34,
+      "fallback_path_counts": {
+        "Binary.findByte": 1,
+        "Binary.find_utf8String": 3,
+        "Binary.getFileSuffix": 9,
+        "Binary.getFileSuffix.toLowerCase": 9,
+        "Binary.getHeaderString": 5,
+        "Binary.getHeaderString.match": 1,
+        "Binary.getScanID": 1,
+        "Binary.isDebugData": 1,
+        "Binary.isPlainText": 2,
+        "Binary.isResource": 1,
+        "Binary.isText": 1
+      },
+      "fallback_rule_count": 12,
+      "fallback_truncated_rule_count": 0,
+      "include_call_count": 30,
+      "overlay_host_calling_rules": [
+        "data_overlay_null_padding.1.sg",
+        "data_overlays.6.sg"
+      ],
+      "overlay_host_call_totals": {
+        "getOverlayOffset": 0,
+        "getOverlaySize": 0,
+        "isOverlay": 2,
+        "isOverlayPresent": 0
+      },
+      "signature_calling_rule_count": 254,
+      "signature_compare_call_total": 1109,
+      "signature_compare_error_total": 0,
+      "signature_compare_fast_path_total": 1047,
+      "signature_compare_generic_path_total": 62,
+      "signature_compare_quirk_total": 5,
+      "signature_search_call_total": 11,
+      "signature_search_calling_rule_count": 4,
+      "signature_search_error_total": 0,
+      "signature_search_match_total": 0,
+      "signature_search_method_call_totals": {
+        "fSig": 5,
+        "findSignature": 0,
+        "isSignaturePresent": 6
+      },
+      "signature_search_quirk_total": 1,
+      "zero_recorded_fallback_error_count": 0,
+      "zero_recorded_fallback_rule_count": 280
+    },
+    "before_snapshot": "signature_search_increment.after",
+    "branch_effect": "isOverlay returned false for the top-level header context and short-circuited both overlay rules; getOverlayOffset/getOverlaySize therefore remained registered but uncalled on this fixed input, and compare calls changed from 1179 to 1109",
+    "scope": "incremental generic Binary overlay-context HostApi gap measurement on one top-level header sample; format-specific context construction and overlay subdevice scans remain outside this result"
   },
   "isolated_eval": {
     "bytes": 2902881,

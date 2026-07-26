@@ -297,7 +297,7 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
             hashlib.sha256(baseline.read_bytes()).hexdigest(),
             oracle["baseline_sha256"],
         )
-        self.assertEqual(oracle["case_count"], 66)
+        self.assertEqual(oracle["case_count"], 67)
         self.assertEqual(oracle["wrapper_case_count"], 7)
         self.assertEqual(oracle["wrapper_matched_count"], 7)
         self.assertTrue(oracle["negative_offset_qstring_mid_clamp_observed"])
@@ -329,7 +329,7 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
             hashlib.sha256(baseline.read_bytes()).hexdigest(),
             oracle["baseline_sha256"],
         )
-        self.assertEqual(oracle["case_count"], 66)
+        self.assertEqual(oracle["case_count"], 67)
         self.assertEqual(oracle["wrapper_case_count"], 4)
         self.assertEqual(oracle["wrapper_matched_count"], 4)
         self.assertTrue(oracle["oversized_range_clamp_observed"])
@@ -375,6 +375,64 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
         ):
             self.assertNotIn(method, after["fallback_path_counts"])
         self.assertIn("truthy fallback proxies", increment["branch_effect"])
+
+    def test_overlay_host_increment_separates_context_and_nested_overlay(self):
+        increment = self.reference["overlay_host_increment"]
+        oracle = increment["oracle"]
+        baseline = ROOT / oracle["baseline"]
+        self.assertEqual(
+            hashlib.sha256(baseline.read_bytes()).hexdigest(),
+            oracle["baseline_sha256"],
+        )
+        self.assertEqual(oracle["case_count"], 67)
+        self.assertEqual(oracle["overlay_host_case_count"], 3)
+        self.assertEqual(oracle["overlay_host_matched_count"], 3)
+        self.assertTrue(
+            increment["adapter"]["file_part_is_independent_from_nested_overlay"]
+        )
+        after = increment["after"]
+        self.assertEqual(after["attempted_detect_count"], 292)
+        self.assertEqual(after["accepted_detect_count"], 292)
+        self.assertEqual(after["detect_error_count"], 0)
+        self.assertEqual(after["error_rules"], [])
+        self.assertEqual(after["include_call_count"], 30)
+        self.assertEqual(after["fallback_rule_count"], 12)
+        self.assertEqual(after["fallback_call_total"], 34)
+        self.assertEqual(sum(after["fallback_path_counts"].values()), 34)
+        self.assertEqual(len(after["fallback_path_counts"]), 11)
+        self.assertEqual(after["fallback_truncated_rule_count"], 0)
+        self.assertEqual(after["zero_recorded_fallback_rule_count"], 280)
+        self.assertEqual(after["zero_recorded_fallback_error_count"], 0)
+        self.assertEqual(
+            after["overlay_host_call_totals"],
+            {
+                "getOverlayOffset": 0,
+                "getOverlaySize": 0,
+                "isOverlay": 2,
+                "isOverlayPresent": 0,
+            },
+        )
+        self.assertEqual(len(after["overlay_host_calling_rules"]), 2)
+        self.assertEqual(after["signature_calling_rule_count"], 254)
+        self.assertEqual(after["signature_compare_call_total"], 1109)
+        self.assertEqual(after["signature_compare_fast_path_total"], 1047)
+        self.assertEqual(after["signature_compare_generic_path_total"], 62)
+        self.assertEqual(after["signature_compare_quirk_total"], 5)
+        self.assertEqual(after["signature_compare_error_total"], 0)
+        self.assertEqual(after["signature_search_call_total"], 11)
+        self.assertEqual(after["signature_search_calling_rule_count"], 4)
+        self.assertEqual(after["signature_search_match_total"], 0)
+        self.assertEqual(after["signature_search_quirk_total"], 1)
+        self.assertEqual(after["signature_search_error_total"], 0)
+        self.assertFalse(after["detection_evidence_valid"])
+        for method in (
+            "Binary.getOverlayOffset",
+            "Binary.getOverlaySize",
+            "Binary.isOverlay",
+            "Binary.isOverlayPresent",
+        ):
+            self.assertNotIn(method, after["fallback_path_counts"])
+        self.assertIn("short-circuited", increment["branch_effect"])
 
     def test_binary_lifecycle_uses_fixed_order_and_exact_overlays(self):
         lifecycle = self.reference["binary_lifecycle"]

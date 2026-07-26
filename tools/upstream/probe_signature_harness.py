@@ -16,6 +16,11 @@ EXPECTED_OBSERVATIONS = {
     "binary_script_fast_path_invalid_suffix": {
         "compare": True,
         "binary_script_compare_result": False,
+        "binary_script_file_part": "header",
+        "binary_script_get_overlay_offset_result": 256,
+        "binary_script_get_overlay_size_result": 0,
+        "binary_script_is_overlay_present_result": False,
+        "binary_script_is_overlay_result": False,
     },
     "binary_script_fast_path_before_strict_boundary": {
         "compare": True,
@@ -40,6 +45,13 @@ EXPECTED_OBSERVATIONS = {
     "binary_script_negative_offset_clamp_can_mismatch": {
         "compare": False,
         "binary_script_compare_result": False,
+    },
+    "binary_script_overlay_file_part_without_nested_overlay": {
+        "binary_script_file_part": "overlay",
+        "binary_script_get_overlay_offset_result": 1,
+        "binary_script_get_overlay_size_result": 0,
+        "binary_script_is_overlay_present_result": False,
+        "binary_script_is_overlay_result": True,
     },
     "binary_script_ep_fast_path_invalid_suffix": {
         "binary_script_parser_valid": True,
@@ -69,6 +81,11 @@ EXPECTED_OBSERVATIONS = {
         "binary_script_overlay_size": 512,
         "binary_compare_overlay_result": True,
         "binary_script_compare_overlay_result": False,
+        "binary_script_file_part": "header",
+        "binary_script_get_overlay_offset_result": 1536,
+        "binary_script_get_overlay_size_result": 512,
+        "binary_script_is_overlay_present_result": True,
+        "binary_script_is_overlay_result": False,
     },
     "binary_script_overlay_cache_overrun_fast_path": {
         "binary_compare_overlay_result": True,
@@ -292,6 +309,8 @@ def validate_baseline(
             "binary_script_find_signature",
             "binary_script_f_sig",
             "binary_script_is_signature_present",
+            "binary_script_overlay_info",
+            "binary_script_file_part",
             "binary_script_parser",
         ):
             if field in vector and actual.get(field) != vector.get(field):

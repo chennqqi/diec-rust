@@ -66,7 +66,7 @@ Qt 5/Qt 6 oracle 闭合 `U24`/`read_uint24` 与 `shru64` 后，调用从 387 降
 完整宿主方法和跨平台 oracle 仍未覆盖，候选状态不变。
 
 随后 diagnostic HostApi 直接复用隔离的纯 Rust signature spike，实现
-`Binary.c`/`compare` 与 `X.c`/`compare`。固定 66-case Qt 5 oracle 中 compare wrapper
+`Binary.c`/`compare` 与 `X.c`/`compare`。固定 67-case Qt 5 oracle 中 compare wrapper
 路径 7/7 一致，包含严格 `<`、invalid suffix 和负 offset 经
 `QString::mid` clamp 到 header 起点的行为。在同一 292-rule probe 中，799 次
 compare 均返回或产生已记录 quirk：776 次 header fast path、23 次 generic、
@@ -83,6 +83,14 @@ compare 增至 1179 次，291/292 条 `detect` 无异常，fallback 为 14 条�
 39 次、15 条路径。唯一异常 `data_overlays.6.sg` 来自随后抵达的
 `isOverlay/getOverlayOffset/getOverlaySize` 缺口，不是签名搜索错误；5 条
 detection 仍不构成兼容证据。
+
+固定 oracle 的 3/3 个 overlay HostApi 向量进一步证明 file-part 与 nested
+overlay 是两组独立状态。`BinaryHostContext` 接入 `isOverlay`、
+`getOverlayOffset/Size` 和 `isOverlayPresent` 后，当前 top-level header 只执行
+2 次 `isOverlay`，均为 false，另外三个方法因规则短路未调用。结果恢复为
+292/292 无异常；fallback 为 12 条规则、34 次、11 条路径，未记录 fallback
+规则为 280。短路又使 compare 从 1179 变为 1109；4 条 detection 仍不构成
+兼容证据。该输入不证明 PE/ELF 等格式 context 或实际 overlay subdevice 的构造。
 
 ## 实验边界
 
@@ -117,7 +125,7 @@ proxy 只用于语法/顶层执行覆盖，不代表宿主 API 兼容，也不�
 | Lockfile packages | 24 |
 | 当前 target packages | 19（`cargo metadata --filter-platform x86_64-pc-windows-msvc`） |
 | Clean release build | 13,258 ms（adapter 前记录，本机已缓存下载、空 target） |
-| Release executable | 1,908,224 bytes（接入 compare + search adapter 后） |
+| Release executable | 1,916,928 bytes（接入 compare、search 与 overlay context 后） |
 
 `cargo +1.86.0 check --locked` 明确报告
 `rquickjs@0.12.1 requires rustc 1.87`。本实验继续复用已安装的 1.88 工具链。
@@ -417,21 +425,22 @@ Underflow。将字节读取偏移改为有符号输入，并让负值安全返�
 
 基础方法及 numeric oracle 增量前后的摘要：
 
-| 指标 | 补入前 | 基础读取后 | `U24`/`shru64` 后 | `c`/`compare` 后 | search/presence 后 |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| Attempted `detect` | 292 | 292 | 292 | 292 | 292 |
-| 无异常返回 | 281 | 285 | 285 | 292 | 291 |
-| 异常 | 11 | 7 | 7 | 0 | 1 |
-| 调用 fallback 的规则 | 253 | 233 | 233 | 16 | 14 |
-| Fallback 调用 | 496 | 387 | 365 | 58 | 39 |
-| 唯一 fallback 路径 | 34 | 19 | 17 | 18 | 15 |
-| 未记录 fallback 的规则 | 39 | 59 | 59 | 276 | 278 |
-| 未记录 fallback 且异常 | 0 | 0 | 0 | 0 | 0 |
-| 代理影响下产生的 detections | 122 | 153 | 153 | 10 | 5 |
+| 指标 | 补入前 | 基础读取后 | `U24`/`shru64` 后 | `c`/`compare` 后 | search/presence 后 | overlay context 后 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Attempted `detect` | 292 | 292 | 292 | 292 | 292 | 292 |
+| 无异常返回 | 281 | 285 | 285 | 292 | 291 | 292 |
+| 异常 | 11 | 7 | 7 | 0 | 1 | 0 |
+| 调用 fallback 的规则 | 253 | 233 | 233 | 16 | 14 | 12 |
+| Fallback 调用 | 496 | 387 | 365 | 58 | 39 | 34 |
+| 唯一 fallback 路径 | 34 | 19 | 17 | 18 | 15 | 11 |
+| 未记录 fallback 的规则 | 39 | 59 | 59 | 276 | 278 | 280 |
+| 未记录 fallback 且异常 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 代理影响下产生的 detections | 122 | 153 | 153 | 10 | 5 | 4 |
 
 `U24`/`shru64` 后的 7 个异常仍是诊断代理值或非字符串值进入结果边界；接入
 compare 后这些分支不再触发异常；search/presence 的真实假值又让 overlay
-分支暴露一个后续缺口。完整历史快照和剩余 15 条路径保存在
+分支暴露一个后续缺口；显式 overlay context 随后闭合该异常。完整历史快照和
+剩余 11 条路径保存在
 [`rquickjs-rule-runtime.json`](data/rquickjs-rule-runtime.json)。
 
 ### `U24` 与 `shru64` Qt oracle
@@ -474,7 +483,9 @@ find 的畸形/穷举边界、无效/短小 wrapper 上下文和全调用点差�
 特判，并单独记录 compare 与 search 的 call/fast/generic/quirk/error。接入
 search 前固定样本得到 799 次 compare、0 error；接入后因真实搜索假值改变控制流，
 得到 1179 次 compare（1115 fast、64 generic、5 quirk、0 error）和 11 次
-search（0 match、1 quirk、0 error）。header fast path 对未知字符仍按上游
+search（0 match、1 quirk、0 error）。overlay context 再次改变分支，最终为
+1109 次 compare（1047 fast、62 generic、5 quirk、0 error），search 计数不变。
+header fast path 对未知字符仍按上游
 string matcher 返回 false；generic parser/search 才产生显式诊断。此接入只覆盖
 generic Binary identity memory map，不代表 PE/ELF/Mach-O 等格式专用 map。
 
@@ -485,10 +496,11 @@ generic Binary identity memory map，不代表 PE/ELF/Mach-O 等格式专用 map
 97 个唯一 pattern；其余 3 个仍是输入相关 Number→QString 值域，因此仍不能据此
 替换 HostApi。
 
-历史快照的 285 条“无异常”及 153 条 detection、compare 增量的 292/10，以及
-当前 search 增量的 291/5，都不能作为兼容证据：代理返回的 callable
+历史快照的 285 条“无异常”及 153 条 detection、compare 增量的 292/10、
+search 增量的 291/5，以及当前 overlay 增量的 292/4，都不能作为兼容证据：
+代理返回的 callable
 object 在 JavaScript 条件中可能为 truthy，已明显制造大量 false positive。即使
-当前 278 条规则没有记录 fallback 调用，本轮也没有逐条 Qt oracle 结果，且代理只记录
+当前 280 条规则没有记录 fallback 调用，本轮也没有逐条 Qt oracle 结果，且代理只记录
 实际 function application，不能把“未记录”扩大解释为 HostApi 完整。该 probe
 的有效产物是可重复的缺口优先级和失败隔离机制。
 
@@ -552,7 +564,7 @@ Nintendo 的单脚本语法 overlay，`audio` 和 MiniExtensions 的跨规则 ov
 | 外部 interrupt | 未发现公开接口 | 跨线程 token 已中断并同 context 恢复 |
 | Heap limit | 未发现公开接口 | 支持默认 allocator |
 | Windows target packages | 126 | 19 |
-| Release spike | 11,784,192 bytes | 1,908,224 bytes |
+| Release spike | 11,784,192 bytes | 1,916,928 bytes |
 | 实现语言 | 纯 Rust | Rust wrapper + vendored C |
 | 本轮工具链 | Rust 1.88 | 最低 1.87，本轮 1.88 |
 

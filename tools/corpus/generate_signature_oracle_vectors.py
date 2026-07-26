@@ -10,7 +10,7 @@ from pathlib import Path
 
 
 SCHEMA_VERSION = 2
-GENERATOR_VERSION = 10
+GENERATOR_VERSION = 11
 UPSTREAM_COMMIT = "74eaf505c250ab47e709024e9dc41657cd8f2254"
 FORMATS_COMMIT = "1151e7254fdee3c0294ff7095edbdd7bfccf8201"
 
@@ -642,6 +642,7 @@ def vectors() -> list[dict[str, object]]:
             "pattern": "41x",
             "data_hex": "41" + ("00" * 255),
             "binary_script_compare": True,
+            "binary_script_overlay_info": True,
         },
         {
             "id": "binary_script_fast_path_before_strict_boundary",
@@ -684,6 +685,13 @@ def vectors() -> list[dict[str, object]]:
             "data_hex": "00434f4c4c" + ("00" * 251),
             "offset": -1,
             "binary_script_compare": True,
+        },
+        {
+            "id": "binary_script_overlay_file_part_without_nested_overlay",
+            "pattern": "41",
+            "data_hex": "41",
+            "binary_script_overlay_info": True,
+            "binary_script_file_part": "overlay",
         },
         {
             "id": "binary_script_ep_fast_path_invalid_suffix",
@@ -730,6 +738,7 @@ def vectors() -> list[dict[str, object]]:
             "data_hex": mapped_pe32_with_overlay().hex(),
             "binary_script_parser": "pe",
             "binary_script_compare_overlay": True,
+            "binary_script_overlay_info": True,
         },
         {
             "id": "binary_script_overlay_cache_overrun_fast_path",

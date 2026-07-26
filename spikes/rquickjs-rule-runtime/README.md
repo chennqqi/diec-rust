@@ -39,6 +39,8 @@ fast path, strict boundary, and negative-offset clamp; generic unknown syntax
 is an explicit diagnostic. `fSig`, `findSignature`, and
 `isSignaturePresent` share the same oracle-backed pure-Rust search adapter,
 including EOF range clamping and `size == -1`. Compare and search calls,
-quirks, and errors are counted separately.
+quirks, and errors are counted separately. Overlay methods consume an explicit
+`BinaryHostContext` whose current file-part is independent from the current
+parser's nested-overlay offset and size; their calls are traced separately.
 Its accepted calls and emitted detections are gap-inventory data, not
 compatibility evidence.
