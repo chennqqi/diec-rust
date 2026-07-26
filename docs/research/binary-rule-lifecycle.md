@@ -216,14 +216,20 @@ wrapper-loss 零候选。在该 selected probe 中，非目标规则只执行了
 调用 `detect`。
 
 全 Binary diagnostic probe 又按该顺序逐条尝试了 292 个 `detect`，并在单条异常
-后继续执行。它得到 281 条无异常、11 条异常，但 253 条规则实际调用了缺失
-HostApi 的 fallback；代理还制造了 122 条无效 detection。因此该实验完成的是
-动态缺口 inventory，不是完整 signature compatibility。
+后继续执行。首轮得到 281 条无异常、11 条异常，253 条规则调用 34 类缺失
+HostApi。按固定上游契约补入基础整数、字符串、字节数组、size 和 `Util.div64`
+后，结果改善为 285 条无异常、7 条异常，但仍有 233 条规则调用 19 类 fallback；
+代理制造的 153 条 detection 仍然无效。此外 32 条规则调用了 317 种简化 `X.c`
+未支持的签名 pattern。因此该实验完成的是动态缺口 inventory，不是完整
+signature compatibility。
 
 下一轮完整 signature lifecycle probe 仍至少要满足：
 
-- 以真实 HostApi 逐项替换 34 条动态 fallback 路径，并补齐 Windows/macOS 顺序；
-- 给 39 条未记录 fallback 的规则建立对应 Qt oracle，而不是按“无异常”计 pass；
+- 以真实 HostApi 逐项替换剩余 19 条动态 fallback 路径，并补齐
+  Windows/macOS 顺序；
+- 实现完整 signature parser，以固定 317-pattern 缺口清单和上游差分验证，不得
+  对未知 pattern 静默返回 false；
+- 给 59 条未记录 fallback 的规则建立对应 Qt oracle，而不是按“无异常”计 pass；
 - 保存每条 rule eval、include、host call、result/error 的 trace；
 - 单条失败后验证后续规则是否继续且 metadata 已切换；
 - 以完整上游结果排序逻辑代替当前仅用于 Nintendo/EA-XA 的目标类型投影；

@@ -28,3 +28,10 @@ context, and applies three path/size/declaration-pinned, length-preserving
 legacy overlays. `eval-binary-lifecycle-raw` runs the same sequence unchanged
 and intentionally reports the three known modern-JavaScript failures. These
 commands evaluate top-level rule code only; they do not call every `detect`.
+
+`trace-binary-detects` invokes all 292 `detect` functions in that fixed order
+with a bounded diagnostic fallback. The implemented byte/string/size methods
+follow pinned XScanEngine and die_script contracts. Unknown signature patterns
+are counted explicitly rather than silently treated as a mismatch. Its
+accepted calls and emitted detections are gap-inventory data, not compatibility
+evidence.

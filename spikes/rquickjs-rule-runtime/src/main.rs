@@ -76,6 +76,15 @@ const HOST_FALLBACK_SHIM: &[u8] = br#"
 const DIAGNOSTIC_HOST_FALLBACK_SHIM: &[u8] = br#"
     globalThis.__fallbackCalls = [];
     globalThis.__fallbackTotal = 0;
+    globalThis.__unsupportedSignatureCalls = [];
+    globalThis.__unsupportedSignatureTotal = 0;
+    globalThis.__supportedSignaturePatterns = [
+        "'SC'",
+        "'SCE'00",
+        "0000 0002",
+        "0300 0000",
+        "7F 'ELF' .. .. 01"
+    ];
     function __makeDiagnosticFallback(path) {
         var stub;
         stub = new Proxy(function () {
@@ -90,6 +99,17 @@ const DIAGNOSTIC_HOST_FALLBACK_SHIM: &[u8] = br#"
         });
         return stub;
     }
+    var __realSignatureCompare = Binary.c;
+    Binary.c = function (pattern) {
+        pattern = String(pattern);
+        if (__supportedSignaturePatterns.indexOf(pattern) < 0) {
+            __unsupportedSignatureTotal++;
+            if (__unsupportedSignatureCalls.length < 256) {
+                __unsupportedSignatureCalls.push(pattern);
+            }
+        }
+        return __realSignatureCompare.apply(Binary, arguments);
+    };
     Binary = new Proxy(Binary, {
         get: function (target, property) {
             if (property in target) return target[property];
@@ -343,11 +363,11 @@ fn eval_rule_lexical(
     eval_string(context, &wrapped)
 }
 
-fn read_unsigned(data: &[u8], offset: usize, width: usize, big_endian: bool) -> f64 {
+fn read_unsigned_bits(data: &[u8], offset: usize, width: usize, big_endian: bool) -> u64 {
     let Some(bytes) = data.get(offset..offset.saturating_add(width)) else {
-        return 0.0;
+        return 0;
     };
-    let value = if big_endian {
+    if big_endian {
         bytes
             .iter()
             .fold(0_u64, |value, byte| (value << 8) | u64::from(*byte))
@@ -356,8 +376,17 @@ fn read_unsigned(data: &[u8], offset: usize, width: usize, big_endian: bool) -> 
             .iter()
             .rev()
             .fold(0_u64, |value, byte| (value << 8) | u64::from(*byte))
-    };
-    value as f64
+    }
+}
+
+fn read_unsigned(data: &[u8], offset: usize, width: usize, big_endian: bool) -> f64 {
+    read_unsigned_bits(data, offset, width, big_endian) as f64
+}
+
+fn read_signed(data: &[u8], offset: usize, width: usize, big_endian: bool) -> f64 {
+    let unsigned = read_unsigned_bits(data, offset, width, big_endian);
+    let shift = 64_u32.saturating_sub((width as u32).saturating_mul(8));
+    ((unsigned << shift) as i64 >> shift) as f64
 }
 
 fn nonnegative_index(value: i64) -> Option<usize> {
@@ -365,15 +394,39 @@ fn nonnegative_index(value: i64) -> Option<usize> {
 }
 
 fn read_ascii(data: &[u8], offset: usize, size: usize) -> String {
-    data.get(offset..offset.saturating_add(size))
-        .map(|bytes| {
-            bytes
-                .iter()
-                .take_while(|byte| **byte != 0)
-                .map(|byte| char::from(*byte))
-                .collect()
-        })
+    let Some(bytes) = read_byte_slice(data, offset, size) else {
+        return String::new();
+    };
+    bytes
+        .iter()
+        .take_while(|byte| **byte != 0)
+        .map(|byte| char::from(*byte))
+        .collect()
+}
+
+fn read_byte_slice(data: &[u8], offset: usize, size: usize) -> Option<&[u8]> {
+    if offset > data.len() {
+        return None;
+    }
+    let end = offset.saturating_add(size).min(data.len());
+    data.get(offset..end)
+}
+
+fn read_byte_array(data: &[u8], offset: i64, size: i64, replace_zero: bool) -> Vec<u8> {
+    let Some((offset, size)) = nonnegative_index(offset).zip(nonnegative_index(size)) else {
+        return Vec::new();
+    };
+    read_byte_slice(data, offset, size)
         .unwrap_or_default()
+        .iter()
+        .map(|byte| {
+            if replace_zero && *byte == 0 {
+                b' '
+            } else {
+                *byte
+            }
+        })
+        .collect()
 }
 
 fn signature_matches(data: &[u8], pattern: &str, offset: usize) -> bool {
@@ -413,7 +466,17 @@ fn install_nintendo_host(
         )
         .map_err(|error| error.to_string())?;
 
-        for (name, width) in [("U16", 2_usize), ("U32", 4), ("U64", 8)] {
+        for (name, width) in [
+            ("U16", 2_usize),
+            ("readWord", 2),
+            ("read_uint16", 2),
+            ("U32", 4),
+            ("readDword", 4),
+            ("read_uint32", 4),
+            ("U64", 8),
+            ("readQword", 8),
+            ("read_uint64", 8),
+        ] {
             let integer_data = Arc::clone(&data);
             x.set(
                 name,
@@ -426,38 +489,84 @@ fn install_nintendo_host(
             )
             .map_err(|error| error.to_string())?;
         }
-        let byte_data = Arc::clone(&data);
-        x.set(
-            "U8",
-            Function::new(ctx.clone(), move |offset: i64| {
-                nonnegative_index(offset)
-                    .and_then(|offset| byte_data.get(offset))
-                    .copied()
-                    .unwrap_or(0)
-            })
-            .map_err(|error| error.to_string())?,
-        )
-        .map_err(|error| error.to_string())?;
-        let string_data = Arc::clone(&data);
-        x.set(
-            "SA",
-            Function::new(ctx.clone(), move |offset: i64, size: i64| {
-                nonnegative_index(offset)
-                    .zip(nonnegative_index(size))
-                    .map_or_else(String::new, |(offset, size)| {
-                        read_ascii(&string_data, offset, size)
+        for name in ["U8", "readByte", "read_uint8"] {
+            let byte_data = Arc::clone(&data);
+            x.set(
+                name,
+                Function::new(ctx.clone(), move |offset: i64| {
+                    nonnegative_index(offset)
+                        .and_then(|offset| byte_data.get(offset))
+                        .copied()
+                        .unwrap_or(0)
+                })
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        }
+        for (name, width) in [
+            ("I8", 1_usize),
+            ("readSByte", 1),
+            ("read_int8", 1),
+            ("I16", 2),
+            ("readSWord", 2),
+            ("read_int16", 2),
+            ("I32", 4),
+            ("readSDword", 4),
+            ("read_int32", 4),
+            ("I64", 8),
+            ("readSQword", 8),
+            ("read_int64", 8),
+        ] {
+            let integer_data = Arc::clone(&data);
+            x.set(
+                name,
+                Function::new(ctx.clone(), move |offset: i64, big_endian: Opt<bool>| {
+                    nonnegative_index(offset).map_or(0.0, |offset| {
+                        read_signed(&integer_data, offset, width, big_endian.0.unwrap_or(false))
                     })
-            })
-            .map_err(|error| error.to_string())?,
-        )
-        .map_err(|error| error.to_string())?;
+                })
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        }
+        for name in ["SA", "getString", "read_ansiString"] {
+            let string_data = Arc::clone(&data);
+            x.set(
+                name,
+                Function::new(ctx.clone(), move |offset: i64, size: Opt<i64>| {
+                    nonnegative_index(offset)
+                        .zip(nonnegative_index(size.0.unwrap_or(50)))
+                        .map_or_else(String::new, |(offset, size)| {
+                            read_ascii(&string_data, offset, size)
+                        })
+                })
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        }
+        for name in ["readBytes", "BA"] {
+            let array_data = Arc::clone(&data);
+            x.set(
+                name,
+                Function::new(
+                    ctx.clone(),
+                    move |offset: i64, size: i64, replace_zero: Opt<bool>| {
+                        read_byte_array(&array_data, offset, size, replace_zero.0.unwrap_or(false))
+                    },
+                )
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        }
 
         let size = data.len() as f64;
-        x.set(
-            "Sz",
-            Function::new(ctx.clone(), move || size).map_err(|error| error.to_string())?,
-        )
-        .map_err(|error| error.to_string())?;
+        for name in ["Sz", "getSize"] {
+            x.set(
+                name,
+                Function::new(ctx.clone(), move || size).map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        }
         x.set(
             "isHeuristicScan",
             Function::new(ctx.clone(), || false).map_err(|error| error.to_string())?,
@@ -482,6 +591,18 @@ fn install_nintendo_host(
             "shlu64",
             Function::new(ctx.clone(), |value: f64, bits: u32| {
                 value * 2_f64.powi(i32::try_from(bits).unwrap_or(i32::MAX))
+            })
+            .map_err(|error| error.to_string())?,
+        )
+        .map_err(|error| error.to_string())?;
+        util.set(
+            "div64",
+            Function::new(ctx.clone(), |dividend: i64, divisor: i64| {
+                if divisor == 0 {
+                    -1
+                } else {
+                    dividend.overflowing_div(divisor).0
+                }
             })
             .map_err(|error| error.to_string())?,
         )
@@ -1311,13 +1432,20 @@ fn trace_binary_detects(
     let mut fallback_rule_count = 0;
     let mut fallback_call_total = 0_u64;
     let mut fallback_paths = BTreeSet::new();
+    let mut unsupported_signature_rule_count = 0;
+    let mut unsupported_signature_call_total = 0_u64;
+    let mut unsupported_signature_patterns = BTreeSet::new();
     for (index, name) in order.iter().enumerate() {
         let path = rule_root.join("Binary").join(name);
         let source =
             fs::read(&path).map_err(|error| format!("cannot read {}: {error}", path.display()))?;
         let (evaluated, applied) = apply_compatibility_overlay(&path, &source)?;
         overlay_count += usize::from(applied);
-        eval_unit(&context, b"__fallbackCalls = []; __fallbackTotal = 0;")?;
+        eval_unit(
+            &context,
+            b"__fallbackCalls = []; __fallbackTotal = 0; \
+              __unsupportedSignatureCalls = []; __unsupportedSignatureTotal = 0;",
+        )?;
         let detections_before = detections
             .lock()
             .map_err(|_| "Binary trace result mutex poisoned".to_owned())?
@@ -1348,6 +1476,32 @@ fn trace_binary_detects(
             .checked_add(fallback_total)
             .ok_or_else(|| "fallback call total overflow".to_owned())?;
         fallback_rule_count += usize::from(fallback_total != 0);
+        let unsupported_signature_text = eval_string(
+            &context,
+            b"JSON.stringify({calls: __unsupportedSignatureCalls, \
+              total: __unsupportedSignatureTotal})",
+        )?;
+        let unsupported_signature: Value = serde_json::from_str(&unsupported_signature_text)
+            .map_err(|error| {
+                format!("cannot parse unsupported signature report for {name}: {error}")
+            })?;
+        let unsupported_signature_total = unsupported_signature
+            .get("total")
+            .and_then(Value::as_u64)
+            .ok_or_else(|| format!("unsupported signature total is missing for {name}"))?;
+        let signature_patterns = unsupported_signature
+            .get("calls")
+            .and_then(Value::as_array)
+            .ok_or_else(|| format!("unsupported signature calls are missing for {name}"))?;
+        for pattern in signature_patterns {
+            if let Some(pattern) = pattern.as_str() {
+                unsupported_signature_patterns.insert(pattern.to_owned());
+            }
+        }
+        unsupported_signature_call_total = unsupported_signature_call_total
+            .checked_add(unsupported_signature_total)
+            .ok_or_else(|| "unsupported signature call total overflow".to_owned())?;
+        unsupported_signature_rule_count += usize::from(unsupported_signature_total != 0);
         let detect_accepted = detect_result.is_ok();
         error_count += usize::from(!detect_accepted);
         let (detect_value, detect_error) = match detect_result {
@@ -1367,6 +1521,10 @@ fn trace_binary_detects(
             "fallback_call_count": fallback_total,
             "fallback_calls": calls,
             "fallback_calls_truncated": fallback_total > calls.len() as u64,
+            "unsupported_signature_call_count": unsupported_signature_total,
+            "unsupported_signature_patterns": signature_patterns,
+            "unsupported_signature_patterns_truncated":
+                unsupported_signature_total > signature_patterns.len() as u64,
             "interrupt_handler_calls": interrupt_handler_calls,
             "detections": emitted,
         }));
@@ -1402,6 +1560,10 @@ fn trace_binary_detects(
             "fallback_rule_count": fallback_rule_count,
             "fallback_call_total": fallback_call_total,
             "fallback_paths": fallback_paths,
+            "unsupported_signature_rule_count": unsupported_signature_rule_count,
+            "unsupported_signature_call_total": unsupported_signature_call_total,
+            "unsupported_signature_pattern_count": unsupported_signature_patterns.len(),
+            "unsupported_signature_patterns": unsupported_signature_patterns,
             "detection_count": all_detections.len(),
             "detections": all_detections,
             "observations": observations,
@@ -1754,7 +1916,8 @@ mod tests {
         apply_compatibility_overlay, apply_exact_lifecycle_overlay, collect_rule_files,
         eval_rule_lexical, eval_string, eval_unit, install_diagnostic_host_fallbacks, new_context,
         new_runtime, nonnegative_index, normalized_path, parse_scope_detections,
-        parse_scope_fixture_order, read_ascii, read_unsigned, signature_matches,
+        parse_scope_fixture_order, read_ascii, read_byte_array, read_signed, read_unsigned,
+        signature_matches,
     };
     use std::fs;
     use std::path::PathBuf;
@@ -1892,7 +2055,19 @@ mod tests {
         let bytes = b"SC\0trailing";
         assert_eq!(read_ascii(bytes, 0, bytes.len()), "SC");
         assert_eq!(read_ascii(bytes, 3, 4), "trai");
+        assert_eq!(read_ascii(b"abc", 1, 50), "bc");
         assert_eq!(read_ascii(bytes, bytes.len(), 1), "");
+    }
+
+    #[test]
+    fn signed_and_byte_array_host_reads_are_bounded() {
+        assert_eq!(read_signed(&[0xff], 0, 1, false), -1.0);
+        assert_eq!(read_signed(&[0x80, 0x00], 0, 2, true), -32768.0);
+        assert_eq!(read_signed(&[0x80], 1, 1, false), 0.0);
+        assert_eq!(read_byte_array(b"a\0b", 0, 20, false), b"a\0b");
+        assert_eq!(read_byte_array(b"a\0b", 0, 20, true), b"a b");
+        assert!(read_byte_array(b"abc", -1, 1, false).is_empty());
+        assert!(read_byte_array(b"abc", 0, -1, false).is_empty());
     }
 
     #[test]
@@ -1906,17 +2081,34 @@ mod tests {
     fn diagnostic_fallback_counts_all_calls_and_caps_captured_paths() {
         let runtime = new_runtime().expect("runtime should be created");
         let context = new_context(&runtime).expect("context should be created");
-        eval_unit(&context, b"var Binary = {}; var Util = {};")
-            .expect("fallback globals should be initialized");
+        eval_unit(
+            &context,
+            b"var Binary = { c: function () { return false; } }; var Util = {};",
+        )
+        .expect("fallback globals should be initialized");
         install_diagnostic_host_fallbacks(&context).expect("fallback should be installed");
         eval_unit(&context, b"for (var i = 0; i < 300; i++) Binary.missing();")
             .expect("fallback calls should complete");
+        eval_unit(
+            &context,
+            b"for (var i = 0; i < 300; i++) Binary.c('unknown-' + String(i));",
+        )
+        .expect("unsupported signature calls should complete");
         assert_eq!(
             eval_string(
                 &context,
                 b"String(__fallbackTotal) + '|' + String(__fallbackCalls.length)",
             )
             .expect("fallback counters should be readable"),
+            "300|256"
+        );
+        assert_eq!(
+            eval_string(
+                &context,
+                b"String(__unsupportedSignatureTotal) + '|' + \
+                  String(__unsupportedSignatureCalls.length)",
+            )
+            .expect("unsupported signature counters should be readable"),
             "300|256"
         );
     }

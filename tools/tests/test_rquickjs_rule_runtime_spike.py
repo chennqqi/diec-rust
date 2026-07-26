@@ -167,6 +167,31 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
         self.assertEqual(sample["size"], diagnostic["input"]["bytes"])
         self.assertEqual(sample["sha256"], diagnostic["input"]["sha256"])
 
+    def test_basic_host_api_increment_records_remaining_dynamic_gaps(self):
+        increment = self.reference["basic_host_api_increment"]
+        after = increment["after"]
+        self.assertEqual(after["attempted_detect_count"], 292)
+        self.assertEqual(after["accepted_detect_count"], 285)
+        self.assertEqual(after["detect_error_count"], 7)
+        self.assertEqual(after["include_call_count"], 30)
+        self.assertEqual(after["fallback_rule_count"], 233)
+        self.assertEqual(after["fallback_call_total"], 387)
+        self.assertEqual(after["fallback_truncated_rule_count"], 0)
+        self.assertEqual(len(after["fallback_paths"]), 19)
+        self.assertEqual(after["zero_recorded_fallback_rule_count"], 59)
+        self.assertEqual(after["zero_recorded_fallback_error_count"], 0)
+        self.assertEqual(after["unsupported_signature_rule_count"], 32)
+        self.assertEqual(after["unsupported_signature_call_total"], 331)
+        self.assertEqual(after["unsupported_signature_pattern_count"], 317)
+        self.assertEqual(
+            after["unsupported_signature_patterns_truncated_rule_count"],
+            0,
+        )
+        self.assertFalse(after["detection_evidence_valid"])
+        self.assertEqual(len(after["error_rules"]), 7)
+        self.assertIn("Binary.read_uint24", after["fallback_paths"])
+        self.assertNotIn("Binary.read_uint32", after["fallback_paths"])
+
     def test_binary_lifecycle_uses_fixed_order_and_exact_overlays(self):
         lifecycle = self.reference["binary_lifecycle"]
         self.assertEqual(lifecycle["files"], 292)

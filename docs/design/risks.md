@@ -94,11 +94,12 @@ baseline 的变更都要检查本表。
   同时发现 archive_DEFLATE 动态初始化隐式全局 `bad` 是 EA-XA 的前置依赖。
   selected lifecycle 中非目标规则尚未调用 `detect`，顶层加载仍有三次来自
   `shell-script` include 的可追踪 HostApi fallback。后续 diagnostic 已逐条尝试
-  全部 292 个 `detect`：
-  281 条无异常、11 条异常，但 253 条规则共调用 496 次 fallback、涉及 34 条动态
-  路径，代理并制造 122 条无效 detection；只有 39 条未记录 fallback，且仍无逐条
-  Qt oracle。该结果是缺口 inventory，不是 281/292 兼容率。Qt 6 和完整 HostApi
-  也尚未验证。
+  全部 292 个 `detect`。补入固定上游契约的基础读取方法后为 285 条无异常、
+  7 条异常，但仍有 233 条规则共调用 387 次 fallback、涉及 19 条动态路径；
+  32 条规则还调用 317 种未支持 signature pattern。代理制造 153 条无效
+  detection；只有 59 条未记录 fallback，且仍无逐条 Qt oracle。该结果是缺口
+  inventory，不是 285/292 兼容率。Qt 6、完整 signature parser 和 HostApi 也
+  尚未验证。
 - **缓解**：保持 `RuleRuntime`/`HostApi` port；建立全规则 inventory、最小失败
   fixture、host call trace；基于证据选 runtime，禁止静默转换规则。
 - **验证**：固定规则 100% discovered/parsed/loaded，zero silent unsupported；

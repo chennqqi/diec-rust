@@ -12,14 +12,14 @@
   },
   "dependency_footprint": {
     "lockfile_packages": 23,
-    "release_executable_bytes": 1753088,
+    "release_executable_bytes": 1773056,
     "target": "x86_64-pc-windows-msvc",
     "target_packages": 18
   },
   "experiment": {
     "cargo_lock_sha256": "aa7cd4c42e1f3429f45ec31e05e41862abe6156bdbe351eeacc507673f237232",
     "cargo_toml_sha256": "875730b205ca351b4bc0f830a1896fb6ad777c46046e6f26c9c368849614be16",
-    "source_sha256": "a69f538b78c38bdbd6aa748d73565ff3fe878664b8629ebb2b37339626a80031",
+    "source_sha256": "757e6dec99867fa8c3c6ad07201bec55727137d22ab23d0446d430b164d49dac",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -234,6 +234,83 @@
       "__MiniExtensionsHeuristic_By_DosX.7.sg",
       "__MiniJavaScriptHeuristic_By_DosX.7.sg"
     ]
+  },
+  "basic_host_api_increment": {
+    "source_contracts": {
+      "binary_script": "horsicq/XScanEngine@dfe4a419e4f491bb23688ba03c5a5bf39e34da83/modules/binary_script.cpp",
+      "signature_grammar": "horsicq/Formats@1151e7254fdee3c0294ff7095edbdd7bfccf8201/xbinary.h",
+      "util_script": "horsicq/die_script@5d82316c110abf0eb863b50bc679d330e05067b6/util_script.cpp"
+    },
+    "implemented_methods": [
+      "Binary.Sz/getSize",
+      "Binary.U8/readByte/read_uint8",
+      "Binary.I8/readSByte/read_int8",
+      "Binary.U16/readWord/read_uint16",
+      "Binary.I16/readSWord/read_int16",
+      "Binary.U32/readDword/read_uint32",
+      "Binary.I32/readSDword/read_int32",
+      "Binary.U64/readQword/read_uint64",
+      "Binary.I64/readSQword/read_int64",
+      "Binary.SA/getString/read_ansiString",
+      "Binary.BA/readBytes",
+      "Util.div64"
+    ],
+    "after": {
+      "accepted_detect_count": 285,
+      "attempted_detect_count": 292,
+      "compatibility_overlay_count": 1,
+      "completed": true,
+      "detect_error_count": 7,
+      "detection_count": 153,
+      "detection_evidence_valid": false,
+      "error_categories": {
+        "fallback_proxy_reached_number_result_boundary": 1,
+        "fallback_proxy_reached_string_result_boundary": 4,
+        "integer_reached_string_result_boundary": 2
+      },
+      "error_rules": [
+        "archive_GhidraZipFile.1.sg",
+        "format_CTRK.1.sg",
+        "format_PlayStation1BIOS.1.sg",
+        "format_TOT.1.sg",
+        "format_WBFS.1.sg",
+        "format_bin.Hermes.1.sg",
+        "format_doc.CHM.1.sg"
+      ],
+      "fallback_call_total": 387,
+      "fallback_paths": [
+        "Binary.cleanString",
+        "Binary.compare",
+        "Binary.fSig",
+        "Binary.findByte",
+        "Binary.findSignature",
+        "Binary.findString",
+        "Binary.getFileSuffix",
+        "Binary.getFileSuffix.toLowerCase",
+        "Binary.getHeaderString",
+        "Binary.getHeaderString.match",
+        "Binary.getScanID",
+        "Binary.isOverlay",
+        "Binary.isPlainText",
+        "Binary.isResource",
+        "Binary.isSignaturePresent",
+        "Binary.isText",
+        "Binary.isZeroFilled",
+        "Binary.read_uint24",
+        "Util.shru64"
+      ],
+      "fallback_rule_count": 233,
+      "fallback_truncated_rule_count": 0,
+      "include_call_count": 30,
+      "unsupported_signature_call_total": 331,
+      "unsupported_signature_pattern_count": 317,
+      "unsupported_signature_patterns_lf_sha256": "6beba9cc7824e208fd32c1aef0454b91998b70951e5f70c893fd0ae6b7863539",
+      "unsupported_signature_patterns_truncated_rule_count": 0,
+      "unsupported_signature_rule_count": 32,
+      "zero_recorded_fallback_error_count": 0,
+      "zero_recorded_fallback_rule_count": 59
+    },
+    "scope": "incremental HostApi gap measurement; accepted calls and detections are not compatibility evidence"
   },
   "isolated_eval": {
     "bytes": 2902881,

@@ -53,8 +53,10 @@ selected lifecycle probe 随后在同一固定全库加载环境中依次调用
 `bad` 为 EA-XA 建立动态前置状态；补齐该调用及目标所需 Byte HostApi 后，PS3 和
 PS Vita 的目标完整有序结果与 Qt 5 baseline 14/14 匹配，三个目标调用均未使用
 fallback HostApi。全 Binary diagnostic probe 随后逐条尝试了 292 个 `detect`，
-但 253 条规则使用了缺失 HostApi 的代理，因此该结果只用于形成缺口清单，不能
-作为兼容率。Qt 6 和完整宿主方法仍未覆盖，候选状态不变。
+首轮有 253 条规则使用缺失 HostApi 代理。按固定上游实现补入基础整数、字符串、
+字节数组、size 与 `Util.div64` 后，仍有 233 条规则触发 19 类 fallback；另有
+32 条规则调用 317 种当前简化 `X.c` 不支持的签名模式。该结果只用于形成缺口
+清单，不能作为兼容率。Qt 6 和完整宿主方法仍未覆盖，候选状态不变。
 
 ## 实验边界
 
@@ -293,36 +295,51 @@ SHA-256 499c269ca6a0be20f48480b1ed766e5d8f448c5a4a8facdff9335b7c1b0a994e
 条路径，同时单独累计总调用数；本次没有规则触发截断。每条规则还独立记录异常、
 interrupt handler 调用、返回值和新增 detection，异常后继续下一条。
 
+基础方法的别名、宽度、符号与 endian 行为来自固定
+[`binary_script.cpp`](https://github.com/horsicq/XScanEngine/blob/dfe4a419e4f491bb23688ba03c5a5bf39e34da83/modules/binary_script.cpp)
+和
+[`binary_script.h`](https://github.com/horsicq/XScanEngine/blob/dfe4a419e4f491bb23688ba03c5a5bf39e34da83/modules/binary_script.h)；
+`Util.div64` 的零除数 `-1` 行为来自固定
+[`util_script.cpp`](https://github.com/horsicq/die_script/blob/5d82316c110abf0eb863b50bc679d330e05067b6/util_script.cpp)。
+本轮实现 `Sz/getSize`，8/16/32/64-bit 有/无符号读取及其上游别名，
+`SA/getString/read_ansiString`、`BA/readBytes` 和 `Util.div64`。越界字符串和
+字节数组按可用输入截短；负 offset/size 安全返回空值或零。
+
 首次执行暴露了 Rust 绑定自身的边界错误：`format_bin.COL.1.sg` 在 `p == 0` 时
 按规则设计调用 `X.U8(p - 1)`，原来的 `usize` 参数在进入 HostApi 前产生
 Underflow。将字节读取偏移改为有符号输入，并让负值安全返回越界默认值后，该规则
 不再异常；这也是“不可信 offset 必须在宿主内部验证，不能依赖 Rust 参数转换”的
 直接证据。
 
-最终摘要：
+基础方法补入前后的摘要：
 
-| 指标 | 值 |
-| --- | ---: |
-| Attempted `detect` | 292 |
-| 无异常返回 | 281 |
-| 异常 | 11 |
-| 调用 fallback 的规则 | 253 |
-| Fallback 调用 | 496 |
-| 唯一 fallback 路径 | 34 |
-| 未记录 fallback 的规则 | 39 |
-| 未记录 fallback 且异常 | 0 |
-| 代理驱动产生的 detections | 122 |
+| 指标 | 补入前 | 补入后 |
+| --- | ---: | ---: |
+| Attempted `detect` | 292 | 292 |
+| 无异常返回 | 281 | 285 |
+| 异常 | 11 | 7 |
+| 调用 fallback 的规则 | 253 | 233 |
+| Fallback 调用 | 496 | 387 |
+| 唯一 fallback 路径 | 34 | 19 |
+| 未记录 fallback 的规则 | 39 | 59 |
+| 未记录 fallback 且异常 | 0 | 0 |
+| 代理驱动产生的 detections | 122 | 153 |
 
-11 个异常全部发生在调用 fallback 的规则中：10 个是代理值最终进入字符串结果边界
-后无法转换，1 个是 `text.script.2.sg` 在代理驱动路径中抛出
-`No input detection name`。34 条路径集中在基础读取/搜索/上下文方法，例如
-`Binary.compare`、`getSize`、`getString`、`readByte`、`readBytes`、
-`findSignature`、`isPlainText` 和 `Util.div64`；完整清单和 39 条规则名保存在
-[`rquickjs-rule-runtime.json`](data/rquickjs-rule-runtime.json)。
+补入后 7 个异常仍是诊断代理值或非字符串值进入结果边界，完整规则名和分类保存在
+[`rquickjs-rule-runtime.json`](data/rquickjs-rule-runtime.json)。剩余 19 条路径
+集中在签名/搜索、输入上下文和文本判断，另有 `read_uint24` 与 `Util.shru64`。
 
-281 条“无异常”及 122 条 detection 都不能作为兼容证据：代理返回的 callable
+此前简化的 `X.c` 只识别 Nintendo spike 使用的 5 个固定 pattern，并对其他
+pattern 静默返回 false。这不符合“不支持语法必须显式诊断”的兼容门禁。本轮在
+该方法外增加诊断包装，固定样本上有 32 条规则、331 次调用、317 个唯一 pattern
+未被实现，且未发生记录截断。上游
+[`xbinary.h`](https://github.com/horsicq/Formats/blob/1151e7254fdee3c0294ff7095edbdd7bfccf8201/xbinary.h)
+还定义通配、ASCII、相对跳转等组合语法，因此不能用若干字符串特判近似
+`compare`/`fSig`；正式实现必须建立完整 parser 和差分测试。
+
+285 条“无异常”及 153 条 detection 都不能作为兼容证据：代理返回的 callable
 object 在 JavaScript 条件中可能为 truthy，已明显制造大量 false positive。即使
-39 条规则没有记录 fallback 调用，本轮也没有逐条 Qt oracle 结果，且代理只记录
+59 条规则没有记录 fallback 调用，本轮也没有逐条 Qt oracle 结果，且代理只记录
 实际 function application，不能把“未记录”扩大解释为 HostApi 完整。该 probe
 的有效产物是可重复的缺口优先级和失败隔离机制。
 
