@@ -272,7 +272,7 @@ format HostApi 行为仍不能外推。
 | Candidate | 优点 | 风险/代价 | 当前结论 |
 | --- | --- | --- | --- |
 | [Boa](https://github.com/boa-dev/boa) | JavaScript engine 以 Rust 实现；可注册 native class/function | 0.21.1 拒绝 1 条 Qt 接受的固定规则；shared lexical semantics 不同；MSRV 1.88、Windows spike 126 个 target packages | 保留为需 patch/上游修复的候选，不能原样采用 |
-| [rquickjs](https://github.com/DelSkayn/rquickjs) | 0.12.1 的 interrupt/heap limit 可用，跨线程 token 可中断并同 context 恢复，synthetic native HostApi 已合作取消，VM/native monotonic deadline 已到期；Windows spike 18 个 target packages、约 1.77 MiB | 同样拒绝 1 条 Qt 接受的规则；必须显式 sloppy eval；编译 vendored QuickJS-NG C，MSVC 仍属 engine experimental；真实长调用的 checkpoint 密度与跨平台最大延迟仍须验证 | 保留为需 legacy compatibility 层的候选，不能原样采用 |
+| [rquickjs](https://github.com/DelSkayn/rquickjs) | 0.12.1 的 interrupt/heap limit 可用，跨线程 token 可中断并同 context 恢复，synthetic native HostApi 已合作取消，VM/native monotonic deadline 已到期；Windows spike 18 个 target packages、约 1.77 MiB；Windows `/MD`/`/MT` 与 Linux GNU staticlib C smoke 已通过 | 同样拒绝 1 条 Qt 接受的规则；必须显式 sloppy eval；编译 vendored QuickJS-NG C；完整 HostApi、macOS 和 sanitizer 仍须验证 | ADR 0006 Proposed 为首个私有 backend；不能未经 compatibility layer 原样采用，也未达到 Accepted |
 | [rusty_v8](https://github.com/denoland/rusty_v8) | ECMAScript 兼容性高、成熟宿主 API | V8 很大；默认下载预编译静态库或源码构建成本高，不符合轻依赖目标 | 仅作兼容性上界/备选 |
 | 自研 interpreter/transpiler | 可精确控制行为和资源限制 | 语法、RegExp、prototype、异常和动态特性成本极高 | 不作为首选 |
 

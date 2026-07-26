@@ -55,7 +55,7 @@ baseline 的变更都要检查本表。
 | R-003 | 能力矩阵和物化组件不完整导致漏实现 | High | Likely | Compatibility | Open | Phase 0 exit |
 | R-004 | 畸形二进制触发 panic、越界或无界分配 | Critical | Possible | Core/Formats | Open | each format merge |
 | R-005 | archive/resource/overlay 导致解压炸弹或无界嵌套 | Critical | Likely | Engine | Open | nested implementation |
-| R-006 | native runtime/解压依赖破坏可移植性与 static link | High | Possible | Build | Open | dependency ADR |
+| R-006 | native runtime/解压依赖破坏可移植性与 static link | High | Possible | Build | Mitigating | dependency ADR |
 | R-007 | C ABI ownership、allocator、线程或 panic 产生 UB | Critical | Possible | FFI | Mitigating | Phase 5 exit |
 | R-008 | 结果 schema/顺序错误使 CLI、FFI 与差分不一致 | High | Possible | API/Output | Open | schema freeze |
 | R-009 | Windows/macOS oracle 缺失却声称跨平台兼容 | High | Likely | Compatibility | Open | Phase 4 exit |
@@ -207,6 +207,11 @@ baseline 的变更都要检查本表。
 
 - **触发**：backend 引入不可静态链接系统库、C++ runtime、动态加载、平台缺失、
   许可证问题或大量 unsafe。
+- **当前证据**：ADR 0006 提议的 rquickjs/QuickJS-NG backend 已在
+  Windows MSVC `/MD`、`+crt-static`/`/MT` 和 Linux GNU 三条真实 C 链路中
+  创建 runtime/context 并求值，最终程序无 QuickJS 动态依赖；rustc system
+  library、最终 DLL/SO、产物大小和 18-package 许可证闭包已记录。macOS、
+  musl、arm64 和 sanitizer 仍未验证。
 - **缓解**：纯 Rust 优先；大型/native 依赖必须 ADR；backend 私有隔离；构建
   target matrix 早验证。
 - **验证**：Windows `.lib`、Unix `.a` 的真实 C link/run 和 system library 清单；
@@ -376,7 +381,8 @@ baseline 的变更都要检查本表。
 
 Phase 0 不要求所有实现期风险 Closed，但必须满足：
 
-- R-001/R-015 的 runtime 候选失败已被实验记录，选型门禁明确，不提前选定。
+- R-001/R-015 的 runtime 候选失败已被实验记录；ADR 0006 可保持 Proposed，
+  acceptance conditions 未满足前不把选型写成已冻结或已兼容。
 - R-002 的已知源码/规则/依赖闭包完成初审，无未经核对的导入。
 - R-003 的能力矩阵缺口均显式，不把 Source only 写成已兼容。
 - R-006/R-007/R-018 有 Windows/Linux static-link spike 和正式设计。
@@ -388,7 +394,8 @@ Phase 0 评审可以让风险保持 Open，但不能接受缺少关闭路径或�
 
 ## 7. 当前最高优先级
 
-1. R-001 + R-015：完成规则 runtime 全库执行/中断证据并作选型 ADR。
+1. R-001 + R-015：完成 ADR 0006 的完整规则/HostApi、平台和 sanitizer
+   acceptance evidence。
 2. R-003：关闭 capability matrix 的 Source only/未物化关键证据缺口。
 3. R-002：完成规则、关键 bundled code 和候选 runtime 的许可证组合复核。
 4. R-016 + R-009：提高 oracle 可重复性并建立 Windows/macOS baseline。

@@ -23,3 +23,6 @@
   默认拒绝、精确 fingerprint 且有期限的兼容差异 waiver（Proposed）。
 - [`0005-deterministic-text-classification.md`](0005-deterministic-text-classification.md)：
   显式初始化文本事实，不复制 `Binary_Script` 的未初始化状态（Proposed）。
+- [`0006-rquickjs-rule-runtime.md`](0006-rquickjs-rule-runtime.md)：
+  以私有 rquickjs/QuickJS-NG backend 作为首个规则运行时，保留严格兼容层、
+  资源和 static-link 门禁（Proposed）。

@@ -1,0 +1,229 @@
+{
+  "experiment": {
+    "hashes": {
+      "Cargo.lock": "e80e1d8f87c753d7accba7dc3625a926b67221e4ed07c38d13a9d0b9e94c0e80",
+      "Cargo.toml": "05921fa7e57ab38fb9e8051934cf5c60748911eed61cebcc75468735bf68d0b9",
+      "README.md": "c290b147d34756ff387123cf03571fa38f314b4166c061aa049ca84c3b85e956",
+      "c/smoke.c": "2d94779a37ac1417795f9de50bfd61840d375562920191b1f1ce7d0e56399943",
+      "include/diec_rquickjs_spike.h": "d6171a38b396384a95fcf2ca8cdfc63b92fb5498c8572aaec3eb7c1f0c3bf635",
+      "run-linux-gnu.sh": "2bb72de3e845a1ccd85a8415e42201987b3d91b1dce075abeffb845f312fb05c",
+      "run-windows-msvc.cmd": "102f3f5af6ce5f9d588bf85947652c4ab9d2a263e26ff53380f77c1b2daa45e4",
+      "src/lib.rs": "2b2c489e94b4c33135904429939428a531766a7bcac072d797b3d117386cea67"
+    },
+    "rust": "rustc 1.88.0 (6b00bc388 2025-06-23)"
+  },
+  "fixture": {
+    "expected_value": 42,
+    "javascript": "40 + 2",
+    "lifecycle_iterations": 16,
+    "null_output_rejected": true,
+    "panic_contained": true,
+    "panic_hook_stderr_observed": true,
+    "runtime_context_created_by_c_call": true
+  },
+  "licenses": {
+    "cargo_packages": [
+      {
+        "license": "MIT OR Apache-2.0",
+        "name": "allocator-api2",
+        "version": "0.2.21"
+      },
+      {
+        "license": "MIT OR Apache-2.0",
+        "name": "cc",
+        "version": "1.4.0"
+      },
+      {
+        "license": "Apache-2.0 OR MIT",
+        "name": "equivalent",
+        "version": "1.0.2"
+      },
+      {
+        "license": "MIT OR Apache-2.0",
+        "name": "find-msvc-tools",
+        "version": "0.1.9"
+      },
+      {
+        "license": "Zlib",
+        "name": "foldhash",
+        "version": "0.2.0"
+      },
+      {
+        "license": "MIT OR Apache-2.0",
+        "name": "hashbrown",
+        "version": "0.17.1"
+      },
+      {
+        "license": "MIT OR Apache-2.0",
+        "name": "proc-macro2",
+        "version": "1.0.107"
+      },
+      {
+        "license": "MIT OR Apache-2.0",
+        "name": "quote",
+        "version": "1.0.47"
+      },
+      {
+        "license": "MIT OR Apache-2.0",
+        "name": "relative-path",
+        "version": "2.0.1"
+      },
+      {
+        "license": "MIT",
+        "name": "rquickjs",
+        "version": "0.12.1"
+      },
+      {
+        "license": "MIT",
+        "name": "rquickjs-core",
+        "version": "0.12.1"
+      },
+      {
+        "license": "MIT",
+        "name": "rquickjs-sys",
+        "version": "0.12.1"
+      },
+      {
+        "license": "MIT OR Apache-2.0",
+        "name": "serde",
+        "version": "1.0.229"
+      },
+      {
+        "license": "MIT OR Apache-2.0",
+        "name": "serde_core",
+        "version": "1.0.229"
+      },
+      {
+        "license": "MIT OR Apache-2.0",
+        "name": "serde_derive",
+        "version": "1.0.229"
+      },
+      {
+        "license": "MIT OR Apache-2.0",
+        "name": "shlex",
+        "version": "2.0.1"
+      },
+      {
+        "license": "MIT OR Apache-2.0",
+        "name": "syn",
+        "version": "3.0.3"
+      },
+      {
+        "license": "(MIT OR Apache-2.0) AND Unicode-3.0",
+        "name": "unicode-ident",
+        "version": "1.0.24"
+      }
+    ],
+    "enabled_build_package_count": 10,
+    "package_count": 18,
+    "scope": "conservative Cargo.lock inventory; includes disabled optional dependencies",
+    "quickjs_ng_license": {
+      "copyright": [
+        "Fabrice Bellard",
+        "Charlie Gordon",
+        "Ben Noordhuis",
+        "Saúl Ibarra Corretgé"
+      ],
+      "expression": "MIT",
+      "path": "rquickjs-sys-0.12.1/quickjs/LICENSE",
+      "sha256": "96f73f9d2a16c21a36b418f06073be26e7d6d5e7c1bc99756b21a4f2c74ef171"
+    },
+    "rquickjs_license": {
+      "copyright": [
+        "Mees Delzenne",
+        "Rquickjs Contributors"
+      ],
+      "expression": "MIT",
+      "path": "rquickjs-0.12.1/LICENSE",
+      "sha256": "976ad3d07927343ab99b31510625acba89eac8e0e517c712925620ddeda91b70"
+    }
+  },
+  "linux_gnu": {
+    "archive_bytes": 23121454,
+    "c_compiler": "gcc 12.2.0",
+    "container_digest": "sha256:38bc5a86d998772d4aec2348656ed21438d20fcdce2795b56ca434cf21430d89",
+    "container_image": "rust:1.88.0-slim-bookworm",
+    "dynamic_dependencies": [
+      "libgcc_s.so.1",
+      "libm.so.6",
+      "libc.so.6",
+      "ld-linux-x86-64.so.2"
+    ],
+    "executable_bytes": 6048664,
+    "native_static_libs": [
+      "-lgcc_s",
+      "-lutil",
+      "-lrt",
+      "-lpthread",
+      "-lm",
+      "-ldl",
+      "-lc"
+    ],
+    "smoke_exit_code": 0,
+    "target": "x86_64-unknown-linux-gnu"
+  },
+  "runtime": {
+    "default_features": false,
+    "features": [
+      "std"
+    ],
+    "native_engine": "QuickJS-NG",
+    "rquickjs": "0.12.1",
+    "rquickjs_core": "0.12.1",
+    "rquickjs_sys": "0.12.1",
+    "vendored_c": true
+  },
+  "schema_version": 1,
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "windows_msvc": {
+    "c_compiler": "MSVC 19.44.35207.1",
+    "dynamic_crt": {
+      "dynamic_dependencies": [
+        "api-ms-win-core-synch-l1-2-0.dll",
+        "bcryptprimitives.dll",
+        "VCRUNTIME140.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-convert-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-locale-l1-1-0.dll",
+        "KERNEL32.dll",
+        "ntdll.dll"
+      ],
+      "executable_bytes": 1139712,
+      "native_static_libs": [
+        "kernel32.lib",
+        "ntdll.lib",
+        "userenv.lib",
+        "ws2_32.lib",
+        "dbghelp.lib",
+        "/defaultlib:msvcrt"
+      ],
+      "smoke_exit_code": 0,
+      "staticlib_bytes": 18322760
+    },
+    "linker": "MSVC link.exe 14.44.35207.1",
+    "static_crt": {
+      "dynamic_dependencies": [
+        "api-ms-win-core-synch-l1-2-0.dll",
+        "bcryptprimitives.dll",
+        "KERNEL32.dll",
+        "ntdll.dll"
+      ],
+      "executable_bytes": 1382912,
+      "native_static_libs": [
+        "kernel32.lib",
+        "ntdll.lib",
+        "userenv.lib",
+        "ws2_32.lib",
+        "dbghelp.lib",
+        "/defaultlib:libcmt"
+      ],
+      "smoke_exit_code": 0,
+      "staticlib_bytes": 18360456
+    },
+    "target": "x86_64-pc-windows-msvc"
+  }
+}

@@ -39,9 +39,12 @@ Error: invalid redefinition of a variable
 不能修改上游规则字节来规避它。
 
 rquickjs 的资源控制、较小依赖闭包和较小二进制优于本轮 Boa spike，但引入
-vendored C、MSVC/clang/gcc 构建链及 native 安全边界。当前仍不冻结规则
-runtime；需要先验证按真实上游生命周期执行、legacy compatibility patch/
-受控转换的可维护性，以及 Linux/macOS/Windows 静态链接和 fuzz 行为。
+vendored C、MSVC/clang/gcc 构建链及 native 安全边界。后续 staticlib spike
+已在 Windows `/MD`、Windows `/MT` 和 Linux GNU 三条真实 C 链路中通过，并完成
+18-package 许可证初审；详见
+[`rquickjs-static-link.md`](rquickjs-static-link.md)。ADR 0006 因此提议把它
+作为首个私有 backend，但完整规则/HostApi、macOS 和 sanitizer acceptance
+conditions 未完成前仍不冻结为 Accepted。
 
 后续最小实验确认：对唯一失败规则应用 source-identity 约束、等长且不落盘的
 compatibility overlay 后，QuickJS 接受该规则；同一 overlay 在 2235 个文件中
@@ -63,7 +66,8 @@ fallback HostApi。全 Binary diagnostic probe 随后逐条尝试了 292 个 `de
 Qt 5/Qt 6 oracle 闭合 `U24`/`read_uint24` 与 `shru64` 后，调用从 387 降至
 365、路径从 19 降至 17，但触发规则仍为 233。另有 32 条规则调用 317 种当前
 简化 `X.c` 不支持的签名模式。该结果只用于形成缺口清单，不能作为兼容率；
-完整宿主方法和跨平台 oracle 仍未覆盖，候选状态不变。
+完整宿主方法和跨平台 oracle 仍未覆盖；该事实限制 ADR 0006 的 acceptance，
+不能由 static-link 成功替代。
 
 随后 diagnostic HostApi 直接复用隔离的纯 Rust signature spike，实现
 `Binary.c`/`compare` 与 `X.c`/`compare`。固定 89-case Qt 5 oracle 中 compare wrapper

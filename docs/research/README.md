@@ -10,6 +10,7 @@ Phase 0 计划形成：
 - [`rule-compatibility.md`](rule-compatibility.md)：规则语法、内建函数和宿主 API（Draft）。
 - [`rule-runtime-spike.md`](rule-runtime-spike.md)：Boa 全库解析、真实复杂规则、宿主绑定和资源限制验证（Draft）。
 - [`rquickjs-rule-runtime-spike.md`](rquickjs-rule-runtime-spike.md)：rquickjs/QuickJS-NG 全库执行、sloppy 语义、native 构建和资源限制验证（Draft）。
+- [`rquickjs-static-link.md`](rquickjs-static-link.md)：rquickjs/QuickJS-NG 的 Windows/Linux Rust staticlib、C 链接、CRT、系统依赖和许可证闭包（Draft）。
 - [`nintendo-certified-rule.md`](nintendo-certified-rule.md)：唯一 legacy 规则的项目生成语料与真实 detect 基线（Draft）。
 - [`binary-rule-lifecycle.md`](binary-rule-lifecycle.md)：Binary 数据库分层、init/include 选择、共享引擎生命周期和排序缺陷（Draft）。
 - [`signature-language.md`](signature-language.md)：signature 文法、固定 oracle、静态/动态调用清单和边界行为（Draft）。
@@ -40,6 +41,7 @@ Phase 0 计划形成：
 - [`data/subdevice-source-audit.json`](data/subdevice-source-audit.json)：固定 XScanEngine/Formats 源码哈希、resource/overlay 调度及 debug-data 可达性审计。
 - [`data/boa-rule-runtime.json`](data/boa-rule-runtime.json)：Boa spike 输入哈希、固定版本和稳定结果摘要。
 - [`data/rquickjs-rule-runtime.json`](data/rquickjs-rule-runtime.json)：rquickjs spike 输入哈希、固定版本和稳定结果摘要。
+- [`data/rquickjs-static-link.json`](data/rquickjs-static-link.json)：rquickjs staticlib 三条 native smoke、链接依赖和 18-package 许可证清单。
 - [`data/context-rule-qt5.json`](data/context-rule-qt5.json)：三条原样 Binary 规则在 resource/debugdata/text context 下的 8-case Qt5 基线。
 - [`data/nintendo-certified-corpus.json`](data/nintendo-certified-corpus.json)：PS3/PS Vita Certified File 分支语料清单。
 - [`data/nintendo-certified-baseline.json`](data/nintendo-certified-baseline.json)：双 oracle 原始输出哈希和 detection 摘要。

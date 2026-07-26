@@ -413,7 +413,8 @@ manifest 至少记录组件、上游路径、commit、SHA-256、同步时间和�
 
 ## 21. 风险与开放门禁
 
-- 规则 runtime 尚未选型；两个 spike 均暴露完整规则兼容风险。
+- ADR 0006 已提议 rquickjs/QuickJS-NG 作为首个私有 backend；完整规则/HostApi、
+  macOS static-link、sanitizer 和许可证发布评审未通过前仍不能 Accepted。
 - 上游宿主 API 的精确生命周期和 side effects 尚需扩大 instrumentation。
 - archive/decompression backend 可能引入 native 依赖和 zip-bomb 风险。
 - 结果 model 的字段、排序和 partial success 仍需 `api.md` 与 baseline 共同冻结。

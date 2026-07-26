@@ -621,7 +621,8 @@ tested、exact、semantic、waived 和 unsupported 数量。
 
 - Windows/macOS upstream oracle 尚未固定，不能声称跨平台 exact。
 - 当前 corpus 的格式覆盖仍不足以满足 capability matrix。
-- 完整规则 runtime 尚未选定，全库 execution conformance 未通过。
+- ADR 0006 已提议 rquickjs/QuickJS-NG，但 acceptance conditions 和全库
+  execution conformance 未通过。
 - normalizer schema、semantic projection 和 waiver validator 尚未实现。
 - benchmark runner/noise/阈值和默认资源 limits 尚未冻结。
 - archive/decompression sanitizer 与恶意语料隔离设施尚未建立。
