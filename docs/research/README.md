@@ -17,6 +17,7 @@ Phase 0 计划形成：
 - [`host-api-inventory.md`](host-api-inventory.md)：XScanEngine C++ slot、继承、默认参数与规则调用覆盖（Draft）。
 - [`global-host-api-inventory.md`](global-host-api-inventory.md)：die_script 非格式 native globals、规则顶层函数与直接调用分类（Draft）。
 - [`global-host-api-runtime-differential.md`](global-host-api-runtime-differential.md)：真实 `DiE_ScriptEngine` 的 Qt 5/Qt 6 global HostApi 转换、副作用与异常差分（Draft）。
+- [`format-host-api-runtime-differential.md`](format-host-api-runtime-differential.md)：真实格式 QObject 的 Qt 5/Qt 6 参数数量、转换、stderr 与异常差分（Draft）。
 - [`global-typo-error-behavior.md`](global-typo-error-behavior.md)：两个固定规则未定义 global 的可达性、Qt 5 错误和 CLI framing（Draft）。
 - [`script-scope-semantics.md`](script-scope-semantics.md)：Qt Script 跨规则 lexical 环境与 QuickJS 差分（Draft）。
 - [`script-state-semantics.md`](script-state-semantics.md)：Qt Script 跨规则 var/function/global 持久状态与 wrapper 风险（Draft）。
@@ -51,6 +52,8 @@ Phase 0 计划形成：
 - [`data/rule-syntax-inventory.json`](data/rule-syntax-inventory.json)：2235 个规则脚本的 AST、运算符、global 和宿主调用机器清单。
 - [`data/host-api-inventory.json`](data/host-api-inventory.json)：固定 XScanEngine 宿主声明、继承和规则 arity 覆盖清单。
 - [`data/host-api-arity-qt5.json`](data/host-api-arity-qt5.json)：固定 Qt 5 QObject wrapper 的额外实参与缺失方法异常基线。
+- [`data/host-api-arity-qt6.json`](data/host-api-arity-qt6.json)：固定 Qt 6 QObject wrapper 的参数转换、diagnostic 与异常基线。
+- [`data/host-api-arity-qt5-qt6.json`](data/host-api-arity-qt5-qt6.json)：两个格式 QObject runtime observation 的逐字段机器差分。
 - [`data/global-host-api-inventory.json`](data/global-host-api-inventory.json)：固定 die_script global 注册面、规则函数和 undeclared direct-call 分类。
 - [`data/global-host-api-qt5.json`](data/global-host-api-qt5.json)：真实 `DiE_ScriptEngine` 的 Qt 5 native global 转换与副作用基线。
 - [`data/global-host-api-qt6.json`](data/global-host-api-qt6.json)：真实 `DiE_ScriptEngine` 的 Qt 6 native global 转换、异常与副作用基线。

@@ -1,0 +1,281 @@
+{
+  "difference_count": 41,
+  "differences": [
+    {
+      "kind": "value",
+      "left": "<global>() at sc-missing.js:1",
+      "path": "$.observation.binary.sc_missing.backtrace[0]",
+      "right": "%entry@file:sc-missing.js:1"
+    },
+    {
+      "kind": "value",
+      "left": "too few arguments in call to SC(); candidates are\n    SC(qlonglong)\n    SC(qlonglong,qlonglong)\n    SC(qlonglong,qlonglong,QString)",
+      "path": "$.observation.binary.sc_missing.error_message",
+      "right": "Unable to determine callable overload.  Candidates are:\n    SC(qlonglong)\n    SC(qlonglong,qlonglong)\n    SC(qlonglong,qlonglong,QString)\n    SC(qlonglong)\n    SC(qlonglong,qlonglong)\n    SC(qlonglong,qlonglong,QString)\n    SC(qlonglong)\n    SC(qlonglong,qlonglong)\n    SC(qlonglong,qlonglong,QString)"
+    },
+    {
+      "kind": "value",
+      "left": "SyntaxError",
+      "path": "$.observation.binary.sc_missing.error_name",
+      "right": "Error"
+    },
+    {
+      "kind": "value",
+      "left": "SyntaxError: too few arguments in call to SC(); candidates are\n    SC(qlonglong)\n    SC(qlonglong,qlonglong)\n    SC(qlonglong,qlonglong,QString)",
+      "path": "$.observation.binary.sc_missing.string",
+      "right": "Error: Unable to determine callable overload.  Candidates are:\n    SC(qlonglong)\n    SC(qlonglong,qlonglong)\n    SC(qlonglong,qlonglong,QString)\n    SC(qlonglong)\n    SC(qlonglong,qlonglong)\n    SC(qlonglong,qlonglong,QString)\n    SC(qlonglong)\n    SC(qlonglong,qlonglong)\n    SC(qlonglong,qlonglong,QString)"
+    },
+    {
+      "kind": "value",
+      "left": "<global>() at u8-missing.js:1",
+      "path": "$.observation.binary.u8_missing.backtrace[0]",
+      "right": "%entry@file:u8-missing.js:1"
+    },
+    {
+      "kind": "value",
+      "left": "too few arguments in call to U8(); candidates are\n    U8(qlonglong)",
+      "path": "$.observation.binary.u8_missing.error_message",
+      "right": "Insufficient arguments"
+    },
+    {
+      "kind": "value",
+      "left": "SyntaxError",
+      "path": "$.observation.binary.u8_missing.error_name",
+      "right": "Error"
+    },
+    {
+      "kind": "value",
+      "left": "SyntaxError: too few arguments in call to U8(); candidates are\n    U8(qlonglong)",
+      "path": "$.observation.binary.u8_missing.string",
+      "right": "Error: Insufficient arguments"
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.observation.binary.u8_null.backtrace",
+      "right": [
+        "%entry@file:u8-null.js:1"
+      ]
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.observation.binary.u8_null.error_line",
+      "right": 1
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.observation.binary.u8_null.error_message",
+      "right": "Passing incompatible arguments to C++ functions from JavaScript is not allowed."
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.observation.binary.u8_null.error_name",
+      "right": "TypeError"
+    },
+    {
+      "kind": "value",
+      "left": false,
+      "path": "$.observation.binary.u8_null.is_error",
+      "right": true
+    },
+    {
+      "kind": "value",
+      "left": true,
+      "path": "$.observation.binary.u8_null.is_number",
+      "right": false
+    },
+    {
+      "kind": "missing_right",
+      "left": 65,
+      "path": "$.observation.binary.u8_null.number"
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.observation.binary.u8_null.string",
+      "right": "TypeError: Passing incompatible arguments to C++ functions from JavaScript is not allowed."
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.observation.binary.u8_undefined.backtrace",
+      "right": [
+        "%entry@file:u8-undefined.js:1"
+      ]
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.observation.binary.u8_undefined.error_line",
+      "right": 1
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.observation.binary.u8_undefined.error_message",
+      "right": "Passing incompatible arguments to C++ functions from JavaScript is not allowed."
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.observation.binary.u8_undefined.error_name",
+      "right": "TypeError"
+    },
+    {
+      "kind": "value",
+      "left": false,
+      "path": "$.observation.binary.u8_undefined.is_error",
+      "right": true
+    },
+    {
+      "kind": "value",
+      "left": true,
+      "path": "$.observation.binary.u8_undefined.is_number",
+      "right": false
+    },
+    {
+      "kind": "missing_right",
+      "left": 65,
+      "path": "$.observation.binary.u8_undefined.number"
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.observation.binary.u8_undefined.string",
+      "right": "TypeError: Passing incompatible arguments to C++ functions from JavaScript is not allowed."
+    },
+    {
+      "kind": "value",
+      "left": "<global>() at get-ep-signature-call.js:1",
+      "path": "$.observation.pe.get_ep_signature_call.backtrace[0]",
+      "right": "%entry@file:get-ep-signature-call.js:1"
+    },
+    {
+      "kind": "value",
+      "left": "Result of expression 'PE.getEPSignature' [undefined] is not a function.",
+      "path": "$.observation.pe.get_ep_signature_call.error_message",
+      "right": "Property 'getEPSignature' of object PE_Script(<address>) is not a function"
+    },
+    {
+      "kind": "value",
+      "left": "TypeError: Result of expression 'PE.getEPSignature' [undefined] is not a function.",
+      "path": "$.observation.pe.get_ep_signature_call.string",
+      "right": "TypeError: Property 'getEPSignature' of object PE_Script(<address>) is not a function"
+    },
+    {
+      "kind": "value",
+      "left": false,
+      "path": "$.observation.pe.init_evaluation.is_undefined",
+      "right": true
+    },
+    {
+      "kind": "value",
+      "left": "5.15.13",
+      "path": "$.observation.qt_version",
+      "right": "6.4.2"
+    },
+    {
+      "kind": "value",
+      "left": 0,
+      "path": "$.stderr.bytes",
+      "right": 302
+    },
+    {
+      "kind": "value",
+      "left": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "path": "$.stderr.sha256",
+      "right": "e0310923c499e07d496a16fa9e9050185d71144cf113642560e08697a9e67bac"
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.stderr.utf8_lines[0]",
+      "right": "%entry@file:u8-extra.js:1"
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.stderr.utf8_lines[1]",
+      "right": "Too many arguments, ignoring 1"
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.stderr.utf8_lines[2]",
+      "right": "\"Could not convert argument 0 at\""
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.stderr.utf8_lines[3]",
+      "right": "\t \"%entry@file:u8-null.js:1\""
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.stderr.utf8_lines[4]",
+      "right": "\"Could not convert argument 0 at\""
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.stderr.utf8_lines[5]",
+      "right": "\t \"%entry@file:u8-undefined.js:1\""
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.stderr.utf8_lines[6]",
+      "right": "%entry@file:sa-extra.js:1"
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.stderr.utf8_lines[7]",
+      "right": "Too many arguments, ignoring 1"
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.stderr.utf8_lines[8]",
+      "right": "%entry@file:sc-extra.js:1"
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.stderr.utf8_lines[9]",
+      "right": "Too many arguments, ignoring 1"
+    }
+  ],
+  "equal": false,
+  "generator": "tools/upstream/compare_host_api_arity_reports.py",
+  "inputs": {
+    "qt5": {
+      "binary": {
+        "path": "/opt/die-build/src/console/diec-host-api-arity-harness",
+        "sha256": "1ebe7d03ccdb05489b033a2d079d603382618d81900c90d0f07088f70d7d89bc"
+      },
+      "image": {
+        "id": "sha256:0db880fc25300a5eae56650798863e3c8edd85e31d3aeefc85ce18a595267a52",
+        "name": "diec-rust/upstream-host-api-arity-harness:74eaf505",
+        "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+      },
+      "path": "docs/research/data/host-api-arity-qt5.json",
+      "sha256": "e5f7108a55f9af59e6c07c1362cf59297f7c5f0e95d2bfff76ed1a305b7e2a46"
+    },
+    "qt6": {
+      "binary": {
+        "path": "/opt/die-build/src/console/diec-host-api-arity-harness",
+        "sha256": "6970f3f61a3399f63e44058e08ed6b93ba9cccce03f89222e7a396a94699997b"
+      },
+      "image": {
+        "id": "sha256:e88739194238e805e769338c5ddbc08bbccc1a7d9b78332e2b746762a6d2593d",
+        "name": "diec-rust/upstream-host-api-arity-harness-qt6:74eaf505",
+        "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+      },
+      "path": "docs/research/data/host-api-arity-qt6.json",
+      "sha256": "cd4262afa0acaf96f38d42be0383050e6d5053995f55a48f3f8c427fc5a58994"
+    }
+  },
+  "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+  "schema_version": 1,
+  "sources": {
+    "tools/upstream/compare_global_host_api_reports.py": {
+      "bytes": 5968,
+      "sha256": "367c39026786e70bc1b7cfb0c01eb2b30722f7d0b5947c92f0ebde4f8794503a"
+    },
+    "tools/upstream/compare_host_api_arity_reports.py": {
+      "bytes": 4382,
+      "sha256": "ebf91827d2c5230d5c473e2f65877bafcba83d48c2568580345643befaa85bc6"
+    },
+    "tools/upstream/probe_host_api_arity.py": {
+      "bytes": 11465,
+      "sha256": "4cc0701b62a93c8a440051a8b4301ec8aa1b838db4dde5a9fd2962c90dff2fd5"
+    }
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+}

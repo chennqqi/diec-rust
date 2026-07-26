@@ -1,12 +1,12 @@
 {
   "binary": {
     "path": "/opt/die-build/src/console/diec-host-api-arity-harness",
-    "sha256": "1ebe7d03ccdb05489b033a2d079d603382618d81900c90d0f07088f70d7d89bc"
+    "sha256": "6970f3f61a3399f63e44058e08ed6b93ba9cccce03f89222e7a396a94699997b"
   },
   "generator": "tools/upstream/probe_host_api_arity.py",
   "image": {
-    "id": "sha256:0db880fc25300a5eae56650798863e3c8edd85e31d3aeefc85ce18a595267a52",
-    "name": "diec-rust/upstream-host-api-arity-harness:74eaf505",
+    "id": "sha256:e88739194238e805e769338c5ddbc08bbccc1a7d9b78332e2b746762a6d2593d",
+    "name": "diec-rust/upstream-host-api-arity-harness-qt6:74eaf505",
     "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
   },
   "observation": {
@@ -103,11 +103,11 @@
       },
       "sc_missing": {
         "backtrace": [
-          "<global>() at sc-missing.js:1"
+          "%entry@file:sc-missing.js:1"
         ],
         "error_line": 1,
-        "error_message": "too few arguments in call to SC(); candidates are\n    SC(qlonglong)\n    SC(qlonglong,qlonglong)\n    SC(qlonglong,qlonglong,QString)",
-        "error_name": "SyntaxError",
+        "error_message": "Unable to determine callable overload.  Candidates are:\n    SC(qlonglong)\n    SC(qlonglong,qlonglong)\n    SC(qlonglong,qlonglong,QString)\n    SC(qlonglong)\n    SC(qlonglong,qlonglong)\n    SC(qlonglong,qlonglong,QString)\n    SC(qlonglong)\n    SC(qlonglong,qlonglong)\n    SC(qlonglong,qlonglong,QString)",
+        "error_name": "Error",
         "is_boolean": false,
         "is_error": true,
         "is_null": false,
@@ -115,7 +115,7 @@
         "is_string": false,
         "is_undefined": false,
         "source": "X.SC()",
-        "string": "SyntaxError: too few arguments in call to SC(); candidates are\n    SC(qlonglong)\n    SC(qlonglong,qlonglong)\n    SC(qlonglong,qlonglong,QString)"
+        "string": "Error: Unable to determine callable overload.  Candidates are:\n    SC(qlonglong)\n    SC(qlonglong,qlonglong)\n    SC(qlonglong,qlonglong,QString)\n    SC(qlonglong)\n    SC(qlonglong,qlonglong)\n    SC(qlonglong,qlonglong,QString)\n    SC(qlonglong)\n    SC(qlonglong,qlonglong)\n    SC(qlonglong,qlonglong,QString)"
       },
       "sc_null_encoding": {
         "is_boolean": false,
@@ -179,11 +179,11 @@
       },
       "u8_missing": {
         "backtrace": [
-          "<global>() at u8-missing.js:1"
+          "%entry@file:u8-missing.js:1"
         ],
         "error_line": 1,
-        "error_message": "too few arguments in call to U8(); candidates are\n    U8(qlonglong)",
-        "error_name": "SyntaxError",
+        "error_message": "Insufficient arguments",
+        "error_name": "Error",
         "is_boolean": false,
         "is_error": true,
         "is_null": false,
@@ -191,17 +191,23 @@
         "is_string": false,
         "is_undefined": false,
         "source": "X.U8()",
-        "string": "SyntaxError: too few arguments in call to U8(); candidates are\n    U8(qlonglong)"
+        "string": "Error: Insufficient arguments"
       },
       "u8_null": {
+        "backtrace": [
+          "%entry@file:u8-null.js:1"
+        ],
+        "error_line": 1,
+        "error_message": "Passing incompatible arguments to C++ functions from JavaScript is not allowed.",
+        "error_name": "TypeError",
         "is_boolean": false,
-        "is_error": false,
+        "is_error": true,
         "is_null": false,
-        "is_number": true,
+        "is_number": false,
         "is_string": false,
         "is_undefined": false,
-        "number": 65,
-        "source": "X.U8(null)"
+        "source": "X.U8(null)",
+        "string": "TypeError: Passing incompatible arguments to C++ functions from JavaScript is not allowed."
       },
       "u8_string": {
         "is_boolean": false,
@@ -214,14 +220,20 @@
         "source": "X.U8('0')"
       },
       "u8_undefined": {
+        "backtrace": [
+          "%entry@file:u8-undefined.js:1"
+        ],
+        "error_line": 1,
+        "error_message": "Passing incompatible arguments to C++ functions from JavaScript is not allowed.",
+        "error_name": "TypeError",
         "is_boolean": false,
-        "is_error": false,
+        "is_error": true,
         "is_null": false,
-        "is_number": true,
+        "is_number": false,
         "is_string": false,
         "is_undefined": false,
-        "number": 65,
-        "source": "X.U8(undefined)"
+        "source": "X.U8(undefined)",
+        "string": "TypeError: Passing incompatible arguments to C++ functions from JavaScript is not allowed."
       }
     },
     "pe": {
@@ -247,10 +259,10 @@
       },
       "get_ep_signature_call": {
         "backtrace": [
-          "<global>() at get-ep-signature-call.js:1"
+          "%entry@file:get-ep-signature-call.js:1"
         ],
         "error_line": 1,
-        "error_message": "Result of expression 'PE.getEPSignature' [undefined] is not a function.",
+        "error_message": "Property 'getEPSignature' of object PE_Script(<address>) is not a function",
         "error_name": "TypeError",
         "is_boolean": false,
         "is_error": true,
@@ -259,7 +271,7 @@
         "is_string": false,
         "is_undefined": false,
         "source": "PE.getEPSignature(19, 14)",
-        "string": "TypeError: Result of expression 'PE.getEPSignature' [undefined] is not a function."
+        "string": "TypeError: Property 'getEPSignature' of object PE_Script(<address>) is not a function"
       },
       "get_ep_signature_type_after_init": {
         "is_boolean": false,
@@ -287,7 +299,7 @@
         "is_null": false,
         "is_number": false,
         "is_string": false,
-        "is_undefined": false,
+        "is_undefined": true,
         "source_bytes": 6327,
         "source_sha256": "26f5912c5ac137ed44d0d9edade8d3ce65501a61ce06d0491db5e1faa59c1f90"
       },
@@ -297,18 +309,18 @@
       "path": "/opt/die-source/Detect-It-Easy/db/PE/_init",
       "sha256": "26f5912c5ac137ed44d0d9edade8d3ce65501a61ce06d0491db5e1faa59c1f90"
     },
-    "qt_version": "5.15.13",
+    "qt_version": "6.4.2",
     "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
     "schema_version": 1,
     "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
     "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
   },
-  "runtime_profile": "qt5",
+  "runtime_profile": "qt6",
   "schema_version": 1,
   "sources": {
-    "tools/upstream/Dockerfile.host-api-arity-harness-qt5": {
-      "bytes": 1309,
-      "sha256": "f655c9e53990244d377c0de7b75f06680dba30ba6f6ee004531921144af138ad"
+    "tools/upstream/Dockerfile.host-api-arity-harness-qt6": {
+      "bytes": 1313,
+      "sha256": "dd9d1fbe075f542e1eb531f315f6a124f92c38e4b5583d9223dccec23fa533ef"
     },
     "tools/upstream/host_api_arity_harness_main.cpp": {
       "bytes": 10108,
@@ -320,8 +332,19 @@
     }
   },
   "stderr": {
-    "bytes": 0,
-    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "utf8_lines": []
+    "bytes": 302,
+    "sha256": "e0310923c499e07d496a16fa9e9050185d71144cf113642560e08697a9e67bac",
+    "utf8_lines": [
+      "%entry@file:u8-extra.js:1",
+      "Too many arguments, ignoring 1",
+      "\"Could not convert argument 0 at\"",
+      "\t \"%entry@file:u8-null.js:1\"",
+      "\"Could not convert argument 0 at\"",
+      "\t \"%entry@file:u8-undefined.js:1\"",
+      "%entry@file:sa-extra.js:1",
+      "Too many arguments, ignoring 1",
+      "%entry@file:sc-extra.js:1",
+      "Too many arguments, ignoring 1"
+    ]
   }
 }

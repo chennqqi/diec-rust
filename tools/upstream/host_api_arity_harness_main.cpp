@@ -1,4 +1,4 @@
-// Project-generated research harness for pinned Qt 5 QObject HostApi behavior.
+// Project-generated research harness for pinned Qt QObject HostApi behavior.
 // It links unmodified upstream Binary_Script and PE_Script implementations.
 
 #include "binary_script.h"
@@ -13,13 +13,27 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QRegularExpression>
+#ifdef QT_SCRIPT_LIB
 #include <QScriptEngine>
 #include <QScriptValue>
+#else
+#include <QJSEngine>
+#include <QJSValue>
+#endif
 #include <QString>
 
 #include <cstdio>
 
 namespace {
+
+#ifdef QT_SCRIPT_LIB
+using ScriptEngine = QScriptEngine;
+using ScriptValue = QScriptValue;
+#else
+using ScriptEngine = QJSEngine;
+using ScriptValue = QJSValue;
+#endif
 
 constexpr const char *UPSTREAM_COMMIT =
     "74eaf505c250ab47e709024e9dc41657cd8f2254";
@@ -32,14 +46,28 @@ constexpr const char *PE_INIT_PATH =
 constexpr const char *PE_INIT_SHA256 =
     "26f5912c5ac137ed44d0d9edade8d3ce65501a61ce06d0491db5e1faa59c1f90";
 
+QString normalizeObjectAddress(const QString &text)
+{
+    QString result = text;
+    result.replace(
+        QRegularExpression(
+            "([A-Za-z_][A-Za-z0-9_:]*)\\(0x[0-9a-fA-F]+\\)"
+        ),
+        "\\1(<address>)"
+    );
+    return result;
+}
+
 QJsonObject evaluate(
-    QScriptEngine *engine,
+    ScriptEngine *engine,
     const QString &source,
     const QString &fileName
 )
 {
+#ifdef QT_SCRIPT_LIB
     engine->clearExceptions();
-    QScriptValue value = engine->evaluate(source, fileName);
+#endif
+    ScriptValue value = engine->evaluate(source, fileName);
 
     QJsonObject output;
     output.insert("source", source);
@@ -56,22 +84,42 @@ QJsonObject evaluate(
         output.insert("number", value.toNumber());
     }
     if (value.isString() || value.isError()) {
-        output.insert("string", value.toString());
+        output.insert(
+            "string",
+            normalizeObjectAddress(value.toString())
+        );
     }
     if (value.isError()) {
         output.insert("error_name", value.property("name").toString());
         output.insert(
             "error_message",
-            value.property("message").toString()
+            normalizeObjectAddress(
+                value.property("message").toString()
+            )
         );
         output.insert(
             "error_line",
+#ifdef QT_SCRIPT_LIB
             value.property("lineNumber").toInt32()
+#else
+            value.property("lineNumber").toInt()
+#endif
         );
         QJsonArray backtrace;
+#ifdef QT_SCRIPT_LIB
         for (const QString &line : engine->uncaughtExceptionBacktrace()) {
             backtrace.append(line);
         }
+#else
+        for (
+            const QString &line :
+            value.property("stack").toString().split('\n')
+        ) {
+            if (!line.isEmpty()) {
+                backtrace.append(line);
+            }
+        }
+#endif
         output.insert("backtrace", backtrace);
     }
     return output;
@@ -91,7 +139,10 @@ QJsonObject binaryObservations()
         options,
         &state
     );
-    QScriptEngine engine;
+    ScriptEngine engine;
+#ifndef QT_SCRIPT_LIB
+    QJSEngine::setObjectOwnership(&script, QJSEngine::CppOwnership);
+#endif
     engine.globalObject().setProperty("X", engine.newQObject(&script));
 
     QJsonObject output;
@@ -104,8 +155,28 @@ QJsonObject binaryObservations()
         evaluate(&engine, "X.U8(0)", "u8-exact.js")
     );
     output.insert(
+        "u8_missing",
+        evaluate(&engine, "X.U8()", "u8-missing.js")
+    );
+    output.insert(
         "u8_extra",
         evaluate(&engine, "X.U8(0, 12)", "u8-extra.js")
+    );
+    output.insert(
+        "u8_string",
+        evaluate(&engine, "X.U8('0')", "u8-string.js")
+    );
+    output.insert(
+        "u8_null",
+        evaluate(&engine, "X.U8(null)", "u8-null.js")
+    );
+    output.insert(
+        "u8_undefined",
+        evaluate(&engine, "X.U8(undefined)", "u8-undefined.js")
+    );
+    output.insert(
+        "u8_boolean",
+        evaluate(&engine, "X.U8(false)", "u8-boolean.js")
     );
     output.insert(
         "sa_function_length",
@@ -114,6 +185,10 @@ QJsonObject binaryObservations()
     output.insert(
         "sa_exact",
         evaluate(&engine, "X.SA(0, 1)", "sa-exact.js")
+    );
+    output.insert(
+        "sa_missing",
+        evaluate(&engine, "X.SA(0)", "sa-missing.js")
     );
     output.insert(
         "sa_extra",
@@ -129,6 +204,34 @@ QJsonObject binaryObservations()
             &engine,
             "X.SC(0, 1, 'System')",
             "sc-exact.js"
+        )
+    );
+    output.insert(
+        "sc_default_one",
+        evaluate(&engine, "X.SC(0)", "sc-default-one.js")
+    );
+    output.insert(
+        "sc_default_two",
+        evaluate(&engine, "X.SC(0, 1)", "sc-default-two.js")
+    );
+    output.insert(
+        "sc_missing",
+        evaluate(&engine, "X.SC()", "sc-missing.js")
+    );
+    output.insert(
+        "sc_null_encoding",
+        evaluate(
+            &engine,
+            "X.SC(0, 1, null)",
+            "sc-null-encoding.js"
+        )
+    );
+    output.insert(
+        "sc_number_encoding",
+        evaluate(
+            &engine,
+            "X.SC(0, 1, 42)",
+            "sc-number-encoding.js"
         )
     );
     output.insert(
@@ -158,7 +261,10 @@ QJsonObject peObservations(QString *error)
         options,
         &state
     );
-    QScriptEngine engine;
+    ScriptEngine engine;
+#ifndef QT_SCRIPT_LIB
+    QJSEngine::setObjectOwnership(&script, QJSEngine::CppOwnership);
+#endif
     engine.globalObject().setProperty("PE", engine.newQObject(&script));
 
     QFile initFile(QString::fromLatin1(PE_INIT_PATH));

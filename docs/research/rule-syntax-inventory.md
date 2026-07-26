@@ -146,8 +146,10 @@ global、7 个 ECMAScript global 和 2 个固定规则拼写错误。详见
 ## 7. 尚未完成
 
 - 为固定 C++ 声明和脚本 shadowing 补齐 Qt 类型转换、默认/额外参数及异常行为；
+  当前仅完成 Binary/PE 代表性边界和四个静态未解释 arity 形状的 Qt 5/Qt 6
+  对照；
 - 为 1408 个未声明 global 中非直接调用的读取、写入和动态访问完成分类，并验证
   55 个跨文件函数候选的 include 可达性；
-- 为 55 种 AST 类型、全部运算符及 464 个宿主 arity 形状生成最小 Qt 5/Qt 6
-  conformance fixture；
+- 为 55 种 AST 类型、全部运算符及全部 464 个宿主 arity 形状生成最小 Qt 5/
+  Qt 6 conformance fixture；四个静态缺口已实验闭合不等于该完整矩阵完成；
 - 用完整 HostApi 逐条执行规则并与固定 Qt oracle 比较结果和异常。

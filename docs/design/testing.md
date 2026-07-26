@@ -277,7 +277,10 @@ semantic model 至少比较：
 - 已证明无语义的固定临时根目录替换为 token；
 - 明确标为 non-canonical 的 wall-clock/profile timing；
 - 平台 oracle 已证明不同但等价的 path separator/line ending；
-- 上游生成且无业务语义的地址或随机标识（目前尚未批准任何此类字段）。
+- 上游生成且无业务语义的地址或随机标识；当前只批准 format HostApi semantic
+  harness 的 QObject error message，把精确匹配
+  `ClassName(0x[0-9a-fA-F]+)` 的地址替换为 `ClassName(<address>)`，raw
+  execution 仍必须保留。
 
 禁止规范化：
 
@@ -290,6 +293,11 @@ semantic model 至少比较：
 - 丢弃完整 JSON document 前后的 stdout records，或只比较已解析 JSON。
 
 normalizer 的每条变换有 unit/golden test。新增变换按兼容策略变更评审。
+
+format HostApi 的 argument conformance case 必须同时断言语义返回、异常四元组
+（name/message/line/backtrace）和 stderr。特别覆盖 Qt 5/Qt 6 对 extra arguments、
+缺少必需参数、C++ 默认参数，以及 `qint64` 的 string/boolean/null/undefined
+转换；不能因返回值相同而忽略 Qt 6 的 extra-argument diagnostics。
 
 ## 11. 差异分类与 waiver
 

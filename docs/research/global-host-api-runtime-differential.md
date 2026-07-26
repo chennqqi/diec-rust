@@ -179,8 +179,9 @@ Qt 6 image 构建日期不同。该 raw 差异由 binary/image identity 保存�
 - Qt 6 profile 必须精确测试四个 missing-argument error、原子无副作用和空 stderr。
 - raw differential 保留 build-date 字段；semantic projection 可以把它标为
   build identity，但需要显式规则，不能全局删除版本字符串。
-- format QObject 的 arity/转换仍由独立 HostApi matrix 覆盖，本实验不能外推
-  337 个格式 slot。
+- format QObject 的首轮 arity/转换差分见
+  [`format-host-api-runtime-differential.md`](format-host-api-runtime-differential.md)；
+  两项实验都不能外推 337 个格式 slot 的完整矩阵。
 
 ## 尚未覆盖
 
@@ -189,4 +190,4 @@ Qt 6 image 构建日期不同。该 raw 差异由 binary/image identity 保存�
 - `_log` 对 PDSTRUCT info 的后续扫描可见性；
 - library=true 的可达宿主条件；
 - Qt 6 其他 minor、Windows 和 macOS；
-- 全部 format QObject 与逐规则 execution conformance。
+- 其余 format QObject 完整矩阵与逐规则 execution conformance。

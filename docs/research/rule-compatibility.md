@@ -382,8 +382,12 @@ header fast path 的字符/字节混合计算和严格 `<` 分界会改变 inval
 节点类型、28,372 个普通调用；29 个已知宿主 receiver 上共有 16,499 次第一层
 调用、429 个 receiver/method 组合和 464 个 arity 形状，动态 computed 第一层
 宿主方法名为 0。C++ 337 个 slot 加 13 个公共脚本扩展静态覆盖其中 460/464；
-固定 Qt 5.15.13 QObject 探针进一步证明三个额外实参形状会忽略额外参数，而
-`PE.getEPSignature` 在完整 PE `_init` 后仍不存在、调用时抛出 `TypeError`。
+共享 Qt 5.15.13/Qt 6.4.2 QObject 探针进一步证明三个额外实参形状在两侧都会
+忽略额外参数并保留相同语义返回，但 Qt 6 额外写 stderr warning；
+`PE.getEPSignature` 在完整 PE `_init` 后仍不存在、两侧调用均抛出
+runtime-specific `TypeError`。代表性 `qint64` fixture 还确认 Qt 5 会把
+`null`/`undefined` 转成 0，Qt 6 则拒绝。详见
+[`format-host-api-runtime-differential.md`](format-host-api-runtime-differential.md)。
 该清单闭合规则侧语法和静态调用用法面，但不替代其余类型转换和运行行为核对。
 
 非格式 global 另由固定 `die_script` 源码清单闭合：声明 16 个 native slot，
@@ -403,7 +407,7 @@ global。`_getEngineVersion` 还把编译日期写入可观察结果。
 ## 尚未完成
 
 - 为固定 C++ 声明、默认参数、继承和规则脚本扩展补齐其余 Qt 5/Qt 6 行为
-  fixture，并补做四个已闭合形状的 Qt 6 对照。
+  fixture；四个静态未解释形状及代表性 Binary/PE 边界已完成两侧对照。
 - Qt 5 与 Qt 6 的 conformance oracle。
 - include 同名、重复、循环和异常实验。
 - native global 剩余 Qt 5 边界和完整 Qt 6 对照；两个拼写错误分支仍缺

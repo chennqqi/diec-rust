@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Capture the pinned Qt5 QObject HostApi arity/error oracle."""
+"""Capture pinned Qt 5/Qt 6 QObject HostApi arity/error oracles."""
 
 from __future__ import annotations
 
@@ -17,19 +17,38 @@ RULES_COMMIT = "c2c17dfa5ea4e078ba31eab55d87430c96622fb6"
 PE_INIT_SHA256 = (
     "26f5912c5ac137ed44d0d9edade8d3ce65501a61ce06d0491db5e1faa59c1f90"
 )
-DEFAULT_IMAGE = "diec-rust/upstream-host-api-arity-harness:74eaf505"
+QT5_IMAGE = "diec-rust/upstream-host-api-arity-harness:74eaf505"
+QT6_IMAGE = "diec-rust/upstream-host-api-arity-harness-qt6:74eaf505"
 DEFAULT_BINARY = "/opt/die-build/src/console/diec-host-api-arity-harness"
+QT6_STDERR = (
+    b"%entry@file:u8-extra.js:1\n"
+    b"Too many arguments, ignoring 1\n"
+    b'"Could not convert argument 0 at"\n'
+    b'\t "%entry@file:u8-null.js:1"\n'
+    b'"Could not convert argument 0 at"\n'
+    b'\t "%entry@file:u8-undefined.js:1"\n'
+    b"%entry@file:sa-extra.js:1\n"
+    b"Too many arguments, ignoring 1\n"
+    b"%entry@file:sc-extra.js:1\n"
+    b"Too many arguments, ignoring 1\n"
+)
 
 
 def sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
-def parse_observation(stdout: bytes, stderr: bytes, returncode: int) -> dict[str, Any]:
+def parse_observation(
+    stdout: bytes,
+    stderr: bytes,
+    returncode: int,
+    runtime: str = "qt5",
+) -> dict[str, Any]:
     if returncode != 0:
         raise ValueError(f"harness exited with {returncode}")
-    if stderr:
-        raise ValueError("harness wrote stderr")
+    expected_stderr = b"" if runtime == "qt5" else QT6_STDERR
+    if stderr != expected_stderr:
+        raise ValueError("harness wrote unexpected stderr")
     try:
         text = stdout.decode("utf-8")
         observation, end = json.JSONDecoder().raw_decode(text)
@@ -37,7 +56,7 @@ def parse_observation(stdout: bytes, stderr: bytes, returncode: int) -> dict[str
         raise ValueError("harness did not emit one UTF-8 JSON document") from error
     if text[end:].strip():
         raise ValueError("harness emitted trailing stdout")
-    validate_observation(observation)
+    validate_observation(observation, runtime)
     return observation
 
 
@@ -45,19 +64,48 @@ def _semantic_value(value: dict[str, Any]) -> dict[str, Any]:
     return {key: item for key, item in value.items() if key != "source"}
 
 
-def validate_observation(observation: dict[str, Any]) -> None:
+def validate_observation(
+    observation: dict[str, Any],
+    runtime: str = "qt5",
+) -> None:
+    if runtime not in {"qt5", "qt6"}:
+        raise ValueError("unsupported runtime profile")
     identities = {
         "schema_version": 1,
         "upstream_commit": UPSTREAM_COMMIT,
         "xscanengine_commit": XSCANENGINE_COMMIT,
         "rules_commit": RULES_COMMIT,
-        "qt_version": "5.15.13",
+        "qt_version": "5.15.13" if runtime == "qt5" else "6.4.2",
     }
     for key, expected in identities.items():
         if observation.get(key) != expected:
             raise ValueError(f"unexpected {key}")
     if observation.get("pe_init", {}).get("sha256") != PE_INIT_SHA256:
         raise ValueError("unexpected PE _init identity")
+
+    def expect_value(
+        value: dict[str, Any],
+        kind: str,
+        expected: Any,
+    ) -> None:
+        if value.get("is_error"):
+            raise ValueError("successful invocation raised an exception")
+        key = {"number": "number", "string": "string"}[kind]
+        if value.get(key) != expected:
+            raise ValueError(f"unexpected {kind} result")
+
+    def expect_error(
+        value: dict[str, Any],
+        name: str,
+        message: str,
+    ) -> None:
+        if (
+            not value.get("is_error")
+            or value.get("error_name") != name
+            or value.get("error_message") != message
+            or value.get("error_line") != 1
+        ):
+            raise ValueError("unexpected QObject invocation error")
 
     binary = observation["binary"]
     for name in ("u8", "sa", "sc"):
@@ -70,6 +118,84 @@ def validate_observation(observation: dict[str, Any]) -> None:
         length = binary[f"{name}_function_length"]
         if not length["is_number"] or length.get("number") != 0:
             raise ValueError(f"{name} wrapper length is not zero")
+
+    for key in (
+        "u8_exact",
+        "u8_extra",
+        "u8_string",
+        "u8_boolean",
+    ):
+        expect_value(binary[key], "number", 65)
+    if runtime == "qt5":
+        expect_value(binary["u8_null"], "number", 65)
+        expect_value(binary["u8_undefined"], "number", 65)
+        expect_error(
+            binary["u8_missing"],
+            "SyntaxError",
+            (
+                "too few arguments in call to U8(); candidates are\n"
+                "    U8(qlonglong)"
+            ),
+        )
+    else:
+        incompatible = (
+            "Passing incompatible arguments to C++ functions from "
+            "JavaScript is not allowed."
+        )
+        expect_error(binary["u8_null"], "TypeError", incompatible)
+        expect_error(binary["u8_undefined"], "TypeError", incompatible)
+        expect_error(
+            binary["u8_missing"],
+            "Error",
+            "Insufficient arguments",
+        )
+
+    expect_value(binary["sa_exact"], "string", "A")
+    expect_value(binary["sa_extra"], "string", "A")
+    expect_value(binary["sa_missing"], "string", "ABC")
+    for key in (
+        "sc_exact",
+        "sc_extra",
+        "sc_default_one",
+        "sc_default_two",
+        "sc_null_encoding",
+        "sc_number_encoding",
+    ):
+        expect_value(binary[key], "string", "")
+    sc_candidates = (
+        "    SC(qlonglong)\n"
+        "    SC(qlonglong,qlonglong)\n"
+        "    SC(qlonglong,qlonglong,QString)"
+    )
+    if runtime == "qt5":
+        expect_error(
+            binary["sc_missing"],
+            "SyntaxError",
+            (
+                "too few arguments in call to SC(); candidates are\n"
+                f"{sc_candidates}"
+            ),
+        )
+    else:
+        expect_error(
+            binary["sc_missing"],
+            "Error",
+            (
+                "Unable to determine callable overload.  Candidates are:\n"
+                f"{sc_candidates}\n{sc_candidates}\n{sc_candidates}"
+            ),
+        )
+
+    observed_error_sources = {
+        value["source"]
+        for value in binary.values()
+        if isinstance(value, dict) and value.get("is_error")
+    }
+    expected_error_sources = {"X.U8()", "X.SC()"}
+    if runtime == "qt6":
+        expected_error_sources |= {"X.U8(null)", "X.U8(undefined)"}
+    if observed_error_sources != expected_error_sources:
+        raise ValueError("unexpected QObject error set")
 
     pe = observation["pe"]
     if pe["init_evaluation"]["is_error"]:
@@ -84,13 +210,17 @@ def validate_observation(observation: dict[str, Any]) -> None:
         if pe[key].get("string") != expected:
             raise ValueError(f"unexpected PE method type: {key}")
     error = pe["get_ep_signature_call"]
-    if (
-        not error["is_error"]
-        or error.get("error_name") != "TypeError"
-        or "PE.getEPSignature" not in error.get("error_message", "")
-        or error.get("error_line") != 1
-    ):
-        raise ValueError("unexpected PE.getEPSignature failure")
+    if runtime == "qt5":
+        expected_pe_error = (
+            "Result of expression 'PE.getEPSignature' [undefined] "
+            "is not a function."
+        )
+    else:
+        expected_pe_error = (
+            "Property 'getEPSignature' of object "
+            "PE_Script(<address>) is not a function"
+        )
+    expect_error(error, "TypeError", expected_pe_error)
 
 
 def inspect_image(image: str) -> tuple[str, str]:
@@ -149,12 +279,22 @@ def observe(image: str, binary: str) -> subprocess.CompletedProcess[bytes]:
 
 
 def build_report(
-    repo: pathlib.Path, image: str = DEFAULT_IMAGE, binary: str = DEFAULT_BINARY
+    repo: pathlib.Path,
+    runtime: str = "qt5",
+    image: str | None = None,
+    binary: str = DEFAULT_BINARY,
 ) -> dict[str, Any]:
+    if runtime not in {"qt5", "qt6"}:
+        raise ValueError("unsupported runtime profile")
+    if image is None:
+        image = QT5_IMAGE if runtime == "qt5" else QT6_IMAGE
     image_id, revision = inspect_image(image)
     process = observe(image, binary)
     observation = parse_observation(
-        process.stdout, process.stderr, process.returncode
+        process.stdout,
+        process.stderr,
+        process.returncode,
+        runtime,
     )
 
     init = observation["pe"]["init_evaluation"]
@@ -167,7 +307,7 @@ def build_report(
     sources = {}
     for relative in (
         "tools/upstream/host_api_arity_harness_main.cpp",
-        "tools/upstream/Dockerfile.host-api-arity-harness-qt5",
+        f"tools/upstream/Dockerfile.host-api-arity-harness-{runtime}",
         "tools/upstream/probe_host_api_arity.py",
     ):
         data = (repo / relative).read_bytes()
@@ -176,12 +316,18 @@ def build_report(
     return {
         "schema_version": 1,
         "generator": "tools/upstream/probe_host_api_arity.py",
+        "runtime_profile": runtime,
         "image": {
             "name": image,
             "id": image_id,
             "revision": revision,
         },
         "binary": {"path": binary, "sha256": binary_sha256(image, binary)},
+        "stderr": {
+            "bytes": len(process.stderr),
+            "sha256": sha256(process.stderr),
+            "utf8_lines": process.stderr.decode("utf-8").splitlines(),
+        },
         "sources": sources,
         "observation": observation,
     }
@@ -190,16 +336,16 @@ def build_report(
 def main() -> int:
     parser = argparse.ArgumentParser()
     repo = pathlib.Path(__file__).resolve().parents[2]
-    parser.add_argument("--image", default=DEFAULT_IMAGE)
+    parser.add_argument("--runtime", choices=("qt5", "qt6"), default="qt5")
+    parser.add_argument("--image")
     parser.add_argument("--binary", default=DEFAULT_BINARY)
-    parser.add_argument(
-        "--output",
-        type=pathlib.Path,
-        default=repo / "docs/research/data/host-api-arity-qt5.json",
-    )
+    parser.add_argument("--output", type=pathlib.Path)
     args = parser.parse_args()
-    report = build_report(repo, args.image, args.binary)
-    args.output.write_text(
+    output = args.output or (
+        repo / f"docs/research/data/host-api-arity-{args.runtime}.json"
+    )
+    report = build_report(repo, args.runtime, args.image, args.binary)
+    output.write_text(
         json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
         newline="\n",

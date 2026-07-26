@@ -114,7 +114,7 @@ C++ slot。
 | `X.SC` 四参数 | 1 | C++ 声明范围 1..3 |
 | `X.U8` 二参数 | 5 | C++ 声明范围 1..1 |
 
-## 6. Qt 5 QObject 行为实验
+## 6. Qt 5/Qt 6 QObject 行为实验
 
 固定 Linux Qt 5.15.13 探针直接构造上游 `Binary_Script`/`PE_Script`，并使用与
 `XScriptEngine::_addClass` 相同的 `QScriptEngine::newQObject(pClass)` 注册方式。
@@ -148,6 +148,13 @@ python tools/upstream/probe_host_api_arity.py
 探针只证明表达式被执行时的行为，尚未证明该规则分支对代表性输入可达，也未证明上层
 扫描器如何记录或吞掉这次异常。
 
+同一份 harness 已在固定 Qt 6.4.2 `QJSEngine` 上独立运行，并生成逐字段比较。
+四个静态缺口在 Qt 6 也闭合：三个额外实参调用保持相同语义返回，但每次向 stderr
+写入两行 warning；未知 PE 方法仍抛出 `TypeError`，消息和 backtrace framing
+不同。代表性 fixture 还确认 Qt 5 会把 `null`/`undefined` 转成 `qint64(0)`，
+Qt 6 则拒绝两者。完整身份、复现命令、stderr 和边界见
+[`format-host-api-runtime-differential.md`](format-host-api-runtime-differential.md)。
+
 ## 7. 对实现和测试的约束
 
 - Rust `HostApi` 不能只复制 337 个直接方法；必须按 30 类继承展开，并单独加载
@@ -158,16 +165,19 @@ python tools/upstream/probe_host_api_arity.py
 - 未知方法、未覆盖 arity 和类型转换失败必须产生可定位 diagnostic；
 - 上游同步时，header manifest、slot、default、inheritance、脚本扩展或规则 arity
   任一变化都必须重新生成并评审；
-- Qt 5 兼容层必须忽略 QObject wrapper 的额外实参，并保留未知方法调用的异常；
-  Qt 6 行为仍须独立取证。
+- Qt 5 兼容层必须静默忽略 QObject wrapper 的额外实参；Qt 6 profile 必须在
+  保持相同语义返回的同时保留 stderr warning；
+- `qint64` 的 `null`/`undefined` 转换和缺参/未知方法异常必须按 runtime profile
+  建模，不能用一套“合理”转换外推两侧。
 
 ## 8. 尚未完成
 
 - 337 个 C++ slot 的参数/返回 Qt 类型转换和异常行为 fixture；
-- 继承 override、默认参数的 Qt 5/Qt 6 对照，以及本节四项的 Qt 6 对照；
+- 继承 override 和其余默认参数的完整 Qt 5/Qt 6 对照；本节四个静态缺口及
+  代表性 `qint64`/`QString` 边界已完成首轮对照；
 - `File`/`X` 在每种 file type/init/include 生命周期中的精确 identity；
 - `PE.getEPSignature` 所在分支的可达样本及上层异常传播/报告行为；
 - 16 个非格式 native global 和根规则函数清单已单独闭合，见
-  [`global-host-api-inventory.md`](global-host-api-inventory.md)；Qt 5 主行为
-  fixture 已完成，Qt 6 和剩余转换边界仍未完成；
+  [`global-host-api-inventory.md`](global-host-api-inventory.md)；Qt 5/Qt 6
+  主行为 fixture 已完成，剩余转换边界仍未完成；
 - 用完整 HostApi 逐规则执行并对比固定上游结果。
