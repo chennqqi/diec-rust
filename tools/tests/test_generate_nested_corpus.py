@@ -1,6 +1,8 @@
+import hashlib
 import importlib.util
 import io
 import pathlib
+import struct
 import sys
 import tempfile
 import unittest
@@ -101,6 +103,53 @@ class GenerateNestedCorpusTests(unittest.TestCase):
             ).read_bytes()
 
         self.assertEqual(resource_pe.count(b"%PDF-1.4"), 22)
+
+    def test_manifest_resource_has_type_id_and_unclassified_payload(self):
+        with tempfile.TemporaryDirectory() as output_dir:
+            root = pathlib.Path(output_dir)
+            MODULE.generate(root)
+            resource_pe = (
+                root / "pe-manifest-resource.exe"
+            ).read_bytes()
+
+        resource_offset = 0x200
+        resource_type = struct.unpack_from(
+            "<I", resource_pe, resource_offset + 0x10
+        )[0]
+        data_rva, data_size = struct.unpack_from(
+            "<II", resource_pe, resource_offset + 0x48
+        )
+        payload_offset = resource_offset + data_rva - 0x1000
+
+        self.assertEqual(resource_type, 24)
+        self.assertEqual(data_size, len(MODULE.MANIFEST_RESOURCE_PAYLOAD))
+        self.assertEqual(
+            resource_pe[payload_offset : payload_offset + data_size],
+            MODULE.MANIFEST_RESOURCE_PAYLOAD,
+        )
+
+    def test_existing_resource_fixtures_keep_reference_hashes(self):
+        expected = {
+            "pe-pdf-resource.exe": (
+                "679124ef09b88eeb9edc29e2ee7165f"
+                "3dbaf4e17b9d988b548c51cf8d4d1482b"
+            ),
+            "pe-many-pdf-resources.exe": (
+                "1eea60ef127f55f19a82568262ed14098"
+                "972c7f50f462448eb209106592cf568"
+            ),
+        }
+        with tempfile.TemporaryDirectory() as output_dir:
+            root = pathlib.Path(output_dir)
+            MODULE.generate(root)
+            actual = {
+                name: hashlib.sha256(
+                    (root / name).read_bytes()
+                ).hexdigest()
+                for name in expected
+            }
+
+        self.assertEqual(actual, expected)
 
     def test_matches_versioned_reference_manifest(self):
         reference_path = (

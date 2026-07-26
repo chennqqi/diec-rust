@@ -13,14 +13,21 @@ Last updated: 2026-07-27
 - `--recursivescan` 将可扫描的 resource 以及任何 overlay 作为 subdevice
   扫描，并在父记录的 `values` 中输出嵌套 detection；
 - `--aggressivecscan` 单独使用不启用任何 file-part 扫描；
-- `--recursivescan --aggressivecscan` 在本轮小语料上与单独 recursive
-  逐字节相同；aggressive 只改变已启用路径的过滤和计数上限；
+- `--recursivescan --aggressivecscan` 对可识别 resource 与单独 recursive
+  相同；对无法被格式探测器识别的 resource，aggressive 会越过
+  `isScanable()` 过滤并按 `Binary` 扫描；
 - 顶层 ZIP 和 ZIP overlay 均不会因 `--recursivescan` 被解包。archive 提取
   需要独立的 engine 选项 `bIsArchivesScan`，发布 CLI 没有设置它。
 
-7 个确定性样本、4 种模式在固定 qmake/CMake 两个 oracle 上共运行 56 次。
+8 个确定性样本、4 种模式在固定 qmake/CMake 两个 oracle 上共运行 64 次。
 每次退出码均为 `0`、stderr 为空，两个构建的退出码及原始 stdout/stderr
 逐字节相同。
+
+其中 `RT_MANIFEST` 样本另以专用 probe 保存固定 CMake Qt 5 CLI 的完整 raw
+stdout 与规范化树；通用双 oracle 报告确认 qmake 输出逐字节相同。它把
+resource type ID、子设备 file-part、scan ID、重新探测和原样 Binary 规则连接成
+一条端到端证据链：仅 recursive+aggressive 产生 `Binary / Resource` 子记录，
+并由 `win_resources.1.sg` 输出 `Format: Manifest[Resources]`。
 
 另用只替换发布 CLI `main` 的 engine harness 运行 7 个样本 × 8 种
 archive/recursive/aggressive 组合，并将其中 4 个不含 archive 的模式逐字节
@@ -106,7 +113,7 @@ resource/overlay，archive 选项在 engine 调用中也会继续传播。当前
 ## 确定性语料
 
 [`tools/corpus/generate_nested_corpus.py`](../../tools/corpus/generate_nested_corpus.py)
-只从项目生成的最小 PE/PDF 字节构造 7 个样本：
+只从项目生成的最小 PE/PDF 字节构造 8 个样本：
 
 | Sample | 结构 | Size | SHA-256 |
 | --- | --- | ---: | --- |
@@ -116,11 +123,13 @@ resource/overlay，archive 选项在 engine 调用中也会继续传播。当前
 | `pe-pdf-overlay.exe` | PE → overlay → PDF | 843 | `315f3a0e55ef32aed2d03b5330602dd45cbd81c50db527a68bdd65d8a6475f7b` |
 | `pe-pdf-resource.exe` | PE → RT_RCDATA resource → PDF | 1024 | `679124ef09b88eeb9edc29e2ee7165f3dbaf4e17b9d988b548c51cf8d4d1482b` |
 | `pe-many-pdf-resources.exe` | PE → 22 × RT_RCDATA PDF | 9216 | `1eea60ef127f55f19a82568262ed14098972c7f50f462448eb209106592cf568` |
+| `pe-manifest-resource.exe` | PE → RT_MANIFEST → unclassified binary | 1024 | `0a973cbde2f520bdbd6e1b75304e4a412462113d4de9a8139cdf997af16641ee` |
 | `pe-zip-overlay.exe` | PE → overlay → ZIP → PDF | 965 | `5e2b2da6d29fb18b638dc696524b1a045bd1748a59944cf2f97c388e2e0c3075` |
 
 ZIP 使用 store method、单成员、固定 DOS 时间字段，不存在高压缩比或动态元数据。
-PE resource 使用标准三层 type/name/language directory，类型为 RT_RCDATA
-（ID 10），PDF 位于文件 offset 608。仓库只提交生成器及
+PE resource 使用标准三层 type/name/language directory。PDF resource 类型为
+RT_RCDATA（ID 10）；Manifest resource 类型为 RT_MANIFEST（ID 24），内容是
+20 字节项目生成的未分类二进制；两者 payload 均位于文件 offset 608。仓库只提交生成器及
 [`data/nested-corpus.json`](data/nested-corpus.json)，不提交二进制。
 
 生成命令：
@@ -139,6 +148,7 @@ python3 tools/corpus/generate_nested_corpus.py /tmp/diec-nested-corpus
 | `pe-pdf-overlay.exe` | PE32 Unknown | 增加 PDF Overlay，offset 512、size 331 |
 | `pe-pdf-resource.exe` | PE32 Unknown | 增加 PDF Resource，offset 608、size 331 |
 | `pe-many-pdf-resources.exe` | PE32 Unknown | recursive 增加 21 个 PDF Resource；recursive+aggressive 增加 22 个 |
+| `pe-manifest-resource.exe` | PE32 Unknown | recursive 因内容不可识别而跳过；recursive+aggressive 增加 Binary Resource，并报告 Manifest |
 | `pe-zip-overlay.exe` | PE32，顶层规则报告 Zip archive | 增加 ZIP Overlay，offset 512、size 453；不提取 PDF |
 
 嵌套 detection 直接放在父 detection 的 `values` 数组中。PDF 子记录保留其
@@ -158,6 +168,7 @@ python3 tools/corpus/generate_nested_corpus.py /tmp/diec-nested-corpus
 | `pe-pdf-overlay.exe` | `971925ae03163e822dd574e2375344a2b666c43527ec65cc1ad8448787b6529d` | `5da6c91da7dec687207781d752f538c7bf7a546c5167ff0b82c8cc5a0c55310d` |
 | `pe-pdf-resource.exe` | `94941d54fe62e2c43a0709062c7628eb2fa26d7fda825dc366547a4dc85a8f8b` | `4707bde3cda1f7d47d7f7b7e34b4af90a97f11abdc0f6fac5dfbd1a5edde7db4` |
 | `pe-many-pdf-resources.exe` | `f184ce3c75aa41d215fc29eec8ded6c3fb24fe178f3ad647232b65502fa7a52a` | `093ee24d820d55662090bda88088f08c52ff5af66b01619d9569cc9b1097753b`；aggressive 为 `60eec7e0c60d5cf85dfc5129e5c821bc6c8137af7a4f9cf8a8ae8cef4349b530` |
+| `pe-manifest-resource.exe` | `94941d54fe62e2c43a0709062c7628eb2fa26d7fda825dc366547a4dc85a8f8b` | 同 default；recursive+aggressive 为 `c9e8a5c7f3eab49f1f8b533917aba24abebc9f1f05128bf4a359bedbeffab7fa` |
 | `pe-zip-overlay.exe` | `2df1e81416610a0e4d678b7b816358cf4b2fc8dbd7b6a379a6ed54bc6ec440dd` | `a9bb31663ca8aca9669dcd97298265cd07d76a86ea91f7c986a3d7ad7b0cd012` |
 
 ## 复现
@@ -175,6 +186,23 @@ python3 tools/upstream/compare_cli_oracles.py \
 工具先验证 manifest 的 size/SHA-256 和 generator identity，再将目录只读挂载
 为 `/nested`。报告保留每次运行的原始字节哈希、双 oracle 差分、相对 default
 变化以及只抽取稳定字段的 detection tree；稳定字段摘要不参与相等判定。
+
+Manifest 端到端链使用专用 probe，并同时保存完整 raw stdout 与规范化树：
+
+```sh
+python3 tools/upstream/probe_resource_context_chain.py \
+  --image diec-rust/upstream-oracle-cmake:74eaf505 \
+  --binary /opt/die-build/src/console/diec \
+  --expected-revision 74eaf505c250ab47e709024e9dc41657cd8f2254 \
+  --nested-corpus-dir /tmp/diec-nested-corpus \
+  --baseline docs/research/data/resource-context-chain-qt5.json
+```
+
+基线 SHA-256 为
+`56090cee25f736eeb1c1fbb90a1619199f0fc2a93c7c318c0731ddffb585de64`。
+它固定 child offset `608`、size `20`、file type `Binary`、
+parent file-part `Resource` 以及 `format / Manifest / "" / Resources` 的完整
+可观察输出。
 
 ## Engine archive harness
 
@@ -246,14 +274,34 @@ resource 和 PDB link detection，Rust 规则 spike 与 Qt5 8/8 一致。该实�
 “subdevice context → 规则结果”；本页 engine/CLI harness 才验证父对象枚举与
 层级输出。两者尚未合并为同一条端到端 Rust 扫描链。
 
+Manifest 专用 CLI oracle 已把上述两段的 resource 路径合并为单一上游端到端
+链。固定源码审计进一步区分 debug-data 的“格式层可枚举”和“普通 engine
+不调度”：
+
+- `Formats@1151e725...` 的 `XPE::getFileParts()` 在
+  `xpe.cpp:11244-11261` 可生成 `FILEPART_DEBUGDATA`；
+- `XScanEngine@dfe4a419...` 的完整 `xscanengine.cpp` SHA-256 为
+  `e088bebb...61b498`，其中 `FILEPART_DEBUGDATA` 出现次数为 `0`；
+- 普通 `scanProcess()` 在 `xscanengine.cpp:2935,2939` 只请求 resource 和
+  overlay；resource ID 在 `:2990` 写入 `sScanID`，并在 `:2995` 调度 child。
+
+可重复审计由
+[`probe_subdevice_source_audit.py`](../../tools/upstream/probe_subdevice_source_audit.py)
+生成 [`subdevice-source-audit.json`](data/subdevice-source-audit.json)，基线
+SHA-256 为
+`9e521017baeb15ae8331c931b30ad6905e932aa6b69556b81566b5e09e9a3652`。
+因此不能把 `debug_data_debugData.1.sg` 的直接 context 正例误写成发布 scanner
+可达性；若 Rust legacy-compatible 默认扫描额外调度 debug-data，会形成上游
+没有的 detection，属于可观察兼容差异。
+
 ## 尚未覆盖
 
 - ZIP/7Z/RAR/CAB/ISO9660 各自的解包错误、encrypted entry、重复名称和 metadata；
 - 100000 archive、2000 resource 的 aggressive 上限边界；
 - 更深的 resource/overlay/archive 链及实际最大栈深、取消、超时和内存峰值；
 - 非 PE 格式的 overlay；
-- Rust scanner 从父格式枚举 resource/debugdata、生成 scan ID、调度规则并形成
-  与 Qt5 一致的结果树；
+- Rust scanner 从父格式枚举 resource、生成 scan ID、调度规则并形成与 Qt5
+  一致的结果树；debug-data 需同时保留格式层表示能力和 legacy 默认不调度行为；
 - XML、CSV、TSV 和文本 formatter 的嵌套表示；
 - Windows/macOS 与 Qt 6 oracle。
 

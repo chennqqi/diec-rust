@@ -1,0 +1,75 @@
+{
+  "component_commits": {
+    "Formats": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+    "XScanEngine": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+  },
+  "facts": {
+    "xpe_can_enumerate_debugdata": true,
+    "xscanengine_debugdata_token_count": 0,
+    "xscanengine_enumerated_file_parts": [
+      "resource",
+      "overlay"
+    ]
+  },
+  "failures": [],
+  "image": "diec-rust/upstream-oracle-cmake:74eaf505",
+  "passed": true,
+  "schema_version": 1,
+  "sources": {
+    "xpe": {
+      "occurrences": {
+        "debugdata_enumeration": [
+          {
+            "line": 11244,
+            "text": "if (nFileParts & FILEPART_DEBUGDATA) {"
+          }
+        ],
+        "debugdata_record": [
+          {
+            "line": 11261,
+            "text": "record.filePart = XBinary::FILEPART_DEBUGDATA;"
+          }
+        ],
+        "resource_or_debugdata_gate": [
+          {
+            "line": 11102,
+            "text": "if ((nFileParts & FILEPART_RESOURCE) || (nFileParts & FILEPART_DEBUGDATA)) {"
+          }
+        ]
+      },
+      "path": "/opt/die-source/Formats/exec/xpe.cpp",
+      "sha256": "bfad885df2569b03bc33c040852a884bfe40d781a58bef5f6d8c53c16b488a0c"
+    },
+    "xscanengine": {
+      "occurrences": {
+        "child_scan": [
+          {
+            "line": 2995,
+            "text": "scanProcess(&subDevice, &scanResultFilePart, scanIdSub, &_options, false, pPdStruct);"
+          }
+        ],
+        "overlay_enumeration": [
+          {
+            "line": 2939,
+            "text": "listFileParts.append(XFormats::getFileParts(pScanResult->ftInit, _pDevice, XBinary::FILEPART_OVERLAY, 1, false, -1, pPdStruct));"
+          }
+        ],
+        "resource_enumeration": [
+          {
+            "line": 2935,
+            "text": "listFileParts.append(XFormats::getFileParts(pScanResult->ftInit, _pDevice, XBinary::FILEPART_RESOURCE, 10000, false, -1, pPdStruct));"
+          }
+        ],
+        "resource_scan_id": [
+          {
+            "line": 2990,
+            "text": "_options.sScanID = filePart.mapProperties.value(XBinary::FPART_PROP_RESOURCEID).toString();"
+          }
+        ]
+      },
+      "path": "/opt/die-source/XScanEngine/xscanengine.cpp",
+      "sha256": "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498"
+    }
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

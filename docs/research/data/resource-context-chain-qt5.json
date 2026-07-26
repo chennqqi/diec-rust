@@ -1,0 +1,167 @@
+{
+  "binary": {
+    "path": "/opt/die-build/src/console/diec",
+    "sha256": "da1fab49f7ba5970d1fc1c7fe3d4f380cf5e8775dd8097207e7b3c30f08236cf"
+  },
+  "cases": {
+    "aggressive": {
+      "arguments": [
+        "--json",
+        "--aggressivecscan",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/corpus/pe-manifest-resource.exe"
+      ],
+      "exit_code": 0,
+      "normalized_detect_tree": [
+        {
+          "filetype": "PE32",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "1024",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "raw_stderr_hex": "",
+      "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_stdout": "{\n    \"detects\": [\n        {\n            \"filetype\": \"PE32\",\n            \"info\": \"\",\n            \"offset\": \"0\",\n            \"parentfilepart\": \"Header\",\n            \"size\": \"1024\",\n            \"values\": [\n                {\n                    \"info\": \"\",\n                    \"name\": \"Unknown\",\n                    \"string\": \"Unknown: Unknown\",\n                    \"type\": \"Unknown\",\n                    \"version\": \"\"\n                }\n            ]\n        }\n    ]\n}\n\n\n",
+      "raw_stdout_sha256": "94941d54fe62e2c43a0709062c7628eb2fa26d7fda825dc366547a4dc85a8f8b"
+    },
+    "default": {
+      "arguments": [
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/corpus/pe-manifest-resource.exe"
+      ],
+      "exit_code": 0,
+      "normalized_detect_tree": [
+        {
+          "filetype": "PE32",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "1024",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "raw_stderr_hex": "",
+      "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_stdout": "{\n    \"detects\": [\n        {\n            \"filetype\": \"PE32\",\n            \"info\": \"\",\n            \"offset\": \"0\",\n            \"parentfilepart\": \"Header\",\n            \"size\": \"1024\",\n            \"values\": [\n                {\n                    \"info\": \"\",\n                    \"name\": \"Unknown\",\n                    \"string\": \"Unknown: Unknown\",\n                    \"type\": \"Unknown\",\n                    \"version\": \"\"\n                }\n            ]\n        }\n    ]\n}\n\n\n",
+      "raw_stdout_sha256": "94941d54fe62e2c43a0709062c7628eb2fa26d7fda825dc366547a4dc85a8f8b"
+    },
+    "recursive": {
+      "arguments": [
+        "--json",
+        "--recursivescan",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/corpus/pe-manifest-resource.exe"
+      ],
+      "exit_code": 0,
+      "normalized_detect_tree": [
+        {
+          "filetype": "PE32",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "1024",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "raw_stderr_hex": "",
+      "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_stdout": "{\n    \"detects\": [\n        {\n            \"filetype\": \"PE32\",\n            \"info\": \"\",\n            \"offset\": \"0\",\n            \"parentfilepart\": \"Header\",\n            \"size\": \"1024\",\n            \"values\": [\n                {\n                    \"info\": \"\",\n                    \"name\": \"Unknown\",\n                    \"string\": \"Unknown: Unknown\",\n                    \"type\": \"Unknown\",\n                    \"version\": \"\"\n                }\n            ]\n        }\n    ]\n}\n\n\n",
+      "raw_stdout_sha256": "94941d54fe62e2c43a0709062c7628eb2fa26d7fda825dc366547a4dc85a8f8b"
+    },
+    "recursive_aggressive": {
+      "arguments": [
+        "--json",
+        "--recursivescan",
+        "--aggressivecscan",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/corpus/pe-manifest-resource.exe"
+      ],
+      "exit_code": 0,
+      "normalized_detect_tree": [
+        {
+          "filetype": "PE32",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "1024",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            },
+            {
+              "filetype": "Binary",
+              "offset": "608",
+              "parentfilepart": "Resource",
+              "size": "20",
+              "values": [
+                {
+                  "name": "Manifest",
+                  "type": "format",
+                  "version": ""
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "raw_stderr_hex": "",
+      "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_stdout": "{\n    \"detects\": [\n        {\n            \"filetype\": \"PE32\",\n            \"info\": \"\",\n            \"offset\": \"0\",\n            \"parentfilepart\": \"Header\",\n            \"size\": \"1024\",\n            \"values\": [\n                {\n                    \"info\": \"\",\n                    \"name\": \"Unknown\",\n                    \"string\": \"Unknown: Unknown\",\n                    \"type\": \"Unknown\",\n                    \"version\": \"\"\n                },\n                {\n                    \"filetype\": \"Binary\",\n                    \"info\": \"\",\n                    \"offset\": \"608\",\n                    \"parentfilepart\": \"Resource\",\n                    \"size\": \"20\",\n                    \"values\": [\n                        {\n                            \"info\": \"Resources\",\n                            \"name\": \"Manifest\",\n                            \"string\": \"Format: Manifest[Resources]\",\n                            \"type\": \"format\",\n                            \"version\": \"\"\n                        }\n                    ]\n                }\n            ]\n        }\n    ]\n}\n\n\n",
+      "raw_stdout_sha256": "c9e8a5c7f3eab49f1f8b533917aba24abebc9f1f05128bf4a359bedbeffab7fa"
+    }
+  },
+  "image": "diec-rust/upstream-oracle-cmake:74eaf505",
+  "sample": {
+    "intended_structure": "PE32 with an unclassified RT_MANIFEST resource",
+    "layers": [
+      "pe",
+      "resource",
+      "binary"
+    ],
+    "name": "pe-manifest-resource.exe",
+    "sha256": "0a973cbde2f520bdbd6e1b75304e4a412462113d4de9a8139cdf997af16641ee",
+    "size": 1024
+  },
+  "schema_version": 1,
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

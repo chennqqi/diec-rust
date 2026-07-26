@@ -2,7 +2,7 @@
 
 Status: Draft
 
-Last updated: 2026-07-26
+Last updated: 2026-07-27
 
 ## 1. 状态与证据
 
@@ -71,6 +71,13 @@ Last updated: 2026-07-26
 
 低层 fake 不能代替高层真实规则和真实 parser 的 system test。每个缺陷修复先增加能
 失败的最小回归用例，再修复并将用例保留。
+
+嵌套 engine integration 必须覆盖 context 传播而不只计数 child：项目生成的
+RT_MANIFEST resource 在 recursive+aggressive 下应形成 offset 608、size 20、
+`Binary / Resource` child，把 scan ID `"24"` 交给原样规则并得到
+`format / Manifest / "" / Resources`；其他三种模式不得产生该 child。测试同时
+保存 raw upstream stdout 与规范化树。另设负门禁保证 legacy-compatible 普通
+扫描不因 PE parser 能枚举 debug-data 就自动调度它。
 
 ## 4. 能力追踪
 

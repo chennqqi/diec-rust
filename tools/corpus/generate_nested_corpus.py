@@ -134,11 +134,18 @@ def _align_up(value: int, alignment: int) -> int:
     return (value + alignment - 1) // alignment * alignment
 
 
-def make_pe_pdf_resources(count: int) -> bytes:
-    """Create a PE32 with ``count`` RT_RCDATA resources containing PDFs."""
+def make_pe_resources(
+    count: int,
+    payload: bytes,
+    resource_type: int,
+) -> bytes:
+    """Create a PE32 with deterministic numeric-type resources."""
     if count < 1:
         raise ValueError("PE resource fixture requires at least one resource")
-    payload = BASELINE.make_pdf()
+    if not payload:
+        raise ValueError("PE resource fixture payload must not be empty")
+    if not 1 <= resource_type <= 0x7FFFFFFF:
+        raise ValueError("PE resource fixture type must be a numeric ID")
     root_directory_offset = 0
     type_directory_offset = 0x18
     language_directories_offset = (
@@ -222,7 +229,7 @@ def make_pe_pdf_resources(count: int) -> bytes:
         "<II",
         image,
         resource + 0x10,
-        10,
+        resource_type,
         0x80000000 | type_directory_offset,
     )
     struct.pack_into(
@@ -285,12 +292,25 @@ def make_pe_pdf_resources(count: int) -> bytes:
     return bytes(image)
 
 
+def make_pe_pdf_resources(count: int) -> bytes:
+    """Create a PE32 with ``count`` RT_RCDATA resources containing PDFs."""
+    return make_pe_resources(count, BASELINE.make_pdf(), 10)
+
+
 def make_pe_pdf_resource() -> bytes:
     return make_pe_pdf_resources(1)
 
 
 def make_pe_many_pdf_resources() -> bytes:
     return make_pe_pdf_resources(22)
+
+
+MANIFEST_RESOURCE_PAYLOAD = b"\0DIEC-RUST-MANIFEST\0"
+
+
+def make_pe_manifest_resource() -> bytes:
+    """Create a PE32 with an unclassified RT_MANIFEST resource."""
+    return make_pe_resources(1, MANIFEST_RESOURCE_PAYLOAD, 24)
 
 
 GENERATORS: tuple[
@@ -331,6 +351,12 @@ GENERATORS: tuple[
         "PE32 with 22 PDF RCDATA resources",
         ("pe", "resource x22", "pdf x22"),
         make_pe_many_pdf_resources,
+    ),
+    (
+        "pe-manifest-resource.exe",
+        "PE32 with an unclassified RT_MANIFEST resource",
+        ("pe", "resource", "binary"),
+        make_pe_manifest_resource,
     ),
     (
         "pe-zip-overlay.exe",

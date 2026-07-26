@@ -67,6 +67,17 @@
       "size": 9216
     },
     {
+      "intended_structure": "PE32 with an unclassified RT_MANIFEST resource",
+      "layers": [
+        "pe",
+        "resource",
+        "binary"
+      ],
+      "name": "pe-manifest-resource.exe",
+      "sha256": "0a973cbde2f520bdbd6e1b75304e4a412462113d4de9a8139cdf997af16641ee",
+      "size": 1024
+    },
+    {
       "intended_structure": "PE32 with a ZIP overlay containing a PDF",
       "layers": [
         "pe",

@@ -2,7 +2,7 @@
 
 Status: Draft  
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`  
-Last updated: 2026-07-25
+Last updated: 2026-07-27
 
 ## 范围
 
@@ -161,6 +161,16 @@ resource/overlay 由 `bIsRecursiveScan` 或各自独立选项启用。resource �
 每层最多取 1 个且无条件扫描。递归复制完整 options，源码路径未见独立深度或
 总解压字节限制。固定 PE resource/overlay 和 archive 不可达实验见
 [`nested-scan-behavior.md`](nested-scan-behavior.md)。
+
+固定 source audit 还确认 XPE 格式层支持 `FILEPART_DEBUGDATA` 枚举，但普通
+`XScanEngine::scanProcess()` 的完整源码中没有该 token，只请求 resource 与
+overlay。resource 的父类型 ID 会写入 child `sScanID`；项目生成的
+RT_MANIFEST 样本已在固定 CMake Qt 5 CLI 中端到端触发原样 Binary 规则。机器
+证据见
+[`subdevice-source-audit.json`](data/subdevice-source-audit.json) 和
+[`resource-context-chain-qt5.json`](data/resource-context-chain-qt5.json)。
+Rust 兼容模式必须同时复现 resource context 传播和 debug-data 默认不可达性，
+不能因 parser 能枚举某类 file part 就自动把它加入 work queue。
 
 这些是 Rust 实现需要重新审视的安全边界。兼容检测结果不代表必须复制潜在的无界内存风险；若设置更严格限制导致可观察差异，应通过 API/配置和 ADR 明确处理。
 

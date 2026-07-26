@@ -216,6 +216,8 @@ backend 私有模块。
 5. 为候选建立 host adapter，执行全局/type init 和排序后的规则。
 6. 聚合 detections、script diagnostics、handlers 和待扫描 child work。
 7. 用显式有界 work queue 处理 resource、overlay、archive entry 等 file-part。
+   parser 枚举能力与 legacy 调度策略分离；例如 PE debug-data 可表示、可供显式
+   context 使用，但固定上游普通扫描只调度 resource/overlay。
 8. 以稳定顺序 finalize result arena；渲染发生在 engine 返回之后。
 
 CLI、FFI 和 output crate 不得复制上述任一检测分支。一次性 API 与可复用 scanner
@@ -241,6 +243,20 @@ CLI、FFI 和 output crate 不得复制上述任一检测分支。一次性 API 
 能够识别的 ancestry cycle 应提前终止，但 cycle detection 不能替代 hard cap。
 预算耗尽返回结构化 `limit reached`，保留允许的部分结果及原始位置。若固定上游存在
 off-by-one 深度行为，兼容模式也只能在安全硬上限内模拟，并须单独 ADR。
+
+每个 child work item 还必须携带 format parser 提供的语义 context，至少包括
+`FilePart`、根文件 offset/size 和可选 scan ID；不得在 rule adapter 或 renderer
+中根据文件名反推。resource 类型 ID `24` 必须原样成为字符串 scan ID `"24"`，
+child 重新探测为 `Binary` 后仍保留 `Resource` file-part，从而使原样
+`win_resources.1.sg` 得到 Manifest detection。
+
+Phase 1/2 的 engine integration 门禁固定为：
+
+- Manifest fixture 的 default、recursive、aggressive 都没有 child；
+- recursive+aggressive 精确产生 offset 608、size 20 的 `Binary / Resource`
+  child 和 `Manifest[Resources]`；
+- legacy-compatible 默认路径不得调度 PE debug-data。若未来提供显式 opt-in，
+  必须使用独立 typed option、ADR 和差分 allowlist，不能改变 legacy 默认值。
 
 ## 12. 结果模型与确定性
 

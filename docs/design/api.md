@@ -2,7 +2,7 @@
 
 Status: Draft
 
-Last updated: 2026-07-26
+Last updated: 2026-07-27
 
 ## 1. 状态与证据
 
@@ -351,7 +351,9 @@ pub struct Detection {
 - `NodeId` 只在所属 report 内有效，不序列化内存地址或随机 UUID。
 - parent/children 双向关系必须一致，children 按发现 ordinal。
 - offset/size 是相对根输入还是父 view 必须由字段名区分，不复用含糊字段。
-- `FilePart` 能表达 root、resource、overlay、stream/archive entry 及 unknown。
+- `FilePart` 能表达 root、resource、debug-data、overlay、stream/archive entry
+  及 unknown。能够表示不等于默认调度：legacy-compatible recursive 按固定上游
+  只调度 resource/overlay。
 - detection 保留上游原始拼写和 display，不自动修正 `Complier` 等文本。
 - format candidate 与 rule detection 是不同集合。
 - unknown/hideunknown 是显式 detection 表示，不通过缺字段猜测。

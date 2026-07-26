@@ -2,7 +2,7 @@
 
 Status: Draft  
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`  
-Last updated: 2026-07-26
+Last updated: 2026-07-27
 
 本矩阵同时记录源码证据和固定 Linux oracle 实验。`Observed` 表示已用固定
 二进制、规则和输入验证；未标记为 Observed 的能力仍不能从相邻实验外推。
@@ -127,6 +127,14 @@ hideunknown 的可观察增量。完整输入哈希和输出见
   为 2000。两条默认 21、aggressive 至少 22 的边界均已 Observed。
 - overlay 始终作为 subdevice 扫描；非 aggressive resource 仅在探测为
   scanable 类型时扫描。
+- 项目生成的 RT_MANIFEST 未分类 payload 证明完整链：recursive 单独跳过，
+  recursive+aggressive 产生 `Binary / Resource` child，并将 resource ID `24`
+  传入原样 `win_resources.1.sg` 得到 `Manifest[Resources]`。raw 与规范化基线见
+  [`resource-context-chain-qt5.json`](data/resource-context-chain-qt5.json)。
+- `XPE::getFileParts()` 能生成 debug-data file part，但固定
+  `XScanEngine::scanProcess()` 只请求 resource/overlay，完整 engine 源文件中
+  `FILEPART_DEBUGDATA` 为 0 次。因此发布 scanner 的普通 recursive 不调度
+  debug-data；直接 context-rule 正例只证明规则在显式上下文中的语义。
 - JSON 结果通过父 detection 的 `values` 表达树，并保留 file part、size 和
   offset。详见 [`nested-scan-behavior.md`](nested-scan-behavior.md)。
 - 源码未见独立嵌套深度和 archive 总解压字节限制；跨平台和资源耗尽行为待验证。
