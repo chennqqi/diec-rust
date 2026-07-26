@@ -3,7 +3,7 @@
   "generator": {
     "path": "tools/rules/extract_rule_syntax_inventory.js",
     "version": 1,
-    "sha256": "5e127fc815cf47a1e42f581b85709284606f2c2280066c10b1149198229ff820"
+    "sha256": "1bfb08ce689b35e9d843506736e70a395fe848eb2dbdf61ad850ef4c5f243a79"
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
   "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
@@ -63393,5 +63393,2940 @@
       }
     }
   ],
-  "classification_boundary": "known_host records require an undeclared statically named receiver root and a direct first-level member call; deeper chains remain in member records because their final method belongs to an intermediate value; undeclared globals retain JS built-ins, runtime globals, rule-created globals, and HostApi globals for later source-backed classification"
+  "top_level_function_definitions": [
+    {
+      "name": "Bin",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 252,
+        "column": 0
+      }
+    },
+    {
+      "name": "BitReader",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 351,
+        "column": 0
+      }
+    },
+    {
+      "name": "CheckpointTimer",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 929,
+        "column": 0
+      }
+    },
+    {
+      "name": "Hex",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 236,
+        "column": 0
+      }
+    },
+    {
+      "name": "MDXCmdStr",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/bytecodeparsers",
+        "line": 193,
+        "column": 0
+      }
+    },
+    {
+      "name": "MUAP98CmdStr",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "3": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/bytecodeparsers",
+        "line": 29,
+        "column": 4
+      }
+    },
+    {
+      "name": "NetOpCodes",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 1651,
+        "column": 0
+      }
+    },
+    {
+      "name": "Oct",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 268,
+        "column": 0
+      }
+    },
+    {
+      "name": "Resource",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "6": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/_init",
+        "line": 174,
+        "column": 0
+      }
+    },
+    {
+      "name": "Section",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "7": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/_init",
+        "line": 129,
+        "column": 0
+      }
+    },
+    {
+      "name": "YM2151RegStr",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/bytecodeparsers",
+        "line": 240,
+        "column": 0
+      }
+    },
+    {
+      "name": "YM3812CmdStr",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/bytecodeparsers",
+        "line": 415,
+        "column": 0
+      }
+    },
+    {
+      "name": "_currentLine",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 901,
+        "column": 0
+      }
+    },
+    {
+      "name": "_debug",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/_debug",
+        "line": 12,
+        "column": 0
+      }
+    },
+    {
+      "name": "_error",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/_debug",
+        "line": 19,
+        "column": 0
+      }
+    },
+    {
+      "name": "_forceCaching",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/_db_caching",
+        "line": 9,
+        "column": 0
+      }
+    },
+    {
+      "name": "_isLangDetected",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/language",
+        "line": 13,
+        "column": 0
+      }
+    },
+    {
+      "name": "_isLangPresent",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/language",
+        "line": 9,
+        "column": 0
+      }
+    },
+    {
+      "name": "_l2r",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "3": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 897,
+        "column": 0
+      }
+    },
+    {
+      "name": "_logBase64",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 868,
+        "column": 0
+      }
+    },
+    {
+      "name": "_logHex",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 876,
+        "column": 0
+      }
+    },
+    {
+      "name": "_logIt",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 909,
+        "column": 0
+      }
+    },
+    {
+      "name": "_logText",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 886,
+        "column": 0
+      }
+    },
+    {
+      "name": "_setLang",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/language",
+        "line": 17,
+        "column": 0
+      }
+    },
+    {
+      "name": "_setLangByHeur",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 6108,
+        "column": 0
+      }
+    },
+    {
+      "name": "addEllipsis",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "3": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 450,
+        "column": 0
+      }
+    },
+    {
+      "name": "addOption",
+      "definition_count": 2,
+      "file_count": 2,
+      "parameter_count_counts": {
+        "2": 2
+      },
+      "definition_kind_counts": {
+        "function_declaration": 2
+      },
+      "first_location": {
+        "path": "db/Binary/__MiniBatchHeuristic_By_DosX.7.sg",
+        "line": 54,
+        "column": 0
+      }
+    },
+    {
+      "name": "bitCount",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 397,
+        "column": 0
+      }
+    },
+    {
+      "name": "cab_resource",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/Cab.6.sg",
+        "line": 6,
+        "column": 0
+      }
+    },
+    {
+      "name": "charStat",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 652,
+        "column": 0
+      }
+    },
+    {
+      "name": "checkDeflate",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/Binary/archive_DEFLATE.1.sg",
+        "line": 9,
+        "column": 0
+      }
+    },
+    {
+      "name": "checkZlib",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/Binary/archive_DEFLATE.1.sg",
+        "line": 79,
+        "column": 0
+      }
+    },
+    {
+      "name": "cleanSectionName",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 2082,
+        "column": 0
+      }
+    },
+    {
+      "name": "compareArrays",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 851,
+        "column": 0
+      }
+    },
+    {
+      "name": "convertStringToUnicodeSignature",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 3876,
+        "column": 0
+      }
+    },
+    {
+      "name": "createOrderlyHuffmanTable",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "3": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 594,
+        "column": 0
+      }
+    },
+    {
+      "name": "decAnsi",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "5": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 179,
+        "column": 0
+      }
+    },
+    {
+      "name": "decEncoding",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "4": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 127,
+        "column": 0
+      }
+    },
+    {
+      "name": "detect",
+      "definition_count": 2174,
+      "file_count": 2174,
+      "parameter_count_counts": {
+        "0": 2173,
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 2174
+      },
+      "first_location": {
+        "path": "db/APK/_APK.0.sg",
+        "line": 6,
+        "column": 0
+      }
+    },
+    {
+      "name": "detectThemida",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/protector_Themida.2.sg",
+        "line": 9,
+        "column": 0
+      }
+    },
+    {
+      "name": "detectUnknownDebugData",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/_debug_data.5.sg",
+        "line": 67,
+        "column": 0
+      }
+    },
+    {
+      "name": "detectVmp",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/protector_VMProtect.2.sg",
+        "line": 168,
+        "column": 0
+      }
+    },
+    {
+      "name": "detectVmp2",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/protector_VMProtect.2.sg",
+        "line": 182,
+        "column": 0
+      }
+    },
+    {
+      "name": "detect_ACE",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/ACE",
+        "line": 13,
+        "column": 0
+      }
+    },
+    {
+      "name": "detect_ARJ",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/arj",
+        "line": 9,
+        "column": 0
+      }
+    },
+    {
+      "name": "detect_Cab",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/cab",
+        "line": 10,
+        "column": 0
+      }
+    },
+    {
+      "name": "detect_RAR",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/rar-file",
+        "line": 10,
+        "column": 0
+      }
+    },
+    {
+      "name": "detect_Zip",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/zip-file",
+        "line": 10,
+        "column": 0
+      }
+    },
+    {
+      "name": "detect_zlib",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/zlib",
+        "line": 7,
+        "column": 0
+      }
+    },
+    {
+      "name": "duration",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/duration",
+        "line": 10,
+        "column": 0
+      }
+    },
+    {
+      "name": "emulateAndGetAsmInstructionByIndex",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 5207,
+        "column": 0
+      }
+    },
+    {
+      "name": "emulateAndGetEpAsmPattern",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 5165,
+        "column": 0
+      }
+    },
+    {
+      "name": "extIs",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 565,
+        "column": 0
+      }
+    },
+    {
+      "name": "findAndMark",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 3952,
+        "column": 0
+      }
+    },
+    {
+      "name": "findGaps",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 735,
+        "column": 0
+      }
+    },
+    {
+      "name": "findIntersections",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 758,
+        "column": 0
+      }
+    },
+    {
+      "name": "findMarker",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db_extra/PE/protector_Protection_Plus_SDK.2.sg",
+        "line": 47,
+        "column": 0
+      }
+    },
+    {
+      "name": "findMultiple",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "4": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 785,
+        "column": 0
+      }
+    },
+    {
+      "name": "findPatchVersion",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/library_Perl.3.sg",
+        "line": 69,
+        "column": 0
+      }
+    },
+    {
+      "name": "firstNotOf",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "3": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 411,
+        "column": 0
+      }
+    },
+    {
+      "name": "funSampleName",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 806,
+        "column": 0
+      }
+    },
+    {
+      "name": "generateUnicodeSignatureMask",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/protector_VMProtect_NET.2.sg",
+        "line": 60,
+        "column": 0
+      }
+    },
+    {
+      "name": "getASPackVersion",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/packer_ASPack.2.sg",
+        "line": 7,
+        "column": 0
+      }
+    },
+    {
+      "name": "getAsmOpCode",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 5286,
+        "column": 0
+      }
+    },
+    {
+      "name": "getBLVersion",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/MSDOS/extender_Borland_RTM.4.sg",
+        "line": 6,
+        "column": 0
+      }
+    },
+    {
+      "name": "getBuild",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/protector_Protect_Disc.2.sg",
+        "line": 20,
+        "column": 0
+      }
+    },
+    {
+      "name": "getChSFXVersion",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/MSDOS/sfx_ChSFX.1.sg",
+        "line": 6,
+        "column": 0
+      }
+    },
+    {
+      "name": "getConfuserVersion",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/protector_Confuser.2.sg",
+        "line": 6,
+        "column": 0
+      }
+    },
+    {
+      "name": "getCurIcoBPP",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/CurIcoBPP",
+        "line": 7,
+        "column": 0
+      }
+    },
+    {
+      "name": "getEnigmaVersion",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/protector_ENIGMA.2.sg",
+        "line": 7,
+        "column": 0
+      }
+    },
+    {
+      "name": "getEnigmaVersion4x",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/protector_ENIGMA.2.sg",
+        "line": 41,
+        "column": 0
+      }
+    },
+    {
+      "name": "getEnigmaVersion_old",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/protector_ENIGMA.2.sg",
+        "line": 79,
+        "column": 0
+      }
+    },
+    {
+      "name": "getEnigmaVersion_old1x",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/protector_ENIGMA.2.sg",
+        "line": 66,
+        "column": 0
+      }
+    },
+    {
+      "name": "getExportFunctionOffsetByIndex",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/protector_Arxan.2.sg",
+        "line": 78,
+        "column": 0
+      }
+    },
+    {
+      "name": "getFileNameWithoutExtension",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 2123,
+        "column": 0
+      }
+    },
+    {
+      "name": "getFirstEpAsmInstruction",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 5273,
+        "column": 0
+      }
+    },
+    {
+      "name": "getFirstEpAsmOpCode",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 5297,
+        "column": 0
+      }
+    },
+    {
+      "name": "getInstructionsAsmPattern",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 5256,
+        "column": 0
+      }
+    },
+    {
+      "name": "getLDCVersion",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/ELF/compiler_ldc.4.sg",
+        "line": 6,
+        "column": 0
+      }
+    },
+    {
+      "name": "getManglerInfoByMangledItem",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 5331,
+        "column": 0
+      }
+    },
+    {
+      "name": "getMaxVersion",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/ELF/library_GLIBC.3.sg",
+        "line": 6,
+        "column": 0
+      }
+    },
+    {
+      "name": "getMinGWVersion",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/compiler_MinGW.6.sg",
+        "line": 9,
+        "column": 0
+      }
+    },
+    {
+      "name": "getNSPackVersion",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/packer_NsPack.2.sg",
+        "line": 6,
+        "column": 0
+      }
+    },
+    {
+      "name": "getNameOfMangledItem",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 5396,
+        "column": 0
+      }
+    },
+    {
+      "name": "getOSSVersion",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/ELF/compiler_Oracle_Solaris_Studio.4.sg",
+        "line": 6,
+        "column": 0
+      }
+    },
+    {
+      "name": "getOptHeaderOffset",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 5763,
+        "column": 0
+      }
+    },
+    {
+      "name": "getPerlVersion",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/library_Perl.3.sg",
+        "line": 29,
+        "column": 0
+      }
+    },
+    {
+      "name": "getPythonVersionByDll",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/python",
+        "line": 9,
+        "column": 0
+      }
+    },
+    {
+      "name": "getQTVersion",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/ELF/library_QT.3.sg",
+        "line": 6,
+        "column": 0
+      }
+    },
+    {
+      "name": "getSDLVersion",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/ELF/library_SDL.3.sg",
+        "line": 6,
+        "column": 0
+      }
+    },
+    {
+      "name": "getUPXOptions",
+      "definition_count": 3,
+      "file_count": 3,
+      "parameter_count_counts": {
+        "1": 3
+      },
+      "definition_kind_counts": {
+        "function_declaration": 3
+      },
+      "first_location": {
+        "path": "db/ELF/packer_UPX.2.sg",
+        "line": 6,
+        "column": 0
+      }
+    },
+    {
+      "name": "getUPXVersion",
+      "definition_count": 3,
+      "file_count": 3,
+      "parameter_count_counts": {
+        "0": 2,
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 3
+      },
+      "first_location": {
+        "path": "db/LE/packer_UPX.1.sg",
+        "line": 58,
+        "column": 0
+      }
+    },
+    {
+      "name": "getVbOptions",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/_Microsoft.6.sg",
+        "line": 1144,
+        "column": 0
+      }
+    },
+    {
+      "name": "getVersion",
+      "definition_count": 6,
+      "file_count": 6,
+      "parameter_count_counts": {
+        "0": 4,
+        "1": 1,
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 6
+      },
+      "first_location": {
+        "path": "db/ELF/compiler_DMD.4.sg",
+        "line": 6,
+        "column": 0
+      }
+    },
+    {
+      "name": "getVersionAndOptions",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/installer_Inno_Setup_Module.1.sg",
+        "line": 7,
+        "column": 0
+      }
+    },
+    {
+      "name": "init",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/_init",
+        "line": 47,
+        "column": 0
+      }
+    },
+    {
+      "name": "initializeCache",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 249,
+        "column": 0
+      }
+    },
+    {
+      "name": "isAllNetReferencesMissing",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 3903,
+        "column": 0
+      }
+    },
+    {
+      "name": "isAllNetReferencesPresent",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 3927,
+        "column": 0
+      }
+    },
+    {
+      "name": "isAllZeroes",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 425,
+        "column": 0
+      }
+    },
+    {
+      "name": "isArchX86",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 5140,
+        "column": 0
+      }
+    },
+    {
+      "name": "isAsciiString",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 2106,
+        "column": 0
+      }
+    },
+    {
+      "name": "isCompilerDetected",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 5817,
+        "column": 0
+      }
+    },
+    {
+      "name": "isCppClrLikeApp",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 1598,
+        "column": 0
+      }
+    },
+    {
+      "name": "isFrameworkComponent",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 3740,
+        "column": 0
+      }
+    },
+    {
+      "name": "isInside",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "3": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 206,
+        "column": 0
+      }
+    },
+    {
+      "name": "isInterpreter",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/shell-script",
+        "line": 20,
+        "column": 0
+      }
+    },
+    {
+      "name": "isItemMangled",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 5309,
+        "column": 0
+      }
+    },
+    {
+      "name": "isJscriptNetStandardLibraryPresent",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 3729,
+        "column": 0
+      }
+    },
+    {
+      "name": "isLinkerDetected",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 5828,
+        "column": 0
+      }
+    },
+    {
+      "name": "isNameObfuscated",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 3975,
+        "column": 0
+      }
+    },
+    {
+      "name": "isNetMetaDataPresent",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 5778,
+        "column": 0
+      }
+    },
+    {
+      "name": "isPatchedUPX",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/packer_UPX.2.sg",
+        "line": 7,
+        "column": 0
+      }
+    },
+    {
+      "name": "isSignatureInBeginAndEndPresent",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/Binary/protector_javascript-obfuscator.2.sg",
+        "line": 42,
+        "column": 0
+      }
+    },
+    {
+      "name": "isTokenObfuscated",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 4029,
+        "column": 0
+      }
+    },
+    {
+      "name": "isUnpackagedWindowsAppSdkLinked",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 1613,
+        "column": 0
+      }
+    },
+    {
+      "name": "isVbNetStandardLibraryPresent",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 3718,
+        "column": 0
+      }
+    },
+    {
+      "name": "isWinCert",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/Binary/audio.1.sg",
+        "line": 15,
+        "column": 0
+      }
+    },
+    {
+      "name": "isWithin",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "3": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 193,
+        "column": 0
+      }
+    },
+    {
+      "name": "isWithinRanges",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 216,
+        "column": 0
+      }
+    },
+    {
+      "name": "isYM2151Reg",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/bytecodeparsers",
+        "line": 234,
+        "column": 0
+      }
+    },
+    {
+      "name": "isYM2612Reg",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/bytecodeparsers",
+        "line": 355,
+        "column": 0
+      }
+    },
+    {
+      "name": "isYM3812Reg",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/bytecodeparsers",
+        "line": 407,
+        "column": 0
+      }
+    },
+    {
+      "name": "log",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 6143,
+        "column": 0
+      }
+    },
+    {
+      "name": "main",
+      "definition_count": 4,
+      "file_count": 4,
+      "parameter_count_counts": {
+        "0": 4
+      },
+      "definition_kind_counts": {
+        "function_declaration": 4
+      },
+      "first_location": {
+        "path": "db/Binary/__MiniBatchHeuristic_By_DosX.7.sg",
+        "line": 18,
+        "column": 0
+      }
+    },
+    {
+      "name": "meta",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "6": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/_init",
+        "line": 26,
+        "column": 0
+      }
+    },
+    {
+      "name": "outArray",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "3": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 538,
+        "column": 0
+      }
+    },
+    {
+      "name": "outSz",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 512,
+        "column": 0
+      }
+    },
+    {
+      "name": "parseAmigaHunks",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/chunkparsers",
+        "line": 18,
+        "column": 0
+      }
+    },
+    {
+      "name": "parseAtariBinary",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/chunkparsers",
+        "line": 46,
+        "column": 0
+      }
+    },
+    {
+      "name": "parseMDGYM",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/bytecodeparsers",
+        "line": 365,
+        "column": 0
+      }
+    },
+    {
+      "name": "parseMUAP98",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "3": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/bytecodeparsers",
+        "line": 103,
+        "column": 0
+      }
+    },
+    {
+      "name": "parseYM2151RegLog",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/bytecodeparsers",
+        "line": 292,
+        "column": 0
+      }
+    },
+    {
+      "name": "parseYM3812RegLog",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/bytecodeparsers",
+        "line": 442,
+        "column": 0
+      }
+    },
+    {
+      "name": "patchClear",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 722,
+        "column": 0
+      }
+    },
+    {
+      "name": "patchLength",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 721,
+        "column": 0
+      }
+    },
+    {
+      "name": "readFloat80",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 298,
+        "column": 0
+      }
+    },
+    {
+      "name": "readVarUInt",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 286,
+        "column": 0
+      }
+    },
+    {
+      "name": "removeFalsePositive",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/_FixDetects.9.sg",
+        "line": 43,
+        "column": 0
+      }
+    },
+    {
+      "name": "removeWhitespaces",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 2034,
+        "column": 0
+      }
+    },
+    {
+      "name": "replaceAllInString",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "3": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 2055,
+        "column": 0
+      }
+    },
+    {
+      "name": "result",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/_init",
+        "line": 63,
+        "column": 0
+      }
+    },
+    {
+      "name": "rpU16be",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 703,
+        "column": 0
+      }
+    },
+    {
+      "name": "rpU32be",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 706,
+        "column": 0
+      }
+    },
+    {
+      "name": "rpU8",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 699,
+        "column": 0
+      }
+    },
+    {
+      "name": "sOption",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "3": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 494,
+        "column": 0
+      }
+    },
+    {
+      "name": "sOptionT",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "4": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 477,
+        "column": 0
+      }
+    },
+    {
+      "name": "scanForAntiAnalysis_NET",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 1280,
+        "column": 0
+      }
+    },
+    {
+      "name": "scanForBadFileFormat_NET_and_Native",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 3394,
+        "column": 0
+      }
+    },
+    {
+      "name": "scanForDebugData_NET_and_Native",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 3565,
+        "column": 0
+      }
+    },
+    {
+      "name": "scanForInterestingMarkers_NET_and_Native",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 8310,
+        "column": 0
+      }
+    },
+    {
+      "name": "scanForLanguagesAndCompilers_NET_and_Native",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 5835,
+        "column": 0
+      }
+    },
+    {
+      "name": "scanForLicensingSystems_NET_and_Native",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 3267,
+        "column": 0
+      }
+    },
+    {
+      "name": "scanForMaliciousCode_NET_and_Native",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 6178,
+        "column": 0
+      }
+    },
+    {
+      "name": "scanForObfuscations_NET",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 307,
+        "column": 0
+      }
+    },
+    {
+      "name": "scanForObfuscations_Native",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 4257,
+        "column": 0
+      }
+    },
+    {
+      "name": "scanForPackersAndCryptors_NET_and_Native",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 2153,
+        "column": 0
+      }
+    },
+    {
+      "name": "scanNameForAnomalies_FileSystem_NET_and_Native",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 8353,
+        "column": 0
+      }
+    },
+    {
+      "name": "secondsToTimeStr",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 628,
+        "column": 0
+      }
+    },
+    {
+      "name": "skipJumpsAndNops",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/protector_Arxan.2.sg",
+        "line": 60,
+        "column": 0
+      }
+    },
+    {
+      "name": "skipNestedTemplate",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/Binary/__MiniJavaScriptHeuristic_By_DosX.7.sg",
+        "line": 130,
+        "column": 0
+      }
+    },
+    {
+      "name": "slashTag",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 575,
+        "column": 0
+      }
+    },
+    {
+      "name": "stdout",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 220,
+        "column": 0
+      }
+    },
+    {
+      "name": "stubForLegacyEngines",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 179,
+        "column": 0
+      }
+    },
+    {
+      "name": "stubForWrongEnvironment",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 191,
+        "column": 0
+      }
+    },
+    {
+      "name": "toBase64",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 828,
+        "column": 0
+      }
+    },
+    {
+      "name": "toUtf16LE",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db_extra/PE/protector_Protection_Plus_SDK.2.sg",
+        "line": 28,
+        "column": 0
+      }
+    },
+    {
+      "name": "unloadCache",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "0": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 298,
+        "column": 0
+      }
+    },
+    {
+      "name": "validateGlobalUnicodeString",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 3857,
+        "column": 0
+      }
+    },
+    {
+      "name": "validateImportHashes",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 5681,
+        "column": 0
+      }
+    },
+    {
+      "name": "validateNativeImports",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/cryptor_PEUnion.2.sg",
+        "line": 105,
+        "column": 0
+      }
+    },
+    {
+      "name": "validateNetByteCode",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 3789,
+        "column": 0
+      }
+    },
+    {
+      "name": "validateNetObject",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 3825,
+        "column": 0
+      }
+    },
+    {
+      "name": "validateNetUnicodeString",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 3839,
+        "column": 0
+      }
+    },
+    {
+      "name": "validateReferences",
+      "definition_count": 3,
+      "file_count": 3,
+      "parameter_count_counts": {
+        "2": 2,
+        "3": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 3
+      },
+      "first_location": {
+        "path": "db/PE/cryptor_LimeCrypter.2.sg",
+        "line": 39,
+        "column": 0
+      }
+    },
+    {
+      "name": "validateResourceNames",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 5733,
+        "column": 0
+      }
+    },
+    {
+      "name": "validateSectionNames",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 5705,
+        "column": 0
+      }
+    },
+    {
+      "name": "validateSignature",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "line": 3767,
+        "column": 0
+      }
+    },
+    {
+      "name": "wpU16be",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 714,
+        "column": 0
+      }
+    },
+    {
+      "name": "wpU32be",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 717,
+        "column": 0
+      }
+    },
+    {
+      "name": "wpU8",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/read",
+        "line": 709,
+        "column": 0
+      }
+    },
+    {
+      "name": "xma2_parse_fmt_chunk_extra",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "2": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/vgmcodingutils",
+        "line": 30,
+        "column": 0
+      }
+    },
+    {
+      "name": "xma2_parse_xma2_chunk",
+      "definition_count": 1,
+      "file_count": 1,
+      "parameter_count_counts": {
+        "1": 1
+      },
+      "definition_kind_counts": {
+        "function_declaration": 1
+      },
+      "first_location": {
+        "path": "db/vgmcodingutils",
+        "line": 14,
+        "column": 0
+      }
+    }
+  ],
+  "classification_boundary": "known_host records require an undeclared statically named receiver root and a direct first-level member call; deeper chains remain in member records because their final method belongs to an intermediate value; top_level_function_definitions contain only direct AST_Toplevel function declarations, function-valued var definitions, and simple identifier assignments; undeclared globals retain JS built-ins, runtime globals, rule-created globals, and HostApi globals for later source-backed classification"
 }

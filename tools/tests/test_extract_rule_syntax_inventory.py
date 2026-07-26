@@ -148,6 +148,20 @@ var Archive = {
                 ],
                 {"object_literal": 1},
             )
+            top_level_functions = {
+                item["name"]: item
+                for item in inventory[
+                    "top_level_function_definitions"
+                ]
+            }
+            self.assertEqual(
+                top_level_functions["helper"]["parameter_count_counts"],
+                {"1": 1},
+            )
+            self.assertEqual(
+                top_level_functions["detect"]["definition_count"], 2
+            )
+            self.assertNotIn("add", top_level_functions)
 
     def test_committed_inventory_is_reproducible(self):
         with tempfile.TemporaryDirectory() as directory:

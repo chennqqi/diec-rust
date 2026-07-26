@@ -114,18 +114,22 @@ MSDOS HostApi。
 
 ## 5. 未声明 global 的解释限制
 
-清单保存 1408 个未声明 global symbol 名及 read/call/write 摘要，但不提前把它们都
-标成 HostApi。该集合混合了：
+清单保存 1408 个未声明 global symbol 名及 read/call/write 摘要，并新增 183 个
+顶层函数名、2371 次定义的清单，但不提前把所有 undeclared symbol 都标成 HostApi。
+该集合混合了：
 
 - Qt/ECMAScript 内建，如 `String`、`Number`、`parseInt`；
-- 引擎注入函数，如 `result`、`meta`、`includeScript`、`_setResult`；
+- 引擎注入函数，如 `includeScript`、`_setResult`；
+- 根规则框架定义的 `meta`、`result` 等普通 JavaScript 函数；
 - 公共脚本稍后定义的 helper；
 - 规则有意创建并跨脚本共享的隐式 global；
 - 加载顺序错误时才会表现为未声明的符号。
 
-因此 scope analysis 中的 `undeclared` 不能直接等价为“缺失宿主方法”。下一步必须
-把这 1408 个名字与固定 `die_script`/XScanEngine 注入源码、公共脚本定义和真实
-加载顺序做集合差分；跨规则 global 还必须遵守
+71 个 undeclared direct-call 名已与固定 `die_script` 声明、规则顶层定义和
+ECMAScript global 做完第一轮集合差分：55 个规则函数候选、7 个 native engine
+global、7 个 ECMAScript global 和 2 个固定规则拼写错误。详见
+[`global-host-api-inventory.md`](global-host-api-inventory.md)。scope analysis
+中的 `undeclared` 仍不能直接等价为“缺失宿主方法”；跨规则 global 还必须遵守
 [`binary-rule-lifecycle.md`](binary-rule-lifecycle.md) 已确认的共享 context。
 
 ## 6. 对设计和测试的约束
@@ -133,7 +137,7 @@ MSDOS HostApi。
 - runtime conformance corpus 至少覆盖机器清单中的全部 55 种 AST 类型和运算符；
 - 未支持语法必须在规则加载阶段产生路径、行列和构造类型诊断；
 - HostApi codegen/trait 设计必须以源码声明为主，并证明覆盖 429 个观察到的方法组合、
-  464 个 arity 形状、13 个脚本扩展和第一层字段访问；
+  464 个 arity 形状、16 个非格式 native global、13 个脚本扩展和第一层字段访问；
 - 规则同步校验必须重生成清单；文件 manifest、AST 类型、宿主方法或 arity 变化均
   进入人工评审；
 - 该清单不能作为 runtime 兼容率或 detection 正确率使用，后者仍依赖 Qt oracle
@@ -142,8 +146,8 @@ MSDOS HostApi。
 ## 7. 尚未完成
 
 - 为固定 C++ 声明和脚本 shadowing 补齐 Qt 类型转换、默认/额外参数及异常行为；
-- 将 1408 个未声明 global 分为 ECMAScript 内建、引擎注入、公共脚本定义、
-  跨规则隐式 global 和真正未解析引用；
+- 为 1408 个未声明 global 中非直接调用的读取、写入和动态访问完成分类，并验证
+  55 个跨文件函数候选的 include 可达性；
 - 为 55 种 AST 类型、全部运算符及 464 个宿主 arity 形状生成最小 Qt 5/Qt 6
   conformance fixture；
 - 用完整 HostApi 逐条执行规则并与固定 Qt oracle 比较结果和异常。

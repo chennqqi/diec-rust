@@ -269,6 +269,102 @@ function finalizeScriptExtensions(records) {
         }));
 }
 
+function observeTopLevelFunction(
+    records,
+    name,
+    parameterCount,
+    kind,
+    relativePath,
+    node,
+) {
+    if (!records.has(name)) {
+        records.set(name, {
+            name,
+            definition_count: 0,
+            files: new Set(),
+            parameter_counts: new Map(),
+            definition_kinds: new Map(),
+            first_location: null,
+        });
+    }
+    const record = records.get(name);
+    record.definition_count += 1;
+    record.files.add(relativePath);
+    increment(record.parameter_counts, String(parameterCount));
+    increment(record.definition_kinds, kind);
+    if (!record.first_location) {
+        record.first_location = {
+            path: relativePath,
+            line: node.start.line,
+            column: node.start.col,
+        };
+    }
+}
+
+function collectTopLevelFunctions(uglify, ast, relativePath, records) {
+    for (const statement of ast.body) {
+        if (statement instanceof uglify.AST_Defun) {
+            observeTopLevelFunction(
+                records,
+                statement.name.name,
+                statement.argnames.length,
+                "function_declaration",
+                relativePath,
+                statement,
+            );
+            continue;
+        }
+        if (statement instanceof uglify.AST_Var) {
+            for (const definition of statement.definitions) {
+                if (definition.value instanceof uglify.AST_Function) {
+                    observeTopLevelFunction(
+                        records,
+                        definition.name.name,
+                        definition.value.argnames.length,
+                        "variable_function",
+                        relativePath,
+                        definition,
+                    );
+                }
+            }
+            continue;
+        }
+        if (
+            statement instanceof uglify.AST_SimpleStatement &&
+            statement.body instanceof uglify.AST_Assign &&
+            statement.body.operator === "=" &&
+            statement.body.left instanceof uglify.AST_SymbolRef &&
+            statement.body.right instanceof uglify.AST_Function
+        ) {
+            observeTopLevelFunction(
+                records,
+                statement.body.left.name,
+                statement.body.right.argnames.length,
+                "assignment_function",
+                relativePath,
+                statement.body,
+            );
+        }
+    }
+}
+
+function finalizeTopLevelFunctions(records) {
+    return [...records.values()]
+        .sort((left, right) => compareOrdinal(left.name, right.name))
+        .map((record) => ({
+            name: record.name,
+            definition_count: record.definition_count,
+            file_count: record.files.size,
+            parameter_count_counts: sortedCounts(
+                record.parameter_counts,
+            ),
+            definition_kind_counts: sortedCounts(
+                record.definition_kinds,
+            ),
+            first_location: record.first_location,
+        }));
+}
+
 function main() {
     const options = parseArguments(process.argv);
     const rulesRoot = path.resolve(options["rules-root"]);
@@ -286,6 +382,7 @@ function main() {
     const globals = new Map();
     const hostMembers = new Map();
     const scriptExtensions = new Map();
+    const topLevelFunctions = new Map();
     let totalBytes = 0;
     let callCount = 0;
 
@@ -313,6 +410,12 @@ function main() {
                 }`,
             );
         }
+        collectTopLevelFunctions(
+            uglify,
+            ast,
+            relativePath,
+            topLevelFunctions,
+        );
         ast.walk(
             new uglify.TreeWalker(function (node) {
                 increment(astTypes, node.TYPE);
@@ -646,8 +749,10 @@ function main() {
             finalizeHostMembers(hostMembers),
         known_receiver_script_extensions:
             finalizeScriptExtensions(scriptExtensions),
+        top_level_function_definitions:
+            finalizeTopLevelFunctions(topLevelFunctions),
         classification_boundary:
-            "known_host records require an undeclared statically named receiver root and a direct first-level member call; deeper chains remain in member records because their final method belongs to an intermediate value; undeclared globals retain JS built-ins, runtime globals, rule-created globals, and HostApi globals for later source-backed classification",
+            "known_host records require an undeclared statically named receiver root and a direct first-level member call; deeper chains remain in member records because their final method belongs to an intermediate value; top_level_function_definitions contain only direct AST_Toplevel function declarations, function-valued var definitions, and simple identifier assignments; undeclared globals retain JS built-ins, runtime globals, rule-created globals, and HostApi globals for later source-backed classification",
     };
     const outputPath = path.resolve(options.output);
     fs.mkdirSync(path.dirname(outputPath), { recursive: true });

@@ -118,7 +118,10 @@ baseline 的变更都要检查本表。
   QObject 探针证明三个额外实参形状会忽略额外参数，并确认未定义
   `PE.getEPSignature` 调用抛出 `TypeError`。类型转换、畸形 map、find 的畸形/
   穷举边界、无效/短小 wrapper 上下文、异常上层传播、Qt 6 和其余 HostApi 行为
-  仍未验证。
+  仍未验证。非格式面已固定 16 个 native global slot；Qt 5 只注册其中 15 个，
+  固定规则实际调用 7 个共 253 次。71 个 undeclared direct-call 名已全部分类，
+  暴露两个不应静默修复的规则拼写错误；跨文件函数 include 可达性和 native
+  global 行为仍未验证。
 - **缓解**：保持 `RuleRuntime`/`HostApi` port；建立全规则 inventory、最小失败
   fixture、host call trace；基于证据选 runtime，禁止静默转换规则。
 - **验证**：固定规则 100% discovered/parsed/loaded，zero silent unsupported；

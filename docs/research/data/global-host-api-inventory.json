@@ -1,0 +1,2228 @@
+{
+  "die_script": {
+    "commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+    "license": "MIT",
+    "license_sha256": "abdeb212f229d2b93a5c315763df4d7201c7d74f580ad9dc77d77dec7cbc6c69",
+    "repository": "https://github.com/horsicq/die_script",
+    "sources": [
+      {
+        "bytes": 1085,
+        "path": "LICENSE",
+        "sha256": "abdeb212f229d2b93a5c315763df4d7201c7d74f580ad9dc77d77dec7cbc6c69"
+      },
+      {
+        "bytes": 1671,
+        "path": "xscriptengine.cpp",
+        "sha256": "1655527e65b4426527a755dbddc616fedfe3bdedfdc45f25f0e4cae86ced2fbe"
+      },
+      {
+        "bytes": 30878,
+        "path": "die_scriptengine.cpp",
+        "sha256": "f9b9d69a17dc930556c7308fce46d3287d18dd9f927c91d6733ce994594fcb72"
+      },
+      {
+        "bytes": 5361,
+        "path": "die_scriptengine.h",
+        "sha256": "e5c1895f4ad353e883e4aabb2177d1357799d8b261b96edcb4df7f52d4f63596"
+      },
+      {
+        "bytes": 3666,
+        "path": "die_global_script.cpp",
+        "sha256": "52d94ad9c427baa814f1766ae187680fc717eb41fde05aa24468f2ae84b28fe9"
+      },
+      {
+        "bytes": 3100,
+        "path": "die_global_script.h",
+        "sha256": "b45256709859cb4f0675014e8fbdddaa512d25f36083deff555828fb61464091"
+      }
+    ]
+  },
+  "generator": {
+    "path": "tools/rules/extract_global_host_api_inventory.py",
+    "sha256": "39672ba482e3ec91df7e36212e142c5d37298bc961b1d83fa1650dbbf872a9ed",
+    "version": 1
+  },
+  "native_global_api": {
+    "declared_slot_count": 16,
+    "methods": [
+      {
+        "declaration": {
+          "class": "die_global_script",
+          "const": false,
+          "declaration": "void includeScript(const QString &sScript)",
+          "line": 33,
+          "maximum_arity": 1,
+          "minimum_arity": 1,
+          "name": "includeScript",
+          "parameters": [
+            {
+              "default": null,
+              "name": "sScript",
+              "type": "const QString &"
+            }
+          ],
+          "path": "die_global_script.h",
+          "return_type": "void",
+          "virtual": false
+        },
+        "name": "includeScript",
+        "qt5_registered": true,
+        "qt6_registered": true,
+        "rule_direct_calls": {
+          "arity_counts": {
+            "1": 56
+          },
+          "bindings": {
+            "undeclared_global": 56
+          },
+          "count": 56,
+          "file_count_upper_bound": 48,
+          "first_location": {
+            "column": 0,
+            "line": 10,
+            "path": "db/ACE"
+          },
+          "name": "includeScript"
+        }
+      },
+      {
+        "declaration": {
+          "class": "die_global_script",
+          "const": false,
+          "declaration": "void _log(const QString &sText)",
+          "line": 34,
+          "maximum_arity": 1,
+          "minimum_arity": 1,
+          "name": "_log",
+          "parameters": [
+            {
+              "default": null,
+              "name": "sText",
+              "type": "const QString &"
+            }
+          ],
+          "path": "die_global_script.h",
+          "return_type": "void",
+          "virtual": false
+        },
+        "name": "_log",
+        "qt5_registered": true,
+        "qt6_registered": true,
+        "rule_direct_calls": {
+          "arity_counts": {
+            "1": 29
+          },
+          "bindings": {
+            "undeclared_global": 29
+          },
+          "count": 29,
+          "file_count_upper_bound": 9,
+          "first_location": {
+            "column": 3,
+            "line": 40,
+            "path": "db/Binary/archive_archives.ancient.sg"
+          },
+          "name": "_log"
+        }
+      },
+      {
+        "declaration": {
+          "class": "die_global_script",
+          "const": false,
+          "declaration": "void _setResult(const QString &sType, const QString &sName, const QString &sVersion, const QString &sOptions)",
+          "line": 37,
+          "maximum_arity": 4,
+          "minimum_arity": 4,
+          "name": "_setResult",
+          "parameters": [
+            {
+              "default": null,
+              "name": "sType",
+              "type": "const QString &"
+            },
+            {
+              "default": null,
+              "name": "sName",
+              "type": "const QString &"
+            },
+            {
+              "default": null,
+              "name": "sVersion",
+              "type": "const QString &"
+            },
+            {
+              "default": null,
+              "name": "sOptions",
+              "type": "const QString &"
+            }
+          ],
+          "path": "die_global_script.h",
+          "return_type": "void",
+          "virtual": false
+        },
+        "name": "_setResult",
+        "qt5_registered": true,
+        "qt6_registered": true,
+        "rule_direct_calls": {
+          "arity_counts": {
+            "4": 113
+          },
+          "bindings": {
+            "undeclared_global": 113
+          },
+          "count": 113,
+          "file_count_upper_bound": 28,
+          "first_location": {
+            "column": 16,
+            "line": 1495,
+            "path": "db/Binary/ROM_1.sg"
+          },
+          "name": "_setResult"
+        }
+      },
+      {
+        "declaration": {
+          "class": "die_global_script",
+          "const": false,
+          "declaration": "bool _isResultPresent(const QString &sType, const QString &sName)",
+          "line": 38,
+          "maximum_arity": 2,
+          "minimum_arity": 2,
+          "name": "_isResultPresent",
+          "parameters": [
+            {
+              "default": null,
+              "name": "sType",
+              "type": "const QString &"
+            },
+            {
+              "default": null,
+              "name": "sName",
+              "type": "const QString &"
+            }
+          ],
+          "path": "die_global_script.h",
+          "return_type": "bool",
+          "virtual": false
+        },
+        "name": "_isResultPresent",
+        "qt5_registered": true,
+        "qt6_registered": true,
+        "rule_direct_calls": {
+          "arity_counts": {
+            "2": 11
+          },
+          "bindings": {
+            "undeclared_global": 11
+          },
+          "count": 11,
+          "file_count_upper_bound": 4,
+          "first_location": {
+            "column": 8,
+            "line": 28,
+            "path": "db/PE/_FixDetects.9.sg"
+          },
+          "name": "_isResultPresent"
+        }
+      },
+      {
+        "declaration": {
+          "class": "die_global_script",
+          "const": false,
+          "declaration": "qint32 _getNumberOfResults(const QString &sType)",
+          "line": 39,
+          "maximum_arity": 1,
+          "minimum_arity": 1,
+          "name": "_getNumberOfResults",
+          "parameters": [
+            {
+              "default": null,
+              "name": "sType",
+              "type": "const QString &"
+            }
+          ],
+          "path": "die_global_script.h",
+          "return_type": "qint32",
+          "virtual": false
+        },
+        "name": "_getNumberOfResults",
+        "qt5_registered": true,
+        "qt6_registered": true,
+        "rule_direct_calls": {
+          "arity_counts": {
+            "1": 30
+          },
+          "bindings": {
+            "undeclared_global": 30
+          },
+          "count": 30,
+          "file_count_upper_bound": 9,
+          "first_location": {
+            "column": 24,
+            "line": 269,
+            "path": "db/Binary/__MiniExtensionsHeuristic_By_DosX.7.sg"
+          },
+          "name": "_getNumberOfResults"
+        }
+      },
+      {
+        "declaration": {
+          "class": "die_global_script",
+          "const": false,
+          "declaration": "void _removeResult(const QString &sType, const QString &sName)",
+          "line": 40,
+          "maximum_arity": 2,
+          "minimum_arity": 2,
+          "name": "_removeResult",
+          "parameters": [
+            {
+              "default": null,
+              "name": "sType",
+              "type": "const QString &"
+            },
+            {
+              "default": null,
+              "name": "sName",
+              "type": "const QString &"
+            }
+          ],
+          "path": "die_global_script.h",
+          "return_type": "void",
+          "virtual": false
+        },
+        "name": "_removeResult",
+        "qt5_registered": true,
+        "qt6_registered": true,
+        "rule_direct_calls": {
+          "arity_counts": {
+            "2": 13
+          },
+          "bindings": {
+            "undeclared_global": 13
+          },
+          "count": 13,
+          "file_count_upper_bound": 4,
+          "first_location": {
+            "column": 8,
+            "line": 29,
+            "path": "db/PE/_FixDetects.9.sg"
+          },
+          "name": "_removeResult"
+        }
+      },
+      {
+        "declaration": {
+          "class": "die_global_script",
+          "const": false,
+          "declaration": "bool _isStop()",
+          "line": 41,
+          "maximum_arity": 0,
+          "minimum_arity": 0,
+          "name": "_isStop",
+          "parameters": [],
+          "path": "die_global_script.h",
+          "return_type": "bool",
+          "virtual": false
+        },
+        "name": "_isStop",
+        "qt5_registered": true,
+        "qt6_registered": true,
+        "rule_direct_calls": {
+          "arity_counts": {
+            "0": 1
+          },
+          "bindings": {
+            "undeclared_global": 1
+          },
+          "count": 1,
+          "file_count_upper_bound": 1,
+          "first_location": {
+            "column": 120,
+            "line": 25,
+            "path": "db/PE/Cab.6.sg"
+          },
+          "name": "_isStop"
+        }
+      },
+      {
+        "declaration": {
+          "class": "die_global_script",
+          "const": false,
+          "declaration": "void _encodingList()",
+          "line": 42,
+          "maximum_arity": 0,
+          "minimum_arity": 0,
+          "name": "_encodingList",
+          "parameters": [],
+          "path": "die_global_script.h",
+          "return_type": "void",
+          "virtual": false
+        },
+        "name": "_encodingList",
+        "qt5_registered": true,
+        "qt6_registered": true,
+        "rule_direct_calls": {
+          "arity_counts": {},
+          "bindings": {},
+          "count": 0,
+          "file_count_upper_bound": 0,
+          "first_location": null,
+          "name": "_encodingList"
+        }
+      },
+      {
+        "declaration": {
+          "class": "die_global_script",
+          "const": false,
+          "declaration": "bool _isConsoleMode()",
+          "line": 43,
+          "maximum_arity": 0,
+          "minimum_arity": 0,
+          "name": "_isConsoleMode",
+          "parameters": [],
+          "path": "die_global_script.h",
+          "return_type": "bool",
+          "virtual": false
+        },
+        "name": "_isConsoleMode",
+        "qt5_registered": true,
+        "qt6_registered": true,
+        "rule_direct_calls": {
+          "arity_counts": {},
+          "bindings": {},
+          "count": 0,
+          "file_count_upper_bound": 0,
+          "first_location": null,
+          "name": "_isConsoleMode"
+        }
+      },
+      {
+        "declaration": {
+          "class": "die_global_script",
+          "const": false,
+          "declaration": "bool _isLiteMode()",
+          "line": 44,
+          "maximum_arity": 0,
+          "minimum_arity": 0,
+          "name": "_isLiteMode",
+          "parameters": [],
+          "path": "die_global_script.h",
+          "return_type": "bool",
+          "virtual": false
+        },
+        "name": "_isLiteMode",
+        "qt5_registered": true,
+        "qt6_registered": true,
+        "rule_direct_calls": {
+          "arity_counts": {},
+          "bindings": {},
+          "count": 0,
+          "file_count_upper_bound": 0,
+          "first_location": null,
+          "name": "_isLiteMode"
+        }
+      },
+      {
+        "declaration": {
+          "class": "die_global_script",
+          "const": false,
+          "declaration": "bool _isGuiMode()",
+          "line": 45,
+          "maximum_arity": 0,
+          "minimum_arity": 0,
+          "name": "_isGuiMode",
+          "parameters": [],
+          "path": "die_global_script.h",
+          "return_type": "bool",
+          "virtual": false
+        },
+        "name": "_isGuiMode",
+        "qt5_registered": true,
+        "qt6_registered": true,
+        "rule_direct_calls": {
+          "arity_counts": {},
+          "bindings": {},
+          "count": 0,
+          "file_count_upper_bound": 0,
+          "first_location": null,
+          "name": "_isGuiMode"
+        }
+      },
+      {
+        "declaration": {
+          "class": "die_global_script",
+          "const": false,
+          "declaration": "bool _isLibraryMode()",
+          "line": 46,
+          "maximum_arity": 0,
+          "minimum_arity": 0,
+          "name": "_isLibraryMode",
+          "parameters": [],
+          "path": "die_global_script.h",
+          "return_type": "bool",
+          "virtual": false
+        },
+        "name": "_isLibraryMode",
+        "qt5_registered": true,
+        "qt6_registered": true,
+        "rule_direct_calls": {
+          "arity_counts": {},
+          "bindings": {},
+          "count": 0,
+          "file_count_upper_bound": 0,
+          "first_location": null,
+          "name": "_isLibraryMode"
+        }
+      },
+      {
+        "declaration": {
+          "class": "die_global_script",
+          "const": false,
+          "declaration": "void _breakScan()",
+          "line": 47,
+          "maximum_arity": 0,
+          "minimum_arity": 0,
+          "name": "_breakScan",
+          "parameters": [],
+          "path": "die_global_script.h",
+          "return_type": "void",
+          "virtual": false
+        },
+        "name": "_breakScan",
+        "qt5_registered": true,
+        "qt6_registered": true,
+        "rule_direct_calls": {
+          "arity_counts": {},
+          "bindings": {},
+          "count": 0,
+          "file_count_upper_bound": 0,
+          "first_location": null,
+          "name": "_breakScan"
+        }
+      },
+      {
+        "declaration": {
+          "class": "die_global_script",
+          "const": false,
+          "declaration": "QString _getEngineVersion()",
+          "line": 48,
+          "maximum_arity": 0,
+          "minimum_arity": 0,
+          "name": "_getEngineVersion",
+          "parameters": [],
+          "path": "die_global_script.h",
+          "return_type": "QString",
+          "virtual": false
+        },
+        "name": "_getEngineVersion",
+        "qt5_registered": true,
+        "qt6_registered": true,
+        "rule_direct_calls": {
+          "arity_counts": {},
+          "bindings": {},
+          "count": 0,
+          "file_count_upper_bound": 0,
+          "first_location": null,
+          "name": "_getEngineVersion"
+        }
+      },
+      {
+        "declaration": {
+          "class": "die_global_script",
+          "const": false,
+          "declaration": "QString _getOS()",
+          "line": 49,
+          "maximum_arity": 0,
+          "minimum_arity": 0,
+          "name": "_getOS",
+          "parameters": [],
+          "path": "die_global_script.h",
+          "return_type": "QString",
+          "virtual": false
+        },
+        "name": "_getOS",
+        "qt5_registered": true,
+        "qt6_registered": true,
+        "rule_direct_calls": {
+          "arity_counts": {},
+          "bindings": {},
+          "count": 0,
+          "file_count_upper_bound": 0,
+          "first_location": null,
+          "name": "_getOS"
+        }
+      },
+      {
+        "declaration": {
+          "class": "die_global_script",
+          "const": false,
+          "declaration": "QString _getQtVersion()",
+          "line": 50,
+          "maximum_arity": 0,
+          "minimum_arity": 0,
+          "name": "_getQtVersion",
+          "parameters": [],
+          "path": "die_global_script.h",
+          "return_type": "QString",
+          "virtual": false
+        },
+        "name": "_getQtVersion",
+        "qt5_registered": false,
+        "qt6_registered": true,
+        "rule_direct_calls": {
+          "arity_counts": {},
+          "bindings": {},
+          "count": 0,
+          "file_count_upper_bound": 0,
+          "first_location": null,
+          "name": "_getQtVersion"
+        }
+      }
+    ],
+    "qt5_custom_wrappers": [
+      {
+        "declaration_line": 57,
+        "declaration_path": "die_scriptengine.h",
+        "implementation_line": 326,
+        "implementation_path": "die_scriptengine.cpp",
+        "name": "includeScript"
+      },
+      {
+        "declaration_line": 58,
+        "declaration_path": "die_scriptengine.h",
+        "implementation_line": 344,
+        "implementation_path": "die_scriptengine.cpp",
+        "name": "_log"
+      },
+      {
+        "declaration_line": 59,
+        "declaration_path": "die_scriptengine.h",
+        "implementation_line": 360,
+        "implementation_path": "die_scriptengine.cpp",
+        "name": "_setResult"
+      },
+      {
+        "declaration_line": 60,
+        "declaration_path": "die_scriptengine.h",
+        "implementation_line": 379,
+        "implementation_path": "die_scriptengine.cpp",
+        "name": "_isResultPresent"
+      },
+      {
+        "declaration_line": 61,
+        "declaration_path": "die_scriptengine.h",
+        "implementation_line": 399,
+        "implementation_path": "die_scriptengine.cpp",
+        "name": "_getNumberOfResults"
+      },
+      {
+        "declaration_line": 62,
+        "declaration_path": "die_scriptengine.h",
+        "implementation_line": 418,
+        "implementation_path": "die_scriptengine.cpp",
+        "name": "_removeResult"
+      },
+      {
+        "declaration_line": 63,
+        "declaration_path": "die_scriptengine.h",
+        "implementation_line": 435,
+        "implementation_path": "die_scriptengine.cpp",
+        "name": "_isStop"
+      },
+      {
+        "declaration_line": 64,
+        "declaration_path": "die_scriptengine.h",
+        "implementation_line": 455,
+        "implementation_path": "die_scriptengine.cpp",
+        "name": "_encodingList"
+      },
+      {
+        "declaration_line": 65,
+        "declaration_path": "die_scriptengine.h",
+        "implementation_line": 475,
+        "implementation_path": "die_scriptengine.cpp",
+        "name": "_isConsoleMode"
+      },
+      {
+        "declaration_line": 66,
+        "declaration_path": "die_scriptengine.h",
+        "implementation_line": 515,
+        "implementation_path": "die_scriptengine.cpp",
+        "name": "_isLiteMode"
+      },
+      {
+        "declaration_line": 67,
+        "declaration_path": "die_scriptengine.h",
+        "implementation_line": 495,
+        "implementation_path": "die_scriptengine.cpp",
+        "name": "_isGuiMode"
+      },
+      {
+        "declaration_line": 68,
+        "declaration_path": "die_scriptengine.h",
+        "implementation_line": 535,
+        "implementation_path": "die_scriptengine.cpp",
+        "name": "_isLibraryMode"
+      },
+      {
+        "declaration_line": 69,
+        "declaration_path": "die_scriptengine.h",
+        "implementation_line": 555,
+        "implementation_path": "die_scriptengine.cpp",
+        "name": "_breakScan"
+      },
+      {
+        "declaration_line": 70,
+        "declaration_path": "die_scriptengine.h",
+        "implementation_line": 571,
+        "implementation_path": "die_scriptengine.cpp",
+        "name": "_getEngineVersion"
+      },
+      {
+        "declaration_line": 71,
+        "declaration_path": "die_scriptengine.h",
+        "implementation_line": 591,
+        "implementation_path": "die_scriptengine.cpp",
+        "name": "_getOS"
+      }
+    ],
+    "qt5_only_omission": [
+      "_getQtVersion"
+    ],
+    "qt5_registered_count": 15,
+    "qt6_registered_count": 16,
+    "registration_evidence": {
+      "qt5_qscriptengine": [
+        {
+          "name": "includeScript",
+          "native_symbol": "includeScript"
+        },
+        {
+          "name": "_log",
+          "native_symbol": "_log"
+        },
+        {
+          "name": "_setResult",
+          "native_symbol": "_setResult"
+        },
+        {
+          "name": "_isResultPresent",
+          "native_symbol": "_isResultPresent"
+        },
+        {
+          "name": "_getNumberOfResults",
+          "native_symbol": "_getNumberOfResults"
+        },
+        {
+          "name": "_removeResult",
+          "native_symbol": "_removeResult"
+        },
+        {
+          "name": "_isStop",
+          "native_symbol": "_isStop"
+        },
+        {
+          "name": "_encodingList",
+          "native_symbol": "_encodingList"
+        },
+        {
+          "name": "_isConsoleMode",
+          "native_symbol": "_isConsoleMode"
+        },
+        {
+          "name": "_isLiteMode",
+          "native_symbol": "_isLiteMode"
+        },
+        {
+          "name": "_isGuiMode",
+          "native_symbol": "_isGuiMode"
+        },
+        {
+          "name": "_isLibraryMode",
+          "native_symbol": "_isLibraryMode"
+        },
+        {
+          "name": "_breakScan",
+          "native_symbol": "_breakScan"
+        },
+        {
+          "name": "_getEngineVersion",
+          "native_symbol": "_getEngineVersion"
+        },
+        {
+          "name": "_getOS",
+          "native_symbol": "_getOS"
+        }
+      ],
+      "qt6_qjsengine": [
+        {
+          "name": "includeScript",
+          "qobject_property": "includeScript"
+        },
+        {
+          "name": "_log",
+          "qobject_property": "_log"
+        },
+        {
+          "name": "_setResult",
+          "qobject_property": "_setResult"
+        },
+        {
+          "name": "_isResultPresent",
+          "qobject_property": "_isResultPresent"
+        },
+        {
+          "name": "_getNumberOfResults",
+          "qobject_property": "_getNumberOfResults"
+        },
+        {
+          "name": "_removeResult",
+          "qobject_property": "_removeResult"
+        },
+        {
+          "name": "_isStop",
+          "qobject_property": "_isStop"
+        },
+        {
+          "name": "_encodingList",
+          "qobject_property": "_encodingList"
+        },
+        {
+          "name": "_isConsoleMode",
+          "qobject_property": "_isConsoleMode"
+        },
+        {
+          "name": "_isLiteMode",
+          "qobject_property": "_isLiteMode"
+        },
+        {
+          "name": "_isGuiMode",
+          "qobject_property": "_isGuiMode"
+        },
+        {
+          "name": "_isLibraryMode",
+          "qobject_property": "_isLibraryMode"
+        },
+        {
+          "name": "_breakScan",
+          "qobject_property": "_breakScan"
+        },
+        {
+          "name": "_getEngineVersion",
+          "qobject_property": "_getEngineVersion"
+        },
+        {
+          "name": "_getOS",
+          "qobject_property": "_getOS"
+        },
+        {
+          "name": "_getQtVersion",
+          "qobject_property": "_getQtVersion"
+        }
+      ]
+    }
+  },
+  "rule_inventory": {
+    "path": "docs/research/data/rule-syntax-inventory.json",
+    "root_framework_functions": [
+      {
+        "definition": {
+          "definition_count": 1,
+          "definition_kind_counts": {
+            "function_declaration": 1
+          },
+          "file_count": 1,
+          "first_location": {
+            "column": 0,
+            "line": 12,
+            "path": "db/_debug"
+          },
+          "name": "_debug",
+          "parameter_count_counts": {
+            "1": 1
+          }
+        },
+        "rule_direct_calls": {
+          "arity_counts": {
+            "1": 1
+          },
+          "bindings": {
+            "undeclared_global": 1
+          },
+          "count": 1,
+          "file_count_upper_bound": 1,
+          "first_location": {
+            "column": 4,
+            "line": 48,
+            "path": "db/_init"
+          },
+          "name": "_debug"
+        }
+      },
+      {
+        "definition": {
+          "definition_count": 1,
+          "definition_kind_counts": {
+            "function_declaration": 1
+          },
+          "file_count": 1,
+          "first_location": {
+            "column": 0,
+            "line": 19,
+            "path": "db/_debug"
+          },
+          "name": "_error",
+          "parameter_count_counts": {
+            "1": 1
+          }
+        },
+        "rule_direct_calls": {
+          "arity_counts": {
+            "1": 12
+          },
+          "bindings": {
+            "undeclared_global": 12
+          },
+          "count": 12,
+          "file_count_upper_bound": 3,
+          "first_location": {
+            "column": 12,
+            "line": 227,
+            "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg"
+          },
+          "name": "_error"
+        }
+      },
+      {
+        "definition": {
+          "definition_count": 1,
+          "definition_kind_counts": {
+            "function_declaration": 1
+          },
+          "file_count": 1,
+          "first_location": {
+            "column": 0,
+            "line": 13,
+            "path": "db/language"
+          },
+          "name": "_isLangDetected",
+          "parameter_count_counts": {
+            "0": 1
+          }
+        },
+        "rule_direct_calls": {
+          "arity_counts": {
+            "0": 7,
+            "1": 1
+          },
+          "bindings": {
+            "declared": 1,
+            "undeclared_global": 7
+          },
+          "count": 8,
+          "file_count_upper_bound": 3,
+          "first_location": {
+            "column": 13,
+            "line": 1126,
+            "path": "db/PE/_Microsoft.6.sg"
+          },
+          "name": "_isLangDetected"
+        }
+      },
+      {
+        "definition": {
+          "definition_count": 1,
+          "definition_kind_counts": {
+            "function_declaration": 1
+          },
+          "file_count": 1,
+          "first_location": {
+            "column": 0,
+            "line": 9,
+            "path": "db/language"
+          },
+          "name": "_isLangPresent",
+          "parameter_count_counts": {
+            "1": 1
+          }
+        },
+        "rule_direct_calls": {
+          "arity_counts": {
+            "1": 10
+          },
+          "bindings": {
+            "declared": 6,
+            "undeclared_global": 4
+          },
+          "count": 10,
+          "file_count_upper_bound": 3,
+          "first_location": {
+            "column": 51,
+            "line": 31,
+            "path": "db/PE/_FixDetects.9.sg"
+          },
+          "name": "_isLangPresent"
+        }
+      },
+      {
+        "definition": {
+          "definition_count": 1,
+          "definition_kind_counts": {
+            "function_declaration": 1
+          },
+          "file_count": 1,
+          "first_location": {
+            "column": 0,
+            "line": 17,
+            "path": "db/language"
+          },
+          "name": "_setLang",
+          "parameter_count_counts": {
+            "2": 1
+          }
+        },
+        "rule_direct_calls": {
+          "arity_counts": {
+            "1": 11,
+            "2": 2
+          },
+          "bindings": {
+            "undeclared_global": 13
+          },
+          "count": 13,
+          "file_count_upper_bound": 5,
+          "first_location": {
+            "column": 8,
+            "line": 39,
+            "path": "db/PE/_FixDetects.9.sg"
+          },
+          "name": "_setLang"
+        }
+      },
+      {
+        "definition": {
+          "definition_count": 1,
+          "definition_kind_counts": {
+            "function_declaration": 1
+          },
+          "file_count": 1,
+          "first_location": {
+            "column": 0,
+            "line": 47,
+            "path": "db/_init"
+          },
+          "name": "init",
+          "parameter_count_counts": {
+            "0": 1
+          }
+        },
+        "rule_direct_calls": {
+          "arity_counts": {},
+          "bindings": {},
+          "count": 0,
+          "file_count_upper_bound": 0,
+          "first_location": null,
+          "name": "init"
+        }
+      },
+      {
+        "definition": {
+          "definition_count": 1,
+          "definition_kind_counts": {
+            "function_declaration": 1
+          },
+          "file_count": 1,
+          "first_location": {
+            "column": 0,
+            "line": 26,
+            "path": "db/_init"
+          },
+          "name": "meta",
+          "parameter_count_counts": {
+            "6": 1
+          }
+        },
+        "rule_direct_calls": {
+          "arity_counts": {
+            "0": 2,
+            "1": 21,
+            "2": 2133
+          },
+          "bindings": {
+            "declared": 2,
+            "undeclared_global": 2154
+          },
+          "count": 2156,
+          "file_count_upper_bound": 2155,
+          "first_location": {
+            "column": 0,
+            "line": 4,
+            "path": "db/APK/_APK.0.sg"
+          },
+          "name": "meta"
+        }
+      },
+      {
+        "definition": {
+          "definition_count": 1,
+          "definition_kind_counts": {
+            "function_declaration": 1
+          },
+          "file_count": 1,
+          "first_location": {
+            "column": 0,
+            "line": 63,
+            "path": "db/_init"
+          },
+          "name": "result",
+          "parameter_count_counts": {
+            "0": 1
+          }
+        },
+        "rule_direct_calls": {
+          "arity_counts": {
+            "0": 2165
+          },
+          "bindings": {
+            "undeclared_global": 2165
+          },
+          "count": 2165,
+          "file_count_upper_bound": 2161,
+          "first_location": {
+            "column": 11,
+            "line": 15,
+            "path": "db/APK/_APK.0.sg"
+          },
+          "name": "result"
+        }
+      }
+    ],
+    "root_framework_paths": [
+      "db/_debug",
+      "db/_init",
+      "db/_runtime_helpers",
+      "db/language"
+    ],
+    "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+    "sha256": "8152a2c39f62f3b21a646a0b4df29b7bd7f1315f7fad2302a5258e601eb1b136",
+    "top_level_function_definition_count": 2371,
+    "top_level_function_name_count": 183
+  },
+  "schema_version": 1,
+  "scope": "die_global_script public slots, Qt5/Qt6 constructor registration surfaces, repository-wide rule top-level function definitions, and direct undeclared identifier calls; format QObject members, member calls, non-call global reads/writes, include reachability, native function behavior, and indirect calls are outside scope",
+  "undeclared_direct_call_classification": {
+    "boundary": "classification covers only direct calls whose callee is an undeclared identifier in its individual source file; rule top-level definitions are a repository-wide candidate union and do not prove include reachability; unclassified is not silently treated as HostApi",
+    "call_count": 7834,
+    "category_call_counts": {
+      "ecmascript_global": 356,
+      "native_engine_global": 253,
+      "rule_top_level_function": 7223,
+      "unclassified": 2
+    },
+    "category_name_counts": {
+      "ecmascript_global": 7,
+      "native_engine_global": 7,
+      "rule_top_level_function": 55,
+      "unclassified": 2
+    },
+    "name_count": 71,
+    "records": [
+      {
+        "arity_counts": {
+          "1": 4
+        },
+        "binding": "undeclared_global",
+        "classification": "ecmascript_global",
+        "count": 4,
+        "file_count": 2,
+        "first_location": {
+          "column": 55,
+          "line": 13277,
+          "path": "db/Binary/audio.1.sg"
+        },
+        "name": "Array"
+      },
+      {
+        "arity_counts": {
+          "1": 2,
+          "2": 3
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 5,
+        "file_count": 1,
+        "first_location": {
+          "column": 70,
+          "line": 244,
+          "path": "db/bytecodeparsers"
+        },
+        "name": "Bin"
+      },
+      {
+        "arity_counts": {
+          "0": 9,
+          "1": 25
+        },
+        "binding": "undeclared_global",
+        "classification": "ecmascript_global",
+        "count": 34,
+        "file_count": 17,
+        "first_location": {
+          "column": 29,
+          "line": 68,
+          "path": "db/Binary/formats.1.sg"
+        },
+        "name": "Boolean"
+      },
+      {
+        "arity_counts": {
+          "1": 207,
+          "2": 4
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 211,
+        "file_count": 20,
+        "first_location": {
+          "column": 50,
+          "line": 336,
+          "path": "db/Binary/ROM_1.sg"
+        },
+        "name": "Hex"
+      },
+      {
+        "arity_counts": {
+          "0": 1,
+          "1": 12
+        },
+        "binding": "undeclared_global",
+        "classification": "ecmascript_global",
+        "count": 13,
+        "file_count": 7,
+        "first_location": {
+          "column": 13,
+          "line": 3021,
+          "path": "db/Binary/audio.1.sg"
+        },
+        "name": "Number"
+      },
+      {
+        "arity_counts": {
+          "1": 1
+        },
+        "binding": "undeclared_global",
+        "classification": "ecmascript_global",
+        "count": 1,
+        "file_count": 1,
+        "first_location": {
+          "column": 12,
+          "line": 150,
+          "path": "db/_runtime_helpers"
+        },
+        "name": "Object"
+      },
+      {
+        "arity_counts": {
+          "0": 281,
+          "1": 10
+        },
+        "binding": "undeclared_global",
+        "classification": "ecmascript_global",
+        "count": 291,
+        "file_count": 29,
+        "first_location": {
+          "column": 18,
+          "line": 19,
+          "path": "db/Binary/__MiniBatchHeuristic_By_DosX.7.sg"
+        },
+        "name": "String"
+      },
+      {
+        "arity_counts": {
+          "1": 1
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 1,
+        "file_count": 1,
+        "first_location": {
+          "column": 4,
+          "line": 48,
+          "path": "db/_init"
+        },
+        "name": "_debug"
+      },
+      {
+        "arity_counts": {
+          "1": 12
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 12,
+        "file_count": 3,
+        "first_location": {
+          "column": 12,
+          "line": 227,
+          "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg"
+        },
+        "name": "_error"
+      },
+      {
+        "arity_counts": {
+          "1": 30
+        },
+        "binding": "undeclared_global",
+        "classification": "native_engine_global",
+        "count": 30,
+        "file_count": 9,
+        "first_location": {
+          "column": 24,
+          "line": 269,
+          "path": "db/Binary/__MiniExtensionsHeuristic_By_DosX.7.sg"
+        },
+        "name": "_getNumberOfResults"
+      },
+      {
+        "arity_counts": {
+          "0": 6,
+          "1": 1
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 7,
+        "file_count": 2,
+        "first_location": {
+          "column": 13,
+          "line": 1126,
+          "path": "db/PE/_Microsoft.6.sg"
+        },
+        "name": "_isLangDetected"
+      },
+      {
+        "arity_counts": {
+          "1": 4
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 4,
+        "file_count": 2,
+        "first_location": {
+          "column": 51,
+          "line": 31,
+          "path": "db/PE/_FixDetects.9.sg"
+        },
+        "name": "_isLangPresent"
+      },
+      {
+        "arity_counts": {
+          "2": 11
+        },
+        "binding": "undeclared_global",
+        "classification": "native_engine_global",
+        "count": 11,
+        "file_count": 4,
+        "first_location": {
+          "column": 8,
+          "line": 28,
+          "path": "db/PE/_FixDetects.9.sg"
+        },
+        "name": "_isResultPresent"
+      },
+      {
+        "arity_counts": {
+          "0": 1
+        },
+        "binding": "undeclared_global",
+        "classification": "native_engine_global",
+        "count": 1,
+        "file_count": 1,
+        "first_location": {
+          "column": 120,
+          "line": 25,
+          "path": "db/PE/Cab.6.sg"
+        },
+        "name": "_isStop"
+      },
+      {
+        "arity_counts": {
+          "3": 37
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 37,
+        "file_count": 6,
+        "first_location": {
+          "column": 52,
+          "line": 1431,
+          "path": "db/Binary/ROM_1.sg"
+        },
+        "name": "_l2r"
+      },
+      {
+        "arity_counts": {
+          "1": 29
+        },
+        "binding": "undeclared_global",
+        "classification": "native_engine_global",
+        "count": 29,
+        "file_count": 9,
+        "first_location": {
+          "column": 3,
+          "line": 40,
+          "path": "db/Binary/archive_archives.ancient.sg"
+        },
+        "name": "_log"
+      },
+      {
+        "arity_counts": {
+          "1": 16
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 16,
+        "file_count": 2,
+        "first_location": {
+          "column": 31,
+          "line": 11958,
+          "path": "db/Binary/audio.1.sg"
+        },
+        "name": "_logIt"
+      },
+      {
+        "arity_counts": {
+          "2": 13
+        },
+        "binding": "undeclared_global",
+        "classification": "native_engine_global",
+        "count": 13,
+        "file_count": 4,
+        "first_location": {
+          "column": 8,
+          "line": 29,
+          "path": "db/PE/_FixDetects.9.sg"
+        },
+        "name": "_removeResult"
+      },
+      {
+        "arity_counts": {
+          "1": 11,
+          "2": 2
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 13,
+        "file_count": 5,
+        "first_location": {
+          "column": 8,
+          "line": 39,
+          "path": "db/PE/_FixDetects.9.sg"
+        },
+        "name": "_setLang"
+      },
+      {
+        "arity_counts": {
+          "4": 113
+        },
+        "binding": "undeclared_global",
+        "classification": "native_engine_global",
+        "count": 113,
+        "file_count": 28,
+        "first_location": {
+          "column": 16,
+          "line": 1495,
+          "path": "db/Binary/ROM_1.sg"
+        },
+        "name": "_setResult"
+      },
+      {
+        "arity_counts": {
+          "1": 33,
+          "2": 38,
+          "3": 30
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 101,
+        "file_count": 9,
+        "first_location": {
+          "column": 21,
+          "line": 64,
+          "path": "db/Binary/ROM_1.sg"
+        },
+        "name": "addEllipsis"
+      },
+      {
+        "arity_counts": {
+          "1": 3
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 3,
+        "file_count": 1,
+        "first_location": {
+          "column": 41,
+          "line": 320,
+          "path": "db/bytecodeparsers"
+        },
+        "name": "bitCount"
+      },
+      {
+        "arity_counts": {
+          "1": 6,
+          "2": 44
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 50,
+        "file_count": 9,
+        "first_location": {
+          "column": 58,
+          "line": 124,
+          "path": "db/Binary/ROM_1.sg"
+        },
+        "name": "charStat"
+      },
+      {
+        "arity_counts": {
+          "2": 10
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 10,
+        "file_count": 2,
+        "first_location": {
+          "column": 9,
+          "line": 6542,
+          "path": "db/Binary/audio.1.sg"
+        },
+        "name": "compareArrays"
+      },
+      {
+        "arity_counts": {
+          "0": 1,
+          "3": 2
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 3,
+        "file_count": 2,
+        "first_location": {
+          "column": 21,
+          "line": 43,
+          "path": "db/Binary/archive_DEFLATE.1.sg"
+        },
+        "name": "createOrderlyHuffmanTable"
+      },
+      {
+        "arity_counts": {
+          "3": 34,
+          "4": 7,
+          "5": 8
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 49,
+        "file_count": 2,
+        "first_location": {
+          "column": 19,
+          "line": 335,
+          "path": "db/Binary/ROM_1.sg"
+        },
+        "name": "decAnsi"
+      },
+      {
+        "arity_counts": {
+          "2": 34,
+          "3": 2,
+          "4": 3
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 39,
+        "file_count": 3,
+        "first_location": {
+          "column": 28,
+          "line": 920,
+          "path": "db/Binary/ROM_1.sg"
+        },
+        "name": "decEncoding"
+      },
+      {
+        "arity_counts": {
+          "1": 3
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 3,
+        "file_count": 3,
+        "first_location": {
+          "column": 4,
+          "line": 7,
+          "path": "db/Binary/archive_ACE.1.sg"
+        },
+        "name": "detect_ACE"
+      },
+      {
+        "arity_counts": {
+          "1": 2
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 2,
+        "file_count": 2,
+        "first_location": {
+          "column": 4,
+          "line": 7,
+          "path": "db/Binary/archive_ARJ.1.sg"
+        },
+        "name": "detect_ARJ"
+      },
+      {
+        "arity_counts": {
+          "2": 1,
+          "3": 3
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 4,
+        "file_count": 2,
+        "first_location": {
+          "column": 9,
+          "line": 9,
+          "path": "db/Binary/archive_Cab.1.sg"
+        },
+        "name": "detect_Cab"
+      },
+      {
+        "arity_counts": {
+          "1": 3
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 3,
+        "file_count": 3,
+        "first_location": {
+          "column": 4,
+          "line": 7,
+          "path": "db/Binary/archive_RAR.1.sg"
+        },
+        "name": "detect_RAR"
+      },
+      {
+        "arity_counts": {
+          "1": 3
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 3,
+        "file_count": 3,
+        "first_location": {
+          "column": 4,
+          "line": 7,
+          "path": "db/Binary/archive_ZIP.1.sg"
+        },
+        "name": "detect_Zip"
+      },
+      {
+        "arity_counts": {
+          "2": 9
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 9,
+        "file_count": 4,
+        "first_location": {
+          "column": 8,
+          "line": 8,
+          "path": "db/Binary/archive_ZLIB.1.sg"
+        },
+        "name": "detect_zlib"
+      },
+      {
+        "arity_counts": {
+          "1": 1
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 1,
+        "file_count": 1,
+        "first_location": {
+          "column": 52,
+          "line": 186,
+          "path": "db/Binary/audio_mp3.2.sg"
+        },
+        "name": "duration"
+      },
+      {
+        "arity_counts": {
+          "1": 22
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 22,
+        "file_count": 5,
+        "first_location": {
+          "column": 13,
+          "line": 532,
+          "path": "db/Binary/ROM_1.sg"
+        },
+        "name": "extIs"
+      },
+      {
+        "arity_counts": {
+          "2": 2
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 2,
+        "file_count": 1,
+        "first_location": {
+          "column": 6,
+          "line": 8223,
+          "path": "db/Binary/audio.1.sg"
+        },
+        "name": "findGaps"
+      },
+      {
+        "arity_counts": {
+          "1": 1,
+          "2": 2
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 3,
+        "file_count": 2,
+        "first_location": {
+          "column": 5,
+          "line": 7083,
+          "path": "db/Binary/audio.1.sg"
+        },
+        "name": "findIntersections"
+      },
+      {
+        "arity_counts": {
+          "3": 4
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 4,
+        "file_count": 2,
+        "first_location": {
+          "column": 20,
+          "line": 558,
+          "path": "db/Binary/ROM_1.sg"
+        },
+        "name": "firstNotOf"
+      },
+      {
+        "arity_counts": {
+          "1": 3
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 3,
+        "file_count": 2,
+        "first_location": {
+          "column": 27,
+          "line": 29,
+          "path": "db/Binary/image_CUR.1.sg"
+        },
+        "name": "getCurIcoBPP"
+      },
+      {
+        "arity_counts": {
+          "1": 1
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 1,
+        "file_count": 1,
+        "first_location": {
+          "column": 26,
+          "line": 70,
+          "path": "db/PE/packer_PyInstaller.2.sg"
+        },
+        "name": "getPythonVersionByDll"
+      },
+      {
+        "arity_counts": {
+          "2": 1
+        },
+        "binding": "undeclared_global",
+        "classification": "unclassified",
+        "count": 1,
+        "file_count": 1,
+        "first_location": {
+          "column": 31,
+          "line": 58,
+          "path": "db/Binary/debug_data_debugData.1.sg"
+        },
+        "name": "get_DWRAF_vi"
+      },
+      {
+        "arity_counts": {
+          "1": 56
+        },
+        "binding": "undeclared_global",
+        "classification": "native_engine_global",
+        "count": 56,
+        "file_count": 48,
+        "first_location": {
+          "column": 0,
+          "line": 10,
+          "path": "db/ACE"
+        },
+        "name": "includeScript"
+      },
+      {
+        "arity_counts": {
+          "2": 9
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 9,
+        "file_count": 4,
+        "first_location": {
+          "column": 63,
+          "line": 234,
+          "path": "db/Binary/ROM_1.sg"
+        },
+        "name": "isAllZeroes"
+      },
+      {
+        "arity_counts": {
+          "3": 5
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 5,
+        "file_count": 1,
+        "first_location": {
+          "column": 6,
+          "line": 8281,
+          "path": "db/Binary/audio.1.sg"
+        },
+        "name": "isInside"
+      },
+      {
+        "arity_counts": {
+          "1": 1
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 1,
+        "file_count": 1,
+        "first_location": {
+          "column": 8,
+          "line": 9,
+          "path": "db/Binary/script_text.Shell.1.sg"
+        },
+        "name": "isInterpreter"
+      },
+      {
+        "arity_counts": {
+          "1": 4
+        },
+        "binding": "undeclared_global",
+        "classification": "ecmascript_global",
+        "count": 4,
+        "file_count": 3,
+        "first_location": {
+          "column": 56,
+          "line": 107,
+          "path": "db/PE/_Microsoft.6.sg"
+        },
+        "name": "isNaN"
+      },
+      {
+        "arity_counts": {
+          "2": 1,
+          "3": 369
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 370,
+        "file_count": 18,
+        "first_location": {
+          "column": 91,
+          "line": 20,
+          "path": "db/Binary/ROM_1.sg"
+        },
+        "name": "isWithin"
+      },
+      {
+        "arity_counts": {
+          "2": 21
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 21,
+        "file_count": 2,
+        "first_location": {
+          "column": 17,
+          "line": 4184,
+          "path": "db/Binary/audio.1.sg"
+        },
+        "name": "isWithinRanges"
+      },
+      {
+        "arity_counts": {
+          "0": 1
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 1,
+        "file_count": 1,
+        "first_location": {
+          "column": 8,
+          "line": 12111,
+          "path": "db/Binary/audio.1.sg"
+        },
+        "name": "isYM2151Reg"
+      },
+      {
+        "arity_counts": {
+          "1": 21,
+          "2": 2133
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 2154,
+        "file_count": 2154,
+        "first_location": {
+          "column": 0,
+          "line": 4,
+          "path": "db/APK/_APK.0.sg"
+        },
+        "name": "meta"
+      },
+      {
+        "arity_counts": {
+          "1": 2,
+          "2": 19
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 21,
+        "file_count": 3,
+        "first_location": {
+          "column": 34,
+          "line": 8867,
+          "path": "db/Binary/audio.1.sg"
+        },
+        "name": "outArray"
+      },
+      {
+        "arity_counts": {
+          "0": 6,
+          "1": 297,
+          "2": 1
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 304,
+        "file_count": 29,
+        "first_location": {
+          "column": 20,
+          "line": 65,
+          "path": "db/Binary/ROM_1.sg"
+        },
+        "name": "outSz"
+      },
+      {
+        "arity_counts": {
+          "0": 2,
+          "1": 2
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 4,
+        "file_count": 1,
+        "first_location": {
+          "column": 7,
+          "line": 4121,
+          "path": "db/Binary/audio.1.sg"
+        },
+        "name": "parseAtariBinary"
+      },
+      {
+        "arity_counts": {
+          "1": 1,
+          "2": 8
+        },
+        "binding": "undeclared_global",
+        "classification": "ecmascript_global",
+        "count": 9,
+        "file_count": 4,
+        "first_location": {
+          "column": 24,
+          "line": 46,
+          "path": "db/Binary/archive_AR.1.sg"
+        },
+        "name": "parseInt"
+      },
+      {
+        "arity_counts": {
+          "2": 2
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 2,
+        "file_count": 1,
+        "first_location": {
+          "column": 19,
+          "line": 11438,
+          "path": "db/Binary/audio.1.sg"
+        },
+        "name": "parseMDGYM"
+      },
+      {
+        "arity_counts": {
+          "3": 1
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 1,
+        "file_count": 1,
+        "first_location": {
+          "column": 11,
+          "line": 8870,
+          "path": "db/Binary/audio.1.sg"
+        },
+        "name": "parseMUAP98"
+      },
+      {
+        "arity_counts": {
+          "2": 1
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 1,
+        "file_count": 1,
+        "first_location": {
+          "column": 13,
+          "line": 14170,
+          "path": "db/Binary/audio.1.sg"
+        },
+        "name": "parseYM2151RegLog"
+      },
+      {
+        "arity_counts": {
+          "2": 1
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 1,
+        "file_count": 1,
+        "first_location": {
+          "column": 14,
+          "line": 14186,
+          "path": "db/Binary/audio.1.sg"
+        },
+        "name": "parseYM3812RegLog"
+      },
+      {
+        "arity_counts": {
+          "0": 3
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 3,
+        "file_count": 1,
+        "first_location": {
+          "column": 57,
+          "line": 10962,
+          "path": "db/Binary/audio.1.sg"
+        },
+        "name": "patchClear"
+      },
+      {
+        "arity_counts": {
+          "2": 1
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 1,
+        "file_count": 1,
+        "first_location": {
+          "column": 93,
+          "line": 33,
+          "path": "db/Binary/audio.AIFF.1.sg"
+        },
+        "name": "readFloat80"
+      },
+      {
+        "arity_counts": {
+          "1": 60,
+          "2": 6
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 66,
+        "file_count": 2,
+        "first_location": {
+          "column": 21,
+          "line": 1424,
+          "path": "db/Binary/audio.1.sg"
+        },
+        "name": "readVarUInt"
+      },
+      {
+        "arity_counts": {
+          "0": 2165
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 2165,
+        "file_count": 2161,
+        "first_location": {
+          "column": 11,
+          "line": 15,
+          "path": "db/APK/_APK.0.sg"
+        },
+        "name": "result"
+      },
+      {
+        "arity_counts": {
+          "1": 5
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 5,
+        "file_count": 1,
+        "first_location": {
+          "column": 9,
+          "line": 11004,
+          "path": "db/Binary/audio.1.sg"
+        },
+        "name": "rpU16be"
+      },
+      {
+        "arity_counts": {
+          "1": 23
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 23,
+        "file_count": 1,
+        "first_location": {
+          "column": 26,
+          "line": 10988,
+          "path": "db/Binary/audio.1.sg"
+        },
+        "name": "rpU32be"
+      },
+      {
+        "arity_counts": {
+          "1": 707,
+          "2": 265,
+          "3": 46
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 1018,
+        "file_count": 66,
+        "first_location": {
+          "column": 24,
+          "line": 42,
+          "path": "db/Binary/ROM_1.sg"
+        },
+        "name": "sOption"
+      },
+      {
+        "arity_counts": {
+          "1": 224,
+          "2": 132,
+          "3": 41
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 397,
+        "file_count": 11,
+        "first_location": {
+          "column": 12,
+          "line": 64,
+          "path": "db/Binary/ROM_1.sg"
+        },
+        "name": "sOptionT"
+      },
+      {
+        "arity_counts": {
+          "1": 14,
+          "2": 1
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 15,
+        "file_count": 9,
+        "first_location": {
+          "column": 25,
+          "line": 4312,
+          "path": "db/Binary/audio.1.sg"
+        },
+        "name": "secondsToTimeStr"
+      },
+      {
+        "arity_counts": {
+          "2": 4
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 4,
+        "file_count": 1,
+        "first_location": {
+          "column": 12,
+          "line": 5168,
+          "path": "db/Binary/audio.1.sg"
+        },
+        "name": "slashTag"
+      },
+      {
+        "arity_counts": {
+          "2": 9
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 9,
+        "file_count": 1,
+        "first_location": {
+          "column": 13,
+          "line": 10988,
+          "path": "db/Binary/audio.1.sg"
+        },
+        "name": "wpU32be"
+      },
+      {
+        "arity_counts": {
+          "2": 1
+        },
+        "binding": "undeclared_global",
+        "classification": "rule_top_level_function",
+        "count": 1,
+        "file_count": 1,
+        "first_location": {
+          "column": 15,
+          "line": 70,
+          "path": "db/Binary/audio_WEM.1.sg"
+        },
+        "name": "xma2_parse_fmt_chunk_extra"
+      },
+      {
+        "arity_counts": {
+          "1": 1
+        },
+        "binding": "undeclared_global",
+        "classification": "unclassified",
+        "count": 1,
+        "file_count": 1,
+        "first_location": {
+          "column": 15,
+          "line": 55,
+          "path": "db/Binary/audio_WEM.1.sg"
+        },
+        "name": "xma2_pase_xma2_chunk"
+      }
+    ]
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

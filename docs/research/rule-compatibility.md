@@ -367,12 +367,22 @@ header fast path 的字符/字节混合计算和严格 `<` 分界会改变 inval
 `PE.getEPSignature` 在完整 PE `_init` 后仍不存在、调用时抛出 `TypeError`。
 该清单闭合规则侧语法和静态调用用法面，但不替代其余类型转换和运行行为核对。
 
+非格式 global 另由固定 `die_script` 源码清单闭合：声明 16 个 native slot，
+Qt 5 注册 15 个（遗漏规则未调用的 `_getQtVersion`），Qt 6 注册全部 16 个。
+固定规则只直接调用其中 7 个，共 253 次且 arity 全部匹配。`meta`、`result` 等
+8 个根框架函数来自规则脚本，不是 native HostApi。71 个 undeclared direct-call
+名已分成 55 个规则函数候选、7 个 native global、7 个 ECMAScript global 和
+2 个固定拼写错误。详见
+[`global-host-api-inventory.md`](global-host-api-inventory.md)。
+
 ## 尚未完成
 
 - 为固定 C++ 声明、默认参数、继承和规则脚本扩展补齐其余 Qt 5/Qt 6 行为
   fixture，并补做四个已闭合形状的 Qt 6 对照。
 - Qt 5 与 Qt 6 的 conformance oracle。
 - include 同名、重复、循环和异常实验。
+- 16 个 native global 的 Qt 5/Qt 6 转换、副作用和异常行为，以及两个拼写错误
+  分支的可达性/异常传播实验。
 - database cache 与 ZIP database 行为。
 - `dbs_min` 生成逻辑。
 - 用真实 HostApi 和 Qt oracle 逐条验证全库 `detect`、冻结 legacy compatibility
