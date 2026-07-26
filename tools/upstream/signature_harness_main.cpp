@@ -19,7 +19,9 @@
 #include <QString>
 
 #include <cstdio>
+#include <cstring>
 #include <memory>
+#include <new>
 
 namespace {
 
@@ -373,6 +375,12 @@ QJsonObject runCase(const QJsonObject &input, QString *error)
     if (input.contains("file_name")) {
         result.insert("file_name", input.value("file_name"));
     }
+    if (input.contains("binary_script_scan_id")) {
+        result.insert(
+            "binary_script_scan_id",
+            input.value("binary_script_scan_id")
+        );
+    }
 
     bool invokeScriptCompare =
         input.value("binary_script_compare").toBool();
@@ -390,6 +398,8 @@ QJsonObject runCase(const QJsonObject &input, QString *error)
         input.value("binary_script_overlay_info").toBool();
     bool invokeScriptStringInfo =
         input.value("binary_script_string_info").toBool();
+    bool invokeScriptContextInfo =
+        input.value("binary_script_context_info").toBool();
     if (
         invokeScriptCompare ||
         invokeScriptCompareEp ||
@@ -398,7 +408,8 @@ QJsonObject runCase(const QJsonObject &input, QString *error)
         invokeScriptFSig ||
         invokeScriptIsSignaturePresent ||
         invokeScriptOverlayInfo ||
-        invokeScriptStringInfo
+        invokeScriptStringInfo ||
+        invokeScriptContextInfo
     ) {
         std::unique_ptr<XBinary> parsedBinary;
         XBinary *scriptBinary = &binary;
@@ -415,6 +426,8 @@ QJsonObject runCase(const QJsonObject &input, QString *error)
         }
 
         Binary_Script::OPTIONS options = {};
+        options.sScanID =
+            input.value("binary_script_scan_id").toString();
         XBinary::PDSTRUCT scriptState = XBinary::createPdStruct();
         QString scriptFilePartName =
             input.value("binary_script_file_part").toString("header");
@@ -581,6 +594,73 @@ QJsonObject runCase(const QJsonObject &input, QString *error)
                 unicodeTypeName(scriptBinary->getUnicodeType())
             );
         }
+        if (invokeScriptContextInfo) {
+            result.insert("binary_script_context_info", true);
+            result.insert(
+                "binary_script_file_part",
+                scriptFilePartName
+            );
+            result.insert(
+                "binary_script_get_scan_id_result",
+                script.getScanID()
+            );
+            result.insert(
+                "binary_script_is_resource_result",
+                script.isResource()
+            );
+            result.insert(
+                "binary_script_is_debug_data_result",
+                script.isDebugData()
+            );
+            result.insert(
+                "binary_script_is_file_part_result",
+                script.isFilePart()
+            );
+
+            QString prefill =
+                input.value("binary_script_prefill").toString();
+            if (!prefill.isEmpty()) {
+                int fill = 0;
+                if (prefill == "zero") {
+                    fill = 0x00;
+                } else if (prefill == "one") {
+                    fill = 0x01;
+                } else {
+                    *error = QString(
+                        "unsupported binary_script_prefill: %1"
+                    ).arg(prefill);
+                    return result;
+                }
+                alignas(Binary_Script)
+                    unsigned char storage[sizeof(Binary_Script)];
+                std::memset(storage, fill, sizeof(storage));
+                Binary_Script *prefilledScript =
+                    new (storage) Binary_Script(
+                        scriptBinary,
+                        scriptFilePart,
+                        options,
+                        &scriptState
+                    );
+                result.insert("binary_script_prefill", prefill);
+                result.insert(
+                    "binary_script_prefill_is_plain_text_result",
+                    prefilledScript->isPlainText()
+                );
+                result.insert(
+                    "binary_script_prefill_is_utf8_text_result",
+                    prefilledScript->isUTF8Text()
+                );
+                result.insert(
+                    "binary_script_prefill_is_unicode_text_result",
+                    prefilledScript->isUnicodeText()
+                );
+                result.insert(
+                    "binary_script_prefill_is_text_result",
+                    prefilledScript->isText()
+                );
+                prefilledScript->~Binary_Script();
+            }
+        }
         result.insert(
             "binary_script_compare_error",
             XBinary::getPdStructErrorString(&scriptState)
@@ -657,7 +737,7 @@ int main(int argc, char *argv[])
     }
 
     QJsonObject output;
-    output.insert("schema_version", 3);
+    output.insert("schema_version", 4);
     output.insert("upstream_commit", UPSTREAM_COMMIT);
     output.insert("formats_commit", FORMATS_COMMIT);
     output.insert("xscanengine_commit", XSCANENGINE_COMMIT);

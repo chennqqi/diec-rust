@@ -8,7 +8,7 @@ Rules: `horsicq/Detect-It-Easy@c2c17dfa5ea4e078ba31eab55d87430c96622fb6`
 
 Candidate: `rquickjs@0.12.1` / vendored QuickJS-NG 0.15.1
 
-Last updated: 2026-07-26
+Last updated: 2026-07-27
 
 ## 结论
 
@@ -66,7 +66,7 @@ Qt 5/Qt 6 oracle 闭合 `U24`/`read_uint24` 与 `shru64` 后，调用从 387 降
 完整宿主方法和跨平台 oracle 仍未覆盖，候选状态不变。
 
 随后 diagnostic HostApi 直接复用隔离的纯 Rust signature spike，实现
-`Binary.c`/`compare` 与 `X.c`/`compare`。固定 82-case Qt 5 oracle 中 compare wrapper
+`Binary.c`/`compare` 与 `X.c`/`compare`。固定 89-case Qt 5 oracle 中 compare wrapper
 路径 7/7 一致，包含严格 `<`、invalid suffix 和负 offset 经
 `QString::mid` clamp 到 header 起点的行为。在同一 292-rule probe 中，799 次
 compare 均返回或产生已记录 quirk：776 次 header fast path、23 次 generic、
@@ -95,7 +95,12 @@ overlay 是两组独立状态。`BinaryHostContext` 接入 `isOverlay`、
 固定 oracle 再扩展 15 个字符串 context 向量并全部匹配；接入后缀、header、
 plain/UTF-8 API 后，292/292 仍无异常，fallback 降为 3 条规则、4 次、4 条路径，
 未记录 fallback 规则为 289。上游未初始化的 Unicode-text 布尔值未被伪装成
-确定性 Rust 事实。
+确定性 Rust 事实。最后 3 个 scan ID/resource/debugdata context 与 4 个
+构造前 storage prefill 向量固定剩余源码行为；Rust 按 ADR 0005 显式初始化文本
+facts，并接入 `getScanID`、`isResource`、`isDebugData`、`isFilePart`、
+`isUnicodeText` 和 `isText`。固定 292-rule trace 达到 292/292、0 异常、
+0 fallback，仍只产生同一条 Nintendo detection；这只闭合该样本的实际调用路径，
+不等于全规则兼容。
 
 ## 实验边界
 
@@ -430,17 +435,17 @@ Underflow。将字节读取偏移改为有符号输入，并让负值安全返�
 
 基础方法及 numeric oracle 增量前后的摘要：
 
-| 指标 | 补入前 | 基础读取后 | `U24`/`shru64` 后 | `c`/`compare` 后 | search/presence 后 | overlay context 后 | string context 后 |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| Attempted `detect` | 292 | 292 | 292 | 292 | 292 | 292 | 292 |
-| 无异常返回 | 281 | 285 | 285 | 292 | 291 | 292 | 292 |
-| 异常 | 11 | 7 | 7 | 0 | 1 | 0 | 0 |
-| 调用 fallback 的规则 | 253 | 233 | 233 | 16 | 14 | 12 | 3 |
-| Fallback 调用 | 496 | 387 | 365 | 58 | 39 | 34 | 4 |
-| 唯一 fallback 路径 | 34 | 19 | 17 | 18 | 15 | 11 | 4 |
-| 未记录 fallback 的规则 | 39 | 59 | 59 | 276 | 278 | 280 | 289 |
-| 未记录 fallback 且异常 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| 代理影响下产生的 detections | 122 | 153 | 153 | 10 | 5 | 4 | 1 |
+| 指标 | 补入前 | 基础读取后 | `U24`/`shru64` 后 | `c`/`compare` 后 | search/presence 后 | overlay context 后 | string context 后 | execution context 后 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Attempted `detect` | 292 | 292 | 292 | 292 | 292 | 292 | 292 | 292 |
+| 无异常返回 | 281 | 285 | 285 | 292 | 291 | 292 | 292 | 292 |
+| 异常 | 11 | 7 | 7 | 0 | 1 | 0 | 0 | 0 |
+| 调用 fallback 的规则 | 253 | 233 | 233 | 16 | 14 | 12 | 3 | 0 |
+| Fallback 调用 | 496 | 387 | 365 | 58 | 39 | 34 | 4 | 0 |
+| 唯一 fallback 路径 | 34 | 19 | 17 | 18 | 15 | 11 | 4 | 0 |
+| 未记录 fallback 的规则 | 39 | 59 | 59 | 276 | 278 | 280 | 289 | 292 |
+| 未记录 fallback 且异常 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 代理影响下产生的 detections | 122 | 153 | 153 | 10 | 5 | 4 | 1 | 1 |
 
 `U24`/`shru64` 后的 7 个异常仍是诊断代理值或非字符串值进入结果边界；接入
 compare 后这些分支不再触发异常；search/presence 的真实假值又让 overlay
@@ -448,15 +453,26 @@ compare 后这些分支不再触发异常；search/presence 的真实假值又�
 该阶段剩余的 11 条路径保存在
 [`rquickjs-rule-runtime.json`](data/rquickjs-rule-runtime.json)。
 
-固定源码与扩展到 82-case 的 Qt5 wrapper oracle 随后闭合文件名/文本上下文：
+固定源码与扩展到 89-case 的 Qt5 wrapper oracle 随后闭合文件名/文本上下文：
 `BinaryStringContext` 按上游不同采样上限计算 plain、UTF-8 和 UTF-16 facts，
 保留无 BOM UTF-8 仍跳过 3 bytes、无 BOM UTF-16 端序反向等可观察行为；路径
 后缀按 Qt 最后点号语义且保留大小写。接入 `getFileSuffix`、
 `getHeaderString`、`isPlainText` 和 `isUTF8Text` 后，固定样本分别调用
 9、5、2、0 次，292/292 无异常；fallback 降至 3 条规则/4 次，只剩
 `getScanID`、`isDebugData`、`isResource` 和 `isText`。后者依赖上游构造器未
-初始化的 `m_bIsUnicodeText`，尚未被错误地冻结为确定性 Rust 值。真实字符串
-返回值改变控制流后只产生 1 条 Nintendo detection；它仍是单样本缺口诊断，
+初始化的 `m_bIsUnicodeText`。真实字符串返回值改变控制流后只产生 1 条
+Nintendo detection。
+
+新增 3/3 个 execution context 用例固定 `getScanID`、resource/debugdata
+file-part 和 `isFilePart`；4/4 个 prefill 用例证明非 Unicode 的
+`isUnicodeText/isText` 随构造前 storage 改变，而 UTF-16 分支稳定覆盖字段。
+Rust 按 [`ADR 0005`](../design/decisions/0005-deterministic-text-classification.md)
+使用显式确定性 facts，不复制未初始化读取。接入六个 native HostApi 后，
+`debug_data_debugData.1.sg` 调用 `isDebugData` 1 次，`win_resources.1.sg`
+调用 `isResource` 1 次，`format_DESKTOP.1.sg` 调用 `isText` 1 次；三个值均为
+false，短路使 `getScanID`、`isFilePart` 和 `isUnicodeText` 在此样本上为 0 次。
+292/292 无异常且 fallback 为 0；compare 因 `isText=false` 的短路从 1109 降为
+1105，search 保持 11，检测仍为同一条 Nintendo result。它仍是单样本缺口诊断，
 不是全规则兼容证据。
 
 ### `U24` 与 `shru64` Qt oracle
@@ -499,9 +515,11 @@ find 的畸形/穷举边界、无效/短小 wrapper 上下文和全调用点差�
 特判，并单独记录 compare 与 search 的 call/fast/generic/quirk/error。接入
 search 前固定样本得到 799 次 compare、0 error；接入后因真实搜索假值改变控制流，
 得到 1179 次 compare（1115 fast、64 generic、5 quirk、0 error）和 11 次
-search（0 match、1 quirk、0 error）。overlay context 再次改变分支，最终为
-1109 次 compare（1047 fast、62 generic、5 quirk、0 error），search 计数不变。
-string context 接入后 compare/search 计数仍分别为 1109/11。
+search（0 match、1 quirk、0 error）。overlay context 再次改变分支，得到
+1109 次 compare（1047 fast、62 generic、5 quirk、0 error），search 计数不变；
+string context 接入后仍为 1109/11。execution context 的确定性 `isText=false`
+再次短路，最终为 1105 次 compare（1043 fast、62 generic、5 quirk、0 error）
+和 11 次 search。
 header fast path 对未知字符仍按上游
 string matcher 返回 false；generic parser/search 才产生显式诊断。此接入只覆盖
 generic Binary identity memory map，不代表 PE/ELF/Mach-O 等格式专用 map。
@@ -514,12 +532,14 @@ generic Binary identity memory map，不代表 PE/ELF/Mach-O 等格式专用 map
 替换 HostApi。
 
 历史快照的 285 条“无异常”及 153 条 detection、compare 增量的 292/10、
-search 增量的 291/5、overlay 增量的 292/4，以及当前 string 增量的 292/1，
+search 增量的 291/5、overlay 增量的 292/4、string 增量的 292/1，以及当前
+execution context 增量的 292/1，
 都不能作为兼容证据：
 代理返回的 callable
 object 在 JavaScript 条件中可能为 truthy，已明显制造大量 false positive。即使
-当前 289 条规则没有记录 fallback 调用，本轮也没有逐条 Qt oracle 结果，且代理只记录
-实际 function application，不能把“未记录”扩大解释为 HostApi 完整。该 probe
+当前 292 条规则没有记录 fallback 调用，本轮也没有逐条 Qt oracle 结果，且“零
+fallback”只覆盖这个输入抵达的实际 function application，不能把“未记录”扩大
+解释为 HostApi 完整。该 probe
 的有效产物是可重复的缺口优先级和失败隔离机制。
 
 ## Binary 顶层生命周期实验

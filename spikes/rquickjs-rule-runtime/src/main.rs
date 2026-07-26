@@ -1,3 +1,5 @@
+#![recursion_limit = "256"]
+
 use std::collections::BTreeSet;
 use std::env;
 use std::fs;
@@ -10,6 +12,7 @@ use std::thread;
 use std::time::{Duration, Instant};
 
 use diec_signature_parser_spike::Pattern;
+
 use rquickjs::{
     CatchResultExt, Context, Error, Function, Object, Runtime, context::EvalOptions, function::Opt,
 };
@@ -161,19 +164,28 @@ struct HostTrace {
     get_header_string_calls: AtomicUsize,
     is_plain_text_calls: AtomicUsize,
     is_utf8_text_calls: AtomicUsize,
+    is_unicode_text_calls: AtomicUsize,
+    is_text_calls: AtomicUsize,
+    get_scan_id_calls: AtomicUsize,
+    is_resource_calls: AtomicUsize,
+    is_debug_data_calls: AtomicUsize,
+    is_file_part_calls: AtomicUsize,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum HostFilePart {
     Header,
     Overlay,
+    Resource,
+    DebugData,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct BinaryHostContext {
     file_part: HostFilePart,
     overlay_offset: i64,
     overlay_size: i64,
+    scan_id: String,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -212,6 +224,14 @@ impl BinaryStringContext {
             unicode_type,
         }
     }
+
+    fn is_unicode_text(&self) -> bool {
+        self.unicode_type != TextUnicodeType::None
+    }
+
+    fn is_text(&self) -> bool {
+        self.is_plain_text || self.is_utf8_text || self.is_unicode_text()
+    }
 }
 
 impl BinaryHostContext {
@@ -227,7 +247,13 @@ impl BinaryHostContext {
             file_part,
             overlay_offset,
             overlay_size,
+            scan_id: String::new(),
         })
+    }
+
+    fn with_scan_id(mut self, scan_id: impl Into<String>) -> Self {
+        self.scan_id = scan_id.into();
+        self
     }
 
     fn identity_header(data_len: usize) -> Result<Self, String> {
@@ -237,14 +263,27 @@ impl BinaryHostContext {
                 .map_err(|_| "Binary input length does not fit qint64".to_owned())?,
             0,
         )
+        .map(|context| context.with_scan_id(""))
     }
 
-    fn is_overlay(self) -> bool {
+    fn is_overlay(&self) -> bool {
         self.file_part == HostFilePart::Overlay
     }
 
-    fn is_overlay_present(self) -> bool {
+    fn is_overlay_present(&self) -> bool {
         self.overlay_size != 0
+    }
+
+    fn is_resource(&self) -> bool {
+        self.file_part == HostFilePart::Resource
+    }
+
+    fn is_debug_data(&self) -> bool {
+        self.file_part == HostFilePart::DebugData
+    }
+
+    fn is_file_part(&self) -> bool {
+        self.file_part != HostFilePart::Header
     }
 }
 
@@ -883,6 +922,14 @@ fn install_nintendo_host_with_context_and_strings(
 ) -> Result<SharedHostTrace, String> {
     let signature_trace = Arc::new(HostTrace::default());
     let signature_trace_for_context = Arc::clone(&signature_trace);
+    let is_overlay = host_context.is_overlay();
+    let overlay_offset = host_context.overlay_offset;
+    let overlay_size = host_context.overlay_size;
+    let is_overlay_present = host_context.is_overlay_present();
+    let scan_id = host_context.scan_id.clone();
+    let is_resource = host_context.is_resource();
+    let is_debug_data = host_context.is_debug_data();
+    let is_file_part = host_context.is_file_part();
     context.with(|ctx| {
         let globals = ctx.globals();
         let x = Object::new(ctx.clone()).map_err(|error| error.to_string())?;
@@ -1042,7 +1089,7 @@ fn install_nintendo_host_with_context_and_strings(
                     overlay_trace
                         .is_overlay_calls
                         .fetch_add(1, Ordering::Relaxed);
-                    host_context.is_overlay()
+                    is_overlay
                 })
                 .map_err(|error| error.to_string())?,
             )
@@ -1056,7 +1103,7 @@ fn install_nintendo_host_with_context_and_strings(
                     overlay_trace
                         .get_overlay_offset_calls
                         .fetch_add(1, Ordering::Relaxed);
-                    host_context.overlay_offset
+                    overlay_offset
                 })
                 .map_err(|error| error.to_string())?,
             )
@@ -1070,7 +1117,7 @@ fn install_nintendo_host_with_context_and_strings(
                     overlay_trace
                         .get_overlay_size_calls
                         .fetch_add(1, Ordering::Relaxed);
-                    host_context.overlay_size
+                    overlay_size
                 })
                 .map_err(|error| error.to_string())?,
             )
@@ -1084,7 +1131,7 @@ fn install_nintendo_host_with_context_and_strings(
                     overlay_trace
                         .is_overlay_present_calls
                         .fetch_add(1, Ordering::Relaxed);
-                    host_context.is_overlay_present()
+                    is_overlay_present
                 })
                 .map_err(|error| error.to_string())?,
             )
@@ -1145,6 +1192,90 @@ fn install_nintendo_host_with_context_and_strings(
                         .is_utf8_text_calls
                         .fetch_add(1, Ordering::Relaxed);
                     value
+                })
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        }
+        {
+            let value = string_context.is_unicode_text();
+            let string_trace = Arc::clone(&signature_trace_for_context);
+            x.set(
+                "isUnicodeText",
+                Function::new(ctx.clone(), move || {
+                    string_trace
+                        .is_unicode_text_calls
+                        .fetch_add(1, Ordering::Relaxed);
+                    value
+                })
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        }
+        {
+            let value = string_context.is_text();
+            let string_trace = Arc::clone(&signature_trace_for_context);
+            x.set(
+                "isText",
+                Function::new(ctx.clone(), move || {
+                    string_trace.is_text_calls.fetch_add(1, Ordering::Relaxed);
+                    value
+                })
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        }
+        {
+            let context_trace = Arc::clone(&signature_trace_for_context);
+            x.set(
+                "getScanID",
+                Function::new(ctx.clone(), move || {
+                    context_trace
+                        .get_scan_id_calls
+                        .fetch_add(1, Ordering::Relaxed);
+                    scan_id.clone()
+                })
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        }
+        {
+            let context_trace = Arc::clone(&signature_trace_for_context);
+            x.set(
+                "isResource",
+                Function::new(ctx.clone(), move || {
+                    context_trace
+                        .is_resource_calls
+                        .fetch_add(1, Ordering::Relaxed);
+                    is_resource
+                })
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        }
+        {
+            let context_trace = Arc::clone(&signature_trace_for_context);
+            x.set(
+                "isDebugData",
+                Function::new(ctx.clone(), move || {
+                    context_trace
+                        .is_debug_data_calls
+                        .fetch_add(1, Ordering::Relaxed);
+                    is_debug_data
+                })
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        }
+        {
+            let context_trace = Arc::clone(&signature_trace_for_context);
+            x.set(
+                "isFilePart",
+                Function::new(ctx.clone(), move || {
+                    context_trace
+                        .is_file_part_calls
+                        .fetch_add(1, Ordering::Relaxed);
+                    is_file_part
                 })
                 .map_err(|error| error.to_string())?,
             )
@@ -2176,6 +2307,15 @@ fn trace_binary_detects(
         let is_plain_text_calls_before =
             signature_trace.is_plain_text_calls.load(Ordering::Relaxed);
         let is_utf8_text_calls_before = signature_trace.is_utf8_text_calls.load(Ordering::Relaxed);
+        let is_unicode_text_calls_before = signature_trace
+            .is_unicode_text_calls
+            .load(Ordering::Relaxed);
+        let is_text_calls_before = signature_trace.is_text_calls.load(Ordering::Relaxed);
+        let get_scan_id_calls_before = signature_trace.get_scan_id_calls.load(Ordering::Relaxed);
+        let is_resource_calls_before = signature_trace.is_resource_calls.load(Ordering::Relaxed);
+        let is_debug_data_calls_before =
+            signature_trace.is_debug_data_calls.load(Ordering::Relaxed);
+        let is_file_part_calls_before = signature_trace.is_file_part_calls.load(Ordering::Relaxed);
         interrupt_ticks.store(0, Ordering::Relaxed);
         let detect_result = eval_rule_lexical(&context, &evaluated, true);
         let signature_call_count = signature_trace
@@ -2258,6 +2398,30 @@ fn trace_binary_detects(
             .is_utf8_text_calls
             .load(Ordering::Relaxed)
             .saturating_sub(is_utf8_text_calls_before);
+        let is_unicode_text_call_count = signature_trace
+            .is_unicode_text_calls
+            .load(Ordering::Relaxed)
+            .saturating_sub(is_unicode_text_calls_before);
+        let is_text_call_count = signature_trace
+            .is_text_calls
+            .load(Ordering::Relaxed)
+            .saturating_sub(is_text_calls_before);
+        let get_scan_id_call_count = signature_trace
+            .get_scan_id_calls
+            .load(Ordering::Relaxed)
+            .saturating_sub(get_scan_id_calls_before);
+        let is_resource_call_count = signature_trace
+            .is_resource_calls
+            .load(Ordering::Relaxed)
+            .saturating_sub(is_resource_calls_before);
+        let is_debug_data_call_count = signature_trace
+            .is_debug_data_calls
+            .load(Ordering::Relaxed)
+            .saturating_sub(is_debug_data_calls_before);
+        let is_file_part_call_count = signature_trace
+            .is_file_part_calls
+            .load(Ordering::Relaxed)
+            .saturating_sub(is_file_part_calls_before);
         let interrupt_handler_calls = interrupt_ticks.load(Ordering::Relaxed);
         let fallback_text = eval_string(
             &context,
@@ -2325,6 +2489,14 @@ fn trace_binary_detects(
                 "get_header_string": get_header_string_call_count,
                 "is_plain_text": is_plain_text_call_count,
                 "is_utf8_text": is_utf8_text_call_count,
+                "is_unicode_text": is_unicode_text_call_count,
+                "is_text": is_text_call_count,
+            },
+            "context_host_calls": {
+                "get_scan_id": get_scan_id_call_count,
+                "is_resource": is_resource_call_count,
+                "is_debug_data": is_debug_data_call_count,
+                "is_file_part": is_file_part_call_count,
             },
             "interrupt_handler_calls": interrupt_handler_calls,
             "detections": emitted,
@@ -2358,6 +2530,26 @@ fn trace_binary_detects(
         .lock()
         .map_err(|_| "signature search error mutex poisoned".to_owned())?
         .clone();
+    let overlay_host_call_totals = json!({
+        "is_overlay": signature_trace.is_overlay_calls.load(Ordering::Relaxed),
+        "get_overlay_offset": signature_trace.get_overlay_offset_calls.load(Ordering::Relaxed),
+        "get_overlay_size": signature_trace.get_overlay_size_calls.load(Ordering::Relaxed),
+        "is_overlay_present": signature_trace.is_overlay_present_calls.load(Ordering::Relaxed),
+    });
+    let string_host_call_totals = json!({
+        "get_file_suffix": signature_trace.get_file_suffix_calls.load(Ordering::Relaxed),
+        "get_header_string": signature_trace.get_header_string_calls.load(Ordering::Relaxed),
+        "is_plain_text": signature_trace.is_plain_text_calls.load(Ordering::Relaxed),
+        "is_utf8_text": signature_trace.is_utf8_text_calls.load(Ordering::Relaxed),
+        "is_unicode_text": signature_trace.is_unicode_text_calls.load(Ordering::Relaxed),
+        "is_text": signature_trace.is_text_calls.load(Ordering::Relaxed),
+    });
+    let context_host_call_totals = json!({
+        "get_scan_id": signature_trace.get_scan_id_calls.load(Ordering::Relaxed),
+        "is_resource": signature_trace.is_resource_calls.load(Ordering::Relaxed),
+        "is_debug_data": signature_trace.is_debug_data_calls.load(Ordering::Relaxed),
+        "is_file_part": signature_trace.is_file_part_calls.load(Ordering::Relaxed),
+    });
     println!(
         "{}",
         serde_json::to_string_pretty(&json!({
@@ -2404,25 +2596,9 @@ fn trace_binary_detects(
                 signature_trace.search_errors.load(Ordering::Relaxed),
             "signature_search_unique_quirks": signature_search_unique_quirks,
             "signature_search_unique_errors": signature_search_unique_errors,
-            "overlay_host_call_totals": {
-                "is_overlay": signature_trace.is_overlay_calls.load(Ordering::Relaxed),
-                "get_overlay_offset":
-                    signature_trace.get_overlay_offset_calls.load(Ordering::Relaxed),
-                "get_overlay_size":
-                    signature_trace.get_overlay_size_calls.load(Ordering::Relaxed),
-                "is_overlay_present":
-                    signature_trace.is_overlay_present_calls.load(Ordering::Relaxed),
-            },
-            "string_host_call_totals": {
-                "get_file_suffix":
-                    signature_trace.get_file_suffix_calls.load(Ordering::Relaxed),
-                "get_header_string":
-                    signature_trace.get_header_string_calls.load(Ordering::Relaxed),
-                "is_plain_text":
-                    signature_trace.is_plain_text_calls.load(Ordering::Relaxed),
-                "is_utf8_text":
-                    signature_trace.is_utf8_text_calls.load(Ordering::Relaxed),
-            },
+            "overlay_host_call_totals": overlay_host_call_totals,
+            "string_host_call_totals": string_host_call_totals,
+            "context_host_call_totals": context_host_call_totals,
             "detection_count": all_detections.len(),
             "detections": all_detections,
             "observations": observations,
@@ -3293,6 +3469,110 @@ mod tests {
     }
 
     #[test]
+    fn scan_and_file_part_context_matches_pinned_qt5_oracle() {
+        let oracle: serde_json::Value = serde_json::from_str(include_str!(
+            "../../../docs/research/data/signature-oracle-qt5.json"
+        ))
+        .expect("Qt5 signature oracle should be valid JSON");
+        let cases = oracle["cases"]
+            .as_array()
+            .expect("Qt5 signature oracle should contain cases");
+        let mut checked = 0_usize;
+        for case in cases {
+            let Some(file_part_name) = case["binary_script_file_part"].as_str() else {
+                continue;
+            };
+            let Some(scan_id) = case["binary_script_scan_id"].as_str() else {
+                continue;
+            };
+            checked += 1;
+            let file_part = match file_part_name {
+                "header" => HostFilePart::Header,
+                "resource" => HostFilePart::Resource,
+                "debugdata" => HostFilePart::DebugData,
+                other => panic!("unexpected oracle file part: {other}"),
+            };
+            let actual = BinaryHostContext::new(file_part, 0, 0)
+                .expect("oracle context should be valid")
+                .with_scan_id(scan_id);
+            assert_eq!(
+                actual.scan_id,
+                case["binary_script_get_scan_id_result"]
+                    .as_str()
+                    .expect("oracle scan ID should be a string")
+            );
+            assert_eq!(
+                actual.is_resource(),
+                case["binary_script_is_resource_result"]
+                    .as_bool()
+                    .expect("oracle resource flag should be a bool")
+            );
+            assert_eq!(
+                actual.is_debug_data(),
+                case["binary_script_is_debug_data_result"]
+                    .as_bool()
+                    .expect("oracle debug-data flag should be a bool")
+            );
+            assert_eq!(
+                actual.is_file_part(),
+                case["binary_script_is_file_part_result"]
+                    .as_bool()
+                    .expect("oracle file-part flag should be a bool")
+            );
+        }
+        assert_eq!(checked, 3);
+    }
+
+    #[test]
+    fn text_context_is_deterministic_across_upstream_prefill_states() {
+        let oracle: serde_json::Value = serde_json::from_str(include_str!(
+            "../../../docs/research/data/signature-oracle-qt5.json"
+        ))
+        .expect("Qt5 signature oracle should be valid JSON");
+        let cases = oracle["cases"]
+            .as_array()
+            .expect("Qt5 signature oracle should contain cases");
+        let find = |id: &str| {
+            cases
+                .iter()
+                .find(|case| case["id"].as_str() == Some(id))
+                .unwrap_or_else(|| panic!("missing oracle case {id}"))
+        };
+        let nontext_zero = find("binary_script_nontext_prefill_zero");
+        let nontext_one = find("binary_script_nontext_prefill_one");
+        assert_eq!(
+            nontext_zero["binary_script_prefill_is_text_result"].as_bool(),
+            Some(false)
+        );
+        assert_eq!(
+            nontext_one["binary_script_prefill_is_text_result"].as_bool(),
+            Some(true),
+            "fixed upstream result must expose the uninitialized-state divergence"
+        );
+        let nontext = BinaryStringContext::from_file_name(&decode_hex("00010203"), "");
+        assert!(!nontext.is_unicode_text());
+        assert!(!nontext.is_text());
+
+        for id in [
+            "binary_script_unicode_prefill_zero",
+            "binary_script_unicode_prefill_one",
+        ] {
+            let case = find(id);
+            assert_eq!(
+                case["binary_script_prefill_is_unicode_text_result"].as_bool(),
+                Some(true)
+            );
+            assert_eq!(
+                case["binary_script_prefill_is_text_result"].as_bool(),
+                Some(true)
+            );
+        }
+        let unicode = BinaryStringContext::from_file_name(&decode_hex("fffe4100"), "");
+        assert!(unicode.is_unicode_text());
+        assert!(unicode.is_text());
+    }
+
+    #[test]
     fn string_context_matches_pinned_qt5_oracle() {
         let oracle: serde_json::Value = serde_json::from_str(include_str!(
             "../../../docs/research/data/signature-oracle-qt5.json"
@@ -3382,15 +3662,53 @@ mod tests {
                 br#"Binary.getFileSuffix() + "|" +
                     Binary.getHeaderString() + "|" +
                     String(Binary.isPlainText()) + "|" +
-                    String(Binary.isUTF8Text())"#,
+                    String(Binary.isUTF8Text()) + "|" +
+                    String(Binary.isUnicodeText()) + "|" +
+                    String(Binary.isText())"#,
             )
             .expect("string HostApi should be callable"),
-            "C|function test() {}\n|true|false"
+            "C|function test() {}\n|true|false|false|true"
         );
         assert_eq!(trace.get_file_suffix_calls.load(Ordering::Relaxed), 1);
         assert_eq!(trace.get_header_string_calls.load(Ordering::Relaxed), 1);
         assert_eq!(trace.is_plain_text_calls.load(Ordering::Relaxed), 1);
         assert_eq!(trace.is_utf8_text_calls.load(Ordering::Relaxed), 1);
+        assert_eq!(trace.is_unicode_text_calls.load(Ordering::Relaxed), 1);
+        assert_eq!(trace.is_text_calls.load(Ordering::Relaxed), 1);
+    }
+
+    #[test]
+    fn scan_and_file_part_context_is_exposed_as_native_host_api() {
+        let runtime = new_runtime().expect("runtime should be created");
+        let context = new_context(&runtime).expect("context should be created");
+        let bytes = Arc::new(vec![0x41]);
+        let host_context = BinaryHostContext::new(HostFilePart::Resource, 1, 0)
+            .expect("fixed context should be valid")
+            .with_scan_id("24");
+        let string_context = BinaryStringContext::from_file_name(&bytes, "");
+        let trace = install_nintendo_host_with_context_and_strings(
+            &context,
+            bytes,
+            Arc::new(Mutex::new(Vec::new())),
+            host_context,
+            string_context,
+        )
+        .expect("host should be installed");
+        assert_eq!(
+            eval_string(
+                &context,
+                br#"Binary.getScanID() + "|" +
+                    String(Binary.isResource()) + "|" +
+                    String(Binary.isDebugData()) + "|" +
+                    String(Binary.isFilePart())"#,
+            )
+            .expect("scan and file-part HostApi should be callable"),
+            "24|true|false|true"
+        );
+        assert_eq!(trace.get_scan_id_calls.load(Ordering::Relaxed), 1);
+        assert_eq!(trace.is_resource_calls.load(Ordering::Relaxed), 1);
+        assert_eq!(trace.is_debug_data_calls.load(Ordering::Relaxed), 1);
+        assert_eq!(trace.is_file_part_calls.load(Ordering::Relaxed), 1);
     }
 
     #[test]

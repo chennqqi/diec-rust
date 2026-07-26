@@ -47,6 +47,9 @@ Phase 0 计划形成：
 - [`data/script-state-fixture.json`](data/script-state-fixture.json)：项目生成的跨规则持久状态 fixture 清单。
 - [`data/script-state-qt5.json`](data/script-state-qt5.json)：固定 qmake/CMake oracle 的持久状态行为基线。
 - [`data/binary-cross-rule-state.json`](data/binary-cross-rule-state.json)：固定 Binary 顺序的跨规则状态静态审计摘要。
+- [`data/signature-parser.json`](data/signature-parser.json)：signature 文法、Rust spike、固定 oracle 身份和差分覆盖摘要。
+- [`data/signature-oracle-vectors.json`](data/signature-oracle-vectors.json)：89 个项目生成的 XBinary/`Binary_Script` 输入向量。
+- [`data/signature-oracle-qt5.json`](data/signature-oracle-qt5.json)：固定 Qt 5 harness 的 89-case 原始结构化基线。
 - [`data/signature-static-inventory.json`](data/signature-static-inventory.json)：全规则具名 signature API 调用点和保守静态值清单。
 - [`data/net-bytecode-patterns.json`](data/net-bytecode-patterns.json)：固定 PE Generic 规则的 .NET bytecode pattern 有限值域。
 - [`data/rule-syntax-inventory.json`](data/rule-syntax-inventory.json)：2235 个规则脚本的 AST、运算符、global 和宿主调用机器清单。

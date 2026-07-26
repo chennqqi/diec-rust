@@ -343,6 +343,48 @@ EXPECTED_OBSERVATIONS = {
         "binary_script_is_utf8_text_result": False,
         "x_binary_unicode_type_result": "none",
     },
+    "binary_script_context_header_scan_id": {
+        "binary_script_get_scan_id_result": "header-id",
+        "binary_script_is_resource_result": False,
+        "binary_script_is_debug_data_result": False,
+        "binary_script_is_file_part_result": False,
+    },
+    "binary_script_context_resource_scan_id": {
+        "binary_script_get_scan_id_result": "24",
+        "binary_script_is_resource_result": True,
+        "binary_script_is_debug_data_result": False,
+        "binary_script_is_file_part_result": True,
+    },
+    "binary_script_context_debugdata_scan_id": {
+        "binary_script_get_scan_id_result": "debug-id",
+        "binary_script_is_resource_result": False,
+        "binary_script_is_debug_data_result": True,
+        "binary_script_is_file_part_result": True,
+    },
+    "binary_script_nontext_prefill_zero": {
+        "binary_script_prefill_is_plain_text_result": False,
+        "binary_script_prefill_is_utf8_text_result": False,
+        "binary_script_prefill_is_unicode_text_result": False,
+        "binary_script_prefill_is_text_result": False,
+    },
+    "binary_script_nontext_prefill_one": {
+        "binary_script_prefill_is_plain_text_result": False,
+        "binary_script_prefill_is_utf8_text_result": False,
+        "binary_script_prefill_is_unicode_text_result": True,
+        "binary_script_prefill_is_text_result": True,
+    },
+    "binary_script_unicode_prefill_zero": {
+        "binary_script_prefill_is_plain_text_result": False,
+        "binary_script_prefill_is_utf8_text_result": False,
+        "binary_script_prefill_is_unicode_text_result": True,
+        "binary_script_prefill_is_text_result": True,
+    },
+    "binary_script_unicode_prefill_one": {
+        "binary_script_prefill_is_plain_text_result": False,
+        "binary_script_prefill_is_utf8_text_result": False,
+        "binary_script_prefill_is_unicode_text_result": True,
+        "binary_script_prefill_is_text_result": True,
+    },
 }
 
 
@@ -418,6 +460,8 @@ def validate_baseline(
             "memory_map",
             "format_parser",
             "file_name",
+            "binary_script_scan_id",
+            "binary_script_prefill",
         ):
             if field in vector and actual.get(field) != vector.get(field):
                 failures.append(f"{case_id}.{field}")
@@ -430,6 +474,7 @@ def validate_baseline(
             "binary_script_is_signature_present",
             "binary_script_overlay_info",
             "binary_script_string_info",
+            "binary_script_context_info",
             "binary_script_file_part",
             "binary_script_parser",
         ):

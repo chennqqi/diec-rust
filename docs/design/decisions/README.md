@@ -21,3 +21,5 @@
   分离上游兼容输出与 canonical API/CLI 输出（Proposed）。
 - [`0004-evidence-bound-difference-waivers.md`](0004-evidence-bound-difference-waivers.md)：
   默认拒绝、精确 fingerprint 且有期限的兼容差异 waiver（Proposed）。
+- [`0005-deterministic-text-classification.md`](0005-deterministic-text-classification.md)：
+  显式初始化文本事实，不复制 `Binary_Script` 的未初始化状态（Proposed）。

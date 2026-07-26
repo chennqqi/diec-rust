@@ -9,8 +9,8 @@ import struct
 from pathlib import Path
 
 
-SCHEMA_VERSION = 3
-GENERATOR_VERSION = 12
+SCHEMA_VERSION = 4
+GENERATOR_VERSION = 13
 UPSTREAM_COMMIT = "74eaf505c250ab47e709024e9dc41657cd8f2254"
 FORMATS_COMMIT = "1151e7254fdee3c0294ff7095edbdd7bfccf8201"
 XSCANENGINE_COMMIT = "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
@@ -876,6 +876,57 @@ def vectors() -> list[dict[str, object]]:
             "data_hex": "4100420143",
             "binary_script_string_info": True,
             "file_name": "sample.bin",
+        },
+        {
+            "id": "binary_script_context_header_scan_id",
+            "pattern": "41",
+            "data_hex": "41",
+            "binary_script_context_info": True,
+            "binary_script_scan_id": "header-id",
+        },
+        {
+            "id": "binary_script_context_resource_scan_id",
+            "pattern": "41",
+            "data_hex": "41",
+            "binary_script_context_info": True,
+            "binary_script_file_part": "resource",
+            "binary_script_scan_id": "24",
+        },
+        {
+            "id": "binary_script_context_debugdata_scan_id",
+            "pattern": "41",
+            "data_hex": "41",
+            "binary_script_context_info": True,
+            "binary_script_file_part": "debugdata",
+            "binary_script_scan_id": "debug-id",
+        },
+        {
+            "id": "binary_script_nontext_prefill_zero",
+            "pattern": "0001",
+            "data_hex": "00010203",
+            "binary_script_context_info": True,
+            "binary_script_prefill": "zero",
+        },
+        {
+            "id": "binary_script_nontext_prefill_one",
+            "pattern": "0001",
+            "data_hex": "00010203",
+            "binary_script_context_info": True,
+            "binary_script_prefill": "one",
+        },
+        {
+            "id": "binary_script_unicode_prefill_zero",
+            "pattern": "fffe",
+            "data_hex": (b"\xff\xfe" + "A".encode("utf-16le")).hex(),
+            "binary_script_context_info": True,
+            "binary_script_prefill": "zero",
+        },
+        {
+            "id": "binary_script_unicode_prefill_one",
+            "pattern": "fffe",
+            "data_hex": (b"\xff\xfe" + "A".encode("utf-16le")).hex(),
+            "binary_script_context_info": True,
+            "binary_script_prefill": "one",
         },
         {
             "id": "invalid_prefix_has_no_records",

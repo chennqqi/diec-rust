@@ -5,7 +5,7 @@ Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
 Rules: `horsicq/Detect-It-Easy@c2c17dfa5ea4e078ba31eab55d87430c96622fb6`  
 Runtime: `horsicq/die_script@5d82316c110abf0eb863b50bc679d330e05067b6`  
 Host API: `horsicq/XScanEngine@dfe4a419e4f491bb23688ba03c5a5bf39e34da83`  
-Last updated: 2026-07-26
+Last updated: 2026-07-27
 
 ## 结论摘要
 
@@ -360,7 +360,7 @@ inventory 和纯 Rust parser spike 见
 [`signature-language.md`](signature-language.md)；兼容模式已解析动态 317/317，
 固定 AST inventory 已解析 `db`/`db_extra` 2175/2175 文件并保存 5968 个具名
 signature API 调用点：5855 个 literal、109 个可枚举静态表达式、4 个动态表达式，
-得到 5628 个静态 pattern，包含动态样本的 317/317。固定 oracle 已运行 82 个
+得到 5628 个静态 pattern，包含动态样本的 317/317。固定 oracle 已运行 89 个
 compare/find/边界向量，Rust context-free
 compare 差分 16/16、六类合成 memory-map 差分 7/7、PE32/ELF64/Mach-O64/
 COM/MS-DOS/AmigaHunk 加上 PE64/ELF32/Mach-O32 parser-derived map 差分
@@ -394,8 +394,11 @@ API 缺口。再用 3/3 个 wrapper 向量区分 file-part 与 nested overlay，
 UTF-16 分类及 header 解码。接入 4 个确定性 HostApi 后，固定输入调用
 `getFileSuffix/getHeaderString/isPlainText/isUTF8Text` 分别为 9/5/2/0 次；
 292/292 无异常，fallback 降为 3 条规则、4 次、4 条路径，未记录 fallback
-规则为 289。真实字符串分支下只产生 1 条 detection，仍不是兼容证据。上游
-`isUnicodeText/isText` 读取未初始化字段，必须另行决定兼容策略。
+规则为 289。真实字符串分支下只产生 1 条 detection，仍不是兼容证据。
+新增 3/3 个 scan/file-part context 与 4/4 个 storage-prefill 用例确认剩余
+HostApi 和上游非 Unicode 未初始化状态；Rust 按 ADR 0005 使用确定性文本 facts。
+接入后固定 trace 为 292/292、0 异常、0 fallback、1105 次 compare 和同一条
+Nintendo detection。“零 fallback”只覆盖该输入实际抵达的分支，仍不是兼容率。
 
 固定 Binary 生命周期、init/include 首个命中规则、共享 global scope 和上游
 排序比较器缺陷见

@@ -297,7 +297,7 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
             hashlib.sha256(baseline.read_bytes()).hexdigest(),
             oracle["baseline_sha256"],
         )
-        self.assertEqual(oracle["case_count"], 82)
+        self.assertEqual(oracle["case_count"], 89)
         self.assertEqual(oracle["wrapper_case_count"], 7)
         self.assertEqual(oracle["wrapper_matched_count"], 7)
         self.assertTrue(oracle["negative_offset_qstring_mid_clamp_observed"])
@@ -329,7 +329,7 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
             hashlib.sha256(baseline.read_bytes()).hexdigest(),
             oracle["baseline_sha256"],
         )
-        self.assertEqual(oracle["case_count"], 82)
+        self.assertEqual(oracle["case_count"], 89)
         self.assertEqual(oracle["wrapper_case_count"], 4)
         self.assertEqual(oracle["wrapper_matched_count"], 4)
         self.assertTrue(oracle["oversized_range_clamp_observed"])
@@ -384,7 +384,7 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
             hashlib.sha256(baseline.read_bytes()).hexdigest(),
             oracle["baseline_sha256"],
         )
-        self.assertEqual(oracle["case_count"], 82)
+        self.assertEqual(oracle["case_count"], 89)
         self.assertEqual(oracle["overlay_host_case_count"], 3)
         self.assertEqual(oracle["overlay_host_matched_count"], 3)
         self.assertTrue(
@@ -442,7 +442,7 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
             hashlib.sha256(baseline.read_bytes()).hexdigest(),
             oracle["baseline_sha256"],
         )
-        self.assertEqual(oracle["case_count"], 82)
+        self.assertEqual(oracle["case_count"], 89)
         self.assertEqual(oracle["string_context_case_count"], 15)
         self.assertEqual(oracle["string_context_matched_count"], 15)
         after = increment["after"]
@@ -487,6 +487,57 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
         self.assertIn(
             "m_bIsUnicodeText",
             increment["remaining_undefined_behavior"],
+        )
+
+    def test_execution_context_increment_closes_observed_fallbacks(self):
+        increment = self.reference["execution_context_increment"]
+        oracle = increment["oracle"]
+        baseline = ROOT / oracle["baseline"]
+        self.assertEqual(
+            hashlib.sha256(baseline.read_bytes()).hexdigest(),
+            oracle["baseline_sha256"],
+        )
+        self.assertEqual(oracle["case_count"], 89)
+        self.assertEqual(oracle["execution_context_case_count"], 3)
+        self.assertEqual(oracle["execution_context_matched_count"], 3)
+        self.assertEqual(oracle["text_prefill_case_count"], 4)
+        self.assertEqual(oracle["text_prefill_matched_count"], 4)
+        self.assertTrue(oracle["upstream_uninitialized_state_observed"])
+        self.assertNotEqual(
+            oracle["non_unicode_prefill_results"]["zero"],
+            oracle["non_unicode_prefill_results"]["one"],
+        )
+        after = increment["after"]
+        self.assertEqual(after["attempted_detect_count"], 292)
+        self.assertEqual(after["accepted_detect_count"], 292)
+        self.assertEqual(after["detect_error_count"], 0)
+        self.assertEqual(after["error_rules"], [])
+        self.assertEqual(after["fallback_rule_count"], 0)
+        self.assertEqual(after["fallback_call_total"], 0)
+        self.assertEqual(after["fallback_path_counts"], {})
+        self.assertEqual(after["zero_recorded_fallback_rule_count"], 292)
+        self.assertEqual(
+            after["context_host_call_totals"],
+            {
+                "getScanID": 0,
+                "isDebugData": 1,
+                "isFilePart": 0,
+                "isResource": 1,
+            },
+        )
+        self.assertEqual(after["signature_compare_call_total"], 1105)
+        self.assertEqual(after["signature_compare_fast_path_total"], 1043)
+        self.assertEqual(after["signature_compare_generic_path_total"], 62)
+        self.assertEqual(after["signature_search_call_total"], 11)
+        self.assertEqual(after["detection_count"], 1)
+        self.assertFalse(after["detection_evidence_valid"])
+        self.assertIn(
+            "0005-deterministic-text-classification.md",
+            increment["adapter"]["text_policy_adr"],
+        )
+        self.assertIn(
+            "Phase 1",
+            increment["deterministic_deviation"]["waiver_status"],
         )
 
     def test_binary_lifecycle_uses_fixed_order_and_exact_overlays(self):

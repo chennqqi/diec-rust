@@ -5,7 +5,7 @@ Status: Draft
 Upstream: `horsicq/Formats@1151e7254fdee3c0294ff7095edbdd7bfccf8201`,
 `horsicq/XScanEngine@dfe4a419e4f491bb23688ba03c5a5bf39e34da83`
 
-Last updated: 2026-07-26
+Last updated: 2026-07-27
 
 ## 结论
 
@@ -337,14 +337,18 @@ API 的语法调用点范围和 `byteCode` 有限值域视为闭合；跨所有�
 
 输入由
 [`generate_signature_oracle_vectors.py`](../../tools/corpus/generate_signature_oracle_vectors.py)
-生成，共 82 个项目自有向量，其中新增 15 个 `Binary_Script` 文件名/文本上下文
-向量。原始输出保存为
+生成，共 89 个项目自有向量，包括 15 个 `Binary_Script` 文件名/文本上下文、
+3 个 scan ID/file-part context 和 4 个构造前存储填充值向量。原始输出保存为
 [`signature-oracle-qt5.json`](data/signature-oracle-qt5.json)，自动探针
 [`probe_signature_harness.py`](../../tools/upstream/probe_signature_harness.py)
 在禁网、512 MiB、1 CPU、128 PID 限制下验证 image revision、binary hash、
-输入 identity 及 baseline 原始 bytes。当前结果 82/82，stdout/baseline
+输入 identity 及 baseline 原始 bytes。当前结果 89/89，stdout/baseline
 SHA-256 均为
-`b8e6665c99fc7060ca738b9bcf920efba42503aa82d3b6c572261e7619462ed1`。
+`85235553b7846f46efd74b92b15b61009fd11ba01b0c2c23aec26a01f05dba18`。
+向量 SHA-256 为
+`ef43be61d0f94cc1b745a68da713f9ddfb6eadae35a93ac35f45495e1c137b49`，
+harness binary SHA-256 为
+`2b157ece440b092a824dd202410fb209877c752201a1ec8f9a8670a271985f4c`。
 
 构建与复现：
 
@@ -460,12 +464,25 @@ header string 不是直接把前 4 KiB 当作 UTF-8。固定
 - 不满足任一文本分支的二进制输入返回空 header。
 
 固定构造器只在检测到 Unicode 时给 `m_bIsUnicodeText` 赋 true，未在其他路径
-初始化该字段；`isUnicodeText()`/`isText()` 因此包含 C++ 未初始化读取，不能作为
-确定性兼容值直接冻结。oracle 记录确定性的 `XBinary::getUnicodeType()`，而不是
-把该未定义布尔值写成 Rust 契约。当前 Rust `BinaryStringContext` 已与 15/15
-向量一致，并只暴露确定性的 `getFileSuffix`、`getHeaderString`、`isPlainText`
-和 `isUTF8Text`。本轮文件名均为 ASCII，oracle 为 Linux Qt 5；Windows/macOS
-separator、非 Unicode 原生路径与非法 UTF-8 文件名仍需平台差分。
+初始化该字段；`isUnicodeText()`/`isText()` 因此包含 C++ 未初始化读取。新增
+placement-new 实验在构造前分别用 `0x00` 和合法 bool 表示 `0x01` 填充 storage：
+
+- 普通 `00 01 02 03` 输入的 zero prefill 得到 `false/false`，one prefill 得到
+  `true/true`；
+- UTF-16LE `ff fe 41 00` 在两种 prefill 下均得到 `true/true`。
+
+这 4/4 个强断言证明非 Unicode 结果依赖构造前存储，而 Unicode 分支会覆盖状态。
+Rust 不使用 `unsafe` 模拟该未定义行为；`BinaryStringContext` 显式定义
+`isUnicodeText = unicode_type != None`，`isText` 为 plain、UTF-8、Unicode 三项
+事实的 OR，详见
+[`ADR 0005`](../design/decisions/0005-deterministic-text-classification.md)。
+原始两种 Qt5 结果都保留，不能把任一种偶然值称为唯一兼容值。
+
+当前 Rust `BinaryStringContext` 与 15/15 个确定性字符串向量一致。另 3/3 个
+context 向量确认 `getScanID()` 原样返回 options 的字符串，resource/debugdata
+分别只匹配对应 `FILEPART`，且二者的 `isFilePart()` 都为 true，header 为 false。
+本轮文件名均为 ASCII，oracle 为 Linux Qt 5；Windows/macOS separator、非
+Unicode 原生路径与非法 UTF-8 文件名仍需平台差分。
 
 `compareEP` 和 `compareOverlay` 的实现又有两处不同：
 

@@ -2,7 +2,7 @@
 
 Status: Draft
 
-Last updated: 2026-07-26
+Last updated: 2026-07-27
 
 ## 1. 用途与依据
 
@@ -110,10 +110,13 @@ baseline 的变更都要检查本表。
   12 条规则 34 次 fallback 和 11 条路径；当前 4 条 detection 与 280 条
   “未记录 fallback”仍不是兼容证据。字符串 context 15/15 oracle 接入后为
   3 条规则 4 次 fallback 和 4 条路径；当前 1 条 detection 与 289 条
-  “未记录 fallback”同样不是兼容证据。纯 Rust
+  “未记录 fallback”同样不是兼容证据。最后接入 scan/file-part 和确定性 text
+  HostApi 后，固定 trace 为 292/292、
+  0 异常、0 fallback、1105 次 compare 和 1 条 detection；零 fallback 只说明
+  单输入实际分支已闭合，不能替代逐规则 Qt oracle。纯 Rust
   signature spike 已在显式兼容模式
   解析动态 317/317，并对 6 个上游宽松点返回 quirk。固定 XBinary oracle 的
-  82 个向量已确认 compare/find 在 `%&`、DEL、leading `+` 和 invalid suffix
+  89 个向量已确认 compare/find 在 `%&`、DEL、leading `+` 和 invalid suffix
   上存在不同语义；Rust context-free compare 当前差分 16/16，六类合成
   memory-map 分支差分 7/7，PE32/64、ELF32/64、Mach-O32/64、COM、MS-DOS、
   AmigaHunk 真实 parser map 差分 9/9；独立 find 三分支聚焦差分 19/19。
@@ -122,8 +125,11 @@ baseline 的变更都要检查本表。
   256-byte cache 被当作 512-byte 范围、原始 pattern 长度参与分支，能改变合法
   literal 结果；search/presence wrapper 4/4 固定范围裁剪、`size == -1`、别名
   和布尔投影；overlay HostApi 3/3 证明 file-part 与 nested overlay 独立；
-  文件后缀/header text context 15/15 固定确定性字符串语义。上游未初始化
-  `m_bIsUnicodeText` 仍需显式偏离策略。
+  文件后缀/header text context 15/15 固定确定性字符串语义；execution context
+  3/3 固定 scan ID 和 resource/debugdata file-part；storage prefill 4/4 证明
+  非 Unicode 的 `m_bIsUnicodeText/isText` 依赖未初始化状态。ADR 0005 采用
+  显式确定性 facts，接入后固定 trace 为 292/292、0 异常、0 fallback、1105 次
+  compare 和 1 条 detection；仍不能把单输入零 fallback 当作兼容率。
   固定 signature AST inventory 随后解析 `db`/`db_extra`
   2175/2175，保存 5968 个具名 signature API 调用点和 5628 个静态 pattern，
   覆盖动态 317/317；四个保守动态参数中的 `byteCode` 又已闭合为 97 个唯一

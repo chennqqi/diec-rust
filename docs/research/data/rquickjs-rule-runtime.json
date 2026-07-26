@@ -19,7 +19,7 @@
   "experiment": {
     "cargo_lock_sha256": "e03ce821c4a4c0f362d417d84752ed9ef1f775377ef9042306397aca39d21836",
     "cargo_toml_sha256": "3a40e231c4f71f7e4e3ea1362f2dc256852b4e9201f5a2f3da41f443cdcbbfbf",
-    "source_sha256": "f916afbee7b77806498d6a7825610c69d874461ccd47c1ae484ab0893c98340e",
+    "source_sha256": "a366c983208cd24f841b5e26d83ae3e93d080622b55723bfc80753b296e8b447",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -392,8 +392,8 @@
     },
     "oracle": {
       "baseline": "docs/research/data/signature-oracle-qt5.json",
-      "baseline_sha256": "b8e6665c99fc7060ca738b9bcf920efba42503aa82d3b6c572261e7619462ed1",
-      "case_count": 82,
+      "baseline_sha256": "85235553b7846f46efd74b92b15b61009fd11ba01b0c2c23aec26a01f05dba18",
+      "case_count": 89,
       "wrapper_case_count": 7,
       "wrapper_matched_count": 7,
       "negative_offset_qstring_mid_clamp_observed": true,
@@ -470,8 +470,8 @@
     },
     "oracle": {
       "baseline": "docs/research/data/signature-oracle-qt5.json",
-      "baseline_sha256": "b8e6665c99fc7060ca738b9bcf920efba42503aa82d3b6c572261e7619462ed1",
-      "case_count": 82,
+      "baseline_sha256": "85235553b7846f46efd74b92b15b61009fd11ba01b0c2c23aec26a01f05dba18",
+      "case_count": 89,
       "wrapper_case_count": 4,
       "wrapper_matched_count": 4,
       "oversized_range_clamp_observed": true,
@@ -560,8 +560,8 @@
     },
     "oracle": {
       "baseline": "docs/research/data/signature-oracle-qt5.json",
-      "baseline_sha256": "b8e6665c99fc7060ca738b9bcf920efba42503aa82d3b6c572261e7619462ed1",
-      "case_count": 82,
+      "baseline_sha256": "85235553b7846f46efd74b92b15b61009fd11ba01b0c2c23aec26a01f05dba18",
+      "case_count": 89,
       "overlay_host_case_count": 3,
       "overlay_host_matched_count": 3,
       "contexts": [
@@ -649,8 +649,8 @@
     },
     "oracle": {
       "baseline": "docs/research/data/signature-oracle-qt5.json",
-      "baseline_sha256": "b8e6665c99fc7060ca738b9bcf920efba42503aa82d3b6c572261e7619462ed1",
-      "case_count": 82,
+      "baseline_sha256": "85235553b7846f46efd74b92b15b61009fd11ba01b0c2c23aec26a01f05dba18",
+      "case_count": 89,
       "string_context_case_count": 15,
       "string_context_matched_count": 15,
       "covered_facts": [
@@ -712,6 +712,109 @@
     "branch_effect": "real suffix/header/plain-text values replace callable fallback proxies; compare/search totals remain 1109/11 while fallback calls fall from 34 to 4 and diagnostic detections fall from 4 to 1",
     "remaining_undefined_behavior": "Binary_Script leaves m_bIsUnicodeText uninitialized on non-Unicode inputs, so isUnicodeText/isText cannot be frozen as deterministic compatibility values without an explicit policy",
     "scope": "incremental ASCII file-name and text-context HostApi gap measurement on one Linux Qt5 top-level header sample; cross-platform and non-Unicode path behavior remains unverified; accepted calls and detections are not compatibility evidence"
+  },
+  "execution_context_increment": {
+    "adapter": {
+      "context_models": [
+        "BinaryHostContext",
+        "BinaryStringContext"
+      ],
+      "methods": [
+        "Binary.getScanID",
+        "Binary.isDebugData",
+        "Binary.isFilePart",
+        "Binary.isResource",
+        "Binary.isText",
+        "Binary.isUnicodeText",
+        "X.getScanID",
+        "X.isDebugData",
+        "X.isFilePart",
+        "X.isResource",
+        "X.isText",
+        "X.isUnicodeText"
+      ],
+      "source_contract": "horsicq/XScanEngine@dfe4a419e4f491bb23688ba03c5a5bf39e34da83/modules/binary_script.cpp",
+      "text_policy_adr": "docs/design/decisions/0005-deterministic-text-classification.md"
+    },
+    "oracle": {
+      "baseline": "docs/research/data/signature-oracle-qt5.json",
+      "baseline_sha256": "85235553b7846f46efd74b92b15b61009fd11ba01b0c2c23aec26a01f05dba18",
+      "case_count": 89,
+      "execution_context_case_count": 3,
+      "execution_context_matched_count": 3,
+      "text_prefill_case_count": 4,
+      "text_prefill_matched_count": 4,
+      "non_unicode_prefill_results": {
+        "one": {
+          "isText": true,
+          "isUnicodeText": true
+        },
+        "zero": {
+          "isText": false,
+          "isUnicodeText": false
+        }
+      },
+      "unicode_prefill_results_are_stable": true,
+      "upstream_uninitialized_state_observed": true
+    },
+    "after": {
+      "accepted_detect_count": 292,
+      "attempted_detect_count": 292,
+      "compatibility_overlay_count": 1,
+      "completed": true,
+      "context_host_call_totals": {
+        "getScanID": 0,
+        "isDebugData": 1,
+        "isFilePart": 0,
+        "isResource": 1
+      },
+      "context_host_calling_rules": [
+        "debug_data_debugData.1.sg",
+        "win_resources.1.sg"
+      ],
+      "detect_error_count": 0,
+      "detection_count": 1,
+      "detection_evidence_valid": false,
+      "error_rules": [],
+      "fallback_call_total": 0,
+      "fallback_path_counts": {},
+      "fallback_rule_count": 0,
+      "fallback_truncated_rule_count": 0,
+      "include_call_count": 30,
+      "signature_compare_call_total": 1105,
+      "signature_compare_error_total": 0,
+      "signature_compare_fast_path_total": 1043,
+      "signature_compare_generic_path_total": 62,
+      "signature_compare_quirk_total": 5,
+      "signature_search_call_total": 11,
+      "signature_search_error_total": 0,
+      "signature_search_match_total": 0,
+      "string_host_call_totals": {
+        "getFileSuffix": 9,
+        "getHeaderString": 5,
+        "isPlainText": 2,
+        "isText": 1,
+        "isUnicodeText": 0,
+        "isUTF8Text": 0
+      },
+      "text_host_calling_rules": [
+        "format_DESKTOP.1.sg"
+      ],
+      "zero_recorded_fallback_error_count": 0,
+      "zero_recorded_fallback_rule_count": 292
+    },
+    "before_snapshot": "string_host_increment.after",
+    "branch_effect": "deterministic false isText for the fixed non-text header short-circuits format_DESKTOP and changes compare calls from 1109 to 1105; false isResource short-circuits getScanID, while the single Nintendo detection remains unchanged",
+    "deterministic_deviation": {
+      "fields": [
+        "Binary.isUnicodeText",
+        "Binary.isText"
+      ],
+      "policy": "explicit facts: unicode_type != none; isText is the OR of plain, UTF-8, and Unicode facts",
+      "reason": "fixed upstream non-Unicode result depends on object storage prefill and cannot be reproduced safely or deterministically",
+      "waiver_status": "Phase 1 machine-readable waiver required by ADR 0004 and ADR 0005"
+    },
+    "scope": "incremental scan-id, resource/debug file-part and deterministic text HostApi gap measurement on one Linux Qt5 top-level header sample; 0 fallback proves only the observed execution path, not full rule compatibility"
   },
   "isolated_eval": {
     "bytes": 2902881,
