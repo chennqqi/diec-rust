@@ -168,6 +168,6 @@ python tools/upstream/probe_host_api_arity.py
 - `File`/`X` 在每种 file type/init/include 生命周期中的精确 identity；
 - `PE.getEPSignature` 所在分支的可达样本及上层异常传播/报告行为；
 - 16 个非格式 native global 和根规则函数清单已单独闭合，见
-  [`global-host-api-inventory.md`](global-host-api-inventory.md)；其行为 fixture
-  仍未完成；
+  [`global-host-api-inventory.md`](global-host-api-inventory.md)；Qt 5 主行为
+  fixture 已完成，Qt 6 和剩余转换边界仍未完成；
 - 用完整 HostApi 逐规则执行并对比固定上游结果。

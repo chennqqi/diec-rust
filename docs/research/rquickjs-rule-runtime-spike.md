@@ -536,6 +536,8 @@ JSON。运行前先执行
   探针已证明三个额外实参形状忽略额外参数，并固定缺失
   `PE.getEPSignature` 的 `TypeError`；仍缺其余参数/返回类型、默认参数、异常和
   Qt 6 行为 fixture。
+- 非格式 native global 的 Qt 5 探针已固定缺参字符串化、结果重复/删除/block、
+  双 stop 状态和重复 include；QuickJS adapter 尚未逐项复刻并差分这些副作用。
 - Nintendo/EA-XA 已在固定 292 条加载环境中完成三个 selected `detect` 的 Qt 5
   14/14 对照；仍缺 Qt 6、其余 289 个 `detect` 的真实 HostApi/Qt oracle。
 - Qt 5/Qt 6 与 QuickJS 的整数、字符串、数组、异常和 RegExp 差分。

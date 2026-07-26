@@ -375,14 +375,20 @@ Qt 5 注册 15 个（遗漏规则未调用的 `_getQtVersion`），Qt 6 注册�
 2 个固定拼写错误。详见
 [`global-host-api-inventory.md`](global-host-api-inventory.md)。
 
+固定 Qt 5 `DiE_ScriptEngine` 行为基线进一步确认：15 个 wrapper 的
+`function.length` 全为 0；缺参转成 `"undefined"`；普通结果允许重复；
+`_removeResult` 只删第一项并建立后续 block，数组参数不会批量删除；first-wrapper
+内部 stop 与 `_isStop()` 的 PDSTRUCT stop 是两个状态；include 可重复求值共享
+global。`_getEngineVersion` 还把编译日期写入可观察结果。
+
 ## 尚未完成
 
 - 为固定 C++ 声明、默认参数、继承和规则脚本扩展补齐其余 Qt 5/Qt 6 行为
   fixture，并补做四个已闭合形状的 Qt 6 对照。
 - Qt 5 与 Qt 6 的 conformance oracle。
 - include 同名、重复、循环和异常实验。
-- 16 个 native global 的 Qt 5/Qt 6 转换、副作用和异常行为，以及两个拼写错误
-  分支的可达性/异常传播实验。
+- native global 剩余 Qt 5 边界和完整 Qt 6 对照，以及两个拼写错误分支的
+  可达性/异常传播实验。
 - database cache 与 ZIP database 行为。
 - `dbs_min` 生成逻辑。
 - 用真实 HostApi 和 Qt oracle 逐条验证全库 `detect`、冻结 legacy compatibility

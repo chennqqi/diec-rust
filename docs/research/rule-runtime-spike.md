@@ -171,6 +171,9 @@ JSON 报告写到 stdout。报告包含环境无关的计数和错误列表，�
   337 个 C++ slot 与 13 个脚本扩展静态覆盖 460 个形状。固定 Qt 5 QObject
   探针已闭合三个额外实参形状和一个缺失方法异常；仍缺其余参数/返回类型、
   默认参数、异常和 Qt 6 行为 fixture。
+- 16 个非格式 native global 已完成声明/注册清单；固定 Qt 5
+  `DiE_ScriptEngine` 已覆盖主要转换、结果 mutation、stop/include 和模式行为，
+  仍缺剩余 Qt 5 边界及完整 Qt 6 对照。
 - Qt 5 与 Qt 6 的 64 位整数、字符串、数组、默认参数和异常 oracle。
 - QuickJS-NG/rquickjs 的固定 Binary 顶层生命周期已完成；完整 HostApi 下逐规则
   detect 生命周期仍未完成。

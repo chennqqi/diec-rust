@@ -121,7 +121,9 @@ baseline 的变更都要检查本表。
   仍未验证。非格式面已固定 16 个 native global slot；Qt 5 只注册其中 15 个，
   固定规则实际调用 7 个共 253 次。71 个 undeclared direct-call 名已全部分类，
   暴露两个不应静默修复的规则拼写错误；跨文件函数 include 可达性和 native
-  global 行为仍未验证。
+  global 的完整行为仍未验证。固定 Qt 5 探针已确认缺参 `"undefined"` 转换、
+  重复结果、单项删除/block、数组字符串化、双 stop 状态和重复 include；Qt 6
+  及剩余转换边界仍是开放风险。
 - **缓解**：保持 `RuleRuntime`/`HostApi` port；建立全规则 inventory、最小失败
   fixture、host call trace；基于证据选 runtime，禁止静默转换规则。
 - **验证**：固定规则 100% discovered/parsed/loaded，zero silent unsupported；

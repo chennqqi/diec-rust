@@ -129,7 +129,71 @@ init/include 可达仍需生命周期实验。
 两者不得被兼容层静默补成别名。当前只证明执行到表达式时会查找未定义 global；
 分支可达性、Qt 异常文本和上层扫描行为仍需 oracle fixture。
 
-## 6. 对实现与测试的约束
+## 6. Qt 5 native global 行为实验
+
+固定 Linux Qt 5.15.13 探针直接构造未修改的 `DiE_ScriptEngine`，以独立 fixture
+隔离 surface、结果变更、数组删除、缺参、first-wrapper stop、include、日志/
+encoding 和运行模式。机器基线见
+[`global-host-api-qt5.json`](data/global-host-api-qt5.json)。
+
+复现：
+
+```sh
+docker build \
+  --file tools/upstream/Dockerfile.global-host-api-harness-qt5 \
+  --tag diec-rust/upstream-global-host-api-harness:74eaf505 \
+  tools/upstream
+python tools/upstream/probe_global_host_api.py
+```
+
+### 6.1 Surface 与转换
+
+- 15 个 Qt 5 global 均为 `function`，JavaScript `function.length` 全为 0；
+  `_getQtVersion` 为 `undefined`；
+- `_log()`、`_log(null)`、`_log(42)` 分别向 `infoMessage` 发出
+  `"undefined"`、`"null"`、`"42"`，说明 wrapper 直接使用 QtScript
+  `toString()`，缺参不是空串；
+- `_setResult()` 不报错，而是加入 type/name/version/info 均为
+  `"undefined"` 的真实结果；随后无参 `_isResultPresent()` 返回 true，无参
+  `_getNumberOfResults()` 返回 1；
+- `_encodingList()` 返回 boolean false，同时按固定顺序发出 104 条消息；首项为空
+  字符串、末项为 `TIS-620`，NUL 分隔 UTF-8 列表 SHA-256 为
+  `4ca2afaa9d6924630d5329ad327d6651deb705e8bc4ecc9b46fecaf030474d02`。
+
+### 6.2 结果列表语义
+
+- type/name 查询和删除比较大小写不敏感；
+- 连续加入 `compiler/Rust` 与 `COMPILER/rust` 会保留两条，native 层不做普通结果
+  去重；
+- `_removeResult("compiler", "Rust")` 只删除第一条匹配，并把该 type/name 追加到
+  block list；之后同名结果不能重新加入；
+- `_removeResult("compiler", "")` 不把空 name 当 wildcard，剩余 `rust` 不会删除；
+- 规则中的 `_removeResult("protector", ["Enigma", "Denuvo"])` 会先把数组转换成
+  单个字符串 `"Enigma,Denuvo"`：两条原结果均不删除，但该组合名会进入 block
+  list，之后同名组合结果不能加入。
+
+这组行为意味着 Rust 不能把 `_removeResult` “改进”为批量删除，也不能在
+`_setResult` 中自行去重。
+
+### 6.3 Stop、include 与模式
+
+- `bIsFirstWrapperScan=true` 时 compiler 结果被丢弃；protection 结果被保留并设置
+  `DiE_ScriptEngine::m_bIsStop`；
+- 此时 C++ `isStopped()` 为 true，但 JavaScript `_isStop()` 仍为 false，因为后者
+  只读取 `PDSTRUCT`；调用 `_breakScan()` 后 `_isStop()` 才变为 true；
+- `includeScript` 名称比较大小写不敏感，重复 include 会再次求值并修改共享 global；
+  缺失脚本仍返回 `undefined`，只发出 `Cannot find: missing-include` error signal；
+- console 目标中 application name 为 `die` 时 console=true、GUI/lite/library
+  均为 false；`diel` 时 lite=true；
+- 请求把 application name 设为空后，Qt 恢复为可执行文件名
+  `diec-global-host-api-harness`，所以 library=false。这个实验不能证明嵌入式宿主
+  中 library=true 的可达条件；
+- `_getOS()` 在固定镜像返回 `Linux Ubuntu x64`；
+- `_getEngineVersion()` 返回 `9.9.9.2026.07.25`。前缀来自探针设置的 application
+  version，日期来自上游对象编译时的 `__DATE__`，因此输出受构建日期影响；固定
+  image/binary hash 可以复现本基线，但从源码重建不应假设该字段稳定。
+
+## 7. 对实现与测试的约束
 
 - Rust `HostApi` 的非格式 native surface 以 16 个 slot 为声明基线，并显式记录
   Qt 5 的 `_getQtVersion` omission；
@@ -141,9 +205,11 @@ init/include 可达仍需生命周期实验。
 - 后续 Qt/QuickJS 对照必须覆盖 native 返回值、字符串转换、结果去重/删除、停止
   状态、include 失败和异常传播，而不只验证函数名存在。
 
-## 7. 尚未完成
+## 8. 尚未完成
 
-- 16 个 native global 的 Qt 5/Qt 6 参数转换、返回值、副作用和异常 fixture；
+- Qt 5 仍缺 `_isResultPresent`/`_getNumberOfResults` 更多数组、对象和异常转换，
+  include 语法错误、`_log` 的 PDSTRUCT 副作用及 library=true 可达条件；
+- 全部 16 个 Qt 6 native global 的参数转换、返回值、副作用和异常 fixture；
 - 两个拼写错误分支的可达语料、Qt 异常及扫描器传播行为；
 - 55 个跨文件规则函数候选的逐调用 include 可达性证明；
 - 1,408 个 undeclared global symbol 中非直接调用的读取、写入、隐式 global 和

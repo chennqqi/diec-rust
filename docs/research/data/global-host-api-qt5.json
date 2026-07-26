@@ -1,0 +1,1078 @@
+{
+  "binary": {
+    "path": "/opt/die-build/src/console/diec-global-host-api-harness",
+    "sha256": "b7ca1e67ba929670e7c288c5e4ed2ebd7f43d99dbcb5fbbce828501eaa40a432"
+  },
+  "generator": "tools/upstream/probe_global_host_api.py",
+  "image": {
+    "id": "sha256:1a475413eeb9ccb559168a8937c932b323712ef95329202bbb5bc68fd1871808",
+    "name": "diec-rust/upstream-global-host-api-harness:74eaf505",
+    "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "observation": {
+    "array_removal": {
+      "add_combined": {
+        "engine_is_stopped": false,
+        "evaluation": {
+          "is_boolean": false,
+          "is_error": false,
+          "is_null": false,
+          "is_number": false,
+          "is_string": false,
+          "is_undefined": true,
+          "source": "_setResult('protector','Enigma,Denuvo','','blocked-combined')"
+        },
+        "records": [
+          {
+            "info": "",
+            "is_advanced_heuristic": false,
+            "is_heuristic": false,
+            "name": "Enigma",
+            "priority": 70,
+            "type": "protector",
+            "version": ""
+          },
+          {
+            "info": "",
+            "is_advanced_heuristic": false,
+            "is_heuristic": false,
+            "name": "Denuvo",
+            "priority": 70,
+            "type": "protector",
+            "version": ""
+          }
+        ]
+      },
+      "before": [
+        {
+          "info": "",
+          "is_advanced_heuristic": false,
+          "is_heuristic": false,
+          "name": "Enigma",
+          "priority": 70,
+          "type": "protector",
+          "version": ""
+        },
+        {
+          "info": "",
+          "is_advanced_heuristic": false,
+          "is_heuristic": false,
+          "name": "Denuvo",
+          "priority": 70,
+          "type": "protector",
+          "version": ""
+        }
+      ],
+      "removal": {
+        "engine_is_stopped": false,
+        "evaluation": {
+          "is_boolean": false,
+          "is_error": false,
+          "is_null": false,
+          "is_number": false,
+          "is_string": false,
+          "is_undefined": true,
+          "source": "_removeResult('protector',['Enigma','Denuvo'])"
+        },
+        "records": [
+          {
+            "info": "",
+            "is_advanced_heuristic": false,
+            "is_heuristic": false,
+            "name": "Enigma",
+            "priority": 70,
+            "type": "protector",
+            "version": ""
+          },
+          {
+            "info": "",
+            "is_advanced_heuristic": false,
+            "is_heuristic": false,
+            "name": "Denuvo",
+            "priority": 70,
+            "type": "protector",
+            "version": ""
+          }
+        ]
+      }
+    },
+    "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+    "include": {
+      "error_messages": [
+        "Cannot find: missing-include"
+      ],
+      "first": {
+        "engine_is_stopped": false,
+        "evaluation": {
+          "is_boolean": false,
+          "is_error": false,
+          "is_null": false,
+          "is_number": false,
+          "is_string": false,
+          "is_undefined": true,
+          "source": "includeScript('PrObE-InClUdE')"
+        },
+        "records": []
+      },
+      "missing": {
+        "engine_is_stopped": false,
+        "evaluation": {
+          "is_boolean": false,
+          "is_error": false,
+          "is_null": false,
+          "is_number": false,
+          "is_string": false,
+          "is_undefined": true,
+          "source": "includeScript('missing-include')"
+        },
+        "records": []
+      },
+      "second": {
+        "engine_is_stopped": false,
+        "evaluation": {
+          "is_boolean": false,
+          "is_error": false,
+          "is_null": false,
+          "is_number": false,
+          "is_string": false,
+          "is_undefined": true,
+          "source": "includeScript('probe-include')"
+        },
+        "records": []
+      },
+      "value_after_first": {
+        "engine_is_stopped": false,
+        "evaluation": {
+          "is_boolean": false,
+          "is_error": false,
+          "is_null": false,
+          "is_number": true,
+          "is_string": false,
+          "is_undefined": false,
+          "number": 1,
+          "source": "includedProbe"
+        },
+        "records": []
+      },
+      "value_after_second": {
+        "engine_is_stopped": false,
+        "evaluation": {
+          "is_boolean": false,
+          "is_error": false,
+          "is_null": false,
+          "is_number": true,
+          "is_string": false,
+          "is_undefined": false,
+          "number": 2,
+          "source": "includedProbe"
+        },
+        "records": []
+      }
+    },
+    "info": {
+      "encoding_call": {
+        "engine_is_stopped": false,
+        "evaluation": {
+          "boolean": false,
+          "is_boolean": true,
+          "is_error": false,
+          "is_null": false,
+          "is_number": false,
+          "is_string": false,
+          "is_undefined": false,
+          "source": "_encodingList()"
+        },
+        "records": []
+      },
+      "encoding_first": "",
+      "encoding_last": "TIS-620",
+      "encoding_message_count": 104,
+      "encoding_messages_sha256": "4ca2afaa9d6924630d5329ad327d6651deb705e8bc4ecc9b46fecaf030474d02",
+      "log_messages": [
+        "undefined",
+        "null",
+        "42"
+      ],
+      "missing": {
+        "engine_is_stopped": false,
+        "evaluation": {
+          "is_boolean": false,
+          "is_error": false,
+          "is_null": false,
+          "is_number": false,
+          "is_string": false,
+          "is_undefined": true,
+          "source": "_log()"
+        },
+        "records": []
+      },
+      "null": {
+        "engine_is_stopped": false,
+        "evaluation": {
+          "is_boolean": false,
+          "is_error": false,
+          "is_null": false,
+          "is_number": false,
+          "is_string": false,
+          "is_undefined": true,
+          "source": "_log(null)"
+        },
+        "records": []
+      },
+      "number": {
+        "engine_is_stopped": false,
+        "evaluation": {
+          "is_boolean": false,
+          "is_error": false,
+          "is_null": false,
+          "is_number": false,
+          "is_string": false,
+          "is_undefined": true,
+          "source": "_log(42)"
+        },
+        "records": []
+      }
+    },
+    "missing_arguments": {
+      "count": {
+        "engine_is_stopped": false,
+        "evaluation": {
+          "is_boolean": false,
+          "is_error": false,
+          "is_null": false,
+          "is_number": true,
+          "is_string": false,
+          "is_undefined": false,
+          "number": 1,
+          "source": "_getNumberOfResults()"
+        },
+        "records": [
+          {
+            "info": "undefined",
+            "is_advanced_heuristic": false,
+            "is_heuristic": false,
+            "name": "undefined",
+            "priority": 1000,
+            "type": "undefined",
+            "version": "undefined"
+          }
+        ]
+      },
+      "is_present": {
+        "engine_is_stopped": false,
+        "evaluation": {
+          "boolean": true,
+          "is_boolean": true,
+          "is_error": false,
+          "is_null": false,
+          "is_number": false,
+          "is_string": false,
+          "is_undefined": false,
+          "source": "_isResultPresent()"
+        },
+        "records": [
+          {
+            "info": "undefined",
+            "is_advanced_heuristic": false,
+            "is_heuristic": false,
+            "name": "undefined",
+            "priority": 1000,
+            "type": "undefined",
+            "version": "undefined"
+          }
+        ]
+      },
+      "set_result": {
+        "engine_is_stopped": false,
+        "evaluation": {
+          "is_boolean": false,
+          "is_error": false,
+          "is_null": false,
+          "is_number": false,
+          "is_string": false,
+          "is_undefined": true,
+          "source": "_setResult()"
+        },
+        "records": [
+          {
+            "info": "undefined",
+            "is_advanced_heuristic": false,
+            "is_heuristic": false,
+            "name": "undefined",
+            "priority": 1000,
+            "type": "undefined",
+            "version": "undefined"
+          }
+        ]
+      }
+    },
+    "modes": {
+      "die": {
+        "application_name": "die",
+        "console": {
+          "boolean": true,
+          "is_boolean": true,
+          "is_error": false,
+          "is_null": false,
+          "is_number": false,
+          "is_string": false,
+          "is_undefined": false,
+          "source": "_isConsoleMode()"
+        },
+        "gui": {
+          "boolean": false,
+          "is_boolean": true,
+          "is_error": false,
+          "is_null": false,
+          "is_number": false,
+          "is_string": false,
+          "is_undefined": false,
+          "source": "_isGuiMode()"
+        },
+        "library": {
+          "boolean": false,
+          "is_boolean": true,
+          "is_error": false,
+          "is_null": false,
+          "is_number": false,
+          "is_string": false,
+          "is_undefined": false,
+          "source": "_isLibraryMode()"
+        },
+        "lite": {
+          "boolean": false,
+          "is_boolean": true,
+          "is_error": false,
+          "is_null": false,
+          "is_number": false,
+          "is_string": false,
+          "is_undefined": false,
+          "source": "_isLiteMode()"
+        }
+      },
+      "diel": {
+        "application_name": "diel",
+        "lite": {
+          "boolean": true,
+          "is_boolean": true,
+          "is_error": false,
+          "is_null": false,
+          "is_number": false,
+          "is_string": false,
+          "is_undefined": false,
+          "source": "_isLiteMode()"
+        }
+      },
+      "empty_requested": {
+        "application_name": "diec-global-host-api-harness",
+        "library": {
+          "boolean": false,
+          "is_boolean": true,
+          "is_error": false,
+          "is_null": false,
+          "is_number": false,
+          "is_string": false,
+          "is_undefined": false,
+          "source": "_isLibraryMode()"
+        }
+      },
+      "engine_version": {
+        "is_boolean": false,
+        "is_error": false,
+        "is_null": false,
+        "is_number": false,
+        "is_string": true,
+        "is_undefined": false,
+        "source": "_getEngineVersion()",
+        "string": "9.9.9.2026.07.25"
+      },
+      "os": {
+        "is_boolean": false,
+        "is_error": false,
+        "is_null": false,
+        "is_number": false,
+        "is_string": true,
+        "is_undefined": false,
+        "source": "_getOS()",
+        "string": "Linux Ubuntu x64"
+      }
+    },
+    "qt_version": "5.15.13",
+    "results": {
+      "steps": [
+        {
+          "engine_is_stopped": false,
+          "evaluation": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": false,
+            "is_string": false,
+            "is_undefined": true,
+            "source": "_setResult('compiler','Rust','1.0','first')"
+          },
+          "records": [
+            {
+              "info": "first",
+              "is_advanced_heuristic": false,
+              "is_heuristic": false,
+              "name": "Rust",
+              "priority": 30,
+              "type": "compiler",
+              "version": "1.0"
+            }
+          ]
+        },
+        {
+          "engine_is_stopped": false,
+          "evaluation": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": false,
+            "is_string": false,
+            "is_undefined": true,
+            "source": "_setResult('COMPILER','rust','2.0','duplicate')"
+          },
+          "records": [
+            {
+              "info": "first",
+              "is_advanced_heuristic": false,
+              "is_heuristic": false,
+              "name": "Rust",
+              "priority": 30,
+              "type": "compiler",
+              "version": "1.0"
+            },
+            {
+              "info": "duplicate",
+              "is_advanced_heuristic": false,
+              "is_heuristic": false,
+              "name": "rust",
+              "priority": 30,
+              "type": "COMPILER",
+              "version": "2.0"
+            }
+          ]
+        },
+        {
+          "engine_is_stopped": false,
+          "evaluation": {
+            "boolean": true,
+            "is_boolean": true,
+            "is_error": false,
+            "is_null": false,
+            "is_number": false,
+            "is_string": false,
+            "is_undefined": false,
+            "source": "_isResultPresent('compiler','RUST')"
+          },
+          "records": [
+            {
+              "info": "first",
+              "is_advanced_heuristic": false,
+              "is_heuristic": false,
+              "name": "Rust",
+              "priority": 30,
+              "type": "compiler",
+              "version": "1.0"
+            },
+            {
+              "info": "duplicate",
+              "is_advanced_heuristic": false,
+              "is_heuristic": false,
+              "name": "rust",
+              "priority": 30,
+              "type": "COMPILER",
+              "version": "2.0"
+            }
+          ]
+        },
+        {
+          "engine_is_stopped": false,
+          "evaluation": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": true,
+            "is_string": false,
+            "is_undefined": false,
+            "number": 2,
+            "source": "_getNumberOfResults('')"
+          },
+          "records": [
+            {
+              "info": "first",
+              "is_advanced_heuristic": false,
+              "is_heuristic": false,
+              "name": "Rust",
+              "priority": 30,
+              "type": "compiler",
+              "version": "1.0"
+            },
+            {
+              "info": "duplicate",
+              "is_advanced_heuristic": false,
+              "is_heuristic": false,
+              "name": "rust",
+              "priority": 30,
+              "type": "COMPILER",
+              "version": "2.0"
+            }
+          ]
+        },
+        {
+          "engine_is_stopped": false,
+          "evaluation": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": false,
+            "is_string": false,
+            "is_undefined": true,
+            "source": "_removeResult('compiler','Rust')"
+          },
+          "records": [
+            {
+              "info": "duplicate",
+              "is_advanced_heuristic": false,
+              "is_heuristic": false,
+              "name": "rust",
+              "priority": 30,
+              "type": "COMPILER",
+              "version": "2.0"
+            }
+          ]
+        },
+        {
+          "engine_is_stopped": false,
+          "evaluation": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": false,
+            "is_string": false,
+            "is_undefined": true,
+            "source": "_setResult('compiler','Rust','3.0','blocked')"
+          },
+          "records": [
+            {
+              "info": "duplicate",
+              "is_advanced_heuristic": false,
+              "is_heuristic": false,
+              "name": "rust",
+              "priority": 30,
+              "type": "COMPILER",
+              "version": "2.0"
+            }
+          ]
+        },
+        {
+          "engine_is_stopped": false,
+          "evaluation": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": false,
+            "is_string": false,
+            "is_undefined": true,
+            "source": "_removeResult('compiler','')"
+          },
+          "records": [
+            {
+              "info": "duplicate",
+              "is_advanced_heuristic": false,
+              "is_heuristic": false,
+              "name": "rust",
+              "priority": 30,
+              "type": "COMPILER",
+              "version": "2.0"
+            }
+          ]
+        }
+      ]
+    },
+    "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+    "schema_version": 1,
+    "stop": {
+      "break_scan": {
+        "engine_is_stopped": true,
+        "evaluation": {
+          "is_boolean": false,
+          "is_error": false,
+          "is_null": false,
+          "is_number": false,
+          "is_string": false,
+          "is_undefined": true,
+          "source": "_breakScan()"
+        },
+        "records": [
+          {
+            "info": "",
+            "is_advanced_heuristic": false,
+            "is_heuristic": false,
+            "name": "Example",
+            "priority": 90,
+            "type": "protection",
+            "version": ""
+          }
+        ]
+      },
+      "compiler": {
+        "engine_is_stopped": false,
+        "evaluation": {
+          "is_boolean": false,
+          "is_error": false,
+          "is_null": false,
+          "is_number": false,
+          "is_string": false,
+          "is_undefined": true,
+          "source": "_setResult('compiler','Example','','')"
+        },
+        "records": []
+      },
+      "js_stop_after_break": {
+        "engine_is_stopped": true,
+        "evaluation": {
+          "boolean": true,
+          "is_boolean": true,
+          "is_error": false,
+          "is_null": false,
+          "is_number": false,
+          "is_string": false,
+          "is_undefined": false,
+          "source": "_isStop()"
+        },
+        "records": [
+          {
+            "info": "",
+            "is_advanced_heuristic": false,
+            "is_heuristic": false,
+            "name": "Example",
+            "priority": 90,
+            "type": "protection",
+            "version": ""
+          }
+        ]
+      },
+      "js_stop_before_break": {
+        "engine_is_stopped": true,
+        "evaluation": {
+          "boolean": false,
+          "is_boolean": true,
+          "is_error": false,
+          "is_null": false,
+          "is_number": false,
+          "is_string": false,
+          "is_undefined": false,
+          "source": "_isStop()"
+        },
+        "records": [
+          {
+            "info": "",
+            "is_advanced_heuristic": false,
+            "is_heuristic": false,
+            "name": "Example",
+            "priority": 90,
+            "type": "protection",
+            "version": ""
+          }
+        ]
+      },
+      "protection": {
+        "engine_is_stopped": true,
+        "evaluation": {
+          "is_boolean": false,
+          "is_error": false,
+          "is_null": false,
+          "is_number": false,
+          "is_string": false,
+          "is_undefined": true,
+          "source": "_setResult('protection','Example','','')"
+        },
+        "records": [
+          {
+            "info": "",
+            "is_advanced_heuristic": false,
+            "is_heuristic": false,
+            "name": "Example",
+            "priority": 90,
+            "type": "protection",
+            "version": ""
+          }
+        ]
+      }
+    },
+    "surface": {
+      "methods": {
+        "_breakScan": {
+          "length": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": true,
+            "is_string": false,
+            "is_undefined": false,
+            "number": 0,
+            "source": "typeof _breakScan === 'function' ? _breakScan.length : null"
+          },
+          "type": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": false,
+            "is_string": true,
+            "is_undefined": false,
+            "source": "typeof _breakScan",
+            "string": "function"
+          }
+        },
+        "_encodingList": {
+          "length": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": true,
+            "is_string": false,
+            "is_undefined": false,
+            "number": 0,
+            "source": "typeof _encodingList === 'function' ? _encodingList.length : null"
+          },
+          "type": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": false,
+            "is_string": true,
+            "is_undefined": false,
+            "source": "typeof _encodingList",
+            "string": "function"
+          }
+        },
+        "_getEngineVersion": {
+          "length": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": true,
+            "is_string": false,
+            "is_undefined": false,
+            "number": 0,
+            "source": "typeof _getEngineVersion === 'function' ? _getEngineVersion.length : null"
+          },
+          "type": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": false,
+            "is_string": true,
+            "is_undefined": false,
+            "source": "typeof _getEngineVersion",
+            "string": "function"
+          }
+        },
+        "_getNumberOfResults": {
+          "length": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": true,
+            "is_string": false,
+            "is_undefined": false,
+            "number": 0,
+            "source": "typeof _getNumberOfResults === 'function' ? _getNumberOfResults.length : null"
+          },
+          "type": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": false,
+            "is_string": true,
+            "is_undefined": false,
+            "source": "typeof _getNumberOfResults",
+            "string": "function"
+          }
+        },
+        "_getOS": {
+          "length": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": true,
+            "is_string": false,
+            "is_undefined": false,
+            "number": 0,
+            "source": "typeof _getOS === 'function' ? _getOS.length : null"
+          },
+          "type": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": false,
+            "is_string": true,
+            "is_undefined": false,
+            "source": "typeof _getOS",
+            "string": "function"
+          }
+        },
+        "_getQtVersion": {
+          "length": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": true,
+            "is_number": false,
+            "is_string": false,
+            "is_undefined": false,
+            "source": "typeof _getQtVersion === 'function' ? _getQtVersion.length : null"
+          },
+          "type": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": false,
+            "is_string": true,
+            "is_undefined": false,
+            "source": "typeof _getQtVersion",
+            "string": "undefined"
+          }
+        },
+        "_isConsoleMode": {
+          "length": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": true,
+            "is_string": false,
+            "is_undefined": false,
+            "number": 0,
+            "source": "typeof _isConsoleMode === 'function' ? _isConsoleMode.length : null"
+          },
+          "type": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": false,
+            "is_string": true,
+            "is_undefined": false,
+            "source": "typeof _isConsoleMode",
+            "string": "function"
+          }
+        },
+        "_isGuiMode": {
+          "length": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": true,
+            "is_string": false,
+            "is_undefined": false,
+            "number": 0,
+            "source": "typeof _isGuiMode === 'function' ? _isGuiMode.length : null"
+          },
+          "type": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": false,
+            "is_string": true,
+            "is_undefined": false,
+            "source": "typeof _isGuiMode",
+            "string": "function"
+          }
+        },
+        "_isLibraryMode": {
+          "length": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": true,
+            "is_string": false,
+            "is_undefined": false,
+            "number": 0,
+            "source": "typeof _isLibraryMode === 'function' ? _isLibraryMode.length : null"
+          },
+          "type": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": false,
+            "is_string": true,
+            "is_undefined": false,
+            "source": "typeof _isLibraryMode",
+            "string": "function"
+          }
+        },
+        "_isLiteMode": {
+          "length": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": true,
+            "is_string": false,
+            "is_undefined": false,
+            "number": 0,
+            "source": "typeof _isLiteMode === 'function' ? _isLiteMode.length : null"
+          },
+          "type": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": false,
+            "is_string": true,
+            "is_undefined": false,
+            "source": "typeof _isLiteMode",
+            "string": "function"
+          }
+        },
+        "_isResultPresent": {
+          "length": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": true,
+            "is_string": false,
+            "is_undefined": false,
+            "number": 0,
+            "source": "typeof _isResultPresent === 'function' ? _isResultPresent.length : null"
+          },
+          "type": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": false,
+            "is_string": true,
+            "is_undefined": false,
+            "source": "typeof _isResultPresent",
+            "string": "function"
+          }
+        },
+        "_isStop": {
+          "length": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": true,
+            "is_string": false,
+            "is_undefined": false,
+            "number": 0,
+            "source": "typeof _isStop === 'function' ? _isStop.length : null"
+          },
+          "type": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": false,
+            "is_string": true,
+            "is_undefined": false,
+            "source": "typeof _isStop",
+            "string": "function"
+          }
+        },
+        "_log": {
+          "length": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": true,
+            "is_string": false,
+            "is_undefined": false,
+            "number": 0,
+            "source": "typeof _log === 'function' ? _log.length : null"
+          },
+          "type": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": false,
+            "is_string": true,
+            "is_undefined": false,
+            "source": "typeof _log",
+            "string": "function"
+          }
+        },
+        "_removeResult": {
+          "length": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": true,
+            "is_string": false,
+            "is_undefined": false,
+            "number": 0,
+            "source": "typeof _removeResult === 'function' ? _removeResult.length : null"
+          },
+          "type": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": false,
+            "is_string": true,
+            "is_undefined": false,
+            "source": "typeof _removeResult",
+            "string": "function"
+          }
+        },
+        "_setResult": {
+          "length": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": true,
+            "is_string": false,
+            "is_undefined": false,
+            "number": 0,
+            "source": "typeof _setResult === 'function' ? _setResult.length : null"
+          },
+          "type": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": false,
+            "is_string": true,
+            "is_undefined": false,
+            "source": "typeof _setResult",
+            "string": "function"
+          }
+        },
+        "includeScript": {
+          "length": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": true,
+            "is_string": false,
+            "is_undefined": false,
+            "number": 0,
+            "source": "typeof includeScript === 'function' ? includeScript.length : null"
+          },
+          "type": {
+            "is_boolean": false,
+            "is_error": false,
+            "is_null": false,
+            "is_number": false,
+            "is_string": true,
+            "is_undefined": false,
+            "source": "typeof includeScript",
+            "string": "function"
+          }
+        }
+      }
+    },
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "schema_version": 1,
+  "sources": {
+    "tools/upstream/Dockerfile.global-host-api-harness-qt5": {
+      "bytes": 1326,
+      "sha256": "5059e761e896b3e11f941ef56623b03651fe6aa323b16a9c568d666345b306e2"
+    },
+    "tools/upstream/global_host_api_harness_main.cpp": {
+      "bytes": 16123,
+      "sha256": "644a1d395e03b54d1e49e3d236257a0832a27cf57c490292ab1292a79c2dda2f"
+    },
+    "tools/upstream/probe_global_host_api.py": {
+      "bytes": 11186,
+      "sha256": "8926ab624c803e65e94db97b557210506517e9d54750f2db600332d6bd5410fc"
+    }
+  }
+}

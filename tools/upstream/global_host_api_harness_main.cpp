@@ -1,0 +1,606 @@
+// Project-generated research harness for pinned Qt 5 native script globals.
+// It links and constructs the unmodified upstream DiE_ScriptEngine.
+
+#include "die_scriptengine.h"
+
+#include <QBuffer>
+#include <QCoreApplication>
+#include <QCryptographicHash>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QScriptValue>
+#include <QStringList>
+
+#include <cstdio>
+
+namespace {
+
+constexpr const char *UPSTREAM_COMMIT =
+    "74eaf505c250ab47e709024e9dc41657cd8f2254";
+constexpr const char *DIE_SCRIPT_COMMIT =
+    "5d82316c110abf0eb863b50bc679d330e05067b6";
+constexpr const char *RULES_COMMIT =
+    "c2c17dfa5ea4e078ba31eab55d87430c96622fb6";
+
+QJsonObject evaluate(
+    DiE_ScriptEngine *engine,
+    const QString &source,
+    const QString &fileName
+)
+{
+    engine->clearExceptions();
+    QScriptValue value = engine->evaluate(source, fileName);
+
+    QJsonObject output;
+    output.insert("source", source);
+    output.insert("is_error", value.isError());
+    output.insert("is_undefined", value.isUndefined());
+    output.insert("is_null", value.isNull());
+    output.insert("is_boolean", value.isBool());
+    output.insert("is_number", value.isNumber());
+    output.insert("is_string", value.isString());
+    if (value.isBool()) {
+        output.insert("boolean", value.toBool());
+    }
+    if (value.isNumber()) {
+        output.insert("number", value.toNumber());
+    }
+    if (value.isString() || value.isError()) {
+        output.insert("string", value.toString());
+    }
+    if (value.isError()) {
+        output.insert("error_name", value.property("name").toString());
+        output.insert(
+            "error_message",
+            value.property("message").toString()
+        );
+        output.insert(
+            "error_line",
+            value.property("lineNumber").toInt32()
+        );
+        QJsonArray backtrace;
+        for (const QString &line : engine->uncaughtExceptionBacktrace()) {
+            backtrace.append(line);
+        }
+        output.insert("backtrace", backtrace);
+    }
+    return output;
+}
+
+QJsonArray recordSnapshot(const QList<XScanEngine::SCANSTRUCT> &records)
+{
+    QJsonArray output;
+    for (const XScanEngine::SCANSTRUCT &record : records) {
+        output.append(
+            QJsonObject{
+                {"type", record.sType},
+                {"name", record.sName},
+                {"version", record.sVersion},
+                {"info", record.sInfo},
+                {"is_heuristic", record.bIsHeuristic},
+                {"is_advanced_heuristic", record.bIsAHeuristic},
+                {"priority", record.nPrio},
+            }
+        );
+    }
+    return output;
+}
+
+class EngineFixture {
+public:
+    explicit EngineFixture(bool firstWrapper = false)
+        : bytes("ABC\0", 4),
+          buffer(&bytes),
+          options{},
+          state(XBinary::createPdStruct())
+    {
+        buffer.open(QIODevice::ReadOnly);
+        options.bIsFirstWrapperScan = firstWrapper;
+        engine = new DiE_ScriptEngine(
+            &signatures,
+            &records,
+            &buffer,
+            XBinary::FT_BINARY,
+            XBinary::FILEPART_HEADER,
+            &options,
+            &state
+        );
+        QObject::connect(
+            engine,
+            &XScriptEngine::infoMessage,
+            [&] (const QString &message) {
+                infoMessages.append(message);
+            }
+        );
+        QObject::connect(
+            engine,
+            &XScriptEngine::errorMessage,
+            [&] (const QString &message) {
+                errorMessages.append(message);
+            }
+        );
+    }
+
+    ~EngineFixture()
+    {
+        delete engine;
+    }
+
+    QByteArray bytes;
+    QBuffer buffer;
+    XScanEngine::SCAN_OPTIONS options;
+    XBinary::PDSTRUCT state;
+    QList<XScanEngine::SIGNATURE_RECORD> signatures;
+    QList<XScanEngine::SCANSTRUCT> records;
+    QStringList infoMessages;
+    QStringList errorMessages;
+    DiE_ScriptEngine *engine;
+};
+
+QJsonObject step(
+    EngineFixture *fixture,
+    const QString &source,
+    const QString &name
+)
+{
+    return QJsonObject{
+        {"evaluation", evaluate(fixture->engine, source, name)},
+        {"records", recordSnapshot(fixture->records)},
+        {"engine_is_stopped", fixture->engine->isStopped()},
+    };
+}
+
+QJsonObject surfaceObservations()
+{
+    EngineFixture fixture;
+    const QStringList names = {
+        "includeScript",
+        "_log",
+        "_setResult",
+        "_isResultPresent",
+        "_getNumberOfResults",
+        "_removeResult",
+        "_isStop",
+        "_encodingList",
+        "_isConsoleMode",
+        "_isLiteMode",
+        "_isGuiMode",
+        "_isLibraryMode",
+        "_breakScan",
+        "_getEngineVersion",
+        "_getOS",
+        "_getQtVersion",
+    };
+    QJsonObject methods;
+    for (const QString &name : names) {
+        methods.insert(
+            name,
+            QJsonObject{
+                {
+                    "type",
+                    evaluate(
+                        fixture.engine,
+                        QString("typeof %1").arg(name),
+                        QString("typeof-%1.js").arg(name)
+                    )
+                },
+                {
+                    "length",
+                    evaluate(
+                        fixture.engine,
+                        QString(
+                            "typeof %1 === 'function' ? %1.length : null"
+                        ).arg(name),
+                        QString("length-%1.js").arg(name)
+                    )
+                },
+            }
+        );
+    }
+    return QJsonObject{{"methods", methods}};
+}
+
+QJsonObject resultObservations()
+{
+    EngineFixture fixture;
+    QJsonArray steps;
+    steps.append(
+        step(
+            &fixture,
+            "_setResult('compiler','Rust','1.0','first')",
+            "result-add-first.js"
+        )
+    );
+    steps.append(
+        step(
+            &fixture,
+            "_setResult('COMPILER','rust','2.0','duplicate')",
+            "result-add-duplicate.js"
+        )
+    );
+    steps.append(
+        step(
+            &fixture,
+            "_isResultPresent('compiler','RUST')",
+            "result-present-case.js"
+        )
+    );
+    steps.append(
+        step(
+            &fixture,
+            "_getNumberOfResults('')",
+            "result-count-wildcard.js"
+        )
+    );
+    steps.append(
+        step(
+            &fixture,
+            "_removeResult('compiler','Rust')",
+            "result-remove-first.js"
+        )
+    );
+    steps.append(
+        step(
+            &fixture,
+            "_setResult('compiler','Rust','3.0','blocked')",
+            "result-add-blocked.js"
+        )
+    );
+    steps.append(
+        step(
+            &fixture,
+            "_removeResult('compiler','')",
+            "result-remove-empty-name.js"
+        )
+    );
+    return QJsonObject{{"steps", steps}};
+}
+
+QJsonObject arrayRemovalObservations()
+{
+    EngineFixture fixture;
+    evaluate(
+        fixture.engine,
+        "_setResult('protector','Enigma','','')",
+        "array-remove-seed-enigma.js"
+    );
+    evaluate(
+        fixture.engine,
+        "_setResult('protector','Denuvo','','')",
+        "array-remove-seed-denuvo.js"
+    );
+    QJsonArray before = recordSnapshot(fixture.records);
+    QJsonObject removal = step(
+        &fixture,
+        "_removeResult('protector',['Enigma','Denuvo'])",
+        "array-remove-call.js"
+    );
+    QJsonObject addCombined = step(
+        &fixture,
+        "_setResult('protector','Enigma,Denuvo','','blocked-combined')",
+        "array-remove-block-combined.js"
+    );
+    return QJsonObject{
+        {"before", before},
+        {"removal", removal},
+        {"add_combined", addCombined},
+    };
+}
+
+QJsonObject missingArgumentObservations()
+{
+    EngineFixture fixture;
+    QJsonObject setResult = step(
+        &fixture,
+        "_setResult()",
+        "missing-set-result.js"
+    );
+    QJsonObject present = step(
+        &fixture,
+        "_isResultPresent()",
+        "missing-is-present.js"
+    );
+    QJsonObject count = step(
+        &fixture,
+        "_getNumberOfResults()",
+        "missing-count.js"
+    );
+    return QJsonObject{
+        {"set_result", setResult},
+        {"is_present", present},
+        {"count", count},
+    };
+}
+
+QJsonObject stopObservations()
+{
+    EngineFixture fixture(true);
+    QJsonObject compiler = step(
+        &fixture,
+        "_setResult('compiler','Example','','')",
+        "first-wrapper-compiler.js"
+    );
+    QJsonObject protection = step(
+        &fixture,
+        "_setResult('protection','Example','','')",
+        "first-wrapper-protection.js"
+    );
+    QJsonObject jsStopBefore = step(
+        &fixture,
+        "_isStop()",
+        "first-wrapper-js-stop-before-break.js"
+    );
+    QJsonObject breakScan = step(
+        &fixture,
+        "_breakScan()",
+        "first-wrapper-break.js"
+    );
+    QJsonObject jsStopAfter = step(
+        &fixture,
+        "_isStop()",
+        "first-wrapper-js-stop-after-break.js"
+    );
+    return QJsonObject{
+        {"compiler", compiler},
+        {"protection", protection},
+        {"js_stop_before_break", jsStopBefore},
+        {"break_scan", breakScan},
+        {"js_stop_after_break", jsStopAfter},
+    };
+}
+
+QJsonObject includeObservations()
+{
+    EngineFixture fixture;
+    XScanEngine::SIGNATURE_RECORD signature = {};
+    signature.fileType = XBinary::FT_UNKNOWN;
+    signature.sName = "probe-include";
+    signature.sText =
+        "var includedProbe = "
+        "(typeof includedProbe === 'undefined' ? 1 : includedProbe + 1);";
+    fixture.signatures.append(signature);
+
+    QJsonObject first = step(
+        &fixture,
+        "includeScript('PrObE-InClUdE')",
+        "include-first.js"
+    );
+    QJsonObject valueAfterFirst = step(
+        &fixture,
+        "includedProbe",
+        "include-value-first.js"
+    );
+    QJsonObject second = step(
+        &fixture,
+        "includeScript('probe-include')",
+        "include-second.js"
+    );
+    QJsonObject valueAfterSecond = step(
+        &fixture,
+        "includedProbe",
+        "include-value-second.js"
+    );
+    QJsonObject missing = step(
+        &fixture,
+        "includeScript('missing-include')",
+        "include-missing.js"
+    );
+    QJsonArray errors;
+    for (const QString &message : fixture.errorMessages) {
+        errors.append(message);
+    }
+    return QJsonObject{
+        {"first", first},
+        {"value_after_first", valueAfterFirst},
+        {"second", second},
+        {"value_after_second", valueAfterSecond},
+        {"missing", missing},
+        {"error_messages", errors},
+    };
+}
+
+QJsonObject infoObservations()
+{
+    EngineFixture fixture;
+    QJsonObject missing = step(
+        &fixture,
+        "_log()",
+        "log-missing.js"
+    );
+    QJsonObject nullValue = step(
+        &fixture,
+        "_log(null)",
+        "log-null.js"
+    );
+    QJsonObject number = step(
+        &fixture,
+        "_log(42)",
+        "log-number.js"
+    );
+    qint32 beforeEncoding = fixture.infoMessages.count();
+    QJsonObject encoding = step(
+        &fixture,
+        "_encodingList()",
+        "encoding-list.js"
+    );
+    QStringList encodingMessages =
+        fixture.infoMessages.mid(beforeEncoding);
+    QByteArray encodingBytes;
+    for (const QString &message : encodingMessages) {
+        if (!encodingBytes.isEmpty()) {
+            encodingBytes.append('\0');
+        }
+        encodingBytes.append(message.toUtf8());
+    }
+    QJsonArray logMessages;
+    for (qint32 i = 0; i < beforeEncoding; i++) {
+        logMessages.append(fixture.infoMessages.at(i));
+    }
+    return QJsonObject{
+        {"missing", missing},
+        {"null", nullValue},
+        {"number", number},
+        {"log_messages", logMessages},
+        {"encoding_call", encoding},
+        {"encoding_message_count", encodingMessages.count()},
+        {
+            "encoding_messages_sha256",
+            QString::fromLatin1(
+                QCryptographicHash::hash(
+                    encodingBytes,
+                    QCryptographicHash::Sha256
+                ).toHex()
+            )
+        },
+        {
+            "encoding_first",
+            encodingMessages.isEmpty()
+                ? QString()
+                : encodingMessages.first()
+        },
+        {
+            "encoding_last",
+            encodingMessages.isEmpty()
+                ? QString()
+                : encodingMessages.last()
+        },
+    };
+}
+
+QJsonObject modeObservations()
+{
+    EngineFixture fixture;
+    QJsonObject output;
+    QCoreApplication::setApplicationName("die");
+    output.insert(
+        "die",
+        QJsonObject{
+            {
+                "application_name",
+                QCoreApplication::applicationName()
+            },
+            {
+                "console",
+                evaluate(
+                    fixture.engine,
+                    "_isConsoleMode()",
+                    "mode-die-console.js"
+                )
+            },
+            {
+                "gui",
+                evaluate(
+                    fixture.engine,
+                    "_isGuiMode()",
+                    "mode-die-gui.js"
+                )
+            },
+            {
+                "lite",
+                evaluate(
+                    fixture.engine,
+                    "_isLiteMode()",
+                    "mode-die-lite.js"
+                )
+            },
+            {
+                "library",
+                evaluate(
+                    fixture.engine,
+                    "_isLibraryMode()",
+                    "mode-die-library.js"
+                )
+            },
+        }
+    );
+    QCoreApplication::setApplicationName("diel");
+    output.insert(
+        "diel",
+        QJsonObject{
+            {
+                "application_name",
+                QCoreApplication::applicationName()
+            },
+            {
+                "lite",
+                evaluate(
+                    fixture.engine,
+                    "_isLiteMode()",
+                    "mode-diel-lite.js"
+                )
+            },
+        }
+    );
+    QCoreApplication::setApplicationName("");
+    output.insert(
+        "empty_requested",
+        QJsonObject{
+            {
+                "application_name",
+                QCoreApplication::applicationName()
+            },
+            {
+                "library",
+                evaluate(
+                    fixture.engine,
+                    "_isLibraryMode()",
+                    "mode-empty-library.js"
+                )
+            },
+        }
+    );
+    QCoreApplication::setApplicationName("die");
+    output.insert(
+        "engine_version",
+        evaluate(
+            fixture.engine,
+            "_getEngineVersion()",
+            "engine-version.js"
+        )
+    );
+    output.insert(
+        "os",
+        evaluate(fixture.engine, "_getOS()", "os.js")
+    );
+    return output;
+}
+
+}  // namespace
+
+int main(int argc, char *argv[])
+{
+    QCoreApplication application(argc, argv);
+    if (argc != 1) {
+        std::fprintf(stderr, "global HostApi harness takes no arguments\n");
+        return 2;
+    }
+    QCoreApplication::setApplicationName("die");
+    QCoreApplication::setApplicationVersion("9.9.9");
+
+    QJsonObject output;
+    output.insert("schema_version", 1);
+    output.insert("upstream_commit", UPSTREAM_COMMIT);
+    output.insert("die_script_commit", DIE_SCRIPT_COMMIT);
+    output.insert("rules_commit", RULES_COMMIT);
+    output.insert("qt_version", QT_VERSION_STR);
+    output.insert("surface", surfaceObservations());
+    output.insert("results", resultObservations());
+    output.insert("array_removal", arrayRemovalObservations());
+    output.insert("missing_arguments", missingArgumentObservations());
+    output.insert("stop", stopObservations());
+    output.insert("include", includeObservations());
+    output.insert("info", infoObservations());
+    output.insert("modes", modeObservations());
+
+    QByteArray serialized =
+        QJsonDocument(output).toJson(QJsonDocument::Compact);
+    std::fwrite(
+        serialized.constData(),
+        1,
+        static_cast<size_t>(serialized.size()),
+        stdout
+    );
+    std::fputc('\n', stdout);
+    return 0;
+}
