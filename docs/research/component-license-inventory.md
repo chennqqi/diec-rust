@@ -83,7 +83,9 @@ python tools\upstream\audit_component_licenses.py `
 
 ## 尚未完成
 
-- `XArchive/Algos`、zlib/LZMA/PPMd 的实际编译文件与文件头逐项分类；
+- [`xarchive-license-closure.md`](xarchive-license-closure.md) 已固定 Linux Qt5
+  CMake CLI 的 106 个 XArchive 编译单元和 217 个依赖文件；其中聚合
+  Brotli/Zstandard 源码仍缺原始许可证/版本溯源；
 - XYara 内 bundled YARA、TLSH、authenticode 和生成 parser 的文件级条款；
 - qmake/CMake、普通 scan/info/struct 和 GUI 的实际 object/link map 对应关系；
 - rules、YARA rules、PEiD rules 和 signatures 数据资产的逐路径许可结论；

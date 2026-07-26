@@ -527,6 +527,9 @@ upstream 与 Rust 使用相同 bytes/options/database；无法等价的 case 不
 - component license inventory：58 个 gitlink commit、root LICENSE path/hash、
   nested `.gitmodules` 和 bundled license candidate diff；候选文件名清单不得
   代替实际 object/link/file-header license closure；
+- bundled build closure：由固定 link line 和 `.o.d` 反推实际 compile
+  source/header/archive，固定 path/hash/license marker，并拒绝对象数或链接关系
+  静默漂移；
 - fuzz corpus replay、零未分类 crash；
 - benchmark 与 size/resource gate；
 - release binary/library hash、依赖和签名清单。

@@ -175,7 +175,9 @@ baseline 的变更都要检查本表。
   全部首行为 MIT、共有 12 个文本 hash，且无嵌套 `.gitmodules`；103 个按名称
   发现的 license files 中 45 个位于 bundled/build-tool 路径。该结果关闭直接
   component root/submodule inventory，不覆盖 XArchive/XYara 文件头、规则数据或
-  候选 Rust 依赖组合。
+  候选 Rust 依赖组合。固定 Linux CLI 又证明 XArchive 有 106 个实际编译单元和
+  217 个依赖文件；其中 Brotli/Zstandard 聚合源进入链接闭包但没有文件内
+  license marker，是当前明确未关闭的归属缺口。
 - **缓解**：每次导入/同步前生成 source/license inventory；保留原始 LICENSE、
   commit、path、hash 和 attribution；选型前由发布责任人复核组合。
 - **验证**：规则 bundle、source closure、binary dependency、samples 和 release

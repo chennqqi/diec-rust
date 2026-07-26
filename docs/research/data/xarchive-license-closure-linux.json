@@ -1,0 +1,2697 @@
+{
+  "build": {
+    "archive_object_count": 22,
+    "archive_object_counts": {
+      "../XArchive/3rdparty/bzip2/libbzip2.a": 8,
+      "../XArchive/3rdparty/lzma/liblzma.a": 2,
+      "../XArchive/3rdparty/ppmd/libppmd.a": 4,
+      "../XArchive/3rdparty/zlib/libzlib.a": 8
+    },
+    "direct_object_count": 84,
+    "link_path": "src/console/CMakeFiles/diec.dir/link.txt",
+    "link_sha256": "b2a4c7953997137d45f06eb3541d5da2efe127e85905c62311f5e03e5a500afb",
+    "linked_xarchive_archives": [
+      "../XArchive/3rdparty/bzip2/libbzip2.a",
+      "../XArchive/3rdparty/lzma/liblzma.a",
+      "../XArchive/3rdparty/ppmd/libppmd.a",
+      "../XArchive/3rdparty/zlib/libzlib.a"
+    ]
+  },
+  "closure_file_count": 217,
+  "compile_source_count": 106,
+  "compile_units": [
+    {
+      "dependency_file": "src/XArchive/3rdparty/bzip2/CMakeFiles/bzip2.dir/src/blocksort.c.o.d",
+      "linkage": "../XArchive/3rdparty/bzip2/libbzip2.a",
+      "source": "3rdparty/bzip2/src/blocksort.c"
+    },
+    {
+      "dependency_file": "src/XArchive/3rdparty/bzip2/CMakeFiles/bzip2.dir/src/bzip2.c.o.d",
+      "linkage": "../XArchive/3rdparty/bzip2/libbzip2.a",
+      "source": "3rdparty/bzip2/src/bzip2.c"
+    },
+    {
+      "dependency_file": "src/XArchive/3rdparty/bzip2/CMakeFiles/bzip2.dir/src/bzlib.c.o.d",
+      "linkage": "../XArchive/3rdparty/bzip2/libbzip2.a",
+      "source": "3rdparty/bzip2/src/bzlib.c"
+    },
+    {
+      "dependency_file": "src/XArchive/3rdparty/bzip2/CMakeFiles/bzip2.dir/src/compress.c.o.d",
+      "linkage": "../XArchive/3rdparty/bzip2/libbzip2.a",
+      "source": "3rdparty/bzip2/src/compress.c"
+    },
+    {
+      "dependency_file": "src/XArchive/3rdparty/bzip2/CMakeFiles/bzip2.dir/src/crctable.c.o.d",
+      "linkage": "../XArchive/3rdparty/bzip2/libbzip2.a",
+      "source": "3rdparty/bzip2/src/crctable.c"
+    },
+    {
+      "dependency_file": "src/XArchive/3rdparty/bzip2/CMakeFiles/bzip2.dir/src/decompress.c.o.d",
+      "linkage": "../XArchive/3rdparty/bzip2/libbzip2.a",
+      "source": "3rdparty/bzip2/src/decompress.c"
+    },
+    {
+      "dependency_file": "src/XArchive/3rdparty/bzip2/CMakeFiles/bzip2.dir/src/huffman.c.o.d",
+      "linkage": "../XArchive/3rdparty/bzip2/libbzip2.a",
+      "source": "3rdparty/bzip2/src/huffman.c"
+    },
+    {
+      "dependency_file": "src/XArchive/3rdparty/bzip2/CMakeFiles/bzip2.dir/src/randtable.c.o.d",
+      "linkage": "../XArchive/3rdparty/bzip2/libbzip2.a",
+      "source": "3rdparty/bzip2/src/randtable.c"
+    },
+    {
+      "dependency_file": "src/XArchive/3rdparty/lzma/CMakeFiles/lzma.dir/src/Lzma2Dec.c.o.d",
+      "linkage": "../XArchive/3rdparty/lzma/liblzma.a",
+      "source": "3rdparty/lzma/src/Lzma2Dec.c"
+    },
+    {
+      "dependency_file": "src/XArchive/3rdparty/lzma/CMakeFiles/lzma.dir/src/LzmaDec.c.o.d",
+      "linkage": "../XArchive/3rdparty/lzma/liblzma.a",
+      "source": "3rdparty/lzma/src/LzmaDec.c"
+    },
+    {
+      "dependency_file": "src/XArchive/3rdparty/ppmd/CMakeFiles/ppmd.dir/src/Ppmd7.c.o.d",
+      "linkage": "../XArchive/3rdparty/ppmd/libppmd.a",
+      "source": "3rdparty/ppmd/src/Ppmd7.c"
+    },
+    {
+      "dependency_file": "src/XArchive/3rdparty/ppmd/CMakeFiles/ppmd.dir/src/Ppmd7Dec.c.o.d",
+      "linkage": "../XArchive/3rdparty/ppmd/libppmd.a",
+      "source": "3rdparty/ppmd/src/Ppmd7Dec.c"
+    },
+    {
+      "dependency_file": "src/XArchive/3rdparty/ppmd/CMakeFiles/ppmd.dir/src/Ppmd8.c.o.d",
+      "linkage": "../XArchive/3rdparty/ppmd/libppmd.a",
+      "source": "3rdparty/ppmd/src/Ppmd8.c"
+    },
+    {
+      "dependency_file": "src/XArchive/3rdparty/ppmd/CMakeFiles/ppmd.dir/src/Ppmd8Dec.c.o.d",
+      "linkage": "../XArchive/3rdparty/ppmd/libppmd.a",
+      "source": "3rdparty/ppmd/src/Ppmd8Dec.c"
+    },
+    {
+      "dependency_file": "src/XArchive/3rdparty/zlib/CMakeFiles/zlib.dir/src/adler32.c.o.d",
+      "linkage": "../XArchive/3rdparty/zlib/libzlib.a",
+      "source": "3rdparty/zlib/src/adler32.c"
+    },
+    {
+      "dependency_file": "src/XArchive/3rdparty/zlib/CMakeFiles/zlib.dir/src/crc32.c.o.d",
+      "linkage": "../XArchive/3rdparty/zlib/libzlib.a",
+      "source": "3rdparty/zlib/src/crc32.c"
+    },
+    {
+      "dependency_file": "src/XArchive/3rdparty/zlib/CMakeFiles/zlib.dir/src/deflate.c.o.d",
+      "linkage": "../XArchive/3rdparty/zlib/libzlib.a",
+      "source": "3rdparty/zlib/src/deflate.c"
+    },
+    {
+      "dependency_file": "src/XArchive/3rdparty/zlib/CMakeFiles/zlib.dir/src/inffast.c.o.d",
+      "linkage": "../XArchive/3rdparty/zlib/libzlib.a",
+      "source": "3rdparty/zlib/src/inffast.c"
+    },
+    {
+      "dependency_file": "src/XArchive/3rdparty/zlib/CMakeFiles/zlib.dir/src/inflate.c.o.d",
+      "linkage": "../XArchive/3rdparty/zlib/libzlib.a",
+      "source": "3rdparty/zlib/src/inflate.c"
+    },
+    {
+      "dependency_file": "src/XArchive/3rdparty/zlib/CMakeFiles/zlib.dir/src/inftrees.c.o.d",
+      "linkage": "../XArchive/3rdparty/zlib/libzlib.a",
+      "source": "3rdparty/zlib/src/inftrees.c"
+    },
+    {
+      "dependency_file": "src/XArchive/3rdparty/zlib/CMakeFiles/zlib.dir/src/trees.c.o.d",
+      "linkage": "../XArchive/3rdparty/zlib/libzlib.a",
+      "source": "3rdparty/zlib/src/trees.c"
+    },
+    {
+      "dependency_file": "src/XArchive/3rdparty/zlib/CMakeFiles/zlib.dir/src/zutil.c.o.d",
+      "linkage": "../XArchive/3rdparty/zlib/libzlib.a",
+      "source": "3rdparty/zlib/src/zutil.c"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/algo_utils.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/algo_utils.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xacedecoder.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/xacedecoder.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xaesdecoder.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/xaesdecoder.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xarjdecoder.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/xarjdecoder.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xascii85decoder.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/xascii85decoder.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xbcj2decoder.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/xbcj2decoder.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xblake2sp.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/xblake2sp.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xbrotlidecoder.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/xbrotlidecoder.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xbzip2decoder.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/xbzip2decoder.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xcompressdecoder.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/xcompressdecoder.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xdeflatedecoder.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/xdeflatedecoder.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/ximplodedecoder.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/ximplodedecoder.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xit214decoder.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/xit214decoder.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xlzhdecoder.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/xlzhdecoder.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xlzmadecoder.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/xlzmadecoder.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xlzodecoder.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/xlzodecoder.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xlzssdecoder.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/xlzssdecoder.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xlzwdecoder.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/xlzwdecoder.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xppmd7model.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/xppmd7model.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xppmddecoder.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/xppmddecoder.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xppmdmodel.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/xppmdmodel.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xppmdrangedecoder.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/xppmdrangedecoder.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xrardecoder.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/xrardecoder.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xreducedecoder.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/xreducedecoder.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xsha256decoder.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/xsha256decoder.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xshrinkdecoder.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/xshrinkdecoder.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xstoredecoder.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/xstoredecoder.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xucldecoder.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/xucldecoder.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xzipcryptodecoder.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/xzipcryptodecoder.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xzstddecoder.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/xzstddecoder.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/zstddeclib.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "Algos/zstddeclib.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/x_ar.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "x_ar.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xace.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xace.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xapk.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xapk.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xapks.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xapks.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xarchive.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xarchive.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xarchives.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xarchives.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xarj.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xarj.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xbrotli.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xbrotli.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xbzip2.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xbzip2.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xcab.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xcab.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xcfbf.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xcfbf.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xcompress.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xcompress.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xcompresseddevice.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xcompresseddevice.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xcompressz.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xcompressz.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xcpio.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xcpio.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xdeb.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xdeb.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xdecompress.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xdecompress.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xdmg.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xdmg.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xdos16.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xdos16.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xfreearc.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xfreearc.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xgzip.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xgzip.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xipa.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xipa.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xiso9660.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xiso9660.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xjar.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xjar.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xlha.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xlha.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xlz4.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xlz4.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xlzip.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xlzip.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xlzma.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xlzma.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xlzo.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xlzo.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xmachofat.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xmachofat.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xminidump.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xminidump.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xnpm.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xnpm.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xrar.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xrar.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xseaarc.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xseaarc.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xsevenzip.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xsevenzip.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xsquashfs.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xsquashfs.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xszdd.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xszdd.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xtar.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xtar.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xtar_bzip2.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xtar_bzip2.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xtar_compress.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xtar_compress.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xtar_gz.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xtar_gz.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xtar_lzip.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xtar_lzip.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xtar_lzma.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xtar_lzma.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xtar_lzop.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xtar_lzop.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xtar_xz.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xtar_xz.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xtar_zstd.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xtar_zstd.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xtarcompressed.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xtarcompressed.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xudf.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xudf.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xwim.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xwim.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xxz.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xxz.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xzip.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xzip.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xzlib.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xzlib.cpp"
+    },
+    {
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xzstd.cpp.o.d",
+      "linkage": "diec-direct",
+      "source": "xzstd.cpp"
+    }
+  ],
+  "component_lock": {
+    "path": "upstream/components.lock.toml",
+    "sha256": "9fabcaf6a0062fcae7007ea5af13a98876e8a6e08b3e2e4727fdff06d974c63c"
+  },
+  "files": [
+    {
+      "bytes": 30694,
+      "license_markers": [
+        "bzip2-copyright"
+      ],
+      "origin_markers": [],
+      "path": "3rdparty/bzip2/src/blocksort.c",
+      "sha256": "5a87cc2624b4c676fdb595a3caad22cfe4f667e347c7dcc22ad39c64bc243471"
+    },
+    {
+      "bytes": 58556,
+      "license_markers": [
+        "bzip2-copyright"
+      ],
+      "origin_markers": [],
+      "path": "3rdparty/bzip2/src/bzip2.c",
+      "sha256": "87aff50026000cbab8d7e7314bab83a980fd481c96005d8650f3df1c748d9fcf"
+    },
+    {
+      "bytes": 45995,
+      "license_markers": [
+        "bzip2-copyright"
+      ],
+      "origin_markers": [],
+      "path": "3rdparty/bzip2/src/bzlib.c",
+      "sha256": "2ff7ee75f54a48632ce7200555d6064397c134e13d1cece200131bbc8f81a94b"
+    },
+    {
+      "bytes": 5852,
+      "license_markers": [
+        "bzip2-copyright"
+      ],
+      "origin_markers": [],
+      "path": "3rdparty/bzip2/src/bzlib.h",
+      "sha256": "51452ee61a0f07b77d35b6f21cfa636fc623a11c2cd2b912f8116a242b1f9297"
+    },
+    {
+      "bytes": 13244,
+      "license_markers": [
+        "bzip2-copyright"
+      ],
+      "origin_markers": [],
+      "path": "3rdparty/bzip2/src/bzlib_private.h",
+      "sha256": "0cdc41a109e5f003a691a3b541c7c75ea44b5da82f91605b197124a598a79741"
+    },
+    {
+      "bytes": 20561,
+      "license_markers": [
+        "bzip2-copyright"
+      ],
+      "origin_markers": [],
+      "path": "3rdparty/bzip2/src/compress.c",
+      "sha256": "eaa8b0d57e61aa259938e5023e0afa33bf88146a6797c38409d1c6e72ae8ccbf"
+    },
+    {
+      "bytes": 4818,
+      "license_markers": [
+        "bzip2-copyright"
+      ],
+      "origin_markers": [],
+      "path": "3rdparty/bzip2/src/crctable.c",
+      "sha256": "12cde199e167a5d48a8a463d1234d6ec345f77df2b11dcd025fe137da6eb53da"
+    },
+    {
+      "bytes": 20919,
+      "license_markers": [
+        "bzip2-copyright"
+      ],
+      "origin_markers": [],
+      "path": "3rdparty/bzip2/src/decompress.c",
+      "sha256": "e703faddf69686cb5664be628da2e3c8c443acc16e2a137a0d546d4ededbf72e"
+    },
+    {
+      "bytes": 6991,
+      "license_markers": [
+        "bzip2-copyright"
+      ],
+      "origin_markers": [],
+      "path": "3rdparty/bzip2/src/huffman.c",
+      "sha256": "faa54732e6148d5c5832c5cd7c1986c1ba25b6917354c42e0cd6a7370ca25056"
+    },
+    {
+      "bytes": 3860,
+      "license_markers": [
+        "bzip2-copyright"
+      ],
+      "origin_markers": [],
+      "path": "3rdparty/bzip2/src/randtable.c",
+      "sha256": "46d27493aa8f64bed44495e3fa30233a2938056b2b274410bd67aaf40b8ef5f6"
+    },
+    {
+      "bytes": 15740,
+      "license_markers": [
+        "public-domain"
+      ],
+      "origin_markers": [
+        "lzma-7zip"
+      ],
+      "path": "3rdparty/lzma/src/7zTypes.h",
+      "sha256": "e3636de033274b264be8c66ded3443a79e45171492fcb4626ca3cb894738b186"
+    },
+    {
+      "bytes": 7620,
+      "license_markers": [
+        "public-domain"
+      ],
+      "origin_markers": [
+        "lzma-7zip"
+      ],
+      "path": "3rdparty/lzma/src/Compiler.h",
+      "sha256": "e4b14a798e6c01bc885966249afa6b5061a5dd10c723ce86b254e89ae650de7f"
+    },
+    {
+      "bytes": 12891,
+      "license_markers": [
+        "public-domain"
+      ],
+      "origin_markers": [
+        "lzma-7zip"
+      ],
+      "path": "3rdparty/lzma/src/Lzma2Dec.c",
+      "sha256": "0b9928f0092564e15db238c38cc03ece29dc620b23534b1c53a232f7cacc3147"
+    },
+    {
+      "bytes": 3781,
+      "license_markers": [
+        "public-domain"
+      ],
+      "origin_markers": [
+        "lzma-7zip"
+      ],
+      "path": "3rdparty/lzma/src/Lzma2Dec.h",
+      "sha256": "a4b97083c3817d3e1e3049f8b1abc0b4ca3e91192606497c02bb5351b57422c7"
+    },
+    {
+      "bytes": 38106,
+      "license_markers": [
+        "public-domain"
+      ],
+      "origin_markers": [
+        "lzma-7zip"
+      ],
+      "path": "3rdparty/lzma/src/LzmaDec.c",
+      "sha256": "6e96899def1c643f24435563c96b1cffe9be589ffecaa3f663d6cab77845e3e6"
+    },
+    {
+      "bytes": 7166,
+      "license_markers": [
+        "public-domain"
+      ],
+      "origin_markers": [
+        "lzma-7zip"
+      ],
+      "path": "3rdparty/lzma/src/LzmaDec.h",
+      "sha256": "3aaf07b4ae4173a2d103179455dc7089b5ddbc7fc3db3c0e40964a7499c69266"
+    },
+    {
+      "bytes": 182,
+      "license_markers": [
+        "public-domain"
+      ],
+      "origin_markers": [
+        "lzma-7zip"
+      ],
+      "path": "3rdparty/lzma/src/Precomp.h",
+      "sha256": "3850ffe13cb2207dba1c037fe41a803303883aaeec1407052f6038c4e6722ace"
+    },
+    {
+      "bytes": 16331,
+      "license_markers": [
+        "public-domain"
+      ],
+      "origin_markers": [
+        "lzma-7zip"
+      ],
+      "path": "3rdparty/ppmd/src/7zTypes.h",
+      "sha256": "7123a497c26b6d3ab5bc1b95909cab3965efba2a09c6afbb197736543cb011c8"
+    },
+    {
+      "bytes": 7866,
+      "license_markers": [
+        "public-domain"
+      ],
+      "origin_markers": [
+        "lzma-7zip"
+      ],
+      "path": "3rdparty/ppmd/src/Compiler.h",
+      "sha256": "f6a87109b7eb1a7d3974b37361f39bb52e4ba06fac6602c1b79bf7866fe64bdf"
+    },
+    {
+      "bytes": 19521,
+      "license_markers": [
+        "public-domain"
+      ],
+      "origin_markers": [
+        "lzma-7zip"
+      ],
+      "path": "3rdparty/ppmd/src/CpuArch.h",
+      "sha256": "45a4f2e83d58da909201923db73f580fe25e8fa2aaa3bf41edc4a4109cba4d10"
+    },
+    {
+      "bytes": 5613,
+      "license_markers": [
+        "public-domain"
+      ],
+      "origin_markers": [
+        "lzma-7zip",
+        "ppmd"
+      ],
+      "path": "3rdparty/ppmd/src/Ppmd.h",
+      "sha256": "0356e2eb0258e3723bf49355d97e52a712a9abfdda60f177410a406353e056dd"
+    },
+    {
+      "bytes": 30040,
+      "license_markers": [
+        "public-domain"
+      ],
+      "origin_markers": [
+        "lzma-7zip",
+        "ppmd"
+      ],
+      "path": "3rdparty/ppmd/src/Ppmd7.c",
+      "sha256": "07dcecf2616a8731c41bb219a44a13881b87aec34ef880226c5ebb668c17b3bd"
+    },
+    {
+      "bytes": 4614,
+      "license_markers": [
+        "public-domain"
+      ],
+      "origin_markers": [
+        "lzma-7zip",
+        "ppmd"
+      ],
+      "path": "3rdparty/ppmd/src/Ppmd7.h",
+      "sha256": "dbb8572208a5670dd01be9121c3a65870ccc50d82b47dd959f5f811be7f0e459"
+    },
+    {
+      "bytes": 7518,
+      "license_markers": [
+        "public-domain"
+      ],
+      "origin_markers": [
+        "lzma-7zip",
+        "ppmd"
+      ],
+      "path": "3rdparty/ppmd/src/Ppmd7Dec.c",
+      "sha256": "79190f3575984bed0f5ddc827ca2b99a25f6e5704c3946bad8556cb7f742b5d7"
+    },
+    {
+      "bytes": 37952,
+      "license_markers": [
+        "public-domain"
+      ],
+      "origin_markers": [
+        "lzma-7zip",
+        "ppmd"
+      ],
+      "path": "3rdparty/ppmd/src/Ppmd8.c",
+      "sha256": "4b4ad25f8d3d33f4fcd913c6e042425b94056e11a99ecf2cbde6127d15239537"
+    },
+    {
+      "bytes": 4264,
+      "license_markers": [
+        "public-domain"
+      ],
+      "origin_markers": [
+        "lzma-7zip",
+        "ppmd"
+      ],
+      "path": "3rdparty/ppmd/src/Ppmd8.h",
+      "sha256": "413150e9baaa7a07fe4ae52adbbfd72c78ebd693158acd6c8f3c7bdf30fca956"
+    },
+    {
+      "bytes": 7347,
+      "license_markers": [
+        "public-domain"
+      ],
+      "origin_markers": [
+        "lzma-7zip",
+        "ppmd"
+      ],
+      "path": "3rdparty/ppmd/src/Ppmd8Dec.c",
+      "sha256": "1c5c91febe0c12045b531ea2b83cafb4bf79314d99919ef3c7fb387dec9b2a61"
+    },
+    {
+      "bytes": 3376,
+      "license_markers": [
+        "public-domain"
+      ],
+      "origin_markers": [
+        "lzma-7zip"
+      ],
+      "path": "3rdparty/ppmd/src/Precomp.h",
+      "sha256": "391517fb8c2a9a112237ba5c5a68e2f241ea2616b5c9eaba058b36d7d3676343"
+    },
+    {
+      "bytes": 5390,
+      "license_markers": [],
+      "origin_markers": [],
+      "path": "3rdparty/zlib/src/adler32.c",
+      "sha256": "77f6a3cb057ed493c15a268ef66a08ca0f28c44c427018e3cf2f22c92e69ea8f"
+    },
+    {
+      "bytes": 14495,
+      "license_markers": [],
+      "origin_markers": [],
+      "path": "3rdparty/zlib/src/crc32.c",
+      "sha256": "a725577fc519a6280ad0cdc6006fc248749bda46534a2d5ab0eaba2e1744cabf"
+    },
+    {
+      "bytes": 31003,
+      "license_markers": [],
+      "origin_markers": [],
+      "path": "3rdparty/zlib/src/crc32.h",
+      "sha256": "cb2e444abab6cb8672a11c33ca46dfd6c3f3d6106be11524225b3ab99542cbcc"
+    },
+    {
+      "bytes": 81052,
+      "license_markers": [
+        "zlib-notice"
+      ],
+      "origin_markers": [],
+      "path": "3rdparty/zlib/src/deflate.c",
+      "sha256": "8ac2529abc4becd55620976c858c1073945621075a0e05109d5ccdf868eb4a07"
+    },
+    {
+      "bytes": 13499,
+      "license_markers": [
+        "zlib-notice"
+      ],
+      "origin_markers": [],
+      "path": "3rdparty/zlib/src/deflate.h",
+      "sha256": "11debb027e14f744d9f50d31717f6af3869e2b98019d51203fc7c3e519884e75"
+    },
+    {
+      "bytes": 7037,
+      "license_markers": [],
+      "origin_markers": [],
+      "path": "3rdparty/zlib/src/gzguts.h",
+      "sha256": "10e384a35288c61595a9647decfd51119b69e576047a9d52028b11486c485544"
+    },
+    {
+      "bytes": 13301,
+      "license_markers": [],
+      "origin_markers": [],
+      "path": "3rdparty/zlib/src/inffast.c",
+      "sha256": "b3a70f46437d977f226efb15462a6e891a6b482aaff0617e402dfcdbae772fa1"
+    },
+    {
+      "bytes": 438,
+      "license_markers": [],
+      "origin_markers": [],
+      "path": "3rdparty/zlib/src/inffast.h",
+      "sha256": "69826e9bcdf9ae6a774d8eca4ae2e7f9f7a3c6f77f5d1f30de24b96a2c818780"
+    },
+    {
+      "bytes": 6426,
+      "license_markers": [],
+      "origin_markers": [],
+      "path": "3rdparty/zlib/src/inffixed.h",
+      "sha256": "869a9f968e6b85ce2a2364db6325a35eb0f5b283727b40ac74d2cf053f364124"
+    },
+    {
+      "bytes": 56361,
+      "license_markers": [],
+      "origin_markers": [],
+      "path": "3rdparty/zlib/src/inflate.c",
+      "sha256": "fca92513e8608fba48bfc7a801261a3175b0d42f8de3a5d73231f653a18c8294"
+    },
+    {
+      "bytes": 6743,
+      "license_markers": [],
+      "origin_markers": [],
+      "path": "3rdparty/zlib/src/inflate.h",
+      "sha256": "8aed60896e5329c8af371c5ce8849d22346067fd580d9a488205d0ed3aeead0a"
+    },
+    {
+      "bytes": 13303,
+      "license_markers": [],
+      "origin_markers": [],
+      "path": "3rdparty/zlib/src/inftrees.c",
+      "sha256": "fe80cd74aac2dc0606193486e6bc964797a7abef32724961883a39ec304e30de"
+    },
+    {
+      "bytes": 2990,
+      "license_markers": [],
+      "origin_markers": [],
+      "path": "3rdparty/zlib/src/inftrees.h",
+      "sha256": "d7066eba83ae46bd5e290e58ee2b39c692cc8c8466940c176665421420204e8c"
+    },
+    {
+      "bytes": 44964,
+      "license_markers": [
+        "zlib-notice"
+      ],
+      "origin_markers": [],
+      "path": "3rdparty/zlib/src/trees.c",
+      "sha256": "c6c1b3beda92808b38e18f998ebf389d7afd7b30d5eedd6d3c953fcccc4ba30d"
+    },
+    {
+      "bytes": 8600,
+      "license_markers": [],
+      "origin_markers": [],
+      "path": "3rdparty/zlib/src/trees.h",
+      "sha256": "ef4025453d5e62f39da4f7d0a04cd256e9091c8d2aff5aada59c31c22491e4dc"
+    },
+    {
+      "bytes": 16693,
+      "license_markers": [
+        "zlib-notice"
+      ],
+      "origin_markers": [],
+      "path": "3rdparty/zlib/src/zconf.h",
+      "sha256": "01c458c9f737ecd4b4d1d1c3e7f7d479f868b364aa170cd305ee4505fb927f14"
+    },
+    {
+      "bytes": 97487,
+      "license_markers": [
+        "zlib-notice"
+      ],
+      "origin_markers": [],
+      "path": "3rdparty/zlib/src/zlib.h",
+      "sha256": "0dab06cf1abe0cf6f2f16e9ee6cdc36d1cae929be2a126ac6046b212def829e2"
+    },
+    {
+      "bytes": 7629,
+      "license_markers": [
+        "zlib-notice"
+      ],
+      "origin_markers": [],
+      "path": "3rdparty/zlib/src/zutil.c",
+      "sha256": "1cf92ee1874877e8f4ae3124c7ad1131459d2388440bfd8bc5752a4d9b960ae1"
+    },
+    {
+      "bytes": 7398,
+      "license_markers": [
+        "zlib-notice"
+      ],
+      "origin_markers": [],
+      "path": "3rdparty/zlib/src/zutil.h",
+      "sha256": "92b711ca09e759c27d7c43626a4e0d3f52f84e400319d12ff9ee488ca4c23e95"
+    },
+    {
+      "bytes": 18969,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "ppmd"
+      ],
+      "path": "Algos/algo_utils.cpp",
+      "sha256": "47b50b5c89018c91e1d3f16f0550fecf5ac94de0ef9d05f537fb786e1d4acd54"
+    },
+    {
+      "bytes": 3101,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "ppmd"
+      ],
+      "path": "Algos/algo_utils.h",
+      "sha256": "5df5266d49472c5e63dae907bb582f8514c9ad9b10eba178c75c62e3403fc9f7"
+    },
+    {
+      "bytes": 884710,
+      "license_markers": [],
+      "origin_markers": [
+        "brotli"
+      ],
+      "path": "Algos/brotlideclib.cpp",
+      "sha256": "42289e96819b525d3dbb74e2812c0c5043d6fdaee10da10f87149625ebae5ed3"
+    },
+    {
+      "bytes": 21628,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xacedecoder.cpp",
+      "sha256": "b02f2d26874abf38cfc276234c1567d4ec446c2b21a429b90f864861b9095e12"
+    },
+    {
+      "bytes": 5957,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xacedecoder.h",
+      "sha256": "7adc8a86c3baf0f55c4fa26f2d9ba93b184e0870cccea6e9be16d7963c3372ec"
+    },
+    {
+      "bytes": 44440,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xaesdecoder.cpp",
+      "sha256": "f05f7cbe2235c937efe17caf088156d03951dc09a30507c4caa4f0732ecbc3ad"
+    },
+    {
+      "bytes": 5122,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xaesdecoder.h",
+      "sha256": "df3d298412b008598c7f7088e2cfcd484a42995a46b541f807cb362c43bb5583"
+    },
+    {
+      "bytes": 182596,
+      "license_markers": [
+        "mit-permission",
+        "public-domain",
+        "zlib-notice"
+      ],
+      "origin_markers": [
+        "lzma-7zip",
+        "ppmd"
+      ],
+      "path": "Algos/xalgo_local.h",
+      "sha256": "5e4062fafc25669984547576ee6b760a8eb8653a66fe9a2ed4e75523b3af0af4"
+    },
+    {
+      "bytes": 22845,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xarjdecoder.cpp",
+      "sha256": "8d2e454f26975a2cfa65648e3ffe47ff1cd54b65360757a4e630fa199ed8f286"
+    },
+    {
+      "bytes": 3962,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xarjdecoder.h",
+      "sha256": "6cd72fe8c2cbb9fc6f7218bd29f0b94d0b8bb753bf27eb0fd38f3c709542f76b"
+    },
+    {
+      "bytes": 6511,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xascii85decoder.cpp",
+      "sha256": "85575648b2335fc62772430c698394a91ab1b724ae5653d1d9f54d2cf5c93936"
+    },
+    {
+      "bytes": 1508,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xascii85decoder.h",
+      "sha256": "f1f37b735dc61017a39d7be904fbccf36ea648f946a8af8f71a9527166d67a39"
+    },
+    {
+      "bytes": 8121,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xbcj2decoder.cpp",
+      "sha256": "254d9773c5f709e4700d917815afba07f87325300bfbd0c14ee314a501b3018a"
+    },
+    {
+      "bytes": 2929,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xbcj2decoder.h",
+      "sha256": "1e601aab0dce37bf66bb0f6a52fdc0c3fb6a82f232824a180aba140628c06056"
+    },
+    {
+      "bytes": 12421,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xblake2sp.cpp",
+      "sha256": "4411bb60d37486797d1add6188c49a314cb1297ac1e2a49bc829bfc80bce9996"
+    },
+    {
+      "bytes": 2748,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xblake2sp.h",
+      "sha256": "05b71e8a761ad8a131bbe568b32c618c2fda153e7620f9e282fe37673ef88b08"
+    },
+    {
+      "bytes": 5038,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "brotli"
+      ],
+      "path": "Algos/xbrotlidecoder.cpp",
+      "sha256": "35a5172f7a5f6ac8b7b2f83dfcdd7fc458d5f2f787c90954a7c7b0256d9f3b2b"
+    },
+    {
+      "bytes": 1685,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "brotli"
+      ],
+      "path": "Algos/xbrotlidecoder.h",
+      "sha256": "42a0b76247dc3ef6f1432bf0af78ad6a39e7cae7f7ccd9e126b941a91fd03990"
+    },
+    {
+      "bytes": 72818,
+      "license_markers": [
+        "bzip2-copyright",
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xbzip2decoder.cpp",
+      "sha256": "41dd7f621d9711ae289bc6ccc14f8c4d887eaa2d399dd17b383178747c3cec7f"
+    },
+    {
+      "bytes": 7350,
+      "license_markers": [
+        "bzip2-copyright",
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xbzip2decoder.h",
+      "sha256": "6c25891ab05cb2a380cb7183c3b71dd08b6f7e4a83d0cf51e5f5fb5211022ca2"
+    },
+    {
+      "bytes": 8929,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xcompressdecoder.cpp",
+      "sha256": "e4c853ec9f7925be67042ec8a6871c11c4492cca4994ee0bed66e260c7a83540"
+    },
+    {
+      "bytes": 1554,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xcompressdecoder.h",
+      "sha256": "5e9de458db59e487abcb8c33d4fd927bef9aaf7d42c17e662ca163322faf69d4"
+    },
+    {
+      "bytes": 412636,
+      "license_markers": [
+        "mit-permission",
+        "zlib-notice"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xdeflatedecoder.cpp",
+      "sha256": "cb74b248ded89fea38940ee2ea8135f77a6a4d3b11bc1edd5dea1eb49e5627a6"
+    },
+    {
+      "bytes": 2100,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xdeflatedecoder.h",
+      "sha256": "461a61dac940da59fa3f1b6da2056bfa2a8a193f479657e7406295ddcf5f758b"
+    },
+    {
+      "bytes": 33024,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/ximplodedecoder.cpp",
+      "sha256": "161aab723639e33362f942fb239b5f3861cd78cd173fe9977496a42d55b09768"
+    },
+    {
+      "bytes": 1534,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/ximplodedecoder.h",
+      "sha256": "a23c6e1a771db09e6b05c21a2b43c514e33b24f859b6b8c13bd34f738f75b41f"
+    },
+    {
+      "bytes": 9811,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xit214decoder.cpp",
+      "sha256": "f6033563acdaac96a42fcbee7c8e527dd0b1664ff9b04bbbeb58d9b273bece4e"
+    },
+    {
+      "bytes": 1839,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xit214decoder.h",
+      "sha256": "a684018d40c523e38fcb2dc449b3490535d97df73db41c7bf6b6451cbfb0a2d8"
+    },
+    {
+      "bytes": 40592,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xlzhdecoder.cpp",
+      "sha256": "fbfc9577f37b3e70cda53cd1c239d2e3a80a72263e05e10040ff7dc8b4487379"
+    },
+    {
+      "bytes": 8013,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xlzhdecoder.h",
+      "sha256": "43d410e93398a59a57bf2e1f744aa82ed66d58019b7eea368cfd3dafda3eec7a"
+    },
+    {
+      "bytes": 72309,
+      "license_markers": [
+        "mit-permission",
+        "public-domain"
+      ],
+      "origin_markers": [
+        "lzma-7zip"
+      ],
+      "path": "Algos/xlzmadecoder.cpp",
+      "sha256": "5fd76d23badb01d7132b7ea14a7350d8023ff82ea199b08d9d842c6462ce17f3"
+    },
+    {
+      "bytes": 2049,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xlzmadecoder.h",
+      "sha256": "9c822dc5e64ea079f062badcaa7dc7e1b47264103c1f6e64cf6182936217e914"
+    },
+    {
+      "bytes": 11802,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xlzodecoder.cpp",
+      "sha256": "3a6ff49a38d6caae5c0f1ecd1cc49a6aa1501281d1e2762a83dd1464a4a4f49d"
+    },
+    {
+      "bytes": 1738,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xlzodecoder.h",
+      "sha256": "7edf36b347512316f5e880de76a381ddc758e01d49bb91b9837a90b6701d1a91"
+    },
+    {
+      "bytes": 6853,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xlzssdecoder.cpp",
+      "sha256": "4e87e8971a54b78ca860f1f198e7cd6d885d3fd94befcdb8a556391e1867c81c"
+    },
+    {
+      "bytes": 1534,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xlzssdecoder.h",
+      "sha256": "94e06d45534721fe91afed4c2b65b080d7d1f9704ac0c9ff48b7af20c81438cc"
+    },
+    {
+      "bytes": 11363,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xlzwdecoder.cpp",
+      "sha256": "3874e01bd40371b3971d23be72b40212ed375752ea18367cb3bda440f860b943"
+    },
+    {
+      "bytes": 1490,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xlzwdecoder.h",
+      "sha256": "fbb579a8e1ab27829f1eec3636c6963f169cd644ac714aeaad7fdaf764d41843"
+    },
+    {
+      "bytes": 3154,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "ppmd"
+      ],
+      "path": "Algos/xppmd7model.cpp",
+      "sha256": "9a7ea17e9b5ae33431d82d6d2dab84626436308627000f84eb3d83c7511d05ea"
+    },
+    {
+      "bytes": 2140,
+      "license_markers": [
+        "mit-permission",
+        "public-domain"
+      ],
+      "origin_markers": [
+        "lzma-7zip",
+        "ppmd"
+      ],
+      "path": "Algos/xppmd7model.h",
+      "sha256": "7508075ffc3538e7528a3620dc88288c5ebcae9a185399ec52bc0cf560a91b53"
+    },
+    {
+      "bytes": 100211,
+      "license_markers": [
+        "mit-permission",
+        "public-domain"
+      ],
+      "origin_markers": [
+        "lzma-7zip",
+        "ppmd"
+      ],
+      "path": "Algos/xppmddecoder.cpp",
+      "sha256": "3c2427f61dc1d9d895e97d943d291d7ea1e6683986bd15a35065b9478cc6803a"
+    },
+    {
+      "bytes": 1647,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "ppmd"
+      ],
+      "path": "Algos/xppmddecoder.h",
+      "sha256": "ae2aee5940bd75a97a0094ce6c17c60edb3c6986fbda299e4ad4ce19a9d58bd9"
+    },
+    {
+      "bytes": 3630,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "ppmd"
+      ],
+      "path": "Algos/xppmdmodel.cpp",
+      "sha256": "89c06093e533338e3bd1c538e73fb1ee1ff43ab216db6b96e5d7ca1df29bdb26"
+    },
+    {
+      "bytes": 2655,
+      "license_markers": [
+        "mit-permission",
+        "public-domain"
+      ],
+      "origin_markers": [
+        "lzma-7zip",
+        "ppmd"
+      ],
+      "path": "Algos/xppmdmodel.h",
+      "sha256": "f0039e2a2e509e16049a0251fd5601d92c7825e18bb3bd636447b84268cb2c63"
+    },
+    {
+      "bytes": 3291,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "ppmd"
+      ],
+      "path": "Algos/xppmdrangedecoder.cpp",
+      "sha256": "2286efe274fd55b227335b769f4c189b2cfebcbf44c6f77b2e23d7565444d8ce"
+    },
+    {
+      "bytes": 2148,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "ppmd"
+      ],
+      "path": "Algos/xppmdrangedecoder.h",
+      "sha256": "1ffa7bb89efbd17f1a24050880f192523b15e6dfd8fa08bf9e365cb01bd2eca8"
+    },
+    {
+      "bytes": 128003,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "ppmd"
+      ],
+      "path": "Algos/xrardecoder.cpp",
+      "sha256": "55f36d7b0188f5093ffad5723637fedafae32321b1fde3cf2f81ff5983e94026"
+    },
+    {
+      "bytes": 27390,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "ppmd"
+      ],
+      "path": "Algos/xrardecoder.h",
+      "sha256": "29e0f4e1091df88f992f2cf5688df044bfbb46e607cb6536cbd5b4e234665540"
+    },
+    {
+      "bytes": 13274,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xreducedecoder.cpp",
+      "sha256": "6e84d2d669bd019fe552ddc0d79e3a25ac77d243dd76b980cb9b62019f2de4d2"
+    },
+    {
+      "bytes": 1560,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xreducedecoder.h",
+      "sha256": "9c0be122e571144ca847d4f18c6a79f6a45cd1326c5417c2ebc705859e759ba0"
+    },
+    {
+      "bytes": 6115,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xsha256decoder.cpp",
+      "sha256": "44b95200e7be17438651a2ac45333f3fd4bd8114dca320a81ae5508c4ee4352a"
+    },
+    {
+      "bytes": 1901,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xsha256decoder.h",
+      "sha256": "cb7b8526d99bfb602f4e2c94a9c08ea467228b8bc34da6920b9c342cb5912fd3"
+    },
+    {
+      "bytes": 15247,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xshrinkdecoder.cpp",
+      "sha256": "a1cdd2f5e4b5d5f79f7f90b8564c52d86b929152e25d873ca73d6a7cf1993d57"
+    },
+    {
+      "bytes": 1544,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xshrinkdecoder.h",
+      "sha256": "416d7465fb412dbe08fbd4bc05dc87507275c7c8e5d4b0ff212c5731f5b3532a"
+    },
+    {
+      "bytes": 2868,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xstoredecoder.cpp",
+      "sha256": "8f54fab15fd3b29ae8b6253bab084769133ecba8c0b791b56b9ae8e2bb5e8c7b"
+    },
+    {
+      "bytes": 1496,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xstoredecoder.h",
+      "sha256": "95c2db7a119eab506e9c3041b5370002658d2d347e2fcdd53ed0c48004bb2d55"
+    },
+    {
+      "bytes": 129921,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xucldecoder.cpp",
+      "sha256": "f2f2fe4e11beaa122c2474a44c7c1c97242e9d211eacc15d0c7f3c646b2a45cf"
+    },
+    {
+      "bytes": 1626,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xucldecoder.h",
+      "sha256": "523762f3e15706aa017d74affe4c6063d77956b4dd1afea3db533a695ce9591a"
+    },
+    {
+      "bytes": 86349,
+      "license_markers": [],
+      "origin_markers": [],
+      "path": "Algos/xucldecoder_acc.h",
+      "sha256": "f53d934a8efdb4f1b483e7fddf5ffe749d6914a2830bbaf7d68428b91fecc669"
+    },
+    {
+      "bytes": 10745,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xzipcryptodecoder.cpp",
+      "sha256": "adec3b4ff6c70d2c92f23cd35cff3da3e9d322f21905852436022453c65d12bf"
+    },
+    {
+      "bytes": 2195,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "Algos/xzipcryptodecoder.h",
+      "sha256": "1906c4857336e9fa8cadf1649b0d0b6dcb5bdca009df010793368c3f6090e150"
+    },
+    {
+      "bytes": 4441,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "zstandard"
+      ],
+      "path": "Algos/xzstddecoder.cpp",
+      "sha256": "030069b78dce98c08401c997c3e749bf0c0fe17d139bf426d0c1096d5c0fb5c0"
+    },
+    {
+      "bytes": 2064,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "zstandard"
+      ],
+      "path": "Algos/xzstddecoder.h",
+      "sha256": "1d17206ee64aa5ecc2a77239275b94cb78a67f50fc55057d5883e95a5eac8c44"
+    },
+    {
+      "bytes": 524843,
+      "license_markers": [],
+      "origin_markers": [
+        "zstandard"
+      ],
+      "path": "Algos/zstddeclib.cpp",
+      "sha256": "61e7028570039c299dad5689483d82341f558388ba06f4b2c4819e0ba489e812"
+    },
+    {
+      "bytes": 35058,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "x_ar.cpp",
+      "sha256": "4d4c3120ded19a10db48c64d8d16f018bb4b60760848a0f1ef47f9f27f5507ac"
+    },
+    {
+      "bytes": 4949,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "x_ar.h",
+      "sha256": "733f7aa3967466746de9ac4503028cfc0f0bafee71e5e6d35e66f2a1bd8c2d2f"
+    },
+    {
+      "bytes": 26074,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xace.cpp",
+      "sha256": "c86cd47cace16d4108d452fd8d54ceb0a62a866a928d2c1537ac5f6f5a38c169"
+    },
+    {
+      "bytes": 5121,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xace.h",
+      "sha256": "49855ecec997efcc18d61c200dba91ee1414c14577f3c7c1896e2ff3d804546a"
+    },
+    {
+      "bytes": 9431,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xapk.cpp",
+      "sha256": "2bc3d7badc71d1f1569f6f0ad01ca1dcffcf8a98d529c84fdc7c7290d7d137d8"
+    },
+    {
+      "bytes": 2690,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xapk.h",
+      "sha256": "ae8958c9700088b20e86e411e10ca7f4ed2de7169fcc128e20c3f1574ed04813"
+    },
+    {
+      "bytes": 2854,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xapks.cpp",
+      "sha256": "6b544411a48f997777258be43ab878020de5b0cb7bdb80e1e11adc97e015d2ed"
+    },
+    {
+      "bytes": 1714,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xapks.h",
+      "sha256": "a4d5f29bae8b5db8bf52c5d48b6cd472f02eb2a469ebd2f545bafb8a194865b5"
+    },
+    {
+      "bytes": 41092,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "ppmd"
+      ],
+      "path": "xarchive.cpp",
+      "sha256": "f5a128fd35e13cf7cb8881521a48f3899121408ebd7f482e084bbd5ea3a6099f"
+    },
+    {
+      "bytes": 7059,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xarchive.h",
+      "sha256": "72f329c1ccc9d75a4c1eb99577ebe2a887955a9a6f0876fe2b6380a86a156e3e"
+    },
+    {
+      "bytes": 12707,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "brotli",
+        "zstandard"
+      ],
+      "path": "xarchives.cpp",
+      "sha256": "114517c9bad1ced506d84d0d4b18dfb3704ad09310870a651a1b1196ddcebe4b"
+    },
+    {
+      "bytes": 4351,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xarchives.h",
+      "sha256": "d7d100e71c16786b7f1bcc4a89f1255c33a7fb79e1695d9d6964a60686405d00"
+    },
+    {
+      "bytes": 26341,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xarj.cpp",
+      "sha256": "88b5e7dbf0fa8f465338c62753440c44daf2f0d2e3e5c4087b62b1825ae8a7bc"
+    },
+    {
+      "bytes": 4391,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xarj.h",
+      "sha256": "14f57047ae7d4122b57f1f2b55ec651f9404512334c0e6466d6d436d718f10cf"
+    },
+    {
+      "bytes": 12596,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "brotli"
+      ],
+      "path": "xbrotli.cpp",
+      "sha256": "518126a65d899df4b402a7556f21da08fd88fea4db53e3bb7a13e662ad332b68"
+    },
+    {
+      "bytes": 3503,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "brotli"
+      ],
+      "path": "xbrotli.h",
+      "sha256": "9beb72d7dfb5ccb2b3c8e8ace0324d0f7a909f98e42aaf07bb0915d9c28fb9a5"
+    },
+    {
+      "bytes": 15011,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xbzip2.cpp",
+      "sha256": "441e601d24c89602ee0323eec05d7b69f0d3926e6624b9dc1f6ae08245c9890b"
+    },
+    {
+      "bytes": 3753,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xbzip2.h",
+      "sha256": "c11e7bf80f20708fa92c3119b8cd827abdcdd533617b052e69c92a9ad1dee967"
+    },
+    {
+      "bytes": 38683,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xcab.cpp",
+      "sha256": "a0ce130f4d81ba3aeb018e485a3ee8c046d4cbb570d6318f7aa8817aff28035b"
+    },
+    {
+      "bytes": 7965,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xcab.h",
+      "sha256": "86629497526df92d74c2c1deb0de10a56aa1128fe2f1d2ffbc6e158753091e77"
+    },
+    {
+      "bytes": 43368,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xcfbf.cpp",
+      "sha256": "05740b020ea292c8d2602bf5ff7649e8c5a092e40b0ee388ead4212325f6f03a"
+    },
+    {
+      "bytes": 8027,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xcfbf.h",
+      "sha256": "f28b26d89dc77781c173834d1ca6fea5aa4b93782846b8b4ef2524218d9e22d9"
+    },
+    {
+      "bytes": 35530,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xcompress.cpp",
+      "sha256": "d6827edd8b7d2ba10ca039c837baedd7d4ef45f888af7d77e9fa220d6b84812c"
+    },
+    {
+      "bytes": 7653,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xcompress.h",
+      "sha256": "94c9b46cc2a5fce1497ecb11db55998dfc0b217ede79cc2cdcd6a39ae5ec4866"
+    },
+    {
+      "bytes": 4107,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xcompresseddevice.cpp",
+      "sha256": "4e2aab9c58ab49608ca5625062818baf944ee48a82c75aa8dc9f4d1158b73e78"
+    },
+    {
+      "bytes": 2086,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xcompresseddevice.h",
+      "sha256": "9ff238187c0f400a45a072267459588392219a301c74bfbc5a30ce5cb3a74002"
+    },
+    {
+      "bytes": 16514,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xcompressz.cpp",
+      "sha256": "69bf7df92313a813d583ef5de83591b16fd050b0c04f581d42e7f0e6d7e51b4e"
+    },
+    {
+      "bytes": 4156,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xcompressz.h",
+      "sha256": "b012265d1025b81a27b382d299b4d68473a2ada20d5f3317f17f6b4e07a09e93"
+    },
+    {
+      "bytes": 35436,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xcpio.cpp",
+      "sha256": "f1167cf80a9681ce7fd47b3b096f9eb7021453a6a0fcf2025722b232c4df91cc"
+    },
+    {
+      "bytes": 6867,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xcpio.h",
+      "sha256": "5f87fc27f533295ca42a961c30d5f1cc795bc75186739ff1e098003948c6634a"
+    },
+    {
+      "bytes": 3621,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xdeb.cpp",
+      "sha256": "3d437b6a520338c0a9ea2c2d73ae1c8be4f27d9fc8728afe79fc8558f506f5dc"
+    },
+    {
+      "bytes": 2001,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xdeb.h",
+      "sha256": "425808c3fd16f191422081c27545c8104070d45c33fcfb181ee87453544af6d6"
+    },
+    {
+      "bytes": 74478,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "brotli",
+        "ppmd",
+        "zstandard"
+      ],
+      "path": "xdecompress.cpp",
+      "sha256": "4f52eefa06674ea5b7e3f7e1b989502147be84d83e32e8086a7087839ed2728d"
+    },
+    {
+      "bytes": 3540,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "brotli",
+        "ppmd",
+        "zstandard"
+      ],
+      "path": "xdecompress.h",
+      "sha256": "a9865d658aefc394e781056c30b36fc7f3eec62d9932f08d08cea4bfc114dd4e"
+    },
+    {
+      "bytes": 22438,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xdmg.cpp",
+      "sha256": "5b53f3748cc721ff029f149193b31fe5fa94b12dac91bd41d27c0f9e86e0a988"
+    },
+    {
+      "bytes": 5989,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xdmg.h",
+      "sha256": "c43004d0e211a46ebb75a909a0beb988e51d0c3558f56c384c08f429658ddd6a"
+    },
+    {
+      "bytes": 16048,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xdos16.cpp",
+      "sha256": "cc2d997e7e83f076feac654577c8237a995b619688e6a7f93626d79490fb8ab7"
+    },
+    {
+      "bytes": 2983,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xdos16.h",
+      "sha256": "453eda28b86331a4cfdc08ab668b6b306bd16ffc10f1d5df3a6e1e22259a4da6"
+    },
+    {
+      "bytes": 14202,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xfreearc.cpp",
+      "sha256": "a318907b12be5fa4372292b23f53005948fffff162f24cb05d1f40578a261c32"
+    },
+    {
+      "bytes": 3990,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xfreearc.h",
+      "sha256": "55b3461ef77f00e177c438854b1d0b769f83dd1c6688f1c8724eaacbac2a17a1"
+    },
+    {
+      "bytes": 19664,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xgzip.cpp",
+      "sha256": "68a72c51e269ad53c839f208335fdff402d457366845301ba15585b6e35b3948"
+    },
+    {
+      "bytes": 4617,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xgzip.h",
+      "sha256": "2d2cae8f821539dfc023c2f881e7814c37964788c3bad8582cf0514a5ff0eda3"
+    },
+    {
+      "bytes": 1676,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xipa.cpp",
+      "sha256": "00798e3828b9a9c822d7036ba4aa4f032c327ce82bf6fd64a5ced5e412dcf3cb"
+    },
+    {
+      "bytes": 1596,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xipa.h",
+      "sha256": "24a06ccb734669ed64f00a0a4b993c0a914992c83b91cac8247d543ee0df09c8"
+    },
+    {
+      "bytes": 39955,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xiso9660.cpp",
+      "sha256": "d6e97c4ff2395b812b65da5ab480e937c6b365e6e6e8b0288ddf48b8fd398fb1"
+    },
+    {
+      "bytes": 9142,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xiso9660.h",
+      "sha256": "e00be100c8bae77e15f5a1dc265a3e622d9c727bc70e236e89df96a91f9a47f8"
+    },
+    {
+      "bytes": 4628,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xjar.cpp",
+      "sha256": "8e4c3878226c35b3c062f635679412dc248f7fdf92e76b98194cd09847bd71e4"
+    },
+    {
+      "bytes": 2175,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xjar.h",
+      "sha256": "ca6111cc20c07ca629f1a99821a14ffe619e72d5a096b6002856668f0db66083"
+    },
+    {
+      "bytes": 21387,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xlha.cpp",
+      "sha256": "456ddb8b2b5ad3ec54e79f3820ef3fa902767f7bd6df6a71fedf6859f51c61ed"
+    },
+    {
+      "bytes": 3481,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xlha.h",
+      "sha256": "2c652f046b52a0da3c141bb83434a04cd70a372cc76b84d7df1d974bd1ef325f"
+    },
+    {
+      "bytes": 9527,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xlz4.cpp",
+      "sha256": "aff47779401094b7dd982866981c6517ff44b7fe7b78a7f113e11cfd57578661"
+    },
+    {
+      "bytes": 3284,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xlz4.h",
+      "sha256": "ff2b2e398fc3ebb40b64a144594eb92ac8294f1357fca778f96e4acc5ea57c9b"
+    },
+    {
+      "bytes": 15388,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xlzip.cpp",
+      "sha256": "bb0715dfd703e24971a2a80e9e4b30bee8e0bfb8b2bb8de5c8a929e893fb3faa"
+    },
+    {
+      "bytes": 4680,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xlzip.h",
+      "sha256": "159844fcc2bc97870ab60f7bee2e6dd7b3b673d275eb4eb7c0c7b2788e583f7f"
+    },
+    {
+      "bytes": 10139,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xlzma.cpp",
+      "sha256": "1f6a228a83cf0d16acf093cb9fc3bedd2419a7b17814a5e9fba95693ac67cfc1"
+    },
+    {
+      "bytes": 3299,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xlzma.h",
+      "sha256": "73ec35615febbf586b4e99341f8b011be5e01da30067e994a5f52d5a7d96fa0c"
+    },
+    {
+      "bytes": 13352,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xlzo.cpp",
+      "sha256": "a31320f7599876977eaef3501cfeb4fac317b2584e93858b5352d9e094fbd40e"
+    },
+    {
+      "bytes": 3755,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xlzo.h",
+      "sha256": "c02294775b71a0e4cc23deca552359751fe73070467516196020273573c99921"
+    },
+    {
+      "bytes": 22069,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xmachofat.cpp",
+      "sha256": "6dee790070b3e3803b90f748fe3f26f42bceeee2368e0644b03458242bbddc0e"
+    },
+    {
+      "bytes": 4246,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xmachofat.h",
+      "sha256": "6fc4af337dd97c827962f09c0c884cc6f45e07b334eaa2700664053d501e0fce"
+    },
+    {
+      "bytes": 29387,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xminidump.cpp",
+      "sha256": "e55023341f8d73584dc3f0c939d8633e53e945e8febb2e5334f25f8fd8302cab"
+    },
+    {
+      "bytes": 12018,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xminidump.h",
+      "sha256": "ad7e2c9284bc666b590c22c695097a81b77d1a0010125e042f4a13ef514aa316"
+    },
+    {
+      "bytes": 3343,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xnpm.cpp",
+      "sha256": "7ef5f9cdf7c50a047802cd25d2b71a919a5a50ca9f6fcbbeb2bc1cb9b7441b91"
+    },
+    {
+      "bytes": 2169,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xnpm.h",
+      "sha256": "be096c1a6d1e1f7c5211288dd9649674ef81e9655c922cbe2412b9f36290ff3e"
+    },
+    {
+      "bytes": 95968,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xrar.cpp",
+      "sha256": "23721187a6118edce8b9511680f34c404727f831ec8c7ed66e0ed0868260ccb8"
+    },
+    {
+      "bytes": 11544,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xrar.h",
+      "sha256": "ee525c970946478580e09f123a61fbf0e08613cb3c59d72c1bb4764734c673d8"
+    },
+    {
+      "bytes": 20043,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xseaarc.cpp",
+      "sha256": "d0509860715262df95683e32c609b7bf39da23e5a4e0072d6c63b57151ef53a2"
+    },
+    {
+      "bytes": 3981,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xseaarc.h",
+      "sha256": "ca5ddf2e8544235e438f2973613bb2ce71e35957d1ce481fd559952ad1e7ec2c"
+    },
+    {
+      "bytes": 124109,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "ppmd"
+      ],
+      "path": "xsevenzip.cpp",
+      "sha256": "d8da44bdcd1dfab07f1403ae19a0113238fd54620ef9b4307410097d7d8e5554"
+    },
+    {
+      "bytes": 10287,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "ppmd"
+      ],
+      "path": "xsevenzip.h",
+      "sha256": "18f309d63e3e182cc1c90223dbf6f051555db2b199ed0560a6ead4620a55da30"
+    },
+    {
+      "bytes": 5975,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "zstandard"
+      ],
+      "path": "xsquashfs.cpp",
+      "sha256": "ca687d35573e2b57d4bf6b36cd07f1f12119b77b47ca1e20e2014be853f55a39"
+    },
+    {
+      "bytes": 4265,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "zstandard"
+      ],
+      "path": "xsquashfs.h",
+      "sha256": "4333bd186577b26b4bf5d4eb8bc61f5aa0711db4b518ecf9e0a326568f550d38"
+    },
+    {
+      "bytes": 14634,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xszdd.cpp",
+      "sha256": "39ebee243a38ed88995b73326d7a4125ce2cfbc1247366b3409fc10489a4969d"
+    },
+    {
+      "bytes": 3694,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xszdd.h",
+      "sha256": "50cbaff3f6463492cb1fe2d312f8f429089fd2f89b1760c296ec136541108437"
+    },
+    {
+      "bytes": 32353,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xtar.cpp",
+      "sha256": "2134ce45ccd4e6a7b1bc57d494e5dcaa42f780014e5febfd9014025306d2b4a4"
+    },
+    {
+      "bytes": 5405,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xtar.h",
+      "sha256": "cb8443fb0c839c872c7fbaabcf538c5a3f3b6ff9d8fc242827ac9160582ca812"
+    },
+    {
+      "bytes": 2714,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xtar_bzip2.cpp",
+      "sha256": "ea63b9f70d7ddbad1b15cfb7b482385cea3c4f62315c4dac6acf22ffc43f1ba0"
+    },
+    {
+      "bytes": 1915,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xtar_bzip2.h",
+      "sha256": "20bbe1cc8c0381bed34dd1551356949c843c471663ff529190578075eaf9e709"
+    },
+    {
+      "bytes": 2471,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xtar_compress.cpp",
+      "sha256": "5a8289de867916e24b9324b3fd3d37e81508d9f7623c8a7e526880a3940f217a"
+    },
+    {
+      "bytes": 1848,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xtar_compress.h",
+      "sha256": "9694c4549bd8649c6a37ef52438743249ab12e566c64f4fe9af9c236e239a279"
+    },
+    {
+      "bytes": 3366,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xtar_gz.cpp",
+      "sha256": "b3a1d03309d77d0aae71312fa1213658976d68e284f6e413fea3e80312837e98"
+    },
+    {
+      "bytes": 1942,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xtar_gz.h",
+      "sha256": "24225cb3dc8d83c330b54f44c403d233747c2ae300e58baa222d9d99feba234f"
+    },
+    {
+      "bytes": 2933,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xtar_lzip.cpp",
+      "sha256": "0036d628dd53fc563c0894567d253457c25d37a65c6f874eeed1f271704d18cc"
+    },
+    {
+      "bytes": 2001,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xtar_lzip.h",
+      "sha256": "7f82745889597021ac9c0bd8e0862cdcd84a1dca621589c55192b126e18b16de"
+    },
+    {
+      "bytes": 2917,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xtar_lzma.cpp",
+      "sha256": "6b9f0c0ca346e51a262b57de3e381b1db2f4d78832eedaca6be4a65cf0e250e3"
+    },
+    {
+      "bytes": 2001,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xtar_lzma.h",
+      "sha256": "89fae337cf59d111fb6372041600e283b654d4045a2da15c5998f5fa3157e4b5"
+    },
+    {
+      "bytes": 2855,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xtar_lzop.cpp",
+      "sha256": "6c31b8f3cb0303af35abfa48fadfba99ddafbca1aede3966eefb2ba659ffe0e8"
+    },
+    {
+      "bytes": 2001,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xtar_lzop.h",
+      "sha256": "3de5f364e44f3095d7db55af23f8478c96681f4fbae9e9311b44e85340997d22"
+    },
+    {
+      "bytes": 3049,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xtar_xz.cpp",
+      "sha256": "9ebdac04b34a4274b94bb54a13e302f4476411a4c80d051e3aa5c9bdc9a6773b"
+    },
+    {
+      "bytes": 1989,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xtar_xz.h",
+      "sha256": "98e172941fef1ec06787951ab8ada2813007d139089f8bc6da5a983a5853c11b"
+    },
+    {
+      "bytes": 2914,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "zstandard"
+      ],
+      "path": "xtar_zstd.cpp",
+      "sha256": "99dfd3a638a70638bb641b789d672ca54a4067a91282d5b145793a65e4c81a9f"
+    },
+    {
+      "bytes": 2001,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "zstandard"
+      ],
+      "path": "xtar_zstd.h",
+      "sha256": "9e07aa0f251cd06c0270b7bcc45450d9b63f4b58982fa9ee1f9c63f32ce3e6a9"
+    },
+    {
+      "bytes": 10354,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "zstandard"
+      ],
+      "path": "xtarcompressed.cpp",
+      "sha256": "aa4c8bf7c5bb99199c5104fc0f46ee16f7fbd3e3ca21c3cbb7c4ffd913504b49"
+    },
+    {
+      "bytes": 3918,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "zstandard"
+      ],
+      "path": "xtarcompressed.h",
+      "sha256": "769d058baa43ff5288e41460b5fde1a0f587db8bc8f3c25334841528fd1ef712"
+    },
+    {
+      "bytes": 28295,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xudf.cpp",
+      "sha256": "6410a65d147be4618228860e8c54b8e7d2df1d0ae264fa5cb69e669f1ff12051"
+    },
+    {
+      "bytes": 7469,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xudf.h",
+      "sha256": "c5a7452e5d4d419b1446dc25ff600b19cc2e1bf4bf49ffb587a3273e90559ff0"
+    },
+    {
+      "bytes": 32164,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xwim.cpp",
+      "sha256": "0b3873470a62561010f77209761750d8ffbe0f5c10db99cf8209392be1a87382"
+    },
+    {
+      "bytes": 6753,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xwim.h",
+      "sha256": "4f127f47e8bf11d72f14e92a3adca8eb713e37e8e390d063df48280699cc92dd"
+    },
+    {
+      "bytes": 19390,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xxz.cpp",
+      "sha256": "e6961271267a43ba706a44ae4171a6fa6688f9e3189f1c619cee9f68c506695c"
+    },
+    {
+      "bytes": 5064,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xxz.h",
+      "sha256": "c79bff6d6d053c14d4c2f0cfb5be20754f68e39b8b64b2f975bf1181bc678941"
+    },
+    {
+      "bytes": 114959,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "ppmd"
+      ],
+      "path": "xzip.cpp",
+      "sha256": "f20ab74f3f919bf8db666b7f7b9e6a0206c9d087a11b4ff60fb2a395162213b7"
+    },
+    {
+      "bytes": 11481,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "ppmd",
+        "zstandard"
+      ],
+      "path": "xzip.h",
+      "sha256": "dc9942c19e90b593de030bddeaf5994a47d6c59edc60c91e9be944bb42b41473"
+    },
+    {
+      "bytes": 19075,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xzlib.cpp",
+      "sha256": "f56d3f9854210692a27c91c7affe791c1ec19e133959d44c3ec3fecff8f5e782"
+    },
+    {
+      "bytes": 3721,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "xzlib.h",
+      "sha256": "a4028ddc90a71e3ef71b1bca52de7f897482592b9b7f3f26d006216eb802db39"
+    },
+    {
+      "bytes": 15681,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "zstandard"
+      ],
+      "path": "xzstd.cpp",
+      "sha256": "56572be4586fce6838f4ad78101c424c00d207d8bd4b08d95fc348c304c20271"
+    },
+    {
+      "bytes": 4027,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [
+        "zstandard"
+      ],
+      "path": "xzstd.h",
+      "sha256": "69c85199f2d7f25bcb55606c59d35498ce2e7710527918cc1e8e4fcee5d523bc"
+    }
+  ],
+  "generator": "tools/upstream/audit_xarchive_license_closure.py",
+  "generator_sha256": "799d98e30bcd9cd1a62ef5979230448aeab032bd789a3d2119b51f60abaecb53",
+  "license_evidence_files": [
+    {
+      "bytes": 1085,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "origin_markers": [],
+      "path": "LICENSE",
+      "sha256": "abdeb212f229d2b93a5c315763df4d7201c7d74f580ad9dc77d77dec7cbc6c69"
+    },
+    {
+      "bytes": 1901,
+      "license_markers": [
+        "bsd-redistribution",
+        "bzip2-copyright"
+      ],
+      "origin_markers": [],
+      "path": "3rdparty/bzip2/src/LICENSE",
+      "sha256": "4919cfb14a73cd64fcef67b107613970cf1659a09aa675dba31314f373bc7204"
+    },
+    {
+      "bytes": 38106,
+      "license_markers": [
+        "public-domain"
+      ],
+      "origin_markers": [
+        "lzma-7zip"
+      ],
+      "path": "3rdparty/lzma/src/LzmaDec.c",
+      "sha256": "6e96899def1c643f24435563c96b1cffe9be589ffecaa3f663d6cab77845e3e6"
+    },
+    {
+      "bytes": 30040,
+      "license_markers": [
+        "public-domain"
+      ],
+      "origin_markers": [
+        "lzma-7zip",
+        "ppmd"
+      ],
+      "path": "3rdparty/ppmd/src/Ppmd7.c",
+      "sha256": "07dcecf2616a8731c41bb219a44a13881b87aec34ef880226c5ebb668c17b3bd"
+    },
+    {
+      "bytes": 97487,
+      "license_markers": [
+        "zlib-notice"
+      ],
+      "origin_markers": [],
+      "path": "3rdparty/zlib/src/zlib.h",
+      "sha256": "0dab06cf1abe0cf6f2f16e9ee6cdc36d1cae929be2a126ac6046b212def829e2"
+    }
+  ],
+  "origin_files_without_license_markers": [
+    "Algos/brotlideclib.cpp",
+    "Algos/zstddeclib.cpp"
+  ],
+  "relationships": {
+    "all_compile_units_and_dependency_files_exist": true,
+    "direct_xarchive_object_count_is_84": true,
+    "four_expected_xarchive_archives_are_linked": true,
+    "linked_archive_object_count_is_22": true,
+    "xyara_is_not_linked_into_diec": true
+  },
+  "schema_version": 1,
+  "source_image": {
+    "image": "diec-rust/upstream-oracle-cmake:74eaf505",
+    "image_id": "sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040",
+    "network": "none",
+    "repository_mount": "readonly",
+    "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "xarchive_commit": "0fcd4e8d3e9933baac3b12246d82ac026557ffd0"
+}
