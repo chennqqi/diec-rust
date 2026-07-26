@@ -531,7 +531,8 @@ JSON。运行前先执行
 - Binary 已按固定 Linux 顺序完成 292 条顶层 eval 和 fallback-tolerant
   `detect` 缺口采集；尚未用完整 HostApi/Qt oracle 逐条验证，也未完成其他 file
   type 和 Windows/macOS 顺序。
-- 338 个直接宿主方法及继承方法的行为 fixture。
+- 规则侧已清点 430 个宿主 receiver/method 和 465 个 arity 形状；仍缺 338 个
+  C++ 直接声明方法及继承方法的行为 fixture。
 - Nintendo/EA-XA 已在固定 292 条加载环境中完成三个 selected `detect` 的 Qt 5
   14/14 对照；仍缺 Qt 6、其余 289 个 `detect` 的真实 HostApi/Qt oracle。
 - Qt 5/Qt 6 与 QuickJS 的整数、字符串、数组、异常和 RegExp 差分。

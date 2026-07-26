@@ -354,10 +354,17 @@ header fast path 的字符/字节混合计算和严格 `<` 分界会改变 inval
 [`binary-rule-lifecycle.md`](binary-rule-lifecycle.md)。该证据排除了
 “每条规则一个 context”作为兼容执行模型。
 
+全规则语法和调用形状机器清单见
+[`rule-syntax-inventory.md`](rule-syntax-inventory.md)：固定 `db`/`db_extra`
+的 2175 个 `.sg` 与 60 个无扩展名公共脚本共 2235/2235 建立 AST，得到 55 种
+节点类型、28,372 个普通调用；29 个已知宿主 receiver 上共有 16,500 次调用、
+430 个 receiver/method 组合和 465 个 arity 形状，动态 computed 宿主方法名为
+0。该清单闭合规则侧语法和静态调用用法面，但不替代 C++ 声明、继承、默认参数和
+运行行为核对。
+
 ## 尚未完成
 
-- 对所有规则进行 AST 级语法与 signature 调用点统计。
-- 自动生成完整宿主方法签名清单。
+- 从固定 C++ 声明自动生成包含参数类型、默认参数、属性和继承的完整宿主签名清单。
 - Qt 5 与 Qt 6 的 conformance oracle。
 - include 同名、重复、循环和异常实验。
 - database cache 与 ZIP database 行为。

@@ -107,10 +107,14 @@ baseline 的变更都要检查本表。
   `Binary_Script::compare` header fast path 端到端差分 5/5，确认字符/字节混合
   size 和严格 `<` 会改变 invalid suffix 结果；EP/overlay 各 5/5 又确认
   256-byte cache 被当作 512-byte 范围、原始 pattern 长度参与分支，能改变合法
-  literal 结果。固定 AST inventory 随后解析 `db`/`db_extra` 2175/2175，
-  保存 5968 个具名 signature API 调用点和 5628 个静态 pattern，覆盖动态
-  317/317；仍有 4 个参数依赖运行时数据流。畸形 map、find 的畸形/穷举边界、
-  无效/短小 wrapper 上下文、Qt 6 和其余 HostApi 仍未验证。
+  literal 结果。固定 signature AST inventory 随后解析 `db`/`db_extra`
+  2175/2175，保存 5968 个具名 signature API 调用点和 5628 个静态 pattern，
+  覆盖动态 317/317；四个保守动态参数中的 `byteCode` 又已闭合为 97 个唯一
+  pattern，其余 3 个是输入相关 Number→QString 调用。完整规则语法清单按 runtime
+  spike 的 2235 文件口径达到 2235/2235，记录 55 种 AST 类型、28,372 个调用和
+  29 个宿主 receiver 上的 430 个 receiver/method、465 个 arity 形状，动态
+  computed 宿主方法名为 0。C++ 宿主声明/继承、畸形 map、find 的畸形/穷举边界、
+  无效/短小 wrapper 上下文、Qt 6 和其余 HostApi 行为仍未验证。
 - **缓解**：保持 `RuleRuntime`/`HostApi` port；建立全规则 inventory、最小失败
   fixture、host call trace；基于证据选 runtime，禁止静默转换规则。
 - **验证**：固定规则 100% discovered/parsed/loaded，zero silent unsupported；

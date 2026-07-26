@@ -471,8 +471,9 @@ oracle schema v2 允许每个项目自有向量显式注入 `_MEMORY_MAP`，但�
 
 ## 下一步门禁
 
-1. 对 4 个动态 signature 参数做 scope/data-flow 或受控 runtime-assisted
-   求值，并审计 computed method name；不得把 5628 个静态值当作完整值域。
+1. 对剩余 3 个输入相关 Number→QString signature 参数做受控 runtime-assisted
+   求值；`byteCode` 已闭合为 97 个值，全规则调用清单已确认已知宿主 receiver
+   上动态 computed method name 为 0。不得把 5628 个通用静态值当作完整值域。
 2. 扩展现有 XBinary oracle，覆盖更多畸形组合、buffer boundary 和取消行为。
 3. 补齐畸形/重叠/virtual-only map 的项目生成文件，端到端验证各格式
    `getMemoryMap` 边界。
