@@ -19,13 +19,15 @@ vectors agree 7/7 with the pinned XBinary harness; real format-specific
 `getMemoryMap` construction for generated PE32/64, ELF32/64, Mach-O32/64, COM,
 MS-DOS, and AmigaHunk files also agrees 9/9. Malformed map variants remain
 outside this spike.
-`find_signature` is a separate operation with control-record, SigByte, and
-plain-hex branches; this spike does not approximate it by looping the raw
-matcher.
+`find_raw` and `find_with_memory_map` independently model the control-record,
+SigByte, and plain-hex `find_signature` branches, including their anchor
+selection and class-table differences. They are not implemented as a loop over
+the raw matcher.
 
 Tests consume
 `docs/research/data/signature-pattern-inventory.json`, a deterministic
 inventory generated from the fixed 292-rule runtime trace.
 Additional tests compare 16 context-free, 7 synthetic memory-map, and 9
 parser-derived memory-map cases directly with the pinned Qt 5 XBinary harness
-baseline.
+baseline. A separate 19-case differential covers all three `find_signature`
+branches.

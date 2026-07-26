@@ -19,6 +19,7 @@ pub enum Operation {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Pattern {
     operations: Vec<Operation>,
+    normalized_len: usize,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -52,6 +53,12 @@ pub struct MemoryMap {
     pub code_base: u64,
     pub start_load_offset: u64,
     pub records: Vec<MemoryRecord>,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct FindResult {
+    pub offset: usize,
+    pub size: usize,
 }
 
 impl MemoryMap {
@@ -194,7 +201,10 @@ impl Pattern {
             return Err(ParseError::new(0, ParseErrorKind::EmptyPattern));
         }
         Ok(ParseReport {
-            pattern: Self { operations },
+            pattern: Self {
+                operations,
+                normalized_len: normalized.len(),
+            },
             quirks,
         })
     }
@@ -214,6 +224,233 @@ impl Pattern {
         memory_map: &MemoryMap,
     ) -> Result<bool, MatchError> {
         self.matches(data, offset, Some(memory_map))
+    }
+
+    pub fn find_raw(
+        &self,
+        data: &[u8],
+        offset: usize,
+        size: usize,
+    ) -> Result<Option<FindResult>, MatchError> {
+        self.find(data, offset, size, None)
+    }
+
+    pub fn find_with_memory_map(
+        &self,
+        data: &[u8],
+        offset: usize,
+        size: usize,
+        memory_map: &MemoryMap,
+    ) -> Result<Option<FindResult>, MatchError> {
+        self.find(data, offset, size, Some(memory_map))
+    }
+
+    fn find(
+        &self,
+        data: &[u8],
+        offset: usize,
+        size: usize,
+        memory_map: Option<&MemoryMap>,
+    ) -> Result<Option<FindResult>, MatchError> {
+        let Some(end) = offset
+            .checked_add(size)
+            .map(|end| end.min(data.len()))
+            .filter(|end| offset < *end)
+        else {
+            return Ok(None);
+        };
+        let has_control = self.operations.iter().any(|operation| {
+            matches!(
+                operation,
+                Operation::FindBytes { .. }
+                    | Operation::RelativeOffset { .. }
+                    | Operation::AbsoluteAddress { .. }
+            )
+        });
+        let found = if has_control {
+            self.find_control(data, offset, end, memory_map)?
+        } else if self.operations.iter().any(|operation| {
+            matches!(
+                operation,
+                Operation::Skip(_)
+                    | Operation::NotNull(_)
+                    | Operation::Ansi(_)
+                    | Operation::NotAnsi(_)
+                    | Operation::NotAnsiAndNotNull(_)
+                    | Operation::DecimalDigit(_)
+            )
+        }) {
+            self.find_sigbytes(data, offset, end)?
+        } else {
+            self.find_plain(data, offset, end)
+        };
+        Ok(found.map(|offset| FindResult {
+            offset,
+            size: if has_control {
+                1
+            } else {
+                self.normalized_len / 2
+            },
+        }))
+    }
+
+    fn find_plain(&self, data: &[u8], offset: usize, end: usize) -> Option<usize> {
+        let mut needle = Vec::new();
+        for operation in &self.operations {
+            let Operation::CompareBytes(bytes) = operation else {
+                return None;
+            };
+            needle.extend_from_slice(bytes);
+        }
+        find_exact(data, offset, end, &needle)
+    }
+
+    fn find_sigbytes(
+        &self,
+        data: &[u8],
+        offset: usize,
+        end: usize,
+    ) -> Result<Option<usize>, MatchError> {
+        let mut predicates: Vec<SigPredicate> = Vec::new();
+        for operation in &self.operations {
+            match operation {
+                Operation::CompareBytes(bytes) => {
+                    predicates.extend(bytes.iter().copied().map(SigPredicate::Exact));
+                }
+                Operation::Skip(size) => {
+                    predicates.extend(std::iter::repeat_n(SigPredicate::Any, *size));
+                }
+                Operation::NotNull(size) => {
+                    predicates.extend(std::iter::repeat_n(SigPredicate::NotNull, *size));
+                }
+                Operation::Ansi(size) => {
+                    predicates.extend(std::iter::repeat_n(SigPredicate::Ansi, *size));
+                }
+                Operation::NotAnsi(size) => {
+                    predicates.extend(std::iter::repeat_n(SigPredicate::NotAnsi, *size));
+                }
+                Operation::NotAnsiAndNotNull(size) => {
+                    predicates.extend(std::iter::repeat_n(SigPredicate::NotAnsiAndNotNull, *size));
+                }
+                Operation::DecimalDigit(size) => {
+                    predicates.extend(std::iter::repeat_n(SigPredicate::Alphanumeric, *size));
+                }
+                Operation::FindBytes { .. }
+                | Operation::RelativeOffset { .. }
+                | Operation::AbsoluteAddress { .. } => return Ok(None),
+            }
+        }
+        let leading_non_exact = predicates
+            .iter()
+            .take_while(|predicate| !matches!(predicate, SigPredicate::Exact(_)))
+            .count();
+        if leading_non_exact >= 3 {
+            let fixed: Vec<u8> = predicates[leading_non_exact..]
+                .iter()
+                .map_while(|predicate| match predicate {
+                    SigPredicate::Exact(byte) => Some(*byte),
+                    _ => None,
+                })
+                .collect();
+            if fixed.len() >= 3 {
+                let mut search_from = offset;
+                while search_from < end {
+                    let Some(found) = find_exact(data, search_from, end, &fixed) else {
+                        break;
+                    };
+                    if let Some(candidate) = found.checked_sub(leading_non_exact) {
+                        if candidate >= offset && self.matches(data, candidate, None)? {
+                            return Ok(Some(candidate));
+                        }
+                    }
+                    search_from = found.saturating_add(1);
+                }
+                return Ok(None);
+            }
+        }
+        Ok(find_predicates(data, offset, end, &predicates))
+    }
+
+    fn find_control(
+        &self,
+        data: &[u8],
+        offset: usize,
+        end: usize,
+        memory_map: Option<&MemoryMap>,
+    ) -> Result<Option<usize>, MatchError> {
+        let contains_find = self
+            .operations
+            .iter()
+            .any(|operation| matches!(operation, Operation::FindBytes { .. }));
+        let mut anchor_index = 0;
+        let mut anchor_delta = 0;
+        if !contains_find {
+            let mut current_delta: usize = 0;
+            let mut maximum: usize = 0;
+            for (index, operation) in self.operations.iter().enumerate() {
+                if matches!(
+                    operation,
+                    Operation::RelativeOffset { .. } | Operation::AbsoluteAddress { .. }
+                ) {
+                    break;
+                }
+                if matches!(
+                    operation,
+                    Operation::CompareBytes(_) | Operation::FindBytes { .. }
+                ) && operation_span(operation) > maximum
+                {
+                    maximum = operation_span(operation);
+                    anchor_index = index;
+                    anchor_delta = current_delta;
+                }
+                current_delta = current_delta
+                    .checked_add(operation_span(operation))
+                    .unwrap_or(usize::MAX);
+            }
+        }
+
+        if anchor_index > 0 {
+            let Some(anchor_start) = offset.checked_add(anchor_delta) else {
+                return Ok(None);
+            };
+            let anchor = &self.operations[anchor_index];
+            let mut search_from = anchor_start;
+            while search_from < end {
+                let Some(found) = find_control_anchor(data, search_from, end, anchor) else {
+                    break;
+                };
+                if let Some(candidate) = found.checked_sub(anchor_delta) {
+                    if candidate >= offset && self.matches(data, candidate, memory_map)? {
+                        return Ok(Some(candidate));
+                    }
+                }
+                search_from = found.saturating_add(1);
+            }
+            return Ok(None);
+        }
+
+        if let Some(first) = self.operations.first() {
+            if is_searchable_control_anchor(first) {
+                let mut search_from = offset;
+                while search_from < end {
+                    let Some(found) = find_control_anchor(data, search_from, end, first) else {
+                        break;
+                    };
+                    if self.matches(data, found, memory_map)? {
+                        return Ok(Some(found));
+                    }
+                    search_from = found.saturating_add(1);
+                }
+                return Ok(None);
+            }
+        }
+
+        for candidate in offset..end {
+            if self.matches(data, candidate, memory_map)? {
+                return Ok(Some(candidate));
+            }
+        }
+        Ok(None)
     }
 
     fn matches(
@@ -345,6 +582,133 @@ impl Pattern {
             }
         }
         Ok(true)
+    }
+}
+
+#[derive(Clone, Copy)]
+enum SigPredicate {
+    Exact(u8),
+    Any,
+    NotNull,
+    Ansi,
+    NotAnsi,
+    NotAnsiAndNotNull,
+    Alphanumeric,
+    DecimalDigit,
+    RecordAnsi,
+    RecordNotAnsi,
+    RecordNotAnsiAndNotNull,
+}
+
+impl SigPredicate {
+    fn matches(self, byte: u8) -> bool {
+        match self {
+            Self::Exact(expected) => byte == expected,
+            Self::Any => true,
+            Self::NotNull => byte != 0,
+            Self::Ansi => (0x20..=0x7e).contains(&byte),
+            Self::NotAnsi => !(0x20..=0x7e).contains(&byte),
+            Self::NotAnsiAndNotNull => byte != 0 && !(0x20..=0x7e).contains(&byte),
+            Self::Alphanumeric => byte.is_ascii_alphanumeric(),
+            Self::DecimalDigit => byte.is_ascii_digit(),
+            Self::RecordAnsi => (0x20..0x80).contains(&byte),
+            Self::RecordNotAnsi => !(0x20..0x80).contains(&byte),
+            Self::RecordNotAnsiAndNotNull => byte != 0 && !(0x20..0x80).contains(&byte),
+        }
+    }
+}
+
+fn find_exact(data: &[u8], offset: usize, end: usize, needle: &[u8]) -> Option<usize> {
+    if needle.is_empty() || offset > end {
+        return None;
+    }
+    let region = data.get(offset..end)?;
+    region
+        .windows(needle.len())
+        .position(|candidate| candidate == needle)
+        .and_then(|relative| offset.checked_add(relative))
+}
+
+fn find_predicates(
+    data: &[u8],
+    offset: usize,
+    end: usize,
+    predicates: &[SigPredicate],
+) -> Option<usize> {
+    if predicates.is_empty() || offset > end {
+        return None;
+    }
+    let region = data.get(offset..end)?;
+    region
+        .windows(predicates.len())
+        .position(|candidate| {
+            predicates
+                .iter()
+                .copied()
+                .zip(candidate.iter().copied())
+                .all(|(predicate, byte)| predicate.matches(byte))
+        })
+        .and_then(|relative| offset.checked_add(relative))
+}
+
+fn operation_span(operation: &Operation) -> usize {
+    match operation {
+        Operation::CompareBytes(bytes) => bytes.len(),
+        Operation::Skip(size)
+        | Operation::NotNull(size)
+        | Operation::Ansi(size)
+        | Operation::NotAnsi(size)
+        | Operation::NotAnsiAndNotNull(size)
+        | Operation::DecimalDigit(size) => *size,
+        Operation::FindBytes { window, .. } => *window,
+        Operation::RelativeOffset { width } | Operation::AbsoluteAddress { width, .. } => *width,
+    }
+}
+
+fn is_searchable_control_anchor(operation: &Operation) -> bool {
+    matches!(
+        operation,
+        Operation::CompareBytes(_)
+            | Operation::FindBytes { .. }
+            | Operation::NotNull(_)
+            | Operation::Ansi(_)
+            | Operation::NotAnsi(_)
+            | Operation::NotAnsiAndNotNull(_)
+            | Operation::DecimalDigit(_)
+    )
+}
+
+fn find_control_anchor(
+    data: &[u8],
+    offset: usize,
+    end: usize,
+    operation: &Operation,
+) -> Option<usize> {
+    match operation {
+        Operation::CompareBytes(bytes) | Operation::FindBytes { bytes, .. } => {
+            find_exact(data, offset, end, bytes)
+        }
+        Operation::NotNull(size) => {
+            find_predicates(data, offset, end, &vec![SigPredicate::NotNull; *size])
+        }
+        Operation::Ansi(size) => {
+            find_predicates(data, offset, end, &vec![SigPredicate::RecordAnsi; *size])
+        }
+        Operation::NotAnsi(size) => {
+            find_predicates(data, offset, end, &vec![SigPredicate::RecordNotAnsi; *size])
+        }
+        Operation::NotAnsiAndNotNull(size) => find_predicates(
+            data,
+            offset,
+            end,
+            &vec![SigPredicate::RecordNotAnsiAndNotNull; *size],
+        ),
+        Operation::DecimalDigit(size) => {
+            find_predicates(data, offset, end, &vec![SigPredicate::DecimalDigit; *size])
+        }
+        Operation::Skip(_)
+        | Operation::RelativeOffset { .. }
+        | Operation::AbsoluteAddress { .. } => None,
     }
 }
 
@@ -754,8 +1118,8 @@ impl std::error::Error for MatchError {}
 #[cfg(test)]
 mod tests {
     use super::{
-        CompatibilityQuirk, Endian, FileType, MatchError, MemoryMap, MemoryRecord, Operation,
-        ParseErrorKind, Pattern,
+        CompatibilityQuirk, Endian, FileType, FindResult, MatchError, MemoryMap, MemoryRecord,
+        Operation, ParseErrorKind, Pattern,
     };
     use serde_json::Value;
     use std::collections::BTreeSet;
@@ -1224,6 +1588,99 @@ mod tests {
                 Ok(expected),
                 "differential mismatch for {id}"
             );
+            compared += 1;
+        }
+        assert_eq!(compared, selected.len());
+    }
+
+    #[test]
+    fn independent_find_paths_agree_with_pinned_xbinary_oracle() {
+        let selected = BTreeSet::from([
+            "quoted_literal_and_wildcard_match",
+            "exact_match_at_eof",
+            "all_byte_classes_match",
+            "decimal_class_rejects_letter",
+            "ansi_del_compare_find_divergence",
+            "not_ansi_del_compare_find_divergence",
+            "find_at_window_end",
+            "find_outside_window",
+            "relative_offset_little_endian",
+            "absolute_address_identity_map",
+            "address_markers_around_ignored_base",
+            "odd_hex_qbytearray_behavior",
+            "unterminated_quote_behavior",
+            "single_wildcard_is_zero_width",
+            "plain_find_clamps_oversized_range",
+            "sigbyte_fixed_anchor_rechecks_record_classes",
+            "control_longest_literal_anchor",
+            "control_class_first_anchor",
+            "control_relative_first_fallback",
+        ]);
+        let oracle: Value = serde_json::from_str(include_str!(
+            "../../../docs/research/data/signature-oracle-qt5.json"
+        ))
+        .expect("oracle baseline should be valid JSON");
+        let cases = oracle["cases"]
+            .as_array()
+            .expect("oracle cases should be an array");
+        let mut compared = 0;
+        for case in cases {
+            let id = case["id"].as_str().expect("case id should be a string");
+            if !selected.contains(id) {
+                continue;
+            }
+            let source = case["pattern"]
+                .as_str()
+                .expect("pattern should be a string");
+            let data = decode_hex(
+                case["data_hex"]
+                    .as_str()
+                    .expect("data should be a hex string"),
+            );
+            let search_offset = case["search_offset"]
+                .as_u64()
+                .and_then(|value| usize::try_from(value).ok())
+                .expect("search offset should fit usize");
+            let search_size = case["search_size"]
+                .as_u64()
+                .and_then(|value| usize::try_from(value).ok())
+                .expect("search size should fit usize");
+            let expected_offset = case["find_offset"]
+                .as_i64()
+                .expect("find offset should be an integer");
+            let expected = (expected_offset >= 0).then(|| FindResult {
+                offset: expected_offset as usize,
+                size: case["find_result_size"]
+                    .as_u64()
+                    .and_then(|value| usize::try_from(value).ok())
+                    .expect("find result size should fit usize"),
+            });
+            let report = Pattern::parse_upstream_compatible(source)
+                .unwrap_or_else(|error| panic!("cannot parse {id}: {error}"));
+            let actual = if report.pattern.operations().iter().any(|operation| {
+                matches!(
+                    operation,
+                    Operation::RelativeOffset { .. } | Operation::AbsoluteAddress { .. }
+                )
+            }) {
+                let map = MemoryMap {
+                    file_type: FileType::Binary,
+                    endian: Endian::Little,
+                    code_base: 0,
+                    start_load_offset: 0,
+                    records: vec![MemoryRecord {
+                        offset: 0,
+                        address: 0,
+                        size: data.len() as u64,
+                    }],
+                };
+                report
+                    .pattern
+                    .find_with_memory_map(&data, search_offset, search_size, &map)
+            } else {
+                report.pattern.find_raw(&data, search_offset, search_size)
+            };
+            assert_eq!(actual, Ok(expected), "find mismatch for {id}");
             compared += 1;
         }
         assert_eq!(compared, selected.len());

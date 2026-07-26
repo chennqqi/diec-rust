@@ -88,6 +88,10 @@ SigByte matcher 与 record matcher 已有可观察差异：
 - record ANSI 范围是 `0x20..0x7f`，即包括 DEL `0x7f`；SigByte ANSI 是
   `0x20..0x7e`；
 - 对 `!%`，DEL 的两侧结论相反；
+- SigByte 路径在前三个以上 token 非固定、随后至少三个 token 固定时，先搜索固定
+  anchor，再回调 record matcher 校验整个 pattern；因此 `%&%&%&414243` 对
+  `ABCABC` 不会采用 SigByte 的 alphanumeric 结论，而会因 record matcher
+  只接受数字而失败；
 - plain-hex find 会容忍 `QByteArray::fromHex` 忽略的无效字符，而
   `isSignatureValid` 仍可返回 false；
 - 以 `+` 开头的 pattern 可以在 offset 0 直接 compare 成功，但
@@ -140,13 +144,13 @@ pattern 仍可能缺失。
 
 输入由
 [`generate_signature_oracle_vectors.py`](../../tools/corpus/generate_signature_oracle_vectors.py)
-生成，共 43 个项目自有向量。原始输出保存为
+生成，共 48 个项目自有向量。原始输出保存为
 [`signature-oracle-qt5.json`](data/signature-oracle-qt5.json)，自动探针
 [`probe_signature_harness.py`](../../tools/upstream/probe_signature_harness.py)
 在禁网、512 MiB、1 CPU、128 PID 限制下验证 image revision、binary hash、
-输入 identity 及 baseline 原始 bytes。当前结果 43/43，stdout/baseline
+输入 identity 及 baseline 原始 bytes。当前结果 48/48，stdout/baseline
 SHA-256 均为
-`16b6cd4b34cfb85e5590853d366739ef4525bb4dc5558db8fc66bb13d6625346`。
+`82bb25de85f8edb9a4bd34cc38c283a9b2efd7e716a47c8d8c788eedc1a6d883`。
 
 构建与复现：
 
@@ -213,7 +217,10 @@ oracle schema v2 允许每个项目自有向量显式注入 `_MEMORY_MAP`，但�
 - 空串、奇数 token、未知字符、无 find needle 和未闭合结构均有结构化错误；
 - 16 个 context-free `compareSignature` 向量与固定 Qt 5 XBinary oracle 16/16
   一致，7 个合成 memory-map 向量 7/7 一致，9 个真实格式 parser map 向量
-  9/9 一致。
+  9/9 一致；
+- 独立 `find_signature` 实现覆盖 plain-hex、SigByte、control-record 三条路径，
+  包括范围截断、固定/最长/类锚点和无锚点回退；19 个聚焦向量与固定 oracle
+  19/19 一致，未以循环调用 raw matcher 代替搜索算法。
 
 机器摘要见
 [`signature-parser.json`](data/signature-parser.json)。
@@ -227,7 +234,7 @@ oracle schema v2 允许每个项目自有向量显式注入 `_MEMORY_MAP`，但�
    `getMemoryMap` 边界。
 4. 端到端调用 `Binary_Script::compare`，比较 header-signature fast path 与
    通用 matcher 的严格 `<` 边界差异。
-5. 独立实现并差分 `find_signature` 的 control-record、SigByte 和 plain-hex
-   三条路径；不能由 `matches_raw` 推导。
+5. 扩展 `find_signature` 差分到 malformed partial-parse、更多 buffer boundary
+   和锚点优化组合，并验证取消行为；现有 19-case spike 不作为完整性证明。
 6. 只有 parser、matcher 和 `find_signature` 差分门禁通过后，才能替换当前
    rquickjs spike 中的五-pattern 特判。

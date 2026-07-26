@@ -10,7 +10,7 @@ from pathlib import Path
 
 
 SCHEMA_VERSION = 2
-GENERATOR_VERSION = 5
+GENERATOR_VERSION = 6
 UPSTREAM_COMMIT = "74eaf505c250ab47e709024e9dc41657cd8f2254"
 FORMATS_COMMIT = "1151e7254fdee3c0294ff7095edbdd7bfccf8201"
 
@@ -372,6 +372,18 @@ def vectors() -> list[dict[str, object]]:
             "data_hex": "7f",
         },
         {
+            "id": "plain_find_clamps_oversized_range",
+            "pattern": "41",
+            "data_hex": "0041",
+            "find_offset": 1,
+            "find_size": 999,
+        },
+        {
+            "id": "sigbyte_fixed_anchor_rechecks_record_classes",
+            "pattern": "%&%&%&414243",
+            "data_hex": "414243414243",
+        },
+        {
             "id": "find_at_window_end",
             "pattern": "++'MZ'",
             "data_hex": ("00" * 64) + "4d5a",
@@ -380,6 +392,21 @@ def vectors() -> list[dict[str, object]]:
             "id": "find_outside_window",
             "pattern": "++'MZ'",
             "data_hex": ("00" * 65) + "4d5a",
+        },
+        {
+            "id": "control_longest_literal_anchor",
+            "pattern": "41....424344$$$$$$$$90",
+            "data_hex": "4100004243440000000090",
+        },
+        {
+            "id": "control_class_first_anchor",
+            "pattern": "%&$$$$$$$$90",
+            "data_hex": "370000000090",
+        },
+        {
+            "id": "control_relative_first_fallback",
+            "pattern": "$$$$$$$$90",
+            "data_hex": "0000000090",
         },
         {
             "id": "relative_offset_little_endian",

@@ -103,7 +103,7 @@
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)",
     "cargo_toml_sha256": "492a5c5521a832006771de28eff65052ef8475d693bfb8ca61ba150eea965b64",
     "cargo_lock_sha256": "2985224550a817be8fe4dea19a12c2db06cc21f199b985fba12fc23dedfa9279",
-    "source_sha256": "b24c349f4e9d47500cf11886440a1a2a0db281ef1838d283ba3318f374df3606",
+    "source_sha256": "d2c2606c82bbfc8da570d335682463aebd4d23e731869427742d15cfac4f0016",
     "runtime_dependencies": 0,
     "strict_parse_count": 312,
     "compatible_parse_count": 317,
@@ -127,6 +127,15 @@
     "pinned_xbinary_compare_differential": {
       "case_count": 16,
       "matched_count": 16
+    },
+    "pinned_xbinary_find_differential": {
+      "case_count": 19,
+      "matched_count": 19,
+      "branches": [
+        "plain-hex",
+        "SigByte",
+        "control-record"
+      ]
     },
     "pinned_xbinary_memory_map_differential": {
       "case_count": 7,
@@ -174,13 +183,13 @@
     "binary_sha256": "717ef40c99c311b8d358e82f74758361beb7e331790816ca25e50e61e8a1139a",
     "dockerfile_sha256": "c9c28565e2d3274edbc72d54e3bcf1b3edc0b2707749707718fcbafbf9430aa8",
     "harness_source_sha256": "c6fbdf0633e85579da113981cedee9e91ea4674bb9b05e7488909bb80f1c6504",
-    "probe_sha256": "26704c071b45fba0cb383eabf1f2d72086b20f5d9de368c27fc30a344f7306ea",
-    "vector_generator_sha256": "0aed4d02ae9951d4e298923e5534fec097f107318e9c153eb55ea7d880081c5f",
+    "probe_sha256": "eff25950bcb9f11c217d668f0b90108b5da3258a072fc32c91d216f03498b298",
+    "vector_generator_sha256": "42a74e4fda3f8361d711a331ee647086c70c26724fb6d2d38c9ec55df9dedfd4",
     "vectors": "docs/research/data/signature-oracle-vectors.json",
-    "vectors_sha256": "8a95a70d1974af6f05097ee20a80c8b1abf3aa5b2ce1b1007c7e13796c94c839",
+    "vectors_sha256": "8a8798e837483a51b77bd56920aa063f1ba2819d3ae970e70a25ae61f25ae5ca",
     "baseline": "docs/research/data/signature-oracle-qt5.json",
-    "baseline_sha256": "16b6cd4b34cfb85e5590853d366739ef4525bb4dc5558db8fc66bb13d6625346",
-    "case_count": 43,
+    "baseline_sha256": "82bb25de85f8edb9a4bd34cc38c283a9b2efd7e716a47c8d8c788eedc1a6d883",
+    "case_count": 48,
     "probe_passed": true,
     "compare_find_divergences": [
       "%& accepts only digits in compare records but letters and digits in SigBytes find",
@@ -193,7 +202,7 @@
     "the 317-pattern inventory is dynamic coverage for one fixed generated sample, not a complete static corpus inventory",
     "generated PE32/64, ELF32/64, Mach-O32/64, COM, MS-DOS, and AmigaHunk files cover real parser memory-map construction, but malformed map variants remain untested",
     "XScanEngine Binary_Script header-signature fast-path boundary behavior is not yet invoked end-to-end",
-    "find_signature has separate optimization branches and is not yet implemented in the Rust spike",
-    "the 27 focused vectors do not yet exhaust malformed partial-parse combinations"
+    "the independent find_signature spike covers 19 focused cases across all three branches, but malformed partial-parse and exhaustive optimization combinations remain untested",
+    "the 48 focused vectors do not yet exhaust malformed partial-parse combinations"
   ]
 }

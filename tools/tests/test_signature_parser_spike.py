@@ -105,6 +105,18 @@ class SignatureParserSpikeTests(unittest.TestCase):
             {"case_count": 16, "matched_count": 16},
         )
         self.assertEqual(
+            spike["pinned_xbinary_find_differential"],
+            {
+                "case_count": 19,
+                "matched_count": 19,
+                "branches": [
+                    "plain-hex",
+                    "SigByte",
+                    "control-record",
+                ],
+            },
+        )
+        self.assertEqual(
             spike["pinned_xbinary_memory_map_differential"],
             {
                 "case_count": 7,
@@ -180,7 +192,7 @@ class SignatureParserSpikeTests(unittest.TestCase):
         )
         self.assertEqual(baseline["case_count"], oracle["case_count"])
         self.assertTrue(oracle["probe_passed"])
-        self.assertEqual(oracle["case_count"], 43)
+        self.assertEqual(oracle["case_count"], 48)
         self.assertEqual(len(oracle["compare_find_divergences"]), 4)
 
 

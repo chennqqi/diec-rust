@@ -13,9 +13,29 @@ from typing import Any
 
 
 EXPECTED_OBSERVATIONS = {
+    "plain_find_clamps_oversized_range": {
+        "compare": False,
+        "find_offset": 1,
+    },
+    "sigbyte_fixed_anchor_rechecks_record_classes": {
+        "compare": False,
+        "find_offset": -1,
+    },
     "find_at_window_end": {
         "compare": True,
         "find_offset": -1,
+    },
+    "control_longest_literal_anchor": {
+        "compare": True,
+        "find_offset": 0,
+    },
+    "control_class_first_anchor": {
+        "compare": True,
+        "find_offset": 0,
+    },
+    "control_relative_first_fallback": {
+        "compare": True,
+        "find_offset": 0,
     },
     "decimal_class_rejects_letter": {
         "compare": False,
