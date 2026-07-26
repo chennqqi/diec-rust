@@ -244,8 +244,10 @@ baseline 的变更都要检查本表。
   文件名已使 `sort_signature_prio()` 产生非传递比较环，`std::sort` 结果不能
   外推到另一 STL/编译器。
 - **当前证据**：固定 Linux Qt5 qmake/CMake oracle 的 292 条 Binary 执行序列
-  逐项一致，重复运行 order hash 稳定；Linux Qt6 初始矩阵已证明 runtime profile
-  可改变异常文本和 stderr。尚无 MSVC/libc++ 顺序证据。
+  逐项一致，重复运行 order hash 稳定；隔离 priority-only/init fixture 又证明
+  `_init` 可直接形成比较环，并固定两个 Linux 构建偏离纯 priority 的相同顺序；
+  Linux Qt6 初始矩阵已证明 runtime profile可改变异常文本和 stderr。尚无
+  MSVC/libc++ 顺序证据。
 - **缓解**：报告按 platform 分层；未固定 oracle 标记 missing；不允许跨平台
   blanket normalization。
 - **验证**：Windows/macOS 固定 upstream oracle、path/encoding corpus 和 Rust

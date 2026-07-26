@@ -50,7 +50,8 @@ workspace 建立时重新生成并审计，不允许浮动到其他 minor/patch 
 - 每次 scan 使用与上游生命周期一致的共享 runtime/context，由一个确定 owner
   worker 使用；跨线程只传 cancel/deadline token，不移动 live JS handle。
 - global init、type init、signature、普通规则和 include 的顺序来自固定 database
-  snapshot，不按文件系统偶然顺序执行。
+  snapshot，不按文件系统偶然顺序执行；上游非传递 comparator 的隔离与
+  target-pinned order manifest 由 ADR 0008 约束。
 
 兼容层：
 

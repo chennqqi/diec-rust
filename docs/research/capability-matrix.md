@@ -81,18 +81,22 @@ verbose/messages/profiling 的 channel 与结构化结果关系，以及两个�
 | 能力 | 源码证据 | 状态 |
 | --- | --- | --- |
 | main/extra/custom 三层规则库 | `XScanEngine::loadDatabase()` | Observed；固定目录加载成功 |
-| 规则优先级排序 | `sort_signature_prio` | Source only |
-| global/type Init 规则 | `findInitSignatures()` + `_executeInitSignature()` | Source only |
-| 按文件类型过滤规则 | `_shouldExecuteSignature()` | Source only |
-| deep/heuristic 规则过滤 | `_shouldExecuteSignature()` | Source only |
+| 规则优先级排序 | `sort_signature_prio` | Observed + source；priority-only 按字符串 priority；含 `_init` 时比较非传递 |
+| global/type Init 规则 | `findInitSignatures()` + `_executeInitSignature()` | Observed；Binary main init 遮蔽 extra/custom |
+| 按文件类型过滤规则 | `_shouldExecuteSignature()` | Observed；Binary 输入不执行 PE decoy |
+| deep/heuristic 规则过滤 | `_shouldExecuteSignature()` | Observed；DS/EP 与 HEUR 独立四模式 |
 | 自定义单条 signature/file 过滤 | `sSignatureName`, `sSignatureFilePath` | Source only |
-| 未命中时产生 Unknown | `DiE_Script::processDetect()` | Source only |
+| 未命中时产生 Unknown | `DiE_Script::processDetect()` | Observed；空的有效三层数据库产生唯一 Unknown |
 | 检测结果稳定排序选项 | `bIsSort` + `sortRecords()` | Source only |
 | 脚本错误收集 | `SCAN_RESULT.listErrors` | Observed；parse/runtime error 追加到 stdout，退出 0 |
 | 脚本 profiling | `listDebugRecords` / messages | Observed；292 条 Binary 规则顺序及 CLI channel 已固定 |
 | 取消/停止 | `PDSTRUCT`, callback, `breakScan()` | Source only |
 
 规则脚本由 Qt 5 `QScriptEngine` 或 Qt 6 `QJSEngine` 执行。规则兼容性不是简单的模式匹配移植，必须覆盖 JavaScript 方言、全局函数和每种格式宿主对象；详见待建的 `rule-compatibility.md`。
+
+priority、数据库分层、init/include、file type、deep/heuristic 和 Unknown 的隔离
+端到端证据见
+[`rule-orchestration.md`](rule-orchestration.md)。
 
 ## 文件类型分派
 

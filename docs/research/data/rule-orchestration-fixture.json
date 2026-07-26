@@ -1,0 +1,209 @@
+{
+  "directories": [
+    "main",
+    "main/Binary",
+    "main/PE",
+    "extra",
+    "extra/Binary",
+    "custom",
+    "custom/Binary",
+    "empty-main",
+    "empty-extra",
+    "empty-custom",
+    "priority-main",
+    "priority-main/Binary",
+    "priority-extra",
+    "priority-custom",
+    "input"
+  ],
+  "entries": [
+    {
+      "path": "input/probe.bin",
+      "purpose": "benign Binary scan input",
+      "sha256": "b9e88c21a74e1be0f85e85465c3f6bb831a55ef1d626af3fa11164e5f353ac60",
+      "size": 35,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/_init",
+      "purpose": "winning global init from the main database",
+      "sha256": "2f84fee8c715ddee7aa057e4887d5934393e7674ecaaf1bc1d4a51a5717ed5f6",
+      "size": 73,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/shared_helper",
+      "purpose": "winning same-name include from the main database",
+      "sha256": "4bdc0ac4b386ee31880d128ee7dc8597698e1f5ba3795c4b79ffd7e1d2f0fc04",
+      "size": 41,
+      "source": "project-generated"
+    },
+    {
+      "path": "extra/_init",
+      "purpose": "shadowed global init",
+      "sha256": "7580646f2d98ec436a6afebed72ebede53c336263fec02774d8d4f9f4369509b",
+      "size": 42,
+      "source": "project-generated"
+    },
+    {
+      "path": "extra/shared_helper",
+      "purpose": "shadowed same-name include",
+      "sha256": "d153a2e2db6f5d30ceadf15ef8ca5763e59be1c54115dcbe24187200cd6ddeda",
+      "size": 42,
+      "source": "project-generated"
+    },
+    {
+      "path": "custom/_init",
+      "purpose": "shadowed global init",
+      "sha256": "7ce02ed628558fe2b3826d4053f819b86608aaac23444f3e58e3033bd708e7a9",
+      "size": 43,
+      "source": "project-generated"
+    },
+    {
+      "path": "custom/shared_helper",
+      "purpose": "shadowed same-name include",
+      "sha256": "e63cdbb2cd59eb32d6137774e1a1392b72834ee83ffb30f24ad6f15bae5664ec",
+      "size": 43,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/_init",
+      "purpose": "winning Binary type init from the main database",
+      "sha256": "b68fd5b5793d3691d8ddb90d7aa0aae8f67f02a37ef12aba7e8720e48fc273c2",
+      "size": 88,
+      "source": "project-generated"
+    },
+    {
+      "path": "extra/Binary/_init",
+      "purpose": "shadowed Binary type init",
+      "sha256": "1d50aaec38bd790b3ef8b70810e7a037319232d55dbd35de6f10c2c4b709bf74",
+      "size": 38,
+      "source": "project-generated"
+    },
+    {
+      "path": "custom/Binary/_init",
+      "purpose": "shadowed Binary type init",
+      "sha256": "242512a756d2aebfb048706af7ffe738fe2473657d78a811266cceac89dfc632",
+      "size": 39,
+      "source": "project-generated"
+    },
+    {
+      "detection_name": "Main normal",
+      "path": "main/Binary/z_normal.1.sg",
+      "purpose": "ordinary main rule whose priority is disrupted by the non-transitive comparison with _init",
+      "sha256": "ba9a91bd41292498f6682c8b3927f2dd40f0c016aabec3a3538091625bbc38f3",
+      "size": 103,
+      "source": "project-generated"
+    },
+    {
+      "detection_name": "Main deep",
+      "path": "main/Binary/DS.deep.2.sg",
+      "purpose": "DS deep-only rule",
+      "sha256": "49927e2eb537f9114f56073d88e1cb738612c45a2a102f10ccfedff1dfc0cc37",
+      "size": 101,
+      "source": "project-generated"
+    },
+    {
+      "detection_name": "Main heuristic",
+      "path": "main/Binary/HEUR.heuristic.3.sg",
+      "purpose": "HEUR heuristic-only rule",
+      "sha256": "beaad310699728d80c58f7804028768485764c71514ec649efec6d5749877035",
+      "size": 106,
+      "source": "project-generated"
+    },
+    {
+      "detection_name": "Main entrypoint",
+      "path": "main/Binary/EP.entrypoint.4.sg",
+      "purpose": "EP deep-only rule",
+      "sha256": "b21f1295d2048cf42948460254d959c07e81af448d46d3ec783d3bd17b25f58a",
+      "size": 107,
+      "source": "project-generated"
+    },
+    {
+      "detection_name": "Extra normal",
+      "path": "extra/Binary/a_extra.0.sg",
+      "purpose": "extra rule with lower priority appended after main",
+      "sha256": "01a8546b7890cc8f6313157e5cf31398617fc5ddf9138080d6d63637060787d5",
+      "size": 104,
+      "source": "project-generated"
+    },
+    {
+      "detection_name": "Custom normal",
+      "path": "custom/Binary/a_custom.0.sg",
+      "purpose": "custom rule with lower priority appended after extra",
+      "sha256": "907c3fd83c46b7d69eb4cbf1c6c813838ff7ef82d00cce77fe385e4529294c8a",
+      "size": 105,
+      "source": "project-generated"
+    },
+    {
+      "detection_name": "PE decoy",
+      "path": "main/PE/decoy.0.sg",
+      "purpose": "wrong-file-type rule that must not execute for Binary",
+      "sha256": "4a0bc8998af09d1baad7c6c02a6c82a4de6171eeceeb20bbed366215ef3a16a8",
+      "size": 100,
+      "source": "project-generated"
+    },
+    {
+      "detection_name": "Priority one",
+      "path": "priority-main/Binary/z_priority.1.sg",
+      "purpose": "priority 1 rule with lexically last name",
+      "sha256": "901647c674479dd69fb4cddb0157272bed095187a0f366d2a157db80be280e84",
+      "size": 102,
+      "source": "project-generated"
+    },
+    {
+      "detection_name": "Priority two",
+      "path": "priority-main/Binary/a_priority.2.sg",
+      "purpose": "priority 2 rule with lexically first name",
+      "sha256": "87f1cbaea24611275c3085db5bd6fb2dc0ad64b452f2e47283964de21d16ff92",
+      "size": 102,
+      "source": "project-generated"
+    },
+    {
+      "detection_name": "Priority four",
+      "path": "priority-main/Binary/m_priority.4.sg",
+      "purpose": "priority 4 rule",
+      "sha256": "094e780bf1e25e915ea0f688f217c5a70c3940d007ef8081ded94e1aebe4c722",
+      "size": 103,
+      "source": "project-generated"
+    }
+  ],
+  "expected_init_value": "main-global:main-helper:main-type",
+  "generator": "tools/corpus/generate_rule_orchestration_fixture.py",
+  "license": "project-generated; no third-party sample or rule bytes",
+  "mode_orders": {
+    "combined": [
+      "DS.deep.2.sg",
+      "HEUR.heuristic.3.sg",
+      "EP.entrypoint.4.sg",
+      "z_normal.1.sg",
+      "a_extra.0.sg",
+      "a_custom.0.sg"
+    ],
+    "deep": [
+      "DS.deep.2.sg",
+      "EP.entrypoint.4.sg",
+      "z_normal.1.sg",
+      "a_extra.0.sg",
+      "a_custom.0.sg"
+    ],
+    "default": [
+      "z_normal.1.sg",
+      "a_extra.0.sg",
+      "a_custom.0.sg"
+    ],
+    "heuristic": [
+      "HEUR.heuristic.3.sg",
+      "z_normal.1.sg",
+      "a_extra.0.sg",
+      "a_custom.0.sg"
+    ]
+  },
+  "priority_only_order": [
+    "z_priority.1.sg",
+    "a_priority.2.sg",
+    "m_priority.4.sg"
+  ],
+  "schema_version": 1,
+  "wrong_type_decoy": "decoy.0.sg"
+}

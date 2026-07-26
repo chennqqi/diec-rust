@@ -95,6 +95,12 @@ Extra database 为 Amiga 2、COM 2、ELF 1、MSDOS 2、PE 131。
 完整证据和 Rust 端门禁见
 [`binary-rule-lifecycle.md`](binary-rule-lifecycle.md)。
 
+项目生成的端到端 fixture 进一步证明，type `_init` 本身就可与普通 priority
+文件构成比较环；不含 `_init` 的 priority-only 列表按字符串 priority
+`1 → 2 → 4`，真实 init 布局的固定 Linux 执行序列则偏离纯 priority。main、
+extra、custom 的 `.0`/`.4` 反例同时确认三层分别排序后 append。见
+[`rule-orchestration.md`](rule-orchestration.md)。
+
 ## 执行生命周期
 
 每个扫描对象创建一个 `DiE_ScriptEngine`：

@@ -29,3 +29,6 @@
 - [`0007-rust-toolchain-baseline.md`](0007-rust-toolchain-baseline.md)：
   固定 Rust 1.88 作为当前默认工具链与显式 MSRV，并将后续升级绑定到可重复证据
   （Proposed）。
+- [`0008-pinned-rule-order-manifest.md`](0008-pinned-rule-order-manifest.md)：
+  不在 Rust runtime 复刻非传递 comparator，以 source/target/oracle 绑定的显式
+  顺序清单驱动 legacy 规则执行（Proposed）。

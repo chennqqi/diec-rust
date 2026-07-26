@@ -1,0 +1,181 @@
+# 上游规则编排端到端行为
+
+Status: Draft
+
+Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
+
+Components:
+`XScanEngine@dfe4a419e4f491bb23688ba03c5a5bf39e34da83`,
+`die_script@5d82316c110abf0eb863b50bc679d330e05067b6`
+
+Last updated: 2026-07-27
+
+## 范围
+
+本文用一个完全项目生成的无害 Binary 数据库，同时验证：
+
+- 单层 signature priority 与文件名字典序的关系；
+- type `_init` 参与排序时的非传递比较；
+- main、extra、custom 分层 append；
+- global init、type init 和同名 include 的层优先级；
+- file type 过滤；
+- `DS`/`EP` deep 与 `HEUR` heuristic 过滤；
+- 空数据库的 Unknown 结果。
+
+fixture 清单为
+[`rule-orchestration-fixture.json`](data/rule-orchestration-fixture.json)，
+生成器为
+[`generate_rule_orchestration_fixture.py`](../../tools/corpus/generate_rule_orchestration_fixture.py)。
+输入只是固定 ASCII 文本，规则只调用 `_setResult()`，不包含第三方规则或样本字节。
+
+探针
+[`probe_rule_orchestration.py`](../../tools/upstream/probe_rule_orchestration.py)
+同时运行固定 Linux Qt5 qmake/CMake oracle。报告
+[`rule-orchestration-linux-qt5.json`](data/rule-orchestration-linux-qt5.json)
+保留每个 mode/oracle 的原始 stdout/stderr 长度与 SHA-256、规范化执行顺序和完整
+detection 字段；原始流保存在 `--raw-dir` 指定的非版本化目录。
+
+## 固定身份
+
+| Oracle | Image ID | Binary |
+| --- | --- | --- |
+| Linux Qt5 qmake | `sha256:cc5561a5d256...bac964ab` | `/opt/die-source/build/release/diec` |
+| Linux Qt5 CMake | `sha256:466102628c3a...0255040` | `/opt/die-build/src/console/diec` |
+
+两个镜像的 revision 都是 `74eaf505...`。6 个 case 的规范化执行顺序与 detection
+逐字段相同，所有进程 exit 0、stderr 为空。profiling elapsed 毫秒不作为稳定
+字段；原始 artifact 仍保留哈希。
+
+## Priority 的正常路径与 `_init` 排序环
+
+固定
+[`sort_signature_prio()`](https://github.com/horsicq/XScanEngine/blob/dfe4a419e4f491bb23688ba03c5a5bf39e34da83/xscanengine.cpp#L35-L67)
+只有在比较双方的文件名都包含至少两个点时，才取倒数第二段作为字符串 priority；
+否则直接比较完整文件名。
+
+### 没有 type init
+
+priority-only 数据库不含 Binary `_init`，并故意让字典序与 priority 冲突：
+
+| 文件 | Priority | 字典序位置 | 实际执行 |
+| --- | --- | ---: | ---: |
+| `z_priority.1.sg` | `"1"` | 3 | 1 |
+| `a_priority.2.sg` | `"2"` | 1 | 2 |
+| `m_priority.4.sg` | `"4"` | 2 | 3 |
+
+两个 oracle 都按 `1 → 2 → 4` 执行，证明有效比较路径使用字符串 priority，而不是
+完整文件名字典序。
+
+### 加入真实 type init
+
+正常 main/Binary 层包含 `_init`。它的点数不足，导致以下比较环：
+
+```text
+DS.deep.2.sg < _init          # lexical
+_init < z_normal.1.sg         # lexical
+z_normal.1.sg < DS.deep.2.sg  # priority "1" < "2"
+```
+
+这不满足 `std::sort` 的 strict weak ordering 前置条件。combined 模式在两个固定
+Linux 构建中实际得到：
+
+```text
+DS.deep.2.sg
+HEUR.heuristic.3.sg
+EP.entrypoint.4.sg
+z_normal.1.sg
+a_extra.0.sg
+a_custom.0.sg
+```
+
+因此不能把规则排序实现为无条件 `(priority, name)` 并称为 1:1。这里固定的是
+Linux Qt5 的观察值；Windows MSVC 和 macOS libc++ 仍需各自 oracle。
+
+## 数据库分层不是全局 priority
+
+main、extra、custom 分别收集并排序，然后按层 append。fixture 中 extra/custom
+普通规则 priority 都是 `"0"`，main 最后一条是 `"4"`，实际仍为：
+
+```text
+... main priority "4"
+extra priority "0"
+custom priority "0"
+```
+
+这证明层优先级高于跨层 priority；不能把三层合并后全局排序。
+
+## Init 与 include 首层胜出
+
+三个数据库层都提供 root `_init`、Binary `_init` 和同名 `shared_helper`。main
+global init 设置 `main-global` 并 include helper，main helper 设置
+`main-helper`，main Binary init 再追加 `main-type`。
+
+所有 default/deep/heuristic/combined detection 的 version 都精确为：
+
+```text
+main-global:main-helper:main-type
+```
+
+extra/custom 的替代值从未出现。这同时证明：
+
+- main global init 遮蔽后层 global init；
+- main type init 遮蔽后层 type init；
+- root 同名 include 选择已装载列表中的首个 main record；
+- main/extra/custom 普通规则共享这次 init 后的同一脚本状态。
+
+## Mode 与 file type 过滤
+
+profiling 中只接受 fixture manifest 声明的完整 rule basename。四种模式为：
+
+| Mode | Main rules executed before extra/custom |
+| --- | --- |
+| default | `z_normal.1.sg` |
+| deep | `DS.deep.2.sg`, `EP.entrypoint.4.sg`, `z_normal.1.sg` |
+| heuristic | `HEUR.heuristic.3.sg`, `z_normal.1.sg` |
+| combined | `DS.deep.2.sg`, `HEUR.heuristic.3.sg`, `EP.entrypoint.4.sg`, `z_normal.1.sg` |
+
+这验证 `DS` 和 `EP` 只由 deep 开关放行，`HEUR` 只由 heuristic 放行，两个开关
+彼此独立。
+
+main/PE 中另放置 `decoy.0.sg`。同一 Binary 输入的四种模式都没有执行该规则，也
+没有产生 `PE decoy` detection，验证 file type filter 在 mode filter 之前排除
+错误类型记录。
+
+## Unknown
+
+同一 Binary 输入使用存在但完全为空的 main/extra/custom 目录时：
+
+- exit 0；
+- profiling execution order 为空；
+- stderr 为空；
+- 唯一 normalized value 为
+  `type=Unknown, name=Unknown, version="", info=""`。
+
+这证明 `bAddUnknown` 在没有规则结果时生成 Unknown，而不是要求至少装载一条规则。
+
+## 复现
+
+```powershell
+python tools\corpus\generate_rule_orchestration_fixture.py `
+  I:\tmp\diec-rule-orchestration-fixture
+
+python tools\upstream\probe_rule_orchestration.py `
+  --fixture-dir I:\tmp\diec-rule-orchestration-fixture `
+  --raw-dir I:\tmp\diec-rule-orchestration-raw `
+  --output docs\research\data\rule-orchestration-linux-qt5.json
+```
+
+Docker 执行使用 `--network=none`。探针校验 fixture 文件/目录全集、每个字节 hash、
+image revision、执行顺序、detection 集合、init 值、Unknown 以及双 oracle
+规范化相等；失败不会静默生成新基线。
+
+## 尚未覆盖
+
+- `sSignatureName` 与 `sSignatureFilePath` 是 engine-only 过滤器，CLI 无入口，仍需
+  固定 C++ harness；
+- `bIsSort` 的最终 record 排序开/关需要 engine harness；
+- callback stop、`_breakScan()` 和外部 `PDSTRUCT` cancel 需要独立时序探针；
+- 非 Binary file type、Windows 和 macOS 的排序/层行为；
+- include 重复、循环及异常传播。
+
+这些缺口不能从本轮成功外推。

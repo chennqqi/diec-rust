@@ -25,6 +25,8 @@ Last updated: 2026-07-27
   CLI、特殊模式和失败行为；
 - [`nested-scan-behavior.md`](../research/nested-scan-behavior.md)：
   resource/overlay/archive harness；
+- [`rule-orchestration.md`](../research/rule-orchestration.md)：
+  priority/init/layer/mode/file-type/Unknown 编排基线；
 - [`rule-compatibility.md`](../research/rule-compatibility.md)：
   规则语法、host API 和结果要求；
 - [`c-static-link-spike.md`](../research/c-static-link-spike.md)：
@@ -71,6 +73,15 @@ Last updated: 2026-07-27
 
 低层 fake 不能代替高层真实规则和真实 parser 的 system test。每个缺陷修复先增加能
 失败的最小回归用例，再修复并将用例保留。
+
+规则数据库/engine integration 必须保留
+[`rule-orchestration-fixture.json`](../research/data/rule-orchestration-fixture.json)
+的六类关系：无 type init 的 `1 → 2 → 4` priority、含 `_init` 的非传递实际
+顺序、main→extra→custom layer append、main global/type/include 首选、
+DS/EP/HEUR mode filter、PE decoy 排除和空数据库 Unknown。legacy 测试比较
+execution order 与 detection 数组原顺序；只允许规范化 profiling elapsed，
+不得按名称排序后比较。order manifest 的 source path/hash/target/oracle 任一漂移
+都必须是 database incompatibility。
 
 嵌套 engine integration 必须覆盖 context 传播而不只计数 child：项目生成的
 RT_MANIFEST resource 在 recursive+aggressive 下应形成 offset 608、size 20、
@@ -579,6 +590,7 @@ result
 
 - workspace CI、manifest validator 和依赖 DAG 检查存在；
 - 最小 corpus 可重复生成；
+- 规则 source/order manifest validator 能检测 path/hash 漂移与 comparator cycle；
 - Rust placeholder/vertical slice 能被 differential harness 调用并产生可审计失败；
 - C smoke 和 canonical schema golden 基础设施存在。
 
@@ -591,6 +603,8 @@ result
 ### Phase 3
 
 - 固定规则 inventory 100% discovered/parsed/loaded；
+- 每个支持 target 的 cyclic rule set 有精确 oracle order manifest，runtime 不
+  调用非传递 comparator；
 - zero silent unsupported syntax；
 - host API/lifecycle conformance 完整；
 - 代表语料规则结果达到批准阈值，剩余差异都有精确 waiver。

@@ -204,6 +204,11 @@ backend 私有模块。
 
 数据库完成校验后形成 immutable snapshot。scanner/session 引用 snapshot，不在扫描
 期间修改规则。main、extra、custom 数据库的合并顺序是请求契约的一部分。
+上游 `sort_signature_prio()` 已确认非传递，runtime 不得翻译该 comparator 后在
+扫描时重新排序。snapshot 中的每条规则必须携带 layer-local/final execution
+ordinal；legacy ordinal 来自 upstream/rules/target/source-hash 绑定的固定 oracle
+order manifest。发现 comparator cycle 而目标清单缺失时拒绝数据库，不能回退到
+文件系统顺序或“修正后”的 `(priority, name)`。详见 ADR 0008。
 
 ## 10. Engine 扫描流水线
 

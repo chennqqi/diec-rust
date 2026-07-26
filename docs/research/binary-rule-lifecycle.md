@@ -119,6 +119,17 @@ archive_DotBundle.sg
   < archive_DotBundle.sg        (name)
 ```
 
+即使不依赖完整上游文件名，type `_init` 也足以与标准 priority 文件形成环：
+
+```text
+DS.deep.2.sg < _init < z_normal.1.sg < DS.deep.2.sg
+```
+
+隔离 fixture 证明：移除 type `_init` 后，`z_priority.1.sg`、
+`a_priority.2.sg`、`m_priority.4.sg` 按 priority `1 → 2 → 4`；加入真实 init
+布局后，两个固定 Linux oracle 的 executable subsequence 不再是纯 priority。
+见 [`rule-orchestration.md`](rule-orchestration.md)。
+
 机器清单保存 10 个可复验环。调用 `std::sort` 时违反比较器前置条件，因此不能仅凭
 源码推导一个跨 STL、编译器和平台稳定的“正确顺序”。这也解释了为什么 Rust 端
 不能简单按 `(priority, name)` 排序后宣称兼容。

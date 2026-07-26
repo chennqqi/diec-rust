@@ -13,6 +13,7 @@ Phase 0 计划形成：
 - [`rquickjs-static-link.md`](rquickjs-static-link.md)：rquickjs/QuickJS-NG 的 Windows/Linux Rust staticlib、C 链接、CRT、系统依赖和许可证闭包（Draft）。
 - [`nintendo-certified-rule.md`](nintendo-certified-rule.md)：唯一 legacy 规则的项目生成语料与真实 detect 基线（Draft）。
 - [`binary-rule-lifecycle.md`](binary-rule-lifecycle.md)：Binary 数据库分层、init/include 选择、共享引擎生命周期和排序缺陷（Draft）。
+- [`rule-orchestration.md`](rule-orchestration.md)：priority、数据库分层、init/include、mode/file-type 过滤和 Unknown 的端到端基线（Draft）。
 - [`signature-language.md`](signature-language.md)：signature 文法、固定 oracle、静态/动态调用清单和边界行为（Draft）。
 - [`rule-syntax-inventory.md`](rule-syntax-inventory.md)：全规则 AST 语法、全局引用和宿主调用形状清单（Draft）。
 - [`host-api-inventory.md`](host-api-inventory.md)：XScanEngine C++ slot、继承、默认参数与规则调用覆盖（Draft）。
@@ -48,6 +49,8 @@ Phase 0 计划形成：
 - [`data/nintendo-certified-baseline.json`](data/nintendo-certified-baseline.json)：双 oracle 原始输出哈希和 detection 摘要。
 - [`data/binary-rule-lifecycle.json`](data/binary-rule-lifecycle.json)：固定 Binary records、helper 解析、源码 hash 和比较器环证据。
 - [`data/binary-rule-order-linux-qt5.json`](data/binary-rule-order-linux-qt5.json)：固定 qmake/CMake oracle 的 292 条 Binary profiling 执行顺序。
+- [`data/rule-orchestration-fixture.json`](data/rule-orchestration-fixture.json)：项目生成的规则编排数据库、输入和期望模式顺序清单。
+- [`data/rule-orchestration-linux-qt5.json`](data/rule-orchestration-linux-qt5.json)：固定 qmake/CMake oracle 的规则编排原始哈希与规范化基线。
 - [`data/cli-option-behavior-linux.json`](data/cli-option-behavior-linux.json)：固定 qmake/CMake oracle 的 verbose/messages/profiling 与 test/create test 原始 CLI 基线。
 - [`data/script-scope-fixture.json`](data/script-scope-fixture.json)：项目生成的跨规则作用域 fixture 清单。
 - [`data/script-scope-qt5.json`](data/script-scope-qt5.json)：固定 qmake/CMake oracle 的作用域行为基线。
