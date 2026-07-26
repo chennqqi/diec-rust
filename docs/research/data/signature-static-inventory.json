@@ -18,6 +18,13 @@
     "safe_definition_count": 95,
     "safety_contract": "top-level name is unique across db/db_extra and has no unresolved direct call in another parsed rule; nested functions use lexical scope"
   },
+  "plain_object_enumeration_audit": {
+    "object_reference_count": 1,
+    "safe_has_own_property_call_count": 1,
+    "unsafe_reference_count": 0,
+    "unsafe_references": [],
+    "safety_contract": "all Object references resolve to the undeclared global built-in and are direct Object.prototype.hasOwnProperty.call uses, with no globalThis/eval/Function or __proto__/constructor access in db/db_extra"
+  },
   "verified_static_transforms": [
     {
       "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
@@ -563,6 +570,22 @@
       ]
     }
   ],
+  "finite_object_key_iterations": [
+    {
+      "path": "db/Binary/format_PDB.1.sg",
+      "function": "detect",
+      "function_line": 13,
+      "object": "refs",
+      "key": "key",
+      "loop_line": 34,
+      "static_values": [
+        "%%%%%%%%%%'.cs'00",
+        "'$'11'@P:FSharp.Core'00",
+        "'$'11'@P:Microsoft.VisualBasic'00",
+        "'std::'%%%%%%"
+      ]
+    }
+  ],
   "finite_loop_accumulations": [
     {
       "path": "db/PE/protector_NetReactor.2.sg",
@@ -661,11 +684,11 @@
     "isSignaturePresent": 72
   },
   "argument_kind_counts": {
-    "dynamic": 14,
+    "dynamic": 13,
     "literal": 5855,
-    "static_expression": 99
+    "static_expression": 100
   },
-  "static_pattern_count": 5565,
+  "static_pattern_count": 5569,
   "static_patterns": [
     "$$$$$$$$5589e557565383ec..8b7d..8b75..8b5d..b8........85c00f84........a1........85c00f94c025........a3",
     "$$$$$$$$55b8........57565383ec..85c08b7c24..8bb424........8b9c24........0f84........8b15........31c085d20f94c08b5424..8b4c24..a3........8d44....8b9424........a3........8915........6690",
@@ -686,6 +709,7 @@
     "%% '.wnry'",
     "%% 'DLSS' %%",
     "%% 00 %% %% %% %% %% %% %% %% 00 %%",
+    "%%%%%%%%%%'.cs'00",
     "'\n'",
     "'\r\nPE-PROTECT 0.9 (C)o'",
     "'                                GM 00000000-00'",
@@ -708,6 +732,8 @@
     "'#?RADIANCE'0A",
     "'#?RGBE'0A",
     "'$$method0x'363030303331372D310024246D6574686F643078363030303333322D310024246D6574686F643078363030303333322D320024246D6574686F643078363030303334302D310024246D6574686F643078363030303334302D320024246D6574686F643078363030303335332D310024246D6574686F64",
+    "'$'11'@P:FSharp.Core'00",
+    "'$'11'@P:Microsoft.VisualBasic'00",
     "'$CAN'",
     "'$SDI0001'0000000000000000",
     "'$_BIM_CONFIG_START_$",
@@ -1869,6 +1895,7 @@
     "'sqsh'0000",
     "'ssh-ed25519'20",
     "'ssh-rsa'20",
+    "'std::'%%%%%%",
     "'stgc_hdr'",
     "'string.d'",
     "'stub_2.netrsrc.resources'",
@@ -6233,10 +6260,10 @@
     "fff589e566f7c6....80c3..80eb..81ec........66c1eb..6689ed",
     "fffe2a002a002a006d0065007300730061006700650073002a002a002a00"
   ],
-  "dynamic_call_site_count": 14,
+  "dynamic_call_site_count": 13,
   "dynamic_expression_type_counts": {
     "Binary": 3,
-    "SymbolRef": 11
+    "SymbolRef": 10
   },
   "dynamic_calls": [
     {
@@ -6293,20 +6320,6 @@
       "argument_kind": "dynamic",
       "argument_ast_type": "Binary",
       "argument_expression": "lo-20",
-      "static_patterns": []
-    },
-    {
-      "path": "db/Binary/format_PDB.1.sg",
-      "line": 35,
-      "column": 16,
-      "receiver": "Binary",
-      "receiver_root": "Binary",
-      "known_host_receiver": true,
-      "method": "isSignaturePresent",
-      "argument_index": 2,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "key",
       "static_patterns": []
     },
     {
@@ -6441,10 +6454,10 @@
     "path": "docs/research/data/signature-pattern-inventory.json",
     "sha256": "15a80990b981d6588d59818c4e6bc1947f35d076dd3dae468a1beaf8f8b27731",
     "dynamic_pattern_count": 317,
-    "static_pattern_count": 5565,
+    "static_pattern_count": 5569,
     "intersection_count": 317,
     "dynamic_only_count": 0,
-    "static_only_count": 5248,
+    "static_only_count": 5252,
     "dynamic_only_patterns": []
   },
   "calls": [
@@ -35724,10 +35737,15 @@
       "known_host_receiver": true,
       "method": "isSignaturePresent",
       "argument_index": 2,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "key",
-      "static_patterns": []
+      "static_patterns": [
+        "%%%%%%%%%%'.cs'00",
+        "'$'11'@P:FSharp.Core'00",
+        "'$'11'@P:Microsoft.VisualBasic'00",
+        "'std::'%%%%%%"
+      ]
     },
     {
       "path": "db/Binary/format_PEM.1.sg",
@@ -102290,6 +102308,7 @@
     "function parameters are enumerated only when a named function does not escape and every direct call argument is static",
     "an exact function-local x = x assignment is treated as value preserving; top-level, cross-symbol, and compound assignments remain mutations",
     "function-scoped assignment values require one direct first-statement write and expire at the first direct symbol call",
+    "for-in keys are enumerated only for same-block non-escaping string-valued object literals under a corpus-wide plain-object prototype safety audit",
     "loop accumulation requires an adjacent initializer and canonical finite for-loop with one string += body",
     "static expression enumeration is limited to literals, finite non-escaping arrays with statically enumerable elements, single-initializer unmodified symbol references, +, conditionals, and sequences",
     "expressions exceeding the fixed static-value budget remain dynamic",

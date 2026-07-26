@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+  "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+  "oracle": {
+    "image": "diec-rust/upstream-oracle:74eaf505-repro",
+    "image_id": "sha256:cc5561a5d256c7912227a8ecf4ba9c6b9178c99911e471017d3c3988bac964ab",
+    "qt_version": "5.15.13",
+    "engine": "QScriptEngine"
+  },
+  "probe": {
+    "source": "tools/upstream/qtscript_object_enumeration_probe.cpp",
+    "source_sha256": "7761357ad160d2ed3f5adfe0bd18dc57ed87a07d981329c57a148bb432b9c246",
+    "qmake_project": "tools/upstream/qtscript_object_enumeration_probe.pro",
+    "qmake_project_sha256": "970f81a8ef450d01e0a1363d1af3617ee8f57c083eae6345d1f97635df891081"
+  },
+  "result": {
+    "inherited_enumerable_keys": [],
+    "refs_for_in_keys": [
+      "'$'11'@P:Microsoft.VisualBasic'00",
+      "%%%%%%%%%%'.cs'00",
+      "'$'11'@P:FSharp.Core'00",
+      "'std::'%%%%%%"
+    ]
+  },
+  "probe_passed": true
+}

@@ -100,8 +100,8 @@
   },
   "static_inventory": {
     "path": "docs/research/data/signature-static-inventory.json",
-    "sha256": "820c16bac0e0139bc58bf058a2e2fde88900a65c2f7a03f82d3eb05e7c206693",
-    "generator_sha256": "3618d8af8f2de70e5002ee04255e7d0d84dd5ae049196df950c09900b73a960a",
+    "sha256": "d6ef3809bc6fc8ba55191ce4c24f6ac049730ed97cf9225c14a32eefc8b3d7fd",
+    "generator_sha256": "05baa246ca03f7a1e72f9097aaed837976480f96e627c88bc5e333829ea475de",
     "parser": {
       "name": "uglify-js",
       "version": "3.19.3",
@@ -121,7 +121,13 @@
     "value_preserving_self_assignment_count": 1,
     "finite_parameter_value_count": 26,
     "finite_scoped_assignment_count": 5,
+    "finite_object_key_iteration_count": 1,
     "finite_loop_accumulation_count": 2,
+    "plain_object_enumeration_audit": {
+      "object_reference_count": 1,
+      "safe_has_own_property_call_count": 1,
+      "unsafe_reference_count": 0
+    },
     "top_level_function_audit": {
       "top_level_definition_count": 2290,
       "unique_name_count": 95,
@@ -140,18 +146,18 @@
       "isSignaturePresent": 72
     },
     "argument_kind_counts": {
-      "dynamic": 14,
+      "dynamic": 13,
       "literal": 5855,
-      "static_expression": 99
+      "static_expression": 100
     },
     "dynamic_expression_type_counts": {
       "Binary": 3,
-      "SymbolRef": 11
+      "SymbolRef": 10
     },
-    "static_pattern_count": 5565,
+    "static_pattern_count": 5569,
     "dynamic_pattern_overlap_count": 317,
     "dynamic_only_pattern_count": 0,
-    "static_only_pattern_count": 5248,
+    "static_only_pattern_count": 5252,
     "syntactic_call_site_scope_complete": true,
     "runtime_value_scope_complete": false
   },
@@ -243,6 +249,17 @@
       ]
     }
   },
+  "qtscript_object_enumeration": {
+    "path": "docs/research/data/qtscript-object-enumeration.json",
+    "sha256": "e1af8ddceadb7eaa0bb0bd3ae3bb188cc5c71ed62fbaed5392c6c02fdf9de6bf",
+    "image": "diec-rust/upstream-oracle:74eaf505-repro",
+    "image_id": "sha256:cc5561a5d256c7912227a8ecf4ba9c6b9178c99911e471017d3c3988bac964ab",
+    "qt_version": "5.15.13",
+    "engine": "QScriptEngine",
+    "inherited_enumerable_key_count": 0,
+    "pdb_ref_key_count": 4,
+    "probe_passed": true
+  },
   "qt5_oracle": {
     "image": "diec-rust/upstream-oracle:74eaf505",
     "qt_version": "5.15.13",
@@ -276,7 +293,7 @@
     ]
   },
   "limitations": [
-    "all 5968 syntactic calls to named signature APIs are inventoried, but 14 dynamic argument expressions and non-static computed method names prevent a complete runtime value inventory",
+    "all 5968 syntactic calls to named signature APIs are inventoried, but 13 dynamic argument expressions and non-static computed method names prevent a complete runtime value inventory",
     "generated PE32/64, ELF32/64, Mach-O32/64, COM, MS-DOS, and AmigaHunk files cover real parser memory-map construction, but malformed map variants remain untested",
     "Binary_Script wrapper fast paths are verified with one generated PE32 entry point and overlay, but absent, short, invalid, and non-PE contexts remain untested",
     "the independent find_signature spike covers 19 focused cases across all three branches, but malformed partial-parse and exhaustive optimization combinations remain untested",

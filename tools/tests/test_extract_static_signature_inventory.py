@@ -647,6 +647,133 @@ X.compare(globalSignature);
                 ],
             )
 
+    def test_for_in_keys_require_safe_string_object_literal(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            rules = root / "rules"
+            (rules / "db").mkdir(parents=True)
+            (rules / "db_extra").mkdir()
+            (rules / "db" / "object_keys.sg").write_text(
+                """
+function safe() {
+    var refs = {"61": "one", "60": "zero"};
+    for (var key in refs) {
+        X.compare(key);
+    }
+}
+
+function escaped() {
+    var refs = {"62": "two"};
+    touch(refs);
+    for (var key in refs) {
+        X.compare(key);
+    }
+}
+
+function mutated() {
+    var refs = {"63": "three"};
+    refs["extra"] = "four";
+    for (var key in refs) {
+        X.compare(key);
+    }
+}
+
+function specialPrototypeKey() {
+    var refs = {"__proto__": "five"};
+    for (var key in refs) {
+        X.compare(key);
+    }
+}
+""".lstrip(),
+                encoding="utf-8",
+            )
+            dynamic = root / "dynamic.json"
+            dynamic.write_text(
+                json.dumps(
+                    {
+                        "upstream_commit": UPSTREAM_COMMIT,
+                        "patterns": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            output = root / "inventory.json"
+            self.run_extractor(rules, dynamic, output)
+            inventory = json.loads(output.read_text(encoding="utf-8"))
+
+            self.assertEqual(
+                [
+                    call["argument_kind"]
+                    for call in inventory["calls"]
+                ],
+                [
+                    "static_expression",
+                    "dynamic",
+                    "dynamic",
+                    "dynamic",
+                ],
+            )
+            self.assertEqual(
+                inventory["calls"][0]["static_patterns"],
+                ["60", "61"],
+            )
+            self.assertEqual(
+                inventory["finite_object_key_iterations"],
+                [
+                    {
+                        "path": "db/object_keys.sg",
+                        "function": "safe",
+                        "function_line": 1,
+                        "object": "refs",
+                        "key": "key",
+                        "loop_line": 3,
+                        "static_values": ["60", "61"],
+                    }
+                ],
+            )
+            self.assertEqual(
+                inventory["plain_object_enumeration_audit"][
+                    "unsafe_reference_count"
+                ],
+                0,
+            )
+
+            (rules / "db" / "prototype_mutation.sg").write_text(
+                """
+Object.prototype.extra = "65";
+function shadowedObject() {
+    var Object = {prototype: {hasOwnProperty: {call: touch}}};
+    Object.prototype.hasOwnProperty.call();
+}
+function poisoned() {
+    var refs = {"66": "six"};
+    for (var key in refs) {
+        X.compare(key);
+    }
+}
+""".lstrip(),
+                encoding="utf-8",
+            )
+            poisoned_output = root / "poisoned.json"
+            self.run_extractor(rules, dynamic, poisoned_output)
+            poisoned = json.loads(
+                poisoned_output.read_text(encoding="utf-8")
+            )
+            self.assertEqual(
+                poisoned["finite_object_key_iterations"],
+                [],
+            )
+            self.assertEqual(
+                poisoned["argument_kind_counts"],
+                {"dynamic": 5},
+            )
+            self.assertEqual(
+                poisoned["plain_object_enumeration_audit"][
+                    "unsafe_reference_count"
+                ],
+                2,
+            )
+
     def test_committed_inventory_matches_fixed_rules(self):
         with tempfile.TemporaryDirectory() as directory:
             output = pathlib.Path(directory) / "inventory.json"
@@ -726,12 +853,50 @@ X.compare(globalSignature);
                 },
             )
             self.assertEqual(
+                inventory["plain_object_enumeration_audit"],
+                {
+                    "object_reference_count": 1,
+                    "safe_has_own_property_call_count": 1,
+                    "unsafe_reference_count": 0,
+                    "unsafe_references": [],
+                    "safety_contract": (
+                        "all Object references resolve to the "
+                        "undeclared global built-in and are direct "
+                        "Object.prototype.hasOwnProperty.call uses, "
+                        "with no globalThis/eval/Function or "
+                        "__proto__/constructor access in db/db_extra"
+                    ),
+                },
+            )
+            self.assertEqual(
                 len(inventory["finite_parameter_values"]),
                 26,
             )
             self.assertEqual(
                 len(inventory["finite_scoped_assignments"]),
                 5,
+            )
+            self.assertEqual(
+                inventory["finite_object_key_iterations"],
+                [
+                    {
+                        "path": "db/Binary/format_PDB.1.sg",
+                        "function": "detect",
+                        "function_line": 13,
+                        "object": "refs",
+                        "key": "key",
+                        "loop_line": 34,
+                        "static_values": [
+                            "%%%%%%%%%%'.cs'00",
+                            "'$'11'@P:FSharp.Core'00",
+                            (
+                                "'$'11'@P:"
+                                "Microsoft.VisualBasic'00"
+                            ),
+                            "'std::'%%%%%%",
+                        ],
+                    }
+                ],
             )
             self.assertEqual(
                 [
@@ -783,23 +948,23 @@ X.compare(globalSignature);
             self.assertEqual(
                 inventory["argument_kind_counts"],
                 {
-                    "dynamic": 14,
+                    "dynamic": 13,
                     "literal": 5855,
-                    "static_expression": 99,
+                    "static_expression": 100,
                 },
             )
             self.assertEqual(
                 inventory["dynamic_expression_type_counts"],
                 {
                     "Binary": 3,
-                    "SymbolRef": 11,
+                    "SymbolRef": 10,
                 },
             )
-            self.assertEqual(inventory["static_pattern_count"], 5565)
+            self.assertEqual(inventory["static_pattern_count"], 5569)
             comparison = inventory["dynamic_inventory_comparison"]
             self.assertEqual(comparison["intersection_count"], 317)
             self.assertEqual(comparison["dynamic_only_count"], 0)
-            self.assertEqual(comparison["static_only_count"], 5248)
+            self.assertEqual(comparison["static_only_count"], 5252)
 
 
 if __name__ == "__main__":

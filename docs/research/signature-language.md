@@ -159,13 +159,13 @@ pattern 仍可能缺失。
 | **总计** | **5968** |
 
 5968 个调用点分布在 1615 个文件，receiver 均落在已知格式宿主集合；同名未知
-receiver 候选为 0。参数分类为 5855 个直接字符串、99 个可保守枚举的静态表达式
+receiver 候选为 0。参数分类为 5855 个直接字符串、100 个可保守枚举的静态表达式
 （字符串拼接、条件分支、sequence，或只有一次初始化且未检测到写入的变量引用）
-和 14 个动态表达式。有限、非逃逸且元素可静态枚举的数组，其动态下标采用全部元素
+和 13 个动态表达式。有限、非逃逸且元素可静态枚举的数组，其动态下标采用全部元素
 并集；数组只允许下标和 `length` 读取，发生方法调用、传参、别名或其他逃逸即保持
-动态。每个表达式最多枚举 4096 个值，超限也保持动态。静态可枚举得到 5565 个唯一
+动态。每个表达式最多枚举 4096 个值，超限也保持动态。静态可枚举得到 5569 个唯一
 pattern：包含动态样本观察到的全部 317 个，另有
-5248 个未被该样本执行的 pattern。
+5252 个未被该样本执行的 pattern。
 
 另有三个纯字符串转换只有在规则路径、函数名及函数源码 SHA-256 全部匹配时才允许
 静态执行：`convertStringToUnicodeSignature`、`generateUnicodeSignatureMask`
@@ -198,6 +198,35 @@ pattern。
 `njRatDataSeparatorPattern` 一个调用，得到一个新增 pattern
 `7C0027007C0027007C0000`。
 
+有限对象键传播要求：对象是同一代码块内先声明的单变量、所有值均为字符串的对象
+字面量；对象只能用于 `for…in` 和下标读取，不能逃逸或修改；key 在该函数内只能由
+这一条 `for…in` 写入；`__proto__` 键明确拒绝。另有全语料 plain-object 原型门禁：
+2175 个文件中的唯一 `Object` 引用解析为未声明的全局内建，并且是
+`Object.prototype.hasOwnProperty.call`，`globalThis`、`eval`、`Function`、
+`__proto__`、`constructor` 的敏感引用均为 0；任一不安全引用会关闭全部对象键传播。
+
+固定 Qt 5.15.13 `QScriptEngine` 探针在可重复 oracle 镜像
+`diec-rust/upstream-oracle:74eaf505-repro`
+（image ID
+`sha256:cc5561a5d256c7912227a8ecf4ba9c6b9178c99911e471017d3c3988bac964ab`）
+中确认 `Object.prototype` 没有可枚举
+继承键，并按源码顺序枚举 PDB 的四个 own key。源码与原始结果分别见
+[`qtscript_object_enumeration_probe.cpp`](../../tools/upstream/qtscript_object_enumeration_probe.cpp)
+和
+[`qtscript-object-enumeration.json`](data/qtscript-object-enumeration.json)。
+该门禁恰好闭合 `format_PDB.1.sg:35` 的一个调用，新增四个唯一 pattern。
+
+复现实验（POSIX shell）：
+
+```sh
+docker run --rm -v "${PWD}/tools/upstream:/src:ro" \
+  diec-rust/upstream-oracle:74eaf505-repro sh -lc \
+  'mkdir /tmp/qtscript-enum && cd /tmp/qtscript-enum &&
+   /usr/lib/qt5/bin/qmake /src/qtscript_object_enumeration_probe.pro &&
+   make -j2 &&
+   ./qtscript-object-enumeration-probe'
+```
+
 确定性循环仅在可证明的 canonical 形态下折叠：目标必须由紧邻循环的单变量
 声明初始化；循环必须是固定安全整数范围的
 `for (var i = start; i < limit; i++)`；循环体只能有一条
@@ -214,8 +243,8 @@ pattern。
 `X.c(p+o, "'PACK'FFFF")` 和 `X.c(p+8, "'PACK'FFFF")` 仍按 Qt 参数转换保留为
 输入依赖调用，不能把第二参数改当 signature。
 
-“包含动态 317/317”证明动态清单是静态清单的子集，不证明 5565 是完整运行时值域。
-剩余 14 个调用仍依赖其他循环、数组/可变变量或输入数据流；非静态 computed
+“包含动态 317/317”证明动态清单是静态清单的子集，不证明 5569 是完整运行时值域。
+剩余 13 个调用仍依赖其他循环、数组/可变变量或输入数据流；非静态 computed
 method name 也不能仅凭 AST 属性名归因。当前可以把具名 signature API 的语法调用
 点范围视为完整，但运行时 pattern value 范围仍未闭合。
 
@@ -364,8 +393,8 @@ oracle schema v2 允许每个项目自有向量显式注入 `_MEMORY_MAP`，但�
 
 ## 下一步门禁
 
-1. 对 14 个动态 signature 参数做 scope/data-flow 或受控 runtime-assisted
-   求值，并审计 computed method name；不得把 5565 个静态值当作完整值域。
+1. 对 13 个动态 signature 参数做 scope/data-flow 或受控 runtime-assisted
+   求值，并审计 computed method name；不得把 5569 个静态值当作完整值域。
 2. 扩展现有 XBinary oracle，覆盖更多畸形组合、buffer boundary 和取消行为。
 3. 补齐畸形/重叠/virtual-only map 的项目生成文件，端到端验证各格式
    `getMemoryMap` 边界。

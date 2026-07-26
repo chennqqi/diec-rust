@@ -658,6 +658,7 @@ function inspectFile(
     rulesRoot,
     file,
     safeTopLevelFunctions = new Set(),
+    plainObjectEnumerationSafe = true,
 ) {
     const source = fs.readFileSync(file, "utf8");
     const relativePath = toPosix(path.relative(rulesRoot, file));
@@ -710,6 +711,7 @@ function inspectFile(
     const initializerCandidates = new Map();
     const mutatedDefinitions = new Set();
     const unsafeArrayDefinitions = new Set();
+    const unsafeObjectDefinitions = new Set();
     const valuePreservingSelfAssignments = [];
     function markDefinitions(node) {
         if (!node) {
@@ -793,10 +795,25 @@ function inspectFile(
             const initializer = initializerCandidates.get(
                 node.thedef.id,
             ).value;
-            if (!(initializer instanceof uglify.AST_Array)) {
+            if (
+                !(initializer instanceof uglify.AST_Array) &&
+                !(initializer instanceof uglify.AST_Object)
+            ) {
                 return;
             }
             const parent = this.parent();
+            if (initializer instanceof uglify.AST_Object) {
+                const isForInRead =
+                    parent instanceof uglify.AST_ForIn &&
+                    parent.object === node;
+                const isIndexRead =
+                    parent instanceof uglify.AST_Sub &&
+                    parent.expression === node;
+                if (!isForInRead && !isIndexRead) {
+                    unsafeObjectDefinitions.add(node.thedef.id);
+                }
+                return;
+            }
             const isIndexRead =
                 parent instanceof uglify.AST_Sub &&
                 parent.expression === node;
@@ -813,7 +830,8 @@ function inspectFile(
         [...initializerCandidates].filter(
             ([definitionId]) =>
                 !mutatedDefinitions.has(definitionId) &&
-                !unsafeArrayDefinitions.has(definitionId),
+                !unsafeArrayDefinitions.has(definitionId) &&
+                !unsafeObjectDefinitions.has(definitionId),
         ),
     );
     const functionInfos = new Map();
@@ -1047,7 +1065,136 @@ function inspectFile(
     );
     const scopedSymbolValues = new Map();
     const finiteScopedAssignments = [];
+    const finiteObjectKeyIterations = [];
     constantInitializers.scoped_symbol_values = scopedSymbolValues;
+    if (plainObjectEnumerationSafe) {
+        ast.walk(
+            new uglify.TreeWalker(function (node) {
+                if (
+                    !(node instanceof uglify.AST_ForIn) ||
+                    !(node.init instanceof uglify.AST_Var) ||
+                    node.init.definitions.length !== 1 ||
+                    !(node.object instanceof
+                        uglify.AST_SymbolRef) ||
+                    !node.object.thedef
+                ) {
+                    return;
+                }
+                const lambda = this.find_parent(
+                    uglify.AST_Lambda,
+                );
+                const keyDefinition = node.init.definitions[0];
+                if (
+                    !lambda ||
+                    !keyDefinition.name ||
+                    !keyDefinition.name.thedef ||
+                    keyDefinition.value
+                ) {
+                    return;
+                }
+                const objectInitializer =
+                    constantInitializers.get(
+                        node.object.thedef.id,
+                    );
+                if (
+                    !objectInitializer ||
+                    objectInitializer.position > node.start.pos ||
+                    !(objectInitializer.value instanceof
+                        uglify.AST_Object)
+                ) {
+                    return;
+                }
+                const declaration = parentByNode.get(
+                    initializerCandidates.get(
+                        node.object.thedef.id,
+                    ).node,
+                );
+                const statementContainer = parentByNode.get(node);
+                const statements =
+                    statementContainer instanceof
+                    uglify.AST_BlockStatement
+                        ? statementContainer.body
+                        : statementContainer === lambda
+                          ? lambda.body
+                          : null;
+                if (
+                    !(declaration instanceof uglify.AST_Var) ||
+                    declaration.definitions.length !== 1 ||
+                    !statements ||
+                    parentByNode.get(declaration) !==
+                        statementContainer ||
+                    statements.indexOf(declaration) < 0 ||
+                    statements.indexOf(declaration) >=
+                        statements.indexOf(node)
+                ) {
+                    return;
+                }
+                const properties =
+                    objectInitializer.value.properties;
+                if (
+                    properties.length === 0 ||
+                    properties.length >
+                        MAX_STATIC_VALUES_PER_EXPRESSION ||
+                    properties.some(
+                        (property) =>
+                            !(
+                                property instanceof
+                                    uglify.AST_ObjectKeyVal
+                            ) ||
+                            typeof property.key !== "string" ||
+                            property.key === "__proto__" ||
+                            !(
+                                property.value instanceof
+                                uglify.AST_String
+                            ),
+                    )
+                ) {
+                    return;
+                }
+                const writes =
+                    scopedWrites.get(lambda) &&
+                    scopedWrites
+                        .get(lambda)
+                        .get(keyDefinition.name.thedef.id);
+                if (
+                    !writes ||
+                    writes.length !== 1 ||
+                    writes[0].kind !== "for_in" ||
+                    writes[0].node !== node
+                ) {
+                    return;
+                }
+                const values = boundedUniqueSorted(
+                    properties.map((property) => property.key),
+                );
+                if (!values) {
+                    return;
+                }
+                if (!scopedSymbolValues.has(lambda)) {
+                    scopedSymbolValues.set(lambda, new Map());
+                }
+                scopedSymbolValues
+                    .get(lambda)
+                    .set(keyDefinition.name.thedef.id, {
+                        assignment_end_position:
+                            node.body.start.pos,
+                        invalidation_position: node.end.endpos,
+                        static_values: values,
+                    });
+                finiteObjectKeyIterations.push({
+                    function:
+                        lambda.name && lambda.name.name
+                            ? lambda.name.name
+                            : "<anonymous>",
+                    function_line: lambda.start.line,
+                    object: node.object.name,
+                    key: keyDefinition.name.name,
+                    loop_line: node.start.line,
+                    static_values: values,
+                });
+            }),
+        );
+    }
     for (const [lambda, writesByDefinition] of scopedWrites) {
         for (const [definitionId, writes] of writesByDefinition) {
             if (writes.length !== 1) {
@@ -1385,6 +1532,7 @@ function inspectFile(
             valuePreservingSelfAssignments,
         finite_parameter_values: [...finiteParameterValues.values()],
         finite_scoped_assignments: finiteScopedAssignments,
+        finite_object_key_iterations: finiteObjectKeyIterations,
         finite_loop_accumulations: finiteLoopAccumulations,
         verified_static_transforms: verifiedStaticTransforms,
         static_transform_verification_failures:
@@ -1504,6 +1652,122 @@ function auditTopLevelFunctions(uglify, rulesRoot, ruleFiles) {
     };
 }
 
+function auditPlainObjectEnumeration(uglify, rulesRoot, ruleFiles) {
+    const unsafeReferences = [];
+    let objectReferenceCount = 0;
+    let safeHasOwnPropertyCallCount = 0;
+    for (const file of ruleFiles) {
+        const relativePath = toPosix(
+            path.relative(rulesRoot, file),
+        );
+        const source = fs.readFileSync(file, "utf8");
+        const ast = uglify.parse(source, {
+            filename: relativePath,
+        });
+        ast.figure_out_scope();
+        const parentByNode = new WeakMap();
+        ast.walk(
+            new uglify.TreeWalker(function (node) {
+                parentByNode.set(node, this.parent());
+            }),
+        );
+        ast.walk(
+            new uglify.TreeWalker(function (node) {
+                if (
+                    node instanceof uglify.AST_SymbolRef &&
+                    node.name === "Object"
+                ) {
+                    objectReferenceCount += 1;
+                    const prototype = parentByNode.get(node);
+                    const hasOwnProperty =
+                        prototype &&
+                        parentByNode.get(prototype);
+                    const callProperty =
+                        hasOwnProperty &&
+                        parentByNode.get(hasOwnProperty);
+                    const call =
+                        callProperty &&
+                        parentByNode.get(callProperty);
+                    const isSafeHasOwnPropertyCall =
+                        node.thedef &&
+                        node.thedef.undeclared &&
+                        node.thedef.global &&
+                        prototype instanceof uglify.AST_Dot &&
+                        prototype.expression === node &&
+                        prototype.property === "prototype" &&
+                        hasOwnProperty instanceof
+                            uglify.AST_Dot &&
+                        hasOwnProperty.expression === prototype &&
+                        hasOwnProperty.property ===
+                            "hasOwnProperty" &&
+                        callProperty instanceof uglify.AST_Dot &&
+                        callProperty.expression ===
+                            hasOwnProperty &&
+                        callProperty.property === "call" &&
+                        call instanceof uglify.AST_Call &&
+                        call.expression === callProperty;
+                    if (isSafeHasOwnPropertyCall) {
+                        safeHasOwnPropertyCallCount += 1;
+                    } else {
+                        unsafeReferences.push({
+                            path: relativePath,
+                            line: node.start.line,
+                            kind: "Object reference",
+                        });
+                    }
+                }
+                if (
+                    node instanceof uglify.AST_SymbolRef &&
+                    (node.name === "globalThis" ||
+                        node.name === "eval" ||
+                        node.name === "Function")
+                ) {
+                    unsafeReferences.push({
+                        path: relativePath,
+                        line: node.start.line,
+                        kind: `${node.name} reference`,
+                    });
+                }
+                if (
+                    node instanceof uglify.AST_Dot &&
+                    (node.property === "__proto__" ||
+                        node.property === "constructor")
+                ) {
+                    unsafeReferences.push({
+                        path: relativePath,
+                        line: node.start.line,
+                        kind: `${node.property} property`,
+                    });
+                }
+                if (
+                    node instanceof uglify.AST_Sub &&
+                    node.property instanceof uglify.AST_String &&
+                    (node.property.value === "__proto__" ||
+                        node.property.value === "constructor")
+                ) {
+                    unsafeReferences.push({
+                        path: relativePath,
+                        line: node.start.line,
+                        kind: `${node.property.value} property`,
+                    });
+                }
+            }),
+        );
+    }
+    return {
+        safe: unsafeReferences.length === 0,
+        evidence: {
+            object_reference_count: objectReferenceCount,
+            safe_has_own_property_call_count:
+                safeHasOwnPropertyCallCount,
+            unsafe_reference_count: unsafeReferences.length,
+            unsafe_references: unsafeReferences,
+            safety_contract:
+                "all Object references resolve to the undeclared global built-in and are direct Object.prototype.hasOwnProperty.call uses, with no globalThis/eval/Function or __proto__/constructor access in db/db_extra",
+        },
+    };
+}
+
 function buildInventory(options) {
     const rulesRoot = path.resolve(options["rules-root"]);
     const parserModule = path.resolve(options["parser-module"]);
@@ -1525,12 +1789,19 @@ function buildInventory(options) {
         rulesRoot,
         ruleFiles,
     );
+    const plainObjectEnumerationAudit =
+        auditPlainObjectEnumeration(
+            uglify,
+            rulesRoot,
+            ruleFiles,
+        );
     const fileResults = ruleFiles.map((file) =>
         inspectFile(
             uglify,
             rulesRoot,
             file,
             topLevelFunctionAudit.safe_keys,
+            plainObjectEnumerationAudit.safe,
         ),
     );
     const calls = fileResults.flatMap((result) => result.calls);
@@ -1571,6 +1842,8 @@ function buildInventory(options) {
         max_static_values_per_expression:
             MAX_STATIC_VALUES_PER_EXPRESSION,
         top_level_function_audit: topLevelFunctionAudit.evidence,
+        plain_object_enumeration_audit:
+            plainObjectEnumerationAudit.evidence,
         verified_static_transforms: fileResults.flatMap(
             (result) => result.verified_static_transforms,
         ),
@@ -1591,6 +1864,12 @@ function buildInventory(options) {
         ),
         finite_scoped_assignments: fileResults.flatMap((result) =>
             result.finite_scoped_assignments.map((item) => ({
+                path: result.path,
+                ...item,
+            })),
+        ),
+        finite_object_key_iterations: fileResults.flatMap((result) =>
+            result.finite_object_key_iterations.map((item) => ({
                 path: result.path,
                 ...item,
             })),
@@ -1647,6 +1926,7 @@ function buildInventory(options) {
             "function parameters are enumerated only when a named function does not escape and every direct call argument is static",
             "an exact function-local x = x assignment is treated as value preserving; top-level, cross-symbol, and compound assignments remain mutations",
             "function-scoped assignment values require one direct first-statement write and expire at the first direct symbol call",
+            "for-in keys are enumerated only for same-block non-escaping string-valued object literals under a corpus-wide plain-object prototype safety audit",
             "loop accumulation requires an adjacent initializer and canonical finite for-loop with one string += body",
             "static expression enumeration is limited to literals, finite non-escaping arrays with statically enumerable elements, single-initializer unmodified symbol references, +, conditionals, and sequences",
             "expressions exceeding the fixed static-value budget remain dynamic",

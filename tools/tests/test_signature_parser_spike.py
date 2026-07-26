@@ -22,6 +22,13 @@ STATIC_INVENTORY_PATH = (
     / "data"
     / "signature-static-inventory.json"
 )
+QTSCRIPT_OBJECT_ENUMERATION_PATH = (
+    ROOT
+    / "docs"
+    / "research"
+    / "data"
+    / "qtscript-object-enumeration.json"
+)
 
 
 class SignatureParserSpikeTests(unittest.TestCase):
@@ -32,6 +39,11 @@ class SignatureParserSpikeTests(unittest.TestCase):
         )
         self.static_inventory = json.loads(
             STATIC_INVENTORY_PATH.read_text(encoding="utf-8")
+        )
+        self.qtscript_object_enumeration = json.loads(
+            QTSCRIPT_OBJECT_ENUMERATION_PATH.read_text(
+                encoding="utf-8"
+            )
         )
 
     def test_fixed_source_versions_are_consistent(self):
@@ -67,6 +79,66 @@ class SignatureParserSpikeTests(unittest.TestCase):
                     hashlib.sha256(path.read_bytes()).hexdigest(),
                     spike[field],
                 )
+
+    def test_qtscript_object_enumeration_provenance_matches_files(self):
+        summary = self.evidence["qtscript_object_enumeration"]
+        evidence = self.qtscript_object_enumeration
+        self.assertEqual(
+            hashlib.sha256(
+                QTSCRIPT_OBJECT_ENUMERATION_PATH.read_bytes()
+            ).hexdigest(),
+            summary["sha256"],
+        )
+        self.assertEqual(
+            summary["path"],
+            str(
+                QTSCRIPT_OBJECT_ENUMERATION_PATH.relative_to(ROOT)
+            ).replace("\\", "/"),
+        )
+        self.assertEqual(summary["image"], evidence["oracle"]["image"])
+        self.assertEqual(
+            summary["image_id"],
+            evidence["oracle"]["image_id"],
+        )
+        self.assertEqual(
+            summary["qt_version"],
+            evidence["oracle"]["qt_version"],
+        )
+        self.assertEqual(summary["engine"], "QScriptEngine")
+        probe = evidence["probe"]
+        for path_field, hash_field in (
+            ("source", "source_sha256"),
+            ("qmake_project", "qmake_project_sha256"),
+        ):
+            path = ROOT / probe[path_field]
+            self.assertEqual(
+                hashlib.sha256(path.read_bytes()).hexdigest(),
+                probe[hash_field],
+            )
+        result = evidence["result"]
+        self.assertEqual(result["inherited_enumerable_keys"], [])
+        self.assertEqual(
+            summary["inherited_enumerable_key_count"],
+            len(result["inherited_enumerable_keys"]),
+        )
+        self.assertEqual(
+            result["refs_for_in_keys"],
+            [
+                "'$'11'@P:Microsoft.VisualBasic'00",
+                "%%%%%%%%%%'.cs'00",
+                "'$'11'@P:FSharp.Core'00",
+                "'std::'%%%%%%",
+            ],
+        )
+        self.assertEqual(
+            summary["pdb_ref_key_count"],
+            len(result["refs_for_in_keys"]),
+        )
+        self.assertEqual(
+            summary["probe_passed"],
+            evidence["probe_passed"],
+        )
+        self.assertTrue(evidence["probe_passed"])
 
     def test_inventory_hash_and_counts_are_reproducible(self):
         dynamic = self.evidence["dynamic_inventory"]
@@ -145,27 +217,39 @@ class SignatureParserSpikeTests(unittest.TestCase):
         self.assertEqual(
             static["argument_kind_counts"],
             {
-                "dynamic": 14,
+                "dynamic": 13,
                 "literal": 5855,
-                "static_expression": 99,
+                "static_expression": 100,
             },
         )
         self.assertEqual(
             static["dynamic_expression_type_counts"],
             {
                 "Binary": 3,
-                "SymbolRef": 11,
+                "SymbolRef": 10,
             },
         )
         self.assertEqual(
             static["value_preserving_self_assignment_count"],
             1,
         )
+        self.assertEqual(
+            static["finite_object_key_iteration_count"],
+            1,
+        )
+        self.assertEqual(
+            static["plain_object_enumeration_audit"],
+            {
+                "object_reference_count": 1,
+                "safe_has_own_property_call_count": 1,
+                "unsafe_reference_count": 0,
+            },
+        )
         self.assertEqual(static["finite_loop_accumulation_count"], 2)
-        self.assertEqual(static["static_pattern_count"], 5565)
+        self.assertEqual(static["static_pattern_count"], 5569)
         self.assertEqual(static["dynamic_pattern_overlap_count"], 317)
         self.assertEqual(static["dynamic_only_pattern_count"], 0)
-        self.assertEqual(static["static_only_pattern_count"], 5248)
+        self.assertEqual(static["static_only_pattern_count"], 5252)
         self.assertTrue(static["syntactic_call_site_scope_complete"])
         self.assertFalse(static["runtime_value_scope_complete"])
 
