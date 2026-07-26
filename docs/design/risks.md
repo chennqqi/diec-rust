@@ -171,6 +171,11 @@ baseline 的变更都要检查本表。
 
 - **触发**：规则、bundled code、runtime、archive backend 或样本缺失许可证、条款
   冲突或要求无法随 static library 履行。
+- **当前证据**：固定 source image 已对 58/58 直接组件校验 commit 与根 LICENSE，
+  全部首行为 MIT、共有 12 个文本 hash，且无嵌套 `.gitmodules`；103 个按名称
+  发现的 license files 中 45 个位于 bundled/build-tool 路径。该结果关闭直接
+  component root/submodule inventory，不覆盖 XArchive/XYara 文件头、规则数据或
+  候选 Rust 依赖组合。
 - **缓解**：每次导入/同步前生成 source/license inventory；保留原始 LICENSE、
   commit、path、hash 和 attribution；选型前由发布责任人复核组合。
 - **验证**：规则 bundle、source closure、binary dependency、samples 和 release

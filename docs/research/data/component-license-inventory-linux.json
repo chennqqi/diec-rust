@@ -1,0 +1,1290 @@
+{
+  "component_count": 58,
+  "component_lock": {
+    "path": "upstream/components.lock.toml",
+    "sha256": "9fabcaf6a0062fcae7007ea5af13a98876e8a6e08b3e2e4727fdff06d974c63c"
+  },
+  "components": [
+    {
+      "actual_commit": "3e1fc8b4578e0a9f61b6fc4ec1230e8178cef3e8",
+      "expected_commit": "3e1fc8b4578e0a9f61b6fc4ec1230e8178cef3e8",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "5f1133d595966880a5c4af69f448d5cc6ebbad6989033bb2f8c2c874e861c5ca"
+        }
+      ],
+      "name": "Controls",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+      "expected_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+      "license_file_count": 42,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "be0fe2d727cd0a754fb0b2fdc579ead8f19ef575840b4daef221be201701eaad"
+        },
+        {
+          "bytes": 1060,
+          "first_nonempty_line": "Copyright (c) 2015 Chris Talkington.",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.archiver-utils.txt",
+          "sha256": "9fe335fb097fbff0b7f709ee14a77b1d1cf739d3400cd0b0e19118946772ea56"
+        },
+        {
+          "bytes": 1079,
+          "first_nonempty_line": "Copyright (c) 2012-2014 Chris Talkington, contributors.",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.archiver.txt",
+          "sha256": "9e23899170d96e708b24a2afce11e96d169c8cebf1bd24ac60b675a400cb1cf1"
+        },
+        {
+          "bytes": 1063,
+          "first_nonempty_line": "Copyright (c) 2010-2018 Caolan McMahon",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.async.txt",
+          "sha256": "d9fed24f132985934fca621c4dc1dfb53e03377a24d0568d424383d7eaa9c0ac"
+        },
+        {
+          "bytes": 1096,
+          "first_nonempty_line": "(MIT)",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.balanced-match.txt",
+          "sha256": "a1bd5deadb6a06dd74efa852c1b8b23f63b67f2214fbe9c8bd591da51da69268"
+        },
+        {
+          "bytes": 1081,
+          "first_nonempty_line": "The MIT License (MIT)",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.base64-js.txt",
+          "sha256": "5b37224c080cdcc97c871ada971c224e9926370fe74f11b539aa1cf9f3b1aca1"
+        },
+        {
+          "bytes": 1216,
+          "first_nonempty_line": "The MIT License (MIT)",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.bl.txt",
+          "sha256": "9377db95383c8befacf05c6e465d969d756edf178487ca1344fdf3ba147c596f"
+        },
+        {
+          "bytes": 1096,
+          "first_nonempty_line": "MIT License",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.brace-expansion.txt",
+          "sha256": "68f12f6e2c33688699249c01d8f9623c534da20aa71989c57b061b7bc1676d14"
+        },
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "The MIT License",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.buffer-crc32.txt",
+          "sha256": "14895b82e3367b66bdb127fe91505f8615491f2a23eb1c0b7d8f7c54be67f57a"
+        },
+        {
+          "bytes": 1106,
+          "first_nonempty_line": "The MIT License (MIT)",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.buffer.txt",
+          "sha256": "06bafa45fdad2579ba0e43b0c9b2c6290287c99c4203c300254a462b38a307f6"
+        },
+        {
+          "bytes": 1074,
+          "first_nonempty_line": "Copyright (c) 2014 Chris Talkington, contributors.",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.compress-commons.txt",
+          "sha256": "79bad9f51738814f83251ae89460326b2ff2ea19ff5f71ab8f7636b2e17bb231"
+        },
+        {
+          "bytes": 1073,
+          "first_nonempty_line": "This software is released under the MIT license:",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.concat-map.txt",
+          "sha256": "435a6722c786b0a56fbe7387028f1d9d3f3a2d0fb615bb8fee118727c3f59b7b"
+        },
+        {
+          "bytes": 1077,
+          "first_nonempty_line": "Copyright Node.js contributors. All rights reserved.",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.core-util-is.txt",
+          "sha256": "33b734d60042d0fe0c92dd1fc1e874193a1c899ec3e276a2eb935d2d0bf5b710"
+        },
+        {
+          "bytes": 11355,
+          "first_nonempty_line": "Apache License",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.crc-32.txt",
+          "sha256": "c542ba7851b5d39a5face477e47a27cb7c00a9759e321b66824e79718bffe1ac"
+        },
+        {
+          "bytes": 1074,
+          "first_nonempty_line": "Copyright (c) 2014 Chris Talkington, contributors.",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.crc32-stream.txt",
+          "sha256": "79bad9f51738814f83251ae89460326b2ff2ea19ff5f71ab8f7636b2e17bb231"
+        },
+        {
+          "bytes": 1078,
+          "first_nonempty_line": "The MIT License (MIT)",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.end-of-stream.txt",
+          "sha256": "3fe8d55a98dbf260eace67c00cf9bc53edb46234e840098a0b93df3096b97fb6"
+        },
+        {
+          "bytes": 1079,
+          "first_nonempty_line": "The MIT License (MIT)",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.fs-constants.txt",
+          "sha256": "2281f2db407bdbb54f069eec38128b2dee2c0c952f52b786ef1faecb81767b3c"
+        },
+        {
+          "bytes": 2125,
+          "first_nonempty_line": "The ISC License",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.fs.realpath.txt",
+          "sha256": "8465b04b67f473341171b5c9c8b2c741a4a395b3f6ed58339b3a4f4db3db7472"
+        },
+        {
+          "bytes": 976,
+          "first_nonempty_line": "The ISC License",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.glob.txt",
+          "sha256": "6236fa0b88a4a0cce3dda0367979491b2052b3c8d6b1c10b3668de083e86a7f0"
+        },
+        {
+          "bytes": 791,
+          "first_nonempty_line": "The ISC License",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.graceful-fs.txt",
+          "sha256": "f65c5d9f22a317b2a10803bd1868461ce6499c2ed7217bc80c0cc772a748789c"
+        },
+        {
+          "bytes": 1465,
+          "first_nonempty_line": "Copyright 2008 Fair Oaks Labs, Inc.",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.ieee754.txt",
+          "sha256": "18d45466ba3253deae04667e267a91ea8de8548f18c1125264d1c9db28194cc1"
+        },
+        {
+          "bytes": 748,
+          "first_nonempty_line": "The ISC License",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.inflight.txt",
+          "sha256": "05dc4d785ac3a488676d3ed10e901b75ad89dafcc63f8e66610fd4a39cc5c7e8"
+        },
+        {
+          "bytes": 749,
+          "first_nonempty_line": "The ISC License",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.inherits.txt",
+          "sha256": "5ffe28e7ade7d8f10d85d5337a73fd793dac5c462fb9a28fbf8c5046c7fbca3b"
+        },
+        {
+          "bytes": 1074,
+          "first_nonempty_line": "Copyright (c) 2013 J. Pommerening, contributors.",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.lazystream.txt",
+          "sha256": "e7f5d28405c9fe6580db684634bace66953055b436d7fbb6f860d0c800c44a9f"
+        },
+        {
+          "bytes": 1951,
+          "first_nonempty_line": "Copyright jQuery Foundation and other contributors <https://jquery.org/>",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.lodash.defaults.txt",
+          "sha256": "ffd8b33b354585f4ce119f19c53728281e48a97b074491eb6bf6d5c5ff305272"
+        },
+        {
+          "bytes": 1951,
+          "first_nonempty_line": "Copyright jQuery Foundation and other contributors <https://jquery.org/>",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.lodash.difference.txt",
+          "sha256": "ffd8b33b354585f4ce119f19c53728281e48a97b074491eb6bf6d5c5ff305272"
+        },
+        {
+          "bytes": 1951,
+          "first_nonempty_line": "Copyright jQuery Foundation and other contributors <https://jquery.org/>",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.lodash.flatten.txt",
+          "sha256": "ffd8b33b354585f4ce119f19c53728281e48a97b074491eb6bf6d5c5ff305272"
+        },
+        {
+          "bytes": 1951,
+          "first_nonempty_line": "Copyright jQuery Foundation and other contributors <https://jquery.org/>",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.lodash.isplainobject.txt",
+          "sha256": "ffd8b33b354585f4ce119f19c53728281e48a97b074491eb6bf6d5c5ff305272"
+        },
+        {
+          "bytes": 1951,
+          "first_nonempty_line": "Copyright jQuery Foundation and other contributors <https://jquery.org/>",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.lodash.union.txt",
+          "sha256": "ffd8b33b354585f4ce119f19c53728281e48a97b074491eb6bf6d5c5ff305272"
+        },
+        {
+          "bytes": 775,
+          "first_nonempty_line": "The ISC License",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.minimatch.txt",
+          "sha256": "d11323827fa4edeaafc437cc5b91b6971b335f0127efeeb42bf5122fe8657e8f"
+        },
+        {
+          "bytes": 1088,
+          "first_nonempty_line": "The MIT License (MIT)",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.normalize-path.txt",
+          "sha256": "e70ff771504ba41f2be55de812a017ff46433d7a250c862e38fc419159e44500"
+        },
+        {
+          "bytes": 765,
+          "first_nonempty_line": "The ISC License",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.once.txt",
+          "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b"
+        },
+        {
+          "bytes": 1119,
+          "first_nonempty_line": "The MIT License (MIT)",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.path-is-absolute.txt",
+          "sha256": "6fb9754611c20f6649f68805e8c990e83261f29316e29de9e6cedae607b8634c"
+        },
+        {
+          "bytes": 1064,
+          "first_nonempty_line": "# Copyright (c) 2015 Calvin Metcalf",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.process-nextick-args.txt",
+          "sha256": "ecdccbcf39024f624ded480c01c0b25458e1eca8f26ecf040933865ce56d9a4f"
+        },
+        {
+          "bytes": 2337,
+          "first_nonempty_line": "Node.js is licensed for use as follows:",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.readable-stream.txt",
+          "sha256": "ec62dc96da0099b87f4511736c87309335527fb7031639493e06c95728dc8c54"
+        },
+        {
+          "bytes": 11341,
+          "first_nonempty_line": "Apache License",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.readdir-glob.txt",
+          "sha256": "8cd23e2d76d2791765f7dd1025a9df99d81db91da9e2701f283987a1c0435aa3"
+        },
+        {
+          "bytes": 1081,
+          "first_nonempty_line": "The MIT License (MIT)",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.safe-buffer.txt",
+          "sha256": "c7cc929b57080f4b9d0c6cf57669f0463fc5b39906344dfc8d3bc43426b30eac"
+        },
+        {
+          "bytes": 2338,
+          "first_nonempty_line": "Node.js is licensed for use as follows:",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.string_decoder.txt",
+          "sha256": "11f2aafb37d06b3ee5bdaf06e9811141d0da05263c316f3d627f45c20d43261b"
+        },
+        {
+          "bytes": 1078,
+          "first_nonempty_line": "The MIT License (MIT)",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.tar-stream.txt",
+          "sha256": "3fe8d55a98dbf260eace67c00cf9bc53edb46234e840098a0b93df3096b97fb6"
+        },
+        {
+          "bytes": 1102,
+          "first_nonempty_line": "(The MIT License)",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.util-deprecate.txt",
+          "sha256": "0154425673db15cdfa80ecba2c9b1f1a867f7197a006764712849bfc3a93cbb7"
+        },
+        {
+          "bytes": 765,
+          "first_nonempty_line": "The ISC License",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.wrappy.txt",
+          "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b"
+        },
+        {
+          "bytes": 1074,
+          "first_nonempty_line": "Copyright (c) 2014 Chris Talkington, contributors.",
+          "path": "autotools/dbcompiler/node_licenses/LICENSE.zip-stream.txt",
+          "sha256": "79bad9f51738814f83251ae89460326b2ff2ea19ff5f71ab8f7636b2e17bb231"
+        }
+      ],
+      "name": "Detect-It-Easy",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "25f4074091004b54e043f13d26dbccb89c70efa6",
+      "expected_commit": "25f4074091004b54e043f13d26dbccb89c70efa6",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "abdeb212f229d2b93a5c315763df4d7201c7d74f580ad9dc77d77dec7cbc6c69"
+        }
+      ],
+      "name": "FormatDialogs",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "f122d47a6941b8ff040182f1ab6e5771f0792f21",
+      "expected_commit": "f122d47a6941b8ff040182f1ab6e5771f0792f21",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "5f1133d595966880a5c4af69f448d5cc6ebbad6989033bb2f8c2c874e861c5ca"
+        }
+      ],
+      "name": "FormatWidgets",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+      "expected_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "5f1133d595966880a5c4af69f448d5cc6ebbad6989033bb2f8c2c874e861c5ca"
+        }
+      ],
+      "name": "Formats",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "cdfe1070ce5c756bea134554b88592295800a485",
+      "expected_commit": "cdfe1070ce5c756bea134554b88592295800a485",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "5f1133d595966880a5c4af69f448d5cc6ebbad6989033bb2f8c2c874e861c5ca"
+        }
+      ],
+      "name": "SpecAbstract",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "fcdcb25b16d0e0c6b2f82c2b270b2a3d58c1e11d",
+      "expected_commit": "fcdcb25b16d0e0c6b2f82c2b270b2a3d58c1e11d",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "5f1133d595966880a5c4af69f448d5cc6ebbad6989033bb2f8c2c874e861c5ca"
+        }
+      ],
+      "name": "StaticScan",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "27616868c86ae22724b8693d8f08d953e09ee74f",
+      "expected_commit": "27616868c86ae22724b8693d8f08d953e09ee74f",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "44fc93c0e4e0bdaff0209afeecb51e34456ad22327fbe8f226cfddc49a34290d"
+        }
+      ],
+      "name": "XAboutWidget",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "0fcd4e8d3e9933baac3b12246d82ac026557ffd0",
+      "expected_commit": "0fcd4e8d3e9933baac3b12246d82ac026557ffd0",
+      "license_file_count": 3,
+      "license_files": [
+        {
+          "bytes": 1901,
+          "first_nonempty_line": "--------------------------------------------------------------------------",
+          "path": "3rdparty/bzip2/src/LICENSE",
+          "sha256": "4919cfb14a73cd64fcef67b107613970cf1659a09aa675dba31314f373bc7204"
+        },
+        {
+          "bytes": 1514,
+          "first_nonempty_line": "Copyright (c) 2015-2016, Apple Inc. All rights reserved.",
+          "path": "3rdparty/lzfse/src/LICENSE",
+          "sha256": "2a20082c2219edbbdb2e862a0566ba4f762a564ade7c04b09250ae4464bc4b32"
+        },
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "abdeb212f229d2b93a5c315763df4d7201c7d74f580ad9dc77d77dec7cbc6c69"
+        }
+      ],
+      "name": "XArchive",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "96c639939478998b81d2e662a027a00f3054cbfe",
+      "expected_commit": "96c639939478998b81d2e662a027a00f3054cbfe",
+      "license_file_count": 3,
+      "license_files": [
+        {
+          "bytes": 1718,
+          "first_nonempty_line": "This is the software license for Capstone disassembly framework.",
+          "path": "3rdparty/Capstone/src/LICENSE.TXT",
+          "sha256": "404bd0cb0137ffb797258f844f53e5273f9b6d5781a1a359a2880411f49a4f30"
+        },
+        {
+          "bytes": 3402,
+          "first_nonempty_line": "==============================================================================",
+          "path": "3rdparty/Capstone/src/LICENSE_LLVM.TXT",
+          "sha256": "d4cc2005623614495b43508021c85d1d2ff21d8766287605ac41fee47f499bf9"
+        },
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "abdeb212f229d2b93a5c315763df4d7201c7d74f580ad9dc77d77dec7cbc6c69"
+        }
+      ],
+      "name": "XCapstone",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "07f5baa72fee1e23e70b248ad674657e76aa76ec",
+      "expected_commit": "07f5baa72fee1e23e70b248ad674657e76aa76ec",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "b15e85faef7d7294e40453fd4bf6fcb09138836312b2e61d1a17512e57e35a45"
+        }
+      ],
+      "name": "XCppfilt",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "035c61966d3a9018edf80cd0013083ee32626e71",
+      "expected_commit": "035c61966d3a9018edf80cd0013083ee32626e71",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "94248d08e0cf1d2b4b5bce907450c6d742e2fd8af93d1b837ce937e95cb29a3a"
+        }
+      ],
+      "name": "XDEX",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "b681f5da8612da90a0dcc5537b1dfe92c7bf58da",
+      "expected_commit": "b681f5da8612da90a0dcc5537b1dfe92c7bf58da",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "47bb6a450a9993a105a68e03df70e732abcb2f942e6ab06fac409107986f0a6e"
+        }
+      ],
+      "name": "XDataConvertorWidget",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "aa8359ca7edfc3d766fb09c2ccbec554539d13f0",
+      "expected_commit": "aa8359ca7edfc3d766fb09c2ccbec554539d13f0",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "47bb6a450a9993a105a68e03df70e732abcb2f942e6ab06fac409107986f0a6e"
+        }
+      ],
+      "name": "XDecompiler",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "e64230a0044f54c669d6698e0bf3a9fe345d88fc",
+      "expected_commit": "e64230a0044f54c669d6698e0bf3a9fe345d88fc",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "b15e85faef7d7294e40453fd4bf6fcb09138836312b2e61d1a17512e57e35a45"
+        }
+      ],
+      "name": "XDemangle",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "20ef25596dc7dd64c4e77296184fb8bce869c130",
+      "expected_commit": "20ef25596dc7dd64c4e77296184fb8bce869c130",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "b15e85faef7d7294e40453fd4bf6fcb09138836312b2e61d1a17512e57e35a45"
+        }
+      ],
+      "name": "XDemangleWidget",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "c5757cc007d3ddd419e4db9bd46be00e244644b6",
+      "expected_commit": "c5757cc007d3ddd419e4db9bd46be00e244644b6",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "fef46fae59c09542d5edfdd0ffea6e5b33247145434f937ed8fab6027c8481bb"
+        }
+      ],
+      "name": "XDisasmCore",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "6cd5367d4d243b40b69949aa89184a8ee089fd70",
+      "expected_commit": "6cd5367d4d243b40b69949aa89184a8ee089fd70",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "94248d08e0cf1d2b4b5bce907450c6d742e2fd8af93d1b837ce937e95cb29a3a"
+        }
+      ],
+      "name": "XDisasmView",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "09a4360561513df5146667d6174b3b43b97cd085",
+      "expected_commit": "09a4360561513df5146667d6174b3b43b97cd085",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "b15e85faef7d7294e40453fd4bf6fcb09138836312b2e61d1a17512e57e35a45"
+        }
+      ],
+      "name": "XDynStructs",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "3c75fef0cb57b0095e893bc3e162d8c85242738e",
+      "expected_commit": "3c75fef0cb57b0095e893bc3e162d8c85242738e",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "b15e85faef7d7294e40453fd4bf6fcb09138836312b2e61d1a17512e57e35a45"
+        }
+      ],
+      "name": "XDynStructsEngine",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "c7fc0dbe7742bcd531e1e49bfbadcfdab1a931d7",
+      "expected_commit": "c7fc0dbe7742bcd531e1e49bfbadcfdab1a931d7",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "b15e85faef7d7294e40453fd4bf6fcb09138836312b2e61d1a17512e57e35a45"
+        }
+      ],
+      "name": "XDynStructsWidget",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "d2bf95b1019e21e5a5ae71f55fcd6c12349c3030",
+      "expected_commit": "d2bf95b1019e21e5a5ae71f55fcd6c12349c3030",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "abdeb212f229d2b93a5c315763df4d7201c7d74f580ad9dc77d77dec7cbc6c69"
+        }
+      ],
+      "name": "XEntropyWidget",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "d67a714b3e1f8a5510a698606a537a255f355215",
+      "expected_commit": "d67a714b3e1f8a5510a698606a537a255f355215",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "44fc93c0e4e0bdaff0209afeecb51e34456ad22327fbe8f226cfddc49a34290d"
+        }
+      ],
+      "name": "XExtractor",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "fb0681e9ce13016c5c164e7c4c4c552e3661c767",
+      "expected_commit": "fb0681e9ce13016c5c164e7c4c4c552e3661c767",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "44fc93c0e4e0bdaff0209afeecb51e34456ad22327fbe8f226cfddc49a34290d"
+        }
+      ],
+      "name": "XExtractorWidget",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "88b8e2821f86d309f141b38c4d46fa0b000aa74b",
+      "expected_commit": "88b8e2821f86d309f141b38c4d46fa0b000aa74b",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "b15e85faef7d7294e40453fd4bf6fcb09138836312b2e61d1a17512e57e35a45"
+        }
+      ],
+      "name": "XFileInfo",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "9d6c4dcbfce3200c66b9b5e9aa7f57f2b69ae904",
+      "expected_commit": "9d6c4dcbfce3200c66b9b5e9aa7f57f2b69ae904",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "94248d08e0cf1d2b4b5bce907450c6d742e2fd8af93d1b837ce937e95cb29a3a"
+        }
+      ],
+      "name": "XGithub",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "5eaa1815af7f689afa167ad7f4ff9c836a7a4f0e",
+      "expected_commit": "5eaa1815af7f689afa167ad7f4ff9c836a7a4f0e",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "94248d08e0cf1d2b4b5bce907450c6d742e2fd8af93d1b837ce937e95cb29a3a"
+        }
+      ],
+      "name": "XHashWidget",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "cde4ff0f869100007a41077adc0a636add32cb1b",
+      "expected_commit": "cde4ff0f869100007a41077adc0a636add32cb1b",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "b15e85faef7d7294e40453fd4bf6fcb09138836312b2e61d1a17512e57e35a45"
+        }
+      ],
+      "name": "XHexEdit",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "56161ce8c2034dd8c9b35aa23585eb55ee20451c",
+      "expected_commit": "56161ce8c2034dd8c9b35aa23585eb55ee20451c",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "94248d08e0cf1d2b4b5bce907450c6d742e2fd8af93d1b837ce937e95cb29a3a"
+        }
+      ],
+      "name": "XHexView",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "5a1a426c408e3825cf64153e44dc4ee383e1fe64",
+      "expected_commit": "5a1a426c408e3825cf64153e44dc4ee383e1fe64",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "44fc93c0e4e0bdaff0209afeecb51e34456ad22327fbe8f226cfddc49a34290d"
+        }
+      ],
+      "name": "XInfoDB",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "73168d35734c6b5b5fa2585af054ad31af53e87f",
+      "expected_commit": "73168d35734c6b5b5fa2585af054ad31af53e87f",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "94248d08e0cf1d2b4b5bce907450c6d742e2fd8af93d1b837ce937e95cb29a3a"
+        }
+      ],
+      "name": "XMIME",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "ae33cf59a9574220c12ea82a5a21c5f4cb3aae9e",
+      "expected_commit": "ae33cf59a9574220c12ea82a5a21c5f4cb3aae9e",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "94248d08e0cf1d2b4b5bce907450c6d742e2fd8af93d1b837ce937e95cb29a3a"
+        }
+      ],
+      "name": "XMIMEWidget",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "d314a08e6510acae36cd4c5e9462a787b3002c8d",
+      "expected_commit": "d314a08e6510acae36cd4c5e9462a787b3002c8d",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "94248d08e0cf1d2b4b5bce907450c6d742e2fd8af93d1b837ce937e95cb29a3a"
+        }
+      ],
+      "name": "XMemoryMapWidget",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "0cacfe0a77e797d38cb662a11fdcfe7ccaad7256",
+      "expected_commit": "0cacfe0a77e797d38cb662a11fdcfe7ccaad7256",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "44fc93c0e4e0bdaff0209afeecb51e34456ad22327fbe8f226cfddc49a34290d"
+        }
+      ],
+      "name": "XOnlineTools",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "810d78d0654f45d39bf07bcda5dc92ce287a4aeb",
+      "expected_commit": "810d78d0654f45d39bf07bcda5dc92ce287a4aeb",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "94248d08e0cf1d2b4b5bce907450c6d742e2fd8af93d1b837ce937e95cb29a3a"
+        }
+      ],
+      "name": "XOptions",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "cdcee54dce97f566f2c023f400a457f4e6278de2",
+      "expected_commit": "cdcee54dce97f566f2c023f400a457f4e6278de2",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "44fc93c0e4e0bdaff0209afeecb51e34456ad22327fbe8f226cfddc49a34290d"
+        }
+      ],
+      "name": "XPDF",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "15c2e2951ab2443c7794e8f88c9fc5c65b217f28",
+      "expected_commit": "15c2e2951ab2443c7794e8f88c9fc5c65b217f28",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1061,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "374e26cb4e674f28a1b261b8f394f0ce6f1950bd1200d85cc1a9aa23858007d1"
+        }
+      ],
+      "name": "XPEID",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "eb14747e8a8eed860a8eaf7d566f270bf52a8b2d",
+      "expected_commit": "eb14747e8a8eed860a8eaf7d566f270bf52a8b2d",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "94248d08e0cf1d2b4b5bce907450c6d742e2fd8af93d1b837ce937e95cb29a3a"
+        }
+      ],
+      "name": "XQwt",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "307edf22920c2d7a9dda69e3d7f333ea6539be2b",
+      "expected_commit": "307edf22920c2d7a9dda69e3d7f333ea6539be2b",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "fef46fae59c09542d5edfdd0ffea6e5b33247145434f937ed8fab6027c8481bb"
+        }
+      ],
+      "name": "XRegionsWidget",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83",
+      "expected_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "ac4f868b0034a4047dd1394409e412a25b03013a42f75f20fb0a4f9b4692a827"
+        }
+      ],
+      "name": "XScanEngine",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "52f581bf7c5b83723e09182b99ff26d63cf953d3",
+      "expected_commit": "52f581bf7c5b83723e09182b99ff26d63cf953d3",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "b15e85faef7d7294e40453fd4bf6fcb09138836312b2e61d1a17512e57e35a45"
+        }
+      ],
+      "name": "XShortcuts",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "6f7fdbca4389b78cf9e746a805fd0059712aa9ba",
+      "expected_commit": "6f7fdbca4389b78cf9e746a805fd0059712aa9ba",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "94248d08e0cf1d2b4b5bce907450c6d742e2fd8af93d1b837ce937e95cb29a3a"
+        }
+      ],
+      "name": "XSingleApplication",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "c1633b9bcae7482dfae037f8efb531ac61baf3f8",
+      "expected_commit": "c1633b9bcae7482dfae037f8efb531ac61baf3f8",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "abdeb212f229d2b93a5c315763df4d7201c7d74f580ad9dc77d77dec7cbc6c69"
+        }
+      ],
+      "name": "XStaticUnpacker",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "3a32a855f6776cf63fe6eeee5a62db60a396aa6a",
+      "expected_commit": "3a32a855f6776cf63fe6eeee5a62db60a396aa6a",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "94248d08e0cf1d2b4b5bce907450c6d742e2fd8af93d1b837ce937e95cb29a3a"
+        }
+      ],
+      "name": "XStyles",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "c16c72ea0a7a986f94b8a4dd872f53bef2d55e6e",
+      "expected_commit": "c16c72ea0a7a986f94b8a4dd872f53bef2d55e6e",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "44fc93c0e4e0bdaff0209afeecb51e34456ad22327fbe8f226cfddc49a34290d"
+        }
+      ],
+      "name": "XSymbolsWidget",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "424271d5c390dc8f3c4e575558b651cfb002c01a",
+      "expected_commit": "424271d5c390dc8f3c4e575558b651cfb002c01a",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "94248d08e0cf1d2b4b5bce907450c6d742e2fd8af93d1b837ce937e95cb29a3a"
+        }
+      ],
+      "name": "XTranslation",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "b9f456b65c74a51011dd17283f3f6073d15f97fa",
+      "expected_commit": "b9f456b65c74a51011dd17283f3f6073d15f97fa",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "44fc93c0e4e0bdaff0209afeecb51e34456ad22327fbe8f226cfddc49a34290d"
+        }
+      ],
+      "name": "XUpdate",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "791525650cf28dc6a79c7536451bd5d2cc82f9bb",
+      "expected_commit": "791525650cf28dc6a79c7536451bd5d2cc82f9bb",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "47bb6a450a9993a105a68e03df70e732abcb2f942e6ab06fac409107986f0a6e"
+        }
+      ],
+      "name": "XVisualizationWidget",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "34a733e9c733669ad8dcaf4588d51197a08545e3",
+      "expected_commit": "34a733e9c733669ad8dcaf4588d51197a08545e3",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "abdeb212f229d2b93a5c315763df4d7201c7d74f580ad9dc77d77dec7cbc6c69"
+        }
+      ],
+      "name": "XYara",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "2950341b5a9db041f65034393ae8e779ccb99455",
+      "expected_commit": "2950341b5a9db041f65034393ae8e779ccb99455",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "94248d08e0cf1d2b4b5bce907450c6d742e2fd8af93d1b837ce937e95cb29a3a"
+        }
+      ],
+      "name": "archive_widget",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "5dd5bcc8abf3b178d9ed47100f6f37ebecceb23e",
+      "expected_commit": "5dd5bcc8abf3b178d9ed47100f6f37ebecceb23e",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1106,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "5ad1e8381e1b109d88a6c69f1d7c7581e1b023e8bbd4d90882b226f0d4fa789c"
+        }
+      ],
+      "name": "build_tools",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+      "expected_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "abdeb212f229d2b93a5c315763df4d7201c7d74f580ad9dc77d77dec7cbc6c69"
+        }
+      ],
+      "name": "die_script",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "5b483772edde713fb872bc3ca86cfde4c00ea42c",
+      "expected_commit": "5b483772edde713fb872bc3ca86cfde4c00ea42c",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "94248d08e0cf1d2b4b5bce907450c6d742e2fd8af93d1b837ce937e95cb29a3a"
+        }
+      ],
+      "name": "die_widget",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "a7451c5d714e56d491dbd69f0ae86a1f85363f22",
+      "expected_commit": "a7451c5d714e56d491dbd69f0ae86a1f85363f22",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "44fc93c0e4e0bdaff0209afeecb51e34456ad22327fbe8f226cfddc49a34290d"
+        }
+      ],
+      "name": "hex_templates",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "cf60ed2b9dcac8f183ec5e4172113df1aae17065",
+      "expected_commit": "cf60ed2b9dcac8f183ec5e4172113df1aae17065",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "94248d08e0cf1d2b4b5bce907450c6d742e2fd8af93d1b837ce937e95cb29a3a"
+        }
+      ],
+      "name": "nfd_widget",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "8a80abec2e0cfc9a718796263511542d21538874",
+      "expected_commit": "8a80abec2e0cfc9a718796263511542d21538874",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1080,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "da4fa18d1f5e18f9d84698ec66dea06f02ed6b8d8c82ac6af8836a64e97ff3a3"
+        }
+      ],
+      "name": "peid_widget",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "5d80fb2863d02e9366aee7b3ade6abb7d6598dbb",
+      "expected_commit": "5d80fb2863d02e9366aee7b3ade6abb7d6598dbb",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "b15e85faef7d7294e40453fd4bf6fcb09138836312b2e61d1a17512e57e35a45"
+        }
+      ],
+      "name": "signatures",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    },
+    {
+      "actual_commit": "611eae6b74d45ce8f916961f4de7fffc5d95f40b",
+      "expected_commit": "611eae6b74d45ce8f916961f4de7fffc5d95f40b",
+      "license_file_count": 1,
+      "license_files": [
+        {
+          "bytes": 1085,
+          "first_nonempty_line": "MIT License",
+          "path": "LICENSE",
+          "sha256": "94248d08e0cf1d2b4b5bce907450c6d742e2fd8af93d1b837ce937e95cb29a3a"
+        }
+      ],
+      "name": "yara_widget",
+      "nested_gitmodules": [],
+      "root_license_count": 1,
+      "root_license_is_mit": true
+    }
+  ],
+  "generator": "tools/upstream/audit_component_licenses.py",
+  "generator_sha256": "379ce06625169082a135377fa307b8e7bc4f6bdc5c925346565979ea3fbf6614",
+  "license_file_count": 103,
+  "relationships": {
+    "all_58_component_directories_present": true,
+    "all_component_commits_match_lock": true,
+    "all_component_root_licenses_identify_mit": true,
+    "all_components_have_exactly_one_root_license": true,
+    "no_component_has_nested_gitmodules": true
+  },
+  "schema_version": 1,
+  "source_image": {
+    "image": "diec-rust/upstream-oracle-cmake:74eaf505",
+    "image_id": "sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040",
+    "network": "none",
+    "repository_mount": "readonly",
+    "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "source_root_license": {
+    "bytes": 1085,
+    "first_nonempty_line": "MIT License",
+    "path": "LICENSE",
+    "sha256": "be0fe2d727cd0a754fb0b2fdc579ead8f19ef575840b4daef221be201701eaad"
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

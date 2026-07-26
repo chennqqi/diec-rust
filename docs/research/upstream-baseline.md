@@ -2,7 +2,7 @@
 
 Status: Draft  
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`  
-Last updated: 2026-07-26
+Last updated: 2026-07-27
 
 ## 结论摘要
 
@@ -53,7 +53,11 @@ git -C DIE-engine submodule status --recursive
 
 主仓库 `LICENSE` 为 MIT License，copyright 为 `2012-2026 hors<horsicq@gmail.com>`。本轮检查的 `Detect-It-Easy`、`Formats`、`StaticScan`、`XScanEngine`、`die_script`、`signatures`、`XOptions`、`XFileInfo` 和 `XEntropyWidget` 均有以 `MIT License` 开头的独立 `LICENSE` 文件。固定 XScanEngine external research checkout 的 LICENSE SHA-256 为 `ac4f868b0034a4047dd1394409e412a25b03013a42f75f20fb0a4f9b4692a827`，其 HostApi 头文件清单见 [`host-api-inventory.md`](host-api-inventory.md)。
 
-这不是完整许可证审计。剩余 submodule、构建时下载的第三方库、YARA/PEiD 规则及测试样本仍需逐项核对。
+完整 58 个直接组件均已固定根 LICENSE path/hash，全部首行为 MIT，且确认没有嵌套
+`.gitmodules`；58 份根文本有 12 个不同 hash。机器清单与限制见
+[`component-license-inventory.md`](component-license-inventory.md)。这仍不是完整
+许可证审计：bundled code 文件头、构建工具、YARA/PEiD 规则及测试样本仍需逐项
+核对。
 
 ## Submodule 基线
 
@@ -94,7 +98,9 @@ XDisasmCore XRegionsWidget XStaticUnpacker XPEID build_tools peid_widget
 python3 tools/verify_upstream.py
 ```
 
-该清单覆盖主仓库的直接 submodule。各组件自身的递归 submodule 尚待在物化组件和许可证审计时继续展开。
+该清单覆盖主仓库的直接 submodule。固定 source image 审计确认 58 个组件都没有
+嵌套 `.gitmodules`，因此 git submodule closure 在本 commit 到此终止；普通
+vendored 目录仍需独立 source/license 审计。
 
 ## 构建系统静态分析
 
@@ -129,13 +135,13 @@ python3 tools/verify_upstream.py
 
 ## 尚未完成
 
-- [`cli-dependency-and-license.md`](cli-dependency-and-license.md) 已确认 CLI 核心范围
-  16 个组件均无嵌套 `.gitmodules`；其余 42 个直接组件仍待检查。
+- [`component-license-inventory.md`](component-license-inventory.md) 已确认全部
+  58 个直接组件 commit/root LICENSE，并证明没有嵌套 `.gitmodules`。
 - Linux Qt5 qmake、Qt5 CMake 和 Qt6 CMake CLI 候选 oracle 已构建。Qt5
   qmake/CMake 首轮矩阵无差异；Qt 5/Qt 6 首轮差分发现一项规则 stderr 差异。
   完整 CMake 发布打包以及 Windows、macOS 的可重复构建和运行记录仍待完成。
 - release workflow、预编译包与源码构建之间的数据资产差异。
-- 所有 submodule 和规则文件的许可证审计。
+- bundled code、规则文件和最终发布组合的许可证审计。
 - 已采集 Linux Qt5 qmake/CMake 与 Qt6 CMake 产物的链接证据；完整静态依赖与
   发布产物清单仍待采集。
 - 已完成自扫描 smoke baseline 和 15 个项目生成安全样本的 JSON/退出码差分；

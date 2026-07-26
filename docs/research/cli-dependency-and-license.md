@@ -4,7 +4,7 @@ Status: Draft
 
 Upstream: https://github.com/horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254
 
-Last updated: 2026-07-25
+Last updated: 2026-07-27
 
 ## 目的与范围
 
@@ -153,11 +153,15 @@ LICENSE 的 vendored 代码。
 - Rust 重写若采用不同的纯 Rust crate，可以改变依赖实现和许可证组合，但仍需差分证明
   解压、反汇编、格式解析等可观察行为一致。
 
+完整 58 个直接组件的根 LICENSE、commit 和嵌套 `.gitmodules` 已由
+[`component-license-inventory.md`](component-license-inventory.md) 补齐：全部根
+许可证为 MIT、共有 12 个文本 hash，且没有组件含递归 git submodule。该清单同时
+发现 45 个 nested license candidates，但不替代文件级 bundled code 审计。
+
 ## 尚未完成
 
 - 构建固定上游并保存 CMake target graph、link map、动态依赖和符号表。
 - 对 `XArchive/Algos` 及 YARA 内嵌的 TLSH/authenticode 等代码完成逐文件来源与许可证审计。
-- 核对 16 个核心组件之外其余 42 个直接组件是否有嵌套 `.gitmodules`。
 - 区分正常扫描、`--info`、`--struct`、YARA/PEiD 数据和 GUI-only 路径的最小产物闭包。
 - 对 Qt 5 与 Qt 6 构建分别记录链接依赖和规则运行时行为。
 - 形成发布时必须携带的 LICENSE/NOTICE 清单；在审计完成前不得把当前表当作发布许可结论。

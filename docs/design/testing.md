@@ -524,6 +524,9 @@ upstream 与 Rust 使用相同 bytes/options/database；无法等价的 case 不
 - 三大桌面平台目标架构 static-link system tests；
 - 完整 differential、waiver audit、schema/header/symbol audit；
 - rules/source/license/SBOM/provenance；
+- component license inventory：58 个 gitlink commit、root LICENSE path/hash、
+  nested `.gitmodules` 和 bundled license candidate diff；候选文件名清单不得
+  代替实际 object/link/file-header license closure；
 - fuzz corpus replay、零未分类 crash；
 - benchmark 与 size/resource gate；
 - release binary/library hash、依赖和签名清单。
