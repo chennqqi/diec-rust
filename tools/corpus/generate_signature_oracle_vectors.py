@@ -10,7 +10,7 @@ from pathlib import Path
 
 
 SCHEMA_VERSION = 2
-GENERATOR_VERSION = 3
+GENERATOR_VERSION = 4
 UPSTREAM_COMMIT = "74eaf505c250ab47e709024e9dc41657cd8f2254"
 FORMATS_COMMIT = "1151e7254fdee3c0294ff7095edbdd7bfccf8201"
 
@@ -159,6 +159,40 @@ def mapped_macho64() -> bytes:
     image[0x100:0x109] = bytes.fromhex("680010000001000000")
     image[0x180] = 0x90
     return bytes(image)
+
+
+def mapped_com() -> bytes:
+    return bytes.fromhex("eb0090")
+
+
+def mapped_msdos() -> bytes:
+    image = bytearray(0x80)
+    image[0:2] = b"MZ"
+    struct.pack_into("<H", image, 2, 0x80)
+    struct.pack_into("<H", image, 4, 1)
+    struct.pack_into("<H", image, 8, 4)
+    image[0x40:0x45] = bytes.fromhex("6803000200")
+    image[0x63] = 0x90
+    return bytes(image)
+
+
+def mapped_amigahunk() -> bytes:
+    words = [
+        0x000003F3,
+        0,
+        1,
+        0,
+        0,
+        4,
+        0x000003E9,
+        4,
+        0xAA000400,
+        0x00BB0000,
+        0,
+        0,
+        0x000003F2,
+    ]
+    return b"".join(struct.pack(">I", word) for word in words)
 
 
 def vectors() -> list[dict[str, object]]:
@@ -337,6 +371,26 @@ def vectors() -> list[dict[str, object]]:
             "data_hex": mapped_macho64().hex(),
             "offset": 0x100,
             "format_parser": "macho",
+        },
+        {
+            "id": "com_parser_memory_map_relative_jump",
+            "pattern": "eb$$90",
+            "data_hex": mapped_com().hex(),
+            "format_parser": "com",
+        },
+        {
+            "id": "msdos_parser_memory_map_far_pointer",
+            "pattern": "68########90",
+            "data_hex": mapped_msdos().hex(),
+            "offset": 0x40,
+            "format_parser": "msdos",
+        },
+        {
+            "id": "amigahunk_parser_memory_map_relative_jump",
+            "pattern": "aa$$$$bb",
+            "data_hex": mapped_amigahunk().hex(),
+            "offset": 32,
+            "format_parser": "amigahunk",
         },
         {
             "id": "address_markers_around_ignored_base",

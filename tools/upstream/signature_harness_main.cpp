@@ -2,8 +2,11 @@
 // It does not modify upstream parsing or matching behavior.
 
 #include "xbinary.h"
+#include "xamigahunk.h"
+#include "xcom.h"
 #include "xelf.h"
 #include "xmach.h"
+#include "xmsdos.h"
 #include "xpe.h"
 
 #include <QBuffer>
@@ -69,6 +72,15 @@ QString fileTypeName(XBinary::FT fileType)
         fileType == XBinary::FT_MACHO64) {
         return "macho";
     }
+    if (fileType == XBinary::FT_COM) {
+        return "com";
+    }
+    if (fileType == XBinary::FT_MSDOS) {
+        return "msdos";
+    }
+    if (fileType == XBinary::FT_AMIGAHUNK) {
+        return "amigahunk";
+    }
     return QString("unknown:%1").arg(static_cast<int>(fileType));
 }
 
@@ -109,6 +121,11 @@ QJsonObject serializeMemoryMap(const XBinary::_MEMORY_MAP &memoryMap)
     );
     output.insert("binary_size", QString::number(memoryMap.nBinarySize));
     output.insert("image_size", QString::number(memoryMap.nImageSize));
+    output.insert("code_base", QString::number(memoryMap.nCodeBase));
+    output.insert(
+        "start_load_offset",
+        QString::number(memoryMap.nStartLoadOffset)
+    );
     output.insert("records", records);
     return output;
 }
@@ -135,6 +152,24 @@ bool deriveFormatMemoryMap(
     }
     if (formatParser == "macho") {
         XMACH format(buffer);
+        *formatValid = format.isValid();
+        *memoryMap = format.getMemoryMap();
+        return true;
+    }
+    if (formatParser == "com") {
+        XCOM format(buffer);
+        *formatValid = format.isValid();
+        *memoryMap = format.getMemoryMap();
+        return true;
+    }
+    if (formatParser == "msdos") {
+        XMSDOS format(buffer);
+        *formatValid = format.isValid();
+        *memoryMap = format.getMemoryMap();
+        return true;
+    }
+    if (formatParser == "amigahunk") {
+        XAmigaHunk format(buffer);
         *formatValid = format.isValid();
         *memoryMap = format.getMemoryMap();
         return true;

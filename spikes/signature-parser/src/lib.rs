@@ -829,6 +829,9 @@ mod tests {
             "pe" => FileType::Pe,
             "elf" => FileType::Elf,
             "macho" => FileType::MachO,
+            "com" => FileType::Com,
+            "msdos" => FileType::MsDos,
+            "amigahunk" => FileType::AmigaHunk,
             other => panic!("unsupported derived file type {other}"),
         };
         let endian = match value["endian"].as_str().expect("endian should be a string") {
@@ -866,8 +869,16 @@ mod tests {
         MemoryMap {
             file_type,
             endian,
-            code_base: 0,
-            start_load_offset: 0,
+            code_base: value["code_base"]
+                .as_str()
+                .expect("code_base should be a string")
+                .parse()
+                .expect("code_base should be decimal"),
+            start_load_offset: value["start_load_offset"]
+                .as_str()
+                .expect("start_load_offset should be a string")
+                .parse()
+                .expect("start_load_offset should be decimal"),
             records,
         }
     }
@@ -1169,6 +1180,9 @@ mod tests {
             "pe32_parser_memory_map_relative_jump",
             "elf64_parser_memory_map_relative_jump",
             "macho64_parser_memory_map_absolute_jump",
+            "com_parser_memory_map_relative_jump",
+            "msdos_parser_memory_map_far_pointer",
+            "amigahunk_parser_memory_map_relative_jump",
         ]);
         let oracle: Value = serde_json::from_str(include_str!(
             "../../../docs/research/data/signature-oracle-qt5.json"

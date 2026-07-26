@@ -140,13 +140,13 @@ pattern 仍可能缺失。
 
 输入由
 [`generate_signature_oracle_vectors.py`](../../tools/corpus/generate_signature_oracle_vectors.py)
-生成，共 37 个项目自有向量。原始输出保存为
+生成，共 40 个项目自有向量。原始输出保存为
 [`signature-oracle-qt5.json`](data/signature-oracle-qt5.json)，自动探针
 [`probe_signature_harness.py`](../../tools/upstream/probe_signature_harness.py)
 在禁网、512 MiB、1 CPU、128 PID 限制下验证 image revision、binary hash、
-输入 identity 及 baseline 原始 bytes。当前结果 37/37，stdout/baseline
+输入 identity 及 baseline 原始 bytes。当前结果 40/40，stdout/baseline
 SHA-256 均为
-`dbd83eff2e0c88b9e4e7933cff653fa0fd49fb1a725c19f08d47b3d5950a8e82`。
+`900ea6ab01b1622cae900050587e86c9a3f9817995a151fb4bcbc02d87582e9f`。
 
 构建与复现：
 
@@ -185,13 +185,18 @@ oracle schema v2 允许每个项目自有向量显式注入 `_MEMORY_MAP`，但�
 落在某个 record；因此 Rust matcher 不能额外施加 record 连续性约束。
 
 这些合成向量隔离 matcher 分支，不单独证明格式 parser 构造出的 map 正确。
-因此 generator 另行产生带两个映射区域的 PE32、ELF64 和 Mach-O64 文件，
-harness 分别直接实例化固定 `XPE`、`XELF` 和 `XMACH`，先验证 `isValid()`，
-再把真实 `getMemoryMap()` 交给同一 signature matcher。三种格式均有效且跨区域
-compare 成功；Rust 从上游派生 map 重放后 3/3 一致。
+因此 generator 另行产生带两个映射区域的 PE32、ELF64 和 Mach-O64，以及最小
+COM、MS-DOS、AmigaHunk 文件。harness 分别直接实例化固定格式 parser，先验证
+`isValid()`，再把真实 `getMemoryMap()` 交给同一 signature matcher：
 
-该端到端层当前仍未覆盖 PE64、ELF32、Mach-O32，以及 COM、MS-DOS、AmigaHunk
-parser 的真实 map 构造。
+- PE32/ELF64 使用 relative jump 跨越不连续 raw region；
+- Mach-O64 使用 64-bit absolute address 跨 segment；
+- COM 验证 16-bit relative 分支；
+- MS-DOS 用 far pointer 验证 `nStartLoadOffset`；
+- AmigaHunk 验证大端 relative word 不增加 operand width。
+
+六种格式均有效且 compare 成功；Rust 从上游派生 map 重放后 6/6 一致。该端到端
+层当前仍未覆盖 PE64、ELF32、Mach-O32 和畸形 map。
 
 ## 纯 Rust spike
 
@@ -207,8 +212,8 @@ parser 的真实 map 构造。
   `MemoryMap` 后覆盖通用映射、端序、COM/MS-DOS 和 AmigaHunk 特殊分支；
 - 空串、奇数 token、未知字符、无 find needle 和未闭合结构均有结构化错误；
 - 16 个 context-free `compareSignature` 向量与固定 Qt 5 XBinary oracle 16/16
-  一致，7 个合成 memory-map 向量 7/7 一致，3 个真实格式 parser map 向量
-  3/3 一致。
+  一致，7 个合成 memory-map 向量 7/7 一致，6 个真实格式 parser map 向量
+  6/6 一致。
 
 机器摘要见
 [`signature-parser.json`](data/signature-parser.json)。
@@ -218,8 +223,8 @@ parser 的真实 map 构造。
 1. 对固定 `db`/`db_extra` 做 AST 或 runtime-assisted 全调用点 inventory，覆盖
    非执行分支和动态拼接。
 2. 扩展现有 XBinary oracle，覆盖更多畸形组合、buffer boundary 和取消行为。
-3. 补齐 PE64、ELF32、Mach-O32 以及 COM/MSDOS、AmigaHunk 的项目生成文件，
-   端到端验证各格式 `getMemoryMap`。
+3. 补齐 PE64、ELF32、Mach-O32 及畸形/重叠/virtual-only map 的项目生成文件，
+   端到端验证各格式 `getMemoryMap` 边界。
 4. 端到端调用 `Binary_Script::compare`，比较 header-signature fast path 与
    通用 matcher 的严格 `<` 边界差异。
 5. 独立实现并差分 `find_signature` 的 control-record、SigByte 和 plain-hex

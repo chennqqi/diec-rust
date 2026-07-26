@@ -80,6 +80,18 @@ EXPECTED_OBSERVATIONS = {
         "format_valid": True,
         "compare": True,
     },
+    "com_parser_memory_map_relative_jump": {
+        "format_valid": True,
+        "compare": True,
+    },
+    "msdos_parser_memory_map_far_pointer": {
+        "format_valid": True,
+        "compare": True,
+    },
+    "amigahunk_parser_memory_map_relative_jump": {
+        "format_valid": True,
+        "compare": True,
+    },
 }
 
 
