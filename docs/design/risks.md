@@ -186,7 +186,12 @@ baseline 的变更都要检查本表。
   精确追溯到 `avast/tlshc` 的 Apache-2.0 OR BSD-3-Clause 与 Trend Micro
   NOTICE；但 bundled tree 没有携带 YARA `COPYING` 或 tlshc
   `LICENSE`/`NOTICE.txt`。10 个 Avast MIT Authenticode 文件在当前无 OpenSSL
-  target 中未进入闭包，其他平台/feature 仍待审。
+  target 中未进入闭包，其他平台/feature 仍待审。五组 YARA/PEiD/signature
+  数据资产又已固定逐文件 path/hash/history：三个 YARA 文件明确 GPLv2，三个
+  DosX 文件只有归属保留请求，`peid.yar` 聚合多项外部 database URL，而
+  PEiD/signature 数据没有文件级许可声明。固定 `diec` CLI 不加载这些资产，
+  但上游打包脚本仍会复制 component YARA、PEiD 和根 `crypto.db`，因此不能以
+  “CLI 不可达”免除发布物许可审计。
 - **缓解**：每次导入/同步前生成 source/license inventory；保留原始 LICENSE、
   commit、path、hash 和 attribution；选型前由发布责任人复核组合。
 - **验证**：规则 bundle、source closure、binary dependency、samples 和 release

@@ -56,6 +56,12 @@ BSD-3-Clause、Bison GPL-3.0-or-later + special exception，以及无内联声�
 TLSH 双许可证源码；因此根候选清单明确不能代表 XYara 的 source/default-build
 发布义务。
 
+YARA/PEiD/signatures 数据资产已由
+[`rule-asset-provenance.md`](rule-asset-provenance.md) 固定到五组逐文件
+path/hash/history。该审计发现三个 YARA 文件明确 GPLv2、三个 DosX 文件要求
+保留归属、`peid.yar` 聚合多个未逐项许可的外部数据库，而 PEiD/signature 数据
+没有文件级许可声明。组件根 MIT 因此仍不能代表这些数据资产的完整分发结论。
+
 ## 方法与复现
 
 工具
@@ -98,6 +104,7 @@ python tools\upstream\audit_component_licenses.py `
   审计及 TLSH/Authenticode/Bison 分类；仍缺 Windows/macOS/OpenSSL/qmake
   闭包和书面组合评审；
 - qmake/CMake、普通 scan/info/struct 和 GUI 的实际 object/link map 对应关系；
-- rules、YARA rules、PEiD rules 和 signatures 数据资产的逐路径许可结论；
+- `db*` JavaScript rules 的逐路径许可结论；YARA/PEiD/signatures 已完成
+  路径/hash/可见标记审计，但原始第三方许可和书面组合评审仍未关闭；
 - 候选 Rust dependency graph、最终 static library 和发布包的 SBOM/NOTICE；
 - 由发布/法律责任人完成书面组合评审。

@@ -56,8 +56,10 @@ git -C DIE-engine submodule status --recursive
 完整 58 个直接组件均已固定根 LICENSE path/hash，全部首行为 MIT，且确认没有嵌套
 `.gitmodules`；58 份根文本有 12 个不同 hash。机器清单与限制见
 [`component-license-inventory.md`](component-license-inventory.md)。这仍不是完整
-许可证审计：bundled code 文件头、构建工具、YARA/PEiD 规则及测试样本仍需逐项
-核对。
+许可证审计：bundled code 文件头、构建工具及测试样本仍需逐项核对。YARA、
+PEiD 与 signatures 数据已完成固定路径/hash/可见标记审计，但多项第三方来源
+许可仍未关闭，见
+[`rule-asset-provenance.md`](rule-asset-provenance.md)。
 
 ## Submodule 基线
 
@@ -131,7 +133,10 @@ vendored 目录仍需独立 source/license 审计。
 - `db_extra/`：Amiga、COM、ELF、MSDOS、PE。
 - `db_custom/`：默认没有规则类别目录。
 - `dbs_min/`、`dbs_special/`：用途和发布选择规则待分析。
-- `yara_rules/`、`peid_rules/`：是否属于 CLI 兼容范围待确认。
+- `yara_rules/`、`peid_rules/`：固定 `diec` CLI 不加载；Detect release tree
+  与 XYara/XPEID component tree 又不是字节镜像。它们属于 GUI/替代引擎及
+  发布物审计范围，见
+  [`rule-asset-provenance.md`](rule-asset-provenance.md)。
 
 ## 尚未完成
 
@@ -141,7 +146,8 @@ vendored 目录仍需独立 source/license 审计。
   qmake/CMake 首轮矩阵无差异；Qt 5/Qt 6 首轮差分发现一项规则 stderr 差异。
   完整 CMake 发布打包以及 Windows、macOS 的可重复构建和运行记录仍待完成。
 - release workflow、预编译包与源码构建之间的数据资产差异。
-- bundled code、规则文件和最终发布组合的许可证审计。
+- bundled code、规则原始来源和最终发布组合的许可证审计；YARA/PEiD/signature
+  资产路径与可见标记已固定，但 GPL/未知来源仍需书面评审。
 - 已采集 Linux Qt5 qmake/CMake 与 Qt6 CMake 产物的链接证据；完整静态依赖与
   发布产物清单仍待采集。
 - 已完成自扫描 smoke baseline 和 15 个项目生成安全样本的 JSON/退出码差分；

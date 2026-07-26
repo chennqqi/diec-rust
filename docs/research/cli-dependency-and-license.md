@@ -149,9 +149,10 @@ LICENSE 的 vendored 代码。
 - `--info`/`--struct` 把 `XFileInfo`、`SpecAbstract` 和扫描/规则闭包带入 CLI。
 - 上游在 CLI 编译时无条件定义 `USE_DEX`、`USE_PDF`、`USE_ARCHIVE`、`USE_XSIMD`；
   这些格式不能在未建立行为证据前从兼容范围删除。
-- `yara` target 和 `Detect-It-Easy/yara_rules` 是否属于 `diec` 可观察能力是两个不同问题。
-  当前 link 证据显示 YARA native target 不进入 `diec`，但仍需运行上游验证相关数据目录
-  是否被 CLI 以其他方式读取。
+- `yara` target 和 YARA 数据是否属于 `diec` 可观察能力是两个不同问题。
+  [`rule-asset-provenance.md`](rule-asset-provenance.md) 已进一步验证固定 CLI
+  source list、入口和 link line：YARA、PEiD、signatures 均无运行时数据入口；
+  它们只在 GUI/替代引擎和打包路径可达。
 - Rust 重写若采用不同的纯 Rust crate，可以改变依赖实现和许可证组合，但仍需差分证明
   解压、反汇编、格式解析等可观察行为一致。
 
@@ -182,5 +183,7 @@ XYara/YARA 当前 Linux target 也已由
   完成 Brotli 剩余约 1.4% token 分类；为 YARA/TLSH 恢复独立
   COPYING/LICENSE/NOTICE，并补 Windows/macOS/OpenSSL/qmake 闭包。
 - 区分正常扫描、`--info`、`--struct`、YARA/PEiD 数据和 GUI-only 路径的最小产物闭包。
+- YARA/PEiD/signatures 的 CLI 可达性已关闭；其 GUI/辅助 engine 运行闭包、
+  第三方数据来源许可和 release artifact 内容仍待关闭。
 - 对 Qt 5 与 Qt 6 构建分别记录链接依赖和规则运行时行为。
 - 形成发布时必须携带的 LICENSE/NOTICE 清单；在审计完成前不得把当前表当作发布许可结论。

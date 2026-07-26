@@ -1,0 +1,1159 @@
+{
+  "asset_sets": [
+    {
+      "byte_count": 3490324,
+      "commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+      "file_count": 8,
+      "files": [
+        {
+          "bytes": 2882,
+          "first_nonempty_line": "/*",
+          "line_count": 127,
+          "newline_style": "lf",
+          "path": "DiE_BasicHeuristics_by_DosX.yar",
+          "peid_section_count": 0,
+          "sha256": "8142500a3f754630c8ccba90f963e8824ca65d4bd52c4cd9be098ee8ec2cc7d7",
+          "visible_markers": [
+            "author-metadata",
+            "retain-copyright-request"
+          ],
+          "yara_rule_count": 11
+        },
+        {
+          "bytes": 17598,
+          "first_nonempty_line": "/*",
+          "line_count": 550,
+          "newline_style": "lf",
+          "path": "DiE_EnhancedHeuristics_by_DosX.yar",
+          "peid_section_count": 0,
+          "sha256": "098f6ad052e982b731321efd02b1e04814bc27930994de90e333057282d1e52f",
+          "visible_markers": [
+            "author-metadata",
+            "retain-copyright-request"
+          ],
+          "yara_rule_count": 49
+        },
+        {
+          "bytes": 3731,
+          "first_nonempty_line": "/*",
+          "line_count": 186,
+          "newline_style": "lf",
+          "path": "DiE_InterestingThings_by_DosX.yar",
+          "peid_section_count": 0,
+          "sha256": "3967cc7eb16682cf8155d21da1636943e38877d01f8df0aab153ff3e1ac625ca",
+          "visible_markers": [
+            "author-metadata",
+            "retain-copyright-request"
+          ],
+          "yara_rule_count": 21
+        },
+        {
+          "bytes": 75534,
+          "first_nonempty_line": "/*",
+          "line_count": 1450,
+          "newline_style": "lf",
+          "path": "crypto_signature.yar",
+          "peid_section_count": 0,
+          "sha256": "137585b849e8ebfdc108e7cebd505c8a2ddb257bd8ea3c28f50c1bc89e6f8247",
+          "visible_markers": [
+            "author-metadata",
+            "explicit-gpl-v2"
+          ],
+          "yara_rule_count": 124
+        },
+        {
+          "bytes": 428770,
+          "first_nonempty_line": "import \"pe\"",
+          "line_count": 11464,
+          "newline_style": "lf",
+          "path": "malware_analisys.yar",
+          "peid_section_count": 0,
+          "sha256": "c5a166c1de527105308e4f6d44cb0413deef6f6ea880947eeee87df8634a5ea2",
+          "visible_markers": [
+            "author-metadata"
+          ],
+          "yara_rule_count": 536
+        },
+        {
+          "bytes": 559115,
+          "first_nonempty_line": "/*",
+          "line_count": 15264,
+          "newline_style": "lf",
+          "path": "packer.yar",
+          "peid_section_count": 0,
+          "sha256": "588911fc536c730de69a97b2e066aeda8a3c79206f34db368a2507019c60738b",
+          "visible_markers": [
+            "author-metadata",
+            "explicit-gpl-v2"
+          ],
+          "yara_rule_count": 1664
+        },
+        {
+          "bytes": 20409,
+          "first_nonempty_line": "/*",
+          "line_count": 520,
+          "newline_style": "lf",
+          "path": "packer_compiler_signatures.yar",
+          "peid_section_count": 0,
+          "sha256": "5bfb0e30c60802c471e7025705aa4901247fdcb3f08722c9ea94e2b51e9bef82",
+          "visible_markers": [
+            "author-metadata",
+            "explicit-gpl-v2"
+          ],
+          "yara_rule_count": 36
+        },
+        {
+          "bytes": 2382285,
+          "first_nonempty_line": "/*",
+          "line_count": 38999,
+          "newline_style": "lf",
+          "path": "peid.yar",
+          "peid_section_count": 0,
+          "sha256": "092ba6a9ab91b8f5c4e0e2dbefd8e7a3d5b283f7f00b94dc529f21647ae28718",
+          "visible_markers": [
+            "author-metadata",
+            "peid2yara-generated",
+            "upstream-database-urls"
+          ],
+          "yara_rule_count": 7615
+        }
+      ],
+      "name": "detect-release-yara",
+      "peid_section_count": 0,
+      "repository": "https://github.com/horsicq/Detect-It-Easy.git",
+      "source_path": "yara_rules",
+      "tree_sha256": "24684a5ca84971ec11aac060955ad77f255ec58195e1a44551cd3c965422501f",
+      "yara_rule_count": 10056
+    },
+    {
+      "byte_count": 2459045,
+      "commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+      "file_count": 11,
+      "files": [
+        {
+          "bytes": 103640,
+          "first_nonempty_line": "\ufeff; PEiD signature database - compiler",
+          "line_count": 1719,
+          "newline_style": "lf",
+          "path": "PE/compiler.userdb.txt",
+          "peid_section_count": 429,
+          "sha256": "cc2471243bd0de40d2d6870f63a65c1fab6845817f2691e4e6cb9865ffc8875b",
+          "visible_markers": [],
+          "yara_rule_count": 0
+        },
+        {
+          "bytes": 9311,
+          "first_nonempty_line": "\ufeff; PEiD signature database - file_format",
+          "line_count": 391,
+          "newline_style": "lf",
+          "path": "PE/file_format.userdb.txt",
+          "peid_section_count": 97,
+          "sha256": "c42f6b048d8dc04098b115552f6b7a4ad5e90ea92b316b8506b05f6fbcc487e5",
+          "visible_markers": [],
+          "yara_rule_count": 0
+        },
+        {
+          "bytes": 37130,
+          "first_nonempty_line": "\ufeff; PEiD signature database - installer",
+          "line_count": 363,
+          "newline_style": "lf",
+          "path": "PE/installer.userdb.txt",
+          "peid_section_count": 90,
+          "sha256": "1b71d28ed30e02053caea5358626a24ade20ac052de9ce8de387c6fd8fc09085",
+          "visible_markers": [],
+          "yara_rule_count": 0
+        },
+        {
+          "bytes": 16940,
+          "first_nonempty_line": "\ufeff; PEiD signature database - joiner",
+          "line_count": 231,
+          "newline_style": "lf",
+          "path": "PE/joiner.userdb.txt",
+          "peid_section_count": 57,
+          "sha256": "fc72331f0ae25514bd10ba0999c2b9e0720620c6861d9051441555d76c0dd573",
+          "visible_markers": [],
+          "yara_rule_count": 0
+        },
+        {
+          "bytes": 2559,
+          "first_nonempty_line": "\ufeff; PEiD signature database - overlay",
+          "line_count": 63,
+          "newline_style": "lf",
+          "path": "PE/overlay.userdb.txt",
+          "peid_section_count": 15,
+          "sha256": "93967531d8a153ec61ef46a47150bd76fb0fb463e54d33975073798078007437",
+          "visible_markers": [],
+          "yara_rule_count": 0
+        },
+        {
+          "bytes": 300078,
+          "first_nonempty_line": "\ufeff; PEiD signature database - packer",
+          "line_count": 3971,
+          "newline_style": "lf",
+          "path": "PE/packer.userdb.txt",
+          "peid_section_count": 992,
+          "sha256": "37f77fc123692b26ededb7eea76e823ae2b01cec6a110ca3434a3e456015064a",
+          "visible_markers": [],
+          "yara_rule_count": 0
+        },
+        {
+          "bytes": 262524,
+          "first_nonempty_line": "\ufeff; PEiD signature database - protection",
+          "line_count": 3775,
+          "newline_style": "lf",
+          "path": "PE/protection.userdb.txt",
+          "peid_section_count": 943,
+          "sha256": "707c6029d75a6221afc20dbc44b87f878d90155ffa8c2dec620ebc5e7053a4bd",
+          "visible_markers": [],
+          "yara_rule_count": 0
+        },
+        {
+          "bytes": 486754,
+          "first_nonempty_line": "\ufeff; PEiD signature database - protector",
+          "line_count": 7139,
+          "newline_style": "lf",
+          "path": "PE/protector.userdb.txt",
+          "peid_section_count": 1784,
+          "sha256": "5f88a6371161db930cec9bb309c5df761f5cfcef350a4faa1706b9820525320c",
+          "visible_markers": [],
+          "yara_rule_count": 0
+        },
+        {
+          "bytes": 8549,
+          "first_nonempty_line": "\ufeff; PEiD signature database - sfx_archive",
+          "line_count": 155,
+          "newline_style": "lf",
+          "path": "PE/sfx_archive.userdb.txt",
+          "peid_section_count": 38,
+          "sha256": "ec2910c46257a7975841dc05fc140e55ae5ab5e357aa1f311fbbce5f3181d908",
+          "visible_markers": [],
+          "yara_rule_count": 0
+        },
+        {
+          "bytes": 5021,
+          "first_nonempty_line": "$ErrorActionPreference = 'Stop'",
+          "line_count": 55,
+          "newline_style": "lf",
+          "path": "PE/split_userdb.ps1",
+          "peid_section_count": 0,
+          "sha256": "aaa2e728200b8c47fe3d51d1cbf1bcd53379ab58ec241b38eb6cbaef23f22f0e",
+          "visible_markers": [
+            "absolute-local-build-path"
+          ],
+          "yara_rule_count": 0
+        },
+        {
+          "bytes": 1226539,
+          "first_nonempty_line": ";  Made with Add Signature v2.00 by BoB / BobSoft ..",
+          "line_count": 17783,
+          "newline_style": "lf",
+          "path": "PE/userdb.txt",
+          "peid_section_count": 4445,
+          "sha256": "4ebc240a724c39351ff4887efa5ecf2e9e3a4b75fea0eceb51d701e386d74380",
+          "visible_markers": [],
+          "yara_rule_count": 0
+        }
+      ],
+      "name": "detect-release-peid",
+      "peid_section_count": 8890,
+      "repository": "https://github.com/horsicq/Detect-It-Easy.git",
+      "source_path": "peid_rules",
+      "tree_sha256": "9333a04068a80b2e3349477cfd8080c684b58fcb61e08ad2525c58355e4f9d38",
+      "yara_rule_count": 0
+    },
+    {
+      "byte_count": 3900619,
+      "commit": "34a733e9c733669ad8dcaf4588d51197a08545e3",
+      "file_count": 10,
+      "files": [
+        {
+          "bytes": 3317,
+          "first_nonempty_line": "/*",
+          "history": {
+            "commit_count": 1,
+            "first": {
+              "commit": "0ea7c032a7bbd1b8fae9c40754aadb725e7a1ec1",
+              "committed_at": "2026-04-19T19:17:10+02:00"
+            },
+            "last": {
+              "commit": "0ea7c032a7bbd1b8fae9c40754aadb725e7a1ec1",
+              "committed_at": "2026-04-19T19:17:10+02:00"
+            }
+          },
+          "line_count": 127,
+          "newline_style": "lf",
+          "path": "DiE_BasicHeuristics_by_DosX.yar",
+          "peid_section_count": 0,
+          "sha256": "ece476536dbe90dcc88603e72a2a55dbdb34edff5a3d07cb269f75e934e58249",
+          "visible_markers": [
+            "author-metadata",
+            "retain-copyright-request"
+          ],
+          "yara_rule_count": 11
+        },
+        {
+          "bytes": 19410,
+          "first_nonempty_line": "/*",
+          "history": {
+            "commit_count": 1,
+            "first": {
+              "commit": "0ea7c032a7bbd1b8fae9c40754aadb725e7a1ec1",
+              "committed_at": "2026-04-19T19:17:10+02:00"
+            },
+            "last": {
+              "commit": "0ea7c032a7bbd1b8fae9c40754aadb725e7a1ec1",
+              "committed_at": "2026-04-19T19:17:10+02:00"
+            }
+          },
+          "line_count": 550,
+          "newline_style": "lf",
+          "path": "DiE_EnhancedHeuristics_by_DosX.yar",
+          "peid_section_count": 0,
+          "sha256": "edc1ad43a4d6ae4dfff5591e75a841e3002c9c5ee9eca4315d24f1dcd07d6379",
+          "visible_markers": [
+            "author-metadata",
+            "retain-copyright-request"
+          ],
+          "yara_rule_count": 49
+        },
+        {
+          "bytes": 4454,
+          "first_nonempty_line": "/*",
+          "history": {
+            "commit_count": 1,
+            "first": {
+              "commit": "0ea7c032a7bbd1b8fae9c40754aadb725e7a1ec1",
+              "committed_at": "2026-04-19T19:17:10+02:00"
+            },
+            "last": {
+              "commit": "0ea7c032a7bbd1b8fae9c40754aadb725e7a1ec1",
+              "committed_at": "2026-04-19T19:17:10+02:00"
+            }
+          },
+          "line_count": 186,
+          "newline_style": "lf",
+          "path": "DiE_InterestingThings_by_DosX.yar",
+          "peid_section_count": 0,
+          "sha256": "290b9302ef62b9b5563caccab545e0de24f7a42be502e3fac3c521d608236acf",
+          "visible_markers": [
+            "author-metadata",
+            "retain-copyright-request"
+          ],
+          "yara_rule_count": 21
+        },
+        {
+          "bytes": 3946,
+          "first_nonempty_line": "/*",
+          "history": {
+            "commit_count": 2,
+            "first": {
+              "commit": "fc9e8aad43a1bc06a72726e6df7d53e2e452a16c",
+              "committed_at": "2024-01-23T18:47:21+01:00"
+            },
+            "last": {
+              "commit": "8b0955d88ac9017f752000c4df09bc0fb666caeb",
+              "committed_at": "2024-10-15T07:57:46+02:00"
+            }
+          },
+          "line_count": 170,
+          "newline_style": "crlf",
+          "path": "DosX_Heuristic.yar",
+          "peid_section_count": 0,
+          "sha256": "c0290039b30f50ca428fe0bf78f1147b51e7081c1595c85dbf8252fa62228322",
+          "visible_markers": [
+            "author-metadata"
+          ],
+          "yara_rule_count": 12
+        },
+        {
+          "bytes": 76593,
+          "first_nonempty_line": "/*",
+          "history": {
+            "commit_count": 1,
+            "first": {
+              "commit": "ff8560ddf38236cf66cfaf0303498bf4613e20f7",
+              "committed_at": "2023-06-08T11:12:11+02:00"
+            },
+            "last": {
+              "commit": "ff8560ddf38236cf66cfaf0303498bf4613e20f7",
+              "committed_at": "2023-06-08T11:12:11+02:00"
+            }
+          },
+          "line_count": 1580,
+          "newline_style": "lf",
+          "path": "crypto_signature.yar",
+          "peid_section_count": 0,
+          "sha256": "886ffb7bff349189b4cfe6d7d702040f504d036fb02e66e2233e6554a9346145",
+          "visible_markers": [
+            "author-metadata",
+            "explicit-gpl-v2"
+          ],
+          "yara_rule_count": 124
+        },
+        {
+          "bytes": 16,
+          "first_nonempty_line": "date=2015-05-06",
+          "history": {
+            "commit_count": 2,
+            "first": {
+              "commit": "d322ad9778b9b74fa1c0e3a6e99fd53c1cf3b69e",
+              "committed_at": "2026-04-18T16:03:30+02:00"
+            },
+            "last": {
+              "commit": "b1c66524dcde7a8f86b250776fb171f080c2e2d3",
+              "committed_at": "2026-04-19T19:17:06+02:00"
+            }
+          },
+          "line_count": 1,
+          "newline_style": "lf",
+          "path": "info.ini",
+          "peid_section_count": 0,
+          "sha256": "63ea45bbe174c414b34643796b82c3b955519b6ff1f492ff585ba92f16dfb729",
+          "visible_markers": [],
+          "yara_rule_count": 0
+        },
+        {
+          "bytes": 487229,
+          "first_nonempty_line": "import \"pe\"",
+          "history": {
+            "commit_count": 1,
+            "first": {
+              "commit": "0ea7c032a7bbd1b8fae9c40754aadb725e7a1ec1",
+              "committed_at": "2026-04-19T19:17:10+02:00"
+            },
+            "last": {
+              "commit": "0ea7c032a7bbd1b8fae9c40754aadb725e7a1ec1",
+              "committed_at": "2026-04-19T19:17:10+02:00"
+            }
+          },
+          "line_count": 11957,
+          "newline_style": "lf",
+          "path": "malware_analisys.yar",
+          "peid_section_count": 0,
+          "sha256": "ba6c0aa1b0ff6651b843de22cc83010addbb27f7c2d53db81a87d52b2fc32999",
+          "visible_markers": [
+            "author-metadata"
+          ],
+          "yara_rule_count": 536
+        },
+        {
+          "bytes": 596085,
+          "first_nonempty_line": "/*",
+          "history": {
+            "commit_count": 1,
+            "first": {
+              "commit": "db682c9b6b35be13081c517f656b7fb2073860e6",
+              "committed_at": "2023-05-19T17:24:01+02:00"
+            },
+            "last": {
+              "commit": "db682c9b6b35be13081c517f656b7fb2073860e6",
+              "committed_at": "2023-05-19T17:24:01+02:00"
+            }
+          },
+          "line_count": 20218,
+          "newline_style": "lf",
+          "path": "packer.yar",
+          "peid_section_count": 0,
+          "sha256": "3eab8d072c83155d7a24fa851268e726255c01b88d451656f28d161a71766ba3",
+          "visible_markers": [
+            "author-metadata",
+            "explicit-gpl-v2"
+          ],
+          "yara_rule_count": 1665
+        },
+        {
+          "bytes": 20394,
+          "first_nonempty_line": "/*",
+          "history": {
+            "commit_count": 1,
+            "first": {
+              "commit": "0ea7c032a7bbd1b8fae9c40754aadb725e7a1ec1",
+              "committed_at": "2026-04-19T19:17:10+02:00"
+            },
+            "last": {
+              "commit": "0ea7c032a7bbd1b8fae9c40754aadb725e7a1ec1",
+              "committed_at": "2026-04-19T19:17:10+02:00"
+            }
+          },
+          "line_count": 543,
+          "newline_style": "lf",
+          "path": "packer_compiler_signatures.yar",
+          "peid_section_count": 0,
+          "sha256": "f0ff37acfbc518e1211e7a44fbe4668a6d6510e60add4e834cd3bf7e717bdbee",
+          "visible_markers": [
+            "author-metadata",
+            "explicit-gpl-v2"
+          ],
+          "yara_rule_count": 36
+        },
+        {
+          "bytes": 2689175,
+          "first_nonempty_line": "/*",
+          "history": {
+            "commit_count": 1,
+            "first": {
+              "commit": "0ea7c032a7bbd1b8fae9c40754aadb725e7a1ec1",
+              "committed_at": "2026-04-19T19:17:10+02:00"
+            },
+            "last": {
+              "commit": "0ea7c032a7bbd1b8fae9c40754aadb725e7a1ec1",
+              "committed_at": "2026-04-19T19:17:10+02:00"
+            }
+          },
+          "line_count": 54227,
+          "newline_style": "lf",
+          "path": "peid.yar",
+          "peid_section_count": 0,
+          "sha256": "ea9589904e9c62b0e50b9363bfb427875be5e2eb7b3738b44c3badd695246b01",
+          "visible_markers": [
+            "author-metadata",
+            "peid2yara-generated",
+            "upstream-database-urls"
+          ],
+          "yara_rule_count": 7615
+        }
+      ],
+      "name": "xyara-component-yara",
+      "peid_section_count": 0,
+      "repository": "https://github.com/horsicq/XYara.git",
+      "source_path": "yara_rules",
+      "tree_sha256": "a9ca2ae58309386ec9b6045eae5344fbf4873adc6449a832ea2749428196f3df",
+      "yara_rule_count": 10069
+    },
+    {
+      "byte_count": 1157703,
+      "commit": "15c2e2951ab2443c7794e8f88c9fc5c65b217f28",
+      "file_count": 14,
+      "files": [
+        {
+          "bytes": 254,
+          "first_nonempty_line": "; PEiD signature database - archive",
+          "history": {
+            "commit_count": 2,
+            "first": {
+              "commit": "695d2e049f2ebb53fb1b17d04809c4d29bd9340c",
+              "committed_at": "2026-04-09T00:28:13+02:00"
+            },
+            "last": {
+              "commit": "050f6adafad5ace7958df9c9d20acc5f79836cdc",
+              "committed_at": "2026-04-20T18:15:37+02:00"
+            }
+          },
+          "line_count": 14,
+          "newline_style": "crlf",
+          "path": "Binary/archive.userdb.txt",
+          "peid_section_count": 3,
+          "sha256": "6d67875c63eaea19939ec0681fca7ef1f11eeabbca49b52d320a9c8e3c68e2b4",
+          "visible_markers": [
+            "peid-category-header"
+          ],
+          "yara_rule_count": 0
+        },
+        {
+          "bytes": 8364,
+          "first_nonempty_line": "; PEiD signature database - file_format",
+          "history": {
+            "commit_count": 2,
+            "first": {
+              "commit": "2ec3c6b5710de476aee02a90de0874c0e348d980",
+              "committed_at": "2026-03-18T23:15:25+01:00"
+            },
+            "last": {
+              "commit": "050f6adafad5ace7958df9c9d20acc5f79836cdc",
+              "committed_at": "2026-04-20T18:15:37+02:00"
+            }
+          },
+          "line_count": 358,
+          "newline_style": "crlf",
+          "path": "Binary/file_format.userdb.txt",
+          "peid_section_count": 89,
+          "sha256": "3f694018fd909cb6b82ff6d6dcdd8255e414392e47e3dbf898aa653c9396d92d",
+          "visible_markers": [
+            "peid-category-header"
+          ],
+          "yara_rule_count": 0
+        },
+        {
+          "bytes": 677,
+          "first_nonempty_line": "; PEiD signature database - packer",
+          "history": {
+            "commit_count": 2,
+            "first": {
+              "commit": "695d2e049f2ebb53fb1b17d04809c4d29bd9340c",
+              "committed_at": "2026-04-09T00:28:13+02:00"
+            },
+            "last": {
+              "commit": "050f6adafad5ace7958df9c9d20acc5f79836cdc",
+              "committed_at": "2026-04-20T18:15:37+02:00"
+            }
+          },
+          "line_count": 18,
+          "newline_style": "crlf",
+          "path": "COM/packer.userdb.txt",
+          "peid_section_count": 4,
+          "sha256": "45d659a1a777eae26280678378ca9235633b05e8a38ea9d9829b6060a0dd41af",
+          "visible_markers": [
+            "peid-category-header"
+          ],
+          "yara_rule_count": 0
+        },
+        {
+          "bytes": 1107,
+          "first_nonempty_line": "; PEiD signature database - dos_extender",
+          "history": {
+            "commit_count": 2,
+            "first": {
+              "commit": "2ec3c6b5710de476aee02a90de0874c0e348d980",
+              "committed_at": "2026-03-18T23:15:25+01:00"
+            },
+            "last": {
+              "commit": "050f6adafad5ace7958df9c9d20acc5f79836cdc",
+              "committed_at": "2026-04-20T18:15:37+02:00"
+            }
+          },
+          "line_count": 30,
+          "newline_style": "crlf",
+          "path": "MSDOS/dos_extender.userdb.txt",
+          "peid_section_count": 7,
+          "sha256": "c7f7e46263d4c15c9863233e51612555d86bf90882ecee59398126ad76315d83",
+          "visible_markers": [
+            "peid-category-header"
+          ],
+          "yara_rule_count": 0
+        },
+        {
+          "bytes": 101443,
+          "first_nonempty_line": "; PEiD signature database - compiler",
+          "history": {
+            "commit_count": 3,
+            "first": {
+              "commit": "d52bc6d60877142b849420ba31b2432e2817843c",
+              "committed_at": "2026-03-17T21:46:01+01:00"
+            },
+            "last": {
+              "commit": "050f6adafad5ace7958df9c9d20acc5f79836cdc",
+              "committed_at": "2026-04-20T18:15:37+02:00"
+            }
+          },
+          "line_count": 1646,
+          "newline_style": "crlf",
+          "path": "PE/compiler.userdb.txt",
+          "peid_section_count": 411,
+          "sha256": "34620339e56df2b2e94091a829b5758eba3d0163e10ede3f666a1df51b443abd",
+          "visible_markers": [
+            "peid-category-header"
+          ],
+          "yara_rule_count": 0
+        },
+        {
+          "bytes": 46642,
+          "first_nonempty_line": "; PEiD signature database - crypter",
+          "history": {
+            "commit_count": 2,
+            "first": {
+              "commit": "2ec3c6b5710de476aee02a90de0874c0e348d980",
+              "committed_at": "2026-03-18T23:15:25+01:00"
+            },
+            "last": {
+              "commit": "050f6adafad5ace7958df9c9d20acc5f79836cdc",
+              "committed_at": "2026-04-20T18:15:37+02:00"
+            }
+          },
+          "line_count": 574,
+          "newline_style": "crlf",
+          "path": "PE/crypter.userdb.txt",
+          "peid_section_count": 143,
+          "sha256": "06ad76fbb9f74fe6c342a2a93dc5d16990e667bf68797887a7eea6e3465b31eb",
+          "visible_markers": [
+            "peid-category-header"
+          ],
+          "yara_rule_count": 0
+        },
+        {
+          "bytes": 35612,
+          "first_nonempty_line": "; PEiD signature database - installer",
+          "history": {
+            "commit_count": 3,
+            "first": {
+              "commit": "d52bc6d60877142b849420ba31b2432e2817843c",
+              "committed_at": "2026-03-17T21:46:01+01:00"
+            },
+            "last": {
+              "commit": "050f6adafad5ace7958df9c9d20acc5f79836cdc",
+              "committed_at": "2026-04-20T18:15:37+02:00"
+            }
+          },
+          "line_count": 346,
+          "newline_style": "crlf",
+          "path": "PE/installer.userdb.txt",
+          "peid_section_count": 86,
+          "sha256": "db2d5e464cb8ae996f9fda81ed6f11549994115d91d7235fad24879a742b947f",
+          "visible_markers": [
+            "peid-category-header"
+          ],
+          "yara_rule_count": 0
+        },
+        {
+          "bytes": 9171,
+          "first_nonempty_line": "; PEiD signature database - joiner",
+          "history": {
+            "commit_count": 3,
+            "first": {
+              "commit": "d52bc6d60877142b849420ba31b2432e2817843c",
+              "committed_at": "2026-03-17T21:46:01+01:00"
+            },
+            "last": {
+              "commit": "050f6adafad5ace7958df9c9d20acc5f79836cdc",
+              "committed_at": "2026-04-20T18:15:37+02:00"
+            }
+          },
+          "line_count": 102,
+          "newline_style": "crlf",
+          "path": "PE/joiner.userdb.txt",
+          "peid_section_count": 25,
+          "sha256": "1b03e62826d406ee7bfeb2e1f928060f12adbe10f19033282b18964d2743b3e0",
+          "visible_markers": [
+            "peid-category-header"
+          ],
+          "yara_rule_count": 0
+        },
+        {
+          "bytes": 1125,
+          "first_nonempty_line": "; PEiD signature database - overlay",
+          "history": {
+            "commit_count": 3,
+            "first": {
+              "commit": "d52bc6d60877142b849420ba31b2432e2817843c",
+              "committed_at": "2026-03-17T21:46:01+01:00"
+            },
+            "last": {
+              "commit": "050f6adafad5ace7958df9c9d20acc5f79836cdc",
+              "committed_at": "2026-04-20T18:15:37+02:00"
+            }
+          },
+          "line_count": 22,
+          "newline_style": "crlf",
+          "path": "PE/overlay.userdb.txt",
+          "peid_section_count": 5,
+          "sha256": "44af86a3e9f7eba520aa966e43807deefc8a9c8d9926a433a28d384046178a9d",
+          "visible_markers": [
+            "peid-category-header"
+          ],
+          "yara_rule_count": 0
+        },
+        {
+          "bytes": 186141,
+          "first_nonempty_line": "; PEiD signature database - packer",
+          "history": {
+            "commit_count": 3,
+            "first": {
+              "commit": "d52bc6d60877142b849420ba31b2432e2817843c",
+              "committed_at": "2026-03-17T21:46:01+01:00"
+            },
+            "last": {
+              "commit": "050f6adafad5ace7958df9c9d20acc5f79836cdc",
+              "committed_at": "2026-04-20T18:15:37+02:00"
+            }
+          },
+          "line_count": 2338,
+          "newline_style": "crlf",
+          "path": "PE/packer.userdb.txt",
+          "peid_section_count": 584,
+          "sha256": "ebf37949c5f503388afbe3b038a244da53643d6665f685a017e4bb4b532812d7",
+          "visible_markers": [
+            "peid-category-header"
+          ],
+          "yara_rule_count": 0
+        },
+        {
+          "bytes": 362817,
+          "first_nonempty_line": "; PEiD signature database - protection",
+          "history": {
+            "commit_count": 5,
+            "first": {
+              "commit": "d52bc6d60877142b849420ba31b2432e2817843c",
+              "committed_at": "2026-03-17T21:46:01+01:00"
+            },
+            "last": {
+              "commit": "050f6adafad5ace7958df9c9d20acc5f79836cdc",
+              "committed_at": "2026-04-20T18:15:37+02:00"
+            }
+          },
+          "line_count": 4986,
+          "newline_style": "crlf",
+          "path": "PE/protection.userdb.txt",
+          "peid_section_count": 1246,
+          "sha256": "f0c548dd0d2ff236903942be7d052ec0f8b91aa8862733fc53955b4ca8fba9fe",
+          "visible_markers": [
+            "peid-category-header"
+          ],
+          "yara_rule_count": 0
+        },
+        {
+          "bytes": 400238,
+          "first_nonempty_line": "; PEiD signature database - protector",
+          "history": {
+            "commit_count": 4,
+            "first": {
+              "commit": "d52bc6d60877142b849420ba31b2432e2817843c",
+              "committed_at": "2026-03-17T21:46:01+01:00"
+            },
+            "last": {
+              "commit": "050f6adafad5ace7958df9c9d20acc5f79836cdc",
+              "committed_at": "2026-04-20T18:15:37+02:00"
+            }
+          },
+          "line_count": 6082,
+          "newline_style": "crlf",
+          "path": "PE/protector.userdb.txt",
+          "peid_section_count": 1520,
+          "sha256": "a28114b4461611e94f1bdc52af1c10e1cb864d2e391f148acaa2d049c58fd805",
+          "visible_markers": [
+            "peid-category-header"
+          ],
+          "yara_rule_count": 0
+        },
+        {
+          "bytes": 4096,
+          "first_nonempty_line": "; PEiD signature database - sfx_archive",
+          "history": {
+            "commit_count": 3,
+            "first": {
+              "commit": "d52bc6d60877142b849420ba31b2432e2817843c",
+              "committed_at": "2026-03-17T21:46:01+01:00"
+            },
+            "last": {
+              "commit": "050f6adafad5ace7958df9c9d20acc5f79836cdc",
+              "committed_at": "2026-04-20T18:15:37+02:00"
+            }
+          },
+          "line_count": 54,
+          "newline_style": "crlf",
+          "path": "PE/sfx_archive.userdb.txt",
+          "peid_section_count": 13,
+          "sha256": "a7d9ac0a72a8c295037b89a4801277f721e332dfae014a073c4eee3ae2a71aff",
+          "visible_markers": [
+            "peid-category-header"
+          ],
+          "yara_rule_count": 0
+        },
+        {
+          "bytes": 16,
+          "first_nonempty_line": "date=2026-04-20",
+          "history": {
+            "commit_count": 2,
+            "first": {
+              "commit": "1835feeb91e9d490c7143a90643e5160c342ee6c",
+              "committed_at": "2026-04-16T20:33:34+02:00"
+            },
+            "last": {
+              "commit": "050f6adafad5ace7958df9c9d20acc5f79836cdc",
+              "committed_at": "2026-04-20T18:15:37+02:00"
+            }
+          },
+          "line_count": 1,
+          "newline_style": "lf",
+          "path": "info.ini",
+          "peid_section_count": 0,
+          "sha256": "b840eb1c14b6a5f4d0bf96d868f747cfb38aea753f01f0506bfed839b0874a92",
+          "visible_markers": [],
+          "yara_rule_count": 0
+        }
+      ],
+      "name": "xpeid-component-peid",
+      "peid_section_count": 4136,
+      "repository": "https://github.com/horsicq/XPEID.git",
+      "source_path": "peid",
+      "tree_sha256": "8423847fa72e06444dfcc20c3914b14c2140ee222006ea92e89aab355f4eb331",
+      "yara_rule_count": 0
+    },
+    {
+      "byte_count": 6170981,
+      "commit": "5d80fb2863d02e9366aee7b3ade6abb7d6598dbb",
+      "file_count": 4,
+      "files": [
+        {
+          "bytes": 22,
+          "first_nonempty_line": "jmp + 1, db 0x90;LE;90",
+          "history": {
+            "commit_count": 1,
+            "first": {
+              "commit": "a7c94931d31c9c63bbe552f85ec7ac4265e876d2",
+              "committed_at": "2025-02-28T00:12:02+01:00"
+            },
+            "last": {
+              "commit": "a7c94931d31c9c63bbe552f85ec7ac4265e876d2",
+              "committed_at": "2025-02-28T00:12:02+01:00"
+            }
+          },
+          "line_count": 1,
+          "newline_style": "none",
+          "path": "Junks/x86.db",
+          "peid_section_count": 0,
+          "sha256": "fb8c0a9ba071c27d1c870651b4bb33490cca1a3bca1202fcccb6b21b02190cda",
+          "visible_markers": [],
+          "yara_rule_count": 0
+        },
+        {
+          "bytes": 3085459,
+          "first_nonempty_line": "CRC32 poly 0x1800063;LE;0000000003008c0106001803050094020c0030060f00bc070a0028050900a4041800600c1b00ec0d1e00780f1d00f40e1400500a1700dc0b120048091100c4083000c01833004c193600d81b3500541a3c00f01e3f007c1f3a00e81d3900641c2800a0142b002c152e00b817",
+          "history": {
+            "commit_count": 1,
+            "first": {
+              "commit": "9fcacfa7c871def9c1c9d2e0ae5f35b0ba527578",
+              "committed_at": "2021-02-18T15:54:39+01:00"
+            },
+            "last": {
+              "commit": "9fcacfa7c871def9c1c9d2e0ae5f35b0ba527578",
+              "committed_at": "2021-02-18T15:54:39+01:00"
+            }
+          },
+          "line_count": 2287,
+          "newline_style": "lf",
+          "path": "crypto.db",
+          "peid_section_count": 0,
+          "sha256": "ad0a1b6a0d8ea530693aca2a9681b2698c41b919eca1a325753117c3291193f6",
+          "visible_markers": [],
+          "yara_rule_count": 0
+        },
+        {
+          "bytes": 3085459,
+          "first_nonempty_line": "CRC32 poly 0x1800063;LE;0000000003008c0106001803050094020c0030060f00bc070a0028050900a4041800600c1b00ec0d1e00780f1d00f40e1400500a1700dc0b120048091100c4083000c01833004c193600d81b3500541a3c00f01e3f007c1f3a00e81d3900641c2800a0142b002c152e00b817",
+          "history": {
+            "commit_count": 1,
+            "first": {
+              "commit": "d8f3a4d694f18e3d80244accf2e384b0d710fde9",
+              "committed_at": "2025-02-28T23:56:33+01:00"
+            },
+            "last": {
+              "commit": "d8f3a4d694f18e3d80244accf2e384b0d710fde9",
+              "committed_at": "2025-02-28T23:56:33+01:00"
+            }
+          },
+          "line_count": 2287,
+          "newline_style": "lf",
+          "path": "signatures/generic/crypto.db",
+          "peid_section_count": 0,
+          "sha256": "ad0a1b6a0d8ea530693aca2a9681b2698c41b919eca1a325753117c3291193f6",
+          "visible_markers": [],
+          "yara_rule_count": 0
+        },
+        {
+          "bytes": 41,
+          "first_nonempty_line": "BREAK_STACK_1;LE P:90;0F8401000000E80FA2",
+          "history": {
+            "commit_count": 2,
+            "first": {
+              "commit": "d8f3a4d694f18e3d80244accf2e384b0d710fde9",
+              "committed_at": "2025-02-28T23:56:33+01:00"
+            },
+            "last": {
+              "commit": "4fcef140c7a058e51a738288a33df7f474bb7b1d",
+              "committed_at": "2025-03-02T00:50:10+01:00"
+            }
+          },
+          "line_count": 1,
+          "newline_style": "lf",
+          "path": "signatures/x86/junks.db",
+          "peid_section_count": 0,
+          "sha256": "8984544e47db077d07d1c294a9622f4afe913d6de70d3ce40c11f4fb6b80aacf",
+          "visible_markers": [],
+          "yara_rule_count": 0
+        }
+      ],
+      "name": "signatures-component-data",
+      "peid_section_count": 0,
+      "repository": "https://github.com/horsicq/signatures.git",
+      "source_path": ".",
+      "tree_sha256": "0cc6bff37cc9a65260ee0a8aec30d852639029eec0be9d229ee1ad610a7d40a5",
+      "yara_rule_count": 0
+    }
+  ],
+  "comparisons": {
+    "peid_release_vs_component": {
+      "byte_exact_count": 0,
+      "byte_exact_paths": [],
+      "common_path_count": 8,
+      "left": "detect-release-peid",
+      "left_only_paths": [
+        "PE/file_format.userdb.txt",
+        "PE/split_userdb.ps1",
+        "PE/userdb.txt"
+      ],
+      "modified_common_paths": [
+        "PE/compiler.userdb.txt",
+        "PE/installer.userdb.txt",
+        "PE/joiner.userdb.txt",
+        "PE/overlay.userdb.txt",
+        "PE/packer.userdb.txt",
+        "PE/protection.userdb.txt",
+        "PE/protector.userdb.txt",
+        "PE/sfx_archive.userdb.txt"
+      ],
+      "right": "xpeid-component-peid",
+      "right_only_paths": [
+        "Binary/archive.userdb.txt",
+        "Binary/file_format.userdb.txt",
+        "COM/packer.userdb.txt",
+        "MSDOS/dos_extender.userdb.txt",
+        "PE/crypter.userdb.txt",
+        "info.ini"
+      ]
+    },
+    "yara_release_vs_component": {
+      "byte_exact_count": 0,
+      "byte_exact_paths": [],
+      "common_path_count": 8,
+      "left": "detect-release-yara",
+      "left_only_paths": [],
+      "modified_common_paths": [
+        "DiE_BasicHeuristics_by_DosX.yar",
+        "DiE_EnhancedHeuristics_by_DosX.yar",
+        "DiE_InterestingThings_by_DosX.yar",
+        "crypto_signature.yar",
+        "malware_analisys.yar",
+        "packer.yar",
+        "packer_compiler_signatures.yar",
+        "peid.yar"
+      ],
+      "right": "xyara-component-yara",
+      "right_only_paths": [
+        "DosX_Heuristic.yar",
+        "info.ini"
+      ]
+    }
+  },
+  "component_lock": {
+    "path": "upstream/components.lock.toml",
+    "sha256": "9fabcaf6a0062fcae7007ea5af13a98876e8a6e08b3e2e4727fdff06d974c63c"
+  },
+  "generator": "tools/upstream/audit_rule_assets.py",
+  "generator_sha256": "68bb31a244626c4c2e073a8a7659e894dabdb964c5c45c03339a1e83834a8fe3",
+  "reachability": {
+    "current_die_cli_does_not_load": [
+      "Detect-It-Easy/yara_rules",
+      "Detect-It-Easy/peid_rules",
+      "XYara/yara_rules",
+      "XPEID/peid",
+      "signatures/*.db"
+    ],
+    "current_die_cli_loads": [
+      "Detect-It-Easy/db",
+      "Detect-It-Easy/db_extra",
+      "Detect-It-Easy/db_custom"
+    ],
+    "files": {
+      "appimage_packaging": {
+        "path": "create_appimage.sh",
+        "sha256": "3b4cfc5b8118eda8bfbbe199001520bc022858955667d0ed8f851f82a2646075"
+      },
+      "console_cmake": {
+        "path": "src/console/CMakeLists.txt",
+        "sha256": "569a6a24813479b8284fc16f84a7f7f321c7e89145e79ab177ddcf6f4a2b097a"
+      },
+      "console_link": {
+        "path": "src/console/CMakeFiles/diec.dir/link.txt",
+        "sha256": "b2a4c7953997137d45f06eb3541d5da2efe127e85905c62311f5e03e5a500afb"
+      },
+      "console_main": {
+        "path": "src/console/main_console.cpp",
+        "sha256": "ebb82a94fdd0f54722ea36589d6a35694ec4022bc9179030dae6a85e7a9d7e8f"
+      },
+      "generic_install": {
+        "path": "install.sh",
+        "sha256": "063f604c0ca7a6c058c03643a040efd5bd7d9c4488f7faca314aef23755f2cbe"
+      },
+      "gui_cmake": {
+        "path": "src/gui/CMakeLists.txt",
+        "sha256": "ffe14edba5cc1fdac1a0e3592fab40e798a9c50241ec2a8dfbffd6cf050fdb12"
+      },
+      "gui_qmake_sources": {
+        "path": "gui_source/gui_source_tr.pro",
+        "sha256": "73ba19dc211aab046aeb5d4e50519097e2e064d7bde460a17f8972a2925ff01b"
+      },
+      "portable_packaging": {
+        "path": "build_linux_portable.sh",
+        "sha256": "91fb88e2f7841362b927b3471bbcb473c663ea9421859f2ec8ceae9d2b35052a"
+      },
+      "scan_console": {
+        "path": "XScanEngine/xscanengineconsole.cpp",
+        "sha256": "e13768166154e66c7d220945ae4bb085d5a1eebe6bb79cf566c704829a2b9eb0"
+      },
+      "signature_cmake": {
+        "path": "FormatWidgets/SearchSignatures/searchsignatureswidget.cmake",
+        "sha256": "8c690aa0d1befd8106284d9b4a66607621069e1a33d94d4de1f81bf4e5fafe94"
+      },
+      "signature_options": {
+        "path": "FormatWidgets/SearchSignatures/searchsignaturesoptionswidget.cpp",
+        "sha256": "acfb39f3a6ec60b1358e4fc659a4431a51864b8647eb516f81a32aaed59eb79d"
+      },
+      "xpeid_cmake": {
+        "path": "XPEID/xpeid.cmake",
+        "sha256": "92e581ca6705fdcd7a828567ca6cde30449bc9868a5974238a443c0c9bbd1366"
+      }
+    },
+    "relationships": {
+      "alternative_console_has_yara_and_peid_paths": true,
+      "appimage_copies_all_auxiliary_assets": true,
+      "console_constructs_die_script": true,
+      "console_exposes_only_die_database_paths": true,
+      "console_has_no_auxiliary_asset_path": true,
+      "console_link_has_no_auxiliary_engine": true,
+      "generic_install_copies_all_auxiliary_assets": true,
+      "gui_cmake_enables_and_links_yara": true,
+      "portable_package_copies_yara_and_signatures": true,
+      "qmake_gui_collects_xyara_and_xpeid": true,
+      "signature_widget_defaults_to_signature_path": true,
+      "signature_widget_includes_signature_assets": true,
+      "xpeid_component_installs_peid_assets": true
+    }
+  },
+  "relationships": {
+    "all_component_commits_match_lock_and_image": true,
+    "all_root_license_candidates_identify_mit": true,
+    "legacy_and_structured_junk_databases_are_distinct": true,
+    "local_release_peid_matches_fixed_image": true,
+    "local_release_yara_matches_fixed_image": true,
+    "release_and_component_peid_are_not_byte_mirrors": true,
+    "release_and_component_yara_are_not_byte_mirrors": true,
+    "root_and_structured_crypto_databases_are_identical": true
+  },
+  "root_license_evidence": {
+    "Detect-It-Easy": {
+      "bytes": 1085,
+      "first_nonempty_line": "MIT License",
+      "path": "LICENSE",
+      "sha256": "be0fe2d727cd0a754fb0b2fdc579ead8f19ef575840b4daef221be201701eaad"
+    },
+    "XPEID": {
+      "bytes": 1061,
+      "first_nonempty_line": "MIT License",
+      "path": "LICENSE",
+      "sha256": "374e26cb4e674f28a1b261b8f394f0ce6f1950bd1200d85cc1a9aa23858007d1"
+    },
+    "XYara": {
+      "bytes": 1085,
+      "first_nonempty_line": "MIT License",
+      "path": "LICENSE",
+      "sha256": "abdeb212f229d2b93a5c315763df4d7201c7d74f580ad9dc77d77dec7cbc6c69"
+    },
+    "signatures": {
+      "bytes": 1085,
+      "first_nonempty_line": "MIT License",
+      "path": "LICENSE",
+      "sha256": "b15e85faef7d7294e40453fd4bf6fcb09138836312b2e61d1a17512e57e35a45"
+    }
+  },
+  "schema_version": 1,
+  "source_image": {
+    "asset_mounts": "readonly",
+    "cpu_limit": 2,
+    "image": "diec-rust/upstream-oracle-cmake:74eaf505",
+    "image_id": "sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040",
+    "memory_limit": "2g",
+    "network": "none",
+    "repository_mount": "readonly",
+    "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

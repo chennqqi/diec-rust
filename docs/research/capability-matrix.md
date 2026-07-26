@@ -64,6 +64,11 @@ custom 在 CLI 中默认启用。main/extra/custom 返回值不对称、入口�
 错误输出见
 [`database-error-behavior.md`](database-error-behavior.md)。
 
+固定源码、CMake source list 和最终 link line 共同证明当前 `diec` CLI 没有
+YARA、PEiD 或 SearchSignatures 数据入口。上游安装包仍可能携带这些 GUI/辅助
+engine 资产；运行时范围、两套数据树差异及逐文件哈希见
+[`rule-asset-provenance.md`](rule-asset-provenance.md)。
+
 entropy/info/struct 不使用普通扫描 formatter，组合优先级、schema、空文件 hash
 边界和复现命令见
 [`cli-special-modes.md`](cli-special-modes.md)。
