@@ -68,6 +68,12 @@ pub struct BinaryCompareReport {
     pub quirks: Vec<CompatibilityQuirk>,
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct BinarySearchReport {
+    pub found: Option<FindResult>,
+    pub quirks: Vec<CompatibilityQuirk>,
+}
+
 impl MemoryMap {
     fn offset_to_address(&self, offset: u64) -> Option<u64> {
         self.records.iter().rev().find_map(|record| {
@@ -286,6 +292,39 @@ impl Pattern {
         Ok(BinaryCompareReport {
             matched,
             header_fast_path: false,
+            quirks: parsed.quirks,
+        })
+    }
+
+    pub fn find_binary_wrapper(
+        source: &str,
+        data: &[u8],
+        offset: i64,
+        size: i64,
+    ) -> Result<BinarySearchReport, BinarySearchError> {
+        let parsed = Self::parse_upstream_compatible(source)?;
+        let Some((offset, size)) = normalize_binary_search_range(data.len(), offset, size) else {
+            return Ok(BinarySearchReport {
+                found: None,
+                quirks: parsed.quirks,
+            });
+        };
+        let memory_map = MemoryMap {
+            file_type: FileType::Binary,
+            endian: Endian::Little,
+            code_base: 0,
+            start_load_offset: 0,
+            records: vec![MemoryRecord {
+                offset: 0,
+                address: 0,
+                size: data.len() as u64,
+            }],
+        };
+        let found = parsed
+            .pattern
+            .find_with_memory_map(data, offset, size, &memory_map)?;
+        Ok(BinarySearchReport {
+            found,
             quirks: parsed.quirks,
         })
     }
@@ -660,6 +699,24 @@ impl Pattern {
         }
         Ok(true)
     }
+}
+
+fn normalize_binary_search_range(
+    data_len: usize,
+    offset: i64,
+    size: i64,
+) -> Option<(usize, usize)> {
+    let offset = usize::try_from(offset).ok()?;
+    if offset >= data_len {
+        return None;
+    }
+    let remaining = data_len - offset;
+    let size = if size == -1 {
+        remaining
+    } else {
+        usize::try_from(size).ok()?.min(remaining)
+    };
+    (size > 0).then_some((offset, size))
 }
 
 #[derive(Clone, Copy)]
@@ -1167,6 +1224,12 @@ pub enum BinaryCompareError {
     Match(MatchError),
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub enum BinarySearchError {
+    Parse(ParseError),
+    Match(MatchError),
+}
+
 impl fmt::Display for BinaryCompareError {
     fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
@@ -1185,6 +1248,29 @@ impl From<ParseError> for BinaryCompareError {
 }
 
 impl From<MatchError> for BinaryCompareError {
+    fn from(error: MatchError) -> Self {
+        Self::Match(error)
+    }
+}
+
+impl fmt::Display for BinarySearchError {
+    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Parse(error) => error.fmt(formatter),
+            Self::Match(error) => error.fmt(formatter),
+        }
+    }
+}
+
+impl std::error::Error for BinarySearchError {}
+
+impl From<ParseError> for BinarySearchError {
+    fn from(error: ParseError) -> Self {
+        Self::Parse(error)
+    }
+}
+
+impl From<MatchError> for BinarySearchError {
     fn from(error: MatchError) -> Self {
         Self::Match(error)
     }
@@ -1670,6 +1756,79 @@ mod tests {
             .expect("generic matcher should reject a negative offset without an adapter error");
         assert!(!negative_generic.header_fast_path);
         assert!(!negative_generic.matched);
+    }
+
+    #[test]
+    fn binary_search_wrappers_match_pinned_qt5_oracle() {
+        let oracle: Value = serde_json::from_str(include_str!(
+            "../../../docs/research/data/signature-oracle-qt5.json"
+        ))
+        .expect("oracle baseline should be valid JSON");
+        let cases = oracle["cases"]
+            .as_array()
+            .expect("oracle cases should be an array");
+        let mut compared = 0;
+        for case in cases {
+            if case["binary_script_find_signature"].as_bool() != Some(true) {
+                continue;
+            }
+            let id = case["id"].as_str().expect("case id should be a string");
+            let source = case["pattern"]
+                .as_str()
+                .expect("pattern should be a string");
+            let data = decode_hex(
+                case["data_hex"]
+                    .as_str()
+                    .expect("data should be a hex string"),
+            );
+            let offset = case["search_offset"]
+                .as_i64()
+                .expect("search offset should be an integer");
+            let size = case["search_size"]
+                .as_i64()
+                .expect("search size should be an integer");
+            let expected_offset = case["binary_script_find_signature_result"]
+                .as_i64()
+                .expect("findSignature result should be an integer");
+            assert_eq!(
+                case["binary_script_f_sig_result"].as_i64(),
+                Some(expected_offset),
+                "fSig oracle alias mismatch for {id}"
+            );
+            assert_eq!(
+                case["binary_script_is_signature_present_result"].as_bool(),
+                Some(expected_offset >= 0),
+                "isSignaturePresent oracle projection mismatch for {id}"
+            );
+            let actual = Pattern::find_binary_wrapper(source, &data, offset, size)
+                .unwrap_or_else(|error| panic!("cannot search {id}: {error}"));
+            assert_eq!(
+                actual.found.map_or(-1, |found| found.offset as i64),
+                expected_offset,
+                "findSignature wrapper mismatch for {id}"
+            );
+            if let Some(found) = actual.found {
+                assert_eq!(
+                    found.size,
+                    case["find_result_size"]
+                        .as_u64()
+                        .and_then(|value| usize::try_from(value).ok())
+                        .expect("find result size should fit usize"),
+                    "match size mismatch for {id}"
+                );
+            }
+            compared += 1;
+        }
+        assert_eq!(compared, 4);
+    }
+
+    #[test]
+    fn binary_search_wrapper_rejects_invalid_ranges_without_panicking() {
+        for (offset, size) in [(-1, 1), (0, -2), (0, 0), (i64::MAX, i64::MAX)] {
+            let actual = Pattern::find_binary_wrapper("41", b"A", offset, size)
+                .expect("a valid pattern with an invalid range is not an adapter error");
+            assert_eq!(actual.found, None, "range ({offset}, {size})");
+        }
     }
 
     #[test]

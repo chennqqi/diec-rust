@@ -358,10 +358,19 @@ QJsonObject runCase(const QJsonObject &input, QString *error)
         input.value("binary_script_compare_ep").toBool();
     bool invokeScriptCompareOverlay =
         input.value("binary_script_compare_overlay").toBool();
+    bool invokeScriptFindSignature =
+        input.value("binary_script_find_signature").toBool();
+    bool invokeScriptFSig =
+        input.value("binary_script_f_sig").toBool();
+    bool invokeScriptIsSignaturePresent =
+        input.value("binary_script_is_signature_present").toBool();
     if (
         invokeScriptCompare ||
         invokeScriptCompareEp ||
-        invokeScriptCompareOverlay
+        invokeScriptCompareOverlay ||
+        invokeScriptFindSignature ||
+        invokeScriptFSig ||
+        invokeScriptIsSignaturePresent
     ) {
         std::unique_ptr<XBinary> parsedBinary;
         XBinary *scriptBinary = &binary;
@@ -455,6 +464,27 @@ QJsonObject runCase(const QJsonObject &input, QString *error)
             result.insert(
                 "binary_script_compare_overlay_result",
                 script.compareOverlay(pattern, offset)
+            );
+        }
+        if (invokeScriptFindSignature) {
+            result.insert("binary_script_find_signature", true);
+            result.insert(
+                "binary_script_find_signature_result",
+                script.findSignature(findOffset, findSize, pattern)
+            );
+        }
+        if (invokeScriptFSig) {
+            result.insert("binary_script_f_sig", true);
+            result.insert(
+                "binary_script_f_sig_result",
+                script.fSig(findOffset, findSize, pattern)
+            );
+        }
+        if (invokeScriptIsSignaturePresent) {
+            result.insert("binary_script_is_signature_present", true);
+            result.insert(
+                "binary_script_is_signature_present_result",
+                script.isSignaturePresent(findOffset, findSize, pattern)
             );
         }
         result.insert(

@@ -144,6 +144,15 @@ struct SignatureTrace {
     errors: AtomicUsize,
     unique_quirks: Mutex<BTreeSet<String>>,
     unique_errors: Mutex<BTreeSet<String>>,
+    search_calls: AtomicUsize,
+    find_signature_calls: AtomicUsize,
+    f_sig_calls: AtomicUsize,
+    is_signature_present_calls: AtomicUsize,
+    search_matches: AtomicUsize,
+    search_quirks: AtomicUsize,
+    search_errors: AtomicUsize,
+    search_unique_quirks: Mutex<BTreeSet<String>>,
+    search_unique_errors: Mutex<BTreeSet<String>>,
 }
 
 fn collect_rule_files(root: &Path, output: &mut Vec<PathBuf>) -> Result<(), String> {
@@ -442,6 +451,61 @@ fn read_byte_array(data: &[u8], offset: i64, size: i64, replace_zero: bool) -> V
         .collect()
 }
 
+fn search_signature(
+    data: &[u8],
+    trace: &SignatureTrace,
+    host_name: &'static str,
+    offset: i64,
+    size: i64,
+    pattern: &str,
+) -> rquickjs::Result<Option<usize>> {
+    trace.search_calls.fetch_add(1, Ordering::Relaxed);
+    match Pattern::find_binary_wrapper(pattern, data, offset, size) {
+        Ok(report) => {
+            trace
+                .search_matches
+                .fetch_add(usize::from(report.found.is_some()), Ordering::Relaxed);
+            trace
+                .search_quirks
+                .fetch_add(report.quirks.len(), Ordering::Relaxed);
+            if !report.quirks.is_empty() {
+                trace
+                    .search_unique_quirks
+                    .lock()
+                    .map_err(|_| {
+                        Error::new_from_js_message(
+                            host_name,
+                            "signature search result",
+                            "signature search quirk mutex poisoned",
+                        )
+                    })?
+                    .extend(report.quirks.iter().map(|quirk| format!("{quirk:?}")));
+            }
+            Ok(report.found.map(|found| found.offset))
+        }
+        Err(error) => {
+            trace.search_errors.fetch_add(1, Ordering::Relaxed);
+            let message = error.to_string();
+            trace
+                .search_unique_errors
+                .lock()
+                .map_err(|_| {
+                    Error::new_from_js_message(
+                        host_name,
+                        "signature search result",
+                        "signature search error mutex poisoned",
+                    )
+                })?
+                .insert(message.clone());
+            Err(Error::new_from_js_message(
+                host_name,
+                "signature search result",
+                message,
+            ))
+        }
+    }
+}
+
 fn install_nintendo_host(
     context: &Context,
     data: Arc<Vec<u8>>,
@@ -510,6 +574,91 @@ fn install_nintendo_host(
                         }
                     }
                 })
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        }
+
+        {
+            let search_data = Arc::clone(&data);
+            let search_trace = Arc::clone(&signature_trace_for_context);
+            x.set(
+                "findSignature",
+                Function::new(
+                    ctx.clone(),
+                    move |offset: i64, size: i64, pattern: String| {
+                        search_trace
+                            .find_signature_calls
+                            .fetch_add(1, Ordering::Relaxed);
+                        search_signature(
+                            &search_data,
+                            &search_trace,
+                            "Binary.findSignature",
+                            offset,
+                            size,
+                            &pattern,
+                        )
+                        .map(|found| {
+                            found
+                                .and_then(|offset| i64::try_from(offset).ok())
+                                .unwrap_or(-1)
+                        })
+                    },
+                )
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        }
+        {
+            let search_data = Arc::clone(&data);
+            let search_trace = Arc::clone(&signature_trace_for_context);
+            x.set(
+                "fSig",
+                Function::new(
+                    ctx.clone(),
+                    move |offset: i64, size: i64, pattern: String| {
+                        search_trace.f_sig_calls.fetch_add(1, Ordering::Relaxed);
+                        search_signature(
+                            &search_data,
+                            &search_trace,
+                            "Binary.fSig",
+                            offset,
+                            size,
+                            &pattern,
+                        )
+                        .map(|found| {
+                            found
+                                .and_then(|offset| i64::try_from(offset).ok())
+                                .unwrap_or(-1)
+                        })
+                    },
+                )
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        }
+        {
+            let search_data = Arc::clone(&data);
+            let search_trace = Arc::clone(&signature_trace_for_context);
+            x.set(
+                "isSignaturePresent",
+                Function::new(
+                    ctx.clone(),
+                    move |offset: i64, size: i64, pattern: String| {
+                        search_trace
+                            .is_signature_present_calls
+                            .fetch_add(1, Ordering::Relaxed);
+                        search_signature(
+                            &search_data,
+                            &search_trace,
+                            "Binary.isSignaturePresent",
+                            offset,
+                            size,
+                            &pattern,
+                        )
+                        .map(|found| found.is_some())
+                    },
+                )
                 .map_err(|error| error.to_string())?,
             )
             .map_err(|error| error.to_string())?;
@@ -1505,6 +1654,17 @@ fn trace_binary_detects(
         let signature_generic_paths_before = signature_trace.generic_paths.load(Ordering::Relaxed);
         let signature_quirks_before = signature_trace.quirks.load(Ordering::Relaxed);
         let signature_errors_before = signature_trace.errors.load(Ordering::Relaxed);
+        let signature_search_calls_before = signature_trace.search_calls.load(Ordering::Relaxed);
+        let signature_find_signature_calls_before =
+            signature_trace.find_signature_calls.load(Ordering::Relaxed);
+        let signature_f_sig_calls_before = signature_trace.f_sig_calls.load(Ordering::Relaxed);
+        let signature_is_signature_present_calls_before = signature_trace
+            .is_signature_present_calls
+            .load(Ordering::Relaxed);
+        let signature_search_matches_before =
+            signature_trace.search_matches.load(Ordering::Relaxed);
+        let signature_search_quirks_before = signature_trace.search_quirks.load(Ordering::Relaxed);
+        let signature_search_errors_before = signature_trace.search_errors.load(Ordering::Relaxed);
         interrupt_ticks.store(0, Ordering::Relaxed);
         let detect_result = eval_rule_lexical(&context, &evaluated, true);
         let signature_call_count = signature_trace
@@ -1527,6 +1687,34 @@ fn trace_binary_detects(
             .errors
             .load(Ordering::Relaxed)
             .saturating_sub(signature_errors_before);
+        let signature_search_call_count = signature_trace
+            .search_calls
+            .load(Ordering::Relaxed)
+            .saturating_sub(signature_search_calls_before);
+        let signature_find_signature_call_count = signature_trace
+            .find_signature_calls
+            .load(Ordering::Relaxed)
+            .saturating_sub(signature_find_signature_calls_before);
+        let signature_f_sig_call_count = signature_trace
+            .f_sig_calls
+            .load(Ordering::Relaxed)
+            .saturating_sub(signature_f_sig_calls_before);
+        let signature_is_signature_present_call_count = signature_trace
+            .is_signature_present_calls
+            .load(Ordering::Relaxed)
+            .saturating_sub(signature_is_signature_present_calls_before);
+        let signature_search_match_count = signature_trace
+            .search_matches
+            .load(Ordering::Relaxed)
+            .saturating_sub(signature_search_matches_before);
+        let signature_search_quirk_count = signature_trace
+            .search_quirks
+            .load(Ordering::Relaxed)
+            .saturating_sub(signature_search_quirks_before);
+        let signature_search_error_count = signature_trace
+            .search_errors
+            .load(Ordering::Relaxed)
+            .saturating_sub(signature_search_errors_before);
         let interrupt_handler_calls = interrupt_ticks.load(Ordering::Relaxed);
         let fallback_text = eval_string(
             &context,
@@ -1575,6 +1763,14 @@ fn trace_binary_detects(
             "signature_compare_generic_path_count": signature_generic_path_count,
             "signature_compare_quirk_count": signature_quirk_count,
             "signature_compare_error_count": signature_error_count,
+            "signature_search_call_count": signature_search_call_count,
+            "signature_find_signature_call_count": signature_find_signature_call_count,
+            "signature_f_sig_call_count": signature_f_sig_call_count,
+            "signature_is_signature_present_call_count":
+                signature_is_signature_present_call_count,
+            "signature_search_match_count": signature_search_match_count,
+            "signature_search_quirk_count": signature_search_quirk_count,
+            "signature_search_error_count": signature_search_error_count,
             "interrupt_handler_calls": interrupt_handler_calls,
             "detections": emitted,
         }));
@@ -1596,6 +1792,16 @@ fn trace_binary_detects(
         .unique_errors
         .lock()
         .map_err(|_| "signature error mutex poisoned".to_owned())?
+        .clone();
+    let signature_search_unique_quirks = signature_trace
+        .search_unique_quirks
+        .lock()
+        .map_err(|_| "signature search quirk mutex poisoned".to_owned())?
+        .clone();
+    let signature_search_unique_errors = signature_trace
+        .search_unique_errors
+        .lock()
+        .map_err(|_| "signature search error mutex poisoned".to_owned())?
         .clone();
     println!(
         "{}",
@@ -1629,6 +1835,20 @@ fn trace_binary_detects(
             "signature_compare_error_total": signature_trace.errors.load(Ordering::Relaxed),
             "signature_compare_unique_quirks": signature_unique_quirks,
             "signature_compare_unique_errors": signature_unique_errors,
+            "signature_search_call_total": signature_trace.search_calls.load(Ordering::Relaxed),
+            "signature_find_signature_call_total":
+                signature_trace.find_signature_calls.load(Ordering::Relaxed),
+            "signature_f_sig_call_total": signature_trace.f_sig_calls.load(Ordering::Relaxed),
+            "signature_is_signature_present_call_total":
+                signature_trace.is_signature_present_calls.load(Ordering::Relaxed),
+            "signature_search_match_total":
+                signature_trace.search_matches.load(Ordering::Relaxed),
+            "signature_search_quirk_total":
+                signature_trace.search_quirks.load(Ordering::Relaxed),
+            "signature_search_error_total":
+                signature_trace.search_errors.load(Ordering::Relaxed),
+            "signature_search_unique_quirks": signature_search_unique_quirks,
+            "signature_search_unique_errors": signature_search_unique_errors,
             "detection_count": all_detections.len(),
             "detections": all_detections,
             "observations": observations,
@@ -2392,7 +2612,7 @@ mod tests {
     }
 
     #[test]
-    fn signature_adapter_exposes_binary_compare_and_explicit_diagnostics() {
+    fn signature_adapter_exposes_compare_search_and_explicit_diagnostics() {
         let runtime = new_runtime().expect("runtime should be created");
         let context = new_context(&runtime).expect("context should be created");
         let mut bytes = vec![0_u8; 300];
@@ -2407,18 +2627,30 @@ mod tests {
             eval_string(
                 &context,
                 br#"String(X.c("'SCE'00", 0)) + "|" +
-                    String(Binary.compare("41x", 253))"#,
+                    String(Binary.compare("41x", 253)) + "|" +
+                    String(Binary.findSignature(0, -1, "'SCE'")) + "|" +
+                    String(X.fSig(1, 10, "4345")) + "|" +
+                    String(Binary.isSignaturePresent(0, 8, "'ELF'"))"#,
             )
             .expect("supported signatures should be evaluated"),
-            "true|true"
+            "true|true|0|1|false"
         );
         eval_unit(&context, b"Binary.compare('unsupported', 253)")
             .expect_err("unknown syntax must be an explicit diagnostic");
+        eval_unit(&context, b"Binary.findSignature(0, -1, 'unsupported')")
+            .expect_err("unknown search syntax must be an explicit diagnostic");
         assert_eq!(trace.calls.load(Ordering::Relaxed), 3);
         assert_eq!(trace.fast_paths.load(Ordering::Relaxed), 1);
         assert_eq!(trace.generic_paths.load(Ordering::Relaxed), 1);
         assert_eq!(trace.quirks.load(Ordering::Relaxed), 1);
         assert_eq!(trace.errors.load(Ordering::Relaxed), 1);
+        assert_eq!(trace.search_calls.load(Ordering::Relaxed), 4);
+        assert_eq!(trace.find_signature_calls.load(Ordering::Relaxed), 2);
+        assert_eq!(trace.f_sig_calls.load(Ordering::Relaxed), 1);
+        assert_eq!(trace.is_signature_present_calls.load(Ordering::Relaxed), 1);
+        assert_eq!(trace.search_matches.load(Ordering::Relaxed), 2);
+        assert_eq!(trace.search_quirks.load(Ordering::Relaxed), 0);
+        assert_eq!(trace.search_errors.load(Ordering::Relaxed), 1);
     }
 
     #[test]

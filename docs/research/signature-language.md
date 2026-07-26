@@ -337,13 +337,13 @@ API 的语法调用点范围和 `byteCode` 有限值域视为闭合；跨所有�
 
 输入由
 [`generate_signature_oracle_vectors.py`](../../tools/corpus/generate_signature_oracle_vectors.py)
-生成，共 65 个项目自有向量。原始输出保存为
+生成，共 66 个项目自有向量。原始输出保存为
 [`signature-oracle-qt5.json`](data/signature-oracle-qt5.json)，自动探针
 [`probe_signature_harness.py`](../../tools/upstream/probe_signature_harness.py)
 在禁网、512 MiB、1 CPU、128 PID 限制下验证 image revision、binary hash、
-输入 identity 及 baseline 原始 bytes。当前结果 65/65，stdout/baseline
+输入 identity 及 baseline 原始 bytes。当前结果 66/66，stdout/baseline
 SHA-256 均为
-`c514f12ad6b34bf18300befbea386ee9704bb0ba7790db66e5eb5a55cd52d736`。
+`93689464adcf255e399623c9a672abb5def8b8c28fa840d4a7a2481237b478a5`。
 
 构建与复现：
 
@@ -394,6 +394,21 @@ python tools/upstream/probe_signature_harness.py \
 compatibility profile 必须保留这一 wrapper-level 可观察行为。未知字符在
 header fast path 中也只会形成 string mismatch；只有进入 generic parser 后才有
 结构化语法诊断，二者不能被合并。
+
+### `findSignature`、`fSig` 与 `isSignaturePresent`
+
+固定 wrapper oracle 新增 4 个端到端向量，直接调用三个
+`Binary_Script` 方法并全部一致：
+
+- `findSignature` 与别名 `fSig` 返回相同的绝对文件 offset，未找到时为 `-1`；
+- `isSignaturePresent` 是同一搜索结果的布尔投影；
+- 正 size 超出 EOF 时裁剪到剩余字节，`size == -1` 表示搜索到 EOF；
+- 不匹配及 leading `+` 的窗口末端案例分别返回 `-1/-1/false`。
+
+纯 Rust `Pattern::find_binary_wrapper` 只解析一次 pattern，使用 Binary identity
+memory map 调用独立 `find_signature` 实现，三个 JS HostApi 共享这一实现。负
+offset、其他负 size、零 size 和不可表示范围安全返回“未找到”，不会 panic；
+这些额外防御边界尚未作为上游兼容事实冻结。
 
 `compareEP` 和 `compareOverlay` 的实现又有两处不同：
 
@@ -471,7 +486,8 @@ oracle schema v2 允许每个项目自有向量显式注入 `_MEMORY_MAP`，但�
   19/19 一致，未以循环调用 raw matcher 代替搜索算法；
 - wrapper-level oracle 对 header `compare` 覆盖 7 个向量，对 `compareEP`、
   `compareOverlay` 各覆盖 5 个向量并全部通过，固定了 cache-size、严格边界和
-  Qt 5 负位置 clamp 行为。
+  Qt 5 负位置 clamp 行为；搜索/存在性 wrapper 另有 4/4 个向量，固定超长范围
+  裁剪、`size == -1`、别名和布尔投影。
 
 机器摘要见
 [`signature-parser.json`](data/signature-parser.json)。
@@ -488,6 +504,6 @@ oracle schema v2 允许每个项目自有向量显式注入 `_MEMORY_MAP`，但�
    和非 PE parser，确认错误与 fallback 行为。
 5. 扩展 `find_signature` 差分到 malformed partial-parse、更多 buffer boundary
    和锚点优化组合，并验证取消行为；现有 19-case spike 不作为完整性证明。
-6. rquickjs diagnostic 已用本 spike 替换五-pattern 特判；下一步分别实现
-   `fSig`、`findSignature`、`isSignaturePresent`，并在接入非 Binary identity
-   memory map 前保持显式诊断。
+6. rquickjs diagnostic 已用本 spike 实现 `c`/`compare`、`fSig`、
+   `findSignature` 和 `isSignaturePresent`；下一步为 PE/ELF/Mach-O 等
+   format-specific receiver 接入各自 memory map，并保持未知语法显式诊断。

@@ -36,6 +36,9 @@ with a bounded diagnostic fallback. The implemented byte/string/size methods
 follow pinned XScanEngine and die_script contracts. `Binary.c`/`compare` use
 the adjacent pure-Rust signature spike and preserve the pinned Qt 5 header
 fast path, strict boundary, and negative-offset clamp; generic unknown syntax
-is an explicit diagnostic. Signature quirks and errors are counted separately.
+is an explicit diagnostic. `fSig`, `findSignature`, and
+`isSignaturePresent` share the same oracle-backed pure-Rust search adapter,
+including EOF range clamping and `size == -1`. Compare and search calls,
+quirks, and errors are counted separately.
 Its accepted calls and emitted detections are gap-inventory data, not
 compatibility evidence.

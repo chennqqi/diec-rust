@@ -9,6 +9,8 @@
       "symbols": [
         "Binary_Script::compare",
         "Binary_Script::fSig",
+        "Binary_Script::findSignature",
+        "Binary_Script::isSignaturePresent",
         "Binary_Script::c"
       ]
     },
@@ -175,7 +177,7 @@
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)",
     "cargo_toml_sha256": "492a5c5521a832006771de28eff65052ef8475d693bfb8ca61ba150eea965b64",
     "cargo_lock_sha256": "2985224550a817be8fe4dea19a12c2db06cc21f199b985fba12fc23dedfa9279",
-    "source_sha256": "6424487aa2e3fd2581de0f2412a4a30f8a96086d808e46d37750fe80e631c306",
+    "source_sha256": "5884f9dd266fcde7a6b3ef518024d04ecafd4eacb6871fe319226cf48cfae4a6",
     "runtime_dependencies": 0,
     "strict_parse_count": 312,
     "compatible_parse_count": 317,
@@ -215,6 +217,17 @@
       "header_fast_path_observed": true,
       "negative_offset_qstring_mid_clamp_observed": true,
       "strict_boundary_observed": true
+    },
+    "pinned_binary_script_search_differential": {
+      "case_count": 4,
+      "matched_count": 4,
+      "methods": [
+        "findSignature",
+        "fSig",
+        "isSignaturePresent"
+      ],
+      "oversized_range_clamp_observed": true,
+      "size_minus_one_to_eof_observed": true
     },
     "pinned_binary_script_compare_ep_differential": {
       "case_count": 5,
@@ -280,20 +293,20 @@
     "base_image": "diec-rust/upstream-oracle-cmake:74eaf505",
     "base_image_id": "sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040",
     "image": "diec-rust/upstream-signature-harness:74eaf505",
-    "image_id": "sha256:45cbe6654678df52db2eafdbd735d651f62ccec4344884602aa575b14591d16f",
+    "image_id": "sha256:4acb434365b6d255677d94f1446cc7a9fc643337f8e709bf619ee1bebab18612",
     "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254",
     "qt_version": "5.15.13",
     "binary": "/opt/die-build/src/console/diec-signature-harness",
-    "binary_sha256": "7256a58eff8a6f325a12b273e730c3c3e7addb0f2a4aca5be1357aa96bc4da67",
+    "binary_sha256": "45a3d62ad0cf50f816dd50605577e993ade0d43732e6dc01596be0c3ea161a2c",
     "dockerfile_sha256": "c9c28565e2d3274edbc72d54e3bcf1b3edc0b2707749707718fcbafbf9430aa8",
-    "harness_source_sha256": "9fc1f812c6b46b1bf5f0172385e42d6a19aa871937a17545c939b39f014bbcc1",
-    "probe_sha256": "2f4393373853df9007ed1eda62b85b29118b090697079b738271bae87195b969",
-    "vector_generator_sha256": "00faa5c810bebd24b09329a15cc8271505d903a501a7f679951752541f31dea9",
+    "harness_source_sha256": "55d0bd2ccdcccf39e09904071d4f4959d39b543b32bb2a3539afef9cfe9adfe1",
+    "probe_sha256": "9670921709fd0d34197cb27d123ac7cec9fb178a7919942feea71a7679199228",
+    "vector_generator_sha256": "84beb2b7eb8d31fc8a3a20581de99032de36d849d214cad88afad5192fbbf63c",
     "vectors": "docs/research/data/signature-oracle-vectors.json",
-    "vectors_sha256": "36c2079f3d001191364eea8ca38ae71f36e9fd4766d9ccc39ea579ca4ccff149",
+    "vectors_sha256": "6c4f214b909014c9558dd2f85a135e4199c97ad61a8e18ee9e477babd841d711",
     "baseline": "docs/research/data/signature-oracle-qt5.json",
-    "baseline_sha256": "c514f12ad6b34bf18300befbea386ee9704bb0ba7790db66e5eb5a55cd52d736",
-    "case_count": 65,
+    "baseline_sha256": "93689464adcf255e399623c9a672abb5def8b8c28fa840d4a7a2481237b478a5",
+    "case_count": 66,
     "probe_passed": true,
     "compare_find_divergences": [
       "%& accepts only digits in compare records but letters and digits in SigBytes find",
@@ -307,6 +320,6 @@
     "generated PE32/64, ELF32/64, Mach-O32/64, COM, MS-DOS, and AmigaHunk files cover real parser memory-map construction, but malformed map variants remain untested",
     "Binary_Script wrapper fast paths are verified with one generated PE32 entry point and overlay, but absent, short, invalid, and non-PE contexts remain untested",
     "the independent find_signature spike covers 19 focused cases across all three branches, but malformed partial-parse and exhaustive optimization combinations remain untested",
-    "the 65 focused vectors do not yet exhaust malformed partial-parse combinations"
+    "the 66 focused vectors do not yet exhaust malformed partial-parse combinations"
   ]
 }

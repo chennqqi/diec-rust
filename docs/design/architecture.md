@@ -181,8 +181,11 @@ Phase 0 diagnostic 已把 pure-Rust parser/matcher 接入 generic Binary
 `c`/`compare`：固定样本执行 799 次、0 adapter error，fallback 降为 16 条规则、
 58 次和 18 类路径。但 header wrapper 必须保留 Qt 5 的严格边界、invalid suffix
 分支和负 offset `QString::mid` clamp；generic 未知语法才产生诊断。该 spike
-通过相邻 path dependency 复用代码不等于正式 crate 边界已确定，Phase 1 必须按
-本架构重新落位，并为 `fSig`/find/presence 与格式专用 memory map 单独建模。
+继续以共享实现接入 `fSig`/find/presence 后，11 次搜索为 0 adapter error；
+真实假值改变分支，得到 1179 次 compare、291/292 条无异常、14 条规则 39 次
+fallback，并暴露 overlay HostApi 缺口。该 spike 通过相邻 path dependency 复用
+代码不等于正式 crate 边界已确定，Phase 1 必须按本架构重新落位，并为
+format-specific receiver/memory map 与 overlay context 单独建模。
 后续 ADR 必须基于固定规则集、宿主 API、资源中断、static link、许可证和跨平台
 实验选型。
 native runtime、FFI glue、runtime-specific handles 只存在于 `diec-rules`

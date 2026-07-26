@@ -297,7 +297,7 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
             hashlib.sha256(baseline.read_bytes()).hexdigest(),
             oracle["baseline_sha256"],
         )
-        self.assertEqual(oracle["case_count"], 65)
+        self.assertEqual(oracle["case_count"], 66)
         self.assertEqual(oracle["wrapper_case_count"], 7)
         self.assertEqual(oracle["wrapper_matched_count"], 7)
         self.assertTrue(oracle["negative_offset_qstring_mid_clamp_observed"])
@@ -320,6 +320,61 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
         self.assertEqual(after["signature_compare_unique_errors"], [])
         self.assertFalse(after["detection_evidence_valid"])
         self.assertNotIn("Binary.compare", after["fallback_path_counts"])
+
+    def test_signature_search_increment_records_branch_effect_and_gaps(self):
+        increment = self.reference["signature_search_increment"]
+        oracle = increment["oracle"]
+        baseline = ROOT / oracle["baseline"]
+        self.assertEqual(
+            hashlib.sha256(baseline.read_bytes()).hexdigest(),
+            oracle["baseline_sha256"],
+        )
+        self.assertEqual(oracle["case_count"], 66)
+        self.assertEqual(oracle["wrapper_case_count"], 4)
+        self.assertEqual(oracle["wrapper_matched_count"], 4)
+        self.assertTrue(oracle["oversized_range_clamp_observed"])
+        self.assertTrue(oracle["size_minus_one_to_eof_observed"])
+        after = increment["after"]
+        self.assertEqual(after["attempted_detect_count"], 292)
+        self.assertEqual(after["accepted_detect_count"], 291)
+        self.assertEqual(after["detect_error_count"], 1)
+        self.assertEqual(after["error_rules"], ["data_overlays.6.sg"])
+        self.assertEqual(after["include_call_count"], 30)
+        self.assertEqual(after["fallback_rule_count"], 14)
+        self.assertEqual(after["fallback_call_total"], 39)
+        self.assertEqual(sum(after["fallback_path_counts"].values()), 39)
+        self.assertEqual(len(after["fallback_path_counts"]), 15)
+        self.assertEqual(after["fallback_truncated_rule_count"], 0)
+        self.assertEqual(after["zero_recorded_fallback_rule_count"], 278)
+        self.assertEqual(after["zero_recorded_fallback_error_count"], 0)
+        self.assertEqual(after["signature_calling_rule_count"], 255)
+        self.assertEqual(after["signature_compare_call_total"], 1179)
+        self.assertEqual(after["signature_compare_fast_path_total"], 1115)
+        self.assertEqual(after["signature_compare_generic_path_total"], 64)
+        self.assertEqual(after["signature_compare_quirk_total"], 5)
+        self.assertEqual(after["signature_compare_error_total"], 0)
+        self.assertEqual(after["signature_search_call_total"], 11)
+        self.assertEqual(after["signature_search_calling_rule_count"], 4)
+        self.assertEqual(
+            after["signature_search_method_call_totals"],
+            {
+                "fSig": 5,
+                "findSignature": 0,
+                "isSignaturePresent": 6,
+            },
+        )
+        self.assertEqual(after["signature_search_match_total"], 0)
+        self.assertEqual(after["signature_search_quirk_total"], 1)
+        self.assertEqual(after["signature_search_error_total"], 0)
+        self.assertEqual(after["signature_search_unique_errors"], [])
+        self.assertFalse(after["detection_evidence_valid"])
+        for method in (
+            "Binary.fSig",
+            "Binary.findSignature",
+            "Binary.isSignaturePresent",
+        ):
+            self.assertNotIn(method, after["fallback_path_counts"])
+        self.assertIn("truthy fallback proxies", increment["branch_effect"])
 
     def test_binary_lifecycle_uses_fixed_order_and_exact_overlays(self):
         lifecycle = self.reference["binary_lifecycle"]

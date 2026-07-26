@@ -22,7 +22,9 @@ outside this spike.
 `find_raw` and `find_with_memory_map` independently model the control-record,
 SigByte, and plain-hex `find_signature` branches, including their anchor
 selection and class-table differences. They are not implemented as a loop over
-the raw matcher.
+the raw matcher. `find_binary_wrapper` adds the pinned `Binary_Script` range
+normalization used by `findSignature`, `fSig`, and `isSignaturePresent`, while
+keeping parse quirks and errors explicit.
 
 Tests consume
 `docs/research/data/signature-pattern-inventory.json`, a deterministic
@@ -30,7 +32,9 @@ inventory generated from the fixed 292-rule runtime trace.
 Additional tests compare 16 context-free, 7 synthetic memory-map, and 9
 parser-derived memory-map cases directly with the pinned Qt 5 XBinary harness
 baseline. A separate 19-case differential covers all three `find_signature`
-branches. Seventeen wrapper-level cases invoke pinned `Binary_Script::compare`,
-`compareEP`, and `compareOverlay` end-to-end and distinguish their cached
+branches. Twenty-one wrapper-level cases invoke pinned
+`Binary_Script::compare`, `compareEP`, `compareOverlay`, `findSignature`,
+`fSig`, and `isSignaturePresent` end-to-end. They distinguish cached compare
 fast paths from the record matcher at strict boundaries, including Qt 5's
-negative-position `QString::mid` clamp in the header wrapper.
+negative-position `QString::mid` clamp, and verify search range clamping plus
+the `size == -1` convention.

@@ -228,20 +228,27 @@ signature compatibility。
 387 降到 365、唯一路径由 19 降到 17；触发规则仍为 233，不能据此声称新增规则
 兼容。
 
-随后以固定 65-case Qt 5 oracle 验证的 pure-Rust adapter 替换五-pattern
+随后以固定 66-case Qt 5 oracle 验证的 pure-Rust adapter 替换五-pattern
 `X.c` 特判，并同时注册 `Binary.c`/`compare` 与 `X.c`/`compare`。固定样本上
 共执行 799 次 compare（776 fast、23 generic、5 个显式 quirk、0 error），
 292/292 个 `detect` 无异常完成；fallback 降为 16 条规则、58 次、18 条路径，
 未记录 fallback 的规则增至 276。代理仍会影响控制流，当前 10 条 detection
 不是兼容证据。
 
+同一 adapter 随后接入 `fSig`、`findSignature` 和 `isSignaturePresent`。固定
+输入实际执行 11 次搜索、1 个兼容 quirk、0 adapter error。真实 `false/-1`
+替换 truthy fallback proxy 后改变控制流，compare 增至 1179 次；291/292 个
+`detect` 无异常，fallback 为 14 条规则、39 次、15 条路径，未记录 fallback
+的规则为 278。`data_overlays.6.sg` 的唯一异常来自随后抵达的
+`isOverlay/getOverlayOffset/getOverlaySize` 缺口，不是签名搜索错误。
+
 下一轮完整 signature lifecycle probe 仍至少要满足：
 
-- 以真实 HostApi 逐项替换剩余 18 条动态 fallback 路径，并补齐
+- 以真实 HostApi 逐项替换剩余 15 条动态 fallback 路径，优先闭合 overlay
+  offset/size/presence，并补齐
   Windows/macOS 顺序；
-- 把已验证的独立 find matcher 接入 `fSig`/`findSignature`/
-  `isSignaturePresent`，并为格式专用 memory map 建立端到端差分；
-- 给 276 条未记录 fallback 的规则建立对应 Qt oracle，而不是按“无异常”计 pass；
+- 为格式专用 signature receiver 和 memory map 建立端到端差分；
+- 给 278 条未记录 fallback 的规则建立对应 Qt oracle，而不是按“无异常”计 pass；
 - 保存每条 rule eval、include、host call、result/error 的 trace；
 - 单条失败后验证后续规则是否继续且 metadata 已切换；
 - 以完整上游结果排序逻辑代替当前仅用于 Nintendo/EA-XA 的目标类型投影；

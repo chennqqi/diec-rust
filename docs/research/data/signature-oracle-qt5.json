@@ -1,5 +1,5 @@
 {
-    "case_count": 65,
+    "case_count": 66,
     "cases": [
         {
             "compare": true,
@@ -19,6 +19,13 @@
             "valid_error": ""
         },
         {
+            "binary_script_compare_error": "",
+            "binary_script_f_sig": true,
+            "binary_script_f_sig_result": -1,
+            "binary_script_find_signature": true,
+            "binary_script_find_signature_result": -1,
+            "binary_script_is_signature_present": true,
+            "binary_script_is_signature_present_result": false,
             "compare": false,
             "compare_error": "",
             "converted": "4d5a",
@@ -138,6 +145,13 @@
             "valid_error": ""
         },
         {
+            "binary_script_compare_error": "",
+            "binary_script_f_sig": true,
+            "binary_script_f_sig_result": 1,
+            "binary_script_find_signature": true,
+            "binary_script_find_signature_result": 1,
+            "binary_script_is_signature_present": true,
+            "binary_script_is_signature_present_result": true,
             "compare": false,
             "compare_error": "",
             "converted": "41",
@@ -151,6 +165,30 @@
             "pattern": "41",
             "search_offset": 1,
             "search_size": 999,
+            "valid": true,
+            "valid_error": ""
+        },
+        {
+            "binary_script_compare_error": "",
+            "binary_script_f_sig": true,
+            "binary_script_f_sig_result": 1,
+            "binary_script_find_signature": true,
+            "binary_script_find_signature_result": 1,
+            "binary_script_is_signature_present": true,
+            "binary_script_is_signature_present_result": true,
+            "compare": false,
+            "compare_error": "",
+            "converted": "4142",
+            "converted_utf8_hex": "34313432",
+            "data_hex": "00414200",
+            "find_error": "",
+            "find_offset": 1,
+            "find_result_size": 2,
+            "id": "binary_script_find_size_minus_one",
+            "offset": 0,
+            "pattern": "4142",
+            "search_offset": 1,
+            "search_size": -1,
             "valid": true,
             "valid_error": ""
         },
@@ -172,6 +210,13 @@
             "valid_error": ""
         },
         {
+            "binary_script_compare_error": "",
+            "binary_script_f_sig": true,
+            "binary_script_f_sig_result": -1,
+            "binary_script_find_signature": true,
+            "binary_script_find_signature_result": -1,
+            "binary_script_is_signature_present": true,
+            "binary_script_is_signature_present_result": false,
             "compare": true,
             "compare_error": "",
             "converted": "++4d5a",

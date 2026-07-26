@@ -103,16 +103,21 @@ baseline 的变更都要检查本表。
   799 次 compare 为 776 fast、23 generic、5 个显式 quirk、0 error；292/292
   个 `detect` 无异常，fallback 降为 16 条规则、58 次和 18 条路径。但剩余代理
   仍影响控制流，10 条 detection 及 276 条“未记录 fallback”都不是逐条兼容
-  证据。纯 Rust signature spike 已在显式兼容模式
+  证据。继续接入 `fSig`/find/presence 后，11 次搜索为 1 quirk、0 error；
+  真实 `false/-1` 改变控制流，1179 次 compare 后为 291/292 条无异常、
+  14 条规则 39 次 fallback 和 15 条路径，唯一异常暴露 overlay HostApi 缺口。
+  当前 5 条 detection 与 278 条“未记录 fallback”仍不是兼容证据。纯 Rust
+  signature spike 已在显式兼容模式
   解析动态 317/317，并对 6 个上游宽松点返回 quirk。固定 XBinary oracle 的
-  65 个向量已确认 compare/find 在 `%&`、DEL、leading `+` 和 invalid suffix
+  66 个向量已确认 compare/find 在 `%&`、DEL、leading `+` 和 invalid suffix
   上存在不同语义；Rust context-free compare 当前差分 16/16，六类合成
   memory-map 分支差分 7/7，PE32/64、ELF32/64、Mach-O32/64、COM、MS-DOS、
   AmigaHunk 真实 parser map 差分 9/9；独立 find 三分支聚焦差分 19/19。
   `Binary_Script::compare` header fast path 端到端差分 7/7，确认字符/字节混合
   size、严格 `<` 和 Qt 5 负 offset clamp 会改变结果；EP/overlay 各 5/5 又确认
   256-byte cache 被当作 512-byte 范围、原始 pattern 长度参与分支，能改变合法
-  literal 结果。固定 signature AST inventory 随后解析 `db`/`db_extra`
+  literal 结果；search/presence wrapper 4/4 固定范围裁剪、`size == -1`、别名
+  和布尔投影。固定 signature AST inventory 随后解析 `db`/`db_extra`
   2175/2175，保存 5968 个具名 signature API 调用点和 5628 个静态 pattern，
   覆盖动态 317/317；四个保守动态参数中的 `byteCode` 又已闭合为 97 个唯一
   pattern，其余 3 个是输入相关 Number→QString 调用。完整规则语法清单按 runtime

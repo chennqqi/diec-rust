@@ -10,7 +10,7 @@ from pathlib import Path
 
 
 SCHEMA_VERSION = 2
-GENERATOR_VERSION = 9
+GENERATOR_VERSION = 10
 UPSTREAM_COMMIT = "74eaf505c250ab47e709024e9dc41657cd8f2254"
 FORMATS_COMMIT = "1151e7254fdee3c0294ff7095edbdd7bfccf8201"
 
@@ -349,6 +349,9 @@ def vectors() -> list[dict[str, object]]:
             "id": "literal_mismatch",
             "pattern": "'MZ'",
             "data_hex": "4d00",
+            "binary_script_find_signature": True,
+            "binary_script_f_sig": True,
+            "binary_script_is_signature_present": True,
         },
         {
             "id": "exact_match_at_eof",
@@ -387,6 +390,19 @@ def vectors() -> list[dict[str, object]]:
             "data_hex": "0041",
             "find_offset": 1,
             "find_size": 999,
+            "binary_script_find_signature": True,
+            "binary_script_f_sig": True,
+            "binary_script_is_signature_present": True,
+        },
+        {
+            "id": "binary_script_find_size_minus_one",
+            "pattern": "4142",
+            "data_hex": "00414200",
+            "find_offset": 1,
+            "find_size": -1,
+            "binary_script_find_signature": True,
+            "binary_script_f_sig": True,
+            "binary_script_is_signature_present": True,
         },
         {
             "id": "sigbyte_fixed_anchor_rechecks_record_classes",
@@ -397,6 +413,9 @@ def vectors() -> list[dict[str, object]]:
             "id": "find_at_window_end",
             "pattern": "++'MZ'",
             "data_hex": ("00" * 64) + "4d5a",
+            "binary_script_find_signature": True,
+            "binary_script_f_sig": True,
+            "binary_script_is_signature_present": True,
         },
         {
             "id": "find_outside_window",

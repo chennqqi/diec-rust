@@ -12,14 +12,14 @@
   },
   "dependency_footprint": {
     "lockfile_packages": 24,
-    "release_executable_bytes": 1882112,
+    "release_executable_bytes": 1908224,
     "target": "x86_64-pc-windows-msvc",
     "target_packages": 19
   },
   "experiment": {
     "cargo_lock_sha256": "e03ce821c4a4c0f362d417d84752ed9ef1f775377ef9042306397aca39d21836",
     "cargo_toml_sha256": "3a40e231c4f71f7e4e3ea1362f2dc256852b4e9201f5a2f3da41f443cdcbbfbf",
-    "source_sha256": "12f81bb615bc3e4763662843c2e938d7082b8ddb131622f67a121bb0db45ddd8",
+    "source_sha256": "caa1e5f6f1d9941e12e30fa30af8fdd3797ebba399269e99ebf57926b6703a16",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -392,8 +392,8 @@
     },
     "oracle": {
       "baseline": "docs/research/data/signature-oracle-qt5.json",
-      "baseline_sha256": "c514f12ad6b34bf18300befbea386ee9704bb0ba7790db66e5eb5a55cd52d736",
-      "case_count": 65,
+      "baseline_sha256": "93689464adcf255e399623c9a672abb5def8b8c28fa840d4a7a2481237b478a5",
+      "case_count": 66,
       "wrapper_case_count": 7,
       "wrapper_matched_count": 7,
       "negative_offset_qstring_mid_clamp_observed": true,
@@ -453,6 +453,95 @@
     },
     "before_snapshot": "basic_host_api_increment.after",
     "scope": "incremental Binary.c/compare gap measurement on the fixed 128-byte sample; accepted calls and detections are not compatibility evidence"
+  },
+  "signature_search_increment": {
+    "adapter": {
+      "methods": [
+        "Binary.fSig",
+        "Binary.findSignature",
+        "Binary.isSignaturePresent",
+        "X.fSig",
+        "X.findSignature",
+        "X.isSignaturePresent"
+      ],
+      "shared_implementation": "Pattern::find_binary_wrapper",
+      "signature_spike_path": "spikes/signature-parser",
+      "unknown_syntax_is_diagnostic": true
+    },
+    "oracle": {
+      "baseline": "docs/research/data/signature-oracle-qt5.json",
+      "baseline_sha256": "93689464adcf255e399623c9a672abb5def8b8c28fa840d4a7a2481237b478a5",
+      "case_count": 66,
+      "wrapper_case_count": 4,
+      "wrapper_matched_count": 4,
+      "oversized_range_clamp_observed": true,
+      "size_minus_one_to_eof_observed": true
+    },
+    "after": {
+      "accepted_detect_count": 291,
+      "attempted_detect_count": 292,
+      "compatibility_overlay_count": 1,
+      "completed": true,
+      "detect_error_count": 1,
+      "detection_count": 5,
+      "detection_evidence_valid": false,
+      "error_categories": {
+        "fallback_proxy_reached_number_result_boundary": 1
+      },
+      "error_rules": [
+        "data_overlays.6.sg"
+      ],
+      "fallback_call_total": 39,
+      "fallback_path_counts": {
+        "Binary.findByte": 1,
+        "Binary.find_utf8String": 3,
+        "Binary.getFileSuffix": 9,
+        "Binary.getFileSuffix.toLowerCase": 9,
+        "Binary.getHeaderString": 5,
+        "Binary.getHeaderString.match": 1,
+        "Binary.getOverlayOffset": 1,
+        "Binary.getOverlaySize": 1,
+        "Binary.getScanID": 1,
+        "Binary.isDebugData": 1,
+        "Binary.isOverlay": 2,
+        "Binary.isPlainText": 2,
+        "Binary.isResource": 1,
+        "Binary.isText": 1,
+        "Binary.isZeroFilled": 1
+      },
+      "fallback_rule_count": 14,
+      "fallback_truncated_rule_count": 0,
+      "include_call_count": 30,
+      "signature_calling_rule_count": 255,
+      "signature_compare_call_total": 1179,
+      "signature_compare_error_total": 0,
+      "signature_compare_fast_path_total": 1115,
+      "signature_compare_generic_path_total": 64,
+      "signature_compare_quirk_total": 5,
+      "signature_search_call_total": 11,
+      "signature_search_calling_rule_count": 4,
+      "signature_search_error_total": 0,
+      "signature_search_match_total": 0,
+      "signature_search_method_call_totals": {
+        "fSig": 5,
+        "findSignature": 0,
+        "isSignaturePresent": 6
+      },
+      "signature_search_quirk_rules": {
+        "audio.1.sg": 1
+      },
+      "signature_search_quirk_total": 1,
+      "signature_search_unique_errors": [],
+      "signature_search_unique_quirks": [
+        "UnterminatedQuotedString { position: 66 }"
+      ],
+      "zero_recorded_fallback_error_count": 0,
+      "zero_recorded_fallback_rule_count": 278
+    },
+    "before_snapshot": "binary_compare_increment.after",
+    "branch_effect": "real false/-1 search results replace truthy fallback proxies, so later compare/fallback/detection counts are a new execution path and are not an arithmetic subtraction from the prior snapshot",
+    "remaining_error": "data_overlays.6.sg reaches unimplemented Binary.isOverlay/getOverlayOffset/getOverlaySize; this is an overlay HostApi gap, not a signature adapter error",
+    "scope": "incremental Binary fSig/findSignature/isSignaturePresent gap measurement on the fixed 128-byte sample; accepted calls and detections are not compatibility evidence"
   },
   "isolated_eval": {
     "bytes": 2902881,

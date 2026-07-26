@@ -89,6 +89,15 @@ EXPECTED_OBSERVATIONS = {
     "plain_find_clamps_oversized_range": {
         "compare": False,
         "find_offset": 1,
+        "binary_script_find_signature_result": 1,
+        "binary_script_f_sig_result": 1,
+        "binary_script_is_signature_present_result": True,
+    },
+    "binary_script_find_size_minus_one": {
+        "find_offset": 1,
+        "binary_script_find_signature_result": 1,
+        "binary_script_f_sig_result": 1,
+        "binary_script_is_signature_present_result": True,
     },
     "sigbyte_fixed_anchor_rechecks_record_classes": {
         "compare": False,
@@ -97,6 +106,9 @@ EXPECTED_OBSERVATIONS = {
     "find_at_window_end": {
         "compare": True,
         "find_offset": -1,
+        "binary_script_find_signature_result": -1,
+        "binary_script_f_sig_result": -1,
+        "binary_script_is_signature_present_result": False,
     },
     "control_longest_literal_anchor": {
         "compare": True,
@@ -126,6 +138,13 @@ EXPECTED_OBSERVATIONS = {
         "valid": False,
         "compare": True,
         "find_offset": 0,
+    },
+    "literal_mismatch": {
+        "compare": False,
+        "find_offset": -1,
+        "binary_script_find_signature_result": -1,
+        "binary_script_f_sig_result": -1,
+        "binary_script_is_signature_present_result": False,
     },
     "percent_only_has_no_records": {
         "valid": True,
@@ -270,6 +289,9 @@ def validate_baseline(
             "binary_script_compare",
             "binary_script_compare_ep",
             "binary_script_compare_overlay",
+            "binary_script_find_signature",
+            "binary_script_f_sig",
+            "binary_script_is_signature_present",
             "binary_script_parser",
         ):
             if field in vector and actual.get(field) != vector.get(field):
