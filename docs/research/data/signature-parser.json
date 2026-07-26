@@ -100,8 +100,8 @@
   },
   "static_inventory": {
     "path": "docs/research/data/signature-static-inventory.json",
-    "sha256": "7c1f849bca02289bd8f3d5afdce55cffec6c758f49b3d70a56260ea6bee82801",
-    "generator_sha256": "1656845e64668a167f966f96705592521f1547c820ee52a8787a5dce59c7bac9",
+    "sha256": "f102107771af082311138a83626aa6fbb068f47dbce33003c754f603d819b7bc",
+    "generator_sha256": "77020b41d8efecbd87f66a0d39f485e8893bf4bf85544468bc847dfd5ebe80eb",
     "parser": {
       "name": "uglify-js",
       "version": "3.19.3",
@@ -120,6 +120,7 @@
     "static_transform_verification_failure_count": 0,
     "value_preserving_self_assignment_count": 1,
     "finite_parameter_value_count": 26,
+    "finite_array_parameter_value_count": 3,
     "finite_scoped_assignment_count": 5,
     "finite_object_key_iteration_count": 1,
     "finite_object_element_assignment_count": 1,
@@ -137,6 +138,12 @@
       "unresolved_direct_call_name_count": 72,
       "safe_definition_count": 95
     },
+    "static_array_parameter_function_audit": {
+      "configured_spec_count": 3,
+      "verified_definition_count": 3,
+      "safe_definition_count": 3,
+      "unsafe_reference_count": 0
+    },
     "method_counts": {
       "c": 1191,
       "compare": 1367,
@@ -148,18 +155,18 @@
       "isSignaturePresent": 72
     },
     "argument_kind_counts": {
-      "dynamic": 11,
+      "dynamic": 5,
       "literal": 5855,
-      "static_expression": 102
+      "static_expression": 108
     },
     "dynamic_expression_type_counts": {
       "Binary": 3,
-      "SymbolRef": 8
+      "SymbolRef": 2
     },
-    "static_pattern_count": 5614,
+    "static_pattern_count": 5628,
     "dynamic_pattern_overlap_count": 317,
     "dynamic_only_pattern_count": 0,
-    "static_only_pattern_count": 5297,
+    "static_only_pattern_count": 5311,
     "syntactic_call_site_scope_complete": true,
     "runtime_value_scope_complete": false
   },

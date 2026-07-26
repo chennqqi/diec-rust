@@ -119,6 +119,39 @@ const STATIC_TRANSFORM_SPECS = new Map([
     ],
 ]);
 
+const STATIC_ARRAY_PARAMETER_SPECS = new Map([
+    [
+        "db/PE/cryptor_LimeCrypter.2.sg\0validateReferences",
+        {
+            sha256:
+                "aee17a5bf77037e78a05883d33a50edabfe0e5b4eb1126ba515f11767193f71d",
+            parameter: "references",
+            parameter_index: 1,
+            named_argument: "references",
+        },
+    ],
+    [
+        "db/PE/cryptor_PEUnion.2.sg\0validateReferences",
+        {
+            sha256:
+                "ceb0109b92a60190e3cc926a6678acac7d36d5ea0d35020351db5186c5460c05",
+            parameter: "references",
+            parameter_index: 1,
+            named_argument: "references",
+        },
+    ],
+    [
+        "db_extra/PE/cryptor_njCrypter.2.sg\0validateReferences",
+        {
+            sha256:
+                "aee17a5bf77037e78a05883d33a50edabfe0e5b4eb1126ba515f11767193f71d",
+            parameter: "references",
+            parameter_index: 1,
+            named_argument: "references",
+        },
+    ],
+]);
+
 function fail(message) {
     throw new Error(message);
 }
@@ -352,6 +385,8 @@ function finiteExpressionNodes(
     if (expression instanceof uglify.AST_SymbolRef) {
         const reachingExpressionValues =
             constantInitializers.reaching_expression_values;
+        const staticExpressionNodes =
+            constantInitializers.static_expression_nodes;
         const currentLambda = constantInitializers.current_lambda;
         if (
             reachingExpressionValues &&
@@ -374,6 +409,13 @@ function finiteExpressionNodes(
                     return interval.expression_nodes;
                 }
             }
+        }
+        if (
+            staticExpressionNodes &&
+            expression.thedef &&
+            staticExpressionNodes.has(expression.thedef.id)
+        ) {
+            return staticExpressionNodes.get(expression.thedef.id);
         }
         const initializer = initializerFor(
             expression,
@@ -770,6 +812,7 @@ function inspectFile(
     file,
     safeTopLevelFunctions = new Set(),
     plainObjectEnumerationSafe = true,
+    safeStaticArrayParameterFunctions = new Set(),
 ) {
     const source = fs.readFileSync(file, "utf8");
     const relativePath = toPosix(path.relative(rulesRoot, file));
@@ -996,6 +1039,86 @@ function inspectFile(
             }
         }),
     );
+    const staticExpressionNodes = new Map();
+    const finiteArrayParameterValues = [];
+    constantInitializers.static_expression_nodes =
+        staticExpressionNodes;
+    for (const info of functionInfos.values()) {
+        const key = `${relativePath}\0${info.name}`;
+        const spec = STATIC_ARRAY_PARAMETER_SPECS.get(key);
+        if (
+            !spec ||
+            !safeStaticArrayParameterFunctions.has(key) ||
+            info.escaped ||
+            info.calls.length === 0
+        ) {
+            continue;
+        }
+        const parameter = info.parameters[spec.parameter_index];
+        if (
+            !parameter ||
+            !parameter.thedef ||
+            parameter.name !== spec.parameter
+        ) {
+            continue;
+        }
+        const arrays = [];
+        let complete = true;
+        for (const call of info.calls) {
+            const argument = call.args[spec.parameter_index];
+            if (
+                !(argument instanceof uglify.AST_Assign) ||
+                argument.operator !== "=" ||
+                !(argument.left instanceof
+                    uglify.AST_SymbolRef) ||
+                argument.left.name !== spec.named_argument ||
+                !argument.left.thedef ||
+                !argument.left.thedef.undeclared ||
+                !(argument.right instanceof uglify.AST_Array) ||
+                argument.right.elements.length === 0 ||
+                argument.right.elements.some(
+                    (element) =>
+                        !(element instanceof uglify.AST_String),
+                )
+            ) {
+                complete = false;
+                break;
+            }
+            arrays.push(argument.right);
+        }
+        const elementCount = arrays.reduce(
+            (count, array) => count + array.elements.length,
+            0,
+        );
+        if (
+            !complete ||
+            arrays.length === 0 ||
+            arrays.length >
+                MAX_STATIC_VALUES_PER_EXPRESSION ||
+            elementCount > MAX_STATIC_VALUES_PER_EXPRESSION
+        ) {
+            continue;
+        }
+        const values = boundedUniqueSorted(
+            arrays.flatMap((array) =>
+                array.elements.map((element) => element.value),
+            ),
+        );
+        if (!values) {
+            continue;
+        }
+        staticExpressionNodes.set(parameter.thedef.id, arrays);
+        finiteArrayParameterValues.push({
+            function: info.name,
+            function_line: info.line,
+            parameter: parameter.name,
+            parameter_index: spec.parameter_index,
+            direct_call_site_count: info.calls.length,
+            array_count: arrays.length,
+            element_count: elementCount,
+            static_values: values,
+        });
+    }
     const staticSymbolValues = new Map();
     constantInitializers.static_symbol_values = staticSymbolValues;
     const finiteParameterValues = new Map();
@@ -2177,6 +2300,7 @@ function inspectFile(
         value_preserving_self_assignments:
             valuePreservingSelfAssignments,
         finite_parameter_values: [...finiteParameterValues.values()],
+        finite_array_parameter_values: finiteArrayParameterValues,
         finite_scoped_assignments: finiteScopedAssignments,
         finite_object_key_iterations: finiteObjectKeyIterations,
         finite_loop_accumulations: finiteLoopAccumulations,
@@ -2231,6 +2355,121 @@ function loadDynamicComparison(inventoryPath, staticPatterns) {
         dynamic_only_patterns: dynamicPatterns.filter(
             (value) => !staticSet.has(value),
         ),
+    };
+}
+
+function auditStaticArrayParameterFunctions(
+    uglify,
+    rulesRoot,
+    ruleFiles,
+) {
+    const specNames = new Set(
+        [...STATIC_ARRAY_PARAMETER_SPECS.keys()].map(
+            (key) => key.split("\0")[1],
+        ),
+    );
+    const verifiedDefinitions = [];
+    const unsafeReferences = [];
+    for (const file of ruleFiles) {
+        const source = fs.readFileSync(file, "utf8");
+        const relativePath = toPosix(path.relative(rulesRoot, file));
+        const ast = uglify.parse(source, { filename: relativePath });
+        ast.figure_out_scope();
+        const verifiedByDefinitionId = new Map();
+        ast.walk(
+            new uglify.TreeWalker(function (node) {
+                if (
+                    !(node instanceof uglify.AST_Defun) ||
+                    !node.name ||
+                    !node.name.thedef ||
+                    !specNames.has(node.name.name) ||
+                    this.find_parent(uglify.AST_Lambda)
+                ) {
+                    return;
+                }
+                const key = `${relativePath}\0${node.name.name}`;
+                const spec = STATIC_ARRAY_PARAMETER_SPECS.get(key);
+                const sourceSha256 = sha256Bytes(
+                    Buffer.from(sourceSlice(source, node), "utf8"),
+                );
+                if (!spec || sourceSha256 !== spec.sha256) {
+                    unsafeReferences.push({
+                        path: relativePath,
+                        line: node.start.line,
+                        name: node.name.name,
+                        kind: spec
+                            ? "source hash mismatch"
+                            : "unexpected definition",
+                        source_sha256: sourceSha256,
+                        expected_source_sha256: spec
+                            ? spec.sha256
+                            : null,
+                    });
+                    return;
+                }
+                verifiedByDefinitionId.set(node.name.thedef.id, key);
+                verifiedDefinitions.push({
+                    path: relativePath,
+                    name: node.name.name,
+                    line: node.start.line,
+                    source_sha256: sourceSha256,
+                    parameter: spec.parameter,
+                    parameter_index: spec.parameter_index,
+                });
+            }),
+        );
+        ast.walk(
+            new uglify.TreeWalker(function (node) {
+                if (
+                    !(node instanceof uglify.AST_SymbolRef) ||
+                    !specNames.has(node.name)
+                ) {
+                    return;
+                }
+                const parent = this.parent();
+                const isVerifiedDirectCall =
+                    parent instanceof uglify.AST_Call &&
+                    parent.expression === node &&
+                    node.thedef &&
+                    verifiedByDefinitionId.has(node.thedef.id);
+                if (!isVerifiedDirectCall) {
+                    unsafeReferences.push({
+                        path: relativePath,
+                        line: node.start.line,
+                        name: node.name,
+                        kind: "non-local or non-direct reference",
+                        source_sha256: null,
+                        expected_source_sha256: null,
+                    });
+                }
+            }),
+        );
+    }
+    const unsafeNames = new Set(
+        unsafeReferences.map((reference) => reference.name),
+    );
+    const safeDefinitions = verifiedDefinitions.filter(
+        (definition) => !unsafeNames.has(definition.name),
+    );
+    return {
+        safe_keys: new Set(
+            safeDefinitions.map(
+                (definition) =>
+                    `${definition.path}\0${definition.name}`,
+            ),
+        ),
+        evidence: {
+            configured_spec_count:
+                STATIC_ARRAY_PARAMETER_SPECS.size,
+            verified_definition_count:
+                verifiedDefinitions.length,
+            safe_definition_count: safeDefinitions.length,
+            unsafe_reference_count: unsafeReferences.length,
+            verified_definitions: verifiedDefinitions,
+            unsafe_references: unsafeReferences,
+            safety_contract:
+                "configured top-level helpers match path, name, and source hash; every same-name reference in db/db_extra is a direct call bound to a verified definition in the same evaluated rule",
+        },
     };
 }
 
@@ -2438,6 +2677,12 @@ function buildInventory(options) {
         rulesRoot,
         ruleFiles,
     );
+    const staticArrayParameterFunctionAudit =
+        auditStaticArrayParameterFunctions(
+            uglify,
+            rulesRoot,
+            ruleFiles,
+        );
     const plainObjectEnumerationAudit =
         auditPlainObjectEnumeration(
             uglify,
@@ -2451,6 +2696,7 @@ function buildInventory(options) {
             file,
             topLevelFunctionAudit.safe_keys,
             plainObjectEnumerationAudit.safe,
+            staticArrayParameterFunctionAudit.safe_keys,
         ),
     );
     const calls = fileResults.flatMap((result) => result.calls);
@@ -2491,6 +2737,8 @@ function buildInventory(options) {
         max_static_values_per_expression:
             MAX_STATIC_VALUES_PER_EXPRESSION,
         top_level_function_audit: topLevelFunctionAudit.evidence,
+        static_array_parameter_function_audit:
+            staticArrayParameterFunctionAudit.evidence,
         plain_object_enumeration_audit:
             plainObjectEnumerationAudit.evidence,
         verified_static_transforms: fileResults.flatMap(
@@ -2507,6 +2755,12 @@ function buildInventory(options) {
         ),
         finite_parameter_values: fileResults.flatMap((result) =>
             result.finite_parameter_values.map((item) => ({
+                path: result.path,
+                ...item,
+            })),
+        ),
+        finite_array_parameter_values: fileResults.flatMap((result) =>
+            result.finite_array_parameter_values.map((item) => ({
                 path: result.path,
                 ...item,
             })),

@@ -33,6 +33,21 @@ VM_PROTECT_TRANSFORM = """function generateUnicodeSignatureMask(inputString) {
     for (var c = 0; c < inputString.length; c++) { output += (c != 0 ? "00" : "") + "'" + inputString[c] + "'"; }
     return output;
 }"""
+VALIDATE_REFERENCES_FUNCTION = """function validateReferences(isPositive, references) {
+    for (var i = 0; i < references.length; i++) {
+        var sign = "00'" + references[i] + "'00";
+        if (isPositive == true) {
+            if (!PE.isSignatureInSectionPresent(0, sign)) {
+                return true;
+            }
+        } else { // negative
+            if (PE.isSignatureInSectionPresent(0, sign)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}"""
 
 
 class StaticSignatureInventoryTests(unittest.TestCase):
@@ -258,6 +273,126 @@ function detect() {
                     self.assertEqual(
                         inventory["calls"][0]["static_patterns"],
                         [] if changed else ["'A'00'B'"],
+                    )
+
+    def test_array_parameter_requires_verified_helper_and_exact_call_shape(
+        self,
+    ):
+        cases = {
+            "safe": (
+                """
+function detect() {
+    validateReferences(
+        isPositive = true,
+        references = ["60", "61"]
+    );
+}
+""".lstrip(),
+                VALIDATE_REFERENCES_FUNCTION,
+                "static_expression",
+            ),
+            "changed_source": (
+                """
+function detect() {
+    validateReferences(
+        isPositive = true,
+        references = ["60", "61"]
+    );
+}
+""".lstrip(),
+                VALIDATE_REFERENCES_FUNCTION.replace(
+                    "// negative",
+                    "// changed",
+                ),
+                "dynamic",
+            ),
+            "direct_array": (
+                """
+function detect() {
+    validateReferences(true, ["60", "61"]);
+}
+""".lstrip(),
+                VALIDATE_REFERENCES_FUNCTION,
+                "dynamic",
+            ),
+            "escaped": (
+                """
+function detect() {
+    var callback = validateReferences;
+    callback(true, ["60", "61"]);
+}
+""".lstrip(),
+                VALIDATE_REFERENCES_FUNCTION,
+                "dynamic",
+            ),
+        }
+        for name, (detect, helper, expected_kind) in cases.items():
+            with self.subTest(name=name):
+                with tempfile.TemporaryDirectory() as directory:
+                    root = pathlib.Path(directory)
+                    rules = root / "rules"
+                    target = (
+                        rules
+                        / "db"
+                        / "PE"
+                        / "cryptor_LimeCrypter.2.sg"
+                    )
+                    target.parent.mkdir(parents=True)
+                    (rules / "db_extra").mkdir()
+                    target.write_bytes(
+                        (detect + "\n" + helper + "\n").encode(
+                            "utf-8"
+                        )
+                    )
+                    dynamic = root / "dynamic.json"
+                    dynamic.write_text(
+                        json.dumps(
+                            {
+                                "upstream_commit": UPSTREAM_COMMIT,
+                                "patterns": [],
+                            }
+                        ),
+                        encoding="utf-8",
+                    )
+                    output = root / "inventory.json"
+                    self.run_extractor(rules, dynamic, output)
+                    inventory = json.loads(
+                        output.read_text(encoding="utf-8")
+                    )
+
+                    self.assertEqual(
+                        [
+                            call["argument_kind"]
+                            for call in inventory["calls"]
+                        ],
+                        [expected_kind, expected_kind],
+                    )
+                    self.assertEqual(
+                        inventory["static_patterns"],
+                        (
+                            ["00'60'00", "00'61'00"]
+                            if expected_kind == "static_expression"
+                            else []
+                        ),
+                    )
+                    self.assertEqual(
+                        len(
+                            inventory[
+                                "finite_array_parameter_values"
+                            ]
+                        ),
+                        1
+                        if expected_kind == "static_expression"
+                        else 0,
+                    )
+                    audit = inventory[
+                        "static_array_parameter_function_audit"
+                    ]
+                    self.assertEqual(
+                        audit["safe_definition_count"],
+                        1
+                        if name in {"safe", "direct_array"}
+                        else 0,
                     )
 
     def test_parameter_values_require_all_direct_calls_and_no_escape(self):
@@ -1146,6 +1281,66 @@ function notFirst(k) {
                 },
             )
             self.assertEqual(
+                inventory[
+                    "static_array_parameter_function_audit"
+                ],
+                {
+                    "configured_spec_count": 3,
+                    "verified_definition_count": 3,
+                    "safe_definition_count": 3,
+                    "unsafe_reference_count": 0,
+                    "verified_definitions": [
+                        {
+                            "path": (
+                                "db/PE/"
+                                "cryptor_LimeCrypter.2.sg"
+                            ),
+                            "name": "validateReferences",
+                            "line": 39,
+                            "source_sha256": (
+                                "aee17a5bf77037e78a05883d33a50eda"
+                                "bfe0e5b4eb1126ba515f11767193f71d"
+                            ),
+                            "parameter": "references",
+                            "parameter_index": 1,
+                        },
+                        {
+                            "path": "db/PE/cryptor_PEUnion.2.sg",
+                            "name": "validateReferences",
+                            "line": 86,
+                            "source_sha256": (
+                                "ceb0109b92a60190e3cc926a6678acac"
+                                "7d36d5ea0d35020351db5186c5460c05"
+                            ),
+                            "parameter": "references",
+                            "parameter_index": 1,
+                        },
+                        {
+                            "path": (
+                                "db_extra/PE/"
+                                "cryptor_njCrypter.2.sg"
+                            ),
+                            "name": "validateReferences",
+                            "line": 33,
+                            "source_sha256": (
+                                "aee17a5bf77037e78a05883d33a50eda"
+                                "bfe0e5b4eb1126ba515f11767193f71d"
+                            ),
+                            "parameter": "references",
+                            "parameter_index": 1,
+                        },
+                    ],
+                    "unsafe_references": [],
+                    "safety_contract": (
+                        "configured top-level helpers match path, "
+                        "name, and source hash; every same-name "
+                        "reference in db/db_extra is a direct call "
+                        "bound to a verified definition in the same "
+                        "evaluated rule"
+                    ),
+                },
+            )
+            self.assertEqual(
                 inventory["plain_object_enumeration_audit"],
                 {
                     "object_reference_count": 1,
@@ -1164,6 +1359,42 @@ function notFirst(k) {
             self.assertEqual(
                 len(inventory["finite_parameter_values"]),
                 26,
+            )
+            self.assertEqual(
+                [
+                    (
+                        item["path"],
+                        item["function"],
+                        item["parameter"],
+                        item["element_count"],
+                    )
+                    for item in inventory[
+                        "finite_array_parameter_values"
+                    ]
+                ],
+                [
+                    (
+                        "db/PE/cryptor_LimeCrypter.2.sg",
+                        "validateReferences",
+                        "references",
+                        4,
+                    ),
+                    (
+                        "db/PE/cryptor_PEUnion.2.sg",
+                        "validateReferences",
+                        "references",
+                        14,
+                    ),
+                    (
+                        (
+                            "db_extra/PE/"
+                            "cryptor_njCrypter.2.sg"
+                        ),
+                        "validateReferences",
+                        "references",
+                        8,
+                    ),
+                ],
             )
             self.assertEqual(
                 len(inventory["finite_scoped_assignments"]),
@@ -1357,23 +1588,23 @@ function notFirst(k) {
             self.assertEqual(
                 inventory["argument_kind_counts"],
                 {
-                    "dynamic": 11,
+                    "dynamic": 5,
                     "literal": 5855,
-                    "static_expression": 102,
+                    "static_expression": 108,
                 },
             )
             self.assertEqual(
                 inventory["dynamic_expression_type_counts"],
                 {
                     "Binary": 3,
-                    "SymbolRef": 8,
+                    "SymbolRef": 2,
                 },
             )
-            self.assertEqual(inventory["static_pattern_count"], 5614)
+            self.assertEqual(inventory["static_pattern_count"], 5628)
             comparison = inventory["dynamic_inventory_comparison"]
             self.assertEqual(comparison["intersection_count"], 317)
             self.assertEqual(comparison["dynamic_only_count"], 0)
-            self.assertEqual(comparison["static_only_count"], 5297)
+            self.assertEqual(comparison["static_only_count"], 5311)
 
 
 if __name__ == "__main__":

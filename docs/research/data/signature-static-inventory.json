@@ -18,6 +18,40 @@
     "safe_definition_count": 95,
     "safety_contract": "top-level name is unique across db/db_extra and has no unresolved direct call in another parsed rule; nested functions use lexical scope"
   },
+  "static_array_parameter_function_audit": {
+    "configured_spec_count": 3,
+    "verified_definition_count": 3,
+    "safe_definition_count": 3,
+    "unsafe_reference_count": 0,
+    "verified_definitions": [
+      {
+        "path": "db/PE/cryptor_LimeCrypter.2.sg",
+        "name": "validateReferences",
+        "line": 39,
+        "source_sha256": "aee17a5bf77037e78a05883d33a50edabfe0e5b4eb1126ba515f11767193f71d",
+        "parameter": "references",
+        "parameter_index": 1
+      },
+      {
+        "path": "db/PE/cryptor_PEUnion.2.sg",
+        "name": "validateReferences",
+        "line": 86,
+        "source_sha256": "ceb0109b92a60190e3cc926a6678acac7d36d5ea0d35020351db5186c5460c05",
+        "parameter": "references",
+        "parameter_index": 1
+      },
+      {
+        "path": "db_extra/PE/cryptor_njCrypter.2.sg",
+        "name": "validateReferences",
+        "line": 33,
+        "source_sha256": "aee17a5bf77037e78a05883d33a50edabfe0e5b4eb1126ba515f11767193f71d",
+        "parameter": "references",
+        "parameter_index": 1
+      }
+    ],
+    "unsafe_references": [],
+    "safety_contract": "configured top-level helpers match path, name, and source hash; every same-name reference in db/db_extra is a direct call bound to a verified definition in the same evaluated rule"
+  },
   "plain_object_enumeration_audit": {
     "object_reference_count": 1,
     "safe_has_own_property_call_count": 1,
@@ -513,6 +547,70 @@
       ]
     }
   ],
+  "finite_array_parameter_values": [
+    {
+      "path": "db/PE/cryptor_LimeCrypter.2.sg",
+      "function": "validateReferences",
+      "function_line": 39,
+      "parameter": "references",
+      "parameter_index": 1,
+      "direct_call_site_count": 1,
+      "array_count": 1,
+      "element_count": 4,
+      "static_values": [
+        "System.Collections.Generic",
+        "System.Reflection",
+        "System.Resources",
+        "System.Security.Cryptography"
+      ]
+    },
+    {
+      "path": "db/PE/cryptor_PEUnion.2.sg",
+      "function": "validateReferences",
+      "function_line": 86,
+      "parameter": "references",
+      "parameter_index": 1,
+      "direct_call_site_count": 1,
+      "array_count": 1,
+      "element_count": 14,
+      "static_values": [
+        "<>c__DisplayClass1",
+        "Func`2",
+        "GetProcAddress",
+        "IEnumerable`1",
+        "LoadLibraryA",
+        "System.Collections.Generic",
+        "System.Core",
+        "System.IO",
+        "System.Linq",
+        "System.Reflection",
+        "System.Resources",
+        "System.Runtime.CompilerServices",
+        "System.Runtime.InteropServices",
+        "kernel32.dll"
+      ]
+    },
+    {
+      "path": "db_extra/PE/cryptor_njCrypter.2.sg",
+      "function": "validateReferences",
+      "function_line": 33,
+      "parameter": "references",
+      "parameter_index": 1,
+      "direct_call_site_count": 1,
+      "array_count": 1,
+      "element_count": 8,
+      "static_values": [
+        "Decrypt",
+        "Stub",
+        "System.IO",
+        "System.Reflection",
+        "System.Security.Cryptography",
+        "System.Text",
+        "bSalt",
+        "cMain"
+      ]
+    }
+  ],
   "finite_scoped_assignments": [
     {
       "path": "db/Binary/archive_AR.1.sg",
@@ -777,11 +875,11 @@
     "isSignaturePresent": 72
   },
   "argument_kind_counts": {
-    "dynamic": 11,
+    "dynamic": 5,
     "literal": 5855,
-    "static_expression": 102
+    "static_expression": 108
   },
-  "static_pattern_count": 5614,
+  "static_pattern_count": 5628,
   "static_patterns": [
     "$$$$$$$$5589e557565383ec..8b7d..8b75..8b5d..b8........85c00f84........a1........85c00f94c025........a3",
     "$$$$$$$$55b8........57565383ec..85c08b7c24..8bb424........8b9c24........0f84........8b15........31c085d20f94c08b5424..8b4c24..a3........8d44....8b9424........a3........8915........6690",
@@ -2104,6 +2202,7 @@
     "00'#Strings'00",
     "00'#US'00",
     "00'#~'00",
+    "00'<>c__DisplayClass1'00",
     "00'<Module>'00",
     "00'A'00",
     "00'APPL'",
@@ -2125,6 +2224,7 @@
     "00'DESCryptoServiceProvider'00",
     "00'DSACryptoServiceProvider'",
     "00'DSACryptoServiceProvider'00",
+    "00'Decrypt'00",
     "00'DeflateStream'",
     "00'DeflateStream'00",
     "00'DestroyWindow'00",
@@ -2132,20 +2232,24 @@
     "00'ECDsaCng'00",
     "00'EmptyWorkingSet'00",
     "00'EnumChildWindows'00",
+    "00'Func`2'00",
     "00'GZipStream'",
     "00'GZipStream'00",
     "00'GetAsyncKeyState'00",
     "00'GetForegroundWindow'00",
     "00'GetKeyboardState'00",
+    "00'GetProcAddress'00",
     "00'GetWindowText'00",
     "00'GetWindowTextA'00",
     "00'GetWindowTextLength'00",
     "00'GetWindowTextLengthA'00",
+    "00'IEnumerable`1'00",
     "00'INFO'",
     "00'InfaceMax 'ffffff005f175920ffff00'toCode_interface'00",
     "00'KERNEL32.DLL'00",
     "00'Kernel32.dll'00",
     "00'LP'",
+    "00'LoadLibraryA'00",
     "00'MapVirtualKey'00",
     "00'Microsoft.CSharp'00",
     "00'NetzStarter'00'netz'00",
@@ -2171,17 +2275,23 @@
     "00'SetWindowPos'00",
     "00'Shlwapi.dll'00",
     "00'Stub'00",
+    "00'System.Collections.Generic'00",
     "00'System.Core'00",
     "00'System.Diagnostics'00",
     "00'System.Drawing'00",
+    "00'System.IO'00",
     "00'System.IO.Compression'",
     "00'System.IO.Compression'00",
+    "00'System.Linq'00",
     "00'System.Management'00",
     "00'System.Net.Sockets'00",
     "00'System.Reflection'00",
+    "00'System.Resources'00",
+    "00'System.Runtime.CompilerServices'00",
     "00'System.Runtime.InteropServices'00",
     "00'System.Security.Cryptography'",
     "00'System.Security.Cryptography'00",
+    "00'System.Text'00",
     "00'System.Windows.Forms'00",
     "00'TMSAMVOH'",
     "00'ToUnicodeEx'00",
@@ -2193,6 +2303,8 @@
     "00'actmp.dll'00'stub'00'Sixxpack'00",
     "00'asm'010000000",
     "00'avicap32.dll'00",
+    "00'bSalt'00",
+    "00'cMain'00",
     "00'capCreateCaptureWindowA'00",
     "00'capGetDriverDescriptionA'00",
     "00'crypt'",
@@ -6398,10 +6510,10 @@
     "fff589e566f7c6....80c3..80eb..81ec........66c1eb..6689ed",
     "fffe2a002a002a006d0065007300730061006700650073002a002a002a00"
   ],
-  "dynamic_call_site_count": 11,
+  "dynamic_call_site_count": 5,
   "dynamic_expression_type_counts": {
     "Binary": 3,
-    "SymbolRef": 8
+    "SymbolRef": 2
   },
   "dynamic_calls": [
     {
@@ -6473,90 +6585,6 @@
       "argument_ast_type": "SymbolRef",
       "argument_expression": "byteCode",
       "static_patterns": []
-    },
-    {
-      "path": "db/PE/cryptor_LimeCrypter.2.sg",
-      "line": 43,
-      "column": 17,
-      "receiver": "PE",
-      "receiver_root": "PE",
-      "known_host_receiver": true,
-      "method": "isSignatureInSectionPresent",
-      "argument_index": 1,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "sign",
-      "static_patterns": []
-    },
-    {
-      "path": "db/PE/cryptor_LimeCrypter.2.sg",
-      "line": 47,
-      "column": 16,
-      "receiver": "PE",
-      "receiver_root": "PE",
-      "known_host_receiver": true,
-      "method": "isSignatureInSectionPresent",
-      "argument_index": 1,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "sign",
-      "static_patterns": []
-    },
-    {
-      "path": "db/PE/cryptor_PEUnion.2.sg",
-      "line": 90,
-      "column": 17,
-      "receiver": "PE",
-      "receiver_root": "PE",
-      "known_host_receiver": true,
-      "method": "isSignatureInSectionPresent",
-      "argument_index": 1,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "sign",
-      "static_patterns": []
-    },
-    {
-      "path": "db/PE/cryptor_PEUnion.2.sg",
-      "line": 94,
-      "column": 16,
-      "receiver": "PE",
-      "receiver_root": "PE",
-      "known_host_receiver": true,
-      "method": "isSignatureInSectionPresent",
-      "argument_index": 1,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "sign",
-      "static_patterns": []
-    },
-    {
-      "path": "db_extra/PE/cryptor_njCrypter.2.sg",
-      "line": 37,
-      "column": 17,
-      "receiver": "PE",
-      "receiver_root": "PE",
-      "known_host_receiver": true,
-      "method": "isSignatureInSectionPresent",
-      "argument_index": 1,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "sign",
-      "static_patterns": []
-    },
-    {
-      "path": "db_extra/PE/cryptor_njCrypter.2.sg",
-      "line": 41,
-      "column": 16,
-      "receiver": "PE",
-      "receiver_root": "PE",
-      "known_host_receiver": true,
-      "method": "isSignatureInSectionPresent",
-      "argument_index": 1,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "sign",
-      "static_patterns": []
     }
   ],
   "unknown_receiver_calls": [],
@@ -6564,10 +6592,10 @@
     "path": "docs/research/data/signature-pattern-inventory.json",
     "sha256": "15a80990b981d6588d59818c4e6bc1947f35d076dd3dae468a1beaf8f8b27731",
     "dynamic_pattern_count": 317,
-    "static_pattern_count": 5614,
+    "static_pattern_count": 5628,
     "intersection_count": 317,
     "dynamic_only_count": 0,
-    "static_only_count": 5297,
+    "static_only_count": 5311,
     "dynamic_only_patterns": []
   },
   "calls": [
@@ -73165,10 +73193,15 @@
       "known_host_receiver": true,
       "method": "isSignatureInSectionPresent",
       "argument_index": 1,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "sign",
-      "static_patterns": []
+      "static_patterns": [
+        "00'System.Collections.Generic'00",
+        "00'System.Reflection'00",
+        "00'System.Resources'00",
+        "00'System.Security.Cryptography'00"
+      ]
     },
     {
       "path": "db/PE/cryptor_LimeCrypter.2.sg",
@@ -73179,10 +73212,15 @@
       "known_host_receiver": true,
       "method": "isSignatureInSectionPresent",
       "argument_index": 1,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "sign",
-      "static_patterns": []
+      "static_patterns": [
+        "00'System.Collections.Generic'00",
+        "00'System.Reflection'00",
+        "00'System.Resources'00",
+        "00'System.Security.Cryptography'00"
+      ]
     },
     {
       "path": "db/PE/cryptor_NativeCryptor_by_DosX.2.sg",
@@ -73241,10 +73279,25 @@
       "known_host_receiver": true,
       "method": "isSignatureInSectionPresent",
       "argument_index": 1,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "sign",
-      "static_patterns": []
+      "static_patterns": [
+        "00'<>c__DisplayClass1'00",
+        "00'Func`2'00",
+        "00'GetProcAddress'00",
+        "00'IEnumerable`1'00",
+        "00'LoadLibraryA'00",
+        "00'System.Collections.Generic'00",
+        "00'System.Core'00",
+        "00'System.IO'00",
+        "00'System.Linq'00",
+        "00'System.Reflection'00",
+        "00'System.Resources'00",
+        "00'System.Runtime.CompilerServices'00",
+        "00'System.Runtime.InteropServices'00",
+        "00'kernel32.dll'00"
+      ]
     },
     {
       "path": "db/PE/cryptor_PEUnion.2.sg",
@@ -73255,10 +73308,25 @@
       "known_host_receiver": true,
       "method": "isSignatureInSectionPresent",
       "argument_index": 1,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "sign",
-      "static_patterns": []
+      "static_patterns": [
+        "00'<>c__DisplayClass1'00",
+        "00'Func`2'00",
+        "00'GetProcAddress'00",
+        "00'IEnumerable`1'00",
+        "00'LoadLibraryA'00",
+        "00'System.Collections.Generic'00",
+        "00'System.Core'00",
+        "00'System.IO'00",
+        "00'System.Linq'00",
+        "00'System.Reflection'00",
+        "00'System.Resources'00",
+        "00'System.Runtime.CompilerServices'00",
+        "00'System.Runtime.InteropServices'00",
+        "00'kernel32.dll'00"
+      ]
     },
     {
       "path": "db/PE/cryptor_RCryptor.2.sg",
@@ -99949,10 +100017,19 @@
       "known_host_receiver": true,
       "method": "isSignatureInSectionPresent",
       "argument_index": 1,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "sign",
-      "static_patterns": []
+      "static_patterns": [
+        "00'Decrypt'00",
+        "00'Stub'00",
+        "00'System.IO'00",
+        "00'System.Reflection'00",
+        "00'System.Security.Cryptography'00",
+        "00'System.Text'00",
+        "00'bSalt'00",
+        "00'cMain'00"
+      ]
     },
     {
       "path": "db_extra/PE/cryptor_njCrypter.2.sg",
@@ -99963,10 +100040,19 @@
       "known_host_receiver": true,
       "method": "isSignatureInSectionPresent",
       "argument_index": 1,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "sign",
-      "static_patterns": []
+      "static_patterns": [
+        "00'Decrypt'00",
+        "00'Stub'00",
+        "00'System.IO'00",
+        "00'System.Reflection'00",
+        "00'System.Security.Cryptography'00",
+        "00'System.Text'00",
+        "00'bSalt'00",
+        "00'cMain'00"
+      ]
     },
     {
       "path": "db_extra/PE/cryptor_unknown_malware_cryptor.2.sg",

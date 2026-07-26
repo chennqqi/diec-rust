@@ -203,6 +203,10 @@ class SignatureParserSpikeTests(unittest.TestCase):
             0,
         )
         self.assertEqual(static["finite_parameter_value_count"], 26)
+        self.assertEqual(
+            static["finite_array_parameter_value_count"],
+            3,
+        )
         self.assertEqual(static["finite_scoped_assignment_count"], 5)
         self.assertEqual(
             static["top_level_function_audit"],
@@ -215,18 +219,27 @@ class SignatureParserSpikeTests(unittest.TestCase):
             },
         )
         self.assertEqual(
+            static["static_array_parameter_function_audit"],
+            {
+                "configured_spec_count": 3,
+                "verified_definition_count": 3,
+                "safe_definition_count": 3,
+                "unsafe_reference_count": 0,
+            },
+        )
+        self.assertEqual(
             static["argument_kind_counts"],
             {
-                "dynamic": 11,
+                "dynamic": 5,
                 "literal": 5855,
-                "static_expression": 102,
+                "static_expression": 108,
             },
         )
         self.assertEqual(
             static["dynamic_expression_type_counts"],
             {
                 "Binary": 3,
-                "SymbolRef": 8,
+                "SymbolRef": 2,
             },
         )
         self.assertEqual(
@@ -254,10 +267,10 @@ class SignatureParserSpikeTests(unittest.TestCase):
             static["finite_adjacent_assignment_count"],
             2,
         )
-        self.assertEqual(static["static_pattern_count"], 5614)
+        self.assertEqual(static["static_pattern_count"], 5628)
         self.assertEqual(static["dynamic_pattern_overlap_count"], 317)
         self.assertEqual(static["dynamic_only_pattern_count"], 0)
-        self.assertEqual(static["static_only_pattern_count"], 5297)
+        self.assertEqual(static["static_only_pattern_count"], 5311)
         self.assertTrue(static["syntactic_call_site_scope_complete"])
         self.assertFalse(static["runtime_value_scope_complete"])
 

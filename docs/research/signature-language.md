@@ -159,13 +159,13 @@ pattern 仍可能缺失。
 | **总计** | **5968** |
 
 5968 个调用点分布在 1615 个文件，receiver 均落在已知格式宿主集合；同名未知
-receiver 候选为 0。参数分类为 5855 个直接字符串、102 个可保守枚举的静态表达式
+receiver 候选为 0。参数分类为 5855 个直接字符串、108 个可保守枚举的静态表达式
 （字符串拼接、条件分支、sequence，或只有一次初始化且未检测到写入的变量引用）
-和 11 个动态表达式。有限、非逃逸且元素可静态枚举的数组，其动态下标采用全部元素
+和 5 个动态表达式。有限、非逃逸且元素可静态枚举的数组，其动态下标采用全部元素
 并集；数组只允许下标和 `length` 读取，发生方法调用、传参、别名或其他逃逸即保持
-动态。每个表达式最多枚举 4096 个值，超限也保持动态。静态可枚举得到 5614 个唯一
+动态。每个表达式最多枚举 4096 个值，超限也保持动态。静态可枚举得到 5628 个唯一
 pattern：包含动态样本观察到的全部 317 个，另有
-5297 个未被该样本执行的 pattern。
+5311 个未被该样本执行的 pattern。
 
 另有三个纯字符串转换只有在规则路径、函数名及函数源码 SHA-256 全部匹配时才允许
 静态执行：`convertStringToUnicodeSignature`、`generateUnicodeSignatureMask`
@@ -184,6 +184,24 @@ unresolved direct call；嵌套函数依赖词法作用域。全库审计了 229
 95 个名字唯一、7 个名字重复、72 个 unresolved direct-call 名字，最终 95 个顶层
 定义满足门禁。清单保存 26 个有限参数记录；其中 signature 参数传播闭合 12 个调用、
 增加 125 个唯一 pattern。动态参数中不再有 `Call` AST。
+
+三个同名顶层 `validateReferences` helper 因共享 global scope 不进入上述通用参数
+门禁，而使用更窄的数组参数门禁。固定执行协议保证每条规则文本求值后立即取得并
+调用该规则的 `detect`；额外的全语料审计要求三个 helper 分别匹配路径、函数名和
+完整函数源码 SHA-256，并要求 `db`/`db_extra` 中所有同名引用都直接绑定到当前
+规则已验证的定义。三个固定定义和三个直接调用全部通过，0 个不安全引用：
+
+| 路径 | helper 源码 SHA-256 | 数组元素 |
+| --- | --- | ---: |
+| `db/PE/cryptor_LimeCrypter.2.sg` | `aee17a5bf77037e78a05883d33a50edabfe0e5b4eb1126ba515f11767193f71d` | 4 |
+| `db/PE/cryptor_PEUnion.2.sg` | `ceb0109b92a60190e3cc926a6678acac7d36d5ea0d35020351db5186c5460c05` | 14 |
+| `db_extra/PE/cryptor_njCrypter.2.sg` | `aee17a5bf77037e78a05883d33a50edabfe0e5b4eb1126ba515f11767193f71d` | 8 |
+
+数组实参还必须保持固定源码中的伪命名参数形状
+`references = [<非空纯字符串数组>]`，目标必须是未声明 global，helper 不能逃逸，
+所有直接调用都必须满足且总元素数受 4096 上限约束。函数源码改变、直接数组实参
+或 helper 逃逸 fixture 均保持动态。三条 `finite_array_parameter_values` 记录闭合
+正/负分支共 6 个调用，增加 14 个唯一 pattern。
 
 函数作用域常量还要求：目标符号在该函数内只有一次 `=` 写入，该写入是函数第一条
 直接语句；值从赋值结束起生效，并在首个直接符号函数调用处失效。条件写入、重复
@@ -267,8 +285,8 @@ pattern。
 `X.c(p+o, "'PACK'FFFF")` 和 `X.c(p+8, "'PACK'FFFF")` 仍按 Qt 参数转换保留为
 输入依赖调用，不能把第二参数改当 signature。
 
-“包含动态 317/317”证明动态清单是静态清单的子集，不证明 5614 是完整运行时值域。
-剩余 11 个调用仍依赖其他循环、数组/可变变量或输入数据流；非静态 computed
+“包含动态 317/317”证明动态清单是静态清单的子集，不证明 5628 是完整运行时值域。
+剩余 5 个调用仍依赖偏移量或输入数据流；非静态 computed
 method name 也不能仅凭 AST 属性名归因。当前可以把具名 signature API 的语法调用
 点范围视为完整，但运行时 pattern value 范围仍未闭合。
 
@@ -417,8 +435,8 @@ oracle schema v2 允许每个项目自有向量显式注入 `_MEMORY_MAP`，但�
 
 ## 下一步门禁
 
-1. 对 11 个动态 signature 参数做 scope/data-flow 或受控 runtime-assisted
-   求值，并审计 computed method name；不得把 5614 个静态值当作完整值域。
+1. 对 5 个动态 signature 参数做 scope/data-flow 或受控 runtime-assisted
+   求值，并审计 computed method name；不得把 5628 个静态值当作完整值域。
 2. 扩展现有 XBinary oracle，覆盖更多畸形组合、buffer boundary 和取消行为。
 3. 补齐畸形/重叠/virtual-only map 的项目生成文件，端到端验证各格式
    `getMemoryMap` 边界。
