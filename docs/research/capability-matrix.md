@@ -116,8 +116,10 @@ priority、数据库分层、init/include、file type、deep/heuristic 和 Unkno
 
 `Formats` 子模块还包含更多探测/信息解析类，不等于它们都有 DIE 规则目录或完整扫描结果。最终“支持格式”必须以格式探测、规则数据库、扫描分派和样本输出四者交叉验证。
 
-首批运行实验已观察到专用顶层类型 PE32、ELF64、Mach-O64、DEX、Java Class、
-PNG、PDF、CFBF 和 ZIP。BMP、WAV、TAR、GZIP 由外部 `file(1)` 验证结构，
+运行实验已观察到专用顶层类型 PE32/64、ELF32/64、Mach-O32/64/FAT、DEX、
+Java Class、Python Bytecode、PNG、JPEG、PDF、CFBF、ZIP、APK、JAR、RAR 和
+ISO9660。IPA 被格式层识别，但 engine 有意通过 Binary 规则分派。BMP、WAV、
+TAR、GZIP 由外部 `file(1)` 验证结构，
 但 DIE 顶层类型为 Binary；其中 BMP、WAV、TAR 仍通过 value 报告具体格式，
 GZIP 返回 Unknown。扫描开关矩阵还验证了 heuristic、alltypes、format 和
 hideunknown 的可观察增量。完整输入哈希和输出见

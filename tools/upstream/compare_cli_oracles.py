@@ -33,7 +33,9 @@ class Observation:
     def summary(self) -> dict[str, object]:
         return {
             "exit_code": self.exit_code,
+            "stdout_bytes": len(self.stdout),
             "stdout_sha256": hashlib.sha256(self.stdout).hexdigest(),
+            "stderr_bytes": len(self.stderr),
             "stderr_sha256": hashlib.sha256(self.stderr).hexdigest(),
         }
 
@@ -815,6 +817,11 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     report: dict[str, object] = {
+        "schema_version": 1,
+        "generator": "tools/upstream/compare_cli_oracles.py",
+        "generator_sha256": hashlib.sha256(
+            pathlib.Path(__file__).read_bytes()
+        ).hexdigest(),
         "expected_revision": args.expected_revision,
         "left_image": args.left_image,
         "right_image": args.right_image,
@@ -896,6 +903,11 @@ def main() -> int:
         )
 
     if corpus_dir is not None:
+        manifest_bytes = (corpus_dir / "manifest.json").read_bytes()
+        report["corpus_manifest"] = {
+            "generator": "tools/corpus/generate_baseline_corpus.py",
+            "sha256": hashlib.sha256(manifest_bytes).hexdigest(),
+        }
         corpus_report = {}
         report["corpus"] = corpus_report
         samples = load_corpus(corpus_dir)

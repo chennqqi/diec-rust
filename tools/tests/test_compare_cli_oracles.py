@@ -121,10 +121,12 @@ class CompareObservationsTests(unittest.TestCase):
             observation.summary(),
             {
                 "exit_code": 1,
+                "stdout_bytes": 8,
                 "stdout_sha256": (
                     "50be220f44c8a03a97b92b50debecbbdb2876205aa5d0e"
                     "ec4b69c93a17c64b48"
                 ),
+                "stderr_bytes": 6,
                 "stderr_sha256": (
                     "f097b5f4f46cda2da21b954c9ff4097e1e14ae7064ecde"
                     "e2c2cec2d3c1f08e6b"

@@ -49,7 +49,7 @@ class GenerateBaselineCorpusTests(unittest.TestCase):
             [sample["name"] for sample in manifest["samples"]],
             [item[0] for item in MODULE.GENERATORS],
         )
-        self.assertEqual(len(manifest["samples"]), 15)
+        self.assertEqual(len(manifest["samples"]), 26)
 
     def test_matches_versioned_reference_manifest(self):
         reference_path = (

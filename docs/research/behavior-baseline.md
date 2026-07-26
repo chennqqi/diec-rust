@@ -10,8 +10,8 @@ Last updated: 2026-07-27
 `diec` 候选 oracle 分别扫描。比较保留原始 stdout、stderr 和退出码，不解析后
 再重排 JSON。
 
-15 个样本在两个 oracle 上均返回退出码 `0`、空 stderr，默认 JSON stdout
-逐字节相同。扫描开关矩阵进一步覆盖全部 15 个样本；输出格式矩阵覆盖
+26 个样本在两个 oracle 上均返回退出码 `0`、空 stderr，默认 JSON stdout
+逐字节相同。扫描开关矩阵仍覆盖首版 15 个样本；输出格式矩阵覆盖
 `empty.bin`、`minimal.exe`、`minimal.pdf`、`payload.zip` 和 `plain.txt`。
 这些结论不代表其他选项组合、畸形变体或平台已经兼容。
 
@@ -23,7 +23,10 @@ Last updated: 2026-07-27
 
 - 不下载或复制第三方样本；
 - 不包含可执行指令或恶意载荷；
-- PE、ELF 和 Mach-O 只有最小 header；
+- PE32/64、ELF32/64、Mach-O32/64/FAT 只有最小 header/load command；
+- APK/JAR/IPA 使用固定 store ZIP 和最小成员，RAR 使用空 main header，
+  ISO9660 使用固定 primary volume descriptor；
+- PYC 固定为 CPython 3.8 timestamp header，JPEG 为 1×1 JFIF/SOF/SOS；
 - archive 只包含固定文本 `diec-rust deterministic corpus\n`；
 - 时间戳、UID、GID、文件名、校验和与未使用字段全部固定；
 - PNG/GZIP 使用脚本生成的单个 DEFLATE stored block，不依赖 zlib 压缩器版本；
@@ -40,7 +43,7 @@ Last updated: 2026-07-27
 python3 tools/corpus/generate_baseline_corpus.py /tmp/diec-baseline-corpus
 ```
 
-独立 `file(1) 5.45` 验证了 13 种非空结构均符合生成意图；空文件和纯文本也被
+独立 `file(1) 5.45` 验证了 24 种结构均符合生成意图；空文件和纯文本也被
 正确分类。`minimal.cfbf` 只有合法 header，`file(1)` 明确报告无法读取 section
 信息，因此它同时属于受控截断输入。
 
@@ -101,14 +104,25 @@ python3 tools/upstream/compare_cli_oracles.py \
 | `empty.bin` | Binary | `Format: Empty file` | `85d959957f5cdfc3b3e5d45d83f1d73e5cfe74d5d7906dc13cf3f0c1b351fe5a` |
 | `plain.txt` | Binary | `Format: Plain text[LF]` | `f354d8df85d30a257d89ed74805c60964bc7f65260fc9ba4e01040f845f7cdf7` |
 | `minimal.elf` | ELF64 | `Unknown: Unknown` | `8130d1163c063377eda3143c12a590c73e4ba5621a902b63c4afc455b4249515` |
+| `minimal-elf32.elf` | ELF32 | `Unknown: Unknown` | `f3b54d11d3fc57706c7add5bc72b0e385a65a5b9a3e924c4fd432b43dd0b8383` |
 | `minimal.exe` | PE32 | `Unknown: Unknown` | `c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde` |
+| `minimal-pe64.exe` | PE64 | `Unknown: Unknown` | `1b115a1554c59f2afc298ba759378ced161e940072cbc2f8acd7edb763ba690c` |
 | `minimal.macho` | Mach-O64 | `Unknown: Unknown` | `533ad66822e6737bb512b6963cecec6671c949333ec804db9f682f446cad995d` |
+| `minimal-macho32.macho` | Mach-O32 | `Unknown: Unknown` | `64ae03252f407bdd0888f668591205b44a87a57ef2d80391cdc78bd0eb2321fa` |
+| `minimal-fat.macho` | Mach-O FAT | `Converter: lipo` | `978379072d1f74b81f78d2caac4e2f47e0788e1bca1b4a3ec196a4e7c7a39fe8` |
 | `minimal.dex` | DEX | `Format: DEX(035)` | `5b42ce5c748c9e66174989be4c56b14dfd03eccc9635fcd5b20fa3f60e2e5c98` |
 | `Minimal.class` | Java Class | `Format: Java Class(Java SE 8)` | `e430a0c3b596a3990d5fba87948d94256912ed6f1fb1eee245c0ddb8b33b18e8` |
+| `minimal.pyc` | Python Bytecode | `Format: Python Bytecode(3.8b4)` | `99ab55c1bc9708149ca7bd5a896abf7e4860760c8ea855a641cc11ff1de17a4c` |
 | `pixel.png` | PNG | `Format: PNG[1x1, 8 bits, RGB]` | `2bbe198a5ab3a9dde62e778e62ad73bc836bb6241a61774cb1591b164fc73802` |
+| `pixel.jpg` | JPEG | `Format: JPEG(1.1)`; `Image: DQT` | `49910f50eee0b247031b60131b035229f31410d113253d665e714ac0074842a6` |
 | `pixel.bmp` | Binary | `Image: Windows Bitmap(3)[1x1, 24bpp]` | `35b3366ffdb2bc58375af7ac00183338547e42c799a3023ebecb4868bc922f92` |
 | `minimal.pdf` | PDF | `Format: PDF(1.4)`; `Complier: HeaderComment(e2e3cfd3)` | `5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35` |
 | `payload.zip` | ZIP | `Unknown: Unknown` | `82fb2c4717f3b8063febe1e6f299a10da117f6c4909b63d31aeadc13d247ad31` |
+| `minimal.apk` | APK | `Unknown: Unknown` | `60f6f34d539fb6f3f954d3e023fc45f9e0719da92174e4b9bdde88a12afca04e` |
+| `minimal.jar` | JAR | `Unknown: Unknown` | `0fd4e7f109e634608e898ee774d934189dd8648c81198f6441ccade6fed6e571` |
+| `minimal.ipa` | Binary | `Archive: Zip(2.0)` | `f4e74ed3b429d0a46f53a4e16c306f6bbce6e2c3f2becba0fe00873e1a9caad5` |
+| `minimal.rar` | RAR | `Unknown: Unknown` | `5a19df75955d336f0f4573400e86909cf57f14655dc860d58d79dbb150d18574` |
+| `minimal.iso` | ISO 9660 | `Unknown: Unknown` | `5a9ccc1bed88d5c23d54b47f99b910e37b635c759002096b944678aa5dc2f3b6` |
 | `payload.tar` | Binary | `Archive: tar` | `e7348f825810f6ec94cdcd262c830e2c04532882683827f9351bd7158c692515` |
 | `payload.txt.gz` | Binary | `Unknown: Unknown` | `9e1bf608c90e2ff6c0b07259ec8dc25aa8f705a38b66e2be7ca431ea76be2cde` |
 | `minimal.cfbf` | CFBF | `Format: CFBF(3.62)`; `Format: Microsoft Office(1997-2003)` | `ccf571f677a541c8f26ec0ce4fe8139880a9ef64b6ec1e1c1de81e444a0ec78f` |
@@ -119,6 +133,13 @@ python3 tools/upstream/compare_cli_oracles.py \
 - 格式识别和规则命中是两个不同层次。最小 PE32、ELF64、Mach-O64 已进入正确
   filetype 分派，但在没有编译器/壳等特征时产生 Unknown record。
 - Java Class、DEX、PNG、PDF、CFBF 的最小结构足以触发专用 filetype 和格式规则。
+- ELF32、PE64、Mach-O32/FAT、PYC、JPEG、APK、JAR、RAR 和 ISO9660 也进入
+  对应专用分派；其中 FAT、PYC 和 JPEG 产生非 Unknown 规则结果。
+- IPA 的 central directory 命中 `XZip::isIPA()`，但固定
+  `XScanEngine::scanProcess()` 的 IPA 分支把 `_processDetect()` file type
+  明确设为 `FT_BINARY`（IPA 调用被注释），仅把 `ftInit` 设为 IPA。因此当前
+  JSON 是 `Binary / Archive: Zip(2.0)`；Rust legacy 路径不能擅自输出 IPA
+  detection。
 - BMP、WAV 和 TAR 由 Binary 顶层类型报告更具体的 value；不能把
   `detects[].filetype` 直接等同于所有受支持格式。
 - `payload.zip` 默认扫描只返回顶层 ZIP Unknown，没有报告内部 `payload.txt`。
@@ -207,6 +228,11 @@ filename prefix 行为单独记录在
 resource、overlay 和 archive 嵌套行为已用 7 个独立样本验证，见
 [`nested-scan-behavior.md`](nested-scan-behavior.md)。
 
+26 个默认扫描的机器报告为
+[`data/baseline-corpus-linux-qt5.json`](data/baseline-corpus-linux-qt5.json)。
+它绑定 compare tool、corpus manifest、两个 image revision，保存每次 raw stream
+长度/SHA-256 和未重排 detection tree；测试要求双 oracle 无差异。
+
 verbose、messages、profiling 以及 test/create test 两个遗留入口的确定性行为见
 [`cli-option-behavior.md`](cli-option-behavior.md)。其中 profiling 的非确定
 elapsed 值与固定规则执行序列另见
@@ -214,7 +240,8 @@ elapsed 值与固定规则执行序列另见
 
 ## 尚未覆盖
 
-- PE64、ELF32、Mach-O32/FAT、APK/JAR/IPA、RAR、ISO9660、PYC、JPEG 等格式。
+- 7Z、CAB、NPM、Amiga Hunk、Atari ST 及 DOS/COM/NE/LE/LX 等格式。
+- 新增 11 个格式的 scan/output/special 选项矩阵（当前仅固定 default JSON）。
 - 输出格式的转义边界、特殊 filename，以及专用 struct/entropy 阈值边界。
 - 能实际触发 deep 增量或 aggressive 过滤/上限差异的样本。
 - 其他 archive 格式、aggressive 高上限和最大嵌套深度。
