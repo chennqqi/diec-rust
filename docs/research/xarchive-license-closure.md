@@ -47,16 +47,18 @@ Last updated: 2026-07-27
 - `3rdparty/ppmd/src/Ppmd7.c`：Igor Pavlov/Dmitry Shkarin Public Domain；
 - `3rdparty/zlib/src/zlib.h`：zlib notice。
 
-## 未解决的聚合源码归属
+## 聚合源码归属
 
 `Algos/brotlideclib.cpp` 和 `Algos/zstddeclib.cpp` 都实际编译进 `diec`。文件内容分别
 具有明显 Brotli/Zstandard 来源标记，但全文未匹配版权、许可证、redistribution、
 MIT、BSD、Apache 或 Public Domain 声明，XArchive tree 也没有与它们对应的独立
 LICENSE 文件。
 
-因此当前证据只能证明其来源类型和进入产物，不能证明上游根 MIT 足以覆盖这些
-聚合代码。发布审计必须追溯原始 Brotli/Zstandard 版本、生成/拼接方法、原始
-LICENSE/NOTICE 与文件 hash；在完成前 R-002 仍保持 Open。
+[`embedded-compression-origins.md`](embedded-compression-origins.md) 已进一步
+固定 Brotli `v1.2.0` MIT 与 Zstandard `1.6.0-dev@5c7b7bad` BSD/GPLv2 官方
+来源：Zstandard 聚合代码 token 精确一致，Brotli 64-token 覆盖率为 98.60%。
+当前未关闭项不再是“来源类型未知”，而是 XArchive 剥离声明且未保存两个官方
+许可证，以及 Brotli 剩余约 1.4% token 尚未逐段归类。
 
 `xdeflatedecoder.cpp`、`xbzip2decoder.cpp` 和 `xalgo_local.h` 也是聚合源码，但其中
 保留了 MIT 包装声明及对应 zlib、bzip2 或 Public Domain 文本；它们仍需发布责任人

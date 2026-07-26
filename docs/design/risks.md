@@ -177,7 +177,9 @@ baseline 的变更都要检查本表。
   component root/submodule inventory，不覆盖 XArchive/XYara 文件头、规则数据或
   候选 Rust 依赖组合。固定 Linux CLI 又证明 XArchive 有 106 个实际编译单元和
   217 个依赖文件；其中 Brotli/Zstandard 聚合源进入链接闭包但没有文件内
-  license marker，是当前明确未关闭的归属缺口。
+  license marker。内容追溯已固定到 Brotli 1.2.0 MIT 和 Zstandard
+  1.6.0-dev BSD/GPLv2（后者官方 token 精确一致），但 XArchive 未携带相应
+  license/attribution，仍是明确未关闭的发布缺口。
 - **缓解**：每次导入/同步前生成 source/license inventory；保留原始 LICENSE、
   commit、path、hash 和 attribution；选型前由发布责任人复核组合。
 - **验证**：规则 bundle、source closure、binary dependency、samples 和 release

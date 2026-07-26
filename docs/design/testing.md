@@ -530,6 +530,9 @@ upstream 与 Rust 使用相同 bytes/options/database；无法等价的 case 不
 - bundled build closure：由固定 link line 和 `.o.d` 反推实际 compile
   source/header/archive，固定 path/hash/license marker，并拒绝对象数或链接关系
   静默漂移；
+- embedded source provenance：固定官方 remote/commit/license/generator/input，
+  以去注释 token 精确比较或长 shingle coverage 证明来源；覆盖率不得代替未匹配
+  区域分类；
 - fuzz corpus replay、零未分类 crash；
 - benchmark 与 size/resource gate；
 - release binary/library hash、依赖和签名清单。

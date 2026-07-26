@@ -161,13 +161,16 @@ LICENSE 的 vendored 代码。
 固定 Linux Qt5 CMake CLI 的 XArchive 实际闭包已由
 [`xarchive-license-closure.md`](xarchive-license-closure.md) 展开为 84 个直接对象、
 22 个 archive 对象和 217 个源码/头文件依赖。该证据确认 XYara 未链接进 `diec`，
-同时发现实际编译的 Brotli/Zstandard 聚合源没有保留许可证声明。
+同时发现实际编译的 Brotli/Zstandard 聚合源没有保留许可证声明。后续
+[`embedded-compression-origins.md`](embedded-compression-origins.md) 已把它们
+分别固定到 Brotli 1.2.0 MIT 和 Zstandard 1.6.0-dev BSD/GPLv2 官方来源。
 
 ## 尚未完成
 
 - 构建固定上游并保存 CMake target graph、link map、动态依赖和符号表。
-- 追溯 XArchive 聚合 Brotli/Zstandard 源码的原始版本、生成方式与
-  LICENSE/NOTICE；对 YARA 内嵌的 TLSH/authenticode 等代码完成逐文件审计。
+- 为 XArchive 聚合 Brotli/Zstandard 恢复独立 LICENSE/NOTICE/attribution，并
+  完成 Brotli 剩余约 1.4% token 分类；对 YARA 内嵌的 TLSH/authenticode 等
+  代码完成逐文件审计。
 - 区分正常扫描、`--info`、`--struct`、YARA/PEiD 数据和 GUI-only 路径的最小产物闭包。
 - 对 Qt 5 与 Qt 6 构建分别记录链接依赖和规则运行时行为。
 - 形成发布时必须携带的 LICENSE/NOTICE 清单；在审计完成前不得把当前表当作发布许可结论。
