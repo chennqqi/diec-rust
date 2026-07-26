@@ -253,6 +253,14 @@ trailing diagnostic”而不是单个合法 JSON value，oracle reader 必须同
 字节并解析尾随记录。详见
 [`global-typo-error-behavior.md`](global-typo-error-behavior.md)。
 
+固定 Qt 6.4.2 CMake oracle 保持相同 detection、exit、空 stderr 和 framing，但
+`ReferenceError` 文本改为 `NAME is not defined`。同一 Qt 5/Qt 6 CLI 初始矩阵还在
+最小 PE 上发现 Qt 6 独有的四行 `Unimplemented code.` stderr，并将来源二分到
+`PE/__GenericHeuristicAnalysis_By_DosX.7.sg`；四类整数返回桥接和 PE init-only
+实验均未复现该 warning。见
+[`upstream-qt6-differential.md`](upstream-qt6-differential.md)。这证明 runtime
+profile 和 stderr 都属于兼容面，尚未覆盖的 Qt 6 HostApi 行为仍不能外推。
+
 ## 候选运行时初筛
 
 本节只记录候选，不作设计决定：

@@ -49,6 +49,44 @@ class GlobalTypoErrorProbeTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "messages"):
             MODULE.parse_stdout(data + b"extra\n", name, 32)
 
+    def test_parse_stdout_accepts_exact_qt6_diagnostic(self):
+        document = {
+            "detects": [
+                {
+                    "filetype": "Binary",
+                    "offset": "0",
+                    "size": "40",
+                    "parentfilepart": "Header",
+                    "values": [
+                        {
+                            "type": "Unknown",
+                            "name": "Unknown",
+                            "version": "",
+                            "info": "",
+                        }
+                    ],
+                }
+            ]
+        }
+        name = "audio-xma2-typo.wem"
+        data = (
+            json.dumps(document)
+            + "\n\n"
+            + MODULE.EXPECTED_ERRORS_QT6[name]
+            + "\n"
+        ).encode()
+        parsed = MODULE.parse_stdout(
+            data,
+            name,
+            40,
+            MODULE.EXPECTED_ERRORS_QT6,
+        )
+        self.assertTrue(
+            parsed["diagnostic"].endswith(
+                "xma2_pase_xma2_chunk is not defined"
+            )
+        )
+
     def test_committed_report_has_equal_exact_errors(self):
         path = (
             ROOT
@@ -66,6 +104,39 @@ class GlobalTypoErrorProbeTests(unittest.TestCase):
                 )
                 self.assertEqual(item["exit_code"], 0)
                 self.assertEqual(item["raw_stderr_bytes"], 0)
+
+    def test_committed_qt5_qt6_report_preserves_runtime_diagnostics(self):
+        report = json.loads(
+            (
+                ROOT
+                / "docs/research/data/global-typo-errors-qt5-qt6.json"
+            ).read_text(encoding="utf-8")
+        )
+        self.assertTrue(report["normalized_detections_equal"])
+        self.assertFalse(report["diagnostics_equal"])
+        self.assertEqual(
+            [oracle["name"] for oracle in report["oracles"]],
+            [
+                "linux-qt5-qmake",
+                "linux-qt5-cmake",
+                "linux-qt6-cmake",
+            ],
+        )
+        qt6 = report["oracles"][-1]
+        self.assertEqual(
+            qt6["image_id"],
+            (
+                "sha256:e015495c313d0715f0b80f395da983a"
+                "113a439f2a135eb637e9f0638c225200b"
+            ),
+        )
+        for item in qt6["inputs"]:
+            self.assertEqual(
+                item["diagnostic"],
+                MODULE.EXPECTED_ERRORS_QT6[item["path"]],
+            )
+            self.assertEqual(item["exit_code"], 0)
+            self.assertEqual(item["raw_stderr_bytes"], 0)
 
     def test_fixture_validation_rejects_mutation(self):
         manifest = (

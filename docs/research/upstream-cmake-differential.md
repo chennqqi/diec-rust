@@ -2,13 +2,16 @@
 
 Status: Draft  
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`  
-Last updated: 2026-07-25
+Last updated: 2026-07-26
 
 ## 结论
 
 固定上游的官方 Ubuntu 发布脚本使用 CMake Release。实验在 Linux amd64 和
 Qt 5.15.13 环境中不修改源码地构建了 CMake `diec` 目标，并与先前的 qmake
 产物执行七组逐字节 CLI 差分。
+
+本文只比较 Qt 5 内的构建入口；Qt 6 CMake 构建及跨 major 差分见
+[`upstream-qt6-differential.md`](upstream-qt6-differential.md)。
 
 两个产物的文件哈希、大小、Build ID 和优化参数不同，但下列可观察结果完全相同：
 
@@ -192,8 +195,9 @@ JSON 中只有输入二进制的 `size` 不同。
 - APT repository 未固定 snapshot，clean build 尚未证明 bit-for-bit reproducible。
 - GitHub TLS 中断曾触发 submodule 自身重试；构建入口尚未提供显式、有界重试。
 - Windows 和 macOS oracle 尚未建立。
-- 自动差分目前比较原始 stdout/stderr/exit code，并输出可保存的 JSON 报告，
-  但尚未提交带 provenance 的版本化原始 baseline 文件。
+- 自动差分比较原始 stdout/stderr/exit code，并输出可保存的 JSON 报告。
+  Qt 5/Qt 6 首轮报告已版本化；本文七组 Qt 5 qmake/CMake 扩展矩阵仍未全部固化为
+  带 provenance 的版本化报告。
 
 下一步应继续补充尚未覆盖的格式、畸形变体，将已建立的 engine archive
 harness 扩展到其他 archive 格式及高上限，并保存带 provenance 的版本化

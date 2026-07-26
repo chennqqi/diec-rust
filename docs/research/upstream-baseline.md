@@ -2,7 +2,7 @@
 
 Status: Draft  
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`  
-Last updated: 2026-07-25
+Last updated: 2026-07-26
 
 ## 结论摘要
 
@@ -33,7 +33,8 @@ git -C DIE-engine submodule status --recursive
 仓库中的 subtree 只物化主仓库和规则数据；Linux qmake/CMake CLI 实验会在隔离
 容器中从固定 SHA 初始化全部 58 个直接 submodule。构建、产物和可重复性边界见
 [`upstream-build-baseline.md`](upstream-build-baseline.md) 与
-[`upstream-cmake-differential.md`](upstream-cmake-differential.md)。实验尚未
+[`upstream-cmake-differential.md`](upstream-cmake-differential.md) 与
+[`upstream-qt6-differential.md`](upstream-qt6-differential.md)。实验尚未
 覆盖完整发布打包及 Windows/macOS，因此本文件仍为 Draft。
 
 本仓库目前还物化了两个可审计快照：
@@ -130,11 +131,13 @@ python3 tools/verify_upstream.py
 
 - [`cli-dependency-and-license.md`](cli-dependency-and-license.md) 已确认 CLI 核心范围
   16 个组件均无嵌套 `.gitmodules`；其余 42 个直接组件仍待检查。
-- Linux qmake 和 CMake CLI 候选 oracle 已构建并完成首轮差分；完整 CMake
-  发布打包以及 Windows、macOS 的可重复构建和运行记录仍待完成。
+- Linux Qt5 qmake、Qt5 CMake 和 Qt6 CMake CLI 候选 oracle 已构建。Qt5
+  qmake/CMake 首轮矩阵无差异；Qt 5/Qt 6 首轮差分发现一项规则 stderr 差异。
+  完整 CMake 发布打包以及 Windows、macOS 的可重复构建和运行记录仍待完成。
 - release workflow、预编译包与源码构建之间的数据资产差异。
 - 所有 submodule 和规则文件的许可证审计。
-- 已采集 Linux qmake 产物的动态/静态链接清单；其他构建路径仍待采集。
+- 已采集 Linux Qt5 qmake/CMake 与 Qt6 CMake 产物的链接证据；完整静态依赖与
+  发布产物清单仍待采集。
 - 已完成自扫描 smoke baseline 和 15 个项目生成安全样本的 JSON/退出码差分；
   其他输出格式、扫描模式、畸形矩阵和跨平台原始输出仍待采集。
 

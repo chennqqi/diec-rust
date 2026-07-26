@@ -1,3 +1,4 @@
+import hashlib
 import importlib.util
 import json
 import pathlib
@@ -6,8 +7,9 @@ import tempfile
 import unittest
 
 
+ROOT = pathlib.Path(__file__).resolve().parents[2]
 MODULE_PATH = (
-    pathlib.Path(__file__).parents[1]
+    ROOT / "tools"
     / "upstream"
     / "compare_cli_oracles.py"
 )
@@ -19,6 +21,82 @@ SPEC.loader.exec_module(MODULE)
 
 
 class CompareObservationsTests(unittest.TestCase):
+    def test_committed_qt5_qt6_report_has_one_exact_difference(self):
+        report = json.loads(
+            (
+                ROOT / "docs/research/data/qt5-qt6-cli.json"
+            ).read_text(encoding="utf-8")
+        )
+        revision = "74eaf505c250ab47e709024e9dc41657cd8f2254"
+        self.assertEqual(report["expected_revision"], revision)
+        self.assertEqual(report["left_revision"], revision)
+        self.assertEqual(report["right_revision"], revision)
+        self.assertEqual(len(report["cases"]), 8)
+        self.assertEqual(len(report["unreadable_input"]), 4)
+        self.assertEqual(len(report["corpus"]), 15)
+        self.assertFalse(report["equal"])
+        self.assertEqual(
+            report["failures"],
+            ["corpus.minimal.exe.stderr"],
+        )
+
+        for case in report["cases"].values():
+            self.assertEqual(case["differences"], [])
+        for case in report["unreadable_input"].values():
+            self.assertEqual(case["differences"], [])
+        differing = {
+            name: case["differences"]
+            for name, case in report["corpus"].items()
+            if case["differences"]
+        }
+        self.assertEqual(differing, {"minimal.exe": ["stderr"]})
+
+        minimal = report["corpus"]["minimal.exe"]
+        self.assertEqual(minimal["left"]["exit_code"], 0)
+        self.assertEqual(minimal["right"]["exit_code"], 0)
+        self.assertEqual(
+            minimal["left"]["stdout_sha256"],
+            minimal["right"]["stdout_sha256"],
+        )
+        self.assertEqual(
+            minimal["left_detect_tree"],
+            minimal["right_detect_tree"],
+        )
+        self.assertEqual(
+            minimal["left"]["stderr_sha256"],
+            hashlib.sha256(b"").hexdigest(),
+        )
+        self.assertEqual(
+            minimal["right"]["stderr_sha256"],
+            (
+                "b303e6913e76b70a6f0d6a4d3ccd389"
+                "bc342589e45e1615873a37334dea8c51b"
+            ),
+        )
+
+    def test_parse_args_accepts_optional_output_path(self):
+        original = sys.argv
+        try:
+            sys.argv = [
+                "compare_cli_oracles.py",
+                "--left-image",
+                "left",
+                "--left-binary",
+                "/left",
+                "--right-image",
+                "right",
+                "--right-binary",
+                "/right",
+                "--expected-revision",
+                "revision",
+                "--output",
+                "report.json",
+            ]
+            arguments = MODULE.parse_args()
+        finally:
+            sys.argv = original
+        self.assertEqual(arguments.output, pathlib.Path("report.json"))
+
     def test_accepts_identical_observations(self):
         observation = MODULE.Observation(0, b"same\n", b"")
 

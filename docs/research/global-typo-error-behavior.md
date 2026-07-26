@@ -52,11 +52,11 @@ RIFF/RIFX WAVE/XWMA chunk walk 同时找到非零 `XMA2` 和 `data` payload offs
 
 ```powershell
 python tools/corpus/generate_global_typo_corpus.py `
-  I:\tmp\diec-rust-global-typo-corpus
+  <external-work-dir>/global-typo-corpus
 
 python tools/upstream/probe_global_typo_errors.py `
-  --fixture-dir I:\tmp\diec-rust-global-typo-corpus `
-  --raw-dir I:\tmp\diec-rust-global-typo-raw `
+  --fixture-dir <external-work-dir>/global-typo-corpus `
+  --raw-dir <external-work-dir>/global-typo-raw `
   --output docs/research/data/global-typo-errors-qt5.json
 ```
 
@@ -70,8 +70,9 @@ stderr 写入调用方指定的仓库外目录，版本库只保存哈希和结�
 | --- | --- | --- |
 | Qt 5 qmake | `sha256:cc5561a5d256c7912227a8ecf4ba9c6b9178c99911e471017d3c3988bac964ab` | `/opt/die-source/build/release/diec` |
 | Qt 5 CMake | `sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040` | `/opt/die-build/src/console/diec` |
+| Qt 6 CMake | `sha256:e015495c313d0715f0b80f395da983a113a439f2a135eb637e9f0638c225200b` | `/opt/die-build/src/console/diec` |
 
-两个镜像的 OCI revision 都是固定 DIE-engine commit。调用参数为
+三个镜像的 OCI revision 都是固定 DIE-engine commit。调用参数为
 `--messages --json`、固定 main/extra database 和单个输入。
 
 | 输入 | Detection | 追加诊断 | stdout bytes / SHA-256 |
@@ -90,6 +91,12 @@ schema 内。probe 明确断言 JSON 后只能有预期的一条非空消息，�
 同一命令第二次写到不同 raw/output 目录，报告 SHA-256 仍为
 `cc251a16ba137644b0bb0924328c3c3a4dc1556bb8fe50785df316ab931f70be`。
 
+Qt 6 的 detection、exit、stderr 和 framing 与 Qt 5 相同，但两条尾随诊断把
+`Can't find variable: NAME` 写成 `NAME is not defined`。三 oracle 机器报告见
+[`data/global-typo-errors-qt5-qt6.json`](data/global-typo-errors-qt5-qt6.json)，
+完整构建身份和差分见
+[`upstream-qt6-differential.md`](upstream-qt6-differential.md)。
+
 ## 5. 对 Rust 实现和测试的约束
 
 - 规则加载必须保留原始拼写；未知 global 在运行到调用点时产生明确诊断。
@@ -103,7 +110,7 @@ schema 内。probe 明确断言 JSON 后只能有预期的一条非空消息，�
 
 ## 6. 尚未覆盖
 
-- Qt 6、Windows 和 macOS 的诊断文本与 framing。
+- Windows 和 macOS 的诊断文本与 framing；Qt 6 当前只覆盖 Linux 6.4.2。
 - 不带 `--messages` 时这两条真实规则错误的 stdout。
 - 一个扫描中多个 runtime error 的排序和上限。
 - 错误规则之后的 signature 是否继续执行、已有 detection 是否全部保留。

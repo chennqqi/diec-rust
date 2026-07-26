@@ -1,0 +1,49 @@
+{
+  "candidate_scope": {
+    "directory": "db/PE",
+    "helper_count": 30,
+    "pe_init": "db/PE/_init",
+    "signature_count": 834
+  },
+  "combined_minimized_warning_count": 4,
+  "findings": [
+    {
+      "path": "PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+      "raw_stderr_bytes": 80,
+      "raw_stderr_sha256": "b303e6913e76b70a6f0d6a4d3ccd389bc342589e45e1615873a37334dea8c51b",
+      "raw_stdout_bytes": 467,
+      "raw_stdout_sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde",
+      "sha256": "c84a375fdc66508c66ae10440ab46be23d345d602b2ae6d79e26e66393ebadde",
+      "stderr_lines": [
+        "Unimplemented code.",
+        "Unimplemented code.",
+        "Unimplemented code.",
+        "Unimplemented code."
+      ],
+      "warning_count": 4
+    }
+  ],
+  "full_warning_count": 4,
+  "generator": "tools/upstream/minimize_qt6_rule_warnings.py",
+  "independently_additive": true,
+  "init_only_warning_count": 0,
+  "input": {
+    "manifest": "docs/research/data/baseline-corpus.json",
+    "name": "minimal.exe",
+    "sha256": "afb1bcd812caa45095075a60ff49599c7d5e767c7732226c3e0007708cb198a2"
+  },
+  "observations": 22,
+  "oracle": {
+    "binary": "/opt/die-build/src/console/diec",
+    "id": "sha256:e015495c313d0715f0b80f395da983a113a439f2a135eb637e9f0638c225200b",
+    "name": "diec-rust/upstream-oracle-cmake-qt6:74eaf505",
+    "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "platform": "linux-amd64-qt6",
+  "raw_artifacts": {
+    "storage": "untracked external directory selected by --raw-dir"
+  },
+  "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+  "schema_version": 1,
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

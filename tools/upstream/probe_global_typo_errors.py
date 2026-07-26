@@ -25,6 +25,17 @@ EXPECTED_ERRORS = {
         "ReferenceError: Can't find variable: xma2_pase_xma2_chunk"
     ),
 }
+EXPECTED_ERRORS_QT6 = {
+    "debug-dwarf-typo.bin": (
+        "debug_data_debugData.1.sg: "
+        "Binary/debug_data_debugData.1.sg: 58: "
+        "ReferenceError: get_DWRAF_vi is not defined"
+    ),
+    "audio-xma2-typo.wem": (
+        "audio_WEM.1.sg: Binary/audio_WEM.1.sg: 55: "
+        "ReferenceError: xma2_pase_xma2_chunk is not defined"
+    ),
+}
 
 
 @dataclass(frozen=True)
@@ -45,6 +56,11 @@ ORACLES = (
         "diec-rust/upstream-oracle-cmake:74eaf505",
         "/opt/die-build/src/console/diec",
     ),
+)
+QT6_ORACLE = Oracle(
+    "linux-qt6-cmake",
+    "diec-rust/upstream-oracle-cmake-qt6:74eaf505",
+    "/opt/die-build/src/console/diec",
 )
 
 
@@ -150,13 +166,14 @@ def parse_stdout(
     stdout: bytes,
     input_name: str,
     expected_size: int,
+    expected_errors: dict[str, str] = EXPECTED_ERRORS,
 ) -> dict[str, Any]:
     text = stdout.decode("utf-8")
     document, end = json.JSONDecoder().raw_decode(text)
     messages = [
         line for line in text[end:].splitlines() if line.strip()
     ]
-    if messages != [EXPECTED_ERRORS[input_name]]:
+    if messages != [expected_errors[input_name]]:
         raise ValueError(f"unexpected oracle messages: {messages}")
     detects = document.get("detects", [])
     if len(detects) != 1:
@@ -204,6 +221,7 @@ def build_report(
     manifest_path: pathlib.Path,
     rules_root: pathlib.Path,
     raw_dir: pathlib.Path,
+    oracles: tuple[Oracle, ...] = ORACLES,
 ) -> dict[str, Any]:
     manifest, manifest_sha256 = load_and_verify_fixture(
         fixture_dir, manifest_path, rules_root
@@ -213,8 +231,16 @@ def build_report(
     normalized_by_input: dict[str, list[dict[str, Any]]] = {
         entry["path"]: [] for entry in manifest["entries"]
     }
-    for oracle in ORACLES:
+    diagnostics_by_input: dict[str, list[str]] = {
+        entry["path"]: [] for entry in manifest["entries"]
+    }
+    for oracle in oracles:
         image_id, revision = inspect_image(oracle.image)
+        expected_errors = (
+            EXPECTED_ERRORS_QT6
+            if oracle == QT6_ORACLE
+            else EXPECTED_ERRORS
+        )
         inputs = []
         for entry in manifest["entries"]:
             input_name = entry["path"]
@@ -234,9 +260,17 @@ def build_report(
             if process.stderr:
                 raise ValueError(f"{oracle.name}/{input_name} wrote stderr")
             parsed = parse_stdout(
-                process.stdout, input_name, entry["size"]
+                process.stdout,
+                input_name,
+                entry["size"],
+                expected_errors,
             )
-            normalized_by_input[input_name].append(parsed)
+            normalized_by_input[input_name].append(
+                parsed["normalized_detection"]
+            )
+            diagnostics_by_input[input_name].append(
+                parsed["diagnostic"]
+            )
             inputs.append(
                 {
                     "path": input_name,
@@ -259,18 +293,22 @@ def build_report(
             }
         )
     normalized_equal = all(
-        len(outputs) == len(ORACLES)
+        len(outputs) == len(oracles)
         and all(output == outputs[0] for output in outputs[1:])
         for outputs in normalized_by_input.values()
     )
     if not normalized_equal:
-        raise ValueError("qmake and CMake typo observations differ")
-    return {
+        raise ValueError("oracle normalized typo detections differ")
+    report = {
         "schema_version": 1,
         "generator": "tools/upstream/probe_global_typo_errors.py",
         "upstream_commit": UPSTREAM_COMMIT,
         "rules_commit": RULES_COMMIT,
-        "platform": "linux-amd64-qt5",
+        "platform": (
+            "linux-amd64-qt5"
+            if oracles == ORACLES
+            else "linux-amd64-qt5-qt6"
+        ),
         "fixture_manifest": {
             "path": "docs/research/data/global-typo-corpus.json",
             "sha256": manifest_sha256,
@@ -288,8 +326,20 @@ def build_report(
             "storage": "untracked external directory selected by --raw-dir",
         },
         "oracles": observations,
-        "normalized_outputs_equal": normalized_equal,
     }
+    if oracles == ORACLES:
+        report["normalized_outputs_equal"] = all(
+            len(outputs) == len(oracles)
+            and all(output == outputs[0] for output in outputs[1:])
+            for outputs in diagnostics_by_input.values()
+        )
+    else:
+        report["normalized_detections_equal"] = normalized_equal
+        report["diagnostics_equal"] = all(
+            all(output == outputs[0] for output in outputs[1:])
+            for outputs in diagnostics_by_input.values()
+        )
+    return report
 
 
 def main() -> int:
@@ -308,12 +358,18 @@ def main() -> int:
     )
     parser.add_argument("--raw-dir", type=pathlib.Path, required=True)
     parser.add_argument("--output", type=pathlib.Path, required=True)
+    parser.add_argument(
+        "--include-qt6",
+        action="store_true",
+        help="Also run the fixed CMake Qt 6 oracle",
+    )
     args = parser.parse_args()
     report = build_report(
         args.fixture_dir.resolve(),
         args.manifest.resolve(),
         args.rules_root.resolve(),
         args.raw_dir.resolve(),
+        ORACLES + (QT6_ORACLE,) if args.include_qt6 else ORACLES,
     )
     args.output.write_text(
         json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n",

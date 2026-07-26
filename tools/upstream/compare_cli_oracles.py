@@ -804,6 +804,11 @@ def parse_args() -> argparse.Namespace:
             "special modes"
         ),
     )
+    parser.add_argument(
+        "--output",
+        type=pathlib.Path,
+        help="Write the JSON report to this path instead of stdout",
+    )
     return parser.parse_args()
 
 
@@ -1221,8 +1226,18 @@ def main() -> int:
 
     report["equal"] = not failures
     report["failures"] = failures
-    json.dump(report, sys.stdout, ensure_ascii=False, indent=2, sort_keys=True)
-    sys.stdout.write("\n")
+    serialized = (
+        json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True)
+        + "\n"
+    )
+    if args.output is None:
+        sys.stdout.write(serialized)
+    else:
+        args.output.write_text(
+            serialized,
+            encoding="utf-8",
+            newline="\n",
+        )
     return 0 if not failures else 1
 
 

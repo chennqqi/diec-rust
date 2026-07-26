@@ -117,15 +117,18 @@ baseline 的变更都要检查本表。
   C++ slot；与 13 个规则脚本扩展静态覆盖 460/464 个 arity 形状。固定 Qt 5
   QObject 探针证明三个额外实参形状会忽略额外参数，并确认未定义
   `PE.getEPSignature` 调用抛出 `TypeError`。类型转换、畸形 map、find 的畸形/
-  穷举边界、无效/短小 wrapper 上下文、异常上层传播、Qt 6 和其余 HostApi 行为
-  仍未验证。非格式面已固定 16 个 native global slot；Qt 5 只注册其中 15 个，
+  穷举边界、无效/短小 wrapper 上下文、异常上层传播和其余 HostApi 行为仍未
+  验证。Qt 6.4.2 初始 CLI 差分已确认两个可达未定义 global 的 detection 相同而
+  `ReferenceError` 文本不同；最小 PE 另有四行 Qt 6-only stderr，已二分到单条
+  GenericHeuristicAnalysis 规则但未定位精确表达式。四类整数返回桥接两侧相同，
+  不能外推其余转换。非格式面已固定 16 个 native global slot；Qt 5 只注册其中 15 个，
   固定规则实际调用 7 个共 253 次。71 个 undeclared direct-call 名已全部分类，
   暴露两个不应静默修复的规则拼写错误；32/40 字节安全输入已证明二者在固定
   Qt 5 qmake/CMake 中可达，并产生相同 `Unknown`、trailing `ReferenceError`、
   空 stderr 和 exit 0。跨文件函数 include 可达性和 native global 的完整行为
   仍未验证。固定 Qt 5 探针已确认缺参 `"undefined"` 转换、
-  重复结果、单项删除/block、数组字符串化、双 stop 状态和重复 include；Qt 6
-  及剩余转换边界仍是开放风险。
+  重复结果、单项删除/block、数组字符串化、双 stop 状态和重复 include；完整
+  Qt 6 HostApi harness 及剩余转换边界仍是开放风险。
 - **缓解**：保持 `RuleRuntime`/`HostApi` port；建立全规则 inventory、最小失败
   fixture、host call trace；基于证据选 runtime，禁止静默转换规则。
 - **验证**：固定规则 100% discovered/parsed/loaded，zero silent unsupported；
@@ -207,7 +210,8 @@ baseline 的变更都要检查本表。
   文件名已使 `sort_signature_prio()` 产生非传递比较环，`std::sort` 结果不能
   外推到另一 STL/编译器。
 - **当前证据**：固定 Linux Qt5 qmake/CMake oracle 的 292 条 Binary 执行序列
-  逐项一致，重复运行 order hash 稳定；尚无 MSVC/libc++ 顺序证据。
+  逐项一致，重复运行 order hash 稳定；Linux Qt6 初始矩阵已证明 runtime profile
+  可改变异常文本和 stderr。尚无 MSVC/libc++ 顺序证据。
 - **缓解**：报告按 platform 分层；未固定 oracle 标记 missing；不允许跨平台
   blanket normalization。
 - **验证**：Windows/macOS 固定 upstream oracle、path/encoding corpus 和 Rust
@@ -275,7 +279,8 @@ baseline 的变更都要检查本表。
 
 - **触发**：APT 未 snapshot、base/toolchain 变化、binary hash 改变、oracle crash、
   qmake/CMake 分歧。
-- **当前缓解**：image digest、Dockerfile/toolchain/binary hash、双 oracle 比较。
+- **当前缓解**：image digest、Dockerfile/toolchain/binary hash、Qt 5
+  qmake/CMake 双 oracle 和独立 Qt 6 CMake profile 比较。
 - **缓解**：固定 package snapshot/OCI digest；identity mismatch 作为
   infrastructure failure；baseline namespace 不覆盖。
 - **验证**：clean environment rebuild、行为 matrix、产物/依赖证据。

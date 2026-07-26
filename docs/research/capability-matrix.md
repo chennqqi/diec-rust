@@ -2,7 +2,7 @@
 
 Status: Draft  
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`  
-Last updated: 2026-07-25
+Last updated: 2026-07-26
 
 本矩阵同时记录源码证据和固定 Linux oracle 实验。`Observed` 表示已用固定
 二进制、规则和输入验证；未标记为 Observed 的能力仍不能从相邻实验外推。
@@ -155,7 +155,8 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
 - JSON/XML/CSV/TSV 的转义和嵌套排序。
 - deep 以及 aggressive resource 过滤/计数上限的增量样本。
 - 其他 archive 格式、aggressive 高上限、最大深度和总解压资源限制。
-- Qt 5 与 Qt 6 输出差异。
+- Qt 5 与 Qt 6 的首轮基础/安全语料/不可读输入差分已完成；仍需扩展到完整
+  output/scan/special/path/database/nested 矩阵及其他 Qt 6 minor。
 - Linux、Windows、macOS 路径与编码差异。
 
 ## 证据

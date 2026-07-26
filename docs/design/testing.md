@@ -176,6 +176,14 @@ primary oracle 固定为官方 CMake 路径构建的 upstream CLI；qmake oracle
 - base image digest、Dockerfile hash、工具链/包 inventory；
 - binary hash、link metadata 和启动命令。
 
+“官方 CMake”仍不足以唯一标识 oracle：固定 Qt 5/Qt 6 初始差分已证明同一
+upstream/rules/platform/input 可产生 runtime-specific `ReferenceError` 文本，
+Qt 6 还可额外写 stderr。identity 因此必须另含 Qt major/minor、script runtime
+backend 和构建 profile。当前 Linux Qt 5 CMake profile 是 primary，Qt 6 CMake
+作为独立 conformance profile；不得把两者合并成一个可互换的 expected namespace。
+证据见
+[`../research/upstream-qt6-differential.md`](../research/upstream-qt6-differential.md)。
+
 现有 `compare_cli_oracles.py` 在 Phase 1 扩展为可比较 upstream 与 Rust binary，
 但不得让 Rust 进程参与生成 upstream expected 值。archive-only engine 能力继续
 使用固定 harness；harness 源码/binary hash 是 case identity 的组成部分，并与发布

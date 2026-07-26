@@ -23,6 +23,7 @@ Phase 0 计划形成：
 - [`cli-dependency-and-license.md`](cli-dependency-and-license.md)：CLI 源码/链接依赖闭包与许可证初审（Draft）。
 - [`upstream-build-baseline.md`](upstream-build-baseline.md)：固定 Linux Qt5/qmake CLI 构建与行为实验（Draft）。
 - [`upstream-cmake-differential.md`](upstream-cmake-differential.md)：官方 CMake CLI 构建及与 qmake 的原始输出差分（Draft）。
+- [`upstream-qt6-differential.md`](upstream-qt6-differential.md)：固定 Qt 6 CMake CLI 构建、Qt 5/Qt 6 原始差分与规则 warning 最小化（Draft）。
 - [`behavior-baseline.md`](behavior-baseline.md)：确定性安全语料、原始输出哈希和多格式行为（Draft）。
 - [`cli-special-modes.md`](cli-special-modes.md)：entropy/info/struct 的 schema、优先级和边界行为（Draft）。
 - [`cli-path-behavior.md`](cli-path-behavior.md)：多目标、目录递归、输出聚合和错误顺序（Draft）。
@@ -53,6 +54,10 @@ Phase 0 计划形成：
 - [`data/global-host-api-qt5.json`](data/global-host-api-qt5.json)：真实 `DiE_ScriptEngine` 的 Qt 5 native global 转换与副作用基线。
 - [`data/global-typo-corpus.json`](data/global-typo-corpus.json)：两个未定义 global 分支的 project-generated 安全最小语料及规则哈希。
 - [`data/global-typo-errors-qt5.json`](data/global-typo-errors-qt5.json)：固定 qmake/CMake oracle 的 detection、trailing diagnostic 与原始输出哈希。
+- [`data/global-typo-errors-qt5-qt6.json`](data/global-typo-errors-qt5-qt6.json)：固定 Qt 5/Qt 6 oracle 的相同 detection 与 runtime-specific `ReferenceError` 文本。
+- [`data/qt5-qt6-cli.json`](data/qt5-qt6-cli.json)：固定 CMake Qt 5/Qt 6 CLI 的基础、安全语料和不可读输入原始差分。
+- [`data/qt6-rule-warnings.json`](data/qt6-rule-warnings.json)：Qt6 PE warning 的可重复二分及唯一规则来源。
+- [`data/qt-integer-bridge-fixture.json`](data/qt-integer-bridge-fixture.json)：项目生成的四类 Qt 整数返回桥接规则清单。
 - [`data/c-static-link.json`](data/c-static-link.json)：C static-link spike 输入哈希、ABI 符号、平台依赖和稳定结果摘要。
 
 每份文档遵守 [`../README.md`](../README.md) 的证据和状态约定。实验附件如需版本化，应使用文本格式并放入主题对应的子目录。

@@ -1,0 +1,76 @@
+FROM ubuntu@sha256:4fbb8e6a8395de5a7550b33509421a2bafbc0aab6c06ba2cef9ebffbc7092d90
+
+ARG DEBIAN_FRONTEND=noninteractive
+ARG DIE_COMMIT=74eaf505c250ab47e709024e9dc41657cd8f2254
+
+RUN apt-get update \
+    && apt-get install --yes --no-install-recommends \
+        build-essential \
+        ca-certificates \
+        cmake \
+        file \
+        git \
+        libqt6opengl6-dev \
+        qt6-base-dev \
+        qt6-base-dev-tools \
+        qt6-declarative-dev \
+        qt6-declarative-dev-tools \
+        qt6-svg-dev \
+        qt6-tools-dev \
+        qt6-tools-dev-tools \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /opt/die-source
+
+RUN git init \
+    && git remote add origin https://github.com/horsicq/DIE-engine.git \
+    && git fetch --depth 1 origin "${DIE_COMMIT}" \
+    && git checkout --detach FETCH_HEAD \
+    && test "$(git rev-parse HEAD)" = "${DIE_COMMIT}" \
+    && git submodule update --init --recursive --depth 1 \
+    && test "$(git submodule status | wc -l)" -eq 58 \
+    && ! git submodule status --recursive | grep -E '^[-+U]'
+
+RUN mkdir -p /opt/die-evidence \
+    && git submodule status --recursive > /opt/die-evidence/submodules.txt \
+    && dpkg-query --show \
+        build-essential \
+        ca-certificates \
+        cmake \
+        file \
+        git \
+        libqt6opengl6-dev \
+        qt6-base-dev \
+        qt6-base-dev-tools \
+        qt6-declarative-dev \
+        qt6-declarative-dev-tools \
+        qt6-svg-dev \
+        qt6-tools-dev \
+        qt6-tools-dev-tools \
+        > /opt/die-evidence/packages.tsv \
+    && qtpaths6 --qt-version > /opt/die-evidence/qt-version.txt \
+    && cmake --version > /opt/die-evidence/cmake-version.txt \
+    && cmake \
+        -S /opt/die-source \
+        -B /opt/die-build \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+        -DQT_DEFAULT_MAJOR_VERSION=6 \
+    && cmake --build /opt/die-build \
+        --target diec \
+        --parallel "$(nproc)" \
+    && cmake -LA -N /opt/die-build > /opt/die-evidence/cmake-cache.txt \
+    && cp /opt/die-build/src/console/CMakeFiles/diec.dir/link.txt \
+        /opt/die-evidence/diec-link.txt
+
+RUN file /opt/die-build/src/console/diec > /opt/die-evidence/file.txt \
+    && sha256sum /opt/die-build/src/console/diec > /opt/die-evidence/sha256.txt \
+    && ldd /opt/die-build/src/console/diec > /opt/die-evidence/ldd.txt \
+    && readelf --dynamic /opt/die-build/src/console/diec \
+        > /opt/die-evidence/dynamic.txt \
+    && grep -q 'libQt6Qml.so' /opt/die-evidence/ldd.txt \
+    && ! grep -q 'libQt5' /opt/die-evidence/ldd.txt
+
+LABEL org.opencontainers.image.source="https://github.com/horsicq/DIE-engine" \
+      org.opencontainers.image.revision="${DIE_COMMIT}" \
+      org.opencontainers.image.description="Phase 0 CMake Qt 6 upstream CLI oracle build"
