@@ -128,6 +128,8 @@ build 是事务性的：
 - optional layer 失败也产生可检查 diagnostic，不能静默消失；
 - empty database 与 database not found 是不同状态；
 - unknown syntax、include failure、parse error 不得仅计数后继续；
+- literal include cycle 返回带完整 path/source 的 build error；动态 cycle 由
+  active stack 返回 typed diagnostic，不能依赖 VM/native stack overflow；
 - build 失败不返回可扫描的 `Database`；
 - metadata 保存每层 provenance、规则计数和诊断摘要。
 

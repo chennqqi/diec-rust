@@ -156,7 +156,10 @@ baseline 的变更都要检查本表。
   仍未验证。共享 Qt 5/Qt 6 global harness 已确认 Qt 5 缺参 `"undefined"`
   转换与 Qt 6 `Insufficient arguments` 严格错误不同；null 字符串化和
   `_encodingList` 也不同，而重复结果、单项删除/block、数组字符串化、双 stop
-  状态和重复 include 相同。完整 format HostApi 矩阵、更多参数/转换边界和逐规则
+  状态和重复 include 相同。受限 Qt5 CLI fixture 又证明 self/two-node include
+  cycle 依赖 VM 栈上限，产生 28 条 signal 和一条 init error 后继续规则；
+  ADR 0010 提议静态图与 active stack 提前拒绝该循环。完整 format HostApi 矩阵、
+  更多参数/转换边界和逐规则
   execution 仍是开放风险。
 - **缓解**：保持 `RuleRuntime`/`HostApi` port；建立全规则 inventory、最小失败
   fixture、host call trace；基于证据选 runtime，禁止静默转换规则。

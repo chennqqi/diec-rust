@@ -34,3 +34,5 @@
   顺序清单驱动 legacy 规则执行（Proposed）。
 - [`0009-cancellation-result-contract.md`](0009-cancellation-result-contract.md)：
   modern API 用类型化取消代替上游部分成功结果，legacy 保留原始证据（Proposed）。
+- [`0010-bounded-include-graph.md`](0010-bounded-include-graph.md)：
+  静态 include 图与运行时 active stack 有界，循环作为安全偏差提前失败（Proposed）。

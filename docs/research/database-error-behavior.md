@@ -235,5 +235,7 @@ normal scan 的 JSON 不是通常的 `{"detects": [...]}`，而是：
 - cache 创建失败、stale/corrupt cache 和 cache 命中差异。
 - 合法 ZIP database、截断 ZIP、重复 entry 和 path traversal entry。
 - main/extra/custom 同名规则覆盖、优先级和排序。
-- init/include 缺失、include cycle、多个 script error 和 error ordering。
+- 多个独立 script/include error 的最终 ordering；missing、parse error 和
+  self/two-node include cycle 已由
+  [`include-lifecycle-behavior.md`](include-lifecycle-behavior.md) 覆盖。
 - Windows/macOS 文件权限及错误字符串。

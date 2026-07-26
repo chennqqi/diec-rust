@@ -218,7 +218,12 @@ PE 的新增 API 覆盖 section、resource、imports/exports、.NET metadata、R
 - type/name 转枚举时会 uppercase 并移除空格、连字符。
 - first-wrapper 模式只接受 protection/bundle，并在首次结果后停止。
 
-结果删除会维护 blacklist，后续相同 type/name 不再加入。比较基本采用 uppercase 后的 case-insensitive 语义。精确去重范围仍需测试：当前代码的 blacklist 与已产生结果列表使用方式并不完全相同。
+结果删除会维护 blacklist，后续相同 type/name 不再加入。固定 Qt5/Qt6 global
+HostApi harness 已确认：大小写不同的普通结果可同时保留；lookup/delete
+大小写不敏感；delete 只删除首个命中并把该 type/name 加入 block list；再次加入
+被阻止；空 name 不是删除 wildcard；数组参数先字符串化为
+`"Enigma,Denuvo"`。详见
+[`global-host-api-runtime-differential.md`](global-host-api-runtime-differential.md)。
 
 ## 类型转换兼容风险
 

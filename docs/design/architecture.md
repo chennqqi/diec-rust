@@ -153,6 +153,10 @@ parser。它不决定是否扫描 overlay、是否启用 aggressive mode 或先�
 规则源文件不得格式化或手工修正。加载清单记录上游路径、commit、文件哈希和同步
 时间。派生索引或 bytecode cache 是内部、带版本且可重建的数据，不属于 ABI。
 unknown syntax、include 失败和数据库冲突必须成为明确错误或兼容性失败，不能跳过。
+literal include 形成可审计有向图；按
+[`ADR 0010`](decisions/0010-bounded-include-graph.md)，静态 cycle 在 build
+阶段失败，动态 include 由 runtime active stack 和累计预算约束。ordinary duplicate
+include 仍可在退出 active path 后重新求值，不能用全局 once cache 代替 cycle guard。
 
 `RuleRuntime` 的生命周期必须表达上游所需的 init、include、单规则求值、函数抽取、
 取消和预算；不能为了同时容纳多个候选 backend 而退化成最低公分母。`HostApi` 由

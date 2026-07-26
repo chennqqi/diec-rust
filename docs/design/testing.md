@@ -374,6 +374,9 @@ removal_condition = "..."
 - budget：`limit-1/limit/limit+1`、子任务累计、diagnostic cap 和 queue cap；
 - arena：parent/child 一致、stable ID、无 cycle 和 deterministic finalize；
 - rules：发现/排序/init/include、全部语法节点、host API 类型/边界及异常；
+- include graph：self/two-node/dynamic cycle、长无环链、重复非 active include，
+  depth/evaluation budget 的 `limit-1/exact/+1`；不得依赖 VM/native stack
+  overflow，SafetyDeviation 必须保留 upstream raw 诊断；
 - engine：candidate 顺序、all-types、unknown、heuristic、嵌套、partial 和 cancel；
 - engine contract：精确 signature name（含大小写/deep gate）、record sort 开关、
   callback false、规则 `_breakScan()`、预停止，以及 file/memory/device/subdevice

@@ -1,0 +1,446 @@
+{
+  "fixture_manifest": {
+    "path": "docs/research/data/include-fixture.json",
+    "sha256": "60bc6e9bf77d3553930be201109e91132516d5dd4ed1cca78658e68db92540ae"
+  },
+  "generator": "tools/upstream/probe_include_lifecycle.py",
+  "generator_sha256": "2efe0e400690858b2eec8c8f0fb9368d883ea4552fc7482d03936c2ed8054a50",
+  "normalized_outputs_equal": true,
+  "oracles": [
+    {
+      "binary": "/opt/die-source/build/release/diec",
+      "binary_sha256": "721ec846507a8567aae07e91dcd1f576182481ae0dc1595b1f19e4a3e859b79d",
+      "cases": {
+        "missing": {
+          "detection_names": [
+            "After missing include"
+          ],
+          "document": {
+            "detects": [
+              {
+                "filetype": "Binary",
+                "info": "",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "36",
+                "values": [
+                  {
+                    "info": "",
+                    "name": "After missing include",
+                    "string": "Format: After missing include",
+                    "type": "format",
+                    "version": ""
+                  }
+                ]
+              }
+            ]
+          },
+          "exit_code": 0,
+          "prefix_lines": [
+            "Cannot find: not-present",
+            "Cannot find: not-present"
+          ],
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 544,
+          "stdout_sha256": "560c3ea025e220e6e8b40af232d76d36092788de3cfb5c72ceb3e6f887237642",
+          "suffix_lines": []
+        },
+        "parse-error": {
+          "detection_names": [
+            "After parse error"
+          ],
+          "document": {
+            "detects": [
+              {
+                "filetype": "Binary",
+                "info": "",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "36",
+                "values": [
+                  {
+                    "info": "",
+                    "name": "After parse error",
+                    "string": "Format: After parse error",
+                    "type": "format",
+                    "version": ""
+                  }
+                ]
+              }
+            ]
+          },
+          "exit_code": 0,
+          "prefix_lines": [
+            "includeScript broken-helper: 1: SyntaxError: Parse error",
+            "includeScript broken-helper: 1: SyntaxError: Parse error"
+          ],
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 650,
+          "stdout_sha256": "31afdabf22698aab354bd1f7c09fc3c6fe9f6fa1d48d1941f30802711976aa4d",
+          "suffix_lines": [
+            "_init: Unknown/_init: 1: SyntaxError: Parse error"
+          ]
+        },
+        "self-cycle": {
+          "detection_names": [
+            "After self cycle"
+          ],
+          "document": {
+            "detects": [
+              {
+                "filetype": "Binary",
+                "info": "",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "36",
+                "values": [
+                  {
+                    "info": "",
+                    "name": "After self cycle",
+                    "string": "Format: After self cycle",
+                    "type": "format",
+                    "version": ""
+                  }
+                ]
+              }
+            ]
+          },
+          "exit_code": 0,
+          "prefix_lines": [
+            "includeScript self: : RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: : RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded."
+          ],
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 2485,
+          "stdout_sha256": "36d25a805bc50cf15bce6bb021381d7de0a82a86203f64f36d314c7cfb7ba2a6",
+          "suffix_lines": [
+            "_init: Unknown/_init: 1: RangeError: Maximum call stack size exceeded."
+          ]
+        },
+        "two-cycle": {
+          "detection_names": [
+            "After two cycle"
+          ],
+          "document": {
+            "detects": [
+              {
+                "filetype": "Binary",
+                "info": "",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "36",
+                "values": [
+                  {
+                    "info": "",
+                    "name": "After two cycle",
+                    "string": "Format: After two cycle",
+                    "type": "format",
+                    "version": ""
+                  }
+                ]
+              }
+            ]
+          },
+          "exit_code": 0,
+          "prefix_lines": [
+            "includeScript cycle-b: : RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-a: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-b: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-a: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-b: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-a: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-b: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-a: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-b: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-a: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-b: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-a: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-b: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-a: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-b: : RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-a: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-b: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-a: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-b: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-a: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-b: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-a: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-b: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-a: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-b: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-a: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-b: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-a: 1: RangeError: Maximum call stack size exceeded."
+          ],
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 2567,
+          "stdout_sha256": "c40eae71acf5ba402db8fb9d30fab06f861cf1de8c6bd03fc2f43c735df0c226",
+          "suffix_lines": [
+            "_init: Unknown/_init: 1: RangeError: Maximum call stack size exceeded."
+          ]
+        }
+      },
+      "image": "diec-rust/upstream-oracle:74eaf505-repro",
+      "image_id": "sha256:cc5561a5d256c7912227a8ecf4ba9c6b9178c99911e471017d3c3988bac964ab",
+      "name": "linux-qt5-qmake",
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    },
+    {
+      "binary": "/opt/die-build/src/console/diec",
+      "binary_sha256": "da1fab49f7ba5970d1fc1c7fe3d4f380cf5e8775dd8097207e7b3c30f08236cf",
+      "cases": {
+        "missing": {
+          "detection_names": [
+            "After missing include"
+          ],
+          "document": {
+            "detects": [
+              {
+                "filetype": "Binary",
+                "info": "",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "36",
+                "values": [
+                  {
+                    "info": "",
+                    "name": "After missing include",
+                    "string": "Format: After missing include",
+                    "type": "format",
+                    "version": ""
+                  }
+                ]
+              }
+            ]
+          },
+          "exit_code": 0,
+          "prefix_lines": [
+            "Cannot find: not-present",
+            "Cannot find: not-present"
+          ],
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 544,
+          "stdout_sha256": "560c3ea025e220e6e8b40af232d76d36092788de3cfb5c72ceb3e6f887237642",
+          "suffix_lines": []
+        },
+        "parse-error": {
+          "detection_names": [
+            "After parse error"
+          ],
+          "document": {
+            "detects": [
+              {
+                "filetype": "Binary",
+                "info": "",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "36",
+                "values": [
+                  {
+                    "info": "",
+                    "name": "After parse error",
+                    "string": "Format: After parse error",
+                    "type": "format",
+                    "version": ""
+                  }
+                ]
+              }
+            ]
+          },
+          "exit_code": 0,
+          "prefix_lines": [
+            "includeScript broken-helper: 1: SyntaxError: Parse error",
+            "includeScript broken-helper: 1: SyntaxError: Parse error"
+          ],
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 650,
+          "stdout_sha256": "31afdabf22698aab354bd1f7c09fc3c6fe9f6fa1d48d1941f30802711976aa4d",
+          "suffix_lines": [
+            "_init: Unknown/_init: 1: SyntaxError: Parse error"
+          ]
+        },
+        "self-cycle": {
+          "detection_names": [
+            "After self cycle"
+          ],
+          "document": {
+            "detects": [
+              {
+                "filetype": "Binary",
+                "info": "",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "36",
+                "values": [
+                  {
+                    "info": "",
+                    "name": "After self cycle",
+                    "string": "Format: After self cycle",
+                    "type": "format",
+                    "version": ""
+                  }
+                ]
+              }
+            ]
+          },
+          "exit_code": 0,
+          "prefix_lines": [
+            "includeScript self: : RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: : RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript self: 1: RangeError: Maximum call stack size exceeded."
+          ],
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 2485,
+          "stdout_sha256": "36d25a805bc50cf15bce6bb021381d7de0a82a86203f64f36d314c7cfb7ba2a6",
+          "suffix_lines": [
+            "_init: Unknown/_init: 1: RangeError: Maximum call stack size exceeded."
+          ]
+        },
+        "two-cycle": {
+          "detection_names": [
+            "After two cycle"
+          ],
+          "document": {
+            "detects": [
+              {
+                "filetype": "Binary",
+                "info": "",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "36",
+                "values": [
+                  {
+                    "info": "",
+                    "name": "After two cycle",
+                    "string": "Format: After two cycle",
+                    "type": "format",
+                    "version": ""
+                  }
+                ]
+              }
+            ]
+          },
+          "exit_code": 0,
+          "prefix_lines": [
+            "includeScript cycle-b: : RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-a: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-b: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-a: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-b: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-a: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-b: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-a: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-b: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-a: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-b: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-a: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-b: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-a: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-b: : RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-a: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-b: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-a: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-b: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-a: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-b: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-a: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-b: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-a: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-b: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-a: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-b: 1: RangeError: Maximum call stack size exceeded.",
+            "includeScript cycle-a: 1: RangeError: Maximum call stack size exceeded."
+          ],
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 2567,
+          "stdout_sha256": "c40eae71acf5ba402db8fb9d30fab06f861cf1de8c6bd03fc2f43c735df0c226",
+          "suffix_lines": [
+            "_init: Unknown/_init: 1: RangeError: Maximum call stack size exceeded."
+          ]
+        }
+      },
+      "image": "diec-rust/upstream-oracle-cmake:74eaf505",
+      "image_id": "sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040",
+      "name": "linux-qt5-cmake",
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    }
+  ],
+  "platform": "linux-amd64-qt5",
+  "raw_artifacts": {
+    "storage": "untracked external directory selected by --raw-dir"
+  },
+  "relationships": {
+    "cycles_hit_qtscript_stack_limit_without_process_failure": true,
+    "include_failure_does_not_stop_later_rule": true,
+    "included_parse_error_is_signal_and_init_error": true,
+    "missing_include_is_signal_only": true
+  },
+  "resource_limits": {
+    "fixture_mount": "readonly",
+    "memory": "256m",
+    "network": "none",
+    "pids": 64,
+    "timeout_seconds_per_case": 10
+  },
+  "schema_version": 1,
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

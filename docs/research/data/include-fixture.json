@@ -1,0 +1,117 @@
+{
+  "directories": [
+    "self-cycle-main",
+    "self-cycle-main/Binary",
+    "self-cycle-extra",
+    "self-cycle-custom",
+    "two-cycle-main",
+    "two-cycle-main/Binary",
+    "two-cycle-extra",
+    "two-cycle-custom",
+    "parse-error-main",
+    "parse-error-main/Binary",
+    "parse-error-extra",
+    "parse-error-custom",
+    "missing-main",
+    "missing-main/Binary",
+    "missing-extra",
+    "missing-custom",
+    "input"
+  ],
+  "entries": [
+    {
+      "path": "input/probe.bin",
+      "purpose": "benign Binary scan input",
+      "sha256": "059ae2450efa504a9b85b27c43eeb2e281f76b78e9ca31e394337b3f4195f9c9",
+      "size": 36,
+      "source": "project-generated"
+    },
+    {
+      "path": "self-cycle-main/_init",
+      "purpose": "global init enters self include",
+      "sha256": "706d0b6e3e15df9e259163cfc48176115da255dc73fc35c57f60b6a4aa928002",
+      "size": 23,
+      "source": "project-generated"
+    },
+    {
+      "path": "self-cycle-main/self",
+      "purpose": "direct include cycle",
+      "sha256": "706d0b6e3e15df9e259163cfc48176115da255dc73fc35c57f60b6a4aa928002",
+      "size": 23,
+      "source": "project-generated"
+    },
+    {
+      "path": "self-cycle-main/Binary/after.1.sg",
+      "purpose": "detect whether traversal continues after self cycle",
+      "sha256": "9f4ab58e97b8dc0ef7be19d0c6733e1724dc800012ed66f90779f2e18b4563ea",
+      "size": 93,
+      "source": "project-generated"
+    },
+    {
+      "path": "two-cycle-main/_init",
+      "purpose": "global init enters two-node include cycle",
+      "sha256": "e5f1db1e6ca785d3c2f1d05289f692089e1e0498f41ca432336ee1a86c84083e",
+      "size": 26,
+      "source": "project-generated"
+    },
+    {
+      "path": "two-cycle-main/cycle-a",
+      "purpose": "two-node include cycle first helper",
+      "sha256": "12e3e2fe1dc0e3a4a18e3246853d82398fdbb3c719f37708fb9acdbdca9eb538",
+      "size": 26,
+      "source": "project-generated"
+    },
+    {
+      "path": "two-cycle-main/cycle-b",
+      "purpose": "two-node include cycle second helper",
+      "sha256": "e5f1db1e6ca785d3c2f1d05289f692089e1e0498f41ca432336ee1a86c84083e",
+      "size": 26,
+      "source": "project-generated"
+    },
+    {
+      "path": "two-cycle-main/Binary/after.1.sg",
+      "purpose": "detect whether traversal continues after two-node cycle",
+      "sha256": "826d6f1a2c9efade5c021b80aa91300397512e2e0484fa3ce5192c6c9ff3bf60",
+      "size": 92,
+      "source": "project-generated"
+    },
+    {
+      "path": "parse-error-main/_init",
+      "purpose": "global init includes malformed helper",
+      "sha256": "15995744caee3e22dd7ba06f049f287434b5fda71509d53f241e7985ee2fc3fc",
+      "size": 32,
+      "source": "project-generated"
+    },
+    {
+      "path": "parse-error-main/broken-helper",
+      "purpose": "included JavaScript syntax error",
+      "sha256": "ff6e2a6cf56e91d01d1729815c725fba4cd1c75c59fd4097f22f8498f9cde32b",
+      "size": 19,
+      "source": "project-generated"
+    },
+    {
+      "path": "parse-error-main/Binary/after.1.sg",
+      "purpose": "detect whether traversal continues after include parse error",
+      "sha256": "b667ec78780a11c56663634566f082014265d4c72c32626257ac5254a303ab3c",
+      "size": 94,
+      "source": "project-generated"
+    },
+    {
+      "path": "missing-main/_init",
+      "purpose": "global init includes absent helper",
+      "sha256": "6c35943fc2f9fbf3bdc61d3566d63e7ef9a8247540750e1d4ce7167792ca148f",
+      "size": 30,
+      "source": "project-generated"
+    },
+    {
+      "path": "missing-main/Binary/after.1.sg",
+      "purpose": "detect whether traversal continues after missing include",
+      "sha256": "a4991ad65ee2e47ad51eb0de80b1c2ae321a9fdd98f7249a769d5d23b822a424",
+      "size": 98,
+      "source": "project-generated"
+    }
+  ],
+  "generator": "tools/corpus/generate_include_fixture.py",
+  "license": "project-generated; no third-party sample or rule bytes",
+  "schema_version": 1
+}

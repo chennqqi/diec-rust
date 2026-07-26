@@ -85,8 +85,11 @@ global init 依次 include `_debug`、`_runtime_helpers`、`language`；Binary i
 当成“无 include”。
 
 重复 include 具有语义意义。例如不同签名可以重复求值同一 helper；实现不能仅凭
-文件 hash 自动去重。循环 include 没有上游保护，仍需用受控 fixture 测出 Qt 5/6
-的实际失败和资源行为。
+文件 hash 自动去重。受控 Qt5 fixture 已证明 self/two-node cycle 依赖 QtScript
+stack limit 终止，产生 28 条 include signal 和一条 init error，随后仍执行后续
+规则；missing include 仅走 signal。见
+[`include-lifecycle-behavior.md`](include-lifecycle-behavior.md)。Qt6 与其他平台
+仍未验证。
 
 ## 每条规则的执行
 
