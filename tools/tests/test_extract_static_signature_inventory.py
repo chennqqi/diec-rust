@@ -70,6 +70,9 @@ function detect() {
     var stable = "49";
     var changing = "50";
     var iterated = "51";
+    const rows = [["53", "54"], ["55", "56"]];
+    const mutableRows = [["57"]];
+    mutableRows.push(["58"]);
     changing = "52";
     X.c("41");
     X.compare(fixed);
@@ -77,6 +80,9 @@ function detect() {
     X.compare(changing);
     for (iterated in table) {}
     X.compare(iterated);
+    X.compare(rows[index][1]);
+    X.compare(mutableRows[index][0]);
+    X.compare(host[index]);
     PE.compareEP(flag ? "42" : "43");
     PE.findSignature(0, 10, prefix + "44");
     PE.compareOverlay("4" + "5");
@@ -117,21 +123,32 @@ function detect() {
             self.assertEqual(inventory["rules"]["file_count"], 2)
             self.assertEqual(inventory["rules"]["parse_success_count"], 2)
             self.assertEqual(inventory["rules"]["parse_failure_count"], 0)
-            self.assertEqual(inventory["call_site_count"], 11)
-            self.assertEqual(inventory["known_host_call_site_count"], 10)
+            self.assertEqual(inventory["call_site_count"], 14)
+            self.assertEqual(inventory["known_host_call_site_count"], 13)
             self.assertEqual(inventory["unknown_receiver_call_site_count"], 1)
-            self.assertEqual(inventory["dynamic_call_site_count"], 3)
+            self.assertEqual(inventory["dynamic_call_site_count"], 5)
             self.assertEqual(
                 inventory["argument_kind_counts"],
                 {
-                    "dynamic": 3,
+                    "dynamic": 5,
                     "literal": 3,
-                    "static_expression": 4,
+                    "static_expression": 5,
                 },
             )
             self.assertEqual(
                 inventory["static_patterns"],
-                ["41", "42", "43", "45", "46", "47", "48", "49"],
+                [
+                    "41",
+                    "42",
+                    "43",
+                    "45",
+                    "46",
+                    "47",
+                    "48",
+                    "49",
+                    "54",
+                    "56",
+                ],
             )
             self.assertEqual(
                 inventory["dynamic_inventory_comparison"][
@@ -183,6 +200,10 @@ function detect() {
             inventory = json.loads(output.read_text(encoding="utf-8"))
             self.assertEqual(inventory["parser"]["version"], "3.19.3")
             self.assertEqual(inventory["parser"]["license"], "BSD-2-Clause")
+            self.assertEqual(
+                inventory["max_static_values_per_expression"],
+                4096,
+            )
             self.assertEqual(inventory["rules"]["file_count"], 2175)
             self.assertEqual(inventory["rules"]["parse_success_count"], 2175)
             self.assertEqual(inventory["rules"]["parse_failure_count"], 0)
@@ -193,25 +214,24 @@ function detect() {
             self.assertEqual(
                 inventory["argument_kind_counts"],
                 {
-                    "dynamic": 73,
+                    "dynamic": 59,
                     "literal": 5855,
-                    "static_expression": 40,
+                    "static_expression": 54,
                 },
             )
             self.assertEqual(
                 inventory["dynamic_expression_type_counts"],
                 {
-                    "Binary": 12,
+                    "Binary": 6,
                     "Call": 9,
-                    "Sub": 7,
-                    "SymbolRef": 45,
+                    "SymbolRef": 44,
                 },
             )
-            self.assertEqual(inventory["static_pattern_count"], 5187)
+            self.assertEqual(inventory["static_pattern_count"], 5413)
             comparison = inventory["dynamic_inventory_comparison"]
             self.assertEqual(comparison["intersection_count"], 317)
             self.assertEqual(comparison["dynamic_only_count"], 0)
-            self.assertEqual(comparison["static_only_count"], 4870)
+            self.assertEqual(comparison["static_only_count"], 5096)
 
 
 if __name__ == "__main__":

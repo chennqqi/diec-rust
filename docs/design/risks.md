@@ -108,8 +108,8 @@ baseline 的变更都要检查本表。
   size 和严格 `<` 会改变 invalid suffix 结果；EP/overlay 各 5/5 又确认
   256-byte cache 被当作 512-byte 范围、原始 pattern 长度参与分支，能改变合法
   literal 结果。固定 AST inventory 随后解析 `db`/`db_extra` 2175/2175，
-  保存 5968 个具名 signature API 调用点和 5187 个静态 pattern，覆盖动态
-  317/317；仍有 73 个参数依赖运行时数据流。畸形 map、find 的畸形/穷举边界、
+  保存 5968 个具名 signature API 调用点和 5413 个静态 pattern，覆盖动态
+  317/317；仍有 59 个参数依赖运行时数据流。畸形 map、find 的畸形/穷举边界、
   无效/短小 wrapper 上下文、Qt 6 和其余 HostApi 仍未验证。
 - **缓解**：保持 `RuleRuntime`/`HostApi` port；建立全规则 inventory、最小失败
   fixture、host call trace；基于证据选 runtime，禁止静默转换规则。

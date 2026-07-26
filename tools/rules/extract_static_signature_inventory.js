@@ -7,6 +7,7 @@ const crypto = require("crypto");
 
 const SCHEMA_VERSION = 1;
 const GENERATOR_VERSION = 1;
+const MAX_STATIC_VALUES_PER_EXPRESSION = 4096;
 const RULES_COMMIT = "c2c17dfa5ea4e078ba31eab55d87430c96622fb6";
 const UPSTREAM_COMMIT = "74eaf505c250ab47e709024e9dc41657cd8f2254";
 const FORMATS_COMMIT = "1151e7254fdee3c0294ff7095edbdd7bfccf8201";
@@ -209,6 +210,127 @@ function uniqueSorted(values) {
     return [...new Set(values)].sort();
 }
 
+function boundedUniqueSorted(values) {
+    const result = uniqueSorted(values);
+    return result.length <= MAX_STATIC_VALUES_PER_EXPRESSION
+        ? result
+        : null;
+}
+
+function initializerFor(
+    expression,
+    constantInitializers,
+    resolving,
+    usePosition,
+) {
+    const definition = expression.thedef;
+    if (
+        !definition ||
+        !constantInitializers.has(definition.id) ||
+        resolving.has(definition.id)
+    ) {
+        return null;
+    }
+    const initializer = constantInitializers.get(definition.id);
+    if (initializer.position > usePosition) {
+        return null;
+    }
+    const nextResolving = new Set(resolving);
+    nextResolving.add(definition.id);
+    return {
+        expression: initializer.value,
+        resolving: nextResolving,
+        usePosition: initializer.position,
+    };
+}
+
+function indexedNodes(
+    uglify,
+    expression,
+    constantInitializers,
+    resolving,
+    usePosition,
+) {
+    let collections;
+    if (expression.expression instanceof uglify.AST_Sub) {
+        collections = indexedNodes(
+            uglify,
+            expression.expression,
+            constantInitializers,
+            resolving,
+            usePosition,
+        );
+    } else if (
+        expression.expression instanceof uglify.AST_SymbolRef
+    ) {
+        const initializer = initializerFor(
+            expression.expression,
+            constantInitializers,
+            resolving,
+            usePosition,
+        );
+        collections =
+            initializer &&
+            initializer.expression instanceof uglify.AST_Array
+                ? [initializer.expression]
+                : null;
+    } else if (expression.expression instanceof uglify.AST_Array) {
+        collections = [expression.expression];
+    } else {
+        collections = null;
+    }
+    if (!collections) {
+        return null;
+    }
+
+    const indices = staticValues(
+        uglify,
+        expression.property,
+        constantInitializers,
+        resolving,
+        usePosition,
+    );
+    const selected = [];
+    for (const collection of collections) {
+        if (!(collection instanceof uglify.AST_Array)) {
+            return null;
+        }
+        if (!indices) {
+            selected.push(
+                ...collection.elements.filter((element) => element),
+            );
+            if (
+                selected.length >
+                MAX_STATIC_VALUES_PER_EXPRESSION
+            ) {
+                return null;
+            }
+            continue;
+        }
+        for (const index of indices) {
+            const numericIndex = Number(index);
+            if (
+                !Number.isSafeInteger(numericIndex) ||
+                numericIndex < 0 ||
+                String(numericIndex) !== String(index)
+            ) {
+                return null;
+            }
+            const element = collection.elements[numericIndex];
+            if (element) {
+                selected.push(element);
+                if (
+                    selected.length >
+                    MAX_STATIC_VALUES_PER_EXPRESSION
+                ) {
+                    return null;
+                }
+            }
+        }
+    }
+    return selected;
+}
+
 function staticValues(
     uglify,
     expression,
@@ -223,27 +345,49 @@ function staticValues(
         return [expression.value];
     }
     if (expression instanceof uglify.AST_SymbolRef) {
-        const definition = expression.thedef;
-        if (
-            !definition ||
-            !constantInitializers.has(definition.id) ||
-            resolving.has(definition.id)
-        ) {
+        const initializer = initializerFor(
+            expression,
+            constantInitializers,
+            resolving,
+            usePosition,
+        );
+        if (!initializer) {
             return null;
         }
-        const initializer = constantInitializers.get(definition.id);
-        if (initializer.position > usePosition) {
-            return null;
-        }
-        const nextResolving = new Set(resolving);
-        nextResolving.add(definition.id);
         return staticValues(
             uglify,
-            initializer.value,
+            initializer.expression,
             constantInitializers,
-            nextResolving,
-            initializer.position,
+            initializer.resolving,
+            initializer.usePosition,
         );
+    }
+    if (expression instanceof uglify.AST_Sub) {
+        const nodes = indexedNodes(
+            uglify,
+            expression,
+            constantInitializers,
+            resolving,
+            usePosition,
+        );
+        if (!nodes) {
+            return null;
+        }
+        const values = [];
+        for (const node of nodes) {
+            const nodeValues = staticValues(
+                uglify,
+                node,
+                constantInitializers,
+                resolving,
+                usePosition,
+            );
+            if (!nodeValues) {
+                return null;
+            }
+            values.push(...nodeValues);
+        }
+        return boundedUniqueSorted(values);
     }
     if (expression instanceof uglify.AST_Conditional) {
         const consequent = staticValues(
@@ -263,7 +407,7 @@ function staticValues(
         if (!consequent || !alternative) {
             return null;
         }
-        return uniqueSorted([...consequent, ...alternative]);
+        return boundedUniqueSorted([...consequent, ...alternative]);
     }
     if (expression instanceof uglify.AST_Sequence) {
         const last = expression.expressions.at(-1);
@@ -298,13 +442,19 @@ function staticValues(
         if (!left || !right) {
             return null;
         }
+        if (
+            left.length * right.length >
+            MAX_STATIC_VALUES_PER_EXPRESSION
+        ) {
+            return null;
+        }
         const values = [];
         for (const leftValue of left) {
             for (const rightValue of right) {
                 values.push(leftValue + rightValue);
             }
         }
-        return uniqueSorted(values);
+        return boundedUniqueSorted(values);
     }
     return null;
 }
@@ -323,6 +473,7 @@ function inspectFile(uglify, rulesRoot, file) {
     ast.figure_out_scope();
     const initializerCandidates = new Map();
     const mutatedDefinitions = new Set();
+    const unsafeArrayDefinitions = new Set();
     function markDefinitions(node) {
         if (!node) {
             return;
@@ -373,9 +524,39 @@ function inspectFile(uglify, rulesRoot, file) {
             }
         }),
     );
+    ast.walk(
+        new uglify.TreeWalker(function (node) {
+            if (
+                !(node instanceof uglify.AST_SymbolRef) ||
+                !node.thedef ||
+                !initializerCandidates.has(node.thedef.id)
+            ) {
+                return;
+            }
+            const initializer = initializerCandidates.get(
+                node.thedef.id,
+            ).value;
+            if (!(initializer instanceof uglify.AST_Array)) {
+                return;
+            }
+            const parent = this.parent();
+            const isIndexRead =
+                parent instanceof uglify.AST_Sub &&
+                parent.expression === node;
+            const isLengthRead =
+                parent instanceof uglify.AST_Dot &&
+                parent.expression === node &&
+                parent.property === "length";
+            if (!isIndexRead && !isLengthRead) {
+                unsafeArrayDefinitions.add(node.thedef.id);
+            }
+        }),
+    );
     const constantInitializers = new Map(
         [...initializerCandidates].filter(
-            ([definitionId]) => !mutatedDefinitions.has(definitionId),
+            ([definitionId]) =>
+                !mutatedDefinitions.has(definitionId) &&
+                !unsafeArrayDefinitions.has(definitionId),
         ),
     );
     const calls = [];
@@ -537,6 +718,8 @@ function buildInventory(options) {
             "all syntactic calls to fixed Binary_Script signature API names " +
             "in db/db_extra .sg files; static values are conservative and " +
             "dynamic expressions remain explicit",
+        max_static_values_per_expression:
+            MAX_STATIC_VALUES_PER_EXPRESSION,
         parser: parserIdentity(parserModule),
         rules: {
             roots: ["db", "db_extra"],
@@ -575,7 +758,8 @@ function buildInventory(options) {
         limitations: [
             "computed method names are not attributable to a signature API",
             "function calls, loops, unresolved symbols, and mutable data flow remain dynamic",
-            "static expression enumeration is limited to literals, single-initializer unmodified symbol references, +, conditionals, and sequences",
+            "static expression enumeration is limited to literals, finite non-escaping arrays with statically enumerable elements, single-initializer unmodified symbol references, +, conditionals, and sequences",
+            "expressions exceeding the fixed static-value budget remain dynamic",
             "same-named methods on unknown receivers are retained as audit candidates",
         ],
     };
