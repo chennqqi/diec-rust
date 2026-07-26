@@ -233,6 +233,116 @@ EXPECTED_OBSERVATIONS = {
         "format_valid": True,
         "compare": True,
     },
+    "binary_script_string_empty_unnamed_device": {
+        "binary_script_get_file_suffix_result": "",
+        "binary_script_get_header_string_utf8_hex": "",
+        "binary_script_is_plain_text_result": False,
+        "binary_script_is_utf8_text_result": False,
+        "x_binary_unicode_type_result": "none",
+    },
+    "binary_script_suffix_simple": {
+        "binary_script_get_file_suffix_result": "bin",
+        "binary_script_get_header_string_utf8_hex": "41",
+        "binary_script_is_plain_text_result": True,
+        "binary_script_is_utf8_text_result": False,
+        "x_binary_unicode_type_result": "none",
+    },
+    "binary_script_suffix_last_component": {
+        "binary_script_get_file_suffix_result": "gz",
+        "binary_script_get_header_string_utf8_hex": "41",
+        "binary_script_is_plain_text_result": True,
+        "binary_script_is_utf8_text_result": False,
+        "x_binary_unicode_type_result": "none",
+    },
+    "binary_script_suffix_hidden_file": {
+        "binary_script_get_file_suffix_result": "bashrc",
+        "binary_script_get_header_string_utf8_hex": "41",
+        "binary_script_is_plain_text_result": True,
+        "binary_script_is_utf8_text_result": False,
+        "x_binary_unicode_type_result": "none",
+    },
+    "binary_script_suffix_trailing_dot": {
+        "binary_script_get_file_suffix_result": "",
+        "binary_script_get_header_string_utf8_hex": "41",
+        "binary_script_is_plain_text_result": True,
+        "binary_script_is_utf8_text_result": False,
+        "x_binary_unicode_type_result": "none",
+    },
+    "binary_script_suffix_preserves_case": {
+        "binary_script_get_file_suffix_result": "SG",
+        "binary_script_get_header_string_utf8_hex": "41",
+        "binary_script_is_plain_text_result": True,
+        "binary_script_is_utf8_text_result": False,
+        "x_binary_unicode_type_result": "none",
+    },
+    "binary_script_header_ascii": {
+        "binary_script_get_file_suffix_result": "c",
+        "binary_script_get_header_string_utf8_hex":
+            "66756e6374696f6e20746573742829207b7d0a",
+        "binary_script_is_plain_text_result": True,
+        "binary_script_is_utf8_text_result": False,
+        "x_binary_unicode_type_result": "none",
+    },
+    "binary_script_header_latin1": {
+        "binary_script_get_file_suffix_result": "txt",
+        "binary_script_get_header_string_utf8_hex":
+            "636166c3a920746578740a",
+        "binary_script_is_plain_text_result": True,
+        "binary_script_is_utf8_text_result": False,
+        "x_binary_unicode_type_result": "none",
+    },
+    "binary_script_header_utf8_bom": {
+        "binary_script_get_file_suffix_result": "txt",
+        "binary_script_get_header_string_utf8_hex": "68c3a96c6c6f0a",
+        "binary_script_is_plain_text_result": False,
+        "binary_script_is_utf8_text_result": True,
+        "x_binary_unicode_type_result": "none",
+    },
+    "binary_script_header_utf8_without_bom": {
+        "binary_script_get_file_suffix_result": "txt",
+        "binary_script_get_header_string_utf8_hex":
+            "6c6f20636166c3a920746578740a",
+        "binary_script_is_plain_text_result": True,
+        "binary_script_is_utf8_text_result": True,
+        "x_binary_unicode_type_result": "none",
+    },
+    "binary_script_header_utf16le_bom": {
+        "binary_script_get_file_suffix_result": "txt",
+        "binary_script_get_header_string_utf8_hex": "48656c6c6f0a",
+        "binary_script_is_plain_text_result": False,
+        "binary_script_is_utf8_text_result": False,
+        "x_binary_unicode_type_result": "little",
+    },
+    "binary_script_header_utf16be_bom": {
+        "binary_script_get_file_suffix_result": "txt",
+        "binary_script_get_header_string_utf8_hex": "48656c6c6f0a",
+        "binary_script_is_plain_text_result": False,
+        "binary_script_is_utf8_text_result": False,
+        "x_binary_unicode_type_result": "big",
+    },
+    "binary_script_header_utf16le_without_bom": {
+        "binary_script_get_file_suffix_result": "txt",
+        "binary_script_get_header_string_utf8_hex":
+            "e69480e6b080e6b080e6bc80e0a880",
+        "binary_script_is_plain_text_result": False,
+        "binary_script_is_utf8_text_result": False,
+        "x_binary_unicode_type_result": "big",
+    },
+    "binary_script_header_utf16be_without_bom": {
+        "binary_script_get_file_suffix_result": "txt",
+        "binary_script_get_header_string_utf8_hex":
+            "e69480e6b080e6b080e6bc80e0a880",
+        "binary_script_is_plain_text_result": False,
+        "binary_script_is_utf8_text_result": False,
+        "x_binary_unicode_type_result": "little",
+    },
+    "binary_script_header_binary_nul": {
+        "binary_script_get_file_suffix_result": "bin",
+        "binary_script_get_header_string_utf8_hex": "",
+        "binary_script_is_plain_text_result": False,
+        "binary_script_is_utf8_text_result": False,
+        "x_binary_unicode_type_result": "none",
+    },
 }
 
 
@@ -265,6 +375,10 @@ def validate_baseline(
         failures.append("schema_version")
     if baseline.get("formats_commit") != vectors.get("formats_commit"):
         failures.append("formats_commit")
+    if baseline.get("xscanengine_commit") != vectors.get(
+        "xscanengine_commit"
+    ):
+        failures.append("xscanengine_commit")
     if baseline.get("case_count") != len(vector_cases):
         failures.append("case_count")
     if len(baseline_cases) != len(vector_cases):
@@ -299,7 +413,12 @@ def validate_baseline(
         )
         if actual.get("search_size") != expected_search_size:
             failures.append(f"{case_id}.search_size")
-        for field in ("base_signature", "memory_map", "format_parser"):
+        for field in (
+            "base_signature",
+            "memory_map",
+            "format_parser",
+            "file_name",
+        ):
             if field in vector and actual.get(field) != vector.get(field):
                 failures.append(f"{case_id}.{field}")
         for field in (
@@ -310,6 +429,7 @@ def validate_baseline(
             "binary_script_f_sig",
             "binary_script_is_signature_present",
             "binary_script_overlay_info",
+            "binary_script_string_info",
             "binary_script_file_part",
             "binary_script_parser",
         ):

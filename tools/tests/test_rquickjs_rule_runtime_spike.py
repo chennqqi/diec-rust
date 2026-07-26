@@ -297,7 +297,7 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
             hashlib.sha256(baseline.read_bytes()).hexdigest(),
             oracle["baseline_sha256"],
         )
-        self.assertEqual(oracle["case_count"], 67)
+        self.assertEqual(oracle["case_count"], 82)
         self.assertEqual(oracle["wrapper_case_count"], 7)
         self.assertEqual(oracle["wrapper_matched_count"], 7)
         self.assertTrue(oracle["negative_offset_qstring_mid_clamp_observed"])
@@ -329,7 +329,7 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
             hashlib.sha256(baseline.read_bytes()).hexdigest(),
             oracle["baseline_sha256"],
         )
-        self.assertEqual(oracle["case_count"], 67)
+        self.assertEqual(oracle["case_count"], 82)
         self.assertEqual(oracle["wrapper_case_count"], 4)
         self.assertEqual(oracle["wrapper_matched_count"], 4)
         self.assertTrue(oracle["oversized_range_clamp_observed"])
@@ -384,7 +384,7 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
             hashlib.sha256(baseline.read_bytes()).hexdigest(),
             oracle["baseline_sha256"],
         )
-        self.assertEqual(oracle["case_count"], 67)
+        self.assertEqual(oracle["case_count"], 82)
         self.assertEqual(oracle["overlay_host_case_count"], 3)
         self.assertEqual(oracle["overlay_host_matched_count"], 3)
         self.assertTrue(
@@ -433,6 +433,61 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
         ):
             self.assertNotIn(method, after["fallback_path_counts"])
         self.assertIn("short-circuited", increment["branch_effect"])
+
+    def test_string_host_increment_matches_oracle_and_trace_totals(self):
+        increment = self.reference["string_host_increment"]
+        oracle = increment["oracle"]
+        baseline = ROOT / oracle["baseline"]
+        self.assertEqual(
+            hashlib.sha256(baseline.read_bytes()).hexdigest(),
+            oracle["baseline_sha256"],
+        )
+        self.assertEqual(oracle["case_count"], 82)
+        self.assertEqual(oracle["string_context_case_count"], 15)
+        self.assertEqual(oracle["string_context_matched_count"], 15)
+        after = increment["after"]
+        self.assertEqual(after["attempted_detect_count"], 292)
+        self.assertEqual(after["accepted_detect_count"], 292)
+        self.assertEqual(after["detect_error_count"], 0)
+        self.assertEqual(after["error_rules"], [])
+        self.assertEqual(after["include_call_count"], 30)
+        self.assertEqual(after["fallback_rule_count"], 3)
+        self.assertEqual(after["fallback_call_total"], 4)
+        self.assertEqual(sum(after["fallback_path_counts"].values()), 4)
+        self.assertEqual(len(after["fallback_path_counts"]), 4)
+        self.assertEqual(after["fallback_truncated_rule_count"], 0)
+        self.assertEqual(after["zero_recorded_fallback_rule_count"], 289)
+        self.assertEqual(after["zero_recorded_fallback_error_count"], 0)
+        self.assertEqual(
+            after["string_host_call_totals"],
+            {
+                "getFileSuffix": 9,
+                "getHeaderString": 5,
+                "isPlainText": 2,
+                "isUTF8Text": 0,
+            },
+        )
+        self.assertEqual(len(after["string_host_calling_rules"]), 9)
+        self.assertEqual(after["signature_compare_call_total"], 1109)
+        self.assertEqual(after["signature_compare_fast_path_total"], 1047)
+        self.assertEqual(after["signature_compare_generic_path_total"], 62)
+        self.assertEqual(after["signature_compare_quirk_total"], 5)
+        self.assertEqual(after["signature_compare_error_total"], 0)
+        self.assertEqual(after["signature_search_call_total"], 11)
+        self.assertEqual(after["signature_search_match_total"], 0)
+        self.assertEqual(after["signature_search_error_total"], 0)
+        self.assertFalse(after["detection_evidence_valid"])
+        for method in (
+            "Binary.getFileSuffix",
+            "Binary.getHeaderString",
+            "Binary.isPlainText",
+            "Binary.isUTF8Text",
+        ):
+            self.assertNotIn(method, after["fallback_path_counts"])
+        self.assertIn(
+            "m_bIsUnicodeText",
+            increment["remaining_undefined_behavior"],
+        )
 
     def test_binary_lifecycle_uses_fixed_order_and_exact_overlays(self):
         lifecycle = self.reference["binary_lifecycle"]

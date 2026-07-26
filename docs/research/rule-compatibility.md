@@ -360,7 +360,7 @@ inventory 和纯 Rust parser spike 见
 [`signature-language.md`](signature-language.md)；兼容模式已解析动态 317/317，
 固定 AST inventory 已解析 `db`/`db_extra` 2175/2175 文件并保存 5968 个具名
 signature API 调用点：5855 个 literal、109 个可枚举静态表达式、4 个动态表达式，
-得到 5628 个静态 pattern，包含动态样本的 317/317。固定 oracle 已运行 67 个
+得到 5628 个静态 pattern，包含动态样本的 317/317。固定 oracle 已运行 82 个
 compare/find/边界向量，Rust context-free
 compare 差分 16/16、六类合成 memory-map 差分 7/7、PE32/ELF64/Mach-O64/
 COM/MS-DOS/AmigaHunk 加上 PE64/ELF32/Mach-O32 parser-derived map 差分
@@ -389,6 +389,13 @@ API 缺口。再用 3/3 个 wrapper 向量区分 file-part 与 nested overlay，
 1109 次 compare、292/292 无异常、12 条规则 34 次 fallback 和 11 条路径。
 这些结果都只是缺口 inventory：剩余 proxy 会改变控制流，当前 4 条 detection
 不具兼容意义；格式专用 context/memory map 尚未接入。
+
+固定 oracle 扩展的 15/15 个字符串 context 向量随后固定 Qt 后缀、plain/UTF-8/
+UTF-16 分类及 header 解码。接入 4 个确定性 HostApi 后，固定输入调用
+`getFileSuffix/getHeaderString/isPlainText/isUTF8Text` 分别为 9/5/2/0 次；
+292/292 无异常，fallback 降为 3 条规则、4 次、4 条路径，未记录 fallback
+规则为 289。真实字符串分支下只产生 1 条 detection，仍不是兼容证据。上游
+`isUnicodeText/isText` 读取未初始化字段，必须另行决定兼容策略。
 
 固定 Binary 生命周期、init/include 首个命中规则、共享 global scope 和上游
 排序比较器缺陷见

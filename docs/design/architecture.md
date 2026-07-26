@@ -186,9 +186,12 @@ Phase 0 diagnostic 已把 pure-Rust parser/matcher 接入 generic Binary
 fallback，并暴露 overlay HostApi 缺口。固定 3-case wrapper oracle 随后证明
 file-part 与 nested-overlay facts 必须独立；显式 context 接入后为 1109 次
 compare、292/292 条无异常、12 条规则 34 次 fallback 和 11 条路径。该 spike
+再以 15/15 个字符串 context 向量接入后缀、header 和文本分类，降至 3 条规则、
+4 次 fallback、4 条路径，292/292 仍无异常；上游未初始化 Unicode-text 布尔值
+尚未被纳入确定性模型。该 spike
 通过相邻 path dependency 复用代码不等于正式 crate 边界已确定，Phase 1 必须按
 本架构重新落位，并由 format-specific receiver/memory map 构造独立的
-file-part、overlay offset/size context。
+file-part、overlay offset/size、文件名和文本 context。
 后续 ADR 必须基于固定规则集、宿主 API、资源中断、static link、许可证和跨平台
 实验选型。
 native runtime、FFI glue、runtime-specific handles 只存在于 `diec-rules`

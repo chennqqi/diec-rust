@@ -27,6 +27,8 @@ constexpr const char *UPSTREAM_COMMIT =
     "74eaf505c250ab47e709024e9dc41657cd8f2254";
 constexpr const char *FORMATS_COMMIT =
     "1151e7254fdee3c0294ff7095edbdd7bfccf8201";
+constexpr const char *XSCANENGINE_COMMIT =
+    "dfe4a419e4f491bb23688ba03c5a5bf39e34da83";
 
 qint64 jsonInteger(
     const QJsonObject &object,
@@ -95,6 +97,17 @@ QString endianName(XBinary::ENDIAN endian)
         return "big";
     }
     return "unknown";
+}
+
+QString unicodeTypeName(XBinary::UNICODE_TYPE unicodeType)
+{
+    if (unicodeType == XBinary::UNICODE_TYPE_LE) {
+        return "little";
+    }
+    if (unicodeType == XBinary::UNICODE_TYPE_BE) {
+        return "big";
+    }
+    return "none";
 }
 
 QJsonObject serializeMemoryMap(const XBinary::_MEMORY_MAP &memoryMap)
@@ -276,6 +289,12 @@ QJsonObject runCase(const QJsonObject &input, QString *error)
 
     QByteArray data = QByteArray::fromHex(dataHex);
     QBuffer buffer(&data);
+    if (input.contains("file_name")) {
+        buffer.setProperty(
+            "FileName",
+            input.value("file_name").toString()
+        );
+    }
     if (!buffer.open(QIODevice::ReadOnly)) {
         *error = QString("cannot open input buffer for %1").arg(id);
         return result;
@@ -351,6 +370,9 @@ QJsonObject runCase(const QJsonObject &input, QString *error)
         "find_error",
         XBinary::getPdStructErrorString(&findState)
     );
+    if (input.contains("file_name")) {
+        result.insert("file_name", input.value("file_name"));
+    }
 
     bool invokeScriptCompare =
         input.value("binary_script_compare").toBool();
@@ -366,6 +388,8 @@ QJsonObject runCase(const QJsonObject &input, QString *error)
         input.value("binary_script_is_signature_present").toBool();
     bool invokeScriptOverlayInfo =
         input.value("binary_script_overlay_info").toBool();
+    bool invokeScriptStringInfo =
+        input.value("binary_script_string_info").toBool();
     if (
         invokeScriptCompare ||
         invokeScriptCompareEp ||
@@ -373,7 +397,8 @@ QJsonObject runCase(const QJsonObject &input, QString *error)
         invokeScriptFindSignature ||
         invokeScriptFSig ||
         invokeScriptIsSignaturePresent ||
-        invokeScriptOverlayInfo
+        invokeScriptOverlayInfo ||
+        invokeScriptStringInfo
     ) {
         std::unique_ptr<XBinary> parsedBinary;
         XBinary *scriptBinary = &binary;
@@ -528,6 +553,34 @@ QJsonObject runCase(const QJsonObject &input, QString *error)
                 script.isOverlay()
             );
         }
+        if (invokeScriptStringInfo) {
+            QString headerString = script.getHeaderString();
+            result.insert("binary_script_string_info", true);
+            result.insert(
+                "binary_script_get_file_suffix_result",
+                script.getFileSuffix()
+            );
+            result.insert(
+                "binary_script_get_header_string_result",
+                headerString
+            );
+            result.insert(
+                "binary_script_get_header_string_utf8_hex",
+                QString::fromLatin1(headerString.toUtf8().toHex())
+            );
+            result.insert(
+                "binary_script_is_plain_text_result",
+                script.isPlainText()
+            );
+            result.insert(
+                "binary_script_is_utf8_text_result",
+                script.isUTF8Text()
+            );
+            result.insert(
+                "x_binary_unicode_type_result",
+                unicodeTypeName(scriptBinary->getUnicodeType())
+            );
+        }
         result.insert(
             "binary_script_compare_error",
             XBinary::getPdStructErrorString(&scriptState)
@@ -604,9 +657,10 @@ int main(int argc, char *argv[])
     }
 
     QJsonObject output;
-    output.insert("schema_version", 2);
+    output.insert("schema_version", 3);
     output.insert("upstream_commit", UPSTREAM_COMMIT);
     output.insert("formats_commit", FORMATS_COMMIT);
+    output.insert("xscanengine_commit", XSCANENGINE_COMMIT);
     output.insert("qt_version", qVersion());
     output.insert("case_count", outputCases.size());
     output.insert("cases", outputCases);

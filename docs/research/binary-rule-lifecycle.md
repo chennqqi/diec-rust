@@ -228,7 +228,7 @@ signature compatibility。
 387 降到 365、唯一路径由 19 降到 17；触发规则仍为 233，不能据此声称新增规则
 兼容。
 
-随后以固定 67-case Qt 5 oracle 验证的 pure-Rust adapter 替换五-pattern
+随后以固定 Qt 5 oracle 验证的 pure-Rust adapter 替换五-pattern
 `X.c` 特判，并同时注册 `Binary.c`/`compare` 与 `X.c`/`compare`。固定样本上
 共执行 799 次 compare（776 fast、23 generic、5 个显式 quirk、0 error），
 292/292 个 `detect` 无异常完成；fallback 降为 16 条规则、58 次、18 条路径，
@@ -249,12 +249,20 @@ compare 变为 1109 次，292/292 个 `detect` 无异常，fallback 降为 12 �
 34 次、11 条路径，未记录 fallback 的规则为 280。该单一 header 输入仍不能证明
 格式 parser 或实际 overlay subdevice 的 context 构造。
 
+oracle 扩展到 82-case 后，其中 15 个向量固定 Qt 文件后缀、plain/UTF-8/
+UTF-16 分类和 header 解码。`BinaryStringContext` 15/15 一致并接入
+`getFileSuffix`、`getHeaderString`、`isPlainText`、`isUTF8Text`；固定输入
+实际调用 9/5/2/0 次。292/292 条规则无异常，fallback 降为 3 条规则、4 次、
+4 条路径，未记录 fallback 的规则为 289，真实返回值下只产生 1 条 Nintendo
+detection。上游 `m_bIsUnicodeText` 在非 Unicode 路径未初始化，因此
+`isUnicodeText`/`isText` 不能直接冻结为确定性 Rust 行为。
+
 下一轮完整 signature lifecycle probe 仍至少要满足：
 
-- 以真实 HostApi 逐项替换剩余 11 条动态 fallback 路径，并补齐
+- 以真实 HostApi 逐项替换剩余 4 条动态 fallback 路径，并补齐
   Windows/macOS 顺序；
 - 为格式专用 signature receiver 和 memory map 建立端到端差分；
-- 给 280 条未记录 fallback 的规则建立对应 Qt oracle，而不是按“无异常”计 pass；
+- 给 289 条未记录 fallback 的规则建立对应 Qt oracle，而不是按“无异常”计 pass；
 - 保存每条 rule eval、include、host call、result/error 的 trace；
 - 单条失败后验证后续规则是否继续且 metadata 已切换；
 - 以完整上游结果排序逻辑代替当前仅用于 Nintendo/EA-XA 的目标类型投影；

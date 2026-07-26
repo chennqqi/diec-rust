@@ -337,13 +337,14 @@ API 的语法调用点范围和 `byteCode` 有限值域视为闭合；跨所有�
 
 输入由
 [`generate_signature_oracle_vectors.py`](../../tools/corpus/generate_signature_oracle_vectors.py)
-生成，共 67 个项目自有向量。原始输出保存为
+生成，共 82 个项目自有向量，其中新增 15 个 `Binary_Script` 文件名/文本上下文
+向量。原始输出保存为
 [`signature-oracle-qt5.json`](data/signature-oracle-qt5.json)，自动探针
 [`probe_signature_harness.py`](../../tools/upstream/probe_signature_harness.py)
 在禁网、512 MiB、1 CPU、128 PID 限制下验证 image revision、binary hash、
-输入 identity 及 baseline 原始 bytes。当前结果 67/67，stdout/baseline
+输入 identity 及 baseline 原始 bytes。当前结果 82/82，stdout/baseline
 SHA-256 均为
-`b36b38ff3abe8224c79e2ff3b2804dde137ddf059ff1699b36c47a1634937d12`。
+`b8e6665c99fc7060ca738b9bcf920efba42503aa82d3b6c572261e7619462ed1`。
 
 构建与复现：
 
@@ -430,6 +431,42 @@ offset、其他负 size、零 size 和不可表示范围安全返回“未找到
 presence 必须由 size 判断。当前 rquickjs spike 用显式 `BinaryHostContext`
 分别保存 file-part、offset 和 size；正式格式 parser 仍需负责构造这些 facts。
 
+### 文件后缀与 header text context
+
+固定
+[`Binary_Script` 构造器](https://github.com/horsicq/XScanEngine/blob/dfe4a419e4f491bb23688ba03c5a5bf39e34da83/modules/binary_script.cpp#L25-L73)
+通过 `XBinary::getDeviceFileSuffix()` 缓存后缀。
+[`XBinary::getDeviceFileName/Suffix`](https://github.com/horsicq/Formats/blob/1151e7254fdee3c0294ff7095edbdd7bfccf8201/xbinary.cpp#L10132-L10224)
+先读取 QIODevice 的 `FileName` property，再尝试
+`QFile::fileName()`；后缀本身由 `QFileInfo::suffix()` 计算。6 个向量确认最后一个
+点号后的原始大小写文本会被保留：`sample.bin`、`archive.tar.gz`、`.bashrc`、
+`sample.` 和 `SAMPLE.SG` 分别得到 `bin`、`gz`、`bashrc`、空串和 `SG`；未命名
+device 也是空串。
+
+header string 不是直接把前 4 KiB 当作 UTF-8。固定
+[`isPlainTextType/isUTF8TextType/getUnicodeType`](https://github.com/horsicq/Formats/blob/1151e7254fdee3c0294ff7095edbdd7bfccf8201/xbinary.cpp#L12120-L12397)
+分别读取最多 32 KiB、
+8 KiB、4 KiB 做 ANSI、UTF-8、UTF-16 分类，然后按 UTF-16、UTF-8、ANSI 的
+优先级解码；UTF-16 分支固定从 offset 2 开始，UTF-8 分支固定从 offset 3
+开始，即使对应编码没有 BOM。9 个文本/二进制向量确认：
+
+- ASCII 和允许比例内的 Latin-1 走 ANSI，Latin-1 `e9` 映射为 `é`；
+- 带 BOM 的 UTF-8、UTF-16LE、UTF-16BE 正确跳过 BOM；
+- 无 BOM 的有效 UTF-8 同时被判为 plain/UTF-8，因 UTF-8 分支优先且固定跳过
+  3 bytes，`hello café text\n` 的 header 实际从 `lo` 开始；
+- 无 BOM UTF-16 启发式返回的端序与输入的 ASCII null-byte 位置相反，构造器又
+  固定跳过首 2 bytes；LE 与 BE 向量最终都得到相同的
+  `e69480e6b080e6b080e6bc80e0a880` UTF-8 bytes，而不是 `ello\n`；
+- 不满足任一文本分支的二进制输入返回空 header。
+
+固定构造器只在检测到 Unicode 时给 `m_bIsUnicodeText` 赋 true，未在其他路径
+初始化该字段；`isUnicodeText()`/`isText()` 因此包含 C++ 未初始化读取，不能作为
+确定性兼容值直接冻结。oracle 记录确定性的 `XBinary::getUnicodeType()`，而不是
+把该未定义布尔值写成 Rust 契约。当前 Rust `BinaryStringContext` 已与 15/15
+向量一致，并只暴露确定性的 `getFileSuffix`、`getHeaderString`、`isPlainText`
+和 `isUTF8Text`。本轮文件名均为 ASCII，oracle 为 Linux Qt 5；Windows/macOS
+separator、非 Unicode 原生路径与非法 UTF-8 文件名仍需平台差分。
+
 `compareEP` 和 `compareOverlay` 的实现又有两处不同：
 
 - 两个构造器字段都把最多 256 bytes 的缓存保存为 hex `QString`，随后直接用
@@ -456,7 +493,7 @@ wrapper 行为：
 
 ### 合成 memory-map 差分
 
-oracle schema v2 允许每个项目自有向量显式注入 `_MEMORY_MAP`，但仍调用未修改的
+oracle schema v3 允许每个项目自有向量显式注入 `_MEMORY_MAP`，但仍调用未修改的
 固定 XBinary matcher。7 个向量覆盖：
 
 - PE：raw offset 有间隙、virtual address 连续时的 32-bit relative jump；
@@ -507,7 +544,8 @@ oracle schema v2 允许每个项目自有向量显式注入 `_MEMORY_MAP`，但�
 - wrapper-level oracle 对 header `compare` 覆盖 7 个向量，对 `compareEP`、
   `compareOverlay` 各覆盖 5 个向量并全部通过，固定了 cache-size、严格边界和
   Qt 5 负位置 clamp 行为；搜索/存在性 wrapper 另有 4/4 个向量，固定超长范围
-  裁剪、`size == -1`、别名和布尔投影。
+  裁剪、`size == -1`、别名和布尔投影；文件后缀/header text context 另有
+  15/15 个向量。
 
 机器摘要见
 [`signature-parser.json`](data/signature-parser.json)。

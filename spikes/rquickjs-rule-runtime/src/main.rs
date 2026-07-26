@@ -157,6 +157,10 @@ struct HostTrace {
     get_overlay_offset_calls: AtomicUsize,
     get_overlay_size_calls: AtomicUsize,
     is_overlay_present_calls: AtomicUsize,
+    get_file_suffix_calls: AtomicUsize,
+    get_header_string_calls: AtomicUsize,
+    is_plain_text_calls: AtomicUsize,
+    is_utf8_text_calls: AtomicUsize,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -170,6 +174,44 @@ struct BinaryHostContext {
     file_part: HostFilePart,
     overlay_offset: i64,
     overlay_size: i64,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+enum TextUnicodeType {
+    None,
+    Little,
+    Big,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+struct BinaryStringContext {
+    file_suffix: String,
+    header_string: String,
+    is_plain_text: bool,
+    is_utf8_text: bool,
+    unicode_type: TextUnicodeType,
+}
+
+impl BinaryStringContext {
+    fn from_file_name(data: &[u8], file_name: &str) -> Self {
+        let is_plain_text = is_plain_text_type(data);
+        let is_utf8_text = is_utf8_text_type(data);
+        let unicode_type = detect_unicode_type(data);
+        let header_string = match unicode_type {
+            TextUnicodeType::Little => read_utf16_header(data, false),
+            TextUnicodeType::Big => read_utf16_header(data, true),
+            TextUnicodeType::None if is_utf8_text => read_utf8_header(data),
+            TextUnicodeType::None if is_plain_text => read_latin1_header(data),
+            TextUnicodeType::None => String::new(),
+        };
+        Self {
+            file_suffix: qt_file_suffix(file_name),
+            header_string,
+            is_plain_text,
+            is_utf8_text,
+            unicode_type,
+        }
+    }
 }
 
 impl BinaryHostContext {
@@ -485,6 +527,230 @@ fn read_byte_slice(data: &[u8], offset: usize, size: usize) -> Option<&[u8]> {
     data.get(offset..end)
 }
 
+fn percentage_at_least(value: usize, total: usize, percent: usize) -> bool {
+    (value as u128) * 100 >= (total as u128) * (percent as u128)
+}
+
+fn percentage_at_most(value: usize, total: usize, percent: usize) -> bool {
+    (value as u128) * 100 <= (total as u128) * (percent as u128)
+}
+
+fn is_plain_text_type(data: &[u8]) -> bool {
+    let sample = &data[..data.len().min(0x8000)];
+    if sample.is_empty()
+        || sample.starts_with(&[0xef, 0xbb, 0xbf])
+        || sample.starts_with(&[0xff, 0xfe])
+        || sample.starts_with(&[0xfe, 0xff])
+    {
+        return false;
+    }
+
+    let mut control = 0_usize;
+    let mut printable = 0_usize;
+    let mut extended = 0_usize;
+    for byte in sample {
+        match *byte {
+            0 => return false,
+            1..=8 => control += 1,
+            9 | 10 | 13 | 0x20..=0x7e => printable += 1,
+            0x80..=0xff => extended += 1,
+            _ => control += 1,
+        }
+    }
+    percentage_at_least(printable + extended, sample.len(), 85)
+        && percentage_at_most(control, sample.len(), 5)
+        && percentage_at_most(extended, sample.len(), 50)
+}
+
+fn is_utf8_text_type(data: &[u8]) -> bool {
+    let sample = &data[..data.len().min(0x2000)];
+    if sample.is_empty() {
+        return false;
+    }
+    let has_bom = sample.starts_with(&[0xef, 0xbb, 0xbf]);
+    let mut index = usize::from(has_bom) * 3;
+    let mut valid_chars = 0_usize;
+    let mut multibyte_chars = 0_usize;
+    let mut printable_chars = 0_usize;
+    while index < sample.len() {
+        let byte = sample[index];
+        if byte == 0 {
+            return false;
+        }
+        if byte < 0x80 {
+            printable_chars += usize::from(byte >= 0x20 || matches!(byte, 9 | 10 | 13));
+            valid_chars += 1;
+            index += 1;
+            continue;
+        }
+        if byte & 0xe0 == 0xc0 {
+            if index + 1 >= sample.len() || sample[index + 1] & 0xc0 != 0x80 || byte < 0xc2 {
+                return false;
+            }
+            multibyte_chars += 1;
+            valid_chars += 1;
+            index += 2;
+            continue;
+        }
+        if byte & 0xf0 == 0xe0 {
+            if index + 2 >= sample.len()
+                || sample[index + 1] & 0xc0 != 0x80
+                || sample[index + 2] & 0xc0 != 0x80
+                || (byte == 0xe0 && sample[index + 1] < 0xa0)
+            {
+                return false;
+            }
+            multibyte_chars += 1;
+            valid_chars += 1;
+            index += 3;
+            continue;
+        }
+        if byte & 0xf8 == 0xf0 {
+            if index + 3 >= sample.len()
+                || sample[index + 1] & 0xc0 != 0x80
+                || sample[index + 2] & 0xc0 != 0x80
+                || sample[index + 3] & 0xc0 != 0x80
+                || (byte == 0xf0 && sample[index + 1] < 0x90)
+                || byte > 0xf4
+                || (byte == 0xf4 && sample[index + 1] > 0x8f)
+            {
+                return false;
+            }
+            multibyte_chars += 1;
+            valid_chars += 1;
+            index += 4;
+            continue;
+        }
+        return false;
+    }
+
+    if has_bom {
+        valid_chars != 0
+    } else {
+        valid_chars != 0
+            && (multibyte_chars as u128) * 100 > (valid_chars as u128) * 5
+            && percentage_at_least(printable_chars, valid_chars, 70)
+    }
+}
+
+fn detect_unicode_type(data: &[u8]) -> TextUnicodeType {
+    let sample = &data[..data.len().min(0x1000)];
+    if sample.starts_with(&[0xff, 0xfe]) {
+        return TextUnicodeType::Little;
+    }
+    if sample.starts_with(&[0xfe, 0xff]) {
+        return TextUnicodeType::Big;
+    }
+    if sample.len() < 4 {
+        return TextUnicodeType::None;
+    }
+
+    let analyzed = &sample[..sample.len().min(512)];
+    let mut nulls = 0_usize;
+    let mut even_nulls = 0_usize;
+    let mut odd_nulls = 0_usize;
+    let mut printable = 0_usize;
+    for (index, byte) in analyzed.iter().enumerate() {
+        if *byte == 0 {
+            nulls += 1;
+            if index % 2 == 0 {
+                even_nulls += 1;
+            } else {
+                odd_nulls += 1;
+            }
+        } else if (0x20..=0x7e).contains(byte) {
+            printable += 1;
+        }
+    }
+    if nulls == 0
+        || analyzed.len() <= 4
+        || !percentage_at_least(nulls, analyzed.len(), 30)
+        || !percentage_at_least(printable, analyzed.len(), 30)
+    {
+        return TextUnicodeType::None;
+    }
+    if even_nulls > odd_nulls.saturating_mul(2) {
+        return TextUnicodeType::Little;
+    }
+    if odd_nulls > even_nulls.saturating_mul(2) {
+        return TextUnicodeType::Big;
+    }
+
+    let mut little_pairs = 0_usize;
+    let mut big_pairs = 0_usize;
+    for pair in analyzed.chunks_exact(2) {
+        let little = u16::from_le_bytes([pair[0], pair[1]]);
+        if little & 0xff00 == 0 && (0x20..=0x7e).contains(&(little & 0xff)) {
+            little_pairs += 1;
+        }
+        let big = u16::from_be_bytes([pair[0], pair[1]]);
+        if big & 0xff00 == 0 && (0x20..=0x7e).contains(&(big & 0xff)) {
+            big_pairs += 1;
+        }
+    }
+    if little_pairs > big_pairs {
+        TextUnicodeType::Little
+    } else if big_pairs > little_pairs {
+        TextUnicodeType::Big
+    } else {
+        TextUnicodeType::None
+    }
+}
+
+fn nul_terminated(bytes: &[u8]) -> &[u8] {
+    let length = bytes
+        .iter()
+        .position(|byte| *byte == 0)
+        .unwrap_or(bytes.len());
+    &bytes[..length]
+}
+
+fn read_latin1_header(data: &[u8]) -> String {
+    nul_terminated(&data[..data.len().min(0x1000)])
+        .iter()
+        .map(|byte| char::from(*byte))
+        .collect()
+}
+
+fn read_utf8_header(data: &[u8]) -> String {
+    let max_size = data.len().min(0x1000);
+    let bytes = data
+        .get(3..3_usize.saturating_add(max_size).min(data.len()))
+        .unwrap_or_default();
+    String::from_utf8_lossy(nul_terminated(bytes)).into_owned()
+}
+
+fn read_utf16_header(data: &[u8], big_endian: bool) -> String {
+    let max_words = data.len().min(0x1000);
+    let bytes = data.get(2..).unwrap_or_default();
+    let mut words = Vec::with_capacity((bytes.len() / 2).min(max_words));
+    for pair in bytes.chunks_exact(2).take(max_words) {
+        let word = if big_endian {
+            u16::from_be_bytes([pair[0], pair[1]])
+        } else {
+            u16::from_le_bytes([pair[0], pair[1]])
+        };
+        if word == 0 {
+            break;
+        }
+        words.push(word);
+    }
+    String::from_utf16_lossy(&words)
+}
+
+fn qt_file_suffix(file_name: &str) -> String {
+    if file_name.is_empty() {
+        return String::new();
+    }
+    #[cfg(windows)]
+    let base_name = file_name.rsplit(['/', '\\']).next().unwrap_or(file_name);
+    #[cfg(not(windows))]
+    let base_name = file_name.rsplit('/').next().unwrap_or(file_name);
+    base_name
+        .rfind('.')
+        .map_or_else(String::new, |dot| base_name[dot + 1..].to_owned())
+}
+
 fn read_byte_array(data: &[u8], offset: i64, size: i64, replace_zero: bool) -> Vec<u8> {
     let Some((offset, size)) = nonnegative_index(offset).zip(nonnegative_index(size)) else {
         return Vec::new();
@@ -563,14 +829,57 @@ fn install_nintendo_host(
     detections: SharedDetections,
 ) -> Result<SharedHostTrace, String> {
     let host_context = BinaryHostContext::identity_header(data.len())?;
-    install_nintendo_host_with_context(context, data, detections, host_context)
+    let string_context = BinaryStringContext::from_file_name(&data, "");
+    install_nintendo_host_with_context_and_strings(
+        context,
+        data,
+        detections,
+        host_context,
+        string_context,
+    )
 }
 
+fn install_nintendo_host_for_path(
+    context: &Context,
+    data: Arc<Vec<u8>>,
+    detections: SharedDetections,
+    input_path: &Path,
+) -> Result<SharedHostTrace, String> {
+    let host_context = BinaryHostContext::identity_header(data.len())?;
+    let file_name = input_path.as_os_str().to_string_lossy();
+    let string_context = BinaryStringContext::from_file_name(&data, &file_name);
+    install_nintendo_host_with_context_and_strings(
+        context,
+        data,
+        detections,
+        host_context,
+        string_context,
+    )
+}
+
+#[cfg(test)]
 fn install_nintendo_host_with_context(
     context: &Context,
     data: Arc<Vec<u8>>,
     detections: SharedDetections,
     host_context: BinaryHostContext,
+) -> Result<SharedHostTrace, String> {
+    let string_context = BinaryStringContext::from_file_name(&data, "");
+    install_nintendo_host_with_context_and_strings(
+        context,
+        data,
+        detections,
+        host_context,
+        string_context,
+    )
+}
+
+fn install_nintendo_host_with_context_and_strings(
+    context: &Context,
+    data: Arc<Vec<u8>>,
+    detections: SharedDetections,
+    host_context: BinaryHostContext,
+    string_context: BinaryStringContext,
 ) -> Result<SharedHostTrace, String> {
     let signature_trace = Arc::new(HostTrace::default());
     let signature_trace_for_context = Arc::clone(&signature_trace);
@@ -776,6 +1085,66 @@ fn install_nintendo_host_with_context(
                         .is_overlay_present_calls
                         .fetch_add(1, Ordering::Relaxed);
                     host_context.is_overlay_present()
+                })
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        }
+        {
+            let value = string_context.file_suffix.clone();
+            let string_trace = Arc::clone(&signature_trace_for_context);
+            x.set(
+                "getFileSuffix",
+                Function::new(ctx.clone(), move || {
+                    string_trace
+                        .get_file_suffix_calls
+                        .fetch_add(1, Ordering::Relaxed);
+                    value.clone()
+                })
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        }
+        {
+            let value = string_context.header_string.clone();
+            let string_trace = Arc::clone(&signature_trace_for_context);
+            x.set(
+                "getHeaderString",
+                Function::new(ctx.clone(), move || {
+                    string_trace
+                        .get_header_string_calls
+                        .fetch_add(1, Ordering::Relaxed);
+                    value.clone()
+                })
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        }
+        {
+            let value = string_context.is_plain_text;
+            let string_trace = Arc::clone(&signature_trace_for_context);
+            x.set(
+                "isPlainText",
+                Function::new(ctx.clone(), move || {
+                    string_trace
+                        .is_plain_text_calls
+                        .fetch_add(1, Ordering::Relaxed);
+                    value
+                })
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        }
+        {
+            let value = string_context.is_utf8_text;
+            let string_trace = Arc::clone(&signature_trace_for_context);
+            x.set(
+                "isUTF8Text",
+                Function::new(ctx.clone(), move || {
+                    string_trace
+                        .is_utf8_text_calls
+                        .fetch_add(1, Ordering::Relaxed);
+                    value
                 })
                 .map_err(|error| error.to_string())?,
             )
@@ -1738,7 +2107,12 @@ fn trace_binary_detects(
     })));
     let context = new_context(&runtime)?;
     let detections = Arc::new(Mutex::new(Vec::new()));
-    let signature_trace = install_nintendo_host(&context, Arc::new(data), Arc::clone(&detections))?;
+    let signature_trace = install_nintendo_host_for_path(
+        &context,
+        Arc::new(data),
+        Arc::clone(&detections),
+        input_path,
+    )?;
     install_diagnostic_host_fallbacks(&context)?;
     install_main_include_registry(&context, rule_root)?;
     for relative in ["_init", "Binary/_init"] {
@@ -1793,6 +2167,15 @@ fn trace_binary_detects(
         let is_overlay_present_calls_before = signature_trace
             .is_overlay_present_calls
             .load(Ordering::Relaxed);
+        let get_file_suffix_calls_before = signature_trace
+            .get_file_suffix_calls
+            .load(Ordering::Relaxed);
+        let get_header_string_calls_before = signature_trace
+            .get_header_string_calls
+            .load(Ordering::Relaxed);
+        let is_plain_text_calls_before =
+            signature_trace.is_plain_text_calls.load(Ordering::Relaxed);
+        let is_utf8_text_calls_before = signature_trace.is_utf8_text_calls.load(Ordering::Relaxed);
         interrupt_ticks.store(0, Ordering::Relaxed);
         let detect_result = eval_rule_lexical(&context, &evaluated, true);
         let signature_call_count = signature_trace
@@ -1859,6 +2242,22 @@ fn trace_binary_detects(
             .is_overlay_present_calls
             .load(Ordering::Relaxed)
             .saturating_sub(is_overlay_present_calls_before);
+        let get_file_suffix_call_count = signature_trace
+            .get_file_suffix_calls
+            .load(Ordering::Relaxed)
+            .saturating_sub(get_file_suffix_calls_before);
+        let get_header_string_call_count = signature_trace
+            .get_header_string_calls
+            .load(Ordering::Relaxed)
+            .saturating_sub(get_header_string_calls_before);
+        let is_plain_text_call_count = signature_trace
+            .is_plain_text_calls
+            .load(Ordering::Relaxed)
+            .saturating_sub(is_plain_text_calls_before);
+        let is_utf8_text_call_count = signature_trace
+            .is_utf8_text_calls
+            .load(Ordering::Relaxed)
+            .saturating_sub(is_utf8_text_calls_before);
         let interrupt_handler_calls = interrupt_ticks.load(Ordering::Relaxed);
         let fallback_text = eval_string(
             &context,
@@ -1920,6 +2319,12 @@ fn trace_binary_detects(
                 "get_overlay_offset": get_overlay_offset_call_count,
                 "get_overlay_size": get_overlay_size_call_count,
                 "is_overlay_present": is_overlay_present_call_count,
+            },
+            "string_host_calls": {
+                "get_file_suffix": get_file_suffix_call_count,
+                "get_header_string": get_header_string_call_count,
+                "is_plain_text": is_plain_text_call_count,
+                "is_utf8_text": is_utf8_text_call_count,
             },
             "interrupt_handler_calls": interrupt_handler_calls,
             "detections": emitted,
@@ -2007,6 +2412,16 @@ fn trace_binary_detects(
                     signature_trace.get_overlay_size_calls.load(Ordering::Relaxed),
                 "is_overlay_present":
                     signature_trace.is_overlay_present_calls.load(Ordering::Relaxed),
+            },
+            "string_host_call_totals": {
+                "get_file_suffix":
+                    signature_trace.get_file_suffix_calls.load(Ordering::Relaxed),
+                "get_header_string":
+                    signature_trace.get_header_string_calls.load(Ordering::Relaxed),
+                "is_plain_text":
+                    signature_trace.is_plain_text_calls.load(Ordering::Relaxed),
+                "is_utf8_text":
+                    signature_trace.is_utf8_text_calls.load(Ordering::Relaxed),
             },
             "detection_count": all_detections.len(),
             "detections": all_detections,
@@ -2621,13 +3036,14 @@ fn main() -> ExitCode {
 #[cfg(test)]
 mod tests {
     use super::{
-        BinaryHostContext, HostFilePart, NINTENDO_COMPAT_DECLARATION, NINTENDO_RULE_BYTES,
-        NINTENDO_VAR_DECLARATION, apply_compatibility_overlay, apply_exact_lifecycle_overlay,
-        collect_rule_files, eval_rule_lexical, eval_string, eval_unit,
-        install_diagnostic_host_fallbacks, install_nintendo_host,
-        install_nintendo_host_with_context, new_context, new_runtime, nonnegative_index,
-        normalized_path, parse_scope_detections, parse_scope_fixture_order, read_ascii,
-        read_byte_array, read_signed, read_unsigned, shift_right_unsigned,
+        BinaryHostContext, BinaryStringContext, HostFilePart, NINTENDO_COMPAT_DECLARATION,
+        NINTENDO_RULE_BYTES, NINTENDO_VAR_DECLARATION, TextUnicodeType,
+        apply_compatibility_overlay, apply_exact_lifecycle_overlay, collect_rule_files,
+        eval_rule_lexical, eval_string, eval_unit, install_diagnostic_host_fallbacks,
+        install_nintendo_host, install_nintendo_host_with_context,
+        install_nintendo_host_with_context_and_strings, new_context, new_runtime,
+        nonnegative_index, normalized_path, parse_scope_detections, parse_scope_fixture_order,
+        read_ascii, read_byte_array, read_signed, read_unsigned, shift_right_unsigned,
     };
     use std::fs;
     use std::path::PathBuf;
@@ -2644,6 +3060,18 @@ mod tests {
             "diec-rquickjs-spike-{}-{nonce}",
             std::process::id()
         ))
+    }
+
+    fn decode_hex(value: &str) -> Vec<u8> {
+        assert_eq!(value.len() % 2, 0, "hex fixture must have complete bytes");
+        value
+            .as_bytes()
+            .chunks_exact(2)
+            .map(|pair| {
+                let text = std::str::from_utf8(pair).expect("hex fixture must be ASCII");
+                u8::from_str_radix(text, 16).expect("hex fixture must contain digits")
+            })
+            .collect()
     }
 
     #[test]
@@ -2862,6 +3290,107 @@ mod tests {
             assert_eq!(trace.is_overlay_present_calls.load(Ordering::Relaxed), 1);
         }
         assert!(BinaryHostContext::new(HostFilePart::Header, 0, -1).is_err());
+    }
+
+    #[test]
+    fn string_context_matches_pinned_qt5_oracle() {
+        let oracle: serde_json::Value = serde_json::from_str(include_str!(
+            "../../../docs/research/data/signature-oracle-qt5.json"
+        ))
+        .expect("Qt5 signature oracle should be valid JSON");
+        let cases = oracle["cases"]
+            .as_array()
+            .expect("Qt5 signature oracle should contain cases");
+        let mut checked = 0_usize;
+        for case in cases {
+            if case["binary_script_string_info"].as_bool() != Some(true) {
+                continue;
+            }
+            checked += 1;
+            let id = case["id"].as_str().expect("oracle case should have an id");
+            let data = decode_hex(
+                case["data_hex"]
+                    .as_str()
+                    .expect("oracle case should have data"),
+            );
+            let file_name = case["file_name"].as_str().unwrap_or("");
+            let actual = BinaryStringContext::from_file_name(&data, file_name);
+            assert_eq!(
+                actual.file_suffix,
+                case["binary_script_get_file_suffix_result"]
+                    .as_str()
+                    .expect("oracle suffix should be a string"),
+                "suffix mismatch for {id}"
+            );
+            assert_eq!(
+                actual.header_string,
+                case["binary_script_get_header_string_result"]
+                    .as_str()
+                    .expect("oracle header should be a string"),
+                "header mismatch for {id}"
+            );
+            assert_eq!(
+                actual.is_plain_text,
+                case["binary_script_is_plain_text_result"]
+                    .as_bool()
+                    .expect("oracle plain-text flag should be a bool"),
+                "plain-text mismatch for {id}"
+            );
+            assert_eq!(
+                actual.is_utf8_text,
+                case["binary_script_is_utf8_text_result"]
+                    .as_bool()
+                    .expect("oracle UTF-8 flag should be a bool"),
+                "UTF-8 mismatch for {id}"
+            );
+            let expected_unicode = match case["x_binary_unicode_type_result"]
+                .as_str()
+                .expect("oracle Unicode type should be a string")
+            {
+                "none" => TextUnicodeType::None,
+                "little" => TextUnicodeType::Little,
+                "big" => TextUnicodeType::Big,
+                other => panic!("unexpected oracle Unicode type: {other}"),
+            };
+            assert_eq!(
+                actual.unicode_type, expected_unicode,
+                "Unicode type mismatch for {id}"
+            );
+        }
+        assert_eq!(checked, 15);
+    }
+
+    #[test]
+    fn string_context_is_exposed_as_native_host_api() {
+        let runtime = new_runtime().expect("runtime should be created");
+        let context = new_context(&runtime).expect("context should be created");
+        let bytes = Arc::new(b"function test() {}\n".to_vec());
+        let host_context =
+            BinaryHostContext::identity_header(bytes.len()).expect("fixed context should be valid");
+        let string_context = BinaryStringContext::from_file_name(&bytes, "sample.C");
+        let trace = install_nintendo_host_with_context_and_strings(
+            &context,
+            bytes,
+            Arc::new(Mutex::new(Vec::new())),
+            host_context,
+            string_context,
+        )
+        .expect("host should be installed");
+        assert_eq!(
+            eval_string(
+                &context,
+                br#"Binary.getFileSuffix() + "|" +
+                    Binary.getHeaderString() + "|" +
+                    String(Binary.isPlainText()) + "|" +
+                    String(Binary.isUTF8Text())"#,
+            )
+            .expect("string HostApi should be callable"),
+            "C|function test() {}\n|true|false"
+        );
+        assert_eq!(trace.get_file_suffix_calls.load(Ordering::Relaxed), 1);
+        assert_eq!(trace.get_header_string_calls.load(Ordering::Relaxed), 1);
+        assert_eq!(trace.is_plain_text_calls.load(Ordering::Relaxed), 1);
+        assert_eq!(trace.is_utf8_text_calls.load(Ordering::Relaxed), 1);
     }
 
     #[test]

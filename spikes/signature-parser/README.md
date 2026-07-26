@@ -42,3 +42,6 @@ The shared harness also has three overlay-context cases proving that the
 current `FILEPART_OVERLAY` state is independent from nested-overlay
 offset/size/presence. That context model belongs to the host/runtime spike,
 not this signature parser.
+Fifteen additional shared-harness cases pin file-suffix and header-text
+construction for the adjacent host/runtime spike; they are intentionally not
+implemented in this signature parser.

@@ -297,21 +297,22 @@
     "base_image": "diec-rust/upstream-oracle-cmake:74eaf505",
     "base_image_id": "sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040",
     "image": "diec-rust/upstream-signature-harness:74eaf505",
-    "image_id": "sha256:983e6abbe6c7645b4e343393dc576389d08139adb7ce33c05fbe6ecf032e03ef",
+    "image_id": "sha256:94fb1cf643ec111a95ea5179cbf83645b07b63a862ba1bae8e7987e14fb9b44a",
     "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254",
     "qt_version": "5.15.13",
     "binary": "/opt/die-build/src/console/diec-signature-harness",
-    "binary_sha256": "70fae6ee934ab29efce3523255432db3c169c51dc2e7d5531941da7ebb75fb71",
+    "binary_sha256": "31ff6d04bbda24f6e39602eba3ae371723c48827a9235d609094366424b6ffe1",
     "dockerfile_sha256": "c9c28565e2d3274edbc72d54e3bcf1b3edc0b2707749707718fcbafbf9430aa8",
-    "harness_source_sha256": "617035290abb7f7872010403d38795f47f291e87b7f6e68c001893b2d55a4e69",
-    "probe_sha256": "ed738929bfd26271b8822dd07c8a9ae55e0cfd5963a952c8a18e2ff7ee5db75b",
-    "vector_generator_sha256": "4162d4abae194359eee30c354a63b7388cb0a9eb954261a490b40514e383d932",
+    "harness_source_sha256": "be8edb4c72be91cb825cd64d525a648e12aa5ee032e7a3abe1c5864e76ac0b5e",
+    "probe_sha256": "370f5f9258e5a4108812f551efde887fe6421e7013f9c717ab20099616ad9e18",
+    "vector_generator_sha256": "2adeee0ab21d090666714f1a868fd3391d951eba2db7c938685ab3337e762150",
     "vectors": "docs/research/data/signature-oracle-vectors.json",
-    "vectors_sha256": "878f46172727701a375e8fc053942e8949222033edd9f0c15c40ed0282315e55",
+    "vectors_sha256": "1ffcc4cfb227f6f9fbe19616abe6a18ce3757ec8164725be44783b2169cdfb1f",
     "baseline": "docs/research/data/signature-oracle-qt5.json",
-    "baseline_sha256": "b36b38ff3abe8224c79e2ff3b2804dde137ddf059ff1699b36c47a1634937d12",
-    "case_count": 67,
+    "baseline_sha256": "b8e6665c99fc7060ca738b9bcf920efba42503aa82d3b6c572261e7619462ed1",
+    "case_count": 82,
     "binary_script_overlay_host_case_count": 3,
+    "binary_script_string_context_case_count": 15,
     "probe_passed": true,
     "compare_find_divergences": [
       "%& accepts only digits in compare records but letters and digits in SigBytes find",
@@ -325,6 +326,6 @@
     "generated PE32/64, ELF32/64, Mach-O32/64, COM, MS-DOS, and AmigaHunk files cover real parser memory-map construction, but malformed map variants remain untested",
     "Binary_Script wrapper fast paths are verified with one generated PE32 entry point and overlay, but absent, short, invalid, and non-PE contexts remain untested",
     "the independent find_signature spike covers 19 focused cases across all three branches, but malformed partial-parse and exhaustive optimization combinations remain untested",
-    "the 67 focused vectors do not yet exhaust malformed partial-parse combinations"
+    "the 82 focused vectors do not yet exhaust malformed partial-parse combinations"
   ]
 }

@@ -42,5 +42,10 @@ including EOF range clamping and `size == -1`. Compare and search calls,
 quirks, and errors are counted separately. Overlay methods consume an explicit
 `BinaryHostContext` whose current file-part is independent from the current
 parser's nested-overlay offset and size; their calls are traced separately.
+`BinaryStringContext` separately derives the Qt-style file suffix and pinned
+text classification/header decoding facts. `getFileSuffix`,
+`getHeaderString`, `isPlainText`, and `isUTF8Text` are native adapters whose
+calls are also traced; 15 focused Qt5 wrapper cases cover their deterministic
+behavior.
 Its accepted calls and emitted detections are gap-inventory data, not
 compatibility evidence.

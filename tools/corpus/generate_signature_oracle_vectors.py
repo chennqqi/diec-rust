@@ -9,10 +9,11 @@ import struct
 from pathlib import Path
 
 
-SCHEMA_VERSION = 2
-GENERATOR_VERSION = 11
+SCHEMA_VERSION = 3
+GENERATOR_VERSION = 12
 UPSTREAM_COMMIT = "74eaf505c250ab47e709024e9dc41657cd8f2254"
 FORMATS_COMMIT = "1151e7254fdee3c0294ff7095edbdd7bfccf8201"
+XSCANENGINE_COMMIT = "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
 
 
 def mapped_pe32() -> bytes:
@@ -773,6 +774,110 @@ def vectors() -> list[dict[str, object]]:
             "binary_script_compare_overlay": True,
         },
         {
+            "id": "binary_script_string_empty_unnamed_device",
+            "pattern": "",
+            "data_hex": "",
+            "binary_script_string_info": True,
+        },
+        {
+            "id": "binary_script_suffix_simple",
+            "pattern": "41",
+            "data_hex": "41",
+            "binary_script_string_info": True,
+            "file_name": "sample.bin",
+        },
+        {
+            "id": "binary_script_suffix_last_component",
+            "pattern": "41",
+            "data_hex": "41",
+            "binary_script_string_info": True,
+            "file_name": "/tmp/archive.tar.gz",
+        },
+        {
+            "id": "binary_script_suffix_hidden_file",
+            "pattern": "41",
+            "data_hex": "41",
+            "binary_script_string_info": True,
+            "file_name": ".bashrc",
+        },
+        {
+            "id": "binary_script_suffix_trailing_dot",
+            "pattern": "41",
+            "data_hex": "41",
+            "binary_script_string_info": True,
+            "file_name": "sample.",
+        },
+        {
+            "id": "binary_script_suffix_preserves_case",
+            "pattern": "41",
+            "data_hex": "41",
+            "binary_script_string_info": True,
+            "file_name": "SAMPLE.SG",
+        },
+        {
+            "id": "binary_script_header_ascii",
+            "pattern": "66",
+            "data_hex": b"function test() {}\n".hex(),
+            "binary_script_string_info": True,
+            "file_name": "sample.c",
+        },
+        {
+            "id": "binary_script_header_latin1",
+            "pattern": "63",
+            "data_hex": b"caf\xe9 text\n".hex(),
+            "binary_script_string_info": True,
+            "file_name": "sample.txt",
+        },
+        {
+            "id": "binary_script_header_utf8_bom",
+            "pattern": "efbbbf",
+            "data_hex": (b"\xef\xbb\xbf" + "héllo\n".encode()).hex(),
+            "binary_script_string_info": True,
+            "file_name": "sample.txt",
+        },
+        {
+            "id": "binary_script_header_utf8_without_bom",
+            "pattern": "68",
+            "data_hex": "hello café text\n".encode().hex(),
+            "binary_script_string_info": True,
+            "file_name": "sample.txt",
+        },
+        {
+            "id": "binary_script_header_utf16le_bom",
+            "pattern": "fffe",
+            "data_hex": (b"\xff\xfe" + "Hello\n".encode("utf-16le")).hex(),
+            "binary_script_string_info": True,
+            "file_name": "sample.txt",
+        },
+        {
+            "id": "binary_script_header_utf16be_bom",
+            "pattern": "feff",
+            "data_hex": (b"\xfe\xff" + "Hello\n".encode("utf-16be")).hex(),
+            "binary_script_string_info": True,
+            "file_name": "sample.txt",
+        },
+        {
+            "id": "binary_script_header_utf16le_without_bom",
+            "pattern": "4100",
+            "data_hex": "Hello\n".encode("utf-16le").hex(),
+            "binary_script_string_info": True,
+            "file_name": "sample.txt",
+        },
+        {
+            "id": "binary_script_header_utf16be_without_bom",
+            "pattern": "0041",
+            "data_hex": "Hello\n".encode("utf-16be").hex(),
+            "binary_script_string_info": True,
+            "file_name": "sample.txt",
+        },
+        {
+            "id": "binary_script_header_binary_nul",
+            "pattern": "4100",
+            "data_hex": "4100420143",
+            "binary_script_string_info": True,
+            "file_name": "sample.bin",
+        },
+        {
             "id": "invalid_prefix_has_no_records",
             "pattern": "x41",
             "data_hex": "41",
@@ -828,6 +933,7 @@ def manifest() -> dict[str, object]:
         },
         "upstream_commit": UPSTREAM_COMMIT,
         "formats_commit": FORMATS_COMMIT,
+        "xscanengine_commit": XSCANENGINE_COMMIT,
         "license": "project-generated; no third-party sample or rule bytes",
         "case_count": len(cases),
         "cases": cases,
