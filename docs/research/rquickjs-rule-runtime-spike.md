@@ -348,6 +348,12 @@ wrapper-level header fast path 又以 5/5 端到端向量确认：不能把 `X.c
 find 的畸形/穷举边界、无效/短小 wrapper 上下文和全调用点差分尚未完成，当前
 运行时仍不替换五-pattern 特判。
 
+后续静态 AST inventory 已把范围从单一样本扩大到固定 `db`/`db_extra`：
+2175/2175 文件解析成功，5968 个具名 signature API 调用点中有 5855 个 literal、
+40 个可枚举静态表达式和 73 个动态表达式；5187 个静态 pattern 包含本动态 probe
+的 317/317。该结果闭合了具名语法调用点，不闭合 73 个动态参数的运行时值域，
+因此仍不能据此替换 HostApi。
+
 285 条“无异常”及 153 条 detection 都不能作为兼容证据：代理返回的 callable
 object 在 JavaScript 条件中可能为 truthy，已明显制造大量 false positive。即使
 59 条规则没有记录 fallback 调用，本轮也没有逐条 Qt oracle 结果，且代理只记录

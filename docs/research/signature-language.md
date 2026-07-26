@@ -122,7 +122,7 @@ quirk 清单。这样既能保持固定规则兼容，又不会静默接纳未�
 仍使用已形成的 `41` record 并返回 true；这类 partial parse 必须作为 legacy
 compatibility profile，而不是 strict parser 默认行为。
 
-## 动态 inventory
+## 动态与静态 inventory
 
 `trace-binary-detects` 对固定 292 条 Binary 规则和项目生成的 128-byte 样本记录了
 32 条规则、331 次 `X.c` 调用、317 个唯一 pattern。可重复提取工具为
@@ -132,6 +132,42 @@ compatibility profile，而不是 strict parser 默认行为。
 
 该清单是单一样本的动态覆盖，不是全规则静态语言清单；未执行分支中的动态构造
 pattern 仍可能缺失。
+
+为覆盖未执行分支，
+[`extract_static_signature_inventory.js`](../../tools/rules/extract_static_signature_inventory.js)
+使用固定规则 subtree 自带的 UglifyJS 3.19.3 parser（BSD-2-Clause）解析
+`db`/`db_extra` 全部 `.sg`。parser 的 18-file manifest SHA-256 为
+`08dce1589c2782677f197d6289ebce3edc968aa0a35c982c0e6b66788e9e70a6`；
+2175 个规则文件、2,771,327 bytes 的 manifest SHA-256 为
+`a3254bdea9f58544f50eeff02378b48d24f70dbb782ecca1662e222b35596ae0`。
+结果 2175/2175 parse、0 failure。
+
+静态 AST 清单
+[`signature-static-inventory.json`](data/signature-static-inventory.json)
+保存每个调用点的路径、行列、receiver、方法、pattern 参数表达式和保守静态值：
+
+| 方法 | 调用点 |
+| --- | ---: |
+| `c` | 1191 |
+| `compare` | 1367 |
+| `compareEP` | 2783 |
+| `compareOverlay` | 217 |
+| `fSig` | 120 |
+| `findSignature` | 113 |
+| `isSignatureInSectionPresent` | 105 |
+| `isSignaturePresent` | 72 |
+| **总计** | **5968** |
+
+5968 个调用点分布在 1615 个文件，receiver 均落在已知格式宿主集合；同名未知
+receiver 候选为 0。参数分类为 5855 个直接字符串、40 个可保守枚举的静态表达式
+（字符串拼接、条件分支、sequence，或只有一次初始化且未检测到写入的变量引用）
+和 73 个动态表达式。静态可枚举得到 5187 个唯一 pattern：包含动态样本观察到的
+全部 317 个，另有 4870 个未被该样本执行的 pattern。
+
+“包含动态 317/317”证明动态清单是静态清单的子集，不证明 5187 是完整运行时值域。
+剩余 73 个调用仍依赖函数调用、循环、数组/可变变量或其他数据流；非静态 computed
+method name 也不能仅凭 AST 属性名归因。当前可以把具名 signature API 的语法调用
+点范围视为完整，但运行时 pattern value 范围仍未闭合。
 
 ## 固定 Qt 5 XBinary oracle
 
@@ -278,8 +314,8 @@ oracle schema v2 允许每个项目自有向量显式注入 `_MEMORY_MAP`，但�
 
 ## 下一步门禁
 
-1. 对固定 `db`/`db_extra` 做 AST 或 runtime-assisted 全调用点 inventory，覆盖
-   非执行分支和动态拼接。
+1. 对 73 个动态 signature 参数做 scope/data-flow 或受控 runtime-assisted
+   求值，并审计 computed method name；不得把 5187 个静态值当作完整值域。
 2. 扩展现有 XBinary oracle，覆盖更多畸形组合、buffer boundary 和取消行为。
 3. 补齐畸形/重叠/virtual-only map 的项目生成文件，端到端验证各格式
    `getMemoryMap` 边界。

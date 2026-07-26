@@ -98,6 +98,51 @@
     "patterns_lf_sha256": "0dc46f913e46c2a382b574a3dac8ae673aa209911494f6c0202dfbd4a808ae84",
     "scope_complete": false
   },
+  "static_inventory": {
+    "path": "docs/research/data/signature-static-inventory.json",
+    "sha256": "5403469e69f0616b2e9390a8fc32246cb07ec9464483a34ade2a65c96af5ec31",
+    "generator_sha256": "42558aa9220c742b2b521d76ecd4d7e119f8f023d467b286dcd740df44f4d714",
+    "parser": {
+      "name": "uglify-js",
+      "version": "3.19.3",
+      "license": "BSD-2-Clause",
+      "manifest_sha256": "08dce1589c2782677f197d6289ebce3edc968aa0a35c982c0e6b66788e9e70a6"
+    },
+    "rules_manifest_sha256": "a3254bdea9f58544f50eeff02378b48d24f70dbb782ecca1662e222b35596ae0",
+    "rule_file_count": 2175,
+    "parse_success_count": 2175,
+    "parse_failure_count": 0,
+    "call_site_count": 5968,
+    "calling_file_count": 1615,
+    "unknown_receiver_call_site_count": 0,
+    "method_counts": {
+      "c": 1191,
+      "compare": 1367,
+      "compareEP": 2783,
+      "compareOverlay": 217,
+      "fSig": 120,
+      "findSignature": 113,
+      "isSignatureInSectionPresent": 105,
+      "isSignaturePresent": 72
+    },
+    "argument_kind_counts": {
+      "dynamic": 73,
+      "literal": 5855,
+      "static_expression": 40
+    },
+    "dynamic_expression_type_counts": {
+      "Binary": 12,
+      "Call": 9,
+      "Sub": 7,
+      "SymbolRef": 45
+    },
+    "static_pattern_count": 5187,
+    "dynamic_pattern_overlap_count": 317,
+    "dynamic_only_pattern_count": 0,
+    "static_only_pattern_count": 4870,
+    "syntactic_call_site_scope_complete": true,
+    "runtime_value_scope_complete": false
+  },
   "spike": {
     "path": "spikes/signature-parser",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)",
@@ -219,7 +264,7 @@
     ]
   },
   "limitations": [
-    "the 317-pattern inventory is dynamic coverage for one fixed generated sample, not a complete static corpus inventory",
+    "all 5968 syntactic calls to named signature APIs are inventoried, but 73 dynamic argument expressions and non-static computed method names prevent a complete runtime value inventory",
     "generated PE32/64, ELF32/64, Mach-O32/64, COM, MS-DOS, and AmigaHunk files cover real parser memory-map construction, but malformed map variants remain untested",
     "Binary_Script wrapper fast paths are verified with one generated PE32 entry point and overlay, but absent, short, invalid, and non-PE contexts remain untested",
     "the independent find_signature spike covers 19 focused cases across all three branches, but malformed partial-parse and exhaustive optimization combinations remain untested",

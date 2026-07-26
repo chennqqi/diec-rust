@@ -15,6 +15,13 @@ INVENTORY_PATH = (
     / "data"
     / "signature-pattern-inventory.json"
 )
+STATIC_INVENTORY_PATH = (
+    ROOT
+    / "docs"
+    / "research"
+    / "data"
+    / "signature-static-inventory.json"
+)
 
 
 class SignatureParserSpikeTests(unittest.TestCase):
@@ -22,6 +29,9 @@ class SignatureParserSpikeTests(unittest.TestCase):
         self.evidence = json.loads(EVIDENCE_PATH.read_text(encoding="utf-8"))
         self.inventory = json.loads(
             INVENTORY_PATH.read_text(encoding="utf-8")
+        )
+        self.static_inventory = json.loads(
+            STATIC_INVENTORY_PATH.read_text(encoding="utf-8")
         )
 
     def test_fixed_source_versions_are_consistent(self):
@@ -89,6 +99,55 @@ class SignatureParserSpikeTests(unittest.TestCase):
             dynamic["pattern_call_count"],
         )
 
+    def test_static_inventory_hash_and_scope_are_reproducible(self):
+        static = self.evidence["static_inventory"]
+        self.assertEqual(
+            hashlib.sha256(STATIC_INVENTORY_PATH.read_bytes()).hexdigest(),
+            static["sha256"],
+        )
+        generator_path = ROOT / self.static_inventory["generator"]["path"]
+        self.assertEqual(
+            hashlib.sha256(generator_path.read_bytes()).hexdigest(),
+            static["generator_sha256"],
+        )
+        self.assertEqual(
+            self.static_inventory["parser"]["manifest_sha256"],
+            static["parser"]["manifest_sha256"],
+        )
+        self.assertEqual(
+            self.static_inventory["rules"]["manifest_sha256"],
+            static["rules_manifest_sha256"],
+        )
+        self.assertEqual(static["rule_file_count"], 2175)
+        self.assertEqual(static["parse_success_count"], 2175)
+        self.assertEqual(static["parse_failure_count"], 0)
+        self.assertEqual(static["call_site_count"], 5968)
+        self.assertEqual(static["calling_file_count"], 1615)
+        self.assertEqual(static["unknown_receiver_call_site_count"], 0)
+        self.assertEqual(
+            static["argument_kind_counts"],
+            {
+                "dynamic": 73,
+                "literal": 5855,
+                "static_expression": 40,
+            },
+        )
+        self.assertEqual(
+            static["dynamic_expression_type_counts"],
+            {
+                "Binary": 12,
+                "Call": 9,
+                "Sub": 7,
+                "SymbolRef": 45,
+            },
+        )
+        self.assertEqual(static["static_pattern_count"], 5187)
+        self.assertEqual(static["dynamic_pattern_overlap_count"], 317)
+        self.assertEqual(static["dynamic_only_pattern_count"], 0)
+        self.assertEqual(static["static_only_pattern_count"], 4870)
+        self.assertTrue(static["syntactic_call_site_scope_complete"])
+        self.assertFalse(static["runtime_value_scope_complete"])
+
     def test_compatibility_mode_is_explicitly_scoped(self):
         spike = self.evidence["spike"]
         self.assertEqual(spike["strict_parse_count"], 312)
@@ -96,6 +155,14 @@ class SignatureParserSpikeTests(unittest.TestCase):
         self.assertEqual(spike["compatible_parse_error_count"], 0)
         self.assertTrue(spike["unknown_syntax_is_diagnostic"])
         self.assertFalse(self.evidence["dynamic_inventory"]["scope_complete"])
+        self.assertTrue(
+            self.evidence["static_inventory"][
+                "syntactic_call_site_scope_complete"
+            ]
+        )
+        self.assertFalse(
+            self.evidence["static_inventory"]["runtime_value_scope_complete"]
+        )
         self.assertIn(
             "relative offset",
             spike["context_required_operations"],
