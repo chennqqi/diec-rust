@@ -30,6 +30,7 @@ Phase 0 计划形成：
 - [`behavior-baseline.md`](behavior-baseline.md)：确定性安全语料、原始输出哈希和多格式行为（Draft）。
 - [`cli-special-modes.md`](cli-special-modes.md)：entropy/info/struct 的 schema、优先级和边界行为（Draft）。
 - [`cli-path-behavior.md`](cli-path-behavior.md)：多目标、目录递归、输出聚合和错误顺序（Draft）。
+- [`cli-option-behavior.md`](cli-option-behavior.md)：verbose/messages/profiling channel 与 test/create test 遗留入口行为（Draft）。
 - [`database-error-behavior.md`](database-error-behavior.md)：数据库缺失/损坏、规则错误和不可读输入（Draft）。
 - [`nested-scan-behavior.md`](nested-scan-behavior.md)：archive/resource/overlay 的选项可达性、结果树和资源限制（Draft）。
 - [`data/cli-dependencies.toml`](data/cli-dependencies.toml)：固定组件依赖边、LICENSE blob 和 bundled code 证据。
@@ -47,6 +48,7 @@ Phase 0 计划形成：
 - [`data/nintendo-certified-baseline.json`](data/nintendo-certified-baseline.json)：双 oracle 原始输出哈希和 detection 摘要。
 - [`data/binary-rule-lifecycle.json`](data/binary-rule-lifecycle.json)：固定 Binary records、helper 解析、源码 hash 和比较器环证据。
 - [`data/binary-rule-order-linux-qt5.json`](data/binary-rule-order-linux-qt5.json)：固定 qmake/CMake oracle 的 292 条 Binary profiling 执行顺序。
+- [`data/cli-option-behavior-linux.json`](data/cli-option-behavior-linux.json)：固定 qmake/CMake oracle 的 verbose/messages/profiling 与 test/create test 原始 CLI 基线。
 - [`data/script-scope-fixture.json`](data/script-scope-fixture.json)：项目生成的跨规则作用域 fixture 清单。
 - [`data/script-scope-qt5.json`](data/script-scope-qt5.json)：固定 qmake/CMake oracle 的作用域行为基线。
 - [`data/script-state-fixture.json`](data/script-state-fixture.json)：项目生成的跨规则持久状态 fixture 清单。

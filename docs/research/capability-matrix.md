@@ -27,12 +27,12 @@ CLI 主入口为 [`src/console/main_console.cpp`](https://github.com/horsicq/DIE
 | `-r` | `--recursivescan` | Scan directories recursively | `bIsRecursiveScan` | Observed + source；不控制目录枚举，启用 resource/overlay 内部递归 |
 | `-d` | `--deepscan` | Enable deep scanning for thorough analysis | `bIsDeepScan` | Observed；15 个基线样本 |
 | `-u` | `--heuristicscan` | Enable heuristic scanning methods | `bIsHeuristicScan` | Observed；PE32 protection 及 BMP/WAV 扩展名 heuristic |
-| `-b` | `--verbose` | Show verbose output with detailed information | `bIsVerbose` | Source only |
+| `-b` | `--verbose` | Show verbose output with detailed information | `bIsVerbose` | Observed；ELF64 新增 OS record，不是纯日志 |
 | `-g` | `--aggressivecscan` | Enable aggressive scanning mode | `bIsAggressiveScan` | Observed；15 个基线样本；long name含额外 `c` |
 | `-a` | `--alltypes` | Scan all file types | `bIsAllTypesScan` | Observed；最小 PE32 额外报告 MSDOS |
 | `-f` | `--format` | Format the output result | `bFormatResult` | Observed；8 个样本的显示字符串空格发生变化 |
-| `-l` | `--profiling` | Profile signatures during scan | `bLogProfiling` | Source only |
-| `-M` | `--messages` | Display scan messages and warnings | Qt signal output | Source only |
+| `-l` | `--profiling` | Profile signatures during scan | `bLogProfiling` | Observed；不带 messages 时输出不变；带 messages 时输出规则名及非确定 timing |
+| `-M` | `--messages` | Display scan messages and warnings | Qt signal output | Observed；signals 写 stdout，可破坏 JSON framing |
 | `-U` | `--hideunknown` | Hide unknown file types from results | `bHideUnknown` | Observed；5 个 Unknown filetype 被折叠为顶层字符串 |
 
 注意：`XScanEngine::SCAN_OPTIONS` 还定义 resource、archive 和 overlay scan，但当前顶层 `src/console/main_console.cpp` 没有注册相应 CLI 选项。这是“引擎能力”和“当前 CLI 能力”必须分开比较的实例。
@@ -54,8 +54,8 @@ CLI 主入口为 [`src/console/main_console.cpp`](https://github.com/horsicq/DIE
 | `-E` | `--extradatabase <path>` | extra 数据库路径 | Observed |
 | `-C` | `--customdatabase <path>` | custom 数据库路径 | Observed |
 | `-s` | `--showdatabase` | 显示路径及各文件类型规则数量 | Observed；27 类型、2172 条 |
-| — | `--test <directory>` | 规则测试入口 | Source only; 实现含 `TODO` |
-| — | `--createtest <filename>` | 创建测试入口 | Source only; 实现含 `TODO` |
+| — | `--test <directory>` | 规则测试入口 | Observed；加载数据库后 no-op，不校验 directory |
+| — | `--createtest <filename>` | 创建测试入口 | Observed；完整参数只打印文案；缺参 exit 4 且误称 `--addtest` |
 
 同时注册 Qt 自带 `--help` 和 `--version`。无 target 且没有 `--showdatabase` 时调用 `showHelp()`。
 
@@ -72,6 +72,10 @@ entropy/info/struct 不使用普通扫描 formatter，组合优先级、schema�
 行为见
 [`cli-path-behavior.md`](cli-path-behavior.md)。
 
+verbose/messages/profiling 的 channel 与结构化结果关系，以及两个未完成测试入口的
+精确 no-op、stdout 和退出码见
+[`cli-option-behavior.md`](cli-option-behavior.md)。
+
 ## 规则与扫描能力
 
 | 能力 | 源码证据 | 状态 |
@@ -85,7 +89,7 @@ entropy/info/struct 不使用普通扫描 formatter，组合优先级、schema�
 | 未命中时产生 Unknown | `DiE_Script::processDetect()` | Source only |
 | 检测结果稳定排序选项 | `bIsSort` + `sortRecords()` | Source only |
 | 脚本错误收集 | `SCAN_RESULT.listErrors` | Observed；parse/runtime error 追加到 stdout，退出 0 |
-| 脚本 profiling | `listDebugRecords` / messages | Source only |
+| 脚本 profiling | `listDebugRecords` / messages | Observed；292 条 Binary 规则顺序及 CLI channel 已固定 |
 | 取消/停止 | `PDSTRUCT`, callback, `breakScan()` | Source only |
 
 规则脚本由 Qt 5 `QScriptEngine` 或 Qt 6 `QJSEngine` 执行。规则兼容性不是简单的模式匹配移植，必须覆盖 JavaScript 方言、全局函数和每种格式宿主对象；详见待建的 `rule-compatibility.md`。

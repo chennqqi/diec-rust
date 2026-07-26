@@ -2,7 +2,7 @@
 
 Status: Draft  
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`  
-Last updated: 2026-07-25
+Last updated: 2026-07-27
 
 ## 范围
 
@@ -207,10 +207,14 @@ filename prefix 行为单独记录在
 resource、overlay 和 archive 嵌套行为已用 7 个独立样本验证，见
 [`nested-scan-behavior.md`](nested-scan-behavior.md)。
 
+verbose、messages、profiling 以及 test/create test 两个遗留入口的确定性行为见
+[`cli-option-behavior.md`](cli-option-behavior.md)。其中 profiling 的非确定
+elapsed 值与固定规则执行序列另见
+[`binary-rule-lifecycle.md`](binary-rule-lifecycle.md#linux-qt5-实测顺序)。
+
 ## 尚未覆盖
 
 - PE64、ELF32、Mach-O32/FAT、APK/JAR/IPA、RAR、ISO9660、PYC、JPEG 等格式。
-- profiling、verbose 和 messages。
 - 输出格式的转义边界、特殊 filename，以及专用 struct/entropy 阈值边界。
 - 能实际触发 deep 增量或 aggressive 过滤/上限差异的样本。
 - 其他 archive 格式、aggressive 高上限和最大嵌套深度。
