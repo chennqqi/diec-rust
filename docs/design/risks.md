@@ -273,10 +273,16 @@ baseline 的变更都要检查本表。
 
 - **触发**：runtime 无 interrupt；parser/decompressor 长循环无检查点；native call
   无法安全终止。
+- **当前证据**：rquickjs 0.12.1/QuickJS-NG 0.15.1 的 Windows MSVC fixture
+  已由外部线程在 handler 启动后设置原子 token，中断无限循环且未触发百万次
+  handler 硬兜底；清除 token 后同一 context 返回 `"42"`。10 次重复均成功，
+  handler 次数随调度为 6..12，故不作为固定延迟。Boa 0.21.1 仍未发现等价的
+  外部取消/heap 公开接口。
 - **缓解**：runtime 选型硬门禁；fuel/deadline/heap；受控检查点；不可中断 backend
   不得采用。
 - **验证**：每个 scan stage deterministic fake clock/cancel；恶意长循环在期限内
-  清理并返回正确错误；下一次 scan 状态正常。
+  清理并返回正确错误；下一次 scan 状态正常；native HostApi 长调用单独验证合作
+  取消，不能以 VM interrupt 代替。
 - **关闭**：runtime 和全部长循环路径通过 bounded interruption tests。
 
 ### R-016：oracle 漂移或不可复现

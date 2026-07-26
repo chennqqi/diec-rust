@@ -19,6 +19,7 @@ QuickJS-NG C 源码编译成静态 archive。它能够：
 - 原样执行 `_runtime_helpers`；
 - 注册和调用 Rust native function；
 - 通过 interrupt handler 中断无限循环；
+- 由另一个线程通过原子取消令牌中断无限循环，并在同一 context 中恢复执行；
 - 通过 runtime memory limit 拒绝超限分配。
 
 但它不能原样作为 DIE 兼容运行时。显式使用 sloppy-script 模式并为语法覆盖提供
@@ -91,7 +92,7 @@ proxy 只用于语法/顶层执行覆盖，不代表宿主 API 兼容，也不�
 | Lockfile packages | 23 |
 | 当前 target packages | 18 |
 | Clean release build | 13,258 ms，本机已缓存下载、空 target |
-| Release executable | 1,753,088 bytes（加入全 Binary detect diagnostic 后） |
+| Release executable | 1,809,408 bytes（加入外部取消与恢复 fixture 后） |
 
 `cargo +1.86.0 check --locked` 明确报告
 `rquickjs@0.12.1 requires rustc 1.87`。本实验继续复用已安装的 1.88 工具链。
@@ -165,11 +166,42 @@ context”。
   compatibility overlay 后 eval 成功且 evaluated length 不变；
 - 两次 eval 同名 `const` 时第二次失败；
 - 17 次 handler callback 后无限循环返回 `Error: interrupted`；
+- 外部线程在 handler 首次被调用后设置原子取消标志，无限循环返回
+  `Error: interrupted`，百万次 handler 硬停止兜底未触发；
+- 重置取消标志后，同一 runtime/context 求值 `String(40 + 2)` 返回 `"42"`；
 - 4 MiB runtime limit 拒绝 16 MiB `ArrayBuffer`，返回 `out of memory`。
 
 内存限制使用 rquickjs 默认 libc allocator。官方 API 说明使用 `rust-alloc` 或
 自定义 allocator 时 `set_memory_limit` 是 no-op，因此未来不能在未验证的情况
 下同时启用这两个选项。
+
+### 外部取消与恢复
+
+fixture 不用固定 sleep 猜测脚本是否已经开始。外部 worker 先等待 QuickJS
+interrupt handler 至少执行一次，再以 `Release` 写入共享 `AtomicBool`；handler
+以 `Acquire` 读取并返回取消状态。handler 还保留 1,000,000 次回调的独立硬停止，
+使取消同步发生回归时实验仍有上界。worker 只写原子状态，不访问 runtime/context；
+QuickJS 仍只在创建它的线程中执行。
+
+首次运行在 5 次 handler callback 后观察取消。随后同一 release binary 重复运行
+10 次，全部满足 requested=true、hard-stop=false、recovery=`"42"`；回调次数为
+6..12。该次数受 OS 调度影响，不进入稳定兼容断言。机器基线只固定：
+
+- 外部取消确实被请求并产生 interrupted error；
+- 百万次硬停止不是本次退出原因；
+- 清除取消标志后同一 context 可继续执行。
+
+复现单次稳定断言：
+
+```sh
+cargo +1.88.0 run --release --locked -- fixture \
+  ../../upstream/Detect-It-Easy/db
+```
+
+这证明 rquickjs interrupt handler 可以桥接线程安全的外部取消 token，并证明
+JavaScript exception 不必污染后续同 context 求值。它不证明 wall-clock deadline
+精度，也不能中断一个长期阻塞且不返回 QuickJS VM 的 Rust/native HostApi 调用。
+正式 adapter 仍需在 native 长循环中合作检查相同 token/deadline。
 
 ## Nintendo compatibility overlay 实验
 
@@ -418,10 +450,10 @@ Nintendo 的单脚本语法 overlay，`audio` 和 MiniExtensions 的跨规则 ov
 | 固定语料独立错误 | 1（parse） | 1（带 shim 的 eval） |
 | Nintendo legacy 规则 | 拒绝 | 拒绝 |
 | 复杂 audio 规则 | 接受 | sloppy 模式接受 |
-| 外部 interrupt | 未发现公开接口 | 支持 |
+| 外部 interrupt | 未发现公开接口 | 跨线程 token 已中断并同 context 恢复 |
 | Heap limit | 未发现公开接口 | 支持默认 allocator |
 | Windows target packages | 126 | 18 |
-| Release spike | 11,784,192 bytes | 1,753,088 bytes |
+| Release spike | 11,784,192 bytes | 1,809,408 bytes |
 | 实现语言 | 纯 Rust | Rust wrapper + vendored C |
 | 本轮工具链 | Rust 1.88 | 最低 1.87，本轮 1.88 |
 
@@ -523,7 +555,8 @@ JSON。运行前先执行
 - 每个 scan 必须使用共享 context，按 global init、type init、signature 顺序
   执行；include 必须在该 context 立即求值。固定证据见
   [`binary-rule-lifecycle.md`](binary-rule-lifecycle.md)。
-- interrupt、memory、stack 和 wall-clock deadline 应进入统一资源预算模型。
+- external cancel token、interrupt、memory、stack 和 wall-clock deadline 应进入
+  统一资源预算模型；native HostApi 长循环必须合作检查 token/deadline。
 - 若使用自定义 allocator，必须重新实现或验证 heap limit。
 
 ## 尚未完成
@@ -532,17 +565,18 @@ JSON。运行前先执行
   `detect` 缺口采集；尚未用完整 HostApi/Qt oracle 逐条验证，也未完成其他 file
   type 和 Windows/macOS 顺序。
 - 规则侧已清点 429 个第一层宿主 receiver/method 和 464 个 arity 形状；
-  337 个 C++ slot 与 13 个脚本扩展静态覆盖 460 个形状。固定 Qt 5 QObject
-  探针已证明三个额外实参形状忽略额外参数，并固定缺失
-  `PE.getEPSignature` 的 `TypeError`；仍缺其余参数/返回类型、默认参数、异常和
-  Qt 6 行为 fixture。
+  337 个 C++ slot 与 13 个脚本扩展静态覆盖 460 个形状。共享 Qt 5/Qt 6
+  QObject 探针已闭合三个额外实参形状和缺失 `PE.getEPSignature` 的
+  runtime-specific `TypeError`，并发现代表性 `qint64` 转换差异；仍缺其余
+  参数/返回类型、默认参数和异常 fixture。
 - 非格式 native global 的 Qt 5 探针已固定缺参字符串化、结果重复/删除/block、
   双 stop 状态和重复 include；QuickJS adapter 尚未逐项复刻并差分这些副作用。
 - Nintendo/EA-XA 已在固定 292 条加载环境中完成三个 selected `detect` 的 Qt 5
   14/14 对照；仍缺 Qt 6、其余 289 个 `detect` 的真实 HostApi/Qt oracle。
 - Qt 5/Qt 6 与 QuickJS 的整数、字符串、数组、异常和 RegExp 差分。
 - Linux/macOS/Windows GNU/MSVC 静态链接、ASan/UBSan 和 fuzz。
-- 并行 runtime/context 的吞吐、峰值内存和取消延迟。
+- wall-clock deadline 精度、native HostApi 长调用取消，以及并行 runtime/context
+  的吞吐、峰值内存和取消延迟。
 
 ## 外部候选资料
 

@@ -369,6 +369,12 @@ case 晋升为命名 regression，不只依赖随机重现。
 全库“可解析”不等于行为兼容。必须同时通过代表性输入 differential 和 host call
 trace；选定 runtime 前保留失败规则清单及最小重现。
 
+外部取消 fixture 使用确定性握手：worker 只能在 runtime interrupt handler 已被
+观察后设置 token；handler 另有独立硬上限，防止测试自身永久挂起。断言必须包括
+取消来源、typed/interrupted error、硬上限未触发，以及清除 token 后同一 context
+恢复。不得固定受 OS 调度影响的 handler callback 次数。另设 native HostApi
+长循环合作取消用例，因为 VM interrupt 不能抢占正在执行的 Rust/native 调用。
+
 ## 14. Fuzz 设计
 
 初始 fuzz targets：

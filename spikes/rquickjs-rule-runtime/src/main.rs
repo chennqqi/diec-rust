@@ -5,7 +5,8 @@ use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 use std::sync::Arc;
 use std::sync::Mutex;
-use std::sync::atomic::{AtomicUsize, Ordering};
+use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
+use std::thread;
 use std::time::Instant;
 
 use rquickjs::{
@@ -1757,6 +1758,42 @@ fn run_fixture(rule_root: &Path) -> Result<bool, String> {
     let limited_context = new_context(&limited_runtime)?;
     let interrupt_error = eval_unit(&limited_context, b"for (;;) {}").err();
 
+    const EXTERNAL_CANCEL_HARD_STOP_CALLS: usize = 1_000_000;
+    let cancel_requested = Arc::new(AtomicBool::new(false));
+    let cancel_handler_seen = Arc::new(AtomicBool::new(false));
+    let cancel_handler_calls = Arc::new(AtomicUsize::new(0));
+    let cancel_requested_for_handler = Arc::clone(&cancel_requested);
+    let cancel_handler_seen_for_handler = Arc::clone(&cancel_handler_seen);
+    let cancel_handler_calls_for_handler = Arc::clone(&cancel_handler_calls);
+    let cancel_runtime = new_runtime()?;
+    cancel_runtime.set_interrupt_handler(Some(Box::new(move || {
+        let calls = cancel_handler_calls_for_handler.fetch_add(1, Ordering::Relaxed) + 1;
+        cancel_handler_seen_for_handler.store(true, Ordering::Release);
+        cancel_requested_for_handler.load(Ordering::Acquire)
+            || calls >= EXTERNAL_CANCEL_HARD_STOP_CALLS
+    })));
+    let cancel_context = new_context(&cancel_runtime)?;
+    let cancel_requested_for_worker = Arc::clone(&cancel_requested);
+    let cancel_handler_seen_for_worker = Arc::clone(&cancel_handler_seen);
+    let cancel_worker = thread::spawn(move || {
+        while !cancel_handler_seen_for_worker.load(Ordering::Acquire) {
+            thread::yield_now();
+        }
+        cancel_requested_for_worker.store(true, Ordering::Release);
+    });
+    let external_cancel_error = eval_unit(&cancel_context, b"for (;;) {}").err();
+    cancel_worker
+        .join()
+        .map_err(|_| "external cancellation worker panicked".to_owned())?;
+    let external_cancel_requested = cancel_requested.load(Ordering::Acquire);
+    let external_cancel_handler_calls = cancel_handler_calls.load(Ordering::Relaxed);
+    let external_cancel_hard_stop_reached =
+        external_cancel_handler_calls >= EXTERNAL_CANCEL_HARD_STOP_CALLS;
+    cancel_requested.store(false, Ordering::Release);
+    cancel_handler_calls.store(0, Ordering::Relaxed);
+    let external_cancel_recovery = eval_string(&cancel_context, b"String(40 + 2)");
+    let external_cancel_recovered = external_cancel_recovery.as_deref() == Ok("42");
+
     let memory_runtime = new_runtime()?;
     memory_runtime.set_memory_limit(4 * 1024 * 1024);
     let memory_context = new_context(&memory_runtime)?;
@@ -1776,6 +1813,10 @@ fn run_fixture(rule_root: &Path) -> Result<bool, String> {
         && nintendo_overlay_applied
         && nintendo_compat_eval.is_ok()
         && interrupt_error.is_some()
+        && external_cancel_error.is_some()
+        && external_cancel_requested
+        && !external_cancel_hard_stop_reached
+        && external_cancel_recovered
         && memory_limit_error.is_some();
     let compatible = nintendo_eval.is_ok();
     let report = json!({
@@ -1823,6 +1864,18 @@ fn run_fixture(rule_root: &Path) -> Result<bool, String> {
         "interrupt": {
             "handler_calls": interrupt_count.load(Ordering::Relaxed),
             "error": interrupt_error,
+        },
+        "external_cancel": {
+            "requested": external_cancel_requested,
+            "handler_calls": external_cancel_handler_calls,
+            "hard_stop_handler_call_limit": EXTERNAL_CANCEL_HARD_STOP_CALLS,
+            "hard_stop_reached": external_cancel_hard_stop_reached,
+            "error": external_cancel_error,
+            "same_context_recovery": {
+                "accepted": external_cancel_recovery.is_ok(),
+                "result": external_cancel_recovery.as_deref().ok(),
+                "error": external_cancel_recovery.as_ref().err(),
+            },
         },
         "memory_limit": {
             "bytes": 4 * 1024 * 1024,

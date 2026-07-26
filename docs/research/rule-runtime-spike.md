@@ -29,7 +29,8 @@ Boa 0.21.1 能解析绝大多数固定上游规则、执行 603,640 字节的真
 规则文件仍必须保持原始字节，不能通过改写问题规则来掩盖差异。QuickJS-NG
 对照见
 [`rquickjs-rule-runtime-spike.md`](rquickjs-rule-runtime-spike.md)；它拒绝同一
-条 legacy 规则，但提供更完整的 interrupt/heap limit。下一步应按真实上游
+条 legacy 规则，但提供 interrupt/heap limit，并已证明跨线程 token 中断和
+同 context 恢复。下一步应按真实上游
 生命周期验证两者，并向 Boa 缩小/报告 parser-eval 一致性及 legacy Qt semantics
 问题。
 
@@ -168,16 +169,17 @@ JSON 报告写到 stdout。报告包含环境无关的计数和错误列表，�
 - Boa 尚未按上游 file type、priority、database、init/include 顺序做全库 eval；
   QuickJS 已完成固定 Binary 顶层顺序，其他 file type 仍未完成。
 - 规则侧已清点 429 个第一层宿主 receiver/method 和 464 个 arity 形状；
-  337 个 C++ slot 与 13 个脚本扩展静态覆盖 460 个形状。固定 Qt 5 QObject
-  探针已闭合三个额外实参形状和一个缺失方法异常；仍缺其余参数/返回类型、
-  默认参数、异常和 Qt 6 行为 fixture。
-- 16 个非格式 native global 已完成声明/注册清单；固定 Qt 5
-  `DiE_ScriptEngine` 已覆盖主要转换、结果 mutation、stop/include 和模式行为，
-  仍缺剩余 Qt 5 边界及完整 Qt 6 对照。
+  337 个 C++ slot 与 13 个脚本扩展静态覆盖 460 个形状。共享 Qt 5/Qt 6
+  QObject 探针已闭合三个额外实参形状和一个缺失方法异常，并发现代表性
+  `qint64` 转换差异；仍缺其余参数/返回类型、默认参数和异常 fixture。
+- 16 个非格式 native global 已完成声明/注册清单；共享 Qt 5/Qt 6
+  `DiE_ScriptEngine` fixture 已覆盖主要转换、结果 mutation、stop/include 和
+  模式行为，仍缺两侧数组、对象、数值等边界。
 - Qt 5 与 Qt 6 的 64 位整数、字符串、数组、默认参数和异常 oracle。
 - QuickJS-NG/rquickjs 的固定 Binary 顶层生命周期已完成；完整 HostApi 下逐规则
   detect 生命周期仍未完成。
-- Boa heap、wall-clock cancellation、panic 隔离和多线程性能。
+- Boa heap/外部取消，以及两个候选的 wall-clock deadline、native HostApi
+  合作取消、panic 隔离和多线程性能。
 - PE/.NET、ELF、APK/DEX、PDF 等真实阳性/阴性检测。
 
 ## 外部候选资料

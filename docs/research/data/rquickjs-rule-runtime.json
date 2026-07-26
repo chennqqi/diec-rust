@@ -12,20 +12,28 @@
   },
   "dependency_footprint": {
     "lockfile_packages": 23,
-    "release_executable_bytes": 1773056,
+    "release_executable_bytes": 1809408,
     "target": "x86_64-pc-windows-msvc",
     "target_packages": 18
   },
   "experiment": {
     "cargo_lock_sha256": "aa7cd4c42e1f3429f45ec31e05e41862abe6156bdbe351eeacc507673f237232",
     "cargo_toml_sha256": "875730b205ca351b4bc0f830a1896fb6ad777c46046e6f26c9c368849614be16",
-    "source_sha256": "757e6dec99867fa8c3c6ad07201bec55727137d22ab23d0446d430b164d49dac",
+    "source_sha256": "c6c4c785d29ff4ad975b45e18f566aa98863e6b575a7e9c074d30a488af1d60b",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
     "audio_rule_bytes": 603640,
     "candidate_compatible_with_fixed_rules": false,
     "host_function_result": "42",
+    "external_cancel": {
+      "hard_stop_handler_call_limit": 1000000,
+      "hard_stop_reached": false,
+      "interrupt_observed": true,
+      "requested": true,
+      "same_context_recovered": true,
+      "same_context_recovery_result": "42"
+    },
     "interrupt_handler_calls": 17,
     "interrupt_observed": true,
     "memory_limit_bytes": 4194304,

@@ -96,6 +96,17 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
         self.assertTrue(fixture["interrupt_observed"])
         self.assertTrue(fixture["memory_limit_observed"])
         self.assertEqual(fixture["memory_limit_bytes"], 4 * 1024 * 1024)
+        self.assertEqual(
+            fixture["external_cancel"],
+            {
+                "hard_stop_handler_call_limit": 1_000_000,
+                "hard_stop_reached": False,
+                "interrupt_observed": True,
+                "requested": True,
+                "same_context_recovered": True,
+                "same_context_recovery_result": "42",
+            },
+        )
 
     def test_nintendo_probe_uses_real_init_and_include_sequence(self):
         detection = self.reference["nintendo_detect"]
