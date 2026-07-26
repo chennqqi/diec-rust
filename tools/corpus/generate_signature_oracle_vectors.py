@@ -10,7 +10,7 @@ from pathlib import Path
 
 
 SCHEMA_VERSION = 2
-GENERATOR_VERSION = 4
+GENERATOR_VERSION = 5
 UPSTREAM_COMMIT = "74eaf505c250ab47e709024e9dc41657cd8f2254"
 FORMATS_COMMIT = "1151e7254fdee3c0294ff7095edbdd7bfccf8201"
 
@@ -60,6 +60,44 @@ def mapped_pe32() -> bytes:
         0,
         0x60000020,
     )
+    image[0x200:0x205] = bytes.fromhex("e9fb0f0000")
+    image[0x400] = 0x90
+    return bytes(image)
+
+
+def mapped_pe64() -> bytes:
+    image = bytearray(0x600)
+    image[0:2] = b"MZ"
+    struct.pack_into("<I", image, 0x3C, 0x80)
+    image[0x80:0x84] = b"PE\0\0"
+    struct.pack_into("<HHIIIHH", image, 0x84, 0x8664, 2, 0, 0, 0, 240, 0x0022)
+    optional = 0x98
+    struct.pack_into("<H", image, optional, 0x20B)
+    struct.pack_into("<I", image, optional + 16, 0x1000)
+    struct.pack_into("<Q", image, optional + 24, 0x140000000)
+    struct.pack_into("<II", image, optional + 32, 0x1000, 0x200)
+    struct.pack_into("<II", image, optional + 56, 0x3000, 0x200)
+    struct.pack_into("<H", image, optional + 68, 3)
+    struct.pack_into("<I", image, optional + 108, 16)
+    section = 0x188
+    for index, (name, virtual_address, raw_offset) in enumerate(
+        ((b".one\0\0\0\0", 0x1000, 0x200), (b".two\0\0\0\0", 0x2000, 0x400))
+    ):
+        struct.pack_into(
+            "<8sIIIIIIHHI",
+            image,
+            section + index * 40,
+            name,
+            0x100,
+            virtual_address,
+            0x200,
+            raw_offset,
+            0,
+            0,
+            0,
+            0,
+            0x60000020,
+        )
     image[0x200:0x205] = bytes.fromhex("e9fb0f0000")
     image[0x400] = 0x90
     return bytes(image)
@@ -115,6 +153,56 @@ def mapped_elf64() -> bytes:
     return bytes(image)
 
 
+def mapped_elf32() -> bytes:
+    image = bytearray(0x200)
+    ident = b"\x7fELF" + bytes((1, 1, 1, 0, 0)) + bytes(7)
+    image[:52] = ident + struct.pack(
+        "<HHIIIIIHHHHHH",
+        3,
+        3,
+        1,
+        0x8048100,
+        52,
+        0,
+        0,
+        52,
+        32,
+        2,
+        0,
+        0,
+        0,
+    )
+    struct.pack_into(
+        "<IIIIIIII",
+        image,
+        52,
+        1,
+        0x100,
+        0x8048100,
+        0x8048100,
+        0x20,
+        0x20,
+        5,
+        1,
+    )
+    struct.pack_into(
+        "<IIIIIIII",
+        image,
+        84,
+        1,
+        0x180,
+        0x8049000,
+        0x8049000,
+        0x20,
+        0x20,
+        5,
+        1,
+    )
+    image[0x100:0x105] = bytes.fromhex("e9fb0e0000")
+    image[0x180] = 0x90
+    return bytes(image)
+
+
 def mapped_macho64() -> bytes:
     image = bytearray(0x200)
     image[:32] = struct.pack(
@@ -157,6 +245,51 @@ def mapped_macho64() -> bytes:
         1,
     )
     image[0x100:0x109] = bytes.fromhex("680010000001000000")
+    image[0x180] = 0x90
+    return bytes(image)
+
+
+def mapped_macho32() -> bytes:
+    image = bytearray(0x200)
+    image[:28] = struct.pack(
+        "<IiiIIII",
+        0xFEEDFACE,
+        7,
+        3,
+        2,
+        2,
+        112,
+        0,
+    )
+    image[28:84] = struct.pack(
+        "<II16sIIIIiiII",
+        1,
+        56,
+        b"__ONE" + bytes(11),
+        0x01000100,
+        0x20,
+        0x100,
+        0x20,
+        7,
+        5,
+        0,
+        1,
+    )
+    image[84:140] = struct.pack(
+        "<II16sIIIIiiII",
+        1,
+        56,
+        b"__TWO" + bytes(11),
+        0x01001000,
+        0x20,
+        0x180,
+        0x20,
+        7,
+        5,
+        0,
+        1,
+    )
+    image[0x100:0x105] = bytes.fromhex("6800100001")
     image[0x180] = 0x90
     return bytes(image)
 
@@ -359,6 +492,13 @@ def vectors() -> list[dict[str, object]]:
             "format_parser": "pe",
         },
         {
+            "id": "pe64_parser_memory_map_relative_jump",
+            "pattern": "e9$$$$$$$$90",
+            "data_hex": mapped_pe64().hex(),
+            "offset": 0x200,
+            "format_parser": "pe",
+        },
+        {
             "id": "elf64_parser_memory_map_relative_jump",
             "pattern": "e9$$$$$$$$90",
             "data_hex": mapped_elf64().hex(),
@@ -366,9 +506,23 @@ def vectors() -> list[dict[str, object]]:
             "format_parser": "elf",
         },
         {
+            "id": "elf32_parser_memory_map_relative_jump",
+            "pattern": "e9$$$$$$$$90",
+            "data_hex": mapped_elf32().hex(),
+            "offset": 0x100,
+            "format_parser": "elf",
+        },
+        {
             "id": "macho64_parser_memory_map_absolute_jump",
             "pattern": "68################90",
             "data_hex": mapped_macho64().hex(),
+            "offset": 0x100,
+            "format_parser": "macho",
+        },
+        {
+            "id": "macho32_parser_memory_map_absolute_jump",
+            "pattern": "68########90",
+            "data_hex": mapped_macho32().hex(),
             "offset": 0x100,
             "format_parser": "macho",
         },

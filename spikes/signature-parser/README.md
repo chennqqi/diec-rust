@@ -16,9 +16,9 @@ relative-offset and absolute-address records when no context is supplied.
 generic address records, endianness, COM/MS-DOS branches, and the AmigaHunk
 relative-width quirk. Synthetic PE, ELF, Mach-O, COM, MS-DOS, and AmigaHunk
 vectors agree 7/7 with the pinned XBinary harness; real format-specific
-`getMemoryMap` construction for generated PE32, ELF64, Mach-O64, COM, MS-DOS,
-and AmigaHunk files also agrees 6/6. Other bitnesses and malformed map variants
-remain outside this spike.
+`getMemoryMap` construction for generated PE32/64, ELF32/64, Mach-O32/64, COM,
+MS-DOS, and AmigaHunk files also agrees 9/9. Malformed map variants remain
+outside this spike.
 `find_signature` is a separate operation with control-record, SigByte, and
 plain-hex branches; this spike does not approximate it by looping the raw
 matcher.
@@ -26,6 +26,6 @@ matcher.
 Tests consume
 `docs/research/data/signature-pattern-inventory.json`, a deterministic
 inventory generated from the fixed 292-rule runtime trace.
-Additional tests compare 16 context-free, 7 synthetic memory-map, and 6
+Additional tests compare 16 context-free, 7 synthetic memory-map, and 9
 parser-derived memory-map cases directly with the pinned Qt 5 XBinary harness
 baseline.

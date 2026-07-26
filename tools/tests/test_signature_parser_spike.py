@@ -122,12 +122,15 @@ class SignatureParserSpikeTests(unittest.TestCase):
         self.assertEqual(
             spike["pinned_format_parser_memory_map_differential"],
             {
-                "case_count": 6,
-                "matched_count": 6,
-                "format_valid_count": 6,
+                "case_count": 9,
+                "matched_count": 9,
+                "format_valid_count": 9,
                 "file_types": [
                     "PE32",
+                    "PE64",
+                    "ELF32",
                     "ELF64",
+                    "Mach-O32",
                     "Mach-O64",
                     "COM",
                     "MS-DOS",
@@ -177,7 +180,7 @@ class SignatureParserSpikeTests(unittest.TestCase):
         )
         self.assertEqual(baseline["case_count"], oracle["case_count"])
         self.assertTrue(oracle["probe_passed"])
-        self.assertEqual(oracle["case_count"], 40)
+        self.assertEqual(oracle["case_count"], 43)
         self.assertEqual(len(oracle["compare_find_divergences"]), 4)
 
 

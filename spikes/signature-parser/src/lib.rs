@@ -1178,8 +1178,11 @@ mod tests {
     fn parser_derived_memory_maps_agree_with_pinned_xbinary_oracle() {
         let selected = BTreeSet::from([
             "pe32_parser_memory_map_relative_jump",
+            "pe64_parser_memory_map_relative_jump",
             "elf64_parser_memory_map_relative_jump",
+            "elf32_parser_memory_map_relative_jump",
             "macho64_parser_memory_map_absolute_jump",
+            "macho32_parser_memory_map_absolute_jump",
             "com_parser_memory_map_relative_jump",
             "msdos_parser_memory_map_far_pointer",
             "amigahunk_parser_memory_map_relative_jump",

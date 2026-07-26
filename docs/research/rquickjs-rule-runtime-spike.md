@@ -340,8 +340,8 @@ pattern 静默返回 false。这不符合“不支持语法必须显式诊断”
 覆盖该动态清单，固定 XBinary oracle 又确认 `compare` 与 `fSig/find_signature`
 存在 class 和 search 分支差异。合成 memory-map matcher 已覆盖六类 file type
 并与固定 oracle 7/7 一致；PE32/ELF64/Mach-O64 parser-derived map 又达到
-3/3，COM/MS-DOS/AmigaHunk 也达到 3/3。其他 bitness 与畸形 map、完整 find
-和全调用点差分尚未完成，当前运行时仍不替换五-pattern 特判。
+3/3，COM/MS-DOS/AmigaHunk 及 PE64/ELF32/Mach-O32 再达到 6/6。畸形 map、
+完整 find 和全调用点差分尚未完成，当前运行时仍不替换五-pattern 特判。
 
 285 条“无异常”及 153 条 detection 都不能作为兼容证据：代理返回的 callable
 object 在 JavaScript 条件中可能为 truthy，已明显制造大量 false positive。即使

@@ -72,11 +72,23 @@ EXPECTED_OBSERVATIONS = {
         "format_valid": True,
         "compare": True,
     },
+    "pe64_parser_memory_map_relative_jump": {
+        "format_valid": True,
+        "compare": True,
+    },
     "elf64_parser_memory_map_relative_jump": {
         "format_valid": True,
         "compare": True,
     },
+    "elf32_parser_memory_map_relative_jump": {
+        "format_valid": True,
+        "compare": True,
+    },
     "macho64_parser_memory_map_absolute_jump": {
+        "format_valid": True,
+        "compare": True,
+    },
+    "macho32_parser_memory_map_absolute_jump": {
         "format_valid": True,
         "compare": True,
     },
