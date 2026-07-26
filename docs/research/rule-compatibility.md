@@ -143,13 +143,16 @@ Qt 6 `QJSEngine` 路径还暴露 `_getQtVersion`。该差异需要在上游双�
 
 `DiE_ScriptEngine` 总是注册 `Binary`，并在非 Binary 类型下额外以格式名注册同一 wrapper。规则中的 `File` 和 `X` 通常由类型 `_init` 指向该格式对象。
 
-从 `public slots` 静态提取到 30 个 `*_Script` 类、338 个直接声明的方法。继承后每个具体类型还拥有父类方法。
+从 `public slots` 静态提取到 30 个 `*_Script` 类、337 个直接声明的方法。此前
+人工计数 338 误包含 `pe_script.h` 中一条已注释声明；继承后每个具体类型还拥有
+父类方法。完整机器清单和规则调用覆盖见
+[`host-api-inventory.md`](host-api-inventory.md)。
 
 | Class | Parent | Direct methods |
 | --- | --- | ---: |
 | `Binary_Script` | `QObject` | 155 |
 | `MSDOS_Script` | `Binary_Script` | 13 |
-| `PE_Script` | `MSDOS_Script` | 88 |
+| `PE_Script` | `MSDOS_Script` | 87 |
 | `ELF_Script` | `Binary_Script` | 26 |
 | `MACH_Script` | `Binary_Script` | 12 |
 | `DEX_Script` | `Binary_Script` | 4 |
@@ -357,14 +360,15 @@ header fast path 的字符/字节混合计算和严格 `<` 分界会改变 inval
 全规则语法和调用形状机器清单见
 [`rule-syntax-inventory.md`](rule-syntax-inventory.md)：固定 `db`/`db_extra`
 的 2175 个 `.sg` 与 60 个无扩展名公共脚本共 2235/2235 建立 AST，得到 55 种
-节点类型、28,372 个普通调用；29 个已知宿主 receiver 上共有 16,500 次调用、
-430 个 receiver/method 组合和 465 个 arity 形状，动态 computed 宿主方法名为
-0。该清单闭合规则侧语法和静态调用用法面，但不替代 C++ 声明、继承、默认参数和
-运行行为核对。
+节点类型、28,372 个普通调用；29 个已知宿主 receiver 上共有 16,499 次第一层
+调用、429 个 receiver/method 组合和 464 个 arity 形状，动态 computed 第一层
+宿主方法名为 0。C++ 337 个 slot 加 13 个公共脚本扩展联合覆盖其中 460/464；
+剩余 `PE.getEPSignature` 和三个额外实参形状等待 Qt oracle。该清单闭合规则侧
+语法和静态调用用法面，但不替代类型转换和运行行为核对。
 
 ## 尚未完成
 
-- 从固定 C++ 声明自动生成包含参数类型、默认参数、属性和继承的完整宿主签名清单。
+- 为固定 C++ 声明、默认参数、继承和规则脚本扩展补齐 Qt 5/Qt 6 行为 fixture。
 - Qt 5 与 Qt 6 的 conformance oracle。
 - include 同名、重复、循环和异常实验。
 - database cache 与 ZIP database 行为。

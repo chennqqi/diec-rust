@@ -124,7 +124,10 @@ Rust 设计前必须把完整分派顺序提取为测试表，并用多义样本
 6. 默认 detect function 接收 show-type/show-version/show-info 三个布尔参数。
 7. 脚本通过宿主 API 添加/删除结果、检查停止状态、include 其他脚本等。
 
-各格式宿主对象位于 `XScanEngine/modules/*_script.{h,cpp}`，继承关系复用了 Binary、MSDOS、Archive、ZIP、JAR 和 Image 等公共能力。完整宿主 API 是规则 1:1 复用的核心风险，后续单独写入 `rule-compatibility.md`。
+各格式宿主对象位于 `XScanEngine/modules/*_script.{h,cpp}`，继承关系复用了 Binary、
+MSDOS、Archive、ZIP、JAR 和 Image 等公共能力。固定声明、默认参数、继承和规则
+调用覆盖见 [`host-api-inventory.md`](host-api-inventory.md)；类型转换和行为
+fixture 仍是规则 1:1 复用的核心风险。
 
 ## 结果与层级
 

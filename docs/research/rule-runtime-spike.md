@@ -167,8 +167,9 @@ JSON 报告写到 stdout。报告包含环境无关的计数和错误列表，�
 
 - Boa 尚未按上游 file type、priority、database、init/include 顺序做全库 eval；
   QuickJS 已完成固定 Binary 顶层顺序，其他 file type 仍未完成。
-- 规则侧已清点 430 个宿主 receiver/method 和 465 个 arity 形状；仍缺 338 个
-  C++ 直接声明方法、继承方法的参数/返回类型与行为 fixture。
+- 规则侧已清点 429 个第一层宿主 receiver/method 和 464 个 arity 形状；
+  337 个 C++ slot 与 13 个脚本扩展已联合覆盖 460 个形状，仍缺参数/返回类型、
+  额外实参和异常行为 fixture。
 - Qt 5 与 Qt 6 的 64 位整数、字符串、数组、默认参数和异常 oracle。
 - QuickJS-NG/rquickjs 的固定 Binary 顶层生命周期已完成；完整 HostApi 下逐规则
   detect 生命周期仍未完成。

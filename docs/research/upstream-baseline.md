@@ -50,7 +50,7 @@ git -C DIE-engine submodule status --recursive
 | `LICENSE` | `BE0FE2D727CD0A754FB0B2FDC579EAD8F19EF575840B4DAEF221BE201701EAAD` |
 | `.gitmodules` | `7AA824AFAC7F4C74A995519989A9089EF1FA23022E4A9570667A7785B173ACB9` |
 
-主仓库 `LICENSE` 为 MIT License，copyright 为 `2012-2026 hors<horsicq@gmail.com>`。本轮检查的 `Detect-It-Easy`、`Formats`、`StaticScan`、`XScanEngine`、`die_script`、`signatures`、`XOptions`、`XFileInfo` 和 `XEntropyWidget` 均有以 `MIT License` 开头的独立 `LICENSE` 文件。
+主仓库 `LICENSE` 为 MIT License，copyright 为 `2012-2026 hors<horsicq@gmail.com>`。本轮检查的 `Detect-It-Easy`、`Formats`、`StaticScan`、`XScanEngine`、`die_script`、`signatures`、`XOptions`、`XFileInfo` 和 `XEntropyWidget` 均有以 `MIT License` 开头的独立 `LICENSE` 文件。固定 XScanEngine external research checkout 的 LICENSE SHA-256 为 `ac4f868b0034a4047dd1394409e412a25b03013a42f75f20fb0a4f9b4692a827`，其 HostApi 头文件清单见 [`host-api-inventory.md`](host-api-inventory.md)。
 
 这不是完整许可证审计。剩余 submodule、构建时下载的第三方库、YARA/PEiD 规则及测试样本仍需逐项核对。
 

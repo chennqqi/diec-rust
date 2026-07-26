@@ -88,15 +88,17 @@ unsigned coercion 不是可选语义；`==`/`!=` 共 2179 次，也不能统一�
 | --- | ---: | ---: | ---: |
 | 规则内具名函数 | 1,053 | 363 | 372 |
 | 未声明 global 直接调用 | 7,834 | 71 | 101 |
-| member 调用 | 19,485 | 1,013 | 1,079 |
-| 其中已知格式宿主 receiver | 16,500 | 430 | 465 |
+| member 调用 | 19,485 | 1,016 | 1,082 |
+| 其中第一层已知格式宿主 receiver | 16,499 | 429 | 464 |
 
 已知宿主调用分布在 29 个 receiver：`APK`、`Amiga`、`Archive`、`AtariST`、
 `Binary`、`CFBF`、`COM`、`DEX`、`DOS16M`、`DOS4G`、`ELF`、`File`、
 `ISO9660`、`JAR`、`JavaClass`、`LE`、`LX`、`MACH`、`MACHOFAT`、`MSDOS`、
 `NE`、`NPM`、`PDF`、`PE`、`PNG`、`PYC`、`RAR`、`X` 和 `ZIP`。
 
-规则侧未出现动态 computed 宿主方法调用；430 个 receiver/method 均可静态命名。
+规则侧未出现动态 computed 第一层宿主方法调用；429 个 receiver/method 均可静态命名。
+更深成员链单独保留，不把 `MSDOS.addressToOffset.apply(...)` 的 `apply` 误记为
+MSDOS HostApi。
 但同名方法可能有多个实参个数。例如 `X.c` 有 494 次一参数和 699 次二参数调用，
 `PE.compareEP` 有 1434 次一参数和 85 次二参数调用。HostApi 设计不能只保存
 “方法名存在”，必须为每个方法核对全部观察到的 arity、默认参数和 Qt 转换行为。
@@ -104,6 +106,11 @@ unsigned coercion 不是可选语义；`==`/`!=` 共 2179 次，也不能统一�
 `known_host_first_level_members` 还保存宿主第一层字段/方法读取及直接写入计数，
 用于覆盖 `PE.section` 一类非调用访问。嵌套属性的最终键可能由普通 JS 下标决定；
 本清单只把静态第一层宿主成员作为 HostApi 边界。
+
+`known_receiver_script_extensions` 另保存 13 个公共脚本函数扩展，包括
+`Archive.add/contents`、MSDOS `_init` 的 5 个方法和 PE `_init` 的 6 个方法。
+这些是 JavaScript 层，不应误写成 C++ slot；与固定声明的联合差分见
+[`host-api-inventory.md`](host-api-inventory.md)。
 
 ## 5. 未声明 global 的解释限制
 
@@ -125,8 +132,8 @@ unsigned coercion 不是可选语义；`==`/`!=` 共 2179 次，也不能统一�
 
 - runtime conformance corpus 至少覆盖机器清单中的全部 55 种 AST 类型和运算符；
 - 未支持语法必须在规则加载阶段产生路径、行列和构造类型诊断；
-- HostApi codegen/trait 设计必须以源码声明为主，并证明覆盖 430 个观察到的方法组合、
-  465 个 arity 形状和第一层字段访问；
+- HostApi codegen/trait 设计必须以源码声明为主，并证明覆盖 429 个观察到的方法组合、
+  464 个 arity 形状、13 个脚本扩展和第一层字段访问；
 - 规则同步校验必须重生成清单；文件 manifest、AST 类型、宿主方法或 arity 变化均
   进入人工评审；
 - 该清单不能作为 runtime 兼容率或 detection 正确率使用，后者仍依赖 Qt oracle
@@ -134,9 +141,9 @@ unsigned coercion 不是可选语义；`==`/`!=` 共 2179 次，也不能统一�
 
 ## 7. 尚未完成
 
-- 从固定 C++ 宿主声明自动提取方法、参数类型、默认参数、属性和继承关系；
+- 为固定 C++ 声明和脚本 shadowing 补齐 Qt 类型转换、默认/额外参数及异常行为；
 - 将 1408 个未声明 global 分为 ECMAScript 内建、引擎注入、公共脚本定义、
   跨规则隐式 global 和真正未解析引用；
-- 为 55 种 AST 类型、全部运算符及 465 个宿主 arity 形状生成最小 Qt 5/Qt 6
+- 为 55 种 AST 类型、全部运算符及 464 个宿主 arity 形状生成最小 Qt 5/Qt 6
   conformance fixture；
 - 用完整 HostApi 逐条执行规则并与固定 Qt oracle 比较结果和异常。

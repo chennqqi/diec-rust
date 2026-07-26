@@ -147,6 +147,19 @@ function staticMemberName(uglify, expression) {
     return null;
 }
 
+function memberDepth(uglify, expression) {
+    let depth = 0;
+    let current = expression;
+    while (
+        current instanceof uglify.AST_Dot ||
+        current instanceof uglify.AST_Sub
+    ) {
+        depth += 1;
+        current = current.expression;
+    }
+    return depth;
+}
+
 function aggregateRecord(records, key, initial) {
     if (!records.has(key)) {
         records.set(key, {
@@ -178,10 +191,10 @@ function finalizeCallRecords(records) {
         .sort((left, right) => {
             const leftKey = `${left.receiver_root || ""}\0${
                 left.name || left.method || ""
-            }`;
+            }\0${left.member_depth || 0}`;
             const rightKey = `${right.receiver_root || ""}\0${
                 right.name || right.method || ""
-            }`;
+            }\0${right.member_depth || 0}`;
             return compareOrdinal(leftKey, rightKey);
         })
         .map((record) => ({
@@ -232,6 +245,30 @@ function finalizeHostMembers(records) {
         }));
 }
 
+function finalizeScriptExtensions(records) {
+    return [...records.values()]
+        .sort((left, right) => {
+            const byRoot = compareOrdinal(
+                left.receiver_root,
+                right.receiver_root,
+            );
+            return byRoot || compareOrdinal(left.member, right.member);
+        })
+        .map((record) => ({
+            receiver_root: record.receiver_root,
+            member: record.member,
+            definition_count: record.definition_count,
+            file_count: record.files.size,
+            parameter_count_counts: sortedCounts(
+                record.parameter_counts,
+            ),
+            definition_kind_counts: sortedCounts(
+                record.definition_kinds,
+            ),
+            first_location: record.first_location,
+        }));
+}
+
 function main() {
     const options = parseArguments(process.argv);
     const rulesRoot = path.resolve(options["rules-root"]);
@@ -248,6 +285,7 @@ function main() {
     const knownHostCalls = new Map();
     const globals = new Map();
     const hostMembers = new Map();
+    const scriptExtensions = new Map();
     let totalBytes = 0;
     let callCount = 0;
 
@@ -292,6 +330,55 @@ function main() {
                 }
                 if (node instanceof uglify.AST_Assign) {
                     increment(assignmentOperators, node.operator);
+                }
+                if (
+                    node instanceof uglify.AST_Assign &&
+                    node.operator === "=" &&
+                    (node.left instanceof uglify.AST_Dot ||
+                        node.left instanceof uglify.AST_Sub) &&
+                    node.left.expression instanceof
+                        uglify.AST_SymbolRef &&
+                    KNOWN_HOST_RECEIVERS.has(
+                        node.left.expression.name,
+                    ) &&
+                    node.right instanceof uglify.AST_Function
+                ) {
+                    observeScriptExtension(
+                        scriptExtensions,
+                        node.left.expression.name,
+                        staticMemberName(uglify, node.left) ||
+                            "<computed>",
+                        node.right.argnames.length,
+                        "member_assignment",
+                        relativePath,
+                        node,
+                    );
+                }
+                if (
+                    node instanceof uglify.AST_VarDef &&
+                    node.name &&
+                    KNOWN_HOST_RECEIVERS.has(node.name.name) &&
+                    node.value instanceof uglify.AST_Object
+                ) {
+                    for (const property of node.value.properties) {
+                        if (
+                            property instanceof
+                                uglify.AST_ObjectKeyVal &&
+                            typeof property.key === "string" &&
+                            property.value instanceof
+                                uglify.AST_Function
+                        ) {
+                            observeScriptExtension(
+                                scriptExtensions,
+                                node.name.name,
+                                property.key,
+                                property.value.argnames.length,
+                                "object_literal",
+                                relativePath,
+                                property,
+                            );
+                        }
+                    }
                 }
                 if (
                     node instanceof uglify.AST_SymbolRef &&
@@ -449,7 +536,13 @@ function main() {
                             uglify,
                             node.expression,
                         ) || "<computed>";
-                    const key = `${receiver || "<expression>"}\0${method}`;
+                    const depth = memberDepth(
+                        uglify,
+                        node.expression,
+                    );
+                    const key = `${
+                        receiver || "<expression>"
+                    }\0${method}\0${depth}`;
                     const record = aggregateRecord(
                         memberCalls,
                         key,
@@ -457,12 +550,14 @@ function main() {
                             receiver_root:
                                 receiver || "<expression>",
                             method,
+                            member_depth: depth,
                         },
                     );
                     observeCall(record, relativePath, node);
                     if (
                         receiver &&
                         KNOWN_HOST_RECEIVERS.has(receiver) &&
+                        depth === 1 &&
                         receiverSymbol.thedef &&
                         receiverSymbol.thedef.undeclared
                     ) {
@@ -472,6 +567,7 @@ function main() {
                             {
                                 receiver_root: receiver,
                                 method,
+                                member_depth: depth,
                             },
                         );
                         observeCall(
@@ -489,6 +585,7 @@ function main() {
                     {
                         receiver_root: `<${key}>`,
                         method: "<call>",
+                        member_depth: 0,
                     },
                 );
                 observeCall(record, relativePath, node);
@@ -547,8 +644,10 @@ function main() {
         undeclared_globals: finalizeGlobalRecords(globals),
         known_host_first_level_members:
             finalizeHostMembers(hostMembers),
+        known_receiver_script_extensions:
+            finalizeScriptExtensions(scriptExtensions),
         classification_boundary:
-            "known_host records classify only statically named receiver roots; undeclared globals retain JS built-ins, runtime globals, rule-created globals, and HostApi globals for later source-backed classification",
+            "known_host records require an undeclared statically named receiver root and a direct first-level member call; deeper chains remain in member records because their final method belongs to an intermediate value; undeclared globals retain JS built-ins, runtime globals, rule-created globals, and HostApi globals for later source-backed classification",
     };
     const outputPath = path.resolve(options.output);
     fs.mkdirSync(path.dirname(outputPath), { recursive: true });
@@ -557,6 +656,41 @@ function main() {
         JSON.stringify(output, null, 2) + "\n",
         "utf8",
     );
+}
+
+function observeScriptExtension(
+    records,
+    receiver,
+    member,
+    parameterCount,
+    kind,
+    relativePath,
+    node,
+) {
+    const key = `${receiver}\0${member}`;
+    if (!records.has(key)) {
+        records.set(key, {
+            receiver_root: receiver,
+            member,
+            definition_count: 0,
+            files: new Set(),
+            parameter_counts: new Map(),
+            definition_kinds: new Map(),
+            first_location: null,
+        });
+    }
+    const record = records.get(key);
+    record.definition_count += 1;
+    record.files.add(relativePath);
+    increment(record.parameter_counts, String(parameterCount));
+    increment(record.definition_kinds, kind);
+    if (!record.first_location) {
+        record.first_location = {
+            path: relativePath,
+            line: node.start.line,
+            column: node.start.col,
+        };
+    }
 }
 
 main();

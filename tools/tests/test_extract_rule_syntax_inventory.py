@@ -61,14 +61,22 @@ function helper(value) {
 function detect() {
     var index = 0;
     PE.compare("41", index);
+    PE.compare.call(null, "42");
     PE.section[".text"] = true;
     log(logType.any, helper(index));
 }
+PE.extra = function(value) { return value; };
 """,
                 encoding="utf-8",
             )
             (root / "db" / "_init").write_text(
-                "X.c('42');\n", encoding="utf-8"
+                """
+X.c('42');
+var Archive = {
+    add: function(size, packed, directory) {}
+};
+""",
+                encoding="utf-8",
             )
             (root / "db_extra" / "two.sg").write_text(
                 "function detect() { return Binary.readByte(0); }\n",
@@ -87,7 +95,7 @@ function detect() {
                 "=", inventory["operator_counts"]["binary"]
             )
             self.assertEqual(
-                inventory["operator_counts"]["assignment"]["="], 1
+                inventory["operator_counts"]["assignment"]["="], 2
             )
             host_calls = {
                 (item["receiver_root"], item["method"]): item
@@ -96,6 +104,7 @@ function detect() {
             self.assertEqual(
                 host_calls[("PE", "compare")]["arity_counts"], {"2": 1}
             )
+            self.assertNotIn(("PE", "call"), host_calls)
             self.assertEqual(
                 host_calls[("X", "c")]["arity_counts"], {"1": 1}
             )
@@ -120,6 +129,24 @@ function detect() {
             )
             self.assertEqual(
                 members[("PE", "compare")]["call_target_count"], 1
+            )
+            extensions = {
+                (item["receiver_root"], item["member"]): item
+                for item in inventory[
+                    "known_receiver_script_extensions"
+                ]
+            }
+            self.assertEqual(
+                extensions[("PE", "extra")][
+                    "parameter_count_counts"
+                ],
+                {"1": 1},
+            )
+            self.assertEqual(
+                extensions[("Archive", "add")][
+                    "definition_kind_counts"
+                ],
+                {"object_literal": 1},
             )
 
     def test_committed_inventory_is_reproducible(self):
