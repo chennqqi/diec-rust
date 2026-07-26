@@ -100,8 +100,8 @@
   },
   "static_inventory": {
     "path": "docs/research/data/signature-static-inventory.json",
-    "sha256": "026e48f8e3fbacaf51699f16ddc636951e656c77b14614fe661984c977c99769",
-    "generator_sha256": "29292fc9b35513683fdc59b905373025c3176ba4aa34df0a18553e4ad7ffb134",
+    "sha256": "820c16bac0e0139bc58bf058a2e2fde88900a65c2f7a03f82d3eb05e7c206693",
+    "generator_sha256": "3618d8af8f2de70e5002ee04255e7d0d84dd5ae049196df950c09900b73a960a",
     "parser": {
       "name": "uglify-js",
       "version": "3.19.3",
@@ -118,6 +118,7 @@
     "max_static_values_per_expression": 4096,
     "verified_static_transform_count": 3,
     "static_transform_verification_failure_count": 0,
+    "value_preserving_self_assignment_count": 1,
     "finite_parameter_value_count": 26,
     "finite_scoped_assignment_count": 5,
     "finite_loop_accumulation_count": 2,
@@ -139,18 +140,18 @@
       "isSignaturePresent": 72
     },
     "argument_kind_counts": {
-      "dynamic": 15,
+      "dynamic": 14,
       "literal": 5855,
-      "static_expression": 98
+      "static_expression": 99
     },
     "dynamic_expression_type_counts": {
       "Binary": 3,
-      "SymbolRef": 12
+      "SymbolRef": 11
     },
-    "static_pattern_count": 5564,
+    "static_pattern_count": 5565,
     "dynamic_pattern_overlap_count": 317,
     "dynamic_only_pattern_count": 0,
-    "static_only_pattern_count": 5247,
+    "static_only_pattern_count": 5248,
     "syntactic_call_site_scope_complete": true,
     "runtime_value_scope_complete": false
   },
@@ -275,7 +276,7 @@
     ]
   },
   "limitations": [
-    "all 5968 syntactic calls to named signature APIs are inventoried, but 15 dynamic argument expressions and non-static computed method names prevent a complete runtime value inventory",
+    "all 5968 syntactic calls to named signature APIs are inventoried, but 14 dynamic argument expressions and non-static computed method names prevent a complete runtime value inventory",
     "generated PE32/64, ELF32/64, Mach-O32/64, COM, MS-DOS, and AmigaHunk files cover real parser memory-map construction, but malformed map variants remain untested",
     "Binary_Script wrapper fast paths are verified with one generated PE32 entry point and overlay, but absent, short, invalid, and non-PE contexts remain untested",
     "the independent find_signature spike covers 19 focused cases across all three branches, but malformed partial-parse and exhaustive optimization combinations remain untested",

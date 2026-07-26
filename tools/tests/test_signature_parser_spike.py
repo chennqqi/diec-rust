@@ -145,23 +145,27 @@ class SignatureParserSpikeTests(unittest.TestCase):
         self.assertEqual(
             static["argument_kind_counts"],
             {
-                "dynamic": 15,
+                "dynamic": 14,
                 "literal": 5855,
-                "static_expression": 98,
+                "static_expression": 99,
             },
         )
         self.assertEqual(
             static["dynamic_expression_type_counts"],
             {
                 "Binary": 3,
-                "SymbolRef": 12,
+                "SymbolRef": 11,
             },
         )
+        self.assertEqual(
+            static["value_preserving_self_assignment_count"],
+            1,
+        )
         self.assertEqual(static["finite_loop_accumulation_count"], 2)
-        self.assertEqual(static["static_pattern_count"], 5564)
+        self.assertEqual(static["static_pattern_count"], 5565)
         self.assertEqual(static["dynamic_pattern_overlap_count"], 317)
         self.assertEqual(static["dynamic_only_pattern_count"], 0)
-        self.assertEqual(static["static_only_pattern_count"], 5247)
+        self.assertEqual(static["static_only_pattern_count"], 5248)
         self.assertTrue(static["syntactic_call_site_scope_complete"])
         self.assertFalse(static["runtime_value_scope_complete"])
 

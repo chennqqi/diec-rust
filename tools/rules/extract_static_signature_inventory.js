@@ -262,6 +262,19 @@ function memberName(uglify, expression) {
     return null;
 }
 
+function isExactSelfAssignment(uglify, node) {
+    return (
+        node instanceof uglify.AST_Assign &&
+        node.operator === "=" &&
+        node.left instanceof uglify.AST_SymbolRef &&
+        node.right instanceof uglify.AST_SymbolRef &&
+        node.left.thedef &&
+        node.right.thedef &&
+        node.left.thedef.scope instanceof uglify.AST_Lambda &&
+        node.left.thedef.id === node.right.thedef.id
+    );
+}
+
 function receiverRoot(uglify, expression) {
     if (expression instanceof uglify.AST_SymbolRef) {
         return expression.name;
@@ -697,6 +710,7 @@ function inspectFile(
     const initializerCandidates = new Map();
     const mutatedDefinitions = new Set();
     const unsafeArrayDefinitions = new Set();
+    const valuePreservingSelfAssignments = [];
     function markDefinitions(node) {
         if (!node) {
             return;
@@ -713,7 +727,7 @@ function inspectFile(
         );
     }
     ast.walk(
-        new uglify.TreeWalker((node) => {
+        new uglify.TreeWalker(function (node) {
             if (
                 node instanceof uglify.AST_VarDef &&
                 node.name &&
@@ -732,7 +746,26 @@ function inspectFile(
                 }
             }
             if (node instanceof uglify.AST_Assign) {
-                markDefinitions(node.left);
+                if (isExactSelfAssignment(uglify, node)) {
+                    const lambda = this.find_parent(
+                        uglify.AST_Lambda,
+                    );
+                    valuePreservingSelfAssignments.push({
+                        function:
+                            lambda &&
+                            lambda.name &&
+                            lambda.name.name
+                                ? lambda.name.name
+                                : "<anonymous>",
+                        function_line: lambda
+                            ? lambda.start.line
+                            : null,
+                        symbol: node.left.name,
+                        assignment_line: node.start.line,
+                    });
+                } else {
+                    markDefinitions(node.left);
+                }
             }
             if (node instanceof uglify.AST_ForIn) {
                 markDefinitions(node.init);
@@ -948,6 +981,7 @@ function inspectFile(
             const lambda = this.find_parent(uglify.AST_Lambda);
             if (
                 node instanceof uglify.AST_Assign &&
+                !isExactSelfAssignment(uglify, node) &&
                 node.left instanceof uglify.AST_SymbolRef &&
                 node.left.thedef
             ) {
@@ -1347,6 +1381,8 @@ function inspectFile(
     return {
         path: relativePath,
         calls,
+        value_preserving_self_assignments:
+            valuePreservingSelfAssignments,
         finite_parameter_values: [...finiteParameterValues.values()],
         finite_scoped_assignments: finiteScopedAssignments,
         finite_loop_accumulations: finiteLoopAccumulations,
@@ -1538,6 +1574,15 @@ function buildInventory(options) {
         verified_static_transforms: fileResults.flatMap(
             (result) => result.verified_static_transforms,
         ),
+        value_preserving_self_assignments: fileResults.flatMap(
+            (result) =>
+                result.value_preserving_self_assignments.map(
+                    (item) => ({
+                        path: result.path,
+                        ...item,
+                    }),
+                ),
+        ),
         finite_parameter_values: fileResults.flatMap((result) =>
             result.finite_parameter_values.map((item) => ({
                 path: result.path,
@@ -1600,6 +1645,7 @@ function buildInventory(options) {
             "unverified function calls, loops, unresolved symbols, and mutable data flow remain dynamic",
             "only path/name/source-hash verified pure string transforms are evaluated",
             "function parameters are enumerated only when a named function does not escape and every direct call argument is static",
+            "an exact function-local x = x assignment is treated as value preserving; top-level, cross-symbol, and compound assignments remain mutations",
             "function-scoped assignment values require one direct first-statement write and expire at the first direct symbol call",
             "loop accumulation requires an adjacent initializer and canonical finite for-loop with one string += body",
             "static expression enumeration is limited to literals, finite non-escaping arrays with statically enumerable elements, single-initializer unmodified symbol references, +, conditionals, and sequences",

@@ -557,6 +557,96 @@ function nonAdjacent() {
                 ],
             )
 
+    def test_exact_self_assignment_is_not_a_mutation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            rules = root / "rules"
+            (rules / "db").mkdir(parents=True)
+            (rules / "db_extra").mkdir()
+            (rules / "db" / "self_assignment.sg").write_text(
+                """
+function safe() {
+    var signature = "60";
+    signature = signature;
+    X.compare(signature);
+}
+
+function differentSymbol() {
+    var signature = "61", replacement = "62";
+    signature = replacement;
+    X.compare(signature);
+}
+
+function compound() {
+    var signature = "63";
+    signature += "";
+    X.compare(signature);
+}
+
+function laterWrite() {
+    var signature = "64";
+    signature = signature;
+    signature = "65";
+    X.compare(signature);
+}
+
+var globalSignature = "66";
+globalSignature = globalSignature;
+X.compare(globalSignature);
+""".lstrip(),
+                encoding="utf-8",
+            )
+            dynamic = root / "dynamic.json"
+            dynamic.write_text(
+                json.dumps(
+                    {
+                        "upstream_commit": UPSTREAM_COMMIT,
+                        "patterns": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            output = root / "inventory.json"
+            self.run_extractor(rules, dynamic, output)
+            inventory = json.loads(output.read_text(encoding="utf-8"))
+
+            self.assertEqual(
+                [
+                    call["argument_kind"]
+                    for call in inventory["calls"]
+                ],
+                [
+                    "static_expression",
+                    "dynamic",
+                    "dynamic",
+                    "dynamic",
+                    "dynamic",
+                ],
+            )
+            self.assertEqual(
+                inventory["calls"][0]["static_patterns"],
+                ["60"],
+            )
+            self.assertEqual(
+                inventory["value_preserving_self_assignments"],
+                [
+                    {
+                        "path": "db/self_assignment.sg",
+                        "function": "safe",
+                        "function_line": 1,
+                        "symbol": "signature",
+                        "assignment_line": 3,
+                    },
+                    {
+                        "path": "db/self_assignment.sg",
+                        "function": "laterWrite",
+                        "function_line": 19,
+                        "symbol": "signature",
+                        "assignment_line": 21,
+                    },
+                ],
+            )
+
     def test_committed_inventory_matches_fixed_rules(self):
         with tempfile.TemporaryDirectory() as directory:
             output = pathlib.Path(directory) / "inventory.json"
@@ -597,6 +687,23 @@ function nonAdjacent() {
                         "toUtf16LE",
                         "2039971c64346d49c427088f7f58b8c62f58104886bc06d7084ad37e91117d5b",
                     ),
+                ],
+            )
+            self.assertEqual(
+                inventory["value_preserving_self_assignments"],
+                [
+                    {
+                        "path": (
+                            "db/PE/"
+                            "__GenericHeuristicAnalysis_By_DosX.7.sg"
+                        ),
+                        "function": (
+                            "scanForMaliciousCode_NET_and_Native"
+                        ),
+                        "function_line": 6178,
+                        "symbol": "njRatDataSeparatorPattern",
+                        "assignment_line": 6194,
+                    }
                 ],
             )
             self.assertEqual(
@@ -676,23 +783,23 @@ function nonAdjacent() {
             self.assertEqual(
                 inventory["argument_kind_counts"],
                 {
-                    "dynamic": 15,
+                    "dynamic": 14,
                     "literal": 5855,
-                    "static_expression": 98,
+                    "static_expression": 99,
                 },
             )
             self.assertEqual(
                 inventory["dynamic_expression_type_counts"],
                 {
                     "Binary": 3,
-                    "SymbolRef": 12,
+                    "SymbolRef": 11,
                 },
             )
-            self.assertEqual(inventory["static_pattern_count"], 5564)
+            self.assertEqual(inventory["static_pattern_count"], 5565)
             comparison = inventory["dynamic_inventory_comparison"]
             self.assertEqual(comparison["intersection_count"], 317)
             self.assertEqual(comparison["dynamic_only_count"], 0)
-            self.assertEqual(comparison["static_only_count"], 5247)
+            self.assertEqual(comparison["static_only_count"], 5248)
 
 
 if __name__ == "__main__":
