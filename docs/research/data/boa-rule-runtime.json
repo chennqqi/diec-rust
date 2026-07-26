@@ -6,7 +6,7 @@
   },
   "experiment": {
     "cargo_lock_sha256": "a5ec9db4c7333152928b54084573f6cfab95abaa54b456b8d21cf0f310d33569",
-    "cargo_toml_sha256": "ef471bf7a75e0f51bab184ebd001b7aa10e32e4964b6e2aa38fa70a9e9db5df5",
+    "cargo_toml_sha256": "ff4cbfeaf28fdbed79787f0fe648aa80ef6dedbafccb258a35087aae30c0ce7e",
     "source_sha256": "422482d8818d4eef4c24d4940ec62edf90cd6be664928c370be6ac9304e93c47",
     "target": "x86_64-pc-windows-msvc",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"

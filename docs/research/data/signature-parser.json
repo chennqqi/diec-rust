@@ -185,7 +185,7 @@
   "spike": {
     "path": "spikes/signature-parser",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)",
-    "cargo_toml_sha256": "492a5c5521a832006771de28eff65052ef8475d693bfb8ca61ba150eea965b64",
+    "cargo_toml_sha256": "17386601a0aab388d5174f84d4c38c0b5e430e6c74b95ce6fb37cf5c6492fefa",
     "cargo_lock_sha256": "2985224550a817be8fe4dea19a12c2db06cc21f199b985fba12fc23dedfa9279",
     "source_sha256": "5884f9dd266fcde7a6b3ef518024d04ecafd4eacb6871fe319226cf48cfae4a6",
     "runtime_dependencies": 0,

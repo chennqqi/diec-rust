@@ -20,7 +20,7 @@
   "experiment": {
     "hashes": {
       "Cargo.lock": "29d5824964d0249951f9568a80501e665934788834ab01767beacb6331727fd0",
-      "Cargo.toml": "94b10a03295f4d6c38c114f317381e9964b228c07b22425ead2eab3a69173708",
+      "Cargo.toml": "7d76fa9927d4ace6be3762769d41ab188244ea6082feabbd0d42a590cf142452",
       "c/smoke.c": "9e70deb13e007358fc6b1dc0aec908331b0fc6d355e5e766c7d77b0f5eb68807",
       "include/diec_spike.h": "6b21c707fb39d81ce9c79a52a561508950790b7afe66dbffd94c78e791cf27f5",
       "run-linux-gnu.sh": "d2bc95e648d5f3ccbb4a7528272f9dd3711dedd089d4701e2a28409874f0574f",

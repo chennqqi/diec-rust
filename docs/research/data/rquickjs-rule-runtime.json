@@ -18,7 +18,7 @@
   },
   "experiment": {
     "cargo_lock_sha256": "e03ce821c4a4c0f362d417d84752ed9ef1f775377ef9042306397aca39d21836",
-    "cargo_toml_sha256": "3a40e231c4f71f7e4e3ea1362f2dc256852b4e9201f5a2f3da41f443cdcbbfbf",
+    "cargo_toml_sha256": "9607cda695bf719921b1dded3dc8c643886a7f2e6fe7380f714698b994e9ee9a",
     "source_sha256": "da808dcca4941f2c51c9b8cf7ab56313dd1b9df30152c405571fd748b954fc79",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },

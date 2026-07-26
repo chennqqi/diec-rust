@@ -26,3 +26,6 @@
 - [`0006-rquickjs-rule-runtime.md`](0006-rquickjs-rule-runtime.md)：
   以私有 rquickjs/QuickJS-NG backend 作为首个规则运行时，保留严格兼容层、
   资源和 static-link 门禁（Proposed）。
+- [`0007-rust-toolchain-baseline.md`](0007-rust-toolchain-baseline.md)：
+  固定 Rust 1.88 作为当前默认工具链与显式 MSRV，并将后续升级绑定到可重复证据
+  （Proposed）。
