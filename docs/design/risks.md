@@ -277,12 +277,15 @@ baseline 的变更都要检查本表。
   已由外部线程在 handler 启动后设置原子 token，中断无限循环且未触发百万次
   handler 硬兜底；清除 token 后同一 context 返回 `"42"`。10 次重复均成功，
   handler 次数随调度为 6..12，故不作为固定延迟。Boa 0.21.1 仍未发现等价的
-  外部取消/heap 公开接口。
+  外部取消/heap 公开接口。独立 Rust native HostApi fixture 又在进入函数后请求
+  取消，10/10 正常返回且未触发百万次检查点硬上限；迭代数 200..1,511 同样只作
+  调度观察。
 - **缓解**：runtime 选型硬门禁；fuel/deadline/heap；受控检查点；不可中断 backend
   不得采用。
 - **验证**：每个 scan stage deterministic fake clock/cancel；恶意长循环在期限内
-  清理并返回正确错误；下一次 scan 状态正常；native HostApi 长调用单独验证合作
-  取消，不能以 VM interrupt 代替。
+  清理并返回正确错误；下一次 scan 状态正常；真实 signature/search/
+  decompression HostApi 长循环逐项验证合作取消，不能以 synthetic loop 或 VM
+  interrupt 代替。
 - **关闭**：runtime 和全部长循环路径通过 bounded interruption tests。
 
 ### R-016：oracle 漂移或不可复现

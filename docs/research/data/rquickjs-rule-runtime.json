@@ -12,14 +12,14 @@
   },
   "dependency_footprint": {
     "lockfile_packages": 23,
-    "release_executable_bytes": 1809408,
+    "release_executable_bytes": 1826304,
     "target": "x86_64-pc-windows-msvc",
     "target_packages": 18
   },
   "experiment": {
     "cargo_lock_sha256": "aa7cd4c42e1f3429f45ec31e05e41862abe6156bdbe351eeacc507673f237232",
     "cargo_toml_sha256": "875730b205ca351b4bc0f830a1896fb6ad777c46046e6f26c9c368849614be16",
-    "source_sha256": "c6c4c785d29ff4ad975b45e18f566aa98863e6b575a7e9c074d30a488af1d60b",
+    "source_sha256": "996c2181cf2512bc47930b0dcf979c78ee542a2401a2b083aa9ae6026dc6002a",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -38,6 +38,13 @@
     "interrupt_observed": true,
     "memory_limit_bytes": 4194304,
     "memory_limit_observed": true,
+    "native_host_cooperative_cancel": {
+      "hard_stop_iteration_limit": 1000000,
+      "hard_stop_reached": false,
+      "iteration_count_positive": true,
+      "requested": true,
+      "returned": true
+    },
     "nintendo_rule_eval_accepted": false,
     "nintendo_compatibility_overlay": {
       "eval_accepted": true,

@@ -1794,6 +1794,60 @@ fn run_fixture(rule_root: &Path) -> Result<bool, String> {
     let external_cancel_recovery = eval_string(&cancel_context, b"String(40 + 2)");
     let external_cancel_recovered = external_cancel_recovery.as_deref() == Ok("42");
 
+    const NATIVE_CANCEL_HARD_STOP_ITERATIONS: i32 = 1_000_000;
+    let native_cancel_requested = Arc::new(AtomicBool::new(false));
+    let native_host_entered = Arc::new(AtomicBool::new(false));
+    let native_host_finished = Arc::new(AtomicBool::new(false));
+    let native_cancel_requested_for_host = Arc::clone(&native_cancel_requested);
+    let native_host_entered_for_host = Arc::clone(&native_host_entered);
+    let native_cancel_runtime = new_runtime()?;
+    let native_cancel_context = new_context(&native_cancel_runtime)?;
+    native_cancel_context.with(|ctx| {
+        let cooperative_host_loop = Function::new(ctx.clone(), move || {
+            native_host_entered_for_host.store(true, Ordering::Release);
+            let mut iterations = 0;
+            loop {
+                iterations += 1;
+                if native_cancel_requested_for_host.load(Ordering::Acquire)
+                    || iterations >= NATIVE_CANCEL_HARD_STOP_ITERATIONS
+                {
+                    return iterations;
+                }
+                thread::yield_now();
+            }
+        })
+        .map_err(|error| error.to_string())?;
+        ctx.globals()
+            .set("cooperativeHostLoop", cooperative_host_loop)
+            .map_err(|error| error.to_string())
+    })?;
+    let native_cancel_requested_for_worker = Arc::clone(&native_cancel_requested);
+    let native_host_entered_for_worker = Arc::clone(&native_host_entered);
+    let native_host_finished_for_worker = Arc::clone(&native_host_finished);
+    let native_cancel_worker = thread::spawn(move || {
+        while !native_host_entered_for_worker.load(Ordering::Acquire)
+            && !native_host_finished_for_worker.load(Ordering::Acquire)
+        {
+            thread::yield_now();
+        }
+        if native_host_entered_for_worker.load(Ordering::Acquire) {
+            native_cancel_requested_for_worker.store(true, Ordering::Release);
+        }
+    });
+    let native_cancel_result =
+        eval_string(&native_cancel_context, b"String(cooperativeHostLoop())");
+    native_host_finished.store(true, Ordering::Release);
+    native_cancel_worker
+        .join()
+        .map_err(|_| "native cancellation worker panicked".to_owned())?;
+    let native_cancel_requested_observed = native_cancel_requested.load(Ordering::Acquire);
+    let native_cancel_iterations = native_cancel_result
+        .as_deref()
+        .ok()
+        .and_then(|value| value.parse::<i32>().ok());
+    let native_cancel_hard_stop_reached =
+        native_cancel_iterations == Some(NATIVE_CANCEL_HARD_STOP_ITERATIONS);
+
     let memory_runtime = new_runtime()?;
     memory_runtime.set_memory_limit(4 * 1024 * 1024);
     let memory_context = new_context(&memory_runtime)?;
@@ -1817,6 +1871,11 @@ fn run_fixture(rule_root: &Path) -> Result<bool, String> {
         && external_cancel_requested
         && !external_cancel_hard_stop_reached
         && external_cancel_recovered
+        && native_cancel_requested_observed
+        && native_cancel_iterations.is_some_and(|iterations| {
+            (1..NATIVE_CANCEL_HARD_STOP_ITERATIONS).contains(&iterations)
+        })
+        && !native_cancel_hard_stop_reached
         && memory_limit_error.is_some();
     let compatible = nintendo_eval.is_ok();
     let report = json!({
@@ -1876,6 +1935,14 @@ fn run_fixture(rule_root: &Path) -> Result<bool, String> {
                 "result": external_cancel_recovery.as_deref().ok(),
                 "error": external_cancel_recovery.as_ref().err(),
             },
+        },
+        "native_host_cooperative_cancel": {
+            "requested": native_cancel_requested_observed,
+            "result": native_cancel_result.as_deref().ok(),
+            "error": native_cancel_result.as_ref().err(),
+            "iterations": native_cancel_iterations,
+            "hard_stop_iteration_limit": NATIVE_CANCEL_HARD_STOP_ITERATIONS,
+            "hard_stop_reached": native_cancel_hard_stop_reached,
         },
         "memory_limit": {
             "bytes": 4 * 1024 * 1024,

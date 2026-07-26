@@ -252,10 +252,11 @@ link，避免递归 owned graph、随机 UUID 和 FFI 自引用生命周期。
 不得通过规则 runtime 门禁。
 
 rquickjs spike 已证明外部线程可通过原子 token 触发 QuickJS interrupt，并在清除
-token 后继续复用同一 context；这只关闭 VM 内执行路径的可行性。native HostApi
-长调用不会因 VM interrupt 自动停止，必须在自身受控循环中检查同一 token/deadline。
-handler 回调次数依赖调度，只能断言 bounded termination 和恢复，不能作为 ABI 或
-性能常量。
+token 后继续复用同一 context；独立 native fixture 也证明 Rust HostApi 可在受控
+循环中检查同类 token 并在硬上限前合作退出。native HostApi 不会因 VM interrupt
+自动停止，因此 signature/search/decompression 等循环必须接收同一
+token/deadline。handler 回调和 native checkpoint 次数依赖调度，只能断言
+bounded termination 和恢复，不能作为 ABI 或性能常量。
 
 库代码以 typed `Result` 和结构化诊断报告预期失败。畸形输入、unsupported 格式、
 脚本异常和预算耗尽不得 panic。系统性错误与 per-node 诊断分层，partial result

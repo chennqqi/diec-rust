@@ -20,6 +20,7 @@ QuickJS-NG C 源码编译成静态 archive。它能够：
 - 注册和调用 Rust native function；
 - 通过 interrupt handler 中断无限循环；
 - 由另一个线程通过原子取消令牌中断无限循环，并在同一 context 中恢复执行；
+- Rust native HostApi 长循环通过显式检查同一类 token 合作退出；
 - 通过 runtime memory limit 拒绝超限分配。
 
 但它不能原样作为 DIE 兼容运行时。显式使用 sloppy-script 模式并为语法覆盖提供
@@ -92,7 +93,7 @@ proxy 只用于语法/顶层执行覆盖，不代表宿主 API 兼容，也不�
 | Lockfile packages | 23 |
 | 当前 target packages | 18 |
 | Clean release build | 13,258 ms，本机已缓存下载、空 target |
-| Release executable | 1,809,408 bytes（加入外部取消与恢复 fixture 后） |
+| Release executable | 1,826,304 bytes（加入 VM/native 合作取消 fixture 后） |
 
 `cargo +1.86.0 check --locked` 明确报告
 `rquickjs@0.12.1 requires rustc 1.87`。本实验继续复用已安装的 1.88 工具链。
@@ -169,6 +170,8 @@ context”。
 - 外部线程在 handler 首次被调用后设置原子取消标志，无限循环返回
   `Error: interrupted`，百万次 handler 硬停止兜底未触发；
 - 重置取消标志后，同一 runtime/context 求值 `String(40 + 2)` 返回 `"42"`；
+- `cooperativeHostLoop()` 在外部 token 请求后正常返回，未达到 1,000,000 次
+  native 检查点硬上限；
 - 4 MiB runtime limit 拒绝 16 MiB `ArrayBuffer`，返回 `out of memory`。
 
 内存限制使用 rquickjs 默认 libc allocator。官方 API 说明使用 `rust-alloc` 或
@@ -200,8 +203,27 @@ cargo +1.88.0 run --release --locked -- fixture \
 
 这证明 rquickjs interrupt handler 可以桥接线程安全的外部取消 token，并证明
 JavaScript exception 不必污染后续同 context 求值。它不证明 wall-clock deadline
-精度，也不能中断一个长期阻塞且不返回 QuickJS VM 的 Rust/native HostApi 调用。
-正式 adapter 仍需在 native 长循环中合作检查相同 token/deadline。
+精度，也不能自行中断一个长期阻塞且不返回 QuickJS VM 的 Rust/native HostApi
+调用。
+
+### Native HostApi 合作取消
+
+第二个 fixture 把 Rust `cooperativeHostLoop()` 注册到独立 QuickJS context。
+函数先以 `Release` 标记已经进入 native 调用，然后在循环中：
+
+1. 增加本地迭代计数；
+2. 以 `Acquire` 检查外部取消 token；
+3. 未取消时 `yield_now()`，并在 1,000,000 次检查点强制退出。
+
+worker 只在 native 函数已进入后请求取消；若 JavaScript 在调用前失败，独立
+finished 标志会使 worker 正常退出。首次运行在 1,285 次检查点返回。随后同一
+release binary 重复 10 次全部满足 requested=true、returned=true、
+hard-stop=false，迭代数为 200..1,511。迭代数由调度决定，不进入稳定机器断言。
+
+该实验关闭“Rust HostApi 可否共享 scan cancel token 并有界合作退出”的可行性
+问题，但不允许把所有 native 调用视为天然可取消。正式 HostApi 必须把
+token/deadline 传入可能长时间运行的 signature、字符串搜索、解压和遍历循环；
+一次不可分割的阻塞系统/native 调用仍不能由 QuickJS interrupt 抢占。
 
 ## Nintendo compatibility overlay 实验
 
@@ -453,7 +475,7 @@ Nintendo 的单脚本语法 overlay，`audio` 和 MiniExtensions 的跨规则 ov
 | 外部 interrupt | 未发现公开接口 | 跨线程 token 已中断并同 context 恢复 |
 | Heap limit | 未发现公开接口 | 支持默认 allocator |
 | Windows target packages | 126 | 18 |
-| Release spike | 11,784,192 bytes | 1,809,408 bytes |
+| Release spike | 11,784,192 bytes | 1,826,304 bytes |
 | 实现语言 | 纯 Rust | Rust wrapper + vendored C |
 | 本轮工具链 | Rust 1.88 | 最低 1.87，本轮 1.88 |
 
@@ -575,8 +597,9 @@ JSON。运行前先执行
   14/14 对照；仍缺 Qt 6、其余 289 个 `detect` 的真实 HostApi/Qt oracle。
 - Qt 5/Qt 6 与 QuickJS 的整数、字符串、数组、异常和 RegExp 差分。
 - Linux/macOS/Windows GNU/MSVC 静态链接、ASan/UBSan 和 fuzz。
-- wall-clock deadline 精度、native HostApi 长调用取消，以及并行 runtime/context
-  的吞吐、峰值内存和取消延迟。
+- wall-clock deadline 精度、真实 signature/search/decompression HostApi 的
+  checkpoint 密度、不可分割阻塞调用，以及并行 runtime/context 的吞吐、
+  峰值内存和取消延迟。
 
 ## 外部候选资料
 

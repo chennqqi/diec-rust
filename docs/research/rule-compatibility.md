@@ -272,7 +272,7 @@ format HostApi 行为仍不能外推。
 | Candidate | 优点 | 风险/代价 | 当前结论 |
 | --- | --- | --- | --- |
 | [Boa](https://github.com/boa-dev/boa) | JavaScript engine 以 Rust 实现；可注册 native class/function | 0.21.1 拒绝 1 条 Qt 接受的固定规则；shared lexical semantics 不同；MSRV 1.88、Windows spike 126 个 target packages | 保留为需 patch/上游修复的候选，不能原样采用 |
-| [rquickjs](https://github.com/DelSkayn/rquickjs) | 0.12.1 的 interrupt/heap limit 可用，跨线程 token 可中断并同 context 恢复；Windows spike 18 个 target packages、约 1.73 MiB | 同样拒绝 1 条 Qt 接受的规则；必须显式 sloppy eval；编译 vendored QuickJS-NG C，MSVC 仍属 engine experimental；native 长调用仍需合作取消 | 保留为需 legacy compatibility 层的候选，不能原样采用 |
+| [rquickjs](https://github.com/DelSkayn/rquickjs) | 0.12.1 的 interrupt/heap limit 可用，跨线程 token 可中断并同 context 恢复，synthetic native HostApi 已合作退出；Windows spike 18 个 target packages、约 1.74 MiB | 同样拒绝 1 条 Qt 接受的规则；必须显式 sloppy eval；编译 vendored QuickJS-NG C，MSVC 仍属 engine experimental；真实长调用的 checkpoint 密度仍须验证 | 保留为需 legacy compatibility 层的候选，不能原样采用 |
 | [rusty_v8](https://github.com/denoland/rusty_v8) | ECMAScript 兼容性高、成熟宿主 API | V8 很大；默认下载预编译静态库或源码构建成本高，不符合轻依赖目标 | 仅作兼容性上界/备选 |
 | 自研 interpreter/transpiler | 可精确控制行为和资源限制 | 语法、RegExp、prototype、异常和动态特性成本极高 | 不作为首选 |
 
@@ -342,7 +342,7 @@ prototype helper、复杂规则和 loop budget 可用，也确认了必须解决
 差异。
 
 rquickjs 0.12.1 的同语料 eval、sloppy-script 要求、interrupt/heap limit、
-跨线程取消、同 context 恢复和 native 构建成本见
+跨线程取消、同 context 恢复、native HostApi 合作取消和 native 构建成本见
 [`rquickjs-rule-runtime-spike.md`](rquickjs-rule-runtime-spike.md)。它拒绝与
 Boa 相同的 Nintendo legacy 规则，因此两个候选都未通过零差异门禁。精确等长
 overlay 加 per-rule lexical wrapper 已让固定 292 条 Binary 规则全部加载；在该

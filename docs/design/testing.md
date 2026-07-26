@@ -374,6 +374,9 @@ trace；选定 runtime 前保留失败规则清单及最小重现。
 取消来源、typed/interrupted error、硬上限未触发，以及清除 token 后同一 context
 恢复。不得固定受 OS 调度影响的 handler callback 次数。另设 native HostApi
 长循环合作取消用例，因为 VM interrupt 不能抢占正在执行的 Rust/native 调用。
+rquickjs spike 已用项目生成的 cooperative loop 验证可行性；正式实现仍须让真实
+signature/search/decompression 循环分别覆盖取消前、精确 checkpoint 和硬上限，
+并测试不可分割阻塞调用不会被误报为可取消。
 
 ## 14. Fuzz 设计
 

@@ -107,6 +107,16 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
                 "same_context_recovery_result": "42",
             },
         )
+        self.assertEqual(
+            fixture["native_host_cooperative_cancel"],
+            {
+                "hard_stop_iteration_limit": 1_000_000,
+                "hard_stop_reached": False,
+                "iteration_count_positive": True,
+                "requested": True,
+                "returned": True,
+            },
+        )
 
     def test_nintendo_probe_uses_real_init_and_include_sequence(self):
         detection = self.reference["nintendo_detect"]
