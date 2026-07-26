@@ -126,8 +126,10 @@ init/include 可达仍需生命周期实验。
   `includeScript("vgmcodingutils")`，但该脚本在第 14 行定义的是
   `xma2_parse_xma2_chunk(...)`。
 
-两者不得被兼容层静默补成别名。当前只证明执行到表达式时会查找未定义 global；
-分支可达性、Qt 异常文本和上层扫描行为仍需 oracle fixture。
+两者不得被兼容层静默补成别名。project-generated 32/40 字节输入现已证明两个
+分支在固定 Qt 5 qmake/CMake CLI 中都可达：两者均返回 `Binary/Unknown`、exit 0、
+空 stderr，并在 JSON 文档之后追加带规则路径和行号的 `ReferenceError`。详见
+[`global-typo-error-behavior.md`](global-typo-error-behavior.md)。
 
 ## 6. Qt 5 native global 行为实验
 
@@ -210,7 +212,8 @@ python tools/upstream/probe_global_host_api.py
 - Qt 5 仍缺 `_isResultPresent`/`_getNumberOfResults` 更多数组、对象和异常转换，
   include 语法错误、`_log` 的 PDSTRUCT 副作用及 library=true 可达条件；
 - 全部 16 个 Qt 6 native global 的参数转换、返回值、副作用和异常 fixture；
-- 两个拼写错误分支的可达语料、Qt 异常及扫描器传播行为；
+- 两个拼写错误分支的 Qt 6/Windows/macOS 对照、不带 `--messages` 行为及
+  多错误/后续规则传播；
 - 55 个跨文件规则函数候选的逐调用 include 可达性证明；
 - 1,408 个 undeclared global symbol 中非直接调用的读取、写入、隐式 global 和
   动态属性访问分类；

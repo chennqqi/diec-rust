@@ -2,7 +2,7 @@
 
 Status: Draft
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
-Last updated: 2026-07-25
+Last updated: 2026-07-26
 
 ## 范围
 
@@ -150,6 +150,13 @@ throw.1.sg: Binary/throw.1.sg: 2: Error: database fixture
 
 两者都退出 0，错误写 stdout 且破坏 JSON。是否启用 `--messages` 不影响
 `scanResult.listErrors` 的最终打印。
+
+固定规则集中两个真实拼写错误也表现为相同 framing。project-generated 32/40
+字节输入分别触发 `get_DWRAF_vi` 和 `xma2_pase_xma2_chunk` 的
+`ReferenceError`；固定 qmake/CMake 都先输出 `Binary/Unknown` JSON，再追加一条
+带规则路径和行号的 stdout 诊断，stderr 为空且 exit 0。该实验使用
+`--messages`，尚未据此外推无该参数时的行为。详见
+[`global-typo-error-behavior.md`](global-typo-error-behavior.md)。
 
 ## Extra/custom 失败
 

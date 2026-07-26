@@ -1,0 +1,41 @@
+{
+  "entries": [
+    {
+      "path": "debug-dwarf-typo.bin",
+      "purpose": "reach get_DWRAF_vi after SIT/zero/zero trailer checks",
+      "sha256": "fc3a9a165b74ff75047cca723f5145c14604e2e696d21fafc52e68ccb827ee47",
+      "size": 32,
+      "source": "project-generated",
+      "undefined_global": "get_DWRAF_vi"
+    },
+    {
+      "path": "audio-xma2-typo.wem",
+      "purpose": "reach xma2_pase_xma2_chunk after RIFF/WAVE XMA2+data scan",
+      "sha256": "7b4eb91e7492744667c53143312c020316aaa0ebeec9dd9d46314cfedf79dd01",
+      "size": 40,
+      "source": "project-generated",
+      "undefined_global": "xma2_pase_xma2_chunk"
+    }
+  ],
+  "generator": "tools/corpus/generate_global_typo_corpus.py",
+  "license": "project-generated; no third-party sample or rule bytes",
+  "rule_evidence": [
+    {
+      "path": "db/Binary/debug_data_debugData.1.sg",
+      "purpose": "calls undefined get_DWRAF_vi at line 58",
+      "sha256": "381b6259b239f2633b92fbd84fd0d99b972751e20cab12b6e09139a260f1f47d"
+    },
+    {
+      "path": "db/Binary/audio_WEM.1.sg",
+      "purpose": "calls undefined xma2_pase_xma2_chunk at line 55",
+      "sha256": "3ea818a39cf03337249883771a55cd1acacdecd3097f79edb85bce6b9bd85d94"
+    },
+    {
+      "path": "db/vgmcodingutils",
+      "purpose": "defines xma2_parse_xma2_chunk at line 14",
+      "sha256": "ef43f8258558b6dbfc212d5505a9d2b803b27e76a8fd8be5821ad60ea2d815e7"
+    }
+  ],
+  "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+  "schema_version": 1
+}

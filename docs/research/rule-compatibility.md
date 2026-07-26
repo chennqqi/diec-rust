@@ -246,6 +246,13 @@ project-generated 最小规则实验已经分别触发 Qt Script parse error 和
 未来 runtime conformance 需要同时比较错误阶段、文件/行号、后续 signature 是否
 继续执行、结果保留和结构化诊断；不能只比较异常类型。
 
+固定规则中的两个未定义 global 也已由 32/40 字节安全输入证明确实可达。固定
+Qt 5 qmake/CMake 对二者逐字节一致：`Binary/Unknown` detection 后在 stdout 追加
+精确 `ReferenceError`，stderr 为空且 exit 0。由于完整 stdout 是“JSON document +
+trailing diagnostic”而不是单个合法 JSON value，oracle reader 必须同时保存原始
+字节并解析尾随记录。详见
+[`global-typo-error-behavior.md`](global-typo-error-behavior.md)。
+
 ## 候选运行时初筛
 
 本节只记录候选，不作设计决定：
@@ -387,8 +394,8 @@ global。`_getEngineVersion` 还把编译日期写入可观察结果。
   fixture，并补做四个已闭合形状的 Qt 6 对照。
 - Qt 5 与 Qt 6 的 conformance oracle。
 - include 同名、重复、循环和异常实验。
-- native global 剩余 Qt 5 边界和完整 Qt 6 对照，以及两个拼写错误分支的
-  可达性/异常传播实验。
+- native global 剩余 Qt 5 边界和完整 Qt 6 对照；两个拼写错误分支仍缺
+  Qt 6/Windows/macOS、不带 `--messages` 和多错误/后续规则传播。
 - database cache 与 ZIP database 行为。
 - `dbs_min` 生成逻辑。
 - 用真实 HostApi 和 Qt oracle 逐条验证全库 `detect`、冻结 legacy compatibility

@@ -231,7 +231,7 @@ CI 失败报告默认显示结构化 diff 和有限上下文，不把受限语�
 3. 运行 Rust，保存 raw record。
 4. 比较 termination：exit/signal/timeout。
 5. 对 legacy profile 逐字节比较 stdout 和 stderr。
-6. 独立解析两侧已声明格式；parse failure 本身是结果。
+6. 独立解析两侧已声明格式及 framing；parse failure 和 trailing records 本身是结果。
 7. 投影为 versioned semantic model。
 8. 按字段、数组顺序和 tree relation 比较。
 9. 应用精确 waiver，生成 applied/unmatched/stale 清单。
@@ -247,6 +247,7 @@ semantic model 至少比较：
 - handlers/debug/profiling（启用相应模式时）；
 - entropy/info/struct 的字段、数值和顺序；
 - CLI path expansion、filename prefix、stdout/stderr 与 exit；
+- stdout 中首个结构化 document 的边界、前后诊断记录及其顺序；
 - completion/limit/cancel metadata。
 
 数组默认有序比较。只有源码或实验明确证明集合语义的字段才可先按冻结 key 排序。
@@ -272,6 +273,7 @@ semantic model 至少比较：
 - unknown、error、exit code 或 missing field；
 - 浮点精度，除非专项实验冻结 tolerance；
 - 把 crash、timeout、invalid JSON 或 unsupported 转成空成功。
+- 丢弃完整 JSON document 前后的 stdout records，或只比较已解析 JSON。
 
 normalizer 的每条变换有 unit/golden test。新增变换按兼容策略变更评审。
 

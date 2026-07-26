@@ -120,8 +120,10 @@ baseline 的变更都要检查本表。
   穷举边界、无效/短小 wrapper 上下文、异常上层传播、Qt 6 和其余 HostApi 行为
   仍未验证。非格式面已固定 16 个 native global slot；Qt 5 只注册其中 15 个，
   固定规则实际调用 7 个共 253 次。71 个 undeclared direct-call 名已全部分类，
-  暴露两个不应静默修复的规则拼写错误；跨文件函数 include 可达性和 native
-  global 的完整行为仍未验证。固定 Qt 5 探针已确认缺参 `"undefined"` 转换、
+  暴露两个不应静默修复的规则拼写错误；32/40 字节安全输入已证明二者在固定
+  Qt 5 qmake/CMake 中可达，并产生相同 `Unknown`、trailing `ReferenceError`、
+  空 stderr 和 exit 0。跨文件函数 include 可达性和 native global 的完整行为
+  仍未验证。固定 Qt 5 探针已确认缺参 `"undefined"` 转换、
   重复结果、单项删除/block、数组字符串化、双 stop 状态和重复 include；Qt 6
   及剩余转换边界仍是开放风险。
 - **缓解**：保持 `RuleRuntime`/`HostApi` port；建立全规则 inventory、最小失败
@@ -306,9 +308,10 @@ baseline 的变更都要检查本表。
 
 ### R-020：差分工具隐藏回归
 
-- **触发**：宽泛 normalizer/allowlist、只比较 parsed JSON、自动重录 golden、
-  stale waiver 或 oracle failure 被算 pass。
-- **当前缓解**：ADR 0004；raw bytes/hash；精确 fingerprint；默认失败。
+- **触发**：宽泛 normalizer/allowlist、只比较 parsed JSON、丢弃 JSON 前后
+  stdout records、自动重录 golden、stale waiver 或 oracle failure 被算 pass。
+- **当前缓解**：ADR 0004；raw bytes/hash；精确 fingerprint；默认失败；固定
+  真实规则已证明 exit 0 的 stdout 可由 JSON document 加 trailing error 组成。
 - **验证**：validator mutation tests；差异扩大/缩小/消失/换平台时 waiver 失败；
   raw artifacts 不变。
 - **关闭**：Phase 1 工具落地并通过测试；每次 release audit applied/stale waivers。

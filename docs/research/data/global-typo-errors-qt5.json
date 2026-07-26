@@ -1,0 +1,136 @@
+{
+  "arguments": [
+    "--messages",
+    "--json",
+    "--database",
+    "/opt/die-source/Detect-It-Easy/db",
+    "--extradatabase",
+    "/opt/die-source/Detect-It-Easy/db_extra",
+    "/corpus/<input>"
+  ],
+  "fixture_manifest": {
+    "path": "docs/research/data/global-typo-corpus.json",
+    "sha256": "b8576b17f41faf980c56824bccfa1ae48843439293737304bf4ec7af24153dc6"
+  },
+  "generator": "tools/upstream/probe_global_typo_errors.py",
+  "normalized_outputs_equal": true,
+  "oracles": [
+    {
+      "binary": "/opt/die-source/build/release/diec",
+      "image": "diec-rust/upstream-oracle:74eaf505-repro",
+      "image_id": "sha256:cc5561a5d256c7912227a8ecf4ba9c6b9178c99911e471017d3c3988bac964ab",
+      "inputs": [
+        {
+          "diagnostic": "debug_data_debugData.1.sg: Binary/debug_data_debugData.1.sg: 58: ReferenceError: Can't find variable: get_DWRAF_vi",
+          "exit_code": 0,
+          "normalized_detection": {
+            "filetype": "Binary",
+            "offset": "0",
+            "parentfilepart": "Header",
+            "size": "32",
+            "values": [
+              {
+                "info": "",
+                "name": "Unknown",
+                "type": "Unknown",
+                "version": ""
+              }
+            ]
+          },
+          "path": "debug-dwarf-typo.bin",
+          "raw_stderr_bytes": 0,
+          "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "raw_stdout_bytes": 583,
+          "raw_stdout_sha256": "4eac19bbb4a4c994e746c2e53f623e9d7416496d049e0bc172fd3c8721d1f49c"
+        },
+        {
+          "diagnostic": "audio_WEM.1.sg: Binary/audio_WEM.1.sg: 55: ReferenceError: Can't find variable: xma2_pase_xma2_chunk",
+          "exit_code": 0,
+          "normalized_detection": {
+            "filetype": "Binary",
+            "offset": "0",
+            "parentfilepart": "Header",
+            "size": "40",
+            "values": [
+              {
+                "info": "",
+                "name": "Unknown",
+                "type": "Unknown",
+                "version": ""
+              }
+            ]
+          },
+          "path": "audio-xma2-typo.wem",
+          "raw_stderr_bytes": 0,
+          "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "raw_stdout_bytes": 569,
+          "raw_stdout_sha256": "a9b8d27dbfbb6dd7e72d02b38530e0f50d0a307770fb7381960ae572a236de68"
+        }
+      ],
+      "name": "linux-qt5-qmake",
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    },
+    {
+      "binary": "/opt/die-build/src/console/diec",
+      "image": "diec-rust/upstream-oracle-cmake:74eaf505",
+      "image_id": "sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040",
+      "inputs": [
+        {
+          "diagnostic": "debug_data_debugData.1.sg: Binary/debug_data_debugData.1.sg: 58: ReferenceError: Can't find variable: get_DWRAF_vi",
+          "exit_code": 0,
+          "normalized_detection": {
+            "filetype": "Binary",
+            "offset": "0",
+            "parentfilepart": "Header",
+            "size": "32",
+            "values": [
+              {
+                "info": "",
+                "name": "Unknown",
+                "type": "Unknown",
+                "version": ""
+              }
+            ]
+          },
+          "path": "debug-dwarf-typo.bin",
+          "raw_stderr_bytes": 0,
+          "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "raw_stdout_bytes": 583,
+          "raw_stdout_sha256": "4eac19bbb4a4c994e746c2e53f623e9d7416496d049e0bc172fd3c8721d1f49c"
+        },
+        {
+          "diagnostic": "audio_WEM.1.sg: Binary/audio_WEM.1.sg: 55: ReferenceError: Can't find variable: xma2_pase_xma2_chunk",
+          "exit_code": 0,
+          "normalized_detection": {
+            "filetype": "Binary",
+            "offset": "0",
+            "parentfilepart": "Header",
+            "size": "40",
+            "values": [
+              {
+                "info": "",
+                "name": "Unknown",
+                "type": "Unknown",
+                "version": ""
+              }
+            ]
+          },
+          "path": "audio-xma2-typo.wem",
+          "raw_stderr_bytes": 0,
+          "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "raw_stdout_bytes": 569,
+          "raw_stdout_sha256": "a9b8d27dbfbb6dd7e72d02b38530e0f50d0a307770fb7381960ae572a236de68"
+        }
+      ],
+      "name": "linux-qt5-cmake",
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    }
+  ],
+  "platform": "linux-amd64-qt5",
+  "raw_artifacts": {
+    "storage": "untracked external directory selected by --raw-dir"
+  },
+  "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+  "schema_version": 1,
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}
