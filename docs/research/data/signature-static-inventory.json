@@ -497,6 +497,63 @@
       ]
     }
   ],
+  "finite_scoped_assignments": [
+    {
+      "path": "db/Binary/archive_AR.1.sg",
+      "function": "ParseLibInfo",
+      "function_line": 10,
+      "symbol": "sType",
+      "assignment_line": 11,
+      "invalidation_line": null,
+      "static_values": [
+        "format"
+      ]
+    },
+    {
+      "path": "db/Binary/archive_AR.1.sg",
+      "function": "ParseDebInfo",
+      "function_line": 63,
+      "symbol": "sName",
+      "assignment_line": 64,
+      "invalidation_line": null,
+      "static_values": [
+        "Debian Software package (.DEB)"
+      ]
+    },
+    {
+      "path": "db/Binary/audio.1.sg",
+      "function": "isAVP",
+      "function_line": 10850,
+      "symbol": "d1",
+      "assignment_line": 10852,
+      "invalidation_line": null,
+      "static_values": [
+        "48E7FCFE"
+      ]
+    },
+    {
+      "path": "db/MSDOS/protector_GOAT.1.sg",
+      "function": "detect",
+      "function_line": 6,
+      "symbol": "sOptions",
+      "assignment_line": 7,
+      "invalidation_line": 16,
+      "static_values": [
+        "1996 by Martin Overton //ChekWARE"
+      ]
+    },
+    {
+      "path": "db/PE/cryptor_Kryptonit.2.sg",
+      "function": "detect",
+      "function_line": 8,
+      "symbol": "nOffset",
+      "assignment_line": 9,
+      "invalidation_line": 17,
+      "static_values": [
+        147
+      ]
+    }
+  ],
   "static_transform_verification_failures": [],
   "parser": {
     "name": "uglify-js",
@@ -569,11 +626,11 @@
     "isSignaturePresent": 72
   },
   "argument_kind_counts": {
-    "dynamic": 37,
+    "dynamic": 17,
     "literal": 5855,
-    "static_expression": 76
+    "static_expression": 96
   },
-  "static_pattern_count": 5560,
+  "static_pattern_count": 5562,
   "static_patterns": [
     "$$$$$$$$5589e557565383ec..8b7d..8b75..8b5d..b8........85c00f84........a1........85c00f94c025........a3",
     "$$$$$$$$55b8........57565383ec..85c08b7c24..8bb424........8b9c24........0f84........8b15........31c085d20f94c08b5424..8b4c24..a3........8d44....8b9424........a3........8915........6690",
@@ -2843,6 +2900,8 @@
     "48E77FFE E98841FA",
     "48E7F0F0",
     "48E7F1FE610000964CDF7F8F'NuH'E70010610000'$L'DF0800'NuH'E7F1FE610001844CDF7F8F'NuH'E70010610000'NL'DF0800'NuG'FAFFC651EB05',Q'EB05'PQ'EB05'tQ'EB059833FC000F00DFF09633FC00FF00DFF09E33FC000000DFF0A833FC000000DFF0B833FC000000DFF0C833FC000000DFF0D8'NuG'FAFF80177C00010524177C00010548177C0001056C177C00010590'NuG'FAFF'bJ+'00BA670E'S+'00B96608177C000600B9'Nu`'0003180006",
+    "48E7FCFE",
+    "48E7FCFE43FA",
     "48E7FFFE",
     "48E7FFFE ........ 6100",
     "48E7FFFE 41FA",
@@ -6136,10 +6195,10 @@
     "fff589e566f7c6....80c3..80eb..81ec........66c1eb..6689ed",
     "fffe2a002a002a006d0065007300730061006700650073002a002a002a00"
   ],
-  "dynamic_call_site_count": 37,
+  "dynamic_call_site_count": 17,
   "dynamic_expression_type_counts": {
-    "Binary": 4,
-    "SymbolRef": 33
+    "Binary": 3,
+    "SymbolRef": 14
   },
   "dynamic_calls": [
     {
@@ -6196,286 +6255,6 @@
       "argument_kind": "dynamic",
       "argument_ast_type": "Binary",
       "argument_expression": "lo-20",
-      "static_patterns": []
-    },
-    {
-      "path": "db/Binary/audio.1.sg",
-      "line": 10853,
-      "column": 4,
-      "receiver": "X",
-      "receiver_root": "X",
-      "known_host_receiver": true,
-      "method": "c",
-      "argument_index": 0,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "d1",
-      "static_patterns": []
-    },
-    {
-      "path": "db/Binary/audio.1.sg",
-      "line": 10856,
-      "column": 5,
-      "receiver": "X",
-      "receiver_root": "X",
-      "known_host_receiver": true,
-      "method": "c",
-      "argument_index": 0,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "d1",
-      "static_patterns": []
-    },
-    {
-      "path": "db/Binary/audio.1.sg",
-      "line": 10856,
-      "column": 21,
-      "receiver": "X",
-      "receiver_root": "X",
-      "known_host_receiver": true,
-      "method": "c",
-      "argument_index": 0,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "d1",
-      "static_patterns": []
-    },
-    {
-      "path": "db/Binary/audio.1.sg",
-      "line": 10856,
-      "column": 37,
-      "receiver": "X",
-      "receiver_root": "X",
-      "known_host_receiver": true,
-      "method": "c",
-      "argument_index": 0,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "d1",
-      "static_patterns": []
-    },
-    {
-      "path": "db/Binary/audio.1.sg",
-      "line": 10863,
-      "column": 5,
-      "receiver": "X",
-      "receiver_root": "X",
-      "known_host_receiver": true,
-      "method": "c",
-      "argument_index": 0,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "d1",
-      "static_patterns": []
-    },
-    {
-      "path": "db/Binary/audio.1.sg",
-      "line": 10863,
-      "column": 24,
-      "receiver": "X",
-      "receiver_root": "X",
-      "known_host_receiver": true,
-      "method": "c",
-      "argument_index": 0,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "d1",
-      "static_patterns": []
-    },
-    {
-      "path": "db/Binary/audio.1.sg",
-      "line": 10863,
-      "column": 43,
-      "receiver": "X",
-      "receiver_root": "X",
-      "known_host_receiver": true,
-      "method": "c",
-      "argument_index": 0,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "d1",
-      "static_patterns": []
-    },
-    {
-      "path": "db/Binary/audio.1.sg",
-      "line": 10865,
-      "column": 11,
-      "receiver": "X",
-      "receiver_root": "X",
-      "known_host_receiver": true,
-      "method": "c",
-      "argument_index": 0,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "d1",
-      "static_patterns": []
-    },
-    {
-      "path": "db/Binary/audio.1.sg",
-      "line": 10868,
-      "column": 5,
-      "receiver": "X",
-      "receiver_root": "X",
-      "known_host_receiver": true,
-      "method": "c",
-      "argument_index": 0,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "d1",
-      "static_patterns": []
-    },
-    {
-      "path": "db/Binary/audio.1.sg",
-      "line": 10868,
-      "column": 24,
-      "receiver": "X",
-      "receiver_root": "X",
-      "known_host_receiver": true,
-      "method": "c",
-      "argument_index": 0,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "d1",
-      "static_patterns": []
-    },
-    {
-      "path": "db/Binary/audio.1.sg",
-      "line": 10868,
-      "column": 43,
-      "receiver": "X",
-      "receiver_root": "X",
-      "known_host_receiver": true,
-      "method": "c",
-      "argument_index": 0,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "d1",
-      "static_patterns": []
-    },
-    {
-      "path": "db/Binary/audio.1.sg",
-      "line": 10874,
-      "column": 5,
-      "receiver": "X",
-      "receiver_root": "X",
-      "known_host_receiver": true,
-      "method": "c",
-      "argument_index": 0,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "d1",
-      "static_patterns": []
-    },
-    {
-      "path": "db/Binary/audio.1.sg",
-      "line": 10877,
-      "column": 6,
-      "receiver": "X",
-      "receiver_root": "X",
-      "known_host_receiver": true,
-      "method": "c",
-      "argument_index": 0,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "d1",
-      "static_patterns": []
-    },
-    {
-      "path": "db/Binary/audio.1.sg",
-      "line": 10877,
-      "column": 25,
-      "receiver": "X",
-      "receiver_root": "X",
-      "known_host_receiver": true,
-      "method": "c",
-      "argument_index": 0,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "d1",
-      "static_patterns": []
-    },
-    {
-      "path": "db/Binary/audio.1.sg",
-      "line": 10877,
-      "column": 44,
-      "receiver": "X",
-      "receiver_root": "X",
-      "known_host_receiver": true,
-      "method": "c",
-      "argument_index": 0,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "d1",
-      "static_patterns": []
-    },
-    {
-      "path": "db/Binary/audio.1.sg",
-      "line": 10880,
-      "column": 33,
-      "receiver": "X",
-      "receiver_root": "X",
-      "known_host_receiver": true,
-      "method": "c",
-      "argument_index": 0,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "Binary",
-      "argument_expression": "d1+\"43FA\"",
-      "static_patterns": []
-    },
-    {
-      "path": "db/Binary/audio.1.sg",
-      "line": 10885,
-      "column": 20,
-      "receiver": "X",
-      "receiver_root": "X",
-      "known_host_receiver": true,
-      "method": "c",
-      "argument_index": 0,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "d1",
-      "static_patterns": []
-    },
-    {
-      "path": "db/Binary/audio.1.sg",
-      "line": 10889,
-      "column": 5,
-      "receiver": "X",
-      "receiver_root": "X",
-      "known_host_receiver": true,
-      "method": "c",
-      "argument_index": 0,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "d1",
-      "static_patterns": []
-    },
-    {
-      "path": "db/Binary/audio.1.sg",
-      "line": 10889,
-      "column": 24,
-      "receiver": "X",
-      "receiver_root": "X",
-      "known_host_receiver": true,
-      "method": "c",
-      "argument_index": 0,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "d1",
-      "static_patterns": []
-    },
-    {
-      "path": "db/Binary/audio.1.sg",
-      "line": 10889,
-      "column": 43,
-      "receiver": "X",
-      "receiver_root": "X",
-      "known_host_receiver": true,
-      "method": "c",
-      "argument_index": 0,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "d1",
       "static_patterns": []
     },
     {
@@ -6666,10 +6445,10 @@
     "path": "docs/research/data/signature-pattern-inventory.json",
     "sha256": "15a80990b981d6588d59818c4e6bc1947f35d076dd3dae468a1beaf8f8b27731",
     "dynamic_pattern_count": 317,
-    "static_pattern_count": 5560,
+    "static_pattern_count": 5562,
     "intersection_count": 317,
     "dynamic_only_count": 0,
-    "static_only_count": 5243,
+    "static_only_count": 5245,
     "dynamic_only_patterns": []
   },
   "calls": [
@@ -26984,10 +26763,12 @@
       "known_host_receiver": true,
       "method": "c",
       "argument_index": 0,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "d1",
-      "static_patterns": []
+      "static_patterns": [
+        "48E7FCFE"
+      ]
     },
     {
       "path": "db/Binary/audio.1.sg",
@@ -27030,10 +26811,12 @@
       "known_host_receiver": true,
       "method": "c",
       "argument_index": 0,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "d1",
-      "static_patterns": []
+      "static_patterns": [
+        "48E7FCFE"
+      ]
     },
     {
       "path": "db/Binary/audio.1.sg",
@@ -27044,10 +26827,12 @@
       "known_host_receiver": true,
       "method": "c",
       "argument_index": 0,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "d1",
-      "static_patterns": []
+      "static_patterns": [
+        "48E7FCFE"
+      ]
     },
     {
       "path": "db/Binary/audio.1.sg",
@@ -27058,10 +26843,12 @@
       "known_host_receiver": true,
       "method": "c",
       "argument_index": 0,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "d1",
-      "static_patterns": []
+      "static_patterns": [
+        "48E7FCFE"
+      ]
     },
     {
       "path": "db/Binary/audio.1.sg",
@@ -27120,10 +26907,12 @@
       "known_host_receiver": true,
       "method": "c",
       "argument_index": 0,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "d1",
-      "static_patterns": []
+      "static_patterns": [
+        "48E7FCFE"
+      ]
     },
     {
       "path": "db/Binary/audio.1.sg",
@@ -27134,10 +26923,12 @@
       "known_host_receiver": true,
       "method": "c",
       "argument_index": 0,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "d1",
-      "static_patterns": []
+      "static_patterns": [
+        "48E7FCFE"
+      ]
     },
     {
       "path": "db/Binary/audio.1.sg",
@@ -27148,10 +26939,12 @@
       "known_host_receiver": true,
       "method": "c",
       "argument_index": 0,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "d1",
-      "static_patterns": []
+      "static_patterns": [
+        "48E7FCFE"
+      ]
     },
     {
       "path": "db/Binary/audio.1.sg",
@@ -27162,10 +26955,12 @@
       "known_host_receiver": true,
       "method": "c",
       "argument_index": 0,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "d1",
-      "static_patterns": []
+      "static_patterns": [
+        "48E7FCFE"
+      ]
     },
     {
       "path": "db/Binary/audio.1.sg",
@@ -27208,10 +27003,12 @@
       "known_host_receiver": true,
       "method": "c",
       "argument_index": 0,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "d1",
-      "static_patterns": []
+      "static_patterns": [
+        "48E7FCFE"
+      ]
     },
     {
       "path": "db/Binary/audio.1.sg",
@@ -27222,10 +27019,12 @@
       "known_host_receiver": true,
       "method": "c",
       "argument_index": 0,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "d1",
-      "static_patterns": []
+      "static_patterns": [
+        "48E7FCFE"
+      ]
     },
     {
       "path": "db/Binary/audio.1.sg",
@@ -27236,10 +27035,12 @@
       "known_host_receiver": true,
       "method": "c",
       "argument_index": 0,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "d1",
-      "static_patterns": []
+      "static_patterns": [
+        "48E7FCFE"
+      ]
     },
     {
       "path": "db/Binary/audio.1.sg",
@@ -27314,10 +27115,12 @@
       "known_host_receiver": true,
       "method": "c",
       "argument_index": 0,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "d1",
-      "static_patterns": []
+      "static_patterns": [
+        "48E7FCFE"
+      ]
     },
     {
       "path": "db/Binary/audio.1.sg",
@@ -27376,10 +27179,12 @@
       "known_host_receiver": true,
       "method": "c",
       "argument_index": 0,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "d1",
-      "static_patterns": []
+      "static_patterns": [
+        "48E7FCFE"
+      ]
     },
     {
       "path": "db/Binary/audio.1.sg",
@@ -27390,10 +27195,12 @@
       "known_host_receiver": true,
       "method": "c",
       "argument_index": 0,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "d1",
-      "static_patterns": []
+      "static_patterns": [
+        "48E7FCFE"
+      ]
     },
     {
       "path": "db/Binary/audio.1.sg",
@@ -27404,10 +27211,12 @@
       "known_host_receiver": true,
       "method": "c",
       "argument_index": 0,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "d1",
-      "static_patterns": []
+      "static_patterns": [
+        "48E7FCFE"
+      ]
     },
     {
       "path": "db/Binary/audio.1.sg",
@@ -27418,10 +27227,12 @@
       "known_host_receiver": true,
       "method": "c",
       "argument_index": 0,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "Binary",
       "argument_expression": "d1+\"43FA\"",
-      "static_patterns": []
+      "static_patterns": [
+        "48E7FCFE43FA"
+      ]
     },
     {
       "path": "db/Binary/audio.1.sg",
@@ -27448,10 +27259,12 @@
       "known_host_receiver": true,
       "method": "c",
       "argument_index": 0,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "d1",
-      "static_patterns": []
+      "static_patterns": [
+        "48E7FCFE"
+      ]
     },
     {
       "path": "db/Binary/audio.1.sg",
@@ -27510,10 +27323,12 @@
       "known_host_receiver": true,
       "method": "c",
       "argument_index": 0,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "d1",
-      "static_patterns": []
+      "static_patterns": [
+        "48E7FCFE"
+      ]
     },
     {
       "path": "db/Binary/audio.1.sg",
@@ -27524,10 +27339,12 @@
       "known_host_receiver": true,
       "method": "c",
       "argument_index": 0,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "d1",
-      "static_patterns": []
+      "static_patterns": [
+        "48E7FCFE"
+      ]
     },
     {
       "path": "db/Binary/audio.1.sg",
@@ -27538,10 +27355,12 @@
       "known_host_receiver": true,
       "method": "c",
       "argument_index": 0,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "d1",
-      "static_patterns": []
+      "static_patterns": [
+        "48E7FCFE"
+      ]
     },
     {
       "path": "db/Binary/audio.1.sg",
@@ -102467,6 +102286,7 @@
     "unverified function calls, loops, unresolved symbols, and mutable data flow remain dynamic",
     "only path/name/source-hash verified pure string transforms are evaluated",
     "function parameters are enumerated only when a named function does not escape and every direct call argument is static",
+    "function-scoped assignment values require one direct first-statement write and expire at the first direct symbol call",
     "static expression enumeration is limited to literals, finite non-escaping arrays with statically enumerable elements, single-initializer unmodified symbol references, +, conditionals, and sequences",
     "expressions exceeding the fixed static-value budget remain dynamic",
     "same-named methods on unknown receivers are retained as audit candidates"

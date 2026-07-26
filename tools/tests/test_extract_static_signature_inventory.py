@@ -384,6 +384,89 @@ shared("59");
                         [],
                     )
 
+    def test_scoped_assignment_requires_first_unique_write_and_call_barrier(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            rules = root / "rules"
+            (rules / "db").mkdir(parents=True)
+            (rules / "db_extra").mkdir()
+            (rules / "db" / "scoped.sg").write_text(
+                """
+var shared;
+
+function safe() {
+    shared = "65";
+    X.compare(shared);
+}
+
+function barrier() {
+    shared = "66";
+    mutate();
+    X.compare(shared);
+}
+
+function conditional() {
+    if (flag) shared = "67";
+    X.compare(shared);
+}
+
+function reassigned() {
+    shared = "68";
+    shared = "69";
+    X.compare(shared);
+}
+""".lstrip(),
+                encoding="utf-8",
+            )
+            dynamic = root / "dynamic.json"
+            dynamic.write_text(
+                json.dumps(
+                    {
+                        "upstream_commit": UPSTREAM_COMMIT,
+                        "patterns": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            output = root / "inventory.json"
+            self.run_extractor(rules, dynamic, output)
+            inventory = json.loads(output.read_text(encoding="utf-8"))
+
+            self.assertEqual(
+                [
+                    call["argument_kind"]
+                    for call in inventory["calls"]
+                ],
+                ["static_expression", "dynamic", "dynamic", "dynamic"],
+            )
+            self.assertEqual(
+                inventory["calls"][0]["static_patterns"],
+                ["65"],
+            )
+            self.assertEqual(
+                inventory["finite_scoped_assignments"],
+                [
+                    {
+                        "path": "db/scoped.sg",
+                        "function": "safe",
+                        "function_line": 3,
+                        "symbol": "shared",
+                        "assignment_line": 4,
+                        "invalidation_line": None,
+                        "static_values": ["65"],
+                    },
+                    {
+                        "path": "db/scoped.sg",
+                        "function": "barrier",
+                        "function_line": 8,
+                        "symbol": "shared",
+                        "assignment_line": 9,
+                        "invalidation_line": 10,
+                        "static_values": ["66"],
+                    },
+                ],
+            )
+
     def test_committed_inventory_matches_fixed_rules(self):
         with tempfile.TemporaryDirectory() as directory:
             output = pathlib.Path(directory) / "inventory.json"
@@ -449,6 +532,22 @@ shared("59");
                 len(inventory["finite_parameter_values"]),
                 26,
             )
+            self.assertEqual(
+                len(inventory["finite_scoped_assignments"]),
+                5,
+            )
+            self.assertIn(
+                {
+                    "path": "db/Binary/audio.1.sg",
+                    "function": "isAVP",
+                    "function_line": 10850,
+                    "symbol": "d1",
+                    "assignment_line": 10852,
+                    "invalidation_line": None,
+                    "static_values": ["48E7FCFE"],
+                },
+                inventory["finite_scoped_assignments"],
+            )
             self.assertEqual(inventory["rules"]["file_count"], 2175)
             self.assertEqual(inventory["rules"]["parse_success_count"], 2175)
             self.assertEqual(inventory["rules"]["parse_failure_count"], 0)
@@ -459,23 +558,23 @@ shared("59");
             self.assertEqual(
                 inventory["argument_kind_counts"],
                 {
-                    "dynamic": 37,
+                    "dynamic": 17,
                     "literal": 5855,
-                    "static_expression": 76,
+                    "static_expression": 96,
                 },
             )
             self.assertEqual(
                 inventory["dynamic_expression_type_counts"],
                 {
-                    "Binary": 4,
-                    "SymbolRef": 33,
+                    "Binary": 3,
+                    "SymbolRef": 14,
                 },
             )
-            self.assertEqual(inventory["static_pattern_count"], 5560)
+            self.assertEqual(inventory["static_pattern_count"], 5562)
             comparison = inventory["dynamic_inventory_comparison"]
             self.assertEqual(comparison["intersection_count"], 317)
             self.assertEqual(comparison["dynamic_only_count"], 0)
-            self.assertEqual(comparison["static_only_count"], 5243)
+            self.assertEqual(comparison["static_only_count"], 5245)
 
 
 if __name__ == "__main__":

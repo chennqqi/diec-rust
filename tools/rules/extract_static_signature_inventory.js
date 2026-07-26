@@ -418,6 +418,28 @@ function staticValues(
         return [expression.value];
     }
     if (expression instanceof uglify.AST_SymbolRef) {
+        const scopedSymbolValues =
+            constantInitializers.scoped_symbol_values;
+        const currentLambda = constantInitializers.current_lambda;
+        if (
+            scopedSymbolValues &&
+            currentLambda &&
+            expression.thedef &&
+            scopedSymbolValues.has(currentLambda)
+        ) {
+            const scopedValues = scopedSymbolValues
+                .get(currentLambda)
+                .get(expression.thedef.id);
+            if (
+                scopedValues &&
+                expression.start.pos >=
+                    scopedValues.assignment_end_position &&
+                expression.start.pos <
+                    scopedValues.invalidation_position
+            ) {
+                return scopedValues.static_values;
+            }
+        }
         const staticSymbolValues =
             constantInitializers.static_symbol_values;
         if (
@@ -900,9 +922,158 @@ function inspectFile(
             break;
         }
     }
+    const scopedWrites = new Map();
+    function addScopedWrite(lambda, definitionId, write) {
+        if (!lambda || !definitionId) {
+            return;
+        }
+        if (!scopedWrites.has(lambda)) {
+            scopedWrites.set(lambda, new Map());
+        }
+        const writesByDefinition = scopedWrites.get(lambda);
+        if (!writesByDefinition.has(definitionId)) {
+            writesByDefinition.set(definitionId, []);
+        }
+        writesByDefinition.get(definitionId).push(write);
+    }
+    ast.walk(
+        new uglify.TreeWalker(function (node) {
+            const lambda = this.find_parent(uglify.AST_Lambda);
+            if (
+                node instanceof uglify.AST_Assign &&
+                node.left instanceof uglify.AST_SymbolRef &&
+                node.left.thedef
+            ) {
+                addScopedWrite(lambda, node.left.thedef.id, {
+                    node,
+                    kind: "assign",
+                    direct_top_level:
+                        this.parent() instanceof
+                            uglify.AST_SimpleStatement &&
+                        lambda &&
+                        lambda.body.includes(this.parent()),
+                });
+            }
+            if (
+                (node instanceof uglify.AST_UnaryPrefix ||
+                    node instanceof uglify.AST_UnaryPostfix) &&
+                (node.operator === "++" || node.operator === "--") &&
+                node.expression instanceof uglify.AST_SymbolRef &&
+                node.expression.thedef
+            ) {
+                addScopedWrite(lambda, node.expression.thedef.id, {
+                    node,
+                    kind: "update",
+                    direct_top_level: false,
+                });
+            }
+            if (node instanceof uglify.AST_ForIn) {
+                node.init.walk(
+                    new uglify.TreeWalker((symbol) => {
+                        if (
+                            symbol instanceof uglify.AST_Symbol &&
+                            symbol.thedef
+                        ) {
+                            addScopedWrite(lambda, symbol.thedef.id, {
+                                node,
+                                kind: "for_in",
+                                direct_top_level: false,
+                            });
+                        }
+                    }),
+                );
+            }
+        }),
+    );
+    const directSymbolCallsByLambda = new Map();
+    ast.walk(
+        new uglify.TreeWalker(function (node) {
+            if (
+                !(node instanceof uglify.AST_Call) ||
+                !(node.expression instanceof uglify.AST_SymbolRef)
+            ) {
+                return;
+            }
+            const lambda = this.find_parent(uglify.AST_Lambda);
+            if (!lambda) {
+                return;
+            }
+            if (!directSymbolCallsByLambda.has(lambda)) {
+                directSymbolCallsByLambda.set(lambda, []);
+            }
+            directSymbolCallsByLambda.get(lambda).push(node);
+        }),
+    );
+    const scopedSymbolValues = new Map();
+    const finiteScopedAssignments = [];
+    constantInitializers.scoped_symbol_values = scopedSymbolValues;
+    for (const [lambda, writesByDefinition] of scopedWrites) {
+        for (const [definitionId, writes] of writesByDefinition) {
+            if (writes.length !== 1) {
+                continue;
+            }
+            const write = writes[0];
+            if (
+                write.kind !== "assign" ||
+                write.node.operator !== "=" ||
+                !write.direct_top_level ||
+                !(lambda.body[0] instanceof
+                    uglify.AST_SimpleStatement) ||
+                lambda.body[0].body !== write.node
+            ) {
+                continue;
+            }
+            constantInitializers.current_lambda = lambda;
+            const values = staticValues(
+                uglify,
+                write.node.right,
+                constantInitializers,
+                new Set(),
+                write.node.start.pos,
+                staticTransforms,
+            );
+            constantInitializers.current_lambda = null;
+            if (!values) {
+                continue;
+            }
+            const calls = directSymbolCallsByLambda.get(lambda) || [];
+            const barrier = calls
+                .filter(
+                    (call) =>
+                        call.start.pos > write.node.end.endpos,
+                )
+                .reduce(
+                    (position, call) =>
+                        Math.min(position, call.start.pos),
+                    Number.POSITIVE_INFINITY,
+                );
+            if (!scopedSymbolValues.has(lambda)) {
+                scopedSymbolValues.set(lambda, new Map());
+            }
+            scopedSymbolValues.get(lambda).set(definitionId, {
+                assignment_end_position: write.node.end.endpos,
+                invalidation_position: barrier,
+                static_values: values,
+            });
+            finiteScopedAssignments.push({
+                function:
+                    lambda.name && lambda.name.name
+                        ? lambda.name.name
+                        : "<anonymous>",
+                function_line: lambda.start.line,
+                symbol: write.node.left.name,
+                assignment_line: write.node.start.line,
+                invalidation_line: Number.isFinite(barrier)
+                    ? calls.find((call) => call.start.pos === barrier)
+                          .start.line
+                    : null,
+                static_values: values,
+            });
+        }
+    }
     const calls = [];
     ast.walk(
-        new uglify.TreeWalker((node) => {
+        new uglify.TreeWalker(function (node) {
             if (!(node instanceof uglify.AST_Call)) {
                 return;
             }
@@ -913,6 +1084,8 @@ function inspectFile(
             const argumentIndex = METHOD_ARGUMENT_INDEX.get(member.method);
             const argument = node.args[argumentIndex];
             const root = receiverRoot(uglify, member.receiver);
+            constantInitializers.current_lambda =
+                this.find_parent(uglify.AST_Lambda);
             const values = argument
                 ? staticValues(
                       uglify,
@@ -923,6 +1096,7 @@ function inspectFile(
                       staticTransforms,
                   )
                 : null;
+            constantInitializers.current_lambda = null;
             const stringValues = values
                 ? values.filter((value) => typeof value === "string")
                 : [];
@@ -963,6 +1137,7 @@ function inspectFile(
         path: relativePath,
         calls,
         finite_parameter_values: [...finiteParameterValues.values()],
+        finite_scoped_assignments: finiteScopedAssignments,
         verified_static_transforms: verifiedStaticTransforms,
         static_transform_verification_failures:
             staticTransformVerificationFailures,
@@ -1157,6 +1332,12 @@ function buildInventory(options) {
                 ...item,
             })),
         ),
+        finite_scoped_assignments: fileResults.flatMap((result) =>
+            result.finite_scoped_assignments.map((item) => ({
+                path: result.path,
+                ...item,
+            })),
+        ),
         static_transform_verification_failures: fileResults.flatMap(
             (result) =>
                 result.static_transform_verification_failures,
@@ -1201,6 +1382,7 @@ function buildInventory(options) {
             "unverified function calls, loops, unresolved symbols, and mutable data flow remain dynamic",
             "only path/name/source-hash verified pure string transforms are evaluated",
             "function parameters are enumerated only when a named function does not escape and every direct call argument is static",
+            "function-scoped assignment values require one direct first-statement write and expire at the first direct symbol call",
             "static expression enumeration is limited to literals, finite non-escaping arrays with statically enumerable elements, single-initializer unmodified symbol references, +, conditionals, and sequences",
             "expressions exceeding the fixed static-value budget remain dynamic",
             "same-named methods on unknown receivers are retained as audit candidates",
