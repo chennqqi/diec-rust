@@ -171,10 +171,10 @@ image revision、执行顺序、detection 集合、init 值、Unknown 以及双 
 
 ## 尚未覆盖
 
-- `sSignatureName` 与 `sSignatureFilePath` 是 engine-only 过滤器，CLI 无入口，仍需
-  固定 C++ harness；
-- `bIsSort` 的最终 record 排序开/关需要 engine harness；
-- callback stop、`_breakScan()` 和外部 `PDSTRUCT` cancel 需要独立时序探针；
+- `sSignatureName`、`bIsSort`、callback stop、`_breakScan()` 和预停止
+  `PDSTRUCT` 已由 [`engine-contract-behavior.md`](engine-contract-behavior.md)
+  覆盖；`sSignatureFilePath` 经源码审计确认公共扫描 API 不可达；
+- scan 运行期间由其他线程设置 `PDSTRUCT` 的精确时序仍未覆盖；
 - 非 Binary file type、Windows 和 macOS 的排序/层行为；
 - include 重复、循环及异常传播。
 

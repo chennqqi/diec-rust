@@ -32,3 +32,5 @@
 - [`0008-pinned-rule-order-manifest.md`](0008-pinned-rule-order-manifest.md)：
   不在 Rust runtime 复刻非传递 comparator，以 source/target/oracle 绑定的显式
   顺序清单驱动 legacy 规则执行（Proposed）。
+- [`0009-cancellation-result-contract.md`](0009-cancellation-result-contract.md)：
+  modern API 用类型化取消代替上游部分成功结果，legacy 保留原始证据（Proposed）。

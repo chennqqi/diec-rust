@@ -26,6 +26,14 @@ DIRECTORIES = (
     "priority-main/Binary",
     "priority-extra",
     "priority-custom",
+    "sort-main",
+    "sort-main/Binary",
+    "sort-extra",
+    "sort-custom",
+    "break-main",
+    "break-main/Binary",
+    "break-extra",
+    "break-custom",
     "input",
 )
 
@@ -175,6 +183,40 @@ FILES: tuple[dict[str, Any], ...] = (
         "purpose": "priority 4 rule",
         "detection_name": "Priority four",
     },
+    {
+        "path": "sort-main/Binary/sort_records.1.sg",
+        "data": (
+            b"function detect() {\n"
+            b'    _setResult("packer", "Packer last", "", "");\n'
+            b'    _setResult("format", "Format first", "", "");\n'
+            b'    _setResult("compiler", "Compiler middle", "", "");\n'
+            b"    return true;\n"
+            b"}\n"
+        ),
+        "purpose": "emit records in reverse type-priority order",
+        "detection_name": "Sort records",
+    },
+    {
+        "path": "break-main/Binary/break_scan.1.sg",
+        "data": (
+            b"function detect() {\n"
+            b'    _setResult("format", "Break first", "", "");\n'
+            b"    _breakScan();\n"
+            b"    return true;\n"
+            b"}\n"
+        ),
+        "purpose": "emit one result and stop the shared scan state",
+        "detection_name": "Break first",
+    },
+    {
+        "path": "break-main/Binary/after_break.2.sg",
+        "data": detection_rule(
+            "After break",
+            b'""',
+        ),
+        "purpose": "must not execute after _breakScan",
+        "detection_name": "After break",
+    },
 )
 
 MODE_ORDERS = {
@@ -250,6 +292,24 @@ def generate(output_dir: pathlib.Path) -> dict[str, Any]:
         ),
         "mode_orders": MODE_ORDERS,
         "priority_only_order": PRIORITY_ONLY_ORDER,
+        "engine_contract": {
+            "sort_unsorted_names": [
+                "Packer last",
+                "Format first",
+                "Compiler middle",
+            ],
+            "sort_sorted_names": [
+                "Format first",
+                "Compiler middle",
+                "Packer last",
+            ],
+            "break_execution_order": [
+                "break_scan.1.sg",
+            ],
+            "break_detection_names": [
+                "Break first",
+            ],
+        },
         "wrong_type_decoy": "decoy.0.sg",
         "entries": entries,
     }

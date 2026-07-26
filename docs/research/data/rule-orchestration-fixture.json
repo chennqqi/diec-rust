@@ -14,8 +14,34 @@
     "priority-main/Binary",
     "priority-extra",
     "priority-custom",
+    "sort-main",
+    "sort-main/Binary",
+    "sort-extra",
+    "sort-custom",
+    "break-main",
+    "break-main/Binary",
+    "break-extra",
+    "break-custom",
     "input"
   ],
+  "engine_contract": {
+    "break_detection_names": [
+      "Break first"
+    ],
+    "break_execution_order": [
+      "break_scan.1.sg"
+    ],
+    "sort_sorted_names": [
+      "Format first",
+      "Compiler middle",
+      "Packer last"
+    ],
+    "sort_unsorted_names": [
+      "Packer last",
+      "Format first",
+      "Compiler middle"
+    ]
+  },
   "entries": [
     {
       "path": "input/probe.bin",
@@ -165,6 +191,30 @@
       "purpose": "priority 4 rule",
       "sha256": "094e780bf1e25e915ea0f688f217c5a70c3940d007ef8081ded94e1aebe4c722",
       "size": 103,
+      "source": "project-generated"
+    },
+    {
+      "detection_name": "Sort records",
+      "path": "sort-main/Binary/sort_records.1.sg",
+      "purpose": "emit records in reverse type-priority order",
+      "sha256": "ee01611798aed003fd944a807ca68a3e2b6372e0fd6a1e263862738009f300cf",
+      "size": 193,
+      "source": "project-generated"
+    },
+    {
+      "detection_name": "Break first",
+      "path": "break-main/Binary/break_scan.1.sg",
+      "purpose": "emit one result and stop the shared scan state",
+      "sha256": "9dfedfbed74bfc91180a3e3799773a233619093779595fcda44059823c3ff3b3",
+      "size": 106,
+      "source": "project-generated"
+    },
+    {
+      "detection_name": "After break",
+      "path": "break-main/Binary/after_break.2.sg",
+      "purpose": "must not execute after _breakScan",
+      "sha256": "284594eb9c68e2030af3239af8513957a62acba42fa02f85065039654d78dbae",
+      "size": 88,
       "source": "project-generated"
     }
   ],

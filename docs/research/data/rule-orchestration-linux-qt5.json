@@ -191,7 +191,7 @@
   },
   "fixture_manifest": {
     "path": "docs/research/data/rule-orchestration-fixture.json",
-    "sha256": "32461d84f7a2e4421bb2f3152b72117a5acdc7d291809541813f1f871471709d"
+    "sha256": "1ac7b2035a6073cba986bab4056ca17165d82ad1dd5299c0e211303bcfb571fc"
   },
   "generator": "tools/upstream/probe_rule_orchestration.py",
   "generator_sha256": "9792ec5a2eb75f75d120c35cfd66d698209f7b9fb2fe13aa206a6633b2a7ec12",

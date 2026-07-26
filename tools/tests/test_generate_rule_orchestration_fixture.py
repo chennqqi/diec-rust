@@ -80,6 +80,9 @@ class GenerateRuleOrchestrationFixtureTests(unittest.TestCase):
                 "priority-main/Binary/z_priority.1.sg",
                 "priority-main/Binary/a_priority.2.sg",
                 "priority-main/Binary/m_priority.4.sg",
+                "sort-main/Binary/sort_records.1.sg",
+                "break-main/Binary/break_scan.1.sg",
+                "break-main/Binary/after_break.2.sg",
             }.issubset(paths)
         )
         self.assertEqual(
@@ -100,6 +103,23 @@ class GenerateRuleOrchestrationFixtureTests(unittest.TestCase):
                 "a_priority.2.sg",
                 "m_priority.4.sg",
             ],
+        )
+        self.assertEqual(
+            manifest["engine_contract"],
+            {
+                "sort_unsorted_names": [
+                    "Packer last",
+                    "Format first",
+                    "Compiler middle",
+                ],
+                "sort_sorted_names": [
+                    "Format first",
+                    "Compiler middle",
+                    "Packer last",
+                ],
+                "break_execution_order": ["break_scan.1.sg"],
+                "break_detection_names": ["Break first"],
+            },
         )
 
 

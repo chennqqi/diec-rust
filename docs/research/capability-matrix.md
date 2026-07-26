@@ -15,8 +15,8 @@ Last updated: 2026-07-27
 | 多目标扫描 | 多个 positional `target` | Observed | 保持参数顺序、不去重；结构化输出不是有效聚合文档 |
 | 目录枚举 | positional directory | Observed | 无条件 depth-first 递归；Linux 当前语料按 name 排序 |
 | 单文件目录/空目录 | positional directory | Observed | 单文件不加 prefix；空目录退出 0 且无输出 |
-| 内存扫描 | engine `scanMemory()` | Source only | CLI 不直接暴露 |
-| device/subdevice 扫描 | engine API | Source only | 是嵌套扫描基础 |
+| 内存扫描 | engine `scanMemory()` | Observed | Binary fixture 与 file/device/subdevice record 一致；CLI 不暴露 |
+| device/subdevice 扫描 | engine API | Observed | Binary fixture record 一致；边界/error 尚未覆盖 |
 
 CLI 主入口为 [`src/console/main_console.cpp`](https://github.com/horsicq/DIE-engine/blob/74eaf505c250ab47e709024e9dc41657cd8f2254/src/console/main_console.cpp)，选项名称与描述来自 `XOptions@810d78d.../xoptions.cpp`。
 
@@ -85,18 +85,21 @@ verbose/messages/profiling 的 channel 与结构化结果关系，以及两个�
 | global/type Init 规则 | `findInitSignatures()` + `_executeInitSignature()` | Observed；Binary main init 遮蔽 extra/custom |
 | 按文件类型过滤规则 | `_shouldExecuteSignature()` | Observed；Binary 输入不执行 PE decoy |
 | deep/heuristic 规则过滤 | `_shouldExecuteSignature()` | Observed；DS/EP 与 HEUR 独立四模式 |
-| 自定义单条 signature/file 过滤 | `sSignatureName`, `sSignatureFilePath` | Source only |
+| 自定义单条 signature 过滤 | `sSignatureName` | Observed；区分大小写，仍受 deep gate，未命中产生 Unknown |
+| signature file path 过滤 | 私有 `processDetect(..., sSignatureFilePath, ...)` | Source audit；公共 options 无该字段，当前不可达 |
 | 未命中时产生 Unknown | `DiE_Script::processDetect()` | Observed；空的有效三层数据库产生唯一 Unknown |
-| 检测结果稳定排序选项 | `bIsSort` + `sortRecords()` | Source only |
+| 检测结果稳定排序选项 | `bIsSort` + `sortRecords()` | Observed；关闭保持插入顺序，开启按 type priority 升序 |
 | 脚本错误收集 | `SCAN_RESULT.listErrors` | Observed；parse/runtime error 追加到 stdout，退出 0 |
 | 脚本 profiling | `listDebugRecords` / messages | Observed；292 条 Binary 规则顺序及 CLI channel 已固定 |
-| 取消/停止 | `PDSTRUCT`, callback, `breakScan()` | Source only |
+| 取消/停止 | `PDSTRUCT`, callback, `breakScan()` | Observed；运行中停止保留当前 record，预停止产生 Unknown |
 
 规则脚本由 Qt 5 `QScriptEngine` 或 Qt 6 `QJSEngine` 执行。规则兼容性不是简单的模式匹配移植，必须覆盖 JavaScript 方言、全局函数和每种格式宿主对象；详见待建的 `rule-compatibility.md`。
 
 priority、数据库分层、init/include、file type、deep/heuristic 和 Unknown 的隔离
 端到端证据见
 [`rule-orchestration.md`](rule-orchestration.md)。
+引擎过滤、record 排序、停止和扫描入口的固定 harness 证据见
+[`engine-contract-behavior.md`](engine-contract-behavior.md)。
 
 ## 文件类型分派
 

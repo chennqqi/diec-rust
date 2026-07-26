@@ -273,6 +273,11 @@ runtime interrupt 同时观察 token 与 monotonic deadline。取消优先级：
 cancel/timeout 不返回成功 `ScanReport`，避免调用方误用不确定截断点的结果。错误
 details 可以报告停止 stage 和已消耗预算，但不暴露部分 detections。可确定地完成
 某个 child 后遇到 node/count hard limit，则按下一节返回带 `Limited` 状态的报告。
+固定上游并非如此：callback false 和 `_breakScan()` 会保留当前规则结果，调用前
+已停止还会产生 `Unknown`，同时 `PDSTRUCT` 标记 stopped/not-success。因此本段
+是 modern API 候选差异，而非上游事实；证据与接受门禁见
+[`engine-contract-behavior.md`](../research/engine-contract-behavior.md) 和
+[`ADR 0009`](decisions/0009-cancellation-result-contract.md)。
 
 ## 10. ScanReport 与 completion
 

@@ -375,6 +375,9 @@ removal_condition = "..."
 - arena：parent/child 一致、stable ID、无 cycle 和 deterministic finalize；
 - rules：发现/排序/init/include、全部语法节点、host API 类型/边界及异常；
 - engine：candidate 顺序、all-types、unknown、heuristic、嵌套、partial 和 cancel；
+- engine contract：精确 signature name（含大小写/deep gate）、record sort 开关、
+  callback false、规则 `_breakScan()`、预停止，以及 file/memory/device/subdevice
+  等价；legacy 保留部分 record/Unknown，modern 按 ADR 0009 验证类型化取消；
 - output：UTF-8 escaping、整数、float、optional/null、key/array order；
 - database：三层顺序、空/缺失/损坏、duplicate、hash mismatch 和事务失败。
 
