@@ -19,6 +19,7 @@
 #include <QString>
 
 #include <cstdio>
+#include <memory>
 
 namespace {
 
@@ -351,20 +352,111 @@ QJsonObject runCase(const QJsonObject &input, QString *error)
         XBinary::getPdStructErrorString(&findState)
     );
 
-    if (input.value("binary_script_compare").toBool()) {
+    bool invokeScriptCompare =
+        input.value("binary_script_compare").toBool();
+    bool invokeScriptCompareEp =
+        input.value("binary_script_compare_ep").toBool();
+    bool invokeScriptCompareOverlay =
+        input.value("binary_script_compare_overlay").toBool();
+    if (
+        invokeScriptCompare ||
+        invokeScriptCompareEp ||
+        invokeScriptCompareOverlay
+    ) {
+        std::unique_ptr<XBinary> parsedBinary;
+        XBinary *scriptBinary = &binary;
+        QString scriptParser =
+            input.value("binary_script_parser").toString();
+        if (scriptParser == "pe") {
+            parsedBinary = std::make_unique<XPE>(&buffer);
+            scriptBinary = parsedBinary.get();
+        } else if (!scriptParser.isEmpty()) {
+            *error = QString(
+                "unsupported binary_script_parser: %1"
+            ).arg(scriptParser);
+            return result;
+        }
+
         Binary_Script::OPTIONS options = {};
         XBinary::PDSTRUCT scriptState = XBinary::createPdStruct();
         Binary_Script script(
-            &binary,
+            scriptBinary,
             XBinary::FILEPART_HEADER,
             options,
             &scriptState
         );
-        result.insert("binary_script_compare", true);
-        result.insert(
-            "binary_script_compare_result",
-            script.compare(pattern, offset)
-        );
+        XBinary::_MEMORY_MAP scriptMemoryMap =
+            scriptBinary->getMemoryMap();
+
+        if (!scriptParser.isEmpty()) {
+            result.insert("binary_script_parser", scriptParser);
+            result.insert(
+                "binary_script_parser_valid",
+                scriptBinary->isValid()
+            );
+        }
+        if (invokeScriptCompare) {
+            result.insert("binary_script_compare", true);
+            result.insert(
+                "binary_script_compare_result",
+                script.compare(pattern, offset)
+            );
+        }
+        if (invokeScriptCompareEp) {
+            result.insert("binary_script_compare_ep", true);
+            result.insert(
+                "binary_script_entry_point_offset",
+                scriptBinary->getEntryPointOffset(&scriptMemoryMap)
+            );
+            result.insert(
+                "binary_compare_ep_result",
+                scriptBinary->compareEntryPoint(
+                    &scriptMemoryMap,
+                    converted,
+                    offset
+                )
+            );
+            result.insert(
+                "binary_script_compare_ep_result",
+                script.compareEP(pattern, offset)
+            );
+        }
+        if (invokeScriptCompareOverlay) {
+            XBinary::PDSTRUCT overlayCompareState =
+                XBinary::createPdStruct();
+            result.insert("binary_script_compare_overlay", true);
+            result.insert(
+                "binary_script_overlay_offset",
+                scriptBinary->getOverlayOffset(
+                    &scriptMemoryMap,
+                    &scriptState
+                )
+            );
+            result.insert(
+                "binary_script_overlay_size",
+                scriptBinary->getOverlaySize(
+                    &scriptMemoryMap,
+                    &scriptState
+                )
+            );
+            result.insert(
+                "binary_compare_overlay_result",
+                scriptBinary->compareOverlay(
+                    &scriptMemoryMap,
+                    converted,
+                    offset,
+                    &overlayCompareState
+                )
+            );
+            result.insert(
+                "binary_compare_overlay_error",
+                XBinary::getPdStructErrorString(&overlayCompareState)
+            );
+            result.insert(
+                "binary_script_compare_overlay_result",
+                script.compareOverlay(pattern, offset)
+            );
+        }
         result.insert(
             "binary_script_compare_error",
             XBinary::getPdStructErrorString(&scriptState)

@@ -30,6 +30,6 @@ inventory generated from the fixed 292-rule runtime trace.
 Additional tests compare 16 context-free, 7 synthetic memory-map, and 9
 parser-derived memory-map cases directly with the pinned Qt 5 XBinary harness
 baseline. A separate 19-case differential covers all three `find_signature`
-branches. Five wrapper-level cases invoke pinned `Binary_Script::compare`
-end-to-end and distinguish its cached-header fast path from the record matcher
-at the strict boundary.
+branches. Fifteen wrapper-level cases invoke pinned `Binary_Script::compare`,
+`compareEP`, and `compareOverlay` end-to-end and distinguish their cached
+fast paths from the record matcher at strict boundaries.

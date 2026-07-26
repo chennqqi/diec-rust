@@ -10,7 +10,7 @@ from pathlib import Path
 
 
 SCHEMA_VERSION = 2
-GENERATOR_VERSION = 7
+GENERATOR_VERSION = 8
 UPSTREAM_COMMIT = "74eaf505c250ab47e709024e9dc41657cd8f2254"
 FORMATS_COMMIT = "1151e7254fdee3c0294ff7095edbdd7bfccf8201"
 
@@ -100,6 +100,16 @@ def mapped_pe64() -> bytes:
         )
     image[0x200:0x205] = bytes.fromhex("e9fb0f0000")
     image[0x400] = 0x90
+    return bytes(image)
+
+
+def mapped_pe32_with_overlay() -> bytes:
+    image = bytearray(mapped_pe32())
+    image.extend(bytes(0x200))
+    image[0x200] = 0x41
+    image[0x3FC:0x3FF] = b"AAA"
+    image[0x600] = 0x41
+    image[0x7FC:0x7FF] = b"AAA"
     return bytes(image)
 
 
@@ -641,6 +651,84 @@ def vectors() -> list[dict[str, object]]:
             "data_hex": ("00" * 252) + "41414100",
             "offset": 254,
             "binary_script_compare": True,
+        },
+        {
+            "id": "binary_script_ep_fast_path_invalid_suffix",
+            "pattern": "41x",
+            "data_hex": mapped_pe32_with_overlay().hex(),
+            "binary_script_parser": "pe",
+            "binary_script_compare_ep": True,
+        },
+        {
+            "id": "binary_script_ep_cache_overrun_fast_path",
+            "pattern": "41",
+            "data_hex": mapped_pe32_with_overlay().hex(),
+            "offset": 508,
+            "binary_script_parser": "pe",
+            "binary_script_compare_ep": True,
+        },
+        {
+            "id": "binary_script_ep_original_length_selects_generic",
+            "pattern": " 41 ",
+            "data_hex": mapped_pe32_with_overlay().hex(),
+            "offset": 508,
+            "binary_script_parser": "pe",
+            "binary_script_compare_ep": True,
+        },
+        {
+            "id": "binary_script_ep_before_strict_boundary",
+            "pattern": "41",
+            "data_hex": mapped_pe32_with_overlay().hex(),
+            "offset": 509,
+            "binary_script_parser": "pe",
+            "binary_script_compare_ep": True,
+        },
+        {
+            "id": "binary_script_ep_at_strict_boundary",
+            "pattern": "41",
+            "data_hex": mapped_pe32_with_overlay().hex(),
+            "offset": 510,
+            "binary_script_parser": "pe",
+            "binary_script_compare_ep": True,
+        },
+        {
+            "id": "binary_script_overlay_fast_path_invalid_suffix",
+            "pattern": "41x",
+            "data_hex": mapped_pe32_with_overlay().hex(),
+            "binary_script_parser": "pe",
+            "binary_script_compare_overlay": True,
+        },
+        {
+            "id": "binary_script_overlay_cache_overrun_fast_path",
+            "pattern": "41",
+            "data_hex": mapped_pe32_with_overlay().hex(),
+            "offset": 508,
+            "binary_script_parser": "pe",
+            "binary_script_compare_overlay": True,
+        },
+        {
+            "id": "binary_script_overlay_original_length_selects_generic",
+            "pattern": " 41 ",
+            "data_hex": mapped_pe32_with_overlay().hex(),
+            "offset": 508,
+            "binary_script_parser": "pe",
+            "binary_script_compare_overlay": True,
+        },
+        {
+            "id": "binary_script_overlay_before_strict_boundary",
+            "pattern": "41",
+            "data_hex": mapped_pe32_with_overlay().hex(),
+            "offset": 509,
+            "binary_script_parser": "pe",
+            "binary_script_compare_overlay": True,
+        },
+        {
+            "id": "binary_script_overlay_at_strict_boundary",
+            "pattern": "41",
+            "data_hex": mapped_pe32_with_overlay().hex(),
+            "offset": 510,
+            "binary_script_parser": "pe",
+            "binary_script_compare_overlay": True,
         },
         {
             "id": "invalid_prefix_has_no_records",

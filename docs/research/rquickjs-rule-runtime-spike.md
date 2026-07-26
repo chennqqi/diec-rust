@@ -341,11 +341,12 @@ pattern 静默返回 false。这不符合“不支持语法必须显式诊断”
 存在 class 和 search 分支差异。独立 Rust find 已覆盖 control-record、SigByte、
 plain-hex 三分支的 19 个聚焦差分并全部一致。`Binary_Script::compare` 的
 wrapper-level header fast path 又以 5/5 端到端向量确认：不能把 `X.c` 无条件
-映射到 record matcher。合成 memory-map matcher 已覆盖六类 file type，并与固定
-oracle 7/7 一致；PE32/ELF64/Mach-O64 parser-derived map 又达到
+映射到 record matcher；EP 与 overlay wrapper 各 5/5 又确认 cache 长度单位和
+原始 pattern 长度都会改变结果。合成 memory-map matcher 已覆盖六类 file type，
+并与固定 oracle 7/7 一致；PE32/ELF64/Mach-O64 parser-derived map 又达到
 3/3，COM/MS-DOS/AmigaHunk 及 PE64/ELF32/Mach-O32 再达到 6/6。畸形 map、
-find 的畸形/穷举边界、EP/overlay fast path 和全调用点差分尚未完成，当前运行时
-仍不替换五-pattern 特判。
+find 的畸形/穷举边界、无效/短小 wrapper 上下文和全调用点差分尚未完成，当前
+运行时仍不替换五-pattern 特判。
 
 285 条“无异常”及 153 条 detection 都不能作为兼容证据：代理返回的 callable
 object 在 JavaScript 条件中可能为 truthy，已明显制造大量 false positive。即使

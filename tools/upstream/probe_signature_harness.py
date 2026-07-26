@@ -33,6 +33,51 @@ EXPECTED_OBSERVATIONS = {
         "compare": True,
         "binary_script_compare_result": True,
     },
+    "binary_script_ep_fast_path_invalid_suffix": {
+        "binary_script_parser_valid": True,
+        "binary_script_entry_point_offset": 512,
+        "binary_compare_ep_result": True,
+        "binary_script_compare_ep_result": False,
+    },
+    "binary_script_ep_cache_overrun_fast_path": {
+        "binary_compare_ep_result": True,
+        "binary_script_compare_ep_result": False,
+    },
+    "binary_script_ep_original_length_selects_generic": {
+        "binary_compare_ep_result": True,
+        "binary_script_compare_ep_result": True,
+    },
+    "binary_script_ep_before_strict_boundary": {
+        "binary_compare_ep_result": True,
+        "binary_script_compare_ep_result": False,
+    },
+    "binary_script_ep_at_strict_boundary": {
+        "binary_compare_ep_result": True,
+        "binary_script_compare_ep_result": True,
+    },
+    "binary_script_overlay_fast_path_invalid_suffix": {
+        "binary_script_parser_valid": True,
+        "binary_script_overlay_offset": 1536,
+        "binary_script_overlay_size": 512,
+        "binary_compare_overlay_result": True,
+        "binary_script_compare_overlay_result": False,
+    },
+    "binary_script_overlay_cache_overrun_fast_path": {
+        "binary_compare_overlay_result": True,
+        "binary_script_compare_overlay_result": False,
+    },
+    "binary_script_overlay_original_length_selects_generic": {
+        "binary_compare_overlay_result": True,
+        "binary_script_compare_overlay_result": True,
+    },
+    "binary_script_overlay_before_strict_boundary": {
+        "binary_compare_overlay_result": True,
+        "binary_script_compare_overlay_result": False,
+    },
+    "binary_script_overlay_at_strict_boundary": {
+        "binary_compare_overlay_result": True,
+        "binary_script_compare_overlay_result": True,
+    },
     "plain_find_clamps_oversized_range": {
         "compare": False,
         "find_offset": 1,
@@ -213,12 +258,14 @@ def validate_baseline(
         for field in ("base_signature", "memory_map", "format_parser"):
             if field in vector and actual.get(field) != vector.get(field):
                 failures.append(f"{case_id}.{field}")
-        if (
-            "binary_script_compare" in vector
-            and actual.get("binary_script_compare")
-            != vector.get("binary_script_compare")
+        for field in (
+            "binary_script_compare",
+            "binary_script_compare_ep",
+            "binary_script_compare_overlay",
+            "binary_script_parser",
         ):
-            failures.append(f"{case_id}.binary_script_compare")
+            if field in vector and actual.get(field) != vector.get(field):
+                failures.append(f"{case_id}.{field}")
         if "format_parser" in vector and not isinstance(
             actual.get("derived_memory_map"), dict
         ):

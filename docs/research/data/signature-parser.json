@@ -143,6 +143,20 @@
       "header_fast_path_observed": true,
       "strict_boundary_observed": true
     },
+    "pinned_binary_script_compare_ep_differential": {
+      "case_count": 5,
+      "matched_count": 5,
+      "cache_length_unit_mismatch_observed": true,
+      "source_length_branching_observed": true,
+      "strict_boundary_observed": true
+    },
+    "pinned_binary_script_compare_overlay_differential": {
+      "case_count": 5,
+      "matched_count": 5,
+      "cache_length_unit_mismatch_observed": true,
+      "source_length_branching_observed": true,
+      "strict_boundary_observed": true
+    },
     "pinned_xbinary_memory_map_differential": {
       "case_count": 7,
       "matched_count": 7,
@@ -182,20 +196,20 @@
     "base_image": "diec-rust/upstream-oracle-cmake:74eaf505",
     "base_image_id": "sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040",
     "image": "diec-rust/upstream-signature-harness:74eaf505",
-    "image_id": "sha256:7fe99b085c22052cadfe07cfd2f9e425a04f1a9934b24e9d7f99f9888cddcdd3",
+    "image_id": "sha256:45cbe6654678df52db2eafdbd735d651f62ccec4344884602aa575b14591d16f",
     "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254",
     "qt_version": "5.15.13",
     "binary": "/opt/die-build/src/console/diec-signature-harness",
-    "binary_sha256": "56b326fcf14afe96d12d37cd23a2b1a7a6ef0a010fa9944760bbd1d7e4b1055a",
+    "binary_sha256": "7256a58eff8a6f325a12b273e730c3c3e7addb0f2a4aca5be1357aa96bc4da67",
     "dockerfile_sha256": "c9c28565e2d3274edbc72d54e3bcf1b3edc0b2707749707718fcbafbf9430aa8",
-    "harness_source_sha256": "42e347ee76fd1c49015906643c55ef7b65a3fba86c430db63a6112702fdbce82",
-    "probe_sha256": "b0d742e026b5f8d2491d2323ff7a1ccf3d583e3cf333f98e3486ce23f130ce68",
-    "vector_generator_sha256": "b4a2ddbadaa18e2d2caf342624cb8493244a7859e40e7d9473bcdbaae1803548",
+    "harness_source_sha256": "9fc1f812c6b46b1bf5f0172385e42d6a19aa871937a17545c939b39f014bbcc1",
+    "probe_sha256": "7fa242d6f695a364378b36ba418c25c36cf918f604290d4987ec7a030e29a244",
+    "vector_generator_sha256": "87776b5bc3734ed6c4682034034c2bce0a1209561170d0516fdf8d94de57c58f",
     "vectors": "docs/research/data/signature-oracle-vectors.json",
-    "vectors_sha256": "5c2a5e1d56ced0d09a48027dc70474e807a51bb36b5bc89c03d3fe039b1f129d",
+    "vectors_sha256": "88dbf9e980cc4058ca04800924102764cf8bd827f66e9fb391ed2b57528b9547",
     "baseline": "docs/research/data/signature-oracle-qt5.json",
-    "baseline_sha256": "caaabed625980b16facec031a72f19feeeb36cb9b1cf6c061f5a5b2a00607a3d",
-    "case_count": 53,
+    "baseline_sha256": "fd8dc107545ea5eac4383af72f449617c556a679d8c7e74b844f77b39b04f222",
+    "case_count": 63,
     "probe_passed": true,
     "compare_find_divergences": [
       "%& accepts only digits in compare records but letters and digits in SigBytes find",
@@ -207,8 +221,8 @@
   "limitations": [
     "the 317-pattern inventory is dynamic coverage for one fixed generated sample, not a complete static corpus inventory",
     "generated PE32/64, ELF32/64, Mach-O32/64, COM, MS-DOS, and AmigaHunk files cover real parser memory-map construction, but malformed map variants remain untested",
-    "Binary_Script compareEP and compareOverlay cache-size and boundary behavior are not yet invoked end-to-end",
+    "Binary_Script wrapper fast paths are verified with one generated PE32 entry point and overlay, but absent, short, invalid, and non-PE contexts remain untested",
     "the independent find_signature spike covers 19 focused cases across all three branches, but malformed partial-parse and exhaustive optimization combinations remain untested",
-    "the 53 focused vectors do not yet exhaust malformed partial-parse combinations"
+    "the 63 focused vectors do not yet exhaust malformed partial-parse combinations"
   ]
 }

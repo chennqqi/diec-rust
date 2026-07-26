@@ -144,13 +144,13 @@ pattern 仍可能缺失。
 
 输入由
 [`generate_signature_oracle_vectors.py`](../../tools/corpus/generate_signature_oracle_vectors.py)
-生成，共 53 个项目自有向量。原始输出保存为
+生成，共 63 个项目自有向量。原始输出保存为
 [`signature-oracle-qt5.json`](data/signature-oracle-qt5.json)，自动探针
 [`probe_signature_harness.py`](../../tools/upstream/probe_signature_harness.py)
 在禁网、512 MiB、1 CPU、128 PID 限制下验证 image revision、binary hash、
-输入 identity 及 baseline 原始 bytes。当前结果 53/53，stdout/baseline
+输入 identity 及 baseline 原始 bytes。当前结果 63/63，stdout/baseline
 SHA-256 均为
-`caaabed625980b16facec031a72f19feeeb36cb9b1cf6c061f5a5b2a00607a3d`。
+`fd8dc107545ea5eac4383af72f449617c556a679d8c7e74b844f77b39b04f222`。
 
 构建与复现：
 
@@ -194,9 +194,31 @@ python tools/upstream/probe_signature_harness.py \
   证明差异来自 matcher 选择而非输入字节。
 
 因此 Rust Host API 不能把 `X.c` 无条件简化为 record matcher；至少 legacy
-compatibility profile 必须保留这一 wrapper-level 可观察行为。当前证据只覆盖
-header `compare`，尚未覆盖 `compareEP` 和 `compareOverlay` 各自不同的 cache-size
-计算。
+compatibility profile 必须保留这一 wrapper-level 可观察行为。
+
+`compareEP` 和 `compareOverlay` 的实现又有两处不同：
+
+- 两个构造器字段都把最多 256 bytes 的缓存保存为 hex `QString`，随后直接用
+  `QString::size()` 得到 512，而 header 分支会除以二得到 256；
+- 分支判定使用原始 `sSignature.size()`，不是规范化后字符串长度。
+
+项目生成的 PE32 把 entry point 固定在文件 offset `0x200`，overlay 固定在
+`0x600` 且长度为 512 bytes。EP 和 overlay 各 5 个端到端向量得到完全相同的
+wrapper 行为：
+
+- 合法 `41` 位于相对 offset 508 和 509 时，通用 EP/overlay matcher 返回 true；
+  wrapper 却因 `2 + offset < 512` 错走 fast path，从实际 256-byte cache 外取空串
+  并返回 false；
+- offset 510 时 `2 + 510 == 512`，严格 `<` 不成立，wrapper 回退通用 matcher
+  并返回 true；
+- 同在 offset 508，把 pattern 写成规范化结果相同的 `" 41 "` 后，原始长度 4
+  使 `4 + 508 == 512`，wrapper 改走通用 matcher 并返回 true；
+- `41x` 在 offset 0 再次确认 fast-path string matcher false，而对应通用 matcher
+  使用 partial record 返回 true。
+
+这证明 cache 长度单位错误和原始/规范化长度混用都能改变合法输入上的检测结果，
+不能作为内部不可观察的性能细节忽略。当前实验固定了一个有效 PE32 entry point
+和足长 overlay；不存在、短小、无效以及非 PE 上下文仍待扩展。
 
 ### 合成 memory-map 差分
 
@@ -247,7 +269,9 @@ oracle schema v2 允许每个项目自有向量显式注入 `_MEMORY_MAP`，但�
   9/9 一致；
 - 独立 `find_signature` 实现覆盖 plain-hex、SigByte、control-record 三条路径，
   包括范围截断、固定/最长/类锚点和无锚点回退；19 个聚焦向量与固定 oracle
-  19/19 一致，未以循环调用 raw matcher 代替搜索算法。
+  19/19 一致，未以循环调用 raw matcher 代替搜索算法；
+- wrapper-level oracle 对 header `compare`、`compareEP`、`compareOverlay` 各覆盖
+  5 个向量并全部通过，固定了三种 cache-size/边界行为。
 
 机器摘要见
 [`signature-parser.json`](data/signature-parser.json)。
@@ -259,8 +283,8 @@ oracle schema v2 允许每个项目自有向量显式注入 `_MEMORY_MAP`，但�
 2. 扩展现有 XBinary oracle，覆盖更多畸形组合、buffer boundary 和取消行为。
 3. 补齐畸形/重叠/virtual-only map 的项目生成文件，端到端验证各格式
    `getMemoryMap` 边界。
-4. 端到端验证 `Binary_Script::compareEP` 与 `compareOverlay` 的 cache-size、
-   原始/规范化 signature length 和严格 `<` 边界。
+4. 扩展 `Binary_Script` wrapper oracle 到不存在/短小 overlay、无效 entry point
+   和非 PE parser，确认错误与 fallback 行为。
 5. 扩展 `find_signature` 差分到 malformed partial-parse、更多 buffer boundary
    和锚点优化组合，并验证取消行为；现有 19-case spike 不作为完整性证明。
 6. 只有 parser、matcher 和 `find_signature` 差分门禁通过后，才能替换当前
