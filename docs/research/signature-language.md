@@ -290,19 +290,41 @@ pattern。
 输入依赖调用，不能把第二参数改当 signature。
 
 “包含动态 317/317”证明动态清单是静态清单的子集，不证明 5628 是完整运行时值域。
-剩余四个调用的边界已经固定：
+通用提取器保守留下的四个调用中，三个仍是输入相关数值；`byteCode` 已由更窄的
+固定源码求值器闭合：
 
 | 路径与行 | 参数表达式 | 保持动态的原因 |
 | --- | --- | --- |
 | `db/Binary/audio.1.sg:4706` | `X.c(p+o, …)` | 固定 `c` API 的 signature 是第一个参数；这里传入输入相关数值偏移 |
 | `db/Binary/audio.1.sg:4751` | `X.c(p+8, …)` | 同上，第二个看似 signature 的字符串实际进入 offset 参数 |
 | `db/Binary/audio.1.sg:10574` | `X.fSig(…, lo-150, lo-20)` | 固定 `fSig` API 的 signature 是第三个参数；这里传入输入相关数值边界 |
-| `db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg:3806` | `byteCode` | helper 有 31 个真实调用，包含循环生成的 `pattern`、`replaceAllInString` 和多个 `opCodes` 变换 |
+| `db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg:3806` | `byteCode` | 已闭合：helper 有 33 个真实调用点，有限展开为 97 个唯一 pattern |
 
 前三项是上游调用参数次序造成的运行时 Number→QString 行为，不能把另一个参数改当
-signature；最后一项必须先验证完整 opcode builder 和循环值域。非静态 computed
-method name 也不能仅凭 AST 属性名归因。当前可以把具名 signature API 的语法调用
-点范围视为完整，但运行时 pattern value 范围仍未闭合。
+signature。`byteCode` 的独立机器清单
+[`net-bytecode-patterns.json`](data/net-bytecode-patterns.json) 由
+[`extract_net_bytecode_patterns.js`](../../tools/rules/extract_net_bytecode_patterns.js)
+生成；它要求整条规则 SHA-256 精确等于
+`c84a375fdc66508c66ae10440ab46be23d345d602b2ae6d79e26e66393ebadde`，
+不执行上游规则，只受限求值 `NetOpCodes` 的 220 个字符串属性、`setStrict`、
+`setNullValue`、`joinNoBodyAndValue`、`replaceAllInString`、字符串拼接和有限数组
+下标。实际 AST 调用点是 33 个，不是先前人工统计的 31 个；其中 965 行展开 6 个
+math template，969 行展开 6×10=60 个 opcode pattern，总计 97 次展开、97 个唯一
+pattern，排序 LF 清单 SHA-256 为
+`76f27dcb43bdbca2c30951c5846e1a4d145c9dd6a9acaaeb994b94394efd2c11`。
+
+复现命令：
+
+```sh
+node tools/rules/extract_net_bytecode_patterns.js \
+  --rules-root upstream/Detect-It-Easy \
+  --parser-module upstream/Detect-It-Easy/autotools/dbcompiler/node_modules/uglify-js/tools/node.js \
+  --output docs/research/data/net-bytecode-patterns.json
+```
+
+非静态 computed method name 仍不能仅凭 AST 属性名归因。当前可以把具名 signature
+API 的语法调用点范围和 `byteCode` 有限值域视为闭合；跨所有输入的运行时 pattern
+值域仍留下上述三个 Number→QString 调用。
 
 ## 固定 Qt 5 XBinary oracle
 

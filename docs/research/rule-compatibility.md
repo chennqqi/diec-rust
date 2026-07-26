@@ -344,8 +344,10 @@ byte-class/search 语义不同。另有 5/5 `Binary_Script::compare` 向量端�
 header fast path 的字符/字节混合计算和严格 `<` 分界会改变 invalid signature
 结果；`compareEP` 与 `compareOverlay` 又各有 5/5 向量确认 256-byte cache 被按
 512 个 hex 字符计数、原始 pattern 长度参与分支，能让 cache 外合法 literal
-误报 false。畸形 map、find 的畸形/穷举边界、无效/短小 wrapper 上下文，以及
-4 个动态参数的运行时值域仍未完成。
+误报 false。畸形 map、find 的畸形/穷举边界和无效/短小 wrapper 上下文仍未完成。
+四个保守动态参数中的 `byteCode` 已通过固定整文件哈希的受限 AST 求值闭合：
+33 个真实调用点有限展开为 97 个唯一 pattern；其余 3 个是上游参数次序导致的
+输入相关 Number→QString 调用，跨所有输入的运行时值域仍未完成。
 
 固定 Binary 生命周期、init/include 首个命中规则、共享 global scope 和上游
 排序比较器缺陷见

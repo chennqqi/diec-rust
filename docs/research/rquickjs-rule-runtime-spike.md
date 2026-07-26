@@ -351,8 +351,9 @@ find 的畸形/穷举边界、无效/短小 wrapper 上下文和全调用点差�
 后续静态 AST inventory 已把范围从单一样本扩大到固定 `db`/`db_extra`：
 2175/2175 文件解析成功，5968 个具名 signature API 调用点中有 5855 个 literal、
 109 个可枚举静态表达式和 4 个动态表达式；5628 个静态 pattern 包含本动态 probe
-的 317/317。该结果闭合了具名语法调用点，不闭合 4 个动态参数的运行时值域，
-因此仍不能据此替换 HostApi。
+的 317/317。后续固定源码受限求值已把其中 `byteCode` 的 33 个调用点闭合为
+97 个唯一 pattern；其余 3 个仍是输入相关 Number→QString 值域，因此仍不能据此
+替换 HostApi。
 
 285 条“无异常”及 153 条 detection 都不能作为兼容证据：代理返回的 callable
 object 在 JavaScript 条件中可能为 truthy，已明显制造大量 false positive。即使

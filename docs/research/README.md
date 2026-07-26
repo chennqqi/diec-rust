@@ -12,6 +12,7 @@ Phase 0 计划形成：
 - [`rquickjs-rule-runtime-spike.md`](rquickjs-rule-runtime-spike.md)：rquickjs/QuickJS-NG 全库执行、sloppy 语义、native 构建和资源限制验证（Draft）。
 - [`nintendo-certified-rule.md`](nintendo-certified-rule.md)：唯一 legacy 规则的项目生成语料与真实 detect 基线（Draft）。
 - [`binary-rule-lifecycle.md`](binary-rule-lifecycle.md)：Binary 数据库分层、init/include 选择、共享引擎生命周期和排序缺陷（Draft）。
+- [`signature-language.md`](signature-language.md)：signature 文法、固定 oracle、静态/动态调用清单和边界行为（Draft）。
 - [`script-scope-semantics.md`](script-scope-semantics.md)：Qt Script 跨规则 lexical 环境与 QuickJS 差分（Draft）。
 - [`script-state-semantics.md`](script-state-semantics.md)：Qt Script 跨规则 var/function/global 持久状态与 wrapper 风险（Draft）。
 - [`c-static-link-spike.md`](c-static-link-spike.md)：Windows/Linux C staticlib、所有权、panic/CRT 和系统依赖验证（Draft）。
@@ -39,6 +40,8 @@ Phase 0 计划形成：
 - [`data/script-state-fixture.json`](data/script-state-fixture.json)：项目生成的跨规则持久状态 fixture 清单。
 - [`data/script-state-qt5.json`](data/script-state-qt5.json)：固定 qmake/CMake oracle 的持久状态行为基线。
 - [`data/binary-cross-rule-state.json`](data/binary-cross-rule-state.json)：固定 Binary 顺序的跨规则状态静态审计摘要。
+- [`data/signature-static-inventory.json`](data/signature-static-inventory.json)：全规则具名 signature API 调用点和保守静态值清单。
+- [`data/net-bytecode-patterns.json`](data/net-bytecode-patterns.json)：固定 PE Generic 规则的 .NET bytecode pattern 有限值域。
 - [`data/c-static-link.json`](data/c-static-link.json)：C static-link spike 输入哈希、ABI 符号、平台依赖和稳定结果摘要。
 
 每份文档遵守 [`../README.md`](../README.md) 的证据和状态约定。实验附件如需版本化，应使用文本格式并放入主题对应的子目录。
