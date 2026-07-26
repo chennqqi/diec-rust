@@ -137,6 +137,12 @@
         "control-record"
       ]
     },
+    "pinned_binary_script_compare_differential": {
+      "case_count": 5,
+      "matched_count": 5,
+      "header_fast_path_observed": true,
+      "strict_boundary_observed": true
+    },
     "pinned_xbinary_memory_map_differential": {
       "case_count": 7,
       "matched_count": 7,
@@ -176,20 +182,20 @@
     "base_image": "diec-rust/upstream-oracle-cmake:74eaf505",
     "base_image_id": "sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040",
     "image": "diec-rust/upstream-signature-harness:74eaf505",
-    "image_id": "sha256:76ff20c42d0f26e72116c20cffb85f6904eec386072b3f60bb291174f1ad5ef5",
+    "image_id": "sha256:7fe99b085c22052cadfe07cfd2f9e425a04f1a9934b24e9d7f99f9888cddcdd3",
     "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254",
     "qt_version": "5.15.13",
     "binary": "/opt/die-build/src/console/diec-signature-harness",
-    "binary_sha256": "717ef40c99c311b8d358e82f74758361beb7e331790816ca25e50e61e8a1139a",
+    "binary_sha256": "56b326fcf14afe96d12d37cd23a2b1a7a6ef0a010fa9944760bbd1d7e4b1055a",
     "dockerfile_sha256": "c9c28565e2d3274edbc72d54e3bcf1b3edc0b2707749707718fcbafbf9430aa8",
-    "harness_source_sha256": "c6fbdf0633e85579da113981cedee9e91ea4674bb9b05e7488909bb80f1c6504",
-    "probe_sha256": "eff25950bcb9f11c217d668f0b90108b5da3258a072fc32c91d216f03498b298",
-    "vector_generator_sha256": "42a74e4fda3f8361d711a331ee647086c70c26724fb6d2d38c9ec55df9dedfd4",
+    "harness_source_sha256": "42e347ee76fd1c49015906643c55ef7b65a3fba86c430db63a6112702fdbce82",
+    "probe_sha256": "b0d742e026b5f8d2491d2323ff7a1ccf3d583e3cf333f98e3486ce23f130ce68",
+    "vector_generator_sha256": "b4a2ddbadaa18e2d2caf342624cb8493244a7859e40e7d9473bcdbaae1803548",
     "vectors": "docs/research/data/signature-oracle-vectors.json",
-    "vectors_sha256": "8a8798e837483a51b77bd56920aa063f1ba2819d3ae970e70a25ae61f25ae5ca",
+    "vectors_sha256": "5c2a5e1d56ced0d09a48027dc70474e807a51bb36b5bc89c03d3fe039b1f129d",
     "baseline": "docs/research/data/signature-oracle-qt5.json",
-    "baseline_sha256": "82bb25de85f8edb9a4bd34cc38c283a9b2efd7e716a47c8d8c788eedc1a6d883",
-    "case_count": 48,
+    "baseline_sha256": "caaabed625980b16facec031a72f19feeeb36cb9b1cf6c061f5a5b2a00607a3d",
+    "case_count": 53,
     "probe_passed": true,
     "compare_find_divergences": [
       "%& accepts only digits in compare records but letters and digits in SigBytes find",
@@ -201,8 +207,8 @@
   "limitations": [
     "the 317-pattern inventory is dynamic coverage for one fixed generated sample, not a complete static corpus inventory",
     "generated PE32/64, ELF32/64, Mach-O32/64, COM, MS-DOS, and AmigaHunk files cover real parser memory-map construction, but malformed map variants remain untested",
-    "XScanEngine Binary_Script header-signature fast-path boundary behavior is not yet invoked end-to-end",
+    "Binary_Script compareEP and compareOverlay cache-size and boundary behavior are not yet invoked end-to-end",
     "the independent find_signature spike covers 19 focused cases across all three branches, but malformed partial-parse and exhaustive optimization combinations remain untested",
-    "the 48 focused vectors do not yet exhaust malformed partial-parse combinations"
+    "the 53 focused vectors do not yet exhaust malformed partial-parse combinations"
   ]
 }

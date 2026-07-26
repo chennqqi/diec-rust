@@ -13,6 +13,26 @@ from typing import Any
 
 
 EXPECTED_OBSERVATIONS = {
+    "binary_script_fast_path_invalid_suffix": {
+        "compare": True,
+        "binary_script_compare_result": False,
+    },
+    "binary_script_fast_path_before_strict_boundary": {
+        "compare": True,
+        "binary_script_compare_result": False,
+    },
+    "binary_script_generic_at_strict_boundary": {
+        "compare": True,
+        "binary_script_compare_result": True,
+    },
+    "binary_script_literal_before_strict_boundary": {
+        "compare": True,
+        "binary_script_compare_result": True,
+    },
+    "binary_script_literal_at_strict_boundary": {
+        "compare": True,
+        "binary_script_compare_result": True,
+    },
     "plain_find_clamps_oversized_range": {
         "compare": False,
         "find_offset": 1,
@@ -193,6 +213,12 @@ def validate_baseline(
         for field in ("base_signature", "memory_map", "format_parser"):
             if field in vector and actual.get(field) != vector.get(field):
                 failures.append(f"{case_id}.{field}")
+        if (
+            "binary_script_compare" in vector
+            and actual.get("binary_script_compare")
+            != vector.get("binary_script_compare")
+        ):
+            failures.append(f"{case_id}.binary_script_compare")
         if "format_parser" in vector and not isinstance(
             actual.get("derived_memory_map"), dict
         ):

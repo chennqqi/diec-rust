@@ -10,7 +10,7 @@ from pathlib import Path
 
 
 SCHEMA_VERSION = 2
-GENERATOR_VERSION = 6
+GENERATOR_VERSION = 7
 UPSTREAM_COMMIT = "74eaf505c250ab47e709024e9dc41657cd8f2254"
 FORMATS_COMMIT = "1151e7254fdee3c0294ff7095edbdd7bfccf8201"
 
@@ -607,6 +607,40 @@ def vectors() -> list[dict[str, object]]:
             "id": "invalid_suffix_partially_compares",
             "pattern": "41x",
             "data_hex": "41",
+        },
+        {
+            "id": "binary_script_fast_path_invalid_suffix",
+            "pattern": "41x",
+            "data_hex": "41" + ("00" * 255),
+            "binary_script_compare": True,
+        },
+        {
+            "id": "binary_script_fast_path_before_strict_boundary",
+            "pattern": "41x",
+            "data_hex": ("00" * 252) + "41414100",
+            "offset": 252,
+            "binary_script_compare": True,
+        },
+        {
+            "id": "binary_script_generic_at_strict_boundary",
+            "pattern": "41x",
+            "data_hex": ("00" * 252) + "41414100",
+            "offset": 253,
+            "binary_script_compare": True,
+        },
+        {
+            "id": "binary_script_literal_before_strict_boundary",
+            "pattern": "41",
+            "data_hex": ("00" * 252) + "41414100",
+            "offset": 253,
+            "binary_script_compare": True,
+        },
+        {
+            "id": "binary_script_literal_at_strict_boundary",
+            "pattern": "41",
+            "data_hex": ("00" * 252) + "41414100",
+            "offset": 254,
+            "binary_script_compare": True,
         },
         {
             "id": "invalid_prefix_has_no_records",

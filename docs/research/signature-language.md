@@ -144,13 +144,13 @@ pattern 仍可能缺失。
 
 输入由
 [`generate_signature_oracle_vectors.py`](../../tools/corpus/generate_signature_oracle_vectors.py)
-生成，共 48 个项目自有向量。原始输出保存为
+生成，共 53 个项目自有向量。原始输出保存为
 [`signature-oracle-qt5.json`](data/signature-oracle-qt5.json)，自动探针
 [`probe_signature_harness.py`](../../tools/upstream/probe_signature_harness.py)
 在禁网、512 MiB、1 CPU、128 PID 限制下验证 image revision、binary hash、
-输入 identity 及 baseline 原始 bytes。当前结果 48/48，stdout/baseline
+输入 identity 及 baseline 原始 bytes。当前结果 53/53，stdout/baseline
 SHA-256 均为
-`82bb25de85f8edb9a4bd34cc38c283a9b2efd7e716a47c8d8c788eedc1a6d883`。
+`caaabed625980b16facec031a72f19feeeb36cb9b1cf6c061f5a5b2a00607a3d`。
 
 构建与复现：
 
@@ -170,6 +170,33 @@ python tools/upstream/probe_signature_harness.py \
   --baseline docs/research/data/signature-oracle-qt5.json \
   --expected-revision 74eaf505c250ab47e709024e9dc41657cd8f2254
 ```
+
+### `Binary_Script::compare` header fast path
+
+固定
+[`Binary_Script::compare`](https://github.com/horsicq/XScanEngine/blob/dfe4a419e4f491bb23688ba03c5a5bf39e34da83/modules/binary_script.cpp#L95)
+不会始终调用 record matcher。构造器先缓存最多 256 bytes 的 header signature；
+`compare` 对规范化签名执行以下 fast-path 判定：
+
+- `nSignatureSize` 是规范化 `QString` 的字符数，而 header cache size 是 bytes；
+- 条件是 `nSignatureSize + nOffset < m_nHeaderSignatureSize`，使用严格 `<`；
+- `$`、`#`、`+`、`%` 或 `*` 强制进入通用 matcher；
+- 通过判定后调用 `compareSignatureStrings`，否则调用 `compareSignature`。
+
+这不只是性能分支。5 个项目向量已端到端构造 `Binary_Script` 并调用 `compare`：
+
+- 对 256-byte 输入和 invalid suffix `41x`，XBinary record matcher 会用已经形成的
+  `41` record 返回 true；offset 0 和 252 满足 fast-path 条件，
+  `compareSignatureStrings` 返回 false；
+- offset 253 时 `3 + 253 == 256`，严格 `<` 不成立，回退 record matcher 并返回
+  true，同时保留 `Invalid signature: 41x` diagnostic；
+- 普通 `41` 在 offset 253（fast path）和 254（严格边界回退）均返回 true，
+  证明差异来自 matcher 选择而非输入字节。
+
+因此 Rust Host API 不能把 `X.c` 无条件简化为 record matcher；至少 legacy
+compatibility profile 必须保留这一 wrapper-level 可观察行为。当前证据只覆盖
+header `compare`，尚未覆盖 `compareEP` 和 `compareOverlay` 各自不同的 cache-size
+计算。
 
 ### 合成 memory-map 差分
 
@@ -232,8 +259,8 @@ oracle schema v2 允许每个项目自有向量显式注入 `_MEMORY_MAP`，但�
 2. 扩展现有 XBinary oracle，覆盖更多畸形组合、buffer boundary 和取消行为。
 3. 补齐畸形/重叠/virtual-only map 的项目生成文件，端到端验证各格式
    `getMemoryMap` 边界。
-4. 端到端调用 `Binary_Script::compare`，比较 header-signature fast path 与
-   通用 matcher 的严格 `<` 边界差异。
+4. 端到端验证 `Binary_Script::compareEP` 与 `compareOverlay` 的 cache-size、
+   原始/规范化 signature length 和严格 `<` 边界。
 5. 扩展 `find_signature` 差分到 malformed partial-parse、更多 buffer boundary
    和锚点优化组合，并验证取消行为；现有 19-case spike 不作为完整性证明。
 6. 只有 parser、matcher 和 `find_signature` 差分门禁通过后，才能替换当前

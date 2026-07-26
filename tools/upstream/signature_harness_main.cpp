@@ -8,6 +8,7 @@
 #include "xmach.h"
 #include "xmsdos.h"
 #include "xpe.h"
+#include "binary_script.h"
 
 #include <QBuffer>
 #include <QCoreApplication>
@@ -349,6 +350,26 @@ QJsonObject runCase(const QJsonObject &input, QString *error)
         "find_error",
         XBinary::getPdStructErrorString(&findState)
     );
+
+    if (input.value("binary_script_compare").toBool()) {
+        Binary_Script::OPTIONS options = {};
+        XBinary::PDSTRUCT scriptState = XBinary::createPdStruct();
+        Binary_Script script(
+            &binary,
+            XBinary::FILEPART_HEADER,
+            options,
+            &scriptState
+        );
+        result.insert("binary_script_compare", true);
+        result.insert(
+            "binary_script_compare_result",
+            script.compare(pattern, offset)
+        );
+        result.insert(
+            "binary_script_compare_error",
+            XBinary::getPdStructErrorString(&scriptState)
+        );
+    }
 
     if (input.contains("base_signature")) {
         QString baseSignature = input.value("base_signature").toString();

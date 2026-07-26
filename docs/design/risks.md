@@ -100,12 +100,13 @@ baseline 的变更都要检查本表。
   detection；只有 59 条未记录 fallback，且仍无逐条 Qt oracle。该结果是缺口
   inventory，不是 285/292 兼容率。纯 Rust signature spike 已在显式兼容模式
   解析动态 317/317，并对 6 个上游宽松点返回 quirk。固定 XBinary oracle 的
-  48 个向量已确认 compare/find 在 `%&`、DEL、leading `+` 和 invalid suffix
+  53 个向量已确认 compare/find 在 `%&`、DEL、leading `+` 和 invalid suffix
   上存在不同语义；Rust context-free compare 当前差分 16/16，六类合成
   memory-map 分支差分 7/7，PE32/64、ELF32/64、Mach-O32/64、COM、MS-DOS、
   AmigaHunk 真实 parser map 差分 9/9；独立 find 三分支聚焦差分 19/19。
-  全调用点 inventory、畸形 map、find 的畸形/穷举边界、Qt 6 和 HostApi
-  仍未验证。
+  `Binary_Script::compare` header fast path 端到端差分 5/5，确认字符/字节混合
+  size 和严格 `<` 会改变 invalid suffix 结果。全调用点 inventory、畸形 map、
+  find 的畸形/穷举边界、EP/overlay fast path、Qt 6 和其余 HostApi 仍未验证。
 - **缓解**：保持 `RuleRuntime`/`HostApi` port；建立全规则 inventory、最小失败
   fixture、host call trace；基于证据选 runtime，禁止静默转换规则。
 - **验证**：固定规则 100% discovered/parsed/loaded，zero silent unsupported；
