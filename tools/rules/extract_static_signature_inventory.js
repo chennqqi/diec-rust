@@ -50,6 +50,75 @@ const KNOWN_HOST_RECEIVERS = new Set([
     "X",
 ]);
 
+const STATIC_TRANSFORM_SPECS = new Map([
+    [
+        "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg\0" +
+            "convertStringToUnicodeSignature",
+        {
+            sha256:
+                "3c056d3048e21c54c20476f49deb81126a52edf6b7ce6a17848960f726cdc1d9",
+            semantics: "UTF-16 code units to uppercase little-endian hex",
+            transform(value) {
+                let result = "";
+                for (let index = 0; index < value.length; index += 1) {
+                    const code = value.charCodeAt(index);
+                    result += (code & 0xff)
+                        .toString(16)
+                        .toUpperCase()
+                        .padStart(2, "0");
+                    result += ((code >> 8) & 0xff)
+                        .toString(16)
+                        .toUpperCase()
+                        .padStart(2, "0");
+                }
+                return result;
+            },
+        },
+    ],
+    [
+        "db/PE/protector_VMProtect_NET.2.sg\0" +
+            "generateUnicodeSignatureMask",
+        {
+            sha256:
+                "1dab6af286316c2cccda2a3a3bc6698b287df9e2ab872f8b9b7ebbe69cfec4af",
+            semantics:
+                "UTF-16 code units as quoted signature literals separated by 00",
+            transform(value) {
+                let result = "";
+                for (let index = 0; index < value.length; index += 1) {
+                    result +=
+                        (index === 0 ? "" : "00") +
+                        "'" +
+                        value[index] +
+                        "'";
+                }
+                return result;
+            },
+        },
+    ],
+    [
+        "db_extra/PE/protector_Protection_Plus_SDK.2.sg\0" +
+            "toUtf16LE",
+        {
+            sha256:
+                "2039971c64346d49c427088f7f58b8c62f58104886bc06d7084ad37e91117d5b",
+            semantics:
+                "UTF-16 code units as lowercase hex followed by 00",
+            transform(value) {
+                let result = "";
+                for (let index = 0; index < value.length; index += 1) {
+                    result +=
+                        value
+                            .charCodeAt(index)
+                            .toString(16)
+                            .padStart(2, "0") + "00";
+                }
+                return result;
+            },
+        },
+    ],
+]);
+
 function fail(message) {
     throw new Error(message);
 }
@@ -250,6 +319,7 @@ function indexedNodes(
     constantInitializers,
     resolving,
     usePosition,
+    staticTransforms,
 ) {
     let collections;
     if (expression.expression instanceof uglify.AST_Sub) {
@@ -259,6 +329,7 @@ function indexedNodes(
             constantInitializers,
             resolving,
             usePosition,
+            staticTransforms,
         );
     } else if (
         expression.expression instanceof uglify.AST_SymbolRef
@@ -289,6 +360,7 @@ function indexedNodes(
         constantInitializers,
         resolving,
         usePosition,
+        staticTransforms,
     );
     const selected = [];
     for (const collection of collections) {
@@ -337,6 +409,7 @@ function staticValues(
     constantInitializers = new Map(),
     resolving = new Set(),
     usePosition = Number.POSITIVE_INFINITY,
+    staticTransforms = new Map(),
 ) {
     if (expression instanceof uglify.AST_String) {
         return [expression.value];
@@ -360,6 +433,7 @@ function staticValues(
             constantInitializers,
             initializer.resolving,
             initializer.usePosition,
+            staticTransforms,
         );
     }
     if (expression instanceof uglify.AST_Sub) {
@@ -369,6 +443,7 @@ function staticValues(
             constantInitializers,
             resolving,
             usePosition,
+            staticTransforms,
         );
         if (!nodes) {
             return null;
@@ -381,6 +456,7 @@ function staticValues(
                 constantInitializers,
                 resolving,
                 usePosition,
+                staticTransforms,
             );
             if (!nodeValues) {
                 return null;
@@ -396,6 +472,7 @@ function staticValues(
             constantInitializers,
             resolving,
             usePosition,
+            staticTransforms,
         );
         const alternative = staticValues(
             uglify,
@@ -403,6 +480,7 @@ function staticValues(
             constantInitializers,
             resolving,
             usePosition,
+            staticTransforms,
         );
         if (!consequent || !alternative) {
             return null;
@@ -418,8 +496,46 @@ function staticValues(
                   constantInitializers,
                   resolving,
                   usePosition,
+                  staticTransforms,
               )
             : null;
+    }
+    if (
+        expression instanceof uglify.AST_Call &&
+        expression.expression instanceof uglify.AST_SymbolRef &&
+        expression.expression.thedef &&
+        staticTransforms.has(expression.expression.thedef.id)
+    ) {
+        const transform = staticTransforms.get(
+            expression.expression.thedef.id,
+        );
+        const argumentValues = [];
+        for (const argument of expression.args) {
+            const values = staticValues(
+                uglify,
+                argument,
+                constantInitializers,
+                resolving,
+                usePosition,
+                staticTransforms,
+            );
+            if (!values) {
+                return null;
+            }
+            argumentValues.push(values);
+        }
+        if (
+            argumentValues.length !== 1 ||
+            argumentValues[0].length >
+                MAX_STATIC_VALUES_PER_EXPRESSION
+        ) {
+            return null;
+        }
+        return boundedUniqueSorted(
+            argumentValues[0].map((value) =>
+                transform(String(value)),
+            ),
+        );
     }
     if (
         expression instanceof uglify.AST_Binary &&
@@ -431,6 +547,7 @@ function staticValues(
             constantInitializers,
             resolving,
             usePosition,
+            staticTransforms,
         );
         const right = staticValues(
             uglify,
@@ -438,6 +555,7 @@ function staticValues(
             constantInitializers,
             resolving,
             usePosition,
+            staticTransforms,
         );
         if (!left || !right) {
             return null;
@@ -471,6 +589,44 @@ function inspectFile(uglify, rulesRoot, file) {
     const relativePath = toPosix(path.relative(rulesRoot, file));
     const ast = uglify.parse(source, { filename: relativePath });
     ast.figure_out_scope();
+    const staticTransforms = new Map();
+    const verifiedStaticTransforms = [];
+    const staticTransformVerificationFailures = [];
+    ast.walk(
+        new uglify.TreeWalker((node) => {
+            if (
+                !(node instanceof uglify.AST_Defun) ||
+                !node.name ||
+                !node.name.thedef
+            ) {
+                return;
+            }
+            const key = `${relativePath}\0${node.name.name}`;
+            if (!STATIC_TRANSFORM_SPECS.has(key)) {
+                return;
+            }
+            const spec = STATIC_TRANSFORM_SPECS.get(key);
+            const sourceSha256 = sha256Bytes(
+                Buffer.from(sourceSlice(source, node), "utf8"),
+            );
+            const identity = {
+                path: relativePath,
+                name: node.name.name,
+                source_sha256: sourceSha256,
+                expected_source_sha256: spec.sha256,
+                semantics: spec.semantics,
+            };
+            if (sourceSha256 === spec.sha256) {
+                staticTransforms.set(
+                    node.name.thedef.id,
+                    spec.transform,
+                );
+                verifiedStaticTransforms.push(identity);
+            } else {
+                staticTransformVerificationFailures.push(identity);
+            }
+        }),
+    );
     const initializerCandidates = new Map();
     const mutatedDefinitions = new Set();
     const unsafeArrayDefinitions = new Set();
@@ -579,6 +735,7 @@ function inspectFile(uglify, rulesRoot, file) {
                       constantInitializers,
                       new Set(),
                       node.start.pos,
+                      staticTransforms,
                   )
                 : null;
             const stringValues = values
@@ -617,7 +774,12 @@ function inspectFile(uglify, rulesRoot, file) {
             });
         }),
     );
-    return calls;
+    return {
+        calls,
+        verified_static_transforms: verifiedStaticTransforms,
+        static_transform_verification_failures:
+            staticTransformVerificationFailures,
+    };
 }
 
 function countBy(records, key) {
@@ -681,9 +843,10 @@ function buildInventory(options) {
             toPosix(path.relative(rulesRoot, right)),
         ),
     );
-    const calls = ruleFiles.flatMap((file) =>
+    const fileResults = ruleFiles.map((file) =>
         inspectFile(uglify, rulesRoot, file),
     );
+    const calls = fileResults.flatMap((result) => result.calls);
     calls.sort(
         (left, right) =>
             compareOrdinal(left.path, right.path) ||
@@ -720,6 +883,13 @@ function buildInventory(options) {
             "dynamic expressions remain explicit",
         max_static_values_per_expression:
             MAX_STATIC_VALUES_PER_EXPRESSION,
+        verified_static_transforms: fileResults.flatMap(
+            (result) => result.verified_static_transforms,
+        ),
+        static_transform_verification_failures: fileResults.flatMap(
+            (result) =>
+                result.static_transform_verification_failures,
+        ),
         parser: parserIdentity(parserModule),
         rules: {
             roots: ["db", "db_extra"],
@@ -757,7 +927,8 @@ function buildInventory(options) {
         calls,
         limitations: [
             "computed method names are not attributable to a signature API",
-            "function calls, loops, unresolved symbols, and mutable data flow remain dynamic",
+            "unverified function calls, loops, unresolved symbols, and mutable data flow remain dynamic",
+            "only path/name/source-hash verified pure string transforms are evaluated",
             "static expression enumeration is limited to literals, finite non-escaping arrays with statically enumerable elements, single-initializer unmodified symbol references, +, conditionals, and sequences",
             "expressions exceeding the fixed static-value budget remain dynamic",
             "same-named methods on unknown receivers are retained as audit candidates",

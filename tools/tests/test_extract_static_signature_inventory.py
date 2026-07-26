@@ -28,6 +28,11 @@ DYNAMIC_INVENTORY = (
 COMMITTED_INVENTORY = (
     ROOT / "docs" / "research" / "data" / "signature-static-inventory.json"
 )
+VM_PROTECT_TRANSFORM = """function generateUnicodeSignatureMask(inputString) {
+    var output = "";
+    for (var c = 0; c < inputString.length; c++) { output += (c != 0 ? "00" : "") + "'" + inputString[c] + "'"; }
+    return output;
+}"""
 
 
 class StaticSignatureInventoryTests(unittest.TestCase):
@@ -189,6 +194,72 @@ function detect() {
             self.assertNotEqual(result.returncode, 0)
             self.assertFalse(output.exists())
 
+    def test_pure_transform_requires_exact_path_name_and_source_hash(self):
+        for changed, expected_kind in ((False, "static_expression"), (True, "dynamic")):
+            with self.subTest(changed=changed):
+                with tempfile.TemporaryDirectory() as directory:
+                    root = pathlib.Path(directory)
+                    rules = root / "rules"
+                    target = (
+                        rules
+                        / "db"
+                        / "PE"
+                        / "protector_VMProtect_NET.2.sg"
+                    )
+                    target.parent.mkdir(parents=True)
+                    (rules / "db_extra").mkdir()
+                    transform = VM_PROTECT_TRANSFORM
+                    if changed:
+                        transform = transform.replace(
+                            'var output = "";',
+                            'var output = "changed";',
+                        )
+                    target.write_bytes(
+                        (
+                            transform
+                            + "\nfunction detect() {\n"
+                            + '    PE.isSignaturePresent(0, 1, '
+                            + 'generateUnicodeSignatureMask("AB"));\n'
+                            + "}\n"
+                        ).encode("utf-8")
+                    )
+                    dynamic = root / "dynamic.json"
+                    dynamic.write_text(
+                        json.dumps(
+                            {
+                                "upstream_commit": UPSTREAM_COMMIT,
+                                "patterns": [],
+                            }
+                        ),
+                        encoding="utf-8",
+                    )
+                    output = root / "inventory.json"
+                    self.run_extractor(rules, dynamic, output)
+                    inventory = json.loads(
+                        output.read_text(encoding="utf-8")
+                    )
+
+                    self.assertEqual(
+                        inventory["calls"][0]["argument_kind"],
+                        expected_kind,
+                    )
+                    self.assertEqual(
+                        len(inventory["verified_static_transforms"]),
+                        0 if changed else 1,
+                    )
+                    self.assertEqual(
+                        len(
+                            inventory[
+                                "static_transform_verification_failures"
+                            ]
+                        ),
+                        1 if changed else 0,
+                    )
+                    self.assertEqual(
+                        inventory["calls"][0]["static_patterns"],
+                        [] if changed else ["'A'00'B'"],
+                    )
+
     def test_committed_inventory_matches_fixed_rules(self):
         with tempfile.TemporaryDirectory() as directory:
             output = pathlib.Path(directory) / "inventory.json"
@@ -204,6 +275,37 @@ function detect() {
                 inventory["max_static_values_per_expression"],
                 4096,
             )
+            self.assertEqual(
+                [
+                    (
+                        item["path"],
+                        item["name"],
+                        item["source_sha256"],
+                    )
+                    for item in inventory["verified_static_transforms"]
+                ],
+                [
+                    (
+                        "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+                        "convertStringToUnicodeSignature",
+                        "3c056d3048e21c54c20476f49deb81126a52edf6b7ce6a17848960f726cdc1d9",
+                    ),
+                    (
+                        "db/PE/protector_VMProtect_NET.2.sg",
+                        "generateUnicodeSignatureMask",
+                        "1dab6af286316c2cccda2a3a3bc6698b287df9e2ab872f8b9b7ebbe69cfec4af",
+                    ),
+                    (
+                        "db_extra/PE/protector_Protection_Plus_SDK.2.sg",
+                        "toUtf16LE",
+                        "2039971c64346d49c427088f7f58b8c62f58104886bc06d7084ad37e91117d5b",
+                    ),
+                ],
+            )
+            self.assertEqual(
+                inventory["static_transform_verification_failures"],
+                [],
+            )
             self.assertEqual(inventory["rules"]["file_count"], 2175)
             self.assertEqual(inventory["rules"]["parse_success_count"], 2175)
             self.assertEqual(inventory["rules"]["parse_failure_count"], 0)
@@ -214,24 +316,24 @@ function detect() {
             self.assertEqual(
                 inventory["argument_kind_counts"],
                 {
-                    "dynamic": 59,
+                    "dynamic": 49,
                     "literal": 5855,
-                    "static_expression": 54,
+                    "static_expression": 64,
                 },
             )
             self.assertEqual(
                 inventory["dynamic_expression_type_counts"],
                 {
-                    "Binary": 6,
-                    "Call": 9,
-                    "SymbolRef": 44,
+                    "Binary": 5,
+                    "Call": 2,
+                    "SymbolRef": 42,
                 },
             )
-            self.assertEqual(inventory["static_pattern_count"], 5413)
+            self.assertEqual(inventory["static_pattern_count"], 5435)
             comparison = inventory["dynamic_inventory_comparison"]
             self.assertEqual(comparison["intersection_count"], 317)
             self.assertEqual(comparison["dynamic_only_count"], 0)
-            self.assertEqual(comparison["static_only_count"], 5096)
+            self.assertEqual(comparison["static_only_count"], 5118)
 
 
 if __name__ == "__main__":

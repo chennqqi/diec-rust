@@ -10,6 +10,30 @@
   "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83",
   "scope": "all syntactic calls to fixed Binary_Script signature API names in db/db_extra .sg files; static values are conservative and dynamic expressions remain explicit",
   "max_static_values_per_expression": 4096,
+  "verified_static_transforms": [
+    {
+      "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+      "name": "convertStringToUnicodeSignature",
+      "source_sha256": "3c056d3048e21c54c20476f49deb81126a52edf6b7ce6a17848960f726cdc1d9",
+      "expected_source_sha256": "3c056d3048e21c54c20476f49deb81126a52edf6b7ce6a17848960f726cdc1d9",
+      "semantics": "UTF-16 code units to uppercase little-endian hex"
+    },
+    {
+      "path": "db/PE/protector_VMProtect_NET.2.sg",
+      "name": "generateUnicodeSignatureMask",
+      "source_sha256": "1dab6af286316c2cccda2a3a3bc6698b287df9e2ab872f8b9b7ebbe69cfec4af",
+      "expected_source_sha256": "1dab6af286316c2cccda2a3a3bc6698b287df9e2ab872f8b9b7ebbe69cfec4af",
+      "semantics": "UTF-16 code units as quoted signature literals separated by 00"
+    },
+    {
+      "path": "db_extra/PE/protector_Protection_Plus_SDK.2.sg",
+      "name": "toUtf16LE",
+      "source_sha256": "2039971c64346d49c427088f7f58b8c62f58104886bc06d7084ad37e91117d5b",
+      "expected_source_sha256": "2039971c64346d49c427088f7f58b8c62f58104886bc06d7084ad37e91117d5b",
+      "semantics": "UTF-16 code units as lowercase hex followed by 00"
+    }
+  ],
+  "static_transform_verification_failures": [],
   "parser": {
     "name": "uglify-js",
     "version": "3.19.3",
@@ -81,11 +105,11 @@
     "isSignaturePresent": 72
   },
   "argument_kind_counts": {
-    "dynamic": 59,
+    "dynamic": 49,
     "literal": 5855,
-    "static_expression": 54
+    "static_expression": 64
   },
-  "static_pattern_count": 5413,
+  "static_pattern_count": 5435,
   "static_patterns": [
     "$$$$$$$$5589e557565383ec..8b7d..8b75..8b5d..b8........85c00f84........a1........85c00f94c025........a3",
     "$$$$$$$$55b8........57565383ec..85c08b7c24..8bb424........8b9c24........0f84........8b15........31c085d20f94c08b5424..8b4c24..a3........8d44....8b9424........a3........8915........6690",
@@ -748,6 +772,7 @@
     "'OpenMPT '",
     "'Org-02'",
     "'Org-03'",
+    "'P'00'r'00'o'00'g'00'r'00'a'00'm'00' '00'w'00'i'00'l'00'l'00' '00'b'00'e'00' '00't'00'e'00'r'00'm'00'i'00'n'00'a'00't'00'e'00'd'00'.'",
     "'P22A'",
     "'P30A'",
     "'P4'0a",
@@ -1480,6 +1505,7 @@
     "0014",
     "0016",
     "002000000000000000",
+    "00200052004100540000",
     "0021......'xpack!'00................'xpack'00",
     "0022",
     "0026267C",
@@ -1830,10 +1856,14 @@
     "20 .. .. .. .. FE 0C .. .. 3F .. .. 00 00 20 .. .. .. .. FE 0C .. .. 3D .. .. 00 00",
     "20'paf'00000000000000000000AC44",
     "2000",
+    "2000610063007400690076006100740065002000",
     "2000640065006D006F0020",
     "20006500760061006C007500610074006500",
+    "2000660075006C006C002000760065007200730069006F006E00",
     "2000690073002000740061006D00700065007200650064002E00",
     "2000690073002000740061006d00700065007200650064002e00",
+    "200070007500720063006800610073006500200061002000",
+    "200074007200690061006C002000",
     "2000aa00ffffaaaa00aa00000001f0ff0000000000000000",
     "200D0A1A",
     "201045F0 0800228A 43FA",
@@ -1885,6 +1915,7 @@
     "247c........60$$41fa....287c........47fa....323c....28db",
     "25........6187CC5545455581EDCA00000055A4B302FF142473F833C9FF1424731833C0FF1424731FB3",
     "25006C0073005C006C00690062005C006C006900620072006100720079002E007A00690070003B0025006C0073005C006C0069006200",
+    "250073005C00500072006F006700720061006D00440061007400610000 00 00 00 00 'cmd.exe /c ' 22 '%s' 22",
     "251899cd",
     "255B484220322A",
     "261396d3",
@@ -2098,6 +2129,7 @@
     "40A4D0D2 07E3 D211 97F0 00A0C95EA850",
     "40C1",
     "40C2",
+    "41006E007400690076006900720075007300500072006F006400750063007400",
     "4142",
     "41421040",
     "41504151515257535556E8000000005B48B8................482BD8488BEB",
@@ -2148,6 +2180,7 @@
     "43fa....4e714e714e714e714e710005....4e714e714e714e714e714e714e714bfa",
     "43fa....70..2c78....4eae....26406700....43fa....70",
     "44 41 57 4D",
+    "440069007300610062006C0065005400610073006B004D0067007200",
     "44894c24..4c894424..48895424..48894c24..b8........e8........482be0488b05........4833c448898424........48c78424................48c78424................48c78424................c74424..........c74424..........488b8424........4805........48894424..c74424..........c74424..........c74424..........c78424................4883bc24..........74..488b8424........c7",
     "45007A006900720069007A0027007300200022002E004E00450054002000520065006100630074006F0072002200210020005400680069007300200061",
     "453dcd28........................'Compressed ROMFS'",
@@ -2159,6 +2192,7 @@
     "46424f56",
     "4654443C",
     "47 61 6D 65 41 73 73 65 6D 62 6C 79 44 65 6E 75 76 6F 44 72 6D 2E 64 6C 6C",
+    "470061006D00650044006500660069006E006900740069006F006E00460069006C006500",
     "47FA",
     "47FA....D7FA",
     "47f9........377c........377c........43f9........12bc....12bc....12bc",
@@ -2785,6 +2819,7 @@
     "55E8000000005D81ED....0000BE00..000003F5BA0000....2BD58BDD33C0AC3C00743D3C01740E",
     "55E80E0000005D83ED068BC5556089AD........2B8500000000",
     "55e8........5d81ed........eb$$eb$$8d85........8dbd........eb$$8db5........eb$$8bcfeb$$2bc84ffdeb$$33dbeb$$8a07eb$$d2c8eb$$2a....eb$$E8",
+    "560069007300750061006C00200043002B002B00",
     "5633f656ff15........a3........e8........85c074..a1........8b40..48",
     "564889CE534889D34883EC28E8........4885C074..48893048895808488958104883C4285B5EC3",
     "56488BF44883E4F04883EC20E805000000488BE65EC348895C2408574883EC30488BF9488D4C2420E83702000084C0750883C8FFE9BD000000B84D5A00006639070F85AA00000048635F3C4803DF813B504500000F8597000000488D8BB0000000833900750AB8FDFFFFFFE9860000004C8B4330488BD7E86201000084C07507B8FCFFFFFFEB6F83BB9000000000742A0F28442420488D4C2420488B93900000004C8BC7660F7F442420E89300000084C07507B8FBFFFFFFEB3C488D8BD00000008339007408488BD7E8330000008B4328B9002000004803C766854B16740E4533C0488BCF418D5001FFD0EB09FFD0EB05B8FEFFFFFF488B5C24404883C4305FC348895C2408574883EC208B01488BFA488B5C10184885DB741B4C8B0B4D85C974134533C0488BCF418D500141FFD14883C30875E5488B5C2430B0014883C4205FC3488BC44889580848896810488970184889782041564883EC208BDA498BF04903D84C8BF1EB4A8BC84803CE41FF16488BE84885C074628B7B104803FEEB2679050FB7D1EB07488D56024803D14885D27447488BCD41FF56084885C0743B4889074883C708488B0F4885C975D24883C3148B430C85C075AF4885DB0F95C0488B5C2430488B6C2438488B742440488B7C24484883C420415EC332C0EBE148895C240848897C2410448B09498BD84C03CA4C8BDA33FF458B114585D27459418379040872F1418B51044C8BC74883EA0848D1EA7435430FB74C41080FB7C166C1E80C6685C074236683F80A752681E1FF0F0000498BC34103CA482BC34903CB49FFC04801014C3BC272CB418B41044C03C8EBA332C0EB02B001488B5C2408488B7C2410C348895C24084889742410574883EC20488BD9B9029FE66AE8FD010000488BF84885C07432BA8DBDC13F488BC8E893000000488BF04885C0741DBAFF1F7CC9488BCFE87E0000004885C0740B48894308B001488933EB0232C0488B5C2430488B7424384883C4205FC3448A09448ADA4C8BD14183C8FFEB414584DB750C418D41BF3C1977044180C120BA08000000418BC8410FBEC14133C0D1E9448BC14181F02083B8ED2401440F44C141D0F94883EA0175DB49FFC2458A0A4584C975BA41F7D0418BC0C3488BC448895808488968104889701848897820415441564157B84D5A0000448BFA4C8BC16639010F85870000004863413C8B8C088800000085C97478498D040833FF8B68184885ED746A448B4820448B50244D03C8448B601C4D03D0410FB702458B194D03D883CAFF498D3484EB2741BE080000008BCA0FBEC333C2D1E98BD181F22083B8ED24010F44D1D0FB4983EE0175E249FFC3418A1B84DB75D2F7D2413BD7742D48FFC74983C2024983C104483BFD72A833C0488B5C2420488B6C2428488B742430488B7C2438415F415E415CC3428B04064903C0EBDC48895C240848897C2410440FB7094183C8FF33FF8ADA448BD74C8BD9EB4684DB750F418D41BF6683F8197705664183C120BA08000000418BC8410FB7C14133C0D1E9448BC14181F02083B8ED2401440F44C16641D1E94883EA0175DA49FFC2470FB70C53664585C975B4488B5C240841F7D0488B7C2410418BC0C348895C240848896C24104889742418574883EC2065488B0425600000008BE9488B78184883C720488B1F483BDF7430488D43F04885C07427488B70304885F6741E488B48604885C9740B33D2E834FFFFFF3BC57405488B1BEBD0488BC6EB0233C0488B5C2430488B6C2438488B7424404883C4205FC300000000000000000000000000",
@@ -3139,6 +3174,7 @@
     "64a100000000558bec6aff68........68........508b45..6489250000000083ec..85c05356578965",
     "65 FB 4B B5",
     "65000300ea010400fa0c0300e6010400",
+    "65007200690061006C0020006B00650079002000",
     "6545c2fb195bbd004040ebef9155f0401897db0024e8e80000008387202e87d17820fb1cb800b0ef0b000000848e",
     "66 6C 61 74 70 61 6B",
     "66 FB 4B B5",
@@ -3215,6 +3251,8 @@
     "68FF6424F0685858585890FFD4508B40F205B095F6950F850181BBFF",
     "68FF6424F06858585858FFD4508B40F205B095F6950F850181BBFF68",
     "68b0114000e88bfbffff0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f4010000641b400000000000308c4000408c4000980b000000904000b41040",
+    "6900630065006E00730065002000650078007000690072006500",
+    "6900630065006E007300650020006B0065007900",
     "6A",
     "6A..06068CD383....536A..FC",
     "6A..33C0505050FF15........50E8$$$$$$$$55B8........8BECE8........53B9........5657BE",
@@ -3240,6 +3278,8 @@
     "6B65726E656C33322E646C6C000000005669727475616C416C6C6F6300000000",
     "6C776DFFFFFF6E6F",
     "6D5F6973526561644F6E6C790B636F6D70617265496E666F0874657874496E666F076E756D496E666F0C6461746554696D65496E666F0863616C656E6461720A6D5F646174614974656D0963756C747572654944066D5F6E616D65116D5F757365557365724F76657272696465",
+    "6E007400650072002000730065007200690061006C002000",
+    "6F00410041004100",
     "6a..33c0505050ff15........50e8$$$$$$$$55b8........8bece8........53b9........5657be",
     "6a..602eff35........2eff35........68........e8........6683c4..2eff35........2eff35........b8........83c0..50",
     "6a..68........6a..6a..ff15........50e8........50ff15",
@@ -3272,13 +3312,18 @@
     "7000101A",
     "70002A7C 00DFF0A8 3A803B40",
     "700033FC 000F00DF F09641FA",
+    "7000340041004100",
+    "7000510041004100",
     "70FF'NuUNCLEART'",
     "70FF4E75'DAGLISH!'",
     "70FF4E75'DELIRIUM'",
     "70FF4E75'F.PLAYER'",
     "70FF4E75'S.PHIPPS'",
     "70ff0c52",
+    "7100510041004100",
     "72 .. .. .. .. 73 .. .. .. .. 7A",
+    "72006F006E0067002000610063007400690076006100740069006F006E00",
+    "72006F006E00670020006C006900630065006E007300",
     "734213004D00",
     "74$$74$$78$$68A2AF470159E8",
     "74..E9$$$$$$$$60E8........5D83ED..80............0F84........C685..........8BC52B..........89",
@@ -3289,6 +3334,7 @@
     "7500E9",
     "76 68 64 78 66 69 6C 65",
     "7600",
+    "760061006C006900640020006C006900630065006E0073006500",
     "77a0eea2",
     "78",
     "78 74 74 66",
@@ -5501,11 +5547,11 @@
     "fff589e566f7c6....80c3..80eb..81ec........66c1eb..6689ed",
     "fffe2a002a002a006d0065007300730061006700650073002a002a002a00"
   ],
-  "dynamic_call_site_count": 59,
+  "dynamic_call_site_count": 49,
   "dynamic_expression_type_counts": {
-    "Binary": 6,
-    "Call": 9,
-    "SymbolRef": 44
+    "Binary": 5,
+    "Call": 2,
+    "SymbolRef": 42
   },
   "dynamic_calls": [
     {
@@ -5958,20 +6004,6 @@
     },
     {
       "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
-      "line": 3372,
-      "column": 12,
-      "receiver": "PE",
-      "receiver_root": "PE",
-      "known_host_receiver": true,
-      "method": "isSignaturePresent",
-      "argument_index": 2,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "Call",
-      "argument_expression": "convertStringToUnicodeSignature(currentPatternToFind)",
-      "static_patterns": []
-    },
-    {
-      "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
       "line": 3769,
       "column": 22,
       "receiver": "PE",
@@ -6028,20 +6060,6 @@
     },
     {
       "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
-      "line": 6074,
-      "column": 12,
-      "receiver": "PE",
-      "receiver_root": "PE",
-      "known_host_receiver": true,
-      "method": "isSignaturePresent",
-      "argument_index": 2,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "Call",
-      "argument_expression": "convertStringToUnicodeSignature(\"Visual C++\")",
-      "static_patterns": []
-    },
-    {
-      "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
       "line": 6204,
       "column": 16,
       "receiver": "PE",
@@ -6080,104 +6098,6 @@
       "argument_kind": "dynamic",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "importSignature",
-      "static_patterns": []
-    },
-    {
-      "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
-      "line": 6600,
-      "column": 12,
-      "receiver": "PE",
-      "receiver_root": "PE",
-      "known_host_receiver": true,
-      "method": "isSignatureInSectionPresent",
-      "argument_index": 1,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "Binary",
-      "argument_expression": "\"00\" + convertStringToUnicodeSignature(\" RAT\") + \"00\"",
-      "static_patterns": []
-    },
-    {
-      "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
-      "line": 6612,
-      "column": 20,
-      "receiver": "PE",
-      "receiver_root": "PE",
-      "known_host_receiver": true,
-      "method": "isSignatureInSectionPresent",
-      "argument_index": 1,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "Call",
-      "argument_expression": "convertStringToUnicodeSignature(\"AntivirusProduct\")",
-      "static_patterns": []
-    },
-    {
-      "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
-      "line": 6612,
-      "column": 110,
-      "receiver": "PE",
-      "receiver_root": "PE",
-      "known_host_receiver": true,
-      "method": "isSignatureInSectionPresent",
-      "argument_index": 1,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "Call",
-      "argument_expression": "convertStringToUnicodeSignature(\"DisableTaskMgr\")",
-      "static_patterns": []
-    },
-    {
-      "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
-      "line": 7350,
-      "column": 36,
-      "receiver": "PE",
-      "receiver_root": "PE",
-      "known_host_receiver": true,
-      "method": "isSignaturePresent",
-      "argument_index": 2,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "cmdSignature",
-      "static_patterns": []
-    },
-    {
-      "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
-      "line": 7351,
-      "column": 36,
-      "receiver": "PE",
-      "receiver_root": "PE",
-      "known_host_receiver": true,
-      "method": "isSignaturePresent",
-      "argument_index": 2,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "cmdSignature",
-      "static_patterns": []
-    },
-    {
-      "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
-      "line": 7843,
-      "column": 20,
-      "receiver": "PE",
-      "receiver_root": "PE",
-      "known_host_receiver": true,
-      "method": "compare",
-      "argument_index": 0,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "Call",
-      "argument_expression": "convertStringToUnicodeSignature(rawBase64PostfixSigns[k])",
-      "static_patterns": []
-    },
-    {
-      "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
-      "line": 8328,
-      "column": 44,
-      "receiver": "PE",
-      "receiver_root": "PE",
-      "known_host_receiver": true,
-      "method": "isSignaturePresent",
-      "argument_index": 2,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "Call",
-      "argument_expression": "convertStringToUnicodeSignature(\"GameDefinitionFile\")",
       "static_patterns": []
     },
     {
@@ -6279,20 +6199,6 @@
       "static_patterns": []
     },
     {
-      "path": "db/PE/protector_VMProtect_NET.2.sg",
-      "line": 41,
-      "column": 16,
-      "receiver": "PE",
-      "receiver_root": "PE",
-      "known_host_receiver": true,
-      "method": "isSignaturePresent",
-      "argument_index": 2,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "Call",
-      "argument_expression": "generateUnicodeSignatureMask(\"Program will be terminated.\")",
-      "static_patterns": []
-    },
-    {
       "path": "db_extra/PE/cryptor_njCrypter.2.sg",
       "line": 37,
       "column": 17,
@@ -6340,10 +6246,10 @@
     "path": "docs/research/data/signature-pattern-inventory.json",
     "sha256": "15a80990b981d6588d59818c4e6bc1947f35d076dd3dae468a1beaf8f8b27731",
     "dynamic_pattern_count": 317,
-    "static_pattern_count": 5413,
+    "static_pattern_count": 5435,
     "intersection_count": 317,
     "dynamic_only_count": 0,
-    "static_only_count": 5096,
+    "static_only_count": 5118,
     "dynamic_only_patterns": []
   },
   "calls": [
@@ -69212,10 +69118,22 @@
       "known_host_receiver": true,
       "method": "isSignaturePresent",
       "argument_index": 2,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "Call",
       "argument_expression": "convertStringToUnicodeSignature(currentPatternToFind)",
-      "static_patterns": []
+      "static_patterns": [
+        "2000610063007400690076006100740065002000",
+        "2000660075006C006C002000760065007200730069006F006E00",
+        "200070007500720063006800610073006500200061002000",
+        "200074007200690061006C002000",
+        "65007200690061006C0020006B00650079002000",
+        "6900630065006E00730065002000650078007000690072006500",
+        "6900630065006E007300650020006B0065007900",
+        "6E007400650072002000730065007200690061006C002000",
+        "72006F006E0067002000610063007400690076006100740069006F006E00",
+        "72006F006E00670020006C006900630065006E007300",
+        "760061006C006900640020006C006900630065006E0073006500"
+      ]
     },
     {
       "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
@@ -69485,10 +69403,12 @@
       "known_host_receiver": true,
       "method": "isSignaturePresent",
       "argument_index": 2,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "Call",
       "argument_expression": "convertStringToUnicodeSignature(\"Visual C++\")",
-      "static_patterns": []
+      "static_patterns": [
+        "560069007300750061006C00200043002B002B00"
+      ]
     },
     {
       "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
@@ -69573,10 +69493,12 @@
       "known_host_receiver": true,
       "method": "isSignatureInSectionPresent",
       "argument_index": 1,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "Binary",
       "argument_expression": "\"00\" + convertStringToUnicodeSignature(\" RAT\") + \"00\"",
-      "static_patterns": []
+      "static_patterns": [
+        "00200052004100540000"
+      ]
     },
     {
       "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
@@ -69587,10 +69509,12 @@
       "known_host_receiver": true,
       "method": "isSignatureInSectionPresent",
       "argument_index": 1,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "Call",
       "argument_expression": "convertStringToUnicodeSignature(\"AntivirusProduct\")",
-      "static_patterns": []
+      "static_patterns": [
+        "41006E007400690076006900720075007300500072006F006400750063007400"
+      ]
     },
     {
       "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
@@ -69601,10 +69525,12 @@
       "known_host_receiver": true,
       "method": "isSignatureInSectionPresent",
       "argument_index": 1,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "Call",
       "argument_expression": "convertStringToUnicodeSignature(\"DisableTaskMgr\")",
-      "static_patterns": []
+      "static_patterns": [
+        "440069007300610062006C0065005400610073006B004D0067007200"
+      ]
     },
     {
       "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
@@ -69762,10 +69688,12 @@
       "known_host_receiver": true,
       "method": "isSignaturePresent",
       "argument_index": 2,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "cmdSignature",
-      "static_patterns": []
+      "static_patterns": [
+        "250073005C00500072006F006700720061006D00440061007400610000 00 00 00 00 'cmd.exe /c ' 22 '%s' 22"
+      ]
     },
     {
       "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
@@ -69776,10 +69704,12 @@
       "known_host_receiver": true,
       "method": "isSignaturePresent",
       "argument_index": 2,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "cmdSignature",
-      "static_patterns": []
+      "static_patterns": [
+        "250073005C00500072006F006700720061006D00440061007400610000 00 00 00 00 'cmd.exe /c ' 22 '%s' 22"
+      ]
     },
     {
       "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
@@ -69918,10 +69848,15 @@
       "known_host_receiver": true,
       "method": "compare",
       "argument_index": 0,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "Call",
       "argument_expression": "convertStringToUnicodeSignature(rawBase64PostfixSigns[k])",
-      "static_patterns": []
+      "static_patterns": [
+        "6F00410041004100",
+        "7000340041004100",
+        "7000510041004100",
+        "7100510041004100"
+      ]
     },
     {
       "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
@@ -69964,10 +69899,12 @@
       "known_host_receiver": true,
       "method": "isSignaturePresent",
       "argument_index": 2,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "Call",
       "argument_expression": "convertStringToUnicodeSignature(\"GameDefinitionFile\")",
-      "static_patterns": []
+      "static_patterns": [
+        "470061006D00650044006500660069006E006900740069006F006E00460069006C006500"
+      ]
     },
     {
       "path": "db/PE/_debug_data.5.sg",
@@ -93909,10 +93846,12 @@
       "known_host_receiver": true,
       "method": "isSignaturePresent",
       "argument_index": 2,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "Call",
       "argument_expression": "generateUnicodeSignatureMask(\"Program will be terminated.\")",
-      "static_patterns": []
+      "static_patterns": [
+        "'P'00'r'00'o'00'g'00'r'00'a'00'm'00' '00'w'00'i'00'l'00'l'00' '00'b'00'e'00' '00't'00'e'00'r'00'm'00'i'00'n'00'a'00't'00'e'00'd'00'.'"
+      ]
     },
     {
       "path": "db/PE/protector_VaySoft_PDF2EXE.2.sg",
@@ -101946,7 +101885,8 @@
   ],
   "limitations": [
     "computed method names are not attributable to a signature API",
-    "function calls, loops, unresolved symbols, and mutable data flow remain dynamic",
+    "unverified function calls, loops, unresolved symbols, and mutable data flow remain dynamic",
+    "only path/name/source-hash verified pure string transforms are evaluated",
     "static expression enumeration is limited to literals, finite non-escaping arrays with statically enumerable elements, single-initializer unmodified symbol references, +, conditionals, and sequences",
     "expressions exceeding the fixed static-value budget remain dynamic",
     "same-named methods on unknown receivers are retained as audit candidates"
