@@ -100,8 +100,8 @@
   },
   "static_inventory": {
     "path": "docs/research/data/signature-static-inventory.json",
-    "sha256": "bfcf51609cb1ddd55baab22d6c5ad7fb9dcb684b9aadc1582a7359364b30a624",
-    "generator_sha256": "72a5cea8c0b0c443b186c36d2f27c2701cb48272c725f6ec84680df8b7e36626",
+    "sha256": "d141ac28d5a3c9dc1837ea7a7334644e72469e7f1979ea9447230a717bcb7936",
+    "generator_sha256": "6a9827a6f277ed8c3c8ab07be9be99a6bd3ab074dc284003eb4f35da4411ed4b",
     "parser": {
       "name": "uglify-js",
       "version": "3.19.3",
@@ -118,6 +118,14 @@
     "max_static_values_per_expression": 4096,
     "verified_static_transform_count": 3,
     "static_transform_verification_failure_count": 0,
+    "finite_parameter_value_count": 26,
+    "top_level_function_audit": {
+      "top_level_definition_count": 2290,
+      "unique_name_count": 95,
+      "duplicate_name_count": 7,
+      "unresolved_direct_call_name_count": 72,
+      "safe_definition_count": 95
+    },
     "method_counts": {
       "c": 1191,
       "compare": 1367,
@@ -129,19 +137,18 @@
       "isSignaturePresent": 72
     },
     "argument_kind_counts": {
-      "dynamic": 49,
+      "dynamic": 37,
       "literal": 5855,
-      "static_expression": 64
+      "static_expression": 76
     },
     "dynamic_expression_type_counts": {
-      "Binary": 5,
-      "Call": 2,
-      "SymbolRef": 42
+      "Binary": 4,
+      "SymbolRef": 33
     },
-    "static_pattern_count": 5435,
+    "static_pattern_count": 5560,
     "dynamic_pattern_overlap_count": 317,
     "dynamic_only_pattern_count": 0,
-    "static_only_pattern_count": 5118,
+    "static_only_pattern_count": 5243,
     "syntactic_call_site_scope_complete": true,
     "runtime_value_scope_complete": false
   },
@@ -266,7 +273,7 @@
     ]
   },
   "limitations": [
-    "all 5968 syntactic calls to named signature APIs are inventoried, but 49 dynamic argument expressions and non-static computed method names prevent a complete runtime value inventory",
+    "all 5968 syntactic calls to named signature APIs are inventoried, but 37 dynamic argument expressions and non-static computed method names prevent a complete runtime value inventory",
     "generated PE32/64, ELF32/64, Mach-O32/64, COM, MS-DOS, and AmigaHunk files cover real parser memory-map construction, but malformed map variants remain untested",
     "Binary_Script wrapper fast paths are verified with one generated PE32 entry point and overlay, but absent, short, invalid, and non-PE contexts remain untested",
     "the independent find_signature spike covers 19 focused cases across all three branches, but malformed partial-parse and exhaustive optimization combinations remain untested",

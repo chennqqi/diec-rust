@@ -260,6 +260,130 @@ function detect() {
                         [] if changed else ["'A'00'B'"],
                     )
 
+    def test_parameter_values_require_all_direct_calls_and_no_escape(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            rules = root / "rules"
+            (rules / "db").mkdir(parents=True)
+            (rules / "db_extra").mkdir()
+            (rules / "db" / "params.sg").write_text(
+                """
+function safe(pattern) {
+    X.compare(pattern);
+}
+safe("59");
+safe(flag ? "5A" : "5B");
+
+function partial(pattern) {
+    X.compare(pattern);
+}
+partial("5C");
+partial(runtime);
+
+function escaped(pattern) {
+    X.compare(pattern);
+}
+register(escaped);
+escaped("5D");
+""".lstrip(),
+                encoding="utf-8",
+            )
+            dynamic = root / "dynamic.json"
+            dynamic.write_text(
+                json.dumps(
+                    {
+                        "upstream_commit": UPSTREAM_COMMIT,
+                        "patterns": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            output = root / "inventory.json"
+            self.run_extractor(rules, dynamic, output)
+            inventory = json.loads(output.read_text(encoding="utf-8"))
+
+            self.assertEqual(
+                inventory["calls"][0]["static_patterns"],
+                ["59", "5A", "5B"],
+            )
+            self.assertEqual(
+                [
+                    call["argument_kind"]
+                    for call in inventory["calls"]
+                ],
+                ["static_expression", "dynamic", "dynamic"],
+            )
+            self.assertEqual(
+                inventory["finite_parameter_values"],
+                [
+                    {
+                        "path": "db/params.sg",
+                        "function": "safe",
+                        "function_line": 1,
+                        "parameter": "pattern",
+                        "parameter_index": 0,
+                        "direct_call_site_count": 2,
+                        "static_values": ["59", "5A", "5B"],
+                    }
+                ],
+            )
+
+    def test_top_level_parameter_values_reject_duplicate_or_external_names(self):
+        cases = {
+            "duplicate": """
+function shared(value) {
+    return value;
+}
+""",
+            "external_call": """
+shared("5A");
+""",
+        }
+        for name, second_source in cases.items():
+            with self.subTest(name=name):
+                with tempfile.TemporaryDirectory() as directory:
+                    root = pathlib.Path(directory)
+                    rules = root / "rules"
+                    (rules / "db").mkdir(parents=True)
+                    (rules / "db_extra").mkdir()
+                    (rules / "db" / "one.sg").write_text(
+                        """
+function shared(pattern) {
+    X.compare(pattern);
+}
+shared("59");
+""".lstrip(),
+                        encoding="utf-8",
+                    )
+                    (rules / "db_extra" / "two.sg").write_text(
+                        second_source.lstrip(),
+                        encoding="utf-8",
+                    )
+                    dynamic = root / "dynamic.json"
+                    dynamic.write_text(
+                        json.dumps(
+                            {
+                                "upstream_commit": UPSTREAM_COMMIT,
+                                "patterns": [],
+                            }
+                        ),
+                        encoding="utf-8",
+                    )
+                    output = root / "inventory.json"
+                    self.run_extractor(rules, dynamic, output)
+                    inventory = json.loads(
+                        output.read_text(encoding="utf-8")
+                    )
+
+                    self.assertEqual(
+                        inventory["calls"][0]["argument_kind"],
+                        "dynamic",
+                    )
+                    self.assertEqual(
+                        inventory["finite_parameter_values"],
+                        [],
+                    )
+
     def test_committed_inventory_matches_fixed_rules(self):
         with tempfile.TemporaryDirectory() as directory:
             output = pathlib.Path(directory) / "inventory.json"
@@ -306,6 +430,25 @@ function detect() {
                 inventory["static_transform_verification_failures"],
                 [],
             )
+            self.assertEqual(
+                inventory["top_level_function_audit"],
+                {
+                    "top_level_definition_count": 2290,
+                    "unique_name_count": 95,
+                    "duplicate_name_count": 7,
+                    "unresolved_direct_call_name_count": 72,
+                    "safe_definition_count": 95,
+                    "safety_contract": (
+                        "top-level name is unique across db/db_extra and "
+                        "has no unresolved direct call in another parsed "
+                        "rule; nested functions use lexical scope"
+                    ),
+                },
+            )
+            self.assertEqual(
+                len(inventory["finite_parameter_values"]),
+                26,
+            )
             self.assertEqual(inventory["rules"]["file_count"], 2175)
             self.assertEqual(inventory["rules"]["parse_success_count"], 2175)
             self.assertEqual(inventory["rules"]["parse_failure_count"], 0)
@@ -316,24 +459,23 @@ function detect() {
             self.assertEqual(
                 inventory["argument_kind_counts"],
                 {
-                    "dynamic": 49,
+                    "dynamic": 37,
                     "literal": 5855,
-                    "static_expression": 64,
+                    "static_expression": 76,
                 },
             )
             self.assertEqual(
                 inventory["dynamic_expression_type_counts"],
                 {
-                    "Binary": 5,
-                    "Call": 2,
-                    "SymbolRef": 42,
+                    "Binary": 4,
+                    "SymbolRef": 33,
                 },
             )
-            self.assertEqual(inventory["static_pattern_count"], 5435)
+            self.assertEqual(inventory["static_pattern_count"], 5560)
             comparison = inventory["dynamic_inventory_comparison"]
             self.assertEqual(comparison["intersection_count"], 317)
             self.assertEqual(comparison["dynamic_only_count"], 0)
-            self.assertEqual(comparison["static_only_count"], 5118)
+            self.assertEqual(comparison["static_only_count"], 5243)
 
 
 if __name__ == "__main__":

@@ -418,6 +418,15 @@ function staticValues(
         return [expression.value];
     }
     if (expression instanceof uglify.AST_SymbolRef) {
+        const staticSymbolValues =
+            constantInitializers.static_symbol_values;
+        if (
+            staticSymbolValues &&
+            expression.thedef &&
+            staticSymbolValues.has(expression.thedef.id)
+        ) {
+            return staticSymbolValues.get(expression.thedef.id);
+        }
         const initializer = initializerFor(
             expression,
             constantInitializers,
@@ -503,6 +512,31 @@ function staticValues(
     if (
         expression instanceof uglify.AST_Call &&
         expression.expression instanceof uglify.AST_SymbolRef &&
+        expression.expression.name === "String" &&
+        expression.expression.thedef &&
+        expression.expression.thedef.undeclared
+    ) {
+        if (expression.args.length === 0) {
+            return [""];
+        }
+        if (expression.args.length === 1) {
+            const values = staticValues(
+                uglify,
+                expression.args[0],
+                constantInitializers,
+                resolving,
+                usePosition,
+                staticTransforms,
+            );
+            return values
+                ? boundedUniqueSorted(values.map((value) => String(value)))
+                : null;
+        }
+        return null;
+    }
+    if (
+        expression instanceof uglify.AST_Call &&
+        expression.expression instanceof uglify.AST_SymbolRef &&
         expression.expression.thedef &&
         staticTransforms.has(expression.expression.thedef.id)
     ) {
@@ -584,7 +618,12 @@ function sourceSlice(source, node) {
     return source.slice(node.start.pos, node.end.endpos);
 }
 
-function inspectFile(uglify, rulesRoot, file) {
+function inspectFile(
+    uglify,
+    rulesRoot,
+    file,
+    safeTopLevelFunctions = new Set(),
+) {
     const source = fs.readFileSync(file, "utf8");
     const relativePath = toPosix(path.relative(rulesRoot, file));
     const ast = uglify.parse(source, { filename: relativePath });
@@ -715,6 +754,152 @@ function inspectFile(uglify, rulesRoot, file) {
                 !unsafeArrayDefinitions.has(definitionId),
         ),
     );
+    const functionInfos = new Map();
+    ast.walk(
+        new uglify.TreeWalker(function (node) {
+            if (
+                node instanceof uglify.AST_Defun &&
+                node.name &&
+                node.name.thedef
+            ) {
+                const topLevel =
+                    !this.find_parent(uglify.AST_Lambda);
+                functionInfos.set(node.name.thedef.id, {
+                    definition: node.name.thedef,
+                    name: node.name.name,
+                    line: node.start.line,
+                    top_level: topLevel,
+                    parameters: node.argnames,
+                    calls: [],
+                    escaped: false,
+                });
+            }
+        }),
+    );
+    ast.walk(
+        new uglify.TreeWalker(function (node) {
+            if (
+                node instanceof uglify.AST_Call &&
+                node.expression instanceof uglify.AST_SymbolRef &&
+                node.expression.thedef &&
+                functionInfos.has(node.expression.thedef.id)
+            ) {
+                functionInfos
+                    .get(node.expression.thedef.id)
+                    .calls.push(node);
+            }
+            if (
+                !(node instanceof uglify.AST_SymbolRef) ||
+                !node.thedef
+            ) {
+                return;
+            }
+            const parent = this.parent();
+            if (functionInfos.has(node.thedef.id)) {
+                const isDirectCall =
+                    parent instanceof uglify.AST_Call &&
+                    parent.expression === node;
+                if (!isDirectCall) {
+                    functionInfos.get(node.thedef.id).escaped = true;
+                }
+            }
+        }),
+    );
+    const staticSymbolValues = new Map();
+    constantInitializers.static_symbol_values = staticSymbolValues;
+    const finiteParameterValues = new Map();
+    for (
+        let iteration = 0;
+        iteration < functionInfos.size;
+        iteration += 1
+    ) {
+        let changed = false;
+        for (const info of functionInfos.values()) {
+            if (
+                info.escaped ||
+                info.calls.length === 0 ||
+                (info.top_level &&
+                    !safeTopLevelFunctions.has(
+                        `${relativePath}\0${info.name}`,
+                    ))
+            ) {
+                continue;
+            }
+            for (
+                let parameterIndex = 0;
+                parameterIndex < info.parameters.length;
+                parameterIndex += 1
+            ) {
+                const parameter = info.parameters[parameterIndex];
+                if (!parameter || !parameter.thedef) {
+                    continue;
+                }
+                const values = [];
+                let complete = true;
+                for (const call of info.calls) {
+                    const argument = call.args[parameterIndex];
+                    const argumentValues = argument
+                        ? staticValues(
+                              uglify,
+                              argument,
+                              constantInitializers,
+                              new Set(),
+                              call.start.pos,
+                              staticTransforms,
+                          )
+                        : null;
+                    if (!argumentValues) {
+                        complete = false;
+                        break;
+                    }
+                    values.push(...argumentValues);
+                    if (
+                        values.length >
+                        MAX_STATIC_VALUES_PER_EXPRESSION
+                    ) {
+                        complete = false;
+                        break;
+                    }
+                }
+                if (!complete) {
+                    continue;
+                }
+                const staticValuesForParameter =
+                    boundedUniqueSorted(values);
+                if (!staticValuesForParameter) {
+                    continue;
+                }
+                const definitionId = parameter.thedef.id;
+                const previous = staticSymbolValues.get(definitionId);
+                if (
+                    !previous ||
+                    previous.length !==
+                        staticValuesForParameter.length ||
+                    previous.some(
+                        (value, index) =>
+                            value !== staticValuesForParameter[index],
+                    )
+                ) {
+                    staticSymbolValues.set(
+                        definitionId,
+                        staticValuesForParameter,
+                    );
+                    finiteParameterValues.set(definitionId, {
+                        function: info.name,
+                        function_line: info.line,
+                        parameter: parameter.name,
+                        parameter_index: parameterIndex,
+                        direct_call_site_count: info.calls.length,
+                        static_values: staticValuesForParameter,
+                    });
+                    changed = true;
+                }
+            }
+        }
+        if (!changed) {
+            break;
+        }
+    }
     const calls = [];
     ast.walk(
         new uglify.TreeWalker((node) => {
@@ -775,7 +960,9 @@ function inspectFile(uglify, rulesRoot, file) {
         }),
     );
     return {
+        path: relativePath,
         calls,
+        finite_parameter_values: [...finiteParameterValues.values()],
         verified_static_transforms: verifiedStaticTransforms,
         static_transform_verification_failures:
             staticTransformVerificationFailures,
@@ -827,6 +1014,73 @@ function loadDynamicComparison(inventoryPath, staticPatterns) {
     };
 }
 
+function auditTopLevelFunctions(uglify, rulesRoot, ruleFiles) {
+    const definitions = [];
+    const definitionCounts = new Map();
+    const unresolvedDirectCallNames = new Set();
+    for (const file of ruleFiles) {
+        const source = fs.readFileSync(file, "utf8");
+        const relativePath = toPosix(path.relative(rulesRoot, file));
+        const ast = uglify.parse(source, { filename: relativePath });
+        ast.figure_out_scope();
+        ast.walk(
+            new uglify.TreeWalker(function (node) {
+                if (
+                    node instanceof uglify.AST_Defun &&
+                    node.name &&
+                    !this.find_parent(uglify.AST_Lambda)
+                ) {
+                    definitions.push({
+                        path: relativePath,
+                        name: node.name.name,
+                    });
+                    definitionCounts.set(
+                        node.name.name,
+                        (definitionCounts.get(node.name.name) || 0) + 1,
+                    );
+                }
+                if (
+                    node instanceof uglify.AST_Call &&
+                    node.expression instanceof uglify.AST_SymbolRef &&
+                    node.expression.thedef &&
+                    node.expression.thedef.undeclared
+                ) {
+                    unresolvedDirectCallNames.add(
+                        node.expression.name,
+                    );
+                }
+            }),
+        );
+    }
+    const safeDefinitions = definitions.filter(
+        (definition) =>
+            definitionCounts.get(definition.name) === 1 &&
+            !unresolvedDirectCallNames.has(definition.name),
+    );
+    return {
+        safe_keys: new Set(
+            safeDefinitions.map(
+                (definition) =>
+                    `${definition.path}\0${definition.name}`,
+            ),
+        ),
+        evidence: {
+            top_level_definition_count: definitions.length,
+            unique_name_count: [...definitionCounts.values()].filter(
+                (count) => count === 1,
+            ).length,
+            duplicate_name_count: [...definitionCounts.values()].filter(
+                (count) => count > 1,
+            ).length,
+            unresolved_direct_call_name_count:
+                unresolvedDirectCallNames.size,
+            safe_definition_count: safeDefinitions.length,
+            safety_contract:
+                "top-level name is unique across db/db_extra and has no unresolved direct call in another parsed rule; nested functions use lexical scope",
+        },
+    };
+}
+
 function buildInventory(options) {
     const rulesRoot = path.resolve(options["rules-root"]);
     const parserModule = path.resolve(options["parser-module"]);
@@ -843,8 +1097,18 @@ function buildInventory(options) {
             toPosix(path.relative(rulesRoot, right)),
         ),
     );
+    const topLevelFunctionAudit = auditTopLevelFunctions(
+        uglify,
+        rulesRoot,
+        ruleFiles,
+    );
     const fileResults = ruleFiles.map((file) =>
-        inspectFile(uglify, rulesRoot, file),
+        inspectFile(
+            uglify,
+            rulesRoot,
+            file,
+            topLevelFunctionAudit.safe_keys,
+        ),
     );
     const calls = fileResults.flatMap((result) => result.calls);
     calls.sort(
@@ -883,8 +1147,15 @@ function buildInventory(options) {
             "dynamic expressions remain explicit",
         max_static_values_per_expression:
             MAX_STATIC_VALUES_PER_EXPRESSION,
+        top_level_function_audit: topLevelFunctionAudit.evidence,
         verified_static_transforms: fileResults.flatMap(
             (result) => result.verified_static_transforms,
+        ),
+        finite_parameter_values: fileResults.flatMap((result) =>
+            result.finite_parameter_values.map((item) => ({
+                path: result.path,
+                ...item,
+            })),
         ),
         static_transform_verification_failures: fileResults.flatMap(
             (result) =>
@@ -929,6 +1200,7 @@ function buildInventory(options) {
             "computed method names are not attributable to a signature API",
             "unverified function calls, loops, unresolved symbols, and mutable data flow remain dynamic",
             "only path/name/source-hash verified pure string transforms are evaluated",
+            "function parameters are enumerated only when a named function does not escape and every direct call argument is static",
             "static expression enumeration is limited to literals, finite non-escaping arrays with statically enumerable elements, single-initializer unmodified symbol references, +, conditionals, and sequences",
             "expressions exceeding the fixed static-value budget remain dynamic",
             "same-named methods on unknown receivers are retained as audit candidates",
