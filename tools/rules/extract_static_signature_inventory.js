@@ -1216,6 +1216,21 @@ function inspectFile(
     }
     const scopedWrites = new Map();
     const capturedDefinitions = new Set();
+    const nestedCapturedDefinitionsByLambda = new Map();
+    function recordNestedCapture(lambda, definition, name) {
+        if (!nestedCapturedDefinitionsByLambda.has(lambda)) {
+            nestedCapturedDefinitionsByLambda.set(lambda, {
+                definition_ids: new Set(),
+                undeclared_names: new Set(),
+            });
+        }
+        const captures =
+            nestedCapturedDefinitionsByLambda.get(lambda);
+        captures.definition_ids.add(definition.id);
+        if (definition.undeclared) {
+            captures.undeclared_names.add(name);
+        }
+    }
     function addScopedWrite(lambda, definitionId, write) {
         if (!lambda || !definitionId) {
             return;
@@ -1233,17 +1248,32 @@ function inspectFile(
         new uglify.TreeWalker(function (node) {
             if (
                 node instanceof uglify.AST_SymbolRef &&
-                node.thedef &&
-                node.thedef.scope instanceof uglify.AST_Lambda
+                node.thedef
             ) {
                 const referenceLambda = this.find_parent(
                     uglify.AST_Lambda,
                 );
                 if (
                     referenceLambda &&
+                    node.thedef.scope instanceof
+                        uglify.AST_Lambda &&
                     referenceLambda !== node.thedef.scope
                 ) {
                     capturedDefinitions.add(node.thedef.id);
+                }
+                if (referenceLambda) {
+                    let ancestor =
+                        parentByNode.get(referenceLambda);
+                    while (ancestor) {
+                        if (ancestor instanceof uglify.AST_Lambda) {
+                            recordNestedCapture(
+                                ancestor,
+                                node.thedef,
+                                node.name,
+                            );
+                        }
+                        ancestor = parentByNode.get(ancestor);
+                    }
                 }
             }
             const lambda = this.find_parent(uglify.AST_Lambda);
@@ -1294,6 +1324,18 @@ function inspectFile(
             }
         }),
     );
+    function isCapturedByNestedLambda(lambda, definition) {
+        const captures =
+            nestedCapturedDefinitionsByLambda.get(lambda);
+        return Boolean(
+            captures &&
+                (captures.definition_ids.has(definition.id) ||
+                    (definition.undeclared &&
+                        captures.undeclared_names.has(
+                            definition.name,
+                        ))),
+        );
+    }
     const directSymbolCallsByLambda = new Map();
     ast.walk(
         new uglify.TreeWalker(function (node) {
@@ -1454,6 +1496,10 @@ function inspectFile(
             if (
                 write.kind !== "assign" ||
                 write.node.operator !== "=" ||
+                isCapturedByNestedLambda(
+                    lambda,
+                    write.node.left.thedef,
+                ) ||
                 !write.direct_top_level ||
                 !(lambda.body[0] instanceof
                     uglify.AST_SimpleStatement) ||
@@ -2094,8 +2140,23 @@ function inspectFile(
             const lambda = this.find_parent(uglify.AST_Lambda);
             if (
                 !lambda ||
-                node.left.thedef.scope !== lambda ||
-                capturedDefinitions.has(node.left.thedef.id)
+                capturedDefinitions.has(node.left.thedef.id) ||
+                isCapturedByNestedLambda(
+                    lambda,
+                    node.left.thedef,
+                )
+            ) {
+                return;
+            }
+            const scopedInterval =
+                scopedSymbolValues.has(lambda) &&
+                scopedSymbolValues
+                    .get(lambda)
+                    .get(node.left.thedef.id);
+            if (
+                scopedInterval &&
+                scopedInterval.assignment_end_position ===
+                    node.end.endpos
             ) {
                 return;
             }
@@ -2118,10 +2179,32 @@ function inspectFile(
             }
             let unsafeCall = false;
             let targetWrite = false;
+            let targetCaptured = false;
             const signatureUseLines = [];
             nextStatement.walk(
                 new uglify.TreeWalker(function (candidate) {
                     if (candidate instanceof uglify.AST_Lambda) {
+                        if (node.left.thedef.scope !== lambda) {
+                            targetCaptured = true;
+                            return true;
+                        }
+                        candidate.walk(
+                            new uglify.TreeWalker((nested) => {
+                                if (
+                                    nested instanceof
+                                        uglify.AST_SymbolRef &&
+                                    nested.thedef &&
+                                    (nested.thedef.id ===
+                                        node.left.thedef.id ||
+                                        (node.left.thedef.undeclared &&
+                                            nested.thedef.undeclared &&
+                                            nested.name ===
+                                                node.left.name))
+                                ) {
+                                    targetCaptured = true;
+                                }
+                            }),
+                        );
                         return true;
                     }
                     if (
@@ -2185,6 +2268,7 @@ function inspectFile(
             if (
                 unsafeCall ||
                 targetWrite ||
+                targetCaptured ||
                 signatureUseLines.length === 0
             ) {
                 return;

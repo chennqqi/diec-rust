@@ -726,6 +726,21 @@
   ],
   "finite_adjacent_assignments": [
     {
+      "path": "db/Binary/audio.1.sg",
+      "function": "isJesperOlsen",
+      "function_line": 10470,
+      "symbol": "d1",
+      "assignment_line": 10508,
+      "use_lines": [
+        10509
+      ],
+      "invalidation_line": 10509,
+      "static_values": [
+        "7FFE",
+        "7FFF"
+      ]
+    },
+    {
       "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
       "function": "scanForMaliciousCode_NET_and_Native",
       "function_line": 6178,
@@ -875,9 +890,9 @@
     "isSignaturePresent": 72
   },
   "argument_kind_counts": {
-    "dynamic": 5,
+    "dynamic": 4,
     "literal": 5855,
-    "static_expression": 108
+    "static_expression": 109
   },
   "static_pattern_count": 5628,
   "static_patterns": [
@@ -6510,10 +6525,10 @@
     "fff589e566f7c6....80c3..80eb..81ec........66c1eb..6689ed",
     "fffe2a002a002a006d0065007300730061006700650073002a002a002a00"
   ],
-  "dynamic_call_site_count": 5,
+  "dynamic_call_site_count": 4,
   "dynamic_expression_type_counts": {
     "Binary": 3,
-    "SymbolRef": 2
+    "SymbolRef": 1
   },
   "dynamic_calls": [
     {
@@ -6542,20 +6557,6 @@
       "argument_kind": "dynamic",
       "argument_ast_type": "Binary",
       "argument_expression": "p+8",
-      "static_patterns": []
-    },
-    {
-      "path": "db/Binary/audio.1.sg",
-      "line": 10509,
-      "column": 27,
-      "receiver": "X",
-      "receiver_root": "X",
-      "known_host_receiver": true,
-      "method": "c",
-      "argument_index": 0,
-      "argument_kind": "dynamic",
-      "argument_ast_type": "SymbolRef",
-      "argument_expression": "d1",
       "static_patterns": []
     },
     {
@@ -26252,10 +26253,13 @@
       "known_host_receiver": true,
       "method": "c",
       "argument_index": 0,
-      "argument_kind": "dynamic",
+      "argument_kind": "static_expression",
       "argument_ast_type": "SymbolRef",
       "argument_expression": "d1",
-      "static_patterns": []
+      "static_patterns": [
+        "7FFE",
+        "7FFF"
+      ]
     },
     {
       "path": "db/Binary/audio.1.sg",

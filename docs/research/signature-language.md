@@ -159,9 +159,9 @@ pattern 仍可能缺失。
 | **总计** | **5968** |
 
 5968 个调用点分布在 1615 个文件，receiver 均落在已知格式宿主集合；同名未知
-receiver 候选为 0。参数分类为 5855 个直接字符串、108 个可保守枚举的静态表达式
+receiver 候选为 0。参数分类为 5855 个直接字符串、109 个可保守枚举的静态表达式
 （字符串拼接、条件分支、sequence，或只有一次初始化且未检测到写入的变量引用）
-和 5 个动态表达式。有限、非逃逸且元素可静态枚举的数组，其动态下标采用全部元素
+和 4 个动态表达式。有限、非逃逸且元素可静态枚举的数组，其动态下标采用全部元素
 并集；数组只允许下标和 `length` 读取，发生方法调用、传参、别名或其他逃逸即保持
 动态。每个表达式最多枚举 4096 个值，超限也保持动态。静态可枚举得到 5628 个唯一
 pattern：包含动态样本观察到的全部 317 个，另有
@@ -245,17 +245,21 @@ docker run --rm -v "${PWD}/tools/upstream:/src:ro" \
    ./qtscript-object-enumeration-probe'
 ```
 
-块内相邻赋值传播只接受函数局部字符串 binding 的简单 `=`：右值必须可静态枚举，
+块内相邻赋值传播只接受字符串 symbol binding 的简单 `=`：右值必须可静态枚举，
 下一条语句必须直接包含使用该 binding 的已知识别宿主 signature 调用，且该语句中
 不得出现未知/直接函数调用或对目标的再次写入，目标也不得被嵌套 lambda 捕获。
 值域仅从赋值结束持续到下一条语句结束；跨语句间隔、条件单语句赋值、目标重写和
 未知调用 fixture 均保持动态；精确
-`x = x` 由独立无操作规则处理，不重复记账。全库恰好产生两条记录：
+`x = x` 由独立无操作规则处理，不重复记账。函数局部以外的未声明 global 还要求
+当前函数内不存在嵌套 lambda 捕获；捕获关系在一次 AST walk 中预计算，避免对每个
+候选重复扫描。正例 global 和嵌套 callback 负例固定这一边界。全库恰好产生三条记录：
+`audio.1.sg:10508` 把共享 global `d1` 赋为条件值 `7FFE`/`7FFF`，紧邻的 10509
+行循环只经无回调 HostApi 读取它；两个值均已存在于静态集合，因此不增加唯一 pattern。
 `__GenericHeuristicAnalysis_By_DosX.7.sg:6219` 对有限
 `requiredDotNetImports` 数组构造五个 `importSignature` 值，并闭合 6220 行调用；
 其中四个是新增唯一 pattern；同文件 6368 行构造 46 个值并闭合 6369 行调用。
 
-第二条记录依赖一项独立、受限的对象数组元素传播。源必须是在同一块内紧邻循环前
+6368 行记录依赖一项独立、受限的对象数组元素传播。源必须是在同一块内紧邻循环前
 声明的单变量、非空且非逃逸的数组；每个元素必须是无重复敏感键的对象字面量，值
 只能是字符串、数字、布尔、`null`、未遮蔽的全局 `undefined` 或非空字符串数组。
 循环只接受
@@ -286,7 +290,17 @@ pattern。
 输入依赖调用，不能把第二参数改当 signature。
 
 “包含动态 317/317”证明动态清单是静态清单的子集，不证明 5628 是完整运行时值域。
-剩余 5 个调用仍依赖偏移量或输入数据流；非静态 computed
+剩余四个调用的边界已经固定：
+
+| 路径与行 | 参数表达式 | 保持动态的原因 |
+| --- | --- | --- |
+| `db/Binary/audio.1.sg:4706` | `X.c(p+o, …)` | 固定 `c` API 的 signature 是第一个参数；这里传入输入相关数值偏移 |
+| `db/Binary/audio.1.sg:4751` | `X.c(p+8, …)` | 同上，第二个看似 signature 的字符串实际进入 offset 参数 |
+| `db/Binary/audio.1.sg:10574` | `X.fSig(…, lo-150, lo-20)` | 固定 `fSig` API 的 signature 是第三个参数；这里传入输入相关数值边界 |
+| `db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg:3806` | `byteCode` | helper 有 31 个真实调用，包含循环生成的 `pattern`、`replaceAllInString` 和多个 `opCodes` 变换 |
+
+前三项是上游调用参数次序造成的运行时 Number→QString 行为，不能把另一个参数改当
+signature；最后一项必须先验证完整 opcode builder 和循环值域。非静态 computed
 method name 也不能仅凭 AST 属性名归因。当前可以把具名 signature API 的语法调用
 点范围视为完整，但运行时 pattern value 范围仍未闭合。
 
@@ -435,7 +449,7 @@ oracle schema v2 允许每个项目自有向量显式注入 `_MEMORY_MAP`，但�
 
 ## 下一步门禁
 
-1. 对 5 个动态 signature 参数做 scope/data-flow 或受控 runtime-assisted
+1. 对 4 个动态 signature 参数做 scope/data-flow 或受控 runtime-assisted
    求值，并审计 computed method name；不得把 5628 个静态值当作完整值域。
 2. 扩展现有 XBinary oracle，覆盖更多畸形组合、buffer boundary 和取消行为。
 3. 补齐畸形/重叠/virtual-only map 的项目生成文件，端到端验证各格式

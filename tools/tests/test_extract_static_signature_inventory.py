@@ -572,7 +572,12 @@ function reassigned() {
                     call["argument_kind"]
                     for call in inventory["calls"]
                 ],
-                ["static_expression", "dynamic", "dynamic", "dynamic"],
+                [
+                    "static_expression",
+                    "dynamic",
+                    "dynamic",
+                    "static_expression",
+                ],
             )
             self.assertEqual(
                 inventory["calls"][0]["static_patterns"],
@@ -599,6 +604,21 @@ function reassigned() {
                         "invalidation_line": 10,
                         "static_values": ["66"],
                     },
+                ],
+            )
+            self.assertEqual(
+                inventory["finite_adjacent_assignments"],
+                [
+                    {
+                        "path": "db/scoped.sg",
+                        "function": "reassigned",
+                        "function_line": 19,
+                        "symbol": "shared",
+                        "assignment_line": 21,
+                        "use_lines": [22],
+                        "invalidation_line": 22,
+                        "static_values": ["69"],
+                    }
                 ],
             )
 
@@ -691,7 +711,6 @@ function nonAdjacent() {
                     }
                 ],
             )
-
     def test_exact_self_assignment_is_not_a_mutation(self):
         with tempfile.TemporaryDirectory() as directory:
             root = pathlib.Path(directory)
@@ -963,6 +982,20 @@ function capturedByHostCallback() {
     }) && X.compare(signature)) {
     }
 }
+
+function safeGlobal(flag) {
+    X.isVerbose();
+    globalSignature = flag ? "69" : "70";
+    while (X.compare(globalSignature)) {}
+}
+
+function capturedGlobal() {
+    globalCapturedSignature = "71";
+    if (PE.callback(function () {
+        globalCapturedSignature = "72";
+    }) && X.compare(globalCapturedSignature)) {
+    }
+}
 """.lstrip(),
                 encoding="utf-8",
             )
@@ -993,6 +1026,8 @@ function capturedByHostCallback() {
                     "dynamic",
                     "dynamic",
                     "dynamic",
+                    "static_expression",
+                    "dynamic",
                 ],
             )
             self.assertEqual(
@@ -1011,6 +1046,16 @@ function capturedByHostCallback() {
                         "use_lines": [5],
                         "invalidation_line": 6,
                         "static_values": ["0060", "0061"],
+                    },
+                    {
+                        "path": "db/adjacent.sg",
+                        "function": "safeGlobal",
+                        "function_line": 46,
+                        "symbol": "globalSignature",
+                        "assignment_line": 48,
+                        "use_lines": [49],
+                        "invalidation_line": 49,
+                        "static_values": ["69", "70"],
                     }
                 ],
             )
@@ -1448,6 +1493,16 @@ function notFirst(k) {
                 inventory["finite_adjacent_assignments"],
                 [
                     {
+                        "path": "db/Binary/audio.1.sg",
+                        "function": "isJesperOlsen",
+                        "function_line": 10470,
+                        "symbol": "d1",
+                        "assignment_line": 10508,
+                        "use_lines": [10509],
+                        "invalidation_line": 10509,
+                        "static_values": ["7FFE", "7FFF"],
+                    },
+                    {
                         "path": (
                             "db/PE/"
                             "__GenericHeuristicAnalysis_By_DosX.7.sg"
@@ -1588,17 +1643,62 @@ function notFirst(k) {
             self.assertEqual(
                 inventory["argument_kind_counts"],
                 {
-                    "dynamic": 5,
+                    "dynamic": 4,
                     "literal": 5855,
-                    "static_expression": 108,
+                    "static_expression": 109,
                 },
             )
             self.assertEqual(
                 inventory["dynamic_expression_type_counts"],
                 {
                     "Binary": 3,
-                    "SymbolRef": 2,
+                    "SymbolRef": 1,
                 },
+            )
+            self.assertEqual(
+                [
+                    (
+                        call["path"],
+                        call["line"],
+                        call["method"],
+                        call["argument_expression"],
+                        call["argument_ast_type"],
+                    )
+                    for call in inventory["dynamic_calls"]
+                ],
+                [
+                    (
+                        "db/Binary/audio.1.sg",
+                        4706,
+                        "c",
+                        "p+o",
+                        "Binary",
+                    ),
+                    (
+                        "db/Binary/audio.1.sg",
+                        4751,
+                        "c",
+                        "p+8",
+                        "Binary",
+                    ),
+                    (
+                        "db/Binary/audio.1.sg",
+                        10574,
+                        "fSig",
+                        "lo-20",
+                        "Binary",
+                    ),
+                    (
+                        (
+                            "db/PE/"
+                            "__GenericHeuristicAnalysis_By_DosX.7.sg"
+                        ),
+                        3806,
+                        "findSignature",
+                        "byteCode",
+                        "SymbolRef",
+                    ),
+                ],
             )
             self.assertEqual(inventory["static_pattern_count"], 5628)
             comparison = inventory["dynamic_inventory_comparison"]
