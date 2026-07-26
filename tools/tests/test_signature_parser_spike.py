@@ -104,6 +104,21 @@ class SignatureParserSpikeTests(unittest.TestCase):
             spike["pinned_xbinary_compare_differential"],
             {"case_count": 16, "matched_count": 16},
         )
+        self.assertEqual(
+            spike["pinned_xbinary_memory_map_differential"],
+            {
+                "case_count": 7,
+                "matched_count": 7,
+                "file_types": [
+                    "PE",
+                    "ELF",
+                    "Mach-O",
+                    "COM",
+                    "MS-DOS",
+                    "AmigaHunk",
+                ],
+            },
+        )
 
     def test_signature_oracle_provenance_matches_files(self):
         oracle = self.evidence["signature_oracle"]
@@ -146,6 +161,7 @@ class SignatureParserSpikeTests(unittest.TestCase):
         )
         self.assertEqual(baseline["case_count"], oracle["case_count"])
         self.assertTrue(oracle["probe_passed"])
+        self.assertEqual(oracle["case_count"], 34)
         self.assertEqual(len(oracle["compare_find_divergences"]), 4)
 
 

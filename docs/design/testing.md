@@ -195,6 +195,8 @@ signature fast path 与通用 matcher 分开跑同一向量，差异不得被规
 `compareSignature` 与 `find_signature` 必须作为两个 operation 比较；固定 oracle
 已证明 record/SigByte class table 和 search anchor 会产生不同结果，禁止用一侧
 结果推断另一侧。
+合成 memory-map 向量用于隔离 matcher 的地址、端序和 file-type 分支；另用项目
+生成的最小真实格式文件验证各 parser 的 `getMemoryMap`，两层证据不能互相替代。
 
 升级上游时创建新的 baseline namespace；旧 baseline 不就地覆盖。先运行
 upstream-old vs upstream-new 报告，再决定 Rust compatibility target。

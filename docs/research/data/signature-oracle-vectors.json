@@ -1,13 +1,13 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "generator": {
     "path": "tools/corpus/generate_signature_oracle_vectors.py",
-    "version": 1
+    "version": 2
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
   "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
   "license": "project-generated; no third-party sample or rule bytes",
-  "case_count": 27,
+  "case_count": 34,
   "cases": [
     {
       "id": "quoted_literal_and_wildcard_match",
@@ -69,6 +69,151 @@
       "id": "absolute_address_identity_map",
       "pattern": "68########90",
       "data_hex": "680500000090"
+    },
+    {
+      "id": "pe_relative_crosses_raw_gap",
+      "pattern": "e9$$$$$$$$90",
+      "data_hex": "e900000000000000000000000000000090",
+      "memory_map": {
+        "file_type": "pe",
+        "endian": "little",
+        "records": [
+          {
+            "offset": 0,
+            "address": 4198400,
+            "size": 5
+          },
+          {
+            "offset": 16,
+            "address": 4198405,
+            "size": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "elf_big_endian_relative_crosses_raw_gap",
+      "pattern": "aa$$$$bb",
+      "data_hex": "aa00020000000000bb",
+      "memory_map": {
+        "file_type": "elf",
+        "endian": "big",
+        "records": [
+          {
+            "offset": 0,
+            "address": 4096,
+            "size": 3
+          },
+          {
+            "offset": 8,
+            "address": 4101,
+            "size": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "macho_64_absolute_crosses_raw_gap",
+      "pattern": "68################90",
+      "data_hex": "6800100000010000000000000000000090",
+      "memory_map": {
+        "file_type": "macho",
+        "endian": "little",
+        "records": [
+          {
+            "offset": 0,
+            "address": 4294967296,
+            "size": 9
+          },
+          {
+            "offset": 16,
+            "address": 4294971392,
+            "size": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "com_relative_ignores_nonidentity_map",
+      "pattern": "eb$$90",
+      "data_hex": "00009000ebfc",
+      "offset": 4,
+      "memory_map": {
+        "file_type": "com",
+        "endian": "little",
+        "records": [
+          {
+            "offset": 2,
+            "address": 8192,
+            "size": 1
+          },
+          {
+            "offset": 4,
+            "address": 4096,
+            "size": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "msdos_absolute_word_adds_code_base",
+      "pattern": "68####90",
+      "data_hex": "681000000000000090",
+      "memory_map": {
+        "file_type": "msdos",
+        "endian": "little",
+        "code_base": 256,
+        "records": [
+          {
+            "offset": 0,
+            "address": 0,
+            "size": 3
+          },
+          {
+            "offset": 8,
+            "address": 272,
+            "size": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "msdos_far_pointer_uses_segment_address",
+      "pattern": "68########90",
+      "data_hex": "68030002000000000000000000000000000000000000000000000000000000000000000000000090",
+      "memory_map": {
+        "file_type": "msdos",
+        "endian": "little",
+        "start_load_offset": 4,
+        "records": [
+          {
+            "offset": 0,
+            "address": 0,
+            "size": 40
+          }
+        ]
+      }
+    },
+    {
+      "id": "amigahunk_relative_word_omits_width_increment",
+      "pattern": "aa$$$$bb",
+      "data_hex": "aa00040000000000bb",
+      "memory_map": {
+        "file_type": "amigahunk",
+        "endian": "big",
+        "records": [
+          {
+            "offset": 0,
+            "address": 4096,
+            "size": 3
+          },
+          {
+            "offset": 8,
+            "address": 4101,
+            "size": 1
+          }
+        ]
+      }
     },
     {
       "id": "address_markers_around_ignored_base",

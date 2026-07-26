@@ -8,8 +8,8 @@ import json
 from pathlib import Path
 
 
-SCHEMA_VERSION = 1
-GENERATOR_VERSION = 1
+SCHEMA_VERSION = 2
+GENERATOR_VERSION = 2
 UPSTREAM_COMMIT = "74eaf505c250ab47e709024e9dc41657cd8f2254"
 FORMATS_COMMIT = "1151e7254fdee3c0294ff7095edbdd7bfccf8201"
 
@@ -76,6 +76,99 @@ def vectors() -> list[dict[str, object]]:
             "id": "absolute_address_identity_map",
             "pattern": "68########90",
             "data_hex": "680500000090",
+        },
+        {
+            "id": "pe_relative_crosses_raw_gap",
+            "pattern": "e9$$$$$$$$90",
+            "data_hex": "e900000000" + ("00" * 11) + "90",
+            "memory_map": {
+                "file_type": "pe",
+                "endian": "little",
+                "records": [
+                    {"offset": 0, "address": 0x401000, "size": 5},
+                    {"offset": 16, "address": 0x401005, "size": 1},
+                ],
+            },
+        },
+        {
+            "id": "elf_big_endian_relative_crosses_raw_gap",
+            "pattern": "aa$$$$bb",
+            "data_hex": "aa0002" + ("00" * 5) + "bb",
+            "memory_map": {
+                "file_type": "elf",
+                "endian": "big",
+                "records": [
+                    {"offset": 0, "address": 0x1000, "size": 3},
+                    {"offset": 8, "address": 0x1005, "size": 1},
+                ],
+            },
+        },
+        {
+            "id": "macho_64_absolute_crosses_raw_gap",
+            "pattern": "68################90",
+            "data_hex": "680010000001000000" + ("00" * 7) + "90",
+            "memory_map": {
+                "file_type": "macho",
+                "endian": "little",
+                "records": [
+                    {"offset": 0, "address": 0x100000000, "size": 9},
+                    {"offset": 16, "address": 0x100001000, "size": 1},
+                ],
+            },
+        },
+        {
+            "id": "com_relative_ignores_nonidentity_map",
+            "pattern": "eb$$90",
+            "data_hex": "00009000ebfc",
+            "offset": 4,
+            "memory_map": {
+                "file_type": "com",
+                "endian": "little",
+                "records": [
+                    {"offset": 2, "address": 0x2000, "size": 1},
+                    {"offset": 4, "address": 0x1000, "size": 2},
+                ],
+            },
+        },
+        {
+            "id": "msdos_absolute_word_adds_code_base",
+            "pattern": "68####90",
+            "data_hex": "681000" + ("00" * 5) + "90",
+            "memory_map": {
+                "file_type": "msdos",
+                "endian": "little",
+                "code_base": 0x100,
+                "records": [
+                    {"offset": 0, "address": 0, "size": 3},
+                    {"offset": 8, "address": 0x110, "size": 1},
+                ],
+            },
+        },
+        {
+            "id": "msdos_far_pointer_uses_segment_address",
+            "pattern": "68########90",
+            "data_hex": "6803000200" + ("00" * 34) + "90",
+            "memory_map": {
+                "file_type": "msdos",
+                "endian": "little",
+                "start_load_offset": 4,
+                "records": [
+                    {"offset": 0, "address": 0, "size": 40},
+                ],
+            },
+        },
+        {
+            "id": "amigahunk_relative_word_omits_width_increment",
+            "pattern": "aa$$$$bb",
+            "data_hex": "aa0004" + ("00" * 5) + "bb",
+            "memory_map": {
+                "file_type": "amigahunk",
+                "endian": "big",
+                "records": [
+                    {"offset": 0, "address": 0x1000, "size": 3},
+                    {"offset": 8, "address": 0x1005, "size": 1},
+                ],
+            },
         },
         {
             "id": "address_markers_around_ignored_base",

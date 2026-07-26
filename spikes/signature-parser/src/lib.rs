@@ -21,6 +21,59 @@ pub struct Pattern {
     operations: Vec<Operation>,
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum FileType {
+    Binary,
+    Pe,
+    Elf,
+    MachO,
+    Com,
+    MsDos,
+    AmigaHunk,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum Endian {
+    Little,
+    Big,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct MemoryRecord {
+    pub offset: u64,
+    pub address: u64,
+    pub size: u64,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct MemoryMap {
+    pub file_type: FileType,
+    pub endian: Endian,
+    pub code_base: u64,
+    pub start_load_offset: u64,
+    pub records: Vec<MemoryRecord>,
+}
+
+impl MemoryMap {
+    fn offset_to_address(&self, offset: u64) -> Option<u64> {
+        self.records.iter().rev().find_map(|record| {
+            let end = record.offset.checked_add(record.size)?;
+            (record.offset <= offset && offset < end)
+                .then(|| record.address.checked_add(offset - record.offset))
+                .flatten()
+        })
+    }
+
+    fn address_to_offset(&self, address: u64) -> Option<u64> {
+        self.records.iter().rev().find_map(|record| {
+            let end = record.address.checked_add(record.size)?;
+            (record.address <= address && address < end)
+                .then(|| record.offset.checked_add(address - record.address))
+                .flatten()
+        })
+    }
+}
+
 impl Pattern {
     pub fn parse(source: &str) -> Result<Self, ParseError> {
         Self::parse_with_mode(source, false).map(|report| report.pattern)
@@ -151,6 +204,24 @@ impl Pattern {
     }
 
     pub fn matches_raw(&self, data: &[u8], offset: usize) -> Result<bool, MatchError> {
+        self.matches(data, offset, None)
+    }
+
+    pub fn matches_with_memory_map(
+        &self,
+        data: &[u8],
+        offset: usize,
+        memory_map: &MemoryMap,
+    ) -> Result<bool, MatchError> {
+        self.matches(data, offset, Some(memory_map))
+    }
+
+    fn matches(
+        &self,
+        data: &[u8],
+        offset: usize,
+        memory_map: Option<&MemoryMap>,
+    ) -> Result<bool, MatchError> {
         let mut cursor = offset;
         for operation in &self.operations {
             match operation {
@@ -215,13 +286,124 @@ impl Pattern {
                     };
                     cursor += relative + bytes.len();
                 }
-                Operation::RelativeOffset { .. } | Operation::AbsoluteAddress { .. } => {
-                    return Err(MatchError::MemoryMapRequired);
+                Operation::RelativeOffset { width } => {
+                    let Some(memory_map) = memory_map else {
+                        return Err(MatchError::MemoryMapRequired);
+                    };
+                    let Some(delta) = relative_delta(data, cursor, *width, memory_map) else {
+                        return Ok(false);
+                    };
+                    let target = if matches!(memory_map.file_type, FileType::Com | FileType::MsDos)
+                    {
+                        segmented_relative_offset(cursor, delta)
+                    } else {
+                        memory_map
+                            .offset_to_address(cursor as u64)
+                            .and_then(|address| add_signed(address, delta))
+                            .and_then(|address| memory_map.address_to_offset(address))
+                            .and_then(|offset| usize::try_from(offset).ok())
+                    };
+                    let Some(target) = target else {
+                        return Ok(false);
+                    };
+                    cursor = target;
                 }
+                Operation::AbsoluteAddress { width, .. } => {
+                    let Some(memory_map) = memory_map else {
+                        return Err(MatchError::MemoryMapRequired);
+                    };
+                    let Some(address) = read_unsigned(data, cursor, *width, memory_map.endian)
+                    else {
+                        return Ok(false);
+                    };
+                    let target = match (memory_map.file_type, *width) {
+                        (FileType::MsDos, 2) => address
+                            .checked_add(memory_map.code_base)
+                            .and_then(|value| memory_map.address_to_offset(value))
+                            .and_then(|offset| usize::try_from(offset).ok()),
+                        (FileType::MsDos, 4) => {
+                            let low = address & 0xffff;
+                            let high = (address >> 16) & 0xffff;
+                            high.checked_mul(16)
+                                .and_then(|value| value.checked_add(low))
+                                .and_then(|value| value.checked_add(memory_map.start_load_offset))
+                                .and_then(|offset| usize::try_from(offset).ok())
+                        }
+                        (FileType::MsDos, _) => Some(cursor),
+                        _ => memory_map
+                            .address_to_offset(address)
+                            .and_then(|offset| usize::try_from(offset).ok()),
+                    };
+                    let Some(target) = target else {
+                        return Ok(false);
+                    };
+                    cursor = target;
+                }
+            }
+            if memory_map.is_some() && cursor > data.len() {
+                return Ok(false);
             }
         }
         Ok(true)
     }
+}
+
+fn relative_delta(
+    data: &[u8],
+    offset: usize,
+    width: usize,
+    memory_map: &MemoryMap,
+) -> Option<i128> {
+    let value = match width {
+        1 => i128::from(read_signed(data, offset, width, memory_map.endian)?).checked_add(1)?,
+        2 => i128::from(read_unsigned(data, offset, width, memory_map.endian)?).checked_add(
+            if memory_map.file_type == FileType::AmigaHunk {
+                0
+            } else {
+                2
+            },
+        )?,
+        4 | 8 => i128::from(read_signed(data, offset, width, memory_map.endian)?).checked_add(
+            if memory_map.file_type == FileType::AmigaHunk {
+                0
+            } else {
+                width as i128
+            },
+        )?,
+        _ => return None,
+    };
+    Some(value)
+}
+
+fn read_unsigned(data: &[u8], offset: usize, width: usize, endian: Endian) -> Option<u64> {
+    let bytes = bounded_slice(data, offset, width)?;
+    Some(match endian {
+        Endian::Little => bytes
+            .iter()
+            .rev()
+            .fold(0_u64, |value, byte| (value << 8) | u64::from(*byte)),
+        Endian::Big => bytes
+            .iter()
+            .fold(0_u64, |value, byte| (value << 8) | u64::from(*byte)),
+    })
+}
+
+fn read_signed(data: &[u8], offset: usize, width: usize, endian: Endian) -> Option<i64> {
+    let unsigned = read_unsigned(data, offset, width, endian)?;
+    let shift = 64_usize.checked_sub(width.checked_mul(8)?)?;
+    Some(((unsigned << shift) as i64) >> shift)
+}
+
+fn add_signed(value: u64, delta: i128) -> Option<u64> {
+    let result = i128::from(value).checked_add(delta)?;
+    u64::try_from(result).ok()
+}
+
+fn segmented_relative_offset(offset: usize, delta: i128) -> Option<usize> {
+    let high = offset & !0xffff;
+    let low = i128::try_from(offset & 0xffff).ok()?;
+    let wrapped = low.checked_add(delta)?.rem_euclid(0x10000);
+    high.checked_add(usize::try_from(wrapped).ok()?)
 }
 
 fn normalize(
@@ -571,7 +753,10 @@ impl std::error::Error for MatchError {}
 
 #[cfg(test)]
 mod tests {
-    use super::{CompatibilityQuirk, MatchError, Operation, ParseErrorKind, Pattern};
+    use super::{
+        CompatibilityQuirk, Endian, FileType, MatchError, MemoryMap, MemoryRecord, Operation,
+        ParseErrorKind, Pattern,
+    };
     use serde_json::Value;
     use std::collections::BTreeSet;
 
@@ -589,6 +774,50 @@ mod tests {
             b'0'..=b'9' => byte - b'0',
             b'a'..=b'f' => byte - b'a' + 10,
             _ => panic!("invalid fixture hex byte"),
+        }
+    }
+
+    fn memory_map(value: &Value) -> MemoryMap {
+        let file_type = match value["file_type"]
+            .as_str()
+            .expect("file_type should be a string")
+        {
+            "binary" => FileType::Binary,
+            "pe" => FileType::Pe,
+            "elf" => FileType::Elf,
+            "macho" => FileType::MachO,
+            "com" => FileType::Com,
+            "msdos" => FileType::MsDos,
+            "amigahunk" => FileType::AmigaHunk,
+            other => panic!("unsupported fixture file type {other}"),
+        };
+        let endian = match value["endian"].as_str().expect("endian should be a string") {
+            "little" => Endian::Little,
+            "big" => Endian::Big,
+            other => panic!("unsupported fixture endian {other}"),
+        };
+        let records = value["records"]
+            .as_array()
+            .expect("records should be an array")
+            .iter()
+            .map(|record| MemoryRecord {
+                offset: record["offset"]
+                    .as_u64()
+                    .expect("record offset should be an integer"),
+                address: record["address"]
+                    .as_u64()
+                    .expect("record address should be an integer"),
+                size: record["size"]
+                    .as_u64()
+                    .expect("record size should be an integer"),
+            })
+            .collect();
+        MemoryMap {
+            file_type,
+            endian,
+            code_base: value["code_base"].as_u64().unwrap_or(0),
+            start_load_offset: value["start_load_offset"].as_u64().unwrap_or(0),
+            records,
         }
     }
 
@@ -823,6 +1052,58 @@ mod tests {
                 .unwrap_or_else(|error| panic!("cannot parse {id}: {error}"));
             assert_eq!(
                 report.pattern.matches_raw(&data, offset),
+                Ok(expected),
+                "differential mismatch for {id}"
+            );
+            compared += 1;
+        }
+        assert_eq!(compared, selected.len());
+    }
+
+    #[test]
+    fn memory_map_matches_agree_with_pinned_xbinary_oracle() {
+        let selected = BTreeSet::from([
+            "pe_relative_crosses_raw_gap",
+            "elf_big_endian_relative_crosses_raw_gap",
+            "macho_64_absolute_crosses_raw_gap",
+            "com_relative_ignores_nonidentity_map",
+            "msdos_absolute_word_adds_code_base",
+            "msdos_far_pointer_uses_segment_address",
+            "amigahunk_relative_word_omits_width_increment",
+        ]);
+        let oracle: Value = serde_json::from_str(include_str!(
+            "../../../docs/research/data/signature-oracle-qt5.json"
+        ))
+        .expect("oracle baseline should be valid JSON");
+        let cases = oracle["cases"]
+            .as_array()
+            .expect("oracle cases should be an array");
+        let mut compared = 0;
+        for case in cases {
+            let id = case["id"].as_str().expect("case id should be a string");
+            if !selected.contains(id) {
+                continue;
+            }
+            let source = case["pattern"]
+                .as_str()
+                .expect("pattern should be a string");
+            let data = decode_hex(
+                case["data_hex"]
+                    .as_str()
+                    .expect("data should be a hex string"),
+            );
+            let offset = case["offset"]
+                .as_u64()
+                .and_then(|value| usize::try_from(value).ok())
+                .expect("offset should fit usize");
+            let expected = case["compare"]
+                .as_bool()
+                .expect("compare result should be boolean");
+            let map = memory_map(&case["memory_map"]);
+            let report = Pattern::parse_upstream_compatible(source)
+                .unwrap_or_else(|error| panic!("cannot parse {id}: {error}"));
+            assert_eq!(
+                report.pattern.matches_with_memory_map(&data, offset, &map),
                 Ok(expected),
                 "differential mismatch for {id}"
             );

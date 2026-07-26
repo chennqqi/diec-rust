@@ -140,13 +140,13 @@ pattern 仍可能缺失。
 
 输入由
 [`generate_signature_oracle_vectors.py`](../../tools/corpus/generate_signature_oracle_vectors.py)
-生成，共 27 个项目自有向量。原始输出保存为
+生成，共 34 个项目自有向量。原始输出保存为
 [`signature-oracle-qt5.json`](data/signature-oracle-qt5.json)，自动探针
 [`probe_signature_harness.py`](../../tools/upstream/probe_signature_harness.py)
 在禁网、512 MiB、1 CPU、128 PID 限制下验证 image revision、binary hash、
-输入 identity 及 baseline 原始 bytes。当前结果 27/27，stdout/baseline
+输入 identity 及 baseline 原始 bytes。当前结果 34/34，stdout/baseline
 SHA-256 均为
-`892708c4b2b62be84ace76943f251e2c982f361224fb58b271f9eaf0fcaf6a5c`。
+`b7c40ad64013a155d6af726e64c5bb39e5dbb207f084fe05717580de7a6fea05`。
 
 构建与复现：
 
@@ -167,6 +167,27 @@ python tools/upstream/probe_signature_harness.py \
   --expected-revision 74eaf505c250ab47e709024e9dc41657cd8f2254
 ```
 
+### 合成 memory-map 差分
+
+oracle schema v2 允许每个项目自有向量显式注入 `_MEMORY_MAP`，但仍调用未修改的
+固定 XBinary matcher。7 个向量覆盖：
+
+- PE：raw offset 有间隙、virtual address 连续时的 32-bit relative jump；
+- ELF：big-endian 16-bit relative jump；
+- Mach-O：跨 record 的 64-bit absolute address；
+- COM：相对跳转使用 16-bit offset wrap，忽略 address map；
+- MS-DOS：16-bit absolute address 加 `nCodeBase`，以及 32-bit
+  segment:offset 加 `nStartLoadOffset`；
+- AmigaHunk：16-bit relative value 不增加 operand width。
+
+纯 Rust `MemoryMap` port 与固定 oracle 7/7 一致。实验还确认
+`isOffsetValid` 在 `nBinarySize != 0` 时只检查整个 binary 范围，不要求 cursor
+落在某个 record；因此 Rust matcher 不能额外施加 record 连续性约束。
+
+这些是对 matcher 分支的合成验证，不证明各格式 parser 构造出的 map 正确。PE、
+ELF、Mach-O、COM、MS-DOS 和 AmigaHunk 的真实 `getMemoryMap` 仍需使用可重复生成
+的最小格式文件端到端验证。
+
 ## 纯 Rust spike
 
 隔离 spike 位于
@@ -177,11 +198,11 @@ python tools/upstream/probe_signature_harness.py \
 - strict 模式解析 312/317，拒绝上述 5 个宽松 pattern；
 - upstream-compatible 模式解析 317/317，并返回 6 个具体 quirk；
 - raw matcher 已覆盖 literal、wildcard、五类 byte predicate 和 bounded find；
-- relative offset/address 被解析为结构化 operation，但 raw matcher 明确返回
-  `MemoryMapRequired`；
+- relative offset/address 在没有上下文时明确返回 `MemoryMapRequired`，传入显式
+  `MemoryMap` 后覆盖通用映射、端序、COM/MS-DOS 和 AmigaHunk 特殊分支；
 - 空串、奇数 token、未知字符、无 find needle 和未闭合结构均有结构化错误；
 - 16 个 context-free `compareSignature` 向量与固定 Qt 5 XBinary oracle 16/16
-  一致。
+  一致，7 个 memory-map 向量 7/7 一致。
 
 机器摘要见
 [`signature-parser.json`](data/signature-parser.json)。
@@ -191,8 +212,8 @@ python tools/upstream/probe_signature_harness.py \
 1. 对固定 `db`/`db_extra` 做 AST 或 runtime-assisted 全调用点 inventory，覆盖
    非执行分支和动态拼接。
 2. 扩展现有 XBinary oracle，覆盖更多畸形组合、buffer boundary 和取消行为。
-3. 为 relative/address operation 提供 PE、ELF、Mach-O、COM/MSDOS、AmigaHunk
-   memory-map 向量。
+3. 用项目生成的最小 PE、ELF、Mach-O、COM/MSDOS、AmigaHunk 文件端到端验证
+   各格式 `getMemoryMap`，并与当前合成 map 结果交叉核对。
 4. 端到端调用 `Binary_Script::compare`，比较 header-signature fast path 与
    通用 matcher 的严格 `<` 边界差异。
 5. 独立实现并差分 `find_signature` 的 control-record、SigByte 和 plain-hex

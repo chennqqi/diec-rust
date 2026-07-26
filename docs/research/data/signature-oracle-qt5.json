@@ -1,5 +1,5 @@
 {
-    "case_count": 27,
+    "case_count": 34,
     "cases": [
         {
             "compare": true,
@@ -13,6 +13,8 @@
             "id": "quoted_literal_and_wildcard_match",
             "offset": 0,
             "pattern": " 7F 'ELF' ?? .. 01 ",
+            "search_offset": 0,
+            "search_size": 7,
             "valid": true,
             "valid_error": ""
         },
@@ -28,6 +30,8 @@
             "id": "literal_mismatch",
             "offset": 0,
             "pattern": "'MZ'",
+            "search_offset": 0,
+            "search_size": 2,
             "valid": true,
             "valid_error": ""
         },
@@ -43,6 +47,8 @@
             "id": "exact_match_at_eof",
             "offset": 1,
             "pattern": "4142",
+            "search_offset": 0,
+            "search_size": 3,
             "valid": true,
             "valid_error": ""
         },
@@ -58,6 +64,8 @@
             "id": "truncated_literal",
             "offset": 0,
             "pattern": "4142",
+            "search_offset": 0,
+            "search_size": 1,
             "valid": true,
             "valid_error": ""
         },
@@ -73,6 +81,8 @@
             "id": "all_byte_classes_match",
             "offset": 0,
             "pattern": "**%%!%_%%&",
+            "search_offset": 0,
+            "search_size": 5,
             "valid": true,
             "valid_error": ""
         },
@@ -88,6 +98,8 @@
             "id": "decimal_class_rejects_letter",
             "offset": 0,
             "pattern": "%&",
+            "search_offset": 0,
+            "search_size": 1,
             "valid": true,
             "valid_error": ""
         },
@@ -103,6 +115,8 @@
             "id": "ansi_del_compare_find_divergence",
             "offset": 0,
             "pattern": "%%",
+            "search_offset": 0,
+            "search_size": 1,
             "valid": true,
             "valid_error": ""
         },
@@ -118,6 +132,8 @@
             "id": "not_ansi_del_compare_find_divergence",
             "offset": 0,
             "pattern": "!%",
+            "search_offset": 0,
+            "search_size": 1,
             "valid": true,
             "valid_error": ""
         },
@@ -133,6 +149,8 @@
             "id": "find_at_window_end",
             "offset": 0,
             "pattern": "++'MZ'",
+            "search_offset": 0,
+            "search_size": 66,
             "valid": true,
             "valid_error": ""
         },
@@ -148,6 +166,8 @@
             "id": "find_outside_window",
             "offset": 0,
             "pattern": "++'MZ'",
+            "search_offset": 0,
+            "search_size": 67,
             "valid": true,
             "valid_error": ""
         },
@@ -163,6 +183,8 @@
             "id": "relative_offset_little_endian",
             "offset": 0,
             "pattern": "e9$$$$$$$$90",
+            "search_offset": 0,
+            "search_size": 6,
             "valid": true,
             "valid_error": ""
         },
@@ -178,6 +200,236 @@
             "id": "absolute_address_identity_map",
             "offset": 0,
             "pattern": "68########90",
+            "search_offset": 0,
+            "search_size": 6,
+            "valid": true,
+            "valid_error": ""
+        },
+        {
+            "compare": true,
+            "compare_error": "",
+            "converted": "e9$$$$$$$$90",
+            "converted_utf8_hex": "653924242424242424243930",
+            "data_hex": "e900000000000000000000000000000090",
+            "find_error": "",
+            "find_offset": 0,
+            "find_result_size": 1,
+            "id": "pe_relative_crosses_raw_gap",
+            "memory_map": {
+                "endian": "little",
+                "file_type": "pe",
+                "records": [
+                    {
+                        "address": 4198400,
+                        "offset": 0,
+                        "size": 5
+                    },
+                    {
+                        "address": 4198405,
+                        "offset": 16,
+                        "size": 1
+                    }
+                ]
+            },
+            "offset": 0,
+            "pattern": "e9$$$$$$$$90",
+            "search_offset": 0,
+            "search_size": 17,
+            "valid": true,
+            "valid_error": ""
+        },
+        {
+            "compare": true,
+            "compare_error": "",
+            "converted": "aa$$$$bb",
+            "converted_utf8_hex": "6161242424246262",
+            "data_hex": "aa00020000000000bb",
+            "find_error": "",
+            "find_offset": 0,
+            "find_result_size": 1,
+            "id": "elf_big_endian_relative_crosses_raw_gap",
+            "memory_map": {
+                "endian": "big",
+                "file_type": "elf",
+                "records": [
+                    {
+                        "address": 4096,
+                        "offset": 0,
+                        "size": 3
+                    },
+                    {
+                        "address": 4101,
+                        "offset": 8,
+                        "size": 1
+                    }
+                ]
+            },
+            "offset": 0,
+            "pattern": "aa$$$$bb",
+            "search_offset": 0,
+            "search_size": 9,
+            "valid": true,
+            "valid_error": ""
+        },
+        {
+            "compare": true,
+            "compare_error": "",
+            "converted": "68################90",
+            "converted_utf8_hex": "3638232323232323232323232323232323233930",
+            "data_hex": "6800100000010000000000000000000090",
+            "find_error": "",
+            "find_offset": 0,
+            "find_result_size": 1,
+            "id": "macho_64_absolute_crosses_raw_gap",
+            "memory_map": {
+                "endian": "little",
+                "file_type": "macho",
+                "records": [
+                    {
+                        "address": 4294967296,
+                        "offset": 0,
+                        "size": 9
+                    },
+                    {
+                        "address": 4294971392,
+                        "offset": 16,
+                        "size": 1
+                    }
+                ]
+            },
+            "offset": 0,
+            "pattern": "68################90",
+            "search_offset": 0,
+            "search_size": 17,
+            "valid": true,
+            "valid_error": ""
+        },
+        {
+            "compare": true,
+            "compare_error": "",
+            "converted": "eb$$90",
+            "converted_utf8_hex": "656224243930",
+            "data_hex": "00009000ebfc",
+            "find_error": "",
+            "find_offset": 4,
+            "find_result_size": 1,
+            "id": "com_relative_ignores_nonidentity_map",
+            "memory_map": {
+                "endian": "little",
+                "file_type": "com",
+                "records": [
+                    {
+                        "address": 8192,
+                        "offset": 2,
+                        "size": 1
+                    },
+                    {
+                        "address": 4096,
+                        "offset": 4,
+                        "size": 2
+                    }
+                ]
+            },
+            "offset": 4,
+            "pattern": "eb$$90",
+            "search_offset": 0,
+            "search_size": 6,
+            "valid": true,
+            "valid_error": ""
+        },
+        {
+            "compare": true,
+            "compare_error": "",
+            "converted": "68####90",
+            "converted_utf8_hex": "3638232323233930",
+            "data_hex": "681000000000000090",
+            "find_error": "",
+            "find_offset": 0,
+            "find_result_size": 1,
+            "id": "msdos_absolute_word_adds_code_base",
+            "memory_map": {
+                "code_base": 256,
+                "endian": "little",
+                "file_type": "msdos",
+                "records": [
+                    {
+                        "address": 0,
+                        "offset": 0,
+                        "size": 3
+                    },
+                    {
+                        "address": 272,
+                        "offset": 8,
+                        "size": 1
+                    }
+                ]
+            },
+            "offset": 0,
+            "pattern": "68####90",
+            "search_offset": 0,
+            "search_size": 9,
+            "valid": true,
+            "valid_error": ""
+        },
+        {
+            "compare": true,
+            "compare_error": "",
+            "converted": "68########90",
+            "converted_utf8_hex": "363823232323232323233930",
+            "data_hex": "68030002000000000000000000000000000000000000000000000000000000000000000000000090",
+            "find_error": "",
+            "find_offset": 0,
+            "find_result_size": 1,
+            "id": "msdos_far_pointer_uses_segment_address",
+            "memory_map": {
+                "endian": "little",
+                "file_type": "msdos",
+                "records": [
+                    {
+                        "address": 0,
+                        "offset": 0,
+                        "size": 40
+                    }
+                ],
+                "start_load_offset": 4
+            },
+            "offset": 0,
+            "pattern": "68########90",
+            "search_offset": 0,
+            "search_size": 40,
+            "valid": true,
+            "valid_error": ""
+        },
+        {
+            "compare": true,
+            "compare_error": "",
+            "converted": "aa$$$$bb",
+            "converted_utf8_hex": "6161242424246262",
+            "data_hex": "aa00040000000000bb",
+            "find_error": "",
+            "find_offset": 0,
+            "find_result_size": 1,
+            "id": "amigahunk_relative_word_omits_width_increment",
+            "memory_map": {
+                "endian": "big",
+                "file_type": "amigahunk",
+                "records": [
+                    {
+                        "address": 4096,
+                        "offset": 0,
+                        "size": 3
+                    },
+                    {
+                        "address": 4101,
+                        "offset": 8,
+                        "size": 1
+                    }
+                ]
+            },
+            "offset": 0,
+            "pattern": "aa$$$$bb",
+            "search_offset": 0,
+            "search_size": 9,
             "valid": true,
             "valid_error": ""
         },
@@ -193,6 +445,8 @@
             "id": "address_markers_around_ignored_base",
             "offset": 0,
             "pattern": "68##[5]##90",
+            "search_offset": 0,
+            "search_size": 6,
             "valid": true,
             "valid_error": ""
         },
@@ -208,6 +462,8 @@
             "id": "odd_hex_qbytearray_behavior",
             "offset": 0,
             "pattern": "abc",
+            "search_offset": 0,
+            "search_size": 2,
             "valid": true,
             "valid_error": ""
         },
@@ -223,6 +479,8 @@
             "id": "unterminated_quote_behavior",
             "offset": 0,
             "pattern": "'AMX ",
+            "search_offset": 0,
+            "search_size": 4,
             "valid": true,
             "valid_error": ""
         },
@@ -238,6 +496,8 @@
             "id": "odd_hex_and_zero_width_wildcard",
             "offset": 0,
             "pattern": "'RJP'3. 0000 0000",
+            "search_offset": 0,
+            "search_size": 8,
             "valid": true,
             "valid_error": ""
         },
@@ -253,6 +513,8 @@
             "id": "single_wildcard_is_zero_width",
             "offset": 0,
             "pattern": ".",
+            "search_offset": 0,
+            "search_size": 1,
             "valid": true,
             "valid_error": ""
         },
@@ -268,6 +530,8 @@
             "id": "single_not_null_is_zero_width_but_fails",
             "offset": 0,
             "pattern": "*",
+            "search_offset": 0,
+            "search_size": 1,
             "valid": true,
             "valid_error": ""
         },
@@ -283,6 +547,8 @@
             "id": "invalid_suffix_partially_compares",
             "offset": 0,
             "pattern": "41x",
+            "search_offset": 0,
+            "search_size": 1,
             "valid": false,
             "valid_error": "Invalid signature: 41x"
         },
@@ -298,6 +564,8 @@
             "id": "invalid_prefix_has_no_records",
             "offset": 0,
             "pattern": "x41",
+            "search_offset": 0,
+            "search_size": 1,
             "valid": false,
             "valid_error": "Invalid signature: x41"
         },
@@ -313,6 +581,8 @@
             "id": "percent_only_has_no_records",
             "offset": 0,
             "pattern": "%",
+            "search_offset": 0,
+            "search_size": 1,
             "valid": true,
             "valid_error": ""
         },
@@ -328,6 +598,8 @@
             "id": "empty_pattern",
             "offset": 0,
             "pattern": "",
+            "search_offset": 0,
+            "search_size": 0,
             "valid": false,
             "valid_error": ""
         },
@@ -343,6 +615,8 @@
             "id": "non_latin1_quote_becomes_zero",
             "offset": 0,
             "pattern": "'€'",
+            "search_offset": 0,
+            "search_size": 1,
             "valid": true,
             "valid_error": ""
         },
@@ -358,6 +632,8 @@
             "id": "tab_is_not_ignored",
             "offset": 0,
             "pattern": "41\t42",
+            "search_offset": 0,
+            "search_size": 1,
             "valid": false,
             "valid_error": "Invalid signature: 41\t42"
         },
@@ -375,6 +651,8 @@
             "id": "compare_strings_prefix",
             "offset": 0,
             "pattern": "41",
+            "search_offset": 0,
+            "search_size": 0,
             "valid": true,
             "valid_error": ""
         },
@@ -392,6 +670,8 @@
             "id": "compare_strings_wildcard_on_base",
             "offset": 0,
             "pattern": "4142",
+            "search_offset": 0,
+            "search_size": 0,
             "valid": true,
             "valid_error": ""
         },
@@ -409,12 +689,14 @@
             "id": "compare_strings_empty_pattern",
             "offset": 0,
             "pattern": "",
+            "search_offset": 0,
+            "search_size": 0,
             "valid": false,
             "valid_error": ""
         }
     ],
     "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
     "qt_version": "5.15.13",
-    "schema_version": 1,
+    "schema_version": 2,
     "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
 }

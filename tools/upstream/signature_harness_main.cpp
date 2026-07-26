@@ -49,6 +49,84 @@ bool isHexData(const QByteArray &text)
     return true;
 }
 
+bool configureMemoryMap(
+    const QJsonObject &input,
+    qint64 dataSize,
+    XBinary::_MEMORY_MAP *memoryMap,
+    QString *error
+)
+{
+    if (!input.contains("memory_map")) {
+        return true;
+    }
+
+    QJsonObject object = input.value("memory_map").toObject();
+    QString fileType = object.value("file_type").toString();
+    if (fileType == "binary") {
+        memoryMap->fileType = XBinary::FT_BINARY;
+    } else if (fileType == "pe") {
+        memoryMap->fileType = XBinary::FT_PE;
+    } else if (fileType == "elf") {
+        memoryMap->fileType = XBinary::FT_ELF;
+    } else if (fileType == "macho") {
+        memoryMap->fileType = XBinary::FT_MACHO;
+    } else if (fileType == "com") {
+        memoryMap->fileType = XBinary::FT_COM;
+    } else if (fileType == "msdos") {
+        memoryMap->fileType = XBinary::FT_MSDOS;
+    } else if (fileType == "amigahunk") {
+        memoryMap->fileType = XBinary::FT_AMIGAHUNK;
+    } else {
+        *error = QString("unsupported memory_map file_type: %1").arg(fileType);
+        return false;
+    }
+
+    QString endian = object.value("endian").toString();
+    if (endian == "little") {
+        memoryMap->endian = XBinary::ENDIAN_LITTLE;
+    } else if (endian == "big") {
+        memoryMap->endian = XBinary::ENDIAN_BIG;
+    } else {
+        *error = QString("unsupported memory_map endian: %1").arg(endian);
+        return false;
+    }
+
+    memoryMap->nModuleAddress = static_cast<XADDR>(
+        jsonInteger(object, "module_address", 0)
+    );
+    memoryMap->nCodeBase = jsonInteger(object, "code_base", 0);
+    memoryMap->nStartLoadOffset =
+        jsonInteger(object, "start_load_offset", 0);
+    memoryMap->nBinarySize = dataSize;
+    memoryMap->nImageSize = dataSize;
+    memoryMap->listRecords.clear();
+
+    QJsonArray records = object.value("records").toArray();
+    if (records.isEmpty()) {
+        *error = "memory_map records are empty";
+        return false;
+    }
+    for (const QJsonValue &value : records) {
+        if (!value.isObject()) {
+            *error = "memory_map record is not an object";
+            return false;
+        }
+        QJsonObject source = value.toObject();
+        XBinary::_MEMORY_RECORD record = {};
+        record.nOffset = jsonInteger(source, "offset", -1);
+        record.nAddress = static_cast<XADDR>(
+            jsonInteger(source, "address", -1)
+        );
+        record.nSize = jsonInteger(source, "size", 0);
+        if (record.nOffset < 0 || record.nSize <= 0) {
+            *error = "memory_map record has invalid offset or size";
+            return false;
+        }
+        memoryMap->listRecords.append(record);
+    }
+    return true;
+}
+
 QJsonObject runCase(const QJsonObject &input, QString *error)
 {
     QJsonObject result;
@@ -74,6 +152,9 @@ QJsonObject runCase(const QJsonObject &input, QString *error)
 
     XBinary binary(&buffer);
     XBinary::_MEMORY_MAP memoryMap = binary.getMemoryMap();
+    if (!configureMemoryMap(input, data.size(), &memoryMap, error)) {
+        return result;
+    }
     qint64 offset = jsonInteger(input, "offset", 0);
     qint64 findOffset = jsonInteger(input, "find_offset", 0);
     qint64 findSize =
@@ -119,6 +200,8 @@ QJsonObject runCase(const QJsonObject &input, QString *error)
     );
     result.insert("find_offset", findOffsetResult);
     result.insert("find_result_size", findResultSize);
+    result.insert("search_offset", findOffset);
+    result.insert("search_size", findSize);
     result.insert(
         "find_error",
         XBinary::getPdStructErrorString(&findState)
@@ -131,6 +214,9 @@ QJsonObject runCase(const QJsonObject &input, QString *error)
             "compare_strings",
             XBinary::compareSignatureStrings(baseSignature, pattern)
         );
+    }
+    if (input.contains("memory_map")) {
+        result.insert("memory_map", input.value("memory_map"));
     }
 
     return result;
@@ -186,7 +272,7 @@ int main(int argc, char *argv[])
     }
 
     QJsonObject output;
-    output.insert("schema_version", 1);
+    output.insert("schema_version", 2);
     output.insert("upstream_commit", UPSTREAM_COMMIT);
     output.insert("formats_commit", FORMATS_COMMIT);
     output.insert("qt_version", qVersion());

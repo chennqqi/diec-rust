@@ -25,10 +25,10 @@ class SignatureOracleVectorTests(unittest.TestCase):
         first = MODULE.manifest()
         second = MODULE.manifest()
         self.assertEqual(first, second)
-        self.assertEqual(first["case_count"], 27)
+        self.assertEqual(first["case_count"], 34)
         ids = [case["id"] for case in first["cases"]]
         self.assertEqual(len(ids), len(set(ids)))
-        self.assertEqual(first["generator"]["version"], 1)
+        self.assertEqual(first["generator"]["version"], 2)
 
     def test_serialization_round_trip_is_byte_stable(self):
         with tempfile.TemporaryDirectory() as directory:

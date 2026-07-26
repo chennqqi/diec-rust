@@ -47,6 +47,27 @@ EXPECTED_OBSERVATIONS = {
         "compare": True,
         "find_offset": 0,
     },
+    "pe_relative_crosses_raw_gap": {
+        "compare": True,
+    },
+    "elf_big_endian_relative_crosses_raw_gap": {
+        "compare": True,
+    },
+    "macho_64_absolute_crosses_raw_gap": {
+        "compare": True,
+    },
+    "com_relative_ignores_nonidentity_map": {
+        "compare": True,
+    },
+    "msdos_absolute_word_adds_code_base": {
+        "compare": True,
+    },
+    "msdos_far_pointer_uses_segment_address": {
+        "compare": True,
+    },
+    "amigahunk_relative_word_omits_width_increment": {
+        "compare": True,
+    },
 }
 
 
@@ -75,6 +96,8 @@ def validate_baseline(
         return ["case_list"]
     if baseline.get("upstream_commit") != expected_revision:
         failures.append("upstream_commit")
+    if baseline.get("schema_version") != vectors.get("schema_version"):
+        failures.append("schema_version")
     if baseline.get("formats_commit") != vectors.get("formats_commit"):
         failures.append("formats_commit")
     if baseline.get("case_count") != len(vector_cases):
@@ -102,6 +125,18 @@ def validate_baseline(
                 failures.append(f"{case_id}.{field}")
         if actual.get("offset") != vector.get("offset", 0):
             failures.append(f"{case_id}.offset")
+        if actual.get("search_offset") != vector.get("find_offset", 0):
+            failures.append(f"{case_id}.search_offset")
+        expected_search_size = vector.get(
+            "find_size",
+            len(vector.get("data_hex", "")) // 2
+            - vector.get("find_offset", 0),
+        )
+        if actual.get("search_size") != expected_search_size:
+            failures.append(f"{case_id}.search_size")
+        for field in ("base_signature", "memory_map"):
+            if field in vector and actual.get(field) != vector.get(field):
+                failures.append(f"{case_id}.{field}")
 
     for case_id, expected in EXPECTED_OBSERVATIONS.items():
         actual = baseline_by_id.get(case_id)
