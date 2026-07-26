@@ -335,7 +335,10 @@ pattern 静默返回 false。这不符合“不支持语法必须显式诊断”
 未被实现，且未发生记录截断。上游
 [`xbinary.h`](https://github.com/horsicq/Formats/blob/1151e7254fdee3c0294ff7095edbdd7bfccf8201/xbinary.h)
 还定义通配、ASCII、相对跳转等组合语法，因此不能用若干字符串特判近似
-`compare`/`fSig`；正式实现必须建立完整 parser 和差分测试。
+`compare`/`fSig`；固定语法审计、317-pattern inventory 与纯 Rust parser spike
+见 [`signature-language.md`](signature-language.md)。compatibility parser 已
+覆盖该动态清单，但 memory-map matcher 和全调用点差分尚未完成，当前运行时仍不
+替换五-pattern 特判。
 
 285 条“无异常”及 153 条 detection 都不能作为兼容证据：代理返回的 callable
 object 在 JavaScript 条件中可能为 truthy，已明显制造大量 false positive。即使

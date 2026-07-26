@@ -187,6 +187,19 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
             after["unsupported_signature_patterns_truncated_rule_count"],
             0,
         )
+        inventory = json.loads(
+            (ROOT / after["unsupported_signature_inventory"]).read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(
+            inventory["patterns_lf_sha256"],
+            after["unsupported_signature_patterns_lf_sha256"],
+        )
+        self.assertEqual(
+            inventory["pattern_count"],
+            after["unsupported_signature_pattern_count"],
+        )
         self.assertFalse(after["detection_evidence_valid"])
         self.assertEqual(len(after["error_rules"]), 7)
         self.assertIn("Binary.read_uint24", after["fallback_paths"])

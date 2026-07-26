@@ -1,0 +1,9 @@
+[package]
+name = "diec-signature-parser-spike"
+version = "0.0.0"
+edition = "2024"
+license = "MIT"
+publish = false
+
+[dev-dependencies]
+serde_json = "=1.0.145"

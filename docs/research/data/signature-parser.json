@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+  "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83",
+  "source_contracts": {
+    "binary_wrapper": {
+      "path": "modules/binary_script.cpp",
+      "symbols": [
+        "Binary_Script::compare",
+        "Binary_Script::fSig",
+        "Binary_Script::c"
+      ]
+    },
+    "normalization": {
+      "path": "xbinary.cpp",
+      "symbol": "XBinary::convertSignature",
+      "line": 11595
+    },
+    "parser": {
+      "path": "xbinary.cpp",
+      "symbol": "XBinary::getSignatureRecords",
+      "line": 15766
+    },
+    "matcher": {
+      "path": "xbinary.cpp",
+      "symbol": "XBinary::_compareSignature",
+      "line": 15814
+    },
+    "character_classes": {
+      "path": "xbinary.cpp",
+      "lines": [
+        7175,
+        7206,
+        7242,
+        7278,
+        7317
+      ]
+    }
+  },
+  "language": {
+    "operations": [
+      "literal hex bytes",
+      "quoted Latin-1 bytes",
+      "wildcard/skip",
+      "non-null bytes",
+      "ANSI bytes",
+      "non-ANSI bytes",
+      "non-ANSI and non-null bytes",
+      "decimal digit bytes",
+      "bounded byte find",
+      "relative offset",
+      "absolute address"
+    ],
+    "normalization": [
+      "remove U+0020 outside quoted strings",
+      "convert ? to . outside quoted strings",
+      "lowercase syntax outside quoted strings",
+      "convert each quoted QChar through toLatin1 and then to two hex nibbles"
+    ],
+    "documented_implementation_difference": {
+      "token": "%&",
+      "header_comment": "ANSI alphanumeric",
+      "matcher_behavior": "ASCII decimal digit 0x30-0x39 only"
+    }
+  },
+  "dynamic_inventory": {
+    "path": "docs/research/data/signature-pattern-inventory.json",
+    "sha256": "15a80990b981d6588d59818c4e6bc1947f35d076dd3dae468a1beaf8f8b27731",
+    "generator_sha256": "74f8733b824048a1d8dff1a75987e0a170d8211fdf9d2b8fa2775861adc4d48b",
+    "calling_rule_count": 32,
+    "pattern_call_count": 331,
+    "pattern_count": 317,
+    "patterns_lf_sha256": "0dc46f913e46c2a382b574a3dac8ae673aa209911494f6c0202dfbd4a808ae84",
+    "scope_complete": false
+  },
+  "spike": {
+    "path": "spikes/signature-parser",
+    "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)",
+    "cargo_toml_sha256": "492a5c5521a832006771de28eff65052ef8475d693bfb8ca61ba150eea965b64",
+    "cargo_lock_sha256": "2985224550a817be8fe4dea19a12c2db06cc21f199b985fba12fc23dedfa9279",
+    "source_sha256": "a1c6149ef1b7a8b60be3b3866dcd2aace4cf402b0fa31a0f531a80a6402f2019",
+    "runtime_dependencies": 0,
+    "strict_parse_count": 312,
+    "compatible_parse_count": 317,
+    "compatible_parse_error_count": 0,
+    "reported_quirks": {
+      "unterminated_quoted_string": 4,
+      "odd_hex_length": 1,
+      "odd_wildcard_length": 1
+    },
+    "context_free_match_operations": [
+      "literal bytes",
+      "wildcard/skip",
+      "five byte classes",
+      "bounded byte find"
+    ],
+    "context_required_operations": [
+      "relative offset",
+      "absolute address"
+    ],
+    "unknown_syntax_is_diagnostic": true
+  },
+  "qt5_oracle": {
+    "image": "diec-rust/upstream-oracle:74eaf505",
+    "qt_version": "5.15.13",
+    "expression": "QByteArray::fromHex(\"abc\").toHex()",
+    "result": "0abc"
+  },
+  "limitations": [
+    "the 317-pattern inventory is dynamic coverage for one fixed generated sample, not a complete static corpus inventory",
+    "relative-offset and absolute-address matching requires a format memory-map differential harness",
+    "XScanEngine header-signature fast-path boundary behavior is not yet implemented or compared",
+    "all malformed-pattern compatibility quirks still require focused XBinary oracle vectors"
+  ]
+}

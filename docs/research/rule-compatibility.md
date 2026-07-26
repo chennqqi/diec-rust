@@ -326,11 +326,14 @@ Boa 相同的 Nintendo legacy 规则，因此两个候选都未通过零差异�
 overlay 加 per-rule lexical wrapper 已让固定 292 条 Binary 规则全部加载；在该
 环境中选定调用 archive_DEFLATE、EA-XA 和 Nintendo `detect` 后，Qt 5 目标结果
 14/14 匹配，并发现由前一 `detect` 动态建立隐式全局 `bad` 的跨规则依赖。其余
-其余 `detect` 随后也已由 fallback-tolerant diagnostic 逐条尝试。首轮发现
+`detect` 随后也已由 fallback-tolerant diagnostic 逐条尝试。首轮发现
 253 条规则调用 34 类缺失路径；按固定上游契约补入基础读取方法后降为 233 条规则、
 19 类路径，但又显式识别出 32 条规则调用 317 种当前简化 `X.c` 不支持的 signature
 pattern。代理制造的结果不具兼容意义，完整 signature parser、HostApi 与逐条 Qt
-oracle 尚未验证。
+oracle 尚未验证。signature 的固定源码文法、实现怪癖、动态 pattern inventory 和
+纯 Rust parser spike 见
+[`signature-language.md`](signature-language.md)；兼容模式已解析动态 317/317，
+但 context-dependent matcher 与全调用点 inventory 仍未完成。
 
 固定 Binary 生命周期、init/include 首个命中规则、共享 global scope 和上游
 排序比较器缺陷见
@@ -339,7 +342,7 @@ oracle 尚未验证。
 
 ## 尚未完成
 
-- 对所有规则进行 AST 级语法统计。
+- 对所有规则进行 AST 级语法与 signature 调用点统计。
 - 自动生成完整宿主方法签名清单。
 - Qt 5 与 Qt 6 的 conformance oracle。
 - include 同名、重复、循环和异常实验。

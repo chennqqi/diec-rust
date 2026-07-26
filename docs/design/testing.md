@@ -185,6 +185,14 @@ oracle image 只读挂载语料，禁用网络，设置 CPU/memory/pid/time limi
 在独立临时目录执行；timeout 后终止整个 process tree。oracle crash、timeout 或
 identity mismatch 是 `ORACLE_ERROR`，不是 Rust pass。
 
+规则 signature 使用组件级 XBinary oracle，不能只看最终 CLI detection。每个向量
+同时固定 source pattern、规范化结果、parse validity、record sequence、输入 bytes、
+初始 offset、file type/memory map、返回值/最终 offset 或错误。至少覆盖 literal、
+quoted Latin-1、wildcard、五类 byte predicate、bounded find、relative offset、
+absolute address、奇数 token、未闭合 quote、无效后缀和所有 bounds。header
+signature fast path 与通用 matcher 分开跑同一向量，差异不得被规范化隐藏。动态
+317-pattern 清单只证明一个固定样本的已执行路径，不替代全调用点 inventory。
+
 升级上游时创建新的 baseline namespace；旧 baseline 不就地覆盖。先运行
 upstream-old vs upstream-new 报告，再决定 Rust compatibility target。
 

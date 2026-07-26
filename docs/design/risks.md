@@ -98,8 +98,9 @@ baseline 的变更都要检查本表。
   7 条异常，但仍有 233 条规则共调用 387 次 fallback、涉及 19 条动态路径；
   32 条规则还调用 317 种未支持 signature pattern。代理制造 153 条无效
   detection；只有 59 条未记录 fallback，且仍无逐条 Qt oracle。该结果是缺口
-  inventory，不是 285/292 兼容率。Qt 6、完整 signature parser 和 HostApi 也
-  尚未验证。
+  inventory，不是 285/292 兼容率。纯 Rust signature spike 已在显式兼容模式
+  解析动态 317/317，并对 6 个上游宽松点返回 quirk；但全调用点 inventory、
+  memory-map matcher、Qt 6 和完整 HostApi 仍未验证。
 - **缓解**：保持 `RuleRuntime`/`HostApi` port；建立全规则 inventory、最小失败
   fixture、host call trace；基于证据选 runtime，禁止静默转换规则。
 - **验证**：固定规则 100% discovered/parsed/loaded，zero silent unsupported；

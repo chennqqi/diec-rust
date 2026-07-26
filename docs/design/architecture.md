@@ -168,7 +168,10 @@ Binary 规则解析出 `detect`，但完整 HostApi 下逐条调用、其他 fil
 全 292 条 fallback-tolerant 调用首轮显示 253 条规则会触及 34 类未实现 HostApi；
 补入基础读取方法后仍有 233 条规则触及 19 类 fallback，32 条规则还调用 317 种
 未支持 signature pattern。所以“脚本无异常返回”也不得成为 backend 验收指标，
-signature parser 也不得把未知语法静默折叠为 false。
+signature parser 也不得把未知语法静默折叠为 false。固定文法与纯 Rust spike 见
+[`signature-language.md`](../research/signature-language.md)：parser 与
+context-free matcher 可以保持纯 Rust，但 relative/address 操作必须通过显式
+memory-map port 获得上下文，不能回读 runtime 或 CLI 状态。
 后续 ADR 必须基于固定规则集、宿主 API、资源中断、static link、许可证和跨平台
 实验选型。
 native runtime、FFI glue、runtime-specific handles 只存在于 `diec-rules`
