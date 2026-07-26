@@ -22,6 +22,7 @@ Last updated: 2026-07-27
 - [`binary-rule-lifecycle.md`](../research/binary-rule-lifecycle.md)
 - [`nested-scan-behavior.md`](../research/nested-scan-behavior.md)
 - [`cli-dependency-and-license.md`](../research/cli-dependency-and-license.md)
+- [`yara-license-closure.md`](../research/yara-license-closure.md)
 - [`upstream-build-baseline.md`](../research/upstream-build-baseline.md)
 
 ## 2. 评级与状态
@@ -179,7 +180,13 @@ baseline 的变更都要检查本表。
   217 个依赖文件；其中 Brotli/Zstandard 聚合源进入链接闭包但没有文件内
   license marker。内容追溯已固定到 Brotli 1.2.0 MIT 和 Zstandard
   1.6.0-dev BSD/GPLv2（后者官方 token 精确一致），但 XArchive 未携带相应
-  license/attribution，仍是明确未关闭的发布缺口。
+  license/attribution，仍是明确未关闭的发布缺口。XYara 的 Linux YARA target
+  又固定了 51 个编译单元/109 个依赖文件：YARA 主体映射官方 v4.5.2，
+  6 个 Bison 生成文件含 GPL-3.0-or-later + special exception，6 个 TLSH 文件
+  精确追溯到 `avast/tlshc` 的 Apache-2.0 OR BSD-3-Clause 与 Trend Micro
+  NOTICE；但 bundled tree 没有携带 YARA `COPYING` 或 tlshc
+  `LICENSE`/`NOTICE.txt`。10 个 Avast MIT Authenticode 文件在当前无 OpenSSL
+  target 中未进入闭包，其他平台/feature 仍待审。
 - **缓解**：每次导入/同步前生成 source/license inventory；保留原始 LICENSE、
   commit、path、hash 和 attribution；选型前由发布责任人复核组合。
 - **验证**：规则 bundle、source closure、binary dependency、samples 和 release
@@ -200,6 +207,10 @@ baseline 的变更都要检查本表。
 
 - **触发**：panic、越界、integer wrap、超大 reserve、OOM abort、hang 或 native
   sanitizer failure。
+- **当前证据**：固定 YARA v4.5.2 `-O3` build 对 `atoms.c` 四个写入位置产生
+  12 条 `-Wstringop-overflow=` warning，诊断涉及 4-byte atom 的 offsets
+  4/5/6。尚无 sanitizer 或可达输入证明，不能直接定性为漏洞或 false positive；
+  Rust atom extraction 必须独立使用受控长度并覆盖差分边界。
 - **缓解**：checked `u64` range、allocation cap、`try_reserve`、无 panic parser；
   unsafe 最小化；unit/property/fuzz/sanitizer/Miri。
 - **验证**：每个 parser 的合法/截断/畸形/边界/fuzz target 通过，历史 crash 全部

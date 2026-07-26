@@ -49,6 +49,13 @@ license inventory，不能用其缺失证明某目录没有独立条款。
 XCapstone 同时保存 Capstone BSD-3-Clause 和 LLVM/NCSA 来源文本，发布归属必须
 保留两者，不能被组件根 MIT 覆盖。
 
+XYara 的根 license candidate 只有组件 MIT，但
+[`yara-license-closure.md`](yara-license-closure.md) 已证明其 bundled YARA
+目录没有独立 license candidate。实际 YARA build closure 另含 YARA
+BSD-3-Clause、Bison GPL-3.0-or-later + special exception，以及无内联声明的
+TLSH 双许可证源码；因此根候选清单明确不能代表 XYara 的 source/default-build
+发布义务。
+
 ## 方法与复现
 
 工具
@@ -87,7 +94,9 @@ python tools\upstream\audit_component_licenses.py `
   CMake CLI 的 106 个 XArchive 编译单元和 217 个依赖文件；其中聚合
   Brotli/Zstandard 已完成固定官方版本/许可证追溯，但 XArchive 未保存对应文本，
   且 Brotli 仍有约 1.4% 的 64-token 区域未逐段分类；
-- XYara 内 bundled YARA、TLSH、authenticode 和生成 parser 的文件级条款；
+- XYara 内 bundled YARA 已完成当前 Linux CMake target 的 51-object/109-file
+  审计及 TLSH/Authenticode/Bison 分类；仍缺 Windows/macOS/OpenSSL/qmake
+  闭包和书面组合评审；
 - qmake/CMake、普通 scan/info/struct 和 GUI 的实际 object/link map 对应关系；
 - rules、YARA rules、PEiD rules 和 signatures 数据资产的逐路径许可结论；
 - 候选 Rust dependency graph、最终 static library 和发布包的 SBOM/NOTICE；

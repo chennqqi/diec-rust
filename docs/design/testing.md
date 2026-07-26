@@ -529,10 +529,14 @@ upstream 与 Rust 使用相同 bytes/options/database；无法等价的 case 不
   代替实际 object/link/file-header license closure；
 - bundled build closure：由固定 link line 和 `.o.d` 反推实际 compile
   source/header/archive，固定 path/hash/license marker，并拒绝对象数或链接关系
-  静默漂移；
+  静默漂移；默认构建但未进入主二进制的 target 仍计入 source/build
+  distribution 审计，不能只按最终 link closure 删除；
 - embedded source provenance：固定官方 remote/commit/license/generator/input，
   以去注释 token 精确比较或长 shingle coverage 证明来源；覆盖率不得代替未匹配
-  区域分类；
+  区域分类；无内联声明的 vendored 文件必须沿固定 blob/history 链恢复原
+  LICENSE/NOTICE；
+- native compiler diagnostics：保存规范化 warning path/line/option 和原始输出
+  hash；新增、消失或分类变化均需评审，不能把 warning 静默视为通过；
 - fuzz corpus replay、零未分类 crash；
 - benchmark 与 size/resource gate；
 - release binary/library hash、依赖和签名清单。

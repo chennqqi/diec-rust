@@ -133,8 +133,10 @@ LICENSE 的 vendored 代码。
 | `XArchive/3rdparty/zlib` | 是 | `src/zlib.h` | zlib License |
 | `XArchive/Algos` | 是，作为聚合源码 | `xarchive.cmake` | 含多种解码实现，来源和条款尚未完成逐文件分类，优先级高 |
 | `XCppfilt/3rdparty/cppfilt` | 否；默认构建 target | `cp-demangle.c` 等文件头 | GPL-2.0-or-later，并带文件级不限制链接的额外许可；另有 Public Domain 文件 |
-| `XYara/3rdparty/yara` | 否；默认构建 target | YARA 源文件头 | 主体为 BSD-3-Clause；没有随 vendored tree 保存统一 LICENSE 文件 |
-| YARA 生成 parser 文件 | 否；属于 `yara` target | `grammar.c` 等生成文件头 | GPL-3.0-or-later + Bison parser-skeleton special exception |
+| `XYara/3rdparty/yara` | 否；51-object 默认构建 target | 官方 YARA v4.5.2 内容映射与 109-file `.o.d` closure | 主体为 BSD-3-Clause；vendored tree 未保存官方 `COPYING` |
+| YARA 生成 parser 文件 | 否；6 个 `.c/.h` 实际进入 `yara` closure | `grammar.c/.h`、`hex_grammar.c/.h`、`re_grammar.c/.h` | GPL-3.0-or-later + Bison parser-skeleton special exception |
+| YARA bundled TLSH | 否；6 个文件实际进入 `yara` closure | YARA PR #1624 → `avast/tlshc@bb91fef...` blob chain | Apache-2.0 OR BSD-3-Clause；缺失原 `LICENSE`/Trend Micro `NOTICE.txt` |
+| YARA Authenticode parser | 否；当前无 `HAVE_LIBCRYPTO`，10/10 未进入 closure | 10 个 Avast 文件头与 `.o.d` | MIT；启用 OpenSSL 后必须重审 |
 | `XArchive/3rdparty/lzfse` | 当前 CMake target 未包含 | `src/LICENSE` | BSD-3-Clause；存在于源码树不等于进入当前产物 |
 
 上述分类是源码证据摘要，不构成法律意见。尤其不能把仓库根 MIT 机械地应用于
@@ -165,12 +167,20 @@ LICENSE 的 vendored 代码。
 [`embedded-compression-origins.md`](embedded-compression-origins.md) 已把它们
 分别固定到 Brotli 1.2.0 MIT 和 Zstandard 1.6.0-dev BSD/GPLv2 官方来源。
 
+XYara/YARA 当前 Linux target 也已由
+[`yara-license-closure.md`](yara-license-closure.md) 固定：51 个编译单元、
+109 个依赖文件，132 个 vendored YARA 文件全部映射官方 v4.5.2（129 个内容
+精确相同、3 个 MSVC compatibility patch）。TLSH 6 文件已追溯到
+`avast/tlshc` 的双许可证和 Trend Micro NOTICE；bundled tree 未携带这些文本。
+构建同时保留 12 条 `atoms.c -Wstringop-overflow=` warning，尚不能据此判定为
+可达越界或 false positive。
+
 ## 尚未完成
 
 - 构建固定上游并保存 CMake target graph、link map、动态依赖和符号表。
 - 为 XArchive 聚合 Brotli/Zstandard 恢复独立 LICENSE/NOTICE/attribution，并
-  完成 Brotli 剩余约 1.4% token 分类；对 YARA 内嵌的 TLSH/authenticode 等
-  代码完成逐文件审计。
+  完成 Brotli 剩余约 1.4% token 分类；为 YARA/TLSH 恢复独立
+  COPYING/LICENSE/NOTICE，并补 Windows/macOS/OpenSSL/qmake 闭包。
 - 区分正常扫描、`--info`、`--struct`、YARA/PEiD 数据和 GUI-only 路径的最小产物闭包。
 - 对 Qt 5 与 Qt 6 构建分别记录链接依赖和规则运行时行为。
 - 形成发布时必须携带的 LICENSE/NOTICE 清单；在审计完成前不得把当前表当作发布许可结论。

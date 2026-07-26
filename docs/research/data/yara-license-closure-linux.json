@@ -1,0 +1,1645 @@
+{
+  "authenticode_parser": {
+    "compiled_or_included_file_count": 0,
+    "files": [
+      {
+        "bytes": 8628,
+        "license_markers": [
+          "avast-mit",
+          "mit-permission"
+        ],
+        "path": "src/include/authenticode-parser/authenticode.h",
+        "sha256": "46dd0cc070a3d08545bfa61f2f0c1f5f336757b705e7bd7ae83b94fe1ddbd31d"
+      },
+      {
+        "bytes": 20367,
+        "license_markers": [
+          "avast-mit",
+          "mit-permission"
+        ],
+        "path": "src/modules/pe/authenticode-parser/authenticode.c",
+        "sha256": "7b3a2648d3794bde7f6d99d8402f333ddb4ccb4fb6e3c395e39faabf3bf97013"
+      },
+      {
+        "bytes": 17105,
+        "license_markers": [
+          "avast-mit",
+          "mit-permission"
+        ],
+        "path": "src/modules/pe/authenticode-parser/certificate.c",
+        "sha256": "1d13edba28d22182d1f16a99fa36da74ad181a6d727e7becc0538d4fb7207165"
+      },
+      {
+        "bytes": 1862,
+        "license_markers": [
+          "avast-mit",
+          "mit-permission"
+        ],
+        "path": "src/modules/pe/authenticode-parser/certificate.h",
+        "sha256": "1f9a9c7bef0a4984dc839f51f69da0befe7b24f3f9a55661dd155a337d3163e9"
+      },
+      {
+        "bytes": 21952,
+        "license_markers": [
+          "avast-mit",
+          "mit-permission"
+        ],
+        "path": "src/modules/pe/authenticode-parser/countersignature.c",
+        "sha256": "ba42bfb6737a51cdb71b1ba649233f3ff760a17c5c8deaab71767d2af0d98613"
+      },
+      {
+        "bytes": 2005,
+        "license_markers": [
+          "avast-mit",
+          "mit-permission"
+        ],
+        "path": "src/modules/pe/authenticode-parser/countersignature.h",
+        "sha256": "89927dcec41353f363a3044017498f5e319d07808d7d2e02645e98e9540e47f8"
+      },
+      {
+        "bytes": 2351,
+        "license_markers": [
+          "avast-mit",
+          "mit-permission"
+        ],
+        "path": "src/modules/pe/authenticode-parser/helper.c",
+        "sha256": "2e3396c1c0585106c6c5b9eaa5bbfaa9e1fe6d023561c694888f431ad84b95fa"
+      },
+      {
+        "bytes": 2228,
+        "license_markers": [
+          "avast-mit",
+          "mit-permission"
+        ],
+        "path": "src/modules/pe/authenticode-parser/helper.h",
+        "sha256": "f791902580dfa21947e11aaf22c154059189fdb12b4f6570d7a2cd1c964d1e56"
+      },
+      {
+        "bytes": 3267,
+        "license_markers": [
+          "avast-mit",
+          "mit-permission"
+        ],
+        "path": "src/modules/pe/authenticode-parser/structs.c",
+        "sha256": "24921f3d5d55ad18d9c596e40e20bb991625be9fbd0f50f86454da19fd80a768"
+      },
+      {
+        "bytes": 3079,
+        "license_markers": [
+          "avast-mit",
+          "mit-permission"
+        ],
+        "path": "src/modules/pe/authenticode-parser/structs.h",
+        "sha256": "7103f36e44c7ff5696c7d0460f1520ad5374be4aa56da9b2d0567899f58a90ed"
+      }
+    ],
+    "license_expression": "MIT",
+    "vendored_file_count": 10
+  },
+  "build": {
+    "archive_members": [
+      "ahocorasick.c.o",
+      "arena.c.o",
+      "atoms.c.o",
+      "base64.c.o",
+      "bitmask.c.o",
+      "compiler.c.o",
+      "endian.c.o",
+      "exec.c.o",
+      "exefiles.c.o",
+      "filemap.c.o",
+      "grammar.c.o",
+      "_hash.c.o",
+      "hex_grammar.c.o",
+      "hex_lexer.c.o",
+      "lexer.c.o",
+      "libyara.c.o",
+      "mem.c.o",
+      "modules.c.o",
+      "console.c.o",
+      "dex.c.o",
+      "dotnet.c.o",
+      "elf.c.o",
+      "math.c.o",
+      "macho.c.o",
+      "pe.c.o",
+      "pe_utils.c.o",
+      "string.c.o",
+      "tests.c.o",
+      "time.c.o",
+      "notebook.c.o",
+      "object.c.o",
+      "parser.c.o",
+      "proc.c.o",
+      "none.c.o",
+      "re.c.o",
+      "re_grammar.c.o",
+      "re_lexer.c.o",
+      "rules.c.o",
+      "scan.c.o",
+      "scanner.c.o",
+      "sizedstr.c.o",
+      "stack.c.o",
+      "stopwatch.c.o",
+      "stream.c.o",
+      "strutils.c.o",
+      "threading.c.o",
+      "simple_str.c.o",
+      "tlsh.c.o",
+      "tlsh_impl.c.o",
+      "tlsh_util.c.o",
+      "linux.c.o"
+    ],
+    "archive_path": "src/XYara/3rdparty/yara/libyara.a",
+    "archive_sha256": "2a7db6ee2b0191a6092afe3c27640e98702d2b363d01d93e33afe7d2a29d85c9",
+    "compile_definitions": [
+      "-DBUCKETS_128",
+      "-DCHECKSUM_1B",
+      "-DHAVE_CLOCK_GETTIME",
+      "-DHAVE_MEMMEM",
+      "-DHAVE_SCAN_PROC_IMPL",
+      "-DHAVE_STDBOOL_H",
+      "-DHAVE_TIMEGM",
+      "-DUSE_LINUX_PROC"
+    ],
+    "compile_flags": [
+      "-O3",
+      "-DNDEBUG",
+      "-std=gnu11",
+      "-fPIC"
+    ],
+    "flags_path": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/flags.make",
+    "flags_sha256": "6b94f241769281fde0a1f21d95e488ee6bf237d6bf157bbc7bd83c4ce6d0f09c",
+    "normalized_stderr_sha256": "e81d416f008a7bc28ffcd944c73c6817a9ff7f2f1424ae10d257191a65451bf1",
+    "object_count": 51,
+    "target": "yara",
+    "warnings": [
+      {
+        "line": 730,
+        "message": "writing 1 byte into a region of size 0",
+        "option": "-Wstringop-overflow=",
+        "path": "src/atoms.c"
+      },
+      {
+        "line": 731,
+        "message": "writing 1 byte into a region of size 0",
+        "option": "-Wstringop-overflow=",
+        "path": "src/atoms.c"
+      },
+      {
+        "line": 730,
+        "message": "writing 1 byte into a region of size 0",
+        "option": "-Wstringop-overflow=",
+        "path": "src/atoms.c"
+      },
+      {
+        "line": 731,
+        "message": "writing 1 byte into a region of size 0",
+        "option": "-Wstringop-overflow=",
+        "path": "src/atoms.c"
+      },
+      {
+        "line": 730,
+        "message": "writing 1 byte into a region of size 0",
+        "option": "-Wstringop-overflow=",
+        "path": "src/atoms.c"
+      },
+      {
+        "line": 731,
+        "message": "writing 1 byte into a region of size 0",
+        "option": "-Wstringop-overflow=",
+        "path": "src/atoms.c"
+      },
+      {
+        "line": 1396,
+        "message": "writing 1 byte into a region of size 0",
+        "option": "-Wstringop-overflow=",
+        "path": "src/atoms.c"
+      },
+      {
+        "line": 1397,
+        "message": "writing 1 byte into a region of size 0",
+        "option": "-Wstringop-overflow=",
+        "path": "src/atoms.c"
+      },
+      {
+        "line": 1396,
+        "message": "writing 1 byte into a region of size 0",
+        "option": "-Wstringop-overflow=",
+        "path": "src/atoms.c"
+      },
+      {
+        "line": 1397,
+        "message": "writing 1 byte into a region of size 0",
+        "option": "-Wstringop-overflow=",
+        "path": "src/atoms.c"
+      },
+      {
+        "line": 1396,
+        "message": "writing 1 byte into a region of size 0",
+        "option": "-Wstringop-overflow=",
+        "path": "src/atoms.c"
+      },
+      {
+        "line": 1397,
+        "message": "writing 1 byte into a region of size 0",
+        "option": "-Wstringop-overflow=",
+        "path": "src/atoms.c"
+      }
+    ]
+  },
+  "bundled_license_candidates": [],
+  "closure_file_count": 109,
+  "compile_source_count": 51,
+  "compile_units": [
+    {
+      "dependency_count": 6,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/_hash.c.o.d",
+      "source": "src/_hash.c"
+    },
+    {
+      "dependency_count": 21,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/ahocorasick.c.o.d",
+      "source": "src/ahocorasick.c"
+    },
+    {
+      "dependency_count": 9,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/arena.c.o.d",
+      "source": "src/arena.c"
+    },
+    {
+      "dependency_count": 20,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/atoms.c.o.d",
+      "source": "src/atoms.c"
+    },
+    {
+      "dependency_count": 18,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/base64.c.o.d",
+      "source": "src/base64.c"
+    },
+    {
+      "dependency_count": 4,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/bitmask.c.o.d",
+      "source": "src/bitmask.c"
+    },
+    {
+      "dependency_count": 29,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/compiler.c.o.d",
+      "source": "src/compiler.c"
+    },
+    {
+      "dependency_count": 3,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/endian.c.o.d",
+      "source": "src/endian.c"
+    },
+    {
+      "dependency_count": 44,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/exec.c.o.d",
+      "source": "src/exec.c"
+    },
+    {
+      "dependency_count": 22,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/exefiles.c.o.d",
+      "source": "src/exefiles.c"
+    },
+    {
+      "dependency_count": 5,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/filemap.c.o.d",
+      "source": "src/filemap.c"
+    },
+    {
+      "dependency_count": 30,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/grammar.c.o.d",
+      "source": "src/grammar.c"
+    },
+    {
+      "dependency_count": 19,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/hex_grammar.c.o.d",
+      "source": "src/hex_grammar.c"
+    },
+    {
+      "dependency_count": 22,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/hex_lexer.c.o.d",
+      "source": "src/hex_lexer.c"
+    },
+    {
+      "dependency_count": 24,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/lexer.c.o.d",
+      "source": "src/lexer.c"
+    },
+    {
+      "dependency_count": 27,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/libyara.c.o.d",
+      "source": "src/libyara.c"
+    },
+    {
+      "dependency_count": 4,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/mem.c.o.d",
+      "source": "src/mem.c"
+    },
+    {
+      "dependency_count": 25,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/modules.c.o.d",
+      "source": "src/modules.c"
+    },
+    {
+      "dependency_count": 26,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/modules/console/console.c.o.d",
+      "source": "src/modules/console/console.c"
+    },
+    {
+      "dependency_count": 27,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/modules/dex/dex.c.o.d",
+      "source": "src/modules/dex/dex.c"
+    },
+    {
+      "dependency_count": 32,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/modules/dotnet/dotnet.c.o.d",
+      "source": "src/modules/dotnet/dotnet.c"
+    },
+    {
+      "dependency_count": 33,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/modules/elf/elf.c.o.d",
+      "source": "src/modules/elf/elf.c"
+    },
+    {
+      "dependency_count": 27,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/modules/macho/macho.c.o.d",
+      "source": "src/modules/macho/macho.c"
+    },
+    {
+      "dependency_count": 26,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/modules/math/math.c.o.d",
+      "source": "src/modules/math/math.c"
+    },
+    {
+      "dependency_count": 31,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/modules/pe/pe.c.o.d",
+      "source": "src/modules/pe/pe.c"
+    },
+    {
+      "dependency_count": 20,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/modules/pe/pe_utils.c.o.d",
+      "source": "src/modules/pe/pe_utils.c"
+    },
+    {
+      "dependency_count": 26,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/modules/string/string.c.o.d",
+      "source": "src/modules/string/string.c"
+    },
+    {
+      "dependency_count": 24,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/modules/tests/tests.c.o.d",
+      "source": "src/modules/tests/tests.c"
+    },
+    {
+      "dependency_count": 24,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/modules/time/time.c.o.d",
+      "source": "src/modules/time/time.c"
+    },
+    {
+      "dependency_count": 5,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/notebook.c.o.d",
+      "source": "src/notebook.c"
+    },
+    {
+      "dependency_count": 24,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/object.c.o.d",
+      "source": "src/object.c"
+    },
+    {
+      "dependency_count": 32,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/parser.c.o.d",
+      "source": "src/parser.c"
+    },
+    {
+      "dependency_count": 23,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/proc.c.o.d",
+      "source": "src/proc.c"
+    },
+    {
+      "dependency_count": 20,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/proc/linux.c.o.d",
+      "source": "src/proc/linux.c"
+    },
+    {
+      "dependency_count": 1,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/proc/none.c.o.d",
+      "source": "src/proc/none.c"
+    },
+    {
+      "dependency_count": 28,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/re.c.o.d",
+      "source": "src/re.c"
+    },
+    {
+      "dependency_count": 19,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/re_grammar.c.o.d",
+      "source": "src/re_grammar.c"
+    },
+    {
+      "dependency_count": 25,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/re_lexer.c.o.d",
+      "source": "src/re_lexer.c"
+    },
+    {
+      "dependency_count": 26,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/rules.c.o.d",
+      "source": "src/rules.c"
+    },
+    {
+      "dependency_count": 23,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/scan.c.o.d",
+      "source": "src/scan.c"
+    },
+    {
+      "dependency_count": 31,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/scanner.c.o.d",
+      "source": "src/scanner.c"
+    },
+    {
+      "dependency_count": 16,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/simple_str.c.o.d",
+      "source": "src/simple_str.c"
+    },
+    {
+      "dependency_count": 17,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/sizedstr.c.o.d",
+      "source": "src/sizedstr.c"
+    },
+    {
+      "dependency_count": 6,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/stack.c.o.d",
+      "source": "src/stack.c"
+    },
+    {
+      "dependency_count": 3,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/stopwatch.c.o.d",
+      "source": "src/stopwatch.c"
+    },
+    {
+      "dependency_count": 2,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/stream.c.o.d",
+      "source": "src/stream.c"
+    },
+    {
+      "dependency_count": 5,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/strutils.c.o.d",
+      "source": "src/strutils.c"
+    },
+    {
+      "dependency_count": 3,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/threading.c.o.d",
+      "source": "src/threading.c"
+    },
+    {
+      "dependency_count": 3,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/tlshc/tlsh.c.o.d",
+      "source": "src/tlshc/tlsh.c"
+    },
+    {
+      "dependency_count": 4,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/tlshc/tlsh_impl.c.o.d",
+      "source": "src/tlshc/tlsh_impl.c"
+    },
+    {
+      "dependency_count": 2,
+      "dependency_file": "src/XYara/3rdparty/yara/CMakeFiles/yara.dir/src/tlshc/tlsh_util.c.o.d",
+      "source": "src/tlshc/tlsh_util.c"
+    }
+  ],
+  "component_lock": {
+    "path": "upstream/components.lock.toml",
+    "sha256": "9fabcaf6a0062fcae7007ea5af13a98876e8a6e08b3e2e4727fdff06d974c63c"
+  },
+  "files": [
+    {
+      "bytes": 12438,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/_hash.c",
+      "sha256": "75483950bde55fd30976a509ccc309b2087aed5059c85b46fd74670b85eced71"
+    },
+    {
+      "bytes": 25787,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/ahocorasick.c",
+      "sha256": "fa7efe0c81b69e392050ec933927dd3ee68d8cd3646a792aafbd86044f5935fe"
+    },
+    {
+      "bytes": 20907,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/arena.c",
+      "sha256": "89f0b9490252ee8b7695f74e998c9cc93992b51fbf216e20ed5843123258386a"
+    },
+    {
+      "bytes": 42952,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/atoms.c",
+      "sha256": "ab9e9e6979d8ed7caccc4ce542b62adf33bda4b2c75306849248a1d2a12ba52b"
+    },
+    {
+      "bytes": 13268,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/base64.c",
+      "sha256": "2320b0291b2ba95093c45ab1005d169cd8b3f4c1e350cbf5ac7910c0459e9ac9"
+    },
+    {
+      "bytes": 4102,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/bitmask.c",
+      "sha256": "29dc72caf8eae3c1b4d5787f92de230f8a55517c9ccff3968e2f894227bc6a3f"
+    },
+    {
+      "bytes": 29786,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/compiler.c",
+      "sha256": "62705fc9703947ffb41918e50f1bb489d941f57fff341a75fe96e03682a8d131"
+    },
+    {
+      "bytes": 5601,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/crypto.h",
+      "sha256": "8d95d9a52fa111350932ebc8859850a59b1c1526f13da81192b36486fe660ab2"
+    },
+    {
+      "bytes": 2164,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/endian.c",
+      "sha256": "d18afc68bcaf21e7db096e54f578542df8913c0b9b03e8dedc55daf75df31908"
+    },
+    {
+      "bytes": 12617,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/exception.h",
+      "sha256": "438cc9153f454ea966c06c90577b08c41777a4397dbf68b036bf222e7334ed08"
+    },
+    {
+      "bytes": 64548,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/exec.c",
+      "sha256": "f268485ff189741dd73563a87a2d7cb627bde5c9623c1ddce82e0be9b19fbd36"
+    },
+    {
+      "bytes": 11772,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/exefiles.c",
+      "sha256": "0fd408acbe6e296a6eb3f9e2865fee49bd08081e245c38d0178ae25c5f1ce9a0"
+    },
+    {
+      "bytes": 10447,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/filemap.c",
+      "sha256": "9283c8f6a114c7fb2fb0b3218431e8d3b9443bb24b53c9a7dde7472c13078114"
+    },
+    {
+      "bytes": 190363,
+      "license_markers": [
+        "bison-gpl3",
+        "bison-special-exception"
+      ],
+      "path": "src/grammar.c",
+      "sha256": "b57c3cef03e49556bb7210f66681bfdb126d0008adba4b5b2730f546a8139735"
+    },
+    {
+      "bytes": 7653,
+      "license_markers": [
+        "bison-gpl3",
+        "bison-special-exception"
+      ],
+      "path": "src/grammar.h",
+      "sha256": "acd9f5b414659f7a9506b1129489b2b6376f402db461f9204934398aa8b8b0b9"
+    },
+    {
+      "bytes": 54980,
+      "license_markers": [
+        "bison-gpl3",
+        "bison-special-exception"
+      ],
+      "path": "src/hex_grammar.c",
+      "sha256": "c558c83099c5dd874024d97e18dec1064b31c3991cae30ebe44045a10e3a7f24"
+    },
+    {
+      "bytes": 3126,
+      "license_markers": [
+        "bison-gpl3",
+        "bison-special-exception"
+      ],
+      "path": "src/hex_grammar.h",
+      "sha256": "9582342351b0fcf656554eb50a0d6de99565d39e26ff2d2d18bab3f56976a256"
+    },
+    {
+      "bytes": 68018,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/hex_lexer.c",
+      "sha256": "de4114a1801c5c906c64eeec007f93cbb93e02ab055c293937a5503536845889"
+    },
+    {
+      "bytes": 5601,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/../crypto.h",
+      "sha256": "8d95d9a52fa111350932ebc8859850a59b1c1526f13da81192b36486fe660ab2"
+    },
+    {
+      "bytes": 12617,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/../exception.h",
+      "sha256": "438cc9153f454ea966c06c90577b08c41777a4397dbf68b036bf222e7334ed08"
+    },
+    {
+      "bytes": 1907,
+      "license_markers": [],
+      "path": "src/include/tlshc/tlsh.h",
+      "sha256": "d14dabca6ec49160654ff86161d9029a71cb2f5beb319fd2d64b512d2e36b7fa"
+    },
+    {
+      "bytes": 1846,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara.h",
+      "sha256": "2819b2b0321fe8dac3e14adda3bc171961f2a6c9233bc26166b6b72d26d25442"
+    },
+    {
+      "bytes": 2669,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/ahocorasick.h",
+      "sha256": "4cbae741a98bf5f1c7c350162029777f5bf356f4a596e30148be7f70e179d209"
+    },
+    {
+      "bytes": 8996,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/arena.h",
+      "sha256": "5e36573ae07d478b144816c207322b38c7f1a7da6eb9455af03f27832a3fbb48"
+    },
+    {
+      "bytes": 3738,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/atoms.h",
+      "sha256": "8f973ad37b6088ef1747dae2b055c59683622f06eb012df37d3617f1a3e29bfd"
+    },
+    {
+      "bytes": 1865,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/base64.h",
+      "sha256": "5792453107062ce691fd762ba34ace4900412cd770bf3840e7ed462bbcbf3d71"
+    },
+    {
+      "bytes": 3476,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/bitmask.h",
+      "sha256": "b279318f043869a21944e84926a31e81233e0b5eaac29811e63a2c9e3a2d4518"
+    },
+    {
+      "bytes": 14201,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/compiler.h",
+      "sha256": "36345fba2f860ac2f6dc0975df52ae5015df1eb45e974ddd4fbd8fcaa08e4567"
+    },
+    {
+      "bytes": 2858,
+      "license_markers": [],
+      "path": "src/include/yara/dex.h",
+      "sha256": "3bbebcba43470a4e8805e49f85a3f956ba413632a130fac41ae433b5f3fbdb2b"
+    },
+    {
+      "bytes": 13273,
+      "license_markers": [],
+      "path": "src/include/yara/dotnet.h",
+      "sha256": "214056e7d6e2e18f06f49e5de193631efe90dfd50f33f2b6ced10b7bafcc2613"
+    },
+    {
+      "bytes": 10628,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/elf.h",
+      "sha256": "56986cff58f721ec5553b3e179172e73817491e4c229b210acadfa88233b496f"
+    },
+    {
+      "bytes": 527,
+      "license_markers": [],
+      "path": "src/include/yara/elf_utils.h",
+      "sha256": "0a6ed5ec37906b7766aae2b021a5393b154c350d18627f463c4374c4b294df2b"
+    },
+    {
+      "bytes": 2951,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/endian.h",
+      "sha256": "2c5c762699058708f7d0800f1b0ce1ac42e2796f32b46baae278b32ca2135591"
+    },
+    {
+      "bytes": 7076,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/error.h",
+      "sha256": "aa74aedc2d6e61544d67e738283c2d9d92d5f546ae0b6b200d07ee4c9855be8b"
+    },
+    {
+      "bytes": 7826,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/exec.h",
+      "sha256": "457d5846faed9e0c2ae4f9d387f99db82dddbd6633938b1d6982c51dd681a109"
+    },
+    {
+      "bytes": 1748,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/exefiles.h",
+      "sha256": "39340307cce61a0fda00d606dfbedf6a324c17ca3a97c3f74014b7662fbdf277"
+    },
+    {
+      "bytes": 2451,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/filemap.h",
+      "sha256": "611ac4e5968f2b07001ef70fb9ba28a0e2de13b89c78c09dfd8ac4c78cd369ff"
+    },
+    {
+      "bytes": 4831,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/globals.h",
+      "sha256": "b64bb62e3be563587d72bc5cc688d7613b3eacd6606d9c45d997e90a518af03f"
+    },
+    {
+      "bytes": 3829,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/hash.h",
+      "sha256": "a54b207f80b4b9b45434cd1974ca8b1d980ee7eb285216eccfee2fa880ee71f5"
+    },
+    {
+      "bytes": 3765,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/hex_lexer.h",
+      "sha256": "240fe6ed065286d6bf3b1310755e615697b580d8bc5d527a69b1698129f08e50"
+    },
+    {
+      "bytes": 3061,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/integers.h",
+      "sha256": "da676b4fe8bf2c08c2982a5f08bb220e3b4da02f7f1d5706658ea9204bf2bc79"
+    },
+    {
+      "bytes": 3993,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/lexer.h",
+      "sha256": "9a536dc576bced2525d7e8543c24728c8a5ba281c626d57ffb91a0417861e93d"
+    },
+    {
+      "bytes": 3959,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/libyara.h",
+      "sha256": "1d08be1e41cc9311372a634efbd576dfaa2728020eb7b88ab1b3b318171bbd3a"
+    },
+    {
+      "bytes": 6394,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/limits.h",
+      "sha256": "5b9fc80cd44a2e3b62fcf76ee5f5cd635a0d06fb3ca889c259b07a5ae26208d5"
+    },
+    {
+      "bytes": 16232,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/macho.h",
+      "sha256": "a57021ebc40f64e9020ada7e3d54730c9ea2c9655260a2c991bfab874b9787c5"
+    },
+    {
+      "bytes": 2075,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/mem.h",
+      "sha256": "5644fa958e4f531626fac9991098e3625f12ce592eb20d7acbb133c293eed9e1"
+    },
+    {
+      "bytes": 14641,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/modules.h",
+      "sha256": "672ceda4a1643df849d10fda41c76a2c2df090744e4b22688590605cc738da94"
+    },
+    {
+      "bytes": 356,
+      "license_markers": [],
+      "path": "src/include/yara/notebook.h",
+      "sha256": "e6b27b8148cf5688cc40de17d5c39b30de95d55321d7330b2025f65722e1e57b"
+    },
+    {
+      "bytes": 4397,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/object.h",
+      "sha256": "ead1df44e3a8167be3089b002adb9248b543836d883512c4f6add8f99286af80"
+    },
+    {
+      "bytes": 4075,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/parser.h",
+      "sha256": "ab2de7f15856ec2efb59c81f925946ac4ff6d68f71c988584c49e07c747539c1"
+    },
+    {
+      "bytes": 27330,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/pe.h",
+      "sha256": "c4bf7f8bc87cccc30fa0a61e319bf591e7b4f26fce3ee95596f7ad5743ddc1d5"
+    },
+    {
+      "bytes": 2188,
+      "license_markers": [],
+      "path": "src/include/yara/pe_utils.h",
+      "sha256": "fd696174896d6f606fbee1f0b67900f59fbc028fffcbb166d9745ca4119fb459"
+    },
+    {
+      "bytes": 2183,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/proc.h",
+      "sha256": "c533188207b7e39b303b7310798c5f498594ea0672e902d8f5f260a33a195e88"
+    },
+    {
+      "bytes": 5821,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/re.h",
+      "sha256": "79789f2b975247882d0ca4c0adcfd9745aa71dfe9b1928d48ca559e2ca155fc9"
+    },
+    {
+      "bytes": 3985,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/re_lexer.h",
+      "sha256": "0f6933057262ea42a404ee2c2aaa2a25ff21bbb678c7c195ec139824d2951ae8"
+    },
+    {
+      "bytes": 5095,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/rules.h",
+      "sha256": "b728da96c62adc685898497e2f2c281f212bf79af71684291644a7321165d081"
+    },
+    {
+      "bytes": 2055,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/scan.h",
+      "sha256": "f0c5845a8cb7fb6efa027473915ef16cd499b4ae71ca44ae1484b5cb46cbdcc7"
+    },
+    {
+      "bytes": 3306,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/scanner.h",
+      "sha256": "b9d33db3d19af72317beec9fa110b170262dceaa6484b07093ab4715a37b39c3"
+    },
+    {
+      "bytes": 489,
+      "license_markers": [],
+      "path": "src/include/yara/simple_str.h",
+      "sha256": "1fec51b1ed5ddeab96c965050ec5c0f6e3c177c7629f13a341552f70be24b8e9"
+    },
+    {
+      "bytes": 2883,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/sizedstr.h",
+      "sha256": "b0b52d6c77f3823a783774e072d3ec1f2f282b748d46734fc2ba92244bc30aee"
+    },
+    {
+      "bytes": 2249,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/stack.h",
+      "sha256": "2be47608e4d3719045a45cacb09de1f8215e29918f19ba0e0b14d9b6799f3fc7"
+    },
+    {
+      "bytes": 2352,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/stopwatch.h",
+      "sha256": "44a63485a2e012f329cd8f795e92c97bf9b5201a6f776dd8716c3625208c13bd"
+    },
+    {
+      "bytes": 2102,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/stream.h",
+      "sha256": "216597a15636608ccb02f1b93ba1ebada3b9a6ea702a7ea090307aeb58b26b68"
+    },
+    {
+      "bytes": 3031,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/strutils.h",
+      "sha256": "df73f341f271c89c0169f73b4a7ae65c53e665a2c76cd52ad0151d6fa992781f"
+    },
+    {
+      "bytes": 2310,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/threading.h",
+      "sha256": "62496e30d11a1e249275b5c81de66dd9ae6c0f7eacd0178f300e1942019e96e4"
+    },
+    {
+      "bytes": 30579,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/types.h",
+      "sha256": "2a9762f4dc199fd42faaec7ec447cbdd270eb863005e3a51344f2b34fc943121"
+    },
+    {
+      "bytes": 3151,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/unaligned.h",
+      "sha256": "803696a43ca7206ed718dc4936152f603f9d5bdefadfdd33117e489ef64e712c"
+    },
+    {
+      "bytes": 5296,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/include/yara/utils.h",
+      "sha256": "61a2ec3d354e45c0fe016eaca791f442f9eb105dd689f672a001d0ea46311e6d"
+    },
+    {
+      "bytes": 98769,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/lexer.c",
+      "sha256": "015c0d1d8126274ef84a4bceefbd59ead11c51799fe925b42a4f49211dddf820"
+    },
+    {
+      "bytes": 19998,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/libyara.c",
+      "sha256": "170b12b96a8d77d04e127e3999fae9ea233a7661ccc80c745778e46af50a7b3c"
+    },
+    {
+      "bytes": 3410,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/mem.c",
+      "sha256": "1cd38478d9226927a95fdc53cc2ddb01b86b1cd16e595979e7fadccbf6cc9351"
+    },
+    {
+      "bytes": 5712,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/modules.c",
+      "sha256": "9353d90f8fcf98d6dc9794c670aa44c53e27ff8345340dd11224e4ef291d315d"
+    },
+    {
+      "bytes": 7911,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/modules/console/console.c",
+      "sha256": "4d68139fc26cb39b8f1220697a85918e84b91e230c9d11eaa94118a4c556e406"
+    },
+    {
+      "bytes": 45155,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/modules/dex/dex.c",
+      "sha256": "f52537623273237fd7f51f95cb8b07ac64da1a79014f5784cf2809c25146a749"
+    },
+    {
+      "bytes": 98326,
+      "license_markers": [],
+      "path": "src/modules/dotnet/dotnet.c",
+      "sha256": "bb8dc04137c7aa9b2fd3f0f51a84306b0ef5747ee64e39d42f4c12d25557c6ca"
+    },
+    {
+      "bytes": 64736,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/modules/elf/elf.c",
+      "sha256": "1251f585bad59706cabcfe9b7a1a943006b330a6c0fea5fd9edc51923b2c7c41"
+    },
+    {
+      "bytes": 46731,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/modules/macho/macho.c",
+      "sha256": "61cfa9c9176b39bd159929725418558c40c2001d764e8d49109e4735939a1c5d"
+    },
+    {
+      "bytes": 19279,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/modules/math/math.c",
+      "sha256": "24919da89a0faa10c61e235b754979fc37e00bbff90b98815e4a53d35a1622e1"
+    },
+    {
+      "bytes": 392,
+      "license_markers": [],
+      "path": "src/modules/module_list",
+      "sha256": "0e4e79531d40490dff4674bb32620cfffac7932adfb1ae494fa5c1f64ffd98be"
+    },
+    {
+      "bytes": 132531,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/modules/pe/pe.c",
+      "sha256": "4333a87cad7bfcc6850895f4f77ccc9c8b76eb2afe2bdab61a39b446761e0248"
+    },
+    {
+      "bytes": 42134,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/modules/pe/pe_utils.c",
+      "sha256": "38a72362fb73c0fc3291211bddb3a6809b1b82ba965d55c637e3e9a9f3b362de"
+    },
+    {
+      "bytes": 3277,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/modules/string/string.c",
+      "sha256": "d5d00196d996f81935db6c23f78c7d1abd75e58a252d65d8264344d5c54bddc2"
+    },
+    {
+      "bytes": 5976,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/modules/tests/tests.c",
+      "sha256": "c4a8589cc0c47e775cae78c3a76391c34953a55066b84a01489e4a033658db51"
+    },
+    {
+      "bytes": 2158,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/modules/time/time.c",
+      "sha256": "6a28fef29ad6bd6d5f55e1277dc10689697ae8dfd6c140220906cad2b97190b2"
+    },
+    {
+      "bytes": 6379,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/notebook.c",
+      "sha256": "ad64c2164f41f2790714b54179559af8dda04ff818e3edf3e46559d56288f028"
+    },
+    {
+      "bytes": 26292,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/object.c",
+      "sha256": "304ef289b128441c60aef5b7217bf1d8b6802a20dff7a9555c748c1835066ba7"
+    },
+    {
+      "bytes": 42039,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/parser.c",
+      "sha256": "a85e6352bea135af8c43681878282c9a585512e112d95c05a4218b9a2229ec17"
+    },
+    {
+      "bytes": 3460,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/proc.c",
+      "sha256": "886328f2e43fca304fb0437772d35f549c73ae130e13a64b7fc9e0e0f8b946cc"
+    },
+    {
+      "bytes": 11914,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/proc/linux.c",
+      "sha256": "9219831db4c7d501ca4f49a5ef42d3d24d0437a91771158039ed96f4a5f69586"
+    },
+    {
+      "bytes": 2163,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/proc/none.c",
+      "sha256": "b9d1ca1d08532d44846d50f340355ef0b4c1003dc3c1e33fee95cf3bf8a530b4"
+    },
+    {
+      "bytes": 71928,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/re.c",
+      "sha256": "1ec70dc577a63e4f0f69c76a8e9a7ec5252c37fe3db38fbcc34bbbe6b7fc0743"
+    },
+    {
+      "bytes": 58976,
+      "license_markers": [
+        "bison-gpl3",
+        "bison-special-exception"
+      ],
+      "path": "src/re_grammar.c",
+      "sha256": "af356cfeeade574e4d38d32d2950bc9491801d34687ed2f718b86164c34c988b"
+    },
+    {
+      "bytes": 3678,
+      "license_markers": [
+        "bison-gpl3",
+        "bison-special-exception"
+      ],
+      "path": "src/re_grammar.h",
+      "sha256": "c6ec37bc629919439d28dc4a5c79662c4ceed130b1506d7e57144d19b1a99fc5"
+    },
+    {
+      "bytes": 77654,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/re_lexer.c",
+      "sha256": "ecb9780e02b6969d795d847c69fc65da64a663d0ae88d05e4d06cd71bca8f2cb"
+    },
+    {
+      "bytes": 13948,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/rules.c",
+      "sha256": "64da4aa347f9a7aeafe500c4f7175345bb8ad793e061e8072baebe3e1cc1180b"
+    },
+    {
+      "bytes": 29904,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/scan.c",
+      "sha256": "6bfef7828f0c1ad4a2c3367fabb4dee3890761fbfb0531104bd76c7d1fb8651d"
+    },
+    {
+      "bytes": 24408,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/scanner.c",
+      "sha256": "a2965a10b27b82134b9a2310d15b1aecd88622b1c3538ede689b97d4d1776636"
+    },
+    {
+      "bytes": 3369,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/simple_str.c",
+      "sha256": "4cea19e04ac92bcdc8a6bc99b1ca34f5b66c3efcffc6f76220d7fa55d9454366"
+    },
+    {
+      "bytes": 6963,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/sizedstr.c",
+      "sha256": "2faf92f99c442a96f0b8c932b18cd38788b1d3163fa4c7e542180c4c70aa03be"
+    },
+    {
+      "bytes": 3962,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/stack.c",
+      "sha256": "e8fe2c391fe4a4ae3e7cf97cbdbf44bd5aa255a31e06ea8c7e03c25b28bbb0af"
+    },
+    {
+      "bytes": 4229,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/stopwatch.c",
+      "sha256": "2202e09f2ffd4aa9556093c477d8d25fc68446f68b1ddd9644db4d14dfbac63d"
+    },
+    {
+      "bytes": 1942,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/stream.c",
+      "sha256": "bf56b14fdbb6b034fc5e661ec48309f602ce74635f581cac7dc4bbf20893be62"
+    },
+    {
+      "bytes": 6342,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/strutils.c",
+      "sha256": "67e090c7594a1017bc4cbd917b69441796139a2a683159721b0a9e01819205c6"
+    },
+    {
+      "bytes": 4310,
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "path": "src/threading.c",
+      "sha256": "911432a758fa26b55b61bd20f668e4b13ddcee926773d756abdd9b2a8213ede3"
+    },
+    {
+      "bytes": 1209,
+      "license_markers": [],
+      "path": "src/tlshc/tlsh.c",
+      "sha256": "1213a870b96de6f80cef1b337de360b81fc611e44361e993c3f49f1466bd2fff"
+    },
+    {
+      "bytes": 31799,
+      "license_markers": [],
+      "path": "src/tlshc/tlsh_impl.c",
+      "sha256": "054b1bf4d1ebc3bfa050a01c03d825aee7d6a8145495cc700e23b17fcd9c9ba8"
+    },
+    {
+      "bytes": 3217,
+      "license_markers": [],
+      "path": "src/tlshc/tlsh_impl.h",
+      "sha256": "3ab506c46b0c284c763f27cbac3b7dbd43911f6b6b3c75272e249b840596309c"
+    },
+    {
+      "bytes": 272510,
+      "license_markers": [],
+      "path": "src/tlshc/tlsh_util.c",
+      "sha256": "0ccdc386efe4a1dbf88daa4f7ff76d2bb2883c913f3cc54d87b717872287fcc9"
+    },
+    {
+      "bytes": 629,
+      "license_markers": [],
+      "path": "src/tlshc/tlsh_util.h",
+      "sha256": "57e6a1125490650c2c1b47012aeda1f90f18700bb72a849fe6a20c010631fcab"
+    }
+  ],
+  "generated_bison_parsers": [
+    {
+      "bytes": 190363,
+      "license_markers": [
+        "bison-gpl3",
+        "bison-special-exception"
+      ],
+      "path": "src/grammar.c",
+      "sha256": "b57c3cef03e49556bb7210f66681bfdb126d0008adba4b5b2730f546a8139735"
+    },
+    {
+      "bytes": 7653,
+      "license_markers": [
+        "bison-gpl3",
+        "bison-special-exception"
+      ],
+      "path": "src/grammar.h",
+      "sha256": "acd9f5b414659f7a9506b1129489b2b6376f402db461f9204934398aa8b8b0b9"
+    },
+    {
+      "bytes": 54980,
+      "license_markers": [
+        "bison-gpl3",
+        "bison-special-exception"
+      ],
+      "path": "src/hex_grammar.c",
+      "sha256": "c558c83099c5dd874024d97e18dec1064b31c3991cae30ebe44045a10e3a7f24"
+    },
+    {
+      "bytes": 3126,
+      "license_markers": [
+        "bison-gpl3",
+        "bison-special-exception"
+      ],
+      "path": "src/hex_grammar.h",
+      "sha256": "9582342351b0fcf656554eb50a0d6de99565d39e26ff2d2d18bab3f56976a256"
+    },
+    {
+      "bytes": 58976,
+      "license_markers": [
+        "bison-gpl3",
+        "bison-special-exception"
+      ],
+      "path": "src/re_grammar.c",
+      "sha256": "af356cfeeade574e4d38d32d2950bc9491801d34687ed2f718b86164c34c988b"
+    },
+    {
+      "bytes": 3678,
+      "license_markers": [
+        "bison-gpl3",
+        "bison-special-exception"
+      ],
+      "path": "src/re_grammar.h",
+      "sha256": "c6ec37bc629919439d28dc4a5c79662c4ceed130b1506d7e57144d19b1a99fc5"
+    }
+  ],
+  "generator": "tools/upstream/audit_yara_license_closure.py",
+  "generator_sha256": "d5cb8ea561a4cc84d15f977003cc12fae02c0c0bc9565954a16a9f6da8be7563",
+  "official_tlshc": {
+    "commit": "bb91fef822a21d480a6bee2a8d693965b5bca16e",
+    "repository": "https://github.com/avast/tlshc.git"
+  },
+  "official_yara": {
+    "commit": "688268d83983a0d61bb68ef3d8dfd28102b7d1b4",
+    "copying": {
+      "bytes": 1493,
+      "label": "VirusTotal/yara COPYING",
+      "license_markers": [
+        "yara-bsd"
+      ],
+      "sha256": "efdabc1c1f655528b8c3a59b03668d446746d87273fab76f8af800b6e8891bd2"
+    },
+    "repository": "https://github.com/VirusTotal/yara.git",
+    "version": "4.5.2"
+  },
+  "relationships": {
+    "all_tlshc_files_have_fixed_provenance": true,
+    "archive_has_51_objects": true,
+    "archive_hash_is_reproducible": true,
+    "authenticode_parser_is_not_in_linux_closure": true,
+    "bundled_yara_has_no_license_candidate": true,
+    "dependency_graph_has_51_compile_units": true,
+    "generated_bison_parsers_are_in_closure": true,
+    "libcrypto_is_disabled": true,
+    "vendored_yara_maps_to_official_v4_5_2": true,
+    "yara_is_not_linked_into_diec": true
+  },
+  "schema_version": 1,
+  "source_comparison": {
+    "exact_file_count": 129,
+    "mapped_file_count": 132,
+    "modified_files": [
+      {
+        "exact": false,
+        "official_path": "include/yara/unaligned.h",
+        "official_sha256": "d5797a39973f43399e4055b9e29f878f6317540e6daa11ffe27f4b277f931030",
+        "vendored_path": "include/yara/unaligned.h",
+        "vendored_sha256": "803696a43ca7206ed718dc4936152f603f9d5bdefadfdd33117e489ef64e712c"
+      },
+      {
+        "exact": false,
+        "official_path": "simple_str.c",
+        "official_sha256": "6c17960b37d17c1a4d12b533f88da4d70cc9363b0a61a7ee3b6288f6845b0f79",
+        "vendored_path": "simple_str.c",
+        "vendored_sha256": "4cea19e04ac92bcdc8a6bc99b1ca34f5b66c3efcffc6f76220d7fa55d9454366"
+      },
+      {
+        "exact": false,
+        "official_path": "strutils.c",
+        "official_sha256": "fc2ad10d8868a5718d3ad1960d84765511dd3a591230cec5f967979e0cc0b7f2",
+        "vendored_path": "strutils.c",
+        "vendored_sha256": "67e090c7594a1017bc4cbd917b69441796139a2a683159721b0a9e01819205c6"
+      }
+    ],
+    "official_file_count": 139,
+    "official_only_files": [
+      "grammar.y",
+      "hex_grammar.y",
+      "hex_lexer.l",
+      "lexer.l",
+      "re_grammar.y",
+      "re_lexer.l",
+      "stino.settings"
+    ],
+    "renamed_exact_files": [
+      {
+        "exact": true,
+        "official_path": "hash.c",
+        "official_sha256": "75483950bde55fd30976a509ccc309b2087aed5059c85b46fd74670b85eced71",
+        "vendored_path": "_hash.c",
+        "vendored_sha256": "75483950bde55fd30976a509ccc309b2087aed5059c85b46fd74670b85eced71"
+      }
+    ],
+    "vendored_file_count": 132
+  },
+  "source_image": {
+    "cpu_limit": 2,
+    "image": "diec-rust/upstream-oracle-cmake:74eaf505",
+    "image_id": "sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040",
+    "memory_limit": "2g",
+    "network": "none",
+    "official_mounts": "readonly",
+    "repository_mount": "readonly",
+    "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "tlshc_provenance": {
+    "files": [
+      {
+        "inline_license_markers": [],
+        "official_tlshc_path": "include/tlshc/tlsh.h",
+        "official_tlshc_sha256": "d14dabca6ec49160654ff86161d9029a71cb2f5beb319fd2d64b512d2e36b7fa",
+        "official_yara_path": "libyara/include/tlshc/tlsh.h",
+        "official_yara_sha256": "d14dabca6ec49160654ff86161d9029a71cb2f5beb319fd2d64b512d2e36b7fa",
+        "vendored_equals_yara_v4_5_2": true,
+        "vendored_path": "src/include/tlshc/tlsh.h",
+        "vendored_sha256": "d14dabca6ec49160654ff86161d9029a71cb2f5beb319fd2d64b512d2e36b7fa",
+        "yara_history": [
+          "19ac2efeb89b88f938fd64234791149ec7edf00f"
+        ],
+        "yara_import_equals_tlshc": true,
+        "yara_import_sha256": "d14dabca6ec49160654ff86161d9029a71cb2f5beb319fd2d64b512d2e36b7fa"
+      },
+      {
+        "inline_license_markers": [],
+        "official_tlshc_path": "src/tlsh.c",
+        "official_tlshc_sha256": "98075a961da8bccde7b44fc1176e9ef12ac1e564f2f811750f5d9f0f831b4976",
+        "official_yara_path": "libyara/tlshc/tlsh.c",
+        "official_yara_sha256": "1213a870b96de6f80cef1b337de360b81fc611e44361e993c3f49f1466bd2fff",
+        "vendored_equals_yara_v4_5_2": true,
+        "vendored_path": "src/tlshc/tlsh.c",
+        "vendored_sha256": "1213a870b96de6f80cef1b337de360b81fc611e44361e993c3f49f1466bd2fff",
+        "yara_history": [
+          "22fde83d7aa7dd208ee756e3c56d565575d1a7b0",
+          "19ac2efeb89b88f938fd64234791149ec7edf00f"
+        ],
+        "yara_import_equals_tlshc": true,
+        "yara_import_sha256": "98075a961da8bccde7b44fc1176e9ef12ac1e564f2f811750f5d9f0f831b4976"
+      },
+      {
+        "inline_license_markers": [],
+        "official_tlshc_path": "src/tlsh_impl.c",
+        "official_tlshc_sha256": "e99c94c88c2394352a98d92fce568aa9721387566134b8ba4ef49b677a84ecc2",
+        "official_yara_path": "libyara/tlshc/tlsh_impl.c",
+        "official_yara_sha256": "054b1bf4d1ebc3bfa050a01c03d825aee7d6a8145495cc700e23b17fcd9c9ba8",
+        "vendored_equals_yara_v4_5_2": true,
+        "vendored_path": "src/tlshc/tlsh_impl.c",
+        "vendored_sha256": "054b1bf4d1ebc3bfa050a01c03d825aee7d6a8145495cc700e23b17fcd9c9ba8",
+        "yara_history": [
+          "17ae552539cfa09470c40b1e35187ba3c998c64e",
+          "94e884f999734e72301eb4c0cc340e7acbaa5009",
+          "b2612f51362439abbc03311f58fcc452de258f91",
+          "22fde83d7aa7dd208ee756e3c56d565575d1a7b0",
+          "19ac2efeb89b88f938fd64234791149ec7edf00f"
+        ],
+        "yara_import_equals_tlshc": true,
+        "yara_import_sha256": "e99c94c88c2394352a98d92fce568aa9721387566134b8ba4ef49b677a84ecc2"
+      },
+      {
+        "inline_license_markers": [],
+        "official_tlshc_path": "src/tlsh_impl.h",
+        "official_tlshc_sha256": "6e91ca43e9b01be9b58fe5df617c870e7fc31636e285e38427973198353c8cae",
+        "official_yara_path": "libyara/tlshc/tlsh_impl.h",
+        "official_yara_sha256": "3ab506c46b0c284c763f27cbac3b7dbd43911f6b6b3c75272e249b840596309c",
+        "vendored_equals_yara_v4_5_2": true,
+        "vendored_path": "src/tlshc/tlsh_impl.h",
+        "vendored_sha256": "3ab506c46b0c284c763f27cbac3b7dbd43911f6b6b3c75272e249b840596309c",
+        "yara_history": [
+          "bdd398039353279c67d4541aacf7c1875d69a22b",
+          "94e884f999734e72301eb4c0cc340e7acbaa5009",
+          "22fde83d7aa7dd208ee756e3c56d565575d1a7b0",
+          "19ac2efeb89b88f938fd64234791149ec7edf00f"
+        ],
+        "yara_import_equals_tlshc": true,
+        "yara_import_sha256": "6e91ca43e9b01be9b58fe5df617c870e7fc31636e285e38427973198353c8cae"
+      },
+      {
+        "inline_license_markers": [],
+        "official_tlshc_path": "src/tlsh_util.c",
+        "official_tlshc_sha256": "ad9586daf71244a02ea1adea2bc6c20f2499c3256195d222877e64bf245486eb",
+        "official_yara_path": "libyara/tlshc/tlsh_util.c",
+        "official_yara_sha256": "0ccdc386efe4a1dbf88daa4f7ff76d2bb2883c913f3cc54d87b717872287fcc9",
+        "vendored_equals_yara_v4_5_2": true,
+        "vendored_path": "src/tlshc/tlsh_util.c",
+        "vendored_sha256": "0ccdc386efe4a1dbf88daa4f7ff76d2bb2883c913f3cc54d87b717872287fcc9",
+        "yara_history": [
+          "22fde83d7aa7dd208ee756e3c56d565575d1a7b0",
+          "19ac2efeb89b88f938fd64234791149ec7edf00f"
+        ],
+        "yara_import_equals_tlshc": true,
+        "yara_import_sha256": "ad9586daf71244a02ea1adea2bc6c20f2499c3256195d222877e64bf245486eb"
+      },
+      {
+        "inline_license_markers": [],
+        "official_tlshc_path": "src/tlsh_util.h",
+        "official_tlshc_sha256": "18d043727c3e9cc05dabcad95331082e482a44477675423343ddff40e9ecc33b",
+        "official_yara_path": "libyara/tlshc/tlsh_util.h",
+        "official_yara_sha256": "57e6a1125490650c2c1b47012aeda1f90f18700bb72a849fe6a20c010631fcab",
+        "vendored_equals_yara_v4_5_2": true,
+        "vendored_path": "src/tlshc/tlsh_util.h",
+        "vendored_sha256": "57e6a1125490650c2c1b47012aeda1f90f18700bb72a849fe6a20c010631fcab",
+        "yara_history": [
+          "22fde83d7aa7dd208ee756e3c56d565575d1a7b0",
+          "19ac2efeb89b88f938fd64234791149ec7edf00f"
+        ],
+        "yara_import_equals_tlshc": true,
+        "yara_import_sha256": "18d043727c3e9cc05dabcad95331082e482a44477675423343ddff40e9ecc33b"
+      }
+    ],
+    "license_evidence": [
+      {
+        "bytes": 14769,
+        "label": "avast/tlshc LICENSE",
+        "license_markers": [
+          "yara-bsd"
+        ],
+        "sha256": "ad18f3db3225882e03535e586402699684c744115a667dbbc240ef02b16fdbfc"
+      },
+      {
+        "bytes": 1429,
+        "label": "avast/tlshc NOTICE.txt",
+        "license_markers": [],
+        "sha256": "84a6a091e05230fd03d7d57f0423d6ac45fdc217dcf997058b255bef530d51c6"
+      }
+    ],
+    "license_expression": "Apache-2.0 OR BSD-3-Clause",
+    "yara_format_commit": "22fde83d7aa7dd208ee756e3c56d565575d1a7b0",
+    "yara_history_commits": [
+      "17ae552539cfa09470c40b1e35187ba3c998c64e",
+      "19ac2efeb89b88f938fd64234791149ec7edf00f",
+      "22fde83d7aa7dd208ee756e3c56d565575d1a7b0",
+      "94e884f999734e72301eb4c0cc340e7acbaa5009",
+      "b2612f51362439abbc03311f58fcc452de258f91",
+      "bdd398039353279c67d4541aacf7c1875d69a22b"
+    ],
+    "yara_import_commit": "19ac2efeb89b88f938fd64234791149ec7edf00f"
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "xyara_commit": "34a733e9c733669ad8dcaf4588d51197a08545e3"
+}
