@@ -16,6 +16,7 @@ Phase 0 计划形成：
 - [`rule-syntax-inventory.md`](rule-syntax-inventory.md)：全规则 AST 语法、全局引用和宿主调用形状清单（Draft）。
 - [`host-api-inventory.md`](host-api-inventory.md)：XScanEngine C++ slot、继承、默认参数与规则调用覆盖（Draft）。
 - [`global-host-api-inventory.md`](global-host-api-inventory.md)：die_script 非格式 native globals、规则顶层函数与直接调用分类（Draft）。
+- [`global-host-api-runtime-differential.md`](global-host-api-runtime-differential.md)：真实 `DiE_ScriptEngine` 的 Qt 5/Qt 6 global HostApi 转换、副作用与异常差分（Draft）。
 - [`global-typo-error-behavior.md`](global-typo-error-behavior.md)：两个固定规则未定义 global 的可达性、Qt 5 错误和 CLI framing（Draft）。
 - [`script-scope-semantics.md`](script-scope-semantics.md)：Qt Script 跨规则 lexical 环境与 QuickJS 差分（Draft）。
 - [`script-state-semantics.md`](script-state-semantics.md)：Qt Script 跨规则 var/function/global 持久状态与 wrapper 风险（Draft）。
@@ -52,6 +53,8 @@ Phase 0 计划形成：
 - [`data/host-api-arity-qt5.json`](data/host-api-arity-qt5.json)：固定 Qt 5 QObject wrapper 的额外实参与缺失方法异常基线。
 - [`data/global-host-api-inventory.json`](data/global-host-api-inventory.json)：固定 die_script global 注册面、规则函数和 undeclared direct-call 分类。
 - [`data/global-host-api-qt5.json`](data/global-host-api-qt5.json)：真实 `DiE_ScriptEngine` 的 Qt 5 native global 转换与副作用基线。
+- [`data/global-host-api-qt6.json`](data/global-host-api-qt6.json)：真实 `DiE_ScriptEngine` 的 Qt 6 native global 转换、异常与副作用基线。
+- [`data/global-host-api-qt5-qt6.json`](data/global-host-api-qt5-qt6.json)：两个 runtime observation 的逐字段机器差分。
 - [`data/global-typo-corpus.json`](data/global-typo-corpus.json)：两个未定义 global 分支的 project-generated 安全最小语料及规则哈希。
 - [`data/global-typo-errors-qt5.json`](data/global-typo-errors-qt5.json)：固定 qmake/CMake oracle 的 detection、trailing diagnostic 与原始输出哈希。
 - [`data/global-typo-errors-qt5-qt6.json`](data/global-typo-errors-qt5-qt6.json)：固定 Qt 5/Qt 6 oracle 的相同 detection 与 runtime-specific `ReferenceError` 文本。

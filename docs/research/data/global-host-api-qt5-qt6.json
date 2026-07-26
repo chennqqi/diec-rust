@@ -1,0 +1,350 @@
+{
+  "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+  "difference_count": 49,
+  "differences": [
+    {
+      "kind": "missing_right",
+      "left": false,
+      "path": "$.info.encoding_call.evaluation.boolean"
+    },
+    {
+      "kind": "value",
+      "left": true,
+      "path": "$.info.encoding_call.evaluation.is_boolean",
+      "right": false
+    },
+    {
+      "kind": "value",
+      "left": false,
+      "path": "$.info.encoding_call.evaluation.is_undefined",
+      "right": true
+    },
+    {
+      "kind": "value",
+      "left": "TIS-620",
+      "path": "$.info.encoding_last",
+      "right": ""
+    },
+    {
+      "kind": "value",
+      "left": 104,
+      "path": "$.info.encoding_message_count",
+      "right": 0
+    },
+    {
+      "kind": "value",
+      "left": "4ca2afaa9d6924630d5329ad327d6651deb705e8bc4ecc9b46fecaf030474d02",
+      "path": "$.info.encoding_messages_sha256",
+      "right": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "kind": "value",
+      "left": "undefined",
+      "path": "$.info.log_messages[0]",
+      "right": ""
+    },
+    {
+      "kind": "value",
+      "left": "null",
+      "path": "$.info.log_messages[1]",
+      "right": "42"
+    },
+    {
+      "kind": "missing_right",
+      "left": "42",
+      "path": "$.info.log_messages[2]"
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.info.missing.evaluation.backtrace",
+      "right": [
+        "%entry@file:log-missing.js:1"
+      ]
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.info.missing.evaluation.error_line",
+      "right": 1
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.info.missing.evaluation.error_message",
+      "right": "Insufficient arguments"
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.info.missing.evaluation.error_name",
+      "right": "Error"
+    },
+    {
+      "kind": "value",
+      "left": false,
+      "path": "$.info.missing.evaluation.is_error",
+      "right": true
+    },
+    {
+      "kind": "value",
+      "left": true,
+      "path": "$.info.missing.evaluation.is_undefined",
+      "right": false
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.info.missing.evaluation.string",
+      "right": "Error: Insufficient arguments"
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.missing_arguments.count.evaluation.backtrace",
+      "right": [
+        "%entry@file:missing-count.js:1"
+      ]
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.missing_arguments.count.evaluation.error_line",
+      "right": 1
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.missing_arguments.count.evaluation.error_message",
+      "right": "Insufficient arguments"
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.missing_arguments.count.evaluation.error_name",
+      "right": "Error"
+    },
+    {
+      "kind": "value",
+      "left": false,
+      "path": "$.missing_arguments.count.evaluation.is_error",
+      "right": true
+    },
+    {
+      "kind": "value",
+      "left": true,
+      "path": "$.missing_arguments.count.evaluation.is_number",
+      "right": false
+    },
+    {
+      "kind": "missing_right",
+      "left": 1,
+      "path": "$.missing_arguments.count.evaluation.number"
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.missing_arguments.count.evaluation.string",
+      "right": "Error: Insufficient arguments"
+    },
+    {
+      "kind": "missing_right",
+      "left": {
+        "info": "undefined",
+        "is_advanced_heuristic": false,
+        "is_heuristic": false,
+        "name": "undefined",
+        "priority": 1000,
+        "type": "undefined",
+        "version": "undefined"
+      },
+      "path": "$.missing_arguments.count.records[0]"
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.missing_arguments.is_present.evaluation.backtrace",
+      "right": [
+        "%entry@file:missing-is-present.js:1"
+      ]
+    },
+    {
+      "kind": "missing_right",
+      "left": true,
+      "path": "$.missing_arguments.is_present.evaluation.boolean"
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.missing_arguments.is_present.evaluation.error_line",
+      "right": 1
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.missing_arguments.is_present.evaluation.error_message",
+      "right": "Insufficient arguments"
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.missing_arguments.is_present.evaluation.error_name",
+      "right": "Error"
+    },
+    {
+      "kind": "value",
+      "left": true,
+      "path": "$.missing_arguments.is_present.evaluation.is_boolean",
+      "right": false
+    },
+    {
+      "kind": "value",
+      "left": false,
+      "path": "$.missing_arguments.is_present.evaluation.is_error",
+      "right": true
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.missing_arguments.is_present.evaluation.string",
+      "right": "Error: Insufficient arguments"
+    },
+    {
+      "kind": "missing_right",
+      "left": {
+        "info": "undefined",
+        "is_advanced_heuristic": false,
+        "is_heuristic": false,
+        "name": "undefined",
+        "priority": 1000,
+        "type": "undefined",
+        "version": "undefined"
+      },
+      "path": "$.missing_arguments.is_present.records[0]"
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.missing_arguments.set_result.evaluation.backtrace",
+      "right": [
+        "%entry@file:missing-set-result.js:1"
+      ]
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.missing_arguments.set_result.evaluation.error_line",
+      "right": 1
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.missing_arguments.set_result.evaluation.error_message",
+      "right": "Insufficient arguments"
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.missing_arguments.set_result.evaluation.error_name",
+      "right": "Error"
+    },
+    {
+      "kind": "value",
+      "left": false,
+      "path": "$.missing_arguments.set_result.evaluation.is_error",
+      "right": true
+    },
+    {
+      "kind": "value",
+      "left": true,
+      "path": "$.missing_arguments.set_result.evaluation.is_undefined",
+      "right": false
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.missing_arguments.set_result.evaluation.string",
+      "right": "Error: Insufficient arguments"
+    },
+    {
+      "kind": "missing_right",
+      "left": {
+        "info": "undefined",
+        "is_advanced_heuristic": false,
+        "is_heuristic": false,
+        "name": "undefined",
+        "priority": 1000,
+        "type": "undefined",
+        "version": "undefined"
+      },
+      "path": "$.missing_arguments.set_result.records[0]"
+    },
+    {
+      "kind": "value",
+      "left": "9.9.9.2026.07.25",
+      "path": "$.modes.engine_version.string",
+      "right": "9.9.9.2026.07.26"
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.modes.qt_version",
+      "right": {
+        "is_boolean": false,
+        "is_error": false,
+        "is_null": false,
+        "is_number": false,
+        "is_string": true,
+        "is_undefined": false,
+        "source": "_getQtVersion()",
+        "string": "6.4.2"
+      }
+    },
+    {
+      "kind": "value",
+      "left": "5.15.13",
+      "path": "$.qt_version",
+      "right": "6.4.2"
+    },
+    {
+      "kind": "value",
+      "left": true,
+      "path": "$.surface.methods._getQtVersion.length.is_null",
+      "right": false
+    },
+    {
+      "kind": "value",
+      "left": false,
+      "path": "$.surface.methods._getQtVersion.length.is_number",
+      "right": true
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.surface.methods._getQtVersion.length.number",
+      "right": 0
+    },
+    {
+      "kind": "value",
+      "left": "undefined",
+      "path": "$.surface.methods._getQtVersion.type.string",
+      "right": "function"
+    }
+  ],
+  "equal": false,
+  "generator": "tools/upstream/compare_global_host_api_reports.py",
+  "inputs": {
+    "qt5": {
+      "binary": {
+        "path": "/opt/die-build/src/console/diec-global-host-api-harness",
+        "sha256": "b7ca1e67ba929670e7c288c5e4ed2ebd7f43d99dbcb5fbbce828501eaa40a432"
+      },
+      "image": {
+        "id": "sha256:c9f9360714fbb4fc50bcb9a28d4e97253002ebf2e96fc94c479c1784c5032a11",
+        "name": "diec-rust/upstream-global-host-api-harness:74eaf505",
+        "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+      },
+      "path": "docs/research/data/global-host-api-qt5.json",
+      "sha256": "99c4085d6f267ff95e3743c0b0be91a577e4bab4e5ebfdd4ee29910f9b43f81b"
+    },
+    "qt6": {
+      "binary": {
+        "path": "/opt/die-build/src/console/diec-global-host-api-harness",
+        "sha256": "036799bef3dd38cb222f0f09e5e3b123fa5442da03262782f42a307a3a84bde0"
+      },
+      "image": {
+        "id": "sha256:96954960b811a109967862640201fdde268a026d332b3e3034c99facf1eca0b3",
+        "name": "diec-rust/upstream-global-host-api-harness-qt6:74eaf505",
+        "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+      },
+      "path": "docs/research/data/global-host-api-qt6.json",
+      "sha256": "572b3a19d5260673c612accbf8cfe2bdd3bee76c55e3a1846a3ceac22e823a17"
+    }
+  },
+  "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+  "schema_version": 1,
+  "source": {
+    "bytes": 5968,
+    "path": "tools/upstream/compare_global_host_api_reports.py",
+    "sha256": "367c39026786e70bc1b7cfb0c01eb2b30722f7d0b5947c92f0ebde4f8794503a"
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

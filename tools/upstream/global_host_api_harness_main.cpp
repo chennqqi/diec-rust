@@ -1,4 +1,4 @@
-// Project-generated research harness for pinned Qt 5 native script globals.
+// Project-generated research harness for pinned Qt native script globals.
 // It links and constructs the unmodified upstream DiE_ScriptEngine.
 
 #include "die_scriptengine.h"
@@ -9,7 +9,11 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#ifdef QT_SCRIPT_LIB
 #include <QScriptValue>
+#else
+#include <QJSValue>
+#endif
 #include <QStringList>
 
 #include <cstdio>
@@ -29,8 +33,10 @@ QJsonObject evaluate(
     const QString &fileName
 )
 {
+#ifdef QT_SCRIPT_LIB
     engine->clearExceptions();
-    QScriptValue value = engine->evaluate(source, fileName);
+#endif
+    XSCRIPTVALUE value = engine->evaluate(source, fileName);
 
     QJsonObject output;
     output.insert("source", source);
@@ -57,12 +63,27 @@ QJsonObject evaluate(
         );
         output.insert(
             "error_line",
+#ifdef QT_SCRIPT_LIB
             value.property("lineNumber").toInt32()
+#else
+            value.property("lineNumber").toInt()
+#endif
         );
         QJsonArray backtrace;
+#ifdef QT_SCRIPT_LIB
         for (const QString &line : engine->uncaughtExceptionBacktrace()) {
             backtrace.append(line);
         }
+#else
+        for (
+            const QString &line :
+            value.property("stack").toString().split('\n')
+        ) {
+            if (!line.isEmpty()) {
+                backtrace.append(line);
+            }
+        }
+#endif
         output.insert("backtrace", backtrace);
     }
     return output;
@@ -563,6 +584,16 @@ QJsonObject modeObservations()
         "os",
         evaluate(fixture.engine, "_getOS()", "os.js")
     );
+#ifndef QT_SCRIPT_LIB
+    output.insert(
+        "qt_version",
+        evaluate(
+            fixture.engine,
+            "_getQtVersion()",
+            "qt-version.js"
+        )
+    );
+#endif
     return output;
 }
 

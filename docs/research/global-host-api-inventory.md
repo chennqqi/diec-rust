@@ -131,12 +131,21 @@ init/include 可达仍需生命周期实验。
 空 stderr，并在 JSON 文档之后追加带规则路径和行号的 `ReferenceError`。详见
 [`global-typo-error-behavior.md`](global-typo-error-behavior.md)。
 
-## 6. Qt 5 native global 行为实验
+## 6. Qt 5/Qt 6 native global 行为实验
 
 固定 Linux Qt 5.15.13 探针直接构造未修改的 `DiE_ScriptEngine`，以独立 fixture
 隔离 surface、结果变更、数组删除、缺参、first-wrapper stop、include、日志/
 encoding 和运行模式。机器基线见
 [`global-host-api-qt5.json`](data/global-host-api-qt5.json)。
+
+同一个 project-generated harness 现已在固定 Qt 6.4.2 `QJSEngine` 上运行；
+Qt 6 机器基线和逐字段差分分别见
+[`global-host-api-qt6.json`](data/global-host-api-qt6.json) 与
+[`global-host-api-qt5-qt6.json`](data/global-host-api-qt5-qt6.json)。Qt 6 对四个
+缺参调用抛出 `Insufficient arguments`，`_log(null)` 转为空串，且
+`_encodingList()` 因固定源码的 Qt 版本 guard 不发出消息；其余已测行为相同。
+完整实验身份、差分解释与限制见
+[`global-host-api-runtime-differential.md`](global-host-api-runtime-differential.md)。
 
 复现：
 
@@ -198,20 +207,21 @@ python tools/upstream/probe_global_host_api.py
 ## 7. 对实现与测试的约束
 
 - Rust `HostApi` 的非格式 native surface 以 16 个 slot 为声明基线，并显式记录
-  Qt 5 的 `_getQtVersion` omission；
+  Qt 5 的 `_getQtVersion` omission 以及 Qt 5/Qt 6 的 arity/转换差异；
 - `meta`、`result`、语言 helper 和 prototype 扩展必须来自原样规则脚本及真实
   init/include 生命周期；
 - 未声明直接调用不得自动变成 permissive stub；未分类项必须产生兼容诊断；
 - 规则同步时必须重生成规则语法和本清单，评审 native 注册、顶层定义、分类及
   arity 变化；
-- 后续 Qt/QuickJS 对照必须覆盖 native 返回值、字符串转换、结果去重/删除、停止
-  状态、include 失败和异常传播，而不只验证函数名存在。
+- 后续 QuickJS 对照必须覆盖 native 返回值、字符串转换、结果去重/删除、停止
+  状态、include 失败和异常传播，并分别比较 Qt 5 primary 与 Qt 6 profile。
 
 ## 8. 尚未完成
 
 - Qt 5 仍缺 `_isResultPresent`/`_getNumberOfResults` 更多数组、对象和异常转换，
   include 语法错误、`_log` 的 PDSTRUCT 副作用及 library=true 可达条件；
-- 全部 16 个 Qt 6 native global 的参数转换、返回值、副作用和异常 fixture；
+- Qt 5/Qt 6 native global 的 arrays/objects、数值/UTF-16 边界、额外实参、
+  include error 和 PDSTRUCT 后续可见性；
 - 两个拼写错误分支的 Qt 6/Windows/macOS 对照、不带 `--messages` 行为及
   多错误/后续规则传播；
 - 55 个跨文件规则函数候选的逐调用 include 可达性证明；

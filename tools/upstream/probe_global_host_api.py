@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Capture the pinned Qt5 native global HostApi behavior oracle."""
+"""Capture pinned Qt 5/Qt 6 native global HostApi behavior oracles."""
 
 from __future__ import annotations
 
@@ -15,7 +15,8 @@ from typing import Any
 UPSTREAM_COMMIT = "74eaf505c250ab47e709024e9dc41657cd8f2254"
 DIE_SCRIPT_COMMIT = "5d82316c110abf0eb863b50bc679d330e05067b6"
 RULES_COMMIT = "c2c17dfa5ea4e078ba31eab55d87430c96622fb6"
-DEFAULT_IMAGE = "diec-rust/upstream-global-host-api-harness:74eaf505"
+QT5_IMAGE = "diec-rust/upstream-global-host-api-harness:74eaf505"
+QT6_IMAGE = "diec-rust/upstream-global-host-api-harness-qt6:74eaf505"
 DEFAULT_BINARY = "/opt/die-build/src/console/diec-global-host-api-harness"
 QT5_GLOBALS = (
     "includeScript",
@@ -34,6 +35,12 @@ QT5_GLOBALS = (
     "_getEngineVersion",
     "_getOS",
 )
+QT6_ALLOWED_ERRORS = {
+    "_log()": "%entry@file:log-missing.js:1",
+    "_setResult()": "%entry@file:missing-set-result.js:1",
+    "_isResultPresent()": "%entry@file:missing-is-present.js:1",
+    "_getNumberOfResults()": "%entry@file:missing-count.js:1",
+}
 
 
 def sha256(data: bytes) -> str:
@@ -48,43 +55,73 @@ def _record_names(step: dict[str, Any]) -> list[str]:
     return [record["name"] for record in step["records"]]
 
 
-def validate_observation(observation: dict[str, Any]) -> None:
+def validate_observation(
+    observation: dict[str, Any],
+    runtime: str = "qt5",
+) -> None:
+    if runtime not in {"qt5", "qt6"}:
+        raise ValueError("unsupported runtime profile")
     identities = {
         "schema_version": 1,
         "upstream_commit": UPSTREAM_COMMIT,
         "die_script_commit": DIE_SCRIPT_COMMIT,
         "rules_commit": RULES_COMMIT,
-        "qt_version": "5.15.13",
+        "qt_version": "5.15.13" if runtime == "qt5" else "6.4.2",
     }
     for key, expected in identities.items():
         if observation.get(key) != expected:
             raise ValueError(f"unexpected {key}")
 
-    def reject_errors(value: Any) -> None:
+    observed_errors: dict[str, str] = {}
+
+    def validate_errors(value: Any) -> None:
         if isinstance(value, dict):
             if value.get("is_error") is True:
-                raise ValueError("unexpected JavaScript error")
+                source = value.get("source", "")
+                if runtime != "qt6" or source not in QT6_ALLOWED_ERRORS:
+                    raise ValueError("unexpected JavaScript error")
+                if (
+                    value.get("error_name") != "Error"
+                    or value.get("error_message") != "Insufficient arguments"
+                    or value.get("error_line") != 1
+                    or value.get("string")
+                    != "Error: Insufficient arguments"
+                    or value.get("backtrace")
+                    != [QT6_ALLOWED_ERRORS[source]]
+                ):
+                    raise ValueError("unexpected Qt6 missing-argument error")
+                observed_errors[source] = value["error_message"]
             for child in value.values():
-                reject_errors(child)
+                validate_errors(child)
         elif isinstance(value, list):
             for child in value:
-                reject_errors(child)
+                validate_errors(child)
 
-    reject_errors(observation)
+    validate_errors(observation)
+    expected_error_sources = (
+        set() if runtime == "qt5" else set(QT6_ALLOWED_ERRORS)
+    )
+    if set(observed_errors) != expected_error_sources:
+        raise ValueError("missing expected JavaScript error")
 
     methods = observation["surface"]["methods"]
     if set(methods) != set(QT5_GLOBALS) | {"_getQtVersion"}:
         raise ValueError("unexpected native global surface")
-    for name in QT5_GLOBALS:
+    for name in (
+        QT5_GLOBALS
+        if runtime == "qt5"
+        else QT5_GLOBALS + ("_getQtVersion",)
+    ):
         if methods[name]["type"].get("string") != "function":
             raise ValueError(f"{name} is not a function")
         if methods[name]["length"].get("number") != 0:
             raise ValueError(f"{name} wrapper length is not zero")
-    if (
-        methods["_getQtVersion"]["type"].get("string") != "undefined"
-        or not methods["_getQtVersion"]["length"]["is_null"]
-    ):
-        raise ValueError("Qt5 unexpectedly exposes _getQtVersion")
+    if runtime == "qt5":
+        if (
+            methods["_getQtVersion"]["type"].get("string") != "undefined"
+            or not methods["_getQtVersion"]["length"]["is_null"]
+        ):
+            raise ValueError("Qt5 unexpectedly exposes _getQtVersion")
 
     steps = observation["results"]["steps"]
     if [len(step["records"]) for step in steps] != [1, 2, 2, 2, 1, 1, 1]:
@@ -115,14 +152,25 @@ def validate_observation(observation: dict[str, Any]) -> None:
 
     missing = observation["missing_arguments"]
     missing_record = missing["set_result"]["records"]
-    if len(missing_record) != 1 or {
-        missing_record[0][key] for key in ("type", "name", "version", "info")
-    } != {"undefined"}:
-        raise ValueError("missing _setResult arguments did not stringify")
-    if _evaluation(missing["is_present"]).get("boolean") is not True:
-        raise ValueError("missing result query did not match undefined record")
-    if _evaluation(missing["count"]).get("number") != 1:
-        raise ValueError("missing result count did not count all records")
+    if runtime == "qt5":
+        if len(missing_record) != 1 or {
+            missing_record[0][key]
+            for key in ("type", "name", "version", "info")
+        } != {"undefined"}:
+            raise ValueError("missing _setResult arguments did not stringify")
+        if _evaluation(missing["is_present"]).get("boolean") is not True:
+            raise ValueError(
+                "missing result query did not match undefined record"
+            )
+        if _evaluation(missing["count"]).get("number") != 1:
+            raise ValueError("missing result count did not count all records")
+    elif (
+        missing_record
+        or not _evaluation(missing["set_result"])["is_error"]
+        or not _evaluation(missing["is_present"])["is_error"]
+        or not _evaluation(missing["count"])["is_error"]
+    ):
+        raise ValueError("Qt6 missing arguments did not fail atomically")
 
     stop = observation["stop"]
     if stop["compiler"]["records"]:
@@ -145,18 +193,32 @@ def validate_observation(observation: dict[str, Any]) -> None:
         raise ValueError("unexpected missing include diagnostic")
 
     info = observation["info"]
-    if info["log_messages"] != ["undefined", "null", "42"]:
-        raise ValueError("_log conversion behavior changed")
-    if _evaluation(info["encoding_call"]).get("boolean") is not False:
-        raise ValueError("_encodingList return value changed")
-    if (
-        info["encoding_message_count"] != 104
+    if runtime == "qt5":
+        if info["log_messages"] != ["undefined", "null", "42"]:
+            raise ValueError("_log conversion behavior changed")
+        if _evaluation(info["encoding_call"]).get("boolean") is not False:
+            raise ValueError("_encodingList return value changed")
+        if (
+            info["encoding_message_count"] != 104
+            or info["encoding_first"] != ""
+            or info["encoding_last"] != "TIS-620"
+            or info["encoding_messages_sha256"]
+            != (
+                "4ca2afaa9d6924630d5329ad327d6651d"
+                "eb705e8bc4ecc9b46fecaf030474d02"
+            )
+        ):
+            raise ValueError("encoding list behavior changed")
+    elif (
+        info["log_messages"] != ["", "42"]
+        or not _evaluation(info["missing"])["is_error"]
+        or not _evaluation(info["encoding_call"])["is_undefined"]
+        or info["encoding_message_count"] != 0
         or info["encoding_first"] != ""
-        or info["encoding_last"] != "TIS-620"
-        or info["encoding_messages_sha256"]
-        != "4ca2afaa9d6924630d5329ad327d6651deb705e8bc4ecc9b46fecaf030474d02"
+        or info["encoding_last"] != ""
+        or info["encoding_messages_sha256"] != sha256(b"")
     ):
-        raise ValueError("encoding list behavior changed")
+        raise ValueError("unexpected Qt6 log/encoding behavior")
 
     modes = observation["modes"]
     if (
@@ -180,9 +242,19 @@ def validate_observation(observation: dict[str, Any]) -> None:
         raise ValueError("engine version does not expose the compile date")
     if modes["os"].get("string") != "Linux Ubuntu x64":
         raise ValueError("unexpected fixed oracle OS string")
+    if runtime == "qt5":
+        if "qt_version" in modes:
+            raise ValueError("Qt5 unexpectedly called _getQtVersion")
+    elif modes["qt_version"].get("string") != "6.4.2":
+        raise ValueError("Qt6 _getQtVersion return changed")
 
 
-def parse_observation(stdout: bytes, stderr: bytes, returncode: int) -> dict[str, Any]:
+def parse_observation(
+    stdout: bytes,
+    stderr: bytes,
+    returncode: int,
+    runtime: str = "qt5",
+) -> dict[str, Any]:
     if returncode != 0:
         raise ValueError(f"harness exited with {returncode}")
     if stderr:
@@ -194,7 +266,7 @@ def parse_observation(stdout: bytes, stderr: bytes, returncode: int) -> dict[str
         raise ValueError("harness did not emit one UTF-8 JSON document") from error
     if text[end:].strip():
         raise ValueError("harness emitted trailing stdout")
-    validate_observation(observation)
+    validate_observation(observation, runtime)
     return observation
 
 
@@ -254,17 +326,24 @@ def observe(image: str, binary: str) -> subprocess.CompletedProcess[bytes]:
 
 
 def build_report(
-    repo: pathlib.Path, image: str = DEFAULT_IMAGE, binary: str = DEFAULT_BINARY
+    repo: pathlib.Path,
+    runtime: str = "qt5",
+    image: str | None = None,
+    binary: str = DEFAULT_BINARY,
 ) -> dict[str, Any]:
+    if runtime not in {"qt5", "qt6"}:
+        raise ValueError("unsupported runtime profile")
+    if image is None:
+        image = QT5_IMAGE if runtime == "qt5" else QT6_IMAGE
     image_id, revision = inspect_image(image)
     process = observe(image, binary)
     observation = parse_observation(
-        process.stdout, process.stderr, process.returncode
+        process.stdout, process.stderr, process.returncode, runtime
     )
     sources = {}
     for relative in (
         "tools/upstream/global_host_api_harness_main.cpp",
-        "tools/upstream/Dockerfile.global-host-api-harness-qt5",
+        f"tools/upstream/Dockerfile.global-host-api-harness-{runtime}",
         "tools/upstream/probe_global_host_api.py",
     ):
         data = (repo / relative).read_bytes()
@@ -272,6 +351,7 @@ def build_report(
     return {
         "schema_version": 1,
         "generator": "tools/upstream/probe_global_host_api.py",
+        "runtime_profile": runtime,
         "image": {
             "name": image,
             "id": image_id,
@@ -286,16 +366,16 @@ def build_report(
 def main() -> int:
     parser = argparse.ArgumentParser()
     repo = pathlib.Path(__file__).resolve().parents[2]
-    parser.add_argument("--image", default=DEFAULT_IMAGE)
+    parser.add_argument("--runtime", choices=("qt5", "qt6"), default="qt5")
+    parser.add_argument("--image")
     parser.add_argument("--binary", default=DEFAULT_BINARY)
-    parser.add_argument(
-        "--output",
-        type=pathlib.Path,
-        default=repo / "docs/research/data/global-host-api-qt5.json",
-    )
+    parser.add_argument("--output", type=pathlib.Path)
     args = parser.parse_args()
-    report = build_report(repo, args.image, args.binary)
-    args.output.write_text(
+    output = args.output or (
+        repo / f"docs/research/data/global-host-api-{args.runtime}.json"
+    )
+    report = build_report(repo, args.runtime, args.image, args.binary)
+    output.write_text(
         json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
         newline="\n",

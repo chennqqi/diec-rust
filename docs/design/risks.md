@@ -126,9 +126,11 @@ baseline 的变更都要检查本表。
   暴露两个不应静默修复的规则拼写错误；32/40 字节安全输入已证明二者在固定
   Qt 5 qmake/CMake 中可达，并产生相同 `Unknown`、trailing `ReferenceError`、
   空 stderr 和 exit 0。跨文件函数 include 可达性和 native global 的完整行为
-  仍未验证。固定 Qt 5 探针已确认缺参 `"undefined"` 转换、
-  重复结果、单项删除/block、数组字符串化、双 stop 状态和重复 include；完整
-  Qt 6 HostApi harness 及剩余转换边界仍是开放风险。
+  仍未验证。共享 Qt 5/Qt 6 global harness 已确认 Qt 5 缺参 `"undefined"`
+  转换与 Qt 6 `Insufficient arguments` 严格错误不同；null 字符串化和
+  `_encodingList` 也不同，而重复结果、单项删除/block、数组字符串化、双 stop
+  状态和重复 include 相同。format HostApi、更多参数/转换边界和逐规则
+  execution 仍是开放风险。
 - **缓解**：保持 `RuleRuntime`/`HostApi` port；建立全规则 inventory、最小失败
   fixture、host call trace；基于证据选 runtime，禁止静默转换规则。
 - **验证**：固定规则 100% discovered/parsed/loaded，zero silent unsupported；

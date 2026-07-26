@@ -258,8 +258,12 @@ trailing diagnostic”而不是单个合法 JSON value，oracle reader 必须同
 最小 PE 上发现 Qt 6 独有的四行 `Unimplemented code.` stderr，并将来源二分到
 `PE/__GenericHeuristicAnalysis_By_DosX.7.sg`；四类整数返回桥接和 PE init-only
 实验均未复现该 warning。见
-[`upstream-qt6-differential.md`](upstream-qt6-differential.md)。这证明 runtime
-profile 和 stderr 都属于兼容面，尚未覆盖的 Qt 6 HostApi 行为仍不能外推。
+[`upstream-qt6-differential.md`](upstream-qt6-differential.md)。同一真实 global
+HostApi harness 又证明 Qt 5 宽松接受四个缺参调用，而 Qt 6 抛出
+`Insufficient arguments`；null 字符串化和 `_encodingList` 也不同。见
+[`global-host-api-runtime-differential.md`](global-host-api-runtime-differential.md)。
+这证明 runtime profile、arity、转换、副作用和 stderr 都属于兼容面；尚未覆盖的
+format HostApi 行为仍不能外推。
 
 ## 候选运行时初筛
 

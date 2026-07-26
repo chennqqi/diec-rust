@@ -1,12 +1,12 @@
 {
   "binary": {
     "path": "/opt/die-build/src/console/diec-global-host-api-harness",
-    "sha256": "b7ca1e67ba929670e7c288c5e4ed2ebd7f43d99dbcb5fbbce828501eaa40a432"
+    "sha256": "036799bef3dd38cb222f0f09e5e3b123fa5442da03262782f42a307a3a84bde0"
   },
   "generator": "tools/upstream/probe_global_host_api.py",
   "image": {
-    "id": "sha256:c9f9360714fbb4fc50bcb9a28d4e97253002ebf2e96fc94c479c1784c5032a11",
-    "name": "diec-rust/upstream-global-host-api-harness:74eaf505",
+    "id": "sha256:96954960b811a109967862640201fdde268a026d332b3e3034c99facf1eca0b3",
+    "name": "diec-rust/upstream-global-host-api-harness-qt6:74eaf505",
     "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
   },
   "observation": {
@@ -173,36 +173,41 @@
       "encoding_call": {
         "engine_is_stopped": false,
         "evaluation": {
-          "boolean": false,
-          "is_boolean": true,
-          "is_error": false,
-          "is_null": false,
-          "is_number": false,
-          "is_string": false,
-          "is_undefined": false,
-          "source": "_encodingList()"
-        },
-        "records": []
-      },
-      "encoding_first": "",
-      "encoding_last": "TIS-620",
-      "encoding_message_count": 104,
-      "encoding_messages_sha256": "4ca2afaa9d6924630d5329ad327d6651deb705e8bc4ecc9b46fecaf030474d02",
-      "log_messages": [
-        "undefined",
-        "null",
-        "42"
-      ],
-      "missing": {
-        "engine_is_stopped": false,
-        "evaluation": {
           "is_boolean": false,
           "is_error": false,
           "is_null": false,
           "is_number": false,
           "is_string": false,
           "is_undefined": true,
-          "source": "_log()"
+          "source": "_encodingList()"
+        },
+        "records": []
+      },
+      "encoding_first": "",
+      "encoding_last": "",
+      "encoding_message_count": 0,
+      "encoding_messages_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_messages": [
+        "",
+        "42"
+      ],
+      "missing": {
+        "engine_is_stopped": false,
+        "evaluation": {
+          "backtrace": [
+            "%entry@file:log-missing.js:1"
+          ],
+          "error_line": 1,
+          "error_message": "Insufficient arguments",
+          "error_name": "Error",
+          "is_boolean": false,
+          "is_error": true,
+          "is_null": false,
+          "is_number": false,
+          "is_string": false,
+          "is_undefined": false,
+          "source": "_log()",
+          "string": "Error: Insufficient arguments"
         },
         "records": []
       },
@@ -237,73 +242,62 @@
       "count": {
         "engine_is_stopped": false,
         "evaluation": {
+          "backtrace": [
+            "%entry@file:missing-count.js:1"
+          ],
+          "error_line": 1,
+          "error_message": "Insufficient arguments",
+          "error_name": "Error",
           "is_boolean": false,
-          "is_error": false,
+          "is_error": true,
           "is_null": false,
-          "is_number": true,
+          "is_number": false,
           "is_string": false,
           "is_undefined": false,
-          "number": 1,
-          "source": "_getNumberOfResults()"
+          "source": "_getNumberOfResults()",
+          "string": "Error: Insufficient arguments"
         },
-        "records": [
-          {
-            "info": "undefined",
-            "is_advanced_heuristic": false,
-            "is_heuristic": false,
-            "name": "undefined",
-            "priority": 1000,
-            "type": "undefined",
-            "version": "undefined"
-          }
-        ]
+        "records": []
       },
       "is_present": {
         "engine_is_stopped": false,
         "evaluation": {
-          "boolean": true,
-          "is_boolean": true,
-          "is_error": false,
+          "backtrace": [
+            "%entry@file:missing-is-present.js:1"
+          ],
+          "error_line": 1,
+          "error_message": "Insufficient arguments",
+          "error_name": "Error",
+          "is_boolean": false,
+          "is_error": true,
           "is_null": false,
           "is_number": false,
           "is_string": false,
           "is_undefined": false,
-          "source": "_isResultPresent()"
+          "source": "_isResultPresent()",
+          "string": "Error: Insufficient arguments"
         },
-        "records": [
-          {
-            "info": "undefined",
-            "is_advanced_heuristic": false,
-            "is_heuristic": false,
-            "name": "undefined",
-            "priority": 1000,
-            "type": "undefined",
-            "version": "undefined"
-          }
-        ]
+        "records": []
       },
       "set_result": {
         "engine_is_stopped": false,
         "evaluation": {
+          "backtrace": [
+            "%entry@file:missing-set-result.js:1"
+          ],
+          "error_line": 1,
+          "error_message": "Insufficient arguments",
+          "error_name": "Error",
           "is_boolean": false,
-          "is_error": false,
+          "is_error": true,
           "is_null": false,
           "is_number": false,
           "is_string": false,
-          "is_undefined": true,
-          "source": "_setResult()"
+          "is_undefined": false,
+          "source": "_setResult()",
+          "string": "Error: Insufficient arguments"
         },
-        "records": [
-          {
-            "info": "undefined",
-            "is_advanced_heuristic": false,
-            "is_heuristic": false,
-            "name": "undefined",
-            "priority": 1000,
-            "type": "undefined",
-            "version": "undefined"
-          }
-        ]
+        "records": []
       }
     },
     "modes": {
@@ -384,7 +378,7 @@
         "is_string": true,
         "is_undefined": false,
         "source": "_getEngineVersion()",
-        "string": "9.9.9.2026.07.25"
+        "string": "9.9.9.2026.07.26"
       },
       "os": {
         "is_boolean": false,
@@ -395,9 +389,19 @@
         "is_undefined": false,
         "source": "_getOS()",
         "string": "Linux Ubuntu x64"
+      },
+      "qt_version": {
+        "is_boolean": false,
+        "is_error": false,
+        "is_null": false,
+        "is_number": false,
+        "is_string": true,
+        "is_undefined": false,
+        "source": "_getQtVersion()",
+        "string": "6.4.2"
       }
     },
-    "qt_version": "5.15.13",
+    "qt_version": "6.4.2",
     "results": {
       "steps": [
         {
@@ -819,10 +823,11 @@
           "length": {
             "is_boolean": false,
             "is_error": false,
-            "is_null": true,
-            "is_number": false,
+            "is_null": false,
+            "is_number": true,
             "is_string": false,
             "is_undefined": false,
+            "number": 0,
             "source": "typeof _getQtVersion === 'function' ? _getQtVersion.length : null"
           },
           "type": {
@@ -833,7 +838,7 @@
             "is_string": true,
             "is_undefined": false,
             "source": "typeof _getQtVersion",
-            "string": "undefined"
+            "string": "function"
           }
         },
         "_isConsoleMode": {
@@ -1060,12 +1065,12 @@
     },
     "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
   },
-  "runtime_profile": "qt5",
+  "runtime_profile": "qt6",
   "schema_version": 1,
   "sources": {
-    "tools/upstream/Dockerfile.global-host-api-harness-qt5": {
-      "bytes": 1326,
-      "sha256": "5059e761e896b3e11f941ef56623b03651fe6aa323b16a9c568d666345b306e2"
+    "tools/upstream/Dockerfile.global-host-api-harness-qt6": {
+      "bytes": 1330,
+      "sha256": "208a6e8e66cfce8648c207e0e6c7091a35a4694639b07e90919e776295034ad4"
     },
     "tools/upstream/global_host_api_harness_main.cpp": {
       "bytes": 16730,

@@ -191,7 +191,9 @@ Qt 6: ReferenceError: NAME is not defined
 ## 限制与下一步
 
 - 只覆盖 Linux amd64、Qt 6.4.2 和当前安全语料，不代表其他 Qt 6 minor 或平台。
-- 尚未建立 Qt 6 版完整 global HostApi/QObject 转换 harness。
+- Qt 6 global HostApi 首轮 harness 已完成；format QObject 全矩阵和更多转换边界
+  仍未覆盖，见
+  [`global-host-api-runtime-differential.md`](global-host-api-runtime-differential.md)。
 - 四行 warning 的精确 Qt 调用点和 enabled heuristic 路径仍待最小表达式实验。
 - 尚未运行全部输出/扫描/special/path/database/nested 矩阵的 Qt 5/Qt 6 差分。
 - Windows、macOS 固定 oracle 仍缺失。

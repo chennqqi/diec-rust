@@ -184,6 +184,12 @@ backend 和构建 profile。当前 Linux Qt 5 CMake profile 是 primary，Qt 6 C
 证据见
 [`../research/upstream-qt6-differential.md`](../research/upstream-qt6-differential.md)。
 
+global HostApi differential 还必须比较函数 surface、缺参 error、signal/副作用和
+返回值。固定 harness 已证明 Qt 5 的 `"undefined"` 宽松转换与 Qt 6 的
+`Insufficient arguments` 严格拒绝不同，不能由“参数类型相同”或最终 detection
+相同替代。见
+[`../research/global-host-api-runtime-differential.md`](../research/global-host-api-runtime-differential.md)。
+
 现有 `compare_cli_oracles.py` 在 Phase 1 扩展为可比较 upstream 与 Rust binary，
 但不得让 Rust 进程参与生成 upstream expected 值。archive-only engine 能力继续
 使用固定 harness；harness 源码/binary hash 是 case identity 的组成部分，并与发布
