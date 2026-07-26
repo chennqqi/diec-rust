@@ -2,6 +2,9 @@
 // It does not modify upstream parsing or matching behavior.
 
 #include "xbinary.h"
+#include "xelf.h"
+#include "xmach.h"
+#include "xpe.h"
 
 #include <QBuffer>
 #include <QCoreApplication>
@@ -47,6 +50,97 @@ bool isHexData(const QByteArray &text)
         }
     }
     return true;
+}
+
+QString fileTypeName(XBinary::FT fileType)
+{
+    if (fileType == XBinary::FT_PE ||
+        fileType == XBinary::FT_PE32 ||
+        fileType == XBinary::FT_PE64) {
+        return "pe";
+    }
+    if (fileType == XBinary::FT_ELF ||
+        fileType == XBinary::FT_ELF32 ||
+        fileType == XBinary::FT_ELF64) {
+        return "elf";
+    }
+    if (fileType == XBinary::FT_MACHO ||
+        fileType == XBinary::FT_MACHO32 ||
+        fileType == XBinary::FT_MACHO64) {
+        return "macho";
+    }
+    return QString("unknown:%1").arg(static_cast<int>(fileType));
+}
+
+QString endianName(XBinary::ENDIAN endian)
+{
+    if (endian == XBinary::ENDIAN_LITTLE) {
+        return "little";
+    }
+    if (endian == XBinary::ENDIAN_BIG) {
+        return "big";
+    }
+    return "unknown";
+}
+
+QJsonObject serializeMemoryMap(const XBinary::_MEMORY_MAP &memoryMap)
+{
+    QJsonArray records;
+    for (const XBinary::_MEMORY_RECORD &record : memoryMap.listRecords) {
+        QJsonObject output;
+        output.insert("offset", QString::number(record.nOffset));
+        output.insert(
+            "address",
+            QString::number(static_cast<qulonglong>(record.nAddress))
+        );
+        output.insert("size", QString::number(record.nSize));
+        output.insert("virtual", record.bIsVirtual);
+        records.append(output);
+    }
+
+    QJsonObject output;
+    output.insert("file_type", fileTypeName(memoryMap.fileType));
+    output.insert("endian", endianName(memoryMap.endian));
+    output.insert(
+        "module_address",
+        QString::number(
+            static_cast<qulonglong>(memoryMap.nModuleAddress)
+        )
+    );
+    output.insert("binary_size", QString::number(memoryMap.nBinarySize));
+    output.insert("image_size", QString::number(memoryMap.nImageSize));
+    output.insert("records", records);
+    return output;
+}
+
+bool deriveFormatMemoryMap(
+    QBuffer *buffer,
+    const QString &formatParser,
+    XBinary::_MEMORY_MAP *memoryMap,
+    bool *formatValid,
+    QString *error
+)
+{
+    if (formatParser == "pe") {
+        XPE format(buffer);
+        *formatValid = format.isValid();
+        *memoryMap = format.getMemoryMap();
+        return true;
+    }
+    if (formatParser == "elf") {
+        XELF format(buffer);
+        *formatValid = format.isValid();
+        *memoryMap = format.getMemoryMap();
+        return true;
+    }
+    if (formatParser == "macho") {
+        XMACH format(buffer);
+        *formatValid = format.isValid();
+        *memoryMap = format.getMemoryMap();
+        return true;
+    }
+    *error = QString("unsupported format_parser: %1").arg(formatParser);
+    return false;
 }
 
 bool configureMemoryMap(
@@ -152,8 +246,22 @@ QJsonObject runCase(const QJsonObject &input, QString *error)
 
     XBinary binary(&buffer);
     XBinary::_MEMORY_MAP memoryMap = binary.getMemoryMap();
-    if (!configureMemoryMap(input, data.size(), &memoryMap, error)) {
-        return result;
+    QString formatParser = input.value("format_parser").toString();
+    bool formatValid = false;
+    if (!formatParser.isEmpty()) {
+        if (!deriveFormatMemoryMap(
+                &buffer,
+                formatParser,
+                &memoryMap,
+                &formatValid,
+                error
+            )) {
+            return result;
+        }
+    } else {
+        if (!configureMemoryMap(input, data.size(), &memoryMap, error)) {
+            return result;
+        }
     }
     qint64 offset = jsonInteger(input, "offset", 0);
     qint64 findOffset = jsonInteger(input, "find_offset", 0);
@@ -217,6 +325,11 @@ QJsonObject runCase(const QJsonObject &input, QString *error)
     }
     if (input.contains("memory_map")) {
         result.insert("memory_map", input.value("memory_map"));
+    }
+    if (!formatParser.isEmpty()) {
+        result.insert("format_parser", formatParser);
+        result.insert("format_valid", formatValid);
+        result.insert("derived_memory_map", serializeMemoryMap(memoryMap));
     }
 
     return result;

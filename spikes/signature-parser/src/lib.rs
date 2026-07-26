@@ -821,6 +821,57 @@ mod tests {
         }
     }
 
+    fn derived_memory_map(value: &Value) -> MemoryMap {
+        let file_type = match value["file_type"]
+            .as_str()
+            .expect("file_type should be a string")
+        {
+            "pe" => FileType::Pe,
+            "elf" => FileType::Elf,
+            "macho" => FileType::MachO,
+            other => panic!("unsupported derived file type {other}"),
+        };
+        let endian = match value["endian"].as_str().expect("endian should be a string") {
+            "little" => Endian::Little,
+            "big" => Endian::Big,
+            other => panic!("unsupported derived endian {other}"),
+        };
+        let records = value["records"]
+            .as_array()
+            .expect("records should be an array")
+            .iter()
+            .filter_map(|record| {
+                let offset = record["offset"]
+                    .as_str()
+                    .expect("derived offset should be a string")
+                    .parse::<i64>()
+                    .expect("derived offset should be decimal");
+                let address = record["address"]
+                    .as_str()
+                    .expect("derived address should be a string")
+                    .parse::<u64>()
+                    .expect("derived address should be decimal");
+                let size = record["size"]
+                    .as_str()
+                    .expect("derived size should be a string")
+                    .parse::<u64>()
+                    .expect("derived size should be decimal");
+                (offset >= 0 && address != u64::MAX && size != 0).then_some(MemoryRecord {
+                    offset: offset as u64,
+                    address,
+                    size,
+                })
+            })
+            .collect();
+        MemoryMap {
+            file_type,
+            endian,
+            code_base: 0,
+            start_load_offset: 0,
+            records,
+        }
+    }
+
     #[test]
     fn parses_normalization_literals_and_wildcards() {
         let pattern = Pattern::parse(" 7F 'ELF' ?? .. 01 ").expect("pattern should parse");
@@ -1100,6 +1151,55 @@ mod tests {
                 .as_bool()
                 .expect("compare result should be boolean");
             let map = memory_map(&case["memory_map"]);
+            let report = Pattern::parse_upstream_compatible(source)
+                .unwrap_or_else(|error| panic!("cannot parse {id}: {error}"));
+            assert_eq!(
+                report.pattern.matches_with_memory_map(&data, offset, &map),
+                Ok(expected),
+                "differential mismatch for {id}"
+            );
+            compared += 1;
+        }
+        assert_eq!(compared, selected.len());
+    }
+
+    #[test]
+    fn parser_derived_memory_maps_agree_with_pinned_xbinary_oracle() {
+        let selected = BTreeSet::from([
+            "pe32_parser_memory_map_relative_jump",
+            "elf64_parser_memory_map_relative_jump",
+            "macho64_parser_memory_map_absolute_jump",
+        ]);
+        let oracle: Value = serde_json::from_str(include_str!(
+            "../../../docs/research/data/signature-oracle-qt5.json"
+        ))
+        .expect("oracle baseline should be valid JSON");
+        let cases = oracle["cases"]
+            .as_array()
+            .expect("oracle cases should be an array");
+        let mut compared = 0;
+        for case in cases {
+            let id = case["id"].as_str().expect("case id should be a string");
+            if !selected.contains(id) {
+                continue;
+            }
+            assert_eq!(case["format_valid"].as_bool(), Some(true));
+            let source = case["pattern"]
+                .as_str()
+                .expect("pattern should be a string");
+            let data = decode_hex(
+                case["data_hex"]
+                    .as_str()
+                    .expect("data should be a hex string"),
+            );
+            let offset = case["offset"]
+                .as_u64()
+                .and_then(|value| usize::try_from(value).ok())
+                .expect("offset should fit usize");
+            let expected = case["compare"]
+                .as_bool()
+                .expect("compare result should be boolean");
+            let map = derived_memory_map(&case["derived_memory_map"]);
             let report = Pattern::parse_upstream_compatible(source)
                 .unwrap_or_else(|error| panic!("cannot parse {id}: {error}"));
             assert_eq!(

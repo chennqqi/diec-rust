@@ -68,6 +68,18 @@ EXPECTED_OBSERVATIONS = {
     "amigahunk_relative_word_omits_width_increment": {
         "compare": True,
     },
+    "pe32_parser_memory_map_relative_jump": {
+        "format_valid": True,
+        "compare": True,
+    },
+    "elf64_parser_memory_map_relative_jump": {
+        "format_valid": True,
+        "compare": True,
+    },
+    "macho64_parser_memory_map_absolute_jump": {
+        "format_valid": True,
+        "compare": True,
+    },
 }
 
 
@@ -134,9 +146,13 @@ def validate_baseline(
         )
         if actual.get("search_size") != expected_search_size:
             failures.append(f"{case_id}.search_size")
-        for field in ("base_signature", "memory_map"):
+        for field in ("base_signature", "memory_map", "format_parser"):
             if field in vector and actual.get(field) != vector.get(field):
                 failures.append(f"{case_id}.{field}")
+        if "format_parser" in vector and not isinstance(
+            actual.get("derived_memory_map"), dict
+        ):
+            failures.append(f"{case_id}.derived_memory_map")
 
     for case_id, expected in EXPECTED_OBSERVATIONS.items():
         actual = baseline_by_id.get(case_id)

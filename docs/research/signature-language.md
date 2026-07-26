@@ -140,13 +140,13 @@ pattern 仍可能缺失。
 
 输入由
 [`generate_signature_oracle_vectors.py`](../../tools/corpus/generate_signature_oracle_vectors.py)
-生成，共 34 个项目自有向量。原始输出保存为
+生成，共 37 个项目自有向量。原始输出保存为
 [`signature-oracle-qt5.json`](data/signature-oracle-qt5.json)，自动探针
 [`probe_signature_harness.py`](../../tools/upstream/probe_signature_harness.py)
 在禁网、512 MiB、1 CPU、128 PID 限制下验证 image revision、binary hash、
-输入 identity 及 baseline 原始 bytes。当前结果 34/34，stdout/baseline
+输入 identity 及 baseline 原始 bytes。当前结果 37/37，stdout/baseline
 SHA-256 均为
-`b7c40ad64013a155d6af726e64c5bb39e5dbb207f084fe05717580de7a6fea05`。
+`dbd83eff2e0c88b9e4e7933cff653fa0fd49fb1a725c19f08d47b3d5950a8e82`。
 
 构建与复现：
 
@@ -184,9 +184,14 @@ oracle schema v2 允许每个项目自有向量显式注入 `_MEMORY_MAP`，但�
 `isOffsetValid` 在 `nBinarySize != 0` 时只检查整个 binary 范围，不要求 cursor
 落在某个 record；因此 Rust matcher 不能额外施加 record 连续性约束。
 
-这些是对 matcher 分支的合成验证，不证明各格式 parser 构造出的 map 正确。PE、
-ELF、Mach-O、COM、MS-DOS 和 AmigaHunk 的真实 `getMemoryMap` 仍需使用可重复生成
-的最小格式文件端到端验证。
+这些合成向量隔离 matcher 分支，不单独证明格式 parser 构造出的 map 正确。
+因此 generator 另行产生带两个映射区域的 PE32、ELF64 和 Mach-O64 文件，
+harness 分别直接实例化固定 `XPE`、`XELF` 和 `XMACH`，先验证 `isValid()`，
+再把真实 `getMemoryMap()` 交给同一 signature matcher。三种格式均有效且跨区域
+compare 成功；Rust 从上游派生 map 重放后 3/3 一致。
+
+该端到端层当前仍未覆盖 PE64、ELF32、Mach-O32，以及 COM、MS-DOS、AmigaHunk
+parser 的真实 map 构造。
 
 ## 纯 Rust spike
 
@@ -202,7 +207,8 @@ ELF、Mach-O、COM、MS-DOS 和 AmigaHunk 的真实 `getMemoryMap` 仍需使用�
   `MemoryMap` 后覆盖通用映射、端序、COM/MS-DOS 和 AmigaHunk 特殊分支；
 - 空串、奇数 token、未知字符、无 find needle 和未闭合结构均有结构化错误；
 - 16 个 context-free `compareSignature` 向量与固定 Qt 5 XBinary oracle 16/16
-  一致，7 个 memory-map 向量 7/7 一致。
+  一致，7 个合成 memory-map 向量 7/7 一致，3 个真实格式 parser map 向量
+  3/3 一致。
 
 机器摘要见
 [`signature-parser.json`](data/signature-parser.json)。
@@ -212,8 +218,8 @@ ELF、Mach-O、COM、MS-DOS 和 AmigaHunk 的真实 `getMemoryMap` 仍需使用�
 1. 对固定 `db`/`db_extra` 做 AST 或 runtime-assisted 全调用点 inventory，覆盖
    非执行分支和动态拼接。
 2. 扩展现有 XBinary oracle，覆盖更多畸形组合、buffer boundary 和取消行为。
-3. 用项目生成的最小 PE、ELF、Mach-O、COM/MSDOS、AmigaHunk 文件端到端验证
-   各格式 `getMemoryMap`，并与当前合成 map 结果交叉核对。
+3. 补齐 PE64、ELF32、Mach-O32 以及 COM/MSDOS、AmigaHunk 的项目生成文件，
+   端到端验证各格式 `getMemoryMap`。
 4. 端到端调用 `Binary_Script::compare`，比较 header-signature fast path 与
    通用 matcher 的严格 `<` 边界差异。
 5. 独立实现并差分 `find_signature` 的 control-record、SigByte 和 plain-hex

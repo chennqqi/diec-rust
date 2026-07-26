@@ -5,13 +5,160 @@ from __future__ import annotations
 
 import argparse
 import json
+import struct
 from pathlib import Path
 
 
 SCHEMA_VERSION = 2
-GENERATOR_VERSION = 2
+GENERATOR_VERSION = 3
 UPSTREAM_COMMIT = "74eaf505c250ab47e709024e9dc41657cd8f2254"
 FORMATS_COMMIT = "1151e7254fdee3c0294ff7095edbdd7bfccf8201"
+
+
+def mapped_pe32() -> bytes:
+    image = bytearray(0x600)
+    image[0:2] = b"MZ"
+    struct.pack_into("<I", image, 0x3C, 0x80)
+    image[0x80:0x84] = b"PE\0\0"
+    struct.pack_into("<HHIIIHH", image, 0x84, 0x14C, 2, 0, 0, 0, 224, 0x0102)
+    optional = 0x98
+    struct.pack_into("<H", image, optional, 0x10B)
+    struct.pack_into("<I", image, optional + 16, 0x1000)
+    struct.pack_into("<I", image, optional + 28, 0x400000)
+    struct.pack_into("<II", image, optional + 32, 0x1000, 0x200)
+    struct.pack_into("<II", image, optional + 56, 0x3000, 0x200)
+    struct.pack_into("<H", image, optional + 68, 3)
+    struct.pack_into("<I", image, optional + 92, 16)
+    section = 0x178
+    struct.pack_into(
+        "<8sIIIIIIHHI",
+        image,
+        section,
+        b".one\0\0\0\0",
+        0x100,
+        0x1000,
+        0x200,
+        0x200,
+        0,
+        0,
+        0,
+        0,
+        0x60000020,
+    )
+    struct.pack_into(
+        "<8sIIIIIIHHI",
+        image,
+        section + 40,
+        b".two\0\0\0\0",
+        0x100,
+        0x2000,
+        0x200,
+        0x400,
+        0,
+        0,
+        0,
+        0,
+        0x60000020,
+    )
+    image[0x200:0x205] = bytes.fromhex("e9fb0f0000")
+    image[0x400] = 0x90
+    return bytes(image)
+
+
+def mapped_elf64() -> bytes:
+    image = bytearray(0x200)
+    ident = b"\x7fELF" + bytes((2, 1, 1, 0, 0)) + bytes(7)
+    image[:64] = ident + struct.pack(
+        "<HHIQQQIHHHHHH",
+        3,
+        62,
+        1,
+        0x400100,
+        64,
+        0,
+        0,
+        64,
+        56,
+        2,
+        0,
+        0,
+        0,
+    )
+    struct.pack_into(
+        "<IIQQQQQQ",
+        image,
+        64,
+        1,
+        5,
+        0x100,
+        0x400100,
+        0x400100,
+        0x20,
+        0x20,
+        1,
+    )
+    struct.pack_into(
+        "<IIQQQQQQ",
+        image,
+        120,
+        1,
+        5,
+        0x180,
+        0x401000,
+        0x401000,
+        0x20,
+        0x20,
+        1,
+    )
+    image[0x100:0x105] = bytes.fromhex("e9fb0e0000")
+    image[0x180] = 0x90
+    return bytes(image)
+
+
+def mapped_macho64() -> bytes:
+    image = bytearray(0x200)
+    image[:32] = struct.pack(
+        "<IiiIIIII",
+        0xFEEDFACF,
+        0x01000007,
+        3,
+        2,
+        2,
+        144,
+        0,
+        0,
+    )
+    image[32:104] = struct.pack(
+        "<II16sQQQQiiII",
+        0x19,
+        72,
+        b"__ONE" + bytes(11),
+        0x100000100,
+        0x20,
+        0x100,
+        0x20,
+        7,
+        5,
+        0,
+        1,
+    )
+    image[104:176] = struct.pack(
+        "<II16sQQQQiiII",
+        0x19,
+        72,
+        b"__TWO" + bytes(11),
+        0x100001000,
+        0x20,
+        0x180,
+        0x20,
+        7,
+        5,
+        0,
+        1,
+    )
+    image[0x100:0x109] = bytes.fromhex("680010000001000000")
+    image[0x180] = 0x90
+    return bytes(image)
 
 
 def vectors() -> list[dict[str, object]]:
@@ -169,6 +316,27 @@ def vectors() -> list[dict[str, object]]:
                     {"offset": 8, "address": 0x1005, "size": 1},
                 ],
             },
+        },
+        {
+            "id": "pe32_parser_memory_map_relative_jump",
+            "pattern": "e9$$$$$$$$90",
+            "data_hex": mapped_pe32().hex(),
+            "offset": 0x200,
+            "format_parser": "pe",
+        },
+        {
+            "id": "elf64_parser_memory_map_relative_jump",
+            "pattern": "e9$$$$$$$$90",
+            "data_hex": mapped_elf64().hex(),
+            "offset": 0x100,
+            "format_parser": "elf",
+        },
+        {
+            "id": "macho64_parser_memory_map_absolute_jump",
+            "pattern": "68################90",
+            "data_hex": mapped_macho64().hex(),
+            "offset": 0x100,
+            "format_parser": "macho",
         },
         {
             "id": "address_markers_around_ignored_base",

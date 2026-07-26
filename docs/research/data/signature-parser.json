@@ -103,7 +103,7 @@
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)",
     "cargo_toml_sha256": "492a5c5521a832006771de28eff65052ef8475d693bfb8ca61ba150eea965b64",
     "cargo_lock_sha256": "2985224550a817be8fe4dea19a12c2db06cc21f199b985fba12fc23dedfa9279",
-    "source_sha256": "15ed6ff86887af0d42f48694938040f270b0b95c21fd5bb951b6fe8f43d5fbc6",
+    "source_sha256": "d103aeb4a13538d506397cf580a16ef986b44efabe090e098a5d73a329375b77",
     "runtime_dependencies": 0,
     "strict_parse_count": 312,
     "compatible_parse_count": 317,
@@ -139,6 +139,16 @@
         "MS-DOS",
         "AmigaHunk"
       ]
+    },
+    "pinned_format_parser_memory_map_differential": {
+      "case_count": 3,
+      "matched_count": 3,
+      "format_valid_count": 3,
+      "file_types": [
+        "PE32",
+        "ELF64",
+        "Mach-O64"
+      ]
     }
   },
   "qt5_oracle": {
@@ -151,20 +161,20 @@
     "base_image": "diec-rust/upstream-oracle-cmake:74eaf505",
     "base_image_id": "sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040",
     "image": "diec-rust/upstream-signature-harness:74eaf505",
-    "image_id": "sha256:8c78a7ebcd4888c5c9eece3cc1f5d7f2770332541c5ffa36149d0941f21f226b",
+    "image_id": "sha256:98d136115c605a3d930a43365aa6624e1d42f962de8ddb125112c6786ae7c3b4",
     "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254",
     "qt_version": "5.15.13",
     "binary": "/opt/die-build/src/console/diec-signature-harness",
-    "binary_sha256": "df8d1b74864e0f018822d831a83615cdb0d997a6a5f35f94ceff4781444b8ff0",
+    "binary_sha256": "e057a5a495a0dd5c8858a4640ad3ee4e2f2f63173d58204d7689c7467dbc914a",
     "dockerfile_sha256": "c9c28565e2d3274edbc72d54e3bcf1b3edc0b2707749707718fcbafbf9430aa8",
-    "harness_source_sha256": "2be47ecf6749f2e52be784a23683c4c9af850e8c6eac125051cec21276c4b4d7",
-    "probe_sha256": "d78ce555df9cd3edd98af1aa9fd4237b0a8323ff53725bedc2c1574afd8da682",
-    "vector_generator_sha256": "c563476b8ca05ffc6f6b509fe8a1983dd2f447666bf9e016de4bc96561b51e1c",
+    "harness_source_sha256": "782c42bcb24919010f32db16ccae8d07c1c98aa81577b7630e6d20a35b91560d",
+    "probe_sha256": "dfb5fb2ca83cf0a4eb91be93b641ad2580539de624bea23dcd26672bf95d4d30",
+    "vector_generator_sha256": "b5e7fc98ae3b96d3c927948c9b94d395040407ecfa2bb50dca0146ca60bf0186",
     "vectors": "docs/research/data/signature-oracle-vectors.json",
-    "vectors_sha256": "8591d07e9bd163f4e88bac431c8c9944ba62a854181bb7e519692cae3735758c",
+    "vectors_sha256": "8cf1f6a8f7fd7f1df65c5e0bb10bde0321fd1889735a710d98541b6e4944843e",
     "baseline": "docs/research/data/signature-oracle-qt5.json",
-    "baseline_sha256": "b7c40ad64013a155d6af726e64c5bb39e5dbb207f084fe05717580de7a6fea05",
-    "case_count": 34,
+    "baseline_sha256": "dbd83eff2e0c88b9e4e7933cff653fa0fd49fb1a725c19f08d47b3d5950a8e82",
+    "case_count": 37,
     "probe_passed": true,
     "compare_find_divergences": [
       "%& accepts only digits in compare records but letters and digits in SigBytes find",
@@ -175,7 +185,7 @@
   },
   "limitations": [
     "the 317-pattern inventory is dynamic coverage for one fixed generated sample, not a complete static corpus inventory",
-    "synthetic memory maps cover six file-type branches, but actual PE/ELF/Mach-O/COM/MS-DOS/AmigaHunk memory-map constructors still require generated-file end-to-end vectors",
+    "generated PE32, ELF64, and Mach-O64 files cover real parser memory-map construction, but PE64/ELF32/Mach-O32 and COM/MS-DOS/AmigaHunk parser-derived maps remain untested",
     "XScanEngine Binary_Script header-signature fast-path boundary behavior is not yet invoked end-to-end",
     "find_signature has separate optimization branches and is not yet implemented in the Rust spike",
     "the 27 focused vectors do not yet exhaust malformed partial-parse combinations"
