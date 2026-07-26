@@ -532,8 +532,10 @@ JSON。运行前先执行
   `detect` 缺口采集；尚未用完整 HostApi/Qt oracle 逐条验证，也未完成其他 file
   type 和 Windows/macOS 顺序。
 - 规则侧已清点 429 个第一层宿主 receiver/method 和 464 个 arity 形状；
-  337 个 C++ slot 与 13 个脚本扩展已联合覆盖 460 个形状，仍缺参数/返回类型、
-  额外实参和异常行为 fixture。
+  337 个 C++ slot 与 13 个脚本扩展静态覆盖 460 个形状。固定 Qt 5 QObject
+  探针已证明三个额外实参形状忽略额外参数，并固定缺失
+  `PE.getEPSignature` 的 `TypeError`；仍缺其余参数/返回类型、默认参数、异常和
+  Qt 6 行为 fixture。
 - Nintendo/EA-XA 已在固定 292 条加载环境中完成三个 selected `detect` 的 Qt 5
   14/14 对照；仍缺 Qt 6、其余 289 个 `detect` 的真实 HostApi/Qt oracle。
 - Qt 5/Qt 6 与 QuickJS 的整数、字符串、数组、异常和 RegExp 差分。

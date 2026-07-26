@@ -114,9 +114,11 @@ baseline 的变更都要检查本表。
   spike 的 2235 文件口径达到 2235/2235，记录 55 种 AST 类型、28,372 个调用和
   29 个宿主 receiver 上的 429 个第一层 receiver/method、464 个 arity 形状，
   动态 computed 第一层宿主方法名为 0。固定 XScanEngine 30 个类实际有 337 个
-  C++ slot；与 13 个规则脚本扩展联合覆盖 460/464 个 arity 形状，剩余一个未定义
-  方法名和三个额外实参形状。类型转换、畸形 map、find 的畸形/穷举边界、无效/
-  短小 wrapper 上下文、Qt 6 和其余 HostApi 行为仍未验证。
+  C++ slot；与 13 个规则脚本扩展静态覆盖 460/464 个 arity 形状。固定 Qt 5
+  QObject 探针证明三个额外实参形状会忽略额外参数，并确认未定义
+  `PE.getEPSignature` 调用抛出 `TypeError`。类型转换、畸形 map、find 的畸形/
+  穷举边界、无效/短小 wrapper 上下文、异常上层传播、Qt 6 和其余 HostApi 行为
+  仍未验证。
 - **缓解**：保持 `RuleRuntime`/`HostApi` port；建立全规则 inventory、最小失败
   fixture、host call trace；基于证据选 runtime，禁止静默转换规则。
 - **验证**：固定规则 100% discovered/parsed/loaded，zero silent unsupported；

@@ -362,13 +362,15 @@ header fast path 的字符/字节混合计算和严格 `<` 分界会改变 inval
 的 2175 个 `.sg` 与 60 个无扩展名公共脚本共 2235/2235 建立 AST，得到 55 种
 节点类型、28,372 个普通调用；29 个已知宿主 receiver 上共有 16,499 次第一层
 调用、429 个 receiver/method 组合和 464 个 arity 形状，动态 computed 第一层
-宿主方法名为 0。C++ 337 个 slot 加 13 个公共脚本扩展联合覆盖其中 460/464；
-剩余 `PE.getEPSignature` 和三个额外实参形状等待 Qt oracle。该清单闭合规则侧
-语法和静态调用用法面，但不替代类型转换和运行行为核对。
+宿主方法名为 0。C++ 337 个 slot 加 13 个公共脚本扩展静态覆盖其中 460/464；
+固定 Qt 5.15.13 QObject 探针进一步证明三个额外实参形状会忽略额外参数，而
+`PE.getEPSignature` 在完整 PE `_init` 后仍不存在、调用时抛出 `TypeError`。
+该清单闭合规则侧语法和静态调用用法面，但不替代其余类型转换和运行行为核对。
 
 ## 尚未完成
 
-- 为固定 C++ 声明、默认参数、继承和规则脚本扩展补齐 Qt 5/Qt 6 行为 fixture。
+- 为固定 C++ 声明、默认参数、继承和规则脚本扩展补齐其余 Qt 5/Qt 6 行为
+  fixture，并补做四个已闭合形状的 Qt 6 对照。
 - Qt 5 与 Qt 6 的 conformance oracle。
 - include 同名、重复、循环和异常实验。
 - database cache 与 ZIP database 行为。

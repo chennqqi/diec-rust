@@ -94,7 +94,7 @@ MSDOS.addressToOffset.apply(...)   apply 属于函数对象，不是 MSDOS slot
 JavaScript 函数允许少传或多传参数，因此这些扩展作为独立覆盖层；不能把它们伪造为
 C++ slot。
 
-## 5. 联合覆盖结果
+## 5. 静态联合覆盖结果
 
 464 个观察 arity 形状中：
 
@@ -105,7 +105,7 @@ C++ slot。
 | 仍未覆盖 | 4 |
 | **总计** | **464** |
 
-剩余四项为：
+静态声明/定义无法解释的四项为：
 
 | 调用 | 观察次数 | 固定声明/定义结论 |
 | --- | ---: | --- |
@@ -114,15 +114,41 @@ C++ slot。
 | `X.SC` 四参数 | 1 | C++ 声明范围 1..3 |
 | `X.U8` 二参数 | 5 | C++ 声明范围 1..1 |
 
-`PE.getEPSignature` 很可能是
-`db_extra/PE/sfx_CipherWall.1.sg:8` 的上游命名错误，但在 Qt oracle 证明实际异常
-和分支可达性前只记为“未解析”，不自行修正规则。
+## 6. Qt 5 QObject 行为实验
 
-三个 `X` 方法的额外实参集中出现在 Binary 规则。普通 JavaScript 会忽略多余参数，
-但 QObject slot wrapper 是否一致、是否产生 overload/转换差异必须由固定 Qt 5/Qt 6
-实验确认；当前不能把它们算作兼容通过。
+固定 Linux Qt 5.15.13 探针直接构造上游 `Binary_Script`/`PE_Script`，并使用与
+`XScriptEngine::_addClass` 相同的 `QScriptEngine::newQObject(pClass)` 注册方式。
+镜像继承固定 CMake oracle，替换控制台入口但链接原始上游对象。完整机器结果见
+[`host-api-arity-qt5.json`](data/host-api-arity-qt5.json)。
 
-## 6. 对实现和测试的约束
+复现：
+
+```sh
+docker build \
+  --file tools/upstream/Dockerfile.host-api-arity-harness-qt5 \
+  --tag diec-rust/upstream-host-api-arity-harness:74eaf505 \
+  tools/upstream
+python tools/upstream/probe_host_api_arity.py
+```
+
+探针得到：
+
+- `X.U8(0, 12)` 与 `X.U8(0)` 都返回 65；
+- `X.SA(0, 1, 99)` 与 `X.SA(0, 1)` 都返回 `"A"`；
+- `X.SC(0, 1, "System", 99)` 与三参数调用都返回空字符串；
+- 三个 QObject wrapper 的 JavaScript `function.length` 都是 0；
+- 固定 `db/PE/_init` 求值成功，加载后只新增
+  `PE.getEntryPointSignature`；`PE.getEPSignature` 前后均为 `undefined`；
+- 调用 `PE.getEPSignature(19, 14)` 在第 1 行抛出 `TypeError`，消息明确指出该
+  `undefined` expression 不是函数。
+
+因此 Qt 5 下，三个超出 C++ 声明 arity 的规则形状由“忽略额外实参”闭合；
+`PE.getEPSignature` 则由确定的异常行为闭合，而不是通过别名或容错闭合。它很可能是
+`db_extra/PE/sfx_CipherWall.1.sg:8` 的上游命名错误，但兼容实现不得自行修正规则。
+探针只证明表达式被执行时的行为，尚未证明该规则分支对代表性输入可达，也未证明上层
+扫描器如何记录或吞掉这次异常。
+
+## 7. 对实现和测试的约束
 
 - Rust `HostApi` 不能只复制 337 个直接方法；必须按 30 类继承展开，并单独加载
   13 个规则脚本扩展；
@@ -132,12 +158,14 @@ C++ slot。
 - 未知方法、未覆盖 arity 和类型转换失败必须产生可定位 diagnostic；
 - 上游同步时，header manifest、slot、default、inheritance、脚本扩展或规则 arity
   任一变化都必须重新生成并评审；
-- `getEPSignature` 和三个额外参数形状必须加入 Qt 5/Qt 6 conformance oracle。
+- Qt 5 兼容层必须忽略 QObject wrapper 的额外实参，并保留未知方法调用的异常；
+  Qt 6 行为仍须独立取证。
 
-## 7. 尚未完成
+## 8. 尚未完成
 
 - 337 个 C++ slot 的参数/返回 Qt 类型转换和异常行为 fixture；
-- 继承 override、默认参数和额外实参的 Qt 5/Qt 6 对照；
+- 继承 override、默认参数的 Qt 5/Qt 6 对照，以及本节四项的 Qt 6 对照；
 - `File`/`X` 在每种 file type/init/include 生命周期中的精确 identity；
+- `PE.getEPSignature` 所在分支的可达样本及上层异常传播/报告行为；
 - `_setResult`、`meta`、`result` 等非格式对象 global HostApi 的源码声明清单；
 - 用完整 HostApi 逐规则执行并对比固定上游结果。
