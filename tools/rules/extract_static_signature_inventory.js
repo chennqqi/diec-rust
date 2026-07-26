@@ -299,6 +299,13 @@ function boundedUniqueSorted(values) {
         : null;
 }
 
+function boundedUniqueNodes(nodes) {
+    const result = [...new Set(nodes)];
+    return result.length <= MAX_STATIC_VALUES_PER_EXPRESSION
+        ? result
+        : null;
+}
+
 function initializerFor(
     expression,
     constantInitializers,
@@ -326,6 +333,107 @@ function initializerFor(
     };
 }
 
+function finiteExpressionNodes(
+    uglify,
+    expression,
+    constantInitializers,
+    resolving,
+    usePosition,
+    staticTransforms,
+) {
+    if (
+        expression instanceof uglify.AST_Array ||
+        expression instanceof uglify.AST_Object ||
+        expression instanceof uglify.AST_String ||
+        expression instanceof uglify.AST_Number
+    ) {
+        return [expression];
+    }
+    if (expression instanceof uglify.AST_SymbolRef) {
+        const reachingExpressionValues =
+            constantInitializers.reaching_expression_values;
+        const currentLambda = constantInitializers.current_lambda;
+        if (
+            reachingExpressionValues &&
+            currentLambda &&
+            expression.thedef &&
+            reachingExpressionValues.has(currentLambda)
+        ) {
+            const intervals =
+                reachingExpressionValues
+                    .get(currentLambda)
+                    .get(expression.thedef.id) || [];
+            for (let index = intervals.length - 1; index >= 0; index--) {
+                const interval = intervals[index];
+                if (
+                    expression.start.pos >=
+                        interval.assignment_end_position &&
+                    expression.start.pos <
+                        interval.invalidation_position
+                ) {
+                    return interval.expression_nodes;
+                }
+            }
+        }
+        const initializer = initializerFor(
+            expression,
+            constantInitializers,
+            resolving,
+            usePosition,
+        );
+        return initializer
+            ? finiteExpressionNodes(
+                  uglify,
+                  initializer.expression,
+                  constantInitializers,
+                  initializer.resolving,
+                  initializer.usePosition,
+                  staticTransforms,
+              )
+            : null;
+    }
+    if (expression instanceof uglify.AST_Sub) {
+        return indexedNodes(
+            uglify,
+            expression,
+            constantInitializers,
+            resolving,
+            usePosition,
+            staticTransforms,
+        );
+    }
+    if (expression instanceof uglify.AST_Dot) {
+        const objects = finiteExpressionNodes(
+            uglify,
+            expression.expression,
+            constantInitializers,
+            resolving,
+            usePosition,
+            staticTransforms,
+        );
+        if (!objects) {
+            return null;
+        }
+        const selected = [];
+        for (const object of objects) {
+            if (!(object instanceof uglify.AST_Object)) {
+                return null;
+            }
+            const properties = object.properties.filter(
+                (property) =>
+                    property instanceof uglify.AST_ObjectKeyVal &&
+                    property.key === expression.property,
+            );
+            if (properties.length !== 1) {
+                return null;
+            }
+            selected.push(properties[0].value);
+        }
+        return boundedUniqueNodes(selected);
+    }
+    return null;
+}
+
 function indexedNodes(
     uglify,
     expression,
@@ -334,35 +442,14 @@ function indexedNodes(
     usePosition,
     staticTransforms,
 ) {
-    let collections;
-    if (expression.expression instanceof uglify.AST_Sub) {
-        collections = indexedNodes(
-            uglify,
-            expression.expression,
-            constantInitializers,
-            resolving,
-            usePosition,
-            staticTransforms,
-        );
-    } else if (
-        expression.expression instanceof uglify.AST_SymbolRef
-    ) {
-        const initializer = initializerFor(
-            expression.expression,
-            constantInitializers,
-            resolving,
-            usePosition,
-        );
-        collections =
-            initializer &&
-            initializer.expression instanceof uglify.AST_Array
-                ? [initializer.expression]
-                : null;
-    } else if (expression.expression instanceof uglify.AST_Array) {
-        collections = [expression.expression];
-    } else {
-        collections = null;
-    }
+    const collections = finiteExpressionNodes(
+        uglify,
+        expression.expression,
+        constantInitializers,
+        resolving,
+        usePosition,
+        staticTransforms,
+    );
     if (!collections) {
         return null;
     }
@@ -1503,6 +1590,367 @@ function inspectFile(
             });
         }),
     );
+    const reachingExpressionValues = new Map();
+    const finiteObjectElementAssignments = [];
+    constantInitializers.reaching_expression_values =
+        reachingExpressionValues;
+    function objectPropertyMap(object) {
+        if (
+            !(object instanceof uglify.AST_Object) ||
+            object.properties.length === 0
+        ) {
+            return null;
+        }
+        const properties = new Map();
+        for (const property of object.properties) {
+            if (
+                !(property instanceof uglify.AST_ObjectKeyVal) ||
+                typeof property.key !== "string" ||
+                property.key === "__proto__" ||
+                property.key === "constructor" ||
+                properties.has(property.key)
+            ) {
+                return null;
+            }
+            const value = property.value;
+            const primitive =
+                value instanceof uglify.AST_String ||
+                value instanceof uglify.AST_Number ||
+                value instanceof uglify.AST_True ||
+                value instanceof uglify.AST_False ||
+                value instanceof uglify.AST_Null ||
+                (value instanceof uglify.AST_SymbolRef &&
+                    value.name === "undefined" &&
+                    value.thedef &&
+                    value.thedef.undeclared);
+            const stringArray =
+                value instanceof uglify.AST_Array &&
+                value.elements.length > 0 &&
+                value.elements.every(
+                    (element) =>
+                        element instanceof uglify.AST_String,
+                );
+            if (!primitive && !stringArray) {
+                return null;
+            }
+            properties.set(property.key, value);
+        }
+        return properties;
+    }
+    function targetObjectReadsAreSafe(
+        definitionId,
+        assignment,
+        objectPropertyMaps,
+    ) {
+        function memberIsWritten(member) {
+            const parent = parentByNode.get(member);
+            return (
+                (parent instanceof uglify.AST_Assign &&
+                    parent.left === member) ||
+                (parent instanceof uglify.AST_UnaryPrefix &&
+                    (parent.operator === "++" ||
+                        parent.operator === "--" ||
+                        parent.operator === "delete")) ||
+                (parent instanceof uglify.AST_UnaryPostfix &&
+                    (parent.operator === "++" ||
+                        parent.operator === "--"))
+            );
+        }
+        let safe = true;
+        ast.walk(
+            new uglify.TreeWalker(function (node) {
+                if (
+                    !safe ||
+                    !(node instanceof uglify.AST_SymbolRef) ||
+                    !node.thedef ||
+                    node.thedef.id !== definitionId
+                ) {
+                    return;
+                }
+                const parent = this.parent();
+                if (
+                    parent === assignment &&
+                    assignment.left === node
+                ) {
+                    return;
+                }
+                if (
+                    !(parent instanceof uglify.AST_Dot) ||
+                    parent.expression !== node
+                ) {
+                    safe = false;
+                    return;
+                }
+                const propertyValues = objectPropertyMaps.map(
+                    (properties) => properties.get(parent.property),
+                );
+                if (propertyValues.some((value) => !value)) {
+                    safe = false;
+                    return;
+                }
+                const arrays = propertyValues.filter(
+                    (value) => value instanceof uglify.AST_Array,
+                );
+                if (
+                    arrays.length !== 0 &&
+                    arrays.length !== propertyValues.length
+                ) {
+                    safe = false;
+                    return;
+                }
+                const propertyParent = parentByNode.get(parent);
+                if (arrays.length !== 0) {
+                    const isLengthRead =
+                        propertyParent instanceof uglify.AST_Dot &&
+                        propertyParent.expression === parent &&
+                        propertyParent.property === "length";
+                    const isIndexRead =
+                        propertyParent instanceof uglify.AST_Sub &&
+                        propertyParent.expression === parent;
+                    if (!isLengthRead && !isIndexRead) {
+                        safe = false;
+                        return;
+                    }
+                    if (memberIsWritten(propertyParent)) {
+                        safe = false;
+                    }
+                    return;
+                }
+                if (memberIsWritten(parent)) {
+                    safe = false;
+                }
+            }),
+        );
+        return safe;
+    }
+    function sourceReferencesAreExact(
+        definitionId,
+        conditionReference,
+        elementReference,
+    ) {
+        const expected = new Set([
+            conditionReference,
+            elementReference,
+        ]);
+        let safe = true;
+        ast.walk(
+            new uglify.TreeWalker(function (node) {
+                if (
+                    !safe ||
+                    !(node instanceof uglify.AST_SymbolRef) ||
+                    !node.thedef ||
+                    node.thedef.id !== definitionId
+                ) {
+                    return;
+                }
+                if (!expected.delete(node)) {
+                    safe = false;
+                }
+            }),
+        );
+        return safe && expected.size === 0;
+    }
+    ast.walk(
+        new uglify.TreeWalker(function (node) {
+            if (
+                !(node instanceof uglify.AST_For) ||
+                !(node.init instanceof uglify.AST_Var) ||
+                node.init.definitions.length !== 1 ||
+                !(node.condition instanceof uglify.AST_Binary) ||
+                node.condition.operator !== "<" ||
+                !(
+                    node.condition.left instanceof
+                    uglify.AST_SymbolRef
+                ) ||
+                !(node.condition.right instanceof uglify.AST_Dot) ||
+                node.condition.right.property !== "length" ||
+                !(
+                    node.condition.right.expression instanceof
+                    uglify.AST_SymbolRef
+                ) ||
+                !(
+                    node.step instanceof uglify.AST_UnaryPostfix
+                ) ||
+                node.step.operator !== "++" ||
+                !(
+                    node.step.expression instanceof
+                    uglify.AST_SymbolRef
+                ) ||
+                !(node.body instanceof uglify.AST_BlockStatement) ||
+                node.body.body.length === 0 ||
+                !(
+                    node.body.body[0] instanceof
+                    uglify.AST_SimpleStatement
+                ) ||
+                !(
+                    node.body.body[0].body instanceof
+                    uglify.AST_Assign
+                )
+            ) {
+                return;
+            }
+            const lambda = this.find_parent(uglify.AST_Lambda);
+            const loopVariable = node.init.definitions[0];
+            const assignment = node.body.body[0].body;
+            if (
+                !lambda ||
+                !loopVariable.name ||
+                !loopVariable.name.thedef ||
+                !(loopVariable.value instanceof
+                    uglify.AST_Number) ||
+                loopVariable.value.value !== 0 ||
+                !node.condition.left.thedef ||
+                node.condition.left.thedef.id !==
+                    loopVariable.name.thedef.id ||
+                !node.step.expression.thedef ||
+                node.step.expression.thedef.id !==
+                    loopVariable.name.thedef.id ||
+                !node.condition.right.expression.thedef ||
+                assignment.operator !== "=" ||
+                !(assignment.left instanceof
+                    uglify.AST_SymbolRef) ||
+                !assignment.left.thedef ||
+                assignment.left.thedef.scope !== lambda ||
+                capturedDefinitions.has(assignment.left.thedef.id) ||
+                !(assignment.right instanceof uglify.AST_Sub) ||
+                !(
+                    assignment.right.expression instanceof
+                    uglify.AST_SymbolRef
+                ) ||
+                !assignment.right.expression.thedef ||
+                assignment.right.expression.thedef.id !==
+                    node.condition.right.expression.thedef.id ||
+                !(
+                    assignment.right.property instanceof
+                    uglify.AST_SymbolRef
+                ) ||
+                !assignment.right.property.thedef ||
+                assignment.right.property.thedef.id !==
+                    loopVariable.name.thedef.id
+            ) {
+                return;
+            }
+            const sourceDefinitionId =
+                assignment.right.expression.thedef.id;
+            const sourceInitializer =
+                constantInitializers.get(sourceDefinitionId);
+            if (
+                !sourceInitializer ||
+                sourceInitializer.position > node.start.pos ||
+                !(sourceInitializer.value instanceof
+                    uglify.AST_Array) ||
+                sourceInitializer.value.elements.length === 0 ||
+                sourceInitializer.value.elements.length >
+                    MAX_STATIC_VALUES_PER_EXPRESSION ||
+                sourceInitializer.value.elements.some(
+                    (element) =>
+                        !(element instanceof uglify.AST_Object),
+                ) ||
+                !sourceReferencesAreExact(
+                    sourceDefinitionId,
+                    node.condition.right.expression,
+                    assignment.right.expression,
+                )
+            ) {
+                return;
+            }
+            const declaration = parentByNode.get(
+                initializerCandidates.get(sourceDefinitionId).node,
+            );
+            const statementContainer = parentByNode.get(node);
+            const statements =
+                statementContainer instanceof
+                uglify.AST_BlockStatement
+                    ? statementContainer.body
+                    : statementContainer === lambda
+                      ? lambda.body
+                      : null;
+            if (
+                !(declaration instanceof uglify.AST_Var) ||
+                declaration.definitions.length !== 1 ||
+                !statements ||
+                parentByNode.get(declaration) !==
+                    statementContainer ||
+                statements.indexOf(declaration) < 0 ||
+                statements[statements.indexOf(declaration) + 1] !==
+                    node
+            ) {
+                return;
+            }
+            const targetDefinitionId = assignment.left.thedef.id;
+            const writes =
+                scopedWrites.get(lambda) &&
+                scopedWrites.get(lambda).get(targetDefinitionId);
+            const loopVariableWrites =
+                (scopedWrites.get(lambda) &&
+                    scopedWrites
+                        .get(lambda)
+                        .get(loopVariable.name.thedef.id)) ||
+                [];
+            const loopVariableWritesInLoop =
+                loopVariableWrites.filter(
+                    (write) =>
+                        write.node.start.pos >= node.start.pos &&
+                        write.node.end.endpos <= node.end.endpos,
+                );
+            if (
+                !writes ||
+                writes.length !== 1 ||
+                writes[0].kind !== "assign" ||
+                writes[0].node !== assignment ||
+                loopVariableWritesInLoop.length !== 1 ||
+                loopVariableWritesInLoop[0].kind !== "update" ||
+                loopVariableWritesInLoop[0].node !== node.step
+            ) {
+                return;
+            }
+            const objectPropertyMaps =
+                sourceInitializer.value.elements.map(
+                    objectPropertyMap,
+                );
+            if (
+                objectPropertyMaps.some(
+                    (properties) => !properties,
+                ) ||
+                !targetObjectReadsAreSafe(
+                    targetDefinitionId,
+                    assignment,
+                    objectPropertyMaps,
+                )
+            ) {
+                return;
+            }
+            if (!reachingExpressionValues.has(lambda)) {
+                reachingExpressionValues.set(lambda, new Map());
+            }
+            reachingExpressionValues
+                .get(lambda)
+                .set(targetDefinitionId, [
+                    {
+                        assignment_end_position:
+                            assignment.end.endpos,
+                        invalidation_position: node.end.endpos,
+                        expression_nodes:
+                            sourceInitializer.value.elements,
+                    },
+                ]);
+            finiteObjectElementAssignments.push({
+                function:
+                    lambda.name && lambda.name.name
+                        ? lambda.name.name
+                        : "<anonymous>",
+                function_line: lambda.start.line,
+                source: assignment.right.expression.name,
+                target: assignment.left.name,
+                loop_index: loopVariable.name.name,
+                loop_line: node.start.line,
+                assignment_line: assignment.start.line,
+                element_count:
+                    sourceInitializer.value.elements.length,
+                invalidation_line: node.end.line,
+            });
+        }),
+    );
     const reachingSymbolValues = new Map();
     const finiteAdjacentAssignments = [];
     constantInitializers.reaching_symbol_values =
@@ -1732,6 +2180,8 @@ function inspectFile(
         finite_scoped_assignments: finiteScopedAssignments,
         finite_object_key_iterations: finiteObjectKeyIterations,
         finite_loop_accumulations: finiteLoopAccumulations,
+        finite_object_element_assignments:
+            finiteObjectElementAssignments,
         finite_adjacent_assignments: finiteAdjacentAssignments,
         verified_static_transforms: verifiedStaticTransforms,
         static_transform_verification_failures:
@@ -2078,6 +2528,15 @@ function buildInventory(options) {
                 path: result.path,
                 ...item,
             })),
+        ),
+        finite_object_element_assignments: fileResults.flatMap(
+            (result) =>
+                result.finite_object_element_assignments.map(
+                    (item) => ({
+                        path: result.path,
+                        ...item,
+                    }),
+                ),
         ),
         finite_adjacent_assignments: fileResults.flatMap((result) =>
             result.finite_adjacent_assignments.map((item) => ({

@@ -880,6 +880,193 @@ function capturedByHostCallback() {
                 ],
             )
 
+    def test_object_array_element_assignment_requires_pure_non_escaping_shape(
+        self,
+    ):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            rules = root / "rules"
+            (rules / "db").mkdir(parents=True)
+            (rules / "db_extra").mkdir()
+            (rules / "db" / "object_elements.sg").write_text(
+                """
+function safe(k) {
+    var pattern, signature;
+    for (var j = 0; j < 1; j++) {}
+    var rows = [
+        {edition: undefined, references: ["60", "61"], enabled: true},
+        {edition: "two", references: ["62"], enabled: true}
+    ];
+    for (var j = 0; j < rows.length; j++) {
+        pattern = rows[j];
+        for (var k = 0; k < pattern.references.length; k++) {
+            signature = "00" + pattern.references[k];
+            if (X.compare(signature)) {}
+        }
+        if (pattern.edition) {}
+    }
+}
+
+function escaped(k) {
+    var pattern;
+    var rows = [{references: ["63"]}];
+    for (var j = 0; j < rows.length; j++) {
+        pattern = rows[j];
+        touch(pattern.references);
+        X.compare(pattern.references[k]);
+    }
+}
+
+function impure(k) {
+    var pattern;
+    var rows = [{references: ["64"], label: touch()}];
+    for (var j = 0; j < rows.length; j++) {
+        pattern = rows[j];
+        X.compare(pattern.references[k]);
+    }
+}
+
+function nonzero(k) {
+    var pattern;
+    var rows = [{references: ["65"]}];
+    for (var j = 1; j < rows.length; j++) {
+        pattern = rows[j];
+        X.compare(pattern.references[k]);
+    }
+}
+
+function captured(k) {
+    var pattern;
+    var callback = function () { return pattern.references[0]; };
+    var rows = [{references: ["66"]}];
+    for (var j = 0; j < rows.length; j++) {
+        pattern = rows[j];
+        X.compare(pattern.references[k]);
+    }
+    callback();
+}
+
+function propertyWrite(k) {
+    var pattern;
+    var rows = [{references: ["67"]}];
+    for (var j = 0; j < rows.length; j++) {
+        pattern = rows[j];
+        pattern.references[0] = "68";
+        X.compare(pattern.references[k]);
+    }
+}
+
+function lengthWrite(k) {
+    var pattern;
+    var rows = [{references: ["69"]}];
+    for (var j = 0; j < rows.length; j++) {
+        pattern = rows[j];
+        pattern.references.length = 0;
+        X.compare(pattern.references[k]);
+    }
+}
+
+function deleted(k) {
+    var pattern;
+    var rows = [{edition: "x", references: ["70"]}];
+    for (var j = 0; j < rows.length; j++) {
+        pattern = rows[j];
+        delete pattern.edition;
+        X.compare(pattern.references[k]);
+    }
+}
+
+function sourceAlias(k) {
+    var pattern;
+    var rows = [{references: ["71"]}];
+    for (var j = 0; j < rows.length; j++) {
+        pattern = rows[j];
+        var alias = rows[0];
+        X.compare(pattern.references[k]);
+    }
+}
+
+function notFirst(k) {
+    var pattern;
+    var rows = [{references: ["72"]}];
+    for (var j = 0; j < rows.length; j++) {
+        X.isVerbose();
+        pattern = rows[j];
+        X.compare(pattern.references[k]);
+    }
+}
+""".lstrip(),
+                encoding="utf-8",
+            )
+            dynamic = root / "dynamic.json"
+            dynamic.write_text(
+                json.dumps(
+                    {
+                        "upstream_commit": UPSTREAM_COMMIT,
+                        "patterns": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            output = root / "inventory.json"
+            self.run_extractor(rules, dynamic, output)
+            inventory = json.loads(output.read_text(encoding="utf-8"))
+
+            self.assertEqual(
+                [
+                    call["argument_kind"]
+                    for call in inventory["calls"]
+                ],
+                [
+                    "static_expression",
+                    "dynamic",
+                    "dynamic",
+                    "dynamic",
+                    "dynamic",
+                    "dynamic",
+                    "dynamic",
+                    "dynamic",
+                    "dynamic",
+                    "dynamic",
+                ],
+            )
+            self.assertEqual(
+                inventory["calls"][0]["static_patterns"],
+                ["0060", "0061", "0062"],
+            )
+            self.assertEqual(
+                inventory["finite_object_element_assignments"],
+                [
+                    {
+                        "path": "db/object_elements.sg",
+                        "function": "safe",
+                        "function_line": 1,
+                        "source": "rows",
+                        "target": "pattern",
+                        "loop_index": "j",
+                        "loop_line": 8,
+                        "assignment_line": 9,
+                        "element_count": 2,
+                        "invalidation_line": 15,
+                    }
+                ],
+            )
+            self.assertEqual(
+                inventory["finite_adjacent_assignments"],
+                [
+                    {
+                        "path": "db/object_elements.sg",
+                        "function": "safe",
+                        "function_line": 1,
+                        "symbol": "signature",
+                        "assignment_line": 11,
+                        "use_lines": [12],
+                        "invalidation_line": 12,
+                        "static_values": ["0060", "0061", "0062"],
+                    }
+                ],
+            )
+
     def test_committed_inventory_matches_fixed_rules(self):
         with tempfile.TemporaryDirectory() as directory:
             output = pathlib.Path(directory) / "inventory.json"
@@ -1005,6 +1192,28 @@ function capturedByHostCallback() {
                 ],
             )
             self.assertEqual(
+                inventory["finite_object_element_assignments"],
+                [
+                    {
+                        "path": (
+                            "db/PE/"
+                            "__GenericHeuristicAnalysis_By_DosX.7.sg"
+                        ),
+                        "function": (
+                            "scanForMaliciousCode_NET_and_Native"
+                        ),
+                        "function_line": 6178,
+                        "source": "maliciousImportPatterns",
+                        "target": "pattern",
+                        "loop_index": "j",
+                        "loop_line": 6363,
+                        "assignment_line": 6364,
+                        "element_count": 12,
+                        "invalidation_line": 6391,
+                    }
+                ],
+            )
+            self.assertEqual(
                 inventory["finite_adjacent_assignments"],
                 [
                     {
@@ -1027,7 +1236,75 @@ function capturedByHostCallback() {
                             "00'ntdll'00",
                             "00'user32'00",
                         ],
-                    }
+                    },
+                    {
+                        "path": (
+                            "db/PE/"
+                            "__GenericHeuristicAnalysis_By_DosX.7.sg"
+                        ),
+                        "function": (
+                            "scanForMaliciousCode_NET_and_Native"
+                        ),
+                        "function_line": 6178,
+                        "symbol": "importSignature",
+                        "assignment_line": 6368,
+                        "use_lines": [6369],
+                        "invalidation_line": 6371,
+                        "static_values": [
+                            "00'A'00",
+                            "00'DestroyWindow'00",
+                            "00'EmptyWorkingSet'00",
+                            "00'EnumChildWindows'00",
+                            "00'GetAsyncKeyState'00",
+                            "00'GetForegroundWindow'00",
+                            "00'GetKeyboardState'00",
+                            "00'GetWindowText'00",
+                            "00'GetWindowTextA'00",
+                            "00'GetWindowTextLength'00",
+                            "00'GetWindowTextLengthA'00",
+                            "00'KERNEL32.DLL'00",
+                            "00'Kernel32.dll'00",
+                            "00'MapVirtualKey'00",
+                            "00'Microsoft.CSharp'00",
+                            "00'NtSetInformationProcess'00",
+                            "00'NtsetInformationProcess'00",
+                            "00'OK'00",
+                            "00'RtlSetProcessIsCritical'00",
+                            "00'SendMessage'00",
+                            "00'SetThreadExecutionState'00",
+                            "00'SetWindowPos'00",
+                            "00'Stub'00",
+                            "00'System.Core'00",
+                            "00'System.Drawing'00",
+                            "00'System.Management'00",
+                            (
+                                "00'System.Runtime."
+                                "InteropServices'00"
+                            ),
+                            (
+                                "00'System.Security."
+                                "Cryptography'00"
+                            ),
+                            "00'System.Windows.Forms'00",
+                            "00'ToUnicodeEx'00",
+                            "00'USB'00",
+                            "00'avicap32.dll'00",
+                            "00'capCreateCaptureWindowA'00",
+                            "00'capGetDriverDescriptionA'00",
+                            "00'k'00",
+                            "00'kernel32'00",
+                            "00'kernel32.dll'00",
+                            "00'kl'00",
+                            "00'ntdll'00",
+                            "00'ntdll.dll'00",
+                            "00'psapi'00",
+                            "00'user32'00",
+                            "00'user32.dll'00",
+                            "00'w'00",
+                            "00'winmm.dll'00",
+                            "00'wintrust.dll'00",
+                        ],
+                    },
                 ],
             )
             self.assertEqual(
@@ -1080,23 +1357,23 @@ function capturedByHostCallback() {
             self.assertEqual(
                 inventory["argument_kind_counts"],
                 {
-                    "dynamic": 12,
+                    "dynamic": 11,
                     "literal": 5855,
-                    "static_expression": 101,
+                    "static_expression": 102,
                 },
             )
             self.assertEqual(
                 inventory["dynamic_expression_type_counts"],
                 {
                     "Binary": 3,
-                    "SymbolRef": 9,
+                    "SymbolRef": 8,
                 },
             )
-            self.assertEqual(inventory["static_pattern_count"], 5573)
+            self.assertEqual(inventory["static_pattern_count"], 5614)
             comparison = inventory["dynamic_inventory_comparison"]
             self.assertEqual(comparison["intersection_count"], 317)
             self.assertEqual(comparison["dynamic_only_count"], 0)
-            self.assertEqual(comparison["static_only_count"], 5256)
+            self.assertEqual(comparison["static_only_count"], 5297)
 
 
 if __name__ == "__main__":

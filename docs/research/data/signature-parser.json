@@ -100,8 +100,8 @@
   },
   "static_inventory": {
     "path": "docs/research/data/signature-static-inventory.json",
-    "sha256": "d7f214365ea9419929c9bf11cb3a8f476f6f81c87dc0fd801a59b527d1232d3f",
-    "generator_sha256": "4ead4d51774c9832bf4ed691db0340418478096221d54e17a8b1208711f845d6",
+    "sha256": "7c1f849bca02289bd8f3d5afdce55cffec6c758f49b3d70a56260ea6bee82801",
+    "generator_sha256": "1656845e64668a167f966f96705592521f1547c820ee52a8787a5dce59c7bac9",
     "parser": {
       "name": "uglify-js",
       "version": "3.19.3",
@@ -122,8 +122,9 @@
     "finite_parameter_value_count": 26,
     "finite_scoped_assignment_count": 5,
     "finite_object_key_iteration_count": 1,
+    "finite_object_element_assignment_count": 1,
     "finite_loop_accumulation_count": 2,
-    "finite_adjacent_assignment_count": 1,
+    "finite_adjacent_assignment_count": 2,
     "plain_object_enumeration_audit": {
       "object_reference_count": 1,
       "safe_has_own_property_call_count": 1,
@@ -147,18 +148,18 @@
       "isSignaturePresent": 72
     },
     "argument_kind_counts": {
-      "dynamic": 12,
+      "dynamic": 11,
       "literal": 5855,
-      "static_expression": 101
+      "static_expression": 102
     },
     "dynamic_expression_type_counts": {
       "Binary": 3,
-      "SymbolRef": 9
+      "SymbolRef": 8
     },
-    "static_pattern_count": 5573,
+    "static_pattern_count": 5614,
     "dynamic_pattern_overlap_count": 317,
     "dynamic_only_pattern_count": 0,
-    "static_only_pattern_count": 5256,
+    "static_only_pattern_count": 5297,
     "syntactic_call_site_scope_complete": true,
     "runtime_value_scope_complete": false
   },
