@@ -2,7 +2,7 @@
 
 Status: Draft  
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`  
-Last updated: 2026-07-25
+Last updated: 2026-07-27
 
 ## 结论
 
@@ -239,12 +239,21 @@ archive 的 28 次 harness 输出都与发布 CMake CLI 对应模式逐字节相
 和 aggressive 的
 `fcd0bb31b05a7d3452614a63f7277cc8749858ca2b6e953b119953946a81b1b6`。
 
+独立 context-rule oracle 又证明：当 scanner 已经提供
+`FILEPART_RESOURCE + scan ID 24` 或 `FILEPART_DEBUGDATA + RSDS bytes` 时，
+固定 `win_resources.1.sg` 与 `debug_data_debugData.1.sg` 分别产生 Manifest
+resource 和 PDB link detection，Rust 规则 spike 与 Qt5 8/8 一致。该实验只验证
+“subdevice context → 规则结果”；本页 engine/CLI harness 才验证父对象枚举与
+层级输出。两者尚未合并为同一条端到端 Rust 扫描链。
+
 ## 尚未覆盖
 
 - ZIP/7Z/RAR/CAB/ISO9660 各自的解包错误、encrypted entry、重复名称和 metadata；
 - 100000 archive、2000 resource 的 aggressive 上限边界；
 - 更深的 resource/overlay/archive 链及实际最大栈深、取消、超时和内存峰值；
 - 非 PE 格式的 overlay；
+- Rust scanner 从父格式枚举 resource/debugdata、生成 scan ID、调度规则并形成
+  与 Qt5 一致的结果树；
 - XML、CSV、TSV 和文本 formatter 的嵌套表示；
 - Windows/macOS 与 Qt 6 oracle。
 

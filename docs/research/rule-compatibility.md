@@ -399,6 +399,12 @@ UTF-16 分类及 header 解码。接入 4 个确定性 HostApi 后，固定输�
 HostApi 和上游非 Unicode 未初始化状态；Rust 按 ADR 0005 使用确定性文本 facts。
 接入后固定 trace 为 292/292、0 异常、0 fallback、1105 次 compare 和同一条
 Nintendo detection。“零 fallback”只覆盖该输入实际抵达的分支，仍不是兼容率。
+随后固定 Qt5 `Binary_Script` 与 Rust 对
+`win_resources.1.sg`、`debug_data_debugData.1.sg`、
+`format_DESKTOP.1.sg` 三条原样规则执行 8 个 resource/debugdata/text context：
+3 条正例的完整 detection 四元组和 5 条 file-part/ID/content gate 反例 8/8
+一致。该结果验证的是已给定 context 后的规则语义，不包含父扫描器枚举 subdevice、
+生成 scan ID 和调度/排序子扫描。
 
 固定 Binary 生命周期、init/include 首个命中规则、共享 global scope 和上游
 排序比较器缺陷见

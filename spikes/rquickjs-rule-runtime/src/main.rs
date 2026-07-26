@@ -3222,7 +3222,7 @@ mod tests {
         read_ascii, read_byte_array, read_signed, read_unsigned, shift_right_unsigned,
     };
     use std::fs;
-    use std::path::PathBuf;
+    use std::path::{Path, PathBuf};
     use std::sync::atomic::Ordering;
     use std::sync::{Arc, Mutex};
     use std::time::{SystemTime, UNIX_EPOCH};
@@ -3570,6 +3570,120 @@ mod tests {
         let unicode = BinaryStringContext::from_file_name(&decode_hex("fffe4100"), "");
         assert!(unicode.is_unicode_text());
         assert!(unicode.is_text());
+    }
+
+    #[test]
+    fn fixed_context_rules_match_pinned_qt5_oracle_end_to_end() {
+        const RESULT_SHIM: &[u8] = br#"
+            var bDetected, sType, sName, sVersion, sOptions;
+            function meta(type, name, version, options) {
+                sType = type;
+                sName = name ? name : String();
+                sVersion = version ? version : String();
+                sOptions = options ? options : String();
+                bDetected = false;
+            }
+            function _error(message) { throw new Error(String(message)); }
+            function result() {
+                if (bDetected) {
+                    sVersion = sVersion ? sVersion : String();
+                    sOptions = sOptions ? sOptions : String();
+                    if (!sName) _error("No input detection name.");
+                    _setResult(sType, sName, sVersion, sOptions);
+                }
+                sName = sVersion = sOptions = "";
+                var value = bDetected;
+                bDetected = false;
+                return value;
+            }
+        "#;
+
+        let oracle: serde_json::Value = serde_json::from_str(include_str!(
+            "../../../docs/research/data/context-rule-qt5.json"
+        ))
+        .expect("Qt5 context-rule oracle should be valid JSON");
+        let cases = oracle["cases"]
+            .as_array()
+            .expect("Qt5 context-rule oracle should contain cases");
+        let rule_root = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .join("../../upstream/Detect-It-Easy/db/Binary");
+        assert_eq!(cases.len(), 8);
+
+        for case in cases {
+            let id = case["id"].as_str().expect("oracle case should have an id");
+            let data = decode_hex(
+                case["data_hex"]
+                    .as_str()
+                    .expect("oracle case should have data"),
+            );
+            let file_part = match case["file_part"]
+                .as_str()
+                .expect("oracle case should have a file part")
+            {
+                "header" => HostFilePart::Header,
+                "resource" => HostFilePart::Resource,
+                "debugdata" => HostFilePart::DebugData,
+                other => panic!("unexpected context-rule file part: {other}"),
+            };
+            let scan_id = case["scan_id"]
+                .as_str()
+                .expect("oracle case should have a scan ID");
+            let file_name = case["file_name"]
+                .as_str()
+                .expect("oracle case should have a file name");
+            let rule_name = Path::new(
+                case["rule_path"]
+                    .as_str()
+                    .expect("oracle case should have a rule path"),
+            )
+            .file_name()
+            .expect("oracle rule path should have a file name");
+            let rule_path = rule_root.join(rule_name);
+            let source = fs::read(&rule_path)
+                .unwrap_or_else(|error| panic!("cannot read {}: {error}", rule_path.display()));
+
+            let runtime = new_runtime().expect("runtime should be created");
+            let context = new_context(&runtime).expect("context should be created");
+            let detections = Arc::new(Mutex::new(Vec::new()));
+            let bytes = Arc::new(data);
+            let host_context = BinaryHostContext::new(
+                file_part,
+                i64::try_from(bytes.len()).expect("fixture size should fit qint64"),
+                0,
+            )
+            .expect("fixed context should be valid")
+            .with_scan_id(scan_id);
+            let string_context = BinaryStringContext::from_file_name(&bytes, file_name);
+            install_nintendo_host_with_context_and_strings(
+                &context,
+                bytes,
+                Arc::clone(&detections),
+                host_context,
+                string_context,
+            )
+            .expect("host should be installed");
+            eval_unit(&context, RESULT_SHIM).expect("result shim should evaluate");
+            let detect_result = eval_rule_lexical(&context, &source, true)
+                .unwrap_or_else(|error| panic!("{id} should evaluate: {error}"));
+            assert_eq!(
+                detect_result,
+                if case["detect_result"].as_bool() == Some(true) {
+                    "true"
+                } else {
+                    "false"
+                },
+                "detect result mismatch for {id}"
+            );
+            let actual_detections = detections
+                .lock()
+                .expect("fixture result mutex should not be poisoned")
+                .clone();
+            assert_eq!(
+                serde_json::to_value(actual_detections).expect("detections should serialize"),
+                case["detections"],
+                "detection mismatch for {id}"
+            );
+        }
     }
 
     #[test]

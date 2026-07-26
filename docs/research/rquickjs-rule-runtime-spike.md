@@ -100,7 +100,9 @@ plain/UTF-8 API 后，292/292 仍无异常，fallback 降为 3 条规则、4 次
 facts，并接入 `getScanID`、`isResource`、`isDebugData`、`isFilePart`、
 `isUnicodeText` 和 `isText`。固定 292-rule trace 达到 292/292、0 异常、
 0 fallback，仍只产生同一条 Nintendo detection；这只闭合该样本的实际调用路径，
-不等于全规则兼容。
+不等于全规则兼容。随后固定 Qt5 harness 与 Rust 又对三条原样上游规则执行
+8/8 个 resource/debugdata/text context 差分，三条正例的完整 detection 四元组
+和五条 gate 反例全部一致。
 
 ## 实验边界
 
@@ -474,6 +476,62 @@ false，短路使 `getScanID`、`isFilePart` 和 `isUnicodeText` 在此样本上
 292/292 无异常且 fallback 为 0；compare 因 `isText=false` 的短路从 1109 降为
 1105，search 保持 11，检测仍为同一条 Nintendo result。它仍是单样本缺口诊断，
 不是全规则兼容证据。
+
+### Resource、debugdata 与 text 真实规则差分
+
+静态规则清单确认：
+
+- `Binary.getScanID/isResource` 只由
+  `win_resources.1.sg` 调用；
+- `Binary.isDebugData` 只由 `debug_data_debugData.1.sg` 调用；
+- `Binary.isText` 只由 `format_DESKTOP.1.sg` 调用；
+- `X.isFilePart` 只存在于 profiling helper 的延迟方法体，本轮三条规则不调用。
+
+项目生成的
+[`context_rule_harness_main.cpp`](../../tools/upstream/context_rule_harness_main.cpp)
+在固定 Qt Script 5.15.13 中注册未修改的 `Binary_Script`，加载上述三条规则前
+逐一验证原始 bytes 的 SHA-256，不加载改写版本。它使用内存 `QBuffer` 构造
+8 个上下文：
+
+| 类别 | 正例 | 反例 |
+| --- | --- | --- |
+| Resource | `FILEPART_RESOURCE` + scan ID `24` → `format / Manifest / "" / Resources` | 未知 ID；相同 ID 但 header file-part |
+| Debug data | `FILEPART_DEBUGDATA` + `RSDS` → `debug data / PDB file link / 7.0 / ""` | 相同 bytes 但 header file-part |
+| Desktop text | ASCII `[Desktop Entry]\n` → `format / Desktop Entry (.desktop) / "" / ""` | plain text 缺 marker；binary bytes |
+
+Qt5 原始输出保存在
+[`context-rule-qt5.json`](data/context-rule-qt5.json)，SHA-256 为
+`8ccb15372bf6272f1c90356664208b12e096c9cb9430b63cd1573a99b6972c03`。
+probe 对 case inventory、detect 布尔值、完整 detection 四元组、规则错误和
+`Binary_Script` diagnostic 做强断言。Rust 使用同一规则 bytes、相同 context
+facts 和同一 baseline 端到端执行，8/8 一致；没有为测试重写规则。
+
+该差分证明显式 Rust context 足以重现三条规则在已给定 subdevice/text facts 后的
+行为，但不证明上游 scanner 如何从 PE 等父对象枚举 resource/debugdata、如何
+生成 scan ID、如何排序子扫描，或何时调度这些规则。这些仍属于扫描编排与嵌套
+语料差分范围。
+
+复现：
+
+```sh
+docker --context=default buildx build \
+  --load \
+  --provenance=false \
+  --file tools/upstream/Dockerfile.context-rule-harness-qt5 \
+  --tag diec-rust/upstream-context-rule-harness:74eaf505 \
+  tools/upstream
+
+python tools/upstream/probe_context_rule_harness.py \
+  --docker-context default \
+  --image diec-rust/upstream-context-rule-harness:74eaf505 \
+  --binary /opt/die-build/src/console/diec-context-rule-harness \
+  --baseline docs/research/data/context-rule-qt5.json \
+  --expected-revision 74eaf505c250ab47e709024e9dc41657cd8f2254
+
+cargo +1.88.0 test --locked \
+  --manifest-path spikes/rquickjs-rule-runtime/Cargo.toml \
+  fixed_context_rules_match_pinned_qt5_oracle_end_to_end
+```
 
 ### `U24` 与 `shru64` Qt oracle
 

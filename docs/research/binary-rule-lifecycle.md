@@ -257,7 +257,10 @@ UTF-16 分类和 header 解码。`BinaryStringContext` 15/15 一致并接入
 detection。新增 3/3 个 scan/file-part context 和 4/4 个 storage-prefill
 用例证明上游 `m_bIsUnicodeText` 在非 Unicode 路径依赖未初始化状态。Rust 按
 ADR 0005 使用显式确定性 facts 并接入剩余 native HostApi 后，292/292 无异常、
-0 fallback；compare 为 1105 次，检测仍是同一条 Nintendo result。
+0 fallback；compare 为 1105 次，检测仍是同一条 Nintendo result。独立 Qt5
+harness 随后给三条原样规则构造 resource/debugdata/text context，Rust 对
+3 条正例 detection 和 5 条 gate 反例达到 8/8 一致；父扫描器的 subdevice
+发现、scan ID 生成与调度仍未包含在该差分中。
 
 下一轮完整 signature lifecycle probe 仍至少要满足：
 

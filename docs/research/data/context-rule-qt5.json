@@ -1,0 +1,136 @@
+{
+  "case_count": 8,
+  "cases": [
+    {
+      "binary_script_error": "",
+      "data_hex": "00",
+      "detect_is_boolean": true,
+      "detect_result": true,
+      "detections": [
+        [
+          "format",
+          "Manifest",
+          "",
+          "Resources"
+        ]
+      ],
+      "file_name": "resource.bin",
+      "file_part": "resource",
+      "id": "resource_manifest",
+      "rule_path": "/opt/die-source/Detect-It-Easy/db/Binary/win_resources.1.sg",
+      "rule_sha256": "2fdad41d666d32467cabe83dae7d16625ade5935e3061c58dfefeb1fb7b99db7",
+      "scan_id": "24"
+    },
+    {
+      "binary_script_error": "",
+      "data_hex": "00",
+      "detect_is_boolean": true,
+      "detect_result": false,
+      "detections": [],
+      "file_name": "resource.bin",
+      "file_part": "resource",
+      "id": "resource_unknown_id",
+      "rule_path": "/opt/die-source/Detect-It-Easy/db/Binary/win_resources.1.sg",
+      "rule_sha256": "2fdad41d666d32467cabe83dae7d16625ade5935e3061c58dfefeb1fb7b99db7",
+      "scan_id": "999"
+    },
+    {
+      "binary_script_error": "",
+      "data_hex": "00",
+      "detect_is_boolean": true,
+      "detect_result": false,
+      "detections": [],
+      "file_name": "resource.bin",
+      "file_part": "header",
+      "id": "resource_header_gate",
+      "rule_path": "/opt/die-source/Detect-It-Easy/db/Binary/win_resources.1.sg",
+      "rule_sha256": "2fdad41d666d32467cabe83dae7d16625ade5935e3061c58dfefeb1fb7b99db7",
+      "scan_id": "24"
+    },
+    {
+      "binary_script_error": "",
+      "data_hex": "52534453",
+      "detect_is_boolean": true,
+      "detect_result": true,
+      "detections": [
+        [
+          "debug data",
+          "PDB file link",
+          "7.0",
+          ""
+        ]
+      ],
+      "file_name": "debug.bin",
+      "file_part": "debugdata",
+      "id": "debug_rsds",
+      "rule_path": "/opt/die-source/Detect-It-Easy/db/Binary/debug_data_debugData.1.sg",
+      "rule_sha256": "381b6259b239f2633b92fbd84fd0d99b972751e20cab12b6e09139a260f1f47d",
+      "scan_id": ""
+    },
+    {
+      "binary_script_error": "",
+      "data_hex": "52534453",
+      "detect_is_boolean": true,
+      "detect_result": false,
+      "detections": [],
+      "file_name": "debug.bin",
+      "file_part": "header",
+      "id": "debug_header_gate",
+      "rule_path": "/opt/die-source/Detect-It-Easy/db/Binary/debug_data_debugData.1.sg",
+      "rule_sha256": "381b6259b239f2633b92fbd84fd0d99b972751e20cab12b6e09139a260f1f47d",
+      "scan_id": ""
+    },
+    {
+      "binary_script_error": "",
+      "data_hex": "5b4465736b746f7020456e7472795d0a",
+      "detect_is_boolean": true,
+      "detect_result": true,
+      "detections": [
+        [
+          "format",
+          "Desktop Entry (.desktop)",
+          "",
+          ""
+        ]
+      ],
+      "file_name": "sample.desktop",
+      "file_part": "header",
+      "id": "desktop_entry",
+      "rule_path": "/opt/die-source/Detect-It-Easy/db/Binary/format_DESKTOP.1.sg",
+      "rule_sha256": "9318de29fa4b3ea3c36f0fb286dc70fd77020cde092e1cf078aa57dc21562ff3",
+      "scan_id": ""
+    },
+    {
+      "binary_script_error": "",
+      "data_hex": "68656c6c6f0a",
+      "detect_is_boolean": true,
+      "detect_result": false,
+      "detections": [],
+      "file_name": "sample.desktop",
+      "file_part": "header",
+      "id": "desktop_missing_marker",
+      "rule_path": "/opt/die-source/Detect-It-Easy/db/Binary/format_DESKTOP.1.sg",
+      "rule_sha256": "9318de29fa4b3ea3c36f0fb286dc70fd77020cde092e1cf078aa57dc21562ff3",
+      "scan_id": ""
+    },
+    {
+      "binary_script_error": "",
+      "data_hex": "00010203",
+      "detect_is_boolean": true,
+      "detect_result": false,
+      "detections": [],
+      "file_name": "sample.desktop",
+      "file_part": "header",
+      "id": "desktop_binary_gate",
+      "rule_path": "/opt/die-source/Detect-It-Easy/db/Binary/format_DESKTOP.1.sg",
+      "rule_sha256": "9318de29fa4b3ea3c36f0fb286dc70fd77020cde092e1cf078aa57dc21562ff3",
+      "scan_id": ""
+    }
+  ],
+  "engine": "QScriptEngine",
+  "qt_version": "5.15.13",
+  "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+  "schema_version": 1,
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+}

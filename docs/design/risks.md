@@ -129,7 +129,9 @@ baseline 的变更都要检查本表。
   3/3 固定 scan ID 和 resource/debugdata file-part；storage prefill 4/4 证明
   非 Unicode 的 `m_bIsUnicodeText/isText` 依赖未初始化状态。ADR 0005 采用
   显式确定性 facts，接入后固定 trace 为 292/292、0 异常、0 fallback、1105 次
-  compare 和 1 条 detection；仍不能把单输入零 fallback 当作兼容率。
+  compare 和 1 条 detection；仍不能把单输入零 fallback 当作兼容率。三条原样
+  context-sensitive 规则的 Qt5/Rust 差分随后为 8/8，但只验证已给定 context
+  后的规则行为，未验证 scanner 的 subdevice 枚举、scan ID 和调度。
   固定 signature AST inventory 随后解析 `db`/`db_extra`
   2175/2175，保存 5968 个具名 signature API 调用点和 5628 个静态 pattern，
   覆盖动态 317/317；四个保守动态参数中的 `byteCode` 又已闭合为 97 个唯一

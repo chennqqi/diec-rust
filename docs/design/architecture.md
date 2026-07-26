@@ -191,7 +191,9 @@ compare、292/292 条无异常、12 条规则 34 次 fallback 和 11 条路径�
 和 4/4 个 storage-prefill 向量固定剩余行为；按 ADR 0005 使用显式文本 facts 并
 接入剩余 native HostApi 后，固定 trace 为 1105 次 compare、292/292 条无异常、
 0 fallback 和 1 条 diagnostic detection。这里的零 fallback 只覆盖单一输入的
-实际分支，不是全规则兼容证明。该 spike
+实际分支，不是全规则兼容证明。后续三条原样规则的 resource/debugdata/text
+context 差分达到 8/8，说明显式 context 可驱动对应规则语义；它不替代 scanner
+负责的 subdevice 发现、scan ID 生成和调度。该 spike
 通过相邻 path dependency 复用代码不等于正式 crate 边界已确定，Phase 1 必须按
 本架构重新落位，并由 format-specific receiver/memory map 构造独立的
 file-part、overlay offset/size、scan ID、文件名和文本 context。

@@ -19,7 +19,7 @@
   "experiment": {
     "cargo_lock_sha256": "e03ce821c4a4c0f362d417d84752ed9ef1f775377ef9042306397aca39d21836",
     "cargo_toml_sha256": "3a40e231c4f71f7e4e3ea1362f2dc256852b4e9201f5a2f3da41f443cdcbbfbf",
-    "source_sha256": "a366c983208cd24f841b5e26d83ae3e93d080622b55723bfc80753b296e8b447",
+    "source_sha256": "da808dcca4941f2c51c9b8cf7ab56313dd1b9df30152c405571fd748b954fc79",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -815,6 +815,79 @@
       "waiver_status": "Phase 1 machine-readable waiver required by ADR 0004 and ADR 0005"
     },
     "scope": "incremental scan-id, resource/debug file-part and deterministic text HostApi gap measurement on one Linux Qt5 top-level header sample; 0 fallback proves only the observed execution path, not full rule compatibility"
+  },
+  "context_rule_differential": {
+    "oracle": {
+      "baseline": "docs/research/data/context-rule-qt5.json",
+      "baseline_sha256": "8ccb15372bf6272f1c90356664208b12e096c9cb9430b63cd1573a99b6972c03",
+      "binary": "/opt/die-build/src/console/diec-context-rule-harness",
+      "binary_sha256": "91062485af09470efadd1a99786bb03693cb2ea0547f01c65ba7f59dd6679c4b",
+      "case_count": 8,
+      "dockerfile": "tools/upstream/Dockerfile.context-rule-harness-qt5",
+      "dockerfile_sha256": "bca38b169be75f0748bdfac6be4fe5bc6b9a8c199e91c91cdd4f128a2be70710",
+      "engine": "QScriptEngine",
+      "harness_source": "tools/upstream/context_rule_harness_main.cpp",
+      "harness_source_sha256": "4213d1a572dd23b125ba757aec34bee6645465ad24ad819bf24c8d917bd78b77",
+      "image": "diec-rust/upstream-context-rule-harness:74eaf505",
+      "image_id": "sha256:8645ad6abddd9dd8780c1f8946782510d51a9b262b1323af8787522ea4d03d1d",
+      "probe": "tools/upstream/probe_context_rule_harness.py",
+      "probe_passed": true,
+      "probe_sha256": "9395ef89215900b301db0ffa5022b8f1a309a8a0e629a991c5abc049f3e1e60f",
+      "qt_version": "5.15.13",
+      "rule_sources": [
+        {
+          "bytes": 1041,
+          "path": "upstream/Detect-It-Easy/db/Binary/win_resources.1.sg",
+          "sha256": "2fdad41d666d32467cabe83dae7d16625ade5935e3061c58dfefeb1fb7b99db7"
+        },
+        {
+          "bytes": 2471,
+          "path": "upstream/Detect-It-Easy/db/Binary/debug_data_debugData.1.sg",
+          "sha256": "381b6259b239f2633b92fbd84fd0d99b972751e20cab12b6e09139a260f1f47d"
+        },
+        {
+          "bytes": 434,
+          "path": "upstream/Detect-It-Easy/db/Binary/format_DESKTOP.1.sg",
+          "sha256": "9318de29fa4b3ea3c36f0fb286dc70fd77020cde092e1cf078aa57dc21562ff3"
+        }
+      ]
+    },
+    "rust": {
+      "case_count": 8,
+      "matched_count": 8,
+      "rule_bytes_preserved": true,
+      "test": "fixed_context_rules_match_pinned_qt5_oracle_end_to_end"
+    },
+    "coverage": {
+      "negative_case_count": 5,
+      "positive_case_count": 3,
+      "positive_detections": [
+        [
+          "format",
+          "Manifest",
+          "",
+          "Resources"
+        ],
+        [
+          "debug data",
+          "PDB file link",
+          "7.0",
+          ""
+        ],
+        [
+          "format",
+          "Desktop Entry (.desktop)",
+          "",
+          ""
+        ]
+      ],
+      "rules": [
+        "win_resources.1.sg",
+        "debug_data_debugData.1.sg",
+        "format_DESKTOP.1.sg"
+      ]
+    },
+    "scope": "three byte-identical fixed Binary rules under project-generated resource, debugdata, and text/header QBuffer contexts; verifies detect return and full detection tuple, not upstream orchestration that discovers and schedules subdevices"
   },
   "isolated_eval": {
     "bytes": 2902881,
