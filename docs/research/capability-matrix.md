@@ -171,7 +171,9 @@ hideunknown 的可观察增量。完整输入哈希和输出见
   ZIP→ZIP 样本在 recursive/aggressive 组合下均不解包。
 - `CAP-NEST-004`：archive 源码 `nLimit` 为 20/100000，但默认 `>` 判断实际允许第 21 个
   scanable member；resource 的 `<=` 判断也允许第 21 个，aggressive limit
-  为 2000。两条默认 21、aggressive 至少 22 的边界均已 Observed。
+  为 2000。resource 已精确观察默认 21/aggressive 2001；2002 项 fixture 分为
+  三个合法 type directory，以满足 PE parser 每目录不超过 1000 项的前置限制。
+  archive 100000 上限仍归 `CAP-GAP-006`。
 - `CAP-NEST-005`：overlay 始终作为 subdevice 扫描；非 aggressive resource 仅在探测为
   scanable 类型时扫描。
 - `CAP-NEST-006`：项目生成的 RT_MANIFEST 未分类 payload 证明完整链：recursive 单独跳过，
@@ -228,8 +230,9 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
   OOM/调度结果采纳为 compatibility golden。
 - Unicode/特殊 filename 及 Windows/macOS 的路径和枚举差异。
 - formatter 转义与嵌套排序已闭合；跨平台编码差异仍归入路径/平台缺口。
-- deep 以及 aggressive resource 过滤/计数上限的增量样本。
-- 其他 archive 格式、aggressive 高上限、最大深度和总解压资源限制。
+- deep 与 aggressive resource 过滤/计数边界已由
+  [`scan-option-boundaries.md`](scan-option-boundaries.md) 闭合。
+- 其他 archive 格式、archive aggressive 100000 上限、最大深度和总解压资源限制。
 - Qt 5 与 Qt 6 的首轮基础/安全语料/不可读输入差分已完成；仍需扩展到完整
   output/scan/special/path/database/nested 矩阵及其他 Qt 6 minor。
 - Linux、Windows、macOS 路径与编码差异。

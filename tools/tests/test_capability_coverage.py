@@ -36,7 +36,7 @@ class CapabilityCoverageTest(unittest.TestCase):
         self.assertEqual(summary["capability_row_count"], 68)
         self.assertEqual(summary["platform_count"], 4)
         self.assertEqual(summary["cell_count"], 272)
-        self.assertEqual(summary["rows_with_corpus_gaps"], 11)
+        self.assertEqual(summary["rows_with_corpus_gaps"], 8)
         self.assertEqual(summary["unclassified_capability_row_count"], 0)
         self.assertEqual(summary["unclassified_cell_count"], 0)
         self.assertEqual(
@@ -148,7 +148,7 @@ class CapabilityCoverageTest(unittest.TestCase):
         )
         self.assertEqual(
             rows["CAP-NEST-009"]["corpus_gap_ids"],
-            ["CAP-GAP-005", "CAP-GAP-006"],
+            ["CAP-GAP-006"],
         )
 
     def test_every_declared_gap_maps_to_known_capabilities(self):
@@ -162,7 +162,6 @@ class CapabilityCoverageTest(unittest.TestCase):
             gap_ids,
             [
                 "CAP-GAP-003",
-                "CAP-GAP-005",
                 "CAP-GAP-006",
                 "CAP-GAP-007",
                 "CAP-GAP-008",

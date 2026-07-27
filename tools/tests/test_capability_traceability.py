@@ -111,7 +111,6 @@ class CapabilityTraceabilityTest(unittest.TestCase):
             gap_ids,
             [
                 "CAP-GAP-003",
-                "CAP-GAP-005",
                 "CAP-GAP-006",
                 "CAP-GAP-007",
                 "CAP-GAP-008",

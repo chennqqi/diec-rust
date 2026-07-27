@@ -96,8 +96,10 @@ ISO9660 视为可解包类型。流程为：
 - resource 在 aggressive 下始终扫描，否则只扫描 `isScanable()` 类型；
 - resource 的 `nLimit` 默认 20、aggressive 为 2000。条件使用
   `nCurrentIndex <= nLimit`，且计数只在实际扫描后增加。22 个 PDF resource
-  的发布 CLI 实验确认默认输出 21 个 `Resource`，aggressive 输出 22 个；
-  overlay 不受该判断约束。
+  的发布 CLI 实验确认默认输出 21 个 `Resource`；三组合法 resource directory
+  的 2002 项实验确认 aggressive 精确输出 2001 个。PE parser 本身要求每层
+  directory 不超过 1000 项。overlay 不受该判断约束。详见
+  [`scan-option-boundaries.md`](scan-option-boundaries.md)。
 
 PE 的 resource 由
 [`XPE::getFileParts()`](https://github.com/horsicq/Formats/blob/1151e7254fdee3c0294ff7095edbdd7bfccf8201/exec/xpe.cpp#L11205-L11288)
@@ -305,7 +307,8 @@ recursive+aggressive 对前者产生 Manifest child，对后者不建 child；�
 ## 尚未覆盖
 
 - ZIP/7Z/RAR/CAB/ISO9660 各自的解包错误、encrypted entry、重复名称和 metadata；
-- 100000 archive、2000 resource 的 aggressive 上限边界；
+- archive 100000 aggressive 上限边界；resource aggressive 2001 实际 child
+  边界已固定；
 - 更深的 resource/overlay/archive 链及实际最大栈深、取消、超时和内存峰值；
 - 非 PE 格式的 overlay；
 - Rust scanner 从父格式枚举 resource、生成 scan ID、调度规则并形成与 Qt5

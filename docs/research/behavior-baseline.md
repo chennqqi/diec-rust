@@ -247,8 +247,9 @@ elapsed 值与固定规则执行序列另见
   固定；特殊 filename 与跨平台路径编码仍待覆盖。专用 struct/entropy 阈值
   边界已由 [`cli-special-modes.md`](cli-special-modes.md) 的 28-case 双 oracle
   固定。
-- 能实际触发 deep 增量或 aggressive 过滤/上限差异的样本。
-- 其他 archive 格式、aggressive 高上限和最大嵌套深度。
+- deep 增量、aggressive resource filter 和默认 21/aggressive 2001 精确上限已由
+  [`scan-option-boundaries.md`](scan-option-boundaries.md) 固定。
+- 其他 archive 格式、archive aggressive 100000 上限和最大嵌套深度。
 - 发布 CLI 的 ZIP database 截断/重复/`..`/根前缀边界及 cache-disabled
   副作用已由 [`database-archive-cache.md`](database-archive-cache.md) 覆盖；
   Qt5 engine cache 的 miss/hit/stale/bad-magic/truncated/cancel 已固定，其他

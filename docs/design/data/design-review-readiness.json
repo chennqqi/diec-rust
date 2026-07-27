@@ -84,7 +84,7 @@
       ],
       "blocking_items": [
         "ADR 0004 remains Proposed",
-        "11 named corpus-gap rows and Windows/macOS/complete Qt6 oracles remain open",
+        "8 named corpus-gap rows and Windows/macOS/complete Qt6 oracles remain open",
         "Rust-paired/cold/cross-platform benchmark and package-size targets, reviewed limits, and release integration are incomplete"
       ]
     },

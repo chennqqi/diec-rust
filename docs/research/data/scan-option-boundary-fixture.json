@@ -1,0 +1,84 @@
+{
+  "boundaries": {
+    "aggressive_resource_scan_count": 2001,
+    "default_resource_scan_count": 21,
+    "resource_enumeration_count": 10000
+  },
+  "directories": [
+    "database",
+    "database/Binary",
+    "database/PE",
+    "database/PDF",
+    "extra",
+    "custom",
+    "input"
+  ],
+  "entries": [
+    {
+      "path": "database/Binary/normal.1.sg",
+      "purpose": "ordinary Binary rule",
+      "sha256": "11aeedc3b84082cec89470db84bb84662687a2c7d711abc9118cd3234b5f4b9f",
+      "size": 90,
+      "source": "project-generated"
+    },
+    {
+      "path": "database/Binary/DS.deep.2.sg",
+      "purpose": "DS rule enabled only by deep scan",
+      "sha256": "4ec2ebf3429d965c07910bbc80d959000bec410eb1f9972722a64ddc094e21f8",
+      "size": 88,
+      "source": "project-generated"
+    },
+    {
+      "path": "database/Binary/EP.entrypoint.3.sg",
+      "purpose": "EP rule enabled only by deep scan",
+      "sha256": "a7ac988b7030cd1a19c59dd8d7086ad2bbd178b5d535b23f3331c8dd39c0c783",
+      "size": 94,
+      "source": "project-generated"
+    },
+    {
+      "path": "database/PE/root.1.sg",
+      "purpose": "stable parent record for resource scans",
+      "sha256": "5cacd0912a1a5680349a6dac43ac13769b2a6f747e45092b2a694a8d6abdb10f",
+      "size": 84,
+      "source": "project-generated"
+    },
+    {
+      "path": "database/PDF/pdf.1.sg",
+      "purpose": "stable record for scanable PDF resources",
+      "sha256": "820186762384a2c29711aa4ef6e0b2d161cddbc8d6ea62848a7e4febe463dd68",
+      "size": 86,
+      "source": "project-generated"
+    },
+    {
+      "path": "input/probe.bin",
+      "purpose": "benign Binary input for deep filtering",
+      "sha256": "73bd12abdc7ac30e4bae5f4f9acbae3682e0e0f86edce7f085c37cd7d9b9d8ae",
+      "size": 37,
+      "source": "project-generated"
+    },
+    {
+      "path": "input/pe-one-unclassified.exe",
+      "purpose": "PE32 with one unclassified resource",
+      "sha256": "e740a8924b97f1ad260531dd252c5b62d494cac183f4969a9ed0f4d4cb4e2fce",
+      "size": 1024,
+      "source": "project-generated"
+    },
+    {
+      "path": "input/pe-22-pdf.exe",
+      "purpose": "PE32 with 22 scanable PDF resources",
+      "sha256": "1eea60ef127f55f19a82568262ed14098972c7f50f462448eb209106592cf568",
+      "size": 9216,
+      "source": "project-generated"
+    },
+    {
+      "path": "input/pe-2002-unclassified.exe",
+      "purpose": "PE32 with 2002 unclassified resources across three types",
+      "sha256": "0fee9b1b137912d784f8c5eac06104f427c42f3ef3fa5a89fac81d77bf30c713",
+      "size": 98816,
+      "source": "project-generated"
+    }
+  ],
+  "generator": "tools/corpus/generate_scan_option_boundary_fixture.py",
+  "license": "project-generated; no third-party sample or rule bytes",
+  "schema_version": 1
+}

@@ -88,16 +88,6 @@ def build_gap_map(capability_ids: set[str]) -> dict[str, list[str]]:
             capability_ids,
             prefixes=("CAP-CLI-IN-",),
         ),
-        "CAP-GAP-005": select(
-            capability_ids,
-            exact=(
-                "CAP-CLI-OPT-002",
-                "CAP-CLI-OPT-005",
-                "CAP-RULE-005",
-                "CAP-NEST-004",
-                "CAP-NEST-009",
-            ),
-        ),
         "CAP-GAP-006": select(
             capability_ids,
             exact=(
@@ -147,7 +137,6 @@ def validate_traceability(traceability: dict[str, Any]) -> None:
     gap_ids = [gap["id"] for gap in traceability["coverage_gaps"]]
     expected_gap_ids = [
         "CAP-GAP-003",
-        "CAP-GAP-005",
         "CAP-GAP-006",
         "CAP-GAP-007",
         "CAP-GAP-008",

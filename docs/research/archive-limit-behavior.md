@@ -137,4 +137,6 @@ python tools\upstream\probe_archive_limits_harness.py `
   allocation；性能/内存结论仍需专用 benchmark/profiler。
 - Windows、macOS 和 Linux Qt6 仍为平台缺口。
 
-因此本能力保留 `CAP-GAP-005/006`，但不再是 source-only。
+resource filtering/count 已由
+[`scan-option-boundaries.md`](scan-option-boundaries.md) 闭合；本能力仍保留
+`CAP-GAP-006`，但不再是 source-only。
