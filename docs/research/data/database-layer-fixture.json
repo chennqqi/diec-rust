@@ -1,0 +1,87 @@
+{
+  "entries": [
+    {
+      "path": "input.bin",
+      "purpose": "benign Binary scan input",
+      "sha256": "f3370133fc26b3a245351c44040a16f63eac945f3a79da6dd91bdb17a76b5943",
+      "size": 46,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/layer-low.1.sg",
+      "purpose": "main layer low priority rule",
+      "sha256": "4282f7bc89f70403d3684c3664ec3640529c5edf56f587d3cef0d1ea9b97726e",
+      "size": 85,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/shared.5.sg",
+      "purpose": "main layer shared priority rule",
+      "sha256": "3ae3adcbf022888f20b19686cd3a0d33621467c294d4caa2b0fbbde329eee360",
+      "size": 88,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/layer-high.9.sg",
+      "purpose": "main layer high priority rule",
+      "sha256": "ab81aa733e7f9c408d2ad18e560bd2d7b6f1ad8bac24300b6d952b9b41781837",
+      "size": 86,
+      "source": "project-generated"
+    },
+    {
+      "path": "extra/Binary/layer-low.1.sg",
+      "purpose": "extra layer low priority rule",
+      "sha256": "45a19d4d45fbb97409907cfbed734d5b2b7e46d73aecb2dd5b2b3dd0b79fb908",
+      "size": 86,
+      "source": "project-generated"
+    },
+    {
+      "path": "extra/Binary/shared.5.sg",
+      "purpose": "extra layer shared priority rule",
+      "sha256": "552f20be2cbd360915519e712ad6cea5fb0612c803208f69806e9c759f634574",
+      "size": 89,
+      "source": "project-generated"
+    },
+    {
+      "path": "extra/Binary/layer-high.9.sg",
+      "purpose": "extra layer high priority rule",
+      "sha256": "1841a12a030c0b690dea0fd85bea8b716909d4342c4690a25d66ddb45e1fecbe",
+      "size": 87,
+      "source": "project-generated"
+    },
+    {
+      "path": "custom/Binary/layer-low.1.sg",
+      "purpose": "custom layer low priority rule",
+      "sha256": "44bf11348658ed21dcacde00d35b554affd30c25cbfb726cc68928d4c32931c9",
+      "size": 87,
+      "source": "project-generated"
+    },
+    {
+      "path": "custom/Binary/shared.5.sg",
+      "purpose": "custom layer shared priority rule",
+      "sha256": "123efeb6da3b787893404f9db66a23add1e1c4eeab55c88589bef11ed3fd99a8",
+      "size": 90,
+      "source": "project-generated"
+    },
+    {
+      "path": "custom/Binary/layer-high.9.sg",
+      "purpose": "custom layer high priority rule",
+      "sha256": "eef39e4c6ef79cf75434472fe48dc090c362fdb8f03d81fc7768f458edf823c4",
+      "size": 88,
+      "source": "project-generated"
+    }
+  ],
+  "generator": "tools/corpus/generate_database_layer_fixture.py",
+  "layers": [
+    "main",
+    "extra",
+    "custom"
+  ],
+  "license": "project-generated; no third-party sample or rule bytes",
+  "rule_filenames": [
+    "layer-low.1.sg",
+    "shared.5.sg",
+    "layer-high.9.sg"
+  ],
+  "schema_version": 1
+}

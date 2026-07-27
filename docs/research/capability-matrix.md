@@ -85,7 +85,7 @@ verbose/messages/profiling 的 channel 与结构化结果关系，以及两个�
 
 | 能力 | 源码证据 | 状态 |
 | --- | --- | --- |
-| main/extra/custom 三层规则库 | `XScanEngine::loadDatabase()` | Observed；固定目录加载成功 |
+| main/extra/custom 三层规则库 | `XScanEngine::loadDatabase()` + `_shouldExecuteSignature()` | Observed；各层分别排序并按 main→extra→custom append；同名不覆盖/不去重；load 与 runtime gate 已固定 |
 | 规则优先级排序 | `sort_signature_prio` | Observed + source；priority-only 按字符串 priority；含 `_init` 时比较非传递 |
 | global/type Init 规则 | `findInitSignatures()` + `_executeInitSignature()` | Observed；Binary main init 遮蔽 extra/custom |
 | 按文件类型过滤规则 | `_shouldExecuteSignature()` | Observed；Binary 输入不执行 PE decoy |

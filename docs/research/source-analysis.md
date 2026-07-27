@@ -114,6 +114,12 @@ build/cache decode 必须事务化，取消或失败不得发布 records 或提�
 普通扫描退出码。完整错误矩阵见
 [`database-error-behavior.md`](database-error-behavior.md)。
 
+三层成功加载时，每层内部按 signature priority/name 排序后，以
+`main → extra → custom` 连续块 append；同名 record 不覆盖也不去重。扫描时
+`_shouldExecuteSignature()` 仍可按 extra/custom flag 过滤已经加载的 records。
+固定同名 fixture 与 Qt5 engine 证据见
+[`database-layer-behavior.md`](database-layer-behavior.md)。
+
 `DiE_Script::_shouldExecuteSignature()` 过滤条件包括：
 
 - signature file type 与当前 file type 匹配。

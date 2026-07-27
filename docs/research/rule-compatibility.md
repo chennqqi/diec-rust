@@ -101,6 +101,10 @@ Extra database 为 Amiga 2、COM 2、ELF 1、MSDOS 2、PE 131。
 extra、custom 的 `.0`/`.4` 反例同时确认三层分别排序后 append。见
 [`rule-orchestration.md`](rule-orchestration.md)。
 
+补充的同名 fixture 确认三个 `shared.5.sg` records 全部保留并按层执行，而非
+extra/custom 覆盖 main；层已全部加载后，scan options 仍能过滤 extra/custom。
+见 [`database-layer-behavior.md`](database-layer-behavior.md)。
+
 ## 执行生命周期
 
 每个扫描对象创建一个 `DiE_ScriptEngine`：

@@ -83,6 +83,12 @@ execution order 与 detection 数组原顺序；只允许规范化 profiling ela
 不得按名称排序后比较。order manifest 的 source path/hash/target/oracle 任一漂移
 都必须是 database incompatibility。
 
+另用
+[`database-layer-fixture.json`](../research/data/database-layer-fixture.json)
+验证三层同名 `shared.5.sg` 不覆盖/不去重、3/6/6/9 materialized counts、
+main→extra→custom record blocks，以及全量加载后四组 runtime gate。测试必须同时
+比较 record provenance 和 detection 原顺序，不能只比较名称 multiset。
+
 嵌套 engine integration 必须覆盖 context 传播而不只计数 child：项目生成的
 RT_MANIFEST resource 在 recursive+aggressive 下应形成 offset 608、size 20、
 `Binary / Resource` child，把 scan ID `"24"` 交给原样规则并得到

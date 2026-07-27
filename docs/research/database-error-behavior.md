@@ -2,7 +2,7 @@
 
 Status: Draft
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
-Last updated: 2026-07-26
+Last updated: 2026-07-27
 
 ## 范围
 
@@ -238,7 +238,9 @@ normal scan 的 JSON 不是通常的 `{"detects": [...]}`，而是：
   `bUseCache=true` 的 miss/hit、同统计 stale、bad magic、截断和预取消已由
   专用 harness 固定；cache 写失败、权限、其他 header/长度边界和并发仍待验证。
 - encrypted/ZIP64/data descriptor/CRC mismatch、压缩比和超大 entry count。
-- main/extra/custom 同名规则覆盖、优先级和排序。
+- main/extra/custom 同名规则不覆盖、分层顺序和 load/runtime gate 已由
+  [`database-layer-behavior.md`](database-layer-behavior.md) 固定；同层 ZIP
+  duplicate 与跨层 directory/ZIP 混合仍待覆盖。
 - 多个独立 script/include error 的最终 ordering；missing、parse error 和
   self/two-node include cycle 已由
   [`include-lifecycle-behavior.md`](include-lifecycle-behavior.md) 覆盖。

@@ -119,8 +119,11 @@ pub struct DatabaseMetadata {
 ```
 
 真实 API 应用 newtype/constructor 保证 path、name 和 hash 有效，示意中的 public
-fields 不代表最终可绕过校验。layer 按加入顺序合并；同优先级覆盖规则必须在规则
-兼容调研后冻结。
+fields 不代表最终可绕过校验。legacy layer 顺序固定为 main、extra、custom；
+每层先形成自身 execution ordinal，再按层 append。相同 signature filename
+不是 override key：跨层同名 records 全部保留，并携带 layer/source identity。
+证据见
+[`database-layer-behavior.md`](../research/database-layer-behavior.md)。
 
 build 是事务性的：
 
@@ -613,7 +616,8 @@ offset/size 差异。
 
 - `ScanReport` 的完整字段 inventory 和 canonical JSON Schema。
 - runtime exception 是 node diagnostic 继续，还是 scan-level error。
-- database layer override/duplicate rule 的精确顺序。
+- 同层 ZIP duplicate、完全相同 sort key，以及 directory/ZIP 混合层的精确顺序
+  （跨层同名 directory records 已固定为全部保留且不 override）。
 - project default limits、aggressive 倍率及 `Limited` 的允许触发点。
 - Scanner 是否 `Send`，database 是否可无条件 `Sync`。
 - modern 与 legacy 的无参数默认 profile。

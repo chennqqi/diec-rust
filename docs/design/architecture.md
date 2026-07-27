@@ -213,6 +213,9 @@ backend 私有模块。
 
 数据库完成校验后形成 immutable snapshot。scanner/session 引用 snapshot，不在扫描
 期间修改规则。main、extra、custom 数据库的合并顺序是请求契约的一部分。
+snapshot 是保序 record sequence，不是以 signature filename 为 key 的覆盖 map；
+跨层同名 records 全部保留并携带 layer/source provenance。extra/custom policy
+过滤同一 snapshot 中的 records，不得通过另一个去重/重建路径改变 ordinal。
 上游 `sort_signature_prio()` 已确认非传递，runtime 不得翻译该 comparator 后在
 扫描时重新排序。snapshot 中的每条规则必须携带 layer-local/final execution
 ordinal；legacy ordinal 来自 upstream/rules/target/source-hash 绑定的固定 oracle
