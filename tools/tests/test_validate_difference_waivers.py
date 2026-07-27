@@ -416,6 +416,36 @@ class ValidateDifferenceWaiversTests(unittest.TestCase):
                 "infrastructure_error",
             )
 
+    def test_cli_invalid_date_emits_null_infrastructure_date(self):
+        examples = SCHEMA_DIR / "examples"
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(MODULE_PATH),
+                "--registry",
+                str(
+                    examples
+                    / "difference-waiver-registry-v1.example.json"
+                ),
+                "--report",
+                str(
+                    examples
+                    / "difference-input-report-v1.example.json"
+                ),
+                "--as-of",
+                "not-a-date",
+                "--repo-root",
+                str(ROOT),
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(result.returncode, 2)
+        audit = json.loads(result.stdout)
+        self.assertEqual(audit["result"], "infrastructure_error")
+        self.assertIsNone(audit["as_of"])
+
     def test_strict_json_rejects_duplicate_keys_and_non_finite_values(self):
         for content, message in (
             (b'{"schema_version":1,"schema_version":1}', "duplicate key"),
@@ -535,10 +565,8 @@ class ValidateDifferenceWaiversTests(unittest.TestCase):
             self.assertIn(text, adr)
             self.assertIn(text, index)
         self.assertIn("compare_semantic_results.py", testing)
-        self.assertIn(
-            "comparator 尚未调用 waiver validator",
-            adr,
-        )
+        self.assertIn("顶层 single-case auditor", adr)
+        self.assertIn("audit_semantic_case.py", adr)
         self.assertIn("仍保持 Proposed", adr)
 
 

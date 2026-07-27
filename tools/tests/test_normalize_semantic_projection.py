@@ -456,7 +456,7 @@ class SemanticNormalizationTests(unittest.TestCase):
         self.assertIn("不等于完整 semantic model", testing)
         self.assertIn("compare_semantic_results.py", testing)
         self.assertIn(
-            "waiver/multi-case/full report integration",
+            "multi-case/full report integration",
             testing,
         )
 

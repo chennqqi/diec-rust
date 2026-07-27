@@ -63,6 +63,12 @@ The audited two-sided comparison schemas are:
   difference set exceeds the fixed budget, so stale valid reports cannot be
   consumed.
 
+The authoritative single-case decision is
+[`semantic-case-audit-v1.schema.json`](semantic-case-audit-v1.schema.json).
+It embeds the rebuilt comparison and exact waiver audit, binds all four
+generated/input artifacts by byte and canonical SHA-256, and has only
+`pass`, `fail`, or `infrastructure_error` outcomes.
+
 [`examples/`](examples/) contains synthetic, non-production inputs and
 reproducible outputs for all compatibility sub-pipelines.
 
@@ -106,6 +112,8 @@ difference.
 - Any non-empty expired/stale/unmatched list fails the audit.
 - Invalid schema, identity, fingerprint or evidence is
   `infrastructure_error`.
+- `as_of` is `null` only when the supplied audit date itself cannot be parsed;
+  valid pass/fail audits always carry the canonical explicit date.
 
 v1 supports semantic RFC 6901 JSON Pointer targets only. It intentionally does
 not support wildcard, root-document or raw whole-stream waivers. Raw-only byte
@@ -129,9 +137,9 @@ manifest, refuses source overwrite, and emits deterministic UTF-8/LF audit
 bytes. stdout and stderr are mandatory; runtime logs remain a separate optional
 raw stream.
 
-This proves the bytes materialized for one execution record. The full
-differential harness must still bind both executions, their verifications,
-normalizations, comparisons and waivers in order.
+This proves the bytes materialized for one execution record. The single-case
+auditor binds both executions, their derived comparison and waiver decision in
+order; multi-case and release aggregation remain open.
 
 ## Lossless framing
 
@@ -233,6 +241,13 @@ Therefore projection failure, resource exhaustion, and a stale earlier report
 cannot become waivable success. v1 requires the complete ordered difference set
 to fit within 10,000 entries.
 
-This closes the single-case path through comparison for the typed legacy CLI.
-It does not yet apply waivers or aggregate cases into the final release
-compatibility report.
+The authoritative wrapper is
+[`tools/compat/audit_semantic_case.py`](../../../tools/compat/audit_semantic_case.py).
+It closes the single-case path through comparison and exact waiver application
+for the typed legacy CLI. Raw-only mismatch under an exact requirement has no
+semantic difference pointer and cannot be waived in v1. A semantic mismatch
+passes only when every current difference is applied and no waiver is stale,
+expired or unmatched. Blocked comparison results overwrite the waiver output
+with an infrastructure audit.
+
+It does not yet aggregate cases into the final release compatibility report.

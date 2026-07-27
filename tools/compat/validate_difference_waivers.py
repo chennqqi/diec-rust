@@ -832,6 +832,7 @@ def main() -> int:
     if output_path in {registry_path, report_path}:
         raise SystemExit("output must not overwrite an input")
 
+    as_of = None
     try:
         as_of = parse_date(args.as_of, "--as-of")
         repo_root = args.repo_root.resolve()
@@ -867,7 +868,7 @@ def main() -> int:
     except (OSError, ValidationError) as error:
         audit = {
             "audit_schema": AUDIT_SCHEMA_VERSION,
-            "as_of": args.as_of,
+            "as_of": None if as_of is None else as_of.isoformat(),
             "errors": [str(error)],
             "result": "infrastructure_error",
         }

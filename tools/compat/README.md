@@ -1,6 +1,6 @@
 # Compatibility tooling
 
-Phase 0 currently provides six strict compatibility sub-pipeline tools:
+Phase 0 currently provides seven strict compatibility sub-pipeline tools:
 
 - `verify_raw_execution.py` validates a versioned execution record and rehashes
   its content-addressed stdout/stderr/runtime-log bytes;
@@ -13,7 +13,9 @@ Phase 0 currently provides six strict compatibility sub-pipeline tools:
 - `compare_semantic_results.py` rebuilds both projections from raw evidence,
   optionally normalizes both sides, and emits an ordered semantic comparison;
 - `validate_difference_waivers.py` audits evidence-bound semantic difference
-  waivers.
+  waivers;
+- `audit_semantic_case.py` rebuilds one two-sided comparison and applies the
+  exact waiver audit as one authoritative case decision.
 
 ## Raw execution verification
 
@@ -188,6 +190,28 @@ records their SHA-256 in its audit. It recomputes every difference fingerprint
 from canonical JSON plus both raw stream hashes.
 
 The normative v1 shapes and synthetic examples are under
-`docs/design/schemas/`. The tools remain partially integrated slices:
-engine-only/modern typed variants, waiver application, multi-case aggregation
-and the full differential report still need integration.
+`docs/design/schemas/`.
+
+## Authoritative single-case audit
+
+`audit_semantic_case.py` is the trusted entry point for one typed legacy CLI
+case. It accepts the comparator's raw inputs plus one exact waiver registry,
+rebuilds every intermediate artifact, and writes the comparison, difference
+report, waiver audit and `semantic-case-audit-v1` result. It freezes and re-reads
+the registry and generated artifacts, records both byte and canonical hashes,
+and rejects output collisions or outputs below either raw artifact root.
+
+An `exact` result, or `semantic_equal` under a semantic requirement, passes when
+the waiver registry has no stale entries. A `different` result passes only when
+every difference has one exact current waiver. Raw-only mismatch under an exact
+requirement is deliberately not waivable in v1. Projection failure, difference
+limit exhaustion, invalid inputs and mutation are `infrastructure_error`; the
+tool overwrites the waiver output with a non-passing infrastructure audit.
+
+Exit codes are `0` for pass, `1` for a valid failed requirement/audit, and `2`
+for infrastructure error. A reproducible full invocation is in
+`docs/design/schemas/examples/README.md`.
+
+The tools remain partially integrated slices: engine-only/modern typed
+variants, multi-case aggregation and the full differential report still need
+integration.

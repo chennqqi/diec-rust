@@ -776,13 +776,18 @@ typed legacy semantic projection 子流水线冻结并实现：
 - [`semantic-comparison-v1.schema.json`](schemas/semantic-comparison-v1.schema.json)；
 - [`semantic-difference-blocked-v1.schema.json`](schemas/semantic-difference-blocked-v1.schema.json)。
 
+单 case 顶层比较/waiver 决策冻结并实现：
+
+- [`semantic-case-audit-v1.schema.json`](schemas/semantic-case-audit-v1.schema.json)；
+- [`audit_semantic_case.py`](../../tools/compat/audit_semantic_case.py)。
+
 这些子 schema 不冒充完整 differential report：waiver input 只携带 executed case、
 精确 semantic difference、两侧 raw stream hash 和 canonical fingerprint；
 normalization input 只是任意 semantic value 的版本化 envelope，不等于完整
 semantic model；raw verifier/framing 只证明一侧 execution bytes 身份与 stdout
-无损分段；comparison report 只证明一个 typed legacy case 达到 exact/semantic
-要求或给出完整差异。full differential integration 仍需接入 waiver、engine-only/
-modern variants、多 case 聚合和统一顶层 report。
+无损分段；case audit 只证明一个 typed legacy case 的完整 comparison/waiver
+决策。full differential integration 仍需接入 engine-only/modern variants、
+多 case 聚合和统一顶层 report。
 
 ## 21. Phase 门禁
 
@@ -839,8 +844,9 @@ tested、exact、semantic、waived 和 unsupported 数量。
   execution conformance 未通过。
 - waiver v1、最小 semantic-normalizer v1、raw execution/artifact rehash、
   lossless raw framing v1、固定 legacy CLI typed semantic result v1 和单 case
-  双侧 comparator v1 子流水线已实现；完整 semantic model 仍缺 engine-only/
-  modern canonical variants，waiver/multi-case/full report integration 尚未实现。
+  双侧 comparator + exact waiver audit v1 子流水线已实现；完整 semantic model
+  仍缺 engine-only/modern canonical variants，multi-case/full report integration
+  尚未实现。
 - benchmark runner/noise/阈值和默认资源 limits 尚未冻结。
 - archive/decompression sanitizer 与恶意语料隔离设施尚未建立。
 - CI provider、artifact retention 和 restricted corpus 权限尚未决定。

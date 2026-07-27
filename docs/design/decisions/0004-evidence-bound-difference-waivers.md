@@ -87,8 +87,11 @@ case ID 和一个非根 semantic JSON Pointer。日期使用 ISO `YYYY-MM-DD`，
 - [`difference-waiver-registry-v1.schema.json`](../schemas/difference-waiver-registry-v1.schema.json)
 - [`difference-input-report-v1.schema.json`](../schemas/difference-input-report-v1.schema.json)
 - [`difference-waiver-audit-v1.schema.json`](../schemas/difference-waiver-audit-v1.schema.json)
+- [`semantic-case-audit-v1.schema.json`](../schemas/semantic-case-audit-v1.schema.json)
 - [`validate_difference_waivers.py`](../../../tools/compat/validate_difference_waivers.py)
+- [`audit_semantic_case.py`](../../../tools/compat/audit_semantic_case.py)
 - [`test_validate_difference_waivers.py`](../../../tools/tests/test_validate_difference_waivers.py)
+- [`test_audit_semantic_case.py`](../../../tools/tests/test_audit_semantic_case.py)
 
 ## Implementation status
 
@@ -108,8 +111,11 @@ artifact 本体；单 case comparator 也已从两侧 raw execution 按
 verification/framing/semantic projection/optional normalization/comparison 顺序
 重建证据，并直接产生 fingerprint 已复算的 waiver input。projection failure 或
 差异超过固定上限时写入不可被 validator 接受的 blocked marker，避免复用旧报告。
-但 comparator 尚未调用 waiver validator，也未聚合多 case/full report；
-synthetic owner 字段同样不能替代真实 compatibility owner review 流程。
+顶层 single-case auditor 已按固定顺序调用 comparator 与 waiver validator，
+冻结并复核 registry/中间产物，且将 blocked comparison 传播为不可通过的
+infrastructure audit。独立 comparator 仍是可单测的低层工具。多 case/full
+report 尚未聚合；synthetic owner 字段同样不能替代真实 compatibility owner
+review 流程。
 
 ## Acceptance conditions
 

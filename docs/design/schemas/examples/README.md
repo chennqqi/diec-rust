@@ -98,3 +98,29 @@ python tools/compat/compare_semantic_results.py \
 The result is `exact`; producer-specific projection artifacts differ while
 their comparison hashes match. The empty difference report remains a valid
 waiver-input shape. Projection failure would write a blocked marker instead.
+
+The authoritative single-case example adds an empty registry for that exact
+result and produces both the waiver audit and top-level decision:
+
+```text
+python tools/compat/audit_semantic_case.py \
+  --comparison-contract docs/design/schemas/examples/semantic-comparison-contract-v1.example.json \
+  --projection-contract docs/design/schemas/examples/semantic-projection-contract-v1.example.json \
+  --upstream-manifest docs/design/schemas/examples/raw-framing-execution-v1.example.json \
+  --upstream-artifact-root docs/design/schemas/examples/raw-artifacts \
+  --rust-manifest docs/design/schemas/examples/semantic-comparison-rust-execution-v1.example.json \
+  --rust-artifact-root docs/design/schemas/examples/raw-artifacts \
+  --upstream-projection-output docs/design/schemas/examples/semantic-comparison-upstream-projection-v1.example.json \
+  --rust-projection-output docs/design/schemas/examples/semantic-comparison-rust-projection-v1.example.json \
+  --comparison-output docs/design/schemas/examples/semantic-comparison-v1.example.json \
+  --difference-report-output docs/design/schemas/examples/semantic-comparison-difference-report-v1.example.json \
+  --waiver-registry docs/design/schemas/examples/semantic-case-waiver-registry-v1.example.json \
+  --waiver-audit-output docs/design/schemas/examples/semantic-case-waiver-audit-v1.example.json \
+  --case-audit-output docs/design/schemas/examples/semantic-case-audit-v1.example.json \
+  --as-of 2026-07-27 \
+  --max-artifact-bytes 1024 \
+  --repo-root .
+```
+
+These case-audit files are also documentation-only synthetic data and approve
+no real compatibility difference.

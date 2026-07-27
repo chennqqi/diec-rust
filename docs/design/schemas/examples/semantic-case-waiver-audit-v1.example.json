@@ -1,0 +1,22 @@
+{
+  "applied": [],
+  "as_of": "2026-07-27",
+  "audit_schema": 1,
+  "expired_waivers": [],
+  "failures": [],
+  "forbidden_waiver_attempts": [],
+  "input_files_unchanged": true,
+  "input_sha256": {
+    "registry": "279baa5a0bf52fbb2ff1b5b6be331940a72ae95594b5a1cb90a725b9c9861924",
+    "report": "8f181bb864a6e27fab9c920f8bbf082eb15851a9e4904dec018b48891da73c6b"
+  },
+  "result": "pass",
+  "run_identity": {
+    "platform": "linux-x86_64",
+    "rust_schema": 1,
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "stale_waivers": [],
+  "unmatched_differences": [],
+  "unmatched_waivers": []
+}

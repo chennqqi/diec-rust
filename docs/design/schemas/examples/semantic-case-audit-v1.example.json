@@ -1,0 +1,161 @@
+{
+  "artifacts": {
+    "comparison": {
+      "canonical_sha256": "0f8154c288b84bf2f00292bd44b9153673f2ce3dcb5fae078b4afd67cc39c9c2",
+      "sha256": "835da586d25f7b763ce442d36a6295e05e1facb4db208173bf95d96c5f3378fb"
+    },
+    "difference_report": {
+      "canonical_sha256": "16fb494b7b1f36fbd27b0c3c47b56d83262483548badeccab6243844715ecf0b",
+      "sha256": "8f181bb864a6e27fab9c920f8bbf082eb15851a9e4904dec018b48891da73c6b"
+    },
+    "waiver_audit": {
+      "canonical_sha256": "cc23c7fa37f29491f1ca7df9444f2a15641c796133acd45dae99e498055fccbe",
+      "sha256": "6d2cfc07cca19219eb998f19210a9f07f1e8515ec8375eef042e7327aae41527"
+    },
+    "waiver_registry": {
+      "canonical_sha256": "c645ef6c9aef05b786da628e43111ff4ca9b9480ca5f51bd403e4704efe8e632",
+      "sha256": "279baa5a0bf52fbb2ff1b5b6be331940a72ae95594b5a1cb90a725b9c9861924"
+    }
+  },
+  "as_of": "2026-07-27",
+  "auditor": {
+    "name": "diec-semantic-case-auditor",
+    "version": 1
+  },
+  "case_audit_schema": 1,
+  "case_id": "synthetic.raw-framing.example",
+  "comparison": {
+    "case_id": "synthetic.raw-framing.example",
+    "comparator": {
+      "name": "diec-semantic-comparator",
+      "version": 1
+    },
+    "comparison_schema": 1,
+    "contracts": {
+      "comparison": {
+        "artifact_sha256": "c2bd8d0c99191fb034261fd386cc37b1424a7b7a5b5af5a8b77e3d0fce024296",
+        "canonical_contract_sha256": "2fdf5d70f8f15e8da11f04d44177d324819b3ca158f32bac0bbf2fdd732bb7db"
+      },
+      "projection": {
+        "artifact_sha256": "af90438640ca6e36cbf4b070b5990085b14c47c6779009a47a18b916c7e06113"
+      }
+    },
+    "difference_report_artifact": {
+      "canonical_report_sha256": "16fb494b7b1f36fbd27b0c3c47b56d83262483548badeccab6243844715ecf0b",
+      "difference_count": 0,
+      "kind": "report",
+      "sha256": "8f181bb864a6e27fab9c920f8bbf082eb15851a9e4904dec018b48891da73c6b"
+    },
+    "inputs": {
+      "rust": {
+        "comparison_sha256": "8c9fa61181ff83ebd11aac2921eaad098b8140bbaf936e9749d248779032b6cb",
+        "normalization": {
+          "kind": "none"
+        },
+        "producer": {
+          "executable_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "profile": "rust-synthetic",
+          "revision": "2222222222222222222222222222222222222222",
+          "side": "rust"
+        },
+        "projection": {
+          "artifact_sha256": "1fcca72adda1f8636a012df39b15a2ca32a903f9514af8671ff7cdeab8f012b9",
+          "canonical_projection_sha256": "f07de1a5521df8f7ef65b1aac8e6fe21fcac512b4271646bd4560af14c6dd636",
+          "issues": [],
+          "result": "pass"
+        },
+        "raw_observation_sha256": "043ef91d30717f3cad85b6776e4d7df000f3fc37772c2430e9e065a42fdaa6c4",
+        "raw_streams": {
+          "stderr": {
+            "sha256": "8372f34794ce221b78e055cd545f9d95e285202181948dfd9c2a80909fa6710e",
+            "size": 21
+          },
+          "stdout": {
+            "sha256": "5c48788adf5e7f42ff9f06c67c6b169356b1c81f4379e3d1ca4d44d24d2b906d",
+            "size": 69
+          }
+        }
+      },
+      "upstream": {
+        "comparison_sha256": "8c9fa61181ff83ebd11aac2921eaad098b8140bbaf936e9749d248779032b6cb",
+        "normalization": {
+          "kind": "none"
+        },
+        "producer": {
+          "executable_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "profile": "cmake-qt5",
+          "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+          "side": "upstream"
+        },
+        "projection": {
+          "artifact_sha256": "13f12c829e2d8ecb8424018d85934e31801d51aac4f0bf461b55158a9b59b928",
+          "canonical_projection_sha256": "27f1b032445d275eb8dd489379cdb6c10a717acf7888e4317ee1ac58fb07e2bb",
+          "issues": [],
+          "result": "pass"
+        },
+        "raw_observation_sha256": "043ef91d30717f3cad85b6776e4d7df000f3fc37772c2430e9e065a42fdaa6c4",
+        "raw_streams": {
+          "stderr": {
+            "sha256": "8372f34794ce221b78e055cd545f9d95e285202181948dfd9c2a80909fa6710e",
+            "size": 21
+          },
+          "stdout": {
+            "sha256": "5c48788adf5e7f42ff9f06c67c6b169356b1c81f4379e3d1ca4d44d24d2b906d",
+            "size": 69
+          }
+        }
+      }
+    },
+    "limit_error": null,
+    "raw_equality": {
+      "all": true,
+      "runtime_log": true,
+      "stderr": true,
+      "stdout": true,
+      "termination": true
+    },
+    "requirement": {
+      "met": true,
+      "required_equivalence": "exact"
+    },
+    "result": "exact",
+    "run_identity": {
+      "oracle_profile": "cmake-qt5",
+      "platform": "linux-x86_64",
+      "semantic_schema": 1,
+      "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    }
+  },
+  "errors": [],
+  "input_files_unchanged": true,
+  "reason": "required_equivalence_met",
+  "result": "pass",
+  "run_identity": {
+    "oracle_profile": "cmake-qt5",
+    "platform": "linux-x86_64",
+    "semantic_schema": 1,
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "waiver_audit": {
+    "applied": [],
+    "as_of": "2026-07-27",
+    "audit_schema": 1,
+    "expired_waivers": [],
+    "failures": [],
+    "forbidden_waiver_attempts": [],
+    "input_files_unchanged": true,
+    "input_sha256": {
+      "registry": "279baa5a0bf52fbb2ff1b5b6be331940a72ae95594b5a1cb90a725b9c9861924",
+      "report": "8f181bb864a6e27fab9c920f8bbf082eb15851a9e4904dec018b48891da73c6b"
+    },
+    "result": "pass",
+    "run_identity": {
+      "platform": "linux-x86_64",
+      "rust_schema": 1,
+      "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    },
+    "stale_waivers": [],
+    "unmatched_differences": [],
+    "unmatched_waivers": []
+  }
+}

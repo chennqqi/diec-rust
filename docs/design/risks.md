@@ -417,7 +417,7 @@ baseline 的变更都要检查本表。
   真实规则已证明 exit 0 的 stdout 可由 JSON document 加 trailing error 组成。
   Phase 0 v1 validator 已拒绝 wildcard/root、duplicate JSON key、identity drift、
   expired/stale/unmatched 和不可 waiver failure，并重新计算 fingerprint。
-- **验证**：17 项 validator tests 覆盖差异扩大/缩小/消失、raw hash/平台/commit/
+- **验证**：18 项 validator tests 覆盖差异扩大/缩小/消失、raw hash/平台/commit/
   schema 改变、过期/未执行 case、输入只读和 synthetic audit 重现；独立
   content-addressed raw artifact verifier 另覆盖固定派生路径、stream size/hash、
   预算、symlink/reparse、TOCTOU、输入只读和 golden 重现。raw artifact rehash
@@ -429,8 +429,9 @@ baseline 的变更都要检查本表。
   execution 重新投影、可选地双侧规范化，并严格比较 `semantic.comparison`；有序
   RFC 6901 差异携带 presence、双 raw-observation hash 和可复算 fingerprint。
   exact/semantic requirement、10,000 项完整差异上限、projection/limit blocked
-  marker 防止失败或旧 report 进入 waiver。engine-only/modern typed variants、
-  waiver application、多 case 聚合和 full differential report 尚未完成。
+  marker 防止失败或旧 report 进入 waiver；single-case auditor 已串联 exact
+  waiver application 并复核中间产物。engine-only/modern typed variants、
+  多 case 聚合和 full differential report 尚未完成。
 - **关闭**：Phase 1 工具落地并通过测试；每次 release audit applied/stale waivers。
 
 ## 5. 风险变更流程

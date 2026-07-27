@@ -1,0 +1,9 @@
+{
+  "registry_identity": {
+    "platform": "linux-x86_64",
+    "rust_schema": 1,
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "schema_version": 1,
+  "waivers": []
+}

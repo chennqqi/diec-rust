@@ -14,8 +14,15 @@
       "const": 1
     },
     "as_of": {
-      "type": "string",
-      "format": "date"
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "date"
+        },
+        {
+          "type": "null"
+        }
+      ]
     },
     "run_identity": {
       "$ref": "#/$defs/run_identity"
@@ -119,6 +126,12 @@
           "forbidden_waiver_attempts",
           "failures"
         ],
+        "properties": {
+          "as_of": {
+            "type": "string",
+            "format": "date"
+          }
+        },
         "not": {
           "required": [
             "errors"
