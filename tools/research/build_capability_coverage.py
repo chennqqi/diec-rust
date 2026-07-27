@@ -11,7 +11,7 @@ from typing import Any
 
 
 SCHEMA_VERSION = 1
-EVALUATED_ON = "2026-07-27"
+EVALUATED_ON = "2026-07-28"
 TRACEABILITY_PATH = "docs/research/data/capability-traceability.json"
 TARGET_PLATFORMS = (
     "linux-x86_64-qt5",

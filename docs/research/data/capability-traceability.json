@@ -92,6 +92,21 @@
         "tools/tests/test_probe_rule_orchestration.py"
       ]
     },
+    "signature_path_filter": {
+      "kind": "source_and_experiment",
+      "paths": [
+        "docs/research/signature-path-filter-behavior.md",
+        "docs/research/data/signature-path-fixture.json",
+        "docs/research/data/signature-path-engine-qt5.json",
+        "tools/corpus/generate_signature_path_fixture.py",
+        "tools/upstream/probe_signature_path_harness.py",
+        "tools/upstream/signature_path_harness_main.cpp",
+        "tools/upstream/Dockerfile.signature-path-harness-qt5",
+        "tools/tests/test_generate_signature_path_fixture.py",
+        "tools/tests/test_probe_signature_path_harness.py",
+        "tools/tests/test_signature_path_harness_dockerfile.py"
+      ]
+    },
     "dispatch_source": {
       "kind": "source_and_experiment",
       "paths": [
@@ -205,7 +220,7 @@
     {"id": "CAP-RULE-004", "name": "file type rule filtering", "verification": "observed", "evidence_set": "rule_orchestration"},
     {"id": "CAP-RULE-005", "name": "deep and heuristic rule filtering", "verification": "observed", "evidence_set": "rule_orchestration"},
     {"id": "CAP-RULE-006", "name": "single signature filtering", "verification": "observed", "evidence_set": "engine_contract"},
-    {"id": "CAP-RULE-007", "name": "signature path filtering", "verification": "source_verified", "evidence_set": "dispatch_source"},
+    {"id": "CAP-RULE-007", "name": "signature path filtering", "verification": "observed", "evidence_set": "signature_path_filter"},
     {"id": "CAP-RULE-008", "name": "unknown fallback", "verification": "observed", "evidence_set": "rule_orchestration"},
     {"id": "CAP-RULE-009", "name": "result sorting option", "verification": "observed", "evidence_set": "engine_contract"},
     {"id": "CAP-RULE-010", "name": "script error collection", "verification": "observed", "evidence_set": "rule_orchestration"},
@@ -330,9 +345,9 @@
   ],
   "summary": {
     "capability_count": 68,
-    "observed": 45,
+    "observed": 46,
     "observed_with_gaps": 20,
-    "source_verified": 2,
+    "source_verified": 1,
     "source_verified_with_gaps": 1,
     "coverage_gap_count": 12,
     "phase_0_coverage_complete": false

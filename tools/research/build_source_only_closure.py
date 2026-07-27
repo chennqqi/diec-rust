@@ -11,25 +11,11 @@ from typing import Any
 
 
 SCHEMA_VERSION = 1
-EVALUATED_ON = "2026-07-27"
+EVALUATED_ON = "2026-07-28"
 COVERAGE_PATH = "docs/research/data/capability-coverage.json"
 PLATFORM = "linux-x86_64-qt5"
 
 CATALOG: dict[str, dict[str, Any]] = {
-    "CAP-RULE-007": {
-        "closure_kind": "scope_review_or_private_harness",
-        "missing_evidence": [
-            "the public scan API cannot pass a non-empty signature path",
-            "no runtime case observes the private path comparator",
-        ],
-        "fixture": "two same-name rules in distinct directories",
-        "harness": "private DiE_Script processDetect path-filter harness",
-        "assertions": [
-            "exact path selects only the addressed rule",
-            "empty, missing, case-mismatched, and normalized paths are distinct",
-            "an ADR either keeps the private behavior in scope or excludes it",
-        ],
-    },
     "CAP-NEST-007": {
         "closure_kind": "paired_negative_nested_oracle",
         "missing_evidence": [

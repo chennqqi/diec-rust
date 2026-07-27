@@ -1,28 +1,6 @@
 {
-  "evaluated_on": "2026-07-27",
+  "evaluated_on": "2026-07-28",
   "items": [
-    {
-      "acceptance": "all assertions pass against the pinned upstream identity and the capability becomes runtime-observed or receives an explicit reviewed scope disposition",
-      "closure_kind": "scope_review_or_private_harness",
-      "current_status": "source_only_runtime_corpus_missing",
-      "evidence_set": "dispatch_source",
-      "id": "CAP-RULE-007",
-      "missing_evidence": [
-        "the public scan API cannot pass a non-empty signature path",
-        "no runtime case observes the private path comparator"
-      ],
-      "name": "signature path filtering",
-      "proposed_experiment": {
-        "assertions": [
-          "exact path selects only the addressed rule",
-          "empty, missing, case-mismatched, and normalized paths are distinct",
-          "an ADR either keeps the private behavior in scope or excludes it"
-        ],
-        "fixture": "two same-name rules in distinct directories",
-        "harness": "private DiE_Script processDetect path-filter harness",
-        "platform": "linux-x86_64-qt5"
-      }
-    },
     {
       "acceptance": "all assertions pass against the pinned upstream identity and the capability becomes runtime-observed or receives an explicit reviewed scope disposition",
       "closure_kind": "paired_negative_nested_oracle",
@@ -79,18 +57,17 @@
   "schema_version": 1,
   "source": {
     "path": "docs/research/data/capability-coverage.json",
-    "sha256": "4f5d9749e712153429edf2f3fd781448061c0d59f03cbcf9c350f12294f2d0e7"
+    "sha256": "d69392c38fe4c5e4ae24cd93e0001278aa593cb7414e48dca4f70f40118fc32b"
   },
   "summary": {
     "all_items_have_executable_assertions": true,
     "all_items_have_missing_evidence": true,
     "closure_kind_counts": {
       "bounded_escalation_and_adr": 1,
-      "paired_negative_nested_oracle": 1,
-      "scope_review_or_private_harness": 1
+      "paired_negative_nested_oracle": 1
     },
     "phase_0_source_only_closed": false,
-    "source_only_capability_count": 3
+    "source_only_capability_count": 2
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
 }

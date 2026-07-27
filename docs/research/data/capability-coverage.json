@@ -236,7 +236,7 @@
       "scope": "generic Image dispatch and non-JPEG/PNG image variants"
     }
   ],
-  "evaluated_on": "2026-07-27",
+  "evaluated_on": "2026-07-28",
   "evidence_sets": {
     "cli_control": {
       "kind": "source_and_experiment",
@@ -384,6 +384,21 @@
         "docs/research/data/rule-orchestration-fixture.json",
         "docs/research/data/rule-orchestration-linux-qt5.json",
         "tools/tests/test_probe_rule_orchestration.py"
+      ]
+    },
+    "signature_path_filter": {
+      "kind": "source_and_experiment",
+      "paths": [
+        "docs/research/signature-path-filter-behavior.md",
+        "docs/research/data/signature-path-fixture.json",
+        "docs/research/data/signature-path-engine-qt5.json",
+        "tools/corpus/generate_signature_path_fixture.py",
+        "tools/upstream/probe_signature_path_harness.py",
+        "tools/upstream/signature_path_harness_main.cpp",
+        "tools/upstream/Dockerfile.signature-path-harness-qt5",
+        "tools/tests/test_generate_signature_path_fixture.py",
+        "tools/tests/test_probe_signature_path_harness.py",
+        "tools/tests/test_signature_path_harness_dockerfile.py"
       ]
     }
   },
@@ -1033,14 +1048,14 @@
     },
     {
       "corpus_gap_ids": [],
-      "evidence_set": "dispatch_source",
+      "evidence_set": "signature_path_filter",
       "id": "CAP-RULE-007",
       "name": "signature path filtering",
       "platform_gap_ids": [
         "CAP-GAP-007"
       ],
       "platform_status": {
-        "linux-x86_64-qt5": "source_only_runtime_corpus_missing",
+        "linux-x86_64-qt5": "runtime_observed",
         "linux-x86_64-qt6": "platform_missing",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
@@ -1489,7 +1504,7 @@
   "schema_version": 1,
   "source": {
     "path": "docs/research/data/capability-traceability.json",
-    "sha256": "60ce4e9049a0e2cc67787dd52a6e55b1c2958b928a46012723b8072c612a01d4"
+    "sha256": "23e7812bc22ef268d13aa82498ab15e5afc921258016ad72ccc5b4c157560be3"
   },
   "status_definitions": {
     "platform_missing": "no complete capability baseline is admitted for this platform",
@@ -1508,9 +1523,9 @@
     "status_counts_by_platform": {
       "linux-x86_64-qt5": {
         "platform_missing": 0,
-        "runtime_observed": 45,
+        "runtime_observed": 46,
         "runtime_observed_with_corpus_gaps": 20,
-        "source_only_runtime_corpus_missing": 2,
+        "source_only_runtime_corpus_missing": 1,
         "source_only_with_corpus_gaps": 1
       },
       "linux-x86_64-qt6": {

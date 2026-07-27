@@ -1,0 +1,73 @@
+{
+  "capability": "CAP-RULE-007",
+  "cases": {
+    "basename_only": {
+      "expected_names": [],
+      "filter": "shared.1.sg"
+    },
+    "case_mismatch": {
+      "expected_names": [],
+      "filter": "main/Binary/SHARED.1.SG"
+    },
+    "dot_segment": {
+      "expected_names": [],
+      "filter": "main/Binary/../Binary/shared.1.sg"
+    },
+    "empty_filter": {
+      "expected_names": [
+        "main-path",
+        "extra-path"
+      ],
+      "filter": ""
+    },
+    "exact_extra": {
+      "expected_names": [
+        "extra-path"
+      ],
+      "filter": "extra/Binary/shared.1.sg"
+    },
+    "exact_main": {
+      "expected_names": [
+        "main-path"
+      ],
+      "filter": "main/Binary/shared.1.sg"
+    },
+    "missing": {
+      "expected_names": [],
+      "filter": "main/Binary/missing.1.sg"
+    }
+  },
+  "directories": [
+    "main",
+    "main/Binary",
+    "extra",
+    "extra/Binary",
+    "input"
+  ],
+  "entries": [
+    {
+      "path": "input/probe.bin",
+      "purpose": "benign Binary scan input",
+      "sha256": "ec19bc91132237e7293ac3a67caab394c86acad9e7f6dec4a403bfee42d95f8e",
+      "size": 38,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/shared.1.sg",
+      "purpose": "main-layer rule sharing a basename with the extra rule",
+      "sha256": "7bf3cd44e0c7a2178345b0c627889b52d818b98173d2a10aa4eb3dd40deac908",
+      "size": 86,
+      "source": "project-generated"
+    },
+    {
+      "path": "extra/Binary/shared.1.sg",
+      "purpose": "extra-layer rule sharing a basename with the main rule",
+      "sha256": "7222f9b230093eb21a2e5e6444a3a33708e4cc1a231519186c610d644d92feba",
+      "size": 87,
+      "source": "project-generated"
+    }
+  ],
+  "generator": "tools/corpus/generate_signature_path_fixture.py",
+  "license": "project-generated; no third-party sample or rule bytes",
+  "schema_version": 1
+}

@@ -96,7 +96,7 @@ verbose/messages/profiling 的 channel 与结构化结果关系，以及两个�
 | `CAP-RULE-004` | 按文件类型过滤规则 | `_shouldExecuteSignature()` | Observed；Binary 输入不执行 PE decoy |
 | `CAP-RULE-005` | deep/heuristic 规则过滤 | `_shouldExecuteSignature()` | Observed；DS/EP 与 HEUR 独立四模式 |
 | `CAP-RULE-006` | 自定义单条 signature 过滤 | `sSignatureName` | Observed；区分大小写，仍受 deep gate，未命中产生 Unknown |
-| `CAP-RULE-007` | signature file path 过滤 | 私有 `processDetect(..., sSignatureFilePath, ...)` | Source audit；公共 options 无该字段，当前不可达 |
+| `CAP-RULE-007` | signature file path 过滤 | 私有 `processDetect(..., sSignatureFilePath, ...)` | Observed；严格绝对路径相等、区分大小写、不清理 `..`、basename 不匹配；公共入口仍固定传空路径 |
 | `CAP-RULE-008` | 未命中时产生 Unknown | `DiE_Script::processDetect()` | Observed；空的有效三层数据库产生唯一 Unknown |
 | `CAP-RULE-009` | 检测结果稳定排序选项 | `bIsSort` + `sortRecords()` | Observed；关闭保持插入顺序，开启按 type priority 升序 |
 | `CAP-RULE-010` | 脚本错误收集 | `SCAN_RESULT.listErrors` | Observed；parse/runtime error 追加到 stdout，退出 0 |
@@ -223,8 +223,8 @@ validator 要求本文 68 个 `CAP-*` 与 manifest 完全相等，并拒绝缺�
 不能提升为 Rust 已实现或跨平台兼容。
 
 [`capability-coverage-report.md`](capability-coverage-report.md) 进一步把该清单
-投影为 68 行 × 4 平台的闭集：Linux Qt5 为 45 observed、20 observed with
-gaps、2 source-only、1 source-only with gaps；Linux Qt6、Windows 和 macOS
+投影为 68 行 × 4 平台的闭集：Linux Qt5 为 46 observed、20 observed with
+gaps、1 source-only、1 source-only with gaps；Linux Qt6、Windows 和 macOS
 各有 68 个 platform-missing。全部行已分类不等于覆盖完成。
 
 - [CLI main](https://github.com/horsicq/DIE-engine/blob/74eaf505c250ab47e709024e9dc41657cd8f2254/src/console/main_console.cpp)

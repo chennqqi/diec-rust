@@ -9,8 +9,11 @@ Phase 0 计划形成：
 - [`capability-coverage-report.md`](capability-coverage-report.md)：68 个稳定能力在
   Linux Qt5/Qt6、Windows 和 macOS 上的 runtime/source-only、corpus-missing
   与 platform-missing 闭集报告（Draft）。
-- [`source-only-closure-plan.md`](source-only-closure-plan.md)：剩余 3 个 Linux
+- [`source-only-closure-plan.md`](source-only-closure-plan.md)：剩余 2 个 Linux
   Qt5 source-only 能力的缺失证据、fixture、harness、强断言和关闭方式（Draft）。
+- [`signature-path-filter-behavior.md`](signature-path-filter-behavior.md)：
+  private signature-file path comparator 的严格绝对路径语义及公共不可达边界
+  （Draft）。
 - [`legacy-dispatch-oracle.md`](legacy-dispatch-oracle.md)：Amiga Hunk/Atari ST
   的固定源码边界、8-case 生成语料和双 Qt5 oracle 执行门禁（Draft）。
 - [`dos-dispatch-reachability.md`](dos-dispatch-reachability.md)：DOS/COM 七个
@@ -87,7 +90,7 @@ Phase 0 计划形成：
   `CAP-*` 的验证层级、证据路径、平台范围和 12 个显式 coverage gap。
 - [`data/capability-coverage.json`](data/capability-coverage.json)：68 行 × 4 平台
   的 272-cell 闭集分类、十二个 gap 到能力的显式映射和未分类计数。
-- [`data/source-only-closure.json`](data/source-only-closure.json)：与当前三个
+- [`data/source-only-closure.json`](data/source-only-closure.json)：与当前两个
   source-only 行严格相等的可执行关闭清单。
 - [`data/legacy-dispatch-corpus.json`](data/legacy-dispatch-corpus.json)：
   Amiga Hunk/Atari ST 正例、截断、错误端序和近似 magic 控制的 hash-bound 清单。
@@ -118,6 +121,10 @@ Phase 0 计划形成：
   heuristic、自定义原文与 Unknown fallback 的安全规则和输入哈希。
 - [`data/result-enums-engine-qt5.json`](data/result-enums-engine-qt5.json)：
   原始 type/name、数值 enum、规范投影和保留 Unknown 槽位 Qt5 基线。
+- [`data/signature-path-fixture.json`](data/signature-path-fixture.json)：
+  main/extra 两层同名规则、良性 Binary 输入及七组 path-filter case 的哈希清单。
+- [`data/signature-path-engine-qt5.json`](data/signature-path-engine-qt5.json)：
+  private comparator 的 exact/empty/missing/case/`..`/basename Qt5 运行时矩阵。
 - [`data/path-corpus.json`](data/path-corpus.json)：由基线字节组成的确定性嵌套目录树。
 - [`data/database-fixture.json`](data/database-fixture.json)：项目生成的数据库成功/故障 fixture。
 - [`data/database-archive-linux-qt5.json`](data/database-archive-linux-qt5.json)：两套固定 Qt5 oracle 的 17-case ZIP 数据库矩阵及两侧原始 stream。

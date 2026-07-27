@@ -44,7 +44,7 @@ class SourceOnlyClosureTest(unittest.TestCase):
         items = self.manifest["items"]
         self.assertEqual({item["id"] for item in items}, expected_ids)
         self.assertEqual(len(items), len(expected_ids))
-        self.assertEqual(len(items), 3)
+        self.assertEqual(len(items), 2)
 
     def test_every_item_has_actionable_closure_evidence(self):
         for item in self.manifest["items"]:
@@ -64,12 +64,8 @@ class SourceOnlyClosureTest(unittest.TestCase):
         self.assertTrue(summary["all_items_have_executable_assertions"])
         self.assertFalse(summary["phase_0_source_only_closed"])
 
-    def test_negative_capabilities_require_paired_control_or_scope_review(self):
+    def test_negative_capabilities_keep_explicit_closure_kinds(self):
         items = {item["id"]: item for item in self.manifest["items"]}
-        self.assertEqual(
-            items["CAP-RULE-007"]["closure_kind"],
-            "scope_review_or_private_harness",
-        )
         self.assertEqual(
             items["CAP-NEST-007"]["closure_kind"],
             "paired_negative_nested_oracle",
