@@ -8,7 +8,7 @@ Last updated: 2026-07-27
 
 ## 1. 目的与结论
 
-[`capability-coverage.json`](data/capability-coverage.json) 当前仍有 9 个
+[`capability-coverage.json`](data/capability-coverage.json) 当前仍有 8 个
 Linux Qt5 source-only 能力。本文不把源码证据提升为 runtime compatibility，
 而是为每项固定缺失证据、最小 fixture、oracle/harness、强断言和关闭方式。
 
@@ -18,7 +18,7 @@ Linux Qt5 source-only 能力。本文不把源码证据提升为 runtime compati
 生成。生成器要求清单 ID 与 coverage report 的 source-only 闭集完全相等；
 新增、提升或删除能力而未同步计划会显式失败。
 
-## 2. 当前九项
+## 2. 当前八项
 
 | 能力 | 关闭类型 | 关键缺口 |
 | --- | --- | --- |
@@ -27,7 +27,6 @@ Linux Qt5 source-only 能力。本文不把源码证据提升为 runtime compati
 | `CAP-DISPATCH-003` | generated format oracle | fixture/probe 已就绪；固定 Qt5 oracle 尚未执行 |
 | `CAP-NEST-007` | paired negative nested oracle | 缺“直接可检测、递归不分派”的同输入正负控制 |
 | `CAP-NEST-009` | bounded escalation + ADR | 缺深度/总展开量递增实验和 Rust 有界偏离决策 |
-| `CAP-RESULT-002` | engine harness extension | records/errors 已见，缺 debug records 与 handlers |
 | `CAP-RESULT-003` | engine harness extension | unknown 有正反例，heuristic/advanced flags 只有 false |
 | `CAP-RESULT-004` | nested result harness | record ID、parent ID 未导出 |
 | `CAP-RESULT-005` | engine harness extension | 字符串 type/name 已见，数值 enum 未导出 |
@@ -96,6 +95,13 @@ filetype 均为数值 9 / `MSDOS`；filename 分别为固定文件路径、空�
 空。scan time 保留原始整数值（本次为 9/0/0/0 ms），只断言非负，不抹平其
 非确定性。
 
+`CAP-RESULT-002` 已由
+[`result-lists-engine-qt5.json`](data/result-lists-engine-qt5.json)
+关闭 source-only 状态。固定 harness 分别观察默认成功扫描与开启 profiling /
+collection 的综合扫描；四个列表独立导出，并保留 2 个重复 detection、
+runtime/parse 两条错误、四条规则的 debug 顺序，以及 2 个完全相同的 copy
+handler。harness 不调用 `processRecords`，因此不会执行文件副作用。
+
 ## 4. 可重复生成与验证
 
 ```text
@@ -112,12 +118,16 @@ python tools/upstream/probe_bw_dispatch_harness.py \
 python tools/upstream/probe_result_metadata_harness.py \
   --raw-dir <raw-dir> \
   --output docs/research/data/result-metadata-engine-qt5.json
+python tools/corpus/generate_result_list_fixture.py <fixture-dir>
+python tools/upstream/probe_result_lists_harness.py \
+  --fixture-dir <fixture-dir> --raw-dir <raw-dir> \
+  --output docs/research/data/result-lists-engine-qt5.json
 ```
 
 测试要求：
 
 - committed manifest 与生成结果逐字节一致；
-- 九个 ID 与当前 source-only 行完全相等；
+- 八个 ID 与当前 source-only 行完全相等；
 - 每项都有非空缺失证据、fixture、harness 和至少三个强断言；
 - 三类负向能力保持 paired control、scope review 或 ADR 关闭路径；
 - catalog 漂移和重复 JSON key 显式失败。
@@ -125,6 +135,6 @@ python tools/upstream/probe_result_metadata_harness.py \
 ## 5. 对 Phase 0 的影响
 
 该清单使 `P0-BLOCK-005` 的 Linux source-only 部分具备逐项执行入口。
-`CAP-RESULT-001` 已经完成实验、原始流哈希绑定和 traceability 提升；其余能力
-只有在对应实验实际通过、原始证据落盘并更新 traceability 后，才能继续减少
-source-only 计数。
+`CAP-RESULT-001` 和 `CAP-RESULT-002` 已经完成实验、原始流哈希绑定和
+traceability 提升；其余能力只有在对应实验实际通过、原始证据落盘并更新
+traceability 后，才能继续减少 source-only 计数。

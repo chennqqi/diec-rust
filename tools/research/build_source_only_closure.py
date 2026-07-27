@@ -102,19 +102,6 @@ CATALOG: dict[str, dict[str, Any]] = {
             "an ADR records the bounded Rust default and legacy compatibility policy",
         ],
     },
-    "CAP-RESULT-002": {
-        "closure_kind": "engine_result_harness_extension",
-        "missing_evidence": [
-            "records and errors are observed but debug-record and handler lists are not"
-        ],
-        "fixture": "success, parse error, runtime error, debug record, and handler cases",
-        "harness": "extended engine-contract result serializer",
-        "assertions": [
-            "record, error, debug-record, and handler lists are emitted separately",
-            "empty and non-empty cases preserve order and duplicates",
-            "no list is inferred from CLI stderr or another list",
-        ],
-    },
     "CAP-RESULT-003": {
         "closure_kind": "engine_result_harness_extension",
         "missing_evidence": [

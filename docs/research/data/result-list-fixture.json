@@ -1,0 +1,54 @@
+{
+  "capability": "CAP-RESULT-002",
+  "directories": [
+    "main",
+    "main/Binary",
+    "input"
+  ],
+  "entries": [
+    {
+      "path": "input/probe.bin",
+      "purpose": "benign Binary scan input",
+      "sha256": "789b791f239520d2244dfa30bcec3dbf5b77db407d8cbca4aba64b29e99c8b54",
+      "size": 37,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/a_first.1.sg",
+      "purpose": "first exact duplicate result",
+      "sha256": "dff0f34a051fb7a204024a34b7bcf77ff8b13391a764e9d1b1f701243c677194",
+      "size": 91,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/b_second.1.sg",
+      "purpose": "second exact duplicate result",
+      "sha256": "dff0f34a051fb7a204024a34b7bcf77ff8b13391a764e9d1b1f701243c677194",
+      "size": 91,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/c_runtime_error.1.sg",
+      "purpose": "JavaScript runtime error",
+      "sha256": "099c25905b172fd462b1b37b2ced0ea07692a5003e10b2ed80b66202a2b65aa2",
+      "size": 74,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/d_parse_error.1.sg",
+      "purpose": "JavaScript syntax error",
+      "sha256": "669f79431d84c5bda53be5dd121c2d46dae60830c5fa684f9384c49882aecf6c",
+      "size": 19,
+      "source": "project-generated"
+    }
+  ],
+  "expected_signature_order": [
+    "a_first.1.sg",
+    "b_second.1.sg",
+    "c_runtime_error.1.sg",
+    "d_parse_error.1.sg"
+  ],
+  "generator": "tools/corpus/generate_result_list_fixture.py",
+  "license": "project-generated; no third-party sample or rule bytes",
+  "schema_version": 1
+}

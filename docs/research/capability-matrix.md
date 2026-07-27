@@ -177,7 +177,9 @@ hideunknown 的可观察增量。完整输入哈希和输出见
 - `CAP-RESULT-001`：`nScanTime`, `sFileName`, `nSize`, `ftInit`；四个公共
   入口的固定 Qt5 runtime 基线见
   [`result-metadata-behavior.md`](result-metadata-behavior.md)。
-- `CAP-RESULT-002`：`listRecords`, `listErrors`, `listDebugRecords`, `listHandlers`。
+- `CAP-RESULT-002`：`listRecords`, `listErrors`, `listDebugRecords`,
+  `listHandlers`；空/非空、失败规则 profiling、顺序和重复项的固定 Qt5
+  基线见 [`result-list-behavior.md`](result-list-behavior.md)。
 
 每个 `SCANSTRUCT` 包含：
 

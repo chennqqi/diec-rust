@@ -1,0 +1,161 @@
+{
+  "capability": "CAP-RESULT-002",
+  "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+  "fixture": {
+    "entry_count": 5,
+    "license": "project-generated; no third-party sample or rule bytes",
+    "manifest": "docs/research/data/result-list-fixture.json",
+    "manifest_sha256": "ea37885f44160438c2952043752eb43352ad105adf9a4539648fe2a4b4dafcf4"
+  },
+  "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+  "generator": "tools/upstream/probe_result_lists_harness.py",
+  "generator_sha256": "51fd4fe1231687fbfbc24d5faa78622f063e089d78a9e068cf7d723c1ee583eb",
+  "harness_output": {
+    "case_count": 2,
+    "cases": [
+      {
+        "collection": false,
+        "database_loaded": true,
+        "debug_records": [],
+        "errors": [],
+        "handlers": [],
+        "id": "default_success",
+        "load_not_canceled": true,
+        "records": [
+          {
+            "info": "same",
+            "name": "Duplicate",
+            "signature": "a_first.1.sg",
+            "signature_file": "/fixture/main/Binary/a_first.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "1"
+          }
+        ],
+        "scan_not_canceled": true,
+        "show_scan_time": false,
+        "signature_name": "a_first.1.sg"
+      },
+      {
+        "collection": true,
+        "database_loaded": true,
+        "debug_records": [
+          {
+            "elapsed_ms": 0,
+            "line": 0,
+            "name": "",
+            "script": "a_first.1.sg",
+            "type": "",
+            "value": ""
+          },
+          {
+            "elapsed_ms": 0,
+            "line": 0,
+            "name": "",
+            "script": "b_second.1.sg",
+            "type": "",
+            "value": ""
+          },
+          {
+            "elapsed_ms": 0,
+            "line": 0,
+            "name": "",
+            "script": "c_runtime_error.1.sg",
+            "type": "",
+            "value": ""
+          },
+          {
+            "elapsed_ms": 0,
+            "line": 0,
+            "name": "",
+            "script": "d_parse_error.1.sg",
+            "type": "",
+            "value": ""
+          }
+        ],
+        "errors": [
+          {
+            "message": "Binary/c_runtime_error.1.sg: 2: Error: result list runtime fixture",
+            "script": "c_runtime_error.1.sg"
+          },
+          {
+            "message": "Binary/d_parse_error.1.sg: 1: SyntaxError: Parse error",
+            "script": "d_parse_error.1.sg"
+          }
+        ],
+        "handlers": [
+          {
+            "destination": "/tmp/diec-result-list-collection/files/duplicate.bin",
+            "kind": 2,
+            "source": "/fixture/input/probe.bin"
+          },
+          {
+            "destination": "/tmp/diec-result-list-collection/files/duplicate.bin",
+            "kind": 2,
+            "source": "/fixture/input/probe.bin"
+          }
+        ],
+        "id": "all_lists",
+        "load_not_canceled": true,
+        "records": [
+          {
+            "info": "same",
+            "name": "Duplicate",
+            "signature": "a_first.1.sg",
+            "signature_file": "/fixture/main/Binary/a_first.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "1"
+          },
+          {
+            "info": "same",
+            "name": "Duplicate",
+            "signature": "b_second.1.sg",
+            "signature_file": "/fixture/main/Binary/b_second.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "1"
+          }
+        ],
+        "scan_not_canceled": true,
+        "show_scan_time": true,
+        "signature_name": ""
+      }
+    ],
+    "collection_root": "/tmp/diec-result-list-collection",
+    "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+    "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+    "input_sha256": "789b791f239520d2244dfa30bcec3dbf5b77db407d8cbca4aba64b29e99c8b54",
+    "schema_version": 1,
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+  },
+  "oracle": {
+    "binary": "/opt/die-build/src/console/diec-result-lists-harness",
+    "binary_sha256": "05eb2249be53dca14561c8db91b33caee6675af01acbfc5cb89ca509eaafa3c8",
+    "exit_code": 0,
+    "image": "diec-rust/result-lists-harness-qt5:74eaf505",
+    "image_id": "sha256:50147bba6c5ccfc032e83e31cad5fc186d84869e2336af565d4ab807fb732a3f",
+    "raw_stderr_bytes": 0,
+    "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "raw_stdout_bytes": 4224,
+    "raw_stdout_sha256": "40894aec1387bf0745981202f65b8e17cf0f8f9ae11d6387daae11a03641ec3f",
+    "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "platform": "linux-amd64-qt5",
+  "raw_artifacts": {
+    "storage": "untracked external directory selected by --raw-dir"
+  },
+  "relationships": {
+    "debug_records_cover_every_rule_in_order": true,
+    "default_has_only_record_list": true,
+    "duplicate_handlers_preserved_in_order": true,
+    "duplicate_records_preserved_in_order": true,
+    "errors_preserved_separately_in_order": true,
+    "lists_serialized_independently": true,
+    "scans_loaded_and_completed": true
+  },
+  "schema_version": 1,
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+}
