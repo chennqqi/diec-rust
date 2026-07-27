@@ -32,7 +32,7 @@
       ]
     },
     "engine_contract": {
-      "kind": "experiment",
+      "kind": "source_and_experiment",
       "paths": [
         "docs/research/engine-contract-behavior.md",
         "docs/research/data/engine-contract-linux-qt5.json",
@@ -263,7 +263,7 @@
     {"id": "CAP-RULE-009", "name": "result sorting option", "verification": "observed", "evidence_set": "engine_contract"},
     {"id": "CAP-RULE-010", "name": "script error collection", "verification": "observed", "evidence_set": "rule_orchestration"},
     {"id": "CAP-RULE-011", "name": "script profiling", "verification": "observed_with_gaps", "evidence_set": "cli_options"},
-    {"id": "CAP-RULE-012", "name": "cancellation and stop", "verification": "observed_with_gaps", "evidence_set": "engine_contract"},
+    {"id": "CAP-RULE-012", "name": "cancellation and stop", "verification": "observed", "evidence_set": "engine_contract"},
 
     {"id": "CAP-DISPATCH-001", "name": "PE ELF and Mach-O dispatch", "verification": "observed", "evidence_set": "dispatch_source"},
     {"id": "CAP-DISPATCH-002", "name": "DOS and COM public dispatch plus BW property-only branch", "verification": "observed", "evidence_set": "dispatch_source"},
@@ -351,22 +351,15 @@
         "windows-x86_64-qt5",
         "macos-x86_64-qt5"
       ]
-    },
-    {
-      "id": "CAP-GAP-011",
-      "scope": "mid-scan callback, asynchronous stop, and cancellation race boundaries",
-      "platforms": [
-        "linux-x86_64-qt5"
-      ]
     }
   ],
   "summary": {
     "capability_count": 68,
-    "observed": 50,
-    "observed_with_gaps": 18,
+    "observed": 51,
+    "observed_with_gaps": 17,
     "source_verified": 0,
     "source_verified_with_gaps": 0,
-    "coverage_gap_count": 9,
+    "coverage_gap_count": 8,
     "phase_0_coverage_complete": false
   }
 }

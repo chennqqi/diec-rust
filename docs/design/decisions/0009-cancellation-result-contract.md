@@ -6,8 +6,11 @@ Last updated: 2026-07-27
 ## 背景
 
 固定上游实验证明 callback 返回 false、规则 `_breakScan()` 和调用前已停止不会让
-扫描 API 返回类型化错误。运行中停止保留当前规则产生的 detection；调用前停止仍
-可能追加 `Unknown`，同时 `PDSTRUCT` 报告 stopped/not-success。证据见
+扫描 API 返回类型化错误。运行中停止保留当前规则产生的 detection；最后一条才
+停止时甚至保留完整 detection 集但仍报告 canceled；调用前停止仍可能追加
+`Unknown`。同步外部线程在 callback checkpoint 设置 stop 会保留当前规则，同一
+engine 换 fresh state 后恢复。`PDSTRUCT` stop flag 是 plain `bool`，未同步跨线程
+访问属于数据竞争而非可移植契约。证据见
 [`engine-contract-behavior.md`](../../research/engine-contract-behavior.md)。
 
 这会让非空结果同时表示完整成功、部分取消和未开始扫描。现代 Rust API 若原样返回
@@ -58,7 +61,8 @@ Proposed：
 
 ## 验收条件
 
-- callback false、`_breakScan()`、调用前取消分别有 upstream raw baseline；
+- callback 在首/中/末 false、同步外部 stop、`_breakScan()`、调用前取消和
+  fresh-state 恢复分别有 upstream raw baseline；
 - modern Rust、JSON 和 C ABI 对三类 case 返回一致 termination；
 - legacy 差分验证部分 record、Unknown 和 stop/success 状态；
 - waiver 精确绑定 upstream commit、case 和差异字段；

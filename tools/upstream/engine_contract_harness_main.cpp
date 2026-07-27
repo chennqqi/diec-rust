@@ -14,6 +14,7 @@
 
 #include <cstdio>
 #include <cstring>
+#include <thread>
 
 namespace {
 
@@ -37,6 +38,9 @@ enum class CallbackMode {
     None,
     Continue,
     StopFirst,
+    StopSecond,
+    StopLast,
+    ExternalStopSecond,
 };
 
 struct CaseSpec {
@@ -53,6 +57,9 @@ struct CaseSpec {
 struct CallbackState {
     CallbackMode mode = CallbackMode::None;
     QJsonArray events;
+    XBinary::PDSTRUCT *scanState = nullptr;
+    qint32 externalStopWrites = 0;
+    bool externalStopThreadDistinct = false;
 };
 
 enum class DeviceBehavior {
@@ -222,9 +229,32 @@ bool scanCallback(
     event.insert("number_of_signatures", numberOfSignatures);
     event.insert("current_index", currentIndex);
     state->events.append(event);
+    const qint32 callbackNumber = state->events.size();
+
+    if (
+        state->mode == CallbackMode::ExternalStopSecond &&
+        callbackNumber == 2
+    ) {
+        const std::thread::id callbackThread =
+            std::this_thread::get_id();
+        bool distinctThread = false;
+        std::thread stopThread([&]() {
+            distinctThread =
+                std::this_thread::get_id() != callbackThread;
+            XBinary::setPdStructStopped(state->scanState);
+        });
+        stopThread.join();
+        state->externalStopWrites++;
+        state->externalStopThreadDistinct = distinctThread;
+    }
+
     return !(
-        state->mode == CallbackMode::StopFirst &&
-        state->events.size() == 1
+        (state->mode == CallbackMode::StopFirst &&
+         callbackNumber == 1) ||
+        (state->mode == CallbackMode::StopSecond &&
+         callbackNumber == 2) ||
+        (state->mode == CallbackMode::StopLast &&
+         callbackNumber == numberOfSignatures)
     );
 }
 
@@ -398,8 +428,10 @@ QJsonObject runCase(
         "custom"
     );
 
+    XBinary::PDSTRUCT scanState = XBinary::createPdStruct();
     CallbackState callbackState;
     callbackState.mode = spec.callbackMode;
+    callbackState.scanState = &scanState;
     if (spec.callbackMode != CallbackMode::None) {
         options.scanEngineCallback = scanCallback;
         options.pUserData = &callbackState;
@@ -415,7 +447,6 @@ QJsonObject runCase(
         return {};
     }
 
-    XBinary::PDSTRUCT scanState = XBinary::createPdStruct();
     if (spec.preStopped) {
         XBinary::setPdStructStopped(&scanState);
     }
@@ -448,6 +479,14 @@ QJsonObject runCase(
     output.insert("errors", serializeErrors(result.listErrors));
     output.insert("callback_events", callbackState.events);
     output.insert(
+        "external_stop_writes",
+        callbackState.externalStopWrites
+    );
+    output.insert(
+        "external_stop_thread_distinct",
+        callbackState.externalStopThreadDistinct
+    );
+    output.insert(
         "pd_stopped",
         XBinary::isPdStructStopped(&scanState)
     );
@@ -468,6 +507,103 @@ QJsonObject runCase(
         static_cast<qint64>(scanState.nFinished)
     );
     output.insert("result_size", result.nSize);
+    return output;
+}
+
+QJsonObject serializeRecoveryScan(
+    const XScanEngine::SCAN_RESULT &result,
+    XBinary::PDSTRUCT *state,
+    const CallbackState &callbackState
+)
+{
+    QJsonObject output;
+    output.insert("records", serializeRecords(result.listRecords));
+    output.insert("errors", serializeErrors(result.listErrors));
+    output.insert("callback_events", callbackState.events);
+    output.insert(
+        "pd_stopped",
+        XBinary::isPdStructStopped(state)
+    );
+    output.insert(
+        "pd_success",
+        XBinary::isPdStructSuccess(state)
+    );
+    output.insert(
+        "pd_finished",
+        XBinary::isPdStructFinished(state)
+    );
+    output.insert(
+        "pd_not_canceled",
+        XBinary::isPdStructNotCanceled(state)
+    );
+    output.insert(
+        "pd_n_finished",
+        static_cast<qint64>(state->nFinished)
+    );
+    return output;
+}
+
+QJsonObject runRecoveryCase(
+    const QString &fixtureRoot,
+    const QString &inputPath,
+    QString *error
+)
+{
+    XScanEngine::SCAN_OPTIONS options = {};
+    options.bUseCustomDatabase = true;
+    options.bUseExtraDatabase = true;
+    options.bShowType = true;
+    options.bShowInfo = true;
+    options.bShowVersion = true;
+    options.sMainDatabasePath = fixtureRoot + "/priority-main";
+    options.sExtraDatabasePath = fixtureRoot + "/priority-extra";
+    options.sCustomDatabasePath = fixtureRoot + "/priority-custom";
+    options.scanEngineCallback = scanCallback;
+
+    DiE_Script engine;
+    XBinary::PDSTRUCT loadState = XBinary::createPdStruct();
+    const bool loaded = engine.loadDatabase(&options, &loadState);
+    if (!loaded) {
+        *error = "cannot load recovery fixture database";
+        return {};
+    }
+
+    XBinary::PDSTRUCT canceledState = XBinary::createPdStruct();
+    CallbackState canceledCallback;
+    canceledCallback.mode = CallbackMode::StopSecond;
+    canceledCallback.scanState = &canceledState;
+    options.pUserData = &canceledCallback;
+    const XScanEngine::SCAN_RESULT canceledResult =
+        engine.scanFile(inputPath, &options, &canceledState);
+
+    XBinary::PDSTRUCT freshState = XBinary::createPdStruct();
+    CallbackState freshCallback;
+    freshCallback.mode = CallbackMode::Continue;
+    freshCallback.scanState = &freshState;
+    options.pUserData = &freshCallback;
+    const XScanEngine::SCAN_RESULT freshResult =
+        engine.scanFile(inputPath, &options, &freshState);
+
+    QJsonObject output;
+    output.insert("id", "post_cancel_fresh_state_recovery");
+    output.insert("method", "scanFile_twice");
+    output.insert("database_loaded", loaded);
+    output.insert(
+        "canceled",
+        serializeRecoveryScan(
+            canceledResult,
+            &canceledState,
+            canceledCallback
+        )
+    );
+    output.insert(
+        "fresh",
+        serializeRecoveryScan(
+            freshResult,
+            &freshState,
+            freshCallback
+        )
+    );
     return output;
 }
 
@@ -733,6 +869,36 @@ int main(int argc, char *argv[])
             ScanMethod::File,
         },
         {
+            "callback_stop_second",
+            "priority",
+            "",
+            false,
+            false,
+            CallbackMode::StopSecond,
+            false,
+            ScanMethod::File,
+        },
+        {
+            "callback_stop_last",
+            "priority",
+            "",
+            false,
+            false,
+            CallbackMode::StopLast,
+            false,
+            ScanMethod::File,
+        },
+        {
+            "external_stop_second",
+            "priority",
+            "",
+            false,
+            false,
+            CallbackMode::ExternalStopSecond,
+            false,
+            ScanMethod::File,
+        },
+        {
             "break_scan",
             "break",
             "",
@@ -810,6 +976,17 @@ int main(int argc, char *argv[])
         }
         outputs.append(output);
     }
+
+    QJsonObject recoveryOutput = runRecoveryCase(
+        fixtureRoot,
+        inputPath,
+        &error
+    );
+    if (!error.isEmpty()) {
+        std::fprintf(stderr, "%s\n", error.toUtf8().constData());
+        return 1;
+    }
+    outputs.append(recoveryOutput);
 
     const DeviceCaseSpec deviceCases[] = {
         {

@@ -111,7 +111,6 @@ class CapabilityTraceabilityTest(unittest.TestCase):
             gap_ids,
             [
                 *(f"CAP-GAP-{index:03d}" for index in range(1, 9)),
-                "CAP-GAP-011",
             ],
         )
         self.assertEqual(len(gap_ids), len(set(gap_ids)))

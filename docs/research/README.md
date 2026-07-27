@@ -85,7 +85,7 @@ Phase 0 计划形成：
 - [`database-error-behavior.md`](database-error-behavior.md)：数据库缺失/损坏、规则错误和不可读输入（Draft）。
 - [`database-archive-cache.md`](database-archive-cache.md)：ZIP 规则数据库边界、发布 CLI cache 可达性，以及 engine cache stale/corrupt/cancel 行为（Draft）。
 - [`database-layer-behavior.md`](database-layer-behavior.md)：main/extra/custom 同名规则、分层顺序、加载与运行时 gate（Draft）。
-- [`engine-contract-behavior.md`](engine-contract-behavior.md)：engine 过滤/排序/停止/入口，以及 device/subdevice short-read、I/O、seek 和范围边界；闭合 `CAP-GAP-009`（Draft）。
+- [`engine-contract-behavior.md`](engine-contract-behavior.md)：engine 过滤/排序/停止/入口，以及 device/subdevice short-read、I/O、seek 和范围边界；闭合 `CAP-GAP-009` 与 `CAP-GAP-011`（Draft）。
 - [`nested-scan-behavior.md`](nested-scan-behavior.md)：archive/resource/overlay 的选项可达性、结果树和资源限制（Draft）。
 - [`data/cli-dependencies.toml`](data/cli-dependencies.toml)：固定组件依赖边、LICENSE blob 和 bundled code 证据。
 - [`data/xarchive-license-closure-linux.json`](data/xarchive-license-closure-linux.json)：XArchive 106 个实际编译单元、217 个依赖文件及许可证/来源标记。
@@ -96,9 +96,9 @@ Phase 0 计划形成：
   runtime 三层规则树的 2,268 文件 hash、作者/URL/许可标记和 22 个 PNG 清单。
 - [`data/baseline-corpus.json`](data/baseline-corpus.json)：生成语料的文件名、意图、大小和 SHA-256。
 - [`data/capability-traceability.json`](data/capability-traceability.json)：68 个稳定
-  `CAP-*` 的验证层级、证据路径、平台范围和九个开放 coverage gap。
+  `CAP-*` 的验证层级、证据路径、平台范围和八个开放 coverage gap。
 - [`data/capability-coverage.json`](data/capability-coverage.json)：68 行 × 4 平台
-  的 272-cell 闭集分类、九个开放 gap 到能力的显式映射和未分类计数。
+  的 272-cell 闭集分类、八个开放 gap 到能力的显式映射和未分类计数。
 - [`image-dispatch-behavior.md`](image-dispatch-behavior.md)：固定七种非
   JPEG/PNG 图像的自然 Binary fallback、强制 generic Image null adapter 和
   `CAP-GAP-012` 闭合证据。

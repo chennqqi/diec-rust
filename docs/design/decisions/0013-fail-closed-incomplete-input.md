@@ -12,7 +12,7 @@ Last updated: 2026-07-28
 或 seek 失败只停止循环，不写 `PDSTRUCT::sErrorString`。因此未读满时，扫描器会把
 未初始化的 buffer 尾部当作输入继续处理。
 
-固定 Linux Qt5 的 33-case engine oracle 进一步观察到：
+固定 Linux Qt5 的 37-case engine oracle 进一步观察到：
 
 - 3-byte chunked direct device 会循环至完整 35 bytes；
 - 提前 EOF 只返回 5/35 bytes，`read()=-1` 返回 0/35 bytes，seek 失败和

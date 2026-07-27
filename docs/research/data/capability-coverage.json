@@ -190,17 +190,6 @@
         "macos-x86_64-qt5"
       ],
       "scope": "Windows and macOS path and encoding behavior"
-    },
-    {
-      "capability_ids": [
-        "CAP-RULE-012"
-      ],
-      "id": "CAP-GAP-011",
-      "kind": "corpus_missing",
-      "platforms": [
-        "linux-x86_64-qt5"
-      ],
-      "scope": "mid-scan callback, asynchronous stop, and cancellation race boundaries"
     }
   ],
   "evaluated_on": "2026-07-28",
@@ -318,7 +307,7 @@
       ]
     },
     "engine_contract": {
-      "kind": "experiment",
+      "kind": "source_and_experiment",
       "paths": [
         "docs/research/engine-contract-behavior.md",
         "docs/research/data/engine-contract-linux-qt5.json",
@@ -1125,9 +1114,7 @@
       }
     },
     {
-      "corpus_gap_ids": [
-        "CAP-GAP-011"
-      ],
+      "corpus_gap_ids": [],
       "evidence_set": "engine_contract",
       "id": "CAP-RULE-012",
       "name": "cancellation and stop",
@@ -1135,7 +1122,7 @@
         "CAP-GAP-007"
       ],
       "platform_status": {
-        "linux-x86_64-qt5": "runtime_observed_with_corpus_gaps",
+        "linux-x86_64-qt5": "runtime_observed",
         "linux-x86_64-qt6": "platform_missing",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
@@ -1503,7 +1490,7 @@
   "schema_version": 1,
   "source": {
     "path": "docs/research/data/capability-traceability.json",
-    "sha256": "ddc6c23569036c11cfc2193b0e429ae9410deaad796e110ad222f684fca55fb1"
+    "sha256": "235315d09f7431faf54e0c48dd3de561af16a1784eb13cb24dca929dc84f8785"
   },
   "status_definitions": {
     "platform_missing": "no complete capability baseline is admitted for this platform",
@@ -1517,13 +1504,13 @@
     "cell_count": 272,
     "phase_0_coverage_complete": false,
     "platform_count": 4,
-    "rows_with_corpus_gaps": 27,
+    "rows_with_corpus_gaps": 26,
     "rows_with_platform_gaps": 68,
     "status_counts_by_platform": {
       "linux-x86_64-qt5": {
         "platform_missing": 0,
-        "runtime_observed": 50,
-        "runtime_observed_with_corpus_gaps": 18,
+        "runtime_observed": 51,
+        "runtime_observed_with_corpus_gaps": 17,
         "source_only_runtime_corpus_missing": 0,
         "source_only_with_corpus_gaps": 0
       },

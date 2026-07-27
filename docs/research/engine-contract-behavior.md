@@ -7,7 +7,7 @@ Components:
 `XScanEngine@dfe4a419e4f491bb23688ba03c5a5bf39e34da83`,
 `Formats@1151e7254fdee3c0294ff7095edbdd7bfccf8201`
 
-Last updated: 2026-07-27
+Last updated: 2026-07-28
 
 ## 范围
 
@@ -15,7 +15,8 @@ Last updated: 2026-07-27
 
 - `sSignatureName` 精确规则过滤；
 - `bIsSort` 最终 record 排序；
-- scan callback、规则 `_breakScan()` 和预先停止的 `PDSTRUCT`；
+- scan callback 在首条/中间/末条停止、同步跨线程停止、规则 `_breakScan()`、
+  预先停止及取消后恢复；
 - `scanFile`、`scanMemory`、`scanDevice`、`scanSubdevice`；
 - device 分块读取、提前 EOF、read/seek error、sequential 与初始 position；
 - subdevice 合法/非法范围、父设备短读/error 和 slice 边界；
@@ -25,8 +26,8 @@ Last updated: 2026-07-27
 同一组已构建对象；输入和规则均由项目生成，不包含外部样本。机器报告为
 [`data/engine-contract-linux-qt5.json`](data/engine-contract-linux-qt5.json)。
 派生镜像 ID 为
-`sha256:e5a8a469...b8bfbb`，harness binary SHA-256 为
-`930be4f3...ae4162`；报告同时绑定 harness、Dockerfile、fixture 和六个上游
+`sha256:2a3ce9d5...4462a`，harness binary SHA-256 为
+`22d0219a...c0cdb2`；报告同时绑定 harness、Dockerfile、fixture 和七个上游
 源码文件的完整 hash。
 
 ## 观察结果
@@ -57,14 +58,29 @@ Last updated: 2026-07-27
 
 - callback 在每条规则执行前收到规则文件名、规则总数和零基 current index；
 - callback 对第一条返回 false 后，第一条规则仍执行并保留结果，后续规则停止；
+- callback 对第二条返回 false 时保留前两条 record；对最后一条返回 false 时
+  三条 record 全部存在，但 `PDSTRUCT` 仍为 stopped/not-success；
+- 独立线程在第二次 callback 内设置 stop、并在线程 `join` 后再返回 callback，
+  同样保留前两条 record。报告证明 setter 确实由不同线程执行一次；
 - 规则内 `_breakScan()` 同样保留调用前已追加的当前 record，再停止后续规则；
 - 两种运行中停止均令 `pd_stopped=true`、`pd_not_canceled=false`、
   `pd_success=false`，但 API 仍返回包含部分 detection 的 `SCAN_RESULT`；
 - 调用前已停止时不执行规则，但普通 Unknown 收尾仍增加唯一 `Unknown`。
+- 同一个 `DiE_Script` 实例在一次第二条取消后，换用新的 `PDSTRUCT` 再扫描会执行
+  全部三条规则并恢复 success；取消状态属于传入的 progress state，而不是永久
+  污染 engine。
 
 因此上游“停止”不是事务性错误返回，也不会丢弃部分结果。Rust modern API 若选择
 返回类型化 `Cancelled` 且不暴露部分 detection，属于有意差异，必须由 ADR 和
 legacy/modern 两套回归测试约束。
+
+固定源码还限定了“异步”的含义：`PDSTRUCT::bIsStop` 是普通 `bool`，
+`setPdStructStopped()` 是普通赋值，`isPdStructNotCanceled()` 是普通读取，没有
+atomic 或 mutex。未同步地由一个线程写、扫描线程同时读属于 C++ 数据竞争和未定义
+行为，不能生成可移植 compatibility golden。本实验只保存由 callback 与 `join`
+建立 happens-before 的跨线程请求；Rust modern API 则必须使用 thread-safe atomic
+cancel token。首/中/末 checkpoint、同步外部请求、预停止、规则内停止和 fresh-state
+恢复共同闭合 Linux Qt5 的 `CAP-GAP-011`。
 
 ### 扫描入口
 
@@ -144,13 +160,14 @@ python tools\upstream\probe_engine_contract.py `
 ```
 
 Docker 全程 `--network=none`，fixture 只读挂载。探针验证 image revision、binary
-hash、fixture 全集/hash、33 个 case 关系和源码可达性；raw streams 保存在未跟踪
+hash、fixture 全集/hash、37 个 case 关系和源码可达性；raw streams 保存在未跟踪
 目录，提交报告只保存长度和 SHA-256。
 
 ## 尚未覆盖
 
-- callback 在中间规则停止及 callback 自身异常；
-- scan 运行期间由其他线程设置 `PDSTRUCT` 的精确竞态窗口；
+- callback 抛出 C++ exception 的 unwind 行为未执行；公共 callback 契约没有
+  类型化异常通道；
+- 未同步跨线程 stop 的真正数据竞争不执行，也不属于可移植兼容契约；
 - unknown/negative-size device、未打开或 null device、并发修改和超大
   `nOffset + nSize` 的 C++ signed-overflow 路径未执行；
 - 本轮强制 Binary 规则不读取输入内容，因此未把未初始化尾部的偶然字节保存为

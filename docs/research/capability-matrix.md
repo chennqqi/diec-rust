@@ -18,7 +18,7 @@ traceability manifest 中记录替代关系，不得复用旧 ID 表示不同语
 | `CAP-CLI-IN-003` | 目录枚举 | positional directory | Observed | 无条件 depth-first 递归；Linux 当前语料按 name 排序 |
 | `CAP-CLI-IN-004` | 单文件目录/空目录 | positional directory | Observed | 单文件不加 prefix；空目录退出 0 且无输出 |
 | `CAP-ENG-IN-001` | 内存扫描 | engine `scanMemory()` | Observed | Binary fixture 与 file/device/subdevice record 一致；CLI 不暴露 |
-| `CAP-ENG-IN-002` | device/subdevice 扫描 | engine API | Observed | 33-case fixture 固定 chunked/EOF/read/seek/sequential、position 与合法/非法 subdevice 范围；见 `engine-contract-behavior.md` |
+| `CAP-ENG-IN-002` | device/subdevice 扫描 | engine API | Observed | 37-case fixture 固定 chunked/EOF/read/seek/sequential、position 与合法/非法 subdevice 范围；见 `engine-contract-behavior.md` |
 
 CLI 主入口为 [`src/console/main_console.cpp`](https://github.com/horsicq/DIE-engine/blob/74eaf505c250ab47e709024e9dc41657cd8f2254/src/console/main_console.cpp)，选项名称与描述来自 `XOptions@810d78d.../xoptions.cpp`。
 
@@ -101,7 +101,7 @@ verbose/messages/profiling 的 channel 与结构化结果关系，以及两个�
 | `CAP-RULE-009` | 检测结果稳定排序选项 | `bIsSort` + `sortRecords()` | Observed；关闭保持插入顺序，开启按 type priority 升序 |
 | `CAP-RULE-010` | 脚本错误收集 | `SCAN_RESULT.listErrors` | Observed；parse/runtime error 追加到 stdout，退出 0 |
 | `CAP-RULE-011` | 脚本 profiling | `listDebugRecords` / messages | Observed；292 条 Binary 规则顺序及 CLI channel 已固定 |
-| `CAP-RULE-012` | 取消/停止 | `PDSTRUCT`, callback, `breakScan()` | Observed；运行中停止保留当前 record，预停止产生 Unknown |
+| `CAP-RULE-012` | 取消/停止 | `PDSTRUCT`, callback, `breakScan()` | Observed；首/中/末 callback、同步跨线程 stop、预停止、`_breakScan()` 及 fresh-state 恢复已固定；未同步跨线程访问是数据竞争 |
 
 规则脚本由 Qt 5 `QScriptEngine` 或 Qt 6 `QJSEngine` 执行。规则兼容性不是简单的模式匹配移植，必须覆盖 JavaScript 方言、全局函数和每种格式宿主对象；详见待建的 `rule-compatibility.md`。
 

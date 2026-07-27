@@ -1,10 +1,11 @@
 {
+  "closed_corpus_gap": "CAP-GAP-011",
   "fixture_manifest": {
     "path": "docs/research/data/rule-orchestration-fixture.json",
     "sha256": "535d96510e1a807a07af752ed60b0239bdbb91331ce51b1f89d2be043d07f23e"
   },
   "generator": "tools/upstream/probe_engine_contract.py",
-  "generator_sha256": "f1f274d73f1f8ebf667d0487587617ba244e99bd96ab16038864832093122ac6",
+  "generator_sha256": "8030bdada4729626a9dc9eb6eea76f1d311166a39bee6b51d3eb18ccbd441b3d",
   "harness_inputs": {
     "dockerfile": {
       "path": "tools/upstream/Dockerfile.engine-contract-harness-qt5",
@@ -12,11 +13,11 @@
     },
     "source": {
       "path": "tools/upstream/engine_contract_harness_main.cpp",
-      "sha256": "3cb409a164804c4e8ba9792c584f181da09ee5cec2afdc3c8db44452effec8b2"
+      "sha256": "55efa51a59ada97064169df8f65f776d74176d859e2b8457d6a051d1bd0f29c6"
     }
   },
   "harness_output": {
-    "case_count": 33,
+    "case_count": 37,
     "cases": [
       {
         "callback_events": [],
@@ -24,6 +25,8 @@
         "database_loaded": true,
         "deep": false,
         "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
         "id": "filter_all",
         "method": "scanFile",
         "pd_finished": true,
@@ -80,6 +83,8 @@
         "database_loaded": true,
         "deep": false,
         "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
         "id": "filter_exact_extra",
         "method": "scanFile",
         "pd_finished": true,
@@ -112,6 +117,8 @@
         "database_loaded": true,
         "deep": false,
         "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
         "id": "filter_missing",
         "method": "scanFile",
         "pd_finished": true,
@@ -144,6 +151,8 @@
         "database_loaded": true,
         "deep": false,
         "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
         "id": "filter_case_mismatch",
         "method": "scanFile",
         "pd_finished": true,
@@ -176,6 +185,8 @@
         "database_loaded": true,
         "deep": false,
         "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
         "id": "filter_deep_disabled",
         "method": "scanFile",
         "pd_finished": true,
@@ -208,6 +219,8 @@
         "database_loaded": true,
         "deep": true,
         "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
         "id": "filter_deep_enabled",
         "method": "scanFile",
         "pd_finished": true,
@@ -240,6 +253,8 @@
         "database_loaded": true,
         "deep": false,
         "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
         "id": "sort_disabled",
         "method": "scanFile",
         "pd_finished": true,
@@ -296,6 +311,8 @@
         "database_loaded": true,
         "deep": false,
         "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
         "id": "sort_enabled",
         "method": "scanFile",
         "pd_finished": true,
@@ -368,6 +385,8 @@
         "database_loaded": true,
         "deep": false,
         "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
         "id": "callback_continue",
         "method": "scanFile",
         "pd_finished": true,
@@ -430,6 +449,8 @@
         "database_loaded": true,
         "deep": false,
         "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
         "id": "callback_stop_first",
         "method": "scanFile",
         "pd_finished": true,
@@ -457,11 +478,201 @@
         "sort": false
       },
       {
+        "callback_events": [
+          {
+            "current_index": 0,
+            "number_of_signatures": 3,
+            "signature": "z_priority.1.sg"
+          },
+          {
+            "current_index": 1,
+            "number_of_signatures": 3,
+            "signature": "a_priority.2.sg"
+          }
+        ],
+        "database": "priority",
+        "database_loaded": true,
+        "deep": false,
+        "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
+        "id": "callback_stop_second",
+        "method": "scanFile",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_not_canceled": false,
+        "pd_stopped": true,
+        "pd_success": false,
+        "pre_stopped": false,
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          },
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority two",
+            "priority": 12,
+            "signature": "a_priority.2.sg",
+            "signature_file": "/fixture/priority-main/Binary/a_priority.2.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_size": 35,
+        "signature_name": "",
+        "sort": false
+      },
+      {
+        "callback_events": [
+          {
+            "current_index": 0,
+            "number_of_signatures": 3,
+            "signature": "z_priority.1.sg"
+          },
+          {
+            "current_index": 1,
+            "number_of_signatures": 3,
+            "signature": "a_priority.2.sg"
+          },
+          {
+            "current_index": 2,
+            "number_of_signatures": 3,
+            "signature": "m_priority.4.sg"
+          }
+        ],
+        "database": "priority",
+        "database_loaded": true,
+        "deep": false,
+        "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
+        "id": "callback_stop_last",
+        "method": "scanFile",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_not_canceled": false,
+        "pd_stopped": true,
+        "pd_success": false,
+        "pre_stopped": false,
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          },
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority two",
+            "priority": 12,
+            "signature": "a_priority.2.sg",
+            "signature_file": "/fixture/priority-main/Binary/a_priority.2.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          },
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority four",
+            "priority": 12,
+            "signature": "m_priority.4.sg",
+            "signature_file": "/fixture/priority-main/Binary/m_priority.4.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_size": 35,
+        "signature_name": "",
+        "sort": false
+      },
+      {
+        "callback_events": [
+          {
+            "current_index": 0,
+            "number_of_signatures": 3,
+            "signature": "z_priority.1.sg"
+          },
+          {
+            "current_index": 1,
+            "number_of_signatures": 3,
+            "signature": "a_priority.2.sg"
+          }
+        ],
+        "database": "priority",
+        "database_loaded": true,
+        "deep": false,
+        "errors": [],
+        "external_stop_thread_distinct": true,
+        "external_stop_writes": 1,
+        "id": "external_stop_second",
+        "method": "scanFile",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_not_canceled": false,
+        "pd_stopped": true,
+        "pd_success": false,
+        "pre_stopped": false,
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          },
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority two",
+            "priority": 12,
+            "signature": "a_priority.2.sg",
+            "signature_file": "/fixture/priority-main/Binary/a_priority.2.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_size": 35,
+        "signature_name": "",
+        "sort": false
+      },
+      {
         "callback_events": [],
         "database": "break",
         "database_loaded": true,
         "deep": false,
         "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
         "id": "break_scan",
         "method": "scanFile",
         "pd_finished": true,
@@ -494,6 +705,8 @@
         "database_loaded": true,
         "deep": false,
         "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
         "id": "pre_stopped",
         "method": "scanFile",
         "pd_finished": true,
@@ -526,6 +739,8 @@
         "database_loaded": true,
         "deep": false,
         "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
         "id": "entry_file",
         "method": "scanFile",
         "pd_finished": true,
@@ -558,6 +773,8 @@
         "database_loaded": true,
         "deep": false,
         "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
         "id": "entry_memory",
         "method": "scanMemory",
         "pd_finished": true,
@@ -590,6 +807,8 @@
         "database_loaded": true,
         "deep": false,
         "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
         "id": "entry_device",
         "method": "scanDevice",
         "pd_finished": true,
@@ -622,6 +841,8 @@
         "database_loaded": true,
         "deep": false,
         "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
         "id": "entry_subdevice",
         "method": "scanSubdevice",
         "pd_finished": true,
@@ -647,6 +868,120 @@
         "result_size": 35,
         "signature_name": "z_priority.1.sg",
         "sort": false
+      },
+      {
+        "canceled": {
+          "callback_events": [
+            {
+              "current_index": 0,
+              "number_of_signatures": 3,
+              "signature": "z_priority.1.sg"
+            },
+            {
+              "current_index": 1,
+              "number_of_signatures": 3,
+              "signature": "a_priority.2.sg"
+            }
+          ],
+          "errors": [],
+          "pd_finished": true,
+          "pd_n_finished": 2,
+          "pd_not_canceled": false,
+          "pd_stopped": true,
+          "pd_success": false,
+          "records": [
+            {
+              "aggressive_heuristic": false,
+              "heuristic": false,
+              "info": "",
+              "name": "Priority one",
+              "priority": 12,
+              "signature": "z_priority.1.sg",
+              "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+              "type": "format",
+              "unknown": false,
+              "version": "priority-only"
+            },
+            {
+              "aggressive_heuristic": false,
+              "heuristic": false,
+              "info": "",
+              "name": "Priority two",
+              "priority": 12,
+              "signature": "a_priority.2.sg",
+              "signature_file": "/fixture/priority-main/Binary/a_priority.2.sg",
+              "type": "format",
+              "unknown": false,
+              "version": "priority-only"
+            }
+          ]
+        },
+        "database_loaded": true,
+        "fresh": {
+          "callback_events": [
+            {
+              "current_index": 0,
+              "number_of_signatures": 3,
+              "signature": "z_priority.1.sg"
+            },
+            {
+              "current_index": 1,
+              "number_of_signatures": 3,
+              "signature": "a_priority.2.sg"
+            },
+            {
+              "current_index": 2,
+              "number_of_signatures": 3,
+              "signature": "m_priority.4.sg"
+            }
+          ],
+          "errors": [],
+          "pd_finished": true,
+          "pd_n_finished": 2,
+          "pd_not_canceled": true,
+          "pd_stopped": false,
+          "pd_success": true,
+          "records": [
+            {
+              "aggressive_heuristic": false,
+              "heuristic": false,
+              "info": "",
+              "name": "Priority one",
+              "priority": 12,
+              "signature": "z_priority.1.sg",
+              "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+              "type": "format",
+              "unknown": false,
+              "version": "priority-only"
+            },
+            {
+              "aggressive_heuristic": false,
+              "heuristic": false,
+              "info": "",
+              "name": "Priority two",
+              "priority": 12,
+              "signature": "a_priority.2.sg",
+              "signature_file": "/fixture/priority-main/Binary/a_priority.2.sg",
+              "type": "format",
+              "unknown": false,
+              "version": "priority-only"
+            },
+            {
+              "aggressive_heuristic": false,
+              "heuristic": false,
+              "info": "",
+              "name": "Priority four",
+              "priority": 12,
+              "signature": "m_priority.4.sg",
+              "signature_file": "/fixture/priority-main/Binary/m_priority.4.sg",
+              "type": "format",
+              "unknown": false,
+              "version": "priority-only"
+            }
+          ]
+        },
+        "id": "post_cancel_fresh_state_recovery",
+        "method": "scanFile_twice"
       },
       {
         "behavior": "chunked",
@@ -1401,14 +1736,14 @@
   },
   "oracle": {
     "binary": "/opt/die-build/src/console/diec-engine-contract-harness",
-    "binary_sha256": "930be4f3d5f24b2a9c2c58d3cd9f8fbde8d32382377918da14383bd123ae4162",
+    "binary_sha256": "22d0219a70aca23513d6d4c392e4ea96f9759c9781b1e56719aeba4c0cc0cdb2",
     "exit_code": 0,
     "image": "diec-rust/engine-contract-harness-qt5:74eaf505",
-    "image_id": "sha256:e5a8a469f258302a2a49efe2faa65d8d0225035184caf1128a46b15ea9b8bfbb",
+    "image_id": "sha256:2a3ce9d5dd003ceb714b978706aac370bc4fff14cf86bd3967185af61164462a",
     "raw_stderr_bytes": 0,
     "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "raw_stdout_bytes": 46474,
-    "raw_stdout_sha256": "23ea45cad36f0cb3766d4ad38e87449116c6f214d20f1c73269a38dcd9d5edf0",
+    "raw_stdout_bytes": 59412,
+    "raw_stdout_sha256": "d7f23f56025a6507ee06bbcfb5e6976a038dae9c9fbde02504391a428bfaa39a",
     "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
   },
   "platform": "linux-amd64-qt5",
@@ -1417,12 +1752,15 @@
   },
   "relationships": {
     "break_scan_keeps_current_then_stops": true,
+    "callback_false_at_last_keeps_complete_records_but_cancels": true,
+    "callback_false_at_second_keeps_two_record_prefix": true,
     "callback_false_keeps_current_then_stops": true,
     "chunked_direct_read_completes": true,
     "chunked_subdevice_parent_overreads_one_buffered_byte": true,
     "deep_filter_still_applies_to_exact_name": true,
     "entry_points_are_semantically_equal": true,
     "exact_tail_subdevice_is_accepted": true,
+    "fresh_state_recovers_same_engine_after_cancel": true,
     "incomplete_device_reads_are_silent_success": true,
     "initial_device_position_is_reset_then_consumed": true,
     "invalid_subdevice_ranges_return_zero_without_io": true,
@@ -1434,10 +1772,16 @@
     "signature_name_is_case_sensitive": true,
     "sort_disabled_preserves_insertion_order": true,
     "sort_enabled_orders_by_type_priority": true,
-    "successful_boundary_cases_keep_forced_binary_result": true
+    "successful_boundary_cases_keep_forced_binary_result": true,
+    "synchronized_external_stop_at_second_keeps_current_rule": true
   },
   "schema_version": 1,
   "source_audit": {
+    "cancellation_contracts": {
+      "stop_flag_is_plain_bool": true,
+      "stop_reader_is_plain_read": true,
+      "stop_setter_is_plain_assignment": true
+    },
     "device_contracts": {
       "range_gate_requires_positive_size_and_valid_last_byte": true,
       "safe_read_stops_without_pd_error_on_nonpositive_read": true,
@@ -1459,6 +1803,10 @@
       "/opt/die-source/Formats/xbinary.cpp": {
         "bytes": 549347,
         "sha256": "d82bd21326bb7ba07eb343020d50af0ae2cf7e8e534d8e08d07ffa8129913c34"
+      },
+      "/opt/die-source/Formats/xbinary.h": {
+        "bytes": 107804,
+        "sha256": "c0e92d317ca9d0c54edaeeaf2846e13c50abaf9d32b987a9454bb8b4d63b5838"
       },
       "/opt/die-source/XScanEngine/xscanengine.cpp": {
         "bytes": 191204,

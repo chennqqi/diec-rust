@@ -272,7 +272,7 @@ baseline 的变更都要检查本表。
   前泄漏部分反序列化 record；预取消 miss 会返回成功并持久化空 cache，下一次
   未取消加载继续复用并静默得到 `Unknown`。机器证据见
   [`database-cache-engine-qt5.json`](../research/data/database-cache-engine-qt5.json)。
-  33-case device oracle 又确认小输入整体复制忽略实际读取数：EOF、read/seek
+  37-case engine oracle 又确认小输入整体复制忽略实际读取数：EOF、read/seek
   error 和 sequential source 均可扫描未初始化尾部并报告成功；Qt subdevice
   chunked case 还从父设备读取 slice 后一字节。非法 range 则静默返回全零结果。
   详见 [`engine-contract-behavior.md`](../research/engine-contract-behavior.md)；
@@ -360,7 +360,7 @@ baseline 的变更都要检查本表。
   traceability、闭集 coverage report 和 mutation/minimization。
 - **验证**：每项能力 positive/negative/boundary；manifest hash；license review；
   fuzz regression growth。当前报告已分类 68 行 × 4 平台、0 未分类 cell，但仍
-  Linux source-only 已清零，同时显式保留 27 个 corpus-gap 行和三个缺失平台；
+  Linux source-only 已清零，同时显式保留 26 个 corpus-gap 行和三个缺失平台；
   source-only closure manifest 会拒绝任何未进入 closure catalog 的新缺口。
 - **关闭**：release 范围无 coverage gap，所有样本可追溯且处理策略合规。
 
@@ -431,6 +431,9 @@ baseline 的变更都要检查本表。
   取消，10/10 正常返回且未触发百万次检查点硬上限；迭代数 200..1,511 同样只作
   调度观察。VM/native 的 25ms monotonic deadline 也分别 10/10 到期、0/10
   触发硬兜底并恢复同一 context；callback/checkpoint 范围不作跨机器延迟承诺。
+  固定上游 engine oracle 另证明首/中/末 callback 停止的 record 前缀、同步外部
+  线程在 checkpoint 停止及 fresh-state engine 恢复；上游 `bIsStop` 为 plain
+  `bool`，所以未同步跨线程取消属于数据竞争，不能作为 Rust API 模板。
   同一 fixture 的 128 KiB stack limit 也已捕获无界递归并恢复 context，但真实
   include graph 仍必须由 ADR 0010 的静态/active-stack budget 提前拒绝。
 - **缓解**：runtime 选型硬门禁；fuel/deadline/heap；受控检查点；不可中断 backend

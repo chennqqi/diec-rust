@@ -28,6 +28,7 @@ SOURCE_PATHS = (
     "/opt/die-source/die_script/die_script.cpp",
     "/opt/die-source/Formats/xbinary.cpp",
     "/opt/die-source/Formats/subdevice.cpp",
+    "/opt/die-source/Formats/xbinary.h",
 )
 
 
@@ -80,6 +81,7 @@ def audit_source_contracts() -> dict[str, Any]:
     implementation = sources[SOURCE_PATHS[3]].decode("utf-8")
     binary_implementation = sources[SOURCE_PATHS[4]].decode("utf-8")
     subdevice_implementation = sources[SOURCE_PATHS[5]].decode("utf-8")
+    binary_header = sources[SOURCE_PATHS[6]].decode("utf-8")
 
     options_match = re.search(
         r"struct\s+SCAN_OPTIONS\s*\{(?P<body>.*?)\n\s*\};",
@@ -186,6 +188,51 @@ def audit_source_contracts() -> dict[str, Any]:
             f"{failed_device_assumptions}"
         )
 
+    pdstruct_match = re.search(
+        r"struct\s+PDSTRUCT\s*\{(?P<body>.*?)\n\s*\};",
+        binary_header,
+        re.DOTALL,
+    )
+    if pdstruct_match is None:
+        raise ValueError("PDSTRUCT definition not found")
+    pdstruct_body = pdstruct_match.group("body")
+    stop_setter_match = re.search(
+        r"void XBinary::setPdStructStopped\(.*?\n\}",
+        binary_implementation,
+        re.DOTALL,
+    )
+    stop_reader_match = re.search(
+        r"bool XBinary::isPdStructNotCanceled\(.*?\n\}",
+        binary_implementation,
+        re.DOTALL,
+    )
+    if stop_setter_match is None or stop_reader_match is None:
+        raise ValueError("PDSTRUCT stop accessors not found")
+    cancellation_assumptions = {
+        "stop_flag_is_plain_bool": bool(
+            re.search(r"\bbool\s+bIsStop\s*;", pdstruct_body)
+        )
+        and "atomic" not in pdstruct_body,
+        "stop_setter_is_plain_assignment": (
+            "pPdStruct->bIsStop = true;"
+            in stop_setter_match.group(0)
+        ),
+        "stop_reader_is_plain_read": (
+            "if (pPdStruct->bIsStop)"
+            in stop_reader_match.group(0)
+        ),
+    }
+    failed_cancellation_assumptions = [
+        name
+        for name, value in cancellation_assumptions.items()
+        if not value
+    ]
+    if failed_cancellation_assumptions:
+        raise ValueError(
+            "cancellation source assumptions changed: "
+            f"{failed_cancellation_assumptions}"
+        )
+
     return {
         "public_scan_options_has_signature_name": name_option_present,
         "public_scan_options_has_signature_file_path": (
@@ -198,6 +245,7 @@ def audit_source_contracts() -> dict[str, Any]:
         "implementation_process_detect_occurrences": call_argument_count,
         "public_runtime_filter_reachable": reachable,
         "device_contracts": device_assumptions,
+        "cancellation_contracts": cancellation_assumptions,
         "sources": {
             path: {
                 "bytes": len(data),
@@ -237,6 +285,10 @@ def validate(document: dict[str, Any]) -> dict[str, bool]:
         "sort_enabled",
         "callback_continue",
         "callback_stop_first",
+        "callback_stop_second",
+        "callback_stop_last",
+        "external_stop_second",
+        "post_cancel_fresh_state_recovery",
         "break_scan",
         "pre_stopped",
         "entry_file",
@@ -316,6 +368,59 @@ def validate(document: dict[str, Any]) -> dict[str, bool]:
             and len(cases["callback_stop_first"]["callback_events"]) == 1
             and cases["callback_stop_first"]["pd_stopped"]
             and not cases["callback_stop_first"]["pd_success"]
+        ),
+        "callback_false_at_second_keeps_two_record_prefix": (
+            names(cases["callback_stop_second"])
+            == ["Priority one", "Priority two"]
+            and len(cases["callback_stop_second"]["callback_events"]) == 2
+            and cases["callback_stop_second"]["pd_stopped"]
+            and not cases["callback_stop_second"]["pd_success"]
+        ),
+        "callback_false_at_last_keeps_complete_records_but_cancels": (
+            names(cases["callback_stop_last"])
+            == ["Priority one", "Priority two", "Priority four"]
+            and len(cases["callback_stop_last"]["callback_events"]) == 3
+            and cases["callback_stop_last"]["pd_stopped"]
+            and not cases["callback_stop_last"]["pd_success"]
+        ),
+        "synchronized_external_stop_at_second_keeps_current_rule": (
+            names(cases["external_stop_second"])
+            == ["Priority one", "Priority two"]
+            and len(cases["external_stop_second"]["callback_events"]) == 2
+            and cases["external_stop_second"]["external_stop_writes"] == 1
+            and cases["external_stop_second"][
+                "external_stop_thread_distinct"
+            ]
+            and cases["external_stop_second"]["pd_stopped"]
+            and not cases["external_stop_second"]["pd_success"]
+        ),
+        "fresh_state_recovers_same_engine_after_cancel": (
+            [
+                record["name"]
+                for record in cases[
+                    "post_cancel_fresh_state_recovery"
+                ]["canceled"]["records"]
+            ]
+            == ["Priority one", "Priority two"]
+            and cases["post_cancel_fresh_state_recovery"]["canceled"][
+                "pd_stopped"
+            ]
+            and not cases["post_cancel_fresh_state_recovery"][
+                "canceled"
+            ]["pd_success"]
+            and [
+                record["name"]
+                for record in cases[
+                    "post_cancel_fresh_state_recovery"
+                ]["fresh"]["records"]
+            ]
+            == ["Priority one", "Priority two", "Priority four"]
+            and not cases["post_cancel_fresh_state_recovery"]["fresh"][
+                "pd_stopped"
+            ]
+            and cases["post_cancel_fresh_state_recovery"]["fresh"][
+                "pd_success"
+            ]
         ),
         "break_scan_keeps_current_then_stops": (
             names(cases["break_scan"]) == ["Break first"]
@@ -486,6 +591,7 @@ def build_report(
         "raw_artifacts": {
             "storage": "untracked external directory selected by --raw-dir"
         },
+        "closed_corpus_gap": "CAP-GAP-011",
         "relationships": relationships,
         "source_audit": source_audit,
         "harness_output": document,
