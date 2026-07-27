@@ -323,6 +323,13 @@ baseline 的变更都要检查本表。
 
 - **触发**：依赖浮动、MSRV 意外提高、default feature 拉入 native/system 库、
   yanked/advisory 或 release 构建联网。
+- **当前证据**：默认工具链已由 1.88.0 固定升级到 1.97.1，同时五个 spike
+  继续声明 MSRV 1.88。五个 spike 在 1.97.1 下通过 fmt/Clippy/test；
+  `signature-parser` 的新版 Clippy 修正又在 1.88 下通过相同 14-test suite。
+  Windows MSVC `/MD`、`/MT` 和断网/只读/offline Linux GNU 共六条 C consumer
+  均成功，native system library 集合未相对历史 1.88 报告增加。结果绑定到
+  [`rust-toolchain-upgrade-1.97.1.json`](../research/data/rust-toolchain-upgrade-1.97.1.json)。
+  Phase 1 双版本 CI、advisory/license CI、SBOM 和 clean release build 仍未建立。
 - **缓解**：lockfile、明确 features/MSRV、依赖/许可证/audit policy、离线 release
   build、SBOM。
 - **验证**：clean locked build、minimal feature builds、dependency diff review、

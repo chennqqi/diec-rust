@@ -501,7 +501,8 @@ upstream 与 Rust 使用相同 bytes/options/database；无法等价的 case 不
 ### Pull request
 
 - formatting、clippy `-D warnings`、unit/property smoke、doc contract；
-- Linux/Windows/macOS stable Rust 的 workspace tests；
+- Linux/Windows/macOS 固定 default Rust 1.97.1 的 workspace tests，并以显式
+  MSRV 1.88 job 防止最低版本漂移；浮动 stable 只作非阻塞前瞻信号；
 - corpus/manifest/upstream lock verifier；
 - generated corpus reproducibility；
 - 快速 canonical/legacy golden 和最小 differential（oracle 可用 runner）；
@@ -545,10 +546,10 @@ upstream 与 Rust 使用相同 bytes/options/database；无法等价的 case 不
 
 | OS | Architecture | Rust | C link | Differential | Go/Python |
 | --- | --- | --- | --- | --- | --- |
-| Linux | x86_64 | stable + MSRV | required | required | required |
-| Windows | x86_64 MSVC | stable + MSRV | required | required when oracle fixed | required |
-| macOS | x86_64 | stable | required | required when oracle fixed | required |
-| macOS | aarch64 | stable | required | required when oracle fixed | required |
+| Linux | x86_64 | fixed default + MSRV | required | required | required |
+| Windows | x86_64 MSVC | fixed default + MSRV | required | required when oracle fixed | required |
+| macOS | x86_64 | fixed default + MSRV | required | required when oracle fixed | required |
+| macOS | aarch64 | fixed default + MSRV | required | required when oracle fixed | required |
 
 Linux aarch64、Windows aarch64 和 32-bit 是扩展门禁；宣称支持前必须升为 required。
 不得用 Linux oracle 证明 Windows/macOS CLI 路径和编码完全兼容。

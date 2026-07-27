@@ -1,0 +1,305 @@
+{
+  "schema_version": 1,
+  "decision": "docs/design/decisions/0011-rust-1.97.1-default-toolchain.md",
+  "report": "docs/research/rust-toolchain-upgrade-1.97.1.md",
+  "toolchains": {
+    "default": {
+      "channel": "1.97.1",
+      "rustc": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+      "cargo": "cargo 1.97.1 (c980f4866 2026-06-30)",
+      "llvm": "22.1.6",
+      "rustfmt": "rustfmt 1.9.0-stable (8bab26f4f6 2026-07-14)",
+      "clippy": "clippy 0.1.97 (8bab26f4f6 2026-07-14)"
+    },
+    "msrv": {
+      "channel": "1.88.0",
+      "package_rust_version": "1.88",
+      "rustc": "rustc 1.88.0 (6b00bc388 2025-06-23)",
+      "cargo": "cargo 1.88.0 (873a06493 2025-05-10)"
+    }
+  },
+  "security_advisories": [
+    {
+      "id": "CVE-2026-33056",
+      "url": "https://blog.rust-lang.org/2026/03/21/cve-2026-33056/"
+    },
+    {
+      "id": "CVE-2026-5222",
+      "url": "https://blog.rust-lang.org/2026/05/25/cve-2026-5222/"
+    },
+    {
+      "id": "CVE-2026-5223",
+      "url": "https://blog.rust-lang.org/2026/05/25/cve-2026-5223/"
+    },
+    {
+      "id": "RUST-1.97.1-LLVM-MISCOMPILATION",
+      "url": "https://blog.rust-lang.org/2026/07/16/Rust-1.97.1/"
+    }
+  ],
+  "input_hashes": {
+    "rust-toolchain.toml": "8e390d6a0838315f972690f46ef8bae8b7ecc9ee6c1ed70140ef852869c2482e",
+    "spikes/boa-rule-runtime/Cargo.toml": "ff4cbfeaf28fdbed79787f0fe648aa80ef6dedbafccb258a35087aae30c0ce7e",
+    "spikes/boa-rule-runtime/Cargo.lock": "a5ec9db4c7333152928b54084573f6cfab95abaa54b456b8d21cf0f310d33569",
+    "spikes/boa-rule-runtime/src/main.rs": "422482d8818d4eef4c24d4940ec62edf90cd6be664928c370be6ac9304e93c47",
+    "spikes/c-static-link/Cargo.toml": "7d76fa9927d4ace6be3762769d41ab188244ea6082feabbd0d42a590cf142452",
+    "spikes/c-static-link/Cargo.lock": "29d5824964d0249951f9568a80501e665934788834ab01767beacb6331727fd0",
+    "spikes/c-static-link/src/lib.rs": "2a37c663701af5c29bd1dab0e5952e7324d5023862bb8e1d3f6725b562d9f806",
+    "spikes/c-static-link/c/smoke.c": "9e70deb13e007358fc6b1dc0aec908331b0fc6d355e5e766c7d77b0f5eb68807",
+    "spikes/rquickjs-rule-runtime/Cargo.toml": "9607cda695bf719921b1dded3dc8c643886a7f2e6fe7380f714698b994e9ee9a",
+    "spikes/rquickjs-rule-runtime/Cargo.lock": "e03ce821c4a4c0f362d417d84752ed9ef1f775377ef9042306397aca39d21836",
+    "spikes/rquickjs-rule-runtime/src/main.rs": "da808dcca4941f2c51c9b8cf7ab56313dd1b9df30152c405571fd748b954fc79",
+    "spikes/rquickjs-static-link/Cargo.toml": "160117e2885abc7ca3d5f5d5b9fe77c1fbfc8337a20a709548ff7ef157b96bf0",
+    "spikes/rquickjs-static-link/Cargo.lock": "e80e1d8f87c753d7accba7dc3625a926b67221e4ed07c38d13a9d0b9e94c0e80",
+    "spikes/rquickjs-static-link/src/lib.rs": "2b2c489e94b4c33135904429939428a531766a7bcac072d797b3d117386cea67",
+    "spikes/rquickjs-static-link/c/smoke.c": "2d94779a37ac1417795f9de50bfd61840d375562920191b1f1ce7d0e56399943",
+    "spikes/signature-parser/Cargo.toml": "17386601a0aab388d5174f84d4c38c0b5e430e6c74b95ce6fb37cf5c6492fefa",
+    "spikes/signature-parser/Cargo.lock": "2985224550a817be8fe4dea19a12c2db06cc21f199b985fba12fc23dedfa9279",
+    "spikes/signature-parser/src/lib.rs": "fbfe13ea5135baff6c4ea0d24d0c837990536799a18133976c92bd16740c32f6"
+  },
+  "rust_gates": [
+    {
+      "spike": "boa-rule-runtime",
+      "manifest": "spikes/boa-rule-runtime/Cargo.toml",
+      "default": {
+        "fmt": "pass",
+        "clippy": "pass",
+        "unit_tests": 2,
+        "doc_tests": 0
+      }
+    },
+    {
+      "spike": "c-static-link",
+      "manifest": "spikes/c-static-link/Cargo.toml",
+      "default": {
+        "fmt": "pass",
+        "clippy": "pass",
+        "unit_tests": 3,
+        "doc_tests": 0
+      }
+    },
+    {
+      "spike": "rquickjs-rule-runtime",
+      "manifest": "spikes/rquickjs-rule-runtime/Cargo.toml",
+      "default": {
+        "fmt": "pass",
+        "clippy": "pass",
+        "unit_tests": 22,
+        "doc_tests": 0
+      }
+    },
+    {
+      "spike": "rquickjs-static-link",
+      "manifest": "spikes/rquickjs-static-link/Cargo.toml",
+      "default": {
+        "fmt": "pass",
+        "clippy": "pass",
+        "unit_tests": 2,
+        "doc_tests": 0
+      }
+    },
+    {
+      "spike": "signature-parser",
+      "manifest": "spikes/signature-parser/Cargo.toml",
+      "default": {
+        "fmt": "pass",
+        "clippy": "pass",
+        "unit_tests": 14,
+        "doc_tests": 0
+      },
+      "msrv": {
+        "fmt": "pass",
+        "clippy": "pass",
+        "unit_tests": 14,
+        "doc_tests": 0
+      }
+    }
+  ],
+  "clippy_remediation": {
+    "spike": "signature-parser",
+    "diagnostic_count": 5,
+    "diagnostics": {
+      "collapsible_if": 3,
+      "manual_saturating_arithmetic": 1,
+      "manual_is_multiple_of": 1
+    },
+    "public_api_changed": false,
+    "msrv_raised": false
+  },
+  "linux_gnu": {
+    "target": "x86_64-unknown-linux-gnu",
+    "container_image": "rust:1.97.1-slim-bookworm",
+    "container_digest": "sha256:99e09cb2284e2ddbb73a995deee3e91783fd04d177602ccf6eab326d778ee777",
+    "c_compiler": "gcc 12.2.0",
+    "network": "none",
+    "cpus": 2,
+    "memory_bytes": 2147483648,
+    "source_mount": "read-only",
+    "registry_cache_mount": "read-only",
+    "cargo_mode": "offline",
+    "native_static_libs": [
+      "-lgcc_s",
+      "-lutil",
+      "-lrt",
+      "-lpthread",
+      "-lm",
+      "-ldl",
+      "-lc"
+    ],
+    "consumers": [
+      {
+        "spike": "c-static-link",
+        "archive_bytes": 21989188,
+        "archive_sha256": "2a036c365256b16ff9bb097f6ecd1a2231926c5cd5d7d26f4481425dd9b346a5",
+        "executable_bytes": 5155488,
+        "executable_sha256": "b2a6990a1834fee2d859d6338a11de8f39e553f4c9f9240fb47de4e19abbdefc",
+        "dynamic_dependencies": [
+          "libgcc_s.so.1",
+          "libc.so.6",
+          "ld-linux-x86-64.so.2"
+        ],
+        "smoke_exit_code": 0,
+        "panic_contained": true,
+        "panic_hook_stderr_observed": true
+      },
+      {
+        "spike": "rquickjs-static-link",
+        "archive_bytes": 24714608,
+        "archive_sha256": "e1b01d0cb73be291063e10020bc75a0c0147a082ee6831de9e07e1c6584de4b4",
+        "executable_bytes": 6651064,
+        "executable_sha256": "91287d1c398e01a13bf5efb99eb519f3f3c43a7b1213c3996b24db7b741a2e6e",
+        "dynamic_dependencies": [
+          "libgcc_s.so.1",
+          "libm.so.6",
+          "libc.so.6",
+          "ld-linux-x86-64.so.2"
+        ],
+        "smoke_exit_code": 0,
+        "panic_contained": true,
+        "panic_hook_stderr_observed": true
+      }
+    ]
+  },
+  "windows_msvc": {
+    "target": "x86_64-pc-windows-msvc",
+    "c_compiler": "MSVC 19.44.35207.1",
+    "linker": "MSVC link.exe 14.44.35207.1",
+    "common_native_static_libs": [
+      "kernel32.lib",
+      "ntdll.lib",
+      "userenv.lib",
+      "ws2_32.lib",
+      "dbghelp.lib"
+    ],
+    "consumers": [
+      {
+        "spike": "c-static-link",
+        "crt": "dynamic",
+        "c_flag": "/MD",
+        "rust_crt_static": false,
+        "defaultlib": "/defaultlib:msvcrt",
+        "staticlib_bytes": 12030768,
+        "staticlib_sha256": "980b16479ab1f0de820c6e2a69b8aa89fb83e3d142340c40a4e38aa4bb607156",
+        "executable_bytes": 119296,
+        "executable_sha256": "2c71ae3d508fbd5babca31bde2bd67cea4034480cd012375c860d5ebe40e061d",
+        "dynamic_dependencies": [
+          "api-ms-win-core-synch-l1-2-0.dll",
+          "VCRUNTIME140.dll",
+          "api-ms-win-crt-stdio-l1-1-0.dll",
+          "api-ms-win-crt-string-l1-1-0.dll",
+          "api-ms-win-crt-runtime-l1-1-0.dll",
+          "api-ms-win-crt-math-l1-1-0.dll",
+          "api-ms-win-crt-locale-l1-1-0.dll",
+          "api-ms-win-crt-heap-l1-1-0.dll",
+          "KERNEL32.dll",
+          "ntdll.dll"
+        ],
+        "smoke_exit_code": 0,
+        "panic_contained": true,
+        "panic_hook_stderr_observed": true
+      },
+      {
+        "spike": "c-static-link",
+        "crt": "static",
+        "c_flag": "/MT",
+        "rust_crt_static": true,
+        "defaultlib": "/defaultlib:libcmt",
+        "staticlib_bytes": 12030768,
+        "staticlib_sha256": "167764bc569c00aa2865f94744f534732fe7db269c5042cbb0770679984bdad8",
+        "executable_bytes": 250880,
+        "executable_sha256": "fbd14e6741c5972b2d62399ec317886476b5d20494d09c2c05022d65fd5eda19",
+        "dynamic_dependencies": [
+          "api-ms-win-core-synch-l1-2-0.dll",
+          "KERNEL32.dll",
+          "ntdll.dll"
+        ],
+        "smoke_exit_code": 0,
+        "panic_contained": true,
+        "panic_hook_stderr_observed": true
+      },
+      {
+        "spike": "rquickjs-static-link",
+        "crt": "dynamic",
+        "c_flag": "/MD",
+        "rust_crt_static": false,
+        "defaultlib": "/defaultlib:msvcrt",
+        "staticlib_bytes": 15735194,
+        "staticlib_sha256": "e584768391854938c8fdf590774176361c7b9f0585a216854a6e097a5529bc0e",
+        "executable_bytes": 1134080,
+        "executable_sha256": "de7acb2fd7e27d54d375428830650cf260a357add4bf726262ef2f8cf4e171e3",
+        "dynamic_dependencies": [
+          "api-ms-win-core-synch-l1-2-0.dll",
+          "bcryptprimitives.dll",
+          "VCRUNTIME140.dll",
+          "api-ms-win-crt-runtime-l1-1-0.dll",
+          "api-ms-win-crt-string-l1-1-0.dll",
+          "api-ms-win-crt-heap-l1-1-0.dll",
+          "api-ms-win-crt-convert-l1-1-0.dll",
+          "api-ms-win-crt-stdio-l1-1-0.dll",
+          "api-ms-win-crt-math-l1-1-0.dll",
+          "api-ms-win-crt-locale-l1-1-0.dll",
+          "KERNEL32.dll",
+          "ntdll.dll"
+        ],
+        "smoke_exit_code": 0,
+        "panic_contained": true,
+        "panic_hook_stderr_observed": true
+      },
+      {
+        "spike": "rquickjs-static-link",
+        "crt": "static",
+        "c_flag": "/MT",
+        "rust_crt_static": true,
+        "defaultlib": "/defaultlib:libcmt",
+        "staticlib_bytes": 15772692,
+        "staticlib_sha256": "6a58fd721bd2dc2b998cd0431d82b37ff01e52fcf79af650fc250a515930c661",
+        "executable_bytes": 1376768,
+        "executable_sha256": "da4ce375a2b9e3b3cafa28d1c899b5613580600adb299fb8a5026dd6790fc518",
+        "dynamic_dependencies": [
+          "api-ms-win-core-synch-l1-2-0.dll",
+          "bcryptprimitives.dll",
+          "KERNEL32.dll",
+          "ntdll.dll"
+        ],
+        "smoke_exit_code": 0,
+        "panic_contained": true,
+        "panic_hook_stderr_observed": true
+      }
+    ]
+  },
+  "relationships": {
+    "default_and_msrv_are_distinct": true,
+    "all_default_rust_gates_passed": true,
+    "changed_source_passed_msrv": true,
+    "all_six_native_consumers_passed": true,
+    "native_system_library_sets_did_not_expand_from_1.88": true,
+    "dependencies_features_and_lockfiles_unchanged": true
+  },
+  "limitations": [
+    "Phase 1 default-and-MSRV CI jobs are not implemented",
+    "macOS x86_64 and aarch64 are not validated",
+    "Linux musl and aarch64 are not validated",
+    "Windows GNU and aarch64 are not validated",
+    "artifact bit-for-bit reproducibility is not validated",
+    "release SBOM and advisory CI are not implemented"
+  ]
+}
