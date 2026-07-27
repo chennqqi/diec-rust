@@ -92,9 +92,14 @@
       "paths": [
         "docs/research/database-layer-behavior.md",
         "docs/research/database-error-behavior.md",
+        "docs/research/database-archive-cache.md",
         "docs/research/data/database-layer-fixture.json",
         "docs/research/data/database-layers-engine-qt5.json",
-        "tools/tests/test_database_layers_harness.py"
+        "docs/research/data/database-cache-engine-qt5.json",
+        "tools/upstream/database_cache_harness_main.cpp",
+        "tools/upstream/probe_database_cache_harness.py",
+        "tools/tests/test_database_layers_harness.py",
+        "tools/tests/test_database_cache_harness.py"
       ]
     },
     "rule_orchestration": {
@@ -255,9 +260,9 @@
     {"id": "CAP-CLI-OUT-003", "name": "CSV output", "verification": "observed_with_gaps", "evidence_set": "cli_output"},
     {"id": "CAP-CLI-OUT-004", "name": "TSV output", "verification": "observed_with_gaps", "evidence_set": "cli_output"},
     {"id": "CAP-CLI-OUT-005", "name": "plain text output", "verification": "observed_with_gaps", "evidence_set": "cli_output"},
-    {"id": "CAP-CLI-DB-001", "name": "main database path", "verification": "observed_with_gaps", "evidence_set": "database"},
-    {"id": "CAP-CLI-DB-002", "name": "extra database path", "verification": "observed_with_gaps", "evidence_set": "database"},
-    {"id": "CAP-CLI-DB-003", "name": "custom database path", "verification": "observed_with_gaps", "evidence_set": "database"},
+    {"id": "CAP-CLI-DB-001", "name": "main database path", "verification": "observed", "evidence_set": "database"},
+    {"id": "CAP-CLI-DB-002", "name": "extra database path", "verification": "observed", "evidence_set": "database"},
+    {"id": "CAP-CLI-DB-003", "name": "custom database path", "verification": "observed", "evidence_set": "database"},
     {"id": "CAP-CLI-DB-004", "name": "show database mode", "verification": "observed", "evidence_set": "database"},
     {"id": "CAP-CLI-TEST-001", "name": "test mode no-op", "verification": "observed", "evidence_set": "cli_options"},
     {"id": "CAP-CLI-TEST-002", "name": "create test mode no-op", "verification": "observed", "evidence_set": "cli_options"},
@@ -302,13 +307,6 @@
     {"id": "CAP-RESULT-006", "name": "record version info rule and priority", "verification": "observed", "evidence_set": "result_model"}
   ],
   "coverage_gaps": [
-    {
-      "id": "CAP-GAP-002",
-      "scope": "remaining database header truncation, write, permission, and concurrency behavior",
-      "platforms": [
-        "linux-x86_64-qt5"
-      ]
-    },
     {
       "id": "CAP-GAP-003",
       "scope": "Unicode and special filenames plus path enumeration",
@@ -358,11 +356,11 @@
   ],
   "summary": {
     "capability_count": 68,
-    "observed": 56,
-    "observed_with_gaps": 12,
+    "observed": 59,
+    "observed_with_gaps": 9,
     "source_verified": 0,
     "source_verified_with_gaps": 0,
-    "coverage_gap_count": 7,
+    "coverage_gap_count": 6,
     "phase_0_coverage_complete": false
   }
 }

@@ -8,7 +8,7 @@ Components:
 `horsicq/XScanEngine@dfe4a419e4f491bb23688ba03c5a5bf39e34da83`,
 `horsicq/XArchive@0fcd4e8d3e9933baac3b12246d82ac026557ffd0`
 
-Last updated: 2026-07-27
+Last updated: 2026-07-28
 
 ## 1. 范围
 
@@ -37,7 +37,7 @@ engine `bUseCache=true` 专用 harness 报告为
 | --- | --- | --- |
 | Qt5 qmake reproducible | `diec-rust/upstream-oracle:74eaf505-repro` | `sha256:cc5561a5d256c7912227a8ecf4ba9c6b9178c99911e471017d3c3988bac964ab` |
 | Qt5 CMake | `diec-rust/upstream-oracle-cmake:74eaf505` | `sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040` |
-| Qt5 CMake cache harness | `diec-rust/upstream-database-cache-harness:74eaf505` | `sha256:67737570f9824f570fbc702ca8fd526ed3da06feca6b6d37d57d2eaf176590c3` |
+| Qt5 CMake cache harness | `diec-rust/upstream-database-cache-harness:74eaf505` | `sha256:17f7bd0514e973df9da8ff06967cb73ddff906cb568d1d07d75f3b09c7146fc9` |
 
 三个镜像 label 都固定到上游
 `74eaf505c250ab47e709024e9dc41657cd8f2254`。关键源码 SHA-256：
@@ -200,9 +200,10 @@ cache-disabled 行为。
 ### 6.1 固定 engine harness
 
 专用 harness 只替换上游 console `main`，链接固定 CMake Qt5 镜像中的未修改
-engine objects。它复制项目生成的单条 Binary 规则，固定文件 mtime 为
-`1700000000.123` 秒，设置 `bUseCache=true`，并在网络禁用、2 CPU、1 GiB
-内存和 256 PIDs 的容器中连续执行九个状态：
+engine objects。它以非特权 UID/GID `65534:65534` 运行，复制项目生成的单条
+Binary 规则，固定文件 mtime 为 `1700000000.123` 秒，设置
+`bUseCache=true`，并在网络禁用、2 CPU、1 GiB 内存和 256 PIDs 的容器中
+连续执行十九个状态：
 
 ```text
 docker build --network none \
@@ -221,7 +222,7 @@ python tools/upstream/probe_database_cache_harness.py \
 ```
 
 报告保存两次完整 stdout/stderr 的 Base64、长度和 SHA-256；两次输出逐字节相同，
-`passed=true` 且 `failures=[]`。九个 case 的可观察结果如下：
+`passed=true` 且 `failures=[]`。十九个 case 的可观察结果如下：
 
 | Case | Binary records | Scan | Cache |
 | --- | ---: | --- | --- |
@@ -230,7 +231,17 @@ python tools/upstream/probe_database_cache_harness.py \
 | `same_stats_stale_hit` | 1 | `Fixture` | 内容已改成 `Changed`，仍命中旧 cache |
 | `stats_changed_rebuild` | 1 | `Changed` | mtime 改变后重建 |
 | `bad_magic_fallback` | 1 | `Changed` | 回退目录并重写有效 cache |
-| `truncated_cache_fallback` | 2 | `Changed` | 回退后留下一个部分反序列化 record |
+| `bad_version_fallback` | 1 | `Changed` | 回退目录并重写有效 cache |
+| `empty_cache_fallback` | 1 | `Changed` | 空文件回退并重写 |
+| `magic_only_fallback` | 1 | `Changed` | 仅 magic 回退并重写 |
+| `magic_version_only_fallback` | 1 | `Changed` | 仅 magic/version 回退并重写 |
+| `truncated_record_fallback` | 2 | `Changed` | 半截 record 污染内部列表后回退 |
+| `record_tail_truncated_fallback` | 2 | `Changed`, `Changed` | 尾部少 1 byte，完整检测重复 |
+| `cache_write_denied` | 1 | `Changed` | 成功且无诊断，不产生 cache |
+| `cache_write_recovery` | 1 | `Changed` | 权限恢复后创建 399-byte cache |
+| `concurrent_identical_writers` | 1 | `Changed` | 8 writer 均成功，最终 cache 有效 |
+| `database_directory_permission_denied` | 0 | `Unknown` | 返回成功并保存 42-byte 空 cache |
+| `database_file_permission_denied` | 0 | `Unknown` | 返回失败，无诊断和 cache |
 | `canceled_cache_hit` | 0 | `Unknown` | 返回成功，原 cache 不变 |
 | `canceled_cache_miss` | 0 | `Unknown` | 返回成功并写出 42-byte 空 cache |
 | `poisoned_empty_cache_hit` | 0 | `Unknown` | 未取消的后续加载命中空 cache |
@@ -238,9 +249,18 @@ python tools/upstream/probe_database_cache_harness.py \
 所有 case 的 `loadDatabase()` 都返回 true，`scan_errors` 都为空。具体含义是：
 
 - freshness 三元组无法发现保持 file count、total size、newest mtime 不变的内容替换；
-- bad magic 会干净回退并重写，但截断发生在 record 中时，stream status 在 append
-  之后才检查，已反序列化的部分 record 没有回滚；随后目录 fallback 再追加正确
-  record，因此状态计数为 2；
+- bad magic、bad version 以及 0/4/8-byte header 截断会干净回退并重写；
+  截断发生在 record 中时，stream status 在 append 之后才检查，已反序列化的
+  record 没有回滚；半截 record 令状态计数为 2 但只产生一个有效检测，尾部少
+  1 byte 则把同一条规则执行两次；
+- cache directory 不可写时，规则仍从源目录加载且 `loadDatabase()` 返回 true，
+  写失败没有 signal/返回值；权限恢复后的下一次 load 会正常创建 cache；
+- 同一路径、相同输入的 8 个同步并发 miss/writer 在两次独立运行中全部成功，
+  最终 cache 与串行输出逐字节相同；源码仍是无锁的直接 `QFile(WriteOnly)`
+  truncate/write，没有临时文件、原子 rename 或跨进程锁，因此此结果不能证明
+  changed-during-read 或不同内容 writer 安全；
+- 不可搜索的 database 目录被当作空目录成功加载并持久化空 cache；存在但
+  不可读的 database ZIP file 则静默返回 false。两者都不产生 scan error；
 - 预取消的 cache hit 和 miss 都被报告为成功且不产生诊断；
 - 更严重的是，预取消的 miss 会持久化零 record cache；下一次未取消加载会复用它，
   稳定地产生 `Unknown`，而不是重新读取仍有效的规则源。
@@ -263,14 +283,17 @@ cache，也不得把部分/空状态暴露给后续扫描。若 legacy engine pr
   上游 app-data；
 - cache freshness 绑定规则 bundle 的完整内容身份；decode、database build 与
   cache publish 均为事务，失败或取消时不发布部分 records、不写 cache；
+- cache publish 使用同目录临时文件、flush/close 校验与原子替换，并按 cache
+  identity 串行化 writer；permission/write failure 必须形成类型化诊断；
 - cache bytes、record count、单 script 和总 script bytes 使用 checked budgets，
   cache miss/fallback 不能绕过同一预算；
 - 差分保留 raw stdout/stderr，特别是 JSON 后追加规则错误的 framing。
 
 ## 8. 仍未覆盖
 
-- bad version/engine、不同截断偏移、超大 record count 和声明 script 长度；
-- cache 写失败、只读 app-data 和并发 writer；
+- bad engine、超大 record count 和声明 script 长度；
+- changed-during-read 与不同内容 writer 的竞争结果；固定源码已证明没有锁和
+  原子 publish，本项目不把未定义调度结果作为 golden output；
 - deflate/其他 method、encrypted ZIP、CRC mismatch、data descriptor、ZIP64；
 - 超大 entry count、声明长度欺骗、压缩比和总解压预算；
 - Windows/macOS path、QStandardPaths 和 archive filename encoding。

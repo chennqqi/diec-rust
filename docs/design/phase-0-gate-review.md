@@ -68,7 +68,7 @@ Accepted。
 | `P0-BLOCK-002` | Open | 五份设计已 review-ready/In Review；仍缺 architecture、API、C ABI、testing、risks 的明确评审结论 |
 | `P0-BLOCK-003` | Open | 十二个 ADR 已 review-ready、但 acceptance-ready 均为 false；仍需 Accepted/Rejected/Superseded 评审结论 |
 | `P0-BLOCK-004` | Open | runtime `db*` 2,268 文件身份及根 MIT/marker 已闭合；仍需 PNG/历史贡献、其余 source closure 和发布责任人书面评审 |
-| `P0-BLOCK-005` | Open | 68 行 × 4 平台 coverage report 已建立且无未分类 cell；Linux source-only 已清零，CAP-GAP-001/009/010/011/012 已由 CLI 专用模式、device、规则排序、取消和七类 Image oracle 闭合；仍有 21 个 corpus-gap 行及三个平台各 68 个 platform-missing |
+| `P0-BLOCK-005` | Open | 68 行 × 4 平台 coverage report 已建立且无未分类 cell；Linux source-only 已清零，CAP-GAP-001/002/009/010/011/012 已由 CLI 专用模式、database cache/权限、device、规则排序、取消和七类 Image oracle 闭合；仍有 17 个 corpus-gap 行及三个平台各 68 个 platform-missing |
 | `P0-BLOCK-006` | Open | 固定 Linux Qt5 五层 warm baseline 已保留 17 warmup/90 measured 的 latency/MAD/p95/RSS、cgroup 和确定性输出；[体积基线](../research/upstream-deployment-size.md)也已固定 ELF、16 个去重动态依赖与 2,268 个规则的两种口径；仍需 Rust 成对、cold/affinity、跨平台发行包、评审阈值和默认资源限制 |
 
 ## 下一步顺序

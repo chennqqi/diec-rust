@@ -64,7 +64,9 @@ CLI 主入口为 [`src/console/main_console.cpp`](https://github.com/horsicq/DIE
 默认规则路径为 `$data/db`、`$data/db_extra`、`$data/db_custom`；extra 和
 custom 在 CLI 中默认启用。main/extra/custom 返回值不对称、入口相关退出码及
 错误输出见
-[`database-error-behavior.md`](database-error-behavior.md)。
+[`database-error-behavior.md`](database-error-behavior.md)。ZIP/database
+边界、cache header/record 截断、写失败与恢复、非特权权限失败和同输入并发
+writer 见 [`database-archive-cache.md`](database-archive-cache.md)。
 
 固定源码、CMake source list 和最终 link line 共同证明当前 `diec` CLI 没有
 YARA、PEiD 或 SearchSignatures 数据入口。上游安装包仍可能携带这些 GUI/辅助
@@ -216,8 +218,10 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
 
 - 尚未实验的 CLI 选项及专用模式剩余 struct/阈值边界。
 - 发布 CLI 的合法/空/多级截断/重复/`..`/根前缀 ZIP database 已 Observed；
-  engine-only cache miss/hit、同统计 stale、bad magic、截断和预取消已 Observed；
-  其他 header/截断边界、写失败、并发和权限失败仍待 harness。
+  engine-only cache miss/hit、同统计 stale、bad magic/version、header/record
+  截断、预取消、写失败/恢复、非特权权限失败和 8 个同输入并发 writer 已
+  Observed。超大 count/text 等安全预算仍作为 Rust 实现测试门禁，不把上游
+  OOM/调度结果采纳为 compatibility golden。
 - Unicode/特殊 filename 及 Windows/macOS 的路径和枚举差异。
 - JSON/XML/CSV/TSV 的转义和嵌套排序。
 - deep 以及 aggressive resource 过滤/计数上限的增量样本。

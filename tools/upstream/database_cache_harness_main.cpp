@@ -17,8 +17,12 @@
 
 #include <fcntl.h>
 #include <sys/stat.h>
+#include <unistd.h>
 
+#include <atomic>
 #include <cstdio>
+#include <thread>
+#include <vector>
 
 namespace {
 
@@ -126,6 +130,44 @@ CacheSnapshot cacheSnapshot(const QString &path)
         ).toHex()
     );
     return result;
+}
+
+QByteArray readFile(const QString &path, QString *error)
+{
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly)) {
+        *error = QString("cannot read file: %1").arg(path);
+        return {};
+    }
+    return file.readAll();
+}
+
+bool writeFile(
+    const QString &path,
+    const QByteArray &data,
+    QString *error
+)
+{
+    QFile file(path);
+    if (!file.open(QIODevice::WriteOnly)) {
+        *error = QString("cannot write file: %1").arg(path);
+        return false;
+    }
+    if (file.write(data) != data.size()) {
+        *error = QString("short write: %1").arg(path);
+        return false;
+    }
+    return true;
+}
+
+bool setMode(const QString &path, mode_t mode, QString *error)
+{
+    const QByteArray nativePath = QFile::encodeName(path);
+    if (::chmod(nativePath.constData(), mode) != 0) {
+        *error = QString("chmod failed: %1").arg(path);
+        return false;
+    }
+    return true;
 }
 
 QJsonObject serializeCache(const CacheSnapshot &snapshot)
@@ -265,19 +307,98 @@ bool corruptMagic(const QString &cachePath, QString *error)
     return true;
 }
 
-bool truncateCache(const QString &cachePath, QString *error)
+bool writeCachePrefix(
+    const QString &cachePath,
+    const QByteArray &validCache,
+    qsizetype size,
+    QString *error
+)
 {
-    QFile file(cachePath);
-    if (!file.open(QIODevice::ReadWrite)) {
-        *error = "cannot open cache for truncation";
+    if (size < 0 || size > validCache.size()) {
+        *error = "invalid cache prefix size";
         return false;
     }
-    const qint64 size = file.size();
-    if (size < 2 || !file.resize(size / 2)) {
-        *error = "cannot truncate cache";
+    return writeFile(
+        cachePath,
+        validCache.left(static_cast<int>(size)),
+        error
+    );
+}
+
+bool writeBadVersionCache(
+    const QString &cachePath,
+    const QByteArray &validCache,
+    QString *error
+)
+{
+    if (validCache.size() < 8) {
+        *error = "valid cache is shorter than magic and version";
         return false;
     }
-    return true;
+    QByteArray data = validCache;
+    data[4] = '\0';
+    data[5] = '\0';
+    data[6] = '\0';
+    data[7] = '\x06';
+    return writeFile(cachePath, data, error);
+}
+
+QJsonObject observeConcurrentWriters(
+    const QString &databasePath,
+    const QString &cachePath
+)
+{
+    constexpr int WRITER_COUNT = 8;
+    std::atomic<int> ready(0);
+    std::atomic<bool> start(false);
+    std::vector<int> loaded(WRITER_COUNT, 0);
+    std::vector<qint32> counts(WRITER_COUNT, 0);
+    std::vector<std::thread> threads;
+    threads.reserve(WRITER_COUNT);
+
+    for (int index = 0; index < WRITER_COUNT; ++index) {
+        threads.emplace_back([&, index]() {
+            XScanEngine::SCAN_OPTIONS options = {};
+            options.sMainDatabasePath = databasePath;
+            options.bUseCache = true;
+            DiE_Script engine;
+            XBinary::PDSTRUCT state = XBinary::createPdStruct();
+            ready.fetch_add(1);
+            while (!start.load()) {
+                std::this_thread::yield();
+            }
+            loaded[index] = engine.loadDatabase(&options, &state) ? 1 : 0;
+            counts[index] = binarySignatureCount(&engine);
+        });
+    }
+    while (ready.load() != WRITER_COUNT) {
+        std::this_thread::yield();
+    }
+    start.store(true);
+    for (std::thread &thread : threads) {
+        thread.join();
+    }
+
+    QJsonArray writerLoaded;
+    QJsonArray writerCounts;
+    bool allLoaded = true;
+    for (int index = 0; index < WRITER_COUNT; ++index) {
+        writerLoaded.append(loaded[index] != 0);
+        writerCounts.append(counts[index]);
+        allLoaded = allLoaded && loaded[index];
+    }
+
+    QJsonObject result = observeLoad(
+        "concurrent_identical_writers",
+        databasePath,
+        cachePath,
+        false
+    );
+    result.insert("writer_count", WRITER_COUNT);
+    result.insert("writer_loaded", writerLoaded);
+    result.insert("writer_signature_counts", writerCounts);
+    result.insert("loaded", allLoaded && result.value("loaded").toBool());
+    return result;
 }
 
 }  // namespace
@@ -361,6 +482,12 @@ int main(int argc, char *argv[])
         false
     ));
 
+    const QByteArray rebuiltCache = readFile(cachePath, &error);
+    if (rebuiltCache.isEmpty()) {
+        std::fprintf(stderr, "%s\n", error.toUtf8().constData());
+        return 1;
+    }
+
     if (!corruptMagic(cachePath, &error)) {
         std::fprintf(stderr, "%s\n", error.toUtf8().constData());
         return 1;
@@ -372,16 +499,125 @@ int main(int argc, char *argv[])
         false
     ));
 
-    if (!truncateCache(cachePath, &error)) {
+    if (!writeBadVersionCache(cachePath, rebuiltCache, &error)) {
         std::fprintf(stderr, "%s\n", error.toUtf8().constData());
         return 1;
     }
     cases.append(observeLoad(
-        "truncated_cache_fallback",
+        "bad_version_fallback",
         databasePath,
         cachePath,
         false
     ));
+
+    const qsizetype prefixSizes[] = {
+        0,
+        4,
+        8,
+        rebuiltCache.size() / 2,
+        rebuiltCache.size() - 1,
+    };
+    const char *prefixIds[] = {
+        "empty_cache_fallback",
+        "magic_only_fallback",
+        "magic_version_only_fallback",
+        "truncated_record_fallback",
+        "record_tail_truncated_fallback",
+    };
+    for (int index = 0; index < 5; ++index) {
+        if (!writeCachePrefix(
+                cachePath,
+                rebuiltCache,
+                prefixSizes[index],
+                &error
+            )) {
+            std::fprintf(stderr, "%s\n", error.toUtf8().constData());
+            return 1;
+        }
+        cases.append(observeLoad(
+            prefixIds[index],
+            databasePath,
+            cachePath,
+            false
+        ));
+    }
+
+    if (!QFile::remove(cachePath)) {
+        std::fprintf(stderr, "cannot remove cache before write denial\n");
+        return 1;
+    }
+    if (!setMode(cacheDirectory.absolutePath(), 0555, &error)) {
+        std::fprintf(stderr, "%s\n", error.toUtf8().constData());
+        return 1;
+    }
+    cases.append(observeLoad(
+        "cache_write_denied",
+        databasePath,
+        cachePath,
+        false
+    ));
+    if (!setMode(cacheDirectory.absolutePath(), 0755, &error)) {
+        std::fprintf(stderr, "%s\n", error.toUtf8().constData());
+        return 1;
+    }
+    cases.append(observeLoad(
+        "cache_write_recovery",
+        databasePath,
+        cachePath,
+        false
+    ));
+
+    if (!QFile::remove(cachePath)) {
+        std::fprintf(stderr, "cannot remove cache before concurrency\n");
+        return 1;
+    }
+    cases.append(observeConcurrentWriters(databasePath, cachePath));
+
+    const QString deniedDirectory =
+        QString::fromLatin1(WORK_ROOT) + "/denied-directory";
+    const QString deniedRule =
+        deniedDirectory + "/Binary/fixture.1.sg";
+    if (
+        !QDir().mkpath(deniedDirectory + "/Binary") ||
+        !QFile::copy(rulePath, deniedRule) ||
+        !setMode(deniedDirectory, 0000, &error)
+    ) {
+        std::fprintf(stderr, "%s\n", error.toUtf8().constData());
+        return 1;
+    }
+    cases.append(observeLoad(
+        "database_directory_permission_denied",
+        deniedDirectory,
+        cachePathForDatabase(deniedDirectory),
+        false
+    ));
+    if (!setMode(deniedDirectory, 0755, &error)) {
+        std::fprintf(stderr, "%s\n", error.toUtf8().constData());
+        return 1;
+    }
+
+    const QString deniedFile =
+        QString::fromLatin1(WORK_ROOT) + "/denied-main.zip";
+    if (
+        !QFile::copy(
+            QString::fromLocal8Bit(argv[1]) + "/valid-main.zip",
+            deniedFile
+        ) ||
+        !setMode(deniedFile, 0000, &error)
+    ) {
+        std::fprintf(stderr, "%s\n", error.toUtf8().constData());
+        return 1;
+    }
+    cases.append(observeLoad(
+        "database_file_permission_denied",
+        deniedFile,
+        cachePathForDatabase(deniedFile),
+        false
+    ));
+    if (!setMode(deniedFile, 0644, &error)) {
+        std::fprintf(stderr, "%s\n", error.toUtf8().constData());
+        return 1;
+    }
 
     cases.append(observeLoad(
         "canceled_cache_hit",
@@ -411,6 +647,8 @@ int main(int argc, char *argv[])
     output.insert("schema_version", 1);
     output.insert("upstream_commit", UPSTREAM_COMMIT);
     output.insert("xscanengine_commit", XSCANENGINE_COMMIT);
+    output.insert("effective_uid", static_cast<qint64>(::geteuid()));
+    output.insert("effective_gid", static_cast<qint64>(::getegid()));
     output.insert("database_path", databasePath);
     output.insert("rule_path", rulePath);
     output.insert("cache_path", cachePath);

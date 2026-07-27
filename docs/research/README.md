@@ -96,9 +96,9 @@ Phase 0 计划形成：
   runtime 三层规则树的 2,268 文件 hash、作者/URL/许可标记和 22 个 PNG 清单。
 - [`data/baseline-corpus.json`](data/baseline-corpus.json)：生成语料的文件名、意图、大小和 SHA-256。
 - [`data/capability-traceability.json`](data/capability-traceability.json)：68 个稳定
-  `CAP-*` 的验证层级、证据路径、平台范围和七个开放 coverage gap。
+  `CAP-*` 的验证层级、证据路径、平台范围和六个开放 coverage gap。
 - [`data/capability-coverage.json`](data/capability-coverage.json)：68 行 × 4 平台
-  的 272-cell 闭集分类、七个开放 gap 到能力的显式映射和未分类计数。
+  的 272-cell 闭集分类、六个开放 gap 到能力的显式映射和未分类计数。
 - [`image-dispatch-behavior.md`](image-dispatch-behavior.md)：固定七种非
   JPEG/PNG 图像的自然 Binary fallback、强制 generic Image null adapter 和
   `CAP-GAP-012` 闭合证据。
@@ -141,7 +141,9 @@ Phase 0 计划形成：
 - [`data/database-fixture.json`](data/database-fixture.json)：项目生成的数据库成功/故障 fixture。
 - [`data/database-archive-linux-qt5.json`](data/database-archive-linux-qt5.json)：两套固定 Qt5 oracle 的 17-case ZIP 数据库矩阵及两侧原始 stream。
 - [`data/database-cache-cli.json`](data/database-cache-cli.json)：发布 CLI cache-disabled 源码身份、删除副作用与 engine cache header 摘要。
-- [`data/database-cache-engine-qt5.json`](data/database-cache-engine-qt5.json)：固定 Qt5 engine harness 的 cache miss/hit/stale/corrupt/cancel 九状态原始报告。
+- [`data/database-cache-engine-qt5.json`](data/database-cache-engine-qt5.json)：
+  固定 Qt5 engine harness 的 cache miss/hit/stale、header/record corruption、
+  cancel、write/permission failure 和 8-writer concurrency 十九状态原始报告。
 - [`data/database-layer-fixture.json`](data/database-layer-fixture.json)：三层同名/priority 规则的项目生成 fixture 清单。
 - [`data/database-layers-engine-qt5.json`](data/database-layers-engine-qt5.json)：固定 Qt5 engine 的三层 materialization、同名保留和 runtime gate 原始报告。
 - [`data/nested-corpus.json`](data/nested-corpus.json)：安全的 archive/resource/overlay 嵌套语料清单。

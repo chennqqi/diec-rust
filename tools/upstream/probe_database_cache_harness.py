@@ -20,7 +20,17 @@ EXPECTED_CASE_IDS = (
     "same_stats_stale_hit",
     "stats_changed_rebuild",
     "bad_magic_fallback",
-    "truncated_cache_fallback",
+    "bad_version_fallback",
+    "empty_cache_fallback",
+    "magic_only_fallback",
+    "magic_version_only_fallback",
+    "truncated_record_fallback",
+    "record_tail_truncated_fallback",
+    "cache_write_denied",
+    "cache_write_recovery",
+    "concurrent_identical_writers",
+    "database_directory_permission_denied",
+    "database_file_permission_denied",
     "canceled_cache_hit",
     "canceled_cache_miss",
     "poisoned_empty_cache_hit",
@@ -60,6 +70,8 @@ def observe(
         "1g",
         "--pids-limit",
         "256",
+        "--user",
+        "65534:65534",
         "--mount",
         (
             f"type=bind,source={fixture_dir},"
@@ -125,7 +137,17 @@ def derive_relationships(
     stale = cases["same_stats_stale_hit"]
     rebuilt = cases["stats_changed_rebuild"]
     bad_magic = cases["bad_magic_fallback"]
-    truncated = cases["truncated_cache_fallback"]
+    bad_version = cases["bad_version_fallback"]
+    empty = cases["empty_cache_fallback"]
+    magic_only = cases["magic_only_fallback"]
+    magic_version = cases["magic_version_only_fallback"]
+    truncated = cases["truncated_record_fallback"]
+    tail_truncated = cases["record_tail_truncated_fallback"]
+    write_denied = cases["cache_write_denied"]
+    write_recovery = cases["cache_write_recovery"]
+    concurrent = cases["concurrent_identical_writers"]
+    denied_directory = cases["database_directory_permission_denied"]
+    denied_file = cases["database_file_permission_denied"]
     canceled_hit = cases["canceled_cache_hit"]
     canceled_miss = cases["canceled_cache_miss"]
     poisoned = cases["poisoned_empty_cache_hit"]
@@ -134,6 +156,10 @@ def derive_relationships(
     rebuilt_hash = rebuilt["cache"]["sha256"]
     poisoned_hash = canceled_miss["cache"]["sha256"]
     return {
+        "harness_runs_without_root_privileges": (
+            observation.get("effective_uid") == 65534
+            and observation.get("effective_gid") == 65534
+        ),
         "initial_load_creates_one_record_cache": (
             initial["loaded"]
             and initial["binary_signature_count"] == 1
@@ -158,10 +184,57 @@ def derive_relationships(
             and bad_magic["binary_signature_count"] == 1
             and bad_magic["scan_names"] == ["Changed"]
         ),
-        "truncated_cache_injects_partial_record_before_fallback": (
+        "bad_version_falls_back_and_rewrites": (
+            bad_version["cache"]["sha256"] == rebuilt_hash
+            and bad_version["binary_signature_count"] == 1
+            and bad_version["scan_names"] == ["Changed"]
+        ),
+        "header_truncations_fall_back_without_partial_records": all(
+            case["cache"]["sha256"] == rebuilt_hash
+            and case["binary_signature_count"] == 1
+            and case["scan_names"] == ["Changed"]
+            for case in (empty, magic_only, magic_version)
+        ),
+        "record_truncation_injects_partial_record_before_fallback": (
             truncated["cache"]["sha256"] == rebuilt_hash
             and truncated["binary_signature_count"] == 2
             and truncated["scan_names"] == ["Changed"]
+        ),
+        "tail_truncation_injects_partial_record_before_fallback": (
+            tail_truncated["cache"]["sha256"] == rebuilt_hash
+            and tail_truncated["binary_signature_count"] == 2
+            and tail_truncated["scan_names"] == ["Changed", "Changed"]
+        ),
+        "cache_write_failure_is_silent_and_nonfatal": (
+            write_denied["loaded"]
+            and write_denied["binary_signature_count"] == 1
+            and write_denied["scan_names"] == ["Changed"]
+            and not write_denied["cache"]["exists"]
+        ),
+        "cache_write_recovers_after_permission_restore": (
+            write_recovery["loaded"]
+            and write_recovery["binary_signature_count"] == 1
+            and write_recovery["scan_names"] == ["Changed"]
+            and write_recovery["cache"]["sha256"] == rebuilt_hash
+        ),
+        "concurrent_identical_writers_finish_with_valid_cache": (
+            concurrent["loaded"]
+            and concurrent["writer_count"] == 8
+            and concurrent["writer_loaded"] == [True] * 8
+            and concurrent["writer_signature_counts"] == [1] * 8
+            and concurrent["binary_signature_count"] == 1
+            and concurrent["scan_names"] == ["Changed"]
+            and concurrent["cache"]["sha256"] == rebuilt_hash
+        ),
+        "permission_denied_directory_is_silent_empty_success": (
+            denied_directory["loaded"]
+            and denied_directory["binary_signature_count"] == 0
+            and denied_directory["scan_names"] == ["Unknown"]
+        ),
+        "permission_denied_file_is_silent_failure": (
+            not denied_file["loaded"]
+            and denied_file["binary_signature_count"] == 0
+            and denied_file["scan_names"] == ["Unknown"]
         ),
         "canceled_cache_hit_reports_success_with_zero_records": (
             canceled_hit["loaded"]
@@ -294,6 +367,7 @@ def main() -> int:
             "pids": 256,
             "fixture_mount": "read-only",
             "xdg_data_home": "/tmp/xdg",
+            "uid_gid": "65534:65534",
         },
         "source_hashes": {
             name: hashlib.sha256(path.read_bytes()).hexdigest()

@@ -2,7 +2,7 @@
 
 Status: Draft
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
-Last updated: 2026-07-27
+Last updated: 2026-07-28
 
 ## 范围
 
@@ -231,12 +231,15 @@ normal scan 的 JSON 不是通常的 `{"detects": [...]}`，而是：
 
 ## 尚未覆盖
 
-- permission-denied database directory/file。
+- permission-denied database directory/file 已由非特权 engine harness 固定：
+  不可搜索目录被静默当作空 database 成功加载并写出空 cache；不可读 ZIP
+  静默返回 false。详见 [`database-archive-cache.md`](database-archive-cache.md)。
 - 发布 CLI 的合法/空/截断 ZIP、重复 entry、`..` 名称和额外根前缀，以及
   cache-disabled 删除副作用已由
   [`database-archive-cache.md`](database-archive-cache.md) 覆盖。engine
   `bUseCache=true` 的 miss/hit、同统计 stale、bad magic、截断和预取消已由
-  专用 harness 固定；cache 写失败、权限、其他 header/长度边界和并发仍待验证。
+  专用 harness 固定；扩展 harness 还覆盖 bad version、0/4/8-byte header、
+  record 中部/尾部截断、cache 写失败与恢复，以及 8 个同输入并发 writer。
 - encrypted/ZIP64/data descriptor/CRC mismatch、压缩比和超大 entry count。
 - main/extra/custom 同名规则不覆盖、分层顺序和 load/runtime gate 已由
   [`database-layer-behavior.md`](database-layer-behavior.md) 固定；同层 ZIP

@@ -63,8 +63,8 @@ class DatabaseCacheHarnessTests(unittest.TestCase):
             report["image_id"],
             (
                 "sha256:"
-                "67737570f9824f570fbc702ca8fd526ed3da06feca6b6d"
-                "37d57d2eaf176590c3"
+                "17f7bd0514e973df9da8ff06967cb73ddff906cb568d1d0"
+                "7d75f3b09c7146fc9"
             ),
         )
         self.assertEqual(
@@ -112,6 +112,7 @@ class DatabaseCacheHarnessTests(unittest.TestCase):
                 "pids": 256,
                 "fixture_mount": "read-only",
                 "xdg_data_home": "/tmp/xdg",
+                "uid_gid": "65534:65534",
             },
         )
         observation = self.report["observation"]
@@ -124,6 +125,8 @@ class DatabaseCacheHarnessTests(unittest.TestCase):
             observation["xscanengine_commit"],
             "dfe4a419e4f491bb23688ba03c5a5bf39e34da83",
         )
+        self.assertEqual(observation["effective_uid"], 65534)
+        self.assertEqual(observation["effective_gid"], 65534)
         self.assertEqual(
             observation["database_path"],
             "/tmp/diec-database-cache-harness/database",
@@ -163,7 +166,17 @@ class DatabaseCacheHarnessTests(unittest.TestCase):
                 "same_stats_stale_hit",
                 "stats_changed_rebuild",
                 "bad_magic_fallback",
-                "truncated_cache_fallback",
+                "bad_version_fallback",
+                "empty_cache_fallback",
+                "magic_only_fallback",
+                "magic_version_only_fallback",
+                "truncated_record_fallback",
+                "record_tail_truncated_fallback",
+                "cache_write_denied",
+                "cache_write_recovery",
+                "concurrent_identical_writers",
+                "database_directory_permission_denied",
+                "database_file_permission_denied",
                 "canceled_cache_hit",
                 "canceled_cache_miss",
                 "poisoned_empty_cache_hit",
@@ -176,7 +189,21 @@ class DatabaseCacheHarnessTests(unittest.TestCase):
             "same_stats_stale_hit": (1, ["Fixture"], 399),
             "stats_changed_rebuild": (1, ["Changed"], 399),
             "bad_magic_fallback": (1, ["Changed"], 399),
-            "truncated_cache_fallback": (2, ["Changed"], 399),
+            "bad_version_fallback": (1, ["Changed"], 399),
+            "empty_cache_fallback": (1, ["Changed"], 399),
+            "magic_only_fallback": (1, ["Changed"], 399),
+            "magic_version_only_fallback": (1, ["Changed"], 399),
+            "truncated_record_fallback": (2, ["Changed"], 399),
+            "record_tail_truncated_fallback": (
+                2,
+                ["Changed", "Changed"],
+                399,
+            ),
+            "cache_write_denied": (1, ["Changed"], 0),
+            "cache_write_recovery": (1, ["Changed"], 399),
+            "concurrent_identical_writers": (1, ["Changed"], 399),
+            "database_directory_permission_denied": (0, ["Unknown"], 42),
+            "database_file_permission_denied": (0, ["Unknown"], 0),
             "canceled_cache_hit": (0, ["Unknown"], 399),
             "canceled_cache_miss": (0, ["Unknown"], 42),
             "poisoned_empty_cache_hit": (0, ["Unknown"], 42),
@@ -188,14 +215,24 @@ class DatabaseCacheHarnessTests(unittest.TestCase):
         ) in expected.items():
             with self.subTest(case=case_id):
                 case = self.cases[case_id]
-                self.assertTrue(case["loaded"])
+                self.assertEqual(
+                    case["loaded"],
+                    case_id != "database_file_permission_denied",
+                )
                 self.assertEqual(
                     case["binary_signature_count"],
                     signature_count,
                 )
                 self.assertEqual(case["scan_names"], scan_names)
                 self.assertEqual(case["scan_errors"], [])
-                self.assertTrue(case["cache"]["exists"])
+                self.assertEqual(
+                    case["cache"]["exists"],
+                    case_id
+                    not in {
+                        "cache_write_denied",
+                        "database_file_permission_denied",
+                    },
+                )
                 self.assertEqual(case["cache"]["size"], cache_size)
 
     def test_cache_hash_transitions_and_cancellation_are_fixed(self):
@@ -223,7 +260,14 @@ class DatabaseCacheHarnessTests(unittest.TestCase):
         for case_id in (
             "stats_changed_rebuild",
             "bad_magic_fallback",
-            "truncated_cache_fallback",
+            "bad_version_fallback",
+            "empty_cache_fallback",
+            "magic_only_fallback",
+            "magic_version_only_fallback",
+            "truncated_record_fallback",
+            "record_tail_truncated_fallback",
+            "cache_write_recovery",
+            "concurrent_identical_writers",
             "canceled_cache_hit",
         ):
             self.assertEqual(
@@ -258,12 +302,21 @@ class DatabaseCacheHarnessTests(unittest.TestCase):
             {
                 "all_scan_error_lists_are_empty",
                 "bad_magic_falls_back_and_rewrites",
+                "bad_version_falls_back_and_rewrites",
+                "cache_write_failure_is_silent_and_nonfatal",
+                "cache_write_recovers_after_permission_restore",
                 "canceled_cache_hit_reports_success_with_zero_records",
                 "canceled_miss_saves_empty_cache",
+                "concurrent_identical_writers_finish_with_valid_cache",
+                "header_truncations_fall_back_without_partial_records",
+                "harness_runs_without_root_privileges",
                 "initial_load_creates_one_record_cache",
                 "mtime_change_rebuilds_changed_rule",
+                "permission_denied_directory_is_silent_empty_success",
+                "permission_denied_file_is_silent_failure",
                 "same_size_mtime_content_change_is_stale_hit",
-                "truncated_cache_injects_partial_record_before_fallback",
+                "record_truncation_injects_partial_record_before_fallback",
+                "tail_truncation_injects_partial_record_before_fallback",
                 "uncanceled_load_reuses_poisoned_empty_cache",
                 "unchanged_load_reuses_identical_cache",
             },
@@ -275,7 +328,13 @@ class DatabaseCacheHarnessTests(unittest.TestCase):
         for token in (
             "options.bUseCache = true",
             "setPdStructStopped",
-            "truncateCache",
+            "writeCachePrefix",
+            "writeBadVersionCache",
+            "observeConcurrentWriters",
+            "cache_write_denied",
+            "database_directory_permission_denied",
+            "geteuid",
+            "getegid",
             "replaceRulePreservingStats",
             "/tmp/diec-database-cache-harness",
             "1700000000",
@@ -302,7 +361,10 @@ class DatabaseCacheHarnessTests(unittest.TestCase):
         for text in (
             REPORT_PATH.name,
             "same_stats_stale_hit",
-            "truncated_cache_fallback",
+            "truncated_record_fallback",
+            "cache_write_denied",
+            "concurrent_identical_writers",
+            "database_file_permission_denied",
             "poisoned_empty_cache_hit",
         ):
             self.assertIn(text, document)

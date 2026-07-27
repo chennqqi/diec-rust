@@ -270,7 +270,10 @@ baseline 的变更都要检查本表。
   database loader 必须统一纳入输入和分配预算。固定 Qt5 engine harness 已确认
   弱 freshness 会命中同 count/size/mtime 的旧内容；截断 cache 会在 fallback
   前泄漏部分反序列化 record；预取消 miss 会返回成功并持久化空 cache，下一次
-  未取消加载继续复用并静默得到 `Unknown`。机器证据见
+  未取消加载继续复用并静默得到 `Unknown`。扩展边界还确认：尾部少 1 byte 会
+  让同一规则执行两次；cache 写失败无诊断且不影响 load success；不可搜索目录
+  被缓存为空 database，而不可读 ZIP 静默失败；8 个同输入并发 writer 的观察
+  结果有效，但源码 publish 无锁、非原子。机器证据见
   [`database-cache-engine-qt5.json`](../research/data/database-cache-engine-qt5.json)。
   37-case engine oracle 又确认小输入整体复制忽略实际读取数：EOF、read/seek
   error 和 sequential source 均可扫描未初始化尾部并报告成功；Qt subdevice
