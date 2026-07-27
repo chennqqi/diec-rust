@@ -534,7 +534,11 @@ class ValidateDifferenceWaiversTests(unittest.TestCase):
             self.assertIn(text, testing)
             self.assertIn(text, adr)
             self.assertIn(text, index)
-        self.assertIn("raw artifact rehash", testing)
+        self.assertIn("compare_semantic_results.py", testing)
+        self.assertIn(
+            "comparator 尚未调用 waiver validator",
+            adr,
+        )
         self.assertIn("仍保持 Proposed", adr)
 
 

@@ -49,6 +49,20 @@ The typed legacy CLI semantic projection schemas are:
 - [`semantic-result-projection-v1.schema.json`](semantic-result-projection-v1.schema.json)
   places that payload in the normalizer-compatible projection envelope.
 
+The audited two-sided comparison schemas are:
+
+- [`semantic-comparison-contract-v1.schema.json`](semantic-comparison-contract-v1.schema.json)
+  binds the exact projection contract bytes, optional normalization policy,
+  required `exact`/`semantic` equivalence and fixed difference budget;
+- [`semantic-comparison-v1.schema.json`](semantic-comparison-v1.schema.json)
+  records both rebuilt projections, optional normalization audits, raw and
+  semantic equality, contract hashes, requirement result and difference
+  artifact identity;
+- [`semantic-difference-blocked-v1.schema.json`](semantic-difference-blocked-v1.schema.json)
+  replaces the difference output when projection fails or the complete
+  difference set exceeds the fixed budget, so stale valid reports cannot be
+  consumed.
+
 [`examples/`](examples/) contains synthetic, non-production inputs and
 reproducible outputs for all compatibility sub-pipelines.
 
@@ -191,5 +205,34 @@ are re-read before output is written and may never be overwritten by it.
 
 The generic envelope alone does not define a DIEC payload. The strict legacy
 CLI payload is `semantic-result-v1`; engine-only and modern canonical payloads
-remain separate open schema work. A two-sided comparator and full differential
-report are still required.
+remain separate open schema work.
+
+## Audited two-sided comparison
+
+The reference comparator is
+[`tools/compat/compare_semantic_results.py`](../../../tools/compat/compare_semantic_results.py).
+It consumes raw execution manifests and rebuilds both framing/semantic
+projections itself. If a shared policy is configured, both normalization
+outputs are then rebuilt before comparison. Contract and policy identity use
+their exact artifact SHA-256, not only parsed canonical content.
+
+Only each projection's `semantic.comparison` subtree is compared. Objects use
+sorted key traversal, arrays preserve order, JSON types are strict except
+numerically equal finite integer/float forms, and missing values use explicit
+presence records. Difference pointers are RFC 6901 paths relative to
+`semantic`, beginning at `/comparison`; reports retain both producer-specific
+projection evidence and a raw-observation hash over termination plus all raw
+stream references.
+
+The result is `exact`, `semantic_equal`, `different`,
+`projection_failure`, or `comparison_limit_reached`. A valid difference-input
+report is emitted for the first three, including an empty list when equal.
+Failure/limit results instead overwrite the designated output with a blocked
+marker that deliberately does not satisfy `difference-input-report-v1`.
+Therefore projection failure, resource exhaustion, and a stale earlier report
+cannot become waivable success. v1 requires the complete ordered difference set
+to fit within 10,000 entries.
+
+This closes the single-case path through comparison for the typed legacy CLI.
+It does not yet apply waivers or aggregate cases into the final release
+compatibility report.

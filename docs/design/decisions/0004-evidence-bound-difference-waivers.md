@@ -104,9 +104,12 @@ Phase 0 reference implementation已经具备：
 - deterministic `--as-of`、`pass`/`fail`/`infrastructure_error` exit contract。
 
 ADR 仍保持 Proposed：独立 verifier 已能重新读取并校验 content-addressed raw
-artifact 本体，但尚未把两侧 execution verification 与 normalizer/validator 按
-顺序接入完整 differential pipeline；synthetic owner 字段也不能替代真实
-compatibility owner review 流程。
+artifact 本体；单 case comparator 也已从两侧 raw execution 按
+verification/framing/semantic projection/optional normalization/comparison 顺序
+重建证据，并直接产生 fingerprint 已复算的 waiver input。projection failure 或
+差异超过固定上限时写入不可被 validator 接受的 blocked marker，避免复用旧报告。
+但 comparator 尚未调用 waiver validator，也未聚合多 case/full report；
+synthetic owner 字段同样不能替代真实 compatibility owner review 流程。
 
 ## Acceptance conditions
 

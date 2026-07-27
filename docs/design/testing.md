@@ -314,7 +314,7 @@ CI 失败报告默认显示结构化 diff 和有限上下文，不把受限语�
 5. 对 legacy profile 逐字节比较 stdout 和 stderr。
 6. 独立解析两侧已声明格式及 framing；parse failure 和 trailing records 本身是结果。
 7. 投影为 versioned semantic model。
-8. 按字段、数组顺序和 tree relation 比较。
+8. 按字段、数组顺序和 tree relation 比较，先生成完整有序差异。
 9. 应用精确 waiver，生成 applied/unmatched/stale 清单。
 10. 输出 machine-readable report，保留两侧 raw hashes。
 
@@ -412,9 +412,24 @@ equality；producer revision/executable 与 verification/framing/contract hashes
 该 v1 闭合的是已观测 legacy CLI JSON/output surface，不等于 modern canonical
 `ScanReport` 或全部 engine-only harness schema。rule identity/priority、
 handlers/debug 等仅 engine 可观察字段仍须补 inventory 和 typed variant；未知
-harness JSON 当前明确失败并保留 value。完整差分流水线还须实现双侧 comparator，
-并按 execution → framing → semantic projection → normalization → comparison →
-waiver audit 的顺序接入同一 full report。
+harness JSON 当前明确失败并保留 value。
+
+Phase 0 reference comparator
+[`compare_semantic_results.py`](../../tools/compat/compare_semantic_results.py)
+已经闭合单 case 的 execution → framing → semantic projection → optional
+normalization → comparison。它从两侧 raw manifest 重新构造全部派生 artifact，
+不接受调用方提供的投影作为可信输入；只比较 `semantic.comparison`，但在报告中
+保留两侧 producer/evidence/contract/policy hash。object key 按稳定顺序遍历，
+array 保序，missing 与 JSON null 分离，bool 不等同数字，只有数值相等的有限
+integer/float 表示视为相同。每项差异使用 `/comparison` 起始的 RFC 6901 pointer、
+显式 presence/value、双 raw-observation hash 和 validator 可复算 fingerprint。
+
+结果区分 `exact`、`semantic_equal`、`different`、`projection_failure` 和
+`comparison_limit_reached`；contract 可要求 exact 或 semantic。完整差异硬上限为
+10,000，超限不发布部分 report。projection/limit 失败会覆盖输出为不可 waiver 的
+versioned blocked marker，配置过 policy 的 projection failure 也不会继续运行
+normalizer。尚未闭合的是 comparator → waiver audit、多 case 聚合和统一 full
+report。
 
 format HostApi 的 argument conformance case 必须同时断言语义返回、异常四元组
 （name/message/line/backtrace）和 stderr。特别覆盖 Qt 5/Qt 6 对 extra arguments、
@@ -749,15 +764,25 @@ lossless framing 子流水线冻结并实现：
 
 - [`raw-framing-projection-v1.schema.json`](schemas/raw-framing-projection-v1.schema.json)。
 
-standalone raw artifact rehash 已实现并保留 audit hash，但尚未代表两侧差分通过。
+typed legacy semantic projection 子流水线冻结并实现：
+
+- [`semantic-projection-contract-v1.schema.json`](schemas/semantic-projection-contract-v1.schema.json)；
+- [`semantic-result-v1.schema.json`](schemas/semantic-result-v1.schema.json)；
+- [`semantic-result-projection-v1.schema.json`](schemas/semantic-result-projection-v1.schema.json)。
+
+单 case 双侧比较子流水线冻结并实现：
+
+- [`semantic-comparison-contract-v1.schema.json`](schemas/semantic-comparison-contract-v1.schema.json)；
+- [`semantic-comparison-v1.schema.json`](schemas/semantic-comparison-v1.schema.json)；
+- [`semantic-difference-blocked-v1.schema.json`](schemas/semantic-difference-blocked-v1.schema.json)。
 
 这些子 schema 不冒充完整 differential report：waiver input 只携带 executed case、
 精确 semantic difference、两侧 raw stream hash 和 canonical fingerprint；
 normalization input 只是任意 semantic value 的版本化 envelope，不等于完整
 semantic model；raw verifier/framing 只证明一侧 execution bytes 身份与 stdout
-无损分段。full differential integration 仍需把两侧已验证 execution/framing、
-完整 semantic projection、normalization、comparison 和 waiver 接入同一顶层
-report。
+无损分段；comparison report 只证明一个 typed legacy case 达到 exact/semantic
+要求或给出完整差异。full differential integration 仍需接入 waiver、engine-only/
+modern variants、多 case 聚合和统一顶层 report。
 
 ## 21. Phase 门禁
 
@@ -813,9 +838,9 @@ tested、exact、semantic、waived 和 unsupported 数量。
 - ADR 0006 已提议 rquickjs/QuickJS-NG，但 acceptance conditions 和全库
   execution conformance 未通过。
 - waiver v1、最小 semantic-normalizer v1、raw execution/artifact rehash、
-  lossless raw framing v1 和固定 legacy CLI typed semantic result v1
-  子流水线已实现；完整 semantic model 仍缺 engine-only/modern canonical
-  variants，两侧 comparator 和 full report integration 尚未实现。
+  lossless raw framing v1、固定 legacy CLI typed semantic result v1 和单 case
+  双侧 comparator v1 子流水线已实现；完整 semantic model 仍缺 engine-only/
+  modern canonical variants，waiver/multi-case/full report integration 尚未实现。
 - benchmark runner/noise/阈值和默认资源 limits 尚未冻结。
 - archive/decompression sanitizer 与恶意语料隔离设施尚未建立。
 - CI provider、artifact retention 和 restricted corpus 权限尚未决定。

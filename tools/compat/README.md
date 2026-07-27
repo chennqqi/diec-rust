@@ -1,6 +1,6 @@
 # Compatibility tooling
 
-Phase 0 currently provides five strict compatibility sub-pipeline tools:
+Phase 0 currently provides six strict compatibility sub-pipeline tools:
 
 - `verify_raw_execution.py` validates a versioned execution record and rehashes
   its content-addressed stdout/stderr/runtime-log bytes;
@@ -10,6 +10,8 @@ Phase 0 currently provides five strict compatibility sub-pipeline tools:
   into a closed typed model without dropping raw streams;
 - `normalize_semantic_projection.py` applies only evidence-backed, closed-set
   semantic transforms;
+- `compare_semantic_results.py` rebuilds both projections from raw evidence,
+  optionally normalizes both sides, and emits an ordered semantic comparison;
 - `validate_difference_waivers.py` audits evidence-bound semantic difference
   waivers.
 
@@ -107,6 +109,55 @@ exact replacement count, and exact complete normalized value. See
 `semantic-normalization-policy-v1.schema.json`, and
 `semantic-normalization-output-v1.schema.json`.
 
+## Audited two-sided semantic comparison
+
+The comparator consumes one shared comparison contract, one shared projection
+contract, and two raw execution manifests. It does not trust caller-produced
+projection or normalization artifacts: it rebuilds and persists both sides in
+the required order.
+
+```text
+python tools/compat/compare_semantic_results.py \
+  --comparison-contract docs/design/schemas/examples/semantic-comparison-contract-v1.example.json \
+  --projection-contract docs/design/schemas/examples/semantic-projection-contract-v1.example.json \
+  --upstream-manifest docs/design/schemas/examples/raw-framing-execution-v1.example.json \
+  --upstream-artifact-root docs/design/schemas/examples/raw-artifacts \
+  --rust-manifest docs/design/schemas/examples/semantic-comparison-rust-execution-v1.example.json \
+  --rust-artifact-root docs/design/schemas/examples/raw-artifacts \
+  --upstream-projection-output upstream-projection.json \
+  --rust-projection-output rust-projection.json \
+  --comparison-output semantic-comparison.json \
+  --difference-report-output semantic-differences.json
+```
+
+An optional shared normalization policy requires two explicit normalization
+outputs. Equality is recursive and strict over `semantic.comparison`: object
+keys are traversed in sorted order, arrays remain ordered, JSON types remain
+distinct except that integer and finite floating representations of the same
+number compare equal, and missing values are not confused with JSON `null`.
+Every difference has a stable RFC 6901 pointer below `/comparison`, explicit
+presence state, both raw-observation hashes and a recomputed waiver-compatible
+fingerprint. The complete difference set is capped at exactly 10,000 entries;
+the comparator never publishes a partial valid difference report.
+
+`exact` requires identical termination and raw stdout/stderr/runtime-log
+references as well as semantic equality. `semantic_equal` preserves a raw
+difference while recording semantic equality. `different`,
+`projection_failure`, and `comparison_limit_reached` fail either equivalence
+requirement. A projection failure skips configured normalization.
+
+Exit code `0` means the contract's `exact` or `semantic` requirement was met;
+`1` means a valid comparison did not meet it; `2` means projection failure,
+difference-limit exhaustion, or invalid infrastructure input. Successful
+comparisons always replace the difference output with a valid v1 report.
+Projection/limit failures replace it with a versioned blocked marker that the
+waiver validator rejects, preventing a stale earlier report from being reused.
+
+The contracts are
+`semantic-comparison-contract-v1.schema.json`,
+`semantic-comparison-v1.schema.json`, and
+`semantic-difference-blocked-v1.schema.json`.
+
 ## Difference waiver audit
 
 The waiver validator consumes:
@@ -137,6 +188,6 @@ records their SHA-256 in its audit. It recomputes every difference fingerprint
 from canonical JSON plus both raw stream hashes.
 
 The normative v1 shapes and synthetic examples are under
-`docs/design/schemas/`. The tools remain partially integrated slices; typed
-engine-only variants, a two-sided comparator and the full differential report
-must still enforce complete ordering and carry every audit hash.
+`docs/design/schemas/`. The tools remain partially integrated slices:
+engine-only/modern typed variants, waiver application, multi-case aggregation
+and the full differential report still need integration.

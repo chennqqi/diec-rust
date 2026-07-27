@@ -418,8 +418,12 @@ baseline 的变更都要检查本表。
   byte ranges；固定 legacy CLI 的 normal/entropy/info/struct/open-error 已接入
   evidence-bound semantic result v1，unknown shape/document count/framing limit
   均显式失败，raw diagnostics/stderr/runtime log 以可逐行规范化且可精确重建的
-  offset/size/hash/body/ending records 保留。engine-only typed variants、双侧
-  comparator，以及 normalizer/waiver 的 full differential integration 尚未完成。
+  offset/size/hash/body/ending records 保留。单 case 双侧 comparator 已从两份 raw
+  execution 重新投影、可选地双侧规范化，并严格比较 `semantic.comparison`；有序
+  RFC 6901 差异携带 presence、双 raw-observation hash 和可复算 fingerprint。
+  exact/semantic requirement、10,000 项完整差异上限、projection/limit blocked
+  marker 防止失败或旧 report 进入 waiver。engine-only/modern typed variants、
+  waiver application、多 case 聚合和 full differential report 尚未完成。
 - **关闭**：Phase 1 工具落地并通过测试；每次 release audit applied/stale waivers。
 
 ## 5. 风险变更流程

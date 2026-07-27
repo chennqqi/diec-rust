@@ -73,3 +73,28 @@ python tools/compat/project_semantic_result.py \
 The typed document is an empty normal scan, while profiling prefix, trailing
 rule error and stderr remain exact semantic stream records. The contract and
 all identities/hashes are synthetic and approve no production baseline.
+
+The two-sided comparison example reuses the upstream execution and pairs it
+with a synthetic Rust execution whose producer identity is intentionally
+different but whose raw observation is identical. Reproduce all four derived
+artifacts with:
+
+```text
+python tools/compat/compare_semantic_results.py \
+  --comparison-contract docs/design/schemas/examples/semantic-comparison-contract-v1.example.json \
+  --projection-contract docs/design/schemas/examples/semantic-projection-contract-v1.example.json \
+  --upstream-manifest docs/design/schemas/examples/raw-framing-execution-v1.example.json \
+  --upstream-artifact-root docs/design/schemas/examples/raw-artifacts \
+  --rust-manifest docs/design/schemas/examples/semantic-comparison-rust-execution-v1.example.json \
+  --rust-artifact-root docs/design/schemas/examples/raw-artifacts \
+  --upstream-projection-output docs/design/schemas/examples/semantic-comparison-upstream-projection-v1.example.json \
+  --rust-projection-output docs/design/schemas/examples/semantic-comparison-rust-projection-v1.example.json \
+  --comparison-output docs/design/schemas/examples/semantic-comparison-v1.example.json \
+  --difference-report-output docs/design/schemas/examples/semantic-comparison-difference-report-v1.example.json \
+  --max-artifact-bytes 1024 \
+  --repo-root .
+```
+
+The result is `exact`; producer-specific projection artifacts differ while
+their comparison hashes match. The empty difference report remains a valid
+waiver-input shape. Projection failure would write a blocked marker instead.
