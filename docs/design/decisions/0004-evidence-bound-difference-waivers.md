@@ -90,8 +90,10 @@ case ID 和一个非根 semantic JSON Pointer。日期使用 ISO `YYYY-MM-DD`，
 - [`semantic-case-audit-v1.schema.json`](../schemas/semantic-case-audit-v1.schema.json)
 - [`validate_difference_waivers.py`](../../../tools/compat/validate_difference_waivers.py)
 - [`audit_semantic_case.py`](../../../tools/compat/audit_semantic_case.py)
+- [`run_compatibility_suite.py`](../../../tools/compat/run_compatibility_suite.py)
 - [`test_validate_difference_waivers.py`](../../../tools/tests/test_validate_difference_waivers.py)
 - [`test_audit_semantic_case.py`](../../../tools/tests/test_audit_semantic_case.py)
+- [`test_run_compatibility_suite.py`](../../../tools/tests/test_run_compatibility_suite.py)
 
 ## Implementation status
 
@@ -114,8 +116,10 @@ verification/framing/semantic projection/optional normalization/comparison 顺�
 顶层 single-case auditor 已按固定顺序调用 comparator 与 waiver validator，
 冻结并复核 registry/中间产物，且将 blocked comparison 传播为不可通过的
 infrastructure audit。独立 comparator 仍是可单测的低层工具。多 case/full
-report 尚未聚合；synthetic owner 字段同样不能替代真实 compatibility owner
-review 流程。
+report runner 已使用 hash-bound expected matrix 聚合 typed legacy case，并对
+platform/capability/classification/waiver 做确定性汇总。engine-only/modern
+variant 和 release approval/signing 尚未接入；synthetic owner 字段同样不能
+替代真实 compatibility owner review 流程。
 
 ## Acceptance conditions
 

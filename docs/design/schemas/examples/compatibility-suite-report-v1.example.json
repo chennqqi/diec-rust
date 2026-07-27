@@ -1,0 +1,113 @@
+{
+  "aggregator": {
+    "name": "diec-compatibility-suite-runner",
+    "version": 1
+  },
+  "as_of": "2026-07-27",
+  "capabilities": [
+    {
+      "capability": "legacy-cli.normal-scan",
+      "case_results": {
+        "fail": 0,
+        "infrastructure_error": 0,
+        "pass": 1,
+        "total": 1
+      },
+      "differences": {
+        "applied": 0,
+        "by_classification": {
+          "SafetyDeviation": 0,
+          "Semantic": 0,
+          "Unsupported": 0
+        },
+        "total": 0,
+        "unmatched": 0
+      }
+    }
+  ],
+  "cases": [
+    {
+      "audit_artifact": {
+        "canonical_sha256": "d181b0eaf621db18ad73b789bc2df2b404e7707ea57bdd6da8f8b942287374a0",
+        "sha256": "18662acf74b3e1b2f3cc12c0119c861e97fa7446946ae90fabea22684e7fda6b"
+      },
+      "audit_path": "cases/000001/case-audit.json",
+      "comparison_result": "exact",
+      "differences": {
+        "applied": 0,
+        "by_classification": {
+          "SafetyDeviation": 0,
+          "Semantic": 0,
+          "Unsupported": 0
+        },
+        "total": 0,
+        "unmatched": 0
+      },
+      "errors": [],
+      "identity": {
+        "capability": "legacy-cli.normal-scan",
+        "case_id": "synthetic.raw-framing.example",
+        "oracle_profile": "cmake-qt5",
+        "platform": "linux-x86_64"
+      },
+      "index": 1,
+      "normalization_applied": false,
+      "raw_equal": true,
+      "reason": "required_equivalence_met",
+      "result": "pass"
+    }
+  ],
+  "compatibility_report_schema": 1,
+  "errors": [],
+  "input_files_unchanged": true,
+  "plan_artifact": {
+    "canonical_sha256": "f37fb7e57571fa54a690549149d9342c4e760f069f021d2ae90519542a85665c",
+    "sha256": "5074d29a121d21e64f9934004e134daa23f0600ed0f203c67d5155a3f9c468ea"
+  },
+  "platforms": [
+    {
+      "case_results": {
+        "fail": 0,
+        "infrastructure_error": 0,
+        "pass": 1,
+        "total": 1
+      },
+      "oracle_profile": "cmake-qt5",
+      "platform": "linux-x86_64"
+    }
+  ],
+  "result": "pass",
+  "run_identity": {
+    "semantic_schema": 1,
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "suite_id": "synthetic.typed-legacy.example",
+  "summary": {
+    "case_results": {
+      "fail": 0,
+      "infrastructure_error": 0,
+      "pass": 1,
+      "total": 1
+    },
+    "comparison_results": {
+      "comparison_limit_reached": 0,
+      "different": 0,
+      "exact": 1,
+      "projection_failure": 0,
+      "semantic_equal": 0,
+      "unavailable": 0
+    },
+    "differences": {
+      "applied": 0,
+      "by_classification": {
+        "SafetyDeviation": 0,
+        "Semantic": 0,
+        "Unsupported": 0
+      },
+      "total": 0,
+      "unmatched": 0
+    },
+    "normalization_applied_cases": 0,
+    "waived_cases": 0
+  }
+}

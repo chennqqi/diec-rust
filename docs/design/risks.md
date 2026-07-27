@@ -430,8 +430,9 @@ baseline 的变更都要检查本表。
   RFC 6901 差异携带 presence、双 raw-observation hash 和可复算 fingerprint。
   exact/semantic requirement、10,000 项完整差异上限、projection/limit blocked
   marker 防止失败或旧 report 进入 waiver；single-case auditor 已串联 exact
-  waiver application 并复核中间产物。engine-only/modern typed variants、
-  多 case 聚合和 full differential report 尚未完成。
+  waiver application 并复核中间产物；suite runner 已按 hash-bound expected
+  matrix 运行并汇总 typed legacy case。engine-only/modern typed variants、
+  真实跨平台矩阵和 release approval/signing 尚未完成。
 - **关闭**：Phase 1 工具落地并通过测试；每次 release audit applied/stale waivers。
 
 ## 5. 风险变更流程

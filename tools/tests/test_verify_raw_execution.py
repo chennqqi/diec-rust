@@ -685,7 +685,7 @@ class RawExecutionVerificationTests(unittest.TestCase):
             self.assertIn(name, index)
             self.assertIn(name, compat)
         self.assertIn("content-addressed", risks)
-        self.assertIn("full differential integration", testing)
+        self.assertIn("run_compatibility_suite.py", testing)
 
 
 if __name__ == "__main__":

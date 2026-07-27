@@ -1,6 +1,6 @@
 # Compatibility tooling
 
-Phase 0 currently provides seven strict compatibility sub-pipeline tools:
+Phase 0 currently provides eight strict compatibility sub-pipeline tools:
 
 - `verify_raw_execution.py` validates a versioned execution record and rehashes
   its content-addressed stdout/stderr/runtime-log bytes;
@@ -15,7 +15,9 @@ Phase 0 currently provides seven strict compatibility sub-pipeline tools:
 - `validate_difference_waivers.py` audits evidence-bound semantic difference
   waivers;
 - `audit_semantic_case.py` rebuilds one two-sided comparison and applies the
-  exact waiver audit as one authoritative case decision.
+  exact waiver audit as one authoritative case decision;
+- `run_compatibility_suite.py` executes a hash-bound expected case matrix and
+  emits one deterministic typed-legacy compatibility report.
 
 ## Raw execution verification
 
@@ -212,6 +214,30 @@ Exit codes are `0` for pass, `1` for a valid failed requirement/audit, and `2`
 for infrastructure error. A reproducible full invocation is in
 `docs/design/schemas/examples/README.md`.
 
-The tools remain partially integrated slices: engine-only/modern typed
-variants, multi-case aggregation and the full differential report still need
-integration.
+## Planned multi-case compatibility report
+
+`run_compatibility_suite.py` consumes a versioned suite plan rather than
+arbitrary prebuilt case reports. The plan fixes the ordered expected matrix,
+capability/platform/oracle identity, upstream commit, semantic schema, resource
+budget and SHA-256 of every contract, execution manifest, policy and registry.
+The runner freezes those inputs, invokes the authoritative case auditor for
+every planned entry, re-reads derived case evidence, and emits
+`compatibility-suite-report-v1`.
+
+The input and output roots must be disjoint, and each run uses a fresh empty
+output root. All plan paths are normalized
+relative paths below the input root; symlink/reparse components, hash drift,
+duplicates and output collisions are rejected before case execution. A valid
+case failure makes the suite `fail`; any case or suite infrastructure error has
+higher precedence and makes the entire suite `infrastructure_error`. There is
+no partial-success state.
+
+The report retains ordered case audit hashes and summaries by platform,
+capability, comparison result, difference classification and waiver state.
+Exit codes remain `0` pass, `1` valid fail and `2` infrastructure error. See the
+synthetic plan and golden command in
+`docs/design/schemas/examples/README.md`.
+
+The tools remain partially integrated slices: engine-only and modern typed
+variants, real Windows/macOS matrices and release-level policy/signing remain
+open.

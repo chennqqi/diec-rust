@@ -69,6 +69,14 @@ It embeds the rebuilt comparison and exact waiver audit, binds all four
 generated/input artifacts by byte and canonical SHA-256, and has only
 `pass`, `fail`, or `infrastructure_error` outcomes.
 
+The typed-legacy multi-case schemas are:
+
+- [`compatibility-suite-plan-v1.schema.json`](compatibility-suite-plan-v1.schema.json)
+  freezes the ordered expected case matrix and exact input artifact hashes;
+- [`compatibility-suite-report-v1.schema.json`](compatibility-suite-report-v1.schema.json)
+  indexes the generated case audits and aggregates result, platform,
+  capability, comparison, classification and waiver counts.
+
 [`examples/`](examples/) contains synthetic, non-production inputs and
 reproducible outputs for all compatibility sub-pipelines.
 
@@ -139,7 +147,8 @@ raw stream.
 
 This proves the bytes materialized for one execution record. The single-case
 auditor binds both executions, their derived comparison and waiver decision in
-order; multi-case and release aggregation remain open.
+order; the suite runner binds the complete planned typed-legacy matrix.
+Release policy/signing remains open.
 
 ## Lossless framing
 
@@ -250,4 +259,16 @@ passes only when every current difference is applied and no waiver is stale,
 expired or unmatched. Blocked comparison results overwrite the waiver output
 with an infrastructure audit.
 
-It does not yet aggregate cases into the final release compatibility report.
+The multi-case reference runner is
+[`tools/compat/run_compatibility_suite.py`](../../../tools/compat/run_compatibility_suite.py).
+It never accepts a directory scan as the expected case set: its versioned plan
+lists every case and binds every non-content-addressed input file by SHA-256.
+It runs all planned entries in order, verifies plan/case identity, re-reads
+inputs and derived case evidence, then reports strict result precedence:
+infrastructure error, valid failure, pass.
+Each run requires a fresh empty output root disjoint from the input root, so
+stale case artifacts cannot be mistaken for current results.
+
+This closes the typed-legacy multi-case report path. Engine-only and modern
+typed variants, real Windows/macOS execution matrices, release approval,
+signing and publication remain open.

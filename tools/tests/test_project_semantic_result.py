@@ -864,7 +864,7 @@ class SemanticResultProjectionTests(unittest.TestCase):
         self.assertIn("scan-node | detection", research)
         self.assertIn("engine-only", testing)
         self.assertIn("双侧 comparator", testing)
-        self.assertIn("full report integration", testing)
+        self.assertIn("run_compatibility_suite.py", testing)
 
 
 if __name__ == "__main__":

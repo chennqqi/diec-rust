@@ -124,3 +124,18 @@ python tools/compat/audit_semantic_case.py \
 
 These case-audit files are also documentation-only synthetic data and approve
 no real compatibility difference.
+
+The suite example fixes that case and every input hash in an explicit expected
+matrix. Its output root must be outside the repository/input root:
+
+```text
+python tools/compat/run_compatibility_suite.py \
+  --plan docs/design/schemas/examples/compatibility-suite-plan-v1.example.json \
+  --input-root . \
+  --output-root <temporary-output-root> \
+  --repo-root .
+```
+
+`<temporary-output-root>/compatibility-report.json` must reproduce
+`compatibility-suite-report-v1.example.json` byte for byte. Per-case derived
+artifacts remain temporary; the report binds the exact case-audit bytes.

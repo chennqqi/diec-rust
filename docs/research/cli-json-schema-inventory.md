@@ -193,7 +193,8 @@ Phase 0 `semantic-result-v1` 覆盖固定 CLI 的：
 - PE/ELF/Mach-O/DEX 全部 format-specific struct；
 - Windows/macOS 的 native path 与非 Unicode filename 表示；
 - modern canonical `ScanReport` 的完整字段与 schema；
-- 两侧 semantic comparator 和 full differential report integration。
+- engine-only/modern variant 的 full differential report integration；typed
+  legacy comparator、exact waiver audit 和 planned multi-case report 已实现。
 
 遇到这些 shape 时 v1 必须失败并保留证据；新增 variant 前先补固定源码/实验与
 golden，不能放宽为任意 JSON。

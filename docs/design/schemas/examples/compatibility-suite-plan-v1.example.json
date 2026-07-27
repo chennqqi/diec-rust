@@ -1,0 +1,39 @@
+{
+  "as_of": "2026-07-27",
+  "cases": [
+    {
+      "capability": "legacy-cli.normal-scan",
+      "case_id": "synthetic.raw-framing.example",
+      "comparison_contract": {
+        "path": "docs/design/schemas/examples/semantic-comparison-contract-v1.example.json",
+        "sha256": "c2bd8d0c99191fb034261fd386cc37b1424a7b7a5b5af5a8b77e3d0fce024296"
+      },
+      "normalization_policy": null,
+      "oracle_profile": "cmake-qt5",
+      "platform": "linux-x86_64",
+      "projection_contract": {
+        "path": "docs/design/schemas/examples/semantic-projection-contract-v1.example.json",
+        "sha256": "af90438640ca6e36cbf4b070b5990085b14c47c6779009a47a18b916c7e06113"
+      },
+      "rust_artifact_root": "docs/design/schemas/examples/raw-artifacts",
+      "rust_manifest": {
+        "path": "docs/design/schemas/examples/semantic-comparison-rust-execution-v1.example.json",
+        "sha256": "5180bc7a1c4703ff8d282ac206c6396b9affa3fd2e07b9c7e0af357e51c76b8d"
+      },
+      "upstream_artifact_root": "docs/design/schemas/examples/raw-artifacts",
+      "upstream_manifest": {
+        "path": "docs/design/schemas/examples/raw-framing-execution-v1.example.json",
+        "sha256": "b5dffd9d67ba36931eb703d1f9ce810cef83de50eda23ff7f464f260af6ae6cd"
+      },
+      "waiver_registry": {
+        "path": "docs/design/schemas/examples/semantic-case-waiver-registry-v1.example.json",
+        "sha256": "279baa5a0bf52fbb2ff1b5b6be331940a72ae95594b5a1cb90a725b9c9861924"
+      }
+    }
+  ],
+  "max_artifact_bytes": 1024,
+  "semantic_schema": 1,
+  "suite_id": "synthetic.typed-legacy.example",
+  "suite_plan_schema": 1,
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

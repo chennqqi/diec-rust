@@ -428,8 +428,10 @@ integer/float 表示视为相同。每项差异使用 `/comparison` 起始的 RF
 `comparison_limit_reached`；contract 可要求 exact 或 semantic。完整差异硬上限为
 10,000，超限不发布部分 report。projection/limit 失败会覆盖输出为不可 waiver 的
 versioned blocked marker，配置过 policy 的 projection failure 也不会继续运行
-normalizer。尚未闭合的是 comparator → waiver audit、多 case 聚合和统一 full
-report。
+normalizer。`audit_semantic_case.py` 已继续执行 exact waiver audit；
+`run_compatibility_suite.py` 使用 hash-bound expected matrix 顺序运行所有
+typed legacy case，并聚合统一顶层 report。尚未闭合的是 engine-only/modern
+typed variant、真实跨平台矩阵和 release approval/signing。
 
 format HostApi 的 argument conformance case 必须同时断言语义返回、异常四元组
 （name/message/line/backtrace）和 stderr。特别覆盖 Qt 5/Qt 6 对 extra arguments、
@@ -781,13 +783,20 @@ typed legacy semantic projection 子流水线冻结并实现：
 - [`semantic-case-audit-v1.schema.json`](schemas/semantic-case-audit-v1.schema.json)；
 - [`audit_semantic_case.py`](../../tools/compat/audit_semantic_case.py)。
 
+typed legacy 多 case 执行与顶层报告冻结并实现：
+
+- [`compatibility-suite-plan-v1.schema.json`](schemas/compatibility-suite-plan-v1.schema.json)；
+- [`compatibility-suite-report-v1.schema.json`](schemas/compatibility-suite-report-v1.schema.json)；
+- [`run_compatibility_suite.py`](../../tools/compat/run_compatibility_suite.py)。
+
 这些子 schema 不冒充完整 differential report：waiver input 只携带 executed case、
 精确 semantic difference、两侧 raw stream hash 和 canonical fingerprint；
 normalization input 只是任意 semantic value 的版本化 envelope，不等于完整
 semantic model；raw verifier/framing 只证明一侧 execution bytes 身份与 stdout
-无损分段；case audit 只证明一个 typed legacy case 的完整 comparison/waiver
-决策。full differential integration 仍需接入 engine-only/modern variants、
-多 case 聚合和统一顶层 report。
+无损分段；case audit 证明一个 typed legacy case 的完整 comparison/waiver
+决策；suite report 证明 version-controlled plan 中预期 case 矩阵全部执行并按
+platform/capability/classification/waiver 汇总。engine-only/modern variants、
+真实 Windows/macOS 矩阵和 release approval/signing 仍需接入。
 
 ## 21. Phase 门禁
 
@@ -844,9 +853,9 @@ tested、exact、semantic、waived 和 unsupported 数量。
   execution conformance 未通过。
 - waiver v1、最小 semantic-normalizer v1、raw execution/artifact rehash、
   lossless raw framing v1、固定 legacy CLI typed semantic result v1 和单 case
-  双侧 comparator + exact waiver audit v1 子流水线已实现；完整 semantic model
-  仍缺 engine-only/modern canonical variants，multi-case/full report integration
-  尚未实现。
+  双侧 comparator + exact waiver audit v1、hash-bound typed legacy multi-case
+  report 已实现；完整 semantic model 仍缺 engine-only/modern canonical
+  variants，真实跨平台/release integration 尚未实现。
 - benchmark runner/noise/阈值和默认资源 limits 尚未冻结。
 - archive/decompression sanitizer 与恶意语料隔离设施尚未建立。
 - CI provider、artifact retention 和 restricted corpus 权限尚未决定。

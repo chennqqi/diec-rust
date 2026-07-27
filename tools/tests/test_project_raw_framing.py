@@ -586,7 +586,7 @@ class RawFramingProjectionTests(unittest.TestCase):
             self.assertIn(name, index)
             self.assertIn(name, compat)
         self.assertIn("完整 semantic model", testing)
-        self.assertIn("full report integration", testing)
+        self.assertIn("run_compatibility_suite.py", testing)
 
 
 if __name__ == "__main__":

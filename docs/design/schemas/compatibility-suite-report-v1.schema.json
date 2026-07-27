@@ -1,0 +1,527 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://diec-rust.invalid/schemas/compatibility-suite-report-v1.schema.json",
+  "title": "DIEC typed legacy compatibility suite report v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "compatibility_report_schema",
+    "aggregator",
+    "suite_id",
+    "as_of",
+    "run_identity",
+    "plan_artifact",
+    "result",
+    "summary",
+    "platforms",
+    "capabilities",
+    "cases",
+    "input_files_unchanged",
+    "errors"
+  ],
+  "properties": {
+    "compatibility_report_schema": {
+      "const": 1
+    },
+    "aggregator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version"
+      ],
+      "properties": {
+        "name": {
+          "const": "diec-compatibility-suite-runner"
+        },
+        "version": {
+          "const": 1
+        }
+      }
+    },
+    "suite_id": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/id"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "as_of": {
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "date"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "run_identity": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/runIdentity"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "plan_artifact": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/artifact"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "result": {
+      "enum": [
+        "pass",
+        "fail",
+        "infrastructure_error"
+      ]
+    },
+    "summary": {
+      "$ref": "#/$defs/summary"
+    },
+    "platforms": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/platformSummary"
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/capabilitySummary"
+      }
+    },
+    "cases": {
+      "type": "array",
+      "maxItems": 10000,
+      "items": {
+        "$ref": "#/$defs/caseResult"
+      }
+    },
+    "input_files_unchanged": {
+      "oneOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "result": {
+            "const": "infrastructure_error"
+          }
+        },
+        "required": [
+          "result"
+        ]
+      },
+      "then": {
+        "properties": {
+          "errors": {
+            "minItems": 1
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "suite_id": {
+            "$ref": "#/$defs/id"
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date"
+          },
+          "run_identity": {
+            "$ref": "#/$defs/runIdentity"
+          },
+          "plan_artifact": {
+            "$ref": "#/$defs/artifact"
+          },
+          "input_files_unchanged": {
+            "const": true
+          },
+          "errors": {
+            "maxItems": 0
+          },
+          "cases": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100000000
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sha256",
+        "canonical_sha256"
+      ],
+      "properties": {
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "canonical_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "runIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "upstream_commit",
+        "semantic_schema"
+      ],
+      "properties": {
+        "upstream_commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "semantic_schema": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "resultCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total",
+        "pass",
+        "fail",
+        "infrastructure_error"
+      ],
+      "properties": {
+        "total": {
+          "$ref": "#/$defs/count"
+        },
+        "pass": {
+          "$ref": "#/$defs/count"
+        },
+        "fail": {
+          "$ref": "#/$defs/count"
+        },
+        "infrastructure_error": {
+          "$ref": "#/$defs/count"
+        }
+      }
+    },
+    "comparisonCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "exact",
+        "semantic_equal",
+        "different",
+        "projection_failure",
+        "comparison_limit_reached",
+        "unavailable"
+      ],
+      "properties": {
+        "exact": {
+          "$ref": "#/$defs/count"
+        },
+        "semantic_equal": {
+          "$ref": "#/$defs/count"
+        },
+        "different": {
+          "$ref": "#/$defs/count"
+        },
+        "projection_failure": {
+          "$ref": "#/$defs/count"
+        },
+        "comparison_limit_reached": {
+          "$ref": "#/$defs/count"
+        },
+        "unavailable": {
+          "$ref": "#/$defs/count"
+        }
+      }
+    },
+    "classificationCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "Semantic",
+        "SafetyDeviation",
+        "Unsupported"
+      ],
+      "properties": {
+        "Semantic": {
+          "$ref": "#/$defs/count"
+        },
+        "SafetyDeviation": {
+          "$ref": "#/$defs/count"
+        },
+        "Unsupported": {
+          "$ref": "#/$defs/count"
+        }
+      }
+    },
+    "differenceCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total",
+        "applied",
+        "unmatched",
+        "by_classification"
+      ],
+      "properties": {
+        "total": {
+          "$ref": "#/$defs/count"
+        },
+        "applied": {
+          "$ref": "#/$defs/count"
+        },
+        "unmatched": {
+          "$ref": "#/$defs/count"
+        },
+        "by_classification": {
+          "$ref": "#/$defs/classificationCounts"
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "case_results",
+        "comparison_results",
+        "differences",
+        "normalization_applied_cases",
+        "waived_cases"
+      ],
+      "properties": {
+        "case_results": {
+          "$ref": "#/$defs/resultCounts"
+        },
+        "comparison_results": {
+          "$ref": "#/$defs/comparisonCounts"
+        },
+        "differences": {
+          "$ref": "#/$defs/differenceCounts"
+        },
+        "normalization_applied_cases": {
+          "$ref": "#/$defs/count"
+        },
+        "waived_cases": {
+          "$ref": "#/$defs/count"
+        }
+      }
+    },
+    "platformSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "platform",
+        "oracle_profile",
+        "case_results"
+      ],
+      "properties": {
+        "platform": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+-[a-z0-9][a-z0-9_]*$"
+        },
+        "oracle_profile": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+        },
+        "case_results": {
+          "$ref": "#/$defs/resultCounts"
+        }
+      }
+    },
+    "capabilitySummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "capability",
+        "case_results",
+        "differences"
+      ],
+      "properties": {
+        "capability": {
+          "$ref": "#/$defs/id"
+        },
+        "case_results": {
+          "$ref": "#/$defs/resultCounts"
+        },
+        "differences": {
+          "$ref": "#/$defs/differenceCounts"
+        }
+      }
+    },
+    "caseIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "case_id",
+        "capability",
+        "platform",
+        "oracle_profile"
+      ],
+      "properties": {
+        "case_id": {
+          "$ref": "#/$defs/id"
+        },
+        "capability": {
+          "$ref": "#/$defs/id"
+        },
+        "platform": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+-[a-z0-9][a-z0-9_]*$"
+        },
+        "oracle_profile": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+        }
+      }
+    },
+    "caseResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "index",
+        "identity",
+        "result",
+        "reason",
+        "comparison_result",
+        "raw_equal",
+        "normalization_applied",
+        "differences",
+        "audit_path",
+        "audit_artifact",
+        "errors"
+      ],
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10000
+        },
+        "identity": {
+          "$ref": "#/$defs/caseIdentity"
+        },
+        "result": {
+          "enum": [
+            "pass",
+            "fail",
+            "infrastructure_error"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "comparison_result": {
+          "oneOf": [
+            {
+              "enum": [
+                "exact",
+                "semantic_equal",
+                "different",
+                "projection_failure",
+                "comparison_limit_reached"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "raw_equal": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "normalization_applied": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "differences": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/differenceCounts"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "audit_path": {
+          "type": "string",
+          "pattern": "^cases/[0-9]{6}/case-audit\\.json$"
+        },
+        "audit_artifact": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/artifact"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}
