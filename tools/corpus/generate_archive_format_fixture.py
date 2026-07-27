@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate benign stored RAR4, CAB, and ISO9660 archives."""
+"""Generate benign stored 7Z, RAR4, CAB, and ISO9660 archives."""
 
 from __future__ import annotations
 
@@ -35,6 +35,76 @@ def _load_baseline_module():
 
 BASELINE = _load_baseline_module()
 PDF = BASELINE.make_pdf()
+
+
+def sevenzip_uint64(value: int) -> bytes:
+    if not 0 <= value <= 0xFFFFFFFFFFFFFFFF:
+        raise ValueError("7Z UINT64 is out of range")
+    for extra_bytes in range(8):
+        value_bits = 7 + 7 * extra_bytes
+        if value < (1 << value_bits):
+            prefix = (0xFF << (8 - extra_bytes)) & 0xFF
+            high = value >> (8 * extra_bytes)
+            first = prefix | high
+            low = value & ((1 << (8 * extra_bytes)) - 1)
+            return bytes((first,)) + low.to_bytes(extra_bytes, "little")
+    return b"\xff" + value.to_bytes(8, "little")
+
+
+def make_7z_stored(name: str, payload: bytes) -> bytes:
+    encoded_name = name.encode("utf-16le") + b"\0\0"
+    payload_crc = binascii.crc32(payload) & 0xFFFFFFFF
+
+    pack_info = (
+        b"\x06"
+        + sevenzip_uint64(0)
+        + sevenzip_uint64(1)
+        + b"\x09"
+        + sevenzip_uint64(len(payload))
+        + b"\x0a\x01"
+        + struct.pack("<I", payload_crc)
+        + b"\x00"
+    )
+    unpack_info = (
+        b"\x07\x0b"
+        + sevenzip_uint64(1)
+        + b"\x00"
+        + sevenzip_uint64(1)
+        + b"\x01\x00"
+        + b"\x0c"
+        + sevenzip_uint64(len(payload))
+        + b"\x0a\x01"
+        + struct.pack("<I", payload_crc)
+        + b"\x00"
+    )
+    main_streams = b"\x04" + pack_info + unpack_info + b"\x00"
+    name_property = b"\x00" + encoded_name
+    files_info = (
+        b"\x05"
+        + sevenzip_uint64(1)
+        + b"\x11"
+        + sevenzip_uint64(len(name_property))
+        + name_property
+        + b"\x00"
+    )
+    next_header = b"\x01" + main_streams + files_info + b"\x00"
+    start_header = struct.pack(
+        "<QQI",
+        len(payload),
+        len(next_header),
+        binascii.crc32(next_header) & 0xFFFFFFFF,
+    )
+    return (
+        b"7z\xbc\xaf\x27\x1c"
+        + b"\x00\x04"
+        + struct.pack(
+            "<I",
+            binascii.crc32(start_header) & 0xFFFFFFFF,
+        )
+        + start_header
+        + payload
+        + next_header
+    )
 
 
 def rar4_header(block_type: int, flags: int, body: bytes) -> bytes:
@@ -209,6 +279,11 @@ def make_iso9660_stored(name: str, payload: bytes) -> bytes:
 
 
 FIXTURES = (
+    (
+        "pdf-member.7z",
+        "7Z Copy-method archive containing one PDF",
+        make_7z_stored,
+    ),
     (
         "pdf-member.rar",
         "RAR4 store archive containing one PDF",

@@ -43,7 +43,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
         report = self.report
         self.assertEqual(
             sha256(self.report_bytes),
-            "06b26bf0d7d9fa5710cb718b27ff1cca2893742c3e51acf844adcd23f3a42e18",
+            "2801fbbae9a8d332488c8dd4b0a4e7564a825c147073ca78a1ba70c26d6d9263",
         )
         self.assertEqual(report["schema_version"], 1)
         self.assertEqual(
@@ -65,7 +65,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
             report["fixture_manifest"],
             {
                 "path": "docs/research/data/archive-format-corpus.json",
-                "sample_count": 3,
+                "sample_count": 4,
                 "sha256": sha256(MANIFEST_PATH.read_bytes()),
             },
         )
@@ -132,6 +132,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
             "engine": "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498",
             "iso9660": "d6e97c4ff2395b812b65da5ab480e937c6b365e6e6e8b0288ddf48b8fd398fb1",
             "rar": "23721187a6118edce8b9511680f34c404727f831ec8c7ed66e0ed0868260ccb8",
+            "sevenzip": "d8da44bdcd1dfab07f1403ae19a0113238fd54620ef9b4307410097d7d8e5554",
         }
         self.assertEqual(
             {
@@ -150,7 +151,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
     def test_raw_artifacts_reconstruct_every_execution(self):
         report = self.report
         artifacts = report["raw_artifacts"]
-        self.assertEqual(len(artifacts), 7)
+        self.assertEqual(len(artifacts), 9)
         for digest, artifact in artifacts.items():
             with self.subTest(digest=digest):
                 self.assertEqual(artifact["encoding"], "zlib+base64")
@@ -178,6 +179,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
 
     def test_modes_preserve_exact_roots_and_unpack_one_pdf(self):
         expected_roots = {
+            "pdf-member.7z": ("Binary", ["7-Zip"]),
             "pdf-member.cab": ("Binary", ["CAB"]),
             "pdf-member.iso": ("ISO 9660", ["Unknown"]),
             "pdf-member.rar": ("RAR", ["Unknown"]),
@@ -246,7 +248,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
         self.assertIn("CAP-GAP-006", document)
         self.assertIn("archive-format-engine-qt5.json", document)
         self.assertIn(
-            "06b26bf0d7d9fa5710cb718b27ff1cca2893742c3e51acf844adcd23f3a42e18",
+            "2801fbbae9a8d332488c8dd4b0a4e7564a825c147073ca78a1ba70c26d6d9263",
             document,
         )
 

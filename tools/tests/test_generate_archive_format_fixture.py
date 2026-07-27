@@ -42,6 +42,7 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
                 {path.name for path in output.iterdir()},
                 {
                     "manifest.json",
+                    "pdf-member.7z",
                     "pdf-member.rar",
                     "pdf-member.cab",
                     "pdf-member.iso",
@@ -80,6 +81,57 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
             offset += header_size
             if expected_type == 0x74:
                 offset += len(module.PDF)
+
+    def test_7z_copy_header_crcs_and_payload_are_deterministic(self):
+        module = load_module()
+        data = module.make_7z_stored(module.PAYLOAD_NAME, module.PDF)
+        self.assertTrue(data.startswith(b"7z\xbc\xaf\x27\x1c\x00\x04"))
+        self.assertEqual(data.count(module.PDF), 1)
+        start_header = data[12:32]
+        self.assertEqual(
+            int.from_bytes(data[8:12], "little"),
+            binascii.crc32(start_header) & 0xFFFFFFFF,
+        )
+        next_header_offset = int.from_bytes(
+            start_header[0:8],
+            "little",
+        )
+        next_header_size = int.from_bytes(
+            start_header[8:16],
+            "little",
+        )
+        next_header = data[
+            32 + next_header_offset :
+            32 + next_header_offset + next_header_size
+        ]
+        self.assertEqual(
+            int.from_bytes(start_header[16:20], "little"),
+            binascii.crc32(next_header) & 0xFFFFFFFF,
+        )
+        self.assertEqual(next_header[0], 0x01)
+        self.assertIn(
+            module.PAYLOAD_NAME.encode("utf-16le") + b"\0\0",
+            next_header,
+        )
+
+    def test_7z_uint64_boundary_encodings_are_canonical(self):
+        module = load_module()
+        expected = {
+            0: b"\x00",
+            0x7F: b"\x7f",
+            0x80: b"\x80\x80",
+            0x14B: b"\x81\x4b",
+            0x3FFF: b"\xbf\xff",
+            0x4000: b"\xc0\x00\x40",
+            0xFFFFFFFFFFFFFFFF: b"\xff" * 9,
+        }
+        for value, encoded in expected.items():
+            with self.subTest(value=value):
+                self.assertEqual(module.sevenzip_uint64(value), encoded)
+        with self.assertRaises(ValueError):
+            module.sevenzip_uint64(-1)
+        with self.assertRaises(ValueError):
+            module.sevenzip_uint64(0x10000000000000000)
 
     def test_cab_and_iso_store_payload_once(self):
         module = load_module()

@@ -3,6 +3,15 @@
   "license": "project-generated; no third-party sample bytes",
   "samples": [
     {
+      "archive_format": "7Z",
+      "expected_member_name": "payload.pdf",
+      "expected_payload_sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "name": "pdf-member.7z",
+      "purpose": "7Z Copy-method archive containing one PDF",
+      "sha256": "b5db3322be26f8693e15cfcd1d898e463f6ac20003274b90ffd75dd80788611d",
+      "size": 427
+    },
+    {
       "archive_format": "RAR",
       "expected_member_name": "payload.pdf",
       "expected_payload_sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",

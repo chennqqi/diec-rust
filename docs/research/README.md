@@ -13,8 +13,9 @@ Phase 0 计划形成：
   source-only 闭集及最后一项 depth/expanded-byte 关闭证据（Draft）。
 - [`archive-limit-behavior.md`](archive-limit-behavior.md)：受资源约束的 archive
   depth/累计展开量递增、peak RSS 与 cooperative cancellation 证据（In Review）。
-- [`archive-format-behavior.md`](archive-format-behavior.md)：RAR4/CAB/ISO9660
-  store 正向解包、发布 CLI 默认对照与 CAB `Binary` 顶层 quirk（Draft）。
+- [`archive-format-behavior.md`](archive-format-behavior.md)：
+  7Z/RAR4/CAB/ISO9660 无压缩正向解包、发布 CLI 默认对照与
+  7Z/CAB `Binary` 顶层 quirk（Draft）。
 - [`signature-path-filter-behavior.md`](signature-path-filter-behavior.md)：
   private signature-file path comparator 的严格绝对路径语义及公共不可达边界
   （Draft）。
@@ -156,9 +157,9 @@ Phase 0 计划形成：
 - [`data/database-layers-engine-qt5.json`](data/database-layers-engine-qt5.json)：固定 Qt5 engine 的三层 materialization、同名保留和 runtime gate 原始报告。
 - [`data/nested-corpus.json`](data/nested-corpus.json)：安全的 archive/resource/overlay 嵌套语料清单。
 - [`data/archive-format-corpus.json`](data/archive-format-corpus.json)：
-  项目生成的 RAR4/CAB/ISO9660 单 PDF store fixture 清单。
+  项目生成的 7Z/RAR4/CAB/ISO9660 单 PDF 无压缩 fixture 清单。
 - [`data/archive-format-engine-qt5.json`](data/archive-format-engine-qt5.json)：
-  三种 archive 的 default/release/archive/aggressive 原始输出、固定身份和
+  四种 archive 的 default/release/archive/aggressive 原始输出、固定身份和
   结构化摘要。
 - [`data/resource-context-chain-qt5.json`](data/resource-context-chain-qt5.json)：RT_MANIFEST 父扫描、resource context、scan ID 与原样规则结果的四模式端到端基线。
 - [`data/subdevice-source-audit.json`](data/subdevice-source-audit.json)：固定 XScanEngine/Formats 源码哈希、resource/overlay 调度及 debug-data 可达性审计。

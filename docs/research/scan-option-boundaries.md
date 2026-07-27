@@ -123,9 +123,9 @@ legacy-compatible 模式必须保留：
 
 这些上游上限不是 Rust 的安全上限。Rust hard limits 必须先于兼容策略执行，
 aggressive 只能在调用方允许的 hard budget 内提高 legacy policy threshold。
-`CAP-GAP-006` 仍保持开放：RAR4/CAB/ISO9660 store 正例虽已由
-[`archive-format-behavior.md`](archive-format-behavior.md) 固定，7Z、
-archive 100000 边界、高压缩比/畸形、最大深度、累计解压量和资源耗尽仍不能
+`CAP-GAP-006` 仍保持开放：7Z/RAR4/CAB/ISO9660 无压缩正例虽已由
+[`archive-format-behavior.md`](archive-format-behavior.md) 固定，archive
+100000 边界、高压缩比/畸形、最大深度、累计解压量和资源耗尽仍不能
 由本实验外推为闭合。
 
 ## 8. 复现
