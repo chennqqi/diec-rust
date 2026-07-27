@@ -12,7 +12,7 @@
   "schema_version": 1,
   "source": {
     "path": "docs/research/data/capability-coverage.json",
-    "sha256": "0ef13f7edbe33aa1fda577138f8f2245fb60618178794f70de7168a6b9fcbfc0"
+    "sha256": "5e7baa6e0e64da2d637dede4d4a528984e4a275bccf9231b33a6dcafe9da9784"
   },
   "summary": {
     "all_items_have_executable_assertions": true,

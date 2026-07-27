@@ -27,6 +27,8 @@ harness、未来 GUI 或尚未物化组件的全部内部字段。
   [`database-error-behavior.md`](database-error-behavior.md)；
 - 多目标、空目录、partial failure 和 filename prefix 的
   [`cli-path-behavior.md`](cli-path-behavior.md)。
+- Unicode/控制字符 escaping、三条 detection 顺序和嵌套 formatter 的
+  [`cli-output-boundaries.md`](cli-output-boundaries.md)。
 
 ## 2. 分支与 formatter 不是一个统一 schema
 
@@ -141,7 +143,9 @@ status: string
 ```
 
 records 是 format memory map 的非 virtual 区域，顺序和数值均有语义。不能对浮点
-值擅自设置 tolerance；阈值边界尚未完成实验，仍是调研缺口。
+值擅自设置 tolerance；packed entropy 临界值的逐项浮点累加、结构化值和
+plain-text 舍入差异已由
+[`cli-special-modes.md`](cli-special-modes.md) 固定。
 
 ## 5. Info 与 Struct JSON
 

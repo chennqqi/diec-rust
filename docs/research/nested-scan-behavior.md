@@ -311,7 +311,9 @@ recursive+aggressive 对前者产生 Manifest child，对后者不建 child；�
 - Rust scanner 从父格式枚举 resource、生成 scan ID、调度规则并形成与 Qt5
   一致的结果树；本页已固定 debug-data 的 legacy 默认不调度契约，但 Rust
   实现尚未开始；
-- XML、CSV、TSV 和文本 formatter 的嵌套表示；
+- formatter 的嵌套表示已由
+  [`cli-output-boundaries.md`](cli-output-boundaries.md) 固定：JSON/text
+  保留树或缩进，CSV/TSV 仅深度优先输出 leaf，nested XML 会生成非法动态标签；
 - Windows/macOS 与 Qt 6 oracle。
 
 archive 的源码限制不等于已验证的安全保证。后续 engine harness 应先使用受控、

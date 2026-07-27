@@ -190,7 +190,7 @@
       "title": "Windows/macOS oracle and remaining capability corpus coverage are incomplete",
       "owner": "compatibility",
       "status": "open",
-      "progress_evidence": "docs/research/capability-coverage-report.md and docs/research/data/capability-coverage.json classify all 68 capability rows across four platforms with zero unclassified cells; docs/research/data/source-only-closure.json proves zero Linux source-only capabilities; docs/research/cli-special-modes.md, docs/research/database-archive-cache.md, docs/research/engine-contract-behavior.md, docs/research/rule-orchestration.md, and docs/research/image-dispatch-behavior.md close CAP-GAP-001, CAP-GAP-002, CAP-GAP-009, CAP-GAP-010, CAP-GAP-011, and CAP-GAP-012 while preserving 17 named corpus-gap rows and three missing platform baselines",
+      "progress_evidence": "docs/research/capability-coverage-report.md and docs/research/data/capability-coverage.json classify all 68 capability rows across four platforms with zero unclassified cells; docs/research/data/source-only-closure.json proves zero Linux source-only capabilities; docs/research/cli-special-modes.md, docs/research/database-archive-cache.md, docs/research/cli-output-boundaries.md, docs/research/engine-contract-behavior.md, docs/research/rule-orchestration.md, and docs/research/image-dispatch-behavior.md close CAP-GAP-001, CAP-GAP-002, CAP-GAP-004, CAP-GAP-009, CAP-GAP-010, CAP-GAP-011, and CAP-GAP-012 while preserving 11 named corpus-gap rows and three missing platform baselines",
       "closure_evidence": "pinned reproducible baselines with no Phase 0 source-only, corpus-missing, platform-missing, or unclassified capability rows"
     },
     {

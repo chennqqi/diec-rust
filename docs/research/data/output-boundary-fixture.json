@@ -1,0 +1,46 @@
+{
+  "directories": [
+    "database",
+    "database/Binary",
+    "input"
+  ],
+  "entries": [
+    {
+      "path": "database/Binary/output-boundary.1.sg",
+      "purpose": "rule emitting output delimiter and Unicode boundaries",
+      "sha256": "f85fe66e4af40eef3ee7dc522442627af61d3cd1be415a91d4abb51c8eb05dc0",
+      "size": 380,
+      "source": "project-generated"
+    },
+    {
+      "path": "input/plain.bin",
+      "purpose": "benign Binary input",
+      "sha256": "c479c2bff6507c91b9d794ef69bbbf75e217191decf99c5b8c99d011646cfad0",
+      "size": 34,
+      "source": "project-generated"
+    }
+  ],
+  "expected_records": [
+    {
+      "info": "info;,\t\r\n\"\\/<>&' ☃中😀",
+      "name": "Quote\" Backslash\\ Slash/ Semi; Comma, Tab\t CR\r LF\n XML<>&' Snowman☃ CJK中 Emoji😀 LS PS ",
+      "type": "format",
+      "version": "v\"\\;\t\r\n<>&'"
+    },
+    {
+      "info": "line1\nline2",
+      "name": "Second;compiler",
+      "type": "compiler",
+      "version": "2\tbeta"
+    },
+    {
+      "info": "tail",
+      "name": "Third",
+      "type": "tool",
+      "version": ""
+    }
+  ],
+  "generator": "tools/corpus/generate_output_boundary_fixture.py",
+  "license": "project-generated; no third-party sample or rule bytes",
+  "schema_version": 1
+}

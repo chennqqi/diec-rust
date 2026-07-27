@@ -36,7 +36,7 @@ class CapabilityCoverageTest(unittest.TestCase):
         self.assertEqual(summary["capability_row_count"], 68)
         self.assertEqual(summary["platform_count"], 4)
         self.assertEqual(summary["cell_count"], 272)
-        self.assertEqual(summary["rows_with_corpus_gaps"], 17)
+        self.assertEqual(summary["rows_with_corpus_gaps"], 11)
         self.assertEqual(summary["unclassified_capability_row_count"], 0)
         self.assertEqual(summary["unclassified_cell_count"], 0)
         self.assertEqual(
@@ -60,8 +60,8 @@ class CapabilityCoverageTest(unittest.TestCase):
     def test_linux_runtime_and_source_only_counts_are_not_conflated(self):
         counts = self.report["summary"]["status_counts_by_platform"]
         linux = counts["linux-x86_64-qt5"]
-        self.assertEqual(linux["runtime_observed"], 59)
-        self.assertEqual(linux["runtime_observed_with_corpus_gaps"], 9)
+        self.assertEqual(linux["runtime_observed"], 64)
+        self.assertEqual(linux["runtime_observed_with_corpus_gaps"], 4)
         self.assertEqual(
             linux["source_only_runtime_corpus_missing"],
             0,
@@ -88,6 +88,11 @@ class CapabilityCoverageTest(unittest.TestCase):
             "CAP-CLI-DB-002",
             "CAP-CLI-DB-003",
             "CAP-CLI-DB-004",
+            "CAP-CLI-OUT-001",
+            "CAP-CLI-OUT-002",
+            "CAP-CLI-OUT-003",
+            "CAP-CLI-OUT-004",
+            "CAP-CLI-OUT-005",
             "CAP-ENG-IN-002",
             "CAP-DISPATCH-001",
             "CAP-DISPATCH-002",
@@ -96,6 +101,7 @@ class CapabilityCoverageTest(unittest.TestCase):
             "CAP-DISPATCH-006",
             "CAP-DISPATCH-008",
             "CAP-NEST-007",
+            "CAP-NEST-008",
             "CAP-RULE-002",
             "CAP-RULE-007",
             "CAP-RULE-011",
@@ -155,7 +161,11 @@ class CapabilityCoverageTest(unittest.TestCase):
         self.assertEqual(
             gap_ids,
             [
-                *(f"CAP-GAP-{index:03d}" for index in range(3, 9)),
+                "CAP-GAP-003",
+                "CAP-GAP-005",
+                "CAP-GAP-006",
+                "CAP-GAP-007",
+                "CAP-GAP-008",
             ],
         )
 

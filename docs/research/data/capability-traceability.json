@@ -83,8 +83,15 @@
       "paths": [
         "docs/research/behavior-baseline.md",
         "docs/research/cli-json-schema-inventory.md",
+        "docs/research/cli-output-boundaries.md",
         "docs/research/data/baseline-corpus-linux-qt5.json",
-        "tools/tests/test_baseline_corpus_report.py"
+        "docs/research/data/output-boundary-fixture.json",
+        "docs/research/data/cli-output-boundaries-linux-qt5.json",
+        "tools/corpus/generate_output_boundary_fixture.py",
+        "tools/upstream/probe_cli_output_boundaries.py",
+        "tools/tests/test_baseline_corpus_report.py",
+        "tools/tests/test_generate_output_boundary_fixture.py",
+        "tools/tests/test_probe_cli_output_boundaries.py"
       ]
     },
     "database": {
@@ -255,11 +262,11 @@
     {"id": "CAP-CLI-MODE-004", "name": "show structs mode", "verification": "observed", "evidence_set": "cli_special"},
     {"id": "CAP-CLI-MODE-005", "name": "help mode and no-target help", "verification": "observed", "evidence_set": "cli_control"},
     {"id": "CAP-CLI-MODE-006", "name": "version mode", "verification": "observed", "evidence_set": "cli_control"},
-    {"id": "CAP-CLI-OUT-001", "name": "XML output", "verification": "observed_with_gaps", "evidence_set": "cli_output"},
-    {"id": "CAP-CLI-OUT-002", "name": "JSON output", "verification": "observed_with_gaps", "evidence_set": "cli_output"},
-    {"id": "CAP-CLI-OUT-003", "name": "CSV output", "verification": "observed_with_gaps", "evidence_set": "cli_output"},
-    {"id": "CAP-CLI-OUT-004", "name": "TSV output", "verification": "observed_with_gaps", "evidence_set": "cli_output"},
-    {"id": "CAP-CLI-OUT-005", "name": "plain text output", "verification": "observed_with_gaps", "evidence_set": "cli_output"},
+    {"id": "CAP-CLI-OUT-001", "name": "XML output", "verification": "observed", "evidence_set": "cli_output"},
+    {"id": "CAP-CLI-OUT-002", "name": "JSON output", "verification": "observed", "evidence_set": "cli_output"},
+    {"id": "CAP-CLI-OUT-003", "name": "CSV output", "verification": "observed", "evidence_set": "cli_output"},
+    {"id": "CAP-CLI-OUT-004", "name": "TSV output", "verification": "observed", "evidence_set": "cli_output"},
+    {"id": "CAP-CLI-OUT-005", "name": "plain text output", "verification": "observed", "evidence_set": "cli_output"},
     {"id": "CAP-CLI-DB-001", "name": "main database path", "verification": "observed", "evidence_set": "database"},
     {"id": "CAP-CLI-DB-002", "name": "extra database path", "verification": "observed", "evidence_set": "database"},
     {"id": "CAP-CLI-DB-003", "name": "custom database path", "verification": "observed", "evidence_set": "database"},
@@ -317,13 +324,6 @@
       ]
     },
     {
-      "id": "CAP-GAP-004",
-      "scope": "structured output escaping and nested ordering",
-      "platforms": [
-        "linux-x86_64-qt5"
-      ]
-    },
-    {
       "id": "CAP-GAP-005",
       "scope": "deep and aggressive resource filtering and count limits",
       "platforms": [
@@ -356,11 +356,11 @@
   ],
   "summary": {
     "capability_count": 68,
-    "observed": 59,
-    "observed_with_gaps": 9,
+    "observed": 64,
+    "observed_with_gaps": 4,
     "source_verified": 0,
     "source_verified_with_gaps": 0,
-    "coverage_gap_count": 6,
+    "coverage_gap_count": 5,
     "phase_0_coverage_complete": false
   }
 }

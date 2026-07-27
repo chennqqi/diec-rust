@@ -333,7 +333,9 @@ baseline 的变更都要检查本表。
 - **当前证据**：理论 entropy 6.5 在固定上游逐项 `log()` 累加后为
   `6.499999999999999/not packed`，plain text 同时显示 `6.5: not packed`；
   special-mode 多目标 JSON 还会串接 filename prefix 和两个 object。两者都要求
-  legacy raw/semantic 双层保真，不能只验证单个 parsed JSON。
+  legacy raw/semantic 双层保真，不能只验证单个 parsed JSON。固定 formatter
+  oracle 还证明 nested XML 因动态元素名而非良构，CSV/TSV 不引用包含分隔符或
+  换行的字段并把嵌套树扁平化为 leaf；这些缺陷同样属于可观察 legacy 契约。
 - **缓解**：统一 arena/report；`diec-output` 单点序列化；ADR 0003 双输出；
   schema version 和 golden。
 - **验证**：Rust/C/modern CLI canonical bytes 相同；legacy raw differential；

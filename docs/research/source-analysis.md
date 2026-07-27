@@ -221,7 +221,7 @@ Rust 兼容模式必须同时复现 resource context 传播和 debug-data 默认
 | 多候选格式的优先顺序 | 分类结果偏差 | 建立分派顺序表和多义样本 |
 | archive/resource/overlay 递归 | 无深度/总解压限制；CLI 与 engine 可达性不同 | 其他格式、高上限和资源耗尽实验 |
 | 目录枚举无深度/循环保护 | symlink loop、栈/时间耗尽 | 隔离测试并为 Rust 设计资源限制 |
-| formatter 分散 | JSON/XML 契约不明确 | 逐格式保存 schema 和 escaping 样本 |
+| formatter 分散 | nested XML 非良构；CSV/TSV 无引用且丢失父节点 | 已保存逐格式 schema/escaping golden；Rust legacy 层不得“修复”后冒充兼容 |
 | engine database cache | `readAll`/无界 record count、弱 freshness；截断会泄漏部分 record，取消可持久化空 cache；CLI 不启用 | 验证 header/长度上限、写失败和并发 writer |
 | 数据库/输入错误语义随入口变化 | 静默漏报、无效 JSON、调用方误判 | 核心 typed error + CLI compatibility ADR |
 | CLI 部分选项有 `TODO` | “能力相同”范围争议 | 构建并运行确认真实行为 |
@@ -231,5 +231,5 @@ Rust 兼容模式必须同时复现 resource context 传播和 debug-data 默认
 1. 建立完整规则目录和语法统计。
 2. 提取 `Binary_Script` 及每个派生宿主类的公开 API。
 3. 扩展 engine archive harness，验证其他格式、高上限和资源限制。
-4. 补齐 `ScanItemModel` 的转义、多目标和嵌套输出 schema。
+4. 将已闭合的 `ScanItemModel` 转义与嵌套 schema 纳入未来 legacy serializer golden。
 5. 建立 Windows/macOS oracle 并与当前 Linux 行为基线差分。

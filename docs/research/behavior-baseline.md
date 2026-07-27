@@ -242,8 +242,11 @@ elapsed 值与固定规则执行序列另见
 
 - 7Z、CAB、NPM、Amiga Hunk、Atari ST 及 DOS/COM/NE/LE/LX 等格式。
 - 新增 11 个格式的 scan/output/special 选项矩阵（当前仅固定 default JSON）。
-- 输出格式的转义边界和特殊 filename；专用 struct/entropy 阈值边界已由
-  [`cli-special-modes.md`](cli-special-modes.md) 的 28-case 双 oracle 固定。
+- 输出格式的转义和嵌套排序已由
+  [`cli-output-boundaries.md`](cli-output-boundaries.md) 的 10-case 双 oracle
+  固定；特殊 filename 与跨平台路径编码仍待覆盖。专用 struct/entropy 阈值
+  边界已由 [`cli-special-modes.md`](cli-special-modes.md) 的 28-case 双 oracle
+  固定。
 - 能实际触发 deep 增量或 aggressive 过滤/上限差异的样本。
 - 其他 archive 格式、aggressive 高上限和最大嵌套深度。
 - 发布 CLI 的 ZIP database 截断/重复/`..`/根前缀边界及 cache-disabled

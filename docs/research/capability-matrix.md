@@ -79,6 +79,10 @@ entropy/info/struct 不使用普通扫描 formatter，组合优先级、schema�
 normal scan、hideunknown 根级 leaf、entropy、info/struct、open-error 和 raw
 diagnostic 的封闭 JSON 字段/type/order inventory 见
 [`cli-json-schema-inventory.md`](cli-json-schema-inventory.md)。
+JSON/XML/CSV/TSV/plain text 的 Unicode、控制字符、分隔符 escaping 与嵌套
+顺序已由 [`cli-output-boundaries.md`](cli-output-boundaries.md) 固定；其中
+nested XML 非良构、CSV/TSV 不引用字段且会扁平化嵌套 leaf，是必须逐字兼容或
+经 ADR 明确偏离的 legacy 行为。
 
 多目标 filename prefix、目录顺序、重复 target、部分失败和无效 JSON/XML 聚合
 行为见
@@ -223,7 +227,7 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
   Observed。超大 count/text 等安全预算仍作为 Rust 实现测试门禁，不把上游
   OOM/调度结果采纳为 compatibility golden。
 - Unicode/特殊 filename 及 Windows/macOS 的路径和枚举差异。
-- JSON/XML/CSV/TSV 的转义和嵌套排序。
+- formatter 转义与嵌套排序已闭合；跨平台编码差异仍归入路径/平台缺口。
 - deep 以及 aggressive resource 过滤/计数上限的增量样本。
 - 其他 archive 格式、aggressive 高上限、最大深度和总解压资源限制。
 - Qt 5 与 Qt 6 的首轮基础/安全语料/不可读输入差分已完成；仍需扩展到完整
