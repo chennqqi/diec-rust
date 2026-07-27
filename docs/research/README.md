@@ -20,6 +20,8 @@ Phase 0 计划形成：
   Qt5 harness（Draft）。
 - [`result-list-behavior.md`](result-list-behavior.md)：`SCAN_RESULT` 的
   records/errors/debug/handlers 四列表、顺序和重复项 Qt5 契约（Draft）。
+- [`result-flag-behavior.md`](result-flag-behavior.md)：`SCANSTRUCT` 的
+  heuristic/advanced heuristic/unknown 三标记真值表（Draft）。
 - [`source-analysis.md`](source-analysis.md)：模块关系及扫描/规则调用链（Draft）。
 - [`rule-compatibility.md`](rule-compatibility.md)：规则语法、内建函数和宿主 API（Draft）。
 - [`rule-runtime-spike.md`](rule-runtime-spike.md)：Boa 全库解析、真实复杂规则、宿主绑定和资源限制验证（Draft）。
@@ -96,6 +98,10 @@ Phase 0 计划形成：
   detection、runtime error、parse error 和安全 Binary 输入的逐文件哈希。
 - [`data/result-lists-engine-qt5.json`](data/result-lists-engine-qt5.json)：
   四个结果列表的空/非空、顺序、重复项和 handler option runtime 基线。
+- [`data/result-flag-fixture.json`](data/result-flag-fixture.json)：normal、
+  `~` heuristic、`!` advanced heuristic 与空数据库的逐文件哈希。
+- [`data/result-flags-engine-qt5.json`](data/result-flags-engine-qt5.json)：
+  三个独立结果 flag 的四行 Qt5 runtime 真值表和原始流哈希。
 - [`data/path-corpus.json`](data/path-corpus.json)：由基线字节组成的确定性嵌套目录树。
 - [`data/database-fixture.json`](data/database-fixture.json)：项目生成的数据库成功/故障 fixture。
 - [`data/database-archive-linux-qt5.json`](data/database-archive-linux-qt5.json)：两套固定 Qt5 oracle 的 17-case ZIP 数据库矩阵及两侧原始 stream。

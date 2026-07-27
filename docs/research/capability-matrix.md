@@ -183,7 +183,9 @@ hideunknown 的可观察增量。完整输入哈希和输出见
 
 每个 `SCANSTRUCT` 包含：
 
-- `CAP-RESULT-003`：heuristic/unknown 标记。
+- `CAP-RESULT-003`：heuristic/advanced heuristic/unknown 三个独立标记；
+  固定 Qt5 四行真值表见
+  [`result-flag-behavior.md`](result-flag-behavior.md)。
 - `CAP-RESULT-004`：自身与父级 ID。
 - `CAP-RESULT-005`：record type/name 枚举及字符串 type/name。
 - `CAP-RESULT-006`：version、info、规则信息与优先级；固定 engine/global HostApi

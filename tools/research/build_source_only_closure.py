@@ -102,19 +102,6 @@ CATALOG: dict[str, dict[str, Any]] = {
             "an ADR records the bounded Rust default and legacy compatibility policy",
         ],
     },
-    "CAP-RESULT-003": {
-        "closure_kind": "engine_result_harness_extension",
-        "missing_evidence": [
-            "unknown true/false is observed but heuristic flags are only false"
-        ],
-        "fixture": "normal, heuristic, advanced-heuristic, and unknown rules",
-        "harness": "extended engine-contract rule fixture",
-        "assertions": [
-            "heuristic and advanced-heuristic each have true and false cases",
-            "unknown has true and false cases",
-            "flags are asserted independently from display type strings",
-        ],
-    },
     "CAP-RESULT-004": {
         "closure_kind": "nested_result_harness_extension",
         "missing_evidence": [

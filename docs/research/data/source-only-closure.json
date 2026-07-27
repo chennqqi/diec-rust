@@ -113,27 +113,6 @@
     },
     {
       "acceptance": "all assertions pass against the pinned upstream identity and the capability becomes runtime-observed or receives an explicit reviewed scope disposition",
-      "closure_kind": "engine_result_harness_extension",
-      "current_status": "source_only_runtime_corpus_missing",
-      "evidence_set": "result_model",
-      "id": "CAP-RESULT-003",
-      "missing_evidence": [
-        "unknown true/false is observed but heuristic flags are only false"
-      ],
-      "name": "heuristic and unknown flags",
-      "proposed_experiment": {
-        "assertions": [
-          "heuristic and advanced-heuristic each have true and false cases",
-          "unknown has true and false cases",
-          "flags are asserted independently from display type strings"
-        ],
-        "fixture": "normal, heuristic, advanced-heuristic, and unknown rules",
-        "harness": "extended engine-contract rule fixture",
-        "platform": "linux-x86_64-qt5"
-      }
-    },
-    {
-      "acceptance": "all assertions pass against the pinned upstream identity and the capability becomes runtime-observed or receives an explicit reviewed scope disposition",
       "closure_kind": "nested_result_harness_extension",
       "current_status": "source_only_runtime_corpus_missing",
       "evidence_set": "result_model",
@@ -186,14 +165,14 @@
   "schema_version": 1,
   "source": {
     "path": "docs/research/data/capability-coverage.json",
-    "sha256": "030359363826882e9312822097c5d60e837d8f1d8af6ad984248ab08ebc9b349"
+    "sha256": "364409e62554c6fe7928d76493875ae5ed7acdd61959fe0266f7a84477a27afa"
   },
   "summary": {
     "all_items_have_executable_assertions": true,
     "all_items_have_missing_evidence": true,
     "closure_kind_counts": {
       "bounded_escalation_and_adr": 1,
-      "engine_result_harness_extension": 2,
+      "engine_result_harness_extension": 1,
       "generated_format_oracle": 1,
       "generated_format_oracle_plus_scope_review": 1,
       "nested_result_harness_extension": 1,
@@ -201,7 +180,7 @@
       "scope_review_or_private_harness": 1
     },
     "phase_0_source_only_closed": false,
-    "source_only_capability_count": 8
+    "source_only_capability_count": 7
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
 }

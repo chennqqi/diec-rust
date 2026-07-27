@@ -1,0 +1,64 @@
+{
+  "capability": "CAP-RESULT-003",
+  "cases": {
+    "advanced_heuristic": {
+      "database": "main",
+      "heuristic_scan": true,
+      "signature": "HEUR.advanced.3.sg"
+    },
+    "heuristic": {
+      "database": "main",
+      "heuristic_scan": true,
+      "signature": "HEUR.heuristic.2.sg"
+    },
+    "normal": {
+      "database": "main",
+      "heuristic_scan": false,
+      "signature": "normal.1.sg"
+    },
+    "unknown": {
+      "database": "empty-main",
+      "heuristic_scan": false,
+      "signature": ""
+    }
+  },
+  "directories": [
+    "main",
+    "main/Binary",
+    "empty-main",
+    "input"
+  ],
+  "entries": [
+    {
+      "path": "input/probe.bin",
+      "purpose": "benign Binary scan input",
+      "sha256": "28aa71cff9d35029534ce01a6c64d944e910f9b0232b9519679c79abf2288b87",
+      "size": 37,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/normal.1.sg",
+      "purpose": "normal result without a flag prefix",
+      "sha256": "ce92de170d884dc20d84732f5f395824170e12cc45d12f89ad72ee552e5a5e38",
+      "size": 83,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/HEUR.heuristic.2.sg",
+      "purpose": "heuristic-gated rule with tilde result prefix",
+      "sha256": "a962756e43c0edfec7b711110715e10a305d947c4f9e6348c9a60be5bd8cf2d9",
+      "size": 87,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/HEUR.advanced.3.sg",
+      "purpose": "heuristic-gated rule with exclamation result prefix",
+      "sha256": "e7f22bd6a74fbec70a8956242a9b8923f4e64a1e5bf5be133586efa5373ac4a6",
+      "size": 86,
+      "source": "project-generated"
+    }
+  ],
+  "generator": "tools/corpus/generate_result_flag_fixture.py",
+  "license": "project-generated; no third-party sample or rule bytes",
+  "schema_version": 1
+}
