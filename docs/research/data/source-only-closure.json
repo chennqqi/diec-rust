@@ -1,0 +1,246 @@
+{
+  "evaluated_on": "2026-07-27",
+  "items": [
+    {
+      "acceptance": "all assertions pass against the pinned upstream identity and the capability becomes runtime-observed or receives an explicit reviewed scope disposition",
+      "closure_kind": "scope_review_or_private_harness",
+      "current_status": "source_only_runtime_corpus_missing",
+      "evidence_set": "dispatch_source",
+      "id": "CAP-RULE-007",
+      "missing_evidence": [
+        "the public scan API cannot pass a non-empty signature path",
+        "no runtime case observes the private path comparator"
+      ],
+      "name": "signature path filtering",
+      "proposed_experiment": {
+        "assertions": [
+          "exact path selects only the addressed rule",
+          "empty, missing, case-mismatched, and normalized paths are distinct",
+          "an ADR either keeps the private behavior in scope or excludes it"
+        ],
+        "fixture": "two same-name rules in distinct directories",
+        "harness": "private DiE_Script processDetect path-filter harness",
+        "platform": "linux-x86_64-qt5"
+      }
+    },
+    {
+      "acceptance": "all assertions pass against the pinned upstream identity and the capability becomes runtime-observed or receives an explicit reviewed scope disposition",
+      "closure_kind": "generated_format_oracle",
+      "current_status": "source_only_runtime_corpus_missing",
+      "evidence_set": "dispatch_source",
+      "id": "CAP-DISPATCH-002",
+      "missing_evidence": [
+        "MS-DOS, NE, LE, LX, DOS16M, DOS4G, BW DOS16M, and COM lack runtime cases"
+      ],
+      "name": "DOS and COM dispatch",
+      "proposed_experiment": {
+        "assertions": [
+          "each family member reaches its exact upstream filetype",
+          "truncated and near-magic controls do not borrow adjacent dispatch",
+          "raw stdout, stderr, exit code, size, and SHA-256 are retained"
+        ],
+        "fixture": "deterministic minimal DOS/COM family corpus",
+        "harness": "pinned qmake/CMake CLI oracle comparator",
+        "platform": "linux-x86_64-qt5"
+      }
+    },
+    {
+      "acceptance": "all assertions pass against the pinned upstream identity and the capability becomes runtime-observed or receives an explicit reviewed scope disposition",
+      "closure_kind": "generated_format_oracle",
+      "current_status": "source_only_runtime_corpus_missing",
+      "evidence_set": "dispatch_source",
+      "id": "CAP-DISPATCH-003",
+      "missing_evidence": [
+        "Amiga Hunk and Atari ST have source dispatch only"
+      ],
+      "name": "Amiga Hunk and Atari ST dispatch",
+      "proposed_experiment": {
+        "assertions": [
+          "both formats reach their exact upstream filetype",
+          "truncated and wrong-endian controls are included",
+          "raw stdout, stderr, exit code, size, and SHA-256 are retained"
+        ],
+        "fixture": "deterministic minimal Amiga Hunk and Atari ST corpus",
+        "harness": "pinned qmake/CMake CLI oracle comparator",
+        "platform": "linux-x86_64-qt5"
+      }
+    },
+    {
+      "acceptance": "all assertions pass against the pinned upstream identity and the capability becomes runtime-observed or receives an explicit reviewed scope disposition",
+      "closure_kind": "paired_negative_nested_oracle",
+      "current_status": "source_only_runtime_corpus_missing",
+      "evidence_set": "nested_scan",
+      "id": "CAP-NEST-007",
+      "missing_evidence": [
+        "source proves debug-data enumeration exists but scanner dispatch omits it",
+        "no paired runtime case distinguishes direct debug context from recursive scanning"
+      ],
+      "name": "debug data is not scanner dispatched",
+      "proposed_experiment": {
+        "assertions": [
+          "resource is recursively dispatched as the positive control",
+          "debug data is detectable when invoked directly",
+          "the same debug data produces no recursive scanner child"
+        ],
+        "fixture": "PE with both RT_MANIFEST resource and valid debug-data records",
+        "harness": "engine recursive scan plus direct debug-context harness",
+        "platform": "linux-x86_64-qt5"
+      }
+    },
+    {
+      "acceptance": "all assertions pass against the pinned upstream identity and the capability becomes runtime-observed or receives an explicit reviewed scope disposition",
+      "closure_kind": "bounded_escalation_and_adr",
+      "current_status": "source_only_with_corpus_gaps",
+      "evidence_set": "nested_scan",
+      "id": "CAP-NEST-009",
+      "missing_evidence": [
+        "absence of an independent depth or total-extraction limit is source-only",
+        "resource exhaustion boundaries have no escalating runtime corpus"
+      ],
+      "name": "no independent depth or total extraction limit",
+      "proposed_experiment": {
+        "assertions": [
+          "per-level count behavior is separated from depth and total bytes",
+          "timeout, peak memory, partial results, and cancellation are retained",
+          "an ADR records the bounded Rust default and legacy compatibility policy"
+        ],
+        "fixture": "generated nested archives with monotonic depth and expanded bytes",
+        "harness": "resource-limited upstream engine oracle",
+        "platform": "linux-x86_64-qt5"
+      }
+    },
+    {
+      "acceptance": "all assertions pass against the pinned upstream identity and the capability becomes runtime-observed or receives an explicit reviewed scope disposition",
+      "closure_kind": "engine_result_harness_extension",
+      "current_status": "source_only_runtime_corpus_missing",
+      "evidence_set": "result_model",
+      "id": "CAP-RESULT-001",
+      "missing_evidence": [
+        "runtime output currently retains nSize but not nScanTime, sFileName, or ftInit"
+      ],
+      "name": "scan result scalar metadata",
+      "proposed_experiment": {
+        "assertions": [
+          "nScanTime, sFileName, nSize, and ftInit are emitted",
+          "entry-point-specific filename semantics are compared",
+          "nondeterministic scan time is typed and not exact-normalized away"
+        ],
+        "fixture": "file, memory, device, and subdevice scans over identical bytes",
+        "harness": "extended engine-contract result serializer",
+        "platform": "linux-x86_64-qt5"
+      }
+    },
+    {
+      "acceptance": "all assertions pass against the pinned upstream identity and the capability becomes runtime-observed or receives an explicit reviewed scope disposition",
+      "closure_kind": "engine_result_harness_extension",
+      "current_status": "source_only_runtime_corpus_missing",
+      "evidence_set": "result_model",
+      "id": "CAP-RESULT-002",
+      "missing_evidence": [
+        "records and errors are observed but debug-record and handler lists are not"
+      ],
+      "name": "scan result record error debug and handler lists",
+      "proposed_experiment": {
+        "assertions": [
+          "record, error, debug-record, and handler lists are emitted separately",
+          "empty and non-empty cases preserve order and duplicates",
+          "no list is inferred from CLI stderr or another list"
+        ],
+        "fixture": "success, parse error, runtime error, debug record, and handler cases",
+        "harness": "extended engine-contract result serializer",
+        "platform": "linux-x86_64-qt5"
+      }
+    },
+    {
+      "acceptance": "all assertions pass against the pinned upstream identity and the capability becomes runtime-observed or receives an explicit reviewed scope disposition",
+      "closure_kind": "engine_result_harness_extension",
+      "current_status": "source_only_runtime_corpus_missing",
+      "evidence_set": "result_model",
+      "id": "CAP-RESULT-003",
+      "missing_evidence": [
+        "unknown true/false is observed but heuristic flags are only false"
+      ],
+      "name": "heuristic and unknown flags",
+      "proposed_experiment": {
+        "assertions": [
+          "heuristic and advanced-heuristic each have true and false cases",
+          "unknown has true and false cases",
+          "flags are asserted independently from display type strings"
+        ],
+        "fixture": "normal, heuristic, advanced-heuristic, and unknown rules",
+        "harness": "extended engine-contract rule fixture",
+        "platform": "linux-x86_64-qt5"
+      }
+    },
+    {
+      "acceptance": "all assertions pass against the pinned upstream identity and the capability becomes runtime-observed or receives an explicit reviewed scope disposition",
+      "closure_kind": "nested_result_harness_extension",
+      "current_status": "source_only_runtime_corpus_missing",
+      "evidence_set": "result_model",
+      "id": "CAP-RESULT-004",
+      "missing_evidence": [
+        "record and parent identifiers are not emitted by current harnesses"
+      ],
+      "name": "record and parent identifiers",
+      "proposed_experiment": {
+        "assertions": [
+          "root and child record identifiers are retained",
+          "each child parent identifier equals the actual parent identifier",
+          "identifier stability and uniqueness are tested without hard-coding randomness"
+        ],
+        "fixture": "root scan with resource and overlay children",
+        "harness": "extended nested engine result serializer",
+        "platform": "linux-x86_64-qt5"
+      }
+    },
+    {
+      "acceptance": "all assertions pass against the pinned upstream identity and the capability becomes runtime-observed or receives an explicit reviewed scope disposition",
+      "closure_kind": "engine_result_harness_extension",
+      "current_status": "source_only_runtime_corpus_missing",
+      "evidence_set": "result_model",
+      "id": "CAP-RESULT-005",
+      "missing_evidence": [
+        "string type/name values are observed but enum representations are not"
+      ],
+      "name": "record type and name representations",
+      "proposed_experiment": {
+        "assertions": [
+          "numeric enums and string type/name projections are emitted together",
+          "unknown and out-of-range representations are explicit",
+          "case and alias behavior is retained"
+        ],
+        "fixture": "known, unknown, heuristic, and custom result records",
+        "harness": "extended engine-contract result serializer",
+        "platform": "linux-x86_64-qt5"
+      }
+    }
+  ],
+  "limitations": [
+    "this manifest specifies closure evidence but does not execute the experiments",
+    "source-only negative claims require paired controls or a reviewed scope decision",
+    "a catalog entry cannot by itself promote a capability status"
+  ],
+  "platform": "linux-x86_64-qt5",
+  "result": "incomplete",
+  "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+  "schema_version": 1,
+  "source": {
+    "path": "docs/research/data/capability-coverage.json",
+    "sha256": "c85eb70a92f01c7b775ddcc54cb7b34a9e52510e577e1ff9cc25b94a1280122a"
+  },
+  "summary": {
+    "all_items_have_executable_assertions": true,
+    "all_items_have_missing_evidence": true,
+    "closure_kind_counts": {
+      "bounded_escalation_and_adr": 1,
+      "engine_result_harness_extension": 4,
+      "generated_format_oracle": 2,
+      "nested_result_harness_extension": 1,
+      "paired_negative_nested_oracle": 1,
+      "scope_review_or_private_harness": 1
+    },
+    "phase_0_source_only_closed": false,
+    "source_only_capability_count": 10
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

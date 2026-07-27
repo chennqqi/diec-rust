@@ -1,0 +1,81 @@
+# Linux Qt5 source-only 能力关闭计划
+
+Status: Draft
+
+Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
+
+Last updated: 2026-07-27
+
+## 1. 目的与结论
+
+[`capability-coverage.json`](data/capability-coverage.json) 当前仍有 10 个
+Linux Qt5 source-only 能力。本文不把源码证据提升为 runtime compatibility，
+而是为每项固定缺失证据、最小 fixture、oracle/harness、强断言和关闭方式。
+
+机器清单为
+[`data/source-only-closure.json`](data/source-only-closure.json)，由
+[`build_source_only_closure.py`](../../tools/research/build_source_only_closure.py)
+生成。生成器要求清单 ID 与 coverage report 的 source-only 闭集完全相等；
+新增、提升或删除能力而未同步计划会显式失败。
+
+## 2. 当前十项
+
+| 能力 | 关闭类型 | 关键缺口 |
+| --- | --- | --- |
+| `CAP-RULE-007` | scope review / private harness | 公共 API 不可传非空 signature path，private comparator 未运行 |
+| `CAP-DISPATCH-002` | generated format oracle | DOS/COM 八个成员无 runtime corpus |
+| `CAP-DISPATCH-003` | generated format oracle | Amiga Hunk、Atari ST 无 runtime corpus |
+| `CAP-NEST-007` | paired negative nested oracle | 缺“直接可检测、递归不分派”的同输入正负控制 |
+| `CAP-NEST-009` | bounded escalation + ADR | 缺深度/总展开量递增实验和 Rust 有界偏离决策 |
+| `CAP-RESULT-001` | engine harness extension | 只保留 size，缺 scan time、filename、initial filetype |
+| `CAP-RESULT-002` | engine harness extension | records/errors 已见，缺 debug records 与 handlers |
+| `CAP-RESULT-003` | engine harness extension | unknown 有正反例，heuristic/advanced flags 只有 false |
+| `CAP-RESULT-004` | nested result harness | record ID、parent ID 未导出 |
+| `CAP-RESULT-005` | engine harness extension | 字符串 type/name 已见，数值 enum 未导出 |
+
+## 3. 关闭原则
+
+### 负向能力
+
+“公共入口不可达”“scanner 不分派”“没有独立上限”不能仅靠一次未观察到行为来
+证明：
+
+- signature path 必须由 private harness 验证 comparator，或经 ADR 明确排除
+  非公共能力；
+- debug data 必须使用相同 PE 的直接 debug-context 正例、resource recursive
+  正例和 debug recursive 负例；
+- 无独立 depth/total limit 必须用单调递增语料记录 timeout、peak memory、
+  partial result 和 cancellation，并用 ADR 固定 Rust 的有界策略。
+
+### 组合格式
+
+DOS/COM 和 Amiga/Atari 必须为每个矩阵成员提供项目生成、hash-bound 的正例，
+同时提供截断、近似 magic 或错误端序控制。所有 case 在固定 qmake/CMake oracle
+上保存原始 stdout/stderr、退出码、大小和 SHA-256。
+
+### 结果模型
+
+不能从 CLI JSON 反推 engine 内部字段。harness 必须在同一 record 中同时导出
+原始 enum/flag/ID 与字符串投影，并分别覆盖空/非空、true/false、root/child、
+success/error/debug/handler 状态。随机 ID 可断言关系和唯一性，不硬编码具体值。
+
+## 4. 可重复生成与验证
+
+```text
+python tools/research/build_source_only_closure.py
+python tools/tests/test_source_only_closure.py
+```
+
+测试要求：
+
+- committed manifest 与生成结果逐字节一致；
+- 十个 ID 与当前 source-only 行完全相等；
+- 每项都有非空缺失证据、fixture、harness 和至少三个强断言；
+- 三类负向能力保持 paired control、scope review 或 ADR 关闭路径；
+- catalog 漂移和重复 JSON key 显式失败。
+
+## 5. 对 Phase 0 的影响
+
+该清单使 `P0-BLOCK-005` 的 Linux source-only 部分具备逐项执行入口，但不关闭
+任何能力，也不改变当前 38/20/9/1 分类。只有对应实验实际通过、原始证据落盘并
+更新 traceability 后，才能减少 source-only 计数。

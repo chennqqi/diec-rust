@@ -863,7 +863,8 @@ tested、exact、semantic、waived 和 unsupported 数量。
 - Windows/macOS upstream oracle 尚未固定，不能声称跨平台 exact。
 - capability coverage report 已覆盖全部 68 行和 272 个平台 cell 的分类；当前
   10 个 Linux Qt5 source-only 能力、30 个 corpus-gap 行及三个缺失平台仍不足以
-  满足 capability matrix。
+  满足 capability matrix；十项的 fixture/harness/assertion 闭集见
+  [`source-only-closure.json`](../research/data/source-only-closure.json)。
 - ADR 0006 已提议 rquickjs/QuickJS-NG，但 acceptance conditions 和全库
   execution conformance 未通过。
 - waiver v1、最小 semantic-normalizer v1、raw execution/artifact rehash、

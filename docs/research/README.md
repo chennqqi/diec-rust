@@ -9,6 +9,8 @@ Phase 0 计划形成：
 - [`capability-coverage-report.md`](capability-coverage-report.md)：68 个稳定能力在
   Linux Qt5/Qt6、Windows 和 macOS 上的 runtime/source-only、corpus-missing
   与 platform-missing 闭集报告（Draft）。
+- [`source-only-closure-plan.md`](source-only-closure-plan.md)：剩余 10 个 Linux
+  Qt5 source-only 能力的缺失证据、fixture、harness、强断言和关闭方式（Draft）。
 - [`source-analysis.md`](source-analysis.md)：模块关系及扫描/规则调用链（Draft）。
 - [`rule-compatibility.md`](rule-compatibility.md)：规则语法、内建函数和宿主 API（Draft）。
 - [`rule-runtime-spike.md`](rule-runtime-spike.md)：Boa 全库解析、真实复杂规则、宿主绑定和资源限制验证（Draft）。
@@ -70,6 +72,8 @@ Phase 0 计划形成：
   `CAP-*` 的验证层级、证据路径、平台范围和 12 个显式 coverage gap。
 - [`data/capability-coverage.json`](data/capability-coverage.json)：68 行 × 4 平台
   的 272-cell 闭集分类、十二个 gap 到能力的显式映射和未分类计数。
+- [`data/source-only-closure.json`](data/source-only-closure.json)：与当前十个
+  source-only 行严格相等的可执行关闭清单。
 - [`data/path-corpus.json`](data/path-corpus.json)：由基线字节组成的确定性嵌套目录树。
 - [`data/database-fixture.json`](data/database-fixture.json)：项目生成的数据库成功/故障 fixture。
 - [`data/database-archive-linux-qt5.json`](data/database-archive-linux-qt5.json)：两套固定 Qt5 oracle 的 17-case ZIP 数据库矩阵及两侧原始 stream。

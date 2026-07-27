@@ -110,7 +110,9 @@ python tools/tests/test_capability_coverage.py
 该报告关闭了 `P0-BLOCK-005` 中“没有完整 coverage report”的审计缺口，但没有
 关闭 blocker 本身。要关闭 `P0-BLOCK-005`，仍须：
 
-1. 为 10 个 Linux source-only 能力建立固定 runtime corpus；
+1. 按
+   [`source-only-closure-plan.md`](source-only-closure-plan.md)
+   为 10 个 Linux source-only 能力建立固定 runtime corpus 或评审 scope；
 2. 逐项收敛十类 corpus gap，而不是只增加 happy-path 样本；
 3. 固定 Windows、macOS 和完整 Linux Qt6 oracle；
 4. 重新生成报告，且经评审确认 Phase 0 所需行不再为 source-only、
