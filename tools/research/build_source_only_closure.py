@@ -40,12 +40,12 @@ CATALOG: dict[str, dict[str, Any]] = {
             ),
         ],
         "fixture": (
-            "deterministic seven-member public DOS/COM corpus plus "
+            "tools/corpus/generate_dos_dispatch_corpus.py (19 cases) plus "
             "docs/research/data/dos-dispatch-source-audit.json"
         ),
         "harness": (
-            "pinned qmake/CMake CLI comparator plus BW forced-property "
-            "harness or reviewed scope disposition"
+            "tools/upstream/probe_dos_dispatch.py plus BW "
+            "forced-property harness or reviewed scope disposition"
         ),
         "assertions": [
             "seven publicly detected members reach their exact upstream filetype",

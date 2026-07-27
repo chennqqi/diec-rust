@@ -63,6 +63,15 @@ COM，却没有 `FT_BWDOS16M` token。BW magic 只留在旧
 必须由显式 property harness 验证，或经 scope review 排除，不能伪造为第八个
 CLI 正例。
 
+七个公共成员的
+[`dos-dispatch-corpus.json`](data/dos-dispatch-corpus.json) 已由
+[`generate_dos_dispatch_corpus.py`](../../tools/corpus/generate_dos_dispatch_corpus.py)
+固定为 19 个正例/控制；
+[`probe_dos_dispatch.py`](../../tools/upstream/probe_dos_dispatch.py) 已实现双
+Qt5 oracle、manifest 身份、present/absent filetype 和 raw stream 门禁。Docker
+daemon 不可用，因此 runtime report 仍待采集；BW 路径仍待 property harness
+或 scope review。
+
 `CAP-DISPATCH-003` 已具备
 [`legacy-dispatch-corpus.json`](data/legacy-dispatch-corpus.json) 对应的 8-case
 生成器和 [`probe_legacy_dispatch.py`](../../tools/upstream/probe_legacy_dispatch.py)。
@@ -85,6 +94,9 @@ python tools/tests/test_source_only_closure.py
 python tools/corpus/generate_legacy_dispatch_corpus.py <corpus-dir>
 python tools/upstream/probe_legacy_dispatch.py \
   --corpus-dir <corpus-dir> --raw-dir <raw-dir> --output <report.json>
+python tools/corpus/generate_dos_dispatch_corpus.py <dos-corpus-dir>
+python tools/upstream/probe_dos_dispatch.py \
+  --corpus-dir <dos-corpus-dir> --raw-dir <raw-dir> --output <report.json>
 ```
 
 测试要求：

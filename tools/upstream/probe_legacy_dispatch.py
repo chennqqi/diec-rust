@@ -160,12 +160,11 @@ def expectation_failures(
     return failures
 
 
-def build_report(
-    repo: pathlib.Path,
+def probe_dispatch_cases(
     corpus_dir: pathlib.Path,
     raw_dir: pathlib.Path,
-) -> dict[str, Any]:
-    manifest, samples, manifest_bytes = load_fixture(repo, corpus_dir)
+    samples: list[dict[str, Any]],
+) -> tuple[dict[str, Any], dict[str, Any], list[str]]:
     raw_dir.mkdir(parents=True, exist_ok=True)
 
     oracle_identities = {}
@@ -248,6 +247,20 @@ def build_report(
         }
 
     unique_failures = list(dict.fromkeys(failures))
+    return oracle_identities, cases, unique_failures
+
+
+def build_report(
+    repo: pathlib.Path,
+    corpus_dir: pathlib.Path,
+    raw_dir: pathlib.Path,
+) -> dict[str, Any]:
+    manifest, samples, manifest_bytes = load_fixture(repo, corpus_dir)
+    oracle_identities, cases, unique_failures = probe_dispatch_cases(
+        corpus_dir,
+        raw_dir,
+        samples,
+    )
     return {
         "schema_version": 1,
         "generator": "tools/upstream/probe_legacy_dispatch.py",

@@ -1,0 +1,352 @@
+{
+  "capability": "CAP-DISPATCH-002",
+  "excluded_member": {
+    "evidence": "docs/research/data/dos-dispatch-source-audit.json",
+    "filetype": "BW DOS16M",
+    "reason": "scanner branch has no public XFormats detector at the pinned commit"
+  },
+  "generator": "tools/corpus/generate_dos_dispatch_corpus.py",
+  "license": "project-generated; no third-party sample bytes",
+  "public_filetypes": [
+    "MSDOS",
+    "NE",
+    "LE",
+    "LX",
+    "DOS16M",
+    "DOS4G",
+    "COM"
+  ],
+  "samples": [
+    {
+      "case_kind": "positive",
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "NE",
+          "LE",
+          "LX",
+          "DOS16M",
+          "DOS4G",
+          "COM"
+        ],
+        "present_filetypes": [
+          "MSDOS"
+        ]
+      },
+      "name": "minimal-msdos.exe",
+      "sha256": "51747adac1d11576a4bfc5de353eb0351511779be1d06130aa5f30d1a09d0590",
+      "size": 128,
+      "target_filetype": "MSDOS"
+    },
+    {
+      "case_kind": "near_magic",
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "MSDOS"
+        ],
+        "present_filetypes": []
+      },
+      "name": "msdos-near-magic.exe",
+      "sha256": "32ea0166a010857de94871754a3f3358a217ff582e52dd92579cd0624ef5ef61",
+      "size": 128,
+      "target_filetype": "MSDOS"
+    },
+    {
+      "case_kind": "positive",
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "LE",
+          "LX",
+          "DOS16M",
+          "DOS4G",
+          "COM"
+        ],
+        "present_filetypes": [
+          "NE"
+        ]
+      },
+      "name": "minimal-ne.exe",
+      "sha256": "13fde0e883336db2a2dd5ee1de2831b52f6de4b1b216b48df23ed2151ccd0e1f",
+      "size": 256,
+      "target_filetype": "NE"
+    },
+    {
+      "case_kind": "truncated",
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "NE"
+        ],
+        "present_filetypes": [
+          "MSDOS"
+        ]
+      },
+      "name": "ne-truncated.exe",
+      "sha256": "886eca9da24b80a58c6babbe82483adf28b013f220212bf1b8c7648ce438e0de",
+      "size": 128,
+      "target_filetype": "NE"
+    },
+    {
+      "case_kind": "near_magic",
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "NE"
+        ],
+        "present_filetypes": [
+          "MSDOS"
+        ]
+      },
+      "name": "ne-near-magic.exe",
+      "sha256": "1143827bc788e7fcd813c47e43dc07b3aa52b409f3f2a9b8693b20e26bf5375a",
+      "size": 256,
+      "target_filetype": "NE"
+    },
+    {
+      "case_kind": "positive",
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "NE",
+          "LX",
+          "DOS16M",
+          "DOS4G",
+          "COM"
+        ],
+        "present_filetypes": [
+          "LE"
+        ]
+      },
+      "name": "minimal-le.exe",
+      "sha256": "8bc90cf1f8f246cda3c2899afea9a3f23d12d3eed66f717a3b22cd1fe243c65f",
+      "size": 256,
+      "target_filetype": "LE"
+    },
+    {
+      "case_kind": "near_magic",
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "LE"
+        ],
+        "present_filetypes": [
+          "MSDOS"
+        ]
+      },
+      "name": "le-near-magic.exe",
+      "sha256": "f7369555f33a3ec66e8a3975b8eb7ab2154c9e7295702a2ad4d11a7a317ad3a0",
+      "size": 256,
+      "target_filetype": "LE"
+    },
+    {
+      "case_kind": "positive",
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "NE",
+          "LE",
+          "DOS16M",
+          "DOS4G",
+          "COM"
+        ],
+        "present_filetypes": [
+          "LX"
+        ]
+      },
+      "name": "minimal-lx.exe",
+      "sha256": "555bceadd838b53cd052fc5456d73524edb57a59d485d19faa709f76ec933584",
+      "size": 256,
+      "target_filetype": "LX"
+    },
+    {
+      "case_kind": "near_magic",
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "LX"
+        ],
+        "present_filetypes": [
+          "MSDOS"
+        ]
+      },
+      "name": "lx-near-magic.exe",
+      "sha256": "73b82ad87f2da00e10b29fa23e53fd631bf9827670cd35f223c5458416ce8b5e",
+      "size": 256,
+      "target_filetype": "LX"
+    },
+    {
+      "case_kind": "positive",
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "NE",
+          "LE",
+          "LX",
+          "DOS4G",
+          "COM"
+        ],
+        "present_filetypes": [
+          "DOS16M"
+        ]
+      },
+      "name": "minimal-dos16m.exe",
+      "sha256": "1a60a7d6f44e23d0a1b0fcce8478b84f01e9911ac442b75ea6bf6d997c0b8a88",
+      "size": 1280,
+      "target_filetype": "DOS16M"
+    },
+    {
+      "case_kind": "truncated",
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "DOS16M",
+          "DOS4G"
+        ],
+        "present_filetypes": [
+          "MSDOS"
+        ]
+      },
+      "name": "dos16m-truncated.exe",
+      "sha256": "6c7148c5e3d5a07b7ad933b29b52a231969d8430cb3056c5b2f742623bab801e",
+      "size": 1024,
+      "target_filetype": "DOS16M"
+    },
+    {
+      "case_kind": "near_magic",
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "DOS16M",
+          "DOS4G"
+        ],
+        "present_filetypes": [
+          "MSDOS"
+        ]
+      },
+      "name": "dos16m-near-bw.exe",
+      "sha256": "4ed6f6179fb8e78bd83ed88d3cbaa269acb90e2af579ef866b708e57d9079f73",
+      "size": 1280,
+      "target_filetype": "DOS16M"
+    },
+    {
+      "case_kind": "positive",
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "NE",
+          "LE",
+          "LX",
+          "DOS16M",
+          "COM"
+        ],
+        "present_filetypes": [
+          "DOS4G"
+        ]
+      },
+      "name": "minimal-dos4g.exe",
+      "sha256": "45cad3c831999cbc639cfdd6367dac6bb515b33ebbead237548deb9dddb28044",
+      "size": 1280,
+      "target_filetype": "DOS4G"
+    },
+    {
+      "case_kind": "truncated",
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "DOS16M",
+          "DOS4G"
+        ],
+        "present_filetypes": [
+          "MSDOS"
+        ]
+      },
+      "name": "dos4g-truncated.exe",
+      "sha256": "a2a4cc3938f612ebd5002082211638600fa38451729cf7163fe7e947937ac442",
+      "size": 1024,
+      "target_filetype": "DOS4G"
+    },
+    {
+      "case_kind": "adjacent_dispatch",
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "DOS4G"
+        ],
+        "present_filetypes": [
+          "DOS16M"
+        ]
+      },
+      "name": "dos4g-near-nested-magic.exe",
+      "sha256": "a6321b8ecb43206014888687722bbe69562dffaa04931e5b23798088cb4b86d3",
+      "size": 1280,
+      "target_filetype": "DOS4G"
+    },
+    {
+      "case_kind": "positive",
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "MSDOS",
+          "NE",
+          "LE",
+          "LX",
+          "DOS16M",
+          "DOS4G"
+        ],
+        "present_filetypes": [
+          "COM"
+        ]
+      },
+      "name": "minimal.com",
+      "sha256": "b98244cfb85d8bde554243e0175b0d9a6bffae8d6fb3736b477669d0c99aa0d7",
+      "size": 3,
+      "target_filetype": "COM"
+    },
+    {
+      "case_kind": "wrong_suffix",
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "COM"
+        ],
+        "present_filetypes": []
+      },
+      "name": "com-wrong-suffix.bin",
+      "sha256": "b98244cfb85d8bde554243e0175b0d9a6bffae8d6fb3736b477669d0c99aa0d7",
+      "size": 3,
+      "target_filetype": "COM"
+    },
+    {
+      "case_kind": "boundary_positive",
+      "expected_dispatch": {
+        "absent_filetypes": [],
+        "present_filetypes": [
+          "COM"
+        ]
+      },
+      "name": "com-max-size.com",
+      "sha256": "64625dd1be1b038a32ae6aa3631049b91436a6453f382c18dd9b3a94c06dac8f",
+      "size": 65280,
+      "target_filetype": "COM"
+    },
+    {
+      "case_kind": "oversized",
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "COM"
+        ],
+        "present_filetypes": []
+      },
+      "name": "com-oversized.com",
+      "sha256": "bce76f9599804c52141441b41a457eac0cd8f9638cc10c9609cd69618790deae",
+      "size": 65281,
+      "target_filetype": "COM"
+    }
+  ],
+  "schema_version": 1,
+  "source_identity": {
+    "Formats": {
+      "commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+      "repository": "https://github.com/horsicq/Formats.git"
+    },
+    "XArchive": {
+      "commit": "0fcd4e8d3e9933baac3b12246d82ac026557ffd0",
+      "repository": "https://github.com/horsicq/XArchive.git"
+    },
+    "validity_sources": [
+      "Formats/exec/xcom.cpp",
+      "Formats/exec/xcom_def.h",
+      "Formats/exec/xmsdos.cpp",
+      "Formats/exec/xmsdos_def.h",
+      "Formats/exec/xne.cpp",
+      "Formats/exec/xle.cpp",
+      "Formats/xformats.cpp",
+      "XArchive/xdos16.cpp"
+    ]
+  }
+}

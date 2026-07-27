@@ -73,15 +73,32 @@ python tools/upstream/probe_dos_dispatch_source_audit.py \
 既有 signature parser 语料已经包含 COM、MSDOS 的 parser-derived memory map
 正例，但没有覆盖 diec 顶层分发；它们只能复用字节构造，不能直接提升本能力。
 
-## 4. 后续实验
+## 4. 公共成员语料与 oracle
 
-下一步生成七个公共正例及成对控制：
+[`generate_dos_dispatch_corpus.py`](../../tools/corpus/generate_dos_dispatch_corpus.py)
+和 [`dos-dispatch-corpus.json`](data/dos-dispatch-corpus.json) 已固定 19 个 case：
 
 - MZ/ZM、`e_lfanew`、NE/LE/LX magic 的截断和近似值；
 - DOS16M/DOS4G 的 1024-byte 边界、BW chain 和嵌套 signature；
 - COM 的后缀与 65280/65281-byte 大小边界。
 
-双 CLI oracle 必须保留原始 stdout/stderr、退出码、输入长度和 SHA-256，并断言
-每个正例进入精确 filetype、控制不借用相邻 DOS family 分支。BW property
-harness 必须单独保留强制前后的对照；在该实验或 scope review 完成前，
-`CAP-DISPATCH-002` 保持 source-only。
+每个公共 filetype 都有正例。控制包含 `e_lfanew` 截断、近似 magic、DOS chain
+恰好 1024 bytes、错误 BW、COM 错误后缀和上限加一。特别地，
+`dos4g-near-nested-magic.exe` 必须回落到 DOS16M，显式检查相邻分发。
+
+[`probe_dos_dispatch.py`](../../tools/upstream/probe_dos_dispatch.py) 复用
+Amiga/Atari probe 的双 oracle 执行层；它要求临时 manifest 与提交清单逐字节
+相同，对两套 Qt5 oracle 分别执行 19 case，强制检查 present/absent filetype，
+并把每次 raw stdout/stderr 保存到外部目录。
+
+```text
+python tools/corpus/generate_dos_dispatch_corpus.py <corpus-dir>
+python tools/upstream/probe_dos_dispatch.py \
+  --corpus-dir <corpus-dir> \
+  --raw-dir <raw-dir> \
+  --output <report.json>
+```
+
+Docker daemon 当前不可用，尚未生成公共七成员 runtime report。BW property
+harness 也仍待实现或 scope review；在两部分完成前，`CAP-DISPATCH-002`
+保持 source-only。

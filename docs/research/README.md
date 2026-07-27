@@ -83,6 +83,8 @@ Phase 0 计划形成：
 - [`data/dos-dispatch-source-audit.json`](data/dos-dispatch-source-audit.json)：
   DOS/COM detector、BW legacy magic、scanner 分支和 property bypass 的
   SHA/line-bound 审计。
+- [`data/dos-dispatch-corpus.json`](data/dos-dispatch-corpus.json)：七个公共
+  DOS/COM filetype 的 19-case 正例、截断、近似 magic、chain、后缀和大小边界。
 - [`data/path-corpus.json`](data/path-corpus.json)：由基线字节组成的确定性嵌套目录树。
 - [`data/database-fixture.json`](data/database-fixture.json)：项目生成的数据库成功/故障 fixture。
 - [`data/database-archive-linux-qt5.json`](data/database-archive-linux-qt5.json)：两套固定 Qt5 oracle 的 17-case ZIP 数据库矩阵及两侧原始 stream。
