@@ -1,0 +1,44 @@
+{
+  "argv": [
+    "diec",
+    "--json",
+    "/corpus/synthetic.bin"
+  ],
+  "artifacts": {
+    "stderr": {
+      "sha256": "8372f34794ce221b78e055cd545f9d95e285202181948dfd9c2a80909fa6710e",
+      "size": 21
+    },
+    "stdout": {
+      "sha256": "a089aeead8675430ac529cf9cba3aeb21cb10d811a28ec6359a0e0f70c72a844",
+      "size": 15
+    }
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC"
+  },
+  "execution_schema": 1,
+  "logical_cwd": "/work",
+  "resource_usage": {
+    "budget_counters": {
+      "records": 1
+    },
+    "cpu_time_ns": 1000000,
+    "peak_memory_bytes": 4096
+  },
+  "run_identity": {
+    "case_id": "synthetic.raw-execution.example",
+    "case_manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "executable_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+    "platform": "linux-x86_64",
+    "producer_profile": "cmake-qt5",
+    "producer_revision": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "side": "upstream"
+  },
+  "termination": {
+    "code": 0,
+    "kind": "exit"
+  },
+  "wall_time_ns": 1234567
+}

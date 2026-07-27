@@ -29,3 +29,17 @@ python tools/compat/normalize_semantic_projection.py \
 The output binds the exact input and policy bytes and records each target
 value's before/after hash. It must not be copied as a production normalization
 policy.
+
+The raw-execution example uses two harmless text streams under the fixed
+content-addressed `raw-artifacts/sha256/` layout. Reproduce its audit with:
+
+```text
+python tools/compat/verify_raw_execution.py \
+  --manifest docs/design/schemas/examples/raw-execution-v1.example.json \
+  --artifact-root docs/design/schemas/examples/raw-artifacts \
+  --max-artifact-bytes 1024 \
+  --output docs/design/schemas/examples/raw-execution-verification-v1.example.json
+```
+
+The zero/one case and executable hashes are synthetic sentinels, not real
+provenance.

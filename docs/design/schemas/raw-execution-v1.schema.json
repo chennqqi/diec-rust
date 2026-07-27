@@ -1,0 +1,261 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://diec-rust.invalid/schemas/raw-execution-v1.schema.json",
+  "title": "DIEC raw execution record v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "execution_schema",
+    "run_identity",
+    "argv",
+    "environment",
+    "logical_cwd",
+    "termination",
+    "wall_time_ns",
+    "resource_usage",
+    "artifacts"
+  ],
+  "properties": {
+    "execution_schema": {
+      "const": 1
+    },
+    "run_identity": {
+      "$ref": "#/$defs/runIdentity"
+    },
+    "argv": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/nonNulString"
+      }
+    },
+    "environment": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[^=\u0000]+$"
+      },
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[^\u0000]*$"
+      }
+    },
+    "logical_cwd": {
+      "$ref": "#/$defs/nonNulString"
+    },
+    "termination": {
+      "$ref": "#/$defs/termination"
+    },
+    "wall_time_ns": {
+      "$ref": "#/$defs/u64"
+    },
+    "resource_usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cpu_time_ns",
+        "peak_memory_bytes",
+        "budget_counters"
+      ],
+      "properties": {
+        "cpu_time_ns": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/u64"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "peak_memory_bytes": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/u64"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "budget_counters": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^[a-z][a-z0-9_.-]*$"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/u64"
+          }
+        }
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stdout",
+        "stderr"
+      ],
+      "properties": {
+        "stdout": {
+          "$ref": "#/$defs/artifactReference"
+        },
+        "stderr": {
+          "$ref": "#/$defs/artifactReference"
+        },
+        "runtime_log": {
+          "$ref": "#/$defs/artifactReference"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "u64": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 18446744073709551615
+    },
+    "nonNulString": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[^\u0000]+$"
+    },
+    "runIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "case_id",
+        "side",
+        "platform",
+        "producer_profile",
+        "producer_revision",
+        "case_manifest_sha256",
+        "executable_sha256"
+      ],
+      "properties": {
+        "case_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "side": {
+          "enum": [
+            "upstream",
+            "rust"
+          ]
+        },
+        "platform": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+-[a-z0-9][a-z0-9_]*$"
+        },
+        "producer_profile": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+        },
+        "producer_revision": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "case_manifest_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "executable_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "artifactReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sha256",
+        "size"
+      ],
+      "properties": {
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "size": {
+          "$ref": "#/$defs/u64"
+        }
+      }
+    },
+    "termination": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "code"
+          ],
+          "properties": {
+            "kind": {
+              "const": "exit"
+            },
+            "code": {
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 4294967295
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "signal"
+          ],
+          "properties": {
+            "kind": {
+              "const": "signal"
+            },
+            "signal": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "limit_ms"
+          ],
+          "properties": {
+            "kind": {
+              "const": "timeout"
+            },
+            "limit_ms": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 18446744073709551615
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "error_code"
+          ],
+          "properties": {
+            "kind": {
+              "const": "spawn_error"
+            },
+            "error_code": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9_]*$"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

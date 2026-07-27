@@ -264,6 +264,23 @@ stdout/stderr 是 byte stream，不先 decode；小型基线可以直接保存�
 content-addressed artifact。报告时间戳不参与 equality。任何 sanitizer/runtime
 日志都作为独立 stream，不能混入程序 stdout。
 
+Phase 0 v1 以
+[`raw-execution-v1.schema.json`](schemas/raw-execution-v1.schema.json)
+冻结最小 execution evidence，并由
+[`verify_raw_execution.py`](../../tools/compat/verify_raw_execution.py)
+按
+[`raw-execution-verification-v1.schema.json`](schemas/raw-execution-verification-v1.schema.json)
+产生审计。manifest 固定 side/platform/profile/producer revision/case manifest/
+executable、argv/environment/logical cwd、四类 termination、wall time，以及
+显式 nullable CPU/peak-memory、命名 budget counters，及 stdout/stderr（必需）
+和 runtime log（可选）的 digest/size。环境变量名保留平台原始拼写，只拒绝 NUL/
+`=`。artifact path 不进入 manifest，而由显式 root 下的 `sha256/<digest>` 唯一派生。
+
+验证器在解析 artifact 前先检查总 declared bytes，随后有界流式读取；拒绝
+symlink/reparse/non-regular、缺失、size/hash mismatch 和读取期间身份变化，并在
+输出前重新有界读取 manifest。manifest、raw bytes 和 audit 的 SHA-256 均保留；
+audit 只表示该单份 execution evidence 通过，不等于 differential pass。
+
 CI 失败报告默认显示结构化 diff 和有限上下文，不把受限语料、全部二进制或巨量
 输出写入日志。
 
@@ -669,11 +686,19 @@ Phase 0 已先冻结并实现 waiver 子流水线的三个 v1 schema：
 - [`semantic-normalization-policy-v1.schema.json`](schemas/semantic-normalization-policy-v1.schema.json)；
 - [`semantic-normalization-output-v1.schema.json`](schemas/semantic-normalization-output-v1.schema.json)。
 
+raw execution evidence 子流水线冻结并实现两个 v1 schema：
+
+- [`raw-execution-v1.schema.json`](schemas/raw-execution-v1.schema.json)；
+- [`raw-execution-verification-v1.schema.json`](schemas/raw-execution-verification-v1.schema.json)。
+
+standalone raw artifact rehash 已实现并保留 audit hash，但尚未代表两侧差分通过。
+
 这些子 schema 不冒充完整 differential report：waiver input 只携带 executed case、
 精确 semantic difference、两侧 raw stream hash 和 canonical fingerprint；
 normalization input 只是任意 semantic value 的版本化 envelope，不等于完整
-semantic model。full harness 仍需把 execution、framing、完整 semantic projection、
-comparison 和 content-addressed raw artifact manifest 接入同一顶层 report。
+semantic model；raw verifier 只证明一侧 execution manifest 所引用 bytes 的内容
+身份。full differential integration 仍需把两侧已验证 execution、framing、完整
+semantic projection、normalization、comparison 和 waiver 接入同一顶层 report。
 
 ## 21. Phase 门禁
 
@@ -728,9 +753,9 @@ tested、exact、semantic、waived 和 unsupported 数量。
 - 当前 corpus 的格式覆盖仍不足以满足 capability matrix。
 - ADR 0006 已提议 rquickjs/QuickJS-NG，但 acceptance conditions 和全库
   execution conformance 未通过。
-- waiver v1 与最小 semantic-normalizer v1 子流水线已实现；完整 semantic model、
-  raw execution projection、raw artifact rehash、两侧 comparator 和 full report
-  integration 尚未实现。
+- waiver v1、最小 semantic-normalizer v1、raw execution 与 standalone raw
+  artifact rehash v1 子流水线已实现；完整 semantic model、raw framing
+  projection、两侧 comparator 和 full report integration 尚未实现。
 - benchmark runner/noise/阈值和默认资源 limits 尚未冻结。
 - archive/decompression sanitizer 与恶意语料隔离设施尚未建立。
 - CI provider、artifact retention 和 restricted corpus 权限尚未决定。

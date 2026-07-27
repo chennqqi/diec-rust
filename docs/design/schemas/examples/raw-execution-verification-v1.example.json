@@ -1,0 +1,35 @@
+{
+  "artifacts": {
+    "stderr": {
+      "relative_path": "sha256/8372f34794ce221b78e055cd545f9d95e285202181948dfd9c2a80909fa6710e",
+      "sha256": "8372f34794ce221b78e055cd545f9d95e285202181948dfd9c2a80909fa6710e",
+      "size": 21
+    },
+    "stdout": {
+      "relative_path": "sha256/a089aeead8675430ac529cf9cba3aeb21cb10d811a28ec6359a0e0f70c72a844",
+      "sha256": "a089aeead8675430ac529cf9cba3aeb21cb10d811a28ec6359a0e0f70c72a844",
+      "size": 15
+    }
+  },
+  "manifest_artifact": {
+    "canonical_execution_sha256": "ecec4288301106a8361286271b3bab25c26703b41c9f03cdda208db46bff5f88",
+    "sha256": "6461522d685a0f0f091149f9a2045389a0a6619cb7c9fd0c2aadbefbcc22f440"
+  },
+  "result": "pass",
+  "run_identity": {
+    "case_id": "synthetic.raw-execution.example",
+    "case_manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "executable_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+    "platform": "linux-x86_64",
+    "producer_profile": "cmake-qt5",
+    "producer_revision": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "side": "upstream"
+  },
+  "verification_budget_bytes": 1024,
+  "verification_schema": 1,
+  "verified_total_bytes": 36,
+  "verifier": {
+    "name": "diec-raw-execution-verifier",
+    "version": 1
+  }
+}

@@ -411,8 +411,10 @@ baseline 的变更都要检查本表。
   Phase 0 v1 validator 已拒绝 wildcard/root、duplicate JSON key、identity drift、
   expired/stale/unmatched 和不可 waiver failure，并重新计算 fingerprint。
 - **验证**：17 项 validator tests 覆盖差异扩大/缩小/消失、raw hash/平台/commit/
-  schema 改变、过期/未执行 case、输入只读和 synthetic audit 重现；完整 raw
-  artifact rehash 与 full differential integration 仍待验证。
+  schema 改变、过期/未执行 case、输入只读和 synthetic audit 重现；独立
+  content-addressed raw artifact verifier 另覆盖固定派生路径、stream size/hash、
+  预算、symlink/reparse、TOCTOU、输入只读和 golden 重现。raw artifact rehash
+  尚未与 normalizer/waiver 按顺序接入 full differential integration。
 - **关闭**：Phase 1 工具落地并通过测试；每次 release audit applied/stale waivers。
 
 ## 5. 风险变更流程

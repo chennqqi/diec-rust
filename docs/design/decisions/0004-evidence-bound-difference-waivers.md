@@ -103,9 +103,10 @@ Phase 0 reference implementation已经具备：
 - 严格 JSON duplicate-key/non-finite 拒绝、输入文件 SHA-256 和只读审计；
 - deterministic `--as-of`、`pass`/`fail`/`infrastructure_error` exit contract。
 
-ADR 仍保持 Proposed：validator 尚未接入完整 differential/normalizer pipeline，
-也未对 content-addressed raw artifact 本体重新取 hash；synthetic owner 字段不能
-替代真实 compatibility owner review 流程。
+ADR 仍保持 Proposed：独立 verifier 已能重新读取并校验 content-addressed raw
+artifact 本体，但尚未把两侧 execution verification 与 normalizer/validator 按
+顺序接入完整 differential pipeline；synthetic owner 字段也不能替代真实
+compatibility owner review 流程。
 
 ## Acceptance conditions
 

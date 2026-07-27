@@ -24,8 +24,16 @@ The audited semantic-normalization schemas are:
 - [`semantic-normalization-output-v1.schema.json`](semantic-normalization-output-v1.schema.json)
   records the derived value and input, policy, target-value and output hashes.
 
+The raw-execution evidence schemas are:
+
+- [`raw-execution-v1.schema.json`](raw-execution-v1.schema.json) records one
+  exact producer/case identity, argv/environment/termination, and raw stream
+  digest/length pairs, plus explicit nullable resource measurements;
+- [`raw-execution-verification-v1.schema.json`](raw-execution-verification-v1.schema.json)
+  records the streamed content rehash result and verification budget.
+
 [`examples/`](examples/) contains synthetic, non-production inputs and
-reproducible outputs for both sub-pipelines.
+reproducible outputs for all three sub-pipelines.
 
 The reference validator is
 [`tools/compat/validate_difference_waivers.py`](../../../tools/compat/validate_difference_waivers.py).
@@ -73,9 +81,26 @@ not support wildcard, root-document or raw whole-stream waivers. Raw-only byte
 range support requires a future schema with exact artifact/range identity.
 
 The validator records registry/report hashes and verifies those input files did
-not change during the audit. The full differential harness must additionally
-rehash the content-addressed raw artifacts referenced by execution records;
-that integration is not claimed by this v1 sub-pipeline.
+not change during the audit.
+
+## Raw execution evidence
+
+The reference verifier is
+[`tools/compat/verify_raw_execution.py`](../../../tools/compat/verify_raw_execution.py).
+An artifact reference contains only lowercase SHA-256 and byte length. Its path
+is derived as `sha256/<digest>` below an explicit root; manifests cannot inject
+absolute paths, `..`, separators, or globs.
+
+The verifier validates the total declared size before resolving any artifact,
+then reads each regular non-reparse file in bounded chunks. It checks size,
+SHA-256 and file identity before/during/after reading, re-reads the bounded
+manifest, refuses source overwrite, and emits deterministic UTF-8/LF audit
+bytes. stdout and stderr are mandatory; runtime logs remain a separate optional
+raw stream.
+
+This proves the bytes materialized for one execution record. The full
+differential harness must still bind both executions, their verifications,
+normalizations, comparisons and waivers in order.
 
 ## Normalization semantics
 
