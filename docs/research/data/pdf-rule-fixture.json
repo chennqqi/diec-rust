@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "generator": {
+    "path": "tools/corpus/generate_pdf_rule_fixture.py",
+    "version": 1
+  },
+  "license": "project-generated; no third-party sample bytes",
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "xpdf_commit": "cdcee54dce97f566f2c023f400a457f4e6278de2",
+  "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83",
+  "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+  "rule": {
+    "path": "PDF/format_Tools.2.sg",
+    "sha256": "982869432394292415be6c3c2ef9408ac1943c4d7571e19f767ffe87314c23da",
+    "preservation": "loaded byte-for-byte from the pinned rules subtree"
+  },
+  "case_count": 3,
+  "cases": [
+    {
+      "id": "tools_string_values",
+      "data_hex": "255044462d312e370a25e2e3cfd30a312030206f626a0a3c3c202f43726561746f722028546f6f6c204129202f50726f6475636572202850726f64204f6e6529203e3e0a656e646f626a0a322030206f626a0a3c3c202f43726561746f722028546f6f6c204129202f43726561746f722028546f6f6c5c294229202f50726f6475636572203c3438363537383e203e3e0a656e646f626a0a",
+      "data_sha256": "8498277c88e14e34bcc2c0fae357fa925ce984b566ef54fb826ba3229f890b96"
+    },
+    {
+      "id": "tools_non_string_values",
+      "data_hex": "255044462d312e340a2541534349490a312030206f626a0a3c3c202f43726561746f72203c35343666366636633e202f50726f6475636572202f4e616d656450726f6475636572203e3e0a656e646f626a0a",
+      "data_sha256": "5d0d2b18a562b0f782faf2a896f3fff050914dac53b3c380b279795a61008d08"
+    },
+    {
+      "id": "tools_missing_endobj",
+      "data_hex": "255044462d312e340a25fffe0a312030206f626a0a3c3c202f43726561746f72202848696464656e29202f50726f6475636572202848696464656e2050726f6429203e3e0a",
+      "data_sha256": "c0f56b999e178dda17e2f66af877edd95520ef444829165ea03910e8a6e613ea"
+    }
+  ]
+}
