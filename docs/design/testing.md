@@ -281,6 +281,25 @@ symlink/reparse/non-regular、缺失、size/hash mismatch 和读取期间身份�
 输出前重新有界读取 manifest。manifest、raw bytes 和 audit 的 SHA-256 均保留；
 audit 只表示该单份 execution evidence 通过，不等于 differential pass。
 
+固定上游证据同时存在 profiling/messages 位于 JSON 前，以及 rule error 位于 JSON
+后的两类 framing。Phase 0 v1
+[`project_raw_framing.py`](../../tools/compat/project_raw_framing.py)
+先执行上述全 execution rehash，再二次稳定读取 stdout，并按
+[`raw-framing-projection-v1.schema.json`](schemas/raw-framing-projection-v1.schema.json)
+投影为覆盖全部 bytes 的连续有序 ranges。只把 stream/LF 行首的完整 object/array、
+严格 UTF-8、无 duplicate key/非有限数的候选标为 `json_document`；prefix、
+separator、invalid candidate 和 trailing diagnostic 都保留为 `raw` range。
+每段保留 offset/size/raw hash，JSON 另保留 parsed value/canonical hash，整个
+segment sequence 再取 hash。`documents_found`/`no_json_document` 仅描述 framing，
+不得当作 differential pass/empty success。证据见
+[`../research/cli-option-behavior.md`](../research/cli-option-behavior.md) 和
+[`../research/database-error-behavior.md`](../research/database-error-behavior.md)。
+扫描位置只能单调前进：balanced-invalid 整段保留 raw、mismatch 从冲突后继续、
+unterminated 消费至 EOF，不得从嵌套 opener 重试形成二次复杂度。
+单 document 最大 8 MiB、JSON document 最多 4096、nesting 最大 256；触发时未投影
+部分仍归入 raw range，并输出 `projection_limit_reached` 与有序原因，不得继续解析
+成部分 semantic success。
+
 CI 失败报告默认显示结构化 diff 和有限上下文，不把受限语料、全部二进制或巨量
 输出写入日志。
 
@@ -691,14 +710,19 @@ raw execution evidence 子流水线冻结并实现两个 v1 schema：
 - [`raw-execution-v1.schema.json`](schemas/raw-execution-v1.schema.json)；
 - [`raw-execution-verification-v1.schema.json`](schemas/raw-execution-verification-v1.schema.json)。
 
+lossless framing 子流水线冻结并实现：
+
+- [`raw-framing-projection-v1.schema.json`](schemas/raw-framing-projection-v1.schema.json)。
+
 standalone raw artifact rehash 已实现并保留 audit hash，但尚未代表两侧差分通过。
 
 这些子 schema 不冒充完整 differential report：waiver input 只携带 executed case、
 精确 semantic difference、两侧 raw stream hash 和 canonical fingerprint；
 normalization input 只是任意 semantic value 的版本化 envelope，不等于完整
-semantic model；raw verifier 只证明一侧 execution manifest 所引用 bytes 的内容
-身份。full differential integration 仍需把两侧已验证 execution、framing、完整
-semantic projection、normalization、comparison 和 waiver 接入同一顶层 report。
+semantic model；raw verifier/framing 只证明一侧 execution bytes 身份与 stdout
+无损分段。full differential integration 仍需把两侧已验证 execution/framing、
+完整 semantic projection、normalization、comparison 和 waiver 接入同一顶层
+report。
 
 ## 21. Phase 门禁
 
@@ -753,9 +777,9 @@ tested、exact、semantic、waived 和 unsupported 数量。
 - 当前 corpus 的格式覆盖仍不足以满足 capability matrix。
 - ADR 0006 已提议 rquickjs/QuickJS-NG，但 acceptance conditions 和全库
   execution conformance 未通过。
-- waiver v1、最小 semantic-normalizer v1、raw execution 与 standalone raw
-  artifact rehash v1 子流水线已实现；完整 semantic model、raw framing
-  projection、两侧 comparator 和 full report integration 尚未实现。
+- waiver v1、最小 semantic-normalizer v1、raw execution/artifact rehash 和
+  lossless raw framing v1 子流水线已实现；完整 semantic model、两侧 comparator
+  和 full report integration 尚未实现。
 - benchmark runner/noise/阈值和默认资源 limits 尚未冻结。
 - archive/decompression sanitizer 与恶意语料隔离设施尚未建立。
 - CI provider、artifact retention 和 restricted corpus 权限尚未决定。

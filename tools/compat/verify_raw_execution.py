@@ -533,6 +533,18 @@ def artifact_relative_path(digest: str) -> pathlib.PurePosixPath:
     return pathlib.PurePosixPath("sha256", digest)
 
 
+def resolve_artifact_root(artifact_root: pathlib.Path) -> pathlib.Path:
+    root_metadata = artifact_root.lstat()
+    if (
+        not stat.S_ISDIR(root_metadata.st_mode)
+        or is_reparse_point(root_metadata)
+    ):
+        raise VerificationError(
+            "artifact root must be a real directory, not a symlink"
+        )
+    return artifact_root.resolve(strict=True)
+
+
 def resolve_artifact_path(
     artifact_root: pathlib.Path,
     digest: str,
@@ -572,12 +584,13 @@ def resolve_artifact_path(
     return resolved
 
 
-def hash_artifact(
+def _verify_artifact_content(
     path: pathlib.Path,
     expected_digest: str,
     expected_size: int,
     max_artifact_bytes: int,
-) -> dict[str, object]:
+    capture: bool,
+) -> bytes | None:
     relative = str(artifact_relative_path(expected_digest))
     before_path = path.lstat()
     if (
@@ -598,6 +611,7 @@ def hash_artifact(
         )
 
     digest = hashlib.sha256()
+    chunks: list[bytes] = []
     bytes_read = 0
     open_flags = os.O_RDONLY | getattr(os, "O_BINARY", 0)
     if hasattr(os, "O_NOFOLLOW"):
@@ -622,6 +636,8 @@ def hash_artifact(
                     f"artifact grew while hashing: {relative}"
                 )
             digest.update(chunk)
+            if capture:
+                chunks.append(chunk)
         after_open = os.fstat(descriptor)
     finally:
         os.close(descriptor)
@@ -645,10 +661,44 @@ def hash_artifact(
         raise VerificationError(
             f"artifact SHA-256 mismatch for {relative}"
         )
+    return b"".join(chunks) if capture else None
+
+
+def read_verified_artifact(
+    path: pathlib.Path,
+    expected_digest: str,
+    expected_size: int,
+    max_artifact_bytes: int,
+) -> bytes:
+    content = _verify_artifact_content(
+        path,
+        expected_digest,
+        expected_size,
+        max_artifact_bytes,
+        True,
+    )
+    assert content is not None
+    return content
+
+
+def hash_artifact(
+    path: pathlib.Path,
+    expected_digest: str,
+    expected_size: int,
+    max_artifact_bytes: int,
+) -> dict[str, object]:
+    relative = str(artifact_relative_path(expected_digest))
+    _verify_artifact_content(
+        path,
+        expected_digest,
+        expected_size,
+        max_artifact_bytes,
+        False,
+    )
     return {
         "relative_path": relative,
-        "sha256": observed_digest,
-        "size": bytes_read,
+        "sha256": expected_digest,
+        "size": expected_size,
     }
 
 
@@ -751,15 +801,7 @@ def verify_files(
             "execution manifest must be a regular non-reparse file"
         )
     resolved_manifest = manifest_path.resolve(strict=True)
-    resolved_root = artifact_root.resolve(strict=True)
-    root_metadata = artifact_root.lstat()
-    if (
-        not stat.S_ISDIR(root_metadata.st_mode)
-        or is_reparse_point(root_metadata)
-    ):
-        raise VerificationError(
-            "artifact root must be a real directory, not a symlink"
-        )
+    resolved_root = resolve_artifact_root(artifact_root)
     resolved_output = output_path.resolve()
     if resolved_output == resolved_manifest:
         raise VerificationError("output must not overwrite the manifest")

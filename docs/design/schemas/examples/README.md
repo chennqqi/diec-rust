@@ -43,3 +43,17 @@ python tools/compat/verify_raw_execution.py \
 
 The zero/one case and executable hashes are synthetic sentinels, not real
 provenance.
+
+The framing example combines profiling prefix lines, one JSON document and a
+trailing rule error in stdout. Reproduce the lossless projection with:
+
+```text
+python tools/compat/project_raw_framing.py \
+  --manifest docs/design/schemas/examples/raw-framing-execution-v1.example.json \
+  --artifact-root docs/design/schemas/examples/raw-artifacts \
+  --max-artifact-bytes 1024 \
+  --output docs/design/schemas/examples/raw-framing-projection-v1.example.json
+```
+
+Its three byte ranges cover the original stdout exactly; neither raw diagnostic
+is part of the parsed JSON value or omitted from the projection.

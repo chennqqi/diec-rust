@@ -32,8 +32,13 @@ The raw-execution evidence schemas are:
 - [`raw-execution-verification-v1.schema.json`](raw-execution-verification-v1.schema.json)
   records the streamed content rehash result and verification budget.
 
+The lossless framing schema is
+[`raw-framing-projection-v1.schema.json`](raw-framing-projection-v1.schema.json).
+It binds a raw execution verification and covers stdout with ordered,
+contiguous raw/strict-JSON byte ranges.
+
 [`examples/`](examples/) contains synthetic, non-production inputs and
-reproducible outputs for all three sub-pipelines.
+reproducible outputs for all compatibility sub-pipelines.
 
 The reference validator is
 [`tools/compat/validate_difference_waivers.py`](../../../tools/compat/validate_difference_waivers.py).
@@ -101,6 +106,30 @@ raw stream.
 This proves the bytes materialized for one execution record. The full
 differential harness must still bind both executions, their verifications,
 normalizations, comparisons and waivers in order.
+
+## Lossless framing
+
+The reference projector is
+[`tools/compat/project_raw_framing.py`](../../../tools/compat/project_raw_framing.py).
+It first verifies all execution artifacts, then re-reads stdout with the same
+bounded size/hash/identity checks. Object/array candidates are recognized only
+at stream or LF-delimited line start, matching the fixed CLI evidence. Balanced
+candidates must also be strict UTF-8 JSON with unique keys and finite values.
+Candidate scanning advances monotonically: balanced-invalid candidates are
+kept whole as raw, mismatches resume after the conflicting byte, and an
+unterminated candidate consumes to EOF. Nested retry cannot create quadratic
+work.
+
+v1 also freezes an 8 MiB per-document limit, 4096 JSON documents and nesting
+256. Hitting any limit preserves uncovered bytes as raw and emits
+`projection_limit_reached` with ordered reasons; it never becomes an empty
+successful projection.
+
+The output segments cover every byte exactly once and retain raw SHA-256 for
+JSON documents as well as prefixes, separators, invalid candidates and trailing
+diagnostics. Parsed JSON and its canonical hash are additional projections;
+they never replace the source bytes. `no_json_document` is explicit and cannot
+be interpreted as empty successful output.
 
 ## Normalization semantics
 

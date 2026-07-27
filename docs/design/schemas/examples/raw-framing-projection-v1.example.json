@@ -1,0 +1,101 @@
+{
+  "coverage": {
+    "bytes": 69,
+    "json_document_count": 1,
+    "raw_segment_count": 2,
+    "segment_count": 3
+  },
+  "execution_verification": {
+    "artifacts": {
+      "stderr": {
+        "relative_path": "sha256/8372f34794ce221b78e055cd545f9d95e285202181948dfd9c2a80909fa6710e",
+        "sha256": "8372f34794ce221b78e055cd545f9d95e285202181948dfd9c2a80909fa6710e",
+        "size": 21
+      },
+      "stdout": {
+        "relative_path": "sha256/5c48788adf5e7f42ff9f06c67c6b169356b1c81f4379e3d1ca4d44d24d2b906d",
+        "sha256": "5c48788adf5e7f42ff9f06c67c6b169356b1c81f4379e3d1ca4d44d24d2b906d",
+        "size": 69
+      }
+    },
+    "manifest_artifact": {
+      "canonical_execution_sha256": "a6541b5f90b72b60fb8a1eaa18fa4f389d66b889563816827020a2c1857298a5",
+      "sha256": "b5dffd9d67ba36931eb703d1f9ce810cef83de50eda23ff7f464f260af6ae6cd"
+    },
+    "result": "pass",
+    "run_identity": {
+      "case_id": "synthetic.raw-framing.example",
+      "case_manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "executable_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "platform": "linux-x86_64",
+      "producer_profile": "cmake-qt5",
+      "producer_revision": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+      "side": "upstream"
+    },
+    "verification_budget_bytes": 1024,
+    "verification_schema": 1,
+    "verified_total_bytes": 90,
+    "verifier": {
+      "name": "diec-raw-execution-verifier",
+      "version": 1
+    }
+  },
+  "execution_verification_sha256": "0967ad674af1e4bf12e6e5629128cd4c81341e0f7c19ee95d1b394783c16992b",
+  "framing_schema": 1,
+  "limits": {
+    "limit_reached": false,
+    "max_json_document_bytes": 8388608,
+    "max_json_documents": 4096,
+    "max_json_nesting": 256,
+    "reasons": []
+  },
+  "projector": {
+    "name": "diec-raw-framing-projector",
+    "version": 1
+  },
+  "result": "documents_found",
+  "run_identity": {
+    "case_id": "synthetic.raw-framing.example",
+    "case_manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "executable_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+    "platform": "linux-x86_64",
+    "producer_profile": "cmake-qt5",
+    "producer_revision": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "side": "upstream"
+  },
+  "segments": [
+    {
+      "index": 0,
+      "kind": "raw",
+      "offset": 0,
+      "sha256": "fdb80e8ea942196b50583a954b7fb08d632f6325a7067276044cef61b23ca218",
+      "size": 27
+    },
+    {
+      "canonical_json_sha256": "a5e0f046bf95a54b3c3b042320ffd3b035d639c02378d2392648a7a208586aba",
+      "index": 1,
+      "kind": "json_document",
+      "offset": 27,
+      "root_kind": "object",
+      "sha256": "a5e0f046bf95a54b3c3b042320ffd3b035d639c02378d2392648a7a208586aba",
+      "size": 14,
+      "value": {
+        "detects": []
+      }
+    },
+    {
+      "index": 2,
+      "kind": "raw",
+      "offset": 41,
+      "sha256": "9036a168912ba491abd5d3b8aa472df74882adae0965d5339d861de1f48cf956",
+      "size": 28
+    }
+  ],
+  "segments_sha256": "739e6cfce98734402af73f5031207380c491639d4ee8f8a3643fb11cbcfad93f",
+  "stream": {
+    "relative_path": "sha256/5c48788adf5e7f42ff9f06c67c6b169356b1c81f4379e3d1ca4d44d24d2b906d",
+    "role": "stdout",
+    "sha256": "5c48788adf5e7f42ff9f06c67c6b169356b1c81f4379e3d1ca4d44d24d2b906d",
+    "size": 69
+  }
+}

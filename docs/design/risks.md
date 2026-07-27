@@ -414,7 +414,9 @@ baseline 的变更都要检查本表。
   schema 改变、过期/未执行 case、输入只读和 synthetic audit 重现；独立
   content-addressed raw artifact verifier 另覆盖固定派生路径、stream size/hash、
   预算、symlink/reparse、TOCTOU、输入只读和 golden 重现。raw artifact rehash
-  尚未与 normalizer/waiver 按顺序接入 full differential integration。
+  已接入 lossless stdout framing，覆盖 prefix/invalid/trailing/multi-document
+  byte ranges；尚未与完整 semantic model、双侧 comparator、normalizer/waiver
+  按顺序接入 full differential integration。
 - **关闭**：Phase 1 工具落地并通过测试；每次 release audit applied/stale waivers。
 
 ## 5. 风险变更流程

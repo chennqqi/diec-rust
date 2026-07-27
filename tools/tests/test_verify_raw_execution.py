@@ -113,6 +113,23 @@ class RawExecutionVerificationTests(unittest.TestCase):
             )
             self.assertNotIn(b"\r\n", output_path.read_bytes())
 
+    def test_hash_only_verification_does_not_capture_artifact_bytes(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = pathlib.Path(temporary)
+            path = write_artifact(root, STDOUT_SHA256, STDOUT_BYTES)
+            with mock.patch.object(
+                MODULE,
+                "_verify_artifact_content",
+                wraps=MODULE._verify_artifact_content,
+            ) as verifier:
+                MODULE.hash_artifact(
+                    path,
+                    STDOUT_SHA256,
+                    len(STDOUT_BYTES),
+                    1024,
+                )
+            self.assertFalse(verifier.call_args.args[-1])
+
     def test_rejects_content_hash_mismatch(self):
         with tempfile.TemporaryDirectory() as temporary:
             directory = pathlib.Path(temporary)

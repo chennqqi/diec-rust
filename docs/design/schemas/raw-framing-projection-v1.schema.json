@@ -1,0 +1,416 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://diec-rust.invalid/schemas/raw-framing-projection-v1.schema.json",
+  "title": "DIEC lossless raw framing projection v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "framing_schema",
+    "projector",
+    "result",
+    "run_identity",
+    "execution_verification",
+    "execution_verification_sha256",
+    "stream",
+    "coverage",
+    "limits",
+    "segments_sha256",
+    "segments"
+  ],
+  "properties": {
+    "framing_schema": {
+      "const": 1
+    },
+    "projector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version"
+      ],
+      "properties": {
+        "name": {
+          "const": "diec-raw-framing-projector"
+        },
+        "version": {
+          "const": 1
+        }
+      }
+    },
+    "result": {
+      "enum": [
+        "documents_found",
+        "no_json_document",
+        "projection_limit_reached"
+      ]
+    },
+    "run_identity": {
+      "$ref": "#/$defs/runIdentity"
+    },
+    "execution_verification": {
+      "$ref": "https://diec-rust.invalid/schemas/raw-execution-verification-v1.schema.json"
+    },
+    "execution_verification_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "stream": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role",
+        "relative_path",
+        "sha256",
+        "size"
+      ],
+      "properties": {
+        "role": {
+          "const": "stdout"
+        },
+        "relative_path": {
+          "type": "string",
+          "pattern": "^sha256/[0-9a-f]{64}$"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "size": {
+          "$ref": "#/$defs/u64"
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bytes",
+        "segment_count",
+        "raw_segment_count",
+        "json_document_count"
+      ],
+      "properties": {
+        "bytes": {
+          "$ref": "#/$defs/u64"
+        },
+        "segment_count": {
+          "$ref": "#/$defs/u64"
+        },
+        "raw_segment_count": {
+          "$ref": "#/$defs/u64"
+        },
+        "json_document_count": {
+          "$ref": "#/$defs/u64"
+        }
+      }
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_json_document_bytes",
+        "max_json_documents",
+        "max_json_nesting",
+        "limit_reached",
+        "reasons"
+      ],
+      "properties": {
+        "max_json_document_bytes": {
+          "const": 8388608
+        },
+        "max_json_documents": {
+          "const": 4096
+        },
+        "max_json_nesting": {
+          "const": 256
+        },
+        "limit_reached": {
+          "type": "boolean"
+        },
+        "reasons": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "document_bytes",
+              "document_count",
+              "nesting"
+            ]
+          }
+        }
+      }
+    },
+    "segments_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "segments": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/rawSegment"
+          },
+          {
+            "$ref": "#/$defs/jsonSegment"
+          }
+        ]
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "result": {
+            "const": "projection_limit_reached"
+          }
+        },
+        "required": [
+          "result"
+        ]
+      },
+      "then": {
+        "properties": {
+          "limits": {
+            "properties": {
+              "limit_reached": {
+                "const": true
+              },
+              "reasons": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "limits": {
+            "properties": {
+              "limit_reached": {
+                "const": false
+              },
+              "reasons": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "result": {
+            "const": "documents_found"
+          }
+        },
+        "required": [
+          "result"
+        ]
+      },
+      "then": {
+        "properties": {
+          "coverage": {
+            "properties": {
+              "json_document_count": {
+                "minimum": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "result": {
+            "const": "no_json_document"
+          }
+        },
+        "required": [
+          "result"
+        ]
+      },
+      "then": {
+        "properties": {
+          "coverage": {
+            "properties": {
+              "json_document_count": {
+                "const": 0
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "u64": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 18446744073709551615
+    },
+    "runIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "case_id",
+        "side",
+        "platform",
+        "producer_profile",
+        "producer_revision",
+        "case_manifest_sha256",
+        "executable_sha256"
+      ],
+      "properties": {
+        "case_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "side": {
+          "enum": [
+            "upstream",
+            "rust"
+          ]
+        },
+        "platform": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+-[a-z0-9][a-z0-9_]*$"
+        },
+        "producer_profile": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+        },
+        "producer_revision": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "case_manifest_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "executable_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "segmentBase": {
+      "type": "object",
+      "required": [
+        "index",
+        "kind",
+        "offset",
+        "size",
+        "sha256"
+      ],
+      "properties": {
+        "index": {
+          "$ref": "#/$defs/u64"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "offset": {
+          "$ref": "#/$defs/u64"
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 18446744073709551615
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "rawSegment": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/segmentBase"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "index",
+            "kind",
+            "offset",
+            "size",
+            "sha256"
+          ],
+          "properties": {
+            "index": {
+              "$ref": "#/$defs/u64"
+            },
+            "kind": {
+              "const": "raw"
+            },
+            "offset": {
+              "$ref": "#/$defs/u64"
+            },
+            "size": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 18446744073709551615
+            },
+            "sha256": {
+              "$ref": "#/$defs/sha256"
+            }
+          }
+        }
+      ]
+    },
+    "jsonSegment": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/segmentBase"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "index",
+            "kind",
+            "offset",
+            "size",
+            "sha256",
+            "root_kind",
+            "canonical_json_sha256",
+            "value"
+          ],
+          "properties": {
+            "index": {
+              "$ref": "#/$defs/u64"
+            },
+            "kind": {
+              "const": "json_document"
+            },
+            "offset": {
+              "$ref": "#/$defs/u64"
+            },
+            "size": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 18446744073709551615
+            },
+            "sha256": {
+              "$ref": "#/$defs/sha256"
+            },
+            "root_kind": {
+              "enum": [
+                "object",
+                "array"
+              ]
+            },
+            "canonical_json_sha256": {
+              "$ref": "#/$defs/sha256"
+            },
+            "value": true
+          }
+        }
+      ]
+    }
+  }
+}
