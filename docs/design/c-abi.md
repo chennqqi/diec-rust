@@ -1,8 +1,8 @@
 # C ABI 设计
 
-Status: Draft
+Status: In Review
 
-Last updated: 2026-07-26
+Last updated: 2026-07-27
 
 ## 依据与状态
 
@@ -22,7 +22,7 @@ Last updated: 2026-07-26
 不透明句柄和配对释放的长期边界选择记录在
 [`decisions/0001-c-abi-opaque-ownership.md`](decisions/0001-c-abi-opaque-ownership.md)。
 
-本文是 Phase 0 Draft。符号名、状态码和 options layout 在进入 `Accepted` 前仍可
+本文是 Phase 0 评审稿。符号名、状态码和 options layout 在进入 `Accepted` 前仍可
 调整；它们不是当前仓库已经发布的 ABI。正式实现不得直接复制 spike 的
 `diec_spike_*` 名称或占位 JSON。
 

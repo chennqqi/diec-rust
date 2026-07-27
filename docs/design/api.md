@@ -1,12 +1,12 @@
 # Rust API、结果与 CLI 契约
 
-Status: Draft
+Status: In Review
 
 Last updated: 2026-07-27
 
 ## 1. 状态与证据
 
-本文定义 Phase 0 的 API 草案，不是已发布的 semver 承诺。类型名和字段在设计门禁
+本文定义 Phase 0 的 API 评审稿，不是已发布的 semver 承诺。类型名和字段在设计门禁
 通过前仍可调整；错误分类、所有权、确定性、兼容输出与安全限制不可在实现中静默
 弱化。
 
@@ -629,7 +629,7 @@ offset/size 差异。
   mode union 表示，不替代该 modern API 决策。
 
 上述项目必须由固定 baseline、spike 或 `testing.md` 的可执行用例关闭；不能仅凭
-实现方便作决定。
+实现方便作决定。`In Review` 不表示这些问题已经关闭，也不冻结公共 API。
 
 ## 22. API 验收条件
 

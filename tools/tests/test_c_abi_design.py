@@ -16,7 +16,7 @@ ADR = (
 class CAbiDesignTests(unittest.TestCase):
     def test_design_links_evidence_and_covers_required_contracts(self):
         text = DESIGN.read_text(encoding="utf-8")
-        self.assertIn("Status: Draft", text)
+        self.assertIn("Status: In Review", text)
         self.assertIn("../research/c-static-link-spike.md", text)
         self.assertIn("../research/source-analysis.md", text)
         for heading in (

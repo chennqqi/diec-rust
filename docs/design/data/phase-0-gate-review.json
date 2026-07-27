@@ -41,31 +41,31 @@
     {
       "id": "P0-DES-001",
       "path": "docs/design/architecture.md",
-      "document_status": "Draft",
+      "document_status": "In Review",
       "gate_status": "review_pending"
     },
     {
       "id": "P0-DES-002",
       "path": "docs/design/api.md",
-      "document_status": "Draft",
+      "document_status": "In Review",
       "gate_status": "review_pending"
     },
     {
       "id": "P0-DES-003",
       "path": "docs/design/c-abi.md",
-      "document_status": "Draft",
+      "document_status": "In Review",
       "gate_status": "review_pending"
     },
     {
       "id": "P0-DES-004",
       "path": "docs/design/testing.md",
-      "document_status": "Draft",
+      "document_status": "In Review",
       "gate_status": "review_pending"
     },
     {
       "id": "P0-DES-005",
       "path": "docs/design/risks.md",
-      "document_status": "Draft",
+      "document_status": "In Review",
       "gate_status": "review_pending"
     }
   ],
@@ -165,9 +165,10 @@
     },
     {
       "id": "P0-BLOCK-002",
-      "title": "five required design documents remain Draft",
+      "title": "five required design documents await review disposition",
       "owner": "architecture",
       "status": "open",
+      "progress_evidence": "docs/design/design-review-readiness.md and docs/design/data/design-review-readiness.json mark all five documents review_ready while keeping acceptance_ready false",
       "closure_evidence": "recorded review disposition for architecture, API, C ABI, testing, and risks"
     },
     {

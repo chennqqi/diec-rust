@@ -1,12 +1,12 @@
 # 测试、差分与发布验证设计
 
-Status: Draft
+Status: In Review
 
 Last updated: 2026-07-27
 
 ## 1. 状态与证据
 
-本文定义 Phase 0 的测试设计，不表示当前兼容性已经得到证明。正式实现开始后，
+本文定义 Phase 0 的测试设计评审稿，不表示当前兼容性已经得到证明。正式实现开始后，
 测试工具和 manifest 可以演进，但不得削弱原始证据保存、默认拒绝差异、语料溯源、
 资源安全和跨平台门禁。
 
@@ -860,7 +860,8 @@ tested、exact、semantic、waived 和 unsupported 数量。
 - archive/decompression sanitizer 与恶意语料隔离设施尚未建立。
 - CI provider、artifact retention 和 restricted corpus 权限尚未决定。
 
-这些项目关闭前本文保持 Draft。
+这些项目关闭前本文不得标记为 Accepted。`In Review` 只表示测试层级、证据契约、
+开放门禁和验收条件已经完整列出。
 
 ## 23. 测试设计验收条件
 

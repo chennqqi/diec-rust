@@ -1,12 +1,12 @@
 # diec-rust 分层架构
 
-Status: Draft
+Status: In Review
 
 Last updated: 2026-07-27
 
 ## 1. 状态与证据
 
-本文是 Phase 0 的架构草案，不表示设计门禁已经通过，也不授权开始正式功能实现。
+本文是 Phase 0 的架构评审稿，不表示设计门禁已经通过，也不授权开始正式功能实现。
 它冻结优先级最高的边界：workspace 职责、依赖方向、扫描数据流、资源预算和第三方
 runtime 隔离。公共 Rust API、CLI 契约和完整结果字段仍由后续 `api.md` 定义。
 
@@ -441,7 +441,8 @@ flush/close 后的原子替换和单 writer 协调；取消或 build/decode 失�
 - static linking 的完整平台系统库清单仍需 CI target matrix 验证。
 - 上游许可证、规则许可证及第三方 runtime 组合必须在选型前完成复核。
 
-这些门禁未关闭前，文档状态保持 Draft。
+这些门禁未关闭前，文档不得标记为 Accepted。`In Review` 只表示正文、证据和
+开放问题已具备评审条件，不表示评审通过。
 
 ## 22. 架构验收条件
 

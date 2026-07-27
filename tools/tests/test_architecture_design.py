@@ -15,7 +15,7 @@ class ArchitectureDesignTest(unittest.TestCase):
         cls.adr = ADR.read_text(encoding="utf-8")
 
     def test_document_is_draft_and_evidence_backed(self) -> None:
-        self.assertIn("Status: Draft", self.architecture)
+        self.assertIn("Status: In Review", self.architecture)
         for evidence in (
             "source-analysis.md",
             "behavior-baseline.md",

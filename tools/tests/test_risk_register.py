@@ -13,7 +13,7 @@ class RiskRegisterTest(unittest.TestCase):
         cls.risks = RISKS.read_text(encoding="utf-8")
 
     def test_register_is_draft_and_links_design_evidence(self) -> None:
-        self.assertIn("Status: Draft", self.risks)
+        self.assertIn("Status: In Review", self.risks)
         for evidence in (
             "architecture.md",
             "api.md",

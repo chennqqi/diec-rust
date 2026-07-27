@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "evaluated_on": "2026-07-27",
+  "phase": 0,
+  "result": "review_pending",
+  "documents": [
+    {
+      "id": "DESIGN-ARCHITECTURE",
+      "path": "docs/design/architecture.md",
+      "document_status": "In Review",
+      "review_ready": true,
+      "acceptance_ready": false,
+      "contract_test": "tools/tests/test_architecture_design.py",
+      "required_headings": [
+        "## 2. 目标",
+        "## 3. 非目标",
+        "## 6. 依赖 DAG 与禁止边",
+        "## 13. 资源、取消与失败语义",
+        "## 21. 风险与开放门禁",
+        "## 22. 架构验收条件"
+      ],
+      "blocking_items": [
+        "ADR 0002 remains Proposed",
+        "ADR 0006 runtime acceptance is incomplete",
+        "canonical result and default resource limits are not frozen"
+      ]
+    },
+    {
+      "id": "DESIGN-API",
+      "path": "docs/design/api.md",
+      "document_status": "In Review",
+      "review_ready": true,
+      "acceptance_ready": false,
+      "contract_test": "tools/tests/test_api_design.py",
+      "required_headings": [
+        "## 2. API 目标",
+        "## 3. 非目标",
+        "## 8. ScanLimits",
+        "## 10. ScanReport 与 completion",
+        "## 21. 开放问题与冻结门禁",
+        "## 22. API 验收条件"
+      ],
+      "blocking_items": [
+        "ADR 0003 remains Proposed",
+        "canonical modern schema and default limits are not frozen",
+        "thread and path policies remain open"
+      ]
+    },
+    {
+      "id": "DESIGN-C-ABI",
+      "path": "docs/design/c-abi.md",
+      "document_status": "In Review",
+      "review_ready": true,
+      "acceptance_ready": false,
+      "contract_test": "tools/tests/test_c_abi_design.py",
+      "required_headings": [
+        "## 目标",
+        "## 非目标",
+        "## 公共 C 类型",
+        "## Panic、异常与 native fault",
+        "## 验收矩阵",
+        "## 开放问题与冻结门禁"
+      ],
+      "blocking_items": [
+        "ADR 0001 remains Proposed",
+        "runtime thread and interrupt behavior is not frozen",
+        "macOS, musl, arm64, Go, and Python validation is incomplete"
+      ]
+    },
+    {
+      "id": "DESIGN-TESTING",
+      "path": "docs/design/testing.md",
+      "document_status": "In Review",
+      "review_ready": true,
+      "acceptance_ready": false,
+      "contract_test": "tools/tests/test_testing_design.py",
+      "required_headings": [
+        "## 4. 能力追踪",
+        "## 9. 差分算法",
+        "## 14. Fuzz 设计",
+        "## 17. CI 矩阵",
+        "## 22. 风险与开放门禁",
+        "## 23. 测试设计验收条件"
+      ],
+      "blocking_items": [
+        "ADR 0004 remains Proposed",
+        "Windows and macOS oracles are not pinned",
+        "benchmark runner, limits, and release integration are incomplete"
+      ]
+    },
+    {
+      "id": "DESIGN-RISKS",
+      "path": "docs/design/risks.md",
+      "document_status": "In Review",
+      "review_ready": true,
+      "acceptance_ready": false,
+      "contract_test": "tools/tests/test_risk_register.py",
+      "required_headings": [
+        "## 2. 评级与状态",
+        "## 3. 风险总览",
+        "## 4. 详细风险",
+        "## 5. 风险变更流程",
+        "## 6. Phase 0 风险门禁",
+        "## 7. 当前最高优先级"
+      ],
+      "blocking_items": [
+        "Phase 0 design and ADR review dispositions are not recorded",
+        "runtime, license, platform oracle, and performance blockers remain open"
+      ]
+    }
+  ],
+  "summary": {
+    "document_count": 5,
+    "review_ready_count": 5,
+    "acceptance_ready_count": 0,
+    "all_in_review": true,
+    "phase_0_authorized_to_exit": false
+  }
+}

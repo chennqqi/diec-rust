@@ -16,7 +16,7 @@ class ApiDesignTest(unittest.TestCase):
         cls.c_abi = C_ABI.read_text(encoding="utf-8")
 
     def test_api_is_draft_and_links_evidence(self) -> None:
-        self.assertIn("Status: Draft", self.api)
+        self.assertIn("Status: In Review", self.api)
         for evidence in (
             "architecture.md",
             "c-abi.md",
