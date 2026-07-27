@@ -290,7 +290,16 @@
         "tools/upstream/npm_dispatch_harness_main.cpp",
         "tools/upstream/Dockerfile.npm-dispatch-harness-qt5",
         "tools/tests/test_generate_npm_dispatch_fixture.py",
-        "tools/tests/test_probe_npm_dispatch_harness.py"
+        "tools/tests/test_probe_npm_dispatch_harness.py",
+        "docs/research/generic-archive-dispatch-reachability.md",
+        "docs/research/data/generic-archive-dispatch-fixture.json",
+        "docs/research/data/generic-archive-dispatch-engine-qt5.json",
+        "tools/corpus/generate_generic_archive_dispatch_fixture.py",
+        "tools/upstream/probe_generic_archive_dispatch_harness.py",
+        "tools/upstream/generic_archive_dispatch_harness_main.cpp",
+        "tools/upstream/Dockerfile.generic-archive-dispatch-harness-qt5",
+        "tools/tests/test_generate_generic_archive_dispatch_fixture.py",
+        "tools/tests/test_probe_generic_archive_dispatch_harness.py"
       ]
     },
     "engine_contract": {
@@ -1462,7 +1471,7 @@
   "schema_version": 1,
   "source": {
     "path": "docs/research/data/capability-traceability.json",
-    "sha256": "5dc5d0b4b78614f95756ab62835118eb28bd7e53823cb1b08c005e8ff4b84089"
+    "sha256": "191c59a4433a2546953741fc9173b4bc6333a3eabf50191ed135af3e10fbcecd"
   },
   "status_definitions": {
     "platform_missing": "no complete capability baseline is admitted for this platform",

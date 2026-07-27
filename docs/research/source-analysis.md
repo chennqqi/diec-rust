@@ -153,6 +153,13 @@ NPM 是“类、宿主和规则存在，但公共自动分派不可达”的具�
 调用链模型必须分别表达 detector 命中与 public dispatch 结果，不能从类型实现
 存在性推断公共可达性。
 
+generic Archive 又揭示了三阶段分派：Formats 自然检测同时加入
+`FT_ARCHIVE + concrete subtype`；scanner 仅在单一 `FT_ARCHIVE` 时进入通用
+分支；脚本宿主随后重新检测 concrete subtype，经 `createClass()` 创建具体
+XArchive adapter。ZIP/TAR/GZIP 的双 release 与 forced-property 控制见
+[`generic-archive-dispatch-reachability.md`](generic-archive-dispatch-reachability.md)。
+Rust 结果与调试模型必须能区分这三阶段，避免用任一中间集合覆盖顶层初始类型。
+
 ## 结果与层级
 
 `SCAN_RESULT` 不只是字符串：

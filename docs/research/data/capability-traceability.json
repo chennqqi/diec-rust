@@ -212,7 +212,16 @@
         "tools/upstream/npm_dispatch_harness_main.cpp",
         "tools/upstream/Dockerfile.npm-dispatch-harness-qt5",
         "tools/tests/test_generate_npm_dispatch_fixture.py",
-        "tools/tests/test_probe_npm_dispatch_harness.py"
+        "tools/tests/test_probe_npm_dispatch_harness.py",
+        "docs/research/generic-archive-dispatch-reachability.md",
+        "docs/research/data/generic-archive-dispatch-fixture.json",
+        "docs/research/data/generic-archive-dispatch-engine-qt5.json",
+        "tools/corpus/generate_generic_archive_dispatch_fixture.py",
+        "tools/upstream/probe_generic_archive_dispatch_harness.py",
+        "tools/upstream/generic_archive_dispatch_harness_main.cpp",
+        "tools/upstream/Dockerfile.generic-archive-dispatch-harness-qt5",
+        "tools/tests/test_generate_generic_archive_dispatch_fixture.py",
+        "tools/tests/test_probe_generic_archive_dispatch_harness.py"
       ]
     },
     "nested_scan": {

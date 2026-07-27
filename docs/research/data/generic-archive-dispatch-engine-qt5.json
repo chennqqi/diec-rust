@@ -1,0 +1,1000 @@
+{
+  "binaries": {
+    "harness": {
+      "path": "/opt/die-build/src/console/diec-generic-archive-dispatch-harness",
+      "sha256": "387ad8e6f3b64e027798fd04c384f2bcbbca6860274da4704cdabd3028735621",
+      "size": 8238504
+    },
+    "release_cmake": {
+      "path": "/opt/die-build/src/console/diec",
+      "sha256": "da1fab49f7ba5970d1fc1c7fe3d4f380cf5e8775dd8097207e7b3c30f08236cf",
+      "size": 8248008
+    },
+    "release_qmake": {
+      "path": "/opt/die-source/build/release/diec",
+      "sha256": "721ec846507a8567aae07e91dcd1f576182481ae0dc1595b1f19e4a3e859b79d",
+      "size": 7684384
+    }
+  },
+  "cases": {
+    "payload.tar": {
+      "cmake_release_quiet": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/payload.tar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "e7348f825810f6ec94cdcd262c830e2c04532882683827f9351bd7158c692515",
+          "bytes": 462,
+          "sha256": "e7348f825810f6ec94cdcd262c830e2c04532882683827f9351bd7158c692515"
+        },
+        "summary": {
+          "filetype": "Binary",
+          "names": [
+            "tar"
+          ],
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "2048"
+        }
+      },
+      "cmake_release_verbose": {
+        "arguments": [
+          "--json",
+          "--verbose",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/payload.tar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "e7348f825810f6ec94cdcd262c830e2c04532882683827f9351bd7158c692515",
+          "bytes": 462,
+          "sha256": "e7348f825810f6ec94cdcd262c830e2c04532882683827f9351bd7158c692515"
+        },
+        "summary": {
+          "filetype": "Binary",
+          "names": [
+            "tar"
+          ],
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "2048"
+        }
+      },
+      "harness": {
+        "arguments": [
+          "/fixture/payload.tar"
+        ],
+        "exit_code": 0,
+        "output": {
+          "automatic_quiet": {
+            "database_loaded": true,
+            "detected_filetypes": "BINARY|ARCHIVE|TAR|TEXT|UTF8",
+            "error_count": 0,
+            "forced": false,
+            "initial_filetype": "Binary",
+            "property": "",
+            "record_count": 1,
+            "records": [
+              {
+                "filetype": "Binary",
+                "info": "",
+                "name": "tar",
+                "signature": "archive_archives.1.sg",
+                "type": "archive",
+                "unknown": false,
+                "version": ""
+              }
+            ],
+            "scan_success": true,
+            "verbose": false
+          },
+          "automatic_verbose": {
+            "database_loaded": true,
+            "detected_filetypes": "BINARY|ARCHIVE|TAR|TEXT|UTF8",
+            "error_count": 0,
+            "forced": false,
+            "initial_filetype": "Binary",
+            "property": "",
+            "record_count": 1,
+            "records": [
+              {
+                "filetype": "Binary",
+                "info": "",
+                "name": "tar",
+                "signature": "archive_archives.1.sg",
+                "type": "archive",
+                "unknown": false,
+                "version": ""
+              }
+            ],
+            "scan_success": true,
+            "verbose": true
+          },
+          "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+          "forced_archive_quiet": {
+            "database_loaded": true,
+            "detected_filetypes": "ARCHIVE",
+            "error_count": 0,
+            "forced": true,
+            "initial_filetype": "Archive",
+            "property": "ARCHIVE",
+            "record_count": 1,
+            "records": [
+              {
+                "filetype": "Archive",
+                "info": "",
+                "name": "Unknown",
+                "signature": "",
+                "type": "Unknown",
+                "unknown": true,
+                "version": ""
+              }
+            ],
+            "scan_success": true,
+            "verbose": false
+          },
+          "forced_archive_verbose": {
+            "database_loaded": true,
+            "detected_filetypes": "ARCHIVE",
+            "error_count": 0,
+            "forced": true,
+            "initial_filetype": "Archive",
+            "property": "ARCHIVE",
+            "record_count": 1,
+            "records": [
+              {
+                "filetype": "Archive",
+                "info": "",
+                "name": "tar",
+                "signature": "_Archive.0.sg",
+                "type": "format",
+                "unknown": false,
+                "version": ""
+              }
+            ],
+            "scan_success": true,
+            "verbose": true
+          },
+          "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+          "input_name": "payload.tar",
+          "input_size": 2048,
+          "schema_version": 1,
+          "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+          "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+        },
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "9b2d141d3681e18bafd13b8e1fd0dcd16d528d7dd669e7d25a3d850d757c0fa0",
+          "bytes": 2844,
+          "sha256": "9b2d141d3681e18bafd13b8e1fd0dcd16d528d7dd669e7d25a3d850d757c0fa0"
+        }
+      },
+      "qmake_release_quiet": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/payload.tar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "e7348f825810f6ec94cdcd262c830e2c04532882683827f9351bd7158c692515",
+          "bytes": 462,
+          "sha256": "e7348f825810f6ec94cdcd262c830e2c04532882683827f9351bd7158c692515"
+        },
+        "summary": {
+          "filetype": "Binary",
+          "names": [
+            "tar"
+          ],
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "2048"
+        }
+      },
+      "qmake_release_verbose": {
+        "arguments": [
+          "--json",
+          "--verbose",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/payload.tar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "e7348f825810f6ec94cdcd262c830e2c04532882683827f9351bd7158c692515",
+          "bytes": 462,
+          "sha256": "e7348f825810f6ec94cdcd262c830e2c04532882683827f9351bd7158c692515"
+        },
+        "summary": {
+          "filetype": "Binary",
+          "names": [
+            "tar"
+          ],
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "2048"
+        }
+      }
+    },
+    "payload.txt.gz": {
+      "cmake_release_quiet": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/payload.txt.gz"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "9e1bf608c90e2ff6c0b07259ec8dc25aa8f705a38b66e2be7ca431ea76be2cde",
+          "bytes": 468,
+          "sha256": "9e1bf608c90e2ff6c0b07259ec8dc25aa8f705a38b66e2be7ca431ea76be2cde"
+        },
+        "summary": {
+          "filetype": "Binary",
+          "names": [
+            "Unknown"
+          ],
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "54"
+        }
+      },
+      "cmake_release_verbose": {
+        "arguments": [
+          "--json",
+          "--verbose",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/payload.txt.gz"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "9e1bf608c90e2ff6c0b07259ec8dc25aa8f705a38b66e2be7ca431ea76be2cde",
+          "bytes": 468,
+          "sha256": "9e1bf608c90e2ff6c0b07259ec8dc25aa8f705a38b66e2be7ca431ea76be2cde"
+        },
+        "summary": {
+          "filetype": "Binary",
+          "names": [
+            "Unknown"
+          ],
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "54"
+        }
+      },
+      "harness": {
+        "arguments": [
+          "/fixture/payload.txt.gz"
+        ],
+        "exit_code": 0,
+        "output": {
+          "automatic_quiet": {
+            "database_loaded": true,
+            "detected_filetypes": "BINARY|ARCHIVE|GZIP",
+            "error_count": 0,
+            "forced": false,
+            "initial_filetype": "Binary",
+            "property": "",
+            "record_count": 1,
+            "records": [
+              {
+                "filetype": "Binary",
+                "info": "",
+                "name": "Unknown",
+                "signature": "",
+                "type": "Unknown",
+                "unknown": true,
+                "version": ""
+              }
+            ],
+            "scan_success": true,
+            "verbose": false
+          },
+          "automatic_verbose": {
+            "database_loaded": true,
+            "detected_filetypes": "BINARY|ARCHIVE|GZIP",
+            "error_count": 0,
+            "forced": false,
+            "initial_filetype": "Binary",
+            "property": "",
+            "record_count": 1,
+            "records": [
+              {
+                "filetype": "Binary",
+                "info": "",
+                "name": "Unknown",
+                "signature": "",
+                "type": "Unknown",
+                "unknown": true,
+                "version": ""
+              }
+            ],
+            "scan_success": true,
+            "verbose": true
+          },
+          "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+          "forced_archive_quiet": {
+            "database_loaded": true,
+            "detected_filetypes": "ARCHIVE",
+            "error_count": 0,
+            "forced": true,
+            "initial_filetype": "Archive",
+            "property": "ARCHIVE",
+            "record_count": 1,
+            "records": [
+              {
+                "filetype": "Archive",
+                "info": "",
+                "name": "Unknown",
+                "signature": "",
+                "type": "Unknown",
+                "unknown": true,
+                "version": ""
+              }
+            ],
+            "scan_success": true,
+            "verbose": false
+          },
+          "forced_archive_verbose": {
+            "database_loaded": true,
+            "detected_filetypes": "ARCHIVE",
+            "error_count": 0,
+            "forced": true,
+            "initial_filetype": "Archive",
+            "property": "ARCHIVE",
+            "record_count": 1,
+            "records": [
+              {
+                "filetype": "Archive",
+                "info": "",
+                "name": "GZIP",
+                "signature": "_Archive.0.sg",
+                "type": "format",
+                "unknown": false,
+                "version": ""
+              }
+            ],
+            "scan_success": true,
+            "verbose": true
+          },
+          "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+          "input_name": "payload.txt.gz",
+          "input_size": 54,
+          "schema_version": 1,
+          "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+          "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+        },
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "37d77c26d81e86abd339c24106931b1de339fa6edae3659f1e6458bbb51ccbf3",
+          "bytes": 2792,
+          "sha256": "37d77c26d81e86abd339c24106931b1de339fa6edae3659f1e6458bbb51ccbf3"
+        }
+      },
+      "qmake_release_quiet": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/payload.txt.gz"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "9e1bf608c90e2ff6c0b07259ec8dc25aa8f705a38b66e2be7ca431ea76be2cde",
+          "bytes": 468,
+          "sha256": "9e1bf608c90e2ff6c0b07259ec8dc25aa8f705a38b66e2be7ca431ea76be2cde"
+        },
+        "summary": {
+          "filetype": "Binary",
+          "names": [
+            "Unknown"
+          ],
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "54"
+        }
+      },
+      "qmake_release_verbose": {
+        "arguments": [
+          "--json",
+          "--verbose",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/payload.txt.gz"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "9e1bf608c90e2ff6c0b07259ec8dc25aa8f705a38b66e2be7ca431ea76be2cde",
+          "bytes": 468,
+          "sha256": "9e1bf608c90e2ff6c0b07259ec8dc25aa8f705a38b66e2be7ca431ea76be2cde"
+        },
+        "summary": {
+          "filetype": "Binary",
+          "names": [
+            "Unknown"
+          ],
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "54"
+        }
+      }
+    },
+    "payload.zip": {
+      "cmake_release_quiet": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/payload.zip"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "82fb2c4717f3b8063febe1e6f299a10da117f6c4909b63d31aeadc13d247ad31",
+          "bytes": 466,
+          "sha256": "82fb2c4717f3b8063febe1e6f299a10da117f6c4909b63d31aeadc13d247ad31"
+        },
+        "summary": {
+          "filetype": "ZIP",
+          "names": [
+            "Unknown"
+          ],
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "151"
+        }
+      },
+      "cmake_release_verbose": {
+        "arguments": [
+          "--json",
+          "--verbose",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/payload.zip"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "05d31121121f67162d0bcc799b07c625c2ff54d8ab7ecdb9b998201568185342",
+          "bytes": 476,
+          "sha256": "05d31121121f67162d0bcc799b07c625c2ff54d8ab7ecdb9b998201568185342"
+        },
+        "summary": {
+          "filetype": "ZIP",
+          "names": [
+            "ZIP"
+          ],
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "151"
+        }
+      },
+      "harness": {
+        "arguments": [
+          "/fixture/payload.zip"
+        ],
+        "exit_code": 0,
+        "output": {
+          "automatic_quiet": {
+            "database_loaded": true,
+            "detected_filetypes": "BINARY|ARCHIVE|ZIP",
+            "error_count": 0,
+            "forced": false,
+            "initial_filetype": "ZIP",
+            "property": "",
+            "record_count": 1,
+            "records": [
+              {
+                "filetype": "ZIP",
+                "info": "",
+                "name": "Unknown",
+                "signature": "",
+                "type": "Unknown",
+                "unknown": true,
+                "version": ""
+              }
+            ],
+            "scan_success": true,
+            "verbose": false
+          },
+          "automatic_verbose": {
+            "database_loaded": true,
+            "detected_filetypes": "BINARY|ARCHIVE|ZIP",
+            "error_count": 0,
+            "forced": false,
+            "initial_filetype": "ZIP",
+            "property": "",
+            "record_count": 1,
+            "records": [
+              {
+                "filetype": "ZIP",
+                "info": "Store",
+                "name": "ZIP",
+                "signature": "_ZIP.0.sg",
+                "type": "format",
+                "unknown": false,
+                "version": "2.0"
+              }
+            ],
+            "scan_success": true,
+            "verbose": true
+          },
+          "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+          "forced_archive_quiet": {
+            "database_loaded": true,
+            "detected_filetypes": "ARCHIVE",
+            "error_count": 0,
+            "forced": true,
+            "initial_filetype": "Archive",
+            "property": "ARCHIVE",
+            "record_count": 1,
+            "records": [
+              {
+                "filetype": "Archive",
+                "info": "",
+                "name": "Unknown",
+                "signature": "",
+                "type": "Unknown",
+                "unknown": true,
+                "version": ""
+              }
+            ],
+            "scan_success": true,
+            "verbose": false
+          },
+          "forced_archive_verbose": {
+            "database_loaded": true,
+            "detected_filetypes": "ARCHIVE",
+            "error_count": 0,
+            "forced": true,
+            "initial_filetype": "Archive",
+            "property": "ARCHIVE",
+            "record_count": 1,
+            "records": [
+              {
+                "filetype": "Archive",
+                "info": "Store",
+                "name": "ZIP",
+                "signature": "_Archive.0.sg",
+                "type": "format",
+                "unknown": false,
+                "version": "2.0"
+              }
+            ],
+            "scan_success": true,
+            "verbose": true
+          },
+          "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+          "input_name": "payload.zip",
+          "input_size": 151,
+          "schema_version": 1,
+          "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+          "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+        },
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "17e868f9473c3d0262dcd28daa25f027507e7ee39202ec1d709a7faeda008f4e",
+          "bytes": 2796,
+          "sha256": "17e868f9473c3d0262dcd28daa25f027507e7ee39202ec1d709a7faeda008f4e"
+        }
+      },
+      "qmake_release_quiet": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/payload.zip"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "82fb2c4717f3b8063febe1e6f299a10da117f6c4909b63d31aeadc13d247ad31",
+          "bytes": 466,
+          "sha256": "82fb2c4717f3b8063febe1e6f299a10da117f6c4909b63d31aeadc13d247ad31"
+        },
+        "summary": {
+          "filetype": "ZIP",
+          "names": [
+            "Unknown"
+          ],
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "151"
+        }
+      },
+      "qmake_release_verbose": {
+        "arguments": [
+          "--json",
+          "--verbose",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/payload.zip"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "05d31121121f67162d0bcc799b07c625c2ff54d8ab7ecdb9b998201568185342",
+          "bytes": 476,
+          "sha256": "05d31121121f67162d0bcc799b07c625c2ff54d8ab7ecdb9b998201568185342"
+        },
+        "summary": {
+          "filetype": "ZIP",
+          "names": [
+            "ZIP"
+          ],
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "151"
+        }
+      }
+    }
+  },
+  "component_commits": {
+    "Detect-It-Easy": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+    "Formats": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+    "XArchive": "0fcd4e8d3e9933baac3b12246d82ac026557ffd0",
+    "XScanEngine": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83",
+    "die_script": "5d82316c110abf0eb863b50bc679d330e05067b6"
+  },
+  "facts": {
+    "automatic_scan_never_initializes_generic_archive": true,
+    "automatic_verbose_does_not_force_generic_archive": true,
+    "forced_quiet_archive_is_unknown": true,
+    "forced_verbose_archive_redetects_all_adapters": true,
+    "natural_detection_pairs_archive_with_concrete_subtype": true,
+    "qmake_and_cmake_release_outputs_are_byte_equal": true,
+    "release_and_harness_automatic_semantics_agree": true,
+    "tar_and_gzip_use_binary_public_fallback": true,
+    "zip_uses_specialized_public_branch": true
+  },
+  "failures": [],
+  "fixture_manifest": {
+    "path": "docs/research/data/generic-archive-dispatch-fixture.json",
+    "sample_count": 3,
+    "sha256": "a3732a790689bb91081cdf2119bfc7d2f6ed114402e6f5fe7b19bc98cff534e5"
+  },
+  "generator": "tools/upstream/probe_generic_archive_dispatch_harness.py",
+  "generator_sha256": "826120400523c2a9e22517e91222925f6baa1967104540536788eb77ee6687ca",
+  "images": {
+    "harness_cmake": {
+      "id": "sha256:8676a288d390aa2b806997fd6c32550ac3ffa6a837386faf9636acb3d092555c",
+      "name": "diec-rust/generic-archive-dispatch-harness-qt5:74eaf505",
+      "repo_digests": [
+        "diec-rust/generic-archive-dispatch-harness-qt5@sha256:8676a288d390aa2b806997fd6c32550ac3ffa6a837386faf9636acb3d092555c"
+      ],
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    },
+    "release_qmake": {
+      "id": "sha256:cc5561a5d256c7912227a8ecf4ba9c6b9178c99911e471017d3c3988bac964ab",
+      "name": "diec-rust/upstream-oracle:74eaf505-repro",
+      "repo_digests": [
+        "diec-rust/upstream-oracle@sha256:cc5561a5d256c7912227a8ecf4ba9c6b9178c99911e471017d3c3988bac964ab"
+      ],
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    }
+  },
+  "local_sources": {
+    "baseline_generator": {
+      "path": "tools/corpus/generate_baseline_corpus.py",
+      "sha256": "6b36a120c552cecfd4212385302807e6f85f2e2aa2a867528026c48d80d070fa"
+    },
+    "fixture_generator": {
+      "path": "tools/corpus/generate_generic_archive_dispatch_fixture.py",
+      "sha256": "07fe1a18ef9d155a93187d3643052d1718d0da5f3cd2b493edf9840749db28ac"
+    },
+    "harness_dockerfile": {
+      "path": "tools/upstream/Dockerfile.generic-archive-dispatch-harness-qt5",
+      "sha256": "821089a308e1411f6b71e45bd2c9764afd829ea72a635ebe6e92e8bedf750730"
+    },
+    "harness_source": {
+      "path": "tools/upstream/generic_archive_dispatch_harness_main.cpp",
+      "sha256": "3945373be1bd6b63545a43fc3e48f92eb678400b031f5b1875740d0ee089fb56"
+    },
+    "probe": {
+      "path": "tools/upstream/probe_generic_archive_dispatch_harness.py",
+      "sha256": "826120400523c2a9e22517e91222925f6baa1967104540536788eb77ee6687ca"
+    }
+  },
+  "passed": true,
+  "platform": "linux-x86_64-qt5",
+  "raw_artifacts": {
+    "05d31121121f67162d0bcc799b07c625c2ff54d8ab7ecdb9b998201568185342": {
+      "base64": "eNp1kMEKwjAQRO/5ipCTgkgreOkHiN4K3iw9BLuRQJuUZC1o6b+bBKwktXtaZl4mk4yEumENINzRsoJWQfAzzltAhGwBXz04ht0uJdvFtlRCeyvVtRAW0DtZavXcgEKf67aAnIE3YFLOyne4NT/mqTXw9glx7f/1Fz2vqA0kcTOkeLfyzl8pNFI9PHTSpuNYUAdvDvtsW4Xoeu3g9w9FOLZGDWCs1MqDLpMtoClSahLrNZkIIR8HRF+i",
+      "bytes": 476,
+      "compressed_bytes": 186,
+      "encoding": "zlib+base64"
+    },
+    "17e868f9473c3d0262dcd28daa25f027507e7ee39202ec1d709a7faeda008f4e": {
+      "base64": "eNrtlE2P0zAQhu/7K1Y5ryrnO+FWEBK9ILQIJECryB/jrkVjB9tZ6Hb733HSJJumHxKiJ9jc4nc873jm0Wyurt3n4dqqEltBix+1AOu9ut60QisybDHBBoqVwgyYE62u4WYUABaoBVZwsQK7rsC4GO/14v389svT/PbNu8Xnt09fFx+80R3QWumCqlo2bmikcKVp68LxyoxthBRW4NXg0phMslZaVaDtupHG5xqo0myw8w+kpuJvw2Hzbfb+dpWdNB7VyNXEfNAkLturn+R3qX7KYyFGLCW2tYZTOXr7MznqTpqOaQh4AG2Ekq3Fnrod/u5GDTIUy8LUlIIxh7N3yYgy0I+rFbY3U6qeo164+iuuPlrl4DgD14n7e2AVLmiGZmZ5jjDXLje784BNOnmMsGCGLglZI+wxxgQUhmpRWTeFshTNGLyYZUHoJ9T3ESYcAcmSkMSI0CTNWRgiQDFKUpJ0r+vQKLCm9+IBLrgDO0j/ENBJ6mN8znelnmL0iO/lUT2s4WUNHluDE7ouuQv/d74usw47o39lJe7KNKN96PuxD2kQR5wBhBQFecR5ivIYGGEsJZxSngXI7/ehkFVti76HFV43VM4eRbUfYMRjE+CSd8eG3kOJi+e39kJdGasBl6Oa0ggwj1FMg9gt6SgFVw8KIsgZjfwkTinLeOBK7i1/Nf0AuRQSRlkYhwhHfg4Rj3KfkCBMsoxgFNIYx4SHOYQRw1noXW2vfgONErN1",
+      "bytes": 2796,
+      "compressed_bytes": 558,
+      "encoding": "zlib+base64"
+    },
+    "37d77c26d81e86abd339c24106931b1de339fa6edae3659f1e6458bbb51ccbf3": {
+      "base64": "eNrtlUuPmzAUhff5FSPWo8iAzaO7tKrabKpqpFZqqxHy4zpjNRhqm+lkMvnvBUIYQh5Sq6irsMPncs/h8umyntzUl0crV+TUKZ79qhQ4783NuhVaUVBHGbWQLQsqQNSiMxXcDgrAAXcgMqmW4FYl2LrGezv/NLv79jK7e/dx/vX9y4fv88/e4CEwpjAZLyrd2KGBIgvDWxtJl3boo7Ryii57m9ZFaWpWw8alKUowbtWow3MDvDCid/QPpCb1j/6wudZ7d9tw57wHSWUx8u81TfP26S/6py5+62MlVi00dZWBUz12Cc70qDpp/LX6gkcwVhW6tdhTN/3d/WBGllOd2YpzsPYQgboZKyzsPlorbG7HcL1WXfG64vVPeDXCHl1CQWa5UaWrZ5/nqhm+R0QShH7EfR9RJhGwJAoZQYxHcSrCEAEiKIpZ1L1Zx0RGDX9Qj3DBJdjh+ZdkjlofA3O2jXqKzCO+lwf0MMOV0GMLcETXJbfgla/TfI1+CcfhyjqTKZraxTnS6uHVP7HzoI3+KP99F24z2sEi9H3iQxwQLAVAyFGQYiljlBIQTIiYSc5lEiB/twiVLiuX7SZY0lWD49Q9uenieb/GquemhuDu1PIHyGn2+qodAF5VWmeA5oNUMQYqCSI8IPV+xjHUiVCAIRUc+xGJuUhkUIfeOT41EwG9UBoGXYQETLGfApY49RkLwihJGEUhJ5QwGaYQYkGT0JtsJn8A9xG1Jw==",
+      "bytes": 2792,
+      "compressed_bytes": 553,
+      "encoding": "zlib+base64"
+    },
+    "82fb2c4717f3b8063febe1e6f299a10da117f6c4909b63d31aeadc13d247ad31": {
+      "base64": "eNqFkLEOwiAQhneegjA72MGlT6Cbi4umA7GHIdajgWuNNn13gcRGUAPT5f8+uD9MjPsjWiA4kxM1P8UgnGmZoqJ0B/TowTviuNuLVYo1KhNQnhulHFAg6xz10gJSeNdPUdmCbMHmntPPuLXaVDkaZTdAWvt3/VLPhaO8xWUHvKK54z/NkdV4+RBrXrjx/ruCNoJ12mCs+GXMSdKwNG/YzBh7AWhhXkc=",
+      "bytes": 466,
+      "compressed_bytes": 167,
+      "encoding": "zlib+base64"
+    },
+    "9b2d141d3681e18bafd13b8e1fd0dcd16d528d7dd669e7d25a3d850d757c0fa0": {
+      "base64": "eNrtlU2P0zAQhu/7K1Y5ryo7cb64FbSIvXCougiEVpE/xl2Lxgm2s1Da/neSbJqmH3RBVIhDfYnidzzvZPxosry6rpdHK1fk1Cmefa0UOO/V9bIVWlFQRxm1kM0LKkDUojMV3AwCwAF3IDKp5uAWJdg6xnt99348+bQaT968u/twu5qOJ6vp7cfp6n76NvEGp8GYwmS8qHTjiwaKLAxv/SSd26Gh0sopOu/9WjulqVkME5emKMG4RaMO9w3wwojeER9ITfmf+81mLXfenos75T2oVBZ7/r2mad6edtQck62aaeoq08ZQwx/VE2Td047wyM6OndqU1AUeC6n0F11804d97SOewFhV6LbwHXXdvz0MumY51ZmtOAdrD+mok7HCwsauFdY3+9xtoy7kXcg7N3mNsAOeUJBZblTp6tvIc9VchxeKxA9wxDFGlEkELIkCFiLGozgVQYAAhSiKWdR9WkfJpjNnHJ0duX/I6l7qY6iOD+5mh9UjvudHdvxrPn6H2fuOoZe4PYXoiRxbRHfb+e9n4x5d5xyQF77+biZmnccIvTAL697Vv7f/exQ+12gHcxDjEEPsh0QKgIAjPyVSxigNQTAhYiY5l4mP8GYOKl1WLts0sKSLhsbRtpFdgFU/mgAfkaTbt/wRcpptv7S7fq8qrTNA80FRMQEqQxRyP6ynM4mhLgj5BFLBCY7CmItE+nXNG8/vTUNAz5SGQRYhgVCCUyCSpJgxP4iShFEU8JCGTAYpBETQJPCu1lc/AWnix7U=",
+      "bytes": 2844,
+      "compressed_bytes": 578,
+      "encoding": "zlib+base64"
+    },
+    "9e1bf608c90e2ff6c0b07259ec8dc25aa8f705a38b66e2be7ca431ea76be2cde": {
+      "base64": "eNqFkDEOwjAMRfecosrMwABLRyYuwIQ6RNRBFsWpEtOqVL07SSQqEkDxZP3/bP9kFpUv2QLDhZ2sq3MUQs1rFxGNHfDUg2fkAUnZSW5SAkmb4Oa60doBB2ebW72yQBxW+y4iR1At2Jxz+IyH97vcGVT3gDT47weUYq4+qXu8daIbmZH+YY4t0vUDrKvCxPv3CtgA1qGhGPGLWBKlEaneiEUI8QKF01+L",
+      "bytes": 468,
+      "compressed_bytes": 168,
+      "encoding": "zlib+base64"
+    },
+    "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855": {
+      "base64": "eNoDAAAAAAE=",
+      "bytes": 0,
+      "compressed_bytes": 8,
+      "encoding": "zlib+base64"
+    },
+    "e7348f825810f6ec94cdcd262c830e2c04532882683827f9351bd7158c692515": {
+      "base64": "eNqFkMEKwjAMhu99itGzhyEeZDc9+Q6yQ9hSDcxupHEwx97dteKg1WlO4f8/kj8ZVTaXrlGwEqeL7BwEX+PSBcRQgzJ0ODP6SBZ40JuYIGta76Z6a4xD8U6eWh0wWvGj5y4gJ4QaOeUcPcLibb7bp14PzR3j6N9P+Bd08S3cwjYBXkOcMNmLhw5cXanHIvtBv/8GL3YN65EdtTZE+yCmSClVrJdqUko9ASGbXGI=",
+      "bytes": 462,
+      "compressed_bytes": 173,
+      "encoding": "zlib+base64"
+    }
+  },
+  "remaining_gap": "CAP-GAP-006",
+  "resource_limits": {
+    "container_root": "read-only",
+    "cpus": 1,
+    "fixture_mount": "read-only",
+    "memory_bytes": 536870912,
+    "network": "none",
+    "pids": 128,
+    "timeout_seconds_per_execution": 60
+  },
+  "schema_version": 1,
+  "source_contract": {
+    "archive_rule": {
+      "path": "/opt/die-source/Detect-It-Easy/db/Archive/_Archive.0.sg",
+      "required_patterns": [
+        {
+          "count": 1,
+          "text": "if (Archive.isVerbose()) {"
+        },
+        {
+          "count": 1,
+          "text": "Archive.getFileFormatName()"
+        }
+      ],
+      "sha256": "97202e19118514bcd33ef40c2dea69822249406092eddcb61f56e3410278ec86"
+    },
+    "binary_archive_rule": {
+      "path": "/opt/die-source/Detect-It-Easy/db/Binary/archive_archives.1.sg",
+      "required_patterns": [
+        {
+          "count": 1,
+          "text": "Binary.compare(\"00'ustar'\", 0x100)"
+        },
+        {
+          "count": 1,
+          "text": "sName = \"tar\";"
+        }
+      ],
+      "sha256": "b148ae0ba8e64f58f5285c16b0812dd014cb6230550bf9df9bdc290387802255"
+    },
+    "formats": {
+      "path": "/opt/die-source/Formats/xformats.cpp",
+      "required_patterns": [
+        {
+          "count": 30,
+          "text": "stResult.insert(XBinary::FT_ARCHIVE);"
+        },
+        {
+          "count": 3,
+          "text": "stResult.insert(XBinary::FT_ZIP);"
+        },
+        {
+          "count": 1,
+          "text": "stResult.insert(XBinary::FT_TAR);"
+        },
+        {
+          "count": 1,
+          "text": "stResult.insert(XBinary::FT_GZIP);"
+        },
+        {
+          "count": 1,
+          "text": "XBinary::checkFileType(XBinary::FT_ZIP, fileType)"
+        },
+        {
+          "count": 1,
+          "text": "XBinary::checkFileType(XBinary::FT_TAR, fileType)"
+        },
+        {
+          "count": 1,
+          "text": "XBinary::checkFileType(XBinary::FT_GZIP, fileType)"
+        }
+      ],
+      "sha256": "674eba0046eb6cc947e547d1ac0b93ac695cbb30f68e11f135e5551d81e0b115"
+    },
+    "scan_engine": {
+      "path": "/opt/die-source/XScanEngine/xscanengine.cpp",
+      "required_patterns": [
+        {
+          "count": 1,
+          "text": "stFT.contains(XBinary::FT_ARCHIVE) && (stFT.size() == 1)"
+        },
+        {
+          "count": 1,
+          "text": "XBinary::FT_ARCHIVE, pScanOptions, true"
+        }
+      ],
+      "sha256": "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498"
+    },
+    "script_engine": {
+      "path": "/opt/die-source/die_script/die_scriptengine.cpp",
+      "required_patterns": [
+        {
+          "count": 1,
+          "text": "XBinary::checkFileType(XBinary::FT_ARCHIVE, fileType)"
+        },
+        {
+          "count": 2,
+          "text": "QSet<XBinary::FT> fileTypes = XBinary::getFileTypes(pDevice, true);"
+        },
+        {
+          "count": 1,
+          "text": "XFormats::createClass(_fileType, pDevice)"
+        },
+        {
+          "count": 1,
+          "text": "new Archive_Script(_pArchive"
+        }
+      ],
+      "sha256": "f9b9d69a17dc930556c7308fce46d3287d18dd9f927c91d6733ce994594fcb72"
+    },
+    "zip_rule": {
+      "path": "/opt/die-source/Detect-It-Easy/db/ZIP/_ZIP.0.sg",
+      "required_patterns": [
+        {
+          "count": 1,
+          "text": "if (ZIP.isVerbose()) {"
+        },
+        {
+          "count": 1,
+          "text": "ZIP.getFileFormatName()"
+        }
+      ],
+      "sha256": "0c35cbe87bfa82bbeb5d5880ae4ebec9e1d48b7dadad04cfc8eee365d776e7a7"
+    }
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

@@ -148,7 +148,12 @@ PDF/CFBF 和 Binary fallback 四组的所有成员。Archive 组已观察 APK、
 产生 `BINARY|ARCHIVE|GZIP` 并回退 `Binary / Unknown`；强制 `filetypes=NPM`
 后语言规则可达。详见
 [`npm-dispatch-reachability.md`](npm-dispatch-reachability.md)。通用 Archive
-仍缺，因此本组只标记 `observed_with_gaps`。Image 组除既有
+专用实验又证明自然检测始终同时产生具体子类型，无法满足 `stFT.size()==1`；
+强制 `filetypes=ARCHIVE` 后 quiet 为 Unknown，verbose 可重新选择 ZIP/TAR/GZIP
+adapter，见
+[`generic-archive-dispatch-reachability.md`](generic-archive-dispatch-reachability.md)。
+100000 边界及压力/畸形语料仍缺，因此本组只标记
+`observed_with_gaps`。Image 组除既有
 JPEG/PNG 外，专用 engine harness 已观察 GIF/BMP/TIFF/ICO/CUR/ICC/WebP 的
 Binary fallback，以及强制 `FT_IMAGE` 后 generic Image adapter 为 null 的错误，
 现标记为 `observed`，见
@@ -244,9 +249,9 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
 - formatter 转义与嵌套排序已闭合；跨平台编码差异仍归入路径/平台缺口。
 - deep 与 aggressive resource 过滤/计数边界已由
   [`scan-option-boundaries.md`](scan-option-boundaries.md) 闭合。
-- 通用 Archive、archive aggressive 100000 上限、高压缩比/畸形、最大深度和
-  总解压资源限制；7Z/RAR4/CAB/ISO9660 无压缩正例以及 NPM 自动/强制分派
-  quirk 已固定。
+- archive aggressive 100000 上限、高压缩比/畸形、最大深度和总解压资源
+  限制；7Z/RAR4/CAB/ISO9660 无压缩正例、NPM 自动/强制分派 quirk 以及
+  generic Archive singleton/verbose 重检测已固定。
 - Qt 5 与 Qt 6 的首轮基础/安全语料/不可读输入差分已完成；仍需扩展到完整
   output/scan/special/path/database/nested 矩阵及其他 Qt 6 minor。
 - Linux、Windows、macOS 路径与编码差异。

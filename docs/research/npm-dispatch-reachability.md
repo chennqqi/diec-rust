@@ -144,7 +144,9 @@ python tools/upstream/probe_npm_dispatch_harness.py \
 本实验收窄了 `CAP-DISPATCH-004` 中的 NPM 子项，但不关闭
 `CAP-GAP-006`。仍需补齐：
 
-- 通用 Archive 顶层分派及与 `--archive` 的关系；
+- 通用 Archive 顶层分派现由
+  [`generic-archive-dispatch-reachability.md`](generic-archive-dispatch-reachability.md)
+  固定；
 - archive aggressive 的 100000 记录/迭代边界；
 - 压缩、加密、高压缩比和畸形 archive；
 - Linux Qt6、Windows、macOS 的对应行为。

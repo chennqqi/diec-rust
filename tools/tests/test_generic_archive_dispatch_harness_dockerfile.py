@@ -1,0 +1,45 @@
+import pathlib
+import unittest
+
+
+ROOT = pathlib.Path(__file__).parents[2]
+DOCKERFILE = (
+    ROOT
+    / "tools"
+    / "upstream"
+    / "Dockerfile.generic-archive-dispatch-harness-qt5"
+)
+
+
+class GenericArchiveDispatchHarnessDockerfileTests(unittest.TestCase):
+    def test_builds_from_pinned_cmake_oracle_without_network(self):
+        text = DOCKERFILE.read_text(encoding="utf-8")
+        self.assertIn(
+            "ARG BASE_IMAGE=diec-rust/upstream-oracle-cmake:74eaf505",
+            text,
+        )
+        self.assertIn(
+            "generic_archive_dispatch_harness_main.cpp",
+            text,
+        )
+        self.assertIn(
+            "diec-generic-archive-dispatch-harness",
+            text,
+        )
+        self.assertNotIn("apt-get", text)
+        self.assertNotIn("git clone", text)
+
+    def test_labels_exact_upstream_revision(self):
+        text = DOCKERFILE.read_text(encoding="utf-8")
+        self.assertIn(
+            (
+                'org.opencontainers.image.revision="'
+                "74eaf505c250ab47e709024e9dc41657cd8f2254"
+                '"'
+            ),
+            text,
+        )
+
+
+if __name__ == "__main__":
+    unittest.main()

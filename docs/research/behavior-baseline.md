@@ -245,7 +245,10 @@ elapsed 值与固定规则执行序列另见
   [`archive-format-behavior.md`](archive-format-behavior.md) 固定，legacy 与
   DOS/COM 由各自专用 oracle 固定；NPM 精确路径直接检测为真、公共自动扫描
   回退 Binary 及强制规则分支现由
-  [`npm-dispatch-reachability.md`](npm-dispatch-reachability.md) 固定。
+  [`npm-dispatch-reachability.md`](npm-dispatch-reachability.md) 固定；通用
+  Archive 的 ZIP/TAR/GZIP 自动与强制 quiet/verbose 控制现由
+  [`generic-archive-dispatch-reachability.md`](generic-archive-dispatch-reachability.md)
+  固定。
 - 新增 11 个格式的 scan/output/special 选项矩阵（当前仅固定 default JSON）。
 - 输出格式的转义和嵌套排序已由
   [`cli-output-boundaries.md`](cli-output-boundaries.md) 的 10-case 双 oracle

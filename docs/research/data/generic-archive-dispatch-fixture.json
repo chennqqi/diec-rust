@@ -1,0 +1,34 @@
+{
+  "generator": "tools/corpus/generate_generic_archive_dispatch_fixture.py",
+  "license": "project-generated; no third-party sample bytes",
+  "samples": [
+    {
+      "archive_format": "ZIP",
+      "expected_member_name": "payload.txt",
+      "expected_payload_sha256": "22b217bfba5795d402092bf48bfb28146c0ee4dd0036fd4d0c93e25bbe65e998",
+      "name": "payload.zip",
+      "purpose": "specialized public ZIP branch and forced Archive control",
+      "sha256": "c29a3445c289e061a11d4675b36763657d4e550c4941821ea74905593a29acfe",
+      "size": 151
+    },
+    {
+      "archive_format": "TAR",
+      "expected_member_name": "payload.txt",
+      "expected_payload_sha256": "22b217bfba5795d402092bf48bfb28146c0ee4dd0036fd4d0c93e25bbe65e998",
+      "name": "payload.tar",
+      "purpose": "Binary public fallback and forced Archive adapter",
+      "sha256": "3af89e8d0f52e951a8ea4ad0bef3d10cf3464c06a5c7a0fc451abc0583289f2f",
+      "size": 2048
+    },
+    {
+      "archive_format": "GZIP",
+      "expected_member_name": "",
+      "expected_payload_sha256": "22b217bfba5795d402092bf48bfb28146c0ee4dd0036fd4d0c93e25bbe65e998",
+      "name": "payload.txt.gz",
+      "purpose": "Binary Unknown public fallback and forced Archive adapter",
+      "sha256": "f51df8f3b04ac2120ba283fbad7f22ec9aefce5a07c38a335deb771be560b39a",
+      "size": 54
+    }
+  ],
+  "schema_version": 1
+}

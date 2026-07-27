@@ -19,6 +19,9 @@ Phase 0 计划形成：
 - [`npm-dispatch-reachability.md`](npm-dispatch-reachability.md)：
   NPM 精确归档路径检测、公共 GZIP 自动分派不可达、强制 NPM 规则分支及
   双 Qt5 release 对照（Draft）。
+- [`generic-archive-dispatch-reachability.md`](generic-archive-dispatch-reachability.md)：
+  ZIP/TAR/GZIP 自然分派、singleton `FT_ARCHIVE` 门控、强制通用 adapter
+  重检测及双 Qt5 quiet/verbose 对照（Draft）。
 - [`signature-path-filter-behavior.md`](signature-path-filter-behavior.md)：
   private signature-file path comparator 的严格绝对路径语义及公共不可达边界
   （Draft）。
@@ -169,6 +172,10 @@ Phase 0 计划形成：
 - [`data/npm-dispatch-engine-qt5.json`](data/npm-dispatch-engine-qt5.json)：
   NPM 直接检测、自动/强制 engine 分派、双 Qt5 release 原始输出及源码/规则
   哈希契约。
+- [`data/generic-archive-dispatch-fixture.json`](data/generic-archive-dispatch-fixture.json)：
+  项目生成的 ZIP/TAR/GZIP 通用 Archive 分派 fixture 清单。
+- [`data/generic-archive-dispatch-engine-qt5.json`](data/generic-archive-dispatch-engine-qt5.json)：
+  自动/强制 quiet/verbose 分派、双 Qt5 release 原始输出和源码/规则哈希契约。
 - [`data/resource-context-chain-qt5.json`](data/resource-context-chain-qt5.json)：RT_MANIFEST 父扫描、resource context、scan ID 与原样规则结果的四模式端到端基线。
 - [`data/subdevice-source-audit.json`](data/subdevice-source-audit.json)：固定 XScanEngine/Formats 源码哈希、resource/overlay 调度及 debug-data 可达性审计。
 - [`data/debug-dispatch-fixture.json`](data/debug-dispatch-fixture.json)：
