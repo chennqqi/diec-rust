@@ -32,6 +32,7 @@ class AdrReviewReadinessTest(unittest.TestCase):
                 "ADR-0011",
                 "ADR-0012",
                 "ADR-0013",
+                "ADR-0014",
             },
         )
         self.assertEqual(

@@ -307,6 +307,31 @@
         "Rust/CLI/JSON/C/Go/Python typed error conformance",
         "fuzz, sanitizer, range property tests, and SafetyDeviation waiver"
       ]
+    },
+    {
+      "id": "ADR-0014",
+      "path": "docs/design/decisions/0014-bounded-path-expansion.md",
+      "status": "Proposed",
+      "review_ready": true,
+      "acceptance_ready": false,
+      "contract_tests": [
+        "tools/tests/test_path_expansion_design.py",
+        "tools/tests/test_probe_path_filesystem_behavior.py"
+      ],
+      "required_headings": [
+        "## 背景",
+        "## 决策",
+        "## 考虑过的替代方案",
+        "## 后果",
+        "## 证据",
+        "## 验收条件"
+      ],
+      "review_question": "是否接受 safe canonical 默认不跟随枚举 link、legacy 保留非循环 alias 但所有 profile 均采用 ancestry cycle detection、handle recheck 与 hard budget？",
+      "remaining_acceptance_evidence": [
+        "production shared TargetExpander and typed traversal diagnostics",
+        "limit-1/exact/+1, cancellation, TOCTOU, and root-confinement tests",
+        "Windows/macOS oracle plus cross-language SafetyDeviation conformance"
+      ]
     }
   ],
   "excluded_adrs": [
@@ -318,10 +343,10 @@
     }
   ],
   "summary": {
-    "active_adr_count": 12,
-    "review_ready_count": 12,
+    "active_adr_count": 13,
+    "review_ready_count": 13,
     "acceptance_ready_count": 0,
-    "proposed_count": 12,
+    "proposed_count": 13,
     "superseded_count": 1,
     "phase_0_decision_gate_complete": false
   }

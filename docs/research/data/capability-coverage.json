@@ -13,11 +13,9 @@
       "id": "CAP-GAP-003",
       "kind": "corpus_missing",
       "platforms": [
-        "linux-x86_64-qt5",
-        "windows-x86_64-qt5",
-        "macos-x86_64-qt5"
+        "linux-x86_64-qt5"
       ],
-      "scope": "symlink/permission/depth/locale and cross-platform path behavior"
+      "scope": "large-directory/cancellation/TOCTOU and remaining Linux locale/filesystem path behavior"
     },
     {
       "capability_ids": [
@@ -183,7 +181,14 @@
         "tools/corpus/generate_special_path_fixture.py",
         "tools/upstream/probe_special_path_behavior.py",
         "tools/tests/test_generate_special_path_fixture.py",
-        "tools/tests/test_probe_special_path_behavior.py"
+        "tools/tests/test_probe_special_path_behavior.py",
+        "docs/research/path-filesystem-behavior.md",
+        "docs/research/data/path-filesystem-fixture.json",
+        "docs/research/data/path-filesystem-engine-qt5.json",
+        "tools/corpus/generate_path_filesystem_fixture.py",
+        "tools/upstream/probe_path_filesystem_behavior.py",
+        "tools/tests/test_generate_path_filesystem_fixture.py",
+        "tools/tests/test_probe_path_filesystem_behavior.py"
       ]
     },
     "cli_scan_baseline": {
@@ -1494,7 +1499,7 @@
   "schema_version": 1,
   "source": {
     "path": "docs/research/data/capability-traceability.json",
-    "sha256": "c40efe2a23a7d049292567540ab1cadb5ce794cd8cd24fd184b095711ee232ff"
+    "sha256": "d4e3efa0475e7c32f759f8ec203bf12e1cb3d57861f33501aa994d1121836a8a"
   },
   "status_definitions": {
     "platform_missing": "no complete capability baseline is admitted for this platform",

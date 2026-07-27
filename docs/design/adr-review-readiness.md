@@ -6,7 +6,7 @@ Last updated: 2026-07-28
 
 ## 结论
 
-当前十二个有效 Proposed ADR 都具备提交决策评审所需的背景、明确决策、替代方案、
+当前十三个有效 Proposed ADR 都具备提交决策评审所需的背景、明确决策、替代方案、
 后果/代价、固定证据和验收条件，因此均为 `review_ready=true`。没有任何一个
 ADR 满足自身全部 acceptance conditions，因此全部为
 `acceptance_ready=false`，不得自动改为 Accepted。
@@ -30,6 +30,7 @@ ADR 0007 已被 ADR 0011 Superseded，不属于当前待接受集合。机器清
 | 0011 | 默认 Rust 1.97.1、MSRV 1.88 | Phase 1 default/MSRV CI jobs |
 | 0012 | 全 scan 嵌套预算有限，legacy high-resource 仍有 hard ceiling | production budget、Rust 全 limit 边界与固定 high-ratio/畸形 corpus 的 sanitizer/fuzz replay、跨平台资源与 waiver |
 | 0013 | short read/I/O/seek/range fail closed，不复制未初始化尾部 | production ByteSource、跨 adapter typed error、fuzz/sanitizer 与 waiver |
+| 0014 | safe canonical 不跟随枚举 link；legacy alias 仍受 cycle/TOCTOU/budget hard stop | production TargetExpander、边界/TOCTOU/root confinement、Windows/macOS 与跨语言 waiver |
 
 ## 评审约束
 
@@ -39,8 +40,8 @@ ADR 0007 已被 ADR 0011 Superseded，不属于当前待接受集合。机器清
   ADR，明确拆分 `Decision acceptance` 与 `Implementation exit`，不能直接绕过。
 - ADR 0006 的七类代表规则、全语法 inventory 和资源 spike 是重要证据，但不是
   全量规则/HostApi/平台兼容率。
-- ADR 0005、0010 与 0013 都是安全偏差，必须保留 ADR 0004 的精确 waiver 与原始上游
-  证据；不能在 normalizer 中隐藏。
+- ADR 0005、0010、0013 与 0014 都是安全偏差，必须保留 ADR 0004 的精确
+  waiver 与原始上游证据；不能在 normalizer 中隐藏。
 - ADR 0011 的本机双工具链门禁不能替代 Phase 1 CI。
 
 ## 可重复校验
@@ -48,7 +49,7 @@ ADR 0007 已被 ADR 0011 Superseded，不属于当前待接受集合。机器清
 [`test_adr_review_readiness.py`](../../tools/tests/test_adr_review_readiness.py)
 验证：
 
-- 十二个 Proposed 与一个 Superseded ADR 的集合、状态完全匹配；
+- 十三个 Proposed 与一个 Superseded ADR 的集合、状态完全匹配；
 - 每份 ADR 的必要章节和 contract test 实际存在；
 - 全部 active ADR `review_ready=true`、`acceptance_ready=false`，且剩余证据
   和评审问题非空；

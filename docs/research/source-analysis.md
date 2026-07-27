@@ -49,7 +49,10 @@ signatures/*                     binary crypto/junk signatures
 resource/overlay 递归。多目标顺序、filename prefix 和结构化输出有效性见
 [`cli-path-behavior.md`](cli-path-behavior.md)；无参数 `QDir::entryInfoList()`
 在 Linux Qt5 的 Unicode、非 UTF-8、控制字符、hidden 与大小写排序结果见
-[`special-path-behavior.md`](special-path-behavior.md)。
+[`special-path-behavior.md`](special-path-behavior.md)。同一 overload 的
+file/directory symlink follow、alias 重复、权限静默、depth-64 与 self-cycle
+运行边界见 [`path-filesystem-behavior.md`](path-filesystem-behavior.md)；
+循环终止来自 Linux 路径解析上限，不是 engine visited set 或预算。
 
 ## 扫描主流程
 

@@ -24,7 +24,7 @@ Phase 0 设计门禁，不把 Phase 2—6 的实现期风险误当成当前必�
 | `P0-EXIT-001` | 能力矩阵每项有源码或可重复实验 | Ready for review | 68 个稳定 `CAP-*` 均绑定固定源码或可重复实验，并已投影到 272 个平台 cell；source-only/platform-missing 作为 EXIT-002 缺口保留 |
 | `P0-EXIT-002` | 基线覆盖主要格式和代表规则语法 | Not ready | 基础安全格式样本、七类专用规则差分、CLI 专用模式临界值、七种非 JPEG/PNG Image 分派、规则 priority、取消及 device/subdevice 边界已存在；闭集报告仍有 8 个 corpus-gap 行 |
 | `P0-EXIT-003` | 三项技术验证完成或记录替代 | Ready for review | rquickjs runtime、C static link 和固定 Linux upstream oracle 均有可重复证据及边界 |
-| `P0-EXIT-004` | 架构、规则 runtime、ABI、测试方案完成评审 | Not ready | 五份必需设计已进入 In Review、但未获得评审结论；十二个有效 ADR 均为 Proposed |
+| `P0-EXIT-004` | 架构、规则 runtime、ABI、测试方案完成评审 | Not ready | 五份必需设计已进入 In Review、但未获得评审结论；十三个有效 ADR 均为 Proposed |
 | `P0-EXIT-005` | 风险清单完整 | Ready for review | 20 项风险均含触发、缓解、验证和关闭条件，但文档仍需评审 |
 | `P0-EXIT-006` | 后续阶段有可测完成条件 | Ready for review | `ROADMAP.md` 与 `testing.md` 已给出 Phase 1—6 的量化门禁 |
 | `P0-EXIT-007` | 性能基线与资源目标得到回答 | Not ready | 固定 Linux Qt5 warm baseline、cgroup/noise 及 ELF+动态依赖+规则 size 已有机器证据；Rust 成对/cold/跨平台发行包、阈值和默认限制仍未冻结 |
@@ -44,7 +44,7 @@ Roadmap 点名的五份调研正文和五份设计正文均已存在。调研正
 
 这表示正文已具备评审输入，不表示 Accepted，证据见
 [`design-review-readiness.md`](design-review-readiness.md)。当前有效决策中，
-ADR 0001—0006 与 0008—0013 共十二份仍为 Proposed；ADR 0007 已被 0011
+ADR 0001—0006 与 0008—0014 共十三份仍为 Proposed；ADR 0007 已被 0011
 Superseded，不计作待接受决策。不能仅因对应 spike 通过就自动把 ADR 改为
 Accepted。
 
@@ -66,9 +66,9 @@ Accepted。
 | --- | --- | --- |
 | `P0-BLOCK-001` | Closed | 68 个稳定 CAP ID、四级验证状态、证据路径和开放 gap 闭集已写入 manifest，并由测试与上游 lock 绑定 |
 | `P0-BLOCK-002` | Open | 五份设计已 review-ready/In Review；仍缺 architecture、API、C ABI、testing、risks 的明确评审结论 |
-| `P0-BLOCK-003` | Open | 十二个 ADR 已 review-ready、但 acceptance-ready 均为 false；仍需 Accepted/Rejected/Superseded 评审结论 |
+| `P0-BLOCK-003` | Open | 十三个 ADR 已 review-ready、但 acceptance-ready 均为 false；仍需 Accepted/Rejected/Superseded 评审结论 |
 | `P0-BLOCK-004` | Open | runtime `db*` 2,268 文件身份及根 MIT/marker 已闭合；仍需 PNG/历史贡献、其余 source closure 和发布责任人书面评审 |
-| `P0-BLOCK-005` | Open | 68 行 × 4 平台 coverage report 已建立且无未分类 cell；Linux source-only 已清零，CAP-GAP-001/002/004/005/009/010/011/012 已闭合；CAP-GAP-006 已固定 100000-record 及 ZIP deflate/ZipCrypto/1 MiB high-ratio/首轮 malformed 子矩阵，CAP-GAP-003 已固定 Linux UTF-8/非 UTF-8/控制字符/hidden/leading-dash/排序子矩阵；仍有 8 个 corpus-gap 行及三个平台各 68 个 platform-missing |
+| `P0-BLOCK-005` | Open | 68 行 × 4 平台 coverage report 已建立且无未分类 cell；Linux source-only 已清零，CAP-GAP-001/002/004/005/009/010/011/012 已闭合；CAP-GAP-006 已固定 100000-record 及 ZIP deflate/ZipCrypto/1 MiB high-ratio/首轮 malformed 子矩阵，CAP-GAP-003 已固定 Linux UTF-8/非 UTF-8/控制字符/hidden/leading-dash/排序及 symlink/权限/depth/self-cycle 子矩阵；仍有 8 个 corpus-gap 行及三个平台各 68 个 platform-missing |
 | `P0-BLOCK-006` | Open | 固定 Linux Qt5 五层 warm baseline 已保留 17 warmup/90 measured 的 latency/MAD/p95/RSS、cgroup 和确定性输出；[体积基线](../research/upstream-deployment-size.md)也已固定 ELF、16 个去重动态依赖与 2,268 个规则的两种口径；仍需 Rust 成对、cold/affinity、跨平台发行包、评审阈值和默认资源限制 |
 
 ## 下一步顺序

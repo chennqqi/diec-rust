@@ -42,7 +42,14 @@
         "tools/corpus/generate_special_path_fixture.py",
         "tools/upstream/probe_special_path_behavior.py",
         "tools/tests/test_generate_special_path_fixture.py",
-        "tools/tests/test_probe_special_path_behavior.py"
+        "tools/tests/test_probe_special_path_behavior.py",
+        "docs/research/path-filesystem-behavior.md",
+        "docs/research/data/path-filesystem-fixture.json",
+        "docs/research/data/path-filesystem-engine-qt5.json",
+        "tools/corpus/generate_path_filesystem_fixture.py",
+        "tools/upstream/probe_path_filesystem_behavior.py",
+        "tools/tests/test_generate_path_filesystem_fixture.py",
+        "tools/tests/test_probe_path_filesystem_behavior.py"
       ]
     },
     "engine_contract": {
@@ -396,11 +403,9 @@
   "coverage_gaps": [
     {
       "id": "CAP-GAP-003",
-      "scope": "symlink/permission/depth/locale and cross-platform path behavior",
+      "scope": "large-directory/cancellation/TOCTOU and remaining Linux locale/filesystem path behavior",
       "platforms": [
-        "linux-x86_64-qt5",
-        "windows-x86_64-qt5",
-        "macos-x86_64-qt5"
+        "linux-x86_64-qt5"
       ]
     },
     {

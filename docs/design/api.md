@@ -2,7 +2,7 @@
 
 Status: In Review
 
-Last updated: 2026-07-27
+Last updated: 2026-07-28
 
 ## 1. 状态与证据
 
@@ -18,6 +18,8 @@ Last updated: 2026-07-27
 - [`cli-path-behavior.md`](../research/cli-path-behavior.md)：多目标、目录和 partial exit；
 - [`special-path-behavior.md`](../research/special-path-behavior.md)：Linux
   UTF-8/特殊路径、无 normalization 与 native path 边界；
+- [`path-filesystem-behavior.md`](../research/path-filesystem-behavior.md)：Linux
+  symlink、权限、深度与 self-cycle 的固定边界；
 - [`cli-special-modes.md`](../research/cli-special-modes.md)：entropy/info/struct 分派；
 - [`database-error-behavior.md`](../research/database-error-behavior.md)：数据库和 I/O 错误；
 - [`nested-scan-behavior.md`](../research/nested-scan-behavior.md)：嵌套 file-part 及顺序；
@@ -512,6 +514,11 @@ pub struct BatchReport {
     pub diagnostics: Vec<BatchDiagnostic>,
     pub completion: BatchCompletion,
 }
+
+pub enum TraversalProfile {
+    LegacyCompatible,
+    SafeCanonical,
+}
 ```
 
 顺序规则：
@@ -522,9 +529,19 @@ pub struct BatchReport {
 - modern mode 在每个 item 中保存 path/result/error，不把错误文本拼进 JSON；
 - legacy mode 复现固定平台已验证的 filename prefix 和 partial stdout。
 
-安全 traversal 必须有目录深度、文件数、总字节和 deadline；默认不跟随 directory
-symlink/junction。该行为可能偏离上游无界递归，必须在 CLI safety ADR 或 ADR 0003
-评审时明确。不可读 entry 产生 item diagnostic，是否继续由 policy 决定。
+安全 traversal 必须有目录深度、considered/emitted entry、累计 native path
+encoding、metadata/open、deadline 和 cancellation 的共享 checked budget；
+child 不重置额度。
+
+`SafeCanonical` 候选默认不跟随枚举发现的 symlink/junction/reparse point，
+使用 stable file identity、ancestry cycle detection 和 handle-relative
+open/identity recheck；permission、dangling、cycle、limit 和 TOCTOU 都产生
+typed item diagnostic。
+
+`LegacyCompatible` 跟随 link、保留 alias logical path 和非循环重复，但仍受
+hard ceiling；self-cycle 不依赖 OS link 上限。完整策略、候选数值与
+SafetyDeviation 门禁见
+[`ADR 0014`](decisions/0014-bounded-path-expansion.md)。
 
 ## 15. CLI 命令面
 

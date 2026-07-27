@@ -60,6 +60,7 @@ class RiskRegisterTest(unittest.TestCase):
             "取消/timeout",
             "symlink/junction",
             "waiver",
+            "handle-relative",
         ):
             self.assertIn(domain, self.risks)
 

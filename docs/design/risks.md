@@ -2,7 +2,7 @@
 
 Status: In Review
 
-Last updated: 2026-07-27
+Last updated: 2026-07-28
 
 ## 1. 用途与依据
 
@@ -488,11 +488,19 @@ baseline 的变更都要检查本表。
 - **触发**：symlink/junction cycle、路径逃逸、TOCTOU、权限错误、极深目录、非
   UTF-8/UTF-16 边界或 locale-dependent ordering。
 - **缓解**：CLI `TargetExpander` 与 engine 分离；不默认跟随 directory link；
-  depth/file/byte/time budgets；native path 保留无损 identity。
+  stable identity/ancestry cycle detection；handle-relative open 与 identity
+  recheck；depth/entry/path-byte/time budgets；native path 保留无损 identity。
 - **当前证据**：固定 Linux Qt5 双 Oracle 已覆盖 NFC/NFD、非 UTF-8 目录与显式
-  raw argv、空白与控制字符、hidden、leading-dash 和目录顺序；三平台矩阵仍缺。
-- **验证**：隔离 path corpus 覆盖循环、权限、重复、特殊字符和三平台排序。
-- **关闭**：path policy ADR/API 冻结且三平台 system tests 通过。
+  raw argv、空白与控制字符、hidden、leading-dash 和目录顺序。新增 9-case 双
+  Oracle 确认 file/directory symlink follow、alias 不去重、dangling not-found、
+  mode-000 非特权静默、depth-64 可达，以及 self-cycle 依赖 Linux link 上限重复
+  扫描 41 次；见
+  [`path-filesystem-behavior.md`](../research/path-filesystem-behavior.md)。
+  大目录取消/预算、TOCTOU 和三平台矩阵仍缺；ADR 0014 现为 Proposed。
+- **验证**：隔离 path corpus 覆盖循环、权限、重复、特殊字符、TOCTOU、全部
+  traversal limit 和三平台排序；legacy/canonical 差异有精确 waiver。
+- **关闭**：ADR 0014 Accepted，API/profile 数值冻结，handle-relative traversal
+  与三平台 system/property tests 通过。
 
 ### R-020：差分工具隐藏回归
 

@@ -164,9 +164,10 @@ class PhaseZeroGateReviewTest(unittest.TestCase):
                 "0011-rust-1.97.1-default-toolchain.md",
                 "0012-bounded-nested-scan-budget.md",
                 "0013-fail-closed-incomplete-input.md",
+                "0014-bounded-path-expansion.md",
             },
         )
-        self.assertIn("十二个有效 ADR", self.document)
+        self.assertIn("十三个有效 ADR", self.document)
 
 
 if __name__ == "__main__":

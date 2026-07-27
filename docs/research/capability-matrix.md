@@ -15,7 +15,7 @@ traceability manifest 中记录替代关系，不得复用旧 ID 表示不同语
 | --- | --- | --- | --- | --- |
 | `CAP-CLI-IN-001` | 单文件扫描 | positional `target` | Observed | 15 个确定性样本；见 `behavior-baseline.md` |
 | `CAP-CLI-IN-002` | 多目标扫描 | 多个 positional `target` | Observed | 保持参数顺序、不去重；结构化输出不是有效聚合文档 |
-| `CAP-CLI-IN-003` | 目录枚举 | positional directory | Observed | 无条件 depth-first 递归；Linux 当前语料按 name 排序 |
+| `CAP-CLI-IN-003` | 目录枚举 | positional directory | Observed | 无条件 depth-first；Linux 跟随 file/dir symlink、alias 不去重、权限错误静默，self-cycle 依赖 OS link 上限；大目录/TOCTOU/跨平台仍缺 |
 | `CAP-CLI-IN-004` | 单文件目录/空目录 | positional directory | Observed | 单文件不加 prefix；空目录退出 0 且无输出 |
 | `CAP-ENG-IN-001` | 内存扫描 | engine `scanMemory()` | Observed | Binary fixture 与 file/device/subdevice record 一致；CLI 不暴露 |
 | `CAP-ENG-IN-002` | device/subdevice 扫描 | engine API | Observed | 37-case fixture 固定 chunked/EOF/read/seek/sequential、position 与合法/非法 subdevice 范围；见 `engine-contract-behavior.md` |
@@ -259,8 +259,9 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
   截断、预取消、写失败/恢复、非特权权限失败和 8 个同输入并发 writer 已
   Observed。超大 count/text 等安全预算仍作为 Rust 实现测试门禁，不把上游
   OOM/调度结果采纳为 compatibility golden。
-- Linux Qt5 UTF-8 与首轮非 UTF-8/特殊 filename 矩阵已固定；仍缺
-  symlink/权限/深度/locale，以及 Windows/macOS 的路径和枚举差异。
+- Linux Qt5 UTF-8、首轮非 UTF-8/特殊 filename、symlink/权限/depth-64/
+  self-cycle 矩阵已固定；仍缺大目录取消/预算、TOCTOU、locale/filesystem，
+  以及 Windows/macOS 的路径和枚举差异。
 - formatter 转义与嵌套排序已闭合；跨平台编码差异仍归入路径/平台缺口。
 - deep 与 aggressive resource 过滤/计数边界已由
   [`scan-option-boundaries.md`](scan-option-boundaries.md) 闭合。

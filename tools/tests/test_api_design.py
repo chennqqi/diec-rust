@@ -22,6 +22,7 @@ class ApiDesignTest(unittest.TestCase):
             "c-abi.md",
             "behavior-baseline.md",
             "cli-path-behavior.md",
+            "path-filesystem-behavior.md",
             "cli-special-modes.md",
             "database-error-behavior.md",
             "nested-scan-behavior.md",
@@ -43,6 +44,17 @@ class ApiDesignTest(unittest.TestCase):
         self.assertIn("`scan_once` 调用同一个内部 scan service", self.api)
         self.assertIn("`Scanner::scan` 需要 `&mut self`", self.api)
         self.assertIn("不提供隐式 global default database", self.api)
+
+    def test_path_expansion_profiles_are_explicit_and_bounded(self) -> None:
+        for contract in (
+            "TraversalProfile",
+            "LegacyCompatible",
+            "SafeCanonical",
+            "stable file identity",
+            "handle-relative",
+            "ADR 0014",
+        ):
+            self.assertIn(contract, self.api)
 
     def test_result_states_are_unambiguous(self) -> None:
         self.assertIn("Complete", self.api)

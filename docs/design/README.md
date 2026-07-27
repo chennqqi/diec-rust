@@ -17,7 +17,7 @@ Phase 0 计划形成：
   关闭证据的审计总账（In Review）。
 - [`design-review-readiness.md`](design-review-readiness.md)：五份必需设计从
   Draft 进入 In Review 的结构证据、开放阻塞项和防误报约束（In Review）。
-- [`adr-review-readiness.md`](adr-review-readiness.md)：十二个有效 Proposed ADR 的
+- [`adr-review-readiness.md`](adr-review-readiness.md)：十三个有效 Proposed ADR 的
   评审问题、剩余 acceptance evidence 和防止自动接受的机器清单（In Review）。
 - [`upstream-sync.md`](upstream-sync.md)：DIE-engine subtree 和组件锁定策略（Accepted）。
 - [`decisions/`](decisions/)：重大决策的 ADR。

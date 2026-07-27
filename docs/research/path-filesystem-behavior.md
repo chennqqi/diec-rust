@@ -182,7 +182,8 @@ python tools\upstream\probe_path_filesystem_behavior.py `
 - symlink target 与扫描时打开之间存在 TOCTOU；Rust 应使用受控 open/metadata
   策略，并在测试中覆盖 target swap。
 - 安全偏离需由 ADR/compatibility profile 明确，不得把“比上游更安全”写成逐字
-  兼容。
+  兼容。当前 Proposed 策略见
+  [`ADR 0014`](../design/decisions/0014-bounded-path-expansion.md)。
 
 ## 剩余缺口
 

@@ -21,6 +21,11 @@ NFC/NFD、中文、emoji、前导/尾随空格、tab/newline、colon/backslash�
 leading-dash、非 UTF-8 目录/显式 argv 与目录排序，但不把 Linux 结果外推到
 其他平台。
 
+symlink、权限、64 层目录与自循环由独立的受限文件系统实验覆盖，见
+[`path-filesystem-behavior.md`](path-filesystem-behavior.md)。该实验确认 Linux
+上游跟随 file/directory symlink、不去重 alias、静默忽略不可读目录，并依赖 OS
+symlink resolution 上限而非 visited set 终止自循环。
+
 ## 源码语义
 
 固定上游
@@ -172,17 +177,19 @@ CSV 同样在记录之间插入不符合 CSV schema 的 filename/colon 行。pla
   在 CLI 设计中用 ADR 明确；不能静默“修好”后仍声称逐字节兼容。
 - “目录递归”和“文件内部递归”必须是两个独立概念。沿用上游 `-r` 名称时，
   help/API 文档应避免暗示它决定目录深度。
-- `findFiles()` 源码没有目录深度和循环检测。确定性语料刻意不含 symlink；
-  symlink-to-directory、循环链接、权限错误和超深目录需要受控隔离实验。Rust
-  实现不能继承无限递归风险；若安全限制产生差异，需要配置、诊断和 ADR。
+- `findFiles()` 源码没有目录深度和循环检测。后续受控实验已经证明 directory
+  symlink/self-cycle、权限静默和 depth-64 行为；Rust 实现不能继承这种依赖 OS
+  上限的递归。安全兼容策略见
+  [`ADR 0014`](../design/decisions/0014-bounded-path-expansion.md)。
 
 ## 尚未覆盖
 
-- symlink、junction、循环目录、超深目录和权限错误。
+- Linux file/directory/dangling symlink、自循环、depth-64 和 mode-000 权限矩阵
+  已覆盖；Windows junction/reparse point 与 macOS 对应边界仍缺。
 - UTF-8 与首轮非 UTF-8 filename bytes、空格、colon、backslash、tab/newline
   及 hidden/leading-dash 已由特殊路径实验覆盖。
 - QDir ordering 已固定一个大小写/NFC/NFD/控制字符矩阵；locale 与 filesystem
   边界仍缺。
 - Windows/macOS path separator、绝对路径和枚举顺序。
 - 能实际触发 resource/overlay 的 `--recursivescan` 样本。
-- 大目录的取消、时间、内存和最大文件数。
+- 大目录的取消、时间、内存、最大文件数与枚举/打开间 TOCTOU。

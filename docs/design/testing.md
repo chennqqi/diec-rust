@@ -2,7 +2,7 @@
 
 Status: In Review
 
-Last updated: 2026-07-27
+Last updated: 2026-07-28
 
 ## 1. 状态与证据
 
@@ -21,6 +21,7 @@ Last updated: 2026-07-27
   生成语料、原始输出哈希和扫描矩阵；
 - [`cli-path-behavior.md`](../research/cli-path-behavior.md)、
   [`special-path-behavior.md`](../research/special-path-behavior.md)、
+  [`path-filesystem-behavior.md`](../research/path-filesystem-behavior.md)、
   [`cli-special-modes.md`](../research/cli-special-modes.md) 与
   [`database-error-behavior.md`](../research/database-error-behavior.md)：
   CLI、特殊模式和失败行为；
@@ -177,7 +178,8 @@ manifest 规则：
 ### Tier A：项目生成
 
 首选。生成器只用代码内常量或已验证 Tier A 输入，写出 deterministic manifest。
-现有 baseline、path、database 和 nested generators 属于该层。测试要求：
+现有 baseline、path、path-filesystem、database 和 nested generators 属于该层。
+测试要求：
 
 - 两次生成逐字节相同；
 - 目录无额外文件、symlink 或 path escape；
@@ -477,7 +479,7 @@ JSON Pointer，不使用数组或 glob 扩大匹配面。格式为：
     "right_raw_sha256": "<sha256>",
     "diff_fingerprint": "<sha256>",
     "evidence": "docs/research/...",
-    "decision": "docs/design/decisions/....md",
+    "decision": "docs/design/decisions/0014-bounded-path-expansion.md",
     "owner": "compatibility",
     "reviewed_by": "compatibility-owner",
     "reviewed_on": "2026-07-27",
