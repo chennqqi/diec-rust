@@ -55,10 +55,13 @@
         "tools/tests/test_baseline_corpus_report.py"
       ]
     },
-    "cli_main_source": {
-      "kind": "source",
+    "cli_control": {
+      "kind": "source_and_experiment",
       "paths": [
-        "upstream/DIE-engine/src/console/main_console.cpp"
+        "upstream/DIE-engine/src/console/main_console.cpp",
+        "docs/research/upstream-cmake-differential.md",
+        "docs/research/data/baseline-corpus-linux-qt5.json",
+        "tools/tests/test_baseline_corpus_report.py"
       ]
     },
     "cli_output": {
@@ -139,8 +142,8 @@
     {"id": "CAP-CLI-MODE-002", "name": "info mode", "verification": "observed_with_gaps", "evidence_set": "cli_special"},
     {"id": "CAP-CLI-MODE-003", "name": "struct mode", "verification": "observed_with_gaps", "evidence_set": "cli_special"},
     {"id": "CAP-CLI-MODE-004", "name": "show structs mode", "verification": "observed", "evidence_set": "cli_special"},
-    {"id": "CAP-CLI-MODE-005", "name": "help mode and no-target help", "verification": "source_verified", "evidence_set": "cli_main_source"},
-    {"id": "CAP-CLI-MODE-006", "name": "version mode", "verification": "source_verified", "evidence_set": "cli_main_source"},
+    {"id": "CAP-CLI-MODE-005", "name": "help mode and no-target help", "verification": "observed", "evidence_set": "cli_control"},
+    {"id": "CAP-CLI-MODE-006", "name": "version mode", "verification": "observed", "evidence_set": "cli_control"},
     {"id": "CAP-CLI-OUT-001", "name": "XML output", "verification": "observed_with_gaps", "evidence_set": "cli_output"},
     {"id": "CAP-CLI-OUT-002", "name": "JSON output", "verification": "observed_with_gaps", "evidence_set": "cli_output"},
     {"id": "CAP-CLI-OUT-003", "name": "CSV output", "verification": "observed_with_gaps", "evidence_set": "cli_output"},
@@ -256,9 +259,9 @@
   ],
   "summary": {
     "capability_count": 68,
-    "observed": 31,
+    "observed": 33,
     "observed_with_gaps": 18,
-    "source_verified": 17,
+    "source_verified": 15,
     "source_verified_with_gaps": 2,
     "coverage_gap_count": 8,
     "phase_0_coverage_complete": false

@@ -101,6 +101,42 @@ class BaselineCorpusReportTests(unittest.TestCase):
             [{"name": "Zip", "type": "archive", "version": "2.0"}],
         )
 
+    def test_help_no_args_and_version_are_fixed_runtime_cases(self):
+        cases = self.report["cases"]
+        empty_sha256 = hashlib.sha256(b"").hexdigest()
+
+        help_case = cases["help"]
+        no_args_case = cases["no_args"]
+        version_case = cases["version"]
+        self.assertEqual(help_case["arguments"], ["--help"])
+        self.assertEqual(no_args_case["arguments"], [])
+        self.assertEqual(version_case["arguments"], ["--version"])
+
+        for case in (help_case, no_args_case, version_case):
+            self.assertEqual(case["differences"], [])
+            self.assertEqual(case["left"], case["right"])
+            self.assertEqual(case["left"]["exit_code"], 0)
+            self.assertEqual(case["left"]["stderr_bytes"], 0)
+            self.assertEqual(
+                case["left"]["stderr_sha256"],
+                empty_sha256,
+            )
+
+        self.assertEqual(help_case["left"]["stdout_bytes"], 2173)
+        self.assertEqual(
+            help_case["left"]["stdout_sha256"],
+            "65a944c5841645c637313b371d47e04498441b5338faeacfd00a740ba85c8844",
+        )
+        self.assertEqual(
+            no_args_case["left"],
+            help_case["left"],
+        )
+        self.assertEqual(version_case["left"]["stdout_bytes"], 10)
+        self.assertEqual(
+            version_case["left"]["stdout_sha256"],
+            "641f88fbece5c6334703787fb6801826745620bd4189f0c0cc036e63d9e1d758",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

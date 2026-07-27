@@ -47,8 +47,8 @@ CLI 主入口为 [`src/console/main_console.cpp`](https://github.com/horsicq/DIE
 | `CAP-CLI-MODE-002` | `-i` | `--info` | 输出文件信息模型 | Observed；5 个代表样本、6 种 formatter |
 | `CAP-CLI-MODE-003` | `-S` | `--struct <value>` | 特定结构信息，如 `Hash` / `Hash#MD5` | Observed；Hash、子字段和未知方法 |
 | `CAP-CLI-MODE-004` | `-w` | `--showstructs` | 列出可用结构方法 | Observed；仅列 4 个通用方法，target 被忽略 |
-| `CAP-CLI-MODE-005` | — | `--help` | 显示 Qt command-line help | Source audit；无 target 且没有 `--showdatabase` 时也调用 `showHelp()` |
-| `CAP-CLI-MODE-006` | — | `--version` | 显示应用版本 | Source audit；由 Qt command-line parser 注册 |
+| `CAP-CLI-MODE-005` | — | `--help` | 显示 Qt command-line help | Observed；无参数与 `--help` 原始 stdout 相同，退出 0、stderr 为空 |
+| `CAP-CLI-MODE-006` | — | `--version` | 显示应用版本 | Observed；双 oracle 原始 stdout 10 bytes，退出 0、stderr 为空 |
 | `CAP-CLI-OUT-001` | `-x` | `--xml` | XML | Observed；5 个代表样本 |
 | `CAP-CLI-OUT-002` | `-j` | `--json` | JSON | Observed；15 个样本原始输出已固定哈希 |
 | `CAP-CLI-OUT-003` | `-c` | `--csv` | CSV | Observed；5 个代表样本；normal scan 多格式开关中优先级最高 |
@@ -202,8 +202,8 @@ validator 要求本文 68 个 `CAP-*` 与 manifest 完全相等，并拒绝缺�
 不能提升为 Rust 已实现或跨平台兼容。
 
 [`capability-coverage-report.md`](capability-coverage-report.md) 进一步把该清单
-投影为 68 行 × 4 平台的闭集：Linux Qt5 为 31 observed、18 observed with
-gaps、17 source-only、2 source-only with gaps；Linux Qt6、Windows 和 macOS
+投影为 68 行 × 4 平台的闭集：Linux Qt5 为 33 observed、18 observed with
+gaps、15 source-only、2 source-only with gaps；Linux Qt6、Windows 和 macOS
 各有 68 个 platform-missing。全部行已分类不等于覆盖完成。
 
 - [CLI main](https://github.com/horsicq/DIE-engine/blob/74eaf505c250ab47e709024e9dc41657cd8f2254/src/console/main_console.cpp)

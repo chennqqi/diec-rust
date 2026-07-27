@@ -86,7 +86,12 @@ def build_gap_map(capability_ids: set[str]) -> dict[str, list[str]]:
     return {
         "CAP-GAP-001": select(
             capability_ids,
-            prefixes=("CAP-CLI-OPT-", "CAP-CLI-MODE-"),
+            exact=(
+                "CAP-CLI-OPT-008",
+                "CAP-CLI-MODE-001",
+                "CAP-CLI-MODE-002",
+                "CAP-CLI-MODE-003",
+            ),
         ),
         "CAP-GAP-002": select(
             capability_ids,
