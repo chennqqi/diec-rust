@@ -8,7 +8,7 @@ Last updated: 2026-07-27
 
 ## 1. 目的与结论
 
-[`capability-coverage.json`](data/capability-coverage.json) 当前仍有 5 个
+[`capability-coverage.json`](data/capability-coverage.json) 当前仍有 4 个
 Linux Qt5 source-only 能力。本文不把源码证据提升为 runtime compatibility，
 而是为每项固定缺失证据、最小 fixture、oracle/harness、强断言和关闭方式。
 
@@ -18,13 +18,12 @@ Linux Qt5 source-only 能力。本文不把源码证据提升为 runtime compati
 生成。生成器要求清单 ID 与 coverage report 的 source-only 闭集完全相等；
 新增、提升或删除能力而未同步计划会显式失败。
 
-## 2. 当前五项
+## 2. 当前四项
 
 | 能力 | 关闭类型 | 关键缺口 |
 | --- | --- | --- |
 | `CAP-RULE-007` | scope review / private harness | 公共 API 不可传非空 signature path，private comparator 未运行 |
 | `CAP-DISPATCH-002` | generated oracle + scope review | 七个公共 detector 成员缺 runtime；BW 只有不可自动到达的分支 |
-| `CAP-DISPATCH-003` | generated format oracle | fixture/probe 已就绪；固定 Qt5 oracle 尚未执行 |
 | `CAP-NEST-007` | paired negative nested oracle | 缺“直接可检测、递归不分派”的同输入正负控制 |
 | `CAP-NEST-009` | bounded escalation + ADR | 缺深度/总展开量递增实验和 Rust 有界偏离决策 |
 
@@ -63,19 +62,21 @@ CLI 正例。
 [`generate_dos_dispatch_corpus.py`](../../tools/corpus/generate_dos_dispatch_corpus.py)
 固定为 19 个正例/控制；
 [`probe_dos_dispatch.py`](../../tools/upstream/probe_dos_dispatch.py) 已实现双
-Qt5 oracle、manifest 身份、present/absent filetype 和 raw stream 门禁。Docker
-daemon 不可用，因此 runtime report 仍待采集。BW 路径的
+Qt5 oracle、manifest 身份、present/absent filetype 和 raw stream 门禁。
+runtime report 仍待采集。BW 路径的
 [`probe_bw_dispatch_harness.py`](../../tools/upstream/probe_bw_dispatch_harness.py)
 也已实现 automatic/forced property 成对对照和 Unknown fallback 断言，但同样
 尚未运行；若不保留该 engine-only 入口则仍需 scope review。
 
-`CAP-DISPATCH-003` 已具备
+`CAP-DISPATCH-003` 已由
 [`legacy-dispatch-corpus.json`](data/legacy-dispatch-corpus.json) 对应的 8-case
-生成器和 [`probe_legacy_dispatch.py`](../../tools/upstream/probe_legacy_dispatch.py)。
-probe 要求临时生成的 manifest 与提交版本逐字节相同，并对两套 oracle 分别断言
-正例命中精确 filetype、三类控制不命中 Amiga/Atari，同时把每次 stdout/stderr
-写入外部 raw 目录。Docker daemon 当前不可用，因此尚无可提交的 runtime report，
-能力仍保持 source-only。
+生成器和
+[`legacy-dispatch-linux-qt5.json`](data/legacy-dispatch-linux-qt5.json)
+关闭 source-only 状态。首次实验纠正了两个假设：Atari `HEADER` 的字段共
+28 bytes，但固定 Linux ABI 的 `sizeof` 为 32；且 detector 虽返回
+`Atari ST`，`scanProcess` 没有 `FT_ATARIST` 分支并回退 Binary。最终 probe
+对两套 oracle 同时执行 info detector 与 normal scan：Amiga 两侧均命中，
+Atari 两侧均形成 `Atari ST → Binary` 成对结果，六个边界控制均保持 Binary。
 
 ### 结果模型
 
@@ -155,7 +156,7 @@ python tools/upstream/probe_result_enums_harness.py \
 测试要求：
 
 - committed manifest 与生成结果逐字节一致；
-- 五个 ID 与当前 source-only 行完全相等；
+- 四个 ID 与当前 source-only 行完全相等；
 - 每项都有非空缺失证据、fixture、harness 和至少三个强断言；
 - 三类负向能力保持 paired control、scope review 或 ADR 关闭路径；
 - catalog 漂移和重复 JSON key 显式失败。

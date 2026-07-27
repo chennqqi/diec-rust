@@ -106,6 +106,8 @@ def load_fixture(
             expectation["absent_filetypes"]
         ):
             raise ValueError("dispatch expectation overlaps")
+        if not isinstance(expectation.get("info_filetype"), str):
+            raise ValueError("invalid dispatch expectation: info_filetype")
     return manifest, samples, reference
 
 
@@ -160,10 +162,23 @@ def expectation_failures(
     return failures
 
 
+def info_filetype(stdout: bytes) -> str | None:
+    try:
+        document = json.loads(stdout)
+    except (UnicodeDecodeError, json.JSONDecodeError):
+        return None
+    try:
+        value = document["data"]["Info"]["File type"]
+    except (KeyError, TypeError):
+        return None
+    return value if isinstance(value, str) else None
+
+
 def probe_dispatch_cases(
     corpus_dir: pathlib.Path,
     raw_dir: pathlib.Path,
     samples: list[dict[str, Any]],
+    include_detector_info: bool = False,
 ) -> tuple[dict[str, Any], dict[str, Any], list[str]]:
     raw_dir.mkdir(parents=True, exist_ok=True)
 
@@ -181,35 +196,96 @@ def probe_dispatch_cases(
     cases = {}
     for sample in samples:
         name = str(sample["name"])
-        arguments = (
+        scan_arguments = (
             "--json",
             *SHARED.DATABASE_ARGS,
             f"/corpus/{name}",
         )
+        info_arguments = (
+            "--info",
+            "--json",
+            f"/corpus/{name}",
+        )
         observations = {}
         trees = {}
+        info_filetypes = {}
         for oracle in ORACLES:
-            observation = SHARED.observe(
+            scan_observation = SHARED.observe(
                 oracle.image,
                 oracle.binary,
-                arguments,
+                scan_arguments,
                 corpus_dir,
             )
-            stdout_name = f"{name}.{oracle.name}.stdout"
-            stderr_name = f"{name}.{oracle.name}.stderr"
-            (raw_dir / stdout_name).write_bytes(observation.stdout)
-            (raw_dir / stderr_name).write_bytes(observation.stderr)
-            tree = SHARED.json_detect_tree(observation.stdout)
+            scan_mode = ".scan" if include_detector_info else ""
+            scan_stdout_name = (
+                f"{name}.{oracle.name}{scan_mode}.stdout"
+            )
+            scan_stderr_name = (
+                f"{name}.{oracle.name}{scan_mode}.stderr"
+            )
+            (raw_dir / scan_stdout_name).write_bytes(
+                scan_observation.stdout
+            )
+            (raw_dir / scan_stderr_name).write_bytes(
+                scan_observation.stderr
+            )
+            tree = SHARED.json_detect_tree(scan_observation.stdout)
             trees[oracle.name] = tree
-            observations[oracle.name] = {
-                **observation.summary(),
-                "raw_stdout": stdout_name,
-                "raw_stderr": stderr_name,
-                "detect_tree": tree,
-            }
-            if observation.exit_code != 0:
+            if include_detector_info:
+                info_observation = SHARED.observe(
+                    oracle.image,
+                    oracle.binary,
+                    info_arguments,
+                    corpus_dir,
+                )
+                info_stdout_name = f"{name}.{oracle.name}.info.stdout"
+                info_stderr_name = f"{name}.{oracle.name}.info.stderr"
+                (raw_dir / info_stdout_name).write_bytes(
+                    info_observation.stdout
+                )
+                (raw_dir / info_stderr_name).write_bytes(
+                    info_observation.stderr
+                )
+                observed_info_filetype = info_filetype(
+                    info_observation.stdout
+                )
+                info_filetypes[oracle.name] = observed_info_filetype
+                observations[oracle.name] = {
+                    "scan": {
+                        **scan_observation.summary(),
+                        "arguments": list(scan_arguments),
+                        "raw_stdout": scan_stdout_name,
+                        "raw_stderr": scan_stderr_name,
+                        "detect_tree": tree,
+                    },
+                    "detector_info": {
+                        **info_observation.summary(),
+                        "arguments": list(info_arguments),
+                        "raw_stdout": info_stdout_name,
+                        "raw_stderr": info_stderr_name,
+                        "filetype": observed_info_filetype,
+                    },
+                }
+            else:
+                observations[oracle.name] = {
+                    **scan_observation.summary(),
+                    "arguments": list(scan_arguments),
+                    "raw_stdout": scan_stdout_name,
+                    "raw_stderr": scan_stderr_name,
+                    "detect_tree": tree,
+                }
+            if scan_observation.exit_code != 0:
+                scan_exit_field = (
+                    "scan.exit_code"
+                    if include_detector_info
+                    else "exit_code"
+                )
                 failures.append(
-                    f"cases.{name}.{oracle.name}.exit_code"
+                    f"cases.{name}.{oracle.name}.{scan_exit_field}"
+                )
+            if include_detector_info and info_observation.exit_code != 0:
+                failures.append(
+                    f"cases.{name}.{oracle.name}.info.exit_code"
                 )
             failures.extend(
                 expectation_failures(
@@ -218,33 +294,87 @@ def probe_dispatch_cases(
                     sample["expected_dispatch"],
                 )
             )
+            if include_detector_info and (
+                observed_info_filetype
+                != sample["expected_dispatch"]["info_filetype"]
+            ):
+                failures.append(
+                    f"cases.{name}.{oracle.name}.info.filetype"
+                )
 
         left = ORACLES[0].name
         right = ORACLES[1].name
-        if observations[left]["exit_code"] != observations[right]["exit_code"]:
-            failures.append(f"cases.{name}.oracle_diff.exit_code")
+        scan_left = (
+            observations[left]["scan"]
+            if include_detector_info
+            else observations[left]
+        )
+        scan_right = (
+            observations[right]["scan"]
+            if include_detector_info
+            else observations[right]
+        )
         if (
-            observations[left]["stdout_sha256"]
-            != observations[right]["stdout_sha256"]
+            scan_left["exit_code"]
+            != scan_right["exit_code"]
         ):
-            failures.append(f"cases.{name}.oracle_diff.stdout")
+            suffix = (
+                "scan.exit_code"
+                if include_detector_info
+                else "exit_code"
+            )
+            failures.append(f"cases.{name}.oracle_diff.{suffix}")
         if (
-            observations[left]["stderr_sha256"]
-            != observations[right]["stderr_sha256"]
+            scan_left["stdout_sha256"]
+            != scan_right["stdout_sha256"]
         ):
-            failures.append(f"cases.{name}.oracle_diff.stderr")
+            suffix = "scan.stdout" if include_detector_info else "stdout"
+            failures.append(f"cases.{name}.oracle_diff.{suffix}")
+        if (
+            scan_left["stderr_sha256"]
+            != scan_right["stderr_sha256"]
+        ):
+            suffix = "scan.stderr" if include_detector_info else "stderr"
+            failures.append(f"cases.{name}.oracle_diff.{suffix}")
         if trees[left] != trees[right]:
-            failures.append(f"cases.{name}.oracle_diff.detect_tree")
+            suffix = (
+                "scan.detect_tree"
+                if include_detector_info
+                else "detect_tree"
+            )
+            failures.append(f"cases.{name}.oracle_diff.{suffix}")
+        if include_detector_info and (
+            observations[left]["detector_info"]["exit_code"]
+            != observations[right]["detector_info"]["exit_code"]
+        ):
+            failures.append(f"cases.{name}.oracle_diff.info.exit_code")
+        if include_detector_info and (
+            observations[left]["detector_info"]["stdout_sha256"]
+            != observations[right]["detector_info"]["stdout_sha256"]
+        ):
+            failures.append(f"cases.{name}.oracle_diff.info.stdout")
+        if include_detector_info and (
+            observations[left]["detector_info"]["stderr_sha256"]
+            != observations[right]["detector_info"]["stderr_sha256"]
+        ):
+            failures.append(f"cases.{name}.oracle_diff.info.stderr")
+        if (
+            include_detector_info
+            and info_filetypes[left] != info_filetypes[right]
+        ):
+            failures.append(f"cases.{name}.oracle_diff.info.filetype")
 
-        cases[name] = {
+        case = {
             "case_kind": sample["case_kind"],
             "target_filetype": sample["target_filetype"],
             "expected_dispatch": sample["expected_dispatch"],
             "size": sample["size"],
             "sha256": sample["sha256"],
-            "arguments": list(arguments),
             "oracles": observations,
         }
+        if not include_detector_info:
+            case["arguments"] = list(scan_arguments)
+        cases[name] = case
 
     unique_failures = list(dict.fromkeys(failures))
     return oracle_identities, cases, unique_failures
@@ -260,6 +390,7 @@ def build_report(
         corpus_dir,
         raw_dir,
         samples,
+        include_detector_info=True,
     )
     return {
         "schema_version": 1,

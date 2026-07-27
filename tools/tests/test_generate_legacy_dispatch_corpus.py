@@ -58,8 +58,9 @@ class GenerateLegacyDispatchCorpusTests(unittest.TestCase):
         atari = MODULE.make_atari_st()
         self.assertGreater(len(amiga), 8)
         self.assertEqual(struct.unpack_from(">I", amiga)[0], 0x000003F3)
-        self.assertEqual(len(atari), 28)
+        self.assertEqual(len(atari), 32)
         self.assertEqual(struct.unpack_from(">H", atari)[0], 0x601A)
+        self.assertEqual(atari[28:], b"\x00" * 4)
 
     def test_each_target_has_positive_and_three_negative_controls(self):
         with tempfile.TemporaryDirectory() as output_dir:
@@ -77,8 +78,13 @@ class GenerateLegacyDispatchCorpusTests(unittest.TestCase):
                 {"positive", "truncated", "wrong_endian", "near_magic"},
             )
             self.assertEqual(
+                cases["positive"]["expected_dispatch"]["info_filetype"],
+                target,
+            )
+            expected_scanner = [target] if target == "Amiga Hunk" else []
+            self.assertEqual(
                 cases["positive"]["expected_dispatch"]["present_filetypes"],
-                [target],
+                expected_scanner,
             )
             for case_kind in ("truncated", "wrong_endian", "near_magic"):
                 self.assertEqual(
@@ -95,6 +101,10 @@ class GenerateLegacyDispatchCorpusTests(unittest.TestCase):
                     ),
                     set(MODULE.TARGET_FILETYPES),
                 )
+                self.assertEqual(
+                    cases[case_kind]["expected_dispatch"]["info_filetype"],
+                    "Binary",
+                )
 
     def test_controls_cross_exact_upstream_validity_boundaries(self):
         by_name = {
@@ -110,7 +120,7 @@ class GenerateLegacyDispatchCorpusTests(unittest.TestCase):
             by_name["amiga-hunk-near-magic.bin"][:4],
             bytes.fromhex("000003f4"),
         )
-        self.assertEqual(len(by_name["atari-st-truncated.prg"]), 27)
+        self.assertEqual(len(by_name["atari-st-truncated.prg"]), 31)
         self.assertEqual(
             by_name["atari-st-wrong-endian.prg"][:2],
             bytes.fromhex("1a60"),

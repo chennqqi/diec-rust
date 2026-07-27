@@ -58,22 +58,6 @@ CATALOG: dict[str, dict[str, Any]] = {
             "raw stdout, stderr, exit code, size, and SHA-256 are retained",
         ],
     },
-    "CAP-DISPATCH-003": {
-        "closure_kind": "generated_format_oracle",
-        "missing_evidence": [
-            "Amiga Hunk and Atari ST have source dispatch only"
-        ],
-        "fixture": (
-            "tools/corpus/generate_legacy_dispatch_corpus.py: "
-            "two positives plus truncated, wrong-endian, and near-magic controls"
-        ),
-        "harness": "tools/upstream/probe_legacy_dispatch.py",
-        "assertions": [
-            "both formats reach their exact upstream filetype",
-            "truncated and wrong-endian controls are included",
-            "raw stdout, stderr, exit code, size, and SHA-256 are retained",
-        ],
-    },
     "CAP-NEST-007": {
         "closure_kind": "paired_negative_nested_oracle",
         "missing_evidence": [

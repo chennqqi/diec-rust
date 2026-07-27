@@ -9,7 +9,7 @@ Phase 0 计划形成：
 - [`capability-coverage-report.md`](capability-coverage-report.md)：68 个稳定能力在
   Linux Qt5/Qt6、Windows 和 macOS 上的 runtime/source-only、corpus-missing
   与 platform-missing 闭集报告（Draft）。
-- [`source-only-closure-plan.md`](source-only-closure-plan.md)：剩余 5 个 Linux
+- [`source-only-closure-plan.md`](source-only-closure-plan.md)：剩余 4 个 Linux
   Qt5 source-only 能力的缺失证据、fixture、harness、强断言和关闭方式（Draft）。
 - [`legacy-dispatch-oracle.md`](legacy-dispatch-oracle.md)：Amiga Hunk/Atari ST
   的固定源码边界、8-case 生成语料和双 Qt5 oracle 执行门禁（Draft）。
@@ -87,10 +87,12 @@ Phase 0 计划形成：
   `CAP-*` 的验证层级、证据路径、平台范围和 12 个显式 coverage gap。
 - [`data/capability-coverage.json`](data/capability-coverage.json)：68 行 × 4 平台
   的 272-cell 闭集分类、十二个 gap 到能力的显式映射和未分类计数。
-- [`data/source-only-closure.json`](data/source-only-closure.json)：与当前五个
+- [`data/source-only-closure.json`](data/source-only-closure.json)：与当前四个
   source-only 行严格相等的可执行关闭清单。
 - [`data/legacy-dispatch-corpus.json`](data/legacy-dispatch-corpus.json)：
   Amiga Hunk/Atari ST 正例、截断、错误端序和近似 magic 控制的 hash-bound 清单。
+- [`data/legacy-dispatch-linux-qt5.json`](data/legacy-dispatch-linux-qt5.json)：
+  Amiga 正常分发及 Atari detector-only/Binary fallback 的双 Qt5 成对基线。
 - [`data/dos-dispatch-source-audit.json`](data/dos-dispatch-source-audit.json)：
   DOS/COM detector、BW legacy magic、scanner 分支和 property bypass 的
   SHA/line-bound 审计。

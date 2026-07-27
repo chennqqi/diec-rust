@@ -118,7 +118,9 @@ priority、数据库分层、init/include、file type、deep/heuristic 和 Unkno
 - `CAP-DISPATCH-001`：PE32/PE64、ELF32/ELF64、Mach-O 32/64、Mach-O FAT。
 - `CAP-DISPATCH-002`：DOS/COM 家族：MS-DOS、NE、LE、LX、DOS16M、DOS4G、
   BW DOS16M、COM。
-- `CAP-DISPATCH-003`：Amiga Hunk、Atari ST。
+- `CAP-DISPATCH-003`：Amiga Hunk 正常分发；Atari ST detector 命中但
+  `scanProcess` 缺少对应分支并回退 Binary。双 Qt5 成对基线见
+  [`legacy-dispatch-oracle.md`](legacy-dispatch-oracle.md)。
 - `CAP-DISPATCH-004`：APK、IPA、JAR、ZIP、RAR、NPM、ISO9660、通用 Archive。
 - `CAP-DISPATCH-005`：DEX、Java Class、PYC。
 - `CAP-DISPATCH-006`：PDF、CFBF。
@@ -219,8 +221,8 @@ validator 要求本文 68 个 `CAP-*` 与 manifest 完全相等，并拒绝缺�
 不能提升为 Rust 已实现或跨平台兼容。
 
 [`capability-coverage-report.md`](capability-coverage-report.md) 进一步把该清单
-投影为 68 行 × 4 平台的闭集：Linux Qt5 为 43 observed、20 observed with
-gaps、4 source-only、1 source-only with gaps；Linux Qt6、Windows 和 macOS
+投影为 68 行 × 4 平台的闭集：Linux Qt5 为 44 observed、20 observed with
+gaps、3 source-only、1 source-only with gaps；Linux Qt6、Windows 和 macOS
 各有 68 个 platform-missing。全部行已分类不等于覆盖完成。
 
 - [CLI main](https://github.com/horsicq/DIE-engine/blob/74eaf505c250ab47e709024e9dc41657cd8f2254/src/console/main_console.cpp)

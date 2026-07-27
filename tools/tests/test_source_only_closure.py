@@ -44,7 +44,7 @@ class SourceOnlyClosureTest(unittest.TestCase):
         items = self.manifest["items"]
         self.assertEqual({item["id"] for item in items}, expected_ids)
         self.assertEqual(len(items), len(expected_ids))
-        self.assertEqual(len(items), 5)
+        self.assertEqual(len(items), 4)
 
     def test_every_item_has_actionable_closure_evidence(self):
         for item in self.manifest["items"]:

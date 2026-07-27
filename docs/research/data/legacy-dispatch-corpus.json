@@ -9,6 +9,7 @@
         "absent_filetypes": [
           "Atari ST"
         ],
+        "info_filetype": "Amiga Hunk",
         "present_filetypes": [
           "Amiga Hunk"
         ]
@@ -25,6 +26,7 @@
           "Amiga Hunk",
           "Atari ST"
         ],
+        "info_filetype": "Binary",
         "present_filetypes": []
       },
       "name": "amiga-hunk-truncated.bin",
@@ -39,6 +41,7 @@
           "Amiga Hunk",
           "Atari ST"
         ],
+        "info_filetype": "Binary",
         "present_filetypes": []
       },
       "name": "amiga-hunk-wrong-endian.bin",
@@ -53,6 +56,7 @@
           "Amiga Hunk",
           "Atari ST"
         ],
+        "info_filetype": "Binary",
         "present_filetypes": []
       },
       "name": "amiga-hunk-near-magic.bin",
@@ -64,15 +68,15 @@
       "case_kind": "positive",
       "expected_dispatch": {
         "absent_filetypes": [
-          "Amiga Hunk"
-        ],
-        "present_filetypes": [
+          "Amiga Hunk",
           "Atari ST"
-        ]
+        ],
+        "info_filetype": "Atari ST",
+        "present_filetypes": []
       },
       "name": "minimal-atari-st.prg",
-      "sha256": "825abe31e10e4f41c01d2fe2de166cdb8ba2b99be3dd474d70b6c97c5e8ce98a",
-      "size": 28,
+      "sha256": "6f9c2042681c85fa43ffefcf84981a2e041410fdc7bc59fb87acda47f1bd5efc",
+      "size": 32,
       "target_filetype": "Atari ST"
     },
     {
@@ -82,11 +86,12 @@
           "Amiga Hunk",
           "Atari ST"
         ],
+        "info_filetype": "Binary",
         "present_filetypes": []
       },
       "name": "atari-st-truncated.prg",
-      "sha256": "f01083eb23fabd12bb2186bf8f9ec93d68c3666dd4c9f5707c32eb199e7209f6",
-      "size": 27,
+      "sha256": "04ff05e96019b83a5913a55e27423367c61b7fd7b788fd3722a0242096a8344e",
+      "size": 31,
       "target_filetype": "Atari ST"
     },
     {
@@ -96,11 +101,12 @@
           "Amiga Hunk",
           "Atari ST"
         ],
+        "info_filetype": "Binary",
         "present_filetypes": []
       },
       "name": "atari-st-wrong-endian.prg",
-      "sha256": "0cf39892ba204ab987afb8ab4e9b83933d1edf5e401c5f2d473e0789037c44b9",
-      "size": 28,
+      "sha256": "aab0b23b5e1898a29b157ff8d4dbf158ee402dded285405c34a11e5966c55720",
+      "size": 32,
       "target_filetype": "Atari ST"
     },
     {
@@ -110,11 +116,12 @@
           "Amiga Hunk",
           "Atari ST"
         ],
+        "info_filetype": "Binary",
         "present_filetypes": []
       },
       "name": "atari-st-near-magic.prg",
-      "sha256": "8e79aa6b905b2beb1f3addbd11fe8fe7e9e0d998c932e2781c86c1899029a9bd",
-      "size": 28,
+      "sha256": "281baaab9cffba6507473a8192c282d5be5ce3505cc311e06c9cba757817d6b5",
+      "size": 32,
       "target_filetype": "Atari ST"
     }
   ],

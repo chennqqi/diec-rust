@@ -124,5 +124,6 @@ python tools/upstream/probe_bw_dispatch_harness.py \
   --output <report.json>
 ```
 
-Docker daemon 当前不可用，因此公共七成员和 BW harness 都尚无 runtime report。
-基础设施已就绪，但在两份报告实际通过前，`CAP-DISPATCH-002` 保持 source-only。
+公共七成员和 BW harness 都尚无 runtime report。当前 Docker daemon 已由
+legacy dispatch 实验确认可用，因此这是下一项可执行实验，不再是环境阻塞。
+在两份报告实际通过前，`CAP-DISPATCH-002` 保持 source-only。

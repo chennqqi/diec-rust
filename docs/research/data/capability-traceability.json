@@ -98,7 +98,12 @@
         "docs/research/source-analysis.md",
         "docs/research/behavior-baseline.md",
         "docs/research/data/baseline-corpus-linux-qt5.json",
-        "tools/tests/test_baseline_corpus_report.py"
+        "tools/tests/test_baseline_corpus_report.py",
+        "docs/research/legacy-dispatch-oracle.md",
+        "docs/research/data/legacy-dispatch-corpus.json",
+        "docs/research/data/legacy-dispatch-linux-qt5.json",
+        "tools/upstream/probe_legacy_dispatch.py",
+        "tools/tests/test_probe_legacy_dispatch.py"
       ]
     },
     "nested_scan": {
@@ -198,7 +203,7 @@
 
     {"id": "CAP-DISPATCH-001", "name": "PE ELF and Mach-O dispatch", "verification": "observed", "evidence_set": "dispatch_source"},
     {"id": "CAP-DISPATCH-002", "name": "DOS and COM dispatch", "verification": "source_verified", "evidence_set": "dispatch_source"},
-    {"id": "CAP-DISPATCH-003", "name": "Amiga Hunk and Atari ST dispatch", "verification": "source_verified", "evidence_set": "dispatch_source"},
+    {"id": "CAP-DISPATCH-003", "name": "Amiga Hunk dispatch and Atari ST detector-only fallback", "verification": "observed", "evidence_set": "dispatch_source"},
     {"id": "CAP-DISPATCH-004", "name": "archive family dispatch", "verification": "observed_with_gaps", "evidence_set": "dispatch_source"},
     {"id": "CAP-DISPATCH-005", "name": "DEX Java Class and PYC dispatch", "verification": "observed", "evidence_set": "dispatch_source"},
     {"id": "CAP-DISPATCH-006", "name": "PDF and CFBF dispatch", "verification": "observed", "evidence_set": "dispatch_source"},
@@ -314,9 +319,9 @@
   ],
   "summary": {
     "capability_count": 68,
-    "observed": 43,
+    "observed": 44,
     "observed_with_gaps": 20,
-    "source_verified": 4,
+    "source_verified": 3,
     "source_verified_with_gaps": 1,
     "coverage_gap_count": 12,
     "phase_0_coverage_complete": false

@@ -39,8 +39,8 @@ def make_amiga_hunk() -> bytes:
 
 
 def make_atari_st() -> bytes:
-    """Return a header-only Atari ST executable with empty segments."""
-    return struct.pack(
+    """Return the smallest Atari ST image accepted by the pinned Linux ABI."""
+    wire_header = struct.pack(
         ">HIIIIIIH",
         0x601A,
         0,  # text
@@ -51,6 +51,10 @@ def make_atari_st() -> bytes:
         0,  # flags
         1,  # absolute image; no relocation table
     )
+    # XAtariST::isValid compares the input size with sizeof(HEADER).
+    # The declared fields occupy 28 bytes, but the pinned Linux C++ ABI adds
+    # four bytes of trailing struct padding and therefore requires 32 bytes.
+    return wire_header + b"\x00" * 4
 
 
 def _amiga_truncated() -> bytes:
@@ -70,7 +74,7 @@ def _amiga_near_magic() -> bytes:
 
 
 def _atari_truncated() -> bytes:
-    return make_atari_st()[:27]
+    return make_atari_st()[:31]
 
 
 def _atari_wrong_endian() -> bytes:
@@ -140,17 +144,22 @@ GENERATORS: tuple[
 )
 
 
-def _expectations(case_kind: str, target: str) -> dict[str, list[str]]:
+def _expectations(case_kind: str, target: str) -> dict[str, object]:
     if case_kind == "positive":
+        scanner_present = [target] if target == "Amiga Hunk" else []
         return {
-            "present_filetypes": [target],
+            "present_filetypes": scanner_present,
             "absent_filetypes": [
-                item for item in TARGET_FILETYPES if item != target
+                item
+                for item in TARGET_FILETYPES
+                if item not in scanner_present
             ],
+            "info_filetype": target,
         }
     return {
         "present_filetypes": [],
         "absent_filetypes": list(TARGET_FILETYPES),
+        "info_filetype": "Binary",
     }
 
 

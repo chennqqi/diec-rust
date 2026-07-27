@@ -1,4 +1,5 @@
 import importlib.util
+import hashlib
 import json
 import pathlib
 import sys
@@ -11,6 +12,20 @@ ROOT = pathlib.Path(__file__).parents[2]
 MODULE_PATH = ROOT / "tools" / "upstream" / "probe_legacy_dispatch.py"
 GENERATOR_PATH = (
     ROOT / "tools" / "corpus" / "generate_legacy_dispatch_corpus.py"
+)
+REPORT_PATH = (
+    ROOT
+    / "docs"
+    / "research"
+    / "data"
+    / "legacy-dispatch-linux-qt5.json"
+)
+MANIFEST_PATH = (
+    ROOT
+    / "docs"
+    / "research"
+    / "data"
+    / "legacy-dispatch-corpus.json"
 )
 
 
@@ -46,7 +61,69 @@ def scan_stdout(filetype):
     ).encode()
 
 
+def info_stdout(filetype):
+    return json.dumps(
+        {"data": {"Info": {"File type": filetype}}},
+        sort_keys=True,
+    ).encode()
+
+
 class ProbeLegacyDispatchTests(unittest.TestCase):
+    def test_committed_report_binds_current_inputs_and_paired_behavior(self):
+        report = json.loads(REPORT_PATH.read_text(encoding="utf-8"))
+        self.assertEqual(report["result"], "pass")
+        self.assertEqual(report["failures"], [])
+        self.assertEqual(
+            report["generator_sha256"],
+            hashlib.sha256(MODULE_PATH.read_bytes()).hexdigest(),
+        )
+        self.assertEqual(
+            report["corpus_manifest"]["sha256"],
+            hashlib.sha256(MANIFEST_PATH.read_bytes()).hexdigest(),
+        )
+        self.assertEqual(report["corpus_manifest"]["sample_count"], 8)
+
+        for oracle in MODULE.ORACLES:
+            name = oracle.name
+            amiga = report["cases"]["minimal-amiga-hunk.bin"][
+                "oracles"
+            ][name]
+            atari = report["cases"]["minimal-atari-st.prg"][
+                "oracles"
+            ][name]
+            self.assertEqual(
+                amiga["detector_info"]["filetype"],
+                "Amiga Hunk",
+            )
+            self.assertIn(
+                "Amiga Hunk",
+                MODULE.observed_filetypes(amiga["scan"]["detect_tree"]),
+            )
+            self.assertEqual(atari["detector_info"]["filetype"], "Atari ST")
+            self.assertNotIn(
+                "Atari ST",
+                MODULE.observed_filetypes(atari["scan"]["detect_tree"]),
+            )
+            self.assertIn(
+                "Binary",
+                MODULE.observed_filetypes(atari["scan"]["detect_tree"]),
+            )
+
+        for case_name, case in report["cases"].items():
+            if case["case_kind"] == "positive":
+                continue
+            for observation in case["oracles"].values():
+                self.assertEqual(
+                    observation["detector_info"]["filetype"],
+                    "Binary",
+                    msg=case_name,
+                )
+                observed = MODULE.observed_filetypes(
+                    observation["scan"]["detect_tree"]
+                )
+                self.assertNotIn("Amiga Hunk", observed, msg=case_name)
+                self.assertNotIn("Atari ST", observed, msg=case_name)
+
     def test_observed_filetypes_walks_nested_projection(self):
         tree = [
             {
@@ -80,6 +157,13 @@ class ProbeLegacyDispatchTests(unittest.TestCase):
             ],
         )
 
+    def test_info_filetype_reads_detector_projection(self):
+        self.assertEqual(
+            MODULE.info_filetype(info_stdout("Atari ST")),
+            "Atari ST",
+        )
+        self.assertIsNone(MODULE.info_filetype(b"not json"))
+
     def test_fixture_requires_exact_committed_manifest(self):
         with tempfile.TemporaryDirectory() as temporary:
             corpus = pathlib.Path(temporary)
@@ -112,14 +196,29 @@ class ProbeLegacyDispatchTests(unittest.TestCase):
                 target_by_name = {
                     sample["name"]: (
                         sample["target_filetype"]
-                        if sample["case_kind"] == "positive"
+                        if (
+                            sample["case_kind"] == "positive"
+                            and sample["target_filetype"] == "Amiga Hunk"
+                        )
                         else "Binary"
                     )
+                    for sample in manifest["samples"]
+                }
+                info_by_name = {
+                    sample["name"]: sample["expected_dispatch"][
+                        "info_filetype"
+                    ]
                     for sample in manifest["samples"]
                 }
 
                 def observe(_image, _binary, arguments, _corpus):
                     name = pathlib.PurePosixPath(arguments[-1]).name
+                    if "--info" in arguments:
+                        return MODULE.SHARED.Observation(
+                            0,
+                            info_stdout(info_by_name[name]),
+                            b"",
+                        )
                     return MODULE.SHARED.Observation(
                         0,
                         scan_stdout(target_by_name[name]),
@@ -143,8 +242,8 @@ class ProbeLegacyDispatchTests(unittest.TestCase):
         self.assertEqual(report["result"], "pass")
         self.assertEqual(report["failures"], [])
         self.assertEqual(len(report["cases"]), 8)
-        self.assertEqual(stdout_count, 16)
-        self.assertEqual(stderr_count, 16)
+        self.assertEqual(stdout_count, 32)
+        self.assertEqual(stderr_count, 32)
         for case in report["cases"].values():
             self.assertEqual(len(case["oracles"]), 2)
 
@@ -152,10 +251,22 @@ class ProbeLegacyDispatchTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as corpus_temp:
             with tempfile.TemporaryDirectory() as raw_temp:
                 corpus = pathlib.Path(corpus_temp)
-                GENERATOR.generate(corpus)
+                manifest = GENERATOR.generate(corpus)
+                info_by_name = {
+                    sample["name"]: sample["expected_dispatch"][
+                        "info_filetype"
+                    ]
+                    for sample in manifest["samples"]
+                }
 
                 def observe(_image, _binary, arguments, _corpus):
                     name = pathlib.PurePosixPath(arguments[-1]).name
+                    if "--info" in arguments:
+                        return MODULE.SHARED.Observation(
+                            0,
+                            info_stdout(info_by_name[name]),
+                            b"",
+                        )
                     filetype = (
                         "Amiga Hunk"
                         if name == "amiga-hunk-near-magic.bin"
