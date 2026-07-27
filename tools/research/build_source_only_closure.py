@@ -102,19 +102,6 @@ CATALOG: dict[str, dict[str, Any]] = {
             "an ADR records the bounded Rust default and legacy compatibility policy",
         ],
     },
-    "CAP-RESULT-005": {
-        "closure_kind": "engine_result_harness_extension",
-        "missing_evidence": [
-            "string type/name values are observed but enum representations are not"
-        ],
-        "fixture": "known, unknown, heuristic, and custom result records",
-        "harness": "extended engine-contract result serializer",
-        "assertions": [
-            "numeric enums and string type/name projections are emitted together",
-            "unknown and out-of-range representations are explicit",
-            "case and alias behavior is retained",
-        ],
-    },
 }
 
 

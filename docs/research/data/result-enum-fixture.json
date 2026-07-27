@@ -1,0 +1,64 @@
+{
+  "capability": "CAP-RESULT-005",
+  "cases": {
+    "custom_raw": {
+      "database": "main",
+      "heuristic_scan": false,
+      "signature": "custom.3.sg"
+    },
+    "heuristic_prefix": {
+      "database": "main",
+      "heuristic_scan": true,
+      "signature": "HEUR.heuristic.2.sg"
+    },
+    "known_alias": {
+      "database": "main",
+      "heuristic_scan": false,
+      "signature": "known_alias.1.sg"
+    },
+    "unknown_fallback": {
+      "database": "empty-main",
+      "heuristic_scan": false,
+      "signature": ""
+    }
+  },
+  "directories": [
+    "main",
+    "main/Binary",
+    "empty-main",
+    "input"
+  ],
+  "entries": [
+    {
+      "path": "input/probe.bin",
+      "purpose": "benign Binary scan input",
+      "sha256": "1effe084564a199b007fbfdeb2cbe1095bd5b5e87303147a515fefcd3e1cb7b5",
+      "size": 37,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/known_alias.1.sg",
+      "purpose": "known type/name using non-canonical spelling",
+      "sha256": "c0d1828261c3b3a07e87d4351a348ff4d8c6ed423910a9bd8105c536dee87047",
+      "size": 83,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/HEUR.heuristic.2.sg",
+      "purpose": "heuristic raw type mapped to the Format enum",
+      "sha256": "628c9dc3645e2a2a4f4430d352cb04a81f84070bd81c94992a0bfc0e8d49598e",
+      "size": 83,
+      "source": "project-generated"
+    },
+    {
+      "path": "main/Binary/custom.3.sg",
+      "purpose": "unrecognized raw type/name retained beside Unknown enums",
+      "sha256": "c52c5b3ed8211f816e4eeead7d3f325cd607f31aadc1c0bdabaaa371091e9050",
+      "size": 98,
+      "source": "project-generated"
+    }
+  ],
+  "generator": "tools/corpus/generate_result_enum_fixture.py",
+  "license": "project-generated; no third-party sample or rule bytes",
+  "schema_version": 1
+}

@@ -351,6 +351,11 @@
         "docs/research/data/result-ids-engine-qt5.json",
         "tools/upstream/probe_result_ids_harness.py",
         "tools/tests/test_probe_result_ids_harness.py",
+        "docs/research/result-enum-behavior.md",
+        "docs/research/data/result-enum-fixture.json",
+        "docs/research/data/result-enums-engine-qt5.json",
+        "tools/upstream/probe_result_enums_harness.py",
+        "tools/tests/test_probe_result_enums_harness.py",
         "docs/research/global-host-api-runtime-differential.md",
         "docs/research/data/global-host-api-qt5.json",
         "tools/tests/test_probe_global_host_api.py"
@@ -1442,7 +1447,7 @@
         "CAP-GAP-007"
       ],
       "platform_status": {
-        "linux-x86_64-qt5": "source_only_runtime_corpus_missing",
+        "linux-x86_64-qt5": "runtime_observed",
         "linux-x86_64-qt6": "platform_missing",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
@@ -1468,7 +1473,7 @@
   "schema_version": 1,
   "source": {
     "path": "docs/research/data/capability-traceability.json",
-    "sha256": "a346c6240eafe5418b81a23d3014affcf6a6fa30188533a4da8c0b6173ff257b"
+    "sha256": "f8f349697d9d9b4afa68108e81109f9d1c9b1ccd1652fd3a0b2d19c5842b3511"
   },
   "status_definitions": {
     "platform_missing": "no complete capability baseline is admitted for this platform",
@@ -1487,9 +1492,9 @@
     "status_counts_by_platform": {
       "linux-x86_64-qt5": {
         "platform_missing": 0,
-        "runtime_observed": 42,
+        "runtime_observed": 43,
         "runtime_observed_with_corpus_gaps": 20,
-        "source_only_runtime_corpus_missing": 5,
+        "source_only_runtime_corpus_missing": 4,
         "source_only_with_corpus_gaps": 1
       },
       "linux-x86_64-qt6": {

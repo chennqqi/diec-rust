@@ -110,27 +110,6 @@
         "harness": "resource-limited upstream engine oracle",
         "platform": "linux-x86_64-qt5"
       }
-    },
-    {
-      "acceptance": "all assertions pass against the pinned upstream identity and the capability becomes runtime-observed or receives an explicit reviewed scope disposition",
-      "closure_kind": "engine_result_harness_extension",
-      "current_status": "source_only_runtime_corpus_missing",
-      "evidence_set": "result_model",
-      "id": "CAP-RESULT-005",
-      "missing_evidence": [
-        "string type/name values are observed but enum representations are not"
-      ],
-      "name": "record type and name representations",
-      "proposed_experiment": {
-        "assertions": [
-          "numeric enums and string type/name projections are emitted together",
-          "unknown and out-of-range representations are explicit",
-          "case and alias behavior is retained"
-        ],
-        "fixture": "known, unknown, heuristic, and custom result records",
-        "harness": "extended engine-contract result serializer",
-        "platform": "linux-x86_64-qt5"
-      }
     }
   ],
   "limitations": [
@@ -144,21 +123,20 @@
   "schema_version": 1,
   "source": {
     "path": "docs/research/data/capability-coverage.json",
-    "sha256": "122fe70415e5b4955651f2489c0bfdc39457862cae0866e4cf9d1f7b0a8d7dd7"
+    "sha256": "11d34e1f59af823c2d1d1e2dccd6fafe0c7d8486b43494f3886a5f4b45026929"
   },
   "summary": {
     "all_items_have_executable_assertions": true,
     "all_items_have_missing_evidence": true,
     "closure_kind_counts": {
       "bounded_escalation_and_adr": 1,
-      "engine_result_harness_extension": 1,
       "generated_format_oracle": 1,
       "generated_format_oracle_plus_scope_review": 1,
       "paired_negative_nested_oracle": 1,
       "scope_review_or_private_harness": 1
     },
     "phase_0_source_only_closed": false,
-    "source_only_capability_count": 6
+    "source_only_capability_count": 5
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
 }

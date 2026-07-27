@@ -1,0 +1,251 @@
+{
+  "capability": "CAP-RESULT-005",
+  "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+  "fixture": {
+    "entry_count": 4,
+    "license": "project-generated; no third-party sample or rule bytes",
+    "manifest": "docs/research/data/result-enum-fixture.json",
+    "manifest_sha256": "f02b09ecb940faa09a751b389fd4221e0eb296fd4be47c0f12de1ef6e7ae5a42"
+  },
+  "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+  "generator": "tools/upstream/probe_result_enums_harness.py",
+  "generator_sha256": "e6365ce99b3212163aa2820a5b95ccb137bf98161f0e7f1efde68ed5e6bf8b31",
+  "harness_output": {
+    "case_count": 4,
+    "cases": [
+      {
+        "database": "main",
+        "database_loaded": true,
+        "error_count": 0,
+        "heuristic_scan": false,
+        "id": "known_alias",
+        "load_not_canceled": true,
+        "records": [
+          {
+            "name_canonical": "7-Zip",
+            "name_value": 4,
+            "raw_name": "7 ZIP",
+            "raw_type": "PE-Tool",
+            "signature": "known_alias.1.sg",
+            "type_canonical": "PE Tool",
+            "type_value": 29,
+            "unknown": false
+          }
+        ],
+        "scan_not_canceled": true,
+        "signature": "known_alias.1.sg"
+      },
+      {
+        "database": "main",
+        "database_loaded": true,
+        "error_count": 0,
+        "heuristic_scan": true,
+        "id": "heuristic_prefix",
+        "load_not_canceled": true,
+        "records": [
+          {
+            "name_canonical": "7-Zip",
+            "name_value": 4,
+            "raw_name": "7-Zip",
+            "raw_type": "~format",
+            "signature": "HEUR.heuristic.2.sg",
+            "type_canonical": "Format",
+            "type_value": 13,
+            "unknown": false
+          }
+        ],
+        "scan_not_canceled": true,
+        "signature": "HEUR.heuristic.2.sg"
+      },
+      {
+        "database": "main",
+        "database_loaded": true,
+        "error_count": 0,
+        "heuristic_scan": false,
+        "id": "custom_raw",
+        "load_not_canceled": true,
+        "records": [
+          {
+            "name_canonical": "Unknown",
+            "name_value": 0,
+            "raw_name": "Project/Custom",
+            "raw_type": "Vendor-Custom",
+            "signature": "custom.3.sg",
+            "type_canonical": "Unknown",
+            "type_value": 0,
+            "unknown": false
+          }
+        ],
+        "scan_not_canceled": true,
+        "signature": "custom.3.sg"
+      },
+      {
+        "database": "empty-main",
+        "database_loaded": true,
+        "error_count": 0,
+        "heuristic_scan": false,
+        "id": "unknown_fallback",
+        "load_not_canceled": true,
+        "records": [
+          {
+            "name_canonical": "Unknown",
+            "name_value": 0,
+            "raw_name": "Unknown",
+            "raw_type": "Unknown",
+            "signature": "",
+            "type_canonical": "Unknown",
+            "type_value": 0,
+            "unknown": true
+          }
+        ],
+        "scan_not_canceled": true,
+        "signature": ""
+      }
+    ],
+    "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+    "fallbacks": {
+      "out_of_range_name_string": "Unknown",
+      "out_of_range_name_value": 826,
+      "out_of_range_type_string": "Unknown",
+      "out_of_range_type_value": 74,
+      "reserved_alias_first_value": 800,
+      "reserved_alias_input": {
+        "canonical": "_Unknown",
+        "input": "_Unknown",
+        "value": 800
+      },
+      "reserved_alias_last_value": 809,
+      "unknown_name_input": {
+        "canonical": "Unknown",
+        "input": "not-a-record-name",
+        "value": 0
+      },
+      "unknown_type_input": {
+        "canonical": "Unknown",
+        "input": "not-a-record-type",
+        "value": 0
+      }
+    },
+    "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+    "input_sha256": "1effe084564a199b007fbfdeb2cbe1095bd5b5e87303147a515fefcd3e1cb7b5",
+    "name_mappings": [
+      {
+        "canonical": "7-Zip",
+        "input": "7-Zip",
+        "value": 4
+      },
+      {
+        "canonical": "7-Zip",
+        "input": "7 ZIP",
+        "value": 4
+      },
+      {
+        "canonical": "7-Zip",
+        "input": "7zip",
+        "value": 4
+      }
+    ],
+    "reserved_name_aliases": [
+      {
+        "canonical": "_Unknown",
+        "value": 800
+      },
+      {
+        "canonical": "_Unknown",
+        "value": 801
+      },
+      {
+        "canonical": "_Unknown",
+        "value": 802
+      },
+      {
+        "canonical": "_Unknown",
+        "value": 803
+      },
+      {
+        "canonical": "_Unknown",
+        "value": 804
+      },
+      {
+        "canonical": "_Unknown",
+        "value": 805
+      },
+      {
+        "canonical": "_Unknown",
+        "value": 806
+      },
+      {
+        "canonical": "_Unknown",
+        "value": 807
+      },
+      {
+        "canonical": "_Unknown",
+        "value": 808
+      },
+      {
+        "canonical": "_Unknown",
+        "value": 809
+      }
+    ],
+    "schema_version": 1,
+    "type_mappings": [
+      {
+        "canonical": "PE Tool",
+        "input": "PE Tool",
+        "value": 29
+      },
+      {
+        "canonical": "PE Tool",
+        "input": "pe-tool",
+        "value": 29
+      },
+      {
+        "canonical": "PE Tool",
+        "input": "PETOOL",
+        "value": 29
+      },
+      {
+        "canonical": "PE Tool",
+        "input": "~PE Tool",
+        "value": 29
+      },
+      {
+        "canonical": "PE Tool",
+        "input": "!pe-tool",
+        "value": 29
+      }
+    ],
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+  },
+  "oracle": {
+    "binary": "/opt/die-build/src/console/diec-result-enums-harness",
+    "binary_sha256": "2cf85896e29482b37df6cb87c494a3526d8c9ed543eef40bc78e3e3bf5a3f564",
+    "exit_code": 0,
+    "image": "diec-rust/result-enums-harness-qt5:74eaf505",
+    "image_id": "sha256:56d982f4f5eceb1031422f5c6333eb00905c63e8492aaeb4c01c035cdd7d4533",
+    "raw_stderr_bytes": 0,
+    "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "raw_stdout_bytes": 5882,
+    "raw_stdout_sha256": "77e9292c24ddd890f704339a3b3b4dfa9fc0fc210c93925563ed064fbaf14bad",
+    "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "platform": "linux-amd64-qt5",
+  "raw_artifacts": {
+    "storage": "untracked external directory selected by --raw-dir"
+  },
+  "relationships": {
+    "canonicalization_aliases_are_equal": true,
+    "custom_raw_is_retained_beside_unknown_enums": true,
+    "fallback_has_unknown_text_enum_and_flag": true,
+    "heuristic_prefix_keeps_raw_but_maps_format": true,
+    "known_alias_maps_to_canonical_enums": true,
+    "raw_and_numeric_are_emitted_together": true,
+    "reserved_unknown_aliases_are_distinct": true,
+    "scans_loaded_without_errors": true,
+    "unknown_and_out_of_range_are_explicit": true
+  },
+  "schema_version": 1,
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+}

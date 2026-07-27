@@ -135,6 +135,11 @@
         "docs/research/data/result-ids-engine-qt5.json",
         "tools/upstream/probe_result_ids_harness.py",
         "tools/tests/test_probe_result_ids_harness.py",
+        "docs/research/result-enum-behavior.md",
+        "docs/research/data/result-enum-fixture.json",
+        "docs/research/data/result-enums-engine-qt5.json",
+        "tools/upstream/probe_result_enums_harness.py",
+        "tools/tests/test_probe_result_enums_harness.py",
         "docs/research/global-host-api-runtime-differential.md",
         "docs/research/data/global-host-api-qt5.json",
         "tools/tests/test_probe_global_host_api.py"
@@ -214,7 +219,7 @@
     {"id": "CAP-RESULT-002", "name": "scan result record error debug and handler lists", "verification": "observed", "evidence_set": "result_model"},
     {"id": "CAP-RESULT-003", "name": "heuristic and unknown flags", "verification": "observed", "evidence_set": "result_model"},
     {"id": "CAP-RESULT-004", "name": "record and parent identifiers", "verification": "observed", "evidence_set": "result_model"},
-    {"id": "CAP-RESULT-005", "name": "record type and name representations", "verification": "source_verified", "evidence_set": "result_model"},
+    {"id": "CAP-RESULT-005", "name": "record type and name representations", "verification": "observed", "evidence_set": "result_model"},
     {"id": "CAP-RESULT-006", "name": "record version info rule and priority", "verification": "observed", "evidence_set": "result_model"}
   ],
   "coverage_gaps": [
@@ -309,9 +314,9 @@
   ],
   "summary": {
     "capability_count": 68,
-    "observed": 42,
+    "observed": 43,
     "observed_with_gaps": 20,
-    "source_verified": 5,
+    "source_verified": 4,
     "source_verified_with_gaps": 1,
     "coverage_gap_count": 12,
     "phase_0_coverage_complete": false
