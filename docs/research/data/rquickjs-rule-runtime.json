@@ -20,7 +20,7 @@
   "experiment": {
     "cargo_lock_sha256": "f389eb266779a88939fea9793effdff29d01ea0e1184915698f4fa0f9441d0ad",
     "cargo_toml_sha256": "82c5bb97749f50212e5364c2ac7d1f81eaec4d460a9bf47710b4b42f9204a79f",
-    "source_sha256": "2b3b3d6cff3d418e08f0917a9cfcb9d2209c7ef84bf4167b4eb9d0092a91da80",
+    "source_sha256": "0f606301be1e78e059aecf8d7abd202169199a5e79134ce097d22075d08d591f",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -953,6 +953,61 @@
       "bounded_upstream_section_alias_count": 1
     },
     "scope": "one byte-identical PE rule with a real Rust PE context over project-generated positive, negative, and truncated inputs; not complete PE or format HostApi compatibility"
+  },
+  "elf_rule_differential": {
+    "oracle": {
+      "baseline": "docs/research/data/elf-rule-qt5.json",
+      "baseline_sha256": "edf2d32cde44c8fcf010190e48cc33076dcb1dc0ea81830996eeab7a57f89410",
+      "binary": "/opt/die-build/src/console/diec-elf-rule-harness",
+      "binary_sha256": "e34dee4c03ffc0c6801535e9d5b0700ba2932f304fd6cbf230973c8a28e71ef7",
+      "case_count": 6,
+      "dockerfile": "tools/upstream/Dockerfile.elf-rule-harness-qt5",
+      "dockerfile_sha256": "083a43e1a9b29be492fd127744aeccdb054be0974b1ab7f11e3ef3f2bd513b13",
+      "engine": "QScriptEngine",
+      "fixture": "docs/research/data/elf-rule-fixture.json",
+      "fixture_generator": "tools/corpus/generate_elf_rule_fixture.py",
+      "fixture_generator_sha256": "111eaaf93609775c094c1e7171a6fb1886babf6f1e0f43e6cd92cd3efe16fd8b",
+      "fixture_sha256": "b3547482b2013a993a36262860f82dbda69b1588898cd2a8020124c6b9aad5b4",
+      "harness_source": "tools/upstream/elf_rule_harness_main.cpp",
+      "harness_source_sha256": "7fa0a06839f28757e5801f0917fdf8169df420fde2fab08d7654069a550954d7",
+      "image": "diec-rust/elf-rule-harness-qt5:74eaf505",
+      "image_id": "sha256:175520c66f735dbcea8e98f1b73b9529353ac1000af98fff5d2f8826ee3394ee",
+      "probe": "tools/upstream/probe_elf_rule_harness.py",
+      "probe_passed": true,
+      "probe_sha256": "f5efbed4e837afcbc58f16dcb604867d23014cc0c27d22c1c2f22399a266ce4c",
+      "qt_version": "5.15.13",
+      "rule_source": {
+        "bytes": 282,
+        "path": "upstream/Detect-It-Easy/db/ELF/protector_Burneye.2.sg",
+        "sha256": "35461b495f056d98de9af44eda91df3c6412d22555b182834af9b6a68842d44c"
+      }
+    },
+    "rust": {
+      "case_count": 6,
+      "matched_count": 6,
+      "rule_bytes_preserved": true,
+      "command": "verify-elf-rule",
+      "compare_ep_call_count": 6,
+      "compare_ep_error_count": 0,
+      "fast_path_count": 4,
+      "generic_path_count": 2
+    },
+    "coverage": {
+      "positive_case_count": 2,
+      "negative_case_count": 2,
+      "truncated_case_count": 2,
+      "formats": [
+        "ELF32",
+        "ELF64"
+      ],
+      "receiver_method": "ELF.compareEP",
+      "entry_point_and_matcher_map_match_count": 6,
+      "qt5_discarded_virtual_record_count": 4,
+      "qt5_discarded_nonpositive_size_record_count": 4,
+      "qt5_discarded_overlay_sentinel_record_count": 4,
+      "rust_declared_out_of_bounds_load_count": 4
+    },
+    "scope": "one byte-identical ELF rule with real Rust ELF32/ELF64 contexts over project-generated positive, negative, and truncated inputs; not complete ELF or format HostApi compatibility"
   },
   "full_binary_corpus_oracle": {
     "accepted_detect_count": 4088,

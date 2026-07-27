@@ -145,7 +145,14 @@ const PE_RULE_SHA256: &str = "de563e3333c54b966efb7aa3d678acd56ca5fa9b83a7b8356b
 const PE_FIXTURE_SHA256: &str = "102eacfa044f838fb51992c65a2cf7e90cd346a493bffc77b08f4ec02f5159e1";
 const PE_QT5_BASELINE_SHA256: &str =
     "645fc9b13d500f1eda3203df90439cb5234f8eb850d820de119962b4778be03a";
-const PE_RESULT_SHIM: &[u8] = br#"
+const ELF_RULE_SUFFIX: &str = "ELF/protector_Burneye.2.sg";
+const ELF_RULE_BYTES: usize = 282;
+const ELF_RULE_SHA256: &str = "35461b495f056d98de9af44eda91df3c6412d22555b182834af9b6a68842d44c";
+const ELF_FIXTURE_SHA256: &str = "b3547482b2013a993a36262860f82dbda69b1588898cd2a8020124c6b9aad5b4";
+const ELF_QT5_BASELINE_SHA256: &str =
+    "edf2d32cde44c8fcf010190e48cc33076dcb1dc0ea81830996eeab7a57f89410";
+const FORMATS_COMMIT: &str = "1151e7254fdee3c0294ff7095edbdd7bfccf8201";
+const FORMAT_RESULT_SHIM: &[u8] = br#"
     var bDetected, sType, sName, sVersion, sOptions;
     function meta(type, name, version, options) {
         sType = type;
@@ -232,8 +239,16 @@ struct PeRuleContext {
     aliased_out_of_bounds_sections: usize,
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
+struct ElfRuleContext {
+    elf_class: u8,
+    entry_point_offset: Option<usize>,
+    memory_map: MemoryMap,
+    out_of_bounds_loads: usize,
+}
+
 #[derive(Default)]
-struct PeHostTrace {
+struct EntryPointHostTrace {
     compare_ep_calls: AtomicUsize,
     fast_paths: AtomicUsize,
     generic_paths: AtomicUsize,
@@ -517,6 +532,218 @@ impl PeRuleContext {
             memory_map: MemoryMap {
                 file_type: FileType::Pe,
                 endian: Endian::Little,
+                code_base: 0,
+                start_load_offset: 0,
+                records,
+            },
+        })
+    }
+}
+
+fn elf_u16(data: &[u8], offset: usize, endian: Endian) -> Option<u16> {
+    let bytes: [u8; 2] = data.get(offset..offset.checked_add(2)?)?.try_into().ok()?;
+    Some(match endian {
+        Endian::Little => u16::from_le_bytes(bytes),
+        Endian::Big => u16::from_be_bytes(bytes),
+    })
+}
+
+fn elf_u32(data: &[u8], offset: usize, endian: Endian) -> Option<u32> {
+    let bytes: [u8; 4] = data.get(offset..offset.checked_add(4)?)?.try_into().ok()?;
+    Some(match endian {
+        Endian::Little => u32::from_le_bytes(bytes),
+        Endian::Big => u32::from_be_bytes(bytes),
+    })
+}
+
+fn elf_u64(data: &[u8], offset: usize, endian: Endian) -> Option<u64> {
+    let bytes: [u8; 8] = data.get(offset..offset.checked_add(8)?)?.try_into().ok()?;
+    Some(match endian {
+        Endian::Little => u64::from_le_bytes(bytes),
+        Endian::Big => u64::from_be_bytes(bytes),
+    })
+}
+
+fn elf_field(base: usize, relative: usize, name: &str) -> Result<usize, String> {
+    base.checked_add(relative)
+        .ok_or_else(|| format!("ELF {name} offset overflow"))
+}
+
+impl ElfRuleContext {
+    fn parse(data: &[u8]) -> Result<Self, String> {
+        if data.get(0..4) != Some(b"\x7fELF") {
+            return Err("ELF signature is missing".to_owned());
+        }
+        let elf_class = *data
+            .get(4)
+            .ok_or_else(|| "ELF class is truncated".to_owned())?;
+        let endian = match data
+            .get(5)
+            .copied()
+            .ok_or_else(|| "ELF data encoding is truncated".to_owned())?
+        {
+            1 => Endian::Little,
+            2 => Endian::Big,
+            other => return Err(format!("unsupported ELF data encoding {other}")),
+        };
+        if data.get(6) != Some(&1) {
+            return Err("unsupported or truncated ELF identification version".to_owned());
+        }
+        let (header_size, program_header_size, entry, program_offset, entry_size, entry_count) =
+            match elf_class {
+                1 => (
+                    52_usize,
+                    32_usize,
+                    u64::from(
+                        elf_u32(data, 24, endian)
+                            .ok_or_else(|| "ELF32 entry point is truncated".to_owned())?,
+                    ),
+                    u64::from(
+                        elf_u32(data, 28, endian)
+                            .ok_or_else(|| "ELF32 program table offset is truncated".to_owned())?,
+                    ),
+                    elf_u16(data, 42, endian)
+                        .ok_or_else(|| "ELF32 program entry size is truncated".to_owned())?,
+                    elf_u16(data, 44, endian)
+                        .ok_or_else(|| "ELF32 program entry count is truncated".to_owned())?,
+                ),
+                2 => (
+                    64_usize,
+                    56_usize,
+                    elf_u64(data, 24, endian)
+                        .ok_or_else(|| "ELF64 entry point is truncated".to_owned())?,
+                    elf_u64(data, 32, endian)
+                        .ok_or_else(|| "ELF64 program table offset is truncated".to_owned())?,
+                    elf_u16(data, 54, endian)
+                        .ok_or_else(|| "ELF64 program entry size is truncated".to_owned())?,
+                    elf_u16(data, 56, endian)
+                        .ok_or_else(|| "ELF64 program entry count is truncated".to_owned())?,
+                ),
+                other => return Err(format!("unsupported ELF class {other}")),
+            };
+        let declared_header_size = usize::from(
+            elf_u16(data, if elf_class == 1 { 40 } else { 52 }, endian)
+                .ok_or_else(|| "ELF header size is truncated".to_owned())?,
+        );
+        if declared_header_size < header_size || data.len() < header_size {
+            return Err(format!(
+                "ELF header is truncated or smaller than class minimum {header_size}"
+            ));
+        }
+        let entry_size = usize::from(entry_size);
+        if entry_size < program_header_size {
+            return Err(format!(
+                "ELF program entry size {entry_size} is smaller than {program_header_size}"
+            ));
+        }
+        let entry_count = usize::from(entry_count);
+        if entry_count > 1024 {
+            return Err(format!(
+                "ELF program entry count {entry_count} exceeds spike limit 1024"
+            ));
+        }
+        let program_offset = usize::try_from(program_offset)
+            .map_err(|_| "ELF program table offset does not fit usize".to_owned())?;
+        let table_size = entry_count
+            .checked_mul(entry_size)
+            .ok_or_else(|| "ELF program table size overflow".to_owned())?;
+        let table_end = program_offset
+            .checked_add(table_size)
+            .ok_or_else(|| "ELF program table end overflow".to_owned())?;
+        if table_end > data.len() {
+            return Err("ELF program table is truncated".to_owned());
+        }
+
+        let mut loads = Vec::new();
+        for index in 0..entry_count {
+            let header = program_offset
+                .checked_add(
+                    index
+                        .checked_mul(entry_size)
+                        .ok_or_else(|| "ELF program entry offset overflow".to_owned())?,
+                )
+                .ok_or_else(|| "ELF program entry offset overflow".to_owned())?;
+            let segment_type = elf_u32(data, header, endian)
+                .ok_or_else(|| "ELF program entry type is truncated".to_owned())?;
+            if segment_type != 1 {
+                continue;
+            }
+            let (offset, address, file_size) = if elf_class == 1 {
+                (
+                    u64::from(
+                        elf_u32(data, elf_field(header, 4, "ELF32 segment offset")?, endian)
+                            .ok_or_else(|| "ELF32 segment offset is truncated".to_owned())?,
+                    ),
+                    u64::from(
+                        elf_u32(data, elf_field(header, 8, "ELF32 segment address")?, endian)
+                            .ok_or_else(|| "ELF32 segment address is truncated".to_owned())?,
+                    ),
+                    u64::from(
+                        elf_u32(data, elf_field(header, 16, "ELF32 file size")?, endian)
+                            .ok_or_else(|| "ELF32 file size is truncated".to_owned())?,
+                    ),
+                )
+            } else {
+                (
+                    elf_u64(data, elf_field(header, 8, "ELF64 segment offset")?, endian)
+                        .ok_or_else(|| "ELF64 segment offset is truncated".to_owned())?,
+                    elf_u64(
+                        data,
+                        elf_field(header, 16, "ELF64 segment address")?,
+                        endian,
+                    )
+                    .ok_or_else(|| "ELF64 segment address is truncated".to_owned())?,
+                    elf_u64(data, elf_field(header, 32, "ELF64 file size")?, endian)
+                        .ok_or_else(|| "ELF64 file size is truncated".to_owned())?,
+                )
+            };
+            if file_size != 0 {
+                loads.push((offset, address, file_size));
+            }
+        }
+        let image_base = loads
+            .iter()
+            .map(|(_, address, _)| *address)
+            .min()
+            .ok_or_else(|| "ELF contains no non-empty PT_LOAD segment".to_owned())?;
+        let mut entry_point_offset = None;
+        let mut records = Vec::with_capacity(loads.len());
+        let mut out_of_bounds_loads = 0_usize;
+        let data_len = u64::try_from(data.len())
+            .map_err(|_| "ELF input length does not fit u64".to_owned())?;
+        for (offset, address, size) in loads {
+            let normalized_address = address
+                .checked_sub(image_base)
+                .ok_or_else(|| "ELF normalized segment address underflow".to_owned())?;
+            let segment_end = offset
+                .checked_add(size)
+                .ok_or_else(|| "ELF segment file range overflow".to_owned())?;
+            if segment_end > data_len {
+                out_of_bounds_loads += 1;
+            }
+            if entry_point_offset.is_none() {
+                let address_end = address
+                    .checked_add(size)
+                    .ok_or_else(|| "ELF segment address range overflow".to_owned())?;
+                if address <= entry && entry < address_end {
+                    entry_point_offset = offset
+                        .checked_add(entry - address)
+                        .and_then(|value| usize::try_from(value).ok());
+                }
+            }
+            records.push(MemoryRecord {
+                offset,
+                address: normalized_address,
+                size,
+            });
+        }
+        Ok(Self {
+            elf_class,
+            entry_point_offset,
+            out_of_bounds_loads,
+            memory_map: MemoryMap {
+                file_type: FileType::Elf,
+                endian,
                 code_base: 0,
                 start_load_offset: 0,
                 records,
@@ -1100,58 +1327,94 @@ fn search_signature(
     }
 }
 
+fn install_entry_point_host(
+    context: &Context,
+    receiver_name: &'static str,
+    data: Arc<Vec<u8>>,
+    entry_point_offset: Option<usize>,
+    memory_map: MemoryMap,
+) -> Result<Arc<EntryPointHostTrace>, String> {
+    let trace = Arc::new(EntryPointHostTrace::default());
+    let trace_for_context = Arc::clone(&trace);
+    let compare_api = match receiver_name {
+        "PE" => "PE.compareEP",
+        "ELF" => "ELF.compareEP",
+        _ => "format.compareEP",
+    };
+    context.with(|ctx| {
+        let receiver = Object::new(ctx.clone()).map_err(|error| error.to_string())?;
+        let compare_data = Arc::clone(&data);
+        let compare_memory_map = memory_map.clone();
+        receiver
+            .set(
+                "compareEP",
+                Function::new(ctx.clone(), move |pattern: String, offset: Opt<i64>| {
+                    trace_for_context
+                        .compare_ep_calls
+                        .fetch_add(1, Ordering::Relaxed);
+                    match Pattern::compare_entry_point_wrapper(
+                        &pattern,
+                        &compare_data,
+                        entry_point_offset,
+                        offset.0.unwrap_or(0),
+                        &compare_memory_map,
+                    ) {
+                        Ok(report) => {
+                            if report.header_fast_path {
+                                trace_for_context.fast_paths.fetch_add(1, Ordering::Relaxed);
+                            } else {
+                                trace_for_context
+                                    .generic_paths
+                                    .fetch_add(1, Ordering::Relaxed);
+                            }
+                            Ok(report.matched)
+                        }
+                        Err(error) => {
+                            trace_for_context.errors.fetch_add(1, Ordering::Relaxed);
+                            Err(Error::new_from_js_message(
+                                compare_api,
+                                "boolean",
+                                error.to_string(),
+                            ))
+                        }
+                    }
+                })
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        ctx.globals()
+            .set(receiver_name, receiver)
+            .map_err(|error| error.to_string())
+    })?;
+    Ok(trace)
+}
+
 fn install_pe_host(
     context: &Context,
     data: Arc<Vec<u8>>,
     pe_context: PeRuleContext,
-) -> Result<Arc<PeHostTrace>, String> {
-    let trace = Arc::new(PeHostTrace::default());
-    let trace_for_context = Arc::clone(&trace);
-    context.with(|ctx| {
-        let pe = Object::new(ctx.clone()).map_err(|error| error.to_string())?;
-        let compare_data = Arc::clone(&data);
-        let compare_context = pe_context.clone();
-        pe.set(
-            "compareEP",
-            Function::new(ctx.clone(), move |pattern: String, offset: Opt<i64>| {
-                trace_for_context
-                    .compare_ep_calls
-                    .fetch_add(1, Ordering::Relaxed);
-                match Pattern::compare_entry_point_wrapper(
-                    &pattern,
-                    &compare_data,
-                    compare_context.entry_point_offset,
-                    offset.0.unwrap_or(0),
-                    &compare_context.memory_map,
-                ) {
-                    Ok(report) => {
-                        if report.header_fast_path {
-                            trace_for_context.fast_paths.fetch_add(1, Ordering::Relaxed);
-                        } else {
-                            trace_for_context
-                                .generic_paths
-                                .fetch_add(1, Ordering::Relaxed);
-                        }
-                        Ok(report.matched)
-                    }
-                    Err(error) => {
-                        trace_for_context.errors.fetch_add(1, Ordering::Relaxed);
-                        Err(Error::new_from_js_message(
-                            "PE.compareEP",
-                            "boolean",
-                            error.to_string(),
-                        ))
-                    }
-                }
-            })
-            .map_err(|error| error.to_string())?,
-        )
-        .map_err(|error| error.to_string())?;
-        ctx.globals()
-            .set("PE", pe)
-            .map_err(|error| error.to_string())
-    })?;
-    Ok(trace)
+) -> Result<Arc<EntryPointHostTrace>, String> {
+    install_entry_point_host(
+        context,
+        "PE",
+        data,
+        pe_context.entry_point_offset,
+        pe_context.memory_map,
+    )
+}
+
+fn install_elf_host(
+    context: &Context,
+    data: Arc<Vec<u8>>,
+    elf_context: ElfRuleContext,
+) -> Result<Arc<EntryPointHostTrace>, String> {
+    install_entry_point_host(
+        context,
+        "ELF",
+        data,
+        elf_context.entry_point_offset,
+        elf_context.memory_map,
+    )
 }
 
 fn install_nintendo_host(
@@ -2999,6 +3262,103 @@ fn qt5_pe_physical_map_projection(value: &Value) -> Result<Value, String> {
     }))
 }
 
+fn elf_matcher_map_projection(context: &ElfRuleContext) -> Value {
+    let endian = match context.memory_map.endian {
+        Endian::Little => "little",
+        Endian::Big => "big",
+    };
+    json!({
+        "file_type": "elf",
+        "endian": endian,
+        "code_base": context.memory_map.code_base.to_string(),
+        "start_load_offset": context.memory_map.start_load_offset.to_string(),
+        "records": context
+            .memory_map
+            .records
+            .iter()
+            .map(|record| json!({
+                "offset": record.offset.to_string(),
+                "address": record.address.to_string(),
+                "size": record.size.to_string(),
+            }))
+            .collect::<Vec<_>>(),
+    })
+}
+
+#[derive(Debug, Eq, PartialEq)]
+struct Qt5ElfMapProjection {
+    matcher_map: Value,
+    discarded_virtual_records: usize,
+    discarded_nonpositive_size_records: usize,
+    discarded_negative_offset_records: usize,
+    discarded_overlay_sentinel_records: usize,
+}
+
+fn parse_qt5_i128(value: Option<&Value>, field: &str) -> Result<i128, String> {
+    value
+        .and_then(Value::as_str)
+        .ok_or_else(|| format!("Qt5 ELF memory record {field} is missing"))?
+        .parse::<i128>()
+        .map_err(|error| format!("Qt5 ELF memory record {field} is invalid: {error}"))
+}
+
+fn qt5_elf_matcher_map_projection(value: &Value) -> Result<Qt5ElfMapProjection, String> {
+    let object = value
+        .as_object()
+        .ok_or_else(|| "Qt5 ELF memory map must be an object".to_owned())?;
+    let source_records = object
+        .get("records")
+        .and_then(Value::as_array)
+        .ok_or_else(|| "Qt5 ELF memory map records are missing".to_owned())?;
+    let mut records = Vec::new();
+    let mut discarded_virtual_records = 0_usize;
+    let mut discarded_nonpositive_size_records = 0_usize;
+    let mut discarded_negative_offset_records = 0_usize;
+    let mut discarded_overlay_sentinel_records = 0_usize;
+    for record in source_records {
+        let record = record
+            .as_object()
+            .ok_or_else(|| "Qt5 ELF memory map record must be an object".to_owned())?;
+        if record.get("virtual").and_then(Value::as_bool) != Some(false) {
+            discarded_virtual_records += 1;
+            continue;
+        }
+        let size = parse_qt5_i128(record.get("size"), "size")?;
+        if size <= 0 {
+            discarded_nonpositive_size_records += 1;
+            continue;
+        }
+        let offset = parse_qt5_i128(record.get("offset"), "offset")?;
+        if offset < 0 {
+            discarded_negative_offset_records += 1;
+            continue;
+        }
+        let address = parse_qt5_i128(record.get("address"), "address")?;
+        if address == i128::from(u64::MAX) {
+            discarded_overlay_sentinel_records += 1;
+            continue;
+        }
+        records.push(json!({
+            "offset": offset.to_string(),
+            "address": address.to_string(),
+            "size": size.to_string(),
+        }));
+    }
+    Ok(Qt5ElfMapProjection {
+        matcher_map: json!({
+            "file_type": object.get("file_type"),
+            "endian": object.get("endian"),
+            "code_base": object.get("code_base"),
+            "start_load_offset": object.get("start_load_offset"),
+            "records": records,
+        }),
+        discarded_virtual_records,
+        discarded_nonpositive_size_records,
+        discarded_negative_offset_records,
+        discarded_overlay_sentinel_records,
+    })
+}
+
 fn verify_pe_rule(
     rule_root: &Path,
     fixture_path: &Path,
@@ -3096,7 +3456,7 @@ fn verify_pe_rule(
         let detections = Arc::new(Mutex::new(Vec::new()));
         install_nintendo_host(&context, Arc::new(data.clone()), Arc::clone(&detections))?;
         let pe_trace = install_pe_host(&context, Arc::new(data), pe_context.clone())?;
-        eval_unit(&context, PE_RESULT_SHIM)?;
+        eval_unit(&context, FORMAT_RESULT_SHIM)?;
         let detect_result = eval_rule_lexical(&context, &rule_source, true)
             .map_err(|error| format!("{id}: fixed PE rule failed: {error}"))?;
         let actual_detections = detections
@@ -3183,6 +3543,219 @@ fn verify_pe_rule(
             "all_match": all_match,
         }))
         .map_err(|error| format!("cannot serialize PE rule report: {error}"))?
+    );
+    Ok(all_match)
+}
+
+fn verify_elf_rule(
+    rule_root: &Path,
+    fixture_path: &Path,
+    baseline_path: &Path,
+) -> Result<bool, String> {
+    let fixture_bytes = fs::read(fixture_path)
+        .map_err(|error| format!("cannot read {}: {error}", fixture_path.display()))?;
+    let baseline_bytes = fs::read(baseline_path)
+        .map_err(|error| format!("cannot read {}: {error}", baseline_path.display()))?;
+    if sha256_hex(&fixture_bytes) != ELF_FIXTURE_SHA256 {
+        return Err(format!(
+            "fixed ELF fixture hash mismatch: {}",
+            fixture_path.display()
+        ));
+    }
+    if sha256_hex(&baseline_bytes) != ELF_QT5_BASELINE_SHA256 {
+        return Err(format!(
+            "fixed Qt5 ELF baseline hash mismatch: {}",
+            baseline_path.display()
+        ));
+    }
+    let rule_path = rule_root.join(ELF_RULE_SUFFIX);
+    let rule_source = fs::read(&rule_path)
+        .map_err(|error| format!("cannot read {}: {error}", rule_path.display()))?;
+    if rule_source.len() != ELF_RULE_BYTES || sha256_hex(&rule_source) != ELF_RULE_SHA256 {
+        return Err(format!("fixed ELF rule mismatch: {}", rule_path.display()));
+    }
+    let fixture: Value = serde_json::from_slice(&fixture_bytes)
+        .map_err(|error| format!("cannot parse {}: {error}", fixture_path.display()))?;
+    let baseline: Value = serde_json::from_slice(&baseline_bytes)
+        .map_err(|error| format!("cannot parse {}: {error}", baseline_path.display()))?;
+    for (document_name, document) in [("fixture", &fixture), ("baseline", &baseline)] {
+        if document["upstream_commit"] != UPSTREAM_COMMIT
+            || document["formats_commit"] != FORMATS_COMMIT
+            || document["xscanengine_commit"] != XSCANENGINE_COMMIT
+            || document["rules_commit"] != RULES_COMMIT
+            || document["case_count"] != 6
+        {
+            return Err(format!("{document_name} ELF metadata mismatch"));
+        }
+    }
+    if fixture["rule"]["path"] != ELF_RULE_SUFFIX
+        || fixture["rule"]["sha256"] != ELF_RULE_SHA256
+        || baseline["rule_path"] != format!("/opt/die-source/Detect-It-Easy/db/{ELF_RULE_SUFFIX}")
+        || baseline["rule_sha256"] != ELF_RULE_SHA256
+        || baseline["qt_version"] != "5.15.13"
+        || baseline["engine"] != "QScriptEngine"
+    {
+        return Err("fixed ELF fixture/baseline contract mismatch".to_owned());
+    }
+    let fixture_cases = fixture["cases"]
+        .as_array()
+        .ok_or_else(|| "ELF fixture cases are missing".to_owned())?;
+    let baseline_cases = baseline["cases"]
+        .as_array()
+        .ok_or_else(|| "Qt5 ELF baseline cases are missing".to_owned())?;
+    if fixture_cases.len() != 6 || baseline_cases.len() != 6 {
+        return Err("fixed ELF case count mismatch".to_owned());
+    }
+
+    let mut reports = Vec::with_capacity(fixture_cases.len());
+    let mut all_match = true;
+    for fixture_case in fixture_cases {
+        let id = fixture_case["id"]
+            .as_str()
+            .ok_or_else(|| "ELF fixture case id is missing".to_owned())?;
+        let baseline_case = baseline_cases
+            .iter()
+            .find(|case| case["id"] == id)
+            .ok_or_else(|| format!("Qt5 ELF baseline case is missing: {id}"))?;
+        if fixture_case["data_hex"] != baseline_case["data_hex"]
+            || fixture_case["data_sha256"] != baseline_case["data_sha256"]
+            || fixture_case["elf_class"] != baseline_case["elf_class"]
+        {
+            return Err(format!("{id}: fixture and Qt5 input evidence differ"));
+        }
+        if baseline_case["parser_valid"] != true || baseline_case["elf_script_error"] != "" {
+            return Err(format!("{id}: Qt5 ELF parser/script evidence is not valid"));
+        }
+        let data_hex = fixture_case["data_hex"]
+            .as_str()
+            .ok_or_else(|| format!("{id}: data_hex is missing"))?;
+        let data = decode_hex_string(data_hex, &format!("{id}.data_hex"))?;
+        if sha256_hex(&data) != fixture_case["data_sha256"] {
+            return Err(format!("{id}: decoded input hash mismatch"));
+        }
+        let elf_context = ElfRuleContext::parse(&data).map_err(|error| format!("{id}: {error}"))?;
+        let expected_class = baseline_case["elf_class"]
+            .as_u64()
+            .ok_or_else(|| format!("{id}: Qt5 ELF class is missing"))?;
+        let actual_class = u64::from(elf_context.elf_class) * 32;
+        let expected_entry_point = baseline_case["entry_point_offset"]
+            .as_i64()
+            .ok_or_else(|| format!("{id}: Qt5 entry point offset is missing"))?;
+        let actual_entry_point = elf_context
+            .entry_point_offset
+            .and_then(|offset| i64::try_from(offset).ok())
+            .unwrap_or(-1);
+        let actual_map = elf_matcher_map_projection(&elf_context);
+        let expected_projection = qt5_elf_matcher_map_projection(&baseline_case["memory_map"])?;
+        let memory_map_matches = actual_map == expected_projection.matcher_map;
+
+        let runtime = new_runtime()?;
+        let context = new_context(&runtime)?;
+        let detections = Arc::new(Mutex::new(Vec::new()));
+        install_nintendo_host(&context, Arc::new(data.clone()), Arc::clone(&detections))?;
+        let elf_trace = install_elf_host(&context, Arc::new(data), elf_context.clone())?;
+        eval_unit(&context, FORMAT_RESULT_SHIM)?;
+        let detect_result = eval_rule_lexical(&context, &rule_source, true)
+            .map_err(|error| format!("{id}: fixed ELF rule failed: {error}"))?;
+        let actual_detections = detections
+            .lock()
+            .map_err(|_| "ELF detection result mutex poisoned".to_owned())?
+            .clone();
+        let expected_detections: Vec<Detection> =
+            serde_json::from_value(baseline_case["detections"].clone())
+                .map_err(|error| format!("{id}: invalid Qt5 detections: {error}"))?;
+        let expected_detect_result = baseline_case["detect_result"]
+            .as_bool()
+            .ok_or_else(|| format!("{id}: Qt5 detect result is missing"))?;
+        let compare_ep_calls = elf_trace.compare_ep_calls.load(Ordering::Relaxed);
+        let fast_paths = elf_trace.fast_paths.load(Ordering::Relaxed);
+        let generic_paths = elf_trace.generic_paths.load(Ordering::Relaxed);
+        let errors = elf_trace.errors.load(Ordering::Relaxed);
+        let class_matches = actual_class == expected_class;
+        let entry_point_matches = actual_entry_point == expected_entry_point;
+        let matches = class_matches
+            && entry_point_matches
+            && memory_map_matches
+            && detect_result == expected_detect_result.to_string()
+            && actual_detections == expected_detections
+            && compare_ep_calls == 1
+            && fast_paths + generic_paths == 1
+            && errors == 0;
+        all_match &= matches;
+        reports.push(json!({
+            "id": id,
+            "input_sha256": fixture_case["data_sha256"],
+            "input_bytes": data_hex.len() / 2,
+            "parser_valid": true,
+            "elf_class": {
+                "qt5": expected_class,
+                "rust": actual_class,
+                "matches": class_matches,
+            },
+            "entry_point_offset": {
+                "qt5": expected_entry_point,
+                "rust": actual_entry_point,
+                "matches": entry_point_matches,
+            },
+            "matcher_memory_map": {
+                "qt5_safe_projection": expected_projection.matcher_map,
+                "rust": actual_map,
+                "matches": memory_map_matches,
+                "qt5_discarded_records": {
+                    "virtual": expected_projection.discarded_virtual_records,
+                    "nonpositive_size":
+                        expected_projection.discarded_nonpositive_size_records,
+                    "negative_offset":
+                        expected_projection.discarded_negative_offset_records,
+                    "overlay_sentinel":
+                        expected_projection.discarded_overlay_sentinel_records,
+                },
+                "rust_declared_out_of_bounds_loads": elf_context.out_of_bounds_loads,
+            },
+            "detect_result": {
+                "qt5": expected_detect_result,
+                "rust": detect_result,
+            },
+            "detections": {
+                "qt5": expected_detections,
+                "rust": actual_detections,
+            },
+            "elf_compare_ep_calls": compare_ep_calls,
+            "elf_compare_ep_fast_paths": fast_paths,
+            "elf_compare_ep_generic_paths": generic_paths,
+            "elf_compare_ep_errors": errors,
+            "matches": matches,
+        }));
+    }
+    println!(
+        "{}",
+        serde_json::to_string_pretty(&json!({
+            "schema_version": 1,
+            "operation": "byte-identical fixed ELF rule with Rust ELF context and ELF.compareEP",
+            "runtime": "rquickjs 0.12.1 / QuickJS-NG 0.15.1",
+            "upstream_commit": UPSTREAM_COMMIT,
+            "formats_commit": FORMATS_COMMIT,
+            "xscanengine_commit": XSCANENGINE_COMMIT,
+            "rules_commit": RULES_COMMIT,
+            "rule": {
+                "path": normalized_path(&rule_path),
+                "bytes": rule_source.len(),
+                "sha256": ELF_RULE_SHA256,
+            },
+            "fixture": {
+                "path": normalized_path(fixture_path),
+                "sha256": ELF_FIXTURE_SHA256,
+            },
+            "qt5_baseline": {
+                "path": normalized_path(baseline_path),
+                "sha256": ELF_QT5_BASELINE_SHA256,
+            },
+            "case_count": reports.len(),
+            "matched_count": reports.iter().filter(|case| case["matches"] == true).count(),
+            "cases": reports,
+            "all_match": all_match,
+        }))
+        .map_err(|error| format!("cannot serialize ELF rule report: {error}"))?
     );
     Ok(all_match)
 }
@@ -4201,7 +4774,9 @@ fn usage() -> ExitCode {
          <main-rule-root> <corpus-dir> <corpus-manifest-json> \
          <baseline-json> <binary-order-json>\n       \
          diec-rquickjs-rule-runtime-spike verify-pe-rule \
-         <main-rule-root> <pe-fixture-json> <qt5-baseline-json>"
+         <main-rule-root> <pe-fixture-json> <qt5-baseline-json>\n       \
+         diec-rquickjs-rule-runtime-spike verify-elf-rule \
+         <main-rule-root> <elf-fixture-json> <qt5-baseline-json>"
     );
     ExitCode::from(2)
 }
@@ -4245,6 +4820,8 @@ fn main() -> ExitCode {
         verify_binary_corpus(&roots[0], &roots[1], &roots[2], &roots[3], &roots[4])
     } else if command == "verify-pe-rule" && roots.len() == 3 {
         verify_pe_rule(&roots[0], &roots[1], &roots[2])
+    } else if command == "verify-elf-rule" && roots.len() == 3 {
+        verify_elf_rule(&roots[0], &roots[1], &roots[2])
     } else {
         return usage();
     };
@@ -4261,15 +4838,16 @@ fn main() -> ExitCode {
 #[cfg(test)]
 mod tests {
     use super::{
-        BinaryHostContext, BinaryStringContext, HostFilePart, NINTENDO_COMPAT_DECLARATION,
-        NINTENDO_RULE_BYTES, NINTENDO_VAR_DECLARATION, PeRuleContext, TextUnicodeType,
-        apply_compatibility_overlay, apply_exact_lifecycle_overlay, collect_rule_files,
-        eval_rule_lexical, eval_string, eval_unit, install_diagnostic_host_fallbacks,
-        install_nintendo_host, install_nintendo_host_with_context,
-        install_nintendo_host_with_context_and_strings, new_context, new_runtime,
-        nonnegative_index, normalized_path, parse_detection_triples, parse_scope_detections,
-        parse_scope_fixture_order, pe_physical_map_projection, qt5_pe_physical_map_projection,
-        read_ascii, read_byte_array, read_signed, read_unsigned, sha256_hex, shift_right_unsigned,
+        BinaryHostContext, BinaryStringContext, ElfRuleContext, HostFilePart,
+        NINTENDO_COMPAT_DECLARATION, NINTENDO_RULE_BYTES, NINTENDO_VAR_DECLARATION, PeRuleContext,
+        TextUnicodeType, apply_compatibility_overlay, apply_exact_lifecycle_overlay,
+        collect_rule_files, elf_matcher_map_projection, eval_rule_lexical, eval_string, eval_unit,
+        install_diagnostic_host_fallbacks, install_nintendo_host,
+        install_nintendo_host_with_context, install_nintendo_host_with_context_and_strings,
+        new_context, new_runtime, nonnegative_index, normalized_path, parse_detection_triples,
+        parse_scope_detections, parse_scope_fixture_order, pe_physical_map_projection,
+        qt5_elf_matcher_map_projection, qt5_pe_physical_map_projection, read_ascii,
+        read_byte_array, read_signed, read_unsigned, sha256_hex, shift_right_unsigned,
         sorted_detection_projection, upstream_type_priority,
     };
     use std::fs;
@@ -4375,6 +4953,99 @@ mod tests {
                 usize::from(id == "cygwin32_entry_point_truncated")
             );
         }
+    }
+
+    #[test]
+    fn elf_context_matches_fixed_qt5_entry_points_and_safe_matcher_maps() {
+        let baseline: serde_json::Value = serde_json::from_str(include_str!(
+            "../../../docs/research/data/elf-rule-qt5.json"
+        ))
+        .expect("fixed Qt5 ELF rule baseline should be valid JSON");
+        let cases = baseline["cases"]
+            .as_array()
+            .expect("fixed Qt5 ELF baseline should have cases");
+        assert_eq!(cases.len(), 6);
+        for case in cases {
+            assert_eq!(case["parser_valid"], true);
+            let id = case["id"].as_str().expect("case should have an id");
+            let data = decode_hex(case["data_hex"].as_str().expect("case should contain data"));
+            let context = ElfRuleContext::parse(&data)
+                .unwrap_or_else(|error| panic!("{id}: ELF context should parse: {error}"));
+            assert_eq!(
+                u64::from(context.elf_class) * 32,
+                case["elf_class"].as_u64().unwrap()
+            );
+            let entry_point = context
+                .entry_point_offset
+                .and_then(|offset| i64::try_from(offset).ok())
+                .unwrap_or(-1);
+            assert_eq!(entry_point, case["entry_point_offset"].as_i64().unwrap());
+            let expected = qt5_elf_matcher_map_projection(&case["memory_map"])
+                .expect("Qt5 ELF map should safely project");
+            assert_eq!(elf_matcher_map_projection(&context), expected.matcher_map);
+            if id.ends_with("_truncated") {
+                assert_eq!(context.out_of_bounds_loads, 2);
+                assert_eq!(expected.discarded_virtual_records, 2);
+                assert_eq!(expected.discarded_nonpositive_size_records, 2);
+                assert_eq!(expected.discarded_overlay_sentinel_records, 0);
+            } else {
+                assert_eq!(context.out_of_bounds_loads, 0);
+                assert_eq!(expected.discarded_virtual_records, 0);
+                assert_eq!(expected.discarded_nonpositive_size_records, 0);
+                assert_eq!(expected.discarded_overlay_sentinel_records, 1);
+            }
+            assert_eq!(expected.discarded_negative_offset_records, 0);
+        }
+    }
+
+    #[test]
+    fn elf_context_rejects_malformed_counts_ranges_and_missing_loads() {
+        assert!(ElfRuleContext::parse(&[]).is_err());
+        let baseline: serde_json::Value = serde_json::from_str(include_str!(
+            "../../../docs/research/data/elf-rule-qt5.json"
+        ))
+        .expect("fixed Qt5 ELF rule baseline should be valid JSON");
+        let mut data = decode_hex(
+            baseline["cases"][3]["data_hex"]
+                .as_str()
+                .expect("ELF64 case should contain data"),
+        );
+
+        let mut short_entry = data.clone();
+        short_entry[54..56].copy_from_slice(&0_u16.to_le_bytes());
+        assert!(
+            ElfRuleContext::parse(&short_entry)
+                .expect_err("undersized program entry must fail")
+                .contains("smaller")
+        );
+
+        let mut excessive_count = data.clone();
+        excessive_count[56..58].copy_from_slice(&1025_u16.to_le_bytes());
+        assert!(
+            ElfRuleContext::parse(&excessive_count)
+                .expect_err("excessive program entry count must fail")
+                .contains("limit 1024")
+        );
+
+        data[72..80].copy_from_slice(&u64::MAX.to_le_bytes());
+        assert!(
+            ElfRuleContext::parse(&data)
+                .expect_err("overflowing segment range must fail")
+                .contains("range overflow")
+        );
+
+        let mut no_loads = decode_hex(
+            baseline["cases"][3]["data_hex"]
+                .as_str()
+                .expect("ELF64 case should contain data"),
+        );
+        no_loads[64..68].copy_from_slice(&0_u32.to_le_bytes());
+        no_loads[120..124].copy_from_slice(&0_u32.to_le_bytes());
+        assert!(
+            ElfRuleContext::parse(&no_loads)
+                .expect_err("missing PT_LOAD must fail")
+                .contains("no non-empty PT_LOAD")
+        );
     }
 
     #[test]

@@ -664,8 +664,10 @@ string context 接入后仍为 1109/11。execution context 的确定性 `isText=
 再次短路，最终为 1105 次 compare（1043 fast、62 generic、5 quirk、0 error）
 和 11 次 search。
 header fast path 对未知字符仍按上游
-string matcher 返回 false；generic parser/search 才产生显式诊断。此接入只覆盖
-generic Binary identity memory map，不代表 PE/ELF/Mach-O 等格式专用 map。
+string matcher 返回 false；generic parser/search 才产生显式诊断。此处的全库
+diagnostic trace 只覆盖 generic Binary identity memory map；后续规则级差分已
+分别闭合一条真实 PE32 和 ELF32/ELF64 format map 分支，但仍不能外推到其他
+格式或 HostApi。
 
 后续静态 AST inventory 已把范围从单一样本扩大到固定 `db`/`db_extra`：
 2175/2175 文件解析成功，5968 个具名 signature API 调用点中有 5855 个 literal、
@@ -838,6 +840,11 @@ cargo +1.88.0 run --release --locked -- verify-pe-rule \
   ../../upstream/Detect-It-Easy/db \
   ../../docs/research/data/pe-rule-fixture.json \
   ../../docs/research/data/pe-rule-qt5.json
+
+cargo +1.88.0 run --release --locked -- verify-elf-rule \
+  ../../upstream/Detect-It-Easy/db \
+  ../../docs/research/data/elf-rule-fixture.json \
+  ../../docs/research/data/elf-rule-qt5.json
 ```
 
 `fixture`、`eval-isolated-compat`、`eval-binary-lifecycle`、两个 lexical
@@ -873,7 +880,11 @@ JSON。运行前先执行
   Cygwin32 规则完成 positive/negative/truncated Qt5 差分 3/3；入口点、physical
   memory records、boolean 和完整 detection tuple 均一致。证据见
   [`pe-rule-runtime-differential.md`](pe-rule-runtime-differential.md)。
-  这不覆盖其余 PE HostApi、PE32+ 或其他格式。
+  第二个分支又用真实 Rust ELF32/ELF64 context、native `ELF.compareEP` 和原样
+  Burneye 规则完成六例差分 6/6，并显式保存 XELF 截断时的负长度/virtual map
+  记录及安全 matcher 投影，证据见
+  [`elf-rule-runtime-differential.md`](elf-rule-runtime-differential.md)。
+  两者仍不覆盖其余 PE/ELF HostApi、PE32+ 或其他格式。
 - 规则侧已清点 429 个第一层宿主 receiver/method 和 464 个 arity 形状；
   337 个 C++ slot 与 13 个脚本扩展静态覆盖 460 个形状。共享 Qt 5/Qt 6
   QObject 探针已闭合三个额外实参形状和缺失 `PE.getEPSignature` 的

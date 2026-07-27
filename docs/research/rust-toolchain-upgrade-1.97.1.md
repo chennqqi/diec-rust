@@ -89,7 +89,7 @@ cargo +1.97.1 test --manifest-path <manifest> --all-features
 | --- | --- | --- | ---: | ---: |
 | `boa-rule-runtime` | pass | pass | 2 | 0 |
 | `c-static-link` | pass | pass | 3 | 0 |
-| `rquickjs-rule-runtime` | pass | pass | 26 | 0 |
+| `rquickjs-rule-runtime` | pass | pass | 28 | 0 |
 | `rquickjs-static-link` | pass | pass | 2 | 0 |
 | `signature-parser` | pass | pass | 15 | 0 |
 
@@ -116,10 +116,11 @@ callback panic；4 MiB heap OOM 后同一 context 也恢复执行。语料 oracl
 固定纯 Rust `sha2@0.10.9`，因此 Cargo manifest、lockfile 和 spike 依赖闭包随之
 更新；两套 release 构建的语料 oracle 都得到 4088/4088 次 `detect` 成功、
 0 fallback 和 14/14 baseline 匹配。该变化不改变独立的 native static-link
-consumer。随后增加真实 PE32 context/Cygwin32 规则差分后，当前 source
-SHA-256 为
-`2b3b3d6cff3d418e08f0917a9cfcb9d2209c7ef84bf4167b4eb9d0092a91da80`；
-两套工具链均通过 26 项测试，release 差分 3/3，且未新增 Cargo 依赖。
+consumer。随后依次增加真实 PE32/Cygwin32 与 ELF32/ELF64/Burneye 规则差分；
+当前 source SHA-256 为
+`0f606301be1e78e059aecf8d7abd202169199a5e79134ce097d22075d08d591f`。
+两套工具链均通过 28 项测试，release 差分分别为 3/3 和 6/6，且未新增 Cargo
+依赖。
 
 ## 5. Native static-link 结果
 

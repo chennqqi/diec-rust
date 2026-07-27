@@ -144,8 +144,13 @@ baseline 的变更都要检查本表。
   `PE.compareEP` 和 240-byte 原样 Cygwin32 规则，对项目生成的
   positive/negative/truncated 输入完成 Qt5 差分 3/3；入口点、非 virtual
   physical map、detect boolean 和完整 detection tuple 均一致，且显式记录
-  截断 XPE 的有界 section alias。该证据只覆盖一条 PE32 分支，ADR 0006 要求的
-  其余 PE/ELF/Mach-O/DEX/APK/Archive/PDF 代表规则仍缺，因而 R-001 继续 Open。
+  截断 XPE 的有界 section alias。第二个专用格式闭环使用真实 Rust
+  ELF32/ELF64 parser/context、native `ELF.compareEP` 和 282-byte 原样 Burneye
+  规则，对两种 class 的 positive/negative/truncated 输入完成 Qt5 差分 6/6；
+  入口点、安全 matcher map、boolean 和完整 tuple 一致，XELF 截断产生的
+  negative-size/virtual records 及其投影计数均保留。该证据仍各只覆盖一条
+  PE/ELF 分支，ADR 0006 要求的其余 HostApi 和 Mach-O/DEX/APK/Archive/PDF
+  代表规则仍缺，因而 R-001 继续 Open。
   固定 signature AST inventory 随后解析 `db`/`db_extra`
   2175/2175，保存 5968 个具名 signature API 调用点和 5628 个静态 pattern，
   覆盖动态 317/317；四个保守动态参数中的 `byteCode` 又已闭合为 97 个唯一

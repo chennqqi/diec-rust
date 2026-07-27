@@ -508,6 +508,14 @@ wrapper 行为：
 不能作为内部不可观察的性能细节忽略。当前实验固定了一个有效 PE32 entry point
 和足长 overlay；不存在、短小、无效以及非 PE 上下文仍待扩展。
 
+后续规则级 ELF 实验补上了非 PE context：项目生成 ELF32/ELF64 的 entry point
+均为 file offset 256。完整 512-byte 输入有足够 EP cache，原样 Burneye wildcard
+pattern 走 fast path；截断到 256 bytes 后 XELF 仍返回 EP 256，但 cache 为空，
+wrapper 转入 generic matcher 并安全返回 false。Qt5/Rust 六例的完整 detection
+tuple 6/6 一致，详见
+[`elf-rule-runtime-differential.md`](elf-rule-runtime-differential.md)。这固定了
+入口点恰在 EOF 时的 wrapper 行为，但没有覆盖更早截断或控制 pattern。
+
 ### 合成 memory-map 差分
 
 oracle schema v3 允许每个项目自有向量显式注入 `_MEMORY_MAP`，但仍调用未修改的
