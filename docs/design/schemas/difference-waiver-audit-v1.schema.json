@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://diec-rust.invalid/schemas/difference-waiver-audit-v1.schema.json",
+  "title": "diec-rust difference waiver audit v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "audit_schema",
+    "as_of",
+    "result"
+  ],
+  "properties": {
+    "audit_schema": {
+      "const": 1
+    },
+    "as_of": {
+      "type": "string",
+      "format": "date"
+    },
+    "run_identity": {
+      "$ref": "#/$defs/run_identity"
+    },
+    "input_sha256": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "registry",
+        "report"
+      ],
+      "properties": {
+        "registry": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "report": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "input_files_unchanged": {
+      "const": true
+    },
+    "applied": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "waiver_id",
+          "difference_id"
+        ],
+        "properties": {
+          "waiver_id": {
+            "type": "string"
+          },
+          "difference_id": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "unmatched_differences": {
+      "$ref": "#/$defs/id_list"
+    },
+    "expired_waivers": {
+      "$ref": "#/$defs/id_list"
+    },
+    "stale_waivers": {
+      "$ref": "#/$defs/id_list"
+    },
+    "unmatched_waivers": {
+      "$ref": "#/$defs/id_list"
+    },
+    "forbidden_waiver_attempts": {
+      "$ref": "#/$defs/id_list"
+    },
+    "failures": {
+      "$ref": "#/$defs/id_list"
+    },
+    "errors": {
+      "$ref": "#/$defs/id_list"
+    },
+    "result": {
+      "enum": [
+        "pass",
+        "fail",
+        "infrastructure_error"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "result": {
+            "const": "infrastructure_error"
+          }
+        },
+        "required": [
+          "result"
+        ]
+      },
+      "then": {
+        "required": [
+          "errors"
+        ]
+      },
+      "else": {
+        "required": [
+          "run_identity",
+          "input_sha256",
+          "input_files_unchanged",
+          "applied",
+          "unmatched_differences",
+          "expired_waivers",
+          "stale_waivers",
+          "unmatched_waivers",
+          "forbidden_waiver_attempts",
+          "failures"
+        ],
+        "not": {
+          "required": [
+            "errors"
+          ]
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "run_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "platform",
+        "upstream_commit",
+        "rust_schema"
+      ],
+      "properties": {
+        "platform": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+-[a-z0-9][a-z0-9_]*$"
+        },
+        "upstream_commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "rust_schema": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "id_list": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

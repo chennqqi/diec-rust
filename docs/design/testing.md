@@ -338,22 +338,39 @@ format HostApi 的 argument conformance case 必须同时断言语义返回、�
 未匹配差异默认失败。分类采用 `Exact`、`Semantic`、`SafetyDeviation` 和
 `Unsupported`，含义与 [`api.md`](api.md) 一致。
 
-waiver 是精确、有期限的审计记录，不是宽泛 allowlist。格式至少包含：
+waiver 是精确、有期限的审计记录，不是宽泛 allowlist。v1 registry 整体绑定一个
+platform/upstream commit/Rust schema；每条 record 只绑定一个 case 和一个非根
+JSON Pointer，不使用数组或 glob 扩大匹配面。格式为：
 
-```toml
-id = "DIFF-0001"
-status = "proposed"
-case_ids = ["cli.path.symlink-cycle"]
-platforms = ["linux-x86_64"]
-upstream_commit = "74eaf505c250ab47e709024e9dc41657cd8f2254"
-rust_schema = 1
-json_paths = ["/items/0/error/code"]
-classification = "SafetyDeviation"
-evidence = "docs/research/..."
-decision = "docs/design/decisions/....md"
-owner = "compatibility"
-expires = "before-v1.0"
-removal_condition = "..."
+```json
+{
+  "schema_version": 1,
+  "registry_identity": {
+    "platform": "linux-x86_64",
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "rust_schema": 1
+  },
+  "waivers": [{
+    "id": "DIFF-0001",
+    "status": "approved",
+    "case_id": "cli.path.symlink-cycle",
+    "json_pointer": "/items/0/error/code",
+    "classification": "SafetyDeviation",
+    "failure_kind": "safety_limit",
+    "left_raw_sha256": "<sha256>",
+    "right_raw_sha256": "<sha256>",
+    "diff_fingerprint": "<sha256>",
+    "evidence": "docs/research/...",
+    "decision": "docs/design/decisions/....md",
+    "owner": "compatibility",
+    "reviewed_by": "compatibility-owner",
+    "reviewed_on": "2026-07-27",
+    "expires": "2027-07-27",
+    "removal_condition": "...",
+    "threat_analysis": "docs/design/risks.md",
+    "regression_test": "tools/tests/test_....py"
+  }]
+}
 ```
 
 约束：
@@ -369,6 +386,12 @@ removal_condition = "..."
 - waiver 增改要求 compatibility owner review。
 
 该策略由 [`ADR 0004`](decisions/0004-evidence-bound-difference-waivers.md) 记录。
+v1 schemas 位于 [`schemas/`](schemas/)，reference validator 为
+[`validate_difference_waivers.py`](../../tools/compat/validate_difference_waivers.py)。
+validator 使用严格 JSON（拒绝 duplicate key、`NaN`/`Infinity` 和未知字段），
+重新计算 canonical diff fingerprint，并以显式 `--as-of` 产生 applied、
+unmatched、expired 和 stale audit。当前 v1 只处理 semantic JSON Pointer；
+raw-only byte-range waiver 默认 unmatched。
 
 ## 12. Unit、property 与 integration
 
@@ -594,7 +617,7 @@ CI artifact 使用 content hash、访问控制和保留期。release compatibili
 
 ## 20. 机器可读报告
 
-差分报告 schema 至少包含：
+完整差分报告最终至少包含：
 
 ```text
 report_schema
@@ -613,6 +636,17 @@ result
 `result` 只能是 `pass`、`fail` 或 `infrastructure_error`。没有“warning 即 pass”
 的隐式状态。summary 按 capability、platform、classification 和 waiver 聚合，并
 链接精确 case，不只提供总百分比。
+
+Phase 0 已先冻结并实现 waiver 子流水线的三个 v1 schema：
+
+- [`difference-input-report-v1.schema.json`](schemas/difference-input-report-v1.schema.json)；
+- [`difference-waiver-registry-v1.schema.json`](schemas/difference-waiver-registry-v1.schema.json)；
+- [`difference-waiver-audit-v1.schema.json`](schemas/difference-waiver-audit-v1.schema.json)。
+
+它们不冒充完整 differential report：input report 只携带 executed case、精确
+semantic difference、两侧 raw stream hash 和 canonical fingerprint。full harness
+仍需把 execution、normalization、semantic projection 和 content-addressed raw
+artifact manifest 接入同一顶层 report。
 
 ## 21. Phase 门禁
 
@@ -667,7 +701,8 @@ tested、exact、semantic、waived 和 unsupported 数量。
 - 当前 corpus 的格式覆盖仍不足以满足 capability matrix。
 - ADR 0006 已提议 rquickjs/QuickJS-NG，但 acceptance conditions 和全库
   execution conformance 未通过。
-- normalizer schema、semantic projection 和 waiver validator 尚未实现。
+- waiver v1 schema/standalone validator 已实现；normalizer schema、semantic
+  projection、raw artifact rehash 和 full report integration 尚未实现。
 - benchmark runner/noise/阈值和默认资源 limits 尚未冻结。
 - archive/decompression sanitizer 与恶意语料隔离设施尚未建立。
 - CI provider、artifact retention 和 restricted corpus 权限尚未决定。

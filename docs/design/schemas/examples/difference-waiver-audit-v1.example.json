@@ -1,0 +1,27 @@
+{
+  "applied": [
+    {
+      "difference_id": "D-0001",
+      "waiver_id": "DIFF-0001"
+    }
+  ],
+  "as_of": "2026-07-27",
+  "audit_schema": 1,
+  "expired_waivers": [],
+  "failures": [],
+  "forbidden_waiver_attempts": [],
+  "input_files_unchanged": true,
+  "input_sha256": {
+    "registry": "1a3d17b3d121f4d3a0fae3bf65b0011cc06d6471e33d183a49617a806782cc36",
+    "report": "7af79c1f96afd298b70bdaf0ebbaadbcf6f5af057238dc014170cf0630459237"
+  },
+  "result": "pass",
+  "run_identity": {
+    "platform": "linux-x86_64",
+    "rust_schema": 1,
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "stale_waivers": [],
+  "unmatched_differences": [],
+  "unmatched_waivers": []
+}

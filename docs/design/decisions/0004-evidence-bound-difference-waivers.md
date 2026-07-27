@@ -2,7 +2,7 @@
 
 Status: Proposed
 
-Last updated: 2026-07-26
+Last updated: 2026-07-27
 
 ## Context
 
@@ -18,6 +18,12 @@ Proposed：所有允许差异使用 versioned、machine-readable、evidence-boun
 
 每项 waiver 必须固定 case ID、平台、upstream commit、Rust schema、精确字段或
 raw diff fingerprint，并记录分类、证据、ADR、owner、期限和移除条件。
+
+v1 采用 JSON registry：一个文件只绑定一个
+`(platform, upstream_commit, rust_schema)` identity，每条 record 只绑定一个
+case ID 和一个非根 semantic JSON Pointer。日期使用 ISO `YYYY-MM-DD`，审计必须
+显式传入 `as_of`；`as_of >= expires` 即过期。只有完成 owner review 的
+`status=approved` record 能进入 registry，proposal 不作为可应用 waiver。
 
 - 未匹配差异默认失败。
 - wildcard case、root JSON path 和整份 stdout blanket waiver 禁止。
@@ -66,7 +72,7 @@ raw diff fingerprint，并记录分类、证据、ADR、owner、期限和移除�
 
 代价：
 
-- waiver schema、validator、fingerprint 和 stale detection 需要工具支持。
+- waiver schema、validator、fingerprint 和 stale detection 增加维护面。
 - 上游升级时需要逐项复审。
 - 平台差异较多时记录数量可能增加。
 - 精确 raw fingerprint 对输出 framing 变化敏感，但这是期望的审计门禁。
@@ -78,6 +84,28 @@ raw diff fingerprint，并记录分类、证据、ADR、owner、期限和移除�
 - [`cli-path-behavior.md`](../../research/cli-path-behavior.md)
 - [`database-error-behavior.md`](../../research/database-error-behavior.md)
 - [`nested-scan-behavior.md`](../../research/nested-scan-behavior.md)
+- [`difference-waiver-registry-v1.schema.json`](../schemas/difference-waiver-registry-v1.schema.json)
+- [`difference-input-report-v1.schema.json`](../schemas/difference-input-report-v1.schema.json)
+- [`difference-waiver-audit-v1.schema.json`](../schemas/difference-waiver-audit-v1.schema.json)
+- [`validate_difference_waivers.py`](../../../tools/compat/validate_difference_waivers.py)
+- [`test_validate_difference_waivers.py`](../../../tools/tests/test_validate_difference_waivers.py)
+
+## Implementation status
+
+Phase 0 reference implementation已经具备：
+
+- 单一 platform/upstream/Rust schema registry identity；
+- 单 case、单非根 JSON Pointer、双 raw hash 和 canonical diff fingerprint；
+- exact match、expiration、stale、unmatched case/difference 和 identity drift；
+- `SafetyDeviation` threat/regression、`Unsupported` phase/exit condition 门禁；
+- 对 crash、memory safety、data race、panic、hang、unbounded allocation、
+  silent unknown syntax 和 ABI UB 的结构性拒绝；
+- 严格 JSON duplicate-key/non-finite 拒绝、输入文件 SHA-256 和只读审计；
+- deterministic `--as-of`、`pass`/`fail`/`infrastructure_error` exit contract。
+
+ADR 仍保持 Proposed：validator 尚未接入完整 differential/normalizer pipeline，
+也未对 content-addressed raw artifact 本体重新取 hash；synthetic owner 字段不能
+替代真实 compatibility owner review 流程。
 
 ## Acceptance conditions
 

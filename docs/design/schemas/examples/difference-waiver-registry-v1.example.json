@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "registry_identity": {
+    "platform": "linux-x86_64",
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "rust_schema": 1
+  },
+  "waivers": [
+    {
+      "id": "DIFF-0001",
+      "status": "approved",
+      "case_id": "cli.path.line-ending",
+      "json_pointer": "/stdout/framing/line_ending",
+      "classification": "Semantic",
+      "failure_kind": "platform_behavior",
+      "left_raw_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "right_raw_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "diff_fingerprint": "5a5d52dcaee7aca17434cd3c14b8908b59e15e5f067ad43c7fe0404530f29c10",
+      "evidence": "docs/research/cli-path-behavior.md",
+      "decision": "docs/design/decisions/0004-evidence-bound-difference-waivers.md",
+      "owner": "example-compatibility",
+      "reviewed_by": "example-compatibility-owner",
+      "reviewed_on": "2026-07-27",
+      "expires": "2027-07-27",
+      "removal_condition": "Remove when the synthetic example no longer exercises exact matching"
+    }
+  ]
+}

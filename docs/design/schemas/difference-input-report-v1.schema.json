@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://diec-rust.invalid/schemas/difference-input-report-v1.schema.json",
+  "title": "diec-rust semantic difference input report v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "report_schema",
+    "run_identity",
+    "executed_case_ids",
+    "differences"
+  ],
+  "properties": {
+    "report_schema": {
+      "const": 1
+    },
+    "run_identity": {
+      "$ref": "#/$defs/run_identity"
+    },
+    "executed_case_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+      }
+    },
+    "differences": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/difference"
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "run_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "platform",
+        "upstream_commit",
+        "rust_schema"
+      ],
+      "properties": {
+        "platform": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+-[a-z0-9][a-z0-9_]*$"
+        },
+        "upstream_commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "rust_schema": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "difference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "case_id",
+        "json_pointer",
+        "classification",
+        "failure_kind",
+        "left_raw_sha256",
+        "right_raw_sha256",
+        "upstream_value",
+        "rust_value",
+        "diff_fingerprint"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^D-[0-9]{4,}$"
+        },
+        "case_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "json_pointer": {
+          "type": "string",
+          "minLength": 2,
+          "pattern": "^/(?!$)(?!.*[?*\\[\\]]).+$"
+        },
+        "classification": {
+          "enum": [
+            "Semantic",
+            "SafetyDeviation",
+            "Unsupported"
+          ]
+        },
+        "failure_kind": {
+          "enum": [
+            "semantic_mismatch",
+            "platform_behavior",
+            "safety_limit",
+            "unsupported_feature",
+            "abi_ub",
+            "crash",
+            "data_race",
+            "hang",
+            "memory_safety",
+            "panic",
+            "silent_unknown_syntax",
+            "unbounded_allocation"
+          ]
+        },
+        "left_raw_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "right_raw_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "upstream_value": true,
+        "rust_value": true,
+        "diff_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,274 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://diec-rust.invalid/schemas/difference-waiver-registry-v1.schema.json",
+  "title": "diec-rust evidence-bound difference waiver registry v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "registry_identity",
+    "waivers"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "registry_identity": {
+      "$ref": "#/$defs/run_identity"
+    },
+    "waivers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/waiver"
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "repo_path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$"
+    },
+    "run_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "platform",
+        "upstream_commit",
+        "rust_schema"
+      ],
+      "properties": {
+        "platform": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+-[a-z0-9][a-z0-9_]*$"
+        },
+        "upstream_commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "rust_schema": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "waiver": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "status",
+        "case_id",
+        "json_pointer",
+        "classification",
+        "failure_kind",
+        "left_raw_sha256",
+        "right_raw_sha256",
+        "diff_fingerprint",
+        "evidence",
+        "decision",
+        "owner",
+        "reviewed_by",
+        "reviewed_on",
+        "expires",
+        "removal_condition"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^DIFF-[0-9]{4,}$"
+        },
+        "status": {
+          "const": "approved"
+        },
+        "case_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "json_pointer": {
+          "type": "string",
+          "minLength": 2,
+          "pattern": "^/(?!$)(?!.*[?*\\[\\]]).+$"
+        },
+        "classification": {
+          "enum": [
+            "Semantic",
+            "SafetyDeviation",
+            "Unsupported"
+          ]
+        },
+        "failure_kind": {
+          "enum": [
+            "semantic_mismatch",
+            "platform_behavior",
+            "safety_limit",
+            "unsupported_feature"
+          ]
+        },
+        "left_raw_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "right_raw_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "diff_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        },
+        "evidence": {
+          "$ref": "#/$defs/repo_path"
+        },
+        "decision": {
+          "$ref": "#/$defs/repo_path"
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reviewed_by": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reviewed_on": {
+          "type": "string",
+          "format": "date"
+        },
+        "expires": {
+          "type": "string",
+          "format": "date"
+        },
+        "removal_condition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "threat_analysis": {
+          "$ref": "#/$defs/repo_path"
+        },
+        "regression_test": {
+          "$ref": "#/$defs/repo_path"
+        },
+        "roadmap_phase": {
+          "enum": [
+            "Phase 1",
+            "Phase 2",
+            "Phase 3",
+            "Phase 4",
+            "Phase 5",
+            "Phase 6"
+          ]
+        },
+        "exit_condition": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "classification": {
+                "const": "SafetyDeviation"
+              }
+            },
+            "required": [
+              "classification"
+            ]
+          },
+          "then": {
+            "required": [
+              "threat_analysis",
+              "regression_test"
+            ],
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "roadmap_phase"
+                  ]
+                },
+                {
+                  "required": [
+                    "exit_condition"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "classification": {
+                "const": "Unsupported"
+              }
+            },
+            "required": [
+              "classification"
+            ]
+          },
+          "then": {
+            "required": [
+              "roadmap_phase",
+              "exit_condition"
+            ],
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "threat_analysis"
+                  ]
+                },
+                {
+                  "required": [
+                    "regression_test"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "classification": {
+                "const": "Semantic"
+              }
+            },
+            "required": [
+              "classification"
+            ]
+          },
+          "then": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "threat_analysis"
+                  ]
+                },
+                {
+                  "required": [
+                    "regression_test"
+                  ]
+                },
+                {
+                  "required": [
+                    "roadmap_phase"
+                  ]
+                },
+                {
+                  "required": [
+                    "exit_condition"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

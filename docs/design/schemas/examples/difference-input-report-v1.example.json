@@ -1,0 +1,25 @@
+{
+  "report_schema": 1,
+  "run_identity": {
+    "platform": "linux-x86_64",
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "rust_schema": 1
+  },
+  "executed_case_ids": [
+    "cli.path.line-ending"
+  ],
+  "differences": [
+    {
+      "id": "D-0001",
+      "case_id": "cli.path.line-ending",
+      "json_pointer": "/stdout/framing/line_ending",
+      "classification": "Semantic",
+      "failure_kind": "platform_behavior",
+      "left_raw_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "right_raw_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "upstream_value": "\r\n",
+      "rust_value": "\n",
+      "diff_fingerprint": "5a5d52dcaee7aca17434cd3c14b8908b59e15e5f067ad43c7fe0404530f29c10"
+    }
+  ]
+}
