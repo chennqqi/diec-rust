@@ -24,7 +24,7 @@ Linux Qt5 source-only 能力。本文不把源码证据提升为 runtime compati
 | --- | --- | --- |
 | `CAP-RULE-007` | scope review / private harness | 公共 API 不可传非空 signature path，private comparator 未运行 |
 | `CAP-DISPATCH-002` | generated format oracle | DOS/COM 八个成员无 runtime corpus |
-| `CAP-DISPATCH-003` | generated format oracle | Amiga Hunk、Atari ST 无 runtime corpus |
+| `CAP-DISPATCH-003` | generated format oracle | fixture/probe 已就绪；固定 Qt5 oracle 尚未执行 |
 | `CAP-NEST-007` | paired negative nested oracle | 缺“直接可检测、递归不分派”的同输入正负控制 |
 | `CAP-NEST-009` | bounded escalation + ADR | 缺深度/总展开量递增实验和 Rust 有界偏离决策 |
 | `CAP-RESULT-001` | engine harness extension | 只保留 size，缺 scan time、filename、initial filetype |
@@ -53,6 +53,14 @@ DOS/COM 和 Amiga/Atari 必须为每个矩阵成员提供项目生成、hash-bou
 同时提供截断、近似 magic 或错误端序控制。所有 case 在固定 qmake/CMake oracle
 上保存原始 stdout/stderr、退出码、大小和 SHA-256。
 
+`CAP-DISPATCH-003` 已具备
+[`legacy-dispatch-corpus.json`](data/legacy-dispatch-corpus.json) 对应的 8-case
+生成器和 [`probe_legacy_dispatch.py`](../../tools/upstream/probe_legacy_dispatch.py)。
+probe 要求临时生成的 manifest 与提交版本逐字节相同，并对两套 oracle 分别断言
+正例命中精确 filetype、三类控制不命中 Amiga/Atari，同时把每次 stdout/stderr
+写入外部 raw 目录。Docker daemon 当前不可用，因此尚无可提交的 runtime report，
+能力仍保持 source-only。
+
 ### 结果模型
 
 不能从 CLI JSON 反推 engine 内部字段。harness 必须在同一 record 中同时导出
@@ -64,6 +72,9 @@ success/error/debug/handler 状态。随机 ID 可断言关系和唯一性，不
 ```text
 python tools/research/build_source_only_closure.py
 python tools/tests/test_source_only_closure.py
+python tools/corpus/generate_legacy_dispatch_corpus.py <corpus-dir>
+python tools/upstream/probe_legacy_dispatch.py \
+  --corpus-dir <corpus-dir> --raw-dir <raw-dir> --output <report.json>
 ```
 
 测试要求：

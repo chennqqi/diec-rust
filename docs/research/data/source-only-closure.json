@@ -60,8 +60,8 @@
           "truncated and wrong-endian controls are included",
           "raw stdout, stderr, exit code, size, and SHA-256 are retained"
         ],
-        "fixture": "deterministic minimal Amiga Hunk and Atari ST corpus",
-        "harness": "pinned qmake/CMake CLI oracle comparator",
+        "fixture": "tools/corpus/generate_legacy_dispatch_corpus.py: two positives plus truncated, wrong-endian, and near-magic controls",
+        "harness": "tools/upstream/probe_legacy_dispatch.py",
         "platform": "linux-x86_64-qt5"
       }
     },

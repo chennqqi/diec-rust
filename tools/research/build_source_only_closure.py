@@ -48,8 +48,11 @@ CATALOG: dict[str, dict[str, Any]] = {
         "missing_evidence": [
             "Amiga Hunk and Atari ST have source dispatch only"
         ],
-        "fixture": "deterministic minimal Amiga Hunk and Atari ST corpus",
-        "harness": "pinned qmake/CMake CLI oracle comparator",
+        "fixture": (
+            "tools/corpus/generate_legacy_dispatch_corpus.py: "
+            "two positives plus truncated, wrong-endian, and near-magic controls"
+        ),
+        "harness": "tools/upstream/probe_legacy_dispatch.py",
         "assertions": [
             "both formats reach their exact upstream filetype",
             "truncated and wrong-endian controls are included",

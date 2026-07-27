@@ -1,0 +1,133 @@
+{
+  "capability": "CAP-DISPATCH-003",
+  "generator": "tools/corpus/generate_legacy_dispatch_corpus.py",
+  "license": "project-generated; no third-party sample bytes",
+  "samples": [
+    {
+      "case_kind": "positive",
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "Atari ST"
+        ],
+        "present_filetypes": [
+          "Amiga Hunk"
+        ]
+      },
+      "name": "minimal-amiga-hunk.bin",
+      "sha256": "47ea2e9a8424130cb9c36591d0d82b4fbb3707adc994070fdaf28f02ae7c8cbb",
+      "size": 52,
+      "target_filetype": "Amiga Hunk"
+    },
+    {
+      "case_kind": "truncated",
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "Amiga Hunk",
+          "Atari ST"
+        ],
+        "present_filetypes": []
+      },
+      "name": "amiga-hunk-truncated.bin",
+      "sha256": "8aa396ceebd680b89754b12dc87ce34ba559b8ba601a2b3e2b66ca3fd3f4f396",
+      "size": 8,
+      "target_filetype": "Amiga Hunk"
+    },
+    {
+      "case_kind": "wrong_endian",
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "Amiga Hunk",
+          "Atari ST"
+        ],
+        "present_filetypes": []
+      },
+      "name": "amiga-hunk-wrong-endian.bin",
+      "sha256": "91bed7e6912643dfeec5e168358394d7c93b3b61ec3aeb93f2263696d119c3c7",
+      "size": 52,
+      "target_filetype": "Amiga Hunk"
+    },
+    {
+      "case_kind": "near_magic",
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "Amiga Hunk",
+          "Atari ST"
+        ],
+        "present_filetypes": []
+      },
+      "name": "amiga-hunk-near-magic.bin",
+      "sha256": "97bdaac5b5a9aa159186801236626ea125b921ea1fbaabd815182cc320668864",
+      "size": 52,
+      "target_filetype": "Amiga Hunk"
+    },
+    {
+      "case_kind": "positive",
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "Amiga Hunk"
+        ],
+        "present_filetypes": [
+          "Atari ST"
+        ]
+      },
+      "name": "minimal-atari-st.prg",
+      "sha256": "825abe31e10e4f41c01d2fe2de166cdb8ba2b99be3dd474d70b6c97c5e8ce98a",
+      "size": 28,
+      "target_filetype": "Atari ST"
+    },
+    {
+      "case_kind": "truncated",
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "Amiga Hunk",
+          "Atari ST"
+        ],
+        "present_filetypes": []
+      },
+      "name": "atari-st-truncated.prg",
+      "sha256": "f01083eb23fabd12bb2186bf8f9ec93d68c3666dd4c9f5707c32eb199e7209f6",
+      "size": 27,
+      "target_filetype": "Atari ST"
+    },
+    {
+      "case_kind": "wrong_endian",
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "Amiga Hunk",
+          "Atari ST"
+        ],
+        "present_filetypes": []
+      },
+      "name": "atari-st-wrong-endian.prg",
+      "sha256": "0cf39892ba204ab987afb8ab4e9b83933d1edf5e401c5f2d473e0789037c44b9",
+      "size": 28,
+      "target_filetype": "Atari ST"
+    },
+    {
+      "case_kind": "near_magic",
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "Amiga Hunk",
+          "Atari ST"
+        ],
+        "present_filetypes": []
+      },
+      "name": "atari-st-near-magic.prg",
+      "sha256": "8e79aa6b905b2beb1f3addbd11fe8fe7e9e0d998c932e2781c86c1899029a9bd",
+      "size": 28,
+      "target_filetype": "Atari ST"
+    }
+  ],
+  "schema_version": 1,
+  "source_identity": {
+    "commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+    "repository": "https://github.com/horsicq/Formats.git",
+    "validity_sources": [
+      "exec/xamigahunk.cpp",
+      "exec/xamigahunk_def.h",
+      "exec/xatarist.cpp",
+      "exec/xatarist_def.h",
+      "xformats.cpp"
+    ]
+  }
+}
