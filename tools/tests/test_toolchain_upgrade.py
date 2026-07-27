@@ -81,7 +81,7 @@ class ToolchainUpgradeTests(unittest.TestCase):
         expected_test_counts = {
             "boa-rule-runtime": 2,
             "c-static-link": 3,
-            "rquickjs-rule-runtime": 36,
+            "rquickjs-rule-runtime": 38,
             "rquickjs-static-link": 2,
             "signature-parser": 15,
         }
@@ -118,7 +118,7 @@ class ToolchainUpgradeTests(unittest.TestCase):
             {
                 "fmt": "pass",
                 "clippy": "pass",
-                "unit_tests": 36,
+                "unit_tests": 38,
                 "doc_tests": 0,
             },
         )

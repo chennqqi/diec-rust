@@ -163,9 +163,13 @@ baseline 的变更都要检查本表。
   native `Archive.isVerbose`/三个 format getter 和 421-byte 原样
   `_Archive.0.sg`，在 verbose stored ZIP、同输入 quiet 反例及
   central-directory-only 边界上完成 3/3；`ZIP / 2.0 / Store`、完整 tuple 和
-  1/4 次 HostApi 路径均一致。当前 Rust spike 对未覆盖 compression 明确失败，
-  仍未覆盖其他 XArchive 格式族。ADR 0006 要求的其余 HostApi 和 PDF 代表规则
-  仍缺，因而 R-001 继续 Open。
+  quiet 1 次、verbose 4 次 HostApi 路径均一致。当前 Rust spike 对未覆盖
+  compression 明确失败，仍未覆盖其他 XArchive 格式族。第七个闭环使用真实
+  Rust PDF object/string context、native `PDF.getStringValuesByKey`/
+  `getHeaderCommentAsHex` 和 557-byte 原样 Tools 规则，在 literal-string、
+  hex/name 类型反例和缺 `endobj` 边界上完成 3/3；object token、去重数组、
+  header comment、完整 tuple 和调用次数均一致。七个计划代表规则已闭合，但
+  ADR 0006 要求的其余 HostApi、全部规则和跨平台差分仍缺，因而 R-001 继续 Open。
   固定 signature AST inventory 随后解析 `db`/`db_extra`
   2175/2175，保存 5968 个具名 signature API 调用点和 5628 个静态 pattern，
   覆盖动态 317/317；四个保守动态参数中的 `byteCode` 又已闭合为 97 个唯一

@@ -21,6 +21,7 @@ Phase 0 计划形成：
 - [`dex-rule-runtime-differential.md`](dex-rule-runtime-differential.md)：真实 DEX035 string-table context、`DEX.isDexStringPresent` 与原样 QDBH 规则的 Qt5/Rust 正反截断差分（Draft）。
 - [`apk-rule-runtime-differential.md`](apk-rule-runtime-differential.md)：真实 APK/ZIP central-directory context、`APK.isArchiveRecordPresent` 与原样 QDBH 规则的 Qt5/Rust 正反截断差分（Draft）。
 - [`archive-rule-runtime-differential.md`](archive-rule-runtime-differential.md)：真实 ZIP metadata context、`Archive.isVerbose`/format getters 与原样 Archive 规则的 Qt5/Rust verbose 门控和截断差分（Draft）。
+- [`pdf-rule-runtime-differential.md`](pdf-rule-runtime-differential.md)：真实 PDF object/string context、`PDF.getStringValuesByKey`/header comment 与原样 Tools 规则的 Qt5/Rust 类型、去重和截断差分（Draft）。
 - [`rule-syntax-inventory.md`](rule-syntax-inventory.md)：全规则 AST 语法、全局引用和宿主调用形状清单（Draft）。
 - [`host-api-inventory.md`](host-api-inventory.md)：XScanEngine C++ slot、继承、默认参数与规则调用覆盖（Draft）。
 - [`global-host-api-inventory.md`](global-host-api-inventory.md)：die_script 非格式 native globals、规则顶层函数与直接调用分类（Draft）。
@@ -80,6 +81,8 @@ Phase 0 计划形成：
 - [`data/apk-rule-qt5.json`](data/apk-rule-qt5.json)：固定 XAPK/APK_Script/QScriptEngine 的 3-case APK 规则 oracle。
 - [`data/archive-rule-fixture.json`](data/archive-rule-fixture.json)：原样 Archive metadata 规则的项目生成 stored ZIP、quiet 反例和 central-directory-only 输入。
 - [`data/archive-rule-qt5.json`](data/archive-rule-qt5.json)：固定 XZip/Archive_Script/QScriptEngine 的 3-case Archive 规则 oracle。
+- [`data/pdf-rule-fixture.json`](data/pdf-rule-fixture.json)：原样 PDF Tools 规则的项目生成 literal/hex/name object 与缺失 `endobj` 输入。
+- [`data/pdf-rule-qt5.json`](data/pdf-rule-qt5.json)：固定 XPDF/PDF_Script/QScriptEngine 的 3-case PDF 规则 oracle。
 - [`data/nintendo-certified-corpus.json`](data/nintendo-certified-corpus.json)：PS3/PS Vita Certified File 分支语料清单。
 - [`data/nintendo-certified-baseline.json`](data/nintendo-certified-baseline.json)：双 oracle 原始输出哈希和 detection 摘要。
 - [`data/binary-rule-lifecycle.json`](data/binary-rule-lifecycle.json)：固定 Binary records、helper 解析、源码 hash 和比较器环证据。

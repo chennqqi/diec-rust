@@ -1054,6 +1054,74 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
             1,
         )
 
+    def test_pdf_rule_differential_binds_real_context_and_qt5_oracle(self):
+        differential = self.reference["pdf_rule_differential"]
+        oracle = differential["oracle"]
+        for path_field, hash_field in (
+            ("baseline", "baseline_sha256"),
+            ("dockerfile", "dockerfile_sha256"),
+            ("fixture", "fixture_sha256"),
+            ("fixture_generator", "fixture_generator_sha256"),
+            ("harness_source", "harness_source_sha256"),
+            ("probe", "probe_sha256"),
+        ):
+            path = ROOT / oracle[path_field]
+            with self.subTest(path=path_field):
+                self.assertEqual(
+                    hashlib.sha256(path.read_bytes()).hexdigest(),
+                    oracle[hash_field],
+                )
+        rule = oracle["rule_source"]
+        rule_path = ROOT / rule["path"]
+        self.assertEqual(rule_path.stat().st_size, rule["bytes"])
+        self.assertEqual(
+            hashlib.sha256(rule_path.read_bytes()).hexdigest(),
+            rule["sha256"],
+        )
+        fixture = json.loads(
+            (ROOT / oracle["fixture"]).read_text(encoding="utf-8")
+        )
+        baseline = json.loads(
+            (ROOT / oracle["baseline"]).read_text(encoding="utf-8")
+        )
+        self.assertEqual(fixture["case_count"], 3)
+        self.assertEqual(baseline["case_count"], 3)
+        self.assertEqual(
+            [case["object_count"] for case in baseline["cases"]],
+            [2, 1, 0],
+        )
+        self.assertEqual(
+            [case["native_creator_values"] for case in baseline["cases"]],
+            [["Tool A", "Tool)B"], [], []],
+        )
+        self.assertEqual(
+            [
+                case["native_header_comment_hex"]
+                for case in baseline["cases"]
+            ],
+            ["e2e3cfd3", "4153434949", "fffe"],
+        )
+        self.assertTrue(oracle["probe_passed"])
+        self.assertEqual(oracle["qt_version"], "5.15.13")
+        self.assertEqual(oracle["engine"], "QScriptEngine")
+        self.assertEqual(
+            oracle["xpdf_commit"],
+            "cdcee54dce97f566f2c023f400a457f4e6278de2",
+        )
+        self.assertEqual(differential["rust"]["matched_count"], 3)
+        self.assertEqual(
+            differential["rust"]["get_string_values_by_key_call_count"],
+            6,
+        )
+        self.assertEqual(
+            differential["rust"]["get_header_comment_as_hex_call_count"],
+            3,
+        )
+        self.assertEqual(differential["rust"]["object_match_count"], 3)
+        self.assertEqual(differential["rust"]["token_match_count"], 3)
+        self.assertEqual(differential["coverage"]["object_match_count"], 3)
+        self.assertEqual(differential["coverage"]["token_match_count"], 3)
+
     def test_binary_lifecycle_uses_fixed_order_and_exact_overlays(self):
         lifecycle = self.reference["binary_lifecycle"]
         self.assertEqual(lifecycle["files"], 292)

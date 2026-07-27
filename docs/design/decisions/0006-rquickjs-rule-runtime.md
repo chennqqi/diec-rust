@@ -164,6 +164,7 @@ lexical 不兼容。
 - [`dex-rule-runtime-differential.md`](../../research/dex-rule-runtime-differential.md)
 - [`apk-rule-runtime-differential.md`](../../research/apk-rule-runtime-differential.md)
 - [`archive-rule-runtime-differential.md`](../../research/archive-rule-runtime-differential.md)
+- [`pdf-rule-runtime-differential.md`](../../research/pdf-rule-runtime-differential.md)
 - [`c-static-link-spike.md`](../../research/c-static-link-spike.md)
 
 ## Acceptance conditions

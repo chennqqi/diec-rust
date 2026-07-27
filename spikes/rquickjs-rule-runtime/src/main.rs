@@ -179,6 +179,13 @@ const ARCHIVE_FIXTURE_SHA256: &str =
     "04ee27fe5741ad9b65098722213d67058f748416e7075256dacf26a3be4d6b6b";
 const ARCHIVE_QT5_BASELINE_SHA256: &str =
     "92d33c5982fcb457c0a07b30dbe1ef262ac5ccf36ca00fa5151c7b2e3f10c97c";
+const PDF_RULE_SUFFIX: &str = "PDF/format_Tools.2.sg";
+const PDF_RULE_BYTES: usize = 557;
+const PDF_RULE_SHA256: &str = "982869432394292415be6c3c2ef9408ac1943c4d7571e19f767ffe87314c23da";
+const PDF_FIXTURE_SHA256: &str = "28ae4bbe1b02c0ba303ad08fd075a7f01ff0ca7f9ec5fbf77f8b751c7d8c1f65";
+const PDF_QT5_BASELINE_SHA256: &str =
+    "af31dc57c04974af5fb74b0a4dea42b01ac0aa9460f541b70d60a107d370dbd8";
+const XPDF_COMMIT: &str = "cdcee54dce97f566f2c023f400a457f4e6278de2";
 const XARCHIVE_COMMIT: &str = "0fcd4e8d3e9933baac3b12246d82ac026557ffd0";
 const FORMATS_COMMIT: &str = "1151e7254fdee3c0294ff7095edbdd7bfccf8201";
 const FORMAT_RESULT_SHIM: &[u8] = br#"
@@ -308,6 +315,21 @@ struct ArchiveRuleContext {
     local_header_signature_mismatches: usize,
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
+struct PdfObjectContext {
+    id: u64,
+    offset: usize,
+    tokens: Vec<String>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+struct PdfRuleContext {
+    objects: Vec<PdfObjectContext>,
+    creator_values: Vec<String>,
+    producer_values: Vec<String>,
+    header_comment_hex: String,
+}
+
 #[derive(Default)]
 struct EntryPointHostTrace {
     compare_ep_calls: AtomicUsize,
@@ -332,6 +354,12 @@ struct ArchiveHostTrace {
     get_file_format_name_calls: AtomicUsize,
     get_file_format_version_calls: AtomicUsize,
     get_file_format_options_calls: AtomicUsize,
+}
+
+#[derive(Default)]
+struct PdfHostTrace {
+    get_string_values_by_key_calls: AtomicUsize,
+    get_header_comment_as_hex_calls: AtomicUsize,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -1437,6 +1465,284 @@ impl ArchiveRuleContext {
     }
 }
 
+fn pdf_is_line_ending(byte: u8) -> bool {
+    byte == b'\n' || byte == b'\r'
+}
+
+fn pdf_skip_space_then_endings(data: &[u8], mut offset: usize) -> usize {
+    while data.get(offset) == Some(&b' ') {
+        offset += 1;
+    }
+    while let Some(byte) = data.get(offset) {
+        if *byte == b'\n' {
+            offset += 1;
+        } else if *byte == b'\r' {
+            offset += 1;
+            if data.get(offset) == Some(&b'\n') {
+                offset += 1;
+            }
+        } else {
+            break;
+        }
+    }
+    offset
+}
+
+fn pdf_latin1(bytes: &[u8]) -> String {
+    bytes.iter().copied().map(char::from).collect()
+}
+
+fn pdf_read_line(data: &[u8], offset: usize) -> Result<(String, usize), String> {
+    if offset >= data.len() {
+        return Ok((String::new(), offset));
+    }
+    let mut end = offset;
+    while let Some(byte) = data.get(end) {
+        if *byte == 0 {
+            return Err("PDF NUL line termination is not covered by this spike".to_owned());
+        }
+        if pdf_is_line_ending(*byte) {
+            break;
+        }
+        end += 1;
+    }
+    Ok((
+        pdf_latin1(&data[offset..end]),
+        pdf_skip_space_then_endings(data, end),
+    ))
+}
+
+fn pdf_is_structural_delimiter(byte: u8) -> bool {
+    matches!(byte, b'[' | b']' | b'<' | b'>')
+}
+
+fn pdf_read_token(data: &[u8], offset: usize) -> Result<(String, usize), String> {
+    let first = *data
+        .get(offset)
+        .ok_or_else(|| "PDF token offset is at EOF".to_owned())?;
+    let mut end = offset;
+    let token = match first {
+        b'/' => {
+            end += 1;
+            while let Some(byte) = data.get(end) {
+                if *byte == 0
+                    || pdf_is_line_ending(*byte)
+                    || pdf_is_structural_delimiter(*byte)
+                    || *byte == b' '
+                    || *byte == b'('
+                    || *byte == b'/'
+                {
+                    break;
+                }
+                end += 1;
+            }
+            pdf_latin1(&data[offset..end])
+        }
+        b'(' => {
+            let mut output = String::from("(");
+            end += 1;
+            let mut escaped = false;
+            while let Some(byte) = data.get(end).copied() {
+                if byte == 0 || pdf_is_line_ending(byte) {
+                    break;
+                }
+                if byte == b')' && !escaped {
+                    output.push(')');
+                    end += 1;
+                    break;
+                }
+                if byte == b'\\' {
+                    escaped = true;
+                    end += 1;
+                    continue;
+                }
+                output.push(char::from(byte));
+                escaped = false;
+                end += 1;
+            }
+            output
+        }
+        b'<' if data.get(offset + 1) == Some(&b'<') => {
+            end += 2;
+            "<<".to_owned()
+        }
+        b'<' => {
+            end += 1;
+            while let Some(byte) = data.get(end) {
+                end += 1;
+                if *byte == b'>' {
+                    break;
+                }
+            }
+            pdf_latin1(&data[offset..end])
+        }
+        b'>' if data.get(offset + 1) == Some(&b'>') => {
+            end += 2;
+            ">>".to_owned()
+        }
+        b'[' | b']' => {
+            end += 1;
+            char::from(first).to_string()
+        }
+        b'>' => return Err("single PDF '>' token is unsupported".to_owned()),
+        _ => {
+            while let Some(byte) = data.get(end) {
+                if *byte == 0
+                    || pdf_is_line_ending(*byte)
+                    || pdf_is_structural_delimiter(*byte)
+                    || *byte == b'/'
+                {
+                    break;
+                }
+                if *byte == b' ' {
+                    break;
+                }
+                end += 1;
+            }
+            pdf_latin1(&data[offset..end])
+        }
+    };
+    if end == offset {
+        return Err("PDF tokenizer made no progress".to_owned());
+    }
+    Ok((token, pdf_skip_space_then_endings(data, end)))
+}
+
+fn pdf_is_object_line(line: &str) -> bool {
+    let trimmed = line.trim_end_matches(' ');
+    let Some(prefix) = trimmed.strip_suffix("obj") else {
+        return false;
+    };
+    prefix.is_empty() || prefix.ends_with(' ')
+}
+
+fn pdf_object_id(line: &str) -> u64 {
+    line.split_ascii_whitespace()
+        .next()
+        .and_then(|value| value.parse().ok())
+        .unwrap_or(0)
+}
+
+fn pdf_string_values_by_key(objects: &[PdfObjectContext], key: &str) -> Vec<String> {
+    let mut seen = BTreeSet::new();
+    let mut values = Vec::new();
+    for object in objects {
+        for pair in object.tokens.windows(2) {
+            if pair[0] != key {
+                continue;
+            }
+            let value = &pair[1];
+            if value.len() >= 2 && value.starts_with('(') && value.ends_with(')') {
+                let string = value[1..value.len() - 1].to_owned();
+                if seen.insert(string.clone()) {
+                    values.push(string);
+                }
+            }
+        }
+    }
+    values
+}
+
+impl PdfRuleContext {
+    fn parse(data: &[u8]) -> Result<Self, String> {
+        const OBJECT_LIMIT: usize = 4_096;
+        const PART_LIMIT: usize = 20;
+
+        if data.len() <= 4 || data.get(0..4) != Some(b"%PDF") {
+            return Err("PDF signature is missing or input is too short".to_owned());
+        }
+        let (_, mut header_end) = pdf_read_line(data, 0)?;
+        let header_comment_hex = if data.get(header_end) == Some(&b'%') {
+            header_end += 1;
+            let comment_end = data.len().min(header_end.saturating_add(40));
+            let mut end = header_end;
+            while end < comment_end {
+                let byte = data[end];
+                if byte == 0 || pdf_is_line_ending(byte) {
+                    break;
+                }
+                end += 1;
+            }
+            data[header_end..end]
+                .iter()
+                .map(|byte| format!("{byte:02x}"))
+                .collect::<Vec<_>>()
+                .join("")
+        } else {
+            String::new()
+        };
+
+        let mut objects = Vec::new();
+        let mut cursor = 0_usize;
+        while cursor < data.len() {
+            if objects.len() >= OBJECT_LIMIT {
+                return Err(format!(
+                    "PDF object count exceeds spike limit {OBJECT_LIMIT}"
+                ));
+            }
+            let object_offset = cursor;
+            let (line, next) = pdf_read_line(data, cursor)?;
+            if pdf_is_object_line(&line) {
+                let search = &data[next..];
+                let Some(relative_endobj) = search
+                    .windows(b"endobj".len())
+                    .position(|window| window == b"endobj")
+                else {
+                    break;
+                };
+                let endobj_offset = next
+                    .checked_add(relative_endobj)
+                    .ok_or_else(|| "PDF endobj offset overflow".to_owned())?;
+                let (endobj, after_endobj) = pdf_read_line(data, endobj_offset)?;
+                if endobj.trim() != "endobj" {
+                    break;
+                }
+
+                let mut token_cursor = next;
+                let mut tokens = Vec::new();
+                let mut dictionary_depth = 0_i32;
+                let mut array_depth = 0_i32;
+                while token_cursor < endobj_offset && tokens.len() < PART_LIMIT {
+                    let (token, token_next) = pdf_read_token(data, token_cursor)?;
+                    match token.as_str() {
+                        "<<" => dictionary_depth += 1,
+                        ">>" => dictionary_depth -= 1,
+                        "[" => array_depth += 1,
+                        "]" => array_depth -= 1,
+                        _ => {}
+                    }
+                    tokens.push(token);
+                    token_cursor = token_next;
+                    if dictionary_depth == 0 && array_depth == 0 {
+                        break;
+                    }
+                    if dictionary_depth < 0 || array_depth < 0 {
+                        return Err("PDF dictionary/array nesting underflow".to_owned());
+                    }
+                }
+                objects.push(PdfObjectContext {
+                    id: pdf_object_id(&line),
+                    offset: object_offset,
+                    tokens,
+                });
+                cursor = after_endobj;
+            } else if line.starts_with('%') {
+                cursor = next;
+            } else {
+                break;
+            }
+        }
+        let creator_values = pdf_string_values_by_key(&objects, "/Creator");
+        let producer_values = pdf_string_values_by_key(&objects, "/Producer");
+        Ok(Self {
+            objects,
+            creator_values,
+            producer_values,
+            header_comment_hex,
+        })
+    }
+}
+
 fn collect_rule_files(root: &Path, output: &mut Vec<PathBuf>) -> Result<(), String> {
     let entries =
         fs::read_dir(root).map_err(|error| format!("cannot read {}: {error}", root.display()))?;
@@ -2245,6 +2551,56 @@ fn install_archive_host(
 
         ctx.globals()
             .set("Archive", receiver)
+            .map_err(|error| error.to_string())
+    })?;
+    Ok(trace)
+}
+
+fn install_pdf_host(
+    context: &Context,
+    pdf_context: PdfRuleContext,
+) -> Result<Arc<PdfHostTrace>, String> {
+    let trace = Arc::new(PdfHostTrace::default());
+    let pdf_context = Arc::new(pdf_context);
+    context.with(|ctx| {
+        let receiver = Object::new(ctx.clone()).map_err(|error| error.to_string())?;
+
+        let context_for_values = Arc::clone(&pdf_context);
+        let trace_for_values = Arc::clone(&trace);
+        receiver
+            .set(
+                "getStringValuesByKey",
+                Function::new(ctx.clone(), move |key: String| {
+                    trace_for_values
+                        .get_string_values_by_key_calls
+                        .fetch_add(1, Ordering::Relaxed);
+                    match key.as_str() {
+                        "/Creator" => context_for_values.creator_values.clone(),
+                        "/Producer" => context_for_values.producer_values.clone(),
+                        _ => Vec::new(),
+                    }
+                })
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+
+        let context_for_header = Arc::clone(&pdf_context);
+        let trace_for_header = Arc::clone(&trace);
+        receiver
+            .set(
+                "getHeaderCommentAsHex",
+                Function::new(ctx.clone(), move || {
+                    trace_for_header
+                        .get_header_comment_as_hex_calls
+                        .fetch_add(1, Ordering::Relaxed);
+                    context_for_header.header_comment_hex.clone()
+                })
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+
+        ctx.globals()
+            .set("PDF", receiver)
             .map_err(|error| error.to_string())
     })?;
     Ok(trace)
@@ -5477,6 +5833,226 @@ fn verify_archive_rule(
     Ok(all_match)
 }
 
+fn verify_pdf_rule(
+    rule_root: &Path,
+    fixture_path: &Path,
+    baseline_path: &Path,
+) -> Result<bool, String> {
+    let fixture_bytes = fs::read(fixture_path)
+        .map_err(|error| format!("cannot read {}: {error}", fixture_path.display()))?;
+    let baseline_bytes = fs::read(baseline_path)
+        .map_err(|error| format!("cannot read {}: {error}", baseline_path.display()))?;
+    if sha256_hex(&fixture_bytes) != PDF_FIXTURE_SHA256 {
+        return Err(format!(
+            "fixed PDF fixture hash mismatch: {}",
+            fixture_path.display()
+        ));
+    }
+    if sha256_hex(&baseline_bytes) != PDF_QT5_BASELINE_SHA256 {
+        return Err(format!(
+            "fixed Qt5 PDF baseline hash mismatch: {}",
+            baseline_path.display()
+        ));
+    }
+    let rule_path = rule_root.join(PDF_RULE_SUFFIX);
+    let rule_source = fs::read(&rule_path)
+        .map_err(|error| format!("cannot read {}: {error}", rule_path.display()))?;
+    if rule_source.len() != PDF_RULE_BYTES || sha256_hex(&rule_source) != PDF_RULE_SHA256 {
+        return Err(format!("fixed PDF rule mismatch: {}", rule_path.display()));
+    }
+    let fixture: Value = serde_json::from_slice(&fixture_bytes)
+        .map_err(|error| format!("cannot parse {}: {error}", fixture_path.display()))?;
+    let baseline: Value = serde_json::from_slice(&baseline_bytes)
+        .map_err(|error| format!("cannot parse {}: {error}", baseline_path.display()))?;
+    for (document_name, document) in [("fixture", &fixture), ("baseline", &baseline)] {
+        if document["upstream_commit"] != UPSTREAM_COMMIT
+            || document["xpdf_commit"] != XPDF_COMMIT
+            || document["xscanengine_commit"] != XSCANENGINE_COMMIT
+            || document["rules_commit"] != RULES_COMMIT
+            || document["case_count"] != 3
+        {
+            return Err(format!("{document_name} PDF metadata mismatch"));
+        }
+    }
+    if fixture["rule"]["path"] != PDF_RULE_SUFFIX
+        || fixture["rule"]["sha256"] != PDF_RULE_SHA256
+        || baseline["rule_path"] != format!("/opt/die-source/Detect-It-Easy/db/{PDF_RULE_SUFFIX}")
+        || baseline["rule_sha256"] != PDF_RULE_SHA256
+        || baseline["qt_version"] != "5.15.13"
+        || baseline["engine"] != "QScriptEngine"
+    {
+        return Err("fixed PDF fixture/baseline contract mismatch".to_owned());
+    }
+    let fixture_cases = fixture["cases"]
+        .as_array()
+        .ok_or_else(|| "PDF fixture cases are missing".to_owned())?;
+    let baseline_cases = baseline["cases"]
+        .as_array()
+        .ok_or_else(|| "Qt5 PDF baseline cases are missing".to_owned())?;
+    if fixture_cases.len() != 3 || baseline_cases.len() != 3 {
+        return Err("fixed PDF case count mismatch".to_owned());
+    }
+
+    let mut reports = Vec::with_capacity(fixture_cases.len());
+    let mut all_match = true;
+    for fixture_case in fixture_cases {
+        let id = fixture_case["id"]
+            .as_str()
+            .ok_or_else(|| "PDF fixture case id is missing".to_owned())?;
+        let baseline_case = baseline_cases
+            .iter()
+            .find(|case| case["id"] == id)
+            .ok_or_else(|| format!("Qt5 PDF baseline case is missing: {id}"))?;
+        for field in ["data_hex", "data_sha256"] {
+            if fixture_case[field] != baseline_case[field] {
+                return Err(format!("{id}: fixture and Qt5 {field} evidence differ"));
+            }
+        }
+        if baseline_case["parser_valid"] != true || baseline_case["pdf_script_error"] != "" {
+            return Err(format!("{id}: Qt5 PDF parser/script evidence is not valid"));
+        }
+        let data_hex = fixture_case["data_hex"]
+            .as_str()
+            .ok_or_else(|| format!("{id}: data_hex is missing"))?;
+        let data = decode_hex_string(data_hex, &format!("{id}.data_hex"))?;
+        if sha256_hex(&data) != fixture_case["data_sha256"] {
+            return Err(format!("{id}: decoded input hash mismatch"));
+        }
+        let pdf_context = PdfRuleContext::parse(&data).map_err(|error| format!("{id}: {error}"))?;
+        let actual_parts = Value::Array(
+            pdf_context
+                .objects
+                .iter()
+                .map(|object| {
+                    json!({
+                        "id": object.id,
+                        "offset": object.offset,
+                        "tokens": object.tokens,
+                    })
+                })
+                .collect(),
+        );
+        let expected_creators: Vec<String> =
+            serde_json::from_value(baseline_case["native_creator_values"].clone())
+                .map_err(|error| format!("{id}: invalid Qt5 creator values: {error}"))?;
+        let expected_producers: Vec<String> =
+            serde_json::from_value(baseline_case["native_producer_values"].clone())
+                .map_err(|error| format!("{id}: invalid Qt5 producer values: {error}"))?;
+        let expected_header = baseline_case["native_header_comment_hex"]
+            .as_str()
+            .ok_or_else(|| format!("{id}: Qt5 header comment is missing"))?;
+        let object_parts_match = actual_parts == baseline_case["object_parts"];
+        let native_matches = pdf_context.creator_values == expected_creators
+            && pdf_context.producer_values == expected_producers
+            && pdf_context.header_comment_hex == expected_header;
+
+        let runtime = new_runtime()?;
+        let context = new_context(&runtime)?;
+        let detections = Arc::new(Mutex::new(Vec::new()));
+        install_nintendo_host(&context, Arc::new(data), Arc::clone(&detections))?;
+        let pdf_trace = install_pdf_host(&context, pdf_context.clone())?;
+        eval_unit(&context, FORMAT_RESULT_SHIM)?;
+        let detect_result = eval_rule_lexical(&context, &rule_source, true)
+            .map_err(|error| format!("{id}: fixed PDF rule failed: {error}"))?;
+        let actual_detections = detections
+            .lock()
+            .map_err(|_| "PDF detection result mutex poisoned".to_owned())?
+            .clone();
+        let expected_detections: Vec<Detection> =
+            serde_json::from_value(baseline_case["detections"].clone())
+                .map_err(|error| format!("{id}: invalid Qt5 detections: {error}"))?;
+        let values_calls = pdf_trace
+            .get_string_values_by_key_calls
+            .load(Ordering::Relaxed);
+        let header_calls = pdf_trace
+            .get_header_comment_as_hex_calls
+            .load(Ordering::Relaxed);
+        let expected_header_calls = expected_creators.len() + expected_producers.len();
+        let matches = object_parts_match
+            && pdf_context.objects.len()
+                == baseline_case["object_count"]
+                    .as_u64()
+                    .and_then(|count| usize::try_from(count).ok())
+                    .ok_or_else(|| format!("{id}: Qt5 object count is missing"))?
+            && native_matches
+            && detect_result == "undefined"
+            && baseline_case["detect_is_undefined"] == true
+            && actual_detections == expected_detections
+            && values_calls == 2
+            && header_calls == expected_header_calls;
+        all_match &= matches;
+        reports.push(json!({
+            "id": id,
+            "input_sha256": fixture_case["data_sha256"],
+            "input_bytes": data_hex.len() / 2,
+            "parser_valid": true,
+            "object_count": pdf_context.objects.len(),
+            "object_parts": {
+                "qt5": baseline_case["object_parts"],
+                "rust": actual_parts,
+                "matches": object_parts_match,
+            },
+            "creator_values": {
+                "qt5": expected_creators,
+                "rust": pdf_context.creator_values,
+            },
+            "producer_values": {
+                "qt5": expected_producers,
+                "rust": pdf_context.producer_values,
+            },
+            "header_comment_hex": {
+                "qt5": expected_header,
+                "rust": pdf_context.header_comment_hex,
+            },
+            "detect_result": {
+                "qt5_is_undefined": true,
+                "rust": detect_result,
+            },
+            "detections": {
+                "qt5": expected_detections,
+                "rust": actual_detections,
+            },
+            "pdf_host_calls": {
+                "get_string_values_by_key": values_calls,
+                "get_header_comment_as_hex": header_calls,
+            },
+            "matches": matches,
+        }));
+    }
+    println!(
+        "{}",
+        serde_json::to_string_pretty(&json!({
+            "schema_version": 1,
+            "operation":
+                "byte-identical fixed PDF Tools rule with Rust object/string context",
+            "runtime": "rquickjs 0.12.1 / QuickJS-NG 0.15.1",
+            "upstream_commit": UPSTREAM_COMMIT,
+            "xpdf_commit": XPDF_COMMIT,
+            "xscanengine_commit": XSCANENGINE_COMMIT,
+            "rules_commit": RULES_COMMIT,
+            "rule": {
+                "path": normalized_path(&rule_path),
+                "bytes": rule_source.len(),
+                "sha256": PDF_RULE_SHA256,
+            },
+            "fixture": {
+                "path": normalized_path(fixture_path),
+                "sha256": PDF_FIXTURE_SHA256,
+            },
+            "qt5_baseline": {
+                "path": normalized_path(baseline_path),
+                "sha256": PDF_QT5_BASELINE_SHA256,
+            },
+            "case_count": reports.len(),
+            "matched_count": reports.iter().filter(|case| case["matches"] == true).count(),
+            "cases": reports,
+            "all_match": all_match,
+        }))
+        .map_err(|error| format!("cannot serialize PDF rule report: {error}"))?
+    );
+    Ok(all_match)
+}
+
 fn upstream_type_priority(kind: &str) -> i32 {
     let normalized = kind.to_lowercase().replace(['~', '!'], "");
     match normalized.as_str() {
@@ -6501,7 +7077,9 @@ fn usage() -> ExitCode {
          diec-rquickjs-rule-runtime-spike verify-apk-rule \
          <main-rule-root> <apk-fixture-json> <qt5-baseline-json>\n       \
          diec-rquickjs-rule-runtime-spike verify-archive-rule \
-         <main-rule-root> <archive-fixture-json> <qt5-baseline-json>"
+         <main-rule-root> <archive-fixture-json> <qt5-baseline-json>\n       \
+         diec-rquickjs-rule-runtime-spike verify-pdf-rule \
+         <main-rule-root> <pdf-fixture-json> <qt5-baseline-json>"
     );
     ExitCode::from(2)
 }
@@ -6555,6 +7133,8 @@ fn main() -> ExitCode {
         verify_apk_rule(&roots[0], &roots[1], &roots[2])
     } else if command == "verify-archive-rule" && roots.len() == 3 {
         verify_archive_rule(&roots[0], &roots[1], &roots[2])
+    } else if command == "verify-pdf-rule" && roots.len() == 3 {
+        verify_pdf_rule(&roots[0], &roots[1], &roots[2])
     } else {
         return usage();
     };
@@ -6573,9 +7153,9 @@ mod tests {
     use super::{
         ApkRuleContext, ArchiveRuleContext, BinaryHostContext, BinaryStringContext, DexRuleContext,
         ElfRuleContext, HostFilePart, MachoRuleContext, NINTENDO_COMPAT_DECLARATION,
-        NINTENDO_RULE_BYTES, NINTENDO_VAR_DECLARATION, PeRuleContext, TextUnicodeType,
-        apply_compatibility_overlay, apply_exact_lifecycle_overlay, collect_rule_files,
-        elf_matcher_map_projection, eval_rule_lexical, eval_string, eval_unit,
+        NINTENDO_RULE_BYTES, NINTENDO_VAR_DECLARATION, PdfRuleContext, PeRuleContext,
+        TextUnicodeType, apply_compatibility_overlay, apply_exact_lifecycle_overlay,
+        collect_rule_files, elf_matcher_map_projection, eval_rule_lexical, eval_string, eval_unit,
         install_diagnostic_host_fallbacks, install_nintendo_host,
         install_nintendo_host_with_context, install_nintendo_host_with_context_and_strings,
         macho_matcher_map_projection, new_context, new_runtime, nonnegative_index, normalized_path,
@@ -7101,6 +7681,87 @@ mod tests {
             ArchiveRuleContext::parse(&deflate, true)
                 .expect_err("uncovered compression method must fail explicitly")
                 .contains("unsupported ZIP metadata method")
+        );
+    }
+
+    #[test]
+    fn pdf_context_matches_fixed_qt5_objects_strings_and_truncation() {
+        let baseline: serde_json::Value = serde_json::from_str(include_str!(
+            "../../../docs/research/data/pdf-rule-qt5.json"
+        ))
+        .expect("fixed Qt5 PDF rule baseline should be valid JSON");
+        let cases = baseline["cases"]
+            .as_array()
+            .expect("fixed Qt5 PDF baseline should have cases");
+        assert_eq!(cases.len(), 3);
+        for case in cases {
+            assert_eq!(case["parser_valid"], true);
+            let id = case["id"].as_str().expect("case should have an id");
+            let data = decode_hex(case["data_hex"].as_str().expect("case should contain data"));
+            let context = PdfRuleContext::parse(&data)
+                .unwrap_or_else(|error| panic!("{id}: PDF context should parse: {error}"));
+            assert_eq!(
+                context.objects.len(),
+                case["object_count"].as_u64().unwrap() as usize
+            );
+            let object_parts = serde_json::Value::Array(
+                context
+                    .objects
+                    .iter()
+                    .map(|object| {
+                        serde_json::json!({
+                            "id": object.id,
+                            "offset": object.offset,
+                            "tokens": object.tokens,
+                        })
+                    })
+                    .collect(),
+            );
+            assert_eq!(object_parts, case["object_parts"]);
+            let expected_creators: Vec<String> =
+                serde_json::from_value(case["native_creator_values"].clone()).unwrap();
+            let expected_producers: Vec<String> =
+                serde_json::from_value(case["native_producer_values"].clone()).unwrap();
+            assert_eq!(context.creator_values, expected_creators);
+            assert_eq!(context.producer_values, expected_producers);
+            assert_eq!(
+                context.header_comment_hex,
+                case["native_header_comment_hex"].as_str().unwrap()
+            );
+        }
+    }
+
+    #[test]
+    fn pdf_context_rejects_malformed_tokens_without_unbounded_scanning() {
+        assert!(PdfRuleContext::parse(&[]).is_err());
+        let baseline: serde_json::Value = serde_json::from_str(include_str!(
+            "../../../docs/research/data/pdf-rule-qt5.json"
+        ))
+        .expect("fixed Qt5 PDF rule baseline should be valid JSON");
+        let data = decode_hex(
+            baseline["cases"][0]["data_hex"]
+                .as_str()
+                .expect("PDF case should contain data"),
+        );
+
+        let mut nul_line = data.clone();
+        nul_line[4] = 0;
+        assert!(
+            PdfRuleContext::parse(&nul_line)
+                .expect_err("NUL line termination must fail explicitly")
+                .contains("NUL")
+        );
+
+        let dictionary_offset = data
+            .windows(2)
+            .position(|window| window == b"<<")
+            .expect("fixed PDF should contain a dictionary");
+        let mut nesting_underflow = data;
+        nesting_underflow[dictionary_offset..dictionary_offset + 2].copy_from_slice(b">>");
+        assert!(
+            PdfRuleContext::parse(&nesting_underflow)
+                .expect_err("dictionary nesting underflow must fail")
+                .contains("underflow")
         );
     }
 
