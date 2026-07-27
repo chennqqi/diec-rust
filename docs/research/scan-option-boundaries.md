@@ -127,7 +127,10 @@ aggressive 只能在调用方允许的 hard budget 内提高 legacy policy thres
 [`archive-format-behavior.md`](archive-format-behavior.md) 固定，archive
 100000 精确边界已由
 [`archive-iteration-boundary.md`](archive-iteration-boundary.md) 固定；
-高压缩比/畸形、最大深度、累计解压量和资源耗尽仍不能由本实验外推为闭合。
+ZIP 1 MiB/843.58:1 和首轮畸形由
+[`archive-adversarial-behavior.md`](archive-adversarial-behavior.md) 固定；
+其他格式/算法、更高展开量、最大深度、累计解压量和资源耗尽仍不能由本实验
+外推为闭合。
 
 ## 8. 复现
 

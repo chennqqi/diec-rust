@@ -18,8 +18,10 @@ Last updated: 2026-07-28
   在增加后才检查。循环最多执行 100000 轮，因此 aggressive 模式下该条件
   不可能为真；实际边界是第 100000 条记录可达、第 100001 条不可达。
 
-这关闭了 `CAP-GAP-006` 中“archive aggressive 100000 精确边界”子项，但
-`CAP-GAP-006` 仍因压缩/加密/畸形成员、真实资源耗尽和跨平台行为保持开放。
+这关闭了 `CAP-GAP-006` 中“archive aggressive 100000 精确边界”子项。
+ZIP deflate/ZipCrypto/CRC/压缩流畸形已有
+[`archive-adversarial-behavior.md`](archive-adversarial-behavior.md)；该 gap
+仍因其他算法/格式、系统化畸形、真实资源耗尽和跨平台行为保持开放。
 
 机器报告：
 [`archive-iteration-boundary-engine-qt5.json`](data/archive-iteration-boundary-engine-qt5.json)。

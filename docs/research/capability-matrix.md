@@ -154,7 +154,10 @@ adapter，见
 [`generic-archive-dispatch-reachability.md`](generic-archive-dispatch-reachability.md)。
 100000 精确记录边界已由
 [`archive-iteration-boundary.md`](archive-iteration-boundary.md) 固定；
-压力/畸形语料仍缺，因此本组只标记
+ZIP deflate/ZipCrypto、1 MiB/843.58:1 和首轮 CRC/压缩流/offset/method
+畸形已由
+[`archive-adversarial-behavior.md`](archive-adversarial-behavior.md) 固定；
+其他格式/算法及系统化压力/畸形语料仍缺，因此本组只标记
 `observed_with_gaps`。Image 组除既有
 JPEG/PNG 外，专用 engine harness 已观察 GIF/BMP/TIFF/ICO/CUR/ICC/WebP 的
 Binary fallback，以及强制 `FT_IMAGE` 后 generic Image adapter 为 null 的错误，
@@ -193,7 +196,9 @@ hideunknown 的可观察增量。完整输入哈希和输出见
   三个合法 type directory，以满足 PE parser 每目录不超过 1000 项的前置限制。
   archive aggressive 已精确观察第 100000 条可达、第 100001 条不可达，见
   [`archive-iteration-boundary.md`](archive-iteration-boundary.md)；
-  压缩/加密/畸形及跨平台仍归 `CAP-GAP-006`。
+  ZIP 压缩/加密/畸形首轮矩阵见
+  [`archive-adversarial-behavior.md`](archive-adversarial-behavior.md)；
+  其他格式/算法、系统化畸形及跨平台仍归 `CAP-GAP-006`。
 - `CAP-NEST-005`：overlay 始终作为 subdevice 扫描；非 aggressive resource 仅在探测为
   scanable 类型时扫描。
 - `CAP-NEST-006`：项目生成的 RT_MANIFEST 未分类 payload 证明完整链：recursive 单独跳过，
@@ -211,10 +216,12 @@ hideunknown 的可观察增量。完整输入哈希和输出见
   受限 Linux Qt5 oracle 的单成员 ZIP 到达 16 层，固定两层累计展开量达到
   2,097,266 bytes，第一次 progress callback 取消保留 1 条 root partial record。
   状态为 Observed with gaps；7Z/RAR4/CAB/ISO9660 无压缩正例已经固定，但
-  高压缩比、真实资源耗尽、格式错误边界和跨平台仍待验证。详见
+  ZIP 1 MiB/843.58:1 和首轮格式错误边界已固定；更高展开量、其他格式/算法、
+  真实资源耗尽和跨平台仍待验证。详见
   [`archive-limit-behavior.md`](archive-limit-behavior.md) 与
   [`archive-format-behavior.md`](archive-format-behavior.md)、
-  [`archive-iteration-boundary.md`](archive-iteration-boundary.md)。
+  [`archive-iteration-boundary.md`](archive-iteration-boundary.md)、
+  [`archive-adversarial-behavior.md`](archive-adversarial-behavior.md)。
 
 ## 结果模型
 
@@ -254,9 +261,10 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
 - formatter 转义与嵌套排序已闭合；跨平台编码差异仍归入路径/平台缺口。
 - deep 与 aggressive resource 过滤/计数边界已由
   [`scan-option-boundaries.md`](scan-option-boundaries.md) 闭合。
-- archive aggressive 100000 精确边界已固定；高压缩比/畸形、最大深度和总解压
-  资源限制仍待扩展；7Z/RAR4/CAB/ISO9660 无压缩正例、NPM 自动/强制分派
-  quirk 以及 generic Archive singleton/verbose 重检测已固定。
+- archive aggressive 100000、ZIP 1 MiB/843.58:1 与首轮压缩/加密/畸形边界
+  已固定；其他格式/算法、系统化畸形、最大深度和总解压资源限制仍待扩展；
+  7Z/RAR4/CAB/ISO9660 无压缩正例、NPM 自动/强制分派 quirk 以及 generic
+  Archive singleton/verbose 重检测已固定。
 - Qt 5 与 Qt 6 的首轮基础/安全语料/不可读输入差分已完成；仍需扩展到完整
   output/scan/special/path/database/nested 矩阵及其他 Qt 6 minor。
 - Linux、Windows、macOS 路径与编码差异。

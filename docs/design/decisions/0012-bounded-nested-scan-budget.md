@@ -9,6 +9,11 @@ Last updated: 2026-07-28
 累计展开字节计数。固定 Linux Qt5 oracle 已观察到单成员 ZIP 到达 16 层、固定两层
 累计展开 2,097,266 bytes，并证明取消返回部分 record。详见
 [`archive-limit-behavior.md`](../../research/archive-limit-behavior.md)。
+aggressive 的精确记录边界为第 100000 条可达、第 100001 条不可达；ZIP
+1 MiB/843.58:1、ZipCrypto 无密码和首轮畸形矩阵也已固定，见
+[`archive-iteration-boundary.md`](../../research/archive-iteration-boundary.md)
+与
+[`archive-adversarial-behavior.md`](../../research/archive-adversarial-behavior.md)。
 
 复制上游的直接递归和完整成员分配，会把终止条件交给 native stack、allocator、
 decompressor 或宿主进程。二进制输入不可信，因此“没有上游上限”不能成为 Rust
@@ -39,12 +44,15 @@ Proposed：
    经评审修改，但实现不得以 `0`、`u64::MAX` 或“未配置”表示无界。
 5. legacy normal 保留上游“每 container 最多 21 个 scanable members”的语义，
    同时受 modern 全局 hard budget 限制。legacy aggressive 是显式高资源 opt-in：
-   每 container 最多 100,001 个 scanable members，但全 scan 仍须有有限、调用方
-   可见的 global budget；默认不得静默升级到 aggressive ceiling。
+   每 container 只迭代前 100,000 条 archive records；其中成功解包的成员全部
+   扫描。源码的 `nLimit=100000` 因 `i < 100000` 先到而不可达，不得另行实现成
+   第 100,001 个 scanable-member allowance。全 scan 仍须有有限、调用方可见的
+   global budget；默认不得静默升级到 aggressive ceiling。
 6. 为差分测试可提供 `LegacyHighResource` profile，但 hard ceilings 仍有限：depth
    64、total entries 100,001、single object 512 MiB、total expanded 4 GiB、
    total source read 8 GiB、deadline 120 s。它需要显式构造，不是 CLI、C ABI 或
-   library 默认。
+   library 默认。`total entries 100,001` 是全 scan budget，不改变单 container
+   只迭代前 100,000 条的 legacy policy。
 7. 在 exact upstream 行为超出 hard ceiling 时，结果分类为 `SafetyDeviation`，
    绑定 upstream/case/limit/ADR 0012 的精确 waiver；normalizer 不得隐藏差异。
 8. 到达确定性预算边界使用 `Completion::Limited` 并保留已完成的稳定前缀；外部
@@ -90,6 +98,10 @@ subprocess。进程隔离可作为服务部署的第二层防线，不能替代 
 - [`archive-limit-behavior.md`](../../research/archive-limit-behavior.md)
 - [`archive-limit-engine-qt5.json`](../../research/data/archive-limit-engine-qt5.json)
 - [`archive-limit-corpus.json`](../../research/data/archive-limit-corpus.json)
+- [`archive-iteration-boundary.md`](../../research/archive-iteration-boundary.md)
+- [`archive-iteration-boundary-engine-qt5.json`](../../research/data/archive-iteration-boundary-engine-qt5.json)
+- [`archive-adversarial-behavior.md`](../../research/archive-adversarial-behavior.md)
+- [`archive-adversarial-engine-qt5.json`](../../research/data/archive-adversarial-engine-qt5.json)
 - [`upstream-performance-baseline.md`](../../research/upstream-performance-baseline.md)
 - `XScanEngine@dfe4a419.../xscanengine.cpp::scanProcess`
 - [`architecture.md` §11](../architecture.md#11-嵌套扫描-work-queue)
@@ -102,11 +114,13 @@ subprocess。进程隔离可作为服务部署的第二层防线，不能替代 
 - 每个 archive backend 通过相同的 cumulative reserve API，不能先分配后记账；
 - depth、entry、single object、total expanded、queue、node 和 deadline 触发点有
   system tests，结果包含稳定 `LimitReached` 字段；
-- generated high-ratio、declared-size mismatch、deep chain 和 malformed archive
-  在 sanitizer/fuzz 下无 panic、stack overflow、OOM 或 hang；
+- 已固定的 1 MiB/843.58:1 high-ratio、CRC/deflate/offset/method 畸形上游
+  corpus，以及后续 declared-size mismatch、deep chain 和扩展 malformed archive
+  在 Rust sanitizer/fuzz 下无 panic、stack overflow、OOM 或 hang；
 - modern default 与 `LegacyHighResource` 的 CPU/peak-memory benchmark 在目标平台
   完成，评审确认或调整具体数值；
-- legacy normal 的 21 boundary 和 aggressive 的 100,001 boundary 在预算允许时
-  与固定 upstream 差分一致；
+- legacy normal 的第 21 个 scanable member 可达/第 22 个不可达，以及
+  aggressive 的第 100000 条 archive record 可达/第 100001 条不可达，在预算
+  允许时与固定 upstream 差分一致；
 - 超出 hard ceiling 的差异有 ADR 0004 machine-readable SafetyDeviation waiver；
 - Rust、CLI、JSON、C、Go 和 Python 看到相同 completion/usage/limit contract。

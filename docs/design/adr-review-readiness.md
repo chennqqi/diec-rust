@@ -28,7 +28,7 @@ ADR 0007 已被 ADR 0011 Superseded，不属于当前待接受集合。机器清
 | 0009 | modern cancel 不返回 partial detections | production Rust/JSON/C mapping、race/recovery、legacy waiver |
 | 0010 | include cycle 提前有界失败 | production graph/stack、边界/fuzz、SafetyDeviation |
 | 0011 | 默认 Rust 1.97.1、MSRV 1.88 | Phase 1 default/MSRV CI jobs |
-| 0012 | 全 scan 嵌套预算有限，legacy high-resource 仍有 hard ceiling | production budget、全 limit 边界/畸形 archive、跨平台资源与 waiver |
+| 0012 | 全 scan 嵌套预算有限，legacy high-resource 仍有 hard ceiling | production budget、Rust 全 limit 边界与固定 high-ratio/畸形 corpus 的 sanitizer/fuzz replay、跨平台资源与 waiver |
 | 0013 | short read/I/O/seek/range fail closed，不复制未初始化尾部 | production ByteSource、跨 adapter typed error、fuzz/sanitizer 与 waiver |
 
 ## 评审约束

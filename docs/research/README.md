@@ -16,6 +16,9 @@ Phase 0 计划形成：
 - [`archive-iteration-boundary.md`](archive-iteration-boundary.md)：aggressive
   archive 第 99999/100000/100001 条哨兵、源码循环顺序和受控分配失败证据
   （In Review）。
+- [`archive-adversarial-behavior.md`](archive-adversarial-behavior.md)：ZIP
+  deflate/ZipCrypto、高压缩比、CRC/压缩流/offset/method 畸形、local-header
+  fallback 与 mixed-member filter（In Review）。
 - [`archive-format-behavior.md`](archive-format-behavior.md)：
   7Z/RAR4/CAB/ISO9660 无压缩正向解包、发布 CLI 默认对照与
   7Z/CAB `Binary` 顶层 quirk（Draft）。
@@ -170,6 +173,10 @@ Phase 0 计划形成：
 - [`data/archive-iteration-boundary-engine-qt5.json`](data/archive-iteration-boundary-engine-qt5.json)：
   aggressive 第 100000 条可达、第 100001 条不可达的固定源码、镜像、原始输出
   和资源报告。
+- [`data/archive-adversarial-corpus.json`](data/archive-adversarial-corpus.json)：
+  12 个项目生成 ZIP 压缩、加密、畸形和 filter 控制的 hash manifest。
+- [`data/archive-adversarial-engine-qt5.json`](data/archive-adversarial-engine-qt5.json)：
+  48 次 release/harness default/archive/aggressive 原始输出、源码契约和结构摘要。
 - [`data/archive-format-corpus.json`](data/archive-format-corpus.json)：
   项目生成的 7Z/RAR4/CAB/ISO9660 单 PDF 无压缩 fixture 清单。
 - [`data/archive-format-engine-qt5.json`](data/archive-format-engine-qt5.json)：

@@ -1,0 +1,128 @@
+{
+  "generator": "tools/corpus/generate_archive_adversarial_fixture.py",
+  "license": "project-generated; no third-party sample bytes",
+  "password": "diec-rust",
+  "samples": [
+    {
+      "archive_format": "ZIP",
+      "category": "control",
+      "member_count": 1,
+      "name": "stored-valid.zip",
+      "purpose": "stored PDF positive control",
+      "sha256": "7e9a30711d2e7bd61e730015a8aaa7d0a87f8aa81d8c2cddf479b929030c72be",
+      "size": 451,
+      "zipfile_readable": true
+    },
+    {
+      "archive_format": "ZIP",
+      "category": "compressed",
+      "member_count": 1,
+      "name": "deflate-valid.zip",
+      "purpose": "deflate PDF positive control",
+      "sha256": "2fa910f1e4345cb02a36e624b5b5b9a25260b2b4d7a4212378c396256d7c70f4",
+      "size": 317,
+      "zipfile_readable": true
+    },
+    {
+      "archive_format": "ZIP",
+      "category": "high_ratio",
+      "member_count": 1,
+      "name": "deflate-high-ratio.zip",
+      "purpose": "1 MiB PDF-prefix payload compressed with deflate",
+      "sha256": "43dde1798f849816a5a47c55d1e2127cce74944109f560f6914b0f5c0dc9e93c",
+      "size": 1363,
+      "zipfile_readable": true
+    },
+    {
+      "archive_format": "ZIP",
+      "category": "encrypted",
+      "member_count": 1,
+      "name": "zipcrypto-stored.zip",
+      "purpose": "traditional ZipCrypto member without scanner password API",
+      "sha256": "46fc9935ce4aff8940dd5e79025d361727d002822e5769f2857869851bed90fe",
+      "size": 463,
+      "zipfile_readable": true
+    },
+    {
+      "archive_format": "ZIP",
+      "category": "malformed_crc",
+      "member_count": 1,
+      "name": "stored-bad-crc.zip",
+      "purpose": "stored member with mismatched CRC",
+      "sha256": "bb652f417eac604c0820e9dc9763b9dfd0dc9c28ac7eb9d60b48a4ddadc6f119",
+      "size": 451,
+      "zipfile_readable": false
+    },
+    {
+      "archive_format": "ZIP",
+      "category": "malformed_compressed_data",
+      "member_count": 1,
+      "name": "deflate-corrupt.zip",
+      "purpose": "deflate member with one corrupted compressed byte",
+      "sha256": "66bf1aba131439924527d7b6fad433b21beba7a09a9125d2fe1bceec58202925",
+      "size": 317,
+      "zipfile_readable": false
+    },
+    {
+      "archive_format": "ZIP",
+      "category": "malformed_truncation",
+      "member_count": 1,
+      "name": "deflate-truncated.zip",
+      "purpose": "truncated deflate stream with original declared size",
+      "sha256": "8216f27a78a40cd0adb64730e6a643e7f50cdb40a385795368f9355b907eb8bb",
+      "size": 218,
+      "zipfile_readable": false
+    },
+    {
+      "archive_format": "ZIP",
+      "category": "local_header_fallback",
+      "member_count": 1,
+      "name": "stored-local-only.zip",
+      "purpose": "valid local record without central directory or EOCD",
+      "sha256": "395eaf6b34aab49b687809758cd975010b91e4d57b3e983e84b1a3550532b997",
+      "size": 372,
+      "zipfile_readable": false
+    },
+    {
+      "archive_format": "ZIP",
+      "category": "malformed_offset",
+      "member_count": 1,
+      "name": "stored-invalid-local-offset.zip",
+      "purpose": "central record points outside the archive",
+      "sha256": "194dec4d06922a34cc3057056b847729d0284a299a744f5f1a2487d6d8f240cc",
+      "size": 451,
+      "zipfile_readable": false
+    },
+    {
+      "archive_format": "ZIP",
+      "category": "unsupported_method",
+      "member_count": 1,
+      "name": "unsupported-method-99.zip",
+      "purpose": "unknown ZIP method with CRC verification disabled",
+      "sha256": "9362e8a31c03f66eaa540570e8df46d259489f83f865fa298cc92e050f3f3abe",
+      "size": 451,
+      "zipfile_readable": false
+    },
+    {
+      "archive_format": "ZIP",
+      "category": "path_metadata",
+      "member_count": 1,
+      "name": "stored-traversal-name.zip",
+      "purpose": "stored PDF carrying parent-directory path metadata",
+      "sha256": "417b0c3045d47d5aa9fcea5109a8a51fe2d6970f39f4329eb2d0d1930556de85",
+      "size": 455,
+      "zipfile_readable": true
+    },
+    {
+      "archive_format": "ZIP",
+      "category": "mixed_members",
+      "member_count": 2,
+      "name": "mixed-members.zip",
+      "purpose": "scanable PDF followed by one-byte non-scanable member",
+      "sha256": "67964a1503e41feba273eeac43612bc56f63e5e98410c30d0750a6c14b0d46b8",
+      "size": 544,
+      "zipfile_readable": true
+    }
+  ],
+  "schema_version": 1
+}

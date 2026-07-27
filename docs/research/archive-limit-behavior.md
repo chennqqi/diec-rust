@@ -131,8 +131,11 @@ python tools\upstream\probe_archive_limits_harness.py `
 - 只验证 Linux x86_64 Qt5、ZIP store method、depth 16 和约 2 MiB 累计展开量。
 - 7Z/RAR4/CAB/ISO9660 的合法无压缩单成员正例已由
   [`archive-format-behavior.md`](archive-format-behavior.md) 固定；仍未验证
-  这些格式的压缩/加密/损坏边界、deflate 高压缩比、欺骗声明长度、循环
-  container、真正 OOM 或超过 30 秒后的引擎内部清理。
+  这些格式的压缩/加密/损坏边界。ZIP deflate、ZipCrypto 无密码、CRC/压缩流
+  畸形和 1 MiB/843.58:1 已由
+  [`archive-adversarial-behavior.md`](archive-adversarial-behavior.md) 固定；
+  更高展开量、欺骗声明长度、循环 container、真正 OOM 或超过 30 秒后的
+  引擎内部清理仍未验证。
 - Docker 外部 timeout 会终止进程，无法提供 cooperative partial result；因此
   partial/cancellation 使用 upstream 同线程 callback 单独验证。
 - `ru_maxrss` 包含 database load 形成的历史高水位，不可解释为单个 sample 的精确

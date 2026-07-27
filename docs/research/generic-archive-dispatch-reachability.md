@@ -20,6 +20,8 @@ Last updated: 2026-07-28
 回退。archive aggressive 的 100000 精确边界已由
 [`archive-iteration-boundary.md`](archive-iteration-boundary.md) 固定；
 本实验不验证压缩/加密/畸形输入或跨平台行为，这些仍归 `CAP-GAP-006`。
+ZIP 的首轮对应矩阵见
+[`archive-adversarial-behavior.md`](archive-adversarial-behavior.md)。
 
 ## 结论
 
@@ -154,6 +156,8 @@ generic Archive 顶层分派及其 verbose 规则入口已固定，但
 
 - archive aggressive 的 100000 精确边界已由
   [`archive-iteration-boundary.md`](archive-iteration-boundary.md) 闭合；
-- 高压缩比、加密、solid/multi-volume 和畸形 archive；
+- ZIP 1 MiB/843.58:1、ZipCrypto 无密码和首轮畸形已由
+  [`archive-adversarial-behavior.md`](archive-adversarial-behavior.md)
+  固定；其他格式/算法、更高展开量、solid/multi-volume 和系统化畸形仍缺；
 - 最大深度、总展开量的安全预算与更多格式交互；
 - Linux Qt6、Windows、macOS 对应行为。

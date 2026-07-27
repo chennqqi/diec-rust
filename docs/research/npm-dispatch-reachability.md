@@ -18,7 +18,9 @@ Last updated: 2026-07-28
 `XNPM` 类和 NPM 规则。通用 Archive 已由独立实验固定，archive aggressive
 的 100000 精确边界已由
 [`archive-iteration-boundary.md`](archive-iteration-boundary.md) 固定；
-压缩/加密/畸形语料和跨平台行为仍归 `CAP-GAP-006`。
+ZIP 压缩/加密/畸形首轮语料见
+[`archive-adversarial-behavior.md`](archive-adversarial-behavior.md)；
+其他格式/算法、系统化畸形和跨平台行为仍归 `CAP-GAP-006`。
 
 ## 结论
 
@@ -151,5 +153,6 @@ python tools/upstream/probe_npm_dispatch_harness.py \
   固定；
 - archive aggressive 的 100000 记录/迭代边界已由
   [`archive-iteration-boundary.md`](archive-iteration-boundary.md) 闭合；
-- 压缩、加密、高压缩比和畸形 archive；
+- ZIP deflate/ZipCrypto、1 MiB/843.58:1 和首轮畸形已固定；其他格式/算法、
+  更高展开量和系统化畸形 archive；
 - Linux Qt6、Windows、macOS 的对应行为。
