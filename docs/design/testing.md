@@ -20,6 +20,7 @@ Last updated: 2026-07-27
 - [`behavior-baseline.md`](../research/behavior-baseline.md)：
   生成语料、原始输出哈希和扫描矩阵；
 - [`cli-path-behavior.md`](../research/cli-path-behavior.md)、
+  [`special-path-behavior.md`](../research/special-path-behavior.md)、
   [`cli-special-modes.md`](../research/cli-special-modes.md) 与
   [`database-error-behavior.md`](../research/database-error-behavior.md)：
   CLI、特殊模式和失败行为；
@@ -880,7 +881,7 @@ tested、exact、semantic、waived 和 unsupported 数量。
 
 - Windows/macOS upstream oracle 尚未固定，不能声称跨平台 exact。
 - capability coverage report 已覆盖全部 68 行和 272 个平台 cell 的分类；当前
-  Linux Qt5 source-only 已清零、21 个 corpus-gap 行及三个缺失平台仍不足以
+  Linux Qt5 source-only 已清零、8 个 corpus-gap 行及三个缺失平台仍不足以
   满足 capability matrix；十项的 fixture/harness/assertion 闭集见
   [`source-only-closure.json`](../research/data/source-only-closure.json)。
 - ADR 0006 已提议 rquickjs/QuickJS-NG，但 acceptance conditions 和全库

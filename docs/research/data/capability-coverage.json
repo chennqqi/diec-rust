@@ -17,7 +17,7 @@
         "windows-x86_64-qt5",
         "macos-x86_64-qt5"
       ],
-      "scope": "Unicode and special filenames plus path enumeration"
+      "scope": "non-UTF-8, symlink/permission/depth, and cross-platform path behavior"
     },
     {
       "capability_ids": [
@@ -176,7 +176,14 @@
       "paths": [
         "docs/research/cli-path-behavior.md",
         "docs/research/data/path-corpus.json",
-        "tools/tests/test_generate_path_corpus.py"
+        "tools/tests/test_generate_path_corpus.py",
+        "docs/research/special-path-behavior.md",
+        "docs/research/data/special-path-fixture.json",
+        "docs/research/data/special-path-engine-qt5.json",
+        "tools/corpus/generate_special_path_fixture.py",
+        "tools/upstream/probe_special_path_behavior.py",
+        "tools/tests/test_generate_special_path_fixture.py",
+        "tools/tests/test_probe_special_path_behavior.py"
       ]
     },
     "cli_scan_baseline": {
@@ -1487,7 +1494,7 @@
   "schema_version": 1,
   "source": {
     "path": "docs/research/data/capability-traceability.json",
-    "sha256": "a13b41a147d06e6201c94aedc8bc9a5b9d13acad57745a27ee142756d7359f6d"
+    "sha256": "0e0588d50fd8a4221a674078784d1ce44849932fc81872eed985d1a63ae4c0a4"
   },
   "status_definitions": {
     "platform_missing": "no complete capability baseline is admitted for this platform",

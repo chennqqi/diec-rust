@@ -82,6 +82,7 @@ case ID 和一个非根 semantic JSON Pointer。日期使用 ISO `YYYY-MM-DD`，
 - [`testing.md`](../testing.md)
 - [`api.md`](../api.md)
 - [`cli-path-behavior.md`](../../research/cli-path-behavior.md)
+- [`special-path-behavior.md`](../../research/special-path-behavior.md)
 - [`database-error-behavior.md`](../../research/database-error-behavior.md)
 - [`nested-scan-behavior.md`](../../research/nested-scan-behavior.md)
 - [`difference-waiver-registry-v1.schema.json`](../schemas/difference-waiver-registry-v1.schema.json)

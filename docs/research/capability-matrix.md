@@ -86,7 +86,9 @@ nested XML 非良构、CSV/TSV 不引用字段且会扁平化嵌套 leaf，是�
 
 多目标 filename prefix、目录顺序、重复 target、部分失败和无效 JSON/XML 聚合
 行为见
-[`cli-path-behavior.md`](cli-path-behavior.md)。
+[`cli-path-behavior.md`](cli-path-behavior.md)。Linux Qt5 的 NFC/NFD、中文、
+emoji、空白/控制字符、hidden、leading-dash 与精确目录顺序见
+[`special-path-behavior.md`](special-path-behavior.md)。
 
 verbose/messages/profiling 的 channel 与结构化结果关系，以及两个未完成测试入口的
 精确 no-op、stdout 和退出码见
@@ -257,7 +259,8 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
   截断、预取消、写失败/恢复、非特权权限失败和 8 个同输入并发 writer 已
   Observed。超大 count/text 等安全预算仍作为 Rust 实现测试门禁，不把上游
   OOM/调度结果采纳为 compatibility golden。
-- Unicode/特殊 filename 及 Windows/macOS 的路径和枚举差异。
+- Linux Qt5 UTF-8/特殊 filename 首轮矩阵已固定；仍缺非 UTF-8、
+  symlink/权限/深度/locale，以及 Windows/macOS 的路径和枚举差异。
 - formatter 转义与嵌套排序已闭合；跨平台编码差异仍归入路径/平台缺口。
 - deep 与 aggressive resource 过滤/计数边界已由
   [`scan-option-boundaries.md`](scan-option-boundaries.md) 闭合。
@@ -278,9 +281,9 @@ validator 要求本文 68 个 `CAP-*` 与 manifest 完全相等，并拒绝缺�
 不能提升为 Rust 已实现或跨平台兼容。
 
 [`capability-coverage-report.md`](capability-coverage-report.md) 进一步把该清单
-投影为 68 行 × 4 平台的闭集：Linux Qt5 为 47 observed、20 observed with
-gaps、0 source-only、1 source-only with gaps；Linux Qt6、Windows 和 macOS
-各有 68 个 platform-missing。全部行已分类不等于覆盖完成。
+投影为 68 行 × 4 平台的闭集：Linux Qt5 为 64 observed、4 observed with
+corpus gaps、0 source-only；Linux Qt6、Windows 和 macOS 各有 68 个
+platform-missing。全部行已分类不等于覆盖完成。
 
 - [CLI main](https://github.com/horsicq/DIE-engine/blob/74eaf505c250ab47e709024e9dc41657cd8f2254/src/console/main_console.cpp)
 - [XOptions option table](https://github.com/horsicq/XOptions/blob/810d78d0654f45d39bf07bcda5dc92ce287a4aeb/xoptions.cpp)

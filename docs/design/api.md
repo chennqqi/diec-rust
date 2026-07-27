@@ -16,6 +16,8 @@ Last updated: 2026-07-27
 - [`c-abi.md`](c-abi.md)：C ownership、status、线程和 static library；
 - [`behavior-baseline.md`](../research/behavior-baseline.md)：普通扫描和输出基线；
 - [`cli-path-behavior.md`](../research/cli-path-behavior.md)：多目标、目录和 partial exit；
+- [`special-path-behavior.md`](../research/special-path-behavior.md)：Linux
+  UTF-8/特殊路径、无 normalization 与 native path 边界；
 - [`cli-special-modes.md`](../research/cli-special-modes.md)：entropy/info/struct 分派；
 - [`database-error-behavior.md`](../research/database-error-behavior.md)：数据库和 I/O 错误；
 - [`nested-scan-behavior.md`](../research/nested-scan-behavior.md)：嵌套 file-part 及顺序；

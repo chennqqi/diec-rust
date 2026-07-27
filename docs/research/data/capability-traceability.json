@@ -35,7 +35,14 @@
       "paths": [
         "docs/research/cli-path-behavior.md",
         "docs/research/data/path-corpus.json",
-        "tools/tests/test_generate_path_corpus.py"
+        "tools/tests/test_generate_path_corpus.py",
+        "docs/research/special-path-behavior.md",
+        "docs/research/data/special-path-fixture.json",
+        "docs/research/data/special-path-engine-qt5.json",
+        "tools/corpus/generate_special_path_fixture.py",
+        "tools/upstream/probe_special_path_behavior.py",
+        "tools/tests/test_generate_special_path_fixture.py",
+        "tools/tests/test_probe_special_path_behavior.py"
       ]
     },
     "engine_contract": {
@@ -389,7 +396,7 @@
   "coverage_gaps": [
     {
       "id": "CAP-GAP-003",
-      "scope": "Unicode and special filenames plus path enumeration",
+      "scope": "non-UTF-8, symlink/permission/depth, and cross-platform path behavior",
       "platforms": [
         "linux-x86_64-qt5",
         "windows-x86_64-qt5",

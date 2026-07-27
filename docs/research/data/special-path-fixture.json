@@ -1,0 +1,125 @@
+{
+  "archive": {
+    "format": "ustar",
+    "name": "special-path-fixture.tar",
+    "sha256": "4745de26864b87ef7380cdc6e695a468005f470fa950c9ee763b3ef6817d68a2",
+    "size": 19968
+  },
+  "directories": [
+    "paths/",
+    "paths/special/",
+    "paths/目录 空格/"
+  ],
+  "files": [
+    {
+      "path": "paths/special/00-ascii.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331,
+      "source": "minimal.pdf"
+    },
+    {
+      "path": "paths/special/A-case.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331,
+      "source": "minimal.pdf"
+    },
+    {
+      "path": "paths/special/a-case.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331,
+      "source": "minimal.pdf"
+    },
+    {
+      "path": "paths/special/é-nfc.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331,
+      "source": "minimal.pdf"
+    },
+    {
+      "path": "paths/special/é-nfd.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331,
+      "source": "minimal.pdf"
+    },
+    {
+      "path": "paths/special/中文.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331,
+      "source": "minimal.pdf"
+    },
+    {
+      "path": "paths/special/emoji-😀.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331,
+      "source": "minimal.pdf"
+    },
+    {
+      "path": "paths/special/space name.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331,
+      "source": "minimal.pdf"
+    },
+    {
+      "path": "paths/special/ leading-space.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331,
+      "source": "minimal.pdf"
+    },
+    {
+      "path": "paths/special/trailing-space.pdf ",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331,
+      "source": "minimal.pdf"
+    },
+    {
+      "path": "paths/special/tab\tname.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331,
+      "source": "minimal.pdf"
+    },
+    {
+      "path": "paths/special/line\nbreak.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331,
+      "source": "minimal.pdf"
+    },
+    {
+      "path": "paths/special/colon:name.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331,
+      "source": "minimal.pdf"
+    },
+    {
+      "path": "paths/special/backslash\\name.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331,
+      "source": "minimal.pdf"
+    },
+    {
+      "path": "paths/special/--leading-dash.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331,
+      "source": "minimal.pdf"
+    },
+    {
+      "path": "paths/special/.hidden.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331,
+      "source": "minimal.pdf"
+    },
+    {
+      "path": "paths/目录 空格/子 文件.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331,
+      "source": "minimal.pdf"
+    }
+  ],
+  "generator": "tools/corpus/generate_special_path_fixture.py",
+  "license": "project-generated paths; baseline corpus bytes only",
+  "payload": {
+    "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+    "size": 331,
+    "source": "minimal.pdf"
+  },
+  "schema_version": 1
+}

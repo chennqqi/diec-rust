@@ -75,6 +75,7 @@ version 判断语义。
 ## Evidence
 
 - [`cli-path-behavior.md`](../../research/cli-path-behavior.md)
+- [`special-path-behavior.md`](../../research/special-path-behavior.md)
 - [`cli-special-modes.md`](../../research/cli-special-modes.md)
 - [`database-error-behavior.md`](../../research/database-error-behavior.md)
 - [`behavior-baseline.md`](../../research/behavior-baseline.md)

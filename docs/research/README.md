@@ -98,6 +98,8 @@ Phase 0 计划形成：
 - [`scan-option-boundaries.md`](scan-option-boundaries.md)：固定 deep 实际增量、aggressive resource gate、默认 21/aggressive 2001 精确计数及 PE 每目录 1000 项 parser 限制；闭合 `CAP-GAP-005`（Draft）。
 - [`cli-special-modes.md`](cli-special-modes.md)：entropy/info/struct 的 schema、优先级、临界熵、层级 filter、格式方法和多目标行为；闭合 `CAP-GAP-001`（Draft）。
 - [`cli-path-behavior.md`](cli-path-behavior.md)：多目标、目录递归、输出聚合和错误顺序（Draft）。
+- [`special-path-behavior.md`](special-path-behavior.md)：固定 Linux Qt5 的
+  NFC/NFD、中文、emoji、控制字符、hidden、前导短横线和目录排序（In Review）。
 - [`cli-option-behavior.md`](cli-option-behavior.md)：verbose/messages/profiling channel 与 test/create test 遗留入口行为（Draft）。
 - [`database-error-behavior.md`](database-error-behavior.md)：数据库缺失/损坏、规则错误和不可读输入（Draft）。
 - [`database-archive-cache.md`](database-archive-cache.md)：ZIP 规则数据库边界、发布 CLI cache 可达性，以及 engine cache stale/corrupt/cancel 行为（Draft）。
@@ -159,6 +161,10 @@ Phase 0 计划形成：
 - [`data/signature-path-engine-qt5.json`](data/signature-path-engine-qt5.json)：
   private comparator 的 exact/empty/missing/case/`..`/basename Qt5 运行时矩阵。
 - [`data/path-corpus.json`](data/path-corpus.json)：由基线字节组成的确定性嵌套目录树。
+- [`data/special-path-fixture.json`](data/special-path-fixture.json)：确定性
+  USTAR 特殊路径语料清单，不提交生成出的 TAR。
+- [`data/special-path-engine-qt5.json`](data/special-path-engine-qt5.json)：
+  18-case 双 Qt5 特殊路径 Oracle 的完整原始 streams、身份和冻结排序。
 - [`data/database-fixture.json`](data/database-fixture.json)：项目生成的数据库成功/故障 fixture。
 - [`data/database-archive-linux-qt5.json`](data/database-archive-linux-qt5.json)：两套固定 Qt5 oracle 的 17-case ZIP 数据库矩阵及两侧原始 stream。
 - [`data/database-cache-cli.json`](data/database-cache-cli.json)：发布 CLI cache-disabled 源码身份、删除副作用与 engine cache header 摘要。
