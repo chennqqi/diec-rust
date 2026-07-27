@@ -1,0 +1,518 @@
+#!/usr/bin/env python3
+"""Probe stored RAR4, CAB, and ISO9660 members with the pinned harness."""
+
+from __future__ import annotations
+
+import argparse
+import base64
+import hashlib
+import json
+import pathlib
+import subprocess
+import zlib
+from typing import Any
+
+
+UPSTREAM_COMMIT = "74eaf505c250ab47e709024e9dc41657cd8f2254"
+FIXTURE_GENERATOR = "tools/corpus/generate_archive_format_fixture.py"
+IMAGE = "diec-rust/upstream-archive-harness:74eaf505"
+HARNESS_BINARY = "/opt/die-build/src/console/diec-archive-harness"
+RELEASE_BINARY = "/opt/die-build/src/console/diec"
+DATABASE_ARGS = (
+    "--database",
+    "/opt/die-source/db",
+    "--extradatabase",
+    "/opt/die-source/db_extra",
+    "--customdatabase",
+    "/opt/die-source/db_custom",
+)
+SOURCE_PATHS = {
+    "engine": "/opt/die-source/XScanEngine/xscanengine.cpp",
+    "rar": "/opt/die-source/XArchive/xrar.cpp",
+    "cab": "/opt/die-source/XArchive/xcab.cpp",
+    "iso9660": "/opt/die-source/XArchive/xiso9660.cpp",
+}
+SOURCE_PATTERNS = {
+    "engine": (
+        "stFT.contains(XBinary::FT_ZIP) || "
+        "stFT.contains(XBinary::FT_7Z) || "
+        "stFT.contains(XBinary::FT_RAR) || "
+        "stFT.contains(XBinary::FT_CAB)",
+    ),
+    "rar": "bool XRar::initUnpack(",
+    "cab": "bool XCab::initUnpack(",
+    "iso9660": "bool XISO9660::initUnpack(",
+}
+EXPECTED_ROOTS = {
+    "pdf-member.rar": {
+        "filetype": "RAR",
+        "root_names": ["Unknown"],
+    },
+    "pdf-member.cab": {
+        "filetype": "Binary",
+        "root_names": ["CAB"],
+    },
+    "pdf-member.iso": {
+        "filetype": "ISO 9660",
+        "root_names": ["Unknown"],
+    },
+}
+
+
+class ProbeError(ValueError):
+    """The archive-format fixture, oracle, or report is invalid."""
+
+
+def sha256(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
+def reject_duplicate_keys(
+    pairs: list[tuple[str, Any]],
+) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ProbeError(f"duplicate JSON key: {key}")
+        result[key] = value
+    return result
+
+
+def strict_json(data: bytes) -> Any:
+    return json.loads(
+        data.decode("utf-8"),
+        object_pairs_hook=reject_duplicate_keys,
+        parse_constant=lambda value: (_ for _ in ()).throw(
+            ProbeError(f"non-finite JSON constant: {value}")
+        ),
+    )
+
+
+def load_fixture(
+    fixture_dir: pathlib.Path,
+    manifest_path: pathlib.Path,
+) -> tuple[dict[str, Any], str]:
+    manifest_bytes = manifest_path.read_bytes()
+    manifest = strict_json(manifest_bytes)
+    if not isinstance(manifest, dict) or set(manifest) != {
+        "schema_version",
+        "generator",
+        "license",
+        "samples",
+    }:
+        raise ProbeError("fixture manifest fields changed")
+    if manifest["schema_version"] != 1:
+        raise ProbeError("unsupported fixture schema")
+    if manifest["generator"] != FIXTURE_GENERATOR:
+        raise ProbeError("unexpected fixture generator")
+    if len(manifest["samples"]) != 3:
+        raise ProbeError("fixture sample count changed")
+
+    declared = set()
+    for sample in manifest["samples"]:
+        if set(sample) != {
+            "archive_format",
+            "expected_member_name",
+            "expected_payload_sha256",
+            "name",
+            "purpose",
+            "sha256",
+            "size",
+        }:
+            raise ProbeError("fixture sample fields changed")
+        name = sample["name"]
+        if pathlib.PurePosixPath(name).name != name or name in declared:
+            raise ProbeError(f"unsafe or duplicate fixture name: {name}")
+        path = fixture_dir / name
+        if path.is_symlink() or not path.is_file():
+            raise ProbeError(f"fixture file missing or symlinked: {name}")
+        data = path.read_bytes()
+        if len(data) != sample["size"] or sha256(data) != sample["sha256"]:
+            raise ProbeError(f"fixture identity mismatch: {name}")
+        declared.add(name)
+    actual = {
+        path.name
+        for path in fixture_dir.iterdir()
+        if path.is_file() and path.name != "manifest.json"
+    }
+    if actual != declared:
+        raise ProbeError("fixture file inventory mismatch")
+    return manifest, sha256(manifest_bytes)
+
+
+def inspect_image() -> dict[str, Any]:
+    process = subprocess.run(
+        ["docker", "image", "inspect", IMAGE],
+        check=True,
+        capture_output=True,
+    )
+    documents = strict_json(process.stdout)
+    if not isinstance(documents, list) or len(documents) != 1:
+        raise ProbeError("unexpected image inspection shape")
+    document = documents[0]
+    revision = document["Config"]["Labels"].get(
+        "org.opencontainers.image.revision",
+        "",
+    )
+    if revision != UPSTREAM_COMMIT:
+        raise ProbeError("archive harness revision changed")
+    return {
+        "id": document["Id"],
+        "revision": revision,
+        "repo_digests": sorted(document.get("RepoDigests") or []),
+    }
+
+
+def read_container_files(paths: tuple[str, ...]) -> dict[str, bytes]:
+    script = (
+        "import base64,json,pathlib;"
+        f"paths={paths!r};"
+        "print(json.dumps({p:base64.b64encode("
+        "pathlib.Path(p).read_bytes()).decode('ascii') for p in paths},"
+        "sort_keys=True))"
+    )
+    process = subprocess.run(
+        [
+            "docker",
+            "run",
+            "--rm",
+            "--network",
+            "none",
+            IMAGE,
+            "python3",
+            "-c",
+            script,
+        ],
+        check=True,
+        capture_output=True,
+    )
+    encoded = strict_json(process.stdout)
+    if set(encoded) != set(paths):
+        raise ProbeError("container file inventory changed")
+    return {
+        path: base64.b64decode(value, validate=True)
+        for path, value in encoded.items()
+    }
+
+
+def source_contract(files: dict[str, bytes]) -> dict[str, Any]:
+    result = {}
+    for name, path in SOURCE_PATHS.items():
+        data = files[path]
+        text = data.decode("utf-8")
+        count = text.count(SOURCE_PATTERNS[name])
+        if count < 1:
+            raise ProbeError(f"source pattern missing: {name}")
+        result[name] = {
+            "path": path,
+            "sha256": sha256(data),
+            "required_pattern": SOURCE_PATTERNS[name],
+            "required_pattern_count": count,
+        }
+    return result
+
+
+def run_binary(
+    *,
+    binary: str,
+    fixture_dir: pathlib.Path,
+    arguments: tuple[str, ...],
+) -> subprocess.CompletedProcess[bytes]:
+    return subprocess.run(
+        [
+            "docker",
+            "run",
+            "--rm",
+            "--network",
+            "none",
+            "--cpus",
+            "1",
+            "--memory",
+            "512m",
+            "--pids-limit",
+            "128",
+            "--read-only",
+            "--mount",
+            f"type=bind,src={fixture_dir},dst=/fixture,readonly",
+            IMAGE,
+            binary,
+            *arguments,
+        ],
+        capture_output=True,
+        timeout=60,
+        check=False,
+    )
+
+
+def walk_dicts(value: Any):
+    if isinstance(value, dict):
+        yield value
+        for child in value.values():
+            yield from walk_dicts(child)
+    elif isinstance(value, list):
+        for child in value:
+            yield from walk_dicts(child)
+
+
+def summarize(document: Any) -> dict[str, Any]:
+    if not isinstance(document, dict) or set(document) != {"detects"}:
+        raise ProbeError("unexpected scan JSON root")
+    detects = document["detects"]
+    if not isinstance(detects, list) or len(detects) != 1:
+        raise ProbeError("expected exactly one root detection")
+    root = detects[0]
+    streams = [
+        item
+        for item in walk_dicts(root)
+        if item.get("parentfilepart") == "Stream"
+    ]
+    root_names = [
+        value["name"]
+        for value in root.get("values", [])
+        if isinstance(value, dict) and "parentfilepart" not in value
+    ]
+    stream_names = [
+        value["name"]
+        for stream in streams
+        for value in stream.get("values", [])
+        if isinstance(value, dict) and "parentfilepart" not in value
+    ]
+    return {
+        "root_filetype": root.get("filetype"),
+        "root_detection_names": root_names,
+        "stream_count": len(streams),
+        "stream_filetypes": [
+            stream.get("filetype") for stream in streams
+        ],
+        "stream_detection_names": stream_names,
+        "stream_sizes": [stream.get("size") for stream in streams],
+    }
+
+
+def raw_ref(
+    data: bytes,
+    artifacts: dict[str, dict[str, Any]],
+) -> dict[str, Any]:
+    digest = sha256(data)
+    compressed = zlib.compress(data, 9)
+    artifact = {
+        "bytes": len(data),
+        "encoding": "zlib+base64",
+        "compressed_bytes": len(compressed),
+        "base64": base64.b64encode(compressed).decode("ascii"),
+    }
+    previous = artifacts.setdefault(digest, artifact)
+    if previous != artifact:
+        raise ProbeError("raw artifact digest collision")
+    return {
+        "artifact_sha256": digest,
+        "bytes": len(data),
+        "sha256": digest,
+    }
+
+
+def validate_case(
+    sample_name: str,
+    mode: str,
+    summary: dict[str, Any],
+) -> None:
+    expected = EXPECTED_ROOTS[sample_name]
+    if summary["root_filetype"] != expected["filetype"]:
+        raise ProbeError(f"root filetype changed: {sample_name}/{mode}")
+    if summary["root_detection_names"] != expected["root_names"]:
+        raise ProbeError(f"root detections changed: {sample_name}/{mode}")
+    if mode == "default":
+        if summary["stream_count"] != 0:
+            raise ProbeError(f"default unpacked archive: {sample_name}")
+    else:
+        if summary["stream_count"] != 1:
+            raise ProbeError(f"member count changed: {sample_name}/{mode}")
+        if summary["stream_filetypes"] != ["PDF"]:
+            raise ProbeError(f"member filetype changed: {sample_name}/{mode}")
+        if summary["stream_detection_names"] != [
+            "PDF",
+            "HeaderComment",
+        ]:
+            raise ProbeError(f"member detections changed: {sample_name}/{mode}")
+        if summary["stream_sizes"] != ["331"]:
+            raise ProbeError(f"member size changed: {sample_name}/{mode}")
+
+
+def build_report(
+    fixture_dir: pathlib.Path,
+    manifest_path: pathlib.Path,
+) -> dict[str, Any]:
+    manifest, manifest_sha256 = load_fixture(
+        fixture_dir,
+        manifest_path,
+    )
+    container_paths = (
+        HARNESS_BINARY,
+        RELEASE_BINARY,
+        *SOURCE_PATHS.values(),
+    )
+    container_files = read_container_files(container_paths)
+    artifacts: dict[str, dict[str, Any]] = {}
+    cases: dict[str, Any] = {}
+
+    for sample in manifest["samples"]:
+        sample_name = sample["name"]
+        sample_cases: dict[str, Any] = {}
+        raw_modes: dict[str, tuple[bytes, bytes]] = {}
+        for mode, flags in (
+            ("default", ()),
+            ("archive", ("--archive",)),
+            ("archive_aggressive", ("--archive", "--aggressive")),
+        ):
+            arguments = (*flags, f"/fixture/{sample_name}")
+            process = run_binary(
+                binary=HARNESS_BINARY,
+                fixture_dir=fixture_dir,
+                arguments=arguments,
+            )
+            if process.returncode != 0 or process.stderr:
+                raise ProbeError(
+                    f"harness failed: {sample_name}/{mode}"
+                )
+            summary = summarize(strict_json(process.stdout))
+            validate_case(sample_name, mode, summary)
+            raw_modes[mode] = (process.stdout, process.stderr)
+            sample_cases[mode] = {
+                "arguments": list(arguments),
+                "exit_code": process.returncode,
+                "stdout": raw_ref(process.stdout, artifacts),
+                "stderr": raw_ref(process.stderr, artifacts),
+                "summary": summary,
+            }
+
+        if raw_modes["archive"] != raw_modes["archive_aggressive"]:
+            raise ProbeError(
+                f"aggressive changed single-member output: {sample_name}"
+            )
+        release_arguments = (
+            "--json",
+            *DATABASE_ARGS,
+            f"/fixture/{sample_name}",
+        )
+        release = run_binary(
+            binary=RELEASE_BINARY,
+            fixture_dir=fixture_dir,
+            arguments=release_arguments,
+        )
+        if release.returncode != 0 or release.stderr:
+            raise ProbeError(f"release failed: {sample_name}")
+        if (release.stdout, release.stderr) != raw_modes["default"]:
+            raise ProbeError(f"harness default drift: {sample_name}")
+        sample_cases["release_default"] = {
+            "arguments": list(release_arguments),
+            "exit_code": release.returncode,
+            "stdout": raw_ref(release.stdout, artifacts),
+            "stderr": raw_ref(release.stderr, artifacts),
+            "summary": summarize(strict_json(release.stdout)),
+        }
+        cases[sample_name] = sample_cases
+
+    facts = {
+        "release_and_harness_default_outputs_are_equal": True,
+        "archive_option_is_required_for_unpacking": True,
+        "rar4_store_member_reaches_pdf_rules": True,
+        "cab_store_member_reaches_pdf_rules": True,
+        "iso9660_store_member_reaches_pdf_rules": True,
+        "cab_root_dispatches_as_binary_while_archive_adapter_runs": True,
+        "aggressive_does_not_change_single_member_results": True,
+    }
+    root = pathlib.Path(__file__).resolve().parents[2]
+    return {
+        "schema_version": 1,
+        "generator": "tools/upstream/probe_archive_format_harness.py",
+        "generator_sha256": sha256(pathlib.Path(__file__).read_bytes()),
+        "upstream_commit": UPSTREAM_COMMIT,
+        "platform": "linux-x86_64-qt5",
+        "image": {
+            **inspect_image(),
+            "name": IMAGE,
+        },
+        "binaries": {
+            "harness": {
+                "path": HARNESS_BINARY,
+                "sha256": sha256(container_files[HARNESS_BINARY]),
+                "size": len(container_files[HARNESS_BINARY]),
+            },
+            "release": {
+                "path": RELEASE_BINARY,
+                "sha256": sha256(container_files[RELEASE_BINARY]),
+                "size": len(container_files[RELEASE_BINARY]),
+            },
+        },
+        "local_sources": {
+            "fixture_generator": {
+                "path": FIXTURE_GENERATOR,
+                "sha256": sha256((root / FIXTURE_GENERATOR).read_bytes()),
+            },
+            "baseline_generator": {
+                "path": "tools/corpus/generate_baseline_corpus.py",
+                "sha256": sha256(
+                    (
+                        root
+                        / "tools"
+                        / "corpus"
+                        / "generate_baseline_corpus.py"
+                    ).read_bytes()
+                ),
+            },
+        },
+        "source_contract": source_contract(container_files),
+        "fixture_manifest": {
+            "path": "docs/research/data/archive-format-corpus.json",
+            "sha256": manifest_sha256,
+            "sample_count": len(manifest["samples"]),
+        },
+        "resource_limits": {
+            "network": "none",
+            "cpus": 1,
+            "memory_bytes": 512 * 1024 * 1024,
+            "pids": 128,
+            "timeout_seconds_per_execution": 60,
+            "fixture_mount": "read-only",
+            "container_root": "read-only",
+        },
+        "cases": cases,
+        "raw_artifacts": artifacts,
+        "facts": facts,
+        "passed": all(facts.values()),
+        "failures": [],
+        "remaining_gap": "CAP-GAP-006",
+    }
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    root = pathlib.Path(__file__).resolve().parents[2]
+    parser.add_argument("--fixture-dir", required=True, type=pathlib.Path)
+    parser.add_argument(
+        "--manifest",
+        type=pathlib.Path,
+        default=(
+            root
+            / "docs"
+            / "research"
+            / "data"
+            / "archive-format-corpus.json"
+        ),
+    )
+    parser.add_argument("--output", required=True, type=pathlib.Path)
+    args = parser.parse_args()
+    report = build_report(
+        args.fixture_dir.resolve(),
+        args.manifest.resolve(),
+    )
+    args.output.write_text(
+        json.dumps(report, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

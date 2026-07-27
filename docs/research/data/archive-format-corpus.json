@@ -1,0 +1,34 @@
+{
+  "generator": "tools/corpus/generate_archive_format_fixture.py",
+  "license": "project-generated; no third-party sample bytes",
+  "samples": [
+    {
+      "archive_format": "RAR",
+      "expected_member_name": "payload.pdf",
+      "expected_payload_sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "name": "pdf-member.rar",
+      "purpose": "RAR4 store archive containing one PDF",
+      "sha256": "1e988659f00088083708520b34d0fcd280af016d03f2d9d95b8449425bb01ab9",
+      "size": 401
+    },
+    {
+      "archive_format": "CAB",
+      "expected_member_name": "payload.pdf",
+      "expected_payload_sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "name": "pdf-member.cab",
+      "purpose": "CAB store archive containing one PDF",
+      "sha256": "9c96e5fc93766362d90940ef83606646f255eaad408677675b510eebb2434708",
+      "size": 411
+    },
+    {
+      "archive_format": "ISO",
+      "expected_member_name": "payload.pdf",
+      "expected_payload_sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "name": "pdf-member.iso",
+      "purpose": "ISO9660 image containing one PDF",
+      "sha256": "d32df4410a94094ab990d9cb32fa4a2e4e168d3173756962f6889902c18bb832",
+      "size": 43008
+    }
+  ],
+  "schema_version": 1
+}
