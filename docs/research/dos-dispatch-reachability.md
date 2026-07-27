@@ -99,6 +99,30 @@ python tools/upstream/probe_dos_dispatch.py \
   --output <report.json>
 ```
 
-Docker daemon 当前不可用，尚未生成公共七成员 runtime report。BW property
-harness 也仍待实现或 scope review；在两部分完成前，`CAP-DISPATCH-002`
-保持 source-only。
+## 5. BW forced-property harness
+
+[`bw_dispatch_harness_main.cpp`](../../tools/upstream/bw_dispatch_harness_main.cpp)
+和 [`probe_bw_dispatch_harness.py`](../../tools/upstream/probe_bw_dispatch_harness.py)
+已固定同一 10-byte `BW` 输入的成对控制：
+
+- automatic case 不设置 property，要求 detector 和 `ftInit` 均不是 BW；
+- forced case 设置 `filetypes=BW DOS16M`，要求 detector、`ftInit` 和结果 record
+  均为 BW；
+- 因 `XFormats::createClass` 没有 BW factory、规则加载也没有 BW database path，
+  forced case 当前应产生单条显式 `Unknown`，该 quirk 同样进入断言。
+
+Dockerfile 直接继承固定 CMake Qt5 oracle，通过替换 `main_console.cpp.o` 链接
+未修改的上游 objects，不执行网络下载：
+
+```text
+docker build \
+  -f tools/upstream/Dockerfile.bw-dispatch-harness-qt5 \
+  -t diec-rust/bw-dispatch-harness-qt5:74eaf505 \
+  tools/upstream
+python tools/upstream/probe_bw_dispatch_harness.py \
+  --raw-dir <raw-dir> \
+  --output <report.json>
+```
+
+Docker daemon 当前不可用，因此公共七成员和 BW harness 都尚无 runtime report。
+基础设施已就绪，但在两份报告实际通过前，`CAP-DISPATCH-002` 保持 source-only。

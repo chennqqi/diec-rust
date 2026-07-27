@@ -168,8 +168,9 @@ def audit_sources(sources: dict[str, bytes]) -> dict[str, Any]:
             "external_filetypes_property_can_bypass_detection": True,
             "absence_counts": absence_counts,
             "closure_requirement": (
-                "seven-member CLI oracle plus BW forced-property harness "
-                "or reviewed scope disposition"
+                "tools/upstream/probe_dos_dispatch.py plus "
+                "tools/upstream/probe_bw_dispatch_harness.py runtime "
+                "reports or reviewed BW scope disposition"
             ),
         },
         "failures": failures,

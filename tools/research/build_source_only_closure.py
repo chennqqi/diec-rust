@@ -44,8 +44,9 @@ CATALOG: dict[str, dict[str, Any]] = {
             "docs/research/data/dos-dispatch-source-audit.json"
         ),
         "harness": (
-            "tools/upstream/probe_dos_dispatch.py plus BW "
-            "forced-property harness or reviewed scope disposition"
+            "tools/upstream/probe_dos_dispatch.py plus "
+            "tools/upstream/probe_bw_dispatch_harness.py or reviewed "
+            "BW scope disposition"
         ),
         "assertions": [
             "seven publicly detected members reach their exact upstream filetype",

@@ -22,7 +22,7 @@
     "branch_without_public_detector": [
       "BW DOS16M"
     ],
-    "closure_requirement": "seven-member CLI oracle plus BW forced-property harness or reviewed scope disposition",
+    "closure_requirement": "tools/upstream/probe_dos_dispatch.py plus tools/upstream/probe_bw_dispatch_harness.py runtime reports or reviewed BW scope disposition",
     "external_filetypes_property_can_bypass_detection": true,
     "legacy_xbinary_detector_contains_bw_signature": true,
     "public_detector": "XFormats::getFileTypes"

@@ -69,8 +69,10 @@ CLI 正例。
 固定为 19 个正例/控制；
 [`probe_dos_dispatch.py`](../../tools/upstream/probe_dos_dispatch.py) 已实现双
 Qt5 oracle、manifest 身份、present/absent filetype 和 raw stream 门禁。Docker
-daemon 不可用，因此 runtime report 仍待采集；BW 路径仍待 property harness
-或 scope review。
+daemon 不可用，因此 runtime report 仍待采集。BW 路径的
+[`probe_bw_dispatch_harness.py`](../../tools/upstream/probe_bw_dispatch_harness.py)
+也已实现 automatic/forced property 成对对照和 Unknown fallback 断言，但同样
+尚未运行；若不保留该 engine-only 入口则仍需 scope review。
 
 `CAP-DISPATCH-003` 已具备
 [`legacy-dispatch-corpus.json`](data/legacy-dispatch-corpus.json) 对应的 8-case
@@ -97,6 +99,8 @@ python tools/upstream/probe_legacy_dispatch.py \
 python tools/corpus/generate_dos_dispatch_corpus.py <dos-corpus-dir>
 python tools/upstream/probe_dos_dispatch.py \
   --corpus-dir <dos-corpus-dir> --raw-dir <raw-dir> --output <report.json>
+python tools/upstream/probe_bw_dispatch_harness.py \
+  --raw-dir <raw-dir> --output <bw-report.json>
 ```
 
 测试要求：
