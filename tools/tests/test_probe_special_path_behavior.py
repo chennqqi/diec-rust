@@ -84,7 +84,7 @@ class ProbeSpecialPathBehaviorTests(unittest.TestCase):
             self.report["fixture"]["manifest_sha256"],
             hashlib.sha256(MANIFEST_PATH.read_bytes()).hexdigest(),
         )
-        self.assertEqual(self.report["fixture"]["file_count"], 17)
+        self.assertEqual(self.report["fixture"]["file_count"], 21)
         self.assertEqual(set(self.report["images"]), set(MODULE.ORACLES))
         for image in self.report["images"].values():
             self.assertRegex(image["id"], r"^sha256:[0-9a-f]{64}$")
@@ -92,9 +92,12 @@ class ProbeSpecialPathBehaviorTests(unittest.TestCase):
     def test_all_cases_have_byte_equal_qmake_and_cmake_results(self):
         self.assertEqual(
             set(self.report["cases"]),
-            {case.name for case in MODULE.CASES},
+            {
+                *(case.name for case in MODULE.CASES),
+                *(case.name for case in MODULE.RAW_ARGV_CASES),
+            },
         )
-        self.assertEqual(len(self.report["cases"]), 18)
+        self.assertEqual(len(self.report["cases"]), 23)
         for name, case in self.report["cases"].items():
             with self.subTest(case=name):
                 observations = case["observations"]
@@ -157,6 +160,80 @@ class ProbeSpecialPathBehaviorTests(unittest.TestCase):
         self.assertIn(b"Unknown option 'leading-dash.pdf'.", diagnostic)
         self.assertEqual(escaped["observations"]["cmake"]["exit_code"], 0)
         self.assertEqual(absolute["observations"]["cmake"]["exit_code"], 0)
+
+    def test_non_utf8_entries_exist_but_qdir_skips_them(self):
+        expected = sorted(
+            [
+                b"ascii-control.pdf".hex(),
+                *(
+                    path_bytes.rsplit(b"/", 1)[1].hex()
+                    for path_bytes, _ in GENERATOR.RAW_FILES
+                ),
+            ]
+        )
+        self.assertEqual(
+            self.report["fixture"][
+                "non_utf8_extracted_basename_hex"
+            ],
+            expected,
+        )
+        directory = self.report["cases"]["directory_non_utf8"]
+        control = self.report["cases"]["single_non_utf8_control"]
+        self.assertEqual(
+            directory["raw_path_summary"],
+            {
+                "ascii_control_prefix_present": False,
+                "pdf_root_count": 1,
+                "replacement_character_count": 0,
+                "stdout_utf8_valid": True,
+            },
+        )
+        for oracle in MODULE.ORACLES:
+            with self.subTest(oracle=oracle):
+                self.assertEqual(
+                    directory["observations"][oracle]["stdout"],
+                    control["observations"][oracle]["stdout"],
+                )
+                self.assertEqual(
+                    directory["observations"][oracle]["stderr"],
+                    control["observations"][oracle]["stderr"],
+                )
+                self.assertEqual(
+                    directory["observations"][oracle]["exit_code"],
+                    0,
+                )
+
+    def test_explicit_non_utf8_argv_is_lossy_and_cannot_open(self):
+        for raw_case in MODULE.RAW_ARGV_CASES:
+            case = self.report["cases"][raw_case.name]
+            expected = MODULE.EXPECTED_RAW_ARGV[raw_case.name]
+            with self.subTest(case=raw_case.name):
+                self.assertEqual(
+                    case["path_bytes_hex"],
+                    raw_case.path_bytes_hex,
+                )
+                self.assertEqual(
+                    case["raw_argv_summary"],
+                    {
+                        "cannot_find_count": 1,
+                        "pdf_root_count": 0,
+                        "replacement_character_count": expected[
+                            "replacement_character_count"
+                        ],
+                        "stdout_utf8_valid": True,
+                    },
+                )
+                for oracle in MODULE.ORACLES:
+                    observation = case["observations"][oracle]
+                    self.assertEqual(observation["exit_code"], 1)
+                    self.assertEqual(
+                        observation["stdout"]["sha256"],
+                        expected["stdout_sha256"],
+                    )
+                    self.assertEqual(
+                        observation["stderr"]["sha256"],
+                        hashlib.sha256(b"").hexdigest(),
+                    )
 
     def test_raw_artifacts_are_content_addressed_and_complete(self):
         referenced = set()

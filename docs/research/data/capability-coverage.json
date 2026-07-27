@@ -17,7 +17,7 @@
         "windows-x86_64-qt5",
         "macos-x86_64-qt5"
       ],
-      "scope": "non-UTF-8, symlink/permission/depth, and cross-platform path behavior"
+      "scope": "symlink/permission/depth/locale and cross-platform path behavior"
     },
     {
       "capability_ids": [
@@ -1494,7 +1494,7 @@
   "schema_version": 1,
   "source": {
     "path": "docs/research/data/capability-traceability.json",
-    "sha256": "0e0588d50fd8a4221a674078784d1ce44849932fc81872eed985d1a63ae4c0a4"
+    "sha256": "c40efe2a23a7d049292567540ab1cadb5ce794cd8cd24fd184b095711ee232ff"
   },
   "status_definitions": {
     "platform_missing": "no complete capability baseline is admitted for this platform",

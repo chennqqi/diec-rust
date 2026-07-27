@@ -396,7 +396,7 @@
   "coverage_gaps": [
     {
       "id": "CAP-GAP-003",
-      "scope": "non-UTF-8, symlink/permission/depth, and cross-platform path behavior",
+      "scope": "symlink/permission/depth/locale and cross-platform path behavior",
       "platforms": [
         "linux-x86_64-qt5",
         "windows-x86_64-qt5",

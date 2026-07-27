@@ -71,16 +71,16 @@ traceability 中四个开放 `CAP-GAP-*` 现在显式映射到受影响能力；
 
 | Gap | 类型 | 能力行数 | 范围 |
 | --- | --- | ---: | --- |
-| `CAP-GAP-003` | corpus | 4 | 非 UTF-8、symlink/权限/深度及跨平台路径 |
+| `CAP-GAP-003` | corpus | 4 | symlink/权限/深度/locale 及跨平台路径 |
 | `CAP-GAP-006` | corpus | 4 | archive 格式、深度和总解压限制 |
 | `CAP-GAP-007` | platform | 68 | 完整 Qt5/Qt6 capability matrix |
 | `CAP-GAP-008` | platform | 8 | Windows/macOS path 与 encoding |
 映射是保守的审计范围，不是“这些能力除此之外都已完备”的声明。
 
-`CAP-GAP-003` 已新增固定 Linux Qt5 的 18-case 双 Oracle 子矩阵，见
+`CAP-GAP-003` 已新增固定 Linux Qt5 的 23-case 双 Oracle 子矩阵，见
 [`special-path-behavior.md`](special-path-behavior.md)：NFC/NFD、中文、emoji、
-前导/尾随空格、tab/newline、colon/backslash、hidden、leading-dash 与精确目录
-顺序均已有 raw-byte 证据。非 UTF-8、symlink/权限/深度/locale 和跨平台行为仍使
+非 UTF-8 目录/显式 argv、tab/newline、colon/backslash、hidden、leading-dash
+与精确目录顺序均已有 raw-byte 证据。symlink/权限/深度/locale 和跨平台行为仍使
 该 gap 保持开放。
 
 `CAP-GAP-006` 已新增五组固定证据：7Z/RAR4/CAB/ISO9660 无压缩单 PDF 在显式

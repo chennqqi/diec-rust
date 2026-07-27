@@ -87,7 +87,7 @@ nested XML 非良构、CSV/TSV 不引用字段且会扁平化嵌套 leaf，是�
 多目标 filename prefix、目录顺序、重复 target、部分失败和无效 JSON/XML 聚合
 行为见
 [`cli-path-behavior.md`](cli-path-behavior.md)。Linux Qt5 的 NFC/NFD、中文、
-emoji、空白/控制字符、hidden、leading-dash 与精确目录顺序见
+emoji、非 UTF-8 原始字节、空白/控制字符、hidden、leading-dash 与精确目录顺序见
 [`special-path-behavior.md`](special-path-behavior.md)。
 
 verbose/messages/profiling 的 channel 与结构化结果关系，以及两个未完成测试入口的
@@ -259,7 +259,7 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
   截断、预取消、写失败/恢复、非特权权限失败和 8 个同输入并发 writer 已
   Observed。超大 count/text 等安全预算仍作为 Rust 实现测试门禁，不把上游
   OOM/调度结果采纳为 compatibility golden。
-- Linux Qt5 UTF-8/特殊 filename 首轮矩阵已固定；仍缺非 UTF-8、
+- Linux Qt5 UTF-8 与首轮非 UTF-8/特殊 filename 矩阵已固定；仍缺
   symlink/权限/深度/locale，以及 Windows/macOS 的路径和枚举差异。
 - formatter 转义与嵌套排序已闭合；跨平台编码差异仍归入路径/平台缺口。
 - deep 与 aggressive resource 过滤/计数边界已由

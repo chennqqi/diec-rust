@@ -170,6 +170,11 @@ path 入口负责打开和读取 metadata 后转为 checked source。核心 API 
 - 否则写 `path_display` 的明确 lossy 值和平台编码后的无损 byte/code-unit 表示；
 - legacy renderer 按固定 oracle 平台的路径行为处理。
 
+固定 Linux Qt5 上游会在目录枚举时静默跳过非 UTF-8 basename，显式 raw argv
+又会先转为 U+FFFD、随后因重编码路径不存在而失败。Rust 核心不得复制这种 lossy
+打开逻辑；若 legacy CLI profile 需要保留该可观察缺陷，必须在 target expansion
+适配层显式实现并与 canonical/native-path profile 分开测试。
+
 `identity` 是展示/provenance，不参与格式识别。调用 bytes API 不得伪造文件系统
 metadata；规则需要 extension 时使用显式 logical name，并在结果中标记来源。
 

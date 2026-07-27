@@ -18,7 +18,8 @@ Last updated: 2026-07-28
 Unicode 与特殊名称现由独立的可移植 USTAR 实验覆盖，见
 [`special-path-behavior.md`](special-path-behavior.md)。它固定 Linux Qt5 下的
 NFC/NFD、中文、emoji、前导/尾随空格、tab/newline、colon/backslash、hidden、
-leading-dash 与目录排序，但不把 Linux 结果外推到其他平台。
+leading-dash、非 UTF-8 目录/显式 argv 与目录排序，但不把 Linux 结果外推到
+其他平台。
 
 ## 源码语义
 
@@ -178,8 +179,8 @@ CSV 同样在记录之间插入不符合 CSV schema 的 filename/colon 行。pla
 ## 尚未覆盖
 
 - symlink、junction、循环目录、超深目录和权限错误。
-- 非 UTF-8 filename bytes；UTF-8 Unicode、空格、colon、backslash、tab/newline
-  与 hidden/leading-dash 已由特殊路径实验覆盖。
+- UTF-8 与首轮非 UTF-8 filename bytes、空格、colon、backslash、tab/newline
+  及 hidden/leading-dash 已由特殊路径实验覆盖。
 - QDir ordering 已固定一个大小写/NFC/NFD/控制字符矩阵；locale 与 filesystem
   边界仍缺。
 - Windows/macOS path separator、绝对路径和枚举顺序。

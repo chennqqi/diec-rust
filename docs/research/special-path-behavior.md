@@ -1,4 +1,4 @@
-# Linux Unicode 与特殊路径行为
+# Linux Unicode、原始字节与特殊路径行为
 
 Status: In Review
 
@@ -8,7 +8,7 @@ Last updated: 2026-07-28
 
 ## 结论
 
-固定 Linux x86_64 Qt5 qmake/CMake 两个 Oracle 对 18 个路径 case、共 36 次执行
+固定 Linux x86_64 Qt5 qmake/CMake 两个 Oracle 对 23 个路径 case、共 46 次执行
 给出逐字节一致结果：
 
 - NFC `é`、NFD `e + U+0301`、中文、emoji、普通空格、前导/尾随空格、tab、
@@ -25,17 +25,23 @@ Last updated: 2026-07-28
   option terminator 后才正常扫描；
 - 仅含一个文件的 Unicode 目录仍不打印 filename prefix，并输出有效的单个 JSON；
   特殊目录展开 15 个非隐藏文件后，为每项插入原始路径 prefix，其中 newline/tab
-  直接进入 stdout，多结果 `--json` 仍不是有效 JSON。
+  直接进入 stdout，多结果 `--json` 仍不是有效 JSON；
+- USTAR 解包前置证明确认 `nonutf8/` 中同时存在一个 ASCII PDF 与三个非法 UTF-8
+  basename；按父目录扫描时，`QDir::entryInfoList()` 静默跳过三个非法名称，只
+  扫描 ASCII control，exit `0`、无 stderr，stdout 与单独扫描 control 逐字节相同；
+- 容器内用 `os.execve` 的 bytes argv 显式传入三个非法路径时，Qt 分别将非法字节
+  转成 1、2、2 个 U+FFFD replacement character；重编码后的路径已不存在，三个
+  case 都向 stdout 打印 `Cannot find:`、exit `1`、stderr 为空。
 
 机器报告为
 [`special-path-engine-qt5.json`](data/special-path-engine-qt5.json)，SHA-256 为
-`ebdecb0fddadedc2a45511bf525f1ba66eba644b4590356cea2cf07d531bfb9d`。
+`0b5fc241e2c30449e1df11aa08532a7b0adbf9c81362d552bf7770f8cd159f82`。
 报告保存每次未经规范化的 stdout/stderr，并以 `zlib+base64`、SHA-256
 content-addressed artifact 形式去重。
 
-这批证据闭合 `CAP-GAP-003` 的 Linux UTF-8/特殊名称基础子矩阵，但没有关闭整个
-gap。非 UTF-8 原始字节路径、symlink/权限/超深目录，以及 Windows/macOS
-路径与编码行为仍未覆盖。
+这批证据闭合 `CAP-GAP-003` 的 Linux UTF-8 与首轮非 UTF-8/特殊名称子矩阵，但
+没有关闭整个 gap。symlink/权限/超深或超大目录、locale/filesystem 差异，以及
+Windows/macOS 路径与编码行为仍未覆盖。
 
 ## 固定身份
 
@@ -47,8 +53,8 @@ gap。非 UTF-8 原始字节路径、symlink/权限/超深目录，以及 Window
 | CMake image ID | `sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040` |
 | qmake `diec` SHA-256 | `721ec846507a8567aae07e91dcd1f576182481ae0dc1595b1f19e4a3e859b79d` |
 | CMake `diec` SHA-256 | `da1fab49f7ba5970d1fc1c7fe3d4f380cf5e8775dd8097207e7b3c30f08236cf` |
-| fixture TAR SHA-256 | `4745de26864b87ef7380cdc6e695a468005f470fa950c9ee763b3ef6817d68a2` |
-| fixture manifest SHA-256 | `5dccc0f7f2b6c06fab2a1a7c53b94aef330e4e80a48aae5a4003f83c7f15a52d` |
+| fixture TAR SHA-256 | `f432b70835ea45d623fd6412a709228da2c2f89d98744b1e12d6467afac0e4ab` |
+| fixture manifest SHA-256 | `46947670f1f8dc024d31b04860dbd3049f86f4fd53cb301f9e08ab04f0f586a5` |
 
 报告还绑定固定镜像内 `main_console.cpp` 与 `Formats/xbinary.cpp` 的完整 SHA-256，
 并验证以下正向源码契约仍存在：
@@ -68,6 +74,7 @@ gap。非 UTF-8 原始字节路径、symlink/权限/超深目录，以及 Window
 
 - mode、uid、gid、mtime 和 header checksum 均确定；
 - 路径字段直接使用 UTF-8 bytes；
+- 三个 raw member 分别包含孤立 `ff`、overlong `c0 af` 和截断 `e2 82`；
 - archive 末尾固定为两个零 block；
 - 不含第三方样本字节，也不提交生成出的 TAR。
 
@@ -76,10 +83,11 @@ newline 和 backslash 名称。版本化清单是
 [`special-path-fixture.json`](data/special-path-fixture.json)；测试独立使用
 Python `tarfile` 复验 member 顺序、名称和全部 payload。
 
-fixture 共 17 个文件：
+fixture 共 21 个文件：
 
 - 16 个位于 `paths/special/`；
 - 1 个位于 `paths/目录 空格/`；
+- `paths/nonutf8/` 包含 1 个 ASCII control 与 3 个原始非法 UTF-8 basename；
 - `.hidden.pdf` 是目录枚举的负向控制；
 - `A-case.pdf`/`a-case.pdf`、NFC/NFD 是排序与 normalization 控制；
 - 所有文件内容完全相同，隔离路径变量。
@@ -132,6 +140,43 @@ trailing-space.pdf<SPACE>
 stdout SHA-256 为
 `b9f6cab51648dcb3b9dc273a996bef9a52bb04de5754f96c10568650e03c9aa9`。
 
+## 非 UTF-8 目录与显式 argv
+
+探针在运行 `diec` 前，先在同一个只读 fixture/临时 `/work` 模型中调用
+`os.listdir(b"...")`，得到四个 basename 的原始十六进制：
+
+```text
+61736369692d636f6e74726f6c2e706466
+696e76616c69642d633061662dc0af2e706466
+696e76616c69642d66662dff2e706466
+7472756e63617465642d653238322de2822e706466
+```
+
+因此目录实验不是“非法文件没有成功解包”。但 `diec --json
+/work/paths/nonutf8` 的 stdout SHA-256 为
+`5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35`，
+恰好等于单独扫描 `ascii-control.pdf`：
+
+- 只有一个 PDF root；
+- 没有 filename prefix；
+- 没有 U+FFFD；
+- stderr 为空；
+- exit `0`。
+
+三个显式 raw argv 则均 exit `1`，输出一个 `Cannot find:`，不产生 PDF root。
+对应 stdout SHA-256 和 replacement 数为：
+
+| 原始非法序列 | U+FFFD 数 | stdout SHA-256 |
+| --- | ---: | --- |
+| `ff` | 1 | `58da8d8676a5e382e9093371147d1c2d8ec8416c57f152130d271f942eeb88e6` |
+| `c0 af` | 2 | `860db1ea8c00651c30ed6696e489205298900c67b38f6a242056bc7a384c1ac3` |
+| `e2 82` | 2 | `818700a7b873a54c3dbbdb28c2becc3e03244f9fad2a2334c3da0027f1906401` |
+
+这证明固定上游 Linux CLI **不能无损扫描非 UTF-8 文件名**。Rust 核心若使用
+`Path`/`OsStr` 可以安全支持这些输入，但 legacy-compatible CLI 必须把这种改进
+视为明确的可观察偏离；canonical API/JSON 需要无损 byte 表示，不能先 lossy
+转换再尝试打开路径。
+
 ## 复现
 
 ```powershell
@@ -160,13 +205,13 @@ timeout=60 seconds
 ```
 
 TAR 只展开到每个隔离 container 的 `/work` tmpfs，不写宿主路径。两个 Oracle
-均使用固定三层数据库路径；探针要求 18 个 case 的 exit/stdout/stderr 逐字节相同。
+均使用固定三层数据库路径；探针要求 23 个 case 的 exit/stdout/stderr 逐字节相同。
 
 ## 兼容与安全要求
 
 - 路径模型必须能无损区分 NFC/NFD，并在 Unix 上避免强制 Unicode normalization。
-- Rust `Path`/`OsStr` 层不得过早转换为 UTF-8 `String`。非 UTF-8 输入的公共 API、
-  JSON 表示和 C ABI 编码策略仍需在实现前冻结。
+- Rust `Path`/`OsStr` 层不得像固定 Qt CLI 一样过早 lossy 转换。非 UTF-8 输入的
+  公共 API、JSON 表示和 C ABI 编码策略仍需在实现前冻结。
 - CLI 原始兼容输出必须保留 filename prefix 中的控制字符；安全结构化输出应将
   路径作为字段正确转义。两者若不同，需用明确模式与差分测试区分。
 - 目录枚举必须设置 symlink、depth、entry count、权限错误与取消策略；不能因上游
@@ -176,8 +221,9 @@ TAR 只展开到每个隔离 container 的 `/work` tmpfs，不写宿主路径。
 
 ## 剩余缺口
 
-- Linux 非 UTF-8 filename bytes 与其诊断/输出表示；
 - symlink、循环、权限错误、超深目录、超大目录及取消；
+- NUL 不可能成为 POSIX basename；其他无效 byte 序列可按风险继续扩展，但首轮
+  directory 与 explicit argv 行为已固定；
 - locale 改变后的排序，以及不同 filesystem normalization/case 行为；
 - Linux Qt6 的完整能力矩阵；
 - Windows/macOS separator、绝对路径、reserved name、Unicode normalization、

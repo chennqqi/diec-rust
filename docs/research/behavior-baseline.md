@@ -221,7 +221,7 @@ stderr 逐字节相同，均退出 `0` 且 stderr 为空。
 多目标、目录、重复 target、缺失+存在 partial result，以及结构化输出的
 filename prefix 行为单独记录在
 [`cli-path-behavior.md`](cli-path-behavior.md)。Linux Qt5 的 NFC/NFD、中文、
-emoji、控制字符、hidden、leading-dash 与固定目录顺序见
+emoji、非 UTF-8 原始字节、控制字符、hidden、leading-dash 与固定目录顺序见
 [`special-path-behavior.md`](special-path-behavior.md)。
 
 数据库缺失/空/无效 ZIP、规则 parse/runtime error 和不可读输入行为见

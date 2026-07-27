@@ -489,8 +489,8 @@ baseline 的变更都要检查本表。
   UTF-8/UTF-16 边界或 locale-dependent ordering。
 - **缓解**：CLI `TargetExpander` 与 engine 分离；不默认跟随 directory link；
   depth/file/byte/time budgets；native path 保留无损 identity。
-- **当前证据**：固定 Linux Qt5 双 Oracle 已覆盖 NFC/NFD、中文、emoji、空白与
-  控制字符、hidden、leading-dash 和目录顺序；非 UTF-8 与三平台矩阵仍缺。
+- **当前证据**：固定 Linux Qt5 双 Oracle 已覆盖 NFC/NFD、非 UTF-8 目录与显式
+  raw argv、空白与控制字符、hidden、leading-dash 和目录顺序；三平台矩阵仍缺。
 - **验证**：隔离 path corpus 覆盖循环、权限、重复、特殊字符和三平台排序。
 - **关闭**：path policy ADR/API 冻结且三平台 system tests 通过。
 

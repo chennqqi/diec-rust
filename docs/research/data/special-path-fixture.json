@@ -2,13 +2,14 @@
   "archive": {
     "format": "ustar",
     "name": "special-path-fixture.tar",
-    "sha256": "4745de26864b87ef7380cdc6e695a468005f470fa950c9ee763b3ef6817d68a2",
-    "size": 19968
+    "sha256": "f432b70835ea45d623fd6412a709228da2c2f89d98744b1e12d6467afac0e4ab",
+    "size": 24576
   },
   "directories": [
     "paths/",
     "paths/special/",
-    "paths/目录 空格/"
+    "paths/目录 空格/",
+    "paths/nonutf8/"
   ],
   "files": [
     {
@@ -121,5 +122,34 @@
     "size": 331,
     "source": "minimal.pdf"
   },
+  "raw_control_file": {
+    "path": "paths/nonutf8/ascii-control.pdf",
+    "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+    "size": 331,
+    "source": "minimal.pdf"
+  },
+  "raw_files": [
+    {
+      "path_bytes_hex": "70617468732f6e6f6e757466382f696e76616c69642d66662dff2e706466",
+      "purpose": "isolated invalid 0xff byte",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331,
+      "source": "minimal.pdf"
+    },
+    {
+      "path_bytes_hex": "70617468732f6e6f6e757466382f696e76616c69642d633061662dc0af2e706466",
+      "purpose": "overlong UTF-8 slash byte sequence",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331,
+      "source": "minimal.pdf"
+    },
+    {
+      "path_bytes_hex": "70617468732f6e6f6e757466382f7472756e63617465642d653238322de2822e706466",
+      "purpose": "truncated three-byte UTF-8 sequence",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331,
+      "source": "minimal.pdf"
+    }
+  ],
   "schema_version": 1
 }

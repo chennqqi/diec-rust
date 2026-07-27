@@ -78,6 +78,12 @@ class Case:
     expect_json: bool = True
 
 
+@dataclass(frozen=True)
+class RawArgvCase:
+    name: str
+    path_bytes_hex: str
+
+
 def scan_case(name: str, path: str) -> Case:
     return Case(name, "/work", ("--json", *DATABASE_ARGS, path))
 
@@ -118,6 +124,16 @@ CASES = (
         expect_json=False,
     ),
     scan_case("directory_unicode", "/work/paths/目录 空格"),
+    scan_case(
+        "single_non_utf8_control",
+        "/work/paths/nonutf8/ascii-control.pdf",
+    ),
+    Case(
+        "directory_non_utf8",
+        "/work",
+        ("--json", *DATABASE_ARGS, "/work/paths/nonutf8"),
+        expect_json=False,
+    ),
     Case(
         "explicit_order",
         "/work",
@@ -131,6 +147,44 @@ CASES = (
         expect_json=False,
     ),
 )
+
+RAW_ARGV_CASES = (
+    RawArgvCase(
+        "explicit_non_utf8_ff",
+        "70617468732f6e6f6e757466382f696e76616c69642d66662dff2e706466",
+    ),
+    RawArgvCase(
+        "explicit_non_utf8_c0af",
+        "70617468732f6e6f6e757466382f696e76616c69642d633061662dc0af2e706466",
+    ),
+    RawArgvCase(
+        "explicit_non_utf8_truncated_e282",
+        "70617468732f6e6f6e757466382f7472756e63617465642d653238322de2822e706466",
+    ),
+)
+EXPECTED_RAW_ARGV = {
+    "explicit_non_utf8_ff": {
+        "replacement_character_count": 1,
+        "stdout_sha256": (
+            "58da8d8676a5e382e9093371147d1c2d8"
+            "ec8416c57f152130d271f942eeb88e6"
+        ),
+    },
+    "explicit_non_utf8_c0af": {
+        "replacement_character_count": 2,
+        "stdout_sha256": (
+            "860db1ea8c00651c30ed6696e48920529"
+            "8900c67b38f6a242056bc7a384c1ac3"
+        ),
+    },
+    "explicit_non_utf8_truncated_e282": {
+        "replacement_character_count": 2,
+        "stdout_sha256": (
+            "818700a7b873a54c3dbbdb28c2becc3"
+            "e03244f9fad2a2334c3da0027f1906401"
+        ),
+    },
+}
 
 
 class ProbeError(ValueError):
@@ -176,6 +230,8 @@ def load_fixture(
         "generator",
         "license",
         "payload",
+        "raw_control_file",
+        "raw_files",
         "schema_version",
     }
     if not isinstance(manifest, dict) or set(manifest) != expected_fields:
@@ -222,6 +278,48 @@ def load_fixture(
     }
     if not required.issubset(set(paths)):
         raise ProbeError("fixture special-path matrix changed")
+    raw_control = manifest["raw_control_file"]
+    if (
+        not isinstance(raw_control, dict)
+        or raw_control.get("path")
+        != "paths/nonutf8/ascii-control.pdf"
+    ):
+        raise ProbeError("raw-path control changed")
+    raw_files = manifest["raw_files"]
+    if not isinstance(raw_files, list) or len(raw_files) != 3:
+        raise ProbeError("raw-path matrix changed")
+    raw_paths = []
+    for record in raw_files:
+        if not isinstance(record, dict) or set(record) != {
+            "path_bytes_hex",
+            "purpose",
+            "sha256",
+            "size",
+            "source",
+        }:
+            raise ProbeError("raw-path record fields changed")
+        try:
+            path_bytes = bytes.fromhex(record["path_bytes_hex"])
+        except (TypeError, ValueError) as error:
+            raise ProbeError("invalid raw-path hex") from error
+        try:
+            path_bytes.decode("utf-8")
+        except UnicodeDecodeError:
+            pass
+        else:
+            raise ProbeError("raw-path record is valid UTF-8")
+        if (
+            not path_bytes.startswith(b"paths/nonutf8/")
+            or not path_bytes.endswith(b".pdf")
+        ):
+            raise ProbeError("raw path escaped fixture directory")
+        raw_paths.append(path_bytes)
+    if len(raw_paths) != len(set(raw_paths)):
+        raise ProbeError("duplicate raw path")
+    if {path.hex() for path in raw_paths} != {
+        case.path_bytes_hex for case in RAW_ARGV_CASES
+    }:
+        raise ProbeError("raw argv and fixture matrices differ")
     return manifest, raw
 
 
@@ -335,6 +433,121 @@ def run_case(
     return process, round((time.monotonic() - started) * 1000)
 
 
+def inspect_extracted_raw_paths(
+    *,
+    image: str,
+    archive_path: pathlib.Path,
+) -> list[str]:
+    script = (
+        "import json,os;"
+        "print(json.dumps(sorted("
+        "name.hex() for name in "
+        "os.listdir(b'/work/paths/nonutf8'))))"
+    )
+    process = subprocess.run(
+        [
+            "docker",
+            "run",
+            "--rm",
+            "--network",
+            "none",
+            "--cpus",
+            "1",
+            "--memory",
+            "512m",
+            "--pids-limit",
+            "128",
+            "--read-only",
+            "--tmpfs",
+            "/work:rw,noexec,nosuid,nodev,size=16m",
+            "--mount",
+            (
+                f"type=bind,src={archive_path.parent},"
+                "dst=/fixture,readonly"
+            ),
+            image,
+            "sh",
+            "-c",
+            (
+                "tar -xf /fixture/special-path-fixture.tar -C /work"
+                ' && exec python3 -c "$1"'
+            ),
+            "sh",
+            script,
+        ],
+        capture_output=True,
+        timeout=60,
+        check=False,
+    )
+    if process.returncode != 0 or process.stderr:
+        raise ProbeError("raw-path extraction preflight failed")
+    result = strict_json(process.stdout)
+    if (
+        not isinstance(result, list)
+        or any(not isinstance(value, str) for value in result)
+    ):
+        raise ProbeError("raw-path extraction inventory changed shape")
+    return result
+
+
+def run_raw_argv_case(
+    *,
+    image: str,
+    binary: str,
+    archive_path: pathlib.Path,
+    case: RawArgvCase,
+) -> tuple[subprocess.CompletedProcess[bytes], int]:
+    python = (
+        "import os,sys;"
+        "binary=sys.argv[1].encode('ascii');"
+        "path=b'/work/'+bytes.fromhex(sys.argv[2]);"
+        f"args=[binary]+[value.encode('ascii') for value in "
+        f"{('--json', *DATABASE_ARGS)!r}]+[path];"
+        "os.chdir(b'/work');"
+        "os.execve(binary,args,os.environb)"
+    )
+    command = [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--cpus",
+        "1",
+        "--memory",
+        "512m",
+        "--pids-limit",
+        "128",
+        "--read-only",
+        "--tmpfs",
+        "/work:rw,noexec,nosuid,nodev,size=16m",
+        "--mount",
+        (
+            f"type=bind,src={archive_path.parent},"
+            "dst=/fixture,readonly"
+        ),
+        image,
+        "sh",
+        "-c",
+        (
+            "tar -xf /fixture/special-path-fixture.tar -C /work"
+            ' && exec python3 -c "$1" "$2" "$3"'
+        ),
+        "sh",
+        python,
+        binary,
+        case.path_bytes_hex,
+    ]
+    started = time.monotonic()
+    process = subprocess.run(
+        command,
+        capture_output=True,
+        timeout=60,
+        check=False,
+    )
+    return process, round((time.monotonic() - started) * 1000)
+
+
 def validate_pdf_document(data: bytes) -> None:
     document = strict_json(data)
     if not isinstance(document, dict) or set(document) != {"detects"}:
@@ -429,8 +642,33 @@ def build_report(
         ORACLES["qmake"]["image"],
         (ORACLES["qmake"]["binary"],),
     )
+    expected_raw_basenames = sorted(
+        pathlib.PurePosixPath(
+            bytes.fromhex(record["path_bytes_hex"]).decode(
+                "utf-8", "surrogateescape"
+            )
+        )
+        .name.encode("utf-8", "surrogateescape")
+        .hex()
+        for record in manifest["raw_files"]
+    )
+    expected_extracted = sorted(
+        [
+            pathlib.PurePosixPath(
+                manifest["raw_control_file"]["path"]
+            ).name.encode("utf-8").hex(),
+            *expected_raw_basenames,
+        ]
+    )
+    extracted_raw_paths = inspect_extracted_raw_paths(
+        image=ORACLES["cmake"]["image"],
+        archive_path=archive_path,
+    )
+    if extracted_raw_paths != expected_extracted:
+        raise ProbeError("raw-path extraction inventory changed")
 
     fixture_paths = [entry["path"] for entry in manifest["files"]]
+    fixture_paths.append(manifest["raw_control_file"]["path"])
     special_paths = [
         path for path in fixture_paths if path.startswith("paths/special/")
     ]
@@ -494,6 +732,8 @@ def build_report(
             # its filename prefix and emits one valid JSON document.
             if order:
                 raise ProbeError("Unicode single-file directory gained prefix")
+        elif case.name == "directory_non_utf8":
+            pass
         elif case.name == "explicit_order":
             expected = [
                 "paths/special/emoji-😀.pdf",
@@ -515,6 +755,96 @@ def build_report(
             "filename_prefix_order": order,
             "observations": observations,
         }
+        if case.name == "directory_non_utf8":
+            cases[case.name]["raw_path_summary"] = {
+                "ascii_control_prefix_present": (
+                    b"/work/paths/nonutf8/ascii-control.pdf:\n"
+                    in stdout
+                ),
+                "pdf_root_count": (
+                    stdout.count(b'"filetype":"PDF"')
+                    + stdout.count(b'"filetype": "PDF"')
+                ),
+                "replacement_character_count": stdout.count(
+                    b"\xef\xbf\xbd"
+                ),
+                "stdout_utf8_valid": True,
+            }
+            try:
+                stdout.decode("utf-8")
+            except UnicodeDecodeError:
+                cases[case.name]["raw_path_summary"][
+                    "stdout_utf8_valid"
+                ] = False
+
+    raw_argv_observations: dict[
+        str, tuple[bytes, bytes, int]
+    ] = {}
+    for case in RAW_ARGV_CASES:
+        observations = {}
+        for oracle_name, oracle in ORACLES.items():
+            process, elapsed_ms = run_raw_argv_case(
+                image=oracle["image"],
+                binary=oracle["binary"],
+                archive_path=archive_path,
+                case=case,
+            )
+            if process.stderr:
+                raise ProbeError(
+                    f"raw argv stderr changed: {case.name}/{oracle_name}"
+                )
+            if process.returncode != 1:
+                raise ProbeError(
+                    f"raw argv exit changed: {case.name}/{oracle_name}"
+                )
+            raw = (
+                process.stdout,
+                process.stderr,
+                process.returncode,
+            )
+            previous = raw_argv_observations.setdefault(case.name, raw)
+            if previous != raw:
+                raise ProbeError(f"raw argv qmake/CMake drift: {case.name}")
+            observations[oracle_name] = {
+                "exit_code": process.returncode,
+                "stderr": raw_ref(process.stderr, artifacts),
+                "stdout": raw_ref(process.stdout, artifacts),
+                "wall_elapsed_ms": elapsed_ms,
+            }
+        stdout = raw_argv_observations[case.name][0]
+        try:
+            stdout.decode("utf-8")
+            stdout_utf8_valid = True
+        except UnicodeDecodeError:
+            stdout_utf8_valid = False
+        summary = {
+            "cannot_find_count": stdout.count(b"Cannot find:"),
+            "pdf_root_count": (
+                stdout.count(b'"filetype":"PDF"')
+                + stdout.count(b'"filetype": "PDF"')
+            ),
+            "replacement_character_count": stdout.count(
+                b"\xef\xbf\xbd"
+            ),
+            "stdout_utf8_valid": stdout_utf8_valid,
+        }
+        expected = EXPECTED_RAW_ARGV[case.name]
+        if summary != {
+            "cannot_find_count": 1,
+            "pdf_root_count": 0,
+            "replacement_character_count": expected[
+                "replacement_character_count"
+            ],
+            "stdout_utf8_valid": True,
+        }:
+            raise ProbeError(f"raw argv summary changed: {case.name}")
+        if sha256(stdout) != expected["stdout_sha256"]:
+            raise ProbeError(f"raw argv diagnostic changed: {case.name}")
+        cases[case.name] = {
+            "observations": observations,
+            "path_bytes_hex": case.path_bytes_hex,
+            "raw_argv_summary": summary,
+        }
 
     unescaped_raw = raw_by_case[
         "single_leading_dash_relative_unescaped"
@@ -524,10 +854,27 @@ def build_report(
         not in unescaped_raw[0] + unescaped_raw[1]
     ):
         raise ProbeError("leading-dash option diagnostic changed")
+    raw_directory = raw_by_case["directory_non_utf8"]
+    raw_control = raw_by_case["single_non_utf8_control"]
+    if raw_directory != raw_control:
+        raise ProbeError(
+            "non-UTF-8 directory result differs from ASCII control"
+        )
+    raw_summary = cases["directory_non_utf8"]["raw_path_summary"]
+    if raw_summary != {
+        "ascii_control_prefix_present": False,
+        "pdf_root_count": 1,
+        "replacement_character_count": 0,
+        "stdout_utf8_valid": True,
+    }:
+        raise ProbeError("non-UTF-8 directory summary changed")
 
     facts = {
         "all_utf8_single_file_paths_scan_as_pdf": True,
         "nfc_and_nfd_are_distinct_paths": True,
+        "non_utf8_entries_are_present_before_scan": True,
+        "non_utf8_entries_are_skipped_by_directory_enumeration": True,
+        "non_utf8_explicit_argv_becomes_replacement_and_cannot_find": True,
         "directory_enumeration_excludes_hidden_entries": True,
         "explicit_hidden_path_is_scannable": True,
         "directory_enumeration_order_is_recorded": True,
@@ -564,9 +911,14 @@ def build_report(
         "fixture": {
             "archive_sha256": manifest["archive"]["sha256"],
             "archive_size": manifest["archive"]["size"],
-            "file_count": len(fixture_paths),
+            "file_count": (
+                len(manifest["files"])
+                + 1
+                + len(manifest["raw_files"])
+            ),
             "manifest_path": FIXTURE_MANIFEST,
             "manifest_sha256": sha256(manifest_raw),
+            "non_utf8_extracted_basename_hex": extracted_raw_paths,
         },
         "generator": "tools/upstream/probe_special_path_behavior.py",
         "generator_sha256": sha256(pathlib.Path(__file__).read_bytes()),

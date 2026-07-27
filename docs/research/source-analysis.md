@@ -48,7 +48,7 @@ signatures/*                     binary crypto/junk signatures
 `--recursivescan` 不控制第 5 步的目录枚举，而是控制单个文件内部的
 resource/overlay 递归。多目标顺序、filename prefix 和结构化输出有效性见
 [`cli-path-behavior.md`](cli-path-behavior.md)；无参数 `QDir::entryInfoList()`
-在 Linux Qt5 的 Unicode、控制字符、hidden 与大小写排序结果见
+在 Linux Qt5 的 Unicode、非 UTF-8、控制字符、hidden 与大小写排序结果见
 [`special-path-behavior.md`](special-path-behavior.md)。
 
 ## 扫描主流程

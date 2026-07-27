@@ -73,10 +73,21 @@ class GenerateSpecialPathFixtureTests(unittest.TestCase):
             with tarfile.open(fileobj=io.BytesIO(archive), mode="r:") as tar:
                 members = tar.getmembers()
                 self.assertEqual(
-                    [member.name for member in members],
                     [
-                        *(value.rstrip("/") for value in MODULE.DIRECTORIES),
-                        *MODULE.FILES,
+                        member.name.encode("utf-8", "surrogateescape")
+                        for member in members
+                    ],
+                    [
+                        *(
+                            value.rstrip("/").encode("utf-8")
+                            for value in MODULE.DIRECTORIES
+                        ),
+                        *(value.encode("utf-8") for value in MODULE.FILES),
+                        MODULE.RAW_CONTROL_FILE.encode("utf-8"),
+                        *(
+                            path_bytes
+                            for path_bytes, _ in MODULE.RAW_FILES
+                        ),
                     ],
                 )
                 for member in members[len(MODULE.DIRECTORIES) :]:
@@ -88,6 +99,13 @@ class GenerateSpecialPathFixtureTests(unittest.TestCase):
             self.assertEqual(
                 [entry["path"] for entry in manifest["files"]],
                 list(MODULE.FILES),
+            )
+            self.assertEqual(
+                [
+                    bytes.fromhex(entry["path_bytes_hex"])
+                    for entry in manifest["raw_files"]
+                ],
+                [path_bytes for path_bytes, _ in MODULE.RAW_FILES],
             )
 
     def test_matrix_contains_distinct_unicode_and_special_names(self):
@@ -110,6 +128,20 @@ class GenerateSpecialPathFixtureTests(unittest.TestCase):
         self.assertNotEqual(
             "é-nfc.pdf".encode("utf-8"),
             "e\u0301-nfd.pdf".encode("utf-8"),
+        )
+
+    def test_raw_path_matrix_is_invalid_utf8_and_has_valid_control(self):
+        for path_bytes, _ in MODULE.RAW_FILES:
+            with self.subTest(path=path_bytes.hex()):
+                with self.assertRaises(UnicodeDecodeError):
+                    path_bytes.decode("utf-8")
+                self.assertTrue(
+                    path_bytes.startswith(b"paths/nonutf8/")
+                )
+                self.assertTrue(path_bytes.endswith(b".pdf"))
+        self.assertEqual(
+            MODULE.RAW_CONTROL_FILE,
+            "paths/nonutf8/ascii-control.pdf",
         )
 
 

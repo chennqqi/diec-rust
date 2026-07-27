@@ -19,6 +19,7 @@ DIRECTORIES = (
     "paths/",
     "paths/special/",
     "paths/目录 空格/",
+    "paths/nonutf8/",
 )
 
 FILES = (
@@ -40,6 +41,22 @@ FILES = (
     "paths/special/.hidden.pdf",
     "paths/目录 空格/子 文件.pdf",
 )
+
+RAW_FILES = (
+    (
+        b"paths/nonutf8/invalid-ff-\xff.pdf",
+        "isolated invalid 0xff byte",
+    ),
+    (
+        b"paths/nonutf8/invalid-c0af-\xc0\xaf.pdf",
+        "overlong UTF-8 slash byte sequence",
+    ),
+    (
+        b"paths/nonutf8/truncated-e282-\xe2\x82.pdf",
+        "truncated three-byte UTF-8 sequence",
+    ),
+)
+RAW_CONTROL_FILE = "paths/nonutf8/ascii-control.pdf"
 
 
 def _sha256(data: bytes) -> str:
@@ -78,8 +95,8 @@ def _octal(value: int, width: int) -> bytes:
     return encoded
 
 
-def _header(name: str, *, size: int, typeflag: bytes) -> bytes:
-    name_bytes = name.encode("utf-8")
+def _header(name: str | bytes, *, size: int, typeflag: bytes) -> bytes:
+    name_bytes = name.encode("utf-8") if isinstance(name, str) else name
     if not name_bytes or len(name_bytes) > 100 or b"\0" in name_bytes:
         raise ValueError(f"path is not representable in fixture USTAR: {name!r}")
     if typeflag not in {b"0", b"5"}:
@@ -101,7 +118,9 @@ def _header(name: str, *, size: int, typeflag: bytes) -> bytes:
     return bytes(header)
 
 
-def _entry(name: str, payload: bytes, *, typeflag: bytes) -> bytes:
+def _entry(
+    name: str | bytes, payload: bytes, *, typeflag: bytes
+) -> bytes:
     result = bytearray(_header(name, size=len(payload), typeflag=typeflag))
     result.extend(payload)
     result.extend(b"\0" * ((-len(payload)) % 512))
@@ -114,6 +133,9 @@ def build_archive(payload: bytes) -> bytes:
         archive.extend(_entry(directory, b"", typeflag=b"5"))
     for path in FILES:
         archive.extend(_entry(path, payload, typeflag=b"0"))
+    archive.extend(_entry(RAW_CONTROL_FILE, payload, typeflag=b"0"))
+    for path_bytes, _ in RAW_FILES:
+        archive.extend(_entry(path_bytes, payload, typeflag=b"0"))
     archive.extend(b"\0" * 1024)
     return bytes(archive)
 
@@ -151,6 +173,22 @@ def generate(
             }
             for path in FILES
         ],
+        "raw_files": [
+            {
+                "path_bytes_hex": path_bytes.hex(),
+                "purpose": purpose,
+                "source": SOURCE_NAME,
+                "size": len(payload),
+                "sha256": _sha256(payload),
+            }
+            for path_bytes, purpose in RAW_FILES
+        ],
+        "raw_control_file": {
+            "path": RAW_CONTROL_FILE,
+            "source": SOURCE_NAME,
+            "size": len(payload),
+            "sha256": _sha256(payload),
+        },
     }
     (output_dir / "manifest.json").write_text(
         json.dumps(
