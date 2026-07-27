@@ -1,0 +1,433 @@
+{
+  "archive": {
+    "format": "gnu",
+    "name": "path-filesystem-fixture.tar",
+    "sha256": "c5b2e170e7032afd1e6297c7a9f501ec395f72cae2718a3fbbf91340c704037b",
+    "size": 112640
+  },
+  "deep_levels": 64,
+  "entries": [
+    {
+      "mode": 493,
+      "path": "paths/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/symlink/",
+      "type": "directory"
+    },
+    {
+      "mode": 420,
+      "path": "paths/symlink/target.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331,
+      "source": "minimal.pdf",
+      "type": "file"
+    },
+    {
+      "mode": 511,
+      "path": "paths/symlink/file-link.pdf",
+      "target": "target.pdf",
+      "type": "symlink"
+    },
+    {
+      "mode": 493,
+      "path": "paths/symlink/dir-target/",
+      "type": "directory"
+    },
+    {
+      "mode": 420,
+      "path": "paths/symlink/dir-target/child.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331,
+      "source": "minimal.pdf",
+      "type": "file"
+    },
+    {
+      "mode": 511,
+      "path": "paths/symlink/dir-link",
+      "target": "dir-target",
+      "type": "symlink"
+    },
+    {
+      "mode": 511,
+      "path": "paths/symlink/dangling.pdf",
+      "target": "missing.pdf",
+      "type": "symlink"
+    },
+    {
+      "mode": 493,
+      "path": "paths/cycle/",
+      "type": "directory"
+    },
+    {
+      "mode": 420,
+      "path": "paths/cycle/root.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331,
+      "source": "minimal.pdf",
+      "type": "file"
+    },
+    {
+      "mode": 511,
+      "path": "paths/cycle/loop",
+      "target": ".",
+      "type": "symlink"
+    },
+    {
+      "mode": 0,
+      "path": "paths/denied/",
+      "type": "directory"
+    },
+    {
+      "mode": 420,
+      "path": "paths/denied/secret.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331,
+      "source": "minimal.pdf",
+      "type": "file"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/level-038/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/level-038/level-039/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/level-038/level-039/level-040/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/level-038/level-039/level-040/level-041/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/level-038/level-039/level-040/level-041/level-042/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/level-038/level-039/level-040/level-041/level-042/level-043/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/level-038/level-039/level-040/level-041/level-042/level-043/level-044/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/level-038/level-039/level-040/level-041/level-042/level-043/level-044/level-045/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/level-038/level-039/level-040/level-041/level-042/level-043/level-044/level-045/level-046/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/level-038/level-039/level-040/level-041/level-042/level-043/level-044/level-045/level-046/level-047/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/level-038/level-039/level-040/level-041/level-042/level-043/level-044/level-045/level-046/level-047/level-048/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/level-038/level-039/level-040/level-041/level-042/level-043/level-044/level-045/level-046/level-047/level-048/level-049/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/level-038/level-039/level-040/level-041/level-042/level-043/level-044/level-045/level-046/level-047/level-048/level-049/level-050/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/level-038/level-039/level-040/level-041/level-042/level-043/level-044/level-045/level-046/level-047/level-048/level-049/level-050/level-051/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/level-038/level-039/level-040/level-041/level-042/level-043/level-044/level-045/level-046/level-047/level-048/level-049/level-050/level-051/level-052/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/level-038/level-039/level-040/level-041/level-042/level-043/level-044/level-045/level-046/level-047/level-048/level-049/level-050/level-051/level-052/level-053/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/level-038/level-039/level-040/level-041/level-042/level-043/level-044/level-045/level-046/level-047/level-048/level-049/level-050/level-051/level-052/level-053/level-054/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/level-038/level-039/level-040/level-041/level-042/level-043/level-044/level-045/level-046/level-047/level-048/level-049/level-050/level-051/level-052/level-053/level-054/level-055/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/level-038/level-039/level-040/level-041/level-042/level-043/level-044/level-045/level-046/level-047/level-048/level-049/level-050/level-051/level-052/level-053/level-054/level-055/level-056/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/level-038/level-039/level-040/level-041/level-042/level-043/level-044/level-045/level-046/level-047/level-048/level-049/level-050/level-051/level-052/level-053/level-054/level-055/level-056/level-057/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/level-038/level-039/level-040/level-041/level-042/level-043/level-044/level-045/level-046/level-047/level-048/level-049/level-050/level-051/level-052/level-053/level-054/level-055/level-056/level-057/level-058/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/level-038/level-039/level-040/level-041/level-042/level-043/level-044/level-045/level-046/level-047/level-048/level-049/level-050/level-051/level-052/level-053/level-054/level-055/level-056/level-057/level-058/level-059/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/level-038/level-039/level-040/level-041/level-042/level-043/level-044/level-045/level-046/level-047/level-048/level-049/level-050/level-051/level-052/level-053/level-054/level-055/level-056/level-057/level-058/level-059/level-060/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/level-038/level-039/level-040/level-041/level-042/level-043/level-044/level-045/level-046/level-047/level-048/level-049/level-050/level-051/level-052/level-053/level-054/level-055/level-056/level-057/level-058/level-059/level-060/level-061/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/level-038/level-039/level-040/level-041/level-042/level-043/level-044/level-045/level-046/level-047/level-048/level-049/level-050/level-051/level-052/level-053/level-054/level-055/level-056/level-057/level-058/level-059/level-060/level-061/level-062/",
+      "type": "directory"
+    },
+    {
+      "mode": 493,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/level-038/level-039/level-040/level-041/level-042/level-043/level-044/level-045/level-046/level-047/level-048/level-049/level-050/level-051/level-052/level-053/level-054/level-055/level-056/level-057/level-058/level-059/level-060/level-061/level-062/level-063/",
+      "type": "directory"
+    },
+    {
+      "mode": 420,
+      "path": "paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/level-038/level-039/level-040/level-041/level-042/level-043/level-044/level-045/level-046/level-047/level-048/level-049/level-050/level-051/level-052/level-053/level-054/level-055/level-056/level-057/level-058/level-059/level-060/level-061/level-062/level-063/leaf.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331,
+      "source": "minimal.pdf",
+      "type": "file"
+    }
+  ],
+  "generator": "tools/corpus/generate_path_filesystem_fixture.py",
+  "license": "project-generated paths; baseline corpus bytes only",
+  "payload": {
+    "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+    "size": 331,
+    "source": "minimal.pdf"
+  },
+  "schema_version": 1
+}

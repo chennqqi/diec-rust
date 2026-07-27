@@ -1,0 +1,558 @@
+{
+  "binaries": {
+    "cmake": {
+      "path": "/opt/die-build/src/console/diec",
+      "sha256": "da1fab49f7ba5970d1fc1c7fe3d4f380cf5e8775dd8097207e7b3c30f08236cf",
+      "size": 8248008
+    },
+    "qmake": {
+      "path": "/opt/die-source/build/release/diec",
+      "sha256": "721ec846507a8567aae07e91dcd1f576182481ae0dc1595b1f19e4a3e859b79d",
+      "size": 7684384
+    }
+  },
+  "cases": {
+    "dangling_symlink": {
+      "observations": {
+        "cmake": {
+          "exit_code": 1,
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "48b5671e6aa7f34d80f0fe5cb435162d57e0b66264665fb23fb82ff725bac75a",
+            "bytes": 46,
+            "sha256": "48b5671e6aa7f34d80f0fe5cb435162d57e0b66264665fb23fb82ff725bac75a"
+          },
+          "wall_elapsed_ms": 510
+        },
+        "qmake": {
+          "exit_code": 1,
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "48b5671e6aa7f34d80f0fe5cb435162d57e0b66264665fb23fb82ff725bac75a",
+            "bytes": 46,
+            "sha256": "48b5671e6aa7f34d80f0fe5cb435162d57e0b66264665fb23fb82ff725bac75a"
+          },
+          "wall_elapsed_ms": 538
+        }
+      },
+      "path": "/work/paths/symlink/dangling.pdf",
+      "prefix_summary": {},
+      "summary": {
+        "cannot_find_count": 1,
+        "filename_prefix_count": 0,
+        "pdf_root_count": 0
+      },
+      "timeout_seconds": 30,
+      "user": "root"
+    },
+    "deep_64": {
+      "observations": {
+        "cmake": {
+          "exit_code": 0,
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35",
+            "bytes": 727,
+            "sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+          },
+          "wall_elapsed_ms": 541
+        },
+        "qmake": {
+          "exit_code": 0,
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35",
+            "bytes": 727,
+            "sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+          },
+          "wall_elapsed_ms": 507
+        }
+      },
+      "path": "/work/paths/deep",
+      "prefix_summary": {},
+      "summary": {
+        "cannot_find_count": 0,
+        "filename_prefix_count": 0,
+        "pdf_root_count": 1
+      },
+      "timeout_seconds": 30,
+      "user": "root"
+    },
+    "denied_as_nobody": {
+      "observations": {
+        "cmake": {
+          "exit_code": 0,
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "wall_elapsed_ms": 533
+        },
+        "qmake": {
+          "exit_code": 0,
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "wall_elapsed_ms": 527
+        }
+      },
+      "path": "/work/paths/denied",
+      "prefix_summary": {},
+      "summary": {
+        "cannot_find_count": 0,
+        "filename_prefix_count": 0,
+        "pdf_root_count": 0
+      },
+      "timeout_seconds": 30,
+      "user": "nobody"
+    },
+    "denied_as_root": {
+      "observations": {
+        "cmake": {
+          "exit_code": 0,
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35",
+            "bytes": 727,
+            "sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+          },
+          "wall_elapsed_ms": 529
+        },
+        "qmake": {
+          "exit_code": 0,
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35",
+            "bytes": 727,
+            "sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+          },
+          "wall_elapsed_ms": 514
+        }
+      },
+      "path": "/work/paths/denied",
+      "prefix_summary": {},
+      "summary": {
+        "cannot_find_count": 0,
+        "filename_prefix_count": 0,
+        "pdf_root_count": 1
+      },
+      "timeout_seconds": 30,
+      "user": "root"
+    },
+    "direct_control": {
+      "observations": {
+        "cmake": {
+          "exit_code": 0,
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35",
+            "bytes": 727,
+            "sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+          },
+          "wall_elapsed_ms": 520
+        },
+        "qmake": {
+          "exit_code": 0,
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35",
+            "bytes": 727,
+            "sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+          },
+          "wall_elapsed_ms": 519
+        }
+      },
+      "path": "/work/paths/symlink/target.pdf",
+      "prefix_summary": {},
+      "summary": {
+        "cannot_find_count": 0,
+        "filename_prefix_count": 0,
+        "pdf_root_count": 1
+      },
+      "timeout_seconds": 30,
+      "user": "root"
+    },
+    "directory_symlink": {
+      "observations": {
+        "cmake": {
+          "exit_code": 0,
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35",
+            "bytes": 727,
+            "sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+          },
+          "wall_elapsed_ms": 522
+        },
+        "qmake": {
+          "exit_code": 0,
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35",
+            "bytes": 727,
+            "sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+          },
+          "wall_elapsed_ms": 509
+        }
+      },
+      "path": "/work/paths/symlink/dir-link",
+      "prefix_summary": {},
+      "summary": {
+        "cannot_find_count": 0,
+        "filename_prefix_count": 0,
+        "pdf_root_count": 1
+      },
+      "timeout_seconds": 30,
+      "user": "root"
+    },
+    "file_symlink": {
+      "observations": {
+        "cmake": {
+          "exit_code": 0,
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35",
+            "bytes": 727,
+            "sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+          },
+          "wall_elapsed_ms": 488
+        },
+        "qmake": {
+          "exit_code": 0,
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35",
+            "bytes": 727,
+            "sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+          },
+          "wall_elapsed_ms": 477
+        }
+      },
+      "path": "/work/paths/symlink/file-link.pdf",
+      "prefix_summary": {},
+      "summary": {
+        "cannot_find_count": 0,
+        "filename_prefix_count": 0,
+        "pdf_root_count": 1
+      },
+      "timeout_seconds": 30,
+      "user": "root"
+    },
+    "self_cycle": {
+      "observations": {
+        "cmake": {
+          "exit_code": 0,
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "66f7fb7535dcdd248ff2ee053bcd528a009c277f598044540e3c86506b0b8bf6",
+            "bytes": 35055,
+            "sha256": "66f7fb7535dcdd248ff2ee053bcd528a009c277f598044540e3c86506b0b8bf6"
+          },
+          "wall_elapsed_ms": 604
+        },
+        "qmake": {
+          "exit_code": 0,
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "66f7fb7535dcdd248ff2ee053bcd528a009c277f598044540e3c86506b0b8bf6",
+            "bytes": 35055,
+            "sha256": "66f7fb7535dcdd248ff2ee053bcd528a009c277f598044540e3c86506b0b8bf6"
+          },
+          "wall_elapsed_ms": 565
+        }
+      },
+      "path": "/work/paths/cycle",
+      "prefix_summary": {
+        "first_path": "/work/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "last_path": "/work/paths/cycle/root.pdf",
+        "loop_depths": [
+          40,
+          39,
+          38,
+          37,
+          36,
+          35,
+          34,
+          33,
+          32,
+          31,
+          30,
+          29,
+          28,
+          27,
+          26,
+          25,
+          24,
+          23,
+          22,
+          21,
+          20,
+          19,
+          18,
+          17,
+          16,
+          15,
+          14,
+          13,
+          12,
+          11,
+          10,
+          9,
+          8,
+          7,
+          6,
+          5,
+          4,
+          3,
+          2,
+          1,
+          0
+        ]
+      },
+      "summary": {
+        "cannot_find_count": 0,
+        "filename_prefix_count": 41,
+        "pdf_root_count": 41
+      },
+      "timeout_seconds": 10,
+      "user": "root"
+    },
+    "symlink_tree": {
+      "observations": {
+        "cmake": {
+          "exit_code": 0,
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "79d30fa46318c587e501b67afea27364710cae5ac10f09dd1b4eda33c5792617",
+            "bytes": 3057,
+            "sha256": "79d30fa46318c587e501b67afea27364710cae5ac10f09dd1b4eda33c5792617"
+          },
+          "wall_elapsed_ms": 516
+        },
+        "qmake": {
+          "exit_code": 0,
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "79d30fa46318c587e501b67afea27364710cae5ac10f09dd1b4eda33c5792617",
+            "bytes": 3057,
+            "sha256": "79d30fa46318c587e501b67afea27364710cae5ac10f09dd1b4eda33c5792617"
+          },
+          "wall_elapsed_ms": 509
+        }
+      },
+      "path": "/work/paths/symlink",
+      "prefix_summary": {
+        "paths": [
+          "/work/paths/symlink/dir-link/child.pdf",
+          "/work/paths/symlink/dir-target/child.pdf",
+          "/work/paths/symlink/file-link.pdf",
+          "/work/paths/symlink/target.pdf"
+        ]
+      },
+      "summary": {
+        "cannot_find_count": 0,
+        "filename_prefix_count": 4,
+        "pdf_root_count": 4
+      },
+      "timeout_seconds": 30,
+      "user": "root"
+    }
+  },
+  "facts": {
+    "dangling_symlink_is_reported_missing": true,
+    "deep_64_directory_reaches_leaf": true,
+    "denied_directory_is_silently_empty_for_nobody": true,
+    "directory_symlink_is_followed": true,
+    "file_symlink_is_followed": true,
+    "fixture_preflight_passed": true,
+    "qmake_and_cmake_outputs_are_byte_equal": true,
+    "self_cycle_duplicates_pdf_at_depths_40_through_0": true,
+    "symlink_tree_duplicates_file_and_directory_targets": true
+  },
+  "failures": [],
+  "fixture": {
+    "archive_sha256": "c5b2e170e7032afd1e6297c7a9f501ec395f72cae2718a3fbbf91340c704037b",
+    "archive_size": 112640,
+    "entry_count": 79,
+    "extraction_preflight": {
+      "cycle_link": ".",
+      "cycle_link_is_symlink": true,
+      "dangling_link": "missing.pdf",
+      "deep_component_count": 64,
+      "deep_leaf": "/work/paths/deep/level-000/level-001/level-002/level-003/level-004/level-005/level-006/level-007/level-008/level-009/level-010/level-011/level-012/level-013/level-014/level-015/level-016/level-017/level-018/level-019/level-020/level-021/level-022/level-023/level-024/level-025/level-026/level-027/level-028/level-029/level-030/level-031/level-032/level-033/level-034/level-035/level-036/level-037/level-038/level-039/level-040/level-041/level-042/level-043/level-044/level-045/level-046/level-047/level-048/level-049/level-050/level-051/level-052/level-053/level-054/level-055/level-056/level-057/level-058/level-059/level-060/level-061/level-062/level-063/leaf.pdf",
+      "denied_mode": 0,
+      "dir_link": "dir-target",
+      "dir_link_is_symlink": true,
+      "file_link": "target.pdf",
+      "file_link_is_symlink": true
+    },
+    "manifest_path": "docs/research/data/path-filesystem-fixture.json",
+    "manifest_sha256": "a763d4a3270f299f0bfb983cc5a204a4e0fd4247b74fabe247756d5bd962dedb"
+  },
+  "generator": "tools/upstream/probe_path_filesystem_behavior.py",
+  "generator_sha256": "1cbc8eec867363ffb63706d48ed3913896d850e3f4d47baea9a77bc43f664bee",
+  "images": {
+    "cmake": {
+      "binary": "/opt/die-build/src/console/diec",
+      "id": "sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040",
+      "image": "diec-rust/upstream-oracle-cmake:74eaf505",
+      "repo_digests": [
+        "diec-rust/upstream-oracle-cmake@sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040"
+      ],
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    },
+    "qmake": {
+      "binary": "/opt/die-source/build/release/diec",
+      "id": "sha256:cc5561a5d256c7912227a8ecf4ba9c6b9178c99911e471017d3c3988bac964ab",
+      "image": "diec-rust/upstream-oracle:74eaf505-repro",
+      "repo_digests": [
+        "diec-rust/upstream-oracle@sha256:cc5561a5d256c7912227a8ecf4ba9c6b9178c99911e471017d3c3988bac964ab"
+      ],
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    }
+  },
+  "local_sources": {
+    "baseline_generator": {
+      "path": "tools/corpus/generate_baseline_corpus.py",
+      "sha256": "6b36a120c552cecfd4212385302807e6f85f2e2aa2a867528026c48d80d070fa"
+    },
+    "fixture_generator": {
+      "path": "tools/corpus/generate_path_filesystem_fixture.py",
+      "sha256": "68f4f43bd4d2711a9d02991ab467788f9d212a35af027df7f9286cb69b96021c"
+    }
+  },
+  "passed": true,
+  "platform": "linux-x86_64-qt5",
+  "raw_artifacts": {
+    "48b5671e6aa7f34d80f0fe5cb435162d57e0b66264665fb23fb82ff725bac75a": {
+      "base64": "eNpzTszLyy9RSMvMS7FS0C/PL8rWL0gsySjWL67MzcnMy9ZPScxLBzLS9QpS0rgAjKoQ2w==",
+      "bytes": 46,
+      "compressed_bytes": 52,
+      "encoding": "zlib+base64"
+    },
+    "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35": {
+      "base64": "eNqtkbEOgjAQhvc+BemECTEiTqwa4uhuGBq4mibQkraSKOHdbatgihIcvOny/99d764dCkzgEjQUWuE0ODvBRjdmDqGsAn1rwDD4dMhw5NuMU2GtqS4oVaCts5laDZHAte1rMoccgZQgp5xid/dqksRTqyXVFfyxv4+/NOfoc1LPrPieR0vGLxbKhKyJTgMDh/F6t5qrGO5GHT9HtSAVE9yCphn+gPro30s+770XdW0+YnldAzYVA5kGXmEIW0gKWiaL+xevBj9cYOj55QyekiNfz1GPEHoA3E+S0g==",
+      "bytes": 727,
+      "compressed_bytes": 220,
+      "encoding": "zlib+base64"
+    },
+    "66f7fb7535dcdd248ff2ee053bcd528a009c277f598044540e3c86506b0b8bf6": {
+      "base64": "eNrt08FOg0AUheE9T0FY1aQpVlyx1TQu3ZsuCFyUCAwZxpra9N0FtDVgm6qpscLPgpC5h2FmuJ/7rPSjWwTmoXTDZZiKmypV9OGmlTKTIop9a2XZ1eVEYiQ0pePbd81Afa22T00kTlIxy0KqjHN7PXPG7XKSx6oudcdVHJdi6sp5t1QEWnJTz1s9NZEbCSLR3VyZvDRf9bxpt7QI0idpL3v38g+tc1vPg2zPFj/WY3SS39ehmdJZYHy7Co+mk8uzfW9szi1u8vtSC9FlovI6WE3mfAqtx8fe5Nt5X6ksq37E4e1WwSJNRPt268WRXIgXxpF3cP/h+wRfOIHNnDuOoTUyt9rjc2ttWZbbR7qoRS1qAQtYwAIWq1jF6tCswhSmMEUoQhGKUHCCE5w9wIlLXOISkpCEJCTRiEY0AhGIQAQiBjGIQfjBD34D54c85CEPdKADXW/R4Q1veIMa1KDWC2ooQxnKAAYwgP07YNjCFrZgBStYnTQrRCEKUWACE5hOBhOOcIQjCEEIQn9CCD3oQQ9wgAOcX4eDGcxgBi5wgctRuSAFKUgBCUhA8mMk+MAHPqABDWgIKlCBim+qAAQgAIEFLGABBjCAAQIQMGQBND/NP8Tmp+/p+4H1PS1Py/e65V8BRcNClg==",
+      "bytes": 35055,
+      "compressed_bytes": 487,
+      "encoding": "zlib+base64"
+    },
+    "79d30fa46318c587e501b67afea27364710cae5ac10f09dd1b4eda33c5792617": {
+      "base64": "eNrtlT1PwzAQhnf/ishTkUpNCVNWUMXIjjpY8bm16i/ZpqhU/e/YLi1KaBQGJmpPp7vHl7vLewl5N25DLA1rT/xOSaE3hAl3m412LSSbWcYbtEdVPJhBgDZ43FSv2ZHO/mxlhAsJYWchMvjlaYGn3bDQ3KRQ32849xBS5K4fstSBDilvtDLyDJSB63NefOSn1vW8H9pS+Qbdsi+XP1bnOa6pGmjxu57ghF4laGGcoqGpIjyZzx5uhm6c5sYzP0RtwXlhdAJjMvwDOkz/usnjvB+NUvFFjLcbQSsFuKbqXJzAPdQtZ/Vo/+1Xgl9M4JTzwhg6niXq+pfogBAiA/IP1K0glAUoC3CFC5CEln8ARflF+Vel/ONnv8i+yP7fyv4Ta/GCIA==",
+      "bytes": 3057,
+      "compressed_bytes": 292,
+      "encoding": "zlib+base64"
+    },
+    "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855": {
+      "base64": "eNoDAAAAAAE=",
+      "bytes": 0,
+      "compressed_bytes": 8,
+      "encoding": "zlib+base64"
+    }
+  },
+  "remaining_gap": "CAP-GAP-003: locale/filesystem and cross-platform behavior",
+  "resource_limits": {
+    "container_root": "read-only",
+    "core_bytes": 0,
+    "cpus": 1,
+    "fixture_mount": "read-only",
+    "memory_bytes": 536870912,
+    "network": "none",
+    "pids": 128,
+    "timeout_seconds_default": 30,
+    "timeout_seconds_self_cycle": 10,
+    "work_tmpfs_bytes": 67108864
+  },
+  "schema_version": 1,
+  "source_contract": {
+    "path": "/opt/die-source/Formats/xbinary.cpp",
+    "required_patterns": {
+      "QFileInfoList eil = dir.entryInfoList();": 4,
+      "findFiles(eil.at(i).absoluteFilePath(), pListFileNames, pPdStruct);": 1
+    },
+    "sha256": "d82bd21326bb7ba07eb343020d50af0ae2cf7e8e534d8e08d07ffa8129913c34"
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}
