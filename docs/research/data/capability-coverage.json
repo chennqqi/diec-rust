@@ -287,7 +287,10 @@
         "docs/research/cli-json-schema-inventory.md",
         "docs/research/engine-contract-behavior.md",
         "docs/research/data/engine-contract-linux-qt5.json",
-        "tools/tests/test_probe_engine_contract.py"
+        "tools/tests/test_probe_engine_contract.py",
+        "docs/research/global-host-api-runtime-differential.md",
+        "docs/research/data/global-host-api-qt5.json",
+        "tools/tests/test_probe_global_host_api.py"
       ]
     },
     "rule_orchestration": {
@@ -1381,7 +1384,7 @@
         "CAP-GAP-007"
       ],
       "platform_status": {
-        "linux-x86_64-qt5": "source_only_runtime_corpus_missing",
+        "linux-x86_64-qt5": "runtime_observed",
         "linux-x86_64-qt6": "platform_missing",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
@@ -1392,7 +1395,7 @@
   "schema_version": 1,
   "source": {
     "path": "docs/research/data/capability-traceability.json",
-    "sha256": "807cf63cfc958c284431f63f269a728f6fe0fa4b16089573b2f3c140facaab60"
+    "sha256": "f6523fa9d0f28e6df3becdff38850574aee43131699488a34707f1219b9cd15b"
   },
   "status_definitions": {
     "platform_missing": "no complete capability baseline is admitted for this platform",
@@ -1411,9 +1414,9 @@
     "status_counts_by_platform": {
       "linux-x86_64-qt5": {
         "platform_missing": 0,
-        "runtime_observed": 37,
+        "runtime_observed": 38,
         "runtime_observed_with_corpus_gaps": 19,
-        "source_only_runtime_corpus_missing": 11,
+        "source_only_runtime_corpus_missing": 10,
         "source_only_with_corpus_gaps": 1
       },
       "linux-x86_64-qt6": {

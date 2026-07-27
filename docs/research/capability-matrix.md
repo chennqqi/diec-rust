@@ -181,7 +181,8 @@ hideunknown 的可观察增量。完整输入哈希和输出见
 - `CAP-RESULT-003`：heuristic/unknown 标记。
 - `CAP-RESULT-004`：自身与父级 ID。
 - `CAP-RESULT-005`：record type/name 枚举及字符串 type/name。
-- `CAP-RESULT-006`：version、info、规则信息与优先级。
+- `CAP-RESULT-006`：version、info、规则信息与优先级；固定 engine/global HostApi
+  oracle 已观察非空 version/info、规则名/路径和两种 priority。
 
 Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前冻结。
 
@@ -208,8 +209,8 @@ validator 要求本文 68 个 `CAP-*` 与 manifest 完全相等，并拒绝缺�
 不能提升为 Rust 已实现或跨平台兼容。
 
 [`capability-coverage-report.md`](capability-coverage-report.md) 进一步把该清单
-投影为 68 行 × 4 平台的闭集：Linux Qt5 为 37 observed、19 observed with
-gaps、11 source-only、1 source-only with gaps；Linux Qt6、Windows 和 macOS
+投影为 68 行 × 4 平台的闭集：Linux Qt5 为 38 observed、19 observed with
+gaps、10 source-only、1 source-only with gaps；Linux Qt6、Windows 和 macOS
 各有 68 个 platform-missing。全部行已分类不等于覆盖完成。
 
 - [CLI main](https://github.com/horsicq/DIE-engine/blob/74eaf505c250ab47e709024e9dc41657cd8f2254/src/console/main_console.cpp)

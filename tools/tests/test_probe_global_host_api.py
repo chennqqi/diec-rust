@@ -90,6 +90,27 @@ class GlobalHostApiProbeTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "array removeResult"):
             MODULE.validate_observation(changed)
 
+    def test_nonempty_version_info_and_type_priority_are_observed(self):
+        first = self.observation["results"]["steps"][0]
+        self.assertEqual(
+            first["evaluation"]["source"],
+            "_setResult('compiler','Rust','1.0','first')",
+        )
+        self.assertEqual(
+            first["records"],
+            [
+                {
+                    "info": "first",
+                    "is_advanced_heuristic": False,
+                    "is_heuristic": False,
+                    "name": "Rust",
+                    "priority": 30,
+                    "type": "compiler",
+                    "version": "1.0",
+                }
+            ],
+        )
+
     def test_stop_state_conflation_is_rejected(self):
         changed = json.loads(json.dumps(self.observation))
         changed["stop"]["js_stop_before_break"]["evaluation"][

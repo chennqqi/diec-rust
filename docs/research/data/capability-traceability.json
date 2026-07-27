@@ -116,7 +116,10 @@
         "docs/research/cli-json-schema-inventory.md",
         "docs/research/engine-contract-behavior.md",
         "docs/research/data/engine-contract-linux-qt5.json",
-        "tools/tests/test_probe_engine_contract.py"
+        "tools/tests/test_probe_engine_contract.py",
+        "docs/research/global-host-api-runtime-differential.md",
+        "docs/research/data/global-host-api-qt5.json",
+        "tools/tests/test_probe_global_host_api.py"
       ]
     }
   },
@@ -194,7 +197,7 @@
     {"id": "CAP-RESULT-003", "name": "heuristic and unknown flags", "verification": "source_verified", "evidence_set": "result_model"},
     {"id": "CAP-RESULT-004", "name": "record and parent identifiers", "verification": "source_verified", "evidence_set": "result_model"},
     {"id": "CAP-RESULT-005", "name": "record type and name representations", "verification": "source_verified", "evidence_set": "result_model"},
-    {"id": "CAP-RESULT-006", "name": "record version info rule and priority", "verification": "source_verified", "evidence_set": "result_model"}
+    {"id": "CAP-RESULT-006", "name": "record version info rule and priority", "verification": "observed", "evidence_set": "result_model"}
   ],
   "coverage_gaps": [
     {
@@ -260,9 +263,9 @@
   ],
   "summary": {
     "capability_count": 68,
-    "observed": 37,
+    "observed": 38,
     "observed_with_gaps": 19,
-    "source_verified": 11,
+    "source_verified": 10,
     "source_verified_with_gaps": 1,
     "coverage_gap_count": 8,
     "phase_0_coverage_complete": false

@@ -68,14 +68,14 @@ Accepted。
 | `P0-BLOCK-002` | Open | 五份设计已 review-ready/In Review；仍缺 architecture、API、C ABI、testing、risks 的明确评审结论 |
 | `P0-BLOCK-003` | Open | 十个 ADR 已 review-ready、但 acceptance-ready 均为 false；仍需 Accepted/Rejected/Superseded 评审结论 |
 | `P0-BLOCK-004` | Open | runtime `db*` 2,268 文件身份及根 MIT/marker 已闭合；仍需 PNG/历史贡献、其余 source closure 和发布责任人书面评审 |
-| `P0-BLOCK-005` | Open | 68 行 × 4 平台 coverage report 已建立且无未分类 cell；仍需关闭 12 个 Linux source-only、25 个 corpus-gap 行及三个平台各 68 个 platform-missing |
+| `P0-BLOCK-005` | Open | 68 行 × 4 平台 coverage report 已建立且无未分类 cell；仍需关闭 11 个 Linux source-only、25 个 corpus-gap 行及三个平台各 68 个 platform-missing |
 | `P0-BLOCK-006` | Open | strict process runner、bounded output 和 wall time/peak RSS 报告已有证据；仍需固定环境的上游 benchmark、noise calibration、可测 latency/memory/size 目标和默认资源限制 |
 
 ## 下一步顺序
 
 1. `P0-BLOCK-001` 已关闭；后续能力增删必须同时修改 matrix/manifest，validator
    会拒绝 ID、固定 commit、证据路径或汇总计数漂移。
-2. coverage report 已完成闭集分类；优先为 12 个 Linux source-only 能力建立
+2. coverage report 已完成闭集分类；优先为 11 个 Linux source-only 能力建立
    runtime corpus，并逐项收敛 25 个 corpus-gap 行，再扩展平台 oracle。
 3. 并行准备许可证和 benchmark 评审材料；不得用技术可行性替代许可证结论，
    也不得在没有固定环境时声称性能改善。

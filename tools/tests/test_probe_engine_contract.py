@@ -88,6 +88,27 @@ class ProbeEngineContractTests(unittest.TestCase):
         )
         self.assertFalse(audit["public_runtime_filter_reachable"])
 
+    def test_rule_identity_and_priority_metadata_are_observed(self):
+        record = self.cases["filter_exact_extra"]["records"][0]
+        self.assertEqual(
+            {
+                "version": record["version"],
+                "info": record["info"],
+                "priority": record["priority"],
+                "signature": record["signature"],
+                "signature_file": record["signature_file"],
+            },
+            {
+                "version": "main-global:main-helper:main-type",
+                "info": "",
+                "priority": 12,
+                "signature": "a_extra.0.sg",
+                "signature_file": (
+                    "/fixture/extra/Binary/a_extra.0.sg"
+                ),
+            },
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
