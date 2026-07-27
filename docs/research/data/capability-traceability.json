@@ -249,7 +249,7 @@
     {"id": "CAP-CLI-TEST-002", "name": "create test mode no-op", "verification": "observed", "evidence_set": "cli_options"},
 
     {"id": "CAP-RULE-001", "name": "three database layers", "verification": "observed", "evidence_set": "rule_orchestration"},
-    {"id": "CAP-RULE-002", "name": "rule priority ordering", "verification": "observed_with_gaps", "evidence_set": "rule_orchestration"},
+    {"id": "CAP-RULE-002", "name": "rule priority ordering", "verification": "observed", "evidence_set": "rule_orchestration"},
     {"id": "CAP-RULE-003", "name": "global and type init rules", "verification": "observed", "evidence_set": "rule_orchestration"},
     {"id": "CAP-RULE-004", "name": "file type rule filtering", "verification": "observed", "evidence_set": "rule_orchestration"},
     {"id": "CAP-RULE-005", "name": "deep and heuristic rule filtering", "verification": "observed", "evidence_set": "rule_orchestration"},
@@ -356,13 +356,6 @@
       ]
     },
     {
-      "id": "CAP-GAP-010",
-      "scope": "equal-priority, cross-layer, and comparator-edge rule ordering",
-      "platforms": [
-        "linux-x86_64-qt5"
-      ]
-    },
-    {
       "id": "CAP-GAP-011",
       "scope": "mid-scan callback, asynchronous stop, and cancellation race boundaries",
       "platforms": [
@@ -372,11 +365,11 @@
   ],
   "summary": {
     "capability_count": 68,
-    "observed": 48,
-    "observed_with_gaps": 20,
+    "observed": 49,
+    "observed_with_gaps": 19,
     "source_verified": 0,
     "source_verified_with_gaps": 0,
-    "coverage_gap_count": 11,
+    "coverage_gap_count": 10,
     "phase_0_coverage_complete": false
   }
 }

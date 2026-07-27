@@ -41,7 +41,7 @@ Phase 0 计划形成：
 - [`rquickjs-static-link.md`](rquickjs-static-link.md)：rquickjs/QuickJS-NG 的 Windows/Linux Rust staticlib、C 链接、CRT、系统依赖和许可证闭包（Draft）。
 - [`nintendo-certified-rule.md`](nintendo-certified-rule.md)：唯一 legacy 规则的项目生成语料与真实 detect 基线（Draft）。
 - [`binary-rule-lifecycle.md`](binary-rule-lifecycle.md)：Binary 数据库分层、init/include 选择、共享引擎生命周期和排序缺陷（Draft）。
-- [`rule-orchestration.md`](rule-orchestration.md)：priority、数据库分层、init/include、mode/file-type 过滤和 Unknown 的端到端基线（Draft）。
+- [`rule-orchestration.md`](rule-orchestration.md)：priority 比较器边界、数据库分层、init/include、mode/file-type 过滤、Unknown 及 `CAP-GAP-010` 闭合基线（Draft）。
 - [`signature-language.md`](signature-language.md)：signature 文法、固定 oracle、静态/动态调用清单和边界行为（Draft）。
 - [`pe-rule-runtime-differential.md`](pe-rule-runtime-differential.md)：真实 PE32 context、`PE.compareEP` 与原样 Cygwin32 规则的 Qt5/Rust 正反截断差分（Draft）。
 - [`elf-rule-runtime-differential.md`](elf-rule-runtime-differential.md)：真实 ELF32/ELF64 context、`ELF.compareEP` 与原样 Burneye 规则的 Qt5/Rust 正反截断差分（Draft）。
@@ -95,14 +95,14 @@ Phase 0 计划形成：
   runtime 三层规则树的 2,268 文件 hash、作者/URL/许可标记和 22 个 PNG 清单。
 - [`data/baseline-corpus.json`](data/baseline-corpus.json)：生成语料的文件名、意图、大小和 SHA-256。
 - [`data/capability-traceability.json`](data/capability-traceability.json)：68 个稳定
-  `CAP-*` 的验证层级、证据路径、平台范围和 12 个显式 coverage gap。
+  `CAP-*` 的验证层级、证据路径、平台范围和十个开放 coverage gap。
 - [`data/capability-coverage.json`](data/capability-coverage.json)：68 行 × 4 平台
-  的 272-cell 闭集分类、十一个开放 gap 到能力的显式映射和未分类计数。
+  的 272-cell 闭集分类、十个开放 gap 到能力的显式映射和未分类计数。
 - [`image-dispatch-behavior.md`](image-dispatch-behavior.md)：固定七种非
   JPEG/PNG 图像的自然 Binary fallback、强制 generic Image null adapter 和
   `CAP-GAP-012` 闭合证据。
-- [`data/source-only-closure.json`](data/source-only-closure.json)：与当前一个
-  source-only 行严格相等的可执行关闭清单。
+- [`data/source-only-closure.json`](data/source-only-closure.json)：与当前空
+  source-only 闭集严格相等的可执行关闭清单。
 - [`data/legacy-dispatch-corpus.json`](data/legacy-dispatch-corpus.json)：
   Amiga Hunk/Atari ST 正例、截断、错误端序和近似 magic 控制的 hash-bound 清单。
 - [`data/legacy-dispatch-linux-qt5.json`](data/legacy-dispatch-linux-qt5.json)：

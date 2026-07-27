@@ -26,6 +26,22 @@ DIRECTORIES = (
     "priority-main/Binary",
     "priority-extra",
     "priority-custom",
+    "equal-main",
+    "equal-main/Binary",
+    "equal-extra",
+    "equal-custom",
+    "lexical-priority-main",
+    "lexical-priority-main/Binary",
+    "lexical-priority-extra",
+    "lexical-priority-custom",
+    "missing-priority-main",
+    "missing-priority-main/Binary",
+    "missing-priority-extra",
+    "missing-priority-custom",
+    "empty-priority-main",
+    "empty-priority-main/Binary",
+    "empty-priority-extra",
+    "empty-priority-custom",
     "sort-main",
     "sort-main/Binary",
     "sort-extra",
@@ -184,6 +200,60 @@ FILES: tuple[dict[str, Any], ...] = (
         "detection_name": "Priority four",
     },
     {
+        "path": "equal-main/Binary/z_equal.2.sg",
+        "data": detection_rule("Equal z", b'"ordering-edge"'),
+        "purpose": "equal-priority rule with lexically last name",
+        "detection_name": "Equal z",
+    },
+    {
+        "path": "equal-main/Binary/a_equal.2.sg",
+        "data": detection_rule("Equal a", b'"ordering-edge"'),
+        "purpose": "equal-priority rule with lexically first name",
+        "detection_name": "Equal a",
+    },
+    {
+        "path": "equal-main/Binary/m_equal.2.sg",
+        "data": detection_rule("Equal m", b'"ordering-edge"'),
+        "purpose": "equal-priority rule with lexically middle name",
+        "detection_name": "Equal m",
+    },
+    {
+        "path": "lexical-priority-main/Binary/z_ten.10.sg",
+        "data": detection_rule("Lexical ten", b'"ordering-edge"'),
+        "purpose": "priority 10 rule whose filename sorts after priority 2",
+        "detection_name": "Lexical ten",
+    },
+    {
+        "path": "lexical-priority-main/Binary/a_two.2.sg",
+        "data": detection_rule("Lexical two", b'"ordering-edge"'),
+        "purpose": "priority 2 rule whose filename sorts before priority 10",
+        "detection_name": "Lexical two",
+    },
+    {
+        "path": "missing-priority-main/Binary/a_plain.sg",
+        "data": detection_rule("Missing plain", b'"ordering-edge"'),
+        "purpose": "one-dot name that disables pairwise priority extraction",
+        "detection_name": "Missing plain",
+    },
+    {
+        "path": "missing-priority-main/Binary/z_ranked.1.sg",
+        "data": detection_rule("Missing ranked", b'"ordering-edge"'),
+        "purpose": "priority 1 rule compared lexically with a one-dot name",
+        "detection_name": "Missing ranked",
+    },
+    {
+        "path": "empty-priority-main/Binary/a_empty..sg",
+        "data": detection_rule("Empty segment", b'"ordering-edge"'),
+        "purpose": "empty priority segment that forces filename comparison",
+        "detection_name": "Empty segment",
+    },
+    {
+        "path": "empty-priority-main/Binary/z_empty_ranked.1.sg",
+        "data": detection_rule("Empty ranked", b'"ordering-edge"'),
+        "purpose": "priority 1 rule compared with an empty priority segment",
+        "detection_name": "Empty ranked",
+    },
+    {
         "path": "sort-main/Binary/sort_records.1.sg",
         "data": (
             b"function detect() {\n"
@@ -254,6 +324,38 @@ PRIORITY_ONLY_ORDER = [
     "m_priority.4.sg",
 ]
 
+ORDERING_CASES = {
+    "equal_priority": {
+        "database_prefix": "equal",
+        "execution_order": [
+            "a_equal.2.sg",
+            "m_equal.2.sg",
+            "z_equal.2.sg",
+        ],
+    },
+    "lexical_priority": {
+        "database_prefix": "lexical-priority",
+        "execution_order": [
+            "z_ten.10.sg",
+            "a_two.2.sg",
+        ],
+    },
+    "missing_priority": {
+        "database_prefix": "missing-priority",
+        "execution_order": [
+            "a_plain.sg",
+            "z_ranked.1.sg",
+        ],
+    },
+    "empty_priority": {
+        "database_prefix": "empty-priority",
+        "execution_order": [
+            "a_empty..sg",
+            "z_empty_ranked.1.sg",
+        ],
+    },
+}
+
 
 def generate(output_dir: pathlib.Path) -> dict[str, Any]:
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -292,6 +394,7 @@ def generate(output_dir: pathlib.Path) -> dict[str, Any]:
         ),
         "mode_orders": MODE_ORDERS,
         "priority_only_order": PRIORITY_ONLY_ORDER,
+        "ordering_cases": ORDERING_CASES,
         "engine_contract": {
             "sort_unsorted_names": [
                 "Packer last",

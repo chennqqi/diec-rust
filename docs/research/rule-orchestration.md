@@ -42,7 +42,7 @@ detection 字段；原始流保存在 `--raw-dir` 指定的非版本化目录。
 | Linux Qt5 qmake | `sha256:cc5561a5d256...bac964ab` | `/opt/die-source/build/release/diec` |
 | Linux Qt5 CMake | `sha256:466102628c3a...0255040` | `/opt/die-build/src/console/diec` |
 
-两个镜像的 revision 都是 `74eaf505...`。6 个 case 的规范化执行顺序与 detection
+两个镜像的 revision 都是 `74eaf505...`。10 个 case 的规范化执行顺序与 detection
 逐字段相同，所有进程 exit 0、stderr 为空。profiling elapsed 毫秒不作为稳定
 字段；原始 artifact 仍保留哈希。
 
@@ -65,6 +65,20 @@ priority-only 数据库不含 Binary `_init`，并故意让字典序与 priority
 
 两个 oracle 都按 `1 → 2 → 4` 执行，证明有效比较路径使用字符串 priority，而不是
 完整文件名字典序。
+
+### 比较器边界闭合
+
+四个隔离数据库进一步固定 `sort_signature_prio()` 的 pairwise 行为：
+
+| Case | 输入文件名 | 实际执行顺序 | 结论 |
+| --- | --- | --- | --- |
+| equal priority | `z_equal.2.sg`, `a_equal.2.sg`, `m_equal.2.sg` | `a → m → z` | priority 相等时回退完整文件名 |
+| lexical priority | `z_ten.10.sg`, `a_two.2.sg` | `10 → 2` | priority 是 `QString` 字典序，不是整数 |
+| missing priority | `a_plain.sg`, `z_ranked.1.sg` | `a_plain → z_ranked` | 任一名称不足两个点时，双方都使用默认 `"9"` 并回退文件名 |
+| empty priority | `a_empty..sg`, `z_empty_ranked.1.sg` | `a_empty → z_empty_ranked` | 任一提取段为空时跳过 priority 比较并回退文件名 |
+
+profiling 行固定的是规则执行顺序；CLI 的 `bIsSort=true` 还会独立排序 detection，
+因此探针分别校验执行顺序和 detection 集合，不能用后者倒推出规则顺序。
 
 ### 加入真实 type init
 
@@ -103,6 +117,10 @@ custom priority "0"
 ```
 
 这证明层优先级高于跨层 priority；不能把三层合并后全局排序。
+
+同优先级、字符串 priority、缺失/空段、跨层 append 和 `_init` 非传递环已共同
+闭合 Linux Qt5 的 `CAP-GAP-010`。该闭合不外推到 MSVC/libc++；其余平台仍由
+`CAP-GAP-007` 覆盖。
 
 ## Init 与 include 首层胜出
 

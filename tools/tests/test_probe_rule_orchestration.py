@@ -97,6 +97,37 @@ class ProbeRuleOrchestrationTests(unittest.TestCase):
             {"priority-only"},
         )
 
+    def test_priority_comparator_edges_are_exact(self):
+        cases = self.report["canonical_cases"]
+        self.assertEqual(
+            cases["equal_priority"]["execution_order"],
+            ["a_equal.2.sg", "m_equal.2.sg", "z_equal.2.sg"],
+        )
+        self.assertEqual(
+            cases["lexical_priority"]["execution_order"],
+            ["z_ten.10.sg", "a_two.2.sg"],
+        )
+        self.assertEqual(
+            cases["missing_priority"]["execution_order"],
+            ["a_plain.sg", "z_ranked.1.sg"],
+        )
+        self.assertEqual(
+            cases["empty_priority"]["execution_order"],
+            ["a_empty..sg", "z_empty_ranked.1.sg"],
+        )
+        relationships = self.report["relationships"]
+        for key in (
+            "equal_priority_falls_back_to_name",
+            "priority_segments_are_lexicographic",
+            "missing_priority_disables_pairwise_priority",
+            "empty_priority_disables_pairwise_priority",
+        ):
+            self.assertTrue(relationships[key])
+        self.assertEqual(
+            self.report["closed_corpus_gap"],
+            "CAP-GAP-010",
+        )
+
     def test_modes_filter_ds_ep_and_heur_independently(self):
         cases = self.report["canonical_cases"]
         self.assertNotIn(
@@ -139,9 +170,8 @@ class ProbeRuleOrchestrationTests(unittest.TestCase):
         ):
             self.assertTrue(relationships[key])
 
-        for name, case in self.report["canonical_cases"].items():
-            if name in {"unknown", "priority_only"}:
-                continue
+        for name in MODULE.MODES:
+            case = self.report["canonical_cases"][name]
             for detection in case["detections"]:
                 self.assertEqual(
                     detection["version"],

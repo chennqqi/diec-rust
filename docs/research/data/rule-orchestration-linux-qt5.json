@@ -116,6 +116,53 @@
         "a_custom.0.sg"
       ]
     },
+    "empty_priority": {
+      "detections": [
+        {
+          "info": "",
+          "name": "Empty segment",
+          "type": "format",
+          "version": "ordering-edge"
+        },
+        {
+          "info": "",
+          "name": "Empty ranked",
+          "type": "format",
+          "version": "ordering-edge"
+        }
+      ],
+      "execution_order": [
+        "a_empty..sg",
+        "z_empty_ranked.1.sg"
+      ]
+    },
+    "equal_priority": {
+      "detections": [
+        {
+          "info": "",
+          "name": "Equal a",
+          "type": "format",
+          "version": "ordering-edge"
+        },
+        {
+          "info": "",
+          "name": "Equal m",
+          "type": "format",
+          "version": "ordering-edge"
+        },
+        {
+          "info": "",
+          "name": "Equal z",
+          "type": "format",
+          "version": "ordering-edge"
+        }
+      ],
+      "execution_order": [
+        "a_equal.2.sg",
+        "m_equal.2.sg",
+        "z_equal.2.sg"
+      ]
+    },
     "heuristic": {
       "detections": [
         {
@@ -148,6 +195,46 @@
         "z_normal.1.sg",
         "a_extra.0.sg",
         "a_custom.0.sg"
+      ]
+    },
+    "lexical_priority": {
+      "detections": [
+        {
+          "info": "",
+          "name": "Lexical ten",
+          "type": "format",
+          "version": "ordering-edge"
+        },
+        {
+          "info": "",
+          "name": "Lexical two",
+          "type": "format",
+          "version": "ordering-edge"
+        }
+      ],
+      "execution_order": [
+        "z_ten.10.sg",
+        "a_two.2.sg"
+      ]
+    },
+    "missing_priority": {
+      "detections": [
+        {
+          "info": "",
+          "name": "Missing plain",
+          "type": "format",
+          "version": "ordering-edge"
+        },
+        {
+          "info": "",
+          "name": "Missing ranked",
+          "type": "format",
+          "version": "ordering-edge"
+        }
+      ],
+      "execution_order": [
+        "a_plain.sg",
+        "z_ranked.1.sg"
       ]
     },
     "priority_only": {
@@ -189,12 +276,13 @@
       "execution_order": []
     }
   },
+  "closed_corpus_gap": "CAP-GAP-010",
   "fixture_manifest": {
     "path": "docs/research/data/rule-orchestration-fixture.json",
-    "sha256": "1ac7b2035a6073cba986bab4056ca17165d82ad1dd5299c0e211303bcfb571fc"
+    "sha256": "535d96510e1a807a07af752ed60b0239bdbb91331ce51b1f89d2be043d07f23e"
   },
   "generator": "tools/upstream/probe_rule_orchestration.py",
-  "generator_sha256": "9792ec5a2eb75f75d120c35cfd66d698209f7b9fb2fe13aa206a6633b2a7ec12",
+  "generator_sha256": "42b5b24e13c46fcf9c23c4d2cd3838e25625c1c2e3d55388bb7cca6cabe40ec1",
   "normalized_outputs_equal": true,
   "oracles": [
     {
@@ -370,6 +458,87 @@
           "raw_stdout_bytes": 1264,
           "raw_stdout_sha256": "407127f4b4628b0cd6d0782ffa5d1762d47880f902177e86b986c2eee65b5eaa"
         },
+        "empty_priority": {
+          "arguments": [
+            "--profiling",
+            "--messages",
+            "--json",
+            "--database",
+            "/fixture/empty-priority-main",
+            "--extradatabase",
+            "/fixture/empty-priority-extra",
+            "--customdatabase",
+            "/fixture/empty-priority-custom",
+            "/fixture/input/probe.bin"
+          ],
+          "detections": [
+            {
+              "info": "",
+              "name": "Empty segment",
+              "type": "format",
+              "version": "ordering-edge"
+            },
+            {
+              "info": "",
+              "name": "Empty ranked",
+              "type": "format",
+              "version": "ordering-edge"
+            }
+          ],
+          "execution_order": [
+            "a_empty..sg",
+            "z_empty_ranked.1.sg"
+          ],
+          "exit_code": 0,
+          "raw_stderr_bytes": 0,
+          "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "raw_stdout_bytes": 853,
+          "raw_stdout_sha256": "03ad77d945098c17890e9fb5ef57b2a7e0b9979248fa8b5a195a35336a724932"
+        },
+        "equal_priority": {
+          "arguments": [
+            "--profiling",
+            "--messages",
+            "--json",
+            "--database",
+            "/fixture/equal-main",
+            "--extradatabase",
+            "/fixture/equal-extra",
+            "--customdatabase",
+            "/fixture/equal-custom",
+            "/fixture/input/probe.bin"
+          ],
+          "detections": [
+            {
+              "info": "",
+              "name": "Equal a",
+              "type": "format",
+              "version": "ordering-edge"
+            },
+            {
+              "info": "",
+              "name": "Equal m",
+              "type": "format",
+              "version": "ordering-edge"
+            },
+            {
+              "info": "",
+              "name": "Equal z",
+              "type": "format",
+              "version": "ordering-edge"
+            }
+          ],
+          "execution_order": [
+            "a_equal.2.sg",
+            "m_equal.2.sg",
+            "z_equal.2.sg"
+          ],
+          "exit_code": 0,
+          "raw_stderr_bytes": 0,
+          "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "raw_stdout_bytes": 1110,
+          "raw_stdout_sha256": "b30755a5d223b71d81c5f8cc894f3fa1232b65dd285080f189f40ad845fb0332"
+        },
         "heuristic": {
           "arguments": [
             "--profiling",
@@ -421,6 +590,80 @@
           "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "raw_stdout_bytes": 1623,
           "raw_stdout_sha256": "fbe0880d2c133a8e6ce1b2e25f89006d147151968f03b37c8489ea9ca350a1b3"
+        },
+        "lexical_priority": {
+          "arguments": [
+            "--profiling",
+            "--messages",
+            "--json",
+            "--database",
+            "/fixture/lexical-priority-main",
+            "--extradatabase",
+            "/fixture/lexical-priority-extra",
+            "--customdatabase",
+            "/fixture/lexical-priority-custom",
+            "/fixture/input/probe.bin"
+          ],
+          "detections": [
+            {
+              "info": "",
+              "name": "Lexical ten",
+              "type": "format",
+              "version": "ordering-edge"
+            },
+            {
+              "info": "",
+              "name": "Lexical two",
+              "type": "format",
+              "version": "ordering-edge"
+            }
+          ],
+          "execution_order": [
+            "z_ten.10.sg",
+            "a_two.2.sg"
+          ],
+          "exit_code": 0,
+          "raw_stderr_bytes": 0,
+          "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "raw_stdout_bytes": 829,
+          "raw_stdout_sha256": "511e15cf2ed4f6c66faaaeddbedd6cf310bbaae97fbd82feb133f45572fff7bb"
+        },
+        "missing_priority": {
+          "arguments": [
+            "--profiling",
+            "--messages",
+            "--json",
+            "--database",
+            "/fixture/missing-priority-main",
+            "--extradatabase",
+            "/fixture/missing-priority-extra",
+            "--customdatabase",
+            "/fixture/missing-priority-custom",
+            "/fixture/input/probe.bin"
+          ],
+          "detections": [
+            {
+              "info": "",
+              "name": "Missing plain",
+              "type": "format",
+              "version": "ordering-edge"
+            },
+            {
+              "info": "",
+              "name": "Missing ranked",
+              "type": "format",
+              "version": "ordering-edge"
+            }
+          ],
+          "execution_order": [
+            "a_plain.sg",
+            "z_ranked.1.sg"
+          ],
+          "exit_code": 0,
+          "raw_stderr_bytes": 0,
+          "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "raw_stdout_bytes": 843,
+          "raw_stdout_sha256": "aa83ab6613214de56d3e35395d999b74ac8633efebf351bb5ee77b472ca8f99c"
         },
         "priority_only": {
           "arguments": [
@@ -673,6 +916,87 @@
           "raw_stdout_bytes": 1264,
           "raw_stdout_sha256": "407127f4b4628b0cd6d0782ffa5d1762d47880f902177e86b986c2eee65b5eaa"
         },
+        "empty_priority": {
+          "arguments": [
+            "--profiling",
+            "--messages",
+            "--json",
+            "--database",
+            "/fixture/empty-priority-main",
+            "--extradatabase",
+            "/fixture/empty-priority-extra",
+            "--customdatabase",
+            "/fixture/empty-priority-custom",
+            "/fixture/input/probe.bin"
+          ],
+          "detections": [
+            {
+              "info": "",
+              "name": "Empty segment",
+              "type": "format",
+              "version": "ordering-edge"
+            },
+            {
+              "info": "",
+              "name": "Empty ranked",
+              "type": "format",
+              "version": "ordering-edge"
+            }
+          ],
+          "execution_order": [
+            "a_empty..sg",
+            "z_empty_ranked.1.sg"
+          ],
+          "exit_code": 0,
+          "raw_stderr_bytes": 0,
+          "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "raw_stdout_bytes": 853,
+          "raw_stdout_sha256": "03ad77d945098c17890e9fb5ef57b2a7e0b9979248fa8b5a195a35336a724932"
+        },
+        "equal_priority": {
+          "arguments": [
+            "--profiling",
+            "--messages",
+            "--json",
+            "--database",
+            "/fixture/equal-main",
+            "--extradatabase",
+            "/fixture/equal-extra",
+            "--customdatabase",
+            "/fixture/equal-custom",
+            "/fixture/input/probe.bin"
+          ],
+          "detections": [
+            {
+              "info": "",
+              "name": "Equal a",
+              "type": "format",
+              "version": "ordering-edge"
+            },
+            {
+              "info": "",
+              "name": "Equal m",
+              "type": "format",
+              "version": "ordering-edge"
+            },
+            {
+              "info": "",
+              "name": "Equal z",
+              "type": "format",
+              "version": "ordering-edge"
+            }
+          ],
+          "execution_order": [
+            "a_equal.2.sg",
+            "m_equal.2.sg",
+            "z_equal.2.sg"
+          ],
+          "exit_code": 0,
+          "raw_stderr_bytes": 0,
+          "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "raw_stdout_bytes": 1110,
+          "raw_stdout_sha256": "b30755a5d223b71d81c5f8cc894f3fa1232b65dd285080f189f40ad845fb0332"
+        },
         "heuristic": {
           "arguments": [
             "--profiling",
@@ -724,6 +1048,80 @@
           "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "raw_stdout_bytes": 1623,
           "raw_stdout_sha256": "fbe0880d2c133a8e6ce1b2e25f89006d147151968f03b37c8489ea9ca350a1b3"
+        },
+        "lexical_priority": {
+          "arguments": [
+            "--profiling",
+            "--messages",
+            "--json",
+            "--database",
+            "/fixture/lexical-priority-main",
+            "--extradatabase",
+            "/fixture/lexical-priority-extra",
+            "--customdatabase",
+            "/fixture/lexical-priority-custom",
+            "/fixture/input/probe.bin"
+          ],
+          "detections": [
+            {
+              "info": "",
+              "name": "Lexical ten",
+              "type": "format",
+              "version": "ordering-edge"
+            },
+            {
+              "info": "",
+              "name": "Lexical two",
+              "type": "format",
+              "version": "ordering-edge"
+            }
+          ],
+          "execution_order": [
+            "z_ten.10.sg",
+            "a_two.2.sg"
+          ],
+          "exit_code": 0,
+          "raw_stderr_bytes": 0,
+          "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "raw_stdout_bytes": 829,
+          "raw_stdout_sha256": "511e15cf2ed4f6c66faaaeddbedd6cf310bbaae97fbd82feb133f45572fff7bb"
+        },
+        "missing_priority": {
+          "arguments": [
+            "--profiling",
+            "--messages",
+            "--json",
+            "--database",
+            "/fixture/missing-priority-main",
+            "--extradatabase",
+            "/fixture/missing-priority-extra",
+            "--customdatabase",
+            "/fixture/missing-priority-custom",
+            "/fixture/input/probe.bin"
+          ],
+          "detections": [
+            {
+              "info": "",
+              "name": "Missing plain",
+              "type": "format",
+              "version": "ordering-edge"
+            },
+            {
+              "info": "",
+              "name": "Missing ranked",
+              "type": "format",
+              "version": "ordering-edge"
+            }
+          ],
+          "execution_order": [
+            "a_plain.sg",
+            "z_ranked.1.sg"
+          ],
+          "exit_code": 0,
+          "raw_stderr_bytes": 0,
+          "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "raw_stdout_bytes": 843,
+          "raw_stdout_sha256": "aa83ab6613214de56d3e35395d999b74ac8633efebf351bb5ee77b472ca8f99c"
         },
         "priority_only": {
           "arguments": [
@@ -813,11 +1211,15 @@
     "database_layers_are_appended_main_extra_custom": true,
     "ds_and_ep_require_deep": true,
     "empty_database_adds_unknown": true,
+    "empty_priority_disables_pairwise_priority": true,
+    "equal_priority_falls_back_to_name": true,
     "heur_requires_heuristic": true,
     "main_global_init_wins": true,
     "main_same_name_include_wins": true,
     "main_type_init_wins": true,
+    "missing_priority_disables_pairwise_priority": true,
     "priority_only_beats_lexical_name": true,
+    "priority_segments_are_lexicographic": true,
     "type_init_list_order_is_not_pure_priority": true,
     "wrong_file_type_rule_never_executes": true
   },

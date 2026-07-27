@@ -108,6 +108,9 @@ verbose/messages/profiling 的 channel 与结构化结果关系，以及两个�
 priority、数据库分层、init/include、file type、deep/heuristic 和 Unknown 的隔离
 端到端证据见
 [`rule-orchestration.md`](rule-orchestration.md)。
+其中规则 priority 能力已固定普通 priority、同 priority 回退、字符串 `10 < 2`、
+缺失/空 priority 段、main→extra→custom append 以及 `_init` 非传递比较环，
+在 Linux Qt5 标记为 `observed`。
 引擎过滤、record 排序、停止和扫描入口的固定 harness 证据见
 [`engine-contract-behavior.md`](engine-contract-behavior.md)。
 

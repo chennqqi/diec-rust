@@ -337,6 +337,8 @@ baseline 的变更都要检查本表。
 - **当前证据**：固定 Linux Qt5 qmake/CMake oracle 的 292 条 Binary 执行序列
   逐项一致，重复运行 order hash 稳定；隔离 priority-only/init fixture 又证明
   `_init` 可直接形成比较环，并固定两个 Linux 构建偏离纯 priority 的相同顺序；
+  隔离边界 fixture 还固定了同 priority 文件名回退、字符串 `10 < 2`、缺失/空
+  priority 段的 pairwise 回退及跨层 append，闭合 Linux Qt5 `CAP-GAP-010`；
   Linux Qt6 初始矩阵已证明 runtime profile可改变异常文本和 stderr。尚无
   MSVC/libc++ 顺序证据。
 - **缓解**：报告按 platform 分层；未固定 oracle 标记 missing；不允许跨平台
@@ -353,7 +355,7 @@ baseline 的变更都要检查本表。
   traceability、闭集 coverage report 和 mutation/minimization。
 - **验证**：每项能力 positive/negative/boundary；manifest hash；license review；
   fuzz regression growth。当前报告已分类 68 行 × 4 平台、0 未分类 cell，但仍
-  Linux source-only 已清零，同时显式保留 29 个 corpus-gap 行和三个缺失平台；
+  Linux source-only 已清零，同时显式保留 28 个 corpus-gap 行和三个缺失平台；
   source-only closure manifest 会拒绝任何未进入 closure catalog 的新缺口。
 - **关闭**：release 范围无 coverage gap，所有样本可追溯且处理策略合规。
 

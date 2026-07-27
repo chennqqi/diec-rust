@@ -14,6 +14,22 @@
     "priority-main/Binary",
     "priority-extra",
     "priority-custom",
+    "equal-main",
+    "equal-main/Binary",
+    "equal-extra",
+    "equal-custom",
+    "lexical-priority-main",
+    "lexical-priority-main/Binary",
+    "lexical-priority-extra",
+    "lexical-priority-custom",
+    "missing-priority-main",
+    "missing-priority-main/Binary",
+    "missing-priority-extra",
+    "missing-priority-custom",
+    "empty-priority-main",
+    "empty-priority-main/Binary",
+    "empty-priority-extra",
+    "empty-priority-custom",
     "sort-main",
     "sort-main/Binary",
     "sort-extra",
@@ -194,6 +210,78 @@
       "source": "project-generated"
     },
     {
+      "detection_name": "Equal z",
+      "path": "equal-main/Binary/z_equal.2.sg",
+      "purpose": "equal-priority rule with lexically last name",
+      "sha256": "acf72f94bcf1e4039709373887392c70c73537d90c71b3b1b5cfc0be3d89156f",
+      "size": 97,
+      "source": "project-generated"
+    },
+    {
+      "detection_name": "Equal a",
+      "path": "equal-main/Binary/a_equal.2.sg",
+      "purpose": "equal-priority rule with lexically first name",
+      "sha256": "d20914bb232e55a6a5dd328c230d3e77e09e92ee09294ff9d46c5448faabfc7e",
+      "size": 97,
+      "source": "project-generated"
+    },
+    {
+      "detection_name": "Equal m",
+      "path": "equal-main/Binary/m_equal.2.sg",
+      "purpose": "equal-priority rule with lexically middle name",
+      "sha256": "fff3a08106ac6ffaafbd69aa1bf5be6a53a6104456f2cd9c9c42ec5fc216a13a",
+      "size": 97,
+      "source": "project-generated"
+    },
+    {
+      "detection_name": "Lexical ten",
+      "path": "lexical-priority-main/Binary/z_ten.10.sg",
+      "purpose": "priority 10 rule whose filename sorts after priority 2",
+      "sha256": "4ed0fc9f7a6796d4f5c1454b03e85a4a0cdc0a7f9a17bc8389c9fcd7f5fc27e8",
+      "size": 101,
+      "source": "project-generated"
+    },
+    {
+      "detection_name": "Lexical two",
+      "path": "lexical-priority-main/Binary/a_two.2.sg",
+      "purpose": "priority 2 rule whose filename sorts before priority 10",
+      "sha256": "cfc7ac6c752261d03f0ab6b8db38b77139595397c010b64fd866025c5a9878fd",
+      "size": 101,
+      "source": "project-generated"
+    },
+    {
+      "detection_name": "Missing plain",
+      "path": "missing-priority-main/Binary/a_plain.sg",
+      "purpose": "one-dot name that disables pairwise priority extraction",
+      "sha256": "be9934a3d884c65f1e23317ab9678349f5108c416b2dc0d61908bc7f0d85fb81",
+      "size": 103,
+      "source": "project-generated"
+    },
+    {
+      "detection_name": "Missing ranked",
+      "path": "missing-priority-main/Binary/z_ranked.1.sg",
+      "purpose": "priority 1 rule compared lexically with a one-dot name",
+      "sha256": "dac4a0471c80f51d56662cdac50c32bf7901db67b3a6ff752585e02426ff4c68",
+      "size": 104,
+      "source": "project-generated"
+    },
+    {
+      "detection_name": "Empty segment",
+      "path": "empty-priority-main/Binary/a_empty..sg",
+      "purpose": "empty priority segment that forces filename comparison",
+      "sha256": "ad3864641dddf9fa8231fd5d49dd6b904d9fa178a4ee47a981f890b256c90f1b",
+      "size": 103,
+      "source": "project-generated"
+    },
+    {
+      "detection_name": "Empty ranked",
+      "path": "empty-priority-main/Binary/z_empty_ranked.1.sg",
+      "purpose": "priority 1 rule compared with an empty priority segment",
+      "sha256": "f15f6f5113d7a2baf6df5243de1e04615037d2376d2a877d154fb847e786cb65",
+      "size": 102,
+      "source": "project-generated"
+    },
+    {
       "detection_name": "Sort records",
       "path": "sort-main/Binary/sort_records.1.sg",
       "purpose": "emit records in reverse type-priority order",
@@ -248,6 +336,37 @@
       "a_extra.0.sg",
       "a_custom.0.sg"
     ]
+  },
+  "ordering_cases": {
+    "empty_priority": {
+      "database_prefix": "empty-priority",
+      "execution_order": [
+        "a_empty..sg",
+        "z_empty_ranked.1.sg"
+      ]
+    },
+    "equal_priority": {
+      "database_prefix": "equal",
+      "execution_order": [
+        "a_equal.2.sg",
+        "m_equal.2.sg",
+        "z_equal.2.sg"
+      ]
+    },
+    "lexical_priority": {
+      "database_prefix": "lexical-priority",
+      "execution_order": [
+        "z_ten.10.sg",
+        "a_two.2.sg"
+      ]
+    },
+    "missing_priority": {
+      "database_prefix": "missing-priority",
+      "execution_order": [
+        "a_plain.sg",
+        "z_ranked.1.sg"
+      ]
+    }
   },
   "priority_only_order": [
     "z_priority.1.sg",

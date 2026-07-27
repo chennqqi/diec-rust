@@ -80,6 +80,15 @@ class GenerateRuleOrchestrationFixtureTests(unittest.TestCase):
                 "priority-main/Binary/z_priority.1.sg",
                 "priority-main/Binary/a_priority.2.sg",
                 "priority-main/Binary/m_priority.4.sg",
+                "equal-main/Binary/a_equal.2.sg",
+                "equal-main/Binary/m_equal.2.sg",
+                "equal-main/Binary/z_equal.2.sg",
+                "lexical-priority-main/Binary/z_ten.10.sg",
+                "lexical-priority-main/Binary/a_two.2.sg",
+                "missing-priority-main/Binary/a_plain.sg",
+                "missing-priority-main/Binary/z_ranked.1.sg",
+                "empty-priority-main/Binary/a_empty..sg",
+                "empty-priority-main/Binary/z_empty_ranked.1.sg",
                 "sort-main/Binary/sort_records.1.sg",
                 "break-main/Binary/break_scan.1.sg",
                 "break-main/Binary/after_break.2.sg",
@@ -103,6 +112,40 @@ class GenerateRuleOrchestrationFixtureTests(unittest.TestCase):
                 "a_priority.2.sg",
                 "m_priority.4.sg",
             ],
+        )
+        self.assertEqual(
+            manifest["ordering_cases"],
+            {
+                "empty_priority": {
+                    "database_prefix": "empty-priority",
+                    "execution_order": [
+                        "a_empty..sg",
+                        "z_empty_ranked.1.sg",
+                    ],
+                },
+                "equal_priority": {
+                    "database_prefix": "equal",
+                    "execution_order": [
+                        "a_equal.2.sg",
+                        "m_equal.2.sg",
+                        "z_equal.2.sg",
+                    ],
+                },
+                "lexical_priority": {
+                    "database_prefix": "lexical-priority",
+                    "execution_order": [
+                        "z_ten.10.sg",
+                        "a_two.2.sg",
+                    ],
+                },
+                "missing_priority": {
+                    "database_prefix": "missing-priority",
+                    "execution_order": [
+                        "a_plain.sg",
+                        "z_ranked.1.sg",
+                    ],
+                },
+            },
         )
         self.assertEqual(
             manifest["engine_contract"],

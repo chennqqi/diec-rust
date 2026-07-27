@@ -76,8 +76,9 @@ Last updated: 2026-07-27
 
 规则数据库/engine integration 必须保留
 [`rule-orchestration-fixture.json`](../research/data/rule-orchestration-fixture.json)
-的六类关系：无 type init 的 `1 → 2 → 4` priority、含 `_init` 的非传递实际
-顺序、main→extra→custom layer append、main global/type/include 首选、
+的排序和编排关系：无 type init 的 `1 → 2 → 4` priority、同 priority 文件名
+回退、字符串 priority `10 → 2`、缺失/空 priority 段回退、含 `_init` 的非传递
+实际顺序、main→extra→custom layer append、main global/type/include 首选、
 DS/EP/HEUR mode filter、PE decoy 排除和空数据库 Unknown。legacy 测试比较
 execution order 与 detection 数组原顺序；只允许规范化 profiling elapsed，
 不得按名称排序后比较。order manifest 的 source path/hash/target/oracle 任一漂移
@@ -870,7 +871,7 @@ tested、exact、semantic、waived 和 unsupported 数量。
 
 - Windows/macOS upstream oracle 尚未固定，不能声称跨平台 exact。
 - capability coverage report 已覆盖全部 68 行和 272 个平台 cell 的分类；当前
-  Linux Qt5 source-only 已清零、29 个 corpus-gap 行及三个缺失平台仍不足以
+  Linux Qt5 source-only 已清零、28 个 corpus-gap 行及三个缺失平台仍不足以
   满足 capability matrix；十项的 fixture/harness/assertion 闭集见
   [`source-only-closure.json`](../research/data/source-only-closure.json)。
 - ADR 0006 已提议 rquickjs/QuickJS-NG，但 acceptance conditions 和全库

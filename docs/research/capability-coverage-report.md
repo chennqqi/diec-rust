@@ -61,13 +61,13 @@ Phase 0 报告固定四个平台：
 清单没有“消失的行”，**不表示覆盖完成**：
 
 - Linux Qt5 source-only 能力已清零；
-- 29 行至少关联一个已命名 corpus gap；
+- 28 行至少关联一个已命名 corpus gap；
 - 三个尚未接纳的平台各有 68 个 `platform_missing`；
 - `phase_0_coverage_complete` 必须保持 `false`。
 
 ## 5. 缺口映射
 
-原 traceability 中十一个开放 `CAP-GAP-*` 现在显式映射到受影响能力；
+traceability 中十个开放 `CAP-GAP-*` 现在显式映射到受影响能力；
 
 | Gap | 类型 | 能力行数 | 范围 |
 | --- | --- | ---: | --- |
@@ -80,7 +80,6 @@ Phase 0 报告固定四个平台：
 | `CAP-GAP-007` | platform | 68 | 完整 Qt5/Qt6 capability matrix |
 | `CAP-GAP-008` | platform | 8 | Windows/macOS path 与 encoding |
 | `CAP-GAP-009` | corpus | 1 | device/subdevice short-read、range、seek 与 I/O |
-| `CAP-GAP-010` | corpus | 1 | equal-priority、cross-layer 与 comparator ordering |
 | `CAP-GAP-011` | corpus | 1 | mid-callback、async stop 与 cancellation race |
 映射是保守的审计范围，不是“这些能力除此之外都已完备”的声明。
 
@@ -88,6 +87,11 @@ Phase 0 报告固定四个平台：
 [`image-dispatch-behavior.md`](image-dispatch-behavior.md)
 闭合：七种非 JPEG/PNG variant 的自然 Binary fallback、强制 generic Image
 分支及其 null-adapter error 均有固定机器证据。
+
+原 `CAP-GAP-010` 已由
+[`rule-orchestration.md`](rule-orchestration.md)
+闭合：同 priority、字符串 priority、缺失/空 priority 段、跨层 append 与
+`_init` 比较环均有固定双 Qt5 oracle 证据。
 
 ## 6. 可重复验证
 
@@ -104,8 +108,8 @@ python tools/tests/test_capability_coverage.py
 ```
 
 测试要求 committed report 与生成结果逐字节一致；68 个 ID 与 traceability 完全
-相等；全部平台 cell 有已知状态；Linux 四类计数保持 48/20/0/0；其他三个平台
-各保持 68 个 `platform_missing`；十一个开放 gap 均映射到已知能力；所有
+相等；全部平台 cell 有已知状态；Linux 四类计数保持 49/19/0/0；其他三个平台
+各保持 68 个 `platform_missing`；十个开放 gap 均映射到已知能力；所有
 `with_corpus_gaps` 状态都至少关联一个具名 corpus gap。
 
 ## 7. 对 Phase 0 门禁的影响
@@ -116,7 +120,7 @@ python tools/tests/test_capability_coverage.py
 1. 保持
    [`source-only-closure-plan.md`](source-only-closure-plan.md)
    的 Linux source-only 闭集为空，新增或降级能力必须重新进入 closure catalog；
-2. 逐项收敛剩余十一个 corpus/platform gap，而不是只增加 happy-path 样本；
+2. 逐项收敛剩余十个 corpus/platform gap，而不是只增加 happy-path 样本；
 3. 固定 Windows、macOS 和完整 Linux Qt6 oracle；
 4. 重新生成报告，且经评审确认 Phase 0 所需行不再为 source-only、
    corpus-missing 或 platform-missing。

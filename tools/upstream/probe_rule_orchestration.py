@@ -144,6 +144,21 @@ def priority_arguments() -> tuple[str, ...]:
     )
 
 
+def ordering_arguments(database_prefix: str) -> tuple[str, ...]:
+    return (
+        "--profiling",
+        "--messages",
+        "--json",
+        "--database",
+        f"/fixture/{database_prefix}-main",
+        "--extradatabase",
+        f"/fixture/{database_prefix}-extra",
+        "--customdatabase",
+        f"/fixture/{database_prefix}-custom",
+        "/fixture/input/probe.bin",
+    )
+
+
 def observe(
     oracle: Oracle,
     fixture_dir: pathlib.Path,
@@ -299,6 +314,36 @@ def validate_priority_only(
             )
 
 
+def validate_ordering_case(
+    case_name: str,
+    order: list[str],
+    detections: list[dict[str, str]],
+    manifest: dict[str, Any],
+) -> None:
+    expected_order = manifest["ordering_cases"][case_name][
+        "execution_order"
+    ]
+    if order != expected_order:
+        raise ValueError(
+            f"{case_name} execution order mismatch: "
+            f"expected={expected_order}, actual={order}"
+        )
+    names_by_rule = detection_names_by_rule(manifest)
+    expected_names = {names_by_rule[rule_name] for rule_name in order}
+    if {detection["name"] for detection in detections} != expected_names:
+        raise ValueError(f"{case_name} detection set mismatch")
+    for detection in detections:
+        if detection != {
+            "type": "format",
+            "name": detection["name"],
+            "version": "ordering-edge",
+            "info": "",
+        }:
+            raise ValueError(
+                f"{case_name} detection mismatch: {detection}"
+            )
+
+
 def build_report(
     fixture_dir: pathlib.Path,
     manifest_path: pathlib.Path,
@@ -388,6 +433,52 @@ def build_report(
             "detections": priority_detections,
         }
 
+        for case_name, specification in manifest[
+            "ordering_cases"
+        ].items():
+            edge_arguments = ordering_arguments(
+                specification["database_prefix"]
+            )
+            edge_process = observe(
+                oracle,
+                fixture_dir,
+                edge_arguments,
+            )
+            (raw_dir / f"{oracle.name}-{case_name}.stdout").write_bytes(
+                edge_process.stdout
+            )
+            (raw_dir / f"{oracle.name}-{case_name}.stderr").write_bytes(
+                edge_process.stderr
+            )
+            if edge_process.returncode != 0 or edge_process.stderr:
+                raise ValueError(
+                    f"{oracle.name}/{case_name} scan failed"
+                )
+            edge_order, edge_detections = parse_stdout(
+                edge_process.stdout,
+                known_rule_names,
+            )
+            validate_ordering_case(
+                case_name,
+                edge_order,
+                edge_detections,
+                manifest,
+            )
+            normalized_cases[case_name] = (
+                edge_order,
+                edge_detections,
+            )
+            cases[case_name] = {
+                "arguments": list(edge_arguments),
+                "exit_code": edge_process.returncode,
+                "raw_stdout_bytes": len(edge_process.stdout),
+                "raw_stdout_sha256": sha256(edge_process.stdout),
+                "raw_stderr_bytes": len(edge_process.stderr),
+                "raw_stderr_sha256": sha256(edge_process.stderr),
+                "execution_order": edge_order,
+                "detections": edge_detections,
+            }
+
         unknown_arguments = scan_arguments("default", empty=True)
         unknown_process = observe(
             oracle,
@@ -468,6 +559,34 @@ def build_report(
                 manifest["priority_only_order"][0]
                 == "z_priority.1.sg"
             ),
+            "equal_priority_falls_back_to_name": (
+                manifest["ordering_cases"]["equal_priority"][
+                    "execution_order"
+                ]
+                == [
+                    "a_equal.2.sg",
+                    "m_equal.2.sg",
+                    "z_equal.2.sg",
+                ]
+            ),
+            "priority_segments_are_lexicographic": (
+                manifest["ordering_cases"]["lexical_priority"][
+                    "execution_order"
+                ][0]
+                == "z_ten.10.sg"
+            ),
+            "missing_priority_disables_pairwise_priority": (
+                manifest["ordering_cases"]["missing_priority"][
+                    "execution_order"
+                ][0]
+                == "a_plain.sg"
+            ),
+            "empty_priority_disables_pairwise_priority": (
+                manifest["ordering_cases"]["empty_priority"][
+                    "execution_order"
+                ][0]
+                == "a_empty..sg"
+            ),
             "type_init_list_order_is_not_pure_priority": (
                 combined_order.index("z_normal.1.sg")
                 > combined_order.index("EP.entrypoint.4.sg")
@@ -481,12 +600,18 @@ def build_report(
             "wrong_file_type_rule_never_executes": True,
             "empty_database_adds_unknown": True,
         },
+        "closed_corpus_gap": "CAP-GAP-010",
         "canonical_cases": {
             mode: {
                 "execution_order": normalized_by_oracle[0][mode][0],
                 "detections": normalized_by_oracle[0][mode][1],
             }
-            for mode in (*MODES, "priority_only", "unknown")
+            for mode in (
+                *MODES,
+                "priority_only",
+                *manifest["ordering_cases"],
+                "unknown",
+            )
         },
     }
 
