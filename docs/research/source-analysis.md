@@ -2,7 +2,7 @@
 
 Status: Draft  
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`  
-Last updated: 2026-07-27
+Last updated: 2026-07-28
 
 ## 范围
 
@@ -185,6 +185,10 @@ RT_MANIFEST 样本已在固定 CMake Qt 5 CLI 中端到端触发原样 Binary �
 证据见
 [`subdevice-source-audit.json`](data/subdevice-source-audit.json) 和
 [`resource-context-chain-qt5.json`](data/resource-context-chain-qt5.json)。
+同一 PE 的 paired runtime oracle 又证明 Formats 确实枚举出 RSDS debug part，
+原样 debug rule 在 direct context 命中，而 public recursive+aggressive 只调度
+同文件的 Manifest resource；见
+[`debug-data-dispatch-behavior.md`](debug-data-dispatch-behavior.md)。
 Rust 兼容模式必须同时复现 resource context 传播和 debug-data 默认不可达性，
 不能因 parser 能枚举某类 file part 就自动把它加入 work queue。
 

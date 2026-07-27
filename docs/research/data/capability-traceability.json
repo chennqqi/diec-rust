@@ -107,6 +107,23 @@
         "tools/tests/test_signature_path_harness_dockerfile.py"
       ]
     },
+    "debug_data_dispatch": {
+      "kind": "source_and_experiment",
+      "paths": [
+        "docs/research/debug-data-dispatch-behavior.md",
+        "docs/research/data/subdevice-source-audit.json",
+        "docs/research/data/debug-dispatch-fixture.json",
+        "docs/research/data/debug-dispatch-engine-qt5.json",
+        "tools/corpus/generate_debug_dispatch_fixture.py",
+        "tools/upstream/probe_subdevice_source_audit.py",
+        "tools/upstream/probe_debug_dispatch_harness.py",
+        "tools/upstream/debug_dispatch_harness_main.cpp",
+        "tools/upstream/Dockerfile.debug-dispatch-harness-qt5",
+        "tools/tests/test_generate_debug_dispatch_fixture.py",
+        "tools/tests/test_probe_debug_dispatch_harness.py",
+        "tools/tests/test_debug_dispatch_harness_dockerfile.py"
+      ]
+    },
     "dispatch_source": {
       "kind": "source_and_experiment",
       "paths": [
@@ -242,7 +259,7 @@
     {"id": "CAP-NEST-004", "name": "archive and resource count boundary", "verification": "observed_with_gaps", "evidence_set": "nested_scan"},
     {"id": "CAP-NEST-005", "name": "overlay and resource subdevice gate", "verification": "observed", "evidence_set": "nested_scan"},
     {"id": "CAP-NEST-006", "name": "resource context propagation", "verification": "observed", "evidence_set": "nested_scan"},
-    {"id": "CAP-NEST-007", "name": "debug data is not scanner dispatched", "verification": "source_verified", "evidence_set": "nested_scan"},
+    {"id": "CAP-NEST-007", "name": "debug data is not scanner dispatched", "verification": "observed", "evidence_set": "debug_data_dispatch"},
     {"id": "CAP-NEST-008", "name": "nested JSON result tree", "verification": "observed", "evidence_set": "nested_scan"},
     {"id": "CAP-NEST-009", "name": "no independent depth or total extraction limit", "verification": "source_verified_with_gaps", "evidence_set": "nested_scan"},
 
@@ -345,9 +362,9 @@
   ],
   "summary": {
     "capability_count": 68,
-    "observed": 46,
+    "observed": 47,
     "observed_with_gaps": 20,
-    "source_verified": 1,
+    "source_verified": 0,
     "source_verified_with_gaps": 1,
     "coverage_gap_count": 12,
     "phase_0_coverage_complete": false

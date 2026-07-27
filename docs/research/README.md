@@ -9,10 +9,13 @@ Phase 0 计划形成：
 - [`capability-coverage-report.md`](capability-coverage-report.md)：68 个稳定能力在
   Linux Qt5/Qt6、Windows 和 macOS 上的 runtime/source-only、corpus-missing
   与 platform-missing 闭集报告（Draft）。
-- [`source-only-closure-plan.md`](source-only-closure-plan.md)：剩余 2 个 Linux
+- [`source-only-closure-plan.md`](source-only-closure-plan.md)：剩余 1 个 Linux
   Qt5 source-only 能力的缺失证据、fixture、harness、强断言和关闭方式（Draft）。
 - [`signature-path-filter-behavior.md`](signature-path-filter-behavior.md)：
   private signature-file path comparator 的严格绝对路径语义及公共不可达边界
+  （Draft）。
+- [`debug-data-dispatch-behavior.md`](debug-data-dispatch-behavior.md)：
+  同一 PE 的 resource 正控制、direct debug 正例与 recursive debug 负例
   （Draft）。
 - [`legacy-dispatch-oracle.md`](legacy-dispatch-oracle.md)：Amiga Hunk/Atari ST
   的固定源码边界、8-case 生成语料和双 Qt5 oracle 执行门禁（Draft）。
@@ -90,7 +93,7 @@ Phase 0 计划形成：
   `CAP-*` 的验证层级、证据路径、平台范围和 12 个显式 coverage gap。
 - [`data/capability-coverage.json`](data/capability-coverage.json)：68 行 × 4 平台
   的 272-cell 闭集分类、十二个 gap 到能力的显式映射和未分类计数。
-- [`data/source-only-closure.json`](data/source-only-closure.json)：与当前两个
+- [`data/source-only-closure.json`](data/source-only-closure.json)：与当前一个
   source-only 行严格相等的可执行关闭清单。
 - [`data/legacy-dispatch-corpus.json`](data/legacy-dispatch-corpus.json)：
   Amiga Hunk/Atari ST 正例、截断、错误端序和近似 magic 控制的 hash-bound 清单。
@@ -135,6 +138,11 @@ Phase 0 计划形成：
 - [`data/nested-corpus.json`](data/nested-corpus.json)：安全的 archive/resource/overlay 嵌套语料清单。
 - [`data/resource-context-chain-qt5.json`](data/resource-context-chain-qt5.json)：RT_MANIFEST 父扫描、resource context、scan ID 与原样规则结果的四模式端到端基线。
 - [`data/subdevice-source-audit.json`](data/subdevice-source-audit.json)：固定 XScanEngine/Formats 源码哈希、resource/overlay 调度及 debug-data 可达性审计。
+- [`data/debug-dispatch-fixture.json`](data/debug-dispatch-fixture.json)：
+  同时含 RT_MANIFEST resource 与 CodeView/RSDS debug directory 的项目生成 PE。
+- [`data/debug-dispatch-engine-qt5.json`](data/debug-dispatch-engine-qt5.json)：
+  Formats 枚举、public recursive omission 与 direct debug detection 的 paired
+  Qt5 报告。
 - [`data/boa-rule-runtime.json`](data/boa-rule-runtime.json)：Boa spike 输入哈希、固定版本和稳定结果摘要。
 - [`data/rquickjs-rule-runtime.json`](data/rquickjs-rule-runtime.json)：rquickjs spike 输入哈希、固定版本和稳定结果摘要。
 - [`data/rquickjs-static-link.json`](data/rquickjs-static-link.json)：rquickjs staticlib 三条 native smoke、链接依赖和 18-package 许可证清单。

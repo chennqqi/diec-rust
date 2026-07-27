@@ -16,20 +16,6 @@ COVERAGE_PATH = "docs/research/data/capability-coverage.json"
 PLATFORM = "linux-x86_64-qt5"
 
 CATALOG: dict[str, dict[str, Any]] = {
-    "CAP-NEST-007": {
-        "closure_kind": "paired_negative_nested_oracle",
-        "missing_evidence": [
-            "source proves debug-data enumeration exists but scanner dispatch omits it",
-            "no paired runtime case distinguishes direct debug context from recursive scanning",
-        ],
-        "fixture": "PE with both RT_MANIFEST resource and valid debug-data records",
-        "harness": "engine recursive scan plus direct debug-context harness",
-        "assertions": [
-            "resource is recursively dispatched as the positive control",
-            "debug data is detectable when invoked directly",
-            "the same debug data produces no recursive scanner child",
-        ],
-    },
     "CAP-NEST-009": {
         "closure_kind": "bounded_escalation_and_adr",
         "missing_evidence": [

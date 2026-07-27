@@ -1,0 +1,24 @@
+{
+  "capability": "CAP-NEST-007",
+  "generator": "tools/corpus/generate_debug_dispatch_fixture.py",
+  "license": "project-generated; no third-party sample bytes",
+  "sample": {
+    "debug_data": {
+      "offset": 1088,
+      "sha256": "f4062413bf0504b8eb9b30dc76d27a576f75827f0b13822a43eea00706709e5f",
+      "signature": "RSDS",
+      "size": 38,
+      "type": 2
+    },
+    "name": "pe-resource-debug.exe",
+    "resource": {
+      "offset": 608,
+      "sha256": "96f63fca235e4a359900fa17b076d2cb3d16945855b25fcb3c391eb49215428b",
+      "size": 20,
+      "type_id": 24
+    },
+    "sha256": "58e2b8e73ba187977564e719d39022079b8fb9172c5bcdf40c495ed825b38ea1",
+    "size": 1536
+  },
+  "schema_version": 1
+}

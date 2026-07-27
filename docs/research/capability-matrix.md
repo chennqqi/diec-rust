@@ -2,7 +2,7 @@
 
 Status: Draft  
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`  
-Last updated: 2026-07-27
+Last updated: 2026-07-28
 
 本矩阵同时记录源码证据和固定 Linux oracle 实验。`Observed` 表示已用固定
 二进制、规则和输入验证；未标记为 Observed 的能力仍不能从相邻实验外推。
@@ -166,10 +166,11 @@ hideunknown 的可观察增量。完整输入哈希和输出见
   recursive+aggressive 产生 `Binary / Resource` child，并将 resource ID `24`
   传入原样 `win_resources.1.sg` 得到 `Manifest[Resources]`。raw 与规范化基线见
   [`resource-context-chain-qt5.json`](data/resource-context-chain-qt5.json)。
-- `CAP-NEST-007`：`XPE::getFileParts()` 能生成 debug-data file part，但固定
-  `XScanEngine::scanProcess()` 只请求 resource/overlay，完整 engine 源文件中
-  `FILEPART_DEBUGDATA` 为 0 次。因此发布 scanner 的普通 recursive 不调度
-  debug-data；直接 context-rule 正例只证明规则在显式上下文中的语义。
+- `CAP-NEST-007`：Observed；同一 PE 的 Formats 枚举同时产生 resource/debug
+  part，recursive+aggressive 只调度 Manifest resource child；枚举出的 RSDS
+  bytes 在 direct `FILEPART_DEBUGDATA` context 被原样规则识别为 PDB link，
+  但公共扫描没有 debug child。详见
+  [`debug-data-dispatch-behavior.md`](debug-data-dispatch-behavior.md)。
 - `CAP-NEST-008`：JSON 结果通过父 detection 的 `values` 表达树，并保留 file part、size 和
   offset。详见 [`nested-scan-behavior.md`](nested-scan-behavior.md)。
 - `CAP-NEST-009`：源码未见独立嵌套深度和 archive 总解压字节限制；跨平台和资源耗尽行为待验证。
@@ -223,8 +224,8 @@ validator 要求本文 68 个 `CAP-*` 与 manifest 完全相等，并拒绝缺�
 不能提升为 Rust 已实现或跨平台兼容。
 
 [`capability-coverage-report.md`](capability-coverage-report.md) 进一步把该清单
-投影为 68 行 × 4 平台的闭集：Linux Qt5 为 46 observed、20 observed with
-gaps、1 source-only、1 source-only with gaps；Linux Qt6、Windows 和 macOS
+投影为 68 行 × 4 平台的闭集：Linux Qt5 为 47 observed、20 observed with
+gaps、0 source-only、1 source-only with gaps；Linux Qt6、Windows 和 macOS
 各有 68 个 platform-missing。全部行已分类不等于覆盖完成。
 
 - [CLI main](https://github.com/horsicq/DIE-engine/blob/74eaf505c250ab47e709024e9dc41657cd8f2254/src/console/main_console.cpp)

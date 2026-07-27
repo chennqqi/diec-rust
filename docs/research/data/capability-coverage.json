@@ -300,6 +300,23 @@
         "tools/tests/test_database_layers_harness.py"
       ]
     },
+    "debug_data_dispatch": {
+      "kind": "source_and_experiment",
+      "paths": [
+        "docs/research/debug-data-dispatch-behavior.md",
+        "docs/research/data/subdevice-source-audit.json",
+        "docs/research/data/debug-dispatch-fixture.json",
+        "docs/research/data/debug-dispatch-engine-qt5.json",
+        "tools/corpus/generate_debug_dispatch_fixture.py",
+        "tools/upstream/probe_subdevice_source_audit.py",
+        "tools/upstream/probe_debug_dispatch_harness.py",
+        "tools/upstream/debug_dispatch_harness_main.cpp",
+        "tools/upstream/Dockerfile.debug-dispatch-harness-qt5",
+        "tools/tests/test_generate_debug_dispatch_fixture.py",
+        "tools/tests/test_probe_debug_dispatch_harness.py",
+        "tools/tests/test_debug_dispatch_harness_dockerfile.py"
+      ]
+    },
     "dispatch_source": {
       "kind": "source_and_experiment",
       "paths": [
@@ -1361,14 +1378,14 @@
     },
     {
       "corpus_gap_ids": [],
-      "evidence_set": "nested_scan",
+      "evidence_set": "debug_data_dispatch",
       "id": "CAP-NEST-007",
       "name": "debug data is not scanner dispatched",
       "platform_gap_ids": [
         "CAP-GAP-007"
       ],
       "platform_status": {
-        "linux-x86_64-qt5": "source_only_runtime_corpus_missing",
+        "linux-x86_64-qt5": "runtime_observed",
         "linux-x86_64-qt6": "platform_missing",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
@@ -1504,7 +1521,7 @@
   "schema_version": 1,
   "source": {
     "path": "docs/research/data/capability-traceability.json",
-    "sha256": "23e7812bc22ef268d13aa82498ab15e5afc921258016ad72ccc5b4c157560be3"
+    "sha256": "d4f93bc4b7c7fbcc5c0651211b73f5016fc13161aa6d089edaa5007b876fd8fa"
   },
   "status_definitions": {
     "platform_missing": "no complete capability baseline is admitted for this platform",
@@ -1523,9 +1540,9 @@
     "status_counts_by_platform": {
       "linux-x86_64-qt5": {
         "platform_missing": 0,
-        "runtime_observed": 46,
+        "runtime_observed": 47,
         "runtime_observed_with_corpus_gaps": 20,
-        "source_only_runtime_corpus_missing": 1,
+        "source_only_runtime_corpus_missing": 0,
         "source_only_with_corpus_gaps": 1
       },
       "linux-x86_64-qt6": {

@@ -3,28 +3,6 @@
   "items": [
     {
       "acceptance": "all assertions pass against the pinned upstream identity and the capability becomes runtime-observed or receives an explicit reviewed scope disposition",
-      "closure_kind": "paired_negative_nested_oracle",
-      "current_status": "source_only_runtime_corpus_missing",
-      "evidence_set": "nested_scan",
-      "id": "CAP-NEST-007",
-      "missing_evidence": [
-        "source proves debug-data enumeration exists but scanner dispatch omits it",
-        "no paired runtime case distinguishes direct debug context from recursive scanning"
-      ],
-      "name": "debug data is not scanner dispatched",
-      "proposed_experiment": {
-        "assertions": [
-          "resource is recursively dispatched as the positive control",
-          "debug data is detectable when invoked directly",
-          "the same debug data produces no recursive scanner child"
-        ],
-        "fixture": "PE with both RT_MANIFEST resource and valid debug-data records",
-        "harness": "engine recursive scan plus direct debug-context harness",
-        "platform": "linux-x86_64-qt5"
-      }
-    },
-    {
-      "acceptance": "all assertions pass against the pinned upstream identity and the capability becomes runtime-observed or receives an explicit reviewed scope disposition",
       "closure_kind": "bounded_escalation_and_adr",
       "current_status": "source_only_with_corpus_gaps",
       "evidence_set": "nested_scan",
@@ -57,17 +35,16 @@
   "schema_version": 1,
   "source": {
     "path": "docs/research/data/capability-coverage.json",
-    "sha256": "d69392c38fe4c5e4ae24cd93e0001278aa593cb7414e48dca4f70f40118fc32b"
+    "sha256": "1ca2a999982011081f2a63e7256aad4fa81288a050e27bddc5b6755e89a77a4c"
   },
   "summary": {
     "all_items_have_executable_assertions": true,
     "all_items_have_missing_evidence": true,
     "closure_kind_counts": {
-      "bounded_escalation_and_adr": 1,
-      "paired_negative_nested_oracle": 1
+      "bounded_escalation_and_adr": 1
     },
     "phase_0_source_only_closed": false,
-    "source_only_capability_count": 2
+    "source_only_capability_count": 1
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
 }

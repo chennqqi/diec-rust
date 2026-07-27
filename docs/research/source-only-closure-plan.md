@@ -8,7 +8,7 @@ Last updated: 2026-07-28
 
 ## 1. 目的与结论
 
-[`capability-coverage.json`](data/capability-coverage.json) 当前仍有 2 个
+[`capability-coverage.json`](data/capability-coverage.json) 当前仍有 1 个
 Linux Qt5 source-only 能力。本文不把源码证据提升为 runtime compatibility，
 而是为每项固定缺失证据、最小 fixture、oracle/harness、强断言和关闭方式。
 
@@ -18,11 +18,10 @@ Linux Qt5 source-only 能力。本文不把源码证据提升为 runtime compati
 生成。生成器要求清单 ID 与 coverage report 的 source-only 闭集完全相等；
 新增、提升或删除能力而未同步计划会显式失败。
 
-## 2. 当前两项
+## 2. 当前一项
 
 | 能力 | 关闭类型 | 关键缺口 |
 | --- | --- | --- |
-| `CAP-NEST-007` | paired negative nested oracle | 缺“直接可检测、递归不分派”的同输入正负控制 |
 | `CAP-NEST-009` | bounded escalation + ADR | 缺深度/总展开量递增实验和 Rust 有界偏离决策 |
 
 `CAP-RULE-007` 已由
@@ -31,6 +30,12 @@ private harness 链接未修改的固定 engine object，以 main/extra 两层�
 证明非空 filter 严格匹配保存的绝对路径，区分大小写、不清理 `..`，也不接受
 basename-only 输入；同时源码证据继续固定公共 `_processDetect()` 只能传空路径。
 
+`CAP-NEST-007` 已由
+[`debug-data-dispatch-behavior.md`](debug-data-dispatch-behavior.md) 关闭：
+同一 PE 的 Formats 枚举同时产生 Manifest resource 与 RSDS debug-data part；
+public recursive+aggressive 只为 resource 建 child，direct debug context 则被
+原样规则识别为 PDB link，从而形成同输入正负控制。
+
 ## 3. 关闭原则
 
 ### 负向能力
@@ -38,8 +43,6 @@ basename-only 输入；同时源码证据继续固定公共 `_processDetect()` �
 “公共入口不可达”“scanner 不分派”“没有独立上限”不能仅靠一次未观察到行为来
 证明：
 
-- debug data 必须使用相同 PE 的直接 debug-context 正例、resource recursive
-  正例和 debug recursive 负例；
 - 无独立 depth/total limit 必须用单调递增语料记录 timeout、peak memory、
   partial result 和 cancellation，并用 ADR 固定 Rust 的有界策略。
 
@@ -136,6 +139,12 @@ python tools/upstream/probe_signature_path_harness.py \
   --committed-manifest docs/research/data/signature-path-fixture.json \
   --raw-dir <raw-dir> \
   --output docs/research/data/signature-path-engine-qt5.json
+python tools/corpus/generate_debug_dispatch_fixture.py <fixture-dir>
+python tools/upstream/probe_debug_dispatch_harness.py \
+  --fixture-dir <fixture-dir> \
+  --committed-manifest docs/research/data/debug-dispatch-fixture.json \
+  --raw-dir <raw-dir> \
+  --output docs/research/data/debug-dispatch-engine-qt5.json
 python tools/corpus/generate_legacy_dispatch_corpus.py <corpus-dir>
 python tools/upstream/probe_legacy_dispatch.py \
   --corpus-dir <corpus-dir> --raw-dir <raw-dir> --output <report.json>
@@ -167,14 +176,14 @@ python tools/upstream/probe_result_enums_harness.py \
 测试要求：
 
 - committed manifest 与生成结果逐字节一致；
-- 两个 ID 与当前 source-only 行完全相等；
+- 一个 ID 与当前 source-only 行完全相等；
 - 每项都有非空缺失证据、fixture、harness 和至少三个强断言；
-- 两类负向能力保持 paired control 或 ADR 关闭路径；
+- 剩余负向能力保持 ADR 关闭路径；
 - catalog 漂移和重复 JSON key 显式失败。
 
 ## 5. 对 Phase 0 的影响
 
 该清单使 `P0-BLOCK-005` 的 Linux source-only 部分具备逐项执行入口。
-`CAP-RULE-007` 与 `CAP-RESULT-001` 至 `CAP-RESULT-005` 已经完成实验、原始流
-哈希绑定和 traceability 提升；其余能力只有在对应实验实际通过、原始证据
-落盘并更新 traceability 后，才能继续减少 source-only 计数。
+`CAP-RULE-007`、`CAP-NEST-007` 与 `CAP-RESULT-001` 至 `CAP-RESULT-005`
+已经完成实验、原始流哈希绑定和 traceability 提升；最后一项只有在对应实验
+实际通过、原始证据落盘并更新 traceability 后，才能消除 source-only 计数。

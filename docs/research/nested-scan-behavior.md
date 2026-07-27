@@ -2,7 +2,7 @@
 
 Status: Draft  
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`  
-Last updated: 2026-07-27
+Last updated: 2026-07-28
 
 ## 结论
 
@@ -294,6 +294,14 @@ SHA-256 为
 可达性；若 Rust legacy-compatible 默认扫描额外调度 debug-data，会形成上游
 没有的 detection，属于可观察兼容差异。
 
+后续 paired oracle 已用同一项目生成 PE 闭合这条负向链：Formats 同时枚举
+offset 608 的 Manifest resource 与 offset 1088 的 RSDS debug data；public
+recursive+aggressive 对前者产生 Manifest child，对后者不建 child；把后者的
+原始 38 bytes 直接置于 `FILEPART_DEBUGDATA` context 时，原样 debug rule 产生
+`PDB file link / 7.0`。完整证据见
+[`debug-data-dispatch-behavior.md`](debug-data-dispatch-behavior.md) 和
+[`debug-dispatch-engine-qt5.json`](data/debug-dispatch-engine-qt5.json)。
+
 ## 尚未覆盖
 
 - ZIP/7Z/RAR/CAB/ISO9660 各自的解包错误、encrypted entry、重复名称和 metadata；
@@ -301,7 +309,8 @@ SHA-256 为
 - 更深的 resource/overlay/archive 链及实际最大栈深、取消、超时和内存峰值；
 - 非 PE 格式的 overlay；
 - Rust scanner 从父格式枚举 resource、生成 scan ID、调度规则并形成与 Qt5
-  一致的结果树；debug-data 需同时保留格式层表示能力和 legacy 默认不调度行为；
+  一致的结果树；本页已固定 debug-data 的 legacy 默认不调度契约，但 Rust
+  实现尚未开始；
 - XML、CSV、TSV 和文本 formatter 的嵌套表示；
 - Windows/macOS 与 Qt 6 oracle。
 

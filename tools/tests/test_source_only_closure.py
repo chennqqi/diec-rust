@@ -44,7 +44,7 @@ class SourceOnlyClosureTest(unittest.TestCase):
         items = self.manifest["items"]
         self.assertEqual({item["id"] for item in items}, expected_ids)
         self.assertEqual(len(items), len(expected_ids))
-        self.assertEqual(len(items), 2)
+        self.assertEqual(len(items), 1)
 
     def test_every_item_has_actionable_closure_evidence(self):
         for item in self.manifest["items"]:
@@ -66,10 +66,6 @@ class SourceOnlyClosureTest(unittest.TestCase):
 
     def test_negative_capabilities_keep_explicit_closure_kinds(self):
         items = {item["id"]: item for item in self.manifest["items"]}
-        self.assertEqual(
-            items["CAP-NEST-007"]["closure_kind"],
-            "paired_negative_nested_oracle",
-        )
         self.assertEqual(
             items["CAP-NEST-009"]["closure_kind"],
             "bounded_escalation_and_adr",
