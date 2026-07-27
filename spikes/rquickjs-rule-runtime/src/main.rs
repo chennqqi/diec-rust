@@ -158,6 +158,13 @@ const MACHO_FIXTURE_SHA256: &str =
     "d1e691bcd72942916dcabb75177f6e411b7d78483bdd0d1635c4a0c89619188d";
 const MACHO_QT5_BASELINE_SHA256: &str =
     "ec6b9f373d598f41cf7d51550eae020307c2a41b27f569135c022aeda54045f4";
+const DEX_RULE_SUFFIX: &str = "DEX/protector_QDBH.2.sg";
+const DEX_RULE_BYTES: usize = 273;
+const DEX_RULE_SHA256: &str = "5280ae0425f47c03ca037002b29964fe59eb898e871a00ad266475856f0e7ba7";
+const DEX_FIXTURE_SHA256: &str = "7c312742257d365a49f399036e9ce62784e819f13a27831acfadd7625025cbc8";
+const DEX_QT5_BASELINE_SHA256: &str =
+    "881988e4c85686489fcf05235b686656ea3dcfaa487cbd7b36259f98614b7bf5";
+const XDEX_COMMIT: &str = "035c61966d3a9018edf80cd0013083ee32626e71";
 const FORMATS_COMMIT: &str = "1151e7254fdee3c0294ff7095edbdd7bfccf8201";
 const FORMAT_RESULT_SHIM: &[u8] = br#"
     var bDetected, sType, sName, sVersion, sOptions;
@@ -263,12 +270,25 @@ struct MachoRuleContext {
     out_of_bounds_segments: usize,
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
+struct DexRuleContext {
+    version: u32,
+    map_item_count: usize,
+    strings: Vec<String>,
+    out_of_bounds_string_offsets: usize,
+}
+
 #[derive(Default)]
 struct EntryPointHostTrace {
     compare_ep_calls: AtomicUsize,
     fast_paths: AtomicUsize,
     generic_paths: AtomicUsize,
     errors: AtomicUsize,
+}
+
+#[derive(Default)]
+struct DexHostTrace {
+    is_dex_string_present_calls: AtomicUsize,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -934,6 +954,176 @@ impl MachoRuleContext {
                 start_load_offset: 0,
                 records,
             },
+        })
+    }
+}
+
+fn dex_u16(data: &[u8], offset: usize, endian: Endian) -> Option<u16> {
+    elf_u16(data, offset, endian)
+}
+
+fn dex_u32(data: &[u8], offset: usize, endian: Endian) -> Option<u32> {
+    elf_u32(data, offset, endian)
+}
+
+fn dex_field(base: usize, relative: usize, name: &str) -> Result<usize, String> {
+    base.checked_add(relative)
+        .ok_or_else(|| format!("DEX {name} offset overflow"))
+}
+
+fn dex_uleb128(data: &[u8]) -> Result<(usize, usize), String> {
+    let mut value = 0_usize;
+    for (index, byte) in data.iter().copied().take(5).enumerate() {
+        let shift = index * 7;
+        value |= usize::from(byte & 0x7f) << shift;
+        if byte & 0x80 == 0 {
+            return Ok((value, index + 1));
+        }
+    }
+    if data.is_empty() {
+        Ok((0, 0))
+    } else {
+        Err("DEX string ULEB128 is unterminated or exceeds 5 bytes".to_owned())
+    }
+}
+
+impl DexRuleContext {
+    fn parse(data: &[u8]) -> Result<Self, String> {
+        const HEADER_SIZE: usize = 0x70;
+        const MAP_ITEM_SIZE: usize = 12;
+        const MAX_MAP_ITEMS: usize = 0x1_0000;
+        const MAX_STRINGS: usize = 0x1_0000;
+        const TYPE_STRING_ID_ITEM: u16 = 0x0001;
+
+        if data.get(0..4) != Some(b"dex\n") || data.get(7) != Some(&0) {
+            return Err("DEX signature is missing or unsupported".to_owned());
+        }
+        let version = std::str::from_utf8(
+            data.get(4..7)
+                .ok_or_else(|| "DEX version is truncated".to_owned())?,
+        )
+        .map_err(|_| "DEX version is not ASCII".to_owned())?
+        .parse::<u32>()
+        .map_err(|_| "DEX version is not numeric".to_owned())?;
+        if version < 35 {
+            return Err(format!("unsupported DEX version {version:03}"));
+        }
+        if data.len() < HEADER_SIZE {
+            return Err("DEX header is truncated".to_owned());
+        }
+        let endian = match data.get(40..44) {
+            Some(b"\x78\x56\x34\x12") => Endian::Little,
+            Some(b"\x12\x34\x56\x78") => Endian::Big,
+            _ => return Err("DEX endian tag is invalid".to_owned()),
+        };
+        let data_size = usize::try_from(
+            dex_u32(data, 104, endian).ok_or_else(|| "DEX data size is truncated".to_owned())?,
+        )
+        .map_err(|_| "DEX data size does not fit usize".to_owned())?;
+        let data_offset = usize::try_from(
+            dex_u32(data, 108, endian).ok_or_else(|| "DEX data offset is truncated".to_owned())?,
+        )
+        .map_err(|_| "DEX data offset does not fit usize".to_owned())?;
+        let declared_data_end = data_offset
+            .checked_add(data_size)
+            .ok_or_else(|| "DEX data range overflow".to_owned())?;
+        let data_end = declared_data_end.min(data.len());
+
+        let map_offset = usize::try_from(
+            dex_u32(data, 52, endian).ok_or_else(|| "DEX map offset is truncated".to_owned())?,
+        )
+        .map_err(|_| "DEX map offset does not fit usize".to_owned())?;
+        if map_offset == 0 {
+            return Ok(Self {
+                version,
+                map_item_count: 0,
+                strings: Vec::new(),
+                out_of_bounds_string_offsets: 0,
+            });
+        }
+        let Some(declared_map_items) = dex_u32(data, map_offset, endian) else {
+            return Ok(Self {
+                version,
+                map_item_count: 0,
+                strings: Vec::new(),
+                out_of_bounds_string_offsets: 0,
+            });
+        };
+        let entries_offset = dex_field(map_offset, 4, "map entries")?;
+        let available = data.len().saturating_sub(entries_offset);
+        let map_item_count = usize::try_from(declared_map_items)
+            .unwrap_or(usize::MAX)
+            .min(available / MAP_ITEM_SIZE)
+            .min(MAX_MAP_ITEMS);
+        let mut string_ids = None;
+        for index in 0..map_item_count {
+            let item = entries_offset
+                .checked_add(
+                    index
+                        .checked_mul(MAP_ITEM_SIZE)
+                        .ok_or_else(|| "DEX map item offset overflow".to_owned())?,
+                )
+                .ok_or_else(|| "DEX map item offset overflow".to_owned())?;
+            let item_type = dex_u16(data, item, endian)
+                .ok_or_else(|| "DEX map item type is truncated".to_owned())?;
+            if item_type == TYPE_STRING_ID_ITEM && string_ids.is_none() {
+                let count = usize::try_from(
+                    dex_u32(data, dex_field(item, 4, "string-id count")?, endian)
+                        .ok_or_else(|| "DEX string-id count is truncated".to_owned())?,
+                )
+                .map_err(|_| "DEX string-id count does not fit usize".to_owned())?;
+                if count > MAX_STRINGS {
+                    return Err(format!(
+                        "DEX string count {count} exceeds spike limit {MAX_STRINGS}"
+                    ));
+                }
+                let offset = usize::try_from(
+                    dex_u32(data, dex_field(item, 8, "string-id table")?, endian)
+                        .ok_or_else(|| "DEX string-id offset is truncated".to_owned())?,
+                )
+                .map_err(|_| "DEX string-id offset does not fit usize".to_owned())?;
+                string_ids = Some((count, offset));
+            }
+        }
+
+        let Some((string_count, string_ids_offset)) = string_ids else {
+            return Ok(Self {
+                version,
+                map_item_count,
+                strings: Vec::new(),
+                out_of_bounds_string_offsets: 0,
+            });
+        };
+        let mut strings = Vec::with_capacity(string_count);
+        let mut out_of_bounds_string_offsets = 0_usize;
+        for index in 0..string_count {
+            let id_offset = string_ids_offset
+                .checked_add(
+                    index
+                        .checked_mul(4)
+                        .ok_or_else(|| "DEX string-id entry offset overflow".to_owned())?,
+                )
+                .ok_or_else(|| "DEX string-id entry offset overflow".to_owned())?;
+            let string_offset =
+                dex_u32(data, id_offset, endian).and_then(|offset| usize::try_from(offset).ok());
+            let Some(string_offset) =
+                string_offset.filter(|offset| data_offset <= *offset && *offset < data_end)
+            else {
+                out_of_bounds_string_offsets += 1;
+                strings.push(String::new());
+                continue;
+            };
+            let source = &data[string_offset..data_end];
+            let (declared_length, prefix_size) = dex_uleb128(source)?;
+            let payload = source.get(prefix_size..).unwrap_or_default();
+            let actual_length = declared_length.min(payload.len());
+            strings.push(String::from_utf8_lossy(&payload[..actual_length]).into_owned());
+        }
+        Ok(Self {
+            version,
+            map_item_count,
+            strings,
+            out_of_bounds_string_offsets,
         })
     }
 }
@@ -1616,6 +1806,33 @@ fn install_macho_host(
         macho_context.entry_point_offset,
         macho_context.memory_map,
     )
+}
+
+fn install_dex_host(
+    context: &Context,
+    dex_context: DexRuleContext,
+) -> Result<Arc<DexHostTrace>, String> {
+    let trace = Arc::new(DexHostTrace::default());
+    let trace_for_context = Arc::clone(&trace);
+    context.with(|ctx| {
+        let receiver = Object::new(ctx.clone()).map_err(|error| error.to_string())?;
+        receiver
+            .set(
+                "isDexStringPresent",
+                Function::new(ctx.clone(), move |query: String| {
+                    trace_for_context
+                        .is_dex_string_present_calls
+                        .fetch_add(1, Ordering::Relaxed);
+                    dex_context.strings.iter().any(|value| value == &query)
+                })
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        ctx.globals()
+            .set("DEX", receiver)
+            .map_err(|error| error.to_string())
+    })?;
+    Ok(trace)
 }
 
 fn install_nintendo_host(
@@ -4221,6 +4438,207 @@ fn verify_macho_rule(
     Ok(all_match)
 }
 
+fn verify_dex_rule(
+    rule_root: &Path,
+    fixture_path: &Path,
+    baseline_path: &Path,
+) -> Result<bool, String> {
+    let fixture_bytes = fs::read(fixture_path)
+        .map_err(|error| format!("cannot read {}: {error}", fixture_path.display()))?;
+    let baseline_bytes = fs::read(baseline_path)
+        .map_err(|error| format!("cannot read {}: {error}", baseline_path.display()))?;
+    if sha256_hex(&fixture_bytes) != DEX_FIXTURE_SHA256 {
+        return Err(format!(
+            "fixed DEX fixture hash mismatch: {}",
+            fixture_path.display()
+        ));
+    }
+    if sha256_hex(&baseline_bytes) != DEX_QT5_BASELINE_SHA256 {
+        return Err(format!(
+            "fixed Qt5 DEX baseline hash mismatch: {}",
+            baseline_path.display()
+        ));
+    }
+    let rule_path = rule_root.join(DEX_RULE_SUFFIX);
+    let rule_source = fs::read(&rule_path)
+        .map_err(|error| format!("cannot read {}: {error}", rule_path.display()))?;
+    if rule_source.len() != DEX_RULE_BYTES || sha256_hex(&rule_source) != DEX_RULE_SHA256 {
+        return Err(format!("fixed DEX rule mismatch: {}", rule_path.display()));
+    }
+    let fixture: Value = serde_json::from_slice(&fixture_bytes)
+        .map_err(|error| format!("cannot parse {}: {error}", fixture_path.display()))?;
+    let baseline: Value = serde_json::from_slice(&baseline_bytes)
+        .map_err(|error| format!("cannot parse {}: {error}", baseline_path.display()))?;
+    for (document_name, document) in [("fixture", &fixture), ("baseline", &baseline)] {
+        if document["upstream_commit"] != UPSTREAM_COMMIT
+            || document["xdex_commit"] != XDEX_COMMIT
+            || document["xscanengine_commit"] != XSCANENGINE_COMMIT
+            || document["rules_commit"] != RULES_COMMIT
+            || document["case_count"] != 3
+        {
+            return Err(format!("{document_name} DEX metadata mismatch"));
+        }
+    }
+    if fixture["rule"]["path"] != DEX_RULE_SUFFIX
+        || fixture["rule"]["sha256"] != DEX_RULE_SHA256
+        || baseline["rule_path"] != format!("/opt/die-source/Detect-It-Easy/db/{DEX_RULE_SUFFIX}")
+        || baseline["rule_sha256"] != DEX_RULE_SHA256
+        || baseline["qt_version"] != "5.15.13"
+        || baseline["engine"] != "QScriptEngine"
+    {
+        return Err("fixed DEX fixture/baseline contract mismatch".to_owned());
+    }
+    let fixture_cases = fixture["cases"]
+        .as_array()
+        .ok_or_else(|| "DEX fixture cases are missing".to_owned())?;
+    let baseline_cases = baseline["cases"]
+        .as_array()
+        .ok_or_else(|| "Qt5 DEX baseline cases are missing".to_owned())?;
+    if fixture_cases.len() != 3 || baseline_cases.len() != 3 {
+        return Err("fixed DEX case count mismatch".to_owned());
+    }
+
+    let mut reports = Vec::with_capacity(fixture_cases.len());
+    let mut all_match = true;
+    for fixture_case in fixture_cases {
+        let id = fixture_case["id"]
+            .as_str()
+            .ok_or_else(|| "DEX fixture case id is missing".to_owned())?;
+        let baseline_case = baseline_cases
+            .iter()
+            .find(|case| case["id"] == id)
+            .ok_or_else(|| format!("Qt5 DEX baseline case is missing: {id}"))?;
+        for field in ["data_hex", "data_sha256"] {
+            if fixture_case[field] != baseline_case[field] {
+                return Err(format!("{id}: fixture and Qt5 {field} evidence differ"));
+            }
+        }
+        if baseline_case["parser_valid"] != true || baseline_case["dex_script_error"] != "" {
+            return Err(format!("{id}: Qt5 DEX parser/script evidence is not valid"));
+        }
+        let data_hex = fixture_case["data_hex"]
+            .as_str()
+            .ok_or_else(|| format!("{id}: data_hex is missing"))?;
+        let data = decode_hex_string(data_hex, &format!("{id}.data_hex"))?;
+        if sha256_hex(&data) != fixture_case["data_sha256"] {
+            return Err(format!("{id}: decoded input hash mismatch"));
+        }
+        let dex_context = DexRuleContext::parse(&data).map_err(|error| format!("{id}: {error}"))?;
+        let expected_strings: Vec<String> =
+            serde_json::from_value(baseline_case["parsed_strings"].clone())
+                .map_err(|error| format!("{id}: invalid Qt5 parsed strings: {error}"))?;
+        let expected_map_item_count = baseline_case["map_item_count"]
+            .as_u64()
+            .and_then(|count| usize::try_from(count).ok())
+            .ok_or_else(|| format!("{id}: Qt5 map item count is missing"))?;
+        let expected_native_present = baseline_case["native_qdbh_present"]
+            .as_bool()
+            .ok_or_else(|| format!("{id}: Qt5 native result is missing"))?;
+        let rust_native_present = dex_context.strings.iter().any(|value| value == "/qdbh");
+
+        let runtime = new_runtime()?;
+        let context = new_context(&runtime)?;
+        let detections = Arc::new(Mutex::new(Vec::new()));
+        install_nintendo_host(&context, Arc::new(data), Arc::clone(&detections))?;
+        let dex_trace = install_dex_host(&context, dex_context.clone())?;
+        eval_unit(&context, FORMAT_RESULT_SHIM)?;
+        let detect_result = eval_rule_lexical(&context, &rule_source, true)
+            .map_err(|error| format!("{id}: fixed DEX rule failed: {error}"))?;
+        let actual_detections = detections
+            .lock()
+            .map_err(|_| "DEX detection result mutex poisoned".to_owned())?
+            .clone();
+        let expected_detections: Vec<Detection> =
+            serde_json::from_value(baseline_case["detections"].clone())
+                .map_err(|error| format!("{id}: invalid Qt5 detections: {error}"))?;
+        let expected_detect_result = baseline_case["detect_result"]
+            .as_bool()
+            .ok_or_else(|| format!("{id}: Qt5 detect result is missing"))?;
+        let calls = dex_trace
+            .is_dex_string_present_calls
+            .load(Ordering::Relaxed);
+        let expected_out_of_bounds = usize::from(id == "qdbh_string_data_truncated");
+        let strings_match = dex_context.strings == expected_strings;
+        let map_matches = dex_context.map_item_count == expected_map_item_count;
+        let native_matches = rust_native_present == expected_native_present;
+        let matches = dex_context.version == 35
+            && map_matches
+            && strings_match
+            && native_matches
+            && dex_context.out_of_bounds_string_offsets == expected_out_of_bounds
+            && detect_result == expected_detect_result.to_string()
+            && actual_detections == expected_detections
+            && calls == 1;
+        all_match &= matches;
+        reports.push(json!({
+            "id": id,
+            "input_sha256": fixture_case["data_sha256"],
+            "input_bytes": data_hex.len() / 2,
+            "parser_valid": true,
+            "version": dex_context.version,
+            "map_item_count": {
+                "qt5": expected_map_item_count,
+                "rust": dex_context.map_item_count,
+                "matches": map_matches,
+            },
+            "parsed_strings": {
+                "qt5": expected_strings,
+                "rust": dex_context.strings,
+                "matches": strings_match,
+            },
+            "native_qdbh_present": {
+                "qt5": expected_native_present,
+                "rust": rust_native_present,
+                "matches": native_matches,
+            },
+            "rust_out_of_bounds_string_offsets":
+                dex_context.out_of_bounds_string_offsets,
+            "detect_result": {
+                "qt5": expected_detect_result,
+                "rust": detect_result,
+            },
+            "detections": {
+                "qt5": expected_detections,
+                "rust": actual_detections,
+            },
+            "dex_is_string_present_calls": calls,
+            "matches": matches,
+        }));
+    }
+    println!(
+        "{}",
+        serde_json::to_string_pretty(&json!({
+            "schema_version": 1,
+            "operation":
+                "byte-identical fixed DEX rule with Rust DEX context and DEX.isDexStringPresent",
+            "runtime": "rquickjs 0.12.1 / QuickJS-NG 0.15.1",
+            "upstream_commit": UPSTREAM_COMMIT,
+            "xdex_commit": XDEX_COMMIT,
+            "xscanengine_commit": XSCANENGINE_COMMIT,
+            "rules_commit": RULES_COMMIT,
+            "rule": {
+                "path": normalized_path(&rule_path),
+                "bytes": rule_source.len(),
+                "sha256": DEX_RULE_SHA256,
+            },
+            "fixture": {
+                "path": normalized_path(fixture_path),
+                "sha256": DEX_FIXTURE_SHA256,
+            },
+            "qt5_baseline": {
+                "path": normalized_path(baseline_path),
+                "sha256": DEX_QT5_BASELINE_SHA256,
+            },
+            "case_count": reports.len(),
+            "matched_count": reports.iter().filter(|case| case["matches"] == true).count(),
+            "cases": reports,
+            "all_match": all_match,
+        }))
+        .map_err(|error| format!("cannot serialize DEX rule report: {error}"))?
+    );
+    Ok(all_match)
+}
+
 fn upstream_type_priority(kind: &str) -> i32 {
     let normalized = kind.to_lowercase().replace(['~', '!'], "");
     match normalized.as_str() {
@@ -5239,7 +5657,9 @@ fn usage() -> ExitCode {
          diec-rquickjs-rule-runtime-spike verify-elf-rule \
          <main-rule-root> <elf-fixture-json> <qt5-baseline-json>\n       \
          diec-rquickjs-rule-runtime-spike verify-macho-rule \
-         <main-rule-root> <macho-fixture-json> <qt5-baseline-json>"
+         <main-rule-root> <macho-fixture-json> <qt5-baseline-json>\n       \
+         diec-rquickjs-rule-runtime-spike verify-dex-rule \
+         <main-rule-root> <dex-fixture-json> <qt5-baseline-json>"
     );
     ExitCode::from(2)
 }
@@ -5287,6 +5707,8 @@ fn main() -> ExitCode {
         verify_elf_rule(&roots[0], &roots[1], &roots[2])
     } else if command == "verify-macho-rule" && roots.len() == 3 {
         verify_macho_rule(&roots[0], &roots[1], &roots[2])
+    } else if command == "verify-dex-rule" && roots.len() == 3 {
+        verify_dex_rule(&roots[0], &roots[1], &roots[2])
     } else {
         return usage();
     };
@@ -5303,17 +5725,18 @@ fn main() -> ExitCode {
 #[cfg(test)]
 mod tests {
     use super::{
-        BinaryHostContext, BinaryStringContext, ElfRuleContext, HostFilePart, MachoRuleContext,
-        NINTENDO_COMPAT_DECLARATION, NINTENDO_RULE_BYTES, NINTENDO_VAR_DECLARATION, PeRuleContext,
-        TextUnicodeType, apply_compatibility_overlay, apply_exact_lifecycle_overlay,
-        collect_rule_files, elf_matcher_map_projection, eval_rule_lexical, eval_string, eval_unit,
-        install_diagnostic_host_fallbacks, install_nintendo_host,
-        install_nintendo_host_with_context, install_nintendo_host_with_context_and_strings,
-        macho_matcher_map_projection, new_context, new_runtime, nonnegative_index, normalized_path,
-        parse_detection_triples, parse_scope_detections, parse_scope_fixture_order,
-        pe_physical_map_projection, qt5_matcher_map_projection, qt5_pe_physical_map_projection,
-        read_ascii, read_byte_array, read_signed, read_unsigned, sha256_hex, shift_right_unsigned,
-        sorted_detection_projection, upstream_type_priority,
+        BinaryHostContext, BinaryStringContext, DexRuleContext, ElfRuleContext, HostFilePart,
+        MachoRuleContext, NINTENDO_COMPAT_DECLARATION, NINTENDO_RULE_BYTES,
+        NINTENDO_VAR_DECLARATION, PeRuleContext, TextUnicodeType, apply_compatibility_overlay,
+        apply_exact_lifecycle_overlay, collect_rule_files, elf_matcher_map_projection,
+        eval_rule_lexical, eval_string, eval_unit, install_diagnostic_host_fallbacks,
+        install_nintendo_host, install_nintendo_host_with_context,
+        install_nintendo_host_with_context_and_strings, macho_matcher_map_projection, new_context,
+        new_runtime, nonnegative_index, normalized_path, parse_detection_triples,
+        parse_scope_detections, parse_scope_fixture_order, pe_physical_map_projection,
+        qt5_matcher_map_projection, qt5_pe_physical_map_projection, read_ascii, read_byte_array,
+        read_signed, read_unsigned, sha256_hex, shift_right_unsigned, sorted_detection_projection,
+        upstream_type_priority,
     };
     use std::fs;
     use std::path::{Path, PathBuf};
@@ -5598,6 +6021,77 @@ mod tests {
             MachoRuleContext::parse(&no_segments)
                 .expect_err("missing segment must fail")
                 .contains("no non-empty segment")
+        );
+    }
+
+    #[test]
+    fn dex_context_matches_fixed_qt5_string_table_and_truncation() {
+        let baseline: serde_json::Value = serde_json::from_str(include_str!(
+            "../../../docs/research/data/dex-rule-qt5.json"
+        ))
+        .expect("fixed Qt5 DEX rule baseline should be valid JSON");
+        let cases = baseline["cases"]
+            .as_array()
+            .expect("fixed Qt5 DEX baseline should have cases");
+        assert_eq!(cases.len(), 3);
+        for case in cases {
+            assert_eq!(case["parser_valid"], true);
+            let id = case["id"].as_str().expect("case should have an id");
+            let data = decode_hex(case["data_hex"].as_str().expect("case should contain data"));
+            let context = DexRuleContext::parse(&data)
+                .unwrap_or_else(|error| panic!("{id}: DEX context should parse: {error}"));
+            let expected_strings: Vec<String> =
+                serde_json::from_value(case["parsed_strings"].clone())
+                    .expect("Qt5 parsed strings should deserialize");
+            assert_eq!(context.version, 35);
+            assert_eq!(context.map_item_count, 3);
+            assert_eq!(context.strings, expected_strings);
+            assert_eq!(
+                context.strings.iter().any(|value| value == "/qdbh"),
+                case["native_qdbh_present"].as_bool().unwrap()
+            );
+            assert_eq!(
+                context.out_of_bounds_string_offsets,
+                usize::from(id == "qdbh_string_data_truncated")
+            );
+        }
+    }
+
+    #[test]
+    fn dex_context_rejects_malformed_counts_and_uleb128() {
+        assert!(DexRuleContext::parse(&[]).is_err());
+        let baseline: serde_json::Value = serde_json::from_str(include_str!(
+            "../../../docs/research/data/dex-rule-qt5.json"
+        ))
+        .expect("fixed Qt5 DEX rule baseline should be valid JSON");
+        let data = decode_hex(
+            baseline["cases"][0]["data_hex"]
+                .as_str()
+                .expect("DEX case should contain data"),
+        );
+
+        let mut invalid_endian = data.clone();
+        invalid_endian[40..44].fill(0);
+        assert!(
+            DexRuleContext::parse(&invalid_endian)
+                .expect_err("invalid endian tag must fail")
+                .contains("endian tag")
+        );
+
+        let mut excessive_strings = data.clone();
+        excessive_strings[0x88..0x8c].copy_from_slice(&65_537_u32.to_le_bytes());
+        assert!(
+            DexRuleContext::parse(&excessive_strings)
+                .expect_err("excessive string count must fail")
+                .contains("limit 65536")
+        );
+
+        let mut unterminated_uleb128 = data;
+        unterminated_uleb128[0xa8..0xad].fill(0x80);
+        assert!(
+            DexRuleContext::parse(&unterminated_uleb128)
+                .expect_err("unterminated ULEB128 must fail")
+                .contains("ULEB128")
         );
     }
 

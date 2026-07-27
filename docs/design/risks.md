@@ -152,8 +152,12 @@ baseline 的变更都要检查本表。
   PE/ELF 分支。第三个闭环使用真实 Rust Mach-O64 context、native
   `MACH.compareEP` 和 1331-byte 原样 Rust compiler 规则，在 x86_64/arm64
   positive、x86_64 negative/truncated 上完成 Qt5 差分 4/4；CPU type、入口点、
-  安全 map、完整 tuple 和 5/6/9 次调用路径均一致。ADR 0006 要求的其余
-  HostApi 和 DEX/APK/Archive/PDF 代表规则仍缺，因而 R-001 继续 Open。
+  安全 map、完整 tuple 和 5/6/9 次调用路径均一致。第四个闭环使用真实 Rust
+  DEX035 string-table context、native `DEX.isDexStringPresent` 和 273-byte
+  原样 QDBH 规则，在 positive/negative/string-data-at-EOF 上完成 Qt5 差分
+  3/3；map、解析字符串、native boolean 和完整 tuple 均一致，并记录一个
+  out-of-bounds string offset。ADR 0006 要求的其余 HostApi 和
+  APK/Archive/PDF 代表规则仍缺，因而 R-001 继续 Open。
   固定 signature AST inventory 随后解析 `db`/`db_extra`
   2175/2175，保存 5968 个具名 signature API 调用点和 5628 个静态 pattern，
   覆盖动态 317/317；四个保守动态参数中的 `byteCode` 又已闭合为 97 个唯一

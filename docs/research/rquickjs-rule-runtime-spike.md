@@ -850,6 +850,11 @@ cargo +1.88.0 run --release --locked -- verify-macho-rule \
   ../../upstream/Detect-It-Easy/db \
   ../../docs/research/data/macho-rule-fixture.json \
   ../../docs/research/data/macho-rule-qt5.json
+
+cargo +1.88.0 run --release --locked -- verify-dex-rule \
+  ../../upstream/Detect-It-Easy/db \
+  ../../docs/research/data/dex-rule-fixture.json \
+  ../../docs/research/data/dex-rule-qt5.json
 ```
 
 `fixture`、`eval-isolated-compat`、`eval-binary-lifecycle`、两个 lexical
@@ -893,7 +898,11 @@ JSON。运行前先执行
   `MACH.compareEP` 和原样 Rust compiler 规则完成 4/4，精确核对 5/6/9 次
   wrapper 调用，证据见
   [`macho-rule-runtime-differential.md`](macho-rule-runtime-differential.md)。
-  三者仍不覆盖其余 PE/ELF/Mach-O HostApi、PE32+ 或其他格式。
+  第四个分支使用真实 DEX035 string-table context、native
+  `DEX.isDexStringPresent` 和原样 QDBH 规则完成 positive/negative/EOF 截断
+  3/3；map、解析字符串、native boolean 和完整 tuple 均一致，证据见
+  [`dex-rule-runtime-differential.md`](dex-rule-runtime-differential.md)。
+  四者仍不覆盖其余 PE/ELF/Mach-O/DEX HostApi、PE32+、MUTF-8 或其他格式。
 - 规则侧已清点 429 个第一层宿主 receiver/method 和 464 个 arity 形状；
   337 个 C++ slot 与 13 个脚本扩展静态覆盖 460 个形状。共享 Qt 5/Qt 6
   QObject 探针已闭合三个额外实参形状和缺失 `PE.getEPSignature` 的

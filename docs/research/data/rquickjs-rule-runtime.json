@@ -20,7 +20,7 @@
   "experiment": {
     "cargo_lock_sha256": "f389eb266779a88939fea9793effdff29d01ea0e1184915698f4fa0f9441d0ad",
     "cargo_toml_sha256": "82c5bb97749f50212e5364c2ac7d1f81eaec4d460a9bf47710b4b42f9204a79f",
-    "source_sha256": "97c1fa6396257d5fab02acb8d5d9ed165ba3b249a844aaa06f11320e04f7bbd5",
+    "source_sha256": "36af07d3e9b710164230364152db6e1ccecc6cfb346bd1233b6facf4d8837497",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -1062,6 +1062,53 @@
       "rust_declared_out_of_bounds_segment_count": 1
     },
     "scope": "one byte-identical Mach-O rule with real Rust Mach-O64 x86_64/arm64 contexts over project-generated positive, negative, and truncated inputs; not complete Mach-O or format HostApi compatibility"
+  },
+  "dex_rule_differential": {
+    "oracle": {
+      "baseline": "docs/research/data/dex-rule-qt5.json",
+      "baseline_sha256": "881988e4c85686489fcf05235b686656ea3dcfaa487cbd7b36259f98614b7bf5",
+      "binary": "/opt/die-build/src/console/diec-dex-rule-harness",
+      "binary_sha256": "036dfe8cc987a997bd621d89a8fe01ab9ddc4159547abfba2bb4d2ba250a467d",
+      "case_count": 3,
+      "dockerfile": "tools/upstream/Dockerfile.dex-rule-harness-qt5",
+      "dockerfile_sha256": "aad89e83ecdf2217db182fe270f66f57057e930f76512669b430f80dfcad2d74",
+      "engine": "QScriptEngine",
+      "fixture": "docs/research/data/dex-rule-fixture.json",
+      "fixture_generator": "tools/corpus/generate_dex_rule_fixture.py",
+      "fixture_generator_sha256": "e4fc3d902cbaccb794b655247f8bf4e158b058ae152f8828286c731939afa885",
+      "fixture_sha256": "7c312742257d365a49f399036e9ce62784e819f13a27831acfadd7625025cbc8",
+      "harness_source": "tools/upstream/dex_rule_harness_main.cpp",
+      "harness_source_sha256": "2ec6403e7e0a884d943cad8dae807478f50e6ae1f4db52f9857a8306e9283f35",
+      "image": "diec-rust/dex-rule-harness-qt5:74eaf505",
+      "image_id": "sha256:6043dfc3aabc77df949ff3e76fc45009720cd4d54239f9a7ad0b351950d3d939",
+      "probe": "tools/upstream/probe_dex_rule_harness.py",
+      "probe_passed": true,
+      "probe_sha256": "c249642119c4c482fa86ff2d420b2f4eb0f6b60315b256d3b09dc93ae839ebb9",
+      "qt_version": "5.15.13",
+      "rule_source": {
+        "bytes": 273,
+        "path": "upstream/Detect-It-Easy/db/DEX/protector_QDBH.2.sg",
+        "sha256": "5280ae0425f47c03ca037002b29964fe59eb898e871a00ad266475856f0e7ba7"
+      },
+      "xdex_commit": "035c61966d3a9018edf80cd0013083ee32626e71"
+    },
+    "rust": {
+      "case_count": 3,
+      "matched_count": 3,
+      "rule_bytes_preserved": true,
+      "command": "verify-dex-rule",
+      "is_dex_string_present_call_count": 3
+    },
+    "coverage": {
+      "positive_case_count": 1,
+      "negative_case_count": 1,
+      "truncated_case_count": 1,
+      "format": "DEX035",
+      "receiver_method": "DEX.isDexStringPresent",
+      "map_and_string_table_match_count": 3,
+      "rust_out_of_bounds_string_offset_count": 1
+    },
+    "scope": "one byte-identical DEX rule with a real Rust DEX035 string-table context over project-generated positive, negative, and string-data-at-EOF inputs; not complete DEX, MUTF-8, or format HostApi compatibility"
   },
   "full_binary_corpus_oracle": {
     "accepted_detect_count": 4088,
