@@ -173,7 +173,12 @@ hideunknown 的可观察增量。完整输入哈希和输出见
   [`debug-data-dispatch-behavior.md`](debug-data-dispatch-behavior.md)。
 - `CAP-NEST-008`：JSON 结果通过父 detection 的 `values` 表达树，并保留 file part、size 和
   offset。详见 [`nested-scan-behavior.md`](nested-scan-behavior.md)。
-- `CAP-NEST-009`：源码未见独立嵌套深度和 archive 总解压字节限制；跨平台和资源耗尽行为待验证。
+- `CAP-NEST-009`：固定源码没有独立嵌套 depth 或全 scan 累计展开字节状态；
+  受限 Linux Qt5 oracle 的单成员 ZIP 到达 16 层，固定两层累计展开量达到
+  2,097,266 bytes，第一次 progress callback 取消保留 1 条 root partial record。
+  状态为 Observed with gaps；高压缩比、真实资源耗尽、其他 archive 格式和跨平台
+  仍待验证。详见
+  [`archive-limit-behavior.md`](archive-limit-behavior.md)。
 
 ## 结果模型
 

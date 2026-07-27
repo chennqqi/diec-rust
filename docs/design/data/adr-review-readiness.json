@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "evaluated_on": "2026-07-27",
+  "evaluated_on": "2026-07-28",
   "phase": 0,
   "result": "review_pending",
   "adrs": [
@@ -253,6 +253,31 @@
       "remaining_acceptance_evidence": [
         "Phase 1 CI default and MSRV jobs"
       ]
+    },
+    {
+      "id": "ADR-0012",
+      "path": "docs/design/decisions/0012-bounded-nested-scan-budget.md",
+      "status": "Proposed",
+      "review_ready": true,
+      "acceptance_ready": false,
+      "contract_tests": [
+        "tools/tests/test_generate_archive_limit_fixture.py",
+        "tools/tests/test_probe_archive_limits_harness.py"
+      ],
+      "required_headings": [
+        "## 背景",
+        "## 决策",
+        "## 考虑过的替代方案",
+        "## 后果",
+        "## 证据",
+        "## 验收条件"
+      ],
+      "review_question": "是否接受有限的全 scan 嵌套资源预算，以及 legacy 高资源模式仍受 hard ceiling 约束？",
+      "remaining_acceptance_evidence": [
+        "production shared ScanBudget and extractor reservation",
+        "limit-1/exact/+1 plus high-ratio and malformed archive tests",
+        "cross-platform CPU/peak-memory evidence and SafetyDeviation waiver"
+      ]
     }
   ],
   "excluded_adrs": [
@@ -264,10 +289,10 @@
     }
   ],
   "summary": {
-    "active_adr_count": 10,
-    "review_ready_count": 10,
+    "active_adr_count": 11,
+    "review_ready_count": 11,
     "acceptance_ready_count": 0,
-    "proposed_count": 10,
+    "proposed_count": 11,
     "superseded_count": 1,
     "phase_0_decision_gate_complete": false
   }

@@ -248,8 +248,12 @@ limits 是全 scan 累计预算。child work 不重置额度。所有触发点�
 - scan stage 和 node；
 - 结果是否完整。
 
-默认值、aggressive 倍率和上游 off-by-one 兼容将在 benchmark/queue spike 后冻结，
-不在 Draft 中猜测数字。
+[`ADR 0012`](decisions/0012-bounded-nested-scan-budget.md) 现提议首版有限默认：
+30 s、depth 32、全 scan 4,096 archive entries、单对象 128 MiB、累计展开
+512 MiB 和累计读取 1 GiB，并为显式 `LegacyHighResource` 提议更高但仍有限的
+profile。ADR Accepted 前这些数字是评审候选；实现不得以 `0` 或整数最大值回退为
+无界。对应上游证据见
+[`archive-limit-behavior.md`](../research/archive-limit-behavior.md)。
 
 ## 9. Cancellation 与 deadline
 

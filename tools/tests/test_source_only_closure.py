@@ -44,7 +44,7 @@ class SourceOnlyClosureTest(unittest.TestCase):
         items = self.manifest["items"]
         self.assertEqual({item["id"] for item in items}, expected_ids)
         self.assertEqual(len(items), len(expected_ids))
-        self.assertEqual(len(items), 1)
+        self.assertEqual(len(items), 0)
 
     def test_every_item_has_actionable_closure_evidence(self):
         for item in self.manifest["items"]:
@@ -62,14 +62,12 @@ class SourceOnlyClosureTest(unittest.TestCase):
         summary = self.manifest["summary"]
         self.assertTrue(summary["all_items_have_missing_evidence"])
         self.assertTrue(summary["all_items_have_executable_assertions"])
-        self.assertFalse(summary["phase_0_source_only_closed"])
+        self.assertTrue(summary["phase_0_source_only_closed"])
+        self.assertEqual(self.manifest["result"], "complete")
 
-    def test_negative_capabilities_keep_explicit_closure_kinds(self):
-        items = {item["id"]: item for item in self.manifest["items"]}
-        self.assertEqual(
-            items["CAP-NEST-009"]["closure_kind"],
-            "bounded_escalation_and_adr",
-        )
+    def test_closed_manifest_has_no_stale_closure_catalog(self):
+        self.assertEqual(self.manifest["items"], [])
+        self.assertEqual(MODULE.CATALOG, {})
 
     def test_catalog_drift_and_duplicate_json_are_rejected(self):
         changed = json.loads(json.dumps(self.coverage))

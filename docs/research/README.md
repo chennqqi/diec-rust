@@ -9,8 +9,10 @@ Phase 0 计划形成：
 - [`capability-coverage-report.md`](capability-coverage-report.md)：68 个稳定能力在
   Linux Qt5/Qt6、Windows 和 macOS 上的 runtime/source-only、corpus-missing
   与 platform-missing 闭集报告（Draft）。
-- [`source-only-closure-plan.md`](source-only-closure-plan.md)：剩余 1 个 Linux
-  Qt5 source-only 能力的缺失证据、fixture、harness、强断言和关闭方式（Draft）。
+- [`source-only-closure-plan.md`](source-only-closure-plan.md)：Linux Qt5
+  source-only 闭集及最后一项 depth/expanded-byte 关闭证据（Draft）。
+- [`archive-limit-behavior.md`](archive-limit-behavior.md)：受资源约束的 archive
+  depth/累计展开量递增、peak RSS 与 cooperative cancellation 证据（In Review）。
 - [`signature-path-filter-behavior.md`](signature-path-filter-behavior.md)：
   private signature-file path comparator 的严格绝对路径语义及公共不可达边界
   （Draft）。

@@ -283,8 +283,13 @@ baseline 的变更都要检查本表。
 ### R-005：嵌套和解压资源耗尽
 
 - **触发**：深链、循环、极高 entry count、声明长度欺骗、高压缩比或累计输出超限。
+- **当前证据**：固定 Linux Qt5 archive oracle 已在 256 MiB/1 CPU/30 s 外部边界
+  内到达 16 层和 2,097,266 累计展开 bytes；固定源码与 runtime 均未显示独立
+  depth/total cutoff。取消 control 保留 root partial record。详见
+  [`archive-limit-behavior.md`](../research/archive-limit-behavior.md)。
 - **缓解**：显式 work queue；全 scan depth/node/entry/read/decompressed/time
-  hard budgets；cycle hint；不复刻无界调用栈。
+  hard budgets；cycle hint；不复刻无界调用栈；ADR 0012 提议有限 default 与
+  legacy high-resource ceiling。
 - **验证**：每种 limit 的 `-1/exact/+1`、zip-bomb synthetic case、取消和 peak
   memory；安全偏差有 ADR/waiver。
 - **关闭**：所有 extractor 共享预算且 sanitizer/fuzz/资源测试通过。
@@ -348,8 +353,8 @@ baseline 的变更都要检查本表。
   traceability、闭集 coverage report 和 mutation/minimization。
 - **验证**：每项能力 positive/negative/boundary；manifest hash；license review；
   fuzz regression growth。当前报告已分类 68 行 × 4 平台、0 未分类 cell，但仍
-  显式保留 10 个 Linux source-only 能力、30 个 corpus-gap 行和三个缺失平台；
-  source-only closure manifest 要求每项有 fixture、harness 和至少三个强断言。
+  Linux source-only 已清零，同时显式保留 30 个 corpus-gap 行和三个缺失平台；
+  source-only closure manifest 会拒绝任何未进入 closure catalog 的新缺口。
 - **关闭**：release 范围无 coverage gap，所有样本可追溯且处理策略合规。
 
 ### R-011：并发非确定性和数据竞争

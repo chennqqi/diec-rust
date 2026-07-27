@@ -259,7 +259,11 @@ CLI、FFI 和 output crate 不得复制上述任一检测分支。一次性 API 
 
 能够识别的 ancestry cycle 应提前终止，但 cycle detection 不能替代 hard cap。
 预算耗尽返回结构化 `limit reached`，保留允许的部分结果及原始位置。若固定上游存在
-off-by-one 深度行为，兼容模式也只能在安全硬上限内模拟，并须单独 ADR。
+off-by-one 深度行为，兼容模式也只能在安全硬上限内模拟。初始有限 default、
+legacy normal/aggressive 策略和 SafetyDeviation 由
+[`ADR 0012`](decisions/0012-bounded-nested-scan-budget.md) 提议；上游的受限递增
+证据见
+[`archive-limit-behavior.md`](../research/archive-limit-behavior.md)。
 
 每个 child work item 还必须携带 format parser 提供的语义 context，至少包括
 `FilePart`、根文件 offset/size 和可选 scan ID；不得在 rule adapter 或 renderer

@@ -8,9 +8,9 @@ Last updated: 2026-07-28
 
 ## 1. 目的与结论
 
-[`capability-coverage.json`](data/capability-coverage.json) 当前仍有 1 个
-Linux Qt5 source-only 能力。本文不把源码证据提升为 runtime compatibility，
-而是为每项固定缺失证据、最小 fixture、oracle/harness、强断言和关闭方式。
+[`capability-coverage.json`](data/capability-coverage.json) 当前已有 0 个
+Linux Qt5 source-only 能力。最后一项 `CAP-NEST-009` 已由受资源约束的递增
+runtime corpus 和 ADR 0012 关闭 source-only 状态，但仍保留明确 corpus gaps。
 
 机器清单为
 [`data/source-only-closure.json`](data/source-only-closure.json)，由
@@ -18,11 +18,16 @@ Linux Qt5 source-only 能力。本文不把源码证据提升为 runtime compati
 生成。生成器要求清单 ID 与 coverage report 的 source-only 闭集完全相等；
 新增、提升或删除能力而未同步计划会显式失败。
 
-## 2. 当前一项
+## 2. 关闭结果
 
-| 能力 | 关闭类型 | 关键缺口 |
+| 能力 | 关闭类型 | 结果 |
 | --- | --- | --- |
-| `CAP-NEST-009` | bounded escalation + ADR | 缺深度/总展开量递增实验和 Rust 有界偏离决策 |
+| `CAP-NEST-009` | bounded escalation + ADR | 1—16 层与 2,162—2,097,266 累计展开 bytes 均到达最深 PDF；取消保留 partial；ADR 0012 固定有限预算策略 |
+
+证据见
+[`archive-limit-behavior.md`](archive-limit-behavior.md)、
+[`archive-limit-engine-qt5.json`](data/archive-limit-engine-qt5.json) 和
+[`0012-bounded-nested-scan-budget.md`](../design/decisions/0012-bounded-nested-scan-budget.md)。
 
 `CAP-RULE-007` 已由
 [`signature-path-filter-behavior.md`](signature-path-filter-behavior.md) 关闭：
@@ -45,6 +50,10 @@ public recursive+aggressive 只为 resource 建 child，direct debug context 则
 
 - 无独立 depth/total limit 必须用单调递增语料记录 timeout、peak memory、
   partial result 和 cancellation，并用 ADR 固定 Rust 的有界策略。
+
+该原则已由 `CAP-NEST-009` 实验满足。机器 closure manifest 现在要求 source-only
+闭集为空；未来若 coverage 新增或降级 source-only 能力，catalog drift 会失败，
+不能静默复用本次结论。
 
 ### 组合格式
 

@@ -1,0 +1,108 @@
+{
+  "capability": "CAP-NEST-009",
+  "generator": "tools/corpus/generate_archive_limit_fixture.py",
+  "license": "project-generated; no third-party sample bytes",
+  "samples": [
+    {
+      "cumulative_expanded_bytes": 331,
+      "depth": 1,
+      "leaf_size": 331,
+      "member_count_per_level": 1,
+      "name": "depth-01.zip",
+      "series": "depth",
+      "sha256": "f51a8f744383dff25fc23c1e091d98103a32bed9d6fd387248ad78dde8211ff7",
+      "size": 445
+    },
+    {
+      "cumulative_expanded_bytes": 776,
+      "depth": 2,
+      "leaf_size": 331,
+      "member_count_per_level": 1,
+      "name": "depth-02.zip",
+      "series": "depth",
+      "sha256": "53c1ec4e888ba0a614384e49addcf420f1ceae118666645deedaffd7ea7bdf93",
+      "size": 567
+    },
+    {
+      "cumulative_expanded_bytes": 2032,
+      "depth": 4,
+      "leaf_size": 331,
+      "member_count_per_level": 1,
+      "name": "depth-04.zip",
+      "series": "depth",
+      "sha256": "3c0a8353fc42c4651e62371864a4ff9ee7321bb6885425c9a9a40eaa1470d20e",
+      "size": 811
+    },
+    {
+      "cumulative_expanded_bytes": 6008,
+      "depth": 8,
+      "leaf_size": 331,
+      "member_count_per_level": 1,
+      "name": "depth-08.zip",
+      "series": "depth",
+      "sha256": "66a12c89413618266190af8a548ebb6ef276dab103286a0bf8e0fbced506e859",
+      "size": 1299
+    },
+    {
+      "cumulative_expanded_bytes": 11936,
+      "depth": 12,
+      "leaf_size": 331,
+      "member_count_per_level": 1,
+      "name": "depth-12.zip",
+      "series": "depth",
+      "sha256": "1d9b4a6436af2146e88edfd74ca57cddb40011457beca6c40410b5a457171760",
+      "size": 1787
+    },
+    {
+      "cumulative_expanded_bytes": 19816,
+      "depth": 16,
+      "leaf_size": 331,
+      "member_count_per_level": 1,
+      "name": "depth-16.zip",
+      "series": "depth",
+      "sha256": "ff7eb61595bf6b055d4125a8b2f32ddb2ffc977a9d3d410e6d77d8c2727206cc",
+      "size": 2275
+    },
+    {
+      "cumulative_expanded_bytes": 2162,
+      "depth": 2,
+      "leaf_size": 1024,
+      "member_count_per_level": 1,
+      "name": "expanded-0001024.zip",
+      "series": "expanded_bytes",
+      "sha256": "b2dcc3b4a3d75b6405f8f4575bdcffce84dbdc321deced5a875b30e25623c4e0",
+      "size": 1260
+    },
+    {
+      "cumulative_expanded_bytes": 131186,
+      "depth": 2,
+      "leaf_size": 65536,
+      "member_count_per_level": 1,
+      "name": "expanded-0065536.zip",
+      "series": "expanded_bytes",
+      "sha256": "55f3687f5bd8be93e631b18a170f2393361167b95f2a5bbdb466207071308b5f",
+      "size": 65772
+    },
+    {
+      "cumulative_expanded_bytes": 524402,
+      "depth": 2,
+      "leaf_size": 262144,
+      "member_count_per_level": 1,
+      "name": "expanded-0262144.zip",
+      "series": "expanded_bytes",
+      "sha256": "2f1e9bbd2fda5cd15180165f5a6d953287176616de25a871ee660c3ea500a9bf",
+      "size": 262380
+    },
+    {
+      "cumulative_expanded_bytes": 2097266,
+      "depth": 2,
+      "leaf_size": 1048576,
+      "member_count_per_level": 1,
+      "name": "expanded-1048576.zip",
+      "series": "expanded_bytes",
+      "sha256": "b8af36eb213de9b11d45fa15f8427950873474992f017a79aab4c6adcbae1fa1",
+      "size": 1048812
+    }
+  ],
+  "schema_version": 1
+}

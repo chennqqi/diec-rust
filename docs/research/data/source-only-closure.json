@@ -1,50 +1,25 @@
 {
   "evaluated_on": "2026-07-28",
-  "items": [
-    {
-      "acceptance": "all assertions pass against the pinned upstream identity and the capability becomes runtime-observed or receives an explicit reviewed scope disposition",
-      "closure_kind": "bounded_escalation_and_adr",
-      "current_status": "source_only_with_corpus_gaps",
-      "evidence_set": "nested_scan",
-      "id": "CAP-NEST-009",
-      "missing_evidence": [
-        "absence of an independent depth or total-extraction limit is source-only",
-        "resource exhaustion boundaries have no escalating runtime corpus"
-      ],
-      "name": "no independent depth or total extraction limit",
-      "proposed_experiment": {
-        "assertions": [
-          "per-level count behavior is separated from depth and total bytes",
-          "timeout, peak memory, partial results, and cancellation are retained",
-          "an ADR records the bounded Rust default and legacy compatibility policy"
-        ],
-        "fixture": "generated nested archives with monotonic depth and expanded bytes",
-        "harness": "resource-limited upstream engine oracle",
-        "platform": "linux-x86_64-qt5"
-      }
-    }
-  ],
+  "items": [],
   "limitations": [
-    "this manifest specifies closure evidence but does not execute the experiments",
-    "source-only negative claims require paired controls or a reviewed scope decision",
-    "a catalog entry cannot by itself promote a capability status"
+    "closure is derived only from the admitted Linux Qt5 coverage baseline",
+    "zero source-only rows does not close named corpus or platform gaps",
+    "future source-only rows must add executable catalog entries before regeneration"
   ],
   "platform": "linux-x86_64-qt5",
-  "result": "incomplete",
+  "result": "complete",
   "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
   "schema_version": 1,
   "source": {
     "path": "docs/research/data/capability-coverage.json",
-    "sha256": "1ca2a999982011081f2a63e7256aad4fa81288a050e27bddc5b6755e89a77a4c"
+    "sha256": "f9b17b5afd8be98cd2c8613851d6d2091a39702e57adb3fb633c0d5c15699960"
   },
   "summary": {
     "all_items_have_executable_assertions": true,
     "all_items_have_missing_evidence": true,
-    "closure_kind_counts": {
-      "bounded_escalation_and_adr": 1
-    },
-    "phase_0_source_only_closed": false,
-    "source_only_capability_count": 1
+    "closure_kind_counts": {},
+    "phase_0_source_only_closed": true,
+    "source_only_capability_count": 0
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
 }

@@ -162,9 +162,10 @@ class PhaseZeroGateReviewTest(unittest.TestCase):
                 "0009-cancellation-result-contract.md",
                 "0010-bounded-include-graph.md",
                 "0011-rust-1.97.1-default-toolchain.md",
+                "0012-bounded-nested-scan-budget.md",
             },
         )
-        self.assertIn("十个有效 ADR", self.document)
+        self.assertIn("十一个有效 ADR", self.document)
 
 
 if __name__ == "__main__":

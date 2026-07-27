@@ -39,3 +39,6 @@
 - [`0011-rust-1.97.1-default-toolchain.md`](0011-rust-1.97.1-default-toolchain.md)：
   默认/发布工具链固定升级到 Rust 1.97.1，同时保持 MSRV 1.88 和双版本 CI
   （Proposed）。
+- [`0012-bounded-nested-scan-budget.md`](0012-bounded-nested-scan-budget.md)：
+  嵌套扫描共享有限 depth/entry/read/expanded/node/deadline 预算；legacy 高资源
+  profile 仍不允许无界（Proposed）。

@@ -2,11 +2,11 @@
 
 Status: In Review
 
-Last updated: 2026-07-27
+Last updated: 2026-07-28
 
 ## 结论
 
-当前十个有效 Proposed ADR 都具备提交决策评审所需的背景、明确决策、替代方案、
+当前十一个有效 Proposed ADR 都具备提交决策评审所需的背景、明确决策、替代方案、
 后果/代价、固定证据和验收条件，因此均为 `review_ready=true`。没有任何一个
 ADR 满足自身全部 acceptance conditions，因此全部为
 `acceptance_ready=false`，不得自动改为 Accepted。
@@ -28,6 +28,7 @@ ADR 0007 已被 ADR 0011 Superseded，不属于当前待接受集合。机器清
 | 0009 | modern cancel 不返回 partial detections | production Rust/JSON/C mapping、race/recovery、legacy waiver |
 | 0010 | include cycle 提前有界失败 | production graph/stack、边界/fuzz、SafetyDeviation |
 | 0011 | 默认 Rust 1.97.1、MSRV 1.88 | Phase 1 default/MSRV CI jobs |
+| 0012 | 全 scan 嵌套预算有限，legacy high-resource 仍有 hard ceiling | production budget、全 limit 边界/畸形 archive、跨平台资源与 waiver |
 
 ## 评审约束
 
@@ -46,7 +47,7 @@ ADR 0007 已被 ADR 0011 Superseded，不属于当前待接受集合。机器清
 [`test_adr_review_readiness.py`](../../tools/tests/test_adr_review_readiness.py)
 验证：
 
-- 十个 Proposed 与一个 Superseded ADR 的集合、状态完全匹配；
+- 十一个 Proposed 与一个 Superseded ADR 的集合、状态完全匹配；
 - 每份 ADR 的必要章节和 contract test 实际存在；
 - 全部 active ADR `review_ready=true`、`acceptance_ready=false`，且剩余证据
   和评审问题非空；

@@ -15,22 +15,7 @@ EVALUATED_ON = "2026-07-28"
 COVERAGE_PATH = "docs/research/data/capability-coverage.json"
 PLATFORM = "linux-x86_64-qt5"
 
-CATALOG: dict[str, dict[str, Any]] = {
-    "CAP-NEST-009": {
-        "closure_kind": "bounded_escalation_and_adr",
-        "missing_evidence": [
-            "absence of an independent depth or total-extraction limit is source-only",
-            "resource exhaustion boundaries have no escalating runtime corpus",
-        ],
-        "fixture": "generated nested archives with monotonic depth and expanded bytes",
-        "harness": "resource-limited upstream engine oracle",
-        "assertions": [
-            "per-level count behavior is separated from depth and total bytes",
-            "timeout, peak memory, partial results, and cancellation are retained",
-            "an ADR records the bounded Rust default and legacy compatibility policy",
-        ],
-    },
-}
+CATALOG: dict[str, dict[str, Any]] = {}
 
 
 class ClosureError(ValueError):
@@ -125,7 +110,7 @@ def build_manifest(
     return {
         "schema_version": SCHEMA_VERSION,
         "evaluated_on": EVALUATED_ON,
-        "result": "incomplete",
+        "result": "complete" if not items else "incomplete",
         "upstream_commit": coverage["upstream_commit"],
         "rules_commit": coverage["rules_commit"],
         "platform": PLATFORM,
@@ -143,13 +128,21 @@ def build_manifest(
             "all_items_have_executable_assertions": all(
                 item["proposed_experiment"]["assertions"] for item in items
             ),
-            "phase_0_source_only_closed": False,
+            "phase_0_source_only_closed": not items,
         },
-        "limitations": [
-            "this manifest specifies closure evidence but does not execute the experiments",
-            "source-only negative claims require paired controls or a reviewed scope decision",
-            "a catalog entry cannot by itself promote a capability status",
-        ],
+        "limitations": (
+            [
+                "this manifest specifies closure evidence but does not execute the experiments",
+                "source-only negative claims require paired controls or a reviewed scope decision",
+                "a catalog entry cannot by itself promote a capability status",
+            ]
+            if items
+            else [
+                "closure is derived only from the admitted Linux Qt5 coverage baseline",
+                "zero source-only rows does not close named corpus or platform gaps",
+                "future source-only rows must add executable catalog entries before regeneration",
+            ]
+        ),
     }
 
 

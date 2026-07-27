@@ -155,7 +155,16 @@
         "docs/research/nested-scan-behavior.md",
         "docs/research/data/nested-corpus.json",
         "docs/research/data/resource-context-chain-qt5.json",
-        "tools/tests/test_generate_nested_corpus.py"
+        "tools/tests/test_generate_nested_corpus.py",
+        "docs/research/archive-limit-behavior.md",
+        "docs/research/data/archive-limit-corpus.json",
+        "docs/research/data/archive-limit-engine-qt5.json",
+        "tools/corpus/generate_archive_limit_fixture.py",
+        "tools/upstream/probe_archive_limits_harness.py",
+        "tools/upstream/archive_limits_harness_main.cpp",
+        "tools/upstream/Dockerfile.archive-limits-harness-qt5",
+        "tools/tests/test_generate_archive_limit_fixture.py",
+        "tools/tests/test_probe_archive_limits_harness.py"
       ]
     },
     "result_model": {
@@ -261,7 +270,7 @@
     {"id": "CAP-NEST-006", "name": "resource context propagation", "verification": "observed", "evidence_set": "nested_scan"},
     {"id": "CAP-NEST-007", "name": "debug data is not scanner dispatched", "verification": "observed", "evidence_set": "debug_data_dispatch"},
     {"id": "CAP-NEST-008", "name": "nested JSON result tree", "verification": "observed", "evidence_set": "nested_scan"},
-    {"id": "CAP-NEST-009", "name": "no independent depth or total extraction limit", "verification": "source_verified_with_gaps", "evidence_set": "nested_scan"},
+    {"id": "CAP-NEST-009", "name": "no independent depth or total extraction limit", "verification": "observed_with_gaps", "evidence_set": "nested_scan"},
 
     {"id": "CAP-RESULT-001", "name": "scan result scalar metadata", "verification": "observed", "evidence_set": "result_model"},
     {"id": "CAP-RESULT-002", "name": "scan result record error debug and handler lists", "verification": "observed", "evidence_set": "result_model"},
@@ -363,9 +372,9 @@
   "summary": {
     "capability_count": 68,
     "observed": 47,
-    "observed_with_gaps": 20,
+    "observed_with_gaps": 21,
     "source_verified": 0,
-    "source_verified_with_gaps": 1,
+    "source_verified_with_gaps": 0,
     "coverage_gap_count": 12,
     "phase_0_coverage_complete": false
   }

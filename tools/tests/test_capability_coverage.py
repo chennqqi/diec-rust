@@ -60,12 +60,12 @@ class CapabilityCoverageTest(unittest.TestCase):
         counts = self.report["summary"]["status_counts_by_platform"]
         linux = counts["linux-x86_64-qt5"]
         self.assertEqual(linux["runtime_observed"], 47)
-        self.assertEqual(linux["runtime_observed_with_corpus_gaps"], 20)
+        self.assertEqual(linux["runtime_observed_with_corpus_gaps"], 21)
         self.assertEqual(
             linux["source_only_runtime_corpus_missing"],
             0,
         )
-        self.assertEqual(linux["source_only_with_corpus_gaps"], 1)
+        self.assertEqual(linux["source_only_with_corpus_gaps"], 0)
         self.assertEqual(linux["platform_missing"], 0)
 
         for platform in (
@@ -120,6 +120,16 @@ class CapabilityCoverageTest(unittest.TestCase):
         self.assertEqual(
             rows["CAP-DISPATCH-007"]["corpus_gap_ids"],
             ["CAP-GAP-012"],
+        )
+        self.assertEqual(
+            rows["CAP-NEST-009"]["platform_status"][
+                "linux-x86_64-qt5"
+            ],
+            "runtime_observed_with_corpus_gaps",
+        )
+        self.assertEqual(
+            rows["CAP-NEST-009"]["corpus_gap_ids"],
+            ["CAP-GAP-005", "CAP-GAP-006"],
         )
 
     def test_every_declared_gap_maps_to_known_capabilities(self):

@@ -356,7 +356,16 @@
         "docs/research/nested-scan-behavior.md",
         "docs/research/data/nested-corpus.json",
         "docs/research/data/resource-context-chain-qt5.json",
-        "tools/tests/test_generate_nested_corpus.py"
+        "tools/tests/test_generate_nested_corpus.py",
+        "docs/research/archive-limit-behavior.md",
+        "docs/research/data/archive-limit-corpus.json",
+        "docs/research/data/archive-limit-engine-qt5.json",
+        "tools/corpus/generate_archive_limit_fixture.py",
+        "tools/upstream/probe_archive_limits_harness.py",
+        "tools/upstream/archive_limits_harness_main.cpp",
+        "tools/upstream/Dockerfile.archive-limits-harness-qt5",
+        "tools/tests/test_generate_archive_limit_fixture.py",
+        "tools/tests/test_probe_archive_limits_harness.py"
       ]
     },
     "result_model": {
@@ -1420,7 +1429,7 @@
         "CAP-GAP-007"
       ],
       "platform_status": {
-        "linux-x86_64-qt5": "source_only_with_corpus_gaps",
+        "linux-x86_64-qt5": "runtime_observed_with_corpus_gaps",
         "linux-x86_64-qt6": "platform_missing",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
@@ -1521,7 +1530,7 @@
   "schema_version": 1,
   "source": {
     "path": "docs/research/data/capability-traceability.json",
-    "sha256": "d4f93bc4b7c7fbcc5c0651211b73f5016fc13161aa6d089edaa5007b876fd8fa"
+    "sha256": "e90b3a1ecab664eb9d42a01ab7ef9f8bfe1202baf45c9940a095f179b209fdac"
   },
   "status_definitions": {
     "platform_missing": "no complete capability baseline is admitted for this platform",
@@ -1541,9 +1550,9 @@
       "linux-x86_64-qt5": {
         "platform_missing": 0,
         "runtime_observed": 47,
-        "runtime_observed_with_corpus_gaps": 20,
+        "runtime_observed_with_corpus_gaps": 21,
         "source_only_runtime_corpus_missing": 0,
-        "source_only_with_corpus_gaps": 1
+        "source_only_with_corpus_gaps": 0
       },
       "linux-x86_64-qt6": {
         "platform_missing": 68,
