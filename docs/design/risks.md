@@ -326,7 +326,11 @@ baseline 的变更都要检查本表。
 ### R-008：结果与输出契约漂移
 
 - **触发**：CLI/FFI 各自检测/排序；HashMap 顺序；legacy 与 canonical schema
-  混用；partial/limit 状态含糊。
+  混用；partial/limit 状态含糊；按 formatter 舍入值重新计算语义状态。
+- **当前证据**：理论 entropy 6.5 在固定上游逐项 `log()` 累加后为
+  `6.499999999999999/not packed`，plain text 同时显示 `6.5: not packed`；
+  special-mode 多目标 JSON 还会串接 filename prefix 和两个 object。两者都要求
+  legacy raw/semantic 双层保真，不能只验证单个 parsed JSON。
 - **缓解**：统一 arena/report；`diec-output` 单点序列化；ADR 0003 双输出；
   schema version 和 golden。
 - **验证**：Rust/C/modern CLI canonical bytes 相同；legacy raw differential；
@@ -360,7 +364,7 @@ baseline 的变更都要检查本表。
   traceability、闭集 coverage report 和 mutation/minimization。
 - **验证**：每项能力 positive/negative/boundary；manifest hash；license review；
   fuzz regression growth。当前报告已分类 68 行 × 4 平台、0 未分类 cell，但仍
-  Linux source-only 已清零，同时显式保留 26 个 corpus-gap 行和三个缺失平台；
+  Linux source-only 已清零，同时显式保留 21 个 corpus-gap 行和三个缺失平台；
   source-only closure manifest 会拒绝任何未进入 closure catalog 的新缺口。
 - **关闭**：release 范围无 coverage gap，所有样本可追溯且处理策略合规。
 

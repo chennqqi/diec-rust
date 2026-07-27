@@ -189,8 +189,9 @@ Phase 0 `semantic-result-v1` 覆盖固定 CLI 的：
 以下内容没有被本文外推为已闭合：
 
 - engine-only result 中可观察的 rule identity/priority、handlers 和 debug records；
-- packed entropy 临界值及特殊浮点表示；
-- PE/ELF/Mach-O/DEX 全部 format-specific struct；
+- PE/ELF/Mach-O/DEX format-specific struct 的畸形及非空集合变体；通用方法、
+  11 个方法可达性和空集合、packed entropy 临界浮点已由
+  [`cli-special-modes.md`](cli-special-modes.md) 固定；
 - Windows/macOS 的 native path 与非 Unicode filename 表示；
 - modern canonical `ScanReport` 的完整字段与 schema；
 - engine-only/modern variant 的 full differential report integration；typed

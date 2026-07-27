@@ -1,0 +1,905 @@
+{
+  "case_count": 28,
+  "cases": {
+    "dex_header_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--struct",
+        "Header",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/minimal.dex"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 1024,
+        "stdout_sha256": "6a50b367a6a4c6ad02d5de6eeb98b0a8525230db19ae1f7b8ea5ee86cbf895bc",
+        "stdout_utf8": "{\n    \"data\": {\n        \"Header\": {\n            \"checksum\": \"3d120c30\",\n            \"class_defs_off\": \"00000000\",\n            \"class_defs_size\": \"00000000\",\n            \"data_off\": \"00000000\",\n            \"data_size\": \"00000000\",\n            \"endian_tag\": \"12345678\",\n            \"field_ids_off\": \"00000000\",\n            \"field_ids_size\": \"00000000\",\n            \"file_size\": \"00000070\",\n            \"header_size\": \"00000070\",\n            \"link_off\": \"00000000\",\n            \"link_size\": \"00000000\",\n            \"magic\": \"0a786564\",\n            \"map_off\": \"00000000\",\n            \"method_ids_off\": \"00000000\",\n            \"method_ids_size\": \"00000000\",\n            \"proto_ids_off\": \"00000000\",\n            \"proto_ids_size\": \"00000000\",\n            \"signature\": \"a5fc7bea8fa9ffaa52243540c8026066511b9fce\",\n            \"string_ids_off\": \"00000000\",\n            \"string_ids_size\": \"00000000\",\n            \"type_ids_off\": \"00000000\",\n            \"type_ids_size\": \"00000000\",\n            \"version\": \"00353330\"\n        }\n    }\n}\n\n"
+      }
+    },
+    "elf_ehdr_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--struct",
+        "Elf_Ehdr",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/minimal-elf64.elf"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 745,
+        "stdout_sha256": "b24b31fdd44e64676da9d4153ebae13d20568fdc1b2cbf3afed51c3f0b43b6ab",
+        "stdout_utf8": "{\n    \"data\": {\n        \"Elf_Ehdr\": {\n            \"e_ident\": {\n                \"ei_abiversion\": \"00\",\n                \"ei_class\": \"02\",\n                \"ei_data\": \"01\",\n                \"ei_mag\": \"464c457f\",\n                \"ei_osabi\": \"00\",\n                \"ei_version\": \"01\"\n            },\n            \"ehsize\": \"0040\",\n            \"entry\": \"0000000000000000\",\n            \"flags\": \"00000000\",\n            \"machine\": \"003e\",\n            \"phentsize\": \"0000\",\n            \"phnum\": \"0000\",\n            \"phoff\": \"0000000000000000\",\n            \"shentsize\": \"0000\",\n            \"shnum\": \"0000\",\n            \"shoff\": \"0000000000000000\",\n            \"shstrndx\": \"0000\",\n            \"type\": \"0003\",\n            \"version\": \"00000001\"\n        }\n    }\n}\n\n"
+      }
+    },
+    "elf_entry_point_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--struct",
+        "Entry point",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/minimal-elf64.elf"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 256,
+        "stdout_sha256": "48133c784589047563b75e1fe1eebcc0230969c0008572150c7c5272e3c0b7a6",
+        "stdout_utf8": "{\n    \"data\": {\n        \"Entry point\": {\n            \"Address\": \"00\",\n            \"Bytes\": \"\",\n            \"Offset\": \"ffffffffffffffff\",\n            \"Relative address\": \"00\",\n            \"Signature\": \"\",\n            \"Signature(rel)\": \"\"\n        }\n    }\n}\n\n"
+      }
+    },
+    "entropy_above_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--entropy",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/entropy-above-6_5.bin"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 254,
+        "stdout_sha256": "1402ee517359cd6a35a500ac9deedf34b4ce82b1f8efc4b06b88b03a2c91abcd",
+        "stdout_utf8": "{\n    \"records\": [\n        {\n            \"entropy\": 6.515624999999999,\n            \"name\": \"Data\",\n            \"offset\": 0,\n            \"size\": 128,\n            \"status\": \"packed\"\n        }\n    ],\n    \"status\": \"packed\",\n    \"total\": 6.515624999999999\n}\n"
+      }
+    },
+    "entropy_below_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--entropy",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/entropy-below-6_5.bin"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 262,
+        "stdout_sha256": "93c230f2a635a657fdb807892f90431638900b194629f34156cefb52c28621f3",
+        "stdout_utf8": "{\n    \"records\": [\n        {\n            \"entropy\": 6.484374999999999,\n            \"name\": \"Data\",\n            \"offset\": 0,\n            \"size\": 128,\n            \"status\": \"not packed\"\n        }\n    ],\n    \"status\": \"not packed\",\n    \"total\": 6.484374999999999\n}\n"
+      }
+    },
+    "entropy_exact_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--entropy",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/entropy-exact-6_5.bin"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 262,
+        "stdout_sha256": "736421b0f068fd4576d37ea72d345f17866ba4e7894b5dd8c2c991ba237f9b7f",
+        "stdout_utf8": "{\n    \"records\": [\n        {\n            \"entropy\": 6.499999999999999,\n            \"name\": \"Data\",\n            \"offset\": 0,\n            \"size\": 128,\n            \"status\": \"not packed\"\n        }\n    ],\n    \"status\": \"not packed\",\n    \"total\": 6.499999999999999\n}\n"
+      }
+    },
+    "entropy_exact_text": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--entropy",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/entropy-exact-6_5.bin"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 53,
+        "stdout_sha256": "d56a484dfca0285b3c59939489e5de48987f27745dfd25856c807eb1773ae3f5",
+        "stdout_utf8": "Total 6.5: not packed\n  0|Data|0|128|6.5: not packed\n"
+      }
+    },
+    "entropy_over_struct_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--entropy",
+        "--struct",
+        "Hash#MD5",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/entropy-exact-6_5.bin"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 262,
+        "stdout_sha256": "736421b0f068fd4576d37ea72d345f17866ba4e7894b5dd8c2c991ba237f9b7f",
+        "stdout_utf8": "{\n    \"records\": [\n        {\n            \"entropy\": 6.499999999999999,\n            \"name\": \"Data\",\n            \"offset\": 0,\n            \"size\": 128,\n            \"status\": \"not packed\"\n        }\n    ],\n    \"status\": \"not packed\",\n    \"total\": 6.499999999999999\n}\n"
+      }
+    },
+    "entropy_two_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--entropy",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/entropy-below-6_5.bin",
+        "/fixture/entropy-above-6_5.bin"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 580,
+        "stdout_sha256": "8217fdb2d0c39f2c9824033182aee8fa9f25ba4a21dbad1d85f04abc23890029",
+        "stdout_utf8": "/fixture/entropy-below-6_5.bin:\n{\n    \"records\": [\n        {\n            \"entropy\": 6.484374999999999,\n            \"name\": \"Data\",\n            \"offset\": 0,\n            \"size\": 128,\n            \"status\": \"not packed\"\n        }\n    ],\n    \"status\": \"not packed\",\n    \"total\": 6.484374999999999\n}\n/fixture/entropy-above-6_5.bin:\n{\n    \"records\": [\n        {\n            \"entropy\": 6.515624999999999,\n            \"name\": \"Data\",\n            \"offset\": 0,\n            \"size\": 128,\n            \"status\": \"packed\"\n        }\n    ],\n    \"status\": \"packed\",\n    \"total\": 6.515624999999999\n}\n"
+      }
+    },
+    "info_struct_empty_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--info",
+        "--struct",
+        "",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/entropy-exact-6_5.bin"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 253,
+        "stdout_sha256": "65ba606fbed71baaa6ed4af060578b2b0893353d6933b673c340505b39b1768b",
+        "stdout_utf8": "{\n    \"data\": {\n        \"Info\": {\n            \"File name\": \"/fixture/entropy-exact-6_5.bin\",\n            \"File type\": \"Binary\",\n            \"MIME\": \"application/octet-stream\",\n            \"Size\": \"128\",\n            \"String\": \"Binary\"\n        }\n    }\n}\n\n"
+      }
+    },
+    "info_two_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--info",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/entropy-below-6_5.bin",
+        "/fixture/entropy-above-6_5.bin"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 570,
+        "stdout_sha256": "fc02bcf8c939b794023a5051a84cbbf9b83ceae577c1bdcc158f2a75a9dd8c54",
+        "stdout_utf8": "/fixture/entropy-below-6_5.bin:\n{\n    \"data\": {\n        \"Info\": {\n            \"File name\": \"/fixture/entropy-below-6_5.bin\",\n            \"File type\": \"Binary\",\n            \"MIME\": \"application/octet-stream\",\n            \"Size\": \"128\",\n            \"String\": \"Binary\"\n        }\n    }\n}\n\n/fixture/entropy-above-6_5.bin:\n{\n    \"data\": {\n        \"Info\": {\n            \"File name\": \"/fixture/entropy-above-6_5.bin\",\n            \"File type\": \"Binary\",\n            \"MIME\": \"application/octet-stream\",\n            \"Size\": \"128\",\n            \"String\": \"Binary\"\n        }\n    }\n}\n\n"
+      }
+    },
+    "macho_entry_point_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--struct",
+        "Entry point",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/minimal-macho64.macho"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 284,
+        "stdout_sha256": "4e19f9e6207de27738f3daf8566d8375b6bd71b4f9c003bcd33d182cc84f9e98",
+        "stdout_utf8": "{\n    \"data\": {\n        \"Entry point\": {\n            \"Address\": \"ffffffffffffffff\",\n            \"Bytes\": \"\",\n            \"Offset\": \"ffffffffffffffff\",\n            \"Relative address\": \"ffffffffffffffff\",\n            \"Signature\": \"\",\n            \"Signature(rel)\": \"\"\n        }\n    }\n}\n\n"
+      }
+    },
+    "macho_header_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--struct",
+        "Header",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/minimal-macho64.macho"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 336,
+        "stdout_sha256": "c729ffe1b7a80300cd35f39a445304752dc9b59de52f8d71564b307d2e28e4eb",
+        "stdout_utf8": "{\n    \"data\": {\n        \"Header\": {\n            \"cpusubtype\": \"00000003\",\n            \"cputype\": \"01000007\",\n            \"filetype\": \"00000002\",\n            \"flags\": \"00000000\",\n            \"magic\": \"feedfacf\",\n            \"ncmds\": \"00000001\",\n            \"reserved\": \"00000000\",\n            \"sizeofcmds\": \"00000048\"\n        }\n    }\n}\n\n"
+      }
+    },
+    "pe_dos_header_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--struct",
+        "IMAGE_DOS_HEADER",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/minimal-pe32.exe"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 588,
+        "stdout_sha256": "fe7a8690aad2066b85d03408a22f85555c3ea515612609cab7428c4b14235ebd",
+        "stdout_utf8": "{\n    \"data\": {\n        \"IMAGE_DOS_HEADER\": {\n            \"e_cblp\": \"0000\",\n            \"e_cp\": \"0000\",\n            \"e_cparhdr\": \"0000\",\n            \"e_crlc\": \"0000\",\n            \"e_cs\": \"0000\",\n            \"e_csum\": \"0000\",\n            \"e_ip\": \"0000\",\n            \"e_lfanew\": \"00000080\",\n            \"e_lfarlc\": \"0000\",\n            \"e_magic\": \"5a4d\",\n            \"e_maxalloc\": \"0000\",\n            \"e_minalloc\": \"0000\",\n            \"e_oemid\": \"0000\",\n            \"e_oeminfo\": \"0000\",\n            \"e_ovno\": \"0000\",\n            \"e_sp\": \"0000\",\n            \"e_ss\": \"0000\"\n        }\n    }\n}\n\n"
+      }
+    },
+    "pe_entry_point_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--struct",
+        "Entry point",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/minimal-pe32.exe"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 356,
+        "stdout_sha256": "e6bb15348272c27658e6c1fd58135e0ddf266daf3dba057a798c6a5329376f71",
+        "stdout_utf8": "{\n    \"data\": {\n        \"Entry point\": {\n            \"Address\": \"00400000\",\n            \"Bytes\": \"4d5a00000000000000000000000000000000\",\n            \"Offset\": \"00\",\n            \"Relative address\": \"00\",\n            \"Signature\": \"4d5a00000000000000000000000000000000\",\n            \"Signature(rel)\": \"4d5a00000000000000000000000000000000\"\n        }\n    }\n}\n\n"
+      }
+    },
+    "pe_export_directory_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--struct",
+        "IMAGE_EXPORT_DIRECTORY",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/minimal-pe32.exe"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 20,
+        "stdout_sha256": "c0538adbaf9b1b80944941180f00fe139fb0457290e47944ef8e7c0c6cd67168",
+        "stdout_utf8": "{\n    \"data\": \"\"\n}\n\n"
+      }
+    },
+    "pe_nt_headers_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--struct",
+        "IMAGE_NT_HEADERS",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/minimal-pe32.exe"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 4784,
+        "stdout_sha256": "2091562b049393f9fea78953bfefe3df4ab16bcf50f7b70ff2e28db72c96ee0f",
+        "stdout_utf8": "{\n    \"data\": {\n        \"IMAGE_NT_HEADERS\": {\n            \"IMAGE_FILE_HEADER\": {\n                \"Characteristics\": \"0102\",\n                \"Machine\": \"014c\",\n                \"NumberOfSections\": \"0000\",\n                \"NumberOfSymbols\": \"00000000\",\n                \"PointerToSymbolTable\": \"00000000\",\n                \"SizeOfOptionalHeader\": \"00e0\",\n                \"TimeDateStamp\": \"00000000\"\n            },\n            \"IMAGE_OPTIONAL_HEADER\": {\n                \"AddressOfEntryPoint\": \"00000000\",\n                \"BaseOfCode\": \"00000000\",\n                \"BaseOfData\": \"00000000\",\n                \"CheckSum\": \"00000000\",\n                \"DllCharacteristics\": \"0000\",\n                \"FileAlignment\": \"00000200\",\n                \"IMAGE_DATA_DIRECTORY\": {\n                    \"IMAGE_DIRECTORY_ENTRY_ARCHITECTURE\": {\n                        \"Size\": \"00000000\",\n                        \"VirtualAddress\": \"00000000\"\n                    },\n                    \"IMAGE_DIRECTORY_ENTRY_BASERELOC\": {\n                        \"Size\": \"00000000\",\n                        \"VirtualAddress\": \"00000000\"\n                    },\n                    \"IMAGE_DIRECTORY_ENTRY_BOUND_IMPORT\": {\n                        \"Size\": \"00000000\",\n                        \"VirtualAddress\": \"00000000\"\n                    },\n                    \"IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR\": {\n                        \"Size\": \"00000000\",\n                        \"VirtualAddress\": \"00000000\"\n                    },\n                    \"IMAGE_DIRECTORY_ENTRY_DEBUG\": {\n                        \"Size\": \"00000000\",\n                        \"VirtualAddress\": \"00000000\"\n                    },\n                    \"IMAGE_DIRECTORY_ENTRY_DELAY_IMPORT\": {\n                        \"Size\": \"00000000\",\n                        \"VirtualAddress\": \"00000000\"\n                    },\n                    \"IMAGE_DIRECTORY_ENTRY_EXCEPTION\": {\n                        \"Size\": \"00000000\",\n                        \"VirtualAddress\": \"00000000\"\n                    },\n                    \"IMAGE_DIRECTORY_ENTRY_EXPORT\": {\n                        \"Size\": \"00000000\",\n                        \"VirtualAddress\": \"00000000\"\n                    },\n                    \"IMAGE_DIRECTORY_ENTRY_GLOBALPTR\": {\n                        \"Size\": \"00000000\",\n                        \"VirtualAddress\": \"00000000\"\n                    },\n                    \"IMAGE_DIRECTORY_ENTRY_IAT\": {\n                        \"Size\": \"00000000\",\n                        \"VirtualAddress\": \"00000000\"\n                    },\n                    \"IMAGE_DIRECTORY_ENTRY_IMPORT\": {\n                        \"Size\": \"00000000\",\n                        \"VirtualAddress\": \"00000000\"\n                    },\n                    \"IMAGE_DIRECTORY_ENTRY_LOAD_CONFIG\": {\n                        \"Size\": \"00000000\",\n                        \"VirtualAddress\": \"00000000\"\n                    },\n                    \"IMAGE_DIRECTORY_ENTRY_RESERVED\": {\n                        \"Size\": \"00000000\",\n                        \"VirtualAddress\": \"00000000\"\n                    },\n                    \"IMAGE_DIRECTORY_ENTRY_RESOURCE\": {\n                        \"Size\": \"00000000\",\n                        \"VirtualAddress\": \"00000000\"\n                    },\n                    \"IMAGE_DIRECTORY_ENTRY_SECURITY\": {\n                        \"Size\": \"00000000\",\n                        \"VirtualAddress\": \"00000000\"\n                    },\n                    \"IMAGE_DIRECTORY_ENTRY_TLS\": {\n                        \"Size\": \"00000000\",\n                        \"VirtualAddress\": \"00000000\"\n                    }\n                },\n                \"ImageBase\": \"00400000\",\n                \"LoaderFlags\": \"00000000\",\n                \"Magic\": \"010b\",\n                \"MajorImageVersion\": \"0000\",\n                \"MajorLinkerVersion\": \"00\",\n                \"MajorOperatingSystemVersion\": \"0000\",\n                \"MajorSubsystemVersion\": \"0000\",\n                \"MinorImageVersion\": \"0000\",\n                \"MinorLinkerVersion\": \"00\",\n                \"MinorOperatingSystemVersion\": \"0000\",\n                \"MinorSubsystemVersion\": \"0000\",\n                \"NumberOfRvaAndSizes\": \"00000010\",\n                \"SectionAlignment\": \"00001000\",\n                \"SizeOfCode\": \"00000000\",\n                \"SizeOfHeaders\": \"00000200\",\n                \"SizeOfHeapCommit\": \"00000000\",\n                \"SizeOfHeapReserve\": \"00000000\",\n                \"SizeOfImage\": \"00001000\",\n                \"SizeOfInitializedData\": \"00000000\",\n                \"SizeOfStackCommit\": \"00000000\",\n                \"SizeOfStackReserve\": \"00000000\",\n                \"SizeOfUninitializedData\": \"00000000\",\n                \"Subsystem\": \"0003\",\n                \"Win32VersionValue\": \"00000000\"\n            },\n            \"Signature\": \"4550\"\n        }\n    }\n}\n\n"
+      }
+    },
+    "pe_resource_directory_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--struct",
+        "IMAGE_RESOURCE_DIRECTORY",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/minimal-pe32.exe"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 20,
+        "stdout_sha256": "c0538adbaf9b1b80944941180f00fe139fb0457290e47944ef8e7c0c6cd67168",
+        "stdout_utf8": "{\n    \"data\": \"\"\n}\n\n"
+      }
+    },
+    "pe_section_header_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--struct",
+        "IMAGE_SECTION_HEADER",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/minimal-pe32.exe"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 20,
+        "stdout_sha256": "c0538adbaf9b1b80944941180f00fe139fb0457290e47944ef8e7c0c6cd67168",
+        "stdout_utf8": "{\n    \"data\": \"\"\n}\n\n"
+      }
+    },
+    "struct_check_format_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--struct",
+        "Check format",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/entropy-exact-6_5.bin"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 20,
+        "stdout_sha256": "c0538adbaf9b1b80944941180f00fe139fb0457290e47944ef8e7c0c6cd67168",
+        "stdout_utf8": "{\n    \"data\": \"\"\n}\n\n"
+      }
+    },
+    "struct_empty_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--struct",
+        "",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/entropy-exact-6_5.bin"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 469,
+        "stdout_sha256": "8f77bcb8b1bcc9c9b5a59fd8f01d081045f62836a6ecdcd1ae5cfe5daae2a1c4",
+        "stdout_utf8": "{\n    \"detects\": [\n        {\n            \"filetype\": \"Binary\",\n            \"info\": \"\",\n            \"offset\": \"0\",\n            \"parentfilepart\": \"Header\",\n            \"size\": \"128\",\n            \"values\": [\n                {\n                    \"info\": \"\",\n                    \"name\": \"Unknown\",\n                    \"string\": \"Unknown: Unknown\",\n                    \"type\": \"Unknown\",\n                    \"version\": \"\"\n                }\n            ]\n        }\n    ]\n}\n\n\n"
+      }
+    },
+    "struct_entropy_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--struct",
+        "Entropy",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/entropy-exact-6_5.bin"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 50,
+        "stdout_sha256": "9a00371ca767318a4e4a137f6bcaced53a795f564f95987d93f68d24828005ce",
+        "stdout_utf8": "{\n    \"data\": {\n        \"Entropy\": \"6.5\"\n    }\n}\n\n"
+      }
+    },
+    "struct_hash_empty_segment_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--struct",
+        "Hash##MD5",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/entropy-exact-6_5.bin"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 44,
+        "stdout_sha256": "3e4dff292d4d0e877e99033d79294f97ee1d24c451cc4a92adcf0184f645464d",
+        "stdout_utf8": "{\n    \"data\": {\n        \"Hash\": \"\"\n    }\n}\n\n"
+      }
+    },
+    "struct_hash_md5_casefold_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--struct",
+        "hAsH#mD5",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/entropy-exact-6_5.bin"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 107,
+        "stdout_sha256": "117c42428aa25675c7e0e0b37e46e36845c356643c53a8f90d632822620fce3d",
+        "stdout_utf8": "{\n    \"data\": {\n        \"Hash\": {\n            \"MD5\": \"5c5ae785c5c84f0629700c10e6904677\"\n        }\n    }\n}\n\n"
+      }
+    },
+    "struct_hash_md5_trailing_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--struct",
+        "Hash#MD5#Ignored",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/entropy-exact-6_5.bin"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 107,
+        "stdout_sha256": "117c42428aa25675c7e0e0b37e46e36845c356643c53a8f90d632822620fce3d",
+        "stdout_utf8": "{\n    \"data\": {\n        \"Hash\": {\n            \"MD5\": \"5c5ae785c5c84f0629700c10e6904677\"\n        }\n    }\n}\n\n"
+      }
+    },
+    "struct_hash_md5_two_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--struct",
+        "Hash#MD5",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/entropy-below-6_5.bin",
+        "/fixture/entropy-above-6_5.bin"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 278,
+        "stdout_sha256": "a32dc4aa1c31bdaa9dbf8e1e467633c94e1a3224a3ae0a3a88a1158a2ed7ea64",
+        "stdout_utf8": "/fixture/entropy-below-6_5.bin:\n{\n    \"data\": {\n        \"Hash\": {\n            \"MD5\": \"8963e0e7f19ebe5ca624cca43d7c4d61\"\n        }\n    }\n}\n\n/fixture/entropy-above-6_5.bin:\n{\n    \"data\": {\n        \"Hash\": {\n            \"MD5\": \"b946424cf5d1c6208f9b78a6e92973ff\"\n        }\n    }\n}\n\n"
+      }
+    },
+    "struct_hash_unknown_child_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--struct",
+        "Hash#NoSuch",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/entropy-exact-6_5.bin"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 44,
+        "stdout_sha256": "3e4dff292d4d0e877e99033d79294f97ee1d24c451cc4a92adcf0184f645464d",
+        "stdout_utf8": "{\n    \"data\": {\n        \"Hash\": \"\"\n    }\n}\n\n"
+      }
+    },
+    "struct_unknown_nested_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--struct",
+        "NoSuch#MD5",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/entropy-exact-6_5.bin"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 20,
+        "stdout_sha256": "c0538adbaf9b1b80944941180f00fe139fb0457290e47944ef8e7c0c6cd67168",
+        "stdout_utf8": "{\n    \"data\": \"\"\n}\n\n"
+      }
+    }
+  },
+  "closed_corpus_gap": "CAP-GAP-001",
+  "fixture": {
+    "entries": [
+      {
+        "double_frequency_symbol_count": 33,
+        "expected_status": "not packed",
+        "name": "entropy-below-6_5.bin",
+        "purpose": "exercise floating entropy around the >= 6.5 packed boundary",
+        "sha256": "adde1f4dd1b36ff4d26530496f643de5b3ca1dd222676a4c3e5defacf9271680",
+        "single_frequency_symbol_count": 62,
+        "size": 128,
+        "source": "project-generated",
+        "theoretical_entropy": 6.484375
+      },
+      {
+        "double_frequency_symbol_count": 32,
+        "expected_status": "not packed",
+        "name": "entropy-exact-6_5.bin",
+        "purpose": "exercise floating entropy around the >= 6.5 packed boundary",
+        "sha256": "204b1cb5c0256527b6566d827972a46aa28ccb48461f4f0bc025b5a526a7ba53",
+        "single_frequency_symbol_count": 64,
+        "size": 128,
+        "source": "project-generated",
+        "theoretical_entropy": 6.5
+      },
+      {
+        "double_frequency_symbol_count": 31,
+        "expected_status": "packed",
+        "name": "entropy-above-6_5.bin",
+        "purpose": "exercise floating entropy around the >= 6.5 packed boundary",
+        "sha256": "9c23020d6b07bc82a98eb543c249794430174d7809f02eb3c9f5fb4ba9d5dfa4",
+        "single_frequency_symbol_count": 66,
+        "size": 128,
+        "source": "project-generated",
+        "theoretical_entropy": 6.515625
+      },
+      {
+        "intended_format": "PE32",
+        "name": "minimal-pe32.exe",
+        "purpose": "exercise format-specific struct method dispatch",
+        "sha256": "afb1bcd812caa45095075a60ff49599c7d5e767c7732226c3e0007708cb198a2",
+        "size": 512,
+        "source": "project-generated"
+      },
+      {
+        "intended_format": "ELF64",
+        "name": "minimal-elf64.elf",
+        "purpose": "exercise format-specific struct method dispatch",
+        "sha256": "e717b57a377ce3486a932130454ee070fdd495d3c23a9d5a8a446ad32772e704",
+        "size": 64,
+        "source": "project-generated"
+      },
+      {
+        "intended_format": "Mach-O 64",
+        "name": "minimal-macho64.macho",
+        "purpose": "exercise format-specific struct method dispatch",
+        "sha256": "60a536a7dff9522a8e4af5ab73ff742ebeffc33a34837beb9c5ac4a1a7eb5968",
+        "size": 104,
+        "source": "project-generated"
+      },
+      {
+        "intended_format": "DEX",
+        "name": "minimal.dex",
+        "purpose": "exercise format-specific struct method dispatch",
+        "sha256": "57cfe8878be74cad8bbc5e409b0964d4b13c35e8783d931ef7366881f8d548c2",
+        "size": 112,
+        "source": "project-generated"
+      }
+    ],
+    "generator": "tools/corpus/generate_cli_special_boundary_fixture.py",
+    "generator_sha256": "6dcd3370c14feba34c5f3ba9908077a7523efdf092d8b973e50d6fc7f81af39e",
+    "manifest_path": "docs/research/data/cli-special-boundary-fixture.json",
+    "manifest_sha256": "7238e38a4c06bde6e2af8ff38016a4f2207aad1fd51fb268ee68368840d99874"
+  },
+  "generator": "tools/upstream/probe_cli_special_boundaries.py",
+  "generator_sha256": "3504c362283300b5dd975c0390b8ad7bcf26cbca64f4bb7f86e03aa6b484fc47",
+  "oracles": [
+    {
+      "binary": "/opt/die-source/build/release/diec",
+      "binary_sha256": "721ec846507a8567aae07e91dcd1f576182481ae0dc1595b1f19e4a3e859b79d",
+      "image": "diec-rust/upstream-oracle:74eaf505-repro",
+      "image_id": "sha256:cc5561a5d256c7912227a8ecf4ba9c6b9178c99911e471017d3c3988bac964ab",
+      "name": "qmake",
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    },
+    {
+      "binary": "/opt/die-build/src/console/diec",
+      "binary_sha256": "da1fab49f7ba5970d1fc1c7fe3d4f380cf5e8775dd8097207e7b3c30f08236cf",
+      "image": "diec-rust/upstream-oracle-cmake:74eaf505",
+      "image_id": "sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040",
+      "name": "cmake",
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    }
+  ],
+  "platform": "linux-amd64-qt5",
+  "raw_artifacts": {
+    "stdout_and_stderr_preserved_per_oracle_and_case": true,
+    "storage": "untracked external directory selected by --raw-dir"
+  },
+  "relationships": {
+    "empty_struct_value_falls_back_to_normal_scan": true,
+    "entropy_precedes_struct": true,
+    "format_struct_methods": {
+      "dex_header_json": {
+        "root": "Header",
+        "sentinel_field": "file_size",
+        "sentinel_value": "00000070"
+      },
+      "elf_ehdr_json": {
+        "root": "Elf_Ehdr",
+        "sentinel_field": "machine",
+        "sentinel_value": "003e"
+      },
+      "elf_entry_point_json": {
+        "root": "Entry point",
+        "sentinel_field": "Offset",
+        "sentinel_value": "ffffffffffffffff"
+      },
+      "macho_entry_point_json": {
+        "root": "Entry point",
+        "sentinel_field": "Address",
+        "sentinel_value": "ffffffffffffffff"
+      },
+      "macho_header_json": {
+        "root": "Header",
+        "sentinel_field": "magic",
+        "sentinel_value": "feedfacf"
+      },
+      "pe_dos_header_json": {
+        "root": "IMAGE_DOS_HEADER",
+        "sentinel_field": "e_magic",
+        "sentinel_value": "5a4d"
+      },
+      "pe_entry_point_json": {
+        "root": "Entry point",
+        "sentinel_field": "Address",
+        "sentinel_value": "00400000"
+      },
+      "pe_export_directory_json": {
+        "empty_data": true,
+        "root": null
+      },
+      "pe_nt_headers_json": {
+        "root": "IMAGE_NT_HEADERS",
+        "sentinel_field": "Signature",
+        "sentinel_value": "4550"
+      },
+      "pe_resource_directory_json": {
+        "empty_data": true,
+        "root": null
+      },
+      "pe_section_header_json": {
+        "empty_data": true,
+        "root": null
+      }
+    },
+    "multi_target_structured_outputs": {
+      "entropy_two_json": {
+        "filename_prefixes": [
+          "/fixture/entropy-below-6_5.bin:",
+          "/fixture/entropy-above-6_5.bin:"
+        ],
+        "valid_single_json_document": false
+      },
+      "info_two_json": {
+        "filename_prefixes": [
+          "/fixture/entropy-below-6_5.bin:",
+          "/fixture/entropy-above-6_5.bin:"
+        ],
+        "valid_single_json_document": false
+      },
+      "struct_hash_md5_two_json": {
+        "filename_prefixes": [
+          "/fixture/entropy-below-6_5.bin:",
+          "/fixture/entropy-above-6_5.bin:"
+        ],
+        "valid_single_json_document": false
+      }
+    },
+    "runtime_entropy_statuses": {
+      "above": "packed",
+      "below": "not packed",
+      "exact": "not packed"
+    },
+    "runtime_entropy_totals": {
+      "above": 6.515624999999999,
+      "below": 6.484374999999999,
+      "exact": 6.499999999999999
+    },
+    "struct_filter_is_case_insensitive": true,
+    "struct_trailing_segments_are_ignored": true,
+    "text_rounds_exact_case_to_6_5_but_status_is_not_packed": true,
+    "theoretical_6_5_rounds_below_threshold": true
+  },
+  "schema_version": 1,
+  "source_audit": {
+    "assumptions": {
+      "cli_precedence_entropy_before_info_or_struct": true,
+      "entropy_process_uses_binary_packed_predicate": true,
+      "entropy_threshold_is_6_5": true,
+      "entropy_uses_log_accumulation": true,
+      "format_specific_method_inventory_is_declared": true,
+      "packed_comparison_is_greater_or_equal": true,
+      "struct_filter_is_case_insensitive": true,
+      "struct_missing_candidate_section_is_wildcard": true
+    },
+    "sources": {
+      "/opt/die-source/Formats/xbinary.cpp": {
+        "bytes": 549347,
+        "sha256": "d82bd21326bb7ba07eb343020d50af0ae2cf7e8e534d8e08d07ffa8129913c34"
+      },
+      "/opt/die-source/Formats/xbinary.h": {
+        "bytes": 107804,
+        "sha256": "c0e92d317ca9d0c54edaeeaf2846e13c50abaf9d32b987a9454bb8b4d63b5838"
+      },
+      "/opt/die-source/XEntropyWidget/entropyprocess.cpp": {
+        "bytes": 10409,
+        "sha256": "4ef05f58dc1d52bb1fbd02cbe77bc205ec41bd8021b901ce267c29bedbcde8d8"
+      },
+      "/opt/die-source/XFileInfo/xfileinfo.cpp": {
+        "bytes": 76738,
+        "sha256": "432d1f7169c9b82c4cc88ae09c50f6a58245dc246d7026ae82b52ddd40bba75e"
+      },
+      "/opt/die-source/src/console/main_console.cpp": {
+        "bytes": 17949,
+        "sha256": "ebb82a94fdd0f54722ea36589d6a35694ec4022bc9179030dae6a85e7a9d7e8f"
+      }
+    }
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

@@ -2,7 +2,7 @@
 
 Status: Draft  
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`  
-Last updated: 2026-07-25
+Last updated: 2026-07-28
 
 ## 范围
 
@@ -82,6 +82,12 @@ python3 tools/upstream/compare_cli_oracles.py \
 共 95 种输入/模式组合、190 次 oracle 执行。两侧退出码、原始 stdout 和原始
 stderr 均逐字节相同；所有运行退出 `0` 且 stderr 为空。
 
+补充边界报告
+[`cli-special-boundaries-linux-qt5.json`](data/cli-special-boundaries-linux-qt5.json)
+使用 7 个项目生成输入，在固定 qmake/CMake oracle 上运行 28 个 case、共 56 次
+进程。它绑定两个 binary/image、fixture generator/manifest、五个上游源码文件
+和每个原始 stdout/stderr；重复采集报告逐字节相同。
+
 工具的通用 case 还分别运行无 target 及带 `/usr/bin/true` target 的
 `--showstructs`，用于锁定结构清单和 target 处理。
 
@@ -125,7 +131,21 @@ string `status`。区域来自 `XFormats::getMemoryMap()`，不是固定大小�
   不同。
 
 空文件仍产生一个 `Data` record，size、entropy 和 total 都为 `0`，status 为
-`not packed`。5 个样本的 status 均为 `not packed`；这不覆盖 packed 阈值边界。
+`not packed`。
+
+补充 fixture 用 128 bytes 的精确频数分布构造理论 Shannon entropy
+`6.484375`、`6.5` 和 `6.515625`。固定实现用逐 symbol `log()` 累加，运行时 JSON
+分别得到：
+
+| 理论值 | 运行时 `total` | Status |
+| ---: | ---: | --- |
+| 6.484375 | 6.484374999999999 | `not packed` |
+| 6.5 | 6.499999999999999 | `not packed` |
+| 6.515625 | 6.515624999999999 | `packed` |
+
+源码常量是 `6.5`，判定为 `dEntropy >= D_ENTROPY_THRESHOLD`；但理论恰为 6.5
+的分布因累加舍入落在阈值下方。plain text 又把同一个值显示为
+`Total 6.5: not packed`。兼容实现不能仅按理论熵或 formatter 显示值决定 status。
 
 ## Info 模型
 
@@ -165,6 +185,26 @@ Structures:
 - `Hash` 返回 MD4、MD5、SHA1、SHA224、SHA256、SHA384 和 SHA512。
 - `Hash#MD5` 只返回 MD5 子记录。
 - 未知方法 `NoSuchMethod` 不报错，JSON 为 `{"data": ""}`，退出 `0`。
+- filter 大小写不敏感；`hAsH#mD5` 与 `Hash#MD5` 完全相同。
+- candidate 已没有更多 section 时，额外 option section 被当作 wildcard，
+  `Hash#MD5#Ignored` 仍返回 MD5。
+- `Hash#NoSuch` 和 `Hash##MD5` 都保留空 `Hash` parent；`NoSuch#MD5`
+  返回空 `data`。
+- `--struct ""` 不进入 file-info 分支，而是退回普通 scan；若同时有 `--info`，
+  则进入 Info。
+
+补充语料还执行了固定版本 `getMethodNames(fileType)` 对 PE/ELF/Mach-O/DEX
+四类声明的全部格式专用方法：
+
+- PE32：`Entry point`、`IMAGE_DOS_HEADER`、`IMAGE_NT_HEADERS`、
+  `IMAGE_SECTION_HEADER`、`IMAGE_RESOURCE_DIRECTORY`、
+  `IMAGE_EXPORT_DIRECTORY`；
+- ELF64：`Entry point`、`Elf_Ehdr`；
+- Mach-O 64：`Entry point`、`Header`；
+- DEX：`Header`。
+
+最小 PE 没有 section/resource/export，因此后三个方法返回空 `data`，不是错误；
+其余方法均保存 root 和 sentinel 字段的严格断言。
 
 空文件的 `Hash#MD5` 值是空字符串，不是标准空输入 MD5
 `d41d8cd98f00b204e9800998ecf8427e`。Rust 兼容层若提供同名上游行为，必须保留
@@ -180,11 +220,41 @@ Structures:
 - `--info --struct Hash --json` 与单独 `--struct Hash --json` 逐字节相同。
 - 单独 `--plaintext` 与无 formatter 开关的 entropy/info 输出逐字节相同。
 
+## 多目标 framing 与 profiling 闭合
+
+entropy、info 和 `Hash#MD5` 各自对 below/above 两个 target 运行 JSON。三者都按
+输入顺序先打印 `<filename>:\n`，随后串接两个独立 JSON object，因此完整 stdout
+不是单个合法 JSON 文档。这与普通扫描的多目标 framing 一致，但由专用 formatter
+独立实测，不能外推。
+
+profiling 的剩余证据由两个既有固定实验组成：
+
+- [`cli-option-behavior.md`](cli-option-behavior.md) 证明不带 `--messages` 时
+  profiling 与默认 JSON 逐字节相同；
+- [`binary-rule-lifecycle.md`](binary-rule-lifecycle.md) 在 qmake/CMake oracle
+  上提取 292 条真实 Binary signature，规范化只移除 elapsed milliseconds，
+  规则名、顺序、数量和其他 diagnostics 必须精确相等。
+
+以上边界与本报告共同闭合 Linux Qt5 的 `CAP-GAP-001`。
+
+## 补充边界复现
+
+```powershell
+python tools\corpus\generate_cli_special_boundary_fixture.py `
+  I:\tmp\diec-cli-special-boundary-fixture
+
+python tools\upstream\probe_cli_special_boundaries.py `
+  --fixture-dir I:\tmp\diec-cli-special-boundary-fixture `
+  --raw-dir I:\tmp\diec-cli-special-boundary-raw `
+  --output docs\research\data\cli-special-boundaries-linux-qt5.json
+```
+
+两个 Docker oracle 均使用 `--network=none`，fixture 只读挂载。
+
 ## 尚未覆盖
 
-- packed/not-packed 阈值及临界熵值。
-- 多区域 PE/ELF/Mach-O、virtual region 排除和异常 memory map。
-- PE/ELF/Mach-O/DEX 的格式专用 struct 方法及畸形结构。
-- `Entropy`、`Check format` 和多层 `#` struct 过滤。
-- 多目标 filename 前缀对 JSON/XML 有效性的影响。
+- 多区域 PE/ELF/Mach-O 的 virtual region 排除和异常 memory map；这些属于各格式
+  memory-map 深入语料，不再是 CLI 分派/formatter 未知项。
+- 格式专用 struct 的畸形结构和非空 section/resource/export 数据；最小合法输入
+  已覆盖方法可达性和空集合语义。
 - 路径编码、不可读文件及 Windows/macOS 输出。

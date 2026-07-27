@@ -52,7 +52,7 @@ Phase 0 报告固定四个平台：
 
 | 平台 | Runtime observed | Observed + corpus gaps | Source-only | Source-only + gaps | Platform missing |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| Linux x86_64 Qt5 | 51 | 17 | 0 | 0 | 0 |
+| Linux x86_64 Qt5 | 56 | 12 | 0 | 0 | 0 |
 | Linux x86_64 Qt6 | 0 | 0 | 0 | 0 | 68 |
 | Windows x86_64 Qt5 | 0 | 0 | 0 | 0 | 68 |
 | macOS x86_64 Qt5 | 0 | 0 | 0 | 0 | 68 |
@@ -61,17 +61,16 @@ Phase 0 报告固定四个平台：
 清单没有“消失的行”，**不表示覆盖完成**：
 
 - Linux Qt5 source-only 能力已清零；
-- 26 行至少关联一个已命名 corpus gap；
+- 21 行至少关联一个已命名 corpus gap；
 - 三个尚未接纳的平台各有 68 个 `platform_missing`；
 - `phase_0_coverage_complete` 必须保持 `false`。
 
 ## 5. 缺口映射
 
-traceability 中八个开放 `CAP-GAP-*` 现在显式映射到受影响能力；
+traceability 中七个开放 `CAP-GAP-*` 现在显式映射到受影响能力；
 
 | Gap | 类型 | 能力行数 | 范围 |
 | --- | --- | ---: | --- |
-| `CAP-GAP-001` | corpus | 5 | CLI/script profiling 与 entropy/info/struct 边界 |
 | `CAP-GAP-002` | corpus | 4 | database header/write/permission/concurrency |
 | `CAP-GAP-003` | corpus | 4 | Unicode、特殊路径和枚举 |
 | `CAP-GAP-004` | corpus | 6 | structured-output escaping 与 nested ordering |
@@ -80,6 +79,12 @@ traceability 中八个开放 `CAP-GAP-*` 现在显式映射到受影响能力；
 | `CAP-GAP-007` | platform | 68 | 完整 Qt5/Qt6 capability matrix |
 | `CAP-GAP-008` | platform | 8 | Windows/macOS path 与 encoding |
 映射是保守的审计范围，不是“这些能力除此之外都已完备”的声明。
+
+原 `CAP-GAP-001` 已由
+[`cli-special-modes.md`](cli-special-modes.md)
+闭合：28-case 双 oracle 固定临界 entropy、通用及 PE/ELF/Mach-O/DEX struct
+方法、层级 filter 和多目标 framing；既有 profiling oracle 固定 292 条真实规则
+顺序，并证明 messages gate。
 
 原 `CAP-GAP-011` 已由
 [`engine-contract-behavior.md`](engine-contract-behavior.md)
@@ -118,8 +123,8 @@ python tools/tests/test_capability_coverage.py
 ```
 
 测试要求 committed report 与生成结果逐字节一致；68 个 ID 与 traceability 完全
-相等；全部平台 cell 有已知状态；Linux 四类计数保持 51/17/0/0；其他三个平台
-各保持 68 个 `platform_missing`；八个开放 gap 均映射到已知能力；所有
+相等；全部平台 cell 有已知状态；Linux 四类计数保持 56/12/0/0；其他三个平台
+各保持 68 个 `platform_missing`；七个开放 gap 均映射到已知能力；所有
 `with_corpus_gaps` 状态都至少关联一个具名 corpus gap。
 
 ## 7. 对 Phase 0 门禁的影响
@@ -130,7 +135,7 @@ python tools/tests/test_capability_coverage.py
 1. 保持
    [`source-only-closure-plan.md`](source-only-closure-plan.md)
    的 Linux source-only 闭集为空，新增或降级能力必须重新进入 closure catalog；
-2. 逐项收敛剩余八个 corpus/platform gap，而不是只增加 happy-path 样本；
+2. 逐项收敛剩余七个 corpus/platform gap，而不是只增加 happy-path 样本；
 3. 固定 Windows、macOS 和完整 Linux Qt6 oracle；
 4. 重新生成报告，且经评审确认 Phase 0 所需行不再为 source-only、
    corpus-missing 或 platform-missing。

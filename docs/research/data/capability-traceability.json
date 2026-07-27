@@ -48,15 +48,25 @@
       "paths": [
         "docs/research/cli-option-behavior.md",
         "docs/research/data/cli-option-behavior-linux.json",
-        "tools/tests/test_probe_cli_option_behavior.py"
+        "tools/tests/test_probe_cli_option_behavior.py",
+        "docs/research/binary-rule-lifecycle.md",
+        "docs/research/data/binary-rule-order-linux-qt5.json",
+        "tools/upstream/probe_binary_rule_order.py",
+        "tools/tests/test_probe_binary_rule_order.py"
       ]
     },
     "cli_special": {
-      "kind": "experiment",
+      "kind": "source_and_experiment",
       "paths": [
         "docs/research/cli-special-modes.md",
         "docs/research/data/baseline-corpus-linux-qt5.json",
-        "tools/tests/test_baseline_corpus_report.py"
+        "tools/tests/test_baseline_corpus_report.py",
+        "docs/research/data/cli-special-boundary-fixture.json",
+        "docs/research/data/cli-special-boundaries-linux-qt5.json",
+        "tools/corpus/generate_cli_special_boundary_fixture.py",
+        "tools/upstream/probe_cli_special_boundaries.py",
+        "tools/tests/test_generate_cli_special_boundary_fixture.py",
+        "tools/tests/test_probe_cli_special_boundaries.py"
       ]
     },
     "cli_control": {
@@ -230,13 +240,13 @@
     {"id": "CAP-CLI-OPT-005", "name": "aggressive scan option", "verification": "observed", "evidence_set": "cli_scan_baseline"},
     {"id": "CAP-CLI-OPT-006", "name": "all types option", "verification": "observed", "evidence_set": "cli_scan_baseline"},
     {"id": "CAP-CLI-OPT-007", "name": "formatted result option", "verification": "observed", "evidence_set": "cli_options"},
-    {"id": "CAP-CLI-OPT-008", "name": "profiling option", "verification": "observed_with_gaps", "evidence_set": "cli_options"},
+    {"id": "CAP-CLI-OPT-008", "name": "profiling option", "verification": "observed", "evidence_set": "cli_options"},
     {"id": "CAP-CLI-OPT-009", "name": "messages option", "verification": "observed", "evidence_set": "cli_options"},
     {"id": "CAP-CLI-OPT-010", "name": "hide unknown option", "verification": "observed", "evidence_set": "cli_options"},
 
-    {"id": "CAP-CLI-MODE-001", "name": "entropy mode", "verification": "observed_with_gaps", "evidence_set": "cli_special"},
-    {"id": "CAP-CLI-MODE-002", "name": "info mode", "verification": "observed_with_gaps", "evidence_set": "cli_special"},
-    {"id": "CAP-CLI-MODE-003", "name": "struct mode", "verification": "observed_with_gaps", "evidence_set": "cli_special"},
+    {"id": "CAP-CLI-MODE-001", "name": "entropy mode", "verification": "observed", "evidence_set": "cli_special"},
+    {"id": "CAP-CLI-MODE-002", "name": "info mode", "verification": "observed", "evidence_set": "cli_special"},
+    {"id": "CAP-CLI-MODE-003", "name": "struct mode", "verification": "observed", "evidence_set": "cli_special"},
     {"id": "CAP-CLI-MODE-004", "name": "show structs mode", "verification": "observed", "evidence_set": "cli_special"},
     {"id": "CAP-CLI-MODE-005", "name": "help mode and no-target help", "verification": "observed", "evidence_set": "cli_control"},
     {"id": "CAP-CLI-MODE-006", "name": "version mode", "verification": "observed", "evidence_set": "cli_control"},
@@ -262,7 +272,7 @@
     {"id": "CAP-RULE-008", "name": "unknown fallback", "verification": "observed", "evidence_set": "rule_orchestration"},
     {"id": "CAP-RULE-009", "name": "result sorting option", "verification": "observed", "evidence_set": "engine_contract"},
     {"id": "CAP-RULE-010", "name": "script error collection", "verification": "observed", "evidence_set": "rule_orchestration"},
-    {"id": "CAP-RULE-011", "name": "script profiling", "verification": "observed_with_gaps", "evidence_set": "cli_options"},
+    {"id": "CAP-RULE-011", "name": "script profiling", "verification": "observed", "evidence_set": "cli_options"},
     {"id": "CAP-RULE-012", "name": "cancellation and stop", "verification": "observed", "evidence_set": "engine_contract"},
 
     {"id": "CAP-DISPATCH-001", "name": "PE ELF and Mach-O dispatch", "verification": "observed", "evidence_set": "dispatch_source"},
@@ -292,13 +302,6 @@
     {"id": "CAP-RESULT-006", "name": "record version info rule and priority", "verification": "observed", "evidence_set": "result_model"}
   ],
   "coverage_gaps": [
-    {
-      "id": "CAP-GAP-001",
-      "scope": "remaining CLI option and special-mode boundaries",
-      "platforms": [
-        "linux-x86_64-qt5"
-      ]
-    },
     {
       "id": "CAP-GAP-002",
       "scope": "remaining database header truncation, write, permission, and concurrency behavior",
@@ -355,11 +358,11 @@
   ],
   "summary": {
     "capability_count": 68,
-    "observed": 51,
-    "observed_with_gaps": 17,
+    "observed": 56,
+    "observed_with_gaps": 12,
     "source_verified": 0,
     "source_verified_with_gaps": 0,
-    "coverage_gap_count": 8,
+    "coverage_gap_count": 7,
     "phase_0_coverage_complete": false
   }
 }

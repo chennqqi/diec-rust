@@ -5,21 +5,6 @@
   "coverage_gaps": [
     {
       "capability_ids": [
-        "CAP-CLI-MODE-001",
-        "CAP-CLI-MODE-002",
-        "CAP-CLI-MODE-003",
-        "CAP-CLI-OPT-008",
-        "CAP-RULE-011"
-      ],
-      "id": "CAP-GAP-001",
-      "kind": "corpus_missing",
-      "platforms": [
-        "linux-x86_64-qt5"
-      ],
-      "scope": "remaining CLI option and special-mode boundaries"
-    },
-    {
-      "capability_ids": [
         "CAP-CLI-DB-001",
         "CAP-CLI-DB-002",
         "CAP-CLI-DB-003",
@@ -208,7 +193,11 @@
       "paths": [
         "docs/research/cli-option-behavior.md",
         "docs/research/data/cli-option-behavior-linux.json",
-        "tools/tests/test_probe_cli_option_behavior.py"
+        "tools/tests/test_probe_cli_option_behavior.py",
+        "docs/research/binary-rule-lifecycle.md",
+        "docs/research/data/binary-rule-order-linux-qt5.json",
+        "tools/upstream/probe_binary_rule_order.py",
+        "tools/tests/test_probe_binary_rule_order.py"
       ]
     },
     "cli_output": {
@@ -239,11 +228,17 @@
       ]
     },
     "cli_special": {
-      "kind": "experiment",
+      "kind": "source_and_experiment",
       "paths": [
         "docs/research/cli-special-modes.md",
         "docs/research/data/baseline-corpus-linux-qt5.json",
-        "tools/tests/test_baseline_corpus_report.py"
+        "tools/tests/test_baseline_corpus_report.py",
+        "docs/research/data/cli-special-boundary-fixture.json",
+        "docs/research/data/cli-special-boundaries-linux-qt5.json",
+        "tools/corpus/generate_cli_special_boundary_fixture.py",
+        "tools/upstream/probe_cli_special_boundaries.py",
+        "tools/tests/test_generate_cli_special_boundary_fixture.py",
+        "tools/tests/test_probe_cli_special_boundaries.py"
       ]
     },
     "database": {
@@ -615,9 +610,7 @@
       }
     },
     {
-      "corpus_gap_ids": [
-        "CAP-GAP-001"
-      ],
+      "corpus_gap_ids": [],
       "evidence_set": "cli_options",
       "id": "CAP-CLI-OPT-008",
       "name": "profiling option",
@@ -625,7 +618,7 @@
         "CAP-GAP-007"
       ],
       "platform_status": {
-        "linux-x86_64-qt5": "runtime_observed_with_corpus_gaps",
+        "linux-x86_64-qt5": "runtime_observed",
         "linux-x86_64-qt6": "platform_missing",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
@@ -662,9 +655,7 @@
       }
     },
     {
-      "corpus_gap_ids": [
-        "CAP-GAP-001"
-      ],
+      "corpus_gap_ids": [],
       "evidence_set": "cli_special",
       "id": "CAP-CLI-MODE-001",
       "name": "entropy mode",
@@ -672,16 +663,14 @@
         "CAP-GAP-007"
       ],
       "platform_status": {
-        "linux-x86_64-qt5": "runtime_observed_with_corpus_gaps",
+        "linux-x86_64-qt5": "runtime_observed",
         "linux-x86_64-qt6": "platform_missing",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
     },
     {
-      "corpus_gap_ids": [
-        "CAP-GAP-001"
-      ],
+      "corpus_gap_ids": [],
       "evidence_set": "cli_special",
       "id": "CAP-CLI-MODE-002",
       "name": "info mode",
@@ -689,16 +678,14 @@
         "CAP-GAP-007"
       ],
       "platform_status": {
-        "linux-x86_64-qt5": "runtime_observed_with_corpus_gaps",
+        "linux-x86_64-qt5": "runtime_observed",
         "linux-x86_64-qt6": "platform_missing",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
     },
     {
-      "corpus_gap_ids": [
-        "CAP-GAP-001"
-      ],
+      "corpus_gap_ids": [],
       "evidence_set": "cli_special",
       "id": "CAP-CLI-MODE-003",
       "name": "struct mode",
@@ -706,7 +693,7 @@
         "CAP-GAP-007"
       ],
       "platform_status": {
-        "linux-x86_64-qt5": "runtime_observed_with_corpus_gaps",
+        "linux-x86_64-qt5": "runtime_observed",
         "linux-x86_64-qt6": "platform_missing",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
@@ -1097,9 +1084,7 @@
       }
     },
     {
-      "corpus_gap_ids": [
-        "CAP-GAP-001"
-      ],
+      "corpus_gap_ids": [],
       "evidence_set": "cli_options",
       "id": "CAP-RULE-011",
       "name": "script profiling",
@@ -1107,7 +1092,7 @@
         "CAP-GAP-007"
       ],
       "platform_status": {
-        "linux-x86_64-qt5": "runtime_observed_with_corpus_gaps",
+        "linux-x86_64-qt5": "runtime_observed",
         "linux-x86_64-qt6": "platform_missing",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
@@ -1490,7 +1475,7 @@
   "schema_version": 1,
   "source": {
     "path": "docs/research/data/capability-traceability.json",
-    "sha256": "235315d09f7431faf54e0c48dd3de561af16a1784eb13cb24dca929dc84f8785"
+    "sha256": "87f74045b7f5dabedd62d57b67354b039d91fd9ebd59a44f2848655318179d5a"
   },
   "status_definitions": {
     "platform_missing": "no complete capability baseline is admitted for this platform",
@@ -1504,13 +1489,13 @@
     "cell_count": 272,
     "phase_0_coverage_complete": false,
     "platform_count": 4,
-    "rows_with_corpus_gaps": 26,
+    "rows_with_corpus_gaps": 21,
     "rows_with_platform_gaps": 68,
     "status_counts_by_platform": {
       "linux-x86_64-qt5": {
         "platform_missing": 0,
-        "runtime_observed": 51,
-        "runtime_observed_with_corpus_gaps": 17,
+        "runtime_observed": 56,
+        "runtime_observed_with_corpus_gaps": 12,
         "source_only_runtime_corpus_missing": 0,
         "source_only_with_corpus_gaps": 0
       },

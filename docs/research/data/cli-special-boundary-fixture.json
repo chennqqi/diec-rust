@@ -1,0 +1,83 @@
+{
+  "dependencies": [
+    {
+      "path": "tools/corpus/generate_baseline_corpus.py",
+      "role": "safe deterministic format constructors",
+      "sha256": "6b36a120c552cecfd4212385302807e6f85f2e2aa2a867528026c48d80d070fa"
+    }
+  ],
+  "entries": [
+    {
+      "double_frequency_symbol_count": 33,
+      "expected_status": "not packed",
+      "name": "entropy-below-6_5.bin",
+      "purpose": "exercise floating entropy around the >= 6.5 packed boundary",
+      "sha256": "adde1f4dd1b36ff4d26530496f643de5b3ca1dd222676a4c3e5defacf9271680",
+      "single_frequency_symbol_count": 62,
+      "size": 128,
+      "source": "project-generated",
+      "theoretical_entropy": 6.484375
+    },
+    {
+      "double_frequency_symbol_count": 32,
+      "expected_status": "not packed",
+      "name": "entropy-exact-6_5.bin",
+      "purpose": "exercise floating entropy around the >= 6.5 packed boundary",
+      "sha256": "204b1cb5c0256527b6566d827972a46aa28ccb48461f4f0bc025b5a526a7ba53",
+      "single_frequency_symbol_count": 64,
+      "size": 128,
+      "source": "project-generated",
+      "theoretical_entropy": 6.5
+    },
+    {
+      "double_frequency_symbol_count": 31,
+      "expected_status": "packed",
+      "name": "entropy-above-6_5.bin",
+      "purpose": "exercise floating entropy around the >= 6.5 packed boundary",
+      "sha256": "9c23020d6b07bc82a98eb543c249794430174d7809f02eb3c9f5fb4ba9d5dfa4",
+      "single_frequency_symbol_count": 66,
+      "size": 128,
+      "source": "project-generated",
+      "theoretical_entropy": 6.515625
+    },
+    {
+      "intended_format": "PE32",
+      "name": "minimal-pe32.exe",
+      "purpose": "exercise format-specific struct method dispatch",
+      "sha256": "afb1bcd812caa45095075a60ff49599c7d5e767c7732226c3e0007708cb198a2",
+      "size": 512,
+      "source": "project-generated"
+    },
+    {
+      "intended_format": "ELF64",
+      "name": "minimal-elf64.elf",
+      "purpose": "exercise format-specific struct method dispatch",
+      "sha256": "e717b57a377ce3486a932130454ee070fdd495d3c23a9d5a8a446ad32772e704",
+      "size": 64,
+      "source": "project-generated"
+    },
+    {
+      "intended_format": "Mach-O 64",
+      "name": "minimal-macho64.macho",
+      "purpose": "exercise format-specific struct method dispatch",
+      "sha256": "60a536a7dff9522a8e4af5ab73ff742ebeffc33a34837beb9c5ac4a1a7eb5968",
+      "size": 104,
+      "source": "project-generated"
+    },
+    {
+      "intended_format": "DEX",
+      "name": "minimal.dex",
+      "purpose": "exercise format-specific struct method dispatch",
+      "sha256": "57cfe8878be74cad8bbc5e409b0964d4b13c35e8783d931ef7366881f8d548c2",
+      "size": 112,
+      "source": "project-generated"
+    }
+  ],
+  "generator": "tools/corpus/generate_cli_special_boundary_fixture.py",
+  "license": "project-generated; no third-party sample bytes",
+  "schema_version": 1,
+  "threshold": {
+    "comparison": ">=",
+    "value": 6.5
+  }
+}

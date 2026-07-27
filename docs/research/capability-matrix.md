@@ -33,7 +33,7 @@ CLI 主入口为 [`src/console/main_console.cpp`](https://github.com/horsicq/DIE
 | `CAP-CLI-OPT-005` | `-g` | `--aggressivecscan` | Enable aggressive scanning mode | `bIsAggressiveScan` | Observed；15 个基线样本；long name含额外 `c` |
 | `CAP-CLI-OPT-006` | `-a` | `--alltypes` | Scan all file types | `bIsAllTypesScan` | Observed；最小 PE32 额外报告 MSDOS |
 | `CAP-CLI-OPT-007` | `-f` | `--format` | Format the output result | `bFormatResult` | Observed；8 个样本的显示字符串空格发生变化 |
-| `CAP-CLI-OPT-008` | `-l` | `--profiling` | Profile signatures during scan | `bLogProfiling` | Observed；不带 messages 时输出不变；带 messages 时输出规则名及非确定 timing |
+| `CAP-CLI-OPT-008` | `-l` | `--profiling` | Profile signatures during scan | `bLogProfiling` | Observed；不带 messages 时输出不变；带 messages 的 292 条 Binary 规则名/顺序固定，只有 elapsed 被规范化 |
 | `CAP-CLI-OPT-009` | `-M` | `--messages` | Display scan messages and warnings | Qt signal output | Observed；signals 写 stdout，可破坏 JSON framing |
 | `CAP-CLI-OPT-010` | `-U` | `--hideunknown` | Hide unknown file types from results | `bHideUnknown` | Observed；5 个 Unknown filetype 被折叠为顶层字符串 |
 
@@ -43,9 +43,9 @@ CLI 主入口为 [`src/console/main_console.cpp`](https://github.com/horsicq/DIE
 
 | ID | Short | Long | 能力 | 状态 |
 | --- | --- | --- | --- | --- |
-| `CAP-CLI-MODE-001` | `-e` | `--entropy` | 输出分区/区域熵信息 | Observed；5 个代表样本、6 种 formatter |
-| `CAP-CLI-MODE-002` | `-i` | `--info` | 输出文件信息模型 | Observed；5 个代表样本、6 种 formatter |
-| `CAP-CLI-MODE-003` | `-S` | `--struct <value>` | 特定结构信息，如 `Hash` / `Hash#MD5` | Observed；Hash、子字段和未知方法 |
+| `CAP-CLI-MODE-001` | `-e` | `--entropy` | 输出分区/区域熵信息 | Observed；5 个代表样本、6 种 formatter，另有 6.5 浮点临界值和多目标 framing |
+| `CAP-CLI-MODE-002` | `-i` | `--info` | 输出文件信息模型 | Observed；5 个代表样本、6 种 formatter及双目标 framing |
+| `CAP-CLI-MODE-003` | `-S` | `--struct <value>` | 特定结构信息，如 `Hash` / `Hash#MD5` | Observed；大小写、空/未知/超深层级、双目标及 PE/ELF/Mach-O/DEX 11 个专用方法 |
 | `CAP-CLI-MODE-004` | `-w` | `--showstructs` | 列出可用结构方法 | Observed；仅列 4 个通用方法，target 被忽略 |
 | `CAP-CLI-MODE-005` | — | `--help` | 显示 Qt command-line help | Observed；无参数与 `--help` 原始 stdout 相同，退出 0、stderr 为空 |
 | `CAP-CLI-MODE-006` | — | `--version` | 显示应用版本 | Observed；双 oracle 原始 stdout 10 bytes，退出 0、stderr 为空 |

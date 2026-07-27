@@ -219,6 +219,13 @@ pub struct NestingOptions {
 - mode 分派保持 `entropy > struct > info > detect` 的 legacy 优先级；
 - Rust typed API 一次只能选择一个 `ScanMode`，避免矛盾组合。
 
+legacy entropy 使用固定上游的逐 symbol 浮点累加与 `>= 6.5` 判定；理论值恰为
+6.5 的项目样本运行时为 `6.499999999999999/not packed`，text 可同时显示
+`6.5: not packed`。compatibility renderer 必须读取同一次计算得到的 value/status，
+不能按格式化后的字符串重新分类。`StructSelector` 的 legacy parser 保留大小写
+不敏感、额外尾 section wildcard 和空 option 退回 detect 的行为；canonical typed
+constructor 可拒绝含糊 selector，但必须将该差异显式映射到 legacy adapter。
+
 `aggressive` 只改变兼容策略阈值，不能关闭 hard safety limits。
 
 ## 8. ScanLimits

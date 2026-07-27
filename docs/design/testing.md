@@ -530,6 +530,11 @@ raw-only byte-range waiver 默认 unmatched。
   断言父 source 不越界读取；modern 按 ADR 0009 验证类型化取消、按 ADR 0013
   对不完整读取 fail closed；
 - output：UTF-8 escaping、整数、float、optional/null、key/array order；
+- special modes：理论 entropy `6.484375/6.5/6.515625` 对应固定运行时
+  double/status/text，struct 大小写、空/未知/超深 section、空 option 分派，
+  PE/ELF/Mach-O/DEX 11 个格式方法及两目标 filename-prefix/多文档 framing；
+- profiling：无 messages 时与默认输出逐字节相同；有 messages 时保留 292 条
+  signature 名称/顺序/数量，只允许对 elapsed milliseconds 做具名规范化；
 - database：三层顺序、空/缺失/损坏、duplicate、hash mismatch 和事务失败；
 - database cache：cold miss/hit、保持 count/size/mtime 的内容替换、bad
   magic/version/engine、每个 record 字段截断、超大 count/text、写失败和并发
@@ -875,7 +880,7 @@ tested、exact、semantic、waived 和 unsupported 数量。
 
 - Windows/macOS upstream oracle 尚未固定，不能声称跨平台 exact。
 - capability coverage report 已覆盖全部 68 行和 272 个平台 cell 的分类；当前
-  Linux Qt5 source-only 已清零、26 个 corpus-gap 行及三个缺失平台仍不足以
+  Linux Qt5 source-only 已清零、21 个 corpus-gap 行及三个缺失平台仍不足以
   满足 capability matrix；十项的 fixture/harness/assertion 闭集见
   [`source-only-closure.json`](../research/data/source-only-closure.json)。
 - ADR 0006 已提议 rquickjs/QuickJS-NG，但 acceptance conditions 和全库
