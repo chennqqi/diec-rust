@@ -223,17 +223,6 @@
         "linux-x86_64-qt5"
       ],
       "scope": "mid-scan callback, asynchronous stop, and cancellation race boundaries"
-    },
-    {
-      "capability_ids": [
-        "CAP-DISPATCH-007"
-      ],
-      "id": "CAP-GAP-012",
-      "kind": "corpus_missing",
-      "platforms": [
-        "linux-x86_64-qt5"
-      ],
-      "scope": "generic Image dispatch and non-JPEG/PNG image variants"
     }
   ],
   "evaluated_on": "2026-07-28",
@@ -339,7 +328,15 @@
         "tools/upstream/bw_dispatch_harness_main.cpp",
         "tools/upstream/Dockerfile.bw-dispatch-harness-qt5",
         "tools/tests/test_probe_dos_dispatch.py",
-        "tools/tests/test_probe_bw_dispatch_harness.py"
+        "tools/tests/test_probe_bw_dispatch_harness.py",
+        "docs/research/image-dispatch-behavior.md",
+        "docs/research/data/image-dispatch-engine-qt5.json",
+        "tools/corpus/generate_image_dispatch_fixture.py",
+        "tools/upstream/probe_image_dispatch_harness.py",
+        "tools/upstream/image_dispatch_harness_main.cpp",
+        "tools/upstream/Dockerfile.image-dispatch-harness-qt5",
+        "tools/tests/test_generate_image_dispatch_fixture.py",
+        "tools/tests/test_probe_image_dispatch_harness.py"
       ]
     },
     "engine_contract": {
@@ -1259,9 +1256,7 @@
       }
     },
     {
-      "corpus_gap_ids": [
-        "CAP-GAP-012"
-      ],
+      "corpus_gap_ids": [],
       "evidence_set": "dispatch_source",
       "id": "CAP-DISPATCH-007",
       "name": "image dispatch",
@@ -1269,7 +1264,7 @@
         "CAP-GAP-007"
       ],
       "platform_status": {
-        "linux-x86_64-qt5": "runtime_observed_with_corpus_gaps",
+        "linux-x86_64-qt5": "runtime_observed",
         "linux-x86_64-qt6": "platform_missing",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
@@ -1530,7 +1525,7 @@
   "schema_version": 1,
   "source": {
     "path": "docs/research/data/capability-traceability.json",
-    "sha256": "e90b3a1ecab664eb9d42a01ab7ef9f8bfe1202baf45c9940a095f179b209fdac"
+    "sha256": "9daf16a41db8a23d50785e10e789b39ee1942fa1aa106f36a837bb74893fce06"
   },
   "status_definitions": {
     "platform_missing": "no complete capability baseline is admitted for this platform",
@@ -1544,13 +1539,13 @@
     "cell_count": 272,
     "phase_0_coverage_complete": false,
     "platform_count": 4,
-    "rows_with_corpus_gaps": 30,
+    "rows_with_corpus_gaps": 29,
     "rows_with_platform_gaps": 68,
     "status_counts_by_platform": {
       "linux-x86_64-qt5": {
         "platform_missing": 0,
-        "runtime_observed": 47,
-        "runtime_observed_with_corpus_gaps": 21,
+        "runtime_observed": 48,
+        "runtime_observed_with_corpus_gaps": 20,
         "source_only_runtime_corpus_missing": 0,
         "source_only_with_corpus_gaps": 0
       },

@@ -97,7 +97,10 @@ Phase 0 计划形成：
 - [`data/capability-traceability.json`](data/capability-traceability.json)：68 个稳定
   `CAP-*` 的验证层级、证据路径、平台范围和 12 个显式 coverage gap。
 - [`data/capability-coverage.json`](data/capability-coverage.json)：68 行 × 4 平台
-  的 272-cell 闭集分类、十二个 gap 到能力的显式映射和未分类计数。
+  的 272-cell 闭集分类、十一个开放 gap 到能力的显式映射和未分类计数。
+- [`image-dispatch-behavior.md`](image-dispatch-behavior.md)：固定七种非
+  JPEG/PNG 图像的自然 Binary fallback、强制 generic Image null adapter 和
+  `CAP-GAP-012` 闭合证据。
 - [`data/source-only-closure.json`](data/source-only-closure.json)：与当前一个
   source-only 行严格相等的可执行关闭清单。
 - [`data/legacy-dispatch-corpus.json`](data/legacy-dispatch-corpus.json)：

@@ -146,7 +146,15 @@
         "tools/upstream/bw_dispatch_harness_main.cpp",
         "tools/upstream/Dockerfile.bw-dispatch-harness-qt5",
         "tools/tests/test_probe_dos_dispatch.py",
-        "tools/tests/test_probe_bw_dispatch_harness.py"
+        "tools/tests/test_probe_bw_dispatch_harness.py",
+        "docs/research/image-dispatch-behavior.md",
+        "docs/research/data/image-dispatch-engine-qt5.json",
+        "tools/corpus/generate_image_dispatch_fixture.py",
+        "tools/upstream/probe_image_dispatch_harness.py",
+        "tools/upstream/image_dispatch_harness_main.cpp",
+        "tools/upstream/Dockerfile.image-dispatch-harness-qt5",
+        "tools/tests/test_generate_image_dispatch_fixture.py",
+        "tools/tests/test_probe_image_dispatch_harness.py"
       ]
     },
     "nested_scan": {
@@ -259,7 +267,7 @@
     {"id": "CAP-DISPATCH-004", "name": "archive family dispatch", "verification": "observed_with_gaps", "evidence_set": "dispatch_source"},
     {"id": "CAP-DISPATCH-005", "name": "DEX Java Class and PYC dispatch", "verification": "observed", "evidence_set": "dispatch_source"},
     {"id": "CAP-DISPATCH-006", "name": "PDF and CFBF dispatch", "verification": "observed", "evidence_set": "dispatch_source"},
-    {"id": "CAP-DISPATCH-007", "name": "image dispatch", "verification": "observed_with_gaps", "evidence_set": "dispatch_source"},
+    {"id": "CAP-DISPATCH-007", "name": "image dispatch", "verification": "observed", "evidence_set": "dispatch_source"},
     {"id": "CAP-DISPATCH-008", "name": "binary fallback dispatch", "verification": "observed", "evidence_set": "dispatch_source"},
 
     {"id": "CAP-NEST-001", "name": "directory recursion versus internal recursion", "verification": "observed", "evidence_set": "nested_scan"},
@@ -360,22 +368,15 @@
       "platforms": [
         "linux-x86_64-qt5"
       ]
-    },
-    {
-      "id": "CAP-GAP-012",
-      "scope": "generic Image dispatch and non-JPEG/PNG image variants",
-      "platforms": [
-        "linux-x86_64-qt5"
-      ]
     }
   ],
   "summary": {
     "capability_count": 68,
-    "observed": 47,
-    "observed_with_gaps": 21,
+    "observed": 48,
+    "observed_with_gaps": 20,
     "source_verified": 0,
     "source_verified_with_gaps": 0,
-    "coverage_gap_count": 12,
+    "coverage_gap_count": 11,
     "phase_0_coverage_complete": false
   }
 }

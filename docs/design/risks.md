@@ -353,7 +353,7 @@ baseline 的变更都要检查本表。
   traceability、闭集 coverage report 和 mutation/minimization。
 - **验证**：每项能力 positive/negative/boundary；manifest hash；license review；
   fuzz regression growth。当前报告已分类 68 行 × 4 平台、0 未分类 cell，但仍
-  Linux source-only 已清零，同时显式保留 30 个 corpus-gap 行和三个缺失平台；
+  Linux source-only 已清零，同时显式保留 29 个 corpus-gap 行和三个缺失平台；
   source-only closure manifest 会拒绝任何未进入 closure catalog 的新缺口。
 - **关闭**：release 范围无 coverage gap，所有样本可追溯且处理策略合规。
 

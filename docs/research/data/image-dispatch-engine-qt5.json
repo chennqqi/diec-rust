@@ -1,0 +1,510 @@
+{
+  "capability": "CAP-DISPATCH-007",
+  "closed_corpus_gap": "CAP-GAP-012",
+  "fixture": {
+    "generator": "tools/corpus/generate_image_dispatch_fixture.py",
+    "generator_sha256": "32ee6a2ff262ead9a88c7d61d49896487f25d8e871c78ba736eccb9f373bbf8b",
+    "manifest": {
+      "capability": "CAP-DISPATCH-007",
+      "coverage_gap": "CAP-GAP-012",
+      "generator": "tools/corpus/generate_image_dispatch_fixture.py",
+      "license": "project-generated; no third-party sample bytes",
+      "samples": [
+        {
+          "name": "pixel.bmp",
+          "sha256": "f7cbd816abfb19030d23b8de5435d0141443665a81ed5ba12114c70b5f53b610",
+          "size": 58,
+          "specific_filetype": "BMP"
+        },
+        {
+          "name": "pixel.gif",
+          "sha256": "5615ca327e5593a9494c3d0ca1fa1ca2bb076fbbaa58981430d3dd0b7e774f09",
+          "size": 802,
+          "specific_filetype": "GIF"
+        },
+        {
+          "name": "pixel.tiff",
+          "sha256": "5b8de6f08055194ef790df081c2b76fa7920469750fd5ff47e6a209a7b3c716a",
+          "size": 14,
+          "specific_filetype": "TIFF"
+        },
+        {
+          "name": "pixel.ico",
+          "sha256": "081eaf6938d3382fb806c0de9b1d79c93e5f17a706928b12d2c0be4581962d96",
+          "size": 23,
+          "specific_filetype": "ICO"
+        },
+        {
+          "name": "pointer.cur",
+          "sha256": "23c93025ed03880dd73cb37688383853aea376317aed0b999858de9e4fb36c21",
+          "size": 23,
+          "specific_filetype": "CUR"
+        },
+        {
+          "name": "display.icc",
+          "sha256": "f94da20185a7e71ff1ca637e6ddc0cffee333a0b82816b93bbfd5e6893febead",
+          "size": 128,
+          "specific_filetype": "ICC"
+        },
+        {
+          "name": "pixel.webp",
+          "sha256": "d1f5a9bc0e39c19ef6adc0c621864365f75288950d731600f6d6e5050d0549c4",
+          "size": 36,
+          "specific_filetype": "WebP"
+        }
+      ],
+      "schema_version": 1
+    },
+    "manifest_bytes": 1478,
+    "manifest_sha256": "77e2e743897d9c85ed7c539b1213ce1270bf43aa2cf976a3bf470bdd185a9238"
+  },
+  "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+  "generator": "tools/upstream/probe_image_dispatch_harness.py",
+  "generator_sha256": "9bee4f5db39c5941c943e0705ebfc0149b562d0bfe074542fb5a1992400a7049",
+  "harness": {
+    "dockerfile": "tools/upstream/Dockerfile.image-dispatch-harness-qt5",
+    "dockerfile_sha256": "52269386ec37daa72fac8d6c452f70c1dc16a52f5238d889db9f11b709893d2a",
+    "source": "tools/upstream/image_dispatch_harness_main.cpp",
+    "source_sha256": "ebaba5e10cc5c341e3f1686392ca5c48c84ae90d88c2d9442a54fae8635c8116"
+  },
+  "harness_output": {
+    "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+    "manifest_sha256": "77e2e743897d9c85ed7c539b1213ce1270bf43aa2cf976a3bf470bdd185a9238",
+    "qt_version": "5.15.13",
+    "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+    "sample_count": 7,
+    "samples": [
+      {
+        "automatic": {
+          "errors": [],
+          "forced_image": false,
+          "initial_filetype": "Binary",
+          "option_filetype": "Unknown",
+          "records": [
+            {
+              "filetype": "Binary",
+              "info": "1x1, 24bpp",
+              "name": "Windows Bitmap",
+              "signature_file": "/opt/die-source/Detect-It-Easy/db/Binary/image_BMP.1.sg",
+              "type": "image",
+              "unknown": false,
+              "version": "3"
+            }
+          ],
+          "scan_success": true
+        },
+        "detected_filetypes": [
+          "BMP",
+          "Binary",
+          "Image"
+        ],
+        "forced_image": {
+          "errors": [
+            {
+              "message": "Image/_Image.0.sg: 7: TypeError: Result of expression 'Image' [null] is not an object.",
+              "script": "_Image.0.sg"
+            }
+          ],
+          "forced_image": true,
+          "initial_filetype": "Image",
+          "option_filetype": "Image",
+          "records": [
+            {
+              "filetype": "Image",
+              "info": "",
+              "name": "Unknown",
+              "signature_file": "",
+              "type": "Unknown",
+              "unknown": true,
+              "version": ""
+            }
+          ],
+          "scan_success": true
+        },
+        "image_filtered_filetypes": [
+          "Image"
+        ],
+        "name": "pixel.bmp",
+        "sha256": "f7cbd816abfb19030d23b8de5435d0141443665a81ed5ba12114c70b5f53b610",
+        "size": 58,
+        "specific_filetype": "BMP"
+      },
+      {
+        "automatic": {
+          "errors": [],
+          "forced_image": false,
+          "initial_filetype": "Binary",
+          "option_filetype": "Unknown",
+          "records": [
+            {
+              "filetype": "Binary",
+              "info": "",
+              "name": "Unknown",
+              "signature_file": "",
+              "type": "Unknown",
+              "unknown": true,
+              "version": ""
+            }
+          ],
+          "scan_success": true
+        },
+        "detected_filetypes": [
+          "Binary",
+          "GIF",
+          "Image"
+        ],
+        "forced_image": {
+          "errors": [
+            {
+              "message": "Image/_Image.0.sg: 7: TypeError: Result of expression 'Image' [null] is not an object.",
+              "script": "_Image.0.sg"
+            }
+          ],
+          "forced_image": true,
+          "initial_filetype": "Image",
+          "option_filetype": "Image",
+          "records": [
+            {
+              "filetype": "Image",
+              "info": "",
+              "name": "Unknown",
+              "signature_file": "",
+              "type": "Unknown",
+              "unknown": true,
+              "version": ""
+            }
+          ],
+          "scan_success": true
+        },
+        "image_filtered_filetypes": [
+          "Image"
+        ],
+        "name": "pixel.gif",
+        "sha256": "5615ca327e5593a9494c3d0ca1fa1ca2bb076fbbaa58981430d3dd0b7e774f09",
+        "size": 802,
+        "specific_filetype": "GIF"
+      },
+      {
+        "automatic": {
+          "errors": [],
+          "forced_image": false,
+          "initial_filetype": "Binary",
+          "option_filetype": "Unknown",
+          "records": [
+            {
+              "filetype": "Binary",
+              "info": "LE, undefinedxundefined, undefined-bit ",
+              "name": "Tagged Image File Format (.TIFF)",
+              "signature_file": "/opt/die-source/Detect-It-Easy/db/Binary/image_TIFF.1.sg",
+              "type": "image",
+              "unknown": false,
+              "version": ""
+            }
+          ],
+          "scan_success": true
+        },
+        "detected_filetypes": [
+          "Binary",
+          "Image",
+          "TIFF",
+          "Text",
+          "UTF8"
+        ],
+        "forced_image": {
+          "errors": [
+            {
+              "message": "Image/_Image.0.sg: 7: TypeError: Result of expression 'Image' [null] is not an object.",
+              "script": "_Image.0.sg"
+            }
+          ],
+          "forced_image": true,
+          "initial_filetype": "Image",
+          "option_filetype": "Image",
+          "records": [
+            {
+              "filetype": "Image",
+              "info": "",
+              "name": "Unknown",
+              "signature_file": "",
+              "type": "Unknown",
+              "unknown": true,
+              "version": ""
+            }
+          ],
+          "scan_success": true
+        },
+        "image_filtered_filetypes": [
+          "Image"
+        ],
+        "name": "pixel.tiff",
+        "sha256": "5b8de6f08055194ef790df081c2b76fa7920469750fd5ff47e6a209a7b3c716a",
+        "size": 14,
+        "specific_filetype": "TIFF"
+      },
+      {
+        "automatic": {
+          "errors": [],
+          "forced_image": false,
+          "initial_filetype": "Binary",
+          "option_filetype": "Unknown",
+          "records": [
+            {
+              "filetype": "Binary",
+              "info": "1x1, 0bpp, sz: 23",
+              "name": "Windows Icon",
+              "signature_file": "/opt/die-source/Detect-It-Easy/db/Binary/image_ICO.1.sg",
+              "type": "image",
+              "unknown": false,
+              "version": ""
+            }
+          ],
+          "scan_success": true
+        },
+        "detected_filetypes": [
+          "Binary",
+          "ICO",
+          "Image",
+          "Text",
+          "UTF8"
+        ],
+        "forced_image": {
+          "errors": [
+            {
+              "message": "Image/_Image.0.sg: 7: TypeError: Result of expression 'Image' [null] is not an object.",
+              "script": "_Image.0.sg"
+            }
+          ],
+          "forced_image": true,
+          "initial_filetype": "Image",
+          "option_filetype": "Image",
+          "records": [
+            {
+              "filetype": "Image",
+              "info": "",
+              "name": "Unknown",
+              "signature_file": "",
+              "type": "Unknown",
+              "unknown": true,
+              "version": ""
+            }
+          ],
+          "scan_success": true
+        },
+        "image_filtered_filetypes": [
+          "Image"
+        ],
+        "name": "pixel.ico",
+        "sha256": "081eaf6938d3382fb806c0de9b1d79c93e5f17a706928b12d2c0be4581962d96",
+        "size": 23,
+        "specific_filetype": "ICO"
+      },
+      {
+        "automatic": {
+          "errors": [],
+          "forced_image": false,
+          "initial_filetype": "Binary",
+          "option_filetype": "Unknown",
+          "records": [
+            {
+              "filetype": "Binary",
+              "info": "",
+              "name": "Unknown",
+              "signature_file": "",
+              "type": "Unknown",
+              "unknown": true,
+              "version": ""
+            }
+          ],
+          "scan_success": true
+        },
+        "detected_filetypes": [
+          "Binary",
+          "CUR",
+          "Image",
+          "Text",
+          "UTF8"
+        ],
+        "forced_image": {
+          "errors": [
+            {
+              "message": "Image/_Image.0.sg: 7: TypeError: Result of expression 'Image' [null] is not an object.",
+              "script": "_Image.0.sg"
+            }
+          ],
+          "forced_image": true,
+          "initial_filetype": "Image",
+          "option_filetype": "Image",
+          "records": [
+            {
+              "filetype": "Image",
+              "info": "",
+              "name": "Unknown",
+              "signature_file": "",
+              "type": "Unknown",
+              "unknown": true,
+              "version": ""
+            }
+          ],
+          "scan_success": true
+        },
+        "image_filtered_filetypes": [
+          "Image"
+        ],
+        "name": "pointer.cur",
+        "sha256": "23c93025ed03880dd73cb37688383853aea376317aed0b999858de9e4fb36c21",
+        "size": 23,
+        "specific_filetype": "CUR"
+      },
+      {
+        "automatic": {
+          "errors": [],
+          "forced_image": false,
+          "initial_filetype": "Binary",
+          "option_filetype": "Unknown",
+          "records": [
+            {
+              "filetype": "Binary",
+              "info": "",
+              "name": "Unknown",
+              "signature_file": "",
+              "type": "Unknown",
+              "unknown": true,
+              "version": ""
+            }
+          ],
+          "scan_success": true
+        },
+        "detected_filetypes": [
+          "Binary",
+          "ICC",
+          "Image"
+        ],
+        "forced_image": {
+          "errors": [
+            {
+              "message": "Image/_Image.0.sg: 7: TypeError: Result of expression 'Image' [null] is not an object.",
+              "script": "_Image.0.sg"
+            }
+          ],
+          "forced_image": true,
+          "initial_filetype": "Image",
+          "option_filetype": "Image",
+          "records": [
+            {
+              "filetype": "Image",
+              "info": "",
+              "name": "Unknown",
+              "signature_file": "",
+              "type": "Unknown",
+              "unknown": true,
+              "version": ""
+            }
+          ],
+          "scan_success": true
+        },
+        "image_filtered_filetypes": [
+          "Image"
+        ],
+        "name": "display.icc",
+        "sha256": "f94da20185a7e71ff1ca637e6ddc0cffee333a0b82816b93bbfd5e6893febead",
+        "size": 128,
+        "specific_filetype": "ICC"
+      },
+      {
+        "automatic": {
+          "errors": [],
+          "forced_image": false,
+          "initial_filetype": "Binary",
+          "option_filetype": "Unknown",
+          "records": [
+            {
+              "filetype": "Binary",
+              "info": "",
+              "name": "WebP",
+              "signature_file": "/opt/die-source/Detect-It-Easy/db/Binary/format_RIFF.1.sg",
+              "type": "format",
+              "unknown": false,
+              "version": ""
+            }
+          ],
+          "scan_success": true
+        },
+        "detected_filetypes": [
+          "Binary",
+          "Image",
+          "RIFF",
+          "Text",
+          "UTF8",
+          "WebP"
+        ],
+        "forced_image": {
+          "errors": [
+            {
+              "message": "Image/_Image.0.sg: 7: TypeError: Result of expression 'Image' [null] is not an object.",
+              "script": "_Image.0.sg"
+            }
+          ],
+          "forced_image": true,
+          "initial_filetype": "Image",
+          "option_filetype": "Image",
+          "records": [
+            {
+              "filetype": "Image",
+              "info": "",
+              "name": "Unknown",
+              "signature_file": "",
+              "type": "Unknown",
+              "unknown": true,
+              "version": ""
+            }
+          ],
+          "scan_success": true
+        },
+        "image_filtered_filetypes": [
+          "Image"
+        ],
+        "name": "pixel.webp",
+        "sha256": "d1f5a9bc0e39c19ef6adc0c621864365f75288950d731600f6d6e5050d0549c4",
+        "size": 36,
+        "specific_filetype": "WebP"
+      }
+    ],
+    "schema_version": 1,
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+  },
+  "oracle": {
+    "binary": "/opt/die-build/src/console/diec-image-dispatch-harness",
+    "binary_sha256": "ce9ec2200afdd2531c2c42ec5e00ad1fc427e0282287524cf4b3c0f2f9fed6d3",
+    "exit_code": 0,
+    "image": "diec-rust/image-dispatch-harness-qt5:74eaf505",
+    "image_identity": {
+      "id": "sha256:41bf8553a48e84b759e09d77079e6682f08d44d9d89c38da4b3dbd12f8e5c0dd",
+      "repo_digests": [
+        "diec-rust/image-dispatch-harness-qt5@sha256:41bf8553a48e84b759e09d77079e6682f08d44d9d89c38da4b3dbd12f8e5c0dd"
+      ],
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    },
+    "raw_stderr_bytes": 0,
+    "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "raw_stdout_bytes": 14387,
+    "raw_stdout_sha256": "818a5121bbbbf8f26b73aa646c04f3c454064165fa00d21e97bf1e25b2c59fc7"
+  },
+  "platform": "linux-x86_64-qt5",
+  "raw_artifacts": {
+    "storage": "untracked external directory selected by --raw-dir"
+  },
+  "relationships": {
+    "all_detectors_include_image_and_specific_type": true,
+    "all_scans_complete_with_stable_unknown_fallback": true,
+    "automatic_dispatch_falls_back_to_binary": true,
+    "forced_option_reaches_generic_image_branch": true,
+    "generic_image_adapter_is_null_and_reports_error": true,
+    "image_filter_collapses_each_set_to_image": true,
+    "seven_non_jpeg_png_variants_detected": true
+  },
+  "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+  "schema_version": 1,
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+}

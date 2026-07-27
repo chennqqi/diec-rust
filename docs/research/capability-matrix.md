@@ -132,9 +132,12 @@ priority、数据库分层、init/include、file type、deep/heuristic 和 Unkno
 固定双 oracle 的 26 样本已完整观察上述 PE/ELF/Mach-O、DEX/Class/PYC、
 PDF/CFBF 和 Binary fallback 四组的所有成员。Archive 组已观察 APK、JAR、ZIP、
 RAR、ISO9660，以及固定 commit 将 IPA 识别后仍经 Binary 分派的 quirk；NPM 和
-通用 Archive 等成员仍缺，因此只标记 `observed_with_gaps`。Image 组已观察
-JPEG/PNG，通用 Image 仍缺，也标记 `observed_with_gaps`。DOS/COM 与
-Amiga/Atari 仍只有源码证据，不能从相邻格式外推。
+通用 Archive 等成员仍缺，因此只标记 `observed_with_gaps`。Image 组除既有
+JPEG/PNG 外，专用 engine harness 已观察 GIF/BMP/TIFF/ICO/CUR/ICC/WebP 的
+Binary fallback，以及强制 `FT_IMAGE` 后 generic Image adapter 为 null 的错误，
+现标记为 `observed`，见
+[`image-dispatch-behavior.md`](image-dispatch-behavior.md)。DOS/COM 与
+Amiga/Atari 的固定 runtime 证据另见对应专用调研，不能从相邻格式外推。
 
 `Formats` 子模块还包含更多探测/信息解析类，不等于它们都有 DIE 规则目录或完整扫描结果。最终“支持格式”必须以格式探测、规则数据库、扫描分派和样本输出四者交叉验证。
 
