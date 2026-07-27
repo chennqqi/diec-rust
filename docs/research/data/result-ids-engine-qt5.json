@@ -1,0 +1,116 @@
+{
+  "capability": "CAP-RESULT-004",
+  "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+  "fixture": {
+    "license": "project-generated; no third-party sample bytes",
+    "manifest": "docs/research/data/nested-corpus.json",
+    "manifest_sha256": "b382bd0a903cd4dda5a8128508f7a3f514a67a721baacda4c6722c99aefc4229",
+    "sample_count": 8,
+    "selected_sample": "pe-manifest-resource.exe"
+  },
+  "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+  "generator": "tools/upstream/probe_result_ids_harness.py",
+  "generator_sha256": "ef43963dddea9f2019615a96079821ffd85298675b3094f0c3ff72dc611e782f",
+  "harness_output": {
+    "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+    "error_count": 0,
+    "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+    "record_count": 2,
+    "records": [
+      {
+        "id": {
+          "filepart": 16,
+          "filepart_string": "Header",
+          "filetype": 16,
+          "filetype_string": "PE32",
+          "info": "",
+          "offset": 0,
+          "original_name": "",
+          "size": 1024,
+          "uuid": "bab1c300-218f-415d-bd93-92e433a4a512",
+          "version": ""
+        },
+        "name": "Unknown",
+        "parent_id": {
+          "filepart": 16,
+          "filepart_string": "Header",
+          "filetype": 0,
+          "filetype_string": "Unknown",
+          "info": "",
+          "offset": 0,
+          "original_name": "",
+          "size": 0,
+          "uuid": "",
+          "version": ""
+        },
+        "type": "Unknown",
+        "unknown": true
+      },
+      {
+        "id": {
+          "filepart": 64,
+          "filepart_string": "Resource",
+          "filetype": 4,
+          "filetype_string": "Binary",
+          "info": "",
+          "offset": 608,
+          "original_name": "",
+          "size": 20,
+          "uuid": "cf1bd0f7-5c04-4651-a748-bfb029e6a9b1",
+          "version": ""
+        },
+        "name": "Unknown",
+        "parent_id": {
+          "filepart": 64,
+          "filepart_string": "Resource",
+          "filetype": 16,
+          "filetype_string": "PE32",
+          "info": "",
+          "offset": 608,
+          "original_name": "",
+          "size": 20,
+          "uuid": "bab1c300-218f-415d-bd93-92e433a4a512",
+          "version": ""
+        },
+        "type": "Unknown",
+        "unknown": true
+      }
+    ],
+    "sample_name": "pe-manifest-resource.exe",
+    "sample_sha256": "0a973cbde2f520bdbd6e1b75304e4a412462113d4de9a8139cdf997af16641ee",
+    "sample_size": 1024,
+    "scan_not_canceled": true,
+    "schema_version": 1,
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+  },
+  "oracle": {
+    "binary": "/opt/die-build/src/console/diec-result-ids-harness",
+    "binary_sha256": "9b7ba2f1602a5c7333d33dfb861f108ea148c435288ec013ea61cfbcd641f3d4",
+    "exit_code": 0,
+    "image": "diec-rust/result-ids-harness-qt5:74eaf505",
+    "image_id": "sha256:0e16fde20cdebb97b5215f02e3add965235e353104c499ef7ee2fcdb2a378d6b",
+    "raw_stderr_bytes": 0,
+    "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "raw_stdout_bytes": 2384,
+    "raw_stdout_sha256": "8284bdafbb5ba866a0ee28b9a30e523891c905972c87a57e82dfbd662b65fe85",
+    "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "platform": "linux-amd64-qt5",
+  "raw_artifacts": {
+    "storage": "untracked external directory selected by --raw-dir"
+  },
+  "relationships": {
+    "both_records_are_explicit_unknown": true,
+    "child_id_describes_resource_binary": true,
+    "child_parent_carries_edge_metadata": true,
+    "child_parent_uuid_anchors_root": true,
+    "full_id_shape_is_preserved": true,
+    "root_id_describes_whole_pe": true,
+    "scans_complete_without_errors": true,
+    "uuids_are_nonempty_and_distinct": true
+  },
+  "schema_version": 1,
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+}

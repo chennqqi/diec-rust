@@ -186,7 +186,8 @@ hideunknown 的可观察增量。完整输入哈希和输出见
 - `CAP-RESULT-003`：heuristic/advanced heuristic/unknown 三个独立标记；
   固定 Qt5 四行真值表见
   [`result-flag-behavior.md`](result-flag-behavior.md)。
-- `CAP-RESULT-004`：自身与父级 ID。
+- `CAP-RESULT-004`：自身与父级 ID；完整八字段、随机 UUID identity 与
+  resource edge 元数据见 [`result-id-behavior.md`](result-id-behavior.md)。
 - `CAP-RESULT-005`：record type/name 枚举及字符串 type/name。
 - `CAP-RESULT-006`：version、info、规则信息与优先级；固定 engine/global HostApi
   oracle 已观察非空 version/info、规则名/路径和两种 priority。

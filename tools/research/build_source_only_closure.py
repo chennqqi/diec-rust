@@ -102,19 +102,6 @@ CATALOG: dict[str, dict[str, Any]] = {
             "an ADR records the bounded Rust default and legacy compatibility policy",
         ],
     },
-    "CAP-RESULT-004": {
-        "closure_kind": "nested_result_harness_extension",
-        "missing_evidence": [
-            "record and parent identifiers are not emitted by current harnesses"
-        ],
-        "fixture": "root scan with resource and overlay children",
-        "harness": "extended nested engine result serializer",
-        "assertions": [
-            "root and child record identifiers are retained",
-            "each child parent identifier equals the actual parent identifier",
-            "identifier stability and uniqueness are tested without hard-coding randomness",
-        ],
-    },
     "CAP-RESULT-005": {
         "closure_kind": "engine_result_harness_extension",
         "missing_evidence": [
