@@ -240,7 +240,10 @@ elapsed 值与固定规则执行序列另见
 
 ## 尚未覆盖
 
-- 7Z、CAB、NPM、Amiga Hunk、Atari ST 及 DOS/COM/NE/LE/LX 等格式。
+- 26-sample 通用基线本身不含 7Z、CAB、NPM、Amiga Hunk、Atari ST 及
+  DOS/COM/NE/LE/LX 等格式；其中 CAB store 正例现由
+  [`archive-format-behavior.md`](archive-format-behavior.md) 固定，legacy 与
+  DOS/COM 由各自专用 oracle 固定，7Z/NPM 仍缺。
 - 新增 11 个格式的 scan/output/special 选项矩阵（当前仅固定 default JSON）。
 - 输出格式的转义和嵌套排序已由
   [`cli-output-boundaries.md`](cli-output-boundaries.md) 的 10-case 双 oracle
@@ -249,7 +252,8 @@ elapsed 值与固定规则执行序列另见
   固定。
 - deep 增量、aggressive resource filter 和默认 21/aggressive 2001 精确上限已由
   [`scan-option-boundaries.md`](scan-option-boundaries.md) 固定。
-- 其他 archive 格式、archive aggressive 100000 上限和最大嵌套深度。
+- 7Z、archive aggressive 100000 上限和高压缩比/畸形边界；RAR4/CAB/ISO9660
+  store 正例及 ZIP depth 16/约 2 MiB 累计展开量已有专用报告。
 - 发布 CLI 的 ZIP database 截断/重复/`..`/根前缀边界及 cache-disabled
   副作用已由 [`database-archive-cache.md`](database-archive-cache.md) 覆盖；
   Qt5 engine cache 的 miss/hit/stale/bad-magic/truncated/cancel 已固定，其他

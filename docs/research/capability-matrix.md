@@ -140,8 +140,11 @@ priority、数据库分层、init/include、file type、deep/heuristic 和 Unkno
 
 固定双 oracle 的 26 样本已完整观察上述 PE/ELF/Mach-O、DEX/Class/PYC、
 PDF/CFBF 和 Binary fallback 四组的所有成员。Archive 组已观察 APK、JAR、ZIP、
-RAR、ISO9660，以及固定 commit 将 IPA 识别后仍经 Binary 分派的 quirk；NPM 和
-通用 Archive 等成员仍缺，因此只标记 `observed_with_gaps`。Image 组除既有
+RAR、CAB、ISO9660，以及固定 commit 将 IPA 识别后仍经 Binary 分派的 quirk。
+RAR4/CAB/ISO9660 的 engine-only archive 正向解包见
+[`archive-format-behavior.md`](archive-format-behavior.md)；其中 CAB 顶层仍
+显示 `Binary`，但可产生 PDF Stream child。NPM、7Z 和通用 Archive 等成员仍缺，
+因此只标记 `observed_with_gaps`。Image 组除既有
 JPEG/PNG 外，专用 engine harness 已观察 GIF/BMP/TIFF/ICO/CUR/ICC/WebP 的
 Binary fallback，以及强制 `FT_IMAGE` 后 generic Image adapter 为 null 的错误，
 现标记为 `observed`，见
@@ -151,8 +154,8 @@ Amiga/Atari 的固定 runtime 证据另见对应专用调研，不能从相邻�
 `Formats` 子模块还包含更多探测/信息解析类，不等于它们都有 DIE 规则目录或完整扫描结果。最终“支持格式”必须以格式探测、规则数据库、扫描分派和样本输出四者交叉验证。
 
 运行实验已观察到专用顶层类型 PE32/64、ELF32/64、Mach-O32/64/FAT、DEX、
-Java Class、Python Bytecode、PNG、JPEG、PDF、CFBF、ZIP、APK、JAR、RAR 和
-ISO9660。IPA 被格式层识别，但 engine 有意通过 Binary 规则分派。BMP、WAV、
+Java Class、Python Bytecode、PNG、JPEG、PDF、CFBF、ZIP、APK、JAR、RAR、CAB
+和 ISO9660。IPA 被格式层识别，但 engine 有意通过 Binary 规则分派。BMP、WAV、
 TAR、GZIP 由外部 `file(1)` 验证结构，
 但 DIE 顶层类型为 Binary；其中 BMP、WAV、TAR 仍通过 value 报告具体格式，
 GZIP 返回 Unknown。扫描开关矩阵还验证了 heuristic、alltypes、format 和
@@ -168,7 +171,9 @@ hideunknown 的可观察增量。完整输入哈希和输出见
 - `CAP-NEST-002`：发布 CLI 的 recursive 会启用 resource 和 overlay；默认及单独 aggressive
   不启用。PE PDF resource/overlay 已 Observed。
 - `CAP-NEST-003`：archive 解包由独立 `bIsArchivesScan` 控制，发布 CLI 不设置它；ZIP 和
-  ZIP→ZIP 样本在 recursive/aggressive 组合下均不解包。
+  ZIP→ZIP 样本在 recursive/aggressive 组合下均不解包。固定 harness 进一步
+  证明 RAR4/CAB/ISO9660 默认与发布 CLI 逐字节相同且均不展开，显式 archive
+  后各产生一个 PDF Stream child。
 - `CAP-NEST-004`：archive 源码 `nLimit` 为 20/100000，但默认 `>` 判断实际允许第 21 个
   scanable member；resource 的 `<=` 判断也允许第 21 个，aggressive limit
   为 2000。resource 已精确观察默认 21/aggressive 2001；2002 项 fixture 分为
@@ -190,9 +195,10 @@ hideunknown 的可观察增量。完整输入哈希和输出见
 - `CAP-NEST-009`：固定源码没有独立嵌套 depth 或全 scan 累计展开字节状态；
   受限 Linux Qt5 oracle 的单成员 ZIP 到达 16 层，固定两层累计展开量达到
   2,097,266 bytes，第一次 progress callback 取消保留 1 条 root partial record。
-  状态为 Observed with gaps；高压缩比、真实资源耗尽、其他 archive 格式和跨平台
-  仍待验证。详见
-  [`archive-limit-behavior.md`](archive-limit-behavior.md)。
+  状态为 Observed with gaps；RAR4/CAB/ISO9660 store 正例已经固定，但 7Z、
+  高压缩比、真实资源耗尽、格式错误边界和跨平台仍待验证。详见
+  [`archive-limit-behavior.md`](archive-limit-behavior.md) 与
+  [`archive-format-behavior.md`](archive-format-behavior.md)。
 
 ## 结果模型
 
@@ -232,7 +238,8 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
 - formatter 转义与嵌套排序已闭合；跨平台编码差异仍归入路径/平台缺口。
 - deep 与 aggressive resource 过滤/计数边界已由
   [`scan-option-boundaries.md`](scan-option-boundaries.md) 闭合。
-- 其他 archive 格式、archive aggressive 100000 上限、最大深度和总解压资源限制。
+- 7Z、NPM/通用 Archive、archive aggressive 100000 上限、高压缩比/畸形、
+  最大深度和总解压资源限制；RAR4/CAB/ISO9660 store 正例已固定。
 - Qt 5 与 Qt 6 的首轮基础/安全语料/不可读输入差分已完成；仍需扩展到完整
   output/scan/special/path/database/nested 矩阵及其他 Qt 6 minor。
 - Linux、Windows、macOS 路径与编码差异。

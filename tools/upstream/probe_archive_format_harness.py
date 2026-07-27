@@ -15,16 +15,18 @@ from typing import Any
 
 UPSTREAM_COMMIT = "74eaf505c250ab47e709024e9dc41657cd8f2254"
 FIXTURE_GENERATOR = "tools/corpus/generate_archive_format_fixture.py"
+HARNESS_SOURCE = "tools/upstream/archive_harness_main.cpp"
+HARNESS_DOCKERFILE = "tools/upstream/Dockerfile.archive-harness-qt5"
 IMAGE = "diec-rust/upstream-archive-harness:74eaf505"
 HARNESS_BINARY = "/opt/die-build/src/console/diec-archive-harness"
 RELEASE_BINARY = "/opt/die-build/src/console/diec"
 DATABASE_ARGS = (
     "--database",
-    "/opt/die-source/db",
+    "/opt/die-source/Detect-It-Easy/db",
     "--extradatabase",
-    "/opt/die-source/db_extra",
+    "/opt/die-source/Detect-It-Easy/db_extra",
     "--customdatabase",
-    "/opt/die-source/db_custom",
+    "/opt/die-source/Detect-It-Easy/db_custom",
 )
 SOURCE_PATHS = {
     "engine": "/opt/die-source/XScanEngine/xscanengine.cpp",
@@ -37,7 +39,7 @@ SOURCE_PATTERNS = {
         "stFT.contains(XBinary::FT_ZIP) || "
         "stFT.contains(XBinary::FT_7Z) || "
         "stFT.contains(XBinary::FT_RAR) || "
-        "stFT.contains(XBinary::FT_CAB)",
+        "stFT.contains(XBinary::FT_CAB)"
     ),
     "rar": "bool XRar::initUnpack(",
     "cab": "bool XCab::initUnpack(",
@@ -448,6 +450,14 @@ def build_report(
             "fixture_generator": {
                 "path": FIXTURE_GENERATOR,
                 "sha256": sha256((root / FIXTURE_GENERATOR).read_bytes()),
+            },
+            "harness_source": {
+                "path": HARNESS_SOURCE,
+                "sha256": sha256((root / HARNESS_SOURCE).read_bytes()),
+            },
+            "harness_dockerfile": {
+                "path": HARNESS_DOCKERFILE,
+                "sha256": sha256((root / HARNESS_DOCKERFILE).read_bytes()),
             },
             "baseline_generator": {
                 "path": "tools/corpus/generate_baseline_corpus.py",

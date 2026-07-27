@@ -129,7 +129,9 @@ python tools\upstream\probe_archive_limits_harness.py `
 ## 限制与剩余缺口
 
 - 只验证 Linux x86_64 Qt5、ZIP store method、depth 16 和约 2 MiB 累计展开量。
-- 未验证 deflate 高压缩比、欺骗声明长度、损坏 archive、RAR/7z/CAB/ISO、循环
+- RAR4/CAB/ISO9660 的合法 store-only 单成员正例已由
+  [`archive-format-behavior.md`](archive-format-behavior.md) 固定；仍未验证
+  7Z、这些格式的压缩/加密/损坏边界、deflate 高压缩比、欺骗声明长度、循环
   container、真正 OOM 或超过 30 秒后的引擎内部清理。
 - Docker 外部 timeout 会终止进程，无法提供 cooperative partial result；因此
   partial/cancellation 使用 upstream 同线程 callback 单独验证。
