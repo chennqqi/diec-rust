@@ -165,6 +165,13 @@ const DEX_FIXTURE_SHA256: &str = "7c312742257d365a49f399036e9ce62784e819f13a2783
 const DEX_QT5_BASELINE_SHA256: &str =
     "881988e4c85686489fcf05235b686656ea3dcfaa487cbd7b36259f98614b7bf5";
 const XDEX_COMMIT: &str = "035c61966d3a9018edf80cd0013083ee32626e71";
+const APK_RULE_SUFFIX: &str = "APK/protector_QDBH.2.sg";
+const APK_RULE_BYTES: usize = 283;
+const APK_RULE_SHA256: &str = "cc20faadf1aec677679151a1997ea95184b265db2dbb1d4fcf56f0b62cead752";
+const APK_FIXTURE_SHA256: &str = "531112ec3a4af5a9736c11774c7df6c26819165a6962b5a168bfd70f47c5ee94";
+const APK_QT5_BASELINE_SHA256: &str =
+    "41d75dae86b0f4a57b0159a3cc92fa0ad4cae1ca1117bc5620da68faa98fc00c";
+const XARCHIVE_COMMIT: &str = "0fcd4e8d3e9933baac3b12246d82ac026557ffd0";
 const FORMATS_COMMIT: &str = "1151e7254fdee3c0294ff7095edbdd7bfccf8201";
 const FORMAT_RESULT_SHIM: &[u8] = br#"
     var bDetected, sType, sName, sVersion, sOptions;
@@ -278,6 +285,12 @@ struct DexRuleContext {
     out_of_bounds_string_offsets: usize,
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
+struct ApkRuleContext {
+    archive_record_names: Vec<String>,
+    local_header_signature_mismatches: usize,
+}
+
 #[derive(Default)]
 struct EntryPointHostTrace {
     compare_ep_calls: AtomicUsize,
@@ -289,6 +302,11 @@ struct EntryPointHostTrace {
 #[derive(Default)]
 struct DexHostTrace {
     is_dex_string_present_calls: AtomicUsize,
+}
+
+#[derive(Default)]
+struct ApkHostTrace {
+    is_archive_record_present_calls: AtomicUsize,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -1128,6 +1146,146 @@ impl DexRuleContext {
     }
 }
 
+fn zip_u16(data: &[u8], offset: usize) -> Option<u16> {
+    let bytes: [u8; 2] = data.get(offset..offset.checked_add(2)?)?.try_into().ok()?;
+    Some(u16::from_le_bytes(bytes))
+}
+
+fn zip_u32(data: &[u8], offset: usize) -> Option<u32> {
+    let bytes: [u8; 4] = data.get(offset..offset.checked_add(4)?)?.try_into().ok()?;
+    Some(u32::from_le_bytes(bytes))
+}
+
+fn zip_field(base: usize, relative: usize, name: &str) -> Result<usize, String> {
+    base.checked_add(relative)
+        .ok_or_else(|| format!("ZIP {name} offset overflow"))
+}
+
+fn find_zip_eocd(data: &[u8]) -> Option<usize> {
+    const EOCD_SIZE: usize = 22;
+    const EOCD_SIGNATURE: u32 = 0x0605_4b50;
+    const CENTRAL_SIGNATURE: u32 = 0x0201_4b50;
+
+    if data.len() < EOCD_SIZE {
+        return None;
+    }
+    let start = data.len().saturating_sub(0x1000);
+    let mut result = None;
+    for offset in start..=data.len().saturating_sub(4) {
+        if zip_u32(data, offset) != Some(EOCD_SIGNATURE) {
+            continue;
+        }
+        let Some(central_field) = offset.checked_add(16) else {
+            continue;
+        };
+        let Some(central_offset) =
+            zip_u32(data, central_field).and_then(|value| usize::try_from(value).ok())
+        else {
+            continue;
+        };
+        if central_offset >= offset {
+            continue;
+        }
+        if zip_u32(data, central_offset) == Some(CENTRAL_SIGNATURE) {
+            result = Some(offset);
+        }
+    }
+    result
+}
+
+impl ApkRuleContext {
+    fn parse(data: &[u8]) -> Result<Self, String> {
+        const LOCAL_SIGNATURE: u32 = 0x0403_4b50;
+        const EOCD_SIGNATURE: u32 = 0x0605_4b50;
+        const CENTRAL_SIGNATURE: u32 = 0x0201_4b50;
+        const CENTRAL_HEADER_SIZE: usize = 46;
+        const SCRIPT_RECORD_LIMIT: usize = 20_000;
+        const APK_PROBE_LIMIT: usize = 10_000;
+
+        if !matches!(
+            zip_u32(data, 0),
+            Some(LOCAL_SIGNATURE) | Some(EOCD_SIGNATURE)
+        ) {
+            return Err("ZIP signature is missing or unsupported".to_owned());
+        }
+        let eocd = find_zip_eocd(data)
+            .ok_or_else(|| "ZIP end of central directory is missing".to_owned())?;
+        let total_records = usize::from(
+            zip_u16(data, zip_field(eocd, 10, "EOCD record count")?)
+                .ok_or_else(|| "ZIP EOCD record count is truncated".to_owned())?,
+        );
+        let mut cursor = usize::try_from(
+            zip_u32(data, zip_field(eocd, 16, "central directory")?)
+                .ok_or_else(|| "ZIP central directory offset is truncated".to_owned())?,
+        )
+        .map_err(|_| "ZIP central directory offset does not fit usize".to_owned())?;
+        let record_count = total_records.min(SCRIPT_RECORD_LIMIT);
+        let mut archive_record_names = Vec::with_capacity(record_count);
+        let mut local_header_signature_mismatches = 0_usize;
+        for index in 0..record_count {
+            let header_end = cursor
+                .checked_add(CENTRAL_HEADER_SIZE)
+                .ok_or_else(|| "ZIP central header range overflow".to_owned())?;
+            if header_end > data.len() {
+                return Err(format!("ZIP central header {index} is truncated"));
+            }
+            if zip_u32(data, cursor) != Some(CENTRAL_SIGNATURE) {
+                return Err(format!("ZIP central header {index} signature is invalid"));
+            }
+            let name_length = usize::from(
+                zip_u16(data, zip_field(cursor, 28, "file name length")?)
+                    .ok_or_else(|| "ZIP file name length is truncated".to_owned())?,
+            );
+            let extra_length = usize::from(
+                zip_u16(data, zip_field(cursor, 30, "extra length")?)
+                    .ok_or_else(|| "ZIP extra length is truncated".to_owned())?,
+            );
+            let comment_length = usize::from(
+                zip_u16(data, zip_field(cursor, 32, "comment length")?)
+                    .ok_or_else(|| "ZIP comment length is truncated".to_owned())?,
+            );
+            let local_offset = usize::try_from(
+                zip_u32(data, zip_field(cursor, 42, "local header")?)
+                    .ok_or_else(|| "ZIP local header offset is truncated".to_owned())?,
+            )
+            .map_err(|_| "ZIP local header offset does not fit usize".to_owned())?;
+            if zip_u32(data, local_offset) != Some(LOCAL_SIGNATURE) {
+                local_header_signature_mismatches += 1;
+            }
+            let name_end = header_end
+                .checked_add(name_length)
+                .ok_or_else(|| "ZIP file name range overflow".to_owned())?;
+            let next = name_end
+                .checked_add(extra_length)
+                .and_then(|value| value.checked_add(comment_length))
+                .ok_or_else(|| "ZIP central entry range overflow".to_owned())?;
+            let name = data
+                .get(header_end..name_end)
+                .ok_or_else(|| format!("ZIP central header {index} file name is truncated"))?
+                .iter()
+                .copied()
+                .map(char::from)
+                .collect();
+            if next > data.len() {
+                return Err(format!("ZIP central entry {index} is truncated"));
+            }
+            archive_record_names.push(name);
+            cursor = next;
+        }
+        if !archive_record_names
+            .iter()
+            .take(APK_PROBE_LIMIT)
+            .any(|name| name == "classes.dex" || name == "AndroidManifest.xml")
+        {
+            return Err("ZIP central directory does not identify an APK".to_owned());
+        }
+        Ok(Self {
+            archive_record_names,
+            local_header_signature_mismatches,
+        })
+    }
+}
+
 fn collect_rule_files(root: &Path, output: &mut Vec<PathBuf>) -> Result<(), String> {
     let entries =
         fs::read_dir(root).map_err(|error| format!("cannot read {}: {error}", root.display()))?;
@@ -1830,6 +1988,36 @@ fn install_dex_host(
             .map_err(|error| error.to_string())?;
         ctx.globals()
             .set("DEX", receiver)
+            .map_err(|error| error.to_string())
+    })?;
+    Ok(trace)
+}
+
+fn install_apk_host(
+    context: &Context,
+    apk_context: ApkRuleContext,
+) -> Result<Arc<ApkHostTrace>, String> {
+    let trace = Arc::new(ApkHostTrace::default());
+    let trace_for_context = Arc::clone(&trace);
+    context.with(|ctx| {
+        let receiver = Object::new(ctx.clone()).map_err(|error| error.to_string())?;
+        receiver
+            .set(
+                "isArchiveRecordPresent",
+                Function::new(ctx.clone(), move |query: String| {
+                    trace_for_context
+                        .is_archive_record_present_calls
+                        .fetch_add(1, Ordering::Relaxed);
+                    apk_context
+                        .archive_record_names
+                        .iter()
+                        .any(|value| value == &query)
+                })
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+        ctx.globals()
+            .set("APK", receiver)
             .map_err(|error| error.to_string())
     })?;
     Ok(trace)
@@ -4639,6 +4827,212 @@ fn verify_dex_rule(
     Ok(all_match)
 }
 
+fn verify_apk_rule(
+    rule_root: &Path,
+    fixture_path: &Path,
+    baseline_path: &Path,
+) -> Result<bool, String> {
+    let fixture_bytes = fs::read(fixture_path)
+        .map_err(|error| format!("cannot read {}: {error}", fixture_path.display()))?;
+    let baseline_bytes = fs::read(baseline_path)
+        .map_err(|error| format!("cannot read {}: {error}", baseline_path.display()))?;
+    if sha256_hex(&fixture_bytes) != APK_FIXTURE_SHA256 {
+        return Err(format!(
+            "fixed APK fixture hash mismatch: {}",
+            fixture_path.display()
+        ));
+    }
+    if sha256_hex(&baseline_bytes) != APK_QT5_BASELINE_SHA256 {
+        return Err(format!(
+            "fixed Qt5 APK baseline hash mismatch: {}",
+            baseline_path.display()
+        ));
+    }
+    let rule_path = rule_root.join(APK_RULE_SUFFIX);
+    let rule_source = fs::read(&rule_path)
+        .map_err(|error| format!("cannot read {}: {error}", rule_path.display()))?;
+    if rule_source.len() != APK_RULE_BYTES || sha256_hex(&rule_source) != APK_RULE_SHA256 {
+        return Err(format!("fixed APK rule mismatch: {}", rule_path.display()));
+    }
+    let fixture: Value = serde_json::from_slice(&fixture_bytes)
+        .map_err(|error| format!("cannot parse {}: {error}", fixture_path.display()))?;
+    let baseline: Value = serde_json::from_slice(&baseline_bytes)
+        .map_err(|error| format!("cannot parse {}: {error}", baseline_path.display()))?;
+    for (document_name, document) in [("fixture", &fixture), ("baseline", &baseline)] {
+        if document["upstream_commit"] != UPSTREAM_COMMIT
+            || document["xarchive_commit"] != XARCHIVE_COMMIT
+            || document["xscanengine_commit"] != XSCANENGINE_COMMIT
+            || document["rules_commit"] != RULES_COMMIT
+            || document["case_count"] != 3
+        {
+            return Err(format!("{document_name} APK metadata mismatch"));
+        }
+    }
+    if fixture["rule"]["path"] != APK_RULE_SUFFIX
+        || fixture["rule"]["sha256"] != APK_RULE_SHA256
+        || baseline["rule_path"] != format!("/opt/die-source/Detect-It-Easy/db/{APK_RULE_SUFFIX}")
+        || baseline["rule_sha256"] != APK_RULE_SHA256
+        || baseline["qt_version"] != "5.15.13"
+        || baseline["engine"] != "QScriptEngine"
+    {
+        return Err("fixed APK fixture/baseline contract mismatch".to_owned());
+    }
+    let fixture_cases = fixture["cases"]
+        .as_array()
+        .ok_or_else(|| "APK fixture cases are missing".to_owned())?;
+    let baseline_cases = baseline["cases"]
+        .as_array()
+        .ok_or_else(|| "Qt5 APK baseline cases are missing".to_owned())?;
+    if fixture_cases.len() != 3 || baseline_cases.len() != 3 {
+        return Err("fixed APK case count mismatch".to_owned());
+    }
+
+    let mut reports = Vec::with_capacity(fixture_cases.len());
+    let mut all_match = true;
+    for fixture_case in fixture_cases {
+        let id = fixture_case["id"]
+            .as_str()
+            .ok_or_else(|| "APK fixture case id is missing".to_owned())?;
+        let baseline_case = baseline_cases
+            .iter()
+            .find(|case| case["id"] == id)
+            .ok_or_else(|| format!("Qt5 APK baseline case is missing: {id}"))?;
+        for field in ["data_hex", "data_sha256"] {
+            if fixture_case[field] != baseline_case[field] {
+                return Err(format!("{id}: fixture and Qt5 {field} evidence differ"));
+            }
+        }
+        if baseline_case["parser_valid"] != true || baseline_case["apk_script_error"] != "" {
+            return Err(format!("{id}: Qt5 APK parser/script evidence is not valid"));
+        }
+        let data_hex = fixture_case["data_hex"]
+            .as_str()
+            .ok_or_else(|| format!("{id}: data_hex is missing"))?;
+        let data = decode_hex_string(data_hex, &format!("{id}.data_hex"))?;
+        if sha256_hex(&data) != fixture_case["data_sha256"] {
+            return Err(format!("{id}: decoded input hash mismatch"));
+        }
+        let apk_context = ApkRuleContext::parse(&data).map_err(|error| format!("{id}: {error}"))?;
+        let expected_names: Vec<String> =
+            serde_json::from_value(baseline_case["archive_record_names"].clone())
+                .map_err(|error| format!("{id}: invalid Qt5 archive record names: {error}"))?;
+        let expected_record_count = baseline_case["archive_record_count"]
+            .as_u64()
+            .and_then(|count| usize::try_from(count).ok())
+            .ok_or_else(|| format!("{id}: Qt5 archive record count is missing"))?;
+        let expected_native_present = baseline_case["native_qdbh_present"]
+            .as_bool()
+            .ok_or_else(|| format!("{id}: Qt5 native result is missing"))?;
+        let rust_native_present = apk_context
+            .archive_record_names
+            .iter()
+            .any(|value| value == "assets/qdbh");
+
+        let runtime = new_runtime()?;
+        let context = new_context(&runtime)?;
+        let detections = Arc::new(Mutex::new(Vec::new()));
+        install_nintendo_host(&context, Arc::new(data), Arc::clone(&detections))?;
+        let apk_trace = install_apk_host(&context, apk_context.clone())?;
+        eval_unit(&context, FORMAT_RESULT_SHIM)?;
+        let detect_result = eval_rule_lexical(&context, &rule_source, true)
+            .map_err(|error| format!("{id}: fixed APK rule failed: {error}"))?;
+        let actual_detections = detections
+            .lock()
+            .map_err(|_| "APK detection result mutex poisoned".to_owned())?
+            .clone();
+        let expected_detections: Vec<Detection> =
+            serde_json::from_value(baseline_case["detections"].clone())
+                .map_err(|error| format!("{id}: invalid Qt5 detections: {error}"))?;
+        let expected_detect_result = baseline_case["detect_result"]
+            .as_bool()
+            .ok_or_else(|| format!("{id}: Qt5 detect result is missing"))?;
+        let calls = apk_trace
+            .is_archive_record_present_calls
+            .load(Ordering::Relaxed);
+        let expected_local_mismatches = if id == "qdbh_local_records_truncated" {
+            2
+        } else {
+            0
+        };
+        let names_match = apk_context.archive_record_names == expected_names;
+        let record_count_matches = apk_context.archive_record_names.len() == expected_record_count;
+        let native_matches = rust_native_present == expected_native_present;
+        let matches = names_match
+            && record_count_matches
+            && native_matches
+            && apk_context.local_header_signature_mismatches == expected_local_mismatches
+            && detect_result == expected_detect_result.to_string()
+            && actual_detections == expected_detections
+            && calls == 1;
+        all_match &= matches;
+        reports.push(json!({
+            "id": id,
+            "input_sha256": fixture_case["data_sha256"],
+            "input_bytes": data_hex.len() / 2,
+            "parser_valid": true,
+            "archive_record_count": {
+                "qt5": expected_record_count,
+                "rust": apk_context.archive_record_names.len(),
+                "matches": record_count_matches,
+            },
+            "archive_record_names": {
+                "qt5": expected_names,
+                "rust": apk_context.archive_record_names,
+                "matches": names_match,
+            },
+            "native_qdbh_present": {
+                "qt5": expected_native_present,
+                "rust": rust_native_present,
+                "matches": native_matches,
+            },
+            "rust_local_header_signature_mismatches":
+                apk_context.local_header_signature_mismatches,
+            "detect_result": {
+                "qt5": expected_detect_result,
+                "rust": detect_result,
+            },
+            "detections": {
+                "qt5": expected_detections,
+                "rust": actual_detections,
+            },
+            "apk_is_archive_record_present_calls": calls,
+            "matches": matches,
+        }));
+    }
+    println!(
+        "{}",
+        serde_json::to_string_pretty(&json!({
+            "schema_version": 1,
+            "operation":
+                "byte-identical fixed APK rule with Rust ZIP context and APK.isArchiveRecordPresent",
+            "runtime": "rquickjs 0.12.1 / QuickJS-NG 0.15.1",
+            "upstream_commit": UPSTREAM_COMMIT,
+            "xarchive_commit": XARCHIVE_COMMIT,
+            "xscanengine_commit": XSCANENGINE_COMMIT,
+            "rules_commit": RULES_COMMIT,
+            "rule": {
+                "path": normalized_path(&rule_path),
+                "bytes": rule_source.len(),
+                "sha256": APK_RULE_SHA256,
+            },
+            "fixture": {
+                "path": normalized_path(fixture_path),
+                "sha256": APK_FIXTURE_SHA256,
+            },
+            "qt5_baseline": {
+                "path": normalized_path(baseline_path),
+                "sha256": APK_QT5_BASELINE_SHA256,
+            },
+            "case_count": reports.len(),
+            "matched_count": reports.iter().filter(|case| case["matches"] == true).count(),
+            "cases": reports,
+            "all_match": all_match,
+        }))
+        .map_err(|error| format!("cannot serialize APK rule report: {error}"))?
+    );
+    Ok(all_match)
+}
+
 fn upstream_type_priority(kind: &str) -> i32 {
     let normalized = kind.to_lowercase().replace(['~', '!'], "");
     match normalized.as_str() {
@@ -5659,7 +6053,9 @@ fn usage() -> ExitCode {
          diec-rquickjs-rule-runtime-spike verify-macho-rule \
          <main-rule-root> <macho-fixture-json> <qt5-baseline-json>\n       \
          diec-rquickjs-rule-runtime-spike verify-dex-rule \
-         <main-rule-root> <dex-fixture-json> <qt5-baseline-json>"
+         <main-rule-root> <dex-fixture-json> <qt5-baseline-json>\n       \
+         diec-rquickjs-rule-runtime-spike verify-apk-rule \
+         <main-rule-root> <apk-fixture-json> <qt5-baseline-json>"
     );
     ExitCode::from(2)
 }
@@ -5709,6 +6105,8 @@ fn main() -> ExitCode {
         verify_macho_rule(&roots[0], &roots[1], &roots[2])
     } else if command == "verify-dex-rule" && roots.len() == 3 {
         verify_dex_rule(&roots[0], &roots[1], &roots[2])
+    } else if command == "verify-apk-rule" && roots.len() == 3 {
+        verify_apk_rule(&roots[0], &roots[1], &roots[2])
     } else {
         return usage();
     };
@@ -5725,8 +6123,8 @@ fn main() -> ExitCode {
 #[cfg(test)]
 mod tests {
     use super::{
-        BinaryHostContext, BinaryStringContext, DexRuleContext, ElfRuleContext, HostFilePart,
-        MachoRuleContext, NINTENDO_COMPAT_DECLARATION, NINTENDO_RULE_BYTES,
+        ApkRuleContext, BinaryHostContext, BinaryStringContext, DexRuleContext, ElfRuleContext,
+        HostFilePart, MachoRuleContext, NINTENDO_COMPAT_DECLARATION, NINTENDO_RULE_BYTES,
         NINTENDO_VAR_DECLARATION, PeRuleContext, TextUnicodeType, apply_compatibility_overlay,
         apply_exact_lifecycle_overlay, collect_rule_files, elf_matcher_map_projection,
         eval_rule_lexical, eval_string, eval_unit, install_diagnostic_host_fallbacks,
@@ -6092,6 +6490,88 @@ mod tests {
             DexRuleContext::parse(&unterminated_uleb128)
                 .expect_err("unterminated ULEB128 must fail")
                 .contains("ULEB128")
+        );
+    }
+
+    #[test]
+    fn apk_context_matches_fixed_qt5_records_case_and_local_truncation() {
+        let baseline: serde_json::Value = serde_json::from_str(include_str!(
+            "../../../docs/research/data/apk-rule-qt5.json"
+        ))
+        .expect("fixed Qt5 APK rule baseline should be valid JSON");
+        let cases = baseline["cases"]
+            .as_array()
+            .expect("fixed Qt5 APK baseline should have cases");
+        assert_eq!(cases.len(), 3);
+        for case in cases {
+            assert_eq!(case["parser_valid"], true);
+            let id = case["id"].as_str().expect("case should have an id");
+            let data = decode_hex(case["data_hex"].as_str().expect("case should contain data"));
+            let context = ApkRuleContext::parse(&data)
+                .unwrap_or_else(|error| panic!("{id}: APK context should parse: {error}"));
+            let expected_names: Vec<String> =
+                serde_json::from_value(case["archive_record_names"].clone())
+                    .expect("Qt5 archive record names should deserialize");
+            assert_eq!(context.archive_record_names, expected_names);
+            assert_eq!(
+                context
+                    .archive_record_names
+                    .iter()
+                    .any(|value| value == "assets/qdbh"),
+                case["native_qdbh_present"].as_bool().unwrap()
+            );
+            assert_eq!(
+                context.local_header_signature_mismatches,
+                if id == "qdbh_local_records_truncated" {
+                    2
+                } else {
+                    0
+                }
+            );
+        }
+    }
+
+    #[test]
+    fn apk_context_rejects_malformed_central_ranges_and_non_apk() {
+        assert!(ApkRuleContext::parse(&[]).is_err());
+        let baseline: serde_json::Value = serde_json::from_str(include_str!(
+            "../../../docs/research/data/apk-rule-qt5.json"
+        ))
+        .expect("fixed Qt5 APK rule baseline should be valid JSON");
+        let data = decode_hex(
+            baseline["cases"][0]["data_hex"]
+                .as_str()
+                .expect("APK case should contain data"),
+        );
+        let eocd = data.len() - 22;
+        let central_offset =
+            u32::from_le_bytes(data[eocd + 16..eocd + 20].try_into().unwrap()) as usize;
+
+        let mut invalid_signature = data.clone();
+        invalid_signature[0..4].fill(0);
+        assert!(
+            ApkRuleContext::parse(&invalid_signature)
+                .expect_err("invalid leading ZIP signature must fail")
+                .contains("signature")
+        );
+
+        let mut oversized_name = data.clone();
+        oversized_name[central_offset + 28..central_offset + 30]
+            .copy_from_slice(&u16::MAX.to_le_bytes());
+        assert!(
+            ApkRuleContext::parse(&oversized_name)
+                .expect_err("oversized central name must fail")
+                .contains("truncated")
+        );
+
+        let mut non_apk = data;
+        let class_name = non_apk[central_offset + 46..central_offset + 57].to_vec();
+        assert_eq!(class_name, b"classes.dex");
+        non_apk[central_offset + 46..central_offset + 57].copy_from_slice(b"not-app.bin");
+        assert!(
+            ApkRuleContext::parse(&non_apk)
+                .expect_err("ZIP without APK marker must fail")
+                .contains("does not identify an APK")
         );
     }
 

@@ -131,5 +131,5 @@ HostApi 调用数全部一致才退出 0。本次 `matched_count = 3`、
   其他 `DEX`/继承 HostApi。
 - 未覆盖 APK/ZIP 调度、`classes.dex` 嵌套 identity、Qt 6 和跨平台 oracle。
 
-ADR 0006 仍为 Proposed，R-001 仍为 Open；DEX 代表规则已经闭合，但 APK、
+ADR 0006 仍为 Proposed，R-001 仍为 Open；DEX 与 APK 代表规则已经分别闭合，
 Archive 和 PDF 代表规则仍未闭合。

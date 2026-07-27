@@ -917,6 +917,69 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
             1,
         )
 
+    def test_apk_rule_differential_binds_real_context_and_qt5_oracle(self):
+        differential = self.reference["apk_rule_differential"]
+        oracle = differential["oracle"]
+        for path_field, hash_field in (
+            ("baseline", "baseline_sha256"),
+            ("dockerfile", "dockerfile_sha256"),
+            ("fixture", "fixture_sha256"),
+            ("fixture_generator", "fixture_generator_sha256"),
+            ("harness_source", "harness_source_sha256"),
+            ("probe", "probe_sha256"),
+        ):
+            path = ROOT / oracle[path_field]
+            with self.subTest(path=path_field):
+                self.assertEqual(
+                    hashlib.sha256(path.read_bytes()).hexdigest(),
+                    oracle[hash_field],
+                )
+        rule = oracle["rule_source"]
+        rule_path = ROOT / rule["path"]
+        self.assertEqual(rule_path.stat().st_size, rule["bytes"])
+        self.assertEqual(
+            hashlib.sha256(rule_path.read_bytes()).hexdigest(),
+            rule["sha256"],
+        )
+        fixture = json.loads(
+            (ROOT / oracle["fixture"]).read_text(encoding="utf-8")
+        )
+        baseline = json.loads(
+            (ROOT / oracle["baseline"]).read_text(encoding="utf-8")
+        )
+        self.assertEqual(fixture["case_count"], 3)
+        self.assertEqual(baseline["case_count"], 3)
+        self.assertEqual(
+            [case["archive_record_names"] for case in baseline["cases"]],
+            [
+                ["classes.dex", "assets/qdbh"],
+                ["classes.dex", "assets/QDBH"],
+                ["classes.dex", "assets/qdbh"],
+            ],
+        )
+        self.assertTrue(oracle["probe_passed"])
+        self.assertEqual(oracle["qt_version"], "5.15.13")
+        self.assertEqual(oracle["engine"], "QScriptEngine")
+        self.assertEqual(
+            oracle["xarchive_commit"],
+            "0fcd4e8d3e9933baac3b12246d82ac026557ffd0",
+        )
+        self.assertEqual(differential["rust"]["matched_count"], 3)
+        self.assertEqual(
+            differential["rust"]["is_archive_record_present_call_count"],
+            3,
+        )
+        self.assertEqual(
+            differential["coverage"]["record_name_list_match_count"],
+            3,
+        )
+        self.assertEqual(
+            differential["coverage"][
+                "rust_local_header_signature_mismatch_count"
+            ],
+            2,
+        )
+
     def test_binary_lifecycle_uses_fixed_order_and_exact_overlays(self):
         lifecycle = self.reference["binary_lifecycle"]
         self.assertEqual(lifecycle["files"], 292)

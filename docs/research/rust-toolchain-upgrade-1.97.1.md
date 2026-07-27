@@ -117,11 +117,11 @@ callback panic；4 MiB heap OOM 后同一 context 也恢复执行。语料 oracl
 更新；两套 release 构建的语料 oracle 都得到 4088/4088 次 `detect` 成功、
 0 fallback 和 14/14 baseline 匹配。该变化不改变独立的 native static-link
 consumer。随后依次增加真实 PE32/Cygwin32、ELF32/ELF64/Burneye、
-Mach-O64 x86_64/arm64 Rust compiler 和 DEX035/QDBH 规则差分；当前 source
-SHA-256 为
-`36af07d3e9b710164230364152db6e1ccecc6cfb346bd1233b6facf4d8837497`。
-两套工具链均通过 32 项测试，release 差分分别为 3/3、6/6、4/4 和 3/3，且
-未新增 Cargo 依赖。
+Mach-O64 x86_64/arm64 Rust compiler、DEX035/QDBH 和 APK/ZIP QDBH
+规则差分；当前 source SHA-256 为
+`139d9f3fda2064e694c2eb5549c59ec27412243e42d11456ab123494f86c1f3c`。
+两套工具链均通过 34 项测试，release 差分分别为 3/3、6/6、4/4、3/3 和
+3/3，且未新增 Cargo 依赖。
 
 ## 5. Native static-link 结果
 

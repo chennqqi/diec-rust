@@ -855,6 +855,11 @@ cargo +1.88.0 run --release --locked -- verify-dex-rule \
   ../../upstream/Detect-It-Easy/db \
   ../../docs/research/data/dex-rule-fixture.json \
   ../../docs/research/data/dex-rule-qt5.json
+
+cargo +1.88.0 run --release --locked -- verify-apk-rule \
+  ../../upstream/Detect-It-Easy/db \
+  ../../docs/research/data/apk-rule-fixture.json \
+  ../../docs/research/data/apk-rule-qt5.json
 ```
 
 `fixture`、`eval-isolated-compat`、`eval-binary-lifecycle`、两个 lexical
@@ -902,7 +907,12 @@ JSON。运行前先执行
   `DEX.isDexStringPresent` 和原样 QDBH 规则完成 positive/negative/EOF 截断
   3/3；map、解析字符串、native boolean 和完整 tuple 均一致，证据见
   [`dex-rule-runtime-differential.md`](dex-rule-runtime-differential.md)。
-  四者仍不覆盖其余 PE/ELF/Mach-O/DEX HostApi、PE32+、MUTF-8 或其他格式。
+  第五个分支使用真实 APK/ZIP central-directory context、native
+  `APK.isArchiveRecordPresent` 和原样 QDBH 规则完成 3/3；大小写反例不命中，
+  local records 全部缺失而 central names 保留时仍命中，证据见
+  [`apk-rule-runtime-differential.md`](apk-rule-runtime-differential.md)。
+  五者仍不覆盖其余 PE/ELF/Mach-O/DEX/APK HostApi、PE32+、MUTF-8、
+  decompression 或其他格式。
 - 规则侧已清点 429 个第一层宿主 receiver/method 和 464 个 arity 形状；
   337 个 C++ slot 与 13 个脚本扩展静态覆盖 460 个形状。共享 Qt 5/Qt 6
   QObject 探针已闭合三个额外实参形状和缺失 `PE.getEPSignature` 的

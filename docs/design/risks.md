@@ -156,8 +156,11 @@ baseline 的变更都要检查本表。
   DEX035 string-table context、native `DEX.isDexStringPresent` 和 273-byte
   原样 QDBH 规则，在 positive/negative/string-data-at-EOF 上完成 Qt5 差分
   3/3；map、解析字符串、native boolean 和完整 tuple 均一致，并记录一个
-  out-of-bounds string offset。ADR 0006 要求的其余 HostApi 和
-  APK/Archive/PDF 代表规则仍缺，因而 R-001 继续 Open。
+  out-of-bounds string offset。第五个闭环使用真实 Rust APK/ZIP
+  central-directory context、native `APK.isArchiveRecordPresent` 和 283-byte
+  原样 QDBH 规则完成 3/3；大小写敏感行为一致，两个 local records 均缺失但
+  central names 保留时仍命中。ADR 0006 要求的其余 HostApi 和 Archive/PDF
+  代表规则仍缺，因而 R-001 继续 Open。
   固定 signature AST inventory 随后解析 `db`/`db_extra`
   2175/2175，保存 5968 个具名 signature API 调用点和 5628 个静态 pattern，
   覆盖动态 317/317；四个保守动态参数中的 `byteCode` 又已闭合为 97 个唯一
