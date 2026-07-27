@@ -13,6 +13,8 @@ Phase 0 计划形成：
 - [`c-abi.md`](c-abi.md)：C ABI、所有权、线程安全和静态链接（Draft）。
 - [`testing.md`](testing.md)：语料、oracle、差分、fuzz、benchmark 和 CI（Draft）。
 - [`risks.md`](risks.md)：Phase 0 风险、触发条件、缓解和关闭证据（Draft）。
+- [`phase-0-gate-review.md`](phase-0-gate-review.md)：Phase 0 退出条件、阻塞项及
+  关闭证据的审计总账（In Review）。
 - [`upstream-sync.md`](upstream-sync.md)：DIE-engine subtree 和组件锁定策略（Accepted）。
 - [`decisions/`](decisions/)：重大决策的 ADR。
 

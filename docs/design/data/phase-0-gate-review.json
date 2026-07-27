@@ -1,0 +1,202 @@
+{
+  "schema_version": 1,
+  "evaluated_on": "2026-07-27",
+  "phase": 0,
+  "result": "not_ready",
+  "roadmap_status": "IN PROGRESS",
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "required_research_deliverables": [
+    {
+      "id": "P0-RES-001",
+      "path": "docs/research/upstream-baseline.md",
+      "document_status": "Draft",
+      "gate_status": "review_pending"
+    },
+    {
+      "id": "P0-RES-002",
+      "path": "docs/research/capability-matrix.md",
+      "document_status": "Draft",
+      "gate_status": "evidence_incomplete"
+    },
+    {
+      "id": "P0-RES-003",
+      "path": "docs/research/source-analysis.md",
+      "document_status": "Draft",
+      "gate_status": "review_pending"
+    },
+    {
+      "id": "P0-RES-004",
+      "path": "docs/research/rule-compatibility.md",
+      "document_status": "Draft",
+      "gate_status": "review_pending"
+    },
+    {
+      "id": "P0-RES-005",
+      "path": "docs/research/behavior-baseline.md",
+      "document_status": "Draft",
+      "gate_status": "evidence_incomplete"
+    }
+  ],
+  "required_design_deliverables": [
+    {
+      "id": "P0-DES-001",
+      "path": "docs/design/architecture.md",
+      "document_status": "Draft",
+      "gate_status": "review_pending"
+    },
+    {
+      "id": "P0-DES-002",
+      "path": "docs/design/api.md",
+      "document_status": "Draft",
+      "gate_status": "review_pending"
+    },
+    {
+      "id": "P0-DES-003",
+      "path": "docs/design/c-abi.md",
+      "document_status": "Draft",
+      "gate_status": "review_pending"
+    },
+    {
+      "id": "P0-DES-004",
+      "path": "docs/design/testing.md",
+      "document_status": "Draft",
+      "gate_status": "review_pending"
+    },
+    {
+      "id": "P0-DES-005",
+      "path": "docs/design/risks.md",
+      "document_status": "Draft",
+      "gate_status": "review_pending"
+    }
+  ],
+  "technical_validations": [
+    {
+      "id": "P0-SPIKE-001",
+      "name": "rule_runtime",
+      "gate_status": "evidence_available",
+      "evidence": [
+        "docs/research/rquickjs-rule-runtime-spike.md",
+        "docs/design/decisions/0006-rquickjs-rule-runtime.md"
+      ],
+      "limitation": "runtime ADR is Proposed and its full acceptance conditions are not met"
+    },
+    {
+      "id": "P0-SPIKE-002",
+      "name": "c_static_link",
+      "gate_status": "evidence_available",
+      "evidence": [
+        "docs/research/c-static-link-spike.md",
+        "docs/design/c-abi.md"
+      ],
+      "limitation": "the first Windows/Linux x64 spike is not the final cross-platform ABI"
+    },
+    {
+      "id": "P0-SPIKE-003",
+      "name": "upstream_oracle",
+      "gate_status": "evidence_available",
+      "evidence": [
+        "docs/research/upstream-build-baseline.md",
+        "docs/research/behavior-baseline.md"
+      ],
+      "limitation": "the reproducible oracle is Linux-only"
+    }
+  ],
+  "exit_conditions": [
+    {
+      "id": "P0-EXIT-001",
+      "requirement": "capability matrix items have source or repeatable experimental evidence",
+      "status": "not_ready",
+      "blockers": [
+        "P0-BLOCK-005"
+      ]
+    },
+    {
+      "id": "P0-EXIT-002",
+      "requirement": "baseline corpus covers major formats and representative rule syntax",
+      "status": "not_ready",
+      "blockers": [
+        "P0-BLOCK-005"
+      ]
+    },
+    {
+      "id": "P0-EXIT-003",
+      "requirement": "three technical validations have evidence or a documented alternative",
+      "status": "ready_for_review",
+      "blockers": []
+    },
+    {
+      "id": "P0-EXIT-004",
+      "requirement": "architecture, rule runtime, ABI, and testing designs are reviewed",
+      "status": "not_ready",
+      "blockers": [
+        "P0-BLOCK-002",
+        "P0-BLOCK-003",
+        "P0-BLOCK-004"
+      ]
+    },
+    {
+      "id": "P0-EXIT-005",
+      "requirement": "risk register is complete",
+      "status": "ready_for_review",
+      "blockers": []
+    },
+    {
+      "id": "P0-EXIT-006",
+      "requirement": "later phases have measurable completion conditions",
+      "status": "ready_for_review",
+      "blockers": []
+    },
+    {
+      "id": "P0-EXIT-007",
+      "requirement": "performance baseline and resource targets are answered",
+      "status": "not_ready",
+      "blockers": [
+        "P0-BLOCK-006"
+      ]
+    }
+  ],
+  "blockers": [
+    {
+      "id": "P0-BLOCK-001",
+      "title": "capability matrix lacks stable CAP IDs and machine traceability",
+      "owner": "compatibility",
+      "status": "closed",
+      "closure_evidence": "docs/research/data/capability-traceability.json and tools/tests/test_capability_traceability.py bind all 68 CAP IDs to pinned source or repeatable experiments"
+    },
+    {
+      "id": "P0-BLOCK-002",
+      "title": "five required design documents remain Draft",
+      "owner": "architecture",
+      "status": "open",
+      "closure_evidence": "recorded review disposition for architecture, API, C ABI, testing, and risks"
+    },
+    {
+      "id": "P0-BLOCK-003",
+      "title": "ten active ADRs remain Proposed",
+      "owner": "architecture",
+      "status": "open",
+      "closure_evidence": "each active ADR is Accepted, Rejected, or Superseded with review evidence"
+    },
+    {
+      "id": "P0-BLOCK-004",
+      "title": "rule and bundled distribution license closure is incomplete",
+      "owner": "release",
+      "status": "open",
+      "closure_evidence": "reviewed rules/runtime/source distribution license and attribution report with no unclassified release inputs"
+    },
+    {
+      "id": "P0-BLOCK-005",
+      "title": "Windows/macOS oracle and remaining capability corpus coverage are incomplete",
+      "owner": "compatibility",
+      "status": "open",
+      "closure_evidence": "pinned reproducible platform baselines and a capability coverage report with no missing Phase 0 rows"
+    },
+    {
+      "id": "P0-BLOCK-006",
+      "title": "performance baseline, benchmark environment, and resource targets are not frozen",
+      "owner": "performance",
+      "status": "open",
+      "closure_evidence": "reviewed benchmark identity, baseline report, and measurable latency, memory, size, and resource-limit targets"
+    }
+  ]
+}
