@@ -13,6 +13,8 @@ Phase 0 计划形成：
   Qt5 source-only 能力的缺失证据、fixture、harness、强断言和关闭方式（Draft）。
 - [`legacy-dispatch-oracle.md`](legacy-dispatch-oracle.md)：Amiga Hunk/Atari ST
   的固定源码边界、8-case 生成语料和双 Qt5 oracle 执行门禁（Draft）。
+- [`dos-dispatch-reachability.md`](dos-dispatch-reachability.md)：DOS/COM 七个
+  公共 detector 成员与 BW DOS16M branch-only 路径的固定源码审计（Draft）。
 - [`source-analysis.md`](source-analysis.md)：模块关系及扫描/规则调用链（Draft）。
 - [`rule-compatibility.md`](rule-compatibility.md)：规则语法、内建函数和宿主 API（Draft）。
 - [`rule-runtime-spike.md`](rule-runtime-spike.md)：Boa 全库解析、真实复杂规则、宿主绑定和资源限制验证（Draft）。
@@ -78,6 +80,9 @@ Phase 0 计划形成：
   source-only 行严格相等的可执行关闭清单。
 - [`data/legacy-dispatch-corpus.json`](data/legacy-dispatch-corpus.json)：
   Amiga Hunk/Atari ST 正例、截断、错误端序和近似 magic 控制的 hash-bound 清单。
+- [`data/dos-dispatch-source-audit.json`](data/dos-dispatch-source-audit.json)：
+  DOS/COM detector、BW legacy magic、scanner 分支和 property bypass 的
+  SHA/line-bound 审计。
 - [`data/path-corpus.json`](data/path-corpus.json)：由基线字节组成的确定性嵌套目录树。
 - [`data/database-fixture.json`](data/database-fixture.json)：项目生成的数据库成功/故障 fixture。
 - [`data/database-archive-linux-qt5.json`](data/database-archive-linux-qt5.json)：两套固定 Qt5 oracle 的 17-case ZIP 数据库矩阵及两侧原始 stream。

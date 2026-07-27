@@ -1,0 +1,121 @@
+{
+  "component_commits": {
+    "Formats": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+    "XScanEngine": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+  },
+  "facts": {
+    "absence_counts": {
+      "xformats_bw_filetype_tokens": 0,
+      "xformats_filetypes_property_setters": 0,
+      "xscanengine_bw_database_path_tokens": 0,
+      "xscanengine_filetypes_property_setters": 0
+    },
+    "automatically_detected_family_members": [
+      "MSDOS",
+      "NE",
+      "LE",
+      "LX",
+      "DOS16M",
+      "DOS4G",
+      "COM"
+    ],
+    "branch_without_public_detector": [
+      "BW DOS16M"
+    ],
+    "closure_requirement": "seven-member CLI oracle plus BW forced-property harness or reviewed scope disposition",
+    "external_filetypes_property_can_bypass_detection": true,
+    "legacy_xbinary_detector_contains_bw_signature": true,
+    "public_detector": "XFormats::getFileTypes"
+  },
+  "failures": [],
+  "image": "diec-rust/upstream-oracle:74eaf505-repro",
+  "passed": true,
+  "schema_version": 1,
+  "sources": {
+    "xbinary": {
+      "occurrences": {
+        "legacy_bw_insert": [
+          {
+            "line": 9183,
+            "text": "stResult.insert(FT_BWDOS16M);"
+          }
+        ],
+        "legacy_bw_signature": [
+          {
+            "line": 9182,
+            "text": "} else if (compareSignature(&memoryMap, \"'BW'....00..00000000\", 0)) {"
+          }
+        ]
+      },
+      "path": "/opt/die-source/Formats/xbinary.cpp",
+      "sha256": "d82bd21326bb7ba07eb343020d50af0ae2cf7e8e534d8e08d07ffa8129913c34"
+    },
+    "xformats": {
+      "occurrences": {
+        "com_detector": [
+          {
+            "line": 1827,
+            "text": "if (XCOM::isValid(pDevice, false, -1, pPdStruct)) {"
+          }
+        ],
+        "dos16_dos4g_detector": [
+          {
+            "line": 1556,
+            "text": "if (XDOS16::isValid(pDevice, pPdStruct)) {"
+          }
+        ],
+        "filetypes_property_reader": [
+          {
+            "line": 1527,
+            "text": "QString sFileTypes = pDevice->property(\"filetypes\").toString();"
+          }
+        ],
+        "le_lx_detector": [
+          {
+            "line": 1546,
+            "text": "} else if (XLE::isValid(pDevice, false, -1, pPdStruct)) {"
+          }
+        ],
+        "msdos_detector": [
+          {
+            "line": 1533,
+            "text": "if (XMSDOS::isValid(pDevice, false, -1, pPdStruct)) {"
+          }
+        ],
+        "ne_detector": [
+          {
+            "line": 1544,
+            "text": "} else if (XNE::isValid(pDevice, false, -1, pPdStruct)) {"
+          }
+        ]
+      },
+      "path": "/opt/die-source/Formats/xformats.cpp",
+      "sha256": "674eba0046eb6cc947e547d1ac0b93ac695cbb30f68e11f135e5551d81e0b115"
+    },
+    "xscanengine": {
+      "occurrences": {
+        "active_detector_call": [
+          {
+            "line": 2650,
+            "text": "QSet<XBinary::FT> stFT = XFormats::getFileTypes(_pDevice, true, pPdStruct);"
+          }
+        ],
+        "bw_dispatch_branch": [
+          {
+            "line": 2739,
+            "text": "} else if (stFT.contains(XBinary::FT_BWDOS16M)) {"
+          }
+        ],
+        "bw_process_detect": [
+          {
+            "line": 2740,
+            "text": "_processDetect(&scanIdMain, pScanResult, _pDevice, parentId, XBinary::FT_BWDOS16M, pScanOptions, true, pPdStruct);"
+          }
+        ]
+      },
+      "path": "/opt/die-source/XScanEngine/xscanengine.cpp",
+      "sha256": "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498"
+    }
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

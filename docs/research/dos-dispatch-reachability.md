@@ -1,0 +1,87 @@
+# DOS/COM 分发可达性
+
+Status: Draft
+
+Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
+
+Formats: `horsicq/Formats@1151e7254fdee3c0294ff7095edbdd7bfccf8201`
+
+XScanEngine: `horsicq/XScanEngine@dfe4a419e4f491bb23688ba03c5a5bf39e34da83`
+
+Last updated: 2026-07-27
+
+## 1. 结论
+
+`CAP-DISPATCH-002` 不能按“八个文件均由 CLI 自动识别”关闭。固定版本实际分成：
+
+- 公共 `XFormats::getFileTypes` 自动检测的七项：MSDOS、NE、LE、LX、DOS16M、
+  DOS4G、COM；
+- `XScanEngine::scanProcess` 有分支、但公共 detector 不产生的
+  `BW DOS16M`。
+
+BW DOS16M 的 magic 检测仍存在于旧 `XBinary::getFileTypes`，但活动扫描路径调用
+的是 `XFormats::getFileTypes`。`XFormats` 支持读取外部设置的 QIODevice
+`filetypes` property，因此 private/engine harness 可以强制到达 BW 分支；普通
+文件 CLI 不会设置该 property。
+
+因此关闭路径必须拆分：七项用生成文件跑双 CLI oracle；BW 用显式 property
+harness，或者通过 review 明确排除这个不可从本项目 CLI/FFI 表达的内部入口。
+
+## 2. 可重复源码审计
+
+机器证据：
+[`dos-dispatch-source-audit.json`](data/dos-dispatch-source-audit.json)
+
+生成/复核工具：
+[`probe_dos_dispatch_source_audit.py`](../../tools/upstream/probe_dos_dispatch_source_audit.py)
+
+审计绑定三份固定源码的 SHA-256 和精确行号：
+
+- `Formats/xformats.cpp`：活动 detector、七项 parser 入口和 property reader；
+- `Formats/xbinary.cpp`：旧 BW signature 与 `FT_BWDOS16M` insert；
+- `XScanEngine/xscanengine.cpp`：活动 detector 调用与 BW dispatch branch。
+
+审计还要求以下计数严格为零：
+
+- `xformats.cpp` 中的 `FT_BWDOS16M` token；
+- `xformats.cpp`/`xscanengine.cpp` 内部对 `filetypes` property 的 setter；
+- `xscanengine.cpp` 中的 `"BW DOS16M"` database-path token。
+
+这是一项固定源码的负向结论；任意上游同步改变 token、行号或文件 hash 都会使
+审计失败并要求重新研究。
+
+Docker oracle 可用时复核：
+
+```text
+python tools/upstream/probe_dos_dispatch_source_audit.py \
+  --image diec-rust/upstream-oracle:74eaf505-repro \
+  --baseline docs/research/data/dos-dispatch-source-audit.json
+```
+
+## 3. 七个公共成员的格式边界
+
+固定 parser 源码给出首批生成条件：
+
+- COM：`XCOM::isValid` 只要求大小不超过 `0x10000 - 0x100`，但
+  `XFormats` 还要求文件后缀为 `.COM`；
+- MSDOS：首个 little-endian word 为 `MZ` 或 `ZM`；
+- NE：MZ、有效正 `e_lfanew`，目标处为 `NE`；
+- LE/LX：MZ、有效正 `e_lfanew`，目标处分别为 `LE\0\0`/`LX\0\0`；
+- DOS16M/DOS4G：`XDOS16` 要求文件大于 1024 bytes，根 MZ 的页尾指向 `BW`
+  header，再由嵌套 MZ 的 NE 或 LE/LX signature 区分 16M 与 4G。
+
+既有 signature parser 语料已经包含 COM、MSDOS 的 parser-derived memory map
+正例，但没有覆盖 diec 顶层分发；它们只能复用字节构造，不能直接提升本能力。
+
+## 4. 后续实验
+
+下一步生成七个公共正例及成对控制：
+
+- MZ/ZM、`e_lfanew`、NE/LE/LX magic 的截断和近似值；
+- DOS16M/DOS4G 的 1024-byte 边界、BW chain 和嵌套 signature；
+- COM 的后缀与 65280/65281-byte 大小边界。
+
+双 CLI oracle 必须保留原始 stdout/stderr、退出码、输入长度和 SHA-256，并断言
+每个正例进入精确 filetype、控制不借用相邻 DOS family 分支。BW property
+harness 必须单独保留强制前后的对照；在该实验或 scope review 完成前，
+`CAP-DISPATCH-002` 保持 source-only。

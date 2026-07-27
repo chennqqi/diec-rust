@@ -25,22 +25,24 @@
     },
     {
       "acceptance": "all assertions pass against the pinned upstream identity and the capability becomes runtime-observed or receives an explicit reviewed scope disposition",
-      "closure_kind": "generated_format_oracle",
+      "closure_kind": "generated_format_oracle_plus_scope_review",
       "current_status": "source_only_runtime_corpus_missing",
       "evidence_set": "dispatch_source",
       "id": "CAP-DISPATCH-002",
       "missing_evidence": [
-        "MS-DOS, NE, LE, LX, DOS16M, DOS4G, BW DOS16M, and COM lack runtime cases"
+        "MS-DOS, NE, LE, LX, DOS16M, DOS4G, and COM lack runtime cases",
+        "BW DOS16M has a scanner branch but no public XFormats detector or database loader at the pinned commit"
       ],
       "name": "DOS and COM dispatch",
       "proposed_experiment": {
         "assertions": [
-          "each family member reaches its exact upstream filetype",
+          "seven publicly detected members reach their exact upstream filetype",
           "truncated and near-magic controls do not borrow adjacent dispatch",
+          "BW branch reachability is tested through an explicit filetypes-property harness or excluded by reviewed scope",
           "raw stdout, stderr, exit code, size, and SHA-256 are retained"
         ],
-        "fixture": "deterministic minimal DOS/COM family corpus",
-        "harness": "pinned qmake/CMake CLI oracle comparator",
+        "fixture": "deterministic seven-member public DOS/COM corpus plus docs/research/data/dos-dispatch-source-audit.json",
+        "harness": "pinned qmake/CMake CLI comparator plus BW forced-property harness or reviewed scope disposition",
         "platform": "linux-x86_64-qt5"
       }
     },
@@ -234,7 +236,8 @@
     "closure_kind_counts": {
       "bounded_escalation_and_adr": 1,
       "engine_result_harness_extension": 4,
-      "generated_format_oracle": 2,
+      "generated_format_oracle": 1,
+      "generated_format_oracle_plus_scope_review": 1,
       "nested_result_harness_extension": 1,
       "paired_negative_nested_oracle": 1,
       "scope_review_or_private_harness": 1

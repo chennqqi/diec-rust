@@ -23,7 +23,7 @@ Linux Qt5 source-only 能力。本文不把源码证据提升为 runtime compati
 | 能力 | 关闭类型 | 关键缺口 |
 | --- | --- | --- |
 | `CAP-RULE-007` | scope review / private harness | 公共 API 不可传非空 signature path，private comparator 未运行 |
-| `CAP-DISPATCH-002` | generated format oracle | DOS/COM 八个成员无 runtime corpus |
+| `CAP-DISPATCH-002` | generated oracle + scope review | 七个公共 detector 成员缺 runtime；BW 只有不可自动到达的分支 |
 | `CAP-DISPATCH-003` | generated format oracle | fixture/probe 已就绪；固定 Qt5 oracle 尚未执行 |
 | `CAP-NEST-007` | paired negative nested oracle | 缺“直接可检测、递归不分派”的同输入正负控制 |
 | `CAP-NEST-009` | bounded escalation + ADR | 缺深度/总展开量递增实验和 Rust 有界偏离决策 |
@@ -52,6 +52,16 @@ Linux Qt5 source-only 能力。本文不把源码证据提升为 runtime compati
 DOS/COM 和 Amiga/Atari 必须为每个矩阵成员提供项目生成、hash-bound 的正例，
 同时提供截断、近似 magic 或错误端序控制。所有 case 在固定 qmake/CMake oracle
 上保存原始 stdout/stderr、退出码、大小和 SHA-256。
+
+固定源码审计
+[`dos-dispatch-source-audit.json`](data/dos-dispatch-source-audit.json) 纠正了
+DOS/COM 的原始关闭假设。`scanProcess()` 的活动 detector 是
+`XFormats::getFileTypes`；它能自动产生 MSDOS、NE、LE、LX、DOS16M、DOS4G 和
+COM，却没有 `FT_BWDOS16M` token。BW magic 只留在旧
+`XBinary::getFileTypes`，而 scanner 仍保留 BW 分支，且 device 的外部
+`filetypes` property 可以绕过 detector。因此七个公共成员走 CLI oracle；BW
+必须由显式 property harness 验证，或经 scope review 排除，不能伪造为第八个
+CLI 正例。
 
 `CAP-DISPATCH-003` 已具备
 [`legacy-dispatch-corpus.json`](data/legacy-dispatch-corpus.json) 对应的 8-case

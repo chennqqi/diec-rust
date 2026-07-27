@@ -31,15 +31,29 @@ CATALOG: dict[str, dict[str, Any]] = {
         ],
     },
     "CAP-DISPATCH-002": {
-        "closure_kind": "generated_format_oracle",
+        "closure_kind": "generated_format_oracle_plus_scope_review",
         "missing_evidence": [
-            "MS-DOS, NE, LE, LX, DOS16M, DOS4G, BW DOS16M, and COM lack runtime cases"
+            "MS-DOS, NE, LE, LX, DOS16M, DOS4G, and COM lack runtime cases",
+            (
+                "BW DOS16M has a scanner branch but no public XFormats "
+                "detector or database loader at the pinned commit"
+            ),
         ],
-        "fixture": "deterministic minimal DOS/COM family corpus",
-        "harness": "pinned qmake/CMake CLI oracle comparator",
+        "fixture": (
+            "deterministic seven-member public DOS/COM corpus plus "
+            "docs/research/data/dos-dispatch-source-audit.json"
+        ),
+        "harness": (
+            "pinned qmake/CMake CLI comparator plus BW forced-property "
+            "harness or reviewed scope disposition"
+        ),
         "assertions": [
-            "each family member reaches its exact upstream filetype",
+            "seven publicly detected members reach their exact upstream filetype",
             "truncated and near-magic controls do not borrow adjacent dispatch",
+            (
+                "BW branch reachability is tested through an explicit "
+                "filetypes-property harness or excluded by reviewed scope"
+            ),
             "raw stdout, stderr, exit code, size, and SHA-256 are retained",
         ],
     },
