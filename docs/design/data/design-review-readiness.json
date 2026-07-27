@@ -84,8 +84,8 @@
       ],
       "blocking_items": [
         "ADR 0004 remains Proposed",
-        "10 Linux source-only capabilities, 30 named corpus-gap rows, and Windows/macOS/complete Qt6 oracles remain open",
-        "upstream benchmark baseline, noise, limits, and release integration are incomplete"
+        "30 named corpus-gap rows and Windows/macOS/complete Qt6 oracles remain open",
+        "Rust-paired/cold/cross-platform benchmark, deployment size, reviewed limits, and release integration are incomplete"
       ]
     },
     {

@@ -1,0 +1,43 @@
+ARG BASE_IMAGE=diec-rust/upstream-oracle-cmake:74eaf505
+FROM ${BASE_IMAGE}
+
+COPY upstream/upstream_benchmark_harness_main.cpp \
+    /tmp/upstream_benchmark_harness_main.cpp
+COPY benchmark/run_process_benchmark.py \
+    /opt/diec-benchmark/run_process_benchmark.py
+COPY corpus/generate_baseline_corpus.py \
+    /opt/diec-benchmark/generate_baseline_corpus.py
+COPY corpus/generate_archive_limit_fixture.py \
+    /opt/diec-benchmark/generate_archive_limit_fixture.py
+
+RUN set -eux; \
+    object_dir=/opt/die-build/src/console/CMakeFiles/diec.dir; \
+    cd /opt/die-build/src/console; \
+    harness_defines="$(sed -n 's/^CXX_DEFINES = //p' "${object_dir}/flags.make")"; \
+    harness_includes="$(sed -n 's/^CXX_INCLUDES = //p' "${object_dir}/flags.make")"; \
+    harness_flags="$(sed -n 's/^CXX_FLAGS = //p' "${object_dir}/flags.make")"; \
+    /usr/bin/c++ ${harness_defines} ${harness_includes} ${harness_flags} \
+        -c /tmp/upstream_benchmark_harness_main.cpp \
+        -o /tmp/upstream_benchmark_harness_main.cpp.o; \
+    sed \
+        -e 's#CMakeFiles/diec.dir/main_console.cpp.o#/tmp/upstream_benchmark_harness_main.cpp.o#' \
+        -e 's# -o diec # -o diec-upstream-benchmark-harness #' \
+        "${object_dir}/link.txt" > /tmp/link-upstream-benchmark-harness.sh; \
+    sh /tmp/link-upstream-benchmark-harness.sh; \
+    test -x /opt/die-build/src/console/diec-upstream-benchmark-harness; \
+    mkdir -p /bench/baseline /bench/archive; \
+    python3 /opt/diec-benchmark/generate_baseline_corpus.py \
+        /bench/baseline >/tmp/baseline-manifest.json; \
+    python3 /opt/diec-benchmark/generate_archive_limit_fixture.py \
+        /bench/archive >/tmp/archive-manifest.json; \
+    /opt/die-build/src/console/diec-upstream-benchmark-harness \
+        --noop >/tmp/benchmark-noop.json; \
+    /opt/die-build/src/console/diec-upstream-benchmark-harness \
+        --database-only >/tmp/benchmark-database.json; \
+    /opt/die-build/src/console/diec-upstream-benchmark-harness \
+        --archive /bench/archive/depth-16.zip \
+        >/tmp/benchmark-archive.json
+
+LABEL org.opencontainers.image.revision="74eaf505c250ab47e709024e9dc41657cd8f2254"
+LABEL org.opencontainers.image.source="https://github.com/horsicq/DIE-engine"
+LABEL org.opencontainers.image.description="Pinned Linux Qt5 upstream process benchmark environment"

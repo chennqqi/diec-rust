@@ -374,7 +374,13 @@ baseline 的变更都要检查本表。
   memory；profile before optimize。进程级 runner 已固定 strict plan、artifact/
   executable hash、bounded output 和机器报告，证据见
   [`process-benchmark-runner.md`](../research/process-benchmark-runner.md)。
-- **验证**：noise calibration 后冻结回归阈值，持续 trend；upstream 同条件对比。
+- **当前证据**：固定 Linux Qt5 已有 1 CPU/512 MiB cgroup 下的 process
+  control、database、PE JSON、batch JSON 和 depth-16 五层 warm baseline；
+  17 warmup/90 measured 输出确定，原始 latency/MAD/p95/RSS 与 high-tail
+  control 均保留。见
+  [`upstream-performance-baseline.md`](../research/upstream-performance-baseline.md)。
+- **验证**：Rust 同 bytes/options 成对报告后冻结回归阈值，持续 trend；补
+  cold/affinity、部署 closure size 和目标平台。
 - **关闭**：Phase 6 目标及阈值通过。阈值未冻结前不得声称性能更优。
 
 ### R-013：上游同步漂移

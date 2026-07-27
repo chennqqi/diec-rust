@@ -27,7 +27,7 @@ Phase 0 设计门禁，不把 Phase 2—6 的实现期风险误当成当前必�
 | `P0-EXIT-004` | 架构、规则 runtime、ABI、测试方案完成评审 | Not ready | 五份必需设计已进入 In Review、但未获得评审结论；十一个有效 ADR 均为 Proposed |
 | `P0-EXIT-005` | 风险清单完整 | Ready for review | 20 项风险均含触发、缓解、验证和关闭条件，但文档仍需评审 |
 | `P0-EXIT-006` | 后续阶段有可测完成条件 | Ready for review | `ROADMAP.md` 与 `testing.md` 已给出 Phase 1—6 的量化门禁 |
-| `P0-EXIT-007` | 性能基线与资源目标得到回答 | Not ready | process runner 和报告契约已有测试；环境、上游基线、noise、阈值和默认资源限制未冻结 |
+| `P0-EXIT-007` | 性能基线与资源目标得到回答 | Not ready | 固定 Linux Qt5 warm baseline、cgroup 和 noise 已有机器证据；Rust 成对/cold/跨平台/size、阈值和默认限制仍未冻结 |
 
 `Ready for review` 不等于 `Accepted`，也不允许把 Roadmap 状态改为 `DONE`。
 
@@ -69,7 +69,7 @@ Accepted。
 | `P0-BLOCK-003` | Open | 十一个 ADR 已 review-ready、但 acceptance-ready 均为 false；仍需 Accepted/Rejected/Superseded 评审结论 |
 | `P0-BLOCK-004` | Open | runtime `db*` 2,268 文件身份及根 MIT/marker 已闭合；仍需 PNG/历史贡献、其余 source closure 和发布责任人书面评审 |
 | `P0-BLOCK-005` | Open | 68 行 × 4 平台 coverage report 已建立且无未分类 cell；Linux source-only 已清零；仍有 30 个 corpus-gap 行及三个平台各 68 个 platform-missing |
-| `P0-BLOCK-006` | Open | strict process runner、bounded output 和 wall time/peak RSS 报告已有证据；仍需固定环境的上游 benchmark、noise calibration、可测 latency/memory/size 目标和默认资源限制 |
+| `P0-BLOCK-006` | Open | 固定 Linux Qt5 五层 warm baseline 已保留 17 warmup/90 measured 的 latency/MAD/p95/RSS、cgroup 和确定性输出；仍需 Rust 成对、cold/affinity、跨平台、部署 size、评审阈值和默认资源限制 |
 
 ## 下一步顺序
 

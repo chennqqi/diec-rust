@@ -4,7 +4,7 @@ Status: Draft
 
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
 
-Last updated: 2026-07-27
+Last updated: 2026-07-28
 
 ## 1. 目的与结论
 
@@ -12,9 +12,10 @@ Last updated: 2026-07-27
 建立了 Phase 0 可重复性能证据的第一层：用严格 JSON plan 运行一个直接进程，
 记录 wall time、peak RSS、输入/可执行文件身份、输出 hash、宿主身份和统计摘要。
 
-该工具只证明测量契约可以执行，**尚未形成 DIE-engine 上游性能基线，也没有冻结
-Rust 实现的回归阈值或默认资源限制**。因此 `P0-BLOCK-006` 仍为 Open，当前证据
-不得用于“Rust 更快”之类结论。
+固定 Linux Qt5 的首份描述性上游基线现已形成，见
+[`upstream-performance-baseline.md`](upstream-performance-baseline.md)。Rust
+成对报告、跨平台/cold/affinity、size 和评审阈值仍缺，因此
+`P0-BLOCK-006` 保持 Open，当前证据不得用于“Rust 更快”之类结论。
 
 ## 2. Plan 契约
 
@@ -83,8 +84,10 @@ python tools/benchmark/run_process_benchmark.py \
 
 ## 6. 关闭 `P0-BLOCK-006` 尚需
 
-1. 固定可重建的 upstream release command、数据库、语料和 host 环境；
-2. 采集并提交 upstream 原始 plan/report，完成 runner noise calibration；
-3. 为 database load、单文件、batch、nested、serialization 和 C ABI 分层；
-4. 评审并冻结 latency、throughput、peak memory、产物大小和默认资源限制；
-5. 在支持的平台重复验证，并明确无法等价的 case。
+1. Linux warm-process baseline 已覆盖 process control、database、单文件、batch、
+   nested 和 CLI JSON；继续补 cold/affinity 与部署 closure size；
+2. Phase 1 增加已加载 session 的 in-process scan/serialization 与 Rust C ABI
+   overhead 分层；
+3. 对相同 bytes/options 采集 Rust 与 upstream 成对报告；
+4. 评审并冻结 latency、p95、peak memory、产物/部署大小和默认资源限制；
+5. 在 Windows/macOS 重复验证，并明确无法等价的 case。

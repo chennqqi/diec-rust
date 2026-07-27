@@ -1,0 +1,372 @@
+{
+  "archive_manifest_sha256": "1046b80963f82412616f150ff38b1664dcd7e82a0458e2b4484ab1532f223a36",
+  "baseline_manifest_sha256": "f5adabeedeaf3bb69b8e52f8de20efd0f0b87bd4dcd247610d4e876b9266f329",
+  "container_limits": {
+    "cpus": "1",
+    "memory": "512m",
+    "network": "none",
+    "pids": 128
+  },
+  "plans": [
+    {
+      "benchmark_id": "upstream.qt-process-control.v1",
+      "benchmark_plan_schema": 1,
+      "cache_state": "warm",
+      "command": [
+        "/opt/die-build/src/console/diec-upstream-benchmark-harness",
+        "--noop"
+      ],
+      "environment": {
+        "LC_ALL": "C",
+        "MALLOC_ARENA_MAX": "1",
+        "QT_HASH_SEED": "0",
+        "TZ": "UTC"
+      },
+      "inherit_environment": true,
+      "input_artifacts": [],
+      "max_stderr_bytes": 65536,
+      "max_stdout_bytes": 4096,
+      "measured_runs": 30,
+      "notes": [
+        "runner executes inside the pinned container",
+        "each sample is a fresh direct upstream process",
+        "OS cache is warmed but not forcibly controlled"
+      ],
+      "producer": {
+        "build_profile": "Release -O3 -DNDEBUG",
+        "implementation": "DIE-engine Linux Qt5 CMake oracle",
+        "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+        "source_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+        "toolchain": "GCC 13.3.0; Qt 5.15.13; CMake 3.28.3"
+      },
+      "require_deterministic_output": true,
+      "require_peak_rss": true,
+      "timeout_ms": 10000,
+      "warmup_runs": 5,
+      "work_bytes": 1,
+      "work_definition": "one QCoreApplication process startup; throughput is not interpreted",
+      "working_directory": "."
+    },
+    {
+      "benchmark_id": "upstream.database-load.v1",
+      "benchmark_plan_schema": 1,
+      "cache_state": "warm",
+      "command": [
+        "/opt/die-build/src/console/diec-upstream-benchmark-harness",
+        "--database-only"
+      ],
+      "environment": {
+        "LC_ALL": "C",
+        "MALLOC_ARENA_MAX": "1",
+        "QT_HASH_SEED": "0",
+        "TZ": "UTC"
+      },
+      "inherit_environment": true,
+      "input_artifacts": [],
+      "max_stderr_bytes": 65536,
+      "max_stdout_bytes": 4096,
+      "measured_runs": 15,
+      "notes": [
+        "runner executes inside the pinned container",
+        "each sample is a fresh direct upstream process",
+        "OS cache is warmed but not forcibly controlled"
+      ],
+      "producer": {
+        "build_profile": "Release -O3 -DNDEBUG",
+        "implementation": "DIE-engine Linux Qt5 CMake oracle",
+        "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+        "source_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+        "toolchain": "GCC 13.3.0; Qt 5.15.13; CMake 3.28.3"
+      },
+      "require_deterministic_output": true,
+      "require_peak_rss": true,
+      "timeout_ms": 10000,
+      "warmup_runs": 3,
+      "work_bytes": 1,
+      "work_definition": "one full pinned main/extra/custom database load; throughput is not interpreted",
+      "working_directory": "."
+    },
+    {
+      "benchmark_id": "upstream.cli-pe32-json.v1",
+      "benchmark_plan_schema": 1,
+      "cache_state": "warm",
+      "command": [
+        "/opt/die-build/src/console/diec",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/bench/baseline/minimal.exe"
+      ],
+      "environment": {
+        "LC_ALL": "C",
+        "MALLOC_ARENA_MAX": "1",
+        "QT_HASH_SEED": "0",
+        "TZ": "UTC"
+      },
+      "inherit_environment": true,
+      "input_artifacts": [
+        {
+          "bytes": 512,
+          "path": "baseline/minimal.exe",
+          "sha256": "afb1bcd812caa45095075a60ff49599c7d5e767c7732226c3e0007708cb198a2"
+        }
+      ],
+      "max_stderr_bytes": 65536,
+      "max_stdout_bytes": 1048576,
+      "measured_runs": 15,
+      "notes": [
+        "runner executes inside the pinned container",
+        "each sample is a fresh direct upstream process",
+        "OS cache is warmed but not forcibly controlled"
+      ],
+      "producer": {
+        "build_profile": "Release -O3 -DNDEBUG",
+        "implementation": "DIE-engine Linux Qt5 CMake oracle",
+        "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+        "source_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+        "toolchain": "GCC 13.3.0; Qt 5.15.13; CMake 3.28.3"
+      },
+      "require_deterministic_output": true,
+      "require_peak_rss": true,
+      "timeout_ms": 10000,
+      "warmup_runs": 3,
+      "work_bytes": 512,
+      "work_definition": "minimal PE32 input bytes scanned once with JSON rendering",
+      "working_directory": "."
+    },
+    {
+      "benchmark_id": "upstream.cli-baseline-batch-json.v1",
+      "benchmark_plan_schema": 1,
+      "cache_state": "warm",
+      "command": [
+        "/opt/die-build/src/console/diec",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/bench/baseline"
+      ],
+      "environment": {
+        "LC_ALL": "C",
+        "MALLOC_ARENA_MAX": "1",
+        "QT_HASH_SEED": "0",
+        "TZ": "UTC"
+      },
+      "inherit_environment": true,
+      "input_artifacts": [
+        {
+          "bytes": 0,
+          "path": "baseline/empty.bin",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "bytes": 31,
+          "path": "baseline/plain.txt",
+          "sha256": "22b217bfba5795d402092bf48bfb28146c0ee4dd0036fd4d0c93e25bbe65e998"
+        },
+        {
+          "bytes": 64,
+          "path": "baseline/minimal.elf",
+          "sha256": "e717b57a377ce3486a932130454ee070fdd495d3c23a9d5a8a446ad32772e704"
+        },
+        {
+          "bytes": 52,
+          "path": "baseline/minimal-elf32.elf",
+          "sha256": "75952e884b6d6d4c4ed1023df8a126a816973178160bea43b482ceec0fc1e75d"
+        },
+        {
+          "bytes": 512,
+          "path": "baseline/minimal.exe",
+          "sha256": "afb1bcd812caa45095075a60ff49599c7d5e767c7732226c3e0007708cb198a2"
+        },
+        {
+          "bytes": 512,
+          "path": "baseline/minimal-pe64.exe",
+          "sha256": "63c706607b3d34624313df7356702ff99ce4080f09e6b07ec4b01dfe4dd5e1c3"
+        },
+        {
+          "bytes": 104,
+          "path": "baseline/minimal.macho",
+          "sha256": "60a536a7dff9522a8e4af5ab73ff742ebeffc33a34837beb9c5ac4a1a7eb5968"
+        },
+        {
+          "bytes": 84,
+          "path": "baseline/minimal-macho32.macho",
+          "sha256": "496974f2f66ce0be4a7ef4e05ddaaf1872b5ba6f4a772f729e86de3f9d4cc3b5"
+        },
+        {
+          "bytes": 360,
+          "path": "baseline/minimal-fat.macho",
+          "sha256": "ea343ae7de8a9ee2bdc00f0cc7f48f420e8609bd60510c927a75bed7b3470a67"
+        },
+        {
+          "bytes": 112,
+          "path": "baseline/minimal.dex",
+          "sha256": "57cfe8878be74cad8bbc5e409b0964d4b13c35e8783d931ef7366881f8d548c2"
+        },
+        {
+          "bytes": 59,
+          "path": "baseline/Minimal.class",
+          "sha256": "ed3af378f328281c21e5b56e495377c3e68ba667643c79abc53ad30edb685b9e"
+        },
+        {
+          "bytes": 17,
+          "path": "baseline/minimal.pyc",
+          "sha256": "cb3c0319002c008adb69215aa4559e60ad7e333e33eed58ae918e0d32e241ecd"
+        },
+        {
+          "bytes": 72,
+          "path": "baseline/pixel.png",
+          "sha256": "9ba3d63896d81dc3a55b80c1165fefa4523888b67fcbd4a95cabd3d0ab7e66e2"
+        },
+        {
+          "bytes": 56,
+          "path": "baseline/pixel.jpg",
+          "sha256": "69d4a48ed33b98f972561aa738a91b1d8cf76c876adee54d76e7b326df9276c5"
+        },
+        {
+          "bytes": 58,
+          "path": "baseline/pixel.bmp",
+          "sha256": "f7cbd816abfb19030d23b8de5435d0141443665a81ed5ba12114c70b5f53b610"
+        },
+        {
+          "bytes": 331,
+          "path": "baseline/minimal.pdf",
+          "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92"
+        },
+        {
+          "bytes": 151,
+          "path": "baseline/payload.zip",
+          "sha256": "c29a3445c289e061a11d4675b36763657d4e550c4941821ea74905593a29acfe"
+        },
+        {
+          "bytes": 350,
+          "path": "baseline/minimal.apk",
+          "sha256": "300eec1017b47ac5878bf21da0306b61a4a0dfc9e8249e9f0ff7e40c458ef557"
+        },
+        {
+          "bytes": 324,
+          "path": "baseline/minimal.jar",
+          "sha256": "a081dac459835af70f69de96b705764dc9b06bc356edcaa9857a8d6b630a7747"
+        },
+        {
+          "bytes": 300,
+          "path": "baseline/minimal.ipa",
+          "sha256": "142e16c353a59e152c6ee0b25d783dba0d6f6e9a8ca81b73d0d925dee1d54264"
+        },
+        {
+          "bytes": 21,
+          "path": "baseline/minimal.rar",
+          "sha256": "f7a8865876257ca1bc0ea30fbe8d1e82d3355ff7509c0dbc1ca01fe202795728"
+        },
+        {
+          "bytes": 36864,
+          "path": "baseline/minimal.iso",
+          "sha256": "8723a9cc5cd319414b88d32dcce58e8dc7668b927553f8cdf0bdf4f52f4da90a"
+        },
+        {
+          "bytes": 2048,
+          "path": "baseline/payload.tar",
+          "sha256": "3af89e8d0f52e951a8ea4ad0bef3d10cf3464c06a5c7a0fc451abc0583289f2f"
+        },
+        {
+          "bytes": 54,
+          "path": "baseline/payload.txt.gz",
+          "sha256": "f51df8f3b04ac2120ba283fbad7f22ec9aefce5a07c38a335deb771be560b39a"
+        },
+        {
+          "bytes": 512,
+          "path": "baseline/minimal.cfbf",
+          "sha256": "bb973ef09e2e3bf7e6510e060960dd10a598c5595bfbe08fabc177d0b0911d37"
+        },
+        {
+          "bytes": 46,
+          "path": "baseline/tone.wav",
+          "sha256": "373324023416a5dc3809e647e041fc48a13db20648d5782ac989cba17014203b"
+        },
+        {
+          "bytes": 4971,
+          "path": "baseline/manifest.json",
+          "sha256": "f5adabeedeaf3bb69b8e52f8de20efd0f0b87bd4dcd247610d4e876b9266f329"
+        }
+      ],
+      "max_stderr_bytes": 65536,
+      "max_stdout_bytes": 4194304,
+      "measured_runs": 15,
+      "notes": [
+        "runner executes inside the pinned container",
+        "each sample is a fresh direct upstream process",
+        "OS cache is warmed but not forcibly controlled"
+      ],
+      "producer": {
+        "build_profile": "Release -O3 -DNDEBUG",
+        "implementation": "DIE-engine Linux Qt5 CMake oracle",
+        "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+        "source_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+        "toolchain": "GCC 13.3.0; Qt 5.15.13; CMake 3.28.3"
+      },
+      "require_deterministic_output": true,
+      "require_peak_rss": true,
+      "timeout_ms": 10000,
+      "warmup_runs": 3,
+      "work_bytes": 48065,
+      "work_definition": "all files in generated baseline directory, including manifest.json, scanned once with JSON rendering",
+      "working_directory": "."
+    },
+    {
+      "benchmark_id": "upstream.archive-depth16.v1",
+      "benchmark_plan_schema": 1,
+      "cache_state": "warm",
+      "command": [
+        "/opt/die-build/src/console/diec-upstream-benchmark-harness",
+        "--archive",
+        "/bench/archive/depth-16.zip"
+      ],
+      "environment": {
+        "LC_ALL": "C",
+        "MALLOC_ARENA_MAX": "1",
+        "QT_HASH_SEED": "0",
+        "TZ": "UTC"
+      },
+      "inherit_environment": true,
+      "input_artifacts": [
+        {
+          "bytes": 2275,
+          "path": "archive/depth-16.zip",
+          "sha256": "ff7eb61595bf6b055d4125a8b2f32ddb2ffc977a9d3d410e6d77d8c2727206cc"
+        }
+      ],
+      "max_stderr_bytes": 65536,
+      "max_stdout_bytes": 4096,
+      "measured_runs": 15,
+      "notes": [
+        "runner executes inside the pinned container",
+        "each sample is a fresh direct upstream process",
+        "OS cache is warmed but not forcibly controlled"
+      ],
+      "producer": {
+        "build_profile": "Release -O3 -DNDEBUG",
+        "implementation": "DIE-engine Linux Qt5 CMake oracle",
+        "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+        "source_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+        "toolchain": "GCC 13.3.0; Qt 5.15.13; CMake 3.28.3"
+      },
+      "require_deterministic_output": true,
+      "require_peak_rss": true,
+      "timeout_ms": 10000,
+      "warmup_runs": 3,
+      "work_bytes": 19816,
+      "work_definition": "cumulative uncompressed member bytes traversed through a single-member 16-level store-only ZIP chain",
+      "working_directory": "."
+    }
+  ],
+  "schema_version": 1,
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

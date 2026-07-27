@@ -1,0 +1,2331 @@
+{
+  "baseline_scope": "descriptive_upstream_only",
+  "case_reports": {
+    "upstream.archive-depth16.v1": {
+      "report": {
+        "benchmark_id": "upstream.archive-depth16.v1",
+        "benchmark_report_schema": 1,
+        "executable": {
+          "bytes": 8238352,
+          "path": "/opt/die-build/src/console/diec-upstream-benchmark-harness",
+          "sha256": "78da92e7188d717e8991f80476f40596eedd4f0f00483cafd8495623289f5ece"
+        },
+        "execution": {
+          "cache_state": "warm",
+          "command": [
+            "/opt/die-build/src/console/diec-upstream-benchmark-harness",
+            "--archive",
+            "/bench/archive/depth-16.zip"
+          ],
+          "environment_override_keys": [
+            "LC_ALL",
+            "MALLOC_ARENA_MAX",
+            "QT_HASH_SEED",
+            "TZ"
+          ],
+          "environment_overrides_sha256": "cb7806922a03d641ce896343e3248f299db42d79879b1b67b4ff09218d1f23d7",
+          "environment_policy": "inherit_with_overrides",
+          "measured_runs": 15,
+          "notes": [
+            "runner executes inside the pinned container",
+            "each sample is a fresh direct upstream process",
+            "OS cache is warmed but not forcibly controlled"
+          ],
+          "timeout_ms": 10000,
+          "warmup_runs": 3,
+          "work_bytes": 19816,
+          "work_definition": "cumulative uncompressed member bytes traversed through a single-member 16-level store-only ZIP chain",
+          "working_directory": "."
+        },
+        "host": {
+          "clock": "time.perf_counter_ns",
+          "cpu_model": "Intel(R) Core(TM) Ultra 7 155H",
+          "filesystem": "overlay",
+          "logical_cpu_count": 4,
+          "machine": "x86_64",
+          "python": "3.12.3",
+          "release": "6.6.87.2-microsoft-standard-WSL2",
+          "rss_method": "/proc/PID/status VmHWM/VmRSS polling",
+          "system": "Linux",
+          "total_memory_bytes": 8329089024,
+          "version": "#1 SMP PREEMPT_DYNAMIC Thu Jun  5 18:30:46 UTC 2025"
+        },
+        "input_artifacts": [
+          {
+            "bytes": 2275,
+            "path": "archive/depth-16.zip",
+            "sha256": "ff7eb61595bf6b055d4125a8b2f32ddb2ffc977a9d3d410e6d77d8c2727206cc"
+          }
+        ],
+        "limitations": [
+          "warm cache state is declared but the OS cache is not forcibly controlled",
+          "peak RSS is sampled for the direct process, not an arbitrary descendant tree",
+          "thread scheduling, CPU affinity, power governor, and background load are not controlled",
+          "this report is a process-level benchmark, not a component profiler",
+          "timeouts terminate only the direct process; commands must not leave persistent descendants"
+        ],
+        "plan_artifact": {
+          "canonical_sha256": "ca1a7f581c3ce1a739c439bc974fcdc1f6b01d916121f6a994911494f2a16c45",
+          "sha256": "99ec22fc0deed1fe9389560b9312bb41c2ecf396a8c30c6fe9d8bfe49d3f6a14"
+        },
+        "producer": {
+          "build_profile": "Release -O3 -DNDEBUG",
+          "implementation": "DIE-engine Linux Qt5 CMake oracle",
+          "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+          "source_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+          "toolchain": "GCC 13.3.0; Qt 5.15.13; CMake 3.28.3"
+        },
+        "result": "pass",
+        "runner": {
+          "name": "diec-process-benchmark",
+          "version": 1
+        },
+        "runs": [
+          {
+            "duration_ns": 64873343,
+            "exit_code": 0,
+            "peak_rss_bytes": 24248320,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          },
+          {
+            "duration_ns": 65056486,
+            "exit_code": 0,
+            "peak_rss_bytes": 24014848,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          },
+          {
+            "duration_ns": 65393833,
+            "exit_code": 0,
+            "peak_rss_bytes": 24068096,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          },
+          {
+            "duration_ns": 64895241,
+            "exit_code": 0,
+            "peak_rss_bytes": 24420352,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          },
+          {
+            "duration_ns": 65301798,
+            "exit_code": 0,
+            "peak_rss_bytes": 24563712,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          },
+          {
+            "duration_ns": 65046805,
+            "exit_code": 0,
+            "peak_rss_bytes": 24551424,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          },
+          {
+            "duration_ns": 64601232,
+            "exit_code": 0,
+            "peak_rss_bytes": 23904256,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          },
+          {
+            "duration_ns": 64794818,
+            "exit_code": 0,
+            "peak_rss_bytes": 24420352,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          },
+          {
+            "duration_ns": 65067130,
+            "exit_code": 0,
+            "peak_rss_bytes": 24305664,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          },
+          {
+            "duration_ns": 65191555,
+            "exit_code": 0,
+            "peak_rss_bytes": 24293376,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          },
+          {
+            "duration_ns": 66454163,
+            "exit_code": 0,
+            "peak_rss_bytes": 24342528,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          },
+          {
+            "duration_ns": 64719432,
+            "exit_code": 0,
+            "peak_rss_bytes": 24244224,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          },
+          {
+            "duration_ns": 64742543,
+            "exit_code": 0,
+            "peak_rss_bytes": 24162304,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          },
+          {
+            "duration_ns": 64876541,
+            "exit_code": 0,
+            "peak_rss_bytes": 24170496,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          },
+          {
+            "duration_ns": 64754843,
+            "exit_code": 0,
+            "peak_rss_bytes": 24129536,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          }
+        ],
+        "summary": {
+          "duration_ns": {
+            "mad": 161245,
+            "max": 66454163,
+            "median": 64895241,
+            "min": 64601232,
+            "p95_nearest_rank": 66454163
+          },
+          "peak_rss_bytes": {
+            "max": 24563712,
+            "median": 24248320,
+            "sample_count": 15
+          },
+          "sample_count": 15,
+          "stderr_unique_sha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ],
+          "stdout_unique_sha256": [
+            "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+          ],
+          "throughput_bytes_per_second_at_median": 305353.669924733
+        },
+        "warmup_validation": {
+          "run_count": 3,
+          "stderr_unique_sha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ],
+          "stdout_unique_sha256": [
+            "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+          ]
+        }
+      },
+      "report_sha256": "fce8a35220118bbea7e1a6d2440e5e6299d55cbbff87acc84339a4bf49af8f11",
+      "report_size": 9213
+    },
+    "upstream.cli-baseline-batch-json.v1": {
+      "report": {
+        "benchmark_id": "upstream.cli-baseline-batch-json.v1",
+        "benchmark_report_schema": 1,
+        "executable": {
+          "bytes": 8248008,
+          "path": "/opt/die-build/src/console/diec",
+          "sha256": "da1fab49f7ba5970d1fc1c7fe3d4f380cf5e8775dd8097207e7b3c30f08236cf"
+        },
+        "execution": {
+          "cache_state": "warm",
+          "command": [
+            "/opt/die-build/src/console/diec",
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/bench/baseline"
+          ],
+          "environment_override_keys": [
+            "LC_ALL",
+            "MALLOC_ARENA_MAX",
+            "QT_HASH_SEED",
+            "TZ"
+          ],
+          "environment_overrides_sha256": "cb7806922a03d641ce896343e3248f299db42d79879b1b67b4ff09218d1f23d7",
+          "environment_policy": "inherit_with_overrides",
+          "measured_runs": 15,
+          "notes": [
+            "runner executes inside the pinned container",
+            "each sample is a fresh direct upstream process",
+            "OS cache is warmed but not forcibly controlled"
+          ],
+          "timeout_ms": 10000,
+          "warmup_runs": 3,
+          "work_bytes": 48065,
+          "work_definition": "all files in generated baseline directory, including manifest.json, scanned once with JSON rendering",
+          "working_directory": "."
+        },
+        "host": {
+          "clock": "time.perf_counter_ns",
+          "cpu_model": "Intel(R) Core(TM) Ultra 7 155H",
+          "filesystem": "overlay",
+          "logical_cpu_count": 4,
+          "machine": "x86_64",
+          "python": "3.12.3",
+          "release": "6.6.87.2-microsoft-standard-WSL2",
+          "rss_method": "/proc/PID/status VmHWM/VmRSS polling",
+          "system": "Linux",
+          "total_memory_bytes": 8329089024,
+          "version": "#1 SMP PREEMPT_DYNAMIC Thu Jun  5 18:30:46 UTC 2025"
+        },
+        "input_artifacts": [
+          {
+            "bytes": 0,
+            "path": "baseline/empty.bin",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "bytes": 31,
+            "path": "baseline/plain.txt",
+            "sha256": "22b217bfba5795d402092bf48bfb28146c0ee4dd0036fd4d0c93e25bbe65e998"
+          },
+          {
+            "bytes": 64,
+            "path": "baseline/minimal.elf",
+            "sha256": "e717b57a377ce3486a932130454ee070fdd495d3c23a9d5a8a446ad32772e704"
+          },
+          {
+            "bytes": 52,
+            "path": "baseline/minimal-elf32.elf",
+            "sha256": "75952e884b6d6d4c4ed1023df8a126a816973178160bea43b482ceec0fc1e75d"
+          },
+          {
+            "bytes": 512,
+            "path": "baseline/minimal.exe",
+            "sha256": "afb1bcd812caa45095075a60ff49599c7d5e767c7732226c3e0007708cb198a2"
+          },
+          {
+            "bytes": 512,
+            "path": "baseline/minimal-pe64.exe",
+            "sha256": "63c706607b3d34624313df7356702ff99ce4080f09e6b07ec4b01dfe4dd5e1c3"
+          },
+          {
+            "bytes": 104,
+            "path": "baseline/minimal.macho",
+            "sha256": "60a536a7dff9522a8e4af5ab73ff742ebeffc33a34837beb9c5ac4a1a7eb5968"
+          },
+          {
+            "bytes": 84,
+            "path": "baseline/minimal-macho32.macho",
+            "sha256": "496974f2f66ce0be4a7ef4e05ddaaf1872b5ba6f4a772f729e86de3f9d4cc3b5"
+          },
+          {
+            "bytes": 360,
+            "path": "baseline/minimal-fat.macho",
+            "sha256": "ea343ae7de8a9ee2bdc00f0cc7f48f420e8609bd60510c927a75bed7b3470a67"
+          },
+          {
+            "bytes": 112,
+            "path": "baseline/minimal.dex",
+            "sha256": "57cfe8878be74cad8bbc5e409b0964d4b13c35e8783d931ef7366881f8d548c2"
+          },
+          {
+            "bytes": 59,
+            "path": "baseline/Minimal.class",
+            "sha256": "ed3af378f328281c21e5b56e495377c3e68ba667643c79abc53ad30edb685b9e"
+          },
+          {
+            "bytes": 17,
+            "path": "baseline/minimal.pyc",
+            "sha256": "cb3c0319002c008adb69215aa4559e60ad7e333e33eed58ae918e0d32e241ecd"
+          },
+          {
+            "bytes": 72,
+            "path": "baseline/pixel.png",
+            "sha256": "9ba3d63896d81dc3a55b80c1165fefa4523888b67fcbd4a95cabd3d0ab7e66e2"
+          },
+          {
+            "bytes": 56,
+            "path": "baseline/pixel.jpg",
+            "sha256": "69d4a48ed33b98f972561aa738a91b1d8cf76c876adee54d76e7b326df9276c5"
+          },
+          {
+            "bytes": 58,
+            "path": "baseline/pixel.bmp",
+            "sha256": "f7cbd816abfb19030d23b8de5435d0141443665a81ed5ba12114c70b5f53b610"
+          },
+          {
+            "bytes": 331,
+            "path": "baseline/minimal.pdf",
+            "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92"
+          },
+          {
+            "bytes": 151,
+            "path": "baseline/payload.zip",
+            "sha256": "c29a3445c289e061a11d4675b36763657d4e550c4941821ea74905593a29acfe"
+          },
+          {
+            "bytes": 350,
+            "path": "baseline/minimal.apk",
+            "sha256": "300eec1017b47ac5878bf21da0306b61a4a0dfc9e8249e9f0ff7e40c458ef557"
+          },
+          {
+            "bytes": 324,
+            "path": "baseline/minimal.jar",
+            "sha256": "a081dac459835af70f69de96b705764dc9b06bc356edcaa9857a8d6b630a7747"
+          },
+          {
+            "bytes": 300,
+            "path": "baseline/minimal.ipa",
+            "sha256": "142e16c353a59e152c6ee0b25d783dba0d6f6e9a8ca81b73d0d925dee1d54264"
+          },
+          {
+            "bytes": 21,
+            "path": "baseline/minimal.rar",
+            "sha256": "f7a8865876257ca1bc0ea30fbe8d1e82d3355ff7509c0dbc1ca01fe202795728"
+          },
+          {
+            "bytes": 36864,
+            "path": "baseline/minimal.iso",
+            "sha256": "8723a9cc5cd319414b88d32dcce58e8dc7668b927553f8cdf0bdf4f52f4da90a"
+          },
+          {
+            "bytes": 2048,
+            "path": "baseline/payload.tar",
+            "sha256": "3af89e8d0f52e951a8ea4ad0bef3d10cf3464c06a5c7a0fc451abc0583289f2f"
+          },
+          {
+            "bytes": 54,
+            "path": "baseline/payload.txt.gz",
+            "sha256": "f51df8f3b04ac2120ba283fbad7f22ec9aefce5a07c38a335deb771be560b39a"
+          },
+          {
+            "bytes": 512,
+            "path": "baseline/minimal.cfbf",
+            "sha256": "bb973ef09e2e3bf7e6510e060960dd10a598c5595bfbe08fabc177d0b0911d37"
+          },
+          {
+            "bytes": 46,
+            "path": "baseline/tone.wav",
+            "sha256": "373324023416a5dc3809e647e041fc48a13db20648d5782ac989cba17014203b"
+          },
+          {
+            "bytes": 4971,
+            "path": "baseline/manifest.json",
+            "sha256": "f5adabeedeaf3bb69b8e52f8de20efd0f0b87bd4dcd247610d4e876b9266f329"
+          }
+        ],
+        "limitations": [
+          "warm cache state is declared but the OS cache is not forcibly controlled",
+          "peak RSS is sampled for the direct process, not an arbitrary descendant tree",
+          "thread scheduling, CPU affinity, power governor, and background load are not controlled",
+          "this report is a process-level benchmark, not a component profiler",
+          "timeouts terminate only the direct process; commands must not leave persistent descendants"
+        ],
+        "plan_artifact": {
+          "canonical_sha256": "8af43c8f217f7073b73826ada42b04d5cd3f7aeff7545a39495c149f8e306d69",
+          "sha256": "3169a277ee4df64f14bf91eca3bcb8795abce057b938a0fd06f9eebee24d6c74"
+        },
+        "producer": {
+          "build_profile": "Release -O3 -DNDEBUG",
+          "implementation": "DIE-engine Linux Qt5 CMake oracle",
+          "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+          "source_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+          "toolchain": "GCC 13.3.0; Qt 5.15.13; CMake 3.28.3"
+        },
+        "result": "pass",
+        "runner": {
+          "name": "diec-process-benchmark",
+          "version": 1
+        },
+        "runs": [
+          {
+            "duration_ns": 1368086860,
+            "exit_code": 0,
+            "peak_rss_bytes": 80285696,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          },
+          {
+            "duration_ns": 1418398649,
+            "exit_code": 0,
+            "peak_rss_bytes": 80646144,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          },
+          {
+            "duration_ns": 1418752115,
+            "exit_code": 0,
+            "peak_rss_bytes": 80683008,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          },
+          {
+            "duration_ns": 1320029819,
+            "exit_code": 0,
+            "peak_rss_bytes": 80519168,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          },
+          {
+            "duration_ns": 1368322674,
+            "exit_code": 0,
+            "peak_rss_bytes": 80719872,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          },
+          {
+            "duration_ns": 1318915871,
+            "exit_code": 0,
+            "peak_rss_bytes": 80523264,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          },
+          {
+            "duration_ns": 1368561498,
+            "exit_code": 0,
+            "peak_rss_bytes": 80375808,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          },
+          {
+            "duration_ns": 1368969392,
+            "exit_code": 0,
+            "peak_rss_bytes": 80293888,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          },
+          {
+            "duration_ns": 1368635600,
+            "exit_code": 0,
+            "peak_rss_bytes": 80527360,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          },
+          {
+            "duration_ns": 1418305320,
+            "exit_code": 0,
+            "peak_rss_bytes": 80322560,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          },
+          {
+            "duration_ns": 1420347587,
+            "exit_code": 0,
+            "peak_rss_bytes": 80588800,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          },
+          {
+            "duration_ns": 1420631048,
+            "exit_code": 0,
+            "peak_rss_bytes": 80510976,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          },
+          {
+            "duration_ns": 1419060053,
+            "exit_code": 0,
+            "peak_rss_bytes": 80330752,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          },
+          {
+            "duration_ns": 1368291712,
+            "exit_code": 0,
+            "peak_rss_bytes": 80015360,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          },
+          {
+            "duration_ns": 1368149675,
+            "exit_code": 0,
+            "peak_rss_bytes": 80556032,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          }
+        ],
+        "summary": {
+          "duration_ns": {
+            "mad": 48605781,
+            "max": 1420631048,
+            "median": 1368635600,
+            "min": 1318915871,
+            "p95_nearest_rank": 1420631048
+          },
+          "peak_rss_bytes": {
+            "max": 80719872,
+            "median": 80519168,
+            "sample_count": 15
+          },
+          "sample_count": 15,
+          "stderr_unique_sha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ],
+          "stdout_unique_sha256": [
+            "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+          ],
+          "throughput_bytes_per_second_at_median": 35118.916971033046
+        },
+        "warmup_validation": {
+          "run_count": 3,
+          "stderr_unique_sha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ],
+          "stdout_unique_sha256": [
+            "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+          ]
+        }
+      },
+      "report_sha256": "0a5d2830e8b751f6dfd927bb9060c32f535c25679096d5ba377d42ea225511f7",
+      "report_size": 13469
+    },
+    "upstream.cli-pe32-json.v1": {
+      "report": {
+        "benchmark_id": "upstream.cli-pe32-json.v1",
+        "benchmark_report_schema": 1,
+        "executable": {
+          "bytes": 8248008,
+          "path": "/opt/die-build/src/console/diec",
+          "sha256": "da1fab49f7ba5970d1fc1c7fe3d4f380cf5e8775dd8097207e7b3c30f08236cf"
+        },
+        "execution": {
+          "cache_state": "warm",
+          "command": [
+            "/opt/die-build/src/console/diec",
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/bench/baseline/minimal.exe"
+          ],
+          "environment_override_keys": [
+            "LC_ALL",
+            "MALLOC_ARENA_MAX",
+            "QT_HASH_SEED",
+            "TZ"
+          ],
+          "environment_overrides_sha256": "cb7806922a03d641ce896343e3248f299db42d79879b1b67b4ff09218d1f23d7",
+          "environment_policy": "inherit_with_overrides",
+          "measured_runs": 15,
+          "notes": [
+            "runner executes inside the pinned container",
+            "each sample is a fresh direct upstream process",
+            "OS cache is warmed but not forcibly controlled"
+          ],
+          "timeout_ms": 10000,
+          "warmup_runs": 3,
+          "work_bytes": 512,
+          "work_definition": "minimal PE32 input bytes scanned once with JSON rendering",
+          "working_directory": "."
+        },
+        "host": {
+          "clock": "time.perf_counter_ns",
+          "cpu_model": "Intel(R) Core(TM) Ultra 7 155H",
+          "filesystem": "overlay",
+          "logical_cpu_count": 4,
+          "machine": "x86_64",
+          "python": "3.12.3",
+          "release": "6.6.87.2-microsoft-standard-WSL2",
+          "rss_method": "/proc/PID/status VmHWM/VmRSS polling",
+          "system": "Linux",
+          "total_memory_bytes": 8329089024,
+          "version": "#1 SMP PREEMPT_DYNAMIC Thu Jun  5 18:30:46 UTC 2025"
+        },
+        "input_artifacts": [
+          {
+            "bytes": 512,
+            "path": "baseline/minimal.exe",
+            "sha256": "afb1bcd812caa45095075a60ff49599c7d5e767c7732226c3e0007708cb198a2"
+          }
+        ],
+        "limitations": [
+          "warm cache state is declared but the OS cache is not forcibly controlled",
+          "peak RSS is sampled for the direct process, not an arbitrary descendant tree",
+          "thread scheduling, CPU affinity, power governor, and background load are not controlled",
+          "this report is a process-level benchmark, not a component profiler",
+          "timeouts terminate only the direct process; commands must not leave persistent descendants"
+        ],
+        "plan_artifact": {
+          "canonical_sha256": "652d7f52c31f42dc18b0bf8b044ac89ab3d28f9d4a765b104115cccf322fd3fd",
+          "sha256": "3d90043cd0daf8c04e9d11f42767358c21fc3da546d7ed3eac771643db6481bc"
+        },
+        "producer": {
+          "build_profile": "Release -O3 -DNDEBUG",
+          "implementation": "DIE-engine Linux Qt5 CMake oracle",
+          "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+          "source_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+          "toolchain": "GCC 13.3.0; Qt 5.15.13; CMake 3.28.3"
+        },
+        "result": "pass",
+        "runner": {
+          "name": "diec-process-benchmark",
+          "version": 1
+        },
+        "runs": [
+          {
+            "duration_ns": 165423984,
+            "exit_code": 0,
+            "peak_rss_bytes": 35627008,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          },
+          {
+            "duration_ns": 114998888,
+            "exit_code": 0,
+            "peak_rss_bytes": 35885056,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          },
+          {
+            "duration_ns": 118969281,
+            "exit_code": 0,
+            "peak_rss_bytes": 35704832,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          },
+          {
+            "duration_ns": 114986263,
+            "exit_code": 0,
+            "peak_rss_bytes": 35500032,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          },
+          {
+            "duration_ns": 115217188,
+            "exit_code": 0,
+            "peak_rss_bytes": 35500032,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          },
+          {
+            "duration_ns": 165281508,
+            "exit_code": 0,
+            "peak_rss_bytes": 35627008,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          },
+          {
+            "duration_ns": 165149679,
+            "exit_code": 0,
+            "peak_rss_bytes": 35622912,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          },
+          {
+            "duration_ns": 115070018,
+            "exit_code": 0,
+            "peak_rss_bytes": 35491840,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          },
+          {
+            "duration_ns": 166671897,
+            "exit_code": 0,
+            "peak_rss_bytes": 35364864,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          },
+          {
+            "duration_ns": 115673002,
+            "exit_code": 0,
+            "peak_rss_bytes": 35627008,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          },
+          {
+            "duration_ns": 115288551,
+            "exit_code": 0,
+            "peak_rss_bytes": 35758080,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          },
+          {
+            "duration_ns": 164994770,
+            "exit_code": 0,
+            "peak_rss_bytes": 35188736,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          },
+          {
+            "duration_ns": 114889896,
+            "exit_code": 0,
+            "peak_rss_bytes": 35631104,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          },
+          {
+            "duration_ns": 114872639,
+            "exit_code": 0,
+            "peak_rss_bytes": 35500032,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          },
+          {
+            "duration_ns": 114845799,
+            "exit_code": 0,
+            "peak_rss_bytes": 35495936,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          }
+        ],
+        "summary": {
+          "duration_ns": {
+            "mad": 415912,
+            "max": 166671897,
+            "median": 115288551,
+            "min": 114845799,
+            "p95_nearest_rank": 166671897
+          },
+          "peak_rss_bytes": {
+            "max": 35885056,
+            "median": 35622912,
+            "sample_count": 15
+          },
+          "sample_count": 15,
+          "stderr_unique_sha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ],
+          "stdout_unique_sha256": [
+            "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+          ],
+          "throughput_bytes_per_second_at_median": 4441.030749011669
+        },
+        "warmup_validation": {
+          "run_count": 3,
+          "stderr_unique_sha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ],
+          "stdout_unique_sha256": [
+            "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+          ]
+        }
+      },
+      "report_sha256": "b4c7a1fb21c6659a987442c70423e966b06a60fe6d75598f564ed513fd54eeb6",
+      "report_size": 9356
+    },
+    "upstream.database-load.v1": {
+      "report": {
+        "benchmark_id": "upstream.database-load.v1",
+        "benchmark_report_schema": 1,
+        "executable": {
+          "bytes": 8238352,
+          "path": "/opt/die-build/src/console/diec-upstream-benchmark-harness",
+          "sha256": "78da92e7188d717e8991f80476f40596eedd4f0f00483cafd8495623289f5ece"
+        },
+        "execution": {
+          "cache_state": "warm",
+          "command": [
+            "/opt/die-build/src/console/diec-upstream-benchmark-harness",
+            "--database-only"
+          ],
+          "environment_override_keys": [
+            "LC_ALL",
+            "MALLOC_ARENA_MAX",
+            "QT_HASH_SEED",
+            "TZ"
+          ],
+          "environment_overrides_sha256": "cb7806922a03d641ce896343e3248f299db42d79879b1b67b4ff09218d1f23d7",
+          "environment_policy": "inherit_with_overrides",
+          "measured_runs": 15,
+          "notes": [
+            "runner executes inside the pinned container",
+            "each sample is a fresh direct upstream process",
+            "OS cache is warmed but not forcibly controlled"
+          ],
+          "timeout_ms": 10000,
+          "warmup_runs": 3,
+          "work_bytes": 1,
+          "work_definition": "one full pinned main/extra/custom database load; throughput is not interpreted",
+          "working_directory": "."
+        },
+        "host": {
+          "clock": "time.perf_counter_ns",
+          "cpu_model": "Intel(R) Core(TM) Ultra 7 155H",
+          "filesystem": "overlay",
+          "logical_cpu_count": 4,
+          "machine": "x86_64",
+          "python": "3.12.3",
+          "release": "6.6.87.2-microsoft-standard-WSL2",
+          "rss_method": "/proc/PID/status VmHWM/VmRSS polling",
+          "system": "Linux",
+          "total_memory_bytes": 8329089024,
+          "version": "#1 SMP PREEMPT_DYNAMIC Thu Jun  5 18:30:46 UTC 2025"
+        },
+        "input_artifacts": [],
+        "limitations": [
+          "warm cache state is declared but the OS cache is not forcibly controlled",
+          "peak RSS is sampled for the direct process, not an arbitrary descendant tree",
+          "thread scheduling, CPU affinity, power governor, and background load are not controlled",
+          "this report is a process-level benchmark, not a component profiler",
+          "timeouts terminate only the direct process; commands must not leave persistent descendants"
+        ],
+        "plan_artifact": {
+          "canonical_sha256": "1970efff4cba151492b926292bc98941eb15457c48d7e6c4ce4488e3bcdf8c83",
+          "sha256": "1c0bc8e8ba887086079f9aa9e5e18adb161204877bd21a4f855989e09f935d57"
+        },
+        "producer": {
+          "build_profile": "Release -O3 -DNDEBUG",
+          "implementation": "DIE-engine Linux Qt5 CMake oracle",
+          "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+          "source_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+          "toolchain": "GCC 13.3.0; Qt 5.15.13; CMake 3.28.3"
+        },
+        "result": "pass",
+        "runner": {
+          "name": "diec-process-benchmark",
+          "version": 1
+        },
+        "runs": [
+          {
+            "duration_ns": 65008360,
+            "exit_code": 0,
+            "peak_rss_bytes": 19484672,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          },
+          {
+            "duration_ns": 65009071,
+            "exit_code": 0,
+            "peak_rss_bytes": 19357696,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          },
+          {
+            "duration_ns": 65128010,
+            "exit_code": 0,
+            "peak_rss_bytes": 19357696,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          },
+          {
+            "duration_ns": 64974777,
+            "exit_code": 0,
+            "peak_rss_bytes": 19013632,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          },
+          {
+            "duration_ns": 65429525,
+            "exit_code": 0,
+            "peak_rss_bytes": 19357696,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          },
+          {
+            "duration_ns": 65084480,
+            "exit_code": 0,
+            "peak_rss_bytes": 19361792,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          },
+          {
+            "duration_ns": 65137518,
+            "exit_code": 0,
+            "peak_rss_bytes": 19226624,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          },
+          {
+            "duration_ns": 64849767,
+            "exit_code": 0,
+            "peak_rss_bytes": 19099648,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          },
+          {
+            "duration_ns": 64923963,
+            "exit_code": 0,
+            "peak_rss_bytes": 19619840,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          },
+          {
+            "duration_ns": 64814727,
+            "exit_code": 0,
+            "peak_rss_bytes": 19488768,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          },
+          {
+            "duration_ns": 65232622,
+            "exit_code": 0,
+            "peak_rss_bytes": 19591168,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          },
+          {
+            "duration_ns": 65129195,
+            "exit_code": 0,
+            "peak_rss_bytes": 19095552,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          },
+          {
+            "duration_ns": 64733848,
+            "exit_code": 0,
+            "peak_rss_bytes": 19881984,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          },
+          {
+            "duration_ns": 64963935,
+            "exit_code": 0,
+            "peak_rss_bytes": 19488768,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          },
+          {
+            "duration_ns": 64989687,
+            "exit_code": 0,
+            "peak_rss_bytes": 19701760,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          }
+        ],
+        "summary": {
+          "duration_ns": {
+            "mad": 119650,
+            "max": 65429525,
+            "median": 65008360,
+            "min": 64733848,
+            "p95_nearest_rank": 65429525
+          },
+          "peak_rss_bytes": {
+            "max": 19881984,
+            "median": 19361792,
+            "sample_count": 15
+          },
+          "sample_count": 15,
+          "stderr_unique_sha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ],
+          "stdout_unique_sha256": [
+            "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+          ],
+          "throughput_bytes_per_second_at_median": 15.382636940848839
+        },
+        "warmup_validation": {
+          "run_count": 3,
+          "stderr_unique_sha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ],
+          "stdout_unique_sha256": [
+            "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+          ]
+        }
+      },
+      "report_sha256": "7d32cc86e4c782303b7eadfc035a823a75737bbe37222048f0fb96abf758c337",
+      "report_size": 8999
+    },
+    "upstream.qt-process-control.v1": {
+      "report": {
+        "benchmark_id": "upstream.qt-process-control.v1",
+        "benchmark_report_schema": 1,
+        "executable": {
+          "bytes": 8238352,
+          "path": "/opt/die-build/src/console/diec-upstream-benchmark-harness",
+          "sha256": "78da92e7188d717e8991f80476f40596eedd4f0f00483cafd8495623289f5ece"
+        },
+        "execution": {
+          "cache_state": "warm",
+          "command": [
+            "/opt/die-build/src/console/diec-upstream-benchmark-harness",
+            "--noop"
+          ],
+          "environment_override_keys": [
+            "LC_ALL",
+            "MALLOC_ARENA_MAX",
+            "QT_HASH_SEED",
+            "TZ"
+          ],
+          "environment_overrides_sha256": "cb7806922a03d641ce896343e3248f299db42d79879b1b67b4ff09218d1f23d7",
+          "environment_policy": "inherit_with_overrides",
+          "measured_runs": 30,
+          "notes": [
+            "runner executes inside the pinned container",
+            "each sample is a fresh direct upstream process",
+            "OS cache is warmed but not forcibly controlled"
+          ],
+          "timeout_ms": 10000,
+          "warmup_runs": 5,
+          "work_bytes": 1,
+          "work_definition": "one QCoreApplication process startup; throughput is not interpreted",
+          "working_directory": "."
+        },
+        "host": {
+          "clock": "time.perf_counter_ns",
+          "cpu_model": "Intel(R) Core(TM) Ultra 7 155H",
+          "filesystem": "overlay",
+          "logical_cpu_count": 4,
+          "machine": "x86_64",
+          "python": "3.12.3",
+          "release": "6.6.87.2-microsoft-standard-WSL2",
+          "rss_method": "/proc/PID/status VmHWM/VmRSS polling",
+          "system": "Linux",
+          "total_memory_bytes": 8329089024,
+          "version": "#1 SMP PREEMPT_DYNAMIC Thu Jun  5 18:30:46 UTC 2025"
+        },
+        "input_artifacts": [],
+        "limitations": [
+          "warm cache state is declared but the OS cache is not forcibly controlled",
+          "peak RSS is sampled for the direct process, not an arbitrary descendant tree",
+          "thread scheduling, CPU affinity, power governor, and background load are not controlled",
+          "this report is a process-level benchmark, not a component profiler",
+          "timeouts terminate only the direct process; commands must not leave persistent descendants"
+        ],
+        "plan_artifact": {
+          "canonical_sha256": "5746be5876f6387df02740b0dbc033f72f7423c60f21ef63330a1c41629c17b5",
+          "sha256": "542f26953fcd4ac01ee542f044479eb8182759039b4241d4bafcb64096657726"
+        },
+        "producer": {
+          "build_profile": "Release -O3 -DNDEBUG",
+          "implementation": "DIE-engine Linux Qt5 CMake oracle",
+          "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+          "source_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+          "toolchain": "GCC 13.3.0; Qt 5.15.13; CMake 3.28.3"
+        },
+        "result": "pass",
+        "runner": {
+          "name": "diec-process-benchmark",
+          "version": 1
+        },
+        "runs": [
+          {
+            "duration_ns": 4177839,
+            "exit_code": 0,
+            "peak_rss_bytes": 1441792,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 8172336,
+            "exit_code": 0,
+            "peak_rss_bytes": 6422528,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 8284017,
+            "exit_code": 0,
+            "peak_rss_bytes": 4194304,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 4157825,
+            "exit_code": 0,
+            "peak_rss_bytes": 917504,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 3970811,
+            "exit_code": 0,
+            "peak_rss_bytes": 10616832,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 4197846,
+            "exit_code": 0,
+            "peak_rss_bytes": 9699328,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 3940393,
+            "exit_code": 0,
+            "peak_rss_bytes": 9830400,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 4402283,
+            "exit_code": 0,
+            "peak_rss_bytes": 2228224,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 4092264,
+            "exit_code": 0,
+            "peak_rss_bytes": 9175040,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 4190927,
+            "exit_code": 0,
+            "peak_rss_bytes": 12451840,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 4221945,
+            "exit_code": 0,
+            "peak_rss_bytes": 11927552,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 4022877,
+            "exit_code": 0,
+            "peak_rss_bytes": 11141120,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 8288102,
+            "exit_code": 0,
+            "peak_rss_bytes": 8650752,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 8342264,
+            "exit_code": 0,
+            "peak_rss_bytes": 6946816,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 8308844,
+            "exit_code": 0,
+            "peak_rss_bytes": 7208960,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 4044517,
+            "exit_code": 0,
+            "peak_rss_bytes": 11534336,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 4168780,
+            "exit_code": 0,
+            "peak_rss_bytes": 12058624,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 4126588,
+            "exit_code": 0,
+            "peak_rss_bytes": 1048576,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 4224167,
+            "exit_code": 0,
+            "peak_rss_bytes": 1572864,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 4057057,
+            "exit_code": 0,
+            "peak_rss_bytes": 13762560,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 3995793,
+            "exit_code": 0,
+            "peak_rss_bytes": 12058624,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 4193680,
+            "exit_code": 0,
+            "peak_rss_bytes": 12845056,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 4083427,
+            "exit_code": 0,
+            "peak_rss_bytes": 12845056,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 4073203,
+            "exit_code": 0,
+            "peak_rss_bytes": 12976128,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 3909800,
+            "exit_code": 0,
+            "peak_rss_bytes": 12582912,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 4171993,
+            "exit_code": 0,
+            "peak_rss_bytes": 12189696,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 4152721,
+            "exit_code": 0,
+            "peak_rss_bytes": 1441792,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 3943853,
+            "exit_code": 0,
+            "peak_rss_bytes": 11534336,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 3977432,
+            "exit_code": 0,
+            "peak_rss_bytes": 12582912,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          {
+            "duration_ns": 4134366,
+            "exit_code": 0,
+            "peak_rss_bytes": 11272192,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          }
+        ],
+        "summary": {
+          "duration_ns": {
+            "mad": 90143,
+            "max": 8342264,
+            "median": 4155273,
+            "min": 3909800,
+            "p95_nearest_rank": 8308844
+          },
+          "peak_rss_bytes": {
+            "max": 13762560,
+            "median": 10878976,
+            "sample_count": 30
+          },
+          "sample_count": 30,
+          "stderr_unique_sha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ],
+          "stdout_unique_sha256": [
+            "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          ],
+          "throughput_bytes_per_second_at_median": 240.658074692084
+        },
+        "warmup_validation": {
+          "run_count": 5,
+          "stderr_unique_sha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ],
+          "stdout_unique_sha256": [
+            "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          ]
+        }
+      },
+      "report_sha256": "368b7a922e437b78b5d665898d7d1bf644f929fe9fcb182fbc2625bfa7ff21da",
+      "report_size": 14392
+    }
+  },
+  "environment": {
+    "cgroup": {
+      "cpu_max": "100000 100000",
+      "cpuset_effective": "0-3",
+      "memory_max": "536870912",
+      "pids_max": "128"
+    },
+    "container_limits": {
+      "cpus": "1",
+      "memory": "512m",
+      "network": "none",
+      "pids": 128
+    },
+    "image": "diec-rust/upstream-benchmark-qt5:74eaf505",
+    "image_identity": {
+      "id": "sha256:a5b33708eb148591d127041b6a54d05d68f8dd24bea7855e95ea88715d0bf8c5",
+      "repo_digests": [
+        "diec-rust/upstream-benchmark-qt5@sha256:a5b33708eb148591d127041b6a54d05d68f8dd24bea7855e95ea88715d0bf8c5"
+      ],
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    }
+  },
+  "failures": [],
+  "image_corpora": {
+    "archive": {
+      "path": "/bench/archive/manifest.json",
+      "sha256": "1046b80963f82412616f150ff38b1664dcd7e82a0458e2b4484ab1532f223a36",
+      "size": 3185
+    },
+    "baseline": {
+      "path": "/bench/baseline/manifest.json",
+      "sha256": "f5adabeedeaf3bb69b8e52f8de20efd0f0b87bd4dcd247610d4e876b9266f329",
+      "size": 4971
+    }
+  },
+  "noise": {
+    "upstream.archive-depth16.v1": {
+      "mad_over_median": 0.0024846968362441245,
+      "max_minus_min_over_median": 0.028552648413771975,
+      "p95_over_median": 1.0240221312992734
+    },
+    "upstream.cli-baseline-batch-json.v1": {
+      "mad_over_median": 0.03551404113702727,
+      "max_minus_min_over_median": 0.07431866962981235,
+      "p95_over_median": 1.0379907171784806
+    },
+    "upstream.cli-pe32-json.v1": {
+      "mad_over_median": 0.0036075741814119945,
+      "max_minus_min_over_median": 0.44953377894393,
+      "p95_over_median": 1.445693397603722
+    },
+    "upstream.database-load.v1": {
+      "mad_over_median": 0.0018405325099725635,
+      "max_minus_min_over_median": 0.010701346719098897,
+      "p95_over_median": 1.0064786282871927
+    },
+    "upstream.qt-process-control.v1": {
+      "mad_over_median": 0.02169364082696853,
+      "max_minus_min_over_median": 1.0667082523819735,
+      "p95_over_median": 1.999590399956874
+    }
+  },
+  "noise_interpretation": {
+    "control_classification": "high_tail_noise",
+    "guardrails": {
+      "control_mad_over_median_max": 0.5,
+      "control_p95_over_median_max": 3.0,
+      "minimum_regression_case_median_ms": 50
+    },
+    "short_process_regression_eligible": false
+  },
+  "passed": true,
+  "plan_suite": {
+    "archive_manifest_sha256": "1046b80963f82412616f150ff38b1664dcd7e82a0458e2b4484ab1532f223a36",
+    "baseline_manifest_sha256": "f5adabeedeaf3bb69b8e52f8de20efd0f0b87bd4dcd247610d4e876b9266f329",
+    "container_limits": {
+      "cpus": "1",
+      "memory": "512m",
+      "network": "none",
+      "pids": 128
+    },
+    "plans": [
+      {
+        "benchmark_id": "upstream.qt-process-control.v1",
+        "benchmark_plan_schema": 1,
+        "cache_state": "warm",
+        "command": [
+          "/opt/die-build/src/console/diec-upstream-benchmark-harness",
+          "--noop"
+        ],
+        "environment": {
+          "LC_ALL": "C",
+          "MALLOC_ARENA_MAX": "1",
+          "QT_HASH_SEED": "0",
+          "TZ": "UTC"
+        },
+        "inherit_environment": true,
+        "input_artifacts": [],
+        "max_stderr_bytes": 65536,
+        "max_stdout_bytes": 4096,
+        "measured_runs": 30,
+        "notes": [
+          "runner executes inside the pinned container",
+          "each sample is a fresh direct upstream process",
+          "OS cache is warmed but not forcibly controlled"
+        ],
+        "producer": {
+          "build_profile": "Release -O3 -DNDEBUG",
+          "implementation": "DIE-engine Linux Qt5 CMake oracle",
+          "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+          "source_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+          "toolchain": "GCC 13.3.0; Qt 5.15.13; CMake 3.28.3"
+        },
+        "require_deterministic_output": true,
+        "require_peak_rss": true,
+        "timeout_ms": 10000,
+        "warmup_runs": 5,
+        "work_bytes": 1,
+        "work_definition": "one QCoreApplication process startup; throughput is not interpreted",
+        "working_directory": "."
+      },
+      {
+        "benchmark_id": "upstream.database-load.v1",
+        "benchmark_plan_schema": 1,
+        "cache_state": "warm",
+        "command": [
+          "/opt/die-build/src/console/diec-upstream-benchmark-harness",
+          "--database-only"
+        ],
+        "environment": {
+          "LC_ALL": "C",
+          "MALLOC_ARENA_MAX": "1",
+          "QT_HASH_SEED": "0",
+          "TZ": "UTC"
+        },
+        "inherit_environment": true,
+        "input_artifacts": [],
+        "max_stderr_bytes": 65536,
+        "max_stdout_bytes": 4096,
+        "measured_runs": 15,
+        "notes": [
+          "runner executes inside the pinned container",
+          "each sample is a fresh direct upstream process",
+          "OS cache is warmed but not forcibly controlled"
+        ],
+        "producer": {
+          "build_profile": "Release -O3 -DNDEBUG",
+          "implementation": "DIE-engine Linux Qt5 CMake oracle",
+          "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+          "source_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+          "toolchain": "GCC 13.3.0; Qt 5.15.13; CMake 3.28.3"
+        },
+        "require_deterministic_output": true,
+        "require_peak_rss": true,
+        "timeout_ms": 10000,
+        "warmup_runs": 3,
+        "work_bytes": 1,
+        "work_definition": "one full pinned main/extra/custom database load; throughput is not interpreted",
+        "working_directory": "."
+      },
+      {
+        "benchmark_id": "upstream.cli-pe32-json.v1",
+        "benchmark_plan_schema": 1,
+        "cache_state": "warm",
+        "command": [
+          "/opt/die-build/src/console/diec",
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/bench/baseline/minimal.exe"
+        ],
+        "environment": {
+          "LC_ALL": "C",
+          "MALLOC_ARENA_MAX": "1",
+          "QT_HASH_SEED": "0",
+          "TZ": "UTC"
+        },
+        "inherit_environment": true,
+        "input_artifacts": [
+          {
+            "bytes": 512,
+            "path": "baseline/minimal.exe",
+            "sha256": "afb1bcd812caa45095075a60ff49599c7d5e767c7732226c3e0007708cb198a2"
+          }
+        ],
+        "max_stderr_bytes": 65536,
+        "max_stdout_bytes": 1048576,
+        "measured_runs": 15,
+        "notes": [
+          "runner executes inside the pinned container",
+          "each sample is a fresh direct upstream process",
+          "OS cache is warmed but not forcibly controlled"
+        ],
+        "producer": {
+          "build_profile": "Release -O3 -DNDEBUG",
+          "implementation": "DIE-engine Linux Qt5 CMake oracle",
+          "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+          "source_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+          "toolchain": "GCC 13.3.0; Qt 5.15.13; CMake 3.28.3"
+        },
+        "require_deterministic_output": true,
+        "require_peak_rss": true,
+        "timeout_ms": 10000,
+        "warmup_runs": 3,
+        "work_bytes": 512,
+        "work_definition": "minimal PE32 input bytes scanned once with JSON rendering",
+        "working_directory": "."
+      },
+      {
+        "benchmark_id": "upstream.cli-baseline-batch-json.v1",
+        "benchmark_plan_schema": 1,
+        "cache_state": "warm",
+        "command": [
+          "/opt/die-build/src/console/diec",
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/bench/baseline"
+        ],
+        "environment": {
+          "LC_ALL": "C",
+          "MALLOC_ARENA_MAX": "1",
+          "QT_HASH_SEED": "0",
+          "TZ": "UTC"
+        },
+        "inherit_environment": true,
+        "input_artifacts": [
+          {
+            "bytes": 0,
+            "path": "baseline/empty.bin",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "bytes": 31,
+            "path": "baseline/plain.txt",
+            "sha256": "22b217bfba5795d402092bf48bfb28146c0ee4dd0036fd4d0c93e25bbe65e998"
+          },
+          {
+            "bytes": 64,
+            "path": "baseline/minimal.elf",
+            "sha256": "e717b57a377ce3486a932130454ee070fdd495d3c23a9d5a8a446ad32772e704"
+          },
+          {
+            "bytes": 52,
+            "path": "baseline/minimal-elf32.elf",
+            "sha256": "75952e884b6d6d4c4ed1023df8a126a816973178160bea43b482ceec0fc1e75d"
+          },
+          {
+            "bytes": 512,
+            "path": "baseline/minimal.exe",
+            "sha256": "afb1bcd812caa45095075a60ff49599c7d5e767c7732226c3e0007708cb198a2"
+          },
+          {
+            "bytes": 512,
+            "path": "baseline/minimal-pe64.exe",
+            "sha256": "63c706607b3d34624313df7356702ff99ce4080f09e6b07ec4b01dfe4dd5e1c3"
+          },
+          {
+            "bytes": 104,
+            "path": "baseline/minimal.macho",
+            "sha256": "60a536a7dff9522a8e4af5ab73ff742ebeffc33a34837beb9c5ac4a1a7eb5968"
+          },
+          {
+            "bytes": 84,
+            "path": "baseline/minimal-macho32.macho",
+            "sha256": "496974f2f66ce0be4a7ef4e05ddaaf1872b5ba6f4a772f729e86de3f9d4cc3b5"
+          },
+          {
+            "bytes": 360,
+            "path": "baseline/minimal-fat.macho",
+            "sha256": "ea343ae7de8a9ee2bdc00f0cc7f48f420e8609bd60510c927a75bed7b3470a67"
+          },
+          {
+            "bytes": 112,
+            "path": "baseline/minimal.dex",
+            "sha256": "57cfe8878be74cad8bbc5e409b0964d4b13c35e8783d931ef7366881f8d548c2"
+          },
+          {
+            "bytes": 59,
+            "path": "baseline/Minimal.class",
+            "sha256": "ed3af378f328281c21e5b56e495377c3e68ba667643c79abc53ad30edb685b9e"
+          },
+          {
+            "bytes": 17,
+            "path": "baseline/minimal.pyc",
+            "sha256": "cb3c0319002c008adb69215aa4559e60ad7e333e33eed58ae918e0d32e241ecd"
+          },
+          {
+            "bytes": 72,
+            "path": "baseline/pixel.png",
+            "sha256": "9ba3d63896d81dc3a55b80c1165fefa4523888b67fcbd4a95cabd3d0ab7e66e2"
+          },
+          {
+            "bytes": 56,
+            "path": "baseline/pixel.jpg",
+            "sha256": "69d4a48ed33b98f972561aa738a91b1d8cf76c876adee54d76e7b326df9276c5"
+          },
+          {
+            "bytes": 58,
+            "path": "baseline/pixel.bmp",
+            "sha256": "f7cbd816abfb19030d23b8de5435d0141443665a81ed5ba12114c70b5f53b610"
+          },
+          {
+            "bytes": 331,
+            "path": "baseline/minimal.pdf",
+            "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92"
+          },
+          {
+            "bytes": 151,
+            "path": "baseline/payload.zip",
+            "sha256": "c29a3445c289e061a11d4675b36763657d4e550c4941821ea74905593a29acfe"
+          },
+          {
+            "bytes": 350,
+            "path": "baseline/minimal.apk",
+            "sha256": "300eec1017b47ac5878bf21da0306b61a4a0dfc9e8249e9f0ff7e40c458ef557"
+          },
+          {
+            "bytes": 324,
+            "path": "baseline/minimal.jar",
+            "sha256": "a081dac459835af70f69de96b705764dc9b06bc356edcaa9857a8d6b630a7747"
+          },
+          {
+            "bytes": 300,
+            "path": "baseline/minimal.ipa",
+            "sha256": "142e16c353a59e152c6ee0b25d783dba0d6f6e9a8ca81b73d0d925dee1d54264"
+          },
+          {
+            "bytes": 21,
+            "path": "baseline/minimal.rar",
+            "sha256": "f7a8865876257ca1bc0ea30fbe8d1e82d3355ff7509c0dbc1ca01fe202795728"
+          },
+          {
+            "bytes": 36864,
+            "path": "baseline/minimal.iso",
+            "sha256": "8723a9cc5cd319414b88d32dcce58e8dc7668b927553f8cdf0bdf4f52f4da90a"
+          },
+          {
+            "bytes": 2048,
+            "path": "baseline/payload.tar",
+            "sha256": "3af89e8d0f52e951a8ea4ad0bef3d10cf3464c06a5c7a0fc451abc0583289f2f"
+          },
+          {
+            "bytes": 54,
+            "path": "baseline/payload.txt.gz",
+            "sha256": "f51df8f3b04ac2120ba283fbad7f22ec9aefce5a07c38a335deb771be560b39a"
+          },
+          {
+            "bytes": 512,
+            "path": "baseline/minimal.cfbf",
+            "sha256": "bb973ef09e2e3bf7e6510e060960dd10a598c5595bfbe08fabc177d0b0911d37"
+          },
+          {
+            "bytes": 46,
+            "path": "baseline/tone.wav",
+            "sha256": "373324023416a5dc3809e647e041fc48a13db20648d5782ac989cba17014203b"
+          },
+          {
+            "bytes": 4971,
+            "path": "baseline/manifest.json",
+            "sha256": "f5adabeedeaf3bb69b8e52f8de20efd0f0b87bd4dcd247610d4e876b9266f329"
+          }
+        ],
+        "max_stderr_bytes": 65536,
+        "max_stdout_bytes": 4194304,
+        "measured_runs": 15,
+        "notes": [
+          "runner executes inside the pinned container",
+          "each sample is a fresh direct upstream process",
+          "OS cache is warmed but not forcibly controlled"
+        ],
+        "producer": {
+          "build_profile": "Release -O3 -DNDEBUG",
+          "implementation": "DIE-engine Linux Qt5 CMake oracle",
+          "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+          "source_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+          "toolchain": "GCC 13.3.0; Qt 5.15.13; CMake 3.28.3"
+        },
+        "require_deterministic_output": true,
+        "require_peak_rss": true,
+        "timeout_ms": 10000,
+        "warmup_runs": 3,
+        "work_bytes": 48065,
+        "work_definition": "all files in generated baseline directory, including manifest.json, scanned once with JSON rendering",
+        "working_directory": "."
+      },
+      {
+        "benchmark_id": "upstream.archive-depth16.v1",
+        "benchmark_plan_schema": 1,
+        "cache_state": "warm",
+        "command": [
+          "/opt/die-build/src/console/diec-upstream-benchmark-harness",
+          "--archive",
+          "/bench/archive/depth-16.zip"
+        ],
+        "environment": {
+          "LC_ALL": "C",
+          "MALLOC_ARENA_MAX": "1",
+          "QT_HASH_SEED": "0",
+          "TZ": "UTC"
+        },
+        "inherit_environment": true,
+        "input_artifacts": [
+          {
+            "bytes": 2275,
+            "path": "archive/depth-16.zip",
+            "sha256": "ff7eb61595bf6b055d4125a8b2f32ddb2ffc977a9d3d410e6d77d8c2727206cc"
+          }
+        ],
+        "max_stderr_bytes": 65536,
+        "max_stdout_bytes": 4096,
+        "measured_runs": 15,
+        "notes": [
+          "runner executes inside the pinned container",
+          "each sample is a fresh direct upstream process",
+          "OS cache is warmed but not forcibly controlled"
+        ],
+        "producer": {
+          "build_profile": "Release -O3 -DNDEBUG",
+          "implementation": "DIE-engine Linux Qt5 CMake oracle",
+          "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+          "source_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+          "toolchain": "GCC 13.3.0; Qt 5.15.13; CMake 3.28.3"
+        },
+        "require_deterministic_output": true,
+        "require_peak_rss": true,
+        "timeout_ms": 10000,
+        "warmup_runs": 3,
+        "work_bytes": 19816,
+        "work_definition": "cumulative uncompressed member bytes traversed through a single-member 16-level store-only ZIP chain",
+        "working_directory": "."
+      }
+    ],
+    "schema_version": 1,
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "plan_suite_sha256": "f93672c9603db16050047095f15d5f5ea6d9d58663b4574ed901f819f0106e1a",
+  "schema_version": 1,
+  "targets_frozen": false,
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

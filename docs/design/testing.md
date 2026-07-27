@@ -643,10 +643,13 @@ Phase 0 已提供
 [`run_process_benchmark.py`](../../tools/benchmark/run_process_benchmark.py)
 和对应的[调研记录](../research/process-benchmark-runner.md)，固定 strict plan、
 输入/可执行文件 hash、bounded stdout/stderr、direct-process wall time/peak RSS
-及机器报告。它尚未固定 upstream command/host、noise、阈值或默认限制，不构成
-性能基线。
+及机器报告。固定 Linux Qt5 的五层 warm-process 描述性基线、cgroup 和 noise
+calibration 见
+[`upstream-performance-baseline.md`](../research/upstream-performance-baseline.md)。
+它尚无 Rust 成对数据、cold/affinity/跨平台/size 证据，也未冻结阈值或默认限制。
 
-回归阈值在 runner noise calibration 和首个 Rust vertical slice 后冻结。阈值必须
+回归阈值在首个 Rust vertical slice 形成同 bytes/options 成对报告后冻结。小于
+50 ms median 的 direct-process case 当前不具备 regression eligibility；阈值必须
 同时约束 latency、throughput 和 peak memory，不能用速度提升掩盖内存失控。显著
 变化先保存 profiler/trace，再优化；benchmark 不是普通 CI 的 correctness oracle。
 

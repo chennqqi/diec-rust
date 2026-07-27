@@ -90,6 +90,7 @@ subprocess。进程隔离可作为服务部署的第二层防线，不能替代 
 - [`archive-limit-behavior.md`](../../research/archive-limit-behavior.md)
 - [`archive-limit-engine-qt5.json`](../../research/data/archive-limit-engine-qt5.json)
 - [`archive-limit-corpus.json`](../../research/data/archive-limit-corpus.json)
+- [`upstream-performance-baseline.md`](../../research/upstream-performance-baseline.md)
 - `XScanEngine@dfe4a419.../xscanengine.cpp::scanProcess`
 - [`architecture.md` §11](../architecture.md#11-嵌套扫描-work-queue)
 - [`api.md` §8—10](../api.md#8-scanlimits)
