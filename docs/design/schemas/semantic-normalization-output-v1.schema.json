@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://diec-rust.invalid/schemas/semantic-normalization-output-v1.schema.json",
+  "title": "DIEC audited semantic normalization output v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "normalization_schema",
+    "normalizer",
+    "run_identity",
+    "case_id",
+    "input_artifact",
+    "policy_artifact",
+    "rules_applied",
+    "normalized_projection_sha256",
+    "semantic"
+  ],
+  "properties": {
+    "normalization_schema": {
+      "const": 1
+    },
+    "normalizer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version"
+      ],
+      "properties": {
+        "name": {
+          "const": "diec-semantic-normalizer"
+        },
+        "version": {
+          "const": 1
+        }
+      }
+    },
+    "run_identity": {
+      "$ref": "#/$defs/runIdentity"
+    },
+    "case_id": {
+      "$ref": "#/$defs/caseId"
+    },
+    "input_artifact": {
+      "$ref": "#/$defs/sourceArtifact"
+    },
+    "policy_artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sha256",
+        "canonical_policy_sha256"
+      ],
+      "properties": {
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "canonical_policy_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "rules_applied": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/appliedRule"
+      }
+    },
+    "normalized_projection_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "semantic": true
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "caseId": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+    },
+    "runIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "platform",
+        "oracle_profile",
+        "upstream_commit",
+        "semantic_schema"
+      ],
+      "properties": {
+        "platform": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+-[a-z0-9][a-z0-9_]*$"
+        },
+        "oracle_profile": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+        },
+        "upstream_commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "semantic_schema": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "sourceArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sha256",
+        "canonical_projection_sha256"
+      ],
+      "properties": {
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "canonical_projection_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "appliedRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "json_pointer",
+        "transform",
+        "replacements",
+        "input_value_sha256",
+        "output_value_sha256",
+        "evidence",
+        "contract"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^NORM-[0-9]{4,}$"
+        },
+        "json_pointer": {
+          "type": "string",
+          "pattern": "^/(?!$)"
+        },
+        "transform": {
+          "enum": [
+            "qobject_address_v1",
+            "profiling_elapsed_ms_v1"
+          ]
+        },
+        "replacements": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "input_value_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "output_value_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "evidence": {
+          "type": "string",
+          "pattern": "^docs/research/"
+        },
+        "contract": {
+          "type": "string",
+          "pattern": "^docs/design/"
+        }
+      }
+    }
+  }
+}

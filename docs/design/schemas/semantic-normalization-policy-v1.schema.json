@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://diec-rust.invalid/schemas/semantic-normalization-policy-v1.schema.json",
+  "title": "DIEC semantic normalization policy v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "policy_schema",
+    "policy_identity",
+    "case_id",
+    "rules"
+  ],
+  "properties": {
+    "policy_schema": {
+      "const": 1
+    },
+    "policy_identity": {
+      "$ref": "#/$defs/runIdentity"
+    },
+    "case_id": {
+      "$ref": "#/$defs/caseId"
+    },
+    "rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/rule"
+      }
+    }
+  },
+  "$defs": {
+    "caseId": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+    },
+    "runIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "platform",
+        "oracle_profile",
+        "upstream_commit",
+        "semantic_schema"
+      ],
+      "properties": {
+        "platform": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+-[a-z0-9][a-z0-9_]*$"
+        },
+        "oracle_profile": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+        },
+        "upstream_commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "semantic_schema": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "json_pointer",
+        "transform",
+        "expected_replacements",
+        "expected_normalized_value",
+        "evidence",
+        "contract"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^NORM-[0-9]{4,}$"
+        },
+        "json_pointer": {
+          "type": "string",
+          "pattern": "^/(?!$)"
+        },
+        "transform": {
+          "enum": [
+            "qobject_address_v1",
+            "profiling_elapsed_ms_v1"
+          ]
+        },
+        "expected_replacements": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "expected_normalized_value": {
+          "type": "string"
+        },
+        "evidence": {
+          "type": "string",
+          "pattern": "^docs/research/"
+        },
+        "contract": {
+          "type": "string",
+          "pattern": "^docs/design/"
+        }
+      }
+    }
+  }
+}

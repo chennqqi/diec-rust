@@ -4,16 +4,28 @@ Status: Draft
 
 Last updated: 2026-07-27
 
-These schemas define the Phase 0 evidence-bound waiver sub-pipeline:
+These schemas define two Phase 0 compatibility sub-pipelines.
+
+The evidence-bound waiver schemas are:
 
 - [`difference-input-report-v1.schema.json`](difference-input-report-v1.schema.json)
   describes executed cases and exact semantic differences;
 - [`difference-waiver-registry-v1.schema.json`](difference-waiver-registry-v1.schema.json)
   describes approved waivers for one exact run identity;
 - [`difference-waiver-audit-v1.schema.json`](difference-waiver-audit-v1.schema.json)
-  describes pass/fail audits and infrastructure errors;
-- [`examples/`](examples/) contains synthetic, non-production inputs and their
-  reproducible audit.
+  describes pass/fail audits and infrastructure errors.
+
+The audited semantic-normalization schemas are:
+
+- [`semantic-projection-v1.schema.json`](semantic-projection-v1.schema.json)
+  wraps one versioned case projection;
+- [`semantic-normalization-policy-v1.schema.json`](semantic-normalization-policy-v1.schema.json)
+  binds exact identity, case, JSON Pointer and approved transform;
+- [`semantic-normalization-output-v1.schema.json`](semantic-normalization-output-v1.schema.json)
+  records the derived value and input, policy, target-value and output hashes.
+
+[`examples/`](examples/) contains synthetic, non-production inputs and
+reproducible outputs for both sub-pipelines.
 
 The reference validator is
 [`tools/compat/validate_difference_waivers.py`](../../../tools/compat/validate_difference_waivers.py).
@@ -64,3 +76,23 @@ The validator records registry/report hashes and verifies those input files did
 not change during the audit. The full differential harness must additionally
 rehash the content-addressed raw artifacts referenced by execution records;
 that integration is not claimed by this v1 sub-pipeline.
+
+## Normalization semantics
+
+The reference normalizer is
+[`tools/compat/normalize_semantic_projection.py`](../../../tools/compat/normalize_semantic_projection.py).
+Its JSON Pointers are relative to the input `semantic` value. v1 has a closed
+transform set:
+
+- `qobject_address_v1`;
+- `profiling_elapsed_ms_v1`.
+
+Every rule also supplies the exact complete value expected after
+normalization and the exact replacement count. A missing/non-string target,
+identity or case drift, unknown field/transform, changed surrounding text, or
+replacement-count drift is an infrastructure error. Input and policy files
+are re-read before output is written and may never be overwritten by it.
+
+This envelope does not define the complete DIEC semantic result model. It is a
+strict executable slice that can be integrated only after that model and the
+full differential report are frozen.

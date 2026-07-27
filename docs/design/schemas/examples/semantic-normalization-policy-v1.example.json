@@ -1,0 +1,30 @@
+{
+  "case_id": "synthetic.normalization.example",
+  "policy_identity": {
+    "oracle_profile": "cmake-qt5",
+    "platform": "linux-x86_64",
+    "semantic_schema": 1,
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "policy_schema": 1,
+  "rules": [
+    {
+      "contract": "docs/design/testing.md",
+      "evidence": "docs/research/format-host-api-runtime-differential.md",
+      "expected_normalized_value": "PE_Script(<address>): ReferenceError",
+      "expected_replacements": 1,
+      "id": "NORM-0001",
+      "json_pointer": "/diagnostics/0/message",
+      "transform": "qobject_address_v1"
+    },
+    {
+      "contract": "docs/design/testing.md",
+      "evidence": "docs/research/cli-option-behavior.md",
+      "expected_normalized_value": "one.1.sg: [<elapsed> ms]",
+      "expected_replacements": 1,
+      "id": "NORM-0002",
+      "json_pointer": "/profiling/0",
+      "transform": "profiling_elapsed_ms_v1"
+    }
+  ]
+}

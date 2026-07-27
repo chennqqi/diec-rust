@@ -1,0 +1,26 @@
+{
+  "case_id": "synthetic.normalization.example",
+  "projection_schema": 1,
+  "run_identity": {
+    "oracle_profile": "cmake-qt5",
+    "platform": "linux-x86_64",
+    "semantic_schema": 1,
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "semantic": {
+    "detections": [
+      {
+        "name": "Example",
+        "offset": 16
+      }
+    ],
+    "diagnostics": [
+      {
+        "message": "PE_Script(0x7ffABC): ReferenceError"
+      }
+    ],
+    "profiling": [
+      "one.1.sg: [12 ms]"
+    ]
+  }
+}

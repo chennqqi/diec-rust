@@ -1,0 +1,61 @@
+{
+  "case_id": "synthetic.normalization.example",
+  "input_artifact": {
+    "canonical_projection_sha256": "9dd10dd5bc3a636e2f5318813188dcd08121bc4c1e86e007502ae7350b23d64b",
+    "sha256": "6bb8afa2e95c9acc39621bc514095641ac1b99c6b8b5e60e227d7019cc4aedd2"
+  },
+  "normalization_schema": 1,
+  "normalized_projection_sha256": "f95dcd8d21f4bb6c5102d45cb451c09352b01491e11f9b58b2786b482c9f5351",
+  "normalizer": {
+    "name": "diec-semantic-normalizer",
+    "version": 1
+  },
+  "policy_artifact": {
+    "canonical_policy_sha256": "6091a940dc3b94f6bc89c339d59498c70f1b92d257e3a6a6577d1b7ef7c778f6",
+    "sha256": "e5af991660ffe2a8c9ab7fe52f60eb1539b98050256f1f8ebdec52542d3210fc"
+  },
+  "rules_applied": [
+    {
+      "contract": "docs/design/testing.md",
+      "evidence": "docs/research/format-host-api-runtime-differential.md",
+      "id": "NORM-0001",
+      "input_value_sha256": "4dd126dd094cdb7a32f890af1307c14f80191419f91e2e6bc2939f23afeaa2c3",
+      "json_pointer": "/diagnostics/0/message",
+      "output_value_sha256": "aea9b9152b0766ebd2425e1932a1203a52fe5403b30a9fe540ddd5db81b6d772",
+      "replacements": 1,
+      "transform": "qobject_address_v1"
+    },
+    {
+      "contract": "docs/design/testing.md",
+      "evidence": "docs/research/cli-option-behavior.md",
+      "id": "NORM-0002",
+      "input_value_sha256": "b64c64aee2b1d6fc129145ccbe6248ec58f64499160501b64890626e2a2129ed",
+      "json_pointer": "/profiling/0",
+      "output_value_sha256": "82599fee253d1d03829a9501cb46848843c9f65032e8f1375d47e9e7038d4e0f",
+      "replacements": 1,
+      "transform": "profiling_elapsed_ms_v1"
+    }
+  ],
+  "run_identity": {
+    "oracle_profile": "cmake-qt5",
+    "platform": "linux-x86_64",
+    "semantic_schema": 1,
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "semantic": {
+    "detections": [
+      {
+        "name": "Example",
+        "offset": 16
+      }
+    ],
+    "diagnostics": [
+      {
+        "message": "PE_Script(<address>): ReferenceError"
+      }
+    ],
+    "profiling": [
+      "one.1.sg: [<elapsed> ms]"
+    ]
+  }
+}

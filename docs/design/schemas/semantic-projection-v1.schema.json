@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://diec-rust.invalid/schemas/semantic-projection-v1.schema.json",
+  "title": "DIEC semantic projection input v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "projection_schema",
+    "run_identity",
+    "case_id",
+    "semantic"
+  ],
+  "properties": {
+    "projection_schema": {
+      "const": 1
+    },
+    "run_identity": {
+      "$ref": "#/$defs/runIdentity"
+    },
+    "case_id": {
+      "$ref": "#/$defs/caseId"
+    },
+    "semantic": true
+  },
+  "$defs": {
+    "caseId": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+    },
+    "runIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "platform",
+        "oracle_profile",
+        "upstream_commit",
+        "semantic_schema"
+      ],
+      "properties": {
+        "platform": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+-[a-z0-9][a-z0-9_]*$"
+        },
+        "oracle_profile": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+        },
+        "upstream_commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "semantic_schema": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    }
+  }
+}

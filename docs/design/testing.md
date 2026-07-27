@@ -325,6 +325,26 @@ semantic model 至少比较：
 
 normalizer 的每条变换有 unit/golden test。新增变换按兼容策略变更评审。
 
+Phase 0 已实现严格的最小可执行子流水线
+[`normalize_semantic_projection.py`](../../tools/compat/normalize_semantic_projection.py)，
+对应版本化
+[`semantic-projection-v1.schema.json`](schemas/semantic-projection-v1.schema.json)、
+[`semantic-normalization-policy-v1.schema.json`](schemas/semantic-normalization-policy-v1.schema.json)
+和
+[`semantic-normalization-output-v1.schema.json`](schemas/semantic-normalization-output-v1.schema.json)。
+policy 整体绑定精确 platform/oracle profile/upstream commit/semantic schema/case，
+每条规则绑定相对 `semantic` 的单一 JSON Pointer、封闭 transform、精确替换次数、
+规范化后的完整字符串以及 research/contract 文件。v1 只实现已有证据的
+`qobject_address_v1` 和 `profiling_elapsed_ms_v1`；目标缺失、非字符串、身份漂移、
+未知字段/transform、替换次数或周边文本变化全部按 infrastructure error 拒绝。
+派生输出记录原始 input/policy bytes hash、canonical input/policy hash、每个目标的
+前后 hash 和完整 normalized projection hash，并拒绝覆盖或运行中变化的输入。
+
+该 v1 `semantic-projection` 是规范化 envelope，不等于完整 semantic model；
+它也不解析 raw execution、验证 content-addressed raw artifact，或完成两侧比较。
+完整差分流水线仍须把 execution/framing、完整 semantic schema、raw artifact
+rehash、normalizer、comparator 和 waiver audit 接入同一报告。
+
 format HostApi 的 argument conformance case 必须同时断言语义返回、异常四元组
 （name/message/line/backtrace）和 stderr。特别覆盖 Qt 5/Qt 6 对 extra arguments、
 缺少必需参数、C++ 默认参数，以及 `qint64` 的 string/boolean/null/undefined
@@ -643,10 +663,17 @@ Phase 0 已先冻结并实现 waiver 子流水线的三个 v1 schema：
 - [`difference-waiver-registry-v1.schema.json`](schemas/difference-waiver-registry-v1.schema.json)；
 - [`difference-waiver-audit-v1.schema.json`](schemas/difference-waiver-audit-v1.schema.json)。
 
-它们不冒充完整 differential report：input report 只携带 executed case、精确
-semantic difference、两侧 raw stream hash 和 canonical fingerprint。full harness
-仍需把 execution、normalization、semantic projection 和 content-addressed raw
-artifact manifest 接入同一顶层 report。
+规范化子流水线同时冻结并实现三个 v1 schema：
+
+- [`semantic-projection-v1.schema.json`](schemas/semantic-projection-v1.schema.json)；
+- [`semantic-normalization-policy-v1.schema.json`](schemas/semantic-normalization-policy-v1.schema.json)；
+- [`semantic-normalization-output-v1.schema.json`](schemas/semantic-normalization-output-v1.schema.json)。
+
+这些子 schema 不冒充完整 differential report：waiver input 只携带 executed case、
+精确 semantic difference、两侧 raw stream hash 和 canonical fingerprint；
+normalization input 只是任意 semantic value 的版本化 envelope，不等于完整
+semantic model。full harness 仍需把 execution、framing、完整 semantic projection、
+comparison 和 content-addressed raw artifact manifest 接入同一顶层 report。
 
 ## 21. Phase 门禁
 
@@ -701,8 +728,9 @@ tested、exact、semantic、waived 和 unsupported 数量。
 - 当前 corpus 的格式覆盖仍不足以满足 capability matrix。
 - ADR 0006 已提议 rquickjs/QuickJS-NG，但 acceptance conditions 和全库
   execution conformance 未通过。
-- waiver v1 schema/standalone validator 已实现；normalizer schema、semantic
-  projection、raw artifact rehash 和 full report integration 尚未实现。
+- waiver v1 与最小 semantic-normalizer v1 子流水线已实现；完整 semantic model、
+  raw execution projection、raw artifact rehash、两侧 comparator 和 full report
+  integration 尚未实现。
 - benchmark runner/noise/阈值和默认资源 limits 尚未冻结。
 - archive/decompression sanitizer 与恶意语料隔离设施尚未建立。
 - CI provider、artifact retention 和 restricted corpus 权限尚未决定。
