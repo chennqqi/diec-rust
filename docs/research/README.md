@@ -40,6 +40,9 @@ Phase 0 计划形成：
 - [`runtime-rule-assets-license.md`](runtime-rule-assets-license.md)：`db`/`db_extra`/
   `db_custom` 的 2,268 文件分发身份、根 MIT/文件级标记、归属信号和未关闭法律
   评审（Draft）。
+- [`process-benchmark-runner.md`](process-benchmark-runner.md)：严格 plan、输入/
+  executable 身份、bounded output、wall time/peak RSS 和统计报告的跨平台进程级
+  benchmark 契约（Draft）。
 - [`upstream-build-baseline.md`](upstream-build-baseline.md)：固定 Linux Qt5/qmake CLI 构建与行为实验（Draft）。
 - [`upstream-cmake-differential.md`](upstream-cmake-differential.md)：官方 CMake CLI 构建及与 qmake 的原始输出差分（Draft）。
 - [`upstream-qt6-differential.md`](upstream-qt6-differential.md)：固定 Qt 6 CMake CLI 构建、Qt 5/Qt 6 原始差分与规则 warning 最小化（Draft）。

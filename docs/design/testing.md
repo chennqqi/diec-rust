@@ -633,6 +633,13 @@ debug 与 release、Windows `/MD`/`/MT` 支持矩阵按 [`c-abi.md`](c-abi.md) �
 upstream 与 Rust 使用相同 bytes/options/database；无法等价的 case 不用于“更快”
 结论。冷 cache 如果不能可靠清除，明确标为 uncontrolled。
 
+Phase 0 已提供
+[`run_process_benchmark.py`](../../tools/benchmark/run_process_benchmark.py)
+和对应的[调研记录](../research/process-benchmark-runner.md)，固定 strict plan、
+输入/可执行文件 hash、bounded stdout/stderr、direct-process wall time/peak RSS
+及机器报告。它尚未固定 upstream command/host、noise、阈值或默认限制，不构成
+性能基线。
+
 回归阈值在 runner noise calibration 和首个 Rust vertical slice 后冻结。阈值必须
 同时约束 latency、throughput 和 peak memory，不能用速度提升掩盖内存失控。显著
 变化先保存 profiler/trace，再优化；benchmark 不是普通 CI 的 correctness oracle。
@@ -856,7 +863,8 @@ tested、exact、semantic、waived 和 unsupported 数量。
   双侧 comparator + exact waiver audit v1、hash-bound typed legacy multi-case
   report 已实现；完整 semantic model 仍缺 engine-only/modern canonical
   variants，真实跨平台/release integration 尚未实现。
-- benchmark runner/noise/阈值和默认资源 limits 尚未冻结。
+- process benchmark runner 已有 contract test；upstream 基线、noise、阈值、
+  默认资源 limits 和 release integration 尚未冻结。
 - archive/decompression sanitizer 与恶意语料隔离设施尚未建立。
 - CI provider、artifact retention 和 restricted corpus 权限尚未决定。
 

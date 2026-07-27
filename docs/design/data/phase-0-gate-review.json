@@ -199,6 +199,7 @@
       "title": "performance baseline, benchmark environment, and resource targets are not frozen",
       "owner": "performance",
       "status": "open",
+      "progress_evidence": "docs/research/process-benchmark-runner.md and tools/tests/test_run_process_benchmark.py establish a strict hash-bound process benchmark contract with bounded output, wall time, peak RSS, and machine-readable statistics",
       "closure_evidence": "reviewed benchmark identity, baseline report, and measurable latency, memory, size, and resource-limit targets"
     }
   ]

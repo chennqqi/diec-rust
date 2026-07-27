@@ -85,7 +85,7 @@
       "blocking_items": [
         "ADR 0004 remains Proposed",
         "Windows and macOS oracles are not pinned",
-        "benchmark runner, limits, and release integration are incomplete"
+        "upstream benchmark baseline, noise, limits, and release integration are incomplete"
       ]
     },
     {

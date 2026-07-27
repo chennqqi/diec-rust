@@ -27,7 +27,7 @@ Phase 0 设计门禁，不把 Phase 2—6 的实现期风险误当成当前必�
 | `P0-EXIT-004` | 架构、规则 runtime、ABI、测试方案完成评审 | Not ready | 五份必需设计已进入 In Review、但未获得评审结论；十个有效 ADR 均为 Proposed |
 | `P0-EXIT-005` | 风险清单完整 | Ready for review | 20 项风险均含触发、缓解、验证和关闭条件，但文档仍需评审 |
 | `P0-EXIT-006` | 后续阶段有可测完成条件 | Ready for review | `ROADMAP.md` 与 `testing.md` 已给出 Phase 1—6 的量化门禁 |
-| `P0-EXIT-007` | 性能基线与资源目标得到回答 | Not ready | benchmark 方法已设计，但 runner、环境、上游基线、阈值和默认资源限制未冻结 |
+| `P0-EXIT-007` | 性能基线与资源目标得到回答 | Not ready | process runner 和报告契约已有测试；环境、上游基线、noise、阈值和默认资源限制未冻结 |
 
 `Ready for review` 不等于 `Accepted`，也不允许把 Roadmap 状态改为 `DONE`。
 
@@ -69,7 +69,7 @@ Accepted。
 | `P0-BLOCK-003` | Open | 十个 ADR 已 review-ready、但 acceptance-ready 均为 false；仍需 Accepted/Rejected/Superseded 评审结论 |
 | `P0-BLOCK-004` | Open | runtime `db*` 2,268 文件身份及根 MIT/marker 已闭合；仍需 PNG/历史贡献、其余 source closure 和发布责任人书面评审 |
 | `P0-BLOCK-005` | Open | 固定平台基线及无 Phase 0 missing row 的 coverage report |
-| `P0-BLOCK-006` | Open | 固定环境的上游 benchmark、可测 latency/memory/size 目标和默认资源限制 |
+| `P0-BLOCK-006` | Open | strict process runner、bounded output 和 wall time/peak RSS 报告已有证据；仍需固定环境的上游 benchmark、noise calibration、可测 latency/memory/size 目标和默认资源限制 |
 
 ## 下一步顺序
 

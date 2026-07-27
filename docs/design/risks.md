@@ -364,7 +364,9 @@ baseline 的变更都要检查本表。
 - **触发**：只报告最好值；混淆 database load/I/O/scan；在不同输入或 cache 条件
   比较；速度换取无界内存。
 - **缓解**：固定 runner/corpus/options；分阶段 benchmark；median/p95/MAD 和 peak
-  memory；profile before optimize。
+  memory；profile before optimize。进程级 runner 已固定 strict plan、artifact/
+  executable hash、bounded output 和机器报告，证据见
+  [`process-benchmark-runner.md`](../research/process-benchmark-runner.md)。
 - **验证**：noise calibration 后冻结回归阈值，持续 trend；upstream 同条件对比。
 - **关闭**：Phase 6 目标及阈值通过。阈值未冻结前不得声称性能更优。
 
