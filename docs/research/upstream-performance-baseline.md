@@ -128,9 +128,11 @@ duration 顺序和 RSS。宿主临时路径不写入提交报告。
   session 内的单次 warm scan。Phase 1 需要 in-process benchmark port。
 - 上游没有本项目的 C ABI，因此 staticlib C-call overhead 只能在 Rust 实现出现后
   与 Rust direct-call/control 成对测量，不能伪造 upstream exact case。
-- 尚缺 Linux cold/affinity 复验、Windows/macOS 基线、动态依赖/部署 closure size、
-  Rust 相同 bytes/options 的成对报告，以及评审后的 latency/p95/RSS/size/default
-  limit targets。
+- 固定 Linux Qt5 的 ELF、动态依赖闭包和规则 size 已另行采集，见
+  [`upstream-deployment-size.md`](upstream-deployment-size.md)；它不等于跨平台
+  发行包口径。
+- 尚缺 Linux cold/affinity 复验、Windows/macOS 基线、Rust 相同 bytes/options
+  与 size 的成对报告，以及评审后的 latency/p95/RSS/size/default limit targets。
 
 只有上述成对证据存在后，才能冻结“Rust 相对固定 upstream 的改善百分比”和发布
 回归阈值。

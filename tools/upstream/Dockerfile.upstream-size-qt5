@@ -1,0 +1,14 @@
+ARG BASE_IMAGE=diec-rust/upstream-benchmark-qt5:74eaf505@sha256:a5b33708eb148591d127041b6a54d05d68f8dd24bea7855e95ea88715d0bf8c5
+FROM ${BASE_IMAGE}
+
+COPY benchmark/inspect_upstream_deployment.py \
+    /opt/diec-size/inspect_upstream_deployment.py
+
+RUN set -eux; \
+    python3 /opt/diec-size/inspect_upstream_deployment.py \
+        >/tmp/upstream-deployment-size.json; \
+    test -s /tmp/upstream-deployment-size.json
+
+LABEL org.opencontainers.image.revision="74eaf505c250ab47e709024e9dc41657cd8f2254"
+LABEL org.opencontainers.image.source="https://github.com/horsicq/DIE-engine"
+LABEL org.opencontainers.image.description="Pinned Linux Qt5 upstream deployment-size environment"

@@ -1,0 +1,320 @@
+{
+  "analyzer": {
+    "image_path": "/opt/diec-size/inspect_upstream_deployment.py",
+    "image_sha256": "93d09f465d005b61309fb99ba6f6546c7333dce75b7d7f5e1bd0e080a7216310",
+    "repository_path": "tools/benchmark/inspect_upstream_deployment.py",
+    "repository_sha256": "93d09f465d005b61309fb99ba6f6546c7333dce75b7d7f5e1bd0e080a7216310"
+  },
+  "baseline_scope": "descriptive_upstream_only",
+  "comparison_contract": {
+    "limitations": [
+      "binary bytes alone omit dynamic libraries and runtime rules",
+      "full closure includes OS libraries that a package manager may supply",
+      "a release bundle may add metadata, licenses, launchers, or compression",
+      "this Linux x86_64 result cannot represent other target platforms"
+    ],
+    "primary_metrics": [
+      "binary_and_rules_bytes",
+      "full_closure_and_rules_bytes"
+    ]
+  },
+  "environment": {
+    "image": "diec-rust/upstream-size-qt5:74eaf505",
+    "image_identity": {
+      "id": "sha256:4d8c83178ae3a6ddc96e5bfc96fb4324f0ef1d16372b7e74ef9c2d92b958bef5",
+      "repo_digests": [
+        "diec-rust/upstream-size-qt5@sha256:4d8c83178ae3a6ddc96e5bfc96fb4324f0ef1d16372b7e74ef9c2d92b958bef5"
+      ],
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    },
+    "network": "none"
+  },
+  "failures": [],
+  "measurement": {
+    "binary": {
+      "bytes": 8248008,
+      "direct_needed": [
+        "libQt5Script.so.5",
+        "libQt5Core.so.5",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libc.so.6"
+      ],
+      "path": "/opt/die-build/src/console/diec",
+      "sha256": "da1fab49f7ba5970d1fc1c7fe3d4f380cf5e8775dd8097207e7b3c30f08236cf"
+    },
+    "dynamic_dependencies": {
+      "accounting": "unique resolved real files, symlink aliases deduplicated",
+      "closure_sha256": "96e11fd18f8f1d289a345ecacc10f328bd7b3e2148dcfca29a04824d6e2189b2",
+      "dependencies": [
+        {
+          "bytes": 236616,
+          "direct": false,
+          "real_path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "requested_names": [
+            "ld-linux-x86-64.so.2"
+          ],
+          "resolved_paths": [
+            "/lib64/ld-linux-x86-64.so.2"
+          ],
+          "sha256": "1cd555ac46b7887edeaf3c42aac5408c8135e52f6b37870da2cf82d5fe14e829"
+        },
+        {
+          "bytes": 5699976,
+          "direct": true,
+          "real_path": "/usr/lib/x86_64-linux-gnu/libQt5Core.so.5.15.13",
+          "requested_names": [
+            "libQt5Core.so.5"
+          ],
+          "resolved_paths": [
+            "/lib/x86_64-linux-gnu/libQt5Core.so.5"
+          ],
+          "sha256": "f3a46b3517fdcd82d70b9a2c01ba707499860e2eab328bb98445d8afce59ca37"
+        },
+        {
+          "bytes": 2430480,
+          "direct": true,
+          "real_path": "/usr/lib/x86_64-linux-gnu/libQt5Script.so.5.15.13",
+          "requested_names": [
+            "libQt5Script.so.5"
+          ],
+          "resolved_paths": [
+            "/lib/x86_64-linux-gnu/libQt5Script.so.5"
+          ],
+          "sha256": "2e01d805e37a9f636cd3446dd2abfc73cbb779c2a20c47229bfcda1c8c134558"
+        },
+        {
+          "bytes": 2125328,
+          "direct": true,
+          "real_path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "requested_names": [
+            "libc.so.6"
+          ],
+          "resolved_paths": [
+            "/lib/x86_64-linux-gnu/libc.so.6"
+          ],
+          "sha256": "d8db8739a1633c972cec6a4fe0566bdcec6fd088f98723492ab0361f66238f75"
+        },
+        {
+          "bytes": 79952,
+          "direct": false,
+          "real_path": "/usr/lib/x86_64-linux-gnu/libdouble-conversion.so.3.1",
+          "requested_names": [
+            "libdouble-conversion.so.3"
+          ],
+          "resolved_paths": [
+            "/lib/x86_64-linux-gnu/libdouble-conversion.so.3"
+          ],
+          "sha256": "d1c9583dc7c1fce6f0a0701dd4356448425e45afe15c0946c23edeaf93d9397c"
+        },
+        {
+          "bytes": 183024,
+          "direct": true,
+          "real_path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+          "requested_names": [
+            "libgcc_s.so.1"
+          ],
+          "resolved_paths": [
+            "/lib/x86_64-linux-gnu/libgcc_s.so.1"
+          ],
+          "sha256": "d93224d2b0dab4247598be683adca02f5cf00586f99c187579cd7e92058fb7cb"
+        },
+        {
+          "bytes": 1343056,
+          "direct": false,
+          "real_path": "/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8000.0",
+          "requested_names": [
+            "libglib-2.0.so.0"
+          ],
+          "resolved_paths": [
+            "/lib/x86_64-linux-gnu/libglib-2.0.so.0"
+          ],
+          "sha256": "42467d0dbcc0a6c9e0a31f05a5944095504ce98f093c3fe0825f0a1533fa8207"
+        },
+        {
+          "bytes": 30795392,
+          "direct": false,
+          "real_path": "/usr/lib/x86_64-linux-gnu/libicudata.so.74.2",
+          "requested_names": [
+            "libicudata.so.74"
+          ],
+          "resolved_paths": [
+            "/lib/x86_64-linux-gnu/libicudata.so.74"
+          ],
+          "sha256": "ddbb3718b8bd9cbd780e5ab08b4503c30a6c4fa0706ebe5d074ed6b596c1714e"
+        },
+        {
+          "bytes": 3455304,
+          "direct": false,
+          "real_path": "/usr/lib/x86_64-linux-gnu/libicui18n.so.74.2",
+          "requested_names": [
+            "libicui18n.so.74"
+          ],
+          "resolved_paths": [
+            "/lib/x86_64-linux-gnu/libicui18n.so.74"
+          ],
+          "sha256": "3550b194eb2cf2e6f798f033eb9ca279d498c21296b4a18790ce158d2023e47b"
+        },
+        {
+          "bytes": 2140336,
+          "direct": false,
+          "real_path": "/usr/lib/x86_64-linux-gnu/libicuuc.so.74.2",
+          "requested_names": [
+            "libicuuc.so.74"
+          ],
+          "resolved_paths": [
+            "/lib/x86_64-linux-gnu/libicuuc.so.74"
+          ],
+          "sha256": "7560aadde38e5f4237a47a1ddd5891f9b36768a77a60faae30beee003ac01901"
+        },
+        {
+          "bytes": 952616,
+          "direct": true,
+          "real_path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "requested_names": [
+            "libm.so.6"
+          ],
+          "resolved_paths": [
+            "/lib/x86_64-linux-gnu/libm.so.6"
+          ],
+          "sha256": "1b87a1a50b496cfead2b0ad134c2ff536705c82608db240c7e8aa48d6c0e4217"
+        },
+        {
+          "bytes": 572064,
+          "direct": false,
+          "real_path": "/usr/lib/x86_64-linux-gnu/libpcre2-16.so.0.11.2",
+          "requested_names": [
+            "libpcre2-16.so.0"
+          ],
+          "resolved_paths": [
+            "/lib/x86_64-linux-gnu/libpcre2-16.so.0"
+          ],
+          "sha256": "4dfa8a4023270763b8ca1654dc4f59f835393b1ae78085a19369228f8109a671"
+        },
+        {
+          "bytes": 625344,
+          "direct": false,
+          "real_path": "/usr/lib/x86_64-linux-gnu/libpcre2-8.so.0.11.2",
+          "requested_names": [
+            "libpcre2-8.so.0"
+          ],
+          "resolved_paths": [
+            "/lib/x86_64-linux-gnu/libpcre2-8.so.0"
+          ],
+          "sha256": "e00576d71d81d3ba0cfa4903c835a44a8723aac96f72f79ff75200b4cff9071b"
+        },
+        {
+          "bytes": 2592224,
+          "direct": true,
+          "real_path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33",
+          "requested_names": [
+            "libstdc++.so.6"
+          ],
+          "resolved_paths": [
+            "/lib/x86_64-linux-gnu/libstdc++.so.6"
+          ],
+          "sha256": "1fd75fe70354a416d75aef22bcae68c47bd25d20e2d0568c30b1a9838cf62f11"
+        },
+        {
+          "bytes": 113000,
+          "direct": false,
+          "real_path": "/usr/lib/x86_64-linux-gnu/libz.so.1.3",
+          "requested_names": [
+            "libz.so.1"
+          ],
+          "resolved_paths": [
+            "/lib/x86_64-linux-gnu/libz.so.1"
+          ],
+          "sha256": "9b64150b28505a33d6bc3ecf709c279f6de97a1c184dbda65d06ee4537f6d286"
+        },
+        {
+          "bytes": 755864,
+          "direct": false,
+          "real_path": "/usr/lib/x86_64-linux-gnu/libzstd.so.1.5.5",
+          "requested_names": [
+            "libzstd.so.1"
+          ],
+          "resolved_paths": [
+            "/lib/x86_64-linux-gnu/libzstd.so.1"
+          ],
+          "sha256": "0a2128bc10841fb29e76d08d945864dfb0b6a66da5df6df5d8299197439e54bb"
+        }
+      ],
+      "file_count": 16,
+      "method": "readelf -d plus ldd on a trusted pinned ELF",
+      "total_bytes": 54100576
+    },
+    "host": {
+      "machine": "x86_64",
+      "system": "Linux"
+    },
+    "rules": {
+      "bytes": 2909316,
+      "combined_tree_sha256": "20f2b74effc2bdaf069e3b2e13060432b8890d38364511f5cde56a337348bfda",
+      "file_count": 2268,
+      "root": "/opt/die-source/Detect-It-Easy",
+      "trees": [
+        {
+          "bytes": 2832469,
+          "file_count": 2124,
+          "path": "db",
+          "tree_sha256": "8000138ce96a6a892aaa3cba8dee60960694c42dcfa24b3787f02c25858f1650"
+        },
+        {
+          "bytes": 76651,
+          "file_count": 142,
+          "path": "db_extra",
+          "tree_sha256": "77c4e0da796baa9a71ec1a699a37e61ed73783c0d3dc5d49044185dc80a38ec1"
+        },
+        {
+          "bytes": 196,
+          "file_count": 2,
+          "path": "db_custom",
+          "tree_sha256": "36c10cd4d87826c78f07a0c801c1ae374f4b6364936056d44a045e9150ba5815"
+        }
+      ]
+    },
+    "schema_version": 1,
+    "totals": {
+      "binary_and_dependencies_bytes": 62348584,
+      "binary_and_rules_bytes": 11157324,
+      "full_closure_and_rules_bytes": 65257900
+    }
+  },
+  "measurement_sha256": "17bd9330c28ee67ed2036b9f74d62d21eeda010a7e0866d0b1e12e454c0dbbbd",
+  "passed": true,
+  "rule_asset_identity": {
+    "bytes": 2909316,
+    "combined_tree_sha256": "20f2b74effc2bdaf069e3b2e13060432b8890d38364511f5cde56a337348bfda",
+    "commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+    "file_count": 2268,
+    "trees": [
+      {
+        "bytes": 2832469,
+        "file_count": 2124,
+        "path": "db",
+        "tree_sha256": "8000138ce96a6a892aaa3cba8dee60960694c42dcfa24b3787f02c25858f1650"
+      },
+      {
+        "bytes": 76651,
+        "file_count": 142,
+        "path": "db_extra",
+        "tree_sha256": "77c4e0da796baa9a71ec1a699a37e61ed73783c0d3dc5d49044185dc80a38ec1"
+      },
+      {
+        "bytes": 196,
+        "file_count": 2,
+        "path": "db_custom",
+        "tree_sha256": "36c10cd4d87826c78f07a0c801c1ae374f4b6364936056d44a045e9150ba5815"
+      }
+    ]
+  },
+  "rule_asset_report": {
+    "path": "docs/research/data/runtime-rule-assets-license.json",
+    "sha256": "c1d1fe07ccdd0ff74a4428372e9c18b4f4dbda2f4a1dd0e3082b7702d8370dbb"
+  },
+  "schema_version": 1,
+  "targets_frozen": false,
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}
