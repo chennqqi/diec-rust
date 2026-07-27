@@ -52,7 +52,7 @@ Phase 0 报告固定四个平台：
 
 | 平台 | Runtime observed | Observed + corpus gaps | Source-only | Source-only + gaps | Platform missing |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| Linux x86_64 Qt5 | 33 | 18 | 15 | 2 | 0 |
+| Linux x86_64 Qt5 | 37 | 19 | 11 | 1 | 0 |
 | Linux x86_64 Qt6 | 0 | 0 | 0 | 0 | 68 |
 | Windows x86_64 Qt5 | 0 | 0 | 0 | 0 | 68 |
 | macOS x86_64 Qt5 | 0 | 0 | 0 | 0 | 68 |
@@ -60,7 +60,7 @@ Phase 0 报告固定四个平台：
 所有 68 个能力行和 272 个平台 cell 都已分类，未分类计数为 0。这只证明审计
 清单没有“消失的行”，**不表示覆盖完成**：
 
-- 17 个 Linux Qt5 能力仍只有源码证据；
+- 12 个 Linux Qt5 能力仍只有源码证据；
 - 25 行至少关联一个已命名 corpus gap；
 - 三个尚未接纳的平台各有 68 个 `platform_missing`；
 - `phase_0_coverage_complete` 必须保持 `false`。
@@ -97,7 +97,7 @@ python tools/tests/test_capability_coverage.py
 ```
 
 测试要求 committed report 与生成结果逐字节一致；68 个 ID 与 traceability 完全
-相等；全部平台 cell 有已知状态；Linux 四类计数保持 33/18/15/2；其他三个平台
+相等；全部平台 cell 有已知状态；Linux 四类计数保持 37/19/11/1；其他三个平台
 各保持 68 个 `platform_missing`；八个 gap 均映射到已知能力。
 
 ## 7. 对 Phase 0 门禁的影响
@@ -105,7 +105,7 @@ python tools/tests/test_capability_coverage.py
 该报告关闭了 `P0-BLOCK-005` 中“没有完整 coverage report”的审计缺口，但没有
 关闭 blocker 本身。要关闭 `P0-BLOCK-005`，仍须：
 
-1. 为 17 个 Linux source-only 能力建立固定 runtime corpus；
+1. 为 12 个 Linux source-only 能力建立固定 runtime corpus；
 2. 逐项收敛六类 corpus gap，而不是只增加 happy-path 样本；
 3. 固定 Windows、macOS 和完整 Linux Qt6 oracle；
 4. 重新生成报告，且经评审确认 Phase 0 所需行不再为 source-only、

@@ -97,7 +97,8 @@
       "paths": [
         "docs/research/source-analysis.md",
         "docs/research/behavior-baseline.md",
-        "docs/research/data/baseline-corpus-linux-qt5.json"
+        "docs/research/data/baseline-corpus-linux-qt5.json",
+        "tools/tests/test_baseline_corpus_report.py"
       ]
     },
     "nested_scan": {
@@ -169,14 +170,14 @@
     {"id": "CAP-RULE-011", "name": "script profiling", "verification": "observed_with_gaps", "evidence_set": "cli_options"},
     {"id": "CAP-RULE-012", "name": "cancellation and stop", "verification": "observed_with_gaps", "evidence_set": "engine_contract"},
 
-    {"id": "CAP-DISPATCH-001", "name": "PE ELF and Mach-O dispatch", "verification": "source_verified", "evidence_set": "dispatch_source"},
+    {"id": "CAP-DISPATCH-001", "name": "PE ELF and Mach-O dispatch", "verification": "observed", "evidence_set": "dispatch_source"},
     {"id": "CAP-DISPATCH-002", "name": "DOS and COM dispatch", "verification": "source_verified", "evidence_set": "dispatch_source"},
     {"id": "CAP-DISPATCH-003", "name": "Amiga Hunk and Atari ST dispatch", "verification": "source_verified", "evidence_set": "dispatch_source"},
-    {"id": "CAP-DISPATCH-004", "name": "archive family dispatch", "verification": "source_verified_with_gaps", "evidence_set": "dispatch_source"},
-    {"id": "CAP-DISPATCH-005", "name": "DEX Java Class and PYC dispatch", "verification": "source_verified", "evidence_set": "dispatch_source"},
-    {"id": "CAP-DISPATCH-006", "name": "PDF and CFBF dispatch", "verification": "source_verified", "evidence_set": "dispatch_source"},
+    {"id": "CAP-DISPATCH-004", "name": "archive family dispatch", "verification": "observed_with_gaps", "evidence_set": "dispatch_source"},
+    {"id": "CAP-DISPATCH-005", "name": "DEX Java Class and PYC dispatch", "verification": "observed", "evidence_set": "dispatch_source"},
+    {"id": "CAP-DISPATCH-006", "name": "PDF and CFBF dispatch", "verification": "observed", "evidence_set": "dispatch_source"},
     {"id": "CAP-DISPATCH-007", "name": "image dispatch", "verification": "source_verified", "evidence_set": "dispatch_source"},
-    {"id": "CAP-DISPATCH-008", "name": "binary fallback dispatch", "verification": "source_verified", "evidence_set": "dispatch_source"},
+    {"id": "CAP-DISPATCH-008", "name": "binary fallback dispatch", "verification": "observed", "evidence_set": "dispatch_source"},
 
     {"id": "CAP-NEST-001", "name": "directory recursion versus internal recursion", "verification": "observed", "evidence_set": "nested_scan"},
     {"id": "CAP-NEST-002", "name": "resource and overlay recursive scan", "verification": "observed", "evidence_set": "nested_scan"},
@@ -259,10 +260,10 @@
   ],
   "summary": {
     "capability_count": 68,
-    "observed": 33,
-    "observed_with_gaps": 18,
-    "source_verified": 15,
-    "source_verified_with_gaps": 2,
+    "observed": 37,
+    "observed_with_gaps": 19,
+    "source_verified": 11,
+    "source_verified_with_gaps": 1,
     "coverage_gap_count": 8,
     "phase_0_coverage_complete": false
   }

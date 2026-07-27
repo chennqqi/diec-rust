@@ -73,6 +73,58 @@ class BaselineCorpusReportTests(unittest.TestCase):
             self.assertEqual(left, right)
             self.assertEqual(left[0]["filetype"], filetype)
 
+    def test_composite_dispatch_capabilities_have_runtime_evidence(self):
+        cases = self.report["corpus"]
+        groups = {
+            "CAP-DISPATCH-001": {
+                "minimal.exe": "PE32",
+                "minimal-pe64.exe": "PE64",
+                "minimal.elf": "ELF64",
+                "minimal-elf32.elf": "ELF32",
+                "minimal.macho": "Mach-O64",
+                "minimal-macho32.macho": "Mach-O32",
+                "minimal-fat.macho": "Mach-O FAT",
+            },
+            "CAP-DISPATCH-005": {
+                "minimal.dex": "DEX",
+                "Minimal.class": "Java Class",
+                "minimal.pyc": "Python Bytecode",
+            },
+            "CAP-DISPATCH-006": {
+                "minimal.pdf": "PDF",
+                "minimal.cfbf": "CFBF",
+            },
+            "CAP-DISPATCH-008": {
+                "empty.bin": "Binary",
+                "plain.txt": "Binary",
+                "payload.tar": "Binary",
+                "payload.txt.gz": "Binary",
+            },
+        }
+        for capability_id, expected in groups.items():
+            with self.subTest(capability=capability_id):
+                for sample, filetype in expected.items():
+                    left = cases[sample]["left_detect_tree"]
+                    right = cases[sample]["right_detect_tree"]
+                    self.assertEqual(left, right)
+                    self.assertEqual(left[0]["filetype"], filetype)
+
+        partial_archive_dispatch = {
+            "minimal.apk": "APK",
+            "minimal.jar": "JAR",
+            "payload.zip": "ZIP",
+            "minimal.rar": "RAR",
+            "minimal.iso": "ISO 9660",
+            # Upstream recognizes IPA metadata but dispatches this path through
+            # Binary at the pinned commit.
+            "minimal.ipa": "Binary",
+        }
+        for sample, filetype in partial_archive_dispatch.items():
+            self.assertEqual(
+                cases[sample]["left_detect_tree"][0]["filetype"],
+                filetype,
+            )
+
     def test_distinctive_rule_results_are_preserved(self):
         cases = self.report["corpus"]
         self.assertEqual(

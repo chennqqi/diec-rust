@@ -55,13 +55,13 @@ class CapabilityCoverageTest(unittest.TestCase):
     def test_linux_runtime_and_source_only_counts_are_not_conflated(self):
         counts = self.report["summary"]["status_counts_by_platform"]
         linux = counts["linux-x86_64-qt5"]
-        self.assertEqual(linux["runtime_observed"], 33)
-        self.assertEqual(linux["runtime_observed_with_corpus_gaps"], 18)
+        self.assertEqual(linux["runtime_observed"], 37)
+        self.assertEqual(linux["runtime_observed_with_corpus_gaps"], 19)
         self.assertEqual(
             linux["source_only_runtime_corpus_missing"],
-            15,
+            11,
         )
-        self.assertEqual(linux["source_only_with_corpus_gaps"], 2)
+        self.assertEqual(linux["source_only_with_corpus_gaps"], 1)
         self.assertEqual(linux["platform_missing"], 0)
 
         for platform in (
@@ -75,6 +75,10 @@ class CapabilityCoverageTest(unittest.TestCase):
         for capability_id in (
             "CAP-CLI-MODE-005",
             "CAP-CLI-MODE-006",
+            "CAP-DISPATCH-001",
+            "CAP-DISPATCH-005",
+            "CAP-DISPATCH-006",
+            "CAP-DISPATCH-008",
         ):
             self.assertEqual(
                 rows[capability_id]["platform_status"][
@@ -83,6 +87,16 @@ class CapabilityCoverageTest(unittest.TestCase):
                 "runtime_observed",
             )
             self.assertEqual(rows[capability_id]["corpus_gap_ids"], [])
+        self.assertEqual(
+            rows["CAP-DISPATCH-004"]["platform_status"][
+                "linux-x86_64-qt5"
+            ],
+            "runtime_observed_with_corpus_gaps",
+        )
+        self.assertEqual(
+            rows["CAP-DISPATCH-004"]["corpus_gap_ids"],
+            ["CAP-GAP-006"],
+        )
 
     def test_every_declared_gap_maps_to_known_capabilities(self):
         row_ids = {row["id"] for row in self.report["rows"]}
