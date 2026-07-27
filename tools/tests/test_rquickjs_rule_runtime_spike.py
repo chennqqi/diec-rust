@@ -96,6 +96,11 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
         self.assertTrue(fixture["interrupt_observed"])
         self.assertTrue(fixture["memory_limit_observed"])
         self.assertEqual(fixture["memory_limit_bytes"], 4 * 1024 * 1024)
+        self.assertTrue(fixture["memory_limit_same_context_recovered"])
+        self.assertEqual(
+            fixture["memory_limit_same_context_recovery_result"],
+            "42",
+        )
         self.assertEqual(
             fixture["stack_limit"],
             {

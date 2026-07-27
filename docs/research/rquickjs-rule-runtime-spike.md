@@ -24,7 +24,7 @@ QuickJS-NG C 源码编译成静态 archive。它能够：
 - QuickJS VM 与 Rust native HostApi 均可检查 monotonic wall-clock deadline；
 - Rust `U24`/`read_uint24` 与 `shru64` 聚焦数值 fixture 匹配固定 Qt 5/Qt 6
   上游 oracle；
-- 通过 runtime memory limit 拒绝超限分配；
+- 通过 runtime memory limit 拒绝超限分配，并在同一 context 恢复执行；
 - 通过 128 KiB runtime stack limit 拒绝无界 JavaScript 递归，并在同一 context
   恢复执行；
 - Rust native callback panic 由固定 rquickjs trampoline 在 C ABI 内捕获，在
@@ -226,7 +226,8 @@ context”。
   native 检查点硬上限；
 - QuickJS VM 与 native HostApi 的 25ms deadline 均到期、未触发各自硬上限，
   清理后各自 context 都返回 `"42"`；
-- 4 MiB runtime limit 拒绝 16 MiB `ArrayBuffer`，返回 `out of memory`；
+- 4 MiB runtime limit 拒绝 16 MiB `ArrayBuffer`，返回 `out of memory`，随后
+  同一 context 求值 `String(6 * 7)` 返回 `"42"`；
 - 128 KiB runtime stack limit 使无终止递归返回
   `Maximum call stack size exceeded`，随后同一 context 求值
   `String(6 * 7)` 返回 `"42"`；

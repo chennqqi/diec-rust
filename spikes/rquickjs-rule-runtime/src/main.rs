@@ -2995,6 +2995,7 @@ fn run_fixture(rule_root: &Path) -> Result<bool, String> {
         b"globalThis.large = new ArrayBuffer(16 * 1024 * 1024);",
     )
     .err();
+    let memory_limit_recovery = eval_string(&memory_context, b"String(6 * 7)");
 
     const STACK_LIMIT_BYTES: usize = 128 * 1024;
     let stack_runtime = new_runtime()?;
@@ -3064,6 +3065,7 @@ fn run_fixture(rule_root: &Path) -> Result<bool, String> {
         && native_deadline_recovery.as_deref() == Ok("42")
         && numeric_result == numeric_expected
         && memory_limit_error.is_some()
+        && memory_limit_recovery.as_deref() == Ok("42")
         && stack_limit_error.is_some()
         && stack_limit_recovery.as_deref() == Ok("42")
         && native_panic_payload.as_deref() == Some(PANIC_SENTINEL)
@@ -3169,6 +3171,10 @@ fn run_fixture(rule_root: &Path) -> Result<bool, String> {
         "memory_limit": {
             "bytes": 4 * 1024 * 1024,
             "error": memory_limit_error,
+            "same_context_recovery": {
+                "result": memory_limit_recovery.as_deref().ok(),
+                "error": memory_limit_recovery.as_ref().err(),
+            },
         },
         "stack_limit": {
             "bytes": STACK_LIMIT_BYTES,

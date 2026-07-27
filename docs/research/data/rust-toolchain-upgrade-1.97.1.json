@@ -47,7 +47,7 @@
     "spikes/c-static-link/c/smoke.c": "9e70deb13e007358fc6b1dc0aec908331b0fc6d355e5e766c7d77b0f5eb68807",
     "spikes/rquickjs-rule-runtime/Cargo.toml": "9607cda695bf719921b1dded3dc8c643886a7f2e6fe7380f714698b994e9ee9a",
     "spikes/rquickjs-rule-runtime/Cargo.lock": "e03ce821c4a4c0f362d417d84752ed9ef1f775377ef9042306397aca39d21836",
-    "spikes/rquickjs-rule-runtime/src/main.rs": "1c3180d981f77ee05ecc543a8c1dd8fea5e122644b195feae04bd188e7e4dcfb",
+    "spikes/rquickjs-rule-runtime/src/main.rs": "f14c45c30cd6b4cec5754356e4f63db765bf66e8836131b0436f16ddddbcef50",
     "spikes/rquickjs-static-link/Cargo.toml": "160117e2885abc7ca3d5f5d5b9fe77c1fbfc8337a20a709548ff7ef157b96bf0",
     "spikes/rquickjs-static-link/Cargo.lock": "e80e1d8f87c753d7accba7dc3625a926b67221e4ed07c38d13a9d0b9e94c0e80",
     "spikes/rquickjs-static-link/src/lib.rs": "2b2c489e94b4c33135904429939428a531766a7bcac072d797b3d117386cea67",

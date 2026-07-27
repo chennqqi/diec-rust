@@ -15,8 +15,8 @@ Boa 0.21.1 与 rquickjs 0.12.1 都拒绝 Qt 5 接受的 Nintendo legacy 规则�
 不能未经适配就等价替代 Qt Script。两者的工程能力存在决定性差别：
 
 - Boa 的公开接口未提供 heap byte limit 或外部 token 驱动的 VM interrupt；
-- rquickjs 已验证 interrupt、heap/stack limit、跨线程 cancel、同 context
-  恢复、VM/native deadline、合作式 native HostApi 取消，以及 native callback
+- rquickjs 已验证 interrupt、heap/stack limit 后同 context 恢复、跨线程
+  cancel、VM/native deadline、合作式 native HostApi 取消，以及 native callback
   panic 在 C ABI 内捕获并于 Rust eval 边界恢复；
 - rquickjs 的精确、等长、source-pinned compatibility overlay 与 per-rule
   lexical wrapper 已让固定 292 条 Binary 顶层规则全部加载；

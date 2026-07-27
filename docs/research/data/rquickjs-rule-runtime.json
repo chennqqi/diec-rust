@@ -19,7 +19,7 @@
   "experiment": {
     "cargo_lock_sha256": "e03ce821c4a4c0f362d417d84752ed9ef1f775377ef9042306397aca39d21836",
     "cargo_toml_sha256": "9607cda695bf719921b1dded3dc8c643886a7f2e6fe7380f714698b994e9ee9a",
-    "source_sha256": "1c3180d981f77ee05ecc543a8c1dd8fea5e122644b195feae04bd188e7e4dcfb",
+    "source_sha256": "f14c45c30cd6b4cec5754356e4f63db765bf66e8836131b0436f16ddddbcef50",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -38,6 +38,8 @@
     "interrupt_observed": true,
     "memory_limit_bytes": 4194304,
     "memory_limit_observed": true,
+    "memory_limit_same_context_recovered": true,
+    "memory_limit_same_context_recovery_result": "42",
     "native_host_panic": {
       "caught_at_rust_eval_boundary": true,
       "payload_matches_sentinel": true,

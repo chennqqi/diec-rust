@@ -108,11 +108,11 @@ source SHA-256 为
 后续 `rquickjs-rule-runtime` 增加 128 KiB VM stack-limit/recovery 和 native
 callback panic-recovery fixture 后，
 更新源码 SHA-256 为
-`1c3180d981f77ee05ecc543a8c1dd8fea5e122644b195feae04bd188e7e4dcfb`；
+`f14c45c30cd6b4cec5754356e4f63db765bf66e8836131b0436f16ddddbcef50`；
 同一源码也在 1.88.0 和 1.97.1 下通过 rustfmt、`-D warnings` 和 22 项测试，
 两套 release fixture 均捕获 stack overflow，并在 Rust eval 边界捕获 native
-callback panic，随后恢复同一 context。该补充不改变 Cargo dependency、feature、
-lockfile 或 native static-link consumer。
+callback panic；4 MiB heap OOM 后同一 context 也恢复执行。该补充不改变 Cargo
+dependency、feature、lockfile 或 native static-link consumer。
 
 ## 5. Native static-link 结果
 
