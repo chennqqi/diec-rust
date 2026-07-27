@@ -247,7 +247,8 @@ elapsed 值与固定规则执行序列另见
 - 其他 archive 格式、aggressive 高上限和最大嵌套深度。
 - 发布 CLI 的 ZIP database 截断/重复/`..`/根前缀边界及 cache-disabled
   副作用已由 [`database-archive-cache.md`](database-archive-cache.md) 覆盖；
-  engine cache、权限和 main/extra/custom 同名规则覆盖仍待实验。
+  Qt5 engine cache 的 miss/hit/stale/bad-magic/truncated/cancel 已固定，其他
+  cache 边界、权限和 main/extra/custom 同名规则覆盖仍待实验。
 - 系统化畸形/截断矩阵、资源限制、超时、内存峰值和 fuzz seeds。
 - Windows/macOS oracle 以及路径编码差异。
 

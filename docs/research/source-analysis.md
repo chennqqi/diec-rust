@@ -101,8 +101,13 @@ Rust 设计前必须把完整分派顺序提取为测试表，并用多义样本
 ZIP；发布 CLI 零初始化 `bUseCache=false`，不会 cache hit，并会删除同路径旧
 cache。engine cache 是 Qt `QDataStream` version 5，只用 file count、total
 size、newest mtime 判定 freshness，没有内容 hash 或读取/record 上限。ZIP
-截断、重复名称和路径选择实验证据见
+截断、重复名称和路径选择，以及 engine cache stale/corrupt/cancel 实验证据见
 [`database-archive-cache.md`](database-archive-cache.md)。
+
+固定 Qt5 harness 进一步确认：保持三项统计不变的内容替换命中旧规则；截断
+record 在 fallback 前已向结果追加部分记录；预取消 miss 仍返回成功并写出空
+cache，下一次未取消加载会复用该 cache 并静默得到 `Unknown`。因此 Rust database
+build/cache decode 必须事务化，取消或失败不得发布 records 或提交 cache。
 
 运行实验还确认：函数返回值只反映 main；extra/custom 失败被忽略；空目录被视为
 成功；CLI positional target 分支漏设 `bIsDbUsed`，使 main 加载失败不改变
@@ -207,7 +212,7 @@ Rust 兼容模式必须同时复现 resource context 传播和 debug-data 默认
 | archive/resource/overlay 递归 | 无深度/总解压限制；CLI 与 engine 可达性不同 | 其他格式、高上限和资源耗尽实验 |
 | 目录枚举无深度/循环保护 | symlink loop、栈/时间耗尽 | 隔离测试并为 Rust 设计资源限制 |
 | formatter 分散 | JSON/XML 契约不明确 | 逐格式保存 schema 和 escaping 样本 |
-| engine database cache | `readAll`/无界 record count、弱 freshness；CLI 不启用 | 专用 harness 验证 stale/corrupt/cancel |
+| engine database cache | `readAll`/无界 record count、弱 freshness；截断会泄漏部分 record，取消可持久化空 cache；CLI 不启用 | 验证 header/长度上限、写失败和并发 writer |
 | 数据库/输入错误语义随入口变化 | 静默漏报、无效 JSON、调用方误判 | 核心 typed error + CLI compatibility ADR |
 | CLI 部分选项有 `TODO` | “能力相同”范围争议 | 构建并运行确认真实行为 |
 

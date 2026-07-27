@@ -460,8 +460,9 @@ global。`_getEngineVersion` 还把编译日期写入可观察结果。
   两个拼写错误分支仍缺
   Qt 6/Windows/macOS、不带 `--messages` 和多错误/后续规则传播。
 - ZIP database 的合法/截断/重复/`..`/根前缀行为与发布 CLI cache-disabled
-  副作用已固定；engine `bUseCache=true` 的 stale/corrupt/cancel 行为仍待
-  harness，见 [`database-archive-cache.md`](database-archive-cache.md)。
+  副作用已固定；engine `bUseCache=true` 的同统计 stale、bad magic、截断、
+  预取消和空 cache 污染也已由 Qt5 harness 固定，剩余 header/长度/并发边界见
+  [`database-archive-cache.md`](database-archive-cache.md)。
 - `dbs_min` 生成逻辑。
 - 用真实 HostApi 和 Qt oracle 逐条验证全库 `detect`、冻结 legacy compatibility
   方案和跨 runtime 性能比较。

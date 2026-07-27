@@ -235,8 +235,8 @@ normal scan 的 JSON 不是通常的 `{"detects": [...]}`，而是：
 - 发布 CLI 的合法/空/截断 ZIP、重复 entry、`..` 名称和额外根前缀，以及
   cache-disabled 删除副作用已由
   [`database-archive-cache.md`](database-archive-cache.md) 覆盖。engine
-  `bUseCache=true` 的创建失败、stale/corrupt cache 和 cache hit 仍待专用
-  harness。
+  `bUseCache=true` 的 miss/hit、同统计 stale、bad magic、截断和预取消已由
+  专用 harness 固定；cache 写失败、权限、其他 header/长度边界和并发仍待验证。
 - encrypted/ZIP64/data descriptor/CRC mismatch、压缩比和超大 entry count。
 - main/extra/custom 同名规则覆盖、优先级和排序。
 - 多个独立 script/include error 的最终 ordering；missing、parse error 和

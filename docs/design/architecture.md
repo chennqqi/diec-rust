@@ -153,6 +153,11 @@ parser。它不决定是否扫描 overlay、是否启用 aggressive mode 或先�
 规则源文件不得格式化或手工修正。加载清单记录上游路径、commit、文件哈希和同步
 时间。派生索引或 bytecode cache 是内部、带版本且可重建的数据，不属于 ABI。
 unknown syntax、include 失败和数据库冲突必须成为明确错误或兼容性失败，不能跳过。
+cache key 必须绑定已验证 manifest 的完整内容身份，不得仅依赖 file count、总大小
+或 mtime。cache decode 和规则 database build 在私有 staging state 中完成；只有
+schema、来源身份、全部 lengths/budgets 和 records 都验证成功且操作未取消后，才能
+一次性发布 database 并原子提交 cache。失败、截断或取消不得暴露部分 records，
+也不得持久化空/部分 cache。
 literal include 形成可审计有向图；按
 [`ADR 0010`](decisions/0010-bounded-include-graph.md)，静态 cycle 在 build
 阶段失败，动态 include 由 runtime active stack 和累计预算约束。ordinary duplicate
@@ -389,8 +394,10 @@ manifest 至少记录组件、上游路径、commit、SHA-256、同步时间和�
 验证清单，不因缓存存在而跳过源版本检查。
 
 运行时默认不写安装目录。可选 cache、profiling 和 debug 输出必须由调用方提供路径
-或 writer，并且失败不会更改 detection 语义。测试样本遵守哈希清单、生成器或隔离
-语料库策略。
+或 writer，并且失败不会更改 detection 语义。cache writer 使用同目录临时文件、
+flush/close 后的原子替换和单 writer 协调；取消或 build/decode 失败不进入 commit
+阶段。cache bytes、record count、单规则及规则总字节与无 cache 路径共享同一组
+预算。测试样本遵守哈希清单、生成器或隔离语料库策略。
 
 ## 19. 演进边界
 

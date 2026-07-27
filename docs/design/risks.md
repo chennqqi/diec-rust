@@ -219,11 +219,17 @@ baseline 的变更都要检查本表。
   XScanEngine cache loader 又对文件 `readAll()`，直接按不可信 record count
   `reserve()`，没有 cache byte/record/script 上限；ZIP database 使用
   `getRecords(-1)` 并逐项解压。发布 CLI 不启用 cache，但 ZIP 可达，Rust
-  database loader 必须统一纳入输入和分配预算。
+  database loader 必须统一纳入输入和分配预算。固定 Qt5 engine harness 已确认
+  弱 freshness 会命中同 count/size/mtime 的旧内容；截断 cache 会在 fallback
+  前泄漏部分反序列化 record；预取消 miss 会返回成功并持久化空 cache，下一次
+  未取消加载继续复用并静默得到 `Unknown`。机器证据见
+  [`database-cache-engine-qt5.json`](../research/data/database-cache-engine-qt5.json)。
 - **缓解**：checked `u64` range、allocation cap、`try_reserve`、无 panic parser；
-  unsafe 最小化；unit/property/fuzz/sanitizer/Miri。
+  cache key 绑定完整内容 manifest；decode/build/publish 事务化；失败或取消不提交
+  cache；unsafe 最小化；unit/property/fuzz/sanitizer/Miri。
 - **验证**：每个 parser 的合法/截断/畸形/边界/fuzz target 通过，历史 crash 全部
-  晋升 regression。
+  晋升 regression；cache 每字段截断、伪造 count/length、取消时序、写失败和并发
+  writer 证明无部分发布或 poisoned cache。
 - **关闭**：这是持续风险；单个格式只有在对应证据通过后可关闭其子风险。
 
 ### R-005：嵌套和解压资源耗尽

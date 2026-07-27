@@ -382,7 +382,11 @@ removal_condition = "..."
   callback false、规则 `_breakScan()`、预停止，以及 file/memory/device/subdevice
   等价；legacy 保留部分 record/Unknown，modern 按 ADR 0009 验证类型化取消；
 - output：UTF-8 escaping、整数、float、optional/null、key/array order；
-- database：三层顺序、空/缺失/损坏、duplicate、hash mismatch 和事务失败。
+- database：三层顺序、空/缺失/损坏、duplicate、hash mismatch 和事务失败；
+- database cache：cold miss/hit、保持 count/size/mtime 的内容替换、bad
+  magic/version/engine、每个 record 字段截断、超大 count/text、写失败和并发
+  writer；decode 失败不得发布部分 record，取消前/中/后不得提交 cache，未取消的
+  后续加载不得复用 canceled/partial state。
 
 property test 的随机 seed、case count 和 shrink result 进入失败输出；修复后的最小
 case 晋升为命名 regression，不只依赖随机重现。
