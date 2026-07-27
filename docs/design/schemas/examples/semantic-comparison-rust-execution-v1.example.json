@@ -1,0 +1,46 @@
+{
+  "argv": [
+    "diec",
+    "--profiling",
+    "--messages",
+    "--json",
+    "/corpus/synthetic.bin"
+  ],
+  "artifacts": {
+    "stderr": {
+      "sha256": "8372f34794ce221b78e055cd545f9d95e285202181948dfd9c2a80909fa6710e",
+      "size": 21
+    },
+    "stdout": {
+      "sha256": "5c48788adf5e7f42ff9f06c67c6b169356b1c81f4379e3d1ca4d44d24d2b906d",
+      "size": 69
+    }
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC"
+  },
+  "execution_schema": 1,
+  "logical_cwd": "/work",
+  "resource_usage": {
+    "budget_counters": {
+      "records": 1
+    },
+    "cpu_time_ns": 1000000,
+    "peak_memory_bytes": 4096
+  },
+  "run_identity": {
+    "case_id": "synthetic.raw-framing.example",
+    "case_manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "executable_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+    "platform": "linux-x86_64",
+    "producer_profile": "rust-synthetic",
+    "producer_revision": "2222222222222222222222222222222222222222",
+    "side": "rust"
+  },
+  "termination": {
+    "code": 0,
+    "kind": "exit"
+  },
+  "wall_time_ns": 7654321
+}

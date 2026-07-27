@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://diec-rust.invalid/schemas/semantic-comparison-contract-v1.schema.json",
+  "title": "DIEC semantic comparison contract v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "comparison_contract_schema",
+    "projection_contract_sha256",
+    "normalization_policy_sha256",
+    "required_equivalence",
+    "max_differences"
+  ],
+  "properties": {
+    "comparison_contract_schema": {
+      "const": 1
+    },
+    "projection_contract_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "normalization_policy_sha256": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/sha256"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "required_equivalence": {
+      "enum": [
+        "exact",
+        "semantic"
+      ]
+    },
+    "max_differences": {
+      "const": 10000
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

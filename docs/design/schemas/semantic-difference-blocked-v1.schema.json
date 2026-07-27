@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://diec-rust.invalid/schemas/semantic-difference-blocked-v1.schema.json",
+  "title": "DIEC semantic difference report blocked marker v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "blocked_schema",
+    "result",
+    "reason",
+    "run_identity",
+    "case_id"
+  ],
+  "properties": {
+    "blocked_schema": {
+      "const": 1
+    },
+    "result": {
+      "const": "blocked"
+    },
+    "reason": {
+      "enum": [
+        "projection_failure",
+        "comparison_limit_reached"
+      ]
+    },
+    "run_identity": {
+      "$ref": "https://diec-rust.invalid/schemas/difference-input-report-v1.schema.json#/$defs/run_identity"
+    },
+    "case_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+    }
+  }
+}

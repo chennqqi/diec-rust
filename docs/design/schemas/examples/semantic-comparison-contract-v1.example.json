@@ -1,0 +1,7 @@
+{
+  "comparison_contract_schema": 1,
+  "max_differences": 10000,
+  "normalization_policy_sha256": null,
+  "projection_contract_sha256": "af90438640ca6e36cbf4b070b5990085b14c47c6779009a47a18b916c7e06113",
+  "required_equivalence": "exact"
+}

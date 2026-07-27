@@ -1,0 +1,102 @@
+{
+  "case_id": "synthetic.raw-framing.example",
+  "comparator": {
+    "name": "diec-semantic-comparator",
+    "version": 1
+  },
+  "comparison_schema": 1,
+  "contracts": {
+    "comparison": {
+      "artifact_sha256": "c2bd8d0c99191fb034261fd386cc37b1424a7b7a5b5af5a8b77e3d0fce024296",
+      "canonical_contract_sha256": "2fdf5d70f8f15e8da11f04d44177d324819b3ca158f32bac0bbf2fdd732bb7db"
+    },
+    "projection": {
+      "artifact_sha256": "af90438640ca6e36cbf4b070b5990085b14c47c6779009a47a18b916c7e06113"
+    }
+  },
+  "difference_report_artifact": {
+    "canonical_report_sha256": "16fb494b7b1f36fbd27b0c3c47b56d83262483548badeccab6243844715ecf0b",
+    "difference_count": 0,
+    "kind": "report",
+    "sha256": "8f181bb864a6e27fab9c920f8bbf082eb15851a9e4904dec018b48891da73c6b"
+  },
+  "inputs": {
+    "rust": {
+      "comparison_sha256": "8c9fa61181ff83ebd11aac2921eaad098b8140bbaf936e9749d248779032b6cb",
+      "normalization": {
+        "kind": "none"
+      },
+      "producer": {
+        "executable_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "profile": "rust-synthetic",
+        "revision": "2222222222222222222222222222222222222222",
+        "side": "rust"
+      },
+      "projection": {
+        "artifact_sha256": "1fcca72adda1f8636a012df39b15a2ca32a903f9514af8671ff7cdeab8f012b9",
+        "canonical_projection_sha256": "f07de1a5521df8f7ef65b1aac8e6fe21fcac512b4271646bd4560af14c6dd636",
+        "issues": [],
+        "result": "pass"
+      },
+      "raw_observation_sha256": "043ef91d30717f3cad85b6776e4d7df000f3fc37772c2430e9e065a42fdaa6c4",
+      "raw_streams": {
+        "stderr": {
+          "sha256": "8372f34794ce221b78e055cd545f9d95e285202181948dfd9c2a80909fa6710e",
+          "size": 21
+        },
+        "stdout": {
+          "sha256": "5c48788adf5e7f42ff9f06c67c6b169356b1c81f4379e3d1ca4d44d24d2b906d",
+          "size": 69
+        }
+      }
+    },
+    "upstream": {
+      "comparison_sha256": "8c9fa61181ff83ebd11aac2921eaad098b8140bbaf936e9749d248779032b6cb",
+      "normalization": {
+        "kind": "none"
+      },
+      "producer": {
+        "executable_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+        "profile": "cmake-qt5",
+        "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+        "side": "upstream"
+      },
+      "projection": {
+        "artifact_sha256": "13f12c829e2d8ecb8424018d85934e31801d51aac4f0bf461b55158a9b59b928",
+        "canonical_projection_sha256": "27f1b032445d275eb8dd489379cdb6c10a717acf7888e4317ee1ac58fb07e2bb",
+        "issues": [],
+        "result": "pass"
+      },
+      "raw_observation_sha256": "043ef91d30717f3cad85b6776e4d7df000f3fc37772c2430e9e065a42fdaa6c4",
+      "raw_streams": {
+        "stderr": {
+          "sha256": "8372f34794ce221b78e055cd545f9d95e285202181948dfd9c2a80909fa6710e",
+          "size": 21
+        },
+        "stdout": {
+          "sha256": "5c48788adf5e7f42ff9f06c67c6b169356b1c81f4379e3d1ca4d44d24d2b906d",
+          "size": 69
+        }
+      }
+    }
+  },
+  "limit_error": null,
+  "raw_equality": {
+    "all": true,
+    "runtime_log": true,
+    "stderr": true,
+    "stdout": true,
+    "termination": true
+  },
+  "requirement": {
+    "met": true,
+    "required_equivalence": "exact"
+  },
+  "result": "exact",
+  "run_identity": {
+    "oracle_profile": "cmake-qt5",
+    "platform": "linux-x86_64",
+    "semantic_schema": 1,
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  }
+}

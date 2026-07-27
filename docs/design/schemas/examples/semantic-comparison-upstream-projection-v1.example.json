@@ -1,0 +1,172 @@
+{
+  "case_id": "synthetic.raw-framing.example",
+  "projection_schema": 1,
+  "run_identity": {
+    "oracle_profile": "cmake-qt5",
+    "platform": "linux-x86_64",
+    "semantic_schema": 1,
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "semantic": {
+    "comparison": {
+      "output": {
+        "expected_json_documents": 1,
+        "kind": "normal_scan_json"
+      },
+      "streams": {
+        "stderr": {
+          "records": [
+            {
+              "body": {
+                "encoding": "utf8",
+                "text": "synthetic diagnostic"
+              },
+              "line_ending": "lf"
+            }
+          ]
+        },
+        "stdout": {
+          "segments": [
+            {
+              "kind": "raw",
+              "records": [
+                {
+                  "body": {
+                    "encoding": "utf8",
+                    "text": "one.1.sg"
+                  },
+                  "line_ending": "lf"
+                },
+                {
+                  "body": {
+                    "encoding": "utf8",
+                    "text": "one.1.sg: [12 ms]"
+                  },
+                  "line_ending": "lf"
+                }
+              ]
+            },
+            {
+              "document": {
+                "format_candidates": [],
+                "items": [],
+                "kind": "normal_scan"
+              },
+              "kind": "document"
+            },
+            {
+              "kind": "raw",
+              "records": [
+                {
+                  "body": {
+                    "encoding": "utf8",
+                    "text": ""
+                  },
+                  "line_ending": "lf"
+                },
+                {
+                  "body": {
+                    "encoding": "utf8",
+                    "text": "throw.1.sg: ReferenceError"
+                  },
+                  "line_ending": "lf"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "termination": {
+        "code": 0,
+        "kind": "exit"
+      }
+    },
+    "evidence": {
+      "canonical_contract_sha256": "f65a3a1aa60bc519a4ab85e488867fef92ef7eb08bc1be68f835287c7e7a8644",
+      "canonical_framing_projection_sha256": "1328fee3e23c0e71111e75c1ad0bb3daed07de5f06de4c76a61577a4f3868ce5",
+      "contract_artifact_sha256": "af90438640ca6e36cbf4b070b5990085b14c47c6779009a47a18b916c7e06113",
+      "execution_verification_sha256": "0967ad674af1e4bf12e6e5629128cd4c81341e0f7c19ee95d1b394783c16992b",
+      "framing_segments_sha256": "739e6cfce98734402af73f5031207380c491639d4ee8f8a3643fb11cbcfad93f",
+      "raw_streams": {
+        "stderr": {
+          "records": [
+            {
+              "offset": 0,
+              "sha256": "8372f34794ce221b78e055cd545f9d95e285202181948dfd9c2a80909fa6710e",
+              "size": 21
+            }
+          ],
+          "sha256": "8372f34794ce221b78e055cd545f9d95e285202181948dfd9c2a80909fa6710e",
+          "size": 21
+        },
+        "stdout": {
+          "segments": [
+            {
+              "kind": "raw",
+              "records": [
+                {
+                  "offset": 0,
+                  "sha256": "9c33586c78f01b445e1313c91a81536fd79da8276c6158c5ecedc5332297004c",
+                  "size": 9
+                },
+                {
+                  "offset": 9,
+                  "sha256": "e15e82d3b99ccb6621b965de9c05e1603b26c3280b2d17bdbfa853c2675449c4",
+                  "size": 18
+                }
+              ],
+              "source": {
+                "index": 0,
+                "offset": 0,
+                "sha256": "fdb80e8ea942196b50583a954b7fb08d632f6325a7067276044cef61b23ca218",
+                "size": 27
+              }
+            },
+            {
+              "kind": "document",
+              "source": {
+                "canonical_json_sha256": "a5e0f046bf95a54b3c3b042320ffd3b035d639c02378d2392648a7a208586aba",
+                "index": 1,
+                "offset": 27,
+                "sha256": "a5e0f046bf95a54b3c3b042320ffd3b035d639c02378d2392648a7a208586aba",
+                "size": 14
+              }
+            },
+            {
+              "kind": "raw",
+              "records": [
+                {
+                  "offset": 41,
+                  "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+                  "size": 1
+                },
+                {
+                  "offset": 42,
+                  "sha256": "fd0acdd76fc819e5b6d0b710c2f3a1a21b0e1b9f2a820f0f3ab92689e1a93ab1",
+                  "size": 27
+                }
+              ],
+              "source": {
+                "index": 2,
+                "offset": 41,
+                "sha256": "9036a168912ba491abd5d3b8aa472df74882adae0965d5339d861de1f48cf956",
+                "size": 28
+              }
+            }
+          ],
+          "sha256": "5c48788adf5e7f42ff9f06c67c6b169356b1c81f4379e3d1ca4d44d24d2b906d",
+          "size": 69
+        }
+      }
+    },
+    "issues": [],
+    "model_schema": 1,
+    "producer": {
+      "executable_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "profile": "cmake-qt5",
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+      "side": "upstream"
+    },
+    "result": "pass"
+  }
+}
