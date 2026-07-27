@@ -27,8 +27,8 @@
   以私有 rquickjs/QuickJS-NG backend 作为首个规则运行时，保留严格兼容层、
   资源和 static-link 门禁（Proposed）。
 - [`0007-rust-toolchain-baseline.md`](0007-rust-toolchain-baseline.md)：
-  固定 Rust 1.88 作为当前默认工具链与显式 MSRV，并将后续升级绑定到可重复证据
-  （Proposed）。
+  历史上固定 Rust 1.88 作为默认工具链与显式 MSRV；默认工具链部分已被 ADR
+  0011 取代，MSRV 仍为 1.88（Superseded）。
 - [`0008-pinned-rule-order-manifest.md`](0008-pinned-rule-order-manifest.md)：
   不在 Rust runtime 复刻非传递 comparator，以 source/target/oracle 绑定的显式
   顺序清单驱动 legacy 规则执行（Proposed）。
@@ -36,3 +36,6 @@
   modern API 用类型化取消代替上游部分成功结果，legacy 保留原始证据（Proposed）。
 - [`0010-bounded-include-graph.md`](0010-bounded-include-graph.md)：
   静态 include 图与运行时 active stack 有界，循环作为安全偏差提前失败（Proposed）。
+- [`0011-rust-1.97.1-default-toolchain.md`](0011-rust-1.97.1-default-toolchain.md)：
+  默认/发布工具链固定升级到 Rust 1.97.1，同时保持 MSRV 1.88 和双版本 CI
+  （Proposed）。

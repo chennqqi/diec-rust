@@ -4,7 +4,7 @@ import unittest
 
 
 ROOT = pathlib.Path(__file__).parents[2]
-EXPECTED_CHANNEL = "1.88.0"
+EXPECTED_CHANNEL = "1.97.1"
 EXPECTED_MSRV = "1.88"
 
 
@@ -34,6 +34,12 @@ class RustToolchainPolicyTests(unittest.TestCase):
                     package.get("rust-version"),
                     EXPECTED_MSRV,
                 )
+
+    def test_default_toolchain_and_msrv_are_independent(self):
+        self.assertNotEqual(
+            EXPECTED_CHANNEL.removesuffix(".0"),
+            EXPECTED_MSRV,
+        )
 
 
 if __name__ == "__main__":

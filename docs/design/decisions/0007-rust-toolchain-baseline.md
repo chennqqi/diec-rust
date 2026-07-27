@@ -1,8 +1,13 @@
 # ADR 0007：固定 Rust 1.88 作为当前工具链与 MSRV 基线
 
-Status: Proposed
+Status: Superseded
 
 Last updated: 2026-07-27
+
+Superseded by
+[`0011-rust-1.97.1-default-toolchain.md`](0011-rust-1.97.1-default-toolchain.md).
+Rust 1.88 remains the MSRV; only the default/development/release toolchain part
+of this proposal is replaced.
 
 ## Context
 

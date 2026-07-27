@@ -474,10 +474,13 @@ impl Pattern {
                     let Some(found) = find_exact(data, search_from, end, &fixed) else {
                         break;
                     };
-                    if let Some(candidate) = found.checked_sub(leading_non_exact) {
-                        if candidate >= offset && self.matches(data, candidate, None)? {
+                    match found.checked_sub(leading_non_exact) {
+                        Some(candidate)
+                            if candidate >= offset && self.matches(data, candidate, None)? =>
+                        {
                             return Ok(Some(candidate));
                         }
+                        _ => {}
                     }
                     search_from = found.saturating_add(1);
                 }
@@ -519,9 +522,7 @@ impl Pattern {
                     anchor_index = index;
                     anchor_delta = current_delta;
                 }
-                current_delta = current_delta
-                    .checked_add(operation_span(operation))
-                    .unwrap_or(usize::MAX);
+                current_delta = current_delta.saturating_add(operation_span(operation));
             }
         }
 
@@ -535,18 +536,21 @@ impl Pattern {
                 let Some(found) = find_control_anchor(data, search_from, end, anchor) else {
                     break;
                 };
-                if let Some(candidate) = found.checked_sub(anchor_delta) {
-                    if candidate >= offset && self.matches(data, candidate, memory_map)? {
+                match found.checked_sub(anchor_delta) {
+                    Some(candidate)
+                        if candidate >= offset && self.matches(data, candidate, memory_map)? =>
+                    {
                         return Ok(Some(candidate));
                     }
+                    _ => {}
                 }
                 search_from = found.saturating_add(1);
             }
             return Ok(None);
         }
 
-        if let Some(first) = self.operations.first() {
-            if is_searchable_control_anchor(first) {
+        match self.operations.first() {
+            Some(first) if is_searchable_control_anchor(first) => {
                 let mut search_from = offset;
                 while search_from < end {
                     let Some(found) = find_control_anchor(data, search_from, end, first) else {
@@ -559,6 +563,7 @@ impl Pattern {
                 }
                 return Ok(None);
             }
+            _ => {}
         }
 
         for candidate in offset..end {
@@ -1067,7 +1072,7 @@ fn pair_count(
     upstream_compatible: bool,
     quirks: &mut Vec<CompatibilityQuirk>,
 ) -> Result<usize, ParseError> {
-    if count % 2 != 0 {
+    if !count.is_multiple_of(2) {
         if upstream_compatible {
             quirks.push(CompatibilityQuirk::OddRepeatedToken {
                 position,
