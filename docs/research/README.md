@@ -15,6 +15,9 @@ Phase 0 计划形成：
   的固定源码边界、8-case 生成语料和双 Qt5 oracle 执行门禁（Draft）。
 - [`dos-dispatch-reachability.md`](dos-dispatch-reachability.md)：DOS/COM 七个
   公共 detector 成员与 BW DOS16M branch-only 路径的固定源码审计（Draft）。
+- [`result-metadata-behavior.md`](result-metadata-behavior.md)：`SCAN_RESULT`
+  四个标量字段、四个公共扫描入口的 filename/size/filetype/time 契约及
+  Qt5 harness（Draft）。
 - [`source-analysis.md`](source-analysis.md)：模块关系及扫描/规则调用链（Draft）。
 - [`rule-compatibility.md`](rule-compatibility.md)：规则语法、内建函数和宿主 API（Draft）。
 - [`rule-runtime-spike.md`](rule-runtime-spike.md)：Boa 全库解析、真实复杂规则、宿主绑定和资源限制验证（Draft）。
@@ -85,6 +88,8 @@ Phase 0 计划形成：
   SHA/line-bound 审计。
 - [`data/dos-dispatch-corpus.json`](data/dos-dispatch-corpus.json)：七个公共
   DOS/COM filetype 的 19-case 正例、截断、近似 magic、chain、后缀和大小边界。
+- [`data/result-metadata-engine-qt5.json`](data/result-metadata-engine-qt5.json)：
+  四个公共扫描入口的 `SCAN_RESULT` 标量字段、filename 语义和原始流哈希。
 - [`data/path-corpus.json`](data/path-corpus.json)：由基线字节组成的确定性嵌套目录树。
 - [`data/database-fixture.json`](data/database-fixture.json)：项目生成的数据库成功/故障 fixture。
 - [`data/database-archive-linux-qt5.json`](data/database-archive-linux-qt5.json)：两套固定 Qt5 oracle 的 17-case ZIP 数据库矩阵及两侧原始 stream。

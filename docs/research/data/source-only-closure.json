@@ -116,27 +116,6 @@
       "closure_kind": "engine_result_harness_extension",
       "current_status": "source_only_runtime_corpus_missing",
       "evidence_set": "result_model",
-      "id": "CAP-RESULT-001",
-      "missing_evidence": [
-        "runtime output currently retains nSize but not nScanTime, sFileName, or ftInit"
-      ],
-      "name": "scan result scalar metadata",
-      "proposed_experiment": {
-        "assertions": [
-          "nScanTime, sFileName, nSize, and ftInit are emitted",
-          "entry-point-specific filename semantics are compared",
-          "nondeterministic scan time is typed and not exact-normalized away"
-        ],
-        "fixture": "file, memory, device, and subdevice scans over identical bytes",
-        "harness": "extended engine-contract result serializer",
-        "platform": "linux-x86_64-qt5"
-      }
-    },
-    {
-      "acceptance": "all assertions pass against the pinned upstream identity and the capability becomes runtime-observed or receives an explicit reviewed scope disposition",
-      "closure_kind": "engine_result_harness_extension",
-      "current_status": "source_only_runtime_corpus_missing",
-      "evidence_set": "result_model",
       "id": "CAP-RESULT-002",
       "missing_evidence": [
         "records and errors are observed but debug-record and handler lists are not"
@@ -228,14 +207,14 @@
   "schema_version": 1,
   "source": {
     "path": "docs/research/data/capability-coverage.json",
-    "sha256": "c85eb70a92f01c7b775ddcc54cb7b34a9e52510e577e1ff9cc25b94a1280122a"
+    "sha256": "2157d0ec0dbb7e5bb12c4a3200a956428116d871ee51e79e1c8b8d871088bfa3"
   },
   "summary": {
     "all_items_have_executable_assertions": true,
     "all_items_have_missing_evidence": true,
     "closure_kind_counts": {
       "bounded_escalation_and_adr": 1,
-      "engine_result_harness_extension": 4,
+      "engine_result_harness_extension": 3,
       "generated_format_oracle": 1,
       "generated_format_oracle_plus_scope_review": 1,
       "nested_result_harness_extension": 1,
@@ -243,7 +222,7 @@
       "scope_review_or_private_harness": 1
     },
     "phase_0_source_only_closed": false,
-    "source_only_capability_count": 10
+    "source_only_capability_count": 9
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
 }

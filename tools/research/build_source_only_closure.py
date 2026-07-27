@@ -102,19 +102,6 @@ CATALOG: dict[str, dict[str, Any]] = {
             "an ADR records the bounded Rust default and legacy compatibility policy",
         ],
     },
-    "CAP-RESULT-001": {
-        "closure_kind": "engine_result_harness_extension",
-        "missing_evidence": [
-            "runtime output currently retains nSize but not nScanTime, sFileName, or ftInit"
-        ],
-        "fixture": "file, memory, device, and subdevice scans over identical bytes",
-        "harness": "extended engine-contract result serializer",
-        "assertions": [
-            "nScanTime, sFileName, nSize, and ftInit are emitted",
-            "entry-point-specific filename semantics are compared",
-            "nondeterministic scan time is typed and not exact-normalized away",
-        ],
-    },
     "CAP-RESULT-002": {
         "closure_kind": "engine_result_harness_extension",
         "missing_evidence": [

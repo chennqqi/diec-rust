@@ -117,6 +117,10 @@
         "docs/research/engine-contract-behavior.md",
         "docs/research/data/engine-contract-linux-qt5.json",
         "tools/tests/test_probe_engine_contract.py",
+        "docs/research/result-metadata-behavior.md",
+        "docs/research/data/result-metadata-engine-qt5.json",
+        "tools/upstream/probe_result_metadata_harness.py",
+        "tools/tests/test_probe_result_metadata_harness.py",
         "docs/research/global-host-api-runtime-differential.md",
         "docs/research/data/global-host-api-qt5.json",
         "tools/tests/test_probe_global_host_api.py"
@@ -192,7 +196,7 @@
     {"id": "CAP-NEST-008", "name": "nested JSON result tree", "verification": "observed", "evidence_set": "nested_scan"},
     {"id": "CAP-NEST-009", "name": "no independent depth or total extraction limit", "verification": "source_verified_with_gaps", "evidence_set": "nested_scan"},
 
-    {"id": "CAP-RESULT-001", "name": "scan result scalar metadata", "verification": "source_verified", "evidence_set": "result_model"},
+    {"id": "CAP-RESULT-001", "name": "scan result scalar metadata", "verification": "observed", "evidence_set": "result_model"},
     {"id": "CAP-RESULT-002", "name": "scan result record error debug and handler lists", "verification": "source_verified", "evidence_set": "result_model"},
     {"id": "CAP-RESULT-003", "name": "heuristic and unknown flags", "verification": "source_verified", "evidence_set": "result_model"},
     {"id": "CAP-RESULT-004", "name": "record and parent identifiers", "verification": "source_verified", "evidence_set": "result_model"},
@@ -291,9 +295,9 @@
   ],
   "summary": {
     "capability_count": 68,
-    "observed": 38,
+    "observed": 39,
     "observed_with_gaps": 20,
-    "source_verified": 9,
+    "source_verified": 8,
     "source_verified_with_gaps": 1,
     "coverage_gap_count": 12,
     "phase_0_coverage_complete": false

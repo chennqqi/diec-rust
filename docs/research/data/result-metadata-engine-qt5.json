@@ -1,0 +1,90 @@
+{
+  "capability": "CAP-RESULT-001",
+  "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+  "generator": "tools/upstream/probe_result_metadata_harness.py",
+  "generator_sha256": "a0e71de2aef80d9c2ba809edafcd4c46ecdd9fb35cd3f4f8eb28c5435d12ade7",
+  "harness_output": {
+    "case_count": 4,
+    "cases": [
+      {
+        "error_count": 0,
+        "ftInit": 9,
+        "ftInit_string": "MSDOS",
+        "id": "file",
+        "nScanTime": 9,
+        "nSize": 128,
+        "record_count": 1,
+        "sFileName": "/tmp/diec-result-metadata-input.exe",
+        "scan_success": true
+      },
+      {
+        "error_count": 0,
+        "ftInit": 9,
+        "ftInit_string": "MSDOS",
+        "id": "memory",
+        "nScanTime": 0,
+        "nSize": 128,
+        "record_count": 1,
+        "sFileName": "",
+        "scan_success": true
+      },
+      {
+        "error_count": 0,
+        "ftInit": 9,
+        "ftInit_string": "MSDOS",
+        "id": "device",
+        "nScanTime": 0,
+        "nSize": 128,
+        "record_count": 1,
+        "sFileName": "named-device.exe",
+        "scan_success": true
+      },
+      {
+        "error_count": 0,
+        "ftInit": 9,
+        "ftInit_string": "MSDOS",
+        "id": "subdevice",
+        "nScanTime": 0,
+        "nSize": 128,
+        "record_count": 1,
+        "sFileName": "",
+        "scan_success": true
+      }
+    ],
+    "device_name": "named-device.exe",
+    "file_path": "/tmp/diec-result-metadata-input.exe",
+    "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+    "input_hex": "4d5a800001000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000090cd2000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "input_size": 128,
+    "schema_version": 1,
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+  },
+  "oracle": {
+    "binary": "/opt/die-build/src/console/diec-result-metadata-harness",
+    "binary_sha256": "be7941318ec41fcf7a6d2e17c429afcb1245a3ea11d125fa9d1db2f0714cd0d5",
+    "exit_code": 0,
+    "image": "diec-rust/result-metadata-harness-qt5:74eaf505",
+    "image_id": "sha256:ec177cf2bbf8b3b40d41a045652190181502600121b2b28dc090e4da24007a36",
+    "raw_stderr_bytes": 0,
+    "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "raw_stdout_bytes": 1876,
+    "raw_stdout_sha256": "0b70190ff72ab3c430892f6117524145c82af85a6dc30103858c01eed0fe077a",
+    "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "platform": "linux-amd64-qt5",
+  "raw_artifacts": {
+    "storage": "untracked external directory selected by --raw-dir"
+  },
+  "relationships": {
+    "filenames_follow_entrypoint": true,
+    "filetype_is_consistent_msdos": true,
+    "scalar_fields_present": true,
+    "scan_time_typed_nonnegative": true,
+    "scans_complete_without_errors": true,
+    "sizes_match_identical_input": true
+  },
+  "schema_version": 1,
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+}
