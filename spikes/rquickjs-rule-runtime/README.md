@@ -8,7 +8,8 @@ corpus and runtime fixtures used by `spikes/boa-rule-runtime`. It also probes
 the native engine's counted interrupt, cross-thread cancellation, same-context
 recovery, cooperative native HostApi cancellation, monotonic VM/native
 deadlines, focused Qt-oracle-backed `U24`/`shru64` behavior, and memory
-limits, and records the Windows MSVC build cost.
+and stack limits with same-context recovery, and records the Windows MSVC
+build cost.
 
 The spike must not modify or normalize any upstream rule file. The optional
 `eval-isolated-compat` experiment applies one length-preserving, source-identity

@@ -97,6 +97,15 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
         self.assertTrue(fixture["memory_limit_observed"])
         self.assertEqual(fixture["memory_limit_bytes"], 4 * 1024 * 1024)
         self.assertEqual(
+            fixture["stack_limit"],
+            {
+                "bytes": 128 * 1024,
+                "overflow_observed": True,
+                "same_context_recovered": True,
+                "same_context_recovery_result": "42",
+            },
+        )
+        self.assertEqual(
             fixture["external_cancel"],
             {
                 "hard_stop_handler_call_limit": 1_000_000,

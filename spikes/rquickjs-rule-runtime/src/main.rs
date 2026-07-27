@@ -2995,6 +2995,17 @@ fn run_fixture(rule_root: &Path) -> Result<bool, String> {
     )
     .err();
 
+    const STACK_LIMIT_BYTES: usize = 128 * 1024;
+    let stack_runtime = new_runtime()?;
+    stack_runtime.set_max_stack_size(STACK_LIMIT_BYTES);
+    let stack_context = new_context(&stack_runtime)?;
+    let stack_limit_error = eval_unit(
+        &stack_context,
+        b"function recurse() { return 1 + recurse(); } recurse();",
+    )
+    .err();
+    let stack_limit_recovery = eval_string(&stack_context, b"String(6 * 7)");
+
     let passed = host_result == "42"
         && helper_result == "a, b/c|007"
         && audio_eval.is_ok()
@@ -3025,7 +3036,9 @@ fn run_fixture(rule_root: &Path) -> Result<bool, String> {
         && !native_deadline_hard_stop_reached
         && native_deadline_recovery.as_deref() == Ok("42")
         && numeric_result == numeric_expected
-        && memory_limit_error.is_some();
+        && memory_limit_error.is_some()
+        && stack_limit_error.is_some()
+        && stack_limit_recovery.as_deref() == Ok("42");
     let compatible = nintendo_eval.is_ok();
     let report = json!({
         "schema_version": 1,
@@ -3127,6 +3140,14 @@ fn run_fixture(rule_root: &Path) -> Result<bool, String> {
         "memory_limit": {
             "bytes": 4 * 1024 * 1024,
             "error": memory_limit_error,
+        },
+        "stack_limit": {
+            "bytes": STACK_LIMIT_BYTES,
+            "error": stack_limit_error,
+            "same_context_recovery": {
+                "result": stack_limit_recovery.as_deref().ok(),
+                "error": stack_limit_recovery.as_ref().err(),
+            },
         },
         "elapsed_ms": started.elapsed().as_millis(),
         "candidate_compatible_with_fixed_rules": compatible,

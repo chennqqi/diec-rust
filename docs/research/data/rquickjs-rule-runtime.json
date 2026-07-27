@@ -19,7 +19,7 @@
   "experiment": {
     "cargo_lock_sha256": "e03ce821c4a4c0f362d417d84752ed9ef1f775377ef9042306397aca39d21836",
     "cargo_toml_sha256": "9607cda695bf719921b1dded3dc8c643886a7f2e6fe7380f714698b994e9ee9a",
-    "source_sha256": "da808dcca4941f2c51c9b8cf7ab56313dd1b9df30152c405571fd748b954fc79",
+    "source_sha256": "284759ae3420cdec854c76dee9a22d15424a1e2789b6aeae2df19757ec8b64bd",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -38,6 +38,12 @@
     "interrupt_observed": true,
     "memory_limit_bytes": 4194304,
     "memory_limit_observed": true,
+    "stack_limit": {
+      "bytes": 131072,
+      "overflow_observed": true,
+      "same_context_recovered": true,
+      "same_context_recovery_result": "42"
+    },
     "native_host_cooperative_cancel": {
       "hard_stop_iteration_limit": 1000000,
       "hard_stop_reached": false,

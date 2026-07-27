@@ -113,6 +113,15 @@ class ToolchainUpgradeTests(unittest.TestCase):
                 "doc_tests": 0,
             },
         )
+        self.assertEqual(
+            gates["rquickjs-rule-runtime"]["msrv"],
+            {
+                "fmt": "pass",
+                "clippy": "pass",
+                "unit_tests": 22,
+                "doc_tests": 0,
+            },
+        )
 
     def test_clippy_remediation_is_exact_and_msrv_preserving(self):
         remediation = self.report["clippy_remediation"]

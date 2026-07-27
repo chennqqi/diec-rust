@@ -105,6 +105,13 @@ source SHA-256 为
 同一源码又在 1.88.0 和 1.97.1 下分别通过 rustfmt、`-D warnings` 和全部
 14 项测试，因此这次维护性修改没有提高 MSRV。
 
+后续 `rquickjs-rule-runtime` 增加 128 KiB VM stack-limit/recovery fixture 后，
+更新源码 SHA-256 为
+`284759ae3420cdec854c76dee9a22d15424a1e2789b6aeae2df19757ec8b64bd`；
+同一源码也在 1.88.0 和 1.97.1 下通过 rustfmt、`-D warnings` 和 22 项测试，
+两套 release fixture 均捕获 stack overflow 并恢复同一 context。该补充不改变
+Cargo dependency、feature、lockfile 或 native static-link consumer。
+
 ## 5. Native static-link 结果
 
 下表记录观察到的产物，不承诺不同路径、链接时间或环境能够逐字节重现同一
@@ -158,7 +165,8 @@ consumer 继续运行并以 0 退出。
 2. 安装固定 `1.97.1` minimal toolchain、rustfmt 和 Clippy；另行保留
    `1.88.0` minimal toolchain用于 MSRV job。
 3. 对五个 manifest 运行第 4 节三条命令。
-4. 只对受升级修改的 `signature-parser` 使用 `+1.88.0` 重跑相同门禁。
+4. 对 `signature-parser` 和补充 stack fixture 的 `rquickjs-rule-runtime` 使用
+   `+1.88.0` 重跑相同门禁。
 5. Linux 以固定 digest 启动容器，设置 `RUSTUP_TOOLCHAIN=1.97.1`，断网并只读
    挂载源码和 registry cache；分别 `cargo build --release --offline`，
    用 `gcc` 链接 C fixture，执行 fixture，并记录 `ldd` 与
@@ -176,8 +184,8 @@ consumer 继续运行并以 0 退出。
 
 现有五个 Phase 0 spike 与六条 Windows/Linux native C consumer 路径均兼容
 Rust 1.97.1。已观察的 native system library 集合相对固定 1.88 报告没有增加，
-而 `signature-parser` 仍通过 Rust 1.88 MSRV 门禁。因此，升级默认/发布工具链
-而保持 MSRV 1.88 有直接实验支持。
+而 `signature-parser` 与 `rquickjs-rule-runtime` 仍通过 Rust 1.88 MSRV 门禁。
+因此，升级默认/发布工具链而保持 MSRV 1.88 有直接实验支持。
 
 这不是 ADR 0011 的全部接受证据。仍未完成：
 

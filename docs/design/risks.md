@@ -159,8 +159,10 @@ baseline 的变更都要检查本表。
   `_encodingList` 也不同，而重复结果、单项删除/block、数组字符串化、双 stop
   状态和重复 include 相同。受限 Qt5 CLI fixture 又证明 self/two-node include
   cycle 依赖 VM 栈上限，产生 28 条 signal 和一条 init error 后继续规则；
-  ADR 0010 提议静态图与 active stack 提前拒绝该循环。完整 format HostApi 矩阵、
-  更多参数/转换边界和逐规则
+  ADR 0010 提议静态图与 active stack 提前拒绝该循环。固定 QuickJS-NG fixture
+  已用 128 KiB stack limit 使无界 JavaScript 递归产生明确异常，并在同一
+  context 恢复 `"42"`；这只证明末级 VM hard limit 接线，不等于 Qt include-cycle
+  错误传播兼容。完整 format HostApi 矩阵、更多参数/转换边界和逐规则
   execution 仍是开放风险。
 - **缓解**：保持 `RuleRuntime`/`HostApi` port；建立全规则 inventory、最小失败
   fixture、host call trace；基于证据选 runtime，禁止静默转换规则。
@@ -358,6 +360,8 @@ baseline 的变更都要检查本表。
   取消，10/10 正常返回且未触发百万次检查点硬上限；迭代数 200..1,511 同样只作
   调度观察。VM/native 的 25ms monotonic deadline 也分别 10/10 到期、0/10
   触发硬兜底并恢复同一 context；callback/checkpoint 范围不作跨机器延迟承诺。
+  同一 fixture 的 128 KiB stack limit 也已捕获无界递归并恢复 context，但真实
+  include graph 仍必须由 ADR 0010 的静态/active-stack budget 提前拒绝。
 - **缓解**：runtime 选型硬门禁；fuel/deadline/heap；受控检查点；不可中断 backend
   不得采用。
 - **验证**：每个 scan stage deterministic fake clock/cancel；恶意长循环在期限内

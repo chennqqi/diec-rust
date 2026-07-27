@@ -24,7 +24,9 @@ QuickJS-NG C 源码编译成静态 archive。它能够：
 - QuickJS VM 与 Rust native HostApi 均可检查 monotonic wall-clock deadline；
 - Rust `U24`/`read_uint24` 与 `shru64` 聚焦数值 fixture 匹配固定 Qt 5/Qt 6
   上游 oracle；
-- 通过 runtime memory limit 拒绝超限分配。
+- 通过 runtime memory limit 拒绝超限分配；
+- 通过 128 KiB runtime stack limit 拒绝无界 JavaScript 递归，并在同一 context
+  恢复执行。
 
 但它不能原样作为 DIE 兼容运行时。显式使用 sloppy-script 模式并为语法覆盖提供
 受控宿主 proxy 后，2235 个固定规则文件中仍有 1 个执行失败：
@@ -222,11 +224,20 @@ context”。
   native 检查点硬上限；
 - QuickJS VM 与 native HostApi 的 25ms deadline 均到期、未触发各自硬上限，
   清理后各自 context 都返回 `"42"`；
-- 4 MiB runtime limit 拒绝 16 MiB `ArrayBuffer`，返回 `out of memory`。
+- 4 MiB runtime limit 拒绝 16 MiB `ArrayBuffer`，返回 `out of memory`；
+- 128 KiB runtime stack limit 使无终止递归返回
+  `Maximum call stack size exceeded`，随后同一 context 求值
+  `String(6 * 7)` 返回 `"42"`。
 
 内存限制使用 rquickjs 默认 libc allocator。官方 API 说明使用 `rust-alloc` 或
 自定义 allocator 时 `set_memory_limit` 是 no-op，因此未来不能在未验证的情况
 下同时启用这两个选项。
+
+stack fixture 使用显式递归函数而不是 include graph，因此只证明 QuickJS-NG
+`set_max_stack_size` 对脚本调用栈生效且 exception 后 context 可恢复。它不替代
+固定 Qt include-cycle 的深度、signal 数或错误传播差分；正式 runtime 仍按
+ADR 0010 在进入 VM 前拒绝 active include cycle，并将 VM stack limit 作为末级
+资源防线。
 
 ### 外部取消与恢复
 
