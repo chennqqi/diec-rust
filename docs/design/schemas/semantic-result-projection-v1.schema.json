@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://diec-rust.invalid/schemas/semantic-result-projection-v1.schema.json",
+  "title": "DIEC legacy CLI semantic result projection v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "projection_schema",
+    "run_identity",
+    "case_id",
+    "semantic"
+  ],
+  "properties": {
+    "projection_schema": {
+      "const": 1
+    },
+    "run_identity": {
+      "$ref": "https://diec-rust.invalid/schemas/semantic-projection-v1.schema.json#/$defs/runIdentity"
+    },
+    "case_id": {
+      "$ref": "https://diec-rust.invalid/schemas/semantic-projection-v1.schema.json#/$defs/caseId"
+    },
+    "semantic": {
+      "$ref": "https://diec-rust.invalid/schemas/semantic-result-v1.schema.json"
+    }
+  }
+}

@@ -2,7 +2,8 @@
 
 本目录保存由调研证据支持的 diec-rust 设计。尚未完成上游调研的部分应明确标记为待定。
 
-- [`schemas/`](schemas/)：差分输入、精确 waiver registry 和 audit 的版本化
+- [`schemas/`](schemas/)：raw execution/framing、legacy CLI semantic result、
+  normalization、差分输入、精确 waiver registry 和 audit 的版本化
   machine-readable schema 与 synthetic examples。
 
 Phase 0 计划形成：

@@ -57,3 +57,19 @@ python tools/compat/project_raw_framing.py \
 
 Its three byte ranges cover the original stdout exactly; neither raw diagnostic
 is part of the parsed JSON value or omitted from the projection.
+
+The semantic-result example reuses that verified execution and adds an exact
+case contract. Reproduce it with:
+
+```text
+python tools/compat/project_semantic_result.py \
+  --contract docs/design/schemas/examples/semantic-projection-contract-v1.example.json \
+  --manifest docs/design/schemas/examples/raw-framing-execution-v1.example.json \
+  --artifact-root docs/design/schemas/examples/raw-artifacts \
+  --max-artifact-bytes 1024 \
+  --output docs/design/schemas/examples/semantic-result-projection-v1.example.json
+```
+
+The typed document is an empty normal scan, while profiling prefix, trailing
+rule error and stderr remain exact semantic stream records. The contract and
+all identities/hashes are synthetic and approve no production baseline.

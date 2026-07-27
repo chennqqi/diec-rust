@@ -624,7 +624,9 @@ offset/size 差异。
 - native path 在 canonical JSON 的跨平台无损编码。
 - modern CLI exit code 数值和 batch fail-fast/continue 默认值。
 - directory symlink、permission、TOCTOU 和 changed-during-read policy。
-- entropy/info/struct 是否进入同一 schema major 或使用 mode payload schema。
+- modern canonical entropy/info/struct 是否进入同一 schema major 或使用 mode
+  payload schema；legacy CLI compatibility 已由 `semantic-result-v1` 的封闭
+  mode union 表示，不替代该 modern API 决策。
 
 上述项目必须由固定 baseline、spike 或 `testing.md` 的可执行用例关闭；不能仅凭
 实现方便作决定。

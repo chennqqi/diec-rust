@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://diec-rust.invalid/schemas/semantic-projection-contract-v1.schema.json",
+  "title": "DIEC semantic projection contract v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_schema",
+    "case_id",
+    "platform",
+    "oracle_profile",
+    "upstream_commit",
+    "case_manifest_sha256",
+    "semantic_schema",
+    "output"
+  ],
+  "properties": {
+    "contract_schema": {
+      "const": 1
+    },
+    "case_id": {
+      "$ref": "#/$defs/caseId"
+    },
+    "platform": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+-[a-z0-9][a-z0-9_]*$"
+    },
+    "oracle_profile": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+    },
+    "upstream_commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "case_manifest_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "semantic_schema": {
+      "const": 1
+    },
+    "output": {
+      "$ref": "#/$defs/output"
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "caseId": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "expected_json_documents"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "normal_scan_json",
+            "entropy_json",
+            "info_json",
+            "struct_json",
+            "raw"
+          ]
+        },
+        "expected_json_documents": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4096
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "raw"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "expected_json_documents": {
+                "const": 0
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

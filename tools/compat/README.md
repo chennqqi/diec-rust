@@ -1,11 +1,13 @@
 # Compatibility tooling
 
-Phase 0 currently provides four strict compatibility sub-pipeline tools:
+Phase 0 currently provides five strict compatibility sub-pipeline tools:
 
 - `verify_raw_execution.py` validates a versioned execution record and rehashes
   its content-addressed stdout/stderr/runtime-log bytes;
 - `project_raw_framing.py` creates a lossless byte-range projection of verified
   stdout, including every prefix/trailing diagnostic;
+- `project_semantic_result.py` projects one contract-bound legacy CLI result
+  into a closed typed model without dropping raw streams;
 - `normalize_semantic_projection.py` applies only evidence-backed, closed-set
   semantic transforms;
 - `validate_difference_waivers.py` audits evidence-bound semantic difference
@@ -63,6 +65,39 @@ The projector caps one JSON document at 8 MiB, documents at 4096 and nesting at
 `projection_limit_reached` plus exact reasons. `documents_found` describes
 framing only and is not a differential pass.
 
+## Typed semantic result
+
+`project_semantic_result.py` requires both a raw execution and a strict
+`semantic-projection-contract-v1`:
+
+```text
+python tools/compat/project_semantic_result.py \
+  --contract docs/design/schemas/examples/semantic-projection-contract-v1.example.json \
+  --manifest docs/design/schemas/examples/raw-framing-execution-v1.example.json \
+  --artifact-root docs/design/schemas/examples/raw-artifacts \
+  --output semantic-result-projection.json
+```
+
+The contract supplies the shared upstream target/oracle identity and expected
+legacy CLI output kind/count; producer revision remains side-specific. The
+projector re-verifies every artifact, rebuilds framing, and types normal scan,
+entropy, info, struct and normal-scan error documents. It retains raw stdout
+segments plus stderr/runtime log as lossless line records: comparison holds
+UTF-8 or base64 body/ending, while evidence holds the correlated exact
+offset/size/hash. Unknown fields/shapes, document-count drift and framing limits
+produce an auditable
+`projection_failure` with the original value still present.
+
+Future two-sided equality compares only `semantic.comparison`.
+`semantic.producer` and `semantic.evidence` bind side-specific provenance and
+must not create false detection differences.
+
+Exit code `0` is a valid passing projection, `1` is a valid
+`projection_failure`, and `2` is invalid identity/evidence/filesystem input.
+The schemas are `semantic-projection-contract-v1.schema.json`,
+`semantic-result-v1.schema.json`, and
+`semantic-result-projection-v1.schema.json`.
+
 ## Semantic normalization
 
 `normalize_semantic_projection.py` binds one exact run identity and case to
@@ -102,6 +137,6 @@ records their SHA-256 in its audit. It recomputes every difference fingerprint
 from canonical JSON plus both raw stream hashes.
 
 The normative v1 shapes and synthetic examples are under
-`docs/design/schemas/`. The tools remain partially integrated slices; the full
-differential harness must still enforce their complete ordering and carry their
-exact audit hashes in one report.
+`docs/design/schemas/`. The tools remain partially integrated slices; typed
+engine-only variants, a two-sided comparator and the full differential report
+must still enforce complete ordering and carry every audit hash.

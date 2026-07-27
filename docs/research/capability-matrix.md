@@ -72,6 +72,9 @@ engine 资产；运行时范围、两套数据树差异及逐文件哈希见
 entropy/info/struct 不使用普通扫描 formatter，组合优先级、schema、空文件 hash
 边界和复现命令见
 [`cli-special-modes.md`](cli-special-modes.md)。
+normal scan、hideunknown 根级 leaf、entropy、info/struct、open-error 和 raw
+diagnostic 的封闭 JSON 字段/type/order inventory 见
+[`cli-json-schema-inventory.md`](cli-json-schema-inventory.md)。
 
 多目标 filename prefix、目录顺序、重复 target、部分失败和无效 JSON/XML 聚合
 行为见

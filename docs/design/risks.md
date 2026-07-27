@@ -415,8 +415,11 @@ baseline 的变更都要检查本表。
   content-addressed raw artifact verifier 另覆盖固定派生路径、stream size/hash、
   预算、symlink/reparse、TOCTOU、输入只读和 golden 重现。raw artifact rehash
   已接入 lossless stdout framing，覆盖 prefix/invalid/trailing/multi-document
-  byte ranges；尚未与完整 semantic model、双侧 comparator、normalizer/waiver
-  按顺序接入 full differential integration。
+  byte ranges；固定 legacy CLI 的 normal/entropy/info/struct/open-error 已接入
+  evidence-bound semantic result v1，unknown shape/document count/framing limit
+  均显式失败，raw diagnostics/stderr/runtime log 以可逐行规范化且可精确重建的
+  offset/size/hash/body/ending records 保留。engine-only typed variants、双侧
+  comparator，以及 normalizer/waiver 的 full differential integration 尚未完成。
 - **关闭**：Phase 1 工具落地并通过测试；每次 release audit applied/stale waivers。
 
 ## 5. 风险变更流程

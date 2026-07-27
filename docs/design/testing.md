@@ -376,10 +376,45 @@ policy 整体绑定精确 platform/oracle profile/upstream commit/semantic schem
 派生输出记录原始 input/policy bytes hash、canonical input/policy hash、每个目标的
 前后 hash 和完整 normalized projection hash，并拒绝覆盖或运行中变化的输入。
 
-该 v1 `semantic-projection` 是规范化 envelope，不等于完整 semantic model；
-它也不解析 raw execution、验证 content-addressed raw artifact，或完成两侧比较。
-完整差分流水线仍须把 execution/framing、完整 semantic schema、raw artifact
-rehash、normalizer、comparator 和 waiver audit 接入同一报告。
+`semantic-projection-v1` 只定义规范化 envelope，单独使用仍不等于完整 semantic model。
+固定上游 CLI 的有类型 payload
+由 [`semantic-result-v1.schema.json`](schemas/semantic-result-v1.schema.json)
+定义，证据 inventory 见
+[`cli-json-schema-inventory.md`](../research/cli-json-schema-inventory.md)。
+完整 envelope 由
+[`semantic-result-projection-v1.schema.json`](schemas/semantic-result-projection-v1.schema.json)
+把该 payload 约束到 normalizer-compatible projection。
+[`semantic-projection-contract-v1.schema.json`](schemas/semantic-projection-contract-v1.schema.json)
+把一个 case 的 platform、oracle profile、目标 upstream commit、case manifest
+hash、semantic schema、输出种类和预期 JSON document 数量冻结在投影之前。
+这避免从 argv/JSON shape 猜 mode，也避免把 Rust producer commit 错当成双方共享的
+upstream compatibility target。
+
+Phase 0 reference projector
+[`project_semantic_result.py`](../../tools/compat/project_semantic_result.py)
+先重新验证 execution 的全部 content-addressed artifacts，再从同一 stdout 重建
+lossless framing。v1 对 normal scan、递归 child node/detection、entropy、
+info/struct 和 normal scan open-error 建立封闭 union；unknown field/shape、
+document count mismatch 和 framing limit 都输出 `projection_failure`，不静默
+忽略。raw stdout segments、stderr 和 runtime log 拆为有序 line records；
+`comparison` 保存精确 UTF-8/base64 body 和 `none`/`lf`/`crlf`，关联的
+`evidence.raw_streams` 保存绝对 offset/size/hash。这样 profiling/message 可由
+normalizer 定点处理且仍可重建原 bytes。
+comparison segment/record 与 evidence source-map 使用相同数组 ordinal；数量、
+kind、range 连续性和 hash 由 projector 回归测试强制一致。
+termination 和 producer identity 也进入 semantic payload。normal scan
+同时保留 offset/size 的上游 decimal string 与严格 u64，Info/Struct object 转为
+有序 entries，不能由 canonical object key 排序隐藏 formatter 顺序。
+只有 `semantic.comparison` 的 output/termination/streams 进入两侧 semantic
+equality；producer revision/executable 与 verification/framing/contract hashes
+是同一 artifact 内的 provenance，不得因两侧来源天然不同而报告检测差异。
+
+该 v1 闭合的是已观测 legacy CLI JSON/output surface，不等于 modern canonical
+`ScanReport` 或全部 engine-only harness schema。rule identity/priority、
+handlers/debug 等仅 engine 可观察字段仍须补 inventory 和 typed variant；未知
+harness JSON 当前明确失败并保留 value。完整差分流水线还须实现双侧 comparator，
+并按 execution → framing → semantic projection → normalization → comparison →
+waiver audit 的顺序接入同一 full report。
 
 format HostApi 的 argument conformance case 必须同时断言语义返回、异常四元组
 （name/message/line/backtrace）和 stderr。特别覆盖 Qt 5/Qt 6 对 extra arguments、
@@ -777,9 +812,10 @@ tested、exact、semantic、waived 和 unsupported 数量。
 - 当前 corpus 的格式覆盖仍不足以满足 capability matrix。
 - ADR 0006 已提议 rquickjs/QuickJS-NG，但 acceptance conditions 和全库
   execution conformance 未通过。
-- waiver v1、最小 semantic-normalizer v1、raw execution/artifact rehash 和
-  lossless raw framing v1 子流水线已实现；完整 semantic model、两侧 comparator
-  和 full report integration 尚未实现。
+- waiver v1、最小 semantic-normalizer v1、raw execution/artifact rehash、
+  lossless raw framing v1 和固定 legacy CLI typed semantic result v1
+  子流水线已实现；完整 semantic model 仍缺 engine-only/modern canonical
+  variants，两侧 comparator 和 full report integration 尚未实现。
 - benchmark runner/noise/阈值和默认资源 limits 尚未冻结。
 - archive/decompression sanitizer 与恶意语料隔离设施尚未建立。
 - CI provider、artifact retention 和 restricted corpus 权限尚未决定。

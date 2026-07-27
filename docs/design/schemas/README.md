@@ -4,7 +4,8 @@ Status: Draft
 
 Last updated: 2026-07-27
 
-These schemas define two Phase 0 compatibility sub-pipelines.
+These schemas define the independently executable Phase 0 compatibility
+sub-pipelines and their evidence bindings.
 
 The evidence-bound waiver schemas are:
 
@@ -36,6 +37,17 @@ The lossless framing schema is
 [`raw-framing-projection-v1.schema.json`](raw-framing-projection-v1.schema.json).
 It binds a raw execution verification and covers stdout with ordered,
 contiguous raw/strict-JSON byte ranges.
+
+The typed legacy CLI semantic projection schemas are:
+
+- [`semantic-projection-contract-v1.schema.json`](semantic-projection-contract-v1.schema.json)
+  freezes the shared compatibility target and expected output shape for one
+  case;
+- [`semantic-result-v1.schema.json`](semantic-result-v1.schema.json) defines
+  normal scan trees, entropy, ordered info/struct values, CLI errors, all raw
+  streams, termination, producer identity and explicit projection failures;
+- [`semantic-result-projection-v1.schema.json`](semantic-result-projection-v1.schema.json)
+  places that payload in the normalizer-compatible projection envelope.
 
 [`examples/`](examples/) contains synthetic, non-production inputs and
 reproducible outputs for all compatibility sub-pipelines.
@@ -131,6 +143,36 @@ diagnostics. Parsed JSON and its canonical hash are additional projections;
 they never replace the source bytes. `no_json_document` is explicit and cannot
 be interpreted as empty successful output.
 
+## Typed legacy CLI semantic projection
+
+The reference projector is
+[`tools/compat/project_semantic_result.py`](../../../tools/compat/project_semantic_result.py).
+It consumes a strict case contract plus one raw execution manifest. The
+contract identity must match the execution case, platform and case-manifest
+hash. An upstream execution must additionally have the exact target upstream
+revision; a Rust execution retains its distinct producer revision while using
+the same target identity.
+
+The projector rehashes every content-addressed artifact and reconstructs raw
+framing before reading semantic values. It accepts only the documented normal
+scan, entropy, info, struct and normal-scan error shapes. Raw prefixes,
+separators and trailing diagnostics are split into lossless ordered line
+records. `comparison` keeps the exact UTF-8 or base64 body and its
+`none`/`lf`/`crlf` ending; a correlated `evidence.raw_streams` map keeps every
+raw offset/size/hash. stderr and runtime logs follow the same rule.
+Unknown fields/shapes, unexpected document counts and framing limits emit
+`projection_failure` and preserve the unclassified value instead of becoming
+empty success.
+
+Only the `comparison` subtree (output, termination and streams) is input to
+two-sided semantic equality. Producer and evidence fields stay in the same
+artifact as provenance but are intentionally side-specific.
+
+This v1 is complete for the observed fixed legacy CLI JSON variants listed in
+[`docs/research/cli-json-schema-inventory.md`](../../research/cli-json-schema-inventory.md).
+It does not claim that engine-only harness payloads or the future modern
+canonical `ScanReport` are frozen.
+
 ## Normalization semantics
 
 The reference normalizer is
@@ -147,6 +189,7 @@ identity or case drift, unknown field/transform, changed surrounding text, or
 replacement-count drift is an infrastructure error. Input and policy files
 are re-read before output is written and may never be overwritten by it.
 
-This envelope does not define the complete DIEC semantic result model. It is a
-strict executable slice that can be integrated only after that model and the
-full differential report are frozen.
+The generic envelope alone does not define a DIEC payload. The strict legacy
+CLI payload is `semantic-result-v1`; engine-only and modern canonical payloads
+remain separate open schema work. A two-sided comparator and full differential
+report are still required.
