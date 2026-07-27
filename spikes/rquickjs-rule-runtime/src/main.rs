@@ -12,7 +12,7 @@ use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 use std::thread;
 use std::time::{Duration, Instant};
 
-use diec_signature_parser_spike::Pattern;
+use diec_signature_parser_spike::{Endian, FileType, MemoryMap, MemoryRecord, Pattern};
 
 use rquickjs::{
     CatchResultExt, Context, Error, Function, Object, Runtime, context::EvalOptions, function::Opt,
@@ -130,6 +130,7 @@ const EXTENSIONS_RULE_SHA256: &str =
 const EXTENSIONS_CONST_DETECT_DECLARATION: &[u8] = b"const detect = main;";
 const EXTENSIONS_COMPAT_DETECT_DECLARATION: &[u8] = b"var   detect = main;";
 const UPSTREAM_COMMIT: &str = "74eaf505c250ab47e709024e9dc41657cd8f2254";
+const XSCANENGINE_COMMIT: &str = "dfe4a419e4f491bb23688ba03c5a5bf39e34da83";
 const RULES_COMMIT: &str = "c2c17dfa5ea4e078ba31eab55d87430c96622fb6";
 const LINUX_QT5_BINARY_ORDER_SHA256: &str =
     "27138d68ed788dd2609b7c533fecf540593fa2e4ddb7195adc26b1a9ff0e1ff3";
@@ -138,6 +139,35 @@ const NINTENDO_CORPUS_MANIFEST_SHA256: &str =
 const NINTENDO_BASELINE_SHA256: &str =
     "683d2d85abc7053321785f53224842cd2047427d4d8ce6d591248453e2f29503";
 const BINARY_SIGNATURE_COUNT: usize = 292;
+const PE_RULE_SUFFIX: &str = "PE/compiler_Cygwin32.4.sg";
+const PE_RULE_BYTES: usize = 240;
+const PE_RULE_SHA256: &str = "de563e3333c54b966efb7aa3d678acd56ca5fa9b83a7b8356b3a4e71e47dc4cd";
+const PE_FIXTURE_SHA256: &str = "102eacfa044f838fb51992c65a2cf7e90cd346a493bffc77b08f4ec02f5159e1";
+const PE_QT5_BASELINE_SHA256: &str =
+    "645fc9b13d500f1eda3203df90439cb5234f8eb850d820de119962b4778be03a";
+const PE_RESULT_SHIM: &[u8] = br#"
+    var bDetected, sType, sName, sVersion, sOptions;
+    function meta(type, name, version, options) {
+        sType = type;
+        sName = name ? name : String();
+        sVersion = version ? version : String();
+        sOptions = options ? options : String();
+        bDetected = false;
+    }
+    function _error(message) { throw new Error(String(message)); }
+    function result() {
+        if (bDetected) {
+            sVersion = sVersion ? sVersion : String();
+            sOptions = sOptions ? sOptions : String();
+            if (!sName) _error("No input detection name.");
+            _setResult(sType, sName, sVersion, sOptions);
+        }
+        sName = sVersion = sOptions = "";
+        var value = bDetected;
+        bDetected = false;
+        return value;
+    }
+"#;
 
 type Detection = (String, String, String, String);
 type DetectionTriple = (String, String, String);
@@ -193,6 +223,21 @@ struct BinaryHostContext {
     overlay_offset: i64,
     overlay_size: i64,
     scan_id: String,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+struct PeRuleContext {
+    entry_point_offset: Option<usize>,
+    memory_map: MemoryMap,
+    aliased_out_of_bounds_sections: usize,
+}
+
+#[derive(Default)]
+struct PeHostTrace {
+    compare_ep_calls: AtomicUsize,
+    fast_paths: AtomicUsize,
+    generic_paths: AtomicUsize,
+    errors: AtomicUsize,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -291,6 +336,192 @@ impl BinaryHostContext {
 
     fn is_file_part(&self) -> bool {
         self.file_part != HostFilePart::Header
+    }
+}
+
+fn pe_u16(data: &[u8], offset: usize) -> Option<u16> {
+    let bytes: [u8; 2] = data.get(offset..offset.checked_add(2)?)?.try_into().ok()?;
+    Some(u16::from_le_bytes(bytes))
+}
+
+fn pe_u32(data: &[u8], offset: usize) -> Option<u32> {
+    let bytes: [u8; 4] = data.get(offset..offset.checked_add(4)?)?.try_into().ok()?;
+    Some(u32::from_le_bytes(bytes))
+}
+
+fn pe_u64(data: &[u8], offset: usize) -> Option<u64> {
+    let bytes: [u8; 8] = data.get(offset..offset.checked_add(8)?)?.try_into().ok()?;
+    Some(u64::from_le_bytes(bytes))
+}
+
+fn pe_field(base: usize, relative: usize, name: &str) -> Result<usize, String> {
+    base.checked_add(relative)
+        .ok_or_else(|| format!("PE {name} offset overflow"))
+}
+
+impl PeRuleContext {
+    fn parse(data: &[u8]) -> Result<Self, String> {
+        if data.get(0..2) != Some(b"MZ") {
+            return Err("PE DOS signature is missing".to_owned());
+        }
+        let pe_offset = usize::try_from(
+            pe_u32(data, 0x3c).ok_or_else(|| "PE e_lfanew is truncated".to_owned())?,
+        )
+        .map_err(|_| "PE e_lfanew does not fit usize".to_owned())?;
+        let signature_end = pe_field(pe_offset, 4, "signature end")?;
+        if data.get(pe_offset..signature_end) != Some(b"PE\0\0") {
+            return Err("PE signature is missing or truncated".to_owned());
+        }
+        let coff = signature_end;
+        let section_count = usize::from(
+            pe_u16(data, pe_field(coff, 2, "section count")?)
+                .ok_or_else(|| "PE COFF header is truncated".to_owned())?,
+        );
+        if section_count > 96 {
+            return Err(format!(
+                "PE section count {section_count} exceeds spike limit 96"
+            ));
+        }
+        let optional_size = usize::from(
+            pe_u16(data, pe_field(coff, 16, "optional header size")?)
+                .ok_or_else(|| "PE COFF header is truncated".to_owned())?,
+        );
+        let optional = pe_field(coff, 20, "optional header")?;
+        let optional_end = optional
+            .checked_add(optional_size)
+            .ok_or_else(|| "PE optional header size overflow".to_owned())?;
+        if optional_end > data.len() {
+            return Err("PE optional header is truncated".to_owned());
+        }
+        let magic =
+            pe_u16(data, optional).ok_or_else(|| "PE optional magic is truncated".to_owned())?;
+        let image_base = match magic {
+            0x10b => u64::from(
+                pe_u32(data, pe_field(optional, 28, "PE32 image base")?)
+                    .ok_or_else(|| "PE32 image base is truncated".to_owned())?,
+            ),
+            0x20b => pe_u64(data, pe_field(optional, 24, "PE32+ image base")?)
+                .ok_or_else(|| "PE32+ image base is truncated".to_owned())?,
+            other => {
+                return Err(format!(
+                    "unsupported PE optional header magic 0x{other:04x}"
+                ));
+            }
+        };
+        let entry_rva = u64::from(
+            pe_u32(data, pe_field(optional, 16, "entry point RVA")?)
+                .ok_or_else(|| "PE entry point RVA is truncated".to_owned())?,
+        );
+        let size_of_headers = u64::from(
+            pe_u32(data, pe_field(optional, 60, "SizeOfHeaders")?)
+                .ok_or_else(|| "PE SizeOfHeaders is truncated".to_owned())?,
+        );
+        let section_table_size = section_count
+            .checked_mul(40)
+            .ok_or_else(|| "PE section table size overflow".to_owned())?;
+        let section_table_end = optional_end
+            .checked_add(section_table_size)
+            .ok_or_else(|| "PE section table offset overflow".to_owned())?;
+        if section_table_end > data.len() {
+            return Err("PE section table is truncated".to_owned());
+        }
+
+        let mut records = Vec::with_capacity(section_count.saturating_add(1));
+        let mut aliased_out_of_bounds_sections = 0_usize;
+        let header_size = usize::try_from(size_of_headers)
+            .unwrap_or(usize::MAX)
+            .min(data.len());
+        if header_size != 0 {
+            records.push(MemoryRecord {
+                offset: 0,
+                address: image_base,
+                size: header_size as u64,
+            });
+        }
+        let mut entry_point_offset = (entry_rva < size_of_headers)
+            .then(|| usize::try_from(entry_rva).ok())
+            .flatten()
+            .filter(|offset| *offset < data.len());
+        for index in 0..section_count {
+            let section = optional_end
+                .checked_add(
+                    index
+                        .checked_mul(40)
+                        .ok_or_else(|| "PE section offset overflow".to_owned())?,
+                )
+                .ok_or_else(|| "PE section offset overflow".to_owned())?;
+            let virtual_size = u64::from(
+                pe_u32(data, pe_field(section, 8, "section virtual size")?)
+                    .ok_or_else(|| "PE section header is truncated".to_owned())?,
+            );
+            let virtual_address = u64::from(
+                pe_u32(data, pe_field(section, 12, "section virtual address")?)
+                    .ok_or_else(|| "PE section header is truncated".to_owned())?,
+            );
+            let raw_size = u64::from(
+                pe_u32(data, pe_field(section, 16, "section raw size")?)
+                    .ok_or_else(|| "PE section header is truncated".to_owned())?,
+            );
+            let raw_offset = u64::from(
+                pe_u32(data, pe_field(section, 20, "section raw offset")?)
+                    .ok_or_else(|| "PE section header is truncated".to_owned())?,
+            );
+            let address = image_base
+                .checked_add(virtual_address)
+                .ok_or_else(|| "PE section address overflow".to_owned())?;
+            let physical_offset = usize::try_from(raw_offset).ok().map(|offset| {
+                if offset > data.len() {
+                    aliased_out_of_bounds_sections += 1;
+                    0
+                } else {
+                    offset
+                }
+            });
+            let available_size = physical_offset.map_or(0, |offset| {
+                if offset == data.len() {
+                    0
+                } else {
+                    usize::try_from(raw_size)
+                        .unwrap_or(usize::MAX)
+                        .min(data.len() - offset)
+                }
+            });
+            if available_size != 0 {
+                records.push(MemoryRecord {
+                    offset: physical_offset.unwrap_or(0) as u64,
+                    address,
+                    size: available_size as u64,
+                });
+            }
+            if entry_point_offset.is_none() {
+                let mapped_size = virtual_size.max(raw_size);
+                let section_end = virtual_address.checked_add(mapped_size);
+                if section_end.is_some_and(|end| virtual_address <= entry_rva && entry_rva < end) {
+                    let delta = entry_rva - virtual_address;
+                    entry_point_offset = raw_offset
+                        .checked_add(delta)
+                        .and_then(|offset| usize::try_from(offset).ok())
+                        .filter(|offset| {
+                            delta < raw_size
+                                && *offset < data.len()
+                                && usize::try_from(raw_offset)
+                                    .ok()
+                                    .is_some_and(|raw| *offset >= raw)
+                        });
+                }
+            }
+        }
+        Ok(Self {
+            entry_point_offset,
+            aliased_out_of_bounds_sections,
+            memory_map: MemoryMap {
+                file_type: FileType::Pe,
+                endian: Endian::Little,
+                code_base: 0,
+                start_load_offset: 0,
+                records,
+            },
+        })
     }
 }
 
@@ -867,6 +1098,60 @@ fn search_signature(
             ))
         }
     }
+}
+
+fn install_pe_host(
+    context: &Context,
+    data: Arc<Vec<u8>>,
+    pe_context: PeRuleContext,
+) -> Result<Arc<PeHostTrace>, String> {
+    let trace = Arc::new(PeHostTrace::default());
+    let trace_for_context = Arc::clone(&trace);
+    context.with(|ctx| {
+        let pe = Object::new(ctx.clone()).map_err(|error| error.to_string())?;
+        let compare_data = Arc::clone(&data);
+        let compare_context = pe_context.clone();
+        pe.set(
+            "compareEP",
+            Function::new(ctx.clone(), move |pattern: String, offset: Opt<i64>| {
+                trace_for_context
+                    .compare_ep_calls
+                    .fetch_add(1, Ordering::Relaxed);
+                match Pattern::compare_entry_point_wrapper(
+                    &pattern,
+                    &compare_data,
+                    compare_context.entry_point_offset,
+                    offset.0.unwrap_or(0),
+                    &compare_context.memory_map,
+                ) {
+                    Ok(report) => {
+                        if report.header_fast_path {
+                            trace_for_context.fast_paths.fetch_add(1, Ordering::Relaxed);
+                        } else {
+                            trace_for_context
+                                .generic_paths
+                                .fetch_add(1, Ordering::Relaxed);
+                        }
+                        Ok(report.matched)
+                    }
+                    Err(error) => {
+                        trace_for_context.errors.fetch_add(1, Ordering::Relaxed);
+                        Err(Error::new_from_js_message(
+                            "PE.compareEP",
+                            "boolean",
+                            error.to_string(),
+                        ))
+                    }
+                }
+            })
+            .map_err(|error| error.to_string())?,
+        )
+        .map_err(|error| error.to_string())?;
+        ctx.globals()
+            .set("PE", pe)
+            .map_err(|error| error.to_string())
+    })?;
+    Ok(trace)
 }
 
 fn install_nintendo_host(
@@ -2648,6 +2933,260 @@ fn sha256_hex(bytes: &[u8]) -> String {
     format!("{:x}", Sha256::digest(bytes))
 }
 
+fn decode_hex_string(value: &str, field: &str) -> Result<Vec<u8>, String> {
+    if !value.len().is_multiple_of(2) {
+        return Err(format!("{field} has an odd number of hex digits"));
+    }
+    value
+        .as_bytes()
+        .chunks_exact(2)
+        .map(|pair| {
+            let text = std::str::from_utf8(pair)
+                .map_err(|error| format!("{field} is not ASCII: {error}"))?;
+            u8::from_str_radix(text, 16)
+                .map_err(|error| format!("{field} contains invalid hex: {error}"))
+        })
+        .collect()
+}
+
+fn pe_physical_map_projection(context: &PeRuleContext) -> Value {
+    json!({
+        "file_type": "pe",
+        "endian": "little",
+        "code_base": context.memory_map.code_base.to_string(),
+        "start_load_offset": context.memory_map.start_load_offset.to_string(),
+        "records": context
+            .memory_map
+            .records
+            .iter()
+            .map(|record| json!({
+                "offset": record.offset.to_string(),
+                "address": record.address.to_string(),
+                "size": record.size.to_string(),
+            }))
+            .collect::<Vec<_>>(),
+    })
+}
+
+fn qt5_pe_physical_map_projection(value: &Value) -> Result<Value, String> {
+    let object = value
+        .as_object()
+        .ok_or_else(|| "Qt5 PE memory map must be an object".to_owned())?;
+    let records = object
+        .get("records")
+        .and_then(Value::as_array)
+        .ok_or_else(|| "Qt5 PE memory map records are missing".to_owned())?
+        .iter()
+        .filter_map(|record| {
+            let object = record.as_object()?;
+            let is_virtual = object.get("virtual")?.as_bool()?;
+            let size = object.get("size")?.as_str()?;
+            (!is_virtual && size != "0").then(|| {
+                json!({
+                    "offset": object.get("offset"),
+                    "address": object.get("address"),
+                    "size": size,
+                })
+            })
+        })
+        .collect::<Vec<_>>();
+    Ok(json!({
+        "file_type": object.get("file_type"),
+        "endian": object.get("endian"),
+        "code_base": object.get("code_base"),
+        "start_load_offset": object.get("start_load_offset"),
+        "records": records,
+    }))
+}
+
+fn verify_pe_rule(
+    rule_root: &Path,
+    fixture_path: &Path,
+    baseline_path: &Path,
+) -> Result<bool, String> {
+    let fixture_bytes = fs::read(fixture_path)
+        .map_err(|error| format!("cannot read {}: {error}", fixture_path.display()))?;
+    let baseline_bytes = fs::read(baseline_path)
+        .map_err(|error| format!("cannot read {}: {error}", baseline_path.display()))?;
+    if sha256_hex(&fixture_bytes) != PE_FIXTURE_SHA256 {
+        return Err(format!(
+            "fixed PE fixture hash mismatch: {}",
+            fixture_path.display()
+        ));
+    }
+    if sha256_hex(&baseline_bytes) != PE_QT5_BASELINE_SHA256 {
+        return Err(format!(
+            "fixed Qt5 PE baseline hash mismatch: {}",
+            baseline_path.display()
+        ));
+    }
+    let rule_path = rule_root.join(PE_RULE_SUFFIX);
+    let rule_source = fs::read(&rule_path)
+        .map_err(|error| format!("cannot read {}: {error}", rule_path.display()))?;
+    if rule_source.len() != PE_RULE_BYTES || sha256_hex(&rule_source) != PE_RULE_SHA256 {
+        return Err(format!("fixed PE rule mismatch: {}", rule_path.display()));
+    }
+    let fixture: Value = serde_json::from_slice(&fixture_bytes)
+        .map_err(|error| format!("cannot parse {}: {error}", fixture_path.display()))?;
+    let baseline: Value = serde_json::from_slice(&baseline_bytes)
+        .map_err(|error| format!("cannot parse {}: {error}", baseline_path.display()))?;
+    for (document_name, document) in [("fixture", &fixture), ("baseline", &baseline)] {
+        if document["upstream_commit"] != UPSTREAM_COMMIT
+            || document["xscanengine_commit"] != XSCANENGINE_COMMIT
+            || document["rules_commit"] != RULES_COMMIT
+            || document["case_count"] != 3
+        {
+            return Err(format!("{document_name} PE metadata mismatch"));
+        }
+    }
+    if fixture["formats_commit"] != baseline["formats_commit"]
+        || fixture["rule"]["path"] != PE_RULE_SUFFIX
+        || fixture["rule"]["sha256"] != PE_RULE_SHA256
+        || baseline["rule_sha256"] != PE_RULE_SHA256
+        || baseline["qt_version"] != "5.15.13"
+        || baseline["engine"] != "QScriptEngine"
+    {
+        return Err("fixed PE fixture/baseline contract mismatch".to_owned());
+    }
+    let fixture_cases = fixture["cases"]
+        .as_array()
+        .ok_or_else(|| "PE fixture cases are missing".to_owned())?;
+    let baseline_cases = baseline["cases"]
+        .as_array()
+        .ok_or_else(|| "Qt5 PE baseline cases are missing".to_owned())?;
+    if fixture_cases.len() != 3 || baseline_cases.len() != 3 {
+        return Err("fixed PE case count mismatch".to_owned());
+    }
+
+    let mut reports = Vec::with_capacity(fixture_cases.len());
+    let mut all_match = true;
+    for fixture_case in fixture_cases {
+        let id = fixture_case["id"]
+            .as_str()
+            .ok_or_else(|| "PE fixture case id is missing".to_owned())?;
+        let baseline_case = baseline_cases
+            .iter()
+            .find(|case| case["id"] == id)
+            .ok_or_else(|| format!("Qt5 PE baseline case is missing: {id}"))?;
+        if fixture_case["data_hex"] != baseline_case["data_hex"]
+            || fixture_case["data_sha256"] != baseline_case["data_sha256"]
+        {
+            return Err(format!("{id}: fixture and Qt5 input evidence differ"));
+        }
+        let data_hex = fixture_case["data_hex"]
+            .as_str()
+            .ok_or_else(|| format!("{id}: data_hex is missing"))?;
+        let data = decode_hex_string(data_hex, &format!("{id}.data_hex"))?;
+        if sha256_hex(&data) != fixture_case["data_sha256"] {
+            return Err(format!("{id}: decoded input hash mismatch"));
+        }
+        let pe_context = PeRuleContext::parse(&data).map_err(|error| format!("{id}: {error}"))?;
+        let expected_entry_point = baseline_case["entry_point_offset"]
+            .as_i64()
+            .ok_or_else(|| format!("{id}: Qt5 entry point offset is missing"))?;
+        let actual_entry_point = pe_context
+            .entry_point_offset
+            .and_then(|offset| i64::try_from(offset).ok())
+            .unwrap_or(-1);
+        let actual_map = pe_physical_map_projection(&pe_context);
+        let expected_map = qt5_pe_physical_map_projection(&baseline_case["memory_map"])?;
+
+        let runtime = new_runtime()?;
+        let context = new_context(&runtime)?;
+        let detections = Arc::new(Mutex::new(Vec::new()));
+        install_nintendo_host(&context, Arc::new(data.clone()), Arc::clone(&detections))?;
+        let pe_trace = install_pe_host(&context, Arc::new(data), pe_context.clone())?;
+        eval_unit(&context, PE_RESULT_SHIM)?;
+        let detect_result = eval_rule_lexical(&context, &rule_source, true)
+            .map_err(|error| format!("{id}: fixed PE rule failed: {error}"))?;
+        let actual_detections = detections
+            .lock()
+            .map_err(|_| "PE detection result mutex poisoned".to_owned())?
+            .clone();
+        let expected_detections: Vec<Detection> =
+            serde_json::from_value(baseline_case["detections"].clone())
+                .map_err(|error| format!("{id}: invalid Qt5 detections: {error}"))?;
+        let expected_detect_result = baseline_case["detect_result"]
+            .as_bool()
+            .ok_or_else(|| format!("{id}: Qt5 detect result is missing"))?;
+        let compare_ep_calls = pe_trace.compare_ep_calls.load(Ordering::Relaxed);
+        let fast_paths = pe_trace.fast_paths.load(Ordering::Relaxed);
+        let generic_paths = pe_trace.generic_paths.load(Ordering::Relaxed);
+        let errors = pe_trace.errors.load(Ordering::Relaxed);
+        let entry_point_matches = actual_entry_point == expected_entry_point;
+        let memory_map_matches = actual_map == expected_map;
+        let matches = entry_point_matches
+            && memory_map_matches
+            && detect_result == expected_detect_result.to_string()
+            && actual_detections == expected_detections
+            && compare_ep_calls == 1
+            && fast_paths + generic_paths == 1
+            && errors == 0;
+        all_match &= matches;
+        reports.push(json!({
+            "id": id,
+            "input_sha256": fixture_case["data_sha256"],
+            "input_bytes": data_hex.len() / 2,
+            "parser_valid": true,
+            "entry_point_offset": {
+                "qt5": expected_entry_point,
+                "rust": actual_entry_point,
+                "matches": entry_point_matches,
+            },
+            "physical_memory_map": {
+                "qt5": expected_map,
+                "rust": actual_map,
+                "matches": memory_map_matches,
+                "bounded_upstream_alias_count":
+                    pe_context.aliased_out_of_bounds_sections,
+            },
+            "detect_result": {
+                "qt5": expected_detect_result,
+                "rust": detect_result,
+            },
+            "detections": {
+                "qt5": expected_detections,
+                "rust": actual_detections,
+            },
+            "pe_compare_ep_calls": compare_ep_calls,
+            "pe_compare_ep_fast_paths": fast_paths,
+            "pe_compare_ep_generic_paths": generic_paths,
+            "pe_compare_ep_errors": errors,
+            "matches": matches,
+        }));
+    }
+    println!(
+        "{}",
+        serde_json::to_string_pretty(&json!({
+            "schema_version": 1,
+            "operation": "byte-identical fixed PE rule with Rust PE context and PE.compareEP",
+            "runtime": "rquickjs 0.12.1 / QuickJS-NG 0.15.1",
+            "upstream_commit": UPSTREAM_COMMIT,
+            "xscanengine_commit": XSCANENGINE_COMMIT,
+            "rules_commit": RULES_COMMIT,
+            "rule": {
+                "path": normalized_path(&rule_path),
+                "bytes": rule_source.len(),
+                "sha256": PE_RULE_SHA256,
+            },
+            "fixture": {
+                "path": normalized_path(fixture_path),
+                "sha256": PE_FIXTURE_SHA256,
+            },
+            "qt5_baseline": {
+                "path": normalized_path(baseline_path),
+                "sha256": PE_QT5_BASELINE_SHA256,
+            },
+            "case_count": reports.len(),
+            "matched_count": reports.iter().filter(|case| case["matches"] == true).count(),
+            "cases": reports,
+            "all_match": all_match,
+        }))
+        .map_err(|error| format!("cannot serialize PE rule report: {error}"))?
+    );
+    Ok(all_match)
+}
+
 fn upstream_type_priority(kind: &str) -> i32 {
     let normalized = kind.to_lowercase().replace(['~', '!'], "");
     match normalized.as_str() {
@@ -3660,7 +4199,9 @@ fn usage() -> ExitCode {
          <main-rule-root> <input-file> <binary-order-json>\n       \
          diec-rquickjs-rule-runtime-spike verify-binary-corpus \
          <main-rule-root> <corpus-dir> <corpus-manifest-json> \
-         <baseline-json> <binary-order-json>"
+         <baseline-json> <binary-order-json>\n       \
+         diec-rquickjs-rule-runtime-spike verify-pe-rule \
+         <main-rule-root> <pe-fixture-json> <qt5-baseline-json>"
     );
     ExitCode::from(2)
 }
@@ -3702,6 +4243,8 @@ fn main() -> ExitCode {
         trace_binary_detects(&roots[0], &roots[1], &roots[2])
     } else if command == "verify-binary-corpus" && roots.len() == 5 {
         verify_binary_corpus(&roots[0], &roots[1], &roots[2], &roots[3], &roots[4])
+    } else if command == "verify-pe-rule" && roots.len() == 3 {
+        verify_pe_rule(&roots[0], &roots[1], &roots[2])
     } else {
         return usage();
     };
@@ -3719,14 +4262,15 @@ fn main() -> ExitCode {
 mod tests {
     use super::{
         BinaryHostContext, BinaryStringContext, HostFilePart, NINTENDO_COMPAT_DECLARATION,
-        NINTENDO_RULE_BYTES, NINTENDO_VAR_DECLARATION, TextUnicodeType,
+        NINTENDO_RULE_BYTES, NINTENDO_VAR_DECLARATION, PeRuleContext, TextUnicodeType,
         apply_compatibility_overlay, apply_exact_lifecycle_overlay, collect_rule_files,
         eval_rule_lexical, eval_string, eval_unit, install_diagnostic_host_fallbacks,
         install_nintendo_host, install_nintendo_host_with_context,
         install_nintendo_host_with_context_and_strings, new_context, new_runtime,
         nonnegative_index, normalized_path, parse_detection_triples, parse_scope_detections,
-        parse_scope_fixture_order, read_ascii, read_byte_array, read_signed, read_unsigned,
-        sha256_hex, shift_right_unsigned, sorted_detection_projection, upstream_type_priority,
+        parse_scope_fixture_order, pe_physical_map_projection, qt5_pe_physical_map_projection,
+        read_ascii, read_byte_array, read_signed, read_unsigned, sha256_hex, shift_right_unsigned,
+        sorted_detection_projection, upstream_type_priority,
     };
     use std::fs;
     use std::path::{Path, PathBuf};
@@ -3799,6 +4343,38 @@ mod tests {
             assert_eq!(upstream_type_priority(kind), expected, "{kind}");
         }
         assert_eq!(upstream_type_priority("~!FORMAT"), 12);
+    }
+
+    #[test]
+    fn pe_context_matches_fixed_qt5_entry_points_and_physical_maps() {
+        let baseline: serde_json::Value =
+            serde_json::from_str(include_str!("../../../docs/research/data/pe-rule-qt5.json"))
+                .expect("fixed Qt5 PE rule baseline should be valid JSON");
+        let cases = baseline["cases"]
+            .as_array()
+            .expect("fixed Qt5 PE baseline should have cases");
+        assert_eq!(cases.len(), 3);
+        for case in cases {
+            assert_eq!(case["parser_valid"], true);
+            let id = case["id"].as_str().expect("case should have an id");
+            let data = decode_hex(case["data_hex"].as_str().expect("case should contain data"));
+            let context = PeRuleContext::parse(&data)
+                .unwrap_or_else(|error| panic!("{id}: PE context should parse: {error}"));
+            let entry_point = context
+                .entry_point_offset
+                .and_then(|offset| i64::try_from(offset).ok())
+                .unwrap_or(-1);
+            assert_eq!(entry_point, case["entry_point_offset"].as_i64().unwrap());
+            assert_eq!(
+                pe_physical_map_projection(&context),
+                qt5_pe_physical_map_projection(&case["memory_map"])
+                    .expect("Qt5 map should project")
+            );
+            assert_eq!(
+                context.aliased_out_of_bounds_sections,
+                usize::from(id == "cygwin32_entry_point_truncated")
+            );
+        }
     }
 
     #[test]

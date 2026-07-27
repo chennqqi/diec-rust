@@ -580,5 +580,8 @@ oracle schema v3 允许每个项目自有向量显式注入 `_MEMORY_MAP`，但�
 5. 扩展 `find_signature` 差分到 malformed partial-parse、更多 buffer boundary
    和锚点优化组合，并验证取消行为；现有 19-case spike 不作为完整性证明。
 6. rquickjs diagnostic 已用本 spike 实现 `c`/`compare`、`fSig`、
-   `findSignature` 和 `isSignaturePresent`；下一步为 PE/ELF/Mach-O 等
-   format-specific receiver 接入各自 memory map，并保持未知语法显式诊断。
+   `findSignature` 和 `isSignaturePresent`；首个 PE32 parser/context 已把原样
+   Cygwin32 规则的 positive/negative/truncated 差分做到 3/3，见
+   [`pe-rule-runtime-differential.md`](pe-rule-runtime-differential.md)。
+   下一步扩展更多 PE HostApi 以及 ELF/Mach-O 等 format-specific receiver，
+   并保持未知语法显式诊断。

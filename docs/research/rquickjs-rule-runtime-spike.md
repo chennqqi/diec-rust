@@ -833,6 +833,11 @@ cargo +1.88.0 run --release --locked -- verify-binary-corpus \
   ../../docs/research/data/nintendo-certified-corpus.json \
   ../../docs/research/data/nintendo-certified-baseline.json \
   ../../docs/research/data/binary-rule-order-linux-qt5.json
+
+cargo +1.88.0 run --release --locked -- verify-pe-rule \
+  ../../upstream/Detect-It-Easy/db \
+  ../../docs/research/data/pe-rule-fixture.json \
+  ../../docs/research/data/pe-rule-qt5.json
 ```
 
 `fixture`、`eval-isolated-compat`、`eval-binary-lifecycle`、两个 lexical
@@ -864,6 +869,11 @@ JSON。运行前先执行
   14 个生成 header 样本上完成 4088 次零 fallback 调用和完整有序结果 oracle；
   尚未为 292 条规则分别提供正/反例 Qt oracle，也未完成其他 file type/file-part
   和 Windows/macOS 顺序。
+- 首个格式专用分支已用真实 Rust PE32 context、native `PE.compareEP` 和原样
+  Cygwin32 规则完成 positive/negative/truncated Qt5 差分 3/3；入口点、physical
+  memory records、boolean 和完整 detection tuple 均一致。证据见
+  [`pe-rule-runtime-differential.md`](pe-rule-runtime-differential.md)。
+  这不覆盖其余 PE HostApi、PE32+ 或其他格式。
 - 规则侧已清点 429 个第一层宿主 receiver/method 和 464 个 arity 形状；
   337 个 C++ slot 与 13 个脚本扩展静态覆盖 460 个形状。共享 Qt 5/Qt 6
   QObject 探针已闭合三个额外实参形状和缺失 `PE.getEPSignature` 的

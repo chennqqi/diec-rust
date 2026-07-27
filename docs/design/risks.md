@@ -139,8 +139,13 @@ baseline 的变更都要检查本表。
   完整有序 type/name/version 与双 Linux Qt5 CLI baseline 14/14 一致，
   Nintendo info 14/14 为 `fSELF`。所有多结果样本优先级互异；同优先级
   `std::sort` 仍没有稳定契约。这把单输入动态 trace 扩大为哈希绑定语料 oracle，
-  但多数规则仍未在其正例、专用格式 receiver 或其他 file-part 上抵达有效分支，
-  因而 R-001 继续 Open。
+  但多数规则仍未在其正例、专用格式 receiver 或其他 file-part 上抵达有效分支。
+  首个专用格式闭环随后以真实 Rust PE32 parser/context、native
+  `PE.compareEP` 和 240-byte 原样 Cygwin32 规则，对项目生成的
+  positive/negative/truncated 输入完成 Qt5 差分 3/3；入口点、非 virtual
+  physical map、detect boolean 和完整 detection tuple 均一致，且显式记录
+  截断 XPE 的有界 section alias。该证据只覆盖一条 PE32 分支，ADR 0006 要求的
+  其余 PE/ELF/Mach-O/DEX/APK/Archive/PDF 代表规则仍缺，因而 R-001 继续 Open。
   固定 signature AST inventory 随后解析 `db`/`db_extra`
   2175/2175，保存 5968 个具名 signature API 调用点和 5628 个静态 pattern，
   覆盖动态 317/317；四个保守动态参数中的 `byteCode` 又已闭合为 97 个唯一

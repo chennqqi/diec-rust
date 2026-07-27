@@ -158,6 +158,7 @@ lexical 不兼容。
 - [`global-host-api-runtime-differential.md`](../../research/global-host-api-runtime-differential.md)
 - [`format-host-api-runtime-differential.md`](../../research/format-host-api-runtime-differential.md)
 - [`signature-language.md`](../../research/signature-language.md)
+- [`pe-rule-runtime-differential.md`](../../research/pe-rule-runtime-differential.md)
 - [`c-static-link-spike.md`](../../research/c-static-link-spike.md)
 
 ## Acceptance conditions

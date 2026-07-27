@@ -81,9 +81,9 @@ class ToolchainUpgradeTests(unittest.TestCase):
         expected_test_counts = {
             "boa-rule-runtime": 2,
             "c-static-link": 3,
-            "rquickjs-rule-runtime": 25,
+            "rquickjs-rule-runtime": 26,
             "rquickjs-static-link": 2,
-            "signature-parser": 14,
+            "signature-parser": 15,
         }
         for name, gate in gates.items():
             with self.subTest(spike=name):
@@ -109,7 +109,7 @@ class ToolchainUpgradeTests(unittest.TestCase):
             {
                 "fmt": "pass",
                 "clippy": "pass",
-                "unit_tests": 14,
+                "unit_tests": 15,
                 "doc_tests": 0,
             },
         )
@@ -118,7 +118,7 @@ class ToolchainUpgradeTests(unittest.TestCase):
             {
                 "fmt": "pass",
                 "clippy": "pass",
-                "unit_tests": 25,
+                "unit_tests": 26,
                 "doc_tests": 0,
             },
         )

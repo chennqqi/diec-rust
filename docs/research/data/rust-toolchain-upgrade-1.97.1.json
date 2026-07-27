@@ -47,14 +47,14 @@
     "spikes/c-static-link/c/smoke.c": "9e70deb13e007358fc6b1dc0aec908331b0fc6d355e5e766c7d77b0f5eb68807",
     "spikes/rquickjs-rule-runtime/Cargo.toml": "82c5bb97749f50212e5364c2ac7d1f81eaec4d460a9bf47710b4b42f9204a79f",
     "spikes/rquickjs-rule-runtime/Cargo.lock": "f389eb266779a88939fea9793effdff29d01ea0e1184915698f4fa0f9441d0ad",
-    "spikes/rquickjs-rule-runtime/src/main.rs": "141504df18200b89219e76a72687d86cf122d5a21943c451b4b21ec14fe98f3b",
+    "spikes/rquickjs-rule-runtime/src/main.rs": "2b3b3d6cff3d418e08f0917a9cfcb9d2209c7ef84bf4167b4eb9d0092a91da80",
     "spikes/rquickjs-static-link/Cargo.toml": "160117e2885abc7ca3d5f5d5b9fe77c1fbfc8337a20a709548ff7ef157b96bf0",
     "spikes/rquickjs-static-link/Cargo.lock": "e80e1d8f87c753d7accba7dc3625a926b67221e4ed07c38d13a9d0b9e94c0e80",
     "spikes/rquickjs-static-link/src/lib.rs": "2b2c489e94b4c33135904429939428a531766a7bcac072d797b3d117386cea67",
     "spikes/rquickjs-static-link/c/smoke.c": "2d94779a37ac1417795f9de50bfd61840d375562920191b1f1ce7d0e56399943",
     "spikes/signature-parser/Cargo.toml": "17386601a0aab388d5174f84d4c38c0b5e430e6c74b95ce6fb37cf5c6492fefa",
     "spikes/signature-parser/Cargo.lock": "2985224550a817be8fe4dea19a12c2db06cc21f199b985fba12fc23dedfa9279",
-    "spikes/signature-parser/src/lib.rs": "fbfe13ea5135baff6c4ea0d24d0c837990536799a18133976c92bd16740c32f6"
+    "spikes/signature-parser/src/lib.rs": "e1ea895cfefd22a31aea05c89323008f95df44fec71480afb6da202b45cec958"
   },
   "rust_gates": [
     {
@@ -83,13 +83,13 @@
       "default": {
         "fmt": "pass",
         "clippy": "pass",
-        "unit_tests": 25,
+        "unit_tests": 26,
         "doc_tests": 0
       },
       "msrv": {
         "fmt": "pass",
         "clippy": "pass",
-        "unit_tests": 25,
+        "unit_tests": 26,
         "doc_tests": 0
       }
     },
@@ -109,13 +109,13 @@
       "default": {
         "fmt": "pass",
         "clippy": "pass",
-        "unit_tests": 14,
+        "unit_tests": 15,
         "doc_tests": 0
       },
       "msrv": {
         "fmt": "pass",
         "clippy": "pass",
-        "unit_tests": 14,
+        "unit_tests": 15,
         "doc_tests": 0
       }
     }

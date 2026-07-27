@@ -20,7 +20,7 @@
   "experiment": {
     "cargo_lock_sha256": "f389eb266779a88939fea9793effdff29d01ea0e1184915698f4fa0f9441d0ad",
     "cargo_toml_sha256": "82c5bb97749f50212e5364c2ac7d1f81eaec4d460a9bf47710b4b42f9204a79f",
-    "source_sha256": "141504df18200b89219e76a72687d86cf122d5a21943c451b4b21ec14fe98f3b",
+    "source_sha256": "2b3b3d6cff3d418e08f0917a9cfcb9d2209c7ef84bf4167b4eb9d0092a91da80",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -904,6 +904,55 @@
       ]
     },
     "scope": "three byte-identical fixed Binary rules under project-generated resource, debugdata, and text/header QBuffer contexts; verifies detect return and full detection tuple, not upstream orchestration that discovers and schedules subdevices"
+  },
+  "pe_rule_differential": {
+    "oracle": {
+      "baseline": "docs/research/data/pe-rule-qt5.json",
+      "baseline_sha256": "645fc9b13d500f1eda3203df90439cb5234f8eb850d820de119962b4778be03a",
+      "binary": "/opt/die-build/src/console/diec-pe-rule-harness",
+      "binary_sha256": "1f973e934be8540d7a5da2c7545d5533b77f0f2ce97a1f71610b250228489470",
+      "case_count": 3,
+      "dockerfile": "tools/upstream/Dockerfile.pe-rule-harness-qt5",
+      "dockerfile_sha256": "714ce8f94b0e6054219df7cad6e633d6b1fecc104b254fba35cd8588c7d2e2f8",
+      "engine": "QScriptEngine",
+      "fixture": "docs/research/data/pe-rule-fixture.json",
+      "fixture_generator": "tools/corpus/generate_pe_rule_fixture.py",
+      "fixture_generator_sha256": "bec819eb8a0528c6748b0493ba3eab4e58fd2092029ac687cba5f5f5369a0583",
+      "fixture_sha256": "102eacfa044f838fb51992c65a2cf7e90cd346a493bffc77b08f4ec02f5159e1",
+      "harness_source": "tools/upstream/pe_rule_harness_main.cpp",
+      "harness_source_sha256": "3aa0f53a8d14d4907e95a5966356d654ff5425b3d46f766b55c30e5041653e0c",
+      "image": "diec-rust/pe-rule-harness-qt5:74eaf505",
+      "image_id": "sha256:130f6137af884f9d1d932b8634b627aa526036b3b7e1efd81d642b1698f1ab0a",
+      "probe": "tools/upstream/probe_pe_rule_harness.py",
+      "probe_passed": true,
+      "probe_sha256": "334777a2f5c2125981ca9a28f7d97aea2cf8baff9cba1abcd2f78b0e4046a4ab",
+      "qt_version": "5.15.13",
+      "rule_source": {
+        "bytes": 240,
+        "path": "upstream/Detect-It-Easy/db/PE/compiler_Cygwin32.4.sg",
+        "sha256": "de563e3333c54b966efb7aa3d678acd56ca5fa9b83a7b8356b3a4e71e47dc4cd"
+      }
+    },
+    "rust": {
+      "case_count": 3,
+      "matched_count": 3,
+      "rule_bytes_preserved": true,
+      "command": "verify-pe-rule",
+      "compare_ep_call_count": 3,
+      "compare_ep_error_count": 0,
+      "fast_path_count": 2,
+      "generic_path_count": 1
+    },
+    "coverage": {
+      "positive_case_count": 1,
+      "negative_case_count": 1,
+      "truncated_case_count": 1,
+      "format": "PE32",
+      "receiver_method": "PE.compareEP",
+      "entry_point_and_physical_map_match_count": 3,
+      "bounded_upstream_section_alias_count": 1
+    },
+    "scope": "one byte-identical PE rule with a real Rust PE context over project-generated positive, negative, and truncated inputs; not complete PE or format HostApi compatibility"
   },
   "full_binary_corpus_oracle": {
     "accepted_detect_count": 4088,

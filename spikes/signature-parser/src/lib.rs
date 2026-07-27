@@ -296,6 +296,61 @@ impl Pattern {
         })
     }
 
+    pub fn compare_entry_point_wrapper(
+        source: &str,
+        data: &[u8],
+        entry_point_offset: Option<usize>,
+        offset: i64,
+        memory_map: &MemoryMap,
+    ) -> Result<BinaryCompareReport, BinaryCompareError> {
+        let mut normalization_quirks = Vec::new();
+        let normalized = normalize(source, true, &mut normalization_quirks)?;
+        let cached_bytes = entry_point_offset
+            .and_then(|entry_point| data.get(entry_point..))
+            .map_or(0, |bytes| bytes.len().min(256));
+        let cached_signature_chars = cached_bytes.saturating_mul(2);
+        let source_char_count = source.encode_utf16().count();
+        let header_fast_path = i128::try_from(source_char_count)
+            .ok()
+            .and_then(|length| length.checked_add(i128::from(offset)))
+            .is_some_and(|end| end < cached_signature_chars as i128)
+            && !normalized
+                .iter()
+                .any(|byte| matches!(byte, b'$' | b'#' | b'+' | b'%' | b'*'));
+        if header_fast_path {
+            let matched = entry_point_offset.is_some_and(|entry_point| {
+                compare_header_nibbles(
+                    &normalized,
+                    data.get(entry_point..).unwrap_or_default(),
+                    usize::try_from(offset).unwrap_or(0),
+                )
+            });
+            return Ok(BinaryCompareReport {
+                matched,
+                header_fast_path: true,
+                quirks: normalization_quirks,
+            });
+        }
+
+        let parsed = Self::parse_upstream_compatible(source)?;
+        let compare_offset = entry_point_offset.and_then(|entry_point| {
+            usize::try_from(offset)
+                .ok()
+                .and_then(|offset| entry_point.checked_add(offset))
+        });
+        let matched = match compare_offset {
+            Some(offset) => parsed
+                .pattern
+                .matches_with_memory_map(data, offset, memory_map)?,
+            None => false,
+        };
+        Ok(BinaryCompareReport {
+            matched,
+            header_fast_path: false,
+            quirks: parsed.quirks,
+        })
+    }
+
     pub fn find_binary_wrapper(
         source: &str,
         data: &[u8],
@@ -1761,6 +1816,48 @@ mod tests {
             .expect("generic matcher should reject a negative offset without an adapter error");
         assert!(!negative_generic.header_fast_path);
         assert!(!negative_generic.matched);
+    }
+
+    #[test]
+    fn entry_point_wrapper_uses_bounded_cache_and_real_pe_map() {
+        let mut data = vec![0_u8; 0x600];
+        data[0x200..0x208].copy_from_slice(&decode_hex("5589e583ec04833d"));
+        let map = MemoryMap {
+            file_type: FileType::Pe,
+            endian: Endian::Little,
+            code_base: 0,
+            start_load_offset: 0,
+            records: vec![
+                MemoryRecord {
+                    offset: 0,
+                    address: 0x400000,
+                    size: 0x200,
+                },
+                MemoryRecord {
+                    offset: 0x200,
+                    address: 0x401000,
+                    size: 0x200,
+                },
+            ],
+        };
+        let matched =
+            Pattern::compare_entry_point_wrapper("5589E583EC04833D", &data, Some(0x200), 0, &map)
+                .expect("fixed Cygwin32 signature should be valid");
+        assert!(matched.matched);
+        assert!(matched.header_fast_path);
+
+        data[0x200] ^= 0xff;
+        let mismatch =
+            Pattern::compare_entry_point_wrapper("5589E583EC04833D", &data, Some(0x200), 0, &map)
+                .expect("fixed Cygwin32 signature should be valid");
+        assert!(!mismatch.matched);
+        assert!(mismatch.header_fast_path);
+
+        let truncated =
+            Pattern::compare_entry_point_wrapper("5589E583EC04833D", &data[..0x200], None, 0, &map)
+                .expect("fixed Cygwin32 signature should be valid");
+        assert!(!truncated.matched);
+        assert!(!truncated.header_fast_path);
     }
 
     #[test]

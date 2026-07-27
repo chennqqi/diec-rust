@@ -89,9 +89,9 @@ cargo +1.97.1 test --manifest-path <manifest> --all-features
 | --- | --- | --- | ---: | ---: |
 | `boa-rule-runtime` | pass | pass | 2 | 0 |
 | `c-static-link` | pass | pass | 3 | 0 |
-| `rquickjs-rule-runtime` | pass | pass | 25 | 0 |
+| `rquickjs-rule-runtime` | pass | pass | 26 | 0 |
 | `rquickjs-static-link` | pass | pass | 2 | 0 |
-| `signature-parser` | pass | pass | 14 | 0 |
+| `signature-parser` | pass | pass | 15 | 0 |
 
 1.97.1 Clippy 在 `signature-parser` 报告五处新 diagnostic：
 
@@ -100,22 +100,26 @@ cargo +1.97.1 test --manifest-path <manifest> --all-features
 - 一处 `manual_is_multiple_of`。
 
 修正只替换等价控制流和标准整数操作，没有改变公开接口或预期结果。修改后的
-source SHA-256 为
+source SHA-256 当时为
 `fbfe13ea5135baff6c4ea0d24d0c837990536799a18133976c92bd16740c32f6`。
-同一源码又在 1.88.0 和 1.97.1 下分别通过 rustfmt、`-D warnings` 和全部
-14 项测试，因此这次维护性修改没有提高 MSRV。
+后续增加 `compareEP` cache/generic wrapper 与回归后，当前 source SHA-256 为
+`e1ea895cfefd22a31aea05c89323008f95df44fec71480afb6da202b45cec958`；
+同一源码在 1.88.0 和 1.97.1 下分别通过 rustfmt、`-D warnings` 和全部 15 项
+测试，因此没有提高 MSRV。
 
 后续 `rquickjs-rule-runtime` 增加 128 KiB VM stack-limit/recovery、native
 callback panic-recovery fixture，以及带 SHA-256 输入 identity 的 292-rule
 Nintendo 语料 oracle 后，更新源码 SHA-256 为
-`141504df18200b89219e76a72687d86cf122d5a21943c451b4b21ec14fe98f3b`；
-同一源码也在 1.88.0 和 1.97.1 下通过 rustfmt、`-D warnings` 和 25 项测试。
+`141504df18200b89219e76a72687d86cf122d5a21943c451b4b21ec14fe98f3b`。
 两套工具链 fixture 均捕获 stack overflow，并在 Rust eval 边界捕获 native
 callback panic；4 MiB heap OOM 后同一 context 也恢复执行。语料 oracle 引入
 固定纯 Rust `sha2@0.10.9`，因此 Cargo manifest、lockfile 和 spike 依赖闭包随之
 更新；两套 release 构建的语料 oracle 都得到 4088/4088 次 `detect` 成功、
 0 fallback 和 14/14 baseline 匹配。该变化不改变独立的 native static-link
-consumer。
+consumer。随后增加真实 PE32 context/Cygwin32 规则差分后，当前 source
+SHA-256 为
+`2b3b3d6cff3d418e08f0917a9cfcb9d2209c7ef84bf4167b4eb9d0092a91da80`；
+两套工具链均通过 26 项测试，release 差分 3/3，且未新增 Cargo 依赖。
 
 ## 5. Native static-link 结果
 
