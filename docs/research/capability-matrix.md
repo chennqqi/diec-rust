@@ -201,6 +201,11 @@ validator 要求本文 68 个 `CAP-*` 与 manifest 完全相等，并拒绝缺�
 未知验证状态、重复 ID 或错误上游 commit。`source_verified` 只证明固定源码行为，
 不能提升为 Rust 已实现或跨平台兼容。
 
+[`capability-coverage-report.md`](capability-coverage-report.md) 进一步把该清单
+投影为 68 行 × 4 平台的闭集：Linux Qt5 为 31 observed、18 observed with
+gaps、17 source-only、2 source-only with gaps；Linux Qt6、Windows 和 macOS
+各有 68 个 platform-missing。全部行已分类不等于覆盖完成。
+
 - [CLI main](https://github.com/horsicq/DIE-engine/blob/74eaf505c250ab47e709024e9dc41657cd8f2254/src/console/main_console.cpp)
 - [XOptions option table](https://github.com/horsicq/XOptions/blob/810d78d0654f45d39bf07bcda5dc92ce287a4aeb/xoptions.cpp)
 - [XScanEngine result/options model](https://github.com/horsicq/XScanEngine/blob/dfe4a419e4f491bb23688ba03c5a5bf39e34da83/xscanengine.h#L996)

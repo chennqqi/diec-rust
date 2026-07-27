@@ -38,23 +38,23 @@
 
 ### 设计交付物
 
-- [`docs/design/architecture.md`](docs/design/architecture.md) — Draft
+- [`docs/design/architecture.md`](docs/design/architecture.md) — In Review
   - Cargo workspace、模块职责、依赖方向和数据流。
   - 可扩展点、资源限制与明确非目标。
-- [`docs/design/api.md`](docs/design/api.md) — Draft
+- [`docs/design/api.md`](docs/design/api.md) — In Review
   - 纯 Rust API、CLI 契约、结果及错误模型。
   - 取消、超时、并发和资源限制。
-- [`docs/design/c-abi.md`](docs/design/c-abi.md) — Draft
+- [`docs/design/c-abi.md`](docs/design/c-abi.md) — In Review
   - ABI 版本、导出函数和结构布局。
   - 不透明句柄状态机、内存所有权和线程安全。
   - panic 隔离、allocator 和静态链接策略。
-- [`docs/design/testing.md`](docs/design/testing.md) — Draft
+- [`docs/design/testing.md`](docs/design/testing.md) — In Review
   - 测试语料、上游 oracle 和差分算法。
   - 已知差异 allowlist 规则。
   - fuzz、benchmark 和 CI 平台矩阵。
 - `docs/design/decisions/`
   - 记录影响长期兼容性、依赖或公共接口的 ADR。
-- [`docs/design/risks.md`](docs/design/risks.md) — Draft
+- [`docs/design/risks.md`](docs/design/risks.md) — In Review
   - 每项风险包含处理策略、触发条件和验证方式。
 
 ### 必须回答的问题

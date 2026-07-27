@@ -120,6 +120,12 @@ CAP-ABI-C-LIFETIME
 `Observed` 能力没有 Rust case、或已承诺能力只在 mock 中覆盖时，Phase 对应门禁失败。
 新增能力必须先更新矩阵和 case，再宣称支持。
 
+Phase 0 的
+[`capability-coverage.json`](../research/data/capability-coverage.json)
+把 68 个能力投影到四个平台的 272 个 cell，并显式区分 runtime、source-only、
+corpus-missing 与 platform-missing。其未分类行/cell 均为 0，但 coverage complete
+仍为 false；测试不得把“清单闭合”解释为“行为闭合”。
+
 ## 5. Case 身份与 manifest
 
 每个可重复 case 使用稳定 ID，不依赖测试函数名：
@@ -855,7 +861,9 @@ tested、exact、semantic、waived 和 unsupported 数量。
 ## 22. 风险与开放门禁
 
 - Windows/macOS upstream oracle 尚未固定，不能声称跨平台 exact。
-- 当前 corpus 的格式覆盖仍不足以满足 capability matrix。
+- capability coverage report 已覆盖全部 68 行和 272 个平台 cell 的分类；当前
+  19 个 Linux Qt5 source-only 能力、35 个 corpus-gap 行及三个缺失平台仍不足以
+  满足 capability matrix。
 - ADR 0006 已提议 rquickjs/QuickJS-NG，但 acceptance conditions 和全库
   execution conformance 未通过。
 - waiver v1、最小 semantic-normalizer v1、raw execution/artifact rehash、

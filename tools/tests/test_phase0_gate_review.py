@@ -69,6 +69,12 @@ class PhaseZeroGateReviewTest(unittest.TestCase):
                         entry["gate_status"],
                         {"review_pending", "evidence_incomplete"},
                     )
+                    if field == "required_design_deliverables":
+                        self.assertIn(
+                            f"[`{entry['path']}`]({entry['path']}) — "
+                            f"{entry['document_status']}",
+                            self.roadmap,
+                        )
 
     def test_three_technical_validations_have_existing_evidence(self):
         validations = self.report["technical_validations"]

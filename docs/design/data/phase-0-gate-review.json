@@ -105,10 +105,8 @@
     {
       "id": "P0-EXIT-001",
       "requirement": "capability matrix items have source or repeatable experimental evidence",
-      "status": "not_ready",
-      "blockers": [
-        "P0-BLOCK-005"
-      ]
+      "status": "ready_for_review",
+      "blockers": []
     },
     {
       "id": "P0-EXIT-002",
@@ -192,7 +190,8 @@
       "title": "Windows/macOS oracle and remaining capability corpus coverage are incomplete",
       "owner": "compatibility",
       "status": "open",
-      "closure_evidence": "pinned reproducible platform baselines and a capability coverage report with no missing Phase 0 rows"
+      "progress_evidence": "docs/research/capability-coverage-report.md and docs/research/data/capability-coverage.json classify all 68 capability rows across four platforms with zero unclassified cells while preserving 19 Linux source-only capabilities, 35 corpus-gap rows, and three missing platform baselines",
+      "closure_evidence": "pinned reproducible baselines with no Phase 0 source-only, corpus-missing, platform-missing, or unclassified capability rows"
     },
     {
       "id": "P0-BLOCK-006",

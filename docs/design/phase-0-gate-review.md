@@ -21,8 +21,8 @@ Phase 0 设计门禁，不把 Phase 2—6 的实现期风险误当成当前必�
 
 | ID | 退出条件 | 当前判断 | 证据或缺口 |
 | --- | --- | --- | --- |
-| `P0-EXIT-001` | 能力矩阵每项有源码或可重复实验 | Not ready | 68 个稳定 `CAP-*` 已绑定固定源码/实验；8 个 coverage gap 仍使 Phase 0 coverage 不完整 |
-| `P0-EXIT-002` | 基线覆盖主要格式和代表规则语法 | Not ready | 26 个安全格式样本、七类专用规则差分已存在；`testing.md` 和能力矩阵仍明确声明格式覆盖不足 |
+| `P0-EXIT-001` | 能力矩阵每项有源码或可重复实验 | Ready for review | 68 个稳定 `CAP-*` 均绑定固定源码或可重复实验，并已投影到 272 个平台 cell；source-only/platform-missing 作为 EXIT-002 缺口保留 |
+| `P0-EXIT-002` | 基线覆盖主要格式和代表规则语法 | Not ready | 26 个安全格式样本、七类专用规则差分已存在；闭集报告仍有 35 个 corpus-gap 行 |
 | `P0-EXIT-003` | 三项技术验证完成或记录替代 | Ready for review | rquickjs runtime、C static link 和固定 Linux upstream oracle 均有可重复证据及边界 |
 | `P0-EXIT-004` | 架构、规则 runtime、ABI、测试方案完成评审 | Not ready | 五份必需设计已进入 In Review、但未获得评审结论；十个有效 ADR 均为 Proposed |
 | `P0-EXIT-005` | 风险清单完整 | Ready for review | 20 项风险均含触发、缓解、验证和关闭条件，但文档仍需评审 |
@@ -68,15 +68,15 @@ Accepted。
 | `P0-BLOCK-002` | Open | 五份设计已 review-ready/In Review；仍缺 architecture、API、C ABI、testing、risks 的明确评审结论 |
 | `P0-BLOCK-003` | Open | 十个 ADR 已 review-ready、但 acceptance-ready 均为 false；仍需 Accepted/Rejected/Superseded 评审结论 |
 | `P0-BLOCK-004` | Open | runtime `db*` 2,268 文件身份及根 MIT/marker 已闭合；仍需 PNG/历史贡献、其余 source closure 和发布责任人书面评审 |
-| `P0-BLOCK-005` | Open | 固定平台基线及无 Phase 0 missing row 的 coverage report |
+| `P0-BLOCK-005` | Open | 68 行 × 4 平台 coverage report 已建立且无未分类 cell；仍需关闭 19 个 Linux source-only、35 个 corpus-gap 行及三个平台各 68 个 platform-missing |
 | `P0-BLOCK-006` | Open | strict process runner、bounded output 和 wall time/peak RSS 报告已有证据；仍需固定环境的上游 benchmark、noise calibration、可测 latency/memory/size 目标和默认资源限制 |
 
 ## 下一步顺序
 
 1. `P0-BLOCK-001` 已关闭；后续能力增删必须同时修改 matrix/manifest，validator
    会拒绝 ID、固定 commit、证据路径或汇总计数漂移。
-2. 继续把当前 Linux 证据映射到 coverage report，精确拆分已覆盖、source-only、
-   platform-missing 和 corpus-missing，收敛 `P0-BLOCK-005`。
+2. coverage report 已完成闭集分类；优先为 19 个 Linux source-only 能力建立
+   runtime corpus，并逐项收敛 35 个 corpus-gap 行，再扩展平台 oracle。
 3. 并行准备许可证和 benchmark 评审材料；不得用技术可行性替代许可证结论，
    也不得在没有固定环境时声称性能改善。
 4. 技术 blocker 清零后提交设计/ADR 评审；只有评审结论落盘后才能更新

@@ -345,9 +345,10 @@ baseline 的变更都要检查本表。
 - **触发**：主要格式/规则语法无样本；样本只覆盖 happy path；来源、许可证或客户
   数据不清。
 - **缓解**：Tier A 生成优先；Tier B license inventory；Tier C 隔离；capability
-  traceability 和 mutation/minimization。
+  traceability、闭集 coverage report 和 mutation/minimization。
 - **验证**：每项能力 positive/negative/boundary；manifest hash；license review；
-  fuzz regression growth。
+  fuzz regression growth。当前报告已分类 68 行 × 4 平台、0 未分类 cell，但仍
+  显式保留 19 个 Linux source-only 能力、35 个 corpus-gap 行和三个缺失平台。
 - **关闭**：release 范围无 coverage gap，所有样本可追溯且处理策略合规。
 
 ### R-011：并发非确定性和数据竞争
