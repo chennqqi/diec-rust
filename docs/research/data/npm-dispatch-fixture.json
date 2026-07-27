@@ -1,0 +1,55 @@
+{
+  "generator": "tools/corpus/generate_npm_dispatch_fixture.py",
+  "license": "project-generated; no third-party sample bytes",
+  "samples": [
+    {
+      "detector_control": "exact path with valid JSON",
+      "entries": [
+        "package/package.json",
+        "package/index.js"
+      ],
+      "expected_npm": true,
+      "name": "npm-valid.tgz",
+      "purpose": "natural NPM positive with package metadata and JavaScript",
+      "sha256": "8196a2956fc131635be0f9c44ea0325ad7ac491794b3593edd7a74ef85ba17ac",
+      "size": 3095
+    },
+    {
+      "detector_control": "exact path with invalid JSON",
+      "entries": [
+        "package/package.json",
+        "package/index.ts"
+      ],
+      "expected_npm": true,
+      "name": "npm-invalid-json.tgz",
+      "purpose": "NPM path positive independent of package JSON validity",
+      "sha256": "f04b8cadf5da502efe3919728652aff725e64f1b216e4fe9e3fbf8acfe693ba7",
+      "size": 3095
+    },
+    {
+      "detector_control": "package.json at archive root",
+      "entries": [
+        "package.json",
+        "package/index.js"
+      ],
+      "expected_npm": false,
+      "name": "root-package-json.tgz",
+      "purpose": "near control with package.json outside package directory",
+      "sha256": "5a2b2705445cd37b8df2e2b93e9fecbd76ba9618ccbc7dde68b03a59db8aa1a9",
+      "size": 3095
+    },
+    {
+      "detector_control": "case-mismatched package/Package.json",
+      "entries": [
+        "package/Package.json",
+        "package/index.ts"
+      ],
+      "expected_npm": false,
+      "name": "case-package-json.tgz",
+      "purpose": "near control for case-sensitive archive record matching",
+      "sha256": "d187e20f98236eba1b4f777b8ad8df2ca6faa254123d03a1f6ac6771ad010d25",
+      "size": 3095
+    }
+  ],
+  "schema_version": 1
+}

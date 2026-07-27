@@ -281,7 +281,16 @@
         "tools/upstream/archive_harness_main.cpp",
         "tools/upstream/Dockerfile.archive-harness-qt5",
         "tools/tests/test_generate_archive_format_fixture.py",
-        "tools/tests/test_probe_archive_format_harness.py"
+        "tools/tests/test_probe_archive_format_harness.py",
+        "docs/research/npm-dispatch-reachability.md",
+        "docs/research/data/npm-dispatch-fixture.json",
+        "docs/research/data/npm-dispatch-engine-qt5.json",
+        "tools/corpus/generate_npm_dispatch_fixture.py",
+        "tools/upstream/probe_npm_dispatch_harness.py",
+        "tools/upstream/npm_dispatch_harness_main.cpp",
+        "tools/upstream/Dockerfile.npm-dispatch-harness-qt5",
+        "tools/tests/test_generate_npm_dispatch_fixture.py",
+        "tools/tests/test_probe_npm_dispatch_harness.py"
       ]
     },
     "engine_contract": {
@@ -1453,7 +1462,7 @@
   "schema_version": 1,
   "source": {
     "path": "docs/research/data/capability-traceability.json",
-    "sha256": "ad56ae99128df6207f53d4b0ecaec5f3162fec8a68c1aaaec6a2c7d124ff7aad"
+    "sha256": "5dc5d0b4b78614f95756ab62835118eb28bd7e53823cb1b08c005e8ff4b84089"
   },
   "status_definitions": {
     "platform_missing": "no complete capability baseline is admitted for this platform",

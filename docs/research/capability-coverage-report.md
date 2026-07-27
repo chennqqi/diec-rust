@@ -77,11 +77,12 @@ traceability 中四个开放 `CAP-GAP-*` 现在显式映射到受影响能力；
 | `CAP-GAP-008` | platform | 8 | Windows/macOS path 与 encoding |
 映射是保守的审计范围，不是“这些能力除此之外都已完备”的声明。
 
-`CAP-GAP-006` 已新增 7Z/RAR4/CAB/ISO9660 无压缩单 PDF 的固定 engine
-正例：默认模式与发布 CLI 相同，显式 archive 后各产生一个 PDF Stream child。
-该增量见 [`archive-format-behavior.md`](archive-format-behavior.md)，但
-NPM/通用 Archive、100000 边界、压缩/加密/畸形和跨平台仍缺，因此 gap 行数与
-状态均不变。
+`CAP-GAP-006` 已新增两组固定证据：7Z/RAR4/CAB/ISO9660 无压缩单 PDF 在显式
+archive 后各产生一个 PDF Stream child；NPM 精确路径直接检测为真，但公共自动
+扫描回退 `Binary / Unknown`，强制属性才进入 NPM 语言规则。两组增量分别见
+[`archive-format-behavior.md`](archive-format-behavior.md) 和
+[`npm-dispatch-reachability.md`](npm-dispatch-reachability.md)。通用 Archive、
+100000 边界、压缩/加密/畸形和跨平台仍缺，因此 gap 行数与状态均不变。
 
 原 `CAP-GAP-005` 已由
 [`scan-option-boundaries.md`](scan-option-boundaries.md)

@@ -1,0 +1,794 @@
+{
+  "binaries": {
+    "harness": {
+      "path": "/opt/die-build/src/console/diec-npm-dispatch-harness",
+      "sha256": "0cc39eba0761eaaecaa22a25cf486ac2cad728deb94debee3b8f62921e7c5671",
+      "size": 8238488
+    },
+    "release_cmake": {
+      "path": "/opt/die-build/src/console/diec",
+      "sha256": "da1fab49f7ba5970d1fc1c7fe3d4f380cf5e8775dd8097207e7b3c30f08236cf",
+      "size": 8248008
+    },
+    "release_qmake": {
+      "path": "/opt/die-source/build/release/diec",
+      "sha256": "721ec846507a8567aae07e91dcd1f576182481ae0dc1595b1f19e4a3e859b79d",
+      "size": 7684384
+    }
+  },
+  "cases": {
+    "case-package-json.tgz": {
+      "cmake_release": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/case-package-json.tgz"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "490d90498bf9edca19d9e0b2dc7a8e2fc51d6bf0a55205d3011d1e4b3c2483e7",
+          "bytes": 470,
+          "sha256": "490d90498bf9edca19d9e0b2dc7a8e2fc51d6bf0a55205d3011d1e4b3c2483e7"
+        },
+        "summary": {
+          "filetype": "Binary",
+          "names": [
+            "Unknown"
+          ],
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "3095"
+        }
+      },
+      "harness": {
+        "arguments": [
+          "/fixture/case-package-json.tgz"
+        ],
+        "exit_code": 0,
+        "output": {
+          "automatic": {
+            "database_loaded": true,
+            "detected_filetypes": "BINARY|ARCHIVE|GZIP",
+            "error_count": 0,
+            "forced": false,
+            "initial_filetype": "Binary",
+            "property": "",
+            "record_count": 1,
+            "records": [
+              {
+                "filetype": "Binary",
+                "info": "",
+                "name": "Unknown",
+                "signature": "",
+                "type": "Unknown",
+                "unknown": true,
+                "version": ""
+              }
+            ],
+            "scan_success": true
+          },
+          "direct_npm_valid": false,
+          "forced_npm": {
+            "database_loaded": true,
+            "detected_filetypes": "NPM",
+            "error_count": 0,
+            "forced": true,
+            "initial_filetype": "NPM",
+            "property": "NPM",
+            "record_count": 2,
+            "records": [
+              {
+                "filetype": "NPM",
+                "info": "",
+                "name": "JavaScript",
+                "signature": "language_JavaScript.5.sg",
+                "type": "language",
+                "unknown": false,
+                "version": ""
+              },
+              {
+                "filetype": "NPM",
+                "info": "",
+                "name": "TypeScript",
+                "signature": "language_TypeScript.5.sg",
+                "type": "language",
+                "unknown": false,
+                "version": ""
+              }
+            ],
+            "scan_success": true
+          },
+          "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+          "input_name": "case-package-json.tgz",
+          "input_size": 3095,
+          "schema_version": 1,
+          "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+          "xarchive_commit": "0fcd4e8d3e9933baac3b12246d82ac026557ffd0",
+          "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+        },
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "b0e025674511a8eb5e79d5b0a5a495d3d52e9029d2a5650f20bed1f8c5f29805",
+          "bytes": 1839,
+          "sha256": "b0e025674511a8eb5e79d5b0a5a495d3d52e9029d2a5650f20bed1f8c5f29805"
+        }
+      },
+      "qmake_release": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/case-package-json.tgz"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "490d90498bf9edca19d9e0b2dc7a8e2fc51d6bf0a55205d3011d1e4b3c2483e7",
+          "bytes": 470,
+          "sha256": "490d90498bf9edca19d9e0b2dc7a8e2fc51d6bf0a55205d3011d1e4b3c2483e7"
+        },
+        "summary": {
+          "filetype": "Binary",
+          "names": [
+            "Unknown"
+          ],
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "3095"
+        }
+      }
+    },
+    "npm-invalid-json.tgz": {
+      "cmake_release": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/npm-invalid-json.tgz"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "490d90498bf9edca19d9e0b2dc7a8e2fc51d6bf0a55205d3011d1e4b3c2483e7",
+          "bytes": 470,
+          "sha256": "490d90498bf9edca19d9e0b2dc7a8e2fc51d6bf0a55205d3011d1e4b3c2483e7"
+        },
+        "summary": {
+          "filetype": "Binary",
+          "names": [
+            "Unknown"
+          ],
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "3095"
+        }
+      },
+      "harness": {
+        "arguments": [
+          "/fixture/npm-invalid-json.tgz"
+        ],
+        "exit_code": 0,
+        "output": {
+          "automatic": {
+            "database_loaded": true,
+            "detected_filetypes": "BINARY|ARCHIVE|GZIP",
+            "error_count": 0,
+            "forced": false,
+            "initial_filetype": "Binary",
+            "property": "",
+            "record_count": 1,
+            "records": [
+              {
+                "filetype": "Binary",
+                "info": "",
+                "name": "Unknown",
+                "signature": "",
+                "type": "Unknown",
+                "unknown": true,
+                "version": ""
+              }
+            ],
+            "scan_success": true
+          },
+          "direct_npm_valid": true,
+          "forced_npm": {
+            "database_loaded": true,
+            "detected_filetypes": "NPM",
+            "error_count": 0,
+            "forced": true,
+            "initial_filetype": "NPM",
+            "property": "NPM",
+            "record_count": 2,
+            "records": [
+              {
+                "filetype": "NPM",
+                "info": "",
+                "name": "JavaScript",
+                "signature": "language_JavaScript.5.sg",
+                "type": "language",
+                "unknown": false,
+                "version": ""
+              },
+              {
+                "filetype": "NPM",
+                "info": "",
+                "name": "TypeScript",
+                "signature": "language_TypeScript.5.sg",
+                "type": "language",
+                "unknown": false,
+                "version": ""
+              }
+            ],
+            "scan_success": true
+          },
+          "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+          "input_name": "npm-invalid-json.tgz",
+          "input_size": 3095,
+          "schema_version": 1,
+          "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+          "xarchive_commit": "0fcd4e8d3e9933baac3b12246d82ac026557ffd0",
+          "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+        },
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "200984cdee530f3e70f96c327a14ba2b97987d2fa29bf85d6ac5c82fc6389d25",
+          "bytes": 1837,
+          "sha256": "200984cdee530f3e70f96c327a14ba2b97987d2fa29bf85d6ac5c82fc6389d25"
+        }
+      },
+      "qmake_release": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/npm-invalid-json.tgz"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "490d90498bf9edca19d9e0b2dc7a8e2fc51d6bf0a55205d3011d1e4b3c2483e7",
+          "bytes": 470,
+          "sha256": "490d90498bf9edca19d9e0b2dc7a8e2fc51d6bf0a55205d3011d1e4b3c2483e7"
+        },
+        "summary": {
+          "filetype": "Binary",
+          "names": [
+            "Unknown"
+          ],
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "3095"
+        }
+      }
+    },
+    "npm-valid.tgz": {
+      "cmake_release": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/npm-valid.tgz"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "490d90498bf9edca19d9e0b2dc7a8e2fc51d6bf0a55205d3011d1e4b3c2483e7",
+          "bytes": 470,
+          "sha256": "490d90498bf9edca19d9e0b2dc7a8e2fc51d6bf0a55205d3011d1e4b3c2483e7"
+        },
+        "summary": {
+          "filetype": "Binary",
+          "names": [
+            "Unknown"
+          ],
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "3095"
+        }
+      },
+      "harness": {
+        "arguments": [
+          "/fixture/npm-valid.tgz"
+        ],
+        "exit_code": 0,
+        "output": {
+          "automatic": {
+            "database_loaded": true,
+            "detected_filetypes": "BINARY|ARCHIVE|GZIP",
+            "error_count": 0,
+            "forced": false,
+            "initial_filetype": "Binary",
+            "property": "",
+            "record_count": 1,
+            "records": [
+              {
+                "filetype": "Binary",
+                "info": "",
+                "name": "Unknown",
+                "signature": "",
+                "type": "Unknown",
+                "unknown": true,
+                "version": ""
+              }
+            ],
+            "scan_success": true
+          },
+          "direct_npm_valid": true,
+          "forced_npm": {
+            "database_loaded": true,
+            "detected_filetypes": "NPM",
+            "error_count": 0,
+            "forced": true,
+            "initial_filetype": "NPM",
+            "property": "NPM",
+            "record_count": 1,
+            "records": [
+              {
+                "filetype": "NPM",
+                "info": "",
+                "name": "JavaScript",
+                "signature": "language_JavaScript.5.sg",
+                "type": "language",
+                "unknown": false,
+                "version": ""
+              }
+            ],
+            "scan_success": true
+          },
+          "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+          "input_name": "npm-valid.tgz",
+          "input_size": 3095,
+          "schema_version": 1,
+          "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+          "xarchive_commit": "0fcd4e8d3e9933baac3b12246d82ac026557ffd0",
+          "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+        },
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "69f1e753fc95e47c96b556bd5c5bfca7924daa4e65618870e896b6e984f135ff",
+          "bytes": 1543,
+          "sha256": "69f1e753fc95e47c96b556bd5c5bfca7924daa4e65618870e896b6e984f135ff"
+        }
+      },
+      "qmake_release": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/npm-valid.tgz"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "490d90498bf9edca19d9e0b2dc7a8e2fc51d6bf0a55205d3011d1e4b3c2483e7",
+          "bytes": 470,
+          "sha256": "490d90498bf9edca19d9e0b2dc7a8e2fc51d6bf0a55205d3011d1e4b3c2483e7"
+        },
+        "summary": {
+          "filetype": "Binary",
+          "names": [
+            "Unknown"
+          ],
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "3095"
+        }
+      }
+    },
+    "root-package-json.tgz": {
+      "cmake_release": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/root-package-json.tgz"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "490d90498bf9edca19d9e0b2dc7a8e2fc51d6bf0a55205d3011d1e4b3c2483e7",
+          "bytes": 470,
+          "sha256": "490d90498bf9edca19d9e0b2dc7a8e2fc51d6bf0a55205d3011d1e4b3c2483e7"
+        },
+        "summary": {
+          "filetype": "Binary",
+          "names": [
+            "Unknown"
+          ],
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "3095"
+        }
+      },
+      "harness": {
+        "arguments": [
+          "/fixture/root-package-json.tgz"
+        ],
+        "exit_code": 0,
+        "output": {
+          "automatic": {
+            "database_loaded": true,
+            "detected_filetypes": "BINARY|ARCHIVE|GZIP",
+            "error_count": 0,
+            "forced": false,
+            "initial_filetype": "Binary",
+            "property": "",
+            "record_count": 1,
+            "records": [
+              {
+                "filetype": "Binary",
+                "info": "",
+                "name": "Unknown",
+                "signature": "",
+                "type": "Unknown",
+                "unknown": true,
+                "version": ""
+              }
+            ],
+            "scan_success": true
+          },
+          "direct_npm_valid": false,
+          "forced_npm": {
+            "database_loaded": true,
+            "detected_filetypes": "NPM",
+            "error_count": 0,
+            "forced": true,
+            "initial_filetype": "NPM",
+            "property": "NPM",
+            "record_count": 1,
+            "records": [
+              {
+                "filetype": "NPM",
+                "info": "",
+                "name": "JavaScript",
+                "signature": "language_JavaScript.5.sg",
+                "type": "language",
+                "unknown": false,
+                "version": ""
+              }
+            ],
+            "scan_success": true
+          },
+          "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+          "input_name": "root-package-json.tgz",
+          "input_size": 3095,
+          "schema_version": 1,
+          "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+          "xarchive_commit": "0fcd4e8d3e9933baac3b12246d82ac026557ffd0",
+          "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+        },
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "d1d0f7f84760174c5ddec23d6830ec85bd38eca20307401dcf7ccfb0ba51887c",
+          "bytes": 1552,
+          "sha256": "d1d0f7f84760174c5ddec23d6830ec85bd38eca20307401dcf7ccfb0ba51887c"
+        }
+      },
+      "qmake_release": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/root-package-json.tgz"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "490d90498bf9edca19d9e0b2dc7a8e2fc51d6bf0a55205d3011d1e4b3c2483e7",
+          "bytes": 470,
+          "sha256": "490d90498bf9edca19d9e0b2dc7a8e2fc51d6bf0a55205d3011d1e4b3c2483e7"
+        },
+        "summary": {
+          "filetype": "Binary",
+          "names": [
+            "Unknown"
+          ],
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "3095"
+        }
+      }
+    }
+  },
+  "component_commits": {
+    "Formats": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+    "XArchive": "0fcd4e8d3e9933baac3b12246d82ac026557ffd0",
+    "XScanEngine": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83",
+    "die_script": "5d82316c110abf0eb863b50bc679d330e05067b6"
+  },
+  "facts": {
+    "automatic_detection_never_emits_npm": true,
+    "automatic_scan_falls_back_to_binary_unknown": true,
+    "direct_detector_accepts_exact_package_json_path": true,
+    "direct_detector_does_not_parse_package_json": true,
+    "direct_detector_rejects_path_and_case_controls": true,
+    "forced_property_reaches_npm_language_rules": true,
+    "qmake_and_cmake_release_outputs_are_byte_equal": true,
+    "release_and_harness_automatic_semantics_agree": true,
+    "valid_package_metadata_is_not_reported_by_default_options": true
+  },
+  "failures": [],
+  "fixture_manifest": {
+    "path": "docs/research/data/npm-dispatch-fixture.json",
+    "sample_count": 4,
+    "sha256": "fba30872e94eae432452420b4d498cc424ce3d114ba564d75f0e90ea0c399881"
+  },
+  "generator": "tools/upstream/probe_npm_dispatch_harness.py",
+  "generator_sha256": "89329f5285020b46cf918878ebdd92298191f28db26feeb48a5b4b25c7e60fcf",
+  "images": {
+    "harness_cmake": {
+      "id": "sha256:714270cf7bf3e3428c854ff63457754132e55c90a8a6ae9061b6cbdec9c1ca77",
+      "name": "diec-rust/npm-dispatch-harness-qt5:74eaf505",
+      "repo_digests": [
+        "diec-rust/npm-dispatch-harness-qt5@sha256:714270cf7bf3e3428c854ff63457754132e55c90a8a6ae9061b6cbdec9c1ca77"
+      ],
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    },
+    "release_qmake": {
+      "id": "sha256:cc5561a5d256c7912227a8ecf4ba9c6b9178c99911e471017d3c3988bac964ab",
+      "name": "diec-rust/upstream-oracle:74eaf505-repro",
+      "repo_digests": [
+        "diec-rust/upstream-oracle@sha256:cc5561a5d256c7912227a8ecf4ba9c6b9178c99911e471017d3c3988bac964ab"
+      ],
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    }
+  },
+  "local_sources": {
+    "fixture_generator": {
+      "path": "tools/corpus/generate_npm_dispatch_fixture.py",
+      "sha256": "8c5a9505cc4ac7226dee610abac5078d3c8150db7f14b9ae34494f62c000667a"
+    },
+    "harness_dockerfile": {
+      "path": "tools/upstream/Dockerfile.npm-dispatch-harness-qt5",
+      "sha256": "03f4320e55cef5d48996a94b815e68ceb252b6ea5dafc19b0b4e121a4cccd31c"
+    },
+    "harness_source": {
+      "path": "tools/upstream/npm_dispatch_harness_main.cpp",
+      "sha256": "228915d708747c692c39fb42272974bd33b9b0c15a2b4efb7054394965c54643"
+    },
+    "probe": {
+      "path": "tools/upstream/probe_npm_dispatch_harness.py",
+      "sha256": "89329f5285020b46cf918878ebdd92298191f28db26feeb48a5b4b25c7e60fcf"
+    }
+  },
+  "passed": true,
+  "platform": "linux-x86_64-qt5",
+  "raw_artifacts": {
+    "200984cdee530f3e70f96c327a14ba2b97987d2fa29bf85d6ac5c82fc6389d25": {
+      "base64": "eNrFVNtu1DAQfd+vqPLcrnJxNglvBSFYJKqqXCRAKJrY49SQOJHtLGy3++84aTbNhrKwgCBvnjNzznh8JpvZif0caExVghHUeXSy6UJdmIGBDDSmRQUMmQWNavB0lIAGqUGWclGgWdeobY7zeHlxfvXu9vzqyfPl26e3z94vL51RESpVqZRWjTQ22x0hvFK0k+FQ6LGOkMIIKAaZTkVIUOsxca2qGpVZt+g4rpBWig2K3ndQ2/WHIdh+m73TXXOHtEed8mqiP2ASyq76jfwsqy/yoRQtcgmmUfgjjl0HBziaHpq+1pCwQqVFJTuJPXQ7nD6OZqQpyFQ3lKLWPWkHbu9yHCbsFE0q6zJdQSH2bdK/aYv+FW9dXL480ksT2oesNCEd+2gCTazk/7mV9gWO8tELWMErqkRtfmqlAmTeQI7pfc08nOv8kMV2NYc9NlnVXzDZ6T8az2tLcex47mv+23h+awet2+3/W1tjlqVonel4Xuhh5IeEM8SAun5COI/cJESWMRZlnFIe+67Xt28nWjd2ifvZ2XU9E7Jb57NPupJzk9/sZ2px02YGlrGPa3qNJaT3N+t/tE5Ta6MQylF3EUHgoRtSP3QhIxHazlyfYMIo8RZhRFnMfdv8TvMrKHotVjiicDllBGMWYJIEQQZAg8zzfbJgsQ/2voswjDhn7kDRzhBlLuSYhXEkQLwECSeJl2V+sIjjDNyAhhBmPEgwIAziwJltZ98AxvfIFA==",
+      "bytes": 1837,
+      "compressed_bytes": 556,
+      "encoding": "zlib+base64"
+    },
+    "490d90498bf9edca19d9e0b2dc7a8e2fc51d6bf0a55205d3011d1e4b3c2483e7": {
+      "base64": "eNqFkLEOwiAQhneegjA7NDEOdnTyBZxMB2IPc7EeDWCb2vTdBRIbQQ03Xf7/u7sfZsZ9iRYcXJwVNT9HIdS8dhFR2IGbevCMOCBJM4lNSiApHdxc10pZcMGpcquXBsiF1b6LyBFkCybnLD7j4W213+XeILsHpNF/P6EUdPVJ3uO1E91Ij/QPs84gXT/Amhcm3v9XwAYwFjXFiF/EkigNS/WGLYyxF0vRX/M=",
+      "bytes": 470,
+      "compressed_bytes": 170,
+      "encoding": "zlib+base64"
+    },
+    "69f1e753fc95e47c96b556bd5c5bfca7924daa4e65618870e896b6e984f135ff": {
+      "base64": "eNq1VF1v1DAQfL9fUeUZTvlwLglvBSE4JKqqCCRAKNrY69QicSLbObhe77/XSXOpL5RDlYrfvLM7s96dZLc4s8eDzjQ1GEG9V2e7ITSEGRgoQGNeNcCQWdCoDl84CWiQGmQ5FxWabYva5niv1xfnV19vz6/evF9/eXv77tv60nOKUKlG5bTppLHZvoPwRtFBhkOlXR0hhRFQTTKDipCgti5xq5oWldn2qBtXSBvFJsXgD6jv+vsU7M/u6Hbf3Cltp1PezPQnTEI9VH+WP2XzSz6WokUpwXQK/8Zx6OAERzdC821NCRtUWjRykDhC99PthzMjTUHmuqMUtR5JB3B/n+MxYadoctnW+QYqcWyTcac9+izeurj8+EQvzWgfs9KM1PXRDHp+Kx0LPMlHH2ADn6gSrfmnlSqQZQcl5g81y3ipy1MWO9Sc9tjsU/1fJrPrtD8obSdf16IfvRcEcYBJGBPOECPqhxnhPPGzGFnBWFJwSnka+sHYvp1o21mXjrOzfnw5uHVpypvjFC1u+pTIUo1xTa+xhvzhSePeva7VRiHUTlsJQeCxH9Mw9qEgCdqW/JBgxigJVnFCWcpD2/VB8zcoei026FD4nDKCKYswy6KoAKBREYQhWbE0BPvQVRwnnDN/ouiHh7IU0mVhHAmQIEPCSRYURRit0rQAP6IxxAWPMowIgzTyFvvFHUhzhhY=",
+      "bytes": 1543,
+      "compressed_bytes": 527,
+      "encoding": "zlib+base64"
+    },
+    "b0e025674511a8eb5e79d5b0a5a495d3d52e9029d2a5650f20bed1f8c5f29805": {
+      "base64": "eNrFVF1v0zAUfe+vmPK8VflwmoS3gRAUiWkaDAkQim7s68yscSLbKXRd/ztOlqZpGIUCAr/5nnvPub4+9npyYpcDtSkLMII6T07WbagNMzCQgcZ0UQJDZkGjajwdJKBBapClXCzQrCrUNsd5Or84v3p/f3717OX83fP7Fx/ml86gCJUqVUrLWhqb7Q4QXiraynBY6KGOkMIIWPQyrYqQoFZD4kqVFSqzatBhXCEtFesVve+gpuuPfbBZ673dQ3OHtAed8nKk32MSirb6Wt7K8ot8LEWLXIKpFf6IY9vBAY66g8a31ScsUWlRylZiD930u0+DGWkKMtU1pah1R9qCm4cchwk7RZPKqkiXsBCj++sutYH/irkuLl8faaYR7WNeGpEOjTSCRl7y/9xL+wJHGekVLOENVaIyP/XSAmReQ47prmYaTnV+yGPbmsMmG73VX3DZ6T8az1tLcex4djX/bTy/9Qit2+0Hrq0xi0I0znQ8L/Qw8kPCGWJAXT8hnEduEiLLGIsyTimPfdfr2rcTrWr7irvZUfsyzyqgt/aAZ591Kacmv9tP1eKuSQ0sZRfX9AYLSHdH675ap660UQjFoL2IIPDQDakfupCRCG1rrk8wYZR4szCiLOa+7X6r+RUUvRFLHFC4nDKCMQswSYIgA6BB5vk+mbHYB3vgWRhGnDO3p2iGiDIXcsjCOBIgXoKEk8TLMj+YxXEGbkBDCDMeJBgQBnHgTDaTb3c5yJU=",
+      "bytes": 1839,
+      "compressed_bytes": 557,
+      "encoding": "zlib+base64"
+    },
+    "d1d0f7f84760174c5ddec23d6830ec85bd38eca20307401dcf7ccfb0ba51887c": {
+      "base64": "eNq1VF1v1DAQfL9fUeWZnvLhXBLeCkJwSFRVEUiAULSx16lpYke2c3C99r/jpLk0F8qhSsVv3tmdWe9OslucuONBa1UNVlDv5cmuD/VhBhYKMJhXChgyB1rd4otJAlqkFlnORYV226BxOd6r9fnZ5Zfbs8vX79af39y+/bq+8CZFqLXSOVWttC7bnyBcadrLcKjMVEdIYQVUo0yvIiTo7ZS40apBbbcdOo1rpEqzUTH4A+q6/jYGu7M7uN03d0x70ilXM/0Rk1D31Z/ktVQ/5WMpRpQSbKvxbxz7Do5wtAM039aYsEFthJK9xAF6N96+T2ZkKMjctJSiMQNpD97d53hMuCnaXDZ1voFKzPY3LLWDn8Vc5xcfnmimGe1jXpqRTo00g57fS4cCTzLSe9jAR6pFY//ppQpk2UKJ+UPNMl6a8pjH9jXHTTb7Vv+Xy9w63R/KuMnXtehG7wVBHGASxoQzxIj6YUY4T/wsRlYwlhScUp6GfjC07ybatM6mw+y0Uva0AXrtHnj6wyi5tOXNYaoRN11q5CiHuKFXWEP+8LRh/17bGKsR6kl7CUHgsR/TMPahIAm61vyQYMYoCVZxQlnKQ9f9XvMXaHolNjih8DllBFMWYZZFUQFAoyIIQ7JiaQjuwas4Tjhn/kjRDRFlKeSUhXEkQIIMCSdZUBRhtErTAvyIxhAXPMowIgzSyFvcLX4DC5eJfQ==",
+      "bytes": 1552,
+      "compressed_bytes": 535,
+      "encoding": "zlib+base64"
+    },
+    "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855": {
+      "base64": "eNoDAAAAAAE=",
+      "bytes": 0,
+      "compressed_bytes": 8,
+      "encoding": "zlib+base64"
+    }
+  },
+  "remaining_gap": "CAP-GAP-006",
+  "resource_limits": {
+    "container_root": "read-only",
+    "cpus": 1,
+    "fixture_mount": "read-only",
+    "memory_bytes": 536870912,
+    "network": "none",
+    "pids": 128,
+    "timeout_seconds_per_execution": 60
+  },
+  "schema_version": 1,
+  "source_contract": {
+    "formats": {
+      "path": "/opt/die-source/Formats/xformats.cpp",
+      "required_patterns": [
+        {
+          "count": 1,
+          "text": "QSet<XBinary::FT> XFormats::getFileTypesTGZ("
+        },
+        {
+          "count": 1,
+          "text": "stResult.insert(XBinary::FT_NPM);"
+        },
+        {
+          "count": 1,
+          "text": "QSet<XBinary::FT> XFormats::getFileTypesGZIP("
+        },
+        {
+          "count": 1,
+          "text": "//         stResult += getFileTypesTGZ("
+        },
+        {
+          "count": 1,
+          "text": "stResult.insert(XBinary::FT_GZIP);"
+        }
+      ],
+      "sha256": "674eba0046eb6cc947e547d1ac0b93ac695cbb30f68e11f135e5551d81e0b115"
+    },
+    "npm": {
+      "path": "/opt/die-source/XArchive/xnpm.cpp",
+      "required_patterns": [
+        {
+          "count": 1,
+          "text": "XArchive::isArchiveRecordPresent(\"package/package.json\""
+        }
+      ],
+      "sha256": "7ef5f9cdf7c50a047802cd25d2b71a919a5a50ca9f6fcbbeb2bc1cb9b7441b91"
+    },
+    "npm_format_rule": {
+      "path": "/opt/die-source/Detect-It-Easy/db/NPM/_NPM.0.sg",
+      "required_patterns": [
+        {
+          "count": 1,
+          "text": "if (NPM.isVerbose()) {"
+        }
+      ],
+      "sha256": "dfddb12106e7e5e659340bc63b85e80ac336d5434368e1ef248025c15f2c3e24"
+    },
+    "npm_javascript_rule": {
+      "path": "/opt/die-source/Detect-It-Easy/db/NPM/language_JavaScript.5.sg",
+      "required_patterns": [
+        {
+          "count": 1,
+          "text": "NPM.isArchiveRecordPresentExp(\"(.*?).js\")"
+        }
+      ],
+      "sha256": "ea5c8c8980e3228a36d537745abf691145460f6e42de0198e919c7ec8ba8aafd"
+    },
+    "npm_package_rule": {
+      "path": "/opt/die-source/Detect-It-Easy/db/NPM/package_PackageName.1.sg",
+      "required_patterns": [
+        {
+          "count": 1,
+          "text": "NPM.getPackageJsonRecord(\"name\")"
+        },
+        {
+          "count": 1,
+          "text": "NPM.getPackageJsonRecord(\"version\")"
+        }
+      ],
+      "sha256": "0aeb63c01b0132d733565b79c7b678cd8f099d9280ff1f5082e4c91c9da36e5a"
+    },
+    "npm_typescript_rule": {
+      "path": "/opt/die-source/Detect-It-Easy/db/NPM/language_TypeScript.5.sg",
+      "required_patterns": [
+        {
+          "count": 1,
+          "text": "NPM.isArchiveRecordPresentExp(\"(.*?).ts\")"
+        }
+      ],
+      "sha256": "69b2ab4d8c1a654d7b43f602c8993b79bdbeeec561f3b49e5605d5977251e976"
+    },
+    "scan_engine": {
+      "path": "/opt/die-source/XScanEngine/xscanengine.cpp",
+      "required_patterns": [
+        {
+          "count": 1,
+          "text": "} else if (stFT.contains(XBinary::FT_NPM)) {"
+        },
+        {
+          "count": 1,
+          "text": "_processDetect(&scanIdMain, pScanResult, _pDevice, parentId, XBinary::FT_NPM"
+        }
+      ],
+      "sha256": "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498"
+    },
+    "script_engine": {
+      "path": "/opt/die-source/die_script/die_scriptengine.cpp",
+      "required_patterns": [
+        {
+          "count": 1,
+          "text": "NPM_Script *pExtraScript = new NPM_Script("
+        }
+      ],
+      "sha256": "f9b9d69a17dc930556c7308fce46d3287d18dd9f927c91d6733ce994594fcb72"
+    }
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

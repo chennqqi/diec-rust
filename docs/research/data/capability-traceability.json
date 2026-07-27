@@ -203,7 +203,16 @@
         "tools/upstream/archive_harness_main.cpp",
         "tools/upstream/Dockerfile.archive-harness-qt5",
         "tools/tests/test_generate_archive_format_fixture.py",
-        "tools/tests/test_probe_archive_format_harness.py"
+        "tools/tests/test_probe_archive_format_harness.py",
+        "docs/research/npm-dispatch-reachability.md",
+        "docs/research/data/npm-dispatch-fixture.json",
+        "docs/research/data/npm-dispatch-engine-qt5.json",
+        "tools/corpus/generate_npm_dispatch_fixture.py",
+        "tools/upstream/probe_npm_dispatch_harness.py",
+        "tools/upstream/npm_dispatch_harness_main.cpp",
+        "tools/upstream/Dockerfile.npm-dispatch-harness-qt5",
+        "tools/tests/test_generate_npm_dispatch_fixture.py",
+        "tools/tests/test_probe_npm_dispatch_harness.py"
       ]
     },
     "nested_scan": {

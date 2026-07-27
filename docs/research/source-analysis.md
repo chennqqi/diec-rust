@@ -145,6 +145,14 @@ MSDOS、Archive、ZIP、JAR 和 Image 等公共能力。固定声明、默认参
 调用覆盖见 [`host-api-inventory.md`](host-api-inventory.md)；类型转换和行为
 fixture 仍是规则 1:1 复用的核心风险。
 
+NPM 是“类、宿主和规则存在，但公共自动分派不可达”的具体反例。固定源码中
+`getFileTypesTGZ()` 能加入 `FT_NPM`，但活动的 `getFileTypesGZIP()` 细分逻辑
+被整体注释，外层只加入 `FT_ARCHIVE|FT_GZIP`；`scanProcess()` 只有显式
+`FT_NPM` 分支。直接检测、自动扫描和强制属性三层的固定源码/运行证据见
+[`npm-dispatch-reachability.md`](npm-dispatch-reachability.md)。后续 Rust
+调用链模型必须分别表达 detector 命中与 public dispatch 结果，不能从类型实现
+存在性推断公共可达性。
+
 ## 结果与层级
 
 `SCAN_RESULT` 不只是字符串：

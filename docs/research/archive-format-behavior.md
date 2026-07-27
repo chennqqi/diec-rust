@@ -22,8 +22,9 @@ Last updated: 2026-07-28
   逐字节相同。
 
 这组结果增加了 7Z/RAR4/CAB/ISO9660 的正向 corpus 证据，但不关闭
-`CAP-GAP-006`。NPM/通用 Archive 分派、archive aggressive 100000 边界、
-压缩/加密/畸形成员及跨平台行为仍未验证。
+`CAP-GAP-006`。NPM 分派已由独立的直接/自动/强制实验固定，见
+[`npm-dispatch-reachability.md`](npm-dispatch-reachability.md)；通用 Archive、
+archive aggressive 100000 边界、压缩/加密/畸形成员及跨平台行为仍未验证。
 
 机器报告是
 [`archive-format-engine-qt5.json`](data/archive-format-engine-qt5.json)，
@@ -160,7 +161,8 @@ binary/source/local tool identity，最后运行全部 case。报告生成器变
 
 本实验只证明四个格式各一个合法、单成员、无压缩正例，不证明：
 
-- NPM/通用 Archive 的顶层分派；
+- 通用 Archive 的顶层分派；NPM 的直接检测、公共自动回退和强制分支见
+  [`npm-dispatch-reachability.md`](npm-dispatch-reachability.md)；
 - 7Z 的 LZMA/LZMA2/PPMd/BZip2/Deflate/BCJ/AES coder；
 - RAR/CAB/ISO9660 的压缩方法、solid/multi-volume、encrypted entry；
 - 截断 header、错误 size/CRC、重复名称、目录、链接和路径穿越 metadata；
