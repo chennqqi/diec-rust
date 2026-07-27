@@ -257,7 +257,9 @@ elapsed 值与固定规则执行序列另见
   固定。
 - deep 增量、aggressive resource filter 和默认 21/aggressive 2001 精确上限已由
   [`scan-option-boundaries.md`](scan-option-boundaries.md) 固定。
-- archive aggressive 100000 上限和高压缩比/畸形边界；
+- archive aggressive 100000 精确边界已由
+  [`archive-iteration-boundary.md`](archive-iteration-boundary.md) 固定；
+  高压缩比/畸形边界仍待验证；
   7Z/RAR4/CAB/ISO9660 无压缩正例及 ZIP depth 16/约 2 MiB 累计展开量已有
   专用报告。
 - 发布 CLI 的 ZIP database 截断/重复/`..`/根前缀边界及 cache-disabled

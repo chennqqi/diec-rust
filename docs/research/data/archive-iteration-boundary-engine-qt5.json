@@ -1,0 +1,178 @@
+{
+  "assertions": {
+    "aggressive_member_limit_is_unreachable_before_hard_guard": true,
+    "record_100000_is_reachable": true,
+    "record_100001_is_not_reachable": true,
+    "record_99999_is_reachable_control": true
+  },
+  "capability": "CAP-GAP-006",
+  "cases": [
+    {
+      "arguments": [
+        "/corpus/sentinel-099999.iso"
+      ],
+      "exit_code": 0,
+      "harness": {
+        "aggressive_scan": true,
+        "debug_record_count": 0,
+        "elapsed_ms": 814,
+        "error_count": 0,
+        "handler_count": 0,
+        "node_count": 2,
+        "pd_stopped": false,
+        "pdf_node_count": 1,
+        "peak_rss_after_kib": 86588,
+        "peak_rss_before_kib": 18904,
+        "record_count": 3,
+        "scan_result_time_ms": 811,
+        "stream_node_count": 1
+      },
+      "possible_oom_exit_137": false,
+      "sample": "sentinel-099999.iso",
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "{\"aggressive_scan\":true,\"debug_record_count\":0,\"elapsed_ms\":814,\"error_count\":0,\"handler_count\":0,\"node_count\":2,\"pd_stopped\":false,\"pdf_node_count\":1,\"peak_rss_after_kib\":86588,\"peak_rss_before_kib\":18904,\"record_count\":3,\"scan_result_time_ms\":811,\"stream_node_count\":1}\n",
+      "stdout_sha256": "268cd74e9c6ce92b3b3a2ad49b3eb42b4100c48180126645d0b29cec6bdeeca9",
+      "timed_out": false,
+      "wall_elapsed_ms": 1342
+    },
+    {
+      "arguments": [
+        "/corpus/sentinel-100000.iso"
+      ],
+      "exit_code": 0,
+      "harness": {
+        "aggressive_scan": true,
+        "debug_record_count": 0,
+        "elapsed_ms": 838,
+        "error_count": 0,
+        "handler_count": 0,
+        "node_count": 2,
+        "pd_stopped": false,
+        "pdf_node_count": 1,
+        "peak_rss_after_kib": 87184,
+        "peak_rss_before_kib": 19028,
+        "record_count": 3,
+        "scan_result_time_ms": 835,
+        "stream_node_count": 1
+      },
+      "possible_oom_exit_137": false,
+      "sample": "sentinel-100000.iso",
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "{\"aggressive_scan\":true,\"debug_record_count\":0,\"elapsed_ms\":838,\"error_count\":0,\"handler_count\":0,\"node_count\":2,\"pd_stopped\":false,\"pdf_node_count\":1,\"peak_rss_after_kib\":87184,\"peak_rss_before_kib\":19028,\"record_count\":3,\"scan_result_time_ms\":835,\"stream_node_count\":1}\n",
+      "stdout_sha256": "d7a9bc913d31eee3ed743b33f19096d081744983117690e450efd06682db0387",
+      "timed_out": false,
+      "wall_elapsed_ms": 1351
+    },
+    {
+      "arguments": [
+        "/corpus/sentinel-100001.iso"
+      ],
+      "exit_code": 0,
+      "harness": {
+        "aggressive_scan": true,
+        "debug_record_count": 0,
+        "elapsed_ms": 817,
+        "error_count": 0,
+        "handler_count": 0,
+        "node_count": 1,
+        "pd_stopped": false,
+        "pdf_node_count": 0,
+        "peak_rss_after_kib": 86788,
+        "peak_rss_before_kib": 18900,
+        "record_count": 1,
+        "scan_result_time_ms": 814,
+        "stream_node_count": 0
+      },
+      "possible_oom_exit_137": false,
+      "sample": "sentinel-100001.iso",
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "{\"aggressive_scan\":true,\"debug_record_count\":0,\"elapsed_ms\":817,\"error_count\":0,\"handler_count\":0,\"node_count\":1,\"pd_stopped\":false,\"pdf_node_count\":0,\"peak_rss_after_kib\":86788,\"peak_rss_before_kib\":18900,\"record_count\":1,\"scan_result_time_ms\":814,\"stream_node_count\":0}\n",
+      "stdout_sha256": "59920802b6b0b0c5d438a80f45f14a092ed713a91a5c1efead16ad9e0e8cf3cc",
+      "timed_out": false,
+      "wall_elapsed_ms": 1322
+    }
+  ],
+  "corpus": {
+    "capability": "CAP-GAP-006",
+    "generator": "tools/corpus/generate_archive_iteration_boundary_fixture.py",
+    "license": "project-generated; no third-party sample bytes",
+    "record_count": 100001,
+    "samples": [
+      {
+        "name": "sentinel-099999.iso",
+        "record_count": 100001,
+        "sentinel_ordinal": 99999,
+        "sha256": "5214a3b0baadc4e29b7cade268b6e255567bf920110e6cdbae2647883e35b439",
+        "size": 4306944
+      },
+      {
+        "name": "sentinel-100000.iso",
+        "record_count": 100001,
+        "sentinel_ordinal": 100000,
+        "sha256": "a4b9e66ddf948f7fda3aa1d5ef4572e58e9262bef3f2aa90f1f6e005a2c8c449",
+        "size": 4306944
+      },
+      {
+        "name": "sentinel-100001.iso",
+        "record_count": 100001,
+        "sentinel_ordinal": 100001,
+        "sha256": "fd8bc136371dd7e6fb2e58ffd3fac0884440092fb6422bc2bd66302a99ae7819",
+        "size": 4306944
+      }
+    ],
+    "schema_version": 1
+  },
+  "corpus_manifest_sha256": "e7f5e3c7aaa04add2b987bbfbc12df5683a3418b227b64fe501b1c8038c08e10",
+  "environment": {
+    "container_network": "none",
+    "fault_injection": {
+      "placeholder_declared_size": 16777216,
+      "purpose": "force placeholder QTemporaryFile allocation to fail before unpack/child scan while preserving archive-record iteration",
+      "temporary_directory": "/proc"
+    },
+    "image": "diec-rust/upstream-archive-iteration-boundary-harness:74eaf505",
+    "image_identity": {
+      "id": "sha256:6cfc6dfb568e1287103bbe92f31e75864153b6bf5f196a744178d9c86ae19392",
+      "repo_digests": [
+        "diec-rust/upstream-archive-iteration-boundary-harness@sha256:6cfc6dfb568e1287103bbe92f31e75864153b6bf5f196a744178d9c86ae19392"
+      ],
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    },
+    "platform": "linux-x86_64-qt5",
+    "resource_limits": {
+      "cpus": "1",
+      "memory": "512m",
+      "pids": 128,
+      "wall_timeout_seconds": 30
+    }
+  },
+  "failures": [],
+  "harness_binary": {
+    "path": "/opt/die-build/src/console/diec-archive-iteration-boundary-harness",
+    "sha256": "5fba6113410416fc828c8687f9d179d4875862115b53a5a7e993e0760eb87eaa",
+    "size": 8238208
+  },
+  "passed": true,
+  "schema_version": 1,
+  "source_contract": {
+    "archive_block_end_line": 2932,
+    "archive_block_start_line": 2835,
+    "component_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83",
+    "path": "/opt/die-source/XScanEngine/xscanengine.cpp",
+    "required_pattern_counts": {
+      "aggressive_limit": 1,
+      "allocation_before_scan": 1,
+      "current_index_initialization": 1,
+      "hard_iteration_guard": 1,
+      "post_increment_limit_check": 1,
+      "single_increment": 1
+    },
+    "sha256": "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498",
+    "source_order_verified": true
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+}

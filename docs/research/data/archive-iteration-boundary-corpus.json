@@ -1,0 +1,30 @@
+{
+  "capability": "CAP-GAP-006",
+  "generator": "tools/corpus/generate_archive_iteration_boundary_fixture.py",
+  "license": "project-generated; no third-party sample bytes",
+  "record_count": 100001,
+  "samples": [
+    {
+      "name": "sentinel-099999.iso",
+      "record_count": 100001,
+      "sentinel_ordinal": 99999,
+      "sha256": "5214a3b0baadc4e29b7cade268b6e255567bf920110e6cdbae2647883e35b439",
+      "size": 4306944
+    },
+    {
+      "name": "sentinel-100000.iso",
+      "record_count": 100001,
+      "sentinel_ordinal": 100000,
+      "sha256": "a4b9e66ddf948f7fda3aa1d5ef4572e58e9262bef3f2aa90f1f6e005a2c8c449",
+      "size": 4306944
+    },
+    {
+      "name": "sentinel-100001.iso",
+      "record_count": 100001,
+      "sentinel_ordinal": 100001,
+      "sha256": "fd8bc136371dd7e6fb2e58ffd3fac0884440092fb6422bc2bd66302a99ae7819",
+      "size": 4306944
+    }
+  ],
+  "schema_version": 1
+}

@@ -13,6 +13,9 @@ Phase 0 计划形成：
   source-only 闭集及最后一项 depth/expanded-byte 关闭证据（Draft）。
 - [`archive-limit-behavior.md`](archive-limit-behavior.md)：受资源约束的 archive
   depth/累计展开量递增、peak RSS 与 cooperative cancellation 证据（In Review）。
+- [`archive-iteration-boundary.md`](archive-iteration-boundary.md)：aggressive
+  archive 第 99999/100000/100001 条哨兵、源码循环顺序和受控分配失败证据
+  （In Review）。
 - [`archive-format-behavior.md`](archive-format-behavior.md)：
   7Z/RAR4/CAB/ISO9660 无压缩正向解包、发布 CLI 默认对照与
   7Z/CAB `Binary` 顶层 quirk（Draft）。
@@ -162,6 +165,11 @@ Phase 0 计划形成：
 - [`data/database-layer-fixture.json`](data/database-layer-fixture.json)：三层同名/priority 规则的项目生成 fixture 清单。
 - [`data/database-layers-engine-qt5.json`](data/database-layers-engine-qt5.json)：固定 Qt5 engine 的三层 materialization、同名保留和 runtime gate 原始报告。
 - [`data/nested-corpus.json`](data/nested-corpus.json)：安全的 archive/resource/overlay 嵌套语料清单。
+- [`data/archive-iteration-boundary-corpus.json`](data/archive-iteration-boundary-corpus.json)：
+  三个 100001-record ISO9660 的确定性哨兵位置、大小和 SHA-256 清单。
+- [`data/archive-iteration-boundary-engine-qt5.json`](data/archive-iteration-boundary-engine-qt5.json)：
+  aggressive 第 100000 条可达、第 100001 条不可达的固定源码、镜像、原始输出
+  和资源报告。
 - [`data/archive-format-corpus.json`](data/archive-format-corpus.json)：
   项目生成的 7Z/RAR4/CAB/ISO9660 单 PDF 无压缩 fixture 清单。
 - [`data/archive-format-engine-qt5.json`](data/archive-format-engine-qt5.json)：

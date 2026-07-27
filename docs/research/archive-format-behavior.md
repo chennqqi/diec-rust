@@ -26,7 +26,9 @@ Last updated: 2026-07-28
 [`npm-dispatch-reachability.md`](npm-dispatch-reachability.md)；通用 Archive
 分派现由
 [`generic-archive-dispatch-reachability.md`](generic-archive-dispatch-reachability.md)
-固定；archive aggressive 100000 边界、压缩/加密/畸形成员及跨平台行为仍未验证。
+固定；archive aggressive 100000 精确边界现由
+[`archive-iteration-boundary.md`](archive-iteration-boundary.md) 固定，
+压缩/加密/畸形成员及跨平台行为仍未验证。
 
 机器报告是
 [`archive-format-engine-qt5.json`](data/archive-format-engine-qt5.json)，
@@ -171,9 +173,13 @@ binary/source/local tool identity，最后运行全部 case。报告生成器变
 - RAR/CAB/ISO9660 的压缩方法、solid/multi-volume、encrypted entry；
 - 截断 header、错误 size/CRC、重复名称、目录、链接和路径穿越 metadata；
 - 空 archive、多成员顺序、不可扫描成员与错误/partial-result 行为；
-- aggressive 100000 精确边界、高压缩比、真实资源耗尽；
+- aggressive 100000 精确边界见
+  [`archive-iteration-boundary.md`](archive-iteration-boundary.md)；高压缩比和
+  真实资源耗尽仍未验证；
 - Windows、macOS、Qt6，以及平台 archive backend 差异。
 
 `CAP-GAP-006` 因此保持开放。已有 ZIP 深度、累计展开量、取消与 20/21 边界
-证据见 [`archive-limit-behavior.md`](archive-limit-behavior.md)；两组证据应
-共同约束后续 Rust archive 层，但都不能替代剩余格式和压力边界实验。
+证据见 [`archive-limit-behavior.md`](archive-limit-behavior.md)，100000
+记录边界见
+[`archive-iteration-boundary.md`](archive-iteration-boundary.md)；这些证据应
+共同约束后续 Rust archive 层，但不能替代剩余格式和压力边界实验。

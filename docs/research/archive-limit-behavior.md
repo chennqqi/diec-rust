@@ -141,4 +141,6 @@ python tools\upstream\probe_archive_limits_harness.py `
 
 resource filtering/count 已由
 [`scan-option-boundaries.md`](scan-option-boundaries.md) 闭合；本能力仍保留
-`CAP-GAP-006`，但不再是 source-only。
+`CAP-GAP-006`，但不再是 source-only。aggressive 的精确记录边界已由
+[`archive-iteration-boundary.md`](archive-iteration-boundary.md) 观察为
+“第 100000 条可达、第 100001 条不可达”；剩余 gap 不再包含该子项。

@@ -17,8 +17,9 @@ Last updated: 2026-07-28
 - die_script `5d82316c110abf0eb863b50bc679d330e05067b6`
 
 本实验使用 ZIP、TAR、GZIP 三种项目生成归档，覆盖专用分支和两种 Binary
-回退。它不验证 archive aggressive 的 100000 边界、压缩/加密/畸形输入或
-跨平台行为，这些仍归 `CAP-GAP-006`。
+回退。archive aggressive 的 100000 精确边界已由
+[`archive-iteration-boundary.md`](archive-iteration-boundary.md) 固定；
+本实验不验证压缩/加密/畸形输入或跨平台行为，这些仍归 `CAP-GAP-006`。
 
 ## 结论
 
@@ -151,7 +152,8 @@ python tools/upstream/probe_generic_archive_dispatch_harness.py \
 generic Archive 顶层分派及其 verbose 规则入口已固定，但
 `CAP-GAP-006` 仍保持开放：
 
-- archive aggressive 的 100000 精确边界；
+- archive aggressive 的 100000 精确边界已由
+  [`archive-iteration-boundary.md`](archive-iteration-boundary.md) 闭合；
 - 高压缩比、加密、solid/multi-volume 和畸形 archive；
 - 最大深度、总展开量的安全预算与更多格式交互；
 - Linux Qt6、Windows、macOS 对应行为。

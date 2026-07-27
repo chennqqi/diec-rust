@@ -152,7 +152,9 @@ PDF/CFBF 和 Binary fallback 四组的所有成员。Archive 组已观察 APK、
 强制 `filetypes=ARCHIVE` 后 quiet 为 Unknown，verbose 可重新选择 ZIP/TAR/GZIP
 adapter，见
 [`generic-archive-dispatch-reachability.md`](generic-archive-dispatch-reachability.md)。
-100000 边界及压力/畸形语料仍缺，因此本组只标记
+100000 精确记录边界已由
+[`archive-iteration-boundary.md`](archive-iteration-boundary.md) 固定；
+压力/畸形语料仍缺，因此本组只标记
 `observed_with_gaps`。Image 组除既有
 JPEG/PNG 外，专用 engine harness 已观察 GIF/BMP/TIFF/ICO/CUR/ICC/WebP 的
 Binary fallback，以及强制 `FT_IMAGE` 后 generic Image adapter 为 null 的错误，
@@ -189,7 +191,9 @@ hideunknown 的可观察增量。完整输入哈希和输出见
   scanable member；resource 的 `<=` 判断也允许第 21 个，aggressive limit
   为 2000。resource 已精确观察默认 21/aggressive 2001；2002 项 fixture 分为
   三个合法 type directory，以满足 PE parser 每目录不超过 1000 项的前置限制。
-  archive 100000 上限仍归 `CAP-GAP-006`。
+  archive aggressive 已精确观察第 100000 条可达、第 100001 条不可达，见
+  [`archive-iteration-boundary.md`](archive-iteration-boundary.md)；
+  压缩/加密/畸形及跨平台仍归 `CAP-GAP-006`。
 - `CAP-NEST-005`：overlay 始终作为 subdevice 扫描；非 aggressive resource 仅在探测为
   scanable 类型时扫描。
 - `CAP-NEST-006`：项目生成的 RT_MANIFEST 未分类 payload 证明完整链：recursive 单独跳过，
@@ -209,7 +213,8 @@ hideunknown 的可观察增量。完整输入哈希和输出见
   状态为 Observed with gaps；7Z/RAR4/CAB/ISO9660 无压缩正例已经固定，但
   高压缩比、真实资源耗尽、格式错误边界和跨平台仍待验证。详见
   [`archive-limit-behavior.md`](archive-limit-behavior.md) 与
-  [`archive-format-behavior.md`](archive-format-behavior.md)。
+  [`archive-format-behavior.md`](archive-format-behavior.md)、
+  [`archive-iteration-boundary.md`](archive-iteration-boundary.md)。
 
 ## 结果模型
 
@@ -249,9 +254,9 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
 - formatter 转义与嵌套排序已闭合；跨平台编码差异仍归入路径/平台缺口。
 - deep 与 aggressive resource 过滤/计数边界已由
   [`scan-option-boundaries.md`](scan-option-boundaries.md) 闭合。
-- archive aggressive 100000 上限、高压缩比/畸形、最大深度和总解压资源
-  限制；7Z/RAR4/CAB/ISO9660 无压缩正例、NPM 自动/强制分派 quirk 以及
-  generic Archive singleton/verbose 重检测已固定。
+- archive aggressive 100000 精确边界已固定；高压缩比/畸形、最大深度和总解压
+  资源限制仍待扩展；7Z/RAR4/CAB/ISO9660 无压缩正例、NPM 自动/强制分派
+  quirk 以及 generic Archive singleton/verbose 重检测已固定。
 - Qt 5 与 Qt 6 的首轮基础/安全语料/不可读输入差分已完成；仍需扩展到完整
   output/scan/special/path/database/nested 矩阵及其他 Qt 6 minor。
 - Linux、Windows、macOS 路径与编码差异。

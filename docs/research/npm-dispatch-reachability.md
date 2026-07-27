@@ -15,7 +15,9 @@ Last updated: 2026-07-28
 - die_script `5d82316c110abf0eb863b50bc679d330e05067b6`
 
 本实验回答的是 NPM 能力是否能从公共 CLI 自然到达，而不只是源码中是否存在
-`XNPM` 类和 NPM 规则。通用 Archive、archive aggressive 的 100000 边界、
+`XNPM` 类和 NPM 规则。通用 Archive 已由独立实验固定，archive aggressive
+的 100000 精确边界已由
+[`archive-iteration-boundary.md`](archive-iteration-boundary.md) 固定；
 压缩/加密/畸形语料和跨平台行为仍归 `CAP-GAP-006`。
 
 ## 结论
@@ -147,6 +149,7 @@ python tools/upstream/probe_npm_dispatch_harness.py \
 - 通用 Archive 顶层分派现由
   [`generic-archive-dispatch-reachability.md`](generic-archive-dispatch-reachability.md)
   固定；
-- archive aggressive 的 100000 记录/迭代边界；
+- archive aggressive 的 100000 记录/迭代边界已由
+  [`archive-iteration-boundary.md`](archive-iteration-boundary.md) 闭合；
 - 压缩、加密、高压缩比和畸形 archive；
 - Linux Qt6、Windows、macOS 的对应行为。

@@ -125,8 +125,9 @@ legacy-compatible 模式必须保留：
 aggressive 只能在调用方允许的 hard budget 内提高 legacy policy threshold。
 `CAP-GAP-006` 仍保持开放：7Z/RAR4/CAB/ISO9660 无压缩正例虽已由
 [`archive-format-behavior.md`](archive-format-behavior.md) 固定，archive
-100000 边界、高压缩比/畸形、最大深度、累计解压量和资源耗尽仍不能
-由本实验外推为闭合。
+100000 精确边界已由
+[`archive-iteration-boundary.md`](archive-iteration-boundary.md) 固定；
+高压缩比/畸形、最大深度、累计解压量和资源耗尽仍不能由本实验外推为闭合。
 
 ## 8. 复现
 

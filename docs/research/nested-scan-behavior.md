@@ -315,8 +315,9 @@ recursive+aggressive 对前者产生 Manifest child，对后者不建 child；�
 ## 尚未覆盖
 
 - ZIP/7Z/RAR/CAB/ISO9660 各自的解包错误、encrypted entry、重复名称和 metadata；
-- archive 100000 aggressive 上限边界；resource aggressive 2001 实际 child
-  边界已固定；
+- archive aggressive 第 100000 条可达、第 100001 条不可达，见
+  [`archive-iteration-boundary.md`](archive-iteration-boundary.md)；
+  resource aggressive 2001 实际 child 边界也已固定；
 - 更深的 resource/overlay/archive 链及实际最大栈深、取消、超时和内存峰值；
 - 非 PE 格式的 overlay；
 - Rust scanner 从父格式枚举 resource、生成 scan ID、调度规则并形成与 Qt5
