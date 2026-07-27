@@ -1,0 +1,274 @@
+{
+  "schema_version": 1,
+  "evaluated_on": "2026-07-27",
+  "phase": 0,
+  "result": "review_pending",
+  "adrs": [
+    {
+      "id": "ADR-0001",
+      "path": "docs/design/decisions/0001-c-abi-opaque-ownership.md",
+      "status": "Proposed",
+      "review_ready": true,
+      "acceptance_ready": false,
+      "contract_tests": [
+        "tools/tests/test_c_abi_design.py",
+        "tools/tests/test_c_static_link_spike.py"
+      ],
+      "required_headings": [
+        "## Context",
+        "## Decision",
+        "## Alternatives considered",
+        "## Consequences",
+        "## Evidence",
+        "## Acceptance conditions"
+      ],
+      "review_question": "是否接受 opaque handles、paired free 和 JSON-first v1 result boundary？",
+      "remaining_acceptance_evidence": [
+        "accepted internal API model",
+        "C/C++/Go/Python ownership consumers",
+        "sanitizer, final runtime thread affinity, and formal ABI diff"
+      ]
+    },
+    {
+      "id": "ADR-0002",
+      "path": "docs/design/decisions/0002-layered-workspace.md",
+      "status": "Proposed",
+      "review_ready": true,
+      "acceptance_ready": false,
+      "contract_tests": [
+        "tools/tests/test_architecture_design.py"
+      ],
+      "required_headings": [
+        "## Context",
+        "## Decision",
+        "## Alternatives considered",
+        "## Consequences",
+        "## Evidence",
+        "## Acceptance conditions"
+      ],
+      "review_question": "是否接受向内依赖 workspace、ports/adapters 和统一 engine/result 路径？",
+      "remaining_acceptance_evidence": [
+        "accepted architecture/API/testing designs",
+        "Cargo dependency DAG enforcement",
+        "vertical slice and bounded nested queue"
+      ]
+    },
+    {
+      "id": "ADR-0003",
+      "path": "docs/design/decisions/0003-dual-output-contract.md",
+      "status": "Proposed",
+      "review_ready": true,
+      "acceptance_ready": false,
+      "contract_tests": [
+        "tools/tests/test_api_design.py",
+        "tools/tests/test_project_semantic_result.py"
+      ],
+      "required_headings": [
+        "## Context",
+        "## Decision",
+        "## Alternatives considered",
+        "## Consequences",
+        "## Evidence",
+        "## Acceptance conditions"
+      ],
+      "review_question": "是否接受 legacy raw compatibility 与 modern canonical output 永久分离？",
+      "remaining_acceptance_evidence": [
+        "modern canonical schema for single, batch, empty, and partial output",
+        "identical canonical bytes across Rust/C/CLI",
+        "default profile decision"
+      ]
+    },
+    {
+      "id": "ADR-0004",
+      "path": "docs/design/decisions/0004-evidence-bound-difference-waivers.md",
+      "status": "Proposed",
+      "review_ready": true,
+      "acceptance_ready": false,
+      "contract_tests": [
+        "tools/tests/test_validate_difference_waivers.py",
+        "tools/tests/test_audit_semantic_case.py",
+        "tools/tests/test_run_compatibility_suite.py"
+      ],
+      "required_headings": [
+        "## Context",
+        "## Decision",
+        "## Alternatives considered",
+        "## Consequences",
+        "## Evidence",
+        "## Acceptance conditions"
+      ],
+      "review_question": "是否接受默认拒绝、精确 fingerprint、有期限且 owner-reviewed 的 waiver？",
+      "remaining_acceptance_evidence": [
+        "real compatibility owner review workflow",
+        "engine-only and modern report variants",
+        "release approval and signing integration"
+      ]
+    },
+    {
+      "id": "ADR-0005",
+      "path": "docs/design/decisions/0005-deterministic-text-classification.md",
+      "status": "Proposed",
+      "review_ready": true,
+      "acceptance_ready": false,
+      "contract_tests": [
+        "tools/tests/test_rquickjs_rule_runtime_spike.py",
+        "tools/tests/test_signature_parser_spike.py"
+      ],
+      "required_headings": [
+        "## Context",
+        "## Decision",
+        "## Alternatives considered",
+        "## Consequences",
+        "## Evidence",
+        "## Acceptance conditions"
+      ],
+      "review_question": "是否接受 deterministic false/true facts 取代上游未初始化 text 状态？",
+      "remaining_acceptance_evidence": [
+        "formal Phase 1 SafetyDeviation waiver",
+        "production HostApi and differential integration"
+      ]
+    },
+    {
+      "id": "ADR-0006",
+      "path": "docs/design/decisions/0006-rquickjs-rule-runtime.md",
+      "status": "Proposed",
+      "review_ready": true,
+      "acceptance_ready": false,
+      "contract_tests": [
+        "tools/tests/test_rquickjs_rule_runtime_spike.py",
+        "tools/tests/test_rquickjs_static_link_spike.py"
+      ],
+      "required_headings": [
+        "## Context",
+        "## Decision",
+        "## Alternatives considered",
+        "## Consequences",
+        "## Evidence",
+        "## Acceptance conditions"
+      ],
+      "review_question": "是否接受 rquickjs/QuickJS-NG 作为首个私有 backend 候选并保留严格 ports？",
+      "remaining_acceptance_evidence": [
+        "full reachable HostApi conformance without silent fallback",
+        "production runtime resource/cancel/panic tests",
+        "Windows/Linux/macOS static-link and sanitizer matrix",
+        "runtime license, attribution, SBOM, and advisory review"
+      ]
+    },
+    {
+      "id": "ADR-0008",
+      "path": "docs/design/decisions/0008-pinned-rule-order-manifest.md",
+      "status": "Proposed",
+      "review_ready": true,
+      "acceptance_ready": false,
+      "contract_tests": [
+        "tools/tests/test_probe_binary_rule_order.py",
+        "tools/tests/test_probe_rule_orchestration.py"
+      ],
+      "required_headings": [
+        "## Context",
+        "## Decision",
+        "## Alternatives considered",
+        "## Consequences",
+        "## Evidence",
+        "## Acceptance conditions"
+      ],
+      "review_question": "是否接受固定 order manifest，禁止 Rust runtime 复刻非传递 comparator？",
+      "remaining_acceptance_evidence": [
+        "full target rule order manifest",
+        "Rust loader goldens",
+        "Windows and macOS upstream order"
+      ]
+    },
+    {
+      "id": "ADR-0009",
+      "path": "docs/design/decisions/0009-cancellation-result-contract.md",
+      "status": "Proposed",
+      "review_ready": true,
+      "acceptance_ready": false,
+      "contract_tests": [
+        "tools/tests/test_probe_engine_contract.py",
+        "tools/tests/test_api_design.py"
+      ],
+      "required_headings": [
+        "## 背景",
+        "## 决策",
+        "## 理由",
+        "## 代价",
+        "## 考虑过的替代方案",
+        "## 证据",
+        "## 验收条件"
+      ],
+      "review_question": "是否接受 modern API 取消不返回上游 partial detections，legacy 保留原始行为？",
+      "remaining_acceptance_evidence": [
+        "production Rust/JSON/C cancellation mapping",
+        "cancel/deadline race and post-cancel recovery",
+        "exact legacy waiver integration"
+      ]
+    },
+    {
+      "id": "ADR-0010",
+      "path": "docs/design/decisions/0010-bounded-include-graph.md",
+      "status": "Proposed",
+      "review_ready": true,
+      "acceptance_ready": false,
+      "contract_tests": [
+        "tools/tests/test_probe_include_lifecycle.py",
+        "tools/tests/test_generate_include_fixture.py"
+      ],
+      "required_headings": [
+        "## 背景",
+        "## 决策",
+        "## 考虑过的替代方案",
+        "## 后果",
+        "## 证据",
+        "## 验收条件"
+      ],
+      "review_question": "是否接受 include cycle 提前有界失败这一显式安全偏差？",
+      "remaining_acceptance_evidence": [
+        "production include graph and active stack",
+        "depth/evaluation limit boundary tests",
+        "SafetyDeviation waiver plus fuzz/property coverage"
+      ]
+    },
+    {
+      "id": "ADR-0011",
+      "path": "docs/design/decisions/0011-rust-1.97.1-default-toolchain.md",
+      "status": "Proposed",
+      "review_ready": true,
+      "acceptance_ready": false,
+      "contract_tests": [
+        "tools/tests/test_rust_toolchain_policy.py",
+        "tools/tests/test_toolchain_upgrade.py"
+      ],
+      "required_headings": [
+        "## Context",
+        "## Decision",
+        "## Validation evidence",
+        "## Alternatives considered",
+        "## Consequences",
+        "## Security boundary",
+        "## Acceptance conditions"
+      ],
+      "review_question": "是否接受 Rust 1.97.1 为固定默认工具链、1.88 为显式 MSRV？",
+      "remaining_acceptance_evidence": [
+        "Phase 1 CI default and MSRV jobs"
+      ]
+    }
+  ],
+  "excluded_adrs": [
+    {
+      "id": "ADR-0007",
+      "path": "docs/design/decisions/0007-rust-toolchain-baseline.md",
+      "status": "Superseded",
+      "reason": "default toolchain decision is replaced by ADR 0011"
+    }
+  ],
+  "summary": {
+    "active_adr_count": 10,
+    "review_ready_count": 10,
+    "acceptance_ready_count": 0,
+    "proposed_count": 10,
+    "superseded_count": 1,
+    "phase_0_decision_gate_complete": false
+  }
+}

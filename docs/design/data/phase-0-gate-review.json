@@ -176,6 +176,7 @@
       "title": "ten active ADRs remain Proposed",
       "owner": "architecture",
       "status": "open",
+      "progress_evidence": "docs/design/adr-review-readiness.md and docs/design/data/adr-review-readiness.json mark all ten active ADRs review_ready while keeping acceptance_ready false",
       "closure_evidence": "each active ADR is Accepted, Rejected, or Superseded with review evidence"
     },
     {
