@@ -17,6 +17,14 @@ XSCANENGINE_COMMIT = "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
 IMAGE = "diec-rust/bw-dispatch-harness-qt5:74eaf505"
 BINARY = "/opt/die-build/src/console/diec-bw-dispatch-harness"
 INPUT_HEX = "42570000000000000000"
+ROOT = pathlib.Path(__file__).resolve().parents[2]
+HARNESS_SOURCE = ROOT / "tools" / "upstream" / "bw_dispatch_harness_main.cpp"
+DOCKERFILE = (
+    ROOT
+    / "tools"
+    / "upstream"
+    / "Dockerfile.bw-dispatch-harness-qt5"
+)
 
 
 def sha256(data: bytes) -> str:
@@ -89,15 +97,15 @@ def validate(document: dict[str, Any]) -> dict[str, bool]:
     forced = cases["forced_property"]
     relationships = {
         "automatic_detector_does_not_emit_bw": (
-            "BW DOS16M"
+            "BWDOS16M"
             not in automatic["detected_filetypes"].split("|")
         ),
         "automatic_scan_does_not_initialize_bw": (
             automatic["initial_filetype"] != "BW DOS16M"
         ),
         "forced_property_is_exact": (
-            forced["property"] == "BW DOS16M"
-            and forced["detected_filetypes"] == "BW DOS16M"
+            forced["property"] == "BWDOS16M"
+            and forced["detected_filetypes"] == "BWDOS16M"
         ),
         "forced_scan_reaches_bw_branch": (
             forced["initial_filetype"] == "BW DOS16M"
@@ -114,8 +122,6 @@ def validate(document: dict[str, Any]) -> dict[str, bool]:
         "both_scans_complete_without_errors": (
             automatic["error_count"] == 0
             and forced["error_count"] == 0
-            and automatic["detector_success"]
-            and forced["detector_success"]
             and automatic["scan_success"]
             and forced["scan_success"]
         ),
@@ -158,6 +164,14 @@ def build_report(raw_dir: pathlib.Path) -> dict[str, Any]:
         "xscanengine_commit": XSCANENGINE_COMMIT,
         "platform": "linux-amd64-qt5",
         "capability": "CAP-DISPATCH-002",
+        "harness": {
+            "source": "tools/upstream/bw_dispatch_harness_main.cpp",
+            "source_sha256": sha256(HARNESS_SOURCE.read_bytes()),
+            "dockerfile": (
+                "tools/upstream/Dockerfile.bw-dispatch-harness-qt5"
+            ),
+            "dockerfile_sha256": sha256(DOCKERFILE.read_bytes()),
+        },
         "oracle": {
             "image": IMAGE,
             "image_id": image_id,

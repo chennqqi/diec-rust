@@ -8,7 +8,7 @@ Last updated: 2026-07-27
 
 ## 1. 目的与结论
 
-[`capability-coverage.json`](data/capability-coverage.json) 当前仍有 4 个
+[`capability-coverage.json`](data/capability-coverage.json) 当前仍有 3 个
 Linux Qt5 source-only 能力。本文不把源码证据提升为 runtime compatibility，
 而是为每项固定缺失证据、最小 fixture、oracle/harness、强断言和关闭方式。
 
@@ -18,12 +18,11 @@ Linux Qt5 source-only 能力。本文不把源码证据提升为 runtime compati
 生成。生成器要求清单 ID 与 coverage report 的 source-only 闭集完全相等；
 新增、提升或删除能力而未同步计划会显式失败。
 
-## 2. 当前四项
+## 2. 当前三项
 
 | 能力 | 关闭类型 | 关键缺口 |
 | --- | --- | --- |
 | `CAP-RULE-007` | scope review / private harness | 公共 API 不可传非空 signature path，private comparator 未运行 |
-| `CAP-DISPATCH-002` | generated oracle + scope review | 七个公共 detector 成员缺 runtime；BW 只有不可自动到达的分支 |
 | `CAP-NEST-007` | paired negative nested oracle | 缺“直接可检测、递归不分派”的同输入正负控制 |
 | `CAP-NEST-009` | bounded escalation + ADR | 缺深度/总展开量递增实验和 Rust 有界偏离决策 |
 
@@ -57,16 +56,19 @@ COM，却没有 `FT_BWDOS16M` token。BW magic 只留在旧
 必须由显式 property harness 验证，或经 scope review 排除，不能伪造为第八个
 CLI 正例。
 
-七个公共成员的
-[`dos-dispatch-corpus.json`](data/dos-dispatch-corpus.json) 已由
+`CAP-DISPATCH-002` 已由七个公共成员的
+[`dos-dispatch-corpus.json`](data/dos-dispatch-corpus.json) 和
 [`generate_dos_dispatch_corpus.py`](../../tools/corpus/generate_dos_dispatch_corpus.py)
 固定为 19 个正例/控制；
 [`probe_dos_dispatch.py`](../../tools/upstream/probe_dos_dispatch.py) 已实现双
-Qt5 oracle、manifest 身份、present/absent filetype 和 raw stream 门禁。
-runtime report 仍待采集。BW 路径的
+Qt5 oracle、manifest 身份、present/absent filetype 和 raw stream 门禁，并
+形成通过的
+[`dos-dispatch-linux-qt5.json`](data/dos-dispatch-linux-qt5.json)。BW 路径的
 [`probe_bw_dispatch_harness.py`](../../tools/upstream/probe_bw_dispatch_harness.py)
-也已实现 automatic/forced property 成对对照和 Unknown fallback 断言，但同样
-尚未运行；若不保留该 engine-only 入口则仍需 scope review。
+形成
+[`bw-dispatch-engine-qt5.json`](data/bw-dispatch-engine-qt5.json)：
+automatic 不产生 BW，compact `BWDOS16M` property 可强制到达 branch，并产生
+唯一 BW Unknown record。两份报告共同关闭 source-only 状态。
 
 `CAP-DISPATCH-003` 已由
 [`legacy-dispatch-corpus.json`](data/legacy-dispatch-corpus.json) 对应的 8-case
@@ -156,7 +158,7 @@ python tools/upstream/probe_result_enums_harness.py \
 测试要求：
 
 - committed manifest 与生成结果逐字节一致；
-- 四个 ID 与当前 source-only 行完全相等；
+- 三个 ID 与当前 source-only 行完全相等；
 - 每项都有非空缺失证据、fixture、harness 和至少三个强断言；
 - 三类负向能力保持 paired control、scope review 或 ADR 关闭路径；
 - catalog 漂移和重复 JSON key 显式失败。

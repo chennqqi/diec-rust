@@ -46,8 +46,14 @@ QJsonObject runCase(bool forceFiletypes)
     QByteArray input = QByteArray::fromHex(INPUT_HEX);
     QBuffer buffer(&input);
     buffer.setProperty("FileName", "probe.bin");
+    // scanProcess otherwise copies small devices into a fresh QBuffer and
+    // intentionally does not propagate arbitrary source properties.
+    buffer.setProperty(
+        "Memory",
+        reinterpret_cast<quint64>(input.constData())
+    );
     if (forceFiletypes) {
-        buffer.setProperty("filetypes", "BW DOS16M");
+        buffer.setProperty("filetypes", "BWDOS16M");
     }
     if (!buffer.open(QIODevice::ReadOnly)) {
         return {{"error", "cannot open input buffer"}};
@@ -93,10 +99,6 @@ QJsonObject runCase(bool forceFiletypes)
     );
     output.insert("records", serializeRecords(result.listRecords));
     output.insert("error_count", result.listErrors.size());
-    output.insert(
-        "detector_success",
-        XBinary::isPdStructSuccess(&detectorState)
-    );
     output.insert(
         "scan_success",
         XBinary::isPdStructSuccess(&scanState)

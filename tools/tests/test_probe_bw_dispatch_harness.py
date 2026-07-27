@@ -1,4 +1,6 @@
 import importlib.util
+import hashlib
+import json
 import pathlib
 import sys
 import unittest
@@ -10,6 +12,13 @@ MODULE_PATH = (
     / "tools"
     / "upstream"
     / "probe_bw_dispatch_harness.py"
+)
+REPORT_PATH = (
+    ROOT
+    / "docs"
+    / "research"
+    / "data"
+    / "bw-dispatch-engine-qt5.json"
 )
 SPEC = importlib.util.spec_from_file_location(
     "probe_bw_dispatch_harness",
@@ -26,7 +35,7 @@ def case(case_id, *, detected, initial, forced):
     return {
         "id": case_id,
         "forced": forced,
-        "property": "BW DOS16M" if forced else "",
+        "property": "BWDOS16M" if forced else "",
         "detected_filetypes": detected,
         "initial_filetype": initial,
         "records": [
@@ -38,7 +47,6 @@ def case(case_id, *, detected, initial, forced):
             }
         ],
         "error_count": 0,
-        "detector_success": True,
         "scan_success": True,
     }
 
@@ -53,7 +61,7 @@ def valid_document():
         ),
         case(
             "forced_property",
-            detected="BW DOS16M",
+            detected="BWDOS16M",
             initial="BW DOS16M",
             forced=True,
         ),
@@ -70,6 +78,35 @@ def valid_document():
 
 
 class ProbeBwDispatchHarnessTests(unittest.TestCase):
+    def test_committed_report_binds_probe_and_control_pair(self):
+        report = json.loads(REPORT_PATH.read_text(encoding="utf-8"))
+        self.assertTrue(all(report["relationships"].values()))
+        self.assertEqual(
+            report["generator_sha256"],
+            hashlib.sha256(MODULE_PATH.read_bytes()).hexdigest(),
+        )
+        self.assertEqual(
+            report["harness"]["source_sha256"],
+            hashlib.sha256(MODULE.HARNESS_SOURCE.read_bytes()).hexdigest(),
+        )
+        self.assertEqual(
+            report["harness"]["dockerfile_sha256"],
+            hashlib.sha256(MODULE.DOCKERFILE.read_bytes()).hexdigest(),
+        )
+        cases = MODULE.case_map(report["harness_output"])
+        automatic = cases["automatic_detection"]
+        forced = cases["forced_property"]
+        self.assertNotIn(
+            "BWDOS16M",
+            automatic["detected_filetypes"].split("|"),
+        )
+        self.assertEqual(automatic["initial_filetype"], "Binary")
+        self.assertEqual(forced["property"], "BWDOS16M")
+        self.assertEqual(forced["detected_filetypes"], "BWDOS16M")
+        self.assertEqual(forced["initial_filetype"], "BW DOS16M")
+        self.assertEqual(forced["records"][0]["filetype"], "BW DOS16M")
+        self.assertTrue(forced["records"][0]["unknown"])
+
     def test_validates_automatic_and_forced_control_pair(self):
         relationships = MODULE.validate(valid_document())
         self.assertTrue(all(relationships.values()))
@@ -77,7 +114,7 @@ class ProbeBwDispatchHarnessTests(unittest.TestCase):
 
     def test_rejects_public_automatic_bw_detection(self):
         document = valid_document()
-        document["cases"][0]["detected_filetypes"] = "Binary|BW DOS16M"
+        document["cases"][0]["detected_filetypes"] = "Binary|BWDOS16M"
         with self.assertRaisesRegex(ValueError, "automatic_detector"):
             MODULE.validate(document)
 
@@ -94,7 +131,8 @@ class ProbeBwDispatchHarnessTests(unittest.TestCase):
             / "upstream"
             / "bw_dispatch_harness_main.cpp"
         ).read_text(encoding="utf-8")
-        self.assertIn('buffer.setProperty("filetypes", "BW DOS16M")', source)
+        self.assertIn('buffer.setProperty("filetypes", "BWDOS16M")', source)
+        self.assertIn('buffer.setProperty(\n        "Memory"', source)
         self.assertIn("runCase(false)", source)
         self.assertIn("runCase(true)", source)
         self.assertEqual(source.count('setProperty("filetypes"'), 1)

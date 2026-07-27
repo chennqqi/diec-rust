@@ -12,8 +12,8 @@
     "NE",
     "LE",
     "LX",
-    "DOS16M",
-    "DOS4G",
+    "DOS/16M",
+    "DOS/4G",
     "COM"
   ],
   "samples": [
@@ -24,8 +24,8 @@
           "NE",
           "LE",
           "LX",
-          "DOS16M",
-          "DOS4G",
+          "DOS/16M",
+          "DOS/4G",
           "COM"
         ],
         "present_filetypes": [
@@ -56,8 +56,8 @@
         "absent_filetypes": [
           "LE",
           "LX",
-          "DOS16M",
-          "DOS4G",
+          "DOS/16M",
+          "DOS/4G",
           "COM"
         ],
         "present_filetypes": [
@@ -105,8 +105,8 @@
         "absent_filetypes": [
           "NE",
           "LX",
-          "DOS16M",
-          "DOS4G",
+          "DOS/16M",
+          "DOS/4G",
           "COM"
         ],
         "present_filetypes": [
@@ -139,8 +139,8 @@
         "absent_filetypes": [
           "NE",
           "LE",
-          "DOS16M",
-          "DOS4G",
+          "DOS/16M",
+          "DOS/4G",
           "COM"
         ],
         "present_filetypes": [
@@ -174,24 +174,24 @@
           "NE",
           "LE",
           "LX",
-          "DOS4G",
+          "DOS/4G",
           "COM"
         ],
         "present_filetypes": [
-          "DOS16M"
+          "DOS/16M"
         ]
       },
       "name": "minimal-dos16m.exe",
       "sha256": "1a60a7d6f44e23d0a1b0fcce8478b84f01e9911ac442b75ea6bf6d997c0b8a88",
       "size": 1280,
-      "target_filetype": "DOS16M"
+      "target_filetype": "DOS/16M"
     },
     {
       "case_kind": "truncated",
       "expected_dispatch": {
         "absent_filetypes": [
-          "DOS16M",
-          "DOS4G"
+          "DOS/16M",
+          "DOS/4G"
         ],
         "present_filetypes": [
           "MSDOS"
@@ -200,14 +200,14 @@
       "name": "dos16m-truncated.exe",
       "sha256": "6c7148c5e3d5a07b7ad933b29b52a231969d8430cb3056c5b2f742623bab801e",
       "size": 1024,
-      "target_filetype": "DOS16M"
+      "target_filetype": "DOS/16M"
     },
     {
       "case_kind": "near_magic",
       "expected_dispatch": {
         "absent_filetypes": [
-          "DOS16M",
-          "DOS4G"
+          "DOS/16M",
+          "DOS/4G"
         ],
         "present_filetypes": [
           "MSDOS"
@@ -216,7 +216,7 @@
       "name": "dos16m-near-bw.exe",
       "sha256": "4ed6f6179fb8e78bd83ed88d3cbaa269acb90e2af579ef866b708e57d9079f73",
       "size": 1280,
-      "target_filetype": "DOS16M"
+      "target_filetype": "DOS/16M"
     },
     {
       "case_kind": "positive",
@@ -225,24 +225,24 @@
           "NE",
           "LE",
           "LX",
-          "DOS16M",
+          "DOS/16M",
           "COM"
         ],
         "present_filetypes": [
-          "DOS4G"
+          "DOS/4G"
         ]
       },
       "name": "minimal-dos4g.exe",
       "sha256": "45cad3c831999cbc639cfdd6367dac6bb515b33ebbead237548deb9dddb28044",
       "size": 1280,
-      "target_filetype": "DOS4G"
+      "target_filetype": "DOS/4G"
     },
     {
       "case_kind": "truncated",
       "expected_dispatch": {
         "absent_filetypes": [
-          "DOS16M",
-          "DOS4G"
+          "DOS/16M",
+          "DOS/4G"
         ],
         "present_filetypes": [
           "MSDOS"
@@ -251,22 +251,22 @@
       "name": "dos4g-truncated.exe",
       "sha256": "a2a4cc3938f612ebd5002082211638600fa38451729cf7163fe7e947937ac442",
       "size": 1024,
-      "target_filetype": "DOS4G"
+      "target_filetype": "DOS/4G"
     },
     {
       "case_kind": "adjacent_dispatch",
       "expected_dispatch": {
         "absent_filetypes": [
-          "DOS4G"
+          "DOS/4G"
         ],
         "present_filetypes": [
-          "DOS16M"
+          "DOS/16M"
         ]
       },
       "name": "dos4g-near-nested-magic.exe",
       "sha256": "a6321b8ecb43206014888687722bbe69562dffaa04931e5b23798088cb4b86d3",
       "size": 1280,
-      "target_filetype": "DOS4G"
+      "target_filetype": "DOS/4G"
     },
     {
       "case_kind": "positive",
@@ -276,8 +276,8 @@
           "NE",
           "LE",
           "LX",
-          "DOS16M",
-          "DOS4G"
+          "DOS/16M",
+          "DOS/4G"
         ],
         "present_filetypes": [
           "COM"

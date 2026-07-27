@@ -33,8 +33,8 @@ EXPECTED_FILETYPES = {
     "NE",
     "LE",
     "LX",
-    "DOS16M",
-    "DOS4G",
+    "DOS/16M",
+    "DOS/4G",
     "COM",
 }
 
@@ -123,6 +123,8 @@ def build_report(
         "schema_version": 1,
         "generator": "tools/upstream/probe_dos_dispatch.py",
         "generator_sha256": sha256(pathlib.Path(__file__).read_bytes()),
+        "shared_probe": "tools/upstream/probe_legacy_dispatch.py",
+        "shared_probe_sha256": sha256(SHARED_PATH.read_bytes()),
         "result": "pass" if not failures else "fail",
         "upstream_commit": UPSTREAM_COMMIT,
         "rules_commit": RULES_COMMIT,

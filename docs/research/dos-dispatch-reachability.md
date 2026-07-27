@@ -27,6 +27,9 @@ BW DOS16M 的 magic 检测仍存在于旧 `XBinary::getFileTypes`，但活动扫
 因此关闭路径必须拆分：七项用生成文件跑双 CLI oracle；BW 用显式 property
 harness，或者通过 review 明确排除这个不可从本项目 CLI/FFI 表达的内部入口。
 
+两部分 runtime 实验现均通过。公共 CLI 输出使用 `DOS/16M`、`DOS/4G`
+显示字符串，而内部 enum/set token 为 `DOS16M`、`DOS4G`；兼容实现必须区分。
+
 ## 2. 可重复源码审计
 
 机器证据：
@@ -91,6 +94,19 @@ Amiga/Atari probe 的双 oracle 执行层；它要求临时 manifest 与提交�
 相同，对两套 Qt5 oracle 分别执行 19 case，强制检查 present/absent filetype，
 并把每次 raw stdout/stderr 保存到外部目录。
 
+固定报告
+[`dos-dispatch-linux-qt5.json`](data/dos-dispatch-linux-qt5.json)
+在 qmake/CMake 两套 oracle 上均通过全部 19 case，failures 为空：
+
+- 七个正例分别产生 `MSDOS`、`NE`、`LE`、`LX`、`DOS/16M`、`DOS/4G`、
+  `COM`；
+- 1024-byte DOS chain 控制回落 `MSDOS`；
+- DOS/4G 近似嵌套 magic 按预期相邻分发到 `DOS/16M`；
+- 65,280-byte COM 命中，65,281-byte 和错误后缀控制不命中。
+
+38 次 CLI 扫描的 raw stdout/stderr 共 17,810 bytes，stderr 均为空；逐流
+大小/SHA-256、两套 image ID、generator 和 manifest SHA-256 均保存在报告中。
+
 ```text
 python tools/corpus/generate_dos_dispatch_corpus.py <corpus-dir>
 python tools/upstream/probe_dos_dispatch.py \
@@ -106,10 +122,17 @@ python tools/upstream/probe_dos_dispatch.py \
 已固定同一 10-byte `BW` 输入的成对控制：
 
 - automatic case 不设置 property，要求 detector 和 `ftInit` 均不是 BW；
-- forced case 设置 `filetypes=BW DOS16M`，要求 detector、`ftInit` 和结果 record
+- forced case 设置 `filetypes=BWDOS16M`，要求 detector、`ftInit` 和结果 record
   均为 BW；
 - 因 `XFormats::createClass` 没有 BW factory、规则加载也没有 BW database path，
   forced case 当前应产生单条显式 `Unknown`，该 quirk 同样进入断言。
+
+compact token 是上游 parser 契约而非任意选择：
+`XCONVERT_ftStringToId` 会对表项删除空格/连字符，却只把输入转大写，因此显示
+字符串 `BW DOS16M` 反向解析失败，必须传 `BWDOS16M`。另外，
+`scanProcess` 会把小设备复制到新 QBuffer 且不传播任意 property；harness 按
+上游内存设备约定设置真实 `Memory` 指针，才能让同一个 `filetypes` property
+进入 scanner。
 
 Dockerfile 直接继承固定 CMake Qt5 oracle，通过替换 `main_console.cpp.o` 链接
 未修改的上游 objects，不执行网络下载：
@@ -124,6 +147,12 @@ python tools/upstream/probe_bw_dispatch_harness.py \
   --output <report.json>
 ```
 
-公共七成员和 BW harness 都尚无 runtime report。当前 Docker daemon 已由
-legacy dispatch 实验确认可用，因此这是下一项可执行实验，不再是环境阻塞。
-在两份报告实际通过前，`CAP-DISPATCH-002` 保持 source-only。
+固定报告
+[`bw-dispatch-engine-qt5.json`](data/bw-dispatch-engine-qt5.json)
+的六项关系断言全部通过：automatic detector 为 `BINARY|TEXT|UTF8` 且扫描
+初始化 `Binary`；forced detector 为 `BWDOS16M`，扫描初始化和唯一 record
+均为 `BW DOS16M`，record 是显式 Unknown。两次扫描成功、错误数为 0；原始
+stdout 1,335 bytes，stderr 为空。
+
+公共矩阵与 branch-only harness 同时通过后，`CAP-DISPATCH-002` 的 Linux Qt5
+状态提升为 runtime-observed。该状态不表示普通 CLI 可以自动到达 BW。

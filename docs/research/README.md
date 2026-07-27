@@ -9,7 +9,7 @@ Phase 0 计划形成：
 - [`capability-coverage-report.md`](capability-coverage-report.md)：68 个稳定能力在
   Linux Qt5/Qt6、Windows 和 macOS 上的 runtime/source-only、corpus-missing
   与 platform-missing 闭集报告（Draft）。
-- [`source-only-closure-plan.md`](source-only-closure-plan.md)：剩余 4 个 Linux
+- [`source-only-closure-plan.md`](source-only-closure-plan.md)：剩余 3 个 Linux
   Qt5 source-only 能力的缺失证据、fixture、harness、强断言和关闭方式（Draft）。
 - [`legacy-dispatch-oracle.md`](legacy-dispatch-oracle.md)：Amiga Hunk/Atari ST
   的固定源码边界、8-case 生成语料和双 Qt5 oracle 执行门禁（Draft）。
@@ -87,7 +87,7 @@ Phase 0 计划形成：
   `CAP-*` 的验证层级、证据路径、平台范围和 12 个显式 coverage gap。
 - [`data/capability-coverage.json`](data/capability-coverage.json)：68 行 × 4 平台
   的 272-cell 闭集分类、十二个 gap 到能力的显式映射和未分类计数。
-- [`data/source-only-closure.json`](data/source-only-closure.json)：与当前四个
+- [`data/source-only-closure.json`](data/source-only-closure.json)：与当前三个
   source-only 行严格相等的可执行关闭清单。
 - [`data/legacy-dispatch-corpus.json`](data/legacy-dispatch-corpus.json)：
   Amiga Hunk/Atari ST 正例、截断、错误端序和近似 magic 控制的 hash-bound 清单。
@@ -98,6 +98,10 @@ Phase 0 计划形成：
   SHA/line-bound 审计。
 - [`data/dos-dispatch-corpus.json`](data/dos-dispatch-corpus.json)：七个公共
   DOS/COM filetype 的 19-case 正例、截断、近似 magic、chain、后缀和大小边界。
+- [`data/dos-dispatch-linux-qt5.json`](data/dos-dispatch-linux-qt5.json)：
+  七个公共 DOS/COM filetype 的 19-case 双 Qt5 runtime 基线。
+- [`data/bw-dispatch-engine-qt5.json`](data/bw-dispatch-engine-qt5.json)：
+  BW DOS16M automatic-negative 与 compact-property forced-positive 引擎基线。
 - [`data/result-metadata-engine-qt5.json`](data/result-metadata-engine-qt5.json)：
   四个公共扫描入口的 `SCAN_RESULT` 标量字段、filename 语义和原始流哈希。
 - [`data/result-list-fixture.json`](data/result-list-fixture.json)：两条重复

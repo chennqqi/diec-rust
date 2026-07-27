@@ -1,0 +1,83 @@
+{
+  "capability": "CAP-DISPATCH-002",
+  "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+  "generator": "tools/upstream/probe_bw_dispatch_harness.py",
+  "generator_sha256": "6b86e020b328146f7724d66806eae51f5ec7b0c304f879f6d9d8bef81dfb55de",
+  "harness": {
+    "dockerfile": "tools/upstream/Dockerfile.bw-dispatch-harness-qt5",
+    "dockerfile_sha256": "8ad3cf49df21c9ed8dadfc0fa2fd2c0bbde284ee09b4481dfde543fc5b1d70a1",
+    "source": "tools/upstream/bw_dispatch_harness_main.cpp",
+    "source_sha256": "66376bdd27ea72177e7027980fac8bae75ef95010668ad0e2696f642d072c233"
+  },
+  "harness_output": {
+    "case_count": 2,
+    "cases": [
+      {
+        "detected_filetypes": "BINARY|TEXT|UTF8",
+        "error_count": 0,
+        "forced": false,
+        "id": "automatic_detection",
+        "initial_filetype": "Binary",
+        "property": "",
+        "records": [
+          {
+            "filetype": "Binary",
+            "name": "Unknown",
+            "type": "Unknown",
+            "unknown": true
+          }
+        ],
+        "scan_success": true
+      },
+      {
+        "detected_filetypes": "BWDOS16M",
+        "error_count": 0,
+        "forced": true,
+        "id": "forced_property",
+        "initial_filetype": "BW DOS16M",
+        "property": "BWDOS16M",
+        "records": [
+          {
+            "filetype": "BW DOS16M",
+            "name": "Unknown",
+            "type": "Unknown",
+            "unknown": true
+          }
+        ],
+        "scan_success": true
+      }
+    ],
+    "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+    "input_hex": "42570000000000000000",
+    "schema_version": 1,
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+  },
+  "oracle": {
+    "binary": "/opt/die-build/src/console/diec-bw-dispatch-harness",
+    "binary_sha256": "343deb901cdcd8bd2e5c4d58ccb67cbde0e6b06c6218910ec55dfe4a0f0d3953",
+    "exit_code": 0,
+    "image": "diec-rust/bw-dispatch-harness-qt5:74eaf505",
+    "image_id": "sha256:d87952ceaca5f8da58c31188baef7967c2a8fa397bf3f2efffbddae5f1ec8232",
+    "raw_stderr_bytes": 0,
+    "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "raw_stdout_bytes": 1335,
+    "raw_stdout_sha256": "6d8e0055bf0ebc80eec3061559bbb5e3695d3f8e35e20081778e410f4ec3e5df",
+    "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "platform": "linux-amd64-qt5",
+  "raw_artifacts": {
+    "storage": "untracked external directory selected by --raw-dir"
+  },
+  "relationships": {
+    "automatic_detector_does_not_emit_bw": true,
+    "automatic_scan_does_not_initialize_bw": true,
+    "both_scans_complete_without_errors": true,
+    "forced_fallback_is_explicit_unknown": true,
+    "forced_property_is_exact": true,
+    "forced_scan_reaches_bw_branch": true
+  },
+  "schema_version": 1,
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+}

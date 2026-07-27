@@ -311,7 +311,18 @@
         "docs/research/data/legacy-dispatch-corpus.json",
         "docs/research/data/legacy-dispatch-linux-qt5.json",
         "tools/upstream/probe_legacy_dispatch.py",
-        "tools/tests/test_probe_legacy_dispatch.py"
+        "tools/tests/test_probe_legacy_dispatch.py",
+        "docs/research/dos-dispatch-reachability.md",
+        "docs/research/data/dos-dispatch-source-audit.json",
+        "docs/research/data/dos-dispatch-corpus.json",
+        "docs/research/data/dos-dispatch-linux-qt5.json",
+        "docs/research/data/bw-dispatch-engine-qt5.json",
+        "tools/upstream/probe_dos_dispatch.py",
+        "tools/upstream/probe_bw_dispatch_harness.py",
+        "tools/upstream/bw_dispatch_harness_main.cpp",
+        "tools/upstream/Dockerfile.bw-dispatch-harness-qt5",
+        "tools/tests/test_probe_dos_dispatch.py",
+        "tools/tests/test_probe_bw_dispatch_harness.py"
       ]
     },
     "engine_contract": {
@@ -1133,12 +1144,12 @@
       "corpus_gap_ids": [],
       "evidence_set": "dispatch_source",
       "id": "CAP-DISPATCH-002",
-      "name": "DOS and COM dispatch",
+      "name": "DOS and COM public dispatch plus BW property-only branch",
       "platform_gap_ids": [
         "CAP-GAP-007"
       ],
       "platform_status": {
-        "linux-x86_64-qt5": "source_only_runtime_corpus_missing",
+        "linux-x86_64-qt5": "runtime_observed",
         "linux-x86_64-qt6": "platform_missing",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
@@ -1478,7 +1489,7 @@
   "schema_version": 1,
   "source": {
     "path": "docs/research/data/capability-traceability.json",
-    "sha256": "794912520c5c0974ad0001d211a0f254d3d55c992dd829903b0a0a288db8f9ab"
+    "sha256": "60ce4e9049a0e2cc67787dd52a6e55b1c2958b928a46012723b8072c612a01d4"
   },
   "status_definitions": {
     "platform_missing": "no complete capability baseline is admitted for this platform",
@@ -1497,9 +1508,9 @@
     "status_counts_by_platform": {
       "linux-x86_64-qt5": {
         "platform_missing": 0,
-        "runtime_observed": 44,
+        "runtime_observed": 45,
         "runtime_observed_with_corpus_gaps": 20,
-        "source_only_runtime_corpus_missing": 3,
+        "source_only_runtime_corpus_missing": 2,
         "source_only_with_corpus_gaps": 1
       },
       "linux-x86_64-qt6": {

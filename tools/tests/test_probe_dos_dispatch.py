@@ -1,4 +1,5 @@
 import importlib.util
+import hashlib
 import json
 import pathlib
 import sys
@@ -11,6 +12,12 @@ ROOT = pathlib.Path(__file__).parents[2]
 MODULE_PATH = ROOT / "tools" / "upstream" / "probe_dos_dispatch.py"
 GENERATOR_PATH = (
     ROOT / "tools" / "corpus" / "generate_dos_dispatch_corpus.py"
+)
+REPORT_PATH = (
+    ROOT / "docs" / "research" / "data" / "dos-dispatch-linux-qt5.json"
+)
+MANIFEST_PATH = (
+    ROOT / "docs" / "research" / "data" / "dos-dispatch-corpus.json"
 )
 
 
@@ -47,6 +54,53 @@ def scan_stdout(filetype):
 
 
 class ProbeDosDispatchTests(unittest.TestCase):
+    def test_committed_report_binds_inputs_and_public_matrix(self):
+        report = json.loads(REPORT_PATH.read_text(encoding="utf-8"))
+        self.assertEqual(report["result"], "pass")
+        self.assertEqual(report["failures"], [])
+        self.assertEqual(report["corpus_manifest"]["sample_count"], 19)
+        self.assertEqual(
+            report["generator_sha256"],
+            hashlib.sha256(MODULE_PATH.read_bytes()).hexdigest(),
+        )
+        self.assertEqual(
+            report["shared_probe_sha256"],
+            hashlib.sha256(MODULE.SHARED_PATH.read_bytes()).hexdigest(),
+        )
+        self.assertEqual(
+            report["corpus_manifest"]["sha256"],
+            hashlib.sha256(MANIFEST_PATH.read_bytes()).hexdigest(),
+        )
+        positives = {
+            "minimal-msdos.exe": "MSDOS",
+            "minimal-ne.exe": "NE",
+            "minimal-le.exe": "LE",
+            "minimal-lx.exe": "LX",
+            "minimal-dos16m.exe": "DOS/16M",
+            "minimal-dos4g.exe": "DOS/4G",
+            "minimal.com": "COM",
+        }
+        for case_name, expected in positives.items():
+            for observation in report["cases"][case_name][
+                "oracles"
+            ].values():
+                self.assertIn(
+                    expected,
+                    MODULE.SHARED.observed_filetypes(
+                        observation["detect_tree"]
+                    ),
+                    msg=case_name,
+                )
+        for observation in report["cases"]["com-oversized.com"][
+            "oracles"
+        ].values():
+            self.assertNotIn(
+                "COM",
+                MODULE.SHARED.observed_filetypes(
+                    observation["detect_tree"]
+                ),
+            )
+
     def test_fixture_requires_exact_public_set_and_committed_bytes(self):
         with tempfile.TemporaryDirectory() as temporary:
             corpus = pathlib.Path(temporary)
@@ -127,7 +181,7 @@ class ProbeDosDispatchTests(unittest.TestCase):
                 def observe(_image, _binary, arguments, _corpus):
                     name = pathlib.PurePosixPath(arguments[-1]).name
                     filetype = (
-                        "DOS4G"
+                        "DOS/4G"
                         if name == "dos4g-near-nested-magic.exe"
                         else "Binary"
                     )
@@ -155,7 +209,7 @@ class ProbeDosDispatchTests(unittest.TestCase):
         self.assertIn(
             (
                 "cases.dos4g-near-nested-magic.exe."
-                "linux-qt5-qmake.unexpected_filetype.DOS4G"
+                "linux-qt5-qmake.unexpected_filetype.DOS/4G"
             ),
             report["failures"],
         )

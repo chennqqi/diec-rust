@@ -103,7 +103,18 @@
         "docs/research/data/legacy-dispatch-corpus.json",
         "docs/research/data/legacy-dispatch-linux-qt5.json",
         "tools/upstream/probe_legacy_dispatch.py",
-        "tools/tests/test_probe_legacy_dispatch.py"
+        "tools/tests/test_probe_legacy_dispatch.py",
+        "docs/research/dos-dispatch-reachability.md",
+        "docs/research/data/dos-dispatch-source-audit.json",
+        "docs/research/data/dos-dispatch-corpus.json",
+        "docs/research/data/dos-dispatch-linux-qt5.json",
+        "docs/research/data/bw-dispatch-engine-qt5.json",
+        "tools/upstream/probe_dos_dispatch.py",
+        "tools/upstream/probe_bw_dispatch_harness.py",
+        "tools/upstream/bw_dispatch_harness_main.cpp",
+        "tools/upstream/Dockerfile.bw-dispatch-harness-qt5",
+        "tools/tests/test_probe_dos_dispatch.py",
+        "tools/tests/test_probe_bw_dispatch_harness.py"
       ]
     },
     "nested_scan": {
@@ -202,7 +213,7 @@
     {"id": "CAP-RULE-012", "name": "cancellation and stop", "verification": "observed_with_gaps", "evidence_set": "engine_contract"},
 
     {"id": "CAP-DISPATCH-001", "name": "PE ELF and Mach-O dispatch", "verification": "observed", "evidence_set": "dispatch_source"},
-    {"id": "CAP-DISPATCH-002", "name": "DOS and COM dispatch", "verification": "source_verified", "evidence_set": "dispatch_source"},
+    {"id": "CAP-DISPATCH-002", "name": "DOS and COM public dispatch plus BW property-only branch", "verification": "observed", "evidence_set": "dispatch_source"},
     {"id": "CAP-DISPATCH-003", "name": "Amiga Hunk dispatch and Atari ST detector-only fallback", "verification": "observed", "evidence_set": "dispatch_source"},
     {"id": "CAP-DISPATCH-004", "name": "archive family dispatch", "verification": "observed_with_gaps", "evidence_set": "dispatch_source"},
     {"id": "CAP-DISPATCH-005", "name": "DEX Java Class and PYC dispatch", "verification": "observed", "evidence_set": "dispatch_source"},
@@ -319,9 +330,9 @@
   ],
   "summary": {
     "capability_count": 68,
-    "observed": 44,
+    "observed": 45,
     "observed_with_gaps": 20,
-    "source_verified": 3,
+    "source_verified": 2,
     "source_verified_with_gaps": 1,
     "coverage_gap_count": 12,
     "phase_0_coverage_complete": false

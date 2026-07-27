@@ -30,34 +30,6 @@ CATALOG: dict[str, dict[str, Any]] = {
             "an ADR either keeps the private behavior in scope or excludes it",
         ],
     },
-    "CAP-DISPATCH-002": {
-        "closure_kind": "generated_format_oracle_plus_scope_review",
-        "missing_evidence": [
-            "MS-DOS, NE, LE, LX, DOS16M, DOS4G, and COM lack runtime cases",
-            (
-                "BW DOS16M has a scanner branch but no public XFormats "
-                "detector or database loader at the pinned commit"
-            ),
-        ],
-        "fixture": (
-            "tools/corpus/generate_dos_dispatch_corpus.py (19 cases) plus "
-            "docs/research/data/dos-dispatch-source-audit.json"
-        ),
-        "harness": (
-            "tools/upstream/probe_dos_dispatch.py plus "
-            "tools/upstream/probe_bw_dispatch_harness.py or reviewed "
-            "BW scope disposition"
-        ),
-        "assertions": [
-            "seven publicly detected members reach their exact upstream filetype",
-            "truncated and near-magic controls do not borrow adjacent dispatch",
-            (
-                "BW branch reachability is tested through an explicit "
-                "filetypes-property harness or excluded by reviewed scope"
-            ),
-            "raw stdout, stderr, exit code, size, and SHA-256 are retained",
-        ],
-    },
     "CAP-NEST-007": {
         "closure_kind": "paired_negative_nested_oracle",
         "missing_evidence": [

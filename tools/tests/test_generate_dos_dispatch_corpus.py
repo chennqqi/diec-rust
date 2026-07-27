@@ -129,11 +129,11 @@ class GenerateDosDispatchCorpusTests(unittest.TestCase):
             adjacent = by_name["dos4g-near-nested-magic.exe"]
             self.assertEqual(
                 adjacent["expected_dispatch"]["present_filetypes"],
-                ["DOS16M"],
+                ["DOS/16M"],
             )
             self.assertEqual(
                 adjacent["expected_dispatch"]["absent_filetypes"],
-                ["DOS4G"],
+                ["DOS/4G"],
             )
             self.assertEqual(
                 (root / "com-wrong-suffix.bin").read_bytes(),
