@@ -91,6 +91,7 @@ def build_gap_map(capability_ids: set[str]) -> dict[str, list[str]]:
                 "CAP-CLI-MODE-001",
                 "CAP-CLI-MODE-002",
                 "CAP-CLI-MODE-003",
+                "CAP-RULE-011",
             ),
         ),
         "CAP-GAP-002": select(
@@ -130,6 +131,22 @@ def build_gap_map(capability_ids: set[str]) -> dict[str, list[str]]:
             capability_ids,
             prefixes=("CAP-CLI-IN-", "CAP-CLI-DB-"),
         ),
+        "CAP-GAP-009": select(
+            capability_ids,
+            exact=("CAP-ENG-IN-002",),
+        ),
+        "CAP-GAP-010": select(
+            capability_ids,
+            exact=("CAP-RULE-002",),
+        ),
+        "CAP-GAP-011": select(
+            capability_ids,
+            exact=("CAP-RULE-012",),
+        ),
+        "CAP-GAP-012": select(
+            capability_ids,
+            exact=("CAP-DISPATCH-007",),
+        ),
     }
 
 
@@ -163,7 +180,7 @@ def validate_traceability(traceability: dict[str, Any]) -> None:
     ):
         raise CoverageError("verification state set changed")
     gap_ids = [gap["id"] for gap in traceability["coverage_gaps"]]
-    if gap_ids != [f"CAP-GAP-{index:03d}" for index in range(1, 9)]:
+    if gap_ids != [f"CAP-GAP-{index:03d}" for index in range(1, 13)]:
         raise CoverageError("coverage gap IDs changed")
 
 
@@ -232,6 +249,19 @@ def build_report(
             }
         )
 
+    with_gap_status_without_named_gap = [
+        row["id"]
+        for row in rows
+        if "with_corpus_gaps"
+        in row["platform_status"]["linux-x86_64-qt5"]
+        and not row["corpus_gap_ids"]
+    ]
+    if with_gap_status_without_named_gap:
+        raise CoverageError(
+            "with-gaps status lacks a named corpus gap: "
+            f"{with_gap_status_without_named_gap}"
+        )
+
     statuses = set(VERIFICATION_TO_STATUS.values()) | {"platform_missing"}
     status_counts = {
         platform: {
@@ -289,6 +319,7 @@ def build_report(
                 len(capability_ids - {row["id"] for row in rows})
             ),
             "unclassified_cell_count": unclassified_cells,
+            "with_gap_status_without_named_gap_count": 0,
             "rows_with_corpus_gaps": sum(
                 bool(row["corpus_gap_ids"]) for row in rows
             ),

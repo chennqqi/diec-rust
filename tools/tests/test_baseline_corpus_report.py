@@ -125,6 +125,16 @@ class BaselineCorpusReportTests(unittest.TestCase):
                 filetype,
             )
 
+        partial_image_dispatch = {
+            "pixel.jpg": "JPEG",
+            "pixel.png": "PNG",
+        }
+        for sample, filetype in partial_image_dispatch.items():
+            self.assertEqual(
+                cases[sample]["left_detect_tree"][0]["filetype"],
+                filetype,
+            )
+
     def test_distinctive_rule_results_are_preserved(self):
         cases = self.report["corpus"]
         self.assertEqual(

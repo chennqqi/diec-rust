@@ -8,7 +8,8 @@
         "CAP-CLI-MODE-001",
         "CAP-CLI-MODE-002",
         "CAP-CLI-MODE-003",
-        "CAP-CLI-OPT-008"
+        "CAP-CLI-OPT-008",
+        "CAP-RULE-011"
       ],
       "id": "CAP-GAP-001",
       "kind": "corpus_missing",
@@ -189,6 +190,50 @@
         "macos-x86_64-qt5"
       ],
       "scope": "Windows and macOS path and encoding behavior"
+    },
+    {
+      "capability_ids": [
+        "CAP-ENG-IN-002"
+      ],
+      "id": "CAP-GAP-009",
+      "kind": "corpus_missing",
+      "platforms": [
+        "linux-x86_64-qt5"
+      ],
+      "scope": "device and subdevice short reads, invalid ranges, seekability, and I/O errors"
+    },
+    {
+      "capability_ids": [
+        "CAP-RULE-002"
+      ],
+      "id": "CAP-GAP-010",
+      "kind": "corpus_missing",
+      "platforms": [
+        "linux-x86_64-qt5"
+      ],
+      "scope": "equal-priority, cross-layer, and comparator-edge rule ordering"
+    },
+    {
+      "capability_ids": [
+        "CAP-RULE-012"
+      ],
+      "id": "CAP-GAP-011",
+      "kind": "corpus_missing",
+      "platforms": [
+        "linux-x86_64-qt5"
+      ],
+      "scope": "mid-scan callback, asynchronous stop, and cancellation race boundaries"
+    },
+    {
+      "capability_ids": [
+        "CAP-DISPATCH-007"
+      ],
+      "id": "CAP-GAP-012",
+      "kind": "corpus_missing",
+      "platforms": [
+        "linux-x86_64-qt5"
+      ],
+      "scope": "generic Image dispatch and non-JPEG/PNG image variants"
     }
   ],
   "evaluated_on": "2026-07-27",
@@ -398,7 +443,9 @@
       }
     },
     {
-      "corpus_gap_ids": [],
+      "corpus_gap_ids": [
+        "CAP-GAP-009"
+      ],
       "evidence_set": "engine_contract",
       "id": "CAP-ENG-IN-002",
       "name": "device and subdevice scan",
@@ -867,7 +914,9 @@
       }
     },
     {
-      "corpus_gap_ids": [],
+      "corpus_gap_ids": [
+        "CAP-GAP-010"
+      ],
       "evidence_set": "rule_orchestration",
       "id": "CAP-RULE-002",
       "name": "rule priority ordering",
@@ -1004,7 +1053,9 @@
       }
     },
     {
-      "corpus_gap_ids": [],
+      "corpus_gap_ids": [
+        "CAP-GAP-001"
+      ],
       "evidence_set": "cli_options",
       "id": "CAP-RULE-011",
       "name": "script profiling",
@@ -1019,7 +1070,9 @@
       }
     },
     {
-      "corpus_gap_ids": [],
+      "corpus_gap_ids": [
+        "CAP-GAP-011"
+      ],
       "evidence_set": "engine_contract",
       "id": "CAP-RULE-012",
       "name": "cancellation and stop",
@@ -1126,7 +1179,9 @@
       }
     },
     {
-      "corpus_gap_ids": [],
+      "corpus_gap_ids": [
+        "CAP-GAP-012"
+      ],
       "evidence_set": "dispatch_source",
       "id": "CAP-DISPATCH-007",
       "name": "image dispatch",
@@ -1134,7 +1189,7 @@
         "CAP-GAP-007"
       ],
       "platform_status": {
-        "linux-x86_64-qt5": "source_only_runtime_corpus_missing",
+        "linux-x86_64-qt5": "runtime_observed_with_corpus_gaps",
         "linux-x86_64-qt6": "platform_missing",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
@@ -1395,7 +1450,7 @@
   "schema_version": 1,
   "source": {
     "path": "docs/research/data/capability-traceability.json",
-    "sha256": "f6523fa9d0f28e6df3becdff38850574aee43131699488a34707f1219b9cd15b"
+    "sha256": "29c2b9f13adc16730baad80db24e128cfbe28250cdaf4609786a938476951cde"
   },
   "status_definitions": {
     "platform_missing": "no complete capability baseline is admitted for this platform",
@@ -1409,14 +1464,14 @@
     "cell_count": 272,
     "phase_0_coverage_complete": false,
     "platform_count": 4,
-    "rows_with_corpus_gaps": 25,
+    "rows_with_corpus_gaps": 30,
     "rows_with_platform_gaps": 68,
     "status_counts_by_platform": {
       "linux-x86_64-qt5": {
         "platform_missing": 0,
         "runtime_observed": 38,
-        "runtime_observed_with_corpus_gaps": 19,
-        "source_only_runtime_corpus_missing": 10,
+        "runtime_observed_with_corpus_gaps": 20,
+        "source_only_runtime_corpus_missing": 9,
         "source_only_with_corpus_gaps": 1
       },
       "linux-x86_64-qt6": {
@@ -1442,7 +1497,8 @@
       }
     },
     "unclassified_capability_row_count": 0,
-    "unclassified_cell_count": 0
+    "unclassified_cell_count": 0,
+    "with_gap_status_without_named_gap_count": 0
   },
   "target_platforms": [
     "linux-x86_64-qt5",

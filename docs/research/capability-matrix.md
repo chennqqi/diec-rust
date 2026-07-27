@@ -128,8 +128,9 @@ priority、数据库分层、init/include、file type、deep/heuristic 和 Unkno
 固定双 oracle 的 26 样本已完整观察上述 PE/ELF/Mach-O、DEX/Class/PYC、
 PDF/CFBF 和 Binary fallback 四组的所有成员。Archive 组已观察 APK、JAR、ZIP、
 RAR、ISO9660，以及固定 commit 将 IPA 识别后仍经 Binary 分派的 quirk；NPM 和
-通用 Archive 等成员仍缺，因此只标记 `observed_with_gaps`。DOS/COM、
-Amiga/Atari 与通用 Image 仍只有源码证据，不能从相邻格式外推。
+通用 Archive 等成员仍缺，因此只标记 `observed_with_gaps`。Image 组已观察
+JPEG/PNG，通用 Image 仍缺，也标记 `observed_with_gaps`。DOS/COM 与
+Amiga/Atari 仍只有源码证据，不能从相邻格式外推。
 
 `Formats` 子模块还包含更多探测/信息解析类，不等于它们都有 DIE 规则目录或完整扫描结果。最终“支持格式”必须以格式探测、规则数据库、扫描分派和样本输出四者交叉验证。
 
@@ -209,8 +210,8 @@ validator 要求本文 68 个 `CAP-*` 与 manifest 完全相等，并拒绝缺�
 不能提升为 Rust 已实现或跨平台兼容。
 
 [`capability-coverage-report.md`](capability-coverage-report.md) 进一步把该清单
-投影为 68 行 × 4 平台的闭集：Linux Qt5 为 38 observed、19 observed with
-gaps、10 source-only、1 source-only with gaps；Linux Qt6、Windows 和 macOS
+投影为 68 行 × 4 平台的闭集：Linux Qt5 为 38 observed、20 observed with
+gaps、9 source-only、1 source-only with gaps；Linux Qt6、Windows 和 macOS
 各有 68 个 platform-missing。全部行已分类不等于覆盖完成。
 
 - [CLI main](https://github.com/horsicq/DIE-engine/blob/74eaf505c250ab47e709024e9dc41657cd8f2254/src/console/main_console.cpp)

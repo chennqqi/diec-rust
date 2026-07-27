@@ -190,7 +190,7 @@
       "title": "Windows/macOS oracle and remaining capability corpus coverage are incomplete",
       "owner": "compatibility",
       "status": "open",
-      "progress_evidence": "docs/research/capability-coverage-report.md and docs/research/data/capability-coverage.json classify all 68 capability rows across four platforms with zero unclassified cells while preserving 11 Linux source-only capabilities, 25 corpus-gap rows, and three missing platform baselines",
+      "progress_evidence": "docs/research/capability-coverage-report.md and docs/research/data/capability-coverage.json classify all 68 capability rows across four platforms with zero unclassified cells while preserving 10 Linux source-only capabilities, 30 named corpus-gap rows, and three missing platform baselines",
       "closure_evidence": "pinned reproducible baselines with no Phase 0 source-only, corpus-missing, platform-missing, or unclassified capability rows"
     },
     {

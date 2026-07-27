@@ -179,7 +179,7 @@
     {"id": "CAP-DISPATCH-004", "name": "archive family dispatch", "verification": "observed_with_gaps", "evidence_set": "dispatch_source"},
     {"id": "CAP-DISPATCH-005", "name": "DEX Java Class and PYC dispatch", "verification": "observed", "evidence_set": "dispatch_source"},
     {"id": "CAP-DISPATCH-006", "name": "PDF and CFBF dispatch", "verification": "observed", "evidence_set": "dispatch_source"},
-    {"id": "CAP-DISPATCH-007", "name": "image dispatch", "verification": "source_verified", "evidence_set": "dispatch_source"},
+    {"id": "CAP-DISPATCH-007", "name": "image dispatch", "verification": "observed_with_gaps", "evidence_set": "dispatch_source"},
     {"id": "CAP-DISPATCH-008", "name": "binary fallback dispatch", "verification": "observed", "evidence_set": "dispatch_source"},
 
     {"id": "CAP-NEST-001", "name": "directory recursion versus internal recursion", "verification": "observed", "evidence_set": "nested_scan"},
@@ -259,15 +259,43 @@
         "windows-x86_64-qt5",
         "macos-x86_64-qt5"
       ]
+    },
+    {
+      "id": "CAP-GAP-009",
+      "scope": "device and subdevice short reads, invalid ranges, seekability, and I/O errors",
+      "platforms": [
+        "linux-x86_64-qt5"
+      ]
+    },
+    {
+      "id": "CAP-GAP-010",
+      "scope": "equal-priority, cross-layer, and comparator-edge rule ordering",
+      "platforms": [
+        "linux-x86_64-qt5"
+      ]
+    },
+    {
+      "id": "CAP-GAP-011",
+      "scope": "mid-scan callback, asynchronous stop, and cancellation race boundaries",
+      "platforms": [
+        "linux-x86_64-qt5"
+      ]
+    },
+    {
+      "id": "CAP-GAP-012",
+      "scope": "generic Image dispatch and non-JPEG/PNG image variants",
+      "platforms": [
+        "linux-x86_64-qt5"
+      ]
     }
   ],
   "summary": {
     "capability_count": 68,
     "observed": 38,
-    "observed_with_gaps": 19,
-    "source_verified": 10,
+    "observed_with_gaps": 20,
+    "source_verified": 9,
     "source_verified_with_gaps": 1,
-    "coverage_gap_count": 8,
+    "coverage_gap_count": 12,
     "phase_0_coverage_complete": false
   }
 }

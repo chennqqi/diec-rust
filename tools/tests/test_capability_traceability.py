@@ -107,7 +107,10 @@ class CapabilityTraceabilityTest(unittest.TestCase):
     def test_coverage_gaps_are_unique_and_keep_platform_absence_explicit(self):
         gaps = self.manifest["coverage_gaps"]
         gap_ids = [gap["id"] for gap in gaps]
-        self.assertEqual(gap_ids, [f"CAP-GAP-{index:03d}" for index in range(1, 9)])
+        self.assertEqual(
+            gap_ids,
+            [f"CAP-GAP-{index:03d}" for index in range(1, 13)],
+        )
         self.assertEqual(len(gap_ids), len(set(gap_ids)))
         for gap in gaps:
             self.assertTrue(gap["scope"])

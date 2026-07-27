@@ -67,9 +67,9 @@ Phase 0 计划形成：
   runtime 三层规则树的 2,268 文件 hash、作者/URL/许可标记和 22 个 PNG 清单。
 - [`data/baseline-corpus.json`](data/baseline-corpus.json)：生成语料的文件名、意图、大小和 SHA-256。
 - [`data/capability-traceability.json`](data/capability-traceability.json)：68 个稳定
-  `CAP-*` 的验证层级、证据路径、平台范围和 8 个显式 coverage gap。
+  `CAP-*` 的验证层级、证据路径、平台范围和 12 个显式 coverage gap。
 - [`data/capability-coverage.json`](data/capability-coverage.json)：68 行 × 4 平台
-  的 272-cell 闭集分类、八个 gap 到能力的显式映射和未分类计数。
+  的 272-cell 闭集分类、十二个 gap 到能力的显式映射和未分类计数。
 - [`data/path-corpus.json`](data/path-corpus.json)：由基线字节组成的确定性嵌套目录树。
 - [`data/database-fixture.json`](data/database-fixture.json)：项目生成的数据库成功/故障 fixture。
 - [`data/database-archive-linux-qt5.json`](data/database-archive-linux-qt5.json)：两套固定 Qt5 oracle 的 17-case ZIP 数据库矩阵及两侧原始 stream。

@@ -38,6 +38,10 @@ class CapabilityCoverageTest(unittest.TestCase):
         self.assertEqual(summary["cell_count"], 272)
         self.assertEqual(summary["unclassified_capability_row_count"], 0)
         self.assertEqual(summary["unclassified_cell_count"], 0)
+        self.assertEqual(
+            summary["with_gap_status_without_named_gap_count"],
+            0,
+        )
         self.assertFalse(summary["phase_0_coverage_complete"])
 
         traceability_ids = {
@@ -56,10 +60,10 @@ class CapabilityCoverageTest(unittest.TestCase):
         counts = self.report["summary"]["status_counts_by_platform"]
         linux = counts["linux-x86_64-qt5"]
         self.assertEqual(linux["runtime_observed"], 38)
-        self.assertEqual(linux["runtime_observed_with_corpus_gaps"], 19)
+        self.assertEqual(linux["runtime_observed_with_corpus_gaps"], 20)
         self.assertEqual(
             linux["source_only_runtime_corpus_missing"],
-            10,
+            9,
         )
         self.assertEqual(linux["source_only_with_corpus_gaps"], 1)
         self.assertEqual(linux["platform_missing"], 0)
@@ -98,6 +102,16 @@ class CapabilityCoverageTest(unittest.TestCase):
             rows["CAP-DISPATCH-004"]["corpus_gap_ids"],
             ["CAP-GAP-006"],
         )
+        self.assertEqual(
+            rows["CAP-DISPATCH-007"]["platform_status"][
+                "linux-x86_64-qt5"
+            ],
+            "runtime_observed_with_corpus_gaps",
+        )
+        self.assertEqual(
+            rows["CAP-DISPATCH-007"]["corpus_gap_ids"],
+            ["CAP-GAP-012"],
+        )
 
     def test_every_declared_gap_maps_to_known_capabilities(self):
         row_ids = {row["id"] for row in self.report["rows"]}
@@ -108,8 +122,17 @@ class CapabilityCoverageTest(unittest.TestCase):
             self.assertLessEqual(set(gap["capability_ids"]), row_ids)
         self.assertEqual(
             gap_ids,
-            [f"CAP-GAP-{index:03d}" for index in range(1, 9)],
+            [f"CAP-GAP-{index:03d}" for index in range(1, 13)],
         )
+
+    def test_every_with_gaps_status_has_a_named_corpus_gap(self):
+        for row in self.report["rows"]:
+            status = row["platform_status"]["linux-x86_64-qt5"]
+            if "with_corpus_gaps" in status:
+                self.assertTrue(
+                    row["corpus_gap_ids"],
+                    msg=row["id"],
+                )
 
     def test_strict_input_rejects_duplicate_keys_and_changed_scope(self):
         with tempfile.TemporaryDirectory() as directory:
