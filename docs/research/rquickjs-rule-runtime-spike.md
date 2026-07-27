@@ -26,7 +26,9 @@ QuickJS-NG C 源码编译成静态 archive。它能够：
   上游 oracle；
 - 通过 runtime memory limit 拒绝超限分配；
 - 通过 128 KiB runtime stack limit 拒绝无界 JavaScript 递归，并在同一 context
-  恢复执行。
+  恢复执行；
+- Rust native callback panic 由固定 rquickjs trampoline 在 C ABI 内捕获，在
+  Rust eval 边界恢复原 sentinel payload，调用方捕获后同一 context 仍可执行。
 
 但它不能原样作为 DIE 兼容运行时。显式使用 sloppy-script 模式并为语法覆盖提供
 受控宿主 proxy 后，2235 个固定规则文件中仍有 1 个执行失败：
@@ -227,7 +229,9 @@ context”。
 - 4 MiB runtime limit 拒绝 16 MiB `ArrayBuffer`，返回 `out of memory`；
 - 128 KiB runtime stack limit 使无终止递归返回
   `Maximum call stack size exceeded`，随后同一 context 求值
-  `String(6 * 7)` 返回 `"42"`。
+  `String(6 * 7)` 返回 `"42"`；
+- `panicHost()` 的固定 Rust panic payload 在 eval 调用方被 `catch_unwind`
+  捕获，payload 未改变，随后同一 context 求值 `String(6 * 7)` 返回 `"42"`。
 
 内存限制使用 rquickjs 默认 libc allocator。官方 API 说明使用 `rust-alloc` 或
 自定义 allocator 时 `set_memory_limit` 是 no-op，因此未来不能在未验证的情况
@@ -238,6 +242,20 @@ stack fixture 使用显式递归函数而不是 include graph，因此只证明 
 固定 Qt include-cycle 的深度、signal 数或错误传播差分；正式 runtime 仍按
 ADR 0010 在进入 VM 前拒绝 active include cycle，并将 VM stack limit 作为末级
 资源防线。
+
+### Native callback panic 边界
+
+固定 `rquickjs-core 0.12.1` 的普通 callback trampoline 通过
+`Ctx::handle_panic_inner` 在 Rust→C→Rust 回调入口捕获 unwind，把 payload 保存到
+runtime opaque 并向 QuickJS 返回 exception tag；`Ctx::handle_exception` 在控制流
+回到 Rust eval 边界后取回 payload 并 `resume_unwind`。fixture 在 eval 调用方用
+`catch_unwind` 捕获固定 sentinel，并临时替换/恢复 panic hook，避免已捕获的预期
+panic 污染命令 stderr。
+
+因此观察到的 panic 没有跨越 C ABI，也没有被伪装成普通 JavaScript exception。
+这只证明 pinned rquickjs 的普通 `Function` callback 路径；正式 backend 仍必须
+在自己的 HostApi adapter 与最外层 scanner/FFI 边界分别测试 panic 分类、状态清理
+和恢复，native crash/abort 不能由 Rust unwind 防护捕获。
 
 ### 外部取消与恢复
 

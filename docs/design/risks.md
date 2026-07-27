@@ -162,8 +162,10 @@ baseline 的变更都要检查本表。
   ADR 0010 提议静态图与 active stack 提前拒绝该循环。固定 QuickJS-NG fixture
   已用 128 KiB stack limit 使无界 JavaScript 递归产生明确异常，并在同一
   context 恢复 `"42"`；这只证明末级 VM hard limit 接线，不等于 Qt include-cycle
-  错误传播兼容。完整 format HostApi 矩阵、更多参数/转换边界和逐规则
-  execution 仍是开放风险。
+  错误传播兼容。固定 native `Function` callback panic 也已由 rquickjs 在 C ABI
+  trampoline 内捕获、在 Rust eval 边界恢复原 payload；调用方捕获后同一 context
+  继续返回 `"42"`。该结果不覆盖正式 HostApi adapter 或 native crash/abort。
+  完整 format HostApi 矩阵、更多参数/转换边界和逐规则 execution 仍是开放风险。
 - **缓解**：保持 `RuleRuntime`/`HostApi` port；建立全规则 inventory、最小失败
   fixture、host call trace；基于证据选 runtime，禁止静默转换规则。
 - **验证**：固定规则 100% discovered/parsed/loaded，zero silent unsupported；

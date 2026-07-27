@@ -106,6 +106,16 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
             },
         )
         self.assertEqual(
+            fixture["native_host_panic"],
+            {
+                "caught_at_rust_eval_boundary": True,
+                "payload_matches_sentinel": True,
+                "same_context_recovered": True,
+                "same_context_recovery_result": "42",
+                "unwound_across_c_abi": False,
+            },
+        )
+        self.assertEqual(
             fixture["external_cancel"],
             {
                 "hard_stop_handler_call_limit": 1_000_000,

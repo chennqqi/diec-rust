@@ -3,6 +3,7 @@
 use std::collections::BTreeSet;
 use std::env;
 use std::fs;
+use std::panic::{self, AssertUnwindSafe};
 use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 use std::sync::Arc;
@@ -3006,6 +3007,32 @@ fn run_fixture(rule_root: &Path) -> Result<bool, String> {
     .err();
     let stack_limit_recovery = eval_string(&stack_context, b"String(6 * 7)");
 
+    const PANIC_SENTINEL: &str = "diec-rquickjs-native-panic-sentinel";
+    let panic_runtime = new_runtime()?;
+    let panic_context = new_context(&panic_runtime)?;
+    panic_context.with(|ctx| {
+        let panic_host = Function::new(ctx.clone(), move || -> i32 {
+            panic!("{PANIC_SENTINEL}");
+        })
+        .map_err(|error| error.to_string())?;
+        ctx.globals()
+            .set("panicHost", panic_host)
+            .map_err(|error| error.to_string())
+    })?;
+    let previous_panic_hook = panic::take_hook();
+    panic::set_hook(Box::new(|_| {}));
+    let native_panic_result = panic::catch_unwind(AssertUnwindSafe(|| {
+        eval_unit(&panic_context, b"panicHost();")
+    }));
+    panic::set_hook(previous_panic_hook);
+    let native_panic_payload = native_panic_result.as_ref().err().and_then(|payload| {
+        payload
+            .downcast_ref::<&str>()
+            .map(|value| (*value).to_owned())
+            .or_else(|| payload.downcast_ref::<String>().cloned())
+    });
+    let native_panic_recovery = eval_string(&panic_context, b"String(6 * 7)");
+
     let passed = host_result == "42"
         && helper_result == "a, b/c|007"
         && audio_eval.is_ok()
@@ -3038,7 +3065,9 @@ fn run_fixture(rule_root: &Path) -> Result<bool, String> {
         && numeric_result == numeric_expected
         && memory_limit_error.is_some()
         && stack_limit_error.is_some()
-        && stack_limit_recovery.as_deref() == Ok("42");
+        && stack_limit_recovery.as_deref() == Ok("42")
+        && native_panic_payload.as_deref() == Some(PANIC_SENTINEL)
+        && native_panic_recovery.as_deref() == Ok("42");
     let compatible = nintendo_eval.is_ok();
     let report = json!({
         "schema_version": 1,
@@ -3147,6 +3176,15 @@ fn run_fixture(rule_root: &Path) -> Result<bool, String> {
             "same_context_recovery": {
                 "result": stack_limit_recovery.as_deref().ok(),
                 "error": stack_limit_recovery.as_ref().err(),
+            },
+        },
+        "native_host_panic": {
+            "caught_at_rust_eval_boundary": native_panic_result.is_err(),
+            "payload_matches_sentinel": native_panic_payload.as_deref() == Some(PANIC_SENTINEL),
+            "eval_returned_without_panic": native_panic_result.is_ok(),
+            "same_context_recovery": {
+                "result": native_panic_recovery.as_deref().ok(),
+                "error": native_panic_recovery.as_ref().err(),
             },
         },
         "elapsed_ms": started.elapsed().as_millis(),

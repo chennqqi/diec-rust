@@ -9,7 +9,9 @@ the native engine's counted interrupt, cross-thread cancellation, same-context
 recovery, cooperative native HostApi cancellation, monotonic VM/native
 deadlines, focused Qt-oracle-backed `U24`/`shru64` behavior, and memory
 and stack limits with same-context recovery, and records the Windows MSVC
-build cost.
+build cost. It also verifies that a Rust native callback panic is caught by
+the pinned rquickjs trampoline, resumed at the Rust eval boundary, and leaves
+the same context usable.
 
 The spike must not modify or normalize any upstream rule file. The optional
 `eval-isolated-compat` experiment applies one length-preserving, source-identity
