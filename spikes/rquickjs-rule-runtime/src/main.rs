@@ -171,6 +171,14 @@ const APK_RULE_SHA256: &str = "cc20faadf1aec677679151a1997ea95184b265db2dbb1d4fc
 const APK_FIXTURE_SHA256: &str = "531112ec3a4af5a9736c11774c7df6c26819165a6962b5a168bfd70f47c5ee94";
 const APK_QT5_BASELINE_SHA256: &str =
     "41d75dae86b0f4a57b0159a3cc92fa0ad4cae1ca1117bc5620da68faa98fc00c";
+const ARCHIVE_RULE_SUFFIX: &str = "Archive/_Archive.0.sg";
+const ARCHIVE_RULE_BYTES: usize = 421;
+const ARCHIVE_RULE_SHA256: &str =
+    "97202e19118514bcd33ef40c2dea69822249406092eddcb61f56e3410278ec86";
+const ARCHIVE_FIXTURE_SHA256: &str =
+    "04ee27fe5741ad9b65098722213d67058f748416e7075256dacf26a3be4d6b6b";
+const ARCHIVE_QT5_BASELINE_SHA256: &str =
+    "92d33c5982fcb457c0a07b30dbe1ef262ac5ccf36ca00fa5151c7b2e3f10c97c";
 const XARCHIVE_COMMIT: &str = "0fcd4e8d3e9933baac3b12246d82ac026557ffd0";
 const FORMATS_COMMIT: &str = "1151e7254fdee3c0294ff7095edbdd7bfccf8201";
 const FORMAT_RESULT_SHIM: &[u8] = br#"
@@ -291,6 +299,15 @@ struct ApkRuleContext {
     local_header_signature_mismatches: usize,
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
+struct ArchiveRuleContext {
+    is_verbose: bool,
+    file_format_name: String,
+    file_format_version: String,
+    file_format_options: String,
+    local_header_signature_mismatches: usize,
+}
+
 #[derive(Default)]
 struct EntryPointHostTrace {
     compare_ep_calls: AtomicUsize,
@@ -307,6 +324,14 @@ struct DexHostTrace {
 #[derive(Default)]
 struct ApkHostTrace {
     is_archive_record_present_calls: AtomicUsize,
+}
+
+#[derive(Default)]
+struct ArchiveHostTrace {
+    is_verbose_calls: AtomicUsize,
+    get_file_format_name_calls: AtomicUsize,
+    get_file_format_version_calls: AtomicUsize,
+    get_file_format_options_calls: AtomicUsize,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -1286,6 +1311,132 @@ impl ApkRuleContext {
     }
 }
 
+impl ArchiveRuleContext {
+    fn parse(data: &[u8], is_verbose: bool) -> Result<Self, String> {
+        const LOCAL_SIGNATURE: u32 = 0x0403_4b50;
+        const EOCD_SIGNATURE: u32 = 0x0605_4b50;
+        const CENTRAL_SIGNATURE: u32 = 0x0201_4b50;
+        const CENTRAL_HEADER_SIZE: usize = 46;
+        const METADATA_RECORD_LIMIT: usize = 20;
+
+        if data.is_empty()
+            || !matches!(
+                zip_u32(data, 0),
+                Some(LOCAL_SIGNATURE) | Some(EOCD_SIGNATURE)
+            )
+        {
+            return Err("ZIP signature is missing or unsupported".to_owned());
+        }
+        let eocd = find_zip_eocd(data)
+            .ok_or_else(|| "ZIP end of central directory is missing".to_owned())?;
+        let total_records = usize::from(
+            zip_u16(data, zip_field(eocd, 10, "EOCD record count")?)
+                .ok_or_else(|| "ZIP EOCD record count is truncated".to_owned())?,
+        );
+        let central_offset = usize::try_from(
+            zip_u32(data, zip_field(eocd, 16, "central directory")?)
+                .ok_or_else(|| "ZIP central directory offset is truncated".to_owned())?,
+        )
+        .map_err(|_| "ZIP central directory offset does not fit usize".to_owned())?;
+        if zip_u32(data, central_offset) != Some(CENTRAL_SIGNATURE) {
+            return Err("ZIP first central header signature is invalid".to_owned());
+        }
+
+        let central_version_offset = zip_field(central_offset, 4, "central version")?;
+        let local_version_offset = zip_field(0, 4, "local minimum version")?;
+        let mut version = data.get(central_version_offset).copied().unwrap_or(0);
+        if version == 0 {
+            version = data.get(local_version_offset).copied().unwrap_or(0);
+        }
+        let file_format_version = if version == 0 {
+            String::new()
+        } else {
+            format!("{}.{:01}", version / 10, version % 10)
+        };
+
+        let first_flags = zip_u16(data, zip_field(central_offset, 8, "central flags")?)
+            .ok_or_else(|| "ZIP central flags are truncated".to_owned())?;
+        let encrypted = first_flags & 1 != 0;
+        let mut cursor = central_offset;
+        let mut compression_methods = BTreeSet::new();
+        let mut local_header_signature_mismatches = 0_usize;
+        for index in 0..total_records.min(METADATA_RECORD_LIMIT) {
+            let header_end = cursor
+                .checked_add(CENTRAL_HEADER_SIZE)
+                .ok_or_else(|| "ZIP central header range overflow".to_owned())?;
+            if header_end > data.len() {
+                return Err(format!("ZIP central header {index} is truncated"));
+            }
+            if zip_u32(data, cursor) != Some(CENTRAL_SIGNATURE) {
+                return Err(format!("ZIP central header {index} signature is invalid"));
+            }
+            let flags = zip_u16(data, zip_field(cursor, 8, "central flags")?)
+                .ok_or_else(|| "ZIP central flags are truncated".to_owned())?;
+            let method = zip_u16(data, zip_field(cursor, 10, "compression method")?)
+                .ok_or_else(|| "ZIP compression method is truncated".to_owned())?;
+            let uncompressed_size = zip_u32(data, zip_field(cursor, 24, "uncompressed size")?)
+                .ok_or_else(|| "ZIP uncompressed size is truncated".to_owned())?;
+            if uncompressed_size != 0 {
+                match (method, flags & 1 != 0) {
+                    (0, false) => {
+                        compression_methods.insert("Store");
+                    }
+                    (method, encrypted) => {
+                        return Err(format!(
+                            "unsupported ZIP metadata method {method}, encrypted={encrypted}"
+                        ));
+                    }
+                }
+            }
+            let name_length = usize::from(
+                zip_u16(data, zip_field(cursor, 28, "file name length")?)
+                    .ok_or_else(|| "ZIP file name length is truncated".to_owned())?,
+            );
+            let extra_length = usize::from(
+                zip_u16(data, zip_field(cursor, 30, "extra length")?)
+                    .ok_or_else(|| "ZIP extra length is truncated".to_owned())?,
+            );
+            let comment_length = usize::from(
+                zip_u16(data, zip_field(cursor, 32, "comment length")?)
+                    .ok_or_else(|| "ZIP comment length is truncated".to_owned())?,
+            );
+            let local_offset = usize::try_from(
+                zip_u32(data, zip_field(cursor, 42, "local header")?)
+                    .ok_or_else(|| "ZIP local header offset is truncated".to_owned())?,
+            )
+            .map_err(|_| "ZIP local header offset does not fit usize".to_owned())?;
+            if zip_u32(data, local_offset) != Some(LOCAL_SIGNATURE) {
+                local_header_signature_mismatches += 1;
+            }
+            cursor = header_end
+                .checked_add(name_length)
+                .and_then(|value| value.checked_add(extra_length))
+                .and_then(|value| value.checked_add(comment_length))
+                .ok_or_else(|| "ZIP central entry range overflow".to_owned())?;
+            if cursor > data.len() {
+                return Err(format!("ZIP central entry {index} is truncated"));
+            }
+        }
+        if compression_methods.len() > 1 {
+            return Err(
+                "multiple ZIP compression-method ordering is not covered by this spike".to_owned(),
+            );
+        }
+        let mut options = Vec::new();
+        if encrypted {
+            options.push("Encrypted");
+        }
+        options.extend(compression_methods);
+        Ok(Self {
+            is_verbose,
+            file_format_name: "ZIP".to_owned(),
+            file_format_version,
+            file_format_options: options.join(", "),
+            local_header_signature_mismatches,
+        })
+    }
+}
+
 fn collect_rule_files(root: &Path, output: &mut Vec<PathBuf>) -> Result<(), String> {
     let entries =
         fs::read_dir(root).map_err(|error| format!("cannot read {}: {error}", root.display()))?;
@@ -2018,6 +2169,82 @@ fn install_apk_host(
             .map_err(|error| error.to_string())?;
         ctx.globals()
             .set("APK", receiver)
+            .map_err(|error| error.to_string())
+    })?;
+    Ok(trace)
+}
+
+fn install_archive_host(
+    context: &Context,
+    archive_context: ArchiveRuleContext,
+) -> Result<Arc<ArchiveHostTrace>, String> {
+    let trace = Arc::new(ArchiveHostTrace::default());
+    let archive_context = Arc::new(archive_context);
+    context.with(|ctx| {
+        let receiver = Object::new(ctx.clone()).map_err(|error| error.to_string())?;
+
+        let context_for_verbose = Arc::clone(&archive_context);
+        let trace_for_verbose = Arc::clone(&trace);
+        receiver
+            .set(
+                "isVerbose",
+                Function::new(ctx.clone(), move || {
+                    trace_for_verbose
+                        .is_verbose_calls
+                        .fetch_add(1, Ordering::Relaxed);
+                    context_for_verbose.is_verbose
+                })
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+
+        let context_for_name = Arc::clone(&archive_context);
+        let trace_for_name = Arc::clone(&trace);
+        receiver
+            .set(
+                "getFileFormatName",
+                Function::new(ctx.clone(), move || {
+                    trace_for_name
+                        .get_file_format_name_calls
+                        .fetch_add(1, Ordering::Relaxed);
+                    context_for_name.file_format_name.clone()
+                })
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+
+        let context_for_version = Arc::clone(&archive_context);
+        let trace_for_version = Arc::clone(&trace);
+        receiver
+            .set(
+                "getFileFormatVersion",
+                Function::new(ctx.clone(), move || {
+                    trace_for_version
+                        .get_file_format_version_calls
+                        .fetch_add(1, Ordering::Relaxed);
+                    context_for_version.file_format_version.clone()
+                })
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+
+        let context_for_options = Arc::clone(&archive_context);
+        let trace_for_options = Arc::clone(&trace);
+        receiver
+            .set(
+                "getFileFormatOptions",
+                Function::new(ctx.clone(), move || {
+                    trace_for_options
+                        .get_file_format_options_calls
+                        .fetch_add(1, Ordering::Relaxed);
+                    context_for_options.file_format_options.clone()
+                })
+                .map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+
+        ctx.globals()
+            .set("Archive", receiver)
             .map_err(|error| error.to_string())
     })?;
     Ok(trace)
@@ -5033,6 +5260,223 @@ fn verify_apk_rule(
     Ok(all_match)
 }
 
+fn verify_archive_rule(
+    rule_root: &Path,
+    fixture_path: &Path,
+    baseline_path: &Path,
+) -> Result<bool, String> {
+    let fixture_bytes = fs::read(fixture_path)
+        .map_err(|error| format!("cannot read {}: {error}", fixture_path.display()))?;
+    let baseline_bytes = fs::read(baseline_path)
+        .map_err(|error| format!("cannot read {}: {error}", baseline_path.display()))?;
+    if sha256_hex(&fixture_bytes) != ARCHIVE_FIXTURE_SHA256 {
+        return Err(format!(
+            "fixed Archive fixture hash mismatch: {}",
+            fixture_path.display()
+        ));
+    }
+    if sha256_hex(&baseline_bytes) != ARCHIVE_QT5_BASELINE_SHA256 {
+        return Err(format!(
+            "fixed Qt5 Archive baseline hash mismatch: {}",
+            baseline_path.display()
+        ));
+    }
+    let rule_path = rule_root.join(ARCHIVE_RULE_SUFFIX);
+    let rule_source = fs::read(&rule_path)
+        .map_err(|error| format!("cannot read {}: {error}", rule_path.display()))?;
+    if rule_source.len() != ARCHIVE_RULE_BYTES || sha256_hex(&rule_source) != ARCHIVE_RULE_SHA256 {
+        return Err(format!(
+            "fixed Archive rule mismatch: {}",
+            rule_path.display()
+        ));
+    }
+    let fixture: Value = serde_json::from_slice(&fixture_bytes)
+        .map_err(|error| format!("cannot parse {}: {error}", fixture_path.display()))?;
+    let baseline: Value = serde_json::from_slice(&baseline_bytes)
+        .map_err(|error| format!("cannot parse {}: {error}", baseline_path.display()))?;
+    for (document_name, document) in [("fixture", &fixture), ("baseline", &baseline)] {
+        if document["upstream_commit"] != UPSTREAM_COMMIT
+            || document["xarchive_commit"] != XARCHIVE_COMMIT
+            || document["xscanengine_commit"] != XSCANENGINE_COMMIT
+            || document["rules_commit"] != RULES_COMMIT
+            || document["case_count"] != 3
+        {
+            return Err(format!("{document_name} Archive metadata mismatch"));
+        }
+    }
+    if fixture["rule"]["path"] != ARCHIVE_RULE_SUFFIX
+        || fixture["rule"]["sha256"] != ARCHIVE_RULE_SHA256
+        || baseline["rule_path"]
+            != format!("/opt/die-source/Detect-It-Easy/db/{ARCHIVE_RULE_SUFFIX}")
+        || baseline["rule_sha256"] != ARCHIVE_RULE_SHA256
+        || baseline["qt_version"] != "5.15.13"
+        || baseline["engine"] != "QScriptEngine"
+    {
+        return Err("fixed Archive fixture/baseline contract mismatch".to_owned());
+    }
+    let fixture_cases = fixture["cases"]
+        .as_array()
+        .ok_or_else(|| "Archive fixture cases are missing".to_owned())?;
+    let baseline_cases = baseline["cases"]
+        .as_array()
+        .ok_or_else(|| "Qt5 Archive baseline cases are missing".to_owned())?;
+    if fixture_cases.len() != 3 || baseline_cases.len() != 3 {
+        return Err("fixed Archive case count mismatch".to_owned());
+    }
+
+    let mut reports = Vec::with_capacity(fixture_cases.len());
+    let mut all_match = true;
+    for fixture_case in fixture_cases {
+        let id = fixture_case["id"]
+            .as_str()
+            .ok_or_else(|| "Archive fixture case id is missing".to_owned())?;
+        let baseline_case = baseline_cases
+            .iter()
+            .find(|case| case["id"] == id)
+            .ok_or_else(|| format!("Qt5 Archive baseline case is missing: {id}"))?;
+        for field in ["verbose", "data_hex", "data_sha256"] {
+            if fixture_case[field] != baseline_case[field] {
+                return Err(format!("{id}: fixture and Qt5 {field} evidence differ"));
+            }
+        }
+        if baseline_case["parser_valid"] != true || baseline_case["archive_script_error"] != "" {
+            return Err(format!(
+                "{id}: Qt5 Archive parser/script evidence is not valid"
+            ));
+        }
+        let verbose = fixture_case["verbose"]
+            .as_bool()
+            .ok_or_else(|| format!("{id}: verbose flag is missing"))?;
+        let data_hex = fixture_case["data_hex"]
+            .as_str()
+            .ok_or_else(|| format!("{id}: data_hex is missing"))?;
+        let data = decode_hex_string(data_hex, &format!("{id}.data_hex"))?;
+        if sha256_hex(&data) != fixture_case["data_sha256"] {
+            return Err(format!("{id}: decoded input hash mismatch"));
+        }
+        let archive_context =
+            ArchiveRuleContext::parse(&data, verbose).map_err(|error| format!("{id}: {error}"))?;
+        let native_matches = archive_context.is_verbose == baseline_case["native_is_verbose"]
+            && archive_context.file_format_name == baseline_case["native_format_name"]
+            && archive_context.file_format_version == baseline_case["native_format_version"]
+            && archive_context.file_format_options == baseline_case["native_format_options"];
+
+        let runtime = new_runtime()?;
+        let context = new_context(&runtime)?;
+        let detections = Arc::new(Mutex::new(Vec::new()));
+        install_nintendo_host(&context, Arc::new(data), Arc::clone(&detections))?;
+        let archive_trace = install_archive_host(&context, archive_context.clone())?;
+        eval_unit(&context, FORMAT_RESULT_SHIM)?;
+        let detect_result = eval_rule_lexical(&context, &rule_source, true)
+            .map_err(|error| format!("{id}: fixed Archive rule failed: {error}"))?;
+        let actual_detections = detections
+            .lock()
+            .map_err(|_| "Archive detection result mutex poisoned".to_owned())?
+            .clone();
+        let expected_detections: Vec<Detection> =
+            serde_json::from_value(baseline_case["detections"].clone())
+                .map_err(|error| format!("{id}: invalid Qt5 detections: {error}"))?;
+        let expected_detect_result = baseline_case["detect_result"]
+            .as_bool()
+            .ok_or_else(|| format!("{id}: Qt5 detect result is missing"))?;
+        let calls = [
+            archive_trace.is_verbose_calls.load(Ordering::Relaxed),
+            archive_trace
+                .get_file_format_name_calls
+                .load(Ordering::Relaxed),
+            archive_trace
+                .get_file_format_version_calls
+                .load(Ordering::Relaxed),
+            archive_trace
+                .get_file_format_options_calls
+                .load(Ordering::Relaxed),
+        ];
+        let expected_calls = if verbose { [1, 1, 1, 1] } else { [1, 0, 0, 0] };
+        let expected_local_mismatches = if id == "verbose_central_directory_only" {
+            1
+        } else {
+            0
+        };
+        let matches = native_matches
+            && archive_context.local_header_signature_mismatches == expected_local_mismatches
+            && detect_result == expected_detect_result.to_string()
+            && actual_detections == expected_detections
+            && calls == expected_calls;
+        all_match &= matches;
+        reports.push(json!({
+            "id": id,
+            "input_sha256": fixture_case["data_sha256"],
+            "input_bytes": data_hex.len() / 2,
+            "parser_valid": true,
+            "verbose": verbose,
+            "native": {
+                "qt5": {
+                    "is_verbose": baseline_case["native_is_verbose"],
+                    "file_format_name": baseline_case["native_format_name"],
+                    "file_format_version": baseline_case["native_format_version"],
+                    "file_format_options": baseline_case["native_format_options"],
+                },
+                "rust": {
+                    "is_verbose": archive_context.is_verbose,
+                    "file_format_name": archive_context.file_format_name,
+                    "file_format_version": archive_context.file_format_version,
+                    "file_format_options": archive_context.file_format_options,
+                },
+                "matches": native_matches,
+            },
+            "rust_local_header_signature_mismatches":
+                archive_context.local_header_signature_mismatches,
+            "detect_result": {
+                "qt5": expected_detect_result,
+                "rust": detect_result,
+            },
+            "detections": {
+                "qt5": expected_detections,
+                "rust": actual_detections,
+            },
+            "archive_host_calls": {
+                "is_verbose": calls[0],
+                "get_file_format_name": calls[1],
+                "get_file_format_version": calls[2],
+                "get_file_format_options": calls[3],
+            },
+            "matches": matches,
+        }));
+    }
+    println!(
+        "{}",
+        serde_json::to_string_pretty(&json!({
+            "schema_version": 1,
+            "operation":
+                "byte-identical fixed Archive rule with Rust ZIP metadata context",
+            "runtime": "rquickjs 0.12.1 / QuickJS-NG 0.15.1",
+            "upstream_commit": UPSTREAM_COMMIT,
+            "xarchive_commit": XARCHIVE_COMMIT,
+            "xscanengine_commit": XSCANENGINE_COMMIT,
+            "rules_commit": RULES_COMMIT,
+            "rule": {
+                "path": normalized_path(&rule_path),
+                "bytes": rule_source.len(),
+                "sha256": ARCHIVE_RULE_SHA256,
+            },
+            "fixture": {
+                "path": normalized_path(fixture_path),
+                "sha256": ARCHIVE_FIXTURE_SHA256,
+            },
+            "qt5_baseline": {
+                "path": normalized_path(baseline_path),
+                "sha256": ARCHIVE_QT5_BASELINE_SHA256,
+            },
+            "case_count": reports.len(),
+            "matched_count": reports.iter().filter(|case| case["matches"] == true).count(),
+            "cases": reports,
+            "all_match": all_match,
+        }))
+        .map_err(|error| format!("cannot serialize Archive rule report: {error}"))?
+    );
+    Ok(all_match)
+}
+
 fn upstream_type_priority(kind: &str) -> i32 {
     let normalized = kind.to_lowercase().replace(['~', '!'], "");
     match normalized.as_str() {
@@ -6055,7 +6499,9 @@ fn usage() -> ExitCode {
          diec-rquickjs-rule-runtime-spike verify-dex-rule \
          <main-rule-root> <dex-fixture-json> <qt5-baseline-json>\n       \
          diec-rquickjs-rule-runtime-spike verify-apk-rule \
-         <main-rule-root> <apk-fixture-json> <qt5-baseline-json>"
+         <main-rule-root> <apk-fixture-json> <qt5-baseline-json>\n       \
+         diec-rquickjs-rule-runtime-spike verify-archive-rule \
+         <main-rule-root> <archive-fixture-json> <qt5-baseline-json>"
     );
     ExitCode::from(2)
 }
@@ -6107,6 +6553,8 @@ fn main() -> ExitCode {
         verify_dex_rule(&roots[0], &roots[1], &roots[2])
     } else if command == "verify-apk-rule" && roots.len() == 3 {
         verify_apk_rule(&roots[0], &roots[1], &roots[2])
+    } else if command == "verify-archive-rule" && roots.len() == 3 {
+        verify_archive_rule(&roots[0], &roots[1], &roots[2])
     } else {
         return usage();
     };
@@ -6123,18 +6571,18 @@ fn main() -> ExitCode {
 #[cfg(test)]
 mod tests {
     use super::{
-        ApkRuleContext, BinaryHostContext, BinaryStringContext, DexRuleContext, ElfRuleContext,
-        HostFilePart, MachoRuleContext, NINTENDO_COMPAT_DECLARATION, NINTENDO_RULE_BYTES,
-        NINTENDO_VAR_DECLARATION, PeRuleContext, TextUnicodeType, apply_compatibility_overlay,
-        apply_exact_lifecycle_overlay, collect_rule_files, elf_matcher_map_projection,
-        eval_rule_lexical, eval_string, eval_unit, install_diagnostic_host_fallbacks,
-        install_nintendo_host, install_nintendo_host_with_context,
-        install_nintendo_host_with_context_and_strings, macho_matcher_map_projection, new_context,
-        new_runtime, nonnegative_index, normalized_path, parse_detection_triples,
-        parse_scope_detections, parse_scope_fixture_order, pe_physical_map_projection,
-        qt5_matcher_map_projection, qt5_pe_physical_map_projection, read_ascii, read_byte_array,
-        read_signed, read_unsigned, sha256_hex, shift_right_unsigned, sorted_detection_projection,
-        upstream_type_priority,
+        ApkRuleContext, ArchiveRuleContext, BinaryHostContext, BinaryStringContext, DexRuleContext,
+        ElfRuleContext, HostFilePart, MachoRuleContext, NINTENDO_COMPAT_DECLARATION,
+        NINTENDO_RULE_BYTES, NINTENDO_VAR_DECLARATION, PeRuleContext, TextUnicodeType,
+        apply_compatibility_overlay, apply_exact_lifecycle_overlay, collect_rule_files,
+        elf_matcher_map_projection, eval_rule_lexical, eval_string, eval_unit,
+        install_diagnostic_host_fallbacks, install_nintendo_host,
+        install_nintendo_host_with_context, install_nintendo_host_with_context_and_strings,
+        macho_matcher_map_projection, new_context, new_runtime, nonnegative_index, normalized_path,
+        parse_detection_triples, parse_scope_detections, parse_scope_fixture_order,
+        pe_physical_map_projection, qt5_matcher_map_projection, qt5_pe_physical_map_projection,
+        read_ascii, read_byte_array, read_signed, read_unsigned, sha256_hex, shift_right_unsigned,
+        sorted_detection_projection, upstream_type_priority,
     };
     use std::fs;
     use std::path::{Path, PathBuf};
@@ -6572,6 +7020,87 @@ mod tests {
             ApkRuleContext::parse(&non_apk)
                 .expect_err("ZIP without APK marker must fail")
                 .contains("does not identify an APK")
+        );
+    }
+
+    #[test]
+    fn archive_context_matches_fixed_qt5_metadata_verbose_gate_and_truncation() {
+        let baseline: serde_json::Value = serde_json::from_str(include_str!(
+            "../../../docs/research/data/archive-rule-qt5.json"
+        ))
+        .expect("fixed Qt5 Archive rule baseline should be valid JSON");
+        let cases = baseline["cases"]
+            .as_array()
+            .expect("fixed Qt5 Archive baseline should have cases");
+        assert_eq!(cases.len(), 3);
+        for case in cases {
+            assert_eq!(case["parser_valid"], true);
+            let id = case["id"].as_str().expect("case should have an id");
+            let data = decode_hex(case["data_hex"].as_str().expect("case should contain data"));
+            let verbose = case["verbose"]
+                .as_bool()
+                .expect("case should contain verbose");
+            let context = ArchiveRuleContext::parse(&data, verbose)
+                .unwrap_or_else(|error| panic!("{id}: Archive context should parse: {error}"));
+            assert_eq!(context.is_verbose, case["native_is_verbose"]);
+            assert_eq!(
+                context.file_format_name,
+                case["native_format_name"].as_str().unwrap()
+            );
+            assert_eq!(
+                context.file_format_version,
+                case["native_format_version"].as_str().unwrap()
+            );
+            assert_eq!(
+                context.file_format_options,
+                case["native_format_options"].as_str().unwrap()
+            );
+            assert_eq!(
+                context.local_header_signature_mismatches,
+                usize::from(id == "verbose_central_directory_only")
+            );
+        }
+    }
+
+    #[test]
+    fn archive_context_rejects_malformed_ranges_and_uncovered_methods() {
+        assert!(ArchiveRuleContext::parse(&[], true).is_err());
+        let baseline: serde_json::Value = serde_json::from_str(include_str!(
+            "../../../docs/research/data/archive-rule-qt5.json"
+        ))
+        .expect("fixed Qt5 Archive rule baseline should be valid JSON");
+        let data = decode_hex(
+            baseline["cases"][0]["data_hex"]
+                .as_str()
+                .expect("Archive case should contain data"),
+        );
+        let eocd = data.len() - 22;
+        let central_offset =
+            u32::from_le_bytes(data[eocd + 16..eocd + 20].try_into().unwrap()) as usize;
+
+        let mut invalid_signature = data.clone();
+        invalid_signature[0..4].fill(0);
+        assert!(
+            ArchiveRuleContext::parse(&invalid_signature, true)
+                .expect_err("invalid leading ZIP signature must fail")
+                .contains("signature")
+        );
+
+        let mut oversized_name = data.clone();
+        oversized_name[central_offset + 28..central_offset + 30]
+            .copy_from_slice(&u16::MAX.to_le_bytes());
+        assert!(
+            ArchiveRuleContext::parse(&oversized_name, true)
+                .expect_err("oversized central name must fail")
+                .contains("truncated")
+        );
+
+        let mut deflate = data;
+        deflate[central_offset + 10..central_offset + 12].copy_from_slice(&8_u16.to_le_bytes());
+        assert!(
+            ArchiveRuleContext::parse(&deflate, true)
+                .expect_err("uncovered compression method must fail explicitly")
+                .contains("unsupported ZIP metadata method")
         );
     }
 

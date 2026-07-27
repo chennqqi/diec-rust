@@ -155,7 +155,7 @@ proxy 只用于语法/顶层执行覆盖，不代表宿主 API 兼容，也不�
 | Lockfile packages | 34 |
 | 当前 target packages | 28（`cargo metadata --filter-platform x86_64-pc-windows-msvc`） |
 | Clean release build | 13,258 ms（adapter 前记录，本机已缓存下载、空 target） |
-| Release executable | 2,066,944 bytes（Rust 1.97.1）；2,092,032 bytes（Rust 1.88.0） |
+| Release executable | 2,445,824 bytes（Rust 1.97.1）；2,468,352 bytes（Rust 1.88.0） |
 
 `cargo +1.86.0 check --locked` 明确报告
 `rquickjs@0.12.1 requires rustc 1.87`。本实验继续复用已安装的 1.88 工具链。
@@ -747,7 +747,7 @@ Nintendo 的单脚本语法 overlay，`audio` 和 MiniExtensions 的跨规则 ov
 | 外部 interrupt | 未发现公开接口 | 跨线程 token 已中断并同 context 恢复 |
 | Heap limit | 未发现公开接口 | 支持默认 allocator |
 | Windows target packages | 126 | 28 |
-| Release spike | 11,784,192 bytes | 2,066,944 bytes（Rust 1.97.1） |
+| Release spike | 11,784,192 bytes | 2,445,824 bytes（Rust 1.97.1） |
 | 实现语言 | 纯 Rust | Rust wrapper + vendored C |
 | 本轮工具链 | Rust 1.88 | 最低 1.87，本轮 1.88 |
 
@@ -911,7 +911,11 @@ JSON。运行前先执行
   `APK.isArchiveRecordPresent` 和原样 QDBH 规则完成 3/3；大小写反例不命中，
   local records 全部缺失而 central names 保留时仍命中，证据见
   [`apk-rule-runtime-differential.md`](apk-rule-runtime-differential.md)。
-  五者仍不覆盖其余 PE/ELF/Mach-O/DEX/APK HostApi、PE32+、MUTF-8、
+  第六个分支使用真实 ZIP metadata context、native `Archive.isVerbose` 和三个
+  format getter，以及原样 `_Archive.0.sg` 完成 verbose/quiet/
+  central-directory-only 3/3；metadata、完整 tuple 和调用路径均一致，证据见
+  [`archive-rule-runtime-differential.md`](archive-rule-runtime-differential.md)。
+  六者仍不覆盖其余 PE/ELF/Mach-O/DEX/APK/Archive HostApi、PE32+、MUTF-8、
   decompression 或其他格式。
 - 规则侧已清点 429 个第一层宿主 receiver/method 和 464 个 arity 形状；
   337 个 C++ slot 与 13 个脚本扩展静态覆盖 460 个形状。共享 Qt 5/Qt 6

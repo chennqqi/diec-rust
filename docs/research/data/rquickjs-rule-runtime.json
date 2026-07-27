@@ -12,15 +12,15 @@
   },
   "dependency_footprint": {
     "lockfile_packages": 34,
-    "release_executable_bytes_default_1_97_1": 2066944,
-    "release_executable_bytes_msrv_1_88_0": 2092032,
+    "release_executable_bytes_default_1_97_1": 2445824,
+    "release_executable_bytes_msrv_1_88_0": 2468352,
     "target": "x86_64-pc-windows-msvc",
     "target_packages": 28
   },
   "experiment": {
     "cargo_lock_sha256": "f389eb266779a88939fea9793effdff29d01ea0e1184915698f4fa0f9441d0ad",
     "cargo_toml_sha256": "82c5bb97749f50212e5364c2ac7d1f81eaec4d460a9bf47710b4b42f9204a79f",
-    "source_sha256": "139d9f3fda2064e694c2eb5549c59ec27412243e42d11456ab123494f86c1f3c",
+    "source_sha256": "288e476efec36c9f4b8f41ba64d9e6d6eeea2171367e4dff28c3c62386f64eed",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -1156,6 +1156,59 @@
       "rust_local_header_signature_mismatch_count": 2
     },
     "scope": "one byte-identical APK rule with a real Rust ZIP central-directory context over project-generated positive, case-sensitive negative, and local-record-truncated inputs; not complete ZIP, APK manifest, decompression, or format HostApi compatibility"
+  },
+  "archive_rule_differential": {
+    "oracle": {
+      "baseline": "docs/research/data/archive-rule-qt5.json",
+      "baseline_sha256": "92d33c5982fcb457c0a07b30dbe1ef262ac5ccf36ca00fa5151c7b2e3f10c97c",
+      "binary": "/opt/die-build/src/console/diec-archive-rule-harness",
+      "binary_sha256": "2a33d68a9c7046689dc47e08cafd9be795eb614c8d2d2eb3600cfccfece3998b",
+      "case_count": 3,
+      "dockerfile": "tools/upstream/Dockerfile.archive-rule-harness-qt5",
+      "dockerfile_sha256": "436d70747fa1ccf1568d4f494b8d70b14346878dccbc861abf124ee9a10e8688",
+      "engine": "QScriptEngine",
+      "fixture": "docs/research/data/archive-rule-fixture.json",
+      "fixture_generator": "tools/corpus/generate_archive_rule_fixture.py",
+      "fixture_generator_sha256": "d670b1008b5d474060a990c6fd65c46b14a49e9e108966db6350eb95266ee95a",
+      "fixture_sha256": "04ee27fe5741ad9b65098722213d67058f748416e7075256dacf26a3be4d6b6b",
+      "harness_source": "tools/upstream/archive_rule_harness_main.cpp",
+      "harness_source_sha256": "5fe386054f2bc98d28eee46eb1f79b6cee2ad7c282eb33de9497bfe981cfa3fd",
+      "image": "diec-rust/archive-rule-harness-qt5:74eaf505",
+      "image_id": "sha256:844218ebce6ed34ce783ab06e15b69aeb431237999bb70f3ddd5e742a961d521",
+      "probe": "tools/upstream/probe_archive_rule_harness.py",
+      "probe_passed": true,
+      "probe_sha256": "a55d43c1363c4df9e69704889a16dc1c401f5011a609df03f86786b359bae396",
+      "qt_version": "5.15.13",
+      "rule_source": {
+        "bytes": 421,
+        "path": "upstream/Detect-It-Easy/db/Archive/_Archive.0.sg",
+        "sha256": "97202e19118514bcd33ef40c2dea69822249406092eddcb61f56e3410278ec86"
+      },
+      "xarchive_commit": "0fcd4e8d3e9933baac3b12246d82ac026557ffd0"
+    },
+    "rust": {
+      "case_count": 3,
+      "matched_count": 3,
+      "rule_bytes_preserved": true,
+      "command": "verify-archive-rule",
+      "is_verbose_call_count": 3,
+      "metadata_getter_call_count": 6
+    },
+    "coverage": {
+      "verbose_positive_count": 2,
+      "quiet_negative_count": 1,
+      "central_directory_only_count": 1,
+      "format": "Archive/ZIP",
+      "receiver_methods": [
+        "Archive.isVerbose",
+        "Archive.getFileFormatName",
+        "Archive.getFileFormatVersion",
+        "Archive.getFileFormatOptions"
+      ],
+      "metadata_match_count": 3,
+      "rust_local_header_signature_mismatch_count": 1
+    },
+    "scope": "one byte-identical Archive metadata rule with a real Rust ZIP context over project-generated verbose, quiet, and central-directory-only inputs; not complete ZIP metadata, XArchive formats, decompression, or format HostApi compatibility"
   },
   "full_binary_corpus_oracle": {
     "accepted_detect_count": 4088,
