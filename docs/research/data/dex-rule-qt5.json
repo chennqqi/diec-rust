@@ -1,0 +1,68 @@
+{
+    "case_count": 3,
+    "cases": [
+        {
+            "data_hex": "6465780a30333500820e844d1ba22d86393c35d7425bcc260511462af1524f66af00000070000000785634120000000000000000740000000100000070000000000000000000000000000000000000000000000000000000000000000000000000000000000000003b00000074000000a8000000030000000000000001000000000000000100000001000000700000000220000001000000a8000000000000000000000000000000052f7164626800",
+            "data_sha256": "cdbeb8c230c136c53f86ab5798f9b9ec710f7db5c434f7b08967cfc243853279",
+            "detect_is_boolean": true,
+            "detect_result": true,
+            "detections": [
+                [
+                    "protector",
+                    "QDBH",
+                    "",
+                    ""
+                ]
+            ],
+            "dex_script_error": "",
+            "id": "qdbh_string_match",
+            "map_item_count": 3,
+            "native_qdbh_present": true,
+            "parsed_strings": [
+                "/qdbh"
+            ],
+            "parser_valid": true
+        },
+        {
+            "data_hex": "6465780a30333500c20fed098f8359f8b1903e2d1359602c5124e740208d30abaf00000070000000785634120000000000000000740000000100000070000000000000000000000000000000000000000000000000000000000000000000000000000000000000003b00000074000000a8000000030000000000000001000000000000000100000001000000700000000220000001000000a8000000000000000000000000000000052f6e6f706500",
+            "data_sha256": "ce792db686db6c21f1f8b2f1cdff0b46af4b450fb81b8ab64d27f17211b06560",
+            "detect_is_boolean": true,
+            "detect_result": false,
+            "detections": [
+            ],
+            "dex_script_error": "",
+            "id": "qdbh_string_mismatch",
+            "map_item_count": 3,
+            "native_qdbh_present": false,
+            "parsed_strings": [
+                "/nope"
+            ],
+            "parser_valid": true
+        },
+        {
+            "data_hex": "6465780a30333500cc0efb192b4c6a193aaf0fd1ae27489eb51ae4a2f5971faba800000070000000785634120000000000000000740000000100000070000000000000000000000000000000000000000000000000000000000000000000000000000000000000003400000074000000a8000000030000000000000001000000000000000100000001000000700000000220000001000000a8000000000000000000000000000000",
+            "data_sha256": "21ac355feb7351db35b061838031b3aa2e68a02d75b794bf135be31962ec3438",
+            "detect_is_boolean": true,
+            "detect_result": false,
+            "detections": [
+            ],
+            "dex_script_error": "",
+            "id": "qdbh_string_data_truncated",
+            "map_item_count": 3,
+            "native_qdbh_present": false,
+            "parsed_strings": [
+                ""
+            ],
+            "parser_valid": true
+        }
+    ],
+    "engine": "QScriptEngine",
+    "qt_version": "5.15.13",
+    "rule_path": "/opt/die-source/Detect-It-Easy/db/DEX/protector_QDBH.2.sg",
+    "rule_sha256": "5280ae0425f47c03ca037002b29964fe59eb898e871a00ad266475856f0e7ba7",
+    "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+    "schema_version": 1,
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "xdex_commit": "035c61966d3a9018edf80cd0013083ee32626e71",
+    "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+}
