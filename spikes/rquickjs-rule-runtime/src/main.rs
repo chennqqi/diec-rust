@@ -151,6 +151,13 @@ const ELF_RULE_SHA256: &str = "35461b495f056d98de9af44eda91df3c6412d22555b182834
 const ELF_FIXTURE_SHA256: &str = "b3547482b2013a993a36262860f82dbda69b1588898cd2a8020124c6b9aad5b4";
 const ELF_QT5_BASELINE_SHA256: &str =
     "edf2d32cde44c8fcf010190e48cc33076dcb1dc0ea81830996eeab7a57f89410";
+const MACHO_RULE_SUFFIX: &str = "MACH/compiler_Rust.4.sg";
+const MACHO_RULE_BYTES: usize = 1_331;
+const MACHO_RULE_SHA256: &str = "70fec4e86cd1a1a5b3e7663521cb45e3c4ce85d1e1f8ed80cf1d80f6d8268d84";
+const MACHO_FIXTURE_SHA256: &str =
+    "d1e691bcd72942916dcabb75177f6e411b7d78483bdd0d1635c4a0c89619188d";
+const MACHO_QT5_BASELINE_SHA256: &str =
+    "ec6b9f373d598f41cf7d51550eae020307c2a41b27f569135c022aeda54045f4";
 const FORMATS_COMMIT: &str = "1151e7254fdee3c0294ff7095edbdd7bfccf8201";
 const FORMAT_RESULT_SHIM: &[u8] = br#"
     var bDetected, sType, sName, sVersion, sOptions;
@@ -245,6 +252,15 @@ struct ElfRuleContext {
     entry_point_offset: Option<usize>,
     memory_map: MemoryMap,
     out_of_bounds_loads: usize,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+struct MachoRuleContext {
+    is_64: bool,
+    cpu_type: u32,
+    entry_point_offset: Option<usize>,
+    memory_map: MemoryMap,
+    out_of_bounds_segments: usize,
 }
 
 #[derive(Default)]
@@ -743,6 +759,176 @@ impl ElfRuleContext {
             out_of_bounds_loads,
             memory_map: MemoryMap {
                 file_type: FileType::Elf,
+                endian,
+                code_base: 0,
+                start_load_offset: 0,
+                records,
+            },
+        })
+    }
+}
+
+fn macho_u32(data: &[u8], offset: usize, endian: Endian) -> Option<u32> {
+    elf_u32(data, offset, endian)
+}
+
+fn macho_u64(data: &[u8], offset: usize, endian: Endian) -> Option<u64> {
+    elf_u64(data, offset, endian)
+}
+
+fn macho_field(base: usize, relative: usize, name: &str) -> Result<usize, String> {
+    base.checked_add(relative)
+        .ok_or_else(|| format!("Mach-O {name} offset overflow"))
+}
+
+impl MachoRuleContext {
+    fn parse(data: &[u8]) -> Result<Self, String> {
+        let (is_64, endian) = match data.get(0..4) {
+            Some(b"\xce\xfa\xed\xfe") => (false, Endian::Little),
+            Some(b"\xcf\xfa\xed\xfe") => (true, Endian::Little),
+            Some(b"\xfe\xed\xfa\xce") => (false, Endian::Big),
+            Some(b"\xfe\xed\xfa\xcf") => (true, Endian::Big),
+            _ => return Err("Mach-O signature is missing or unsupported".to_owned()),
+        };
+        let header_size = if is_64 { 32_usize } else { 28_usize };
+        if data.len() < header_size {
+            return Err("Mach-O header is truncated".to_owned());
+        }
+        let cpu_type =
+            macho_u32(data, 4, endian).ok_or_else(|| "Mach-O CPU type is truncated".to_owned())?;
+        let command_count = usize::try_from(
+            macho_u32(data, 16, endian)
+                .ok_or_else(|| "Mach-O command count is truncated".to_owned())?,
+        )
+        .map_err(|_| "Mach-O command count does not fit usize".to_owned())?;
+        if command_count > 1024 {
+            return Err(format!(
+                "Mach-O command count {command_count} exceeds spike limit 1024"
+            ));
+        }
+        let command_bytes = usize::try_from(
+            macho_u32(data, 20, endian)
+                .ok_or_else(|| "Mach-O command byte size is truncated".to_owned())?,
+        )
+        .map_err(|_| "Mach-O command byte size does not fit usize".to_owned())?;
+        let commands_end = header_size
+            .checked_add(command_bytes)
+            .ok_or_else(|| "Mach-O command range overflow".to_owned())?;
+        if commands_end > data.len() {
+            return Err("Mach-O load commands are truncated".to_owned());
+        }
+
+        let mut cursor = header_size;
+        let mut segments = Vec::new();
+        let mut main_entry_offset = None;
+        for _ in 0..command_count {
+            let command = macho_u32(data, cursor, endian)
+                .ok_or_else(|| "Mach-O load command is truncated".to_owned())?;
+            let size = usize::try_from(
+                macho_u32(data, macho_field(cursor, 4, "command size")?, endian)
+                    .ok_or_else(|| "Mach-O load command size is truncated".to_owned())?,
+            )
+            .map_err(|_| "Mach-O command size does not fit usize".to_owned())?;
+            if size < 8 {
+                return Err(format!("Mach-O load command size {size} is smaller than 8"));
+            }
+            let next = cursor
+                .checked_add(size)
+                .ok_or_else(|| "Mach-O load command range overflow".to_owned())?;
+            if next > commands_end {
+                return Err("Mach-O load command exceeds declared command range".to_owned());
+            }
+            if command == 0x19 {
+                if size < 72 {
+                    return Err("Mach-O64 segment command is smaller than 72".to_owned());
+                }
+                let address = macho_u64(data, macho_field(cursor, 24, "segment address")?, endian)
+                    .ok_or_else(|| "Mach-O64 segment address is truncated".to_owned())?;
+                let offset = macho_u64(data, macho_field(cursor, 40, "segment offset")?, endian)
+                    .ok_or_else(|| "Mach-O64 segment offset is truncated".to_owned())?;
+                let file_size =
+                    macho_u64(data, macho_field(cursor, 48, "segment file size")?, endian)
+                        .ok_or_else(|| "Mach-O64 segment file size is truncated".to_owned())?;
+                if file_size != 0 {
+                    segments.push((offset, address, file_size));
+                }
+            } else if command == 0x1 {
+                if size < 56 {
+                    return Err("Mach-O32 segment command is smaller than 56".to_owned());
+                }
+                let address = u64::from(
+                    macho_u32(data, macho_field(cursor, 24, "segment address")?, endian)
+                        .ok_or_else(|| "Mach-O32 segment address is truncated".to_owned())?,
+                );
+                let offset = u64::from(
+                    macho_u32(data, macho_field(cursor, 32, "segment offset")?, endian)
+                        .ok_or_else(|| "Mach-O32 segment offset is truncated".to_owned())?,
+                );
+                let file_size = u64::from(
+                    macho_u32(data, macho_field(cursor, 36, "segment file size")?, endian)
+                        .ok_or_else(|| "Mach-O32 segment file size is truncated".to_owned())?,
+                );
+                if file_size != 0 {
+                    segments.push((offset, address, file_size));
+                }
+            } else if command == 0x8000_0028 {
+                if size < 24 {
+                    return Err("Mach-O LC_MAIN command is smaller than 24".to_owned());
+                }
+                main_entry_offset = Some(
+                    macho_u64(
+                        data,
+                        macho_field(cursor, 8, "LC_MAIN entry offset")?,
+                        endian,
+                    )
+                    .ok_or_else(|| "Mach-O LC_MAIN entry offset is truncated".to_owned())?,
+                );
+            }
+            cursor = next;
+        }
+        if cursor != commands_end {
+            return Err("Mach-O load command sizes do not consume sizeofcmds".to_owned());
+        }
+        if segments.is_empty() {
+            return Err("Mach-O contains no non-empty segment".to_owned());
+        }
+        let data_len = u64::try_from(data.len())
+            .map_err(|_| "Mach-O input length does not fit u64".to_owned())?;
+        let mut out_of_bounds_segments = 0_usize;
+        let mut records = Vec::with_capacity(segments.len());
+        for (offset, address, size) in segments {
+            let end = offset
+                .checked_add(size)
+                .ok_or_else(|| "Mach-O segment file range overflow".to_owned())?;
+            address
+                .checked_add(size)
+                .ok_or_else(|| "Mach-O segment address range overflow".to_owned())?;
+            if end > data_len {
+                out_of_bounds_segments += 1;
+            }
+            records.push(MemoryRecord {
+                offset,
+                address,
+                size,
+            });
+        }
+        let entry_point_offset = main_entry_offset
+            .filter(|entry| {
+                records.iter().any(|record| {
+                    record
+                        .offset
+                        .checked_add(record.size)
+                        .is_some_and(|end| record.offset <= *entry && *entry < end)
+                })
+            })
+            .and_then(|entry| usize::try_from(entry).ok());
+        Ok(Self {
+            is_64,
+            cpu_type,
+            entry_point_offset,
+            out_of_bounds_segments,
+            memory_map: MemoryMap {
+                file_type: FileType::MachO,
                 endian,
                 code_base: 0,
                 start_load_offset: 0,
@@ -1339,6 +1525,7 @@ fn install_entry_point_host(
     let compare_api = match receiver_name {
         "PE" => "PE.compareEP",
         "ELF" => "ELF.compareEP",
+        "MACH" => "MACH.compareEP",
         _ => "format.compareEP",
     };
     context.with(|ctx| {
@@ -1414,6 +1601,20 @@ fn install_elf_host(
         data,
         elf_context.entry_point_offset,
         elf_context.memory_map,
+    )
+}
+
+fn install_macho_host(
+    context: &Context,
+    data: Arc<Vec<u8>>,
+    macho_context: MachoRuleContext,
+) -> Result<Arc<EntryPointHostTrace>, String> {
+    install_entry_point_host(
+        context,
+        "MACH",
+        data,
+        macho_context.entry_point_offset,
+        macho_context.memory_map,
     )
 }
 
@@ -3285,8 +3486,31 @@ fn elf_matcher_map_projection(context: &ElfRuleContext) -> Value {
     })
 }
 
+fn macho_matcher_map_projection(context: &MachoRuleContext) -> Value {
+    let endian = match context.memory_map.endian {
+        Endian::Little => "little",
+        Endian::Big => "big",
+    };
+    json!({
+        "file_type": "macho",
+        "endian": endian,
+        "code_base": context.memory_map.code_base.to_string(),
+        "start_load_offset": context.memory_map.start_load_offset.to_string(),
+        "records": context
+            .memory_map
+            .records
+            .iter()
+            .map(|record| json!({
+                "offset": record.offset.to_string(),
+                "address": record.address.to_string(),
+                "size": record.size.to_string(),
+            }))
+            .collect::<Vec<_>>(),
+    })
+}
+
 #[derive(Debug, Eq, PartialEq)]
-struct Qt5ElfMapProjection {
+struct Qt5MatcherMapProjection {
     matcher_map: Value,
     discarded_virtual_records: usize,
     discarded_nonpositive_size_records: usize,
@@ -3297,19 +3521,19 @@ struct Qt5ElfMapProjection {
 fn parse_qt5_i128(value: Option<&Value>, field: &str) -> Result<i128, String> {
     value
         .and_then(Value::as_str)
-        .ok_or_else(|| format!("Qt5 ELF memory record {field} is missing"))?
+        .ok_or_else(|| format!("Qt5 memory record {field} is missing"))?
         .parse::<i128>()
-        .map_err(|error| format!("Qt5 ELF memory record {field} is invalid: {error}"))
+        .map_err(|error| format!("Qt5 memory record {field} is invalid: {error}"))
 }
 
-fn qt5_elf_matcher_map_projection(value: &Value) -> Result<Qt5ElfMapProjection, String> {
+fn qt5_matcher_map_projection(value: &Value) -> Result<Qt5MatcherMapProjection, String> {
     let object = value
         .as_object()
-        .ok_or_else(|| "Qt5 ELF memory map must be an object".to_owned())?;
+        .ok_or_else(|| "Qt5 memory map must be an object".to_owned())?;
     let source_records = object
         .get("records")
         .and_then(Value::as_array)
-        .ok_or_else(|| "Qt5 ELF memory map records are missing".to_owned())?;
+        .ok_or_else(|| "Qt5 memory map records are missing".to_owned())?;
     let mut records = Vec::new();
     let mut discarded_virtual_records = 0_usize;
     let mut discarded_nonpositive_size_records = 0_usize;
@@ -3318,7 +3542,7 @@ fn qt5_elf_matcher_map_projection(value: &Value) -> Result<Qt5ElfMapProjection, 
     for record in source_records {
         let record = record
             .as_object()
-            .ok_or_else(|| "Qt5 ELF memory map record must be an object".to_owned())?;
+            .ok_or_else(|| "Qt5 memory map record must be an object".to_owned())?;
         if record.get("virtual").and_then(Value::as_bool) != Some(false) {
             discarded_virtual_records += 1;
             continue;
@@ -3344,7 +3568,7 @@ fn qt5_elf_matcher_map_projection(value: &Value) -> Result<Qt5ElfMapProjection, 
             "size": size.to_string(),
         }));
     }
-    Ok(Qt5ElfMapProjection {
+    Ok(Qt5MatcherMapProjection {
         matcher_map: json!({
             "file_type": object.get("file_type"),
             "endian": object.get("endian"),
@@ -3646,7 +3870,7 @@ fn verify_elf_rule(
             .and_then(|offset| i64::try_from(offset).ok())
             .unwrap_or(-1);
         let actual_map = elf_matcher_map_projection(&elf_context);
-        let expected_projection = qt5_elf_matcher_map_projection(&baseline_case["memory_map"])?;
+        let expected_projection = qt5_matcher_map_projection(&baseline_case["memory_map"])?;
         let memory_map_matches = actual_map == expected_projection.matcher_map;
 
         let runtime = new_runtime()?;
@@ -3756,6 +3980,243 @@ fn verify_elf_rule(
             "all_match": all_match,
         }))
         .map_err(|error| format!("cannot serialize ELF rule report: {error}"))?
+    );
+    Ok(all_match)
+}
+
+fn verify_macho_rule(
+    rule_root: &Path,
+    fixture_path: &Path,
+    baseline_path: &Path,
+) -> Result<bool, String> {
+    let fixture_bytes = fs::read(fixture_path)
+        .map_err(|error| format!("cannot read {}: {error}", fixture_path.display()))?;
+    let baseline_bytes = fs::read(baseline_path)
+        .map_err(|error| format!("cannot read {}: {error}", baseline_path.display()))?;
+    if sha256_hex(&fixture_bytes) != MACHO_FIXTURE_SHA256 {
+        return Err(format!(
+            "fixed Mach-O fixture hash mismatch: {}",
+            fixture_path.display()
+        ));
+    }
+    if sha256_hex(&baseline_bytes) != MACHO_QT5_BASELINE_SHA256 {
+        return Err(format!(
+            "fixed Qt5 Mach-O baseline hash mismatch: {}",
+            baseline_path.display()
+        ));
+    }
+    let rule_path = rule_root.join(MACHO_RULE_SUFFIX);
+    let rule_source = fs::read(&rule_path)
+        .map_err(|error| format!("cannot read {}: {error}", rule_path.display()))?;
+    if rule_source.len() != MACHO_RULE_BYTES || sha256_hex(&rule_source) != MACHO_RULE_SHA256 {
+        return Err(format!(
+            "fixed Mach-O rule mismatch: {}",
+            rule_path.display()
+        ));
+    }
+    let fixture: Value = serde_json::from_slice(&fixture_bytes)
+        .map_err(|error| format!("cannot parse {}: {error}", fixture_path.display()))?;
+    let baseline: Value = serde_json::from_slice(&baseline_bytes)
+        .map_err(|error| format!("cannot parse {}: {error}", baseline_path.display()))?;
+    for (document_name, document) in [("fixture", &fixture), ("baseline", &baseline)] {
+        if document["upstream_commit"] != UPSTREAM_COMMIT
+            || document["formats_commit"] != FORMATS_COMMIT
+            || document["xscanengine_commit"] != XSCANENGINE_COMMIT
+            || document["rules_commit"] != RULES_COMMIT
+            || document["case_count"] != 4
+        {
+            return Err(format!("{document_name} Mach-O metadata mismatch"));
+        }
+    }
+    if fixture["rule"]["path"] != MACHO_RULE_SUFFIX
+        || fixture["rule"]["sha256"] != MACHO_RULE_SHA256
+        || baseline["rule_path"] != format!("/opt/die-source/Detect-It-Easy/db/{MACHO_RULE_SUFFIX}")
+        || baseline["rule_sha256"] != MACHO_RULE_SHA256
+        || baseline["qt_version"] != "5.15.13"
+        || baseline["engine"] != "QScriptEngine"
+    {
+        return Err("fixed Mach-O fixture/baseline contract mismatch".to_owned());
+    }
+    let fixture_cases = fixture["cases"]
+        .as_array()
+        .ok_or_else(|| "Mach-O fixture cases are missing".to_owned())?;
+    let baseline_cases = baseline["cases"]
+        .as_array()
+        .ok_or_else(|| "Qt5 Mach-O baseline cases are missing".to_owned())?;
+    if fixture_cases.len() != 4 || baseline_cases.len() != 4 {
+        return Err("fixed Mach-O case count mismatch".to_owned());
+    }
+
+    let mut reports = Vec::with_capacity(fixture_cases.len());
+    let mut all_match = true;
+    for fixture_case in fixture_cases {
+        let id = fixture_case["id"]
+            .as_str()
+            .ok_or_else(|| "Mach-O fixture case id is missing".to_owned())?;
+        let baseline_case = baseline_cases
+            .iter()
+            .find(|case| case["id"] == id)
+            .ok_or_else(|| format!("Qt5 Mach-O baseline case is missing: {id}"))?;
+        for field in ["architecture", "cpu_type", "data_hex", "data_sha256"] {
+            if fixture_case[field] != baseline_case[field] {
+                return Err(format!("{id}: fixture and Qt5 {field} evidence differ"));
+            }
+        }
+        if baseline_case["parser_valid"] != true || baseline_case["mach_script_error"] != "" {
+            return Err(format!(
+                "{id}: Qt5 Mach-O parser/script evidence is not valid"
+            ));
+        }
+        let data_hex = fixture_case["data_hex"]
+            .as_str()
+            .ok_or_else(|| format!("{id}: data_hex is missing"))?;
+        let data = decode_hex_string(data_hex, &format!("{id}.data_hex"))?;
+        if sha256_hex(&data) != fixture_case["data_sha256"] {
+            return Err(format!("{id}: decoded input hash mismatch"));
+        }
+        let macho_context =
+            MachoRuleContext::parse(&data).map_err(|error| format!("{id}: {error}"))?;
+        let expected_cpu_type = baseline_case["cpu_type"]
+            .as_u64()
+            .ok_or_else(|| format!("{id}: Qt5 CPU type is missing"))?;
+        let actual_cpu_type = u64::from(macho_context.cpu_type);
+        let expected_entry_point = baseline_case["entry_point_offset"]
+            .as_i64()
+            .ok_or_else(|| format!("{id}: Qt5 entry point offset is missing"))?;
+        let actual_entry_point = macho_context
+            .entry_point_offset
+            .and_then(|offset| i64::try_from(offset).ok())
+            .unwrap_or(-1);
+        let actual_map = macho_matcher_map_projection(&macho_context);
+        let expected_projection = qt5_matcher_map_projection(&baseline_case["memory_map"])?;
+        let memory_map_matches = actual_map == expected_projection.matcher_map;
+
+        let runtime = new_runtime()?;
+        let context = new_context(&runtime)?;
+        let detections = Arc::new(Mutex::new(Vec::new()));
+        install_nintendo_host(&context, Arc::new(data.clone()), Arc::clone(&detections))?;
+        let macho_trace = install_macho_host(&context, Arc::new(data), macho_context.clone())?;
+        eval_unit(&context, FORMAT_RESULT_SHIM)?;
+        let detect_result = eval_rule_lexical(&context, &rule_source, true)
+            .map_err(|error| format!("{id}: fixed Mach-O rule failed: {error}"))?;
+        let actual_detections = detections
+            .lock()
+            .map_err(|_| "Mach-O detection result mutex poisoned".to_owned())?
+            .clone();
+        let expected_detections: Vec<Detection> =
+            serde_json::from_value(baseline_case["detections"].clone())
+                .map_err(|error| format!("{id}: invalid Qt5 detections: {error}"))?;
+        let expected_detect_result = baseline_case["detect_result"]
+            .as_bool()
+            .ok_or_else(|| format!("{id}: Qt5 detect result is missing"))?;
+        let expected_calls = match id {
+            "rust_macho64_x86_64_entry_point_match" => 5,
+            "rust_macho64_arm64_entry_point_match" => 6,
+            "rust_macho64_x86_64_entry_point_mismatch"
+            | "rust_macho64_x86_64_entry_point_truncated" => 9,
+            _ => return Err(format!("{id}: unexpected fixed Mach-O case")),
+        };
+        let expected_fast_paths = if id.ends_with("_truncated") {
+            0
+        } else {
+            expected_calls
+        };
+        let expected_generic_paths = expected_calls - expected_fast_paths;
+        let compare_ep_calls = macho_trace.compare_ep_calls.load(Ordering::Relaxed);
+        let fast_paths = macho_trace.fast_paths.load(Ordering::Relaxed);
+        let generic_paths = macho_trace.generic_paths.load(Ordering::Relaxed);
+        let errors = macho_trace.errors.load(Ordering::Relaxed);
+        let cpu_type_matches = actual_cpu_type == expected_cpu_type;
+        let entry_point_matches = actual_entry_point == expected_entry_point;
+        let matches = macho_context.is_64
+            && cpu_type_matches
+            && entry_point_matches
+            && memory_map_matches
+            && detect_result == expected_detect_result.to_string()
+            && actual_detections == expected_detections
+            && compare_ep_calls == expected_calls
+            && fast_paths == expected_fast_paths
+            && generic_paths == expected_generic_paths
+            && errors == 0;
+        all_match &= matches;
+        reports.push(json!({
+            "id": id,
+            "architecture": fixture_case["architecture"],
+            "input_sha256": fixture_case["data_sha256"],
+            "input_bytes": data_hex.len() / 2,
+            "parser_valid": true,
+            "is_64": macho_context.is_64,
+            "cpu_type": {
+                "qt5": expected_cpu_type,
+                "rust": actual_cpu_type,
+                "matches": cpu_type_matches,
+            },
+            "entry_point_offset": {
+                "qt5": expected_entry_point,
+                "rust": actual_entry_point,
+                "matches": entry_point_matches,
+            },
+            "matcher_memory_map": {
+                "qt5_safe_projection": expected_projection.matcher_map,
+                "rust": actual_map,
+                "matches": memory_map_matches,
+                "qt5_discarded_records": {
+                    "virtual": expected_projection.discarded_virtual_records,
+                    "nonpositive_size":
+                        expected_projection.discarded_nonpositive_size_records,
+                    "negative_offset":
+                        expected_projection.discarded_negative_offset_records,
+                    "overlay_sentinel":
+                        expected_projection.discarded_overlay_sentinel_records,
+                },
+                "rust_declared_out_of_bounds_segments":
+                    macho_context.out_of_bounds_segments,
+            },
+            "detect_result": {
+                "qt5": expected_detect_result,
+                "rust": detect_result,
+            },
+            "detections": {
+                "qt5": expected_detections,
+                "rust": actual_detections,
+            },
+            "macho_compare_ep_calls": compare_ep_calls,
+            "macho_compare_ep_fast_paths": fast_paths,
+            "macho_compare_ep_generic_paths": generic_paths,
+            "macho_compare_ep_errors": errors,
+            "matches": matches,
+        }));
+    }
+    println!(
+        "{}",
+        serde_json::to_string_pretty(&json!({
+            "schema_version": 1,
+            "operation":
+                "byte-identical fixed Mach-O rule with Rust Mach-O context and MACH.compareEP",
+            "runtime": "rquickjs 0.12.1 / QuickJS-NG 0.15.1",
+            "upstream_commit": UPSTREAM_COMMIT,
+            "formats_commit": FORMATS_COMMIT,
+            "xscanengine_commit": XSCANENGINE_COMMIT,
+            "rules_commit": RULES_COMMIT,
+            "rule": {
+                "path": normalized_path(&rule_path),
+                "bytes": rule_source.len(),
+                "sha256": MACHO_RULE_SHA256,
+            },
+            "fixture": {
+                "path": normalized_path(fixture_path),
+                "sha256": MACHO_FIXTURE_SHA256,
+            },
+            "qt5_baseline": {
+                "path": normalized_path(baseline_path),
+                "sha256": MACHO_QT5_BASELINE_SHA256,
+            },
+            "case_count": reports.len(),
+            "matched_count": reports.iter().filter(|case| case["matches"] == true).count(),
+            "cases": reports,
+            "all_match": all_match,
+        }))
+        .map_err(|error| format!("cannot serialize Mach-O rule report: {error}"))?
     );
     Ok(all_match)
 }
@@ -4776,7 +5237,9 @@ fn usage() -> ExitCode {
          diec-rquickjs-rule-runtime-spike verify-pe-rule \
          <main-rule-root> <pe-fixture-json> <qt5-baseline-json>\n       \
          diec-rquickjs-rule-runtime-spike verify-elf-rule \
-         <main-rule-root> <elf-fixture-json> <qt5-baseline-json>"
+         <main-rule-root> <elf-fixture-json> <qt5-baseline-json>\n       \
+         diec-rquickjs-rule-runtime-spike verify-macho-rule \
+         <main-rule-root> <macho-fixture-json> <qt5-baseline-json>"
     );
     ExitCode::from(2)
 }
@@ -4822,6 +5285,8 @@ fn main() -> ExitCode {
         verify_pe_rule(&roots[0], &roots[1], &roots[2])
     } else if command == "verify-elf-rule" && roots.len() == 3 {
         verify_elf_rule(&roots[0], &roots[1], &roots[2])
+    } else if command == "verify-macho-rule" && roots.len() == 3 {
+        verify_macho_rule(&roots[0], &roots[1], &roots[2])
     } else {
         return usage();
     };
@@ -4838,16 +5303,16 @@ fn main() -> ExitCode {
 #[cfg(test)]
 mod tests {
     use super::{
-        BinaryHostContext, BinaryStringContext, ElfRuleContext, HostFilePart,
+        BinaryHostContext, BinaryStringContext, ElfRuleContext, HostFilePart, MachoRuleContext,
         NINTENDO_COMPAT_DECLARATION, NINTENDO_RULE_BYTES, NINTENDO_VAR_DECLARATION, PeRuleContext,
         TextUnicodeType, apply_compatibility_overlay, apply_exact_lifecycle_overlay,
         collect_rule_files, elf_matcher_map_projection, eval_rule_lexical, eval_string, eval_unit,
         install_diagnostic_host_fallbacks, install_nintendo_host,
         install_nintendo_host_with_context, install_nintendo_host_with_context_and_strings,
-        new_context, new_runtime, nonnegative_index, normalized_path, parse_detection_triples,
-        parse_scope_detections, parse_scope_fixture_order, pe_physical_map_projection,
-        qt5_elf_matcher_map_projection, qt5_pe_physical_map_projection, read_ascii,
-        read_byte_array, read_signed, read_unsigned, sha256_hex, shift_right_unsigned,
+        macho_matcher_map_projection, new_context, new_runtime, nonnegative_index, normalized_path,
+        parse_detection_triples, parse_scope_detections, parse_scope_fixture_order,
+        pe_physical_map_projection, qt5_matcher_map_projection, qt5_pe_physical_map_projection,
+        read_ascii, read_byte_array, read_signed, read_unsigned, sha256_hex, shift_right_unsigned,
         sorted_detection_projection, upstream_type_priority,
     };
     use std::fs;
@@ -4980,7 +5445,7 @@ mod tests {
                 .and_then(|offset| i64::try_from(offset).ok())
                 .unwrap_or(-1);
             assert_eq!(entry_point, case["entry_point_offset"].as_i64().unwrap());
-            let expected = qt5_elf_matcher_map_projection(&case["memory_map"])
+            let expected = qt5_matcher_map_projection(&case["memory_map"])
                 .expect("Qt5 ELF map should safely project");
             assert_eq!(elf_matcher_map_projection(&context), expected.matcher_map);
             if id.ends_with("_truncated") {
@@ -5045,6 +5510,94 @@ mod tests {
             ElfRuleContext::parse(&no_loads)
                 .expect_err("missing PT_LOAD must fail")
                 .contains("no non-empty PT_LOAD")
+        );
+    }
+
+    #[test]
+    fn macho_context_matches_fixed_qt5_entry_points_and_safe_matcher_maps() {
+        let baseline: serde_json::Value = serde_json::from_str(include_str!(
+            "../../../docs/research/data/macho-rule-qt5.json"
+        ))
+        .expect("fixed Qt5 Mach-O rule baseline should be valid JSON");
+        let cases = baseline["cases"]
+            .as_array()
+            .expect("fixed Qt5 Mach-O baseline should have cases");
+        assert_eq!(cases.len(), 4);
+        for case in cases {
+            assert_eq!(case["parser_valid"], true);
+            let id = case["id"].as_str().expect("case should have an id");
+            let data = decode_hex(case["data_hex"].as_str().expect("case should contain data"));
+            let context = MachoRuleContext::parse(&data)
+                .unwrap_or_else(|error| panic!("{id}: Mach-O context should parse: {error}"));
+            assert!(context.is_64);
+            assert_eq!(
+                u64::from(context.cpu_type),
+                case["cpu_type"].as_u64().unwrap()
+            );
+            let entry_point = context
+                .entry_point_offset
+                .and_then(|offset| i64::try_from(offset).ok())
+                .unwrap_or(-1);
+            assert_eq!(entry_point, case["entry_point_offset"].as_i64().unwrap());
+            let expected = qt5_matcher_map_projection(&case["memory_map"])
+                .expect("Qt5 Mach-O map should safely project");
+            assert_eq!(macho_matcher_map_projection(&context), expected.matcher_map);
+            if id.ends_with("_truncated") {
+                assert_eq!(context.out_of_bounds_segments, 1);
+                assert_eq!(expected.discarded_overlay_sentinel_records, 0);
+            } else {
+                assert_eq!(context.out_of_bounds_segments, 0);
+                assert_eq!(expected.discarded_overlay_sentinel_records, 1);
+            }
+            assert_eq!(expected.discarded_virtual_records, 0);
+            assert_eq!(expected.discarded_nonpositive_size_records, 0);
+            assert_eq!(expected.discarded_negative_offset_records, 0);
+        }
+    }
+
+    #[test]
+    fn macho_context_rejects_malformed_commands_ranges_and_missing_segments() {
+        assert!(MachoRuleContext::parse(&[]).is_err());
+        let baseline: serde_json::Value = serde_json::from_str(include_str!(
+            "../../../docs/research/data/macho-rule-qt5.json"
+        ))
+        .expect("fixed Qt5 Mach-O rule baseline should be valid JSON");
+        let data = decode_hex(
+            baseline["cases"][0]["data_hex"]
+                .as_str()
+                .expect("Mach-O64 case should contain data"),
+        );
+
+        let mut excessive_count = data.clone();
+        excessive_count[16..20].copy_from_slice(&1025_u32.to_le_bytes());
+        assert!(
+            MachoRuleContext::parse(&excessive_count)
+                .expect_err("excessive load command count must fail")
+                .contains("limit 1024")
+        );
+
+        let mut short_command = data.clone();
+        short_command[36..40].copy_from_slice(&0_u32.to_le_bytes());
+        assert!(
+            MachoRuleContext::parse(&short_command)
+                .expect_err("undersized load command must fail")
+                .contains("smaller than 8")
+        );
+
+        let mut overflowing_segment = data.clone();
+        overflowing_segment[72..80].copy_from_slice(&u64::MAX.to_le_bytes());
+        assert!(
+            MachoRuleContext::parse(&overflowing_segment)
+                .expect_err("overflowing segment file range must fail")
+                .contains("range overflow")
+        );
+
+        let mut no_segments = data;
+        no_segments[32..36].copy_from_slice(&0_u32.to_le_bytes());
+        assert!(
+            MachoRuleContext::parse(&no_segments)
+                .expect_err("missing segment must fail")
+                .contains("no non-empty segment")
         );
     }
 

@@ -516,6 +516,11 @@ tuple 6/6 一致，详见
 [`elf-rule-runtime-differential.md`](elf-rule-runtime-differential.md)。这固定了
 入口点恰在 EOF 时的 wrapper 行为，但没有覆盖更早截断或控制 pattern。
 
+Mach-O 规则级实验进一步执行同一原样规则中的 9 个 x86_64/arm64 pattern。
+完整输入分别产生 5、6 或 9 次 fast-path 调用，入口恰在 EOF 的截断输入产生
+9 次 generic 调用；Qt5/Rust 四例结果 4/4 一致，见
+[`macho-rule-runtime-differential.md`](macho-rule-runtime-differential.md)。
+
 ### 合成 memory-map 差分
 
 oracle schema v3 允许每个项目自有向量显式注入 `_MEMORY_MAP`，但仍调用未修改的

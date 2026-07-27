@@ -20,7 +20,7 @@
   "experiment": {
     "cargo_lock_sha256": "f389eb266779a88939fea9793effdff29d01ea0e1184915698f4fa0f9441d0ad",
     "cargo_toml_sha256": "82c5bb97749f50212e5364c2ac7d1f81eaec4d460a9bf47710b4b42f9204a79f",
-    "source_sha256": "0f606301be1e78e059aecf8d7abd202169199a5e79134ce097d22075d08d591f",
+    "source_sha256": "97c1fa6396257d5fab02acb8d5d9ed165ba3b249a844aaa06f11320e04f7bbd5",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -1008,6 +1008,60 @@
       "rust_declared_out_of_bounds_load_count": 4
     },
     "scope": "one byte-identical ELF rule with real Rust ELF32/ELF64 contexts over project-generated positive, negative, and truncated inputs; not complete ELF or format HostApi compatibility"
+  },
+  "macho_rule_differential": {
+    "oracle": {
+      "baseline": "docs/research/data/macho-rule-qt5.json",
+      "baseline_sha256": "ec6b9f373d598f41cf7d51550eae020307c2a41b27f569135c022aeda54045f4",
+      "binary": "/opt/die-build/src/console/diec-macho-rule-harness",
+      "binary_sha256": "69da2fa1b89eca9e7c8966a43c0ce92b011155b0c6fb2ada46f360c876c7e8ae",
+      "case_count": 4,
+      "dockerfile": "tools/upstream/Dockerfile.macho-rule-harness-qt5",
+      "dockerfile_sha256": "6d64a8b8a011fe0fd3ae3a4208a6a632022961e85711b45785b55da0a2877bd4",
+      "engine": "QScriptEngine",
+      "fixture": "docs/research/data/macho-rule-fixture.json",
+      "fixture_generator": "tools/corpus/generate_macho_rule_fixture.py",
+      "fixture_generator_sha256": "be38cb042f5bd8ea4128d704f6f03f022f227248699d8d7fb177b437334ad9d8",
+      "fixture_sha256": "d1e691bcd72942916dcabb75177f6e411b7d78483bdd0d1635c4a0c89619188d",
+      "harness_source": "tools/upstream/macho_rule_harness_main.cpp",
+      "harness_source_sha256": "799e1a6f0c54b217b954ed949c0c42eb46fdc443658dfdc6644ecf34b30bab12",
+      "image": "diec-rust/macho-rule-harness-qt5:74eaf505",
+      "image_id": "sha256:74f66fa7f4fdecd16a0033b58254ef7a00f341a99172e40cee5c6c80c787bc2c",
+      "probe": "tools/upstream/probe_macho_rule_harness.py",
+      "probe_passed": true,
+      "probe_sha256": "403554f0381801b61cb877a97d158d5aaba70ccc03248eb39254345f4c4c07bd",
+      "qt_version": "5.15.13",
+      "rule_source": {
+        "bytes": 1331,
+        "path": "upstream/Detect-It-Easy/db/MACH/compiler_Rust.4.sg",
+        "sha256": "70fec4e86cd1a1a5b3e7663521cb45e3c4ce85d1e1f8ed80cf1d80f6d8268d84"
+      }
+    },
+    "rust": {
+      "case_count": 4,
+      "matched_count": 4,
+      "rule_bytes_preserved": true,
+      "command": "verify-macho-rule",
+      "compare_ep_call_count": 29,
+      "compare_ep_error_count": 0,
+      "fast_path_count": 20,
+      "generic_path_count": 9
+    },
+    "coverage": {
+      "positive_case_count": 2,
+      "negative_case_count": 1,
+      "truncated_case_count": 1,
+      "format": "Mach-O64",
+      "architectures": [
+        "x86_64",
+        "arm64"
+      ],
+      "receiver_method": "MACH.compareEP",
+      "entry_point_and_matcher_map_match_count": 4,
+      "qt5_discarded_overlay_sentinel_record_count": 3,
+      "rust_declared_out_of_bounds_segment_count": 1
+    },
+    "scope": "one byte-identical Mach-O rule with real Rust Mach-O64 x86_64/arm64 contexts over project-generated positive, negative, and truncated inputs; not complete Mach-O or format HostApi compatibility"
   },
   "full_binary_corpus_oracle": {
     "accepted_detect_count": 4088,

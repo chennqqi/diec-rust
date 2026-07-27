@@ -149,8 +149,11 @@ baseline 的变更都要检查本表。
   规则，对两种 class 的 positive/negative/truncated 输入完成 Qt5 差分 6/6；
   入口点、安全 matcher map、boolean 和完整 tuple 一致，XELF 截断产生的
   negative-size/virtual records 及其投影计数均保留。该证据仍各只覆盖一条
-  PE/ELF 分支，ADR 0006 要求的其余 HostApi 和 Mach-O/DEX/APK/Archive/PDF
-  代表规则仍缺，因而 R-001 继续 Open。
+  PE/ELF 分支。第三个闭环使用真实 Rust Mach-O64 context、native
+  `MACH.compareEP` 和 1331-byte 原样 Rust compiler 规则，在 x86_64/arm64
+  positive、x86_64 negative/truncated 上完成 Qt5 差分 4/4；CPU type、入口点、
+  安全 map、完整 tuple 和 5/6/9 次调用路径均一致。ADR 0006 要求的其余
+  HostApi 和 DEX/APK/Archive/PDF 代表规则仍缺，因而 R-001 继续 Open。
   固定 signature AST inventory 随后解析 `db`/`db_extra`
   2175/2175，保存 5968 个具名 signature API 调用点和 5628 个静态 pattern，
   覆盖动态 317/317；四个保守动态参数中的 `byteCode` 又已闭合为 97 个唯一

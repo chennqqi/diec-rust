@@ -17,6 +17,7 @@ Phase 0 计划形成：
 - [`signature-language.md`](signature-language.md)：signature 文法、固定 oracle、静态/动态调用清单和边界行为（Draft）。
 - [`pe-rule-runtime-differential.md`](pe-rule-runtime-differential.md)：真实 PE32 context、`PE.compareEP` 与原样 Cygwin32 规则的 Qt5/Rust 正反截断差分（Draft）。
 - [`elf-rule-runtime-differential.md`](elf-rule-runtime-differential.md)：真实 ELF32/ELF64 context、`ELF.compareEP` 与原样 Burneye 规则的 Qt5/Rust 正反截断差分（Draft）。
+- [`macho-rule-runtime-differential.md`](macho-rule-runtime-differential.md)：真实 Mach-O64 x86_64/arm64 context、`MACH.compareEP` 与原样 Rust compiler 规则的 Qt5/Rust 差分（Draft）。
 - [`rule-syntax-inventory.md`](rule-syntax-inventory.md)：全规则 AST 语法、全局引用和宿主调用形状清单（Draft）。
 - [`host-api-inventory.md`](host-api-inventory.md)：XScanEngine C++ slot、继承、默认参数与规则调用覆盖（Draft）。
 - [`global-host-api-inventory.md`](global-host-api-inventory.md)：die_script 非格式 native globals、规则顶层函数与直接调用分类（Draft）。
@@ -68,6 +69,8 @@ Phase 0 计划形成：
 - [`data/pe-rule-qt5.json`](data/pe-rule-qt5.json)：固定 XPE/PE_Script/QScriptEngine 的 3-case PE 规则 oracle。
 - [`data/elf-rule-fixture.json`](data/elf-rule-fixture.json)：原样 Burneye ELF 规则的项目生成 ELF32/ELF64 正例、反例和截断输入。
 - [`data/elf-rule-qt5.json`](data/elf-rule-qt5.json)：固定 XELF/ELF_Script/QScriptEngine 的 6-case ELF 规则 oracle。
+- [`data/macho-rule-fixture.json`](data/macho-rule-fixture.json)：原样 Rust compiler Mach-O 规则的项目生成 x86_64/arm64 正例、反例和截断输入。
+- [`data/macho-rule-qt5.json`](data/macho-rule-qt5.json)：固定 XMACH/MACH_Script/QScriptEngine 的 4-case Mach-O 规则 oracle。
 - [`data/nintendo-certified-corpus.json`](data/nintendo-certified-corpus.json)：PS3/PS Vita Certified File 分支语料清单。
 - [`data/nintendo-certified-baseline.json`](data/nintendo-certified-baseline.json)：双 oracle 原始输出哈希和 detection 摘要。
 - [`data/binary-rule-lifecycle.json`](data/binary-rule-lifecycle.json)：固定 Binary records、helper 解析、源码 hash 和比较器环证据。

@@ -160,6 +160,7 @@ lexical 不兼容。
 - [`signature-language.md`](../../research/signature-language.md)
 - [`pe-rule-runtime-differential.md`](../../research/pe-rule-runtime-differential.md)
 - [`elf-rule-runtime-differential.md`](../../research/elf-rule-runtime-differential.md)
+- [`macho-rule-runtime-differential.md`](../../research/macho-rule-runtime-differential.md)
 - [`c-static-link-spike.md`](../../research/c-static-link-spike.md)
 
 ## Acceptance conditions
