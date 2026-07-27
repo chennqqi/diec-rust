@@ -17,10 +17,17 @@ from probe_rule_orchestration import load_and_verify_fixture
 UPSTREAM_COMMIT = "74eaf505c250ab47e709024e9dc41657cd8f2254"
 IMAGE = "diec-rust/engine-contract-harness-qt5:74eaf505"
 BINARY = "/opt/die-build/src/console/diec-engine-contract-harness"
+HARNESS_SOURCE = "tools/upstream/engine_contract_harness_main.cpp"
+HARNESS_DOCKERFILE = (
+    "tools/upstream/Dockerfile.engine-contract-harness-qt5"
+)
 SOURCE_PATHS = (
     "/opt/die-source/XScanEngine/xscanengine.h",
+    "/opt/die-source/XScanEngine/xscanengine.cpp",
     "/opt/die-source/die_script/die_script.h",
     "/opt/die-source/die_script/die_script.cpp",
+    "/opt/die-source/Formats/xbinary.cpp",
+    "/opt/die-source/Formats/subdevice.cpp",
 )
 
 
@@ -63,13 +70,16 @@ def inspect_image() -> tuple[str, str]:
     return document["Id"], revision
 
 
-def audit_signature_file_path() -> dict[str, Any]:
+def audit_source_contracts() -> dict[str, Any]:
     sources = {
         path: docker_bytes("/bin/cat", path) for path in SOURCE_PATHS
     }
     header = sources[SOURCE_PATHS[0]].decode("utf-8")
-    script_header = sources[SOURCE_PATHS[1]].decode("utf-8")
-    implementation = sources[SOURCE_PATHS[2]].decode("utf-8")
+    scan_implementation = sources[SOURCE_PATHS[1]].decode("utf-8")
+    script_header = sources[SOURCE_PATHS[2]].decode("utf-8")
+    implementation = sources[SOURCE_PATHS[3]].decode("utf-8")
+    binary_implementation = sources[SOURCE_PATHS[4]].decode("utf-8")
+    subdevice_implementation = sources[SOURCE_PATHS[5]].decode("utf-8")
 
     options_match = re.search(
         r"struct\s+SCAN_OPTIONS\s*\{(?P<body>.*?)\n\s*\};",
@@ -105,6 +115,77 @@ def audit_signature_file_path() -> dict[str, Any]:
     if not name_option_present or reachable:
         raise ValueError("signature file-path reachability assumptions changed")
 
+    small_copy_match = re.search(
+        r"pBuffer\s*=\s*new char\[nSize\];.*?"
+        r"XBinary::read_array_process\("
+        r"_pDevice,\s*0,\s*pBuffer,\s*nSize,\s*pPdStruct\);.*?"
+        r"bufDevice->setData\(pBuffer,\s*nSize\);",
+        scan_implementation,
+        re.DOTALL,
+    )
+    safe_read_match = re.search(
+        r"qint64 XBinary::safeReadData\(.*?\n\}"
+        r"\n\nqint64 XBinary::safeWriteData",
+        binary_implementation,
+        re.DOTALL,
+    )
+    if safe_read_match is None:
+        raise ValueError("safeReadData implementation not found")
+    safe_read_body = safe_read_match.group(0)
+    safe_read_silent = (
+        "if (nCurrentSize <= 0)" in safe_read_body
+        and "break;" in safe_read_body
+        and "setPdStructErrorString" not in safe_read_body
+    )
+    range_gate = bool(
+        re.search(
+            r"scanSubdevice\(.*?\).*?"
+            r"if \(XBinary::isOffsetAndSizeValid\("
+            r"pDevice,\s*nOffset,\s*nSize\)\)",
+            scan_implementation,
+            re.DOTALL,
+        )
+    )
+    range_check = bool(
+        re.search(
+            r"isOffsetAndSizeValid\(.*?qint64 nOffset,\s*qint64 nSize\)"
+            r".*?if \(nSize > 0\).*?"
+            r"nOffset \+ nSize - 1",
+            binary_implementation,
+            re.DOTALL,
+        )
+    )
+    subdevice_ignores_seek = bool(
+        re.search(
+            r"setSize\(nSize\);.*?pDevice->seek\(nOffset\);",
+            subdevice_implementation,
+            re.DOTALL,
+        )
+    )
+    device_assumptions = {
+        "small_device_copy_ignores_read_count": (
+            small_copy_match is not None
+        ),
+        "safe_read_stops_without_pd_error_on_nonpositive_read": (
+            safe_read_silent
+        ),
+        "scan_subdevice_uses_offset_size_gate": range_gate,
+        "range_gate_requires_positive_size_and_valid_last_byte": (
+            range_check
+        ),
+        "subdevice_constructor_ignores_parent_seek_result": (
+            subdevice_ignores_seek
+        ),
+    }
+    failed_device_assumptions = [
+        name for name, value in device_assumptions.items() if not value
+    ]
+    if failed_device_assumptions:
+        raise ValueError(
+            "device source assumptions changed: "
+            f"{failed_device_assumptions}"
+        )
+
     return {
         "public_scan_options_has_signature_name": name_option_present,
         "public_scan_options_has_signature_file_path": (
@@ -116,6 +197,7 @@ def audit_signature_file_path() -> dict[str, Any]:
         "protected_process_detect_passes_empty_path": protected_passes_empty,
         "implementation_process_detect_occurrences": call_argument_count,
         "public_runtime_filter_reachable": reachable,
+        "device_contracts": device_assumptions,
         "sources": {
             path: {
                 "bytes": len(data),
@@ -161,9 +243,51 @@ def validate(document: dict[str, Any]) -> dict[str, bool]:
         "entry_memory",
         "entry_device",
         "entry_subdevice",
+        "device_chunked_read",
+        "device_early_eof",
+        "device_read_error",
+        "device_seek_error",
+        "device_sequential",
+        "device_initial_position",
+        "subdevice_chunked_read",
+        "subdevice_early_eof",
+        "subdevice_read_error",
+        "subdevice_seek_error",
+        "subdevice_sequential",
+        "subdevice_negative_offset",
+        "subdevice_zero_size",
+        "subdevice_negative_size",
+        "subdevice_offset_at_end",
+        "subdevice_crosses_end",
+        "subdevice_exact_tail",
     }
     if set(cases) != expected_ids:
         raise ValueError("unexpected harness case inventory")
+
+    incomplete_ids = (
+        "device_early_eof",
+        "device_read_error",
+        "device_seek_error",
+        "device_sequential",
+        "subdevice_early_eof",
+        "subdevice_read_error",
+        "subdevice_seek_error",
+        "subdevice_sequential",
+    )
+    invalid_range_ids = (
+        "subdevice_negative_offset",
+        "subdevice_zero_size",
+        "subdevice_negative_size",
+        "subdevice_offset_at_end",
+        "subdevice_crosses_end",
+    )
+    successful_boundary_ids = (
+        "device_chunked_read",
+        "device_initial_position",
+        "subdevice_chunked_read",
+        "subdevice_exact_tail",
+        *incomplete_ids,
+    )
 
     relationships = {
         "signature_name_exact_match_selects_one_rule": (
@@ -208,6 +332,76 @@ def validate(document: dict[str, Any]) -> dict[str, bool]:
             == cases["entry_device"]["records"]
             == cases["entry_subdevice"]["records"]
         ),
+        "chunked_direct_read_completes": (
+            cases["device_chunked_read"]["bytes_returned"] == 35
+            and cases["device_chunked_read"]["read_returns"]
+            == ["3"] * 11 + ["2"]
+        ),
+        "chunked_subdevice_parent_overreads_one_buffered_byte": (
+            cases["subdevice_chunked_read"]["result_size"] == 35
+            and cases["subdevice_chunked_read"]["bytes_returned"] == 36
+            and cases["subdevice_chunked_read"]["read_returns"]
+            == ["3"] * 12
+        ),
+        "incomplete_device_reads_are_silent_success": all(
+            names(cases[case_id]) == ["Priority one"]
+            and cases[case_id]["errors"] == []
+            and cases[case_id]["pd_error"] == ""
+            and cases[case_id]["pd_success"]
+            and cases[case_id]["pd_finished"]
+            and cases[case_id]["bytes_returned"]
+            < cases[case_id]["result_size"]
+            for case_id in incomplete_ids
+        ),
+        "read_error_is_only_device_local": (
+            cases["device_read_error"]["device_error"]
+            == "injected read error"
+            and cases["subdevice_read_error"]["device_error"]
+            == "injected read error"
+            and cases["device_read_error"]["read_returns"] == ["-1"]
+            and cases["subdevice_read_error"]["read_returns"] == ["-1"]
+        ),
+        "seek_failure_and_sequential_device_do_not_read": all(
+            cases[case_id]["seek_calls"] >= 1
+            and cases[case_id]["read_calls"] == 0
+            for case_id in (
+                "device_seek_error",
+                "device_sequential",
+                "subdevice_seek_error",
+                "subdevice_sequential",
+            )
+        ),
+        "initial_device_position_is_reset_then_consumed": (
+            cases["device_initial_position"]["seek_positions"]
+            == ["7", "0"]
+            and cases["device_initial_position"]["final_position"] == 35
+        ),
+        "invalid_subdevice_ranges_return_zero_without_io": all(
+            not cases[case_id]["range_valid"]
+            and cases[case_id]["result_size"] == 0
+            and cases[case_id]["result_filetype"] == "Unknown"
+            and cases[case_id]["records"] == []
+            and cases[case_id]["errors"] == []
+            and cases[case_id]["seek_calls"] == 0
+            and cases[case_id]["read_calls"] == 0
+            and not cases[case_id]["pd_success"]
+            and not cases[case_id]["pd_finished"]
+            and cases[case_id]["pd_n_finished"] == 0
+            for case_id in invalid_range_ids
+        ),
+        "exact_tail_subdevice_is_accepted": (
+            cases["subdevice_exact_tail"]["range_valid"]
+            and cases["subdevice_exact_tail"]["result_size"] == 1
+            and cases["subdevice_exact_tail"]["bytes_returned"] == 1
+            and names(cases["subdevice_exact_tail"])
+            == ["Priority one"]
+        ),
+        "successful_boundary_cases_keep_forced_binary_result": all(
+            cases[case_id]["result_filetype"] == "Binary"
+            and names(cases[case_id]) == ["Priority one"]
+            and cases[case_id]["errors"] == []
+            for case_id in successful_boundary_ids
+        ),
     }
     failed = [name for name, value in relationships.items() if not value]
     if failed:
@@ -220,6 +414,7 @@ def build_report(
     manifest_path: pathlib.Path,
     raw_dir: pathlib.Path,
 ) -> dict[str, Any]:
+    repo = pathlib.Path(__file__).resolve().parents[2]
     _, manifest_sha256 = load_and_verify_fixture(
         fixture_dir, manifest_path
     )
@@ -249,7 +444,7 @@ def build_report(
         raise ValueError("engine contract harness failed")
     document = json.loads(process.stdout)
     relationships = validate(document)
-    source_audit = audit_signature_file_path()
+    source_audit = audit_source_contracts()
 
     return {
         "schema_version": 1,
@@ -257,6 +452,18 @@ def build_report(
         "generator_sha256": sha256(pathlib.Path(__file__).read_bytes()),
         "upstream_commit": UPSTREAM_COMMIT,
         "platform": "linux-amd64-qt5",
+        "harness_inputs": {
+            "source": {
+                "path": HARNESS_SOURCE,
+                "sha256": sha256((repo / HARNESS_SOURCE).read_bytes()),
+            },
+            "dockerfile": {
+                "path": HARNESS_DOCKERFILE,
+                "sha256": sha256(
+                    (repo / HARNESS_DOCKERFILE).read_bytes()
+                ),
+            },
+        },
         "fixture_manifest": {
             "path": (
                 "docs/research/data/"

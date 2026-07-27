@@ -1,12 +1,22 @@
 {
   "fixture_manifest": {
     "path": "docs/research/data/rule-orchestration-fixture.json",
-    "sha256": "1ac7b2035a6073cba986bab4056ca17165d82ad1dd5299c0e211303bcfb571fc"
+    "sha256": "535d96510e1a807a07af752ed60b0239bdbb91331ce51b1f89d2be043d07f23e"
   },
   "generator": "tools/upstream/probe_engine_contract.py",
-  "generator_sha256": "b0c147b5a9fb507e1470a2b8f07190c5a4f2b371b2b0fef57f8c53d7b92b0553",
+  "generator_sha256": "f1f274d73f1f8ebf667d0487587617ba244e99bd96ab16038864832093122ac6",
+  "harness_inputs": {
+    "dockerfile": {
+      "path": "tools/upstream/Dockerfile.engine-contract-harness-qt5",
+      "sha256": "c6aa5ab822f5c8cc5b56677d18124a1edb571959034a60e796a350c679aed9eb"
+    },
+    "source": {
+      "path": "tools/upstream/engine_contract_harness_main.cpp",
+      "sha256": "3cb409a164804c4e8ba9792c584f181da09ee5cec2afdc3c8db44452effec8b2"
+    }
+  },
   "harness_output": {
-    "case_count": 16,
+    "case_count": 33,
     "cases": [
       {
         "callback_events": [],
@@ -637,6 +647,749 @@
         "result_size": 35,
         "signature_name": "z_priority.1.sg",
         "sort": false
+      },
+      {
+        "behavior": "chunked",
+        "bytes_returned": 35,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 35,
+        "errors": [],
+        "final_position": 35,
+        "id": "device_chunked_read",
+        "initial_position": -1,
+        "method": "scanDevice",
+        "offset": 0,
+        "pd_error": "",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_stopped": false,
+        "pd_success": true,
+        "range_valid": false,
+        "read_calls": 12,
+        "read_requests": [
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384"
+        ],
+        "read_returns": [
+          "3",
+          "3",
+          "3",
+          "3",
+          "3",
+          "3",
+          "3",
+          "3",
+          "3",
+          "3",
+          "3",
+          "2"
+        ],
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_filetype": "Binary",
+        "result_size": 35,
+        "seek_calls": 1,
+        "seek_positions": [
+          "0"
+        ],
+        "size": 0
+      },
+      {
+        "behavior": "early_eof",
+        "bytes_returned": 5,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 35,
+        "errors": [],
+        "final_position": 5,
+        "id": "device_early_eof",
+        "initial_position": -1,
+        "method": "scanDevice",
+        "offset": 0,
+        "pd_error": "",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_stopped": false,
+        "pd_success": true,
+        "range_valid": false,
+        "read_calls": 2,
+        "read_requests": [
+          "16384",
+          "16384"
+        ],
+        "read_returns": [
+          "5",
+          "0"
+        ],
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_filetype": "Binary",
+        "result_size": 35,
+        "seek_calls": 1,
+        "seek_positions": [
+          "0"
+        ],
+        "size": 0
+      },
+      {
+        "behavior": "read_error",
+        "bytes_returned": 0,
+        "database_loaded": true,
+        "device_error": "injected read error",
+        "device_size": 35,
+        "errors": [],
+        "final_position": 0,
+        "id": "device_read_error",
+        "initial_position": -1,
+        "method": "scanDevice",
+        "offset": 0,
+        "pd_error": "",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_stopped": false,
+        "pd_success": true,
+        "range_valid": false,
+        "read_calls": 1,
+        "read_requests": [
+          "16384"
+        ],
+        "read_returns": [
+          "-1"
+        ],
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_filetype": "Binary",
+        "result_size": 35,
+        "seek_calls": 1,
+        "seek_positions": [
+          "0"
+        ],
+        "size": 0
+      },
+      {
+        "behavior": "seek_error",
+        "bytes_returned": 0,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 35,
+        "errors": [],
+        "final_position": 0,
+        "id": "device_seek_error",
+        "initial_position": -1,
+        "method": "scanDevice",
+        "offset": 0,
+        "pd_error": "",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_stopped": false,
+        "pd_success": true,
+        "range_valid": false,
+        "read_calls": 0,
+        "read_requests": [],
+        "read_returns": [],
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_filetype": "Binary",
+        "result_size": 35,
+        "seek_calls": 1,
+        "seek_positions": [
+          "0"
+        ],
+        "size": 0
+      },
+      {
+        "behavior": "sequential",
+        "bytes_returned": 0,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 35,
+        "errors": [],
+        "final_position": 0,
+        "id": "device_sequential",
+        "initial_position": -1,
+        "method": "scanDevice",
+        "offset": 0,
+        "pd_error": "",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_stopped": false,
+        "pd_success": true,
+        "range_valid": false,
+        "read_calls": 0,
+        "read_requests": [],
+        "read_returns": [],
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_filetype": "Binary",
+        "result_size": 35,
+        "seek_calls": 1,
+        "seek_positions": [
+          "0"
+        ],
+        "size": 0
+      },
+      {
+        "behavior": "normal",
+        "bytes_returned": 35,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 35,
+        "errors": [],
+        "final_position": 35,
+        "id": "device_initial_position",
+        "initial_position": 7,
+        "method": "scanDevice",
+        "offset": 0,
+        "pd_error": "",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_stopped": false,
+        "pd_success": true,
+        "range_valid": false,
+        "read_calls": 1,
+        "read_requests": [
+          "16384"
+        ],
+        "read_returns": [
+          "35"
+        ],
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_filetype": "Binary",
+        "result_size": 35,
+        "seek_calls": 2,
+        "seek_positions": [
+          "7",
+          "0"
+        ],
+        "size": 0
+      },
+      {
+        "behavior": "chunked",
+        "bytes_returned": 36,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 42,
+        "errors": [],
+        "final_position": 38,
+        "id": "subdevice_chunked_read",
+        "initial_position": -1,
+        "method": "scanSubdevice",
+        "offset": 3,
+        "pd_error": "",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_stopped": false,
+        "pd_success": true,
+        "range_valid": true,
+        "read_calls": 12,
+        "read_requests": [
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384"
+        ],
+        "read_returns": [
+          "3",
+          "3",
+          "3",
+          "3",
+          "3",
+          "3",
+          "3",
+          "3",
+          "3",
+          "3",
+          "3",
+          "3"
+        ],
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_filetype": "Binary",
+        "result_size": 35,
+        "seek_calls": 2,
+        "seek_positions": [
+          "3",
+          "3"
+        ],
+        "size": 35
+      },
+      {
+        "behavior": "early_eof",
+        "bytes_returned": 5,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 42,
+        "errors": [],
+        "final_position": 8,
+        "id": "subdevice_early_eof",
+        "initial_position": -1,
+        "method": "scanSubdevice",
+        "offset": 3,
+        "pd_error": "",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_stopped": false,
+        "pd_success": true,
+        "range_valid": true,
+        "read_calls": 2,
+        "read_requests": [
+          "16384",
+          "16384"
+        ],
+        "read_returns": [
+          "5",
+          "0"
+        ],
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_filetype": "Binary",
+        "result_size": 35,
+        "seek_calls": 2,
+        "seek_positions": [
+          "3",
+          "3"
+        ],
+        "size": 35
+      },
+      {
+        "behavior": "read_error",
+        "bytes_returned": 0,
+        "database_loaded": true,
+        "device_error": "injected read error",
+        "device_size": 42,
+        "errors": [],
+        "final_position": 3,
+        "id": "subdevice_read_error",
+        "initial_position": -1,
+        "method": "scanSubdevice",
+        "offset": 3,
+        "pd_error": "",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_stopped": false,
+        "pd_success": true,
+        "range_valid": true,
+        "read_calls": 1,
+        "read_requests": [
+          "16384"
+        ],
+        "read_returns": [
+          "-1"
+        ],
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_filetype": "Binary",
+        "result_size": 35,
+        "seek_calls": 2,
+        "seek_positions": [
+          "3",
+          "3"
+        ],
+        "size": 35
+      },
+      {
+        "behavior": "seek_error",
+        "bytes_returned": 0,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 42,
+        "errors": [],
+        "final_position": 0,
+        "id": "subdevice_seek_error",
+        "initial_position": -1,
+        "method": "scanSubdevice",
+        "offset": 3,
+        "pd_error": "",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_stopped": false,
+        "pd_success": true,
+        "range_valid": true,
+        "read_calls": 0,
+        "read_requests": [],
+        "read_returns": [],
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_filetype": "Binary",
+        "result_size": 35,
+        "seek_calls": 2,
+        "seek_positions": [
+          "3",
+          "3"
+        ],
+        "size": 35
+      },
+      {
+        "behavior": "sequential",
+        "bytes_returned": 0,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 42,
+        "errors": [],
+        "final_position": 0,
+        "id": "subdevice_sequential",
+        "initial_position": -1,
+        "method": "scanSubdevice",
+        "offset": 3,
+        "pd_error": "",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_stopped": false,
+        "pd_success": true,
+        "range_valid": true,
+        "read_calls": 0,
+        "read_requests": [],
+        "read_returns": [],
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_filetype": "Binary",
+        "result_size": 35,
+        "seek_calls": 2,
+        "seek_positions": [
+          "3",
+          "3"
+        ],
+        "size": 35
+      },
+      {
+        "behavior": "normal",
+        "bytes_returned": 0,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 42,
+        "errors": [],
+        "final_position": 0,
+        "id": "subdevice_negative_offset",
+        "initial_position": -1,
+        "method": "scanSubdevice",
+        "offset": -1,
+        "pd_error": "",
+        "pd_finished": false,
+        "pd_n_finished": 0,
+        "pd_stopped": false,
+        "pd_success": false,
+        "range_valid": false,
+        "read_calls": 0,
+        "read_requests": [],
+        "read_returns": [],
+        "records": [],
+        "result_filetype": "Unknown",
+        "result_size": 0,
+        "seek_calls": 0,
+        "seek_positions": [],
+        "size": 1
+      },
+      {
+        "behavior": "normal",
+        "bytes_returned": 0,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 42,
+        "errors": [],
+        "final_position": 0,
+        "id": "subdevice_zero_size",
+        "initial_position": -1,
+        "method": "scanSubdevice",
+        "offset": 0,
+        "pd_error": "",
+        "pd_finished": false,
+        "pd_n_finished": 0,
+        "pd_stopped": false,
+        "pd_success": false,
+        "range_valid": false,
+        "read_calls": 0,
+        "read_requests": [],
+        "read_returns": [],
+        "records": [],
+        "result_filetype": "Unknown",
+        "result_size": 0,
+        "seek_calls": 0,
+        "seek_positions": [],
+        "size": 0
+      },
+      {
+        "behavior": "normal",
+        "bytes_returned": 0,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 42,
+        "errors": [],
+        "final_position": 0,
+        "id": "subdevice_negative_size",
+        "initial_position": -1,
+        "method": "scanSubdevice",
+        "offset": 0,
+        "pd_error": "",
+        "pd_finished": false,
+        "pd_n_finished": 0,
+        "pd_stopped": false,
+        "pd_success": false,
+        "range_valid": false,
+        "read_calls": 0,
+        "read_requests": [],
+        "read_returns": [],
+        "records": [],
+        "result_filetype": "Unknown",
+        "result_size": 0,
+        "seek_calls": 0,
+        "seek_positions": [],
+        "size": -1
+      },
+      {
+        "behavior": "normal",
+        "bytes_returned": 0,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 42,
+        "errors": [],
+        "final_position": 0,
+        "id": "subdevice_offset_at_end",
+        "initial_position": -1,
+        "method": "scanSubdevice",
+        "offset": 42,
+        "pd_error": "",
+        "pd_finished": false,
+        "pd_n_finished": 0,
+        "pd_stopped": false,
+        "pd_success": false,
+        "range_valid": false,
+        "read_calls": 0,
+        "read_requests": [],
+        "read_returns": [],
+        "records": [],
+        "result_filetype": "Unknown",
+        "result_size": 0,
+        "seek_calls": 0,
+        "seek_positions": [],
+        "size": 1
+      },
+      {
+        "behavior": "normal",
+        "bytes_returned": 0,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 42,
+        "errors": [],
+        "final_position": 0,
+        "id": "subdevice_crosses_end",
+        "initial_position": -1,
+        "method": "scanSubdevice",
+        "offset": 41,
+        "pd_error": "",
+        "pd_finished": false,
+        "pd_n_finished": 0,
+        "pd_stopped": false,
+        "pd_success": false,
+        "range_valid": false,
+        "read_calls": 0,
+        "read_requests": [],
+        "read_returns": [],
+        "records": [],
+        "result_filetype": "Unknown",
+        "result_size": 0,
+        "seek_calls": 0,
+        "seek_positions": [],
+        "size": 2
+      },
+      {
+        "behavior": "normal",
+        "bytes_returned": 1,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 42,
+        "errors": [],
+        "final_position": 42,
+        "id": "subdevice_exact_tail",
+        "initial_position": -1,
+        "method": "scanSubdevice",
+        "offset": 41,
+        "pd_error": "",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_stopped": false,
+        "pd_success": true,
+        "range_valid": true,
+        "read_calls": 1,
+        "read_requests": [
+          "16384"
+        ],
+        "read_returns": [
+          "1"
+        ],
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_filetype": "Binary",
+        "result_size": 1,
+        "seek_calls": 2,
+        "seek_positions": [
+          "41",
+          "41"
+        ],
+        "size": 1
       }
     ],
     "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
@@ -648,14 +1401,14 @@
   },
   "oracle": {
     "binary": "/opt/die-build/src/console/diec-engine-contract-harness",
-    "binary_sha256": "75ec689531cd2c9e008fc42eb379e391afea3957d8d33f84ec54cd44db55ebac",
+    "binary_sha256": "930be4f3d5f24b2a9c2c58d3cd9f8fbde8d32382377918da14383bd123ae4162",
     "exit_code": 0,
     "image": "diec-rust/engine-contract-harness-qt5:74eaf505",
-    "image_id": "sha256:60a13879432a3f566ba6f0a00ca7a7c32ebe621230883ea60897f8f1dbc7d63c",
+    "image_id": "sha256:e5a8a469f258302a2a49efe2faa65d8d0225035184caf1128a46b15ea9b8bfbb",
     "raw_stderr_bytes": 0,
     "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "raw_stdout_bytes": 22637,
-    "raw_stdout_sha256": "4d68241781c2055efcc607d74050a87ab74929b4e5d4f647d3d26f1e92dd0072",
+    "raw_stdout_bytes": 46474,
+    "raw_stdout_sha256": "23ea45cad36f0cb3766d4ad38e87449116c6f214d20f1c73269a38dcd9d5edf0",
     "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
   },
   "platform": "linux-amd64-qt5",
@@ -665,17 +1418,33 @@
   "relationships": {
     "break_scan_keeps_current_then_stops": true,
     "callback_false_keeps_current_then_stops": true,
+    "chunked_direct_read_completes": true,
+    "chunked_subdevice_parent_overreads_one_buffered_byte": true,
     "deep_filter_still_applies_to_exact_name": true,
     "entry_points_are_semantically_equal": true,
+    "exact_tail_subdevice_is_accepted": true,
+    "incomplete_device_reads_are_silent_success": true,
+    "initial_device_position_is_reset_then_consumed": true,
+    "invalid_subdevice_ranges_return_zero_without_io": true,
     "missing_signature_adds_unknown": true,
     "pre_stopped_adds_unknown": true,
+    "read_error_is_only_device_local": true,
+    "seek_failure_and_sequential_device_do_not_read": true,
     "signature_name_exact_match_selects_one_rule": true,
     "signature_name_is_case_sensitive": true,
     "sort_disabled_preserves_insertion_order": true,
-    "sort_enabled_orders_by_type_priority": true
+    "sort_enabled_orders_by_type_priority": true,
+    "successful_boundary_cases_keep_forced_binary_result": true
   },
   "schema_version": 1,
   "source_audit": {
+    "device_contracts": {
+      "range_gate_requires_positive_size_and_valid_last_byte": true,
+      "safe_read_stops_without_pd_error_on_nonpositive_read": true,
+      "scan_subdevice_uses_offset_size_gate": true,
+      "small_device_copy_ignores_read_count": true,
+      "subdevice_constructor_ignores_parent_seek_result": true
+    },
     "implementation_process_detect_occurrences": 2,
     "private_process_detect_has_signature_file_path": true,
     "protected_process_detect_passes_empty_path": true,
@@ -683,6 +1452,18 @@
     "public_scan_options_has_signature_file_path": false,
     "public_scan_options_has_signature_name": true,
     "sources": {
+      "/opt/die-source/Formats/subdevice.cpp": {
+        "bytes": 2850,
+        "sha256": "a1f0dc51e6f8f471bd33b88766b0b0824c52fcea58a37b57abe4ad53a9300215"
+      },
+      "/opt/die-source/Formats/xbinary.cpp": {
+        "bytes": 549347,
+        "sha256": "d82bd21326bb7ba07eb343020d50af0ae2cf7e8e534d8e08d07ffa8129913c34"
+      },
+      "/opt/die-source/XScanEngine/xscanengine.cpp": {
+        "bytes": 191204,
+        "sha256": "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498"
+      },
       "/opt/die-source/XScanEngine/xscanengine.h": {
         "bytes": 47079,
         "sha256": "ddef8387f72cd8a740052d47813018fb0e6f74ed3d3a911827ad1b7b3ce15fe8"

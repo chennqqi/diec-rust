@@ -171,6 +171,12 @@ path 入口负责打开和读取 metadata 后转为 checked source。核心 API 
 `identity` 是展示/provenance，不参与格式识别。调用 bytes API 不得伪造文件系统
 metadata；规则需要 extension 时使用显式 logical name，并在结果中标记来源。
 
+`ByteSource` 是固定长度随机访问契约：分块读取可以有正进展地补齐，但提前 EOF、
+read/seek error 或 non-seekable source 必须在探测前类型化失败；`ByteView`
+使用 checked range 且不得触碰 view 之外。不得复制上游忽略 short read 并扫描
+未初始化尾部的行为，详见
+[`ADR 0013`](decisions/0013-fail-closed-incomplete-input.md)。
+
 ## 7. ScanRequest
 
 ```rust
@@ -418,6 +424,8 @@ public error code/variant 是程序判断依据，message 只用于展示且不�
 
 畸形或未知文件不是顶层错误：只要安全扫描完成，返回 `Complete` report，其中可有
 unknown detection 或 parser diagnostic。
+非法 subview 是 `InvalidRequest`；不完整底层读取是 `Io`。两者都不能降级为空
+成功 report 或 Unknown detection。
 
 Rust error 与 C ABI 的初始映射如下；C 数值以 `c-abi.md` 为准：
 

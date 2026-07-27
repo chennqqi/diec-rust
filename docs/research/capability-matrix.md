@@ -18,7 +18,7 @@ traceability manifest 中记录替代关系，不得复用旧 ID 表示不同语
 | `CAP-CLI-IN-003` | 目录枚举 | positional directory | Observed | 无条件 depth-first 递归；Linux 当前语料按 name 排序 |
 | `CAP-CLI-IN-004` | 单文件目录/空目录 | positional directory | Observed | 单文件不加 prefix；空目录退出 0 且无输出 |
 | `CAP-ENG-IN-001` | 内存扫描 | engine `scanMemory()` | Observed | Binary fixture 与 file/device/subdevice record 一致；CLI 不暴露 |
-| `CAP-ENG-IN-002` | device/subdevice 扫描 | engine API | Observed | Binary fixture record 一致；边界/error 尚未覆盖 |
+| `CAP-ENG-IN-002` | device/subdevice 扫描 | engine API | Observed | 33-case fixture 固定 chunked/EOF/read/seek/sequential、position 与合法/非法 subdevice 范围；见 `engine-contract-behavior.md` |
 
 CLI 主入口为 [`src/console/main_console.cpp`](https://github.com/horsicq/DIE-engine/blob/74eaf505c250ab47e709024e9dc41657cd8f2254/src/console/main_console.cpp)，选项名称与描述来自 `XOptions@810d78d.../xoptions.cpp`。
 

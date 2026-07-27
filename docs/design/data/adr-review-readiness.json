@@ -278,6 +278,31 @@
         "limit-1/exact/+1 plus high-ratio and malformed archive tests",
         "cross-platform CPU/peak-memory evidence and SafetyDeviation waiver"
       ]
+    },
+    {
+      "id": "ADR-0013",
+      "path": "docs/design/decisions/0013-fail-closed-incomplete-input.md",
+      "status": "Proposed",
+      "review_ready": true,
+      "acceptance_ready": false,
+      "contract_tests": [
+        "tools/tests/test_probe_engine_contract.py",
+        "tools/tests/test_api_design.py"
+      ],
+      "required_headings": [
+        "## 背景",
+        "## 决策",
+        "## 考虑过的替代方案",
+        "## 后果",
+        "## 证据",
+        "## 验收条件"
+      ],
+      "review_question": "是否接受不完整读取、不可 seek source 和非法 subdevice 范围 fail closed，禁止复制未初始化尾部与 slice 外读取？",
+      "remaining_acceptance_evidence": [
+        "production ByteSource exact-read and checked-view implementation",
+        "Rust/CLI/JSON/C/Go/Python typed error conformance",
+        "fuzz, sanitizer, range property tests, and SafetyDeviation waiver"
+      ]
     }
   ],
   "excluded_adrs": [
@@ -289,10 +314,10 @@
     }
   ],
   "summary": {
-    "active_adr_count": 11,
-    "review_ready_count": 11,
+    "active_adr_count": 12,
+    "review_ready_count": 12,
     "acceptance_ready_count": 0,
-    "proposed_count": 11,
+    "proposed_count": 12,
     "superseded_count": 1,
     "phase_0_decision_gate_complete": false
   }

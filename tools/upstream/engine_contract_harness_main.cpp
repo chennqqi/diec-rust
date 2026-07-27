@@ -13,6 +13,7 @@
 #include <QString>
 
 #include <cstdio>
+#include <cstring>
 
 namespace {
 
@@ -52,6 +53,160 @@ struct CaseSpec {
 struct CallbackState {
     CallbackMode mode = CallbackMode::None;
     QJsonArray events;
+};
+
+enum class DeviceBehavior {
+    Normal,
+    Chunked,
+    EarlyEof,
+    ReadError,
+    SeekError,
+    Sequential,
+};
+
+class ProbeDevice final : public QIODevice {
+public:
+    ProbeDevice(
+        const QByteArray &data,
+        DeviceBehavior behavior,
+        qint64 maxChunk,
+        qint64 stopAfter
+    )
+        : m_data(data),
+          m_behavior(behavior),
+          m_maxChunk(maxChunk),
+          m_stopAfter(stopAfter)
+    {
+    }
+
+    qint64 size() const override
+    {
+        return m_data.size();
+    }
+
+    bool isSequential() const override
+    {
+        return m_behavior == DeviceBehavior::Sequential;
+    }
+
+    bool seek(qint64 position) override
+    {
+        m_seekCalls++;
+        m_seekPositions.append(QString::number(position));
+        if (
+            m_behavior == DeviceBehavior::SeekError ||
+            m_behavior == DeviceBehavior::Sequential
+        ) {
+            return false;
+        }
+        return QIODevice::seek(position);
+    }
+
+    qint64 bytesAvailable() const override
+    {
+        qint64 end = m_data.size();
+        if (m_stopAfter >= 0) {
+            end = qMin(end, m_stopAfter);
+        }
+        return qMax<qint64>(0, end - pos()) +
+            QIODevice::bytesAvailable();
+    }
+
+    qint64 seekCalls() const
+    {
+        return m_seekCalls;
+    }
+
+    qint64 readCalls() const
+    {
+        return m_readCalls;
+    }
+
+    qint64 bytesReturned() const
+    {
+        return m_bytesReturned;
+    }
+
+    QJsonArray seekPositions() const
+    {
+        return m_seekPositions;
+    }
+
+    QJsonArray readRequests() const
+    {
+        return m_readRequests;
+    }
+
+    QJsonArray readReturns() const
+    {
+        return m_readReturns;
+    }
+
+protected:
+    qint64 readData(char *data, qint64 maxSize) override
+    {
+        m_readCalls++;
+        m_readRequests.append(QString::number(maxSize));
+        if (m_behavior == DeviceBehavior::ReadError) {
+            setErrorString("injected read error");
+            m_readReturns.append("-1");
+            return -1;
+        }
+
+        const qint64 position = pos();
+        qint64 end = m_data.size();
+        if (m_stopAfter >= 0) {
+            end = qMin(end, m_stopAfter);
+        }
+        if (position < 0 || position >= end) {
+            m_readReturns.append("0");
+            return 0;
+        }
+
+        qint64 count = qMin(maxSize, end - position);
+        if (
+            m_behavior == DeviceBehavior::Chunked &&
+            m_maxChunk > 0
+        ) {
+            count = qMin(count, m_maxChunk);
+        }
+        std::memcpy(
+            data,
+            m_data.constData() + position,
+            static_cast<size_t>(count)
+        );
+        m_bytesReturned += count;
+        m_readReturns.append(QString::number(count));
+        return count;
+    }
+
+    qint64 writeData(const char *, qint64) override
+    {
+        return -1;
+    }
+
+private:
+    QByteArray m_data;
+    DeviceBehavior m_behavior;
+    qint64 m_maxChunk = 0;
+    qint64 m_stopAfter = -1;
+    qint64 m_seekCalls = 0;
+    qint64 m_readCalls = 0;
+    qint64 m_bytesReturned = 0;
+    QJsonArray m_seekPositions;
+    QJsonArray m_readRequests;
+    QJsonArray m_readReturns;
+};
+
+struct DeviceCaseSpec {
+    const char *id;
+    DeviceBehavior behavior;
+    bool subdevice;
+    qint64 offset;
+    qint64 size;
+    qint64 maxChunk;
+    qint64 stopAfter;
+    qint64 initialPosition;
 };
 
 bool scanCallback(
@@ -137,6 +292,25 @@ const char *methodName(ScanMethod method)
             return "scanDevice";
         case ScanMethod::Subdevice:
             return "scanSubdevice";
+    }
+    return "unknown";
+}
+
+const char *deviceBehaviorName(DeviceBehavior behavior)
+{
+    switch (behavior) {
+        case DeviceBehavior::Normal:
+            return "normal";
+        case DeviceBehavior::Chunked:
+            return "chunked";
+        case DeviceBehavior::EarlyEof:
+            return "early_eof";
+        case DeviceBehavior::ReadError:
+            return "read_error";
+        case DeviceBehavior::SeekError:
+            return "seek_error";
+        case DeviceBehavior::Sequential:
+            return "sequential";
     }
     return "unknown";
 }
@@ -294,6 +468,136 @@ QJsonObject runCase(
         static_cast<qint64>(scanState.nFinished)
     );
     output.insert("result_size", result.nSize);
+    return output;
+}
+
+QJsonObject runDeviceCase(
+    const DeviceCaseSpec &spec,
+    const QString &fixtureRoot,
+    const QByteArray &input,
+    QString *error
+)
+{
+    QByteArray deviceData = input;
+    if (spec.subdevice) {
+        deviceData.prepend("pre", 3);
+        deviceData.append("post", 4);
+    }
+
+    ProbeDevice device(
+        deviceData,
+        spec.behavior,
+        spec.maxChunk,
+        spec.stopAfter
+    );
+    device.setProperty("FileName", "fault-device.bin");
+    if (!device.open(QIODevice::ReadOnly)) {
+        *error = QString("cannot open probe device: %1").arg(spec.id);
+        return {};
+    }
+    if (
+        spec.initialPosition >= 0 &&
+        !device.seek(spec.initialPosition)
+    ) {
+        *error = QString("cannot set initial position: %1").arg(spec.id);
+        return {};
+    }
+
+    XScanEngine::SCAN_OPTIONS options = {};
+    options.bUseCustomDatabase = true;
+    options.bUseExtraDatabase = true;
+    options.bShowType = true;
+    options.bShowInfo = true;
+    options.bShowVersion = true;
+    options.fileType = XBinary::FT_BINARY;
+    options.sSignatureName = "z_priority.1.sg";
+    options.sMainDatabasePath = fixtureRoot + "/priority-main";
+    options.sExtraDatabasePath = fixtureRoot + "/priority-extra";
+    options.sCustomDatabasePath = fixtureRoot + "/priority-custom";
+
+    DiE_Script engine;
+    XBinary::PDSTRUCT loadState = XBinary::createPdStruct();
+    const bool loaded = engine.loadDatabase(&options, &loadState);
+    if (!loaded) {
+        *error = QString("cannot load device fixture: %1").arg(spec.id);
+        return {};
+    }
+
+    const bool rangeValid = spec.subdevice &&
+        XBinary::isOffsetAndSizeValid(
+            &device,
+            spec.offset,
+            spec.size
+        );
+    XBinary::PDSTRUCT scanState = XBinary::createPdStruct();
+    XScanEngine::SCAN_RESULT result = {};
+    if (spec.subdevice) {
+        result = engine.scanSubdevice(
+            &device,
+            spec.offset,
+            spec.size,
+            &options,
+            &scanState
+        );
+    } else {
+        result = engine.scanDevice(
+            &device,
+            &options,
+            &scanState
+        );
+    }
+
+    QJsonObject output;
+    output.insert("id", QString::fromLatin1(spec.id));
+    output.insert(
+        "method",
+        spec.subdevice ? "scanSubdevice" : "scanDevice"
+    );
+    output.insert(
+        "behavior",
+        QString::fromLatin1(deviceBehaviorName(spec.behavior))
+    );
+    output.insert("database_loaded", loaded);
+    output.insert("device_size", device.size());
+    output.insert("initial_position", spec.initialPosition);
+    output.insert("final_position", device.pos());
+    output.insert("offset", spec.offset);
+    output.insert("size", spec.size);
+    output.insert("range_valid", rangeValid);
+    output.insert("seek_calls", device.seekCalls());
+    output.insert("seek_positions", device.seekPositions());
+    output.insert("read_calls", device.readCalls());
+    output.insert("read_requests", device.readRequests());
+    output.insert("read_returns", device.readReturns());
+    output.insert("bytes_returned", device.bytesReturned());
+    output.insert("device_error", device.errorString());
+    output.insert("records", serializeRecords(result.listRecords));
+    output.insert("errors", serializeErrors(result.listErrors));
+    output.insert("result_size", result.nSize);
+    output.insert(
+        "result_filetype",
+        XBinary::fileTypeIdToString(result.ftInit)
+    );
+    output.insert(
+        "pd_error",
+        XBinary::getPdStructErrorString(&scanState)
+    );
+    output.insert(
+        "pd_stopped",
+        XBinary::isPdStructStopped(&scanState)
+    );
+    output.insert(
+        "pd_success",
+        XBinary::isPdStructSuccess(&scanState)
+    );
+    output.insert(
+        "pd_finished",
+        XBinary::isPdStructFinished(&scanState)
+    );
+    output.insert(
+        "pd_n_finished",
+        static_cast<qint64>(scanState.nFinished)
+    );
     return output;
 }
 
@@ -498,6 +802,193 @@ int main(int argc, char *argv[])
             fixtureRoot,
             inputPath,
             &input,
+            &error
+        );
+        if (!error.isEmpty()) {
+            std::fprintf(stderr, "%s\n", error.toUtf8().constData());
+            return 1;
+        }
+        outputs.append(output);
+    }
+
+    const DeviceCaseSpec deviceCases[] = {
+        {
+            "device_chunked_read",
+            DeviceBehavior::Chunked,
+            false,
+            0,
+            0,
+            3,
+            -1,
+            -1,
+        },
+        {
+            "device_early_eof",
+            DeviceBehavior::EarlyEof,
+            false,
+            0,
+            0,
+            0,
+            5,
+            -1,
+        },
+        {
+            "device_read_error",
+            DeviceBehavior::ReadError,
+            false,
+            0,
+            0,
+            0,
+            -1,
+            -1,
+        },
+        {
+            "device_seek_error",
+            DeviceBehavior::SeekError,
+            false,
+            0,
+            0,
+            0,
+            -1,
+            -1,
+        },
+        {
+            "device_sequential",
+            DeviceBehavior::Sequential,
+            false,
+            0,
+            0,
+            0,
+            -1,
+            -1,
+        },
+        {
+            "device_initial_position",
+            DeviceBehavior::Normal,
+            false,
+            0,
+            0,
+            0,
+            -1,
+            7,
+        },
+        {
+            "subdevice_chunked_read",
+            DeviceBehavior::Chunked,
+            true,
+            3,
+            input.size(),
+            3,
+            -1,
+            -1,
+        },
+        {
+            "subdevice_early_eof",
+            DeviceBehavior::EarlyEof,
+            true,
+            3,
+            input.size(),
+            0,
+            8,
+            -1,
+        },
+        {
+            "subdevice_read_error",
+            DeviceBehavior::ReadError,
+            true,
+            3,
+            input.size(),
+            0,
+            -1,
+            -1,
+        },
+        {
+            "subdevice_seek_error",
+            DeviceBehavior::SeekError,
+            true,
+            3,
+            input.size(),
+            0,
+            -1,
+            -1,
+        },
+        {
+            "subdevice_sequential",
+            DeviceBehavior::Sequential,
+            true,
+            3,
+            input.size(),
+            0,
+            -1,
+            -1,
+        },
+        {
+            "subdevice_negative_offset",
+            DeviceBehavior::Normal,
+            true,
+            -1,
+            1,
+            0,
+            -1,
+            -1,
+        },
+        {
+            "subdevice_zero_size",
+            DeviceBehavior::Normal,
+            true,
+            0,
+            0,
+            0,
+            -1,
+            -1,
+        },
+        {
+            "subdevice_negative_size",
+            DeviceBehavior::Normal,
+            true,
+            0,
+            -1,
+            0,
+            -1,
+            -1,
+        },
+        {
+            "subdevice_offset_at_end",
+            DeviceBehavior::Normal,
+            true,
+            42,
+            1,
+            0,
+            -1,
+            -1,
+        },
+        {
+            "subdevice_crosses_end",
+            DeviceBehavior::Normal,
+            true,
+            41,
+            2,
+            0,
+            -1,
+            -1,
+        },
+        {
+            "subdevice_exact_tail",
+            DeviceBehavior::Normal,
+            true,
+            41,
+            1,
+            0,
+            -1,
+            -1,
+        },
+    };
+
+    for (const DeviceCaseSpec &spec : deviceCases) {
+        QJsonObject output = runDeviceCase(
+            spec,
+            fixtureRoot,
+            input,
             &error
         );
         if (!error.isEmpty()) {

@@ -124,6 +124,12 @@ bytes、文件或 mmap，但解析器不直接打开路径，也不自行 seek �
 - parser 返回带位置和类别的错误，不把短读、溢出或 unsupported 混为一类。
 - mmap 和平台文件 API 若需要 `unsafe`，放在单独 adapter 模块并记录安全不变量。
 
+固定上游会忽略小设备整体复制的实际读取长度，并可能扫描未初始化尾部；Qt
+subdevice buffering 还会触碰 view 后一字节。`ByteSource` 因此必须提供有正进展
+的 exact-read、typed EOF/I/O/seek error，并保证底层请求不越过 view。具体安全
+偏离和 range 语义由
+[`ADR 0013`](decisions/0013-fail-closed-incomplete-input.md) 提议。
+
 嵌套对象要么引用已验证的父 view，要么拥有受预算约束的解压缓冲区。每个对象保存
 来源、父节点、file-part、原始 offset/size 和变换信息，保证结果可以追溯。
 

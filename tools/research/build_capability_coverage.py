@@ -131,10 +131,6 @@ def build_gap_map(capability_ids: set[str]) -> dict[str, list[str]]:
             capability_ids,
             prefixes=("CAP-CLI-IN-", "CAP-CLI-DB-"),
         ),
-        "CAP-GAP-009": select(
-            capability_ids,
-            exact=("CAP-ENG-IN-002",),
-        ),
         "CAP-GAP-011": select(
             capability_ids,
             exact=("CAP-RULE-012",),
@@ -173,7 +169,7 @@ def validate_traceability(traceability: dict[str, Any]) -> None:
         raise CoverageError("verification state set changed")
     gap_ids = [gap["id"] for gap in traceability["coverage_gaps"]]
     expected_gap_ids = [
-        *(f"CAP-GAP-{index:03d}" for index in range(1, 10)),
+        *(f"CAP-GAP-{index:03d}" for index in range(1, 9)),
         "CAP-GAP-011",
     ]
     if gap_ids != expected_gap_ids:

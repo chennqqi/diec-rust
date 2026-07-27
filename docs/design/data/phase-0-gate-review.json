@@ -171,10 +171,10 @@
     },
     {
       "id": "P0-BLOCK-003",
-      "title": "eleven active ADRs remain Proposed",
+      "title": "twelve active ADRs remain Proposed",
       "owner": "architecture",
       "status": "open",
-      "progress_evidence": "docs/design/adr-review-readiness.md and docs/design/data/adr-review-readiness.json mark all eleven active ADRs review_ready while keeping acceptance_ready false",
+      "progress_evidence": "docs/design/adr-review-readiness.md and docs/design/data/adr-review-readiness.json mark all twelve active ADRs review_ready while keeping acceptance_ready false",
       "closure_evidence": "each active ADR is Accepted, Rejected, or Superseded with review evidence"
     },
     {
@@ -190,7 +190,7 @@
       "title": "Windows/macOS oracle and remaining capability corpus coverage are incomplete",
       "owner": "compatibility",
       "status": "open",
-      "progress_evidence": "docs/research/capability-coverage-report.md and docs/research/data/capability-coverage.json classify all 68 capability rows across four platforms with zero unclassified cells; docs/research/data/source-only-closure.json proves zero Linux source-only capabilities; docs/research/rule-orchestration.md and docs/research/image-dispatch-behavior.md close CAP-GAP-010 and CAP-GAP-012 while preserving 28 named corpus-gap rows and three missing platform baselines",
+      "progress_evidence": "docs/research/capability-coverage-report.md and docs/research/data/capability-coverage.json classify all 68 capability rows across four platforms with zero unclassified cells; docs/research/data/source-only-closure.json proves zero Linux source-only capabilities; docs/research/engine-contract-behavior.md, docs/research/rule-orchestration.md, and docs/research/image-dispatch-behavior.md close CAP-GAP-009, CAP-GAP-010, and CAP-GAP-012 while preserving 27 named corpus-gap rows and three missing platform baselines",
       "closure_evidence": "pinned reproducible baselines with no Phase 0 source-only, corpus-missing, platform-missing, or unclassified capability rows"
     },
     {

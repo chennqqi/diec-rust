@@ -11,6 +11,9 @@ MODULE_PATH = ROOT / "tools/upstream/probe_engine_contract.py"
 REPORT_PATH = (
     ROOT / "docs/research/data/engine-contract-linux-qt5.json"
 )
+FIXTURE_MANIFEST_PATH = (
+    ROOT / "docs/research/data/rule-orchestration-fixture.json"
+)
 sys.path.insert(0, str(ROOT / "tools/upstream"))
 SPEC = importlib.util.spec_from_file_location(
     "probe_engine_contract", MODULE_PATH
@@ -42,10 +45,25 @@ class ProbeEngineContractTests(unittest.TestCase):
         self.assertEqual(
             self.report["upstream_commit"], MODULE.UPSTREAM_COMMIT
         )
-        self.assertEqual(self.report["harness_output"]["case_count"], 16)
+        self.assertEqual(self.report["harness_output"]["case_count"], 33)
+        self.assertEqual(
+            self.report["fixture_manifest"]["sha256"],
+            hashlib.sha256(FIXTURE_MANIFEST_PATH.read_bytes()).hexdigest(),
+        )
+        for item in self.report["harness_inputs"].values():
+            path = ROOT / item["path"]
+            self.assertTrue(path.is_file())
+            self.assertEqual(
+                item["sha256"],
+                hashlib.sha256(path.read_bytes()).hexdigest(),
+            )
 
     def test_all_validated_relationships_hold(self):
         self.assertTrue(all(self.report["relationships"].values()))
+        self.assertEqual(
+            self.report["relationships"],
+            MODULE.validate(self.report["harness_output"]),
+        )
 
     def test_stop_paths_keep_current_result_and_mark_failure(self):
         for case_id, expected in (
@@ -108,6 +126,89 @@ class ProbeEngineContractTests(unittest.TestCase):
                 ),
             },
         )
+
+    def test_chunked_and_incomplete_device_reads_are_exact(self):
+        self.assertEqual(
+            self.cases["device_chunked_read"]["read_returns"],
+            ["3"] * 11 + ["2"],
+        )
+        self.assertEqual(
+            self.cases["subdevice_chunked_read"]["read_returns"],
+            ["3"] * 12,
+        )
+        self.assertEqual(
+            self.cases["subdevice_chunked_read"]["bytes_returned"],
+            36,
+        )
+
+        incomplete = (
+            "device_early_eof",
+            "device_read_error",
+            "device_seek_error",
+            "device_sequential",
+            "subdevice_early_eof",
+            "subdevice_read_error",
+            "subdevice_seek_error",
+            "subdevice_sequential",
+        )
+        for case_id in incomplete:
+            with self.subTest(case=case_id):
+                case = self.cases[case_id]
+                self.assertLess(
+                    case["bytes_returned"],
+                    case["result_size"],
+                )
+                self.assertEqual(
+                    [record["name"] for record in case["records"]],
+                    ["Priority one"],
+                )
+                self.assertEqual(case["errors"], [])
+                self.assertEqual(case["pd_error"], "")
+                self.assertTrue(case["pd_success"])
+                self.assertTrue(case["pd_finished"])
+
+    def test_read_error_is_not_promoted_to_scan_error(self):
+        for case_id in ("device_read_error", "subdevice_read_error"):
+            case = self.cases[case_id]
+            self.assertEqual(case["read_returns"], ["-1"])
+            self.assertEqual(case["device_error"], "injected read error")
+            self.assertEqual(case["errors"], [])
+            self.assertEqual(case["pd_error"], "")
+
+    def test_invalid_subdevice_ranges_return_zero_result_without_io(self):
+        for case_id in (
+            "subdevice_negative_offset",
+            "subdevice_zero_size",
+            "subdevice_negative_size",
+            "subdevice_offset_at_end",
+            "subdevice_crosses_end",
+        ):
+            with self.subTest(case=case_id):
+                case = self.cases[case_id]
+                self.assertFalse(case["range_valid"])
+                self.assertEqual(case["result_size"], 0)
+                self.assertEqual(case["result_filetype"], "Unknown")
+                self.assertEqual(case["records"], [])
+                self.assertEqual(case["seek_calls"], 0)
+                self.assertEqual(case["read_calls"], 0)
+                self.assertFalse(case["pd_success"])
+                self.assertFalse(case["pd_finished"])
+
+        tail = self.cases["subdevice_exact_tail"]
+        self.assertTrue(tail["range_valid"])
+        self.assertEqual(tail["result_size"], 1)
+        self.assertEqual(tail["bytes_returned"], 1)
+
+    def test_device_source_contracts_are_hash_bound(self):
+        audit = self.report["source_audit"]
+        self.assertTrue(all(audit["device_contracts"].values()))
+        self.assertEqual(
+            set(audit["sources"]),
+            set(MODULE.SOURCE_PATHS),
+        )
+        for identity in audit["sources"].values():
+            self.assertGreater(identity["bytes"], 0)
+            self.assertRegex(identity["sha256"], r"^[0-9a-f]{64}$")
 
 
 if __name__ == "__main__":

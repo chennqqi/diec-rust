@@ -59,8 +59,8 @@ class CapabilityCoverageTest(unittest.TestCase):
     def test_linux_runtime_and_source_only_counts_are_not_conflated(self):
         counts = self.report["summary"]["status_counts_by_platform"]
         linux = counts["linux-x86_64-qt5"]
-        self.assertEqual(linux["runtime_observed"], 49)
-        self.assertEqual(linux["runtime_observed_with_corpus_gaps"], 19)
+        self.assertEqual(linux["runtime_observed"], 50)
+        self.assertEqual(linux["runtime_observed_with_corpus_gaps"], 18)
         self.assertEqual(
             linux["source_only_runtime_corpus_missing"],
             0,
@@ -79,6 +79,7 @@ class CapabilityCoverageTest(unittest.TestCase):
         for capability_id in (
             "CAP-CLI-MODE-005",
             "CAP-CLI-MODE-006",
+            "CAP-ENG-IN-002",
             "CAP-DISPATCH-001",
             "CAP-DISPATCH-002",
             "CAP-DISPATCH-003",
@@ -143,7 +144,7 @@ class CapabilityCoverageTest(unittest.TestCase):
         self.assertEqual(
             gap_ids,
             [
-                *(f"CAP-GAP-{index:03d}" for index in range(1, 10)),
+                *(f"CAP-GAP-{index:03d}" for index in range(1, 9)),
                 "CAP-GAP-011",
             ],
         )

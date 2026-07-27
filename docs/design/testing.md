@@ -524,7 +524,9 @@ raw-only byte-range waiver 默认 unmatched。
 - engine：candidate 顺序、all-types、unknown、heuristic、嵌套、partial 和 cancel；
 - engine contract：精确 signature name（含大小写/deep gate）、record sort 开关、
   callback false、规则 `_breakScan()`、预停止，以及 file/memory/device/subdevice
-  等价；legacy 保留部分 record/Unknown，modern 按 ADR 0009 验证类型化取消；
+  等价；另固定 chunked/EOF/read/seek/sequential、初始 position、合法/非法
+  subdevice range 和父 source 不越界读取；legacy 保留部分 record/Unknown，
+  modern 按 ADR 0009 验证类型化取消、按 ADR 0013 对不完整读取 fail closed；
 - output：UTF-8 escaping、整数、float、optional/null、key/array order；
 - database：三层顺序、空/缺失/损坏、duplicate、hash mismatch 和事务失败；
 - database cache：cold miss/hit、保持 count/size/mtime 的内容替换、bad
@@ -871,7 +873,7 @@ tested、exact、semantic、waived 和 unsupported 数量。
 
 - Windows/macOS upstream oracle 尚未固定，不能声称跨平台 exact。
 - capability coverage report 已覆盖全部 68 行和 272 个平台 cell 的分类；当前
-  Linux Qt5 source-only 已清零、28 个 corpus-gap 行及三个缺失平台仍不足以
+  Linux Qt5 source-only 已清零、27 个 corpus-gap 行及三个缺失平台仍不足以
   满足 capability matrix；十项的 fixture/harness/assertion 闭集见
   [`source-only-closure.json`](../research/data/source-only-closure.json)。
 - ADR 0006 已提议 rquickjs/QuickJS-NG，但 acceptance conditions 和全库

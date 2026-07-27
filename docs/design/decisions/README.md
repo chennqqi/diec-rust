@@ -42,3 +42,6 @@
 - [`0012-bounded-nested-scan-budget.md`](0012-bounded-nested-scan-budget.md)：
   嵌套扫描共享有限 depth/entry/read/expanded/node/deadline 预算；legacy 高资源
   profile 仍不允许无界（Proposed）。
+- [`0013-fail-closed-incomplete-input.md`](0013-fail-closed-incomplete-input.md)：
+  short read、I/O/seek 失败与非法 subdevice 范围必须类型化失败，不复制上游
+  未初始化尾部或 slice 外读取（Proposed）。

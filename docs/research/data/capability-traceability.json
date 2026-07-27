@@ -36,7 +36,11 @@
       "paths": [
         "docs/research/engine-contract-behavior.md",
         "docs/research/data/engine-contract-linux-qt5.json",
-        "tools/tests/test_probe_engine_contract.py"
+        "tools/upstream/engine_contract_harness_main.cpp",
+        "tools/upstream/Dockerfile.engine-contract-harness-qt5",
+        "tools/upstream/probe_engine_contract.py",
+        "tools/tests/test_probe_engine_contract.py",
+        "tools/tests/test_engine_contract_harness_dockerfile.py"
       ]
     },
     "cli_options": {
@@ -217,7 +221,7 @@
     {"id": "CAP-CLI-IN-003", "name": "directory enumeration", "verification": "observed_with_gaps", "evidence_set": "cli_path"},
     {"id": "CAP-CLI-IN-004", "name": "single-file and empty directory", "verification": "observed", "evidence_set": "cli_path"},
     {"id": "CAP-ENG-IN-001", "name": "memory scan", "verification": "observed", "evidence_set": "engine_contract"},
-    {"id": "CAP-ENG-IN-002", "name": "device and subdevice scan", "verification": "observed_with_gaps", "evidence_set": "engine_contract"},
+    {"id": "CAP-ENG-IN-002", "name": "device and subdevice scan", "verification": "observed", "evidence_set": "engine_contract"},
 
     {"id": "CAP-CLI-OPT-001", "name": "recursive scan option", "verification": "observed", "evidence_set": "cli_scan_baseline"},
     {"id": "CAP-CLI-OPT-002", "name": "deep scan option", "verification": "observed", "evidence_set": "cli_scan_baseline"},
@@ -349,13 +353,6 @@
       ]
     },
     {
-      "id": "CAP-GAP-009",
-      "scope": "device and subdevice short reads, invalid ranges, seekability, and I/O errors",
-      "platforms": [
-        "linux-x86_64-qt5"
-      ]
-    },
-    {
       "id": "CAP-GAP-011",
       "scope": "mid-scan callback, asynchronous stop, and cancellation race boundaries",
       "platforms": [
@@ -365,11 +362,11 @@
   ],
   "summary": {
     "capability_count": 68,
-    "observed": 49,
-    "observed_with_gaps": 19,
+    "observed": 50,
+    "observed_with_gaps": 18,
     "source_verified": 0,
     "source_verified_with_gaps": 0,
-    "coverage_gap_count": 10,
+    "coverage_gap_count": 9,
     "phase_0_coverage_complete": false
   }
 }
