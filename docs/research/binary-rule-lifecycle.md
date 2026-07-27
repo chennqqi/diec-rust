@@ -212,8 +212,8 @@ host/global context 中按本清单重跑：292/292 规则均成功求值并解�
 类型的 `detect`，30 次 include trace 不变，只保留 Nintendo 单脚本语法 overlay。
 这消除了 `audio const debug` 和 MiniExtensions `const detect` 的跨规则改写需求，
 但 persistent-state fixture 证明 wrapper 会隔离 Qt 本应保留的顶层 var/function。
-固定 Binary 静态审计虽未发现后一规则依赖前一规则显式声明的候选，仍尚未调用
-完整规则库的 detect，不能据此接受 runtime ADR。详见
+固定 Binary 静态审计虽未发现后一规则依赖前一规则显式声明的候选，但该阶段仍
+尚未调用完整规则库的 detect，不能据此接受 runtime ADR。详见
 [`script-state-semantics.md`](script-state-semantics.md)。
 
 后续 selected lifecycle probe 已在同一固定 292 条加载环境中完成：
@@ -276,15 +276,23 @@ harness 随后给三条原样规则构造 resource/debugdata/text context，Rust
 3 条正例 detection 和 5 条 gate 反例达到 8/8 一致；父扫描器的 subdevice
 发现、scan ID 生成与调度仍未包含在该差分中。
 
+`verify-binary-corpus` 随后把单样本 trace 扩展为 14 个项目生成 Nintendo
+header 样本。每个样本都重新创建 context，逐条调用全部 292 个 `detect`，
+合计 4088/4088 次无异常、0 fallback；21 条结果按固定
+`XScanEngine::typeToPrio()` 和 `sortRecords()` 排序后，完整有序
+type/name/version 与双 Linux Qt5 CLI baseline 14/14 一致，Nintendo info
+14/14 为 `fSELF`。所有多结果样本的 `nPrio` 互异；同优先级 `std::sort` 没有
+稳定 tie 契约，因此 probe 遇到 tie 会拒绝把它计为排序兼容证据。
+
 下一轮完整 signature lifecycle probe 仍至少要满足：
 
 - 在更多格式/文件部分输入上验证当前单样本未抵达的 HostApi 分支，并补齐
   Windows/macOS 顺序；
 - 为格式专用 signature receiver 和 memory map 建立端到端差分；
-- 给 292 条未记录 fallback 的规则建立对应 Qt oracle，而不是按“无异常”计 pass；
-- 保存每条 rule eval、include、host call、result/error 的 trace；
+- 给 292 条规则分别建立能抵达其有效分支的正/反例 Qt oracle，而不是把 14 个
+  Binary header 上的“无异常、零 fallback”计作全规则 pass；
 - 单条失败后验证后续规则是否继续且 metadata 已切换；
-- 以完整上游结果排序逻辑代替当前仅用于 Nintendo/EA-XA 的目标类型投影；
+- 为同优先级结果采集具体平台/STL oracle，或用 ADR 界定不稳定上游行为；
 - 不把静态分析器的任意排序结果当作上游 oracle。
 
 在该门禁通过前，R-001 仍为 Open，也不能据 selected lifecycle 14/14 结果接受
@@ -294,7 +302,7 @@ QuickJS ADR。
 
 - [`DiE_Script::processDetect()`、`findInitSignatures()` 与 `_executeSignature()`](https://github.com/horsicq/die_script/blob/5d82316c110abf0eb863b50bc679d330e05067b6/die_script.cpp)
 - [`DiE_ScriptEngine::includeScriptSlot()` 与 `evaluateEx()`](https://github.com/horsicq/die_script/blob/5d82316c110abf0eb863b50bc679d330e05067b6/die_scriptengine.cpp)
-- [`sort_signature_prio()` 与数据库装载](https://github.com/horsicq/XScanEngine/blob/dfe4a419e4f491bb23688ba03c5a5bf39e34da83/xscanengine.cpp)
+- [`sort_signature_prio()`、`typeToPrio()`、`sortRecords()` 与数据库装载](https://github.com/horsicq/XScanEngine/blob/dfe4a419e4f491bb23688ba03c5a5bf39e34da83/xscanengine.cpp)
 - [`db/_init`](https://github.com/horsicq/Detect-It-Easy/blob/c2c17dfa5ea4e078ba31eab55d87430c96622fb6/db/_init)
 - [`db/Binary/_init`](https://github.com/horsicq/Detect-It-Easy/blob/c2c17dfa5ea4e078ba31eab55d87430c96622fb6/db/Binary/_init)
 

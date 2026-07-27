@@ -45,9 +45,9 @@
     "spikes/c-static-link/Cargo.lock": "29d5824964d0249951f9568a80501e665934788834ab01767beacb6331727fd0",
     "spikes/c-static-link/src/lib.rs": "2a37c663701af5c29bd1dab0e5952e7324d5023862bb8e1d3f6725b562d9f806",
     "spikes/c-static-link/c/smoke.c": "9e70deb13e007358fc6b1dc0aec908331b0fc6d355e5e766c7d77b0f5eb68807",
-    "spikes/rquickjs-rule-runtime/Cargo.toml": "9607cda695bf719921b1dded3dc8c643886a7f2e6fe7380f714698b994e9ee9a",
-    "spikes/rquickjs-rule-runtime/Cargo.lock": "e03ce821c4a4c0f362d417d84752ed9ef1f775377ef9042306397aca39d21836",
-    "spikes/rquickjs-rule-runtime/src/main.rs": "f14c45c30cd6b4cec5754356e4f63db765bf66e8836131b0436f16ddddbcef50",
+    "spikes/rquickjs-rule-runtime/Cargo.toml": "82c5bb97749f50212e5364c2ac7d1f81eaec4d460a9bf47710b4b42f9204a79f",
+    "spikes/rquickjs-rule-runtime/Cargo.lock": "f389eb266779a88939fea9793effdff29d01ea0e1184915698f4fa0f9441d0ad",
+    "spikes/rquickjs-rule-runtime/src/main.rs": "141504df18200b89219e76a72687d86cf122d5a21943c451b4b21ec14fe98f3b",
     "spikes/rquickjs-static-link/Cargo.toml": "160117e2885abc7ca3d5f5d5b9fe77c1fbfc8337a20a709548ff7ef157b96bf0",
     "spikes/rquickjs-static-link/Cargo.lock": "e80e1d8f87c753d7accba7dc3625a926b67221e4ed07c38d13a9d0b9e94c0e80",
     "spikes/rquickjs-static-link/src/lib.rs": "2b2c489e94b4c33135904429939428a531766a7bcac072d797b3d117386cea67",
@@ -83,13 +83,13 @@
       "default": {
         "fmt": "pass",
         "clippy": "pass",
-        "unit_tests": 22,
+        "unit_tests": 25,
         "doc_tests": 0
       },
       "msrv": {
         "fmt": "pass",
         "clippy": "pass",
-        "unit_tests": 22,
+        "unit_tests": 25,
         "doc_tests": 0
       }
     },

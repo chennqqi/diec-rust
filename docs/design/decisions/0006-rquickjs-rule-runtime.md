@@ -20,8 +20,10 @@ Boa 0.21.1 与 rquickjs 0.12.1 都拒绝 Qt 5 接受的 Nintendo legacy 规则�
   panic 在 C ABI 内捕获并于 Rust eval 边界恢复；
 - rquickjs 的精确、等长、source-pinned compatibility overlay 与 per-rule
   lexical wrapper 已让固定 292 条 Binary 顶层规则全部加载；
-- 固定生命周期下的选择性真实 detection 与 Qt 5 达到 14/14，单一安全输入的
-  292-rule trace 已做到 0 fallback；这些结果仍不是全规则兼容率；
+- 固定生命周期下 14 个生成 Binary header 样本已分别调用全部 292 个
+  `detect`，合计 4088/4088 无异常、0 fallback，按固定 XScanEngine 结果优先级
+  排序后的 type/name/version 与 Qt 5 达到 14/14；这些结果仍不是每条规则在其
+  有效输入上的兼容率；
 - rquickjs 使用 vendored QuickJS-NG C，而 Boa 为纯 Rust；native 边界增加构建、
   sanitizer 和安全审计成本。
 
@@ -139,7 +141,8 @@ lexical 不兼容。
 - QuickJS-NG 的 unsafe/native fault 需要 sanitizer、fuzz 和供应链审计；
 - compatibility overlay 与 lexical wrapper 是长期维护面；
 - staticlib 产物和最终 C executable 明显大于不含 JS runtime 的通用 ABI spike；
-- 完整 HostApi 和逐规则 differential 未完成前，不能声称规则兼容。
+- 其他格式/file-part 的完整 HostApi 和逐规则有效分支 differential 未完成前，
+  不能声称规则兼容。
 
 ## Evidence
 

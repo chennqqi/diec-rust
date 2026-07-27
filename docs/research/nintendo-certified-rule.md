@@ -144,10 +144,15 @@ include，并让目标 Nintendo detection 在 14 个样本上与 Qt baseline 逐
 
 - 扩大 invalid/heuristic 边界；
 - Qt 6 对照；
-- 逐条调用完整 Binary signature sequence，而不只调用三个选定规则；
-- 扩展至完整 HostApi，而不是保留 Nintendo 专项方法集合。
+- 为其他 Binary 规则分别提供能抵达有效分支的正/反例，而不只使用 Nintendo
+  header 语料；
+- 扩展到其他格式/file-part 的完整 HostApi context。
 
-选定生命周期 14/14 仍不能证明完整 Binary rule set 兼容。
+新的 `verify-binary-corpus` 已在每个 14 个生成样本上逐条调用全部 292 个
+Binary `detect`，合计 4088/4088 无异常、0 fallback；完整有序
+type/name/version 与双 Qt5 CLI baseline 14/14 一致，Nintendo info 14/14 为
+`fSELF`。这闭合了此前“只调用三个选定规则”的缺口，但仍不能证明每条规则在其
+有效输入和专用 HostApi context 下兼容。
 
 ## 尚未覆盖
 
@@ -155,7 +160,7 @@ include，并让目标 Nintendo detection 在 14 个样本上与 Qt baseline 逐
 - invalid endian、header size、pointer relationship、offset/size 边界。
 - `attr != 0x8000` 和 `fofs/fsz` 的显示/拒绝边界。
 - Qt 6 oracle。
-- QuickJS 全部 292 个 Binary `detect` 调用；固定全库加载及
-  archive_DEFLATE/EA-XA/Nintendo 选定生命周期已完成。
+- 其余 Binary 规则各自的有效正/反例；全部 292 个 `detect` 已在 14 个 Nintendo
+  header 样本上逐样本调用，但多数规则未抵达正例分支。
 - 完整扫描选项矩阵；一次全矩阵运行超过本轮 120 秒执行窗口，未将超时计为行为
   结果。

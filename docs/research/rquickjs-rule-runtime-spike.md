@@ -112,6 +112,15 @@ facts，并接入 `getScanID`、`isResource`、`isDebugData`、`isFilePart`、
 8/8 个 resource/debugdata/text context 差分，三条正例的完整 detection 四元组
 和五条 gate 反例全部一致。
 
+在此基础上，`verify-binary-corpus` 已对 14 个项目生成 Nintendo 样本分别创建
+完整 scan context，并逐样本调用全部 292 个 Binary `detect`：合计 4088/4088
+次无异常、0 fallback，产生的 21 条结果按固定
+`XScanEngine::typeToPrio()`/`sortRecords()` 语义排序后，type/name/version 与
+双 Linux Qt5 CLI baseline 14/14 一致；14 条 Nintendo `info` 均为 `fSELF`。
+Vita 的实际规则执行顺序是 audio→format，而上游输出顺序是 format→audio，
+因此本轮也替换了此前仅对两种目标类型硬编码的投影。多结果样本的优先级均互异；
+上游 `std::sort` 对同优先级没有稳定顺序契约，该边界仍明确拒绝外推。
+
 ## 实验边界
 
 验证程序位于
@@ -141,11 +150,12 @@ proxy 只用于语法/顶层执行覆盖，不代表宿主 API 兼容，也不�
 | Spike Rust | 1.88.0 |
 | rquickjs | 0.12.1，`default-features = false`，仅 `std` |
 | rquickjs-sys | 0.12.1，crate checksum 固定于 `Cargo.lock` |
+| sha2 | 0.10.9，仅用于 spike 输入/基线 identity 验证 |
 | Vendored engine | QuickJS-NG 0.15.1 |
-| Lockfile packages | 24 |
-| 当前 target packages | 19（`cargo metadata --filter-platform x86_64-pc-windows-msvc`） |
+| Lockfile packages | 34 |
+| 当前 target packages | 28（`cargo metadata --filter-platform x86_64-pc-windows-msvc`） |
 | Clean release build | 13,258 ms（adapter 前记录，本机已缓存下载、空 target） |
-| Release executable | 1,935,360 bytes（接入 compare、search、overlay 与 string context 后） |
+| Release executable | 2,066,944 bytes（Rust 1.97.1）；2,092,032 bytes（Rust 1.88.0） |
 
 `cargo +1.86.0 check --locked` 明确报告
 `rquickjs@0.12.1 requires rustc 1.87`。本实验继续复用已安装的 1.88 工具链。
@@ -154,7 +164,7 @@ proxy 只用于语法/顶层执行覆盖，不代表宿主 API 兼容，也不�
 和 `dtoa.c` 为 `libquickjs.a`；Windows MSVC 不需要运行时 QuickJS DLL，但
 构建不再是纯 Rust。crate 内含 QuickJS-NG 的 MIT `LICENSE` 和 MSVC patch。
 
-当前 Windows target 的 19 个 package 都有许可证表达式，涉及 MIT、
+当前 Windows target 的 28 个 package 都有许可证表达式，涉及 MIT、
 Apache-2.0、BSL-1.0、Unlicense 和 Zlib 组合。这是 metadata 初筛，不替代
 发布前的源码、patch、NOTICE 和二进制归属审计。
 
@@ -511,6 +521,47 @@ false，短路使 `getScanID`、`isFilePart` 和 `isUnicodeText` 在此样本上
 1105，search 保持 11，检测仍为同一条 Nintendo result。它仍是单样本缺口诊断，
 不是全规则兼容证据。
 
+### 全 292 条规则的固定语料 oracle
+
+`verify-binary-corpus` 复用上述同一全规则 trace，但不再把检测结果作为代理影响下
+的诊断输出。它先按
+[`nintendo-certified-corpus.json`](data/nintendo-certified-corpus.json)
+逐项验证 14 个生成输入的 size/SHA-256，再为每个样本重新创建 runtime/context，
+依次执行 global/Binary init、30 次 include 和固定 Linux Qt5 顺序的 292 个
+`detect`。任一样本出现规则异常、HostApi fallback、overlay 数量漂移、include
+数量漂移、signature compare/search adapter error 或输入哈希漂移都会使命令
+失败。corpus manifest 与 baseline 文件本身也绑定固定 SHA-256；292 个顺序名称
+重新按 UTF-8/LF canonical 形式计算 hash，不只信任 JSON 中自报的字段。输入在
+校验后以同一字节缓冲进入 HostApi，避免“校验一次、执行时再读一次”的 TOCTOU
+窗口。
+
+结果为：
+
+| 指标 | 值 |
+| --- | ---: |
+| 样本 | 14 |
+| `detect` 尝试/成功 | 4088 / 4088 |
+| `detect` 异常 | 0 |
+| HostApi fallback | 0 |
+| 结果记录 | 21 |
+| Signature compare/search | 16,285 / 154 |
+| Baseline 匹配 | 14 / 14 |
+
+结果排序不再使用 `format, audio` 特例。固定
+`XScanEngine@dfe4a419e4f491bb23688ba03c5a5bf39e34da83` 的
+`typeToPrio()` 给每条结果赋 `nPrio`，`sortRecords()` 调用 `std::sort`，比较器
+`_sortItems()` 只比较数值优先级。Rust probe 复制该优先级映射，并仅在一个样本的
+所有结果优先级互异时把有序结果作为证据；否则明确判失败，因为上游同优先级的
+`std::sort` 次序没有稳定契约。本语料中 PS3 每例一条 `format`，Vita 每例一条
+`format`（优先级 12）和一条未知类别 `audio`（优先级 1000），所以 14 个样本的
+排序证据均无 tie。
+
+比较范围是双 upstream CLI baseline 保存的完整有序 type/name/version，以及
+Nintendo 规则已固定的 `info == "fSELF"` 不变量。EA-XA 的空 info 被保留在 Rust
+原始四元组诊断中，但现有 upstream baseline 没有保存该字段，因此不把它写成已
+完成的上游 info 差分。该实验覆盖 14 个短 Binary header，不覆盖其他格式、
+file-part、扫描选项或 292 条规则各自的正例；14/14 不能改写为“全规则兼容率”。
+
 ### Resource、debugdata 与 text 真实规则差分
 
 静态规则清单确认：
@@ -693,8 +744,8 @@ Nintendo 的单脚本语法 overlay，`audio` 和 MiniExtensions 的跨规则 ov
 | 复杂 audio 规则 | 接受 | sloppy 模式接受 |
 | 外部 interrupt | 未发现公开接口 | 跨线程 token 已中断并同 context 恢复 |
 | Heap limit | 未发现公开接口 | 支持默认 allocator |
-| Windows target packages | 126 | 19 |
-| Release spike | 11,784,192 bytes | 1,935,360 bytes |
+| Windows target packages | 126 | 28 |
+| Release spike | 11,784,192 bytes | 2,066,944 bytes（Rust 1.97.1） |
 | 实现语言 | 纯 Rust | Rust wrapper + vendored C |
 | 本轮工具链 | Rust 1.88 | 最低 1.87，本轮 1.88 |
 
@@ -775,6 +826,13 @@ cargo +1.88.0 run --release --locked -- trace-binary-detects \
   ../../upstream/Detect-It-Easy/db \
   /tmp/diec-nintendo-certified-corpus/ps3-type-2-revoke-list.self \
   ../../docs/research/data/binary-rule-order-linux-qt5.json
+
+cargo +1.88.0 run --release --locked -- verify-binary-corpus \
+  ../../upstream/Detect-It-Easy/db \
+  /tmp/diec-nintendo-certified-corpus \
+  ../../docs/research/data/nintendo-certified-corpus.json \
+  ../../docs/research/data/nintendo-certified-baseline.json \
+  ../../docs/research/data/binary-rule-order-linux-qt5.json
 ```
 
 `fixture`、`eval-isolated-compat`、`eval-binary-lifecycle`、两个 lexical
@@ -802,9 +860,10 @@ JSON。运行前先执行
 
 ## 尚未完成
 
-- Binary 已按固定 Linux 顺序完成 292 条顶层 eval 和 fallback-tolerant
-  `detect` 缺口采集；尚未用完整 HostApi/Qt oracle 逐条验证，也未完成其他 file
-  type 和 Windows/macOS 顺序。
+- Binary 已按固定 Linux 顺序完成 292 条顶层 eval、全 `detect` 缺口采集，并在
+  14 个生成 header 样本上完成 4088 次零 fallback 调用和完整有序结果 oracle；
+  尚未为 292 条规则分别提供正/反例 Qt oracle，也未完成其他 file type/file-part
+  和 Windows/macOS 顺序。
 - 规则侧已清点 429 个第一层宿主 receiver/method 和 464 个 arity 形状；
   337 个 C++ slot 与 13 个脚本扩展静态覆盖 460 个形状。共享 Qt 5/Qt 6
   QObject 探针已闭合三个额外实参形状和缺失 `PE.getEPSignature` 的
@@ -812,8 +871,9 @@ JSON。运行前先执行
   参数/返回类型、默认参数和异常 fixture。
 - 非格式 native global 的 Qt 5 探针已固定缺参字符串化、结果重复/删除/block、
   双 stop 状态和重复 include；QuickJS adapter 尚未逐项复刻并差分这些副作用。
-- Nintendo/EA-XA 已在固定 292 条加载环境中完成三个 selected `detect` 的 Qt 5
-  14/14 对照；仍缺 Qt 6、其余 289 个 `detect` 的真实 HostApi/Qt oracle。
+- Nintendo 语料已在固定 292 条加载环境中逐样本调用全部 292 个 `detect`，
+  Qt 5 完整有序 type/name/version 14/14 对照通过；仍缺 Qt 6 和其余规则各自能
+  抵达有效分支的正/反例 HostApi/Qt oracle。
 - Qt 5/Qt 6 与 QuickJS 的整数、字符串、数组、异常和 RegExp 差分。
 - Linux/macOS/Windows GNU/MSVC 静态链接、ASan/UBSan 和 fuzz。
 - 真实 signature/search/decompression HostApi 的 deadline/cancel checkpoint

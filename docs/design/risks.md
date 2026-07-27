@@ -133,6 +133,14 @@ baseline 的变更都要检查本表。
   compare 和 1 条 detection；仍不能把单输入零 fallback 当作兼容率。三条原样
   context-sensitive 规则的 Qt5/Rust 差分随后为 8/8，但只验证已给定 context
   后的规则行为，未验证 scanner 的 subdevice 枚举、scan ID 和调度。
+  `verify-binary-corpus` 又在 14 个生成 Nintendo header 样本上分别调用全部
+  292 个 `detect`，合计 4088/4088 无异常、0 fallback、16,285 次 compare、
+  154 次 search；21 条结果按固定 `XScanEngine::typeToPrio/sortRecords` 排序后，
+  完整有序 type/name/version 与双 Linux Qt5 CLI baseline 14/14 一致，
+  Nintendo info 14/14 为 `fSELF`。所有多结果样本优先级互异；同优先级
+  `std::sort` 仍没有稳定契约。这把单输入动态 trace 扩大为哈希绑定语料 oracle，
+  但多数规则仍未在其正例、专用格式 receiver 或其他 file-part 上抵达有效分支，
+  因而 R-001 继续 Open。
   固定 signature AST inventory 随后解析 `db`/`db_extra`
   2175/2175，保存 5968 个具名 signature API 调用点和 5628 个静态 pattern，
   覆盖动态 317/317；四个保守动态参数中的 `byteCode` 又已闭合为 97 个唯一

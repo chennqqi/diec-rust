@@ -11,15 +11,16 @@
     "version": "0.12.1"
   },
   "dependency_footprint": {
-    "lockfile_packages": 24,
-    "release_executable_bytes": 1935360,
+    "lockfile_packages": 34,
+    "release_executable_bytes_default_1_97_1": 2066944,
+    "release_executable_bytes_msrv_1_88_0": 2092032,
     "target": "x86_64-pc-windows-msvc",
-    "target_packages": 19
+    "target_packages": 28
   },
   "experiment": {
-    "cargo_lock_sha256": "e03ce821c4a4c0f362d417d84752ed9ef1f775377ef9042306397aca39d21836",
-    "cargo_toml_sha256": "9607cda695bf719921b1dded3dc8c643886a7f2e6fe7380f714698b994e9ee9a",
-    "source_sha256": "f14c45c30cd6b4cec5754356e4f63db765bf66e8836131b0436f16ddddbcef50",
+    "cargo_lock_sha256": "f389eb266779a88939fea9793effdff29d01ea0e1184915698f4fa0f9441d0ad",
+    "cargo_toml_sha256": "82c5bb97749f50212e5364c2ac7d1f81eaec4d460a9bf47710b4b42f9204a79f",
+    "source_sha256": "141504df18200b89219e76a72687d86cf122d5a21943c451b4b21ec14fe98f3b",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -903,6 +904,44 @@
       ]
     },
     "scope": "three byte-identical fixed Binary rules under project-generated resource, debugdata, and text/header QBuffer contexts; verifies detect return and full detection tuple, not upstream orchestration that discovers and schedules subdevices"
+  },
+  "full_binary_corpus_oracle": {
+    "accepted_detect_count": 4088,
+    "all_match": true,
+    "attempted_detect_count": 4088,
+    "baseline": "docs/research/data/nintendo-certified-baseline.json",
+    "baseline_sha256": "683d2d85abc7053321785f53224842cd2047427d4d8ce6d591248453e2f29503",
+    "comparison_fields": [
+      "ordered type",
+      "ordered name",
+      "ordered version",
+      "Nintendo info invariant"
+    ],
+    "compatibility_overlay_count_per_sample": 1,
+    "corpus_manifest": "docs/research/data/nintendo-certified-corpus.json",
+    "corpus_manifest_sha256": "eac3ad62c7f21d5112ee1ca73fbb6cc4e5306b6004357aeaf86144fa3ef51a03",
+    "detect_error_count": 0,
+    "detection_count": 21,
+    "fallback_call_total": 0,
+    "include_call_count_per_sample": 30,
+    "input_identity_matched_count": 14,
+    "matched_count": 14,
+    "nintendo_info_matched_count": 14,
+    "order_sha256": "27138d68ed788dd2609b7c533fecf540593fa2e4ddb7195adc26b1a9ff0e1ff3",
+    "result_sort_oracle": {
+      "comparison": "ascending numeric nPrio",
+      "component": "horsicq/XScanEngine@dfe4a419e4f491bb23688ba03c5a5bf39e34da83",
+      "equal_priority_limitation": "upstream std::sort has no stable tie-order contract; every multi-detection sample in this corpus has distinct priorities",
+      "source": "xscanengine.cpp::_sortItems, sortRecords, typeToPrio"
+    },
+    "rule_count_per_sample": 292,
+    "sample_count": 14,
+    "scope": "all 292 fixed Binary detect functions over 14 project-generated Nintendo header samples; exact ordered type/name/version oracle plus Nintendo info invariant, not all-rule or all-format compatibility",
+    "signature_compare_call_total": 16285,
+    "signature_compare_error_total": 0,
+    "signature_search_call_total": 154,
+    "signature_search_error_total": 0,
+    "unambiguous_priority_sample_count": 14
   },
   "isolated_eval": {
     "bytes": 2902881,

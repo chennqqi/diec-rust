@@ -262,6 +262,49 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
         self.assertEqual(sample["size"], diagnostic["input"]["bytes"])
         self.assertEqual(sample["sha256"], diagnostic["input"]["sha256"])
 
+    def test_full_binary_corpus_oracle_is_hash_bound_and_complete(self):
+        oracle = self.reference["full_binary_corpus_oracle"]
+        self.assertTrue(oracle["all_match"])
+        self.assertEqual(oracle["sample_count"], 14)
+        self.assertEqual(oracle["matched_count"], 14)
+        self.assertEqual(oracle["input_identity_matched_count"], 14)
+        self.assertEqual(oracle["rule_count_per_sample"], 292)
+        self.assertEqual(oracle["attempted_detect_count"], 14 * 292)
+        self.assertEqual(oracle["accepted_detect_count"], 14 * 292)
+        self.assertEqual(oracle["detect_error_count"], 0)
+        self.assertEqual(oracle["fallback_call_total"], 0)
+        self.assertEqual(oracle["signature_compare_error_total"], 0)
+        self.assertEqual(oracle["signature_search_error_total"], 0)
+        self.assertEqual(oracle["detection_count"], 21)
+        self.assertEqual(oracle["include_call_count_per_sample"], 30)
+        self.assertEqual(oracle["compatibility_overlay_count_per_sample"], 1)
+        self.assertEqual(oracle["unambiguous_priority_sample_count"], 14)
+        self.assertEqual(oracle["nintendo_info_matched_count"], 14)
+        for path_field, hash_field in (
+            ("corpus_manifest", "corpus_manifest_sha256"),
+            ("baseline", "baseline_sha256"),
+        ):
+            path = ROOT / oracle[path_field]
+            self.assertEqual(
+                hashlib.sha256(path.read_bytes()).hexdigest(),
+                oracle[hash_field],
+            )
+        self.assertEqual(
+            oracle["result_sort_oracle"]["component"],
+            (
+                "horsicq/XScanEngine@"
+                "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+            ),
+        )
+        self.assertIn(
+            "std::sort",
+            oracle["result_sort_oracle"]["equal_priority_limitation"],
+        )
+        self.assertIn(
+            "not all-rule or all-format compatibility",
+            oracle["scope"],
+        )
+
     def test_basic_host_api_increment_records_remaining_dynamic_gaps(self):
         increment = self.reference["basic_host_api_increment"]
         numeric_oracle = increment["numeric_oracle"]

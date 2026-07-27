@@ -89,7 +89,7 @@ cargo +1.97.1 test --manifest-path <manifest> --all-features
 | --- | --- | --- | ---: | ---: |
 | `boa-rule-runtime` | pass | pass | 2 | 0 |
 | `c-static-link` | pass | pass | 3 | 0 |
-| `rquickjs-rule-runtime` | pass | pass | 22 | 0 |
+| `rquickjs-rule-runtime` | pass | pass | 25 | 0 |
 | `rquickjs-static-link` | pass | pass | 2 | 0 |
 | `signature-parser` | pass | pass | 14 | 0 |
 
@@ -105,14 +105,17 @@ source SHA-256 为
 同一源码又在 1.88.0 和 1.97.1 下分别通过 rustfmt、`-D warnings` 和全部
 14 项测试，因此这次维护性修改没有提高 MSRV。
 
-后续 `rquickjs-rule-runtime` 增加 128 KiB VM stack-limit/recovery 和 native
-callback panic-recovery fixture 后，
-更新源码 SHA-256 为
-`f14c45c30cd6b4cec5754356e4f63db765bf66e8836131b0436f16ddddbcef50`；
-同一源码也在 1.88.0 和 1.97.1 下通过 rustfmt、`-D warnings` 和 22 项测试，
-两套 release fixture 均捕获 stack overflow，并在 Rust eval 边界捕获 native
-callback panic；4 MiB heap OOM 后同一 context 也恢复执行。该补充不改变 Cargo
-dependency、feature、lockfile 或 native static-link consumer。
+后续 `rquickjs-rule-runtime` 增加 128 KiB VM stack-limit/recovery、native
+callback panic-recovery fixture，以及带 SHA-256 输入 identity 的 292-rule
+Nintendo 语料 oracle 后，更新源码 SHA-256 为
+`141504df18200b89219e76a72687d86cf122d5a21943c451b4b21ec14fe98f3b`；
+同一源码也在 1.88.0 和 1.97.1 下通过 rustfmt、`-D warnings` 和 25 项测试。
+两套工具链 fixture 均捕获 stack overflow，并在 Rust eval 边界捕获 native
+callback panic；4 MiB heap OOM 后同一 context 也恢复执行。语料 oracle 引入
+固定纯 Rust `sha2@0.10.9`，因此 Cargo manifest、lockfile 和 spike 依赖闭包随之
+更新；两套 release 构建的语料 oracle 都得到 4088/4088 次 `detect` 成功、
+0 fallback 和 14/14 baseline 匹配。该变化不改变独立的 native static-link
+consumer。
 
 ## 5. Native static-link 结果
 

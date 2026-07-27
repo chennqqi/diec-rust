@@ -1,6 +1,6 @@
 #![recursion_limit = "256"]
 
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 use std::env;
 use std::fs;
 use std::panic::{self, AssertUnwindSafe};
@@ -18,6 +18,7 @@ use rquickjs::{
     CatchResultExt, Context, Error, Function, Object, Runtime, context::EvalOptions, function::Opt,
 };
 use serde_json::{Value, json};
+use sha2::{Digest, Sha256};
 
 const HOST_SHIM: &[u8] = br#"
     var included = [];
@@ -132,9 +133,14 @@ const UPSTREAM_COMMIT: &str = "74eaf505c250ab47e709024e9dc41657cd8f2254";
 const RULES_COMMIT: &str = "c2c17dfa5ea4e078ba31eab55d87430c96622fb6";
 const LINUX_QT5_BINARY_ORDER_SHA256: &str =
     "27138d68ed788dd2609b7c533fecf540593fa2e4ddb7195adc26b1a9ff0e1ff3";
+const NINTENDO_CORPUS_MANIFEST_SHA256: &str =
+    "eac3ad62c7f21d5112ee1ca73fbb6cc4e5306b6004357aeaf86144fa3ef51a03";
+const NINTENDO_BASELINE_SHA256: &str =
+    "683d2d85abc7053321785f53224842cd2047427d4d8ce6d591248453e2f29503";
 const BINARY_SIGNATURE_COUNT: usize = 292;
 
 type Detection = (String, String, String, String);
+type DetectionTriple = (String, String, String);
 type NintendoLifecycleResult = (Vec<Detection>, Vec<String>, usize, Vec<String>);
 type SharedDetections = Arc<Mutex<Vec<Detection>>>;
 type SharedHostTrace = Arc<HostTrace>;
@@ -1575,6 +1581,14 @@ fn parse_binary_order(document: &Value) -> Result<Vec<String>, String> {
             return Err(format!("invalid Binary signature name: {name}"));
         }
     }
+    let mut canonical = Vec::new();
+    for name in &order {
+        canonical.extend_from_slice(name.as_bytes());
+        canonical.push(b'\n');
+    }
+    if sha256_hex(&canonical) != LINUX_QT5_BINARY_ORDER_SHA256 {
+        return Err("Binary canonical order SHA-256 mismatch".to_owned());
+    }
     Ok(order)
 }
 
@@ -2217,19 +2231,18 @@ fn run_nintendo_lifecycle_corpus(
     Ok(all_match)
 }
 
-fn trace_binary_detects(
+fn trace_binary_detects_report_with_data(
     rule_root: &Path,
     input_path: &Path,
     order_path: &Path,
-) -> Result<bool, String> {
+    data: Vec<u8>,
+) -> Result<Value, String> {
     let order_document: Value = serde_json::from_slice(
         &fs::read(order_path)
             .map_err(|error| format!("cannot read {}: {error}", order_path.display()))?,
     )
     .map_err(|error| format!("cannot parse {}: {error}", order_path.display()))?;
     let order = parse_binary_order(&order_document)?;
-    let data = fs::read(input_path)
-        .map_err(|error| format!("cannot read {}: {error}", input_path.display()))?;
     let input_size = data.len();
     let runtime = new_runtime()?;
     let interrupt_ticks = Arc::new(AtomicUsize::new(0));
@@ -2551,65 +2564,488 @@ fn trace_binary_detects(
         "is_debug_data": signature_trace.is_debug_data_calls.load(Ordering::Relaxed),
         "is_file_part": signature_trace.is_file_part_calls.load(Ordering::Relaxed),
     });
+    Ok(json!({
+        "schema_version": 1,
+        "operation": "diagnostic invocation of all fixed-order Binary detect functions",
+        "scope": "fallback-tolerant gap inventory; detections are not compatibility evidence",
+        "runtime": "rquickjs 0.12.1 / QuickJS-NG 0.15.1",
+        "input": {
+            "path": normalized_path(input_path),
+            "bytes": input_size,
+        },
+        "order_manifest": normalized_path(order_path),
+        "order_sha256": LINUX_QT5_BINARY_ORDER_SHA256,
+        "rule_count": order.len(),
+        "attempted_detect_count": observations.len(),
+        "accepted_detect_count": observations.len() - error_count,
+        "detect_error_count": error_count,
+        "compatibility_overlay_count": overlay_count,
+        "include_trace": include_trace,
+        "include_call_count": include_call_count,
+        "fallback_rule_count": fallback_rule_count,
+        "fallback_call_total": fallback_call_total,
+        "fallback_paths": fallback_paths,
+        "signature_compare_call_total": signature_trace.calls.load(Ordering::Relaxed),
+        "signature_compare_fast_path_total":
+            signature_trace.fast_paths.load(Ordering::Relaxed),
+        "signature_compare_generic_path_total":
+            signature_trace.generic_paths.load(Ordering::Relaxed),
+        "signature_compare_quirk_total": signature_trace.quirks.load(Ordering::Relaxed),
+        "signature_compare_error_total": signature_trace.errors.load(Ordering::Relaxed),
+        "signature_compare_unique_quirks": signature_unique_quirks,
+        "signature_compare_unique_errors": signature_unique_errors,
+        "signature_search_call_total": signature_trace.search_calls.load(Ordering::Relaxed),
+        "signature_find_signature_call_total":
+            signature_trace.find_signature_calls.load(Ordering::Relaxed),
+        "signature_f_sig_call_total": signature_trace.f_sig_calls.load(Ordering::Relaxed),
+        "signature_is_signature_present_call_total":
+            signature_trace.is_signature_present_calls.load(Ordering::Relaxed),
+        "signature_search_match_total":
+            signature_trace.search_matches.load(Ordering::Relaxed),
+        "signature_search_quirk_total":
+            signature_trace.search_quirks.load(Ordering::Relaxed),
+        "signature_search_error_total":
+            signature_trace.search_errors.load(Ordering::Relaxed),
+        "signature_search_unique_quirks": signature_search_unique_quirks,
+        "signature_search_unique_errors": signature_search_unique_errors,
+        "overlay_host_call_totals": overlay_host_call_totals,
+        "string_host_call_totals": string_host_call_totals,
+        "context_host_call_totals": context_host_call_totals,
+        "detection_count": all_detections.len(),
+        "detections": all_detections,
+        "observations": observations,
+        "interrupt_handler_call_limit_per_rule": 1_000_000,
+        "elapsed_ms": started.elapsed().as_millis(),
+        "completed": true,
+    }))
+}
+
+fn trace_binary_detects_report(
+    rule_root: &Path,
+    input_path: &Path,
+    order_path: &Path,
+) -> Result<Value, String> {
+    let data = fs::read(input_path)
+        .map_err(|error| format!("cannot read {}: {error}", input_path.display()))?;
+    trace_binary_detects_report_with_data(rule_root, input_path, order_path, data)
+}
+
+fn trace_binary_detects(
+    rule_root: &Path,
+    input_path: &Path,
+    order_path: &Path,
+) -> Result<bool, String> {
+    let report = trace_binary_detects_report(rule_root, input_path, order_path)?;
     println!(
         "{}",
-        serde_json::to_string_pretty(&json!({
-            "schema_version": 1,
-            "operation": "diagnostic invocation of all fixed-order Binary detect functions",
-            "scope": "fallback-tolerant gap inventory; detections are not compatibility evidence",
-            "runtime": "rquickjs 0.12.1 / QuickJS-NG 0.15.1",
-            "input": {
-                "path": normalized_path(input_path),
-                "bytes": input_size,
-            },
-            "order_manifest": normalized_path(order_path),
-            "order_sha256": LINUX_QT5_BINARY_ORDER_SHA256,
-            "rule_count": order.len(),
-            "attempted_detect_count": observations.len(),
-            "accepted_detect_count": observations.len() - error_count,
-            "detect_error_count": error_count,
-            "compatibility_overlay_count": overlay_count,
-            "include_trace": include_trace,
-            "include_call_count": include_call_count,
-            "fallback_rule_count": fallback_rule_count,
-            "fallback_call_total": fallback_call_total,
-            "fallback_paths": fallback_paths,
-            "signature_compare_call_total": signature_trace.calls.load(Ordering::Relaxed),
-            "signature_compare_fast_path_total":
-                signature_trace.fast_paths.load(Ordering::Relaxed),
-            "signature_compare_generic_path_total":
-                signature_trace.generic_paths.load(Ordering::Relaxed),
-            "signature_compare_quirk_total": signature_trace.quirks.load(Ordering::Relaxed),
-            "signature_compare_error_total": signature_trace.errors.load(Ordering::Relaxed),
-            "signature_compare_unique_quirks": signature_unique_quirks,
-            "signature_compare_unique_errors": signature_unique_errors,
-            "signature_search_call_total": signature_trace.search_calls.load(Ordering::Relaxed),
-            "signature_find_signature_call_total":
-                signature_trace.find_signature_calls.load(Ordering::Relaxed),
-            "signature_f_sig_call_total": signature_trace.f_sig_calls.load(Ordering::Relaxed),
-            "signature_is_signature_present_call_total":
-                signature_trace.is_signature_present_calls.load(Ordering::Relaxed),
-            "signature_search_match_total":
-                signature_trace.search_matches.load(Ordering::Relaxed),
-            "signature_search_quirk_total":
-                signature_trace.search_quirks.load(Ordering::Relaxed),
-            "signature_search_error_total":
-                signature_trace.search_errors.load(Ordering::Relaxed),
-            "signature_search_unique_quirks": signature_search_unique_quirks,
-            "signature_search_unique_errors": signature_search_unique_errors,
-            "overlay_host_call_totals": overlay_host_call_totals,
-            "string_host_call_totals": string_host_call_totals,
-            "context_host_call_totals": context_host_call_totals,
-            "detection_count": all_detections.len(),
-            "detections": all_detections,
-            "observations": observations,
-            "interrupt_handler_call_limit_per_rule": 1_000_000,
-            "elapsed_ms": started.elapsed().as_millis(),
-            "completed": true,
-        }))
-        .map_err(|error| format!("cannot serialize report: {error}"))?
+        serde_json::to_string_pretty(&report)
+            .map_err(|error| format!("cannot serialize report: {error}"))?
     );
     Ok(true)
+}
+
+fn sha256_hex(bytes: &[u8]) -> String {
+    format!("{:x}", Sha256::digest(bytes))
+}
+
+fn upstream_type_priority(kind: &str) -> i32 {
+    let normalized = kind.to_lowercase().replace(['~', '!'], "");
+    match normalized.as_str() {
+        "operation system" | "virtual machine" => 10,
+        "format" => 12,
+        "platform" | "dos extender" => 14,
+        "linker" => 20,
+        "compiler" => 30,
+        "language" => 40,
+        "library" => 50,
+        "tool" | "pe tool" | "sign tool" | "apk tool" => 60,
+        "protector" | "cryptor" | "crypter" => 70,
+        ".net obfuscator" | "apk obfuscator" | "jar obfuscator" => 80,
+        "dongle protection" | "protection" => 90,
+        "packer" | ".net compressor" => 100,
+        "joiner" => 110,
+        "sfx" | "installer" => 120,
+        "virus" | "malware" | "trojan" | "corrupted data" | "personal data" | "author" => 70,
+        "debug data" => 200,
+        _ => 1000,
+    }
+}
+
+fn parse_detection_triples(
+    value: &Value,
+    sample_name: &str,
+) -> Result<Vec<DetectionTriple>, String> {
+    value
+        .as_array()
+        .ok_or_else(|| format!("baseline detections for {sample_name} are not an array"))?
+        .iter()
+        .enumerate()
+        .map(|(index, detection)| {
+            let fields = detection.as_array().ok_or_else(|| {
+                format!("baseline detection {index} for {sample_name} is not an array")
+            })?;
+            if fields.len() != 3 {
+                return Err(format!(
+                    "baseline detection {index} for {sample_name} has {} fields, expected 3",
+                    fields.len()
+                ));
+            }
+            Ok((
+                fields[0]
+                    .as_str()
+                    .ok_or_else(|| {
+                        format!("baseline detection {index} type for {sample_name} is not a string")
+                    })?
+                    .to_owned(),
+                fields[1]
+                    .as_str()
+                    .ok_or_else(|| {
+                        format!("baseline detection {index} name for {sample_name} is not a string")
+                    })?
+                    .to_owned(),
+                fields[2]
+                    .as_str()
+                    .ok_or_else(|| {
+                        format!(
+                            "baseline detection {index} version for {sample_name} is not a string"
+                        )
+                    })?
+                    .to_owned(),
+            ))
+        })
+        .collect()
+}
+
+fn parse_runtime_detections(report: &Value, sample_name: &str) -> Result<Vec<Detection>, String> {
+    report
+        .get("detections")
+        .and_then(Value::as_array)
+        .ok_or_else(|| format!("runtime detections for {sample_name} are missing"))?
+        .iter()
+        .enumerate()
+        .map(|(index, detection)| {
+            let fields = detection.as_array().ok_or_else(|| {
+                format!("runtime detection {index} for {sample_name} is not an array")
+            })?;
+            if fields.len() != 4 {
+                return Err(format!(
+                    "runtime detection {index} for {sample_name} has {} fields, expected 4",
+                    fields.len()
+                ));
+            }
+            let field = |field_index: usize, label: &str| {
+                fields[field_index]
+                    .as_str()
+                    .map(str::to_owned)
+                    .ok_or_else(|| {
+                        format!(
+                            "runtime detection {index} {label} for {sample_name} is not a string"
+                        )
+                    })
+            };
+            Ok((
+                field(0, "type")?,
+                field(1, "name")?,
+                field(2, "version")?,
+                field(3, "info")?,
+            ))
+        })
+        .collect()
+}
+
+fn sorted_detection_projection(detections: &[Detection]) -> (Vec<DetectionTriple>, bool) {
+    let mut priority_counts = BTreeMap::new();
+    for (kind, _, _, _) in detections {
+        *priority_counts
+            .entry(upstream_type_priority(kind))
+            .or_insert(0_usize) += 1;
+    }
+    let priorities_unambiguous = priority_counts.values().all(|count| *count == 1);
+    let mut sorted = detections.to_vec();
+    sorted.sort_by_key(|(kind, _, _, _)| upstream_type_priority(kind));
+    (
+        sorted
+            .into_iter()
+            .map(|(kind, name, version, _)| (kind, name, version))
+            .collect(),
+        priorities_unambiguous,
+    )
+}
+
+fn report_u64(report: &Value, field: &str, sample_name: &str) -> Result<u64, String> {
+    report
+        .get(field)
+        .and_then(Value::as_u64)
+        .ok_or_else(|| format!("{sample_name}: runtime report field {field} is missing"))
+}
+
+fn verify_binary_corpus(
+    rule_root: &Path,
+    corpus_root: &Path,
+    corpus_manifest_path: &Path,
+    baseline_path: &Path,
+    order_path: &Path,
+) -> Result<bool, String> {
+    let corpus_manifest_bytes = fs::read(corpus_manifest_path).map_err(|error| {
+        format!(
+            "cannot read corpus manifest {}: {error}",
+            corpus_manifest_path.display()
+        )
+    })?;
+    if sha256_hex(&corpus_manifest_bytes) != NINTENDO_CORPUS_MANIFEST_SHA256 {
+        return Err("Nintendo corpus manifest SHA-256 mismatch".to_owned());
+    }
+    let corpus_manifest: Value =
+        serde_json::from_slice(&corpus_manifest_bytes).map_err(|error| {
+            format!(
+                "cannot parse corpus manifest {}: {error}",
+                corpus_manifest_path.display()
+            )
+        })?;
+    if corpus_manifest
+        .get("schema_version")
+        .and_then(Value::as_u64)
+        != Some(1)
+        || corpus_manifest.get("generator").and_then(Value::as_str)
+            != Some("tools/corpus/generate_nintendo_certified_corpus.py")
+    {
+        return Err("unexpected Nintendo corpus manifest identity".to_owned());
+    }
+    let mut manifest_samples = BTreeMap::new();
+    for sample in corpus_manifest
+        .get("samples")
+        .and_then(Value::as_array)
+        .ok_or_else(|| "Nintendo corpus manifest samples are missing".to_owned())?
+    {
+        let name = sample
+            .get("name")
+            .and_then(Value::as_str)
+            .ok_or_else(|| "Nintendo corpus manifest sample name is missing".to_owned())?
+            .to_owned();
+        let size = sample
+            .get("size")
+            .and_then(Value::as_u64)
+            .ok_or_else(|| format!("Nintendo corpus manifest size is missing for {name}"))?;
+        let sha256 = sample
+            .get("sha256")
+            .and_then(Value::as_str)
+            .ok_or_else(|| format!("Nintendo corpus manifest SHA-256 is missing for {name}"))?
+            .to_owned();
+        if manifest_samples
+            .insert(name.clone(), (size, sha256))
+            .is_some()
+        {
+            return Err(format!("duplicate Nintendo corpus manifest sample: {name}"));
+        }
+    }
+
+    let baseline_bytes = fs::read(baseline_path)
+        .map_err(|error| format!("cannot read {}: {error}", baseline_path.display()))?;
+    if sha256_hex(&baseline_bytes) != NINTENDO_BASELINE_SHA256 {
+        return Err("Nintendo oracle baseline SHA-256 mismatch".to_owned());
+    }
+    let baseline: Value = serde_json::from_slice(&baseline_bytes)
+        .map_err(|error| format!("cannot parse {}: {error}", baseline_path.display()))?;
+    if baseline.get("schema_version").and_then(Value::as_u64) != Some(1)
+        || baseline.get("expected_revision").and_then(Value::as_str) != Some(UPSTREAM_COMMIT)
+        || baseline.get("rules_commit").and_then(Value::as_str) != Some(RULES_COMMIT)
+    {
+        return Err("unexpected Nintendo oracle baseline identity".to_owned());
+    }
+    let baseline_samples = baseline
+        .get("samples")
+        .and_then(Value::as_object)
+        .ok_or_else(|| "Nintendo oracle baseline samples are missing".to_owned())?;
+    let manifest_names = manifest_samples.keys().collect::<BTreeSet<_>>();
+    let baseline_names = baseline_samples.keys().collect::<BTreeSet<_>>();
+    if manifest_names != baseline_names {
+        return Err("Nintendo corpus manifest and oracle baseline sample sets differ".to_owned());
+    }
+
+    let mut sample_reports = Vec::with_capacity(baseline_samples.len());
+    let mut all_match = true;
+    let mut signature_compare_call_total = 0_u64;
+    let mut signature_search_call_total = 0_u64;
+    let mut attempted_detect_count = 0_u64;
+    let mut accepted_detect_count = 0_u64;
+    let mut detect_error_count = 0_u64;
+    let mut fallback_call_total = 0_u64;
+    let mut signature_compare_error_total = 0_u64;
+    let mut signature_search_error_total = 0_u64;
+    let mut detection_count = 0_u64;
+    let mut unambiguous_priority_sample_count = 0_usize;
+    let mut nintendo_info_matched_count = 0_usize;
+    let mut elapsed_ms = 0_u64;
+    for (name, baseline_sample) in baseline_samples {
+        let expected = parse_detection_triples(
+            baseline_sample
+                .get("detections")
+                .ok_or_else(|| format!("baseline detections are missing for {name}"))?,
+            name,
+        )?;
+        let (expected_size, expected_sha256) = &manifest_samples[name];
+        let input_path = corpus_root.join(name);
+        let input = fs::read(&input_path)
+            .map_err(|error| format!("cannot read {}: {error}", input_path.display()))?;
+        let input_size = input.len();
+        let input_size_matches = input_size as u64 == *expected_size;
+        let actual_sha256 = sha256_hex(&input);
+        let input_sha256_matches = actual_sha256 == *expected_sha256;
+        if !input_size_matches || !input_sha256_matches {
+            return Err(format!(
+                "{name}: generated input identity mismatch: size={} sha256={actual_sha256}",
+                input.len()
+            ));
+        }
+
+        let trace =
+            trace_binary_detects_report_with_data(rule_root, &input_path, order_path, input)
+                .map_err(|error| format!("{name}: {error}"))?;
+        let actual = parse_runtime_detections(&trace, name)?;
+        let execution_order = actual
+            .iter()
+            .map(|(kind, detection_name, version, _)| {
+                (kind.clone(), detection_name.clone(), version.clone())
+            })
+            .collect::<Vec<_>>();
+        let (output_order, output_priorities_unambiguous) = sorted_detection_projection(&actual);
+        let nintendo_detections = actual
+            .iter()
+            .filter(|(_, detection_name, _, _)| detection_name.starts_with("Nintendō "))
+            .collect::<Vec<_>>();
+        let nintendo_info_ok =
+            nintendo_detections.len() == 1 && nintendo_detections[0].3 == "fSELF";
+
+        let attempted = report_u64(&trace, "attempted_detect_count", name)?;
+        let accepted = report_u64(&trace, "accepted_detect_count", name)?;
+        let errors = report_u64(&trace, "detect_error_count", name)?;
+        let overlays = report_u64(&trace, "compatibility_overlay_count", name)?;
+        let fallbacks = report_u64(&trace, "fallback_call_total", name)?;
+        let include_calls = report_u64(&trace, "include_call_count", name)?;
+        let compare_errors = report_u64(&trace, "signature_compare_error_total", name)?;
+        let search_errors = report_u64(&trace, "signature_search_error_total", name)?;
+        let completed = trace.get("completed").and_then(Value::as_bool) == Some(true);
+        let lifecycle_ok = attempted == BINARY_SIGNATURE_COUNT as u64
+            && accepted == BINARY_SIGNATURE_COUNT as u64
+            && errors == 0
+            && overlays == 1
+            && fallbacks == 0
+            && include_calls == 30
+            && compare_errors == 0
+            && search_errors == 0
+            && completed;
+        let matches = lifecycle_ok
+            && output_priorities_unambiguous
+            && output_order == expected
+            && nintendo_info_ok;
+        all_match &= matches;
+        unambiguous_priority_sample_count += usize::from(output_priorities_unambiguous);
+        nintendo_info_matched_count += usize::from(nintendo_info_ok);
+
+        signature_compare_call_total = signature_compare_call_total
+            .checked_add(report_u64(&trace, "signature_compare_call_total", name)?)
+            .ok_or_else(|| "signature compare aggregate overflow".to_owned())?;
+        signature_search_call_total = signature_search_call_total
+            .checked_add(report_u64(&trace, "signature_search_call_total", name)?)
+            .ok_or_else(|| "signature search aggregate overflow".to_owned())?;
+        elapsed_ms = elapsed_ms
+            .checked_add(report_u64(&trace, "elapsed_ms", name)?)
+            .ok_or_else(|| "elapsed millisecond aggregate overflow".to_owned())?;
+        attempted_detect_count = attempted_detect_count
+            .checked_add(attempted)
+            .ok_or_else(|| "attempted detect aggregate overflow".to_owned())?;
+        accepted_detect_count = accepted_detect_count
+            .checked_add(accepted)
+            .ok_or_else(|| "accepted detect aggregate overflow".to_owned())?;
+        detect_error_count = detect_error_count
+            .checked_add(errors)
+            .ok_or_else(|| "detect error aggregate overflow".to_owned())?;
+        fallback_call_total = fallback_call_total
+            .checked_add(fallbacks)
+            .ok_or_else(|| "fallback call aggregate overflow".to_owned())?;
+        signature_compare_error_total =
+            signature_compare_error_total
+                .checked_add(compare_errors)
+                .ok_or_else(|| "signature compare error aggregate overflow".to_owned())?;
+        signature_search_error_total = signature_search_error_total
+            .checked_add(search_errors)
+            .ok_or_else(|| "signature search error aggregate overflow".to_owned())?;
+        detection_count = detection_count
+            .checked_add(actual.len() as u64)
+            .ok_or_else(|| "detection aggregate overflow".to_owned())?;
+
+        sample_reports.push(json!({
+            "name": name,
+            "input": {
+                "bytes": input_size,
+                "sha256": actual_sha256,
+            },
+            "expected_output_order": expected,
+            "actual_execution_order": execution_order,
+            "actual_output_order": output_order,
+            "actual_detection_details": actual,
+            "output_priorities_unambiguous": output_priorities_unambiguous,
+            "nintendo_info_ok": nintendo_info_ok,
+            "lifecycle": {
+                "attempted_detect_count": attempted,
+                "accepted_detect_count": accepted,
+                "detect_error_count": errors,
+                "compatibility_overlay_count": overlays,
+                "fallback_call_total": fallbacks,
+                "include_call_count": include_calls,
+                "signature_compare_error_total": compare_errors,
+                "signature_search_error_total": search_errors,
+                "completed": completed,
+                "matches": lifecycle_ok,
+            },
+            "matches": matches,
+        }));
+    }
+
+    let report = json!({
+        "schema_version": 1,
+        "operation": "all fixed-order Binary detect functions over the generated Nintendo corpus",
+        "scope": "14 generated Binary header samples; exact ordered type/name/version oracle plus Nintendo info invariant",
+        "runtime": "rquickjs 0.12.1 / QuickJS-NG 0.15.1",
+        "upstream_commit": UPSTREAM_COMMIT,
+        "rules_commit": RULES_COMMIT,
+        "compatibility_overlay": "nintendo-unused-var-tp-v1",
+        "corpus_manifest": normalized_path(corpus_manifest_path),
+        "corpus_manifest_sha256": sha256_hex(&corpus_manifest_bytes),
+        "baseline": normalized_path(baseline_path),
+        "baseline_sha256": sha256_hex(&baseline_bytes),
+        "order_manifest": normalized_path(order_path),
+        "order_sha256": LINUX_QT5_BINARY_ORDER_SHA256,
+        "result_sort_oracle": {
+            "component": "XScanEngine@dfe4a419e4f491bb23688ba03c5a5bf39e34da83",
+            "source": "xscanengine.cpp::_sortItems, sortRecords, typeToPrio",
+            "comparison": "ascending numeric nPrio",
+            "equal_priority_limitation": "upstream std::sort has no stable tie-order contract; every multi-detection sample in this corpus has distinct priorities",
+        },
+        "rule_count_per_sample": BINARY_SIGNATURE_COUNT,
+        "sample_count": sample_reports.len(),
+        "matched_count": sample_reports.iter().filter(|sample| sample["matches"] == true).count(),
+        "attempted_detect_count": attempted_detect_count,
+        "accepted_detect_count": accepted_detect_count,
+        "detect_error_count": detect_error_count,
+        "fallback_call_total": fallback_call_total,
+        "signature_compare_error_total": signature_compare_error_total,
+        "signature_search_error_total": signature_search_error_total,
+        "detection_count": detection_count,
+        "unambiguous_priority_sample_count": unambiguous_priority_sample_count,
+        "nintendo_info_matched_count": nintendo_info_matched_count,
+        "signature_compare_call_total": signature_compare_call_total,
+        "signature_search_call_total": signature_search_call_total,
+        "elapsed_ms": elapsed_ms,
+        "samples": sample_reports,
+        "all_match": all_match,
+    });
+    println!(
+        "{}",
+        serde_json::to_string_pretty(&report)
+            .map_err(|error| format!("cannot serialize corpus report: {error}"))?
+    );
+    Ok(all_match)
 }
 
 fn evaluate_corpus(
@@ -3221,7 +3657,10 @@ fn usage() -> ExitCode {
          diec-rquickjs-rule-runtime-spike detect-nintendo-lifecycle \
          <main-rule-root> <corpus-dir> <baseline-json> <binary-order-json>\n       \
          diec-rquickjs-rule-runtime-spike trace-binary-detects \
-         <main-rule-root> <input-file> <binary-order-json>"
+         <main-rule-root> <input-file> <binary-order-json>\n       \
+         diec-rquickjs-rule-runtime-spike verify-binary-corpus \
+         <main-rule-root> <corpus-dir> <corpus-manifest-json> \
+         <baseline-json> <binary-order-json>"
     );
     ExitCode::from(2)
 }
@@ -3261,6 +3700,8 @@ fn main() -> ExitCode {
         run_nintendo_lifecycle_corpus(&roots[0], &roots[1], &roots[2], &roots[3])
     } else if command == "trace-binary-detects" && roots.len() == 3 {
         trace_binary_detects(&roots[0], &roots[1], &roots[2])
+    } else if command == "verify-binary-corpus" && roots.len() == 5 {
+        verify_binary_corpus(&roots[0], &roots[1], &roots[2], &roots[3], &roots[4])
     } else {
         return usage();
     };
@@ -3283,8 +3724,9 @@ mod tests {
         eval_rule_lexical, eval_string, eval_unit, install_diagnostic_host_fallbacks,
         install_nintendo_host, install_nintendo_host_with_context,
         install_nintendo_host_with_context_and_strings, new_context, new_runtime,
-        nonnegative_index, normalized_path, parse_scope_detections, parse_scope_fixture_order,
-        read_ascii, read_byte_array, read_signed, read_unsigned, shift_right_unsigned,
+        nonnegative_index, normalized_path, parse_detection_triples, parse_scope_detections,
+        parse_scope_fixture_order, read_ascii, read_byte_array, read_signed, read_unsigned,
+        sha256_hex, shift_right_unsigned, sorted_detection_projection, upstream_type_priority,
     };
     use std::fs;
     use std::path::{Path, PathBuf};
@@ -3313,6 +3755,127 @@ mod tests {
                 u8::from_str_radix(text, 16).expect("hex fixture must contain digits")
             })
             .collect()
+    }
+
+    #[test]
+    fn upstream_result_priority_matches_fixed_xscanengine_mapping() {
+        let cases = [
+            ("operation system", 10),
+            ("virtual machine", 10),
+            ("format", 12),
+            ("platform", 14),
+            ("dos extender", 14),
+            ("linker", 20),
+            ("compiler", 30),
+            ("language", 40),
+            ("library", 50),
+            ("tool", 60),
+            ("pe tool", 60),
+            ("sign tool", 60),
+            ("apk tool", 60),
+            ("protector", 70),
+            ("cryptor", 70),
+            ("crypter", 70),
+            (".net obfuscator", 80),
+            ("apk obfuscator", 80),
+            ("jar obfuscator", 80),
+            ("dongle protection", 90),
+            ("protection", 90),
+            ("packer", 100),
+            (".net compressor", 100),
+            ("joiner", 110),
+            ("sfx", 120),
+            ("installer", 120),
+            ("virus", 70),
+            ("malware", 70),
+            ("trojan", 70),
+            ("corrupted data", 70),
+            ("personal data", 70),
+            ("author", 70),
+            ("debug data", 200),
+            ("audio", 1000),
+        ];
+        for (kind, expected) in cases {
+            assert_eq!(upstream_type_priority(kind), expected, "{kind}");
+        }
+        assert_eq!(upstream_type_priority("~!FORMAT"), 12);
+    }
+
+    #[test]
+    fn output_projection_sorts_distinct_priorities_and_rejects_tie_evidence() {
+        let distinct = vec![
+            (
+                "audio".to_owned(),
+                "audio-name".to_owned(),
+                "audio-version".to_owned(),
+                String::new(),
+            ),
+            (
+                "platform".to_owned(),
+                "platform-name".to_owned(),
+                "platform-version".to_owned(),
+                String::new(),
+            ),
+            (
+                "format".to_owned(),
+                "format-name".to_owned(),
+                "format-version".to_owned(),
+                "format-info".to_owned(),
+            ),
+        ];
+        let (projection, unambiguous) = sorted_detection_projection(&distinct);
+        assert!(unambiguous);
+        assert_eq!(
+            projection,
+            [
+                (
+                    "format".to_owned(),
+                    "format-name".to_owned(),
+                    "format-version".to_owned(),
+                ),
+                (
+                    "platform".to_owned(),
+                    "platform-name".to_owned(),
+                    "platform-version".to_owned(),
+                ),
+                (
+                    "audio".to_owned(),
+                    "audio-name".to_owned(),
+                    "audio-version".to_owned(),
+                ),
+            ]
+        );
+
+        let tied = vec![
+            (
+                "audio".to_owned(),
+                "first".to_owned(),
+                String::new(),
+                String::new(),
+            ),
+            (
+                "unknown".to_owned(),
+                "second".to_owned(),
+                String::new(),
+                String::new(),
+            ),
+        ];
+        assert!(!sorted_detection_projection(&tied).1);
+    }
+
+    #[test]
+    fn corpus_oracle_helpers_hash_and_strictly_parse_triples() {
+        assert_eq!(
+            sha256_hex(b"abc"),
+            "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+        );
+        let detections = serde_json::json!([["format", "name", "version"]]);
+        assert_eq!(
+            parse_detection_triples(&detections, "sample").expect("valid triple"),
+            [("format".to_owned(), "name".to_owned(), "version".to_owned())]
+        );
+        let invalid = serde_json::json!([["format", "name", "version", "info"]]);
+        assert!(parse_detection_triples(&invalid, "sample").is_err());
     }
 
     #[test]
