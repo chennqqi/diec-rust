@@ -1,0 +1,909 @@
+{
+  "binary_assets": [
+    {
+      "bytes": 172,
+      "path": "db/_icons/_.png",
+      "sha256": "60948f0ab41a2e3a6513329afa24bdeb019230e5d4b790e1e862cc1e8424b8d6"
+    },
+    {
+      "bytes": 153,
+      "path": "db/_icons/archive.png",
+      "sha256": "7b15ec27a2928638d58070f0d05309f4eb61e2ac09bbe813e0e0724abc4054bc"
+    },
+    {
+      "bytes": 212,
+      "path": "db/_icons/certificate.png",
+      "sha256": "dbb20b36c2b5cfeec81cc09658201521b79ec8b74187aa4feb42aa595bdf079a"
+    },
+    {
+      "bytes": 149,
+      "path": "db/_icons/compiler.png",
+      "sha256": "a9ece0f49762c66f79a0e0568fb2ff265c6a337dc759943aae1ceadbc08343dc"
+    },
+    {
+      "bytes": 194,
+      "path": "db/_icons/converter.png",
+      "sha256": "5fdd10f5bc4034f8e19cec76adbb4c9a203fc948502bec1b7728e9d91d5a5fd4"
+    },
+    {
+      "bytes": 249,
+      "path": "db/_icons/corrupted.png",
+      "sha256": "d7e68f36926e29ee92805fc9cda275850cfa86e5a34ba6616d2f65d611df26cb"
+    },
+    {
+      "bytes": 186,
+      "path": "db/_icons/debug data.png",
+      "sha256": "0a1e195aa18a2f80d037865f585213feea59eeb0f30a24c3242c0ef751e7a76d"
+    },
+    {
+      "bytes": 247,
+      "path": "db/_icons/format.png",
+      "sha256": "1e44dcb92fbb4c5bbf053eedec8641cb5a1b1a3beca17cc954fcb76dea2d89a1"
+    },
+    {
+      "bytes": 310,
+      "path": "db/_icons/image.png",
+      "sha256": "e3d32fb4087b5f4e7bb3c448835cfaa7a7052a8a71da947db2f2fe0377f259e8"
+    },
+    {
+      "bytes": 297,
+      "path": "db/_icons/installer, sfx.png",
+      "sha256": "e42e5a3e88034efc40652697b8a12edbca58f155f17b557c60a517b35f0500e2"
+    },
+    {
+      "bytes": 169,
+      "path": "db/_icons/joiner.png",
+      "sha256": "e1e4d0c70e370097595dda08f842804d73f0277c5d129ced44dc673f045e6552"
+    },
+    {
+      "bytes": 247,
+      "path": "db/_icons/language.png",
+      "sha256": "acaf427fecde3041f8e5be0701888bd49905b89da1564ef3b8dee6f3b9b05302"
+    },
+    {
+      "bytes": 151,
+      "path": "db/_icons/library, module.png",
+      "sha256": "e914504c5c69abc0ce29af0c303594f967ecc6d676dbea7530f59de2d7552b93"
+    },
+    {
+      "bytes": 221,
+      "path": "db/_icons/licensing.png",
+      "sha256": "16fda30f4701c22bfd13de33fb0d95bb35c7ea7040f2e0c2f133b78ae7607ffe"
+    },
+    {
+      "bytes": 224,
+      "path": "db/_icons/linker.png",
+      "sha256": "5f8b2f1d65c15f8eb852f15eab38242177f3b3f2905b0e94d6d82d9be5231725"
+    },
+    {
+      "bytes": 168,
+      "path": "db/_icons/malware, virus.png",
+      "sha256": "53f4f8c99662aebcf085105af207cdf9fa5182283610f75d1ac95ed884020cbf"
+    },
+    {
+      "bytes": 600,
+      "path": "db/_icons/operation system.png",
+      "sha256": "9f5c76ff411783d5d94e9227f4106b82d56881a6793842f2381031a9493fe2c4"
+    },
+    {
+      "bytes": 153,
+      "path": "db/_icons/other.png",
+      "sha256": "7b15ec27a2928638d58070f0d05309f4eb61e2ac09bbe813e0e0724abc4054bc"
+    },
+    {
+      "bytes": 316,
+      "path": "db/_icons/package.png",
+      "sha256": "a8665e8b9acd96cde624569d08f170a3bf4517df0eb781f40446fb10d0c3bdf7"
+    },
+    {
+      "bytes": 277,
+      "path": "db/_icons/packer, cryptor, protector, protection.png",
+      "sha256": "efe638938fbbbecd594f4f962cdffa7398a4d8efa05b2a7c5281c17da474e011"
+    },
+    {
+      "bytes": 371,
+      "path": "db/_icons/source.png",
+      "sha256": "565118d6b213a6a0d9b9bfef26d679ed5cf303e3aecd0fcb9afafdc7dbc35333"
+    },
+    {
+      "bytes": 316,
+      "path": "db/_icons/tool.png",
+      "sha256": "a8665e8b9acd96cde624569d08f170a3bf4517df0eb781f40446fb10d0c3bdf7"
+    }
+  ],
+  "findings": {
+    "all_runtime_assets_covered_by_tree_hash": true,
+    "binary_asset_count": 22,
+    "explicit_non_mit_license_marker_count": 0,
+    "legal_review_complete": false,
+    "limitations": [
+      "repository-root MIT text is evidence, not a legal conclusion for every contribution",
+      "author and URL comments do not establish third-party source-license provenance",
+      "binary PNG origins are not established by textual marker scanning",
+      "the report does not include a release-owner or legal approval"
+    ],
+    "root_mit_license_present": true
+  },
+  "identity": {
+    "combined_tree_sha256": "20f2b74effc2bdaf069e3b2e13060432b8890d38364511f5cde56a337348bfda",
+    "component_lock": "upstream/components.lock.toml",
+    "component_lock_sha256": "9fabcaf6a0062fcae7007ea5af13a98876e8a6e08b3e2e4727fdff06d974c63c",
+    "root_license": "upstream/Detect-It-Easy/LICENSE",
+    "root_license_declared": "MIT",
+    "root_license_sha256": "be0fe2d727cd0a754fb0b2fdc579ead8f19ef575840b4daef221be201701eaad"
+  },
+  "inventory": {
+    "byte_count": 2909316,
+    "extension_counts": {
+      ".ini": 2,
+      ".json": 3,
+      ".png": 22,
+      ".sg": 2175,
+      ".txt": 6,
+      "<none>": 60
+    },
+    "file_count": 2268,
+    "non_program_file_count": 33,
+    "program_byte_count": 2902881,
+    "program_file_count": 2235,
+    "trees": [
+      {
+        "byte_count": 2832469,
+        "extension_counts": {
+          ".ini": 1,
+          ".json": 1,
+          ".png": 22,
+          ".sg": 2037,
+          ".txt": 3,
+          "<none>": 60
+        },
+        "file_count": 2124,
+        "path": "db",
+        "tree_sha256": "8000138ce96a6a892aaa3cba8dee60960694c42dcfa24b3787f02c25858f1650"
+      },
+      {
+        "byte_count": 76651,
+        "extension_counts": {
+          ".ini": 1,
+          ".json": 1,
+          ".sg": 138,
+          ".txt": 2
+        },
+        "file_count": 142,
+        "path": "db_extra",
+        "tree_sha256": "77c4e0da796baa9a71ec1a699a37e61ed73783c0d3dc5d49044185dc80a38ec1"
+      },
+      {
+        "byte_count": 196,
+        "extension_counts": {
+          ".json": 1,
+          ".txt": 1
+        },
+        "file_count": 2,
+        "path": "db_custom",
+        "tree_sha256": "36c10cd4d87826c78f07a0c801c1ae374f4b6364936056d44a045e9150ba5815"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "scope": {
+    "commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+    "excludes": [
+      "yara_rules",
+      "peid_rules",
+      "dbs_min",
+      "dbs_special"
+    ],
+    "purpose": "runtime rule distribution assets used by diec CLI",
+    "repository": "https://github.com/horsicq/Detect-It-Easy.git",
+    "trees": [
+      "db",
+      "db_extra",
+      "db_custom"
+    ]
+  },
+  "visible_markers": {
+    "author_marker_file_count": 2101,
+    "authors": [
+      {
+        "author": "hypn0 <hypn0@mail.ru>",
+        "file_count": 846,
+        "paths_sha256": "e7dcd5093ad54ed0ce369da0f323d31032f63f55a26cf73afd55d10079d966fd"
+      },
+      {
+        "author": "horsicq <horsicq@gmail.com>",
+        "file_count": 426,
+        "paths_sha256": "ce7aad99d5e336d1ab2fd4d7bc6a9c0472fbbcdaa952abad243de34ee2909121"
+      },
+      {
+        "author": "DosX",
+        "file_count": 336,
+        "paths_sha256": "4684528fec8e9626c5c29731400490971fc5ba4ecef211db2bce188bea9dadb2"
+      },
+      {
+        "author": "BJNFNE <bjnfne@web.de>",
+        "file_count": 274,
+        "paths_sha256": "2265b01580416eca6a13de746cef83e2c6d4b483a926e16f4340fd0f5bd6ff57"
+      },
+      {
+        "author": "Jason Hood <jadoxa@yahoo.com.au>",
+        "file_count": 43,
+        "paths_sha256": "2ebcfd5522168dc0a448e5b37932c3436fa17ef03f68e80d754cbd82fa262090"
+      },
+      {
+        "author": "LinXP",
+        "file_count": 36,
+        "paths_sha256": "cc493e4115c49482b213ced091a978f08459c45dab2bdb7a89b6df6dc068c3fb"
+      },
+      {
+        "author": "KDSS-Research",
+        "file_count": 13,
+        "paths_sha256": "79ac1c01cc5550c3c0c724c94671005753cd6e404e4805d08b277a88706cf56c"
+      },
+      {
+        "author": "Kae <TG@kaens>",
+        "file_count": 11,
+        "paths_sha256": "e9f71216d33e50b67f476610c582956d823dc909cc2aee6292b4f01679156f09"
+      },
+      {
+        "author": "sendersu",
+        "file_count": 11,
+        "paths_sha256": "c74ed172626ff6e17acbb2443c7f894e529d8865a2c688587be2f0edc9f04dc1"
+      },
+      {
+        "author": "Kaens (TG @kaens)",
+        "file_count": 10,
+        "paths_sha256": "0b5113d2fbd9372f23a43563aeb3cc6bd6329dd5039e038546bed0f788149f96"
+      },
+      {
+        "author": "Kaens TG@kaens",
+        "file_count": 9,
+        "paths_sha256": "5eec480a77b8c1640f6c62797f0b3de92e2a2d8fecdfecfb24b4f07798ca143c"
+      },
+      {
+        "author": "Kaens (TG@kaens)",
+        "file_count": 7,
+        "paths_sha256": "4f05ee4b47a32c41f3391d355e87171da9201955ef78fe5eeb68514743d598d6"
+      },
+      {
+        "author": "Arjan Onwezen",
+        "file_count": 6,
+        "paths_sha256": "19db64bb8df27c9d13779ef3cac9d9ad3e763726e940888fa586fe46bc8fe03e"
+      },
+      {
+        "author": "Levis <levintaeyeon@live.com>",
+        "file_count": 4,
+        "paths_sha256": "ece95862a05a1bbddaf226008f2c5511c72f63d39959ab5a8facdcf3580a8111"
+      },
+      {
+        "author": "ajax",
+        "file_count": 3,
+        "paths_sha256": "fd6684d482ea35aa504956a0d483dd5a8b5e27c10db5f1196c075f64e64d769a"
+      },
+      {
+        "author": "nicholasmckinney",
+        "file_count": 3,
+        "paths_sha256": "a4396d072986e7a0c269d3f9f9540bd479f6a155ffc26ce93a596e7163dbcd3c"
+      },
+      {
+        "author": "Tembo (http://tembolab.pl/products/executable-image-viewer.html)",
+        "file_count": 3,
+        "paths_sha256": "9b61a8edbea494e4446586ee8c02db1cb447c7964d4e2b0c9adcf9837037e092"
+      },
+      {
+        "author": "Vito <@ScalletaZ>",
+        "file_count": 3,
+        "paths_sha256": "c172ff6d5d6c1d581605b077fe3b0e7aa16d1aef4375b5ac5898914dd35b94f6"
+      },
+      {
+        "author": "A.S.L  <asl@onet.eu>",
+        "file_count": 2,
+        "paths_sha256": "676d2b634b6d706e8336490c92f7664f97cd5e2c7499f427a92b3a9884a530d9"
+      },
+      {
+        "author": "A.S.L <asl@onet.eu>",
+        "file_count": 2,
+        "paths_sha256": "d91b4f01bc6af2a6f9c6444a8f57db3ec67e79a36f17556e9e64969da47df0cc"
+      },
+      {
+        "author": "Eliseu Filipi",
+        "file_count": 2,
+        "paths_sha256": "07c2319660c369ddf8d268065f470f07907e37f46b9cd83d1f6fba61fd3b529d"
+      },
+      {
+        "author": "fernandom - menteb.in",
+        "file_count": 2,
+        "paths_sha256": "2b526a48c37c9af88393b791aad74420a02ebeef37526997ba0669660173193f"
+      },
+      {
+        "author": "hypn0 <hypn0@mail.ru>, Kaens (TG@kaens)",
+        "file_count": 2,
+        "paths_sha256": "9a950d652465cd1322b216832dde40efb5723368e6805e92bc37ab5fb8cfd8c6"
+      },
+      {
+        "author": "Jason Hood <jadoxa@yahoo.com.au>, Kae <TG@kaens>",
+        "file_count": 2,
+        "paths_sha256": "3331a433f9bdfa6e60c4f5984ef33c019ec45d365c6f141b29d48fd6a94f3760"
+      },
+      {
+        "author": "Kaens <TG@kaens>",
+        "file_count": 2,
+        "paths_sha256": "c5580fdf94aee8d3a9fc5f2b69a59d8773e2c405c6ec6e8d643ed5c9e79c28e9"
+      },
+      {
+        "author": "LinXP, Kae (TG@kaens)",
+        "file_count": 2,
+        "paths_sha256": "e20fd63ae4c0a4052076072f189f23d6d8c70aea869f427effafc006cf0881f1"
+      },
+      {
+        "author": "Moli13337",
+        "file_count": 2,
+        "paths_sha256": "11435e1f2a852c4a0ccb9ebc5e58b9e4322a7fb3549988fde95ead277b3b046e"
+      },
+      {
+        "author": "Xylitol <xylitol@temari.fr>",
+        "file_count": 2,
+        "paths_sha256": "5ec4fb2a42b50b39a142214ce63f83a391c2da7e8d3a423f81e5285249ff865c"
+      },
+      {
+        "author": "Yosef Khaled",
+        "file_count": 2,
+        "paths_sha256": "f2f2669c4cdecb54a8036f1d1afc85d335fa2bdeb32284230ff2099eacbb3524"
+      },
+      {
+        "author": "6eh01der <ras_atari@mail.ru>, (TG@Ibeh01derI), Improved by AI",
+        "file_count": 1,
+        "paths_sha256": "099e23185fa929388a6689b18927a700e98813cbb0556618210f3fac65a457fe"
+      },
+      {
+        "author": "@justmazz_",
+        "file_count": 1,
+        "paths_sha256": "33c66bf6dac2c84115eec2ec028c83d0114b7f66829d5eca3025a6c5ae321f44"
+      },
+      {
+        "author": "A.S.L - <asl@onet.eu> 2019",
+        "file_count": 1,
+        "paths_sha256": "92c49e780843a318c214a1f904da969f6d4ea88e983e7f75772cd9f85c8cdaa5"
+      },
+      {
+        "author": "A.S.L <asl@onet.eu>   2024.10.28",
+        "file_count": 1,
+        "paths_sha256": "1311d99e38459ae83a8ef6e6b131df12ca421f79a7b3ea7a071bc2e04270bd8a"
+      },
+      {
+        "author": "A.S.L. <asl@onet.eu> 2018",
+        "file_count": 1,
+        "paths_sha256": "56924edb8c661f60baf193e2bd1c36ce5dc0f704f8e1aedfdc48e0f49dbbf649"
+      },
+      {
+        "author": "A.S.L. <asl@onet.eu> 2019.05 updated 2025.01.31",
+        "file_count": 1,
+        "paths_sha256": "f01a8593b9c90dd7a111ff4bd08d3c51ea9ab39b237ae2c9ffd5ec1e447d4cd5"
+      },
+      {
+        "author": "A.S.L. <asl@onet.eu> 2019.07.25",
+        "file_count": 1,
+        "paths_sha256": "7977ad0d2080301d609eb096360697dd2000aafcb77ba13f0dadca3d6baafcd0"
+      },
+      {
+        "author": "A.S.L. <asl@onet.eu> 2019.10.20",
+        "file_count": 1,
+        "paths_sha256": "054d5f99646a922f8699d992562ed0bd46e82ab4f4519f102cfe803387f9271d"
+      },
+      {
+        "author": "A.S.L. <asl@onet.eu> 2020.09.30",
+        "file_count": 1,
+        "paths_sha256": "414929d064b2d88d69bd4b49621afc69187d9d60a21d4df3533bf156bdab10e9"
+      },
+      {
+        "author": "A.S.L. <asl@onet.eu> 2022.01.30",
+        "file_count": 1,
+        "paths_sha256": "6d40f92e20c227c1af9954ed37d07f387035db0ca42e49aa68229d976cf6077f"
+      },
+      {
+        "author": "A.S.L. <asl@onet.eu> 2025.06.15",
+        "file_count": 1,
+        "paths_sha256": "f1042a1e507a3b8ac865e5803ea3d141911d1bc41c153800376d650ef445881e"
+      },
+      {
+        "author": "ajax, adoxa",
+        "file_count": 1,
+        "paths_sha256": "42c9c3164e2005b26c7bc731d76c6d0c9936a82798bf7a8c712eaa25ab31f5aa"
+      },
+      {
+        "author": "ajax, hypn0, DosX",
+        "file_count": 1,
+        "paths_sha256": "d1d176780252d96e577fea6904fbbff580e33ae5fa719e970f106f51ea172faa"
+      },
+      {
+        "author": "anonymous",
+        "file_count": 1,
+        "paths_sha256": "064352d6f57722c355d29bb9f115fce0b413b6ae7d6e6f22cb28db8493f2365e"
+      },
+      {
+        "author": "deadmau5 <deadmau5@tutanota.de>",
+        "file_count": 1,
+        "paths_sha256": "5cd94be38c174ebbec11a80272b1139fd7c8b3a9848df712d1c89030642b4e9d"
+      },
+      {
+        "author": "DosX, fernandom",
+        "file_count": 1,
+        "paths_sha256": "0c44a183d58f4ae01cdcffb77c9f392d46fdfeee20dd005d5d670a5f4f7fe796"
+      },
+      {
+        "author": "ELF_7719116, DosX, BJNFNE",
+        "file_count": 1,
+        "paths_sha256": "41978fbb7486c32e7907874d0494ab3672eb45f000e1fa156f681f22b3d1dd4a"
+      },
+      {
+        "author": "Hand Mill",
+        "file_count": 1,
+        "paths_sha256": "3fe9d7e3c8a446a4201c2fb5611669c39218e305f333d728ba2389f043914542"
+      },
+      {
+        "author": "hbasrc <rob.cheung+git@gmail.com>",
+        "file_count": 1,
+        "paths_sha256": "d1fd1a34fe2ea70eade2d9452f395fda636a8e755bf0985d8a78be2cc46d56c3"
+      },
+      {
+        "author": "hors, sendersu",
+        "file_count": 1,
+        "paths_sha256": "63b34cbaf294465b7932e94c60904881ac71b470a0878f84909697dc7d2859c4"
+      },
+      {
+        "author": "horsicq, ajax, adoxa, DosX",
+        "file_count": 1,
+        "paths_sha256": "bee4c70ece1debaf16ef89acf8665c81e80a72dac836fb83a613f0c8237f4ebc"
+      },
+      {
+        "author": "hypn0 <hypn0@mail.ru> & Arjan Onwezen",
+        "file_count": 1,
+        "paths_sha256": "5dd1bb66397506c36c0961cbd7a5b4b04d1333a7d40dc954a00d3fa3d8f93c8d"
+      },
+      {
+        "author": "hypn0 <hypn0@mail.ru>, Kaens (TG@kaens), LinXP",
+        "file_count": 1,
+        "paths_sha256": "9e1ace40f1836d2d25334576b2ad98fc14b1062dd18eb8b2b8ca857d2712fac2"
+      },
+      {
+        "author": "hypn0 <hypn0@mail.ru>, LinXP",
+        "file_count": 1,
+        "paths_sha256": "24a6d7634df78b23302b690ab379090bcd7a6975c7c5b6165df6c652063ad39c"
+      },
+      {
+        "author": "hypn0, BJNFNE, DosX",
+        "file_count": 1,
+        "paths_sha256": "cef71d7f75715c8375676850570b107e885fb06acf800db4cf163fcb6ca15ff8"
+      },
+      {
+        "author": "Jason Hood <jadoxa@yahoo.com.au>, based on an idea by hypn0",
+        "file_count": 1,
+        "paths_sha256": "a382c6647415b9254c9decb552d0386add259bbc381d2d9d9f4f5071f9fc128c"
+      },
+      {
+        "author": "Jupiter",
+        "file_count": 1,
+        "paths_sha256": "a533cfe383715a7880f3726e5c067917899560747b0a19da90e5bc7341eccbef"
+      },
+      {
+        "author": "Kae (TG@kaens)",
+        "file_count": 1,
+        "paths_sha256": "8af32f42ab197d702dcef568fa4f5431a9072dfd59927d4e287f58d52f438af7"
+      },
+      {
+        "author": "KDSS-Research & ILK",
+        "file_count": 1,
+        "paths_sha256": "d9afa395b7c0a3e99da3425ee212dd7bdc8227b8609b0511726c2599b026ee07"
+      },
+      {
+        "author": "KDSS-Research (koffidev365supp@gmail.com)",
+        "file_count": 1,
+        "paths_sha256": "2da32dca867c5a21a2c9537463b08b66d0d4d82856fc712ca9f8fb5e3125aca6"
+      },
+      {
+        "author": "KDSS-Research <koffidev365supp@gmail.com>",
+        "file_count": 1,
+        "paths_sha256": "4cd6972b232d5c3974ad5b14a7e8add7c86d4a546ec3c8cb2f4d6185f3e57216"
+      },
+      {
+        "author": "Levis <levintaeyeon@live.com> http://ltops9.wordpress.com/",
+        "file_count": 1,
+        "paths_sha256": "b6a3ab9a4fdb38bbc5a58c1a66dceb7c30ce792892bf1b09367e5dcf30d72238"
+      },
+      {
+        "author": "Levis <levintaeyeon@live.com>, LinXP",
+        "file_count": 1,
+        "paths_sha256": "fa9cdd11b70d14e41f73572dbe843cf856bee40cca35865a8620b4836336e7c4"
+      },
+      {
+        "author": "r0da https://github.com/whereisr0da",
+        "file_count": 1,
+        "paths_sha256": "c4471af37ac6a3dc81ca7bc978caf1c79da12af55b62c46bc57cb62ba46c9c34"
+      },
+      {
+        "author": "Rinat Aminow <rinat84.a@gmail.com>",
+        "file_count": 1,
+        "paths_sha256": "a15c12607bd6f949ecb2d3fd90c6adacc6e8da7947409e6a4376c96ea3cb3694"
+      },
+      {
+        "author": "securitystar",
+        "file_count": 1,
+        "paths_sha256": "611e0d63be36d3a543e127b040dfa4a0070a6f6b01e706966490421e46ad9365"
+      }
+    ],
+    "copyright_marker_file_count": 7,
+    "license_marker_counts": {
+      "mit": 1
+    },
+    "license_markers": [
+      {
+        "line": 73,
+        "marker": "mit",
+        "path": "db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+        "text": "//       │  ┌ Copyright (C) 2026 DosX. MIT License.                    │"
+      }
+    ],
+    "unique_author_marker_count": 65,
+    "url_domain_counts": {
+      "12ghosts-zip.apponic.com": 1,
+      "<invalid-url>": 1,
+      "abandonware-magazines.github.io": 3,
+      "adplug.github.io": 1,
+      "advsys.net": 1,
+      "ajaxmin.codeplex.com": 1,
+      "alienyze.com": 1,
+      "alonecoder.nedopc.com": 1,
+      "aluigi.altervista.org": 1,
+      "amicitia.miraheze.org": 1,
+      "aminet.net": 2,
+      "and.intercon.ru": 1,
+      "applesaucefdc.com": 3,
+      "appsec.virbox.com": 1,
+      "asap.sourceforge.net": 1,
+      "asle.free.fr": 4,
+      "atariki.krap.pl": 4,
+      "ay.strangled.net": 16,
+      "battle.net": 1,
+      "bbs.kanxue.com": 4,
+      "bellard.org": 2,
+      "bitbucket.org": 9,
+      "bitsum.com": 1,
+      "blackhatrussia.com": 1,
+      "blog.360totalsecurity.com": 1,
+      "blog.rosseaux.net": 1,
+      "build38.com": 1,
+      "cdburnerxp.se": 1,
+      "citec.us": 1,
+      "commons.wikimedia.org": 1,
+      "community.pcgamingwiki.com": 1,
+      "compression.ru": 1,
+      "ctan.org": 1,
+      "curl.se": 1,
+      "cx-freeze.readthedocs.io": 1,
+      "cx5m.file-hunter.com": 1,
+      "cyvia.io": 1,
+      "daifukkat.su": 1,
+      "decomp.wiki": 1,
+      "dev.lovelyhq.com": 3,
+      "devblogs.microsoft.com": 1,
+      "developer.apple.com": 1,
+      "developer.nvidia.com": 1,
+      "developer.valvesoftware.com": 4,
+      "digiex.net": 1,
+      "digitalmars.com": 1,
+      "director-online.dasdeck.com": 1,
+      "docs.ebpf.io": 1,
+      "docs.microsoft.com": 1,
+      "docs.oracle.com": 1,
+      "docwiki.embarcadero.com": 2,
+      "doomwiki.org": 1,
+      "download.cnet.com": 1,
+      "electrem.emuunlim.com": 1,
+      "en.freedownloadmanager.org": 1,
+      "en.wikibooks.org": 1,
+      "en.wikipedia.org": 118,
+      "euroassembler.eu": 1,
+      "exe-password-protector.soft112.com": 1,
+      "exe32pack.apponic.com": 1,
+      "f.rdw.se": 1,
+      "ffmpeg.com": 1,
+      "ffmpeg.org": 1,
+      "fifam.miraheze.org": 1,
+      "file-extensions.com": 1,
+      "file-recovery.com": 1,
+      "file.org": 2,
+      "fileformats.archiveteam.org": 1,
+      "fileinfo.com": 3,
+      "filext.com": 1,
+      "flatpak.org": 1,
+      "forum.hellroom.ru": 1,
+      "free60.org": 1,
+      "freebasic.net": 1,
+      "freetype.org": 1,
+      "ftp.modland.com": 1,
+      "gameguard.nprotect.com": 1,
+      "gameindustry.eu": 2,
+      "gist.github.com": 4,
+      "git.platon42.de": 1,
+      "github.com": 666,
+      "gitlab.com": 43,
+      "glew.sourceforge.net": 1,
+      "godotengine.org": 1,
+      "gorry.haun.org": 1,
+      "gpuopen.com": 1,
+      "graphicsgale.com": 1,
+      "gtamods.com": 1,
+      "guardant.com": 1,
+      "habr.com": 1,
+      "hacking-software-free-download.blogspot.com": 1,
+      "hackipedia.org": 2,
+      "happy-hack.net": 1,
+      "heavyironmodding.org": 1,
+      "help.autodesk.com": 1,
+      "help.comodo.com": 1,
+      "hex-rays.com": 1,
+      "highwayfrogs.net": 1,
+      "himeworks.com": 1,
+      "home.deds.nl": 1,
+      "home.vollink.com": 1,
+      "html-agility-pack.net": 1,
+      "huaidan.org": 1,
+      "icalendar.org": 1,
+      "independent-software.com": 1,
+      "info-coach.fr": 2,
+      "install-us.software.informer.com": 1,
+      "installsite.org": 1,
+      "isc.sans.edu": 1,
+      "janeway.exotica.org.uk": 1,
+      "jichu4n.github.io": 1,
+      "jrsoftware.org": 2,
+      "jsr-productions.com": 1,
+      "justsolve.archiveteam.org": 3,
+      "kaimi.io": 1,
+      "kotaku.com": 1,
+      "landbeforetime.fandom.com": 1,
+      "lclevy.free.fr": 2,
+      "ldesoras.free.fr": 2,
+      "learn.microsoft.com": 21,
+      "libexpat.github.io": 1,
+      "libmpeg2.sourceforge.io": 1,
+      "libsndfile.github.io": 1,
+      "lm-global.virbox.com": 2,
+      "logicoma.io": 1,
+      "love2d.org": 1,
+      "ltops9.wordpress.com": 1,
+      "malpedia.caad.fkie.fraunhofer.de": 22,
+      "malwarology.substack.com": 1,
+      "marketplace.visualstudio.com": 1,
+      "medium.com": 1,
+      "moddingwiki.shikadi.net": 5,
+      "modland.com": 8,
+      "modthegalaxy.com": 1,
+      "molebox.en.softonic.com": 1,
+      "msopenspecs.azureedge.net": 1,
+      "n10info.blogspot.com": 1,
+      "noname.c64.org": 1,
+      "nsis.sourceforge.io": 1,
+      "nullsecurity.net": 1,
+      "old-dos.ru": 1,
+      "old.exotica.org.uk": 1,
+      "onlineservices.epicgames.com": 1,
+      "opencolorio.org": 1,
+      "openiddict.com": 1,
+      "otvet.mail.ru": 1,
+      "packensoft.music.coocan.jp": 1,
+      "peazip.github.io": 1,
+      "phantom.sannata.org": 1,
+      "plutiedev.com": 3,
+      "powervr-graphics.github.io": 1,
+      "preservation.tylerthorsted.com": 1,
+      "problemkaputt.de": 1,
+      "pyinstaller.org": 1,
+      "qoiformat.org": 1,
+      "qt.io": 1,
+      "raw.githubusercontent.com": 1,
+      "registry.khronos.org": 2,
+      "retrocdn.net": 2,
+      "rewiki.miraheze.org": 1,
+      "rimage.incom.de": 1,
+      "robustify.xyz": 1,
+      "rpg.hamsterrepublic.com": 1,
+      "ru.wikipedia.org": 2,
+      "sinclair.wiki.zxnet.co.uk": 2,
+      "site.xara.com": 1,
+      "smallbasic-publicwebsite.azurewebsites.net": 1,
+      "smart-install-maker.software.informer.com": 1,
+      "sndh.atari.org": 1,
+      "snesmusic.org": 1,
+      "solhsa.com": 1,
+      "soundfile.sapp.org": 1,
+      "source.denx.de": 1,
+      "sourceforge.net": 9,
+      "sox.sourceforge.net": 1,
+      "stackoverflow.com": 1,
+      "steampowered.com": 1,
+      "support.securom.com": 1,
+      "tcrf.net": 1,
+      "tembolab.pl": 4,
+      "the-armadillo-software-protection-system.software.informer.com": 1,
+      "thedustedarchives.com": 1,
+      "tukaani.org": 1,
+      "twinbasic.com": 1,
+      "unity.com": 1,
+      "unprotect.it": 1,
+      "upx.github.io": 3,
+      "verhaagr.home.xs4all.nl": 1,
+      "vgmrips.net": 4,
+      "vmpsoft.com": 2,
+      "vmware.com": 1,
+      "web.archive.org": 22,
+      "webkit.org": 1,
+      "werbespiel.blogspot.com": 2,
+      "wiibrew.org": 1,
+      "wiki.maniac-mansion-mania.de": 1,
+      "wiki.multimedia.cx": 16,
+      "wiki.preview.multitheftauto.com": 1,
+      "wiki.scummvm.org": 25,
+      "win-rar.com": 1,
+      "winamp.com": 1,
+      "windhawk.net": 1,
+      "windows10dll.nirsoft.net": 4,
+      "winiso.com": 1,
+      "worldofspectrum.org": 1,
+      "wpkg.org": 1,
+      "wt.exotica.org.uk": 1,
+      "www.3dbrew.org": 5,
+      "www.3eality.com": 2,
+      "www.abyssmedia.com": 2,
+      "www.actualinstaller.ru": 1,
+      "www.adobe.com": 1,
+      "www.adventure-treff.de": 1,
+      "www.adventuregamestudio.co.uk": 1,
+      "www.alaska-software.com": 1,
+      "www.alessandrogrussu.it": 1,
+      "www.alinea-computer.de": 1,
+      "www.alpha-ii.com": 1,
+      "www.amd.com": 1,
+      "www.amigafuture.de": 1,
+      "www.angelcode.com": 1,
+      "www.armdot.com": 1,
+      "www.aspack.com": 2,
+      "www.audiokinetic.com": 2,
+      "www.autodesk.com": 1,
+      "www.autohotkey.com": 2,
+      "www.avast.com": 1,
+      "www.battleye.com": 1,
+      "www.battoexeconverter.com": 1,
+      "www.binblind.de": 1,
+      "www.boost.org": 1,
+      "www.boxedapp.com": 1,
+      "www.broadcom.com": 1,
+      "www.cdinteractive.co.uk": 1,
+      "www.cgsoftlabs.ro": 1,
+      "www.chilkatsoft.com": 1,
+      "www.clicketyclick.dk": 1,
+      "www.clickteam.com": 2,
+      "www.compression.ru": 2,
+      "www.createinstall.com": 1,
+      "www.crypkey.com": 1,
+      "www.cubic.org": 1,
+      "www.dca.fee.unicamp.br": 1,
+      "www.delphibasics.info": 1,
+      "www.dev-c.com": 1,
+      "www.digibooster.de": 1,
+      "www.discferret.com": 1,
+      "www.dll-files.com": 1,
+      "www.dllme.com": 3,
+      "www.drdobbs.com": 1,
+      "www.dywt.com.cn": 1,
+      "www.ecma-international.org": 1,
+      "www.edm2.com": 1,
+      "www.elastic.co": 1,
+      "www.elby.ch": 1,
+      "www.evillabs.net": 1,
+      "www.exeicon.com": 1,
+      "www.exotica.org.uk": 3,
+      "www.extrus.co.kr": 1,
+      "www.eziriz.com": 1,
+      "www.farbrausch.de": 1,
+      "www.ffmpeg.org": 1,
+      "www.fileformat.info": 2,
+      "www.filetypeadvisor.com": 1,
+      "www.flashbackrecorder.com": 1,
+      "www.fluidsynth.org": 2,
+      "www.fmod.com": 1,
+      "www.freedesktop.org": 1,
+      "www.gapotchenko.com": 1,
+      "www.gburner.com": 1,
+      "www.gimp.org": 2,
+      "www.gnu.org": 1,
+      "www.gnupg.org": 1,
+      "www.heise.de": 1,
+      "www.ibm.com": 1,
+      "www.igdb.com": 1,
+      "www.ilok.com": 1,
+      "www.imgburn.com": 1,
+      "www.installaware.com": 1,
+      "www.intel.com": 1,
+      "www.ixbt.com": 1,
+      "www.jar2exe.com": 1,
+      "www.java.com": 1,
+      "www.jforth.org": 1,
+      "www.kahlin.net": 1,
+      "www.kryoflux.com": 1,
+      "www.legoisland.org": 2,
+      "www.libpng.org": 4,
+      "www.magix.com": 1,
+      "www.mend.io": 1,
+      "www.microcosm.com": 1,
+      "www.microsoft.com": 1,
+      "www.mmsp.ece.mcgill.ca": 2,
+      "www.mobygames.com": 7,
+      "www.mono-project.com": 1,
+      "www.msx.org": 2,
+      "www.nero.com": 1,
+      "www.nesdev.org": 3,
+      "www.networkintelligence.ai": 1,
+      "www.ninject.org": 1,
+      "www.nuget.org": 20,
+      "www.nvidia.com": 3,
+      "www.openal.org": 1,
+      "www.opendesign.com": 1,
+      "www.openssh.com": 1,
+      "www.oreans.com": 1,
+      "www.pantaray.com": 1,
+      "www.pellesc.se": 1,
+      "www.pelock.com": 1,
+      "www.portaudio.com": 1,
+      "www.pouet.net": 1,
+      "www.prodatron.net": 1,
+      "www.psdevwiki.com": 7,
+      "www.purose.net": 2,
+      "www.py2exe.org": 1,
+      "www.python.org": 1,
+      "www.qt.io": 1,
+      "www.radbasic.dev": 1,
+      "www.radgametools.com": 4,
+      "www.rarewares.org": 1,
+      "www.reddit.com": 1,
+      "www.rfc-editor.org": 1,
+      "www.sac.sk": 1,
+      "www.securityhome.eu": 1,
+      "www.setupspecialist.com": 1,
+      "www.soft-lab.de": 1,
+      "www.softpedia.com": 7,
+      "www.softwarekey.com": 2,
+      "www.sonicwall.com": 1,
+      "www.sqlite.org": 1,
+      "www.star-force.com": 1,
+      "www.tagesprotection.com": 1,
+      "www.ultraiso.com": 1,
+      "www.un4seen.com": 1,
+      "www.unrealengine.com": 1,
+      "www.vector.co.jp": 1,
+      "www.vgmpf.com": 1,
+      "www.vgrsoft.net": 1,
+      "www.virtualbox.org": 1,
+      "www.visual-prolog.com": 1,
+      "www.vulkan.org": 1,
+      "www.w3.org": 1,
+      "www.whizzosoftware.com": 1,
+      "www.wiki.sc4devotion.com": 1,
+      "www.win-rar.com": 1,
+      "www.winehq.org": 2,
+      "www.wwpack32.venti.pl": 1,
+      "www.wwpdb.org": 1,
+      "www.xbox.com": 1,
+      "www.xiph.org": 1,
+      "www.xlsoft.com": 1,
+      "www.xojo.com": 1,
+      "www.yaldex.com": 1,
+      "xboxdevwiki.net": 1,
+      "xerinfuscator.com": 1,
+      "xiph.org": 1,
+      "yano.informer.com": 1,
+      "zakalwe.fi": 1,
+      "zenhax.com": 2
+    }
+  }
+}

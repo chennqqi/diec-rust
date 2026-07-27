@@ -37,6 +37,9 @@ Phase 0 计划形成：
 - [`embedded-compression-origins.md`](embedded-compression-origins.md)：XArchive 聚合 Brotli/Zstandard 的固定官方源码、token 指纹与许可证追溯（Draft）。
 - [`yara-license-closure.md`](yara-license-closure.md)：XYara 内嵌 YARA v4.5.2 的实际构建闭包、官方内容映射、TLSH/Authenticode/Bison 许可证和 compiler warning（Draft）。
 - [`rule-asset-provenance.md`](rule-asset-provenance.md)：Detect release 与 XYara/XPEID/signatures 数据树的逐文件哈希、历史、可见许可信号、CLI 可达性和打包路径（Draft）。
+- [`runtime-rule-assets-license.md`](runtime-rule-assets-license.md)：`db`/`db_extra`/
+  `db_custom` 的 2,268 文件分发身份、根 MIT/文件级标记、归属信号和未关闭法律
+  评审（Draft）。
 - [`upstream-build-baseline.md`](upstream-build-baseline.md)：固定 Linux Qt5/qmake CLI 构建与行为实验（Draft）。
 - [`upstream-cmake-differential.md`](upstream-cmake-differential.md)：官方 CMake CLI 构建及与 qmake 的原始输出差分（Draft）。
 - [`upstream-qt6-differential.md`](upstream-qt6-differential.md)：固定 Qt 6 CMake CLI 构建、Qt 5/Qt 6 原始差分与规则 warning 最小化（Draft）。
@@ -54,6 +57,8 @@ Phase 0 计划形成：
 - [`data/embedded-compression-origins.json`](data/embedded-compression-origins.json)：聚合 Brotli/Zstandard 与固定官方 commit/生成物/许可证的内容对照。
 - [`data/yara-license-closure-linux.json`](data/yara-license-closure-linux.json)：YARA 51-object target、109-file dependency closure、官方 v4.5.2/TLSH 来源链和文件级许可证证据。
 - [`data/rule-assets.json`](data/rule-assets.json)：五组固定 YARA/PEiD/signature 资产、逐文件历史/哈希、release/component 差异及 CLI/GUI/打包可达性证据。
+- [`data/runtime-rule-assets-license.json`](data/runtime-rule-assets-license.json)：
+  runtime 三层规则树的 2,268 文件 hash、作者/URL/许可标记和 22 个 PNG 清单。
 - [`data/baseline-corpus.json`](data/baseline-corpus.json)：生成语料的文件名、意图、大小和 SHA-256。
 - [`data/capability-traceability.json`](data/capability-traceability.json)：68 个稳定
   `CAP-*` 的验证层级、证据路径、平台范围和 8 个显式 coverage gap。

@@ -233,7 +233,13 @@ baseline 的变更都要检查本表。
   DosX 文件只有归属保留请求，`peid.yar` 聚合多项外部 database URL，而
   PEiD/signature 数据没有文件级许可声明。固定 `diec` CLI 不加载这些资产，
   但上游打包脚本仍会复制 component YARA、PEiD 和根 `crypto.db`，因此不能以
-  “CLI 不可达”免除发布物许可审计。
+  “CLI 不可达”免除发布物许可审计。当前 CLI 实际加载的三层 runtime 规则树又
+  已独立闭合 2268/2268 文件分发身份：2175 个 `.sg`、60 个无扩展程序和 33 个
+  metadata/PNG 资产，combined tree SHA-256 为
+  `20f2b74effc2bdaf069e3b2e13060432b8890d38364511f5cde56a337348bfda`。
+  根 LICENSE 为固定 MIT，文本内只有一条显式 MIT、无严格 non-MIT marker；
+  但 22 个 PNG 来源、历史贡献适用性和发布责任人书面结论仍缺，机器报告明确
+  保持 `legal_review_complete=false`，所以 R-002/P0-BLOCK-004 继续 Open。
 - **缓解**：每次导入/同步前生成 source/license inventory；保留原始 LICENSE、
   commit、path、hash 和 attribution；选型前由发布责任人复核组合。
 - **验证**：规则 bundle、source closure、binary dependency、samples 和 release

@@ -65,7 +65,7 @@ Roadmap 点名的五份调研正文和五份设计正文均已存在。调研正
 | `P0-BLOCK-001` | Closed | 68 个稳定 CAP ID、四级验证状态、证据路径和 8 个 gap 已写入 manifest，并由测试与上游 lock 绑定 |
 | `P0-BLOCK-002` | Open | architecture、API、C ABI、testing、risks 的明确评审结论 |
 | `P0-BLOCK-003` | Open | 每份 ADR 进入 Accepted、Rejected 或 Superseded，并保存评审证据 |
-| `P0-BLOCK-004` | Open | 无未分类发布输入的规则/runtime/source 许可证与归属报告 |
+| `P0-BLOCK-004` | Open | runtime `db*` 2,268 文件身份及根 MIT/marker 已闭合；仍需 PNG/历史贡献、其余 source closure 和发布责任人书面评审 |
 | `P0-BLOCK-005` | Open | 固定平台基线及无 Phase 0 missing row 的 coverage report |
 | `P0-BLOCK-006` | Open | 固定环境的上游 benchmark、可测 latency/memory/size 目标和默认资源限制 |
 

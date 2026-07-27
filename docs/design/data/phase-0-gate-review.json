@@ -182,6 +182,7 @@
       "title": "rule and bundled distribution license closure is incomplete",
       "owner": "release",
       "status": "open",
+      "progress_evidence": "docs/research/runtime-rule-assets-license.md and docs/research/data/runtime-rule-assets-license.json bind all 2268 db/db_extra/db_custom assets while keeping legal_review_complete false",
       "closure_evidence": "reviewed rules/runtime/source distribution license and attribution report with no unclassified release inputs"
     },
     {
