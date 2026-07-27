@@ -97,7 +97,12 @@ Rust 设计前必须把完整分派顺序提取为测试表，并用多义样本
 2. 如果启用，extra database。
 3. 如果启用，custom database。
 
-数据库规则被解析为 `SIGNATURE_RECORD`，汇总后按优先级排序。加载支持目录/归档和 cache；cache 格式、失效条件及是否需要兼容尚未分析。
+数据库规则被解析为 `SIGNATURE_RECORD`，汇总后按优先级排序。加载支持目录和
+ZIP；发布 CLI 零初始化 `bUseCache=false`，不会 cache hit，并会删除同路径旧
+cache。engine cache 是 Qt `QDataStream` version 5，只用 file count、total
+size、newest mtime 判定 freshness，没有内容 hash 或读取/record 上限。ZIP
+截断、重复名称和路径选择实验证据见
+[`database-archive-cache.md`](database-archive-cache.md)。
 
 运行实验还确认：函数返回值只反映 main；extra/custom 失败被忽略；空目录被视为
 成功；CLI positional target 分支漏设 `bIsDbUsed`，使 main 加载失败不改变
@@ -202,7 +207,7 @@ Rust 兼容模式必须同时复现 resource context 传播和 debug-data 默认
 | archive/resource/overlay 递归 | 无深度/总解压限制；CLI 与 engine 可达性不同 | 其他格式、高上限和资源耗尽实验 |
 | 目录枚举无深度/循环保护 | symlink loop、栈/时间耗尽 | 隔离测试并为 Rust 设计资源限制 |
 | formatter 分散 | JSON/XML 契约不明确 | 逐格式保存 schema 和 escaping 样本 |
-| database cache | 启动性能与兼容性 | 分析 cache header/失效逻辑 |
+| engine database cache | `readAll`/无界 record count、弱 freshness；CLI 不启用 | 专用 harness 验证 stale/corrupt/cancel |
 | 数据库/输入错误语义随入口变化 | 静默漏报、无效 JSON、调用方误判 | 核心 typed error + CLI compatibility ADR |
 | CLI 部分选项有 `TODO` | “能力相同”范围争议 | 构建并运行确认真实行为 |
 

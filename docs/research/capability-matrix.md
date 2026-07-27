@@ -176,7 +176,8 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
 ## 待实验矩阵
 
 - 尚未实验的 CLI 选项及专用模式剩余 struct/阈值边界。
-- database cache、权限失败、合法/损坏 ZIP database 边界。
+- 发布 CLI 的合法/空/多级截断/重复/`..`/根前缀 ZIP database 已 Observed；
+  engine-only cache hit/stale/corrupt/cancel 与权限失败仍待 harness。
 - Unicode/特殊 filename 及 Windows/macOS 的路径和枚举差异。
 - JSON/XML/CSV/TSV 的转义和嵌套排序。
 - deep 以及 aggressive resource 过滤/计数上限的增量样本。

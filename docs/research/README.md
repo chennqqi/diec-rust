@@ -38,6 +38,7 @@ Phase 0 计划形成：
 - [`cli-path-behavior.md`](cli-path-behavior.md)：多目标、目录递归、输出聚合和错误顺序（Draft）。
 - [`cli-option-behavior.md`](cli-option-behavior.md)：verbose/messages/profiling channel 与 test/create test 遗留入口行为（Draft）。
 - [`database-error-behavior.md`](database-error-behavior.md)：数据库缺失/损坏、规则错误和不可读输入（Draft）。
+- [`database-archive-cache.md`](database-archive-cache.md)：ZIP 规则数据库的截断/重复/路径名边界、发布 CLI cache 可达性和 engine cache 格式风险（Draft）。
 - [`nested-scan-behavior.md`](nested-scan-behavior.md)：archive/resource/overlay 的选项可达性、结果树和资源限制（Draft）。
 - [`data/cli-dependencies.toml`](data/cli-dependencies.toml)：固定组件依赖边、LICENSE blob 和 bundled code 证据。
 - [`data/xarchive-license-closure-linux.json`](data/xarchive-license-closure-linux.json)：XArchive 106 个实际编译单元、217 个依赖文件及许可证/来源标记。
@@ -47,6 +48,8 @@ Phase 0 计划形成：
 - [`data/baseline-corpus.json`](data/baseline-corpus.json)：生成语料的文件名、意图、大小和 SHA-256。
 - [`data/path-corpus.json`](data/path-corpus.json)：由基线字节组成的确定性嵌套目录树。
 - [`data/database-fixture.json`](data/database-fixture.json)：项目生成的数据库成功/故障 fixture。
+- [`data/database-archive-linux-qt5.json`](data/database-archive-linux-qt5.json)：两套固定 Qt5 oracle 的 17-case ZIP 数据库矩阵及两侧原始 stream。
+- [`data/database-cache-cli.json`](data/database-cache-cli.json)：发布 CLI cache-disabled 源码身份、删除副作用与 engine cache header 摘要。
 - [`data/nested-corpus.json`](data/nested-corpus.json)：安全的 archive/resource/overlay 嵌套语料清单。
 - [`data/resource-context-chain-qt5.json`](data/resource-context-chain-qt5.json)：RT_MANIFEST 父扫描、resource context、scan ID 与原样规则结果的四模式端到端基线。
 - [`data/subdevice-source-audit.json`](data/subdevice-source-audit.json)：固定 XScanEngine/Formats 源码哈希、resource/overlay 调度及 debug-data 可达性审计。

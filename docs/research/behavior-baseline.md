@@ -245,7 +245,9 @@ elapsed 值与固定规则执行序列另见
 - 输出格式的转义边界、特殊 filename，以及专用 struct/entropy 阈值边界。
 - 能实际触发 deep 增量或 aggressive 过滤/上限差异的样本。
 - 其他 archive 格式、aggressive 高上限和最大嵌套深度。
-- 规则数据库 cache、ZIP 边界、权限和同名规则覆盖。
+- 发布 CLI 的 ZIP database 截断/重复/`..`/根前缀边界及 cache-disabled
+  副作用已由 [`database-archive-cache.md`](database-archive-cache.md) 覆盖；
+  engine cache、权限和 main/extra/custom 同名规则覆盖仍待实验。
 - 系统化畸形/截断矩阵、资源限制、超时、内存峰值和 fuzz seeds。
 - Windows/macOS oracle 以及路径编码差异。
 

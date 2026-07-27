@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83",
+  "source_identities": {
+    "src/console/main_console.cpp": "ebb82a94fdd0f54722ea36589d6a35694ec4022bc9179030dae6a85e7a9d7e8f",
+    "XScanEngine/xscanengine.cpp": "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498",
+    "XScanEngine/xscanengine.h": "ddef8387f72cd8a740052d47813018fb0e6f74ed3d3a911827ad1b7b3ce15fe8"
+  },
+  "fixture": {
+    "manifest": "docs/research/data/database-fixture.json",
+    "manifest_sha256": "90b6ce18e5656fa30c2dfd55573df4612825a74e77cb9e2f4fc1baa81fd7223c",
+    "database_path": "/dbfx/valid-main"
+  },
+  "cache": {
+    "cli_b_use_cache": false,
+    "app_data_location": "/tmp/xdg/NTInfo/die",
+    "directory": "/tmp/xdg/NTInfo/die/db_cache",
+    "filename": "2a513e7f3b4e0f02c53e6da3c4b0d866.cache",
+    "filename_key": "MD5 of UTF-8 database path",
+    "seed_bytes": 13,
+    "seed_content": "corrupt-cache"
+  },
+  "observations": [
+    {
+      "image": "diec-rust/upstream-oracle:74eaf505-repro",
+      "image_id": "sha256:cc5561a5d256c7912227a8ecf4ba9c6b9178c99911e471017d3c3988bac964ab",
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+      "cache_after_load": "removed",
+      "exit_code": 0
+    },
+    {
+      "image": "diec-rust/upstream-oracle-cmake:74eaf505",
+      "image_id": "sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040",
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+      "cache_after_load": "removed",
+      "exit_code": 0
+    }
+  ],
+  "source_findings": {
+    "cli_zero_initializes_scan_options": true,
+    "cli_never_enables_b_use_cache": true,
+    "zip_database_bypasses_cache": true,
+    "disabled_cache_removes_matching_cache_file": true,
+    "cache_magic": "0x44494543",
+    "cache_version": 5,
+    "cache_validation_fields": [
+      "engine_name",
+      "recursive_file_count",
+      "recursive_total_size",
+      "newest_mtime_ms"
+    ],
+    "cache_validates_content_hashes": false,
+    "cache_read_all_is_bounded": false,
+    "cache_record_count_is_bounded": false
+  },
+  "limitations": [
+    "engine bUseCache=true runtime behavior is not probed",
+    "cache corruption and stale-content behavior are source-only findings",
+    "Windows and macOS QStandardPaths behavior is not probed"
+  ]
+}

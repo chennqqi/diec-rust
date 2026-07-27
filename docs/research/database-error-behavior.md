@@ -232,8 +232,12 @@ normal scan 的 JSON 不是通常的 `{"detects": [...]}`，而是：
 ## 尚未覆盖
 
 - permission-denied database directory/file。
-- cache 创建失败、stale/corrupt cache 和 cache 命中差异。
-- 合法 ZIP database、截断 ZIP、重复 entry 和 path traversal entry。
+- 发布 CLI 的合法/空/截断 ZIP、重复 entry、`..` 名称和额外根前缀，以及
+  cache-disabled 删除副作用已由
+  [`database-archive-cache.md`](database-archive-cache.md) 覆盖。engine
+  `bUseCache=true` 的创建失败、stale/corrupt cache 和 cache hit 仍待专用
+  harness。
+- encrypted/ZIP64/data descriptor/CRC mismatch、压缩比和超大 entry count。
 - main/extra/custom 同名规则覆盖、优先级和排序。
 - 多个独立 script/include error 的最终 ordering；missing、parse error 和
   self/two-node include cycle 已由

@@ -215,7 +215,11 @@ baseline 的变更都要检查本表。
 - **当前证据**：固定 YARA v4.5.2 `-O3` build 对 `atoms.c` 四个写入位置产生
   12 条 `-Wstringop-overflow=` warning，诊断涉及 4-byte atom 的 offsets
   4/5/6。尚无 sanitizer 或可达输入证明，不能直接定性为漏洞或 false positive；
-  Rust atom extraction 必须独立使用受控长度并覆盖差分边界。
+  Rust atom extraction 必须独立使用受控长度并覆盖差分边界。固定
+  XScanEngine cache loader 又对文件 `readAll()`，直接按不可信 record count
+  `reserve()`，没有 cache byte/record/script 上限；ZIP database 使用
+  `getRecords(-1)` 并逐项解压。发布 CLI 不启用 cache，但 ZIP 可达，Rust
+  database loader 必须统一纳入输入和分配预算。
 - **缓解**：checked `u64` range、allocation cap、`try_reserve`、无 panic parser；
   unsafe 最小化；unit/property/fuzz/sanitizer/Miri。
 - **验证**：每个 parser 的合法/截断/畸形/边界/fuzz target 通过，历史 crash 全部
