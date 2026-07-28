@@ -8,7 +8,7 @@ Last updated: 2026-07-28
 
 ## 结论
 
-固定 Linux x86_64 Qt5 engine harness 对二十九个可追溯样本给出可重复结果：
+固定 Linux x86_64 Qt5 engine harness 对四十一个可追溯样本给出可重复结果：
 
 - 7Z Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64 distance-32769、
   x86 BCJ+LZMA2、BCJ2+LZMA2 无分支/E8/E9/JCC 四流分支、
@@ -43,6 +43,10 @@ Last updated: 2026-07-28
 - 官方 x86 BCJ+LZMA2+AES 与 ARM64 BCJ+LZMA2+AES archive 在公共路径同样
   因无密码无 child，但直接 harness 的正确密码均成功还原 331-byte PDF；
   缺失与错误密码失败；
+- 上游 `unpackImplemented()` 声明的 x86 BCJ/ARM64 两种 filter × 七种基础
+  coder × 7zAES 简单序列矩阵已全部覆盖：新增十二种组合均经官方 7-Zip
+  正确密码自测并由固定 DIE 还原 canonical PDF；公共路径仍因无密码无 child。
+  Copy 与 PPMd7 组合的错误密码仍留下 331-byte 非认证输出，其余组合输出为空；
 - 7Z 与 CAB 的顶层 `filetype` 都是 `Binary`，顶层规则检测名分别是
   `7-Zip` 与 `CAB`，但 archive adapter 仍可展开成员；不能由顶层展示类型
   直接推断内部 archive 分派失败；
@@ -52,8 +56,8 @@ Last updated: 2026-07-28
 这组结果增加了 7Z 七种单 coder、x86 BCJ+LZMA2、BCJ2+LZMA2
 无分支及 E8/E9/JCC filter 链与
 ARM64-BCJ+LZMA2 BL/ADRP 分支、RAR4 store、CAB Store/MSZIP 与 ISO9660 的正向
-corpus 证据，并固定 7Z 七种基础 coder+AES 及 x86/ARM64 filter+AES 的成功
-密码契约、
+corpus 证据，并固定 7Z 七种基础 coder+AES 及完整 x86/ARM64
+filter × 七种基础 coder × AES 的成功密码契约、
 BCJ2+AES 官方图的失败边界
 以及 CAB
 LZX/Quantum 的未实现/激进扫描 quirk，但不关闭
@@ -65,13 +69,12 @@ LZX/Quantum 的未实现/激进扫描 quirk，但不关闭
 [`archive-iteration-boundary.md`](archive-iteration-boundary.md) 固定，
 ZIP deflate/ZipCrypto/CRC/压缩流畸形与 1 MiB 高压缩比现由
 [`archive-adversarial-behavior.md`](archive-adversarial-behavior.md) 固定；
-其他 method/filter/AES 交叉组合、RAR 的压缩算法、系统化畸形矩阵及跨平台
-行为仍未验证。
+RAR 的压缩算法、系统化畸形矩阵、资源耗尽及跨平台行为仍未验证。
 
 机器报告是
 [`archive-format-engine-qt5.json`](data/archive-format-engine-qt5.json)，
 SHA-256 为
-`f28709a359c1e2bac6575e59591eae51d75ef942955bb8cb9e1e6db427fabd34`。
+`d27ee4aa9c03be0939d495e6b9ab062f669f123eeff36ccfac16062d3089a784`。
 报告中的布尔事实键保持为：
 
 - `release_and_harness_default_outputs_are_equal`
@@ -102,6 +105,10 @@ SHA-256 为
 - `sevenzip_filter_aes_public_engine_has_no_password_and_no_child`
 - `sevenzip_filter_aes_direct_correct_password_reaches_payload`
 - `sevenzip_filter_aes_missing_and_wrong_password_fail`
+- `sevenzip_filter_base_aes_matrix_public_engine_has_no_password_and_no_child`
+- `sevenzip_filter_base_aes_matrix_direct_correct_password_reaches_payload`
+- `sevenzip_filter_base_aes_matrix_missing_and_wrong_password_fail`
+- `sevenzip_filter_copy_and_ppmd7_aes_wrong_password_leave_output`
 - `rar4_store_member_reaches_pdf_rules`
 - `cab_store_member_reaches_pdf_rules`
 - `cab_mszip_member_reaches_pdf_rules`
@@ -123,7 +130,7 @@ SHA-256 为
 | Harness binary | `b7ea9b151b58b630c017e9989333fa035b7d86ffab366a5d3a1f74bab9f1e96e` |
 | Direct password harness | `af3566c9c3a554f0769a3c582ebc2eb116e74560cbd6f3f3b03e4d006cc98baa` |
 | Release binary | `da1fab49f7ba5970d1fc1c7fe3d4f380cf5e8775dd8097207e7b3c30f08236cf` |
-| Fixture manifest | `c35ab9182fff7278a1d9aa54038d99861bcee76bc5d1e2cbacec1830b51406a3` |
+| Fixture manifest | `4ba3b9e9bac2a449e603156d51b2ad32e6a8b87d48a0eb94f99581ab5325d555` |
 
 Harness 只替换 console `main`，扫描、数据库加载、解包和 formatter 均复用固定
 镜像中的上游对象。源码和构建入口分别为
@@ -196,6 +203,18 @@ SHA-256
 | `pdf-member-bcj2-lzma2-aes.7z` | 7Z BCJ2 + LZMA2 + 4×7zAES → `payload.pdf` | 466 | `65acd90a7e2bc019e328d3084821bdcbaaa75404084773b1ac94b07c7989bd50` |
 | `pdf-member-bcj-lzma2-aes.7z` | 7Z x86 BCJ + LZMA2 + 7zAES → `payload.pdf` | 354 | `7eed6f558d94ee89eba36b8e486d094583c31f1227d434af81a47d8c9c1ce857` |
 | `pdf-member-arm64-lzma2-aes.7z` | 7Z ARM64 + LZMA2 + 7zAES → `payload.pdf` | 354 | `dcc122a6019de6e1ea0d07bd853a88069f88b5e709da684eb0647bdec43434ea` |
+| `pdf-member-bcj-copy-aes.7z` | 7Z x86 BCJ + Copy + 7zAES → `payload.pdf` | 482 | `84c55e8a47336b7f53d5c91e53f367b23f18527e8630e9cabb4fd6f56be33102` |
+| `pdf-member-bcj-lzma-aes.7z` | 7Z x86 BCJ + LZMA + 7zAES → `payload.pdf` | 370 | `1894b48a5c0ce50aff6dcb0ca02b94b90277cf93e9ccee2463d2346558300f6d` |
+| `pdf-member-bcj-ppmd7-aes.7z` | 7Z x86 BCJ + PPMd7 + 7zAES → `payload.pdf` | 338 | `405279f0dceabf34c131c81c5070c96e7c08c49ebfe440cffaa4fef35187132d` |
+| `pdf-member-bcj-bzip2-aes.7z` | 7Z x86 BCJ + BZip2 + 7zAES → `payload.pdf` | 386 | `80e596eae5083e61c04a9bec2384268a75a4566c2cec872ad464ef326341e31c` |
+| `pdf-member-bcj-deflate-aes.7z` | 7Z x86 BCJ + Deflate + 7zAES → `payload.pdf` | 354 | `e18f65a20a4adaa63a87b21206e859ac5dfcb13ae701849472d0f209374c739f` |
+| `pdf-member-bcj-deflate64-aes.7z` | 7Z x86 BCJ + Deflate64 + 7zAES → `payload.pdf` | 354 | `831e6ab83f7330b72ec9a0d48f9b5d2ce2d5c8a982b38901bcabeb137d7b9dcc` |
+| `pdf-member-arm64-copy-aes.7z` | 7Z ARM64 + Copy + 7zAES → `payload.pdf` | 482 | `a25254ee79d5eb8d496eefa6bc6a7179f654d5c951120e6198906a0ea718ac4f` |
+| `pdf-member-arm64-lzma-aes.7z` | 7Z ARM64 + LZMA + 7zAES → `payload.pdf` | 354 | `843feea12554d69312240a45ad756c30089678cace1594e9acfae50fc53badce` |
+| `pdf-member-arm64-ppmd7-aes.7z` | 7Z ARM64 + PPMd7 + 7zAES → `payload.pdf` | 322 | `31212640b730a062fff0a855e050842810bf9a76b837aea53bcb0019ab87a759` |
+| `pdf-member-arm64-bzip2-aes.7z` | 7Z ARM64 + BZip2 + 7zAES → `payload.pdf` | 386 | `e95ffcaea1b94cd592b461d077d60e8377717f84809eced64cd0c7bbca69c482` |
+| `pdf-member-arm64-deflate-aes.7z` | 7Z ARM64 + Deflate + 7zAES → `payload.pdf` | 354 | `5e7586388553f33fd2d8d1ac8d25d8c2380ab218b9ae2d09325990e6c858bcc9` |
+| `pdf-member-arm64-deflate64-aes.7z` | 7Z ARM64 + Deflate64 + 7zAES → `payload.pdf` | 354 | `a1fd70039a0a3fbb2ec6df78694ec6e44c1337666282a87088abc1d1fb7b4e09` |
 | `pdf-member-ppmd7.7z` | 7Z PPMd7 coder → `payload.pdf` | 277 | `77045232118f35db87b75404c943dff0535cbfef1194e66866818729a9571269` |
 | `pdf-member-bzip2.7z` | 7Z BZip2 coder → `payload.pdf` | 346 | `f9b7455d5922e88c3e987b6010dbc8f90470b2fb6dc9bd2612225e87fde59c3f` |
 | `pdf-member-deflate.7z` | 7Z Deflate coder → `payload.pdf` | 295 | `07185ac8131fed41933521faf48ac339270f1b15b0f63832330ea848a9dd0097` |
@@ -213,7 +232,7 @@ SHA-256
 | `text-member-quantum.cab` | CAB Quantum 18 → `qtm.txt` | 124 | `2c24e38765939ee6003125244650f32e46a1af760f98c28c79699fc88319945e` |
 | `pdf-member.iso` | ISO9660 → `payload.pdf` | 43008 | `d32df4410a94094ab990d9cb32fa4a2e4e168d3173756962f6889902c18bb832` |
 
-除 ARM64、Deflate64、BCJ2 E8/E9/JCC 与 Quantum 六个特殊 case 外的二十三个成员使用
+除 ARM64、Deflate64、BCJ2 E8/E9/JCC 与 Quantum 六个特殊 case 外的三十五个成员使用
 331-byte payload，
 SHA-256 都是
 `47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92`。
@@ -241,10 +260,11 @@ SHA-256 为
 官方 7-Zip 26.02 Linux x64 console
 `7z2602-linux-x64.tar.xz`（SHA-256
 `41aaba7b1235304ab5aa0624530c67ae829496cd29e875925271efdccc28c03e`）
-对四个 BCJ2 archive、CAB LZX 与十个 AES archive（密码 `DetectItEasy`）执行
+对四个 BCJ2 archive、CAB LZX 与二十二个 AES archive（密码 `DetectItEasy`）执行
 `7zz t` 均报告 `Everything is Ok`。AES archive 由同一工具以固定命令生成；
 7zAES 的随机 salt 使重新创建的 archive 字节不确定，因此仓库生成器保存一次
-已验证产物的精确 322/338/354/370/466-byte 常量，而 manifest 固定各自命令、密码、
+已验证产物的精确 322/338/354/370/386/466/482-byte 常量，而 manifest
+固定各自命令、密码、
 payload hash、
 工具 tarball hash
 `41aaba7b1235304ab5aa0624530c67ae829496cd29e875925271efdccc28c03e`
@@ -310,6 +330,7 @@ ISO9660 检查 sector size。
 | 7Z Copy/LZMA/PPMd7/BZip2/Deflate/Deflate64+AES | `Binary / 7-Zip` | 0 Stream | 0 Stream；stderr 明确要求密码 |
 | 7Z BCJ2+LZMA2+4×AES | `Binary / 7-Zip` | 0 Stream | 0 Stream；stderr 明确要求密码 |
 | 7Z x86/ARM64 BCJ+LZMA2+AES | `Binary / 7-Zip` | 0 Stream | 0 Stream；stderr 明确要求密码 |
+| 7Z x86/ARM64 BCJ × Copy/LZMA/PPMd7/BZip2/Deflate/Deflate64+AES | `Binary / 7-Zip` | 0 Stream | 0 Stream；stderr 明确要求密码 |
 | RAR4 store | `RAR / Unknown` | 0 Stream | 1 × `PDF / Stream` |
 | CAB Store/MSZIP | `Binary / CAB` | 0 Stream | 1 × `PDF / Stream` |
 | CAB LZX:15 | `Binary / CAB` | 0 Stream | archive: 0；aggressive: 1 × 331-byte `Binary / Unknown` |
@@ -325,8 +346,8 @@ Deflate64、ARM64 与 BCJ2 E8/E9/JCC case 的 child size 分别为字符串
 两种 archive 模式明确不相等。比较对象是未经规范化的 stdout/stderr 原始
 字节，不只是摘要。
 
-此外，直接密码 harness 对十个 AES archive 各运行缺失、正确与错误密码三种
-case。完整 116 次公共扫描及 30 次直接密码实验的原始 stream 以 SHA-256
+此外，直接密码 harness 对二十二个 AES archive 各运行缺失、正确与错误密码
+三种 case。完整 164 次公共扫描及 66 次直接密码实验的原始 stream 以 SHA-256
 为键，经 `zlib+base64` 去重嵌入报告；
 离线测试会解压每个 artifact、复验长度/hash，并验证每个 case 的引用。扫描容器
 禁用网络，限制为 1 CPU、512 MiB、128 PIDs、只读根和只读 fixture mount，
@@ -372,8 +393,8 @@ binary/source/local tool identity，最后运行全部 case。报告生成器变
 本实验只证明七种 7Z 单 coder、x86 BCJ+LZMA2、BCJ2+LZMA2
 无分支/E8/E9/JCC filter 链、ARM64-BCJ+LZMA2
 的 BL/ADRP 分支、RAR4 store、CAB Store/MSZIP 与 ISO9660 的合法单成员正例，
-7Z 七种基础 coder+AES 和 x86/ARM64 filter+AES 的公共无密码与直接
-正确/缺失/错误密码
+7Z 七种基础 coder+AES 和完整 x86/ARM64 filter × 七种基础 coder × AES
+矩阵的公共无密码与直接正确/缺失/错误密码
 边界、官方 BCJ2+LZMA2+4×AES 图在正确密码下仍失败的边界，以及 CAB
 LZX/Quantum 普通/激进模式的失败边界，
 不证明：
@@ -382,7 +403,6 @@ LZX/Quantum 普通/激进模式的失败边界，
   [`generic-archive-dispatch-reachability.md`](generic-archive-dispatch-reachability.md)；
   NPM 的直接检测、公共自动回退和强制分支见
   [`npm-dispatch-reachability.md`](npm-dispatch-reachability.md)；
-- 其他 7Z method/filter/AES 交叉组合；
 - RAR 的压缩方法、ISO9660 扩展，以及
   solid/multi-volume/encrypted entry；
 - 截断 header、错误 size/CRC、重复名称、目录、链接和路径穿越 metadata；

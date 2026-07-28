@@ -48,6 +48,36 @@ SEVENZIP_BASE_AES_CASES = {
         ("-m0=Deflate64", "-mx=9"),
     ),
 }
+SEVENZIP_FILTER_BASE_AES_CASES = {
+    f"{filter_slug}_{method_slug}": (
+        f"pdf-member-{filter_slug}-{method_slug}-aes.7z",
+        (
+            f"-m0={filter_name}",
+            (
+                "-m1=PPMd"
+                if method_name == "PPMd7"
+                else f"-m1={method_name}"
+            ),
+            "-mx=9",
+        ),
+    )
+    for filter_slug, filter_name in (
+        ("bcj", "BCJ"),
+        ("arm64", "ARM64"),
+    )
+    for method_slug, method_name in (
+        ("copy", "Copy"),
+        ("lzma", "LZMA"),
+        ("ppmd7", "PPMd7"),
+        ("bzip2", "BZip2"),
+        ("deflate", "Deflate"),
+        ("deflate64", "Deflate64"),
+    )
+}
+SEVENZIP_SIMPLE_AES_CASES = {
+    **SEVENZIP_BASE_AES_CASES,
+    **SEVENZIP_FILTER_BASE_AES_CASES,
+}
 SEVENZIP_AES_PUBLIC_SAMPLES = {
     "pdf-member-lzma2-aes.7z",
     "pdf-member-bcj2-lzma2-aes.7z",
@@ -55,7 +85,7 @@ SEVENZIP_AES_PUBLIC_SAMPLES = {
     "pdf-member-arm64-lzma2-aes.7z",
     *(
         archive_name
-        for archive_name, _ in SEVENZIP_BASE_AES_CASES.values()
+        for archive_name, _ in SEVENZIP_SIMPLE_AES_CASES.values()
     ),
 }
 DATABASE_ARGS = (
@@ -180,7 +210,7 @@ EXPECTED_ROOTS = {
             "root_names": ["7-Zip"],
             "archive_stream_count": 0,
         }
-        for archive_name, _ in SEVENZIP_BASE_AES_CASES.values()
+        for archive_name, _ in SEVENZIP_SIMPLE_AES_CASES.values()
     },
     "pdf-member-bcj2-lzma2-aes.7z": {
         "filetype": "Binary",
@@ -561,7 +591,7 @@ def load_fixture(
             for name, (
                 archive_name,
                 method_options,
-            ) in SEVENZIP_BASE_AES_CASES.items()
+            ) in SEVENZIP_SIMPLE_AES_CASES.items()
         }
     )
     if manifest["generation_provenance"] != (
@@ -591,7 +621,7 @@ def load_fixture(
         }
     }:
         raise ProbeError("unexpected third-party fixture input")
-    if len(manifest["samples"]) != 29:
+    if len(manifest["samples"]) != 41:
         raise ProbeError("fixture sample count changed")
 
     declared = set()
@@ -967,6 +997,26 @@ def build_report(
             "3404ad646903d0c1ae7521b82f606b13"
             "a88fd595496255217f6e4a250076f042",
         ),
+        "arm64_copy": (
+            331,
+            "730eb17ce3f4240b11303a14041e952a"
+            "8acff6463ad59d3f60d723fa500d2dfd",
+        ),
+        "arm64_ppmd7": (
+            331,
+            "3404ad646903d0c1ae7521b82f606b13"
+            "a88fd595496255217f6e4a250076f042",
+        ),
+        "bcj_copy": (
+            331,
+            "e4b808e14457a016c55f09633c0351c7"
+            "bb29d1b785427e7a5dc775f009fc6a43",
+        ),
+        "bcj_ppmd7": (
+            331,
+            "3404ad646903d0c1ae7521b82f606b13"
+            "a88fd595496255217f6e4a250076f042",
+        ),
     }
     direct_case_specs = [
         (
@@ -1086,7 +1136,7 @@ def build_report(
             b"",
         ),
     ]
-    for name, (archive_name, _) in SEVENZIP_BASE_AES_CASES.items():
+    for name, (archive_name, _) in SEVENZIP_SIMPLE_AES_CASES.items():
         archive_path = f"/fixture/{archive_name}"
         wrong_output_size, wrong_output_sha256 = (
             wrong_password_outputs.get(name, (0, empty_sha256))
@@ -1191,12 +1241,16 @@ def build_report(
         "sevenzip_base_aes_direct_correct_password_reaches_payload": True,
         "sevenzip_base_aes_missing_and_wrong_password_fail": True,
         "sevenzip_copy_and_ppmd7_aes_wrong_password_leave_output": True,
+        "sevenzip_filter_base_aes_matrix_direct_correct_password_reaches_payload": True,
+        "sevenzip_filter_base_aes_matrix_missing_and_wrong_password_fail": True,
+        "sevenzip_filter_copy_and_ppmd7_aes_wrong_password_leave_output": True,
         "sevenzip_bcj2_aes_public_engine_has_no_password_and_no_child": True,
         "sevenzip_bcj2_aes_direct_correct_password_still_fails": True,
         "sevenzip_bcj2_aes_missing_and_wrong_password_fail": True,
         "sevenzip_filter_aes_public_engine_has_no_password_and_no_child": True,
         "sevenzip_filter_aes_direct_correct_password_reaches_payload": True,
         "sevenzip_filter_aes_missing_and_wrong_password_fail": True,
+        "sevenzip_filter_base_aes_matrix_public_engine_has_no_password_and_no_child": True,
         "rar4_store_member_reaches_pdf_rules": True,
         "cab_store_member_reaches_pdf_rules": True,
         "cab_mszip_member_reaches_pdf_rules": True,

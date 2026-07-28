@@ -58,6 +58,10 @@ child 为 59-byte `Binary / Unknown`；独立解码器已证明其合法明文�
 补齐七种基础 coder+AES 矩阵：公共路径均无 child，直接正确密码均还原
 331-byte PDF，缺失/错误密码均报告失败；Copy 与 PPMd7 的错误密码仍分别
 留下 331-byte 非认证输出。
+第三十至四十一个样本补齐 x86 BCJ/ARM64 两种 filter ×
+Copy/LZMA/PPMd7/BZip2/Deflate/Deflate64 × AES 的其余十二种序列；公共路径
+均无 child，直接正确密码均还原 PDF。两种 Copy 与两种 PPMd7 组合的错误
+密码留下 331-byte 非认证输出，其余组合输出为空。
 
 ## 三层能力边界
 

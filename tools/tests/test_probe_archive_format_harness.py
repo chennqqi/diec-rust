@@ -43,6 +43,27 @@ BASE_AES_PREFIXES = (
     "deflate",
     "deflate64",
 )
+FILTER_BASE_AES_CASES = tuple(
+    (
+        f"pdf-member-{filter_slug}-{method_slug}-aes.7z",
+        f"{filter_slug}_{method_slug}",
+    )
+    for filter_slug in ("bcj", "arm64")
+    for method_slug in (
+        "copy",
+        "lzma",
+        "ppmd7",
+        "bzip2",
+        "deflate",
+        "deflate64",
+    )
+)
+FILTER_BASE_AES_ARCHIVES = tuple(
+    archive_name for archive_name, _ in FILTER_BASE_AES_CASES
+)
+FILTER_BASE_AES_PREFIXES = tuple(
+    prefix for _, prefix in FILTER_BASE_AES_CASES
+)
 
 
 def sha256(data: bytes) -> str:
@@ -59,7 +80,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
         report = self.report
         self.assertEqual(
             sha256(self.report_bytes),
-            "f28709a359c1e2bac6575e59591eae51d75ef942955bb8cb9e1e6db427fabd34",
+            "d27ee4aa9c03be0939d495e6b9ab062f669f123eeff36ccfac16062d3089a784",
         )
         self.assertEqual(report["schema_version"], 2)
         self.assertEqual(
@@ -81,7 +102,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
             report["fixture_manifest"],
             {
                 "path": "docs/research/data/archive-format-corpus.json",
-                "sample_count": 29,
+                "sample_count": 41,
                 "sha256": sha256(MANIFEST_PATH.read_bytes()),
             },
         )
@@ -198,7 +219,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
     def test_raw_artifacts_reconstruct_every_execution(self):
         report = self.report
         artifacts = report["raw_artifacts"]
-        self.assertEqual(len(artifacts), 47)
+        self.assertEqual(len(artifacts), 51)
         for digest, artifact in artifacts.items():
             with self.subTest(digest=digest):
                 self.assertEqual(artifact["encoding"], "zlib+base64")
@@ -283,7 +304,10 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
         expected_roots.update(
             {
                 name: ("Binary", ["7-Zip"])
-                for name in BASE_AES_ARCHIVES
+                for name in (
+                    *BASE_AES_ARCHIVES,
+                    *FILTER_BASE_AES_ARCHIVES,
+                )
             }
         )
         for sample_name, (filetype, names) in expected_roots.items():
@@ -320,6 +344,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
                             "pdf-member-bcj-lzma2-aes.7z",
                             "pdf-member-arm64-lzma2-aes.7z",
                             *BASE_AES_ARCHIVES,
+                            *FILTER_BASE_AES_ARCHIVES,
                         }
                     ):
                         self.assertEqual(summary["stream_count"], 0)
@@ -388,6 +413,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
                 "pdf-member-bcj-lzma2-aes.7z",
                 "pdf-member-arm64-lzma2-aes.7z",
                 *BASE_AES_ARCHIVES,
+                *FILTER_BASE_AES_ARCHIVES,
             }:
                 warning_sha256 = (
                     "003e45244a40755beaf48f2a2b30bb756"
@@ -420,7 +446,10 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
         }
         expected_case_names.update(
             f"{prefix}_{state}"
-            for prefix in BASE_AES_PREFIXES
+            for prefix in (
+                *BASE_AES_PREFIXES,
+                *FILTER_BASE_AES_PREFIXES,
+            )
             for state in (
                 "correct_password",
                 "missing_password",
@@ -522,7 +551,10 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
                 0,
             ),
         }
-        for prefix in BASE_AES_PREFIXES:
+        for prefix in (
+            *BASE_AES_PREFIXES,
+            *FILTER_BASE_AES_PREFIXES,
+        ):
             expected[f"{prefix}_correct_password"] = (
                 True,
                 True,
@@ -564,6 +596,31 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
             ),
             0,
         )
+        for prefix, output_sha256 in {
+            "arm64_copy": (
+                "730eb17ce3f4240b11303a14041e952a"
+                "8acff6463ad59d3f60d723fa500d2dfd"
+            ),
+            "arm64_ppmd7": (
+                "3404ad646903d0c1ae7521b82f606b13"
+                "a88fd595496255217f6e4a250076f042"
+            ),
+            "bcj_copy": (
+                "e4b808e14457a016c55f09633c0351c7"
+                "bb29d1b785427e7a5dc775f009fc6a43"
+            ),
+            "bcj_ppmd7": (
+                "3404ad646903d0c1ae7521b82f606b13"
+                "a88fd595496255217f6e4a250076f042"
+            ),
+        }.items():
+            expected[f"{prefix}_wrong_password"] = (
+                True,
+                False,
+                331,
+                output_sha256,
+                0,
+            )
         for name, (
             password_supplied,
             unpacked,
@@ -614,7 +671,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
         self.assertIn("CAP-GAP-006", document)
         self.assertIn("archive-format-engine-qt5.json", document)
         self.assertIn(
-            "f28709a359c1e2bac6575e59591eae51d75ef942955bb8cb9e1e6db427fabd34",
+            "d27ee4aa9c03be0939d495e6b9ab062f669f123eeff36ccfac16062d3089a784",
             document,
         )
 

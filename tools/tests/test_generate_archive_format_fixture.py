@@ -61,6 +61,12 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
                     "pdf-member-bcj2-lzma2-aes.7z",
                     "pdf-member-bcj-lzma2-aes.7z",
                     "pdf-member-arm64-lzma2-aes.7z",
+                    *{
+                        fixture[0]
+                        for fixture in (
+                            module.SEVENZIP_FILTER_BASE_AES_FIXTURES
+                        )
+                    },
                     "pdf-member-ppmd7.7z",
                     "pdf-member-bzip2.7z",
                     "pdf-member-deflate.7z",
@@ -438,6 +444,139 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
             module.make_7z_base_aes(
                 module.PAYLOAD_NAME,
                 module.PDF,
+                "Unknown",
+            )
+
+    def test_7z_filter_base_aes_matrix_is_fixed_and_opaque(self):
+        module = load_module()
+        expected = {
+            "ARM64-BZIP2": (
+                386,
+                "e95ffcaea1b94cd592b461d077d60e83"
+                "77717f84809eced64cd0c7bbca69c482",
+            ),
+            "ARM64-COPY": (
+                482,
+                "a25254ee79d5eb8d496eefa6bc6a7179"
+                "f654d5c951120e6198906a0ea718ac4f",
+            ),
+            "ARM64-DEFLATE": (
+                354,
+                "5e7586388553f33fd2d8d1ac8d25d8c"
+                "2380ab218b9ae2d09325990e6c858bcc9",
+            ),
+            "ARM64-DEFLATE64": (
+                354,
+                "a1fd70039a0a3fbb2ec6df78694ec6e4"
+                "4c1337666282a87088abc1d1fb7b4e09",
+            ),
+            "ARM64-LZMA": (
+                354,
+                "843feea12554d69312240a45ad756c300"
+                "89678cace1594e9acfae50fc53badce",
+            ),
+            "ARM64-PPMD7": (
+                322,
+                "31212640b730a062fff0a855e0508428"
+                "10bf9a76b837aea53bcb0019ab87a759",
+            ),
+            "BCJ-BZIP2": (
+                386,
+                "80e596eae5083e61c04a9bec2384268a"
+                "75a4566c2cec872ad464ef326341e31c",
+            ),
+            "BCJ-COPY": (
+                482,
+                "84c55e8a47336b7f53d5c91e53f367b2"
+                "3f18527e8630e9cabb4fd6f56be33102",
+            ),
+            "BCJ-DEFLATE": (
+                354,
+                "e18f65a20a4adaa63a87b21206e859ac"
+                "5dfcb13ae701849472d0f209374c739f",
+            ),
+            "BCJ-DEFLATE64": (
+                354,
+                "831e6ab83f7330b72ec9a0d48f9b5d2c"
+                "e2d5c8a982b38901bcabeb137d7b9dcc",
+            ),
+            "BCJ-LZMA": (
+                370,
+                "1894b48a5c0ce50aff6dcb0ca02b94b9"
+                "0277cf93e9ccee2463d2346558300f6d",
+            ),
+            "BCJ-PPMD7": (
+                338,
+                "405279f0dceabf34c131c81c5070c96e"
+                "7c08c49ebfe440cffaa4fef35187132d",
+            ),
+        }
+        for (
+            _filter_slug,
+            filter_name,
+            _method_slug,
+            method,
+        ) in module.SEVENZIP_FILTER_BASE_AES_MATRIX:
+            key = f"{filter_name.upper()}-{method.upper()}"
+            with self.subTest(combination=key):
+                data = module.make_7z_filter_base_aes(
+                    module.PAYLOAD_NAME,
+                    module.PDF,
+                    filter_name,
+                    method,
+                )
+                size, expected_sha256 = expected[key]
+                self.assertEqual(len(data), size)
+                self.assertEqual(
+                    hashlib.sha256(data).hexdigest(),
+                    expected_sha256,
+                )
+                self.assertNotIn(module.PDF, data)
+                packed_size = int.from_bytes(data[12:20], "little")
+                next_header = data[32 + packed_size :]
+                self.assertEqual(
+                    next_header.count(b"\x24\x06\xf1\x07\x01"),
+                    1,
+                )
+                filter_key = (
+                    "ARM64-BCJ"
+                    if filter_name == "ARM64"
+                    else filter_name
+                )
+                filter_id = module.SEVENZIP_CODER_IDS[filter_key]
+                self.assertIn(
+                    bytes((len(filter_id),)) + filter_id,
+                    next_header,
+                )
+                method_id = module.SEVENZIP_CODER_IDS[method]
+                descriptor = len(method_id)
+                if method in {"LZMA", "PPMd7"}:
+                    descriptor |= 0x20
+                self.assertIn(
+                    bytes((descriptor,)) + method_id,
+                    next_header,
+                )
+                with self.assertRaisesRegex(
+                    ValueError,
+                    (
+                        f"7Z {filter_name}\\+{method}\\+AES fixture "
+                        "requires the canonical PDF"
+                    ),
+                ):
+                    module.make_7z_filter_base_aes(
+                        module.PAYLOAD_NAME,
+                        b"not-pdf",
+                        filter_name,
+                        method,
+                    )
+        with self.assertRaisesRegex(
+            ValueError,
+            "unsupported 7Z filter/base/AES combination",
+        ):
+            module.make_7z_filter_base_aes(
+                module.PAYLOAD_NAME,
+                module.PDF,
+                "BCJ",
                 "Unknown",
             )
 

@@ -229,6 +229,184 @@ SEVENZIP_BASE_AES_PDF_ARCHIVES = {
         "00640066000000150601002080ff810000"
     ),
 }
+SEVENZIP_FILTER_BASE_AES_PDF_ARCHIVES = {
+    "ARM64-BZIP2": bytes.fromhex(
+        "377abcaf271c0004197abcb1f0000000000000007200000000000000ea103281"
+        "2bd3224bd3a96bbd5f5b99adb4425229638308f2b413eccf5e7bf3104910db86"
+        "9264dbb34f8b8e2f1a7ac54828cc8bfeaff19f539dbdba9bb0d2d41e02379151"
+        "61f810bf1a9e33cf966ba3babd9dae61144a884a225feef4b091ae106ec31ab6"
+        "9632a76dbfb66b306f55fe260078c2688f51c15b0b861d449f465f7bcb076de5"
+        "d8c83323c28fcce618bc0a59cfeedc5d9ad55451f6d753446c470c93db274bd6"
+        "dc3edefff5e619490ed0433cec9dfead3e25777f2345f6491b2a6fc27d6610c7"
+        "80fb282f759edf2183bff0d0f0dd66d38d378b6da11cf929edd53cb95c0ddd5c"
+        "4f3367c338a9769b4d81ecb328a0050801040600010980f000070b0100032406"
+        "f1070112530fcafe687d6717ecd0adb513cfd653364603040202010a01000201"
+        "0c80ef814b814b00080a0116f95a330000050119080000000000000000111900"
+        "7000610079006c006f00610064002e007000640066000000150601002080ff81"
+        "0000"
+    ),
+    "ARM64-COPY": bytes.fromhex(
+        "377abcaf271c0004c0c3106c50010000000000007200000000000000dd801136"
+        "a7444be81afbe67a53cde566409bf8d4bb8c9e76c6767f47eb87197266c099ac"
+        "faff447911d6c77ba6a754004db3c8e7e2ea18d30d771205b3c71b6b520c6431"
+        "b7ead5091091451788a96197abdaa845ae101640972b9c656c5073a36000dafa"
+        "24d9705afb0d9e0f6d5f5fd7bbdc7a11bcb7dd8ffa264fc886db38b20160737a"
+        "fbc1212ca231a63252f2ed536f046095077514a8aa0072fc6478f14bd3139c19"
+        "4355cdea2dd77c30e89a3566099effd82829779c1891e014686e5ca877ba2ddd"
+        "66eeeb2356b91059912a925f0ff0c7ee29b1f751292475f4c0e1f06f0d1911bb"
+        "b6c1da45bc497ff5389f915b44292e2cc278cb90cb5c71cfa0c9276949d9dd8f"
+        "05c49000d4e70a633cb5c466677c7ff7f1c6c1140efe840a9957ef57ef45d104"
+        "5b4a76acc1d8e1fd455b5cf6dc4536ec6a322b8874dac67103e99d5028d32540"
+        "cdefbc666dd2801cfdebd76b0ff99c39010406000109815000070b0100032406"
+        "f1070112530f6f8b79192bc48b8877bab43b7944a9270100010a010002010c81"
+        "4b814b814b00080a0116f95a3300000501190a00000000000000000000111900"
+        "7000610079006c006f00610064002e007000640066000000150601002080ff81"
+        "0000"
+    ),
+    "ARM64-DEFLATE": bytes.fromhex(
+        "377abcaf271c000418beafedd00000000000000072000000000000003dfbca92"
+        "503dc6af53111bbc3093028a029bc18053428cbb1aee1638dc3ac92ebbfef0fc"
+        "74653729aa8714e605a1560528545fc7c1d97305924a37093dcb5965a37d126a"
+        "742b96d1deb87c91aab207e56b7843b83996eaa060b7b4492ed8099b4a274a49"
+        "40e237c30c210fecbf0e6ea7985e9fd964effc5d787021dc0752165d9537c62a"
+        "ab79b254803440481edb689149aaf9112d02993fd77b9237a8f72a8d16ea9573"
+        "f33c7fd543072fc1a57179102cf00cee4a4834c25508b0a66cead9039f5a6cf0"
+        "4f12f5986c3663a6e621fc352294237001040600010980d000070b0100032406"
+        "f1070112530f3ef142a35d13e193a92ba462d267f81403040108010a01000201"
+        "0c80c4814b814b00080a0116f95a330000050119080000000000000000111900"
+        "7000610079006c006f00610064002e007000640066000000150601002080ff81"
+        "0000"
+    ),
+    "ARM64-DEFLATE64": bytes.fromhex(
+        "377abcaf271c00040bfae14fd00000000000000072000000000000008db626ba"
+        "832adf5ad5f54d7872913414ddd6dc2f44404cfb54b86a485493705fe65518f9"
+        "be4c42d4e1c3094302816e7cfc0b1a393e0ddcb2dbdace7d75711e04d15200cb"
+        "15509517ca8ed9605dbb8be37d73804ebb04737d458419351b7ea2c35088eb7c"
+        "0ece45aa15b5e9a35ef5972f3bc15c5429f85c3acc4bcaacb38edf8b2967d279"
+        "9f78208b5ad6af92bf20686a202621eaf51663ea374e3506f8ac4a2d373f26b0"
+        "1a48d6f72aa3c53316637e74444a56ff0428d3be6aee7a0ce90bb76b91af708b"
+        "d3fd78e20d5de4b318728f8df3cb868501040600010980d000070b0100032406"
+        "f1070112530f9cdf40b1cde54abd030c3c46282612f503040109010a01000201"
+        "0c80c4814b814b00080a0116f95a330000050119080000000000000000111900"
+        "7000610079006c006f00610064002e007000640066000000150601002080ff81"
+        "0000"
+    ),
+    "ARM64-LZMA": bytes.fromhex(
+        "377abcaf271c0004bf8c979fd0000000000000007200000000000000ecb390b4"
+        "c9dc2146bab30b4352267ac71bb67ccb731bcb9b6f502d3aeef7e7f908a89720"
+        "b9a4cd9d5878232b62f0bb0c470ee8b7c92e5cf2dfb5ea952fd65b0a11517b67"
+        "68530744eed6f2c67eaf69cb5fdc8314f2fbd4d4f287c543073bc0db7100bd39"
+        "98bd8e38f85b4de5b2ebe446e887886996921447b9ab6f13ee6dd18ade5dbac6"
+        "4b92b8a5b354d9599d0aa5ebf7da79c16e5aed3352aebf33b010f5984c13fa88"
+        "aba6f00a738884d325f65fa16e919e6deaecf711f852b6c787c3c27e66ed9c3e"
+        "cee1e1df4e1d922536dd77ade6de0cb101040600010980d000070b0100032406"
+        "f1070112530fae1b91f1a8fe9b2bea48ec56539fb8ba23030101055d00100000"
+        "010a010002010c80c4814b814b00080a0116f95a330000050119020000111900"
+        "7000610079006c006f00610064002e007000640066000000150601002080ff81"
+        "0000"
+    ),
+    "ARM64-PPMD7": bytes.fromhex(
+        "377abcaf271c0004a98be14bb00000000000000072000000000000001a9e7b96"
+        "18cca1a781bef2194aee28783ca381c37d883da0ab00b6ea3be772e84180181b"
+        "1dfe4ee9a4ed0b8e2a89b01ba9a607a425fe498722e39a03bd284298ce573693"
+        "57512d5474fd953251d9cbbf1dda654c8b56784789884266ac146f4d7784f302"
+        "9cff90263affda801b9e6704aa679c7e006ee928ade7535afe0fde004bf62da6"
+        "dca926c35e149b47eaa9937e275ad7c2314e3efc7c1c3900a7756256bba737e7"
+        "1e2019470cd3645ab09bce308d8541eb01040600010980b000070b0100032406"
+        "f1070112530f4b5408e728c078bf9e08eabac1ea645c23030401052000000100"
+        "010a010002010c80ac814b814b00080a0116f95a330000050119020000111900"
+        "7000610079006c006f00610064002e007000640066000000150601002080ff81"
+        "0000"
+    ),
+    "BCJ-BZIP2": bytes.fromhex(
+        "377abcaf271c00049e0f49b1f000000000000000720000000000000093030455"
+        "3b7e1b261334551b05b7600eed27bb0caccd001651a5d8ee8286189ec8d559c4"
+        "1c923095e9d427badae77f2e2f413fdb32ea70d622ba29abd04fc5fb9c2841ee"
+        "1ff2fc677e83ab25aca0cfd98ddc08be54ab077f6140dfe9f650480006d5d052"
+        "c17b1c0ae1e9b618997f0436bf9edc46c7965020371d2ebad2c6305f1da56334"
+        "3f55ae09c38678260d510e0c1388643663475365d04f852148799674ff275b43"
+        "00dd5938fb118e648ee2d5de56780544f9da0b103b1c847354abd8ffd493270c"
+        "7312e977cab335fd89f3f23884502c2770eaff381a5d17cf818b0e14c5cb93b5"
+        "422aa4d4ac9511fb38b52e59c9497c9301040600010980f000070b0100032406"
+        "f1070112530f4ab1172eea8f7818d89d13d72e60380503040202040303010301"
+        "0002010c80ef814b814b00080a0116f95a330000050119050000000000111900"
+        "7000610079006c006f00610064002e007000640066000000150601002080ff81"
+        "0000"
+    ),
+    "BCJ-COPY": bytes.fromhex(
+        "377abcaf271c00043504dd0350010000000000007200000000000000360e9ed5"
+        "cfacf4b18cd928dac3bea893a74c6a636679068dba769ce6fdf5d556add7dd79"
+        "9c1fb0a6f16daf3c513c29a320ee9f58ab427df0f2503aa8046f9b8b6273089b"
+        "ab02ec1ce46d2a7b7e4d443669c27f1493da3dcdcefd21516a7eec71f89475f0"
+        "301cb487296b08255cb672ae0c95876e3b499ee77c881cdb032263694448d3e6"
+        "e3ecff5823c0633a9cf5fe1e586df0d9a153dcbcf7d055d20a1fdeda4a984c98"
+        "3042e4bfc6ff902b5c69891495741e973ec87a4e61c7ed989fd17af6e918a20f"
+        "910ec66dfa3b1980b5c3806481ce2168a9569624c2c146a1aace623679988dd9"
+        "86ac69f7a24f255e82c9c6456647536c937dc6226d9c644e8a8e156ec4393875"
+        "c9eb03a9aeefc089c5c2cb6ad9a35cdacc73dad09a7113c3f3d45a646c9019fa"
+        "9df6b061ed0792dd6b4985aef182d727d793e4dbe3f0b608ff8d11a7a820066c"
+        "7110a182927379ad370106bc9093d153010406000109815000070b0100032406"
+        "f1070112530fe06c16ec6d442c2459a3b0f0b739f47501000403030103010002"
+        "010c814b814b814b00080a0116f95a3300000501190700000000000000111900"
+        "7000610079006c006f00610064002e007000640066000000150601002080ff81"
+        "0000"
+    ),
+    "BCJ-DEFLATE": bytes.fromhex(
+        "377abcaf271c0004e0094755d0000000000000007200000000000000e7af0532"
+        "518cedc8b12b23138b2e89221c8456c64aba48138b6208b6d915f71b08d6ff1c"
+        "88bb1e1a90a93de899894371a330c0a1e1c1442fd27763ddf3b40e982a470112"
+        "edf49d37a00cfc44a9647e52c4035c88481853d3301e51448e9db252c399c708"
+        "43ec245269affc589f3cf1551ae5212d1cc5789dd8dae19da067bd3998f62dba"
+        "b06548a3fd9e68e02cadc1e6b82681c47950318c85ef3be7a77879d3bb094ec3"
+        "2f7e287db44d4be147472790b50e5c3bc392ccdf8e285e34346ce5842bcee9d2"
+        "8cbb4fbb9bf806985d741290ca747b2101040600010980d000070b0100032406"
+        "f1070112530f47e0fe6697d6af99be7eefe9958c890603040108040303010301"
+        "0002010c80c4814b814b00080a0116f95a330000050119050000000000111900"
+        "7000610079006c006f00610064002e007000640066000000150601002080ff81"
+        "0000"
+    ),
+    "BCJ-DEFLATE64": bytes.fromhex(
+        "377abcaf271c00043cb2f7b8d00000000000000072000000000000001ea02dd8"
+        "5e782f6ea0acce1b6ef4e8b7369d162a63ee0f85b7384abf2ae677ce151ef53d"
+        "c4d695685f7565a8eeaec8ff8472169cf126ba2006cf5e1b037eb1f00ef09dac"
+        "240112fa4919e744546590fddbf3cabe66ebc788539d9e6e4c097235826bf65c"
+        "df3591db540732bd6f88b6b933e3ed312b9bc1b4b3eebe9b12c989a4a78cac2e"
+        "a268bbd77ac0544bfecd86e413d8be73d8307f3e13dcfb40cd8b85eddcf822c7"
+        "f4b72646c8bae6f7fd1f0394d6e95c2eb05655c84c879c09983574b79ba426d0"
+        "ed41191504cdddf39b6b81fa6b65dbe901040600010980d000070b0100032406"
+        "f1070112530f1cb2b370f1b1fc68885626be50da64aa03040109040303010301"
+        "0002010c80c4814b814b00080a0116f95a330000050119050000000000111900"
+        "7000610079006c006f00610064002e007000640066000000150601002080ff81"
+        "0000"
+    ),
+    "BCJ-LZMA": bytes.fromhex(
+        "377abcaf271c0004a3395d2cd00000000000000082000000000000003863ed52"
+        "5e96ecb593968d67b9fa00d3ecf85dc3359c3897e535ac4b094efca3860b86b5"
+        "95d6e13f3423ab5b7979a292282ece98fb97c17d9eca9c9609f78bc93c48a94c"
+        "401bcd257810cd53b799293c3d0a84858dd8fe8081f99fcb9a889280f9c38665"
+        "135a433c4419b0680a0314c0f99b0bded2599614b2a86ff387005ca20b26fb8c"
+        "ee491ad7552124e533944df7c71aadff4887464e70013bfdfadbd87843e08063"
+        "1e5c6ce0ec783386be84d3fa7b7e67de27a3f0bae14f6eea2cfadb3512ccea4f"
+        "f21ed657456eefe2aa2c1ab05e76b52b01040600010980d000070b0100032406"
+        "f1070112530f48817016839ce280d9e0d1b6f5079bec23030101055d00100000"
+        "0403030103010002010c80c4814b814b00080a0116f95a3300000501190f0000"
+        "000000000000000000000000001119007000610079006c006f00610064002e00"
+        "7000640066000000150601002080ff810000"
+    ),
+    "BCJ-PPMD7": bytes.fromhex(
+        "377abcaf271c0004e603f962b000000000000000820000000000000077942834"
+        "6d32ac076018ee4315d405b1a5e3ae4132f8c732cca548bb8e592eb3e8c7cb5d"
+        "ee1fd52f159609729b2c631e3e8b645b1a0ef006a6392492a4f44b4800180ccf"
+        "3ab4f4232255083c9448207386be2e26ad65918690ce4911fccfbedc8e561681"
+        "7f4ffa35bf1ec141c151e12464a45f6a086bd741f8fdb00f22c9c2550af9661b"
+        "3a27bc8047396c1f8f6ea2deee2830276f6da64eed368d1da2feb7b28021bbd2"
+        "5e5e5ea40f5545b20f59541991d350cd01040600010980b000070b0100032406"
+        "f1070112530fbbac98e6f89898643137e8006c93cbac23030401052000000100"
+        "0403030103010002010c80ac814b814b00080a0116f95a3300000501190f0000"
+        "000000000000000000000000001119007000610079006c006f00610064002e00"
+        "7000640066000000150601002080ff810000"
+    ),
+}
 
 
 def sevenzip_uint64(value: int) -> bytes:
@@ -954,6 +1132,40 @@ def make_7z_deflate64_aes(name: str, payload: bytes) -> bytes:
     return make_7z_base_aes(name, payload, "Deflate64")
 
 
+def make_7z_filter_base_aes(
+    name: str,
+    payload: bytes,
+    filter_name: str,
+    method: str,
+) -> bytes:
+    key = f"{filter_name.upper()}-{method.upper()}"
+    if key not in SEVENZIP_FILTER_BASE_AES_PDF_ARCHIVES:
+        raise ValueError(
+            f"unsupported 7Z filter/base/AES combination: {key}"
+        )
+    if name != PAYLOAD_NAME or payload != PDF:
+        raise ValueError(
+            f"7Z {filter_name}+{method}+AES fixture "
+            "requires the canonical PDF"
+        )
+    return SEVENZIP_FILTER_BASE_AES_PDF_ARCHIVES[key]
+
+
+def make_7z_filter_base_aes_factory(
+    filter_name: str,
+    method: str,
+):
+    def factory(name: str, payload: bytes) -> bytes:
+        return make_7z_filter_base_aes(
+            name,
+            payload,
+            filter_name,
+            method,
+        )
+
+    return factory
+
+
 def rar4_header(block_type: int, flags: int, body: bytes) -> bytes:
     header_size = 7 + len(body)
     protected = struct.pack("<BHH", block_type, flags, header_size) + body
@@ -1181,6 +1393,48 @@ def make_iso9660_stored(name: str, payload: bytes) -> bytes:
     return bytes(image)
 
 
+SEVENZIP_FILTER_BASE_AES_MATRIX = tuple(
+    (
+        filter_slug,
+        filter_name,
+        method_slug,
+        method_name,
+    )
+    for filter_slug, filter_name in (
+        ("bcj", "BCJ"),
+        ("arm64", "ARM64"),
+    )
+    for method_slug, method_name in (
+        ("copy", "Copy"),
+        ("lzma", "LZMA"),
+        ("ppmd7", "PPMd7"),
+        ("bzip2", "BZip2"),
+        ("deflate", "Deflate"),
+        ("deflate64", "Deflate64"),
+    )
+)
+SEVENZIP_FILTER_BASE_AES_FIXTURES = tuple(
+    (
+        f"pdf-member-{filter_slug}-{method_slug}-aes.7z",
+        (
+            f"7Z {filter_name} plus {method_name} plus "
+            "7zAES archive containing one PDF"
+        ),
+        f"{filter_name}+{method_name}+7zAES",
+        make_7z_filter_base_aes_factory(
+            filter_name,
+            method_name,
+        ),
+    )
+    for (
+        filter_slug,
+        filter_name,
+        method_slug,
+        method_name,
+    ) in SEVENZIP_FILTER_BASE_AES_MATRIX
+)
+
+
 FIXTURES = (
     (
         "pdf-member.7z",
@@ -1268,6 +1522,7 @@ FIXTURES = (
         "ARM64+LZMA2+7zAES",
         make_7z_arm64_lzma2_aes,
     ),
+    *SEVENZIP_FILTER_BASE_AES_FIXTURES,
     (
         "pdf-member-ppmd7.7z",
         "7Z PPMd7-method archive containing one PDF",
@@ -1520,6 +1775,32 @@ def generate(output_dir: pathlib.Path) -> dict[str, object]:
                     ("-m0=PPMd", "-mx=9"),
                 )
             ),
+            **{
+                (
+                    f"sevenzip_{filter_slug}_"
+                    f"{method_slug}_aes_archive"
+                ): sevenzip_aes_generation_provenance(
+                    (
+                        f"pdf-member-{filter_slug}-"
+                        f"{method_slug}-aes.7z"
+                    ),
+                    (
+                        f"-m0={filter_name}",
+                        (
+                            "-m1=PPMd"
+                            if method_name == "PPMd7"
+                            else f"-m1={method_name}"
+                        ),
+                        "-mx=9",
+                    ),
+                )
+                for (
+                    filter_slug,
+                    filter_name,
+                    method_slug,
+                    method_name,
+                ) in SEVENZIP_FILTER_BASE_AES_MATRIX
+            },
             "sevenzip_arm64_lzma2_aes_archive": {
                 "command": [
                     "7zz",
