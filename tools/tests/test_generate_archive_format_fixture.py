@@ -9,6 +9,8 @@ import tempfile
 import unittest
 import zlib
 
+import pyppmd
+
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 SCRIPT = ROOT / "tools" / "corpus" / "generate_archive_format_fixture.py"
@@ -48,6 +50,7 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
                     "pdf-member.7z",
                     "pdf-member-lzma.7z",
                     "pdf-member-lzma2.7z",
+                    "pdf-member-ppmd7.7z",
                     "pdf-member-bzip2.7z",
                     "pdf-member-deflate.7z",
                     "pdf-member-bcj-lzma2.7z",
@@ -151,6 +154,10 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
                     }
                 ],
             ),
+            "PPMd7": lambda value: pyppmd.Ppmd7Decoder(
+                module.PPMD7_ORDER,
+                module.PPMD7_MEMORY_SIZE,
+            ).decode(value, len(module.PDF)),
             "BZip2": bz2.decompress,
             "Deflate": lambda value: zlib.decompress(value, wbits=-15),
         }
@@ -158,6 +165,7 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
             "Copy": b"",
             "LZMA": b"\x5d\x00\x00\x10\x00",
             "LZMA2": b"\x10",
+            "PPMd7": b"\x06\x00\x00\x10\x00",
             "BZip2": b"",
             "Deflate": b"",
         }

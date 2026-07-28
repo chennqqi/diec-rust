@@ -43,7 +43,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
         report = self.report
         self.assertEqual(
             sha256(self.report_bytes),
-            "ceab3ce2e06e00e80d75103aa6294d75585443f4c6faeeab983f4d7c36c83b66",
+            "a43ff4037cc5501eeda39b312a47f2fcee41e1743ae70c72b44dfcb5c3322b94",
         )
         self.assertEqual(report["schema_version"], 1)
         self.assertEqual(
@@ -65,7 +65,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
             report["fixture_manifest"],
             {
                 "path": "docs/research/data/archive-format-corpus.json",
-                "sample_count": 11,
+                "sample_count": 12,
                 "sha256": sha256(MANIFEST_PATH.read_bytes()),
             },
         )
@@ -74,6 +74,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
             {
                 "baseline_generator",
                 "fixture_generator",
+                "fixture_requirements",
                 "harness_dockerfile",
                 "harness_source",
             },
@@ -153,7 +154,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
     def test_raw_artifacts_reconstruct_every_execution(self):
         report = self.report
         artifacts = report["raw_artifacts"]
-        self.assertEqual(len(artifacts), 23)
+        self.assertEqual(len(artifacts), 25)
         for digest, artifact in artifacts.items():
             with self.subTest(digest=digest):
                 self.assertEqual(artifact["encoding"], "zlib+base64")
@@ -191,6 +192,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
             ),
             "pdf-member-lzma.7z": ("Binary", ["7-Zip"]),
             "pdf-member-lzma2.7z": ("Binary", ["7-Zip"]),
+            "pdf-member-ppmd7.7z": ("Binary", ["7-Zip"]),
             "pdf-member.cab": ("Binary", ["CAB"]),
             "pdf-member-mszip.cab": ("Binary", ["CAB"]),
             "pdf-member.iso": ("ISO 9660", ["Unknown"]),
@@ -265,7 +267,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
         self.assertIn("CAP-GAP-006", document)
         self.assertIn("archive-format-engine-qt5.json", document)
         self.assertIn(
-            "ceab3ce2e06e00e80d75103aa6294d75585443f4c6faeeab983f4d7c36c83b66",
+            "a43ff4037cc5501eeda39b312a47f2fcee41e1743ae70c72b44dfcb5c3322b94",
             document,
         )
 

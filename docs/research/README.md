@@ -217,10 +217,10 @@ Phase 0 计划形成：
 - [`data/archive-adversarial-engine-qt5.json`](data/archive-adversarial-engine-qt5.json)：
   44 次 release/harness default/archive/aggressive 原始输出、源码契约和结构摘要。
 - [`data/archive-format-corpus.json`](data/archive-format-corpus.json)：
-  项目生成的五种 7Z 单 coder、x86/ARM64 BCJ+LZMA2 filter 链、RAR4
+  项目生成的六种 7Z 单 coder、x86/ARM64 BCJ+LZMA2 filter 链、RAR4
   store、CAB Store/MSZIP 与 ISO9660 单 PDF fixture 清单。
 - [`data/archive-format-engine-qt5.json`](data/archive-format-engine-qt5.json)：
-  十一个 archive/coder 样本的 default/release/archive/aggressive 原始输出、固定身份和
+  十二个 archive/coder 样本的 default/release/archive/aggressive 原始输出、固定身份和
   结构化摘要。
 - [`data/npm-dispatch-fixture.json`](data/npm-dispatch-fixture.json)：
   项目生成的 NPM 精确路径正例、无效 JSON 正例及路径/大小写近似反例清单。

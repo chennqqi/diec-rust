@@ -7,6 +7,7 @@ import argparse
 import binascii
 import bz2
 import hashlib
+import importlib.metadata
 import importlib.util
 import json
 import lzma
@@ -18,6 +19,9 @@ import zlib
 
 GENERATOR = "tools/corpus/generate_archive_format_fixture.py"
 PAYLOAD_NAME = "payload.pdf"
+PYPPMD_VERSION = "1.3.1"
+PPMD7_ORDER = 6
+PPMD7_MEMORY_SIZE = 1 << 20
 
 
 def _load_baseline_module():
@@ -63,11 +67,37 @@ SEVENZIP_CODER_IDS = {
     "Copy": b"\x00",
     "LZMA": b"\x03\x01\x01",
     "LZMA2": b"\x21",
+    "PPMd7": b"\x03\x04\x01",
     "BZip2": b"\x04\x02\x02",
     "Deflate": b"\x04\x01\x08",
     "BCJ": b"\x03\x03\x01\x03",
     "ARM64-BCJ": b"\x0a",
 }
+
+
+def encode_ppmd7(payload: bytes) -> tuple[bytes, bytes]:
+    try:
+        import pyppmd
+    except ImportError as error:
+        raise RuntimeError(
+            "PPMd7 fixture generation requires "
+            "tools/corpus/requirements-archive-format.txt"
+        ) from error
+    actual_version = importlib.metadata.version("pyppmd")
+    if actual_version != PYPPMD_VERSION:
+        raise RuntimeError(
+            f"expected pyppmd {PYPPMD_VERSION}, got {actual_version}"
+        )
+    encoder = pyppmd.Ppmd7Encoder(
+        PPMD7_ORDER,
+        PPMD7_MEMORY_SIZE,
+    )
+    packed = encoder.encode(payload) + encoder.flush()
+    properties = bytes((PPMD7_ORDER,)) + struct.pack(
+        "<I",
+        PPMD7_MEMORY_SIZE,
+    )
+    return packed, properties
 
 
 def encode_7z_payload(
@@ -107,6 +137,8 @@ def encode_7z_payload(
             ],
         )
         return packed, b"\x10"
+    if method == "PPMd7":
+        return encode_ppmd7(payload)
     if method == "BZip2":
         return bz2.compress(payload, compresslevel=9), b""
     if method == "Deflate":
@@ -597,6 +629,16 @@ FIXTURES = (
         ),
     ),
     (
+        "pdf-member-ppmd7.7z",
+        "7Z PPMd7-method archive containing one PDF",
+        "PPMd7",
+        lambda name, payload: make_7z_single(
+            name,
+            payload,
+            "PPMd7",
+        ),
+    ),
+    (
         "pdf-member-bzip2.7z",
         "7Z BZip2-method archive containing one PDF",
         "BZip2",
@@ -681,6 +723,12 @@ def generate(output_dir: pathlib.Path) -> dict[str, object]:
     manifest: dict[str, object] = {
         "schema_version": 1,
         "generator": GENERATOR,
+        "generator_dependencies": {
+            "pyppmd": {
+                "license": "LGPL-2.1-or-later",
+                "version": PYPPMD_VERSION,
+            }
+        },
         "license": "project-generated; no third-party sample bytes",
         "samples": samples,
     }

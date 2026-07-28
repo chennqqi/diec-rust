@@ -192,7 +192,7 @@ hideunknown 的可观察增量。完整输入哈希和输出见
   不启用。PE PDF resource/overlay 已 Observed。
 - `CAP-NEST-003`：archive 解包由独立 `bIsArchivesScan` 控制，发布 CLI 不设置它；ZIP 和
   ZIP→ZIP 样本在 recursive/aggressive 组合下均不解包。固定 harness 进一步
-  证明五种 7Z 单 coder、x86/ARM64 BCJ+LZMA2 filter 链、RAR4 store、CAB
+  证明六种 7Z 单 coder、x86/ARM64 BCJ+LZMA2 filter 链、RAR4 store、CAB
   Store/MSZIP 与 ISO9660 默认与发布 CLI 逐字节相同且均不展开，显式
   archive 后各产生一个 PDF Stream child。
 - `CAP-NEST-004`：archive 源码 `nLimit` 为 20/100000，但默认 `>` 判断实际允许第 21 个
@@ -273,7 +273,7 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
   [`scan-option-boundaries.md`](scan-option-boundaries.md) 闭合。
 - archive aggressive 100000、ZIP 1 MiB/843.58:1 与首轮压缩/加密/畸形边界
   已固定；其他格式/算法、系统化畸形、最大深度和总解压资源限制仍待扩展；
-  五种 7Z 单 coder、x86/ARM64 BCJ+LZMA2 filter 链、RAR4 store、CAB
+  六种 7Z 单 coder、x86/ARM64 BCJ+LZMA2 filter 链、RAR4 store、CAB
   Store/MSZIP 与 ISO9660 正例、NPM 自动/强制分派 quirk 以及 generic
   Archive singleton/verbose 重检测已固定。
 - Qt 5 与 Qt 6 的首轮基础/安全语料/不可读输入差分已完成；仍需扩展到完整

@@ -15,6 +15,7 @@ from typing import Any
 
 UPSTREAM_COMMIT = "74eaf505c250ab47e709024e9dc41657cd8f2254"
 FIXTURE_GENERATOR = "tools/corpus/generate_archive_format_fixture.py"
+FIXTURE_REQUIREMENTS = "tools/corpus/requirements-archive-format.txt"
 HARNESS_SOURCE = "tools/upstream/archive_harness_main.cpp"
 HARNESS_DOCKERFILE = "tools/upstream/Dockerfile.archive-harness-qt5"
 IMAGE = "diec-rust/upstream-archive-harness:74eaf505"
@@ -69,6 +70,10 @@ EXPECTED_ROOTS = {
         "root_names": ["7-Zip"],
     },
     "pdf-member-lzma2.7z": {
+        "filetype": "Binary",
+        "root_names": ["7-Zip"],
+    },
+    "pdf-member-ppmd7.7z": {
         "filetype": "Binary",
         "root_names": ["7-Zip"],
     },
@@ -146,6 +151,7 @@ def load_fixture(
     if not isinstance(manifest, dict) or set(manifest) != {
         "schema_version",
         "generator",
+        "generator_dependencies",
         "license",
         "samples",
     }:
@@ -154,7 +160,14 @@ def load_fixture(
         raise ProbeError("unsupported fixture schema")
     if manifest["generator"] != FIXTURE_GENERATOR:
         raise ProbeError("unexpected fixture generator")
-    if len(manifest["samples"]) != 11:
+    if manifest["generator_dependencies"] != {
+        "pyppmd": {
+            "license": "LGPL-2.1-or-later",
+            "version": "1.3.1",
+        }
+    }:
+        raise ProbeError("unexpected fixture generator dependencies")
+    if len(manifest["samples"]) != 12:
         raise ProbeError("fixture sample count changed")
 
     declared = set()
@@ -470,6 +483,7 @@ def build_report(
         "sevenzip_copy_member_reaches_pdf_rules": True,
         "sevenzip_lzma_member_reaches_pdf_rules": True,
         "sevenzip_lzma2_member_reaches_pdf_rules": True,
+        "sevenzip_ppmd7_member_reaches_pdf_rules": True,
         "sevenzip_bzip2_member_reaches_pdf_rules": True,
         "sevenzip_deflate_member_reaches_pdf_rules": True,
         "sevenzip_bcj_lzma2_member_reaches_pdf_rules": True,
@@ -509,6 +523,12 @@ def build_report(
             "fixture_generator": {
                 "path": FIXTURE_GENERATOR,
                 "sha256": sha256((root / FIXTURE_GENERATOR).read_bytes()),
+            },
+            "fixture_requirements": {
+                "path": FIXTURE_REQUIREMENTS,
+                "sha256": sha256(
+                    (root / FIXTURE_REQUIREMENTS).read_bytes()
+                ),
             },
             "harness_source": {
                 "path": HARNESS_SOURCE,
