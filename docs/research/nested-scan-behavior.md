@@ -54,6 +54,10 @@ child 为 59-byte `Binary / Unknown`；独立解码器已证明其合法明文�
 第二十二、二十三个 x86 BCJ+LZMA2+AES 与 ARM64 BCJ+LZMA2+AES 样本在
 公共路径同样无 child；直接 harness 的正确密码均还原 331-byte PDF，
 缺失/错误密码失败。
+第二十四至二十九个 Copy/LZMA/PPMd7/BZip2/Deflate/Deflate64+AES 样本
+补齐七种基础 coder+AES 矩阵：公共路径均无 child，直接正确密码均还原
+331-byte PDF，缺失/错误密码均报告失败；Copy 与 PPMd7 的错误密码仍分别
+留下 331-byte 非认证输出。
 
 ## 三层能力边界
 

@@ -23,8 +23,8 @@ Phase 0 计划形成：
 - [`archive-format-behavior.md`](archive-format-behavior.md)：
   7Z Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64 与
   x86/ARM64 BCJ+LZMA2、BCJ2+LZMA2 no-branch/E8/E9/JCC、RAR4、CAB
-  Store/MSZIP、ISO9660 正向解包、7Z LZMA2+AES 与 x86/ARM64
-  filter+AES 成功密码契约、
+  Store/MSZIP、ISO9660 正向解包、7Z 七种基础 coder+AES 与 x86/ARM64
+  filter+AES 成功密码契约、Copy/PPMd7 错误密码残留输出、
   BCJ2+LZMA2+4×AES 正确密码失败边界及 CAB
   LZX/Quantum 普通/激进失败边界、
   发布 CLI 默认对照与 7Z/CAB `Binary` 顶层 quirk（Draft）。
@@ -222,14 +222,14 @@ Phase 0 计划形成：
   44 次 release/harness default/archive/aggressive 原始输出、源码契约和结构摘要。
 - [`data/archive-format-corpus.json`](data/archive-format-corpus.json)：
   项目生成的七种 7Z 单 coder、x86/ARM64 BCJ+LZMA2、
-  BCJ2+LZMA2 no-branch/E8/E9/JCC filter 链、LZMA2+7zAES、
+  BCJ2+LZMA2 no-branch/E8/E9/JCC filter 链、七种基础 coder+7zAES、
   x86/ARM64 BCJ+LZMA2+7zAES、
   BCJ2+LZMA2+4×7zAES、RAR4
   store、CAB Store/MSZIP/LZX、带固定 LGPL 来源切片的 Quantum 与 ISO9660
   fixture 清单。
 - [`data/archive-format-engine-qt5.json`](data/archive-format-engine-qt5.json)：
-  二十三个 archive/coder 样本的 default/release/archive/aggressive 原始输出、
-  十二个 7Z AES 直接密码 case、固定身份和结构化摘要。
+  二十九个 archive/coder 样本的 default/release/archive/aggressive 原始输出、
+  三十个 7Z AES 直接密码 case、固定身份和结构化摘要。
 - [`data/npm-dispatch-fixture.json`](data/npm-dispatch-fixture.json)：
   项目生成的 NPM 精确路径正例、无效 JSON 正例及路径/大小写近似反例清单。
 - [`data/npm-dispatch-engine-qt5.json`](data/npm-dispatch-engine-qt5.json)：

@@ -103,8 +103,9 @@ ISO9660 单 PDF 在显式 archive 后各产生一个 PDF Stream child；CAB LZX:
 普通 archive 无 child、aggressive 扫描一个 331-byte Binary/Unknown Stream；
 CAB Quantum 18 普通 archive 同样无 child、aggressive 扫描一个 59-byte
 Binary/Unknown Stream；
-7Z LZMA2+AES 在公共 archive 路径因无密码不产生 child，直接 `XSevenZip`
-正确密码还原 331-byte PDF，缺失/错误密码均失败；
+7Z Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64+AES 在公共 archive
+路径因无密码不产生 child，直接 `XSevenZip` 正确密码均还原 331-byte PDF，
+缺失/错误密码均报告失败；Copy/PPMd7 错误密码仍留下 331-byte 非认证输出；
 官方 BCJ2+LZMA2+4×AES 图在 7-Zip 26.02 正确密码验证成功，但固定 DIE
 直接 `XSevenZip` 正确密码仍失败并输出 0 bytes；
 x86/ARM64 BCJ+LZMA2+AES 在公共路径因无密码无 child，直接正确密码均

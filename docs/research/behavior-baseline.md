@@ -253,7 +253,7 @@ elapsed 值与固定规则执行序列另见
 
 - 26-sample 通用基线本身不含 7Z、CAB、NPM、Amiga Hunk、Atari ST 及
   DOS/COM/NE/LE/LX 等格式；其中七种 7Z 单 coder、x86/ARM64 BCJ+LZMA2、
-  BCJ2+LZMA2 no-branch/E8/E9/JCC filter 链、7Z LZMA2+AES 与 x86/ARM64
+  BCJ2+LZMA2 no-branch/E8/E9/JCC filter 链、7Z 七种基础 coder+AES 与 x86/ARM64
   filter+AES 成功密码契约、
   BCJ2+LZMA2+4×AES 正确密码失败边界、CAB
   Store/MSZIP 正例与 LZX 普通/激进失败边界现由
@@ -282,7 +282,7 @@ elapsed 值与固定规则执行序列另见
   7Z Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64、x86 BCJ+LZMA2、
   BCJ2+LZMA2 no-branch/E8/E9/JCC、
   ARM64-BCJ+LZMA2 BL/ADRP、
-  7Z LZMA2+AES 与 x86/ARM64 filter+AES 成功密码契约、
+  7Z 七种基础 coder+AES 与 x86/ARM64 filter+AES 成功密码契约、
   BCJ2+LZMA2+4×AES 正确密码失败边界、
   RAR4 store、CAB Store/MSZIP 与 ISO9660 正例、
   CAB LZX/Quantum 失败边界及 ZIP

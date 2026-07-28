@@ -34,6 +34,30 @@ SEVENZIP_AES_PASSWORD = "DetectItEasy"
 SEVENZIP_AES_WARNING = (
     b"[XAESDecoder] Password is required for AES decryption\n"
 )
+SEVENZIP_BASE_AES_CASES = {
+    "copy": ("pdf-member-copy-aes.7z", ("-m0=Copy",)),
+    "lzma": ("pdf-member-lzma-aes.7z", ("-m0=LZMA", "-mx=9")),
+    "ppmd7": ("pdf-member-ppmd7-aes.7z", ("-m0=PPMd", "-mx=9")),
+    "bzip2": ("pdf-member-bzip2-aes.7z", ("-m0=BZip2", "-mx=9")),
+    "deflate": (
+        "pdf-member-deflate-aes.7z",
+        ("-m0=Deflate", "-mx=9"),
+    ),
+    "deflate64": (
+        "pdf-member-deflate64-aes.7z",
+        ("-m0=Deflate64", "-mx=9"),
+    ),
+}
+SEVENZIP_AES_PUBLIC_SAMPLES = {
+    "pdf-member-lzma2-aes.7z",
+    "pdf-member-bcj2-lzma2-aes.7z",
+    "pdf-member-bcj-lzma2-aes.7z",
+    "pdf-member-arm64-lzma2-aes.7z",
+    *(
+        archive_name
+        for archive_name, _ in SEVENZIP_BASE_AES_CASES.values()
+    ),
+}
 DATABASE_ARGS = (
     "--database",
     "/opt/die-source/Detect-It-Easy/db",
@@ -150,6 +174,14 @@ EXPECTED_ROOTS = {
         "root_names": ["7-Zip"],
         "archive_stream_count": 0,
     },
+    **{
+        archive_name: {
+            "filetype": "Binary",
+            "root_names": ["7-Zip"],
+            "archive_stream_count": 0,
+        }
+        for archive_name, _ in SEVENZIP_BASE_AES_CASES.values()
+    },
     "pdf-member-bcj2-lzma2-aes.7z": {
         "filetype": "Binary",
         "root_names": ["7-Zip"],
@@ -257,6 +289,49 @@ def sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+def sevenzip_aes_generation_provenance(
+    archive_name: str,
+    method_options: tuple[str, ...],
+) -> dict[str, Any]:
+    return {
+        "command": [
+            "7zz",
+            "a",
+            archive_name,
+            "payload.pdf",
+            "-t7z",
+            *method_options,
+            "-pDetectItEasy",
+            "-mhe=off",
+            "-mtm=off",
+            "-mtc=off",
+            "-mta=off",
+        ],
+        "password": SEVENZIP_AES_PASSWORD,
+        "payload_sha256": (
+            "47bd96bd99d3fd9d9edf09151f7c6299"
+            "9aaf71ed599bd975db9e46c4d6ef5d92"
+        ),
+        "tool": "7zz",
+        "tool_archive_sha256": (
+            "41aaba7b1235304ab5aa0624530c67ae8"
+            "29496cd29e875925271efdccc28c03e"
+        ),
+        "tool_binary_sha256": (
+            "1676a968815b92e865bc0ffeecee3fa28"
+            "4ba4402bf23dc2bec2412c4b502e922"
+        ),
+        "tool_license": (
+            "LGPL-2.1-or-later; unRAR restriction; "
+            "BSD-2-Clause and BSD-3-Clause components"
+        ),
+        "tool_source": (
+            "https://www.7-zip.org/a/7z2602-linux-x64.tar.xz"
+        ),
+        "tool_version": "26.02",
+    }
+
+
 def reject_duplicate_keys(
     pairs: list[tuple[str, Any]],
 ) -> dict[str, Any]:
@@ -314,7 +389,7 @@ def load_fixture(
         "compressed stream"
     ):
         raise ProbeError("unexpected fixture license declaration")
-    if manifest["generation_provenance"] != {
+    expected_generation_provenance = {
         "sevenzip_arm64_lzma2_aes_archive": {
             "command": [
                 "7zz",
@@ -474,7 +549,24 @@ def load_fixture(
             ),
             "tool_version": "26.02",
         }
-    }:
+    }
+    expected_generation_provenance.update(
+        {
+            f"sevenzip_{name}_aes_archive": (
+                sevenzip_aes_generation_provenance(
+                    archive_name,
+                    method_options,
+                )
+            )
+            for name, (
+                archive_name,
+                method_options,
+            ) in SEVENZIP_BASE_AES_CASES.items()
+        }
+    )
+    if manifest["generation_provenance"] != (
+        expected_generation_provenance
+    ):
         raise ProbeError("unexpected fixture generation provenance")
     if manifest["third_party_inputs"] != {
         "cab_quantum_stream": {
@@ -499,7 +591,7 @@ def load_fixture(
         }
     }:
         raise ProbeError("unexpected third-party fixture input")
-    if len(manifest["samples"]) != 23:
+    if len(manifest["samples"]) != 29:
         raise ProbeError("fixture sample count changed")
 
     declared = set()
@@ -796,13 +888,7 @@ def build_report(
             expected_stderr = (
                 SEVENZIP_AES_WARNING
                 if (
-                    sample_name
-                    in {
-                        "pdf-member-lzma2-aes.7z",
-                        "pdf-member-bcj2-lzma2-aes.7z",
-                        "pdf-member-bcj-lzma2-aes.7z",
-                        "pdf-member-arm64-lzma2-aes.7z",
-                    }
+                    sample_name in SEVENZIP_AES_PUBLIC_SAMPLES
                     and mode != "default"
                 )
                 else b""
@@ -870,15 +956,19 @@ def build_report(
         "9aaf71ed599bd975db9e46c4d6ef5d92"
     )
     direct_password_cases: dict[str, Any] = {}
-    for (
-        name,
-        arguments,
-        password_supplied,
-        unpacked,
-        output_size,
-        output_sha256,
-        expected_stderr,
-    ) in (
+    wrong_password_outputs = {
+        "copy": (
+            331,
+            "d427e6be98806d608c527a2a0b1065ae"
+            "dcfcf29f8bfba42b33f064b806fb0274",
+        ),
+        "ppmd7": (
+            331,
+            "3404ad646903d0c1ae7521b82f606b13"
+            "a88fd595496255217f6e4a250076f042",
+        ),
+    }
+    direct_case_specs = [
         (
             "lzma2_missing_password",
             (aes_path,),
@@ -995,7 +1085,56 @@ def build_report(
             empty_sha256,
             b"",
         ),
-    ):
+    ]
+    for name, (archive_name, _) in SEVENZIP_BASE_AES_CASES.items():
+        archive_path = f"/fixture/{archive_name}"
+        wrong_output_size, wrong_output_sha256 = (
+            wrong_password_outputs.get(name, (0, empty_sha256))
+        )
+        direct_case_specs.extend(
+            (
+                (
+                    f"{name}_missing_password",
+                    (archive_path,),
+                    False,
+                    False,
+                    0,
+                    empty_sha256,
+                    SEVENZIP_AES_WARNING,
+                ),
+                (
+                    f"{name}_correct_password",
+                    (
+                        "--password",
+                        SEVENZIP_AES_PASSWORD,
+                        archive_path,
+                    ),
+                    True,
+                    True,
+                    331,
+                    pdf_sha256,
+                    b"",
+                ),
+                (
+                    f"{name}_wrong_password",
+                    ("--password", "wrong", archive_path),
+                    True,
+                    False,
+                    wrong_output_size,
+                    wrong_output_sha256,
+                    b"",
+                ),
+            )
+        )
+    for (
+        name,
+        arguments,
+        password_supplied,
+        unpacked,
+        output_size,
+        output_sha256,
+        expected_stderr,
+    ) in direct_case_specs:
         process = run_binary(
             binary=DIRECT_PASSWORD_BINARY,
             fixture_dir=fixture_dir,
@@ -1048,6 +1187,10 @@ def build_report(
         "sevenzip_aes_public_engine_has_no_password_and_no_child": True,
         "sevenzip_aes_direct_correct_password_reaches_payload": True,
         "sevenzip_aes_direct_missing_and_wrong_password_fail": True,
+        "sevenzip_base_aes_public_engine_has_no_password_and_no_child": True,
+        "sevenzip_base_aes_direct_correct_password_reaches_payload": True,
+        "sevenzip_base_aes_missing_and_wrong_password_fail": True,
+        "sevenzip_copy_and_ppmd7_aes_wrong_password_leave_output": True,
         "sevenzip_bcj2_aes_public_engine_has_no_password_and_no_child": True,
         "sevenzip_bcj2_aes_direct_correct_password_still_fails": True,
         "sevenzip_bcj2_aes_missing_and_wrong_password_fail": True,
