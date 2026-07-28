@@ -50,6 +50,7 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
                     "pdf-member-lzma2.7z",
                     "pdf-member-bzip2.7z",
                     "pdf-member-deflate.7z",
+                    "pdf-member-bcj-lzma2.7z",
                     "pdf-member.rar",
                     "pdf-member.cab",
                     "pdf-member-mszip.cab",
@@ -185,6 +186,44 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
 
         with self.assertRaisesRegex(ValueError, "unsupported 7Z method"):
             module.encode_7z_payload("Unknown", module.PDF)
+
+    def test_7z_bcj_lzma2_chain_round_trips_independently(self):
+        module = load_module()
+        filters = [
+            {"id": lzma.FILTER_X86},
+            {
+                "id": lzma.FILTER_LZMA2,
+                "dict_size": module.SEVENZIP_DICTIONARY_SIZE,
+            },
+        ]
+        archive = module.make_7z_bcj_lzma2(
+            module.PAYLOAD_NAME,
+            module.PDF,
+        )
+        start_header = archive[12:32]
+        packed_size = int.from_bytes(
+            start_header[0:8],
+            "little",
+        )
+        packed = archive[32 : 32 + packed_size]
+        self.assertEqual(
+            lzma.decompress(
+                packed,
+                format=lzma.FORMAT_RAW,
+                filters=filters,
+            ),
+            module.PDF,
+        )
+        next_header = archive[32 + packed_size :]
+        self.assertIn(
+            module.SEVENZIP_CODER_IDS["LZMA2"],
+            next_header,
+        )
+        self.assertIn(
+            module.SEVENZIP_CODER_IDS["BCJ"],
+            next_header,
+        )
+        self.assertIn(b"\x02\x21\x21\x01\x10\x04\x03\x03\x01\x03", next_header)
 
     def test_7z_uint64_boundary_encodings_are_canonical(self):
         module = load_module()

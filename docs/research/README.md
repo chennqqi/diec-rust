@@ -21,7 +21,8 @@ Phase 0 计划形成：
   deflate/ZipCrypto、高压缩比、CRC/压缩流/offset/method 畸形、local-header
   fallback 与 mixed-member filter（In Review）。
 - [`archive-format-behavior.md`](archive-format-behavior.md)：
-  7Z Copy/LZMA/LZMA2/BZip2/Deflate、RAR4、CAB Store/MSZIP、ISO9660 正向解包、
+  7Z Copy/LZMA/LZMA2/BZip2/Deflate 与 BCJ+LZMA2、RAR4、CAB Store/MSZIP、
+  ISO9660 正向解包、
   发布 CLI 默认对照与 7Z/CAB `Binary` 顶层 quirk（Draft）。
 - [`npm-dispatch-reachability.md`](npm-dispatch-reachability.md)：
   NPM 精确归档路径检测、公共 GZIP 自动分派不可达、强制 NPM 规则分支及
@@ -214,12 +215,12 @@ Phase 0 计划形成：
 - [`data/archive-adversarial-corpus.json`](data/archive-adversarial-corpus.json)：
   12 个项目生成 ZIP 压缩、加密、畸形和 filter 控制的 hash manifest。
 - [`data/archive-adversarial-engine-qt5.json`](data/archive-adversarial-engine-qt5.json)：
-  36 次 release/harness default/archive/aggressive 原始输出、源码契约和结构摘要。
+  40 次 release/harness default/archive/aggressive 原始输出、源码契约和结构摘要。
 - [`data/archive-format-corpus.json`](data/archive-format-corpus.json)：
-  项目生成的五种 7Z coder、RAR4 store、CAB Store/MSZIP 与 ISO9660 单 PDF
-  fixture 清单。
+  项目生成的五种 7Z 单 coder、BCJ+LZMA2 filter 链、RAR4 store、CAB
+  Store/MSZIP 与 ISO9660 单 PDF fixture 清单。
 - [`data/archive-format-engine-qt5.json`](data/archive-format-engine-qt5.json)：
-  九个 archive/coder 样本的 default/release/archive/aggressive 原始输出、固定身份和
+  十个 archive/coder 样本的 default/release/archive/aggressive 原始输出、固定身份和
   结构化摘要。
 - [`data/npm-dispatch-fixture.json`](data/npm-dispatch-fixture.json)：
   项目生成的 NPM 精确路径正例、无效 JSON 正例及路径/大小写近似反例清单。

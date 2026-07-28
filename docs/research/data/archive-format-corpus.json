@@ -53,6 +53,16 @@
       "size": 295
     },
     {
+      "archive_format": "7Z",
+      "compression_method": "BCJ+LZMA2",
+      "expected_member_name": "payload.pdf",
+      "expected_payload_sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "name": "pdf-member-bcj-lzma2.7z",
+      "purpose": "7Z x86 BCJ plus LZMA2 archive containing one PDF",
+      "sha256": "bf72e9c4b7adb71bfadc63abab107948357a21412a84fc12ac57daee8005cbe5",
+      "size": 310
+    },
+    {
       "archive_format": "RAR",
       "compression_method": "Store",
       "expected_member_name": "payload.pdf",

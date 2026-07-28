@@ -32,6 +32,7 @@ SOURCE_PATHS = {
     "engine": "/opt/die-source/XScanEngine/xscanengine.cpp",
     "sevenzip": "/opt/die-source/XArchive/xsevenzip.cpp",
     "sevenzip_methods": "/opt/die-source/XArchive/xsevenzip.cpp",
+    "sevenzip_filters": "/opt/die-source/XArchive/xsevenzip.cpp",
     "rar": "/opt/die-source/XArchive/xrar.cpp",
     "cab": "/opt/die-source/XArchive/xcab.cpp",
     "iso9660": "/opt/die-source/XArchive/xiso9660.cpp",
@@ -49,6 +50,10 @@ SOURCE_PATTERNS = {
         "HANDLE_METHOD_LZMA2, HANDLE_METHOD_PPMD7, "
         "HANDLE_METHOD_BZIP2, HANDLE_METHOD_DEFLATE, "
         "HANDLE_METHOD_DEFLATE64"
+    ),
+    "sevenzip_filters": (
+        "HANDLE_METHOD_BCJ,\n"
+        "        HANDLE_METHOD_ARM64_BCJ"
     ),
     "rar": "bool XRar::initUnpack(",
     "cab": "bool XCab::initUnpack(",
@@ -72,6 +77,10 @@ EXPECTED_ROOTS = {
         "root_names": ["7-Zip"],
     },
     "pdf-member-deflate.7z": {
+        "filetype": "Binary",
+        "root_names": ["7-Zip"],
+    },
+    "pdf-member-bcj-lzma2.7z": {
         "filetype": "Binary",
         "root_names": ["7-Zip"],
     },
@@ -140,7 +149,7 @@ def load_fixture(
         raise ProbeError("unsupported fixture schema")
     if manifest["generator"] != FIXTURE_GENERATOR:
         raise ProbeError("unexpected fixture generator")
-    if len(manifest["samples"]) != 9:
+    if len(manifest["samples"]) != 10:
         raise ProbeError("fixture sample count changed")
 
     declared = set()
@@ -456,6 +465,7 @@ def build_report(
         "sevenzip_lzma2_member_reaches_pdf_rules": True,
         "sevenzip_bzip2_member_reaches_pdf_rules": True,
         "sevenzip_deflate_member_reaches_pdf_rules": True,
+        "sevenzip_bcj_lzma2_member_reaches_pdf_rules": True,
         "rar4_store_member_reaches_pdf_rules": True,
         "cab_store_member_reaches_pdf_rules": True,
         "cab_mszip_member_reaches_pdf_rules": True,

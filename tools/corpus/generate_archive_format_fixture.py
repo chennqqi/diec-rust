@@ -61,6 +61,7 @@ SEVENZIP_CODER_IDS = {
     "LZMA2": b"\x21",
     "BZip2": b"\x04\x02\x02",
     "Deflate": b"\x04\x01\x08",
+    "BCJ": b"\x03\x03\x01\x03",
 }
 
 
@@ -175,6 +176,93 @@ def make_7z_single(name: str, payload: bytes, method: str) -> bytes:
 
 def make_7z_stored(name: str, payload: bytes) -> bytes:
     return make_7z_single(name, payload, "Copy")
+
+
+def make_7z_bcj_lzma2(name: str, payload: bytes) -> bytes:
+    encoded_name = name.encode("utf-16le") + b"\0\0"
+    payload_crc = binascii.crc32(payload) & 0xFFFFFFFF
+    filters = [
+        {"id": lzma.FILTER_X86},
+        {
+            "id": lzma.FILTER_LZMA2,
+            "dict_size": SEVENZIP_DICTIONARY_SIZE,
+        },
+    ]
+    packed = lzma.compress(
+        payload,
+        format=lzma.FORMAT_RAW,
+        filters=filters,
+    )
+    packed_crc = binascii.crc32(packed) & 0xFFFFFFFF
+
+    lzma2_id = SEVENZIP_CODER_IDS["LZMA2"]
+    lzma2_coder = (
+        bytes((len(lzma2_id) | 0x20,))
+        + lzma2_id
+        + sevenzip_uint64(1)
+        + b"\x10"
+    )
+    bcj_id = SEVENZIP_CODER_IDS["BCJ"]
+    bcj_coder = bytes((len(bcj_id),)) + bcj_id
+    folder = (
+        sevenzip_uint64(2)
+        + lzma2_coder
+        + bcj_coder
+        # BCJ input stream 1 is bound to LZMA2 output stream 0.
+        + sevenzip_uint64(1)
+        + sevenzip_uint64(0)
+    )
+
+    pack_info = (
+        b"\x06"
+        + sevenzip_uint64(0)
+        + sevenzip_uint64(1)
+        + b"\x09"
+        + sevenzip_uint64(len(packed))
+        + b"\x0a\x01"
+        + struct.pack("<I", packed_crc)
+        + b"\x00"
+    )
+    unpack_info = (
+        b"\x07\x0b"
+        + sevenzip_uint64(1)
+        + b"\x00"
+        + folder
+        + b"\x0c"
+        + sevenzip_uint64(len(payload))
+        + sevenzip_uint64(len(payload))
+        + b"\x0a\x01"
+        + struct.pack("<I", payload_crc)
+        + b"\x00"
+    )
+    main_streams = b"\x04" + pack_info + unpack_info + b"\x00"
+    name_property = b"\x00" + encoded_name
+    files_info = (
+        b"\x05"
+        + sevenzip_uint64(1)
+        + b"\x11"
+        + sevenzip_uint64(len(name_property))
+        + name_property
+        + b"\x00"
+    )
+    next_header = b"\x01" + main_streams + files_info + b"\x00"
+    start_header = struct.pack(
+        "<QQI",
+        len(packed),
+        len(next_header),
+        binascii.crc32(next_header) & 0xFFFFFFFF,
+    )
+    return (
+        b"7z\xbc\xaf\x27\x1c"
+        + b"\x00\x04"
+        + struct.pack(
+            "<I",
+            binascii.crc32(start_header) & 0xFFFFFFFF,
+        )
+        + start_header
+        + packed
+        + next_header
+    )
 
 
 def rar4_header(block_type: int, flags: int, body: bytes) -> bytes:
@@ -422,6 +510,12 @@ FIXTURES = (
             payload,
             "Deflate",
         ),
+    ),
+    (
+        "pdf-member-bcj-lzma2.7z",
+        "7Z x86 BCJ plus LZMA2 archive containing one PDF",
+        "BCJ+LZMA2",
+        make_7z_bcj_lzma2,
     ),
     (
         "pdf-member.rar",
