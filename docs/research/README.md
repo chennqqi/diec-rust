@@ -21,7 +21,7 @@ Phase 0 计划形成：
   deflate/ZipCrypto、高压缩比、CRC/压缩流/offset/method 畸形、local-header
   fallback 与 mixed-member filter（In Review）。
 - [`archive-format-behavior.md`](archive-format-behavior.md)：
-  7Z Copy/LZMA/LZMA2/BZip2/Deflate 与 x86/ARM64-BL BCJ+LZMA2、RAR4、CAB
+  7Z Copy/LZMA/LZMA2/BZip2/Deflate 与 x86/ARM64 BCJ+LZMA2、RAR4、CAB
   Store/MSZIP、ISO9660 正向解包、
   发布 CLI 默认对照与 7Z/CAB `Binary` 顶层 quirk（Draft）。
 - [`npm-dispatch-reachability.md`](npm-dispatch-reachability.md)：
@@ -217,7 +217,7 @@ Phase 0 计划形成：
 - [`data/archive-adversarial-engine-qt5.json`](data/archive-adversarial-engine-qt5.json)：
   44 次 release/harness default/archive/aggressive 原始输出、源码契约和结构摘要。
 - [`data/archive-format-corpus.json`](data/archive-format-corpus.json)：
-  项目生成的五种 7Z 单 coder、x86/ARM64-BL BCJ+LZMA2 filter 链、RAR4
+  项目生成的五种 7Z 单 coder、x86/ARM64 BCJ+LZMA2 filter 链、RAR4
   store、CAB Store/MSZIP 与 ISO9660 单 PDF fixture 清单。
 - [`data/archive-format-engine-qt5.json`](data/archive-format-engine-qt5.json)：
   十一个 archive/coder 样本的 default/release/archive/aggressive 原始输出、固定身份和

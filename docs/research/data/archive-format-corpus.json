@@ -66,11 +66,11 @@
       "archive_format": "7Z",
       "compression_method": "ARM64-BCJ+LZMA2",
       "expected_member_name": "payload.pdf",
-      "expected_payload_sha256": "09c1c7ab1053428cc0f013e1cd782b508935c996086d55640645949725e088b6",
+      "expected_payload_sha256": "2b3bc0f871ac98ea53d0e0e8188594882876ad1a8f4b8d7c83e18865a47695cd",
       "name": "pdf-member-arm64-bcj-lzma2.7z",
       "purpose": "7Z ARM64 BCJ plus LZMA2 archive containing one PDF",
-      "sha256": "281e79f450fd44c1dfbfaeb2484a85ad46af603d3690fc10cc868374125c32d1",
-      "size": 312
+      "sha256": "08021c16bc18fcd492ddad0dfcbbdf31d56f509193e4c1c052a0b4ff38b51d0c",
+      "size": 338
     },
     {
       "archive_format": "RAR",

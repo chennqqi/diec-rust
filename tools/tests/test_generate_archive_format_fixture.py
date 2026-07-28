@@ -226,21 +226,29 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
         )
         self.assertIn(b"\x02\x21\x21\x01\x10\x04\x03\x03\x01\x03", next_header)
 
-    def test_7z_arm64_bcj_lzma2_bl_vector_round_trips(self):
+    def test_7z_arm64_bcj_lzma2_vectors_round_trip(self):
         module = load_module()
-        self.assertEqual(len(module.ARM64_PDF), 336)
+        self.assertEqual(len(module.ARM64_PDF), 4100)
         self.assertEqual(
             int.from_bytes(module.ARM64_PDF[332:336], "little"),
             0x94000002,
         )
-        encoded = module.arm64_bcj_encode_bl(module.ARM64_PDF)
+        self.assertEqual(
+            int.from_bytes(module.ARM64_PDF[4096:4100], "little"),
+            0x90000001,
+        )
+        encoded = module.arm64_bcj_encode(module.ARM64_PDF)
         self.assertEqual(
             int.from_bytes(encoded[332:336], "little"),
             0x94000055,
         )
+        self.assertEqual(
+            int.from_bytes(encoded[4096:4100], "little"),
+            0xB0000001,
+        )
         self.assertNotEqual(encoded, module.ARM64_PDF)
         self.assertEqual(
-            module.arm64_bcj_decode_bl(encoded),
+            module.arm64_bcj_decode(encoded),
             module.ARM64_PDF,
         )
 
@@ -262,7 +270,7 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
         )
         self.assertEqual(filtered, encoded)
         self.assertEqual(
-            module.arm64_bcj_decode_bl(filtered),
+            module.arm64_bcj_decode(filtered),
             module.ARM64_PDF,
         )
         next_header = archive[32 + packed_size :]

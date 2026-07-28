@@ -87,7 +87,7 @@ EXPECTED_ROOTS = {
     "pdf-member-arm64-bcj-lzma2.7z": {
         "filetype": "Binary",
         "root_names": ["7-Zip"],
-        "stream_size": "336",
+        "stream_size": "4100",
     },
     "pdf-member.rar": {
         "filetype": "RAR",
@@ -473,7 +473,7 @@ def build_report(
         "sevenzip_bzip2_member_reaches_pdf_rules": True,
         "sevenzip_deflate_member_reaches_pdf_rules": True,
         "sevenzip_bcj_lzma2_member_reaches_pdf_rules": True,
-        "sevenzip_arm64_bcj_lzma2_member_reaches_pdf_rules": True,
+        "sevenzip_arm64_bcj_lzma2_bl_and_adrp_reach_pdf_rules": True,
         "rar4_store_member_reaches_pdf_rules": True,
         "cab_store_member_reaches_pdf_rules": True,
         "cab_mszip_member_reaches_pdf_rules": True,

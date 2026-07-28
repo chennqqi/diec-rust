@@ -43,7 +43,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
         report = self.report
         self.assertEqual(
             sha256(self.report_bytes),
-            "85244442e38ccb4c141f5d40c289527ae266583e6ca7ed67705ca0a7e173eaaf",
+            "ceab3ce2e06e00e80d75103aa6294d75585443f4c6faeeab983f4d7c36c83b66",
         )
         self.assertEqual(report["schema_version"], 1)
         self.assertEqual(
@@ -230,7 +230,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
                         self.assertEqual(
                             summary["stream_sizes"],
                             [
-                                "336"
+                                "4100"
                                 if sample_name
                                 == "pdf-member-arm64-bcj-lzma2.7z"
                                 else "331"
@@ -265,7 +265,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
         self.assertIn("CAP-GAP-006", document)
         self.assertIn("archive-format-engine-qt5.json", document)
         self.assertIn(
-            "85244442e38ccb4c141f5d40c289527ae266583e6ca7ed67705ca0a7e173eaaf",
+            "ceab3ce2e06e00e80d75103aa6294d75585443f4c6faeeab983f4d7c36c83b66",
             document,
         )
 

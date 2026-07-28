@@ -38,7 +38,10 @@ def _load_baseline_module():
 
 BASELINE = _load_baseline_module()
 PDF = BASELINE.make_pdf()
-ARM64_PDF = PDF + b"\n" + struct.pack("<I", 0x94000002)
+ARM64_PDF = (
+    (PDF + b"\n" + struct.pack("<I", 0x94000002)).ljust(4096, b"\0")
+    + struct.pack("<I", 0x90000001)
+)
 
 
 def sevenzip_uint64(value: int) -> bytes:
@@ -180,9 +183,11 @@ def make_7z_stored(name: str, payload: bytes) -> bytes:
     return make_7z_single(name, payload, "Copy")
 
 
-def arm64_bcj_encode_bl(payload: bytes) -> bytes:
+def arm64_bcj_encode(payload: bytes) -> bytes:
     result = bytearray(payload)
     aligned_size = len(result) & ~3
+    flag = 1 << 20
+    mask = (1 << 24) - (flag << 1)
     for offset in range(0, aligned_size, 4):
         value = int.from_bytes(result[offset : offset + 4], "little")
         if ((value - 0x94000000) & 0xFC000000) == 0:
@@ -191,12 +196,35 @@ def arm64_bcj_encode_bl(payload: bytes) -> bytes:
                 | 0x94000000
             )
             result[offset : offset + 4] = value.to_bytes(4, "little")
+            continue
+        transformed = (value - 0x90000000) & 0xFFFFFFFF
+        if (transformed & 0x9F000000) != 0:
+            continue
+        transformed = (transformed + flag) & 0xFFFFFFFF
+        if transformed & mask:
+            continue
+        packed = (
+            (transformed & 0xFFFFFFE0) | (transformed >> 26)
+        )
+        packed = (packed + ((offset >> 9) & ~7)) & 0xFFFFFFFF
+        value = value & 0x1F
+        value |= 0x90000000
+        value |= (packed << 26) & 0xFFFFFFFF
+        value |= 0x00FFFFE0 & (
+            ((packed & ((flag << 1) - 1)) - flag)
+            & 0xFFFFFFFF
+        )
+        result[offset : offset + 4] = (
+            value & 0xFFFFFFFF
+        ).to_bytes(4, "little")
     return bytes(result)
 
 
-def arm64_bcj_decode_bl(payload: bytes) -> bytes:
+def arm64_bcj_decode(payload: bytes) -> bytes:
     result = bytearray(payload)
     aligned_size = len(result) & ~3
+    flag = 1 << 20
+    mask = (1 << 24) - (flag << 1)
     for offset in range(0, aligned_size, 4):
         value = int.from_bytes(result[offset : offset + 4], "little")
         if ((value - 0x94000000) & 0xFC000000) == 0:
@@ -205,6 +233,27 @@ def arm64_bcj_decode_bl(payload: bytes) -> bytes:
                 | 0x94000000
             )
             result[offset : offset + 4] = value.to_bytes(4, "little")
+            continue
+        transformed = (value - 0x90000000) & 0xFFFFFFFF
+        if (transformed & 0x9F000000) != 0:
+            continue
+        transformed = (transformed + flag) & 0xFFFFFFFF
+        if transformed & mask:
+            continue
+        packed = (
+            (transformed & 0xFFFFFFE0) | (transformed >> 26)
+        )
+        packed = (packed - ((offset >> 9) & ~7)) & 0xFFFFFFFF
+        value = value & 0x1F
+        value |= 0x90000000
+        value |= (packed << 26) & 0xFFFFFFFF
+        value |= 0x00FFFFE0 & (
+            ((packed & ((flag << 1) - 1)) - flag)
+            & 0xFFFFFFFF
+        )
+        result[offset : offset + 4] = (
+            value & 0xFFFFFFFF
+        ).to_bytes(4, "little")
     return bytes(result)
 
 
@@ -228,7 +277,7 @@ def make_7z_filter_lzma2(
             ],
         )
     elif filter_method == "ARM64-BCJ":
-        filtered = arm64_bcj_encode_bl(payload)
+        filtered = arm64_bcj_encode(payload)
         packed = lzma.compress(
             filtered,
             format=lzma.FORMAT_RAW,
