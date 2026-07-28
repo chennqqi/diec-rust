@@ -81,10 +81,10 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
 
     def test_current_plan_is_conservatively_incomplete(self):
         summary = self.plan["summary"]
-        self.assertEqual(summary["evidence_complete"], 31)
+        self.assertEqual(summary["evidence_complete"], 34)
         self.assertEqual(summary["partial"], 11)
-        self.assertEqual(summary["missing"], 26)
-        self.assertEqual(summary["closure_required"], 37)
+        self.assertEqual(summary["missing"], 23)
+        self.assertEqual(summary["closure_required"], 34)
         self.assertFalse(summary["cap_gap_007_closed"])
         self.assertEqual(self.plan["result"], "incomplete")
 
@@ -111,6 +111,9 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
             "CAP-CLI-MODE-001",
             "CAP-CLI-MODE-002",
             "CAP-CLI-MODE-003",
+            "CAP-CLI-IN-002",
+            "CAP-CLI-IN-004",
+            "CAP-NEST-001",
         }
         for capability_id in promoted:
             with self.subTest(capability=capability_id):
@@ -122,7 +125,7 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
             rows["CAP-DISPATCH-004"]["status"],
             "partial",
         )
-        self.assertEqual(rows["CAP-NEST-001"]["status"], "partial")
+        self.assertEqual(rows["CAP-CLI-IN-003"]["status"], "partial")
         self.assertEqual(rows["CAP-NEST-003"]["status"], "partial")
         self.assertEqual(rows["CAP-RULE-005"]["status"], "partial")
 
@@ -209,6 +212,22 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
         with self.assertRaisesRegex(
             MODULE.ClosurePlanError,
             "oracle difference",
+        ):
+            MODULE.build_plan(
+                self.traceability,
+                self.traceability_raw,
+                changed_reports,
+                self.report_bytes,
+            )
+
+        changed_reports = json.loads(json.dumps(self.reports))
+        path_matrix = changed_reports[MODULE.REPORT_PATHS[10]]
+        path_matrix["path_corpus"]["cases"]["two_files_json"][
+            "right_filename_prefixes"
+        ] = ["changed"]
+        with self.assertRaisesRegex(
+            MODULE.ClosurePlanError,
+            "path prefix difference",
         ):
             MODULE.build_plan(
                 self.traceability,

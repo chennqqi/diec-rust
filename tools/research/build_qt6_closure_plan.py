@@ -28,6 +28,7 @@ REPORT_PATHS = (
     "docs/research/data/qt6-alltypes-diagnostics.json",
     "docs/research/data/cli-special-matrix-linux-qt5-qt6.json",
     "docs/research/data/cli-special-boundaries-linux-qt5-qt6.json",
+    "docs/research/data/cli-path-matrix-linux-qt5-qt6.json",
 )
 EMPTY_SHA256 = hashlib.sha256(b"").hexdigest()
 QT6_UNIMPLEMENTED_SHA256 = (
@@ -67,6 +68,8 @@ def sha256(value: bytes) -> str:
 # Qt6 comparison exercises the entire behavior named by the matrix row.
 COMPLETE: dict[str, str] = {
     "CAP-CLI-IN-001": "15 hash-bound corpus files exercise one positional target",
+    "CAP-CLI-IN-002": "ordered, duplicate, missing-plus-valid, and directory-plus-file targets are equal",
+    "CAP-CLI-IN-004": "single-file directory and empty-directory behavior is equal",
     "CAP-CLI-OPT-001": "all eight nested fixtures have equal recursive-scan detection trees",
     "CAP-CLI-OPT-002": "the five-sample deep-scan matrix has equal stdout and exit codes",
     "CAP-CLI-OPT-003": "the five-sample heuristic matrix has equal detection semantics",
@@ -94,14 +97,15 @@ COMPLETE: dict[str, str] = {
     "CAP-DISPATCH-006": "the PDF and CFBF fixtures have equal detection trees",
     "CAP-DISPATCH-007": "JPEG, PNG, and generic Image/BMP detection trees are equal",
     "CAP-DISPATCH-008": "empty and plain binary fallback fixtures are equal",
+    "CAP-NEST-001": "directory traversal and internal recursive-scan controls are both equal",
     "CAP-NEST-002": "resource and overlay recursive-scan gates have equal detection trees",
     "CAP-NEST-005": "overlay and resource subdevice gate controls have equal detection trees",
     "CAP-NEST-008": "all five nested formatter stdout streams, including the JSON tree, are equal",
 }
 
 PARTIAL: dict[str, str] = {
+    "CAP-CLI-IN-003": "basic depth-first tree is covered; filesystem/locale/TOCTOU/large-directory boundaries remain",
     "CAP-DISPATCH-004": "TAR, gzip, and ZIP only; full archive family remains",
-    "CAP-NEST-001": "internal recursive scan is covered; Qt6 directory traversal remains",
     "CAP-NEST-003": "CLI non-extraction is covered; the Qt6 engine archive option remains",
     "CAP-RULE-005": "five-sample deep/heuristic effects are covered; independent rule-gate controls remain",
     "CAP-RULE-010": "global typo and HostApi failures expose diagnostics, not the full result error-list contract",
@@ -692,6 +696,103 @@ def _validate_special_boundary_report(report: dict[str, Any]) -> None:
         raise ClosurePlanError("CLI special source audit drift")
 
 
+def _validate_path_matrix_report(report: dict[str, Any]) -> None:
+    if (
+        report.get("expected_revision") != UPSTREAM_COMMIT
+        or report.get("left_revision") != UPSTREAM_COMMIT
+        or report.get("right_revision") != UPSTREAM_COMMIT
+    ):
+        raise ClosurePlanError("CLI path matrix revision drift")
+    if report.get("equal") is not False:
+        raise ClosurePlanError("CLI path matrix must retain Qt6 warnings")
+    cases = report.get("cases")
+    unreadable = report.get("unreadable_input")
+    path_corpus = report.get("path_corpus")
+    path_cases = (
+        path_corpus.get("cases")
+        if isinstance(path_corpus, dict)
+        else None
+    )
+    if not all(
+        isinstance(value, dict)
+        for value in (cases, unreadable, path_corpus, path_cases)
+    ):
+        raise ClosurePlanError("CLI path matrix sections are missing")
+    expected_cases = {
+        "single_file_json",
+        "two_files_json",
+        "duplicate_file_json",
+        "tree_json",
+        "tree_recursive_json",
+        "tree_xml",
+        "tree_csv",
+        "tree_plaintext",
+        "tree_entropy_json",
+        "tree_info_json",
+        "single_directory_json",
+        "empty_directory_json",
+        "missing_and_existing_json",
+        "directory_plus_duplicate_json",
+    }
+    if set(path_cases) != expected_cases:
+        raise ClosurePlanError("CLI path case catalog drift")
+    expected_failures = {
+        f"path_corpus.{name}.stderr"
+        for name in (
+            "tree_json",
+            "tree_recursive_json",
+            "tree_xml",
+            "tree_csv",
+            "tree_plaintext",
+            "directory_plus_duplicate_json",
+        )
+    }
+    observed_failures = set()
+    for name, record in cases.items():
+        _validate_paired_observation(record, {()}, f"cases.{name}")
+    for name, record in unreadable.items():
+        _validate_paired_observation(
+            record, {()}, f"unreadable_input.{name}"
+        )
+    for name, record in path_cases.items():
+        label = f"path_corpus.{name}"
+        differences = _validate_paired_observation(
+            record, {(), ("stderr",)}, label
+        )
+        if differences:
+            observed_failures.add(f"{label}.{differences[0]}")
+        if record.get("left_filename_prefixes") != record.get(
+            "right_filename_prefixes"
+        ):
+            raise ClosurePlanError(f"CLI path prefix difference: {name}")
+        for format_name in ("json", "xml"):
+            left_key = f"left_valid_{format_name}"
+            right_key = f"right_valid_{format_name}"
+            if left_key in record and record.get(left_key) != record.get(
+                right_key
+            ):
+                raise ClosurePlanError(
+                    f"CLI path {format_name} validity difference: {name}"
+                )
+        if "left_changes" in record and record.get(
+            "left_changes"
+        ) != record.get("right_changes"):
+            raise ClosurePlanError(
+                f"CLI path recursive effect difference: {name}"
+            )
+    if observed_failures != expected_failures or set(
+        report.get("failures", [])
+    ) != expected_failures:
+        raise ClosurePlanError("CLI path failure catalog drift")
+    if (
+        path_corpus.get("generator")
+        != "tools/corpus/generate_path_corpus.py"
+        or len(path_corpus.get("directories", [])) != 5
+        or len(path_corpus.get("entries", [])) != 5
+    ):
+        raise ClosurePlanError("CLI path fixture catalog drift")
+
+
 CAMPAIGNS: dict[str, dict[str, Any]] = {
     "cli_scan_baseline": {
         "fixture": "reuse baseline-corpus and scan-option-boundary fixtures",
@@ -865,6 +966,7 @@ def _validate_inputs(
     _validate_alltypes_diagnostics(reports[REPORT_PATHS[7]])
     _validate_special_matrix_report(reports[REPORT_PATHS[8]])
     _validate_special_boundary_report(reports[REPORT_PATHS[9]])
+    _validate_path_matrix_report(reports[REPORT_PATHS[10]])
     return capabilities
 
 
@@ -1008,6 +1110,14 @@ def build_plan(
                 "scope": "28-case special-mode exact boundary matrix",
                 "difference_count": 0,
                 "all_raw_streams_equal": True,
+            },
+            {
+                "source": REPORT_PATHS[10],
+                "scope": "14-case basic path and directory matrix",
+                "difference_count": len(
+                    reports[REPORT_PATHS[10]]["failures"]
+                ),
+                "stdout_exit_prefix_and_framing_equal": True,
             },
         ],
         "rows": rows,

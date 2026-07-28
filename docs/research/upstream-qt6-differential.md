@@ -200,7 +200,9 @@ detection tree 相同；PE32/PE64 与 nested PE 唯一保留差异仍是完全�
 [`qt6-scan-nested-runtime-evidence.md`](qt6-scan-nested-runtime-evidence.md)，
 special-mode 矩阵见
 [`qt6-special-runtime-evidence.md`](qt6-special-runtime-evidence.md)。
-三批实验将 Linux Qt6 的逐行完整证据从 11 项增加到 31 项，但没有关闭
+基础 path 矩阵见
+[`qt6-path-runtime-evidence.md`](qt6-path-runtime-evidence.md)。
+四批实验将 Linux Qt6 的逐行完整证据从 11 项增加到 34 项，但没有关闭
 `CAP-GAP-007`。
 
 ## 限制与下一步
@@ -210,6 +212,7 @@ special-mode 矩阵见
   仍未覆盖，见
   [`global-host-api-runtime-differential.md`](global-host-api-runtime-differential.md)。
 - 四行 warning 的精确 Qt 调用点和 enabled heuristic 路径仍待最小表达式实验。
-- 普通输出、scan、special 和首轮 nested gate 矩阵已完成；path、database
-  以及 engine archive/resource 边界 harness 仍未完成。
+- 普通输出、scan、special、基础 path 和首轮 nested gate 矩阵已完成；
+  path 的 filesystem/locale/TOCTOU/large-directory 边界、database 以及
+  engine archive/resource harness 仍未完成。
 - Windows、macOS 固定 oracle 仍缺失。

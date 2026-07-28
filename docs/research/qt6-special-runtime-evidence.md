@@ -77,8 +77,11 @@ Struct：
 - `CAP-CLI-MODE-002` info
 - `CAP-CLI-MODE-003` struct
 
-当前汇总为 31 项 complete、11 项 partial、26 项 missing；37 项仍需闭环。
-`CAP-GAP-007` 保持开放。
+本切片当时使汇总达到 31 项 complete。后续基础 path 证据见
+[`qt6-path-runtime-evidence.md`](qt6-path-runtime-evidence.md)；
+当前计数以
+[`qt6-capability-closure-plan.md`](qt6-capability-closure-plan.md)
+为准。`CAP-GAP-007` 保持开放。
 
 ## 重现
 

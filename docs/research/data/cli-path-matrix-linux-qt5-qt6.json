@@ -1,0 +1,908 @@
+{
+  "cases": {
+    "database": {
+      "arguments": [
+        "--showdatabase",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom"
+      ],
+      "differences": [],
+      "left": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 437,
+        "stdout_sha256": "41a888720b1a6ff610f9e1ac2adfa23eabe6eca201e1fdd540d2969b3eea6ed0"
+      },
+      "right": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 437,
+        "stdout_sha256": "41a888720b1a6ff610f9e1ac2adfa23eabe6eca201e1fdd540d2969b3eea6ed0"
+      }
+    },
+    "help": {
+      "arguments": [
+        "--help"
+      ],
+      "differences": [],
+      "left": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 2173,
+        "stdout_sha256": "65a944c5841645c637313b371d47e04498441b5338faeacfd00a740ba85c8844"
+      },
+      "right": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 2173,
+        "stdout_sha256": "65a944c5841645c637313b371d47e04498441b5338faeacfd00a740ba85c8844"
+      }
+    },
+    "missing": {
+      "arguments": [
+        "/does-not-exist"
+      ],
+      "differences": [],
+      "left": {
+        "exit_code": 1,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 29,
+        "stdout_sha256": "fbcbf1ccccbbaf046c131187d687ec8722683f1daa35d735a2105e86a5f4022c"
+      },
+      "right": {
+        "exit_code": 1,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 29,
+        "stdout_sha256": "fbcbf1ccccbbaf046c131187d687ec8722683f1daa35d735a2105e86a5f4022c"
+      }
+    },
+    "no_args": {
+      "arguments": [],
+      "differences": [],
+      "left": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 2173,
+        "stdout_sha256": "65a944c5841645c637313b371d47e04498441b5338faeacfd00a740ba85c8844"
+      },
+      "right": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 2173,
+        "stdout_sha256": "65a944c5841645c637313b371d47e04498441b5338faeacfd00a740ba85c8844"
+      }
+    },
+    "show_structs": {
+      "arguments": [
+        "--showstructs"
+      ],
+      "differences": [],
+      "left": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 47,
+        "stdout_sha256": "2ef890e26c826858eb053be3db702a629de717c63f35f86432bc1be6181a0699"
+      },
+      "right": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 47,
+        "stdout_sha256": "2ef890e26c826858eb053be3db702a629de717c63f35f86432bc1be6181a0699"
+      }
+    },
+    "show_structs_with_target": {
+      "arguments": [
+        "--showstructs",
+        "/usr/bin/true"
+      ],
+      "differences": [],
+      "left": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 47,
+        "stdout_sha256": "2ef890e26c826858eb053be3db702a629de717c63f35f86432bc1be6181a0699"
+      },
+      "right": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 47,
+        "stdout_sha256": "2ef890e26c826858eb053be3db702a629de717c63f35f86432bc1be6181a0699"
+      }
+    },
+    "true_json": {
+      "arguments": [
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/usr/bin/true"
+      ],
+      "differences": [],
+      "left": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 500,
+        "stdout_sha256": "e5385540a7d8984a84f1183a1fbf061db24118f934d5a25023ae508b885e9213"
+      },
+      "right": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 500,
+        "stdout_sha256": "e5385540a7d8984a84f1183a1fbf061db24118f934d5a25023ae508b885e9213"
+      }
+    },
+    "version": {
+      "arguments": [
+        "--version"
+      ],
+      "differences": [],
+      "left": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 10,
+        "stdout_sha256": "641f88fbece5c6334703787fb6801826745620bd4189f0c0cc036e63d9e1d758"
+      },
+      "right": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 10,
+        "stdout_sha256": "641f88fbece5c6334703787fb6801826745620bd4189f0c0cc036e63d9e1d758"
+      }
+    }
+  },
+  "equal": false,
+  "expected_revision": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "failures": [
+    "path_corpus.tree_json.stderr",
+    "path_corpus.tree_recursive_json.stderr",
+    "path_corpus.tree_xml.stderr",
+    "path_corpus.tree_csv.stderr",
+    "path_corpus.tree_plaintext.stderr",
+    "path_corpus.directory_plus_duplicate_json.stderr"
+  ],
+  "generator": "tools/upstream/compare_cli_oracles.py",
+  "generator_sha256": "06e128b938f362978d983d3d984213535eabd02161b71886ef989e33838b15b4",
+  "left_image": "diec-rust/upstream-oracle-cmake:74eaf505",
+  "left_revision": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "path_corpus": {
+    "cases": {
+      "directory_plus_duplicate_json": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/paths/tree",
+          "/paths/tree/a-first.pdf"
+        ],
+        "differences": [
+          "stderr"
+        ],
+        "left": {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 3008,
+          "stdout_sha256": "2d92944c3729433aff9d1c30cb522ea8b504469e8f30a9e4e6023b00f711aadb"
+        },
+        "left_filename_prefixes": [
+          "/paths/tree/a-first.pdf",
+          "/paths/tree/b-dir/a-child.exe",
+          "/paths/tree/b-dir/c-deep/z-child.zip",
+          "/paths/tree/z-last.txt",
+          "/paths/tree/a-first.pdf"
+        ],
+        "left_valid_json": false,
+        "right": {
+          "exit_code": 0,
+          "stderr_bytes": 80,
+          "stderr_sha256": "b303e6913e76b70a6f0d6a4d3ccd389bc342589e45e1615873a37334dea8c51b",
+          "stdout_bytes": 3008,
+          "stdout_sha256": "2d92944c3729433aff9d1c30cb522ea8b504469e8f30a9e4e6023b00f711aadb"
+        },
+        "right_filename_prefixes": [
+          "/paths/tree/a-first.pdf",
+          "/paths/tree/b-dir/a-child.exe",
+          "/paths/tree/b-dir/c-deep/z-child.zip",
+          "/paths/tree/z-last.txt",
+          "/paths/tree/a-first.pdf"
+        ],
+        "right_valid_json": false
+      },
+      "duplicate_file_json": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/paths/tree/a-first.pdf",
+          "/paths/tree/a-first.pdf"
+        ],
+        "differences": [],
+        "left": {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 1504,
+          "stdout_sha256": "889ecf0566cbd4e363429152ede3b17a95bff10a33fb0d05cc3fd5cb760f06b8"
+        },
+        "left_filename_prefixes": [
+          "/paths/tree/a-first.pdf",
+          "/paths/tree/a-first.pdf"
+        ],
+        "left_valid_json": false,
+        "right": {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 1504,
+          "stdout_sha256": "889ecf0566cbd4e363429152ede3b17a95bff10a33fb0d05cc3fd5cb760f06b8"
+        },
+        "right_filename_prefixes": [
+          "/paths/tree/a-first.pdf",
+          "/paths/tree/a-first.pdf"
+        ],
+        "right_valid_json": false
+      },
+      "empty_directory_json": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/paths/empty-dir"
+        ],
+        "differences": [],
+        "left": {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 0,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "left_filename_prefixes": [],
+        "left_valid_json": false,
+        "right": {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 0,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "right_filename_prefixes": [],
+        "right_valid_json": false
+      },
+      "missing_and_existing_json": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/paths/does-not-exist",
+          "/paths/tree/a-first.pdf"
+        ],
+        "differences": [],
+        "left": {
+          "exit_code": 1,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 762,
+          "stdout_sha256": "b2f77a9902274e7af30e8bfe110e9df4d6bd3b62dc3326a1fbc394cdfe5c942f"
+        },
+        "left_filename_prefixes": [],
+        "left_valid_json": false,
+        "right": {
+          "exit_code": 1,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 762,
+          "stdout_sha256": "b2f77a9902274e7af30e8bfe110e9df4d6bd3b62dc3326a1fbc394cdfe5c942f"
+        },
+        "right_filename_prefixes": [],
+        "right_valid_json": false
+      },
+      "single_directory_json": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/paths/single"
+        ],
+        "differences": [],
+        "left": {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 467,
+          "stdout_sha256": "8130d1163c063377eda3143c12a590c73e4ba5621a902b63c4afc455b4249515"
+        },
+        "left_filename_prefixes": [],
+        "left_valid_json": true,
+        "right": {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 467,
+          "stdout_sha256": "8130d1163c063377eda3143c12a590c73e4ba5621a902b63c4afc455b4249515"
+        },
+        "right_filename_prefixes": [],
+        "right_valid_json": true
+      },
+      "single_file_json": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/paths/tree/a-first.pdf"
+        ],
+        "differences": [],
+        "left": {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 727,
+          "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+        },
+        "left_filename_prefixes": [],
+        "left_valid_json": true,
+        "right": {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 727,
+          "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+        },
+        "right_filename_prefixes": [],
+        "right_valid_json": true
+      },
+      "tree_csv": {
+        "arguments": [
+          "--csv",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/paths/tree"
+        ],
+        "differences": [
+          "stderr"
+        ],
+        "left": {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 341,
+          "stdout_sha256": "90b9b486cdb7a059e83a1a4910edc8c2a7c2f3493c1d8f564cc709405a19d3d2"
+        },
+        "left_filename_prefixes": [
+          "/paths/tree/a-first.pdf",
+          "/paths/tree/b-dir/a-child.exe",
+          "/paths/tree/b-dir/c-deep/z-child.zip",
+          "/paths/tree/z-last.txt"
+        ],
+        "right": {
+          "exit_code": 0,
+          "stderr_bytes": 80,
+          "stderr_sha256": "b303e6913e76b70a6f0d6a4d3ccd389bc342589e45e1615873a37334dea8c51b",
+          "stdout_bytes": 341,
+          "stdout_sha256": "90b9b486cdb7a059e83a1a4910edc8c2a7c2f3493c1d8f564cc709405a19d3d2"
+        },
+        "right_filename_prefixes": [
+          "/paths/tree/a-first.pdf",
+          "/paths/tree/b-dir/a-child.exe",
+          "/paths/tree/b-dir/c-deep/z-child.zip",
+          "/paths/tree/z-last.txt"
+        ]
+      },
+      "tree_entropy_json": {
+        "arguments": [
+          "--entropy",
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/paths/tree"
+        ],
+        "differences": [],
+        "left": {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 1173,
+          "stdout_sha256": "72965be511ffbaed95d27ccf4b2cbb09e501a337b9d4f11ffbe151a15cce270e"
+        },
+        "left_filename_prefixes": [
+          "/paths/tree/a-first.pdf",
+          "/paths/tree/b-dir/a-child.exe",
+          "/paths/tree/b-dir/c-deep/z-child.zip",
+          "/paths/tree/z-last.txt"
+        ],
+        "left_valid_json": false,
+        "right": {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 1173,
+          "stdout_sha256": "72965be511ffbaed95d27ccf4b2cbb09e501a337b9d4f11ffbe151a15cce270e"
+        },
+        "right_filename_prefixes": [
+          "/paths/tree/a-first.pdf",
+          "/paths/tree/b-dir/a-child.exe",
+          "/paths/tree/b-dir/c-deep/z-child.zip",
+          "/paths/tree/z-last.txt"
+        ],
+        "right_valid_json": false
+      },
+      "tree_info_json": {
+        "arguments": [
+          "--info",
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/paths/tree"
+        ],
+        "differences": [],
+        "left": {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 1437,
+          "stdout_sha256": "c4f85dfc86b21eca810f00cd157361629fbee744baba8097179913fdc3bdf5bb"
+        },
+        "left_filename_prefixes": [
+          "/paths/tree/a-first.pdf",
+          "/paths/tree/b-dir/a-child.exe",
+          "/paths/tree/b-dir/c-deep/z-child.zip",
+          "/paths/tree/z-last.txt"
+        ],
+        "left_valid_json": false,
+        "right": {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 1437,
+          "stdout_sha256": "c4f85dfc86b21eca810f00cd157361629fbee744baba8097179913fdc3bdf5bb"
+        },
+        "right_filename_prefixes": [
+          "/paths/tree/a-first.pdf",
+          "/paths/tree/b-dir/a-child.exe",
+          "/paths/tree/b-dir/c-deep/z-child.zip",
+          "/paths/tree/z-last.txt"
+        ],
+        "right_valid_json": false
+      },
+      "tree_json": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/paths/tree"
+        ],
+        "differences": [
+          "stderr"
+        ],
+        "left": {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 2256,
+          "stdout_sha256": "05d3853c9b1087107efa01e4324b752b4bd27a055dd852a2f4f0e414c80a4d4f"
+        },
+        "left_filename_prefixes": [
+          "/paths/tree/a-first.pdf",
+          "/paths/tree/b-dir/a-child.exe",
+          "/paths/tree/b-dir/c-deep/z-child.zip",
+          "/paths/tree/z-last.txt"
+        ],
+        "left_valid_json": false,
+        "right": {
+          "exit_code": 0,
+          "stderr_bytes": 80,
+          "stderr_sha256": "b303e6913e76b70a6f0d6a4d3ccd389bc342589e45e1615873a37334dea8c51b",
+          "stdout_bytes": 2256,
+          "stdout_sha256": "05d3853c9b1087107efa01e4324b752b4bd27a055dd852a2f4f0e414c80a4d4f"
+        },
+        "right_filename_prefixes": [
+          "/paths/tree/a-first.pdf",
+          "/paths/tree/b-dir/a-child.exe",
+          "/paths/tree/b-dir/c-deep/z-child.zip",
+          "/paths/tree/z-last.txt"
+        ],
+        "right_valid_json": false
+      },
+      "tree_plaintext": {
+        "arguments": [
+          "--plaintext",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/paths/tree"
+        ],
+        "differences": [
+          "stderr"
+        ],
+        "left": {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 274,
+          "stdout_sha256": "4dd390a7e5fad1d6ad2e8a4efd3a56c2562a7dcd2e61b4af288e828cdf02630c"
+        },
+        "left_filename_prefixes": [
+          "/paths/tree/a-first.pdf",
+          "/paths/tree/b-dir/a-child.exe",
+          "/paths/tree/b-dir/c-deep/z-child.zip",
+          "/paths/tree/z-last.txt"
+        ],
+        "right": {
+          "exit_code": 0,
+          "stderr_bytes": 80,
+          "stderr_sha256": "b303e6913e76b70a6f0d6a4d3ccd389bc342589e45e1615873a37334dea8c51b",
+          "stdout_bytes": 274,
+          "stdout_sha256": "4dd390a7e5fad1d6ad2e8a4efd3a56c2562a7dcd2e61b4af288e828cdf02630c"
+        },
+        "right_filename_prefixes": [
+          "/paths/tree/a-first.pdf",
+          "/paths/tree/b-dir/a-child.exe",
+          "/paths/tree/b-dir/c-deep/z-child.zip",
+          "/paths/tree/z-last.txt"
+        ]
+      },
+      "tree_recursive_json": {
+        "arguments": [
+          "--json",
+          "--recursivescan",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/paths/tree"
+        ],
+        "differences": [
+          "stderr"
+        ],
+        "left": {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 2256,
+          "stdout_sha256": "05d3853c9b1087107efa01e4324b752b4bd27a055dd852a2f4f0e414c80a4d4f"
+        },
+        "left_changes": [],
+        "left_filename_prefixes": [
+          "/paths/tree/a-first.pdf",
+          "/paths/tree/b-dir/a-child.exe",
+          "/paths/tree/b-dir/c-deep/z-child.zip",
+          "/paths/tree/z-last.txt"
+        ],
+        "left_valid_json": false,
+        "right": {
+          "exit_code": 0,
+          "stderr_bytes": 80,
+          "stderr_sha256": "b303e6913e76b70a6f0d6a4d3ccd389bc342589e45e1615873a37334dea8c51b",
+          "stdout_bytes": 2256,
+          "stdout_sha256": "05d3853c9b1087107efa01e4324b752b4bd27a055dd852a2f4f0e414c80a4d4f"
+        },
+        "right_changes": [],
+        "right_filename_prefixes": [
+          "/paths/tree/a-first.pdf",
+          "/paths/tree/b-dir/a-child.exe",
+          "/paths/tree/b-dir/c-deep/z-child.zip",
+          "/paths/tree/z-last.txt"
+        ],
+        "right_valid_json": false
+      },
+      "tree_xml": {
+        "arguments": [
+          "--xml",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/paths/tree"
+        ],
+        "differences": [
+          "stderr"
+        ],
+        "left": {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 1068,
+          "stdout_sha256": "715d2f73f70d892cdc73f7203771c668dd8948a47b2bcc82dfda8c3ee445b05c"
+        },
+        "left_filename_prefixes": [
+          "/paths/tree/a-first.pdf",
+          "/paths/tree/b-dir/a-child.exe",
+          "/paths/tree/b-dir/c-deep/z-child.zip",
+          "/paths/tree/z-last.txt"
+        ],
+        "left_valid_xml": false,
+        "right": {
+          "exit_code": 0,
+          "stderr_bytes": 80,
+          "stderr_sha256": "b303e6913e76b70a6f0d6a4d3ccd389bc342589e45e1615873a37334dea8c51b",
+          "stdout_bytes": 1068,
+          "stdout_sha256": "715d2f73f70d892cdc73f7203771c668dd8948a47b2bcc82dfda8c3ee445b05c"
+        },
+        "right_filename_prefixes": [
+          "/paths/tree/a-first.pdf",
+          "/paths/tree/b-dir/a-child.exe",
+          "/paths/tree/b-dir/c-deep/z-child.zip",
+          "/paths/tree/z-last.txt"
+        ],
+        "right_valid_xml": false
+      },
+      "two_files_json": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/paths/tree/z-last.txt",
+          "/paths/tree/a-first.pdf"
+        ],
+        "differences": [],
+        "left": {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 1254,
+          "stdout_sha256": "b2f774858460735c268df43654429df59cca8bf0d3e67061299a30a5673bec78"
+        },
+        "left_filename_prefixes": [
+          "/paths/tree/z-last.txt",
+          "/paths/tree/a-first.pdf"
+        ],
+        "left_valid_json": false,
+        "right": {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 1254,
+          "stdout_sha256": "b2f774858460735c268df43654429df59cca8bf0d3e67061299a30a5673bec78"
+        },
+        "right_filename_prefixes": [
+          "/paths/tree/z-last.txt",
+          "/paths/tree/a-first.pdf"
+        ],
+        "right_valid_json": false
+      }
+    },
+    "directories": [
+      "empty-dir",
+      "single",
+      "tree",
+      "tree/b-dir",
+      "tree/b-dir/c-deep"
+    ],
+    "entries": [
+      {
+        "path": "single/only.elf",
+        "sha256": "e717b57a377ce3486a932130454ee070fdd495d3c23a9d5a8a446ad32772e704",
+        "size": 64,
+        "source": "minimal.elf"
+      },
+      {
+        "path": "tree/a-first.pdf",
+        "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+        "size": 331,
+        "source": "minimal.pdf"
+      },
+      {
+        "path": "tree/b-dir/a-child.exe",
+        "sha256": "afb1bcd812caa45095075a60ff49599c7d5e767c7732226c3e0007708cb198a2",
+        "size": 512,
+        "source": "minimal.exe"
+      },
+      {
+        "path": "tree/b-dir/c-deep/z-child.zip",
+        "sha256": "c29a3445c289e061a11d4675b36763657d4e550c4941821ea74905593a29acfe",
+        "size": 151,
+        "source": "payload.zip"
+      },
+      {
+        "path": "tree/z-last.txt",
+        "sha256": "22b217bfba5795d402092bf48bfb28146c0ee4dd0036fd4d0c93e25bbe65e998",
+        "size": 31,
+        "source": "plain.txt"
+      }
+    ],
+    "generator": "tools/corpus/generate_path_corpus.py"
+  },
+  "right_image": "diec-rust/upstream-oracle-cmake-qt6:74eaf505",
+  "right_revision": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "sample": {
+    "left_sha256": "4b5a5694e3c0e8b1d58fc52ac6ef076e55e72c2f53195243ac86d5ff517cc2f6",
+    "path": "/usr/bin/true",
+    "right_sha256": "4b5a5694e3c0e8b1d58fc52ac6ef076e55e72c2f53195243ac86d5ff517cc2f6"
+  },
+  "schema_version": 1,
+  "unreadable_input": {
+    "entropy_json": {
+      "arguments": [
+        "--entropy",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/tmp/unreadable-fixture"
+      ],
+      "differences": [],
+      "left": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 61,
+        "stdout_sha256": "0a74d09f562d585bf7e8701dc7d1c3830bbb8f5493b55c52bb39ff145f85782d"
+      },
+      "left_valid_json": true,
+      "right": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 61,
+        "stdout_sha256": "0a74d09f562d585bf7e8701dc7d1c3830bbb8f5493b55c52bb39ff145f85782d"
+      },
+      "right_valid_json": true
+    },
+    "info_json": {
+      "arguments": [
+        "--info",
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/tmp/unreadable-fixture"
+      ],
+      "differences": [],
+      "left": {
+        "exit_code": 2,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 20,
+        "stdout_sha256": "c0538adbaf9b1b80944941180f00fe139fb0457290e47944ef8e7c0c6cd67168"
+      },
+      "left_valid_json": true,
+      "right": {
+        "exit_code": 2,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 20,
+        "stdout_sha256": "c0538adbaf9b1b80944941180f00fe139fb0457290e47944ef8e7c0c6cd67168"
+      },
+      "right_valid_json": true
+    },
+    "scan_json": {
+      "arguments": [
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/tmp/unreadable-fixture"
+      ],
+      "differences": [],
+      "left": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 96,
+        "stdout_sha256": "3813fcaab55579f111a39bca06243358aab53a6ba7925715b08cb4f30d821f0a"
+      },
+      "left_valid_json": true,
+      "right": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 96,
+        "stdout_sha256": "3813fcaab55579f111a39bca06243358aab53a6ba7925715b08cb4f30d821f0a"
+      },
+      "right_valid_json": true
+    },
+    "scan_messages_json": {
+      "arguments": [
+        "--json",
+        "--messages",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/tmp/unreadable-fixture"
+      ],
+      "differences": [],
+      "left": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 96,
+        "stdout_sha256": "3813fcaab55579f111a39bca06243358aab53a6ba7925715b08cb4f30d821f0a"
+      },
+      "left_valid_json": true,
+      "right": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 96,
+        "stdout_sha256": "3813fcaab55579f111a39bca06243358aab53a6ba7925715b08cb4f30d821f0a"
+      },
+      "right_valid_json": true
+    }
+  }
+}

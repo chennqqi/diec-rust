@@ -59,6 +59,12 @@
       "difference_count": 0,
       "scope": "28-case special-mode exact boundary matrix",
       "source": "docs/research/data/cli-special-boundaries-linux-qt5-qt6.json"
+    },
+    {
+      "difference_count": 6,
+      "scope": "14-case basic path and directory matrix",
+      "source": "docs/research/data/cli-path-matrix-linux-qt5-qt6.json",
+      "stdout_exit_prefix_and_framing_equal": true
     }
   ],
   "limitations": [
@@ -84,27 +90,19 @@
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "cli_path",
       "id": "CAP-CLI-IN-002",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "multiple target scan",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "target order, duplicate handling, and directory traversal are equal",
-          "exit code and raw per-target framing are retained",
-          "links, permissions, TOCTOU, locale, and large-directory controls are all executed"
-        ],
-        "fixture": "reuse path, special-path, filesystem, large-directory, TOCTOU, and locale fixtures",
-        "harness": "port the fixed Linux Qt5 path probes to the pinned Qt6 CLI image"
-      },
-      "status": "missing"
+      "observed_scope": "ordered, duplicate, missing-plus-valid, and directory-plus-file targets are equal",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "cli_path",
       "id": "CAP-CLI-IN-003",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": "execute the remaining Qt5 capability boundary under the pinned Qt6 oracle",
       "name": "directory enumeration",
-      "observed_scope": null,
+      "observed_scope": "basic depth-first tree is covered; filesystem/locale/TOCTOU/large-directory boundaries remain",
       "proposed_experiment": {
         "assertions": [
           "target order, duplicate handling, and directory traversal are equal",
@@ -114,25 +112,17 @@
         "fixture": "reuse path, special-path, filesystem, large-directory, TOCTOU, and locale fixtures",
         "harness": "port the fixed Linux Qt5 path probes to the pinned Qt6 CLI image"
       },
-      "status": "missing"
+      "status": "partial"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "cli_path",
       "id": "CAP-CLI-IN-004",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "single-file and empty directory",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "target order, duplicate handling, and directory traversal are equal",
-          "exit code and raw per-target framing are retained",
-          "links, permissions, TOCTOU, locale, and large-directory controls are all executed"
-        ],
-        "fixture": "reuse path, special-path, filesystem, large-directory, TOCTOU, and locale fixtures",
-        "harness": "port the fixed Linux Qt5 path probes to the pinned Qt6 CLI image"
-      },
-      "status": "missing"
+      "observed_scope": "single-file directory and empty-directory behavior is equal",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
@@ -804,19 +794,11 @@
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "nested_scan",
       "id": "CAP-NEST-001",
-      "missing_scope": "execute the remaining Qt5 capability boundary under the pinned Qt6 oracle",
+      "missing_scope": null,
       "name": "directory recursion versus internal recursion",
-      "observed_scope": "internal recursive scan is covered; Qt6 directory traversal remains",
-      "proposed_experiment": {
-        "assertions": [
-          "CLI recursion and internal recursion gates are distinguished",
-          "record-count, iteration, depth, and expanded-byte observations are equal",
-          "parent tree, context propagation, subdevice gates, and raw errors are compared"
-        ],
-        "fixture": "reuse nested, resource, archive-limit, iteration, adversarial, and structure fixtures",
-        "harness": "build Qt6 nested/resource/archive harness variants"
-      },
-      "status": "partial"
+      "observed_scope": "directory traversal and internal recursive-scan controls are both equal",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
@@ -1053,6 +1035,7 @@
     "docs/research/data/capability-traceability.json": "e1bb982feb52fb97e6678319c629cf71735650fe4239c8558a0f765c16c8cff3",
     "docs/research/data/cli-output-boundaries-linux-qt5-qt6.json": "b94817adf7d99aa67bb64397e97cad5a95af244cdb01b9cd51f79cf15c4dea84",
     "docs/research/data/cli-output-matrix-linux-qt5-qt6.json": "3e032534ce269597c98eee45c1e477796a11402ec1fb07b7a79a7806cad7ba2c",
+    "docs/research/data/cli-path-matrix-linux-qt5-qt6.json": "8250fdc2e2ce0f8480b28421aa9fe17df3ae91a3f1492d7cac456fe195638b41",
     "docs/research/data/cli-scan-nested-matrix-linux-qt5-qt6.json": "a81ed4e791286c78247ca1d758fcb49900ca93ac46941af3d0542801d7e603f8",
     "docs/research/data/cli-special-boundaries-linux-qt5-qt6.json": "339b94c3294e13b1350317ad4aba0e3cd89a45cc6fcfa0cb72241aee39c72d70",
     "docs/research/data/cli-special-matrix-linux-qt5-qt6.json": "0da895e6d82c0b2cafcee8a1b7a951c462822a05faab381ef64d5c168d5653d1",
@@ -1066,9 +1049,9 @@
     "all_capabilities_accounted_for": true,
     "cap_gap_007_closed": false,
     "capability_count": 68,
-    "closure_required": 37,
-    "evidence_complete": 31,
-    "missing": 26,
+    "closure_required": 34,
+    "evidence_complete": 34,
+    "missing": 23,
     "partial": 11
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
