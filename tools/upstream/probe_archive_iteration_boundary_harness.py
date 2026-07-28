@@ -22,6 +22,15 @@ EXPECTED_SOURCE_SHA256 = (
     "a8b239873d7f092db3ae5566a761b498"
 )
 SOURCE_PATH = "/opt/die-source/XScanEngine/xscanengine.cpp"
+ISO_SOURCE_PATH = "/opt/die-source/XArchive/xiso9660.cpp"
+EXPECTED_ISO_SOURCE_SHA256 = (
+    "d6e97c4ff2395b812b65da5ab480e937"
+    "c6b365e6e6e8b0288ddf48b8fd398fb1"
+)
+ISO_DOT_FILTER_PATTERN = (
+    'if (nFileNameLength == 1 && (sFileName == "\\x00" || '
+    'sFileName == "\\x01")) {'
+)
 CORPUS_GENERATOR = (
     "tools/corpus/generate_archive_iteration_boundary_fixture.py"
 )
@@ -250,6 +259,29 @@ def observe_source(image: str) -> dict[str, Any]:
     }
 
 
+def observe_iso_source(image: str) -> dict[str, Any]:
+    source = read_image_file(image, ISO_SOURCE_PATH)
+    source_hash = sha256(source)
+    if source_hash != EXPECTED_ISO_SOURCE_SHA256:
+        raise ProbeError(
+            f"XISO9660 source SHA-256 mismatch: {source_hash}"
+        )
+    text = source.decode("utf-8")
+    pattern_count = text.count(ISO_DOT_FILTER_PATTERN)
+    if pattern_count != 1:
+        raise ProbeError(
+            f"ISO dot-filter pattern drift: {pattern_count}"
+        )
+    line = text[: text.index(ISO_DOT_FILTER_PATTERN)].count("\n") + 1
+    return {
+        "dot_filter_line": line,
+        "dot_filter_pattern": ISO_DOT_FILTER_PATTERN,
+        "dot_filter_pattern_count": pattern_count,
+        "path": ISO_SOURCE_PATH,
+        "sha256": source_hash,
+    }
+
+
 def observe_binary(image: str, binary: str) -> dict[str, Any]:
     data = read_image_file(image, binary)
     return {
@@ -342,6 +374,9 @@ def run_case(
 
 def evaluate_report(report: dict[str, Any]) -> list[str]:
     failures: list[str] = []
+    platform = report["environment"]["platform"]
+    if platform not in {"linux-x86_64-qt5", "linux-x86_64-qt6"}:
+        failures.append("environment.platform")
     by_sample = {
         case["sample"]: case for case in report["cases"]
     }
@@ -363,15 +398,26 @@ def evaluate_report(report: dict[str, Any]) -> list[str]:
         if not isinstance(harness, dict):
             failures.append(f"{name}.harness")
             continue
-        reachable = sample["sentinel_ordinal"] <= 100000
+        if platform == "linux-x86_64-qt6":
+            reachable = sample["sentinel_ordinal"] <= 99999
+            extra_dot_stream = 1
+        else:
+            reachable = sample["sentinel_ordinal"] <= 100000
+            extra_dot_stream = 0
         expected = {
             "aggressive_scan": True,
             "error_count": 0,
-            "node_count": 2 if reachable else 1,
+            "node_count": (
+                2 if reachable else 1
+            ) + extra_dot_stream,
             "pdf_node_count": 1 if reachable else 0,
             "pd_stopped": False,
-            "record_count": 3 if reachable else 1,
-            "stream_node_count": 1 if reachable else 0,
+            "record_count": (
+                3 if reachable else 1
+            ) + extra_dot_stream,
+            "stream_node_count": (
+                1 if reachable else 0
+            ) + extra_dot_stream,
         }
         for field, value in expected.items():
             if harness.get(field) != value:
@@ -396,6 +442,13 @@ def evaluate_report(report: dict[str, Any]) -> list[str]:
         for count in source["required_pattern_counts"].values()
     ):
         failures.append("source.required_pattern")
+    iso_source = report.get("iso_source_contract")
+    if platform == "linux-x86_64-qt6" and (
+        not isinstance(iso_source, dict)
+        or iso_source.get("sha256") != EXPECTED_ISO_SOURCE_SHA256
+        or iso_source.get("dot_filter_pattern_count") != 1
+    ):
+        failures.append("iso_source.contract")
     return failures
 
 
@@ -418,6 +471,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--image", required=True)
     parser.add_argument("--binary", default=DEFAULT_BINARY)
     parser.add_argument("--corpus-dir", required=True, type=Path)
+    parser.add_argument(
+        "--platform",
+        choices=("linux-x86_64-qt5", "linux-x86_64-qt6"),
+        default="linux-x86_64-qt5",
+    )
     parser.add_argument(
         "--reference-manifest",
         type=Path,
@@ -461,38 +519,71 @@ def main() -> int:
             "fault_injection": FAULT_INJECTION,
             "image": args.image,
             "image_identity": docker_inspect(args.image),
-            "platform": "linux-x86_64-qt5",
+            "platform": args.platform,
             "resource_limits": RESOURCE_LIMITS,
         },
         "harness_binary": observe_binary(
             args.image, args.binary
         ),
+        "iso_source_contract": observe_iso_source(args.image),
         "schema_version": SCHEMA_VERSION,
         "source_contract": observe_source(args.image),
         "upstream_commit": EXPECTED_REVISION,
         "xscanengine_commit": EXPECTED_XSCANENGINE_COMMIT,
     }
     failures = evaluate_report(report)
-    report["assertions"] = {
-        "aggressive_member_limit_is_unreachable_before_hard_guard": (
-            not any(
-                failure.startswith("source.")
+    source_assertion = not any(
+        failure.startswith(("source.", "iso_source."))
+        for failure in failures
+    )
+    if args.platform == "linux-x86_64-qt6":
+        report["assertions"] = {
+            "aggressive_member_limit_is_unreachable_before_hard_guard": (
+                source_assertion
+            ),
+            "dot_directory_entry_adds_one_stream": not any(
+                failure.startswith("sentinel-")
                 for failure in failures
-            )
-        ),
-        "record_100000_is_reachable": not any(
-            failure.startswith("sentinel-100000.iso.")
-            for failure in failures
-        ),
-        "record_100001_is_not_reachable": not any(
-            failure.startswith("sentinel-100001.iso.")
-            for failure in failures
-        ),
-        "record_99999_is_reachable_control": not any(
-            failure.startswith("sentinel-099999.iso.")
-            for failure in failures
-        ),
-    }
+            ),
+            "record_100000_is_not_reachable": not any(
+                failure.startswith("sentinel-100000.iso.")
+                for failure in failures
+            ),
+            "record_100001_is_not_reachable": not any(
+                failure.startswith("sentinel-100001.iso.")
+                for failure in failures
+            ),
+            "record_99999_is_reachable_control": not any(
+                failure.startswith("sentinel-099999.iso.")
+                for failure in failures
+            ),
+        }
+        report["known_difference"] = {
+            "scope": "ISO9660 NUL dot-entry filtering",
+            "qt5_last_reachable_pdf_ordinal": 100000,
+            "qt6_last_reachable_pdf_ordinal": 99999,
+            "qt6_extra_stream_count_per_case": 1,
+            "source_revision_equal": True,
+            "requires_qt_string_semantics_probe": True,
+        }
+    else:
+        report["assertions"] = {
+            "aggressive_member_limit_is_unreachable_before_hard_guard": (
+                source_assertion
+            ),
+            "record_100000_is_reachable": not any(
+                failure.startswith("sentinel-100000.iso.")
+                for failure in failures
+            ),
+            "record_100001_is_not_reachable": not any(
+                failure.startswith("sentinel-100001.iso.")
+                for failure in failures
+            ),
+            "record_99999_is_reachable_control": not any(
+                failure.startswith("sentinel-099999.iso.")
+                for failure in failures
+            ),
+        }
     report["failures"] = failures
     report["passed"] = not failures
     raw = serialize(report)

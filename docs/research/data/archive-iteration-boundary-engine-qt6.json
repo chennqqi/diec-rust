@@ -1,0 +1,194 @@
+{
+  "assertions": {
+    "aggressive_member_limit_is_unreachable_before_hard_guard": true,
+    "dot_directory_entry_adds_one_stream": true,
+    "record_100000_is_not_reachable": true,
+    "record_100001_is_not_reachable": true,
+    "record_99999_is_reachable_control": true
+  },
+  "capability": "CAP-GAP-006",
+  "cases": [
+    {
+      "arguments": [
+        "/corpus/sentinel-099999.iso"
+      ],
+      "exit_code": 0,
+      "harness": {
+        "aggressive_scan": true,
+        "debug_record_count": 0,
+        "elapsed_ms": 1082,
+        "error_count": 0,
+        "handler_count": 0,
+        "node_count": 3,
+        "pd_stopped": false,
+        "pdf_node_count": 1,
+        "peak_rss_after_kib": 130416,
+        "peak_rss_before_kib": 27892,
+        "record_count": 4,
+        "scan_result_time_ms": 1079,
+        "stream_node_count": 2
+      },
+      "possible_oom_exit_137": false,
+      "sample": "sentinel-099999.iso",
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "{\"aggressive_scan\":true,\"debug_record_count\":0,\"elapsed_ms\":1082,\"error_count\":0,\"handler_count\":0,\"node_count\":3,\"pd_stopped\":false,\"pdf_node_count\":1,\"peak_rss_after_kib\":130416,\"peak_rss_before_kib\":27892,\"record_count\":4,\"scan_result_time_ms\":1079,\"stream_node_count\":2}\n",
+      "stdout_sha256": "13e4df2894ace7ef8de644a2efe3cc84edfecd503a135bccb8af0f12d31e1e6c",
+      "timed_out": false,
+      "wall_elapsed_ms": 1597
+    },
+    {
+      "arguments": [
+        "/corpus/sentinel-100000.iso"
+      ],
+      "exit_code": 0,
+      "harness": {
+        "aggressive_scan": true,
+        "debug_record_count": 0,
+        "elapsed_ms": 975,
+        "error_count": 0,
+        "handler_count": 0,
+        "node_count": 2,
+        "pd_stopped": false,
+        "pdf_node_count": 0,
+        "peak_rss_after_kib": 130116,
+        "peak_rss_before_kib": 27624,
+        "record_count": 2,
+        "scan_result_time_ms": 972,
+        "stream_node_count": 1
+      },
+      "possible_oom_exit_137": false,
+      "sample": "sentinel-100000.iso",
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "{\"aggressive_scan\":true,\"debug_record_count\":0,\"elapsed_ms\":975,\"error_count\":0,\"handler_count\":0,\"node_count\":2,\"pd_stopped\":false,\"pdf_node_count\":0,\"peak_rss_after_kib\":130116,\"peak_rss_before_kib\":27624,\"record_count\":2,\"scan_result_time_ms\":972,\"stream_node_count\":1}\n",
+      "stdout_sha256": "605282f420d316ccaa0a4edc3d200fad8f84e1febf047f05074048969c6079bd",
+      "timed_out": false,
+      "wall_elapsed_ms": 1475
+    },
+    {
+      "arguments": [
+        "/corpus/sentinel-100001.iso"
+      ],
+      "exit_code": 0,
+      "harness": {
+        "aggressive_scan": true,
+        "debug_record_count": 0,
+        "elapsed_ms": 989,
+        "error_count": 0,
+        "handler_count": 0,
+        "node_count": 2,
+        "pd_stopped": false,
+        "pdf_node_count": 0,
+        "peak_rss_after_kib": 130128,
+        "peak_rss_before_kib": 27772,
+        "record_count": 2,
+        "scan_result_time_ms": 986,
+        "stream_node_count": 1
+      },
+      "possible_oom_exit_137": false,
+      "sample": "sentinel-100001.iso",
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "{\"aggressive_scan\":true,\"debug_record_count\":0,\"elapsed_ms\":989,\"error_count\":0,\"handler_count\":0,\"node_count\":2,\"pd_stopped\":false,\"pdf_node_count\":0,\"peak_rss_after_kib\":130128,\"peak_rss_before_kib\":27772,\"record_count\":2,\"scan_result_time_ms\":986,\"stream_node_count\":1}\n",
+      "stdout_sha256": "554bf28e2db74fa775d48667c8f3455aa1f9051380d67bb332b4e9a8b123860e",
+      "timed_out": false,
+      "wall_elapsed_ms": 1479
+    }
+  ],
+  "corpus": {
+    "capability": "CAP-GAP-006",
+    "generator": "tools/corpus/generate_archive_iteration_boundary_fixture.py",
+    "license": "project-generated; no third-party sample bytes",
+    "record_count": 100001,
+    "samples": [
+      {
+        "name": "sentinel-099999.iso",
+        "record_count": 100001,
+        "sentinel_ordinal": 99999,
+        "sha256": "5214a3b0baadc4e29b7cade268b6e255567bf920110e6cdbae2647883e35b439",
+        "size": 4306944
+      },
+      {
+        "name": "sentinel-100000.iso",
+        "record_count": 100001,
+        "sentinel_ordinal": 100000,
+        "sha256": "a4b9e66ddf948f7fda3aa1d5ef4572e58e9262bef3f2aa90f1f6e005a2c8c449",
+        "size": 4306944
+      },
+      {
+        "name": "sentinel-100001.iso",
+        "record_count": 100001,
+        "sentinel_ordinal": 100001,
+        "sha256": "fd8bc136371dd7e6fb2e58ffd3fac0884440092fb6422bc2bd66302a99ae7819",
+        "size": 4306944
+      }
+    ],
+    "schema_version": 1
+  },
+  "corpus_manifest_sha256": "e7f5e3c7aaa04add2b987bbfbc12df5683a3418b227b64fe501b1c8038c08e10",
+  "environment": {
+    "container_network": "none",
+    "fault_injection": {
+      "placeholder_declared_size": 16777216,
+      "purpose": "force placeholder QTemporaryFile allocation to fail before unpack/child scan while preserving archive-record iteration",
+      "temporary_directory": "/proc"
+    },
+    "image": "diec-rust/archive-iteration-boundary-harness-qt6:74eaf505",
+    "image_identity": {
+      "id": "sha256:a51310e8e03ada9fb907d6ea3d3d3b0a5d0c1917a3aaef971f3a07683486508f",
+      "repo_digests": [
+        "diec-rust/archive-iteration-boundary-harness-qt6@sha256:a51310e8e03ada9fb907d6ea3d3d3b0a5d0c1917a3aaef971f3a07683486508f"
+      ],
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    },
+    "platform": "linux-x86_64-qt6",
+    "resource_limits": {
+      "cpus": "1",
+      "memory": "512m",
+      "pids": 128,
+      "wall_timeout_seconds": 30
+    }
+  },
+  "failures": [],
+  "harness_binary": {
+    "path": "/opt/die-build/src/console/diec-archive-iteration-boundary-harness",
+    "sha256": "d13b381bc5353f8e261a741c235a825e65461d8ab38cf9f9ba71c16fb94dfbcb",
+    "size": 9450416
+  },
+  "iso_source_contract": {
+    "dot_filter_line": 546,
+    "dot_filter_pattern": "if (nFileNameLength == 1 && (sFileName == \"\\x00\" || sFileName == \"\\x01\")) {",
+    "dot_filter_pattern_count": 1,
+    "path": "/opt/die-source/XArchive/xiso9660.cpp",
+    "sha256": "d6e97c4ff2395b812b65da5ab480e937c6b365e6e6e8b0288ddf48b8fd398fb1"
+  },
+  "known_difference": {
+    "qt5_last_reachable_pdf_ordinal": 100000,
+    "qt6_extra_stream_count_per_case": 1,
+    "qt6_last_reachable_pdf_ordinal": 99999,
+    "requires_qt_string_semantics_probe": true,
+    "scope": "ISO9660 NUL dot-entry filtering",
+    "source_revision_equal": true
+  },
+  "passed": true,
+  "schema_version": 1,
+  "source_contract": {
+    "archive_block_end_line": 2932,
+    "archive_block_start_line": 2835,
+    "component_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83",
+    "path": "/opt/die-source/XScanEngine/xscanengine.cpp",
+    "required_pattern_counts": {
+      "aggressive_limit": 1,
+      "allocation_before_scan": 1,
+      "current_index_initialization": 1,
+      "hard_iteration_guard": 1,
+      "post_increment_limit_check": 1,
+      "single_increment": 1
+    },
+    "sha256": "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498",
+    "source_order_verified": true
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+}

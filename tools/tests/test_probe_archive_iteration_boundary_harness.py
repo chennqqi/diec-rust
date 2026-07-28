@@ -28,12 +28,20 @@ MANIFEST_PATH = (
     / "data"
     / "archive-iteration-boundary-corpus.json"
 )
-DOCKERFILE_PATH = (
-    ROOT
-    / "tools"
-    / "upstream"
-    / "Dockerfile.archive-iteration-boundary-harness-qt5"
-)
+DOCKERFILE_PATHS = {
+    "qt5": (
+        ROOT
+        / "tools"
+        / "upstream"
+        / "Dockerfile.archive-iteration-boundary-harness-qt5"
+    ),
+    "qt6": (
+        ROOT
+        / "tools"
+        / "upstream"
+        / "Dockerfile.archive-iteration-boundary-harness-qt6"
+    ),
+}
 HARNESS_PATH = (
     ROOT
     / "tools"
@@ -189,24 +197,34 @@ class ProbeArchiveIterationBoundaryHarnessTests(unittest.TestCase):
                 )
 
     def test_harness_and_dockerfile_enable_aggressive_scan(self):
-        dockerfile = DOCKERFILE_PATH.read_text(encoding="utf-8")
+        dockerfiles = {
+            name: path.read_text(encoding="utf-8")
+            for name, path in DOCKERFILE_PATHS.items()
+        }
         harness = HARNESS_PATH.read_text(encoding="utf-8")
         self.assertIn(
             "ARG BASE_IMAGE=diec-rust/upstream-oracle-cmake:74eaf505",
-            dockerfile,
+            dockerfiles["qt5"],
         )
         self.assertIn(
-            "CMakeFiles/diec.dir/main_console.cpp.o",
-            dockerfile,
+            "ARG BASE_IMAGE="
+            "diec-rust/upstream-oracle-cmake-qt6:74eaf505",
+            dockerfiles["qt6"],
         )
-        self.assertIn(
-            "/tmp/archive_iteration_boundary_harness_main.cpp.o",
-            dockerfile,
-        )
-        self.assertIn(
-            'org.opencontainers.image.revision="74eaf505',
-            dockerfile,
-        )
+        for name, dockerfile in dockerfiles.items():
+            with self.subTest(variant=name):
+                self.assertIn(
+                    "CMakeFiles/diec.dir/main_console.cpp.o",
+                    dockerfile,
+                )
+                self.assertIn(
+                    "/tmp/archive_iteration_boundary_harness_main.cpp.o",
+                    dockerfile,
+                )
+                self.assertIn(
+                    'org.opencontainers.image.revision="74eaf505',
+                    dockerfile,
+                )
         self.assertIn("options.bIsAggressiveScan = true", harness)
         self.assertIn("options.bIsArchivesScan = true", harness)
         self.assertIn("getrusage(RUSAGE_SELF", harness)

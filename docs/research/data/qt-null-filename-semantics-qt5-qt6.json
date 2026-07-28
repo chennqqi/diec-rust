@@ -1,0 +1,60 @@
+{
+  "generator": "tools/upstream/probe_qt_null_filename_semantics.py",
+  "generator_sha256": "8303764c9308923da9402eedfa7988dde4b1380849d92b46671ffec5c4a4ab09",
+  "observations": {
+    "qt5": {
+      "exit_code": 0,
+      "image": "diec-rust/upstream-archive-iteration-boundary-harness:74eaf505",
+      "image_id": "sha256:6cfc6dfb568e1287103bbe92f31e75864153b6bf5f196a744178d9c86ae19392",
+      "result": {
+        "equals_c_string": true,
+        "equals_explicit_null": false,
+        "first_code_unit": -1,
+        "qt_version": "5.15.13",
+        "string_size": 0
+      },
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "{\"equals_c_string\":true,\"equals_explicit_null\":false,\"first_code_unit\":-1,\"qt_version\":\"5.15.13\",\"string_size\":0}\n",
+      "stdout_sha256": "d917d1e006d81aeb8d967468b82c58503d20c11dcd823b10e1c70992073c9faf"
+    },
+    "qt6": {
+      "exit_code": 0,
+      "image": "diec-rust/archive-iteration-boundary-harness-qt6:74eaf505",
+      "image_id": "sha256:a51310e8e03ada9fb907d6ea3d3d3b0a5d0c1917a3aaef971f3a07683486508f",
+      "result": {
+        "equals_c_string": false,
+        "equals_explicit_null": true,
+        "first_code_unit": 0,
+        "qt_version": "6.4.2",
+        "string_size": 1
+      },
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "{\"equals_c_string\":false,\"equals_explicit_null\":true,\"first_code_unit\":0,\"qt_version\":\"6.4.2\",\"string_size\":1}\n",
+      "stdout_sha256": "14371885a1c17503f2f243f7c9cfc871c211bea85d4513ebd3bfe30a649714ee"
+    }
+  },
+  "platform": "linux-x86_64-qt5-qt6",
+  "relationships": {
+    "iso_dot_filter_expression_changes_across_qt_versions": true,
+    "qt5_from_latin1_truncates_at_nul": true,
+    "qt5_nul_string_equals_nul_c_string": true,
+    "qt6_from_latin1_preserves_one_nul_code_unit": true,
+    "qt6_nul_string_does_not_equal_nul_c_string": true
+  },
+  "relevance": {
+    "component": "XArchive/xiso9660.cpp",
+    "expression": "sFileName == \"\\x00\" in the dot-entry filter",
+    "qt6_effect": "the one-NUL dot entry is retained before real ISO records"
+  },
+  "result": "observed",
+  "schema_version": 1,
+  "source": {
+    "path": "tools/upstream/qt_null_filename_probe.cpp",
+    "sha256": "a8dd95be1b739b204f978baabfdd0b2edd1a3ef9400b53a5c5b029ccab1d5a81"
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}
