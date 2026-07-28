@@ -52,6 +52,16 @@ DEFLATE64_PDF = PDF.ljust(DEFLATE64_DISTANCE, b"\0") + PDF[:3]
 BCJ2_E8_PDF = PDF + b"\xe8\xc0\xfe\xff\xff"
 BCJ2_E9_PDF = PDF + b"\xe9\xc0\xfe\xff\xff"
 BCJ2_JCC_PDF = PDF + b"\x0f\x85\xbf\xfe\xff\xff"
+CAB_LZX15_PDF_STREAM = bytes.fromhex(
+    "5b80808d0010b11400000000334300600f567e2b0d0674e2ebb7aa750e2a94ee"
+    "25223c59a328eb7291176b7464a1ffff04b1a4f4e1fc00000000553300000b34"
+    "3d7070a9e2aa4f5c2e94c22441901064f440139860020b5c7b9df0fd00200000"
+    "00006600410019bf7e8dfbfd04f3c687e00e51b04e13faac03046864f3f2ef13"
+    "8b8d71f9679d9481486cbec26113033de06b1de2229bf23cdb7cd355a6facd2d"
+    "cc22fd0d7f8c46a8d449ad30eab644fc9e9fa9ff878b6392a277c69fb033a337"
+    "4bfe3c4f5e94bcc0b91bb86e6ee3510eccfa831e4fde74b460b52a689314884d"
+    "e8e9e9f56bb3e82a8e90f6a14201958c0874781e2544b0ab0008"
+)
 
 
 def sevenzip_uint64(value: int) -> bytes:
@@ -745,6 +755,10 @@ def make_cab_single(
     method: str,
 ) -> bytes:
     encoded_name = name.encode("ascii") + b"\0"
+    data_checksum = 0
+    file_date = 0x0021
+    file_time = 0
+    set_id = 0xD1EC
     if method == "Store":
         compressed = payload
         compression_type = 0
@@ -754,6 +768,15 @@ def make_cab_single(
             compressor.compress(payload) + compressor.flush()
         )
         compression_type = 1
+    elif method == "LZX15":
+        if payload != PDF:
+            raise ValueError("CAB LZX15 fixture requires the canonical PDF")
+        compressed = CAB_LZX15_PDF_STREAM
+        compression_type = 0x0F03
+        data_checksum = 0x715EAFFD
+        file_date = 0x5022
+        file_time = 0x1883
+        set_id = 0
     else:
         raise ValueError(f"unsupported CAB method: {method}")
     header_size = 36
@@ -763,15 +786,15 @@ def make_cab_single(
         len(payload),
         0,
         0,
-        0x0021,
-        0,
+        file_date,
+        file_time,
         0x20,
     ) + encoded_name
     files_offset = header_size + folder_size
     data_offset = files_offset + len(file_entry)
     data_block = struct.pack(
         "<IHH",
-        0,
+        data_checksum,
         len(compressed),
         len(payload),
     ) + compressed
@@ -789,7 +812,7 @@ def make_cab_single(
         1,
         1,
         0,
-        0xD1EC,
+        set_id,
         0,
     )
     folder = struct.pack(
@@ -807,6 +830,10 @@ def make_cab_stored(name: str, payload: bytes) -> bytes:
 
 def make_cab_mszip(name: str, payload: bytes) -> bytes:
     return make_cab_single(name, payload, "MSZIP")
+
+
+def make_cab_lzx15(name: str, payload: bytes) -> bytes:
+    return make_cab_single(name, payload, "LZX15")
 
 
 def both16(value: int) -> bytes:
@@ -1030,6 +1057,12 @@ FIXTURES = (
         "CAB MSZIP archive containing one PDF",
         "MSZIP",
         make_cab_mszip,
+    ),
+    (
+        "pdf-member-lzx.cab",
+        "CAB LZX window-15 archive containing one PDF",
+        "LZX15",
+        make_cab_lzx15,
     ),
     (
         "pdf-member.iso",

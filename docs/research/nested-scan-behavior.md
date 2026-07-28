@@ -41,6 +41,9 @@ CLI 原始输出相同且不展开；
 逐字节相同。7Z/CAB 顶层仍分别为 `Binary / 7-Zip` 和 `Binary / CAB`，不能把
 展示 filetype 当作 adapter 选择条件。完整报告见
 [`archive-format-behavior.md`](archive-format-behavior.md)。
+同一实验中的第十八个 CAB LZX:15 样本在普通 archive 下无 child，
+archive+aggressive 下产生 331-byte `Binary / Unknown` Stream，不能归入上述
+正向解包集合。
 
 ## 三层能力边界
 
@@ -268,6 +271,8 @@ archive 的 28 次 harness 输出都与发布 CMake CLI 对应模式逐字节相
 | ZIP→PDF / archive | 1 | 0 | 0 | PDF 成为 Stream |
 | ZIP→ZIP→PDF / archive | 2 | 0 | 0 | archive flag 跨层传播 |
 | 7Z Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64/x86 BCJ+LZMA2/BCJ2+LZMA2 no-branch/E8/E9/JCC/ARM64-BCJ+LZMA2 BL/ADRP、RAR4 store、CAB Store/MSZIP、ISO→PDF / archive | 1 | 0 | 0 | 十七个 coder/container 样本各产生一个 PDF Stream |
+| CAB LZX:15 / archive | 0 | 0 | 0 | 合法成员未解包 |
+| CAB LZX:15 / archive+aggressive | 1 | 0 | 0 | 331-byte Binary/Unknown Stream |
 | 22 PDF ZIP / archive | 21 | 0 | 0 | 确认默认 off-by-one |
 | 22 PDF ZIP / archive+aggressive | 22 | 0 | 0 | 全部成员 |
 | 22 PDF resources / recursive | 0 | 21 | 0 | 确认默认 off-by-one |

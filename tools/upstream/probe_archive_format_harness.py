@@ -45,6 +45,8 @@ SOURCE_PATHS = {
     "sevenzip_bcj2_graph": "/opt/die-source/XArchive/xsevenzip.cpp",
     "rar": "/opt/die-source/XArchive/xrar.cpp",
     "cab": "/opt/die-source/XArchive/xcab.cpp",
+    "cab_lzx_method": "/opt/die-source/XArchive/xcab.cpp",
+    "cab_decompress_dispatch": "/opt/die-source/XArchive/xdecompress.cpp",
     "iso9660": "/opt/die-source/XArchive/xiso9660.cpp",
 }
 SOURCE_PATTERNS = {
@@ -78,6 +80,15 @@ SOURCE_PATTERNS = {
     ),
     "rar": "bool XRar::initUnpack(",
     "cab": "bool XCab::initUnpack(",
+    "cab_lzx_method": (
+        "result.mapProperties.insert(FPART_PROP_HANDLEMETHOD, "
+        "HANDLE_METHOD_LZX_CAB);"
+    ),
+    "cab_decompress_dispatch": (
+        "} else if ((compressMethod == "
+        "XBinary::HANDLE_METHOD_STORE_CAB) || "
+        "(compressMethod == XBinary::HANDLE_METHOD_MSZIP_CAB)) {"
+    ),
     "iso9660": "bool XISO9660::initUnpack(",
 }
 EXPECTED_ROOTS = {
@@ -150,6 +161,16 @@ EXPECTED_ROOTS = {
         "filetype": "Binary",
         "root_names": ["CAB"],
     },
+    "pdf-member-lzx.cab": {
+        "filetype": "Binary",
+        "root_names": ["CAB"],
+        "archive_stream_count": 0,
+        "aggressive_stream": {
+            "filetypes": ["Binary"],
+            "detection_names": ["Unknown"],
+            "sizes": ["331"],
+        },
+    },
     "pdf-member.iso": {
         "filetype": "ISO 9660",
         "root_names": ["Unknown"],
@@ -215,7 +236,7 @@ def load_fixture(
         }
     }:
         raise ProbeError("unexpected fixture generator dependencies")
-    if len(manifest["samples"]) != 17:
+    if len(manifest["samples"]) != 18:
         raise ProbeError("fixture sample count changed")
 
     declared = set()
@@ -432,9 +453,34 @@ def validate_case(
         raise ProbeError(f"root filetype changed: {sample_name}/{mode}")
     if summary["root_detection_names"] != expected["root_names"]:
         raise ProbeError(f"root detections changed: {sample_name}/{mode}")
-    if mode == "default":
-        if summary["stream_count"] != 0:
-            raise ProbeError(f"default unpacked archive: {sample_name}")
+    aggressive_stream = expected.get("aggressive_stream")
+    if mode == "archive_aggressive" and aggressive_stream:
+        expected_stream_count = 1
+    else:
+        expected_stream_count = (
+            0
+            if mode == "default"
+            else expected.get("archive_stream_count", 1)
+        )
+    if summary["stream_count"] != expected_stream_count:
+        raise ProbeError(f"member count changed: {sample_name}/{mode}")
+    if expected_stream_count == 0:
+        if (
+            summary["stream_filetypes"]
+            or summary["stream_detection_names"]
+            or summary["stream_sizes"]
+        ):
+            raise ProbeError(f"unexpected member data: {sample_name}/{mode}")
+    elif mode == "archive_aggressive" and aggressive_stream:
+        if summary["stream_filetypes"] != aggressive_stream["filetypes"]:
+            raise ProbeError(f"member filetype changed: {sample_name}/{mode}")
+        if (
+            summary["stream_detection_names"]
+            != aggressive_stream["detection_names"]
+        ):
+            raise ProbeError(f"member detections changed: {sample_name}/{mode}")
+        if summary["stream_sizes"] != aggressive_stream["sizes"]:
+            raise ProbeError(f"member size changed: {sample_name}/{mode}")
     else:
         if summary["stream_count"] != 1:
             raise ProbeError(f"member count changed: {sample_name}/{mode}")
@@ -498,7 +544,10 @@ def build_report(
                 "summary": summary,
             }
 
-        if raw_modes["archive"] != raw_modes["archive_aggressive"]:
+        if sample_name == "pdf-member-lzx.cab":
+            if raw_modes["archive"] == raw_modes["archive_aggressive"]:
+                raise ProbeError("LZX aggressive fallback disappeared")
+        elif raw_modes["archive"] != raw_modes["archive_aggressive"]:
             raise ProbeError(
                 f"aggressive changed single-member output: {sample_name}"
             )
@@ -544,10 +593,11 @@ def build_report(
         "rar4_store_member_reaches_pdf_rules": True,
         "cab_store_member_reaches_pdf_rules": True,
         "cab_mszip_member_reaches_pdf_rules": True,
+        "cab_lzx_archive_has_no_child_but_aggressive_scans_unknown_output": True,
         "iso9660_store_member_reaches_pdf_rules": True,
         "cab_root_dispatches_as_binary_while_archive_adapter_runs": True,
         "sevenzip_root_dispatches_as_binary_while_archive_adapter_runs": True,
-        "aggressive_does_not_change_single_member_results": True,
+        "aggressive_does_not_change_supported_single_member_results": True,
     }
     root = pathlib.Path(__file__).resolve().parents[2]
     return {

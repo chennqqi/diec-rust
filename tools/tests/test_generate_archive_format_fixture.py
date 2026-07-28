@@ -64,6 +64,7 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
                     "pdf-member.rar",
                     "pdf-member.cab",
                     "pdf-member-mszip.cab",
+                    "pdf-member-lzx.cab",
                     "pdf-member.iso",
                 },
             )
@@ -534,6 +535,36 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
             zlib.decompress(compressed[2:], wbits=-15),
             module.PDF,
         )
+        lzx = module.make_cab_lzx15(
+            module.PAYLOAD_NAME,
+            module.PDF,
+        )
+        self.assertEqual(len(lzx), 330)
+        self.assertEqual(
+            hashlib.sha256(lzx).hexdigest(),
+            "9fa90ae102f325edc1aaa127216f76a01e393c61b1878098b7179d4db00fa633",
+        )
+        lzx_data_offset = int.from_bytes(lzx[36:40], "little")
+        self.assertEqual(
+            int.from_bytes(lzx[42:44], "little"),
+            0x0F03,
+        )
+        self.assertEqual(
+            int.from_bytes(
+                lzx[lzx_data_offset : lzx_data_offset + 4],
+                "little",
+            ),
+            0x715EAFFD,
+        )
+        self.assertEqual(
+            lzx[lzx_data_offset + 8 :],
+            module.CAB_LZX15_PDF_STREAM,
+        )
+        with self.assertRaisesRegex(
+            ValueError,
+            "CAB LZX15 fixture requires the canonical PDF",
+        ):
+            module.make_cab_lzx15(module.PAYLOAD_NAME, b"not-pdf")
         with self.assertRaisesRegex(ValueError, "unsupported CAB method"):
             module.make_cab_single(
                 module.PAYLOAD_NAME,

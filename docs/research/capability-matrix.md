@@ -149,7 +149,9 @@ ARM64-BCJ+LZMA2 BL/ADRP、
 RAR4 store、CAB Store/MSZIP 与 ISO9660 的 engine-only
 archive 正向解包见
 [`archive-format-behavior.md`](archive-format-behavior.md)；其中 7Z/CAB
-顶层仍显示 `Binary`，但可产生 PDF Stream child。NPM 专用实验进一步证明：
+顶层仍显示 `Binary`，但已支持方法可产生 PDF Stream child；CAB LZX:15
+普通 archive 无 child、aggressive 扫描 331-byte Binary/Unknown。NPM
+专用实验进一步证明：
 精确 `package/package.json` 可使直接检测器返回 true，公共 GZIP 自动检测却只
 产生 `BINARY|ARCHIVE|GZIP` 并回退 `Binary / Unknown`；强制 `filetypes=NPM`
 后语言规则可达。详见
@@ -226,7 +228,7 @@ hideunknown 的可观察增量。完整输入哈希和输出见
   状态为 Observed with gaps；7Z Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64、
   x86 BCJ+LZMA2、BCJ2+LZMA2 no-branch/E8/E9/JCC、ARM64-BCJ+LZMA2 BL/ADRP、
   RAR4 store、CAB Store/MSZIP 与
-  ISO9660 正例已经固定，但
+  ISO9660 正例及 CAB LZX 普通/激进失败边界已经固定，但
   ZIP 1 MiB/843.58:1 和首轮格式错误边界已固定；更高展开量、其他格式/算法、
   真实资源耗尽和跨平台仍待验证。详见
   [`archive-limit-behavior.md`](archive-limit-behavior.md) 与

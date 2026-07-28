@@ -298,8 +298,9 @@ baseline 的变更都要检查本表。
   保留 root partial record。固定 archive harness 还证明 7Z
   Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64 七种 coder、
   x86/ARM64 BCJ+LZMA2、BCJ2+LZMA2 no-branch/E8/E9/JCC filter 链与 CAB
-  Store/MSZIP 都能到达 PDF child；未覆盖的 AES、
-  CAB LZX/Quantum 与其他 backend 仍需共享同一
+  Store/MSZIP 都能到达 PDF child；CAB LZX 普通 archive 不产生 child，
+  aggressive 却扫描 331-byte Binary/Unknown 输出；未覆盖的 AES、
+  CAB Quantum 与其他 backend 仍需共享同一
   预算。详见
   [`archive-limit-behavior.md`](../research/archive-limit-behavior.md) 和
   [`archive-format-behavior.md`](../research/archive-format-behavior.md)、

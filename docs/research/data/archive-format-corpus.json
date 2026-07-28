@@ -173,6 +173,16 @@
       "size": 279
     },
     {
+      "archive_format": "CAB",
+      "compression_method": "LZX15",
+      "expected_member_name": "payload.pdf",
+      "expected_payload_sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "name": "pdf-member-lzx.cab",
+      "purpose": "CAB LZX window-15 archive containing one PDF",
+      "sha256": "9fa90ae102f325edc1aaa127216f76a01e393c61b1878098b7179d4db00fa633",
+      "size": 330
+    },
+    {
       "archive_format": "ISO",
       "compression_method": "Store",
       "expected_member_name": "payload.pdf",
