@@ -1,0 +1,3247 @@
+{
+  "binaries": {
+    "harness": {
+      "path": "/opt/die-build/src/console/diec-archive-harness",
+      "sha256": "b7ea9b151b58b630c017e9989333fa035b7d86ffab366a5d3a1f74bab9f1e96e",
+      "size": 8233888
+    },
+    "release": {
+      "path": "/opt/die-build/src/console/diec",
+      "sha256": "da1fab49f7ba5970d1fc1c7fe3d4f380cf5e8775dd8097207e7b3c30f08236cf",
+      "size": 8248008
+    }
+  },
+  "cases": {
+    "cab-data-start.cab": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/cab-data-start.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "6bb99a08ebe3602125355ff084896a31de28eecfd36a926583eab7644215f112",
+          "bytes": 500,
+          "sha256": "6bb99a08ebe3602125355ff084896a31de28eecfd36a926583eab7644215f112"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/cab-data-start.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "6bb99a08ebe3602125355ff084896a31de28eecfd36a926583eab7644215f112",
+          "bytes": 500,
+          "sha256": "6bb99a08ebe3602125355ff084896a31de28eecfd36a926583eab7644215f112"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/cab-data-start.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "6bb99a08ebe3602125355ff084896a31de28eecfd36a926583eab7644215f112",
+          "bytes": 500,
+          "sha256": "6bb99a08ebe3602125355ff084896a31de28eecfd36a926583eab7644215f112"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/cab-data-start.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "6bb99a08ebe3602125355ff084896a31de28eecfd36a926583eab7644215f112",
+          "bytes": 500,
+          "sha256": "6bb99a08ebe3602125355ff084896a31de28eecfd36a926583eab7644215f112"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "cab-folder.cab": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/cab-folder.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f6faabcf600d4c6df0ebea9ec87c352b8cb9351c5cf651673a2b8c73fdc92422",
+          "bytes": 468,
+          "sha256": "f6faabcf600d4c6df0ebea9ec87c352b8cb9351c5cf651673a2b8c73fdc92422"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/cab-folder.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f6faabcf600d4c6df0ebea9ec87c352b8cb9351c5cf651673a2b8c73fdc92422",
+          "bytes": 468,
+          "sha256": "f6faabcf600d4c6df0ebea9ec87c352b8cb9351c5cf651673a2b8c73fdc92422"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/cab-folder.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f6faabcf600d4c6df0ebea9ec87c352b8cb9351c5cf651673a2b8c73fdc92422",
+          "bytes": 468,
+          "sha256": "f6faabcf600d4c6df0ebea9ec87c352b8cb9351c5cf651673a2b8c73fdc92422"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/cab-folder.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f6faabcf600d4c6df0ebea9ec87c352b8cb9351c5cf651673a2b8c73fdc92422",
+          "bytes": 468,
+          "sha256": "f6faabcf600d4c6df0ebea9ec87c352b8cb9351c5cf651673a2b8c73fdc92422"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "cab-full-minus-one.cab": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/cab-full-minus-one.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "a8cbe83f19ba16ca1a02fb687b4678b3bea6c81b6f95cc6240adfcf9351989ee",
+          "bytes": 501,
+          "sha256": "a8cbe83f19ba16ca1a02fb687b4678b3bea6c81b6f95cc6240adfcf9351989ee"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/cab-full-minus-one.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "a8cbe83f19ba16ca1a02fb687b4678b3bea6c81b6f95cc6240adfcf9351989ee",
+          "bytes": 501,
+          "sha256": "a8cbe83f19ba16ca1a02fb687b4678b3bea6c81b6f95cc6240adfcf9351989ee"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/cab-full-minus-one.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "a8cbe83f19ba16ca1a02fb687b4678b3bea6c81b6f95cc6240adfcf9351989ee",
+          "bytes": 501,
+          "sha256": "a8cbe83f19ba16ca1a02fb687b4678b3bea6c81b6f95cc6240adfcf9351989ee"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/cab-full-minus-one.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "a8cbe83f19ba16ca1a02fb687b4678b3bea6c81b6f95cc6240adfcf9351989ee",
+          "bytes": 501,
+          "sha256": "a8cbe83f19ba16ca1a02fb687b4678b3bea6c81b6f95cc6240adfcf9351989ee"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "cab-full.cab": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/cab-full.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "c61a8ab2f88cbe7cb5d65f3391e79c784e65f9c1ac039d83a33dc3940381da2a",
+          "bytes": 1384,
+          "sha256": "c61a8ab2f88cbe7cb5d65f3391e79c784e65f9c1ac039d83a33dc3940381da2a"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/cab-full.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "c61a8ab2f88cbe7cb5d65f3391e79c784e65f9c1ac039d83a33dc3940381da2a",
+          "bytes": 1384,
+          "sha256": "c61a8ab2f88cbe7cb5d65f3391e79c784e65f9c1ac039d83a33dc3940381da2a"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/cab-full.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "d54c72c325ef34e7fca23c49da90a79eb32d5ff9666f799051fb0618bd69b8e7",
+          "bytes": 501,
+          "sha256": "d54c72c325ef34e7fca23c49da90a79eb32d5ff9666f799051fb0618bd69b8e7"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/cab-full.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "d54c72c325ef34e7fca23c49da90a79eb32d5ff9666f799051fb0618bd69b8e7",
+          "bytes": 501,
+          "sha256": "d54c72c325ef34e7fca23c49da90a79eb32d5ff9666f799051fb0618bd69b8e7"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "cab-header-minus-one.cab": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/cab-header-minus-one.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "26500cd269c97490d56432eb1ccbc8d54f85ce5f7b9023b51fe8dca00633112a",
+          "bytes": 468,
+          "sha256": "26500cd269c97490d56432eb1ccbc8d54f85ce5f7b9023b51fe8dca00633112a"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/cab-header-minus-one.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "26500cd269c97490d56432eb1ccbc8d54f85ce5f7b9023b51fe8dca00633112a",
+          "bytes": 468,
+          "sha256": "26500cd269c97490d56432eb1ccbc8d54f85ce5f7b9023b51fe8dca00633112a"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/cab-header-minus-one.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "26500cd269c97490d56432eb1ccbc8d54f85ce5f7b9023b51fe8dca00633112a",
+          "bytes": 468,
+          "sha256": "26500cd269c97490d56432eb1ccbc8d54f85ce5f7b9023b51fe8dca00633112a"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/cab-header-minus-one.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "26500cd269c97490d56432eb1ccbc8d54f85ce5f7b9023b51fe8dca00633112a",
+          "bytes": 468,
+          "sha256": "26500cd269c97490d56432eb1ccbc8d54f85ce5f7b9023b51fe8dca00633112a"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "cab-header.cab": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/cab-header.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "7cac8c99c662beeec3734d4ced63e292558f88ba2da995833bfe1eb98936ae11",
+          "bytes": 468,
+          "sha256": "7cac8c99c662beeec3734d4ced63e292558f88ba2da995833bfe1eb98936ae11"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/cab-header.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "7cac8c99c662beeec3734d4ced63e292558f88ba2da995833bfe1eb98936ae11",
+          "bytes": 468,
+          "sha256": "7cac8c99c662beeec3734d4ced63e292558f88ba2da995833bfe1eb98936ae11"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/cab-header.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "7cac8c99c662beeec3734d4ced63e292558f88ba2da995833bfe1eb98936ae11",
+          "bytes": 468,
+          "sha256": "7cac8c99c662beeec3734d4ced63e292558f88ba2da995833bfe1eb98936ae11"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/cab-header.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "7cac8c99c662beeec3734d4ced63e292558f88ba2da995833bfe1eb98936ae11",
+          "bytes": 468,
+          "sha256": "7cac8c99c662beeec3734d4ced63e292558f88ba2da995833bfe1eb98936ae11"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "cab-signature.cab": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/cab-signature.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "37d397962aaf4a060d3b7e8c56a81cc6385d7f2c44ddb087e0e1b415804c25db",
+          "bytes": 471,
+          "sha256": "37d397962aaf4a060d3b7e8c56a81cc6385d7f2c44ddb087e0e1b415804c25db"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Plain text"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/cab-signature.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "37d397962aaf4a060d3b7e8c56a81cc6385d7f2c44ddb087e0e1b415804c25db",
+          "bytes": 471,
+          "sha256": "37d397962aaf4a060d3b7e8c56a81cc6385d7f2c44ddb087e0e1b415804c25db"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Plain text"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/cab-signature.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "37d397962aaf4a060d3b7e8c56a81cc6385d7f2c44ddb087e0e1b415804c25db",
+          "bytes": 471,
+          "sha256": "37d397962aaf4a060d3b7e8c56a81cc6385d7f2c44ddb087e0e1b415804c25db"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Plain text"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/cab-signature.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "37d397962aaf4a060d3b7e8c56a81cc6385d7f2c44ddb087e0e1b415804c25db",
+          "bytes": 471,
+          "sha256": "37d397962aaf4a060d3b7e8c56a81cc6385d7f2c44ddb087e0e1b415804c25db"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Plain text"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-descriptor-signature.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-descriptor-signature.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "b5966f84d072ca6afcc088d3fef5e44b0f5004971e458a6f5e7c77ce78904268",
+          "bytes": 473,
+          "sha256": "b5966f84d072ca6afcc088d3fef5e44b0f5004971e458a6f5e7c77ce78904268"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-descriptor-signature.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "b5966f84d072ca6afcc088d3fef5e44b0f5004971e458a6f5e7c77ce78904268",
+          "bytes": 473,
+          "sha256": "b5966f84d072ca6afcc088d3fef5e44b0f5004971e458a6f5e7c77ce78904268"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-descriptor-signature.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "b5966f84d072ca6afcc088d3fef5e44b0f5004971e458a6f5e7c77ce78904268",
+          "bytes": 473,
+          "sha256": "b5966f84d072ca6afcc088d3fef5e44b0f5004971e458a6f5e7c77ce78904268"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-descriptor-signature.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "b5966f84d072ca6afcc088d3fef5e44b0f5004971e458a6f5e7c77ce78904268",
+          "bytes": 473,
+          "sha256": "b5966f84d072ca6afcc088d3fef5e44b0f5004971e458a6f5e7c77ce78904268"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-descriptor-version.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-descriptor-version.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "147709aa19a2b82a1bf05abc96d6ee87be0c07f6f31a13fd4b05d54dfc705f88",
+          "bytes": 473,
+          "sha256": "147709aa19a2b82a1bf05abc96d6ee87be0c07f6f31a13fd4b05d54dfc705f88"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-descriptor-version.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "147709aa19a2b82a1bf05abc96d6ee87be0c07f6f31a13fd4b05d54dfc705f88",
+          "bytes": 473,
+          "sha256": "147709aa19a2b82a1bf05abc96d6ee87be0c07f6f31a13fd4b05d54dfc705f88"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-descriptor-version.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "147709aa19a2b82a1bf05abc96d6ee87be0c07f6f31a13fd4b05d54dfc705f88",
+          "bytes": 473,
+          "sha256": "147709aa19a2b82a1bf05abc96d6ee87be0c07f6f31a13fd4b05d54dfc705f88"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-descriptor-version.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "147709aa19a2b82a1bf05abc96d6ee87be0c07f6f31a13fd4b05d54dfc705f88",
+          "bytes": 473,
+          "sha256": "147709aa19a2b82a1bf05abc96d6ee87be0c07f6f31a13fd4b05d54dfc705f88"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-directory-end.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-directory-end.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f1cd63f85b5b13743e19b83b2fa83d74c1ee9493cbd8f2277ddfbc325d4892e3",
+          "bytes": 473,
+          "sha256": "f1cd63f85b5b13743e19b83b2fa83d74c1ee9493cbd8f2277ddfbc325d4892e3"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-directory-end.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f1cd63f85b5b13743e19b83b2fa83d74c1ee9493cbd8f2277ddfbc325d4892e3",
+          "bytes": 473,
+          "sha256": "f1cd63f85b5b13743e19b83b2fa83d74c1ee9493cbd8f2277ddfbc325d4892e3"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-directory-end.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f1cd63f85b5b13743e19b83b2fa83d74c1ee9493cbd8f2277ddfbc325d4892e3",
+          "bytes": 473,
+          "sha256": "f1cd63f85b5b13743e19b83b2fa83d74c1ee9493cbd8f2277ddfbc325d4892e3"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-directory-end.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f1cd63f85b5b13743e19b83b2fa83d74c1ee9493cbd8f2277ddfbc325d4892e3",
+          "bytes": 473,
+          "sha256": "f1cd63f85b5b13743e19b83b2fa83d74c1ee9493cbd8f2277ddfbc325d4892e3"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-full-minus-one.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-full-minus-one.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "c2b1e230c749a197e5b993451b867e5cdc554d6d4c130fe55f9030f7b4efaf4e",
+          "bytes": 1356,
+          "sha256": "c2b1e230c749a197e5b993451b867e5cdc554d6d4c130fe55f9030f7b4efaf4e"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-full-minus-one.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "c2b1e230c749a197e5b993451b867e5cdc554d6d4c130fe55f9030f7b4efaf4e",
+          "bytes": 1356,
+          "sha256": "c2b1e230c749a197e5b993451b867e5cdc554d6d4c130fe55f9030f7b4efaf4e"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-full-minus-one.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "9a087a03a8ab9b153bb12ec27ba75f23c2360f608a8785958fb7c6803708a3f9",
+          "bytes": 473,
+          "sha256": "9a087a03a8ab9b153bb12ec27ba75f23c2360f608a8785958fb7c6803708a3f9"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-full-minus-one.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "9a087a03a8ab9b153bb12ec27ba75f23c2360f608a8785958fb7c6803708a3f9",
+          "bytes": 473,
+          "sha256": "9a087a03a8ab9b153bb12ec27ba75f23c2360f608a8785958fb7c6803708a3f9"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-full.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-full.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-full.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-full.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-full.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-primary-descriptor.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-primary-descriptor.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "1048277f8ca81c8e227ce0e87cd2e182f422b0b9bd220f824abd26cde5bdc1b7",
+          "bytes": 473,
+          "sha256": "1048277f8ca81c8e227ce0e87cd2e182f422b0b9bd220f824abd26cde5bdc1b7"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-primary-descriptor.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "1048277f8ca81c8e227ce0e87cd2e182f422b0b9bd220f824abd26cde5bdc1b7",
+          "bytes": 473,
+          "sha256": "1048277f8ca81c8e227ce0e87cd2e182f422b0b9bd220f824abd26cde5bdc1b7"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-primary-descriptor.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "1048277f8ca81c8e227ce0e87cd2e182f422b0b9bd220f824abd26cde5bdc1b7",
+          "bytes": 473,
+          "sha256": "1048277f8ca81c8e227ce0e87cd2e182f422b0b9bd220f824abd26cde5bdc1b7"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-primary-descriptor.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "1048277f8ca81c8e227ce0e87cd2e182f422b0b9bd220f824abd26cde5bdc1b7",
+          "bytes": 473,
+          "sha256": "1048277f8ca81c8e227ce0e87cd2e182f422b0b9bd220f824abd26cde5bdc1b7"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "rar4-file-header.rar": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/rar4-file-header.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "8be5188d16a406e36cb6d9678901e9b520da7d7497b04452497c2757a9a9e43f",
+          "bytes": 465,
+          "sha256": "8be5188d16a406e36cb6d9678901e9b520da7d7497b04452497c2757a9a9e43f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/rar4-file-header.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "8be5188d16a406e36cb6d9678901e9b520da7d7497b04452497c2757a9a9e43f",
+          "bytes": 465,
+          "sha256": "8be5188d16a406e36cb6d9678901e9b520da7d7497b04452497c2757a9a9e43f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/rar4-file-header.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "8be5188d16a406e36cb6d9678901e9b520da7d7497b04452497c2757a9a9e43f",
+          "bytes": 465,
+          "sha256": "8be5188d16a406e36cb6d9678901e9b520da7d7497b04452497c2757a9a9e43f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/rar4-file-header.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "8be5188d16a406e36cb6d9678901e9b520da7d7497b04452497c2757a9a9e43f",
+          "bytes": 465,
+          "sha256": "8be5188d16a406e36cb6d9678901e9b520da7d7497b04452497c2757a9a9e43f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "rar4-full-minus-one.rar": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/rar4-full-minus-one.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "fe5b3c4de755c5e7efdb84b92fe9e85d3f460fbd7b03b9fccaf4c82f8540a975",
+          "bytes": 1349,
+          "sha256": "fe5b3c4de755c5e7efdb84b92fe9e85d3f460fbd7b03b9fccaf4c82f8540a975"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/rar4-full-minus-one.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "fe5b3c4de755c5e7efdb84b92fe9e85d3f460fbd7b03b9fccaf4c82f8540a975",
+          "bytes": 1349,
+          "sha256": "fe5b3c4de755c5e7efdb84b92fe9e85d3f460fbd7b03b9fccaf4c82f8540a975"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/rar4-full-minus-one.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "6bad74382cc98c404ff214f8986a2243d386f1074da3aef8ee6cd472ad4f40a9",
+          "bytes": 466,
+          "sha256": "6bad74382cc98c404ff214f8986a2243d386f1074da3aef8ee6cd472ad4f40a9"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/rar4-full-minus-one.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "6bad74382cc98c404ff214f8986a2243d386f1074da3aef8ee6cd472ad4f40a9",
+          "bytes": 466,
+          "sha256": "6bad74382cc98c404ff214f8986a2243d386f1074da3aef8ee6cd472ad4f40a9"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "rar4-full.rar": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/rar4-full.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f4e066ff964ffec387a14d8d35e27b5e4de0fca22c48cb8f5bb579d2151cdb2f",
+          "bytes": 1349,
+          "sha256": "f4e066ff964ffec387a14d8d35e27b5e4de0fca22c48cb8f5bb579d2151cdb2f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/rar4-full.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f4e066ff964ffec387a14d8d35e27b5e4de0fca22c48cb8f5bb579d2151cdb2f",
+          "bytes": 1349,
+          "sha256": "f4e066ff964ffec387a14d8d35e27b5e4de0fca22c48cb8f5bb579d2151cdb2f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/rar4-full.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74",
+          "bytes": 466,
+          "sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/rar4-full.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74",
+          "bytes": 466,
+          "sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "rar4-main-header-minus-one.rar": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/rar4-main-header-minus-one.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "d1dc380fac994f9975415105923f4ed813dbf6b6fe4df38aba1525405a62da03",
+          "bytes": 468,
+          "sha256": "d1dc380fac994f9975415105923f4ed813dbf6b6fe4df38aba1525405a62da03"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/rar4-main-header-minus-one.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "d1dc380fac994f9975415105923f4ed813dbf6b6fe4df38aba1525405a62da03",
+          "bytes": 468,
+          "sha256": "d1dc380fac994f9975415105923f4ed813dbf6b6fe4df38aba1525405a62da03"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/rar4-main-header-minus-one.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "d1dc380fac994f9975415105923f4ed813dbf6b6fe4df38aba1525405a62da03",
+          "bytes": 468,
+          "sha256": "d1dc380fac994f9975415105923f4ed813dbf6b6fe4df38aba1525405a62da03"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/rar4-main-header-minus-one.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "d1dc380fac994f9975415105923f4ed813dbf6b6fe4df38aba1525405a62da03",
+          "bytes": 468,
+          "sha256": "d1dc380fac994f9975415105923f4ed813dbf6b6fe4df38aba1525405a62da03"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "rar4-main-header.rar": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/rar4-main-header.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "429e1c0a9fd5b77f655a2bcf36e91b06806b4c5fb419703bdb44bc5e2249d38b",
+          "bytes": 468,
+          "sha256": "429e1c0a9fd5b77f655a2bcf36e91b06806b4c5fb419703bdb44bc5e2249d38b"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/rar4-main-header.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "429e1c0a9fd5b77f655a2bcf36e91b06806b4c5fb419703bdb44bc5e2249d38b",
+          "bytes": 468,
+          "sha256": "429e1c0a9fd5b77f655a2bcf36e91b06806b4c5fb419703bdb44bc5e2249d38b"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/rar4-main-header.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "429e1c0a9fd5b77f655a2bcf36e91b06806b4c5fb419703bdb44bc5e2249d38b",
+          "bytes": 468,
+          "sha256": "429e1c0a9fd5b77f655a2bcf36e91b06806b4c5fb419703bdb44bc5e2249d38b"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/rar4-main-header.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "429e1c0a9fd5b77f655a2bcf36e91b06806b4c5fb419703bdb44bc5e2249d38b",
+          "bytes": 468,
+          "sha256": "429e1c0a9fd5b77f655a2bcf36e91b06806b4c5fb419703bdb44bc5e2249d38b"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "rar4-payload.rar": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/rar4-payload.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "b43969b080eb5eb5caa17d226fa84b6bc1a42d2f939c10ef2586d1e14f3647ee",
+          "bytes": 1349,
+          "sha256": "b43969b080eb5eb5caa17d226fa84b6bc1a42d2f939c10ef2586d1e14f3647ee"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/rar4-payload.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "b43969b080eb5eb5caa17d226fa84b6bc1a42d2f939c10ef2586d1e14f3647ee",
+          "bytes": 1349,
+          "sha256": "b43969b080eb5eb5caa17d226fa84b6bc1a42d2f939c10ef2586d1e14f3647ee"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/rar4-payload.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "21c70f5625b3697073d0d56855895614c847c2b1231509e4e9cf730c0f58a217",
+          "bytes": 466,
+          "sha256": "21c70f5625b3697073d0d56855895614c847c2b1231509e4e9cf730c0f58a217"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/rar4-payload.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "21c70f5625b3697073d0d56855895614c847c2b1231509e4e9cf730c0f58a217",
+          "bytes": 466,
+          "sha256": "21c70f5625b3697073d0d56855895614c847c2b1231509e4e9cf730c0f58a217"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "rar4-signature.rar": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/rar4-signature.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "aa5a3a90b5f00c315d171c84e9abbc1e932e34c59db4309ee21dfd988d33134f",
+          "bytes": 467,
+          "sha256": "aa5a3a90b5f00c315d171c84e9abbc1e932e34c59db4309ee21dfd988d33134f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/rar4-signature.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "aa5a3a90b5f00c315d171c84e9abbc1e932e34c59db4309ee21dfd988d33134f",
+          "bytes": 467,
+          "sha256": "aa5a3a90b5f00c315d171c84e9abbc1e932e34c59db4309ee21dfd988d33134f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/rar4-signature.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "aa5a3a90b5f00c315d171c84e9abbc1e932e34c59db4309ee21dfd988d33134f",
+          "bytes": 467,
+          "sha256": "aa5a3a90b5f00c315d171c84e9abbc1e932e34c59db4309ee21dfd988d33134f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/rar4-signature.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "aa5a3a90b5f00c315d171c84e9abbc1e932e34c59db4309ee21dfd988d33134f",
+          "bytes": 467,
+          "sha256": "aa5a3a90b5f00c315d171c84e9abbc1e932e34c59db4309ee21dfd988d33134f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "sevenzip-full-minus-one.7z": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/sevenzip-full-minus-one.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f8ae5135c8acf1a24c162e8d88b2b91e8545d9cbb5b0ad4c999c43cd789101d1",
+          "bytes": 473,
+          "sha256": "f8ae5135c8acf1a24c162e8d88b2b91e8545d9cbb5b0ad4c999c43cd789101d1"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/sevenzip-full-minus-one.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f8ae5135c8acf1a24c162e8d88b2b91e8545d9cbb5b0ad4c999c43cd789101d1",
+          "bytes": 473,
+          "sha256": "f8ae5135c8acf1a24c162e8d88b2b91e8545d9cbb5b0ad4c999c43cd789101d1"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/sevenzip-full-minus-one.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f8ae5135c8acf1a24c162e8d88b2b91e8545d9cbb5b0ad4c999c43cd789101d1",
+          "bytes": 473,
+          "sha256": "f8ae5135c8acf1a24c162e8d88b2b91e8545d9cbb5b0ad4c999c43cd789101d1"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/sevenzip-full-minus-one.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f8ae5135c8acf1a24c162e8d88b2b91e8545d9cbb5b0ad4c999c43cd789101d1",
+          "bytes": 473,
+          "sha256": "f8ae5135c8acf1a24c162e8d88b2b91e8545d9cbb5b0ad4c999c43cd789101d1"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "sevenzip-full.7z": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/sevenzip-full.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "c0ad2785c7d63fbfc174755471dd0f6050b257959b70d2181bb615ffd42dcbeb",
+          "bytes": 1356,
+          "sha256": "c0ad2785c7d63fbfc174755471dd0f6050b257959b70d2181bb615ffd42dcbeb"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/sevenzip-full.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "c0ad2785c7d63fbfc174755471dd0f6050b257959b70d2181bb615ffd42dcbeb",
+          "bytes": 1356,
+          "sha256": "c0ad2785c7d63fbfc174755471dd0f6050b257959b70d2181bb615ffd42dcbeb"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/sevenzip-full.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275",
+          "bytes": 473,
+          "sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/sevenzip-full.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275",
+          "bytes": 473,
+          "sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "sevenzip-header-minus-one.7z": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/sevenzip-header-minus-one.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "83cbe006c9b24c93260312b75a213904e76b75b7fcdb17612c6640f37a20c78c",
+          "bytes": 468,
+          "sha256": "83cbe006c9b24c93260312b75a213904e76b75b7fcdb17612c6640f37a20c78c"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/sevenzip-header-minus-one.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "83cbe006c9b24c93260312b75a213904e76b75b7fcdb17612c6640f37a20c78c",
+          "bytes": 468,
+          "sha256": "83cbe006c9b24c93260312b75a213904e76b75b7fcdb17612c6640f37a20c78c"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/sevenzip-header-minus-one.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "83cbe006c9b24c93260312b75a213904e76b75b7fcdb17612c6640f37a20c78c",
+          "bytes": 468,
+          "sha256": "83cbe006c9b24c93260312b75a213904e76b75b7fcdb17612c6640f37a20c78c"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/sevenzip-header-minus-one.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "83cbe006c9b24c93260312b75a213904e76b75b7fcdb17612c6640f37a20c78c",
+          "bytes": 468,
+          "sha256": "83cbe006c9b24c93260312b75a213904e76b75b7fcdb17612c6640f37a20c78c"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "sevenzip-header.7z": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/sevenzip-header.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "a83801b603861ffef94f3d377aa9e1c4c22770e9d0cc89c3bac1b5a18c2c41cc",
+          "bytes": 468,
+          "sha256": "a83801b603861ffef94f3d377aa9e1c4c22770e9d0cc89c3bac1b5a18c2c41cc"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/sevenzip-header.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "a83801b603861ffef94f3d377aa9e1c4c22770e9d0cc89c3bac1b5a18c2c41cc",
+          "bytes": 468,
+          "sha256": "a83801b603861ffef94f3d377aa9e1c4c22770e9d0cc89c3bac1b5a18c2c41cc"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/sevenzip-header.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "a83801b603861ffef94f3d377aa9e1c4c22770e9d0cc89c3bac1b5a18c2c41cc",
+          "bytes": 468,
+          "sha256": "a83801b603861ffef94f3d377aa9e1c4c22770e9d0cc89c3bac1b5a18c2c41cc"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/sevenzip-header.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "a83801b603861ffef94f3d377aa9e1c4c22770e9d0cc89c3bac1b5a18c2c41cc",
+          "bytes": 468,
+          "sha256": "a83801b603861ffef94f3d377aa9e1c4c22770e9d0cc89c3bac1b5a18c2c41cc"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "sevenzip-packed-data.7z": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/sevenzip-packed-data.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "620a1083fcab9e1639746bf12d49d3d54424a5fd0153f93725ab803810d72fb0",
+          "bytes": 473,
+          "sha256": "620a1083fcab9e1639746bf12d49d3d54424a5fd0153f93725ab803810d72fb0"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/sevenzip-packed-data.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "620a1083fcab9e1639746bf12d49d3d54424a5fd0153f93725ab803810d72fb0",
+          "bytes": 473,
+          "sha256": "620a1083fcab9e1639746bf12d49d3d54424a5fd0153f93725ab803810d72fb0"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/sevenzip-packed-data.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "620a1083fcab9e1639746bf12d49d3d54424a5fd0153f93725ab803810d72fb0",
+          "bytes": 473,
+          "sha256": "620a1083fcab9e1639746bf12d49d3d54424a5fd0153f93725ab803810d72fb0"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/sevenzip-packed-data.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "620a1083fcab9e1639746bf12d49d3d54424a5fd0153f93725ab803810d72fb0",
+          "bytes": 473,
+          "sha256": "620a1083fcab9e1639746bf12d49d3d54424a5fd0153f93725ab803810d72fb0"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "sevenzip-signature.7z": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/sevenzip-signature.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "be9d987ee1f7a5265f5dacc749c2a9562f08d47f3ebe562c4544a149698c8c02",
+          "bytes": 467,
+          "sha256": "be9d987ee1f7a5265f5dacc749c2a9562f08d47f3ebe562c4544a149698c8c02"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/sevenzip-signature.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "be9d987ee1f7a5265f5dacc749c2a9562f08d47f3ebe562c4544a149698c8c02",
+          "bytes": 467,
+          "sha256": "be9d987ee1f7a5265f5dacc749c2a9562f08d47f3ebe562c4544a149698c8c02"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/sevenzip-signature.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "be9d987ee1f7a5265f5dacc749c2a9562f08d47f3ebe562c4544a149698c8c02",
+          "bytes": 467,
+          "sha256": "be9d987ee1f7a5265f5dacc749c2a9562f08d47f3ebe562c4544a149698c8c02"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/sevenzip-signature.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "be9d987ee1f7a5265f5dacc749c2a9562f08d47f3ebe562c4544a149698c8c02",
+          "bytes": 467,
+          "sha256": "be9d987ee1f7a5265f5dacc749c2a9562f08d47f3ebe562c4544a149698c8c02"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    }
+  },
+  "execution_count": 104,
+  "facts": {
+    "all_truncation_cases_exit_zero_without_stderr": true,
+    "archive_and_aggressive_outputs_are_equal": true,
+    "cab_full_minus_one_detects_but_has_no_child": true,
+    "iso9660_full_minus_one_reaches_declared_pdf_child": true,
+    "rar4_payload_boundary_reaches_pdf_without_end_header": true,
+    "release_and_harness_default_outputs_are_equal": true,
+    "sevenzip_full_minus_one_detects_but_has_no_child": true,
+    "signature_or_partial_headers_do_not_produce_children": true
+  },
+  "failures": [],
+  "fixture_manifest": {
+    "path": "docs/research/data/archive-truncation-corpus.json",
+    "sample_count": 26,
+    "sha256": "0dadb29929af4fcb47cf99b85fc5ed27d39423672a8c27863adf3f21204de94e"
+  },
+  "generator": "tools/upstream/probe_archive_truncation_harness.py",
+  "generator_sha256": "6956152af56ccc06b03749ac49bce2438368ca5f93c9751a995049db58f0027a",
+  "image": {
+    "id": "sha256:771b9094a2ad6ab4f6250dd89307ab727c07a1aae885a894695abfa959bab5dc",
+    "name": "diec-rust/upstream-archive-harness:74eaf505",
+    "repo_digests": [
+      "diec-rust/upstream-archive-harness@sha256:771b9094a2ad6ab4f6250dd89307ab727c07a1aae885a894695abfa959bab5dc"
+    ],
+    "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "local_sources": {
+    "fixture_generator": {
+      "path": "tools/corpus/generate_archive_truncation_fixture.py",
+      "sha256": "d48d1be19d48352ac77d1167c0bd295ac8fd00e46b4f7ab11dfabb3f9a915847"
+    },
+    "harness_dockerfile": {
+      "path": "tools/upstream/Dockerfile.archive-harness-qt5",
+      "sha256": "2ae4695c9e63857c263dc2d35978dbccc3d4d5f7b65dc20c7424472a1728bf8f"
+    },
+    "harness_source": {
+      "path": "tools/upstream/archive_harness_main.cpp",
+      "sha256": "bd67e06915809d5f9a8065f1d3471a1c9f44d614e1f7d5f176a691088dc6e86d"
+    },
+    "source_generator": {
+      "path": "tools/corpus/generate_archive_format_fixture.py",
+      "sha256": "c60b7832b9858376d46d131876406d87bc49fd82cd018634c8f99af0ade2322e"
+    }
+  },
+  "passed": true,
+  "platform": "linux-x86_64-qt5",
+  "raw_artifacts": {
+    "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f": {
+      "base64": "eNqr5lIAAqWU1JLU5JJiJSuFaLAACFTDWWAlaZk5qSWVBalANUqewf4KlmZmBko6qGoy89LyQfLo4vlpacWpJSAZDC0FiUWpeSUgw4EssBKP1MSU1CJ0dcWZVWCrTYwNDCzQJcsSc0pTUV2P3ReEXAqXz0vMBVsXmpedl1+eh0tZcUlRZl46kkIrBQI6YEFIQFlZalFxZn4e2IkYKmpRRGK5UMVjuWq5uLgA7DNfnA==",
+      "bytes": 473,
+      "compressed_bytes": 175,
+      "encoding": "zlib+base64"
+    },
+    "1048277f8ca81c8e227ce0e87cd2e182f422b0b9bd220f824abd26cde5bdc1b7": {
+      "base64": "eNqr5lIAAqWU1JLU5JJiJSuFaLAACFTDWWAlaZk5qSWVBalANUqewf4KlmZmBko6qGoy89LyQfLo4vlpacWpJSAZDC0FiUWpeSUgw4EssBKP1MSU1CJ0dcWZVWCrjU0sDM3QJcsSc0pTUV2P3ReEXAqXz0vMBVsXmpedl1+eh0tZcUlRZl46kkIrBQI6YEFIQFlZalFxZn4e2IkYKmpRRGK5UMVjuWq5uLgA9D9fow==",
+      "bytes": 473,
+      "compressed_bytes": 175,
+      "encoding": "zlib+base64"
+    },
+    "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275": {
+      "base64": "eNqFkM8KgkAQxu/7FLKnghIJQfBWJ5+h8LDobA3YKrubYOK7504k7JY0p+H7fvN3ZNEcvAYLlTU8jy4kuBiXjBCJDdihg5nhJ1RCD3znE6hk69xQb6U0YJ2ThFYnNCjrWs8ZIQWIGnTIGXzS4PSQhVYvmgf4m/++4N+ei6/EnYZl+zN2a5CxGtXVYUdd3bCHPCJ+k8Tpdq3o8z/xLlnDetAGW0Ufi1P+BU2eUjJfL9nEGHsBGEZeRg==",
+      "bytes": 473,
+      "compressed_bytes": 184,
+      "encoding": "zlib+base64"
+    },
+    "147709aa19a2b82a1bf05abc96d6ee87be0c07f6f31a13fd4b05d54dfc705f88": {
+      "base64": "eNqr5lIAAqWU1JLU5JJiJSuFaLAACFTDWWAlaZk5qSWVBalANUqewf4KlmZmBko6qGoy89LyQfLo4vlpacWpJSAZDC0FiUWpeSUgw4EssBKP1MSU1CJ0dcWZVWCrjY3MzU3RJcsSc0pTUV2P3ReEXAqXz0vMBVsXmpedl1+eh0tZcUlRZl46kkIrBQI6YEFIQFlZalFxZn4e2IkYKmpRRGK5UMVjuWq5uLgA9oVfpQ==",
+      "bytes": 473,
+      "compressed_bytes": 175,
+      "encoding": "zlib+base64"
+    },
+    "21c70f5625b3697073d0d56855895614c847c2b1231509e4e9cf730c0f58a217": {
+      "base64": "eNqFkLEOwiAQhneegjA7mOhiNzfnJk6mA7GHIdajgWuNNn13gcRGUAPT5f8+uD9MjPsjWiA4kxMVP8UgnGmZoqJ0B/TowTui3tdilWKNygSU50YpBxTIOke9tIAU3vVTVA4gW7C55/Qzbt3stjkaZTdAWvt3/VLPhaO8xWVHvKK54z/NkdV4+RArXrjx/ruCNoJ12mCs+GXMSdKwNG/YzBh7AVwpXkI=",
+      "bytes": 466,
+      "compressed_bytes": 167,
+      "encoding": "zlib+base64"
+    },
+    "26500cd269c97490d56432eb1ccbc8d54f85ce5f7b9023b51fe8dca00633112a": {
+      "base64": "eNqFkDEOwjAMRfecosrMgIRYOjJxASbUIaIOsihOlZhWperdSSJRkQCKJ+v/Z/sns6h8yRYYLuxkXZ2jEGpeu4ho7ICnHjwjD0jKTnKTEkjaBDfXjdYOODjb3OqVBeKw2ncROYJqweacw2c8vNvnzqC6B6TBfz+gFHP1Sd3jrRPdyIz0D3Nska4fYF0VJt6/V8AGsA4NxYhfxJIojUj1RixCiBeErV+K",
+      "bytes": 468,
+      "compressed_bytes": 168,
+      "encoding": "zlib+base64"
+    },
+    "37d397962aaf4a060d3b7e8c56a81cc6385d7f2c44ddb087e0e1b415804c25db": {
+      "base64": "eNqFkLEOwjAMRPd8RZSZgYGJkQExsqMOFnWQpdapElNRqv47TSQqJVDVk3X3bJ88Kj2XqVHwLsEc9S0JscalS4ilBmXocGbMiRj8YHY5QWxddEvdWRtQorMvrQ48ssTVc5eQC0KNvuQCvdPhQ2n00Dwxz/0//1bKxWdo06lrA8Ra8CVrZBBP/Ijs2fkW5Ki3Z74ftGlijerRB3KcYv4QU6ZUKtcrNSmlPsTnYDo=",
+      "bytes": 471,
+      "compressed_bytes": 173,
+      "encoding": "zlib+base64"
+    },
+    "429e1c0a9fd5b77f655a2bcf36e91b06806b4c5fb419703bdb44bc5e2249d38b": {
+      "base64": "eNqFkDEOwjAMRfecIsrMgBg7MnEBJtQhog6KKE6VmKK26t1pLFGRFBRP1v8v9ncmIZdSDRBcKahKXliINa0dI8a2QEMHC6OOFrUf1C4lLBoX3Vx3xgSg6Oxzq9MekOLopWPkBLoBn3PBjrz4sJnQ6/YJafDfB5Rirj7qB+864x3dC/9hgbzF2xdYycKLz+8VsB58sA454oaYE6UWqV6LWQjxBn3UX4Q=",
+      "bytes": 468,
+      "compressed_bytes": 167,
+      "encoding": "zlib+base64"
+    },
+    "620a1083fcab9e1639746bf12d49d3d54424a5fd0153f93725ab803810d72fb0": {
+      "base64": "eNqFkM8KgkAQxu/7FLKnghJBKfBWp56h8LDobA3YKrubYOK7504k7JY0p+H7fvN3YNEUvAILpTU8jy4kuBjmjBCJNdi+hYnhR1RC93zjE6hk49xQb6Q0YJ2ThFYrNCjrWk8ZIScQFeiQM/ikwekuDa1O1A/wN/99wb89Z1+JOw3bb8/YLkHGalRXhx10ecMO8oj4VRJn66Wiz//Eu2QJ60AbbBR9LM74FzR6SsF8vWAjY+wFFyBeRQ==",
+      "bytes": 473,
+      "compressed_bytes": 184,
+      "encoding": "zlib+base64"
+    },
+    "6bad74382cc98c404ff214f8986a2243d386f1074da3aef8ee6cd472ad4f40a9": {
+      "base64": "eNqFkDELwjAQhff8ipDZoYNTNzfngpN0CPYiwXopSWzR0v9ucmAxqZKbjve+u3vczHgo0YGHi3ei5mcSYs1rR4jSPfjnAIERzaERu9TWqEy0ct0o5cBHp8qtQVpAH/eGjpAjyA5szjn9oqv7arNilP0D0ti/45dyrj7KOx074Q3NhP8w563G6xdY88LE53cFbATrtEGKuCGWRGlZqrdsYYy9AU5yXjY=",
+      "bytes": 466,
+      "compressed_bytes": 167,
+      "encoding": "zlib+base64"
+    },
+    "6bb99a08ebe3602125355ff084896a31de28eecfd36a926583eab7644215f112": {
+      "base64": "eNp1kFELgjAUhd/3K8YgKAhRCwLftJf+g/gw9K4GNmVbgon/vW2RsJn36XLOxzl3mxA2QxrQUGtFMlw6wc60bA5hvAU99mAYUnBB5UiOPsEF66wb6h1jCrR14tDqqQShbbTZHHID2oAMOcXfrviShs5A2xf4h/9/wOrMJE6j8+6IE2z7g9yFFvTpmq95sYUoLbm4WyiX9YMPkGFD75MoPh1Kv6Xayvj9LP0mbGEDSMU74c438WRFzZ5SIV+v0IwQ+gAAZ2Q2",
+      "bytes": 500,
+      "compressed_bytes": 198,
+      "encoding": "zlib+base64"
+    },
+    "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74": {
+      "base64": "eNqFkLEOwiAQhneegjA71MSpm5tzEyfTgdjDEOvRwNlGm767QGIjqIHp8n8f3B9mxv0RHRCcyYman2IQzrxOUVG6B3oM4B3R7BuxSbFGZQLKc6OUAwqkytEgLSCFd/0UlQPIDmzuOf2MW3fVNkej7O+Q1v5dv9Rz5ShvcdkRr2gm/Kc5shovH2LNCzfef1fQRrBOG4wVv4wlSVqW5i1bGGMvT5ZeNw==",
+      "bytes": 466,
+      "compressed_bytes": 166,
+      "encoding": "zlib+base64"
+    },
+    "7cac8c99c662beeec3734d4ced63e292558f88ba2da995833bfe1eb98936ae11": {
+      "base64": "eNqFkMEKwjAMhu99itGzB0HwsKMnX8CT7FBcKsGZjjZuzLF3ty04bFWaU/j/L8nfzqLyJVtguLCTdXWOQqh57SKisQOeevCMPCApO8lNSiBpE9xcN1o74OBsc6tXFojDat9F5AiqBZtzDp/x8G6fO4PqHpAG//2AUszVJ3WPt050IzPSP8yxRbp+gHVVmHj/XgEbwDo0FCN+EUuiNCLVG7EIIV6F0V+L",
+      "bytes": 468,
+      "compressed_bytes": 168,
+      "encoding": "zlib+base64"
+    },
+    "83cbe006c9b24c93260312b75a213904e76b75b7fcdb17612c6640f37a20c78c": {
+      "base64": "eNqFkDEOwjAMRfecosrMAGLryMQFmFCHiDrIojhVYlqVqncniURFAiierP+f7Z/MovIlW2C4sJN1dY5CqHntIqKxA5568Iw8ICk7yU1KIGkT3Fw3Wjvg4Gxzq1cWiMNq30XkCKoFm3MOn/Hwfpc7g+oekAb//YBSzNUndY+3TnQjM9I/zLFFun6AdVWYeP9eARvAOjQUI34RS6I0ItUbsQghXoAdX4Y=",
+      "bytes": 468,
+      "compressed_bytes": 167,
+      "encoding": "zlib+base64"
+    },
+    "8be5188d16a406e36cb6d9678901e9b520da7d7497b04452497c2757a9a9e43f": {
+      "base64": "eNqFkLEKwjAQhvd7ipDZQRAcurk5F5ykQ7AXCdZLSc6Klr67TcBiopJMx/99yf1kBDEf2SLjib2sxDEG4YzLFBVtOuRHj7Mj610tVyk2pG1AeW619siBrHPUK4fE4d15isoeVYsu97x5xq3bTU4G1d0wbf27fanmwkld464DXcje6Z/m2Rk6f4iVKNx4f11BG9B5YylW/DKmJGkgzRuYAOAF90xeCw==",
+      "bytes": 465,
+      "compressed_bytes": 166,
+      "encoding": "zlib+base64"
+    },
+    "9a087a03a8ab9b153bb12ec27ba75f23c2360f608a8785958fb7c6803708a3f9": {
+      "base64": "eNqr5lIAAqWU1JLU5JJiJSuFaLAACFTDWWAlaZk5qSWVBalANUqewf4KlmZmBko6qGoy89LyQfLo4vlpacWpJSAZDC0FiUWpeSUgw4EssBKP1MSU1CJ0dcWZVWCrTYwNDMzRJcsSc0pTUV2P3ReEXAqXz0vMBVsXmpedl1+eh0tZcUlRZl46kkIrBQI6YEFIQFlZalFxZn4e2IkYKmpRRGK5UMVjuWq5uLgA6w9fmw==",
+      "bytes": 473,
+      "compressed_bytes": 175,
+      "encoding": "zlib+base64"
+    },
+    "a83801b603861ffef94f3d377aa9e1c4c22770e9d0cc89c3bac1b5a18c2c41cc": {
+      "base64": "eNqFkDEOwjAMRfecosrMgGDryMQFmFCHiDrIojhVYlqVqncniURFAiierP+f7Z/MovIlW2C4sJN1dY5CqHntIqKxA5568Iw8ICk7yU1KIGkT3Fw3Wjvg4Gxzq1cWiMNq30XkCKoFm3MOn/Hwfpc7g+oekAb//YBSzNUndY+3TnQjM9I/zLFFun6AdVWYeP9eARvAOjQUI34RS6I0ItUbsQghXoFBX4c=",
+      "bytes": 468,
+      "compressed_bytes": 167,
+      "encoding": "zlib+base64"
+    },
+    "a8cbe83f19ba16ca1a02fb687b4678b3bea6c81b6f95cc6240adfcf9351989ee": {
+      "base64": "eNp1kMEKgzAQRO/5ihAotCBiWk/etJf+g3gIurYBGyVJBSv+e5OUCol1T8vMY3aSGWEzpAENtVYkw6UT7Mzr5pCWd6CnAQxDCi6YnEjkE1y0vXVDvW9bBdo6SWgNTILQNtpsDrkBa0CGnOJvdzilm4iRdS/wm/9/waYnTc5xeogwxbZAkLvSgj3d6Wte7CFKSy7uFspl/eAjZNjQRxonl1PpX6n2Mn5fy74Je9gIUvFeuPomnmyoxVMq5OsVWhBCH1+iZGI=",
+      "bytes": 501,
+      "compressed_bytes": 197,
+      "encoding": "zlib+base64"
+    },
+    "aa5a3a90b5f00c315d171c84e9abbc1e932e34c59db4309ee21dfd988d33134f": {
+      "base64": "eNqFkDEOwjAMRXefIsrMwIbUkYkLMKEOEXVQRHGqxBSVqncniURFAiierP+f7S/PIELJDhnP7GUjTkmINa9dQrTpkacBAyP3hpSb5CYnDGkb3VK3Wnvk6GxLa1AOiePq0CXkgKpDV3LePNPhXWmMqr9jnvt3/lrK1Sd1S6eOdCX7oH+YZ2fo8gE2ojLxfl4FG9F5YylF/CKWTGkh11tYAOAFJW1fWQ==",
+      "bytes": 467,
+      "compressed_bytes": 166,
+      "encoding": "zlib+base64"
+    },
+    "b43969b080eb5eb5caa17d226fa84b6bc1a42d2f939c10ef2586d1e14f3647ee": {
+      "base64": "eNq9U89PwyAYvfNXEE4zacxmd7E3o1l2NDOezA6k/TDEAg3gjC7936XMzrYrpV7kRL73vl/vwRFhd0gBFnJrSIZffKA5x/PNUxgvwX5W4Dhkd7cjSR/mkqkGGsYVYwZsgyyHUEU1SNvUdTdP2QItQA95hn/5runteggdaPkO/bHHx4/NecYlFb7Zs3yT6kOGaMZqLl87xAxHMlrtIrQDaMOV9CNeMOpk7ppdtx4fNqFuMTXC7k24+GQ1UBFUrnUzXQU1CLs6vfbcvS7cDks04vhGaUFthl3SYnW9vopltj4wnxdjdx6AK06C5Dr5L3FOv/JeCeGMni+TS6hKDjrDvQILuIE0Z0U6W7f8p9AflGt7TMg3iuzRNO8XP8X3qEYIfQNbCQH7",
+      "bytes": 1349,
+      "compressed_bytes": 294,
+      "encoding": "zlib+base64"
+    },
+    "b5966f84d072ca6afcc088d3fef5e44b0f5004971e458a6f5e7c77ce78904268": {
+      "base64": "eNqr5lIAAqWU1JLU5JJiJSuFaLAACFTDWWAlaZk5qSWVBalANUqewf4KlmZmBko6qGoy89LyQfLo4vlpacWpJSAZDC0FiUWpeSUgw4EssBKP1MSU1CJ0dcWZVWCrjY3MzU3QJcsSc0pTUV2P3ReEXAqXz0vMBVsXmpedl1+eh0tZcUlRZl46kkIrBQI6YEFIQFlZalFxZn4e2IkYKmpRRGK5UMVjuWq5uLgA9WFfpA==",
+      "bytes": 473,
+      "compressed_bytes": 175,
+      "encoding": "zlib+base64"
+    },
+    "be9d987ee1f7a5265f5dacc749c2a9562f08d47f3ebe562c4544a149698c8c02": {
+      "base64": "eNqFkDEOwjAMRXefIsrMwMTQkYkLMKEOEXVQRHGqxBSVqncniURFAiierP+f7S/PIELJDhnP7GUjTkmINa9dQrTpkacBAyP3hpSb5CYnDGkb3VK3Wnvk6GxLa1AOiePq0CXkgKpDV3LePNPhXWmMqr9jnvt3/lrK1Sd1S6eOdCX7oH+YZ2fo8gE2ojLxfl4FG9F5YylF/CKWTGkh11tYAOAFJElfWA==",
+      "bytes": 467,
+      "compressed_bytes": 166,
+      "encoding": "zlib+base64"
+    },
+    "c0ad2785c7d63fbfc174755471dd0f6050b257959b70d2181bb615ffd42dcbeb": {
+      "base64": "eNq1U8tqwzAQvOsrjE4upCGODQHf+iD0WOitJQdhr1KBJRtZNaQh/15ZTtL4sbZ7qE5iZ3ZXO7M6Es8emoKBxJQ09j5coD7H681RuMjAHAqwHPooFNMHumgzhOJ5jXbjOeclmBpZdaGCaVCmLm1vjvICLAXd5ZXi2zWO1psuVLHsC9ovH55g6p1XXDHpmm3u30WBkUqjhdrXtAedfIoKYs/x/dUyusOSLvqxJgWjVaBLkSun2DKiPdJpMXfUW9Nen7dYwylFcAdHnHwzGphE9Ts7GoYBKgPu7PjYc+fqOY5LNOD7NteSmdizSX6Am94zn7u8KfbNDgRDOzCyC/8kTvMzn3IprdHzZbIJRSZAx16rgA9rCBOehrN1S86F/qDcpceIfIPIjozzfvEmviMnQsgPJPIB/w==",
+      "bytes": 1356,
+      "compressed_bytes": 310,
+      "encoding": "zlib+base64"
+    },
+    "c2b1e230c749a197e5b993451b867e5cdc554d6d4c130fe55f9030f7b4efaf4e": {
+      "base64": "eNq9U81LwzAcveevCDlNKNLZMbFXZehJYXiSHUL7ywi2SUnjREf/d9Nsnf1KUy/mFPLe+3281x4RNoekoCHRJYnxm32oz/FysxTGM9BfBRgOedo+47v1OiRBl8MFkzXef5eMlaBrZCApqAKh6+LmZimPQFNQfV7Jv23rVRSGt33wQLMP6E4/voVv0gsuaG7bvYp3IT+Fi1ZqxcW+RYyxR9FY6KEdQJVcCjvigFEFc9dsh/bysHF187nhzm8ix61WQHOnc+c8o2jp9MCd6vTac/capO22aCTxjVQ51TE2osXyenXlUzY5MKvzsVsfgClOnOQq+C9zTv/lvcxzE/R8m4ygyDioGHcKLOAGooSl0WzfknOhPzjX9JiwbxTZoWneL35636EKIfQDkDUDVA==",
+      "bytes": 1356,
+      "compressed_bytes": 301,
+      "encoding": "zlib+base64"
+    },
+    "c61a8ab2f88cbe7cb5d65f3391e79c784e65f9c1ac039d83a33dc3940381da2a": {
+      "base64": "eNq9k01rgzAYx+/5FEEYtCDFVE/e2o6y42DH4iHoky1Qo8RM6IrffUms3XyJdZflFPL8npf8/8kVYb28DBSkqvJifLIHZl3vO4swfgZ1KUEz3p4LKi+e3ye4YIWJDs8LxipQJhIMQyWVIJQprXcWeQGagRxyFf+yjSNChqGanj+hP/n0DUZzkmC7iZ58TLAZYFD3Tgua29aH3d6FVEpy8W6gnUw/eA0x1vSKbIJwfep3SVw1OmlpW8GF1SArXgg7vi7vjajGXyrDb0Nfn4+ujg5XF7g74/KbkkBzp543t8OQOHVwuz5/7aX3GvnvlmjiHRwLmVMVY52kn0G0fpTZ+cBs3iO69wgizwk3/n+J0/7aQ5Hn2ujlMumE8sxBxrhXYAVbCFOWhYt1S2+F/qBc12NGvslIgua5n3h7nqAGIfQNhNQIHA==",
+      "bytes": 1384,
+      "compressed_bytes": 325,
+      "encoding": "zlib+base64"
+    },
+    "d1dc380fac994f9975415105923f4ed813dbf6b6fe4df38aba1525405a62da03": {
+      "base64": "eNqFkDEOwjAMRfecosrMACMdmbgAE+oQUQdZFKdKTKtS9e4kkahIAMWT9f+z/ZNZVL5kCwwXdrKuzlEINa9dRDR2wFMPnpEHJGUnuUkJJG2Cm+tGawccnG1u9coCcVjtu4gcQbVgc87hMx7e7XNnUN0D0uC/H1CKufqk7vHWiW5kRvqHObZI1w+wrgoT798rYANYh4ZixC9iSZRGpHojFiHEC4bzX4w=",
+      "bytes": 468,
+      "compressed_bytes": 167,
+      "encoding": "zlib+base64"
+    },
+    "d54c72c325ef34e7fca23c49da90a79eb32d5ff9666f799051fb0618bd69b8e7": {
+      "base64": "eNp1kMEKgzAQRO/5ihAotCBiWk/etJf+g3gIurYBGyVJBSv+e5OUCol1T8vMY3aSGWEzpAENtVYkw6UT7Mzr5pCWd6CnAQxDCi6YnEjkE1y0vXVDvW9bBdo6SWgNTILQNtpsDrkBa0CGnOJvdzilNLRG1r3Ab/7/BZueNDnH6SHCFNsCQe5KC/Z0p695sYcoLbm4WyiX9YOPkGFDH2mcXE6lf6Xay/h9Lfsm7GEjSMV74eqbeLKhFk+pkK9XaEEIfQBg5mRj",
+      "bytes": 501,
+      "compressed_bytes": 198,
+      "encoding": "zlib+base64"
+    },
+    "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855": {
+      "base64": "eNoDAAAAAAE=",
+      "bytes": 0,
+      "compressed_bytes": 8,
+      "encoding": "zlib+base64"
+    },
+    "f1cd63f85b5b13743e19b83b2fa83d74c1ee9493cbd8f2277ddfbc325d4892e3": {
+      "base64": "eNqFkLEOwiAQhneegjA7dDBN2ifQycE4mQ7EHoZYjwZojTZ9d4HERoqGmy7//x33HxOhrlgLFi7WsJqeg+BrWrqACNmBffbgGLY/HmhVlgXbxIxEoby/1pUQBqx3kpGea0DrH3ddQHbAW9BrzshXWL0tqnTvyLsB4vS/r8glXXzk97DuhDdUD/yHGaslXr/AmmYmPl+YwUbQRioMERNijpSGxHpDZkLIG/DSX6A=",
+      "bytes": 473,
+      "compressed_bytes": 173,
+      "encoding": "zlib+base64"
+    },
+    "f4e066ff964ffec387a14d8d35e27b5e4de0fca22c48cb8f5bb579d2151cdb2f": {
+      "base64": "eNq9Uz1vwyAU3PkVFlMqWVVcZ/JWtYo6Rqk6VRmQ/ahQDFhAUrWR/3sxiVPbMcZdyoTe3fu6gxOK7MEFGMiNxln07gLNOV1vjkJZCearAsvB28ctjvswE1Q20DAuKdVgGmQ5hCqiQJimrr05yguQAtSQp9m367paJkPoSMoD9MceHz805xUXhLtmb2Iv5Kfw0bRRTHx0iFkUyGi1C9COoDSTwo14w6jjuWt23do8r33dQmr43Ztw8dUoINyr3MXNNE28GvhdnV577l43bvslGnF8LRUnJots0iK5X92FMlsfqMsLsTsPwBbHXnId/5c451/5JDm3Rs+XySZUJQOVRb0CC3iANKdFOlu3/FLoD8q1PSbkG0V2aJr3i5/jO1QjhH4AKIUB8A==",
+      "bytes": 1349,
+      "compressed_bytes": 295,
+      "encoding": "zlib+base64"
+    },
+    "f6faabcf600d4c6df0ebea9ec87c352b8cb9351c5cf651673a2b8c73fdc92422": {
+      "base64": "eNqFkDEOwjAMRfecIsrMwNCpIxMXYEIdIuqgiOJUiSlqq96dxhIVCaB4sv5/tn8yC7mWaoHgQkHV8sxCrHnrGDG2Axp7WBl1sKj9qHYpYdG46Oa6MyYARWefW732gBRXrx0jR9At+JwLduLDVZU7g+4ekAb//YBSzM1HfedbJ7yhe+I/LJC3eP0Aa1mYeP9eARvAB+uQI34RS6I0ItUbsQghXoSuX4o=",
+      "bytes": 468,
+      "compressed_bytes": 167,
+      "encoding": "zlib+base64"
+    },
+    "f8ae5135c8acf1a24c162e8d88b2b91e8545d9cbb5b0ad4c999c43cd789101d1": {
+      "base64": "eNqFkM8KgkAQxu/7FLKnghIJKfCWp56h8LDobA3YKrubYOK7504k7JY0p+H7fvN3YNEUvAILpTU8iy4kuBjmjBCJNdi+hYnhOSqhe77xCVSycW6oN1IasM5JQqsVGpR1raeMkBOICnTIGXzS4HS3D61O1A/wN/99wb89Z1+JOw07bM/YLkHGalRXhx11ecMOsoj4VRKn66Wiz//Eu2QJ60AbbBR9LE75FzR6SsF8vWAjY+wFFx5eRQ==",
+      "bytes": 473,
+      "compressed_bytes": 184,
+      "encoding": "zlib+base64"
+    },
+    "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6": {
+      "base64": "eNq9U81LwzAcveevCDlNKNLZMbRXZehJYXiSHUL7ywi2SUnjREf/d9Nsnf1KUy/mFPLe+3281x4RNoekoCHRJYnxm32oz/FysxTGM9BfBRgOedo+47v1OiRBl8MFkzXef5eMlaBrZCApqAKh6+LmZimPQFNQfV7Jv23rVRSGt33wQLMP6E4/voVv0gsuaG7bvYp3IT+Fi1ZqxcW+RYyxR9FY6KEdQJVcCjvigFEFc9dsh/bysHF187nhzm8ix61WQHOnc+c8o2jp9MCd6vTac/capO22aCTxjVQ51TE2osXyenXlUzY5MKvzsVsfgClOnOQq+C9zTv/lvcxzE/R8m4ygyDioGHcKLOAGooSl0WzfknOhPzjX9JiwbxTZoWneL35636EKIfQDlMwDVQ==",
+      "bytes": 1356,
+      "compressed_bytes": 301,
+      "encoding": "zlib+base64"
+    },
+    "fe5b3c4de755c5e7efdb84b92fe9e85d3f460fbd7b03b9fccaf4c82f8540a975": {
+      "base64": "eNq9U7tuwyAU3fkKiymVrCqpM3mrWkUdo1SdqgzIvlQoBiwgqdrI/15M4tQvjLuUCd1z7uscOKPIHpyDgcxonEbvLlCf8+3mKJQVYL5KsBy8e9zhuAszQWUN9eOSUg2mRpZ9qCQKhKnr2pujvADJQfV5mn27ruvloMSJFEfojj0+fmjOGy4Id83exEHIT+GjaaOY+GgR0yiQ0WgXoJ1AaSaFG3HAqOK5a7bd2j5vfN1Cavjdm3Dx1Sgg3Kvc1c0kWXk18Ls6vfbcvQZu+yUacXwjFScmjWzSYnW/vgtlNj5Qlxditx6ALY695Cr+L3Euv/JJcm6Nni+TTSgLBiqNOgUW8ABJRvNktm7ZtdAflGt6TMg3iuzRNO8Xv8T3qEII/QAj7gHv",
+      "bytes": 1349,
+      "compressed_bytes": 294,
+      "encoding": "zlib+base64"
+    }
+  },
+  "remaining_gap": "CAP-GAP-006",
+  "resource_limits": {
+    "container_root": "read-only",
+    "cpus": 1,
+    "fixture_mount": "read-only",
+    "memory_bytes": 536870912,
+    "network": "none",
+    "pids": 128,
+    "timeout_seconds_per_execution": 60
+  },
+  "schema_version": 1,
+  "source_contract": {
+    "cab": {
+      "path": "/opt/die-source/XArchive/xcab.cpp",
+      "required_pattern": "bool XCab::initUnpack(",
+      "required_pattern_count": 1,
+      "sha256": "a0ce130f4d81ba3aeb018e485a3ee8c046d4cbb570d6318f7aa8817aff28035b"
+    },
+    "engine": {
+      "path": "/opt/die-source/XScanEngine/xscanengine.cpp",
+      "required_pattern": "XBinary::createFileBuffer(archiveRecord.mapProperties.value(XBinary::FPART_PROP_UNCOMPRESSEDSIZE).toLongLong(), pPdStruct)",
+      "required_pattern_count": 1,
+      "sha256": "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498"
+    },
+    "iso9660": {
+      "path": "/opt/die-source/XArchive/xiso9660.cpp",
+      "required_pattern": "bool XISO9660::initUnpack(",
+      "required_pattern_count": 1,
+      "sha256": "d6e97c4ff2395b812b65da5ab480e937c6b365e6e6e8b0288ddf48b8fd398fb1"
+    },
+    "rar": {
+      "path": "/opt/die-source/XArchive/xrar.cpp",
+      "required_pattern": "bool XRar::initUnpack(",
+      "required_pattern_count": 1,
+      "sha256": "23721187a6118edce8b9511680f34c404727f831ec8c7ed66e0ed0868260ccb8"
+    },
+    "sevenzip": {
+      "path": "/opt/die-source/XArchive/xsevenzip.cpp",
+      "required_pattern": "bool XSevenZip::initUnpack(",
+      "required_pattern_count": 1,
+      "sha256": "d8da44bdcd1dfab07f1403ae19a0113238fd54620ef9b4307410097d7d8e5554"
+    }
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

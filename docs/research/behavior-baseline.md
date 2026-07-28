@@ -278,7 +278,9 @@ elapsed 值与固定规则执行序列另见
   [`archive-iteration-boundary.md`](archive-iteration-boundary.md) 固定；
   ZIP deflate/ZipCrypto、1 MiB/843.58:1 和首轮畸形边界已由
   [`archive-adversarial-behavior.md`](archive-adversarial-behavior.md) 固定；
-  其他格式/算法及更高资源边界仍待验证；
+  7Z/RAR4/CAB/ISO9660 的格式识别与 child 展开 EOF 前缀阶梯已由
+  [`archive-truncation-behavior.md`](archive-truncation-behavior.md) 固定；
+  其他算法、结构字段畸变及更高资源边界仍待验证；
   7Z Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64、x86 BCJ+LZMA2、
   BCJ2+LZMA2 no-branch/E8/E9/JCC、
   ARM64-BCJ+LZMA2 BL/ADRP、

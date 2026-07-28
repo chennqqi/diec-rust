@@ -33,7 +33,9 @@ Last updated: 2026-07-28
 截断、central-directory 缺失、越界 offset、未知 method、路径 metadata、
 mixed-member filter 和 1 MiB/843.58:1 压缩比测试点。该 gap 仍因更高资源边界、
 ZIP AES、其他 ZIP 压缩算法、RAR 的压缩/加密、solid/multi-volume、
-系统化畸形矩阵和跨平台行为保持开放。
+结构字段畸变和跨平台行为保持开放。7Z、RAR4、CAB、ISO9660 的系统化 EOF
+前缀截断阶梯已由
+[`archive-truncation-behavior.md`](archive-truncation-behavior.md) 固定。
 CAB Quantum 的合法方法边界已由
 [`archive-format-behavior.md`](archive-format-behavior.md) 单独固定。
 
@@ -164,6 +166,9 @@ python tools\upstream\probe_archive_adversarial_harness.py `
   字段；
 - 未覆盖 data descriptor、ZIP64、extra fields、symlink、重复名称、绝对路径、
   NUL/编码和多磁盘；
+- 7Z/RAR4/CAB/ISO9660 的 EOF 前缀阶梯已由
+  [`archive-truncation-behavior.md`](archive-truncation-behavior.md) 固定，
+  但 size/offset/CRC/method/count 字段突变仍未系统化；
 - 7Z LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64、x86/ARM64 BCJ+LZMA2
   与 CAB MSZIP
   正例及 7Z 七种基础 coder+AES、完整 x86/ARM64

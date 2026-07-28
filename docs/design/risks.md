@@ -305,8 +305,11 @@ baseline 的变更都要检查本表。
   的公共无密码和直接
   正确/缺失/错误密码边界（含 Copy/PPMd7 错误密码残留输出）、官方
   BCJ2+LZMA2+4×AES 图的正确密码失败边界也已固定；未覆盖的其他 archive
-  backend 仍需共享同一
-  预算。详见
+  backend 仍需共享同一预算。另一个 104-run oracle 已固定 7Z/RAR4/CAB/
+  ISO9660 的 26-case EOF 前缀阶梯：7Z/CAB EOF−1 识别格式但无 child，
+  RAR4 不需要 end header，ISO9660 EOF−1 仍产生声明大小 child。详见
+  [`archive-truncation-behavior.md`](../research/archive-truncation-behavior.md)。
+  这些兼容事实不允许安全实现越界读取，结构字段畸变仍未覆盖。详见
   [`archive-limit-behavior.md`](../research/archive-limit-behavior.md) 和
   [`archive-format-behavior.md`](../research/archive-format-behavior.md)、
   [`scan-option-boundaries.md`](../research/scan-option-boundaries.md)。

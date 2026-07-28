@@ -94,7 +94,7 @@ stable old/new、old→new 原子替换和 unlink，证明第二项按打开时�
 volume，冻结两个大小写排序 profile。Windows/macOS 仍由 `CAP-GAP-008`
 单独跟踪，不属于已闭合的 Linux Qt5 corpus gap。
 
-`CAP-GAP-006` 已新增六组固定证据：单成员 ZIP 链已到达 64 层，固定两层
+`CAP-GAP-006` 已新增七组固定证据：单成员 ZIP 链已到达 64 层，固定两层
 累计展开量达到 33,554,546 bytes；7Z
 Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64 与
 x86 BCJ+LZMA2、BCJ2+LZMA2 no-branch/E8/E9/JCC、ARM64-BCJ+LZMA2 BL/ADRP、
@@ -118,14 +118,18 @@ NPM 精确路径直接检测为真，但公共自动
 自然检测不满足 singleton 门控，强制 quiet/verbose 后则分别得到 Unknown 和
 具体 ZIP/TAR/GZIP adapter；aggressive archive 的第 100000 条记录可达，第
 100001 条不可达；ZIP deflate/ZipCrypto/CRC/压缩流/offset/method 畸形、
-local-header fallback、1 MiB/843.58:1 和 mixed filter 也已固定。六组增量见
+local-header fallback、1 MiB/843.58:1 和 mixed filter 也已固定；
+7Z/RAR4/CAB/ISO9660 的 26-case EOF 前缀阶梯进一步固定格式识别与 child
+展开阈值，包括 RAR4 无 end header、ISO9660 EOF−1 仍产生声明大小 child
+的边界。七组增量见
 [`archive-limit-behavior.md`](archive-limit-behavior.md)、
 [`archive-format-behavior.md`](archive-format-behavior.md) 和
 [`npm-dispatch-reachability.md`](npm-dispatch-reachability.md)、
 [`generic-archive-dispatch-reachability.md`](generic-archive-dispatch-reachability.md)、
 [`archive-iteration-boundary.md`](archive-iteration-boundary.md)、
-[`archive-adversarial-behavior.md`](archive-adversarial-behavior.md)。
-其他格式/算法、系统化畸形、真实资源耗尽和跨平台仍缺，因此 gap 行数与状态
+[`archive-adversarial-behavior.md`](archive-adversarial-behavior.md)、
+[`archive-truncation-behavior.md`](archive-truncation-behavior.md)。
+其他算法、结构字段畸变、真实资源耗尽和跨平台仍缺，因此 gap 行数与状态
 均不变。
 
 原 `CAP-GAP-005` 已由
