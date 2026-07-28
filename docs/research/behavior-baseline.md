@@ -253,8 +253,8 @@ elapsed 值与固定规则执行序列另见
 
 - 26-sample 通用基线本身不含 7Z、CAB、NPM、Amiga Hunk、Atari ST 及
   DOS/COM/NE/LE/LX 等格式；其中七种 7Z 单 coder、x86/ARM64 BCJ+LZMA2、
-  BCJ2+LZMA2 no-branch/E8/E9/JCC filter 链、CAB Store/MSZIP 正例与 LZX
-  普通/激进失败边界现由
+  BCJ2+LZMA2 no-branch/E8/E9/JCC filter 链、7Z LZMA2+AES 密码边界、CAB
+  Store/MSZIP 正例与 LZX 普通/激进失败边界现由
   [`archive-format-behavior.md`](archive-format-behavior.md) 固定，legacy 与
   DOS/COM 由各自专用 oracle 固定；NPM 精确路径直接检测为真、公共自动扫描
   回退 Binary 及强制规则分支现由
@@ -280,7 +280,8 @@ elapsed 值与固定规则执行序列另见
   7Z Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64、x86 BCJ+LZMA2、
   BCJ2+LZMA2 no-branch/E8/E9/JCC、
   ARM64-BCJ+LZMA2 BL/ADRP、
-  RAR4 store、CAB Store/MSZIP 与 ISO9660 正例、CAB LZX/Quantum 失败边界及 ZIP
+  7Z LZMA2+AES 密码边界、RAR4 store、CAB Store/MSZIP 与 ISO9660 正例、
+  CAB LZX/Quantum 失败边界及 ZIP
   depth 64/约 32 MiB 累计展开量已有
   专用报告。
 - 发布 CLI 的 ZIP database 截断/重复/`..`/根前缀边界及 cache-disabled

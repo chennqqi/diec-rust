@@ -300,8 +300,9 @@ baseline 的变更都要检查本表。
   x86/ARM64 BCJ+LZMA2、BCJ2+LZMA2 no-branch/E8/E9/JCC filter 链与 CAB
   Store/MSZIP 都能到达 PDF child；CAB LZX 普通 archive 不产生 child，
   aggressive 却扫描 331-byte Binary/Unknown 输出；CAB Quantum 同样在普通
-  archive 无 child、aggressive 扫描 59-byte Binary/Unknown 输出；未覆盖的
-  AES 与其他 backend 仍需共享同一
+  archive 无 child、aggressive 扫描 59-byte Binary/Unknown 输出；7Z
+  LZMA2+AES 的公共无密码和直接正确/缺失/错误密码边界也已固定；未覆盖的
+  BCJ2+AES 与其他 backend 仍需共享同一
   预算。详见
   [`archive-limit-behavior.md`](../research/archive-limit-behavior.md) 和
   [`archive-format-behavior.md`](../research/archive-format-behavior.md)、

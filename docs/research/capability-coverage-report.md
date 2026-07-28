@@ -103,6 +103,8 @@ ISO9660 单 PDF 在显式 archive 后各产生一个 PDF Stream child；CAB LZX:
 普通 archive 无 child、aggressive 扫描一个 331-byte Binary/Unknown Stream；
 CAB Quantum 18 普通 archive 同样无 child、aggressive 扫描一个 59-byte
 Binary/Unknown Stream；
+7Z LZMA2+AES 在公共 archive 路径因无密码不产生 child，直接 `XSevenZip`
+正确密码还原 331-byte PDF，缺失/错误密码均失败；
 NPM 精确路径直接检测为真，但公共自动
 扫描回退 `Binary / Unknown`，强制属性才进入 NPM 语言规则；generic Archive
 自然检测不满足 singleton 门控，强制 quiet/verbose 后则分别得到 Unknown 和

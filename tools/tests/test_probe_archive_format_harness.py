@@ -43,9 +43,9 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
         report = self.report
         self.assertEqual(
             sha256(self.report_bytes),
-            "bf197fff978dd8f8f441da1c0b44201d63a1dda601ff460afee934c6d53705f1",
+            "d28f963275d9ca280bd8647412f1cd06f97994f37679b6e12281549be18714f7",
         )
-        self.assertEqual(report["schema_version"], 1)
+        self.assertEqual(report["schema_version"], 2)
         self.assertEqual(
             report["upstream_commit"],
             "74eaf505c250ab47e709024e9dc41657cd8f2254",
@@ -65,7 +65,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
             report["fixture_manifest"],
             {
                 "path": "docs/research/data/archive-format-corpus.json",
-                "sample_count": 19,
+                "sample_count": 20,
                 "sha256": sha256(MANIFEST_PATH.read_bytes()),
             },
         )
@@ -73,6 +73,8 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
             set(report["local_sources"]),
             {
                 "baseline_generator",
+                "direct_password_dockerfile",
+                "direct_password_source",
                 "fixture_generator",
                 "fixture_requirements",
                 "harness_dockerfile",
@@ -92,14 +94,17 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
             report["image"],
             {
                 "id": (
-                    "sha256:771b9094a2ad6ab4f6250dd89307ab727c07a1aae"
-                    "885a894695abfa959bab5dc"
+                    "sha256:adf8e09f3ed7c15a54f3486c482599e1bcb12230"
+                    "8a0b27396de1baf2ee634daf"
                 ),
-                "name": "diec-rust/upstream-archive-harness:74eaf505",
+                "name": (
+                    "diec-rust/upstream-sevenzip-password-harness:"
+                    "74eaf505"
+                ),
                 "repo_digests": [
-                    "diec-rust/upstream-archive-harness@sha256:"
-                    "771b9094a2ad6ab4f6250dd89307ab727c07a1aae"
-                    "885a894695abfa959bab5dc"
+                    "diec-rust/upstream-sevenzip-password-harness@sha256:"
+                    "adf8e09f3ed7c15a54f3486c482599e1bcb12230"
+                    "8a0b27396de1baf2ee634daf"
                 ],
                 "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254",
             },
@@ -107,6 +112,17 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
         self.assertEqual(
             report["binaries"],
             {
+                "direct_password_harness": {
+                    "path": (
+                        "/opt/die-build/src/console/"
+                        "diec-sevenzip-password-harness"
+                    ),
+                    "sha256": (
+                        "af3566c9c3a554f0769a3c582ebc2eb116e74560"
+                        "cbd6f3f3b03e4d006cc98baa"
+                    ),
+                    "size": 8238080,
+                },
                 "harness": {
                     "path": (
                         "/opt/die-build/src/console/"
@@ -138,9 +154,13 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
             "decompress_dispatch": "4f52eefa06674ea5b7e3f7e1b989502147be84d83e32e8086a7087839ed2728d",
             "deflate_decoder": "cb74b248ded89fea38940ee2ea8135f77a6a4d3b11bc1edd5dea1eb49e5627a6",
             "engine": "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498",
+            "engine_empty_unpack_properties": "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498",
             "iso9660": "d6e97c4ff2395b812b65da5ab480e937c6b365e6e6e8b0288ddf48b8fd398fb1",
             "rar": "23721187a6118edce8b9511680f34c404727f831ec8c7ed66e0ed0868260ccb8",
             "sevenzip": "d8da44bdcd1dfab07f1403ae19a0113238fd54620ef9b4307410097d7d8e5554",
+            "sevenzip_aes_decompress": "4f52eefa06674ea5b7e3f7e1b989502147be84d83e32e8086a7087839ed2728d",
+            "sevenzip_aes_method": "d8da44bdcd1dfab07f1403ae19a0113238fd54620ef9b4307410097d7d8e5554",
+            "sevenzip_aes_sequences": "d8da44bdcd1dfab07f1403ae19a0113238fd54620ef9b4307410097d7d8e5554",
             "sevenzip_bcj2_graph": "d8da44bdcd1dfab07f1403ae19a0113238fd54620ef9b4307410097d7d8e5554",
             "sevenzip_filters": "d8da44bdcd1dfab07f1403ae19a0113238fd54620ef9b4307410097d7d8e5554",
             "sevenzip_methods": "d8da44bdcd1dfab07f1403ae19a0113238fd54620ef9b4307410097d7d8e5554",
@@ -162,7 +182,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
     def test_raw_artifacts_reconstruct_every_execution(self):
         report = self.report
         artifacts = report["raw_artifacts"]
-        self.assertEqual(len(artifacts), 37)
+        self.assertEqual(len(artifacts), 41)
         for digest, artifact in artifacts.items():
             with self.subTest(digest=digest):
                 self.assertEqual(artifact["encoding"], "zlib+base64")
@@ -187,6 +207,15 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
                         reference["artifact_sha256"],
                     )
                     self.assertEqual(reference["bytes"], artifact["bytes"])
+        for case in report["direct_password_cases"].values():
+            for stream in ("stdout", "stderr"):
+                reference = case[stream]
+                artifact = artifacts[reference["artifact_sha256"]]
+                self.assertEqual(
+                    reference["sha256"],
+                    reference["artifact_sha256"],
+                )
+                self.assertEqual(reference["bytes"], artifact["bytes"])
 
     def test_modes_preserve_exact_roots_and_unpack_one_pdf(self):
         expected_roots = {
@@ -214,6 +243,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
             ),
             "pdf-member-lzma.7z": ("Binary", ["7-Zip"]),
             "pdf-member-lzma2.7z": ("Binary", ["7-Zip"]),
+            "pdf-member-lzma2-aes.7z": ("Binary", ["7-Zip"]),
             "pdf-member-ppmd7.7z": ("Binary", ["7-Zip"]),
             "pdf-member.cab": ("Binary", ["CAB"]),
             "pdf-member-mszip.cab": ("Binary", ["CAB"]),
@@ -248,6 +278,8 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
                             "text-member-quantum.cab",
                         }
                         and mode == "archive"
+                    ) or (
+                        sample_name == "pdf-member-lzma2-aes.7z"
                     ):
                         self.assertEqual(summary["stream_count"], 0)
                     elif sample_name in {
@@ -309,6 +341,84 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
                     cases["archive"]["stdout"],
                     cases["archive_aggressive"]["stdout"],
                 )
+            if sample_name == "pdf-member-lzma2-aes.7z":
+                warning_sha256 = (
+                    "003e45244a40755beaf48f2a2b30bb756"
+                    "344488874b4d6f23caa50b7b3bf011c"
+                )
+                self.assertEqual(
+                    cases["archive"]["stderr"]["sha256"],
+                    warning_sha256,
+                )
+                self.assertEqual(
+                    cases["archive_aggressive"]["stderr"]["sha256"],
+                    warning_sha256,
+                )
+
+    def test_direct_sevenzip_password_contract_is_exact(self):
+        cases = self.report["direct_password_cases"]
+        self.assertEqual(
+            set(cases),
+            {
+                "correct_password",
+                "missing_password",
+                "wrong_password",
+            },
+        )
+        empty_sha256 = (
+            "e3b0c44298fc1c149afbf4c8996fb924"
+            "27ae41e4649b934ca495991b7852b855"
+        )
+        pdf_sha256 = (
+            "47bd96bd99d3fd9d9edf09151f7c6299"
+            "9aaf71ed599bd975db9e46c4d6ef5d92"
+        )
+        expected = {
+            "correct_password": (True, True, 331, pdf_sha256, 0),
+            "missing_password": (
+                False,
+                False,
+                0,
+                empty_sha256,
+                54,
+            ),
+            "wrong_password": (
+                True,
+                False,
+                0,
+                empty_sha256,
+                0,
+            ),
+        }
+        for name, (
+            password_supplied,
+            unpacked,
+            output_size,
+            output_sha256,
+            stderr_bytes,
+        ) in expected.items():
+            with self.subTest(name=name):
+                case = cases[name]
+                self.assertEqual(case["exit_code"], 0)
+                self.assertEqual(
+                    case["result"],
+                    {
+                        "archive_valid": True,
+                        "declared_size": 331,
+                        "initialized": True,
+                        "member_name": "payload.pdf",
+                        "output_opened": True,
+                        "output_sha256": output_sha256,
+                        "output_size": output_size,
+                        "password_supplied": password_supplied,
+                        "record_count": 1,
+                        "unpacked": unpacked,
+                    },
+                )
+                self.assertEqual(
+                    case["stderr"]["bytes"],
+                    stderr_bytes,
+                )
 
     def test_limits_facts_and_document_are_explicit(self):
         self.assertEqual(
@@ -330,7 +440,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
         self.assertIn("CAP-GAP-006", document)
         self.assertIn("archive-format-engine-qt5.json", document)
         self.assertIn(
-            "bf197fff978dd8f8f441da1c0b44201d63a1dda601ff460afee934c6d53705f1",
+            "d28f963275d9ca280bd8647412f1cd06f97994f37679b6e12281549be18714f7",
             document,
         )
 

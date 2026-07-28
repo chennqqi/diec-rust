@@ -51,6 +51,7 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
                     "pdf-member.7z",
                     "pdf-member-lzma.7z",
                     "pdf-member-lzma2.7z",
+                    "pdf-member-lzma2-aes.7z",
                     "pdf-member-ppmd7.7z",
                     "pdf-member-bzip2.7z",
                     "pdf-member-deflate.7z",
@@ -212,6 +213,35 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
 
         with self.assertRaisesRegex(ValueError, "unsupported 7Z method"):
             module.encode_7z_payload("Unknown", module.PDF)
+
+    def test_7z_lzma2_aes_fixture_is_fixed_and_opaque(self):
+        module = load_module()
+        data = module.make_7z_lzma2_aes(
+            module.PAYLOAD_NAME,
+            module.PDF,
+        )
+        self.assertEqual(len(data), 338)
+        self.assertEqual(
+            hashlib.sha256(data).hexdigest(),
+            "07c1603dde5df154731333c94f8eba472f792a036bbb1cac566b2a9233afa21e",
+        )
+        self.assertTrue(data.startswith(b"7z\xbc\xaf\x27\x1c\x00\x04"))
+        self.assertNotIn(module.PDF, data)
+        self.assertEqual(data.count(b"\x06\xf1\x07\x01"), 1)
+        self.assertIn(
+            module.PAYLOAD_NAME.encode("utf-16le") + b"\0\0",
+            data,
+        )
+        for name, payload in (
+            ("other.pdf", module.PDF),
+            (module.PAYLOAD_NAME, b"not-pdf"),
+        ):
+            with self.subTest(name=name, payload=payload):
+                with self.assertRaisesRegex(
+                    ValueError,
+                    "7Z LZMA2\\+AES fixture requires the canonical PDF",
+                ):
+                    module.make_7z_lzma2_aes(name, payload)
 
     def test_deflate64_vector_requires_the_extended_distance_code(self):
         module = load_module()

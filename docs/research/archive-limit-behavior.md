@@ -137,7 +137,8 @@ python tools\upstream\probe_archive_limits_harness.py `
   单成员正例已由
   [`archive-format-behavior.md`](archive-format-behavior.md) 固定；CAB LZX 与
   Quantum 的普通 archive 无 child、aggressive 扫描 Unknown 输出边界也已固定；
-  仍未验证 7Z AES、RAR 压缩等
+  7Z LZMA2+AES 的公共无密码与直接正确/缺失/错误密码边界也已固定；仍未验证
+  7Z BCJ2+AES 组合、RAR 压缩等
   压缩/加密/损坏边界。
   ZIP deflate、ZipCrypto 无密码、CRC/压缩流
   畸形和 1 MiB/843.58:1 已由

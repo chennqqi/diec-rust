@@ -44,6 +44,16 @@
     },
     {
       "archive_format": "7Z",
+      "compression_method": "LZMA2+7zAES",
+      "expected_member_name": "payload.pdf",
+      "expected_payload_sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "name": "pdf-member-lzma2-aes.7z",
+      "purpose": "7Z LZMA2 plus 7zAES archive containing one PDF",
+      "sha256": "07c1603dde5df154731333c94f8eba472f792a036bbb1cac566b2a9233afa21e",
+      "size": 338
+    },
+    {
+      "archive_format": "7Z",
       "compression_method": "PPMd7",
       "expected_member_name": "payload.pdf",
       "expected_payload_sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
@@ -203,7 +213,33 @@
       "size": 43008
     }
   ],
-  "schema_version": 2,
+  "schema_version": 3,
+  "generation_provenance": {
+    "sevenzip_lzma2_aes_archive": {
+      "command": [
+        "7zz",
+        "a",
+        "pdf-member-lzma2-aes.7z",
+        "payload.pdf",
+        "-t7z",
+        "-m0=LZMA2",
+        "-mx=9",
+        "-pDetectItEasy",
+        "-mhe=off",
+        "-mtm=off",
+        "-mtc=off",
+        "-mta=off"
+      ],
+      "password": "DetectItEasy",
+      "payload_sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "tool": "7zz",
+      "tool_archive_sha256": "41aaba7b1235304ab5aa0624530c67ae829496cd29e875925271efdccc28c03e",
+      "tool_binary_sha256": "1676a968815b92e865bc0ffeecee3fa284ba4402bf23dc2bec2412c4b502e922",
+      "tool_license": "LGPL-2.1-or-later; unRAR restriction; BSD-2-Clause and BSD-3-Clause components",
+      "tool_source": "https://www.7-zip.org/a/7z2602-linux-x64.tar.xz",
+      "tool_version": "26.02"
+    }
+  },
   "third_party_inputs": {
     "cab_quantum_stream": {
       "commit": "55d501976171397ccd5d5a7a1ca7da065b1d9a06",

@@ -45,6 +45,9 @@ CLI 原始输出相同且不展开；
 archive+aggressive 下产生 331-byte `Binary / Unknown` Stream，不能归入上述
 正向解包集合。第十九个 CAB Quantum 18 样本具有相同模式边界，但 aggressive
 child 为 59-byte `Binary / Unknown`；独立解码器已证明其合法明文。
+第二十个 7Z LZMA2+AES 样本在公共 archive 与 archive+aggressive 下均因
+没有密码入口而不产生 child；直接 `XSevenZip` harness 的正确密码能还原
+331-byte PDF，缺失与错误密码都返回 0-byte 失败输出。
 
 ## 三层能力边界
 

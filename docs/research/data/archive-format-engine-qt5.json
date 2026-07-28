@@ -1,5 +1,10 @@
 {
   "binaries": {
+    "direct_password_harness": {
+      "path": "/opt/die-build/src/console/diec-sevenzip-password-harness",
+      "sha256": "af3566c9c3a554f0769a3c582ebc2eb116e74560cbd6f3f3b03e4d006cc98baa",
+      "size": 8238080
+    },
     "harness": {
       "path": "/opt/die-build/src/console/diec-archive-harness",
       "sha256": "b7ea9b151b58b630c017e9989333fa035b7d86ffab366a5d3a1f74bab9f1e96e",
@@ -1312,6 +1317,122 @@
         }
       }
     },
+    "pdf-member-lzma2-aes.7z": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/pdf-member-lzma2-aes.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "003e45244a40755beaf48f2a2b30bb756344488874b4d6f23caa50b7b3bf011c",
+          "bytes": 54,
+          "sha256": "003e45244a40755beaf48f2a2b30bb756344488874b4d6f23caa50b7b3bf011c"
+        },
+        "stdout": {
+          "artifact_sha256": "ccc63f4731a1a7f32d376a27c744be7d3fdd1bf117c838e16d3ab8b319a3d346",
+          "bytes": 473,
+          "sha256": "ccc63f4731a1a7f32d376a27c744be7d3fdd1bf117c838e16d3ab8b319a3d346"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "stream_detection_names": [],
+          "stream_filetypes": [],
+          "stream_sizes": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/pdf-member-lzma2-aes.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "003e45244a40755beaf48f2a2b30bb756344488874b4d6f23caa50b7b3bf011c",
+          "bytes": 54,
+          "sha256": "003e45244a40755beaf48f2a2b30bb756344488874b4d6f23caa50b7b3bf011c"
+        },
+        "stdout": {
+          "artifact_sha256": "ccc63f4731a1a7f32d376a27c744be7d3fdd1bf117c838e16d3ab8b319a3d346",
+          "bytes": 473,
+          "sha256": "ccc63f4731a1a7f32d376a27c744be7d3fdd1bf117c838e16d3ab8b319a3d346"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "stream_detection_names": [],
+          "stream_filetypes": [],
+          "stream_sizes": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/pdf-member-lzma2-aes.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "ccc63f4731a1a7f32d376a27c744be7d3fdd1bf117c838e16d3ab8b319a3d346",
+          "bytes": 473,
+          "sha256": "ccc63f4731a1a7f32d376a27c744be7d3fdd1bf117c838e16d3ab8b319a3d346"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "stream_detection_names": [],
+          "stream_filetypes": [],
+          "stream_sizes": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/pdf-member-lzma2-aes.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "ccc63f4731a1a7f32d376a27c744be7d3fdd1bf117c838e16d3ab8b319a3d346",
+          "bytes": 473,
+          "sha256": "ccc63f4731a1a7f32d376a27c744be7d3fdd1bf117c838e16d3ab8b319a3d346"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "stream_detection_names": [],
+          "stream_filetypes": [],
+          "stream_sizes": []
+        }
+      }
+    },
     "pdf-member-lzma2.7z": {
       "archive": {
         "arguments": [
@@ -2467,6 +2588,96 @@
       }
     }
   },
+  "direct_password_cases": {
+    "correct_password": {
+      "arguments": [
+        "--password",
+        "DetectItEasy",
+        "/fixture/pdf-member-lzma2-aes.7z"
+      ],
+      "exit_code": 0,
+      "result": {
+        "archive_valid": true,
+        "declared_size": 331,
+        "initialized": true,
+        "member_name": "payload.pdf",
+        "output_opened": true,
+        "output_sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+        "output_size": 331,
+        "password_supplied": true,
+        "record_count": 1,
+        "unpacked": true
+      },
+      "stderr": {
+        "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "artifact_sha256": "2e11b0de365ce8cd97e84b0191bf5d9641e64a683947ee1f00da8be00903dd24",
+        "bytes": 270,
+        "sha256": "2e11b0de365ce8cd97e84b0191bf5d9641e64a683947ee1f00da8be00903dd24"
+      }
+    },
+    "missing_password": {
+      "arguments": [
+        "/fixture/pdf-member-lzma2-aes.7z"
+      ],
+      "exit_code": 0,
+      "result": {
+        "archive_valid": true,
+        "declared_size": 331,
+        "initialized": true,
+        "member_name": "payload.pdf",
+        "output_opened": true,
+        "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "output_size": 0,
+        "password_supplied": false,
+        "record_count": 1,
+        "unpacked": false
+      },
+      "stderr": {
+        "artifact_sha256": "003e45244a40755beaf48f2a2b30bb756344488874b4d6f23caa50b7b3bf011c",
+        "bytes": 54,
+        "sha256": "003e45244a40755beaf48f2a2b30bb756344488874b4d6f23caa50b7b3bf011c"
+      },
+      "stdout": {
+        "artifact_sha256": "25ca0e69d303ce61e86f2038732ef0cfb88b42c68e82ecf94bbda9c6ba83f188",
+        "bytes": 270,
+        "sha256": "25ca0e69d303ce61e86f2038732ef0cfb88b42c68e82ecf94bbda9c6ba83f188"
+      }
+    },
+    "wrong_password": {
+      "arguments": [
+        "--password",
+        "wrong",
+        "/fixture/pdf-member-lzma2-aes.7z"
+      ],
+      "exit_code": 0,
+      "result": {
+        "archive_valid": true,
+        "declared_size": 331,
+        "initialized": true,
+        "member_name": "payload.pdf",
+        "output_opened": true,
+        "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "output_size": 0,
+        "password_supplied": true,
+        "record_count": 1,
+        "unpacked": false
+      },
+      "stderr": {
+        "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "artifact_sha256": "93d6d47ac57da0c31511e1ddfdd02e68c6de23d827f69add158f551c4f84a20c",
+        "bytes": 269,
+        "sha256": "93d6d47ac57da0c31511e1ddfdd02e68c6de23d827f69add158f551c4f84a20c"
+      }
+    }
+  },
   "facts": {
     "aggressive_does_not_change_supported_single_member_results": true,
     "archive_option_is_required_for_unpacking": true,
@@ -2478,6 +2689,9 @@
     "iso9660_store_member_reaches_pdf_rules": true,
     "rar4_store_member_reaches_pdf_rules": true,
     "release_and_harness_default_outputs_are_equal": true,
+    "sevenzip_aes_direct_correct_password_reaches_payload": true,
+    "sevenzip_aes_direct_missing_and_wrong_password_fail": true,
+    "sevenzip_aes_public_engine_has_no_password_and_no_child": true,
     "sevenzip_arm64_bcj_lzma2_bl_and_adrp_reach_pdf_rules": true,
     "sevenzip_bcj2_e8_lzma2_member_reaches_pdf_rules": true,
     "sevenzip_bcj2_e9_lzma2_member_reaches_pdf_rules": true,
@@ -2496,16 +2710,16 @@
   "failures": [],
   "fixture_manifest": {
     "path": "docs/research/data/archive-format-corpus.json",
-    "sample_count": 19,
-    "sha256": "1fb0e7613ef1bb0886f5465c190d039ee3cf08eb70997375971965818173b1dd"
+    "sample_count": 20,
+    "sha256": "246540d97be1f0fa5176744139bfd9fa97ecbf3c3d50135a206b78dcb0933aa9"
   },
   "generator": "tools/upstream/probe_archive_format_harness.py",
-  "generator_sha256": "6cb7f7a2bd1c3ae8074f0d27858f1b5d48018481680e1544611ad7cfdef26bfc",
+  "generator_sha256": "15f654993c20b0fa9ba0f957e82369e0b767c5de208fcd0ef74bbe047de3e223",
   "image": {
-    "id": "sha256:771b9094a2ad6ab4f6250dd89307ab727c07a1aae885a894695abfa959bab5dc",
-    "name": "diec-rust/upstream-archive-harness:74eaf505",
+    "id": "sha256:adf8e09f3ed7c15a54f3486c482599e1bcb122308a0b27396de1baf2ee634daf",
+    "name": "diec-rust/upstream-sevenzip-password-harness:74eaf505",
     "repo_digests": [
-      "diec-rust/upstream-archive-harness@sha256:771b9094a2ad6ab4f6250dd89307ab727c07a1aae885a894695abfa959bab5dc"
+      "diec-rust/upstream-sevenzip-password-harness@sha256:adf8e09f3ed7c15a54f3486c482599e1bcb122308a0b27396de1baf2ee634daf"
     ],
     "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
   },
@@ -2514,9 +2728,17 @@
       "path": "tools/corpus/generate_baseline_corpus.py",
       "sha256": "6b36a120c552cecfd4212385302807e6f85f2e2aa2a867528026c48d80d070fa"
     },
+    "direct_password_dockerfile": {
+      "path": "tools/upstream/Dockerfile.sevenzip-password-harness-qt5",
+      "sha256": "b707fb1601d4855a851bc1069ad85813b3f4fcdb305dd4f3dd04165eb39a0f5d"
+    },
+    "direct_password_source": {
+      "path": "tools/upstream/sevenzip_password_harness_main.cpp",
+      "sha256": "b4ea08fdb05ec35814aa1740e3f6f71a1a89aeabf8a99c14881d43f7b8ec18c5"
+    },
     "fixture_generator": {
       "path": "tools/corpus/generate_archive_format_fixture.py",
-      "sha256": "003964b9510eb35b5262500e799882600757e0c32a72451328da7bea442eb47e"
+      "sha256": "87fe3890eb9f03cd222667a96b2dfd4e2023eb618df7d221966d71f087b34527"
     },
     "fixture_requirements": {
       "path": "tools/corpus/requirements-archive-format.txt",
@@ -2534,6 +2756,12 @@
   "passed": true,
   "platform": "linux-x86_64-qt5",
   "raw_artifacts": {
+    "003e45244a40755beaf48f2a2b30bb756344488874b4d6f23caa50b7b3bf011c": {
+      "base64": "eNqLjnB0DXZJTc5PSS2KVQhILC4uzy9KUcgsVihKLSzNLEpNUUjLL1IAKlJISU0uqiwoyczP4wIAEzsTWw==",
+      "bytes": 54,
+      "compressed_bytes": 61,
+      "encoding": "zlib+base64"
+    },
     "09dd0959bb9c012e4d24ca7c9498faf8994535de636d72ed8418b5f0de3ea30e": {
       "base64": "eNqFkM8KgkAQxu/7FLKnghIjIfCWp56h8LDobA3YKrubYOK7504k7JY0p+H7fvN3YNEUvAILpTU8iy4kuBjmjBCJNdi+hYnhOSqhe77xCVSycW6oN1IasM5JQqsVGpR1raeMkBOICnTIGXzS4H2yC61O1A/wN/99wb89Z1+JOw07bM/YLkHGalRXhx11ecMOsoj4VRKn66Wiz//Eu2QJ60AbbBR9LE75FzR6SsF8vWAjY+wFDdpePQ==",
       "bytes": 473,
@@ -2552,6 +2780,12 @@
       "compressed_bytes": 184,
       "encoding": "zlib+base64"
     },
+    "25ca0e69d303ce61e86f2038732ef0cfb88b42c68e82ecf94bbda9c6ba83f188": {
+      "base64": "eNpFj9tuwyAQRN/7GTxbVcDgGP+MtSyLgooBcUnVVPn3ELVKXkdndGZ+GRS8+CvtVwjesq2VThOzhAEK2b36G7FtnvnEfPTND+hGL+ygw1DZIxwDYhl+QgL7ma1jE0u95d72lCm+C/9hvYBQy6jQbE4opdCrQ45canDGSVy1XpzRQoozkOQkF6mNniWC1Eprbs6rEmZV6u35G3qaxopav1MZ03vOwT/dDkId8kL4zDH12Ng2HvWYAb9exP3jAXm4WjA=",
+      "bytes": 270,
+      "compressed_bytes": 194,
+      "encoding": "zlib+base64"
+    },
     "26983377e7e44b5c97c7071b2972aa4fb5f27c7231fe2deee738675b69b1d73b": {
       "base64": "eNq1Uz1rwzAQ3fUrjCYX0pDEoQFvbULoWOjWkkHYp1RgSUZSDWnIf68s12n8Idsdqknce3ene+90RoE9OAUDidE4Dt5doDzn681RKMvAnHKwHPzEBFEnPGsymKCyRNtxSakGUyKLNpQTBcKUpe3NUZ6BpKDaPM2+XONo9dCGCpJ9QvPl/ROMvfOKC8Jds839G8t9JG0UE8eS9qiSD1ZAHDh+uJiv73xJtX6kSvHRClCaSeEUm69xh3SZTR311rSX3d7XcEwRv4MDTr4aBYR79asdjTZeGfzODo89da6O436JenzfS8WJiQObFC79pnfMpy5vjH2zA8u+HRjYhX8Sp/qZW8m5NXq6TDYhzxioOGgUCGEFUULTaLJuyU+hPyhX9xiQrxc5oGHeL17FD+iCEPoGLHACAw==",
       "bytes": 1356,
@@ -2568,6 +2802,12 @@
       "base64": "eNqFkM8KgkAQxu/7FLKnghIjIfBWp56h8LDobA3YruxugonvnjuRsJo0p+H7fvO3Y9EQvAQHhbM8i64k+OjGjBCJFbi2hoHhJ1TCtHwTEqik9u5U11JacN5JplYtDCjnWw8ZIWcQJZgpZ/FFg/e7WYtGVE8IN/99wb89R1+JBw07bC9YL0HWGVQ3jx1NcccGsoj4VRKn66Wi7//Ep2QJa8BY1Io+Fqd8BvWBkrNQz1nPGHsDDdtePQ==",
       "bytes": 473,
       "compressed_bytes": 184,
+      "encoding": "zlib+base64"
+    },
+    "2e11b0de365ce8cd97e84b0191bf5d9641e64a683947ee1f00da8be00903dd24": {
+      "base64": "eNpNzk1qwzAQBeB9jjFrE+ofyYwvY8aaERGxJSFLDknp3aNCW3cxm8f3ePMJlMzNHTIftDqGKaciDbCYlZLwvLuXwNT3bQPOu+wqeskf22RbJM2etoog0nMNxNfIFhoIJceS5xDFn4WfcL9Rp3StDOPCqOsh95aRUdh+YKtaOxrdISKRHVthhVjRqHhBGbQZWItVjN258+/RSPv+CKk+X2Jc3bmexHzHJhSfYaqy+Ejm/gu+Lm/43Ft0",
+      "bytes": 270,
+      "compressed_bytes": 186,
       "encoding": "zlib+base64"
     },
     "2ed9e3b1f0f3d7090c3b804e52a72b37206ef5852fce2bc6825ef60e32463a84": {
@@ -2628,6 +2868,12 @@
       "base64": "eNqFkM8KgkAQxu/7FLKnghIJQfBWJ5+h8LDobA3YKrubYOK7504k7JY0p+H7fvN3ZNEcvAYLlTU8jy4kuBiXjBCJDdihg5nhJ1RCD3znE6hk69xQb6U0YJ2ThFYnNCjrWs8ZIQWIGnTIGXzS4EOWhVYvmgf4m/++4N+ei6/EnYZl+zN2a5CxGtXVYUdd3bCHPCJ+k8Tpdq3o8z/xLlnDetAGW0Ufi1P+BU2eUjJfL9nEGHsBG79eSQ==",
       "bytes": 473,
       "compressed_bytes": 184,
+      "encoding": "zlib+base64"
+    },
+    "93d6d47ac57da0c31511e1ddfdd02e68c6de23d827f69add158f551c4f84a20c": {
+      "base64": "eNpFj9tuwyAQRN/7GTxbVcDgGP+MtSyLgooBcUnUVP33ErWqX0dnNGe+GBS8+Tvtdwjesq2VThOzhAEK2b36J7FtnvnEfPTND+hJ/9hBh6GyRzgGxDJ8hgT2PVvHJpZ6y73tKVM8C39hvYFQy6jQbC4opdCrQ45canDGSVy1XpzRQoorkOQkF6mNniWC1Eprbq6rEmZV6tz5Fb1Mw6LWRypDvecc/LldCF8xph4b28ahHjPgxwtwECp9v/0AIdRZ5Q==",
+      "bytes": 269,
+      "compressed_bytes": 193,
       "encoding": "zlib+base64"
     },
     "9fee13ad1221f6ce23c45455391d9278972654a1cf5af84027b55bf58c28beab": {
@@ -2767,7 +3013,7 @@
     "pids": 128,
     "timeout_seconds_per_execution": 60
   },
-  "schema_version": 1,
+  "schema_version": 2,
   "source_contract": {
     "bcj2_decoder": {
       "path": "/opt/die-source/XArchive/Algos/xbcj2decoder.cpp",
@@ -2823,6 +3069,12 @@
       "required_pattern_count": 1,
       "sha256": "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498"
     },
+    "engine_empty_unpack_properties": {
+      "path": "/opt/die-source/XScanEngine/xscanengine.cpp",
+      "required_pattern": "QMap<XBinary::UNPACK_PROP, QVariant> mapProperties;\n\n                if (pArchive->initUnpack(&state, mapProperties, pPdStruct)) {",
+      "required_pattern_count": 1,
+      "sha256": "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498"
+    },
     "iso9660": {
       "path": "/opt/die-source/XArchive/xiso9660.cpp",
       "required_pattern": "bool XISO9660::initUnpack(",
@@ -2838,6 +3090,24 @@
     "sevenzip": {
       "path": "/opt/die-source/XArchive/xsevenzip.cpp",
       "required_pattern": "bool XSevenZip::initUnpack(",
+      "required_pattern_count": 1,
+      "sha256": "d8da44bdcd1dfab07f1403ae19a0113238fd54620ef9b4307410097d7d8e5554"
+    },
+    "sevenzip_aes_decompress": {
+      "path": "/opt/die-source/XArchive/xdecompress.cpp",
+      "required_pattern": "bResult = XAESDecoder::decrypt(pState, baProperty, sPassword, pPdStruct);",
+      "required_pattern_count": 1,
+      "sha256": "4f52eefa06674ea5b7e3f7e1b989502147be84d83e32e8086a7087839ed2728d"
+    },
+    "sevenzip_aes_method": {
+      "path": "/opt/die-source/XArchive/xsevenzip.cpp",
+      "required_pattern": "baCodec.startsWith(QByteArray(\"\\x06\\xF1\\x07\\x01\", 4))",
+      "required_pattern_count": 1,
+      "sha256": "d8da44bdcd1dfab07f1403ae19a0113238fd54620ef9b4307410097d7d8e5554"
+    },
+    "sevenzip_aes_sequences": {
+      "path": "/opt/die-source/XArchive/xsevenzip.cpp",
+      "required_pattern": "listResult.append(createPMInfo(method, HANDLE_METHOD_7Z_AES));",
       "required_pattern_count": 1,
       "sha256": "d8da44bdcd1dfab07f1403ae19a0113238fd54620ef9b4307410097d7d8e5554"
     },

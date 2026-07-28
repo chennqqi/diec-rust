@@ -36,6 +36,13 @@ LIBMSPACK_QTM_SOURCE_SHA256 = (
     "0ce0b55fe705b744d41bb361170c0467db30da0c7f9bdd386d5dade71a78e171"
 )
 LIBMSPACK_QTM_STREAM_OFFSET = 331
+SEVENZIP_AES_PASSWORD = "DetectItEasy"
+SEVENZIP_2602_ARCHIVE_SHA256 = (
+    "41aaba7b1235304ab5aa0624530c67ae829496cd29e875925271efdccc28c03e"
+)
+SEVENZIP_2602_BINARY_SHA256 = (
+    "1676a968815b92e865bc0ffeecee3fa284ba4402bf23dc2bec2412c4b502e922"
+)
 
 
 def _load_baseline_module():
@@ -77,6 +84,19 @@ CAB_LZX15_PDF_STREAM = bytes.fromhex(
 CAB_QUANTUM18_TEXT_STREAM = bytes.fromhex(
     "d606690bcb47f02c2a3a8f2cabbb3cb933018bd8584b7b01ba6f6d516e3ac367"
     "424beb023643d66656ca9e72cc300000"
+)
+SEVENZIP_LZMA2_AES_PDF_ARCHIVE = bytes.fromhex(
+    "377abcaf271c00043660593cd00000000000000062000000000000004ec3e97d"
+    "8b2b15a6a56edbdfd3c2937fffec76f3bbefb6c5d45004d210fb8d8d9035471a"
+    "da282261b02e909bbe42ee3e883a4de8ea228a98c29d2532d0f28bd8822b26cd"
+    "7a52184c2ff00873438a93fab694f1535e3724d13892cb884e5d8ad184760854"
+    "2d6485debe4c9f5b5bad745c48fe1a7b6a2ab061341a2c3c6d2534f8a30a8af"
+    "b9f66e93bcb749578486a376208a5b5fc87f13f33dfd969eee024a1f04040f8"
+    "a4a2986e10c85ceb3e1be06561c14409821827263fa56c61e68690d7e766037d"
+    "4f9aa4d387933e232e421b06b3d92720ad01040600010980d000070b01000224"
+    "06f1070112530fb21799a5163453efc1ebc1b74d73b6002121010001000c80cb"
+    "814b00080a0116f95a33000005011119007000610079006c006f00610064002e"
+    "007000640066000000150601002080a4810000"
 )
 
 
@@ -737,6 +757,14 @@ def make_7z_arm64_bcj_lzma2(name: str, payload: bytes) -> bytes:
     return make_7z_filter_lzma2(name, payload, "ARM64-BCJ")
 
 
+def make_7z_lzma2_aes(name: str, payload: bytes) -> bytes:
+    if name != PAYLOAD_NAME or payload != PDF:
+        raise ValueError(
+            "7Z LZMA2+AES fixture requires the canonical PDF"
+        )
+    return SEVENZIP_LZMA2_AES_PDF_ARCHIVE
+
+
 def rar4_header(block_type: int, flags: int, body: bytes) -> bytes:
     header_size = 7 + len(body)
     protected = struct.pack("<BHH", block_type, flags, header_size) + body
@@ -992,6 +1020,12 @@ FIXTURES = (
         ),
     ),
     (
+        "pdf-member-lzma2-aes.7z",
+        "7Z LZMA2 plus 7zAES archive containing one PDF",
+        "LZMA2+7zAES",
+        make_7z_lzma2_aes,
+    ),
+    (
         "pdf-member-ppmd7.7z",
         "7Z PPMd7-method archive containing one PDF",
         "PPMd7",
@@ -1156,7 +1190,7 @@ def generate(output_dir: pathlib.Path) -> dict[str, object]:
             }
         )
     manifest: dict[str, object] = {
-        "schema_version": 2,
+        "schema_version": 3,
         "generator": GENERATOR,
         "generator_dependencies": {
             "inflate64": {
@@ -1172,6 +1206,38 @@ def generate(output_dir: pathlib.Path) -> dict[str, object]:
             "project-generated except the attributed CAB Quantum "
             "compressed stream"
         ),
+        "generation_provenance": {
+            "sevenzip_lzma2_aes_archive": {
+                "command": [
+                    "7zz",
+                    "a",
+                    "pdf-member-lzma2-aes.7z",
+                    "payload.pdf",
+                    "-t7z",
+                    "-m0=LZMA2",
+                    "-mx=9",
+                    "-pDetectItEasy",
+                    "-mhe=off",
+                    "-mtm=off",
+                    "-mtc=off",
+                    "-mta=off",
+                ],
+                "password": SEVENZIP_AES_PASSWORD,
+                "payload_sha256": hashlib.sha256(PDF).hexdigest(),
+                "tool": "7zz",
+                "tool_archive_sha256": SEVENZIP_2602_ARCHIVE_SHA256,
+                "tool_binary_sha256": SEVENZIP_2602_BINARY_SHA256,
+                "tool_license": (
+                    "LGPL-2.1-or-later; unRAR restriction; "
+                    "BSD-2-Clause and BSD-3-Clause components"
+                ),
+                "tool_source": (
+                    "https://www.7-zip.org/a/"
+                    "7z2602-linux-x64.tar.xz"
+                ),
+                "tool_version": "26.02",
+            }
+        },
         "third_party_inputs": {
             "cab_quantum_stream": {
                 "commit": LIBMSPACK_COMMIT,

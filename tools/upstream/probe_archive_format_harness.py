@@ -18,9 +18,22 @@ FIXTURE_GENERATOR = "tools/corpus/generate_archive_format_fixture.py"
 FIXTURE_REQUIREMENTS = "tools/corpus/requirements-archive-format.txt"
 HARNESS_SOURCE = "tools/upstream/archive_harness_main.cpp"
 HARNESS_DOCKERFILE = "tools/upstream/Dockerfile.archive-harness-qt5"
-IMAGE = "diec-rust/upstream-archive-harness:74eaf505"
+DIRECT_PASSWORD_SOURCE = (
+    "tools/upstream/sevenzip_password_harness_main.cpp"
+)
+DIRECT_PASSWORD_DOCKERFILE = (
+    "tools/upstream/Dockerfile.sevenzip-password-harness-qt5"
+)
+IMAGE = "diec-rust/upstream-sevenzip-password-harness:74eaf505"
 HARNESS_BINARY = "/opt/die-build/src/console/diec-archive-harness"
+DIRECT_PASSWORD_BINARY = (
+    "/opt/die-build/src/console/diec-sevenzip-password-harness"
+)
 RELEASE_BINARY = "/opt/die-build/src/console/diec"
+SEVENZIP_AES_PASSWORD = "DetectItEasy"
+SEVENZIP_AES_WARNING = (
+    b"[XAESDecoder] Password is required for AES decryption\n"
+)
 DATABASE_ARGS = (
     "--database",
     "/opt/die-source/Detect-It-Easy/db",
@@ -43,6 +56,14 @@ SOURCE_PATHS = {
         "/opt/die-source/XArchive/Algos/xbcj2decoder.cpp"
     ),
     "sevenzip_bcj2_graph": "/opt/die-source/XArchive/xsevenzip.cpp",
+    "sevenzip_aes_method": "/opt/die-source/XArchive/xsevenzip.cpp",
+    "sevenzip_aes_sequences": "/opt/die-source/XArchive/xsevenzip.cpp",
+    "sevenzip_aes_decompress": (
+        "/opt/die-source/XArchive/xdecompress.cpp"
+    ),
+    "engine_empty_unpack_properties": (
+        "/opt/die-source/XScanEngine/xscanengine.cpp"
+    ),
     "rar": "/opt/die-source/XArchive/xrar.cpp",
     "cab": "/opt/die-source/XArchive/xcab.cpp",
     "cab_lzx_method": "/opt/die-source/XArchive/xcab.cpp",
@@ -79,6 +100,21 @@ SOURCE_PATTERNS = {
     "sevenzip_bcj2_graph": (
         "listResult.append(createPMInfo(HANDLE_METHOD_BCJ2));"
     ),
+    "sevenzip_aes_method": (
+        'baCodec.startsWith(QByteArray("\\x06\\xF1\\x07\\x01", 4))'
+    ),
+    "sevenzip_aes_sequences": (
+        "listResult.append(createPMInfo(method, HANDLE_METHOD_7Z_AES));"
+    ),
+    "sevenzip_aes_decompress": (
+        "bResult = XAESDecoder::decrypt("
+        "pState, baProperty, sPassword, pPdStruct);"
+    ),
+    "engine_empty_unpack_properties": (
+        "QMap<XBinary::UNPACK_PROP, QVariant> mapProperties;\n\n"
+        "                if (pArchive->initUnpack("
+        "&state, mapProperties, pPdStruct)) {"
+    ),
     "rar": "bool XRar::initUnpack(",
     "cab": "bool XCab::initUnpack(",
     "cab_lzx_method": (
@@ -108,6 +144,11 @@ EXPECTED_ROOTS = {
     "pdf-member-lzma2.7z": {
         "filetype": "Binary",
         "root_names": ["7-Zip"],
+    },
+    "pdf-member-lzma2-aes.7z": {
+        "filetype": "Binary",
+        "root_names": ["7-Zip"],
+        "archive_stream_count": 0,
     },
     "pdf-member-ppmd7.7z": {
         "filetype": "Binary",
@@ -232,12 +273,13 @@ def load_fixture(
         "schema_version",
         "generator",
         "generator_dependencies",
+        "generation_provenance",
         "license",
         "samples",
         "third_party_inputs",
     }:
         raise ProbeError("fixture manifest fields changed")
-    if manifest["schema_version"] != 2:
+    if manifest["schema_version"] != 3:
         raise ProbeError("unsupported fixture schema")
     if manifest["generator"] != FIXTURE_GENERATOR:
         raise ProbeError("unexpected fixture generator")
@@ -257,6 +299,48 @@ def load_fixture(
         "compressed stream"
     ):
         raise ProbeError("unexpected fixture license declaration")
+    if manifest["generation_provenance"] != {
+        "sevenzip_lzma2_aes_archive": {
+            "command": [
+                "7zz",
+                "a",
+                "pdf-member-lzma2-aes.7z",
+                "payload.pdf",
+                "-t7z",
+                "-m0=LZMA2",
+                "-mx=9",
+                "-pDetectItEasy",
+                "-mhe=off",
+                "-mtm=off",
+                "-mtc=off",
+                "-mta=off",
+            ],
+            "password": SEVENZIP_AES_PASSWORD,
+            "payload_sha256": (
+                "47bd96bd99d3fd9d9edf09151f7c6299"
+                "9aaf71ed599bd975db9e46c4d6ef5d92"
+            ),
+            "tool": "7zz",
+            "tool_archive_sha256": (
+                "41aaba7b1235304ab5aa0624530c67ae8"
+                "29496cd29e875925271efdccc28c03e"
+            ),
+            "tool_binary_sha256": (
+                "1676a968815b92e865bc0ffeecee3fa28"
+                "4ba4402bf23dc2bec2412c4b502e922"
+            ),
+            "tool_license": (
+                "LGPL-2.1-or-later; unRAR restriction; "
+                "BSD-2-Clause and BSD-3-Clause components"
+            ),
+            "tool_source": (
+                "https://www.7-zip.org/a/"
+                "7z2602-linux-x64.tar.xz"
+            ),
+            "tool_version": "26.02",
+        }
+    }:
+        raise ProbeError("unexpected fixture generation provenance")
     if manifest["third_party_inputs"] != {
         "cab_quantum_stream": {
             "commit": "55d501976171397ccd5d5a7a1ca7da065b1d9a06",
@@ -280,7 +364,7 @@ def load_fixture(
         }
     }:
         raise ProbeError("unexpected third-party fixture input")
-    if len(manifest["samples"]) != 19:
+    if len(manifest["samples"]) != 20:
         raise ProbeError("fixture sample count changed")
 
     declared = set()
@@ -551,6 +635,7 @@ def build_report(
     )
     container_paths = (
         HARNESS_BINARY,
+        DIRECT_PASSWORD_BINARY,
         RELEASE_BINARY,
         *SOURCE_PATHS.values(),
     )
@@ -573,7 +658,18 @@ def build_report(
                 fixture_dir=fixture_dir,
                 arguments=arguments,
             )
-            if process.returncode != 0 or process.stderr:
+            expected_stderr = (
+                SEVENZIP_AES_WARNING
+                if (
+                    sample_name == "pdf-member-lzma2-aes.7z"
+                    and mode != "default"
+                )
+                else b""
+            )
+            if (
+                process.returncode != 0
+                or process.stderr != expected_stderr
+            ):
                 raise ProbeError(
                     f"harness failed: {sample_name}/{mode}"
                 )
@@ -623,6 +719,83 @@ def build_report(
         }
         cases[sample_name] = sample_cases
 
+    aes_path = "/fixture/pdf-member-lzma2-aes.7z"
+    empty_sha256 = sha256(b"")
+    pdf_sha256 = (
+        "47bd96bd99d3fd9d9edf09151f7c6299"
+        "9aaf71ed599bd975db9e46c4d6ef5d92"
+    )
+    direct_password_cases: dict[str, Any] = {}
+    for (
+        name,
+        arguments,
+        password_supplied,
+        unpacked,
+        output_size,
+        output_sha256,
+        expected_stderr,
+    ) in (
+        (
+            "missing_password",
+            (aes_path,),
+            False,
+            False,
+            0,
+            empty_sha256,
+            SEVENZIP_AES_WARNING,
+        ),
+        (
+            "correct_password",
+            ("--password", SEVENZIP_AES_PASSWORD, aes_path),
+            True,
+            True,
+            331,
+            pdf_sha256,
+            b"",
+        ),
+        (
+            "wrong_password",
+            ("--password", "wrong", aes_path),
+            True,
+            False,
+            0,
+            empty_sha256,
+            b"",
+        ),
+    ):
+        process = run_binary(
+            binary=DIRECT_PASSWORD_BINARY,
+            fixture_dir=fixture_dir,
+            arguments=arguments,
+        )
+        if (
+            process.returncode != 0
+            or process.stderr != expected_stderr
+        ):
+            raise ProbeError(f"direct password harness failed: {name}")
+        result = strict_json(process.stdout)
+        expected_result = {
+            "archive_valid": True,
+            "declared_size": 331,
+            "initialized": True,
+            "member_name": "payload.pdf",
+            "output_opened": True,
+            "output_sha256": output_sha256,
+            "output_size": output_size,
+            "password_supplied": password_supplied,
+            "record_count": 1,
+            "unpacked": unpacked,
+        }
+        if result != expected_result:
+            raise ProbeError(f"direct password result changed: {name}")
+        direct_password_cases[name] = {
+            "arguments": list(arguments),
+            "exit_code": process.returncode,
+            "stdout": raw_ref(process.stdout, artifacts),
+            "stderr": raw_ref(process.stderr, artifacts),
+            "result": result,
+        }
+
     facts = {
         "release_and_harness_default_outputs_are_equal": True,
         "archive_option_is_required_for_unpacking": True,
@@ -639,6 +812,9 @@ def build_report(
         "sevenzip_bcj2_e9_lzma2_member_reaches_pdf_rules": True,
         "sevenzip_bcj2_jcc_lzma2_member_reaches_pdf_rules": True,
         "sevenzip_arm64_bcj_lzma2_bl_and_adrp_reach_pdf_rules": True,
+        "sevenzip_aes_public_engine_has_no_password_and_no_child": True,
+        "sevenzip_aes_direct_correct_password_reaches_payload": True,
+        "sevenzip_aes_direct_missing_and_wrong_password_fail": True,
         "rar4_store_member_reaches_pdf_rules": True,
         "cab_store_member_reaches_pdf_rules": True,
         "cab_mszip_member_reaches_pdf_rules": True,
@@ -651,7 +827,7 @@ def build_report(
     }
     root = pathlib.Path(__file__).resolve().parents[2]
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "generator": "tools/upstream/probe_archive_format_harness.py",
         "generator_sha256": sha256(pathlib.Path(__file__).read_bytes()),
         "upstream_commit": UPSTREAM_COMMIT,
@@ -665,6 +841,13 @@ def build_report(
                 "path": HARNESS_BINARY,
                 "sha256": sha256(container_files[HARNESS_BINARY]),
                 "size": len(container_files[HARNESS_BINARY]),
+            },
+            "direct_password_harness": {
+                "path": DIRECT_PASSWORD_BINARY,
+                "sha256": sha256(
+                    container_files[DIRECT_PASSWORD_BINARY]
+                ),
+                "size": len(container_files[DIRECT_PASSWORD_BINARY]),
             },
             "release": {
                 "path": RELEASE_BINARY,
@@ -690,6 +873,18 @@ def build_report(
             "harness_dockerfile": {
                 "path": HARNESS_DOCKERFILE,
                 "sha256": sha256((root / HARNESS_DOCKERFILE).read_bytes()),
+            },
+            "direct_password_source": {
+                "path": DIRECT_PASSWORD_SOURCE,
+                "sha256": sha256(
+                    (root / DIRECT_PASSWORD_SOURCE).read_bytes()
+                ),
+            },
+            "direct_password_dockerfile": {
+                "path": DIRECT_PASSWORD_DOCKERFILE,
+                "sha256": sha256(
+                    (root / DIRECT_PASSWORD_DOCKERFILE).read_bytes()
+                ),
             },
             "baseline_generator": {
                 "path": "tools/corpus/generate_baseline_corpus.py",
@@ -719,6 +914,7 @@ def build_report(
             "container_root": "read-only",
         },
         "cases": cases,
+        "direct_password_cases": direct_password_cases,
         "raw_artifacts": artifacts,
         "facts": facts,
         "passed": all(facts.values()),
