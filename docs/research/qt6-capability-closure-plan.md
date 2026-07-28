@@ -11,10 +11,10 @@ Last updated: 2026-07-28
 [`data/qt6-capability-closure-plan.json`](data/qt6-capability-closure-plan.json)
 逐项列出当前证据和缺失实验：
 
-- 58 项已有证据完整覆盖能力行；
+- 59 项已有证据完整覆盖能力行；
 - 3 项只有部分证据；
-- 7 项没有可接纳的逐行 Qt6 运行时证据；
-- 因此仍有 10 项需要执行闭环实验。
+- 6 项没有可接纳的逐行 Qt6 运行时证据；
+- 因此仍有 9 项需要执行闭环实验。
 
 Linux Qt6 在能力覆盖报告中继续保持 `platform_missing`。本计划只负责把
 缺口变成可执行清单，不改变平台门禁状态。
@@ -67,6 +67,10 @@ enums 和 record metadata；时间、UUID、parse diagnostic 三类差异均逐�
 并分类。见
 [`qt6-result-model-runtime-evidence.md`](qt6-result-model-runtime-evidence.md)。
 
+第十批 private signature-path harness 覆盖七个 exact/empty/missing/case/`..`/
+basename 边界，完整输出与 Qt5 逐字节相同。见
+[`qt6-signature-path-runtime-evidence.md`](qt6-signature-path-runtime-evidence.md)。
+
 下列结果只能算部分证据：
 
 - archive 只覆盖 TAR、gzip 和 ZIP，未覆盖完整 archive family；
@@ -112,8 +116,8 @@ python tools/research/build_qt6_closure_plan.py
 
 ## 限制与下一步
 
-首组 Qt6 engine harness、规则编排和 result-model harness 已完成。后续应按
-机器清单继续复用既有 Qt5 fixture，集中关闭 signature path、dispatch、
+首组 Qt6 engine harness、规则编排、result-model 和 signature-path harness
+已完成。后续应按机器清单继续复用既有 Qt5 fixture，集中关闭 dispatch、
 nested/archive 和复杂目录边界。
 只有 68 行全部达到 `evidence_complete`，且差异完成评审，
 `CAP-GAP-007` 才能关闭。

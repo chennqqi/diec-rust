@@ -9,7 +9,8 @@ Last updated: 2026-07-28
 ## 1. 结论与范围
 
 `CAP-RULE-007` 的路径比较器已在固定 Linux Qt5 engine 上运行观察，不再只是
-源码推断：
+源码推断；相同七用例的 Linux Qt6 对照也已完成，见
+[`qt6-signature-path-runtime-evidence.md`](qt6-signature-path-runtime-evidence.md)：
 
 - 规则数据库把磁盘规则保存为绝对文件路径；
 - 非空 filter 使用严格 `QString` 相等比较，不按 basename 匹配；

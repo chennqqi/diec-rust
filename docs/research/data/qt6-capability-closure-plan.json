@@ -111,6 +111,13 @@
       "difference_count": 5,
       "scope": "five-harness scalar, lists, flags, IDs, enums, and record metadata contract",
       "source": "docs/research/data/result-model-engine-qt6.json"
+    },
+    {
+      "difference_count": 0,
+      "raw_stdout_equal": true,
+      "relationship_count": 11,
+      "scope": "seven-case private signature-file path filter contract",
+      "source": "docs/research/data/signature-path-engine-qt6.json"
     }
   ],
   "limitations": [
@@ -524,19 +531,11 @@
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "signature_path_filter",
       "id": "CAP-RULE-007",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "signature path filtering",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "absolute exact match and mismatch controls are equal",
-          "case, dot-dot, basename, and empty public-entry behavior is equal",
-          "raw records and errors are retained"
-        ],
-        "fixture": "reuse signature-path fixture",
-        "harness": "build and run an equivalent private-path Qt6 harness"
-      },
-      "status": "missing"
+      "observed_scope": "all seven private signature-path filter boundaries are byte-identical to Qt5",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
@@ -913,15 +912,17 @@
     "docs/research/data/result-metadata-engine-qt5.json": "19e394c63eda69d567892cdd579f9b0571613ff390d0d9ab3bc82861f5dd6be3",
     "docs/research/data/result-model-engine-qt6.json": "bb61f7c1bf25fa54c8f25047d9461b6184c08fe24a61fd512be423a84981ba6f",
     "docs/research/data/rule-orchestration-linux-qt5-qt6.json": "a3a3fb8409cd0006729d0eac625586ad30a432580e7ca5a37c4ed491a4c15b0a",
-    "docs/research/data/rule-orchestration-linux-qt5.json": "6787b8a67ee9ee3692d38c668f392a85861d2f517b6827117b478d63df678a5e"
+    "docs/research/data/rule-orchestration-linux-qt5.json": "6787b8a67ee9ee3692d38c668f392a85861d2f517b6827117b478d63df678a5e",
+    "docs/research/data/signature-path-engine-qt5.json": "cfb0673b84c87e5c1a1df114b6b28a44b5f22b431af59427dcabf910feb7cc4e",
+    "docs/research/data/signature-path-engine-qt6.json": "f83535e9579c286bb545659539ef3809e39d300e57e239649fe35e72a00e3014"
   },
   "summary": {
     "all_capabilities_accounted_for": true,
     "cap_gap_007_closed": false,
     "capability_count": 68,
-    "closure_required": 10,
-    "evidence_complete": 58,
-    "missing": 7,
+    "closure_required": 9,
+    "evidence_complete": 59,
+    "missing": 6,
     "partial": 3
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"

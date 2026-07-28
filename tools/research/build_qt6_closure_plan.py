@@ -45,6 +45,8 @@ REPORT_PATHS = (
     "docs/research/data/global-host-api-qt5.json",
     "docs/research/data/global-host-api-qt6.json",
     "docs/research/data/result-model-engine-qt6.json",
+    "docs/research/data/signature-path-engine-qt5.json",
+    "docs/research/data/signature-path-engine-qt6.json",
 )
 EMPTY_SHA256 = hashlib.sha256(b"").hexdigest()
 QT6_UNIMPLEMENTED_SHA256 = (
@@ -141,6 +143,7 @@ COMPLETE: dict[str, str] = {
     "CAP-RESULT-004": "record and parent identifier shape and invariants match modulo UUID values",
     "CAP-RESULT-005": "raw, numeric, canonical, reserved, and fallback enum behavior is identical",
     "CAP-RESULT-006": "normal record version, info, priority, rule name, and rule path fields match Qt5",
+    "CAP-RULE-007": "all seven private signature-path filter boundaries are byte-identical to Qt5",
 }
 
 PARTIAL: dict[str, str] = {
@@ -1486,6 +1489,42 @@ def _validate_result_model_reports(
         raise ClosurePlanError("Qt6 result record metadata drift")
 
 
+def _validate_signature_path_reports(
+    qt5: dict[str, Any], qt6: dict[str, Any]
+) -> None:
+    oracle = qt6.get("oracle", {})
+    if (
+        qt6.get("schema_version") != 1
+        or qt6.get("upstream_commit") != UPSTREAM_COMMIT
+        or qt6.get("platform") != "linux-amd64-qt6"
+        or qt6.get("capability") != "CAP-RULE-007"
+        or qt6.get("result") != "observed"
+        or oracle.get("image")
+        != "diec-rust/signature-path-harness-qt6:74eaf505"
+        or oracle.get("image_id")
+        != "sha256:df9be77359a4b9eb877ddf03c247ab553385b35b103d617655f973e916a333fd"
+        or oracle.get("revision") != UPSTREAM_COMMIT
+        or oracle.get("exit_code") != 0
+        or oracle.get("raw_stderr_bytes") != 0
+        or oracle.get("raw_stderr_sha256") != EMPTY_SHA256
+    ):
+        raise ClosurePlanError("Qt6 signature-path identity/oracle drift")
+    relationships = qt6.get("relationships")
+    if (
+        not isinstance(relationships, dict)
+        or len(relationships) != 11
+        or not all(value is True for value in relationships.values())
+        or relationships != qt5.get("relationships")
+    ):
+        raise ClosurePlanError("Qt5/Qt6 signature-path relationship drift")
+    if (
+        qt6.get("harness_output") != qt5.get("harness_output")
+        or qt6.get("fixture") != qt5.get("fixture")
+        or qt6.get("harness_output", {}).get("case_count") != 7
+    ):
+        raise ClosurePlanError("Qt5/Qt6 signature-path output drift")
+
+
 CAMPAIGNS: dict[str, dict[str, Any]] = {
     "cli_scan_baseline": {
         "fixture": "reuse baseline-corpus and scan-option-boundary fixtures",
@@ -1682,6 +1721,9 @@ def _validate_inputs(
         reports[REPORT_PATHS[25]],
         reports[REPORT_PATHS[16]],
         reports[REPORT_PATHS[26]],
+    )
+    _validate_signature_path_reports(
+        reports[REPORT_PATHS[27]], reports[REPORT_PATHS[28]]
     )
     return capabilities
 
@@ -1893,6 +1935,13 @@ def build_plan(
                 ),
                 "all_differences_classified": True,
                 "capability_count": 6,
+            },
+            {
+                "source": REPORT_PATHS[28],
+                "scope": "seven-case private signature-file path filter contract",
+                "difference_count": 0,
+                "relationship_count": 11,
+                "raw_stdout_equal": True,
             },
         ],
         "rows": rows,

@@ -1,0 +1,179 @@
+{
+  "capability": "CAP-RULE-007",
+  "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+  "fixture": {
+    "entry_count": 3,
+    "license": "project-generated; no third-party sample or rule bytes",
+    "manifest": "docs/research/data/signature-path-fixture.json",
+    "manifest_sha256": "0eb415c1655737ed66e9d3e1b35cbfa2006799a9e216962e60caecd7aa02df90"
+  },
+  "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+  "generator": "tools/upstream/probe_qt6_signature_path_harness.py",
+  "generator_sha256": "cf594f80346c9214f29cbf148ec7722b21413f2ffcd9c6707cd758c7f0e1be72",
+  "harness": {
+    "access_method": "translation-unit-only private-to-public macro; pinned engine objects are unmodified",
+    "dockerfile": "tools/upstream/Dockerfile.signature-path-harness-qt5",
+    "dockerfile_sha256": "4cf3b78d5cbd72cf6460addefaca367c7726af75a40a71f799183131a743b4a7",
+    "source": "tools/upstream/signature_path_harness_main.cpp",
+    "source_sha256": "c7f2ab7ab162ded9c528f760f05602f9dcc68836824160de4796a13fb43d0b31"
+  },
+  "harness_output": {
+    "case_count": 7,
+    "cases": [
+      {
+        "error_count": 0,
+        "filter": "",
+        "id": "empty_filter",
+        "record_count": 2,
+        "records": [
+          {
+            "filetype": "Binary",
+            "name": "main-path",
+            "signature": "shared.1.sg",
+            "signature_path": "/fixture/main/Binary/shared.1.sg",
+            "type": "format",
+            "unknown": false
+          },
+          {
+            "filetype": "Binary",
+            "name": "extra-path",
+            "signature": "shared.1.sg",
+            "signature_path": "/fixture/extra/Binary/shared.1.sg",
+            "type": "format",
+            "unknown": false
+          }
+        ],
+        "scan_not_canceled": true
+      },
+      {
+        "error_count": 0,
+        "filter": "/fixture/main/Binary/shared.1.sg",
+        "id": "exact_main",
+        "record_count": 1,
+        "records": [
+          {
+            "filetype": "Binary",
+            "name": "main-path",
+            "signature": "shared.1.sg",
+            "signature_path": "/fixture/main/Binary/shared.1.sg",
+            "type": "format",
+            "unknown": false
+          }
+        ],
+        "scan_not_canceled": true
+      },
+      {
+        "error_count": 0,
+        "filter": "/fixture/extra/Binary/shared.1.sg",
+        "id": "exact_extra",
+        "record_count": 1,
+        "records": [
+          {
+            "filetype": "Binary",
+            "name": "extra-path",
+            "signature": "shared.1.sg",
+            "signature_path": "/fixture/extra/Binary/shared.1.sg",
+            "type": "format",
+            "unknown": false
+          }
+        ],
+        "scan_not_canceled": true
+      },
+      {
+        "error_count": 0,
+        "filter": "/fixture/main/Binary/missing.1.sg",
+        "id": "missing",
+        "record_count": 0,
+        "records": [],
+        "scan_not_canceled": true
+      },
+      {
+        "error_count": 0,
+        "filter": "/fixture/main/Binary/SHARED.1.SG",
+        "id": "case_mismatch",
+        "record_count": 0,
+        "records": [],
+        "scan_not_canceled": true
+      },
+      {
+        "error_count": 0,
+        "filter": "/fixture/main/Binary/../Binary/shared.1.sg",
+        "id": "dot_segment",
+        "record_count": 0,
+        "records": [],
+        "scan_not_canceled": true
+      },
+      {
+        "error_count": 0,
+        "filter": "shared.1.sg",
+        "id": "basename_only",
+        "record_count": 0,
+        "records": [],
+        "scan_not_canceled": true
+      }
+    ],
+    "database_loaded": true,
+    "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+    "fixture_root": "/fixture",
+    "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+    "input_sha256": "ec19bc91132237e7293ac3a67caab394c86acad9e7f6dec4a403bfee42d95f8e",
+    "load_not_canceled": true,
+    "loaded_signatures": [
+      {
+        "database_type": 0,
+        "file_path": "/fixture/main/Binary/shared.1.sg",
+        "name": "shared.1.sg"
+      },
+      {
+        "database_type": 1,
+        "file_path": "/fixture/extra/Binary/shared.1.sg",
+        "name": "shared.1.sg"
+      }
+    ],
+    "schema_version": 1,
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+  },
+  "limitations": [
+    "the harness uses a translation-unit-only private-to-public macro",
+    "the public scan API still cannot set a signature file path",
+    "the comparison covers the fixed seven-case Linux fixture"
+  ],
+  "oracle": {
+    "binary": "/opt/die-build/src/console/diec-signature-path-harness",
+    "binary_sha256": "3628a994502a923e6de9e3329cf238c4d9d862d97f68cecfad4ea6d435eeb810",
+    "exit_code": 0,
+    "image": "diec-rust/signature-path-harness-qt6:74eaf505",
+    "image_id": "sha256:df9be77359a4b9eb877ddf03c247ab553385b35b103d617655f973e916a333fd",
+    "raw_stderr_bytes": 0,
+    "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "raw_stdout_bytes": 3837,
+    "raw_stdout_sha256": "1ef8d0913678d60050c0e99573fa9a07781b8292ec4c961f7164a740f7a563be",
+    "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "platform": "linux-amd64-qt6",
+  "raw_artifacts": {
+    "storage": "untracked external directory selected by --raw-dir"
+  },
+  "relationships": {
+    "all_runs_complete_without_errors": true,
+    "basename_is_not_a_path_match": true,
+    "both_fixture_rules_loaded_with_absolute_paths": true,
+    "comparison_does_not_clean_dot_segments": true,
+    "comparison_is_case_sensitive": true,
+    "empty_filter_executes_both_layers": true,
+    "exact_extra_selects_only_extra": true,
+    "exact_main_selects_only_main": true,
+    "filters_are_passed_verbatim": true,
+    "nonexistent_path_matches_nothing": true,
+    "same_basename_does_not_conflate_layers": true
+  },
+  "result": "observed",
+  "schema_version": 1,
+  "underlying_probe": {
+    "path": "tools/upstream/probe_signature_path_harness.py",
+    "sha256": "cb244f6e4f6e3d32aa282a00eded580c92be6419c7b6ddf009761ddeb4855299"
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+}

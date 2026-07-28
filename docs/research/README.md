@@ -158,6 +158,9 @@ Phase 0 计划形成：
 - [`qt6-result-model-runtime-evidence.md`](qt6-result-model-runtime-evidence.md)：
   固定五组 Qt6 engine harness 的 scalar、四类列表、flags、IDs、enums 与
   record metadata，并逐字段分类时间、UUID 和 parse diagnostic 差异（In Review）。
+- [`qt6-signature-path-runtime-evidence.md`](qt6-signature-path-runtime-evidence.md)：
+  固定 Qt6 private signature-path harness 的七用例完整输出，并验证与 Qt5
+  逐字节相同（In Review）。
 - [`behavior-baseline.md`](behavior-baseline.md)：确定性安全语料、原始输出哈希和多格式行为（Draft）。
 - [`cli-json-schema-inventory.md`](cli-json-schema-inventory.md)：固定 CLI normal/entropy/info/struct JSON 字段、类型、顺序与失败边界（Draft）。
 - [`cli-output-boundaries.md`](cli-output-boundaries.md)：固定 JSON/XML/CSV/TSV/plain text 的 Unicode/控制字符转义、嵌套排序和格式缺陷；闭合 `CAP-GAP-004`（Draft）。
@@ -236,6 +239,9 @@ Phase 0 计划形成：
 - [`data/result-model-engine-qt6.json`](data/result-model-engine-qt6.json)：
   五组固定 Qt6 result-model harness 报告、Qt5 字段级差异和 CAP-RESULT-006
   组合证据。
+- [`data/signature-path-engine-qt6.json`](data/signature-path-engine-qt6.json)：
+  private comparator 的七用例 Qt6 运行时矩阵及固定 harness/image/raw-stream
+  身份。
 - [`data/scan-option-boundary-fixture.json`](data/scan-option-boundary-fixture.json)：deep/aggressive 规则与 1/22/2002-resource PE 的 hash-bound 清单。
 - [`data/scan-option-boundaries-linux-qt5.json`](data/scan-option-boundaries-linux-qt5.json)：8-case 双 Qt5 scan-option oracle 的去重原始 streams、身份和派生事实。
 - [`data/capability-traceability.json`](data/capability-traceability.json)：68 个稳定
