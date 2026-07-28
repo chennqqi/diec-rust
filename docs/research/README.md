@@ -29,6 +29,9 @@ Phase 0 计划形成：
 - [`archive-multirecord-behavior.md`](archive-multirecord-behavior.md)：7Z、
   RAR4、CAB 和 ISO9660 的正序/逆序/重名/空首记录两成员矩阵及 64 次固定
   Qt5 oracle（In Review）。
+- [`iso9660-endian-behavior.md`](iso9660-endian-behavior.md)：ISO9660
+  17 个 `both16`/`both32` 字段的 LE-only/BE-only 冲突对、35 个样本及
+  140 次固定 Qt5 oracle（In Review）。
 - [`archive-format-behavior.md`](archive-format-behavior.md)：
   7Z Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64 与
   x86/ARM64 BCJ+LZMA2、BCJ2+LZMA2 no-branch/E8/E9/JCC、RAR4、CAB
@@ -252,6 +255,10 @@ Phase 0 计划形成：
   四格式 × 正序/逆序/重名/空首记录的 16 个项目生成两成员 archive 清单。
 - [`data/archive-multirecord-engine-qt5.json`](data/archive-multirecord-engine-qt5.json)：
   16-case × 4 模式的 64 次原始输出、固定身份及记录顺序/重名/空成员摘要。
+- [`data/iso9660-endian-corpus.json`](data/iso9660-endian-corpus.json)：
+  ISO9660 17 个双端序字段 × LE/BE 单侧 alternate 加控制的 35-case 清单。
+- [`data/iso9660-endian-engine-qt5.json`](data/iso9660-endian-engine-qt5.json)：
+  35-case × 4 模式的 140 次原始输出、固定身份及 LE/BE 冲突行为摘要。
 - [`data/archive-format-corpus.json`](data/archive-format-corpus.json)：
   项目生成的七种 7Z 单 coder、x86/ARM64 BCJ+LZMA2、
   BCJ2+LZMA2 no-branch/E8/E9/JCC filter 链、七种基础 coder+7zAES、

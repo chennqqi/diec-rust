@@ -151,5 +151,7 @@ python tools\tests\test_probe_archive_multirecord_harness.py
 - 7Z 仅独立 Copy stream，RAR4/CAB 仅 Store，ISO9660 仅单层 root directory；
 - 未覆盖 solid/compressed/encrypted/multi-volume、多 extent、Joliet/Rock Ridge；
 - 不验证成员名在 adapter 私有数据中的编码或归一化，仅验证公共扫描结果；
-- 未测真实资源耗尽、arithmetic wrap、剩余字段/大小端冲突；
+- 未测真实资源耗尽、arithmetic wrap 与剩余字段；ISO9660 17-field 单侧
+  双端序冲突由
+  [`iso9660-endian-behavior.md`](iso9660-endian-behavior.md) 固定；
 - Windows、macOS 和 Linux Qt6 尚未执行同一 64-case oracle。

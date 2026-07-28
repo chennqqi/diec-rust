@@ -285,7 +285,10 @@ elapsed 值与固定规则执行序列另见
   [`archive-structure-behavior.md`](archive-structure-behavior.md) 固定；
   同四格式两记录正序/逆序/重名/空首记录的顺序与过滤契约已由
   [`archive-multirecord-behavior.md`](archive-multirecord-behavior.md) 固定；
-  其他算法、剩余字段/大小端冲突、更大或混合失败记录图及更高资源边界仍待验证；
+  ISO9660 17-field 单侧双端序冲突已由
+  [`iso9660-endian-behavior.md`](iso9660-endian-behavior.md) 固定；
+  其他算法、剩余字段、ISO path-table location/多字段组合冲突与算术 wrap、
+  更大或混合失败记录图及更高资源边界仍待验证；
   7Z Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64、x86 BCJ+LZMA2、
   BCJ2+LZMA2 no-branch/E8/E9/JCC、
   ARM64-BCJ+LZMA2 BL/ADRP、

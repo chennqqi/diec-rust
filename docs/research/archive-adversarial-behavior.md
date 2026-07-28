@@ -33,13 +33,16 @@ Last updated: 2026-07-28
 截断、central-directory 缺失、越界 offset、未知 method、路径 metadata、
 mixed-member filter 和 1 MiB/843.58:1 压缩比测试点。该 gap 仍因更高资源边界、
 ZIP AES、其他 ZIP 压缩算法、RAR 的压缩/加密、solid/multi-volume、
-剩余结构字段、大小端冲突、更大或混合失败记录图和跨平台行为保持开放。7Z、
-RAR4、CAB、ISO9660 的系统化 EOF 前缀截断阶梯已由
+剩余结构字段、ISO path-table location/多字段组合冲突、算术 wrap、更大或
+混合失败记录图和跨平台行为保持开放。7Z、RAR4、CAB、ISO9660 的系统化
+EOF 前缀截断阶梯已由
 [`archive-truncation-behavior.md`](archive-truncation-behavior.md) 固定。
 同四格式的首轮 CRC/size/offset/method/record-field 突变已由
 [`archive-structure-behavior.md`](archive-structure-behavior.md) 固定。
 同四格式的两记录顺序、重名和空成员过滤已由
 [`archive-multirecord-behavior.md`](archive-multirecord-behavior.md) 固定。
+ISO9660 的 17-field 单侧双端序冲突已由
+[`iso9660-endian-behavior.md`](iso9660-endian-behavior.md) 固定。
 CAB Quantum 的合法方法边界已由
 [`archive-format-behavior.md`](archive-format-behavior.md) 单独固定。
 

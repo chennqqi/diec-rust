@@ -173,7 +173,10 @@ ZIP deflate/ZipCrypto、1 MiB/843.58:1 和首轮 CRC/压缩流/offset/method
 [`archive-structure-behavior.md`](archive-structure-behavior.md) 固定；
 同四格式两记录顺序、重名和空成员过滤已由
 [`archive-multirecord-behavior.md`](archive-multirecord-behavior.md) 固定；
-其他算法、剩余字段/大小端冲突、更大或混合失败记录图及系统化压力语料仍缺，因此本组只标记
+ISO9660 17-field 单侧双端序冲突已由
+[`iso9660-endian-behavior.md`](iso9660-endian-behavior.md) 固定；
+其他算法、剩余字段、ISO path-table location/多字段组合冲突与算术 wrap、
+更大或混合失败记录图及系统化压力语料仍缺，因此本组只标记
 `observed_with_gaps`。Image 组除既有
 JPEG/PNG 外，专用 engine harness 已观察 GIF/BMP/TIFF/ICO/CUR/ICC/WebP 的
 Binary fallback，以及强制 `FT_IMAGE` 后 generic Image adapter 为 null 的错误，
@@ -226,10 +229,12 @@ hideunknown 的可观察增量。完整输入哈希和输出见
   [`archive-structure-behavior.md`](archive-structure-behavior.md)；
   同四格式两记录正序/逆序/重名/空首记录矩阵见
   [`archive-multirecord-behavior.md`](archive-multirecord-behavior.md)；
+  ISO9660 17-field 单侧双端序冲突见
+  [`iso9660-endian-behavior.md`](iso9660-endian-behavior.md)；
   RAR5 Store 单成员与 solid 双成员见
   [`archive-rar5-store-behavior.md`](archive-rar5-store-behavior.md)；
-  RAR 压缩算法、剩余字段/大小端冲突、更大或混合失败记录图及跨平台仍归
-  `CAP-GAP-006`。
+  RAR 压缩算法、剩余字段、ISO path-table location/多字段组合冲突与算术
+  wrap、更大或混合失败记录图及跨平台仍归 `CAP-GAP-006`。
 - `CAP-NEST-005`：overlay 始终作为 subdevice 扫描；非 aggressive resource 仅在探测为
   scanable 类型时扫描。
 - `CAP-NEST-006`：项目生成的 RT_MANIFEST 未分类 payload 证明完整链：recursive 单独跳过，
@@ -306,9 +311,9 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
   [`scan-option-boundaries.md`](scan-option-boundaries.md) 闭合。
 - archive aggressive 100000、ZIP 1 MiB/843.58:1 与首轮压缩/加密/畸形边界，
   以及 7Z/RAR4/CAB/ISO9660 EOF 前缀阶梯、首轮结构字段突变与两记录
-  顺序/重名/空成员过滤已固定；
-  其他算法、剩余字段/大小端冲突、更大或混合失败记录图、最大深度和总解压
-  资源限制仍待扩展；
+  顺序/重名/空成员过滤、ISO9660 17-field 单侧双端序冲突已固定；
+  其他算法、剩余字段、ISO path-table location/多字段组合冲突与算术 wrap、
+  更大或混合失败记录图、最大深度和总解压资源限制仍待扩展；
   七种 7Z 单 coder、x86/ARM64 BCJ+LZMA2、
   BCJ2+LZMA2 no-branch/E8/E9/JCC filter 链、7Z 七种基础 coder+AES 与完整
   x86/ARM64 filter × 七种基础 coder × AES 成功密码契约、

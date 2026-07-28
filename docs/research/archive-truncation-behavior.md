@@ -148,7 +148,10 @@ python tools\upstream\probe_archive_truncation_harness.py `
   [`archive-structure-behavior.md`](archive-structure-behavior.md)；两记录顺序、
   重名与空成员过滤由
   [`archive-multirecord-behavior.md`](archive-multirecord-behavior.md) 固定；
-  大小端冲突、arithmetic wrap 与更大或混合失败记录图仍缺；
+  ISO9660 首轮 17-field 双端序冲突由
+  [`iso9660-endian-behavior.md`](iso9660-endian-behavior.md) 固定；
+  path-table location/多字段组合冲突、arithmetic wrap 与更大或混合失败记录图
+  仍缺；
 - 7Z 仅覆盖 Copy 控制，其他 coder 的正向/密码行为由
   [`archive-format-behavior.md`](archive-format-behavior.md) 覆盖，但尚无同等
   截断阶梯；

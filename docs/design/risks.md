@@ -325,8 +325,12 @@ baseline 的变更都要检查本表。
   重名不去重、普通模式跳过空成员但继续后续记录以及 aggressive 空成员原位输出，
   见
   [`archive-multirecord-behavior.md`](../research/archive-multirecord-behavior.md)。
-  这些兼容事实不允许安全实现越界读取；剩余字段、大小端冲突、arithmetic wrap
-  与更大或混合失败记录图仍未覆盖。详见
+  另一个 140-run oracle 固定 ISO9660 17 个 `both16`/`both32` 字段的单侧
+  冲突：17 个 BE alternate 均保持控制 child，LE block/extent/size 驱动可观察
+  结果，见
+  [`iso9660-endian-behavior.md`](../research/iso9660-endian-behavior.md)。
+  这些兼容事实不允许安全实现越界读取；剩余字段、ISO path-table location/
+  多字段组合冲突、arithmetic wrap 与更大或混合失败记录图仍未覆盖。详见
   [`archive-limit-behavior.md`](../research/archive-limit-behavior.md) 和
   [`archive-format-behavior.md`](../research/archive-format-behavior.md)、
   [`scan-option-boundaries.md`](../research/scan-option-boundaries.md)。

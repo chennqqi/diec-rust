@@ -350,8 +350,10 @@ recursive+aggressive 对前者产生 Manifest child，对后者不建 child；�
   [`archive-structure-behavior.md`](archive-structure-behavior.md)；
   同四格式两记录顺序、重复名称和空成员过滤见
   [`archive-multirecord-behavior.md`](archive-multirecord-behavior.md)；
-  其他 encrypted entry、更大或混合失败记录图、剩余字段/大小端冲突和系统化
-  metadata 仍缺；
+  ISO9660 17-field 单侧双端序冲突见
+  [`iso9660-endian-behavior.md`](iso9660-endian-behavior.md)；
+  其他 encrypted entry、更大或混合失败记录图、剩余字段、ISO path-table
+  location/多字段组合冲突与系统化 metadata 仍缺；
 - archive aggressive 第 100000 条可达、第 100001 条不可达，见
   [`archive-iteration-boundary.md`](archive-iteration-boundary.md)；
   resource aggressive 2001 实际 child 边界也已固定；

@@ -251,7 +251,7 @@ Rust 兼容模式必须同时复现 resource context 传播和 debug-data 默认
 | Qt Script 与 QJSEngine 方言/行为差异 | 规则无法 1:1 复用 | 统计语法并选复杂规则做双引擎实验 |
 | 格式宿主 API 面积未知 | 工作量和漏报风险 | 自动提取所有 exposed method/property |
 | 多候选格式的优先顺序 | 分类结果偏差 | 建立分派顺序表和多义样本 |
-| archive/resource/overlay 递归 | 无深度/总解压限制；runtime 到达 ZIP 64 层/33,554,546 累计展开 bytes；resource 为 21/2001，PE parser 每目录限 1000；archive 第 100000 条可达、第 100001 条不可达；7Z Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64/x86 BCJ+LZMA2/BCJ2+LZMA2 no-branch/E8/E9/JCC/ARM64-BCJ+LZMA2 BL/ADRP/七种基础 coder+AES 与完整 x86/ARM64 filter × 七种基础 coder × AES 成功密码契约/BCJ2+LZMA2+4×AES 正确密码失败边界、RAR4 store、CAB Store/MSZIP、ISO9660 正例、CAB LZX/Quantum 普通/激进失败边界、ZIP deflate/ZipCrypto/首轮畸形、四格式 26-case EOF 前缀阶梯、56-case 结构字段/0/max 突变及两记录正序/逆序/重名/空成员过滤已固定 | 继续验证 RAR 压缩、剩余字段/大小端冲突、更大或混合失败记录图和资源耗尽 |
+| archive/resource/overlay 递归 | 无深度/总解压限制；runtime 到达 ZIP 64 层/33,554,546 累计展开 bytes；resource 为 21/2001，PE parser 每目录限 1000；archive 第 100000 条可达、第 100001 条不可达；7Z Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64/x86 BCJ+LZMA2/BCJ2+LZMA2 no-branch/E8/E9/JCC/ARM64-BCJ+LZMA2 BL/ADRP/七种基础 coder+AES 与完整 x86/ARM64 filter × 七种基础 coder × AES 成功密码契约/BCJ2+LZMA2+4×AES 正确密码失败边界、RAR4 store、CAB Store/MSZIP、ISO9660 正例、CAB LZX/Quantum 普通/激进失败边界、ZIP deflate/ZipCrypto/首轮畸形、四格式 26-case EOF 前缀阶梯、56-case 结构字段/0/max 突变、两记录正序/逆序/重名/空成员过滤及 ISO9660 17-field 双端序冲突已固定 | 继续验证 RAR 压缩、剩余字段、ISO path-table location/多字段组合冲突与算术 wrap、更大或混合失败记录图和资源耗尽 |
 | 目录枚举无深度/循环保护 | symlink loop、栈/时间耗尽 | 隔离测试并为 Rust 设计资源限制 |
 | formatter 分散 | nested XML 非良构；CSV/TSV 无引用且丢失父节点 | 已保存逐格式 schema/escaping golden；Rust legacy 层不得“修复”后冒充兼容 |
 | engine database cache | `readAll`/无界 record count、弱 freshness；截断会泄漏部分 record，取消可持久化空 cache；CLI 不启用 | 验证 header/长度上限、写失败和并发 writer |

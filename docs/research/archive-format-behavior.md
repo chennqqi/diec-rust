@@ -75,8 +75,10 @@ ZIP deflate/ZipCrypto/CRC/压缩流畸形与 1 MiB 高压缩比现由
 [`archive-structure-behavior.md`](archive-structure-behavior.md) 固定；
 同四格式两记录正序/逆序/重名/空首记录契约由
 [`archive-multirecord-behavior.md`](archive-multirecord-behavior.md) 固定；
-RAR 的压缩算法、剩余字段/大小端冲突、更大或混合失败记录图、资源耗尽及
-跨平台行为仍未验证。
+ISO9660 的 17-field 单侧双端序冲突由
+[`iso9660-endian-behavior.md`](iso9660-endian-behavior.md) 固定；
+RAR 的压缩算法、剩余字段、ISO path-table location/多字段组合冲突与算术
+wrap、更大或混合失败记录图、资源耗尽及跨平台行为仍未验证。
 
 机器报告是
 [`archive-format-engine-qt5.json`](data/archive-format-engine-qt5.json)，
@@ -428,5 +430,6 @@ LZX/Quantum 普通/激进模式的失败边界，
 与 [`archive-adversarial-behavior.md`](archive-adversarial-behavior.md)、
 [`archive-truncation-behavior.md`](archive-truncation-behavior.md)、
 [`archive-structure-behavior.md`](archive-structure-behavior.md)、
-[`archive-multirecord-behavior.md`](archive-multirecord-behavior.md)
+[`archive-multirecord-behavior.md`](archive-multirecord-behavior.md)、
+[`iso9660-endian-behavior.md`](iso9660-endian-behavior.md)
 共同约束后续 Rust archive 层，但不能替代剩余格式和压力边界实验。

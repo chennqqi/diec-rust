@@ -48,8 +48,9 @@ SHA-256
 
 本实验关闭 `CAP-GAP-006` 的首轮 7Z/RAR4/CAB/ISO9660 CRC、size、offset、
 method、record-field 与所列 0/max 极值子集，但不关闭该 gap；压缩/加密 RAR、
-更多 coder、大小端冲突/arithmetic wrap、multi-record/solid/multi-volume、
-恢复记录和跨平台行为仍缺。
+更多 coder、arithmetic wrap、multi-record/solid/multi-volume、恢复记录和
+跨平台行为仍缺。ISO9660 首轮 17-field 双端序冲突已由
+[`iso9660-endian-behavior.md`](iso9660-endian-behavior.md) 固定。
 
 ## 语料与隔离策略
 
@@ -184,12 +185,14 @@ python tools\upstream\probe_archive_structure_harness.py `
 ## 限制
 
 - 0/max 只覆盖本页列出的 next-header、size、name、record、extent 与 block
-  字段；其他字段、大小端冲突和 arithmetic wrap 仍缺；
+  字段；其他字段和 arithmetic wrap 仍缺；
 - 两记录顺序、重名和空成员过滤已由
   [`archive-multirecord-behavior.md`](archive-multirecord-behavior.md) 固定，
   但更大或混合失败记录图仍缺；
 - 7Z 仅 Copy，RAR4/CAB 仅 stored control，未覆盖压缩或加密结构图；
-- ISO9660 没有多目录、multi-extent、Joliet/Rock Ridge 或大小端冲突；
+- ISO9660 没有多目录、multi-extent、Joliet/Rock Ridge、path-table location
+  冲突或多个双端序字段组合冲突；17 个字段的单侧冲突见
+  [`iso9660-endian-behavior.md`](iso9660-endian-behavior.md)；
 - 没有通过第三方 parser 把畸形样本声明为“标准合法”；测试目标是精确、可审计
   的单字段 mutation 与固定上游反应；
 - Windows、macOS 和 Linux Qt6 尚未运行同一 224-case oracle。

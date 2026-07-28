@@ -1,0 +1,4493 @@
+{
+  "binaries": {
+    "harness": {
+      "path": "/opt/die-build/src/console/diec-archive-harness",
+      "sha256": "b7ea9b151b58b630c017e9989333fa035b7d86ffab366a5d3a1f74bab9f1e96e",
+      "size": 8233888
+    },
+    "release": {
+      "path": "/opt/die-build/src/console/diec",
+      "sha256": "da1fab49f7ba5970d1fc1c7fe3d4f380cf5e8775dd8097207e7b3c30f08236cf",
+      "size": 8248008
+    }
+  },
+  "cases": {
+    "iso9660-control.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-control.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-control.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-control.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-control.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-dot-extent-big-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-dot-extent-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-dot-extent-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-dot-extent-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-dot-extent-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-dot-extent-little-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-dot-extent-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-dot-extent-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-dot-extent-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-dot-extent-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-dot-size-big-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-dot-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-dot-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-dot-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-dot-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-dot-size-little-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-dot-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-dot-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-dot-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-dot-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-dot-volume-sequence-big-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-dot-volume-sequence-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-dot-volume-sequence-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-dot-volume-sequence-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-dot-volume-sequence-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-dot-volume-sequence-little-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-dot-volume-sequence-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-dot-volume-sequence-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-dot-volume-sequence-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-dot-volume-sequence-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-dotdot-extent-big-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-dotdot-extent-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-dotdot-extent-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-dotdot-extent-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-dotdot-extent-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-dotdot-extent-little-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-dotdot-extent-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-dotdot-extent-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-dotdot-extent-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-dotdot-extent-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-dotdot-size-big-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-dotdot-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-dotdot-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-dotdot-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-dotdot-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-dotdot-size-little-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-dotdot-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-dotdot-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-dotdot-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-dotdot-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-dotdot-volume-sequence-big-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-dotdot-volume-sequence-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-dotdot-volume-sequence-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-dotdot-volume-sequence-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-dotdot-volume-sequence-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-dotdot-volume-sequence-little-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-dotdot-volume-sequence-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-dotdot-volume-sequence-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-dotdot-volume-sequence-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-dotdot-volume-sequence-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-payload-extent-big-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-payload-extent-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-payload-extent-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-payload-extent-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-payload-extent-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-payload-extent-little-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-payload-extent-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-payload-extent-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-payload-extent-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-payload-extent-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-payload-size-big-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-payload-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-payload-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-payload-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-payload-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-payload-size-little-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-payload-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "a32d34589a0d38b606bdee372f8d2028fc31db4dbb1661819747bb33ab1a005c",
+          "bytes": 1356,
+          "sha256": "a32d34589a0d38b606bdee372f8d2028fc31db4dbb1661819747bb33ab1a005c"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "332"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-payload-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "a32d34589a0d38b606bdee372f8d2028fc31db4dbb1661819747bb33ab1a005c",
+          "bytes": 1356,
+          "sha256": "a32d34589a0d38b606bdee372f8d2028fc31db4dbb1661819747bb33ab1a005c"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "332"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-payload-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-payload-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-payload-volume-sequence-big-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-payload-volume-sequence-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-payload-volume-sequence-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-payload-volume-sequence-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-payload-volume-sequence-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-payload-volume-sequence-little-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-payload-volume-sequence-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-payload-volume-sequence-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-payload-volume-sequence-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-payload-volume-sequence-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-pvd-logical-block-size-big-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-pvd-logical-block-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-pvd-logical-block-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-pvd-logical-block-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-pvd-logical-block-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-pvd-logical-block-size-little-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-pvd-logical-block-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-pvd-logical-block-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-pvd-logical-block-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-pvd-logical-block-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-pvd-path-table-size-big-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-pvd-path-table-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-pvd-path-table-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-pvd-path-table-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-pvd-path-table-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-pvd-path-table-size-little-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-pvd-path-table-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-pvd-path-table-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-pvd-path-table-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-pvd-path-table-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-pvd-root-extent-big-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-pvd-root-extent-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-pvd-root-extent-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-pvd-root-extent-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-pvd-root-extent-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-pvd-root-extent-little-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-pvd-root-extent-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-pvd-root-extent-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-pvd-root-extent-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-pvd-root-extent-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-pvd-root-size-big-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-pvd-root-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-pvd-root-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-pvd-root-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-pvd-root-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-pvd-root-size-little-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-pvd-root-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-pvd-root-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-pvd-root-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-pvd-root-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-pvd-root-volume-sequence-big-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-pvd-root-volume-sequence-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-pvd-root-volume-sequence-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-pvd-root-volume-sequence-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-pvd-root-volume-sequence-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-pvd-root-volume-sequence-little-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-pvd-root-volume-sequence-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-pvd-root-volume-sequence-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-pvd-root-volume-sequence-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-pvd-root-volume-sequence-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-pvd-volume-sequence-number-big-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-pvd-volume-sequence-number-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-pvd-volume-sequence-number-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-pvd-volume-sequence-number-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-pvd-volume-sequence-number-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-pvd-volume-sequence-number-little-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-pvd-volume-sequence-number-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-pvd-volume-sequence-number-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-pvd-volume-sequence-number-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-pvd-volume-sequence-number-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-pvd-volume-set-size-big-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-pvd-volume-set-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-pvd-volume-set-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-pvd-volume-set-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-pvd-volume-set-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-pvd-volume-set-size-little-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-pvd-volume-set-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-pvd-volume-set-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-pvd-volume-set-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-pvd-volume-set-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-pvd-volume-space-size-big-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-pvd-volume-space-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-pvd-volume-space-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-pvd-volume-space-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-pvd-volume-space-size-big-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-pvd-volume-space-size-little-alternate.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-pvd-volume-space-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-pvd-volume-space-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-pvd-volume-space-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-pvd-volume-space-size-little-alternate.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    }
+  },
+  "execution_count": 140,
+  "facts": {
+    "all_big_endian_alternates_keep_control_child_projection": true,
+    "all_conflicts_keep_iso9660_root_detection": true,
+    "all_endian_conflict_cases_exit_zero_without_stderr": true,
+    "archive_and_aggressive_outputs_are_equal": true,
+    "little_endian_offsets_and_block_size_control_child_reachability": true,
+    "little_endian_payload_size_controls_declared_child_size": true,
+    "other_little_endian_alternates_keep_control_child_projection": true,
+    "release_and_harness_default_outputs_are_equal": true
+  },
+  "failures": [],
+  "fixture_manifest": {
+    "path": "docs/research/data/iso9660-endian-corpus.json",
+    "sample_count": 35,
+    "sha256": "0075dfcde4d33571d2b71b5db2738e81f46dc1cb67ca5883b86919233d6365c7"
+  },
+  "generator": "tools/upstream/probe_iso9660_endian_harness.py",
+  "generator_sha256": "d440a7fa1afcb2dc9883f2ba8f663cab7332b15b02fc3a5fc128be6adcdf5f52",
+  "image": {
+    "id": "sha256:771b9094a2ad6ab4f6250dd89307ab727c07a1aae885a894695abfa959bab5dc",
+    "name": "diec-rust/upstream-archive-harness:74eaf505",
+    "repo_digests": [
+      "diec-rust/upstream-archive-harness@sha256:771b9094a2ad6ab4f6250dd89307ab727c07a1aae885a894695abfa959bab5dc"
+    ],
+    "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "local_sources": {
+    "fixture_generator": {
+      "path": "tools/corpus/generate_iso9660_endian_fixture.py",
+      "sha256": "e7af41b11c84ce960ebd1394533bed33169cc0d6a7d02546628e819f8d6739d3"
+    },
+    "harness_dockerfile": {
+      "path": "tools/upstream/Dockerfile.archive-harness-qt5",
+      "sha256": "2ae4695c9e63857c263dc2d35978dbccc3d4d5f7b65dc20c7424472a1728bf8f"
+    },
+    "harness_source": {
+      "path": "tools/upstream/archive_harness_main.cpp",
+      "sha256": "bd67e06915809d5f9a8065f1d3471a1c9f44d614e1f7d5f176a691088dc6e86d"
+    },
+    "probe_base": {
+      "path": "tools/upstream/probe_archive_truncation_harness.py",
+      "sha256": "6956152af56ccc06b03749ac49bce2438368ca5f93c9751a995049db58f0027a"
+    },
+    "source_generator": {
+      "path": "tools/corpus/generate_archive_format_fixture.py",
+      "sha256": "c60b7832b9858376d46d131876406d87bc49fd82cd018634c8f99af0ade2322e"
+    }
+  },
+  "passed": true,
+  "platform": "linux-x86_64-qt5",
+  "raw_artifacts": {
+    "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f": {
+      "base64": "eNqr5lIAAqWU1JLU5JJiJSuFaLAACFTDWWAlaZk5qSWVBalANUqewf4KlmZmBko6qGoy89LyQfLo4vlpacWpJSAZDC0FiUWpeSUgw4EssBKP1MSU1CJ0dcWZVWCrTYwNDCzQJcsSc0pTUV2P3ReEXAqXz0vMBVsXmpedl1+eh0tZcUlRZl46kkIrBQI6YEFIQFlZalFxZn4e2IkYKmpRRGK5UMVjuWq5uLgA7DNfnA==",
+      "bytes": 473,
+      "compressed_bytes": 175,
+      "encoding": "zlib+base64"
+    },
+    "a32d34589a0d38b606bdee372f8d2028fc31db4dbb1661819747bb33ab1a005c": {
+      "base64": "eNq9U81LwzAcveevCDlNKFLXMbRXZehJYXiSHUL7ywi2SUnjREf/d9Nsnf1KUy/mFPLe+3281x4RNoekoCHRJYnxm32oz/FysxTGM9BfBRgOedo+47v1OiRBl8MFkzXef5eMlaBrZCApqAKh6+LmZimPQFNQfV7Jv23rVRSGt33wQLMP6E4/voVv0gsuaG7bvYp3IT+Fi1ZqxcW+RYyxR9FY6KEdQJVcCjvigFEFc9dsh/bysHF187nhzm8ix61WQHOnc+c8o2jp9MCd6vTac/capO22aCTxjVQ51TE2osXN9erKp2xyYFbnY7c+AFOcOMlV8F/mnP7Le5nnJuj5NhlBkXFQMe4UWMASooSl0WzfknOhPzjX9JiwbxTZoWneL35636EKIfQDl5UDVg==",
+      "bytes": 1356,
+      "compressed_bytes": 301,
+      "encoding": "zlib+base64"
+    },
+    "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855": {
+      "base64": "eNoDAAAAAAE=",
+      "bytes": 0,
+      "compressed_bytes": 8,
+      "encoding": "zlib+base64"
+    },
+    "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6": {
+      "base64": "eNq9U81LwzAcveevCDlNKNLZMbRXZehJYXiSHUL7ywi2SUnjREf/d9Nsnf1KUy/mFPLe+3281x4RNoekoCHRJYnxm32oz/FysxTGM9BfBRgOedo+47v1OiRBl8MFkzXef5eMlaBrZCApqAKh6+LmZimPQFNQfV7Jv23rVRSGt33wQLMP6E4/voVv0gsuaG7bvYp3IT+Fi1ZqxcW+RYyxR9FY6KEdQJVcCjvigFEFc9dsh/bysHF187nhzm8ix61WQHOnc+c8o2jp9MCd6vTac/capO22aCTxjVQ51TE2osXyenXlUzY5MKvzsVsfgClOnOQq+C9zTv/lvcxzE/R8m4ygyDioGHcKLOAGooSl0WzfknOhPzjX9JiwbxTZoWneL35636EKIfQDlMwDVQ==",
+      "bytes": 1356,
+      "compressed_bytes": 301,
+      "encoding": "zlib+base64"
+    }
+  },
+  "remaining_gap": "CAP-GAP-006",
+  "resource_limits": {
+    "container_root": "read-only",
+    "cpus": 1,
+    "fixture_mount": "read-only",
+    "memory_bytes": 536870912,
+    "network": "none",
+    "pids": 128,
+    "timeout_seconds_per_execution": 60
+  },
+  "schema_version": 1,
+  "source_contract": {
+    "cab": {
+      "path": "/opt/die-source/XArchive/xcab.cpp",
+      "required_pattern": "bool XCab::initUnpack(",
+      "required_pattern_count": 1,
+      "sha256": "a0ce130f4d81ba3aeb018e485a3ee8c046d4cbb570d6318f7aa8817aff28035b"
+    },
+    "engine": {
+      "path": "/opt/die-source/XScanEngine/xscanengine.cpp",
+      "required_pattern": "XBinary::createFileBuffer(archiveRecord.mapProperties.value(XBinary::FPART_PROP_UNCOMPRESSEDSIZE).toLongLong(), pPdStruct)",
+      "required_pattern_count": 1,
+      "sha256": "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498"
+    },
+    "iso9660": {
+      "path": "/opt/die-source/XArchive/xiso9660.cpp",
+      "required_pattern": "bool XISO9660::initUnpack(",
+      "required_pattern_count": 1,
+      "sha256": "d6e97c4ff2395b812b65da5ab480e937c6b365e6e6e8b0288ddf48b8fd398fb1"
+    },
+    "rar": {
+      "path": "/opt/die-source/XArchive/xrar.cpp",
+      "required_pattern": "bool XRar::initUnpack(",
+      "required_pattern_count": 1,
+      "sha256": "23721187a6118edce8b9511680f34c404727f831ec8c7ed66e0ed0868260ccb8"
+    },
+    "sevenzip": {
+      "path": "/opt/die-source/XArchive/xsevenzip.cpp",
+      "required_pattern": "bool XSevenZip::initUnpack(",
+      "required_pattern_count": 1,
+      "sha256": "d8da44bdcd1dfab07f1403ae19a0113238fd54620ef9b4307410097d7d8e5554"
+    }
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}
