@@ -1,0 +1,1798 @@
+{
+  "assets": [
+    {
+      "bytes": 172,
+      "git_blob_oid": "716b44e1c3b121b077b05a82756f61fe78715c94",
+      "history": {
+        "asset_introduction_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "changes_newest_first": [
+          {
+            "changes": [
+              {
+                "path": "db/_icons/_.png",
+                "status": "A"
+              }
+            ],
+            "commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+          }
+        ],
+        "commit_count": 1,
+        "current_path_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "last_change_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "lineage_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+      },
+      "path": "db/_icons/_.png",
+      "png": {
+        "chunk_types": [
+          "IHDR",
+          "pHYs",
+          "IDAT",
+          "IEND"
+        ],
+        "chunks": [
+          {
+            "bytes": 13,
+            "crc32": "1ff3ff61",
+            "crc_valid": true,
+            "type": "IHDR"
+          },
+          {
+            "bytes": 9,
+            "crc32": "c76fa864",
+            "crc_valid": true,
+            "type": "pHYs"
+          },
+          {
+            "bytes": 94,
+            "crc32": "9357a5c0",
+            "crc_valid": true,
+            "type": "IDAT"
+          },
+          {
+            "bytes": 0,
+            "crc32": "ae426082",
+            "crc_valid": true,
+            "type": "IEND"
+          }
+        ],
+        "has_license_or_attribution_text": false,
+        "ihdr": {
+          "bit_depth": 8,
+          "color_type": 6,
+          "compression": 0,
+          "filter": 0,
+          "height": 16,
+          "interlace": 0,
+          "width": 16
+        },
+        "text_chunks": []
+      },
+      "sha256": "60948f0ab41a2e3a6513329afa24bdeb019230e5d4b790e1e862cc1e8424b8d6"
+    },
+    {
+      "bytes": 153,
+      "git_blob_oid": "b9022cb439102ecda5d9bb6911b941e8de71893a",
+      "history": {
+        "asset_introduction_commit": "ae8ec5903a3bf1c3c6c4e674a37b84e7e97dc91a",
+        "changes_newest_first": [
+          {
+            "changes": [
+              {
+                "destination_path": "db/_icons/archive.png",
+                "source_path": "db/_icons/other.png",
+                "status": "C100"
+              }
+            ],
+            "commit": "ae8ec5903a3bf1c3c6c4e674a37b84e7e97dc91a"
+          },
+          {
+            "changes": [
+              {
+                "path": "db/_icons/other.png",
+                "status": "A"
+              }
+            ],
+            "commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+          }
+        ],
+        "commit_count": 2,
+        "current_path_first_commit": "ae8ec5903a3bf1c3c6c4e674a37b84e7e97dc91a",
+        "last_change_commit": "ae8ec5903a3bf1c3c6c4e674a37b84e7e97dc91a",
+        "lineage_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+      },
+      "path": "db/_icons/archive.png",
+      "png": {
+        "chunk_types": [
+          "IHDR",
+          "pHYs",
+          "IDAT",
+          "IEND"
+        ],
+        "chunks": [
+          {
+            "bytes": 13,
+            "crc32": "1ff3ff61",
+            "crc_valid": true,
+            "type": "IHDR"
+          },
+          {
+            "bytes": 9,
+            "crc32": "c76fa864",
+            "crc_valid": true,
+            "type": "pHYs"
+          },
+          {
+            "bytes": 75,
+            "crc32": "c3eb5aad",
+            "crc_valid": true,
+            "type": "IDAT"
+          },
+          {
+            "bytes": 0,
+            "crc32": "ae426082",
+            "crc_valid": true,
+            "type": "IEND"
+          }
+        ],
+        "has_license_or_attribution_text": false,
+        "ihdr": {
+          "bit_depth": 8,
+          "color_type": 6,
+          "compression": 0,
+          "filter": 0,
+          "height": 16,
+          "interlace": 0,
+          "width": 16
+        },
+        "text_chunks": []
+      },
+      "sha256": "7b15ec27a2928638d58070f0d05309f4eb61e2ac09bbe813e0e0724abc4054bc"
+    },
+    {
+      "bytes": 212,
+      "git_blob_oid": "441afaed0cf1cc71d2d469d631e1b64517a2a780",
+      "history": {
+        "asset_introduction_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "changes_newest_first": [
+          {
+            "changes": [
+              {
+                "path": "db/_icons/certificate.png",
+                "status": "A"
+              }
+            ],
+            "commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+          }
+        ],
+        "commit_count": 1,
+        "current_path_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "last_change_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "lineage_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+      },
+      "path": "db/_icons/certificate.png",
+      "png": {
+        "chunk_types": [
+          "IHDR",
+          "pHYs",
+          "IDAT",
+          "IEND"
+        ],
+        "chunks": [
+          {
+            "bytes": 13,
+            "crc32": "1ff3ff61",
+            "crc_valid": true,
+            "type": "IHDR"
+          },
+          {
+            "bytes": 9,
+            "crc32": "c76fa864",
+            "crc_valid": true,
+            "type": "pHYs"
+          },
+          {
+            "bytes": 134,
+            "crc32": "9425c028",
+            "crc_valid": true,
+            "type": "IDAT"
+          },
+          {
+            "bytes": 0,
+            "crc32": "ae426082",
+            "crc_valid": true,
+            "type": "IEND"
+          }
+        ],
+        "has_license_or_attribution_text": false,
+        "ihdr": {
+          "bit_depth": 8,
+          "color_type": 6,
+          "compression": 0,
+          "filter": 0,
+          "height": 16,
+          "interlace": 0,
+          "width": 16
+        },
+        "text_chunks": []
+      },
+      "sha256": "dbb20b36c2b5cfeec81cc09658201521b79ec8b74187aa4feb42aa595bdf079a"
+    },
+    {
+      "bytes": 149,
+      "git_blob_oid": "acabc3aa57cf48213908b70ea17157de7976972d",
+      "history": {
+        "asset_introduction_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "changes_newest_first": [
+          {
+            "changes": [
+              {
+                "path": "db/_icons/compiler.png",
+                "status": "A"
+              }
+            ],
+            "commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+          }
+        ],
+        "commit_count": 1,
+        "current_path_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "last_change_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "lineage_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+      },
+      "path": "db/_icons/compiler.png",
+      "png": {
+        "chunk_types": [
+          "IHDR",
+          "pHYs",
+          "IDAT",
+          "IEND"
+        ],
+        "chunks": [
+          {
+            "bytes": 13,
+            "crc32": "1ff3ff61",
+            "crc_valid": true,
+            "type": "IHDR"
+          },
+          {
+            "bytes": 9,
+            "crc32": "c76fa864",
+            "crc_valid": true,
+            "type": "pHYs"
+          },
+          {
+            "bytes": 71,
+            "crc32": "7b31d261",
+            "crc_valid": true,
+            "type": "IDAT"
+          },
+          {
+            "bytes": 0,
+            "crc32": "ae426082",
+            "crc_valid": true,
+            "type": "IEND"
+          }
+        ],
+        "has_license_or_attribution_text": false,
+        "ihdr": {
+          "bit_depth": 8,
+          "color_type": 6,
+          "compression": 0,
+          "filter": 0,
+          "height": 16,
+          "interlace": 0,
+          "width": 16
+        },
+        "text_chunks": []
+      },
+      "sha256": "a9ece0f49762c66f79a0e0568fb2ff265c6a337dc759943aae1ceadbc08343dc"
+    },
+    {
+      "bytes": 194,
+      "git_blob_oid": "24748ab9687122a8f7e4f6766f2a8a639a2d388e",
+      "history": {
+        "asset_introduction_commit": "ae8ec5903a3bf1c3c6c4e674a37b84e7e97dc91a",
+        "changes_newest_first": [
+          {
+            "changes": [
+              {
+                "path": "db/_icons/converter.png",
+                "status": "A"
+              }
+            ],
+            "commit": "ae8ec5903a3bf1c3c6c4e674a37b84e7e97dc91a"
+          }
+        ],
+        "commit_count": 1,
+        "current_path_first_commit": "ae8ec5903a3bf1c3c6c4e674a37b84e7e97dc91a",
+        "last_change_commit": "ae8ec5903a3bf1c3c6c4e674a37b84e7e97dc91a",
+        "lineage_first_commit": "ae8ec5903a3bf1c3c6c4e674a37b84e7e97dc91a"
+      },
+      "path": "db/_icons/converter.png",
+      "png": {
+        "chunk_types": [
+          "IHDR",
+          "pHYs",
+          "IDAT",
+          "IEND"
+        ],
+        "chunks": [
+          {
+            "bytes": 13,
+            "crc32": "1ff3ff61",
+            "crc_valid": true,
+            "type": "IHDR"
+          },
+          {
+            "bytes": 9,
+            "crc32": "c76fa864",
+            "crc_valid": true,
+            "type": "pHYs"
+          },
+          {
+            "bytes": 116,
+            "crc32": "e67a94f3",
+            "crc_valid": true,
+            "type": "IDAT"
+          },
+          {
+            "bytes": 0,
+            "crc32": "ae426082",
+            "crc_valid": true,
+            "type": "IEND"
+          }
+        ],
+        "has_license_or_attribution_text": false,
+        "ihdr": {
+          "bit_depth": 8,
+          "color_type": 6,
+          "compression": 0,
+          "filter": 0,
+          "height": 16,
+          "interlace": 0,
+          "width": 16
+        },
+        "text_chunks": []
+      },
+      "sha256": "5fdd10f5bc4034f8e19cec76adbb4c9a203fc948502bec1b7728e9d91d5a5fd4"
+    },
+    {
+      "bytes": 249,
+      "git_blob_oid": "ad4e9a9056016f6531d1c1c199dc6079c426d709",
+      "history": {
+        "asset_introduction_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "changes_newest_first": [
+          {
+            "changes": [
+              {
+                "path": "db/_icons/corrupted.png",
+                "status": "A"
+              }
+            ],
+            "commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+          }
+        ],
+        "commit_count": 1,
+        "current_path_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "last_change_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "lineage_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+      },
+      "path": "db/_icons/corrupted.png",
+      "png": {
+        "chunk_types": [
+          "IHDR",
+          "pHYs",
+          "IDAT",
+          "IEND"
+        ],
+        "chunks": [
+          {
+            "bytes": 13,
+            "crc32": "1ff3ff61",
+            "crc_valid": true,
+            "type": "IHDR"
+          },
+          {
+            "bytes": 9,
+            "crc32": "c76fa864",
+            "crc_valid": true,
+            "type": "pHYs"
+          },
+          {
+            "bytes": 171,
+            "crc32": "badcf6a2",
+            "crc_valid": true,
+            "type": "IDAT"
+          },
+          {
+            "bytes": 0,
+            "crc32": "ae426082",
+            "crc_valid": true,
+            "type": "IEND"
+          }
+        ],
+        "has_license_or_attribution_text": false,
+        "ihdr": {
+          "bit_depth": 8,
+          "color_type": 6,
+          "compression": 0,
+          "filter": 0,
+          "height": 16,
+          "interlace": 0,
+          "width": 16
+        },
+        "text_chunks": []
+      },
+      "sha256": "d7e68f36926e29ee92805fc9cda275850cfa86e5a34ba6616d2f65d611df26cb"
+    },
+    {
+      "bytes": 186,
+      "git_blob_oid": "2600ec5b8efdaae4e3c390e1c5b80c4325f682aa",
+      "history": {
+        "asset_introduction_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "changes_newest_first": [
+          {
+            "changes": [
+              {
+                "path": "db/_icons/debug data.png",
+                "status": "A"
+              }
+            ],
+            "commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+          }
+        ],
+        "commit_count": 1,
+        "current_path_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "last_change_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "lineage_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+      },
+      "path": "db/_icons/debug data.png",
+      "png": {
+        "chunk_types": [
+          "IHDR",
+          "pHYs",
+          "IDAT",
+          "IEND"
+        ],
+        "chunks": [
+          {
+            "bytes": 13,
+            "crc32": "1ff3ff61",
+            "crc_valid": true,
+            "type": "IHDR"
+          },
+          {
+            "bytes": 9,
+            "crc32": "c76fa864",
+            "crc_valid": true,
+            "type": "pHYs"
+          },
+          {
+            "bytes": 108,
+            "crc32": "c08e58a6",
+            "crc_valid": true,
+            "type": "IDAT"
+          },
+          {
+            "bytes": 0,
+            "crc32": "ae426082",
+            "crc_valid": true,
+            "type": "IEND"
+          }
+        ],
+        "has_license_or_attribution_text": false,
+        "ihdr": {
+          "bit_depth": 8,
+          "color_type": 6,
+          "compression": 0,
+          "filter": 0,
+          "height": 16,
+          "interlace": 0,
+          "width": 16
+        },
+        "text_chunks": []
+      },
+      "sha256": "0a1e195aa18a2f80d037865f585213feea59eeb0f30a24c3242c0ef751e7a76d"
+    },
+    {
+      "bytes": 247,
+      "git_blob_oid": "4e5c26f714c59f78f0dfcc73735e61a35c30d7a0",
+      "history": {
+        "asset_introduction_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "changes_newest_first": [
+          {
+            "changes": [
+              {
+                "path": "db/_icons/format.png",
+                "status": "A"
+              }
+            ],
+            "commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+          }
+        ],
+        "commit_count": 1,
+        "current_path_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "last_change_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "lineage_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+      },
+      "path": "db/_icons/format.png",
+      "png": {
+        "chunk_types": [
+          "IHDR",
+          "pHYs",
+          "IDAT",
+          "IEND"
+        ],
+        "chunks": [
+          {
+            "bytes": 13,
+            "crc32": "1ff3ff61",
+            "crc_valid": true,
+            "type": "IHDR"
+          },
+          {
+            "bytes": 9,
+            "crc32": "952b0e1b",
+            "crc_valid": true,
+            "type": "pHYs"
+          },
+          {
+            "bytes": 169,
+            "crc32": "11438f28",
+            "crc_valid": true,
+            "type": "IDAT"
+          },
+          {
+            "bytes": 0,
+            "crc32": "ae426082",
+            "crc_valid": true,
+            "type": "IEND"
+          }
+        ],
+        "has_license_or_attribution_text": false,
+        "ihdr": {
+          "bit_depth": 8,
+          "color_type": 6,
+          "compression": 0,
+          "filter": 0,
+          "height": 16,
+          "interlace": 0,
+          "width": 16
+        },
+        "text_chunks": []
+      },
+      "sha256": "1e44dcb92fbb4c5bbf053eedec8641cb5a1b1a3beca17cc954fcb76dea2d89a1"
+    },
+    {
+      "bytes": 310,
+      "git_blob_oid": "0947a7fc78eb45fac94ee89db0dd8f60976a5ff1",
+      "history": {
+        "asset_introduction_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "changes_newest_first": [
+          {
+            "changes": [
+              {
+                "path": "db/_icons/image.png",
+                "status": "A"
+              }
+            ],
+            "commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+          }
+        ],
+        "commit_count": 1,
+        "current_path_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "last_change_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "lineage_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+      },
+      "path": "db/_icons/image.png",
+      "png": {
+        "chunk_types": [
+          "IHDR",
+          "sRGB",
+          "gAMA",
+          "pHYs",
+          "tEXt",
+          "IDAT",
+          "IEND"
+        ],
+        "chunks": [
+          {
+            "bytes": 13,
+            "crc32": "1ff3ff61",
+            "crc_valid": true,
+            "type": "IHDR"
+          },
+          {
+            "bytes": 1,
+            "crc32": "aece1ce9",
+            "crc_valid": true,
+            "type": "sRGB"
+          },
+          {
+            "bytes": 4,
+            "crc32": "0bfc6105",
+            "crc_valid": true,
+            "type": "gAMA"
+          },
+          {
+            "bytes": 9,
+            "crc32": "c76fa864",
+            "crc_valid": true,
+            "type": "pHYs"
+          },
+          {
+            "bytes": 24,
+            "crc32": "8ce69750",
+            "crc_valid": true,
+            "type": "tEXt"
+          },
+          {
+            "bytes": 167,
+            "crc32": "94bf9e3c",
+            "crc_valid": true,
+            "type": "IDAT"
+          },
+          {
+            "bytes": 0,
+            "crc32": "ae426082",
+            "crc_valid": true,
+            "type": "IEND"
+          }
+        ],
+        "has_license_or_attribution_text": false,
+        "ihdr": {
+          "bit_depth": 8,
+          "color_type": 6,
+          "compression": 0,
+          "filter": 0,
+          "height": 16,
+          "interlace": 0,
+          "width": 16
+        },
+        "text_chunks": [
+          {
+            "keyword": "Software",
+            "text": "paint.net 4.0.3",
+            "type": "tEXt"
+          }
+        ]
+      },
+      "sha256": "e3d32fb4087b5f4e7bb3c448835cfaa7a7052a8a71da947db2f2fe0377f259e8"
+    },
+    {
+      "bytes": 297,
+      "git_blob_oid": "f4aaaa6408d5e5d552b1669b09f9a80725d77a1b",
+      "history": {
+        "asset_introduction_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "changes_newest_first": [
+          {
+            "changes": [
+              {
+                "path": "db/_icons/installer, sfx.png",
+                "status": "A"
+              }
+            ],
+            "commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+          }
+        ],
+        "commit_count": 1,
+        "current_path_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "last_change_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "lineage_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+      },
+      "path": "db/_icons/installer, sfx.png",
+      "png": {
+        "chunk_types": [
+          "IHDR",
+          "pHYs",
+          "IDAT",
+          "IEND"
+        ],
+        "chunks": [
+          {
+            "bytes": 13,
+            "crc32": "1ff3ff61",
+            "crc_valid": true,
+            "type": "IHDR"
+          },
+          {
+            "bytes": 9,
+            "crc32": "952b0e1b",
+            "crc_valid": true,
+            "type": "pHYs"
+          },
+          {
+            "bytes": 219,
+            "crc32": "af8b0734",
+            "crc_valid": true,
+            "type": "IDAT"
+          },
+          {
+            "bytes": 0,
+            "crc32": "ae426082",
+            "crc_valid": true,
+            "type": "IEND"
+          }
+        ],
+        "has_license_or_attribution_text": false,
+        "ihdr": {
+          "bit_depth": 8,
+          "color_type": 6,
+          "compression": 0,
+          "filter": 0,
+          "height": 16,
+          "interlace": 0,
+          "width": 16
+        },
+        "text_chunks": []
+      },
+      "sha256": "e42e5a3e88034efc40652697b8a12edbca58f155f17b557c60a517b35f0500e2"
+    },
+    {
+      "bytes": 169,
+      "git_blob_oid": "736af516ecd955a0cd4c48aeca88504bc8e0a2db",
+      "history": {
+        "asset_introduction_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "changes_newest_first": [
+          {
+            "changes": [
+              {
+                "path": "db/_icons/joiner.png",
+                "status": "A"
+              }
+            ],
+            "commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+          }
+        ],
+        "commit_count": 1,
+        "current_path_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "last_change_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "lineage_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+      },
+      "path": "db/_icons/joiner.png",
+      "png": {
+        "chunk_types": [
+          "IHDR",
+          "pHYs",
+          "IDAT",
+          "IEND"
+        ],
+        "chunks": [
+          {
+            "bytes": 13,
+            "crc32": "1ff3ff61",
+            "crc_valid": true,
+            "type": "IHDR"
+          },
+          {
+            "bytes": 9,
+            "crc32": "c76fa864",
+            "crc_valid": true,
+            "type": "pHYs"
+          },
+          {
+            "bytes": 91,
+            "crc32": "c6e34b56",
+            "crc_valid": true,
+            "type": "IDAT"
+          },
+          {
+            "bytes": 0,
+            "crc32": "ae426082",
+            "crc_valid": true,
+            "type": "IEND"
+          }
+        ],
+        "has_license_or_attribution_text": false,
+        "ihdr": {
+          "bit_depth": 8,
+          "color_type": 6,
+          "compression": 0,
+          "filter": 0,
+          "height": 16,
+          "interlace": 0,
+          "width": 16
+        },
+        "text_chunks": []
+      },
+      "sha256": "e1e4d0c70e370097595dda08f842804d73f0277c5d129ced44dc673f045e6552"
+    },
+    {
+      "bytes": 247,
+      "git_blob_oid": "0b8cfa770ff26b27f5bb4e4cabec0c9966e97282",
+      "history": {
+        "asset_introduction_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "changes_newest_first": [
+          {
+            "changes": [
+              {
+                "path": "db/_icons/language.png",
+                "status": "A"
+              }
+            ],
+            "commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+          }
+        ],
+        "commit_count": 1,
+        "current_path_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "last_change_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "lineage_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+      },
+      "path": "db/_icons/language.png",
+      "png": {
+        "chunk_types": [
+          "IHDR",
+          "pHYs",
+          "IDAT",
+          "IEND"
+        ],
+        "chunks": [
+          {
+            "bytes": 13,
+            "crc32": "1ff3ff61",
+            "crc_valid": true,
+            "type": "IHDR"
+          },
+          {
+            "bytes": 9,
+            "crc32": "c76fa864",
+            "crc_valid": true,
+            "type": "pHYs"
+          },
+          {
+            "bytes": 169,
+            "crc32": "ecd708aa",
+            "crc_valid": true,
+            "type": "IDAT"
+          },
+          {
+            "bytes": 0,
+            "crc32": "ae426082",
+            "crc_valid": true,
+            "type": "IEND"
+          }
+        ],
+        "has_license_or_attribution_text": false,
+        "ihdr": {
+          "bit_depth": 8,
+          "color_type": 6,
+          "compression": 0,
+          "filter": 0,
+          "height": 16,
+          "interlace": 0,
+          "width": 16
+        },
+        "text_chunks": []
+      },
+      "sha256": "acaf427fecde3041f8e5be0701888bd49905b89da1564ef3b8dee6f3b9b05302"
+    },
+    {
+      "bytes": 151,
+      "git_blob_oid": "553a6e05fa3edaeb3572b00062ca20de138ce18f",
+      "history": {
+        "asset_introduction_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "changes_newest_first": [
+          {
+            "changes": [
+              {
+                "new_path": "db/_icons/library, module.png",
+                "old_path": "db/_icons/library.png",
+                "status": "R100"
+              }
+            ],
+            "commit": "ae8ec5903a3bf1c3c6c4e674a37b84e7e97dc91a"
+          },
+          {
+            "changes": [
+              {
+                "path": "db/_icons/library.png",
+                "status": "A"
+              }
+            ],
+            "commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+          }
+        ],
+        "commit_count": 2,
+        "current_path_first_commit": "ae8ec5903a3bf1c3c6c4e674a37b84e7e97dc91a",
+        "last_change_commit": "ae8ec5903a3bf1c3c6c4e674a37b84e7e97dc91a",
+        "lineage_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+      },
+      "path": "db/_icons/library, module.png",
+      "png": {
+        "chunk_types": [
+          "IHDR",
+          "pHYs",
+          "IDAT",
+          "IEND"
+        ],
+        "chunks": [
+          {
+            "bytes": 13,
+            "crc32": "1ff3ff61",
+            "crc_valid": true,
+            "type": "IHDR"
+          },
+          {
+            "bytes": 9,
+            "crc32": "c76fa864",
+            "crc_valid": true,
+            "type": "pHYs"
+          },
+          {
+            "bytes": 73,
+            "crc32": "347887ef",
+            "crc_valid": true,
+            "type": "IDAT"
+          },
+          {
+            "bytes": 0,
+            "crc32": "ae426082",
+            "crc_valid": true,
+            "type": "IEND"
+          }
+        ],
+        "has_license_or_attribution_text": false,
+        "ihdr": {
+          "bit_depth": 8,
+          "color_type": 6,
+          "compression": 0,
+          "filter": 0,
+          "height": 16,
+          "interlace": 0,
+          "width": 16
+        },
+        "text_chunks": []
+      },
+      "sha256": "e914504c5c69abc0ce29af0c303594f967ecc6d676dbea7530f59de2d7552b93"
+    },
+    {
+      "bytes": 221,
+      "git_blob_oid": "18ffaabbe84d4a43661019b1ffadae07abbc8207",
+      "history": {
+        "asset_introduction_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "changes_newest_first": [
+          {
+            "changes": [
+              {
+                "path": "db/_icons/licensing.png",
+                "status": "A"
+              }
+            ],
+            "commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+          }
+        ],
+        "commit_count": 1,
+        "current_path_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "last_change_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "lineage_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+      },
+      "path": "db/_icons/licensing.png",
+      "png": {
+        "chunk_types": [
+          "IHDR",
+          "pHYs",
+          "IDAT",
+          "IEND"
+        ],
+        "chunks": [
+          {
+            "bytes": 13,
+            "crc32": "1ff3ff61",
+            "crc_valid": true,
+            "type": "IHDR"
+          },
+          {
+            "bytes": 9,
+            "crc32": "c76fa864",
+            "crc_valid": true,
+            "type": "pHYs"
+          },
+          {
+            "bytes": 143,
+            "crc32": "703e072b",
+            "crc_valid": true,
+            "type": "IDAT"
+          },
+          {
+            "bytes": 0,
+            "crc32": "ae426082",
+            "crc_valid": true,
+            "type": "IEND"
+          }
+        ],
+        "has_license_or_attribution_text": false,
+        "ihdr": {
+          "bit_depth": 8,
+          "color_type": 6,
+          "compression": 0,
+          "filter": 0,
+          "height": 16,
+          "interlace": 0,
+          "width": 16
+        },
+        "text_chunks": []
+      },
+      "sha256": "16fda30f4701c22bfd13de33fb0d95bb35c7ea7040f2e0c2f133b78ae7607ffe"
+    },
+    {
+      "bytes": 224,
+      "git_blob_oid": "c3dc69167a30c86ee0bc7e164657cdd9de60a7a5",
+      "history": {
+        "asset_introduction_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "changes_newest_first": [
+          {
+            "changes": [
+              {
+                "path": "db/_icons/linker.png",
+                "status": "A"
+              }
+            ],
+            "commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+          }
+        ],
+        "commit_count": 1,
+        "current_path_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "last_change_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "lineage_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+      },
+      "path": "db/_icons/linker.png",
+      "png": {
+        "chunk_types": [
+          "IHDR",
+          "pHYs",
+          "IDAT",
+          "IEND"
+        ],
+        "chunks": [
+          {
+            "bytes": 13,
+            "crc32": "1ff3ff61",
+            "crc_valid": true,
+            "type": "IHDR"
+          },
+          {
+            "bytes": 9,
+            "crc32": "c76fa864",
+            "crc_valid": true,
+            "type": "pHYs"
+          },
+          {
+            "bytes": 146,
+            "crc32": "ef5a23a0",
+            "crc_valid": true,
+            "type": "IDAT"
+          },
+          {
+            "bytes": 0,
+            "crc32": "ae426082",
+            "crc_valid": true,
+            "type": "IEND"
+          }
+        ],
+        "has_license_or_attribution_text": false,
+        "ihdr": {
+          "bit_depth": 8,
+          "color_type": 6,
+          "compression": 0,
+          "filter": 0,
+          "height": 16,
+          "interlace": 0,
+          "width": 16
+        },
+        "text_chunks": []
+      },
+      "sha256": "5f8b2f1d65c15f8eb852f15eab38242177f3b3f2905b0e94d6d82d9be5231725"
+    },
+    {
+      "bytes": 168,
+      "git_blob_oid": "ced460ecffdc46c74a4d29c710a2bd39186af3c8",
+      "history": {
+        "asset_introduction_commit": "ae8ec5903a3bf1c3c6c4e674a37b84e7e97dc91a",
+        "changes_newest_first": [
+          {
+            "changes": [
+              {
+                "path": "db/_icons/malware, virus.png",
+                "status": "A"
+              }
+            ],
+            "commit": "ae8ec5903a3bf1c3c6c4e674a37b84e7e97dc91a"
+          }
+        ],
+        "commit_count": 1,
+        "current_path_first_commit": "ae8ec5903a3bf1c3c6c4e674a37b84e7e97dc91a",
+        "last_change_commit": "ae8ec5903a3bf1c3c6c4e674a37b84e7e97dc91a",
+        "lineage_first_commit": "ae8ec5903a3bf1c3c6c4e674a37b84e7e97dc91a"
+      },
+      "path": "db/_icons/malware, virus.png",
+      "png": {
+        "chunk_types": [
+          "IHDR",
+          "pHYs",
+          "IDAT",
+          "IEND"
+        ],
+        "chunks": [
+          {
+            "bytes": 13,
+            "crc32": "1ff3ff61",
+            "crc_valid": true,
+            "type": "IHDR"
+          },
+          {
+            "bytes": 9,
+            "crc32": "c76fa864",
+            "crc_valid": true,
+            "type": "pHYs"
+          },
+          {
+            "bytes": 90,
+            "crc32": "2c607f21",
+            "crc_valid": true,
+            "type": "IDAT"
+          },
+          {
+            "bytes": 0,
+            "crc32": "ae426082",
+            "crc_valid": true,
+            "type": "IEND"
+          }
+        ],
+        "has_license_or_attribution_text": false,
+        "ihdr": {
+          "bit_depth": 8,
+          "color_type": 6,
+          "compression": 0,
+          "filter": 0,
+          "height": 16,
+          "interlace": 0,
+          "width": 16
+        },
+        "text_chunks": []
+      },
+      "sha256": "53f4f8c99662aebcf085105af207cdf9fa5182283610f75d1ac95ed884020cbf"
+    },
+    {
+      "bytes": 600,
+      "git_blob_oid": "f2f90eaeb4513f1ecee1ffd27edd3592b3f88232",
+      "history": {
+        "asset_introduction_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "changes_newest_first": [
+          {
+            "changes": [
+              {
+                "path": "db/_icons/operation system.png",
+                "status": "A"
+              }
+            ],
+            "commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+          }
+        ],
+        "commit_count": 1,
+        "current_path_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "last_change_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "lineage_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+      },
+      "path": "db/_icons/operation system.png",
+      "png": {
+        "chunk_types": [
+          "IHDR",
+          "pHYs",
+          "IDAT",
+          "IEND"
+        ],
+        "chunks": [
+          {
+            "bytes": 13,
+            "crc32": "1ff3ff61",
+            "crc_valid": true,
+            "type": "IHDR"
+          },
+          {
+            "bytes": 9,
+            "crc32": "952b0e1b",
+            "crc_valid": true,
+            "type": "pHYs"
+          },
+          {
+            "bytes": 522,
+            "crc32": "138b511f",
+            "crc_valid": true,
+            "type": "IDAT"
+          },
+          {
+            "bytes": 0,
+            "crc32": "ae426082",
+            "crc_valid": true,
+            "type": "IEND"
+          }
+        ],
+        "has_license_or_attribution_text": false,
+        "ihdr": {
+          "bit_depth": 8,
+          "color_type": 6,
+          "compression": 0,
+          "filter": 0,
+          "height": 16,
+          "interlace": 0,
+          "width": 16
+        },
+        "text_chunks": []
+      },
+      "sha256": "9f5c76ff411783d5d94e9227f4106b82d56881a6793842f2381031a9493fe2c4"
+    },
+    {
+      "bytes": 153,
+      "git_blob_oid": "b9022cb439102ecda5d9bb6911b941e8de71893a",
+      "history": {
+        "asset_introduction_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "changes_newest_first": [
+          {
+            "changes": [
+              {
+                "path": "db/_icons/other.png",
+                "status": "A"
+              }
+            ],
+            "commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+          }
+        ],
+        "commit_count": 1,
+        "current_path_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "last_change_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "lineage_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+      },
+      "path": "db/_icons/other.png",
+      "png": {
+        "chunk_types": [
+          "IHDR",
+          "pHYs",
+          "IDAT",
+          "IEND"
+        ],
+        "chunks": [
+          {
+            "bytes": 13,
+            "crc32": "1ff3ff61",
+            "crc_valid": true,
+            "type": "IHDR"
+          },
+          {
+            "bytes": 9,
+            "crc32": "c76fa864",
+            "crc_valid": true,
+            "type": "pHYs"
+          },
+          {
+            "bytes": 75,
+            "crc32": "c3eb5aad",
+            "crc_valid": true,
+            "type": "IDAT"
+          },
+          {
+            "bytes": 0,
+            "crc32": "ae426082",
+            "crc_valid": true,
+            "type": "IEND"
+          }
+        ],
+        "has_license_or_attribution_text": false,
+        "ihdr": {
+          "bit_depth": 8,
+          "color_type": 6,
+          "compression": 0,
+          "filter": 0,
+          "height": 16,
+          "interlace": 0,
+          "width": 16
+        },
+        "text_chunks": []
+      },
+      "sha256": "7b15ec27a2928638d58070f0d05309f4eb61e2ac09bbe813e0e0724abc4054bc"
+    },
+    {
+      "bytes": 316,
+      "git_blob_oid": "001a8c66aa5a743f2ebeb7ba2175f13af6684fa4",
+      "history": {
+        "asset_introduction_commit": "ae8ec5903a3bf1c3c6c4e674a37b84e7e97dc91a",
+        "changes_newest_first": [
+          {
+            "changes": [
+              {
+                "destination_path": "db/_icons/package.png",
+                "source_path": "db/_icons/tool.png",
+                "status": "C100"
+              }
+            ],
+            "commit": "ae8ec5903a3bf1c3c6c4e674a37b84e7e97dc91a"
+          },
+          {
+            "changes": [
+              {
+                "path": "db/_icons/tool.png",
+                "status": "A"
+              }
+            ],
+            "commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+          }
+        ],
+        "commit_count": 2,
+        "current_path_first_commit": "ae8ec5903a3bf1c3c6c4e674a37b84e7e97dc91a",
+        "last_change_commit": "ae8ec5903a3bf1c3c6c4e674a37b84e7e97dc91a",
+        "lineage_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+      },
+      "path": "db/_icons/package.png",
+      "png": {
+        "chunk_types": [
+          "IHDR",
+          "sRGB",
+          "gAMA",
+          "pHYs",
+          "tEXt",
+          "IDAT",
+          "IEND"
+        ],
+        "chunks": [
+          {
+            "bytes": 13,
+            "crc32": "1ff3ff61",
+            "crc_valid": true,
+            "type": "IHDR"
+          },
+          {
+            "bytes": 1,
+            "crc32": "aece1ce9",
+            "crc_valid": true,
+            "type": "sRGB"
+          },
+          {
+            "bytes": 4,
+            "crc32": "0bfc6105",
+            "crc_valid": true,
+            "type": "gAMA"
+          },
+          {
+            "bytes": 9,
+            "crc32": "c76fa864",
+            "crc_valid": true,
+            "type": "pHYs"
+          },
+          {
+            "bytes": 24,
+            "crc32": "fbe1a7c6",
+            "crc_valid": true,
+            "type": "tEXt"
+          },
+          {
+            "bytes": 173,
+            "crc32": "2f4800b9",
+            "crc_valid": true,
+            "type": "IDAT"
+          },
+          {
+            "bytes": 0,
+            "crc32": "ae426082",
+            "crc_valid": true,
+            "type": "IEND"
+          }
+        ],
+        "has_license_or_attribution_text": false,
+        "ihdr": {
+          "bit_depth": 8,
+          "color_type": 6,
+          "compression": 0,
+          "filter": 0,
+          "height": 16,
+          "interlace": 0,
+          "width": 16
+        },
+        "text_chunks": [
+          {
+            "keyword": "Software",
+            "text": "paint.net 4.0.2",
+            "type": "tEXt"
+          }
+        ]
+      },
+      "sha256": "a8665e8b9acd96cde624569d08f170a3bf4517df0eb781f40446fb10d0c3bdf7"
+    },
+    {
+      "bytes": 277,
+      "git_blob_oid": "171fd1bfc0a03f993f9a27cd414a989313132e08",
+      "history": {
+        "asset_introduction_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "changes_newest_first": [
+          {
+            "changes": [
+              {
+                "path": "db/_icons/packer, cryptor, protector, protection.png",
+                "status": "A"
+              }
+            ],
+            "commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+          }
+        ],
+        "commit_count": 1,
+        "current_path_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "last_change_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "lineage_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+      },
+      "path": "db/_icons/packer, cryptor, protector, protection.png",
+      "png": {
+        "chunk_types": [
+          "IHDR",
+          "pHYs",
+          "IDAT",
+          "IEND"
+        ],
+        "chunks": [
+          {
+            "bytes": 13,
+            "crc32": "1ff3ff61",
+            "crc_valid": true,
+            "type": "IHDR"
+          },
+          {
+            "bytes": 9,
+            "crc32": "952b0e1b",
+            "crc_valid": true,
+            "type": "pHYs"
+          },
+          {
+            "bytes": 199,
+            "crc32": "55209779",
+            "crc_valid": true,
+            "type": "IDAT"
+          },
+          {
+            "bytes": 0,
+            "crc32": "ae426082",
+            "crc_valid": true,
+            "type": "IEND"
+          }
+        ],
+        "has_license_or_attribution_text": false,
+        "ihdr": {
+          "bit_depth": 8,
+          "color_type": 6,
+          "compression": 0,
+          "filter": 0,
+          "height": 16,
+          "interlace": 0,
+          "width": 16
+        },
+        "text_chunks": []
+      },
+      "sha256": "efe638938fbbbecd594f4f962cdffa7398a4d8efa05b2a7c5281c17da474e011"
+    },
+    {
+      "bytes": 371,
+      "git_blob_oid": "06a6d1ce378d1b911f423a32f7fc1fbbd2151d50",
+      "history": {
+        "asset_introduction_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "changes_newest_first": [
+          {
+            "changes": [
+              {
+                "path": "db/_icons/source.png",
+                "status": "A"
+              }
+            ],
+            "commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+          }
+        ],
+        "commit_count": 1,
+        "current_path_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "last_change_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "lineage_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+      },
+      "path": "db/_icons/source.png",
+      "png": {
+        "chunk_types": [
+          "IHDR",
+          "pHYs",
+          "IDAT",
+          "IEND"
+        ],
+        "chunks": [
+          {
+            "bytes": 13,
+            "crc32": "1ff3ff61",
+            "crc_valid": true,
+            "type": "IHDR"
+          },
+          {
+            "bytes": 9,
+            "crc32": "952b0e1b",
+            "crc_valid": true,
+            "type": "pHYs"
+          },
+          {
+            "bytes": 293,
+            "crc32": "ab3dd950",
+            "crc_valid": true,
+            "type": "IDAT"
+          },
+          {
+            "bytes": 0,
+            "crc32": "ae426082",
+            "crc_valid": true,
+            "type": "IEND"
+          }
+        ],
+        "has_license_or_attribution_text": false,
+        "ihdr": {
+          "bit_depth": 8,
+          "color_type": 6,
+          "compression": 0,
+          "filter": 0,
+          "height": 16,
+          "interlace": 0,
+          "width": 16
+        },
+        "text_chunks": []
+      },
+      "sha256": "565118d6b213a6a0d9b9bfef26d679ed5cf303e3aecd0fcb9afafdc7dbc35333"
+    },
+    {
+      "bytes": 316,
+      "git_blob_oid": "001a8c66aa5a743f2ebeb7ba2175f13af6684fa4",
+      "history": {
+        "asset_introduction_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "changes_newest_first": [
+          {
+            "changes": [
+              {
+                "path": "db/_icons/tool.png",
+                "status": "A"
+              }
+            ],
+            "commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+          }
+        ],
+        "commit_count": 1,
+        "current_path_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "last_change_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+        "lineage_first_commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+      },
+      "path": "db/_icons/tool.png",
+      "png": {
+        "chunk_types": [
+          "IHDR",
+          "sRGB",
+          "gAMA",
+          "pHYs",
+          "tEXt",
+          "IDAT",
+          "IEND"
+        ],
+        "chunks": [
+          {
+            "bytes": 13,
+            "crc32": "1ff3ff61",
+            "crc_valid": true,
+            "type": "IHDR"
+          },
+          {
+            "bytes": 1,
+            "crc32": "aece1ce9",
+            "crc_valid": true,
+            "type": "sRGB"
+          },
+          {
+            "bytes": 4,
+            "crc32": "0bfc6105",
+            "crc_valid": true,
+            "type": "gAMA"
+          },
+          {
+            "bytes": 9,
+            "crc32": "c76fa864",
+            "crc_valid": true,
+            "type": "pHYs"
+          },
+          {
+            "bytes": 24,
+            "crc32": "fbe1a7c6",
+            "crc_valid": true,
+            "type": "tEXt"
+          },
+          {
+            "bytes": 173,
+            "crc32": "2f4800b9",
+            "crc_valid": true,
+            "type": "IDAT"
+          },
+          {
+            "bytes": 0,
+            "crc32": "ae426082",
+            "crc_valid": true,
+            "type": "IEND"
+          }
+        ],
+        "has_license_or_attribution_text": false,
+        "ihdr": {
+          "bit_depth": 8,
+          "color_type": 6,
+          "compression": 0,
+          "filter": 0,
+          "height": 16,
+          "interlace": 0,
+          "width": 16
+        },
+        "text_chunks": [
+          {
+            "keyword": "Software",
+            "text": "paint.net 4.0.2",
+            "type": "tEXt"
+          }
+        ]
+      },
+      "sha256": "a8665e8b9acd96cde624569d08f170a3bf4517df0eb781f40446fb10d0c3bdf7"
+    }
+  ],
+  "contribution_policy": {
+    "origin_commits": [
+      {
+        "candidate_count": 0,
+        "candidates": [],
+        "commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+      },
+      {
+        "candidate_count": 0,
+        "candidates": [],
+        "commit": "ae8ec5903a3bf1c3c6c4e674a37b84e7e97dc91a"
+      }
+    ],
+    "pinned": {
+      "candidate_count": 1,
+      "candidates": [
+        {
+          "bytes": 2849,
+          "git_blob_oid": "7d3f4d73c9d2e568eaad81ef482c5ed827bb542f",
+          "mentions_cla_dco_or_signoff": false,
+          "mentions_license_or_copyright": false,
+          "path": "CONTRIBUTING.md",
+          "sha256": "c207432fced507cc5f0c2cb428a6346f7422016f6a62ab46fb8d1e944db90f9d"
+        }
+      ],
+      "commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6"
+    }
+  },
+  "findings": {
+    "all_history_commits_are_pinned_ancestors": true,
+    "all_origin_commits_have_root_mit_text": true,
+    "all_png_chunk_crcs_are_valid": true,
+    "all_pngs_are_16x16_rgba8": true,
+    "all_subtree_bytes_match_pinned_original_blobs": true,
+    "asset_license_or_attribution_metadata_present": false,
+    "legal_review_complete": false,
+    "limitations": [
+      "Git author and committer metadata attribute repository commits, not the underlying artwork authorship or source",
+      "repository-root MIT text at origin commits is evidence, not a legal conclusion for each PNG",
+      "CONTRIBUTING.md exists at the pinned commit but not at the two origin commits and contains no explicit license, CLA, DCO, or sign-off term",
+      "the two origin commits contain no GPG signature or Signed-off-by trailer",
+      "the report does not include release-owner or legal approval"
+    ],
+    "origin_commit_signature_or_signoff_present": false,
+    "origin_contribution_policy_file_present": false,
+    "origin_license_blob_matches_pinned": false,
+    "pinned_contribution_policy_file_present": true,
+    "pinned_policy_explicit_license_or_dco_cla_present": false,
+    "pinned_root_license_has_mit_text": true
+  },
+  "generator": "tools/upstream/audit_runtime_png_history.py",
+  "generator_sha256": "7ca7cf9b814915dd2b4552f4e9226dd6268a83bd7df90a895677c16e84ef1bdf",
+  "history_commits": [
+    {
+      "author": {
+        "date": "2025-07-26T01:49:24+03:00",
+        "email": "collab@kay-software.ru",
+        "name": "DosX"
+      },
+      "commit": "62432a2608cf114a8ae881fbad40bb8e2e3335fc",
+      "committer": {
+        "date": "2025-07-26T01:49:24+03:00",
+        "email": "collab@kay-software.ru",
+        "name": "DosX"
+      },
+      "gpg_signature_present": false,
+      "message_sha256": "91edbd593490408cae85dff928cd7939a578fccc77e97326f564a926d5c7ab44",
+      "parents": [
+        "45f57adc500edc76a9ddbd66dfc8af415f39b358"
+      ],
+      "root_license": {
+        "declares_mit": true,
+        "git_blob_oid": "72521edc075b9280c68bbac98a2eabed14e89df5",
+        "path": "LICENSE",
+        "sha256": "5203a1e5b50c6fcaf9127174aecf01fb179a296a85cb963735b3895693f887ad"
+      },
+      "signed_off_by": [],
+      "subject": "Add icon images for various detection types"
+    },
+    {
+      "author": {
+        "date": "2025-07-26T13:11:05+03:00",
+        "email": "collab@kay-software.ru",
+        "name": "DosX"
+      },
+      "commit": "ae8ec5903a3bf1c3c6c4e674a37b84e7e97dc91a",
+      "committer": {
+        "date": "2025-07-26T13:11:05+03:00",
+        "email": "collab@kay-software.ru",
+        "name": "DosX"
+      },
+      "gpg_signature_present": false,
+      "message_sha256": "1cc16a24620fee96d41dccd14011449c776688b2da8b6af2e4e862d78ba7d87b",
+      "parents": [
+        "62432a2608cf114a8ae881fbad40bb8e2e3335fc"
+      ],
+      "root_license": {
+        "declares_mit": true,
+        "git_blob_oid": "72521edc075b9280c68bbac98a2eabed14e89df5",
+        "path": "LICENSE",
+        "sha256": "5203a1e5b50c6fcaf9127174aecf01fb179a296a85cb963735b3895693f887ad"
+      },
+      "signed_off_by": [],
+      "subject": "Add new icon files and rename library icon"
+    }
+  ],
+  "identity": {
+    "component_lock": "upstream/components.lock.toml",
+    "component_lock_sha256": "9fabcaf6a0062fcae7007ea5af13a98876e8a6e08b3e2e4727fdff06d974c63c",
+    "pinned_root_license": {
+      "declares_mit": true,
+      "git_blob_oid": "5b0d5cc36d5db2e1e1c9ffe68a5ea1a15ec5e74b",
+      "path": "LICENSE",
+      "sha256": "be0fe2d727cd0a754fb0b2fdc579ead8f19ef575840b4daef221be201701eaad"
+    },
+    "runtime_asset_report": "docs/research/data/runtime-rule-assets-license.json",
+    "runtime_asset_report_sha256": "c1d1fe07ccdd0ff74a4428372e9c18b4f4dbda2f4a1dd0e3082b7702d8370dbb"
+  },
+  "schema_version": 1,
+  "scope": {
+    "asset_count": 22,
+    "asset_root": "db/_icons",
+    "commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+    "repository": "https://github.com/horsicq/Detect-It-Easy.git"
+  },
+  "summary": {
+    "asset_count": 22,
+    "asset_introduction_counts": {
+      "62432a2608cf114a8ae881fbad40bb8e2e3335fc": 18,
+      "ae8ec5903a3bf1c3c6c4e674a37b84e7e97dc91a": 4
+    },
+    "content_change_after_add_assets": [],
+    "content_change_after_add_count": 0,
+    "contributor_identities": [
+      {
+        "email": "collab@kay-software.ru",
+        "name": "DosX"
+      }
+    ],
+    "contributor_identity_count": 1,
+    "copy_asset_count": 2,
+    "copy_assets": [
+      "db/_icons/archive.png",
+      "db/_icons/package.png"
+    ],
+    "current_path_first_counts": {
+      "62432a2608cf114a8ae881fbad40bb8e2e3335fc": 17,
+      "ae8ec5903a3bf1c3c6c4e674a37b84e7e97dc91a": 5
+    },
+    "history_commit_count": 2,
+    "license_or_attribution_text_asset_count": 0,
+    "lineage_first_counts": {
+      "62432a2608cf114a8ae881fbad40bb8e2e3335fc": 20,
+      "ae8ec5903a3bf1c3c6c4e674a37b84e7e97dc91a": 2
+    },
+    "rename_asset_count": 1,
+    "rename_assets": [
+      "db/_icons/library, module.png"
+    ],
+    "software_text_counts": {
+      "paint.net 4.0.2": 2,
+      "paint.net 4.0.3": 1
+    },
+    "unique_blob_count": 20
+  }
+}

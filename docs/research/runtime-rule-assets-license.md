@@ -4,7 +4,7 @@ Status: Draft
 
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
 
-Last updated: 2026-07-27
+Last updated: 2026-07-28
 
 ## 范围与结论
 
@@ -28,8 +28,11 @@ PEiD、SearchSignatures、`dbs_min` 和 `dbs_special` 不在本文范围；其�
 `db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg:73` 的一条显式 MIT 声明；
 没有发现严格的 GPL、Apache、BSD 或 SPDX 标记。
 
-这些事实仍不足以关闭许可证门禁。根 MIT 文本不能由技术审计自动转换为“每个
-历史贡献和 22 个 PNG 的来源均完成法律确认”；Author 和 URL 注释也不能证明
+这些事实仍不足以关闭许可证门禁。后续
+[`runtime-png-provenance.md`](runtime-png-provenance.md) 已把 22 个 PNG 收窄到
+两个原仓库来源 commit、一个 R100 rename、两个 C100 copy、20 个唯一 blob
+及有效 PNG metadata，但根 MIT 和 Git author 仍不能由技术审计自动转换为
+“每个 artwork 来源均完成法律确认”；Author 和 URL 注释也不能证明
 第三方内容的许可证。机器报告因此固定
 `legal_review_complete = false`，`P0-BLOCK-004` 继续 Open。
 
@@ -80,14 +83,20 @@ subtree、归档或 release staging 目录中使用相同方式复算。
 
 ## 二进制资产
 
-22 个非文本文件全部具有 PNG signature；报告保存每个相对路径、长度和 SHA-256。
-文本 marker 扫描无法回答其图片内容来源、创作者或首次引入历史，因此它们被明确
-列入未关闭项。后续发布方案可以选择：
+22 个非文本文件全部具有 PNG signature；本报告保存每个相对路径、长度和
+SHA-256。后续离线 Git/PNG 审计已证明它们全部与固定原仓库 blob 逐字节相等，
+由 DosX 身份在两个 2025-07-26 commit 中引入，来源时根目录已有 MIT LICENSE；
+全部为有效 16×16 RGBA8 PNG，只有三条 paint.net Software metadata，没有嵌入
+许可或创作者信息。完整证据和三种历史口径见
+[`runtime-png-provenance.md`](runtime-png-provenance.md)。
+
+这些证据回答当前字节、首次引入历史和仓库级许可上下文，但不能证明底层 artwork
+原创/授权。后续发布方案可以选择：
 
 1. 如果 CLI/runtime 只需要规则程序和必要 metadata，先用可重复运行实验证明 PNG
    不可达，再通过 ADR 定义精确最小分发树；
-2. 如果承诺 1:1 分发完整 `db*` 树，则继续追溯 PNG 历史并在 NOTICE/SBOM 中
-   保留归属；
+2. 如果承诺 1:1 分发完整 `db*` 树，则由发布/法律责任人评审已固定 PNG 历史，
+   并在 NOTICE/SBOM 中保留必要归属；
 3. 不能在未记录行为/分发差异的情况下静默删除或替换 PNG。
 
 ## 复现
@@ -103,12 +112,15 @@ python tools/tests/test_audit_runtime_rule_assets.py
 - 将 component/rules commit、lock hash 和根 LICENSE hash 绑定；
 - 将 2,235/2,902,881 与规则 runtime 全库口径交叉验证；
 - 逐个复算 22 个 PNG 的长度/hash/signature；
+- 独立 PNG 历史测试逐个复算 Git blob、chunk CRC、metadata、commit/policy/
+  LICENSE 身份和 C100/R100 chain；
 - 固定显式许可 marker、作者/版权计数和四条限制；
 - 要求 `legal_review_complete` 保持 false，防止技术报告被误当成批准。
 
 ## 尚未关闭
 
-- 根 MIT 对全部历史贡献及 22 个 PNG 的书面适用性评审；
+- 根 MIT 对全部历史贡献及 22 个 PNG artwork 的书面适用性评审；当前 PNG
+  Git/blob 历史已固定，但不等于底层创作来源获确认；
 - 上游完整历史中非 maintainer 贡献的许可/贡献约定；
 - 最终 Rust release 是分发完整 `db*` 还是经 ADR 证明的最小 runtime asset set；
 - NOTICE、SBOM、source offer/attribution 的最终内容；

@@ -237,8 +237,11 @@ baseline 的变更都要检查本表。
   已独立闭合 2268/2268 文件分发身份：2175 个 `.sg`、60 个无扩展程序和 33 个
   metadata/PNG 资产，combined tree SHA-256 为
   `20f2b74effc2bdaf069e3b2e13060432b8890d38364511f5cde56a337348bfda`。
-  根 LICENSE 为固定 MIT，文本内只有一条显式 MIT、无严格 non-MIT marker；
-  但 22 个 PNG 来源、历史贡献适用性和发布责任人书面结论仍缺，机器报告明确
+  根 LICENSE 为固定 MIT，文本内只有一条显式 MIT、无严格 non-MIT marker。
+  22 个 PNG 已进一步固定到两个 DosX 原仓库 commit、20 个唯一 blob、一个
+  R100 rename、两个 C100 copy、有效 16×16 RGBA8 PNG 和无许可/作者 metadata；
+  两个来源 commit 当时均有 MIT LICENSE，但无签名/sign-off 或贡献政策文件。
+  artwork 原创/授权、历史贡献适用性和发布责任人书面结论仍缺，机器报告明确
   保持 `legal_review_complete=false`，所以 R-002/P0-BLOCK-004 继续 Open。
 - **缓解**：每次导入/同步前生成 source/license inventory；保留原始 LICENSE、
   commit、path、hash 和 attribution；选型前由发布责任人复核组合。

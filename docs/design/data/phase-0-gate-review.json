@@ -182,7 +182,7 @@
       "title": "rule and bundled distribution license closure is incomplete",
       "owner": "release",
       "status": "open",
-      "progress_evidence": "docs/research/runtime-rule-assets-license.md and docs/research/data/runtime-rule-assets-license.json bind all 2268 db/db_extra/db_custom assets while keeping legal_review_complete false",
+      "progress_evidence": "docs/research/runtime-rule-assets-license.md and docs/research/data/runtime-rule-assets-license.json bind all 2268 db/db_extra/db_custom assets; docs/research/runtime-png-provenance.md and docs/research/data/runtime-png-history.json bind all 22 PNGs to two original DosX commits, 20 blobs, C100/R100 history, PNG metadata, origin-time MIT LICENSE, and contribution-policy/sign-off boundaries while keeping legal_review_complete false",
       "closure_evidence": "reviewed rules/runtime/source distribution license and attribution report with no unclassified release inputs"
     },
     {

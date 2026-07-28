@@ -95,6 +95,9 @@ Phase 0 计划形成：
 - [`runtime-rule-assets-license.md`](runtime-rule-assets-license.md)：`db`/`db_extra`/
   `db_custom` 的 2,268 文件分发身份、根 MIT/文件级标记、归属信号和未关闭法律
   评审（Draft）。
+- [`runtime-png-provenance.md`](runtime-png-provenance.md)：runtime 22 个 PNG
+  的原仓库 Git/blob 历史、两次来源提交、C100/R100、PNG metadata、来源时/
+  pinned LICENSE 与贡献政策边界（In Review）。
 - [`process-benchmark-runner.md`](process-benchmark-runner.md)：严格 plan、输入/
   executable 身份、bounded output、wall time/peak RSS 和统计报告的跨平台进程级
   benchmark 契约（Draft）。
@@ -139,6 +142,8 @@ Phase 0 计划形成：
 - [`data/rule-assets.json`](data/rule-assets.json)：五组固定 YARA/PEiD/signature 资产、逐文件历史/哈希、release/component 差异及 CLI/GUI/打包可达性证据。
 - [`data/runtime-rule-assets-license.json`](data/runtime-rule-assets-license.json)：
   runtime 三层规则树的 2,268 文件 hash、作者/URL/许可标记和 22 个 PNG 清单。
+- [`data/runtime-png-history.json`](data/runtime-png-history.json)：22 个 PNG
+  的逐 blob/chunk/CRC、三种历史口径、两次来源 commit 和开放法律评审证据。
 - [`data/baseline-corpus.json`](data/baseline-corpus.json)：生成语料的文件名、意图、大小和 SHA-256。
 - [`data/output-boundary-fixture.json`](data/output-boundary-fixture.json)：输出转义规则、输入和嵌套语料的 hash-bound 清单。
 - [`data/cli-output-boundaries-linux-qt5.json`](data/cli-output-boundaries-linux-qt5.json)：10-case 双 Qt5 formatter oracle 的完整原始 streams、身份和派生事实。
