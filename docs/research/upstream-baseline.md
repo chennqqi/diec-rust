@@ -145,16 +145,17 @@ vendored 目录仍需独立 source/license 审计。
 - Linux Qt5 qmake、Qt5 CMake、Qt6 CMake 和 Windows Qt5 qmake CLI 候选
   oracle 已构建。Windows clean build、官方 CMake/xsimd 断点及一个 PE64 smoke
   见 [`windows-qt5-build-baseline.md`](windows-qt5-build-baseline.md)；Windows
-  默认 26-sample baseline 与首轮 338-case option/output/special 矩阵已归档，
-  完整能力差分、CMake 发布打包、bit-for-bit 验证及 macOS 构建仍待完成。
+  默认 26-sample baseline、首轮 338-case option/output/special 及
+  46-case path/nested 矩阵已归档，完整能力差分、CMake 发布打包、bit-for-bit
+  验证及 macOS 构建仍待完成。
 - release workflow、预编译包与源码构建之间的数据资产差异。
 - bundled code、规则原始来源和最终发布组合的许可证审计；YARA/PEiD/signature
   资产路径与可见标记已固定，但 GPL/未知来源仍需书面评审。
 - 已采集 Linux Qt5 qmake/CMake 与 Qt6 CMake 产物的链接证据；完整静态依赖与
   发布产物清单仍待采集。
 - 已完成自扫描 smoke baseline、26 个项目生成安全样本的默认 JSON/退出码差分
-  及 Windows 首轮 option/output/special 矩阵；nested/path/database-error、
-  engine-only、畸形矩阵和其余跨平台原始输出仍待采集。
+  及 Windows 首轮 option/output/special/path/nested 矩阵；特殊路径和文件系统
+  边界、database-error、engine-only、畸形矩阵和其余跨平台原始输出仍待采集。
 
 ## 主要证据
 

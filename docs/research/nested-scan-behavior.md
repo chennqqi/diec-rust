@@ -23,6 +23,11 @@ Last updated: 2026-07-29
 每次退出码均为 `0`、stderr 为空，两个构建的退出码及原始 stdout/stderr
 逐字节相同。
 
+同一 32-case 矩阵又在固定 Windows x86_64 Qt5 qmake oracle 上各执行两轮，
+共 64 次。0 个 determinism failure；32/32 退出码及 detection tree 与 Linux
+Qt5 相同。32 个 raw stdout 均保留平台字节差异，stderr 均为空。机器报告见
+[`windows-qt5-cli-path-nested.json`](data/windows-qt5-cli-path-nested.json)。
+
 其中 `RT_MANIFEST` 样本另以专用 probe 保存固定 CMake Qt 5 CLI 的完整 raw
 stdout 与规范化树；通用双 oracle 报告确认 qmake 输出逐字节相同。它把
 resource type ID、子设备 file-part、scan ID、重新探测和原样 Binary 规则连接成
@@ -221,6 +226,22 @@ python3 tools/upstream/compare_cli_oracles.py \
 工具先验证 manifest 的 size/SHA-256 和 generator identity，再将目录只读挂载
 为 `/nested`。报告保留每次运行的原始字节哈希、双 oracle 差分、相对 default
 变化以及只抽取稳定字段的 detection tree；稳定字段摘要不参与相等判定。
+
+Windows 原生复验命令为：
+
+```powershell
+python tools\upstream\collect_windows_cli_path_nested.py `
+  --binary <source>\build\release\diec.exe `
+  --source-dir <source> `
+  --qt-dir <qt-root>\5.15.2\msvc2019_64 `
+  --path-corpus-dir <generated-path-corpus> `
+  --nested-corpus-dir <generated-nested-corpus> `
+  --expected-binary-sha256 e8579a6ed0d2536ea14af154bcbeeaaea6967c0c7559a595fb3fe52206ac635e `
+  --output <report.json>
+```
+
+采集器要求两个生成 manifest 与版本化参考逐字节相同，报告 SHA-256 为
+`e877e112deb244ab1cbf9edf221e94e155cda711a182f216478eeaf9da40e21b`。
 
 Manifest 端到端链使用专用 probe，并同时保存完整 raw stdout 与规范化树：
 

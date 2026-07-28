@@ -34,14 +34,15 @@ Linux x86_64 Qt5 由 traceability manifest 接纳为完整 runtime baseline；
 Linux x86_64 Qt6 由 hash-bound 的 68 行 closure 报告接纳为第二个完整 runtime
 baseline。Windows 与 macOS 仍为 `platform_missing`。
 
-Windows 已有 clean candidate oracle、6-control/26-sample 默认 JSON baseline，
-以及 338-case option/output/special 矩阵。两批共 740 次执行均稳定；默认
-detection projection 与 Linux Qt5 26/26 相同，矩阵中与 Linux 报告重叠的
-170 个 case 退出码也全部相同，见
-[`windows-qt5-build-baseline.md`](windows-qt5-build-baseline.md)。由于 nested、
-path、database-error、engine-only 以及非代表样本的 output/special 矩阵仍缺失，
-coverage 生成器尚不接纳 Windows 为完整 runtime baseline，68 行继续保守标记
-为 `platform_missing`。
+Windows 已有 clean candidate oracle、6-control/26-sample 默认 JSON baseline、
+338-case option/output/special 矩阵，以及首轮 14-case path/32-case nested
+矩阵。三批共 832 次执行均稳定；默认 detection projection 与 Linux Qt5
+26/26 相同，216 个重叠矩阵 case 的退出码也全部相同，path 相对输出顺序与
+nested detection tree 没有差异，见
+[`windows-qt5-build-baseline.md`](windows-qt5-build-baseline.md)。由于特殊路径/
+reparse/filesystem 边界、database-error、engine-only 以及非代表样本的
+output/special 矩阵仍缺失，coverage 生成器尚不接纳 Windows 为完整 runtime
+baseline，68 行继续保守标记为 `platform_missing`。
 
 独立的逐行
 [`qt6-capability-closure-plan.md`](qt6-capability-closure-plan.md)

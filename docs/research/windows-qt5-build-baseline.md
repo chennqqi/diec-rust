@@ -15,6 +15,8 @@ Last updated: 2026-07-29
 同一产物随后完成 338-case option/output/special 矩阵，每项两轮共 676 次；
 0 个确定性或默认基线 continuity failure，与 Linux 报告重叠的 170 个 case
 退出码全部相同。
+首轮 14-case path 和 32-case nested 矩阵又完成 92 次执行；退出码、相对
+filename-prefix 顺序和 nested detection tree 均与 Linux Qt5 相同。
 
 本仓库用
 [`build_windows_qt5_oracle.ps1`](../../tools/upstream/build_windows_qt5_oracle.ps1)
@@ -26,7 +28,8 @@ Last updated: 2026-07-29
 [`data/windows-qt5-build-baseline.json`](data/windows-qt5-build-baseline.json)
 和
 [`data/baseline-corpus-windows-qt5.json`](data/baseline-corpus-windows-qt5.json)、
-[`data/windows-qt5-cli-matrix.json`](data/windows-qt5-cli-matrix.json)。
+[`data/windows-qt5-cli-matrix.json`](data/windows-qt5-cli-matrix.json) 和
+[`data/windows-qt5-cli-path-nested.json`](data/windows-qt5-cli-path-nested.json)。
 
 ## 固定环境
 
@@ -208,6 +211,34 @@ alltypes、format、hideunknown 和 combined 的逐样本变化保存在机器�
 special 扩展到其余 21 个样本，因此仍不足以接纳完整 Windows capability
 baseline。
 
+## Windows CLI path/nested 矩阵
+
+[`collect_windows_cli_path_nested.py`](../../tools/upstream/collect_windows_cli_path_nested.py)
+继续复用 `compare_cli_oracles.py` 的 14 个 path case 和 4 个 nested case。
+它要求生成目录中的 manifest 与版本化 `path-corpus.json`、`nested-corpus.json`
+逐字节一致，并重新验证 source/rules/submodule、Qt 和二进制身份。
+
+固定范围为：
+
+- 14 个目录、空目录、多目标、重复、缺失+存在及 formatter path case，各两轮；
+- 8 个 archive/resource/overlay 样本 × default/recursive/aggressive/
+  recursive+aggressive，各两轮；
+- 共 46 个 case、92 次原生 Windows 进程执行。
+
+机器报告 SHA-256 为
+`e877e112deb244ab1cbf9edf221e94e155cda711a182f216478eeaf9da40e21b`。
+结果为 0 个 determinism failure，46/46 退出码、14/14 去除平台根目录后的
+filename-prefix 顺序、32/32 nested detection tree 与 Linux Qt5 一致。
+Windows path 的 13/14 个 raw stdout 与 Linux 不同，空目录的空 stdout 相同；
+32 个 nested raw stdout 全部不同。stderr 均为空，JSON/XML formatter validity
+逐项一致。报告保留这些 raw hash 差异，没有让相对路径或 detection projection
+比较掩盖平台字节。
+
+该 path 树只覆盖 5 个普通文件，不能替代 Unicode/非 UTF-8、reparse point、
+权限、深目录、4096 项和 filesystem ordering 的 Windows 实验。nested 矩阵
+只覆盖发布 CLI 暴露的 recursive/aggressive 组合；archive/resource 的
+engine-only 控制仍需原生 harness。
+
 ## 可重复性边界
 
 当前证据证明“从一次独立 clean recursive checkout 可重复构建并运行”，不证明
@@ -218,13 +249,14 @@ bit-for-bit reproducible：
 - 初步源树此前经过一次 CMake configure，因此两次产物不是严格同输入实验；
 - MSVC archive/PE 时间戳、绝对路径和其他非确定输入尚未逐项隔离；
 - 已完成 6 个控制 case、26 样本默认 JSON baseline、全 26 样本 scan 及
-  5 个代表样本的 output/special；尚未运行 nested、path、database-error、
-  engine-only 和其余样本的 output/special Windows 矩阵；
+  5 个代表样本的 output/special，并完成首轮 path/nested；尚未运行特殊路径/
+  filesystem、database-error、engine-only 和其余样本的 output/special
+  Windows 矩阵；
 - 尚未验证 x86、ARM64、完整 GUI/lite、install/package 和官方 release zip；
 - `cl` 对 x64 的 `/arch:SSE2` 给出 D9002 ignored warning；x64 ABI 本身要求
   SSE2，但该 warning 仍应保留在构建日志中。
 
-下一步扩展原生采集器的 nested/path/database-error 矩阵和其余样本的
+下一步扩展原生采集器的特殊路径/filesystem、database-error 和其余样本的
 output/special，并为 engine-only 行建立 Windows harness；然后独立处理官方
 CMake 路径和二进制确定性。macOS 固定构建仍是三平台基线的剩余大项。
 

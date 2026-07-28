@@ -2,13 +2,18 @@
 
 Status: Draft
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
-Last updated: 2026-07-28
+Last updated: 2026-07-29
 
 ## 范围
 
 本文记录 Linux `diec` 对多个 positional target、目录、空目录、重复目标、缺失
 目标和 `--recursivescan` 的可观察行为。实验使用固定 Qt5 qmake/CMake oracle，
 逐字节比较退出码、stdout 和 stderr。
+
+同一 14-case 基础树已在固定 Windows x86_64 Qt5 qmake oracle 上各执行两轮。
+机器报告为
+[`windows-qt5-cli-path-nested.json`](data/windows-qt5-cli-path-nested.json)；
+它不把此基础树外推为完整 Windows 路径/文件系统覆盖。
 
 路径语料只重排
 [`baseline-corpus.json`](data/baseline-corpus.json)
@@ -41,6 +46,22 @@ old→new 原子替换和 unlink 四组同步 case 固定：第二项按打开�
 [`path-locale-filesystem-behavior.md`](path-locale-filesystem-behavior.md)
 固定。locale 不改变同一文件系统的输出；文件系统会交换 `A-case`/`a-case`
 的相对顺序。
+
+## Windows Qt5 基础树复验
+
+Windows 报告绑定相同 `path-corpus.json`、Linux Qt5/Qt6 path 报告、固定
+上游/规则/Qt/二进制以及 case-definition SHA-256。14 个 case 各运行两轮，
+共 28 次执行：
+
+- 0 个 determinism failure，14/14 退出码与 Linux Qt5 相同；
+- 去除 fixture 根目录后的 filename-prefix 序列 14/14 相同；
+- single JSON、目录 framing JSON/XML 的 validity 判断逐项相同；
+- `tree_recursive_json` 与 `tree_json` 在 Windows 上仍逐字节相同；
+- 13 个非空输出 case 的 raw stdout 与 Linux 不同，空目录的空 stdout 相同；
+- Windows 与 Linux Qt5 stderr 均为空。
+
+这些结果证明普通 ASCII 基础树行为一致，不覆盖 Windows 禁止名称、drive/UNC、
+大小写不敏感、junction/reparse、ACL、长路径和实际 filesystem ordering。
 
 ## 源码语义
 

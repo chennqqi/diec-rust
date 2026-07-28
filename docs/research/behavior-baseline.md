@@ -27,6 +27,11 @@ continuity failure，且与 Linux Qt5 报告重叠的 170 个 case 退出码全�
 机器报告见
 [`data/windows-qt5-cli-matrix.json`](data/windows-qt5-cli-matrix.json)。
 
+随后 14 个 path case 和 8 样本 × 4 模式 nested 矩阵各运行两轮，又完成
+92 次执行。46/46 退出码、14/14 相对 filename-prefix 顺序和 32/32 nested
+detection tree 均与 Linux Qt5 相同，且没有双轮漂移。三份 Windows runtime
+报告累计 832 次执行，仍不代表尚未运行的 Windows 边界已经兼容。
+
 ## 语料来源与安全
 
 所有样本由
@@ -109,6 +114,19 @@ python tools\upstream\collect_windows_cli_matrix.py `
   --source-dir <source> `
   --qt-dir <qt-root>\5.15.2\msvc2019_64 `
   --corpus-dir <generated-corpus> `
+  --expected-binary-sha256 e8579a6ed0d2536ea14af154bcbeeaaea6967c0c7559a595fb3fe52206ac635e `
+  --output <report.json>
+```
+
+Windows path/nested 矩阵使用独立的 hash-bound 采集器：
+
+```powershell
+python tools\upstream\collect_windows_cli_path_nested.py `
+  --binary <source>\build\release\diec.exe `
+  --source-dir <source> `
+  --qt-dir <qt-root>\5.15.2\msvc2019_64 `
+  --path-corpus-dir <generated-path-corpus> `
+  --nested-corpus-dir <generated-nested-corpus> `
   --expected-binary-sha256 e8579a6ed0d2536ea14af154bcbeeaaea6967c0c7559a595fb3fe52206ac635e `
   --output <report.json>
 ```
