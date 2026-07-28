@@ -37,6 +37,14 @@ REPORT_PATHS = (
     "docs/research/data/engine-contract-linux-qt6.json",
     "docs/research/data/rule-orchestration-linux-qt5.json",
     "docs/research/data/rule-orchestration-linux-qt5-qt6.json",
+    "docs/research/data/result-metadata-engine-qt5.json",
+    "docs/research/data/result-lists-engine-qt5.json",
+    "docs/research/data/result-ids-engine-qt5.json",
+    "docs/research/data/result-flags-engine-qt5.json",
+    "docs/research/data/result-enums-engine-qt5.json",
+    "docs/research/data/global-host-api-qt5.json",
+    "docs/research/data/global-host-api-qt6.json",
+    "docs/research/data/result-model-engine-qt6.json",
 )
 EMPTY_SHA256 = hashlib.sha256(b"").hexdigest()
 QT6_UNIMPLEMENTED_SHA256 = (
@@ -127,18 +135,18 @@ COMPLETE: dict[str, str] = {
     "CAP-RULE-003": "global init, type init, and same-name include precedence matches Qt5",
     "CAP-RULE-004": "wrong-file-type rules remain excluded in all four scan modes",
     "CAP-RULE-005": "deep, entry-point, and heuristic gates are independently equal",
+    "CAP-RESULT-001": "four-entry scalar metadata differs only in nondeterministic scan time",
+    "CAP-RESULT-002": "all four result lists match aside from the classified Qt parse diagnostic",
+    "CAP-RESULT-003": "heuristic, advanced heuristic, and unknown flag truth table matches Qt5",
+    "CAP-RESULT-004": "record and parent identifier shape and invariants match modulo UUID values",
+    "CAP-RESULT-005": "raw, numeric, canonical, reserved, and fallback enum behavior is identical",
+    "CAP-RESULT-006": "normal record version, info, priority, rule name, and rule path fields match Qt5",
 }
 
 PARTIAL: dict[str, str] = {
     "CAP-CLI-IN-003": "basic depth-first tree is covered; filesystem/locale/TOCTOU/large-directory boundaries remain",
     "CAP-DISPATCH-004": "TAR, gzip, and ZIP only; full archive family remains",
     "CAP-NEST-003": "CLI non-extraction is covered; the Qt6 engine archive option remains",
-    "CAP-RESULT-001": "CLI JSON exposes only a projection of scalar engine metadata",
-    "CAP-RESULT-002": "rule probes expose errors, but not all four engine lists",
-    "CAP-RESULT-003": "baseline JSON includes Unknown; heuristic flag combinations remain",
-    "CAP-RESULT-004": "CLI trees expose parent structure, not the full engine identifier contract",
-    "CAP-RESULT-005": "CLI JSON exposes string representations, not numeric enums",
-    "CAP-RESULT-006": "HostApi probes cover rule metadata only partially",
 }
 
 
@@ -1269,6 +1277,215 @@ def _validate_rule_orchestration_reports(
         )
 
 
+def _scalar_differences(
+    left: Any, right: Any, path: tuple[str, ...] = ()
+) -> list[dict[str, Any]]:
+    if type(left) is not type(right):
+        return [{"path": "/".join(path), "qt5": left, "qt6": right}]
+    if isinstance(left, dict):
+        differences = []
+        for key in sorted(set(left) | set(right)):
+            child_path = (*path, str(key))
+            if key not in left or key not in right:
+                differences.append(
+                    {
+                        "path": "/".join(child_path),
+                        "qt5": left.get(key, "<missing>"),
+                        "qt6": right.get(key, "<missing>"),
+                    }
+                )
+            else:
+                differences.extend(
+                    _scalar_differences(
+                        left[key],
+                        right[key],
+                        child_path,
+                    )
+                )
+        return differences
+    if isinstance(left, list):
+        if len(left) != len(right):
+            return [
+                {
+                    "path": "/".join((*path, "length")),
+                    "qt5": len(left),
+                    "qt6": len(right),
+                }
+            ]
+        differences = []
+        for index, (left_item, right_item) in enumerate(zip(left, right)):
+            differences.extend(
+                _scalar_differences(
+                    left_item,
+                    right_item,
+                    (*path, str(index)),
+                )
+            )
+        return differences
+    if left == right:
+        return []
+    return [{"path": "/".join(path), "qt5": left, "qt6": right}]
+
+
+def _collect_result_records(
+    value: Any, path: tuple[str, ...] = ()
+) -> dict[str, dict[str, Any]]:
+    records = {}
+    if isinstance(value, dict):
+        if {"type", "name", "version", "info", "priority"} <= set(value):
+            records["/".join(path)] = value
+        for key, child in value.items():
+            records.update(
+                _collect_result_records(child, (*path, str(key)))
+            )
+    elif isinstance(value, list):
+        for index, child in enumerate(value):
+            records.update(
+                _collect_result_records(child, (*path, str(index)))
+            )
+    return records
+
+
+def _validate_result_model_reports(
+    qt5_reports: dict[str, dict[str, Any]],
+    global_qt5: dict[str, Any],
+    global_qt6: dict[str, Any],
+    engine_qt6: dict[str, Any],
+    bundle: dict[str, Any],
+) -> None:
+    profiles = ("metadata", "lists", "ids", "flags", "enums")
+    expected_scope = {f"CAP-RESULT-00{index}" for index in range(1, 7)}
+    if (
+        bundle.get("schema_version") != 1
+        or bundle.get("upstream_commit") != UPSTREAM_COMMIT
+        or bundle.get("platform") != "linux-amd64-qt6"
+        or bundle.get("result") != "observed"
+        or set(bundle.get("capability_scope", [])) != expected_scope
+        or set(bundle.get("reports", {})) != set(profiles)
+        or set(bundle.get("comparisons", {})) != set(profiles)
+    ):
+        raise ClosurePlanError("Qt6 result-model identity/result drift")
+    expected_images = {
+        "metadata": "sha256:50a28ac93d422b86246be12da48e0c25ed71786cb8a069b32d436fcf44679cfa",
+        "lists": "sha256:7b3f4b9f9a87a6cf07a2c9a6dafdf32cc5020071174bcb0e89f2e86842645444",
+        "ids": "sha256:5a705ac19dbcff4ff3d72710dfaa4542401cb4e04414d896606e8812f2105bc4",
+        "flags": "sha256:7476806c3f776636993bf0c48911557dcde1d677c2d960a5336ca81101153fe6",
+        "enums": "sha256:ea9e04d6ad279f7c058e58571ace05313c95ff3cb4e4c8a05d322d999810c434",
+    }
+    expected_paths = {
+        "metadata": {"cases/0/nScanTime"},
+        "lists": {"cases/1/errors/1/message"},
+        "ids": {
+            "records/0/id/uuid",
+            "records/1/id/uuid",
+            "records/1/parent_id/uuid",
+        },
+        "flags": set(),
+        "enums": set(),
+    }
+    for profile in profiles:
+        qt5 = qt5_reports[profile]
+        qt6 = bundle["reports"][profile]
+        oracle = qt6.get("oracle", {})
+        if (
+            qt6.get("platform") != "linux-amd64-qt6"
+            or oracle.get("image_id") != expected_images[profile]
+            or oracle.get("revision") != UPSTREAM_COMMIT
+            or oracle.get("exit_code") != 0
+            or oracle.get("raw_stderr_bytes") != 0
+            or oracle.get("raw_stderr_sha256") != EMPTY_SHA256
+            or not all(qt6.get("relationships", {}).values())
+        ):
+            raise ClosurePlanError(
+                f"Qt6 result-model oracle drift: {profile}"
+            )
+        comparison = bundle["comparisons"][profile]
+        differences = _scalar_differences(
+            qt5.get("harness_output"),
+            qt6.get("harness_output"),
+        )
+        if (
+            qt5.get("relationships") != qt6.get("relationships")
+            or qt5.get("fixture") != qt6.get("fixture")
+            or comparison.get("relationships_equal") is not True
+            or comparison.get("fixture_equal") is not True
+            or comparison.get("differences_classified") is not True
+            or comparison.get("harness_output_differences") != differences
+            or {item["path"] for item in differences}
+            != expected_paths[profile]
+        ):
+            raise ClosurePlanError(
+                f"Qt5/Qt6 result-model comparison drift: {profile}"
+            )
+    list_differences = bundle["comparisons"]["lists"][
+        "harness_output_differences"
+    ]
+    if list_differences != [
+        {
+            "path": "cases/1/errors/1/message",
+            "qt5": (
+                "Binary/d_parse_error.1.sg: 1: SyntaxError: Parse error"
+            ),
+            "qt6": (
+                "Binary/d_parse_error.1.sg: 2: "
+                "SyntaxError: Expected token `}'"
+            ),
+        }
+    ]:
+        raise ClosurePlanError("Qt6 result-list diagnostic drift")
+
+    qt5_records = _collect_result_records(global_qt5["observation"])
+    qt6_records = _collect_result_records(global_qt6["observation"])
+    common_paths = set(qt5_records) & set(qt6_records)
+    qt5_only = sorted(set(qt5_records) - set(qt6_records))
+    expected_qt5_only = [
+        "missing_arguments/count/records/0",
+        "missing_arguments/is_present/records/0",
+        "missing_arguments/set_result/records/0",
+    ]
+    common_values = [qt6_records[path] for path in sorted(common_paths)]
+    engine_records = _collect_result_records(
+        engine_qt6["harness_output"]
+    )
+    rule_records = [
+        record
+        for record in engine_records.values()
+        if record.get("signature") and record.get("signature_file")
+    ]
+    expected_facts = {
+        "common_hostapi_records_equal": all(
+            qt5_records[path] == qt6_records[path]
+            for path in common_paths
+        ),
+        "missing_argument_difference_is_exact": (
+            qt5_only == expected_qt5_only
+            and not (set(qt6_records) - set(qt5_records))
+        ),
+        "nonempty_version_and_info_are_observed": any(
+            record["version"] and record["info"]
+            for record in common_values
+        ),
+        "hostapi_priorities_cover_multiple_types": (
+            {30, 70, 90}
+            <= {record["priority"] for record in common_values}
+        ),
+        "engine_rule_name_and_path_are_observed": bool(rule_records),
+        "engine_rule_priorities_are_observed": (
+            {12, 30, 100}
+            <= {record["priority"] for record in rule_records}
+        ),
+    }
+    metadata = bundle.get("record_metadata_comparison", {})
+    if (
+        metadata.get("common_record_count") != len(common_paths)
+        or metadata.get("qt5_only_record_paths") != qt5_only
+        or metadata.get("qt6_only_record_paths") != []
+        or metadata.get("facts") != expected_facts
+        or not all(expected_facts.values())
+    ):
+        raise ClosurePlanError("Qt6 result record metadata drift")
+
+
 CAMPAIGNS: dict[str, dict[str, Any]] = {
     "cli_scan_baseline": {
         "fixture": "reuse baseline-corpus and scan-option-boundary fixtures",
@@ -1452,6 +1669,19 @@ def _validate_inputs(
     )
     _validate_rule_orchestration_reports(
         reports[REPORT_PATHS[17]], reports[REPORT_PATHS[18]]
+    )
+    _validate_result_model_reports(
+        {
+            "metadata": reports[REPORT_PATHS[19]],
+            "lists": reports[REPORT_PATHS[20]],
+            "ids": reports[REPORT_PATHS[21]],
+            "flags": reports[REPORT_PATHS[22]],
+            "enums": reports[REPORT_PATHS[23]],
+        },
+        reports[REPORT_PATHS[24]],
+        reports[REPORT_PATHS[25]],
+        reports[REPORT_PATHS[16]],
+        reports[REPORT_PATHS[26]],
     )
     return capabilities
 
@@ -1651,6 +1881,18 @@ def build_plan(
                     reports[REPORT_PATHS[18]]["relationships"]
                 ),
                 "qt5_canonical_cases_equal": True,
+            },
+            {
+                "source": REPORT_PATHS[26],
+                "scope": "five-harness scalar, lists, flags, IDs, enums, and record metadata contract",
+                "difference_count": sum(
+                    len(comparison["harness_output_differences"])
+                    for comparison in reports[REPORT_PATHS[26]][
+                        "comparisons"
+                    ].values()
+                ),
+                "all_differences_classified": True,
+                "capability_count": 6,
             },
         ],
         "rows": rows,

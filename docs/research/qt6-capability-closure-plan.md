@@ -11,10 +11,10 @@ Last updated: 2026-07-28
 [`data/qt6-capability-closure-plan.json`](data/qt6-capability-closure-plan.json)
 逐项列出当前证据和缺失实验：
 
-- 52 项已有证据完整覆盖能力行；
-- 9 项只有部分证据；
+- 58 项已有证据完整覆盖能力行；
+- 3 项只有部分证据；
 - 7 项没有可接纳的逐行 Qt6 运行时证据；
-- 因此仍有 16 项需要执行闭环实验。
+- 因此仍有 10 项需要执行闭环实验。
 
 Linux Qt6 在能力覆盖报告中继续保持 `platform_missing`。本计划只负责把
 缺口变成可执行清单，不改变平台门禁状态。
@@ -62,13 +62,17 @@ file-type gate 和 deep/heuristic 独立 gate；10 个 canonical case 与 Qt5 �
 一致。见
 [`qt6-rule-orchestration-runtime-evidence.md`](qt6-rule-orchestration-runtime-evidence.md)。
 
+第九批五组 result-model harness 完整覆盖 scalar、四类列表、flags、IDs、
+enums 和 record metadata；时间、UUID、parse diagnostic 三类差异均逐字段保留
+并分类。见
+[`qt6-result-model-runtime-evidence.md`](qt6-result-model-runtime-evidence.md)。
+
 下列结果只能算部分证据：
 
 - archive 只覆盖 TAR、gzip 和 ZIP，未覆盖完整 archive family；
-- entropy/info 只覆盖不可读输入；
-- CLI JSON 和脚本探针只暴露结果模型的一部分；
-- typo、HostApi 与 arity 报告证明 Qt5/Qt6 诊断确有差异，但没有覆盖完整的
-  `listErrors` 契约。
+- archive 的 CLI non-extraction 已覆盖，engine-only archive option 尚未覆盖；
+- 目录枚举只覆盖基础目录，未覆盖复杂 filesystem/locale/TOCTOU/large
+  directory 边界。
 
 这些边界由生成器中的显式 allow catalog 约束；未列入的能力默认是
 `missing`，不会因共享 evidence set 而自动晋级。
@@ -108,7 +112,8 @@ python tools/research/build_qt6_closure_plan.py
 
 ## 限制与下一步
 
-首组 Qt6 engine harness 和规则编排差分已经完成。后续应按机器清单继续复用
-既有 Qt5 fixture，依次建立剩余 engine harness 的 Qt6 构建变体。
+首组 Qt6 engine harness、规则编排和 result-model harness 已完成。后续应按
+机器清单继续复用既有 Qt5 fixture，集中关闭 signature path、dispatch、
+nested/archive 和复杂目录边界。
 只有 68 行全部达到 `evidence_complete`，且差异完成评审，
 `CAP-GAP-007` 才能关闭。

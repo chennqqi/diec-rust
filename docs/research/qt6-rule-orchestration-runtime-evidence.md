@@ -59,8 +59,10 @@ fixture 校验、进程执行、输出解析、case 断言和 normalized equalit
 - `CAP-RULE-004` file-type rule filtering；
 - `CAP-RULE-005` deep and heuristic filtering。
 
-当前汇总为 52 项 complete、9 项 partial、7 项 missing；16 项仍需闭环，
-`CAP-GAP-007` 保持开放。
+完成本批时汇总为 52 项 complete、9 项 partial、7 项 missing。后续
+result-model 批次已将当前汇总推进到 58/3/7，见
+[`qt6-result-model-runtime-evidence.md`](qt6-result-model-runtime-evidence.md)；
+`CAP-GAP-007` 仍保持开放。
 
 ## 重现
 

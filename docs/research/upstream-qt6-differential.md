@@ -210,7 +210,9 @@ option/profiling 矩阵见
 [`qt6-engine-contract-runtime-evidence.md`](qt6-engine-contract-runtime-evidence.md)。
 规则编排差分见
 [`qt6-rule-orchestration-runtime-evidence.md`](qt6-rule-orchestration-runtime-evidence.md)。
-八批实验将 Linux Qt6 的逐行完整证据从 11 项增加到 52 项，但没有关闭
+结果模型差分见
+[`qt6-result-model-runtime-evidence.md`](qt6-result-model-runtime-evidence.md)。
+九批实验将 Linux Qt6 的逐行完整证据从 11 项增加到 58 项，但没有关闭
 `CAP-GAP-007`。
 
 ## 限制与下一步
@@ -222,8 +224,8 @@ option/profiling 矩阵见
 - 四行 warning 的精确 Qt 调用点和 enabled heuristic 路径仍待最小表达式实验。
 - 普通输出、scan、special、基础 path 和首轮 nested gate 矩阵已完成；
   path 的 filesystem/locale/TOCTOU/large-directory 边界、database
-  layer/cache、其余 dispatch/nested/result engine harness 仍未完成；
+  layer/cache 及其余 dispatch/nested engine harness 仍未完成；
   四入口、device/subdevice、filter、cancel 和 sort 的 engine-contract
   harness，以及三层数据库、priority、init、type/mode gate 的规则编排差分
-  已完成。
+  和五组 result-model harness 已完成。
 - Windows、macOS 固定 oracle 仍缺失。

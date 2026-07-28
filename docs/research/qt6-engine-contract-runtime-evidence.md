@@ -63,8 +63,8 @@ Qt6 Dockerfile 从固定
 - `CAP-RULE-012` result ordering。
 
 完成本批时汇总为 47 项 complete、10 项 partial、11 项 missing。后续规则
-编排批次已将当前汇总推进到 52/9/7，见
-[`qt6-rule-orchestration-runtime-evidence.md`](qt6-rule-orchestration-runtime-evidence.md)；
+编排与 result-model 批次已将当前汇总推进到 58/3/7，见
+[`qt6-result-model-runtime-evidence.md`](qt6-result-model-runtime-evidence.md)；
 `CAP-GAP-007` 仍保持开放。
 
 ## 重现

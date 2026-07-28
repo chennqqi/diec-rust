@@ -1,0 +1,874 @@
+{
+  "capability_scope": [
+    "CAP-RESULT-001",
+    "CAP-RESULT-002",
+    "CAP-RESULT-003",
+    "CAP-RESULT-004",
+    "CAP-RESULT-005",
+    "CAP-RESULT-006"
+  ],
+  "comparisons": {
+    "enums": {
+      "differences_classified": true,
+      "fixture_equal": true,
+      "harness_output_differences": [],
+      "qt5_report": "docs/research/data/result-enums-engine-qt5.json",
+      "qt5_report_sha256": "599a242d56d07806bac8ada5374b480c72f7fe97e25f6a77981ad441fbd933ea",
+      "relationships_equal": true
+    },
+    "flags": {
+      "differences_classified": true,
+      "fixture_equal": true,
+      "harness_output_differences": [],
+      "qt5_report": "docs/research/data/result-flags-engine-qt5.json",
+      "qt5_report_sha256": "639bde185b0213ab76d11e4363525ee3119c64edcb868f7da8da1029a6fd3066",
+      "relationships_equal": true
+    },
+    "ids": {
+      "differences_classified": true,
+      "fixture_equal": true,
+      "harness_output_differences": [
+        {
+          "path": "records/0/id/uuid",
+          "qt5": "bab1c300-218f-415d-bd93-92e433a4a512",
+          "qt6": "b769f772-c005-41e7-9ef2-9d4a9043c3fd"
+        },
+        {
+          "path": "records/1/id/uuid",
+          "qt5": "cf1bd0f7-5c04-4651-a748-bfb029e6a9b1",
+          "qt6": "2b3720f3-2c30-44c1-833c-21e7d75f30ab"
+        },
+        {
+          "path": "records/1/parent_id/uuid",
+          "qt5": "bab1c300-218f-415d-bd93-92e433a4a512",
+          "qt6": "b769f772-c005-41e7-9ef2-9d4a9043c3fd"
+        }
+      ],
+      "qt5_report": "docs/research/data/result-ids-engine-qt5.json",
+      "qt5_report_sha256": "cdcb018939f89e77e51ba70a4108a2269fb450864d042aa44ec38c7002cfd101",
+      "relationships_equal": true
+    },
+    "lists": {
+      "differences_classified": true,
+      "fixture_equal": true,
+      "harness_output_differences": [
+        {
+          "path": "cases/1/errors/1/message",
+          "qt5": "Binary/d_parse_error.1.sg: 1: SyntaxError: Parse error",
+          "qt6": "Binary/d_parse_error.1.sg: 2: SyntaxError: Expected token `}'"
+        }
+      ],
+      "qt5_report": "docs/research/data/result-lists-engine-qt5.json",
+      "qt5_report_sha256": "32065013d9489e6460b253ade6a045a76d95d7adab3444da5731b9f9bc56f8c9",
+      "relationships_equal": true
+    },
+    "metadata": {
+      "differences_classified": true,
+      "fixture_equal": true,
+      "harness_output_differences": [
+        {
+          "path": "cases/0/nScanTime",
+          "qt5": 9,
+          "qt6": 1
+        }
+      ],
+      "qt5_report": "docs/research/data/result-metadata-engine-qt5.json",
+      "qt5_report_sha256": "19e394c63eda69d567892cdd579f9b0571613ff390d0d9ab3bc82861f5dd6be3",
+      "relationships_equal": true
+    }
+  },
+  "generator": "tools/upstream/probe_qt6_result_model.py",
+  "generator_sha256": "5ec5708fac88cb3aa8fefcb4577e6ce67b6f7aebfb6d52726173f6600ff91f27",
+  "limitations": [
+    "scan times, debug elapsed times, and UUID values are nondeterministic",
+    "Qt5 comparison and field-specific normalization are performed by the closure synthesis",
+    "the five harnesses cover Linux amd64 and the fixed fixture revisions only"
+  ],
+  "platform": "linux-amd64-qt6",
+  "raw_artifacts": {
+    "storage": "untracked external directory selected by --raw-dir"
+  },
+  "record_metadata_comparison": {
+    "common_record_count": 20,
+    "facts": {
+      "common_hostapi_records_equal": true,
+      "engine_rule_name_and_path_are_observed": true,
+      "engine_rule_priorities_are_observed": true,
+      "hostapi_priorities_cover_multiple_types": true,
+      "missing_argument_difference_is_exact": true,
+      "nonempty_version_and_info_are_observed": true
+    },
+    "qt5_only_record_paths": [
+      "missing_arguments/count/records/0",
+      "missing_arguments/is_present/records/0",
+      "missing_arguments/set_result/records/0"
+    ],
+    "qt6_only_record_paths": [],
+    "sources": {
+      "docs/research/data/engine-contract-linux-qt6.json": "e2f11d0f8d4070fa3359af0237eca948e6c8a36962bbf8cba59d48f0fe7ac18e",
+      "docs/research/data/global-host-api-qt5.json": "99c4085d6f267ff95e3743c0b0be91a577e4bab4e5ebfdd4ee29910f9b43f81b",
+      "docs/research/data/global-host-api-qt6.json": "572b3a19d5260673c612accbf8cfe2bdd3bee76c55e3a1846a3ceac22e823a17"
+    }
+  },
+  "reports": {
+    "enums": {
+      "capability": "CAP-RESULT-005",
+      "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+      "fixture": {
+        "entry_count": 4,
+        "license": "project-generated; no third-party sample or rule bytes",
+        "manifest": "docs/research/data/result-enum-fixture.json",
+        "manifest_sha256": "f02b09ecb940faa09a751b389fd4221e0eb296fd4be47c0f12de1ef6e7ae5a42"
+      },
+      "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+      "generator": "tools/upstream/probe_result_enums_harness.py",
+      "generator_sha256": "e6365ce99b3212163aa2820a5b95ccb137bf98161f0e7f1efde68ed5e6bf8b31",
+      "harness_output": {
+        "case_count": 4,
+        "cases": [
+          {
+            "database": "main",
+            "database_loaded": true,
+            "error_count": 0,
+            "heuristic_scan": false,
+            "id": "known_alias",
+            "load_not_canceled": true,
+            "records": [
+              {
+                "name_canonical": "7-Zip",
+                "name_value": 4,
+                "raw_name": "7 ZIP",
+                "raw_type": "PE-Tool",
+                "signature": "known_alias.1.sg",
+                "type_canonical": "PE Tool",
+                "type_value": 29,
+                "unknown": false
+              }
+            ],
+            "scan_not_canceled": true,
+            "signature": "known_alias.1.sg"
+          },
+          {
+            "database": "main",
+            "database_loaded": true,
+            "error_count": 0,
+            "heuristic_scan": true,
+            "id": "heuristic_prefix",
+            "load_not_canceled": true,
+            "records": [
+              {
+                "name_canonical": "7-Zip",
+                "name_value": 4,
+                "raw_name": "7-Zip",
+                "raw_type": "~format",
+                "signature": "HEUR.heuristic.2.sg",
+                "type_canonical": "Format",
+                "type_value": 13,
+                "unknown": false
+              }
+            ],
+            "scan_not_canceled": true,
+            "signature": "HEUR.heuristic.2.sg"
+          },
+          {
+            "database": "main",
+            "database_loaded": true,
+            "error_count": 0,
+            "heuristic_scan": false,
+            "id": "custom_raw",
+            "load_not_canceled": true,
+            "records": [
+              {
+                "name_canonical": "Unknown",
+                "name_value": 0,
+                "raw_name": "Project/Custom",
+                "raw_type": "Vendor-Custom",
+                "signature": "custom.3.sg",
+                "type_canonical": "Unknown",
+                "type_value": 0,
+                "unknown": false
+              }
+            ],
+            "scan_not_canceled": true,
+            "signature": "custom.3.sg"
+          },
+          {
+            "database": "empty-main",
+            "database_loaded": true,
+            "error_count": 0,
+            "heuristic_scan": false,
+            "id": "unknown_fallback",
+            "load_not_canceled": true,
+            "records": [
+              {
+                "name_canonical": "Unknown",
+                "name_value": 0,
+                "raw_name": "Unknown",
+                "raw_type": "Unknown",
+                "signature": "",
+                "type_canonical": "Unknown",
+                "type_value": 0,
+                "unknown": true
+              }
+            ],
+            "scan_not_canceled": true,
+            "signature": ""
+          }
+        ],
+        "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+        "fallbacks": {
+          "out_of_range_name_string": "Unknown",
+          "out_of_range_name_value": 826,
+          "out_of_range_type_string": "Unknown",
+          "out_of_range_type_value": 74,
+          "reserved_alias_first_value": 800,
+          "reserved_alias_input": {
+            "canonical": "_Unknown",
+            "input": "_Unknown",
+            "value": 800
+          },
+          "reserved_alias_last_value": 809,
+          "unknown_name_input": {
+            "canonical": "Unknown",
+            "input": "not-a-record-name",
+            "value": 0
+          },
+          "unknown_type_input": {
+            "canonical": "Unknown",
+            "input": "not-a-record-type",
+            "value": 0
+          }
+        },
+        "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+        "input_sha256": "1effe084564a199b007fbfdeb2cbe1095bd5b5e87303147a515fefcd3e1cb7b5",
+        "name_mappings": [
+          {
+            "canonical": "7-Zip",
+            "input": "7-Zip",
+            "value": 4
+          },
+          {
+            "canonical": "7-Zip",
+            "input": "7 ZIP",
+            "value": 4
+          },
+          {
+            "canonical": "7-Zip",
+            "input": "7zip",
+            "value": 4
+          }
+        ],
+        "reserved_name_aliases": [
+          {
+            "canonical": "_Unknown",
+            "value": 800
+          },
+          {
+            "canonical": "_Unknown",
+            "value": 801
+          },
+          {
+            "canonical": "_Unknown",
+            "value": 802
+          },
+          {
+            "canonical": "_Unknown",
+            "value": 803
+          },
+          {
+            "canonical": "_Unknown",
+            "value": 804
+          },
+          {
+            "canonical": "_Unknown",
+            "value": 805
+          },
+          {
+            "canonical": "_Unknown",
+            "value": 806
+          },
+          {
+            "canonical": "_Unknown",
+            "value": 807
+          },
+          {
+            "canonical": "_Unknown",
+            "value": 808
+          },
+          {
+            "canonical": "_Unknown",
+            "value": 809
+          }
+        ],
+        "schema_version": 1,
+        "type_mappings": [
+          {
+            "canonical": "PE Tool",
+            "input": "PE Tool",
+            "value": 29
+          },
+          {
+            "canonical": "PE Tool",
+            "input": "pe-tool",
+            "value": 29
+          },
+          {
+            "canonical": "PE Tool",
+            "input": "PETOOL",
+            "value": 29
+          },
+          {
+            "canonical": "PE Tool",
+            "input": "~PE Tool",
+            "value": 29
+          },
+          {
+            "canonical": "PE Tool",
+            "input": "!pe-tool",
+            "value": 29
+          }
+        ],
+        "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+        "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+      },
+      "oracle": {
+        "binary": "/opt/die-build/src/console/diec-result-enums-harness",
+        "binary_sha256": "a2f71a34656eea872a95e1061995701b1b0adc3fb5a03dec4f5694fb0cfc5afe",
+        "exit_code": 0,
+        "image": "diec-rust/result-enums-harness-qt6:74eaf505",
+        "image_id": "sha256:ea9e04d6ad279f7c058e58571ace05313c95ff3cb4e4c8a05d322d999810c434",
+        "raw_stderr_bytes": 0,
+        "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "raw_stdout_bytes": 5882,
+        "raw_stdout_sha256": "77e9292c24ddd890f704339a3b3b4dfa9fc0fc210c93925563ed064fbaf14bad",
+        "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+      },
+      "platform": "linux-amd64-qt6",
+      "raw_artifacts": {
+        "storage": "untracked external directory selected by --raw-dir"
+      },
+      "relationships": {
+        "canonicalization_aliases_are_equal": true,
+        "custom_raw_is_retained_beside_unknown_enums": true,
+        "fallback_has_unknown_text_enum_and_flag": true,
+        "heuristic_prefix_keeps_raw_but_maps_format": true,
+        "known_alias_maps_to_canonical_enums": true,
+        "raw_and_numeric_are_emitted_together": true,
+        "reserved_unknown_aliases_are_distinct": true,
+        "scans_loaded_without_errors": true,
+        "unknown_and_out_of_range_are_explicit": true
+      },
+      "schema_version": 1,
+      "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+      "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+    },
+    "flags": {
+      "capability": "CAP-RESULT-003",
+      "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+      "fixture": {
+        "entry_count": 4,
+        "license": "project-generated; no third-party sample or rule bytes",
+        "manifest": "docs/research/data/result-flag-fixture.json",
+        "manifest_sha256": "387c161e1188a2afbae66afdddc3d89e642681e07d41f232b47967df24622ed1"
+      },
+      "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+      "generator": "tools/upstream/probe_result_flags_harness.py",
+      "generator_sha256": "25c3a1e9bdc71d1b1b87bfb862539f49114ac9ba6e1256da7b0b0ffd0531981d",
+      "harness_output": {
+        "case_count": 4,
+        "cases": [
+          {
+            "database": "main",
+            "database_loaded": true,
+            "error_count": 0,
+            "heuristic_scan": false,
+            "id": "normal",
+            "load_not_canceled": true,
+            "records": [
+              {
+                "advanced_heuristic": false,
+                "heuristic": false,
+                "name": "Normal",
+                "signature": "normal.1.sg",
+                "type": "format",
+                "unknown": false
+              }
+            ],
+            "scan_not_canceled": true,
+            "signature": "normal.1.sg"
+          },
+          {
+            "database": "main",
+            "database_loaded": true,
+            "error_count": 0,
+            "heuristic_scan": true,
+            "id": "heuristic",
+            "load_not_canceled": true,
+            "records": [
+              {
+                "advanced_heuristic": false,
+                "heuristic": true,
+                "name": "Heuristic",
+                "signature": "HEUR.heuristic.2.sg",
+                "type": "~format",
+                "unknown": false
+              }
+            ],
+            "scan_not_canceled": true,
+            "signature": "HEUR.heuristic.2.sg"
+          },
+          {
+            "database": "main",
+            "database_loaded": true,
+            "error_count": 0,
+            "heuristic_scan": true,
+            "id": "advanced_heuristic",
+            "load_not_canceled": true,
+            "records": [
+              {
+                "advanced_heuristic": true,
+                "heuristic": false,
+                "name": "Advanced",
+                "signature": "HEUR.advanced.3.sg",
+                "type": "!format",
+                "unknown": false
+              }
+            ],
+            "scan_not_canceled": true,
+            "signature": "HEUR.advanced.3.sg"
+          },
+          {
+            "database": "empty-main",
+            "database_loaded": true,
+            "error_count": 0,
+            "heuristic_scan": false,
+            "id": "unknown",
+            "load_not_canceled": true,
+            "records": [
+              {
+                "advanced_heuristic": false,
+                "heuristic": false,
+                "name": "Unknown",
+                "signature": "",
+                "type": "Unknown",
+                "unknown": true
+              }
+            ],
+            "scan_not_canceled": true,
+            "signature": ""
+          }
+        ],
+        "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+        "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+        "input_sha256": "28aa71cff9d35029534ce01a6c64d944e910f9b0232b9519679c79abf2288b87",
+        "schema_version": 1,
+        "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+        "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+      },
+      "oracle": {
+        "binary": "/opt/die-build/src/console/diec-result-flags-harness",
+        "binary_sha256": "7a41a74417e57bd9f2acabdd2dca130ff1bc3509fe1b6d5605a52f32b49c7d03",
+        "exit_code": 0,
+        "image": "diec-rust/result-flags-harness-qt6:74eaf505",
+        "image_id": "sha256:7476806c3f776636993bf0c48911557dcde1d677c2d960a5336ca81101153fe6",
+        "raw_stderr_bytes": 0,
+        "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "raw_stdout_bytes": 2976,
+        "raw_stdout_sha256": "37ea3403ba7067bbb633574c248ae750b3ed0f78501a140ce85c4b44137722f7",
+        "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+      },
+      "platform": "linux-amd64-qt6",
+      "raw_artifacts": {
+        "storage": "untracked external directory selected by --raw-dir"
+      },
+      "relationships": {
+        "flags_match_independently": true,
+        "metadata_matches_fixture": true,
+        "positive_flags_are_mutually_exclusive": true,
+        "raw_types_and_names_preserved": true,
+        "scans_loaded_without_errors": true,
+        "single_record_per_case": true
+      },
+      "schema_version": 1,
+      "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+      "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+    },
+    "ids": {
+      "capability": "CAP-RESULT-004",
+      "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+      "fixture": {
+        "license": "project-generated; no third-party sample bytes",
+        "manifest": "docs/research/data/nested-corpus.json",
+        "manifest_sha256": "b382bd0a903cd4dda5a8128508f7a3f514a67a721baacda4c6722c99aefc4229",
+        "sample_count": 8,
+        "selected_sample": "pe-manifest-resource.exe"
+      },
+      "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+      "generator": "tools/upstream/probe_result_ids_harness.py",
+      "generator_sha256": "ef43963dddea9f2019615a96079821ffd85298675b3094f0c3ff72dc611e782f",
+      "harness_output": {
+        "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+        "error_count": 0,
+        "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+        "record_count": 2,
+        "records": [
+          {
+            "id": {
+              "filepart": 16,
+              "filepart_string": "Header",
+              "filetype": 16,
+              "filetype_string": "PE32",
+              "info": "",
+              "offset": 0,
+              "original_name": "",
+              "size": 1024,
+              "uuid": "b769f772-c005-41e7-9ef2-9d4a9043c3fd",
+              "version": ""
+            },
+            "name": "Unknown",
+            "parent_id": {
+              "filepart": 16,
+              "filepart_string": "Header",
+              "filetype": 0,
+              "filetype_string": "Unknown",
+              "info": "",
+              "offset": 0,
+              "original_name": "",
+              "size": 0,
+              "uuid": "",
+              "version": ""
+            },
+            "type": "Unknown",
+            "unknown": true
+          },
+          {
+            "id": {
+              "filepart": 64,
+              "filepart_string": "Resource",
+              "filetype": 4,
+              "filetype_string": "Binary",
+              "info": "",
+              "offset": 608,
+              "original_name": "",
+              "size": 20,
+              "uuid": "2b3720f3-2c30-44c1-833c-21e7d75f30ab",
+              "version": ""
+            },
+            "name": "Unknown",
+            "parent_id": {
+              "filepart": 64,
+              "filepart_string": "Resource",
+              "filetype": 16,
+              "filetype_string": "PE32",
+              "info": "",
+              "offset": 608,
+              "original_name": "",
+              "size": 20,
+              "uuid": "b769f772-c005-41e7-9ef2-9d4a9043c3fd",
+              "version": ""
+            },
+            "type": "Unknown",
+            "unknown": true
+          }
+        ],
+        "sample_name": "pe-manifest-resource.exe",
+        "sample_sha256": "0a973cbde2f520bdbd6e1b75304e4a412462113d4de9a8139cdf997af16641ee",
+        "sample_size": 1024,
+        "scan_not_canceled": true,
+        "schema_version": 1,
+        "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+        "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+      },
+      "oracle": {
+        "binary": "/opt/die-build/src/console/diec-result-ids-harness",
+        "binary_sha256": "48f2f815fa136ef42b06a45a13012d572249d79a404ee97ac9464e33b224429c",
+        "exit_code": 0,
+        "image": "diec-rust/result-ids-harness-qt6:74eaf505",
+        "image_id": "sha256:5a705ac19dbcff4ff3d72710dfaa4542401cb4e04414d896606e8812f2105bc4",
+        "raw_stderr_bytes": 0,
+        "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "raw_stdout_bytes": 2384,
+        "raw_stdout_sha256": "ccbd4952b0d68a67864f76da7d52cd9c950d4ced0a8739af5ec9025bdf2d13ba",
+        "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+      },
+      "platform": "linux-amd64-qt6",
+      "raw_artifacts": {
+        "storage": "untracked external directory selected by --raw-dir"
+      },
+      "relationships": {
+        "both_records_are_explicit_unknown": true,
+        "child_id_describes_resource_binary": true,
+        "child_parent_carries_edge_metadata": true,
+        "child_parent_uuid_anchors_root": true,
+        "full_id_shape_is_preserved": true,
+        "root_id_describes_whole_pe": true,
+        "scans_complete_without_errors": true,
+        "uuids_are_nonempty_and_distinct": true
+      },
+      "schema_version": 1,
+      "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+      "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+    },
+    "lists": {
+      "capability": "CAP-RESULT-002",
+      "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+      "fixture": {
+        "entry_count": 5,
+        "license": "project-generated; no third-party sample or rule bytes",
+        "manifest": "docs/research/data/result-list-fixture.json",
+        "manifest_sha256": "ea37885f44160438c2952043752eb43352ad105adf9a4539648fe2a4b4dafcf4"
+      },
+      "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+      "generator": "tools/upstream/probe_result_lists_harness.py",
+      "generator_sha256": "51fd4fe1231687fbfbc24d5faa78622f063e089d78a9e068cf7d723c1ee583eb",
+      "harness_output": {
+        "case_count": 2,
+        "cases": [
+          {
+            "collection": false,
+            "database_loaded": true,
+            "debug_records": [],
+            "errors": [],
+            "handlers": [],
+            "id": "default_success",
+            "load_not_canceled": true,
+            "records": [
+              {
+                "info": "same",
+                "name": "Duplicate",
+                "signature": "a_first.1.sg",
+                "signature_file": "/fixture/main/Binary/a_first.1.sg",
+                "type": "format",
+                "unknown": false,
+                "version": "1"
+              }
+            ],
+            "scan_not_canceled": true,
+            "show_scan_time": false,
+            "signature_name": "a_first.1.sg"
+          },
+          {
+            "collection": true,
+            "database_loaded": true,
+            "debug_records": [
+              {
+                "elapsed_ms": 0,
+                "line": 0,
+                "name": "",
+                "script": "a_first.1.sg",
+                "type": "",
+                "value": ""
+              },
+              {
+                "elapsed_ms": 0,
+                "line": 0,
+                "name": "",
+                "script": "b_second.1.sg",
+                "type": "",
+                "value": ""
+              },
+              {
+                "elapsed_ms": 0,
+                "line": 0,
+                "name": "",
+                "script": "c_runtime_error.1.sg",
+                "type": "",
+                "value": ""
+              },
+              {
+                "elapsed_ms": 0,
+                "line": 0,
+                "name": "",
+                "script": "d_parse_error.1.sg",
+                "type": "",
+                "value": ""
+              }
+            ],
+            "errors": [
+              {
+                "message": "Binary/c_runtime_error.1.sg: 2: Error: result list runtime fixture",
+                "script": "c_runtime_error.1.sg"
+              },
+              {
+                "message": "Binary/d_parse_error.1.sg: 2: SyntaxError: Expected token `}'",
+                "script": "d_parse_error.1.sg"
+              }
+            ],
+            "handlers": [
+              {
+                "destination": "/tmp/diec-result-list-collection/files/duplicate.bin",
+                "kind": 2,
+                "source": "/fixture/input/probe.bin"
+              },
+              {
+                "destination": "/tmp/diec-result-list-collection/files/duplicate.bin",
+                "kind": 2,
+                "source": "/fixture/input/probe.bin"
+              }
+            ],
+            "id": "all_lists",
+            "load_not_canceled": true,
+            "records": [
+              {
+                "info": "same",
+                "name": "Duplicate",
+                "signature": "a_first.1.sg",
+                "signature_file": "/fixture/main/Binary/a_first.1.sg",
+                "type": "format",
+                "unknown": false,
+                "version": "1"
+              },
+              {
+                "info": "same",
+                "name": "Duplicate",
+                "signature": "b_second.1.sg",
+                "signature_file": "/fixture/main/Binary/b_second.1.sg",
+                "type": "format",
+                "unknown": false,
+                "version": "1"
+              }
+            ],
+            "scan_not_canceled": true,
+            "show_scan_time": true,
+            "signature_name": ""
+          }
+        ],
+        "collection_root": "/tmp/diec-result-list-collection",
+        "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+        "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+        "input_sha256": "789b791f239520d2244dfa30bcec3dbf5b77db407d8cbca4aba64b29e99c8b54",
+        "schema_version": 1,
+        "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+        "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+      },
+      "oracle": {
+        "binary": "/opt/die-build/src/console/diec-result-lists-harness",
+        "binary_sha256": "8e8843c9fa1262a6afcd5a9bcc3dce917fbfe0aff4919ee0318c098e0e46a0fe",
+        "exit_code": 0,
+        "image": "diec-rust/result-lists-harness-qt6:74eaf505",
+        "image_id": "sha256:7b3f4b9f9a87a6cf07a2c9a6dafdf32cc5020071174bcb0e89f2e86842645444",
+        "raw_stderr_bytes": 0,
+        "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "raw_stdout_bytes": 4231,
+        "raw_stdout_sha256": "efb7ac8f5bd7176e90592f58a682114c231e54856f9a32a2745b5c9dcbf30fdc",
+        "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+      },
+      "platform": "linux-amd64-qt6",
+      "raw_artifacts": {
+        "storage": "untracked external directory selected by --raw-dir"
+      },
+      "relationships": {
+        "debug_records_cover_every_rule_in_order": true,
+        "default_has_only_record_list": true,
+        "duplicate_handlers_preserved_in_order": true,
+        "duplicate_records_preserved_in_order": true,
+        "errors_preserved_separately_in_order": true,
+        "lists_serialized_independently": true,
+        "scans_loaded_and_completed": true
+      },
+      "schema_version": 1,
+      "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+      "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+    },
+    "metadata": {
+      "capability": "CAP-RESULT-001",
+      "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+      "generator": "tools/upstream/probe_result_metadata_harness.py",
+      "generator_sha256": "a0e71de2aef80d9c2ba809edafcd4c46ecdd9fb35cd3f4f8eb28c5435d12ade7",
+      "harness_output": {
+        "case_count": 4,
+        "cases": [
+          {
+            "error_count": 0,
+            "ftInit": 9,
+            "ftInit_string": "MSDOS",
+            "id": "file",
+            "nScanTime": 1,
+            "nSize": 128,
+            "record_count": 1,
+            "sFileName": "/tmp/diec-result-metadata-input.exe",
+            "scan_success": true
+          },
+          {
+            "error_count": 0,
+            "ftInit": 9,
+            "ftInit_string": "MSDOS",
+            "id": "memory",
+            "nScanTime": 0,
+            "nSize": 128,
+            "record_count": 1,
+            "sFileName": "",
+            "scan_success": true
+          },
+          {
+            "error_count": 0,
+            "ftInit": 9,
+            "ftInit_string": "MSDOS",
+            "id": "device",
+            "nScanTime": 0,
+            "nSize": 128,
+            "record_count": 1,
+            "sFileName": "named-device.exe",
+            "scan_success": true
+          },
+          {
+            "error_count": 0,
+            "ftInit": 9,
+            "ftInit_string": "MSDOS",
+            "id": "subdevice",
+            "nScanTime": 0,
+            "nSize": 128,
+            "record_count": 1,
+            "sFileName": "",
+            "scan_success": true
+          }
+        ],
+        "device_name": "named-device.exe",
+        "file_path": "/tmp/diec-result-metadata-input.exe",
+        "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+        "input_hex": "4d5a800001000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000090cd2000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "input_size": 128,
+        "schema_version": 1,
+        "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+        "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+      },
+      "oracle": {
+        "binary": "/opt/die-build/src/console/diec-result-metadata-harness",
+        "binary_sha256": "3a24f83a064c299a9e164a8e73b1f484f28fcc66ec282610a7d56898ad3fda9c",
+        "exit_code": 0,
+        "image": "diec-rust/result-metadata-harness-qt6:74eaf505",
+        "image_id": "sha256:50a28ac93d422b86246be12da48e0c25ed71786cb8a069b32d436fcf44679cfa",
+        "raw_stderr_bytes": 0,
+        "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "raw_stdout_bytes": 1876,
+        "raw_stdout_sha256": "52153419b7c5b14bb034950ff485b62c167f264fd036bbc781ab5c02e72a5bbf",
+        "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+      },
+      "platform": "linux-amd64-qt6",
+      "raw_artifacts": {
+        "storage": "untracked external directory selected by --raw-dir"
+      },
+      "relationships": {
+        "filenames_follow_entrypoint": true,
+        "filetype_is_consistent_msdos": true,
+        "scalar_fields_present": true,
+        "scan_time_typed_nonnegative": true,
+        "scans_complete_without_errors": true,
+        "sizes_match_identical_input": true
+      },
+      "schema_version": 1,
+      "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+      "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+    }
+  },
+  "result": "observed",
+  "schema_version": 1,
+  "underlying_probes": {
+    "tools/upstream/probe_result_enums_harness.py": "e6365ce99b3212163aa2820a5b95ccb137bf98161f0e7f1efde68ed5e6bf8b31",
+    "tools/upstream/probe_result_flags_harness.py": "25c3a1e9bdc71d1b1b87bfb862539f49114ac9ba6e1256da7b0b0ffd0531981d",
+    "tools/upstream/probe_result_ids_harness.py": "ef43963dddea9f2019615a96079821ffd85298675b3094f0c3ff72dc611e782f",
+    "tools/upstream/probe_result_lists_harness.py": "51fd4fe1231687fbfbc24d5faa78622f063e089d78a9e068cf7d723c1ee583eb",
+    "tools/upstream/probe_result_metadata_harness.py": "a0e71de2aef80d9c2ba809edafcd4c46ecdd9fb35cd3f4f8eb28c5435d12ade7"
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

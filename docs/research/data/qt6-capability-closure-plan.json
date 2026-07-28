@@ -104,6 +104,13 @@
       "relationship_count": 14,
       "scope": "ten-case database layer, ordering, init, type, and mode-filter contract",
       "source": "docs/research/data/rule-orchestration-linux-qt5-qt6.json"
+    },
+    {
+      "all_differences_classified": true,
+      "capability_count": 6,
+      "difference_count": 5,
+      "scope": "five-harness scalar, lists, flags, IDs, enums, and record metadata contract",
+      "source": "docs/research/data/result-model-engine-qt6.json"
     }
   ],
   "limitations": [
@@ -819,109 +826,61 @@
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "result_model",
       "id": "CAP-RESULT-001",
-      "missing_scope": "execute the remaining Qt5 capability boundary under the pinned Qt6 oracle",
+      "missing_scope": null,
       "name": "scan result scalar metadata",
-      "observed_scope": "CLI JSON exposes only a projection of scalar engine metadata",
-      "proposed_experiment": {
-        "assertions": [
-          "all scalar fields, lists, flags, IDs, enums, and rule metadata are projected",
-          "stable fields are compared exactly and random IDs by declared invariants",
-          "script-engine diagnostic differences remain separate from detection semantics"
-        ],
-        "fixture": "reuse engine result metadata/list/flag/id/enum fixtures",
-        "harness": "build and run equivalent Qt6 result-model harnesses"
-      },
-      "status": "partial"
+      "observed_scope": "four-entry scalar metadata differs only in nondeterministic scan time",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "result_model",
       "id": "CAP-RESULT-002",
-      "missing_scope": "execute the remaining Qt5 capability boundary under the pinned Qt6 oracle",
+      "missing_scope": null,
       "name": "scan result record error debug and handler lists",
-      "observed_scope": "rule probes expose errors, but not all four engine lists",
-      "proposed_experiment": {
-        "assertions": [
-          "all scalar fields, lists, flags, IDs, enums, and rule metadata are projected",
-          "stable fields are compared exactly and random IDs by declared invariants",
-          "script-engine diagnostic differences remain separate from detection semantics"
-        ],
-        "fixture": "reuse engine result metadata/list/flag/id/enum fixtures",
-        "harness": "build and run equivalent Qt6 result-model harnesses"
-      },
-      "status": "partial"
+      "observed_scope": "all four result lists match aside from the classified Qt parse diagnostic",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "result_model",
       "id": "CAP-RESULT-003",
-      "missing_scope": "execute the remaining Qt5 capability boundary under the pinned Qt6 oracle",
+      "missing_scope": null,
       "name": "heuristic and unknown flags",
-      "observed_scope": "baseline JSON includes Unknown; heuristic flag combinations remain",
-      "proposed_experiment": {
-        "assertions": [
-          "all scalar fields, lists, flags, IDs, enums, and rule metadata are projected",
-          "stable fields are compared exactly and random IDs by declared invariants",
-          "script-engine diagnostic differences remain separate from detection semantics"
-        ],
-        "fixture": "reuse engine result metadata/list/flag/id/enum fixtures",
-        "harness": "build and run equivalent Qt6 result-model harnesses"
-      },
-      "status": "partial"
+      "observed_scope": "heuristic, advanced heuristic, and unknown flag truth table matches Qt5",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "result_model",
       "id": "CAP-RESULT-004",
-      "missing_scope": "execute the remaining Qt5 capability boundary under the pinned Qt6 oracle",
+      "missing_scope": null,
       "name": "record and parent identifiers",
-      "observed_scope": "CLI trees expose parent structure, not the full engine identifier contract",
-      "proposed_experiment": {
-        "assertions": [
-          "all scalar fields, lists, flags, IDs, enums, and rule metadata are projected",
-          "stable fields are compared exactly and random IDs by declared invariants",
-          "script-engine diagnostic differences remain separate from detection semantics"
-        ],
-        "fixture": "reuse engine result metadata/list/flag/id/enum fixtures",
-        "harness": "build and run equivalent Qt6 result-model harnesses"
-      },
-      "status": "partial"
+      "observed_scope": "record and parent identifier shape and invariants match modulo UUID values",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "result_model",
       "id": "CAP-RESULT-005",
-      "missing_scope": "execute the remaining Qt5 capability boundary under the pinned Qt6 oracle",
+      "missing_scope": null,
       "name": "record type and name representations",
-      "observed_scope": "CLI JSON exposes string representations, not numeric enums",
-      "proposed_experiment": {
-        "assertions": [
-          "all scalar fields, lists, flags, IDs, enums, and rule metadata are projected",
-          "stable fields are compared exactly and random IDs by declared invariants",
-          "script-engine diagnostic differences remain separate from detection semantics"
-        ],
-        "fixture": "reuse engine result metadata/list/flag/id/enum fixtures",
-        "harness": "build and run equivalent Qt6 result-model harnesses"
-      },
-      "status": "partial"
+      "observed_scope": "raw, numeric, canonical, reserved, and fallback enum behavior is identical",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "result_model",
       "id": "CAP-RESULT-006",
-      "missing_scope": "execute the remaining Qt5 capability boundary under the pinned Qt6 oracle",
+      "missing_scope": null,
       "name": "record version info rule and priority",
-      "observed_scope": "HostApi probes cover rule metadata only partially",
-      "proposed_experiment": {
-        "assertions": [
-          "all scalar fields, lists, flags, IDs, enums, and rule metadata are projected",
-          "stable fields are compared exactly and random IDs by declared invariants",
-          "script-engine diagnostic differences remain separate from detection semantics"
-        ],
-        "fixture": "reuse engine result metadata/list/flag/id/enum fixtures",
-        "harness": "build and run equivalent Qt6 result-model harnesses"
-      },
-      "status": "partial"
+      "observed_scope": "normal record version, info, priority, rule name, and rule path fields match Qt5",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     }
   ],
   "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
@@ -940,11 +899,19 @@
     "docs/research/data/engine-contract-linux-qt5.json": "15b7795f54ea236219cac8b7865dc73289263db6de85312910096746094b5099",
     "docs/research/data/engine-contract-linux-qt6.json": "e2f11d0f8d4070fa3359af0237eca948e6c8a36962bbf8cba59d48f0fe7ac18e",
     "docs/research/data/global-host-api-qt5-qt6.json": "3895fde7bb3885e6197afe7216daf8540b7808562ff5287984615d5b022634eb",
+    "docs/research/data/global-host-api-qt5.json": "99c4085d6f267ff95e3743c0b0be91a577e4bab4e5ebfdd4ee29910f9b43f81b",
+    "docs/research/data/global-host-api-qt6.json": "572b3a19d5260673c612accbf8cfe2bdd3bee76c55e3a1846a3ceac22e823a17",
     "docs/research/data/global-typo-errors-qt5-qt6.json": "59f9d28679513a939c70c3878ce8d39dcfa01e4b9006150e4b9aadb3311fba23",
     "docs/research/data/host-api-arity-qt5-qt6.json": "96d0b0023dd08ec1e45bc0c1059cf5801837496e09143acff6ffa0120328fa73",
     "docs/research/data/qt5-qt6-cli.json": "30c4298f07f2aa64fc17a16c478f8554eb8eb9e4e5c13687cddbfe3785b88fdd",
     "docs/research/data/qt6-alltypes-diagnostics.json": "58b76997e767147284c65a9f99105fd0afaee1fc055b849651e6cb27ae174df6",
     "docs/research/data/qt6-database-diagnostics.json": "7747eaa4379cd8f1fca4a3ad32105c35d41aee690d4b189a0429a7e7bf0835a8",
+    "docs/research/data/result-enums-engine-qt5.json": "599a242d56d07806bac8ada5374b480c72f7fe97e25f6a77981ad441fbd933ea",
+    "docs/research/data/result-flags-engine-qt5.json": "639bde185b0213ab76d11e4363525ee3119c64edcb868f7da8da1029a6fd3066",
+    "docs/research/data/result-ids-engine-qt5.json": "cdcb018939f89e77e51ba70a4108a2269fb450864d042aa44ec38c7002cfd101",
+    "docs/research/data/result-lists-engine-qt5.json": "32065013d9489e6460b253ade6a045a76d95d7adab3444da5731b9f9bc56f8c9",
+    "docs/research/data/result-metadata-engine-qt5.json": "19e394c63eda69d567892cdd579f9b0571613ff390d0d9ab3bc82861f5dd6be3",
+    "docs/research/data/result-model-engine-qt6.json": "bb61f7c1bf25fa54c8f25047d9461b6184c08fe24a61fd512be423a84981ba6f",
     "docs/research/data/rule-orchestration-linux-qt5-qt6.json": "a3a3fb8409cd0006729d0eac625586ad30a432580e7ca5a37c4ed491a4c15b0a",
     "docs/research/data/rule-orchestration-linux-qt5.json": "6787b8a67ee9ee3692d38c668f392a85861d2f517b6827117b478d63df678a5e"
   },
@@ -952,10 +919,10 @@
     "all_capabilities_accounted_for": true,
     "cap_gap_007_closed": false,
     "capability_count": 68,
-    "closure_required": 16,
-    "evidence_complete": 52,
+    "closure_required": 10,
+    "evidence_complete": 58,
     "missing": 7,
-    "partial": 9
+    "partial": 3
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
 }
