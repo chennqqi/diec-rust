@@ -107,6 +107,8 @@ Binary/Unknown Stream；
 正确密码还原 331-byte PDF，缺失/错误密码均失败；
 官方 BCJ2+LZMA2+4×AES 图在 7-Zip 26.02 正确密码验证成功，但固定 DIE
 直接 `XSevenZip` 正确密码仍失败并输出 0 bytes；
+x86/ARM64 BCJ+LZMA2+AES 在公共路径因无密码无 child，直接正确密码均
+还原 331-byte PDF，缺失/错误密码失败；
 NPM 精确路径直接检测为真，但公共自动
 扫描回退 `Binary / Unknown`，强制属性才进入 NPM 语言规则；generic Archive
 自然检测不满足 singleton 门控，强制 quiet/verbose 后则分别得到 Unknown 和

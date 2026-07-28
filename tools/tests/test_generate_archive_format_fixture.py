@@ -53,6 +53,8 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
                     "pdf-member-lzma2.7z",
                     "pdf-member-lzma2-aes.7z",
                     "pdf-member-bcj2-lzma2-aes.7z",
+                    "pdf-member-bcj-lzma2-aes.7z",
+                    "pdf-member-arm64-lzma2-aes.7z",
                     "pdf-member-ppmd7.7z",
                     "pdf-member-bzip2.7z",
                     "pdf-member-deflate.7z",
@@ -276,6 +278,63 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
                     ),
                 ):
                     module.make_7z_bcj2_lzma2_aes(name, payload)
+
+    def test_7z_filter_lzma2_aes_fixtures_are_fixed_and_opaque(self):
+        module = load_module()
+        cases = (
+            (
+                "BCJ",
+                module.make_7z_bcj_lzma2_aes,
+                module.SEVENZIP_CODER_IDS["BCJ"],
+                (
+                    "7eed6f558d94ee89eba36b8e486d0945"
+                    "83c31f1227d434af81a47d8c9c1ce857"
+                ),
+            ),
+            (
+                "ARM64",
+                module.make_7z_arm64_lzma2_aes,
+                module.SEVENZIP_CODER_IDS["ARM64-BCJ"],
+                (
+                    "dcc122a6019de6e1ea0d07bd853a88069"
+                    "f88b5e709da684eb0647bdec43434ea"
+                ),
+            ),
+        )
+        for filter_name, factory, filter_id, expected_sha256 in cases:
+            with self.subTest(filter_name=filter_name):
+                data = factory(module.PAYLOAD_NAME, module.PDF)
+                self.assertEqual(len(data), 354)
+                self.assertEqual(
+                    hashlib.sha256(data).hexdigest(),
+                    expected_sha256,
+                )
+                self.assertTrue(
+                    data.startswith(b"7z\xbc\xaf\x27\x1c\x00\x04")
+                )
+                self.assertNotIn(module.PDF, data)
+                packed_size = int.from_bytes(data[12:20], "little")
+                next_header = data[32 + packed_size :]
+                self.assertEqual(
+                    next_header.count(b"\x06\xf1\x07\x01"),
+                    1,
+                )
+                self.assertEqual(
+                    next_header.count(bytes((len(filter_id),)) + filter_id),
+                    1,
+                )
+                self.assertIn(
+                    module.PAYLOAD_NAME.encode("utf-16le") + b"\0\0",
+                    data,
+                )
+                with self.assertRaisesRegex(
+                    ValueError,
+                    (
+                        f"7Z {filter_name}\\+LZMA2\\+AES fixture "
+                        "requires the canonical PDF"
+                    ),
+                ):
+                    factory(module.PAYLOAD_NAME, b"not-pdf")
 
     def test_deflate64_vector_requires_the_extended_distance_code(self):
         module = load_module()

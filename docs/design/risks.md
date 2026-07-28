@@ -301,8 +301,10 @@ baseline 的变更都要检查本表。
   Store/MSZIP 都能到达 PDF child；CAB LZX 普通 archive 不产生 child，
   aggressive 却扫描 331-byte Binary/Unknown 输出；CAB Quantum 同样在普通
   archive 无 child、aggressive 扫描 59-byte Binary/Unknown 输出；7Z
-  LZMA2+AES 的公共无密码和直接正确/缺失/错误密码边界、官方
-  BCJ2+LZMA2+4×AES 图的正确密码失败边界也已固定；未覆盖的其他 AES 组合与
+  LZMA2+AES 与 x86/ARM64 filter+AES 的公共无密码和直接正确/缺失/错误
+  密码边界、官方
+  BCJ2+LZMA2+4×AES 图的正确密码失败边界也已固定；未覆盖的其他 base
+  coder+AES 组合与
   backend 仍需共享同一
   预算。详见
   [`archive-limit-behavior.md`](../research/archive-limit-behavior.md) 和

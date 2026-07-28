@@ -200,8 +200,9 @@ hideunknown 的可观察增量。完整输入哈希和输出见
   证明七种 7Z 单 coder、x86/ARM64 BCJ+LZMA2、
   BCJ2+LZMA2 no-branch/E8/E9/JCC filter 链、RAR4 store、CAB
   Store/MSZIP 与 ISO9660 默认与发布 CLI 逐字节相同且均不展开，显式
-  archive 后各产生一个 PDF Stream child；LZMA2+AES 在公共 archive 路径因
-  无密码不产生 child，直接 `XSevenZip` 正确密码可还原同一 PDF；官方
+  archive 后各产生一个 PDF Stream child；LZMA2+AES 与 x86/ARM64
+  filter+AES 在公共 archive 路径因无密码不产生 child，直接 `XSevenZip`
+  正确密码可还原同一 PDF；官方
   BCJ2+LZMA2+4×AES 图则在直接正确密码下仍失败。
 - `CAP-NEST-004`：archive 源码 `nLimit` 为 20/100000，但默认 `>` 判断实际允许第 21 个
   scanable member；resource 的 `<=` 判断也允许第 21 个，aggressive limit
@@ -231,7 +232,8 @@ hideunknown 的可观察增量。完整输入哈希和输出见
   状态为 Observed with gaps；7Z Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64、
   x86 BCJ+LZMA2、BCJ2+LZMA2 no-branch/E8/E9/JCC、ARM64-BCJ+LZMA2 BL/ADRP、
   RAR4 store、CAB Store/MSZIP 与
-  ISO9660 正例、7Z LZMA2+AES 成功密码契约、BCJ2+LZMA2+4×AES 正确密码
+  ISO9660 正例、7Z LZMA2+AES 与 x86/ARM64 filter+AES 成功密码契约、
+  BCJ2+LZMA2+4×AES 正确密码
   失败边界及 CAB LZX/Quantum 普通/激进失败边界
   已经固定，但
   ZIP 1 MiB/843.58:1 和首轮格式错误边界已固定；更高展开量、其他格式/算法、
@@ -285,7 +287,8 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
 - archive aggressive 100000、ZIP 1 MiB/843.58:1 与首轮压缩/加密/畸形边界
   已固定；其他格式/算法、系统化畸形、最大深度和总解压资源限制仍待扩展；
   七种 7Z 单 coder、x86/ARM64 BCJ+LZMA2、
-  BCJ2+LZMA2 no-branch/E8/E9/JCC filter 链、7Z LZMA2+AES 成功密码契约、
+  BCJ2+LZMA2 no-branch/E8/E9/JCC filter 链、7Z LZMA2+AES 与 x86/ARM64
+  filter+AES 成功密码契约、
   BCJ2+LZMA2+4×AES 正确密码失败边界、RAR4
   store、CAB
   Store/MSZIP 与 ISO9660 正例、NPM 自动/强制分派 quirk 以及 generic

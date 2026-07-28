@@ -51,6 +51,9 @@ child 为 59-byte `Binary / Unknown`；独立解码器已证明其合法明文�
 第二十一个官方 BCJ2+LZMA2+4×AES 样本也在公共路径无 child；直接 harness
 即使传入正确密码仍返回 `unpacked=false` 和 0-byte 输出，而固定 7-Zip
 26.02 对同一归档验证成功。
+第二十二、二十三个 x86 BCJ+LZMA2+AES 与 ARM64 BCJ+LZMA2+AES 样本在
+公共路径同样无 child；直接 harness 的正确密码均还原 331-byte PDF，
+缺失/错误密码失败。
 
 ## 三层能力边界
 

@@ -115,6 +115,34 @@ SEVENZIP_BCJ2_LZMA2_AES_PDF_ARCHIVE = bytes.fromhex(
     "000501190b00000000000000000000001119007000610079006c006f00610064"
     "002e007000640066000000150601002080ff810000"
 )
+SEVENZIP_BCJ_LZMA2_AES_PDF_ARCHIVE = bytes.fromhex(
+    "377abcaf271c0004829b37dbd0000000000000007200000000000000ffa8883d"
+    "6d643210d3096897bd759810152953f82c1c62bfd83d97d41fc2687a20780e02"
+    "85252ea5bd9e5f92cce0ae9703177a6cc5962317d3faa07018a92611d6db7dc1"
+    "2f3ddaa994e6a044cc1acf90f7979be6d2fc712525bb8889d6e12344d4f3fc6c"
+    "0290e1a3187dece255f5b16bef190711589dc9ab7234e13c36705521e1d50713"
+    "3da97db67fad04aa378e70cb8ac6e2fbce06fca7a8a2f1ebe7ef3f01f3c63a5"
+    "e96507463b372d801895358af9efaf6114cecea7c415bc1e5107348f38da9a75"
+    "96adba72c4dbfeb389dfc238b5751f1c801040600010980d000070b0100032406"
+    "f1070112530ffca572406a6b2d01b53530ba0a07469721210100040303010301"
+    "0002010c80cb814b814b00080a0116f95a330000050119050000000000111900"
+    "7000610079006c006f00610064002e007000640066000000150601002080ff81"
+    "0000"
+)
+SEVENZIP_ARM64_LZMA2_AES_PDF_ARCHIVE = bytes.fromhex(
+    "377abcaf271c0004f6f7eef4d00000000000000072000000000000003ce2b410"
+    "a516be0c8cf6d693f0d8893a0c7235db18fdc32e427954c2a85b2c87bac85bb5"
+    "4fc3564d889cf9c0d0a4f9aa4d21e71eb02f1be3797c594a0cc60c9b13ab33de"
+    "74b5ade3d00694635554f7b51ada0e0e29da0658a79028b196b946f7ec9d0618"
+    "42bafdad763c5e8b225fbd07eabb9233b0ee17c615e57888346ce35e0232080f"
+    "39b176465ede7dc221b1baf8a90c2f5b13307b47f1c39a582a6c9602db90309e"
+    "897f6d3512c2be4203c85bb9bc71d76636256bba55d8d803d7b77da2717c0236"
+    "3f7f7d97715532c5560a7569e96b01a901040600010980d000070b0100032406"
+    "f1070112530f001323accc765f02fa4b617dfc027b0821210100010a01000201"
+    "0c80cb814b814b00080a0116f95a330000050119080000000000000000111900"
+    "7000610079006c006f00610064002e007000640066000000150601002080ff81"
+    "0000"
+)
 
 
 def sevenzip_uint64(value: int) -> bytes:
@@ -790,6 +818,22 @@ def make_7z_bcj2_lzma2_aes(name: str, payload: bytes) -> bytes:
     return SEVENZIP_BCJ2_LZMA2_AES_PDF_ARCHIVE
 
 
+def make_7z_bcj_lzma2_aes(name: str, payload: bytes) -> bytes:
+    if name != PAYLOAD_NAME or payload != PDF:
+        raise ValueError(
+            "7Z BCJ+LZMA2+AES fixture requires the canonical PDF"
+        )
+    return SEVENZIP_BCJ_LZMA2_AES_PDF_ARCHIVE
+
+
+def make_7z_arm64_lzma2_aes(name: str, payload: bytes) -> bytes:
+    if name != PAYLOAD_NAME or payload != PDF:
+        raise ValueError(
+            "7Z ARM64+LZMA2+AES fixture requires the canonical PDF"
+        )
+    return SEVENZIP_ARM64_LZMA2_AES_PDF_ARCHIVE
+
+
 def rar4_header(block_type: int, flags: int, body: bytes) -> bytes:
     header_size = 7 + len(body)
     protected = struct.pack("<BHH", block_type, flags, header_size) + body
@@ -1057,6 +1101,18 @@ FIXTURES = (
         make_7z_bcj2_lzma2_aes,
     ),
     (
+        "pdf-member-bcj-lzma2-aes.7z",
+        "7Z x86 BCJ plus LZMA2 plus 7zAES archive containing one PDF",
+        "BCJ+LZMA2+7zAES",
+        make_7z_bcj_lzma2_aes,
+    ),
+    (
+        "pdf-member-arm64-lzma2-aes.7z",
+        "7Z ARM64 plus LZMA2 plus 7zAES archive containing one PDF",
+        "ARM64+LZMA2+7zAES",
+        make_7z_arm64_lzma2_aes,
+    ),
+    (
         "pdf-member-ppmd7.7z",
         "7Z PPMd7-method archive containing one PDF",
         "PPMd7",
@@ -1238,6 +1294,68 @@ def generate(output_dir: pathlib.Path) -> dict[str, object]:
             "compressed stream"
         ),
         "generation_provenance": {
+            "sevenzip_arm64_lzma2_aes_archive": {
+                "command": [
+                    "7zz",
+                    "a",
+                    "pdf-member-arm64-lzma2-aes.7z",
+                    "payload.pdf",
+                    "-t7z",
+                    "-m0=ARM64",
+                    "-m1=LZMA2",
+                    "-mx=9",
+                    "-pDetectItEasy",
+                    "-mhe=off",
+                    "-mtm=off",
+                    "-mtc=off",
+                    "-mta=off",
+                ],
+                "password": SEVENZIP_AES_PASSWORD,
+                "payload_sha256": hashlib.sha256(PDF).hexdigest(),
+                "tool": "7zz",
+                "tool_archive_sha256": SEVENZIP_2602_ARCHIVE_SHA256,
+                "tool_binary_sha256": SEVENZIP_2602_BINARY_SHA256,
+                "tool_license": (
+                    "LGPL-2.1-or-later; unRAR restriction; "
+                    "BSD-2-Clause and BSD-3-Clause components"
+                ),
+                "tool_source": (
+                    "https://www.7-zip.org/a/"
+                    "7z2602-linux-x64.tar.xz"
+                ),
+                "tool_version": "26.02",
+            },
+            "sevenzip_bcj_lzma2_aes_archive": {
+                "command": [
+                    "7zz",
+                    "a",
+                    "pdf-member-bcj-lzma2-aes.7z",
+                    "payload.pdf",
+                    "-t7z",
+                    "-m0=BCJ",
+                    "-m1=LZMA2",
+                    "-mx=9",
+                    "-pDetectItEasy",
+                    "-mhe=off",
+                    "-mtm=off",
+                    "-mtc=off",
+                    "-mta=off",
+                ],
+                "password": SEVENZIP_AES_PASSWORD,
+                "payload_sha256": hashlib.sha256(PDF).hexdigest(),
+                "tool": "7zz",
+                "tool_archive_sha256": SEVENZIP_2602_ARCHIVE_SHA256,
+                "tool_binary_sha256": SEVENZIP_2602_BINARY_SHA256,
+                "tool_license": (
+                    "LGPL-2.1-or-later; unRAR restriction; "
+                    "BSD-2-Clause and BSD-3-Clause components"
+                ),
+                "tool_source": (
+                    "https://www.7-zip.org/a/"
+                    "7z2602-linux-x64.tar.xz"
+                ),
+                "tool_version": "26.02",
+            },
             "sevenzip_bcj2_lzma2_aes_archive": {
                 "command": [
                     "7zz",
