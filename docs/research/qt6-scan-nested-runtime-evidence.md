@@ -2,7 +2,7 @@
 
 Status: In Review
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
-Last updated: 2026-07-28
+Last updated: 2026-07-29
 
 ## 结论
 
@@ -80,6 +80,10 @@ Qt6 image ID
 当前计数以
 [`qt6-capability-closure-plan.md`](qt6-capability-closure-plan.md)
 为准。`CAP-GAP-007` 保持开放。
+
+后续 archive-option paired matrix 已执行 engine-only 边界并将
+`CAP-NEST-003` 提升为 complete，见
+[`qt6-archive-option-runtime-evidence.md`](qt6-archive-option-runtime-evidence.md)。
 
 ## 重现
 

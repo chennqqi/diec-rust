@@ -167,6 +167,9 @@ Phase 0 计划形成：
 - [`qt6-resource-context-runtime-evidence.md`](qt6-resource-context-runtime-evidence.md)：
   固定 RT_MANIFEST 四种 recursive/aggressive 组合的完整 Qt6 raw 流、context
   字段与 Qt5 对照，并保留每次调用的四行 PE warning（In Review）。
+- [`qt6-archive-option-runtime-evidence.md`](qt6-archive-option-runtime-evidence.md)：
+  固定 64 个 engine archive-option case、32 个 release control 和内容寻址
+  raw catalog，并验证与 Qt5 的完整语义一致性（In Review）。
 - [`behavior-baseline.md`](behavior-baseline.md)：确定性安全语料、原始输出哈希和多格式行为（Draft）。
 - [`cli-json-schema-inventory.md`](cli-json-schema-inventory.md)：固定 CLI normal/entropy/info/struct JSON 字段、类型、顺序与失败边界（Draft）。
 - [`cli-output-boundaries.md`](cli-output-boundaries.md)：固定 JSON/XML/CSV/TSV/plain text 的 Unicode/控制字符转义、嵌套排序和格式缺陷；闭合 `CAP-GAP-004`（Draft）。
@@ -390,6 +393,9 @@ Phase 0 计划形成：
 - [`data/resource-context-chain-qt6.json`](data/resource-context-chain-qt6.json)：
   同一 RT_MANIFEST 四模式的 Qt6 完整 raw stdout/stderr、逐案 Qt5 对照和
   九项 context/gate 关系。
+- [`data/archive-option-engine-qt5-qt6.json`](data/archive-option-engine-qt5-qt6.json)：
+  192 次 Qt5/Qt6 archive-option/release 执行、20 个唯一 raw stream、
+  18 个 detection tree 与 11 项 option/gate 关系。
 - [`data/subdevice-source-audit.json`](data/subdevice-source-audit.json)：固定 XScanEngine/Formats 源码哈希、resource/overlay 调度及 debug-data 可达性审计。
 - [`data/debug-dispatch-fixture.json`](data/debug-dispatch-fixture.json)：
   同时含 RT_MANIFEST resource 与 CodeView/RSDS debug directory 的项目生成 PE。

@@ -296,6 +296,11 @@ python3 tools/upstream/probe_archive_harness.py \
 recursive、recursive+aggressive、archive+recursive 及三者组合。所有不含
 archive 的 28 次 harness 输出都与发布 CMake CLI 对应模式逐字节相同。
 
+固定 Qt6 paired matrix 将当前八个 nested fixture 的完整 64-case engine
+边界与 32 个 release control 逐案对照 Qt5；stdout/detection tree 全部相同，
+仅 PE 调用保留精确四行 warning。见
+[`qt6-archive-option-runtime-evidence.md`](qt6-archive-option-runtime-evidence.md)。
+
 关键 engine 结果：
 
 | 输入/模式 | Stream | Resource | Overlay | 结果 |

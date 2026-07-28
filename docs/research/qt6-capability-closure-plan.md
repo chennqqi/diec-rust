@@ -11,10 +11,10 @@ Last updated: 2026-07-29
 [`data/qt6-capability-closure-plan.json`](data/qt6-capability-closure-plan.json)
 逐项列出当前证据和缺失实验：
 
-- 61 项已有证据完整覆盖能力行；
-- 3 项只有部分证据；
+- 62 项已有证据完整覆盖能力行；
+- 2 项只有部分证据；
 - 4 项没有可接纳的逐行 Qt6 运行时证据；
-- 因此仍有 7 项需要执行闭环实验。
+- 因此仍有 6 项需要执行闭环实验。
 
 Linux Qt6 在能力覆盖报告中继续保持 `platform_missing`。本计划只负责把
 缺口变成可执行清单，不改变平台门禁状态。
@@ -81,6 +81,11 @@ debug-data child，而 direct debug 正控制仍可检测；JSON 与 Qt5 相同�
 并保留每次调用的精确四行 PE warning。见
 [`qt6-resource-context-runtime-evidence.md`](qt6-resource-context-runtime-evidence.md)。
 
+第十三批 archive-option paired matrix 完整执行 64 个 engine case 和 32 个
+release control；显式 archive option 的可达性、跨层传播及无 archive
+CLI 等价关系均与 Qt5 相同。见
+[`qt6-archive-option-runtime-evidence.md`](qt6-archive-option-runtime-evidence.md)。
+
 下列结果只能算部分证据：
 
 - archive 只覆盖 TAR、gzip 和 ZIP，未覆盖完整 archive family；
@@ -127,7 +132,8 @@ python tools/research/build_qt6_closure_plan.py
 ## 限制与下一步
 
 首组 Qt6 engine harness、规则编排、result-model、signature-path、
-debug-dispatch 和 resource-context probe 已完成。后续应按机器清单继续复用
-既有 Qt5 fixture，集中关闭其余 dispatch、nested/archive 和复杂目录边界。
+debug-dispatch、resource-context 和 archive-option probe 已完成。后续应按
+机器清单继续复用既有 Qt5 fixture，集中关闭其余 dispatch、nested/archive
+limit 和复杂目录边界。
 只有 68 行全部达到 `evidence_complete`，且差异完成评审，
 `CAP-GAP-007` 才能关闭。

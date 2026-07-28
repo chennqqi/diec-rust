@@ -218,7 +218,9 @@ debug-data dispatch 差分见
 [`qt6-debug-dispatch-runtime-evidence.md`](qt6-debug-dispatch-runtime-evidence.md)。
 resource-context raw-first 差分见
 [`qt6-resource-context-runtime-evidence.md`](qt6-resource-context-runtime-evidence.md)。
-十二批实验将 Linux Qt6 的逐行完整证据从 11 项增加到 61 项，但没有关闭
+archive-option paired matrix 见
+[`qt6-archive-option-runtime-evidence.md`](qt6-archive-option-runtime-evidence.md)。
+十三批实验将 Linux Qt6 的逐行完整证据从 11 项增加到 62 项，但没有关闭
 `CAP-GAP-007`。
 
 ## 限制与下一步
@@ -234,5 +236,6 @@ resource-context raw-first 差分见
   已完成四入口、device/subdevice、filter、cancel 和 sort 的
   engine-contract harness、三层数据库/priority/init/type/mode gate 的规则编排
   差分、五组 result-model harness、private signature-path harness 和 paired
-  debug-data dispatch harness 和 resource-context raw-first probe。
+  debug-data dispatch harness、resource-context raw-first probe 和
+  archive-option paired matrix。
 - Windows、macOS 固定 oracle 仍缺失。

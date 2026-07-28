@@ -81,10 +81,10 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
 
     def test_current_plan_is_conservatively_incomplete(self):
         summary = self.plan["summary"]
-        self.assertEqual(summary["evidence_complete"], 61)
-        self.assertEqual(summary["partial"], 3)
+        self.assertEqual(summary["evidence_complete"], 62)
+        self.assertEqual(summary["partial"], 2)
         self.assertEqual(summary["missing"], 4)
-        self.assertEqual(summary["closure_required"], 7)
+        self.assertEqual(summary["closure_required"], 6)
         self.assertFalse(summary["cap_gap_007_closed"])
         self.assertEqual(self.plan["result"], "incomplete")
 
@@ -141,6 +141,7 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
             "CAP-RULE-007",
             "CAP-NEST-007",
             "CAP-NEST-006",
+            "CAP-NEST-003",
         }
         for capability_id in promoted:
             with self.subTest(capability=capability_id):
@@ -153,7 +154,10 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
             "partial",
         )
         self.assertEqual(rows["CAP-CLI-IN-003"]["status"], "partial")
-        self.assertEqual(rows["CAP-NEST-003"]["status"], "partial")
+        self.assertEqual(
+            rows["CAP-NEST-003"]["status"],
+            "evidence_complete",
+        )
         self.assertEqual(
             rows["CAP-RULE-005"]["status"],
             "evidence_complete",
@@ -352,6 +356,22 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
         with self.assertRaisesRegex(
             MODULE.ClosurePlanError,
             "output drift",
+        ):
+            MODULE.build_plan(
+                self.traceability,
+                self.traceability_raw,
+                changed_reports,
+                self.report_bytes,
+            )
+
+        changed_reports = json.loads(json.dumps(self.reports))
+        archive_option = changed_reports[MODULE.REPORT_PATHS[33]]
+        archive_option["cases"]["pdf-member.zip"]["archive"][
+            "observations"
+        ]["qt6"]["stdout_sha256"] = "0" * 64
+        with self.assertRaisesRegex(
+            MODULE.ClosurePlanError,
+            "observation drift",
         ):
             MODULE.build_plan(
                 self.traceability,

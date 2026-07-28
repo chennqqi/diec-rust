@@ -217,7 +217,10 @@ hideunknown 的可观察增量。完整输入哈希和输出见
   x86/ARM64 filter × 七种基础 coder × AES 在公共 archive 路径因无密码
   不产生 child，直接 `XSevenZip`
   正确密码可还原同一 PDF，Copy/PPMd7 错误密码仍留下 331-byte 输出；官方
-  BCJ2+LZMA2+4×AES 图则在直接正确密码下仍失败。
+  BCJ2+LZMA2+4×AES 图则在直接正确密码下仍失败。固定 Qt6 又完成 8 个
+  nested fixture × 8 种 engine 组合及 32 个 release control，全部 stdout
+  和 detection tree 与 Qt5 相同，见
+  [`qt6-archive-option-runtime-evidence.md`](qt6-archive-option-runtime-evidence.md)。
 - `CAP-NEST-004`：archive 源码 `nLimit` 为 20/100000，但默认 `>` 判断实际允许第 21 个
   scanable member；resource 的 `<=` 判断也允许第 21 个，aggressive limit
   为 2000。resource 已精确观察默认 21/aggressive 2001；2002 项 fixture 分为

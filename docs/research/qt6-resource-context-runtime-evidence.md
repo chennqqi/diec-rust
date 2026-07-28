@@ -48,8 +48,12 @@ recursive+aggressive 为 1060 bytes，SHA-256
 ## 能力影响
 
 `CAP-NEST-006` 提升为 Linux Qt6 `evidence_complete`。机器清单现在为
-61 项 complete、3 项 partial、4 项 missing；7 项仍需闭环，
+62 项 complete、2 项 partial、4 项 missing；6 项仍需闭环，
 `CAP-GAP-007` 保持开放。
+
+该计数包含后续
+[`qt6-archive-option-runtime-evidence.md`](qt6-archive-option-runtime-evidence.md)
+对 `CAP-NEST-003` 的闭环。
 
 这项结论只证明固定 public CLI work queue 中 resource context 的传播行为。
 它不扩大 public scanner 的 file-part 范围；debug-data 默认不可达性仍由

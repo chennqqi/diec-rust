@@ -132,6 +132,13 @@
       "scope": "four-mode RT_MANIFEST resource context propagation",
       "semantic_output_equal": true,
       "source": "docs/research/data/resource-context-chain-qt6.json"
+    },
+    {
+      "all_stdout_equal": true,
+      "difference_count": 60,
+      "right_stderr_sha256": "b303e6913e76b70a6f0d6a4d3ccd389bc342589e45e1615873a37334dea8c51b",
+      "scope": "64 engine archive-option cases and 32 release controls",
+      "source": "docs/research/data/archive-option-engine-qt5-qt6.json"
     }
   ],
   "limitations": [
@@ -729,19 +736,11 @@
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "nested_scan",
       "id": "CAP-NEST-003",
-      "missing_scope": "execute the remaining Qt5 capability boundary under the pinned Qt6 oracle",
+      "missing_scope": null,
       "name": "archive scan is engine-only",
-      "observed_scope": "CLI non-extraction is covered; the Qt6 engine archive option remains",
-      "proposed_experiment": {
-        "assertions": [
-          "CLI recursion and internal recursion gates are distinguished",
-          "record-count, iteration, depth, and expanded-byte observations are equal",
-          "parent tree, context propagation, subdevice gates, and raw errors are compared"
-        ],
-        "fixture": "reuse nested, resource, archive-limit, iteration, adversarial, and structure fixtures",
-        "harness": "build Qt6 nested/resource/archive harness variants"
-      },
-      "status": "partial"
+      "observed_scope": "all 64 engine option cases and 32 release controls match Qt5",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
@@ -883,6 +882,7 @@
   "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
   "schema_version": 1,
   "sources": {
+    "docs/research/data/archive-option-engine-qt5-qt6.json": "5cdadeb09d97a0afd03b2f73ebbb5eb4ffd227b9a21973d34d5a3db739bb8d65",
     "docs/research/data/binary-rule-order-linux-qt5-qt6.json": "58eba4dcab44a32412c65a8b80716325140bb5eba3a1e93a7753a67c35256852",
     "docs/research/data/capability-traceability.json": "e1bb982feb52fb97e6678319c629cf71735650fe4239c8558a0f765c16c8cff3",
     "docs/research/data/cli-database-matrix-linux-qt5-qt6.json": "0bb7c6562e7d31604a6a16b3556fbc04ca70a02c089637be0f4849afa0006f4b",
@@ -922,10 +922,10 @@
     "all_capabilities_accounted_for": true,
     "cap_gap_007_closed": false,
     "capability_count": 68,
-    "closure_required": 7,
-    "evidence_complete": 61,
+    "closure_required": 6,
+    "evidence_complete": 62,
     "missing": 4,
-    "partial": 3
+    "partial": 2
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
 }

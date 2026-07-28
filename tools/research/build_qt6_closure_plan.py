@@ -51,6 +51,7 @@ REPORT_PATHS = (
     "docs/research/data/debug-dispatch-engine-qt6.json",
     "docs/research/data/resource-context-chain-qt5.json",
     "docs/research/data/resource-context-chain-qt6.json",
+    "docs/research/data/archive-option-engine-qt5-qt6.json",
 )
 EMPTY_SHA256 = hashlib.sha256(b"").hexdigest()
 QT6_UNIMPLEMENTED_SHA256 = (
@@ -150,12 +151,12 @@ COMPLETE: dict[str, str] = {
     "CAP-RULE-007": "all seven private signature-path filter boundaries are byte-identical to Qt5",
     "CAP-NEST-007": "public omission and direct debug-data positive control match Qt5 exactly",
     "CAP-NEST-006": "all four recursive/aggressive resource-context controls match Qt5 exactly",
+    "CAP-NEST-003": "all 64 engine option cases and 32 release controls match Qt5",
 }
 
 PARTIAL: dict[str, str] = {
     "CAP-CLI-IN-003": "basic depth-first tree is covered; filesystem/locale/TOCTOU/large-directory boundaries remain",
     "CAP-DISPATCH-004": "TAR, gzip, and ZIP only; full archive family remains",
-    "CAP-NEST-003": "CLI non-extraction is covered; the Qt6 engine archive option remains",
 }
 
 
@@ -1714,6 +1715,313 @@ def _validate_resource_context_reports(
             )
 
 
+def _validate_archive_option_report(report: dict[str, Any]) -> None:
+    expected_oracles = {
+        "qt5": {
+            "harness": {
+                "image": "diec-rust/upstream-archive-harness:74eaf505",
+                "image_id": (
+                    "sha256:771b9094a2ad6ab4f6250dd89307ab727c07a1aae885a894695abfa959bab5dc"
+                ),
+                "revision": UPSTREAM_COMMIT,
+                "binary": "/opt/die-build/src/console/diec-archive-harness",
+                "binary_sha256": (
+                    "b7ea9b151b58b630c017e9989333fa035b7d86ffab366a5d3a1f74bab9f1e96e"
+                ),
+            },
+            "release": {
+                "image": "diec-rust/upstream-oracle-cmake:74eaf505",
+                "image_id": (
+                    "sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040"
+                ),
+                "revision": UPSTREAM_COMMIT,
+                "binary": "/opt/die-build/src/console/diec",
+                "binary_sha256": (
+                    "da1fab49f7ba5970d1fc1c7fe3d4f380cf5e8775dd8097207e7b3c30f08236cf"
+                ),
+            },
+        },
+        "qt6": {
+            "harness": {
+                "image": (
+                    "diec-rust/upstream-archive-harness-qt6:74eaf505"
+                ),
+                "image_id": (
+                    "sha256:2e46aa3e3d2fa731e92bd57c11f905bc3ff4a4064106d020314ad05a422c4488"
+                ),
+                "revision": UPSTREAM_COMMIT,
+                "binary": "/opt/die-build/src/console/diec-archive-harness",
+                "binary_sha256": (
+                    "6fed831d6c11b67e0a9e0ea0aa57b2a9e380a5a6f53dd46f426122aec3839d76"
+                ),
+            },
+            "release": {
+                "image": (
+                    "diec-rust/upstream-oracle-cmake-qt6:74eaf505"
+                ),
+                "image_id": (
+                    "sha256:e015495c313d0715f0b80f395da983a113a439f2a135eb637e9f0638c225200b"
+                ),
+                "revision": UPSTREAM_COMMIT,
+                "binary": "/opt/die-build/src/console/diec",
+                "binary_sha256": (
+                    "e3321105af0349b29195325e79d5d2c7cc25ead2f28f84e242e3835b98f7283e"
+                ),
+            },
+        },
+    }
+    if (
+        report.get("schema_version") != 1
+        or report.get("capability") != "CAP-NEST-003"
+        or report.get("platform") != "linux-amd64-qt5-qt6"
+        or report.get("upstream_commit") != UPSTREAM_COMMIT
+        or report.get("rules_commit") != RULES_COMMIT
+        or report.get("result") != "observed"
+        or report.get("oracles") != expected_oracles
+        or report.get("case_count") != 64
+        or report.get("release_control_count") != 32
+    ):
+        raise ClosurePlanError("archive-option identity/oracle drift")
+
+    fixture = report.get("fixture", {})
+    expected_samples = {
+        "pdf-member.zip",
+        "nested-zip.zip",
+        "many-pdf-members.zip",
+        "pe-pdf-overlay.exe",
+        "pe-pdf-resource.exe",
+        "pe-many-pdf-resources.exe",
+        "pe-manifest-resource.exe",
+        "pe-zip-overlay.exe",
+    }
+    if (
+        fixture.get("manifest")
+        != "docs/research/data/nested-corpus.json"
+        or fixture.get("manifest_sha256")
+        != "b382bd0a903cd4dda5a8128508f7a3f514a67a721baacda4c6722c99aefc4229"
+        or not isinstance(fixture.get("samples"), list)
+        or {item.get("name") for item in fixture["samples"]}
+        != expected_samples
+    ):
+        raise ClosurePlanError("archive-option fixture drift")
+
+    expected_difference = {
+        "scope": "Qt6 PE rule runtime warning",
+        "affected_samples": sorted(
+            name for name in expected_samples if name.startswith("pe-")
+        ),
+        "harness_invocations": 40,
+        "release_invocations": 20,
+        "stderr_bytes_per_invocation": 80,
+        "stderr_sha256_per_invocation": QT6_UNIMPLEMENTED_SHA256,
+        "lines_per_invocation": 4,
+        "all_stdout_equal": True,
+    }
+    relationships = report.get("relationships")
+    if (
+        report.get("known_difference") != expected_difference
+        or not isinstance(relationships, dict)
+        or len(relationships) != 11
+        or not all(value is True for value in relationships.values())
+    ):
+        raise ClosurePlanError("archive-option relationship drift")
+
+    raw_streams = report.get("raw_streams")
+    detection_trees = report.get("detection_trees")
+    if not isinstance(raw_streams, dict) or not isinstance(
+        detection_trees, dict
+    ):
+        raise ClosurePlanError("archive-option content catalogs missing")
+    for stream_hash, item in raw_streams.items():
+        try:
+            stream = base64.b64decode(item["base64"], validate=True)
+        except (KeyError, ValueError, TypeError) as error:
+            raise ClosurePlanError(
+                "invalid archive-option raw stream"
+            ) from error
+        if (
+            len(stream) != item.get("bytes")
+            or sha256(stream) != stream_hash
+        ):
+            raise ClosurePlanError("archive-option raw stream drift")
+    for tree_hash, tree in detection_trees.items():
+        encoded = json.dumps(
+            tree,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+            allow_nan=False,
+        ).encode("utf-8")
+        if sha256(encoded) != tree_hash:
+            raise ClosurePlanError("archive-option detection tree drift")
+
+    expected_cases = {
+        "default",
+        "archive",
+        "aggressive",
+        "archive_aggressive",
+        "recursive",
+        "recursive_aggressive",
+        "archive_recursive",
+        "archive_recursive_aggressive",
+    }
+    release_cases = {
+        "default",
+        "aggressive",
+        "recursive",
+        "recursive_aggressive",
+    }
+    cases = report.get("cases")
+    if not isinstance(cases, dict) or set(cases) != expected_samples:
+        raise ClosurePlanError("archive-option sample catalog drift")
+
+    def validate_observation(
+        observation: dict[str, Any],
+        expected_stderr_hash: str,
+        label: str,
+    ) -> None:
+        stdout_hash = observation.get("stdout_sha256")
+        stderr_hash = observation.get("stderr_sha256")
+        tree_hash = observation.get("detect_tree_sha256")
+        if (
+            observation.get("exit_code") != 0
+            or stdout_hash not in raw_streams
+            or stderr_hash not in raw_streams
+            or tree_hash not in detection_trees
+            or raw_streams[stdout_hash].get("bytes")
+            != observation.get("stdout_bytes")
+            or raw_streams[stderr_hash].get("bytes")
+            != observation.get("stderr_bytes")
+            or stderr_hash != expected_stderr_hash
+        ):
+            raise ClosurePlanError(
+                f"archive-option observation drift: {label}"
+            )
+
+    for sample_name, sample_cases in cases.items():
+        if not isinstance(sample_cases, dict) or set(
+            sample_cases
+        ) != expected_cases:
+            raise ClosurePlanError(
+                f"archive-option case catalog drift: {sample_name}"
+            )
+        qt6_stderr = (
+            QT6_UNIMPLEMENTED_SHA256
+            if sample_name.startswith("pe-")
+            else EMPTY_SHA256
+        )
+        for case_name, case in sample_cases.items():
+            observations = case.get("observations")
+            if not isinstance(observations, dict) or set(observations) != {
+                "qt5",
+                "qt6",
+            }:
+                raise ClosurePlanError(
+                    f"archive-option oracle catalog drift: {sample_name}.{case_name}"
+                )
+            validate_observation(
+                observations["qt5"],
+                EMPTY_SHA256,
+                f"{sample_name}.{case_name}.qt5",
+            )
+            validate_observation(
+                observations["qt6"],
+                qt6_stderr,
+                f"{sample_name}.{case_name}.qt6",
+            )
+            expected_classification = (
+                "known_qt6_pe_warning"
+                if sample_name.startswith("pe-")
+                else "equal_empty"
+            )
+            if (
+                observations["qt5"].get("stdout_sha256")
+                != observations["qt6"].get("stdout_sha256")
+                or observations["qt5"].get("detect_tree_sha256")
+                != observations["qt6"].get("detect_tree_sha256")
+                or case.get("comparison")
+                != {
+                    "exit_code_equal": True,
+                    "stdout_equal": True,
+                    "detect_tree_equal": True,
+                    "stderr_classification": expected_classification,
+                }
+            ):
+                raise ClosurePlanError(
+                    f"Qt5/Qt6 archive-option output drift: {sample_name}.{case_name}"
+                )
+            release = case.get("release_control")
+            if case_name in release_cases:
+                if (
+                    not isinstance(release, dict)
+                    or release.get("harness_equal")
+                    != {"qt5": True, "qt6": True}
+                    or set(release.get("observations", {}))
+                    != {"qt5", "qt6"}
+                ):
+                    raise ClosurePlanError(
+                        f"archive-option release control drift: {sample_name}.{case_name}"
+                    )
+                for oracle_name, expected_stderr in (
+                    ("qt5", EMPTY_SHA256),
+                    ("qt6", qt6_stderr),
+                ):
+                    release_observation = release["observations"][
+                        oracle_name
+                    ]
+                    validate_observation(
+                        release_observation,
+                        expected_stderr,
+                        f"{sample_name}.{case_name}.release.{oracle_name}",
+                    )
+                    harness_observation = observations[oracle_name]
+                    if (
+                        release_observation.get("stdout_sha256")
+                        != harness_observation.get("stdout_sha256")
+                        or release_observation.get("stderr_sha256")
+                        != harness_observation.get("stderr_sha256")
+                        or release_observation.get("detect_tree_sha256")
+                        != harness_observation.get("detect_tree_sha256")
+                    ):
+                        raise ClosurePlanError(
+                            f"archive-option release output drift: {sample_name}.{case_name}"
+                        )
+            elif release is not None:
+                raise ClosurePlanError(
+                    f"unexpected archive-option release control: {sample_name}.{case_name}"
+                )
+
+    count_expectations = {
+        ("many-pdf-members.zip", "archive", "stream_count"): 21,
+        (
+            "many-pdf-members.zip",
+            "archive_aggressive",
+            "stream_count",
+        ): 22,
+        (
+            "pe-many-pdf-resources.exe",
+            "recursive",
+            "resource_count",
+        ): 21,
+        (
+            "pe-many-pdf-resources.exe",
+            "recursive_aggressive",
+            "resource_count",
+        ): 22,
+    }
+    for (sample_name, case_name, field), expected in count_expectations.items():
+        for oracle_name in ("qt5", "qt6"):
+            if (
+                cases[sample_name][case_name]["observations"][
+                    oracle_name
+                ].get(field)
+                != expected
+            ):
+                raise ClosurePlanError(
+                    f"archive-option count drift: {sample_name}.{case_name}.{field}"
+                )
+
+
 CAMPAIGNS: dict[str, dict[str, Any]] = {
     "cli_scan_baseline": {
         "fixture": "reuse baseline-corpus and scan-option-boundary fixtures",
@@ -1920,6 +2228,7 @@ def _validate_inputs(
     _validate_resource_context_reports(
         reports[REPORT_PATHS[31]], reports[REPORT_PATHS[32]]
     )
+    _validate_archive_option_report(reports[REPORT_PATHS[33]])
     return capabilities
 
 
@@ -2150,6 +2459,13 @@ def build_plan(
                 "scope": "four-mode RT_MANIFEST resource context propagation",
                 "difference_count": 4,
                 "semantic_output_equal": True,
+                "right_stderr_sha256": QT6_UNIMPLEMENTED_SHA256,
+            },
+            {
+                "source": REPORT_PATHS[33],
+                "scope": "64 engine archive-option cases and 32 release controls",
+                "difference_count": 60,
+                "all_stdout_equal": True,
                 "right_stderr_sha256": QT6_UNIMPLEMENTED_SHA256,
             },
         ],
