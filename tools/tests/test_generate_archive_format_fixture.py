@@ -1,10 +1,13 @@
 import binascii
+import bz2
 import hashlib
 import importlib.util
 import json
+import lzma
 import pathlib
 import tempfile
 import unittest
+import zlib
 
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
@@ -43,6 +46,10 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
                 {
                     "manifest.json",
                     "pdf-member.7z",
+                    "pdf-member-lzma.7z",
+                    "pdf-member-lzma2.7z",
+                    "pdf-member-bzip2.7z",
+                    "pdf-member-deflate.7z",
                     "pdf-member.rar",
                     "pdf-member.cab",
                     "pdf-member.iso",
@@ -113,6 +120,70 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
             module.PAYLOAD_NAME.encode("utf-16le") + b"\0\0",
             next_header,
         )
+
+    def test_7z_compressed_payloads_round_trip_independently(self):
+        module = load_module()
+        decoders = {
+            "Copy": lambda value: value,
+            "LZMA": lambda value: lzma.decompress(
+                value,
+                format=lzma.FORMAT_RAW,
+                filters=[
+                    {
+                        "id": lzma.FILTER_LZMA1,
+                        "dict_size": module.SEVENZIP_DICTIONARY_SIZE,
+                        "lc": 3,
+                        "lp": 0,
+                        "pb": 2,
+                    }
+                ],
+            ),
+            "LZMA2": lambda value: lzma.decompress(
+                value,
+                format=lzma.FORMAT_RAW,
+                filters=[
+                    {
+                        "id": lzma.FILTER_LZMA2,
+                        "dict_size": module.SEVENZIP_DICTIONARY_SIZE,
+                    }
+                ],
+            ),
+            "BZip2": bz2.decompress,
+            "Deflate": lambda value: zlib.decompress(value, wbits=-15),
+        }
+        expected_properties = {
+            "Copy": b"",
+            "LZMA": b"\x5d\x00\x00\x10\x00",
+            "LZMA2": b"\x10",
+            "BZip2": b"",
+            "Deflate": b"",
+        }
+        for method, decoder in decoders.items():
+            with self.subTest(method=method):
+                packed, properties = module.encode_7z_payload(
+                    method,
+                    module.PDF,
+                )
+                self.assertEqual(
+                    properties,
+                    expected_properties[method],
+                )
+                self.assertEqual(decoder(packed), module.PDF)
+                archive = module.make_7z_single(
+                    module.PAYLOAD_NAME,
+                    module.PDF,
+                    method,
+                )
+                self.assertTrue(
+                    archive.startswith(b"7z\xbc\xaf\x27\x1c\x00\x04")
+                )
+                self.assertIn(
+                    module.SEVENZIP_CODER_IDS[method],
+                    archive,
+                )
+
+        with self.assertRaisesRegex(ValueError, "unsupported 7Z method"):
+            module.encode_7z_payload("Unknown", module.PDF)
 
     def test_7z_uint64_boundary_encodings_are_canonical(self):
         module = load_module()

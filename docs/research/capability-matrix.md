@@ -143,7 +143,8 @@ priority、数据库分层、init/include、file type、deep/heuristic 和 Unkno
 固定双 oracle 的 26 样本已完整观察上述 PE/ELF/Mach-O、DEX/Class/PYC、
 PDF/CFBF 和 Binary fallback 四组的所有成员。Archive 组已观察 APK、JAR、ZIP、
 7Z、RAR、CAB、ISO9660，以及固定 commit 将 IPA 识别后仍经 Binary 分派的 quirk。
-7Z/RAR4/CAB/ISO9660 的 engine-only archive 正向解包见
+7Z Copy/LZMA/LZMA2/BZip2/Deflate 与 RAR4/CAB/ISO9660 的 engine-only
+archive 正向解包见
 [`archive-format-behavior.md`](archive-format-behavior.md)；其中 7Z/CAB
 顶层仍显示 `Binary`，但可产生 PDF Stream child。NPM 专用实验进一步证明：
 精确 `package/package.json` 可使直接检测器返回 true，公共 GZIP 自动检测却只
@@ -190,7 +191,7 @@ hideunknown 的可观察增量。完整输入哈希和输出见
   不启用。PE PDF resource/overlay 已 Observed。
 - `CAP-NEST-003`：archive 解包由独立 `bIsArchivesScan` 控制，发布 CLI 不设置它；ZIP 和
   ZIP→ZIP 样本在 recursive/aggressive 组合下均不解包。固定 harness 进一步
-  证明 7Z/RAR4/CAB/ISO9660 默认与发布 CLI 逐字节相同且均不展开，显式
+  证明五种 7Z coder 及 RAR4/CAB/ISO9660 默认与发布 CLI 逐字节相同且均不展开，显式
   archive 后各产生一个 PDF Stream child。
 - `CAP-NEST-004`：archive 源码 `nLimit` 为 20/100000，但默认 `>` 判断实际允许第 21 个
   scanable member；resource 的 `<=` 判断也允许第 21 个，aggressive limit
@@ -217,7 +218,8 @@ hideunknown 的可观察增量。完整输入哈希和输出见
 - `CAP-NEST-009`：固定源码没有独立嵌套 depth 或全 scan 累计展开字节状态；
   受限 Linux Qt5 oracle 的单成员 ZIP 到达 16 层，固定两层累计展开量达到
   2,097,266 bytes，第一次 progress callback 取消保留 1 条 root partial record。
-  状态为 Observed with gaps；7Z/RAR4/CAB/ISO9660 无压缩正例已经固定，但
+  状态为 Observed with gaps；7Z Copy/LZMA/LZMA2/BZip2/Deflate 与
+  RAR4/CAB/ISO9660 正例已经固定，但
   ZIP 1 MiB/843.58:1 和首轮格式错误边界已固定；更高展开量、其他格式/算法、
   真实资源耗尽和跨平台仍待验证。详见
   [`archive-limit-behavior.md`](archive-limit-behavior.md) 与
@@ -268,7 +270,7 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
   [`scan-option-boundaries.md`](scan-option-boundaries.md) 闭合。
 - archive aggressive 100000、ZIP 1 MiB/843.58:1 与首轮压缩/加密/畸形边界
   已固定；其他格式/算法、系统化畸形、最大深度和总解压资源限制仍待扩展；
-  7Z/RAR4/CAB/ISO9660 无压缩正例、NPM 自动/强制分派 quirk 以及 generic
+  五种 7Z coder、RAR4/CAB/ISO9660 正例、NPM 自动/强制分派 quirk 以及 generic
   Archive singleton/verbose 重检测已固定。
 - Qt 5 与 Qt 6 的首轮基础/安全语料/不可读输入差分已完成；仍需扩展到完整
   output/scan/special/path/database/nested 矩阵及其他 Qt 6 minor。

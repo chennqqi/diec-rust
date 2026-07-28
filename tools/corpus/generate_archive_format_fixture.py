@@ -5,12 +5,15 @@ from __future__ import annotations
 
 import argparse
 import binascii
+import bz2
 import hashlib
 import importlib.util
 import json
+import lzma
 import pathlib
 import struct
 import sys
+import zlib
 
 
 GENERATOR = "tools/corpus/generate_archive_format_fixture.py"
@@ -51,18 +54,81 @@ def sevenzip_uint64(value: int) -> bytes:
     return b"\xff" + value.to_bytes(8, "little")
 
 
-def make_7z_stored(name: str, payload: bytes) -> bytes:
+SEVENZIP_DICTIONARY_SIZE = 1 << 20
+SEVENZIP_CODER_IDS = {
+    "Copy": b"\x00",
+    "LZMA": b"\x03\x01\x01",
+    "LZMA2": b"\x21",
+    "BZip2": b"\x04\x02\x02",
+    "Deflate": b"\x04\x01\x08",
+}
+
+
+def encode_7z_payload(
+    method: str,
+    payload: bytes,
+) -> tuple[bytes, bytes]:
+    if method == "Copy":
+        return payload, b""
+    if method == "LZMA":
+        properties = b"\x5d" + struct.pack(
+            "<I",
+            SEVENZIP_DICTIONARY_SIZE,
+        )
+        packed = lzma.compress(
+            payload,
+            format=lzma.FORMAT_RAW,
+            filters=[
+                {
+                    "id": lzma.FILTER_LZMA1,
+                    "dict_size": SEVENZIP_DICTIONARY_SIZE,
+                    "lc": 3,
+                    "lp": 0,
+                    "pb": 2,
+                }
+            ],
+        )
+        return packed, properties
+    if method == "LZMA2":
+        packed = lzma.compress(
+            payload,
+            format=lzma.FORMAT_RAW,
+            filters=[
+                {
+                    "id": lzma.FILTER_LZMA2,
+                    "dict_size": SEVENZIP_DICTIONARY_SIZE,
+                }
+            ],
+        )
+        return packed, b"\x10"
+    if method == "BZip2":
+        return bz2.compress(payload, compresslevel=9), b""
+    if method == "Deflate":
+        compressor = zlib.compressobj(level=9, wbits=-15)
+        return compressor.compress(payload) + compressor.flush(), b""
+    raise ValueError(f"unsupported 7Z method: {method}")
+
+
+def make_7z_single(name: str, payload: bytes, method: str) -> bytes:
     encoded_name = name.encode("utf-16le") + b"\0\0"
     payload_crc = binascii.crc32(payload) & 0xFFFFFFFF
+    packed, properties = encode_7z_payload(method, payload)
+    packed_crc = binascii.crc32(packed) & 0xFFFFFFFF
+    method_id = SEVENZIP_CODER_IDS[method]
+    coder = bytes(
+        (len(method_id) | (0x20 if properties else 0),)
+    ) + method_id
+    if properties:
+        coder += sevenzip_uint64(len(properties)) + properties
 
     pack_info = (
         b"\x06"
         + sevenzip_uint64(0)
         + sevenzip_uint64(1)
         + b"\x09"
-        + sevenzip_uint64(len(payload))
+        + sevenzip_uint64(len(packed))
         + b"\x0a\x01"
-        + struct.pack("<I", payload_crc)
+        + struct.pack("<I", packed_crc)
         + b"\x00"
     )
     unpack_info = (
@@ -70,7 +136,7 @@ def make_7z_stored(name: str, payload: bytes) -> bytes:
         + sevenzip_uint64(1)
         + b"\x00"
         + sevenzip_uint64(1)
-        + b"\x01\x00"
+        + coder
         + b"\x0c"
         + sevenzip_uint64(len(payload))
         + b"\x0a\x01"
@@ -90,7 +156,7 @@ def make_7z_stored(name: str, payload: bytes) -> bytes:
     next_header = b"\x01" + main_streams + files_info + b"\x00"
     start_header = struct.pack(
         "<QQI",
-        len(payload),
+        len(packed),
         len(next_header),
         binascii.crc32(next_header) & 0xFFFFFFFF,
     )
@@ -102,9 +168,13 @@ def make_7z_stored(name: str, payload: bytes) -> bytes:
             binascii.crc32(start_header) & 0xFFFFFFFF,
         )
         + start_header
-        + payload
+        + packed
         + next_header
     )
+
+
+def make_7z_stored(name: str, payload: bytes) -> bytes:
+    return make_7z_single(name, payload, "Copy")
 
 
 def rar4_header(block_type: int, flags: int, body: bytes) -> bytes:
@@ -282,21 +352,65 @@ FIXTURES = (
     (
         "pdf-member.7z",
         "7Z Copy-method archive containing one PDF",
+        "Copy",
         make_7z_stored,
+    ),
+    (
+        "pdf-member-lzma.7z",
+        "7Z LZMA-method archive containing one PDF",
+        "LZMA",
+        lambda name, payload: make_7z_single(
+            name,
+            payload,
+            "LZMA",
+        ),
+    ),
+    (
+        "pdf-member-lzma2.7z",
+        "7Z LZMA2-method archive containing one PDF",
+        "LZMA2",
+        lambda name, payload: make_7z_single(
+            name,
+            payload,
+            "LZMA2",
+        ),
+    ),
+    (
+        "pdf-member-bzip2.7z",
+        "7Z BZip2-method archive containing one PDF",
+        "BZip2",
+        lambda name, payload: make_7z_single(
+            name,
+            payload,
+            "BZip2",
+        ),
+    ),
+    (
+        "pdf-member-deflate.7z",
+        "7Z Deflate-method archive containing one PDF",
+        "Deflate",
+        lambda name, payload: make_7z_single(
+            name,
+            payload,
+            "Deflate",
+        ),
     ),
     (
         "pdf-member.rar",
         "RAR4 store archive containing one PDF",
+        "Store",
         make_rar4_stored,
     ),
     (
         "pdf-member.cab",
         "CAB store archive containing one PDF",
+        "Store",
         make_cab_stored,
     ),
     (
         "pdf-member.iso",
         "ISO9660 image containing one PDF",
+        "Store",
         make_iso9660_stored,
     ),
 )
@@ -305,12 +419,13 @@ FIXTURES = (
 def generate(output_dir: pathlib.Path) -> dict[str, object]:
     output_dir.mkdir(parents=True, exist_ok=True)
     samples = []
-    for name, purpose, factory in FIXTURES:
+    for name, purpose, compression_method, factory in FIXTURES:
         data = factory(PAYLOAD_NAME, PDF)
         (output_dir / name).write_bytes(data)
         samples.append(
             {
                 "archive_format": name.rsplit(".", 1)[1].upper(),
+                "compression_method": compression_method,
                 "expected_member_name": PAYLOAD_NAME,
                 "expected_payload_sha256": hashlib.sha256(PDF).hexdigest(),
                 "name": name,

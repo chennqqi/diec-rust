@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Probe stored 7Z, RAR4, CAB, and ISO9660 members with the pinned harness."""
+"""Probe 7Z coders plus stored RAR4/CAB/ISO members with the pinned harness."""
 
 from __future__ import annotations
 
@@ -31,6 +31,7 @@ DATABASE_ARGS = (
 SOURCE_PATHS = {
     "engine": "/opt/die-source/XScanEngine/xscanengine.cpp",
     "sevenzip": "/opt/die-source/XArchive/xsevenzip.cpp",
+    "sevenzip_methods": "/opt/die-source/XArchive/xsevenzip.cpp",
     "rar": "/opt/die-source/XArchive/xrar.cpp",
     "cab": "/opt/die-source/XArchive/xcab.cpp",
     "iso9660": "/opt/die-source/XArchive/xiso9660.cpp",
@@ -43,12 +44,34 @@ SOURCE_PATTERNS = {
         "stFT.contains(XBinary::FT_CAB)"
     ),
     "sevenzip": "bool XSevenZip::initUnpack(",
+    "sevenzip_methods": (
+        "HANDLE_METHOD_STORE, HANDLE_METHOD_LZMA, "
+        "HANDLE_METHOD_LZMA2, HANDLE_METHOD_PPMD7, "
+        "HANDLE_METHOD_BZIP2, HANDLE_METHOD_DEFLATE, "
+        "HANDLE_METHOD_DEFLATE64"
+    ),
     "rar": "bool XRar::initUnpack(",
     "cab": "bool XCab::initUnpack(",
     "iso9660": "bool XISO9660::initUnpack(",
 }
 EXPECTED_ROOTS = {
     "pdf-member.7z": {
+        "filetype": "Binary",
+        "root_names": ["7-Zip"],
+    },
+    "pdf-member-lzma.7z": {
+        "filetype": "Binary",
+        "root_names": ["7-Zip"],
+    },
+    "pdf-member-lzma2.7z": {
+        "filetype": "Binary",
+        "root_names": ["7-Zip"],
+    },
+    "pdf-member-bzip2.7z": {
+        "filetype": "Binary",
+        "root_names": ["7-Zip"],
+    },
+    "pdf-member-deflate.7z": {
         "filetype": "Binary",
         "root_names": ["7-Zip"],
     },
@@ -113,13 +136,14 @@ def load_fixture(
         raise ProbeError("unsupported fixture schema")
     if manifest["generator"] != FIXTURE_GENERATOR:
         raise ProbeError("unexpected fixture generator")
-    if len(manifest["samples"]) != 4:
+    if len(manifest["samples"]) != 8:
         raise ProbeError("fixture sample count changed")
 
     declared = set()
     for sample in manifest["samples"]:
         if set(sample) != {
             "archive_format",
+            "compression_method",
             "expected_member_name",
             "expected_payload_sha256",
             "name",
@@ -424,6 +448,10 @@ def build_report(
         "release_and_harness_default_outputs_are_equal": True,
         "archive_option_is_required_for_unpacking": True,
         "sevenzip_copy_member_reaches_pdf_rules": True,
+        "sevenzip_lzma_member_reaches_pdf_rules": True,
+        "sevenzip_lzma2_member_reaches_pdf_rules": True,
+        "sevenzip_bzip2_member_reaches_pdf_rules": True,
+        "sevenzip_deflate_member_reaches_pdf_rules": True,
         "rar4_store_member_reaches_pdf_rules": True,
         "cab_store_member_reaches_pdf_rules": True,
         "iso9660_store_member_reaches_pdf_rules": True,

@@ -33,8 +33,8 @@ resource type ID、子设备 file-part、scan ID、重新探测和原样 Binary 
 archive/recursive/aggressive 组合，并将其中 4 个不含 archive 的模式逐字节
 对照发布 CMake oracle。56 次 harness 执行及 28 次发布对照全部通过。
 
-同一固定 harness 的补充格式实验还运行 7Z/RAR4/CAB/ISO9660 四个项目生成的
-无压缩单 PDF 样本。四者 default 均与发布 CLI 原始输出相同且不展开；
+同一固定 harness 的补充格式实验还运行五种 7Z coder 与 RAR4/CAB/ISO9660
+共八个项目生成的单 PDF 样本。八者 default 均与发布 CLI 原始输出相同且不展开；
 显式 archive 后各产生一个 PDF Stream child，archive+aggressive 与 archive
 逐字节相同。7Z/CAB 顶层仍分别为 `Binary / 7-Zip` 和 `Binary / CAB`，不能把
 展示 filetype 当作 adapter 选择条件。完整报告见
@@ -265,7 +265,7 @@ archive 的 28 次 harness 输出都与发布 CMake CLI 对应模式逐字节相
 | --- | ---: | ---: | ---: | --- |
 | ZIP→PDF / archive | 1 | 0 | 0 | PDF 成为 Stream |
 | ZIP→ZIP→PDF / archive | 2 | 0 | 0 | archive flag 跨层传播 |
-| 7Z/RAR4/CAB/ISO→PDF / archive | 1 | 0 | 0 | 四种无压缩容器各产生一个 PDF Stream |
+| 7Z Copy/LZMA/LZMA2/BZip2/Deflate、RAR4/CAB/ISO→PDF / archive | 1 | 0 | 0 | 八个 coder/container 样本各产生一个 PDF Stream |
 | 22 PDF ZIP / archive | 21 | 0 | 0 | 确认默认 off-by-one |
 | 22 PDF ZIP / archive+aggressive | 22 | 0 | 0 | 全部成员 |
 | 22 PDF resources / recursive | 0 | 21 | 0 | 确认默认 off-by-one |

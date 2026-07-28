@@ -20,8 +20,8 @@ Phase 0 计划形成：
   deflate/ZipCrypto、高压缩比、CRC/压缩流/offset/method 畸形、local-header
   fallback 与 mixed-member filter（In Review）。
 - [`archive-format-behavior.md`](archive-format-behavior.md)：
-  7Z/RAR4/CAB/ISO9660 无压缩正向解包、发布 CLI 默认对照与
-  7Z/CAB `Binary` 顶层 quirk（Draft）。
+  7Z Copy/LZMA/LZMA2/BZip2/Deflate、RAR4/CAB/ISO9660 正向解包、
+  发布 CLI 默认对照与 7Z/CAB `Binary` 顶层 quirk（Draft）。
 - [`npm-dispatch-reachability.md`](npm-dispatch-reachability.md)：
   NPM 精确归档路径检测、公共 GZIP 自动分派不可达、强制 NPM 规则分支及
   双 Qt5 release 对照（Draft）。
@@ -215,9 +215,9 @@ Phase 0 计划形成：
 - [`data/archive-adversarial-engine-qt5.json`](data/archive-adversarial-engine-qt5.json)：
   48 次 release/harness default/archive/aggressive 原始输出、源码契约和结构摘要。
 - [`data/archive-format-corpus.json`](data/archive-format-corpus.json)：
-  项目生成的 7Z/RAR4/CAB/ISO9660 单 PDF 无压缩 fixture 清单。
+  项目生成的五种 7Z coder 与 RAR4/CAB/ISO9660 单 PDF fixture 清单。
 - [`data/archive-format-engine-qt5.json`](data/archive-format-engine-qt5.json)：
-  四种 archive 的 default/release/archive/aggressive 原始输出、固定身份和
+  八个 archive/coder 样本的 default/release/archive/aggressive 原始输出、固定身份和
   结构化摘要。
 - [`data/npm-dispatch-fixture.json`](data/npm-dispatch-fixture.json)：
   项目生成的 NPM 精确路径正例、无效 JSON 正例及路径/大小写近似反例清单。

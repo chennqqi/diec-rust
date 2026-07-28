@@ -252,7 +252,7 @@ elapsed 值与固定规则执行序列另见
 ## 尚未覆盖
 
 - 26-sample 通用基线本身不含 7Z、CAB、NPM、Amiga Hunk、Atari ST 及
-  DOS/COM/NE/LE/LX 等格式；其中 7Z/CAB 无压缩正例现由
+  DOS/COM/NE/LE/LX 等格式；其中五种 7Z coder 与 CAB 正例现由
   [`archive-format-behavior.md`](archive-format-behavior.md) 固定，legacy 与
   DOS/COM 由各自专用 oracle 固定；NPM 精确路径直接检测为真、公共自动扫描
   回退 Binary 及强制规则分支现由
@@ -275,7 +275,8 @@ elapsed 值与固定规则执行序列另见
   ZIP deflate/ZipCrypto、1 MiB/843.58:1 和首轮畸形边界已由
   [`archive-adversarial-behavior.md`](archive-adversarial-behavior.md) 固定；
   其他格式/算法及更高资源边界仍待验证；
-  7Z/RAR4/CAB/ISO9660 无压缩正例及 ZIP depth 16/约 2 MiB 累计展开量已有
+  7Z Copy/LZMA/LZMA2/BZip2/Deflate、RAR4/CAB/ISO9660 正例及 ZIP
+  depth 16/约 2 MiB 累计展开量已有
   专用报告。
 - 发布 CLI 的 ZIP database 截断/重复/`..`/根前缀边界及 cache-disabled
   副作用已由 [`database-archive-cache.md`](database-archive-cache.md) 覆盖；

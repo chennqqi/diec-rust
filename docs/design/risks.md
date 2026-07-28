@@ -295,8 +295,11 @@ baseline 的变更都要检查本表。
   内到达 16 层和 2,097,266 累计展开 bytes；固定源码与 runtime 均未显示独立
   depth/total cutoff。另一个双 Qt5 oracle 已固定 resource 默认 21/aggressive
   2001 child 上限、枚举顺序及 PE parser 每目录 1000 项限制。取消 control
-  保留 root partial record。详见
+  保留 root partial record。固定 archive harness 还证明 7Z
+  Copy/LZMA/LZMA2/BZip2/Deflate 五种 coder 都能到达 PDF child；未覆盖的
+  PPMd7/Deflate64/filter/AES 与其他 backend 仍需共享同一预算。详见
   [`archive-limit-behavior.md`](../research/archive-limit-behavior.md) 和
+  [`archive-format-behavior.md`](../research/archive-format-behavior.md)、
   [`scan-option-boundaries.md`](../research/scan-option-boundaries.md)。
 - **缓解**：显式 work queue；全 scan depth/node/entry/read/decompressed/time
   hard budgets；cycle hint；不复刻无界调用栈；ADR 0012 提议有限 default 与

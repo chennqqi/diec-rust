@@ -4,6 +4,7 @@
   "samples": [
     {
       "archive_format": "7Z",
+      "compression_method": "Copy",
       "expected_member_name": "payload.pdf",
       "expected_payload_sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
       "name": "pdf-member.7z",
@@ -12,7 +13,48 @@
       "size": 427
     },
     {
+      "archive_format": "7Z",
+      "compression_method": "LZMA",
+      "expected_member_name": "payload.pdf",
+      "expected_payload_sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "name": "pdf-member-lzma.7z",
+      "purpose": "7Z LZMA-method archive containing one PDF",
+      "sha256": "e5b9efb5cce8422bff727a336a024323595624c972a52a51bf6fa2f144e234a3",
+      "size": 305
+    },
+    {
+      "archive_format": "7Z",
+      "compression_method": "LZMA2",
+      "expected_member_name": "payload.pdf",
+      "expected_payload_sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "name": "pdf-member-lzma2.7z",
+      "purpose": "7Z LZMA2-method archive containing one PDF",
+      "sha256": "a75b724562911af555468ad797c2a940e3597fe3c3387d6db3bb1c0c89aeaafe",
+      "size": 301
+    },
+    {
+      "archive_format": "7Z",
+      "compression_method": "BZip2",
+      "expected_member_name": "payload.pdf",
+      "expected_payload_sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "name": "pdf-member-bzip2.7z",
+      "purpose": "7Z BZip2-method archive containing one PDF",
+      "sha256": "f9b7455d5922e88c3e987b6010dbc8f90470b2fb6dc9bd2612225e87fde59c3f",
+      "size": 346
+    },
+    {
+      "archive_format": "7Z",
+      "compression_method": "Deflate",
+      "expected_member_name": "payload.pdf",
+      "expected_payload_sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "name": "pdf-member-deflate.7z",
+      "purpose": "7Z Deflate-method archive containing one PDF",
+      "sha256": "07185ac8131fed41933521faf48ac339270f1b15b0f63832330ea848a9dd0097",
+      "size": 295
+    },
+    {
       "archive_format": "RAR",
+      "compression_method": "Store",
       "expected_member_name": "payload.pdf",
       "expected_payload_sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
       "name": "pdf-member.rar",
@@ -22,6 +64,7 @@
     },
     {
       "archive_format": "CAB",
+      "compression_method": "Store",
       "expected_member_name": "payload.pdf",
       "expected_payload_sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
       "name": "pdf-member.cab",
@@ -31,6 +74,7 @@
     },
     {
       "archive_format": "ISO",
+      "compression_method": "Store",
       "expected_member_name": "payload.pdf",
       "expected_payload_sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
       "name": "pdf-member.iso",
