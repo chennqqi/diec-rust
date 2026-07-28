@@ -69,7 +69,7 @@ Accepted。
 | `P0-BLOCK-003` | Open | 十三个 ADR 已 review-ready、但 acceptance-ready 均为 false；仍需 Accepted/Rejected/Superseded 评审结论 |
 | `P0-BLOCK-004` | Open | runtime `db*` 2,268 文件身份及根 MIT/marker 已闭合；22 个 PNG 已固定到两个 DosX 来源 commit、20 个 blob、C100/R100、PNG metadata、来源时 MIT LICENSE 和贡献政策/sign-off 边界；仍需 artwork 授权/历史贡献适用性、其余 source closure 和发布责任人书面评审 |
 | `P0-BLOCK-005` | Open | 68 行 × 4 平台 coverage report 已建立且无未分类 cell；Linux source-only 已清零，CAP-GAP-001/002/003/004/005/009/010/011/012 已闭合；CAP-GAP-003 的最后一个固定 Linux locale × tmpfs/volume 排序矩阵已补齐，CAP-GAP-006 已固定 ZIP depth-64/33,554,546 累计展开 bytes、7Z Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64/x86 BCJ+LZMA2/BCJ2+LZMA2 no-branch/E8/E9/JCC/ARM64-BCJ+LZMA2 BL/ADRP/七种基础 coder+AES 与完整 x86/ARM64 filter × 七种基础 coder × AES 成功密码契约（含 Copy/PPMd7 错误密码残留输出）/BCJ2+LZMA2+4×AES 正确密码失败边界、RAR5 Store 单成员/solid 双成员、CAB Store/MSZIP 正例与 LZX/Quantum 普通/激进失败边界、100000-record、ZIP deflate/ZipCrypto/1 MiB high-ratio/首轮 malformed 子矩阵、7Z/RAR4/CAB/ISO9660 的 26-case EOF 前缀阶梯及 33-case 结构字段突变；仍有 4 个 corpus-gap 行及三个平台各 68 个 platform-missing |
-| `P0-BLOCK-006` | Open | 固定 Linux Qt5 五层 warm baseline 已保留 17 warmup/90 measured 的 latency/MAD/p95/RSS、cgroup 和确定性输出；[体积基线](../research/upstream-deployment-size.md)也已固定 ELF、16 个去重动态依赖与 2,268 个规则的两种口径；仍需 Rust 成对、cold/affinity、跨平台发行包、评审阈值和默认资源限制 |
+| `P0-BLOCK-006` | Open | 固定 Linux Qt5 五层 warm baseline 已保留 17 warmup/90 measured 的 latency/MAD/p95/RSS、cgroup 和确定性输出；[单 vCPU affinity 复验](../research/upstream-performance-affinity.md)进一步证明 `cpuset.cpus.effective=0` 并保留短 control 的部分 RSS 边界；[体积基线](../research/upstream-deployment-size.md)也已固定 ELF、16 个去重动态依赖与 2,268 个规则的两种口径；仍需 Rust 成对、cold、physical-core/topology 重复 session、跨平台发行包、评审阈值和默认资源限制 |
 
 ## 下一步顺序
 

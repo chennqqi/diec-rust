@@ -198,7 +198,7 @@
       "title": "performance baseline, benchmark environment, and resource targets are not frozen",
       "owner": "performance",
       "status": "open",
-      "progress_evidence": "docs/research/upstream-performance-baseline.md, docs/research/data/upstream-benchmark-linux-qt5.json, docs/research/upstream-deployment-size.md, and docs/research/data/upstream-deployment-size-linux-qt5.json establish a pinned five-layer Linux Qt5 warm baseline with 17 warmup and 90 measured direct processes plus ELF, 16-real-file dynamic dependency, and 2268-rule size accounting; Rust paired, cold/affinity, cross-platform package size, reviewed thresholds, and default limits remain open",
+      "progress_evidence": "docs/research/upstream-performance-baseline.md and docs/research/data/upstream-benchmark-linux-qt5.json establish a pinned five-layer Linux Qt5 warm baseline with 17 warmup and 90 measured direct processes; docs/research/upstream-performance-affinity.md and docs/research/data/upstream-benchmark-linux-qt5-affinity.json add a single WSL2/Linux vCPU run with cpuset.cpus.effective=0 while preserving the short-control partial-RSS boundary; docs/research/upstream-deployment-size.md and docs/research/data/upstream-deployment-size-linux-qt5.json establish ELF, 16-real-file dynamic dependency, and 2268-rule size accounting; Rust paired, cold, physical-core/topology repeated sessions, cross-platform package size, reviewed thresholds, and default limits remain open",
       "closure_evidence": "reviewed benchmark identity, baseline report, and measurable latency, memory, size, and resource-limit targets"
     }
   ]

@@ -33,6 +33,7 @@ MAX_WARMUPS = 20
 MAX_TIMEOUT_MS = 600_000
 MAX_CAPTURE_BYTES = 64 * 1024 * 1024
 POLL_SECONDS = 0.002
+INITIAL_RSS_ATTEMPTS = 16
 
 
 class BenchmarkError(ValueError):
@@ -583,6 +584,15 @@ def run_once(
     assert process.stderr is not None
     stop = threading.Event()
     observed_peak: list[int] = []
+    for attempt in range(INITIAL_RSS_ATTEMPTS):
+        initial_rss = sample_rss_bytes(process.pid)
+        if initial_rss is not None:
+            observed_peak.append(initial_rss)
+            break
+        if process.poll() is not None:
+            break
+        if attempt + 1 < INITIAL_RSS_ATTEMPTS:
+            time.sleep(0)
     output_results: dict[str, dict[str, object]] = {}
     output_limit_exceeded: list[str] = []
     output_lock = threading.Lock()

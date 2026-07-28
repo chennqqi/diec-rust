@@ -132,8 +132,22 @@ def docker_inspect(image: str) -> dict[str, Any]:
     }
 
 
-def resource_arguments(limits: dict[str, Any]) -> list[str]:
-    return [
+def parse_single_cpu(value: str) -> str:
+    if not value.isascii() or not value.isdecimal():
+        raise argparse.ArgumentTypeError(
+            "cpuset CPU must be one non-negative decimal integer"
+        )
+    cpu = int(value)
+    if cpu > 2**31 - 1:
+        raise argparse.ArgumentTypeError("cpuset CPU is out of range")
+    return str(cpu)
+
+
+def resource_arguments(
+    limits: dict[str, Any],
+    cpuset_cpu: str | None = None,
+) -> list[str]:
+    arguments = [
         "--network",
         str(limits["network"]),
         "--cpus",
@@ -143,6 +157,9 @@ def resource_arguments(limits: dict[str, Any]) -> list[str]:
         "--pids-limit",
         str(limits["pids"]),
     ]
+    if cpuset_cpu is not None:
+        arguments.extend(["--cpuset-cpus", cpuset_cpu])
+    return arguments
 
 
 def run_container(
@@ -150,6 +167,7 @@ def run_container(
     limits: dict[str, Any],
     arguments: list[str],
     *,
+    cpuset_cpu: str | None = None,
     mount: Path | None = None,
     timeout: int = 180,
 ) -> subprocess.CompletedProcess[bytes]:
@@ -157,7 +175,7 @@ def run_container(
         "docker",
         "run",
         "--rm",
-        *resource_arguments(limits),
+        *resource_arguments(limits, cpuset_cpu),
     ]
     if mount is not None:
         command.extend(["-v", f"{mount.resolve()}:/io"])
@@ -173,11 +191,14 @@ def read_image_file(
     image: str,
     limits: dict[str, Any],
     path: str,
+    *,
+    cpuset_cpu: str | None = None,
 ) -> bytes:
     completed = run_container(
         image,
         limits,
         ["cat", path],
+        cpuset_cpu=cpuset_cpu,
         timeout=30,
     )
     if completed.returncode != 0 or completed.stderr:
@@ -188,6 +209,8 @@ def read_image_file(
 def observe_cgroup(
     image: str,
     limits: dict[str, Any],
+    *,
+    cpuset_cpu: str | None = None,
 ) -> dict[str, Any]:
     program = (
         "import json,pathlib;"
@@ -203,6 +226,7 @@ def observe_cgroup(
         image,
         limits,
         ["python3", "-c", program],
+        cpuset_cpu=cpuset_cpu,
         timeout=30,
     )
     if completed.returncode != 0 or completed.stderr:
@@ -218,6 +242,14 @@ def observe_cgroup(
             raise ProbeError(
                 f"cgroup {field} mismatch: {observed.get(field)!r}"
             )
+    if (
+        cpuset_cpu is not None
+        and observed.get("cpuset_effective") != cpuset_cpu
+    ):
+        raise ProbeError(
+            "cgroup cpuset_effective mismatch: "
+            f"{observed.get('cpuset_effective')!r}"
+        )
     return observed
 
 
@@ -225,6 +257,8 @@ def verify_image_corpora(
     image: str,
     limits: dict[str, Any],
     plans: dict[str, Any],
+    *,
+    cpuset_cpu: str | None = None,
 ) -> dict[str, Any]:
     result = {}
     for name, path, expected in (
@@ -239,7 +273,12 @@ def verify_image_corpora(
             plans["archive_manifest_sha256"],
         ),
     ):
-        raw = read_image_file(image, limits, path)
+        raw = read_image_file(
+            image,
+            limits,
+            path,
+            cpuset_cpu=cpuset_cpu,
+        )
         actual = sha256(raw)
         if actual != expected:
             raise ProbeError(f"{name} manifest SHA-256 mismatch")
@@ -255,6 +294,8 @@ def run_plan(
     image: str,
     limits: dict[str, Any],
     plan: dict[str, Any],
+    *,
+    cpuset_cpu: str | None = None,
 ) -> dict[str, Any]:
     with tempfile.TemporaryDirectory() as directory:
         exchange = Path(directory)
@@ -274,6 +315,7 @@ def run_plan(
                 "--repo-root",
                 BENCH_ROOT,
             ],
+            cpuset_cpu=cpuset_cpu,
             mount=exchange,
         )
         if completed.returncode != 0:
@@ -313,6 +355,8 @@ def noise_summary(report: dict[str, Any]) -> dict[str, Any]:
 
 def evaluate_report(report: dict[str, Any]) -> list[str]:
     failures: list[str] = []
+    environment = report.get("environment", {})
+    affinity_enabled = environment.get("cpu_affinity") is not None
     if report.get("upstream_commit") != EXPECTED_REVISION:
         failures.append("upstream_commit")
     if report.get("baseline_scope") != "descriptive_upstream_only":
@@ -381,8 +425,19 @@ def evaluate_report(report: dict[str, Any]) -> list[str]:
             failures.append(f"{prefix}.run_count")
         if any(run.get("exit_code") != 0 for run in runs):
             failures.append(f"{prefix}.exit_code")
-        if any(run.get("peak_rss_bytes") is None for run in runs):
-            failures.append(f"{prefix}.peak_rss")
+        peak_samples = [
+            run.get("peak_rss_bytes")
+            for run in runs
+            if run.get("peak_rss_bytes") is not None
+        ]
+        if len(peak_samples) != len(runs):
+            partial_control_rss = (
+                affinity_enabled
+                and benchmark_id == "upstream.qt-process-control.v1"
+                and len(peak_samples) >= 3
+            )
+            if not partial_control_rss:
+                failures.append(f"{prefix}.peak_rss")
         if any(run.get("stdout", {}).get("bytes", 0) <= 0 for run in runs):
             failures.append(f"{prefix}.stdout_empty")
         if any(
@@ -391,6 +446,11 @@ def evaluate_report(report: dict[str, Any]) -> list[str]:
         ):
             failures.append(f"{prefix}.stderr")
         summary = item.get("summary", {})
+        peak_summary = summary.get("peak_rss_bytes")
+        if not isinstance(peak_summary, dict):
+            failures.append(f"{prefix}.peak_rss_summary")
+        elif peak_summary.get("sample_count") != len(peak_samples):
+            failures.append(f"{prefix}.peak_rss_sample_count")
         if len(summary.get("stdout_unique_sha256", [])) != 1:
             failures.append(f"{prefix}.stdout_determinism")
         if summary.get("stderr_unique_sha256") != [EMPTY_SHA256]:
@@ -403,7 +463,10 @@ def evaluate_report(report: dict[str, Any]) -> list[str]:
             <= duration.get("max", 0)
         ):
             failures.append(f"{prefix}.duration_order")
-        if summary.get("peak_rss_bytes", {}).get("max", 0) <= 0:
+        if (
+            not isinstance(peak_summary, dict)
+            or peak_summary.get("max", 0) <= 0
+        ):
             failures.append(f"{prefix}.peak_rss_summary")
         executable_hashes[
             item["executable"]["path"]
@@ -425,13 +488,25 @@ def evaluate_report(report: dict[str, Any]) -> list[str]:
     ):
         failures.append("rss_method")
 
-    cgroup = report["environment"]["cgroup"]
+    cgroup = environment["cgroup"]
     if cgroup.get("cpu_max") != "100000 100000":
         failures.append("cgroup.cpu_max")
     if cgroup.get("memory_max") != str(512 * 1024 * 1024):
         failures.append("cgroup.memory_max")
     if cgroup.get("pids_max") != "128":
         failures.append("cgroup.pids_max")
+    affinity = environment.get("cpu_affinity")
+    if affinity is not None:
+        if set(affinity) != {
+            "requested_cpuset_cpu",
+            "scope",
+        }:
+            failures.append("cpu_affinity.fields")
+        requested_cpu = affinity.get("requested_cpuset_cpu")
+        if affinity.get("scope") != "linux_vcpu":
+            failures.append("cpu_affinity.scope")
+        if cgroup.get("cpuset_effective") != requested_cpu:
+            failures.append("cgroup.cpuset_effective")
 
     control = report["noise"][
         "upstream.qt-process-control.v1"
@@ -465,6 +540,16 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument("--output", type=Path)
+    parser.add_argument(
+        "--cpuset-cpus",
+        dest="cpuset_cpu",
+        metavar="CPU",
+        type=parse_single_cpu,
+        help=(
+            "pin every probe container to one Linux CPU and verify "
+            "cpuset.cpus.effective"
+        ),
+    )
     return parser.parse_args()
 
 
@@ -473,11 +558,16 @@ def main() -> int:
     plans, raw_plans = load_plans(args.plans)
     limits = plans["container_limits"]
     image = docker_inspect(args.image)
-    cgroup = observe_cgroup(args.image, limits)
+    cgroup = observe_cgroup(
+        args.image,
+        limits,
+        cpuset_cpu=args.cpuset_cpu,
+    )
     corpora = verify_image_corpora(
         args.image,
         limits,
         plans,
+        cpuset_cpu=args.cpuset_cpu,
     )
 
     case_reports = {}
@@ -486,30 +576,49 @@ def main() -> int:
             args.image,
             limits,
             plan,
+            cpuset_cpu=args.cpuset_cpu,
         )
     noise = {
         benchmark_id: noise_summary(wrapped["report"])
         for benchmark_id, wrapped in case_reports.items()
     }
     control_noise = noise["upstream.qt-process-control.v1"]
+    control_report = case_reports[
+        "upstream.qt-process-control.v1"
+    ]["report"]
+    control_rss_samples = control_report["summary"][
+        "peak_rss_bytes"
+    ]["sample_count"]
     noise_interpretation = {
         "control_classification": (
             "high_tail_noise"
             if control_noise["p95_over_median"] > 1.50
             else "low_tail_noise"
         ),
+        "control_peak_rss_complete": (
+            control_rss_samples
+            == control_report["execution"]["measured_runs"]
+        ),
+        "control_peak_rss_product_evidence": False,
+        "control_peak_rss_samples": control_rss_samples,
         "guardrails": NOISE_GUARDRAILS,
         "short_process_regression_eligible": False,
     }
+    environment: dict[str, Any] = {
+        "cgroup": cgroup,
+        "container_limits": limits,
+        "image": args.image,
+        "image_identity": image,
+    }
+    if args.cpuset_cpu is not None:
+        environment["cpu_affinity"] = {
+            "requested_cpuset_cpu": args.cpuset_cpu,
+            "scope": "linux_vcpu",
+        }
     report: dict[str, Any] = {
         "baseline_scope": "descriptive_upstream_only",
         "case_reports": case_reports,
-        "environment": {
-            "cgroup": cgroup,
-            "container_limits": limits,
-            "image": args.image,
-            "image_identity": image,
-        },
+        "environment": environment,
         "image_corpora": corpora,
         "noise": noise,
         "noise_interpretation": noise_interpretation,

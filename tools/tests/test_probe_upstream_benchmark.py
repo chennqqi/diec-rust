@@ -1,3 +1,4 @@
+import argparse
 import hashlib
 import importlib.util
 import json
@@ -27,6 +28,13 @@ REPORT_PATH = (
     / "data"
     / "upstream-benchmark-linux-qt5.json"
 )
+AFFINITY_REPORT_PATH = (
+    ROOT
+    / "docs"
+    / "research"
+    / "data"
+    / "upstream-benchmark-linux-qt5-affinity.json"
+)
 DOCKERFILE_PATH = (
     ROOT
     / "tools"
@@ -41,6 +49,9 @@ HARNESS_PATH = (
 )
 DOCUMENT_PATH = (
     ROOT / "docs" / "research" / "upstream-performance-baseline.md"
+)
+AFFINITY_DOCUMENT_PATH = (
+    ROOT / "docs" / "research" / "upstream-performance-affinity.md"
 )
 
 
@@ -62,6 +73,9 @@ class ProbeUpstreamBenchmarkTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.report = json.loads(
             REPORT_PATH.read_text(encoding="utf-8")
+        )
+        cls.affinity_report = json.loads(
+            AFFINITY_REPORT_PATH.read_text(encoding="utf-8")
         )
         cls.plans = json.loads(
             PLANS_PATH.read_text(encoding="utf-8")
@@ -142,6 +156,88 @@ class ProbeUpstreamBenchmarkTests(unittest.TestCase):
             )
         )
 
+    def test_single_cpu_cpuset_is_strict_and_reaches_docker(self):
+        self.assertEqual(PROBE.parse_single_cpu("0"), "0")
+        self.assertEqual(PROBE.parse_single_cpu("007"), "7")
+        for invalid in ("", "-1", "0-1", "1,2", "１"):
+            with self.subTest(value=invalid):
+                with self.assertRaises(argparse.ArgumentTypeError):
+                    PROBE.parse_single_cpu(invalid)
+        with self.assertRaises(argparse.ArgumentTypeError):
+            PROBE.parse_single_cpu(str(2**31))
+
+        arguments = PROBE.resource_arguments(
+            self.plans["container_limits"],
+            "0",
+        )
+        self.assertEqual(arguments[-2:], ["--cpuset-cpus", "0"])
+        self.assertNotIn(
+            "--cpuset-cpus",
+            PROBE.resource_arguments(
+                self.plans["container_limits"],
+            ),
+        )
+
+    def test_affinity_contract_requires_exact_linux_vcpu_cpuset(self):
+        report = json.loads(json.dumps(self.report))
+        report["environment"]["cpu_affinity"] = {
+            "requested_cpuset_cpu": "0",
+            "scope": "linux_vcpu",
+        }
+        report["environment"]["cgroup"]["cpuset_effective"] = "0"
+        self.assertEqual(PROBE.evaluate_report(report), [])
+
+        report["environment"]["cgroup"]["cpuset_effective"] = "0-3"
+        self.assertIn(
+            "cgroup.cpuset_effective",
+            PROBE.evaluate_report(report),
+        )
+
+    def test_affinity_allows_only_partial_control_rss(self):
+        report = json.loads(json.dumps(self.report))
+        report["environment"]["cpu_affinity"] = {
+            "requested_cpuset_cpu": "0",
+            "scope": "linux_vcpu",
+        }
+        report["environment"]["cgroup"]["cpuset_effective"] = "0"
+        control = report["case_reports"][
+            "upstream.qt-process-control.v1"
+        ]["report"]
+        for run in control["runs"][3:]:
+            run["peak_rss_bytes"] = None
+        retained = [
+            run["peak_rss_bytes"]
+            for run in control["runs"][:3]
+        ]
+        control["summary"]["peak_rss_bytes"] = {
+            "max": max(retained),
+            "median": sorted(retained)[1],
+            "sample_count": 3,
+        }
+        wrapped = report["case_reports"][
+            "upstream.qt-process-control.v1"
+        ]
+        raw = RUNNER.serialize_report(control)
+        wrapped["report_sha256"] = hashlib.sha256(raw).hexdigest()
+        wrapped["report_size"] = len(raw)
+        self.assertEqual(PROBE.evaluate_report(report), [])
+
+        pe = report["case_reports"][
+            "upstream.cli-pe32-json.v1"
+        ]["report"]
+        pe["runs"][0]["peak_rss_bytes"] = None
+        pe["summary"]["peak_rss_bytes"]["sample_count"] -= 1
+        pe_wrapped = report["case_reports"][
+            "upstream.cli-pe32-json.v1"
+        ]
+        raw = RUNNER.serialize_report(pe)
+        pe_wrapped["report_sha256"] = hashlib.sha256(raw).hexdigest()
+        pe_wrapped["report_size"] = len(raw)
+        self.assertIn(
+            "upstream.cli-pe32-json.v1.peak_rss",
+            PROBE.evaluate_report(report),
+        )
+
     def test_noise_is_retained_but_does_not_freeze_targets(self):
         interpretation = self.report["noise_interpretation"]
         self.assertEqual(
@@ -161,9 +257,48 @@ class ProbeUpstreamBenchmarkTests(unittest.TestCase):
             self.assertGreater(duration["median"], 0)
             self.assertGreaterEqual(duration["mad"], 0)
 
+    def test_committed_affinity_report_is_exact_and_auditable(self):
+        report = self.affinity_report
+        self.assertTrue(report["passed"])
+        self.assertEqual(report["failures"], [])
+        self.assertEqual(PROBE.evaluate_report(report), [])
+        self.assertFalse(report["targets_frozen"])
+        environment = report["environment"]
+        self.assertEqual(
+            environment["cpu_affinity"],
+            {
+                "requested_cpuset_cpu": "0",
+                "scope": "linux_vcpu",
+            },
+        )
+        self.assertEqual(
+            environment["cgroup"]["cpuset_effective"],
+            "0",
+        )
+
+        for benchmark_id, wrapped in report["case_reports"].items():
+            item = wrapped["report"]
+            measured = item["execution"]["measured_runs"]
+            samples = item["summary"]["peak_rss_bytes"][
+                "sample_count"
+            ]
+            if benchmark_id == "upstream.qt-process-control.v1":
+                self.assertGreaterEqual(samples, 3)
+                self.assertLess(samples, measured)
+            else:
+                self.assertEqual(samples, measured)
+        interpretation = report["noise_interpretation"]
+        self.assertFalse(
+            interpretation["control_peak_rss_complete"]
+        )
+        self.assertFalse(
+            interpretation["control_peak_rss_product_evidence"]
+        )
+
     def test_report_contains_no_windows_host_path(self):
-        serialized = json.dumps(self.report, ensure_ascii=False)
-        self.assertNotRegex(serialized, r"[A-Za-z]:\\\\")
+        for report in (self.report, self.affinity_report):
+            serialized = json.dumps(report, ensure_ascii=False)
+            self.assertNotRegex(serialized, r"[A-Za-z]:\\\\")
 
     def test_dockerfile_relinks_only_main_and_generates_corpora(self):
         dockerfile = DOCKERFILE_PATH.read_text(encoding="utf-8")
@@ -193,6 +328,24 @@ class ProbeUpstreamBenchmarkTests(unittest.TestCase):
         self.assertIn("76.79 MiB", document)
         self.assertIn(
             self.report["environment"]["image_identity"]["id"],
+            document,
+        )
+
+    def test_affinity_document_keeps_precise_scope_and_values(self):
+        document = AFFINITY_DOCUMENT_PATH.read_text(encoding="utf-8")
+        report = self.affinity_report
+        self.assertIn("Linux vCPU", document)
+        self.assertIn("不是物理核心证明", document)
+        self.assertIn("`cpuset.cpus.effective=0`", document)
+        self.assertIn("9/30", document)
+        self.assertIn("167.141 ms", document)
+        self.assertIn("1,373.345 ms", document)
+        self.assertIn(
+            report["environment"]["image_identity"]["id"],
+            document,
+        )
+        self.assertIn(
+            hashlib.sha256(AFFINITY_REPORT_PATH.read_bytes()).hexdigest(),
             document,
         )
 

@@ -1,9 +1,11 @@
 import hashlib
 import importlib.util
 import json
+import os
 from pathlib import Path
 import sys
 import tempfile
+import threading
 import unittest
 
 
@@ -111,6 +113,39 @@ class ProcessBenchmarkRunnerTest(unittest.TestCase):
         self.assertEqual(len(summary["stderr_unique_sha256"]), 1)
         self.assertEqual(len(report["limitations"]), 5)
         self.assertNotIn("PYTHONHASHSEED", json.dumps(report["host"]))
+
+    def test_run_once_retries_rss_synchronously_before_monitor_thread(self):
+        original = MODULE.sample_rss_bytes
+        calls = []
+
+        def second_main_thread_sample_only(pid):
+            del pid
+            is_main = threading.current_thread() is threading.main_thread()
+            calls.append(is_main)
+            if len(calls) == 2 and is_main:
+                return 4096
+            return None
+
+        MODULE.sample_rss_bytes = second_main_thread_sample_only
+        try:
+            result = MODULE.run_once(
+                command=[
+                    sys.executable,
+                    "-c",
+                    "import time; time.sleep(0.03)",
+                ],
+                cwd=ROOT,
+                environment=dict(os.environ),
+                timeout_ms=2000,
+                max_stdout_bytes=0,
+                max_stderr_bytes=0,
+            )
+        finally:
+            MODULE.sample_rss_bytes = original
+
+        self.assertGreaterEqual(len(calls), 2)
+        self.assertEqual(calls[:2], [True, True])
+        self.assertEqual(result["peak_rss_bytes"], 4096)
 
     def test_plan_rejects_unknown_fields_cold_cache_and_too_few_runs(self):
         root_plan = self.plan()

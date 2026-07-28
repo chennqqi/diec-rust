@@ -13,8 +13,10 @@ Last updated: 2026-07-28
 记录 wall time、peak RSS、输入/可执行文件身份、输出 hash、宿主身份和统计摘要。
 
 固定 Linux Qt5 的首份描述性上游基线现已形成，见
-[`upstream-performance-baseline.md`](upstream-performance-baseline.md)。Rust
-成对报告、跨平台/cold/affinity、size 和评审阈值仍缺，因此
+[`upstream-performance-baseline.md`](upstream-performance-baseline.md)；单
+WSL2/Linux vCPU affinity 首轮复验见
+[`upstream-performance-affinity.md`](upstream-performance-affinity.md)。Rust
+成对报告、跨平台/cold、可证明的 physical-core affinity 和评审阈值仍缺，因此
 `P0-BLOCK-006` 保持 Open，当前证据不得用于“Rust 更快”之类结论。
 
 ## 2. Plan 契约
@@ -51,6 +53,10 @@ runner 在执行前后重新验证全部输入和可执行文件身份。stdout/
 peak RSS median/max，以及输出 hash 的唯一值集合。要求确定性时，measured runs
 的 stdout/stderr hash 必须各自唯一。
 
+`Popen` 返回后，runner 最多执行 16 次同步 RSS 首采样；空值时仅用 `sleep(0)`
+让出调度片，然后继续 2 ms polling。这减少短进程在 monitor thread 启动前退出的
+竞态，但不能恢复父进程再次获调度前已经退出的进程数据。
+
 CLI 用法：
 
 ```text
@@ -67,7 +73,8 @@ python tools/benchmark/run_process_benchmark.py \
 - warm cache 是声明值；runner 不强制刷新或预热 OS cache。
 - RSS 不聚合任意 descendant tree；timeout 也只终止直接进程。benchmark 命令
   不得留下持久子进程。
-- CPU affinity、power governor、worker count、调度和后台负载尚未控制。
+- runner 本身不控制 CPU affinity、power governor、worker count、调度和后台
+  负载；Linux probe 可额外施加并回读单 vCPU cpuset，但不等于物理核心证明。
 - 当前是 process-level benchmark，不替代 allocation profiler 或 component trace。
 
 ## 5. 验证证据
@@ -76,6 +83,7 @@ python tools/benchmark/run_process_benchmark.py \
 使用项目内 `README.md` 作为 hash-bound 安全输入，覆盖：
 
 - 三次 measured run、统计量、peak RSS、可执行文件和输入身份；
+- 同步 RSS 首采样在 monitor thread 前有界重试；
 - strict plan、重复 key、非有限 JSON、cold cache 和少于三次测量的拒绝；
 - 输入 hash 漂移、输出上限和 timeout 的显式失败；
 - CLI report 写入和环境值不进入 host identity。
@@ -85,7 +93,8 @@ python tools/benchmark/run_process_benchmark.py \
 ## 6. 关闭 `P0-BLOCK-006` 尚需
 
 1. Linux warm-process baseline 已覆盖 process control、database、单文件、batch、
-   nested 和 CLI JSON；继续补 cold/affinity 与部署 closure size；
+   nested 和 CLI JSON；单 vCPU affinity 与部署 closure size 已有首轮证据，继续
+   补 cold controller、physical-core/topology 控制与重复 session；
 2. Phase 1 增加已加载 session 的 in-process scan/serialization 与 Rust C ABI
    overhead 分层；
 3. 对相同 bytes/options 采集 Rust 与 upstream 成对报告；

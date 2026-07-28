@@ -662,12 +662,15 @@ Phase 0 已提供
 及机器报告。固定 Linux Qt5 的五层 warm-process 描述性基线、cgroup 和 noise
 calibration 见
 [`upstream-performance-baseline.md`](../research/upstream-performance-baseline.md)。
+单 WSL2/Linux vCPU affinity 首轮复验、`cpuset.cpus.effective=0` 证明和短
+control 的 partial-RSS 审计边界见
+[`upstream-performance-affinity.md`](../research/upstream-performance-affinity.md)。
 固定 Linux Qt5 的 ELF、realpath 去重动态依赖闭包和 2,268 个规则资产 size
 口径见
 [`upstream-deployment-size.md`](../research/upstream-deployment-size.md)；
 同时保留 binary+rules 与 full-closure+rules，禁止只用动态链接 ELF 本体比较。
-这些证据尚无 Rust 成对数据、cold/affinity/跨平台发行包，也未冻结阈值或默认
-限制。
+这些证据尚无 Rust 成对数据、cold、可证明 topology 的 physical-core 重复
+session 或跨平台发行包，也未冻结阈值或默认限制。
 
 回归阈值在首个 Rust vertical slice 形成同 bytes/options 成对报告后冻结。小于
 50 ms median 的 direct-process case 当前不具备 regression eligibility；阈值必须

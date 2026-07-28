@@ -424,11 +424,15 @@ baseline 的变更都要检查本表。
   17 warmup/90 measured 输出确定，原始 latency/MAD/p95/RSS 与 high-tail
   control 均保留。见
   [`upstream-performance-baseline.md`](../research/upstream-performance-baseline.md)。
+  单 WSL2/Linux vCPU affinity 的首轮复验已固定 cpuset 回读与短 control 的
+  partial-RSS 边界，见
+  [`upstream-performance-affinity.md`](../research/upstream-performance-affinity.md)。
   同一固定 ELF 的 16 个 realpath 去重动态依赖、2,268 个规则资产及两种部署
   size 口径也已绑定，见
   [`upstream-deployment-size.md`](../research/upstream-deployment-size.md)。
 - **验证**：Rust 同 bytes/options 成对报告后冻结回归阈值，持续 trend；补
-  cold/affinity、Rust 成对/发行包 size 和目标平台。
+  cold controller、physical-core/topology 重复 session、Rust 成对/发行包 size
+  和目标平台。
 - **关闭**：Phase 6 目标及阈值通过。阈值未冻结前不得声称性能更优。
 
 ### R-013：上游同步漂移
