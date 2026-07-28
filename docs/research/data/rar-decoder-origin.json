@@ -1,0 +1,316 @@
+{
+  "comparison": {
+    "shingle_evidence": [
+      {
+        "coverage": 0.9421264130393961,
+        "covered_token_count": 25086,
+        "embedded_token_count": 26627,
+        "matching_window_count": 21986,
+        "shingle_length": 12,
+        "unique_origin_file_count": 25,
+        "unique_origin_files": [
+          {
+            "path": "coder.cpp",
+            "sha256": "46a187b5983ad236858016f036e18a642f7084a58a6931d54d1aacaad01a8b12",
+            "unique_matching_window_count": 147
+          },
+          {
+            "path": "coder.hpp",
+            "sha256": "192ee42ab13c0d5b05b55c81fd07076d94251cfa998d9686282fe131d9181fe6",
+            "unique_matching_window_count": 36
+          },
+          {
+            "path": "compress.hpp",
+            "sha256": "e5e89be84b384378253127375b85ceb1fd5e1b7f281dcb229a519738327ee066",
+            "unique_matching_window_count": 211
+          },
+          {
+            "path": "crc.cpp",
+            "sha256": "9c39fb087f2ba4fdcc847f4155c307db415ce8b8a05893b44d9d6294199eefa2",
+            "unique_matching_window_count": 21
+          },
+          {
+            "path": "getbits.cpp",
+            "sha256": "93fe4601dce29f7573cf7134b5722f98e416056c36d962af897d75e5651543ac",
+            "unique_matching_window_count": 76
+          },
+          {
+            "path": "getbits.hpp",
+            "sha256": "ca54a9a0765ec4e868e1548294611bb4782679a70be0978cee71ccfcc7e18796",
+            "unique_matching_window_count": 184
+          },
+          {
+            "path": "largepage.cpp",
+            "sha256": "0d13152e5c68110bf44da08557c0fe1ba442f4abb732cc35585e30545d1d295e",
+            "unique_matching_window_count": 11
+          },
+          {
+            "path": "largepage.hpp",
+            "sha256": "8cc77f10e3a2b07ef5e9e0231df0ada3e2ef5051ed9d7bbc93cb02930a0acfab",
+            "unique_matching_window_count": 92
+          },
+          {
+            "path": "model.cpp",
+            "sha256": "1cd6ef92301578ee446af4142f9f1c5d20c94c17bd45e98c210148a0e9f71507",
+            "unique_matching_window_count": 3433
+          },
+          {
+            "path": "model.hpp",
+            "sha256": "4a3c1974508a82f102dd55d0eff5ff6d4de431e3fbf36c9c2b4a79a3638033ec",
+            "unique_matching_window_count": 372
+          },
+          {
+            "path": "rardefs.hpp",
+            "sha256": "887d1161bee628e254a27daff8e6fc88a247480163ab572d770559ead193c543",
+            "unique_matching_window_count": 13
+          },
+          {
+            "path": "rartypes.hpp",
+            "sha256": "d298dd8d92b09a2986244931ad946c30b6d3eacb7d1bf372baa72272e6dcca0d",
+            "unique_matching_window_count": 20
+          },
+          {
+            "path": "rarvm.cpp",
+            "sha256": "0d69705e2f6c54ea7dde8b735bcd74c8bda9579d77c7530426f0b7bc6e9ef17d",
+            "unique_matching_window_count": 1742
+          },
+          {
+            "path": "rarvm.hpp",
+            "sha256": "dbca0684611fdadcb4742e3da87dcba0af668229e354b8c603b78c992a5fa80f",
+            "unique_matching_window_count": 84
+          },
+          {
+            "path": "rawint.hpp",
+            "sha256": "cf2827b0dfa28a033f1911d9b61615a79e277014956b17f4c95481bde53c9439",
+            "unique_matching_window_count": 92
+          },
+          {
+            "path": "suballoc.cpp",
+            "sha256": "8f1cc2af816b217e90e78d7d5b5bfc859f915704afc676225be496b650adf12d",
+            "unique_matching_window_count": 1218
+          },
+          {
+            "path": "suballoc.hpp",
+            "sha256": "d342938a6a332f725a2e642cd5ebb4568ebe7eefa7ae0fc7ab1bfa57e064fc36",
+            "unique_matching_window_count": 269
+          },
+          {
+            "path": "unpack.cpp",
+            "sha256": "355608b06b5870cee6297d4619a1b84df14ec7d01bd3cee97bf6e82513e05493",
+            "unique_matching_window_count": 677
+          },
+          {
+            "path": "unpack.hpp",
+            "sha256": "1e4ab04d4de725126684e421487872b69885ea2e182fd5194ea5638c63cb5da1",
+            "unique_matching_window_count": 734
+          },
+          {
+            "path": "unpack15.cpp",
+            "sha256": "984bf017ae74a4abb4f61de9ef9fe5fcae185e8dbcfe30886705aeb05081faf0",
+            "unique_matching_window_count": 2567
+          },
+          {
+            "path": "unpack20.cpp",
+            "sha256": "ea3f67587b6609eb68417af8345ec18a565a0f124f2912fb34d12bcf442dea16",
+            "unique_matching_window_count": 1727
+          },
+          {
+            "path": "unpack30.cpp",
+            "sha256": "0c8e3be7e80ee210047af1fe05d8c4f91949cd95f6a9d96a383ecdf6cbaabad0",
+            "unique_matching_window_count": 2723
+          },
+          {
+            "path": "unpack50.cpp",
+            "sha256": "3a8f0eac9ea8a4bf6cc0de81d8687aaed4eaf23eac5bc2e346c01819ff8631ee",
+            "unique_matching_window_count": 1932
+          },
+          {
+            "path": "unpack50frag.cpp",
+            "sha256": "e6c0068f389673f41512f7635f4b900e53a828f601cd81cde42c67de6f9e4e4b",
+            "unique_matching_window_count": 476
+          },
+          {
+            "path": "unpackinline.cpp",
+            "sha256": "f783f5b1d3cdd21edff6e93614132ba7ff8aacb56e08078762a68139b5deb9bb",
+            "unique_matching_window_count": 556
+          }
+        ]
+      },
+      {
+        "coverage": 0.742066323656439,
+        "covered_token_count": 19759,
+        "embedded_token_count": 26627,
+        "matching_window_count": 13093,
+        "shingle_length": 64,
+        "unique_origin_file_count": 17,
+        "unique_origin_files": [
+          {
+            "path": "compress.hpp",
+            "sha256": "e5e89be84b384378253127375b85ceb1fd5e1b7f281dcb229a519738327ee066",
+            "unique_matching_window_count": 143
+          },
+          {
+            "path": "getbits.cpp",
+            "sha256": "93fe4601dce29f7573cf7134b5722f98e416056c36d962af897d75e5651543ac",
+            "unique_matching_window_count": 7
+          },
+          {
+            "path": "getbits.hpp",
+            "sha256": "ca54a9a0765ec4e868e1548294611bb4782679a70be0978cee71ccfcc7e18796",
+            "unique_matching_window_count": 3
+          },
+          {
+            "path": "largepage.hpp",
+            "sha256": "8cc77f10e3a2b07ef5e9e0231df0ada3e2ef5051ed9d7bbc93cb02930a0acfab",
+            "unique_matching_window_count": 30
+          },
+          {
+            "path": "model.cpp",
+            "sha256": "1cd6ef92301578ee446af4142f9f1c5d20c94c17bd45e98c210148a0e9f71507",
+            "unique_matching_window_count": 2133
+          },
+          {
+            "path": "model.hpp",
+            "sha256": "4a3c1974508a82f102dd55d0eff5ff6d4de431e3fbf36c9c2b4a79a3638033ec",
+            "unique_matching_window_count": 126
+          },
+          {
+            "path": "rarvm.cpp",
+            "sha256": "0d69705e2f6c54ea7dde8b735bcd74c8bda9579d77c7530426f0b7bc6e9ef17d",
+            "unique_matching_window_count": 980
+          },
+          {
+            "path": "suballoc.cpp",
+            "sha256": "8f1cc2af816b217e90e78d7d5b5bfc859f915704afc676225be496b650adf12d",
+            "unique_matching_window_count": 729
+          },
+          {
+            "path": "suballoc.hpp",
+            "sha256": "d342938a6a332f725a2e642cd5ebb4568ebe7eefa7ae0fc7ab1bfa57e064fc36",
+            "unique_matching_window_count": 89
+          },
+          {
+            "path": "unpack.cpp",
+            "sha256": "355608b06b5870cee6297d4619a1b84df14ec7d01bd3cee97bf6e82513e05493",
+            "unique_matching_window_count": 360
+          },
+          {
+            "path": "unpack.hpp",
+            "sha256": "1e4ab04d4de725126684e421487872b69885ea2e182fd5194ea5638c63cb5da1",
+            "unique_matching_window_count": 65
+          },
+          {
+            "path": "unpack15.cpp",
+            "sha256": "984bf017ae74a4abb4f61de9ef9fe5fcae185e8dbcfe30886705aeb05081faf0",
+            "unique_matching_window_count": 2019
+          },
+          {
+            "path": "unpack20.cpp",
+            "sha256": "ea3f67587b6609eb68417af8345ec18a565a0f124f2912fb34d12bcf442dea16",
+            "unique_matching_window_count": 1770
+          },
+          {
+            "path": "unpack30.cpp",
+            "sha256": "0c8e3be7e80ee210047af1fe05d8c4f91949cd95f6a9d96a383ecdf6cbaabad0",
+            "unique_matching_window_count": 2347
+          },
+          {
+            "path": "unpack50.cpp",
+            "sha256": "3a8f0eac9ea8a4bf6cc0de81d8687aaed4eaf23eac5bc2e346c01819ff8631ee",
+            "unique_matching_window_count": 1363
+          },
+          {
+            "path": "unpack50frag.cpp",
+            "sha256": "e6c0068f389673f41512f7635f4b900e53a828f601cd81cde42c67de6f9e4e4b",
+            "unique_matching_window_count": 240
+          },
+          {
+            "path": "unpackinline.cpp",
+            "sha256": "f783f5b1d3cdd21edff6e93614132ba7ff8aacb56e08078762a68139b5deb9bb",
+            "unique_matching_window_count": 305
+          }
+        ]
+      }
+    ],
+    "tokenization": "C/C++ lexical tokens; comments and whitespace omitted; identifiers and literals preserved"
+  },
+  "generator": "tools/upstream/audit_rar_decoder_origin.py",
+  "generator_sha256": "aba2db258cb1ca6c815c293b4702b612889a678eeaeb3dc10616648feac5ef8f",
+  "implementation_constraint": {
+    "compressed_fixture_redistribution_approved": false,
+    "copy_or_translation_approved": false,
+    "oracle_use_copies_decoder_into_project": false,
+    "reason": "content provenance and conflicting notice evidence require legal review before reuse"
+  },
+  "license_observation": {
+    "decoder_files_contain_mit_permission": true,
+    "decoder_files_contain_unrar_distribution_notice": false,
+    "legal_review_complete": false,
+    "reference_requires_notice_for_modified_distribution": true,
+    "reference_restricts_rar_compression_recreation": true
+  },
+  "reference": {
+    "commit": "9f1ce54025e0175634cbdb21b06341aa29eba591",
+    "kind": "Git mirror of RARLAB portable UnRAR source",
+    "license": {
+      "bytes": 1976,
+      "path": "license.txt",
+      "sha256": "6ecc1687808b7d66b24f874755abfed7464d9751ed0001cd4e8e5d9bf397ff8a"
+    },
+    "mirror_release": "7.1.10",
+    "official_source_url": "https://www.rarlab.com/rar_add.htm",
+    "readme": {
+      "bytes": 1768,
+      "path": "readme.txt",
+      "sha256": "29ee91e2a4a1c5de219efc2015a4f618c744856215fdc6203a65a0a40036e9f2"
+    },
+    "remote": "https://github.com/pmachapman/unrar.git",
+    "source_file_count": 150
+  },
+  "relationships": {
+    "decoder_12_token_coverage_exceeds_94_percent": true,
+    "decoder_64_token_coverage_exceeds_74_percent": true,
+    "decoder_files_declare_mit_permission": true,
+    "decoder_files_omit_unrar_distribution_notice": true,
+    "reference_is_latest_mirror_commit_before_decoder_introduction": true,
+    "reference_license_requires_distribution_notice": true,
+    "reference_license_restricts_compression_recreation": true,
+    "reference_readme_identifies_generated_unrar_source": true
+  },
+  "schema_version": 1,
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "xarchive": {
+    "commit": "0fcd4e8d3e9933baac3b12246d82ac026557ffd0",
+    "decoder_files": [
+      {
+        "bytes": 128003,
+        "path": "Algos/xrardecoder.cpp",
+        "sha256": "55f36d7b0188f5093ffad5723637fedafae32321b1fde3cf2f81ff5983e94026"
+      },
+      {
+        "bytes": 27390,
+        "path": "Algos/xrardecoder.h",
+        "sha256": "29e0f4e1091df88f992f2cf5688df044bfbb46e607cb6536cbd5b4e234665540"
+      }
+    ],
+    "decoder_token_count": 26627,
+    "introduction": {
+      "authored_at": "2025-09-23T20:43:14+02:00",
+      "commit": "d48321dcc54b5011756853437de1a7220fd2a440",
+      "files": [
+        {
+          "bytes": 127262,
+          "path": "Algos/xrardecoder.cpp",
+          "sha256": "45f99e3e7d3776f7ca1f052952c527633039fc576eff970256a7dd2bcf5648f0"
+        },
+        {
+          "bytes": 27270,
+          "path": "Algos/xrardecoder.h",
+          "sha256": "00f648b00d9fcdd5fc1b7fd0c4f71a86d50a3fd5bb51d5e2280113edaca2312f"
+        }
+      ],
+      "subject": "Add new file(s): 2025-09-23"
+    },
+    "remote": "https://github.com/horsicq/XArchive.git"
+  }
+}

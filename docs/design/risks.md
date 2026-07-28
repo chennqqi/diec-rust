@@ -222,7 +222,13 @@ baseline 的变更都要检查本表。
   217 个依赖文件；其中 Brotli/Zstandard 聚合源进入链接闭包但没有文件内
   license marker。内容追溯已固定到 Brotli 1.2.0 MIT 和 Zstandard
   1.6.0-dev BSD/GPLv2（后者官方 token 精确一致），但 XArchive 未携带相应
-  license/attribution，仍是明确未关闭的发布缺口。XYara 的 Linux YARA target
+  license/attribution，仍是明确未关闭的发布缺口。实际编译的 XArchive RAR
+  decoder 又与首次引入前最后一个 UnRAR 7.1.10 镜像 commit 在 12-token 下
+  覆盖 94.21%、64-token 下覆盖 74.21%，跨 17 个长连续唯一来源文件；
+  XArchive 两个文件声明 horsicq MIT，却没有 UnRAR 修改分发 notice。机器报告
+  保持 `copy_or_translation_approved=false` 和
+  `legal_review_complete=false`，因此 Rust 不能直接翻译该 decoder。
+  XYara 的 Linux YARA target
   又固定了 51 个编译单元/109 个依赖文件：YARA 主体映射官方 v4.5.2，
   6 个 Bison 生成文件含 GPL-3.0-or-later + special exception，6 个 TLSH 文件
   精确追溯到 `avast/tlshc` 的 Apache-2.0 OR BSD-3-Clause 与 Trend Micro

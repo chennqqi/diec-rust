@@ -131,7 +131,7 @@ LICENSE 的 vendored 代码。
 | `XArchive/3rdparty/lzma` | 是 | `LzmaDec.c` 等文件头 | Public Domain 声明；需要逐个实际编译文件复核 |
 | `XArchive/3rdparty/ppmd` | 是 | `Ppmd7.c` 等文件头 | Public Domain 声明；需要逐个实际编译文件复核 |
 | `XArchive/3rdparty/zlib` | 是 | `src/zlib.h` | zlib License |
-| `XArchive/Algos` | 是，作为聚合源码 | `xarchive.cmake` | 含多种解码实现，来源和条款尚未完成逐文件分类，优先级高 |
+| `XArchive/Algos` | 是，作为聚合源码 | `xarchive.cmake`、RAR token 来源报告 | Brotli/Zstd 已追溯；RAR decoder 与 UnRAR 7.1.10 高度重合但 notice 不一致；其余实现仍待逐文件分类 |
 | `XCppfilt/3rdparty/cppfilt` | 否；默认构建 target | `cp-demangle.c` 等文件头 | GPL-2.0-or-later，并带文件级不限制链接的额外许可；另有 Public Domain 文件 |
 | `XYara/3rdparty/yara` | 否；51-object 默认构建 target | 官方 YARA v4.5.2 内容映射与 109-file `.o.d` closure | 主体为 BSD-3-Clause；vendored tree 未保存官方 `COPYING` |
 | YARA 生成 parser 文件 | 否；6 个 `.c/.h` 实际进入 `yara` closure | `grammar.c/.h`、`hex_grammar.c/.h`、`re_grammar.c/.h` | GPL-3.0-or-later + Bison parser-skeleton special exception |
@@ -167,6 +167,10 @@ LICENSE 的 vendored 代码。
 同时发现实际编译的 Brotli/Zstandard 聚合源没有保留许可证声明。后续
 [`embedded-compression-origins.md`](embedded-compression-origins.md) 已把它们
 分别固定到 Brotli 1.2.0 MIT 和 Zstandard 1.6.0-dev BSD/GPLv2 官方来源。
+[`rar-decoder-provenance.md`](rar-decoder-provenance.md) 又把实际编译的
+RAR decoder 固定到 UnRAR 7.1.10 镜像：12-token 覆盖 94.21%、64-token
+覆盖 74.21%，但 XArchive 文件没有 UnRAR 修改分发 notice。书面评审前不得把
+该 decoder 直接复制或翻译进 Rust。
 
 XYara/YARA 当前 Linux target 也已由
 [`yara-license-closure.md`](yara-license-closure.md) 固定：51 个编译单元、
@@ -179,8 +183,9 @@ XYara/YARA 当前 Linux target 也已由
 ## 尚未完成
 
 - 构建固定上游并保存 CMake target graph、link map、动态依赖和符号表。
-- 为 XArchive 聚合 Brotli/Zstandard 恢复独立 LICENSE/NOTICE/attribution，并
-  完成 Brotli 剩余约 1.4% token 分类；为 YARA/TLSH 恢复独立
+- 为 XArchive 聚合 Brotli/Zstandard 恢复独立 LICENSE/NOTICE/attribution，
+  完成 Brotli 剩余约 1.4% token 分类，并对 RAR decoder 的 UnRAR notice/
+  复用边界取得书面结论；为 YARA/TLSH 恢复独立
   COPYING/LICENSE/NOTICE，并补 Windows/macOS/OpenSSL/qmake 闭包。
 - 区分正常扫描、`--info`、`--struct`、YARA/PEiD 数据和 GUI-only 路径的最小产物闭包。
 - YARA/PEiD/signatures 的 CLI 可达性已关闭；其 GUI/辅助 engine 运行闭包、

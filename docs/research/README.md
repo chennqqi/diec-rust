@@ -99,6 +99,9 @@ Phase 0 计划形成：
 - [`cli-dependency-and-license.md`](cli-dependency-and-license.md)：CLI 源码/链接依赖闭包与许可证初审（Draft）。
 - [`xarchive-license-closure.md`](xarchive-license-closure.md)：固定 Linux Qt5 CMake CLI 的 XArchive 编译单元、头文件依赖与文件级许可证证据（Draft）。
 - [`embedded-compression-origins.md`](embedded-compression-origins.md)：XArchive 聚合 Brotli/Zstandard 的固定官方源码、token 指纹与许可证追溯（Draft）。
+- [`rar-decoder-provenance.md`](rar-decoder-provenance.md)：XArchive RAR
+  decoder 与固定 UnRAR 7.1.10 的 token 来源、许可证 notice 差异和 Rust
+  复用门禁（Draft）。
 - [`yara-license-closure.md`](yara-license-closure.md)：XYara 内嵌 YARA v4.5.2 的实际构建闭包、官方内容映射、TLSH/Authenticode/Bison 许可证和 compiler warning（Draft）。
 - [`rule-asset-provenance.md`](rule-asset-provenance.md)：Detect release 与 XYara/XPEID/signatures 数据树的逐文件哈希、历史、可见许可信号、CLI 可达性和打包路径（Draft）。
 - [`runtime-rule-assets-license.md`](runtime-rule-assets-license.md)：`db`/`db_extra`/
@@ -150,6 +153,9 @@ Phase 0 计划形成：
 - [`data/cli-dependencies.toml`](data/cli-dependencies.toml)：固定组件依赖边、LICENSE blob 和 bundled code 证据。
 - [`data/xarchive-license-closure-linux.json`](data/xarchive-license-closure-linux.json)：XArchive 106 个实际编译单元、217 个依赖文件及许可证/来源标记。
 - [`data/embedded-compression-origins.json`](data/embedded-compression-origins.json)：聚合 Brotli/Zstandard 与固定官方 commit/生成物/许可证的内容对照。
+- [`data/rar-decoder-origin.json`](data/rar-decoder-origin.json)：固定
+  XArchive RAR decoder 的引入历史、UnRAR 7.1.10 镜像、两档 token shingle
+  与开放法律评审。
 - [`data/yara-license-closure-linux.json`](data/yara-license-closure-linux.json)：YARA 51-object target、109-file dependency closure、官方 v4.5.2/TLSH 来源链和文件级许可证证据。
 - [`data/rule-assets.json`](data/rule-assets.json)：五组固定 YARA/PEiD/signature 资产、逐文件历史/哈希、release/component 差异及 CLI/GUI/打包可达性证据。
 - [`data/runtime-rule-assets-license.json`](data/runtime-rule-assets-license.json)：

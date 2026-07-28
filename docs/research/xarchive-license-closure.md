@@ -4,7 +4,7 @@ Status: Draft
 
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
 
-Last updated: 2026-07-27
+Last updated: 2026-07-28
 
 ## 范围与结论
 
@@ -59,6 +59,13 @@ LICENSE 文件。
 来源：Zstandard 聚合代码 token 精确一致，Brotli 64-token 覆盖率为 98.60%。
 当前未关闭项不再是“来源类型未知”，而是 XArchive 剥离声明且未保存两个官方
 许可证，以及 Brotli 剩余约 1.4% token 尚未逐段归类。
+
+同一闭包中的 `Algos/xrardecoder.cpp/.h` 已由
+[`rar-decoder-provenance.md`](rar-decoder-provenance.md) 单独追溯：固定
+decoder 的 26,627 个 token 与 UnRAR 7.1.10 在 12-token 下覆盖 94.21%，
+64-token 下仍覆盖 74.21%，跨 17 个长连续唯一来源文件。XArchive 文件只携带
+horsicq MIT，没有 UnRAR 修改分发 notice。该证据禁止本项目在书面评审前直接
+复制或翻译 decoder，但不构成法律结论。
 
 `xdeflatedecoder.cpp`、`xbzip2decoder.cpp` 和 `xalgo_local.h` 也是聚合源码，但其中
 保留了 MIT 包装声明及对应 zlib、bzip2 或 Public Domain 文本；它们仍需发布责任人
