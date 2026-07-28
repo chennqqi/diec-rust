@@ -81,10 +81,10 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
 
     def test_current_plan_is_conservatively_incomplete(self):
         summary = self.plan["summary"]
-        self.assertEqual(summary["evidence_complete"], 28)
-        self.assertEqual(summary["partial"], 13)
-        self.assertEqual(summary["missing"], 27)
-        self.assertEqual(summary["closure_required"], 40)
+        self.assertEqual(summary["evidence_complete"], 31)
+        self.assertEqual(summary["partial"], 11)
+        self.assertEqual(summary["missing"], 26)
+        self.assertEqual(summary["closure_required"], 37)
         self.assertFalse(summary["cap_gap_007_closed"])
         self.assertEqual(self.plan["result"], "incomplete")
 
@@ -108,6 +108,9 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
             "CAP-CLI-OPT-010",
             "CAP-NEST-002",
             "CAP-NEST-005",
+            "CAP-CLI-MODE-001",
+            "CAP-CLI-MODE-002",
+            "CAP-CLI-MODE-003",
         }
         for capability_id in promoted:
             with self.subTest(capability=capability_id):
@@ -190,6 +193,22 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
         with self.assertRaisesRegex(
             MODULE.ClosurePlanError,
             "unexpected Qt6 alltypes diagnostic",
+        ):
+            MODULE.build_plan(
+                self.traceability,
+                self.traceability_raw,
+                changed_reports,
+                self.report_bytes,
+            )
+
+        changed_reports = json.loads(json.dumps(self.reports))
+        special = changed_reports[MODULE.REPORT_PATHS[9]]
+        special["cases"]["entropy_exact_json"][
+            "all_oracles_equal"
+        ] = False
+        with self.assertRaisesRegex(
+            MODULE.ClosurePlanError,
+            "oracle difference",
         ):
             MODULE.build_plan(
                 self.traceability,

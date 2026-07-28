@@ -47,6 +47,18 @@
       "repetitions": 3,
       "scope": "alltypes and combined trailing diagnostics",
       "source": "docs/research/data/qt6-alltypes-diagnostics.json"
+    },
+    {
+      "corpus_warning_difference_count": 2,
+      "scope": "five-sample special formatter and priority matrix",
+      "source": "docs/research/data/cli-special-matrix-linux-qt5-qt6.json",
+      "special_case_difference_count": 0
+    },
+    {
+      "all_raw_streams_equal": true,
+      "difference_count": 0,
+      "scope": "28-case special-mode exact boundary matrix",
+      "source": "docs/research/data/cli-special-boundaries-linux-qt5-qt6.json"
     }
   ],
   "limitations": [
@@ -286,55 +298,31 @@
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "cli_special",
       "id": "CAP-CLI-MODE-001",
-      "missing_scope": "execute the remaining Qt5 capability boundary under the pinned Qt6 oracle",
+      "missing_scope": null,
       "name": "entropy mode",
-      "observed_scope": "unreadable entropy JSON behavior only",
-      "proposed_experiment": {
-        "assertions": [
-          "all formatter and multi-target framing cases are equal",
-          "floating-point and invalid/deep struct boundaries are equal",
-          "format-specific PE/ELF/Mach-O/DEX struct methods are exercised"
-        ],
-        "fixture": "reuse special-mode and boundary fixtures",
-        "harness": "run entropy, info, struct, and showstructs matrices on Qt5 and Qt6"
-      },
-      "status": "partial"
+      "observed_scope": "five-sample formatter and exact 6.5 entropy boundaries are equal",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "cli_special",
       "id": "CAP-CLI-MODE-002",
-      "missing_scope": "execute the remaining Qt5 capability boundary under the pinned Qt6 oracle",
+      "missing_scope": null,
       "name": "info mode",
-      "observed_scope": "unreadable info JSON behavior only",
-      "proposed_experiment": {
-        "assertions": [
-          "all formatter and multi-target framing cases are equal",
-          "floating-point and invalid/deep struct boundaries are equal",
-          "format-specific PE/ELF/Mach-O/DEX struct methods are exercised"
-        ],
-        "fixture": "reuse special-mode and boundary fixtures",
-        "harness": "run entropy, info, struct, and showstructs matrices on Qt5 and Qt6"
-      },
-      "status": "partial"
+      "observed_scope": "five-sample formatter, priority, and multi-target info boundaries are equal",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "cli_special",
       "id": "CAP-CLI-MODE-003",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "struct mode",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "all formatter and multi-target framing cases are equal",
-          "floating-point and invalid/deep struct boundaries are equal",
-          "format-specific PE/ELF/Mach-O/DEX struct methods are exercised"
-        ],
-        "fixture": "reuse special-mode and boundary fixtures",
-        "harness": "run entropy, info, struct, and showstructs matrices on Qt5 and Qt6"
-      },
-      "status": "missing"
+      "observed_scope": "generic and 11 format-specific struct method boundaries are equal",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
@@ -1066,6 +1054,8 @@
     "docs/research/data/cli-output-boundaries-linux-qt5-qt6.json": "b94817adf7d99aa67bb64397e97cad5a95af244cdb01b9cd51f79cf15c4dea84",
     "docs/research/data/cli-output-matrix-linux-qt5-qt6.json": "3e032534ce269597c98eee45c1e477796a11402ec1fb07b7a79a7806cad7ba2c",
     "docs/research/data/cli-scan-nested-matrix-linux-qt5-qt6.json": "a81ed4e791286c78247ca1d758fcb49900ca93ac46941af3d0542801d7e603f8",
+    "docs/research/data/cli-special-boundaries-linux-qt5-qt6.json": "339b94c3294e13b1350317ad4aba0e3cd89a45cc6fcfa0cb72241aee39c72d70",
+    "docs/research/data/cli-special-matrix-linux-qt5-qt6.json": "0da895e6d82c0b2cafcee8a1b7a951c462822a05faab381ef64d5c168d5653d1",
     "docs/research/data/global-host-api-qt5-qt6.json": "3895fde7bb3885e6197afe7216daf8540b7808562ff5287984615d5b022634eb",
     "docs/research/data/global-typo-errors-qt5-qt6.json": "59f9d28679513a939c70c3878ce8d39dcfa01e4b9006150e4b9aadb3311fba23",
     "docs/research/data/host-api-arity-qt5-qt6.json": "96d0b0023dd08ec1e45bc0c1059cf5801837496e09143acff6ffa0120328fa73",
@@ -1076,10 +1066,10 @@
     "all_capabilities_accounted_for": true,
     "cap_gap_007_closed": false,
     "capability_count": 68,
-    "closure_required": 40,
-    "evidence_complete": 28,
-    "missing": 27,
-    "partial": 13
+    "closure_required": 37,
+    "evidence_complete": 31,
+    "missing": 26,
+    "partial": 11
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
 }

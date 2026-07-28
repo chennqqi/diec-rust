@@ -75,8 +75,11 @@ Qt6 image ID
 - `CAP-RULE-005`：真实规则集的 deep/heuristic 效果已覆盖，独立 rule gate
   正反 fixture 尚未执行。
 
-当前汇总为 28 项 complete、13 项 partial、27 项 missing；40 项仍需闭环，
-`CAP-GAP-007` 保持开放。
+本切片当时使汇总达到 28 项 complete。后续 special-mode 证据见
+[`qt6-special-runtime-evidence.md`](qt6-special-runtime-evidence.md)；
+当前计数以
+[`qt6-capability-closure-plan.md`](qt6-capability-closure-plan.md)
+为准。`CAP-GAP-007` 保持开放。
 
 ## 重现
 

@@ -26,6 +26,8 @@ REPORT_PATHS = (
     "docs/research/data/cli-output-matrix-linux-qt5-qt6.json",
     "docs/research/data/cli-scan-nested-matrix-linux-qt5-qt6.json",
     "docs/research/data/qt6-alltypes-diagnostics.json",
+    "docs/research/data/cli-special-matrix-linux-qt5-qt6.json",
+    "docs/research/data/cli-special-boundaries-linux-qt5-qt6.json",
 )
 EMPTY_SHA256 = hashlib.sha256(b"").hexdigest()
 QT6_UNIMPLEMENTED_SHA256 = (
@@ -72,6 +74,9 @@ COMPLETE: dict[str, str] = {
     "CAP-CLI-OPT-006": "alltypes detections are equal; the complete Qt6 diagnostic difference is retained",
     "CAP-CLI-OPT-007": "the five-sample format-result matrix has equal stdout and exit codes",
     "CAP-CLI-OPT-010": "the five-sample hide-unknown matrix has equal stdout and exit codes",
+    "CAP-CLI-MODE-001": "five-sample formatter and exact 6.5 entropy boundaries are equal",
+    "CAP-CLI-MODE-002": "five-sample formatter, priority, and multi-target info boundaries are equal",
+    "CAP-CLI-MODE-003": "generic and 11 format-specific struct method boundaries are equal",
     "CAP-CLI-MODE-004": "--showstructs is equal both with and without a target",
     "CAP-CLI-MODE-005": "--help and no-argument help are byte-identical",
     "CAP-CLI-MODE-006": "--version is byte-identical",
@@ -95,8 +100,6 @@ COMPLETE: dict[str, str] = {
 }
 
 PARTIAL: dict[str, str] = {
-    "CAP-CLI-MODE-001": "unreadable entropy JSON behavior only",
-    "CAP-CLI-MODE-002": "unreadable info JSON behavior only",
     "CAP-DISPATCH-004": "TAR, gzip, and ZIP only; full archive family remains",
     "CAP-NEST-001": "internal recursive scan is covered; Qt6 directory traversal remains",
     "CAP-NEST-003": "CLI non-extraction is covered; the Qt6 engine archive option remains",
@@ -519,6 +522,176 @@ def _validate_alltypes_diagnostics(report: dict[str, Any]) -> None:
                     )
 
 
+def _validate_special_matrix_report(report: dict[str, Any]) -> None:
+    if (
+        report.get("expected_revision") != UPSTREAM_COMMIT
+        or report.get("left_revision") != UPSTREAM_COMMIT
+        or report.get("right_revision") != UPSTREAM_COMMIT
+    ):
+        raise ClosurePlanError("CLI special matrix revision drift")
+    if report.get("equal") is not False:
+        raise ClosurePlanError(
+            "CLI special matrix must retain corpus Qt6 warnings"
+        )
+    cases = report.get("cases")
+    unreadable = report.get("unreadable_input")
+    corpus = report.get("corpus")
+    matrix = report.get("matrix")
+    if not all(
+        isinstance(value, dict)
+        for value in (cases, unreadable, corpus, matrix)
+    ):
+        raise ClosurePlanError("CLI special matrix sections are missing")
+    if len(corpus) != 26:
+        raise ClosurePlanError("CLI special matrix corpus drift")
+    expected_samples = {
+        "empty.bin",
+        "minimal.exe",
+        "minimal.pdf",
+        "payload.zip",
+        "plain.txt",
+    }
+    if set(matrix) != expected_samples:
+        raise ClosurePlanError("CLI special matrix sample catalog drift")
+    expected_cases = {
+        "entropy_text",
+        "entropy_plaintext",
+        "entropy_json",
+        "entropy_xml",
+        "entropy_csv",
+        "entropy_tsv",
+        "entropy_all_output_flags",
+        "info_text",
+        "info_plaintext",
+        "info_json",
+        "info_xml",
+        "info_csv",
+        "info_tsv",
+        "info_all_output_flags",
+        "struct_hash_json",
+        "struct_hash_md5_json",
+        "struct_unknown_json",
+        "entropy_over_info_struct_json",
+        "struct_over_info_json",
+    }
+    observed_failures = set()
+    for name, record in cases.items():
+        _validate_paired_observation(record, {()}, f"cases.{name}")
+    for name, record in unreadable.items():
+        _validate_paired_observation(
+            record, {()}, f"unreadable_input.{name}"
+        )
+    for name, record in corpus.items():
+        differences = _validate_paired_observation(
+            record, {(), ("stderr",)}, f"corpus.{name}"
+        )
+        if differences:
+            observed_failures.add(f"corpus.{name}.{differences[0]}")
+        if record.get("left_detect_tree") != record.get("right_detect_tree"):
+            raise ClosurePlanError(f"corpus detection tree difference: {name}")
+    for sample, sample_record in matrix.items():
+        special = sample_record.get("special")
+        if not isinstance(special, dict) or set(special) != expected_cases:
+            raise ClosurePlanError(
+                f"CLI special case catalog drift: {sample}"
+            )
+        for name, record in special.items():
+            _validate_paired_observation(
+                record, {()}, f"matrix.{sample}.special.{name}"
+            )
+    if observed_failures != set(report.get("failures", [])):
+        raise ClosurePlanError("CLI special matrix derived failures drift")
+
+
+def _validate_special_boundary_report(report: dict[str, Any]) -> None:
+    if report.get("upstream_commit") != UPSTREAM_COMMIT:
+        raise ClosurePlanError("CLI special boundary revision drift")
+    if report.get("result") != "equal":
+        raise ClosurePlanError("CLI special boundary result changed")
+    cases = report.get("cases")
+    expected_cases = {
+        "dex_header_json",
+        "elf_ehdr_json",
+        "elf_entry_point_json",
+        "entropy_above_json",
+        "entropy_below_json",
+        "entropy_exact_json",
+        "entropy_exact_text",
+        "entropy_over_struct_json",
+        "entropy_two_json",
+        "info_struct_empty_json",
+        "info_two_json",
+        "macho_entry_point_json",
+        "macho_header_json",
+        "pe_dos_header_json",
+        "pe_entry_point_json",
+        "pe_export_directory_json",
+        "pe_nt_headers_json",
+        "pe_resource_directory_json",
+        "pe_section_header_json",
+        "struct_check_format_json",
+        "struct_empty_json",
+        "struct_entropy_json",
+        "struct_hash_empty_segment_json",
+        "struct_hash_md5_casefold_json",
+        "struct_hash_md5_trailing_json",
+        "struct_hash_md5_two_json",
+        "struct_hash_unknown_child_json",
+        "struct_unknown_nested_json",
+    }
+    if (
+        not isinstance(cases, dict)
+        or set(cases) != expected_cases
+        or report.get("case_count") != len(expected_cases)
+    ):
+        raise ClosurePlanError("CLI special boundary case catalog drift")
+    if not all(
+        case.get("all_oracles_equal") is True for case in cases.values()
+    ):
+        raise ClosurePlanError("CLI special boundary oracle difference")
+    oracles = report.get("oracles")
+    if (
+        not isinstance(oracles, list)
+        or [oracle.get("name") for oracle in oracles]
+        != ["linux-qt5-cmake", "linux-qt6-cmake"]
+        or any(
+            oracle.get("revision") != UPSTREAM_COMMIT
+            for oracle in oracles
+        )
+    ):
+        raise ClosurePlanError("CLI special boundary oracle identity drift")
+    relationships = report.get("relationships")
+    if not isinstance(relationships, dict):
+        raise ClosurePlanError("CLI special boundary relationships missing")
+    if relationships.get("runtime_entropy_statuses") != {
+        "below": "not packed",
+        "exact": "not packed",
+        "above": "packed",
+    }:
+        raise ClosurePlanError("CLI entropy boundary drift")
+    required_true = (
+        "struct_filter_is_case_insensitive",
+        "struct_trailing_segments_are_ignored",
+        "empty_struct_value_falls_back_to_normal_scan",
+        "entropy_precedes_struct",
+    )
+    if not all(relationships.get(name) is True for name in required_true):
+        raise ClosurePlanError("CLI struct/priority boundary drift")
+    if len(relationships.get("format_struct_methods", {})) != 11:
+        raise ClosurePlanError("CLI format struct method catalog drift")
+    if set(relationships.get("multi_target_structured_outputs", {})) != {
+        "entropy_two_json",
+        "info_two_json",
+        "struct_hash_md5_two_json",
+    }:
+        raise ClosurePlanError("CLI special multi-target catalog drift")
+    source_audit = report.get("source_audit", {}).get("assumptions")
+    if not isinstance(source_audit, dict) or not all(
+        value is True for value in source_audit.values()
+    ):
+        raise ClosurePlanError("CLI special source audit drift")
+
+
 CAMPAIGNS: dict[str, dict[str, Any]] = {
     "cli_scan_baseline": {
         "fixture": "reuse baseline-corpus and scan-option-boundary fixtures",
@@ -690,6 +863,8 @@ def _validate_inputs(
     _validate_output_matrix_report(reports[REPORT_PATHS[5]])
     _validate_scan_nested_report(reports[REPORT_PATHS[6]])
     _validate_alltypes_diagnostics(reports[REPORT_PATHS[7]])
+    _validate_special_matrix_report(reports[REPORT_PATHS[8]])
+    _validate_special_boundary_report(reports[REPORT_PATHS[9]])
     return capabilities
 
 
@@ -819,6 +994,20 @@ def build_plan(
                 "repetitions": reports[REPORT_PATHS[7]]["repetitions"],
                 "json_documents_equal": True,
                 "raw_streams_retained_before_address_normalization": True,
+            },
+            {
+                "source": REPORT_PATHS[8],
+                "scope": "five-sample special formatter and priority matrix",
+                "special_case_difference_count": 0,
+                "corpus_warning_difference_count": len(
+                    reports[REPORT_PATHS[8]]["failures"]
+                ),
+            },
+            {
+                "source": REPORT_PATHS[9],
+                "scope": "28-case special-mode exact boundary matrix",
+                "difference_count": 0,
+                "all_raw_streams_equal": True,
             },
         ],
         "rows": rows,
