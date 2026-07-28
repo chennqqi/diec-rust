@@ -127,7 +127,7 @@ aggressive 只能在调用方允许的 hard budget 内提高 legacy policy thres
 BCJ2+LZMA2 no-branch/E8/E9/JCC filter 链、RAR4 store、CAB Store/MSZIP 与
 ISO9660 正例虽已由
 [`archive-format-behavior.md`](archive-format-behavior.md) 固定，archive
-LZX:15 普通模式无 child、aggressive 扫描 Unknown 输出的边界也已固定；
+LZX:15/Quantum 普通模式无 child、aggressive 扫描 Unknown 输出的边界也已固定；
 100000 精确边界已由
 [`archive-iteration-boundary.md`](archive-iteration-boundary.md) 固定；
 ZIP 1 MiB/843.58:1 和首轮畸形由

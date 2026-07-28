@@ -135,9 +135,9 @@ python tools\upstream\probe_archive_limits_harness.py `
   BCJ2+LZMA2 no-branch/E8/E9/JCC、
   ARM64-BCJ+LZMA2 BL/ADRP、RAR4 store、CAB Store/MSZIP 与 ISO9660 的合法
   单成员正例已由
-  [`archive-format-behavior.md`](archive-format-behavior.md) 固定；CAB LZX 的
-  普通 archive 无 child、aggressive 扫描 Unknown 输出边界也已固定；仍未验证
-  7Z AES、RAR 压缩与 CAB Quantum 等
+  [`archive-format-behavior.md`](archive-format-behavior.md) 固定；CAB LZX 与
+  Quantum 的普通 archive 无 child、aggressive 扫描 Unknown 输出边界也已固定；
+  仍未验证 7Z AES、RAR 压缩等
   压缩/加密/损坏边界。
   ZIP deflate、ZipCrypto 无密码、CRC/压缩流
   畸形和 1 MiB/843.58:1 已由

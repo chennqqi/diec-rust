@@ -280,7 +280,7 @@ elapsed 值与固定规则执行序列另见
   7Z Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64、x86 BCJ+LZMA2、
   BCJ2+LZMA2 no-branch/E8/E9/JCC、
   ARM64-BCJ+LZMA2 BL/ADRP、
-  RAR4 store、CAB Store/MSZIP 与 ISO9660 正例、CAB LZX 失败边界及 ZIP
+  RAR4 store、CAB Store/MSZIP 与 ISO9660 正例、CAB LZX/Quantum 失败边界及 ZIP
   depth 64/约 32 MiB 累计展开量已有
   专用报告。
 - 发布 CLI 的 ZIP database 截断/重复/`..`/根前缀边界及 cache-disabled

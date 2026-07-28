@@ -2343,6 +2343,128 @@
           "stream_sizes": []
         }
       }
+    },
+    "text-member-quantum.cab": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/text-member-quantum.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "2becb1f953b9994341b18d2229a8b2abc47e42b061d56fd6f8f73603fb7d4e12",
+          "bytes": 517,
+          "sha256": "2becb1f953b9994341b18d2229a8b2abc47e42b061d56fd6f8f73603fb7d4e12"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "stream_detection_names": [],
+          "stream_filetypes": [],
+          "stream_sizes": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/text-member-quantum.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "b7c8bb295554412c9e177cabade08600093200c3f0ff4395eafc33e401d885bb",
+          "bytes": 1085,
+          "sha256": "b7c8bb295554412c9e177cabade08600093200c3f0ff4395eafc33e401d885bb"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 1,
+          "stream_detection_names": [
+            "Unknown"
+          ],
+          "stream_filetypes": [
+            "Binary"
+          ],
+          "stream_sizes": [
+            "59"
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/text-member-quantum.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "2becb1f953b9994341b18d2229a8b2abc47e42b061d56fd6f8f73603fb7d4e12",
+          "bytes": 517,
+          "sha256": "2becb1f953b9994341b18d2229a8b2abc47e42b061d56fd6f8f73603fb7d4e12"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "stream_detection_names": [],
+          "stream_filetypes": [],
+          "stream_sizes": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/text-member-quantum.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "2becb1f953b9994341b18d2229a8b2abc47e42b061d56fd6f8f73603fb7d4e12",
+          "bytes": 517,
+          "sha256": "2becb1f953b9994341b18d2229a8b2abc47e42b061d56fd6f8f73603fb7d4e12"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "stream_detection_names": [],
+          "stream_filetypes": [],
+          "stream_sizes": []
+        }
+      }
     }
   },
   "facts": {
@@ -2350,6 +2472,7 @@
     "archive_option_is_required_for_unpacking": true,
     "cab_lzx_archive_has_no_child_but_aggressive_scans_unknown_output": true,
     "cab_mszip_member_reaches_pdf_rules": true,
+    "cab_quantum_archive_has_no_child_but_aggressive_scans_unknown_output": true,
     "cab_root_dispatches_as_binary_while_archive_adapter_runs": true,
     "cab_store_member_reaches_pdf_rules": true,
     "iso9660_store_member_reaches_pdf_rules": true,
@@ -2373,11 +2496,11 @@
   "failures": [],
   "fixture_manifest": {
     "path": "docs/research/data/archive-format-corpus.json",
-    "sample_count": 18,
-    "sha256": "583ecc531b4b588f0341943c5727609ac35fdede9d1a34513bd54cc1f36a35ef"
+    "sample_count": 19,
+    "sha256": "1fb0e7613ef1bb0886f5465c190d039ee3cf08eb70997375971965818173b1dd"
   },
   "generator": "tools/upstream/probe_archive_format_harness.py",
-  "generator_sha256": "aa7c2b76b098b6c8a399832d9a85f4b69bcedf2e9e3b093d0185e071962e0323",
+  "generator_sha256": "6cb7f7a2bd1c3ae8074f0d27858f1b5d48018481680e1544611ad7cfdef26bfc",
   "image": {
     "id": "sha256:771b9094a2ad6ab4f6250dd89307ab727c07a1aae885a894695abfa959bab5dc",
     "name": "diec-rust/upstream-archive-harness:74eaf505",
@@ -2393,7 +2516,7 @@
     },
     "fixture_generator": {
       "path": "tools/corpus/generate_archive_format_fixture.py",
-      "sha256": "5ee63376f16902fe8ec138f1b2a1d01ca14c3696135ea00e1f376a05f41ba958"
+      "sha256": "003964b9510eb35b5262500e799882600757e0c32a72451328da7bea442eb47e"
     },
     "fixture_requirements": {
       "path": "tools/corpus/requirements-archive-format.txt",
@@ -2433,6 +2556,12 @@
       "base64": "eNq1Uz1rwzAQ3fUrjCYX0pDEoQFvbULoWOjWkkHYp1RgSUZSDWnIf68s12n8Idsdqknce3ene+90RoE9OAUDidE4Dt5doDzn681RKMvAnHKwHPzEBFEnPGsymKCyRNtxSakGUyKLNpQTBcKUpe3NUZ6BpKDaPM2+XONo9dCGCpJ9QvPl/ROMvfOKC8Jds839G8t9JG0UE8eS9qiSD1ZAHDh+uJiv73xJtX6kSvHRClCaSeEUm69xh3SZTR311rSX3d7XcEwRv4MDTr4aBYR79asdjTZeGfzODo89da6O436JenzfS8WJiQObFC79pnfMpy5vjH2zA8u+HRjYhX8Sp/qZW8m5NXq6TDYhzxioOGgUCGEFUULTaLJuyU+hPyhX9xiQrxc5oGHeL17FD+iCEPoGLHACAw==",
       "bytes": 1356,
       "compressed_bytes": 310,
+      "encoding": "zlib+base64"
+    },
+    "2becb1f953b9994341b18d2229a8b2abc47e42b061d56fd6f8f73603fb7d4e12": {
+      "base64": "eNp1kDELgzAQhff8ihAotCClti662S5dO4tD0Esb0ChJFFrxvzdJqWDUm473vty93ICwKVKChkIrkuDMCbaGqXMI4xXodwuGIVcuqHyTYE5wwRrr+nrDmAJtnZNvtVSC0Ha06RxyB1qC9DnFP25xeI58q6dVB/Pk6z9Y5Hx0VOiuDnAcHeNdgENsg3jzp1eC1i7CLb1uIUpLLp4WSmXx4j0k2ND78Hi6HLL1bfnWrP+p6W/SFtaDVLwR7jZmDVlQ40zJ0VzP0YgQ+gJOQmqQ",
+      "bytes": 517,
+      "compressed_bytes": 207,
       "encoding": "zlib+base64"
     },
     "2dbc24d3f4398463f2aeb24ce0ec5fb608bccc8061d78d1997fb78b681d03ea7": {
@@ -2517,6 +2646,12 @@
       "base64": "eNqFkM8KgkAQxu/7FLKnghIhKfCWp56h8LDobA3YKrubYOK7504k7JY0p+H7fvN3YNEUvAILpTU8iy4kuBjmjBCJNdi+hYnhOSqhe77xCVSycW6oN1IasM5JQqsVGpR1raeMkBOICnTIGXzS4F26D61O1A/wN/99wb89Z1+JOw07bM/YLkHGalRXhx11ecMOsoj4VRKn66Wiz//Eu2QJ60AbbBR9LE75FzR6SsF8vWAjY+wFGEZeRg==",
       "bytes": 473,
       "compressed_bytes": 184,
+      "encoding": "zlib+base64"
+    },
+    "b7c8bb295554412c9e177cabade08600093200c3f0ff4395eafc33e401d885bb": {
+      "base64": "eNqNkj1rwzAQhnf9CiEotGBC3KaDvSVdsobSKXgQybkVjc9Bkl3S4P9eSflqZMu2JnHvc993JNQ8tgUNG61YStfOYN/x+nNILnagD3swDFsI5PLAontCYF5a1beXea5AW2XqS3suAbUNbX4OWQLfgvQ5JX5d4vh55ks131VwX3l3B606VxVHXRURTWaT5CGiMbWFePGvXsgLV8LbfBFClJYCPy00l5svUUNKDf0YT6YvT+vubFko1mXU/BQphNUglSjRzcakYS2qicaOZXDBQ4sesfCexb9rCbwIjvZ8AK9JcBLhO+hvfGxbrUv4wG8sf3AIv13F2SGlIz0v2xiJ/7sFFiSbTiUj/dxNP9kz0hBC/gDWgtP4",
+      "bytes": 1085,
+      "compressed_bytes": 279,
       "encoding": "zlib+base64"
     },
     "b88d25f4c3eb45c4e74f0733f947b92c064ace556111f13f50d8fcef532df126": {
@@ -2661,6 +2796,12 @@
     "cab_lzx_method": {
       "path": "/opt/die-source/XArchive/xcab.cpp",
       "required_pattern": "result.mapProperties.insert(FPART_PROP_HANDLEMETHOD, HANDLE_METHOD_LZX_CAB);",
+      "required_pattern_count": 1,
+      "sha256": "a0ce130f4d81ba3aeb018e485a3ee8c046d4cbb570d6318f7aa8817aff28035b"
+    },
+    "cab_unknown_method": {
+      "path": "/opt/die-source/XArchive/xcab.cpp",
+      "required_pattern": "result.mapProperties.insert(FPART_PROP_HANDLEMETHOD, HANDLE_METHOD_UNKNOWN);",
       "required_pattern_count": 1,
       "sha256": "a0ce130f4d81ba3aeb018e485a3ee8c046d4cbb570d6318f7aa8817aff28035b"
     },

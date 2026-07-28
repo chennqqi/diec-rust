@@ -10,7 +10,7 @@
       "version": "1.3.1"
     }
   },
-  "license": "project-generated; no third-party sample bytes",
+  "license": "project-generated except the attributed CAB Quantum compressed stream",
   "samples": [
     {
       "archive_format": "7Z",
@@ -183,6 +183,16 @@
       "size": 330
     },
     {
+      "archive_format": "CAB",
+      "compression_method": "Quantum18",
+      "expected_member_name": "qtm.txt",
+      "expected_payload_sha256": "bdcfdaf09e54d61f950b165b201d4ad5f5acfdecff1fc5641e382aa382c74b45",
+      "name": "text-member-quantum.cab",
+      "purpose": "CAB Quantum level/window 18 archive containing benign text",
+      "sha256": "2c24e38765939ee6003125244650f32e46a1af760f98c28c79699fc88319945e",
+      "size": 124
+    },
+    {
       "archive_format": "ISO",
       "compression_method": "Store",
       "expected_member_name": "payload.pdf",
@@ -193,5 +203,18 @@
       "size": 43008
     }
   ],
-  "schema_version": 1
+  "schema_version": 2,
+  "third_party_inputs": {
+    "cab_quantum_stream": {
+      "commit": "55d501976171397ccd5d5a7a1ca7da065b1d9a06",
+      "license": "LGPL-2.1-only",
+      "path": "libmspack/test/test_files/cabd/mszip_lzx_qtm.cab",
+      "repository": "https://github.com/kyz/libmspack",
+      "source_sha256": "0ce0b55fe705b744d41bb361170c0467db30da0c7f9bdd386d5dade71a78e171",
+      "source_size": 379,
+      "stream_offset": 331,
+      "stream_sha256": "6131acbaf1867209d537751a567e4c0a72756e7731a166395433c65d1543c04d",
+      "stream_size": 48
+    }
+  }
 }

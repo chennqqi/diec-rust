@@ -32,8 +32,10 @@ Last updated: 2026-07-28
 这些结果关闭 `CAP-GAP-006` 中 ZIP deflate、ZipCrypto 无密码、CRC、压缩流损坏、
 截断、central-directory 缺失、越界 offset、未知 method、路径 metadata、
 mixed-member filter 和 1 MiB/843.58:1 压缩比测试点。该 gap 仍因更高资源边界、
-AES、其他 ZIP 压缩算法、7Z/RAR 的压缩、CAB Quantum、加密、
+AES、其他 ZIP 压缩算法、7Z/RAR 的压缩、加密、
 solid/multi-volume、系统化畸形矩阵和跨平台行为保持开放。
+CAB Quantum 的合法方法边界已由
+[`archive-format-behavior.md`](archive-format-behavior.md) 单独固定。
 
 机器报告：
 [`archive-adversarial-engine-qt5.json`](data/archive-adversarial-engine-qt5.json)。

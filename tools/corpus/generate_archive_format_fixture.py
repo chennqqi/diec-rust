@@ -24,6 +24,18 @@ INFLATE64_VERSION = "1.0.4"
 PPMD7_ORDER = 6
 PPMD7_MEMORY_SIZE = 1 << 20
 DEFLATE64_DISTANCE = 32769
+QTM_PAYLOAD_NAME = "qtm.txt"
+QTM_PAYLOAD = (
+    b"If you can read this, the Quantum decompressor is working!\n"
+)
+LIBMSPACK_COMMIT = "55d501976171397ccd5d5a7a1ca7da065b1d9a06"
+LIBMSPACK_QTM_SOURCE_PATH = (
+    "libmspack/test/test_files/cabd/mszip_lzx_qtm.cab"
+)
+LIBMSPACK_QTM_SOURCE_SHA256 = (
+    "0ce0b55fe705b744d41bb361170c0467db30da0c7f9bdd386d5dade71a78e171"
+)
+LIBMSPACK_QTM_STREAM_OFFSET = 331
 
 
 def _load_baseline_module():
@@ -61,6 +73,10 @@ CAB_LZX15_PDF_STREAM = bytes.fromhex(
     "cc22fd0d7f8c46a8d449ad30eab644fc9e9fa9ff878b6392a277c69fb033a337"
     "4bfe3c4f5e94bcc0b91bb86e6ee3510eccfa831e4fde74b460b52a689314884d"
     "e8e9e9f56bb3e82a8e90f6a14201958c0874781e2544b0ab0008"
+)
+CAB_QUANTUM18_TEXT_STREAM = bytes.fromhex(
+    "d606690bcb47f02c2a3a8f2cabbb3cb933018bd8584b7b01ba6f6d516e3ac367"
+    "424beb023643d66656ca9e72cc300000"
 )
 
 
@@ -777,6 +793,13 @@ def make_cab_single(
         file_date = 0x5022
         file_time = 0x1883
         set_id = 0
+    elif method == "Quantum18":
+        if payload != QTM_PAYLOAD:
+            raise ValueError(
+                "CAB Quantum18 fixture requires the canonical text"
+            )
+        compressed = CAB_QUANTUM18_TEXT_STREAM
+        compression_type = 0x1222
     else:
         raise ValueError(f"unsupported CAB method: {method}")
     header_size = 36
@@ -834,6 +857,10 @@ def make_cab_mszip(name: str, payload: bytes) -> bytes:
 
 def make_cab_lzx15(name: str, payload: bytes) -> bytes:
     return make_cab_single(name, payload, "LZX15")
+
+
+def make_cab_quantum18(name: str, payload: bytes) -> bytes:
+    return make_cab_single(name, payload, "Quantum18")
 
 
 def both16(value: int) -> bytes:
@@ -1065,6 +1092,12 @@ FIXTURES = (
         make_cab_lzx15,
     ),
     (
+        "text-member-quantum.cab",
+        "CAB Quantum level/window 18 archive containing benign text",
+        "Quantum18",
+        make_cab_quantum18,
+    ),
+    (
         "pdf-member.iso",
         "ISO9660 image containing one PDF",
         "Store",
@@ -1077,35 +1110,44 @@ def generate(output_dir: pathlib.Path) -> dict[str, object]:
     output_dir.mkdir(parents=True, exist_ok=True)
     samples = []
     for name, purpose, compression_method, factory in FIXTURES:
+        member_name = (
+            QTM_PAYLOAD_NAME
+            if compression_method == "Quantum18"
+            else PAYLOAD_NAME
+        )
         payload = (
-            ARM64_PDF
-            if compression_method == "ARM64-BCJ+LZMA2"
+            QTM_PAYLOAD
+            if compression_method == "Quantum18"
             else (
-                {
-                    "BCJ2-E8+LZMA2": BCJ2_E8_PDF,
-                    "BCJ2-E9+LZMA2": BCJ2_E9_PDF,
-                    "BCJ2-JCC+LZMA2": BCJ2_JCC_PDF,
-                }[compression_method]
-                if compression_method
-                in {
-                    "BCJ2-E8+LZMA2",
-                    "BCJ2-E9+LZMA2",
-                    "BCJ2-JCC+LZMA2",
-                }
+                ARM64_PDF
+                if compression_method == "ARM64-BCJ+LZMA2"
                 else (
-                    DEFLATE64_PDF
-                    if compression_method == "Deflate64"
-                    else PDF
+                    {
+                        "BCJ2-E8+LZMA2": BCJ2_E8_PDF,
+                        "BCJ2-E9+LZMA2": BCJ2_E9_PDF,
+                        "BCJ2-JCC+LZMA2": BCJ2_JCC_PDF,
+                    }[compression_method]
+                    if compression_method
+                    in {
+                        "BCJ2-E8+LZMA2",
+                        "BCJ2-E9+LZMA2",
+                        "BCJ2-JCC+LZMA2",
+                    }
+                    else (
+                        DEFLATE64_PDF
+                        if compression_method == "Deflate64"
+                        else PDF
+                    )
                 )
             )
         )
-        data = factory(PAYLOAD_NAME, payload)
+        data = factory(member_name, payload)
         (output_dir / name).write_bytes(data)
         samples.append(
             {
                 "archive_format": name.rsplit(".", 1)[1].upper(),
                 "compression_method": compression_method,
-                "expected_member_name": PAYLOAD_NAME,
+                "expected_member_name": member_name,
                 "expected_payload_sha256": hashlib.sha256(payload).hexdigest(),
                 "name": name,
                 "purpose": purpose,
@@ -1114,7 +1156,7 @@ def generate(output_dir: pathlib.Path) -> dict[str, object]:
             }
         )
     manifest: dict[str, object] = {
-        "schema_version": 1,
+        "schema_version": 2,
         "generator": GENERATOR,
         "generator_dependencies": {
             "inflate64": {
@@ -1126,7 +1168,25 @@ def generate(output_dir: pathlib.Path) -> dict[str, object]:
                 "version": PYPPMD_VERSION,
             }
         },
-        "license": "project-generated; no third-party sample bytes",
+        "license": (
+            "project-generated except the attributed CAB Quantum "
+            "compressed stream"
+        ),
+        "third_party_inputs": {
+            "cab_quantum_stream": {
+                "commit": LIBMSPACK_COMMIT,
+                "license": "LGPL-2.1-only",
+                "path": LIBMSPACK_QTM_SOURCE_PATH,
+                "repository": "https://github.com/kyz/libmspack",
+                "source_sha256": LIBMSPACK_QTM_SOURCE_SHA256,
+                "source_size": 379,
+                "stream_offset": LIBMSPACK_QTM_STREAM_OFFSET,
+                "stream_sha256": hashlib.sha256(
+                    CAB_QUANTUM18_TEXT_STREAM
+                ).hexdigest(),
+                "stream_size": len(CAB_QUANTUM18_TEXT_STREAM),
+            }
+        },
         "samples": samples,
     }
     (output_dir / "manifest.json").write_text(

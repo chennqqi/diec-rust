@@ -46,6 +46,7 @@ SOURCE_PATHS = {
     "rar": "/opt/die-source/XArchive/xrar.cpp",
     "cab": "/opt/die-source/XArchive/xcab.cpp",
     "cab_lzx_method": "/opt/die-source/XArchive/xcab.cpp",
+    "cab_unknown_method": "/opt/die-source/XArchive/xcab.cpp",
     "cab_decompress_dispatch": "/opt/die-source/XArchive/xdecompress.cpp",
     "iso9660": "/opt/die-source/XArchive/xiso9660.cpp",
 }
@@ -83,6 +84,10 @@ SOURCE_PATTERNS = {
     "cab_lzx_method": (
         "result.mapProperties.insert(FPART_PROP_HANDLEMETHOD, "
         "HANDLE_METHOD_LZX_CAB);"
+    ),
+    "cab_unknown_method": (
+        "result.mapProperties.insert(FPART_PROP_HANDLEMETHOD, "
+        "HANDLE_METHOD_UNKNOWN);"
     ),
     "cab_decompress_dispatch": (
         "} else if ((compressMethod == "
@@ -171,6 +176,16 @@ EXPECTED_ROOTS = {
             "sizes": ["331"],
         },
     },
+    "text-member-quantum.cab": {
+        "filetype": "Binary",
+        "root_names": ["CAB"],
+        "archive_stream_count": 0,
+        "aggressive_stream": {
+            "filetypes": ["Binary"],
+            "detection_names": ["Unknown"],
+            "sizes": ["59"],
+        },
+    },
     "pdf-member.iso": {
         "filetype": "ISO 9660",
         "root_names": ["Unknown"],
@@ -219,9 +234,10 @@ def load_fixture(
         "generator_dependencies",
         "license",
         "samples",
+        "third_party_inputs",
     }:
         raise ProbeError("fixture manifest fields changed")
-    if manifest["schema_version"] != 1:
+    if manifest["schema_version"] != 2:
         raise ProbeError("unsupported fixture schema")
     if manifest["generator"] != FIXTURE_GENERATOR:
         raise ProbeError("unexpected fixture generator")
@@ -236,7 +252,35 @@ def load_fixture(
         }
     }:
         raise ProbeError("unexpected fixture generator dependencies")
-    if len(manifest["samples"]) != 18:
+    if manifest["license"] != (
+        "project-generated except the attributed CAB Quantum "
+        "compressed stream"
+    ):
+        raise ProbeError("unexpected fixture license declaration")
+    if manifest["third_party_inputs"] != {
+        "cab_quantum_stream": {
+            "commit": "55d501976171397ccd5d5a7a1ca7da065b1d9a06",
+            "license": "LGPL-2.1-only",
+            "path": (
+                "libmspack/test/test_files/cabd/"
+                "mszip_lzx_qtm.cab"
+            ),
+            "repository": "https://github.com/kyz/libmspack",
+            "source_sha256": (
+                "0ce0b55fe705b744d41bb361170c0467"
+                "db30da0c7f9bdd386d5dade71a78e171"
+            ),
+            "source_size": 379,
+            "stream_offset": 331,
+            "stream_sha256": (
+                "6131acbaf1867209d537751a567e4c0a"
+                "72756e7731a166395433c65d1543c04d"
+            ),
+            "stream_size": 48,
+        }
+    }:
+        raise ProbeError("unexpected third-party fixture input")
+    if len(manifest["samples"]) != 19:
         raise ProbeError("fixture sample count changed")
 
     declared = set()
@@ -544,9 +588,14 @@ def build_report(
                 "summary": summary,
             }
 
-        if sample_name == "pdf-member-lzx.cab":
+        if sample_name in {
+            "pdf-member-lzx.cab",
+            "text-member-quantum.cab",
+        }:
             if raw_modes["archive"] == raw_modes["archive_aggressive"]:
-                raise ProbeError("LZX aggressive fallback disappeared")
+                raise ProbeError(
+                    f"CAB aggressive fallback disappeared: {sample_name}"
+                )
         elif raw_modes["archive"] != raw_modes["archive_aggressive"]:
             raise ProbeError(
                 f"aggressive changed single-member output: {sample_name}"
@@ -594,6 +643,7 @@ def build_report(
         "cab_store_member_reaches_pdf_rules": True,
         "cab_mszip_member_reaches_pdf_rules": True,
         "cab_lzx_archive_has_no_child_but_aggressive_scans_unknown_output": True,
+        "cab_quantum_archive_has_no_child_but_aggressive_scans_unknown_output": True,
         "iso9660_store_member_reaches_pdf_rules": True,
         "cab_root_dispatches_as_binary_while_archive_adapter_runs": True,
         "sevenzip_root_dispatches_as_binary_while_archive_adapter_runs": True,

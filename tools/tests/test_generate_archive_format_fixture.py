@@ -65,6 +65,7 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
                     "pdf-member.cab",
                     "pdf-member-mszip.cab",
                     "pdf-member-lzx.cab",
+                    "text-member-quantum.cab",
                     "pdf-member.iso",
                 },
             )
@@ -565,6 +566,61 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
             "CAB LZX15 fixture requires the canonical PDF",
         ):
             module.make_cab_lzx15(module.PAYLOAD_NAME, b"not-pdf")
+        quantum = module.make_cab_quantum18(
+            module.QTM_PAYLOAD_NAME,
+            module.QTM_PAYLOAD,
+        )
+        self.assertEqual(len(quantum), 124)
+        self.assertEqual(
+            hashlib.sha256(quantum).hexdigest(),
+            "2c24e38765939ee6003125244650f32e46a1af760f98c28c79699fc88319945e",
+        )
+        self.assertEqual(
+            int.from_bytes(quantum[42:44], "little"),
+            0x1222,
+        )
+        quantum_data_offset = int.from_bytes(quantum[36:40], "little")
+        self.assertEqual(quantum_data_offset, 68)
+        self.assertEqual(
+            int.from_bytes(
+                quantum[
+                    quantum_data_offset + 4 : quantum_data_offset + 6
+                ],
+                "little",
+            ),
+            len(module.CAB_QUANTUM18_TEXT_STREAM),
+        )
+        self.assertEqual(
+            int.from_bytes(
+                quantum[
+                    quantum_data_offset + 6 : quantum_data_offset + 8
+                ],
+                "little",
+            ),
+            len(module.QTM_PAYLOAD),
+        )
+        self.assertEqual(
+            quantum[quantum_data_offset + 8 :],
+            module.CAB_QUANTUM18_TEXT_STREAM,
+        )
+        self.assertEqual(
+            hashlib.sha256(
+                module.CAB_QUANTUM18_TEXT_STREAM
+            ).hexdigest(),
+            "6131acbaf1867209d537751a567e4c0a72756e7731a166395433c65d1543c04d",
+        )
+        self.assertEqual(
+            hashlib.md5(module.QTM_PAYLOAD).hexdigest(),
+            "98fcfa4962a0f169a3c7fdbcb445cf17",
+        )
+        with self.assertRaisesRegex(
+            ValueError,
+            "CAB Quantum18 fixture requires the canonical text",
+        ):
+            module.make_cab_quantum18(
+                module.QTM_PAYLOAD_NAME,
+                b"not-canonical",
+            )
         with self.assertRaisesRegex(ValueError, "unsupported CAB method"):
             module.make_cab_single(
                 module.PAYLOAD_NAME,

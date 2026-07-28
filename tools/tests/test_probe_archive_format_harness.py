@@ -43,7 +43,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
         report = self.report
         self.assertEqual(
             sha256(self.report_bytes),
-            "1bc1bcc5594a52638ea232fda33f32603bdadbfd6733170f9c3d4e03a85b45d3",
+            "bf197fff978dd8f8f441da1c0b44201d63a1dda601ff460afee934c6d53705f1",
         )
         self.assertEqual(report["schema_version"], 1)
         self.assertEqual(
@@ -65,7 +65,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
             report["fixture_manifest"],
             {
                 "path": "docs/research/data/archive-format-corpus.json",
-                "sample_count": 18,
+                "sample_count": 19,
                 "sha256": sha256(MANIFEST_PATH.read_bytes()),
             },
         )
@@ -134,6 +134,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
             "cab": "a0ce130f4d81ba3aeb018e485a3ee8c046d4cbb570d6318f7aa8817aff28035b",
             "cab_decompress_dispatch": "4f52eefa06674ea5b7e3f7e1b989502147be84d83e32e8086a7087839ed2728d",
             "cab_lzx_method": "a0ce130f4d81ba3aeb018e485a3ee8c046d4cbb570d6318f7aa8817aff28035b",
+            "cab_unknown_method": "a0ce130f4d81ba3aeb018e485a3ee8c046d4cbb570d6318f7aa8817aff28035b",
             "decompress_dispatch": "4f52eefa06674ea5b7e3f7e1b989502147be84d83e32e8086a7087839ed2728d",
             "deflate_decoder": "cb74b248ded89fea38940ee2ea8135f77a6a4d3b11bc1edd5dea1eb49e5627a6",
             "engine": "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498",
@@ -161,7 +162,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
     def test_raw_artifacts_reconstruct_every_execution(self):
         report = self.report
         artifacts = report["raw_artifacts"]
-        self.assertEqual(len(artifacts), 35)
+        self.assertEqual(len(artifacts), 37)
         for digest, artifact in artifacts.items():
             with self.subTest(digest=digest):
                 self.assertEqual(artifact["encoding"], "zlib+base64")
@@ -217,6 +218,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
             "pdf-member.cab": ("Binary", ["CAB"]),
             "pdf-member-mszip.cab": ("Binary", ["CAB"]),
             "pdf-member-lzx.cab": ("Binary", ["CAB"]),
+            "text-member-quantum.cab": ("Binary", ["CAB"]),
             "pdf-member.iso": ("ISO 9660", ["Unknown"]),
             "pdf-member.rar": ("RAR", ["Unknown"]),
         }
@@ -240,11 +242,18 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
                         names,
                     )
                     if mode in {"default", "release_default"} or (
-                        sample_name == "pdf-member-lzx.cab"
+                        sample_name
+                        in {
+                            "pdf-member-lzx.cab",
+                            "text-member-quantum.cab",
+                        }
                         and mode == "archive"
                     ):
                         self.assertEqual(summary["stream_count"], 0)
-                    elif sample_name == "pdf-member-lzx.cab":
+                    elif sample_name in {
+                        "pdf-member-lzx.cab",
+                        "text-member-quantum.cab",
+                    }:
                         self.assertEqual(summary["stream_count"], 1)
                         self.assertEqual(
                             summary["stream_filetypes"],
@@ -256,7 +265,12 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
                         )
                         self.assertEqual(
                             summary["stream_sizes"],
-                            ["331"],
+                            [
+                                {
+                                    "pdf-member-lzx.cab": "331",
+                                    "text-member-quantum.cab": "59",
+                                }[sample_name]
+                            ],
                         )
                     else:
                         self.assertEqual(summary["stream_count"], 1)
@@ -282,7 +296,10 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
                 cases["default"]["stdout"],
                 cases["release_default"]["stdout"],
             )
-            if sample_name == "pdf-member-lzx.cab":
+            if sample_name in {
+                "pdf-member-lzx.cab",
+                "text-member-quantum.cab",
+            }:
                 self.assertNotEqual(
                     cases["archive"]["stdout"],
                     cases["archive_aggressive"]["stdout"],
@@ -313,7 +330,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
         self.assertIn("CAP-GAP-006", document)
         self.assertIn("archive-format-engine-qt5.json", document)
         self.assertIn(
-            "1bc1bcc5594a52638ea232fda33f32603bdadbfd6733170f9c3d4e03a85b45d3",
+            "bf197fff978dd8f8f441da1c0b44201d63a1dda601ff460afee934c6d53705f1",
             document,
         )
 
