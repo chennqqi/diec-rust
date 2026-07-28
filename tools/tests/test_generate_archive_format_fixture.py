@@ -56,6 +56,8 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
                     "pdf-member-deflate.7z",
                     "pdf-member-deflate64.7z",
                     "pdf-member-bcj-lzma2.7z",
+                    "pdf-member-bcj2-lzma2.7z",
+                    "pdf-member-bcj2-e8-lzma2.7z",
                     "pdf-member-arm64-bcj-lzma2.7z",
                     "pdf-member.rar",
                     "pdf-member.cab",
@@ -152,7 +154,7 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
                 filters=[
                     {
                         "id": lzma.FILTER_LZMA2,
-                        "dict_size": module.SEVENZIP_DICTIONARY_SIZE,
+                        "dict_size": 1 << 12,
                     }
                 ],
             ),
@@ -273,6 +275,78 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
             next_header,
         )
         self.assertIn(b"\x02\x21\x21\x01\x10\x04\x03\x03\x01\x03", next_header)
+
+    def test_7z_bcj2_lzma2_control_round_trips_independently(self):
+        module = load_module()
+        self.assertFalse(module.has_bcj2_candidate(module.PDF))
+        archive = module.make_7z_bcj2_lzma2_control(
+            module.PAYLOAD_NAME,
+            module.PDF,
+        )
+        packed_size = int.from_bytes(archive[12:20], "little")
+        packed = archive[32 : 32 + packed_size]
+        next_header = archive[32 + packed_size :]
+        self.assertEqual(packed[-5:], b"\0" * 5)
+        self.assertEqual(
+            lzma.decompress(
+                packed[:-5],
+                format=lzma.FORMAT_RAW,
+                filters=[
+                    {
+                        "id": lzma.FILTER_LZMA2,
+                        "dict_size": module.SEVENZIP_DICTIONARY_SIZE,
+                    }
+                ],
+            ),
+            module.PDF,
+        )
+        self.assertIn(
+            b"\x21\x21\x01\x00\x14\x03\x03\x01\x1b\x04\x01",
+            next_header,
+        )
+        self.assertIn(module.SEVENZIP_CODER_IDS["BCJ2"], next_header)
+        with self.assertRaisesRegex(
+            ValueError,
+            "BCJ2 control payload contains a branch candidate",
+        ):
+            module.make_7z_bcj2_lzma2_control(
+                module.PAYLOAD_NAME,
+                b"\xe8\0\0\0\0",
+            )
+
+    def test_7z_bcj2_e8_vector_round_trips_independently(self):
+        module = load_module()
+        main, call, jump, range_stream = module.encode_bcj2_streams(
+            module.BCJ2_E8_PDF,
+            "e8",
+        )
+        self.assertEqual(main, module.PDF + b"\xe8")
+        self.assertEqual(call, b"\0\0\0\x10")
+        self.assertEqual(jump, b"")
+        self.assertEqual(range_stream, b"\x00\x7f\xff\xfc\x00")
+        absolute = int.from_bytes(call, "big")
+        relative = (
+            absolute - (len(main) + 4)
+        ) & 0xFFFFFFFF
+        self.assertEqual(
+            main + relative.to_bytes(4, "little"),
+            module.BCJ2_E8_PDF,
+        )
+        archive = module.make_7z_bcj2_lzma2_e8(
+            module.PAYLOAD_NAME,
+            module.BCJ2_E8_PDF,
+        )
+        self.assertIn(module.SEVENZIP_CODER_IDS["BCJ2"], archive)
+        with self.assertRaisesRegex(
+            ValueError,
+            "unexpected BCJ2 E8 payload",
+        ):
+            module.encode_bcj2_streams(module.PDF, "e8")
+        with self.assertRaisesRegex(
+            ValueError,
+            "unsupported BCJ2 branch kind",
+        ):
+            module.encode_bcj2_streams(module.PDF, "unknown")
 
     def test_7z_arm64_bcj_lzma2_vectors_round_trip(self):
         module = load_module()

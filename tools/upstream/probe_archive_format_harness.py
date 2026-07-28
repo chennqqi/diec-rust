@@ -38,6 +38,11 @@ SOURCE_PATHS = {
     "deflate_decoder": (
         "/opt/die-source/XArchive/Algos/xdeflatedecoder.cpp"
     ),
+    "bcj2_dispatch": "/opt/die-source/XArchive/xdecompress.cpp",
+    "bcj2_decoder": (
+        "/opt/die-source/XArchive/Algos/xbcj2decoder.cpp"
+    ),
+    "sevenzip_bcj2_graph": "/opt/die-source/XArchive/xsevenzip.cpp",
     "rar": "/opt/die-source/XArchive/xrar.cpp",
     "cab": "/opt/die-source/XArchive/xcab.cpp",
     "iso9660": "/opt/die-source/XArchive/xiso9660.cpp",
@@ -64,6 +69,13 @@ SOURCE_PATTERNS = {
         "compressMethod == XBinary::HANDLE_METHOD_DEFLATE64"
     ),
     "deflate_decoder": "bool XDeflateDecoder::decompress64(",
+    "bcj2_dispatch": (
+        "compressMethod == XBinary::HANDLE_METHOD_BCJ2"
+    ),
+    "bcj2_decoder": "bool XBCJ2Decoder::decompress(",
+    "sevenzip_bcj2_graph": (
+        "listResult.append(createPMInfo(HANDLE_METHOD_BCJ2));"
+    ),
     "rar": "bool XRar::initUnpack(",
     "cab": "bool XCab::initUnpack(",
     "iso9660": "bool XISO9660::initUnpack(",
@@ -101,6 +113,15 @@ EXPECTED_ROOTS = {
     "pdf-member-bcj-lzma2.7z": {
         "filetype": "Binary",
         "root_names": ["7-Zip"],
+    },
+    "pdf-member-bcj2-lzma2.7z": {
+        "filetype": "Binary",
+        "root_names": ["7-Zip"],
+    },
+    "pdf-member-bcj2-e8-lzma2.7z": {
+        "filetype": "Binary",
+        "root_names": ["7-Zip"],
+        "stream_size": "336",
     },
     "pdf-member-arm64-bcj-lzma2.7z": {
         "filetype": "Binary",
@@ -184,7 +205,7 @@ def load_fixture(
         }
     }:
         raise ProbeError("unexpected fixture generator dependencies")
-    if len(manifest["samples"]) != 13:
+    if len(manifest["samples"]) != 15:
         raise ProbeError("fixture sample count changed")
 
     declared = set()
@@ -505,6 +526,8 @@ def build_report(
         "sevenzip_deflate_member_reaches_pdf_rules": True,
         "sevenzip_deflate64_distance_32769_member_reaches_pdf_rules": True,
         "sevenzip_bcj_lzma2_member_reaches_pdf_rules": True,
+        "sevenzip_bcj2_lzma2_control_reaches_pdf_rules": True,
+        "sevenzip_bcj2_e8_lzma2_member_reaches_pdf_rules": True,
         "sevenzip_arm64_bcj_lzma2_bl_and_adrp_reach_pdf_rules": True,
         "rar4_store_member_reaches_pdf_rules": True,
         "cab_store_member_reaches_pdf_rules": True,

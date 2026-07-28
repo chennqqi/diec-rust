@@ -132,10 +132,11 @@ python tools\upstream\probe_archive_limits_harness.py `
 
 - 只验证 Linux x86_64 Qt5、ZIP store method、depth 64 和约 32 MiB 累计展开量。
 - 7Z Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64、x86 BCJ+LZMA2、
+  BCJ2+LZMA2 no-branch/E8、
   ARM64-BCJ+LZMA2 BL/ADRP、RAR4 store、CAB Store/MSZIP 与 ISO9660 的合法
   单成员正例已由
   [`archive-format-behavior.md`](archive-format-behavior.md) 固定；仍未验证
-  7Z BCJ2/AES、RAR 压缩与 CAB LZX/Quantum 等
+  7Z BCJ2 E9/JCC、AES、RAR 压缩与 CAB LZX/Quantum 等
   压缩/加密/损坏边界。
   ZIP deflate、ZipCrypto 无密码、CRC/压缩流
   畸形和 1 MiB/843.58:1 已由

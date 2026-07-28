@@ -49,6 +49,7 @@ ARM64_PDF = (
     + struct.pack("<I", 0x90000001)
 )
 DEFLATE64_PDF = PDF.ljust(DEFLATE64_DISTANCE, b"\0") + PDF[:3]
+BCJ2_E8_PDF = PDF + b"\xe8\xc0\xfe\xff\xff"
 
 
 def sevenzip_uint64(value: int) -> bytes:
@@ -75,6 +76,7 @@ SEVENZIP_CODER_IDS = {
     "Deflate": b"\x04\x01\x08",
     "Deflate64": b"\x04\x01\x09",
     "BCJ": b"\x03\x03\x01\x03",
+    "BCJ2": b"\x03\x03\x01\x1b",
     "ARM64-BCJ": b"\x0a",
 }
 
@@ -486,6 +488,181 @@ def make_7z_bcj_lzma2(name: str, payload: bytes) -> bytes:
     return make_7z_filter_lzma2(name, payload, "BCJ")
 
 
+def has_bcj2_candidate(payload: bytes) -> bool:
+    previous = 0
+    for value in payload:
+        if (
+            value in (0xE8, 0xE9)
+            or (previous == 0x0F and (value & 0xF0) == 0x80)
+        ):
+            return True
+        previous = value
+    return False
+
+
+def encode_bcj2_streams(
+    payload: bytes,
+    branch_kind: str,
+) -> tuple[bytes, bytes, bytes, bytes]:
+    if branch_kind == "control":
+        if has_bcj2_candidate(payload):
+            raise ValueError(
+                "BCJ2 control payload contains a branch candidate"
+            )
+        return payload, b"", b"", b"\0" * 5
+    if branch_kind == "e8":
+        prefix = payload[:-5]
+        if (
+            len(payload) < 5
+            or has_bcj2_candidate(prefix)
+            or payload[-5] != 0xE8
+        ):
+            raise ValueError("unexpected BCJ2 E8 payload")
+        relative = int.from_bytes(payload[-4:], "little")
+        output_position_after_opcode = len(prefix) + 1
+        absolute = (
+            relative + output_position_after_opcode + 4
+        ) & 0xFFFFFFFF
+        return (
+            prefix + b"\xe8",
+            absolute.to_bytes(4, "big"),
+            b"",
+            b"\x00\x7f\xff\xfc\x00",
+        )
+    raise ValueError(f"unsupported BCJ2 branch kind: {branch_kind}")
+
+
+def make_7z_bcj2_lzma2(
+    name: str,
+    payload: bytes,
+    branch_kind: str,
+) -> bytes:
+    encoded_name = name.encode("utf-16le") + b"\0\0"
+    payload_crc = binascii.crc32(payload) & 0xFFFFFFFF
+    main, call, jump, range_stream = encode_bcj2_streams(
+        payload,
+        branch_kind,
+    )
+    main_packed = lzma.compress(
+        main,
+        format=lzma.FORMAT_RAW,
+        filters=[
+            {
+                "id": lzma.FILTER_LZMA2,
+                "dict_size": 1 << 12,
+            }
+        ],
+    )
+    packed_streams = (
+        main_packed,
+        call,
+        jump,
+        range_stream,
+    )
+    packed = b"".join(packed_streams)
+
+    bcj2_id = SEVENZIP_CODER_IDS["BCJ2"]
+    bcj2_coder = (
+        bytes((0x10 | len(bcj2_id),))
+        + bcj2_id
+        + sevenzip_uint64(4)
+        + sevenzip_uint64(1)
+    )
+    lzma2_id = SEVENZIP_CODER_IDS["LZMA2"]
+    lzma2_coder = (
+        bytes((len(lzma2_id) | 0x20,))
+        + lzma2_id
+        + sevenzip_uint64(1)
+        + b"\x00"
+    )
+    folder = (
+        sevenzip_uint64(2)
+        + lzma2_coder
+        + bcj2_coder
+        # BCJ2 main input 1 is produced by LZMA2 output 0.
+        + sevenzip_uint64(1)
+        + sevenzip_uint64(0)
+        # Packed inputs 0, 2, 3, 4: LZMA2 main, call, jump, range.
+        + sevenzip_uint64(0)
+        + sevenzip_uint64(2)
+        + sevenzip_uint64(3)
+        + sevenzip_uint64(4)
+    )
+
+    pack_info = (
+        b"\x06"
+        + sevenzip_uint64(0)
+        + sevenzip_uint64(len(packed_streams))
+        + b"\x09"
+        + b"".join(
+            sevenzip_uint64(len(stream))
+            for stream in packed_streams
+        )
+        + b"\x00"
+    )
+    unpack_info = (
+        b"\x07\x0b"
+        + sevenzip_uint64(1)
+        + b"\x00"
+        + folder
+        + b"\x0c"
+        + sevenzip_uint64(len(main))
+        + sevenzip_uint64(len(payload))
+        + b"\x00"
+    )
+    substreams_info = (
+        b"\x08\x0a\x01"
+        + struct.pack("<I", payload_crc)
+        + b"\x00"
+    )
+    main_streams = (
+        b"\x04" + pack_info + unpack_info + substreams_info + b"\x00"
+    )
+    name_property = b"\x00" + encoded_name
+    files_info = (
+        b"\x05"
+        + sevenzip_uint64(1)
+        + b"\x11"
+        + sevenzip_uint64(len(name_property))
+        + name_property
+        + b"\x00"
+    )
+    next_header = b"\x01" + main_streams + files_info + b"\x00"
+    start_header = struct.pack(
+        "<QQI",
+        len(packed),
+        len(next_header),
+        binascii.crc32(next_header) & 0xFFFFFFFF,
+    )
+    return (
+        b"7z\xbc\xaf\x27\x1c"
+        + b"\x00\x04"
+        + struct.pack(
+            "<I",
+            binascii.crc32(start_header) & 0xFFFFFFFF,
+        )
+        + start_header
+        + packed
+        + next_header
+    )
+
+
+def make_7z_bcj2_lzma2_control(name: str, payload: bytes) -> bytes:
+    return make_7z_bcj2_lzma2(
+        name,
+        payload,
+        "control",
+    )
+
+
+def make_7z_bcj2_lzma2_e8(name: str, payload: bytes) -> bytes:
+    return make_7z_bcj2_lzma2(
+        name,
+        payload,
+        "e8",
+    )
+
+
 def make_7z_arm64_bcj_lzma2(name: str, payload: bytes) -> bytes:
     return make_7z_filter_lzma2(name, payload, "ARM64-BCJ")
 
@@ -763,6 +940,18 @@ FIXTURES = (
         make_7z_bcj_lzma2,
     ),
     (
+        "pdf-member-bcj2-lzma2.7z",
+        "7Z BCJ2 plus LZMA2 no-branch control containing one PDF",
+        "BCJ2+LZMA2",
+        make_7z_bcj2_lzma2_control,
+    ),
+    (
+        "pdf-member-bcj2-e8-lzma2.7z",
+        "7Z BCJ2 E8 plus LZMA2 archive containing one PDF",
+        "BCJ2-E8+LZMA2",
+        make_7z_bcj2_lzma2_e8,
+    ),
+    (
         "pdf-member-arm64-bcj-lzma2.7z",
         "7Z ARM64 BCJ plus LZMA2 archive containing one PDF",
         "ARM64-BCJ+LZMA2",
@@ -803,9 +992,13 @@ def generate(output_dir: pathlib.Path) -> dict[str, object]:
             ARM64_PDF
             if compression_method == "ARM64-BCJ+LZMA2"
             else (
-                DEFLATE64_PDF
-                if compression_method == "Deflate64"
-                else PDF
+                BCJ2_E8_PDF
+                if compression_method == "BCJ2-E8+LZMA2"
+                else (
+                    DEFLATE64_PDF
+                    if compression_method == "Deflate64"
+                    else PDF
+                )
             )
         )
         data = factory(PAYLOAD_NAME, payload)

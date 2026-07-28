@@ -166,7 +166,7 @@ python tools\upstream\probe_archive_adversarial_harness.py `
   与 CAB MSZIP
   正例已由后续
   [`archive-format-behavior.md`](archive-format-behavior.md) 固定；仍未覆盖
-  7Z BCJ2/AES、RAR 压缩、CAB
+  7Z BCJ2 E9/JCC、AES、RAR 压缩、CAB
   LZX/Quantum，以及加密、
   solid/multi-volume 和恢复记录；
 - 未测真实磁盘耗尽、16 MiB 临时文件分支、OOM、长时间取消与并发；
