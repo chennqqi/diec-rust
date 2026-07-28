@@ -34,8 +34,8 @@ archive/recursive/aggressive 组合，并将其中 4 个不含 archive 的模式
 对照发布 CMake oracle。56 次 harness 执行及 28 次发布对照全部通过。
 
 同一固定 harness 的补充格式实验还运行七种 7Z 单 coder、x86/ARM64
-BCJ+LZMA2、BCJ2+LZMA2 no-branch/E8 filter 链、RAR4 store、CAB
-Store/MSZIP 与 ISO9660 共十五个项目生成的单 PDF 样本。十五者 default 均与发布
+BCJ+LZMA2、BCJ2+LZMA2 no-branch/E8/E9/JCC filter 链、RAR4 store、CAB
+Store/MSZIP 与 ISO9660 共十七个项目生成的单 PDF 样本。十七者 default 均与发布
 CLI 原始输出相同且不展开；
 显式 archive 后各产生一个 PDF Stream child，archive+aggressive 与 archive
 逐字节相同。7Z/CAB 顶层仍分别为 `Binary / 7-Zip` 和 `Binary / CAB`，不能把
@@ -267,7 +267,7 @@ archive 的 28 次 harness 输出都与发布 CMake CLI 对应模式逐字节相
 | --- | ---: | ---: | ---: | --- |
 | ZIP→PDF / archive | 1 | 0 | 0 | PDF 成为 Stream |
 | ZIP→ZIP→PDF / archive | 2 | 0 | 0 | archive flag 跨层传播 |
-| 7Z Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64/x86 BCJ+LZMA2/BCJ2+LZMA2 no-branch/E8/ARM64-BCJ+LZMA2 BL/ADRP、RAR4 store、CAB Store/MSZIP、ISO→PDF / archive | 1 | 0 | 0 | 十五个 coder/container 样本各产生一个 PDF Stream |
+| 7Z Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64/x86 BCJ+LZMA2/BCJ2+LZMA2 no-branch/E8/E9/JCC/ARM64-BCJ+LZMA2 BL/ADRP、RAR4 store、CAB Store/MSZIP、ISO→PDF / archive | 1 | 0 | 0 | 十七个 coder/container 样本各产生一个 PDF Stream |
 | 22 PDF ZIP / archive | 21 | 0 | 0 | 确认默认 off-by-one |
 | 22 PDF ZIP / archive+aggressive | 22 | 0 | 0 | 全部成员 |
 | 22 PDF resources / recursive | 0 | 21 | 0 | 确认默认 off-by-one |

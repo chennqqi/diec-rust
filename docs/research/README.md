@@ -22,7 +22,7 @@ Phase 0 计划形成：
   fallback 与 mixed-member filter（In Review）。
 - [`archive-format-behavior.md`](archive-format-behavior.md)：
   7Z Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64 与
-  x86/ARM64 BCJ+LZMA2、BCJ2+LZMA2 no-branch/E8、RAR4、CAB
+  x86/ARM64 BCJ+LZMA2、BCJ2+LZMA2 no-branch/E8/E9/JCC、RAR4、CAB
   Store/MSZIP、ISO9660 正向解包、
   发布 CLI 默认对照与 7Z/CAB `Binary` 顶层 quirk（Draft）。
 - [`npm-dispatch-reachability.md`](npm-dispatch-reachability.md)：
@@ -219,10 +219,10 @@ Phase 0 计划形成：
   44 次 release/harness default/archive/aggressive 原始输出、源码契约和结构摘要。
 - [`data/archive-format-corpus.json`](data/archive-format-corpus.json)：
   项目生成的七种 7Z 单 coder、x86/ARM64 BCJ+LZMA2、
-  BCJ2+LZMA2 no-branch/E8 filter 链、RAR4
+  BCJ2+LZMA2 no-branch/E8/E9/JCC filter 链、RAR4
   store、CAB Store/MSZIP 与 ISO9660 单 PDF fixture 清单。
 - [`data/archive-format-engine-qt5.json`](data/archive-format-engine-qt5.json)：
-  十五个 archive/coder 样本的 default/release/archive/aggressive 原始输出、固定身份和
+  十七个 archive/coder 样本的 default/release/archive/aggressive 原始输出、固定身份和
   结构化摘要。
 - [`data/npm-dispatch-fixture.json`](data/npm-dispatch-fixture.json)：
   项目生成的 NPM 精确路径正例、无效 JSON 正例及路径/大小写近似反例清单。

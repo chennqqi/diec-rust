@@ -124,7 +124,7 @@ legacy-compatible 模式必须保留：
 这些上游上限不是 Rust 的安全上限。Rust hard limits 必须先于兼容策略执行，
 aggressive 只能在调用方允许的 hard budget 内提高 legacy policy threshold。
 `CAP-GAP-006` 仍保持开放：七种 7Z 单 coder、x86/ARM64 BCJ+LZMA2、
-BCJ2+LZMA2 no-branch/E8 filter 链、RAR4 store、CAB Store/MSZIP 与
+BCJ2+LZMA2 no-branch/E8/E9/JCC filter 链、RAR4 store、CAB Store/MSZIP 与
 ISO9660 正例虽已由
 [`archive-format-behavior.md`](archive-format-behavior.md) 固定，archive
 100000 精确边界已由

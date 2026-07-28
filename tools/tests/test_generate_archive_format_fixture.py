@@ -58,6 +58,8 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
                     "pdf-member-bcj-lzma2.7z",
                     "pdf-member-bcj2-lzma2.7z",
                     "pdf-member-bcj2-e8-lzma2.7z",
+                    "pdf-member-bcj2-e9-lzma2.7z",
+                    "pdf-member-bcj2-jcc-lzma2.7z",
                     "pdf-member-arm64-bcj-lzma2.7z",
                     "pdf-member.rar",
                     "pdf-member.cab",
@@ -347,6 +349,63 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
             "unsupported BCJ2 branch kind",
         ):
             module.encode_bcj2_streams(module.PDF, "unknown")
+
+    def test_7z_bcj2_e9_and_jcc_vectors_round_trip_independently(
+        self,
+    ):
+        module = load_module()
+        cases = (
+            (
+                "e9",
+                module.BCJ2_E9_PDF,
+                module.PDF + b"\xe9",
+                module.make_7z_bcj2_lzma2_e9,
+            ),
+            (
+                "jcc",
+                module.BCJ2_JCC_PDF,
+                module.PDF + b"\x0f\x85",
+                module.make_7z_bcj2_lzma2_jcc,
+            ),
+        )
+        for branch_kind, payload, expected_main, factory in cases:
+            with self.subTest(branch_kind=branch_kind):
+                main, call, jump, range_stream = (
+                    module.encode_bcj2_streams(
+                        payload,
+                        branch_kind,
+                    )
+                )
+                self.assertEqual(main, expected_main)
+                self.assertEqual(call, b"")
+                self.assertEqual(jump, b"\0\0\0\x10")
+                self.assertEqual(
+                    range_stream,
+                    b"\x00\x7f\xff\xfc\x00",
+                )
+                absolute = int.from_bytes(jump, "big")
+                relative = (
+                    absolute - (len(main) + 4)
+                ) & 0xFFFFFFFF
+                self.assertEqual(
+                    main + relative.to_bytes(4, "little"),
+                    payload,
+                )
+                archive = factory(module.PAYLOAD_NAME, payload)
+                self.assertIn(
+                    module.SEVENZIP_CODER_IDS["BCJ2"],
+                    archive,
+                )
+        with self.assertRaisesRegex(
+            ValueError,
+            "unexpected BCJ2 E9 payload",
+        ):
+            module.encode_bcj2_streams(module.PDF, "e9")
+        with self.assertRaisesRegex(
+            ValueError,
+            "unexpected BCJ2 JCC payload",
+        ):
+            module.encode_bcj2_streams(module.PDF, "jcc")
 
     def test_7z_arm64_bcj_lzma2_vectors_round_trip(self):
         module = load_module()

@@ -50,6 +50,8 @@ ARM64_PDF = (
 )
 DEFLATE64_PDF = PDF.ljust(DEFLATE64_DISTANCE, b"\0") + PDF[:3]
 BCJ2_E8_PDF = PDF + b"\xe8\xc0\xfe\xff\xff"
+BCJ2_E9_PDF = PDF + b"\xe9\xc0\xfe\xff\xff"
+BCJ2_JCC_PDF = PDF + b"\x0f\x85\xbf\xfe\xff\xff"
 
 
 def sevenzip_uint64(value: int) -> bytes:
@@ -510,23 +512,49 @@ def encode_bcj2_streams(
                 "BCJ2 control payload contains a branch candidate"
             )
         return payload, b"", b"", b"\0" * 5
-    if branch_kind == "e8":
+    if branch_kind in ("e8", "e9"):
         prefix = payload[:-5]
+        opcode = 0xE8 if branch_kind == "e8" else 0xE9
         if (
             len(payload) < 5
             or has_bcj2_candidate(prefix)
-            or payload[-5] != 0xE8
+            or payload[-5] != opcode
         ):
-            raise ValueError("unexpected BCJ2 E8 payload")
+            raise ValueError(
+                f"unexpected BCJ2 {branch_kind.upper()} payload"
+            )
         relative = int.from_bytes(payload[-4:], "little")
         output_position_after_opcode = len(prefix) + 1
         absolute = (
             relative + output_position_after_opcode + 4
         ) & 0xFFFFFFFF
+        address = absolute.to_bytes(4, "big")
         return (
-            prefix + b"\xe8",
-            absolute.to_bytes(4, "big"),
+            prefix + bytes((opcode,)),
+            address if branch_kind == "e8" else b"",
+            address if branch_kind == "e9" else b"",
+            b"\x00\x7f\xff\xfc\x00",
+        )
+    if branch_kind == "jcc":
+        prefix = payload[:-6]
+        opcodes = payload[-6:-4]
+        if (
+            len(payload) < 6
+            or has_bcj2_candidate(prefix)
+            or len(opcodes) != 2
+            or opcodes[0] != 0x0F
+            or (opcodes[1] & 0xF0) != 0x80
+        ):
+            raise ValueError("unexpected BCJ2 JCC payload")
+        relative = int.from_bytes(payload[-4:], "little")
+        output_position_after_opcodes = len(prefix) + 2
+        absolute = (
+            relative + output_position_after_opcodes + 4
+        ) & 0xFFFFFFFF
+        return (
+            prefix + opcodes,
             b"",
+            absolute.to_bytes(4, "big"),
             b"\x00\x7f\xff\xfc\x00",
         )
     raise ValueError(f"unsupported BCJ2 branch kind: {branch_kind}")
@@ -660,6 +688,22 @@ def make_7z_bcj2_lzma2_e8(name: str, payload: bytes) -> bytes:
         name,
         payload,
         "e8",
+    )
+
+
+def make_7z_bcj2_lzma2_e9(name: str, payload: bytes) -> bytes:
+    return make_7z_bcj2_lzma2(
+        name,
+        payload,
+        "e9",
+    )
+
+
+def make_7z_bcj2_lzma2_jcc(name: str, payload: bytes) -> bytes:
+    return make_7z_bcj2_lzma2(
+        name,
+        payload,
+        "jcc",
     )
 
 
@@ -952,6 +996,18 @@ FIXTURES = (
         make_7z_bcj2_lzma2_e8,
     ),
     (
+        "pdf-member-bcj2-e9-lzma2.7z",
+        "7Z BCJ2 E9 plus LZMA2 archive containing one PDF",
+        "BCJ2-E9+LZMA2",
+        make_7z_bcj2_lzma2_e9,
+    ),
+    (
+        "pdf-member-bcj2-jcc-lzma2.7z",
+        "7Z BCJ2 JCC plus LZMA2 archive containing one PDF",
+        "BCJ2-JCC+LZMA2",
+        make_7z_bcj2_lzma2_jcc,
+    ),
+    (
         "pdf-member-arm64-bcj-lzma2.7z",
         "7Z ARM64 BCJ plus LZMA2 archive containing one PDF",
         "ARM64-BCJ+LZMA2",
@@ -992,8 +1048,17 @@ def generate(output_dir: pathlib.Path) -> dict[str, object]:
             ARM64_PDF
             if compression_method == "ARM64-BCJ+LZMA2"
             else (
-                BCJ2_E8_PDF
-                if compression_method == "BCJ2-E8+LZMA2"
+                {
+                    "BCJ2-E8+LZMA2": BCJ2_E8_PDF,
+                    "BCJ2-E9+LZMA2": BCJ2_E9_PDF,
+                    "BCJ2-JCC+LZMA2": BCJ2_JCC_PDF,
+                }[compression_method]
+                if compression_method
+                in {
+                    "BCJ2-E8+LZMA2",
+                    "BCJ2-E9+LZMA2",
+                    "BCJ2-JCC+LZMA2",
+                }
                 else (
                     DEFLATE64_PDF
                     if compression_method == "Deflate64"

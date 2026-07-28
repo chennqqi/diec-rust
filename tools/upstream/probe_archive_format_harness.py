@@ -123,6 +123,16 @@ EXPECTED_ROOTS = {
         "root_names": ["7-Zip"],
         "stream_size": "336",
     },
+    "pdf-member-bcj2-e9-lzma2.7z": {
+        "filetype": "Binary",
+        "root_names": ["7-Zip"],
+        "stream_size": "336",
+    },
+    "pdf-member-bcj2-jcc-lzma2.7z": {
+        "filetype": "Binary",
+        "root_names": ["7-Zip"],
+        "stream_size": "337",
+    },
     "pdf-member-arm64-bcj-lzma2.7z": {
         "filetype": "Binary",
         "root_names": ["7-Zip"],
@@ -205,7 +215,7 @@ def load_fixture(
         }
     }:
         raise ProbeError("unexpected fixture generator dependencies")
-    if len(manifest["samples"]) != 15:
+    if len(manifest["samples"]) != 17:
         raise ProbeError("fixture sample count changed")
 
     declared = set()
@@ -528,6 +538,8 @@ def build_report(
         "sevenzip_bcj_lzma2_member_reaches_pdf_rules": True,
         "sevenzip_bcj2_lzma2_control_reaches_pdf_rules": True,
         "sevenzip_bcj2_e8_lzma2_member_reaches_pdf_rules": True,
+        "sevenzip_bcj2_e9_lzma2_member_reaches_pdf_rules": True,
+        "sevenzip_bcj2_jcc_lzma2_member_reaches_pdf_rules": True,
         "sevenzip_arm64_bcj_lzma2_bl_and_adrp_reach_pdf_rules": True,
         "rar4_store_member_reaches_pdf_rules": True,
         "cab_store_member_reaches_pdf_rules": True,

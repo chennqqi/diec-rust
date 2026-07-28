@@ -114,6 +114,26 @@
     },
     {
       "archive_format": "7Z",
+      "compression_method": "BCJ2-E9+LZMA2",
+      "expected_member_name": "payload.pdf",
+      "expected_payload_sha256": "23b2153ff0e57d3ce794b843dc0daf7b1ddc69654364e72a2dc3aac2a2287052",
+      "name": "pdf-member-bcj2-e9-lzma2.7z",
+      "purpose": "7Z BCJ2 E9 plus LZMA2 archive containing one PDF",
+      "sha256": "c9019677df0e36103ce047eaec5cc4927dfaaba50a958323dee4c5e6433e11d4",
+      "size": 325
+    },
+    {
+      "archive_format": "7Z",
+      "compression_method": "BCJ2-JCC+LZMA2",
+      "expected_member_name": "payload.pdf",
+      "expected_payload_sha256": "8b7323a3472d060dede7dc1a9097d95f0d81a16b8e5bb668dc27dbf228057533",
+      "name": "pdf-member-bcj2-jcc-lzma2.7z",
+      "purpose": "7Z BCJ2 JCC plus LZMA2 archive containing one PDF",
+      "sha256": "b325bccbf764b40309f0156ad5a46b20cd78824f1a3b6866b3123fe451d0cd6c",
+      "size": 326
+    },
+    {
+      "archive_format": "7Z",
       "compression_method": "ARM64-BCJ+LZMA2",
       "expected_member_name": "payload.pdf",
       "expected_payload_sha256": "2b3bc0f871ac98ea53d0e0e8188594882876ad1a8f4b8d7c83e18865a47695cd",
