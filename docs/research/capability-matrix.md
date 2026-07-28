@@ -146,10 +146,12 @@ PDF/CFBF 和 Binary fallback 四组的所有成员。Archive 组已观察 APK、
 7Z Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64、x86 BCJ+LZMA2、
 BCJ2+LZMA2 no-branch/E8/E9/JCC、
 ARM64-BCJ+LZMA2 BL/ADRP、
-RAR4 store、RAR5 Store/solid、CAB Store/MSZIP 与 ISO9660 的 engine-only
+RAR4 store、RAR5 Store/solid、RAR3 unpack29 method `0x35`、RAR5 method 5
+压缩/solid、CAB Store/MSZIP 与 ISO9660 的 engine-only
 archive 正向解包见
 [`archive-format-behavior.md`](archive-format-behavior.md) 与
-[`archive-rar5-store-behavior.md`](archive-rar5-store-behavior.md)；其中 7Z/CAB
+[`archive-rar5-store-behavior.md`](archive-rar5-store-behavior.md)、
+[`archive-rar-compressed-behavior.md`](archive-rar-compressed-behavior.md)；其中 7Z/CAB
 顶层仍显示 `Binary`，但已支持方法可产生 PDF Stream child；CAB LZX:15
 普通 archive 无 child、aggressive 扫描 331-byte Binary/Unknown；CAB
 Quantum 18 对应为 0 child 与 59-byte Binary/Unknown。NPM
@@ -208,7 +210,8 @@ hideunknown 的可观察增量。完整输入哈希和输出见
 - `CAP-NEST-003`：archive 解包由独立 `bIsArchivesScan` 控制，发布 CLI 不设置它；ZIP 和
   ZIP→ZIP 样本在 recursive/aggressive 组合下均不解包。固定 harness 进一步
   证明七种 7Z 单 coder、x86/ARM64 BCJ+LZMA2、
-  BCJ2+LZMA2 no-branch/E8/E9/JCC filter 链、RAR4 store、RAR5 Store/solid、CAB
+  BCJ2+LZMA2 no-branch/E8/E9/JCC filter 链、RAR4 store、RAR5 Store/solid、
+  RAR3 unpack29 method `0x35`、RAR5 method 5 compressed/solid、CAB
   Store/MSZIP 与 ISO9660 默认与发布 CLI 逐字节相同且均不展开，显式
   archive 后各产生一个 PDF Stream child；七种基础 coder+AES 与完整
   x86/ARM64 filter × 七种基础 coder × AES 在公共 archive 路径因无密码
@@ -233,7 +236,10 @@ hideunknown 的可观察增量。完整输入哈希和输出见
   [`iso9660-endian-behavior.md`](iso9660-endian-behavior.md)；
   RAR5 Store 单成员与 solid 双成员见
   [`archive-rar5-store-behavior.md`](archive-rar5-store-behavior.md)；
-  RAR 压缩算法、剩余字段、ISO path-table location/多字段组合冲突与算术
+  RAR3 unpack29/RAR5 method 5 压缩及 solid 矩阵见
+  [`archive-rar-compressed-behavior.md`](archive-rar-compressed-behavior.md)；
+  RAR15/RAR20/RAR7 algorithm version 1、加密/multi-volume/损坏流与剩余字段、
+  ISO path-table location/多字段组合冲突与算术
   wrap、更大或混合失败记录图及跨平台仍归 `CAP-GAP-006`。
 - `CAP-NEST-005`：overlay 始终作为 subdevice 扫描；非 aggressive resource 仅在探测为
   scanable 类型时扫描。
@@ -253,7 +259,7 @@ hideunknown 的可观察增量。完整输入哈希和输出见
   33,554,546 bytes，第一次 progress callback 取消保留 1 条 root partial record。
   状态为 Observed with gaps；7Z Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64、
   x86 BCJ+LZMA2、BCJ2+LZMA2 no-branch/E8/E9/JCC、ARM64-BCJ+LZMA2 BL/ADRP、
-  RAR4 store、CAB Store/MSZIP 与
+  RAR4 store、RAR3 unpack29/RAR5 method 5 compressed/solid、CAB Store/MSZIP 与
   ISO9660 正例、7Z 七种基础 coder+AES 与完整 x86/ARM64
   filter × 七种基础 coder × AES 成功密码契约、
   BCJ2+LZMA2+4×AES 正确密码

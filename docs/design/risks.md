@@ -327,6 +327,12 @@ baseline 的变更都要检查本表。
   RAR5 Store 单成员与 solid 双成员，证明公共 engine 分别展开一/两个 PDF，
   并绑定 RAR5 method/solid index 及 solid Store 分派源码，见
   [`archive-rar5-store-behavior.md`](../research/archive-rar5-store-behavior.md)。
+  另一个 16-run 禁网 oracle 使用固定外部 RAR3 unpack29 method `0x35` 与
+  RAR5 method 5 样本，固定普通模式无 child、aggressive 模式展开单成员及
+  solid 双成员的 text/PNG/JPEG；来源清单绑定 commit、hash、header 结构、
+  license 与 purchase evidence，但项目法律审查和二进制再分发批准保持 false，
+  因而仓库只保存清单与 oracle，不提交样本。见
+  [`archive-rar-compressed-behavior.md`](../research/archive-rar-compressed-behavior.md)。
   新增 64-run oracle 又固定 7Z/RAR4/CAB/ISO9660 的两记录正序/逆序、
   重名不去重、普通模式跳过空成员但继续后续记录以及 aggressive 空成员原位输出，
   见

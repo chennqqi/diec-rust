@@ -255,10 +255,13 @@ elapsed 值与固定规则执行序列另见
   DOS/COM/NE/LE/LX 等格式；其中七种 7Z 单 coder、x86/ARM64 BCJ+LZMA2、
   BCJ2+LZMA2 no-branch/E8/E9/JCC filter 链、7Z 七种基础 coder+AES 与完整
   x86/ARM64 filter × 七种基础 coder × AES 成功密码契约、
-  BCJ2+LZMA2+4×AES 正确密码失败边界、RAR5 Store/solid、CAB
+  BCJ2+LZMA2+4×AES 正确密码失败边界、RAR5 Store/solid、
+  RAR3 unpack29/RAR5 method 5 compressed/solid、CAB
   Store/MSZIP 正例与 LZX 普通/激进失败边界现由
   [`archive-format-behavior.md`](archive-format-behavior.md) 和
-  [`archive-rar5-store-behavior.md`](archive-rar5-store-behavior.md) 固定，legacy 与
+  [`archive-rar5-store-behavior.md`](archive-rar5-store-behavior.md)、
+  [`archive-rar-compressed-behavior.md`](archive-rar-compressed-behavior.md)
+  固定，legacy 与
   DOS/COM 由各自专用 oracle 固定；NPM 精确路径直接检测为真、公共自动扫描
   回退 Binary 及强制规则分支现由
   [`npm-dispatch-reachability.md`](npm-dispatch-reachability.md) 固定；通用
@@ -295,7 +298,8 @@ elapsed 值与固定规则执行序列另见
   7Z 七种基础 coder+AES 与完整 x86/ARM64
   filter × 七种基础 coder × AES 成功密码契约、
   BCJ2+LZMA2+4×AES 正确密码失败边界、
-  RAR4 store、RAR5 Store/solid、CAB Store/MSZIP 与 ISO9660 正例、
+  RAR4 store、RAR5 Store/solid、RAR3 unpack29/RAR5 method 5
+  compressed/solid、CAB Store/MSZIP 与 ISO9660 正例、
   CAB LZX/Quantum 失败边界及 ZIP
   depth 64/约 32 MiB 累计展开量已有
   专用报告。

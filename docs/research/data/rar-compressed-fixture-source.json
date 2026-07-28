@@ -1,0 +1,230 @@
+{
+  "generator": "tools/corpus/audit_rar_compressed_fixture_source.py",
+  "generator_sha256": "72d9abd9d03843454e136d0e82cd177577914c2ed2f1f1bc85da61077f0dfffe",
+  "redistribution_review": {
+    "creator_license_claim_present": true,
+    "creator_owned_content_cc0": true,
+    "creator_purchase_evidence_present": true,
+    "project_legal_review_complete": false,
+    "project_redistribution_approved": false,
+    "rarlab_eula_allows_licensed_creator_to_distribute_archives": true
+  },
+  "relationships": {
+    "creator_applies_cc0_to_owned_content": true,
+    "four_selected_non_sfx_archives_are_present": true,
+    "makefile_requests_best_compression": true,
+    "plain_samples_are_not_solid": true,
+    "purchase_evidence_is_present": true,
+    "rar3_samples_use_compressed_method_0x35": true,
+    "rar5_methods_are_store_or_method_5": true,
+    "rar5_non_solid_has_creator_store_fallback": true,
+    "rar5_samples_include_compressed_method_5": true,
+    "readme_claims_legally_redistributable_test_files": true,
+    "readme_claims_registered_creator": true,
+    "solid_samples_have_a_solid_following_member": true
+  },
+  "schema_version": 1,
+  "selection": {
+    "binary_files_committed_to_project": false,
+    "external_storage": true,
+    "policy": "compressed RAR3/RAR5 controls and solid pairs; exclude all SFX, authenticity, recovery and locked cases",
+    "samples": [
+      {
+        "archive_solid": false,
+        "bytes": 98,
+        "contains_sfx": false,
+        "format": "RAR3",
+        "members": [
+          {
+            "data_crc32": "6ec18ffe",
+            "method": 53,
+            "method_hex": "0x35",
+            "name": "testfile.txt",
+            "packed_sha256": "fef7bde0f30a26837976fe6e3a6b1cb4ea6964747b4419b4ebfa6b3f0ed0ab4c",
+            "packed_size": 27,
+            "solid": false,
+            "unpack_version": 29,
+            "unpacked_size": 12
+          }
+        ],
+        "path": "build/testfile.rar3.rar",
+        "sha256": "dce342bc0c2852fcaa36a03da5e55abb7dd69c045bbd812faebebc1a3844f5a4",
+        "source_files": [
+          {
+            "bytes": 12,
+            "path": "sources/testfile.txt",
+            "sha256": "b2f51cd17b3cbe77f091f887d91110164a2cb5a5a9ebe828c44d655c83dca8eb"
+          }
+        ]
+      },
+      {
+        "archive_solid": true,
+        "bytes": 381,
+        "contains_sfx": false,
+        "format": "RAR3",
+        "members": [
+          {
+            "data_crc32": "afb0ac62",
+            "method": 53,
+            "method_hex": "0x35",
+            "name": "testfile.png",
+            "packed_sha256": "1db5020bdd23d170ef9b319a70c9f1b4097d4808d79c61c1978d861b70ac0be4",
+            "packed_size": 84,
+            "solid": false,
+            "unpack_version": 29,
+            "unpacked_size": 87
+          },
+          {
+            "data_crc32": "da70b16c",
+            "method": 53,
+            "method_hex": "0x35",
+            "name": "testfile.jpg",
+            "packed_sha256": "e5457aa5f839f40713c735bda3b0e1d32b85159b2478a898fb659ef12e7c73f0",
+            "packed_size": 182,
+            "solid": true,
+            "unpack_version": 29,
+            "unpacked_size": 220
+          }
+        ],
+        "path": "build/testfile.rar3.solid.cbr",
+        "sha256": "610376cfa11ec11bf55cd117f5d5b83dd11dded6aad2f825b41dbe84d7f3098d",
+        "source_files": [
+          {
+            "bytes": 87,
+            "path": "sources/testfile.png",
+            "sha256": "fdda20984cc1591419ec4583e24e72e4dba39d0b96608253f853a2dfb238ad1a"
+          },
+          {
+            "bytes": 220,
+            "path": "sources/testfile.jpg",
+            "sha256": "e514232511df1a4f4221a75c27523518c3c62a2fe6470fa56e430364428eecd1"
+          }
+        ]
+      },
+      {
+        "archive_solid": false,
+        "bytes": 410,
+        "contains_sfx": false,
+        "format": "RAR5",
+        "members": [
+          {
+            "algorithm_version": 0,
+            "data_crc32": "da70b16c",
+            "dictionary_exponent": 0,
+            "host_os": 1,
+            "method": 5,
+            "name": "testfile.jpg",
+            "packed_sha256": "23fb65eaa609253adc282c050997d89d509f136c80b6e452cc847db35678310d",
+            "packed_size": 214,
+            "solid": false,
+            "unpacked_size": 220
+          },
+          {
+            "algorithm_version": 0,
+            "data_crc32": "afb0ac62",
+            "dictionary_exponent": 0,
+            "host_os": 1,
+            "method": 0,
+            "name": "testfile.png",
+            "packed_sha256": "fdda20984cc1591419ec4583e24e72e4dba39d0b96608253f853a2dfb238ad1a",
+            "packed_size": 87,
+            "solid": false,
+            "unpacked_size": 87
+          }
+        ],
+        "path": "build/testfile.rar5.cbr",
+        "sha256": "e8b106048f18e6fb9a5f8ec6a95346e76906e7e4e9ca15ec97e4f926159cb398",
+        "source_files": [
+          {
+            "bytes": 220,
+            "path": "sources/testfile.jpg",
+            "sha256": "e514232511df1a4f4221a75c27523518c3c62a2fe6470fa56e430364428eecd1"
+          },
+          {
+            "bytes": 87,
+            "path": "sources/testfile.png",
+            "sha256": "fdda20984cc1591419ec4583e24e72e4dba39d0b96608253f853a2dfb238ad1a"
+          }
+        ]
+      },
+      {
+        "archive_solid": true,
+        "bytes": 407,
+        "contains_sfx": false,
+        "format": "RAR5",
+        "members": [
+          {
+            "algorithm_version": 0,
+            "data_crc32": "da70b16c",
+            "dictionary_exponent": 3,
+            "host_os": 1,
+            "method": 5,
+            "name": "testfile.jpg",
+            "packed_sha256": "0e746528696a7be606fab84294b2357fd39d2610d74a960e5b2666c5b7eac725",
+            "packed_size": 236,
+            "solid": false,
+            "unpacked_size": 220
+          },
+          {
+            "algorithm_version": 0,
+            "data_crc32": "afb0ac62",
+            "dictionary_exponent": 3,
+            "host_os": 1,
+            "method": 5,
+            "name": "testfile.png",
+            "packed_sha256": "c26bd6c7ab6bc8ff05c1b49c527c2473c8e8a73db19b6e1c1a157b2f83a58f35",
+            "packed_size": 62,
+            "solid": true,
+            "unpacked_size": 87
+          }
+        ],
+        "path": "build/testfile.rar5.solid.cbr",
+        "sha256": "23ef370c58b7646d527106829410700ac314d86380b9c968a37066f39fe6c70b",
+        "source_files": [
+          {
+            "bytes": 220,
+            "path": "sources/testfile.jpg",
+            "sha256": "e514232511df1a4f4221a75c27523518c3c62a2fe6470fa56e430364428eecd1"
+          },
+          {
+            "bytes": 87,
+            "path": "sources/testfile.png",
+            "sha256": "fdda20984cc1591419ec4583e24e72e4dba39d0b96608253f853a2dfb238ad1a"
+          }
+        ]
+      }
+    ]
+  },
+  "source": {
+    "commit": "16b785c2b1b504e99fc307676e5369a26d3ce060",
+    "evidence_files": [
+      {
+        "bytes": 10301,
+        "path": "README.md",
+        "sha256": "9dd19d40540bbcfce35ca76001e44eeaf003ed66bebe02006841096929e9dd89"
+      },
+      {
+        "bytes": 1230,
+        "path": "LICENSE.md",
+        "sha256": "64d97b29bc28614947511c5cf1872962a274945903ef2984acdbf455e281ceb1"
+      },
+      {
+        "bytes": 7049,
+        "path": "LICENSE.cc0",
+        "sha256": "7179683e8000e6bdc9bbc60d85edf0a4ac8e76f951857f54fcb775d5886f1309"
+      },
+      {
+        "bytes": 7516,
+        "path": "Makefile",
+        "sha256": "fcbab06a7379fe6b60e2fbc96c49c065621152bea9611e0a618c3396c92a3df7"
+      },
+      {
+        "bytes": 594416,
+        "path": "purchase_evidence.png",
+        "sha256": "0661a34de0d0fdfa5693a2dd29d65b3ca70c3a1b6858f78c9d4dd88a5e966c8b"
+      }
+    ],
+    "rarlab_eula_url": "https://www.rarlab.com/license.htm",
+    "remote": "https://github.com/ssokolow/rar-test-files.git"
+  }
+}

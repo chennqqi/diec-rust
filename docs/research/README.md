@@ -43,6 +43,9 @@ Phase 0 计划形成：
 - [`archive-rar5-store-behavior.md`](archive-rar5-store-behavior.md)：
   项目生成 RAR5 Store 单成员与 solid 双成员、8 次固定 Qt5 oracle、源码
   solid-store 分派及明确排除专有压缩算法/第三方 binary 的语料边界（Draft）。
+- [`archive-rar-compressed-behavior.md`](archive-rar-compressed-behavior.md)：
+  固定外部 CC0 候选的 RAR3/RAR5 method-5、solid 状态、许可证边界和
+  aggressive oracle（Draft）。
 - [`npm-dispatch-reachability.md`](npm-dispatch-reachability.md)：
   NPM 精确归档路径检测、公共 GZIP 自动分派不可达、强制 NPM 规则分支及
   双 Qt5 release 对照（Draft）。
@@ -281,6 +284,11 @@ Phase 0 计划形成：
 - [`data/rar5-store-engine-qt5.json`](data/rar5-store-engine-qt5.json)：
   RAR5 Store 单 PDF 与 solid 双 PDF 的 8 次固定 Qt5 原始输出、源码契约和
   结构化摘要。
+- [`data/rar-compressed-fixture-source.json`](data/rar-compressed-fixture-source.json)：
+  四个外部非 SFX RAR3/RAR5 压缩样本的固定来源、CC0/creator evidence、
+  header/method/solid 结构和开放再分发评审。
+- [`data/rar-compressed-engine-qt5.json`](data/rar-compressed-engine-qt5.json)：
+  RAR3/RAR5 压缩/solid 的 16-run 固定 engine oracle、原始输出和确定性投影。
 - [`data/npm-dispatch-fixture.json`](data/npm-dispatch-fixture.json)：
   项目生成的 NPM 精确路径正例、无效 JSON 正例及路径/大小写近似反例清单。
 - [`data/npm-dispatch-engine-qt5.json`](data/npm-dispatch-engine-qt5.json)：

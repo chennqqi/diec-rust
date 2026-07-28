@@ -32,9 +32,12 @@ Last updated: 2026-07-28
 这些结果关闭 `CAP-GAP-006` 中 ZIP deflate、ZipCrypto 无密码、CRC、压缩流损坏、
 截断、central-directory 缺失、越界 offset、未知 method、路径 metadata、
 mixed-member filter 和 1 MiB/843.58:1 压缩比测试点。该 gap 仍因更高资源边界、
-ZIP AES、其他 ZIP 压缩算法、RAR 的压缩/加密、solid/multi-volume、
-剩余结构字段、ISO path-table location/多字段组合冲突、算术 wrap、更大或
-混合失败记录图和跨平台行为保持开放。7Z、RAR4、CAB、ISO9660 的系统化
+ZIP AES、其他 ZIP 压缩算法、RAR15/RAR20、RAR7 algorithm version 1、RAR
+加密/multi-volume/recovery/损坏压缩流、剩余结构字段、ISO path-table
+location/多字段组合冲突、算术 wrap、更大或混合失败记录图和跨平台行为保持
+开放。RAR3 unpack29 method `0x35` 与 RAR5 method 5 压缩/solid 正例已由
+[`archive-rar-compressed-behavior.md`](archive-rar-compressed-behavior.md)
+固定。7Z、RAR4、CAB、ISO9660 的系统化
 EOF 前缀截断阶梯已由
 [`archive-truncation-behavior.md`](archive-truncation-behavior.md) 固定。
 同四格式的首轮 CRC/size/offset/method/record-field 突变已由
@@ -181,9 +184,12 @@ python tools\upstream\probe_archive_adversarial_harness.py `
 - 7Z LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64、x86/ARM64 BCJ+LZMA2
   与 CAB MSZIP
   正例及 7Z 七种基础 coder+AES、完整 x86/ARM64
-  filter × 七种基础 coder × AES 的公共无密码、直接
-  正确/缺失/错误密码边界已由后续
-  [`archive-format-behavior.md`](archive-format-behavior.md) 固定；仍未覆盖
-  RAR 压缩，以及其他加密、solid/multi-volume 和恢复记录；
+   filter × 七种基础 coder × AES 的公共无密码、直接
+   正确/缺失/错误密码边界已由后续
+   [`archive-format-behavior.md`](archive-format-behavior.md) 固定；RAR3
+   unpack29 method `0x35` 与 RAR5 method 5 压缩/solid 正例也已由
+   [`archive-rar-compressed-behavior.md`](archive-rar-compressed-behavior.md)
+   固定；仍未覆盖 RAR15/RAR20、RAR7 algorithm version 1、加密、多卷、恢复
+   和损坏压缩流；
 - 未测真实磁盘耗尽、16 MiB 临时文件分支、OOM、长时间取消与并发；
 - Windows、macOS 和 Linux Qt6 仍需固定对应 oracle。

@@ -77,8 +77,11 @@ ZIP deflate/ZipCrypto/CRC/压缩流畸形与 1 MiB 高压缩比现由
 [`archive-multirecord-behavior.md`](archive-multirecord-behavior.md) 固定；
 ISO9660 的 17-field 单侧双端序冲突由
 [`iso9660-endian-behavior.md`](iso9660-endian-behavior.md) 固定；
-RAR 的压缩算法、剩余字段、ISO path-table location/多字段组合冲突与算术
-wrap、更大或混合失败记录图、资源耗尽及跨平台行为仍未验证。
+RAR3 unpack29 method `0x35` 与 RAR5 method 5 压缩/solid 正例由
+[`archive-rar-compressed-behavior.md`](archive-rar-compressed-behavior.md)
+固定；RAR15/RAR20、RAR7 algorithm version 1、加密、多卷、恢复与损坏压缩流、
+剩余字段、ISO path-table location/多字段组合冲突与算术 wrap、更大或混合失败
+记录图、资源耗尽及跨平台行为仍未验证。
 
 机器报告是
 [`archive-format-engine-qt5.json`](data/archive-format-engine-qt5.json)，
@@ -412,8 +415,10 @@ LZX/Quantum 普通/激进模式的失败边界，
   [`generic-archive-dispatch-reachability.md`](generic-archive-dispatch-reachability.md)；
   NPM 的直接检测、公共自动回退和强制分支见
   [`npm-dispatch-reachability.md`](npm-dispatch-reachability.md)；
-- RAR 的压缩方法、ISO9660 扩展，以及
-  solid/multi-volume/encrypted entry；
+- RAR3 unpack29 method `0x35` 与 RAR5 method 5 压缩/solid 正例见
+  [`archive-rar-compressed-behavior.md`](archive-rar-compressed-behavior.md)；
+  仍未覆盖 RAR15/RAR20、RAR7 algorithm version 1、加密、多卷、恢复与损坏
+  压缩流，以及 ISO9660 扩展；
 - 截断 header、错误 size/CRC、重复名称、目录、链接和路径穿越 metadata；
 - 空 archive、多成员顺序、不可扫描成员与错误/partial-result 行为；
 - aggressive 100000 精确边界见

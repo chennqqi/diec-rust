@@ -1,0 +1,489 @@
+{
+  "cases": [
+    {
+      "deterministic": true,
+      "fixture": "build/testfile.rar3.rar",
+      "fixture_sha256": "dce342bc0c2852fcaa36a03da5e55abb7dd69c045bbd812faebebc1a3844f5a4",
+      "id": "rar3_method35_single",
+      "mode": "default",
+      "runs": [
+        {
+          "command": [
+            "/opt/die-build/src/console/diec-archive-harness",
+            "--archive",
+            "/fixtures/build/testfile.rar3.rar"
+          ],
+          "exit_code": 0,
+          "projection": {
+            "children": [],
+            "root_filetype": "RAR",
+            "root_size": 98
+          },
+          "stderr_base64": "",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiUkFSIiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjk4IiwKICAgICAgICAgICAgInZhbHVlcyI6IFsKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiVW5rbm93bjogVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgfQogICAgXQp9CgoK",
+          "stdout_sha256": "8f184c8747b5d98db429a743595b5a74993f83f6e03bd0e81fe9ca37f6ca3fe2"
+        },
+        {
+          "command": [
+            "/opt/die-build/src/console/diec-archive-harness",
+            "--archive",
+            "/fixtures/build/testfile.rar3.rar"
+          ],
+          "exit_code": 0,
+          "projection": {
+            "children": [],
+            "root_filetype": "RAR",
+            "root_size": 98
+          },
+          "stderr_base64": "",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiUkFSIiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjk4IiwKICAgICAgICAgICAgInZhbHVlcyI6IFsKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiVW5rbm93bjogVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgfQogICAgXQp9CgoK",
+          "stdout_sha256": "8f184c8747b5d98db429a743595b5a74993f83f6e03bd0e81fe9ca37f6ca3fe2"
+        }
+      ]
+    },
+    {
+      "deterministic": true,
+      "fixture": "build/testfile.rar3.rar",
+      "fixture_sha256": "dce342bc0c2852fcaa36a03da5e55abb7dd69c045bbd812faebebc1a3844f5a4",
+      "id": "rar3_method35_single",
+      "mode": "aggressive",
+      "runs": [
+        {
+          "command": [
+            "/opt/die-build/src/console/diec-archive-harness",
+            "--archive",
+            "--aggressive",
+            "/fixtures/build/testfile.rar3.rar"
+          ],
+          "exit_code": 0,
+          "projection": {
+            "children": [
+              {
+                "filetype": "Binary",
+                "size": 12
+              }
+            ],
+            "root_filetype": "RAR",
+            "root_size": 98
+          },
+          "stderr_base64": "",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiUkFSIiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjk4IiwKICAgICAgICAgICAgInZhbHVlcyI6IFsKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiVW5rbm93bjogVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiZmlsZXR5cGUiOiAiQmluYXJ5IiwKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJvZmZzZXQiOiAiMCIsCiAgICAgICAgICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIlN0cmVhbSIsCiAgICAgICAgICAgICAgICAgICAgInNpemUiOiAiMTIiLAogICAgICAgICAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJpbmZvIjogIkxGIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlBsYWluIHRleHQiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgInN0cmluZyI6ICJGb3JtYXQ6IFBsYWluIHRleHRbTEZdIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJ0eXBlIjogImZvcm1hdCIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAidmVyc2lvbiI6ICIiCiAgICAgICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICAgICBdCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIF0KICAgICAgICB9CiAgICBdCn0KCgo=",
+          "stdout_sha256": "27486f764197d26383c4d0ca92f02a317237e9482b67919a12bf54ae2a080f2a"
+        },
+        {
+          "command": [
+            "/opt/die-build/src/console/diec-archive-harness",
+            "--archive",
+            "--aggressive",
+            "/fixtures/build/testfile.rar3.rar"
+          ],
+          "exit_code": 0,
+          "projection": {
+            "children": [
+              {
+                "filetype": "Binary",
+                "size": 12
+              }
+            ],
+            "root_filetype": "RAR",
+            "root_size": 98
+          },
+          "stderr_base64": "",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiUkFSIiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjk4IiwKICAgICAgICAgICAgInZhbHVlcyI6IFsKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiVW5rbm93bjogVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiZmlsZXR5cGUiOiAiQmluYXJ5IiwKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJvZmZzZXQiOiAiMCIsCiAgICAgICAgICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIlN0cmVhbSIsCiAgICAgICAgICAgICAgICAgICAgInNpemUiOiAiMTIiLAogICAgICAgICAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJpbmZvIjogIkxGIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlBsYWluIHRleHQiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgInN0cmluZyI6ICJGb3JtYXQ6IFBsYWluIHRleHRbTEZdIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJ0eXBlIjogImZvcm1hdCIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAidmVyc2lvbiI6ICIiCiAgICAgICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICAgICBdCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIF0KICAgICAgICB9CiAgICBdCn0KCgo=",
+          "stdout_sha256": "27486f764197d26383c4d0ca92f02a317237e9482b67919a12bf54ae2a080f2a"
+        }
+      ]
+    },
+    {
+      "deterministic": true,
+      "fixture": "build/testfile.rar3.solid.cbr",
+      "fixture_sha256": "610376cfa11ec11bf55cd117f5d5b83dd11dded6aad2f825b41dbe84d7f3098d",
+      "id": "rar3_method35_solid_pair",
+      "mode": "default",
+      "runs": [
+        {
+          "command": [
+            "/opt/die-build/src/console/diec-archive-harness",
+            "--archive",
+            "/fixtures/build/testfile.rar3.solid.cbr"
+          ],
+          "exit_code": 0,
+          "projection": {
+            "children": [],
+            "root_filetype": "RAR",
+            "root_size": 381
+          },
+          "stderr_base64": "",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiUkFSIiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjM4MSIsCiAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJVbmtub3duIiwKICAgICAgICAgICAgICAgICAgICAic3RyaW5nIjogIlVua25vd246IFVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ2ZXJzaW9uIjogIiIKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgXQogICAgICAgIH0KICAgIF0KfQoKCg==",
+          "stdout_sha256": "d1888c473d52f56da929da6df69650a84b768a347d55f04796d81af8a26fb81f"
+        },
+        {
+          "command": [
+            "/opt/die-build/src/console/diec-archive-harness",
+            "--archive",
+            "/fixtures/build/testfile.rar3.solid.cbr"
+          ],
+          "exit_code": 0,
+          "projection": {
+            "children": [],
+            "root_filetype": "RAR",
+            "root_size": 381
+          },
+          "stderr_base64": "",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiUkFSIiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjM4MSIsCiAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJVbmtub3duIiwKICAgICAgICAgICAgICAgICAgICAic3RyaW5nIjogIlVua25vd246IFVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ2ZXJzaW9uIjogIiIKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgXQogICAgICAgIH0KICAgIF0KfQoKCg==",
+          "stdout_sha256": "d1888c473d52f56da929da6df69650a84b768a347d55f04796d81af8a26fb81f"
+        }
+      ]
+    },
+    {
+      "deterministic": true,
+      "fixture": "build/testfile.rar3.solid.cbr",
+      "fixture_sha256": "610376cfa11ec11bf55cd117f5d5b83dd11dded6aad2f825b41dbe84d7f3098d",
+      "id": "rar3_method35_solid_pair",
+      "mode": "aggressive",
+      "runs": [
+        {
+          "command": [
+            "/opt/die-build/src/console/diec-archive-harness",
+            "--archive",
+            "--aggressive",
+            "/fixtures/build/testfile.rar3.solid.cbr"
+          ],
+          "exit_code": 0,
+          "projection": {
+            "children": [
+              {
+                "filetype": "PNG",
+                "size": 87
+              },
+              {
+                "filetype": "JPEG",
+                "size": 220
+              }
+            ],
+            "root_filetype": "RAR",
+            "root_size": 381
+          },
+          "stderr_base64": "",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiUkFSIiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjM4MSIsCiAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJVbmtub3duIiwKICAgICAgICAgICAgICAgICAgICAic3RyaW5nIjogIlVua25vd246IFVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ2ZXJzaW9uIjogIiIKICAgICAgICAgICAgICAgIH0sCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImZpbGV0eXBlIjogIlBORyIsCiAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgICAgICAgICAib2Zmc2V0IjogIjAiLAogICAgICAgICAgICAgICAgICAgICJwYXJlbnRmaWxlcGFydCI6ICJTdHJlYW0iLAogICAgICAgICAgICAgICAgICAgICJzaXplIjogIjg3IiwKICAgICAgICAgICAgICAgICAgICAidmFsdWVzIjogWwogICAgICAgICAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIyeDIsIDggYml0cywgUGFsZXR0ZSIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJQTkciLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgInN0cmluZyI6ICJGb3JtYXQ6IFBOR1syeDIsIDggYml0cywgUGFsZXR0ZV0iLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiZm9ybWF0IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJ2ZXJzaW9uIjogIiIKICAgICAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgICAgIF0KICAgICAgICAgICAgICAgIH0sCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImZpbGV0eXBlIjogIkpQRUciLAogICAgICAgICAgICAgICAgICAgICJpbmZvIjogIiIsCiAgICAgICAgICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgICAgICAgICAicGFyZW50ZmlsZXBhcnQiOiAiU3RyZWFtIiwKICAgICAgICAgICAgICAgICAgICAic2l6ZSI6ICIyMjAiLAogICAgICAgICAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJpbmZvIjogIiIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJKUEVHIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiRm9ybWF0OiBKUEVHKDEuMSkiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiZm9ybWF0IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJ2ZXJzaW9uIjogIjEuMSIKICAgICAgICAgICAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiYTNhOTZhZGQwNTBmYzUxYTJiM2NlNTlhOWE0OTEwMzQiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIm5hbWUiOiAiRFFUIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiSW1hZ2U6IERRVFthM2E5NmFkZDA1MGZjNTFhMmIzY2U1OWE5YTQ5MTAzNF0iLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiaW1hZ2UiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAgICAgXQogICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgfQogICAgXQp9CgoK",
+          "stdout_sha256": "4b5cf406d105898744ea16d11c4545861b9266e0126fd73e28daa08f14990d68"
+        },
+        {
+          "command": [
+            "/opt/die-build/src/console/diec-archive-harness",
+            "--archive",
+            "--aggressive",
+            "/fixtures/build/testfile.rar3.solid.cbr"
+          ],
+          "exit_code": 0,
+          "projection": {
+            "children": [
+              {
+                "filetype": "PNG",
+                "size": 87
+              },
+              {
+                "filetype": "JPEG",
+                "size": 220
+              }
+            ],
+            "root_filetype": "RAR",
+            "root_size": 381
+          },
+          "stderr_base64": "",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiUkFSIiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjM4MSIsCiAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJVbmtub3duIiwKICAgICAgICAgICAgICAgICAgICAic3RyaW5nIjogIlVua25vd246IFVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ2ZXJzaW9uIjogIiIKICAgICAgICAgICAgICAgIH0sCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImZpbGV0eXBlIjogIlBORyIsCiAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgICAgICAgICAib2Zmc2V0IjogIjAiLAogICAgICAgICAgICAgICAgICAgICJwYXJlbnRmaWxlcGFydCI6ICJTdHJlYW0iLAogICAgICAgICAgICAgICAgICAgICJzaXplIjogIjg3IiwKICAgICAgICAgICAgICAgICAgICAidmFsdWVzIjogWwogICAgICAgICAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIyeDIsIDggYml0cywgUGFsZXR0ZSIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJQTkciLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgInN0cmluZyI6ICJGb3JtYXQ6IFBOR1syeDIsIDggYml0cywgUGFsZXR0ZV0iLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiZm9ybWF0IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJ2ZXJzaW9uIjogIiIKICAgICAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgICAgIF0KICAgICAgICAgICAgICAgIH0sCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImZpbGV0eXBlIjogIkpQRUciLAogICAgICAgICAgICAgICAgICAgICJpbmZvIjogIiIsCiAgICAgICAgICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgICAgICAgICAicGFyZW50ZmlsZXBhcnQiOiAiU3RyZWFtIiwKICAgICAgICAgICAgICAgICAgICAic2l6ZSI6ICIyMjAiLAogICAgICAgICAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJpbmZvIjogIiIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJKUEVHIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiRm9ybWF0OiBKUEVHKDEuMSkiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiZm9ybWF0IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJ2ZXJzaW9uIjogIjEuMSIKICAgICAgICAgICAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiYTNhOTZhZGQwNTBmYzUxYTJiM2NlNTlhOWE0OTEwMzQiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIm5hbWUiOiAiRFFUIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiSW1hZ2U6IERRVFthM2E5NmFkZDA1MGZjNTFhMmIzY2U1OWE5YTQ5MTAzNF0iLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiaW1hZ2UiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAgICAgXQogICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgfQogICAgXQp9CgoK",
+          "stdout_sha256": "4b5cf406d105898744ea16d11c4545861b9266e0126fd73e28daa08f14990d68"
+        }
+      ]
+    },
+    {
+      "deterministic": true,
+      "fixture": "build/testfile.rar5.cbr",
+      "fixture_sha256": "e8b106048f18e6fb9a5f8ec6a95346e76906e7e4e9ca15ec97e4f926159cb398",
+      "id": "rar5_method5_mixed_pair",
+      "mode": "default",
+      "runs": [
+        {
+          "command": [
+            "/opt/die-build/src/console/diec-archive-harness",
+            "--archive",
+            "/fixtures/build/testfile.rar5.cbr"
+          ],
+          "exit_code": 0,
+          "projection": {
+            "children": [],
+            "root_filetype": "RAR",
+            "root_size": 410
+          },
+          "stderr_base64": "",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiUkFSIiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjQxMCIsCiAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJVbmtub3duIiwKICAgICAgICAgICAgICAgICAgICAic3RyaW5nIjogIlVua25vd246IFVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ2ZXJzaW9uIjogIiIKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgXQogICAgICAgIH0KICAgIF0KfQoKCg==",
+          "stdout_sha256": "e88cecf96eb86fdd6de21db6d15f2420ccf0674966d24e3893526dac5baa79b8"
+        },
+        {
+          "command": [
+            "/opt/die-build/src/console/diec-archive-harness",
+            "--archive",
+            "/fixtures/build/testfile.rar5.cbr"
+          ],
+          "exit_code": 0,
+          "projection": {
+            "children": [],
+            "root_filetype": "RAR",
+            "root_size": 410
+          },
+          "stderr_base64": "",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiUkFSIiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjQxMCIsCiAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJVbmtub3duIiwKICAgICAgICAgICAgICAgICAgICAic3RyaW5nIjogIlVua25vd246IFVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ2ZXJzaW9uIjogIiIKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgXQogICAgICAgIH0KICAgIF0KfQoKCg==",
+          "stdout_sha256": "e88cecf96eb86fdd6de21db6d15f2420ccf0674966d24e3893526dac5baa79b8"
+        }
+      ]
+    },
+    {
+      "deterministic": true,
+      "fixture": "build/testfile.rar5.cbr",
+      "fixture_sha256": "e8b106048f18e6fb9a5f8ec6a95346e76906e7e4e9ca15ec97e4f926159cb398",
+      "id": "rar5_method5_mixed_pair",
+      "mode": "aggressive",
+      "runs": [
+        {
+          "command": [
+            "/opt/die-build/src/console/diec-archive-harness",
+            "--archive",
+            "--aggressive",
+            "/fixtures/build/testfile.rar5.cbr"
+          ],
+          "exit_code": 0,
+          "projection": {
+            "children": [
+              {
+                "filetype": "JPEG",
+                "size": 220
+              },
+              {
+                "filetype": "PNG",
+                "size": 87
+              }
+            ],
+            "root_filetype": "RAR",
+            "root_size": 410
+          },
+          "stderr_base64": "",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiUkFSIiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjQxMCIsCiAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJVbmtub3duIiwKICAgICAgICAgICAgICAgICAgICAic3RyaW5nIjogIlVua25vd246IFVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ2ZXJzaW9uIjogIiIKICAgICAgICAgICAgICAgIH0sCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImZpbGV0eXBlIjogIkpQRUciLAogICAgICAgICAgICAgICAgICAgICJpbmZvIjogIiIsCiAgICAgICAgICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgICAgICAgICAicGFyZW50ZmlsZXBhcnQiOiAiU3RyZWFtIiwKICAgICAgICAgICAgICAgICAgICAic2l6ZSI6ICIyMjAiLAogICAgICAgICAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJpbmZvIjogIiIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJKUEVHIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiRm9ybWF0OiBKUEVHKDEuMSkiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiZm9ybWF0IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJ2ZXJzaW9uIjogIjEuMSIKICAgICAgICAgICAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiYTNhOTZhZGQwNTBmYzUxYTJiM2NlNTlhOWE0OTEwMzQiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIm5hbWUiOiAiRFFUIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiSW1hZ2U6IERRVFthM2E5NmFkZDA1MGZjNTFhMmIzY2U1OWE5YTQ5MTAzNF0iLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiaW1hZ2UiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAgICAgXQogICAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiZmlsZXR5cGUiOiAiUE5HIiwKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJvZmZzZXQiOiAiMCIsCiAgICAgICAgICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIlN0cmVhbSIsCiAgICAgICAgICAgICAgICAgICAgInNpemUiOiAiODciLAogICAgICAgICAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJpbmZvIjogIjJ4MiwgOCBiaXRzLCBQYWxldHRlIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlBORyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAic3RyaW5nIjogIkZvcm1hdDogUE5HWzJ4MiwgOCBiaXRzLCBQYWxldHRlXSIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAidHlwZSI6ICJmb3JtYXQiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAgICAgXQogICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgfQogICAgXQp9CgoK",
+          "stdout_sha256": "f63f75f9f34dc48bdfcc5edd86c802fb8d54630946e070930350622e8b6148f2"
+        },
+        {
+          "command": [
+            "/opt/die-build/src/console/diec-archive-harness",
+            "--archive",
+            "--aggressive",
+            "/fixtures/build/testfile.rar5.cbr"
+          ],
+          "exit_code": 0,
+          "projection": {
+            "children": [
+              {
+                "filetype": "JPEG",
+                "size": 220
+              },
+              {
+                "filetype": "PNG",
+                "size": 87
+              }
+            ],
+            "root_filetype": "RAR",
+            "root_size": 410
+          },
+          "stderr_base64": "",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiUkFSIiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjQxMCIsCiAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJVbmtub3duIiwKICAgICAgICAgICAgICAgICAgICAic3RyaW5nIjogIlVua25vd246IFVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ2ZXJzaW9uIjogIiIKICAgICAgICAgICAgICAgIH0sCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImZpbGV0eXBlIjogIkpQRUciLAogICAgICAgICAgICAgICAgICAgICJpbmZvIjogIiIsCiAgICAgICAgICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgICAgICAgICAicGFyZW50ZmlsZXBhcnQiOiAiU3RyZWFtIiwKICAgICAgICAgICAgICAgICAgICAic2l6ZSI6ICIyMjAiLAogICAgICAgICAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJpbmZvIjogIiIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJKUEVHIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiRm9ybWF0OiBKUEVHKDEuMSkiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiZm9ybWF0IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJ2ZXJzaW9uIjogIjEuMSIKICAgICAgICAgICAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiYTNhOTZhZGQwNTBmYzUxYTJiM2NlNTlhOWE0OTEwMzQiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIm5hbWUiOiAiRFFUIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiSW1hZ2U6IERRVFthM2E5NmFkZDA1MGZjNTFhMmIzY2U1OWE5YTQ5MTAzNF0iLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiaW1hZ2UiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAgICAgXQogICAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiZmlsZXR5cGUiOiAiUE5HIiwKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJvZmZzZXQiOiAiMCIsCiAgICAgICAgICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIlN0cmVhbSIsCiAgICAgICAgICAgICAgICAgICAgInNpemUiOiAiODciLAogICAgICAgICAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJpbmZvIjogIjJ4MiwgOCBiaXRzLCBQYWxldHRlIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlBORyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAic3RyaW5nIjogIkZvcm1hdDogUE5HWzJ4MiwgOCBiaXRzLCBQYWxldHRlXSIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAidHlwZSI6ICJmb3JtYXQiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAgICAgXQogICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgfQogICAgXQp9CgoK",
+          "stdout_sha256": "f63f75f9f34dc48bdfcc5edd86c802fb8d54630946e070930350622e8b6148f2"
+        }
+      ]
+    },
+    {
+      "deterministic": true,
+      "fixture": "build/testfile.rar5.solid.cbr",
+      "fixture_sha256": "23ef370c58b7646d527106829410700ac314d86380b9c968a37066f39fe6c70b",
+      "id": "rar5_method5_solid_pair",
+      "mode": "default",
+      "runs": [
+        {
+          "command": [
+            "/opt/die-build/src/console/diec-archive-harness",
+            "--archive",
+            "/fixtures/build/testfile.rar5.solid.cbr"
+          ],
+          "exit_code": 0,
+          "projection": {
+            "children": [],
+            "root_filetype": "RAR",
+            "root_size": 407
+          },
+          "stderr_base64": "",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiUkFSIiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjQwNyIsCiAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJVbmtub3duIiwKICAgICAgICAgICAgICAgICAgICAic3RyaW5nIjogIlVua25vd246IFVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ2ZXJzaW9uIjogIiIKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgXQogICAgICAgIH0KICAgIF0KfQoKCg==",
+          "stdout_sha256": "f3e44f6d785f35c4818823d8845070d621e7dcce0c6a9acdd3c2f454683e0e5b"
+        },
+        {
+          "command": [
+            "/opt/die-build/src/console/diec-archive-harness",
+            "--archive",
+            "/fixtures/build/testfile.rar5.solid.cbr"
+          ],
+          "exit_code": 0,
+          "projection": {
+            "children": [],
+            "root_filetype": "RAR",
+            "root_size": 407
+          },
+          "stderr_base64": "",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiUkFSIiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjQwNyIsCiAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJVbmtub3duIiwKICAgICAgICAgICAgICAgICAgICAic3RyaW5nIjogIlVua25vd246IFVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ2ZXJzaW9uIjogIiIKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgXQogICAgICAgIH0KICAgIF0KfQoKCg==",
+          "stdout_sha256": "f3e44f6d785f35c4818823d8845070d621e7dcce0c6a9acdd3c2f454683e0e5b"
+        }
+      ]
+    },
+    {
+      "deterministic": true,
+      "fixture": "build/testfile.rar5.solid.cbr",
+      "fixture_sha256": "23ef370c58b7646d527106829410700ac314d86380b9c968a37066f39fe6c70b",
+      "id": "rar5_method5_solid_pair",
+      "mode": "aggressive",
+      "runs": [
+        {
+          "command": [
+            "/opt/die-build/src/console/diec-archive-harness",
+            "--archive",
+            "--aggressive",
+            "/fixtures/build/testfile.rar5.solid.cbr"
+          ],
+          "exit_code": 0,
+          "projection": {
+            "children": [
+              {
+                "filetype": "JPEG",
+                "size": 220
+              },
+              {
+                "filetype": "PNG",
+                "size": 87
+              }
+            ],
+            "root_filetype": "RAR",
+            "root_size": 407
+          },
+          "stderr_base64": "",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiUkFSIiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjQwNyIsCiAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJVbmtub3duIiwKICAgICAgICAgICAgICAgICAgICAic3RyaW5nIjogIlVua25vd246IFVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ2ZXJzaW9uIjogIiIKICAgICAgICAgICAgICAgIH0sCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImZpbGV0eXBlIjogIkpQRUciLAogICAgICAgICAgICAgICAgICAgICJpbmZvIjogIiIsCiAgICAgICAgICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgICAgICAgICAicGFyZW50ZmlsZXBhcnQiOiAiU3RyZWFtIiwKICAgICAgICAgICAgICAgICAgICAic2l6ZSI6ICIyMjAiLAogICAgICAgICAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJpbmZvIjogIiIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJKUEVHIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiRm9ybWF0OiBKUEVHKDEuMSkiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiZm9ybWF0IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJ2ZXJzaW9uIjogIjEuMSIKICAgICAgICAgICAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiYTNhOTZhZGQwNTBmYzUxYTJiM2NlNTlhOWE0OTEwMzQiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIm5hbWUiOiAiRFFUIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiSW1hZ2U6IERRVFthM2E5NmFkZDA1MGZjNTFhMmIzY2U1OWE5YTQ5MTAzNF0iLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiaW1hZ2UiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAgICAgXQogICAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiZmlsZXR5cGUiOiAiUE5HIiwKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJvZmZzZXQiOiAiMCIsCiAgICAgICAgICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIlN0cmVhbSIsCiAgICAgICAgICAgICAgICAgICAgInNpemUiOiAiODciLAogICAgICAgICAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJpbmZvIjogIjJ4MiwgOCBiaXRzLCBQYWxldHRlIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlBORyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAic3RyaW5nIjogIkZvcm1hdDogUE5HWzJ4MiwgOCBiaXRzLCBQYWxldHRlXSIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAidHlwZSI6ICJmb3JtYXQiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAgICAgXQogICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgfQogICAgXQp9CgoK",
+          "stdout_sha256": "e4d9bd95dfe54243c383da98910c9349b1c15002392c9cd1b6e92cf2902be50c"
+        },
+        {
+          "command": [
+            "/opt/die-build/src/console/diec-archive-harness",
+            "--archive",
+            "--aggressive",
+            "/fixtures/build/testfile.rar5.solid.cbr"
+          ],
+          "exit_code": 0,
+          "projection": {
+            "children": [
+              {
+                "filetype": "JPEG",
+                "size": 220
+              },
+              {
+                "filetype": "PNG",
+                "size": 87
+              }
+            ],
+            "root_filetype": "RAR",
+            "root_size": 407
+          },
+          "stderr_base64": "",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiUkFSIiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjQwNyIsCiAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJVbmtub3duIiwKICAgICAgICAgICAgICAgICAgICAic3RyaW5nIjogIlVua25vd246IFVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ2ZXJzaW9uIjogIiIKICAgICAgICAgICAgICAgIH0sCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImZpbGV0eXBlIjogIkpQRUciLAogICAgICAgICAgICAgICAgICAgICJpbmZvIjogIiIsCiAgICAgICAgICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgICAgICAgICAicGFyZW50ZmlsZXBhcnQiOiAiU3RyZWFtIiwKICAgICAgICAgICAgICAgICAgICAic2l6ZSI6ICIyMjAiLAogICAgICAgICAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJpbmZvIjogIiIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJKUEVHIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiRm9ybWF0OiBKUEVHKDEuMSkiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiZm9ybWF0IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJ2ZXJzaW9uIjogIjEuMSIKICAgICAgICAgICAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiYTNhOTZhZGQwNTBmYzUxYTJiM2NlNTlhOWE0OTEwMzQiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIm5hbWUiOiAiRFFUIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiSW1hZ2U6IERRVFthM2E5NmFkZDA1MGZjNTFhMmIzY2U1OWE5YTQ5MTAzNF0iLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiaW1hZ2UiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAgICAgXQogICAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiZmlsZXR5cGUiOiAiUE5HIiwKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJvZmZzZXQiOiAiMCIsCiAgICAgICAgICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIlN0cmVhbSIsCiAgICAgICAgICAgICAgICAgICAgInNpemUiOiAiODciLAogICAgICAgICAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJpbmZvIjogIjJ4MiwgOCBiaXRzLCBQYWxldHRlIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlBORyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAic3RyaW5nIjogIkZvcm1hdDogUE5HWzJ4MiwgOCBiaXRzLCBQYWxldHRlXSIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAidHlwZSI6ICJmb3JtYXQiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAgICAgXQogICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgfQogICAgXQp9CgoK",
+          "stdout_sha256": "e4d9bd95dfe54243c383da98910c9349b1c15002392c9cd1b6e92cf2902be50c"
+        }
+      ]
+    }
+  ],
+  "fixture_auditor": {
+    "bytes": 16730,
+    "path": "tools/corpus/audit_rar_compressed_fixture_source.py",
+    "sha256": "72d9abd9d03843454e136d0e82cd177577914c2ed2f1f1bc85da61077f0dfffe"
+  },
+  "fixture_report": {
+    "path": "docs/research/data/rar-compressed-fixture-source.json",
+    "sha256": "b8993312c8fd9043b4c17f0dddfebd2483809e7159b9cd9a663ba3c864ee354a"
+  },
+  "fixture_source_commit": "16b785c2b1b504e99fc307676e5369a26d3ce060",
+  "generator": "tools/upstream/probe_rar_compressed_harness.py",
+  "generator_sha256": "ceace9bcf864a8824a1504e8cd6dfed18715afbeab612f7c6dcb265b6de2c053",
+  "harness": {
+    "binary": {
+      "path": "/opt/die-build/src/console/diec-archive-harness",
+      "sha256": "b7ea9b151b58b630c017e9989333fa035b7d86ffab366a5d3a1f74bab9f1e96e"
+    },
+    "dockerfile": {
+      "bytes": 1361,
+      "path": "tools/upstream/Dockerfile.archive-harness-qt5",
+      "sha256": "2ae4695c9e63857c263dc2d35978dbccc3d4d5f7b65dc20c7424472a1728bf8f"
+    },
+    "source": {
+      "bytes": 2589,
+      "path": "tools/upstream/archive_harness_main.cpp",
+      "sha256": "bd67e06915809d5f9a8065f1d3471a1c9f44d614e1f7d5f176a691088dc6e86d"
+    }
+  },
+  "relationships": {
+    "aggressive_mode_expands_all_expected_members": true,
+    "all_cases_are_two_run_deterministic": true,
+    "default_mode_has_no_children": true,
+    "eight_mode_cases_are_present": true,
+    "fixture_binaries_remain_external": true,
+    "fixture_redistribution_review_remains_open": true,
+    "rar3_and_rar5_solid_following_members_expand": true
+  },
+  "repeat_count": 2,
+  "schema_version": 1,
+  "source_files": [
+    {
+      "path": "/opt/die-source/XScanEngine/xscanengine.cpp",
+      "sha256": "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498"
+    },
+    {
+      "path": "/opt/die-source/XArchive/xrar.cpp",
+      "sha256": "23721187a6118edce8b9511680f34c404727f831ec8c7ed66e0ed0868260ccb8"
+    },
+    {
+      "path": "/opt/die-source/XArchive/xdecompress.cpp",
+      "sha256": "4f52eefa06674ea5b7e3f7e1b989502147be84d83e32e8086a7087839ed2728d"
+    },
+    {
+      "path": "/opt/die-source/XArchive/Algos/xrardecoder.cpp",
+      "sha256": "55f36d7b0188f5093ffad5723637fedafae32321b1fde3cf2f81ff5983e94026"
+    },
+    {
+      "path": "/opt/die-source/XArchive/Algos/xrardecoder.h",
+      "sha256": "29e0f4e1091df88f992f2cf5688df044bfbb46e607cb6536cbd5b4e234665540"
+    }
+  ],
+  "source_image": {
+    "fixture_mount": "readonly",
+    "image": "diec-rust/upstream-sevenzip-password-harness:74eaf505",
+    "image_id": "sha256:adf8e09f3ed7c15a54f3486c482599e1bcb122308a0b27396de1baf2ee634daf",
+    "network": "none",
+    "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

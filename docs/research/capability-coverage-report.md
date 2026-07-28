@@ -94,7 +94,7 @@ stable old/new、old→new 原子替换和 unlink，证明第二项按打开时�
 volume，冻结两个大小写排序 profile。Windows/macOS 仍由 `CAP-GAP-008`
 单独跟踪，不属于已闭合的 Linux Qt5 corpus gap。
 
-`CAP-GAP-006` 已新增十一组固定证据：单成员 ZIP 链已到达 64 层，固定两层
+`CAP-GAP-006` 已新增十二组固定证据：单成员 ZIP 链已到达 64 层，固定两层
 累计展开量达到 33,554,546 bytes；7Z
 Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64 与
 x86 BCJ+LZMA2、BCJ2+LZMA2 no-branch/E8/E9/JCC、ARM64-BCJ+LZMA2 BL/ADRP、
@@ -125,11 +125,14 @@ local-header fallback、1 MiB/843.58:1 和 mixed filter 也已固定；
 固定 CRC 容忍、静默无 child、aggressive-only Binary 输出与声明 child size
 边界；项目生成的 RAR5 Store 单成员及 solid 双成员又在 8 次固定执行中分别
 展开一/两个 PDF，普通与 aggressive archive 输出一致，fixture 不包含专有
-压缩算法或第三方 binary；四格式的两记录正序/逆序/重名/空首记录矩阵又在
+压缩算法或第三方 binary；固定外部 RAR3 unpack29 method `0x35` 与 RAR5
+method 5 样本又在 16 次禁网执行中固定普通模式无 child、aggressive 模式展开
+单成员及 solid 双成员的 text/PNG/JPEG，并保留来源、结构与未批准再分发边界；
+四格式的两记录正序/逆序/重名/空首记录矩阵又在
 64 次执行中固定物理记录顺序、同名不去重、普通模式跳过空成员但继续后续记录，
 以及 aggressive 保留空成员的相对顺序；ISO9660 的 17 个 `both16`/`both32`
 字段单侧冲突又在 140 次执行中证明 17 个 BE alternate 均不改变 child projection，
-而 LE block/extent/size 驱动可观察结果。十一组增量见
+而 LE block/extent/size 驱动可观察结果。十二组增量见
 [`archive-limit-behavior.md`](archive-limit-behavior.md)、
 [`archive-format-behavior.md`](archive-format-behavior.md) 和
 [`npm-dispatch-reachability.md`](npm-dispatch-reachability.md)、
@@ -140,10 +143,11 @@ local-header fallback、1 MiB/843.58:1 和 mixed filter 也已固定；
 [`archive-structure-behavior.md`](archive-structure-behavior.md)、
 [`archive-multirecord-behavior.md`](archive-multirecord-behavior.md)、
 [`iso9660-endian-behavior.md`](iso9660-endian-behavior.md)、
-[`archive-rar5-store-behavior.md`](archive-rar5-store-behavior.md)。
-RAR 压缩算法、剩余结构字段、ISO path-table location/多字段组合冲突与算术
-wrap、更大或混合失败记录图、真实资源耗尽和跨平台仍缺，因此 gap 行数与状态
-均不变。
+[`archive-rar5-store-behavior.md`](archive-rar5-store-behavior.md) 和
+[`archive-rar-compressed-behavior.md`](archive-rar-compressed-behavior.md)。
+RAR15/RAR20、RAR7 algorithm version 1、加密、多卷、恢复与损坏压缩流、剩余
+结构字段、ISO path-table location/多字段组合冲突与算术 wrap、更大或混合失败
+记录图、真实资源耗尽和跨平台仍缺，因此 gap 行数与状态均不变。
 
 原 `CAP-GAP-005` 已由
 [`scan-option-boundaries.md`](scan-option-boundaries.md)
