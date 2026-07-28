@@ -28,6 +28,8 @@ Windows 专用 7-case long-path 矩阵再完成 14 次执行；固定 324/325-co
 显式文件、深目录和从短根目录递归发现长叶子。
 Windows 专用 5-case ADS 矩阵再完成 10 次执行；固定显式普通/`\\?\` named
 stream 按内容扫描，以及目录只枚举 carrier 默认 stream。
+剩余 21 个 baseline 样本的 7-case 普通 output 矩阵再完成 294 次执行；固定
+JSON continuity、CSV 优先级及四个带空格 filetype 的 invalid XML。
 
 本仓库用
 [`build_windows_qt5_oracle.ps1`](../../tools/upstream/build_windows_qt5_oracle.ps1)
@@ -49,6 +51,8 @@ stream 按内容扫描，以及目录只枚举 carrier 默认 stream。
 [`data/windows-qt5-cli-long-paths.json`](data/windows-qt5-cli-long-paths.json)
 和
 [`data/windows-qt5-cli-ads.json`](data/windows-qt5-cli-ads.json)。
+普通 output 扩展见
+[`data/windows-qt5-cli-output-remaining.json`](data/windows-qt5-cli-output-remaining.json)。
 
 ## 固定环境
 
@@ -228,8 +232,22 @@ stdout 原始哈希和长度全部不同，主要可观察来源是 CRLF 与平�
 26-sample scan 还扩大了固定增量集合：deep/aggressive 仍无增量；heuristic、
 alltypes、format、hideunknown 和 combined 的逐样本变化保存在机器报告中。
 该报告本身没有覆盖后续独立报告中的 nested/path/database，也没有覆盖
-engine-only 或把 output/special 扩展到其余 21 个样本，因此仍不足以接纳
+engine-only 或把 special 扩展到其余 21 个样本，因此仍不足以接纳
 完整 Windows capability baseline。
+
+## Windows CLI 剩余 21 样本普通 output 矩阵
+
+独立调研
+[`windows-output-matrix-extension.md`](windows-output-matrix-extension.md)
+将 7 个普通 output case 扩展到首轮未覆盖的 21 个 baseline 样本。147 case
+各运行两次；机器报告 SHA-256 为
+`672370ebb6f689366098af2e2262be60569a37f7f80c781a1b49b044c4887376`。
+
+294 次执行全部稳定、退出 `0` 且 stderr 为空；21/21 JSON 等于 Windows 默认
+reference，21/21 all-flags 等于 CSV。`Mach-O FAT`、`Java Class`、
+`Python Bytecode` 和 `ISO 9660` 被直接用作动态 XML element name，因空格使
+4 个 XML 文档稳定无效；其余 17 个可解析。普通 output 现覆盖全部 26 个
+baseline 样本，special entropy/info/struct 仍只覆盖 5 个代表样本。
 
 ## Windows CLI path/nested 矩阵
 
@@ -376,18 +394,19 @@ bit-for-bit reproducible：
 - 初步源树此前经过一次 CMake configure，因此两次产物不是严格同输入实验；
 - MSVC archive/PE 时间戳、绝对路径和其他非确定输入尚未逐项隔离；
 - 已完成 6 个控制 case、26 样本默认 JSON baseline、全 26 样本 scan 及
-  5 个代表样本的 output/special，并完成首轮 path/nested/database；尚未运行
+  全 26 样本普通 output、5 个代表样本 special，并完成首轮
+  path/nested/database；尚未运行
   UNC、精确 namespace 上限、symbolic link/reparse cycle/ACL、database
-  archive/cache/permission engine-only、其他 engine-only 和其余样本的
-  output/special Windows 矩阵；
+  archive/cache/permission engine-only、其他 engine-only 和其余 21 个样本的
+  special Windows 矩阵；
 - 尚未验证 x86、ARM64、完整 GUI/lite、install/package 和官方 release zip；
 - `cl` 对 x64 的 `/arch:SSE2` 给出 D9002 ignored warning；x64 ABI 本身要求
   SSE2，但该 warning 仍应保留在构建日志中。
 
 下一步扩展原生采集器的 UNC、精确 namespace 上限、symbolic link/reparse
-cycle/ACL 和其余
-样本的 output/special，并为 database archive/cache/permission 与其他
-engine-only 行建立 Windows harness；然后独立处理官方 CMake 路径和二进制
+cycle/ACL 和其余 21 个样本的 special，并为 database
+archive/cache/permission 与其他 engine-only 行建立 Windows harness；然后
+独立处理官方 CMake 路径和二进制
 确定性。macOS 固定构建仍是三平台基线的剩余大项。
 
 ## 上游证据

@@ -355,7 +355,8 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
   Archive singleton/verbose 重检测已固定。
 - Qt 5 与 Qt 6 的首轮基础/安全语料/不可读输入差分已完成；仍需扩展到完整
   output/scan/special/path/database/nested 矩阵及其他 Qt 6 minor。
-- Windows Qt5 已完成 26-sample scan 和 5-sample output/special 首轮矩阵；
+- Windows Qt5 已完成 26-sample scan、26-sample 普通 output 和 5-sample
+  special 首轮矩阵；普通 output 扩展另固定 4 个带空格 filetype 的 invalid XML；
   14-case path、32-case nested 和 18-case database 首轮矩阵也已完成；
   17-case Unicode/特殊路径首轮矩阵进一步固定可表示性、Hidden 和顺序；
   8-case filesystem 矩阵进一步固定 Junction、两跳链、alias 重复及普通长度
@@ -363,7 +364,7 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
   发现路径；5-case ADS 矩阵固定显式 named stream 与目录枚举边界；UNC、
   精确 namespace 上限、symlink/reparse cycle/ACL、database
   archive/cache/permission engine-only、其他 engine-only 及其余
-  output/special 样本仍缺失。
+  special 样本仍缺失。
 - Linux、Windows、macOS 路径与编码差异。
 
 ## 证据

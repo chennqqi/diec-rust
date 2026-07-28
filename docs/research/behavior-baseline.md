@@ -62,6 +62,12 @@ NTFS ADS fixture 再完成 5 case、10 次执行。显式普通/`\\?\` named str
 942 次执行，详见
 [`windows-ads-behavior.md`](windows-ads-behavior.md)。
 
+剩余 21 个 baseline 样本的 7-case 普通输出矩阵再完成 294 次执行。全部双轮
+稳定、退出 `0` 且 stderr 为空；JSON continuity 和 CSV 优先级 21/21 成立。
+四个带空格 filetype 的 XML 稳定但不合法，其余 17 个 XML 可解析。九份
+Windows runtime 报告累计 1,236 次执行，详见
+[`windows-output-matrix-extension.md`](windows-output-matrix-extension.md)。
+
 ## 语料来源与安全
 
 所有样本由
@@ -246,7 +252,9 @@ python3 tools/upstream/compare_cli_oracles.py \
 Windows 对同 5 个样本执行相同 35 个 case，每项两轮共 70 次，0 个确定性
 失败；35/35 退出码和空 stderr 与 Linux Qt5 一致。Windows stdout 因 CRLF
 及平台路径表示，35/35 原始哈希和长度均与 Linux 不同，报告没有把这些字节
-差异规范化掉。
+差异规范化掉。随后 Windows 将 7 个普通输出 case 扩展到其余 21 个 baseline
+样本；合计 26/26 已覆盖，四个动态 filetype 元素名导致的 invalid XML 见
+[`windows-output-matrix-extension.md`](windows-output-matrix-extension.md)。
 
 固定上游
 [`main_console.cpp`](https://github.com/horsicq/DIE-engine/blob/74eaf505c250ab47e709024e9dc41657cd8f2254/src/console/main_console.cpp)
