@@ -23,6 +23,9 @@ Phase 0 计划形成：
 - [`archive-truncation-behavior.md`](archive-truncation-behavior.md)：7Z、
   RAR4、CAB 和 ISO9660 的 26-case EOF 前缀阶梯、104 次固定 Qt5 oracle
   与格式识别/成员展开边界（In Review）。
+- [`archive-structure-behavior.md`](archive-structure-behavior.md)：7Z、
+  RAR4、CAB 和 ISO9660 的 33-case CRC/size/offset/method/record-field
+  突变及 132 次固定 Qt5 oracle（In Review）。
 - [`archive-format-behavior.md`](archive-format-behavior.md)：
   7Z Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64 与
   x86/ARM64 BCJ+LZMA2、BCJ2+LZMA2 no-branch/E8/E9/JCC、RAR4、CAB
@@ -227,6 +230,10 @@ Phase 0 计划形成：
   7Z/RAR4/CAB/ISO9660 四个完整控制的 26 个确定性 EOF 前缀及逐文件哈希。
 - [`data/archive-truncation-engine-qt5.json`](data/archive-truncation-engine-qt5.json)：
   26-case × 4 模式的 104 次原始输出、源码契约和严格截断边界摘要。
+- [`data/archive-structure-corpus.json`](data/archive-structure-corpus.json)：
+  四格式 33 个 control/结构字段 mutation 的 changed-byte 与 hash-bound 清单。
+- [`data/archive-structure-engine-qt5.json`](data/archive-structure-engine-qt5.json)：
+  33-case × 4 模式的 132 次原始输出、源码契约和结构字段行为摘要。
 - [`data/archive-format-corpus.json`](data/archive-format-corpus.json)：
   项目生成的七种 7Z 单 coder、x86/ARM64 BCJ+LZMA2、
   BCJ2+LZMA2 no-branch/E8/E9/JCC filter 链、七种基础 coder+7zAES、

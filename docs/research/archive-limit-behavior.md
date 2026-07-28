@@ -147,6 +147,8 @@ python tools\upstream\probe_archive_limits_harness.py `
   [`archive-adversarial-behavior.md`](archive-adversarial-behavior.md) 固定；
   7Z/RAR4/CAB/ISO9660 的 26-case EOF 前缀阶梯已由
   [`archive-truncation-behavior.md`](archive-truncation-behavior.md) 固定；
+  同四格式的 33-case 结构字段突变已由
+  [`archive-structure-behavior.md`](archive-structure-behavior.md) 固定；
   更高展开量、欺骗声明长度、循环 container、真正 OOM 或超过 30 秒后的
   引擎内部清理仍未验证。
 - Docker 外部 timeout 会终止进程，无法提供 cooperative partial result；因此

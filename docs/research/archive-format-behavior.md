@@ -71,7 +71,9 @@ ZIP deflate/ZipCrypto/CRC/压缩流畸形与 1 MiB 高压缩比现由
 [`archive-adversarial-behavior.md`](archive-adversarial-behavior.md) 固定；
 7Z/RAR4/CAB/ISO9660 的 26-case EOF 前缀阶梯由
 [`archive-truncation-behavior.md`](archive-truncation-behavior.md) 固定；
-RAR 的压缩算法、结构字段畸变、资源耗尽及跨平台行为仍未验证。
+同四格式的 33-case CRC/size/offset/method/record-field 突变由
+[`archive-structure-behavior.md`](archive-structure-behavior.md) 固定；
+RAR 的压缩算法、结构字段极值/组合、资源耗尽及跨平台行为仍未验证。
 
 机器报告是
 [`archive-format-engine-qt5.json`](data/archive-format-engine-qt5.json)，
@@ -421,5 +423,6 @@ LZX/Quantum 普通/激进模式的失败边界，
 记录边界见
 [`archive-iteration-boundary.md`](archive-iteration-boundary.md)；这些证据应
 与 [`archive-adversarial-behavior.md`](archive-adversarial-behavior.md)、
-[`archive-truncation-behavior.md`](archive-truncation-behavior.md)
+[`archive-truncation-behavior.md`](archive-truncation-behavior.md)、
+[`archive-structure-behavior.md`](archive-structure-behavior.md)
 共同约束后续 Rust archive 层，但不能替代剩余格式和压力边界实验。

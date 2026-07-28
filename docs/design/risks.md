@@ -309,7 +309,11 @@ baseline 的变更都要检查本表。
   ISO9660 的 26-case EOF 前缀阶梯：7Z/CAB EOF−1 识别格式但无 child，
   RAR4 不需要 end header，ISO9660 EOF−1 仍产生声明大小 child。详见
   [`archive-truncation-behavior.md`](../research/archive-truncation-behavior.md)。
-  这些兼容事实不允许安全实现越界读取，结构字段畸变仍未覆盖。详见
+  后续 132-run oracle 又固定同四格式的 33-case CRC/size/offset/method/
+  record-field 突变，包括 7Z/RAR header CRC 容忍、RAR data CRC 拒绝、
+  CAB aggressive-only Binary 输出和 ISO9660 声明 size 驱动 child 大小，见
+  [`archive-structure-behavior.md`](../research/archive-structure-behavior.md)。
+  这些兼容事实不允许安全实现越界读取，结构字段极值/组合仍未覆盖。详见
   [`archive-limit-behavior.md`](../research/archive-limit-behavior.md) 和
   [`archive-format-behavior.md`](../research/archive-format-behavior.md)、
   [`scan-option-boundaries.md`](../research/scan-option-boundaries.md)。

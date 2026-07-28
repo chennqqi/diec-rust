@@ -346,7 +346,9 @@ recursive+aggressive 对前者产生 Manifest child，对后者不建 child；�
   [`archive-adversarial-behavior.md`](archive-adversarial-behavior.md)；
   7Z/RAR4/CAB/ISO9660 的 26-case EOF 前缀截断矩阵见
   [`archive-truncation-behavior.md`](archive-truncation-behavior.md)；
-  其他 encrypted entry、重复名称、结构字段畸变和系统化 metadata 仍缺；
+  同四格式首轮结构字段突变见
+  [`archive-structure-behavior.md`](archive-structure-behavior.md)；
+  其他 encrypted entry、重复名称、结构字段极值/组合和系统化 metadata 仍缺；
 - archive aggressive 第 100000 条可达、第 100001 条不可达，见
   [`archive-iteration-boundary.md`](archive-iteration-boundary.md)；
   resource aggressive 2001 实际 child 边界也已固定；
