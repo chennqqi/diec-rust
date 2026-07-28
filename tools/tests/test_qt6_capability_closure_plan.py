@@ -81,10 +81,10 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
 
     def test_current_plan_is_conservatively_incomplete(self):
         summary = self.plan["summary"]
-        self.assertEqual(summary["evidence_complete"], 60)
+        self.assertEqual(summary["evidence_complete"], 61)
         self.assertEqual(summary["partial"], 3)
-        self.assertEqual(summary["missing"], 5)
-        self.assertEqual(summary["closure_required"], 8)
+        self.assertEqual(summary["missing"], 4)
+        self.assertEqual(summary["closure_required"], 7)
         self.assertFalse(summary["cap_gap_007_closed"])
         self.assertEqual(self.plan["result"], "incomplete")
 
@@ -140,6 +140,7 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
             "CAP-RESULT-006",
             "CAP-RULE-007",
             "CAP-NEST-007",
+            "CAP-NEST-006",
         }
         for capability_id in promoted:
             with self.subTest(capability=capability_id):
@@ -365,6 +366,22 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
         with self.assertRaisesRegex(
             MODULE.ClosurePlanError,
             "relationship drift",
+        ):
+            MODULE.build_plan(
+                self.traceability,
+                self.traceability_raw,
+                changed_reports,
+                self.report_bytes,
+            )
+
+        changed_reports = json.loads(json.dumps(self.reports))
+        resource_context = changed_reports[MODULE.REPORT_PATHS[32]]
+        resource_context["cases"]["recursive_aggressive"][
+            "raw_stdout"
+        ] = "silently changed"
+        with self.assertRaisesRegex(
+            MODULE.ClosurePlanError,
+            "output drift",
         ):
             MODULE.build_plan(
                 self.traceability,

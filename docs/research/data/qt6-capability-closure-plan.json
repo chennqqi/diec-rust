@@ -125,6 +125,13 @@
       "scope": "public recursive omission and direct debug-data positive control",
       "semantic_output_equal": true,
       "source": "docs/research/data/debug-dispatch-engine-qt6.json"
+    },
+    {
+      "difference_count": 4,
+      "right_stderr_sha256": "b303e6913e76b70a6f0d6a4d3ccd389bc342589e45e1615873a37334dea8c51b",
+      "scope": "four-mode RT_MANIFEST resource context propagation",
+      "semantic_output_equal": true,
+      "source": "docs/research/data/resource-context-chain-qt6.json"
     }
   ],
   "limitations": [
@@ -768,19 +775,11 @@
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "nested_scan",
       "id": "CAP-NEST-006",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "resource context propagation",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "CLI recursion and internal recursion gates are distinguished",
-          "record-count, iteration, depth, and expanded-byte observations are equal",
-          "parent tree, context propagation, subdevice gates, and raw errors are compared"
-        ],
-        "fixture": "reuse nested, resource, archive-limit, iteration, adversarial, and structure fixtures",
-        "harness": "build Qt6 nested/resource/archive harness variants"
-      },
-      "status": "missing"
+      "observed_scope": "all four recursive/aggressive resource-context controls match Qt5 exactly",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
@@ -906,6 +905,8 @@
     "docs/research/data/qt5-qt6-cli.json": "30c4298f07f2aa64fc17a16c478f8554eb8eb9e4e5c13687cddbfe3785b88fdd",
     "docs/research/data/qt6-alltypes-diagnostics.json": "58b76997e767147284c65a9f99105fd0afaee1fc055b849651e6cb27ae174df6",
     "docs/research/data/qt6-database-diagnostics.json": "7747eaa4379cd8f1fca4a3ad32105c35d41aee690d4b189a0429a7e7bf0835a8",
+    "docs/research/data/resource-context-chain-qt5.json": "56090cee25f736eeb1c1fbb90a1619199f0fc2a93c7c318c0731ddffb585de64",
+    "docs/research/data/resource-context-chain-qt6.json": "0619aa5e1768ef4044d9cd60378dd991057bb97960b70887b0de84552978aabc",
     "docs/research/data/result-enums-engine-qt5.json": "599a242d56d07806bac8ada5374b480c72f7fe97e25f6a77981ad441fbd933ea",
     "docs/research/data/result-flags-engine-qt5.json": "639bde185b0213ab76d11e4363525ee3119c64edcb868f7da8da1029a6fd3066",
     "docs/research/data/result-ids-engine-qt5.json": "cdcb018939f89e77e51ba70a4108a2269fb450864d042aa44ec38c7002cfd101",
@@ -921,9 +922,9 @@
     "all_capabilities_accounted_for": true,
     "cap_gap_007_closed": false,
     "capability_count": 68,
-    "closure_required": 8,
-    "evidence_complete": 60,
-    "missing": 5,
+    "closure_required": 7,
+    "evidence_complete": 61,
+    "missing": 4,
     "partial": 3
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"

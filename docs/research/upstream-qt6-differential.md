@@ -6,7 +6,7 @@ Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
 
 Rules: `horsicq/Detect-It-Easy@c2c17dfa5ea4e078ba31eab55d87430c96622fb6`
 
-Last updated: 2026-07-28
+Last updated: 2026-07-29
 
 ## 结论
 
@@ -216,7 +216,9 @@ signature-path 差分见
 [`qt6-signature-path-runtime-evidence.md`](qt6-signature-path-runtime-evidence.md)。
 debug-data dispatch 差分见
 [`qt6-debug-dispatch-runtime-evidence.md`](qt6-debug-dispatch-runtime-evidence.md)。
-十一批实验将 Linux Qt6 的逐行完整证据从 11 项增加到 60 项，但没有关闭
+resource-context raw-first 差分见
+[`qt6-resource-context-runtime-evidence.md`](qt6-resource-context-runtime-evidence.md)。
+十二批实验将 Linux Qt6 的逐行完整证据从 11 项增加到 61 项，但没有关闭
 `CAP-GAP-007`。
 
 ## 限制与下一步
@@ -232,5 +234,5 @@ debug-data dispatch 差分见
   已完成四入口、device/subdevice、filter、cancel 和 sort 的
   engine-contract harness、三层数据库/priority/init/type/mode gate 的规则编排
   差分、五组 result-model harness、private signature-path harness 和 paired
-  debug-data dispatch harness。
+  debug-data dispatch harness 和 resource-context raw-first probe。
 - Windows、macOS 固定 oracle 仍缺失。

@@ -164,6 +164,9 @@ Phase 0 计划形成：
 - [`qt6-debug-dispatch-runtime-evidence.md`](qt6-debug-dispatch-runtime-evidence.md)：
   固定 public resource 正控制、debug-data omission 与 direct debug 正例，并
   保留 Qt6 四行 PE warning（In Review）。
+- [`qt6-resource-context-runtime-evidence.md`](qt6-resource-context-runtime-evidence.md)：
+  固定 RT_MANIFEST 四种 recursive/aggressive 组合的完整 Qt6 raw 流、context
+  字段与 Qt5 对照，并保留每次调用的四行 PE warning（In Review）。
 - [`behavior-baseline.md`](behavior-baseline.md)：确定性安全语料、原始输出哈希和多格式行为（Draft）。
 - [`cli-json-schema-inventory.md`](cli-json-schema-inventory.md)：固定 CLI normal/entropy/info/struct JSON 字段、类型、顺序与失败边界（Draft）。
 - [`cli-output-boundaries.md`](cli-output-boundaries.md)：固定 JSON/XML/CSV/TSV/plain text 的 Unicode/控制字符转义、嵌套排序和格式缺陷；闭合 `CAP-GAP-004`（Draft）。
@@ -384,6 +387,9 @@ Phase 0 计划形成：
 - [`data/generic-archive-dispatch-engine-qt5.json`](data/generic-archive-dispatch-engine-qt5.json)：
   自动/强制 quiet/verbose 分派、双 Qt5 release 原始输出和源码/规则哈希契约。
 - [`data/resource-context-chain-qt5.json`](data/resource-context-chain-qt5.json)：RT_MANIFEST 父扫描、resource context、scan ID 与原样规则结果的四模式端到端基线。
+- [`data/resource-context-chain-qt6.json`](data/resource-context-chain-qt6.json)：
+  同一 RT_MANIFEST 四模式的 Qt6 完整 raw stdout/stderr、逐案 Qt5 对照和
+  九项 context/gate 关系。
 - [`data/subdevice-source-audit.json`](data/subdevice-source-audit.json)：固定 XScanEngine/Formats 源码哈希、resource/overlay 调度及 debug-data 可达性审计。
 - [`data/debug-dispatch-fixture.json`](data/debug-dispatch-fixture.json)：
   同时含 RT_MANIFEST resource 与 CodeView/RSDS debug directory 的项目生成 PE。

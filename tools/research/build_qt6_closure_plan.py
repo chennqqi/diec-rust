@@ -49,6 +49,8 @@ REPORT_PATHS = (
     "docs/research/data/signature-path-engine-qt6.json",
     "docs/research/data/debug-dispatch-engine-qt5.json",
     "docs/research/data/debug-dispatch-engine-qt6.json",
+    "docs/research/data/resource-context-chain-qt5.json",
+    "docs/research/data/resource-context-chain-qt6.json",
 )
 EMPTY_SHA256 = hashlib.sha256(b"").hexdigest()
 QT6_UNIMPLEMENTED_SHA256 = (
@@ -147,6 +149,7 @@ COMPLETE: dict[str, str] = {
     "CAP-RESULT-006": "normal record version, info, priority, rule name, and rule path fields match Qt5",
     "CAP-RULE-007": "all seven private signature-path filter boundaries are byte-identical to Qt5",
     "CAP-NEST-007": "public omission and direct debug-data positive control match Qt5 exactly",
+    "CAP-NEST-006": "all four recursive/aggressive resource-context controls match Qt5 exactly",
 }
 
 PARTIAL: dict[str, str] = {
@@ -1577,6 +1580,140 @@ def _validate_debug_dispatch_reports(
         raise ClosurePlanError("Qt5/Qt6 debug-dispatch output drift")
 
 
+def _validate_resource_context_reports(
+    qt5: dict[str, Any], qt6: dict[str, Any]
+) -> None:
+    oracle = qt6.get("oracle", {})
+    expected_baseline_hash = (
+        "56090cee25f736eeb1c1fbb90a1619199f0fc2a93c7c318c0731ddffb585de64"
+    )
+    if (
+        qt5.get("schema_version") != 1
+        or qt5.get("upstream_commit") != UPSTREAM_COMMIT
+        or qt6.get("schema_version") != 1
+        or qt6.get("upstream_commit") != UPSTREAM_COMMIT
+        or qt6.get("rules_commit") != RULES_COMMIT
+        or qt6.get("platform") != "linux-amd64-qt6"
+        or qt6.get("result") != "observed"
+        or oracle.get("image")
+        != "diec-rust/upstream-oracle-cmake-qt6:74eaf505"
+        or oracle.get("image_id")
+        != "sha256:e015495c313d0715f0b80f395da983a113a439f2a135eb637e9f0638c225200b"
+        or oracle.get("image_revision") != UPSTREAM_COMMIT
+        or oracle.get("binary") != "/opt/die-build/src/console/diec"
+        or oracle.get("binary_sha256")
+        != "e3321105af0349b29195325e79d5d2c7cc25ead2f28f84e242e3835b98f7283e"
+        or qt6.get("qt5_baseline")
+        != {
+            "path": "docs/research/data/resource-context-chain-qt5.json",
+            "sha256": expected_baseline_hash,
+        }
+    ):
+        raise ClosurePlanError("Qt6 resource-context identity/oracle drift")
+
+    expected_sample = {
+        "intended_structure": "PE32 with an unclassified RT_MANIFEST resource",
+        "layers": ["pe", "resource", "binary"],
+        "name": "pe-manifest-resource.exe",
+        "sha256": (
+            "0a973cbde2f520bdbd6e1b75304e4a412462113d4de9a8139cdf997af16641ee"
+        ),
+        "size": 1024,
+    }
+    if qt5.get("sample") != expected_sample or qt6.get("sample") != expected_sample:
+        raise ClosurePlanError("Qt5/Qt6 resource-context sample drift")
+
+    expected_difference = {
+        "scope": "PE rule runtime warning in each CLI invocation",
+        "case_count": 4,
+        "stderr_bytes_per_case": 80,
+        "stderr_sha256_per_case": QT6_UNIMPLEMENTED_SHA256,
+        "lines_per_case": 4,
+        "semantic_output_equal_to_qt5": True,
+    }
+    expected_relationships = {
+        "all_exit_codes_match_qt5",
+        "all_stdout_streams_match_qt5",
+        "all_detection_trees_match_qt5",
+        "default_omits_resource_child",
+        "recursive_alone_omits_unclassified_resource",
+        "aggressive_alone_omits_resource_child",
+        "recursive_and_aggressive_reaches_resource_child",
+        "resource_context_is_propagated",
+        "manifest_rule_observes_original_resource_type",
+    }
+    relationships = qt6.get("relationships")
+    if (
+        qt6.get("known_difference") != expected_difference
+        or not isinstance(relationships, dict)
+        or set(relationships) != expected_relationships
+        or not all(value is True for value in relationships.values())
+    ):
+        raise ClosurePlanError("Qt6 resource-context relationship drift")
+
+    qt5_cases = qt5.get("cases")
+    qt6_cases = qt6.get("cases")
+    expected_cases = {
+        "default",
+        "recursive",
+        "aggressive",
+        "recursive_aggressive",
+    }
+    if (
+        not isinstance(qt5_cases, dict)
+        or not isinstance(qt6_cases, dict)
+        or set(qt5_cases) != expected_cases
+        or set(qt6_cases) != expected_cases
+    ):
+        raise ClosurePlanError("Qt5/Qt6 resource-context case catalog drift")
+    expected_stdout_hashes = {
+        "default": "94941d54fe62e2c43a0709062c7628eb2fa26d7fda825dc366547a4dc85a8f8b",
+        "recursive": "94941d54fe62e2c43a0709062c7628eb2fa26d7fda825dc366547a4dc85a8f8b",
+        "aggressive": "94941d54fe62e2c43a0709062c7628eb2fa26d7fda825dc366547a4dc85a8f8b",
+        "recursive_aggressive": "c9e8a5c7f3eab49f1f8b533917aba24abebc9f1f05128bf4a359bedbeffab7fa",
+    }
+    expected_comparison = {
+        "exit_code_equal": True,
+        "stdout_equal": True,
+        "normalized_detect_tree_equal": True,
+        "stderr_difference": "known_qt6_pe_warning",
+    }
+    for case_name in expected_cases:
+        qt5_case = qt5_cases[case_name]
+        qt6_case = qt6_cases[case_name]
+        try:
+            qt5_stdout = qt5_case["raw_stdout"].encode("utf-8")
+            qt6_stdout = qt6_case["raw_stdout"].encode("utf-8")
+            qt5_stderr = bytes.fromhex(qt5_case["raw_stderr_hex"])
+            qt6_stderr = bytes.fromhex(qt6_case["raw_stderr_hex"])
+        except (KeyError, ValueError, AttributeError) as error:
+            raise ClosurePlanError(
+                f"invalid resource-context raw stream: {case_name}"
+            ) from error
+        expected_stdout_hash = expected_stdout_hashes[case_name]
+        if (
+            qt5_case.get("exit_code") != 0
+            or qt6_case.get("exit_code") != 0
+            or qt5_stdout != qt6_stdout
+            or sha256(qt5_stdout) != expected_stdout_hash
+            or sha256(qt6_stdout) != expected_stdout_hash
+            or qt5_case.get("raw_stdout_sha256") != expected_stdout_hash
+            or qt6_case.get("raw_stdout_sha256") != expected_stdout_hash
+            or qt5_stderr != b""
+            or qt6_stderr != b"Unimplemented code.\n" * 4
+            or qt5_case.get("raw_stderr_sha256") != EMPTY_SHA256
+            or qt6_case.get("raw_stderr_sha256")
+            != QT6_UNIMPLEMENTED_SHA256
+            or qt5_case.get("normalized_detect_tree")
+            != qt6_case.get("normalized_detect_tree")
+            or qt5_case.get("arguments") != qt6_case.get("arguments")
+            or qt6_case.get("comparison_to_qt5") != expected_comparison
+        ):
+            raise ClosurePlanError(
+                f"Qt5/Qt6 resource-context output drift: {case_name}"
+            )
+
+
 CAMPAIGNS: dict[str, dict[str, Any]] = {
     "cli_scan_baseline": {
         "fixture": "reuse baseline-corpus and scan-option-boundary fixtures",
@@ -1779,6 +1916,9 @@ def _validate_inputs(
     )
     _validate_debug_dispatch_reports(
         reports[REPORT_PATHS[29]], reports[REPORT_PATHS[30]]
+    )
+    _validate_resource_context_reports(
+        reports[REPORT_PATHS[31]], reports[REPORT_PATHS[32]]
     )
     return capabilities
 
@@ -2002,6 +2142,13 @@ def build_plan(
                 "source": REPORT_PATHS[30],
                 "scope": "public recursive omission and direct debug-data positive control",
                 "difference_count": 1,
+                "semantic_output_equal": True,
+                "right_stderr_sha256": QT6_UNIMPLEMENTED_SHA256,
+            },
+            {
+                "source": REPORT_PATHS[32],
+                "scope": "four-mode RT_MANIFEST resource context propagation",
+                "difference_count": 4,
                 "semantic_output_equal": True,
                 "right_stderr_sha256": QT6_UNIMPLEMENTED_SHA256,
             },

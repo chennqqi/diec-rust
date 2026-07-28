@@ -48,8 +48,12 @@ stderr 写回 raw artifact 和报告。任何其他 stderr、行数或 SHA 都�
 ## 能力影响
 
 `CAP-NEST-007` 提升为 Linux Qt6 `evidence_complete`。当前汇总为
-60 项 complete、3 项 partial、5 项 missing；8 项仍需闭环，
+61 项 complete、3 项 partial、4 项 missing；7 项仍需闭环，
 `CAP-GAP-007` 保持开放。
+
+该计数包含后续
+[`qt6-resource-context-runtime-evidence.md`](qt6-resource-context-runtime-evidence.md)
+对 `CAP-NEST-006` 的闭环。
 
 ## 重现
 

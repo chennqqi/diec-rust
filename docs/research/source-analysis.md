@@ -2,7 +2,7 @@
 
 Status: Draft  
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`  
-Last updated: 2026-07-28
+Last updated: 2026-07-29
 
 ## 范围
 
@@ -217,6 +217,8 @@ RT_MANIFEST 样本已在固定 CMake Qt 5 CLI 中端到端触发原样 Binary �
 证据见
 [`subdevice-source-audit.json`](data/subdevice-source-audit.json) 和
 [`resource-context-chain-qt5.json`](data/resource-context-chain-qt5.json)。
+同一四模式链的固定 Qt6 raw-first 对照见
+[`qt6-resource-context-runtime-evidence.md`](qt6-resource-context-runtime-evidence.md)。
 同一 PE 的 paired runtime oracle 又证明 Formats 确实枚举出 RSDS debug part，
 原样 debug rule 在 direct context 命中，而 public recursive+aggressive 只调度
 同文件的 Manifest resource；见

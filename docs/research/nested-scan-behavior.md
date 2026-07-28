@@ -2,7 +2,7 @@
 
 Status: Draft  
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`  
-Last updated: 2026-07-28
+Last updated: 2026-07-29
 
 ## 结论
 
@@ -28,6 +28,9 @@ stdout 与规范化树；通用双 oracle 报告确认 qmake 输出逐字节相�
 resource type ID、子设备 file-part、scan ID、重新探测和原样 Binary 规则连接成
 一条端到端证据链：仅 recursive+aggressive 产生 `Binary / Resource` 子记录，
 并由 `win_resources.1.sg` 输出 `Format: Manifest[Resources]`。
+固定 Qt6 raw-first probe 又执行同四种模式；完整 stdout 与 detection tree
+逐案等于 Qt5，唯一差异是每次调用的精确四行 PE warning。见
+[`qt6-resource-context-runtime-evidence.md`](qt6-resource-context-runtime-evidence.md)。
 
 另用只替换发布 CLI `main` 的 engine harness 运行 7 个样本 × 8 种
 archive/recursive/aggressive 组合，并将其中 4 个不含 archive 的模式逐字节
@@ -235,6 +238,17 @@ python3 tools/upstream/probe_resource_context_chain.py \
 它固定 child offset `608`、size `20`、file type `Binary`、
 parent file-part `Resource` 以及 `format / Manifest / "" / Resources` 的完整
 可观察输出。
+
+Qt6 对照复用同一 fixture 和 Qt5 baseline：
+
+```sh
+python3 tools/upstream/probe_qt6_resource_context_chain.py \
+  --nested-corpus-dir /tmp/diec-nested-corpus \
+  --output docs/research/data/resource-context-chain-qt6.json
+```
+
+报告 SHA-256 为
+`0619aa5e1768ef4044d9cd60378dd991057bb97960b70887b0de84552978aabc`。
 
 ## Engine archive harness
 

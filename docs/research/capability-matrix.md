@@ -2,7 +2,7 @@
 
 Status: Draft  
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`  
-Last updated: 2026-07-28
+Last updated: 2026-07-29
 
 本矩阵同时记录源码证据和固定 Linux oracle 实验。`Observed` 表示已用固定
 二进制、规则和输入验证；未标记为 Observed 的能力仍不能从相邻实验外推。
@@ -250,7 +250,10 @@ hideunknown 的可观察增量。完整输入哈希和输出见
 - `CAP-NEST-006`：项目生成的 RT_MANIFEST 未分类 payload 证明完整链：recursive 单独跳过，
   recursive+aggressive 产生 `Binary / Resource` child，并将 resource ID `24`
   传入原样 `win_resources.1.sg` 得到 `Manifest[Resources]`。raw 与规范化基线见
-  [`resource-context-chain-qt5.json`](data/resource-context-chain-qt5.json)。
+  [`resource-context-chain-qt5.json`](data/resource-context-chain-qt5.json)；
+  固定 Qt6 四模式完整 raw stdout 与 detection tree 均相同，仅每次保留已分类
+  的四行 PE warning，见
+  [`qt6-resource-context-runtime-evidence.md`](qt6-resource-context-runtime-evidence.md)。
 - `CAP-NEST-007`：Observed；同一 PE 的 Formats 枚举同时产生 resource/debug
   part，recursive+aggressive 只调度 Manifest resource child；枚举出的 RSDS
   bytes 在 direct `FILEPART_DEBUGDATA` context 被原样规则识别为 PDB link，

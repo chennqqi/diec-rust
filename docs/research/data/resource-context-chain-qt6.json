@@ -1,0 +1,230 @@
+{
+  "cases": {
+    "aggressive": {
+      "arguments": [
+        "--json",
+        "--aggressivecscan",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/corpus/pe-manifest-resource.exe"
+      ],
+      "comparison_to_qt5": {
+        "exit_code_equal": true,
+        "normalized_detect_tree_equal": true,
+        "stderr_difference": "known_qt6_pe_warning",
+        "stdout_equal": true
+      },
+      "exit_code": 0,
+      "normalized_detect_tree": [
+        {
+          "filetype": "PE32",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "1024",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "raw_stderr_hex": "556e696d706c656d656e74656420636f64652e0a556e696d706c656d656e74656420636f64652e0a556e696d706c656d656e74656420636f64652e0a556e696d706c656d656e74656420636f64652e0a",
+      "raw_stderr_sha256": "b303e6913e76b70a6f0d6a4d3ccd389bc342589e45e1615873a37334dea8c51b",
+      "raw_stdout": "{\n    \"detects\": [\n        {\n            \"filetype\": \"PE32\",\n            \"info\": \"\",\n            \"offset\": \"0\",\n            \"parentfilepart\": \"Header\",\n            \"size\": \"1024\",\n            \"values\": [\n                {\n                    \"info\": \"\",\n                    \"name\": \"Unknown\",\n                    \"string\": \"Unknown: Unknown\",\n                    \"type\": \"Unknown\",\n                    \"version\": \"\"\n                }\n            ]\n        }\n    ]\n}\n\n\n",
+      "raw_stdout_sha256": "94941d54fe62e2c43a0709062c7628eb2fa26d7fda825dc366547a4dc85a8f8b"
+    },
+    "default": {
+      "arguments": [
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/corpus/pe-manifest-resource.exe"
+      ],
+      "comparison_to_qt5": {
+        "exit_code_equal": true,
+        "normalized_detect_tree_equal": true,
+        "stderr_difference": "known_qt6_pe_warning",
+        "stdout_equal": true
+      },
+      "exit_code": 0,
+      "normalized_detect_tree": [
+        {
+          "filetype": "PE32",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "1024",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "raw_stderr_hex": "556e696d706c656d656e74656420636f64652e0a556e696d706c656d656e74656420636f64652e0a556e696d706c656d656e74656420636f64652e0a556e696d706c656d656e74656420636f64652e0a",
+      "raw_stderr_sha256": "b303e6913e76b70a6f0d6a4d3ccd389bc342589e45e1615873a37334dea8c51b",
+      "raw_stdout": "{\n    \"detects\": [\n        {\n            \"filetype\": \"PE32\",\n            \"info\": \"\",\n            \"offset\": \"0\",\n            \"parentfilepart\": \"Header\",\n            \"size\": \"1024\",\n            \"values\": [\n                {\n                    \"info\": \"\",\n                    \"name\": \"Unknown\",\n                    \"string\": \"Unknown: Unknown\",\n                    \"type\": \"Unknown\",\n                    \"version\": \"\"\n                }\n            ]\n        }\n    ]\n}\n\n\n",
+      "raw_stdout_sha256": "94941d54fe62e2c43a0709062c7628eb2fa26d7fda825dc366547a4dc85a8f8b"
+    },
+    "recursive": {
+      "arguments": [
+        "--json",
+        "--recursivescan",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/corpus/pe-manifest-resource.exe"
+      ],
+      "comparison_to_qt5": {
+        "exit_code_equal": true,
+        "normalized_detect_tree_equal": true,
+        "stderr_difference": "known_qt6_pe_warning",
+        "stdout_equal": true
+      },
+      "exit_code": 0,
+      "normalized_detect_tree": [
+        {
+          "filetype": "PE32",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "1024",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "raw_stderr_hex": "556e696d706c656d656e74656420636f64652e0a556e696d706c656d656e74656420636f64652e0a556e696d706c656d656e74656420636f64652e0a556e696d706c656d656e74656420636f64652e0a",
+      "raw_stderr_sha256": "b303e6913e76b70a6f0d6a4d3ccd389bc342589e45e1615873a37334dea8c51b",
+      "raw_stdout": "{\n    \"detects\": [\n        {\n            \"filetype\": \"PE32\",\n            \"info\": \"\",\n            \"offset\": \"0\",\n            \"parentfilepart\": \"Header\",\n            \"size\": \"1024\",\n            \"values\": [\n                {\n                    \"info\": \"\",\n                    \"name\": \"Unknown\",\n                    \"string\": \"Unknown: Unknown\",\n                    \"type\": \"Unknown\",\n                    \"version\": \"\"\n                }\n            ]\n        }\n    ]\n}\n\n\n",
+      "raw_stdout_sha256": "94941d54fe62e2c43a0709062c7628eb2fa26d7fda825dc366547a4dc85a8f8b"
+    },
+    "recursive_aggressive": {
+      "arguments": [
+        "--json",
+        "--recursivescan",
+        "--aggressivecscan",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/corpus/pe-manifest-resource.exe"
+      ],
+      "comparison_to_qt5": {
+        "exit_code_equal": true,
+        "normalized_detect_tree_equal": true,
+        "stderr_difference": "known_qt6_pe_warning",
+        "stdout_equal": true
+      },
+      "exit_code": 0,
+      "normalized_detect_tree": [
+        {
+          "filetype": "PE32",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "1024",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            },
+            {
+              "filetype": "Binary",
+              "offset": "608",
+              "parentfilepart": "Resource",
+              "size": "20",
+              "values": [
+                {
+                  "name": "Manifest",
+                  "type": "format",
+                  "version": ""
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "raw_stderr_hex": "556e696d706c656d656e74656420636f64652e0a556e696d706c656d656e74656420636f64652e0a556e696d706c656d656e74656420636f64652e0a556e696d706c656d656e74656420636f64652e0a",
+      "raw_stderr_sha256": "b303e6913e76b70a6f0d6a4d3ccd389bc342589e45e1615873a37334dea8c51b",
+      "raw_stdout": "{\n    \"detects\": [\n        {\n            \"filetype\": \"PE32\",\n            \"info\": \"\",\n            \"offset\": \"0\",\n            \"parentfilepart\": \"Header\",\n            \"size\": \"1024\",\n            \"values\": [\n                {\n                    \"info\": \"\",\n                    \"name\": \"Unknown\",\n                    \"string\": \"Unknown: Unknown\",\n                    \"type\": \"Unknown\",\n                    \"version\": \"\"\n                },\n                {\n                    \"filetype\": \"Binary\",\n                    \"info\": \"\",\n                    \"offset\": \"608\",\n                    \"parentfilepart\": \"Resource\",\n                    \"size\": \"20\",\n                    \"values\": [\n                        {\n                            \"info\": \"Resources\",\n                            \"name\": \"Manifest\",\n                            \"string\": \"Format: Manifest[Resources]\",\n                            \"type\": \"format\",\n                            \"version\": \"\"\n                        }\n                    ]\n                }\n            ]\n        }\n    ]\n}\n\n\n",
+      "raw_stdout_sha256": "c9e8a5c7f3eab49f1f8b533917aba24abebc9f1f05128bf4a359bedbeffab7fa"
+    }
+  },
+  "generator": "tools/upstream/probe_qt6_resource_context_chain.py",
+  "generator_sha256": "4dc0eb8f624aa563c06abead9e1f80b27faf275c9c4926a167af370ffa38bb80",
+  "known_difference": {
+    "case_count": 4,
+    "lines_per_case": 4,
+    "scope": "PE rule runtime warning in each CLI invocation",
+    "semantic_output_equal_to_qt5": true,
+    "stderr_bytes_per_case": 80,
+    "stderr_sha256_per_case": "b303e6913e76b70a6f0d6a4d3ccd389bc342589e45e1615873a37334dea8c51b"
+  },
+  "limitations": [
+    "the experiment covers one fixed RT_MANIFEST resource payload",
+    "the four CLI modes isolate recursive and aggressive gate interaction",
+    "the Qt6 PE warning is retained verbatim before classification"
+  ],
+  "oracle": {
+    "binary": "/opt/die-build/src/console/diec",
+    "binary_sha256": "e3321105af0349b29195325e79d5d2c7cc25ead2f28f84e242e3835b98f7283e",
+    "image": "diec-rust/upstream-oracle-cmake-qt6:74eaf505",
+    "image_id": "sha256:e015495c313d0715f0b80f395da983a113a439f2a135eb637e9f0638c225200b",
+    "image_revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "platform": "linux-amd64-qt6",
+  "qt5_baseline": {
+    "path": "docs/research/data/resource-context-chain-qt5.json",
+    "sha256": "56090cee25f736eeb1c1fbb90a1619199f0fc2a93c7c318c0731ddffb585de64"
+  },
+  "relationships": {
+    "aggressive_alone_omits_resource_child": true,
+    "all_detection_trees_match_qt5": true,
+    "all_exit_codes_match_qt5": true,
+    "all_stdout_streams_match_qt5": true,
+    "default_omits_resource_child": true,
+    "manifest_rule_observes_original_resource_type": true,
+    "recursive_alone_omits_unclassified_resource": true,
+    "recursive_and_aggressive_reaches_resource_child": true,
+    "resource_context_is_propagated": true
+  },
+  "result": "observed",
+  "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+  "sample": {
+    "intended_structure": "PE32 with an unclassified RT_MANIFEST resource",
+    "layers": [
+      "pe",
+      "resource",
+      "binary"
+    ],
+    "name": "pe-manifest-resource.exe",
+    "sha256": "0a973cbde2f520bdbd6e1b75304e4a412462113d4de9a8139cdf997af16641ee",
+    "size": 1024
+  },
+  "schema_version": 1,
+  "underlying_probe": {
+    "path": "tools/upstream/probe_resource_context_chain.py",
+    "sha256": "c8daecfd9dc213ef07a777691ac9734dc8d8b9662bf57b77abb255e837d2f632"
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}
