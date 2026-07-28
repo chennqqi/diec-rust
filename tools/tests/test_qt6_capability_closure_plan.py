@@ -81,10 +81,10 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
 
     def test_current_plan_is_conservatively_incomplete(self):
         summary = self.plan["summary"]
-        self.assertEqual(summary["evidence_complete"], 37)
+        self.assertEqual(summary["evidence_complete"], 42)
         self.assertEqual(summary["partial"], 10)
-        self.assertEqual(summary["missing"], 21)
-        self.assertEqual(summary["closure_required"], 31)
+        self.assertEqual(summary["missing"], 16)
+        self.assertEqual(summary["closure_required"], 26)
         self.assertFalse(summary["cap_gap_007_closed"])
         self.assertEqual(self.plan["result"], "incomplete")
 
@@ -117,6 +117,11 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
             "CAP-CLI-OPT-009",
             "CAP-RULE-008",
             "CAP-RULE-010",
+            "CAP-CLI-OPT-004",
+            "CAP-CLI-OPT-008",
+            "CAP-CLI-TEST-001",
+            "CAP-CLI-TEST-002",
+            "CAP-RULE-011",
         }
         for capability_id in promoted:
             with self.subTest(capability=capability_id):
@@ -247,6 +252,20 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
         with self.assertRaisesRegex(
             MODULE.ClosurePlanError,
             "semantic drift",
+        ):
+            MODULE.build_plan(
+                self.traceability,
+                self.traceability_raw,
+                changed_reports,
+                self.report_bytes,
+            )
+
+        changed_reports = json.loads(json.dumps(self.reports))
+        profiling = changed_reports[MODULE.REPORT_PATHS[14]]
+        profiling["order"] = list(reversed(profiling["order"]))
+        with self.assertRaisesRegex(
+            MODULE.ClosurePlanError,
+            "order hash drift",
         ):
             MODULE.build_plan(
                 self.traceability,

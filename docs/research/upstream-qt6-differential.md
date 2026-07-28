@@ -204,7 +204,9 @@ special-mode 矩阵见
 [`qt6-path-runtime-evidence.md`](qt6-path-runtime-evidence.md)。
 database 矩阵见
 [`qt6-database-runtime-evidence.md`](qt6-database-runtime-evidence.md)。
-五批实验将 Linux Qt6 的逐行完整证据从 11 项增加到 37 项，但没有关闭
+option/profiling 矩阵见
+[`qt6-option-profiling-runtime-evidence.md`](qt6-option-profiling-runtime-evidence.md)。
+六批实验将 Linux Qt6 的逐行完整证据从 11 项增加到 42 项，但没有关闭
 `CAP-GAP-007`。
 
 ## 限制与下一步

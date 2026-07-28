@@ -11,10 +11,10 @@ Last updated: 2026-07-28
 [`data/qt6-capability-closure-plan.json`](data/qt6-capability-closure-plan.json)
 逐项列出当前证据和缺失实验：
 
-- 37 项已有证据完整覆盖能力行；
+- 42 项已有证据完整覆盖能力行；
 - 10 项只有部分证据；
-- 21 项没有可接纳的逐行 Qt6 运行时证据；
-- 因此仍有 31 项需要执行闭环实验。
+- 16 项没有可接纳的逐行 Qt6 运行时证据；
+- 因此仍有 26 项需要执行闭环实验。
 
 Linux Qt6 在能力覆盖报告中继续保持 `platform_missing`。本计划只负责把
 缺口变成可执行清单，不改变平台门禁状态。
@@ -48,6 +48,10 @@ directory-vs-internal recursion；目录枚举的复杂文件系统边界仍是 
 Unknown fallback 和脚本错误收集；database layer ordering 与 cache 仍需 engine
 harness。见
 [`qt6-database-runtime-evidence.md`](qt6-database-runtime-evidence.md)。
+
+第六批 option/profiling 证据完整覆盖 verbose、profiling、test、createtest
+和 292-rule script profiling order。见
+[`qt6-option-profiling-runtime-evidence.md`](qt6-option-profiling-runtime-evidence.md)。
 
 下列结果只能算部分证据：
 

@@ -31,6 +31,8 @@ REPORT_PATHS = (
     "docs/research/data/cli-path-matrix-linux-qt5-qt6.json",
     "docs/research/data/cli-database-matrix-linux-qt5-qt6.json",
     "docs/research/data/qt6-database-diagnostics.json",
+    "docs/research/data/cli-option-behavior-linux-qt5-qt6.json",
+    "docs/research/data/binary-rule-order-linux-qt5-qt6.json",
 )
 EMPTY_SHA256 = hashlib.sha256(b"").hexdigest()
 QT6_UNIMPLEMENTED_SHA256 = (
@@ -75,11 +77,15 @@ COMPLETE: dict[str, str] = {
     "CAP-CLI-OPT-001": "all eight nested fixtures have equal recursive-scan detection trees",
     "CAP-CLI-OPT-002": "the five-sample deep-scan matrix has equal stdout and exit codes",
     "CAP-CLI-OPT-003": "the five-sample heuristic matrix has equal detection semantics",
+    "CAP-CLI-OPT-004": "verbose adds the same single Linux OS record",
     "CAP-CLI-OPT-005": "the five-sample aggressive matrix has equal stdout and exit codes",
     "CAP-CLI-OPT-006": "alltypes detections are equal; the complete Qt6 diagnostic difference is retained",
     "CAP-CLI-OPT-007": "the five-sample format-result matrix has equal stdout and exit codes",
+    "CAP-CLI-OPT-008": "no-message behavior and full 292-rule profiling order are equal",
     "CAP-CLI-OPT-009": "database load messages and structured-output contamination are equal",
     "CAP-CLI-OPT-010": "the five-sample hide-unknown matrix has equal stdout and exit codes",
+    "CAP-CLI-TEST-001": "test mode remains the same directory-agnostic no-op",
+    "CAP-CLI-TEST-002": "createtest complete and missing-argument behavior is equal",
     "CAP-CLI-MODE-001": "five-sample formatter and exact 6.5 entropy boundaries are equal",
     "CAP-CLI-MODE-002": "five-sample formatter, priority, and multi-target info boundaries are equal",
     "CAP-CLI-MODE-003": "generic and 11 format-specific struct method boundaries are equal",
@@ -106,6 +112,7 @@ COMPLETE: dict[str, str] = {
     "CAP-NEST-008": "all five nested formatter stdout streams, including the JSON tree, are equal",
     "CAP-RULE-008": "an empty valid database produces the same sole Unknown fallback",
     "CAP-RULE-010": "parse/runtime errors are collected with exact runtime-specific diagnostics",
+    "CAP-RULE-011": "all 292 Binary profiling announcements have identical order",
 }
 
 PARTIAL: dict[str, str] = {
@@ -996,6 +1003,123 @@ def _validate_database_diagnostics(report: dict[str, Any]) -> None:
                     )
 
 
+def _validate_option_behavior_report(report: dict[str, Any]) -> None:
+    if (
+        report.get("upstream_commit") != UPSTREAM_COMMIT
+        or report.get("result") != "equal"
+    ):
+        raise ClosurePlanError("CLI option report identity/result drift")
+    cases = report.get("cases")
+    expected_cases = {
+        "test_existing_directory",
+        "test_missing_directory",
+        "createtest_missing_positionals",
+        "createtest_complete",
+        "scan_default_json",
+        "scan_verbose_json",
+        "scan_profiling_without_messages_json",
+        "showdatabase_missing_without_messages",
+        "showdatabase_missing_with_messages",
+    }
+    if not isinstance(cases, dict) or set(cases) != expected_cases:
+        raise ClosurePlanError("CLI option case catalog drift")
+    if not all(
+        case.get("all_oracles_equal") is True for case in cases.values()
+    ):
+        raise ClosurePlanError("CLI option oracle difference")
+    oracles = report.get("oracles")
+    if (
+        not isinstance(oracles, list)
+        or [oracle.get("name") for oracle in oracles]
+        != ["linux-qt5-cmake", "linux-qt6-cmake"]
+        or any(
+            oracle.get("revision") != UPSTREAM_COMMIT
+            for oracle in oracles
+        )
+    ):
+        raise ClosurePlanError("CLI option oracle identity drift")
+    relationships = report.get("relationships")
+    if not isinstance(relationships, dict):
+        raise ClosurePlanError("CLI option relationships missing")
+    required_true = (
+        "test_directory_value_is_unvalidated",
+        "createtest_complete_only_prints_announcement",
+        "createtest_missing_positionals_uses_addtest_name",
+        "profiling_without_messages_equals_default",
+        "all_stderr_empty",
+    )
+    if not all(relationships.get(name) is True for name in required_true):
+        raise ClosurePlanError("CLI option relationship drift")
+    if (
+        relationships.get("createtest_missing_positionals_exit_code") != 4
+        or relationships.get("verbose_added_values")
+        != [
+            {
+                "info": "AMD64, 64-bit",
+                "name": "Linux",
+                "type": "operation system",
+                "version": "ABI: 3.2.0",
+            }
+        ]
+        or relationships.get("verbose_removed_values") != []
+    ):
+        raise ClosurePlanError("CLI option delta drift")
+
+
+def _validate_binary_rule_order_report(report: dict[str, Any]) -> None:
+    if (
+        report.get("upstream_commit") != UPSTREAM_COMMIT
+        or report.get("rules_commit") != RULES_COMMIT
+        or report.get("result") != "equal"
+        or report.get("orders_equal") is not True
+    ):
+        raise ClosurePlanError("Binary profiling report identity/result drift")
+    order = report.get("order")
+    if (
+        not isinstance(order, list)
+        or len(order) != 292
+        or len(set(order)) != 292
+        or report.get("order_count") != 292
+    ):
+        raise ClosurePlanError("Binary profiling order catalog drift")
+    order_bytes = "".join(f"{name}\n" for name in order).encode("utf-8")
+    expected_hash = (
+        "27138d68ed788dd2609b7c533fecf540593fa2e4ddb7195adc26b1a9ff0e1ff3"
+    )
+    if (
+        sha256(order_bytes) != expected_hash
+        or report.get("order_sha256") != expected_hash
+    ):
+        raise ClosurePlanError("Binary profiling order hash drift")
+    lifecycle = report.get("lifecycle_manifest")
+    if lifecycle != {
+        "path": "docs/research/data/binary-rule-lifecycle.json",
+        "sha256": (
+            "6cf78bbe8c95886978dfba825e2f4d4b130cd92491ecb7f19049cfbd6374e092"
+        ),
+    }:
+        raise ClosurePlanError("Binary profiling lifecycle identity drift")
+    oracles = report.get("oracles")
+    if (
+        not isinstance(oracles, list)
+        or [oracle.get("name") for oracle in oracles]
+        != ["linux-qt5-cmake", "linux-qt6-cmake"]
+    ):
+        raise ClosurePlanError("Binary profiling oracle catalog drift")
+    for oracle in oracles:
+        if (
+            oracle.get("revision") != UPSTREAM_COMMIT
+            or oracle.get("exit_code") != 0
+            or oracle.get("raw_stderr_bytes") != 0
+            or oracle.get("raw_stderr_sha256") != EMPTY_SHA256
+            or oracle.get("order_count") != 292
+            or oracle.get("order_sha256") != expected_hash
+        ):
+            raise ClosurePlanError(
+                f"Binary profiling oracle drift: {oracle.get('name')}"
+            )
+
+
 CAMPAIGNS: dict[str, dict[str, Any]] = {
     "cli_scan_baseline": {
         "fixture": "reuse baseline-corpus and scan-option-boundary fixtures",
@@ -1172,6 +1296,8 @@ def _validate_inputs(
     _validate_path_matrix_report(reports[REPORT_PATHS[10]])
     _validate_database_matrix_report(reports[REPORT_PATHS[11]])
     _validate_database_diagnostics(reports[REPORT_PATHS[12]])
+    _validate_option_behavior_report(reports[REPORT_PATHS[13]])
+    _validate_binary_rule_order_report(reports[REPORT_PATHS[14]])
     return capabilities
 
 
@@ -1338,6 +1464,20 @@ def build_plan(
                 "repetitions": reports[REPORT_PATHS[12]]["repetitions"],
                 "json_documents_equal": True,
                 "raw_streams_retained": True,
+            },
+            {
+                "source": REPORT_PATHS[13],
+                "scope": "nine-case verbose/profiling/test/createtest option matrix",
+                "difference_count": 0,
+                "all_raw_streams_equal": True,
+            },
+            {
+                "source": REPORT_PATHS[14],
+                "scope": "292-name Binary profiling execution order",
+                "difference_count": 0,
+                "order_sha256": reports[REPORT_PATHS[14]][
+                    "order_sha256"
+                ],
             },
         ],
         "rows": rows,

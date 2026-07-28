@@ -146,6 +146,9 @@ Phase 0 计划形成：
 - [`qt6-database-runtime-evidence.md`](qt6-database-runtime-evidence.md)：
   固定 18-case database load/error/messages 矩阵及 parse/runtime error
   raw-first 诊断差分（In Review）。
+- [`qt6-option-profiling-runtime-evidence.md`](qt6-option-profiling-runtime-evidence.md)：
+  固定 verbose/profiling/test/createtest 九用例与 292 条 Binary 规则 profiling
+  order 的 Qt5/Qt6 差分（In Review）。
 - [`behavior-baseline.md`](behavior-baseline.md)：确定性安全语料、原始输出哈希和多格式行为（Draft）。
 - [`cli-json-schema-inventory.md`](cli-json-schema-inventory.md)：固定 CLI normal/entropy/info/struct JSON 字段、类型、顺序与失败边界（Draft）。
 - [`cli-output-boundaries.md`](cli-output-boundaries.md)：固定 JSON/XML/CSV/TSV/plain text 的 Unicode/控制字符转义、嵌套排序和格式缺陷；闭合 `CAP-GAP-004`（Draft）。
@@ -211,6 +214,10 @@ Phase 0 计划形成：
   JSON framing。
 - [`data/qt6-database-diagnostics.json`](data/qt6-database-diagnostics.json)：
   malformed parse/runtime throw 两次重复的完整原始流、JSON 前缀和精确诊断。
+- [`data/cli-option-behavior-linux-qt5-qt6.json`](data/cli-option-behavior-linux-qt5-qt6.json)：
+  九用例 CLI option 的完整 canonical streams、两侧身份和关系断言。
+- [`data/binary-rule-order-linux-qt5-qt6.json`](data/binary-rule-order-linux-qt5-qt6.json)：
+  两侧 292 条 Binary signature profiling announcements 的完整固定顺序。
 - [`data/scan-option-boundary-fixture.json`](data/scan-option-boundary-fixture.json)：deep/aggressive 规则与 1/22/2002-resource PE 的 hash-bound 清单。
 - [`data/scan-option-boundaries-linux-qt5.json`](data/scan-option-boundaries-linux-qt5.json)：8-case 双 Qt5 scan-option oracle 的去重原始 streams、身份和派生事实。
 - [`data/capability-traceability.json`](data/capability-traceability.json)：68 个稳定

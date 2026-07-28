@@ -78,6 +78,18 @@
       "repetitions": 2,
       "scope": "malformed parse and runtime error diagnostics",
       "source": "docs/research/data/qt6-database-diagnostics.json"
+    },
+    {
+      "all_raw_streams_equal": true,
+      "difference_count": 0,
+      "scope": "nine-case verbose/profiling/test/createtest option matrix",
+      "source": "docs/research/data/cli-option-behavior-linux-qt5-qt6.json"
+    },
+    {
+      "difference_count": 0,
+      "order_sha256": "27138d68ed788dd2609b7c533fecf540593fa2e4ddb7195adc26b1a9ff0e1ff3",
+      "scope": "292-name Binary profiling execution order",
+      "source": "docs/research/data/binary-rule-order-linux-qt5-qt6.json"
     }
   ],
   "limitations": [
@@ -207,19 +219,11 @@
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "cli_options",
       "id": "CAP-CLI-OPT-004",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "verbose option",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "exit code and normalized detection output are equal",
-          "message and profiling channels retain raw output before normalization",
-          "no-op and malformed test-mode behaviors are exercised"
-        ],
-        "fixture": "reuse CLI option and binary rule-order fixtures",
-        "harness": "execute every short/long option and paired control on Qt5 and Qt6"
-      },
-      "status": "missing"
+      "observed_scope": "verbose adds the same single Linux OS record",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
@@ -255,19 +259,11 @@
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "cli_options",
       "id": "CAP-CLI-OPT-008",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "profiling option",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "exit code and normalized detection output are equal",
-          "message and profiling channels retain raw output before normalization",
-          "no-op and malformed test-mode behaviors are exercised"
-        ],
-        "fixture": "reuse CLI option and binary rule-order fixtures",
-        "harness": "execute every short/long option and paired control on Qt5 and Qt6"
-      },
-      "status": "missing"
+      "observed_scope": "no-message behavior and full 292-rule profiling order are equal",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
@@ -443,37 +439,21 @@
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "cli_options",
       "id": "CAP-CLI-TEST-001",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "test mode no-op",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "exit code and normalized detection output are equal",
-          "message and profiling channels retain raw output before normalization",
-          "no-op and malformed test-mode behaviors are exercised"
-        ],
-        "fixture": "reuse CLI option and binary rule-order fixtures",
-        "harness": "execute every short/long option and paired control on Qt5 and Qt6"
-      },
-      "status": "missing"
+      "observed_scope": "test mode remains the same directory-agnostic no-op",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "cli_options",
       "id": "CAP-CLI-TEST-002",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "create test mode no-op",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "exit code and normalized detection output are equal",
-          "message and profiling channels retain raw output before normalization",
-          "no-op and malformed test-mode behaviors are exercised"
-        ],
-        "fixture": "reuse CLI option and binary rule-order fixtures",
-        "harness": "execute every short/long option and paired control on Qt5 and Qt6"
-      },
-      "status": "missing"
+      "observed_scope": "createtest complete and missing-argument behavior is equal",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
@@ -643,19 +623,11 @@
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "cli_options",
       "id": "CAP-RULE-011",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "script profiling",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "exit code and normalized detection output are equal",
-          "message and profiling channels retain raw output before normalization",
-          "no-op and malformed test-mode behaviors are exercised"
-        ],
-        "fixture": "reuse CLI option and binary rule-order fixtures",
-        "harness": "execute every short/long option and paired control on Qt5 and Qt6"
-      },
-      "status": "missing"
+      "observed_scope": "all 292 Binary profiling announcements have identical order",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
@@ -1021,8 +993,10 @@
   "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
   "schema_version": 1,
   "sources": {
+    "docs/research/data/binary-rule-order-linux-qt5-qt6.json": "58eba4dcab44a32412c65a8b80716325140bb5eba3a1e93a7753a67c35256852",
     "docs/research/data/capability-traceability.json": "e1bb982feb52fb97e6678319c629cf71735650fe4239c8558a0f765c16c8cff3",
     "docs/research/data/cli-database-matrix-linux-qt5-qt6.json": "0bb7c6562e7d31604a6a16b3556fbc04ca70a02c089637be0f4849afa0006f4b",
+    "docs/research/data/cli-option-behavior-linux-qt5-qt6.json": "a6e127a0a8439bfbb77b276430662e833ab11343330f11d6c41e3bfadfe649d3",
     "docs/research/data/cli-output-boundaries-linux-qt5-qt6.json": "b94817adf7d99aa67bb64397e97cad5a95af244cdb01b9cd51f79cf15c4dea84",
     "docs/research/data/cli-output-matrix-linux-qt5-qt6.json": "3e032534ce269597c98eee45c1e477796a11402ec1fb07b7a79a7806cad7ba2c",
     "docs/research/data/cli-path-matrix-linux-qt5-qt6.json": "8250fdc2e2ce0f8480b28421aa9fe17df3ae91a3f1492d7cac456fe195638b41",
@@ -1040,9 +1014,9 @@
     "all_capabilities_accounted_for": true,
     "cap_gap_007_closed": false,
     "capability_count": 68,
-    "closure_required": 31,
-    "evidence_complete": 37,
-    "missing": 21,
+    "closure_required": 26,
+    "evidence_complete": 42,
+    "missing": 16,
     "partial": 10
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"

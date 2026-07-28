@@ -85,8 +85,11 @@ Oracle identity：
 - database archive cache、reload 和 stale state；
 - engine-level error/list ownership。
 
-当前汇总为 37 项 complete、10 项 partial、21 项 missing；31 项仍需闭环，
-`CAP-GAP-007` 保持开放。
+本切片当时使汇总达到 37 项 complete。后续 option/profiling 证据见
+[`qt6-option-profiling-runtime-evidence.md`](qt6-option-profiling-runtime-evidence.md)；
+当前计数以
+[`qt6-capability-closure-plan.md`](qt6-capability-closure-plan.md)
+为准。`CAP-GAP-007` 保持开放。
 
 ## 重现
 

@@ -1,0 +1,436 @@
+{
+  "capability_scope": [
+    "CAP-CLI-OPT-004",
+    "CAP-CLI-OPT-008",
+    "CAP-CLI-OPT-009",
+    "CAP-CLI-TEST-001",
+    "CAP-CLI-TEST-002"
+  ],
+  "cases": {
+    "createtest_complete": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--createtest",
+        "/usr/bin/true",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "Detect String",
+        "/tmp"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 92,
+        "stdout_sha256": "ff1c2f129f8e71b8d3fa5c3493a63c622b5e11d966308e61751d15a2bcbe8284",
+        "stdout_utf8": "Adding test for file '/usr/bin/true' with detect string 'Detect String' in directory '/tmp'\n"
+      },
+      "oracles": [
+        {
+          "exit_code": 0,
+          "name": "linux-qt5-cmake",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 92,
+          "stdout_sha256": "ff1c2f129f8e71b8d3fa5c3493a63c622b5e11d966308e61751d15a2bcbe8284"
+        },
+        {
+          "exit_code": 0,
+          "name": "linux-qt6-cmake",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 92,
+          "stdout_sha256": "ff1c2f129f8e71b8d3fa5c3493a63c622b5e11d966308e61751d15a2bcbe8284"
+        }
+      ]
+    },
+    "createtest_missing_positionals": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--createtest",
+        "/usr/bin/true",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom"
+      ],
+      "canonical": {
+        "exit_code": 4,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 65,
+        "stdout_sha256": "3cedfdc8e57a94b5a6517bb42f3fb4b8b60cacca65b29c4d3b7c4c1b26fa0812",
+        "stdout_utf8": "Error: --addtest requires <filename> <detect_string> <directory>\n"
+      },
+      "oracles": [
+        {
+          "exit_code": 4,
+          "name": "linux-qt5-cmake",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 65,
+          "stdout_sha256": "3cedfdc8e57a94b5a6517bb42f3fb4b8b60cacca65b29c4d3b7c4c1b26fa0812"
+        },
+        {
+          "exit_code": 4,
+          "name": "linux-qt6-cmake",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 65,
+          "stdout_sha256": "3cedfdc8e57a94b5a6517bb42f3fb4b8b60cacca65b29c4d3b7c4c1b26fa0812"
+        }
+      ]
+    },
+    "scan_default_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--json",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/usr/bin/true"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 500,
+        "stdout_sha256": "e5385540a7d8984a84f1183a1fbf061db24118f934d5a25023ae508b885e9213",
+        "stdout_utf8": "{\n    \"detects\": [\n        {\n            \"filetype\": \"ELF64\",\n            \"info\": \"\",\n            \"offset\": \"0\",\n            \"parentfilepart\": \"Header\",\n            \"size\": \"26936\",\n            \"values\": [\n                {\n                    \"info\": \"DYN AMD64-64\",\n                    \"name\": \"GLIBC\",\n                    \"string\": \"Library: GLIBC(2.4)[DYN AMD64-64]\",\n                    \"type\": \"library\",\n                    \"version\": \"2.4\"\n                }\n            ]\n        }\n    ]\n}\n\n\n"
+      },
+      "oracles": [
+        {
+          "exit_code": 0,
+          "name": "linux-qt5-cmake",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 500,
+          "stdout_sha256": "e5385540a7d8984a84f1183a1fbf061db24118f934d5a25023ae508b885e9213"
+        },
+        {
+          "exit_code": 0,
+          "name": "linux-qt6-cmake",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 500,
+          "stdout_sha256": "e5385540a7d8984a84f1183a1fbf061db24118f934d5a25023ae508b885e9213"
+        }
+      ]
+    },
+    "scan_profiling_without_messages_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--json",
+        "--profiling",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/usr/bin/true"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 500,
+        "stdout_sha256": "e5385540a7d8984a84f1183a1fbf061db24118f934d5a25023ae508b885e9213",
+        "stdout_utf8": "{\n    \"detects\": [\n        {\n            \"filetype\": \"ELF64\",\n            \"info\": \"\",\n            \"offset\": \"0\",\n            \"parentfilepart\": \"Header\",\n            \"size\": \"26936\",\n            \"values\": [\n                {\n                    \"info\": \"DYN AMD64-64\",\n                    \"name\": \"GLIBC\",\n                    \"string\": \"Library: GLIBC(2.4)[DYN AMD64-64]\",\n                    \"type\": \"library\",\n                    \"version\": \"2.4\"\n                }\n            ]\n        }\n    ]\n}\n\n\n"
+      },
+      "oracles": [
+        {
+          "exit_code": 0,
+          "name": "linux-qt5-cmake",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 500,
+          "stdout_sha256": "e5385540a7d8984a84f1183a1fbf061db24118f934d5a25023ae508b885e9213"
+        },
+        {
+          "exit_code": 0,
+          "name": "linux-qt6-cmake",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 500,
+          "stdout_sha256": "e5385540a7d8984a84f1183a1fbf061db24118f934d5a25023ae508b885e9213"
+        }
+      ]
+    },
+    "scan_verbose_json": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--json",
+        "--verbose",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/usr/bin/true"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 795,
+        "stdout_sha256": "788f0ba455d53e64d23e105eaee12c9c987de5fbd93673e5df440fd7000afec9",
+        "stdout_utf8": "{\n    \"detects\": [\n        {\n            \"filetype\": \"ELF64\",\n            \"info\": \"\",\n            \"offset\": \"0\",\n            \"parentfilepart\": \"Header\",\n            \"size\": \"26936\",\n            \"values\": [\n                {\n                    \"info\": \"AMD64, 64-bit\",\n                    \"name\": \"Linux\",\n                    \"string\": \"Operation system: Linux(ABI: 3.2.0)[AMD64, 64-bit]\",\n                    \"type\": \"operation system\",\n                    \"version\": \"ABI: 3.2.0\"\n                },\n                {\n                    \"info\": \"DYN AMD64-64\",\n                    \"name\": \"GLIBC\",\n                    \"string\": \"Library: GLIBC(2.4)[DYN AMD64-64]\",\n                    \"type\": \"library\",\n                    \"version\": \"2.4\"\n                }\n            ]\n        }\n    ]\n}\n\n\n"
+      },
+      "oracles": [
+        {
+          "exit_code": 0,
+          "name": "linux-qt5-cmake",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 795,
+          "stdout_sha256": "788f0ba455d53e64d23e105eaee12c9c987de5fbd93673e5df440fd7000afec9"
+        },
+        {
+          "exit_code": 0,
+          "name": "linux-qt6-cmake",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 795,
+          "stdout_sha256": "788f0ba455d53e64d23e105eaee12c9c987de5fbd93673e5df440fd7000afec9"
+        }
+      ]
+    },
+    "showdatabase_missing_with_messages": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--showdatabase",
+        "--messages",
+        "--database",
+        "/does-not-exist",
+        "--extradatabase",
+        "/does-not-exist-extra",
+        "--customdatabase",
+        "/does-not-exist-custom"
+      ],
+      "canonical": {
+        "exit_code": 3,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 147,
+        "stdout_sha256": "5c482106f09223b551c1551010343ec534593d81b4d74facb226e03f09e72a53",
+        "stdout_utf8": "Cannot load database: /does-not-exist\nMain database: /does-not-exist\nExtra database: /does-not-exist-extra\nCustom database: /does-not-exist-custom\n"
+      },
+      "oracles": [
+        {
+          "exit_code": 3,
+          "name": "linux-qt5-cmake",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 147,
+          "stdout_sha256": "5c482106f09223b551c1551010343ec534593d81b4d74facb226e03f09e72a53"
+        },
+        {
+          "exit_code": 3,
+          "name": "linux-qt6-cmake",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 147,
+          "stdout_sha256": "5c482106f09223b551c1551010343ec534593d81b4d74facb226e03f09e72a53"
+        }
+      ]
+    },
+    "showdatabase_missing_without_messages": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--showdatabase",
+        "--database",
+        "/does-not-exist",
+        "--extradatabase",
+        "/does-not-exist-extra",
+        "--customdatabase",
+        "/does-not-exist-custom"
+      ],
+      "canonical": {
+        "exit_code": 3,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 109,
+        "stdout_sha256": "4f9140347c13e11cbc18bac06fe28b35f3d760e1ef8de6b07be7906d5fcba5a6",
+        "stdout_utf8": "Main database: /does-not-exist\nExtra database: /does-not-exist-extra\nCustom database: /does-not-exist-custom\n"
+      },
+      "oracles": [
+        {
+          "exit_code": 3,
+          "name": "linux-qt5-cmake",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 109,
+          "stdout_sha256": "4f9140347c13e11cbc18bac06fe28b35f3d760e1ef8de6b07be7906d5fcba5a6"
+        },
+        {
+          "exit_code": 3,
+          "name": "linux-qt6-cmake",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 109,
+          "stdout_sha256": "4f9140347c13e11cbc18bac06fe28b35f3d760e1ef8de6b07be7906d5fcba5a6"
+        }
+      ]
+    },
+    "test_existing_directory": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--test",
+        "/tmp",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_utf8": ""
+      },
+      "oracles": [
+        {
+          "exit_code": 0,
+          "name": "linux-qt5-cmake",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 0,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "exit_code": 0,
+          "name": "linux-qt6-cmake",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 0,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    "test_missing_directory": {
+      "all_oracles_equal": true,
+      "arguments": [
+        "--test",
+        "/does-not-exist",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom"
+      ],
+      "canonical": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_utf8": "",
+        "stdout_bytes": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_utf8": ""
+      },
+      "oracles": [
+        {
+          "exit_code": 0,
+          "name": "linux-qt5-cmake",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 0,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "exit_code": 0,
+          "name": "linux-qt6-cmake",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 0,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    }
+  },
+  "generator": "tools/upstream/probe_qt6_cli_option_behavior.py",
+  "generator_sha256": "f2d6ba7629ee8d396788b3e8f5d04c75a5dc959b5ba2841cd5065e0bb28a7362",
+  "limitations": [
+    "profiling is covered only without --messages in this probe",
+    "full profiling rule order is a separate binary-rule lifecycle probe",
+    "raw streams are retained externally before equality is admitted"
+  ],
+  "oracles": [
+    {
+      "binary": "/opt/die-build/src/console/diec",
+      "image": "diec-rust/upstream-oracle-cmake:74eaf505",
+      "image_id": "sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040",
+      "name": "linux-qt5-cmake",
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+      "sample_sha256": "4b5a5694e3c0e8b1d58fc52ac6ef076e55e72c2f53195243ac86d5ff517cc2f6"
+    },
+    {
+      "binary": "/opt/die-build/src/console/diec",
+      "image": "diec-rust/upstream-oracle-cmake-qt6:74eaf505",
+      "image_id": "sha256:e015495c313d0715f0b80f395da983a113a439f2a135eb637e9f0638c225200b",
+      "name": "linux-qt6-cmake",
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+      "sample_sha256": "4b5a5694e3c0e8b1d58fc52ac6ef076e55e72c2f53195243ac86d5ff517cc2f6"
+    }
+  ],
+  "platform": "linux-amd64-qt5-qt6",
+  "raw_artifacts": {
+    "stdout_and_stderr_preserved_per_oracle_and_case": true,
+    "storage": "untracked external directory selected by --raw-dir"
+  },
+  "relationships": {
+    "all_stderr_empty": true,
+    "createtest_complete_only_prints_announcement": true,
+    "createtest_missing_positionals_exit_code": 4,
+    "createtest_missing_positionals_uses_addtest_name": true,
+    "messages_added_stdout_lines": [
+      "Cannot load database: /does-not-exist"
+    ],
+    "messages_change_exit_code": false,
+    "profiling_without_messages_equals_default": true,
+    "test_directory_value_is_unvalidated": true,
+    "verbose_added_values": [
+      {
+        "info": "AMD64, 64-bit",
+        "name": "Linux",
+        "type": "operation system",
+        "version": "ABI: 3.2.0"
+      }
+    ],
+    "verbose_removed_values": []
+  },
+  "result": "equal",
+  "sample": {
+    "path": "/usr/bin/true",
+    "sha256": "4b5a5694e3c0e8b1d58fc52ac6ef076e55e72c2f53195243ac86d5ff517cc2f6"
+  },
+  "schema_version": 1,
+  "underlying_probe": {
+    "path": "tools/upstream/probe_cli_option_behavior.py",
+    "sha256": "b4790b6fd0df2b821287c43bd1e84ba189c2cf3ad1cd487e695ea2efeb2b1de6"
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}
