@@ -1,0 +1,425 @@
+#!/usr/bin/env python3
+"""Build the 68-row Linux Qt6 capability closure plan."""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+from pathlib import Path
+from typing import Any
+
+
+SCHEMA_VERSION = 1
+EVALUATED_ON = "2026-07-28"
+UPSTREAM_COMMIT = "74eaf505c250ab47e709024e9dc41657cd8f2254"
+RULES_COMMIT = "c2c17dfa5ea4e078ba31eab55d87430c96622fb6"
+PLATFORM = "linux-x86_64-qt6"
+TRACEABILITY_PATH = "docs/research/data/capability-traceability.json"
+REPORT_PATHS = (
+    "docs/research/data/qt5-qt6-cli.json",
+    "docs/research/data/global-host-api-qt5-qt6.json",
+    "docs/research/data/host-api-arity-qt5-qt6.json",
+    "docs/research/data/global-typo-errors-qt5-qt6.json",
+)
+
+
+class ClosurePlanError(ValueError):
+    """The Qt6 closure plan cannot be generated safely."""
+
+
+def reject_duplicate_keys(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ClosurePlanError(f"duplicate JSON key: {key}")
+        result[key] = value
+    return result
+
+
+def load_json(path: Path) -> tuple[dict[str, Any], bytes]:
+    raw = path.read_bytes()
+    try:
+        value = json.loads(raw, object_pairs_hook=reject_duplicate_keys)
+    except (UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise ClosurePlanError(f"invalid JSON in {path}: {error}") from error
+    if not isinstance(value, dict):
+        raise ClosurePlanError(f"JSON root must be an object: {path}")
+    return value, raw
+
+
+def sha256(value: bytes) -> str:
+    return hashlib.sha256(value).hexdigest()
+
+
+# These are deliberately narrow. A capability is complete only when the existing
+# Qt6 comparison exercises the entire behavior named by the matrix row.
+COMPLETE: dict[str, str] = {
+    "CAP-CLI-IN-001": "15 hash-bound corpus files exercise one positional target",
+    "CAP-CLI-MODE-004": "--showstructs is equal both with and without a target",
+    "CAP-CLI-MODE-005": "--help and no-argument help are byte-identical",
+    "CAP-CLI-MODE-006": "--version is byte-identical",
+    "CAP-CLI-OUT-002": "all 15 normal scans have equal JSON detection trees",
+    "CAP-CLI-DB-001": "the main database argument and reported path are equal",
+    "CAP-CLI-DB-002": "the extra database argument and reported path are equal",
+    "CAP-CLI-DB-003": "the custom database argument and reported path are equal",
+    "CAP-CLI-DB-004": "--showdatabase output is byte-identical",
+    "CAP-DISPATCH-006": "the PDF and CFBF fixtures have equal detection trees",
+    "CAP-DISPATCH-008": "empty and plain binary fallback fixtures are equal",
+}
+
+PARTIAL: dict[str, str] = {
+    "CAP-CLI-MODE-001": "unreadable entropy JSON behavior only",
+    "CAP-CLI-MODE-002": "unreadable info JSON behavior only",
+    "CAP-DISPATCH-001": "one ELF, PE, and Mach-O fixture; width/FAT variants remain",
+    "CAP-DISPATCH-004": "TAR, gzip, and ZIP only; full archive family remains",
+    "CAP-DISPATCH-005": "DEX and Java Class only; PYC remains",
+    "CAP-DISPATCH-007": "BMP and PNG only; JPEG and generic Image remain",
+    "CAP-RULE-010": "global typo and HostApi failures expose diagnostics, not the full result error-list contract",
+    "CAP-RESULT-001": "CLI JSON exposes only a projection of scalar engine metadata",
+    "CAP-RESULT-002": "rule probes expose errors, but not all four engine lists",
+    "CAP-RESULT-003": "baseline JSON includes Unknown; heuristic flag combinations remain",
+    "CAP-RESULT-004": "CLI trees expose parent structure, not the full engine identifier contract",
+    "CAP-RESULT-005": "CLI JSON exposes string representations, not numeric enums",
+    "CAP-RESULT-006": "HostApi probes cover rule metadata only partially",
+}
+
+
+CAMPAIGNS: dict[str, dict[str, Any]] = {
+    "cli_scan_baseline": {
+        "fixture": "reuse baseline-corpus and scan-option-boundary fixtures",
+        "harness": "run the pinned Qt5 and Qt6 CLI images with every scan-option vector",
+        "assertions": [
+            "exit code and normalized detection tree are equal",
+            "raw stdout and stderr hashes are retained",
+            "each documented option boundary has a named paired control",
+        ],
+    },
+    "cli_path": {
+        "fixture": "reuse path, special-path, filesystem, large-directory, TOCTOU, and locale fixtures",
+        "harness": "port the fixed Linux Qt5 path probes to the pinned Qt6 CLI image",
+        "assertions": [
+            "target order, duplicate handling, and directory traversal are equal",
+            "exit code and raw per-target framing are retained",
+            "links, permissions, TOCTOU, locale, and large-directory controls are all executed",
+        ],
+    },
+    "engine_contract": {
+        "fixture": "reuse the 37-case engine-contract fixture and controls",
+        "harness": "build and run an equivalent XScanEngine Qt6 harness",
+        "assertions": [
+            "memory, file, device, and subdevice result projections are equal",
+            "read, seek, EOF, sequential, and invalid-range cases are equal",
+            "sort, signature filter, cancellation, and fresh-state cases are equal",
+        ],
+    },
+    "cli_options": {
+        "fixture": "reuse CLI option and binary rule-order fixtures",
+        "harness": "execute every short/long option and paired control on Qt5 and Qt6",
+        "assertions": [
+            "exit code and normalized detection output are equal",
+            "message and profiling channels retain raw output before normalization",
+            "no-op and malformed test-mode behaviors are exercised",
+        ],
+    },
+    "cli_special": {
+        "fixture": "reuse special-mode and boundary fixtures",
+        "harness": "run entropy, info, struct, and showstructs matrices on Qt5 and Qt6",
+        "assertions": [
+            "all formatter and multi-target framing cases are equal",
+            "floating-point and invalid/deep struct boundaries are equal",
+            "format-specific PE/ELF/Mach-O/DEX struct methods are exercised",
+        ],
+    },
+    "cli_control": {
+        "fixture": "reuse control-mode arguments and no-target controls",
+        "harness": "run help, version, missing-target, and no-argument cases",
+        "assertions": [
+            "exit codes are equal",
+            "stdout and stderr hashes are equal",
+            "target-independent control modes are tested with and without a target",
+        ],
+    },
+    "cli_output": {
+        "fixture": "reuse output-boundary fixture and five representative formats",
+        "harness": "run XML, JSON, CSV, TSV, and plain output matrices",
+        "assertions": [
+            "raw bytes and parsed semantic projections are retained",
+            "formatter precedence and multi-target framing are equal",
+            "messages contamination and special-mode output are exercised",
+        ],
+    },
+    "database": {
+        "fixture": "reuse database layer, error, archive, and cache fixtures",
+        "harness": "build Qt6 database-layer and cache harnesses plus CLI controls",
+        "assertions": [
+            "main, extra, and custom layer ordering is equal",
+            "missing, malformed, archive, and cache behavior is equal",
+            "showdatabase counts, paths, exit code, and raw streams are equal",
+        ],
+    },
+    "rule_orchestration": {
+        "fixture": "reuse rule-orchestration and scan-option fixtures",
+        "harness": "run the full rule gate/order/init/error matrix under both script engines",
+        "assertions": [
+            "layer, priority, init, type, deep, heuristic, and fallback behavior is equal",
+            "detections and diagnostics are compared separately",
+            "each known Qt5/Qt6 diagnostic difference is explicit and reviewable",
+        ],
+    },
+    "signature_path_filter": {
+        "fixture": "reuse signature-path fixture",
+        "harness": "build and run an equivalent private-path Qt6 harness",
+        "assertions": [
+            "absolute exact match and mismatch controls are equal",
+            "case, dot-dot, basename, and empty public-entry behavior is equal",
+            "raw records and errors are retained",
+        ],
+    },
+    "debug_data_dispatch": {
+        "fixture": "reuse debug-dispatch fixture and source-audit identity",
+        "harness": "build and run an equivalent Qt6 debug-dispatch harness",
+        "assertions": [
+            "resource and debug enumerations are equal",
+            "only resource candidates are scanner-dispatched",
+            "positive resource and negative debug controls retain raw records",
+        ],
+    },
+    "dispatch_source": {
+        "fixture": "reuse every dispatch fixture named by the Qt5 evidence set",
+        "harness": "build Qt6 variants of all public and private dispatch probes",
+        "assertions": [
+            "every format family and property-only or detector-only branch is exercised",
+            "normalized detection records and raw diagnostics are compared",
+            "archive adapters include positive, malformed, compressed, and boundary controls",
+        ],
+    },
+    "nested_scan": {
+        "fixture": "reuse nested, resource, archive-limit, iteration, adversarial, and structure fixtures",
+        "harness": "build Qt6 nested/resource/archive harness variants",
+        "assertions": [
+            "CLI recursion and internal recursion gates are distinguished",
+            "record-count, iteration, depth, and expanded-byte observations are equal",
+            "parent tree, context propagation, subdevice gates, and raw errors are compared",
+        ],
+    },
+    "result_model": {
+        "fixture": "reuse engine result metadata/list/flag/id/enum fixtures",
+        "harness": "build and run equivalent Qt6 result-model harnesses",
+        "assertions": [
+            "all scalar fields, lists, flags, IDs, enums, and rule metadata are projected",
+            "stable fields are compared exactly and random IDs by declared invariants",
+            "script-engine diagnostic differences remain separate from detection semantics",
+        ],
+    },
+}
+
+
+def _validate_inputs(
+    traceability: dict[str, Any], reports: dict[str, dict[str, Any]]
+) -> list[dict[str, Any]]:
+    if traceability.get("schema_version") != 1:
+        raise ClosurePlanError("unsupported traceability schema")
+    if traceability.get("upstream_commit") != UPSTREAM_COMMIT:
+        raise ClosurePlanError("traceability upstream commit drift")
+    if traceability.get("rules_commit") != RULES_COMMIT:
+        raise ClosurePlanError("traceability rules commit drift")
+    capabilities = traceability.get("capabilities")
+    if not isinstance(capabilities, list) or len(capabilities) != 68:
+        raise ClosurePlanError("traceability must contain exactly 68 capabilities")
+    ids = [item.get("id") for item in capabilities]
+    if len(set(ids)) != len(ids):
+        raise ClosurePlanError("duplicate capability id")
+    evidence_sets = {item.get("evidence_set") for item in capabilities}
+    if evidence_sets != set(CAMPAIGNS):
+        raise ClosurePlanError(
+            "Qt6 campaign catalog does not exactly match evidence sets"
+        )
+    known = set(COMPLETE) | set(PARTIAL)
+    if not known <= set(ids):
+        raise ClosurePlanError("Qt6 evidence catalog contains stale capability ids")
+
+    cli = reports[REPORT_PATHS[0]]
+    if (
+        cli.get("expected_revision") != UPSTREAM_COMMIT
+        or cli.get("left_revision") != UPSTREAM_COMMIT
+        or cli.get("right_revision") != UPSTREAM_COMMIT
+    ):
+        raise ClosurePlanError("CLI comparison revision drift")
+    for path in REPORT_PATHS[1:]:
+        report = reports[path]
+        if report.get("upstream_commit") != UPSTREAM_COMMIT:
+            raise ClosurePlanError(f"report upstream commit drift: {path}")
+        if report.get("rules_commit") != RULES_COMMIT:
+            raise ClosurePlanError(f"report rules commit drift: {path}")
+    return capabilities
+
+
+def build_plan(
+    traceability: dict[str, Any],
+    traceability_bytes: bytes,
+    reports: dict[str, dict[str, Any]],
+    report_bytes: dict[str, bytes],
+) -> dict[str, Any]:
+    capabilities = _validate_inputs(traceability, reports)
+    rows = []
+    for capability in capabilities:
+        capability_id = capability["id"]
+        evidence_set = capability["evidence_set"]
+        if capability_id in COMPLETE:
+            status = "evidence_complete"
+            observed_scope = COMPLETE[capability_id]
+            missing_scope = None
+            experiment = None
+        elif capability_id in PARTIAL:
+            status = "partial"
+            observed_scope = PARTIAL[capability_id]
+            missing_scope = (
+                "execute the remaining Qt5 capability boundary under the "
+                "pinned Qt6 oracle"
+            )
+            experiment = CAMPAIGNS[evidence_set]
+        else:
+            status = "missing"
+            observed_scope = None
+            missing_scope = (
+                "no row-complete Qt6 runtime evidence is currently admitted"
+            )
+            experiment = CAMPAIGNS[evidence_set]
+        rows.append(
+            {
+                "id": capability_id,
+                "name": capability["name"],
+                "evidence_set": evidence_set,
+                "status": status,
+                "observed_scope": observed_scope,
+                "missing_scope": missing_scope,
+                "proposed_experiment": experiment,
+                "acceptance": (
+                    "the full Linux Qt5 row boundary is executed against the "
+                    "pinned Qt6 oracle; raw and normalized outputs are retained; "
+                    "every difference is either zero or explicitly classified"
+                ),
+            }
+        )
+
+    counts = {
+        state: sum(row["status"] == state for row in rows)
+        for state in ("evidence_complete", "partial", "missing")
+    }
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "evaluated_on": EVALUATED_ON,
+        "result": (
+            "complete"
+            if counts["partial"] == 0 and counts["missing"] == 0
+            else "incomplete"
+        ),
+        "platform": PLATFORM,
+        "upstream_commit": UPSTREAM_COMMIT,
+        "rules_commit": RULES_COMMIT,
+        "sources": {
+            TRACEABILITY_PATH: sha256(traceability_bytes),
+            **{path: sha256(report_bytes[path]) for path in REPORT_PATHS},
+        },
+        "known_differences": [
+            {
+                "source": REPORT_PATHS[0],
+                "scope": "minimal.exe stderr",
+                "semantic_detection_equal": True,
+            },
+            {
+                "source": REPORT_PATHS[1],
+                "scope": "global HostApi runtime",
+                "difference_count": reports[REPORT_PATHS[1]][
+                    "difference_count"
+                ],
+            },
+            {
+                "source": REPORT_PATHS[2],
+                "scope": "HostApi arity diagnostics",
+                "difference_count": reports[REPORT_PATHS[2]][
+                    "difference_count"
+                ],
+            },
+            {
+                "source": REPORT_PATHS[3],
+                "scope": "global typo diagnostics",
+                "semantic_detection_equal": reports[REPORT_PATHS[3]][
+                    "normalized_detections_equal"
+                ],
+            },
+        ],
+        "rows": rows,
+        "summary": {
+            "capability_count": len(rows),
+            **counts,
+            "closure_required": counts["partial"] + counts["missing"],
+            "all_capabilities_accounted_for": len(rows) == 68,
+            "cap_gap_007_closed": counts["partial"] == counts["missing"] == 0,
+        },
+        "limitations": [
+            "the plan classifies existing evidence; it does not promote Linux Qt6 platform coverage",
+            "partial evidence cannot satisfy a capability row",
+            "diagnostic differences are not normalized away from compatibility review",
+            "the current Qt6 image and reports remain pinned to exact identities",
+        ],
+    }
+
+
+def serialize(value: dict[str, Any]) -> bytes:
+    return (
+        json.dumps(
+            value,
+            ensure_ascii=False,
+            indent=2,
+            sort_keys=True,
+            allow_nan=False,
+        )
+        + "\n"
+    ).encode("utf-8")
+
+
+def parse_args() -> argparse.Namespace:
+    root = Path(__file__).resolve().parents[2]
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--traceability",
+        type=Path,
+        default=root / TRACEABILITY_PATH,
+    )
+    parser.add_argument(
+        "--output",
+        type=Path,
+        default=root
+        / "docs"
+        / "research"
+        / "data"
+        / "qt6-capability-closure-plan.json",
+    )
+    return parser.parse_args()
+
+
+def main() -> int:
+    args = parse_args()
+    root = Path(__file__).resolve().parents[2]
+    traceability, traceability_raw = load_json(args.traceability)
+    reports: dict[str, dict[str, Any]] = {}
+    raw_reports: dict[str, bytes] = {}
+    for relative_path in REPORT_PATHS:
+        reports[relative_path], raw_reports[relative_path] = load_json(
+            root / relative_path
+        )
+    plan = build_plan(
+        traceability,
+        traceability_raw,
+        reports,
+        raw_reports,
+    )
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_bytes(serialize(plan))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
