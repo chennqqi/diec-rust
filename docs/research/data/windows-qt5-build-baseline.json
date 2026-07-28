@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "upstream": {
+    "repository": "https://github.com/horsicq/DIE-engine",
+    "commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "recursive_submodule_count": 58,
+    "rules_repository": "https://github.com/horsicq/Detect-It-Easy",
+    "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6"
+  },
+  "host": {
+    "os_build": "26100",
+    "architecture": "x86_64",
+    "visual_studio": "2019 Build Tools 16.11.47",
+    "msvc_compiler": "19.29.30159.0",
+    "msvc_tools": "14.29.30133",
+    "cmake": "4.0.1"
+  },
+  "qt": {
+    "installer": "aqtinstall 3.3.0",
+    "version": "5.15.2",
+    "archive": "win64_msvc2019_64",
+    "modules": [
+      "qtscript"
+    ],
+    "qmake_spec": "win32-msvc",
+    "qmake_sha256": "e873ad3a689a0628c3037a6440221dcd2e426395edf14ffa6379612dede26d36",
+    "qt5core_sha256": "8d2ff4ce9096ddccc4f4cd62c2e41fc854cfd1b0d6e8d296645a7f5fd4ae565a",
+    "qt5script_sha256": "0b58e5e79df13110a8258f14d7b3658d1dd0c8dddc337a164b89d4ac12a0638f"
+  },
+  "cmake_nmake_observation": {
+    "status": "link_failed",
+    "generator": "NMake Makefiles",
+    "configuration": "Release",
+    "cmake_system_processor": "",
+    "cmake_c_compiler_architecture_id": "x64",
+    "generated_xsimd_targets": [
+      "xsimd"
+    ],
+    "missing_xsimd_targets": [
+      "xsimd_sse2",
+      "xsimd_avx2"
+    ],
+    "link_exit_code": 2,
+    "lnk2019_count": 46,
+    "lnk1120_unresolved_count": 46,
+    "external_log_sha256": "c7757f813abdfe57b7727f8e8003735024748ab4334458589c0a0fcff683e9e5"
+  },
+  "clean_qmake_build": {
+    "script": "tools/upstream/build_windows_qt5_oracle.ps1",
+    "source_tracked_status_before_build": "clean",
+    "submodule_tracked_status_before_build": "clean",
+    "configuration": "release",
+    "generator": "jom 1.1.4",
+    "jom_sha256": "93eb6b9df1a61b75f8d279578b200706a98096d85773ae3a09bbefea365cc2e8",
+    "jobs": 4,
+    "targets": [
+      "sub-build_libs-release",
+      "sub-console_source-release"
+    ],
+    "elapsed_milliseconds": 287880,
+    "artifact": {
+      "format": "PE32+ console executable, x86-64",
+      "size": 3236352,
+      "sha256": "e8579a6ed0d2536ea14af154bcbeeaaea6967c0c7559a595fb3fe52206ac635e",
+      "version_stdout": "die 4.0.0",
+      "version_exit_code": 0,
+      "direct_dependencies": [
+        "Qt5Script.dll",
+        "Qt5Core.dll",
+        "MSVCP140.dll",
+        "KERNEL32.dll",
+        "VCRUNTIME140_1.dll",
+        "VCRUNTIME140.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "api-ms-win-crt-locale-l1-1-0.dll"
+      ]
+    },
+    "simd_libraries": [
+      {
+        "name": "xsimd-win-x86_64.lib",
+        "size": 30086,
+        "sha256": "9b3d727ee5b84f01cf268989c1e36078b0023788f61d5c6b8de3c87bc3bdbc7d"
+      },
+      {
+        "name": "xsimd_sse2-win-x86_64.lib",
+        "size": 24430,
+        "sha256": "7ea700a8c00c04648a46160d8e2af4a9d44749388b0850796db3623ec99cffe7"
+      },
+      {
+        "name": "xsimd_avx2-win-x86_64.lib",
+        "size": 26798,
+        "sha256": "a0a203974b35ea4c3d96fb9fb08683d46f861e213953e657b0f30439058e9990"
+      }
+    ]
+  },
+  "runtime_smoke": {
+    "generator": "tools/corpus/generate_baseline_corpus.py",
+    "sample": "minimal-pe64.exe",
+    "sample_sha256": "63c706607b3d34624313df7356702ff99ce4080f09e6b07ec4b01dfe4dd5e1c3",
+    "arguments": [
+      "-j",
+      "-D",
+      "<source>/Detect-It-Easy/db",
+      "<corpus>/minimal-pe64.exe"
+    ],
+    "exit_code": 0,
+    "stdout_size": 489,
+    "stdout_sha256": "12362e46500734dd6400230460718e7e100fddb39d069b9249d4d765034455c0",
+    "stderr_size": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "projection": {
+      "filetype": "PE64",
+      "offset": "0",
+      "size": "512",
+      "parentfilepart": "Header",
+      "detect_string": "Unknown: Unknown"
+    }
+  },
+  "source_file_sha256": {
+    ".github/workflows/builder.yml": "b8053dda9c53682b7c931230a427d6ef2880c20bf27fe023a3eb973409ab1d57",
+    "build_win_generic_check.cmd": "f8e17d67b0a44f5f4be757627424f9178065f39c7b094f33756a797c28e6b349",
+    "die_source.pro": "9c888455d1e35276a7aad2069ebe04818e30be96a714383f00659449a6f0bf4b",
+    "build_libs/build_libs.pro": "88749214f7e849ed9e267176ec210bd3e4b995f69ed0c47cb7e20deb14cea0dc",
+    "Formats/xsimd/CMakeLists.txt": "f603475cb4049da5b96241757b573e87901af77c7e430631422e433b5acfb974",
+    "Formats/xsimd/xsimd.pro": "79f2c495bd9c2347be93627d4330d3d5d1e603f44c841abda68216837b7cf833",
+    "Formats/xsimd/xsimd/xsimd.pro": "c25544cc06a6bdc45998143b5011bc36a1355450d5089f80f2cfbbe40e4a3eea"
+  },
+  "reproducibility": {
+    "status": "build_and_smoke_reproduced_once_from_clean_checkout",
+    "bit_for_bit_status": "not_proven",
+    "notes": [
+      "A preliminary build in a different absolute path produced the same size and runtime-smoke hashes but a different executable SHA-256.",
+      "The preliminary source tree had first passed through CMake configure, so the two artifact hashes are not a controlled bit-for-bit reproducibility experiment.",
+      "The capability matrix remains platform_missing on Windows until the complete differential suite is captured."
+    ]
+  }
+}

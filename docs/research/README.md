@@ -5,6 +5,9 @@
 Phase 0 计划形成：
 
 - [`upstream-baseline.md`](upstream-baseline.md)：版本、构建、submodule、依赖和许可证（Draft）。
+- [`windows-qt5-build-baseline.md`](windows-qt5-build-baseline.md)：固定
+  Windows x64/MSVC 2019/Qt 5.15.2 的 clean qmake CLI 构建、官方 CMake
+  xsimd 断点、二进制身份与最小 PE64 smoke（Draft）。
 - [`capability-matrix.md`](capability-matrix.md)：CLI/engine 能力与证据索引（Draft）。
 - [`capability-coverage-report.md`](capability-coverage-report.md)：68 个稳定能力在
   Linux Qt5/Qt6、Windows 和 macOS 上的 runtime/source-only、corpus-missing
@@ -495,5 +498,8 @@ Phase 0 计划形成：
 - [`data/qt-integer-bridge-fixture.json`](data/qt-integer-bridge-fixture.json)：项目生成的四类 Qt 整数返回桥接规则清单。
 - [`data/c-static-link.json`](data/c-static-link.json)：C static-link spike 输入哈希、ABI 符号、平台依赖和稳定结果摘要。
 - [`data/rust-toolchain-upgrade-1.97.1.json`](data/rust-toolchain-upgrade-1.97.1.json)：默认/MSRV 工具链身份、五个 spike 门禁和六条 native C consumer 复验摘要。
+- [`data/windows-qt5-build-baseline.json`](data/windows-qt5-build-baseline.json)：
+  Windows clean qmake build、Qt/MSVC 身份、官方 CMake xsimd 链接失败和最小
+  PE64 runtime smoke 的机器证据。
 
 每份文档遵守 [`../README.md`](../README.md) 的证据和状态约定。实验附件如需版本化，应使用文本格式并放入主题对应的子目录。

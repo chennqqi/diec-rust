@@ -2,7 +2,7 @@
 
 Status: Draft  
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`  
-Last updated: 2026-07-27
+Last updated: 2026-07-29
 
 ## 结论摘要
 
@@ -142,9 +142,10 @@ vendored 目录仍需独立 source/license 审计。
 
 - [`component-license-inventory.md`](component-license-inventory.md) 已确认全部
   58 个直接组件 commit/root LICENSE，并证明没有嵌套 `.gitmodules`。
-- Linux Qt5 qmake、Qt5 CMake 和 Qt6 CMake CLI 候选 oracle 已构建。Qt5
-  qmake/CMake 首轮矩阵无差异；Qt 5/Qt 6 首轮差分发现一项规则 stderr 差异。
-  完整 CMake 发布打包以及 Windows、macOS 的可重复构建和运行记录仍待完成。
+- Linux Qt5 qmake、Qt5 CMake、Qt6 CMake 和 Windows Qt5 qmake CLI 候选
+  oracle 已构建。Windows clean build、官方 CMake/xsimd 断点及一个 PE64 smoke
+  见 [`windows-qt5-build-baseline.md`](windows-qt5-build-baseline.md)；Windows
+  完整能力差分、CMake 发布打包、bit-for-bit 验证及 macOS 构建仍待完成。
 - release workflow、预编译包与源码构建之间的数据资产差异。
 - bundled code、规则原始来源和最终发布组合的许可证审计；YARA/PEiD/signature
   资产路径与可见标记已固定，但 GPL/未知来源仍需书面评审。
