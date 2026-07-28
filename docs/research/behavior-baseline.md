@@ -21,6 +21,12 @@ Windows x86_64 Qt5 qmake candidate oracle 也已对相同 26 个样本各执行�
 [`windows-qt5-build-baseline.md`](windows-qt5-build-baseline.md) 和
 [`data/baseline-corpus-windows-qt5.json`](data/baseline-corpus-windows-qt5.json)。
 
+同一 Windows oracle 又完成 338-case option/output/special 矩阵，每项连续
+运行两次，共 676 次执行。结果为 0 个 determinism failure、0 个默认基线
+continuity failure，且与 Linux Qt5 报告重叠的 170 个 case 退出码全部相同。
+机器报告见
+[`data/windows-qt5-cli-matrix.json`](data/windows-qt5-cli-matrix.json)。
+
 ## 语料来源与安全
 
 所有样本由
@@ -86,6 +92,19 @@ SHA-256 失效：
 
 ```powershell
 python tools\upstream\collect_windows_cli_baseline.py `
+  --binary <source>\build\release\diec.exe `
+  --source-dir <source> `
+  --qt-dir <qt-root>\5.15.2\msvc2019_64 `
+  --corpus-dir <generated-corpus> `
+  --expected-binary-sha256 e8579a6ed0d2536ea14af154bcbeeaaea6967c0c7559a595fb3fe52206ac635e `
+  --output <report.json>
+```
+
+Windows option/output/special 矩阵使用同一组固定输入；脚本直接导入
+`compare_cli_oracles.py` 的 case 定义，并同时绑定该文件 SHA-256：
+
+```powershell
+python tools\upstream\collect_windows_cli_matrix.py `
   --binary <source>\build\release\diec.exe `
   --source-dir <source> `
   --qt-dir <qt-root>\5.15.2\msvc2019_64 `
@@ -176,6 +195,11 @@ python3 tools/upstream/compare_cli_oracles.py \
 同时传入全部 5 个格式开关。共 35 种输入/模式组合、70 次 oracle 执行；
 两侧退出码、stdout 和 stderr 全部逐字节相同，均退出 `0` 且 stderr 为空。
 
+Windows 对同 5 个样本执行相同 35 个 case，每项两轮共 70 次，0 个确定性
+失败；35/35 退出码和空 stderr 与 Linux Qt5 一致。Windows stdout 因 CRLF
+及平台路径表示，35/35 原始哈希和长度均与 Linux 不同，报告没有把这些字节
+差异规范化掉。
+
 固定上游
 [`main_console.cpp`](https://github.com/horsicq/DIE-engine/blob/74eaf505c250ab47e709024e9dc41657cd8f2254/src/console/main_console.cpp)
 对普通扫描使用固定优先级
@@ -204,6 +228,11 @@ python3 tools/upstream/compare_cli_oracles.py \
 hideunknown，以及 deep/heuristic/aggressive/alltypes 组合模式。完整矩阵包含
 120 种输入/模式组合、240 次 oracle 执行；两套上游构建的退出码、stdout 和
 stderr 逐字节相同，均退出 `0` 且 stderr 为空。
+
+Windows 将同一 8-case 矩阵扩展到全部 26 个 baseline 样本：208 个 case、
+416 次执行全部稳定；每个 `default` 的两轮 raw summary 和 detection tree
+均与先前 Windows 默认基线一致。与 Linux 报告重叠的 5 个样本 × 8 case
+退出码全部一致；原始 stdout 保留平台差异。
 
 相对默认 JSON，发生 stdout 变化的样本如下；未列出的模式/样本逐字节不变：
 
@@ -236,6 +265,14 @@ stderr 逐字节相同，均退出 `0` 且 stderr 为空。
   `Plain text [LF]`，PNG 的名称与方括号信息之间也增加空格。
 - deep 和 aggressive 在全部 15 个输入上都没有改变输出；这只能证明它们在
   当前语料上无增量，不能推断开关未生效。
+
+Windows 的 26-sample 扩展同样观察到 deep/aggressive 无增量；新增样本还使
+heuristic 在 `minimal-pe64.exe` 上产生变化，alltypes 在
+`minimal-pe64.exe`、`minimal.apk`、`minimal.jar`、`minimal.ipa` 上产生变化，
+format 在 `minimal.pyc`、`pixel.jpg`、`minimal.ipa` 上产生变化。hideunknown
+还改变 `minimal-elf32.elf`、`minimal-pe64.exe`、`minimal-macho32.macho`、
+`minimal.apk`、`minimal.jar`、`minimal.rar`、`minimal.iso`。这些只是固定
+语料上的增量集合，不替代专用边界实验。
 
 多目标、目录、重复 target、缺失+存在 partial result，以及结构化输出的
 filename prefix 行为单独记录在
@@ -287,7 +324,8 @@ elapsed 值与固定规则执行序列另见
   Archive 的 ZIP/TAR/GZIP 自动与强制 quiet/verbose 控制现由
   [`generic-archive-dispatch-reachability.md`](generic-archive-dispatch-reachability.md)
   固定。
-- 新增 11 个格式的 scan/output/special 选项矩阵（当前仅固定 default JSON）。
+- 新增 11 个格式的 Windows scan 矩阵已固定；它们的 output/special 矩阵及
+  Linux 对应扩展仍待采集。
 - 输出格式的转义和嵌套排序已由
   [`cli-output-boundaries.md`](cli-output-boundaries.md) 的 10-case 双 oracle
   固定；首轮 Linux 特殊 filename、非 UTF-8、symlink/权限/深度及 4096 项目录

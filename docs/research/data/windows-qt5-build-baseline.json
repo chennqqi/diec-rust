@@ -129,6 +129,15 @@
     "determinism_failures": 0,
     "linux_qt5_projection_failures": 0
   },
+  "windows_cli_matrix": {
+    "path": "docs/research/data/windows-qt5-cli-matrix.json",
+    "sha256": "0ab0b636361da958ad6ac32272f9ce261c830e2f3654bc42d99a2dfd474be959",
+    "case_count": 338,
+    "execution_count": 676,
+    "determinism_failures": 0,
+    "default_reference_failures": 0,
+    "linux_qt5_exit_code_failures": 0
+  },
   "source_file_sha256": {
     ".github/workflows/builder.yml": "b8053dda9c53682b7c931230a427d6ef2880c20bf27fe023a3eb973409ab1d57",
     "build_win_generic_check.cmd": "f8e17d67b0a44f5f4be757627424f9178065f39c7b094f33756a797c28e6b349",

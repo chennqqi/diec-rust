@@ -12,6 +12,9 @@ Last updated: 2026-07-29
 `Detect-It-Easy@c2c17dfa5ea4e078ba31eab55d87430c96622fb6` 规则，并对项目
 生成的 26 个 baseline 样本各执行两次默认 JSON 扫描：64 次总执行全部原始输出
 稳定，26/26 detection projection 和退出码与 Linux Qt5 基线一致。
+同一产物随后完成 338-case option/output/special 矩阵，每项两轮共 676 次；
+0 个确定性或默认基线 continuity failure，与 Linux 报告重叠的 170 个 case
+退出码全部相同。
 
 本仓库用
 [`build_windows_qt5_oracle.ps1`](../../tools/upstream/build_windows_qt5_oracle.ps1)
@@ -22,7 +25,8 @@ Last updated: 2026-07-29
 机器证据见
 [`data/windows-qt5-build-baseline.json`](data/windows-qt5-build-baseline.json)
 和
-[`data/baseline-corpus-windows-qt5.json`](data/baseline-corpus-windows-qt5.json)。
+[`data/baseline-corpus-windows-qt5.json`](data/baseline-corpus-windows-qt5.json)、
+[`data/windows-qt5-cli-matrix.json`](data/windows-qt5-cli-matrix.json)。
 
 ## 固定环境
 
@@ -175,6 +179,35 @@ Java/PYC、PDF/CFBF 和 Binary fallback 的 baseline dispatch。它尚不覆盖�
 option/output/special/nested/path/database-error matrix，也不覆盖 engine-only
 harness，因此不足以把 Windows 的 68 行整体接纳为 runtime baseline。
 
+## Windows CLI option/output/special 矩阵
+
+[`collect_windows_cli_matrix.py`](../../tools/upstream/collect_windows_cli_matrix.py)
+复用 `compare_cli_oracles.py` 中已经固定 Linux 报告的 case 定义，不复制选项
+表。采集器同时校验 source/rules、58 个 submodule、Qt、二进制、语料和默认
+Windows 报告身份，并将两个 helper 的 SHA-256 写入结果。
+
+固定范围为：
+
+- 26 个样本 × 8 个 scan case × 两轮：416 次；
+- 与 Linux 矩阵相同的 5 个样本 × 7 个 output case × 两轮：70 次；
+- 同 5 个样本 × 19 个 entropy/info/struct case × 两轮：190 次；
+- 总计 338 个 case、676 次原生进程执行。
+
+报告 SHA-256 为
+`0ab0b636361da958ad6ac32272f9ce261c830e2f3654bc42d99a2dfd474be959`，
+结果为 0 个 determinism failure、0 个默认基线 continuity failure 和
+0 个 Linux Qt5 exit-code failure。26 个 scan `default` 均与前一份 Windows
+报告的两轮 raw summary 和 detection tree 相同。与 Linux 报告重叠的 35 个
+output、40 个 scan 和 95 个 special case 均保持退出码及空 stderr；170 个
+stdout 原始哈希和长度全部不同，主要可观察来源是 CRLF 与平台路径表示，因此
+没有把 raw stream 误报为跨平台逐字节相同。
+
+26-sample scan 还扩大了固定增量集合：deep/aggressive 仍无增量；heuristic、
+alltypes、format、hideunknown 和 combined 的逐样本变化保存在机器报告中。
+该证据没有覆盖 nested/path/database-error、engine-only，也没有把 output/
+special 扩展到其余 21 个样本，因此仍不足以接纳完整 Windows capability
+baseline。
+
 ## 可重复性边界
 
 当前证据证明“从一次独立 clean recursive checkout 可重复构建并运行”，不证明
@@ -184,15 +217,16 @@ bit-for-bit reproducible：
   SHA-256 不同；
 - 初步源树此前经过一次 CMake configure，因此两次产物不是严格同输入实验；
 - MSVC archive/PE 时间戳、绝对路径和其他非确定输入尚未逐项隔离；
-- 已完成 6 个控制 case 和 26 样本默认 JSON baseline，但尚未运行完整 option、
-  output、special、nested、path、database-error 与 engine-only Windows 矩阵；
+- 已完成 6 个控制 case、26 样本默认 JSON baseline、全 26 样本 scan 及
+  5 个代表样本的 output/special；尚未运行 nested、path、database-error、
+  engine-only 和其余样本的 output/special Windows 矩阵；
 - 尚未验证 x86、ARM64、完整 GUI/lite、install/package 和官方 release zip；
 - `cl` 对 x64 的 `/arch:SSE2` 给出 D9002 ignored warning；x64 ABI 本身要求
   SSE2，但该 warning 仍应保留在构建日志中。
 
-下一步扩展原生采集器的 option/output/special/nested/path/database-error
-矩阵，并为 engine-only 行建立 Windows harness；然后独立处理官方 CMake 路径
-和二进制确定性。macOS 固定构建仍是三平台基线的剩余大项。
+下一步扩展原生采集器的 nested/path/database-error 矩阵和其余样本的
+output/special，并为 engine-only 行建立 Windows harness；然后独立处理官方
+CMake 路径和二进制确定性。macOS 固定构建仍是三平台基线的剩余大项。
 
 ## 上游证据
 

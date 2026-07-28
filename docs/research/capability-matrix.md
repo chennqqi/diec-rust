@@ -355,6 +355,8 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
   Archive singleton/verbose 重检测已固定。
 - Qt 5 与 Qt 6 的首轮基础/安全语料/不可读输入差分已完成；仍需扩展到完整
   output/scan/special/path/database/nested 矩阵及其他 Qt 6 minor。
+- Windows Qt5 已完成 26-sample scan 和 5-sample output/special 首轮矩阵；
+  nested/path/database/engine-only 及其余 output/special 样本仍缺失。
 - Linux、Windows、macOS 路径与编码差异。
 
 ## 证据
