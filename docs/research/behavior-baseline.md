@@ -229,6 +229,9 @@ directory/dangling symlink、alias 重复、mode-000 权限、depth-64 与 self-
 [`large-directory-behavior.md`](large-directory-behavior.md)；枚举完成后的
 symlink old→new/unlink TOCTOU 见
 [`path-toctou-behavior.md`](path-toctou-behavior.md)。
+固定镜像全部 `C`/`C.utf8`/`POSIX` locale 与 tmpfs/`ext2/ext3` volume 的
+两个排序 profile 见
+[`path-locale-filesystem-behavior.md`](path-locale-filesystem-behavior.md)。
 
 数据库缺失/空/无效 ZIP、规则 parse/runtime error 和不可读输入行为见
 [`database-error-behavior.md`](database-error-behavior.md)。
@@ -261,7 +264,7 @@ elapsed 值与固定规则执行序列另见
 - 输出格式的转义和嵌套排序已由
   [`cli-output-boundaries.md`](cli-output-boundaries.md) 的 10-case 双 oracle
   固定；首轮 Linux 特殊 filename、非 UTF-8、symlink/权限/深度及 4096 项目录
-  及 TOCTOU 已固定，剩余 locale/filesystem 与跨平台路径编码仍待覆盖。专用
+  、TOCTOU 及固定 Linux locale/filesystem 已固定，剩余跨平台路径编码待覆盖。专用
   struct/entropy 阈值
   边界已由 [`cli-special-modes.md`](cli-special-modes.md) 的 28-case 双 oracle
   固定。

@@ -52,7 +52,7 @@ Phase 0 报告固定四个平台：
 
 | 平台 | Runtime observed | Observed + corpus gaps | Source-only | Source-only + gaps | Platform missing |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| Linux x86_64 Qt5 | 64 | 4 | 0 | 0 | 0 |
+| Linux x86_64 Qt5 | 65 | 3 | 0 | 0 | 0 |
 | Linux x86_64 Qt6 | 0 | 0 | 0 | 0 | 68 |
 | Windows x86_64 Qt5 | 0 | 0 | 0 | 0 | 68 |
 | macOS x86_64 Qt5 | 0 | 0 | 0 | 0 | 68 |
@@ -61,23 +61,22 @@ Phase 0 报告固定四个平台：
 清单没有“消失的行”，**不表示覆盖完成**：
 
 - Linux Qt5 source-only 能力已清零；
-- 8 行至少关联一个已命名 corpus gap；
+- 4 行至少关联一个已命名 corpus gap；
 - 三个尚未接纳的平台各有 68 个 `platform_missing`；
 - `phase_0_coverage_complete` 必须保持 `false`。
 
 ## 5. 缺口映射
 
-traceability 中四个开放 `CAP-GAP-*` 现在显式映射到受影响能力；
+traceability 中三个开放 `CAP-GAP-*` 现在显式映射到受影响能力；
 
 | Gap | 类型 | 能力行数 | 范围 |
 | --- | --- | ---: | --- |
-| `CAP-GAP-003` | corpus | 4 | 剩余 Linux locale/filesystem ordering |
 | `CAP-GAP-006` | corpus | 4 | archive 格式、深度和总解压限制 |
 | `CAP-GAP-007` | platform | 68 | 完整 Qt5/Qt6 capability matrix |
 | `CAP-GAP-008` | platform | 8 | Windows/macOS path 与 encoding |
 映射是保守的审计范围，不是“这些能力除此之外都已完备”的声明。
 
-`CAP-GAP-003` 已新增四组固定 Linux Qt5 双 Oracle 子矩阵。23-case
+原 `CAP-GAP-003` 已由五组固定 Linux Qt5 双 Oracle 子矩阵闭合。23-case
 [`special-path-behavior.md`](special-path-behavior.md)：NFC/NFD、中文、emoji、
 非 UTF-8 目录/显式 argv、tab/newline、colon/backslash、hidden、leading-dash
 与精确目录顺序均已有 raw-byte 证据；9-case
@@ -88,9 +87,12 @@ OS 上限；5-case
 4096 项完整顺序、描述性资源和发布 CLI 默认 null `PDSTRUCT` 的 cancellation
 不可达边界；4-case
 [`path-toctou-behavior.md`](path-toctou-behavior.md) 用 SIGSTOP 同步固定
-stable old/new、old→new 原子替换和 unlink，证明第二项按打开时当前 path 解析。
-剩余 Linux locale/filesystem ordering 仍使该 corpus gap 保持开放；
-Windows/macOS 由 `CAP-GAP-008` 单独跟踪。
+stable old/new、old→new 原子替换和 unlink，证明第二项按打开时当前 path 解析；
+最终
+[`path-locale-filesystem-behavior.md`](path-locale-filesystem-behavior.md)
+覆盖固定镜像的全部 `C`/`C.utf8`/`POSIX` locale 与 tmpfs/`ext2/ext3`
+volume，冻结两个大小写排序 profile。Windows/macOS 仍由 `CAP-GAP-008`
+单独跟踪，不属于已闭合的 Linux Qt5 corpus gap。
 
 `CAP-GAP-006` 已新增五组固定证据：7Z/RAR4/CAB/ISO9660 无压缩单 PDF 在显式
 archive 后各产生一个 PDF Stream child；NPM 精确路径直接检测为真，但公共自动
@@ -168,8 +170,8 @@ python tools/tests/test_capability_coverage.py
 ```
 
 测试要求 committed report 与生成结果逐字节一致；68 个 ID 与 traceability 完全
-相等；全部平台 cell 有已知状态；Linux 四类计数保持 64/4/0/0；其他三个平台
-各保持 68 个 `platform_missing`；四个开放 gap 均映射到已知能力；所有
+相等；全部平台 cell 有已知状态；Linux 四类计数保持 65/3/0/0；其他三个平台
+各保持 68 个 `platform_missing`；三个开放 gap 均映射到已知能力；所有
 `with_corpus_gaps` 状态都至少关联一个具名 corpus gap。
 
 ## 7. 对 Phase 0 门禁的影响

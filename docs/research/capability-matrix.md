@@ -15,7 +15,7 @@ traceability manifest 中记录替代关系，不得复用旧 ID 表示不同语
 | --- | --- | --- | --- | --- |
 | `CAP-CLI-IN-001` | 单文件扫描 | positional `target` | Observed | 15 个确定性样本；见 `behavior-baseline.md` |
 | `CAP-CLI-IN-002` | 多目标扫描 | 多个 positional `target` | Observed | 保持参数顺序、不去重；结构化输出不是有效聚合文档 |
-| `CAP-CLI-IN-003` | 目录枚举 | positional directory | Observed | 无条件 depth-first；Linux 跟随 link、alias 不去重、权限静默，self-cycle 依赖 OS；4096 完整；TOCTOU 按打开时 path；locale/跨平台仍缺 |
+| `CAP-CLI-IN-003` | 目录枚举 | positional directory | Observed | 无条件 depth-first；Linux 跟随 link、alias 不去重、权限静默，self-cycle 依赖 OS；4096 完整；TOCTOU 按打开时 path；locale 不改变顺序，tmpfs/volume 大小写 tie 不同；跨平台仍缺 |
 | `CAP-CLI-IN-004` | 单文件目录/空目录 | positional directory | Observed | 单文件不加 prefix；空目录退出 0 且无输出 |
 | `CAP-ENG-IN-001` | 内存扫描 | engine `scanMemory()` | Observed | Binary fixture 与 file/device/subdevice record 一致；CLI 不暴露 |
 | `CAP-ENG-IN-002` | device/subdevice 扫描 | engine API | Observed | 37-case fixture 固定 chunked/EOF/read/seek/sequential、position 与合法/非法 subdevice 范围；见 `engine-contract-behavior.md` |
@@ -260,8 +260,9 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
   Observed。超大 count/text 等安全预算仍作为 Rust 实现测试门禁，不把上游
   OOM/调度结果采纳为 compatibility golden。
 - Linux Qt5 UTF-8、首轮非 UTF-8/特殊 filename、symlink/权限/depth-64/
-  self-cycle、flat/nested 4096、CLI cancellation 接线与 old→new/unlink TOCTOU
-  已固定；仍缺 locale/filesystem，以及 Windows/macOS 的路径和枚举差异。
+  self-cycle、flat/nested 4096、CLI cancellation 接线、old→new/unlink TOCTOU
+  及 `C`/`C.utf8`/`POSIX` × tmpfs/volume 排序已固定；仍缺 Windows/macOS
+  的路径和枚举差异。
 - formatter 转义与嵌套排序已闭合；跨平台编码差异仍归入路径/平台缺口。
 - deep 与 aggressive resource 过滤/计数边界已由
   [`scan-option-boundaries.md`](scan-option-boundaries.md) 闭合。

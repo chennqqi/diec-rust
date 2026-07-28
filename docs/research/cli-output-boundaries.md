@@ -145,7 +145,7 @@ PE32
 
 - Windows/macOS 与 Qt6 的 formatter 字节差异；
 - native filename encoding 和多目标 filename prefix 的特殊字符；属于
-  `CAP-GAP-003/007/008`；
+  `CAP-GAP-007/008`；原 `CAP-GAP-003` 后续已由完整 Linux 路径子矩阵闭合；
 - entropy/info/struct 模型自身产生特殊字符时的 formatter 边界；
 - 非 PE 的更多 nested parent 显示字符串。固定实现已证明动态元素名的通用风险，
   但本实验只把 PE Resource case 采纳为 golden。

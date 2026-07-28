@@ -36,6 +36,12 @@ expansion 没有可达的 cooperative cancellation。
 old→new 原子替换和 unlink 四组同步 case 固定：第二项按打开时当前 path 解析，
 不复验枚举时 target identity。
 
+固定镜像的完整 `C`/`C.utf8`/`POSIX` locale 清单，以及 tmpfs 与匿名 volume
+两个实际文件系统 profile 由
+[`path-locale-filesystem-behavior.md`](path-locale-filesystem-behavior.md)
+固定。locale 不改变同一文件系统的输出；文件系统会交换 `A-case`/`a-case`
+的相对顺序。
+
 ## 源码语义
 
 固定上游
@@ -198,9 +204,9 @@ CSV 同样在记录之间插入不符合 CSV schema 的 filename/colon 行。pla
   已覆盖；Windows junction/reparse point 与 macOS 对应边界仍缺。
 - UTF-8 与首轮非 UTF-8 filename bytes、空格、colon、backslash、tab/newline
   及 hidden/leading-dash 已由特殊路径实验覆盖。
-- QDir ordering 已固定一个大小写/NFC/NFD/控制字符矩阵；locale 与 filesystem
-  边界仍缺。
+- QDir ordering 已固定大小写/NFC/NFD/控制字符，以及固定镜像全部 locale ×
+  tmpfs/volume profile；不可把一个文件系统的顺序外推到另一个。
 - Windows/macOS path separator、绝对路径和枚举顺序。
 - 能实际触发 resource/overlay 的 `--recursivescan` 样本。
-- flat/nested 4096 项、描述性时间/RSS 与 CLI cancellation 接线已覆盖；仍缺
-  剩余 locale/filesystem ordering 边界。枚举/打开间 TOCTOU 已由同步实验覆盖。
+- flat/nested 4096 项、描述性时间/RSS、CLI cancellation 接线及
+  locale/filesystem ordering 已覆盖。枚举/打开间 TOCTOU 已由同步实验覆盖。

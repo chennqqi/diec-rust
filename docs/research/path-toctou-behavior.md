@@ -171,12 +171,15 @@ python tools\upstream\probe_path_toctou_behavior.py `
 
 ## 剩余缺口
 
-- locale 改变、case/normalization 不同的 Linux filesystem ordering；
+- 固定镜像 locale 与 tmpfs/volume ordering 已由后续
+  [`path-locale-filesystem-behavior.md`](path-locale-filesystem-behavior.md)
+  覆盖；其他 Linux filesystem 实现不从该代表性矩阵外推；
 - Windows symlink/junction/reparse point 的 handle-relative open；
 - macOS case-sensitive/case-insensitive volume 与 normalization；
 - Rust `TargetExpander` production implementation 的 rename/link/target-swap
   adversarial system tests。
 
-本页闭合 `CAP-GAP-003` 的 Linux 枚举—打开 TOCTOU 子矩阵；该 gap 仅剩
-Linux locale/filesystem ordering。`CAP-GAP-007`/`CAP-GAP-008` 的平台缺口不变，
-不能把本结论外推到 Windows 或 macOS。
+本页闭合原 `CAP-GAP-003` 的 Linux 枚举—打开 TOCTOU 子矩阵；后续
+locale/filesystem 实验闭合最后一个固定 Linux Qt5 子矩阵。
+`CAP-GAP-007`/`CAP-GAP-008` 的平台缺口不变，不能把本结论外推到 Windows
+或 macOS。

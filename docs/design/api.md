@@ -24,6 +24,8 @@ Last updated: 2026-07-28
   4096-entry 顺序、资源和 CLI cancellation 接线边界；
 - [`path-toctou-behavior.md`](../research/path-toctou-behavior.md)：Linux
   枚举后 symlink replacement/unlink 与 reopen 结果；
+- [`path-locale-filesystem-behavior.md`](../research/path-locale-filesystem-behavior.md)：
+  Linux locale 不变性与 tmpfs/volume 大小写排序 profile；
 - [`cli-special-modes.md`](../research/cli-special-modes.md)：entropy/info/struct 分派；
 - [`database-error-behavior.md`](../research/database-error-behavior.md)：数据库和 I/O 错误；
 - [`nested-scan-behavior.md`](../research/nested-scan-behavior.md)：嵌套 file-part 及顺序；
@@ -528,7 +530,8 @@ pub enum TraversalProfile {
 顺序规则：
 
 - positional target 保持用户顺序；
-- 每个目录使用明确的跨平台排序键和 depth-first 策略；
+- `SafeCanonical` 每个目录使用明确的跨平台 total-order key 和 depth-first
+  策略；`LegacyCompatible` 使用固定平台/filesystem profile 的观测顺序；
 - 重复 target 默认不去重，以兼容上游；
 - modern mode 在每个 item 中保存 path/result/error，不把错误文本拼进 JSON；
 - legacy mode 复现固定平台已验证的 filename prefix 和 partial stdout。
@@ -556,6 +559,11 @@ overload 虽支持 `PDSTRUCT`，发布 CLI 两参数调用却使用默认 `nullp
 target 结果，unlink 仍打印 logical prefix 却返回空成功文档。`SafeCanonical`
 必须在 handle-relative open 后复验 stable identity/type/root；不能只在枚举时
 `stat()` 后按字符串 reopen。
+
+固定 locale/filesystem Oracle 已证明 `C`/`C.utf8`/`POSIX` 在同一 filesystem
+上逐字节相同，但 tmpfs 与 `ext2/ext3` volume 会交换 `a-case`/`A-case` 的相对
+顺序。legacy differential 必须保存 filesystem profile；canonical total order
+不能冒充上游 raw exact。
 
 ## 15. CLI 命令面
 

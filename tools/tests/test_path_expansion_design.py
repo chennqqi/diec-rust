@@ -19,6 +19,12 @@ LARGE_EVIDENCE_PATH = (
 TOCTOU_EVIDENCE_PATH = (
     ROOT / "docs" / "research" / "path-toctou-behavior.md"
 )
+LOCALE_EVIDENCE_PATH = (
+    ROOT
+    / "docs"
+    / "research"
+    / "path-locale-filesystem-behavior.md"
+)
 
 
 class PathExpansionDesignTest(unittest.TestCase):
@@ -30,6 +36,9 @@ class PathExpansionDesignTest(unittest.TestCase):
         cls.evidence = EVIDENCE_PATH.read_text(encoding="utf-8")
         cls.large_evidence = LARGE_EVIDENCE_PATH.read_text(encoding="utf-8")
         cls.toctou_evidence = TOCTOU_EVIDENCE_PATH.read_text(
+            encoding="utf-8"
+        )
+        cls.locale_evidence = LOCALE_EVIDENCE_PATH.read_text(
             encoding="utf-8"
         )
 
@@ -73,6 +82,9 @@ class PathExpansionDesignTest(unittest.TestCase):
         self.assertIn("nullptr", self.large_evidence)
         self.assertIn("old → new", self.toctou_evidence)
         self.assertIn("ChangedDuringTraversal", self.toctou_evidence)
+        self.assertIn("tmpfs", self.locale_evidence)
+        self.assertIn("ext2/ext3", self.locale_evidence)
+        self.assertIn("filesystem profile", self.api)
 
     def test_traversal_is_bounded_before_metadata_or_queue_work(self) -> None:
         for budget in (

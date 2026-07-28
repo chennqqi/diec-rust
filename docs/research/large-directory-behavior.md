@@ -193,5 +193,7 @@ python tools\upstream\probe_large_path_behavior.py `
 - Rust `TargetExpander` 实现后的 `limit-1/exact/+1`、取消 latency 和 streaming
   prefix 差分。
 
-本页与后续 TOCTOU 实验继续缩小 `CAP-GAP-003`；当前仅剩 Linux
-locale/filesystem ordering。`CAP-GAP-007`/`CAP-GAP-008` 的平台缺口不变。
+本页与后续 TOCTOU 实验继续缩小原 `CAP-GAP-003`；最后的 Linux
+locale/filesystem ordering 已由
+[`path-locale-filesystem-behavior.md`](path-locale-filesystem-behavior.md)
+补齐并闭合该 gap。`CAP-GAP-007`/`CAP-GAP-008` 的平台缺口不变。

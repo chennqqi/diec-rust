@@ -36,7 +36,7 @@ class CapabilityCoverageTest(unittest.TestCase):
         self.assertEqual(summary["capability_row_count"], 68)
         self.assertEqual(summary["platform_count"], 4)
         self.assertEqual(summary["cell_count"], 272)
-        self.assertEqual(summary["rows_with_corpus_gaps"], 8)
+        self.assertEqual(summary["rows_with_corpus_gaps"], 4)
         self.assertEqual(summary["unclassified_capability_row_count"], 0)
         self.assertEqual(summary["unclassified_cell_count"], 0)
         self.assertEqual(
@@ -60,8 +60,8 @@ class CapabilityCoverageTest(unittest.TestCase):
     def test_linux_runtime_and_source_only_counts_are_not_conflated(self):
         counts = self.report["summary"]["status_counts_by_platform"]
         linux = counts["linux-x86_64-qt5"]
-        self.assertEqual(linux["runtime_observed"], 64)
-        self.assertEqual(linux["runtime_observed_with_corpus_gaps"], 4)
+        self.assertEqual(linux["runtime_observed"], 65)
+        self.assertEqual(linux["runtime_observed_with_corpus_gaps"], 3)
         self.assertEqual(
             linux["source_only_runtime_corpus_missing"],
             0,
@@ -77,6 +77,13 @@ class CapabilityCoverageTest(unittest.TestCase):
             self.assertEqual(counts[platform]["platform_missing"], 68)
 
         rows = {row["id"]: row for row in self.report["rows"]}
+        self.assertEqual(
+            rows["CAP-CLI-IN-003"]["platform_status"][
+                "linux-x86_64-qt5"
+            ],
+            "runtime_observed",
+        )
+        self.assertEqual(rows["CAP-CLI-IN-003"]["corpus_gap_ids"], [])
         for capability_id in (
             "CAP-CLI-MODE-001",
             "CAP-CLI-MODE-002",
@@ -161,7 +168,6 @@ class CapabilityCoverageTest(unittest.TestCase):
         self.assertEqual(
             gap_ids,
             [
-                "CAP-GAP-003",
                 "CAP-GAP-006",
                 "CAP-GAP-007",
                 "CAP-GAP-008",

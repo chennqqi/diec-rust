@@ -39,8 +39,9 @@ Last updated: 2026-07-28
 报告保存每次未经规范化的 stdout/stderr，并以 `zlib+base64`、SHA-256
 content-addressed artifact 形式去重。
 
-这批证据闭合 `CAP-GAP-003` 的 Linux UTF-8 与首轮非 UTF-8/特殊名称子矩阵，但
-没有关闭整个 gap。symlink/权限/超深或超大目录、locale/filesystem 差异，以及
+这批证据闭合原 `CAP-GAP-003` 的 Linux UTF-8 与首轮非 UTF-8/特殊名称子矩阵。
+symlink/权限/超深或超大目录、locale/filesystem 差异在本页当时尚未覆盖，随后由
+专用路径实验补齐；跨平台路径差异仍由独立 gap 跟踪。
 Windows/macOS 路径与编码行为仍未覆盖。
 
 ## 固定身份
@@ -229,5 +230,10 @@ TAR 只展开到每个隔离 container 的 `/work` tmpfs，不写宿主路径。
 - Windows/macOS separator、绝对路径、reserved name、Unicode normalization、
   case sensitivity 与枚举顺序。
 
-因此 `CAP-GAP-003`、`CAP-GAP-007` 和 `CAP-GAP-008` 均保持开放；本报告只减少
-Linux Qt5 下的已知语料缺口，不把局部证据提升为跨平台完成声明。
+本页完成时 `CAP-GAP-003` 尚保持开放；后续
+[`path-filesystem-behavior.md`](path-filesystem-behavior.md)、
+[`large-directory-behavior.md`](large-directory-behavior.md)、
+[`path-toctou-behavior.md`](path-toctou-behavior.md) 与
+[`path-locale-filesystem-behavior.md`](path-locale-filesystem-behavior.md)
+已闭合其余 Linux Qt5 子矩阵。`CAP-GAP-007` 和 `CAP-GAP-008` 仍保持开放，
+不能把局部 Linux 证据提升为跨平台完成声明。

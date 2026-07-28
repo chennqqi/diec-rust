@@ -372,7 +372,7 @@ baseline 的变更都要检查本表。
   traceability、闭集 coverage report 和 mutation/minimization。
 - **验证**：每项能力 positive/negative/boundary；manifest hash；license review；
   fuzz regression growth。当前报告已分类 68 行 × 4 平台、0 未分类 cell，但仍
-  Linux source-only 已清零，同时显式保留 8 个 corpus-gap 行和三个缺失平台；
+  Linux source-only 已清零，同时显式保留 4 个 corpus-gap 行和三个缺失平台；
   source-only closure manifest 会拒绝任何未进入 closure catalog 的新缺口。
 - **关闭**：release 范围无 coverage gap，所有样本可追溯且处理策略合规。
 
@@ -503,7 +503,11 @@ baseline 的变更都要检查本表。
   第四组 4-case SIGSTOP 双 Oracle 又证明枚举后 old→new symlink 原子替换会按
   new target 扫描，unlink 仍打印 prefix 但返回空成功文档；见
   [`path-toctou-behavior.md`](../research/path-toctou-behavior.md)。
-  剩余 locale/filesystem 和三平台矩阵仍缺；ADR 0014 现为 Proposed。
+  第五组 3 locale × 2 filesystem × 2 Oracle 证明 locale 在同一 filesystem
+  上不改变 stdout，而 tmpfs 与 `ext2/ext3` volume 会交换 `A-case`/`a-case`
+  顺序；见
+  [`path-locale-filesystem-behavior.md`](../research/path-locale-filesystem-behavior.md)。
+  Linux Qt5 的原 `CAP-GAP-003` 已闭合，三平台矩阵仍缺；ADR 0014 现为 Proposed。
 - **验证**：隔离 path corpus 覆盖循环、权限、重复、特殊字符、TOCTOU、全部
   traversal limit 和三平台排序；legacy/canonical 差异有精确 waiver。
 - **关闭**：ADR 0014 Accepted，API/profile 数值冻结，handle-relative traversal

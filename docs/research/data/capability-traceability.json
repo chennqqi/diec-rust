@@ -63,7 +63,14 @@
         "tools/corpus/generate_path_toctou_fixture.py",
         "tools/upstream/probe_path_toctou_behavior.py",
         "tools/tests/test_generate_path_toctou_fixture.py",
-        "tools/tests/test_probe_path_toctou_behavior.py"
+        "tools/tests/test_probe_path_toctou_behavior.py",
+        "docs/research/path-locale-filesystem-behavior.md",
+        "docs/research/data/path-locale-fixture.json",
+        "docs/research/data/path-locale-filesystem-engine-qt5.json",
+        "tools/corpus/generate_path_locale_fixture.py",
+        "tools/upstream/probe_path_locale_filesystem_behavior.py",
+        "tools/tests/test_generate_path_locale_fixture.py",
+        "tools/tests/test_probe_path_locale_filesystem_behavior.py"
       ]
     },
     "engine_contract": {
@@ -341,7 +348,7 @@
   "capabilities": [
     {"id": "CAP-CLI-IN-001", "name": "single file scan", "verification": "observed", "evidence_set": "cli_scan_baseline"},
     {"id": "CAP-CLI-IN-002", "name": "multiple target scan", "verification": "observed", "evidence_set": "cli_path"},
-    {"id": "CAP-CLI-IN-003", "name": "directory enumeration", "verification": "observed_with_gaps", "evidence_set": "cli_path"},
+    {"id": "CAP-CLI-IN-003", "name": "directory enumeration", "verification": "observed", "evidence_set": "cli_path"},
     {"id": "CAP-CLI-IN-004", "name": "single-file and empty directory", "verification": "observed", "evidence_set": "cli_path"},
     {"id": "CAP-ENG-IN-001", "name": "memory scan", "verification": "observed", "evidence_set": "engine_contract"},
     {"id": "CAP-ENG-IN-002", "name": "device and subdevice scan", "verification": "observed", "evidence_set": "engine_contract"},
@@ -416,13 +423,6 @@
   ],
   "coverage_gaps": [
     {
-      "id": "CAP-GAP-003",
-      "scope": "remaining Linux locale/filesystem ordering behavior",
-      "platforms": [
-        "linux-x86_64-qt5"
-      ]
-    },
-    {
       "id": "CAP-GAP-006",
       "scope": "additional archive formats, depth, and total extraction limits",
       "platforms": [
@@ -448,11 +448,11 @@
   ],
   "summary": {
     "capability_count": 68,
-    "observed": 64,
-    "observed_with_gaps": 4,
+    "observed": 65,
+    "observed_with_gaps": 3,
     "source_verified": 0,
     "source_verified_with_gaps": 0,
-    "coverage_gap_count": 4,
+    "coverage_gap_count": 3,
     "phase_0_coverage_complete": false
   }
 }

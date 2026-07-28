@@ -33,6 +33,9 @@ artifact 去重。
 子矩阵，但不关闭整个 gap。flat/nested 4096 项及发布 CLI cancellation 接线现由
 [`large-directory-behavior.md`](large-directory-behavior.md) 固定；TOCTOU 由
 [`path-toctou-behavior.md`](path-toctou-behavior.md) 固定；locale/filesystem
+随后由
+[`path-locale-filesystem-behavior.md`](path-locale-filesystem-behavior.md)
+固定。
 排序以及 Windows junction/reparse point、macOS alias/normalization 仍缺。
 
 ## 固定身份
@@ -198,5 +201,6 @@ python tools\upstream\probe_path_filesystem_behavior.py `
 - macOS symlink、case-sensitive/case-insensitive volume 与 normalization；
 - Linux Qt6 完整平台基线。
 
-因此 `CAP-GAP-003`、`CAP-GAP-007` 与 `CAP-GAP-008` 仍保持开放；本页只闭合固定
+本页完成时 `CAP-GAP-003`、`CAP-GAP-007` 与 `CAP-GAP-008` 仍保持开放；后续
+locale/filesystem 实验已闭合前者。本页只闭合固定
 Linux Qt5 的具名子矩阵。

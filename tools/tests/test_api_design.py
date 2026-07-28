@@ -25,6 +25,7 @@ class ApiDesignTest(unittest.TestCase):
             "path-filesystem-behavior.md",
             "large-directory-behavior.md",
             "path-toctou-behavior.md",
+            "path-locale-filesystem-behavior.md",
             "cli-special-modes.md",
             "database-error-behavior.md",
             "nested-scan-behavior.md",

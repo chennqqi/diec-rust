@@ -110,6 +110,10 @@ Phase 0 计划形成：
 - [`path-toctou-behavior.md`](path-toctou-behavior.md)：固定 Linux Qt5 在完整
   枚举后的 symlink old→new 原子替换、unlink、stable controls 与当前路径
   reopen 行为（In Review）。
+- [`path-locale-filesystem-behavior.md`](path-locale-filesystem-behavior.md)：
+  固定 Linux Qt5 完整 `C`/`C.utf8`/`POSIX` locale 清单与 tmpfs/
+  `ext2/ext3` volume 的两个大小写排序 profile，闭合 `CAP-GAP-003`
+  （Draft）。
 - [`cli-option-behavior.md`](cli-option-behavior.md)：verbose/messages/profiling channel 与 test/create test 遗留入口行为（Draft）。
 - [`database-error-behavior.md`](database-error-behavior.md)：数据库缺失/损坏、规则错误和不可读输入（Draft）。
 - [`database-archive-cache.md`](database-archive-cache.md)：ZIP 规则数据库边界、发布 CLI cache 可达性，以及 engine cache stale/corrupt/cancel 行为（Draft）。
@@ -129,9 +133,9 @@ Phase 0 计划形成：
 - [`data/scan-option-boundary-fixture.json`](data/scan-option-boundary-fixture.json)：deep/aggressive 规则与 1/22/2002-resource PE 的 hash-bound 清单。
 - [`data/scan-option-boundaries-linux-qt5.json`](data/scan-option-boundaries-linux-qt5.json)：8-case 双 Qt5 scan-option oracle 的去重原始 streams、身份和派生事实。
 - [`data/capability-traceability.json`](data/capability-traceability.json)：68 个稳定
-  `CAP-*` 的验证层级、证据路径、平台范围和四个开放 coverage gap。
+  `CAP-*` 的验证层级、证据路径、平台范围和三个开放 coverage gap。
 - [`data/capability-coverage.json`](data/capability-coverage.json)：68 行 × 4 平台
-  的 272-cell 闭集分类、四个开放 gap 到能力的显式映射和未分类计数。
+  的 272-cell 闭集分类、三个开放 gap 到能力的显式映射和未分类计数。
 - [`image-dispatch-behavior.md`](image-dispatch-behavior.md)：固定七种非
   JPEG/PNG 图像的自然 Binary fallback、强制 generic Image null adapter 和
   `CAP-GAP-012` 闭合证据。
@@ -187,6 +191,11 @@ Phase 0 计划形成：
   old/new targets、四个 mutation case 与 SIGSTOP/SIGCONT 同步协议。
 - [`data/path-toctou-engine-qt5.json`](data/path-toctou-engine-qt5.json)：4-case
   双 Qt5 TOCTOU Oracle、mutation identity、source order 与原始 streams。
+- [`data/path-locale-fixture.json`](data/path-locale-fixture.json)：21 个
+  locale/case/normalization/非法 UTF-8 basename 与两种 filesystem 的确定性计划。
+- [`data/path-locale-filesystem-engine-qt5.json`](data/path-locale-filesystem-engine-qt5.json)：
+  3 locale × 2 filesystem × 2 Oracle 的完整顺序、charmap、原始 streams
+  与源码契约。
 - [`data/database-fixture.json`](data/database-fixture.json)：项目生成的数据库成功/故障 fixture。
 - [`data/database-archive-linux-qt5.json`](data/database-archive-linux-qt5.json)：两套固定 Qt5 oracle 的 17-case ZIP 数据库矩阵及两侧原始 stream。
 - [`data/database-cache-cli.json`](data/database-cache-cli.json)：发布 CLI cache-disabled 源码身份、删除副作用与 engine cache header 摘要。

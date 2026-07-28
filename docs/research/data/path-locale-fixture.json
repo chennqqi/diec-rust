@@ -1,0 +1,176 @@
+{
+  "filesystems": [
+    {
+      "docker_mount": "tmpfs",
+      "expected_type": "tmpfs",
+      "name": "tmpfs"
+    },
+    {
+      "docker_mount": "anonymous-volume",
+      "expected_type": "ext2/ext3",
+      "name": "volume"
+    }
+  ],
+  "generator": "tools/corpus/generate_path_locale_fixture.py",
+  "license": "project-generated empty files and path names",
+  "locales": [
+    "C",
+    "C.utf8",
+    "POSIX"
+  ],
+  "materialization": {
+    "creation_order": "reverse-manifest",
+    "payload_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "payload_size": 0
+  },
+  "names": [
+    {
+      "hidden": false,
+      "id": "leading_space",
+      "path_bytes_hex": "206c656164696e672d73706163652e656d707479",
+      "utf8": " leading-space.empty",
+      "valid_utf8": true
+    },
+    {
+      "hidden": false,
+      "id": "leading_dash",
+      "path_bytes_hex": "2d2d6c656164696e672d646173682e656d707479",
+      "utf8": "--leading-dash.empty",
+      "valid_utf8": true
+    },
+    {
+      "hidden": false,
+      "id": "digit",
+      "path_bytes_hex": "30302d64696769742e656d707479",
+      "utf8": "00-digit.empty",
+      "valid_utf8": true
+    },
+    {
+      "hidden": false,
+      "id": "ascii_upper_a",
+      "path_bytes_hex": "412d636173652e656d707479",
+      "utf8": "A-case.empty",
+      "valid_utf8": true
+    },
+    {
+      "hidden": false,
+      "id": "ascii_lower_a",
+      "path_bytes_hex": "612d636173652e656d707479",
+      "utf8": "a-case.empty",
+      "valid_utf8": true
+    },
+    {
+      "hidden": false,
+      "id": "ascii_upper_i",
+      "path_bytes_hex": "492d61736369692e656d707479",
+      "utf8": "I-ascii.empty",
+      "valid_utf8": true
+    },
+    {
+      "hidden": false,
+      "id": "ascii_lower_i",
+      "path_bytes_hex": "692d61736369692e656d707479",
+      "utf8": "i-ascii.empty",
+      "valid_utf8": true
+    },
+    {
+      "hidden": false,
+      "id": "underscore",
+      "path_bytes_hex": "5f756e64657273636f72652e656d707479",
+      "utf8": "_underscore.empty",
+      "valid_utf8": true
+    },
+    {
+      "hidden": false,
+      "id": "nfd_e_acute",
+      "path_bytes_hex": "65cc812d6e66642e656d707479",
+      "utf8": "é-nfd.empty",
+      "valid_utf8": true
+    },
+    {
+      "hidden": false,
+      "id": "nfc_e_acute",
+      "path_bytes_hex": "c3a92d6e66632e656d707479",
+      "utf8": "é-nfc.empty",
+      "valid_utf8": true
+    },
+    {
+      "hidden": false,
+      "id": "german_a_umlaut",
+      "path_bytes_hex": "c3a42d6765726d616e2e656d707479",
+      "utf8": "ä-german.empty",
+      "valid_utf8": true
+    },
+    {
+      "hidden": false,
+      "id": "swedish_a_ring",
+      "path_bytes_hex": "c3a52d737765646973682e656d707479",
+      "utf8": "å-swedish.empty",
+      "valid_utf8": true
+    },
+    {
+      "hidden": false,
+      "id": "turkish_capital_i_dot",
+      "path_bytes_hex": "c4b02d7475726b6973682d6361706974616c2e656d707479",
+      "utf8": "İ-turkish-capital.empty",
+      "valid_utf8": true
+    },
+    {
+      "hidden": false,
+      "id": "turkish_small_dotless_i",
+      "path_bytes_hex": "c4b12d7475726b6973682d736d616c6c2e656d707479",
+      "utf8": "ı-turkish-small.empty",
+      "valid_utf8": true
+    },
+    {
+      "hidden": false,
+      "id": "cjk",
+      "path_bytes_hex": "e4b8ade696872e656d707479",
+      "utf8": "中文.empty",
+      "valid_utf8": true
+    },
+    {
+      "hidden": false,
+      "id": "emoji",
+      "path_bytes_hex": "656d6f6a692df09f98802e656d707479",
+      "utf8": "emoji-😀.empty",
+      "valid_utf8": true
+    },
+    {
+      "hidden": false,
+      "id": "ascii_last",
+      "path_bytes_hex": "7a2d6c6173742e656d707479",
+      "utf8": "z-last.empty",
+      "valid_utf8": true
+    },
+    {
+      "hidden": true,
+      "id": "hidden",
+      "path_bytes_hex": "2e68696464656e2e656d707479",
+      "utf8": ".hidden.empty",
+      "valid_utf8": true
+    },
+    {
+      "hidden": false,
+      "id": "invalid_ff",
+      "path_bytes_hex": "696e76616c69642dff2e656d707479",
+      "utf8": null,
+      "valid_utf8": false
+    },
+    {
+      "hidden": false,
+      "id": "invalid_overlong",
+      "path_bytes_hex": "696e76616c69642dc0af2e656d707479",
+      "utf8": null,
+      "valid_utf8": false
+    },
+    {
+      "hidden": false,
+      "id": "invalid_truncated",
+      "path_bytes_hex": "696e76616c69642de2822e656d707479",
+      "utf8": null,
+      "valid_utf8": false
+    }
+  ],
+  "schema_version": 1
+}

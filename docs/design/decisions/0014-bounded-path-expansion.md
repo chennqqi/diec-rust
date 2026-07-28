@@ -122,6 +122,9 @@ Proposed：
 - [`path-toctou-behavior.md`](../../research/path-toctou-behavior.md)
 - [`path-toctou-engine-qt5.json`](../../research/data/path-toctou-engine-qt5.json)
 - [`path-toctou-fixture.json`](../../research/data/path-toctou-fixture.json)
+- [`path-locale-filesystem-behavior.md`](../../research/path-locale-filesystem-behavior.md)
+- [`path-locale-filesystem-engine-qt5.json`](../../research/data/path-locale-filesystem-engine-qt5.json)
+- [`path-locale-fixture.json`](../../research/data/path-locale-fixture.json)
 - [`special-path-behavior.md`](../../research/special-path-behavior.md)
 - [`cli-path-behavior.md`](../../research/cli-path-behavior.md)
 - [`test_probe_path_filesystem_behavior.py`](../../../tools/tests/test_probe_path_filesystem_behavior.py)
@@ -130,6 +133,8 @@ Proposed：
 - [`test_generate_large_path_fixture.py`](../../../tools/tests/test_generate_large_path_fixture.py)
 - [`test_probe_path_toctou_behavior.py`](../../../tools/tests/test_probe_path_toctou_behavior.py)
 - [`test_generate_path_toctou_fixture.py`](../../../tools/tests/test_generate_path_toctou_fixture.py)
+- [`test_probe_path_locale_filesystem_behavior.py`](../../../tools/tests/test_probe_path_locale_filesystem_behavior.py)
+- [`test_generate_path_locale_fixture.py`](../../../tools/tests/test_generate_path_locale_fixture.py)
 - `Formats@1151e725.../xbinary.cpp::findFiles`
 - [`api.md` §14](../api.md#14-batch-与目录枚举)
 - [`risks.md` R-019](../risks.md#r-019路径枚举和编码安全)

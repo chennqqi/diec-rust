@@ -5,20 +5,6 @@
   "coverage_gaps": [
     {
       "capability_ids": [
-        "CAP-CLI-IN-001",
-        "CAP-CLI-IN-002",
-        "CAP-CLI-IN-003",
-        "CAP-CLI-IN-004"
-      ],
-      "id": "CAP-GAP-003",
-      "kind": "corpus_missing",
-      "platforms": [
-        "linux-x86_64-qt5"
-      ],
-      "scope": "remaining Linux locale/filesystem ordering behavior"
-    },
-    {
-      "capability_ids": [
         "CAP-DISPATCH-004",
         "CAP-NEST-003",
         "CAP-NEST-004",
@@ -202,7 +188,14 @@
         "tools/corpus/generate_path_toctou_fixture.py",
         "tools/upstream/probe_path_toctou_behavior.py",
         "tools/tests/test_generate_path_toctou_fixture.py",
-        "tools/tests/test_probe_path_toctou_behavior.py"
+        "tools/tests/test_probe_path_toctou_behavior.py",
+        "docs/research/path-locale-filesystem-behavior.md",
+        "docs/research/data/path-locale-fixture.json",
+        "docs/research/data/path-locale-filesystem-engine-qt5.json",
+        "tools/corpus/generate_path_locale_fixture.py",
+        "tools/upstream/probe_path_locale_filesystem_behavior.py",
+        "tools/tests/test_generate_path_locale_fixture.py",
+        "tools/tests/test_probe_path_locale_filesystem_behavior.py"
       ]
     },
     "cli_scan_baseline": {
@@ -465,9 +458,7 @@
   "result": "incomplete",
   "rows": [
     {
-      "corpus_gap_ids": [
-        "CAP-GAP-003"
-      ],
+      "corpus_gap_ids": [],
       "evidence_set": "cli_scan_baseline",
       "id": "CAP-CLI-IN-001",
       "name": "single file scan",
@@ -483,9 +474,7 @@
       }
     },
     {
-      "corpus_gap_ids": [
-        "CAP-GAP-003"
-      ],
+      "corpus_gap_ids": [],
       "evidence_set": "cli_path",
       "id": "CAP-CLI-IN-002",
       "name": "multiple target scan",
@@ -501,9 +490,7 @@
       }
     },
     {
-      "corpus_gap_ids": [
-        "CAP-GAP-003"
-      ],
+      "corpus_gap_ids": [],
       "evidence_set": "cli_path",
       "id": "CAP-CLI-IN-003",
       "name": "directory enumeration",
@@ -512,16 +499,14 @@
         "CAP-GAP-008"
       ],
       "platform_status": {
-        "linux-x86_64-qt5": "runtime_observed_with_corpus_gaps",
+        "linux-x86_64-qt5": "runtime_observed",
         "linux-x86_64-qt6": "platform_missing",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
     },
     {
-      "corpus_gap_ids": [
-        "CAP-GAP-003"
-      ],
+      "corpus_gap_ids": [],
       "evidence_set": "cli_path",
       "id": "CAP-CLI-IN-004",
       "name": "single-file and empty directory",
@@ -1513,7 +1498,7 @@
   "schema_version": 1,
   "source": {
     "path": "docs/research/data/capability-traceability.json",
-    "sha256": "e2b552014f3d2c748b03ce5c7e0675a18cdd7f28dbfee02d6b84a249f233b9ee"
+    "sha256": "61fb7314f77740d7f206ca26a41a291cbec49394c90b9d4c481e2f837aae4bda"
   },
   "status_definitions": {
     "platform_missing": "no complete capability baseline is admitted for this platform",
@@ -1527,13 +1512,13 @@
     "cell_count": 272,
     "phase_0_coverage_complete": false,
     "platform_count": 4,
-    "rows_with_corpus_gaps": 8,
+    "rows_with_corpus_gaps": 4,
     "rows_with_platform_gaps": 68,
     "status_counts_by_platform": {
       "linux-x86_64-qt5": {
         "platform_missing": 0,
-        "runtime_observed": 64,
-        "runtime_observed_with_corpus_gaps": 4,
+        "runtime_observed": 65,
+        "runtime_observed_with_corpus_gaps": 3,
         "source_only_runtime_corpus_missing": 0,
         "source_only_with_corpus_gaps": 0
       },
