@@ -161,6 +161,9 @@ Phase 0 计划形成：
 - [`qt6-signature-path-runtime-evidence.md`](qt6-signature-path-runtime-evidence.md)：
   固定 Qt6 private signature-path harness 的七用例完整输出，并验证与 Qt5
   逐字节相同（In Review）。
+- [`qt6-debug-dispatch-runtime-evidence.md`](qt6-debug-dispatch-runtime-evidence.md)：
+  固定 public resource 正控制、debug-data omission 与 direct debug 正例，并
+  保留 Qt6 四行 PE warning（In Review）。
 - [`behavior-baseline.md`](behavior-baseline.md)：确定性安全语料、原始输出哈希和多格式行为（Draft）。
 - [`cli-json-schema-inventory.md`](cli-json-schema-inventory.md)：固定 CLI normal/entropy/info/struct JSON 字段、类型、顺序与失败边界（Draft）。
 - [`cli-output-boundaries.md`](cli-output-boundaries.md)：固定 JSON/XML/CSV/TSV/plain text 的 Unicode/控制字符转义、嵌套排序和格式缺陷；闭合 `CAP-GAP-004`（Draft）。
@@ -242,6 +245,9 @@ Phase 0 计划形成：
 - [`data/signature-path-engine-qt6.json`](data/signature-path-engine-qt6.json)：
   private comparator 的七用例 Qt6 运行时矩阵及固定 harness/image/raw-stream
   身份。
+- [`data/debug-dispatch-engine-qt6.json`](data/debug-dispatch-engine-qt6.json)：
+  Qt6 Formats 枚举、public recursive omission、direct debug detection 与精确
+  stderr 差异。
 - [`data/scan-option-boundary-fixture.json`](data/scan-option-boundary-fixture.json)：deep/aggressive 规则与 1/22/2002-resource PE 的 hash-bound 清单。
 - [`data/scan-option-boundaries-linux-qt5.json`](data/scan-option-boundaries-linux-qt5.json)：8-case 双 Qt5 scan-option oracle 的去重原始 streams、身份和派生事实。
 - [`data/capability-traceability.json`](data/capability-traceability.json)：68 个稳定

@@ -47,6 +47,8 @@ REPORT_PATHS = (
     "docs/research/data/result-model-engine-qt6.json",
     "docs/research/data/signature-path-engine-qt5.json",
     "docs/research/data/signature-path-engine-qt6.json",
+    "docs/research/data/debug-dispatch-engine-qt5.json",
+    "docs/research/data/debug-dispatch-engine-qt6.json",
 )
 EMPTY_SHA256 = hashlib.sha256(b"").hexdigest()
 QT6_UNIMPLEMENTED_SHA256 = (
@@ -144,6 +146,7 @@ COMPLETE: dict[str, str] = {
     "CAP-RESULT-005": "raw, numeric, canonical, reserved, and fallback enum behavior is identical",
     "CAP-RESULT-006": "normal record version, info, priority, rule name, and rule path fields match Qt5",
     "CAP-RULE-007": "all seven private signature-path filter boundaries are byte-identical to Qt5",
+    "CAP-NEST-007": "public omission and direct debug-data positive control match Qt5 exactly",
 }
 
 PARTIAL: dict[str, str] = {
@@ -1525,6 +1528,55 @@ def _validate_signature_path_reports(
         raise ClosurePlanError("Qt5/Qt6 signature-path output drift")
 
 
+def _validate_debug_dispatch_reports(
+    qt5: dict[str, Any], qt6: dict[str, Any]
+) -> None:
+    oracle = qt6.get("oracle", {})
+    if (
+        qt6.get("schema_version") != 1
+        or qt6.get("upstream_commit") != UPSTREAM_COMMIT
+        or qt6.get("rules_commit") != RULES_COMMIT
+        or qt6.get("platform") != "linux-amd64-qt6"
+        or qt6.get("capability") != "CAP-NEST-007"
+        or qt6.get("result") != "observed"
+        or oracle.get("image")
+        != "diec-rust/debug-dispatch-harness-qt6:74eaf505"
+        or oracle.get("image_id")
+        != "sha256:10a4ab04d46419ae7e3ea7285588d2c8cd9dc7fd75b82e00d6aa9e8f7156f3c3"
+        or oracle.get("revision") != UPSTREAM_COMMIT
+        or oracle.get("exit_code") != 0
+        or oracle.get("raw_stderr_bytes") != 80
+        or oracle.get("raw_stderr_sha256")
+        != QT6_UNIMPLEMENTED_SHA256
+    ):
+        raise ClosurePlanError("Qt6 debug-dispatch identity/oracle drift")
+    expected_difference = {
+        "scope": "PE rule runtime warning",
+        "stderr_bytes": 80,
+        "stderr_sha256": QT6_UNIMPLEMENTED_SHA256,
+        "lines": 4,
+        "semantic_output_equal_to_qt5": True,
+    }
+    relationships = qt6.get("relationships")
+    if (
+        qt6.get("known_difference") != expected_difference
+        or not isinstance(relationships, dict)
+        or len(relationships) != 9
+        or not all(value is True for value in relationships.values())
+        or relationships != qt5.get("relationships")
+    ):
+        raise ClosurePlanError(
+            "Qt5/Qt6 debug-dispatch relationship drift"
+        )
+    if (
+        qt6.get("harness_output") != qt5.get("harness_output")
+        or qt6.get("fixture") != qt5.get("fixture")
+        or oracle.get("raw_stdout_sha256")
+        != qt5.get("oracle", {}).get("raw_stdout_sha256")
+    ):
+        raise ClosurePlanError("Qt5/Qt6 debug-dispatch output drift")
+
+
 CAMPAIGNS: dict[str, dict[str, Any]] = {
     "cli_scan_baseline": {
         "fixture": "reuse baseline-corpus and scan-option-boundary fixtures",
@@ -1724,6 +1776,9 @@ def _validate_inputs(
     )
     _validate_signature_path_reports(
         reports[REPORT_PATHS[27]], reports[REPORT_PATHS[28]]
+    )
+    _validate_debug_dispatch_reports(
+        reports[REPORT_PATHS[29]], reports[REPORT_PATHS[30]]
     )
     return capabilities
 
@@ -1942,6 +1997,13 @@ def build_plan(
                 "difference_count": 0,
                 "relationship_count": 11,
                 "raw_stdout_equal": True,
+            },
+            {
+                "source": REPORT_PATHS[30],
+                "scope": "public recursive omission and direct debug-data positive control",
+                "difference_count": 1,
+                "semantic_output_equal": True,
+                "right_stderr_sha256": QT6_UNIMPLEMENTED_SHA256,
             },
         ],
         "rows": rows,

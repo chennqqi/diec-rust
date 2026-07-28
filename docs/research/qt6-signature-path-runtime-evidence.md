@@ -46,9 +46,11 @@ Qt6 Dockerfile 从固定 CMake Qt6 oracle 派生，以 `--network=none` 构建�
 
 ## 能力影响
 
-`CAP-RULE-007` 提升为 Linux Qt6 `evidence_complete`。当前汇总为
-59 项 complete、3 项 partial、6 项 missing；9 项仍需闭环，
-`CAP-GAP-007` 保持开放。
+`CAP-RULE-007` 提升为 Linux Qt6 `evidence_complete`。完成本批时汇总为
+59 项 complete、3 项 partial、6 项 missing。后续 debug-dispatch 批次已将
+当前汇总推进到 60/3/5，见
+[`qt6-debug-dispatch-runtime-evidence.md`](qt6-debug-dispatch-runtime-evidence.md)；
+`CAP-GAP-007` 仍保持开放。
 
 ## 重现
 

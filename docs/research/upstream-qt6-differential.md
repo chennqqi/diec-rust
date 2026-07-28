@@ -214,7 +214,9 @@ option/profiling 矩阵见
 [`qt6-result-model-runtime-evidence.md`](qt6-result-model-runtime-evidence.md)。
 signature-path 差分见
 [`qt6-signature-path-runtime-evidence.md`](qt6-signature-path-runtime-evidence.md)。
-十批实验将 Linux Qt6 的逐行完整证据从 11 项增加到 59 项，但没有关闭
+debug-data dispatch 差分见
+[`qt6-debug-dispatch-runtime-evidence.md`](qt6-debug-dispatch-runtime-evidence.md)。
+十一批实验将 Linux Qt6 的逐行完整证据从 11 项增加到 60 项，但没有关闭
 `CAP-GAP-007`。
 
 ## 限制与下一步
@@ -229,5 +231,6 @@ signature-path 差分见
   layer/cache 及其余 dispatch/nested engine harness 仍未完成；
   已完成四入口、device/subdevice、filter、cancel 和 sort 的
   engine-contract harness、三层数据库/priority/init/type/mode gate 的规则编排
-  差分、五组 result-model harness 和 private signature-path harness。
+  差分、五组 result-model harness、private signature-path harness 和 paired
+  debug-data dispatch harness。
 - Windows、macOS 固定 oracle 仍缺失。

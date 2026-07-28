@@ -118,6 +118,13 @@
       "relationship_count": 11,
       "scope": "seven-case private signature-file path filter contract",
       "source": "docs/research/data/signature-path-engine-qt6.json"
+    },
+    {
+      "difference_count": 1,
+      "right_stderr_sha256": "b303e6913e76b70a6f0d6a4d3ccd389bc342589e45e1615873a37334dea8c51b",
+      "scope": "public recursive omission and direct debug-data positive control",
+      "semantic_output_equal": true,
+      "source": "docs/research/data/debug-dispatch-engine-qt6.json"
     }
   ],
   "limitations": [
@@ -779,19 +786,11 @@
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "debug_data_dispatch",
       "id": "CAP-NEST-007",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "debug data is not scanner dispatched",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "resource and debug enumerations are equal",
-          "only resource candidates are scanner-dispatched",
-          "positive resource and negative debug controls retain raw records"
-        ],
-        "fixture": "reuse debug-dispatch fixture and source-audit identity",
-        "harness": "build and run an equivalent Qt6 debug-dispatch harness"
-      },
-      "status": "missing"
+      "observed_scope": "public omission and direct debug-data positive control match Qt5 exactly",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
@@ -895,6 +894,8 @@
     "docs/research/data/cli-scan-nested-matrix-linux-qt5-qt6.json": "a81ed4e791286c78247ca1d758fcb49900ca93ac46941af3d0542801d7e603f8",
     "docs/research/data/cli-special-boundaries-linux-qt5-qt6.json": "339b94c3294e13b1350317ad4aba0e3cd89a45cc6fcfa0cb72241aee39c72d70",
     "docs/research/data/cli-special-matrix-linux-qt5-qt6.json": "0da895e6d82c0b2cafcee8a1b7a951c462822a05faab381ef64d5c168d5653d1",
+    "docs/research/data/debug-dispatch-engine-qt5.json": "6ec887de5ece0e041a920a82d79446e9070c7a868614d6c0218caf074930be88",
+    "docs/research/data/debug-dispatch-engine-qt6.json": "4aa91c7ecc275c2d92549f66ee2b421ada6ab3f2c51fc7c0b1934f6cbf94b78f",
     "docs/research/data/engine-contract-linux-qt5.json": "15b7795f54ea236219cac8b7865dc73289263db6de85312910096746094b5099",
     "docs/research/data/engine-contract-linux-qt6.json": "e2f11d0f8d4070fa3359af0237eca948e6c8a36962bbf8cba59d48f0fe7ac18e",
     "docs/research/data/global-host-api-qt5-qt6.json": "3895fde7bb3885e6197afe7216daf8540b7808562ff5287984615d5b022634eb",
@@ -920,9 +921,9 @@
     "all_capabilities_accounted_for": true,
     "cap_gap_007_closed": false,
     "capability_count": 68,
-    "closure_required": 9,
-    "evidence_complete": 59,
-    "missing": 6,
+    "closure_required": 8,
+    "evidence_complete": 60,
+    "missing": 5,
     "partial": 3
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"

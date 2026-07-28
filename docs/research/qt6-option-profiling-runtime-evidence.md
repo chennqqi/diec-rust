@@ -76,9 +76,9 @@ CMake 与 Qt6 CMake oracle，再调用原始 equality、关系、inventory 和 o
 额外交叉验证。
 
 完成本批时汇总为 42 项 complete、10 项 partial、16 项 missing。后续
-engine-contract、规则编排、result-model 与 signature-path 批次已将当前汇总
-推进到 59/3/6，见
-[`qt6-signature-path-runtime-evidence.md`](qt6-signature-path-runtime-evidence.md)；
+engine-contract、规则编排、result-model、signature-path 与 debug-dispatch
+批次已将当前汇总推进到 60/3/5，见
+[`qt6-debug-dispatch-runtime-evidence.md`](qt6-debug-dispatch-runtime-evidence.md)；
 `CAP-GAP-007` 仍保持开放。
 
 ## 重现

@@ -81,10 +81,10 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
 
     def test_current_plan_is_conservatively_incomplete(self):
         summary = self.plan["summary"]
-        self.assertEqual(summary["evidence_complete"], 59)
+        self.assertEqual(summary["evidence_complete"], 60)
         self.assertEqual(summary["partial"], 3)
-        self.assertEqual(summary["missing"], 6)
-        self.assertEqual(summary["closure_required"], 9)
+        self.assertEqual(summary["missing"], 5)
+        self.assertEqual(summary["closure_required"], 8)
         self.assertFalse(summary["cap_gap_007_closed"])
         self.assertEqual(self.plan["result"], "incomplete")
 
@@ -139,6 +139,7 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
             "CAP-RESULT-005",
             "CAP-RESULT-006",
             "CAP-RULE-007",
+            "CAP-NEST-007",
         }
         for capability_id in promoted:
             with self.subTest(capability=capability_id):
@@ -350,6 +351,20 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
         with self.assertRaisesRegex(
             MODULE.ClosurePlanError,
             "output drift",
+        ):
+            MODULE.build_plan(
+                self.traceability,
+                self.traceability_raw,
+                changed_reports,
+                self.report_bytes,
+            )
+
+        changed_reports = json.loads(json.dumps(self.reports))
+        debug_dispatch = changed_reports[MODULE.REPORT_PATHS[30]]
+        debug_dispatch["known_difference"]["lines"] = 3
+        with self.assertRaisesRegex(
+            MODULE.ClosurePlanError,
+            "relationship drift",
         ):
             MODULE.build_plan(
                 self.traceability,

@@ -1,0 +1,214 @@
+{
+  "capability": "CAP-NEST-007",
+  "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+  "fixture": {
+    "license": "project-generated; no third-party sample bytes",
+    "manifest": "docs/research/data/debug-dispatch-fixture.json",
+    "manifest_sha256": "ed52306253c1f989677f15ebd3d4de35ab4ea7904afbeafac0672bbe35a0c1dc",
+    "sample": "pe-resource-debug.exe"
+  },
+  "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+  "generator": "tools/upstream/probe_qt6_debug_dispatch_harness.py",
+  "generator_sha256": "6e5dba3cdbc6f9b3a7bd3f3b53477528faccefd3cf9684f860aceee9fa8ec714",
+  "harness": {
+    "access_method": "public scanner plus direct private rule executor; pinned engine and rule bytes are unmodified",
+    "dockerfile": "tools/upstream/Dockerfile.debug-dispatch-harness-qt5",
+    "dockerfile_sha256": "b95fd79a8be01c64a651fbd35ec6cfa3803b897d71b42ddcc285e44dd2253217",
+    "source": "tools/upstream/debug_dispatch_harness_main.cpp",
+    "source_sha256": "9d2cfb6c3f0cce529938270d67864e09948c483a9632830545973e0be725a381"
+  },
+  "harness_output": {
+    "database_loaded": true,
+    "debug_rule_sha256": "381b6259b239f2633b92fbd84fd0d99b972751e20cab12b6e09139a260f1f47d",
+    "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+    "direct_debug_scan": {
+      "error_count": 0,
+      "record_count": 1,
+      "records": [
+        {
+          "id": {
+            "filepart": 128,
+            "filepart_string": "Debug data",
+            "filetype": 4,
+            "filetype_string": "Binary",
+            "offset": 0,
+            "size": 38
+          },
+          "info": "",
+          "name": "PDB file link",
+          "parent_id": {
+            "filepart": 128,
+            "filepart_string": "Debug data",
+            "filetype": 16,
+            "filetype_string": "PE32",
+            "offset": 1088,
+            "size": 38
+          },
+          "signature": "debug_data_debugData.1.sg",
+          "signature_path": "/opt/die-source/Detect-It-Easy/db/Binary/debug_data_debugData.1.sg",
+          "type": "debug data",
+          "unknown": false,
+          "version": "7.0"
+        }
+      ],
+      "scan_not_canceled": true,
+      "signature_filter": "debug_data_debugData.1.sg",
+      "source_part": {
+        "filepart": 128,
+        "filepart_string": "Debug data",
+        "name": "2",
+        "offset": 1088,
+        "resource_id": "",
+        "sha256": "f4062413bf0504b8eb9b30dc76d27a576f75827f0b13822a43eea00706709e5f",
+        "size": 38
+      }
+    },
+    "enumerated_part_count": 2,
+    "enumerated_parts": [
+      {
+        "filepart": 64,
+        "filepart_string": "Resource",
+        "name": "Resource 0",
+        "offset": 608,
+        "resource_id": "24",
+        "sha256": "96f63fca235e4a359900fa17b076d2cb3d16945855b25fcb3c391eb49215428b",
+        "size": 20
+      },
+      {
+        "filepart": 128,
+        "filepart_string": "Debug data",
+        "name": "2",
+        "offset": 1088,
+        "resource_id": "",
+        "sha256": "f4062413bf0504b8eb9b30dc76d27a576f75827f0b13822a43eea00706709e5f",
+        "size": 38
+      }
+    ],
+    "enumeration_not_canceled": true,
+    "format_filetype": "PE32",
+    "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+    "load_not_canceled": true,
+    "public_recursive_scan": {
+      "aggressive": true,
+      "error_count": 0,
+      "initial_filetype": "PE32",
+      "record_count": 2,
+      "records": [
+        {
+          "id": {
+            "filepart": 16,
+            "filepart_string": "Header",
+            "filetype": 16,
+            "filetype_string": "PE32",
+            "offset": 0,
+            "size": 1536
+          },
+          "info": "CodeView",
+          "name": "Records",
+          "parent_id": {
+            "filepart": 16,
+            "filepart_string": "Header",
+            "filetype": 0,
+            "filetype_string": "Unknown",
+            "offset": 0,
+            "size": 0
+          },
+          "signature": "_debug_data.5.sg",
+          "signature_path": "/opt/die-source/Detect-It-Easy/db/PE/_debug_data.5.sg",
+          "type": "debug data",
+          "unknown": false,
+          "version": ""
+        },
+        {
+          "id": {
+            "filepart": 64,
+            "filepart_string": "Resource",
+            "filetype": 4,
+            "filetype_string": "Binary",
+            "offset": 608,
+            "size": 20
+          },
+          "info": "Resources",
+          "name": "Manifest",
+          "parent_id": {
+            "filepart": 64,
+            "filepart_string": "Resource",
+            "filetype": 16,
+            "filetype_string": "PE32",
+            "offset": 608,
+            "size": 20
+          },
+          "signature": "win_resources.1.sg",
+          "signature_path": "/opt/die-source/Detect-It-Easy/db/Binary/win_resources.1.sg",
+          "type": "format",
+          "unknown": false,
+          "version": ""
+        }
+      ],
+      "recursive": true,
+      "scan_not_canceled": true
+    },
+    "resource_rule_sha256": "2fdad41d666d32467cabe83dae7d16625ade5935e3061c58dfefeb1fb7b99db7",
+    "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+    "sample_name": "pe-resource-debug.exe",
+    "sample_sha256": "58e2b8e73ba187977564e719d39022079b8fb9172c5bcdf40c495ed825b38ea1",
+    "sample_size": 1536,
+    "schema_version": 1,
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+  },
+  "known_difference": {
+    "lines": 4,
+    "scope": "PE rule runtime warning",
+    "semantic_output_equal_to_qt5": true,
+    "stderr_bytes": 80,
+    "stderr_sha256": "b303e6913e76b70a6f0d6a4d3ccd389bc342589e45e1615873a37334dea8c51b"
+  },
+  "limitations": [
+    "the direct debug-data control uses a private engine entry point",
+    "the public scanner is exercised with recursive and aggressive enabled",
+    "the comparison covers one fixed PE resource/debug-data fixture"
+  ],
+  "oracle": {
+    "binary": "/opt/die-build/src/console/diec-debug-dispatch-harness",
+    "binary_sha256": "e19582c9401a493016f8933df642ebc89460f4769d580a6e1aced1fca89d6855",
+    "exit_code": 0,
+    "image": "diec-rust/debug-dispatch-harness-qt6:74eaf505",
+    "image_id": "sha256:10a4ab04d46419ae7e3ea7285588d2c8cd9dc7fd75b82e00d6aa9e8f7156f3c3",
+    "limits": {
+      "cpus": 1,
+      "memory": "512m",
+      "network": "none",
+      "pids": 128
+    },
+    "raw_stderr_bytes": 80,
+    "raw_stderr_sha256": "b303e6913e76b70a6f0d6a4d3ccd389bc342589e45e1615873a37334dea8c51b",
+    "raw_stdout_bytes": 5010,
+    "raw_stdout_sha256": "6068b2b4d1a322b2ba398546e865ba0dbdfd269da99d935fdaa2f8538c22f0cd",
+    "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "platform": "linux-amd64-qt6",
+  "raw_artifacts": {
+    "storage": "untracked external directory selected by --raw-dir"
+  },
+  "relationships": {
+    "all_operations_complete_without_errors": true,
+    "direct_debug_rule_detects_rsds": true,
+    "direct_debug_uses_enumerated_part": true,
+    "format_layer_enumerates_debug_data": true,
+    "format_layer_enumerates_resource": true,
+    "parent_debug_metadata_is_header_record": true,
+    "public_mode_is_recursive_and_aggressive": true,
+    "public_scanner_omits_debug_data_child": true,
+    "recursive_resource_is_positive_control": true
+  },
+  "result": "observed",
+  "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+  "schema_version": 1,
+  "underlying_probe": {
+    "path": "tools/upstream/probe_debug_dispatch_harness.py",
+    "sha256": "714f86f32a5c2d53c3b3aeb391f00ebf661f5210472f60cb3b89c81c8aef312a"
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+}
