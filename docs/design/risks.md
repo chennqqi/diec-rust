@@ -321,8 +321,12 @@ baseline 的变更都要检查本表。
   RAR5 Store 单成员与 solid 双成员，证明公共 engine 分别展开一/两个 PDF，
   并绑定 RAR5 method/solid index 及 solid Store 分派源码，见
   [`archive-rar5-store-behavior.md`](../research/archive-rar5-store-behavior.md)。
+  新增 64-run oracle 又固定 7Z/RAR4/CAB/ISO9660 的两记录正序/逆序、
+  重名不去重、普通模式跳过空成员但继续后续记录以及 aggressive 空成员原位输出，
+  见
+  [`archive-multirecord-behavior.md`](../research/archive-multirecord-behavior.md)。
   这些兼容事实不允许安全实现越界读取；剩余字段、大小端冲突、arithmetic wrap
-  与多记录组合仍未覆盖。详见
+  与更大或混合失败记录图仍未覆盖。详见
   [`archive-limit-behavior.md`](../research/archive-limit-behavior.md) 和
   [`archive-format-behavior.md`](../research/archive-format-behavior.md)、
   [`scan-option-boundaries.md`](../research/scan-option-boundaries.md)。

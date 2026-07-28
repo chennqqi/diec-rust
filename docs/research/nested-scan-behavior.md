@@ -348,7 +348,9 @@ recursive+aggressive 对前者产生 Manifest child，对后者不建 child；�
   [`archive-truncation-behavior.md`](archive-truncation-behavior.md)；
   同四格式首轮结构字段突变见
   [`archive-structure-behavior.md`](archive-structure-behavior.md)；
-  其他 encrypted entry、重复名称、剩余字段/大小端冲突/多记录组合和系统化
+  同四格式两记录顺序、重复名称和空成员过滤见
+  [`archive-multirecord-behavior.md`](archive-multirecord-behavior.md)；
+  其他 encrypted entry、更大或混合失败记录图、剩余字段/大小端冲突和系统化
   metadata 仍缺；
 - archive aggressive 第 100000 条可达、第 100001 条不可达，见
   [`archive-iteration-boundary.md`](archive-iteration-boundary.md)；

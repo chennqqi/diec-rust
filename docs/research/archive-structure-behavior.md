@@ -185,6 +185,9 @@ python tools\upstream\probe_archive_structure_harness.py `
 
 - 0/max 只覆盖本页列出的 next-header、size、name、record、extent 与 block
   字段；其他字段、大小端冲突和 arithmetic wrap 仍缺；
+- 两记录顺序、重名和空成员过滤已由
+  [`archive-multirecord-behavior.md`](archive-multirecord-behavior.md) 固定，
+  但更大或混合失败记录图仍缺；
 - 7Z 仅 Copy，RAR4/CAB 仅 stored control，未覆盖压缩或加密结构图；
 - ISO9660 没有多目录、multi-extent、Joliet/Rock Ridge 或大小端冲突；
 - 没有通过第三方 parser 把畸形样本声明为“标准合法”；测试目标是精确、可审计

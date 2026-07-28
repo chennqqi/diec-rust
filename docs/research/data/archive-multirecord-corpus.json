@@ -1,0 +1,331 @@
+{
+  "generator": "tools/corpus/generate_archive_multirecord_fixture.py",
+  "license": "project-generated",
+  "samples": [
+    {
+      "archive_format": "7Z",
+      "entries": [
+        {
+          "name": "first.pdf",
+          "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+          "size": 331
+        },
+        {
+          "name": "second.pdf",
+          "sha256": "23d10ff04972dc630cf8fea7e0b8361cfb6f25245594cf118d7eb7a9725aaeb9",
+          "size": 332
+        }
+      ],
+      "name": "sevenzip-forward.7z",
+      "order_case": "forward",
+      "purpose": "7Z two-record forward ordering and duplicate-name boundary",
+      "sha256": "a5246da789f9901ec091d7f525ac3954ab296909294f28f1ab5d1b93878e5a72",
+      "size": 792
+    },
+    {
+      "archive_format": "7Z",
+      "entries": [
+        {
+          "name": "second.pdf",
+          "sha256": "23d10ff04972dc630cf8fea7e0b8361cfb6f25245594cf118d7eb7a9725aaeb9",
+          "size": 332
+        },
+        {
+          "name": "first.pdf",
+          "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+          "size": 331
+        }
+      ],
+      "name": "sevenzip-reverse.7z",
+      "order_case": "reverse",
+      "purpose": "7Z two-record reverse ordering and duplicate-name boundary",
+      "sha256": "c228e62c9604ed9b1b3b0ebf6e5875e8dfbd52bd617c4e868e354bdebe4c2bec",
+      "size": 792
+    },
+    {
+      "archive_format": "7Z",
+      "entries": [
+        {
+          "name": "same.pdf",
+          "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+          "size": 331
+        },
+        {
+          "name": "same.pdf",
+          "sha256": "23d10ff04972dc630cf8fea7e0b8361cfb6f25245594cf118d7eb7a9725aaeb9",
+          "size": 332
+        }
+      ],
+      "name": "sevenzip-duplicate-name.7z",
+      "order_case": "duplicate-name",
+      "purpose": "7Z two-record duplicate-name ordering and duplicate-name boundary",
+      "sha256": "9df4a549a363ad2682610bd0b5d8cd54e2bd41c145f7a56ddabe2393b96a7169",
+      "size": 786
+    },
+    {
+      "archive_format": "7Z",
+      "entries": [
+        {
+          "name": "empty.bin",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        {
+          "name": "second.pdf",
+          "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+          "size": 331
+        }
+      ],
+      "name": "sevenzip-empty-first.7z",
+      "order_case": "empty-first",
+      "purpose": "7Z two-record empty-first ordering and duplicate-name boundary",
+      "sha256": "4aed0062e76ec79d60c0e3a2720d9005cbdc673e908dcefaac7e7b25c4d92ce3",
+      "size": 458
+    },
+    {
+      "archive_format": "RAR4",
+      "entries": [
+        {
+          "name": "first.pdf",
+          "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+          "size": 331
+        },
+        {
+          "name": "second.pdf",
+          "sha256": "23d10ff04972dc630cf8fea7e0b8361cfb6f25245594cf118d7eb7a9725aaeb9",
+          "size": 332
+        }
+      ],
+      "name": "rar4-forward.rar",
+      "order_case": "forward",
+      "purpose": "RAR4 two-record forward ordering and duplicate-name boundary",
+      "sha256": "d3f5efb80d31a19fe6fc80a0ee348322dbdfbcfc96152bf236c6fdec7c14e272",
+      "size": 773
+    },
+    {
+      "archive_format": "RAR4",
+      "entries": [
+        {
+          "name": "second.pdf",
+          "sha256": "23d10ff04972dc630cf8fea7e0b8361cfb6f25245594cf118d7eb7a9725aaeb9",
+          "size": 332
+        },
+        {
+          "name": "first.pdf",
+          "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+          "size": 331
+        }
+      ],
+      "name": "rar4-reverse.rar",
+      "order_case": "reverse",
+      "purpose": "RAR4 two-record reverse ordering and duplicate-name boundary",
+      "sha256": "ea0f1ad7450e3c52b9f8d384d6e7a2e75e3f2b078e2daf168945ce5095f54342",
+      "size": 773
+    },
+    {
+      "archive_format": "RAR4",
+      "entries": [
+        {
+          "name": "same.pdf",
+          "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+          "size": 331
+        },
+        {
+          "name": "same.pdf",
+          "sha256": "23d10ff04972dc630cf8fea7e0b8361cfb6f25245594cf118d7eb7a9725aaeb9",
+          "size": 332
+        }
+      ],
+      "name": "rar4-duplicate-name.rar",
+      "order_case": "duplicate-name",
+      "purpose": "RAR4 two-record duplicate-name ordering and duplicate-name boundary",
+      "sha256": "3f594ea7268809ad6a455846cbd4aeec46c403b80f33eca2802cc56284f9c56b",
+      "size": 770
+    },
+    {
+      "archive_format": "RAR4",
+      "entries": [
+        {
+          "name": "empty.bin",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        {
+          "name": "second.pdf",
+          "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+          "size": 331
+        }
+      ],
+      "name": "rar4-empty-first.rar",
+      "order_case": "empty-first",
+      "purpose": "RAR4 two-record empty-first ordering and duplicate-name boundary",
+      "sha256": "66fd6bead6d1725a14809938b55a5a7c6056b8398c195ad4c7b72efaf7efe301",
+      "size": 441
+    },
+    {
+      "archive_format": "CAB",
+      "entries": [
+        {
+          "name": "first.pdf",
+          "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+          "size": 331
+        },
+        {
+          "name": "second.pdf",
+          "sha256": "23d10ff04972dc630cf8fea7e0b8361cfb6f25245594cf118d7eb7a9725aaeb9",
+          "size": 332
+        }
+      ],
+      "name": "cab-forward.cab",
+      "order_case": "forward",
+      "purpose": "CAB two-record forward ordering and duplicate-name boundary",
+      "sha256": "6be007177c774c7825de2716033cc67125e68e3b2e2d707e5428aed43e2a0be1",
+      "size": 768
+    },
+    {
+      "archive_format": "CAB",
+      "entries": [
+        {
+          "name": "second.pdf",
+          "sha256": "23d10ff04972dc630cf8fea7e0b8361cfb6f25245594cf118d7eb7a9725aaeb9",
+          "size": 332
+        },
+        {
+          "name": "first.pdf",
+          "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+          "size": 331
+        }
+      ],
+      "name": "cab-reverse.cab",
+      "order_case": "reverse",
+      "purpose": "CAB two-record reverse ordering and duplicate-name boundary",
+      "sha256": "fbfc26c43c119e23f2667ceb9d41b64a7918be7bc6ab90c28aab7b5c9191b2f1",
+      "size": 768
+    },
+    {
+      "archive_format": "CAB",
+      "entries": [
+        {
+          "name": "same.pdf",
+          "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+          "size": 331
+        },
+        {
+          "name": "same.pdf",
+          "sha256": "23d10ff04972dc630cf8fea7e0b8361cfb6f25245594cf118d7eb7a9725aaeb9",
+          "size": 332
+        }
+      ],
+      "name": "cab-duplicate-name.cab",
+      "order_case": "duplicate-name",
+      "purpose": "CAB two-record duplicate-name ordering and duplicate-name boundary",
+      "sha256": "26e1b8a596fcecccfc0d20450e3a58b780fb400ba1a2eff11ff54c1222222825",
+      "size": 765
+    },
+    {
+      "archive_format": "CAB",
+      "entries": [
+        {
+          "name": "empty.bin",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        {
+          "name": "second.pdf",
+          "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+          "size": 331
+        }
+      ],
+      "name": "cab-empty-first.cab",
+      "order_case": "empty-first",
+      "purpose": "CAB two-record empty-first ordering and duplicate-name boundary",
+      "sha256": "69a7f74b7a54cfb23752118c271c3ec161f7855337da9aafe31cb174a9cfea43",
+      "size": 436
+    },
+    {
+      "archive_format": "ISO9660",
+      "entries": [
+        {
+          "name": "first.pdf",
+          "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+          "size": 331
+        },
+        {
+          "name": "second.pdf",
+          "sha256": "23d10ff04972dc630cf8fea7e0b8361cfb6f25245594cf118d7eb7a9725aaeb9",
+          "size": 332
+        }
+      ],
+      "name": "iso9660-forward.iso",
+      "order_case": "forward",
+      "purpose": "ISO9660 two-record forward ordering and duplicate-name boundary",
+      "sha256": "103ae9b4dac6a193fa4191d1b895d156b2b0b33ddcdc76597ebc44ea4b34dc94",
+      "size": 45056
+    },
+    {
+      "archive_format": "ISO9660",
+      "entries": [
+        {
+          "name": "second.pdf",
+          "sha256": "23d10ff04972dc630cf8fea7e0b8361cfb6f25245594cf118d7eb7a9725aaeb9",
+          "size": 332
+        },
+        {
+          "name": "first.pdf",
+          "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+          "size": 331
+        }
+      ],
+      "name": "iso9660-reverse.iso",
+      "order_case": "reverse",
+      "purpose": "ISO9660 two-record reverse ordering and duplicate-name boundary",
+      "sha256": "e8ca2b3f7711f38e84d35d2c193a7ec2f8de5cc6483e22ab7c91f93f9791155f",
+      "size": 45056
+    },
+    {
+      "archive_format": "ISO9660",
+      "entries": [
+        {
+          "name": "same.pdf",
+          "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+          "size": 331
+        },
+        {
+          "name": "same.pdf",
+          "sha256": "23d10ff04972dc630cf8fea7e0b8361cfb6f25245594cf118d7eb7a9725aaeb9",
+          "size": 332
+        }
+      ],
+      "name": "iso9660-duplicate-name.iso",
+      "order_case": "duplicate-name",
+      "purpose": "ISO9660 two-record duplicate-name ordering and duplicate-name boundary",
+      "sha256": "cb83eeea543997fd8155830420e0b906847f442e3ccaa8359913aaff675f1e06",
+      "size": 45056
+    },
+    {
+      "archive_format": "ISO9660",
+      "entries": [
+        {
+          "name": "empty.bin",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        {
+          "name": "second.pdf",
+          "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+          "size": 331
+        }
+      ],
+      "name": "iso9660-empty-first.iso",
+      "order_case": "empty-first",
+      "purpose": "ISO9660 two-record empty-first ordering and duplicate-name boundary",
+      "sha256": "32eb7ac13948df4a6fd742aaffb5512b70a5c05848b5f643e0c16f4821f06fc7",
+      "size": 45056
+    }
+  ],
+  "schema_version": 1,
+  "source_generator": {
+    "path": "tools/corpus/generate_archive_format_fixture.py",
+    "sha256": "c60b7832b9858376d46d131876406d87bc49fd82cd018634c8f99af0ade2322e"
+  }
+}

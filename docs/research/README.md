@@ -26,6 +26,9 @@ Phase 0 计划形成：
 - [`archive-structure-behavior.md`](archive-structure-behavior.md)：7Z、
   RAR4、CAB 和 ISO9660 的 56-case CRC/size/offset/method/record-field/0/max
   突变及 224 次固定 Qt5 oracle（In Review）。
+- [`archive-multirecord-behavior.md`](archive-multirecord-behavior.md)：7Z、
+  RAR4、CAB 和 ISO9660 的正序/逆序/重名/空首记录两成员矩阵及 64 次固定
+  Qt5 oracle（In Review）。
 - [`archive-format-behavior.md`](archive-format-behavior.md)：
   7Z Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64 与
   x86/ARM64 BCJ+LZMA2、BCJ2+LZMA2 no-branch/E8/E9/JCC、RAR4、CAB
@@ -245,6 +248,10 @@ Phase 0 计划形成：
   四格式 56 个 control/结构字段 mutation 的 changed-byte 与 hash-bound 清单。
 - [`data/archive-structure-engine-qt5.json`](data/archive-structure-engine-qt5.json)：
   56-case × 4 模式的 224 次原始输出、源码契约和结构字段行为摘要。
+- [`data/archive-multirecord-corpus.json`](data/archive-multirecord-corpus.json)：
+  四格式 × 正序/逆序/重名/空首记录的 16 个项目生成两成员 archive 清单。
+- [`data/archive-multirecord-engine-qt5.json`](data/archive-multirecord-engine-qt5.json)：
+  16-case × 4 模式的 64 次原始输出、固定身份及记录顺序/重名/空成员摘要。
 - [`data/archive-format-corpus.json`](data/archive-format-corpus.json)：
   项目生成的七种 7Z 单 coder、x86/ARM64 BCJ+LZMA2、
   BCJ2+LZMA2 no-branch/E8/E9/JCC filter 链、七种基础 coder+7zAES、
