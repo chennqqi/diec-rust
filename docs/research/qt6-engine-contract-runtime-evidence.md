@@ -62,8 +62,10 @@ Qt6 Dockerfile 从固定
 - `CAP-RULE-009` cancellation；
 - `CAP-RULE-012` result ordering。
 
-当前汇总为 47 项 complete、10 项 partial、11 项 missing；21 项仍需闭环，
-`CAP-GAP-007` 保持开放。
+完成本批时汇总为 47 项 complete、10 项 partial、11 项 missing。后续规则
+编排批次已将当前汇总推进到 52/9/7，见
+[`qt6-rule-orchestration-runtime-evidence.md`](qt6-rule-orchestration-runtime-evidence.md)；
+`CAP-GAP-007` 仍保持开放。
 
 ## 重现
 
@@ -91,5 +93,5 @@ true，并要求 Qt5/Qt6 的 relationship、fixture manifest 和 source audit �
   或平台；
 - Qt5 文档列出的 callback exception、未同步数据竞争、超大范围和并发修改等
   未定义或未覆盖边界仍然存在；
-- 本轮只关闭五个完整能力行，不覆盖 database layer/cache、完整 rule
-  orchestration、signature path、dispatch/nested 和 result-model harness。
+- 本轮只关闭五个完整能力行；规则编排已由后续批次覆盖，database cache、
+  signature path、dispatch/nested 和 result-model harness 仍待完成。

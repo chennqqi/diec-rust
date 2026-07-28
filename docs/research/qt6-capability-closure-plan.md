@@ -6,15 +6,15 @@ Last updated: 2026-07-28
 
 ## 结论
 
-`CAP-GAP-007` 尚未关闭。现有固定 Qt6 oracle 与四组差分报告已经提供
+`CAP-GAP-007` 尚未关闭。现有固定 Qt6 oracle 与多组差分报告已经提供
 有价值的运行时证据，但不能从抽样结果推导出 68 项能力全部兼容。机器清单
 [`data/qt6-capability-closure-plan.json`](data/qt6-capability-closure-plan.json)
 逐项列出当前证据和缺失实验：
 
-- 47 项已有证据完整覆盖能力行；
-- 10 项只有部分证据；
-- 11 项没有可接纳的逐行 Qt6 运行时证据；
-- 因此仍有 21 项需要执行闭环实验。
+- 52 项已有证据完整覆盖能力行；
+- 9 项只有部分证据；
+- 7 项没有可接纳的逐行 Qt6 运行时证据；
+- 因此仍有 16 项需要执行闭环实验。
 
 Linux Qt6 在能力覆盖报告中继续保持 `platform_missing`。本计划只负责把
 缺口变成可执行清单，不改变平台门禁状态。
@@ -45,8 +45,7 @@ directory-vs-internal recursion；目录枚举的复杂文件系统边界仍是 
 见 [`qt6-path-runtime-evidence.md`](qt6-path-runtime-evidence.md)。
 
 第五批 database matrix 与 raw-first diagnostics 完整覆盖 messages、空数据库
-Unknown fallback 和脚本错误收集；database layer ordering 与 cache 仍需 engine
-harness。见
+Unknown fallback 和脚本错误收集；database cache 仍需 engine harness。见
 [`qt6-database-runtime-evidence.md`](qt6-database-runtime-evidence.md)。
 
 第六批 option/profiling 证据完整覆盖 verbose、profiling、test、createtest
@@ -57,6 +56,11 @@ harness。见
 扫描入口、device/subdevice I/O、signature-name filter、取消与 record 排序，
 其 23 条确定性关系与 Qt5 完全一致。见
 [`qt6-engine-contract-runtime-evidence.md`](qt6-engine-contract-runtime-evidence.md)。
+
+第八批 rule-orchestration 差分完整覆盖三层数据库、priority、global/type init、
+file-type gate 和 deep/heuristic 独立 gate；10 个 canonical case 与 Qt5 完全
+一致。见
+[`qt6-rule-orchestration-runtime-evidence.md`](qt6-rule-orchestration-runtime-evidence.md)。
 
 下列结果只能算部分证据：
 
@@ -104,7 +108,7 @@ python tools/research/build_qt6_closure_plan.py
 
 ## 限制与下一步
 
-本切片已经补建并执行第一组 Qt6 engine harness。后续应按机器清单继续复用
+首组 Qt6 engine harness 和规则编排差分已经完成。后续应按机器清单继续复用
 既有 Qt5 fixture，依次建立剩余 engine harness 的 Qt6 构建变体。
 只有 68 行全部达到 `evidence_complete`，且差异完成评审，
 `CAP-GAP-007` 才能关闭。

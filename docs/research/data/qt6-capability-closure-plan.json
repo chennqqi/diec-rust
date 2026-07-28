@@ -97,6 +97,13 @@
       "relationship_count": 23,
       "scope": "37-case public entry, device, filter, cancellation, and ordering contract",
       "source": "docs/research/data/engine-contract-linux-qt6.json"
+    },
+    {
+      "difference_count": 0,
+      "qt5_canonical_cases_equal": true,
+      "relationship_count": 14,
+      "scope": "ten-case database layer, ordering, init, type, and mode-filter contract",
+      "source": "docs/research/data/rule-orchestration-linux-qt5-qt6.json"
     }
   ],
   "limitations": [
@@ -450,91 +457,51 @@
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "rule_orchestration",
       "id": "CAP-RULE-001",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "three database layers",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "layer, priority, init, type, deep, heuristic, and fallback behavior is equal",
-          "detections and diagnostics are compared separately",
-          "each known Qt5/Qt6 diagnostic difference is explicit and reviewable"
-        ],
-        "fixture": "reuse rule-orchestration and scan-option fixtures",
-        "harness": "run the full rule gate/order/init/error matrix under both script engines"
-      },
-      "status": "missing"
+      "observed_scope": "main, extra, and custom database layer append behavior matches Qt5",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "rule_orchestration",
       "id": "CAP-RULE-002",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "rule priority ordering",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "layer, priority, init, type, deep, heuristic, and fallback behavior is equal",
-          "detections and diagnostics are compared separately",
-          "each known Qt5/Qt6 diagnostic difference is explicit and reviewable"
-        ],
-        "fixture": "reuse rule-orchestration and scan-option fixtures",
-        "harness": "run the full rule gate/order/init/error matrix under both script engines"
-      },
-      "status": "missing"
+      "observed_scope": "priority, lexical, missing, empty, and type-init ordering matches Qt5",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "rule_orchestration",
       "id": "CAP-RULE-003",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "global and type init rules",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "layer, priority, init, type, deep, heuristic, and fallback behavior is equal",
-          "detections and diagnostics are compared separately",
-          "each known Qt5/Qt6 diagnostic difference is explicit and reviewable"
-        ],
-        "fixture": "reuse rule-orchestration and scan-option fixtures",
-        "harness": "run the full rule gate/order/init/error matrix under both script engines"
-      },
-      "status": "missing"
+      "observed_scope": "global init, type init, and same-name include precedence matches Qt5",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "rule_orchestration",
       "id": "CAP-RULE-004",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "file type rule filtering",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "layer, priority, init, type, deep, heuristic, and fallback behavior is equal",
-          "detections and diagnostics are compared separately",
-          "each known Qt5/Qt6 diagnostic difference is explicit and reviewable"
-        ],
-        "fixture": "reuse rule-orchestration and scan-option fixtures",
-        "harness": "run the full rule gate/order/init/error matrix under both script engines"
-      },
-      "status": "missing"
+      "observed_scope": "wrong-file-type rules remain excluded in all four scan modes",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "rule_orchestration",
       "id": "CAP-RULE-005",
-      "missing_scope": "execute the remaining Qt5 capability boundary under the pinned Qt6 oracle",
+      "missing_scope": null,
       "name": "deep and heuristic rule filtering",
-      "observed_scope": "five-sample deep/heuristic effects are covered; independent rule-gate controls remain",
-      "proposed_experiment": {
-        "assertions": [
-          "layer, priority, init, type, deep, heuristic, and fallback behavior is equal",
-          "detections and diagnostics are compared separately",
-          "each known Qt5/Qt6 diagnostic difference is explicit and reviewable"
-        ],
-        "fixture": "reuse rule-orchestration and scan-option fixtures",
-        "harness": "run the full rule gate/order/init/error matrix under both script engines"
-      },
-      "status": "partial"
+      "observed_scope": "deep, entry-point, and heuristic gates are independently equal",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
@@ -977,16 +944,18 @@
     "docs/research/data/host-api-arity-qt5-qt6.json": "96d0b0023dd08ec1e45bc0c1059cf5801837496e09143acff6ffa0120328fa73",
     "docs/research/data/qt5-qt6-cli.json": "30c4298f07f2aa64fc17a16c478f8554eb8eb9e4e5c13687cddbfe3785b88fdd",
     "docs/research/data/qt6-alltypes-diagnostics.json": "58b76997e767147284c65a9f99105fd0afaee1fc055b849651e6cb27ae174df6",
-    "docs/research/data/qt6-database-diagnostics.json": "7747eaa4379cd8f1fca4a3ad32105c35d41aee690d4b189a0429a7e7bf0835a8"
+    "docs/research/data/qt6-database-diagnostics.json": "7747eaa4379cd8f1fca4a3ad32105c35d41aee690d4b189a0429a7e7bf0835a8",
+    "docs/research/data/rule-orchestration-linux-qt5-qt6.json": "a3a3fb8409cd0006729d0eac625586ad30a432580e7ca5a37c4ed491a4c15b0a",
+    "docs/research/data/rule-orchestration-linux-qt5.json": "6787b8a67ee9ee3692d38c668f392a85861d2f517b6827117b478d63df678a5e"
   },
   "summary": {
     "all_capabilities_accounted_for": true,
     "cap_gap_007_closed": false,
     "capability_count": 68,
-    "closure_required": 21,
-    "evidence_complete": 47,
-    "missing": 11,
-    "partial": 10
+    "closure_required": 16,
+    "evidence_complete": 52,
+    "missing": 7,
+    "partial": 9
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
 }

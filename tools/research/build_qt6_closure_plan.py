@@ -35,6 +35,8 @@ REPORT_PATHS = (
     "docs/research/data/binary-rule-order-linux-qt5-qt6.json",
     "docs/research/data/engine-contract-linux-qt5.json",
     "docs/research/data/engine-contract-linux-qt6.json",
+    "docs/research/data/rule-orchestration-linux-qt5.json",
+    "docs/research/data/rule-orchestration-linux-qt5-qt6.json",
 )
 EMPTY_SHA256 = hashlib.sha256(b"").hexdigest()
 QT6_UNIMPLEMENTED_SHA256 = (
@@ -120,13 +122,17 @@ COMPLETE: dict[str, str] = {
     "CAP-RULE-006": "exact signature-name filtering, case, deep, and missing controls match Qt5",
     "CAP-RULE-009": "callback, break, pre-stop, and synchronized stop boundaries match Qt5",
     "CAP-RULE-012": "sort enabled/disabled ordering and priority metadata match Qt5",
+    "CAP-RULE-001": "main, extra, and custom database layer append behavior matches Qt5",
+    "CAP-RULE-002": "priority, lexical, missing, empty, and type-init ordering matches Qt5",
+    "CAP-RULE-003": "global init, type init, and same-name include precedence matches Qt5",
+    "CAP-RULE-004": "wrong-file-type rules remain excluded in all four scan modes",
+    "CAP-RULE-005": "deep, entry-point, and heuristic gates are independently equal",
 }
 
 PARTIAL: dict[str, str] = {
     "CAP-CLI-IN-003": "basic depth-first tree is covered; filesystem/locale/TOCTOU/large-directory boundaries remain",
     "CAP-DISPATCH-004": "TAR, gzip, and ZIP only; full archive family remains",
     "CAP-NEST-003": "CLI non-extraction is covered; the Qt6 engine archive option remains",
-    "CAP-RULE-005": "five-sample deep/heuristic effects are covered; independent rule-gate controls remain",
     "CAP-RESULT-001": "CLI JSON exposes only a projection of scalar engine metadata",
     "CAP-RESULT-002": "rule probes expose errors, but not all four engine lists",
     "CAP-RESULT-003": "baseline JSON includes Unknown; heuristic flag combinations remain",
@@ -1179,6 +1185,90 @@ def _validate_engine_contract_reports(
         raise ClosurePlanError("Qt5/Qt6 engine-contract source audit drift")
 
 
+def _validate_rule_orchestration_reports(
+    qt5: dict[str, Any], comparison: dict[str, Any]
+) -> None:
+    expected_scope = {
+        "CAP-RULE-001",
+        "CAP-RULE-002",
+        "CAP-RULE-003",
+        "CAP-RULE-004",
+        "CAP-RULE-005",
+    }
+    if (
+        comparison.get("schema_version") != 1
+        or comparison.get("upstream_commit") != UPSTREAM_COMMIT
+        or comparison.get("platform") != "linux-amd64-qt5-qt6"
+        or comparison.get("result") != "equal"
+        or comparison.get("normalized_outputs_equal") is not True
+        or set(comparison.get("capability_scope", [])) != expected_scope
+    ):
+        raise ClosurePlanError(
+            "Qt6 rule-orchestration identity/result drift"
+        )
+    oracles = comparison.get("oracles")
+    expected_oracles = (
+        (
+            "linux-qt5-cmake",
+            "sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040",
+        ),
+        (
+            "linux-qt6-cmake",
+            "sha256:e015495c313d0715f0b80f395da983a113a439f2a135eb637e9f0638c225200b",
+        ),
+    )
+    if (
+        not isinstance(oracles, list)
+        or len(oracles) != 2
+        or tuple(
+            (oracle.get("name"), oracle.get("image_id"))
+            for oracle in oracles
+        )
+        != expected_oracles
+    ):
+        raise ClosurePlanError("Qt6 rule-orchestration oracle drift")
+    for oracle in oracles:
+        if oracle.get("revision") != UPSTREAM_COMMIT:
+            raise ClosurePlanError(
+                "Qt6 rule-orchestration oracle revision drift"
+            )
+        cases = oracle.get("cases")
+        if not isinstance(cases, dict) or len(cases) != 10:
+            raise ClosurePlanError(
+                "Qt6 rule-orchestration case catalog drift"
+            )
+        if any(
+            case.get("exit_code") != 0
+            or case.get("raw_stderr_bytes") != 0
+            or case.get("raw_stderr_sha256") != EMPTY_SHA256
+            for case in cases.values()
+        ):
+            raise ClosurePlanError(
+                "Qt6 rule-orchestration raw observation drift"
+            )
+    relationships = comparison.get("relationships")
+    if (
+        not isinstance(relationships, dict)
+        or len(relationships) != 14
+        or not all(value is True for value in relationships.values())
+    ):
+        raise ClosurePlanError(
+            "Qt6 rule-orchestration relationship drift"
+        )
+    if relationships != qt5.get("relationships"):
+        raise ClosurePlanError(
+            "Qt5/Qt6 rule-orchestration relationship drift"
+        )
+    if comparison.get("canonical_cases") != qt5.get("canonical_cases"):
+        raise ClosurePlanError(
+            "Qt5/Qt6 rule-orchestration canonical case drift"
+        )
+    if comparison.get("fixture_manifest") != qt5.get("fixture_manifest"):
+        raise ClosurePlanError(
+            "Qt5/Qt6 rule-orchestration fixture drift"
+        )
+
+
 CAMPAIGNS: dict[str, dict[str, Any]] = {
     "cli_scan_baseline": {
         "fixture": "reuse baseline-corpus and scan-option-boundary fixtures",
@@ -1359,6 +1449,9 @@ def _validate_inputs(
     _validate_binary_rule_order_report(reports[REPORT_PATHS[14]])
     _validate_engine_contract_reports(
         reports[REPORT_PATHS[15]], reports[REPORT_PATHS[16]]
+    )
+    _validate_rule_orchestration_reports(
+        reports[REPORT_PATHS[17]], reports[REPORT_PATHS[18]]
     )
     return capabilities
 
@@ -1549,6 +1642,15 @@ def build_plan(
                     reports[REPORT_PATHS[16]]["relationships"]
                 ),
                 "qt5_relationships_equal": True,
+            },
+            {
+                "source": REPORT_PATHS[18],
+                "scope": "ten-case database layer, ordering, init, type, and mode-filter contract",
+                "difference_count": 0,
+                "relationship_count": len(
+                    reports[REPORT_PATHS[18]]["relationships"]
+                ),
+                "qt5_canonical_cases_equal": True,
             },
         ],
         "rows": rows,

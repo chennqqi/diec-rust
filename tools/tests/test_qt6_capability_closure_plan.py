@@ -81,10 +81,10 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
 
     def test_current_plan_is_conservatively_incomplete(self):
         summary = self.plan["summary"]
-        self.assertEqual(summary["evidence_complete"], 47)
-        self.assertEqual(summary["partial"], 10)
-        self.assertEqual(summary["missing"], 11)
-        self.assertEqual(summary["closure_required"], 21)
+        self.assertEqual(summary["evidence_complete"], 52)
+        self.assertEqual(summary["partial"], 9)
+        self.assertEqual(summary["missing"], 7)
+        self.assertEqual(summary["closure_required"], 16)
         self.assertFalse(summary["cap_gap_007_closed"])
         self.assertEqual(self.plan["result"], "incomplete")
 
@@ -127,6 +127,11 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
             "CAP-RULE-006",
             "CAP-RULE-009",
             "CAP-RULE-012",
+            "CAP-RULE-001",
+            "CAP-RULE-002",
+            "CAP-RULE-003",
+            "CAP-RULE-004",
+            "CAP-RULE-005",
         }
         for capability_id in promoted:
             with self.subTest(capability=capability_id):
@@ -140,7 +145,10 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
         )
         self.assertEqual(rows["CAP-CLI-IN-003"]["status"], "partial")
         self.assertEqual(rows["CAP-NEST-003"]["status"], "partial")
-        self.assertEqual(rows["CAP-RULE-005"]["status"], "partial")
+        self.assertEqual(
+            rows["CAP-RULE-005"]["status"],
+            "evidence_complete",
+        )
 
     def test_pinned_identity_and_duplicate_keys_are_enforced(self):
         changed = json.loads(json.dumps(self.traceability))
@@ -287,6 +295,22 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
         with self.assertRaisesRegex(
             MODULE.ClosurePlanError,
             "relationship drift",
+        ):
+            MODULE.build_plan(
+                self.traceability,
+                self.traceability_raw,
+                changed_reports,
+                self.report_bytes,
+            )
+
+        changed_reports = json.loads(json.dumps(self.reports))
+        orchestration = changed_reports[MODULE.REPORT_PATHS[18]]
+        orchestration["canonical_cases"]["combined"][
+            "execution_order"
+        ] = []
+        with self.assertRaisesRegex(
+            MODULE.ClosurePlanError,
+            "canonical case drift",
         ):
             MODULE.build_plan(
                 self.traceability,
