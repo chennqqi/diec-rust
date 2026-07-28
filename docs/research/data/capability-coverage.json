@@ -1,6 +1,7 @@
 {
   "admitted_runtime_baseline_platforms": [
-    "linux-x86_64-qt5"
+    "linux-x86_64-qt5",
+    "linux-x86_64-qt6"
   ],
   "coverage_gaps": [
     {
@@ -74,13 +75,18 @@
         "CAP-RULE-011",
         "CAP-RULE-012"
       ],
+      "closure": {
+        "path": "docs/research/data/qt6-capability-closure-plan.json",
+        "sha256": "86dcac38ebe3a55f25722bc85e5524c6140a75544941afc9e25c4162064b340b"
+      },
       "id": "CAP-GAP-007",
-      "kind": "platform_missing",
+      "kind": "closed",
       "platforms": [
         "linux-x86_64-qt5",
         "linux-x86_64-qt6"
       ],
-      "scope": "complete Qt5 versus Qt6 capability matrix"
+      "scope": "complete Qt5 versus Qt6 capability matrix",
+      "status": "closed"
     },
     {
       "capability_ids": [
@@ -99,10 +105,11 @@
         "windows-x86_64-qt5",
         "macos-x86_64-qt5"
       ],
-      "scope": "Windows and macOS path and encoding behavior"
+      "scope": "Windows and macOS path and encoding behavior",
+      "status": "open"
     }
   ],
-  "evaluated_on": "2026-07-28",
+  "evaluated_on": "2026-07-29",
   "evidence_sets": {
     "cli_control": {
       "kind": "source_and_experiment",
@@ -532,7 +539,7 @@
   },
   "limitations": [
     "source-only is not runtime compatibility and must not be promoted to observed",
-    "linux Qt6 spot differentials are not a complete capability baseline and remain platform_missing here",
+    "the complete Linux Qt6 baseline is admitted through the hash-bound 68-row closure report",
     "a zero unclassified-row count means classification is complete, not that capability coverage is complete"
   ],
   "result": "incomplete",
@@ -543,12 +550,11 @@
       "id": "CAP-CLI-IN-001",
       "name": "single file scan",
       "platform_gap_ids": [
-        "CAP-GAP-007",
         "CAP-GAP-008"
       ],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -559,12 +565,11 @@
       "id": "CAP-CLI-IN-002",
       "name": "multiple target scan",
       "platform_gap_ids": [
-        "CAP-GAP-007",
         "CAP-GAP-008"
       ],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -575,12 +580,11 @@
       "id": "CAP-CLI-IN-003",
       "name": "directory enumeration",
       "platform_gap_ids": [
-        "CAP-GAP-007",
         "CAP-GAP-008"
       ],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -591,12 +595,11 @@
       "id": "CAP-CLI-IN-004",
       "name": "single-file and empty directory",
       "platform_gap_ids": [
-        "CAP-GAP-007",
         "CAP-GAP-008"
       ],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -606,12 +609,10 @@
       "evidence_set": "engine_contract",
       "id": "CAP-ENG-IN-001",
       "name": "memory scan",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -621,12 +622,10 @@
       "evidence_set": "engine_contract",
       "id": "CAP-ENG-IN-002",
       "name": "device and subdevice scan",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -636,12 +635,10 @@
       "evidence_set": "cli_scan_baseline",
       "id": "CAP-CLI-OPT-001",
       "name": "recursive scan option",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -651,12 +648,10 @@
       "evidence_set": "cli_scan_baseline",
       "id": "CAP-CLI-OPT-002",
       "name": "deep scan option",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -666,12 +661,10 @@
       "evidence_set": "cli_scan_baseline",
       "id": "CAP-CLI-OPT-003",
       "name": "heuristic scan option",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -681,12 +674,10 @@
       "evidence_set": "cli_options",
       "id": "CAP-CLI-OPT-004",
       "name": "verbose option",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -696,12 +687,10 @@
       "evidence_set": "cli_scan_baseline",
       "id": "CAP-CLI-OPT-005",
       "name": "aggressive scan option",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -711,12 +700,10 @@
       "evidence_set": "cli_scan_baseline",
       "id": "CAP-CLI-OPT-006",
       "name": "all types option",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -726,12 +713,10 @@
       "evidence_set": "cli_options",
       "id": "CAP-CLI-OPT-007",
       "name": "formatted result option",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -741,12 +726,10 @@
       "evidence_set": "cli_options",
       "id": "CAP-CLI-OPT-008",
       "name": "profiling option",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -756,12 +739,10 @@
       "evidence_set": "cli_options",
       "id": "CAP-CLI-OPT-009",
       "name": "messages option",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -771,12 +752,10 @@
       "evidence_set": "cli_options",
       "id": "CAP-CLI-OPT-010",
       "name": "hide unknown option",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -786,12 +765,10 @@
       "evidence_set": "cli_special",
       "id": "CAP-CLI-MODE-001",
       "name": "entropy mode",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -801,12 +778,10 @@
       "evidence_set": "cli_special",
       "id": "CAP-CLI-MODE-002",
       "name": "info mode",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -816,12 +791,10 @@
       "evidence_set": "cli_special",
       "id": "CAP-CLI-MODE-003",
       "name": "struct mode",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -831,12 +804,10 @@
       "evidence_set": "cli_special",
       "id": "CAP-CLI-MODE-004",
       "name": "show structs mode",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -846,12 +817,10 @@
       "evidence_set": "cli_control",
       "id": "CAP-CLI-MODE-005",
       "name": "help mode and no-target help",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -861,12 +830,10 @@
       "evidence_set": "cli_control",
       "id": "CAP-CLI-MODE-006",
       "name": "version mode",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -876,12 +843,10 @@
       "evidence_set": "cli_output",
       "id": "CAP-CLI-OUT-001",
       "name": "XML output",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -891,12 +856,10 @@
       "evidence_set": "cli_output",
       "id": "CAP-CLI-OUT-002",
       "name": "JSON output",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -906,12 +869,10 @@
       "evidence_set": "cli_output",
       "id": "CAP-CLI-OUT-003",
       "name": "CSV output",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -921,12 +882,10 @@
       "evidence_set": "cli_output",
       "id": "CAP-CLI-OUT-004",
       "name": "TSV output",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -936,12 +895,10 @@
       "evidence_set": "cli_output",
       "id": "CAP-CLI-OUT-005",
       "name": "plain text output",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -952,12 +909,11 @@
       "id": "CAP-CLI-DB-001",
       "name": "main database path",
       "platform_gap_ids": [
-        "CAP-GAP-007",
         "CAP-GAP-008"
       ],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -968,12 +924,11 @@
       "id": "CAP-CLI-DB-002",
       "name": "extra database path",
       "platform_gap_ids": [
-        "CAP-GAP-007",
         "CAP-GAP-008"
       ],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -984,12 +939,11 @@
       "id": "CAP-CLI-DB-003",
       "name": "custom database path",
       "platform_gap_ids": [
-        "CAP-GAP-007",
         "CAP-GAP-008"
       ],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1000,12 +954,11 @@
       "id": "CAP-CLI-DB-004",
       "name": "show database mode",
       "platform_gap_ids": [
-        "CAP-GAP-007",
         "CAP-GAP-008"
       ],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1015,12 +968,10 @@
       "evidence_set": "cli_options",
       "id": "CAP-CLI-TEST-001",
       "name": "test mode no-op",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1030,12 +981,10 @@
       "evidence_set": "cli_options",
       "id": "CAP-CLI-TEST-002",
       "name": "create test mode no-op",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1045,12 +994,10 @@
       "evidence_set": "rule_orchestration",
       "id": "CAP-RULE-001",
       "name": "three database layers",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1060,12 +1007,10 @@
       "evidence_set": "rule_orchestration",
       "id": "CAP-RULE-002",
       "name": "rule priority ordering",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1075,12 +1020,10 @@
       "evidence_set": "rule_orchestration",
       "id": "CAP-RULE-003",
       "name": "global and type init rules",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1090,12 +1033,10 @@
       "evidence_set": "rule_orchestration",
       "id": "CAP-RULE-004",
       "name": "file type rule filtering",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1105,12 +1046,10 @@
       "evidence_set": "rule_orchestration",
       "id": "CAP-RULE-005",
       "name": "deep and heuristic rule filtering",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1120,12 +1059,10 @@
       "evidence_set": "engine_contract",
       "id": "CAP-RULE-006",
       "name": "single signature filtering",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1135,12 +1072,10 @@
       "evidence_set": "signature_path_filter",
       "id": "CAP-RULE-007",
       "name": "signature path filtering",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1150,12 +1085,10 @@
       "evidence_set": "rule_orchestration",
       "id": "CAP-RULE-008",
       "name": "unknown fallback",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1165,12 +1098,10 @@
       "evidence_set": "engine_contract",
       "id": "CAP-RULE-009",
       "name": "result sorting option",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1180,12 +1111,10 @@
       "evidence_set": "rule_orchestration",
       "id": "CAP-RULE-010",
       "name": "script error collection",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1195,12 +1124,10 @@
       "evidence_set": "cli_options",
       "id": "CAP-RULE-011",
       "name": "script profiling",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1210,12 +1137,10 @@
       "evidence_set": "engine_contract",
       "id": "CAP-RULE-012",
       "name": "cancellation and stop",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1225,12 +1150,10 @@
       "evidence_set": "dispatch_source",
       "id": "CAP-DISPATCH-001",
       "name": "PE ELF and Mach-O dispatch",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1240,12 +1163,10 @@
       "evidence_set": "dispatch_source",
       "id": "CAP-DISPATCH-002",
       "name": "DOS and COM public dispatch plus BW property-only branch",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1255,12 +1176,10 @@
       "evidence_set": "dispatch_source",
       "id": "CAP-DISPATCH-003",
       "name": "Amiga Hunk dispatch and Atari ST detector-only fallback",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1270,12 +1189,10 @@
       "evidence_set": "dispatch_source",
       "id": "CAP-DISPATCH-004",
       "name": "archive family dispatch",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1285,12 +1202,10 @@
       "evidence_set": "dispatch_source",
       "id": "CAP-DISPATCH-005",
       "name": "DEX Java Class and PYC dispatch",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1300,12 +1215,10 @@
       "evidence_set": "dispatch_source",
       "id": "CAP-DISPATCH-006",
       "name": "PDF and CFBF dispatch",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1315,12 +1228,10 @@
       "evidence_set": "dispatch_source",
       "id": "CAP-DISPATCH-007",
       "name": "image dispatch",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1330,12 +1241,10 @@
       "evidence_set": "dispatch_source",
       "id": "CAP-DISPATCH-008",
       "name": "binary fallback dispatch",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1345,12 +1254,10 @@
       "evidence_set": "nested_scan",
       "id": "CAP-NEST-001",
       "name": "directory recursion versus internal recursion",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1360,12 +1267,10 @@
       "evidence_set": "nested_scan",
       "id": "CAP-NEST-002",
       "name": "resource and overlay recursive scan",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1375,12 +1280,10 @@
       "evidence_set": "nested_scan",
       "id": "CAP-NEST-003",
       "name": "archive scan is engine-only",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1390,12 +1293,10 @@
       "evidence_set": "nested_scan",
       "id": "CAP-NEST-004",
       "name": "archive and resource count boundary",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1405,12 +1306,10 @@
       "evidence_set": "nested_scan",
       "id": "CAP-NEST-005",
       "name": "overlay and resource subdevice gate",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1420,12 +1319,10 @@
       "evidence_set": "nested_scan",
       "id": "CAP-NEST-006",
       "name": "resource context propagation",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1435,12 +1332,10 @@
       "evidence_set": "debug_data_dispatch",
       "id": "CAP-NEST-007",
       "name": "debug data is not scanner dispatched",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1450,12 +1345,10 @@
       "evidence_set": "nested_scan",
       "id": "CAP-NEST-008",
       "name": "nested JSON result tree",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1465,12 +1358,10 @@
       "evidence_set": "nested_scan",
       "id": "CAP-NEST-009",
       "name": "no independent depth or total extraction limit",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1480,12 +1371,10 @@
       "evidence_set": "result_model",
       "id": "CAP-RESULT-001",
       "name": "scan result scalar metadata",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1495,12 +1384,10 @@
       "evidence_set": "result_model",
       "id": "CAP-RESULT-002",
       "name": "scan result record error debug and handler lists",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1510,12 +1397,10 @@
       "evidence_set": "result_model",
       "id": "CAP-RESULT-003",
       "name": "heuristic and unknown flags",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1525,12 +1410,10 @@
       "evidence_set": "result_model",
       "id": "CAP-RESULT-004",
       "name": "record and parent identifiers",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1540,12 +1423,10 @@
       "evidence_set": "result_model",
       "id": "CAP-RESULT-005",
       "name": "record type and name representations",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1555,12 +1436,10 @@
       "evidence_set": "result_model",
       "id": "CAP-RESULT-006",
       "name": "record version info rule and priority",
-      "platform_gap_ids": [
-        "CAP-GAP-007"
-      ],
+      "platform_gap_ids": [],
       "platform_status": {
         "linux-x86_64-qt5": "runtime_observed",
-        "linux-x86_64-qt6": "platform_missing",
+        "linux-x86_64-qt6": "runtime_observed",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
       }
@@ -1568,9 +1447,9 @@
   ],
   "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
   "schema_version": 1,
-  "source": {
-    "path": "docs/research/data/capability-traceability.json",
-    "sha256": "e1bb982feb52fb97e6678319c629cf71735650fe4239c8558a0f765c16c8cff3"
+  "sources": {
+    "docs/research/data/capability-traceability.json": "e1bb982feb52fb97e6678319c629cf71735650fe4239c8558a0f765c16c8cff3",
+    "docs/research/data/qt6-capability-closure-plan.json": "86dcac38ebe3a55f25722bc85e5524c6140a75544941afc9e25c4162064b340b"
   },
   "status_definitions": {
     "platform_missing": "no complete capability baseline is admitted for this platform",
@@ -1585,7 +1464,7 @@
     "phase_0_coverage_complete": false,
     "platform_count": 4,
     "rows_with_corpus_gaps": 0,
-    "rows_with_platform_gaps": 68,
+    "rows_with_platform_gaps": 8,
     "status_counts_by_platform": {
       "linux-x86_64-qt5": {
         "platform_missing": 0,
@@ -1595,8 +1474,8 @@
         "source_only_with_corpus_gaps": 0
       },
       "linux-x86_64-qt6": {
-        "platform_missing": 68,
-        "runtime_observed": 0,
+        "platform_missing": 0,
+        "runtime_observed": 68,
         "runtime_observed_with_corpus_gaps": 0,
         "source_only_runtime_corpus_missing": 0,
         "source_only_with_corpus_gaps": 0

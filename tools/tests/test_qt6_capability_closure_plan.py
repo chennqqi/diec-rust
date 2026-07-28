@@ -79,14 +79,14 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
                     self.assertTrue(experiment["harness"])
                     self.assertGreaterEqual(len(experiment["assertions"]), 3)
 
-    def test_current_plan_is_conservatively_incomplete(self):
+    def test_current_plan_is_complete(self):
         summary = self.plan["summary"]
-        self.assertEqual(summary["evidence_complete"], 67)
+        self.assertEqual(summary["evidence_complete"], 68)
         self.assertEqual(summary["partial"], 0)
-        self.assertEqual(summary["missing"], 1)
-        self.assertEqual(summary["closure_required"], 1)
-        self.assertFalse(summary["cap_gap_007_closed"])
-        self.assertEqual(self.plan["result"], "incomplete")
+        self.assertEqual(summary["missing"], 0)
+        self.assertEqual(summary["closure_required"], 0)
+        self.assertTrue(summary["cap_gap_007_closed"])
+        self.assertEqual(self.plan["result"], "complete")
 
     def test_cli_output_and_dispatch_promotions_are_exact(self):
         rows = {row["id"]: row for row in self.plan["rows"]}
@@ -147,6 +147,7 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
             "CAP-DISPATCH-002",
             "CAP-CLI-IN-003",
             "CAP-DISPATCH-004",
+            "CAP-NEST-009",
         }
         for capability_id in promoted:
             with self.subTest(capability=capability_id):
@@ -180,6 +181,10 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
         )
         self.assertEqual(
             rows["CAP-RULE-005"]["status"],
+            "evidence_complete",
+        )
+        self.assertEqual(
+            rows["CAP-NEST-009"]["status"],
             "evidence_complete",
         )
 
@@ -551,6 +556,22 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
         with self.assertRaisesRegex(
             MODULE.ClosurePlanError,
             "archive-dispatch NPM semantic drift",
+        ):
+            MODULE.build_plan(
+                self.traceability,
+                self.traceability_raw,
+                changed_reports,
+                self.report_bytes,
+            )
+
+        changed_reports = json.loads(json.dumps(self.reports))
+        archive_limits = changed_reports[MODULE.REPORT_PATHS[44]]
+        archive_limits["qt6"]["normal_cases"][-1]["harness"][
+            "deepest_pdf_depth"
+        ] = 1
+        with self.assertRaisesRegex(
+            MODULE.ClosurePlanError,
+            "raw case drift|semantic drift|stable projection drift",
         ):
             MODULE.build_plan(
                 self.traceability,

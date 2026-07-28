@@ -6,18 +6,20 @@ Last updated: 2026-07-29
 
 ## 结论
 
-`CAP-GAP-007` 尚未关闭。现有固定 Qt6 oracle 与多组差分报告已经提供
-有价值的运行时证据，但不能从抽样结果推导出 68 项能力全部兼容。机器清单
+`CAP-GAP-007` 已关闭。固定 Qt6 oracle 的十九批差分与 engine harness 报告已按
+能力行完整执行并由严格 validator 接纳。机器清单
 [`data/qt6-capability-closure-plan.json`](data/qt6-capability-closure-plan.json)
-逐项列出当前证据和缺失实验：
+逐项列出当前证据：
 
-- 67 项已有证据完整覆盖能力行；
+- 68 项已有证据完整覆盖能力行；
 - 0 项只有部分证据；
-- 1 项没有可接纳的逐行 Qt6 运行时证据；
-- 因此仍有 1 项需要执行闭环实验。
+- 0 项没有可接纳的逐行 Qt6 运行时证据；
+- `closure_required=0`，`result=complete`。
 
-Linux Qt6 在能力覆盖报告中继续保持 `platform_missing`。本计划只负责把
-缺口变成可执行清单，不改变平台门禁状态。
+Linux Qt6 已由
+[`capability-coverage.json`](data/capability-coverage.json)
+接纳为 68 行 `runtime_observed`。这只关闭 Linux Qt6 能力基线缺口；Windows、
+macOS、许可证、性能阈值和设计/ADR 评审仍保持各自门禁。
 
 ## 已接纳证据的边界
 
@@ -118,7 +120,11 @@ large-directory、4 个 TOCTOU 和 6 个 locale/filesystem case 全部双轮重�
 相同，公共 8-case 也无差异。见
 [`qt6-archive-dispatch-runtime-evidence.md`](qt6-archive-dispatch-runtime-evidence.md)。
 
-此外，独立 depth/total extraction limit 仍没有可接纳的逐行 Qt6 运行时证据。
+第十九批 archive-limit 证据用相同 14 个 ZIP 样本和取消 control 配对执行
+Qt5/Qt6 engine harness。两侧均到达 depth 64 与累计展开 33,554,546 bytes，
+确定性 result projection 和取消 partial prefix 完全相同；elapsed/RSS 原始值
+保留但不纳入相等投影。见
+[`qt6-archive-limit-runtime-evidence.md`](qt6-archive-limit-runtime-evidence.md)。
 
 这些边界由生成器中的显式 allow catalog 约束；未列入的能力默认是
 `missing`，不会因共享 evidence set 而自动晋级。
@@ -144,7 +150,7 @@ Rust 兼容目标；在评审完成前不能简单忽略。
 ## 闭环方法
 
 机器清单按现有 14 个 evidence set 复用 Qt5 的受控 fixture，并为 Qt6
-指定对应 CLI 或 engine harness。每个未完成能力都必须：
+指定对应 CLI 或 engine harness。每个能力都必须：
 
 1. 在完全相同的固定上游 commit、规则 commit 和输入哈希上运行 Qt5/Qt6；
 2. 同时保留原始 stdout/stderr/engine records 与规范化语义结果；
@@ -163,11 +169,8 @@ python tools/research/build_qt6_closure_plan.py
 
 ## 限制与下一步
 
-首组 Qt6 engine harness、规则编排、result-model、signature-path、
-debug-dispatch、resource-context、archive-option、count-boundary 和
-legacy-dispatch probe
-、DOS/BW dispatch probe、完整 path-boundary replay 和 archive-family
-dispatch 已完成。后续应按机器清单继续复用既有 Qt5 fixture，集中关闭独立
-depth/total extraction limit。
-只有 68 行全部达到 `evidence_complete`，且差异完成评审，
-`CAP-GAP-007` 才能关闭。
+Linux Qt6 的 68 行现已全部达到 `evidence_complete`，`CAP-GAP-007` 已关闭。
+后续新增能力、fixture、上游 commit 或已知差异时必须重新运行全部相关报告和
+本生成器，任何一行降级都会使 closure 重新变为 incomplete。现有结论只适用于
+Linux amd64、固定 Qt 6.4.2 构建和已记录的安全语料；Windows、macOS 以及其他
+Qt minor 不得由此推断。

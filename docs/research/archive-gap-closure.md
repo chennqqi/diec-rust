@@ -141,7 +141,10 @@ OOM、超时或触发平台资源限制。
 - 64 层与 33,554,546 bytes 是兼容观察点，不是建议的默认安全上限；
 - RAR15/RAR20、RAR7 algorithm version 1、加密、多卷、恢复记录和损坏压缩流
   仍是具体 format/method 的扩展差分范围，但不再是“未知 engine family”；
-- Windows、macOS 和完整 Linux Qt6 baseline 仍由 `CAP-GAP-007/008` 跟踪；
+- 本闭集生成时 Windows、macOS 和 Linux Qt6 baseline 仍由
+  `CAP-GAP-007/008` 跟踪；后续
+  [`qt6-capability-closure-plan.md`](qt6-capability-closure-plan.md)
+  已关闭 Linux Qt6 `CAP-GAP-007`，Windows/macOS 仍开放；
 - 历史 oracle 中的 `remaining_gap: CAP-GAP-006` 保留原始生成时结论，不修改
   固定报告；本 synthesis 报告及当前 traceability 是后续闭合证据。
 

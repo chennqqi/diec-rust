@@ -467,22 +467,27 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def main() -> int:
-    args = parse_args()
-    corpus_dir = args.corpus_dir.resolve()
+def build_report(
+    *,
+    image_name: str,
+    binary_path: str,
+    corpus_dir: Path,
+    reference_manifest: Path,
+    platform: str,
+) -> dict[str, Any]:
     corpus, manifest_raw = load_and_verify_corpus(
         corpus_dir,
-        args.reference_manifest.resolve(),
+        reference_manifest,
     )
-    image = docker_inspect(args.image)
-    source = observe_source(args.image)
-    binary = observe_binary(args.image, args.binary)
+    image = docker_inspect(image_name)
+    source = observe_source(image_name)
+    binary = observe_binary(image_name, binary_path)
 
     normal_cases = []
     for sample in corpus["samples"]:
         observation = run_case(
-            image=args.image,
-            binary=args.binary,
+            image=image_name,
+            binary=binary_path,
             corpus_dir=corpus_dir,
             sample_name=sample["name"],
             case_name=f"normal.{sample['name']}",
@@ -499,8 +504,8 @@ def main() -> int:
         key=lambda sample: sample["depth"],
     )
     cancellation = run_case(
-        image=args.image,
-        binary=args.binary,
+        image=image_name,
+        binary=binary_path,
         corpus_dir=corpus_dir,
         sample_name=deepest["name"],
         case_name="cancel_after_first_progress_callback",
@@ -515,9 +520,9 @@ def main() -> int:
         "corpus_manifest_sha256": sha256(manifest_raw),
         "environment": {
             "container_network": "none",
-            "image": args.image,
+            "image": image_name,
             "image_identity": image,
-            "platform": "linux-x86_64-qt5",
+            "platform": platform,
             "resource_limits": RESOURCE_LIMITS,
         },
         "harness_binary": binary,
@@ -550,6 +555,18 @@ def main() -> int:
     }
     report["failures"] = failures
     report["passed"] = not failures
+    return report
+
+
+def main() -> int:
+    args = parse_args()
+    report = build_report(
+        image_name=args.image,
+        binary_path=args.binary,
+        corpus_dir=args.corpus_dir.resolve(),
+        reference_manifest=args.reference_manifest.resolve(),
+        platform="linux-x86_64-qt5",
+    )
     raw_report = serialize(report)
     if args.output is None:
         sys.stdout.buffer.write(raw_report)

@@ -31,6 +31,12 @@ DOCKERFILE_PATH = (
     / "upstream"
     / "Dockerfile.archive-limits-harness-qt5"
 )
+QT6_DOCKERFILE_PATH = (
+    ROOT
+    / "tools"
+    / "upstream"
+    / "Dockerfile.archive-limits-harness-qt6"
+)
 HARNESS_PATH = (
     ROOT
     / "tools"
@@ -195,6 +201,26 @@ class ProbeArchiveLimitsHarnessTests(unittest.TestCase):
         self.assertIn("engine.scanFile", harness)
         self.assertIn("getrusage(RUSAGE_SELF", harness)
         self.assertIn("XBinary::setPdStructStopped", harness)
+
+    def test_qt6_dockerfile_relinks_the_same_console_main(self):
+        dockerfile = QT6_DOCKERFILE_PATH.read_text(encoding="utf-8")
+        self.assertIn(
+            "ARG BASE_IMAGE="
+            "diec-rust/upstream-oracle-cmake-qt6:74eaf505",
+            dockerfile,
+        )
+        self.assertIn(
+            "CMakeFiles/diec.dir/main_console.cpp.o",
+            dockerfile,
+        )
+        self.assertIn(
+            "/tmp/archive_limits_harness_main.cpp.o",
+            dockerfile,
+        )
+        self.assertIn(
+            'org.opencontainers.image.revision="74eaf505',
+            dockerfile,
+        )
 
 
 if __name__ == "__main__":

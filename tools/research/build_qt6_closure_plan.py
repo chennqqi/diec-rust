@@ -63,6 +63,7 @@ REPORT_PATHS = (
     "docs/research/data/bw-dispatch-engine-qt5-qt6.json",
     "docs/research/data/path-boundaries-linux-qt5-qt6.json",
     "docs/research/data/archive-dispatch-linux-qt5-qt6.json",
+    "docs/research/data/archive-limit-engine-qt5-qt6.json",
 )
 EMPTY_SHA256 = hashlib.sha256(b"").hexdigest()
 QT6_UNIMPLEMENTED_SHA256 = (
@@ -168,6 +169,7 @@ COMPLETE: dict[str, str] = {
     "CAP-DISPATCH-003": "all eight Amiga Hunk and Atari ST positive/truncated/endian/magic cases retain equal detector and scanner dispatch with raw-equal Qt5/Qt6 streams",
     "CAP-DISPATCH-002": "all 19 public DOS/COM cases retain equal dispatch after classified Qt6 formatter/TypeError differences, and the BW property-only branch is raw-equal to Qt5",
     "CAP-DISPATCH-004": "all eight APK/IPA/JAR/ZIP/RAR/NPM/ISO9660/Archive members retain equal public or property-only dispatch across fixed Qt5/Qt6 evidence",
+    "CAP-NEST-009": "the same 14-case archive-limit corpus reaches depth 64 and 33,554,546 cumulative expanded bytes on Qt5 and Qt6 with an equal deterministic cancellation prefix and stable result projection",
 }
 
 PARTIAL: dict[str, str] = {}
@@ -1374,6 +1376,235 @@ def _validate_archive_dispatch_report(report: dict[str, Any]) -> None:
             raise ClosurePlanError(
                 f"Qt6 archive-dispatch generic semantic drift: {name}"
             )
+
+
+def _validate_archive_limit_report(report: dict[str, Any]) -> None:
+    stable_fields = [
+        "callback_calls",
+        "cancel_after_callbacks",
+        "cyclic_node_count",
+        "debug_record_count",
+        "deepest_pdf_depth",
+        "error_count",
+        "handler_count",
+        "max_depth",
+        "max_stream_depth",
+        "node_count",
+        "pdf_node_count",
+        "pd_stopped",
+        "record_count",
+        "stream_node_count",
+    ]
+    expected_local_sources = {
+        "tools/upstream/Dockerfile.archive-limits-harness-qt6": (
+            "2e5faf4b76cd2097670e571cb630691067a526e1c364b6f2ee86e4c923317ecf"
+        ),
+        "tools/upstream/archive_limits_harness_main.cpp": (
+            "9bba1c21cf01b93a1ac80ab5cea4145330e1b2621d9f2b6e4275ab04723a68a4"
+        ),
+        "tools/upstream/probe_archive_limits_harness.py": (
+            "d26e07aea850a5b9f1939fe23df7f01abd5e5f0857cf07d80463a85c9a1c8f12"
+        ),
+    }
+    expected_supporting_hashes = {
+        "archive_family_and_qt5_limit_closure": (
+            "docs/research/data/archive-gap-closure.json",
+            "1b727c06c87a14fcb217e0fd69b3b8f935e1f2b7930461ff2a76dc3ffa8996b5",
+        ),
+        "archive_iteration_boundary": (
+            "docs/research/data/archive-iteration-boundary-engine-qt6.json",
+            "50b23210a24620561c19c9bf902f165030e4dbb10b8ecda9ebe5bc996670ba65",
+        ),
+        "archive_option_and_internal_recursion_gate": (
+            "docs/research/data/archive-option-engine-qt5-qt6.json",
+            "5cdadeb09d97a0afd03b2f73ebbb5eb4ffd227b9a21973d34d5a3db739bb8d65",
+        ),
+        "archive_private_and_public_dispatch": (
+            "docs/research/data/archive-dispatch-linux-qt5-qt6.json",
+            "7f4492a0ab48714d5654f5d244266de822c2268c766a2eb75a9de066cc1cb52b",
+        ),
+        "cli_recursion_gate": (
+            "docs/research/data/cli-scan-nested-matrix-linux-qt5-qt6.json",
+            "a81ed4e791286c78247ca1d758fcb49900ca93ac46941af3d0542801d7e603f8",
+        ),
+        "resource_context_and_subdevice_gate": (
+            "docs/research/data/resource-context-chain-qt6.json",
+            "0619aa5e1768ef4044d9cd60378dd991057bb97960b70887b0de84552978aabc",
+        ),
+        "resource_record_count_boundary": (
+            "docs/research/data/scan-option-boundaries-linux-qt6.json",
+            "4f9f4e1c249ebc7b8b6277544ba4c5790bbab3a5ed2158580b79dd6356b6841f",
+        ),
+    }
+    expected_supporting = {
+        role: {"path": path, "sha256": digest}
+        for role, (path, digest) in expected_supporting_hashes.items()
+    }
+    expected_facts = {
+        "cancellation_partial_prefix_is_equal",
+        "depth_64_is_reached_on_both_qt_versions",
+        "expanded_33554546_bytes_is_reached_on_both_qt_versions",
+        "full_stable_behavior_projection_is_equal",
+        "local_probe_sources_are_hash_bound",
+        "raw_qt6_stdout_stderr_are_retained",
+        "source_contract_is_equal",
+        "supporting_nested_boundaries_are_hash_bound",
+    }
+    facts = report.get("facts", {})
+    if (
+        report.get("schema_version") != 1
+        or report.get("capability") != "CAP-NEST-009"
+        or report.get("upstream_commit") != UPSTREAM_COMMIT
+        or report.get("platform") != "linux-x86_64-qt5-qt6"
+        or report.get("generator")
+        != "tools/upstream/probe_qt6_archive_limits.py"
+        or report.get("generator_sha256")
+        != "08dd4329d2712257596cb8095c94117a1a34e6dfca23dbe3b7998db6ec07f980"
+        or report.get("passed") is not True
+        or report.get("failures") != []
+        or report.get("local_sources") != expected_local_sources
+        or report.get("supporting_reports") != expected_supporting
+        or set(facts) != expected_facts
+        or not all(value is True for value in facts.values())
+    ):
+        raise ClosurePlanError("Qt6 archive-limit identity drift")
+    if report.get("qt5_reference") != {
+        "path": "docs/research/data/archive-limit-engine-qt5.json",
+        "sha256": (
+            "e4786dcc578fb0714c86f71955161f981a06be26aefe663281d74202f5372ecd"
+        ),
+    }:
+        raise ClosurePlanError("Qt5 archive-limit reference drift")
+    comparison = report.get("comparison", {})
+    if (
+        comparison.get("behavior_projection_equal") is not True
+        or comparison.get("behavior_projection_sha256")
+        != "b10e21874a95cf675d521ae04ff8a1297fbb9bb054cdbe29b6757f5277503848"
+        or comparison.get("stable_harness_fields") != stable_fields
+    ):
+        raise ClosurePlanError("archive-limit comparison drift")
+
+    qt6 = report.get("qt6", {})
+    environment = qt6.get("environment", {})
+    source = qt6.get("source_contract", {})
+    assertions = qt6.get("assertions", {})
+    if (
+        qt6.get("schema_version") != 1
+        or qt6.get("capability") != "CAP-NEST-009"
+        or qt6.get("upstream_commit") != UPSTREAM_COMMIT
+        or qt6.get("xscanengine_commit")
+        != "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+        or qt6.get("passed") is not True
+        or qt6.get("failures") != []
+        or not assertions
+        or not all(value is True for value in assertions.values())
+        or environment.get("platform") != "linux-x86_64-qt6"
+        or environment.get("container_network") != "none"
+        or environment.get("image_identity", {}).get("id")
+        != "sha256:1a264871bcffab7b2c222d79c2f9800ac272df053166a91c3cdf36c6941b08e2"
+        or qt6.get("harness_binary", {}).get("sha256")
+        != "31c38b40ee7a0afa0d0e482789b75f7ab151448bb2ee0c0150011f51a596dcc9"
+        or qt6.get("corpus_manifest_sha256")
+        != "09e31c8373cd151c68d41aab18fefd7e18fff54c29b8d56c16196276660c5cd5"
+        or source.get("sha256")
+        != "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498"
+        or any(source.get("negative_token_counts", {}).values())
+    ):
+        raise ClosurePlanError("Qt6 archive-limit oracle drift")
+
+    samples = qt6.get("corpus", {}).get("samples", [])
+    cases = qt6.get("normal_cases", [])
+    if len(samples) != 14 or len(cases) != 14:
+        raise ClosurePlanError("Qt6 archive-limit case catalog drift")
+    sample_by_name = {sample.get("name"): sample for sample in samples}
+    case_by_name = {case.get("sample"): case for case in cases}
+    if set(sample_by_name) != set(case_by_name):
+        raise ClosurePlanError("Qt6 archive-limit sample mapping drift")
+
+    def project_case(case: dict[str, Any]) -> dict[str, Any]:
+        harness = case.get("harness", {})
+        stdout = case.get("stdout", "").encode("utf-8")
+        stderr = case.get("stderr", "").encode("utf-8")
+        try:
+            decoded_stdout = json.loads(stdout)
+        except json.JSONDecodeError as error:
+            raise ClosurePlanError(
+                f"Qt6 archive-limit invalid stdout: {case.get('case')}"
+            ) from error
+        if (
+            hashlib.sha256(stdout).hexdigest()
+            != case.get("stdout_sha256")
+            or hashlib.sha256(stderr).hexdigest()
+            != case.get("stderr_sha256")
+            or decoded_stdout != harness
+            or case.get("exit_code") != 0
+            or case.get("timed_out") is not False
+            or case.get("possible_oom_exit_137") is not False
+            or stderr
+        ):
+            raise ClosurePlanError(
+                f"Qt6 archive-limit raw case drift: {case.get('case')}"
+            )
+        return {
+            "arguments": case.get("arguments"),
+            "case": case.get("case"),
+            "exit_code": case.get("exit_code"),
+            "harness": {
+                field: harness.get(field) for field in stable_fields
+            },
+            "possible_oom_exit_137": case.get(
+                "possible_oom_exit_137"
+            ),
+            "sample": case.get("sample"),
+            "stderr": case.get("stderr"),
+            "stderr_sha256": case.get("stderr_sha256"),
+            "timed_out": case.get("timed_out"),
+        }
+
+    projected_cases = [project_case(case) for case in cases]
+    cancellation = qt6.get("cancellation_case", {})
+    projected_cancellation = project_case(cancellation)
+    deepest = case_by_name.get("depth-64.zip", {}).get("harness", {})
+    largest = case_by_name.get(
+        "expanded-16777216.zip", {}
+    ).get("harness", {})
+    if (
+        sample_by_name.get("depth-64.zip", {}).get("depth") != 64
+        or deepest.get("deepest_pdf_depth") != 64
+        or deepest.get("stream_node_count") != 64
+        or sample_by_name.get(
+            "expanded-16777216.zip", {}
+        ).get("cumulative_expanded_bytes")
+        != 33_554_546
+        or largest.get("deepest_pdf_depth") != 2
+        or cancellation.get("sample") != "depth-64.zip"
+        or cancellation.get("harness", {}).get("pd_stopped") is not True
+        or cancellation.get("harness", {}).get("record_count", 0)
+        >= deepest.get("record_count", 0)
+    ):
+        raise ClosurePlanError("Qt6 archive-limit semantic drift")
+    projection = {
+        "assertions": qt6.get("assertions"),
+        "cancellation_case": projected_cancellation,
+        "corpus": qt6.get("corpus"),
+        "corpus_manifest_sha256": qt6.get("corpus_manifest_sha256"),
+        "normal_cases": projected_cases,
+        "source_contract": qt6.get("source_contract"),
+        "upstream_commit": qt6.get("upstream_commit"),
+        "xscanengine_commit": qt6.get("xscanengine_commit"),
+    }
+    projection_hash = hashlib.sha256(
+        json.dumps(
+            projection,
+            ensure_ascii=False,
+            separators=(",", ":"),
+            sort_keys=True,
+        ).encode("utf-8")
+    ).hexdigest()
+    if projection_hash != comparison["behavior_projection_sha256"]:
+        raise ClosurePlanError(
+            "Qt6 archive-limit stable projection drift"
+        )
 
 
 def _validate_database_matrix_report(report: dict[str, Any]) -> None:
@@ -3567,6 +3798,7 @@ def _validate_inputs(
     _validate_bw_dispatch_report(reports[REPORT_PATHS[41]])
     _validate_path_boundary_report(reports[REPORT_PATHS[42]])
     _validate_archive_dispatch_report(reports[REPORT_PATHS[43]])
+    _validate_archive_limit_report(reports[REPORT_PATHS[44]])
     return capabilities
 
 
@@ -3825,7 +4057,7 @@ def build_plan(
             "cap_gap_007_closed": counts["partial"] == counts["missing"] == 0,
         },
         "limitations": [
-            "the plan classifies existing evidence; it does not promote Linux Qt6 platform coverage",
+            "Linux Qt6 platform coverage is promoted only while all 68 hash-bound rows remain evidence_complete",
             "partial evidence cannot satisfy a capability row",
             "diagnostic differences are not normalized away from compatibility review",
             "the current Qt6 image and reports remain pinned to exact identities",

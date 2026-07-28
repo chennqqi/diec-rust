@@ -11,6 +11,13 @@ TRACEABILITY = (
     ROOT / "docs" / "research" / "data" / "capability-traceability.json"
 )
 REPORT = ROOT / "docs" / "research" / "data" / "capability-coverage.json"
+QT6_CLOSURE = (
+    ROOT
+    / "docs"
+    / "research"
+    / "data"
+    / "qt6-capability-closure-plan.json"
+)
 SPEC = importlib.util.spec_from_file_location(
     "build_capability_coverage",
     SCRIPT,
@@ -24,10 +31,16 @@ class CapabilityCoverageTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.traceability, cls.raw = MODULE.load_json(TRACEABILITY)
+        cls.qt6_closure, cls.qt6_raw = MODULE.load_json(QT6_CLOSURE)
         cls.report = json.loads(REPORT.read_text(encoding="utf-8"))
 
     def test_committed_report_is_exact_generator_output(self):
-        expected = MODULE.build_report(self.traceability, self.raw)
+        expected = MODULE.build_report(
+            self.traceability,
+            self.raw,
+            self.qt6_closure,
+            self.qt6_raw,
+        )
         self.assertEqual(self.report, expected)
         self.assertEqual(REPORT.read_bytes(), MODULE.serialize(expected))
 
@@ -69,8 +82,11 @@ class CapabilityCoverageTest(unittest.TestCase):
         self.assertEqual(linux["source_only_with_corpus_gaps"], 0)
         self.assertEqual(linux["platform_missing"], 0)
 
+        qt6 = counts["linux-x86_64-qt6"]
+        self.assertEqual(qt6["runtime_observed"], 68)
+        self.assertEqual(qt6["platform_missing"], 0)
+
         for platform in (
-            "linux-x86_64-qt6",
             "windows-x86_64-qt5",
             "macos-x86_64-qt5",
         ):
@@ -157,6 +173,11 @@ class CapabilityCoverageTest(unittest.TestCase):
             rows["CAP-NEST-009"]["corpus_gap_ids"],
             [],
         )
+        for row in self.report["rows"]:
+            self.assertEqual(
+                row["platform_status"]["linux-x86_64-qt6"],
+                "runtime_observed",
+            )
 
     def test_every_declared_gap_maps_to_known_capabilities(self):
         row_ids = {row["id"] for row in self.report["rows"]}
@@ -171,6 +192,16 @@ class CapabilityCoverageTest(unittest.TestCase):
                 "CAP-GAP-007",
                 "CAP-GAP-008",
             ],
+        )
+        gap_by_id = {
+            gap["id"]: gap for gap in self.report["coverage_gaps"]
+        }
+        self.assertEqual(gap_by_id["CAP-GAP-007"]["status"], "closed")
+        self.assertEqual(gap_by_id["CAP-GAP-007"]["kind"], "closed")
+        self.assertEqual(gap_by_id["CAP-GAP-008"]["status"], "open")
+        self.assertEqual(
+            gap_by_id["CAP-GAP-008"]["kind"],
+            "platform_missing",
         )
 
     def test_every_with_gaps_status_has_a_named_corpus_gap(self):
@@ -201,7 +232,25 @@ class CapabilityCoverageTest(unittest.TestCase):
             MODULE.CoverageError,
             "platform scope",
         ):
-            MODULE.build_report(changed, self.raw)
+            MODULE.build_report(
+                changed,
+                self.raw,
+                self.qt6_closure,
+                self.qt6_raw,
+            )
+
+        changed_closure = dict(self.qt6_closure)
+        changed_closure["result"] = "incomplete"
+        with self.assertRaisesRegex(
+            MODULE.CoverageError,
+            "Qt6 closure",
+        ):
+            MODULE.build_report(
+                self.traceability,
+                self.raw,
+                changed_closure,
+                self.qt6_raw,
+            )
 
 
 if __name__ == "__main__":

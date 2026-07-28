@@ -151,13 +151,13 @@
     }
   ],
   "limitations": [
-    "the plan classifies existing evidence; it does not promote Linux Qt6 platform coverage",
+    "Linux Qt6 platform coverage is promoted only while all 68 hash-bound rows remain evidence_complete",
     "partial evidence cannot satisfy a capability row",
     "diagnostic differences are not normalized away from compatibility review",
     "the current Qt6 image and reports remain pinned to exact identities"
   ],
   "platform": "linux-x86_64-qt6",
-  "result": "incomplete",
+  "result": "complete",
   "rows": [
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
@@ -773,19 +773,11 @@
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "nested_scan",
       "id": "CAP-NEST-009",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "no independent depth or total extraction limit",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "CLI recursion and internal recursion gates are distinguished",
-          "record-count, iteration, depth, and expanded-byte observations are equal",
-          "parent tree, context propagation, subdevice gates, and raw errors are compared"
-        ],
-        "fixture": "reuse nested, resource, archive-limit, iteration, adversarial, and structure fixtures",
-        "harness": "build Qt6 nested/resource/archive harness variants"
-      },
-      "status": "missing"
+      "observed_scope": "the same 14-case archive-limit corpus reaches depth 64 and 33,554,546 cumulative expanded bytes on Qt5 and Qt6 with an equal deterministic cancellation prefix and stable result projection",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
@@ -854,6 +846,7 @@
     "docs/research/data/archive-dispatch-linux-qt5-qt6.json": "7f4492a0ab48714d5654f5d244266de822c2268c766a2eb75a9de066cc1cb52b",
     "docs/research/data/archive-iteration-boundary-engine-qt5.json": "57a78308860d6842bf2b33367451d696a7c3252d1411de2ed5c32d9659c29533",
     "docs/research/data/archive-iteration-boundary-engine-qt6.json": "50b23210a24620561c19c9bf902f165030e4dbb10b8ecda9ebe5bc996670ba65",
+    "docs/research/data/archive-limit-engine-qt5-qt6.json": "2dec18c44faa7580294e6da5f5ff07c8734ebe031fed53af8a03031cc406460e",
     "docs/research/data/archive-option-engine-qt5-qt6.json": "5cdadeb09d97a0afd03b2f73ebbb5eb4ffd227b9a21973d34d5a3db739bb8d65",
     "docs/research/data/binary-rule-order-linux-qt5-qt6.json": "58eba4dcab44a32412c65a8b80716325140bb5eba3a1e93a7753a67c35256852",
     "docs/research/data/bw-dispatch-engine-qt5-qt6.json": "8bf95a3f81855e751880dd54d2747c2aac6c8458378c5a80c411561080143a6a",
@@ -899,11 +892,11 @@
   },
   "summary": {
     "all_capabilities_accounted_for": true,
-    "cap_gap_007_closed": false,
+    "cap_gap_007_closed": true,
     "capability_count": 68,
-    "closure_required": 1,
-    "evidence_complete": 67,
-    "missing": 1,
+    "closure_required": 0,
+    "evidence_complete": 68,
+    "missing": 0,
     "partial": 0
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"

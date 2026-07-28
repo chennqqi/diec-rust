@@ -187,10 +187,10 @@
     },
     {
       "id": "P0-BLOCK-005",
-      "title": "Linux Qt6, Windows, and macOS capability baselines are incomplete",
+      "title": "Windows and macOS capability baselines are incomplete",
       "owner": "compatibility",
       "status": "open",
-      "progress_evidence": "docs/research/capability-coverage-report.md and docs/research/data/capability-coverage.json classify all 68 capability rows across four platforms with zero unclassified cells; Linux Qt5 has 68 runtime-observed rows, zero source-only rows, and zero corpus-gap rows; docs/research/archive-gap-closure.md and docs/research/data/archive-gap-closure.json close CAP-GAP-006 by proving the five-family engine extraction closed set, paired default/archive runtime controls, the exact 100000/100001 iteration boundary, depth 64, and 33554546 cumulative expanded bytes; CAP-GAP-001/002/003/004/005/006/009/010/011/012 are closed while Linux Qt6, Windows, and macOS each retain 68 platform-missing rows",
+      "progress_evidence": "docs/research/capability-coverage-report.md and docs/research/data/capability-coverage.json classify all 68 capability rows across four platforms with zero unclassified cells; Linux Qt5 and Linux Qt6 each have 68 runtime-observed rows, zero source-only rows, and zero corpus-gap rows; docs/research/data/qt6-capability-closure-plan.json closes CAP-GAP-007 with 68 evidence-complete rows, including paired depth 64, 33554546 cumulative expanded bytes, and cancellation-prefix evidence for CAP-NEST-009; Windows and macOS each retain 68 platform-missing rows",
       "closure_evidence": "pinned reproducible baselines with no Phase 0 source-only, corpus-missing, platform-missing, or unclassified capability rows"
     },
     {

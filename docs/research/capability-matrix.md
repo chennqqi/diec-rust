@@ -277,8 +277,9 @@ hideunknown 的可观察增量。完整输入哈希和输出见
 - `CAP-NEST-008`：JSON 结果通过父 detection 的 `values` 表达树，并保留 file part、size 和
   offset。详见 [`nested-scan-behavior.md`](nested-scan-behavior.md)。
 - `CAP-NEST-009`：固定源码没有独立嵌套 depth 或全 scan 累计展开字节状态；
-  受限 Linux Qt5 oracle 的单成员 ZIP 到达 64 层，固定两层累计展开量达到
-  33,554,546 bytes，第一次 progress callback 取消保留 1 条 root partial record。
+  受限 Linux Qt5/Qt6 配对 oracle 的单成员 ZIP 均到达 64 层，固定两层累计
+  展开量均达到 33,554,546 bytes，第一次 progress callback 取消保留相同的
+  root partial prefix。
   状态为 Observed；7Z Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64、
   x86 BCJ+LZMA2、BCJ2+LZMA2 no-branch/E8/E9/JCC、ARM64-BCJ+LZMA2 BL/ADRP、
   RAR4 store、RAR3 unpack29/RAR5 method 5 compressed/solid、CAB Store/MSZIP 与
@@ -296,7 +297,8 @@ hideunknown 的可观察增量。完整输入哈希和输出见
   [`archive-adversarial-behavior.md`](archive-adversarial-behavior.md)、
   [`archive-truncation-behavior.md`](archive-truncation-behavior.md)、
   [`archive-structure-behavior.md`](archive-structure-behavior.md) 与
-  [`archive-gap-closure.md`](archive-gap-closure.md)。
+  [`archive-gap-closure.md`](archive-gap-closure.md)、
+  [`qt6-archive-limit-runtime-evidence.md`](qt6-archive-limit-runtime-evidence.md)。
 
 ## 结果模型
 
@@ -364,9 +366,9 @@ validator 要求本文 68 个 `CAP-*` 与 manifest 完全相等，并拒绝缺�
 不能提升为 Rust 已实现或跨平台兼容。
 
 [`capability-coverage-report.md`](capability-coverage-report.md) 进一步把该清单
-投影为 68 行 × 4 平台的闭集：Linux Qt5 为 68 observed、0 observed with
-corpus gaps、0 source-only；Linux Qt6、Windows 和 macOS 各有 68 个
-platform-missing。全部行已分类不等于覆盖完成。
+投影为 68 行 × 4 平台的闭集：Linux Qt5 与 Linux Qt6 各为 68 observed、
+0 observed with corpus gaps、0 source-only；Windows 和 macOS 各有 68 个
+platform-missing。全部行已分类不等于 Phase 0 覆盖完成。
 
 - [CLI main](https://github.com/horsicq/DIE-engine/blob/74eaf505c250ab47e709024e9dc41657cd8f2254/src/console/main_console.cpp)
 - [XOptions option table](https://github.com/horsicq/XOptions/blob/810d78d0654f45d39bf07bcda5dc92ce287a4aeb/xoptions.cpp)

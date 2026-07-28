@@ -8,8 +8,7 @@ Last updated: 2026-07-28
 
 ## 结论
 
-`CAP-NEST-009` 已从纯源码结论提升为固定 Linux Qt5 的
-`runtime_observed_with_corpus_gaps`：
+`CAP-NEST-009` 已由固定 Linux Qt5 与 Qt6 的配对运行时证据闭合：
 
 - 固定 `XScanEngine@dfe4a419...` 的 archive 循环只有每层 scanable entry
   数量 `20/100000` 和循环 `100000` 次上限；它按成员声明的 uncompressed size
@@ -24,6 +23,10 @@ Last updated: 2026-07-28
   record、产生 0 个 Stream child；同输入未取消时产生 18 records 和 16 个
   Stream nodes。这证明取消会返回可观察的部分前缀，且实验没有异步写
   `PDSTRUCT::bIsStop` 的数据竞争。
+- 相同 14 个正常 case 与 1 个取消 control 在固定 Qt6 harness 上得到相同的
+  确定性结果投影；Qt6 同样到达 depth 64 和累计展开 33,554,546 bytes。完整
+  原始证据见
+  [`qt6-archive-limit-runtime-evidence.md`](qt6-archive-limit-runtime-evidence.md)。
 
 这些结果只证明“固定源码没有独立字段，且在测试上界内没有观察到 cutoff”，不证明
 任意深度/大小都能成功，也不把资源耗尽视为兼容要求。Rust 侧有界偏离由
@@ -155,7 +158,7 @@ python tools\upstream\probe_archive_limits_harness.py `
   partial/cancellation 使用 upstream 同线程 callback 单独验证。
 - `ru_maxrss` 包含 database load 形成的历史高水位，不可解释为单个 sample 的精确
   allocation；性能/内存结论仍需专用 benchmark/profiler。
-- Windows、macOS 和 Linux Qt6 仍为平台缺口。
+- Windows 和 macOS 仍为平台缺口；Linux Qt6 已由配对报告闭合。
 
 resource filtering/count 已由
 [`scan-option-boundaries.md`](scan-option-boundaries.md) 闭合；本能力在本报告

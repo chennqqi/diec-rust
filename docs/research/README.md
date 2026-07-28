@@ -14,6 +14,9 @@ Phase 0 计划形成：
 - [`archive-limit-behavior.md`](archive-limit-behavior.md)：受资源约束的 archive
   depth 64/约 32 MiB 累计展开量递增、peak RSS 与 cooperative cancellation
   证据（In Review）。
+- [`qt6-archive-limit-runtime-evidence.md`](qt6-archive-limit-runtime-evidence.md)：
+  相同 14-case archive-limit corpus 和取消 control 的固定 Qt5/Qt6 配对证据，
+  关闭 Linux Qt6 `CAP-NEST-009`（In Review）。
 - [`archive-iteration-boundary.md`](archive-iteration-boundary.md)：aggressive
   archive 第 99999/100000/100001 条 Qt5/Qt6 哨兵、源码循环顺序、NUL dot-entry
   差异和受控分配失败证据（In Review）。
@@ -134,8 +137,8 @@ Phase 0 计划形成：
 - [`upstream-cmake-differential.md`](upstream-cmake-differential.md)：官方 CMake CLI 构建及与 qmake 的原始输出差分（Draft）。
 - [`upstream-qt6-differential.md`](upstream-qt6-differential.md)：固定 Qt 6 CMake CLI 构建、Qt 5/Qt 6 原始差分与规则 warning 最小化（Draft）。
 - [`qt6-capability-closure-plan.md`](qt6-capability-closure-plan.md)：将现有
-  Qt6 证据保守映射到全部 68 项能力，并为 `CAP-GAP-007` 生成可执行的逐项
-  闭环清单（In Review）。
+  Qt6 证据映射到全部 68 项能力；当前为 68 complete/0 partial/0 missing，
+  `CAP-GAP-007` closed（In Review）。
 - [`qt6-cli-runtime-evidence.md`](qt6-cli-runtime-evidence.md)：固定 Qt5/Qt6
   的 26 样本分派、五样本七 formatter 和 escaping/nested 输出差分，并保留
   PE 的 Qt6 stderr 差异（In Review）。
@@ -274,9 +277,12 @@ Phase 0 计划形成：
 - [`data/capability-traceability.json`](data/capability-traceability.json)：68 个稳定
   `CAP-*` 的验证层级、证据路径、平台范围和三个开放 coverage gap。
 - [`data/capability-coverage.json`](data/capability-coverage.json)：68 行 × 4 平台
-  的 272-cell 闭集分类、三个开放 gap 到能力的显式映射和未分类计数。
+  的 272-cell 闭集分类、closed/open gap 到能力的显式映射和未分类计数。
 - [`data/qt6-capability-closure-plan.json`](data/qt6-capability-closure-plan.json)：
-  将固定 Qt6 证据保守映射到全部 68 项能力，并给出剩余逐项实验。
+  将固定 Qt6 证据映射到全部 68 项能力并证明 closure required 为 0。
+- [`data/archive-limit-engine-qt5-qt6.json`](data/archive-limit-engine-qt5-qt6.json)：
+  14 个正常 archive-limit case、取消 control、Qt6 raw streams 和 Qt5 稳定
+  projection 对照。
 - [`image-dispatch-behavior.md`](image-dispatch-behavior.md)：固定七种非
   JPEG/PNG 图像的自然 Binary fallback、强制 generic Image null adapter 和
   `CAP-GAP-012` 闭合证据。

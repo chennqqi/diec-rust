@@ -19,6 +19,7 @@ Last updated: 2026-07-29
 [`data/capability-coverage.json`](data/capability-coverage.json)，由
 [`build_capability_coverage.py`](../../tools/research/build_capability_coverage.py)
 确定性生成。报告绑定 traceability 原始文件 SHA-256、上游 commit 和规则 commit。
+Linux Qt6 状态还绑定完整 closure 报告的原始 SHA-256。
 
 ## 2. 目标平台闭集
 
@@ -29,15 +30,15 @@ Phase 0 报告固定四个平台：
 - `windows-x86_64-qt5`
 - `macos-x86_64-qt5`
 
-当前只有 Linux x86_64 Qt5 被 traceability manifest 接纳为完整 runtime baseline
-平台。已有 Linux Qt6 spot differential 不等于 68 项能力基线，因此在本报告中
-仍统一分类为 `platform_missing`。Windows 与 macOS 同理。
+Linux x86_64 Qt5 由 traceability manifest 接纳为完整 runtime baseline；
+Linux x86_64 Qt6 由 hash-bound 的 68 行 closure 报告接纳为第二个完整 runtime
+baseline。Windows 与 macOS 仍为 `platform_missing`。
 
 独立的逐行
 [`qt6-capability-closure-plan.md`](qt6-capability-closure-plan.md)
-已接纳 67 项 `evidence_complete`、0 项 partial、1 项 missing；这表示 Qt6
-关闭工作已有可审计进度，但在剩余 1 项及差异评审完成前，不改变本报告
-68-cell `platform_missing` 的平台门禁语义。
+已接纳 68 项 `evidence_complete`、0 项 partial、0 项 missing，并把
+`CAP-GAP-007` 标记为 closed。coverage 生成器同时绑定 traceability 与该 closure
+报告 SHA-256，拒绝缺行、降级或 commit 漂移。
 
 ## 3. 分类语义
 
@@ -59,7 +60,7 @@ Phase 0 报告固定四个平台：
 | 平台 | Runtime observed | Observed + corpus gaps | Source-only | Source-only + gaps | Platform missing |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | Linux x86_64 Qt5 | 68 | 0 | 0 | 0 | 0 |
-| Linux x86_64 Qt6 | 0 | 0 | 0 | 0 | 68 |
+| Linux x86_64 Qt6 | 68 | 0 | 0 | 0 | 0 |
 | Windows x86_64 Qt5 | 0 | 0 | 0 | 0 | 68 |
 | macOS x86_64 Qt5 | 0 | 0 | 0 | 0 | 68 |
 
@@ -68,18 +69,19 @@ Phase 0 报告固定四个平台：
 
 - Linux Qt5 source-only 能力已清零；
 - Linux Qt5 已命名 corpus gap 已清零；
-- 三个尚未接纳的平台各有 68 个 `platform_missing`；
+- Linux Qt6 的 68 行已全部接纳为 runtime observed；
+- Windows 与 macOS 各有 68 个 `platform_missing`；
 - `phase_0_coverage_complete` 必须保持 `false`。
 
 ## 5. 缺口映射
 
-traceability 中两个开放 `CAP-GAP-*` 现在都属于平台缺失，并显式映射到受影响
-能力：
+traceability 中两个 `CAP-GAP-*` 均保留身份；coverage 报告将 Qt6 gap 投影为
+closed，并保留 Windows/macOS path gap 为 open：
 
 | Gap | 类型 | 能力行数 | 范围 |
 | --- | --- | ---: | --- |
-| `CAP-GAP-007` | platform | 68 | 完整 Qt5/Qt6 capability matrix |
-| `CAP-GAP-008` | platform | 8 | Windows/macOS path 与 encoding |
+| `CAP-GAP-007` | closed | 68 | 完整 Qt5/Qt6 capability matrix |
+| `CAP-GAP-008` | platform/open | 8 | Windows/macOS path 与 encoding |
 
 映射是保守的审计范围，不是“这些能力除此之外都已完备”的声明。
 
@@ -161,7 +163,9 @@ method 5 样本又在 16 次禁网执行中固定普通模式无 child、aggress
 RAR15/RAR20、RAR7 algorithm version 1、加密、多卷、恢复与损坏压缩流、剩余
 结构字段、ISO path-table location/多字段组合冲突与算术 wrap、更大或混合失败
 记录图和真实资源耗尽仍是 format-method 扩展与安全风险，不能外推为已验证或
-安全；跨平台缺口由 `CAP-GAP-007/008` 保留。
+安全；Linux Qt6 同边界由
+[`qt6-archive-limit-runtime-evidence.md`](qt6-archive-limit-runtime-evidence.md)
+闭合，Windows/macOS 路径缺口由 `CAP-GAP-008` 保留。
 
 原 `CAP-GAP-005` 已由
 [`scan-option-boundaries.md`](scan-option-boundaries.md)
@@ -227,8 +231,9 @@ python tools/tests/test_capability_coverage.py
 ```
 
 测试要求 committed report 与生成结果逐字节一致；68 个 ID 与 traceability 完全
-相等；全部平台 cell 有已知状态；Linux 四类计数保持 68/0/0/0；其他三个平台
-各保持 68 个 `platform_missing`；两个开放 gap 均映射到已知能力；所有
+相等；Qt6 closure 必须为 68 complete/0 partial/0 missing；全部平台 cell
+有已知状态；Linux Qt5/Qt6 各保持 68 个 `runtime_observed`；Windows 与 macOS
+各保持 68 个 `platform_missing`；closed/open gap 均映射到已知能力；所有
 `with_corpus_gaps` 状态都至少关联一个具名 corpus gap。
 
 ## 7. 对 Phase 0 门禁的影响
@@ -240,6 +245,6 @@ python tools/tests/test_capability_coverage.py
    [`source-only-closure-plan.md`](source-only-closure-plan.md)
    的 Linux source-only 闭集为空，新增或降级能力必须重新进入 closure catalog；
 2. 保持 `CAP-GAP-006` closure 的五类 family 闭集、记录/深度/总量断言不漂移；
-3. 固定 Windows、macOS 和完整 Linux Qt6 oracle；
+3. 保持 Linux Qt6 的 68 行 closure 不降级，并固定 Windows、macOS oracle；
 4. 重新生成报告，且经评审确认 Phase 0 所需行不再为 source-only、
    corpus-missing 或 platform-missing。

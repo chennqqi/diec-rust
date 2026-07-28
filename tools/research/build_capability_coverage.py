@@ -11,8 +11,11 @@ from typing import Any
 
 
 SCHEMA_VERSION = 1
-EVALUATED_ON = "2026-07-28"
+EVALUATED_ON = "2026-07-29"
 TRACEABILITY_PATH = "docs/research/data/capability-traceability.json"
+QT6_CLOSURE_PATH = (
+    "docs/research/data/qt6-capability-closure-plan.json"
+)
 TARGET_PLATFORMS = (
     "linux-x86_64-qt5",
     "linux-x86_64-qt6",
@@ -130,24 +133,73 @@ def validate_traceability(traceability: dict[str, Any]) -> None:
         raise CoverageError("coverage gap IDs changed")
 
 
+def validate_qt6_closure(
+    closure: dict[str, Any],
+    capability_ids: set[str],
+    traceability: dict[str, Any],
+) -> None:
+    rows = closure.get("rows")
+    summary = closure.get("summary", {})
+    if (
+        closure.get("schema_version") != 1
+        or closure.get("result") != "complete"
+        or closure.get("platform") != "linux-x86_64-qt6"
+        or closure.get("upstream_commit")
+        != traceability["upstream_commit"]
+        or closure.get("rules_commit") != traceability["rules_commit"]
+        or not isinstance(rows, list)
+        or {row.get("id") for row in rows} != capability_ids
+        or any(
+            row.get("status") != "evidence_complete"
+            for row in rows
+        )
+        or summary.get("capability_count") != len(capability_ids)
+        or summary.get("evidence_complete") != len(capability_ids)
+        or summary.get("partial") != 0
+        or summary.get("missing") != 0
+        or summary.get("closure_required") != 0
+        or summary.get("cap_gap_007_closed") is not True
+    ):
+        raise CoverageError("Qt6 closure report is not complete")
+
+
 def build_report(
     traceability: dict[str, Any],
     traceability_bytes: bytes,
+    qt6_closure: dict[str, Any],
+    qt6_closure_bytes: bytes,
 ) -> dict[str, Any]:
     validate_traceability(traceability)
     capabilities = traceability["capabilities"]
     capability_ids = {item["id"] for item in capabilities}
+    validate_qt6_closure(
+        qt6_closure,
+        capability_ids,
+        traceability,
+    )
     gap_map = build_gap_map(capability_ids)
     gap_records = []
     for gap in traceability["coverage_gaps"]:
         gap_id = gap["id"]
+        closed = gap_id == "CAP-GAP-007"
         gap_records.append(
             {
                 **gap,
-                "kind": (
-                    "platform_missing"
-                ),
+                "kind": "closed" if closed else "platform_missing",
+                "status": "closed" if closed else "open",
                 "capability_ids": gap_map[gap_id],
+                **(
+                    {
+                        "closure": {
+                            "path": QT6_CLOSURE_PATH,
+                            "sha256": sha256_bytes(
+                                qt6_closure_bytes
+                            ),
+                        }
+                    }
+                    if closed
+                    else {}
+                ),
             }
         )
 
@@ -165,7 +217,8 @@ def build_report(
         gap_ids = [
             gap["id"]
             for gap in gap_records
-            if capability_id in gap["capability_ids"]
+            if gap["status"] == "open"
+            and capability_id in gap["capability_ids"]
         ]
         rows.append(
             {
@@ -176,7 +229,7 @@ def build_report(
                     "linux-x86_64-qt5": VERIFICATION_TO_STATUS[
                         verification
                     ],
-                    "linux-x86_64-qt6": "platform_missing",
+                    "linux-x86_64-qt6": "runtime_observed",
                     "windows-x86_64-qt5": "platform_missing",
                     "macos-x86_64-qt5": "platform_missing",
                 },
@@ -227,13 +280,14 @@ def build_report(
         "result": "incomplete",
         "upstream_commit": traceability["upstream_commit"],
         "rules_commit": traceability["rules_commit"],
-        "source": {
-            "path": TRACEABILITY_PATH,
-            "sha256": sha256_bytes(traceability_bytes),
+        "sources": {
+            TRACEABILITY_PATH: sha256_bytes(traceability_bytes),
+            QT6_CLOSURE_PATH: sha256_bytes(qt6_closure_bytes),
         },
         "target_platforms": list(TARGET_PLATFORMS),
-        "admitted_runtime_baseline_platforms": traceability[
-            "platform_scope"
+        "admitted_runtime_baseline_platforms": [
+            "linux-x86_64-qt5",
+            "linux-x86_64-qt6",
         ],
         "status_definitions": {
             "runtime_observed": (
@@ -279,8 +333,8 @@ def build_report(
                 "promoted to observed"
             ),
             (
-                "linux Qt6 spot differentials are not a complete capability "
-                "baseline and remain platform_missing here"
+                "the complete Linux Qt6 baseline is admitted through the "
+                "hash-bound 68-row closure report"
             ),
             (
                 "a zero unclassified-row count means classification is "
@@ -307,6 +361,11 @@ def parse_args() -> argparse.Namespace:
     root = Path(__file__).resolve().parents[2]
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
+        "--qt6-closure",
+        type=Path,
+        default=root / QT6_CLOSURE_PATH,
+    )
+    parser.add_argument(
         "--traceability",
         type=Path,
         default=root / TRACEABILITY_PATH,
@@ -328,7 +387,13 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     traceability, raw = load_json(args.traceability)
-    report = build_report(traceability, raw)
+    qt6_closure, qt6_raw = load_json(args.qt6_closure)
+    report = build_report(
+        traceability,
+        raw,
+        qt6_closure,
+        qt6_raw,
+    )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_bytes(serialize(report))
     return 0
