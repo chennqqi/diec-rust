@@ -179,6 +179,9 @@ Phase 0 计划形成：
 - [`qt6-archive-option-runtime-evidence.md`](qt6-archive-option-runtime-evidence.md)：
   固定 64 个 engine archive-option case、32 个 release control 和内容寻址
   raw catalog，并验证与 Qt5 的完整语义一致性（In Review）。
+- [`qt6-archive-dispatch-runtime-evidence.md`](qt6-archive-dispatch-runtime-evidence.md)：
+  固定 APK/IPA/JAR/ZIP/RAR/NPM/ISO9660/Archive 八成员的公共与
+  property-only Qt6 分派闭集（In Review）。
 - [`behavior-baseline.md`](behavior-baseline.md)：确定性安全语料、原始输出哈希和多格式行为（Draft）。
 - [`cli-json-schema-inventory.md`](cli-json-schema-inventory.md)：固定 CLI normal/entropy/info/struct JSON 字段、类型、顺序与失败边界（Draft）。
 - [`cli-output-boundaries.md`](cli-output-boundaries.md)：固定 JSON/XML/CSV/TSV/plain text 的 Unicode/控制字符转义、嵌套排序和格式缺陷；闭合 `CAP-GAP-004`（Draft）。
@@ -409,6 +412,9 @@ Phase 0 计划形成：
 - [`data/archive-gap-closure.json`](data/archive-gap-closure.json)：
   六份固定 archive oracle 与 Formats/XScanEngine 源码共同生成的
   `CAP-GAP-006` 机器闭合报告。
+- [`data/archive-dispatch-linux-qt5-qt6.json`](data/archive-dispatch-linux-qt5-qt6.json)：
+  八成员 public/private Qt6 archive 分派、NPM/generic harness、14 个
+  content-addressed raw artifact 与 Qt5 projection 对照。
 - [`data/npm-dispatch-fixture.json`](data/npm-dispatch-fixture.json)：
   项目生成的 NPM 精确路径正例、无效 JSON 正例及路径/大小写近似反例清单。
 - [`data/npm-dispatch-engine-qt5.json`](data/npm-dispatch-engine-qt5.json)：

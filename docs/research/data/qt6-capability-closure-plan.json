@@ -643,19 +643,11 @@
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "dispatch_source",
       "id": "CAP-DISPATCH-004",
-      "missing_scope": "execute the remaining Qt5 capability boundary under the pinned Qt6 oracle",
+      "missing_scope": null,
       "name": "archive family dispatch",
-      "observed_scope": "TAR, gzip, and ZIP only; full archive family remains",
-      "proposed_experiment": {
-        "assertions": [
-          "every format family and property-only or detector-only branch is exercised",
-          "normalized detection records and raw diagnostics are compared",
-          "archive adapters include positive, malformed, compressed, and boundary controls"
-        ],
-        "fixture": "reuse every dispatch fixture named by the Qt5 evidence set",
-        "harness": "build Qt6 variants of all public and private dispatch probes"
-      },
-      "status": "partial"
+      "observed_scope": "all eight APK/IPA/JAR/ZIP/RAR/NPM/ISO9660/Archive members retain equal public or property-only dispatch across fixed Qt5/Qt6 evidence",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
@@ -859,6 +851,7 @@
   "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
   "schema_version": 1,
   "sources": {
+    "docs/research/data/archive-dispatch-linux-qt5-qt6.json": "7f4492a0ab48714d5654f5d244266de822c2268c766a2eb75a9de066cc1cb52b",
     "docs/research/data/archive-iteration-boundary-engine-qt5.json": "57a78308860d6842bf2b33367451d696a7c3252d1411de2ed5c32d9659c29533",
     "docs/research/data/archive-iteration-boundary-engine-qt6.json": "50b23210a24620561c19c9bf902f165030e4dbb10b8ecda9ebe5bc996670ba65",
     "docs/research/data/archive-option-engine-qt5-qt6.json": "5cdadeb09d97a0afd03b2f73ebbb5eb4ffd227b9a21973d34d5a3db739bb8d65",
@@ -908,10 +901,10 @@
     "all_capabilities_accounted_for": true,
     "cap_gap_007_closed": false,
     "capability_count": 68,
-    "closure_required": 2,
-    "evidence_complete": 66,
+    "closure_required": 1,
+    "evidence_complete": 67,
     "missing": 1,
-    "partial": 1
+    "partial": 0
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
 }

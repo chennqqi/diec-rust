@@ -81,10 +81,10 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
 
     def test_current_plan_is_conservatively_incomplete(self):
         summary = self.plan["summary"]
-        self.assertEqual(summary["evidence_complete"], 66)
-        self.assertEqual(summary["partial"], 1)
+        self.assertEqual(summary["evidence_complete"], 67)
+        self.assertEqual(summary["partial"], 0)
         self.assertEqual(summary["missing"], 1)
-        self.assertEqual(summary["closure_required"], 2)
+        self.assertEqual(summary["closure_required"], 1)
         self.assertFalse(summary["cap_gap_007_closed"])
         self.assertEqual(self.plan["result"], "incomplete")
 
@@ -146,6 +146,7 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
             "CAP-DISPATCH-003",
             "CAP-DISPATCH-002",
             "CAP-CLI-IN-003",
+            "CAP-DISPATCH-004",
         }
         for capability_id in promoted:
             with self.subTest(capability=capability_id):
@@ -155,7 +156,7 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
                 )
         self.assertEqual(
             rows["CAP-DISPATCH-004"]["status"],
-            "partial",
+            "evidence_complete",
         )
         self.assertEqual(
             rows["CAP-CLI-IN-003"]["status"],
@@ -532,6 +533,24 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
         with self.assertRaisesRegex(
             MODULE.ClosurePlanError,
             "path-boundary semantic drift",
+        ):
+            MODULE.build_plan(
+                self.traceability,
+                self.traceability_raw,
+                changed_reports,
+                self.report_bytes,
+            )
+
+        changed_reports = json.loads(json.dumps(self.reports))
+        archive_dispatch = changed_reports[MODULE.REPORT_PATHS[43]]
+        archive_dispatch["private_suites"]["npm"]["qt6"]["cases"][
+            "npm-valid.tgz"
+        ]["harness"]["output"]["forced_npm"]["initial_filetype"] = (
+            "Binary"
+        )
+        with self.assertRaisesRegex(
+            MODULE.ClosurePlanError,
+            "archive-dispatch NPM semantic drift",
         ):
             MODULE.build_plan(
                 self.traceability,

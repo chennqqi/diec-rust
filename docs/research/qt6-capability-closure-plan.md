@@ -11,10 +11,10 @@ Last updated: 2026-07-29
 [`data/qt6-capability-closure-plan.json`](data/qt6-capability-closure-plan.json)
 逐项列出当前证据和缺失实验：
 
-- 66 项已有证据完整覆盖能力行；
-- 1 项只有部分证据；
+- 67 项已有证据完整覆盖能力行；
+- 0 项只有部分证据；
 - 1 项没有可接纳的逐行 Qt6 运行时证据；
-- 因此仍有 2 项需要执行闭环实验。
+- 因此仍有 1 项需要执行闭环实验。
 
 Linux Qt6 在能力覆盖报告中继续保持 `platform_missing`。本计划只负责把
 缺口变成可执行清单，不改变平台门禁状态。
@@ -112,9 +112,11 @@ large-directory、4 个 TOCTOU 和 6 个 locale/filesystem case 全部双轮重�
 没有新增差异。见
 [`qt6-path-boundary-runtime-evidence.md`](qt6-path-boundary-runtime-evidence.md)。
 
-下列结果只能算部分证据：
-
-- archive 只覆盖 TAR、gzip 和 ZIP，未覆盖完整 archive family；
+第十八批 archive-dispatch 证据绑定 APK/IPA/JAR/ZIP/RAR/ISO9660 六个公共
+成员、NPM 与 generic Archive 两个 property-only branch，以及 TAR/GZIP
+公共负控制。两个 Qt6 private harness 的完整 behavior projection 与 Qt5
+相同，公共 8-case 也无差异。见
+[`qt6-archive-dispatch-runtime-evidence.md`](qt6-archive-dispatch-runtime-evidence.md)。
 
 此外，独立 depth/total extraction limit 仍没有可接纳的逐行 Qt6 运行时证据。
 
@@ -164,8 +166,8 @@ python tools/research/build_qt6_closure_plan.py
 首组 Qt6 engine harness、规则编排、result-model、signature-path、
 debug-dispatch、resource-context、archive-option、count-boundary 和
 legacy-dispatch probe
-、DOS/BW dispatch probe 和完整 path-boundary replay 已完成。后续应按机器清单
-继续复用既有 Qt5 fixture，集中关闭完整 archive family dispatch 和独立
+、DOS/BW dispatch probe、完整 path-boundary replay 和 archive-family
+dispatch 已完成。后续应按机器清单继续复用既有 Qt5 fixture，集中关闭独立
 depth/total extraction limit。
 只有 68 行全部达到 `evidence_complete`，且差异完成评审，
 `CAP-GAP-007` 才能关闭。

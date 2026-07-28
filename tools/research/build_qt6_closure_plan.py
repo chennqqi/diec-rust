@@ -62,6 +62,7 @@ REPORT_PATHS = (
     "docs/research/data/dos-dispatch-linux-qt5-qt6.json",
     "docs/research/data/bw-dispatch-engine-qt5-qt6.json",
     "docs/research/data/path-boundaries-linux-qt5-qt6.json",
+    "docs/research/data/archive-dispatch-linux-qt5-qt6.json",
 )
 EMPTY_SHA256 = hashlib.sha256(b"").hexdigest()
 QT6_UNIMPLEMENTED_SHA256 = (
@@ -166,11 +167,10 @@ COMPLETE: dict[str, str] = {
     "CAP-NEST-004": "Qt6 executes the 99999/100000/100001 archive iteration boundary and the inclusive 21/2001 resource-count boundary; the ISO NUL difference is classified",
     "CAP-DISPATCH-003": "all eight Amiga Hunk and Atari ST positive/truncated/endian/magic cases retain equal detector and scanner dispatch with raw-equal Qt5/Qt6 streams",
     "CAP-DISPATCH-002": "all 19 public DOS/COM cases retain equal dispatch after classified Qt6 formatter/TypeError differences, and the BW property-only branch is raw-equal to Qt5",
+    "CAP-DISPATCH-004": "all eight APK/IPA/JAR/ZIP/RAR/NPM/ISO9660/Archive members retain equal public or property-only dispatch across fixed Qt5/Qt6 evidence",
 }
 
-PARTIAL: dict[str, str] = {
-    "CAP-DISPATCH-004": "TAR, gzip, and ZIP only; full archive family remains",
-}
+PARTIAL: dict[str, str] = {}
 
 
 def _same_stdout_and_exit(left: dict[str, Any], right: dict[str, Any]) -> bool:
@@ -1088,6 +1088,292 @@ def _validate_path_boundary_report(report: dict[str, Any]) -> None:
         is not False
     ):
         raise ClosurePlanError("Qt6 path-boundary semantic drift")
+
+
+def _validate_archive_dispatch_report(report: dict[str, Any]) -> None:
+    named_members = [
+        "APK",
+        "IPA",
+        "JAR",
+        "ZIP",
+        "RAR",
+        "NPM",
+        "ISO9660",
+        "Archive",
+    ]
+    expected_public = {
+        "minimal.apk": "APK",
+        "minimal.ipa": "Binary",
+        "minimal.iso": "ISO 9660",
+        "minimal.jar": "JAR",
+        "minimal.rar": "RAR",
+        "payload.tar": "Binary",
+        "payload.txt.gz": "Binary",
+        "payload.zip": "ZIP",
+    }
+    if (
+        report.get("schema_version") != 1
+        or report.get("capability") != "CAP-DISPATCH-004"
+        or report.get("upstream_commit") != UPSTREAM_COMMIT
+        or report.get("platform") != "linux-x86_64-qt5-qt6"
+        or report.get("generator")
+        != "tools/upstream/probe_qt6_archive_dispatch.py"
+        or report.get("generator_sha256")
+        != "c307439025c40b26d769fb848fd30904e05011976edb91d110ea6d12f309f31d"
+        or report.get("named_members") != named_members
+        or report.get("passed") is not True
+        or report.get("failures") != []
+        or report.get("private_suite_order")
+        != ["npm", "generic_archive"]
+    ):
+        raise ClosurePlanError("Qt6 archive-dispatch identity drift")
+    facts = report.get("facts")
+    if (
+        not isinstance(facts, dict)
+        or set(facts)
+        != {
+            "all_eight_named_dispatch_members_are_covered",
+            "all_public_dispatch_and_generic_controls_are_covered",
+            "generic_archive_private_branch_matches_qt5",
+            "npm_private_branch_matches_qt5",
+            "public_dispatch_matches_qt5",
+            "source_family_inventory_is_exhaustive",
+        }
+        or not all(value is True for value in facts.values())
+    ):
+        raise ClosurePlanError("Qt6 archive-dispatch relationship drift")
+    public = report.get("public_dispatch")
+    if (
+        not isinstance(public, dict)
+        or public.get("report_path")
+        != "docs/research/data/cli-output-matrix-linux-qt5-qt6.json"
+        or public.get("report_sha256")
+        != "3e032534ce269597c98eee45c1e477796a11402ec1fb07b7a79a7806cad7ba2c"
+        or not isinstance(public.get("cases"), dict)
+        or set(public["cases"]) != set(expected_public)
+    ):
+        raise ClosurePlanError("Qt6 archive-dispatch public catalog drift")
+    for case_name, expected_filetype in expected_public.items():
+        case = public["cases"][case_name]
+        tree = case.get("detect_tree")
+        if (
+            case.get("qt5") != case.get("qt6")
+            or not isinstance(tree, list)
+            or len(tree) != 1
+            or tree[0].get("filetype") != expected_filetype
+            or case.get("qt5", {}).get("exit_code") != 0
+        ):
+            raise ClosurePlanError(
+                f"Qt6 archive-dispatch public drift: {case_name}"
+            )
+    if report.get("archive_gap_reference") != {
+        "engine_extraction_families": [
+            "ZIP",
+            "7Z",
+            "RAR",
+            "CAB",
+            "ISO9660",
+        ],
+        "report_path": "docs/research/data/archive-gap-closure.json",
+        "report_sha256": (
+            "1b727c06c87a14fcb217e0fd69b3b8f935e1f2b7930461ff2a76dc3ffa8996b5"
+        ),
+        "source_inventory_is_exhaustive": True,
+    }:
+        raise ClosurePlanError(
+            "Qt6 archive-dispatch source inventory drift"
+        )
+
+    expected_private = {
+        "npm": {
+            "baseline": "npm-dispatch-engine-qt5.json",
+            "baseline_sha": (
+                "d23168aff29696f46d3579f6d914353865035bd02a8bbbcf9af065475c036ce7"
+            ),
+            "projection": (
+                "ca5a01ab0178e877089e0a584f8f3649da48dd4ae49dfb49c0bf314592073911"
+            ),
+            "image": (
+                "sha256:8c6311d4740eb15055cb8bf474b1c3c36ede78fe9f2293ce5673b86c12957f64"
+            ),
+            "harness": (
+                "b623930bca7301706edad4ab66ebef4718012d112015da7a1b2dae76ea70416f"
+            ),
+            "dockerfile": (
+                "tools/upstream/Dockerfile.npm-dispatch-harness-qt6"
+            ),
+            "dockerfile_sha": (
+                "1733d2191c6899182b5f89168a7580857a97985f90a45b249623bc72a64a3d3e"
+            ),
+            "cases": {
+                "case-package-json.tgz",
+                "npm-invalid-json.tgz",
+                "npm-valid.tgz",
+                "root-package-json.tgz",
+            },
+        },
+        "generic_archive": {
+            "baseline": "generic-archive-dispatch-engine-qt5.json",
+            "baseline_sha": (
+                "960fca28122af3bddb2fcd22706f5350ee8f4753a79a61cc2338aba7d1f53c04"
+            ),
+            "projection": (
+                "ff2d7f5810f766e629486eeb35f91ca8c2c9b8699bb97524b417e4343b672da6"
+            ),
+            "image": (
+                "sha256:384844c09790b019a388381ed8beee2f160e6d3bd405f19b88cea9b87662095f"
+            ),
+            "harness": (
+                "0969dd12914d20964b2d60d660e904f7706c1b4857f66314589386cddf615be7"
+            ),
+            "dockerfile": (
+                "tools/upstream/"
+                "Dockerfile.generic-archive-dispatch-harness-qt6"
+            ),
+            "dockerfile_sha": (
+                "1bda50e76ef9d4b8e4e2d2f9ff263016c08fab4ba38adcd9d7b5f1df89f13247"
+            ),
+            "cases": {"payload.tar", "payload.txt.gz", "payload.zip"},
+        },
+    }
+    suites = report.get("private_suites")
+    if not isinstance(suites, dict) or set(suites) != set(expected_private):
+        raise ClosurePlanError(
+            "Qt6 archive-dispatch private suite catalog drift"
+        )
+    for suite_id, expected in expected_private.items():
+        suite = suites[suite_id]
+        comparison = suite.get("comparison")
+        qt6 = suite.get("qt6")
+        if comparison != {
+            "behavior_projection_equal": True,
+            "behavior_projection_sha256": expected["projection"],
+            "qt5_report_path": (
+                f"docs/research/data/{expected['baseline']}"
+            ),
+            "qt5_report_sha256": expected["baseline_sha"],
+        }:
+            raise ClosurePlanError(
+                f"Qt6 archive-dispatch comparison drift: {suite_id}"
+            )
+        if (
+            not isinstance(qt6, dict)
+            or qt6.get("platform") != "linux-x86_64-qt6"
+            or qt6.get("upstream_commit") != UPSTREAM_COMMIT
+            or qt6.get("passed") is not True
+            or qt6.get("failures") != []
+            or qt6.get("qt6_image", {}).get("id") != expected["image"]
+            or qt6.get("qt6_binaries", {})
+            .get("harness", {})
+            .get("sha256")
+            != expected["harness"]
+            or qt6.get("qt6_binaries", {})
+            .get("release", {})
+            .get("sha256")
+            != "e3321105af0349b29195325e79d5d2c7cc25ead2f28f84e242e3835b98f7283e"
+            or qt6.get("local_sources", {})
+            .get("harness_dockerfile")
+            != {
+                "path": expected["dockerfile"],
+                "sha256": expected["dockerfile_sha"],
+            }
+            or qt6.get("facts", {}).get(
+                "qt6_release_repetitions_are_byte_equal"
+            )
+            is not True
+        ):
+            raise ClosurePlanError(
+                f"Qt6 archive-dispatch oracle drift: {suite_id}"
+            )
+        cases = qt6.get("cases")
+        if not isinstance(cases, dict) or set(cases) != expected["cases"]:
+            raise ClosurePlanError(
+                f"Qt6 archive-dispatch case catalog drift: {suite_id}"
+            )
+        artifacts = qt6.get("raw_artifacts")
+        if not isinstance(artifacts, dict) or not artifacts:
+            raise ClosurePlanError(
+                f"Qt6 archive-dispatch artifacts missing: {suite_id}"
+            )
+        for digest, artifact in artifacts.items():
+            try:
+                compressed = base64.b64decode(
+                    artifact["base64"], validate=True
+                )
+                raw = zlib.decompress(compressed)
+            except (KeyError, ValueError, zlib.error) as error:
+                raise ClosurePlanError(
+                    f"Qt6 archive-dispatch artifact invalid: {suite_id}"
+                ) from error
+            if (
+                len(raw) != artifact.get("bytes")
+                or sha256(raw) != digest
+            ):
+                raise ClosurePlanError(
+                    f"Qt6 archive-dispatch artifact drift: {suite_id}"
+                )
+        referenced = set()
+        for case in cases.values():
+            for observation in case.values():
+                if not isinstance(observation, dict):
+                    continue
+                for stream in ("stdout", "stderr"):
+                    reference = observation.get(stream)
+                    if (
+                        isinstance(reference, dict)
+                        and "artifact_sha256" in reference
+                    ):
+                        referenced.add(reference["artifact_sha256"])
+        if referenced != set(artifacts):
+            raise ClosurePlanError(
+                f"Qt6 archive-dispatch artifact references drift: {suite_id}"
+            )
+
+    npm_cases = suites["npm"]["qt6"]["cases"]
+    for name, case in npm_cases.items():
+        output = case["harness"]["output"]
+        expected_direct = name in {
+            "npm-valid.tgz",
+            "npm-invalid-json.tgz",
+        }
+        if (
+            output.get("direct_npm_valid") is not expected_direct
+            or output.get("automatic", {}).get("initial_filetype")
+            != "Binary"
+            or output.get("forced_npm", {}).get("initial_filetype")
+            != "NPM"
+            or case.get("release_repetition_1")
+            != case.get("release_repetition_2")
+        ):
+            raise ClosurePlanError(
+                f"Qt6 archive-dispatch NPM semantic drift: {name}"
+            )
+    generic_cases = suites["generic_archive"]["qt6"]["cases"]
+    for name, case in generic_cases.items():
+        output = case["harness"]["output"]
+        quiet_records = output.get("forced_archive_quiet", {}).get(
+            "records"
+        )
+        verbose_records = output.get(
+            "forced_archive_verbose", {}
+        ).get("records")
+        if (
+            output.get("automatic_quiet", {}).get("initial_filetype")
+            == "Archive"
+            or not isinstance(quiet_records, list)
+            or len(quiet_records) != 1
+            or quiet_records[0].get("name") != "Unknown"
+            or not isinstance(verbose_records, list)
+            or len(verbose_records) != 1
+            or verbose_records[0].get("name") == "Unknown"
+            or case.get("release_repetition_1_quiet")
+            != case.get("release_repetition_2_quiet")
+            or case.get("release_repetition_1_verbose")
+            != case.get("release_repetition_2_verbose")
+        ):
+            raise ClosurePlanError(
+                f"Qt6 archive-dispatch generic semantic drift: {name}"
+            )
 
 
 def _validate_database_matrix_report(report: dict[str, Any]) -> None:
@@ -3280,6 +3566,7 @@ def _validate_inputs(
     _validate_dos_dispatch_report(reports[REPORT_PATHS[40]])
     _validate_bw_dispatch_report(reports[REPORT_PATHS[41]])
     _validate_path_boundary_report(reports[REPORT_PATHS[42]])
+    _validate_archive_dispatch_report(reports[REPORT_PATHS[43]])
     return capabilities
 
 

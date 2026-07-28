@@ -139,6 +139,9 @@ priority、数据库分层、init/include、file type、deep/heuristic 和 Unkno
   raw streams 逐字节相同，见
   [`legacy-dispatch-oracle.md`](legacy-dispatch-oracle.md)。
 - `CAP-DISPATCH-004`：APK、IPA、JAR、ZIP、RAR、NPM、ISO9660、通用 Archive。
+  六个公共成员、两个 property-only branch 和 TAR/GZIP generic controls 已由
+  双轮 Qt6/Qt5 evidence 闭合，见
+  [`qt6-archive-dispatch-runtime-evidence.md`](qt6-archive-dispatch-runtime-evidence.md)。
 - `CAP-DISPATCH-005`：DEX、Java Class、PYC。
 - `CAP-DISPATCH-006`：PDF、CFBF。
 - `CAP-DISPATCH-007`：JPEG、PNG、通用 Image。

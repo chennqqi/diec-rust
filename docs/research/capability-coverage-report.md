@@ -35,8 +35,8 @@ Phase 0 报告固定四个平台：
 
 独立的逐行
 [`qt6-capability-closure-plan.md`](qt6-capability-closure-plan.md)
-已接纳 66 项 `evidence_complete`、1 项 partial、1 项 missing；这表示 Qt6
-关闭工作已有可审计进度，但在剩余 2 项及差异评审完成前，不改变本报告
+已接纳 67 项 `evidence_complete`、0 项 partial、1 项 missing；这表示 Qt6
+关闭工作已有可审计进度，但在剩余 1 项及差异评审完成前，不改变本报告
 68-cell `platform_missing` 的平台门禁语义。
 
 ## 3. 分类语义

@@ -121,7 +121,7 @@ tmpfs/volume 与 timeout 限制。描述性 wall time、CPU 和 RSS 不进入跨
 本证据关闭的是固定 Linux Qt5 行边界在固定 Linux Qt6 oracle 上的重放缺口。
 它不关闭跨平台路径 gap，也不授权 Rust 正式实现提前越过 Phase 0 设计门禁。
 
-Qt6 能力闭环仍剩：
-
-- `CAP-DISPATCH-004`：完整 archive family dispatch；
-- `CAP-NEST-009`：独立 depth/累计展开量边界。
+后续
+[`qt6-archive-dispatch-runtime-evidence.md`](qt6-archive-dispatch-runtime-evidence.md)
+已关闭 `CAP-DISPATCH-004`。Qt6 能力闭环现在只剩 `CAP-NEST-009`：
+独立 depth/累计展开量边界。
