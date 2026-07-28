@@ -52,6 +52,7 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
                     "pdf-member-deflate.7z",
                     "pdf-member.rar",
                     "pdf-member.cab",
+                    "pdf-member-mszip.cab",
                     "pdf-member.iso",
                 },
             )
@@ -204,7 +205,7 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             module.sevenzip_uint64(0x10000000000000000)
 
-    def test_cab_and_iso_store_payload_once(self):
+    def test_cab_methods_and_iso_store_are_deterministic(self):
         module = load_module()
         cab = module.make_cab_stored(module.PAYLOAD_NAME, module.PDF)
         self.assertEqual(cab[0:4], b"MSCF")
@@ -213,6 +214,51 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
             len(cab),
         )
         self.assertEqual(cab.count(module.PDF), 1)
+
+        mszip = module.make_cab_mszip(
+            module.PAYLOAD_NAME,
+            module.PDF,
+        )
+        self.assertEqual(mszip[0:4], b"MSCF")
+        self.assertEqual(
+            int.from_bytes(mszip[8:12], "little"),
+            len(mszip),
+        )
+        folder_offset = 36
+        data_offset = int.from_bytes(
+            mszip[folder_offset : folder_offset + 4],
+            "little",
+        )
+        self.assertEqual(
+            int.from_bytes(
+                mszip[folder_offset + 6 : folder_offset + 8],
+                "little",
+            ),
+            1,
+        )
+        compressed_size = int.from_bytes(
+            mszip[data_offset + 4 : data_offset + 6],
+            "little",
+        )
+        uncompressed_size = int.from_bytes(
+            mszip[data_offset + 6 : data_offset + 8],
+            "little",
+        )
+        compressed = mszip[
+            data_offset + 8 : data_offset + 8 + compressed_size
+        ]
+        self.assertEqual(compressed[:2], b"CK")
+        self.assertEqual(uncompressed_size, len(module.PDF))
+        self.assertEqual(
+            zlib.decompress(compressed[2:], wbits=-15),
+            module.PDF,
+        )
+        with self.assertRaisesRegex(ValueError, "unsupported CAB method"):
+            module.make_cab_single(
+                module.PAYLOAD_NAME,
+                module.PDF,
+                "Unknown",
+            )
 
         iso = module.make_iso9660_stored(
             module.PAYLOAD_NAME,

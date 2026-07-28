@@ -205,8 +205,23 @@ def make_rar4_stored(name: str, payload: bytes) -> bytes:
     return signature + main + file_header + payload + end
 
 
-def make_cab_stored(name: str, payload: bytes) -> bytes:
+def make_cab_single(
+    name: str,
+    payload: bytes,
+    method: str,
+) -> bytes:
     encoded_name = name.encode("ascii") + b"\0"
+    if method == "Store":
+        compressed = payload
+        compression_type = 0
+    elif method == "MSZIP":
+        compressor = zlib.compressobj(level=9, wbits=-15)
+        compressed = b"CK" + (
+            compressor.compress(payload) + compressor.flush()
+        )
+        compression_type = 1
+    else:
+        raise ValueError(f"unsupported CAB method: {method}")
     header_size = 36
     folder_size = 8
     file_entry = struct.pack(
@@ -223,9 +238,9 @@ def make_cab_stored(name: str, payload: bytes) -> bytes:
     data_block = struct.pack(
         "<IHH",
         0,
+        len(compressed),
         len(payload),
-        len(payload),
-    ) + payload
+    ) + compressed
     cabinet_size = data_offset + len(data_block)
     header = struct.pack(
         "<4sIIIIIBBHHHHH",
@@ -243,8 +258,21 @@ def make_cab_stored(name: str, payload: bytes) -> bytes:
         0xD1EC,
         0,
     )
-    folder = struct.pack("<IHH", data_offset, 1, 0)
+    folder = struct.pack(
+        "<IHH",
+        data_offset,
+        1,
+        compression_type,
+    )
     return header + folder + file_entry + data_block
+
+
+def make_cab_stored(name: str, payload: bytes) -> bytes:
+    return make_cab_single(name, payload, "Store")
+
+
+def make_cab_mszip(name: str, payload: bytes) -> bytes:
+    return make_cab_single(name, payload, "MSZIP")
 
 
 def both16(value: int) -> bytes:
@@ -406,6 +434,12 @@ FIXTURES = (
         "CAB store archive containing one PDF",
         "Store",
         make_cab_stored,
+    ),
+    (
+        "pdf-member-mszip.cab",
+        "CAB MSZIP archive containing one PDF",
+        "MSZIP",
+        make_cab_mszip,
     ),
     (
         "pdf-member.iso",

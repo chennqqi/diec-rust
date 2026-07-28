@@ -32,8 +32,8 @@ Last updated: 2026-07-28
 这些结果关闭 `CAP-GAP-006` 中 ZIP deflate、ZipCrypto 无密码、CRC、压缩流损坏、
 截断、central-directory 缺失、越界 offset、未知 method、路径 metadata、
 mixed-member filter 和 1 MiB/843.58:1 压缩比测试点。该 gap 仍因更高资源边界、
-AES、其他压缩算法、7Z/RAR/CAB 的压缩/加密/solid/multi-volume、系统化畸形矩阵
-和跨平台行为保持开放。
+AES、其他 ZIP 压缩算法、7Z/RAR 的压缩、CAB LZX/Quantum、加密、
+solid/multi-volume、系统化畸形矩阵和跨平台行为保持开放。
 
 机器报告：
 [`archive-adversarial-engine-qt5.json`](data/archive-adversarial-engine-qt5.json)。
@@ -162,9 +162,9 @@ python tools\upstream\probe_archive_adversarial_harness.py `
   字段；
 - 未覆盖 data descriptor、ZIP64、extra fields、symlink、重复名称、绝对路径、
   NUL/编码和多磁盘；
-- 7Z LZMA/LZMA2/BZip2/Deflate 正例已由后续
+- 7Z LZMA/LZMA2/BZip2/Deflate 与 CAB MSZIP 正例已由后续
   [`archive-format-behavior.md`](archive-format-behavior.md) 固定；仍未覆盖
-  7Z PPMd7/Deflate64/filter/AES，以及 RAR/CAB 的压缩、加密、
+  7Z PPMd7/Deflate64/filter/AES、RAR 压缩、CAB LZX/Quantum，以及加密、
   solid/multi-volume 和恢复记录；
 - 未测真实磁盘耗尽、16 MiB 临时文件分支、OOM、长时间取消与并发；
 - Windows、macOS 和 Linux Qt6 仍需固定对应 oracle。

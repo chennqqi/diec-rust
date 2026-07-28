@@ -532,6 +532,136 @@
         }
       }
     },
+    "pdf-member-mszip.cab": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/pdf-member-mszip.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "43365978857c75f4532c759b0bb414b2948a3d5fa53d56694e44af79f72eb6fa",
+          "bytes": 1396,
+          "sha256": "43365978857c75f4532c759b0bb414b2948a3d5fa53d56694e44af79f72eb6fa"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 1,
+          "stream_detection_names": [
+            "PDF",
+            "HeaderComment"
+          ],
+          "stream_filetypes": [
+            "PDF"
+          ],
+          "stream_sizes": [
+            "331"
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/pdf-member-mszip.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "43365978857c75f4532c759b0bb414b2948a3d5fa53d56694e44af79f72eb6fa",
+          "bytes": 1396,
+          "sha256": "43365978857c75f4532c759b0bb414b2948a3d5fa53d56694e44af79f72eb6fa"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 1,
+          "stream_detection_names": [
+            "PDF",
+            "HeaderComment"
+          ],
+          "stream_filetypes": [
+            "PDF"
+          ],
+          "stream_sizes": [
+            "331"
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/pdf-member-mszip.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "2fd55ca1aae2e1ff04eb50c185592a6048d5654f09cbff12f29c24422087db28",
+          "bytes": 513,
+          "sha256": "2fd55ca1aae2e1ff04eb50c185592a6048d5654f09cbff12f29c24422087db28"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "stream_detection_names": [],
+          "stream_filetypes": [],
+          "stream_sizes": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/pdf-member-mszip.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "2fd55ca1aae2e1ff04eb50c185592a6048d5654f09cbff12f29c24422087db28",
+          "bytes": 513,
+          "sha256": "2fd55ca1aae2e1ff04eb50c185592a6048d5654f09cbff12f29c24422087db28"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "stream_detection_names": [],
+          "stream_filetypes": [],
+          "stream_sizes": []
+        }
+      }
+    },
     "pdf-member.7z": {
       "archive": {
         "arguments": [
@@ -1056,6 +1186,7 @@
   "facts": {
     "aggressive_does_not_change_single_member_results": true,
     "archive_option_is_required_for_unpacking": true,
+    "cab_mszip_member_reaches_pdf_rules": true,
     "cab_root_dispatches_as_binary_while_archive_adapter_runs": true,
     "cab_store_member_reaches_pdf_rules": true,
     "iso9660_store_member_reaches_pdf_rules": true,
@@ -1071,11 +1202,11 @@
   "failures": [],
   "fixture_manifest": {
     "path": "docs/research/data/archive-format-corpus.json",
-    "sample_count": 8,
-    "sha256": "5a023700ba896148970b6b72491517c0743d8cd456404d41b0a8e7e786b7f6c9"
+    "sample_count": 9,
+    "sha256": "5765868cc71c283e9447b66f692bd63a70165685ac946fa7cba760588871c03b"
   },
   "generator": "tools/upstream/probe_archive_format_harness.py",
-  "generator_sha256": "fb066c92e157748c43c9a9a1ea0c9dd3f445d8d055badf0639315311790084ca",
+  "generator_sha256": "1e94588cbc4104119fc7511c4a149fccc69827e8bff3df48d5eb086462e317e7",
   "image": {
     "id": "sha256:771b9094a2ad6ab4f6250dd89307ab727c07a1aae885a894695abfa959bab5dc",
     "name": "diec-rust/upstream-archive-harness:74eaf505",
@@ -1091,7 +1222,7 @@
     },
     "fixture_generator": {
       "path": "tools/corpus/generate_archive_format_fixture.py",
-      "sha256": "e918a203a09b132c37cfbd6e450e6eb6d037a942520c4b6e63498af735e8387a"
+      "sha256": "225b4d615e45e2837d21105ff5034708a24dae31bb86e075e0c6cd28bb846765"
     },
     "harness_dockerfile": {
       "path": "tools/upstream/Dockerfile.archive-harness-qt5",
@@ -1121,6 +1252,18 @@
       "base64": "eNqFkM8KgkAQxu/7FLKnghIJQfBWJ5+h8LDobA3YKrubYOK7504k7JY0p+H7fvN3ZNEcvAYLlTU8jy4kuBiXjBCJDdihg5nhJ1RCD3znE6hk69xQb6U0YJ2ThFYnNCjrWs8ZIQWIGnTIGXzS4PSQhVYvmgf4m/++4N+ei6/EnYZl+zN2a5CxGtXVYUdd3bCHPCJ+k8Tpdq3o8z/xLlnDetAGW0Ufi1P+BU2eUjJfL9nEGHsBGEZeRg==",
       "bytes": 473,
       "compressed_bytes": 184,
+      "encoding": "zlib+base64"
+    },
+    "2fd55ca1aae2e1ff04eb50c185592a6048d5654f09cbff12f29c24422087db28": {
+      "base64": "eNp1kMELgjAYxe/7K8YgKBBRoyJv2qVLp26Jh2GfNbAp2xJM/N9ziwSn7vTx3m/ve1uLcH/IHRRkSpIQJ0bQpx0mg+SsANVU0DMkZpyKhjhjgvG81K6tl3kuQWnHs62KCuBKR/eTQc5A7yBsTrKPWRwcjrZV0+IN4+bzL5j0vFxvrHLwPnB3Kwf7WNew0oc7nL5MgVMULyFSCcYfGopE9mQ1hLin177rbTfJ3K50Ken/zfSXs4TVICQruSb1EjKhupGSorGeog4h9AWGImhZ",
+      "bytes": 513,
+      "compressed_bytes": 207,
+      "encoding": "zlib+base64"
+    },
+    "43365978857c75f4532c759b0bb414b2948a3d5fa53d56694e44af79f72eb6fa": {
+      "base64": "eNq9k11rgzAUhu/zK0Jg0IKUqt3KvGs7ym4Gg96teBH0uAX8ImZCV/zvS2Lt5kesu5lXIec5H3nf4xlh+ZEQBASiIB4+6gv1na8njUQsBnHKQTJky1LKT8RqEyyNMhXt3mdRVIBQkWU3lFMOqVCl5Ukjz0BD4F2uYF+6sbN+7IZKGn9Ce/LhF/TmfDm8sdzCD87i/s7CNlZjdKpfc1Ka6AF2m60JKQRn6buCNjz4YCV4WNIze7F058ehXr6pUiMzreuYsBJ4wbJUkaoJ6VGVNVWS3+a+Pu1NHQ0OT3B6xPGD4EATo6oX513XNupg3oDxZ099V28LzBINbMM+4wkVHpZJchlW81uZjQ+RzrtFt5ZgRYxwZf2XOPUfvMuSRBo9XSaZkMcMuIdbBWbggBtEoTtZt+BS6A/KNT1G5BuM+Gic+4nX9z6qEELfVGQMEg==",
+      "bytes": 1396,
+      "compressed_bytes": 334,
       "encoding": "zlib+base64"
     },
     "4e58bd1f5bb9ece6048e59f07b0b76e2424ae724a77d7560e93a70de059314f1": {

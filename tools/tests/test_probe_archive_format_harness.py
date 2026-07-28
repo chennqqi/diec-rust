@@ -43,7 +43,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
         report = self.report
         self.assertEqual(
             sha256(self.report_bytes),
-            "acc82f0f3ed7bd63bb2214158b6a263165863dadba53cf1ded6f7b76abdca53e",
+            "fe8361ff34099b94fac9a886c804b263d83210f23058a8c00fc6187dbd9ec3f1",
         )
         self.assertEqual(report["schema_version"], 1)
         self.assertEqual(
@@ -65,7 +65,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
             report["fixture_manifest"],
             {
                 "path": "docs/research/data/archive-format-corpus.json",
-                "sample_count": 8,
+                "sample_count": 9,
                 "sha256": sha256(MANIFEST_PATH.read_bytes()),
             },
         )
@@ -152,7 +152,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
     def test_raw_artifacts_reconstruct_every_execution(self):
         report = self.report
         artifacts = report["raw_artifacts"]
-        self.assertEqual(len(artifacts), 17)
+        self.assertEqual(len(artifacts), 19)
         for digest, artifact in artifacts.items():
             with self.subTest(digest=digest):
                 self.assertEqual(artifact["encoding"], "zlib+base64")
@@ -186,6 +186,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
             "pdf-member-lzma.7z": ("Binary", ["7-Zip"]),
             "pdf-member-lzma2.7z": ("Binary", ["7-Zip"]),
             "pdf-member.cab": ("Binary", ["CAB"]),
+            "pdf-member-mszip.cab": ("Binary", ["CAB"]),
             "pdf-member.iso": ("ISO 9660", ["Unknown"]),
             "pdf-member.rar": ("RAR", ["Unknown"]),
         }
@@ -253,7 +254,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
         self.assertIn("CAP-GAP-006", document)
         self.assertIn("archive-format-engine-qt5.json", document)
         self.assertIn(
-            "acc82f0f3ed7bd63bb2214158b6a263165863dadba53cf1ded6f7b76abdca53e",
+            "fe8361ff34099b94fac9a886c804b263d83210f23058a8c00fc6187dbd9ec3f1",
             document,
         )
 

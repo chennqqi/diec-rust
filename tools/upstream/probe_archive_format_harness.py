@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Probe 7Z coders plus stored RAR4/CAB/ISO members with the pinned harness."""
+"""Probe 7Z coders plus RAR4/CAB/ISO members with the pinned harness."""
 
 from __future__ import annotations
 
@@ -83,6 +83,10 @@ EXPECTED_ROOTS = {
         "filetype": "Binary",
         "root_names": ["CAB"],
     },
+    "pdf-member-mszip.cab": {
+        "filetype": "Binary",
+        "root_names": ["CAB"],
+    },
     "pdf-member.iso": {
         "filetype": "ISO 9660",
         "root_names": ["Unknown"],
@@ -136,7 +140,7 @@ def load_fixture(
         raise ProbeError("unsupported fixture schema")
     if manifest["generator"] != FIXTURE_GENERATOR:
         raise ProbeError("unexpected fixture generator")
-    if len(manifest["samples"]) != 8:
+    if len(manifest["samples"]) != 9:
         raise ProbeError("fixture sample count changed")
 
     declared = set()
@@ -454,6 +458,7 @@ def build_report(
         "sevenzip_deflate_member_reaches_pdf_rules": True,
         "rar4_store_member_reaches_pdf_rules": True,
         "cab_store_member_reaches_pdf_rules": True,
+        "cab_mszip_member_reaches_pdf_rules": True,
         "iso9660_store_member_reaches_pdf_rules": True,
         "cab_root_dispatches_as_binary_while_archive_adapter_runs": True,
         "sevenzip_root_dispatches_as_binary_while_archive_adapter_runs": True,
