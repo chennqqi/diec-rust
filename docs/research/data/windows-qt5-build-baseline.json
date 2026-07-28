@@ -227,7 +227,7 @@
   },
   "windows_cli_special_remaining": {
     "path": "docs/research/data/windows-qt5-cli-special-remaining.json",
-    "sha256": "4a30d09625e040d56f7abaeb1ef0e3d4df3474a6cc19ca28f9994c8facdc81e0",
+    "sha256": "194f1a1610a18f8fe22814315e67e345ed967c3f61df2604ac3089abbc538cc2",
     "sample_count": 21,
     "case_count": 399,
     "execution_count": 798,

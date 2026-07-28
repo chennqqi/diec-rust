@@ -82,6 +82,49 @@ class CollectWindowsCliSpecialRemainingTests(unittest.TestCase):
             (False, None),
         )
 
+    def test_info_projection_normalizes_only_verified_file_name(self):
+        projection = {
+            "data": {
+                "Info": {
+                    "File name": "I:/private/corpus/minimal.elf",
+                    "File size": "64 bytes",
+                }
+            }
+        }
+        self.assertEqual(
+            MODULE.normalize_projection(
+                "info_json",
+                projection,
+                "minimal.elf",
+            ),
+            {
+                "data": {
+                    "Info": {
+                        "File name": "<corpus>/minimal.elf",
+                        "File size": "64 bytes",
+                    }
+                }
+            },
+        )
+        self.assertEqual(
+            projection["data"]["Info"]["File name"],
+            "I:/private/corpus/minimal.elf",
+        )
+        self.assertIs(
+            MODULE.normalize_projection(
+                "entropy_json",
+                projection,
+                "minimal.elf",
+            ),
+            projection,
+        )
+        with self.assertRaises(MODULE.ProbeError):
+            MODULE.normalize_projection(
+                "info_json",
+                projection,
+                "another.elf",
+            )
+
     @unittest.skipUnless(REPORT.exists(), "Windows special matrix not collected")
     def test_committed_report_is_bound_and_complete(self):
         report = json.loads(REPORT.read_text(encoding="utf-8"))
@@ -180,7 +223,9 @@ class CollectWindowsCliSpecialRemainingTests(unittest.TestCase):
     def test_report_contains_no_local_absolute_paths(self):
         text = REPORT.read_text(encoding="utf-8")
         self.assertNotIn("I:\\\\tmp", text)
+        self.assertNotIn("I:/tmp", text)
         self.assertNotIn("diec-windows-script-source", text)
+        self.assertNotIn("diec-windows-corpus", text)
         self.assertIn("<source>/Detect-It-Easy/db", text)
         self.assertIn("<corpus>/minimal.elf", text)
 

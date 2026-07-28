@@ -31,7 +31,7 @@
     "sha256": "f5adabeedeaf3bb69b8e52f8de20efd0f0b87bd4dcd247610d4e876b9266f329"
   },
   "generator": "tools/upstream/collect_windows_cli_special_remaining.py",
-  "generator_sha256": "af6e46a8a5ae9987ef5ee53c9d7c9fa890ea6982c39e85a4c31677d04ed0e4b1",
+  "generator_sha256": "a75c50154818a281b5e2746268a8e28deb69888ead17ec10609c6704641dcff7",
   "helpers": {
     "matrix_definitions": {
       "path": "tools/upstream/compare_cli_oracles.py",
@@ -455,7 +455,7 @@
         "first_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/Minimal.class",
+              "File name": "<corpus>/Minimal.class",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "59",
@@ -477,7 +477,7 @@
         "second_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/Minimal.class",
+              "File name": "<corpus>/Minimal.class",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "59",
@@ -549,7 +549,7 @@
         "first_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/Minimal.class",
+              "File name": "<corpus>/Minimal.class",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "59",
@@ -569,7 +569,7 @@
         "second_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/Minimal.class",
+              "File name": "<corpus>/Minimal.class",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "59",
@@ -1353,7 +1353,7 @@
               "Architecture": "386",
               "Endianness": "LE",
               "Extension": "so",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal-elf32.elf",
+              "File name": "<corpus>/minimal-elf32.elf",
               "File type": "ELF32",
               "MIME": "application/x-elf",
               "Mode": "32-bit",
@@ -1381,7 +1381,7 @@
               "Architecture": "386",
               "Endianness": "LE",
               "Extension": "so",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal-elf32.elf",
+              "File name": "<corpus>/minimal-elf32.elf",
               "File type": "ELF32",
               "MIME": "application/x-elf",
               "Mode": "32-bit",
@@ -1459,7 +1459,7 @@
               "Architecture": "386",
               "Endianness": "LE",
               "Extension": "so",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal-elf32.elf",
+              "File name": "<corpus>/minimal-elf32.elf",
               "File type": "ELF32",
               "MIME": "application/x-elf",
               "Mode": "32-bit",
@@ -1485,7 +1485,7 @@
               "Architecture": "386",
               "Endianness": "LE",
               "Extension": "so",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal-elf32.elf",
+              "File name": "<corpus>/minimal-elf32.elf",
               "File type": "ELF32",
               "MIME": "application/x-elf",
               "Mode": "32-bit",
@@ -2269,7 +2269,7 @@
         "first_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal-fat.macho",
+              "File name": "<corpus>/minimal-fat.macho",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "360",
@@ -2291,7 +2291,7 @@
         "second_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal-fat.macho",
+              "File name": "<corpus>/minimal-fat.macho",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "360",
@@ -2363,7 +2363,7 @@
         "first_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal-fat.macho",
+              "File name": "<corpus>/minimal-fat.macho",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "360",
@@ -2383,7 +2383,7 @@
         "second_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal-fat.macho",
+              "File name": "<corpus>/minimal-fat.macho",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "360",
@@ -3167,7 +3167,7 @@
               "Architecture": "I386",
               "Endianness": "LE",
               "Extension": "macho",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal-macho32.macho",
+              "File name": "<corpus>/minimal-macho32.macho",
               "File type": "Mach-O32",
               "MIME": "application/x-mach-o",
               "Mode": "32-bit",
@@ -3195,7 +3195,7 @@
               "Architecture": "I386",
               "Endianness": "LE",
               "Extension": "macho",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal-macho32.macho",
+              "File name": "<corpus>/minimal-macho32.macho",
               "File type": "Mach-O32",
               "MIME": "application/x-mach-o",
               "Mode": "32-bit",
@@ -3273,7 +3273,7 @@
               "Architecture": "I386",
               "Endianness": "LE",
               "Extension": "macho",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal-macho32.macho",
+              "File name": "<corpus>/minimal-macho32.macho",
               "File type": "Mach-O32",
               "MIME": "application/x-mach-o",
               "Mode": "32-bit",
@@ -3299,7 +3299,7 @@
               "Architecture": "I386",
               "Endianness": "LE",
               "Extension": "macho",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal-macho32.macho",
+              "File name": "<corpus>/minimal-macho32.macho",
               "File type": "Mach-O32",
               "MIME": "application/x-mach-o",
               "Mode": "32-bit",
@@ -4086,7 +4086,7 @@
               "Architecture": "AMD64",
               "Endianness": "LE",
               "Extension": "exe",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal-pe64.exe",
+              "File name": "<corpus>/minimal-pe64.exe",
               "File type": "PE64",
               "MIME": "application/x-msdos-program",
               "Mode": "64-bit",
@@ -4114,7 +4114,7 @@
               "Architecture": "AMD64",
               "Endianness": "LE",
               "Extension": "exe",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal-pe64.exe",
+              "File name": "<corpus>/minimal-pe64.exe",
               "File type": "PE64",
               "MIME": "application/x-msdos-program",
               "Mode": "64-bit",
@@ -4192,7 +4192,7 @@
               "Architecture": "AMD64",
               "Endianness": "LE",
               "Extension": "exe",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal-pe64.exe",
+              "File name": "<corpus>/minimal-pe64.exe",
               "File type": "PE64",
               "MIME": "application/x-msdos-program",
               "Mode": "64-bit",
@@ -4218,7 +4218,7 @@
               "Architecture": "AMD64",
               "Endianness": "LE",
               "Extension": "exe",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal-pe64.exe",
+              "File name": "<corpus>/minimal-pe64.exe",
               "File type": "PE64",
               "MIME": "application/x-msdos-program",
               "Mode": "64-bit",
@@ -5003,7 +5003,7 @@
           "data": {
             "Info": {
               "Extension": "apk",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.apk",
+              "File name": "<corpus>/minimal.apk",
               "File type": "APK",
               "Size": "350",
               "String": "APK"
@@ -5025,7 +5025,7 @@
           "data": {
             "Info": {
               "Extension": "apk",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.apk",
+              "File name": "<corpus>/minimal.apk",
               "File type": "APK",
               "Size": "350",
               "String": "APK"
@@ -5097,7 +5097,7 @@
           "data": {
             "Info": {
               "Extension": "apk",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.apk",
+              "File name": "<corpus>/minimal.apk",
               "File type": "APK",
               "Size": "350",
               "String": "APK"
@@ -5117,7 +5117,7 @@
           "data": {
             "Info": {
               "Extension": "apk",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.apk",
+              "File name": "<corpus>/minimal.apk",
               "File type": "APK",
               "Size": "350",
               "String": "APK"
@@ -5897,7 +5897,7 @@
         "first_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.cfbf",
+              "File name": "<corpus>/minimal.cfbf",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "512",
@@ -5919,7 +5919,7 @@
         "second_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.cfbf",
+              "File name": "<corpus>/minimal.cfbf",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "512",
@@ -5991,7 +5991,7 @@
         "first_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.cfbf",
+              "File name": "<corpus>/minimal.cfbf",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "512",
@@ -6011,7 +6011,7 @@
         "second_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.cfbf",
+              "File name": "<corpus>/minimal.cfbf",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "512",
@@ -6835,7 +6835,7 @@
           "data": {
             "Info": {
               "Extension": "dex",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.dex",
+              "File name": "<corpus>/minimal.dex",
               "File type": "DEX",
               "MIME": "application/vnd.android.dex",
               "Size": "112",
@@ -6859,7 +6859,7 @@
           "data": {
             "Info": {
               "Extension": "dex",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.dex",
+              "File name": "<corpus>/minimal.dex",
               "File type": "DEX",
               "MIME": "application/vnd.android.dex",
               "Size": "112",
@@ -6933,7 +6933,7 @@
           "data": {
             "Info": {
               "Extension": "dex",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.dex",
+              "File name": "<corpus>/minimal.dex",
               "File type": "DEX",
               "MIME": "application/vnd.android.dex",
               "Size": "112",
@@ -6955,7 +6955,7 @@
           "data": {
             "Info": {
               "Extension": "dex",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.dex",
+              "File name": "<corpus>/minimal.dex",
               "File type": "DEX",
               "MIME": "application/vnd.android.dex",
               "Size": "112",
@@ -7740,7 +7740,7 @@
               "Architecture": "AMD64",
               "Endianness": "LE",
               "Extension": "so",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.elf",
+              "File name": "<corpus>/minimal.elf",
               "File type": "ELF64",
               "MIME": "application/x-elf",
               "Mode": "64-bit",
@@ -7768,7 +7768,7 @@
               "Architecture": "AMD64",
               "Endianness": "LE",
               "Extension": "so",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.elf",
+              "File name": "<corpus>/minimal.elf",
               "File type": "ELF64",
               "MIME": "application/x-elf",
               "Mode": "64-bit",
@@ -7846,7 +7846,7 @@
               "Architecture": "AMD64",
               "Endianness": "LE",
               "Extension": "so",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.elf",
+              "File name": "<corpus>/minimal.elf",
               "File type": "ELF64",
               "MIME": "application/x-elf",
               "Mode": "64-bit",
@@ -7872,7 +7872,7 @@
               "Architecture": "AMD64",
               "Endianness": "LE",
               "Extension": "so",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.elf",
+              "File name": "<corpus>/minimal.elf",
               "File type": "ELF64",
               "MIME": "application/x-elf",
               "Mode": "64-bit",
@@ -8656,7 +8656,7 @@
         "first_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.ipa",
+              "File name": "<corpus>/minimal.ipa",
               "File type": "Unknown",
               "Size": "300",
               "String": "Unknown"
@@ -8677,7 +8677,7 @@
         "second_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.ipa",
+              "File name": "<corpus>/minimal.ipa",
               "File type": "Unknown",
               "Size": "300",
               "String": "Unknown"
@@ -8748,7 +8748,7 @@
         "first_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.ipa",
+              "File name": "<corpus>/minimal.ipa",
               "File type": "Unknown",
               "Size": "300",
               "String": "Unknown"
@@ -8767,7 +8767,7 @@
         "second_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.ipa",
+              "File name": "<corpus>/minimal.ipa",
               "File type": "Unknown",
               "Size": "300",
               "String": "Unknown"
@@ -9547,7 +9547,7 @@
         "first_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.iso",
+              "File name": "<corpus>/minimal.iso",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "36864",
@@ -9569,7 +9569,7 @@
         "second_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.iso",
+              "File name": "<corpus>/minimal.iso",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "36864",
@@ -9641,7 +9641,7 @@
         "first_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.iso",
+              "File name": "<corpus>/minimal.iso",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "36864",
@@ -9661,7 +9661,7 @@
         "second_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.iso",
+              "File name": "<corpus>/minimal.iso",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "36864",
@@ -10443,7 +10443,7 @@
           "data": {
             "Info": {
               "Extension": "jar",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.jar",
+              "File name": "<corpus>/minimal.jar",
               "File type": "JAR",
               "Size": "324",
               "String": "JAR"
@@ -10465,7 +10465,7 @@
           "data": {
             "Info": {
               "Extension": "jar",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.jar",
+              "File name": "<corpus>/minimal.jar",
               "File type": "JAR",
               "Size": "324",
               "String": "JAR"
@@ -10537,7 +10537,7 @@
           "data": {
             "Info": {
               "Extension": "jar",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.jar",
+              "File name": "<corpus>/minimal.jar",
               "File type": "JAR",
               "Size": "324",
               "String": "JAR"
@@ -10557,7 +10557,7 @@
           "data": {
             "Info": {
               "Extension": "jar",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.jar",
+              "File name": "<corpus>/minimal.jar",
               "File type": "JAR",
               "Size": "324",
               "String": "JAR"
@@ -11340,7 +11340,7 @@
               "Architecture": "X86_64",
               "Endianness": "LE",
               "Extension": "macho",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.macho",
+              "File name": "<corpus>/minimal.macho",
               "File type": "Mach-O64",
               "MIME": "application/x-mach-o",
               "Mode": "64-bit",
@@ -11368,7 +11368,7 @@
               "Architecture": "X86_64",
               "Endianness": "LE",
               "Extension": "macho",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.macho",
+              "File name": "<corpus>/minimal.macho",
               "File type": "Mach-O64",
               "MIME": "application/x-mach-o",
               "Mode": "64-bit",
@@ -11446,7 +11446,7 @@
               "Architecture": "X86_64",
               "Endianness": "LE",
               "Extension": "macho",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.macho",
+              "File name": "<corpus>/minimal.macho",
               "File type": "Mach-O64",
               "MIME": "application/x-mach-o",
               "Mode": "64-bit",
@@ -11472,7 +11472,7 @@
               "Architecture": "X86_64",
               "Endianness": "LE",
               "Extension": "macho",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.macho",
+              "File name": "<corpus>/minimal.macho",
               "File type": "Mach-O64",
               "MIME": "application/x-mach-o",
               "Mode": "64-bit",
@@ -12256,7 +12256,7 @@
         "first_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.pyc",
+              "File name": "<corpus>/minimal.pyc",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "17",
@@ -12278,7 +12278,7 @@
         "second_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.pyc",
+              "File name": "<corpus>/minimal.pyc",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "17",
@@ -12350,7 +12350,7 @@
         "first_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.pyc",
+              "File name": "<corpus>/minimal.pyc",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "17",
@@ -12370,7 +12370,7 @@
         "second_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.pyc",
+              "File name": "<corpus>/minimal.pyc",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "17",
@@ -13194,7 +13194,7 @@
           "data": {
             "Info": {
               "Extension": "rar",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.rar",
+              "File name": "<corpus>/minimal.rar",
               "File type": "RAR",
               "MIME": "application/x-rar-compressed",
               "Size": "21",
@@ -13218,7 +13218,7 @@
           "data": {
             "Info": {
               "Extension": "rar",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.rar",
+              "File name": "<corpus>/minimal.rar",
               "File type": "RAR",
               "MIME": "application/x-rar-compressed",
               "Size": "21",
@@ -13292,7 +13292,7 @@
           "data": {
             "Info": {
               "Extension": "rar",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.rar",
+              "File name": "<corpus>/minimal.rar",
               "File type": "RAR",
               "MIME": "application/x-rar-compressed",
               "Size": "21",
@@ -13314,7 +13314,7 @@
           "data": {
             "Info": {
               "Extension": "rar",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/minimal.rar",
+              "File name": "<corpus>/minimal.rar",
               "File type": "RAR",
               "MIME": "application/x-rar-compressed",
               "Size": "21",
@@ -14139,7 +14139,7 @@
           "data": {
             "Info": {
               "Extension": "tar",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/payload.tar",
+              "File name": "<corpus>/payload.tar",
               "File type": "tar",
               "MIME": "application/x-tar",
               "Size": "2048",
@@ -14162,7 +14162,7 @@
           "data": {
             "Info": {
               "Extension": "tar",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/payload.tar",
+              "File name": "<corpus>/payload.tar",
               "File type": "tar",
               "MIME": "application/x-tar",
               "Size": "2048",
@@ -14235,7 +14235,7 @@
           "data": {
             "Info": {
               "Extension": "tar",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/payload.tar",
+              "File name": "<corpus>/payload.tar",
               "File type": "tar",
               "MIME": "application/x-tar",
               "Size": "2048",
@@ -14256,7 +14256,7 @@
           "data": {
             "Info": {
               "Extension": "tar",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/payload.tar",
+              "File name": "<corpus>/payload.tar",
               "File type": "tar",
               "MIME": "application/x-tar",
               "Size": "2048",
@@ -15164,7 +15164,7 @@
           "data": {
             "Info": {
               "Extension": "gz",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/payload.txt.gz",
+              "File name": "<corpus>/payload.txt.gz",
               "File type": "GZIP",
               "MIME": "application/gzip",
               "Size": "54",
@@ -15187,7 +15187,7 @@
           "data": {
             "Info": {
               "Extension": "gz",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/payload.txt.gz",
+              "File name": "<corpus>/payload.txt.gz",
               "File type": "GZIP",
               "MIME": "application/gzip",
               "Size": "54",
@@ -15260,7 +15260,7 @@
           "data": {
             "Info": {
               "Extension": "gz",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/payload.txt.gz",
+              "File name": "<corpus>/payload.txt.gz",
               "File type": "GZIP",
               "MIME": "application/gzip",
               "Size": "54",
@@ -15281,7 +15281,7 @@
           "data": {
             "Info": {
               "Extension": "gz",
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/payload.txt.gz",
+              "File name": "<corpus>/payload.txt.gz",
               "File type": "GZIP",
               "MIME": "application/gzip",
               "Size": "54",
@@ -16062,7 +16062,7 @@
         "first_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/pixel.bmp",
+              "File name": "<corpus>/pixel.bmp",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "58",
@@ -16084,7 +16084,7 @@
         "second_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/pixel.bmp",
+              "File name": "<corpus>/pixel.bmp",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "58",
@@ -16156,7 +16156,7 @@
         "first_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/pixel.bmp",
+              "File name": "<corpus>/pixel.bmp",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "58",
@@ -16176,7 +16176,7 @@
         "second_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/pixel.bmp",
+              "File name": "<corpus>/pixel.bmp",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "58",
@@ -16957,7 +16957,7 @@
         "first_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/pixel.jpg",
+              "File name": "<corpus>/pixel.jpg",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "56",
@@ -16979,7 +16979,7 @@
         "second_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/pixel.jpg",
+              "File name": "<corpus>/pixel.jpg",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "56",
@@ -17051,7 +17051,7 @@
         "first_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/pixel.jpg",
+              "File name": "<corpus>/pixel.jpg",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "56",
@@ -17071,7 +17071,7 @@
         "second_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/pixel.jpg",
+              "File name": "<corpus>/pixel.jpg",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "56",
@@ -17852,7 +17852,7 @@
         "first_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/pixel.png",
+              "File name": "<corpus>/pixel.png",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "72",
@@ -17874,7 +17874,7 @@
         "second_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/pixel.png",
+              "File name": "<corpus>/pixel.png",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "72",
@@ -17946,7 +17946,7 @@
         "first_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/pixel.png",
+              "File name": "<corpus>/pixel.png",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "72",
@@ -17966,7 +17966,7 @@
         "second_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/pixel.png",
+              "File name": "<corpus>/pixel.png",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "72",
@@ -18747,7 +18747,7 @@
         "first_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/tone.wav",
+              "File name": "<corpus>/tone.wav",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "46",
@@ -18769,7 +18769,7 @@
         "second_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/tone.wav",
+              "File name": "<corpus>/tone.wav",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "46",
@@ -18841,7 +18841,7 @@
         "first_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/tone.wav",
+              "File name": "<corpus>/tone.wav",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "46",
@@ -18861,7 +18861,7 @@
         "second_projection": {
           "data": {
             "Info": {
-              "File name": "I:/tmp/diec-windows-corpus-74eaf505/tone.wav",
+              "File name": "<corpus>/tone.wav",
               "File type": "Binary",
               "MIME": "application/octet-stream",
               "Size": "46",

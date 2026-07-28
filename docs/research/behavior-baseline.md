@@ -74,6 +74,12 @@ special 优先级关系 21/21 成立。十份 Windows runtime 报告累计 2,034
 详见
 [`windows-special-matrix-extension.md`](windows-special-matrix-extension.md)。
 
+同一剩余 21 样本 × 19-case special 矩阵又在固定 Linux Qt5/Qt6 image 上
+各执行一次，共 798 次容器执行。399/399 raw observations 逐字节相同；231 个
+JSON/XML projection 在 Qt5/Qt6 及 Windows/Linux Qt5 间相同，跨 Windows 时
+只规范化已验证的 info `File name`。详见
+[`cross-platform-special-matrix-extension.md`](cross-platform-special-matrix-extension.md)。
+
 ## 语料来源与安全
 
 所有样本由
@@ -394,8 +400,8 @@ elapsed 值与固定规则执行序列另见
   Archive 的 ZIP/TAR/GZIP 自动与强制 quiet/verbose 控制现由
   [`generic-archive-dispatch-reachability.md`](generic-archive-dispatch-reachability.md)
   固定。
-- 新增 11 个格式的 Windows scan、output 和 special 矩阵已固定；Linux 对应
-  output/special 扩展仍待采集。
+- 新增 11 个格式的 Windows scan、output 和 special 矩阵已固定；Linux
+  special 扩展已完成，普通 output 扩展仍待采集。
 - 输出格式的转义和嵌套排序已由
   [`cli-output-boundaries.md`](cli-output-boundaries.md) 的 10-case 双 oracle
   固定；首轮 Linux 特殊 filename、非 UTF-8、symlink/权限/深度及 4096 项目录

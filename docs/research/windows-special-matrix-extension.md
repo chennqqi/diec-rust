@@ -26,6 +26,9 @@ entropy/info/struct case 扩展到 baseline corpus 剩余 21 个样本，每项�
 `Hash`/`Hash#MD5`/unknown struct 与模式优先级；不把它外推为所有格式专用
 struct method、畸形输入或跨平台 raw-byte 等价。
 
+后续 Linux Qt5/Qt6 同矩阵及 Windows structured projection 三方差分见
+[`cross-platform-special-matrix-extension.md`](cross-platform-special-matrix-extension.md)。
+
 ## Case 与结构化证据
 
 19 个 case 直接复用
@@ -82,9 +85,10 @@ python tools\upstream\collect_windows_cli_special_remaining.py `
 机器报告
 [`windows-qt5-cli-special-remaining.json`](data/windows-qt5-cli-special-remaining.json)
 SHA-256 为
-`4a30d09625e040d56f7abaeb1ef0e3d4df3474a6cc19ca28f9994c8facdc81e0`。
-报告只保存去本机路径 argv、原始流摘要和结构化 projection，不保存本机绝对
-路径或 raw stream bytes。
+`194f1a1610a18f8fe22814315e67e345ed967c3f61df2604ac3089abbc538cc2`。
+info projection 的 `data.Info["File name"]` 在验证 basename 后固定为
+`<corpus>/<sample>`；其他 projection 不规范化。报告只保存去本机路径 argv、
+原始流摘要和结构化 projection，不保存本机绝对路径或 raw stream bytes。
 
 ## 尚未覆盖
 

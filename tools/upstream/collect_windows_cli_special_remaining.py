@@ -116,6 +116,32 @@ def parse_output(case_name: str, data: bytes) -> tuple[bool, object | None]:
     return bool(text), None
 
 
+def normalize_projection(
+    case_name: str,
+    projection: object | None,
+    sample_name: str,
+) -> object | None:
+    if case_name not in {"info_json", "info_all_output_flags"}:
+        return projection
+    if not isinstance(projection, dict):
+        raise ProbeError("info projection is not an object")
+    data = projection.get("data")
+    if not isinstance(data, dict):
+        raise ProbeError("info projection has no data object")
+    info = data.get("Info")
+    if not isinstance(info, dict):
+        raise ProbeError("info projection has no Info object")
+    file_name = info.get("File name")
+    if (
+        not isinstance(file_name, str)
+        or not file_name.replace("\\", "/").endswith(f"/{sample_name}")
+    ):
+        raise ProbeError("info projection file name differs from sample")
+    normalized = json.loads(json.dumps(projection, ensure_ascii=False))
+    normalized["data"]["Info"]["File name"] = f"<corpus>/{sample_name}"
+    return normalized
+
+
 def main() -> int:
     args = parse_args()
     if os.name != "nt":
@@ -220,6 +246,16 @@ def main() -> int:
             second_valid, second_projection = parse_output(
                 case.name,
                 second.stdout,
+            )
+            first_projection = normalize_projection(
+                case.name,
+                first_projection,
+                sample_name,
+            )
+            second_projection = normalize_projection(
+                case.name,
+                second_projection,
+                sample_name,
             )
             paired.update(
                 {

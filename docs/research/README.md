@@ -199,6 +199,9 @@ Phase 0 计划形成：
 - [`windows-special-matrix-extension.md`](windows-special-matrix-extension.md)：
   将 Windows entropy/info/struct 的 19-case 矩阵扩展到全部 26 个 baseline
   样本，固定结构化输出有效性和四组模式优先级（Draft）。
+- [`cross-platform-special-matrix-extension.md`](cross-platform-special-matrix-extension.md)：
+  将剩余 21 样本的 19-case special 矩阵接入 Linux Qt5/Qt6，并与 Windows
+  structured projection 做三方差分（Draft）。
 - [`cli-path-behavior.md`](cli-path-behavior.md)：多目标、目录递归、输出聚合和错误顺序（Draft）。
 - [`special-path-behavior.md`](special-path-behavior.md)：固定 Linux Qt5 的
   NFC/NFD、非 UTF-8 原始字节、控制字符、hidden、前导短横线和目录排序
@@ -518,6 +521,9 @@ Phase 0 计划形成：
 - [`data/windows-qt5-cli-special-remaining.json`](data/windows-qt5-cli-special-remaining.json)：
   剩余 21 个 baseline 样本 × 19 个 entropy/info/struct case 的 798 次原生
   Windows Qt5 执行、结构化 projection 和优先级检查。
+- [`data/linux-qt5-qt6-cli-special-remaining.json`](data/linux-qt5-qt6-cli-special-remaining.json)：
+  剩余 21 个 baseline 样本 × 19 个 special case 的 798 次 Linux Qt5/Qt6
+  容器执行、raw 差分及 Windows structured projection 对照。
 - [`data/windows-qt5-cli-path-nested.json`](data/windows-qt5-cli-path-nested.json)：
   14-case path 与 32-case nested 的 92 次原生 Windows Qt5 执行。
 - [`data/windows-qt5-cli-database.json`](data/windows-qt5-cli-database.json)：

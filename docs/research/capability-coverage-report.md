@@ -56,6 +56,11 @@ archive/cache/permission engine-only、其他 engine-only 能力以及跨平台�
 仍缺失，coverage 生成器尚不接纳 Windows 为完整 runtime
 baseline，68 行继续保守标记为 `platform_missing`。
 
+另有 798 次 Linux Qt5/Qt6 special 扩展执行把剩余 21 样本的 399 对 raw
+observations 固定为逐字节相同，并证明 231 个 JSON/XML projection 在
+Qt5/Qt6 及规范化后的 Windows/Linux Qt5 间相同。这加强 special 证据，但不
+替代上述 Windows engine-only/path 门禁。
+
 独立的逐行
 [`qt6-capability-closure-plan.md`](qt6-capability-closure-plan.md)
 已接纳 68 项 `evidence_complete`、0 项 partial、0 项 missing，并把

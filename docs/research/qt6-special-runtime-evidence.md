@@ -101,6 +101,12 @@ python tools/upstream/probe_qt6_cli_special_boundaries.py \
   --output <special-boundary-report.json>
 ```
 
+后续
+[`cross-platform-special-matrix-extension.md`](cross-platform-special-matrix-extension.md)
+把首轮未包含的 21 个 baseline 样本接入相同 19-case 矩阵。新增 399 对
+Qt5/Qt6 raw observations 全部逐字节相同，且 231 个 JSON/XML projection 在
+Qt5/Qt6 之间相同；因此 Linux Qt5/Qt6 special baseline 现覆盖全部 26 个样本。
+
 机器清单生成器独立要求：五样本 × 19 case catalog 完整且无 special
 differences；28-case catalog 完整、两侧全相同、关系断言和固定源码审计全部
 通过。任一 case、oracle、source hash 或关系漂移都会拒绝能力晋级。

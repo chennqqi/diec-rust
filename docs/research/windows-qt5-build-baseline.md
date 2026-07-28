@@ -259,7 +259,7 @@ baseline 样本。
 [`windows-special-matrix-extension.md`](windows-special-matrix-extension.md)
 将首轮 19 个 special case 扩展到剩余 21 个 baseline 样本。399 case 各运行
 两次；机器报告 SHA-256 为
-`4a30d09625e040d56f7abaeb1ef0e3d4df3474a6cc19ca28f9994c8facdc81e0`。
+`194f1a1610a18f8fe22814315e67e345ed967c3f61df2604ac3089abbc538cc2`。
 
 798 次执行全部稳定、退出 `0` 且 stderr 为空；9 类 JSON、2 类 XML 及 8 类
 非空 UTF-8 输出全部有效。entropy/info 的 all-output-flags 分别等于自身 JSON；
