@@ -23,6 +23,7 @@ Last updated: 2026-07-28
   [`special-path-behavior.md`](../research/special-path-behavior.md)、
   [`path-filesystem-behavior.md`](../research/path-filesystem-behavior.md)、
   [`large-directory-behavior.md`](../research/large-directory-behavior.md)、
+  [`path-toctou-behavior.md`](../research/path-toctou-behavior.md)、
   [`cli-special-modes.md`](../research/cli-special-modes.md) 与
   [`database-error-behavior.md`](../research/database-error-behavior.md)：
   CLI、特殊模式和失败行为；
@@ -179,8 +180,8 @@ manifest 规则：
 ### Tier A：项目生成
 
 首选。生成器只用代码内常量或已验证 Tier A 输入，写出 deterministic manifest。
-现有 baseline、path、path-filesystem、large-path、database 和 nested
-generators 属于该层。测试要求：
+现有 baseline、path、path-filesystem、large-path、path-toctou、database 和
+nested generators 属于该层。测试要求：
 
 - 两次生成逐字节相同；
 - 目录无额外文件、symlink 或 path escape；

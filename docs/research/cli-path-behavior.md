@@ -31,6 +31,11 @@ flat/nested 4096 项、descending creation 对照、描述性资源及取消接�
 overload 支持可选 `PDSTRUCT`，但发布 CLI 使用默认 `nullptr`，因此 target
 expansion 没有可达的 cooperative cancellation。
 
+枚举—打开 race 由
+[`path-toctou-behavior.md`](path-toctou-behavior.md) 的 stable old/new、
+old→new 原子替换和 unlink 四组同步 case 固定：第二项按打开时当前 path 解析，
+不复验枚举时 target identity。
+
 ## 源码语义
 
 固定上游
@@ -198,4 +203,4 @@ CSV 同样在记录之间插入不符合 CSV schema 的 filename/colon 行。pla
 - Windows/macOS path separator、绝对路径和枚举顺序。
 - 能实际触发 resource/overlay 的 `--recursivescan` 样本。
 - flat/nested 4096 项、描述性时间/RSS 与 CLI cancellation 接线已覆盖；仍缺
-  枚举/打开间 TOCTOU 和剩余 locale/filesystem 边界。
+  剩余 locale/filesystem ordering 边界。枚举/打开间 TOCTOU 已由同步实验覆盖。

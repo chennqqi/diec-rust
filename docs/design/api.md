@@ -22,6 +22,8 @@ Last updated: 2026-07-28
   symlink、权限、深度与 self-cycle 的固定边界；
 - [`large-directory-behavior.md`](../research/large-directory-behavior.md)：Linux
   4096-entry 顺序、资源和 CLI cancellation 接线边界；
+- [`path-toctou-behavior.md`](../research/path-toctou-behavior.md)：Linux
+  枚举后 symlink replacement/unlink 与 reopen 结果；
 - [`cli-special-modes.md`](../research/cli-special-modes.md)：entropy/info/struct 分派；
 - [`database-error-behavior.md`](../research/database-error-behavior.md)：数据库和 I/O 错误；
 - [`nested-scan-behavior.md`](../research/nested-scan-behavior.md)：嵌套 file-part 及顺序；
@@ -549,6 +551,11 @@ SafetyDeviation 门禁见
 overload 虽支持 `PDSTRUCT`，发布 CLI 两参数调用却使用默认 `nullptr`。modern
 实现不得据此省略 cancellation，也不能在没有 diagnostic 的情况下把 4096 设为
 隐式 cap。
+
+固定 TOCTOU Oracle 已证明：完整枚举后的 old→new symlink 原子替换会得到 new
+target 结果，unlink 仍打印 logical prefix 却返回空成功文档。`SafeCanonical`
+必须在 handle-relative open 后复验 stable identity/type/root；不能只在枚举时
+`stat()` 后按字符串 reopen。
 
 ## 15. CLI 命令面
 

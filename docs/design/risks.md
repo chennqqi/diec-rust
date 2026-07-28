@@ -500,7 +500,10 @@ baseline 的变更都要检查本表。
   creation 不改变 name order；源码证明 Formats overload 有可选 `PDSTRUCT`
   cancellation check，但发布 CLI 使用默认 `nullptr`。见
   [`large-directory-behavior.md`](../research/large-directory-behavior.md)。
-  TOCTOU、剩余 locale/filesystem 和三平台矩阵仍缺；ADR 0014 现为 Proposed。
+  第四组 4-case SIGSTOP 双 Oracle 又证明枚举后 old→new symlink 原子替换会按
+  new target 扫描，unlink 仍打印 prefix 但返回空成功文档；见
+  [`path-toctou-behavior.md`](../research/path-toctou-behavior.md)。
+  剩余 locale/filesystem 和三平台矩阵仍缺；ADR 0014 现为 Proposed。
 - **验证**：隔离 path corpus 覆盖循环、权限、重复、特殊字符、TOCTOU、全部
   traversal limit 和三平台排序；legacy/canonical 差异有精确 waiver。
 - **关闭**：ADR 0014 Accepted，API/profile 数值冻结，handle-relative traversal

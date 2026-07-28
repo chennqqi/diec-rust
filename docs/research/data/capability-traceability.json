@@ -56,7 +56,14 @@
         "tools/corpus/generate_large_path_fixture.py",
         "tools/upstream/probe_large_path_behavior.py",
         "tools/tests/test_generate_large_path_fixture.py",
-        "tools/tests/test_probe_large_path_behavior.py"
+        "tools/tests/test_probe_large_path_behavior.py",
+        "docs/research/path-toctou-behavior.md",
+        "docs/research/data/path-toctou-fixture.json",
+        "docs/research/data/path-toctou-engine-qt5.json",
+        "tools/corpus/generate_path_toctou_fixture.py",
+        "tools/upstream/probe_path_toctou_behavior.py",
+        "tools/tests/test_generate_path_toctou_fixture.py",
+        "tools/tests/test_probe_path_toctou_behavior.py"
       ]
     },
     "engine_contract": {
@@ -410,7 +417,7 @@
   "coverage_gaps": [
     {
       "id": "CAP-GAP-003",
-      "scope": "TOCTOU and remaining Linux locale/filesystem path behavior",
+      "scope": "remaining Linux locale/filesystem ordering behavior",
       "platforms": [
         "linux-x86_64-qt5"
       ]

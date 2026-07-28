@@ -1,0 +1,746 @@
+{
+  "binaries": {
+    "cmake": {
+      "path": "/opt/die-build/src/console/diec",
+      "sha256": "da1fab49f7ba5970d1fc1c7fe3d4f380cf5e8775dd8097207e7b3c30f08236cf",
+      "size": 8248008
+    },
+    "qmake": {
+      "path": "/opt/die-source/build/release/diec",
+      "sha256": "721ec846507a8567aae07e91dcd1f576182481ae0dc1595b1f19e4a3e859b79d",
+      "size": 7684384
+    }
+  },
+  "cases": {
+    "remove_old_after_enumeration": {
+      "action": "unlink_symlink",
+      "blocker_document": {
+        "records": [
+          {
+            "entropy": 0,
+            "name": "Data",
+            "offset": 0,
+            "size": 33554432,
+            "status": "not packed"
+          }
+        ],
+        "status": "not packed",
+        "total": 0
+      },
+      "expected_open_target": "missing",
+      "initial_target": "../targets/old.bin",
+      "link_document": {
+        "records": [],
+        "status": "",
+        "total": 0
+      },
+      "link_document_sha256": "3e290661d7ec2213d5cdcde50d44ed727819e5bab3a7542b657ecc3747acc9f7",
+      "observations": {
+        "cmake": {
+          "after": {
+            "link_identity": null,
+            "link_target": null,
+            "target_identity": null
+          },
+          "before": {
+            "link_identity": {
+              "device": 114,
+              "inode": 7,
+              "mode": 41471,
+              "size": 18
+            },
+            "link_target": "../targets/old.bin",
+            "target_identity": {
+              "device": 114,
+              "inode": 5,
+              "mode": 33188,
+              "size": 0
+            }
+          },
+          "exit_code": 0,
+          "host_wall_elapsed_ms": 674,
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "31dfa241dfb8647d9949db4fe2a405e864c1c298184da4254b4572fa03e948f0",
+            "bytes": 345,
+            "sha256": "31dfa241dfb8647d9949db4fe2a405e864c1c298184da4254b4572fa03e948f0"
+          },
+          "synchronization": {
+            "first_line": "/work/case/a-blocker.bin:",
+            "mutation_while_stopped": true,
+            "stop_signal": 19
+          },
+          "usage": {
+            "major_page_faults": 0,
+            "max_rss_kib": 21236,
+            "system_cpu_ns": 23475000,
+            "user_cpu_ns": 148679000,
+            "wall_elapsed_ns": 175849723
+          }
+        },
+        "qmake": {
+          "after": {
+            "link_identity": null,
+            "link_target": null,
+            "target_identity": null
+          },
+          "before": {
+            "link_identity": {
+              "device": 114,
+              "inode": 7,
+              "mode": 41471,
+              "size": 18
+            },
+            "link_target": "../targets/old.bin",
+            "target_identity": {
+              "device": 114,
+              "inode": 5,
+              "mode": 33188,
+              "size": 0
+            }
+          },
+          "exit_code": 0,
+          "host_wall_elapsed_ms": 665,
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "31dfa241dfb8647d9949db4fe2a405e864c1c298184da4254b4572fa03e948f0",
+            "bytes": 345,
+            "sha256": "31dfa241dfb8647d9949db4fe2a405e864c1c298184da4254b4572fa03e948f0"
+          },
+          "synchronization": {
+            "first_line": "/work/case/a-blocker.bin:",
+            "mutation_while_stopped": true,
+            "stop_signal": 19
+          },
+          "usage": {
+            "major_page_faults": 0,
+            "max_rss_kib": 21236,
+            "system_cpu_ns": 31956000,
+            "user_cpu_ns": 139809000,
+            "wall_elapsed_ns": 172620433
+          }
+        }
+      },
+      "stdout_sha256": "31dfa241dfb8647d9949db4fe2a405e864c1c298184da4254b4572fa03e948f0"
+    },
+    "stable_new": {
+      "action": "none",
+      "blocker_document": {
+        "records": [
+          {
+            "entropy": 0,
+            "name": "Data",
+            "offset": 0,
+            "size": 33554432,
+            "status": "not packed"
+          }
+        ],
+        "status": "not packed",
+        "total": 0
+      },
+      "expected_open_target": "new",
+      "initial_target": "../targets/new.bin",
+      "link_document": {
+        "records": [
+          {
+            "entropy": 8,
+            "name": "Data",
+            "offset": 0,
+            "size": 4096,
+            "status": "packed"
+          }
+        ],
+        "status": "packed",
+        "total": 8
+      },
+      "link_document_sha256": "fef169fb0ba1b2ecb0be62570c44855c136e2904467633401616c9f6d764ab27",
+      "observations": {
+        "cmake": {
+          "after": {
+            "link_identity": {
+              "device": 114,
+              "inode": 7,
+              "mode": 41471,
+              "size": 18
+            },
+            "link_target": "../targets/new.bin",
+            "target_identity": {
+              "device": 114,
+              "inode": 6,
+              "mode": 33188,
+              "size": 4096
+            }
+          },
+          "before": {
+            "link_identity": {
+              "device": 114,
+              "inode": 7,
+              "mode": 41471,
+              "size": 18
+            },
+            "link_target": "../targets/new.bin",
+            "target_identity": {
+              "device": 114,
+              "inode": 6,
+              "mode": 33188,
+              "size": 4096
+            }
+          },
+          "exit_code": 0,
+          "host_wall_elapsed_ms": 663,
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "49f59670345f16c63d0d1143e8fd219a1081659da30c5e8d7150ca260a2b4f57",
+            "bytes": 507,
+            "sha256": "49f59670345f16c63d0d1143e8fd219a1081659da30c5e8d7150ca260a2b4f57"
+          },
+          "synchronization": {
+            "first_line": "/work/case/a-blocker.bin:",
+            "mutation_while_stopped": true,
+            "stop_signal": 19
+          },
+          "usage": {
+            "major_page_faults": 0,
+            "max_rss_kib": 21240,
+            "system_cpu_ns": 16049000,
+            "user_cpu_ns": 152466000,
+            "wall_elapsed_ns": 169267639
+          }
+        },
+        "qmake": {
+          "after": {
+            "link_identity": {
+              "device": 114,
+              "inode": 7,
+              "mode": 41471,
+              "size": 18
+            },
+            "link_target": "../targets/new.bin",
+            "target_identity": {
+              "device": 114,
+              "inode": 6,
+              "mode": 33188,
+              "size": 4096
+            }
+          },
+          "before": {
+            "link_identity": {
+              "device": 114,
+              "inode": 7,
+              "mode": 41471,
+              "size": 18
+            },
+            "link_target": "../targets/new.bin",
+            "target_identity": {
+              "device": 114,
+              "inode": 6,
+              "mode": 33188,
+              "size": 4096
+            }
+          },
+          "exit_code": 0,
+          "host_wall_elapsed_ms": 669,
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "49f59670345f16c63d0d1143e8fd219a1081659da30c5e8d7150ca260a2b4f57",
+            "bytes": 507,
+            "sha256": "49f59670345f16c63d0d1143e8fd219a1081659da30c5e8d7150ca260a2b4f57"
+          },
+          "synchronization": {
+            "first_line": "/work/case/a-blocker.bin:",
+            "mutation_while_stopped": true,
+            "stop_signal": 19
+          },
+          "usage": {
+            "major_page_faults": 0,
+            "max_rss_kib": 21108,
+            "system_cpu_ns": 24230000,
+            "user_cpu_ns": 141345000,
+            "wall_elapsed_ns": 166199842
+          }
+        }
+      },
+      "stdout_sha256": "49f59670345f16c63d0d1143e8fd219a1081659da30c5e8d7150ca260a2b4f57"
+    },
+    "stable_old": {
+      "action": "none",
+      "blocker_document": {
+        "records": [
+          {
+            "entropy": 0,
+            "name": "Data",
+            "offset": 0,
+            "size": 33554432,
+            "status": "not packed"
+          }
+        ],
+        "status": "not packed",
+        "total": 0
+      },
+      "expected_open_target": "old",
+      "initial_target": "../targets/old.bin",
+      "link_document": {
+        "records": [
+          {
+            "entropy": 0,
+            "name": "Data",
+            "offset": 0,
+            "size": 0,
+            "status": "not packed"
+          }
+        ],
+        "status": "not packed",
+        "total": 0
+      },
+      "link_document_sha256": "036a129584e0c186d61ba5f1ad379fbcf9c6c2e4ba22da48d81602a91c4ee381",
+      "observations": {
+        "cmake": {
+          "after": {
+            "link_identity": {
+              "device": 114,
+              "inode": 7,
+              "mode": 41471,
+              "size": 18
+            },
+            "link_target": "../targets/old.bin",
+            "target_identity": {
+              "device": 114,
+              "inode": 5,
+              "mode": 33188,
+              "size": 0
+            }
+          },
+          "before": {
+            "link_identity": {
+              "device": 114,
+              "inode": 7,
+              "mode": 41471,
+              "size": 18
+            },
+            "link_target": "../targets/old.bin",
+            "target_identity": {
+              "device": 114,
+              "inode": 5,
+              "mode": 33188,
+              "size": 0
+            }
+          },
+          "exit_code": 0,
+          "host_wall_elapsed_ms": 671,
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "d2bdb2d9ad473838d3529143c33278ab5d09991f9c0b7755b3bf092f128f2d4c",
+            "bytes": 512,
+            "sha256": "d2bdb2d9ad473838d3529143c33278ab5d09991f9c0b7755b3bf092f128f2d4c"
+          },
+          "synchronization": {
+            "first_line": "/work/case/a-blocker.bin:",
+            "mutation_while_stopped": true,
+            "stop_signal": 19
+          },
+          "usage": {
+            "major_page_faults": 0,
+            "max_rss_kib": 21112,
+            "system_cpu_ns": 24265000,
+            "user_cpu_ns": 141549000,
+            "wall_elapsed_ns": 166615004
+          }
+        },
+        "qmake": {
+          "after": {
+            "link_identity": {
+              "device": 114,
+              "inode": 7,
+              "mode": 41471,
+              "size": 18
+            },
+            "link_target": "../targets/old.bin",
+            "target_identity": {
+              "device": 114,
+              "inode": 5,
+              "mode": 33188,
+              "size": 0
+            }
+          },
+          "before": {
+            "link_identity": {
+              "device": 114,
+              "inode": 7,
+              "mode": 41471,
+              "size": 18
+            },
+            "link_target": "../targets/old.bin",
+            "target_identity": {
+              "device": 114,
+              "inode": 5,
+              "mode": 33188,
+              "size": 0
+            }
+          },
+          "exit_code": 0,
+          "host_wall_elapsed_ms": 662,
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "d2bdb2d9ad473838d3529143c33278ab5d09991f9c0b7755b3bf092f128f2d4c",
+            "bytes": 512,
+            "sha256": "d2bdb2d9ad473838d3529143c33278ab5d09991f9c0b7755b3bf092f128f2d4c"
+          },
+          "synchronization": {
+            "first_line": "/work/case/a-blocker.bin:",
+            "mutation_while_stopped": true,
+            "stop_signal": 19
+          },
+          "usage": {
+            "major_page_faults": 0,
+            "max_rss_kib": 21236,
+            "system_cpu_ns": 35772000,
+            "user_cpu_ns": 131164000,
+            "wall_elapsed_ns": 167487279
+          }
+        }
+      },
+      "stdout_sha256": "d2bdb2d9ad473838d3529143c33278ab5d09991f9c0b7755b3bf092f128f2d4c"
+    },
+    "swap_old_to_new": {
+      "action": "replace_symlink_with_new_target",
+      "blocker_document": {
+        "records": [
+          {
+            "entropy": 0,
+            "name": "Data",
+            "offset": 0,
+            "size": 33554432,
+            "status": "not packed"
+          }
+        ],
+        "status": "not packed",
+        "total": 0
+      },
+      "expected_open_target": "new",
+      "initial_target": "../targets/old.bin",
+      "link_document": {
+        "records": [
+          {
+            "entropy": 8,
+            "name": "Data",
+            "offset": 0,
+            "size": 4096,
+            "status": "packed"
+          }
+        ],
+        "status": "packed",
+        "total": 8
+      },
+      "link_document_sha256": "fef169fb0ba1b2ecb0be62570c44855c136e2904467633401616c9f6d764ab27",
+      "observations": {
+        "cmake": {
+          "after": {
+            "link_identity": {
+              "device": 114,
+              "inode": 8,
+              "mode": 41471,
+              "size": 18
+            },
+            "link_target": "../targets/new.bin",
+            "target_identity": {
+              "device": 114,
+              "inode": 6,
+              "mode": 33188,
+              "size": 4096
+            }
+          },
+          "before": {
+            "link_identity": {
+              "device": 114,
+              "inode": 7,
+              "mode": 41471,
+              "size": 18
+            },
+            "link_target": "../targets/old.bin",
+            "target_identity": {
+              "device": 114,
+              "inode": 5,
+              "mode": 33188,
+              "size": 0
+            }
+          },
+          "exit_code": 0,
+          "host_wall_elapsed_ms": 674,
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "49f59670345f16c63d0d1143e8fd219a1081659da30c5e8d7150ca260a2b4f57",
+            "bytes": 507,
+            "sha256": "49f59670345f16c63d0d1143e8fd219a1081659da30c5e8d7150ca260a2b4f57"
+          },
+          "synchronization": {
+            "first_line": "/work/case/a-blocker.bin:",
+            "mutation_while_stopped": true,
+            "stop_signal": 19
+          },
+          "usage": {
+            "major_page_faults": 0,
+            "max_rss_kib": 21492,
+            "system_cpu_ns": 23628000,
+            "user_cpu_ns": 141771000,
+            "wall_elapsed_ns": 166232532
+          }
+        },
+        "qmake": {
+          "after": {
+            "link_identity": {
+              "device": 114,
+              "inode": 8,
+              "mode": 41471,
+              "size": 18
+            },
+            "link_target": "../targets/new.bin",
+            "target_identity": {
+              "device": 114,
+              "inode": 6,
+              "mode": 33188,
+              "size": 4096
+            }
+          },
+          "before": {
+            "link_identity": {
+              "device": 114,
+              "inode": 7,
+              "mode": 41471,
+              "size": 18
+            },
+            "link_target": "../targets/old.bin",
+            "target_identity": {
+              "device": 114,
+              "inode": 5,
+              "mode": 33188,
+              "size": 0
+            }
+          },
+          "exit_code": 0,
+          "host_wall_elapsed_ms": 658,
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "49f59670345f16c63d0d1143e8fd219a1081659da30c5e8d7150ca260a2b4f57",
+            "bytes": 507,
+            "sha256": "49f59670345f16c63d0d1143e8fd219a1081659da30c5e8d7150ca260a2b4f57"
+          },
+          "synchronization": {
+            "first_line": "/work/case/a-blocker.bin:",
+            "mutation_while_stopped": true,
+            "stop_signal": 19
+          },
+          "usage": {
+            "major_page_faults": 0,
+            "max_rss_kib": 21236,
+            "system_cpu_ns": 23724000,
+            "user_cpu_ns": 146301000,
+            "wall_elapsed_ns": 171504432
+          }
+        }
+      },
+      "stdout_sha256": "49f59670345f16c63d0d1143e8fd219a1081659da30c5e8d7150ca260a2b4f57"
+    }
+  },
+  "facts": {
+    "logical_symlink_path_prefix_is_preserved": true,
+    "qmake_and_cmake_outputs_are_byte_equal": true,
+    "remove_after_enumeration_still_scans_stored_path": true,
+    "stable_controls_are_distinct": true,
+    "swap_happens_after_full_enumeration_sync_point": true,
+    "swap_old_to_new_matches_stable_new": true,
+    "swap_old_to_new_no_longer_matches_stable_old": true,
+    "unlink_result_matches_observed_missing_open": true
+  },
+  "failures": [],
+  "fixture": {
+    "manifest_path": "docs/research/data/path-toctou-fixture.json",
+    "manifest_sha256": "aeb693989cf55e2a45209567fc7be03283139299c3dfe563cba86ad4f0e9fd55",
+    "materialization": {
+      "blocker": {
+        "kind": "sparse_zero_file",
+        "path": "/work/case/a-blocker.bin",
+        "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302",
+        "size": 33554432
+      },
+      "case_directory": "/work/case",
+      "link": {
+        "kind": "symlink",
+        "path": "/work/case/z-link.bin"
+      },
+      "new_target": {
+        "path": "/work/targets/new.bin",
+        "recipe": "bytes(range(256)) repeated 16 times",
+        "sha256": "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193",
+        "size": 4096
+      },
+      "old_target": {
+        "path": "/work/targets/old.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      }
+    },
+    "synchronization": {
+      "mutation": "after waitpid(WUNTRACED), before SIGCONT",
+      "resume_signal": "SIGCONT",
+      "stdout": "stdbuf -oL",
+      "stop_after_line": "/work/case/a-blocker.bin:",
+      "stop_signal": "SIGSTOP"
+    }
+  },
+  "generator": "tools/upstream/probe_path_toctou_behavior.py",
+  "generator_sha256": "310f8d18329a283ebe856338eaac93ce2baba2b452363b7251879cce850d6bce",
+  "images": {
+    "cmake": {
+      "id": "sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040",
+      "image": "diec-rust/upstream-oracle-cmake:74eaf505",
+      "repo_digests": [
+        "diec-rust/upstream-oracle-cmake@sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040"
+      ],
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    },
+    "qmake": {
+      "id": "sha256:cc5561a5d256c7912227a8ecf4ba9c6b9178c99911e471017d3c3988bac964ab",
+      "image": "diec-rust/upstream-oracle:74eaf505-repro",
+      "repo_digests": [
+        "diec-rust/upstream-oracle@sha256:cc5561a5d256c7912227a8ecf4ba9c6b9178c99911e471017d3c3988bac964ab"
+      ],
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    }
+  },
+  "local_sources": {
+    "fixture_generator": {
+      "path": "tools/corpus/generate_path_toctou_fixture.py",
+      "sha256": "4738de8ed21bbdec683dc3dc65a5231ed9bf37575a555633005d551520c720d3"
+    }
+  },
+  "passed": true,
+  "platform": "linux-x86_64-qt5",
+  "raw_artifacts": {
+    "31dfa241dfb8647d9949db4fe2a405e864c1c298184da4254b4572fa03e948f0": {
+      "base64": "eNp9UEEOgjAQvPcVTc9ijcCFs78wHpZSEtLaJe0aI4S/26LBiMQ5TXZmdjcj7+iNVBC0hKy2qIz2+7pzFRsZjxBeK/RNEBU/z4OEcWGzRTvy2D+i5bD7VhxcdRyLExCIlYZtGzRthEI3pFCel2VR5Me1SkC39I5wSLyH+HAjFss0s8srs+19a4QENl1nE5OfEobMds78beB3+9bOJ+9xU1k=",
+      "bytes": 345,
+      "compressed_bytes": 161,
+      "encoding": "zlib+base64"
+    },
+    "49f59670345f16c63d0d1143e8fd219a1081659da30c5e8d7150ca260a2b4f57": {
+      "base64": "eNqtUNEKgkAQfL+vkHvOTlLDfPYvoodVTxDtVu42IsV/787CSAwi2qdlZ4adGXFF3YgCjBTg5y0WjdTbvFYpG5hnh2tZoC4NT73jdHAzzNtEkYo0djdLCTbviIKztGeeAQFfYFhVRtKKyNS9E4VhHEdRuFuiBHRxdrhC8jqwhks+U8ZpOz0069wnRkjQuu9sZOJVQu+3tWp+byD5YwNRcNh/TP9t8vXUiU19B312dYo=",
+      "bytes": 507,
+      "compressed_bytes": 176,
+      "encoding": "zlib+base64"
+    },
+    "d2bdb2d9ad473838d3529143c33278ab5d09991f9c0b7755b3bf092f128f2d4c": {
+      "base64": "eNrNUEsKgzAQ3ecUIevaSKMb171F6WLUCGKakWSkVPHuTWyxVFyXvtXwPsybkXd0nazAawlJabDqtDuWrS3YxHiAcLpCV3tR8MtCREzrtFi0JYf9I1jSw7di4aYDLc5AIDYaNo3XtBPy7RhDSuV5lqnTViWgIdYRFon3EArXYrXMy3R9Zfa9b42QwMTtbGby84QxMa3t/uMD6Q9OfwL7/Xe5",
+      "bytes": 512,
+      "compressed_bytes": 162,
+      "encoding": "zlib+base64"
+    },
+    "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855": {
+      "base64": "eNoDAAAAAAE=",
+      "bytes": 0,
+      "compressed_bytes": 8,
+      "encoding": "zlib+base64"
+    }
+  },
+  "remaining_gap": "CAP-GAP-003: remaining Linux locale/filesystem behavior",
+  "resource_limits": {
+    "container_root": "read-only",
+    "core_bytes": 0,
+    "cpus": 1,
+    "memory_bytes": 536870912,
+    "network": "none",
+    "pids": 128,
+    "timeout_seconds": 30,
+    "work_tmpfs_bytes": 67108864
+  },
+  "schema_version": 1,
+  "source_contract": {
+    "/opt/die-source/Formats/xbinary.cpp": {
+      "required_patterns": {
+        "pListFileNames->append(fi.absoluteFilePath());": {
+          "count": 3,
+          "lines": [
+            2433,
+            2457,
+            2488
+          ]
+        }
+      },
+      "sha256": "d82bd21326bb7ba07eb343020d50af0ae2cf7e8e534d8e08d07ffa8129913c34",
+      "size": 549347
+    },
+    "/opt/die-source/src/console/main_console.cpp": {
+      "required_patterns": {
+        "EntropyProcess::DATA epData = EntropyProcess::processRegionsFile(sFileName);": {
+          "count": 1,
+          "lines": [
+            124
+          ]
+        },
+        "QString sFileName = listFileNames.at(i);": {
+          "count": 1,
+          "lines": [
+            115
+          ]
+        },
+        "XBinary::findFiles(sFileName, &listFileNames);": {
+          "count": 1,
+          "lines": [
+            102
+          ]
+        },
+        "printf(\"%s:\\n\", QDir().toNativeSeparators(sFileName).toUtf8().data());": {
+          "count": 1,
+          "lines": [
+            118
+          ]
+        },
+        "qint32 nNumberOfFiles = listFileNames.count();": {
+          "count": 1,
+          "lines": [
+            112
+          ]
+        }
+      },
+      "sha256": "ebb82a94fdd0f54722ea36589d6a35694ec4022bc9179030dae6a85e7a9d7e8f",
+      "size": 17949
+    }
+  },
+  "stdbuf": {
+    "path": "/usr/bin/stdbuf",
+    "sha256": "1fd37836e4a9060756fcec760b0b0f482621aad3fe13af39591a8c14b118eb5d",
+    "size": 51720
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

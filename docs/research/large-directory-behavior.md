@@ -179,17 +179,19 @@ python tools\upstream\probe_large_path_behavior.py `
 - 4096 项的成功不能成为 Rust 无界默认。depth、considered/emitted entry、
   path bytes、deadline/cancellation hard budget 仍按
   [`ADR 0014`](../design/decisions/0014-bounded-path-expansion.md) 处理。
-- 本轮没有制造枚举后、打开前 target replacement，因此不证明 TOCTOU 行为安全
-  或兼容。
+- 枚举后、打开前 target replacement 现由
+  [`path-toctou-behavior.md`](path-toctou-behavior.md) 单独固定；本页的 4096
+  case 不承担该结论。
 
 ## 剩余缺口
 
-- 可控 rename/symlink target swap 的枚举—打开 TOCTOU harness；
+- 可控 symlink target swap/unlink 的枚举—打开 TOCTOU harness 已完成；regular
+  rename/type-change 留作 Rust adversarial 扩展；
 - locale 改变、case/normalization 不同的 filesystem 排序；
 - Windows junction/reparse point 与 macOS volume 行为；
 - Linux Qt6 完整平台基线；
 - Rust `TargetExpander` 实现后的 `limit-1/exact/+1`、取消 latency 和 streaming
   prefix 差分。
 
-本页继续缩小 `CAP-GAP-003`，但 TOCTOU 与剩余 Linux locale/filesystem 行为仍
-使该 gap 保持开放；`CAP-GAP-007`/`CAP-GAP-008` 的平台缺口不变。
+本页与后续 TOCTOU 实验继续缩小 `CAP-GAP-003`；当前仅剩 Linux
+locale/filesystem ordering。`CAP-GAP-007`/`CAP-GAP-008` 的平台缺口不变。

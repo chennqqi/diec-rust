@@ -1,0 +1,62 @@
+{
+  "cases": [
+    {
+      "action": "none",
+      "expected_open_target": "old",
+      "initial_target": "../targets/old.bin",
+      "name": "stable_old"
+    },
+    {
+      "action": "none",
+      "expected_open_target": "new",
+      "initial_target": "../targets/new.bin",
+      "name": "stable_new"
+    },
+    {
+      "action": "replace_symlink_with_new_target",
+      "expected_open_target": "new",
+      "initial_target": "../targets/old.bin",
+      "name": "swap_old_to_new"
+    },
+    {
+      "action": "unlink_symlink",
+      "expected_open_target": "missing",
+      "initial_target": "../targets/old.bin",
+      "name": "remove_old_after_enumeration"
+    }
+  ],
+  "generator": "tools/corpus/generate_path_toctou_fixture.py",
+  "license": "project-generated paths and byte patterns",
+  "materialization": {
+    "blocker": {
+      "kind": "sparse_zero_file",
+      "path": "/work/case/a-blocker.bin",
+      "sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302",
+      "size": 33554432
+    },
+    "case_directory": "/work/case",
+    "link": {
+      "kind": "symlink",
+      "path": "/work/case/z-link.bin"
+    },
+    "new_target": {
+      "path": "/work/targets/new.bin",
+      "recipe": "bytes(range(256)) repeated 16 times",
+      "sha256": "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193",
+      "size": 4096
+    },
+    "old_target": {
+      "path": "/work/targets/old.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    }
+  },
+  "schema_version": 1,
+  "synchronization": {
+    "mutation": "after waitpid(WUNTRACED), before SIGCONT",
+    "resume_signal": "SIGCONT",
+    "stdout": "stdbuf -oL",
+    "stop_after_line": "/work/case/a-blocker.bin:",
+    "stop_signal": "SIGSTOP"
+  }
+}

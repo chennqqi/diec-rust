@@ -107,6 +107,9 @@ Phase 0 计划形成：
 - [`large-directory-behavior.md`](large-directory-behavior.md)：固定 Linux Qt5
   flat/nested 4096-entry 完整枚举、顺序、描述性资源及 CLI 未接线
   `PDSTRUCT` cancellation 的源码边界（In Review）。
+- [`path-toctou-behavior.md`](path-toctou-behavior.md)：固定 Linux Qt5 在完整
+  枚举后的 symlink old→new 原子替换、unlink、stable controls 与当前路径
+  reopen 行为（In Review）。
 - [`cli-option-behavior.md`](cli-option-behavior.md)：verbose/messages/profiling channel 与 test/create test 遗留入口行为（Draft）。
 - [`database-error-behavior.md`](database-error-behavior.md)：数据库缺失/损坏、规则错误和不可读输入（Draft）。
 - [`database-archive-cache.md`](database-archive-cache.md)：ZIP 规则数据库边界、发布 CLI cache 可达性，以及 engine cache stale/corrupt/cancel 行为（Draft）。
@@ -180,6 +183,10 @@ Phase 0 计划形成：
   flat 256/4096 和 nested 4096 的 deterministic materialization plan。
 - [`data/large-path-engine-qt5.json`](data/large-path-engine-qt5.json)：5-case 双
   Qt5 大目录 Oracle、完整原始 streams、source cancellation contract 与资源记录。
+- [`data/path-toctou-fixture.json`](data/path-toctou-fixture.json)：32 MiB blocker、
+  old/new targets、四个 mutation case 与 SIGSTOP/SIGCONT 同步协议。
+- [`data/path-toctou-engine-qt5.json`](data/path-toctou-engine-qt5.json)：4-case
+  双 Qt5 TOCTOU Oracle、mutation identity、source order 与原始 streams。
 - [`data/database-fixture.json`](data/database-fixture.json)：项目生成的数据库成功/故障 fixture。
 - [`data/database-archive-linux-qt5.json`](data/database-archive-linux-qt5.json)：两套固定 Qt5 oracle 的 17-case ZIP 数据库矩阵及两侧原始 stream。
 - [`data/database-cache-cli.json`](data/database-cache-cli.json)：发布 CLI cache-disabled 源码身份、删除副作用与 engine cache header 摘要。

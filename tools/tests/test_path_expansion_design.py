@@ -16,6 +16,9 @@ EVIDENCE_PATH = ROOT / "docs" / "research" / "path-filesystem-behavior.md"
 LARGE_EVIDENCE_PATH = (
     ROOT / "docs" / "research" / "large-directory-behavior.md"
 )
+TOCTOU_EVIDENCE_PATH = (
+    ROOT / "docs" / "research" / "path-toctou-behavior.md"
+)
 
 
 class PathExpansionDesignTest(unittest.TestCase):
@@ -26,6 +29,9 @@ class PathExpansionDesignTest(unittest.TestCase):
         cls.risks = RISKS_PATH.read_text(encoding="utf-8")
         cls.evidence = EVIDENCE_PATH.read_text(encoding="utf-8")
         cls.large_evidence = LARGE_EVIDENCE_PATH.read_text(encoding="utf-8")
+        cls.toctou_evidence = TOCTOU_EVIDENCE_PATH.read_text(
+            encoding="utf-8"
+        )
 
     def test_adr_is_proposed_and_has_review_sections(self) -> None:
         self.assertIn("Status: Proposed", self.adr)
@@ -65,6 +71,8 @@ class PathExpansionDesignTest(unittest.TestCase):
         self.assertIn("41", self.evidence)
         self.assertIn("4096", self.large_evidence)
         self.assertIn("nullptr", self.large_evidence)
+        self.assertIn("old → new", self.toctou_evidence)
+        self.assertIn("ChangedDuringTraversal", self.toctou_evidence)
 
     def test_traversal_is_bounded_before_metadata_or_queue_work(self) -> None:
         for budget in (

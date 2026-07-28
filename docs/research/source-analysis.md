@@ -57,6 +57,10 @@ flat/nested 4096 项均完整枚举；Formats overload 虽按可选 `PDSTRUCT` �
 发布 CLI 的两参数调用使用默认 `nullptr`，所以 target expansion 没有可达的
 cooperative cancellation。固定 source/runtime 证据见
 [`large-directory-behavior.md`](large-directory-behavior.md)。
+完整 list 中只保存 absolute path string；后续 entropy 才按该 path 打开。
+SIGSTOP 同步实验确认枚举后原子替换 symlink 会扫描新 target，unlink 则保留
+prefix 但返回空成功文档，见
+[`path-toctou-behavior.md`](path-toctou-behavior.md)。
 
 ## 扫描主流程
 
