@@ -146,9 +146,10 @@ PDF/CFBF 和 Binary fallback 四组的所有成员。Archive 组已观察 APK、
 7Z Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64、x86 BCJ+LZMA2、
 BCJ2+LZMA2 no-branch/E8/E9/JCC、
 ARM64-BCJ+LZMA2 BL/ADRP、
-RAR4 store、CAB Store/MSZIP 与 ISO9660 的 engine-only
+RAR4 store、RAR5 Store/solid、CAB Store/MSZIP 与 ISO9660 的 engine-only
 archive 正向解包见
-[`archive-format-behavior.md`](archive-format-behavior.md)；其中 7Z/CAB
+[`archive-format-behavior.md`](archive-format-behavior.md) 与
+[`archive-rar5-store-behavior.md`](archive-rar5-store-behavior.md)；其中 7Z/CAB
 顶层仍显示 `Binary`，但已支持方法可产生 PDF Stream child；CAB LZX:15
 普通 archive 无 child、aggressive 扫描 331-byte Binary/Unknown；CAB
 Quantum 18 对应为 0 child 与 59-byte Binary/Unknown。NPM
@@ -202,7 +203,7 @@ hideunknown 的可观察增量。完整输入哈希和输出见
 - `CAP-NEST-003`：archive 解包由独立 `bIsArchivesScan` 控制，发布 CLI 不设置它；ZIP 和
   ZIP→ZIP 样本在 recursive/aggressive 组合下均不解包。固定 harness 进一步
   证明七种 7Z 单 coder、x86/ARM64 BCJ+LZMA2、
-  BCJ2+LZMA2 no-branch/E8/E9/JCC filter 链、RAR4 store、CAB
+  BCJ2+LZMA2 no-branch/E8/E9/JCC filter 链、RAR4 store、RAR5 Store/solid、CAB
   Store/MSZIP 与 ISO9660 默认与发布 CLI 逐字节相同且均不展开，显式
   archive 后各产生一个 PDF Stream child；七种基础 coder+AES 与完整
   x86/ARM64 filter × 七种基础 coder × AES 在公共 archive 路径因无密码
@@ -221,7 +222,9 @@ hideunknown 的可观察增量。完整输入哈希和输出见
   [`archive-truncation-behavior.md`](archive-truncation-behavior.md)；
   同四格式结构字段突变矩阵见
   [`archive-structure-behavior.md`](archive-structure-behavior.md)；
-  其他算法、结构字段极值/组合及跨平台仍归 `CAP-GAP-006`。
+  RAR5 Store 单成员与 solid 双成员见
+  [`archive-rar5-store-behavior.md`](archive-rar5-store-behavior.md)；
+  RAR 压缩算法、其他结构字段极值/组合及跨平台仍归 `CAP-GAP-006`。
 - `CAP-NEST-005`：overlay 始终作为 subdevice 扫描；非 aggressive resource 仅在探测为
   scanable 类型时扫描。
 - `CAP-NEST-006`：项目生成的 RT_MANIFEST 未分类 payload 证明完整链：recursive 单独跳过，

@@ -1,0 +1,51 @@
+{
+  "format_reference": {
+    "scope": "RAR5 container headers and Store data only; no proprietary compression algorithm and no third-party binary",
+    "source": "https://www.rarlab.com/technote.htm"
+  },
+  "generator": "tools/corpus/generate_rar5_store_fixture.py",
+  "license": "project-generated",
+  "samples": [
+    {
+      "archive_format": "RAR5",
+      "compression_method": "Store",
+      "expected_members": [
+        {
+          "name": "payload.pdf",
+          "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+          "size": 331,
+          "solid": false
+        }
+      ],
+      "name": "rar5-store-single.rar",
+      "purpose": "RAR5 Store archive containing one canonical PDF",
+      "sha256": "4ef16656e5ac5f95659d9ff1dd79706adda0b7df91e720b7461a58cb87d5fc7e",
+      "size": 388,
+      "solid": false
+    },
+    {
+      "archive_format": "RAR5",
+      "compression_method": "Store",
+      "expected_members": [
+        {
+          "name": "first.pdf",
+          "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+          "size": 331,
+          "solid": false
+        },
+        {
+          "name": "second.pdf",
+          "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+          "size": 331,
+          "solid": true
+        }
+      ],
+      "name": "rar5-store-solid-pair.rar",
+      "purpose": "RAR5 solid archive containing a boundary PDF and one solid-following PDF",
+      "sha256": "b7c5931d203f3146e38aebe64b9b6ef8cce8489003034ab036331818b4222a7f",
+      "size": 749,
+      "solid": true
+    }
+  ],
+  "schema_version": 1
+}

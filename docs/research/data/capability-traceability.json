@@ -239,6 +239,13 @@
         "tools/upstream/Dockerfile.archive-harness-qt5",
         "tools/tests/test_generate_archive_format_fixture.py",
         "tools/tests/test_probe_archive_format_harness.py",
+        "docs/research/archive-rar5-store-behavior.md",
+        "docs/research/data/rar5-store-corpus.json",
+        "docs/research/data/rar5-store-engine-qt5.json",
+        "tools/corpus/generate_rar5_store_fixture.py",
+        "tools/upstream/probe_rar5_store_harness.py",
+        "tools/tests/test_generate_rar5_store_fixture.py",
+        "tools/tests/test_probe_rar5_store_harness.py",
         "docs/research/archive-truncation-behavior.md",
         "docs/research/data/archive-truncation-corpus.json",
         "docs/research/data/archive-truncation-engine-qt5.json",
@@ -334,7 +341,14 @@
         "tools/upstream/archive_harness_main.cpp",
         "tools/upstream/Dockerfile.archive-harness-qt5",
         "tools/tests/test_generate_archive_format_fixture.py",
-        "tools/tests/test_probe_archive_format_harness.py"
+        "tools/tests/test_probe_archive_format_harness.py",
+        "docs/research/archive-rar5-store-behavior.md",
+        "docs/research/data/rar5-store-corpus.json",
+        "docs/research/data/rar5-store-engine-qt5.json",
+        "tools/corpus/generate_rar5_store_fixture.py",
+        "tools/upstream/probe_rar5_store_harness.py",
+        "tools/tests/test_generate_rar5_store_fixture.py",
+        "tools/tests/test_probe_rar5_store_harness.py"
       ]
     },
     "result_model": {

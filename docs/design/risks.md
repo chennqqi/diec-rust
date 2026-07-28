@@ -316,6 +316,10 @@ baseline 的变更都要检查本表。
   record-field 突变，包括 7Z/RAR header CRC 容忍、RAR data CRC 拒绝、
   CAB aggressive-only Binary 输出和 ISO9660 声明 size 驱动 child 大小，见
   [`archive-structure-behavior.md`](../research/archive-structure-behavior.md)。
+  另一个 8-run oracle 使用完全项目生成且不含专有压缩算法/第三方 binary 的
+  RAR5 Store 单成员与 solid 双成员，证明公共 engine 分别展开一/两个 PDF，
+  并绑定 RAR5 method/solid index 及 solid Store 分派源码，见
+  [`archive-rar5-store-behavior.md`](../research/archive-rar5-store-behavior.md)。
   这些兼容事实不允许安全实现越界读取，结构字段极值/组合仍未覆盖。详见
   [`archive-limit-behavior.md`](../research/archive-limit-behavior.md) 和
   [`archive-format-behavior.md`](../research/archive-format-behavior.md)、

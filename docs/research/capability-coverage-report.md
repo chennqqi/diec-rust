@@ -94,7 +94,7 @@ stable old/new、old→new 原子替换和 unlink，证明第二项按打开时�
 volume，冻结两个大小写排序 profile。Windows/macOS 仍由 `CAP-GAP-008`
 单独跟踪，不属于已闭合的 Linux Qt5 corpus gap。
 
-`CAP-GAP-006` 已新增八组固定证据：单成员 ZIP 链已到达 64 层，固定两层
+`CAP-GAP-006` 已新增九组固定证据：单成员 ZIP 链已到达 64 层，固定两层
 累计展开量达到 33,554,546 bytes；7Z
 Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64 与
 x86 BCJ+LZMA2、BCJ2+LZMA2 no-branch/E8/E9/JCC、ARM64-BCJ+LZMA2 BL/ADRP、
@@ -123,7 +123,9 @@ local-header fallback、1 MiB/843.58:1 和 mixed filter 也已固定；
 展开阈值，包括 RAR4 无 end header、ISO9660 EOF−1 仍产生声明大小 child
 的边界；同四格式的 33-case CRC/size/offset/method/record-field 突变进一步
 固定 CRC 容忍、静默无 child、aggressive-only Binary 输出与声明 child size
-边界。八组增量见
+边界；项目生成的 RAR5 Store 单成员及 solid 双成员又在 8 次固定执行中分别
+展开一/两个 PDF，普通与 aggressive archive 输出一致，fixture 不包含专有
+压缩算法或第三方 binary。九组增量见
 [`archive-limit-behavior.md`](archive-limit-behavior.md)、
 [`archive-format-behavior.md`](archive-format-behavior.md) 和
 [`npm-dispatch-reachability.md`](npm-dispatch-reachability.md)、
@@ -131,9 +133,10 @@ local-header fallback、1 MiB/843.58:1 和 mixed filter 也已固定；
 [`archive-iteration-boundary.md`](archive-iteration-boundary.md)、
 [`archive-adversarial-behavior.md`](archive-adversarial-behavior.md)、
 [`archive-truncation-behavior.md`](archive-truncation-behavior.md)、
-[`archive-structure-behavior.md`](archive-structure-behavior.md)。
-其他算法、结构字段极值/组合、真实资源耗尽和跨平台仍缺，因此 gap 行数与状态
-均不变。
+[`archive-structure-behavior.md`](archive-structure-behavior.md)、
+[`archive-rar5-store-behavior.md`](archive-rar5-store-behavior.md)。
+RAR 压缩算法、其他结构字段极值/组合、真实资源耗尽和跨平台仍缺，因此 gap
+行数与状态均不变。
 
 原 `CAP-GAP-005` 已由
 [`scan-option-boundaries.md`](scan-option-boundaries.md)

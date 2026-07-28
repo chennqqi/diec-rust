@@ -34,6 +34,9 @@ Phase 0 计划形成：
   BCJ2+LZMA2+4×AES 正确密码失败边界及 CAB
   LZX/Quantum 普通/激进失败边界、
   发布 CLI 默认对照与 7Z/CAB `Binary` 顶层 quirk（Draft）。
+- [`archive-rar5-store-behavior.md`](archive-rar5-store-behavior.md)：
+  项目生成 RAR5 Store 单成员与 solid 双成员、8 次固定 Qt5 oracle、源码
+  solid-store 分派及明确排除专有压缩算法/第三方 binary 的语料边界（Draft）。
 - [`npm-dispatch-reachability.md`](npm-dispatch-reachability.md)：
   NPM 精确归档路径检测、公共 GZIP 自动分派不可达、强制 NPM 规则分支及
   双 Qt5 release 对照（Draft）。
@@ -249,6 +252,12 @@ Phase 0 计划形成：
 - [`data/archive-format-engine-qt5.json`](data/archive-format-engine-qt5.json)：
   四十一个 archive/coder 样本的 default/release/archive/aggressive 原始输出、
   六十六个 7Z AES 直接密码 case、固定身份和结构化摘要。
+- [`data/rar5-store-corpus.json`](data/rar5-store-corpus.json)：
+  两个项目生成 RAR5 Store/solid fixture 的 header、成员、solid 位与 hash-bound
+  清单。
+- [`data/rar5-store-engine-qt5.json`](data/rar5-store-engine-qt5.json)：
+  RAR5 Store 单 PDF 与 solid 双 PDF 的 8 次固定 Qt5 原始输出、源码契约和
+  结构化摘要。
 - [`data/npm-dispatch-fixture.json`](data/npm-dispatch-fixture.json)：
   项目生成的 NPM 精确路径正例、无效 JSON 正例及路径/大小写近似反例清单。
 - [`data/npm-dispatch-engine-qt5.json`](data/npm-dispatch-engine-qt5.json)：

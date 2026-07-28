@@ -301,6 +301,13 @@
         "tools/upstream/Dockerfile.archive-harness-qt5",
         "tools/tests/test_generate_archive_format_fixture.py",
         "tools/tests/test_probe_archive_format_harness.py",
+        "docs/research/archive-rar5-store-behavior.md",
+        "docs/research/data/rar5-store-corpus.json",
+        "docs/research/data/rar5-store-engine-qt5.json",
+        "tools/corpus/generate_rar5_store_fixture.py",
+        "tools/upstream/probe_rar5_store_harness.py",
+        "tools/tests/test_generate_rar5_store_fixture.py",
+        "tools/tests/test_probe_rar5_store_harness.py",
         "docs/research/archive-truncation-behavior.md",
         "docs/research/data/archive-truncation-corpus.json",
         "docs/research/data/archive-truncation-engine-qt5.json",
@@ -408,7 +415,14 @@
         "tools/upstream/archive_harness_main.cpp",
         "tools/upstream/Dockerfile.archive-harness-qt5",
         "tools/tests/test_generate_archive_format_fixture.py",
-        "tools/tests/test_probe_archive_format_harness.py"
+        "tools/tests/test_probe_archive_format_harness.py",
+        "docs/research/archive-rar5-store-behavior.md",
+        "docs/research/data/rar5-store-corpus.json",
+        "docs/research/data/rar5-store-engine-qt5.json",
+        "tools/corpus/generate_rar5_store_fixture.py",
+        "tools/upstream/probe_rar5_store_harness.py",
+        "tools/tests/test_generate_rar5_store_fixture.py",
+        "tools/tests/test_probe_rar5_store_harness.py"
       ]
     },
     "result_model": {
@@ -1526,7 +1540,7 @@
   "schema_version": 1,
   "source": {
     "path": "docs/research/data/capability-traceability.json",
-    "sha256": "f60034fd6859a5381368ec95e559ee13dd6fa1673108ade288dbc6910609f995"
+    "sha256": "ba4b2b14b11a0e4921225b58f5e5684bc362d0525ed15538e9f71a25b313c7f3"
   },
   "status_definitions": {
     "platform_missing": "no complete capability baseline is admitted for this platform",
