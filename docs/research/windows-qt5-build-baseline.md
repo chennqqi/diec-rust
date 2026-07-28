@@ -24,6 +24,8 @@ Windows 专用 17-case Unicode/特殊路径矩阵再完成 34 次执行；固定
 默认大小写别名、点号/Hidden attribute 过滤和目录/显式 target 顺序。
 Windows 专用 8-case filesystem 矩阵再完成 16 次执行；固定 Junction 目录、
 两跳 Junction 链、alias 重复扫描和普通长度 `\\?\` 命名空间。
+Windows 专用 7-case long-path 矩阵再完成 14 次执行；固定 324/325-code-unit
+显式文件、深目录和从短根目录递归发现长叶子。
 
 本仓库用
 [`build_windows_qt5_oracle.ps1`](../../tools/upstream/build_windows_qt5_oracle.ps1)
@@ -41,6 +43,8 @@ Windows 专用 8-case filesystem 矩阵再完成 16 次执行；固定 Junction 
 [`data/windows-qt5-cli-special-paths.json`](data/windows-qt5-cli-special-paths.json)
 和
 [`data/windows-qt5-cli-filesystem.json`](data/windows-qt5-cli-filesystem.json)。
+另见
+[`data/windows-qt5-cli-long-paths.json`](data/windows-qt5-cli-long-paths.json)。
 
 ## 固定环境
 
@@ -327,8 +331,22 @@ PDF 和 4 个有限 Junction 构造 8 个 case，每项运行两次。机器报�
 父目录同时包含 `alias -> real` 和 `real` 时，上游按 alias→real 扫描同一底层
 文件两次，不做目标身份去重。普通长度的 `\\?\` 文件和 Junction 目录输出与普通
 Win32 path 逐字节相同。普通用户无法创建 symbolic link，因此本轮不把 Junction
-行为泛化为其他 reparse tag；UNC、真实长路径、dangling/cycle、ACL denial 和
+行为泛化为其他 reparse tag；UNC、dangling/cycle、ACL denial 和
 alternate data stream 仍是显式缺口。
+
+## Windows CLI 超过 MAX_PATH 的路径矩阵
+
+独立调研
+[`windows-long-path-behavior.md`](windows-long-path-behavior.md) 构造相对路径
+本身达到 324/325 code units 的两个 PDF 和一个短 control。7 个 case 各运行
+两次；机器报告 SHA-256 为
+`54084feff726a1da17e8b4b7ff40eed46733bd6eb2f5f900e4f02ec43bfb6cf5`。
+
+普通和 `\\?\` 显式文件、普通和 `\\?\` 深目录、普通和 `\\?\` 短 discovery
+root 全部成功扫描。14 次执行均退出 `0`、stderr 为空、JSON 有效；detection
+tree 与固定 `minimal.pdf` reference 相同，且 stdout 与短 control 逐字节相同。
+这关闭真实超过传统 260-character boundary 的首轮缺口，但不覆盖精确
+32,767 namespace 上限、UTF-16 supplementary character 计数或 UNC 长路径。
 
 ## 可重复性边界
 
@@ -341,14 +359,15 @@ bit-for-bit reproducible：
 - MSVC archive/PE 时间戳、绝对路径和其他非确定输入尚未逐项隔离；
 - 已完成 6 个控制 case、26 样本默认 JSON baseline、全 26 样本 scan 及
   5 个代表样本的 output/special，并完成首轮 path/nested/database；尚未运行
-  UNC、真实长路径、symbolic link/reparse cycle/ACL、database
+  UNC、精确 namespace 上限、symbolic link/reparse cycle/ACL、database
   archive/cache/permission engine-only、其他 engine-only 和其余样本的
   output/special Windows 矩阵；
 - 尚未验证 x86、ARM64、完整 GUI/lite、install/package 和官方 release zip；
 - `cl` 对 x64 的 `/arch:SSE2` 给出 D9002 ignored warning；x64 ABI 本身要求
   SSE2，但该 warning 仍应保留在构建日志中。
 
-下一步扩展原生采集器的 UNC、真实长路径、symbolic link/reparse cycle/ACL 和其余
+下一步扩展原生采集器的 UNC、精确 namespace 上限、symbolic link/reparse
+cycle/ACL 和其余
 样本的 output/special，并为 database archive/cache/permission 与其他
 engine-only 行建立 Windows harness；然后独立处理官方 CMake 路径和二进制
 确定性。macOS 固定构建仍是三平台基线的剩余大项。

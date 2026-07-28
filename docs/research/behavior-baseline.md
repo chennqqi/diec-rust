@@ -50,6 +50,12 @@ Junction 目录及两跳 Junction 链均扫描成功；包含 alias 与 real 目
 执行，详见
 [`windows-filesystem-behavior.md`](windows-filesystem-behavior.md)。
 
+真实超长路径 fixture 再完成 7 case、14 次执行。324/325-code-unit 相对路径
+通过普通 Win32 与 `\\?\` argv 均扫描成功，从短根目录也能递归发现长叶子；
+全部 stdout 与短 control 逐字节相同。七份 Windows runtime 报告累计 932 次
+执行，详见
+[`windows-long-path-behavior.md`](windows-long-path-behavior.md)。
+
 ## 语料来源与安全
 
 所有样本由
@@ -327,6 +333,8 @@ symlink old→new/unlink TOCTOU 见
 Windows Qt5 的 Junction、两跳 Junction 链、alias 重复与普通长度 `\\?\`
 命名空间见
 [`windows-filesystem-behavior.md`](windows-filesystem-behavior.md)。
+Windows Qt5 的 324/325-code-unit 显式及递归发现路径见
+[`windows-long-path-behavior.md`](windows-long-path-behavior.md)。
 
 数据库缺失/空/无效 ZIP、规则 parse/runtime error 和不可读输入行为见
 [`database-error-behavior.md`](database-error-behavior.md)。

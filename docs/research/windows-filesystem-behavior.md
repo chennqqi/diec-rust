@@ -91,7 +91,9 @@ SHA-256 为
 
 - 文件/目录 symbolic link、dangling reparse point；
 - junction/reparse cycle 及其超时、深度和访问预算；
-- 超过 `MAX_PATH` 的真实长路径（当前 `\\?\` case 是普通长度）；
+- 超过 `MAX_PATH` 的真实长路径由独立
+  [`windows-long-path-behavior.md`](windows-long-path-behavior.md) 首轮覆盖；
+  精确 namespace 上限仍未覆盖；
 - ACL denial、UNC share、alternate data stream 和大小写敏感目录。
 
 这些缺口分别需要受控权限主体、网络 share 或带硬超时/资源预算的隔离 harness，

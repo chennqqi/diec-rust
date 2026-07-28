@@ -146,8 +146,9 @@ vendored 目录仍需独立 source/license 审计。
   oracle 已构建。Windows clean build、官方 CMake/xsimd 断点及一个 PE64 smoke
   见 [`windows-qt5-build-baseline.md`](windows-qt5-build-baseline.md)；Windows
   默认 26-sample baseline、首轮 338-case option/output/special 及
-  46-case path/nested、18-case database、17-case 特殊路径矩阵已归档，完整
-  能力差分、CMake 发布打包、bit-for-bit 验证及 macOS 构建仍待完成。
+  46-case path/nested、18-case database、17-case 特殊路径、8-case filesystem
+  和 7-case long-path 矩阵已归档，完整能力差分、CMake 发布打包、
+  bit-for-bit 验证及 macOS 构建仍待完成。
 - release workflow、预编译包与源码构建之间的数据资产差异。
 - bundled code、规则原始来源和最终发布组合的许可证审计；YARA/PEiD/signature
   资产路径与可见标记已固定，但 GPL/未知来源仍需书面评审。
@@ -155,9 +156,10 @@ vendored 目录仍需独立 source/license 审计。
   发布产物清单仍待采集。
 - 已完成自扫描 smoke baseline、26 个项目生成安全样本的默认 JSON/退出码差分
   及 Windows 首轮 option/output/special/path/nested/database 矩阵；特殊路径、
-  Unicode/Hidden/前导短横线首轮矩阵也已完成；UNC/extended-length、
-  reparse/文件系统/ACL、database archive/cache/permission engine-only、其他
-  engine-only、畸形矩阵和其余跨平台原始输出仍待采集。
+  Unicode/Hidden/前导短横线、Junction/`\\?\`、324/325-code-unit 长路径首轮
+  矩阵也已完成；UNC、精确 namespace 上限、symbolic link/reparse cycle/ACL、
+  database archive/cache/permission engine-only、其他 engine-only、畸形矩阵
+  和其余跨平台原始输出仍待采集。
 
 ## 主要证据
 

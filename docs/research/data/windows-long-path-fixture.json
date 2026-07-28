@@ -1,0 +1,46 @@
+{
+  "files": [
+    {
+      "id": "control",
+      "long_path": false,
+      "path": "control/target.pdf",
+      "relative_code_units": 18,
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331
+    },
+    {
+      "id": "explicit",
+      "long_path": true,
+      "path": "explicit-root/level-00-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/level-01-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/level-02-cccccccccccccccccccccccccccccccccccccccc/level-03-dddddddddddddddddddddddddddddddddddddddd/level-04-eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee/level-05-ffffffffffffffffffffffffffffffffffffffff/target.pdf",
+      "relative_code_units": 324,
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331
+    },
+    {
+      "id": "discovery",
+      "long_path": true,
+      "path": "discovery-root/level-00-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/level-01-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/level-02-cccccccccccccccccccccccccccccccccccccccc/level-03-dddddddddddddddddddddddddddddddddddddddd/level-04-eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee/level-05-ffffffffffffffffffffffffffffffffffffffff/target.pdf",
+      "relative_code_units": 325,
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331
+    }
+  ],
+  "generator": "tools/corpus/generate_windows_long_path_fixture.py",
+  "guarantee": "each long relative path alone exceeds MAX_PATH, so every absolute materialization remains over MAX_PATH",
+  "license": "project-generated paths; baseline corpus bytes only",
+  "max_path_reference": 260,
+  "payload": {
+    "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+    "size": 331,
+    "source": "minimal.pdf"
+  },
+  "schema_version": 1,
+  "segments": [
+    "level-00-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "level-01-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "level-02-cccccccccccccccccccccccccccccccccccccccc",
+    "level-03-dddddddddddddddddddddddddddddddddddddddd",
+    "level-04-eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "level-05-ffffffffffffffffffffffffffffffffffffffff"
+  ]
+}

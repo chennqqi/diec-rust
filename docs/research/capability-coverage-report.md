@@ -37,16 +37,18 @@ baseline。Windows 与 macOS 仍为 `platform_missing`。
 Windows 已有 clean candidate oracle、6-control/26-sample 默认 JSON baseline、
 338-case option/output/special 矩阵，以及首轮 14-case path/32-case nested
 矩阵、18-case database success/error 矩阵、17-case Windows 特殊路径矩阵和
-8-case Junction/扩展命名空间矩阵。六批共 918 次执行均稳定；默认 detection
+8-case Junction/扩展命名空间矩阵和 7-case 真实超长路径矩阵。七批共 932 次
+执行均稳定；默认 detection
 projection 与 Linux Qt5 26/26 相同，
 234 个直接重叠矩阵 case 的退出码也全部相同，path 相对输出顺序、nested
 detection tree、database load-error/JSON framing 没有差异；特殊路径又固定
 NFC/NFD、中文、emoji、空格、点号/Hidden attribute 和前导短横线行为；
 filesystem 矩阵固定 Junction 跟随、alias 重复、两跳链及普通长度 `\\?\`
-命名空间，见
+命名空间；长路径矩阵固定 324/325-code-unit 显式路径与递归发现，见
 [`windows-qt5-build-baseline.md`](windows-qt5-build-baseline.md) 和
-[`windows-filesystem-behavior.md`](windows-filesystem-behavior.md)。由于 UNC、
-真实长路径、symlink/reparse cycle/ACL 等边界、database
+[`windows-filesystem-behavior.md`](windows-filesystem-behavior.md)、
+[`windows-long-path-behavior.md`](windows-long-path-behavior.md)。由于 UNC、
+精确 namespace 上限、symlink/reparse cycle/ACL 等边界、database
 archive/cache/permission engine-only、其他 engine-only 能力以及非代表样本的
 output/special 矩阵仍缺失，coverage 生成器尚不接纳 Windows 为完整 runtime
 baseline，68 行继续保守标记为 `platform_missing`。
