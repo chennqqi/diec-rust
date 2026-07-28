@@ -61,6 +61,7 @@ REPORT_PATHS = (
     "docs/research/data/legacy-dispatch-linux-qt5-qt6.json",
     "docs/research/data/dos-dispatch-linux-qt5-qt6.json",
     "docs/research/data/bw-dispatch-engine-qt5-qt6.json",
+    "docs/research/data/path-boundaries-linux-qt5-qt6.json",
 )
 EMPTY_SHA256 = hashlib.sha256(b"").hexdigest()
 QT6_UNIMPLEMENTED_SHA256 = (
@@ -101,6 +102,7 @@ def sha256(value: bytes) -> str:
 COMPLETE: dict[str, str] = {
     "CAP-CLI-IN-001": "15 hash-bound corpus files exercise one positional target",
     "CAP-CLI-IN-002": "ordered, duplicate, missing-plus-valid, and directory-plus-file targets are equal",
+    "CAP-CLI-IN-003": "all 47 special-path, filesystem, large-directory, TOCTOU, and locale/filesystem cases match Qt5 across two Qt6 repetitions",
     "CAP-CLI-IN-004": "single-file directory and empty-directory behavior is equal",
     "CAP-CLI-OPT-001": "all eight nested fixtures have equal recursive-scan detection trees",
     "CAP-CLI-OPT-002": "the five-sample deep-scan matrix has equal stdout and exit codes",
@@ -167,7 +169,6 @@ COMPLETE: dict[str, str] = {
 }
 
 PARTIAL: dict[str, str] = {
-    "CAP-CLI-IN-003": "basic depth-first tree is covered; filesystem/locale/TOCTOU/large-directory boundaries remain",
     "CAP-DISPATCH-004": "TAR, gzip, and ZIP only; full archive family remains",
 }
 
@@ -845,6 +846,248 @@ def _validate_path_matrix_report(report: dict[str, Any]) -> None:
         or len(path_corpus.get("entries", [])) != 5
     ):
         raise ClosurePlanError("CLI path fixture catalog drift")
+
+
+def _validate_path_boundary_report(report: dict[str, Any]) -> None:
+    expected_catalogs = {
+        "special_path": {
+            "directory_non_utf8",
+            "directory_special",
+            "directory_unicode",
+            "explicit_non_utf8_c0af",
+            "explicit_non_utf8_ff",
+            "explicit_non_utf8_truncated_e282",
+            "explicit_order",
+            "single_backslash",
+            "single_cjk",
+            "single_colon",
+            "single_emoji",
+            "single_hidden",
+            "single_leading_dash_absolute",
+            "single_leading_dash_relative_escaped",
+            "single_leading_dash_relative_unescaped",
+            "single_leading_space",
+            "single_newline",
+            "single_nfc",
+            "single_nfd",
+            "single_non_utf8_control",
+            "single_space",
+            "single_tab",
+            "single_trailing_space",
+        },
+        "filesystem": {
+            "dangling_symlink",
+            "deep_64",
+            "denied_as_nobody",
+            "denied_as_root",
+            "direct_control",
+            "directory_symlink",
+            "file_symlink",
+            "self_cycle",
+            "symlink_tree",
+        },
+        "large_directory": {
+            "empty_0",
+            "flat_256",
+            "flat_4096",
+            "nested_4096",
+            "single_1",
+        },
+        "toctou": {
+            "remove_old_after_enumeration",
+            "stable_new",
+            "stable_old",
+            "swap_old_to_new",
+        },
+        "locale_filesystem": {
+            "C.utf8/tmpfs",
+            "C.utf8/volume",
+            "C/tmpfs",
+            "C/volume",
+            "POSIX/tmpfs",
+            "POSIX/volume",
+        },
+    }
+    expected_baselines = {
+        "special_path": (
+            "special-path-engine-qt5.json",
+            "0b5fc241e2c30449e1df11aa08532a7b0adbf9c81362d552bf7770f8cd159f82",
+            "3a978769f2667a13532d21b68c9cfaeeb4b353842b630eb8a6da8b9ffbc2a8c0",
+        ),
+        "filesystem": (
+            "path-filesystem-engine-qt5.json",
+            "97549da236a57cc5502b43a8157f81865fa6d9a0ab626035ebcf63df97792dbb",
+            "76d433ad993c7152263ed6f6ab0479f6d210bf9bff94d085b75d6a1258a07f47",
+        ),
+        "large_directory": (
+            "large-path-engine-qt5.json",
+            "100562d79fa661055fd79e0efe6ce8f58a31b8e4faebedf410f80f51e817883b",
+            "6ff37d6169753b1b4c6e652f84e4347449a1ca4171af6bce23c9dcdcdccee651",
+        ),
+        "toctou": (
+            "path-toctou-engine-qt5.json",
+            "733b136667c39f46e2d32bfb6a15c7da7077eee98232d7ff3a06a812f6913cf9",
+            "3fb66ffd9d25cac0865dfee9a3921a9f8336fe56849568c0b50a415f32f1a174",
+        ),
+        "locale_filesystem": (
+            "path-locale-filesystem-engine-qt5.json",
+            "e3ba7c8b35d7aa82b215402c28e3aadf95d6ac95ab6b64af8dc68b38a439ff6a",
+            "48bb91f7c0d919cf83e5d7f139ae72ddc21b548bf5d5b9d9c7c860a8b0e287bf",
+        ),
+    }
+    expected_order = list(expected_catalogs)
+    if (
+        report.get("schema_version") != 1
+        or report.get("capability") != "CAP-CLI-IN-003"
+        or report.get("upstream_commit") != UPSTREAM_COMMIT
+        or report.get("platform") != "linux-x86_64-qt5-qt6"
+        or report.get("qt6_image")
+        != "diec-rust/upstream-oracle-cmake-qt6:74eaf505"
+        or report.get("qt6_binary") != "/opt/die-build/src/console/diec"
+        or report.get("generator")
+        != "tools/upstream/probe_qt6_path_boundaries.py"
+        or report.get("generator_sha256")
+        != "5cadc79946ccbb2ab519ca443e67fea1572df1ba6a849c08af4ae3038f0be2f1"
+        or report.get("passed") is not True
+        or report.get("failures") != []
+        or report.get("suite_order") != expected_order
+    ):
+        raise ClosurePlanError("Qt6 path-boundary identity drift")
+    facts = report.get("facts")
+    if (
+        not isinstance(facts, dict)
+        or set(facts)
+        != {
+            "all_five_qt5_boundaries_replayed",
+            "all_qt6_repetitions_are_equal",
+            "all_qt6_results_equal_qt5",
+        }
+        or not all(value is True for value in facts.values())
+    ):
+        raise ClosurePlanError("Qt6 path-boundary relationship drift")
+    suites = report.get("suites")
+    if not isinstance(suites, dict) or set(suites) != set(expected_order):
+        raise ClosurePlanError("Qt6 path-boundary suite catalog drift")
+
+    for suite_id, expected_cases in expected_catalogs.items():
+        suite = suites[suite_id]
+        comparison = suite.get("comparison")
+        qt6 = suite.get("qt6")
+        if not isinstance(comparison, dict) or not isinstance(qt6, dict):
+            raise ClosurePlanError("Qt6 path-boundary suite shape drift")
+        baseline_name, baseline_sha, projection_sha = expected_baselines[
+            suite_id
+        ]
+        if comparison != {
+            "behavior_projection_equal": True,
+            "behavior_projection_sha256": projection_sha,
+            "qt5_report_path": f"docs/research/data/{baseline_name}",
+            "qt5_report_sha256": baseline_sha,
+        }:
+            raise ClosurePlanError(
+                f"Qt6 path-boundary comparison drift: {suite_id}"
+            )
+        oracle = qt6.get("qt6_oracle")
+        binary = qt6.get("qt6_binary")
+        if (
+            qt6.get("platform") != "linux-x86_64-qt6"
+            or qt6.get("upstream_commit") != UPSTREAM_COMMIT
+            or qt6.get("passed") is not True
+            or qt6.get("failures") != []
+            or not isinstance(oracle, dict)
+            or oracle.get("id")
+            != "sha256:e015495c313d0715f0b80f395da983a113a439f2a135eb637e9f0638c225200b"
+            or not isinstance(binary, dict)
+            or binary.get("sha256")
+            != "e3321105af0349b29195325e79d5d2c7cc25ead2f28f84e242e3835b98f7283e"
+            or qt6.get("facts", {}).get(
+                "qt6_repetitions_are_byte_equal"
+            )
+            is not True
+        ):
+            raise ClosurePlanError(
+                f"Qt6 path-boundary oracle drift: {suite_id}"
+            )
+        case_map = qt6.get(
+            "matrix" if suite_id == "locale_filesystem" else "cases"
+        )
+        if not isinstance(case_map, dict) or set(case_map) != expected_cases:
+            raise ClosurePlanError(
+                f"Qt6 path-boundary case catalog drift: {suite_id}"
+            )
+        for case_name, case in case_map.items():
+            observations = case.get("observations")
+            if (
+                not isinstance(observations, dict)
+                or set(observations)
+                != {"repetition_1", "repetition_2"}
+            ):
+                raise ClosurePlanError(
+                    f"Qt6 path-boundary repetitions missing: "
+                    f"{suite_id}/{case_name}"
+                )
+            first = observations["repetition_1"]
+            second = observations["repetition_2"]
+            for field in ("exit_code", "stdout", "stderr"):
+                if first.get(field) != second.get(field):
+                    raise ClosurePlanError(
+                        f"Qt6 path-boundary repetition drift: "
+                        f"{suite_id}/{case_name}/{field}"
+                    )
+
+        artifacts = qt6.get("raw_artifacts")
+        if not isinstance(artifacts, dict) or not artifacts:
+            raise ClosurePlanError(
+                f"Qt6 path-boundary artifacts missing: {suite_id}"
+            )
+        decoded = {}
+        for digest, artifact in artifacts.items():
+            try:
+                compressed = base64.b64decode(
+                    artifact["base64"], validate=True
+                )
+                raw = zlib.decompress(compressed)
+            except (KeyError, ValueError, zlib.error) as error:
+                raise ClosurePlanError(
+                    f"Qt6 path-boundary artifact invalid: {suite_id}"
+                ) from error
+            if (
+                len(raw) != artifact.get("bytes")
+                or sha256(raw) != digest
+            ):
+                raise ClosurePlanError(
+                    f"Qt6 path-boundary artifact drift: {suite_id}"
+                )
+            decoded[digest] = raw
+        referenced = {
+            observation[stream]["artifact_sha256"]
+            for case in case_map.values()
+            for observation in case["observations"].values()
+            for stream in ("stdout", "stderr")
+        }
+        if referenced != set(decoded):
+            raise ClosurePlanError(
+                f"Qt6 path-boundary artifact references drift: {suite_id}"
+            )
+
+    filesystem = suites["filesystem"]["qt6"]["cases"]
+    large = suites["large_directory"]["qt6"]["cases"]
+    toctou = suites["toctou"]["qt6"]["cases"]
+    locale = suites["locale_filesystem"]["qt6"]
+    if (
+        filesystem["self_cycle"]["summary"]["pdf_root_count"] != 41
+        or large["flat_4096"]["prefix_count"] != 4096
+        or large["nested_4096"]["entropy_document_count"] != 4096
+        or toctou["swap_old_to_new"]["stdout_sha256"]
+        != toctou["stable_new"]["stdout_sha256"]
+        or toctou["swap_old_to_new"]["stdout_sha256"]
+        == toctou["stable_old"]["stdout_sha256"]
+        or locale.get("output_equivalence", {}).get(
+            "filesystem_stdout_byte_equal_within_locale"
+        )
+        is not False
+    ):
+        raise ClosurePlanError("Qt6 path-boundary semantic drift")
 
 
 def _validate_database_matrix_report(report: dict[str, Any]) -> None:
@@ -3036,6 +3279,7 @@ def _validate_inputs(
     _validate_legacy_dispatch_report(reports[REPORT_PATHS[39]])
     _validate_dos_dispatch_report(reports[REPORT_PATHS[40]])
     _validate_bw_dispatch_report(reports[REPORT_PATHS[41]])
+    _validate_path_boundary_report(reports[REPORT_PATHS[42]])
     return capabilities
 
 

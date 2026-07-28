@@ -81,10 +81,10 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
 
     def test_current_plan_is_conservatively_incomplete(self):
         summary = self.plan["summary"]
-        self.assertEqual(summary["evidence_complete"], 65)
-        self.assertEqual(summary["partial"], 2)
+        self.assertEqual(summary["evidence_complete"], 66)
+        self.assertEqual(summary["partial"], 1)
         self.assertEqual(summary["missing"], 1)
-        self.assertEqual(summary["closure_required"], 3)
+        self.assertEqual(summary["closure_required"], 2)
         self.assertFalse(summary["cap_gap_007_closed"])
         self.assertEqual(self.plan["result"], "incomplete")
 
@@ -145,6 +145,7 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
             "CAP-NEST-004",
             "CAP-DISPATCH-003",
             "CAP-DISPATCH-002",
+            "CAP-CLI-IN-003",
         }
         for capability_id in promoted:
             with self.subTest(capability=capability_id):
@@ -156,7 +157,10 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
             rows["CAP-DISPATCH-004"]["status"],
             "partial",
         )
-        self.assertEqual(rows["CAP-CLI-IN-003"]["status"], "partial")
+        self.assertEqual(
+            rows["CAP-CLI-IN-003"]["status"],
+            "evidence_complete",
+        )
         self.assertEqual(
             rows["CAP-NEST-003"]["status"],
             "evidence_complete",
@@ -512,6 +516,22 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
         with self.assertRaisesRegex(
             MODULE.ClosurePlanError,
             "BW-dispatch semantic relationship drift",
+        ):
+            MODULE.build_plan(
+                self.traceability,
+                self.traceability_raw,
+                changed_reports,
+                self.report_bytes,
+            )
+
+        changed_reports = json.loads(json.dumps(self.reports))
+        path_boundaries = changed_reports[MODULE.REPORT_PATHS[42]]
+        path_boundaries["suites"]["large_directory"]["qt6"][
+            "cases"
+        ]["flat_4096"]["prefix_count"] = 4095
+        with self.assertRaisesRegex(
+            MODULE.ClosurePlanError,
+            "path-boundary semantic drift",
         ):
             MODULE.build_plan(
                 self.traceability,

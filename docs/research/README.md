@@ -148,6 +148,10 @@ Phase 0 计划形成：
 - [`qt6-path-runtime-evidence.md`](qt6-path-runtime-evidence.md)：固定
   14-case 多目标、目录、空目录、重复/缺失 target 与 recursive path
   差分，并界定仍缺的复杂文件系统边界（In Review）。
+- [`qt6-path-boundary-runtime-evidence.md`](qt6-path-boundary-runtime-evidence.md)：
+  固定 23 个特殊路径、9 个 filesystem、5 个 large-directory、4 个 TOCTOU
+  与 6 个 locale/filesystem case 的双轮 Qt6 完整重放，闭合
+  `CAP-CLI-IN-003`（In Review）。
 - [`qt6-database-runtime-evidence.md`](qt6-database-runtime-evidence.md)：
   固定 18-case database load/error/messages 矩阵及 parse/runtime error
   raw-first 诊断差分（In Review）。
@@ -338,6 +342,9 @@ Phase 0 计划形成：
 - [`data/path-locale-filesystem-engine-qt5.json`](data/path-locale-filesystem-engine-qt5.json)：
   3 locale × 2 filesystem × 2 Oracle 的完整顺序、charmap、原始 streams
   与源码契约。
+- [`data/path-boundaries-linux-qt5-qt6.json`](data/path-boundaries-linux-qt5-qt6.json)：
+  五组 47-case、94 次 Qt6 路径边界执行、25 个内容寻址 raw artifact 及
+  Qt5 行为投影对照。
 - [`data/database-fixture.json`](data/database-fixture.json)：项目生成的数据库成功/故障 fixture。
 - [`data/database-archive-linux-qt5.json`](data/database-archive-linux-qt5.json)：两套固定 Qt5 oracle 的 17-case ZIP 数据库矩阵及两侧原始 stream。
 - [`data/database-cache-cli.json`](data/database-cache-cli.json)：发布 CLI cache-disabled 源码身份、删除副作用与 engine cache header 摘要。

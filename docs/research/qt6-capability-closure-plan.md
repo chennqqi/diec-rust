@@ -11,10 +11,10 @@ Last updated: 2026-07-29
 [`data/qt6-capability-closure-plan.json`](data/qt6-capability-closure-plan.json)
 逐项列出当前证据和缺失实验：
 
-- 65 项已有证据完整覆盖能力行；
-- 2 项只有部分证据；
+- 66 项已有证据完整覆盖能力行；
+- 1 项只有部分证据；
 - 1 项没有可接纳的逐行 Qt6 运行时证据；
-- 因此仍有 3 项需要执行闭环实验。
+- 因此仍有 2 项需要执行闭环实验。
 
 Linux Qt6 在能力覆盖报告中继续保持 `platform_missing`。本计划只负责把
 缺口变成可执行清单，不改变平台门禁状态。
@@ -41,7 +41,7 @@ TypeError。该差异已完整保存和分类，不代表 Qt5/Qt6 原始 stdout 
 [`qt6-special-runtime-evidence.md`](qt6-special-runtime-evidence.md)。
 
 第四批基础 path matrix 完整覆盖多目标、单文件/空目录和
-directory-vs-internal recursion；目录枚举的复杂文件系统边界仍是 partial。
+directory-vs-internal recursion；当时目录枚举的复杂文件系统边界仍是 partial。
 见 [`qt6-path-runtime-evidence.md`](qt6-path-runtime-evidence.md)。
 
 第五批 database matrix 与 raw-first diagnostics 完整覆盖 messages、空数据库
@@ -106,11 +106,15 @@ tree 与 Qt5 相同；19 例 `info/string` JSON extras 和 8 例地址相关 MSD
 TypeError 均 raw-first 保留并分类。BW 双轮完整 JSON/raw 与 Qt5 相同。见
 [`dos-dispatch-reachability.md`](dos-dispatch-reachability.md)。
 
+第十七批 path-boundary 证据把 23 个特殊路径、9 个 filesystem、5 个
+large-directory、4 个 TOCTOU 和 6 个 locale/filesystem case 全部双轮重放。
+47 个 case 的原始流、路径顺序、identity 关系和行为投影均与 Qt5 相同，
+没有新增差异。见
+[`qt6-path-boundary-runtime-evidence.md`](qt6-path-boundary-runtime-evidence.md)。
+
 下列结果只能算部分证据：
 
 - archive 只覆盖 TAR、gzip 和 ZIP，未覆盖完整 archive family；
-- 目录枚举只覆盖基础目录，未覆盖复杂 filesystem/locale/TOCTOU/large
-  directory 边界。
 
 此外，独立 depth/total extraction limit 仍没有可接纳的逐行 Qt6 运行时证据。
 
@@ -160,8 +164,8 @@ python tools/research/build_qt6_closure_plan.py
 首组 Qt6 engine harness、规则编排、result-model、signature-path、
 debug-dispatch、resource-context、archive-option、count-boundary 和
 legacy-dispatch probe
-和 DOS/BW dispatch probe 已完成。后续应按机器清单继续复用既有 Qt5 fixture，
-集中关闭完整 archive family dispatch、独立 depth/total extraction limit 和
-复杂目录边界。
+、DOS/BW dispatch probe 和完整 path-boundary replay 已完成。后续应按机器清单
+继续复用既有 Qt5 fixture，集中关闭完整 archive family dispatch 和独立
+depth/total extraction limit。
 只有 68 行全部达到 `evidence_complete`，且差异完成评审，
 `CAP-GAP-007` 才能关闭。

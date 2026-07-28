@@ -226,7 +226,9 @@ TAR 只展开到每个隔离 container 的 `/work` tmpfs，不写宿主路径。
 - NUL 不可能成为 POSIX basename；其他无效 byte 序列可按风险继续扩展，但首轮
   directory 与 explicit argv 行为已固定；
 - locale 改变后的排序，以及不同 filesystem normalization/case 行为；
-- Linux Qt6 的完整能力矩阵；
+- Linux Qt6 的完整能力矩阵已由
+  [`qt6-path-boundary-runtime-evidence.md`](qt6-path-boundary-runtime-evidence.md)
+  重放；Windows/macOS 仍缺；
 - Windows/macOS separator、绝对路径、reserved name、Unicode normalization、
   case sensitivity 与枚举顺序。
 

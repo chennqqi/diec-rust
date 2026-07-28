@@ -183,19 +183,11 @@
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "cli_path",
       "id": "CAP-CLI-IN-003",
-      "missing_scope": "execute the remaining Qt5 capability boundary under the pinned Qt6 oracle",
+      "missing_scope": null,
       "name": "directory enumeration",
-      "observed_scope": "basic depth-first tree is covered; filesystem/locale/TOCTOU/large-directory boundaries remain",
-      "proposed_experiment": {
-        "assertions": [
-          "target order, duplicate handling, and directory traversal are equal",
-          "exit code and raw per-target framing are retained",
-          "links, permissions, TOCTOU, locale, and large-directory controls are all executed"
-        ],
-        "fixture": "reuse path, special-path, filesystem, large-directory, TOCTOU, and locale fixtures",
-        "harness": "port the fixed Linux Qt5 path probes to the pinned Qt6 CLI image"
-      },
-      "status": "partial"
+      "observed_scope": "all 47 special-path, filesystem, large-directory, TOCTOU, and locale/filesystem cases match Qt5 across two Qt6 repetitions",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
@@ -892,6 +884,7 @@
     "docs/research/data/global-typo-errors-qt5-qt6.json": "59f9d28679513a939c70c3878ce8d39dcfa01e4b9006150e4b9aadb3311fba23",
     "docs/research/data/host-api-arity-qt5-qt6.json": "96d0b0023dd08ec1e45bc0c1059cf5801837496e09143acff6ffa0120328fa73",
     "docs/research/data/legacy-dispatch-linux-qt5-qt6.json": "8ecbfe6502de89de58b56316cf5d27274cb9fecccc0f523aa9377d302a7bebfa",
+    "docs/research/data/path-boundaries-linux-qt5-qt6.json": "8dbe49bdd2be73a06950e3a9a36dc07b5c65debfdf62428a50a8425b2c296e76",
     "docs/research/data/qt-null-filename-semantics-qt5-qt6.json": "0a62837f0a32b4147a379f1fdba3a4c286f658734bbcefc2c2b0e2e22493f8c2",
     "docs/research/data/qt5-qt6-cli.json": "30c4298f07f2aa64fc17a16c478f8554eb8eb9e4e5c13687cddbfe3785b88fdd",
     "docs/research/data/qt6-alltypes-diagnostics.json": "58b76997e767147284c65a9f99105fd0afaee1fc055b849651e6cb27ae174df6",
@@ -915,10 +908,10 @@
     "all_capabilities_accounted_for": true,
     "cap_gap_007_closed": false,
     "capability_count": 68,
-    "closure_required": 3,
-    "evidence_complete": 65,
+    "closure_required": 2,
+    "evidence_complete": 66,
     "missing": 1,
-    "partial": 2
+    "partial": 1
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
 }

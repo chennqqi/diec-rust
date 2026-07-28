@@ -15,7 +15,7 @@ traceability manifest 中记录替代关系，不得复用旧 ID 表示不同语
 | --- | --- | --- | --- | --- |
 | `CAP-CLI-IN-001` | 单文件扫描 | positional `target` | Observed | 15 个确定性样本；见 `behavior-baseline.md` |
 | `CAP-CLI-IN-002` | 多目标扫描 | 多个 positional `target` | Observed | 保持参数顺序、不去重；结构化输出不是有效聚合文档 |
-| `CAP-CLI-IN-003` | 目录枚举 | positional directory | Observed | 无条件 depth-first；Linux 跟随 link、alias 不去重、权限静默，self-cycle 依赖 OS；4096 完整；TOCTOU 按打开时 path；locale 不改变顺序，tmpfs/volume 大小写 tie 不同；跨平台仍缺 |
+| `CAP-CLI-IN-003` | 目录枚举 | positional directory | Observed | 无条件 depth-first；Linux 跟随 link、alias 不去重、权限静默，self-cycle 依赖 OS；4096 完整；TOCTOU 按打开时 path；locale 不改变顺序，tmpfs/volume 大小写 tie 不同；47-case 双轮 Qt6 与 Qt5 相同，见 `qt6-path-boundary-runtime-evidence.md`；跨平台仍缺 |
 | `CAP-CLI-IN-004` | 单文件目录/空目录 | positional directory | Observed | 单文件不加 prefix；空目录退出 0 且无输出 |
 | `CAP-ENG-IN-001` | 内存扫描 | engine `scanMemory()` | Observed | Binary fixture 与 file/device/subdevice record 一致；CLI 不暴露 |
 | `CAP-ENG-IN-002` | device/subdevice 扫描 | engine API | Observed | 37-case fixture 固定 chunked/EOF/read/seek/sequential、position 与合法/非法 subdevice 范围；见 `engine-contract-behavior.md` |

@@ -35,10 +35,12 @@ Qt6 四行 `Unimplemented code.` stderr：
 - `CAP-CLI-IN-004` 单文件目录与空目录；
 - `CAP-NEST-001` 目录遍历与文件内部 recursive 的区别。
 
-`CAP-CLI-IN-003` 由 missing 提升为 partial。基础 depth-first 树已执行，但
-该能力在 Linux Qt5 上还固定了 symlink/alias、权限、4096 项目录、TOCTOU、
-locale、非 UTF-8 与不同 volume 的大小写 tie；这些 Qt6 边界尚未执行，不能
-由本轮小型目录树外推。
+本切片当时把 `CAP-CLI-IN-003` 由 missing 提升为 partial。基础 depth-first
+树已执行，但该能力在 Linux Qt5 上还固定了 symlink/alias、权限、4096 项目录、
+TOCTOU、locale、非 UTF-8 与不同 volume 的大小写 tie；这些边界不能由本轮
+小型目录树外推。后续完整重放已由
+[`qt6-path-boundary-runtime-evidence.md`](qt6-path-boundary-runtime-evidence.md)
+闭合。
 
 本切片当时使汇总达到 34 项 complete。后续 database 证据见
 [`qt6-database-runtime-evidence.md`](qt6-database-runtime-evidence.md)；
