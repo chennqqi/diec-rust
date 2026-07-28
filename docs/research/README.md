@@ -504,5 +504,12 @@ Phase 0 计划形成：
 - [`data/baseline-corpus-windows-qt5.json`](data/baseline-corpus-windows-qt5.json)：
   6 个 CLI 控制 case 与 26 个安全样本的 64 次原生 Windows Qt5 执行、原始
   hash、确定性检查和 Linux Qt5 detection projection 差分。
+- [`data/windows-qt5-cli-matrix.json`](data/windows-qt5-cli-matrix.json)：
+  338-case option/output/special 的 676 次原生 Windows Qt5 执行。
+- [`data/windows-qt5-cli-path-nested.json`](data/windows-qt5-cli-path-nested.json)：
+  14-case path 与 32-case nested 的 92 次原生 Windows Qt5 执行。
+- [`data/windows-qt5-cli-database.json`](data/windows-qt5-cli-database.json)：
+  18-case database success/error 的 36 次原生 Windows Qt5 执行及受限
+  path/CRLF normalization 对照。
 
 每份文档遵守 [`../README.md`](../README.md) 的证据和状态约定。实验附件如需版本化，应使用文本格式并放入主题对应的子目录。

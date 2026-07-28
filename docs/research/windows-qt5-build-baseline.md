@@ -17,6 +17,9 @@ Last updated: 2026-07-29
 退出码全部相同。
 首轮 14-case path 和 32-case nested 矩阵又完成 92 次执行；退出码、相对
 filename-prefix 顺序和 nested detection tree 均与 Linux Qt5 相同。
+随后 18-case database success/error 矩阵完成 36 次执行；退出码、load-error
+可见性、JSON validity 和受限 path/CRLF normalization 后的 stdout 均与
+Linux Qt5 相同。
 
 本仓库用
 [`build_windows_qt5_oracle.ps1`](../../tools/upstream/build_windows_qt5_oracle.ps1)
@@ -29,7 +32,8 @@ filename-prefix 顺序和 nested detection tree 均与 Linux Qt5 相同。
 和
 [`data/baseline-corpus-windows-qt5.json`](data/baseline-corpus-windows-qt5.json)、
 [`data/windows-qt5-cli-matrix.json`](data/windows-qt5-cli-matrix.json) 和
-[`data/windows-qt5-cli-path-nested.json`](data/windows-qt5-cli-path-nested.json)。
+[`data/windows-qt5-cli-path-nested.json`](data/windows-qt5-cli-path-nested.json)、
+[`data/windows-qt5-cli-database.json`](data/windows-qt5-cli-database.json)。
 
 ## 固定环境
 
@@ -178,9 +182,10 @@ hash 差异，只在跨平台比较时使用明确的 detection projection 和�
 normalizer 隐藏平台原始字节。
 
 这批证据直接覆盖单文件默认扫描、基本 CLI 控制以及 PE/ELF/Mach-O、DEX/
-Java/PYC、PDF/CFBF 和 Binary fallback 的 baseline dispatch。它尚不覆盖完整
-option/output/special/nested/path/database-error matrix，也不覆盖 engine-only
-harness，因此不足以把 Windows 的 68 行整体接纳为 runtime baseline。
+Java/PYC、PDF/CFBF 和 Binary fallback 的 baseline dispatch。单独看该报告
+不覆盖后续章节的 option/output/special/path/nested/database，也不覆盖
+engine-only harness，因此不足以把 Windows 的 68 行整体接纳为 runtime
+baseline。
 
 ## Windows CLI option/output/special 矩阵
 
@@ -207,9 +212,9 @@ stdout 原始哈希和长度全部不同，主要可观察来源是 CRLF 与平�
 
 26-sample scan 还扩大了固定增量集合：deep/aggressive 仍无增量；heuristic、
 alltypes、format、hideunknown 和 combined 的逐样本变化保存在机器报告中。
-该证据没有覆盖 nested/path/database-error、engine-only，也没有把 output/
-special 扩展到其余 21 个样本，因此仍不足以接纳完整 Windows capability
-baseline。
+该报告本身没有覆盖后续独立报告中的 nested/path/database，也没有覆盖
+engine-only 或把 output/special 扩展到其余 21 个样本，因此仍不足以接纳
+完整 Windows capability baseline。
 
 ## Windows CLI path/nested 矩阵
 
@@ -239,6 +244,32 @@ Windows path 的 13/14 个 raw stdout 与 Linux 不同，空目录的空 stdout 
 只覆盖发布 CLI 暴露的 recursive/aggressive 组合；archive/resource 的
 engine-only 控制仍需原生 harness。
 
+## Windows CLI database success/error 矩阵
+
+[`collect_windows_cli_database.py`](../../tools/upstream/collect_windows_cli_database.py)
+复用 `compare_cli_oracles.py` 的 18 个 release CLI database case，要求生成
+fixture manifest 与版本化 `database-fixture.json` 逐字节一致，并重新验证
+source/rules/submodule、Qt 和二进制身份。每个 case 连续运行两次，共 36 次。
+
+机器报告 SHA-256 为
+`13e58a8d1b0cc4feb3998c06140e0afe7adb754cb59e5198b0e5b3079a3d5f8c`。
+结果为 0 个 determinism failure；18/18 退出码、`Cannot load database:`
+可见性和 JSON validity 与 Linux Qt5 相同。18 个 Windows raw stdout 均因
+路径或换行不同；报告另执行受限 normalization：
+
+1. 将每个实际 Windows path argument 替换成同 case 的原始 Linux argument；
+2. 将 CRLF 替换为 LF；
+3. 不解析/重排 JSON，不删除或改写诊断，不进行其他空白变换。
+
+处理后的 18/18 stdout SHA-256 与 Linux Qt5 原始 stdout 相同。malformed rule
+仍保留 `SyntaxError: Parse error`，throwing rule 仍保留
+`Error: database fixture`，两者继续破坏 JSON framing；所有 stderr 为空。
+
+该矩阵覆盖 missing/empty/invalid/malformed/throwing/valid main、missing
+extra/custom 和 entropy/info load-error framing，不覆盖 ZIP archive/cache
+边界、ACL/permission-denied database 或不可读 input 的 Windows 行为，也不
+替代 engine-only cache harness。
+
 ## 可重复性边界
 
 当前证据证明“从一次独立 clean recursive checkout 可重复构建并运行”，不证明
@@ -249,16 +280,17 @@ bit-for-bit reproducible：
 - 初步源树此前经过一次 CMake configure，因此两次产物不是严格同输入实验；
 - MSVC archive/PE 时间戳、绝对路径和其他非确定输入尚未逐项隔离；
 - 已完成 6 个控制 case、26 样本默认 JSON baseline、全 26 样本 scan 及
-  5 个代表样本的 output/special，并完成首轮 path/nested；尚未运行特殊路径/
-  filesystem、database-error、engine-only 和其余样本的 output/special
-  Windows 矩阵；
+  5 个代表样本的 output/special，并完成首轮 path/nested/database；尚未运行
+  特殊路径/filesystem/ACL、database archive/cache/permission engine-only、
+  其他 engine-only 和其余样本的 output/special Windows 矩阵；
 - 尚未验证 x86、ARM64、完整 GUI/lite、install/package 和官方 release zip；
 - `cl` 对 x64 的 `/arch:SSE2` 给出 D9002 ignored warning；x64 ABI 本身要求
   SSE2，但该 warning 仍应保留在构建日志中。
 
-下一步扩展原生采集器的特殊路径/filesystem、database-error 和其余样本的
-output/special，并为 engine-only 行建立 Windows harness；然后独立处理官方
-CMake 路径和二进制确定性。macOS 固定构建仍是三平台基线的剩余大项。
+下一步扩展原生采集器的特殊路径/filesystem/ACL 和其余样本的 output/special，
+并为 database archive/cache/permission 与其他 engine-only 行建立 Windows
+harness；然后独立处理官方 CMake 路径和二进制确定性。macOS 固定构建仍是
+三平台基线的剩余大项。
 
 ## 上游证据
 

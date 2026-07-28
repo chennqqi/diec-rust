@@ -32,6 +32,11 @@ continuity failure，且与 Linux Qt5 报告重叠的 170 个 case 退出码全�
 detection tree 均与 Linux Qt5 相同，且没有双轮漂移。三份 Windows runtime
 报告累计 832 次执行，仍不代表尚未运行的 Windows 边界已经兼容。
 
+18-case database success/error 矩阵再完成 36 次执行。退出码、load-error
+可见性和 JSON validity 18/18 与 Linux Qt5 一致；仅将实际 Windows path
+argument 替换回对应 Linux argument 并执行 CRLF→LF 后，18/18 stdout hash
+也完全相同。四份 Windows runtime 报告现累计 868 次执行。
+
 ## 语料来源与安全
 
 所有样本由

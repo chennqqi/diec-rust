@@ -2,7 +2,7 @@
 
 Status: Draft
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
-Last updated: 2026-07-28
+Last updated: 2026-07-29
 
 ## 范围
 
@@ -102,6 +102,40 @@ python3 tools/upstream/compare_cli_oracles.py \
 数据库矩阵包含 18 个 case、36 次 oracle 执行。不可读输入矩阵是工具的固定
 通用基线，另含 4 个 case、8 次 oracle 执行。两个构建在所有 case 上的退出码、
 原始 stdout 和原始 stderr 都逐字节相同；stderr 始终为空。
+
+## Windows Qt5 release CLI 复验
+
+相同 18-case database 矩阵在固定 Windows x86_64 Qt5 qmake oracle 上每项
+连续执行两次，共 36 次。机器报告为
+[`windows-qt5-cli-database.json`](data/windows-qt5-cli-database.json)，
+SHA-256
+`13e58a8d1b0cc4feb3998c06140e0afe7adb754cb59e5198b0e5b3079a3d5f8c`。
+
+结果为：
+
+- 0 个 determinism failure，18/18 退出码与 Linux Qt5 相同；
+- 4 个 `--messages` missing-main case 的 load-error 可见性逐项相同；
+- 12 个 JSON case 的 valid/invalid framing 判断逐项相同；
+- parse/runtime error marker 均保留，所有 stderr 为空；
+- 18 个 raw stdout 均保留 Windows path/CRLF 差异；
+- 只把实际 path argument 换回对应 Linux argument 并执行 CRLF→LF 后，
+  18/18 stdout SHA-256 与 Linux Qt5 原始输出相同。
+
+normalizer 不解析或重排 JSON，不删除/改写诊断，也不执行其他空白变换。该结果
+因此证明当前差异可由明确的平台路径与换行解释，但不覆盖 Windows ACL、
+permission-denied database、不可读 input 或 engine cache 行为。
+
+复现命令：
+
+```powershell
+python tools\upstream\collect_windows_cli_database.py `
+  --binary <source>\build\release\diec.exe `
+  --source-dir <source> `
+  --qt-dir <qt-root>\5.15.2\msvc2019_64 `
+  --fixture-dir <generated-database-fixture> `
+  --expected-binary-sha256 e8579a6ed0d2536ea14af154bcbeeaaea6967c0c7559a595fb3fe52206ac635e `
+  --output <report.json>
+```
 
 ## Main database 加载状态
 
