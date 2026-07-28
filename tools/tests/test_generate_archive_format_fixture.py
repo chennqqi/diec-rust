@@ -52,6 +52,12 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
                     "pdf-member-lzma.7z",
                     "pdf-member-lzma2.7z",
                     "pdf-member-lzma2-aes.7z",
+                    "pdf-member-copy-aes.7z",
+                    "pdf-member-lzma-aes.7z",
+                    "pdf-member-ppmd7-aes.7z",
+                    "pdf-member-bzip2-aes.7z",
+                    "pdf-member-deflate-aes.7z",
+                    "pdf-member-deflate64-aes.7z",
                     "pdf-member-bcj2-lzma2-aes.7z",
                     "pdf-member-bcj-lzma2-aes.7z",
                     "pdf-member-arm64-lzma2-aes.7z",
@@ -335,6 +341,105 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
                     ),
                 ):
                     factory(module.PAYLOAD_NAME, b"not-pdf")
+
+    def test_7z_base_aes_matrix_is_fixed_and_opaque(self):
+        module = load_module()
+        cases = (
+            (
+                "Copy",
+                module.make_7z_copy_aes,
+                466,
+                (
+                    "6af39a3f4d30d461b3f64ee62f21437b"
+                    "17c114a6a21c542b09c92c6f31388ff1"
+                ),
+            ),
+            (
+                "LZMA",
+                module.make_7z_lzma_aes,
+                354,
+                (
+                    "24f4b82d99ccf45ce6360ed6597c1daf"
+                    "d8f650f373a1fad8aa8585d463b9e886"
+                ),
+            ),
+            (
+                "PPMd7",
+                module.make_7z_ppmd7_aes,
+                322,
+                (
+                    "a853a9866a5a04dc76ece82557a8f1ca"
+                    "b8b64db1b0365347736272366e632c07"
+                ),
+            ),
+            (
+                "BZip2",
+                module.make_7z_bzip2_aes,
+                370,
+                (
+                    "6a5368372ea5432c083f28bba92afaf29"
+                    "435ef9e5a2d2b9e6cbc3c0a79ea2ddd"
+                ),
+            ),
+            (
+                "Deflate",
+                module.make_7z_deflate_aes,
+                338,
+                (
+                    "79d2717de13d0c8c546aa38d8c5d0780"
+                    "21416830bf288fb20ca5b93f347bcf11"
+                ),
+            ),
+            (
+                "Deflate64",
+                module.make_7z_deflate64_aes,
+                338,
+                (
+                    "4bfd81b77656f041ddf260bc09387965"
+                    "e4fdd2090bc659a605fa6d0c28cc416e"
+                ),
+            ),
+        )
+        for method, factory, size, expected_sha256 in cases:
+            with self.subTest(method=method):
+                data = factory(module.PAYLOAD_NAME, module.PDF)
+                self.assertEqual(len(data), size)
+                self.assertEqual(
+                    hashlib.sha256(data).hexdigest(),
+                    expected_sha256,
+                )
+                self.assertNotIn(module.PDF, data)
+                packed_size = int.from_bytes(data[12:20], "little")
+                next_header = data[32 + packed_size :]
+                self.assertEqual(
+                    next_header.count(b"\x24\x06\xf1\x07\x01"),
+                    1,
+                )
+                method_id = module.SEVENZIP_CODER_IDS[method]
+                descriptor = len(method_id)
+                if method in {"LZMA", "PPMd7"}:
+                    descriptor |= 0x20
+                self.assertIn(
+                    bytes((descriptor,)) + method_id,
+                    next_header,
+                )
+                with self.assertRaisesRegex(
+                    ValueError,
+                    (
+                        f"7Z {method}\\+AES fixture "
+                        "requires the canonical PDF"
+                    ),
+                ):
+                    factory(module.PAYLOAD_NAME, b"not-pdf")
+        with self.assertRaisesRegex(
+            ValueError,
+            "unsupported 7Z AES base method",
+        ):
+            module.make_7z_base_aes(
+                module.PAYLOAD_NAME,
+                module.PDF,
+                "Unknown",
+            )
 
     def test_deflate64_vector_requires_the_extended_distance_code(self):
         module = load_module()

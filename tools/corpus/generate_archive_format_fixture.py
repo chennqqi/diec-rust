@@ -143,6 +143,92 @@ SEVENZIP_ARM64_LZMA2_AES_PDF_ARCHIVE = bytes.fromhex(
     "7000610079006c006f00610064002e007000640066000000150601002080ff81"
     "0000"
 )
+SEVENZIP_BASE_AES_PDF_ARCHIVES = {
+    "Copy": bytes.fromhex(
+        "377abcaf271c00044f06ed8550010000000000006200000000000000e0660d1d"
+        "5d63646cef57ce6dc1e61d0812516dc49c316d5456a867f1d134fb1e00eb23b8"
+        "46a65efa3fbf91000a0e9b06b5b8e3dee8b3d29545e4c28a0c79950956caa58"
+        "bef756c233b9eceddf6a6aeadf7e26a7ebe0b0016ce618baab954f5e4fa8b634"
+        "c68f540a1e6ba4cbed125db092bbd6bebdba4b1119ed901c353d49c6f24acc60"
+        "b31186323ea7f21e88b54e9f300a139d74700752688868fc00366b75df5e5512"
+        "8e14e9b5c70e6295879f34959e68b9b6e49b9b36bd5de7d00928fc2239e5f28"
+        "2359bf88d1e4109d6eb4a0bed8f1aa800e6c5049d19dc084023e44bfe1de2d14"
+        "3ff4f414b7386e40b8eedc8cb5c2e1fc6d808dc3332e8d445d32ea72912bff57"
+        "2b5d14d8976bcfbc6b61526fda2f06a22a6a284d547d5f03b4191ef6a5a8506"
+        "54a9e7a4daa7286901fadbe7e716fce57671da132aa8a9d0000d99792c7acc2f"
+        "57d82fcdd6442199803b2cfbd4fc77bf43b010406000109815000070b01000224"
+        "06f1070112530febbfef5979d92046f0785417a0954755010001000c814b814b"
+        "00080a0116f95a330000050119001119007000610079006c006f00610064002e"
+        "007000640066000000150601002080ff810000"
+    ),
+    "LZMA": bytes.fromhex(
+        "377abcaf271c000426ea63c7d000000000000000720000000000000098615e2f"
+        "64f42eaf452dcf92ea89505a0b4f65edce6fb3728e325315373e8fd72472dfc8"
+        "d41f4f0b056b0b78220e5d6d16d04e0b89363c718831b1cbcf248bb70ee8d296"
+        "a3211574d0f9bb6e3c54b538ee2e2cec266bcb07b7474245b4b8935c086a481c"
+        "4dec9c1220bd4a15e2e3297523878fde3057d8c6763e712ac9565e7b7adcbb05"
+        "4b8be24d91d1c00ba394dd30e5dba9537dea05e4eb752af58ed774d2f3d9512"
+        "be2667c81f99f7146263ab02dec0d6198fa83bc8b50e3cdec024e503689ee9b6"
+        "4918106e961adffc1c2a43f05ba14c8af01040600010980d000070b0100022406"
+        "f1070112530f6694b6bc7ad61eb4482669515ed396a623030101055d00100000"
+        "01000c80c4814b00080a0116f95a330000050119080000000000000000111900"
+        "7000610079006c006f00610064002e007000640066000000150601002080ff81"
+        "0000"
+    ),
+    "PPMd7": bytes.fromhex(
+        "377abcaf271c000497dc5f5ab0000000000000007200000000000000ff37ad47"
+        "9026df5f6934a50dd91dd91beb231cec8e86aa87a0c82a491531113b6f0237ff"
+        "1bf26d20ecc5d2f3d0dd6326f59d8a253e7bd914eb45f88df46d16c7c5bfc14"
+        "d878e496015a0b6a157a32431b8e042d2e484c7b6cecb14f6fc851a89c3e32a"
+        "133514690ceb9425496af36acf0d6f1792839e63b5739101924c443a59ecff794"
+        "5d5dd97e64daefd872899ee5943204a54c33624e59eddef0c27ce210554e1093"
+        "d061360975c21a31e7239abea56929d5401040600010980b000070b0100022406"
+        "f1070112530fe2af0407bf4fe1e86fff5bdffe4cb89c23030401052000000100"
+        "01000c80ac814b00080a0116f95a330000050119080000000000000000111900"
+        "7000610079006c006f00610064002e007000640066000000150601002080ff81"
+        "0000"
+    ),
+    "BZip2": bytes.fromhex(
+        "377abcaf271c00047aabd98ff00000000000000062000000000000005e7b7915"
+        "2745c196c2a0d8f4b580861e878de2de0b1b72be381b0f999c2a5df09b00d273"
+        "3a152a56fb93b8068fde45f8e87fb8dabe86dd57d454af10e25211b585fdb7e2"
+        "5ab1c7699726ffe63b55afcdf261eda10dfb720f8b784e812936d0b564eae661"
+        "05702b92f87dac2d5cfb4fd2f2e1df53abc12a166e19f052668472fc76ca6e98"
+        "3feded0eaebf01cc0883a745b2d617a629d70e89a549db848473a459b61d4560"
+        "57c20a118b1b48d0724567a1ce893d205bcc83bea501825da6d9b645013d9e97"
+        "e2c7fabda62e06e62c3ce3619ee9e9b86dcf5db541e67ecd330ce0c76f95253"
+        "80ff7463a3140b8dd9c543712079c93cf01040600010980f000070b0100022406"
+        "f1070112530f8c6425d1f4b6b4d43fab81f6f6986cc90304020201000c80ef81"
+        "4b00080a0116f95a33000005011119007000610079006c006f00610064002e00"
+        "7000640066000000150601002080ff810000"
+    ),
+    "Deflate": bytes.fromhex(
+        "377abcaf271c000430e5466fd0000000000000006200000000000000f613a639"
+        "f291aad736bf83c5ff91401f1e083028bff8ee9f687b3fe80af7104e00b3e6eb"
+        "5974f129cf5d025fd4709460eaac8e465b11efc769d2b4e3e73c6685274e838c"
+        "36d83b9ebd39ef66d618de4405b8f20c74350b9241dee033835288a24bbfcb66"
+        "aa71942635042651e8939808c6d83cdca553cee7d36baa065c0fd3688905adabe"
+        "952c36f12c3328bc8af4e4bc1a5ae1670c18d6c5649af08550b1dca96bdda44"
+        "a6b79d23bbc8b75cb3a11786a567a0e3d52288dc5acd86924fb4097aa519c444"
+        "0d4afe601c1c0d7f5303dfe36f8e6a5e01040600010980d000070b0100022406"
+        "f1070112530f9d87d4793fc7faa04aff94933c0066250304010801000c80c481"
+        "4b00080a0116f95a33000005011119007000610079006c006f00610064002e00"
+        "7000640066000000150601002080ff810000"
+    ),
+    "Deflate64": bytes.fromhex(
+        "377abcaf271c00041f660d3fd00000000000000062000000000000008f5ed6e2"
+        "0445fd98a93cd3b62236769054d7cf40aaecd080e47be77aad5f72f042c535d0"
+        "63ab3329b9c64e6ba4ab5d4ac710b74f5b99879a8ce2b305bd5301cb7c31c552"
+        "494f29f3794860f555f4496bbc67444eddcaba0c6042de3abf979c13396311bf"
+        "27394ac9687c257b131bad81d3025acf2d5f56a942187b6b225244fac13456b0"
+        "9ebef977efd9315bf6789097755b9e5ea08bf113ab27949a72cb843bc445c8cdb"
+        "f31a115184d787ad45b1a8ccbeed73cb40ea47a192e9651096c7df6579b7e515"
+        "1c1fe99ef724118cca356423e61319101040600010980d000070b0100022406f1"
+        "070112530f69fb0bba324831d240737239244f7a980304010901000c80c4814b"
+        "00080a0116f95a33000005011119007000610079006c006f00610064002e0070"
+        "00640066000000150601002080ff810000"
+    ),
+}
 
 
 def sevenzip_uint64(value: int) -> bytes:
@@ -834,6 +920,40 @@ def make_7z_arm64_lzma2_aes(name: str, payload: bytes) -> bytes:
     return SEVENZIP_ARM64_LZMA2_AES_PDF_ARCHIVE
 
 
+def make_7z_base_aes(name: str, payload: bytes, method: str) -> bytes:
+    if method not in SEVENZIP_BASE_AES_PDF_ARCHIVES:
+        raise ValueError(f"unsupported 7Z AES base method: {method}")
+    if name != PAYLOAD_NAME or payload != PDF:
+        raise ValueError(
+            f"7Z {method}+AES fixture requires the canonical PDF"
+        )
+    return SEVENZIP_BASE_AES_PDF_ARCHIVES[method]
+
+
+def make_7z_copy_aes(name: str, payload: bytes) -> bytes:
+    return make_7z_base_aes(name, payload, "Copy")
+
+
+def make_7z_lzma_aes(name: str, payload: bytes) -> bytes:
+    return make_7z_base_aes(name, payload, "LZMA")
+
+
+def make_7z_ppmd7_aes(name: str, payload: bytes) -> bytes:
+    return make_7z_base_aes(name, payload, "PPMd7")
+
+
+def make_7z_bzip2_aes(name: str, payload: bytes) -> bytes:
+    return make_7z_base_aes(name, payload, "BZip2")
+
+
+def make_7z_deflate_aes(name: str, payload: bytes) -> bytes:
+    return make_7z_base_aes(name, payload, "Deflate")
+
+
+def make_7z_deflate64_aes(name: str, payload: bytes) -> bytes:
+    return make_7z_base_aes(name, payload, "Deflate64")
+
+
 def rar4_header(block_type: int, flags: int, body: bytes) -> bytes:
     header_size = 7 + len(body)
     protected = struct.pack("<BHH", block_type, flags, header_size) + body
@@ -1095,6 +1215,42 @@ FIXTURES = (
         make_7z_lzma2_aes,
     ),
     (
+        "pdf-member-copy-aes.7z",
+        "7Z Copy plus 7zAES archive containing one PDF",
+        "Copy+7zAES",
+        make_7z_copy_aes,
+    ),
+    (
+        "pdf-member-lzma-aes.7z",
+        "7Z LZMA plus 7zAES archive containing one PDF",
+        "LZMA+7zAES",
+        make_7z_lzma_aes,
+    ),
+    (
+        "pdf-member-ppmd7-aes.7z",
+        "7Z PPMd7 plus 7zAES archive containing one PDF",
+        "PPMd7+7zAES",
+        make_7z_ppmd7_aes,
+    ),
+    (
+        "pdf-member-bzip2-aes.7z",
+        "7Z BZip2 plus 7zAES archive containing one PDF",
+        "BZip2+7zAES",
+        make_7z_bzip2_aes,
+    ),
+    (
+        "pdf-member-deflate-aes.7z",
+        "7Z Deflate plus 7zAES archive containing one PDF",
+        "Deflate+7zAES",
+        make_7z_deflate_aes,
+    ),
+    (
+        "pdf-member-deflate64-aes.7z",
+        "7Z Deflate64 plus 7zAES archive containing one PDF",
+        "Deflate64+7zAES",
+        make_7z_deflate64_aes,
+    ),
+    (
         "pdf-member-bcj2-lzma2-aes.7z",
         "7Z BCJ2 plus LZMA2 plus 7zAES archive containing one PDF",
         "BCJ2+LZMA2+7zAES",
@@ -1227,6 +1383,40 @@ FIXTURES = (
 )
 
 
+def sevenzip_aes_generation_provenance(
+    archive_name: str,
+    method_options: tuple[str, ...],
+) -> dict[str, object]:
+    return {
+        "command": [
+            "7zz",
+            "a",
+            archive_name,
+            "payload.pdf",
+            "-t7z",
+            *method_options,
+            "-pDetectItEasy",
+            "-mhe=off",
+            "-mtm=off",
+            "-mtc=off",
+            "-mta=off",
+        ],
+        "password": SEVENZIP_AES_PASSWORD,
+        "payload_sha256": hashlib.sha256(PDF).hexdigest(),
+        "tool": "7zz",
+        "tool_archive_sha256": SEVENZIP_2602_ARCHIVE_SHA256,
+        "tool_binary_sha256": SEVENZIP_2602_BINARY_SHA256,
+        "tool_license": (
+            "LGPL-2.1-or-later; unRAR restriction; "
+            "BSD-2-Clause and BSD-3-Clause components"
+        ),
+        "tool_source": (
+            "https://www.7-zip.org/a/7z2602-linux-x64.tar.xz"
+        ),
+        "tool_version": "26.02",
+    }
+
+
 def generate(output_dir: pathlib.Path) -> dict[str, object]:
     output_dir.mkdir(parents=True, exist_ok=True)
     samples = []
@@ -1294,6 +1484,42 @@ def generate(output_dir: pathlib.Path) -> dict[str, object]:
             "compressed stream"
         ),
         "generation_provenance": {
+            "sevenzip_bzip2_aes_archive": (
+                sevenzip_aes_generation_provenance(
+                    "pdf-member-bzip2-aes.7z",
+                    ("-m0=BZip2", "-mx=9"),
+                )
+            ),
+            "sevenzip_copy_aes_archive": (
+                sevenzip_aes_generation_provenance(
+                    "pdf-member-copy-aes.7z",
+                    ("-m0=Copy",),
+                )
+            ),
+            "sevenzip_deflate_aes_archive": (
+                sevenzip_aes_generation_provenance(
+                    "pdf-member-deflate-aes.7z",
+                    ("-m0=Deflate", "-mx=9"),
+                )
+            ),
+            "sevenzip_deflate64_aes_archive": (
+                sevenzip_aes_generation_provenance(
+                    "pdf-member-deflate64-aes.7z",
+                    ("-m0=Deflate64", "-mx=9"),
+                )
+            ),
+            "sevenzip_lzma_aes_archive": (
+                sevenzip_aes_generation_provenance(
+                    "pdf-member-lzma-aes.7z",
+                    ("-m0=LZMA", "-mx=9"),
+                )
+            ),
+            "sevenzip_ppmd7_aes_archive": (
+                sevenzip_aes_generation_provenance(
+                    "pdf-member-ppmd7-aes.7z",
+                    ("-m0=PPMd", "-mx=9"),
+                )
+            ),
             "sevenzip_arm64_lzma2_aes_archive": {
                 "command": [
                     "7zz",
