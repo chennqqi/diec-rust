@@ -25,7 +25,9 @@ Last updated: 2026-07-29
 - text/plaintext/CSV/TSV 及 all-flags 结果均为非空 UTF-8。
 
 与既有 5-sample 报告合并后，Windows 普通输出格式现覆盖全部 26 个 baseline
-样本。entropy/info/struct 专用模式仍只有 5 个代表样本，不能从本报告外推。
+样本。entropy/info/struct 专用模式的独立 26-sample 扩展见
+[`windows-special-matrix-extension.md`](windows-special-matrix-extension.md)，
+不能从本报告本身外推。
 
 ## 四个 invalid XML 边界
 
@@ -77,7 +79,6 @@ projection，不保存 raw stream 或本机绝对路径。
 
 ## 尚未覆盖
 
-- 剩余 21 个 baseline 样本的 entropy/info/struct 专用模式；
 - 这 21 个样本的 Linux/macOS 同 case output，用于跨平台 raw/semantic 差分；
 - 新增格式 corpus 的普通 output/special 扩展；
 - formatter 注入字符边界之外的系统化 XML element-name 字符集合。

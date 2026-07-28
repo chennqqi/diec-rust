@@ -38,7 +38,8 @@ Windows 已有 clean candidate oracle、6-control/26-sample 默认 JSON baseline
 338-case option/output/special 矩阵，以及首轮 14-case path/32-case nested
 矩阵、18-case database success/error 矩阵、17-case Windows 特殊路径矩阵和
 8-case Junction/扩展命名空间、7-case 真实超长路径和 5-case ADS 矩阵，另有
-21-sample × 7-case 普通输出扩展。九批共 1,236 次执行均稳定；默认 detection
+21-sample × 7-case 普通输出和 21-sample × 19-case special 扩展。十批共
+2,034 次执行均稳定；默认 detection
 projection 与 Linux Qt5 26/26 相同，
 234 个直接重叠矩阵 case 的退出码也全部相同，path 相对输出顺序、nested
 detection tree、database load-error/JSON framing 没有差异；特殊路径又固定
@@ -51,8 +52,8 @@ filesystem 矩阵固定 Junction 跟随、alias 重复、两跳链及普通长�
 [`windows-long-path-behavior.md`](windows-long-path-behavior.md)、
 [`windows-ads-behavior.md`](windows-ads-behavior.md)。由于 UNC、
 精确 namespace 上限、symlink/reparse cycle/ACL 等边界、database
-archive/cache/permission engine-only、其他 engine-only 能力以及非代表样本的
-special 矩阵仍缺失，coverage 生成器尚不接纳 Windows 为完整 runtime
+archive/cache/permission engine-only、其他 engine-only 能力以及跨平台扩展
+仍缺失，coverage 生成器尚不接纳 Windows 为完整 runtime
 baseline，68 行继续保守标记为 `platform_missing`。
 
 独立的逐行

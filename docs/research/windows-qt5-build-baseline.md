@@ -30,6 +30,8 @@ Windows 专用 5-case ADS 矩阵再完成 10 次执行；固定显式普通/`\\?
 stream 按内容扫描，以及目录只枚举 carrier 默认 stream。
 剩余 21 个 baseline 样本的 7-case 普通 output 矩阵再完成 294 次执行；固定
 JSON continuity、CSV 优先级及四个带空格 filetype 的 invalid XML。
+同 21 个样本的 19-case entropy/info/struct 矩阵再完成 798 次执行；固定全部
+输出有效性、JSON-first formatter 和 entropy/struct 模式优先级。
 
 本仓库用
 [`build_windows_qt5_oracle.ps1`](../../tools/upstream/build_windows_qt5_oracle.ps1)
@@ -53,6 +55,8 @@ JSON continuity、CSV 优先级及四个带空格 filetype 的 invalid XML。
 [`data/windows-qt5-cli-ads.json`](data/windows-qt5-cli-ads.json)。
 普通 output 扩展见
 [`data/windows-qt5-cli-output-remaining.json`](data/windows-qt5-cli-output-remaining.json)。
+special 扩展见
+[`data/windows-qt5-cli-special-remaining.json`](data/windows-qt5-cli-special-remaining.json)。
 
 ## 固定环境
 
@@ -232,8 +236,8 @@ stdout 原始哈希和长度全部不同，主要可观察来源是 CRLF 与平�
 26-sample scan 还扩大了固定增量集合：deep/aggressive 仍无增量；heuristic、
 alltypes、format、hideunknown 和 combined 的逐样本变化保存在机器报告中。
 该报告本身没有覆盖后续独立报告中的 nested/path/database，也没有覆盖
-engine-only 或把 special 扩展到其余 21 个样本，因此仍不足以接纳
-完整 Windows capability baseline。
+engine-only；其余 21 个样本的 special 扩展由下一节的独立报告补齐，但这些
+engine-only 和跨平台缺口仍使完整 Windows capability baseline 未被接纳。
 
 ## Windows CLI 剩余 21 样本普通 output 矩阵
 
@@ -247,7 +251,20 @@ engine-only 或把 special 扩展到其余 21 个样本，因此仍不足以接�
 reference，21/21 all-flags 等于 CSV。`Mach-O FAT`、`Java Class`、
 `Python Bytecode` 和 `ISO 9660` 被直接用作动态 XML element name，因空格使
 4 个 XML 文档稳定无效；其余 17 个可解析。普通 output 现覆盖全部 26 个
-baseline 样本，special entropy/info/struct 仍只覆盖 5 个代表样本。
+baseline 样本。
+
+## Windows CLI 剩余 21 样本 entropy/info/struct 矩阵
+
+独立调研
+[`windows-special-matrix-extension.md`](windows-special-matrix-extension.md)
+将首轮 19 个 special case 扩展到剩余 21 个 baseline 样本。399 case 各运行
+两次；机器报告 SHA-256 为
+`4a30d09625e040d56f7abaeb1ef0e3d4df3474a6cc19ca28f9994c8facdc81e0`。
+
+798 次执行全部稳定、退出 `0` 且 stderr 为空；9 类 JSON、2 类 XML 及 8 类
+非空 UTF-8 输出全部有效。entropy/info 的 all-output-flags 分别等于自身 JSON；
+entropy/info/struct 组合等于 entropy JSON，info/struct 组合等于 struct Hash
+JSON。Windows 的 19-case special matrix 现覆盖全部 26 个 baseline 样本。
 
 ## Windows CLI path/nested 矩阵
 
@@ -393,19 +410,18 @@ bit-for-bit reproducible：
   SHA-256 不同；
 - 初步源树此前经过一次 CMake configure，因此两次产物不是严格同输入实验；
 - MSVC archive/PE 时间戳、绝对路径和其他非确定输入尚未逐项隔离；
-- 已完成 6 个控制 case、26 样本默认 JSON baseline、全 26 样本 scan 及
-  全 26 样本普通 output、5 个代表样本 special，并完成首轮
+- 已完成 6 个控制 case、26 样本默认 JSON baseline、全 26 样本 scan、
+  全 26 样本普通 output 和全 26 样本 19-case special，并完成首轮
   path/nested/database；尚未运行
   UNC、精确 namespace 上限、symbolic link/reparse cycle/ACL、database
-  archive/cache/permission engine-only、其他 engine-only 和其余 21 个样本的
-  special Windows 矩阵；
+  archive/cache/permission engine-only 和其他 engine-only 矩阵；
 - 尚未验证 x86、ARM64、完整 GUI/lite、install/package 和官方 release zip；
 - `cl` 对 x64 的 `/arch:SSE2` 给出 D9002 ignored warning；x64 ABI 本身要求
   SSE2，但该 warning 仍应保留在构建日志中。
 
 下一步扩展原生采集器的 UNC、精确 namespace 上限、symbolic link/reparse
-cycle/ACL 和其余 21 个样本的 special，并为 database
-archive/cache/permission 与其他 engine-only 行建立 Windows harness；然后
+cycle/ACL，并为 database archive/cache/permission 与其他 engine-only 行建立
+Windows harness；然后
 独立处理官方 CMake 路径和二进制
 确定性。macOS 固定构建仍是三平台基线的剩余大项。
 

@@ -147,8 +147,8 @@ vendored 目录仍需独立 source/license 审计。
   见 [`windows-qt5-build-baseline.md`](windows-qt5-build-baseline.md)；Windows
   默认 26-sample baseline、首轮 338-case option/output/special 及
   46-case path/nested、18-case database、17-case 特殊路径、8-case
-  filesystem、7-case long-path、5-case ADS 和剩余 21-sample 普通 output
-  矩阵已归档，完整能力差分、CMake 发布打包、
+  filesystem、7-case long-path、5-case ADS、剩余 21-sample 普通 output 和
+  21-sample special 矩阵已归档，完整能力差分、CMake 发布打包、
   bit-for-bit 验证及 macOS 构建仍待完成。
 - release workflow、预编译包与源码构建之间的数据资产差异。
 - bundled code、规则原始来源和最终发布组合的许可证审计；YARA/PEiD/signature
@@ -158,7 +158,8 @@ vendored 目录仍需独立 source/license 审计。
 - 已完成自扫描 smoke baseline、26 个项目生成安全样本的默认 JSON/退出码差分
   及 Windows 首轮 option/output/special/path/nested/database 矩阵；特殊路径、
   Unicode/Hidden/前导短横线、Junction/`\\?\`、324/325-code-unit 长路径首轮
-  矩阵、显式 ADS/目录不枚举 named stream 及 26-sample 普通 output 也已完成；
+  矩阵、显式 ADS/目录不枚举 named stream 及 26-sample 普通 output/special
+  也已完成；
   UNC、精确 namespace
   上限、symbolic link/reparse cycle/ACL、database
   archive/cache/permission engine-only、其他 engine-only、畸形矩阵和其余

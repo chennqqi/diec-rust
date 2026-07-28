@@ -191,8 +191,14 @@ Phase 0 计划形成：
 - [`behavior-baseline.md`](behavior-baseline.md)：确定性安全语料、原始输出哈希和多格式行为（Draft）。
 - [`cli-json-schema-inventory.md`](cli-json-schema-inventory.md)：固定 CLI normal/entropy/info/struct JSON 字段、类型、顺序与失败边界（Draft）。
 - [`cli-output-boundaries.md`](cli-output-boundaries.md)：固定 JSON/XML/CSV/TSV/plain text 的 Unicode/控制字符转义、嵌套排序和格式缺陷；闭合 `CAP-GAP-004`（Draft）。
+- [`windows-output-matrix-extension.md`](windows-output-matrix-extension.md)：
+  将 Windows 普通输出的 7-case 矩阵扩展到全部 26 个 baseline 样本，并固定
+  四个动态 filetype 元素名导致的 invalid XML（Draft）。
 - [`scan-option-boundaries.md`](scan-option-boundaries.md)：固定 deep 实际增量、aggressive resource gate、默认 21/aggressive 2001 精确计数及 PE 每目录 1000 项 parser 限制；闭合 `CAP-GAP-005`（Draft）。
 - [`cli-special-modes.md`](cli-special-modes.md)：entropy/info/struct 的 schema、优先级、临界熵、层级 filter、格式方法和多目标行为；闭合 `CAP-GAP-001`（Draft）。
+- [`windows-special-matrix-extension.md`](windows-special-matrix-extension.md)：
+  将 Windows entropy/info/struct 的 19-case 矩阵扩展到全部 26 个 baseline
+  样本，固定结构化输出有效性和四组模式优先级（Draft）。
 - [`cli-path-behavior.md`](cli-path-behavior.md)：多目标、目录递归、输出聚合和错误顺序（Draft）。
 - [`special-path-behavior.md`](special-path-behavior.md)：固定 Linux Qt5 的
   NFC/NFD、非 UTF-8 原始字节、控制字符、hidden、前导短横线和目录排序
@@ -506,6 +512,12 @@ Phase 0 计划形成：
   hash、确定性检查和 Linux Qt5 detection projection 差分。
 - [`data/windows-qt5-cli-matrix.json`](data/windows-qt5-cli-matrix.json)：
   338-case option/output/special 的 676 次原生 Windows Qt5 执行。
+- [`data/windows-qt5-cli-output-remaining.json`](data/windows-qt5-cli-output-remaining.json)：
+  剩余 21 个 baseline 样本 × 7 个普通输出 case 的 294 次原生 Windows Qt5
+  执行、JSON continuity 和结构化输出有效性检查。
+- [`data/windows-qt5-cli-special-remaining.json`](data/windows-qt5-cli-special-remaining.json)：
+  剩余 21 个 baseline 样本 × 19 个 entropy/info/struct case 的 798 次原生
+  Windows Qt5 执行、结构化 projection 和优先级检查。
 - [`data/windows-qt5-cli-path-nested.json`](data/windows-qt5-cli-path-nested.json)：
   14-case path 与 32-case nested 的 92 次原生 Windows Qt5 执行。
 - [`data/windows-qt5-cli-database.json`](data/windows-qt5-cli-database.json)：

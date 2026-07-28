@@ -68,6 +68,12 @@ NTFS ADS fixture 再完成 5 case、10 次执行。显式普通/`\\?\` named str
 Windows runtime 报告累计 1,236 次执行，详见
 [`windows-output-matrix-extension.md`](windows-output-matrix-extension.md)。
 
+剩余 21 个 baseline 样本的 19-case entropy/info/struct 矩阵再完成 798 次
+执行。全部双轮稳定、退出 `0` 且 stderr 为空，结构化输出均可解析，四组
+special 优先级关系 21/21 成立。十份 Windows runtime 报告累计 2,034 次执行，
+详见
+[`windows-special-matrix-extension.md`](windows-special-matrix-extension.md)。
+
 ## 语料来源与安全
 
 所有样本由
@@ -275,8 +281,9 @@ Windows 对同 5 个样本执行相同 35 个 case，每项两轮共 70 次，0 
 
 该优先级只适用于普通扫描。entropy/info 专用分支已验证按
 `JSON > XML > CSV > TSV > formatted text` 选择 formatter；详见
-[`cli-special-modes.md`](cli-special-modes.md)。Rust CLI 不能把两条路径误
-合并为一个全局优先级。
+[`cli-special-modes.md`](cli-special-modes.md)。Windows 的同一 19-case
+special matrix 已扩展到全部 26 个 baseline 样本。Rust CLI 不能把两条路径
+误合并为一个全局优先级。
 
 ## 扫描开关矩阵
 
@@ -387,8 +394,8 @@ elapsed 值与固定规则执行序列另见
   Archive 的 ZIP/TAR/GZIP 自动与强制 quiet/verbose 控制现由
   [`generic-archive-dispatch-reachability.md`](generic-archive-dispatch-reachability.md)
   固定。
-- 新增 11 个格式的 Windows scan 矩阵已固定；它们的 output/special 矩阵及
-  Linux 对应扩展仍待采集。
+- 新增 11 个格式的 Windows scan、output 和 special 矩阵已固定；Linux 对应
+  output/special 扩展仍待采集。
 - 输出格式的转义和嵌套排序已由
   [`cli-output-boundaries.md`](cli-output-boundaries.md) 的 10-case 双 oracle
   固定；首轮 Linux 特殊 filename、非 UTF-8、symlink/权限/深度及 4096 项目录

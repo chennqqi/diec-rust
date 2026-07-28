@@ -43,17 +43,17 @@ CLI 主入口为 [`src/console/main_console.cpp`](https://github.com/horsicq/DIE
 
 | ID | Short | Long | 能力 | 状态 |
 | --- | --- | --- | --- | --- |
-| `CAP-CLI-MODE-001` | `-e` | `--entropy` | 输出分区/区域熵信息 | Observed；5 个代表样本、6 种 formatter，另有 6.5 浮点临界值和多目标 framing |
-| `CAP-CLI-MODE-002` | `-i` | `--info` | 输出文件信息模型 | Observed；5 个代表样本、6 种 formatter及双目标 framing |
-| `CAP-CLI-MODE-003` | `-S` | `--struct <value>` | 特定结构信息，如 `Hash` / `Hash#MD5` | Observed；大小写、空/未知/超深层级、双目标及 PE/ELF/Mach-O/DEX 11 个专用方法 |
+| `CAP-CLI-MODE-001` | `-e` | `--entropy` | 输出分区/区域熵信息 | Observed；Linux 5 个代表样本、Windows 全 26 样本及 6 种 formatter，另有 6.5 浮点临界值和多目标 framing |
+| `CAP-CLI-MODE-002` | `-i` | `--info` | 输出文件信息模型 | Observed；Linux 5 个代表样本、Windows 全 26 样本及 6 种 formatter，另有双目标 framing |
+| `CAP-CLI-MODE-003` | `-S` | `--struct <value>` | 特定结构信息，如 `Hash` / `Hash#MD5` | Observed；Windows 全 26 样本 generic Hash/MD5/unknown，另有大小写、空/超深层级、双目标及 PE/ELF/Mach-O/DEX 11 个专用方法 |
 | `CAP-CLI-MODE-004` | `-w` | `--showstructs` | 列出可用结构方法 | Observed；仅列 4 个通用方法，target 被忽略 |
 | `CAP-CLI-MODE-005` | — | `--help` | 显示 Qt command-line help | Observed；无参数与 `--help` 原始 stdout 相同，退出 0、stderr 为空 |
 | `CAP-CLI-MODE-006` | — | `--version` | 显示应用版本 | Observed；双 oracle 原始 stdout 10 bytes，退出 0、stderr 为空 |
-| `CAP-CLI-OUT-001` | `-x` | `--xml` | XML | Observed；5 个代表样本 |
-| `CAP-CLI-OUT-002` | `-j` | `--json` | JSON | Observed；15 个样本原始输出已固定哈希 |
-| `CAP-CLI-OUT-003` | `-c` | `--csv` | CSV | Observed；5 个代表样本；normal scan 多格式开关中优先级最高 |
-| `CAP-CLI-OUT-004` | `-t` | `--tsv` | TSV | Observed；5 个代表样本 |
-| `CAP-CLI-OUT-005` | `-p` | `--plaintext` | plain text | Observed；5 个代表样本 |
+| `CAP-CLI-OUT-001` | `-x` | `--xml` | XML | Observed；Linux 5 个代表样本、Windows 全 26 样本 |
+| `CAP-CLI-OUT-002` | `-j` | `--json` | JSON | Observed；Linux 与 Windows baseline 原始输出已固定哈希，Windows 覆盖全 26 样本 |
+| `CAP-CLI-OUT-003` | `-c` | `--csv` | CSV | Observed；Linux 5 个代表样本、Windows 全 26 样本；normal scan 多格式开关中优先级最高 |
+| `CAP-CLI-OUT-004` | `-t` | `--tsv` | TSV | Observed；Linux 5 个代表样本、Windows 全 26 样本 |
+| `CAP-CLI-OUT-005` | `-p` | `--plaintext` | plain text | Observed；Linux 5 个代表样本、Windows 全 26 样本 |
 | `CAP-CLI-DB-001` | `-D` | `--database <path>` | 主数据库路径 | Observed |
 | `CAP-CLI-DB-002` | `-E` | `--extradatabase <path>` | extra 数据库路径 | Observed |
 | `CAP-CLI-DB-003` | `-C` | `--customdatabase <path>` | custom 数据库路径 | Observed |
@@ -355,16 +355,15 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
   Archive singleton/verbose 重检测已固定。
 - Qt 5 与 Qt 6 的首轮基础/安全语料/不可读输入差分已完成；仍需扩展到完整
   output/scan/special/path/database/nested 矩阵及其他 Qt 6 minor。
-- Windows Qt5 已完成 26-sample scan、26-sample 普通 output 和 5-sample
-  special 首轮矩阵；普通 output 扩展另固定 4 个带空格 filetype 的 invalid XML；
+- Windows Qt5 已完成 26-sample scan、26-sample 普通 output 和 26-sample
+  19-case special 矩阵；普通 output 另固定 4 个带空格 filetype 的 invalid XML；
   14-case path、32-case nested 和 18-case database 首轮矩阵也已完成；
   17-case Unicode/特殊路径首轮矩阵进一步固定可表示性、Hidden 和顺序；
   8-case filesystem 矩阵进一步固定 Junction、两跳链、alias 重复及普通长度
   `\\?\` 命名空间；7-case long-path 矩阵固定 324/325-code-unit 显式及递归
   发现路径；5-case ADS 矩阵固定显式 named stream 与目录枚举边界；UNC、
   精确 namespace 上限、symlink/reparse cycle/ACL、database
-  archive/cache/permission engine-only、其他 engine-only 及其余
-  special 样本仍缺失。
+  archive/cache/permission engine-only、其他 engine-only 及跨平台扩展仍缺失。
 - Linux、Windows、macOS 路径与编码差异。
 
 ## 证据
