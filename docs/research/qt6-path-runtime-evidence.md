@@ -40,8 +40,11 @@ Qt6 四行 `Unimplemented code.` stderr：
 locale、非 UTF-8 与不同 volume 的大小写 tie；这些 Qt6 边界尚未执行，不能
 由本轮小型目录树外推。
 
-当前汇总为 34 项 complete、11 项 partial、23 项 missing；34 项仍需闭环，
-`CAP-GAP-007` 保持开放。
+本切片当时使汇总达到 34 项 complete。后续 database 证据见
+[`qt6-database-runtime-evidence.md`](qt6-database-runtime-evidence.md)；
+当前计数以
+[`qt6-capability-closure-plan.md`](qt6-capability-closure-plan.md)
+为准。`CAP-GAP-007` 保持开放。
 
 ## 固定证据
 

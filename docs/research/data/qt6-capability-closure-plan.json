@@ -65,6 +65,19 @@
       "scope": "14-case basic path and directory matrix",
       "source": "docs/research/data/cli-path-matrix-linux-qt5-qt6.json",
       "stdout_exit_prefix_and_framing_equal": true
+    },
+    {
+      "difference_count": 1,
+      "only_malformed_parse_diagnostic_differs": true,
+      "scope": "18-case database load/error/messages matrix",
+      "source": "docs/research/data/cli-database-matrix-linux-qt5-qt6.json"
+    },
+    {
+      "json_documents_equal": true,
+      "raw_streams_retained": true,
+      "repetitions": 2,
+      "scope": "malformed parse and runtime error diagnostics",
+      "source": "docs/research/data/qt6-database-diagnostics.json"
     }
   ],
   "limitations": [
@@ -260,19 +273,11 @@
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "cli_options",
       "id": "CAP-CLI-OPT-009",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "messages option",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "exit code and normalized detection output are equal",
-          "message and profiling channels retain raw output before normalization",
-          "no-op and malformed test-mode behaviors are exercised"
-        ],
-        "fixture": "reuse CLI option and binary rule-order fixtures",
-        "harness": "execute every short/long option and paired control on Qt5 and Qt6"
-      },
-      "status": "missing"
+      "observed_scope": "database load messages and structured-output contamination are equal",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
@@ -600,19 +605,11 @@
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "rule_orchestration",
       "id": "CAP-RULE-008",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "unknown fallback",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "layer, priority, init, type, deep, heuristic, and fallback behavior is equal",
-          "detections and diagnostics are compared separately",
-          "each known Qt5/Qt6 diagnostic difference is explicit and reviewable"
-        ],
-        "fixture": "reuse rule-orchestration and scan-option fixtures",
-        "harness": "run the full rule gate/order/init/error matrix under both script engines"
-      },
-      "status": "missing"
+      "observed_scope": "an empty valid database produces the same sole Unknown fallback",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
@@ -636,19 +633,11 @@
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "rule_orchestration",
       "id": "CAP-RULE-010",
-      "missing_scope": "execute the remaining Qt5 capability boundary under the pinned Qt6 oracle",
+      "missing_scope": null,
       "name": "script error collection",
-      "observed_scope": "global typo and HostApi failures expose diagnostics, not the full result error-list contract",
-      "proposed_experiment": {
-        "assertions": [
-          "layer, priority, init, type, deep, heuristic, and fallback behavior is equal",
-          "detections and diagnostics are compared separately",
-          "each known Qt5/Qt6 diagnostic difference is explicit and reviewable"
-        ],
-        "fixture": "reuse rule-orchestration and scan-option fixtures",
-        "harness": "run the full rule gate/order/init/error matrix under both script engines"
-      },
-      "status": "partial"
+      "observed_scope": "parse/runtime errors are collected with exact runtime-specific diagnostics",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
@@ -1033,6 +1022,7 @@
   "schema_version": 1,
   "sources": {
     "docs/research/data/capability-traceability.json": "e1bb982feb52fb97e6678319c629cf71735650fe4239c8558a0f765c16c8cff3",
+    "docs/research/data/cli-database-matrix-linux-qt5-qt6.json": "0bb7c6562e7d31604a6a16b3556fbc04ca70a02c089637be0f4849afa0006f4b",
     "docs/research/data/cli-output-boundaries-linux-qt5-qt6.json": "b94817adf7d99aa67bb64397e97cad5a95af244cdb01b9cd51f79cf15c4dea84",
     "docs/research/data/cli-output-matrix-linux-qt5-qt6.json": "3e032534ce269597c98eee45c1e477796a11402ec1fb07b7a79a7806cad7ba2c",
     "docs/research/data/cli-path-matrix-linux-qt5-qt6.json": "8250fdc2e2ce0f8480b28421aa9fe17df3ae91a3f1492d7cac456fe195638b41",
@@ -1043,16 +1033,17 @@
     "docs/research/data/global-typo-errors-qt5-qt6.json": "59f9d28679513a939c70c3878ce8d39dcfa01e4b9006150e4b9aadb3311fba23",
     "docs/research/data/host-api-arity-qt5-qt6.json": "96d0b0023dd08ec1e45bc0c1059cf5801837496e09143acff6ffa0120328fa73",
     "docs/research/data/qt5-qt6-cli.json": "30c4298f07f2aa64fc17a16c478f8554eb8eb9e4e5c13687cddbfe3785b88fdd",
-    "docs/research/data/qt6-alltypes-diagnostics.json": "58b76997e767147284c65a9f99105fd0afaee1fc055b849651e6cb27ae174df6"
+    "docs/research/data/qt6-alltypes-diagnostics.json": "58b76997e767147284c65a9f99105fd0afaee1fc055b849651e6cb27ae174df6",
+    "docs/research/data/qt6-database-diagnostics.json": "7747eaa4379cd8f1fca4a3ad32105c35d41aee690d4b189a0429a7e7bf0835a8"
   },
   "summary": {
     "all_capabilities_accounted_for": true,
     "cap_gap_007_closed": false,
     "capability_count": 68,
-    "closure_required": 34,
-    "evidence_complete": 34,
-    "missing": 23,
-    "partial": 11
+    "closure_required": 31,
+    "evidence_complete": 37,
+    "missing": 21,
+    "partial": 10
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
 }

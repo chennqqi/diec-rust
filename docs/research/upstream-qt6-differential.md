@@ -202,7 +202,9 @@ special-mode 矩阵见
 [`qt6-special-runtime-evidence.md`](qt6-special-runtime-evidence.md)。
 基础 path 矩阵见
 [`qt6-path-runtime-evidence.md`](qt6-path-runtime-evidence.md)。
-四批实验将 Linux Qt6 的逐行完整证据从 11 项增加到 34 项，但没有关闭
+database 矩阵见
+[`qt6-database-runtime-evidence.md`](qt6-database-runtime-evidence.md)。
+五批实验将 Linux Qt6 的逐行完整证据从 11 项增加到 37 项，但没有关闭
 `CAP-GAP-007`。
 
 ## 限制与下一步
@@ -213,6 +215,6 @@ special-mode 矩阵见
   [`global-host-api-runtime-differential.md`](global-host-api-runtime-differential.md)。
 - 四行 warning 的精确 Qt 调用点和 enabled heuristic 路径仍待最小表达式实验。
 - 普通输出、scan、special、基础 path 和首轮 nested gate 矩阵已完成；
-  path 的 filesystem/locale/TOCTOU/large-directory 边界、database 以及
-  engine archive/resource harness 仍未完成。
+  path 的 filesystem/locale/TOCTOU/large-directory 边界、database
+  layer/cache engine harness 和 archive/resource harness 仍未完成。
 - Windows、macOS 固定 oracle 仍缺失。

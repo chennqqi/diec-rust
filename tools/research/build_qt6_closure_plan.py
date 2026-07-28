@@ -29,6 +29,8 @@ REPORT_PATHS = (
     "docs/research/data/cli-special-matrix-linux-qt5-qt6.json",
     "docs/research/data/cli-special-boundaries-linux-qt5-qt6.json",
     "docs/research/data/cli-path-matrix-linux-qt5-qt6.json",
+    "docs/research/data/cli-database-matrix-linux-qt5-qt6.json",
+    "docs/research/data/qt6-database-diagnostics.json",
 )
 EMPTY_SHA256 = hashlib.sha256(b"").hexdigest()
 QT6_UNIMPLEMENTED_SHA256 = (
@@ -76,6 +78,7 @@ COMPLETE: dict[str, str] = {
     "CAP-CLI-OPT-005": "the five-sample aggressive matrix has equal stdout and exit codes",
     "CAP-CLI-OPT-006": "alltypes detections are equal; the complete Qt6 diagnostic difference is retained",
     "CAP-CLI-OPT-007": "the five-sample format-result matrix has equal stdout and exit codes",
+    "CAP-CLI-OPT-009": "database load messages and structured-output contamination are equal",
     "CAP-CLI-OPT-010": "the five-sample hide-unknown matrix has equal stdout and exit codes",
     "CAP-CLI-MODE-001": "five-sample formatter and exact 6.5 entropy boundaries are equal",
     "CAP-CLI-MODE-002": "five-sample formatter, priority, and multi-target info boundaries are equal",
@@ -101,6 +104,8 @@ COMPLETE: dict[str, str] = {
     "CAP-NEST-002": "resource and overlay recursive-scan gates have equal detection trees",
     "CAP-NEST-005": "overlay and resource subdevice gate controls have equal detection trees",
     "CAP-NEST-008": "all five nested formatter stdout streams, including the JSON tree, are equal",
+    "CAP-RULE-008": "an empty valid database produces the same sole Unknown fallback",
+    "CAP-RULE-010": "parse/runtime errors are collected with exact runtime-specific diagnostics",
 }
 
 PARTIAL: dict[str, str] = {
@@ -108,7 +113,6 @@ PARTIAL: dict[str, str] = {
     "CAP-DISPATCH-004": "TAR, gzip, and ZIP only; full archive family remains",
     "CAP-NEST-003": "CLI non-extraction is covered; the Qt6 engine archive option remains",
     "CAP-RULE-005": "five-sample deep/heuristic effects are covered; independent rule-gate controls remain",
-    "CAP-RULE-010": "global typo and HostApi failures expose diagnostics, not the full result error-list contract",
     "CAP-RESULT-001": "CLI JSON exposes only a projection of scalar engine metadata",
     "CAP-RESULT-002": "rule probes expose errors, but not all four engine lists",
     "CAP-RESULT-003": "baseline JSON includes Unknown; heuristic flag combinations remain",
@@ -793,6 +797,205 @@ def _validate_path_matrix_report(report: dict[str, Any]) -> None:
         raise ClosurePlanError("CLI path fixture catalog drift")
 
 
+def _validate_database_matrix_report(report: dict[str, Any]) -> None:
+    if (
+        report.get("expected_revision") != UPSTREAM_COMMIT
+        or report.get("left_revision") != UPSTREAM_COMMIT
+        or report.get("right_revision") != UPSTREAM_COMMIT
+    ):
+        raise ClosurePlanError("CLI database matrix revision drift")
+    if report.get("equal") is not False:
+        raise ClosurePlanError(
+            "CLI database matrix must retain parse diagnostic difference"
+        )
+    cases = report.get("cases")
+    unreadable = report.get("unreadable_input")
+    fixture = report.get("database_fixture")
+    database_cases = (
+        fixture.get("cases") if isinstance(fixture, dict) else None
+    )
+    if not all(
+        isinstance(value, dict)
+        for value in (cases, unreadable, fixture, database_cases)
+    ):
+        raise ClosurePlanError("CLI database matrix sections are missing")
+    expected_cases = {
+        "show_database_missing_main",
+        "show_database_missing_main_messages",
+        "show_database_empty_main",
+        "show_database_invalid_archive",
+        "show_database_invalid_archive_messages",
+        "show_database_malformed_main",
+        "scan_missing_main_json",
+        "scan_missing_main_messages_json",
+        "scan_empty_main_json",
+        "scan_invalid_archive_json",
+        "scan_invalid_archive_messages_json",
+        "scan_malformed_main_json",
+        "scan_throwing_main_json",
+        "scan_valid_main_json",
+        "entropy_missing_main_messages_json",
+        "info_missing_main_messages_json",
+        "scan_valid_main_missing_extra_json",
+        "show_database_valid_main_missing_extra",
+    }
+    if set(database_cases) != expected_cases:
+        raise ClosurePlanError("CLI database case catalog drift")
+    expected_failures = {
+        "database_fixture.scan_malformed_main_json.stdout"
+    }
+    for name, record in cases.items():
+        _validate_paired_observation(record, {()}, f"cases.{name}")
+    for name, record in unreadable.items():
+        _validate_paired_observation(
+            record, {()}, f"unreadable_input.{name}"
+        )
+    for name, record in database_cases.items():
+        label = f"database_fixture.{name}"
+        differences = tuple(record.get("differences", []))
+        if name == "scan_malformed_main_json":
+            if (
+                differences != ("stdout",)
+                or record.get("left", {}).get("exit_code")
+                != record.get("right", {}).get("exit_code")
+                or record.get("left", {}).get("stderr_sha256")
+                != record.get("right", {}).get("stderr_sha256")
+            ):
+                raise ClosurePlanError(
+                    "CLI malformed database difference drift"
+                )
+        else:
+            _validate_paired_observation(record, {()}, label)
+        if record.get("left_reports_load_error") != record.get(
+            "right_reports_load_error"
+        ):
+            raise ClosurePlanError(
+                f"CLI database load-error difference: {name}"
+            )
+        if "left_valid_json" in record and record.get(
+            "left_valid_json"
+        ) != record.get("right_valid_json"):
+            raise ClosurePlanError(
+                f"CLI database JSON framing difference: {name}"
+            )
+    for name in (
+        "show_database_missing_main_messages",
+        "scan_missing_main_messages_json",
+        "entropy_missing_main_messages_json",
+        "info_missing_main_messages_json",
+    ):
+        if database_cases[name].get("left_reports_load_error") is not True:
+            raise ClosurePlanError(
+                f"CLI database message channel drift: {name}"
+            )
+    empty = database_cases["scan_empty_main_json"]
+    if (
+        empty["left"].get("stdout_sha256")
+        != "83cbe006c9b24c93260312b75a213904e76b75b7fcdb17612c6640f37a20c78c"
+        or empty["right"].get("stdout_sha256")
+        != empty["left"].get("stdout_sha256")
+    ):
+        raise ClosurePlanError("CLI empty database fallback drift")
+    if set(report.get("failures", [])) != expected_failures:
+        raise ClosurePlanError("CLI database failure catalog drift")
+    if (
+        fixture.get("generator")
+        != "tools/corpus/generate_database_fixture.py"
+        or len(fixture.get("directories", [])) != 10
+        or len(fixture.get("entries", [])) != 15
+    ):
+        raise ClosurePlanError("CLI database fixture catalog drift")
+
+
+def _validate_database_diagnostics(report: dict[str, Any]) -> None:
+    if report.get("upstream_commit") != UPSTREAM_COMMIT:
+        raise ClosurePlanError("database diagnostic revision drift")
+    if report.get("passed") is not True:
+        raise ClosurePlanError("database diagnostic probe did not pass")
+    facts = report.get("facts")
+    if not isinstance(facts, dict) or not facts or not all(
+        value is True for value in facts.values()
+    ):
+        raise ClosurePlanError("database diagnostic facts changed")
+    repetitions = report.get("repetitions")
+    if not isinstance(repetitions, int) or repetitions < 2:
+        raise ClosurePlanError("database diagnostic repetitions drift")
+    expected = {
+        "malformed": {
+            "qt5": (
+                "broken.1.sg: Binary/broken.1.sg: 1: "
+                "SyntaxError: Parse error\n\n"
+            ),
+            "qt6": (
+                "broken.1.sg: Binary/broken.1.sg: 2: "
+                "SyntaxError: Expected token `}'\n\n"
+            ),
+        },
+        "throwing": {
+            "qt5": (
+                "throw.1.sg: Binary/throw.1.sg: 2: "
+                "Error: database fixture\n\n"
+            ),
+            "qt6": (
+                "throw.1.sg: Binary/throw.1.sg: 2: "
+                "Error: database fixture\n\n"
+            ),
+        },
+    }
+    if report.get("expected_diagnostics") != expected:
+        raise ClosurePlanError("database expected diagnostics drift")
+    cases = report.get("cases")
+    if not isinstance(cases, dict) or set(cases) != set(expected):
+        raise ClosurePlanError("database diagnostic case catalog drift")
+    for case_name, case in cases.items():
+        observations = case.get("observations")
+        if not isinstance(observations, dict) or set(observations) != {
+            "qt5",
+            "qt6",
+        }:
+            raise ClosurePlanError(
+                f"database diagnostic oracle drift: {case_name}"
+            )
+        baseline = observations["qt5"][0].get("json_document")
+        for oracle_name, items in observations.items():
+            if len(items) != repetitions:
+                raise ClosurePlanError(
+                    f"database diagnostic repetition drift: {case_name}"
+                )
+            for index, item in enumerate(items):
+                label = f"{case_name}.{oracle_name}.{index}"
+                try:
+                    stdout = base64.b64decode(
+                        item["stdout_base64"], validate=True
+                    )
+                    stderr = base64.b64decode(
+                        item["stderr_base64"], validate=True
+                    )
+                except (KeyError, ValueError) as error:
+                    raise ClosurePlanError(
+                        f"invalid database raw stream: {label}"
+                    ) from error
+                if (
+                    len(stdout) != item.get("stdout_bytes")
+                    or sha256(stdout) != item.get("stdout_sha256")
+                    or len(stderr) != item.get("stderr_bytes")
+                    or sha256(stderr) != item.get("stderr_sha256")
+                ):
+                    raise ClosurePlanError(
+                        f"database raw stream identity drift: {label}"
+                    )
+                if (
+                    item.get("json_document") != baseline
+                    or item.get("diagnostics")
+                    != expected[case_name][oracle_name]
+                    or stderr != b""
+                    or item.get("exit_code") != 0
+                ):
+                    raise ClosurePlanError(
+                        f"database diagnostic semantic drift: {label}"
+                    )
+
+
 CAMPAIGNS: dict[str, dict[str, Any]] = {
     "cli_scan_baseline": {
         "fixture": "reuse baseline-corpus and scan-option-boundary fixtures",
@@ -967,6 +1170,8 @@ def _validate_inputs(
     _validate_special_matrix_report(reports[REPORT_PATHS[8]])
     _validate_special_boundary_report(reports[REPORT_PATHS[9]])
     _validate_path_matrix_report(reports[REPORT_PATHS[10]])
+    _validate_database_matrix_report(reports[REPORT_PATHS[11]])
+    _validate_database_diagnostics(reports[REPORT_PATHS[12]])
     return capabilities
 
 
@@ -1118,6 +1323,21 @@ def build_plan(
                     reports[REPORT_PATHS[10]]["failures"]
                 ),
                 "stdout_exit_prefix_and_framing_equal": True,
+            },
+            {
+                "source": REPORT_PATHS[11],
+                "scope": "18-case database load/error/messages matrix",
+                "difference_count": len(
+                    reports[REPORT_PATHS[11]]["failures"]
+                ),
+                "only_malformed_parse_diagnostic_differs": True,
+            },
+            {
+                "source": REPORT_PATHS[12],
+                "scope": "malformed parse and runtime error diagnostics",
+                "repetitions": reports[REPORT_PATHS[12]]["repetitions"],
+                "json_documents_equal": True,
+                "raw_streams_retained": True,
             },
         ],
         "rows": rows,

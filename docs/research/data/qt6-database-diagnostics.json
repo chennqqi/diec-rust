@@ -1,0 +1,352 @@
+{
+  "cases": {
+    "malformed": {
+      "database": "/dbfx/malformed-main",
+      "observations": {
+        "qt5": [
+          {
+            "diagnostics": "broken.1.sg: Binary/broken.1.sg: 1: SyntaxError: Parse error\n\n",
+            "exit_code": 0,
+            "json_document": {
+              "detects": [
+                {
+                  "filetype": "Binary",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "31",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Unknown",
+                      "string": "Unknown: Unknown",
+                      "type": "Unknown",
+                      "version": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            "stderr_base64": "",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiQmluYXJ5IiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjMxIiwKICAgICAgICAgICAgInZhbHVlcyI6IFsKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiVW5rbm93bjogVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgfQogICAgXQp9Cgpicm9rZW4uMS5zZzogQmluYXJ5L2Jyb2tlbi4xLnNnOiAxOiBTeW50YXhFcnJvcjogUGFyc2UgZXJyb3IKCg==",
+            "stdout_bytes": 529,
+            "stdout_sha256": "23d44d1af431628410415d2bdd6027da51ec5adbe508f86b1bf3aa6c5e3dc006"
+          },
+          {
+            "diagnostics": "broken.1.sg: Binary/broken.1.sg: 1: SyntaxError: Parse error\n\n",
+            "exit_code": 0,
+            "json_document": {
+              "detects": [
+                {
+                  "filetype": "Binary",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "31",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Unknown",
+                      "string": "Unknown: Unknown",
+                      "type": "Unknown",
+                      "version": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            "stderr_base64": "",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiQmluYXJ5IiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjMxIiwKICAgICAgICAgICAgInZhbHVlcyI6IFsKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiVW5rbm93bjogVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgfQogICAgXQp9Cgpicm9rZW4uMS5zZzogQmluYXJ5L2Jyb2tlbi4xLnNnOiAxOiBTeW50YXhFcnJvcjogUGFyc2UgZXJyb3IKCg==",
+            "stdout_bytes": 529,
+            "stdout_sha256": "23d44d1af431628410415d2bdd6027da51ec5adbe508f86b1bf3aa6c5e3dc006"
+          }
+        ],
+        "qt6": [
+          {
+            "diagnostics": "broken.1.sg: Binary/broken.1.sg: 2: SyntaxError: Expected token `}'\n\n",
+            "exit_code": 0,
+            "json_document": {
+              "detects": [
+                {
+                  "filetype": "Binary",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "31",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Unknown",
+                      "string": "Unknown: Unknown",
+                      "type": "Unknown",
+                      "version": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            "stderr_base64": "",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiQmluYXJ5IiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjMxIiwKICAgICAgICAgICAgInZhbHVlcyI6IFsKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiVW5rbm93bjogVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgfQogICAgXQp9Cgpicm9rZW4uMS5zZzogQmluYXJ5L2Jyb2tlbi4xLnNnOiAyOiBTeW50YXhFcnJvcjogRXhwZWN0ZWQgdG9rZW4gYH0nCgo=",
+            "stdout_bytes": 536,
+            "stdout_sha256": "15db05f38f6e0afe07517e399a8629dd025bb904c1e06bd4f951cc33155b05e6"
+          },
+          {
+            "diagnostics": "broken.1.sg: Binary/broken.1.sg: 2: SyntaxError: Expected token `}'\n\n",
+            "exit_code": 0,
+            "json_document": {
+              "detects": [
+                {
+                  "filetype": "Binary",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "31",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Unknown",
+                      "string": "Unknown: Unknown",
+                      "type": "Unknown",
+                      "version": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            "stderr_base64": "",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiQmluYXJ5IiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjMxIiwKICAgICAgICAgICAgInZhbHVlcyI6IFsKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiVW5rbm93bjogVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgfQogICAgXQp9Cgpicm9rZW4uMS5zZzogQmluYXJ5L2Jyb2tlbi4xLnNnOiAyOiBTeW50YXhFcnJvcjogRXhwZWN0ZWQgdG9rZW4gYH0nCgo=",
+            "stdout_bytes": 536,
+            "stdout_sha256": "15db05f38f6e0afe07517e399a8629dd025bb904c1e06bd4f951cc33155b05e6"
+          }
+        ]
+      }
+    },
+    "throwing": {
+      "database": "/dbfx/throwing-main",
+      "observations": {
+        "qt5": [
+          {
+            "diagnostics": "throw.1.sg: Binary/throw.1.sg: 2: Error: database fixture\n\n",
+            "exit_code": 0,
+            "json_document": {
+              "detects": [
+                {
+                  "filetype": "Binary",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "31",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Unknown",
+                      "string": "Unknown: Unknown",
+                      "type": "Unknown",
+                      "version": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            "stderr_base64": "",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiQmluYXJ5IiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjMxIiwKICAgICAgICAgICAgInZhbHVlcyI6IFsKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiVW5rbm93bjogVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgfQogICAgXQp9Cgp0aHJvdy4xLnNnOiBCaW5hcnkvdGhyb3cuMS5zZzogMjogRXJyb3I6IGRhdGFiYXNlIGZpeHR1cmUKCg==",
+            "stdout_bytes": 526,
+            "stdout_sha256": "7ac9f3860721523342e3d6c5917c63d6025a31f6b183c0d5a22c477b9e7fb52f"
+          },
+          {
+            "diagnostics": "throw.1.sg: Binary/throw.1.sg: 2: Error: database fixture\n\n",
+            "exit_code": 0,
+            "json_document": {
+              "detects": [
+                {
+                  "filetype": "Binary",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "31",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Unknown",
+                      "string": "Unknown: Unknown",
+                      "type": "Unknown",
+                      "version": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            "stderr_base64": "",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiQmluYXJ5IiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjMxIiwKICAgICAgICAgICAgInZhbHVlcyI6IFsKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiVW5rbm93bjogVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgfQogICAgXQp9Cgp0aHJvdy4xLnNnOiBCaW5hcnkvdGhyb3cuMS5zZzogMjogRXJyb3I6IGRhdGFiYXNlIGZpeHR1cmUKCg==",
+            "stdout_bytes": 526,
+            "stdout_sha256": "7ac9f3860721523342e3d6c5917c63d6025a31f6b183c0d5a22c477b9e7fb52f"
+          }
+        ],
+        "qt6": [
+          {
+            "diagnostics": "throw.1.sg: Binary/throw.1.sg: 2: Error: database fixture\n\n",
+            "exit_code": 0,
+            "json_document": {
+              "detects": [
+                {
+                  "filetype": "Binary",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "31",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Unknown",
+                      "string": "Unknown: Unknown",
+                      "type": "Unknown",
+                      "version": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            "stderr_base64": "",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiQmluYXJ5IiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjMxIiwKICAgICAgICAgICAgInZhbHVlcyI6IFsKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiVW5rbm93bjogVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgfQogICAgXQp9Cgp0aHJvdy4xLnNnOiBCaW5hcnkvdGhyb3cuMS5zZzogMjogRXJyb3I6IGRhdGFiYXNlIGZpeHR1cmUKCg==",
+            "stdout_bytes": 526,
+            "stdout_sha256": "7ac9f3860721523342e3d6c5917c63d6025a31f6b183c0d5a22c477b9e7fb52f"
+          },
+          {
+            "diagnostics": "throw.1.sg: Binary/throw.1.sg: 2: Error: database fixture\n\n",
+            "exit_code": 0,
+            "json_document": {
+              "detects": [
+                {
+                  "filetype": "Binary",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "31",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Unknown",
+                      "string": "Unknown: Unknown",
+                      "type": "Unknown",
+                      "version": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            "stderr_base64": "",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiQmluYXJ5IiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjMxIiwKICAgICAgICAgICAgInZhbHVlcyI6IFsKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiVW5rbm93bjogVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgfQogICAgXQp9Cgp0aHJvdy4xLnNnOiBCaW5hcnkvdGhyb3cuMS5zZzogMjogRXJyb3I6IGRhdGFiYXNlIGZpeHR1cmUKCg==",
+            "stdout_bytes": 526,
+            "stdout_sha256": "7ac9f3860721523342e3d6c5917c63d6025a31f6b183c0d5a22c477b9e7fb52f"
+          }
+        ]
+      }
+    }
+  },
+  "expected_diagnostics": {
+    "malformed": {
+      "qt5": "broken.1.sg: Binary/broken.1.sg: 1: SyntaxError: Parse error\n\n",
+      "qt6": "broken.1.sg: Binary/broken.1.sg: 2: SyntaxError: Expected token `}'\n\n"
+    },
+    "throwing": {
+      "qt5": "throw.1.sg: Binary/throw.1.sg: 2: Error: database fixture\n\n",
+      "qt6": "throw.1.sg: Binary/throw.1.sg: 2: Error: database fixture\n\n"
+    }
+  },
+  "facts": {
+    "malformed_all_exit_zero": true,
+    "malformed_all_stderr_empty": true,
+    "malformed_json_equal_across_oracles": true,
+    "malformed_qt5_diagnostic_exact": true,
+    "malformed_qt5_raw_stable": true,
+    "malformed_qt6_diagnostic_exact": true,
+    "malformed_qt6_raw_stable": true,
+    "throwing_all_exit_zero": true,
+    "throwing_all_stderr_empty": true,
+    "throwing_json_equal_across_oracles": true,
+    "throwing_qt5_diagnostic_exact": true,
+    "throwing_qt5_raw_stable": true,
+    "throwing_qt6_diagnostic_exact": true,
+    "throwing_qt6_raw_stable": true
+  },
+  "fixture": {
+    "entries": [
+      {
+        "path": "input/plain.txt",
+        "purpose": "benign scan input",
+        "sha256": "22b217bfba5795d402092bf48bfb28146c0ee4dd0036fd4d0c93e25bbe65e998",
+        "size": 31,
+        "source": "project-generated"
+      },
+      {
+        "path": "malformed-main/Binary/broken.1.sg",
+        "purpose": "JavaScript syntax error",
+        "sha256": "669f79431d84c5bda53be5dd121c2d46dae60830c5fa684f9384c49882aecf6c",
+        "size": 19,
+        "source": "project-generated"
+      },
+      {
+        "path": "throwing-main/Binary/throw.1.sg",
+        "purpose": "JavaScript runtime error",
+        "sha256": "9d19269590aa6a4cdaf8b8171613d8a71c11a80c9f06317b17d3888dd683f883",
+        "size": 63,
+        "source": "project-generated"
+      }
+    ],
+    "generator": "tools/corpus/generate_database_fixture.py",
+    "manifest_path": "docs/research/data/database-fixture.json",
+    "manifest_sha256": "90b6ce18e5656fa30c2dfd55573df4612825a74e77cb9e2f4fc1baa81fd7223c"
+  },
+  "generator": "tools/upstream/probe_qt6_database_diagnostics.py",
+  "generator_sha256": "c98e30c40f045b8a83266971f5864c03810c9d4ba6dcb5c6857f38570bc0cbfa",
+  "limitations": [
+    "the focused probe covers one parse error and one runtime error",
+    "raw streams are retained before diagnostic classification",
+    "database layer ordering and engine cache behavior are separate harness concerns"
+  ],
+  "oracles": {
+    "qt5": {
+      "binary": "/opt/die-build/src/console/diec",
+      "binary_sha256": "da1fab49f7ba5970d1fc1c7fe3d4f380cf5e8775dd8097207e7b3c30f08236cf",
+      "image": "diec-rust/upstream-oracle-cmake:74eaf505",
+      "image_id": "sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040",
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    },
+    "qt6": {
+      "binary": "/opt/die-build/src/console/diec",
+      "binary_sha256": "e3321105af0349b29195325e79d5d2c7cc25ead2f28f84e242e3835b98f7283e",
+      "image": "diec-rust/upstream-oracle-cmake-qt6:74eaf505",
+      "image_id": "sha256:e015495c313d0715f0b80f395da983a113a439f2a135eb637e9f0638c225200b",
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    }
+  },
+  "passed": true,
+  "platform": "linux-amd64-qt5-qt6",
+  "repetitions": 2,
+  "resource_limits": {
+    "cpus": 1,
+    "fixture_mount": "/dbfx",
+    "memory_bytes": 536870912,
+    "mount_mode": "read-only",
+    "network": "none",
+    "pids": 128
+  },
+  "schema_version": 1,
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

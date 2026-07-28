@@ -81,10 +81,10 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
 
     def test_current_plan_is_conservatively_incomplete(self):
         summary = self.plan["summary"]
-        self.assertEqual(summary["evidence_complete"], 34)
-        self.assertEqual(summary["partial"], 11)
-        self.assertEqual(summary["missing"], 23)
-        self.assertEqual(summary["closure_required"], 34)
+        self.assertEqual(summary["evidence_complete"], 37)
+        self.assertEqual(summary["partial"], 10)
+        self.assertEqual(summary["missing"], 21)
+        self.assertEqual(summary["closure_required"], 31)
         self.assertFalse(summary["cap_gap_007_closed"])
         self.assertEqual(self.plan["result"], "incomplete")
 
@@ -114,6 +114,9 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
             "CAP-CLI-IN-002",
             "CAP-CLI-IN-004",
             "CAP-NEST-001",
+            "CAP-CLI-OPT-009",
+            "CAP-RULE-008",
+            "CAP-RULE-010",
         }
         for capability_id in promoted:
             with self.subTest(capability=capability_id):
@@ -228,6 +231,22 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
         with self.assertRaisesRegex(
             MODULE.ClosurePlanError,
             "path prefix difference",
+        ):
+            MODULE.build_plan(
+                self.traceability,
+                self.traceability_raw,
+                changed_reports,
+                self.report_bytes,
+            )
+
+        changed_reports = json.loads(json.dumps(self.reports))
+        database_diagnostics = changed_reports[MODULE.REPORT_PATHS[12]]
+        database_diagnostics["cases"]["malformed"]["observations"][
+            "qt6"
+        ][0]["diagnostics"] = "changed"
+        with self.assertRaisesRegex(
+            MODULE.ClosurePlanError,
+            "semantic drift",
         ):
             MODULE.build_plan(
                 self.traceability,

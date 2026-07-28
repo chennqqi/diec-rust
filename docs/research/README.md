@@ -143,6 +143,9 @@ Phase 0 计划形成：
 - [`qt6-path-runtime-evidence.md`](qt6-path-runtime-evidence.md)：固定
   14-case 多目标、目录、空目录、重复/缺失 target 与 recursive path
   差分，并界定仍缺的复杂文件系统边界（In Review）。
+- [`qt6-database-runtime-evidence.md`](qt6-database-runtime-evidence.md)：
+  固定 18-case database load/error/messages 矩阵及 parse/runtime error
+  raw-first 诊断差分（In Review）。
 - [`behavior-baseline.md`](behavior-baseline.md)：确定性安全语料、原始输出哈希和多格式行为（Draft）。
 - [`cli-json-schema-inventory.md`](cli-json-schema-inventory.md)：固定 CLI normal/entropy/info/struct JSON 字段、类型、顺序与失败边界（Draft）。
 - [`cli-output-boundaries.md`](cli-output-boundaries.md)：固定 JSON/XML/CSV/TSV/plain text 的 Unicode/控制字符转义、嵌套排序和格式缺陷；闭合 `CAP-GAP-004`（Draft）。
@@ -203,6 +206,11 @@ Phase 0 计划形成：
 - [`data/cli-path-matrix-linux-qt5-qt6.json`](data/cli-path-matrix-linux-qt5-qt6.json)：
   14-case 基础 path matrix 的成对流哈希、filename prefixes、structured
   framing 和 recursive 相对变化。
+- [`data/cli-database-matrix-linux-qt5-qt6.json`](data/cli-database-matrix-linux-qt5-qt6.json)：
+  18-case database load/error/messages 的成对流哈希、load-error 标记与
+  JSON framing。
+- [`data/qt6-database-diagnostics.json`](data/qt6-database-diagnostics.json)：
+  malformed parse/runtime throw 两次重复的完整原始流、JSON 前缀和精确诊断。
 - [`data/scan-option-boundary-fixture.json`](data/scan-option-boundary-fixture.json)：deep/aggressive 规则与 1/22/2002-resource PE 的 hash-bound 清单。
 - [`data/scan-option-boundaries-linux-qt5.json`](data/scan-option-boundaries-linux-qt5.json)：8-case 双 Qt5 scan-option oracle 的去重原始 streams、身份和派生事实。
 - [`data/capability-traceability.json`](data/capability-traceability.json)：68 个稳定
