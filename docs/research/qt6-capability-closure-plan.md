@@ -11,25 +11,27 @@ Last updated: 2026-07-28
 [`data/qt6-capability-closure-plan.json`](data/qt6-capability-closure-plan.json)
 逐项列出当前证据和缺失实验：
 
-- 11 项已有证据完整覆盖能力行；
-- 13 项只有部分证据；
-- 44 项没有可接纳的逐行 Qt6 运行时证据；
-- 因此仍有 57 项需要执行闭环实验。
+- 19 项已有证据完整覆盖能力行；
+- 10 项只有部分证据；
+- 39 项没有可接纳的逐行 Qt6 运行时证据；
+- 因此仍有 49 项需要执行闭环实验。
 
 Linux Qt6 在能力覆盖报告中继续保持 `platform_missing`。本计划只负责把
 缺口变成可执行清单，不改变平台门禁状态。
 
 ## 已接纳证据的边界
 
-现有 CLI 对比固定了 8 个控制用例、15 个项目生成样本和 4 个不可读输入
-用例。它足以直接证明单文件扫描、help/version/showstructs、JSON 基线、
-三个数据库路径与 showdatabase，以及 PDF/CFBF 和 Binary fallback。
+现有 CLI 对比固定了 8 个控制用例、扩展后的 26 个项目生成样本、4 个
+不可读输入用例、5 样本 × 7 普通输出组合和 10 个 escaping/nested
+formatter 边界。它足以直接证明单文件扫描、help/version/showstructs、
+五种普通无颜色 formatter、三个数据库路径与 showdatabase，
+PE/ELF/Mach-O、DEX/Class/PYC、PDF/CFBF、JPEG/PNG/generic Image 和
+Binary fallback，以及 nested JSON 结果树。新增运行证据详见
+[`qt6-cli-runtime-evidence.md`](qt6-cli-runtime-evidence.md)。
 
 下列结果只能算部分证据：
 
-- PE/ELF/Mach-O 未覆盖全部位宽和 FAT 分支；
 - archive 只覆盖 TAR、gzip 和 ZIP，未覆盖完整 archive family；
-- DEX/Class 缺 PYC，BMP/PNG 缺 JPEG 与 generic Image；
 - entropy/info 只覆盖不可读输入；
 - CLI JSON 和脚本探针只暴露结果模型的一部分；
 - typo、HostApi 与 arity 报告证明 Qt5/Qt6 诊断确有差异，但没有覆盖完整的

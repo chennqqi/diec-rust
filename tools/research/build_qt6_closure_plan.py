@@ -21,6 +21,12 @@ REPORT_PATHS = (
     "docs/research/data/global-host-api-qt5-qt6.json",
     "docs/research/data/host-api-arity-qt5-qt6.json",
     "docs/research/data/global-typo-errors-qt5-qt6.json",
+    "docs/research/data/cli-output-boundaries-linux-qt5-qt6.json",
+    "docs/research/data/cli-output-matrix-linux-qt5-qt6.json",
+)
+EMPTY_SHA256 = hashlib.sha256(b"").hexdigest()
+QT6_UNIMPLEMENTED_SHA256 = (
+    "b303e6913e76b70a6f0d6a4d3ccd389bc342589e45e1615873a37334dea8c51b"
 )
 
 
@@ -59,22 +65,27 @@ COMPLETE: dict[str, str] = {
     "CAP-CLI-MODE-004": "--showstructs is equal both with and without a target",
     "CAP-CLI-MODE-005": "--help and no-argument help are byte-identical",
     "CAP-CLI-MODE-006": "--version is byte-identical",
+    "CAP-CLI-OUT-001": "the five-sample XML matrix has equal stdout and exit codes",
     "CAP-CLI-OUT-002": "all 15 normal scans have equal JSON detection trees",
+    "CAP-CLI-OUT-003": "the five-sample CSV matrix and all-flags precedence are equal",
+    "CAP-CLI-OUT-004": "the five-sample TSV matrix has equal stdout and exit codes",
+    "CAP-CLI-OUT-005": "the five-sample plain-text matrix has equal stdout and exit codes",
     "CAP-CLI-DB-001": "the main database argument and reported path are equal",
     "CAP-CLI-DB-002": "the extra database argument and reported path are equal",
     "CAP-CLI-DB-003": "the custom database argument and reported path are equal",
     "CAP-CLI-DB-004": "--showdatabase output is byte-identical",
+    "CAP-DISPATCH-001": "PE32/64, ELF32/64, Mach-O 32/64/FAT detection trees are equal",
+    "CAP-DISPATCH-005": "DEX, Java Class, and PYC detection trees are equal",
     "CAP-DISPATCH-006": "the PDF and CFBF fixtures have equal detection trees",
+    "CAP-DISPATCH-007": "JPEG, PNG, and generic Image/BMP detection trees are equal",
     "CAP-DISPATCH-008": "empty and plain binary fallback fixtures are equal",
+    "CAP-NEST-008": "all five nested formatter stdout streams, including the JSON tree, are equal",
 }
 
 PARTIAL: dict[str, str] = {
     "CAP-CLI-MODE-001": "unreadable entropy JSON behavior only",
     "CAP-CLI-MODE-002": "unreadable info JSON behavior only",
-    "CAP-DISPATCH-001": "one ELF, PE, and Mach-O fixture; width/FAT variants remain",
     "CAP-DISPATCH-004": "TAR, gzip, and ZIP only; full archive family remains",
-    "CAP-DISPATCH-005": "DEX and Java Class only; PYC remains",
-    "CAP-DISPATCH-007": "BMP and PNG only; JPEG and generic Image remain",
     "CAP-RULE-010": "global typo and HostApi failures expose diagnostics, not the full result error-list contract",
     "CAP-RESULT-001": "CLI JSON exposes only a projection of scalar engine metadata",
     "CAP-RESULT-002": "rule probes expose errors, but not all four engine lists",
@@ -83,6 +94,190 @@ PARTIAL: dict[str, str] = {
     "CAP-RESULT-005": "CLI JSON exposes string representations, not numeric enums",
     "CAP-RESULT-006": "HostApi probes cover rule metadata only partially",
 }
+
+
+def _same_stdout_and_exit(left: dict[str, Any], right: dict[str, Any]) -> bool:
+    return (
+        left.get("exit_code") == right.get("exit_code")
+        and left.get("stdout_sha256") == right.get("stdout_sha256")
+        and left.get("stdout_bytes") == right.get("stdout_bytes")
+    )
+
+
+def _is_known_qt6_warning(
+    left: dict[str, Any], right: dict[str, Any]
+) -> bool:
+    return (
+        left.get("stderr_sha256") == EMPTY_SHA256
+        and left.get("stderr_bytes") == 0
+        and right.get("stderr_sha256") == QT6_UNIMPLEMENTED_SHA256
+        and right.get("stderr_bytes") == 80
+    )
+
+
+def _validate_output_boundary_report(report: dict[str, Any]) -> None:
+    if report.get("expected_revision") != UPSTREAM_COMMIT:
+        raise ClosurePlanError("output-boundary revision drift")
+    for side in ("left", "right"):
+        if report.get(side, {}).get("image_revision") != UPSTREAM_COMMIT:
+            raise ClosurePlanError(f"output-boundary {side} revision drift")
+    cases = report.get("cases")
+    if not isinstance(cases, list):
+        raise ClosurePlanError("output-boundary cases must be an array")
+    expected_ids = {
+        f"{scope}_{formatter}"
+        for scope in ("escaping", "nested")
+        for formatter in ("json", "xml", "csv", "tsv", "plaintext")
+    }
+    if {case.get("id") for case in cases} != expected_ids:
+        raise ClosurePlanError("output-boundary case catalog drift")
+    expected_failures = {
+        f"case.nested_{formatter}.oracle_difference"
+        for formatter in ("json", "xml", "csv", "tsv", "plaintext")
+    }
+    if set(report.get("failures", [])) != expected_failures:
+        raise ClosurePlanError("output-boundary failure catalog drift")
+    if report.get("passed") is not False:
+        raise ClosurePlanError("output-boundary must retain raw Qt6 warnings")
+    facts = report.get("facts")
+    if not isinstance(facts, dict) or not facts or not all(
+        value is True for value in facts.values()
+    ):
+        raise ClosurePlanError("output-boundary semantic facts changed")
+    for case in cases:
+        left = case.get("left", {})
+        right = case.get("right", {})
+        if not _same_stdout_and_exit(left, right):
+            raise ClosurePlanError(
+                f"output-boundary semantic difference: {case.get('id')}"
+            )
+        if case["scope"] == "escaping":
+            if case.get("oracles_equal") is not True:
+                raise ClosurePlanError("escaping formatter difference")
+        elif not (
+            case.get("oracles_equal") is False
+            and _is_known_qt6_warning(left, right)
+        ):
+            raise ClosurePlanError("unexpected nested formatter difference")
+
+
+def _validate_paired_observation(
+    record: dict[str, Any],
+    expected_differences: set[tuple[str, ...]],
+    label: str,
+) -> tuple[str, ...]:
+    left = record.get("left", {})
+    right = record.get("right", {})
+    if not _same_stdout_and_exit(left, right):
+        raise ClosurePlanError(f"CLI matrix semantic difference: {label}")
+    differences = tuple(record.get("differences", []))
+    if differences not in expected_differences:
+        raise ClosurePlanError(f"unexpected CLI matrix difference: {label}")
+    if differences == ("stderr",) and not _is_known_qt6_warning(left, right):
+        raise ClosurePlanError(f"unexpected CLI matrix stderr: {label}")
+    return differences
+
+
+def _validate_output_matrix_report(report: dict[str, Any]) -> None:
+    if (
+        report.get("expected_revision") != UPSTREAM_COMMIT
+        or report.get("left_revision") != UPSTREAM_COMMIT
+        or report.get("right_revision") != UPSTREAM_COMMIT
+    ):
+        raise ClosurePlanError("CLI output matrix revision drift")
+    if report.get("equal") is not False:
+        raise ClosurePlanError("CLI output matrix must retain raw Qt6 warnings")
+
+    failures = {
+        "corpus.minimal.exe.stderr",
+        "corpus.minimal-pe64.exe.stderr",
+        *{
+            f"matrix.minimal.exe.output.{case}.stderr"
+            for case in (
+                "text",
+                "plaintext",
+                "json",
+                "xml",
+                "csv",
+                "tsv",
+                "all_output_flags",
+            )
+        },
+    }
+    if set(report.get("failures", [])) != failures:
+        raise ClosurePlanError("CLI output matrix failure catalog drift")
+
+    cases = report.get("cases")
+    unreadable = report.get("unreadable_input")
+    corpus = report.get("corpus")
+    matrix = report.get("matrix")
+    if not all(
+        isinstance(value, dict)
+        for value in (cases, unreadable, corpus, matrix)
+    ):
+        raise ClosurePlanError("CLI output matrix sections are missing")
+    if len(corpus) != 26:
+        raise ClosurePlanError("CLI output matrix corpus drift")
+    expected_samples = {
+        "empty.bin",
+        "minimal.exe",
+        "minimal.pdf",
+        "payload.zip",
+        "plain.txt",
+    }
+    if set(matrix) != expected_samples:
+        raise ClosurePlanError("CLI output matrix sample catalog drift")
+    expected_formatters = {
+        "text",
+        "plaintext",
+        "json",
+        "xml",
+        "csv",
+        "tsv",
+        "all_output_flags",
+    }
+
+    observed_failures = set()
+    for name, record in cases.items():
+        differences = _validate_paired_observation(
+            record, {()}, f"cases.{name}"
+        )
+        if differences:
+            observed_failures.add(f"{name}.{differences[0]}")
+    for name, record in unreadable.items():
+        differences = _validate_paired_observation(
+            record, {()}, f"unreadable_input.{name}"
+        )
+        if differences:
+            observed_failures.add(
+                f"unreadable_input.{name}.{differences[0]}"
+            )
+    for name, record in corpus.items():
+        differences = _validate_paired_observation(
+            record, {(), ("stderr",)}, f"corpus.{name}"
+        )
+        if differences:
+            observed_failures.add(f"corpus.{name}.{differences[0]}")
+        if record.get("left_detect_tree") != record.get("right_detect_tree"):
+            raise ClosurePlanError(f"corpus detection tree difference: {name}")
+    for sample, sample_record in matrix.items():
+        output = sample_record.get("output")
+        if not isinstance(output, dict) or set(output) != expected_formatters:
+            raise ClosurePlanError(
+                f"CLI output formatter catalog drift: {sample}"
+            )
+        for name, record in output.items():
+            differences = _validate_paired_observation(
+                record,
+                {(), ("stderr",)},
+                f"matrix.{sample}.output.{name}",
+            )
+            if differences:
+                observed_failures.add(
+                    f"matrix.{sample}.output.{name}.{differences[0]}"
+                )
+    if observed_failures != failures:
+        raise ClosurePlanError("CLI output matrix derived failures drift")
 
 
 CAMPAIGNS: dict[str, dict[str, Any]] = {
@@ -246,12 +441,14 @@ def _validate_inputs(
         or cli.get("right_revision") != UPSTREAM_COMMIT
     ):
         raise ClosurePlanError("CLI comparison revision drift")
-    for path in REPORT_PATHS[1:]:
+    for path in REPORT_PATHS[1:4]:
         report = reports[path]
         if report.get("upstream_commit") != UPSTREAM_COMMIT:
             raise ClosurePlanError(f"report upstream commit drift: {path}")
         if report.get("rules_commit") != RULES_COMMIT:
             raise ClosurePlanError(f"report rules commit drift: {path}")
+    _validate_output_boundary_report(reports[REPORT_PATHS[4]])
+    _validate_output_matrix_report(reports[REPORT_PATHS[5]])
     return capabilities
 
 
@@ -348,6 +545,24 @@ def build_plan(
                 "semantic_detection_equal": reports[REPORT_PATHS[3]][
                     "normalized_detections_equal"
                 ],
+            },
+            {
+                "source": REPORT_PATHS[4],
+                "scope": "five nested formatter stderr streams",
+                "difference_count": len(
+                    reports[REPORT_PATHS[4]]["failures"]
+                ),
+                "stdout_and_exit_equal": True,
+                "right_stderr_sha256": QT6_UNIMPLEMENTED_SHA256,
+            },
+            {
+                "source": REPORT_PATHS[5],
+                "scope": "PE32/PE64 baseline and PE32 seven-formatter stderr streams",
+                "difference_count": len(
+                    reports[REPORT_PATHS[5]]["failures"]
+                ),
+                "stdout_and_exit_equal": True,
+                "right_stderr_sha256": QT6_UNIMPLEMENTED_SHA256,
             },
         ],
         "rows": rows,

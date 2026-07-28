@@ -81,12 +81,35 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
 
     def test_current_plan_is_conservatively_incomplete(self):
         summary = self.plan["summary"]
-        self.assertEqual(summary["evidence_complete"], 11)
-        self.assertEqual(summary["partial"], 13)
-        self.assertEqual(summary["missing"], 44)
-        self.assertEqual(summary["closure_required"], 57)
+        self.assertEqual(summary["evidence_complete"], 19)
+        self.assertEqual(summary["partial"], 10)
+        self.assertEqual(summary["missing"], 39)
+        self.assertEqual(summary["closure_required"], 49)
         self.assertFalse(summary["cap_gap_007_closed"])
         self.assertEqual(self.plan["result"], "incomplete")
+
+    def test_cli_output_and_dispatch_promotions_are_exact(self):
+        rows = {row["id"]: row for row in self.plan["rows"]}
+        promoted = {
+            "CAP-CLI-OUT-001",
+            "CAP-CLI-OUT-003",
+            "CAP-CLI-OUT-004",
+            "CAP-CLI-OUT-005",
+            "CAP-DISPATCH-001",
+            "CAP-DISPATCH-005",
+            "CAP-DISPATCH-007",
+            "CAP-NEST-008",
+        }
+        for capability_id in promoted:
+            with self.subTest(capability=capability_id):
+                self.assertEqual(
+                    rows[capability_id]["status"],
+                    "evidence_complete",
+                )
+        self.assertEqual(
+            rows["CAP-DISPATCH-004"]["status"],
+            "partial",
+        )
 
     def test_pinned_identity_and_duplicate_keys_are_enforced(self):
         changed = json.loads(json.dumps(self.traceability))
@@ -110,6 +133,42 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
                 "duplicate JSON key",
             ):
                 MODULE.load_json(path)
+
+    def test_semantic_or_warning_drift_is_rejected(self):
+        changed_reports = json.loads(json.dumps(self.reports))
+        output_matrix = changed_reports[MODULE.REPORT_PATHS[5]]
+        output_matrix["matrix"]["empty.bin"]["output"]["xml"]["right"][
+            "stdout_sha256"
+        ] = "0" * 64
+        with self.assertRaisesRegex(
+            MODULE.ClosurePlanError,
+            "semantic difference",
+        ):
+            MODULE.build_plan(
+                self.traceability,
+                self.traceability_raw,
+                changed_reports,
+                self.report_bytes,
+            )
+
+        changed_reports = json.loads(json.dumps(self.reports))
+        output_boundary = changed_reports[MODULE.REPORT_PATHS[4]]
+        nested_json = next(
+            case
+            for case in output_boundary["cases"]
+            if case["id"] == "nested_json"
+        )
+        nested_json["right"]["stderr_sha256"] = "0" * 64
+        with self.assertRaisesRegex(
+            MODULE.ClosurePlanError,
+            "unexpected nested formatter difference",
+        ):
+            MODULE.build_plan(
+                self.traceability,
+                self.traceability_raw,
+                changed_reports,
+                self.report_bytes,
+            )
 
 
 if __name__ == "__main__":

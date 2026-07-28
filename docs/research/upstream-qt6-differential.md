@@ -188,6 +188,17 @@ Qt 6: ReferenceError: NAME is not defined
 - 上游规则保持原样；本轮 fixture 位于项目生成的独立 database，没有修改规则
   subtree。
 
+## 后续 CLI 矩阵扩展
+
+后续实验已在相同固定 image 上执行 26 个安全格式样本、五样本七种普通
+formatter，以及 escaping/nested 十个输出边界。所有退出码、stdout 和 JSON
+detection tree 相同；PE32/PE64 与 nested PE 唯一保留差异仍是完全相同的四行
+`Unimplemented code.` stderr。
+
+机器证据和逐能力影响见
+[`qt6-cli-runtime-evidence.md`](qt6-cli-runtime-evidence.md)。该实验将 Linux
+Qt6 的逐行完整证据从 11 项增加到 19 项，但没有关闭 `CAP-GAP-007`。
+
 ## 限制与下一步
 
 - 只覆盖 Linux amd64、Qt 6.4.2 和当前安全语料，不代表其他 Qt 6 minor 或平台。
@@ -195,5 +206,6 @@ Qt 6: ReferenceError: NAME is not defined
   仍未覆盖，见
   [`global-host-api-runtime-differential.md`](global-host-api-runtime-differential.md)。
 - 四行 warning 的精确 Qt 调用点和 enabled heuristic 路径仍待最小表达式实验。
-- 尚未运行全部输出/扫描/special/path/database/nested 矩阵的 Qt 5/Qt 6 差分。
+- 普通输出矩阵已完成；scan、special、path、database 和完整 nested scan 矩阵
+  仍未完成。
 - Windows、macOS 固定 oracle 仍缺失。

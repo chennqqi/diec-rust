@@ -131,6 +131,9 @@ Phase 0 计划形成：
 - [`qt6-capability-closure-plan.md`](qt6-capability-closure-plan.md)：将现有
   Qt6 证据保守映射到全部 68 项能力，并为 `CAP-GAP-007` 生成可执行的逐项
   闭环清单（In Review）。
+- [`qt6-cli-runtime-evidence.md`](qt6-cli-runtime-evidence.md)：固定 Qt5/Qt6
+  的 26 样本分派、五样本七 formatter 和 escaping/nested 输出差分，并保留
+  PE 的 Qt6 stderr 差异（In Review）。
 - [`behavior-baseline.md`](behavior-baseline.md)：确定性安全语料、原始输出哈希和多格式行为（Draft）。
 - [`cli-json-schema-inventory.md`](cli-json-schema-inventory.md)：固定 CLI normal/entropy/info/struct JSON 字段、类型、顺序与失败边界（Draft）。
 - [`cli-output-boundaries.md`](cli-output-boundaries.md)：固定 JSON/XML/CSV/TSV/plain text 的 Unicode/控制字符转义、嵌套排序和格式缺陷；闭合 `CAP-GAP-004`（Draft）。
@@ -174,12 +177,18 @@ Phase 0 计划形成：
 - [`data/baseline-corpus.json`](data/baseline-corpus.json)：生成语料的文件名、意图、大小和 SHA-256。
 - [`data/output-boundary-fixture.json`](data/output-boundary-fixture.json)：输出转义规则、输入和嵌套语料的 hash-bound 清单。
 - [`data/cli-output-boundaries-linux-qt5.json`](data/cli-output-boundaries-linux-qt5.json)：10-case 双 Qt5 formatter oracle 的完整原始 streams、身份和派生事实。
+- [`data/cli-output-boundaries-linux-qt5-qt6.json`](data/cli-output-boundaries-linux-qt5-qt6.json)：
+  10-case Qt5/Qt6 escaping/nested formatter 完整原始 streams、身份和派生事实。
+- [`data/cli-output-matrix-linux-qt5-qt6.json`](data/cli-output-matrix-linux-qt5-qt6.json)：
+  26 样本分派与五样本七 formatter 的 Qt5/Qt6 成对流哈希和 detection tree。
 - [`data/scan-option-boundary-fixture.json`](data/scan-option-boundary-fixture.json)：deep/aggressive 规则与 1/22/2002-resource PE 的 hash-bound 清单。
 - [`data/scan-option-boundaries-linux-qt5.json`](data/scan-option-boundaries-linux-qt5.json)：8-case 双 Qt5 scan-option oracle 的去重原始 streams、身份和派生事实。
 - [`data/capability-traceability.json`](data/capability-traceability.json)：68 个稳定
   `CAP-*` 的验证层级、证据路径、平台范围和三个开放 coverage gap。
 - [`data/capability-coverage.json`](data/capability-coverage.json)：68 行 × 4 平台
   的 272-cell 闭集分类、三个开放 gap 到能力的显式映射和未分类计数。
+- [`data/qt6-capability-closure-plan.json`](data/qt6-capability-closure-plan.json)：
+  将固定 Qt6 证据保守映射到全部 68 项能力，并给出剩余逐项实验。
 - [`image-dispatch-behavior.md`](image-dispatch-behavior.md)：固定七种非
   JPEG/PNG 图像的自然 Binary fallback、强制 generic Image null adapter 和
   `CAP-GAP-012` 闭合证据。
