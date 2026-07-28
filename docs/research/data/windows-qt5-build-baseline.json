@@ -171,6 +171,21 @@
     "reference_projection_failures": 0,
     "common_directory_order_matches_linux_qt5": true
   },
+  "windows_cli_filesystem": {
+    "path": "docs/research/data/windows-qt5-cli-filesystem.json",
+    "sha256": "bab9ce41f5bc82e56cba42a2d577669e8d8a6a372da030b0957fcb8b888fa02f",
+    "fixture_manifest_sha256": "7e9f1a05df2d165c4c2177c35cde26a916ba6141eb3f79d6d8bffdca519b5c51",
+    "case_count": 8,
+    "execution_count": 16,
+    "determinism_failures": 0,
+    "expected_exit_failures": 0,
+    "reference_projection_failures": 0,
+    "junction_tree_prefix_order": [
+      "tree_alias",
+      "tree_real"
+    ],
+    "extended_namespace_matches_ordinary": true
+  },
   "source_file_sha256": {
     ".github/workflows/builder.yml": "b8053dda9c53682b7c931230a427d6ef2880c20bf27fe023a3eb973409ab1d57",
     "build_win_generic_check.cmd": "f8e17d67b0a44f5f4be757627424f9178065f39c7b094f33756a797c28e6b349",

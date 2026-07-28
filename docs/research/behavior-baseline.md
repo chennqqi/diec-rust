@@ -43,6 +43,13 @@ Windows 专用 Unicode/特殊路径 fixture 又完成 17 case、34 次执行。N
 目录枚举；真正带 Hidden attribute 的文件被排除。五份 Windows runtime 报告
 累计 902 次执行。
 
+Windows Junction/扩展命名空间 fixture 再完成 8 case、16 次执行。显式文件、
+Junction 目录及两跳 Junction 链均扫描成功；包含 alias 与 real 目录的树会扫描
+同一目标两次，顺序为 alias→real。普通长度的 `\\?\` 文件和 Junction 目录与
+普通 Win32 路径 stdout 逐字节相同。六份 Windows runtime 报告累计 918 次
+执行，详见
+[`windows-filesystem-behavior.md`](windows-filesystem-behavior.md)。
+
 ## 语料来源与安全
 
 所有样本由
@@ -317,6 +324,9 @@ symlink old→new/unlink TOCTOU 见
 固定镜像全部 `C`/`C.utf8`/`POSIX` locale 与 tmpfs/`ext2/ext3` volume 的
 两个排序 profile 见
 [`path-locale-filesystem-behavior.md`](path-locale-filesystem-behavior.md)。
+Windows Qt5 的 Junction、两跳 Junction 链、alias 重复与普通长度 `\\?\`
+命名空间见
+[`windows-filesystem-behavior.md`](windows-filesystem-behavior.md)。
 
 数据库缺失/空/无效 ZIP、规则 parse/runtime error 和不可读输入行为见
 [`database-error-behavior.md`](database-error-behavior.md)。

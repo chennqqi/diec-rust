@@ -1,0 +1,96 @@
+{
+  "explicit_gaps": [
+    {
+      "id": "file_symlink",
+      "reason": "ordinary-user creation failed with the Windows privilege-required error; Developer Mode or elevation was not assumed"
+    },
+    {
+      "id": "directory_symlink",
+      "reason": "ordinary-user creation failed with the Windows privilege-required error; the junction cases remain separately observable"
+    },
+    {
+      "id": "dangling_reparse_point",
+      "reason": "the safe fixture uses directory junctions whose targets exist"
+    },
+    {
+      "id": "reparse_cycle",
+      "reason": "an unbounded junction cycle is excluded from the routine oracle and remains a resource-limit test"
+    },
+    {
+      "id": "acl_denial",
+      "reason": "no disposable alternate security principal was available"
+    },
+    {
+      "id": "unc_path",
+      "reason": "no controlled network share was available"
+    }
+  ],
+  "extended_path_cases": [
+    "single/target.pdf",
+    "direct-alias"
+  ],
+  "files": [
+    {
+      "id": "single",
+      "path": "single/target.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331
+    },
+    {
+      "id": "direct_child",
+      "path": "direct-target/child.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331
+    },
+    {
+      "id": "chain_child",
+      "path": "chain-target/child.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331
+    },
+    {
+      "id": "tree_child",
+      "path": "tree/real/child.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331
+    }
+  ],
+  "generator": "tools/corpus/generate_windows_filesystem_fixture.py",
+  "junctions": [
+    {
+      "id": "direct_alias",
+      "path": "direct-alias",
+      "probe": "child.pdf",
+      "reparse_point": true,
+      "target": "direct-target"
+    },
+    {
+      "id": "chain_hop",
+      "path": "chain-hop",
+      "probe": "child.pdf",
+      "reparse_point": true,
+      "target": "chain-target"
+    },
+    {
+      "id": "chain_entry",
+      "path": "chain-entry",
+      "probe": "child.pdf",
+      "reparse_point": true,
+      "target": "chain-hop"
+    },
+    {
+      "id": "tree_alias",
+      "path": "tree/alias",
+      "probe": "child.pdf",
+      "reparse_point": true,
+      "target": "tree/real"
+    }
+  ],
+  "license": "project-generated paths; baseline corpus bytes only",
+  "payload": {
+    "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+    "size": 331,
+    "source": "minimal.pdf"
+  },
+  "schema_version": 1
+}
