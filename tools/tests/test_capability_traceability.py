@@ -110,7 +110,6 @@ class CapabilityTraceabilityTest(unittest.TestCase):
         self.assertEqual(
             gap_ids,
             [
-                "CAP-GAP-006",
                 "CAP-GAP-007",
                 "CAP-GAP-008",
             ],

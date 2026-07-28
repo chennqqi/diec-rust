@@ -291,7 +291,19 @@
         "tools/upstream/generic_archive_dispatch_harness_main.cpp",
         "tools/upstream/Dockerfile.generic-archive-dispatch-harness-qt5",
         "tools/tests/test_generate_generic_archive_dispatch_fixture.py",
-        "tools/tests/test_probe_generic_archive_dispatch_harness.py"
+        "tools/tests/test_probe_generic_archive_dispatch_harness.py",
+        "docs/research/archive-rar-compressed-behavior.md",
+        "docs/research/data/rar-compressed-fixture-source.json",
+        "docs/research/data/rar-compressed-engine-qt5.json",
+        "tools/corpus/audit_rar_compressed_fixture_source.py",
+        "tools/upstream/probe_rar_compressed_harness.py",
+        "tools/tests/test_rar_compressed_fixture_source.py",
+        "tools/tests/test_rar_compressed_engine_oracle.py",
+        "docs/research/archive-gap-closure.md",
+        "docs/research/data/archive-gap-closure.json",
+        "tools/research/build_archive_gap_closure.py",
+        "tools/tests/test_build_archive_gap_closure.py",
+        "tools/tests/test_archive_gap_closure.py"
       ]
     },
     "nested_scan": {
@@ -376,7 +388,19 @@
         "tools/corpus/generate_rar5_store_fixture.py",
         "tools/upstream/probe_rar5_store_harness.py",
         "tools/tests/test_generate_rar5_store_fixture.py",
-        "tools/tests/test_probe_rar5_store_harness.py"
+        "tools/tests/test_probe_rar5_store_harness.py",
+        "docs/research/archive-rar-compressed-behavior.md",
+        "docs/research/data/rar-compressed-fixture-source.json",
+        "docs/research/data/rar-compressed-engine-qt5.json",
+        "tools/corpus/audit_rar_compressed_fixture_source.py",
+        "tools/upstream/probe_rar_compressed_harness.py",
+        "tools/tests/test_rar_compressed_fixture_source.py",
+        "tools/tests/test_rar_compressed_engine_oracle.py",
+        "docs/research/archive-gap-closure.md",
+        "docs/research/data/archive-gap-closure.json",
+        "tools/research/build_archive_gap_closure.py",
+        "tools/tests/test_build_archive_gap_closure.py",
+        "tools/tests/test_archive_gap_closure.py"
       ]
     },
     "result_model": {
@@ -468,7 +492,7 @@
     {"id": "CAP-DISPATCH-001", "name": "PE ELF and Mach-O dispatch", "verification": "observed", "evidence_set": "dispatch_source"},
     {"id": "CAP-DISPATCH-002", "name": "DOS and COM public dispatch plus BW property-only branch", "verification": "observed", "evidence_set": "dispatch_source"},
     {"id": "CAP-DISPATCH-003", "name": "Amiga Hunk dispatch and Atari ST detector-only fallback", "verification": "observed", "evidence_set": "dispatch_source"},
-    {"id": "CAP-DISPATCH-004", "name": "archive family dispatch", "verification": "observed_with_gaps", "evidence_set": "dispatch_source"},
+    {"id": "CAP-DISPATCH-004", "name": "archive family dispatch", "verification": "observed", "evidence_set": "dispatch_source"},
     {"id": "CAP-DISPATCH-005", "name": "DEX Java Class and PYC dispatch", "verification": "observed", "evidence_set": "dispatch_source"},
     {"id": "CAP-DISPATCH-006", "name": "PDF and CFBF dispatch", "verification": "observed", "evidence_set": "dispatch_source"},
     {"id": "CAP-DISPATCH-007", "name": "image dispatch", "verification": "observed", "evidence_set": "dispatch_source"},
@@ -477,12 +501,12 @@
     {"id": "CAP-NEST-001", "name": "directory recursion versus internal recursion", "verification": "observed", "evidence_set": "nested_scan"},
     {"id": "CAP-NEST-002", "name": "resource and overlay recursive scan", "verification": "observed", "evidence_set": "nested_scan"},
     {"id": "CAP-NEST-003", "name": "archive scan is engine-only", "verification": "observed", "evidence_set": "nested_scan"},
-    {"id": "CAP-NEST-004", "name": "archive and resource count boundary", "verification": "observed_with_gaps", "evidence_set": "nested_scan"},
+    {"id": "CAP-NEST-004", "name": "archive and resource count boundary", "verification": "observed", "evidence_set": "nested_scan"},
     {"id": "CAP-NEST-005", "name": "overlay and resource subdevice gate", "verification": "observed", "evidence_set": "nested_scan"},
     {"id": "CAP-NEST-006", "name": "resource context propagation", "verification": "observed", "evidence_set": "nested_scan"},
     {"id": "CAP-NEST-007", "name": "debug data is not scanner dispatched", "verification": "observed", "evidence_set": "debug_data_dispatch"},
     {"id": "CAP-NEST-008", "name": "nested JSON result tree", "verification": "observed", "evidence_set": "nested_scan"},
-    {"id": "CAP-NEST-009", "name": "no independent depth or total extraction limit", "verification": "observed_with_gaps", "evidence_set": "nested_scan"},
+    {"id": "CAP-NEST-009", "name": "no independent depth or total extraction limit", "verification": "observed", "evidence_set": "nested_scan"},
 
     {"id": "CAP-RESULT-001", "name": "scan result scalar metadata", "verification": "observed", "evidence_set": "result_model"},
     {"id": "CAP-RESULT-002", "name": "scan result record error debug and handler lists", "verification": "observed", "evidence_set": "result_model"},
@@ -492,13 +516,6 @@
     {"id": "CAP-RESULT-006", "name": "record version info rule and priority", "verification": "observed", "evidence_set": "result_model"}
   ],
   "coverage_gaps": [
-    {
-      "id": "CAP-GAP-006",
-      "scope": "additional archive formats, depth, and total extraction limits",
-      "platforms": [
-        "linux-x86_64-qt5"
-      ]
-    },
     {
       "id": "CAP-GAP-007",
       "scope": "complete Qt5 versus Qt6 capability matrix",
@@ -518,11 +535,11 @@
   ],
   "summary": {
     "capability_count": 68,
-    "observed": 65,
-    "observed_with_gaps": 3,
+    "observed": 68,
+    "observed_with_gaps": 0,
     "source_verified": 0,
     "source_verified_with_gaps": 0,
-    "coverage_gap_count": 3,
+    "coverage_gap_count": 2,
     "phase_0_coverage_complete": false
   }
 }

@@ -37,8 +37,13 @@ MIT 代码直接翻译进 Rust：
 - 不因 oracle 能解压某个 RAR 方法，就推定相应压缩样本可以再分发；
 - RAR 压缩 backend 选型必须单独建立来源、许可证、static-link 和资源限制闭包。
 
-因此 `P0-BLOCK-004` 和 `CAP-GAP-006` 均保持 Open。前者新增了明确的 bundled
-code 评审项；后者仍缺合法、可重复的压缩/加密/solid/multi-volume 语料。
+因此 `P0-BLOCK-004` 保持 Open，并新增明确的 bundled code 评审项。本报告完成
+时 `CAP-GAP-006` 仍缺合法、可重复的压缩/solid 语料；后续压缩/solid oracle
+及五类 engine family closure 已由
+[`archive-rar-compressed-behavior.md`](archive-rar-compressed-behavior.md) 和
+[`archive-gap-closure.md`](archive-gap-closure.md)
+补齐。加密/multi-volume 等仍是 method/feature 扩展，不改变 decoder 许可证
+评审未关闭的结论。
 
 ## 固定对象与历史
 

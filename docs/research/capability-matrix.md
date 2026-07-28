@@ -240,7 +240,11 @@ hideunknown 的可观察增量。完整输入哈希和输出见
   [`archive-rar-compressed-behavior.md`](archive-rar-compressed-behavior.md)；
   RAR15/RAR20/RAR7 algorithm version 1、加密/multi-volume/损坏流与剩余字段、
   ISO path-table location/多字段组合冲突与算术
-  wrap、更大或混合失败记录图及跨平台仍归 `CAP-GAP-006`。
+  wrap、更大或混合失败记录图仍是 format-method 扩展与安全风险；固定源码证明
+  engine 解包 family 只有 ZIP/7Z/RAR/CAB/ISO9660 五类且五类均有成对运行
+  控制，故 `CAP-GAP-006` 已由
+  [`archive-gap-closure.md`](archive-gap-closure.md) 关闭。跨平台仍归
+  `CAP-GAP-007/008`。
 - `CAP-NEST-005`：overlay 始终作为 subdevice 扫描；非 aggressive resource 仅在探测为
   scanable 类型时扫描。
 - `CAP-NEST-006`：项目生成的 RT_MANIFEST 未分类 payload 证明完整链：recursive 单独跳过，
@@ -257,7 +261,7 @@ hideunknown 的可观察增量。完整输入哈希和输出见
 - `CAP-NEST-009`：固定源码没有独立嵌套 depth 或全 scan 累计展开字节状态；
   受限 Linux Qt5 oracle 的单成员 ZIP 到达 64 层，固定两层累计展开量达到
   33,554,546 bytes，第一次 progress callback 取消保留 1 条 root partial record。
-  状态为 Observed with gaps；7Z Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64、
+  状态为 Observed；7Z Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64、
   x86 BCJ+LZMA2、BCJ2+LZMA2 no-branch/E8/E9/JCC、ARM64-BCJ+LZMA2 BL/ADRP、
   RAR4 store、RAR3 unpack29/RAR5 method 5 compressed/solid、CAB Store/MSZIP 与
   ISO9660 正例、7Z 七种基础 coder+AES 与完整 x86/ARM64
@@ -265,14 +269,16 @@ hideunknown 的可观察增量。完整输入哈希和输出见
   BCJ2+LZMA2+4×AES 正确密码
   失败边界及 CAB LZX/Quantum 普通/激进失败边界
   已经固定，但
-  ZIP 1 MiB/843.58:1 和首轮格式错误边界已固定；更高展开量、其他格式/算法、
-  真实资源耗尽和跨平台仍待验证。详见
+  ZIP 1 MiB/843.58:1 和首轮格式错误边界已固定；闭集审计证明 engine
+  解包 family 只有五类。更高展开量、其他方法、真实资源耗尽仍是安全/扩展
+  风险，跨平台仍待验证。详见
   [`archive-limit-behavior.md`](archive-limit-behavior.md) 与
   [`archive-format-behavior.md`](archive-format-behavior.md)、
   [`archive-iteration-boundary.md`](archive-iteration-boundary.md)、
   [`archive-adversarial-behavior.md`](archive-adversarial-behavior.md)、
   [`archive-truncation-behavior.md`](archive-truncation-behavior.md)、
-  [`archive-structure-behavior.md`](archive-structure-behavior.md)。
+  [`archive-structure-behavior.md`](archive-structure-behavior.md) 与
+  [`archive-gap-closure.md`](archive-gap-closure.md)。
 
 ## 结果模型
 
@@ -340,7 +346,7 @@ validator 要求本文 68 个 `CAP-*` 与 manifest 完全相等，并拒绝缺�
 不能提升为 Rust 已实现或跨平台兼容。
 
 [`capability-coverage-report.md`](capability-coverage-report.md) 进一步把该清单
-投影为 68 行 × 4 平台的闭集：Linux Qt5 为 64 observed、4 observed with
+投影为 68 行 × 4 平台的闭集：Linux Qt5 为 68 observed、0 observed with
 corpus gaps、0 source-only；Linux Qt6、Windows 和 macOS 各有 68 个
 platform-missing。全部行已分类不等于覆盖完成。
 

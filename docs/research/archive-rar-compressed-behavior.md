@@ -25,7 +25,10 @@ Last updated: 2026-07-28
 这首次给 `CAP-GAP-006` 增加真实 RAR 压缩流和跨成员 solid 状态的运行证据，
 证明固定 XArchive 可达 RAR29 与 RAR5 `Unpack5` 正常路径。它不证明 RAR15、
 RAR20、RAR7 algorithm version 1、加密、multi-volume、recovery、损坏流或资源
-极值，gap 保持 Open。
+极值。后续
+[`archive-gap-closure.md`](archive-gap-closure.md)
+已按 engine family、记录、深度与累计展开量的明确关闭标准关闭该 corpus gap；
+这些未测 RAR method/feature 仍是扩展差分范围，不被闭合结论覆盖。
 
 机器报告：
 

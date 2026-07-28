@@ -1,0 +1,191 @@
+{
+  "capability_dispositions": [
+    {
+      "id": "CAP-DISPATCH-004",
+      "reason": "public archive dispatch evidence is already fixed; all five engine-extractable families are now proven as a closed source set with runtime controls",
+      "verification": "observed"
+    },
+    {
+      "id": "CAP-NEST-003",
+      "reason": "all five families retain zero children without the engine archive option and positive children with it",
+      "verification": "observed"
+    },
+    {
+      "id": "CAP-NEST-004",
+      "reason": "the archive loop reaches records 99999 and 100000 and excludes record 100001",
+      "verification": "observed"
+    },
+    {
+      "id": "CAP-NEST-009",
+      "reason": "source has no independent depth/total budget and runtime reaches depth 64 and 33,554,546 cumulative expanded bytes",
+      "verification": "observed"
+    }
+  ],
+  "closure_assertions": {
+    "all_named_capabilities_have_observed_dispositions": true,
+    "cap_gap_006_closed": true,
+    "depth_and_total_claim_is_bounded_and_source_paired": true,
+    "engine_extraction_family_inventory_is_exhaustive": true,
+    "every_engine_extraction_family_has_runtime_controls": true,
+    "iteration_boundary_is_exact": true
+  },
+  "depth_and_total_observation": {
+    "cancellation_retains_partial_result": true,
+    "maximum_observed_cumulative_expanded_bytes": 33554546,
+    "maximum_observed_depth": 64,
+    "source_has_no_independent_depth_or_total_token": true
+  },
+  "engine_extraction_families": {
+    "adapters": {
+      "7Z": "XSevenZip",
+      "CAB": "XCab",
+      "ISO9660": "XISO9660",
+      "RAR": "XRar",
+      "ZIP": "XZip"
+    },
+    "all_have_positive_and_default_controls": true,
+    "count": 5,
+    "ordered_filetypes": [
+      "ZIP",
+      "7Z",
+      "RAR",
+      "CAB",
+      "ISO9660"
+    ],
+    "runtime_evidence": [
+      {
+        "adapter": "XZip",
+        "archive_stream_count": 1,
+        "archive_stream_filetypes": [
+          "PDF"
+        ],
+        "case": "deflate-valid.zip",
+        "default_stream_count": 0,
+        "family": "ZIP",
+        "nested_control": "depth-01.zip"
+      },
+      {
+        "adapter": "XSevenZip",
+        "archive_stream_count": 1,
+        "archive_stream_filetypes": [
+          "PDF"
+        ],
+        "case": "pdf-member.7z",
+        "default_stream_count": 0,
+        "family": "7Z"
+      },
+      {
+        "adapter": "XRar",
+        "archive_stream_count": 1,
+        "archive_stream_filetypes": [
+          "PDF"
+        ],
+        "case": "pdf-member.rar",
+        "default_stream_count": 0,
+        "family": "RAR"
+      },
+      {
+        "adapter": "XCab",
+        "archive_stream_count": 1,
+        "archive_stream_filetypes": [
+          "PDF"
+        ],
+        "case": "pdf-member.cab",
+        "default_stream_count": 0,
+        "family": "CAB"
+      },
+      {
+        "adapter": "XISO9660",
+        "archive_stream_count": 1,
+        "archive_stream_filetypes": [
+          "PDF"
+        ],
+        "case": "pdf-member.iso",
+        "default_stream_count": 0,
+        "family": "ISO9660"
+      }
+    ]
+  },
+  "evaluated_on": "2026-07-28",
+  "gap": {
+    "capability_ids": [
+      "CAP-DISPATCH-004",
+      "CAP-NEST-003",
+      "CAP-NEST-004",
+      "CAP-NEST-009"
+    ],
+    "disposition": "closed by exhaustive engine extraction-family inventory, positive/default runtime controls, exact iteration boundary, and bounded depth/expanded-byte observations paired with source absence of an independent budget",
+    "id": "CAP-GAP-006",
+    "prior_scope": "additional archive formats, depth, and total extraction limits"
+  },
+  "generator": {
+    "bytes": 21351,
+    "path": "tools/research/build_archive_gap_closure.py",
+    "sha256": "2ed9647bb163e492cf3565d91d90e21daf2065fca2befdd200764e522ae45179"
+  },
+  "input_reports": {
+    "archive_adversarial": {
+      "bytes": 59049,
+      "path": "docs/research/data/archive-adversarial-engine-qt5.json",
+      "sha256": "f00210b660cbc45f6afb66599ea48b9285b392dd06fd9d686fef95148cc67937"
+    },
+    "archive_format": {
+      "bytes": 267411,
+      "path": "docs/research/data/archive-format-engine-qt5.json",
+      "sha256": "d27ee4aa9c03be0939d495e6b9ab062f669f123eeff36ccfac16062d3089a784"
+    },
+    "archive_iteration": {
+      "bytes": 6787,
+      "path": "docs/research/data/archive-iteration-boundary-engine-qt5.json",
+      "sha256": "57a78308860d6842bf2b33367451d696a7c3252d1411de2ed5c32d9659c29533"
+    },
+    "archive_limit": {
+      "bytes": 29007,
+      "path": "docs/research/data/archive-limit-engine-qt5.json",
+      "sha256": "e4786dcc578fb0714c86f71955161f981a06be26aefe663281d74202f5372ecd"
+    },
+    "generic_dispatch": {
+      "bytes": 36189,
+      "path": "docs/research/data/generic-archive-dispatch-engine-qt5.json",
+      "sha256": "960fca28122af3bddb2fcd22706f5350ee8f4753a79a61cc2338aba7d1f53c04"
+    },
+    "npm_dispatch": {
+      "bytes": 29899,
+      "path": "docs/research/data/npm-dispatch-engine-qt5.json",
+      "sha256": "d23168aff29696f46d3579f6d914353865035bd02a8bbbcf9af065475c036ce7"
+    }
+  },
+  "iteration_boundary": {
+    "aggressive_scanable_member_limit": "unreachable before hard iteration guard",
+    "hard_iteration_guard": 100000,
+    "record_100000_reachable": true,
+    "record_100001_reachable": false,
+    "record_99999_reachable": true
+  },
+  "platform": "linux-x86_64-qt5",
+  "remaining_risks": [
+    "upstream still lacks an independent depth, total expanded-byte, time, or allocation budget",
+    "depth 64 and 33,554,546 bytes are maximum observations, not claims that larger inputs are safe",
+    "RAR15/RAR20/RAR7-v1, encrypted, multi-volume, recovery, and corrupt compressed streams remain format-method coverage, not an unclassified engine family",
+    "Windows, macOS, and a complete Linux Qt6 capability baseline remain separate platform gaps"
+  ],
+  "result": "closed",
+  "schema_version": 1,
+  "sources": {
+    "formats": {
+      "bytes": 93160,
+      "commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+      "path": "xformats.cpp",
+      "remote": "https://github.com/horsicq/Formats.git",
+      "sha256": "674eba0046eb6cc947e547d1ac0b93ac695cbb30f68e11f135e5551d81e0b115"
+    },
+    "xscanengine": {
+      "bytes": 191204,
+      "commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83",
+      "path": "xscanengine.cpp",
+      "remote": "https://github.com/horsicq/XScanEngine",
+      "sha256": "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498"
+    }
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

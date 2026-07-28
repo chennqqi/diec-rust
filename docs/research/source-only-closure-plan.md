@@ -10,7 +10,10 @@ Last updated: 2026-07-28
 
 [`capability-coverage.json`](data/capability-coverage.json) 当前已有 0 个
 Linux Qt5 source-only 能力。最后一项 `CAP-NEST-009` 已由受资源约束的递增
-runtime corpus 和 ADR 0012 关闭 source-only 状态，但仍保留明确 corpus gaps。
+runtime corpus 和 ADR 0012 关闭 source-only 状态；后续
+[`archive-gap-closure.md`](archive-gap-closure.md)
+又以五类 engine family 闭集、记录/深度/总量证据关闭剩余 archive corpus gap。
+当前 Linux Qt5 source-only 与 corpus-gap 均为 0。
 
 机器清单为
 [`data/source-only-closure.json`](data/source-only-closure.json)，由

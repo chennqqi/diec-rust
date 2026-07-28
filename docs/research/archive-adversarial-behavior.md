@@ -35,7 +35,11 @@ mixed-member filter 和 1 MiB/843.58:1 压缩比测试点。该 gap 仍因更高
 ZIP AES、其他 ZIP 压缩算法、RAR15/RAR20、RAR7 algorithm version 1、RAR
 加密/multi-volume/recovery/损坏压缩流、剩余结构字段、ISO path-table
 location/多字段组合冲突、算术 wrap、更大或混合失败记录图和跨平台行为保持
-开放。RAR3 unpack29 method `0x35` 与 RAR5 method 5 压缩/solid 正例已由
+开放，是本报告生成时的状态。后续
+[`archive-gap-closure.md`](archive-gap-closure.md)
+已按 engine family、记录、深度和累计展开量标准关闭该 corpus gap；上述未测
+method/字段/资源仍是扩展与安全风险，跨平台由独立 gap 跟踪。RAR3 unpack29
+method `0x35` 与 RAR5 method 5 压缩/solid 正例已由
 [`archive-rar-compressed-behavior.md`](archive-rar-compressed-behavior.md)
 固定。7Z、RAR4、CAB、ISO9660 的系统化
 EOF 前缀截断阶梯已由

@@ -20,7 +20,9 @@ Last updated: 2026-07-28
 [`archive-iteration-boundary.md`](archive-iteration-boundary.md) 固定；
 ZIP 压缩/加密/畸形首轮语料见
 [`archive-adversarial-behavior.md`](archive-adversarial-behavior.md)；
-其他格式/算法、系统化畸形和跨平台行为仍归 `CAP-GAP-006`。
+其他 method、系统化畸形仍是扩展差分/安全风险，跨平台行为由平台 gap 跟踪。
+`CAP-GAP-006` 后续已由
+[`archive-gap-closure.md`](archive-gap-closure.md) 关闭。
 
 ## 结论
 
@@ -145,8 +147,9 @@ python tools/upstream/probe_npm_dispatch_harness.py \
 
 ## 剩余缺口
 
-本实验收窄了 `CAP-DISPATCH-004` 中的 NPM 子项，但不关闭
-`CAP-GAP-006`。仍需补齐：
+本实验收窄了 `CAP-DISPATCH-004` 中的 NPM 子项，但单独不足以关闭当时的
+`CAP-GAP-006`。后续闭集审计已关闭该 gap；以下项目仍是本报告之外的扩展或
+平台验证：
 
 - 通用 Archive 顶层分派现由
   [`generic-archive-dispatch-reachability.md`](generic-archive-dispatch-reachability.md)

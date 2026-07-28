@@ -23,8 +23,9 @@ Last updated: 2026-07-28
 
 这证明固定版本的公共 engine 可达 RAR5 Store，并固定了 Store 成员进入 RAR
 solid streaming 分支时的双成员可观察结果。它不证明 RAR15/20/29/50/70
-专有压缩算法、加密、filter、分卷或资源耗尽行为，因此
-`CAP-GAP-006` **未关闭**。
+专有压缩算法、加密、filter、分卷或资源耗尽行为，因此本实验单独没有关闭
+`CAP-GAP-006`。后续闭合集合与 disposition 见
+[`archive-gap-closure.md`](archive-gap-closure.md)。
 
 ## 安全且可追溯的语料
 
@@ -110,5 +111,7 @@ python tools/upstream/probe_rar5_store_harness.py `
 - file/header encryption、password、filter、recovery 和 multi-volume；
 - 损坏压缩流、真实内存/CPU 耗尽以及其他平台。
 
-这些仍保留在 `CAP-GAP-006`；本报告只收窄 RAR5 Store 与 Store-solid 可观察
-行为，不把“容器可生成”误报为“RAR 压缩兼容已完成”。
+这些仍作为 RAR method/feature 扩展与安全风险保留；本报告只收窄 RAR5 Store
+与 Store-solid 可观察行为，不把“容器可生成”误报为“RAR 压缩兼容已完成”。
+`CAP-GAP-006` 的后续关闭只表示 engine family/记录/深度/总量闭集达到明确
+标准，不把本段未测项改写为已验证。

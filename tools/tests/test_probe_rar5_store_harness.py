@@ -267,7 +267,7 @@ class ProbeRar5StoreHarnessTests(unittest.TestCase):
             ).encode()
         self.assertEqual(actual, self.report_bytes)
 
-    def test_research_document_binds_report_and_open_gap(self):
+    def test_research_document_binds_report_and_later_gap_closure(self):
         document = DOCUMENT_PATH.read_text(encoding="utf-8")
         for token in (
             "Status: Draft",
@@ -279,7 +279,9 @@ class ProbeRar5StoreHarnessTests(unittest.TestCase):
             "solid",
             "8",
             "CAP-GAP-006",
-            "未关闭",
+            "本实验单独没有关闭",
+            "archive-gap-closure.md",
+            "后续关闭",
             "不包含专有压缩算法",
         ):
             with self.subTest(token=token):

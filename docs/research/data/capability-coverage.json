@@ -5,20 +5,6 @@
   "coverage_gaps": [
     {
       "capability_ids": [
-        "CAP-DISPATCH-004",
-        "CAP-NEST-003",
-        "CAP-NEST-004",
-        "CAP-NEST-009"
-      ],
-      "id": "CAP-GAP-006",
-      "kind": "corpus_missing",
-      "platforms": [
-        "linux-x86_64-qt5"
-      ],
-      "scope": "additional archive formats, depth, and total extraction limits"
-    },
-    {
-      "capability_ids": [
         "CAP-CLI-DB-001",
         "CAP-CLI-DB-002",
         "CAP-CLI-DB-003",
@@ -353,7 +339,19 @@
         "tools/upstream/generic_archive_dispatch_harness_main.cpp",
         "tools/upstream/Dockerfile.generic-archive-dispatch-harness-qt5",
         "tools/tests/test_generate_generic_archive_dispatch_fixture.py",
-        "tools/tests/test_probe_generic_archive_dispatch_harness.py"
+        "tools/tests/test_probe_generic_archive_dispatch_harness.py",
+        "docs/research/archive-rar-compressed-behavior.md",
+        "docs/research/data/rar-compressed-fixture-source.json",
+        "docs/research/data/rar-compressed-engine-qt5.json",
+        "tools/corpus/audit_rar_compressed_fixture_source.py",
+        "tools/upstream/probe_rar_compressed_harness.py",
+        "tools/tests/test_rar_compressed_fixture_source.py",
+        "tools/tests/test_rar_compressed_engine_oracle.py",
+        "docs/research/archive-gap-closure.md",
+        "docs/research/data/archive-gap-closure.json",
+        "tools/research/build_archive_gap_closure.py",
+        "tools/tests/test_build_archive_gap_closure.py",
+        "tools/tests/test_archive_gap_closure.py"
       ]
     },
     "engine_contract": {
@@ -450,7 +448,19 @@
         "tools/corpus/generate_rar5_store_fixture.py",
         "tools/upstream/probe_rar5_store_harness.py",
         "tools/tests/test_generate_rar5_store_fixture.py",
-        "tools/tests/test_probe_rar5_store_harness.py"
+        "tools/tests/test_probe_rar5_store_harness.py",
+        "docs/research/archive-rar-compressed-behavior.md",
+        "docs/research/data/rar-compressed-fixture-source.json",
+        "docs/research/data/rar-compressed-engine-qt5.json",
+        "tools/corpus/audit_rar_compressed_fixture_source.py",
+        "tools/upstream/probe_rar_compressed_harness.py",
+        "tools/tests/test_rar_compressed_fixture_source.py",
+        "tools/tests/test_rar_compressed_engine_oracle.py",
+        "docs/research/archive-gap-closure.md",
+        "docs/research/data/archive-gap-closure.json",
+        "tools/research/build_archive_gap_closure.py",
+        "tools/tests/test_build_archive_gap_closure.py",
+        "tools/tests/test_archive_gap_closure.py"
       ]
     },
     "result_model": {
@@ -1256,9 +1266,7 @@
       }
     },
     {
-      "corpus_gap_ids": [
-        "CAP-GAP-006"
-      ],
+      "corpus_gap_ids": [],
       "evidence_set": "dispatch_source",
       "id": "CAP-DISPATCH-004",
       "name": "archive family dispatch",
@@ -1266,7 +1274,7 @@
         "CAP-GAP-007"
       ],
       "platform_status": {
-        "linux-x86_64-qt5": "runtime_observed_with_corpus_gaps",
+        "linux-x86_64-qt5": "runtime_observed",
         "linux-x86_64-qt6": "platform_missing",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
@@ -1363,9 +1371,7 @@
       }
     },
     {
-      "corpus_gap_ids": [
-        "CAP-GAP-006"
-      ],
+      "corpus_gap_ids": [],
       "evidence_set": "nested_scan",
       "id": "CAP-NEST-003",
       "name": "archive scan is engine-only",
@@ -1380,9 +1386,7 @@
       }
     },
     {
-      "corpus_gap_ids": [
-        "CAP-GAP-006"
-      ],
+      "corpus_gap_ids": [],
       "evidence_set": "nested_scan",
       "id": "CAP-NEST-004",
       "name": "archive and resource count boundary",
@@ -1390,7 +1394,7 @@
         "CAP-GAP-007"
       ],
       "platform_status": {
-        "linux-x86_64-qt5": "runtime_observed_with_corpus_gaps",
+        "linux-x86_64-qt5": "runtime_observed",
         "linux-x86_64-qt6": "platform_missing",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
@@ -1457,9 +1461,7 @@
       }
     },
     {
-      "corpus_gap_ids": [
-        "CAP-GAP-006"
-      ],
+      "corpus_gap_ids": [],
       "evidence_set": "nested_scan",
       "id": "CAP-NEST-009",
       "name": "no independent depth or total extraction limit",
@@ -1467,7 +1469,7 @@
         "CAP-GAP-007"
       ],
       "platform_status": {
-        "linux-x86_64-qt5": "runtime_observed_with_corpus_gaps",
+        "linux-x86_64-qt5": "runtime_observed",
         "linux-x86_64-qt6": "platform_missing",
         "macos-x86_64-qt5": "platform_missing",
         "windows-x86_64-qt5": "platform_missing"
@@ -1568,7 +1570,7 @@
   "schema_version": 1,
   "source": {
     "path": "docs/research/data/capability-traceability.json",
-    "sha256": "2510fc90f282edb7af5ab8267d2c436757a6b1188ef28aef36aa9961152e7800"
+    "sha256": "e1bb982feb52fb97e6678319c629cf71735650fe4239c8558a0f765c16c8cff3"
   },
   "status_definitions": {
     "platform_missing": "no complete capability baseline is admitted for this platform",
@@ -1582,13 +1584,13 @@
     "cell_count": 272,
     "phase_0_coverage_complete": false,
     "platform_count": 4,
-    "rows_with_corpus_gaps": 4,
+    "rows_with_corpus_gaps": 0,
     "rows_with_platform_gaps": 68,
     "status_counts_by_platform": {
       "linux-x86_64-qt5": {
         "platform_missing": 0,
-        "runtime_observed": 65,
-        "runtime_observed_with_corpus_gaps": 3,
+        "runtime_observed": 68,
+        "runtime_observed_with_corpus_gaps": 0,
         "source_only_runtime_corpus_missing": 0,
         "source_only_with_corpus_gaps": 0
       },

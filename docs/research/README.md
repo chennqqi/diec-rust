@@ -46,6 +46,9 @@ Phase 0 计划形成：
 - [`archive-rar-compressed-behavior.md`](archive-rar-compressed-behavior.md)：
   固定外部 CC0 候选的 RAR3/RAR5 method-5、solid 状态、许可证边界和
   aggressive oracle（Draft）。
+- [`archive-gap-closure.md`](archive-gap-closure.md)：
+  固定 engine 五类解包 family 闭集、成对运行控制、100000/100001、
+  depth-64/33,554,546-byte 证据及 `CAP-GAP-006` disposition（Draft）。
 - [`npm-dispatch-reachability.md`](npm-dispatch-reachability.md)：
   NPM 精确归档路径检测、公共 GZIP 自动分派不可达、强制 NPM 规则分支及
   双 Qt5 release 对照（Draft）。
@@ -289,6 +292,9 @@ Phase 0 计划形成：
   header/method/solid 结构和开放再分发评审。
 - [`data/rar-compressed-engine-qt5.json`](data/rar-compressed-engine-qt5.json)：
   RAR3/RAR5 压缩/solid 的 16-run 固定 engine oracle、原始输出和确定性投影。
+- [`data/archive-gap-closure.json`](data/archive-gap-closure.json)：
+  六份固定 archive oracle 与 Formats/XScanEngine 源码共同生成的
+  `CAP-GAP-006` 机器闭合报告。
 - [`data/npm-dispatch-fixture.json`](data/npm-dispatch-fixture.json)：
   项目生成的 NPM 精确路径正例、无效 JSON 正例及路径/大小写近似反例清单。
 - [`data/npm-dispatch-engine-qt5.json`](data/npm-dispatch-engine-qt5.json)：

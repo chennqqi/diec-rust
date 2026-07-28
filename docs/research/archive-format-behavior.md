@@ -60,8 +60,10 @@ corpus 证据，并固定 7Z 七种基础 coder+AES 及完整 x86/ARM64
 filter × 七种基础 coder × AES 的成功密码契约、
 BCJ2+AES 官方图的失败边界
 以及 CAB
-LZX/Quantum 的未实现/激进扫描 quirk，但不关闭
-`CAP-GAP-006`。NPM 分派已由独立的直接/自动/强制实验固定，见
+LZX/Quantum 的未实现/激进扫描 quirk。本实验单独不足以关闭当时的
+`CAP-GAP-006`；后续五类 engine family 闭集、记录/深度/总量 synthesis 已由
+[`archive-gap-closure.md`](archive-gap-closure.md) 完成。NPM 分派已由独立的
+直接/自动/强制实验固定，见
 [`npm-dispatch-reachability.md`](npm-dispatch-reachability.md)；通用 Archive
 分派现由
 [`generic-archive-dispatch-reachability.md`](generic-archive-dispatch-reachability.md)
@@ -428,13 +430,16 @@ LZX/Quantum 普通/激进模式的失败边界，
   更高展开量和真实资源耗尽仍未验证；
 - Windows、macOS、Qt6，以及平台 archive backend 差异。
 
-`CAP-GAP-006` 因此保持开放。已有 ZIP 深度、累计展开量、取消与 20/21 边界
-证据见 [`archive-limit-behavior.md`](archive-limit-behavior.md)，100000
-记录边界见
-[`archive-iteration-boundary.md`](archive-iteration-boundary.md)；这些证据应
-与 [`archive-adversarial-behavior.md`](archive-adversarial-behavior.md)、
+本实验生成时 `CAP-GAP-006` 因此保持开放。后续
+[`archive-gap-closure.md`](archive-gap-closure.md)
+已证明 engine 解包 family 只有 ZIP/7Z/RAR/CAB/ISO9660 五类，并将本报告、
+ZIP 深度/累计展开量/取消/20/21 边界
+[`archive-limit-behavior.md`](archive-limit-behavior.md)、100000 记录边界
+[`archive-iteration-boundary.md`](archive-iteration-boundary.md) 与
+[`archive-adversarial-behavior.md`](archive-adversarial-behavior.md)、
 [`archive-truncation-behavior.md`](archive-truncation-behavior.md)、
 [`archive-structure-behavior.md`](archive-structure-behavior.md)、
 [`archive-multirecord-behavior.md`](archive-multirecord-behavior.md)、
 [`iso9660-endian-behavior.md`](iso9660-endian-behavior.md)
-共同约束后续 Rust archive 层，但不能替代剩余格式和压力边界实验。
+共同绑定后关闭该 corpus gap。剩余 method/字段和压力边界仍约束后续 Rust
+archive 层，但作为扩展差分与安全风险跟踪，不外推为已验证或安全。

@@ -34,7 +34,10 @@ SHA-256
 `2bddd90d5670c4e91e8147cf22395c914804c547d487ac29d4bd1da38f773e30`。
 
 这些结果固定了 `CAP-GAP-006` 的多格式系统化 EOF 截断子集；RAR 压缩/加密、
-solid/multi-volume、更多结构字段畸变和跨平台行为仍保持开放。
+solid/multi-volume 和更多结构字段畸变仍是扩展差分范围，跨平台行为由独立
+gap 跟踪。该 corpus gap 后续已由
+[`archive-gap-closure.md`](archive-gap-closure.md)
+按五类 engine family、记录、深度与累计展开量标准关闭。
 
 ## 固定身份与证据链
 

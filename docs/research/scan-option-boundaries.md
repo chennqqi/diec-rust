@@ -123,7 +123,7 @@ legacy-compatible 模式必须保留：
 
 这些上游上限不是 Rust 的安全上限。Rust hard limits 必须先于兼容策略执行，
 aggressive 只能在调用方允许的 hard budget 内提高 legacy policy threshold。
-`CAP-GAP-006` 仍保持开放：七种 7Z 单 coder、x86/ARM64 BCJ+LZMA2、
+本报告完成时 `CAP-GAP-006` 仍保持开放：七种 7Z 单 coder、x86/ARM64 BCJ+LZMA2、
 BCJ2+LZMA2 no-branch/E8/E9/JCC filter 链、7Z 七种基础 coder+AES 与完整
 x86/ARM64 filter × 七种基础 coder × AES 成功密码契约、
 BCJ2+LZMA2+4×AES 正确密码失败边界、RAR4
@@ -135,8 +135,10 @@ LZX:15/Quantum 普通模式无 child、aggressive 扫描 Unknown 输出的边界
 [`archive-iteration-boundary.md`](archive-iteration-boundary.md) 固定；
 ZIP 1 MiB/843.58:1 和首轮畸形由
 [`archive-adversarial-behavior.md`](archive-adversarial-behavior.md) 固定；
-其他格式/算法、更高展开量、最大深度、累计解压量和资源耗尽仍不能由本实验
-外推为闭合。
+后续 [`archive-gap-closure.md`](archive-gap-closure.md)
+以五类 engine family 闭集、成对 oracle、100000/100001、depth-64 与
+33,554,546-byte 证据关闭该 corpus gap。其他 method、更高展开量和资源耗尽
+仍不能由本实验或闭合报告外推为安全。
 
 ## 8. 复现
 

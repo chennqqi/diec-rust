@@ -19,7 +19,9 @@ Last updated: 2026-07-28
 本实验使用 ZIP、TAR、GZIP 三种项目生成归档，覆盖专用分支和两种 Binary
 回退。archive aggressive 的 100000 精确边界已由
 [`archive-iteration-boundary.md`](archive-iteration-boundary.md) 固定；
-本实验不验证压缩/加密/畸形输入或跨平台行为，这些仍归 `CAP-GAP-006`。
+本实验不验证压缩/加密/畸形输入或跨平台行为；前者仍是扩展差分/安全风险，
+后者由平台 gap 跟踪。`CAP-GAP-006` 的后续 disposition 见
+[`archive-gap-closure.md`](archive-gap-closure.md)。
 ZIP 的首轮对应矩阵见
 [`archive-adversarial-behavior.md`](archive-adversarial-behavior.md)。
 
@@ -151,13 +153,15 @@ python tools/upstream/probe_generic_archive_dispatch_harness.py \
 
 ## 剩余缺口
 
-generic Archive 顶层分派及其 verbose 规则入口已固定，但
-`CAP-GAP-006` 仍保持开放：
+generic Archive 顶层分派及其 verbose 规则入口已固定。本实验完成时
+`CAP-GAP-006` 仍保持开放，后续已由
+[`archive-gap-closure.md`](archive-gap-closure.md)
+按五类 engine family、记录、深度与累计展开量标准关闭：
 
 - archive aggressive 的 100000 精确边界已由
   [`archive-iteration-boundary.md`](archive-iteration-boundary.md) 闭合；
 - ZIP 1 MiB/843.58:1、ZipCrypto 无密码和首轮畸形已由
   [`archive-adversarial-behavior.md`](archive-adversarial-behavior.md)
   固定；其他格式/算法、更高展开量、solid/multi-volume 和系统化畸形仍缺；
-- 最大深度、总展开量的安全预算与更多格式交互；
+- 最大深度、总展开量的安全预算与更多 method 交互仍需实现期验证；
 - Linux Qt6、Windows、macOS 对应行为。

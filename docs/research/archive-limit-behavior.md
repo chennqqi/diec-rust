@@ -158,7 +158,10 @@ python tools\upstream\probe_archive_limits_harness.py `
 - Windows、macOS 和 Linux Qt6 仍为平台缺口。
 
 resource filtering/count 已由
-[`scan-option-boundaries.md`](scan-option-boundaries.md) 闭合；本能力仍保留
-`CAP-GAP-006`，但不再是 source-only。aggressive 的精确记录边界已由
+[`scan-option-boundaries.md`](scan-option-boundaries.md) 闭合；本能力在本报告
+生成时仍保留 `CAP-GAP-006`，但不再是 source-only。aggressive 的精确记录边界已由
 [`archive-iteration-boundary.md`](archive-iteration-boundary.md) 观察为
-“第 100000 条可达、第 100001 条不可达”；剩余 gap 不再包含该子项。
+“第 100000 条可达、第 100001 条不可达”。后续
+[`archive-gap-closure.md`](archive-gap-closure.md)
+又证明五类 engine 解包 family 全覆盖并绑定本报告的 depth-64/33,554,546-byte
+观察，因此关闭该 corpus gap；更大输入仍是安全风险，不由闭合结论担保。

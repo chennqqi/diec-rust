@@ -52,7 +52,7 @@ Phase 0 报告固定四个平台：
 
 | 平台 | Runtime observed | Observed + corpus gaps | Source-only | Source-only + gaps | Platform missing |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| Linux x86_64 Qt5 | 65 | 3 | 0 | 0 | 0 |
+| Linux x86_64 Qt5 | 68 | 0 | 0 | 0 | 0 |
 | Linux x86_64 Qt6 | 0 | 0 | 0 | 0 | 68 |
 | Windows x86_64 Qt5 | 0 | 0 | 0 | 0 | 68 |
 | macOS x86_64 Qt5 | 0 | 0 | 0 | 0 | 68 |
@@ -61,19 +61,20 @@ Phase 0 报告固定四个平台：
 清单没有“消失的行”，**不表示覆盖完成**：
 
 - Linux Qt5 source-only 能力已清零；
-- 4 行至少关联一个已命名 corpus gap；
+- Linux Qt5 已命名 corpus gap 已清零；
 - 三个尚未接纳的平台各有 68 个 `platform_missing`；
 - `phase_0_coverage_complete` 必须保持 `false`。
 
 ## 5. 缺口映射
 
-traceability 中三个开放 `CAP-GAP-*` 现在显式映射到受影响能力；
+traceability 中两个开放 `CAP-GAP-*` 现在都属于平台缺失，并显式映射到受影响
+能力：
 
 | Gap | 类型 | 能力行数 | 范围 |
 | --- | --- | ---: | --- |
-| `CAP-GAP-006` | corpus | 4 | archive 格式、深度和总解压限制 |
 | `CAP-GAP-007` | platform | 68 | 完整 Qt5/Qt6 capability matrix |
 | `CAP-GAP-008` | platform | 8 | Windows/macOS path 与 encoding |
+
 映射是保守的审计范围，不是“这些能力除此之外都已完备”的声明。
 
 原 `CAP-GAP-003` 已由五组固定 Linux Qt5 双 Oracle 子矩阵闭合。23-case
@@ -94,7 +95,8 @@ stable old/new、old→new 原子替换和 unlink，证明第二项按打开时�
 volume，冻结两个大小写排序 profile。Windows/macOS 仍由 `CAP-GAP-008`
 单独跟踪，不属于已闭合的 Linux Qt5 corpus gap。
 
-`CAP-GAP-006` 已新增十二组固定证据：单成员 ZIP 链已到达 64 层，固定两层
+原 `CAP-GAP-006` 已由十二组固定证据及最终闭集审计关闭：单成员 ZIP 链已到达
+64 层，固定两层
 累计展开量达到 33,554,546 bytes；7Z
 Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64 与
 x86 BCJ+LZMA2、BCJ2+LZMA2 no-branch/E8/E9/JCC、ARM64-BCJ+LZMA2 BL/ADRP、
@@ -145,9 +147,15 @@ method 5 样本又在 16 次禁网执行中固定普通模式无 child、aggress
 [`iso9660-endian-behavior.md`](iso9660-endian-behavior.md)、
 [`archive-rar5-store-behavior.md`](archive-rar5-store-behavior.md) 和
 [`archive-rar-compressed-behavior.md`](archive-rar-compressed-behavior.md)。
+最终
+[`archive-gap-closure.md`](archive-gap-closure.md)
+从固定源码枚举出 engine 解包 gate 只有 ZIP/7Z/RAR/CAB/ISO9660 五类，证明
+五类均已有默认/显式 archive 成对控制，并绑定 100000/100001、depth-64 与
+33,554,546-byte 边界，所以四个原 corpus-gap 行转为 `runtime_observed`。
 RAR15/RAR20、RAR7 algorithm version 1、加密、多卷、恢复与损坏压缩流、剩余
 结构字段、ISO path-table location/多字段组合冲突与算术 wrap、更大或混合失败
-记录图、真实资源耗尽和跨平台仍缺，因此 gap 行数与状态均不变。
+记录图和真实资源耗尽仍是 format-method 扩展与安全风险，不能外推为已验证或
+安全；跨平台缺口由 `CAP-GAP-007/008` 保留。
 
 原 `CAP-GAP-005` 已由
 [`scan-option-boundaries.md`](scan-option-boundaries.md)
@@ -210,8 +218,8 @@ python tools/tests/test_capability_coverage.py
 ```
 
 测试要求 committed report 与生成结果逐字节一致；68 个 ID 与 traceability 完全
-相等；全部平台 cell 有已知状态；Linux 四类计数保持 65/3/0/0；其他三个平台
-各保持 68 个 `platform_missing`；三个开放 gap 均映射到已知能力；所有
+相等；全部平台 cell 有已知状态；Linux 四类计数保持 68/0/0/0；其他三个平台
+各保持 68 个 `platform_missing`；两个开放 gap 均映射到已知能力；所有
 `with_corpus_gaps` 状态都至少关联一个具名 corpus gap。
 
 ## 7. 对 Phase 0 门禁的影响
@@ -222,7 +230,7 @@ python tools/tests/test_capability_coverage.py
 1. 保持
    [`source-only-closure-plan.md`](source-only-closure-plan.md)
    的 Linux source-only 闭集为空，新增或降级能力必须重新进入 closure catalog；
-2. 逐项收敛剩余四个 corpus/platform gap，而不是只增加 happy-path 样本；
+2. 保持 `CAP-GAP-006` closure 的五类 family 闭集、记录/深度/总量断言不漂移；
 3. 固定 Windows、macOS 和完整 Linux Qt6 oracle；
 4. 重新生成报告，且经评审确认 Phase 0 所需行不再为 source-only、
    corpus-missing 或 platform-missing。
