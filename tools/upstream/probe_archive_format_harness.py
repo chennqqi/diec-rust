@@ -84,6 +84,11 @@ EXPECTED_ROOTS = {
         "filetype": "Binary",
         "root_names": ["7-Zip"],
     },
+    "pdf-member-arm64-bcj-lzma2.7z": {
+        "filetype": "Binary",
+        "root_names": ["7-Zip"],
+        "stream_size": "336",
+    },
     "pdf-member.rar": {
         "filetype": "RAR",
         "root_names": ["Unknown"],
@@ -149,7 +154,7 @@ def load_fixture(
         raise ProbeError("unsupported fixture schema")
     if manifest["generator"] != FIXTURE_GENERATOR:
         raise ProbeError("unexpected fixture generator")
-    if len(manifest["samples"]) != 10:
+    if len(manifest["samples"]) != 11:
         raise ProbeError("fixture sample count changed")
 
     declared = set()
@@ -379,7 +384,9 @@ def validate_case(
             "HeaderComment",
         ]:
             raise ProbeError(f"member detections changed: {sample_name}/{mode}")
-        if summary["stream_sizes"] != ["331"]:
+        if summary["stream_sizes"] != [
+            expected.get("stream_size", "331")
+        ]:
             raise ProbeError(f"member size changed: {sample_name}/{mode}")
 
 
@@ -466,6 +473,7 @@ def build_report(
         "sevenzip_bzip2_member_reaches_pdf_rules": True,
         "sevenzip_deflate_member_reaches_pdf_rules": True,
         "sevenzip_bcj_lzma2_member_reaches_pdf_rules": True,
+        "sevenzip_arm64_bcj_lzma2_member_reaches_pdf_rules": True,
         "rar4_store_member_reaches_pdf_rules": True,
         "cab_store_member_reaches_pdf_rules": True,
         "cab_mszip_member_reaches_pdf_rules": True,

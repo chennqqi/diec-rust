@@ -162,9 +162,11 @@ python tools\upstream\probe_archive_adversarial_harness.py `
   字段；
 - 未覆盖 data descriptor、ZIP64、extra fields、symlink、重复名称、绝对路径、
   NUL/编码和多磁盘；
-- 7Z LZMA/LZMA2/BZip2/Deflate、BCJ+LZMA2 与 CAB MSZIP 正例已由后续
+- 7Z LZMA/LZMA2/BZip2/Deflate、x86/ARM64-BL BCJ+LZMA2 与 CAB MSZIP
+  正例已由后续
   [`archive-format-behavior.md`](archive-format-behavior.md) 固定；仍未覆盖
-  7Z PPMd7/Deflate64/ARM64-BCJ/BCJ2/AES、RAR 压缩、CAB LZX/Quantum，以及加密、
+  7Z PPMd7/Deflate64/ARM64-BCJ ADRP/BCJ2/AES、RAR 压缩、CAB
+  LZX/Quantum，以及加密、
   solid/multi-volume 和恢复记录；
 - 未测真实磁盘耗尽、16 MiB 临时文件分支、OOM、长时间取消与并发；
 - Windows、macOS 和 Linux Qt6 仍需固定对应 oracle。

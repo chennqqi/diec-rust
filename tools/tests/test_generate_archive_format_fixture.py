@@ -51,6 +51,7 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
                     "pdf-member-bzip2.7z",
                     "pdf-member-deflate.7z",
                     "pdf-member-bcj-lzma2.7z",
+                    "pdf-member-arm64-bcj-lzma2.7z",
                     "pdf-member.rar",
                     "pdf-member.cab",
                     "pdf-member-mszip.cab",
@@ -224,6 +225,58 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
             next_header,
         )
         self.assertIn(b"\x02\x21\x21\x01\x10\x04\x03\x03\x01\x03", next_header)
+
+    def test_7z_arm64_bcj_lzma2_bl_vector_round_trips(self):
+        module = load_module()
+        self.assertEqual(len(module.ARM64_PDF), 336)
+        self.assertEqual(
+            int.from_bytes(module.ARM64_PDF[332:336], "little"),
+            0x94000002,
+        )
+        encoded = module.arm64_bcj_encode_bl(module.ARM64_PDF)
+        self.assertEqual(
+            int.from_bytes(encoded[332:336], "little"),
+            0x94000055,
+        )
+        self.assertNotEqual(encoded, module.ARM64_PDF)
+        self.assertEqual(
+            module.arm64_bcj_decode_bl(encoded),
+            module.ARM64_PDF,
+        )
+
+        archive = module.make_7z_arm64_bcj_lzma2(
+            module.PAYLOAD_NAME,
+            module.ARM64_PDF,
+        )
+        packed_size = int.from_bytes(archive[12:20], "little")
+        packed = archive[32 : 32 + packed_size]
+        filtered = lzma.decompress(
+            packed,
+            format=lzma.FORMAT_RAW,
+            filters=[
+                {
+                    "id": lzma.FILTER_LZMA2,
+                    "dict_size": module.SEVENZIP_DICTIONARY_SIZE,
+                },
+            ],
+        )
+        self.assertEqual(filtered, encoded)
+        self.assertEqual(
+            module.arm64_bcj_decode_bl(filtered),
+            module.ARM64_PDF,
+        )
+        next_header = archive[32 + packed_size :]
+        self.assertIn(b"\x02\x21\x21\x01\x10\x01\x0a", next_header)
+
+        with self.assertRaisesRegex(
+            ValueError,
+            "unsupported 7Z filter",
+        ):
+            module.make_7z_filter_lzma2(
+                module.PAYLOAD_NAME,
+                module.PDF,
+                "Unknown",
+            )
 
     def test_7z_uint64_boundary_encodings_are_canonical(self):
         module = load_module()

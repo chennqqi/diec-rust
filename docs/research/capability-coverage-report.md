@@ -96,8 +96,8 @@ volume，冻结两个大小写排序 profile。Windows/macOS 仍由 `CAP-GAP-008
 
 `CAP-GAP-006` 已新增六组固定证据：单成员 ZIP 链已到达 64 层，固定两层
 累计展开量达到 33,554,546 bytes；7Z Copy/LZMA/LZMA2/BZip2/Deflate 与
-BCJ+LZMA2、RAR4 store、CAB Store/MSZIP 与 ISO9660 单 PDF 在显式 archive
-后各产生一个 PDF Stream child；
+x86 BCJ+LZMA2、ARM64-BCJ+LZMA2 BL、RAR4 store、CAB Store/MSZIP 与
+ISO9660 单 PDF 在显式 archive 后各产生一个 PDF Stream child；
 NPM 精确路径直接检测为真，但公共自动
 扫描回退 `Binary / Unknown`，强制属性才进入 NPM 语言规则；generic Archive
 自然检测不满足 singleton 门控，强制 quiet/verbose 后则分别得到 Unknown 和

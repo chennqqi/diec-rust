@@ -38,6 +38,7 @@ def _load_baseline_module():
 
 BASELINE = _load_baseline_module()
 PDF = BASELINE.make_pdf()
+ARM64_PDF = PDF + b"\n" + struct.pack("<I", 0x94000002)
 
 
 def sevenzip_uint64(value: int) -> bytes:
@@ -62,6 +63,7 @@ SEVENZIP_CODER_IDS = {
     "BZip2": b"\x04\x02\x02",
     "Deflate": b"\x04\x01\x08",
     "BCJ": b"\x03\x03\x01\x03",
+    "ARM64-BCJ": b"\x0a",
 }
 
 
@@ -178,21 +180,67 @@ def make_7z_stored(name: str, payload: bytes) -> bytes:
     return make_7z_single(name, payload, "Copy")
 
 
-def make_7z_bcj_lzma2(name: str, payload: bytes) -> bytes:
+def arm64_bcj_encode_bl(payload: bytes) -> bytes:
+    result = bytearray(payload)
+    aligned_size = len(result) & ~3
+    for offset in range(0, aligned_size, 4):
+        value = int.from_bytes(result[offset : offset + 4], "little")
+        if ((value - 0x94000000) & 0xFC000000) == 0:
+            value = (
+                ((value + (offset >> 2)) & 0x03FFFFFF)
+                | 0x94000000
+            )
+            result[offset : offset + 4] = value.to_bytes(4, "little")
+    return bytes(result)
+
+
+def arm64_bcj_decode_bl(payload: bytes) -> bytes:
+    result = bytearray(payload)
+    aligned_size = len(result) & ~3
+    for offset in range(0, aligned_size, 4):
+        value = int.from_bytes(result[offset : offset + 4], "little")
+        if ((value - 0x94000000) & 0xFC000000) == 0:
+            value = (
+                ((value - (offset >> 2)) & 0x03FFFFFF)
+                | 0x94000000
+            )
+            result[offset : offset + 4] = value.to_bytes(4, "little")
+    return bytes(result)
+
+
+def make_7z_filter_lzma2(
+    name: str,
+    payload: bytes,
+    filter_method: str,
+) -> bytes:
     encoded_name = name.encode("utf-16le") + b"\0\0"
     payload_crc = binascii.crc32(payload) & 0xFFFFFFFF
-    filters = [
-        {"id": lzma.FILTER_X86},
-        {
-            "id": lzma.FILTER_LZMA2,
-            "dict_size": SEVENZIP_DICTIONARY_SIZE,
-        },
-    ]
-    packed = lzma.compress(
-        payload,
-        format=lzma.FORMAT_RAW,
-        filters=filters,
-    )
+    if filter_method == "BCJ":
+        packed = lzma.compress(
+            payload,
+            format=lzma.FORMAT_RAW,
+            filters=[
+                {"id": lzma.FILTER_X86},
+                {
+                    "id": lzma.FILTER_LZMA2,
+                    "dict_size": SEVENZIP_DICTIONARY_SIZE,
+                },
+            ],
+        )
+    elif filter_method == "ARM64-BCJ":
+        filtered = arm64_bcj_encode_bl(payload)
+        packed = lzma.compress(
+            filtered,
+            format=lzma.FORMAT_RAW,
+            filters=[
+                {
+                    "id": lzma.FILTER_LZMA2,
+                    "dict_size": SEVENZIP_DICTIONARY_SIZE,
+                },
+            ],
+        )
+    else:
+        raise ValueError(f"unsupported 7Z filter: {filter_method}")
     packed_crc = binascii.crc32(packed) & 0xFFFFFFFF
 
     lzma2_id = SEVENZIP_CODER_IDS["LZMA2"]
@@ -202,13 +250,13 @@ def make_7z_bcj_lzma2(name: str, payload: bytes) -> bytes:
         + sevenzip_uint64(1)
         + b"\x10"
     )
-    bcj_id = SEVENZIP_CODER_IDS["BCJ"]
-    bcj_coder = bytes((len(bcj_id),)) + bcj_id
+    filter_id = SEVENZIP_CODER_IDS[filter_method]
+    filter_coder = bytes((len(filter_id),)) + filter_id
     folder = (
         sevenzip_uint64(2)
         + lzma2_coder
-        + bcj_coder
-        # BCJ input stream 1 is bound to LZMA2 output stream 0.
+        + filter_coder
+        # Filter input stream 1 is bound to LZMA2 output stream 0.
         + sevenzip_uint64(1)
         + sevenzip_uint64(0)
     )
@@ -263,6 +311,14 @@ def make_7z_bcj_lzma2(name: str, payload: bytes) -> bytes:
         + packed
         + next_header
     )
+
+
+def make_7z_bcj_lzma2(name: str, payload: bytes) -> bytes:
+    return make_7z_filter_lzma2(name, payload, "BCJ")
+
+
+def make_7z_arm64_bcj_lzma2(name: str, payload: bytes) -> bytes:
+    return make_7z_filter_lzma2(name, payload, "ARM64-BCJ")
 
 
 def rar4_header(block_type: int, flags: int, body: bytes) -> bytes:
@@ -518,6 +574,12 @@ FIXTURES = (
         make_7z_bcj_lzma2,
     ),
     (
+        "pdf-member-arm64-bcj-lzma2.7z",
+        "7Z ARM64 BCJ plus LZMA2 archive containing one PDF",
+        "ARM64-BCJ+LZMA2",
+        make_7z_arm64_bcj_lzma2,
+    ),
+    (
         "pdf-member.rar",
         "RAR4 store archive containing one PDF",
         "Store",
@@ -548,14 +610,19 @@ def generate(output_dir: pathlib.Path) -> dict[str, object]:
     output_dir.mkdir(parents=True, exist_ok=True)
     samples = []
     for name, purpose, compression_method, factory in FIXTURES:
-        data = factory(PAYLOAD_NAME, PDF)
+        payload = (
+            ARM64_PDF
+            if compression_method == "ARM64-BCJ+LZMA2"
+            else PDF
+        )
+        data = factory(PAYLOAD_NAME, payload)
         (output_dir / name).write_bytes(data)
         samples.append(
             {
                 "archive_format": name.rsplit(".", 1)[1].upper(),
                 "compression_method": compression_method,
                 "expected_member_name": PAYLOAD_NAME,
-                "expected_payload_sha256": hashlib.sha256(PDF).hexdigest(),
+                "expected_payload_sha256": hashlib.sha256(payload).hexdigest(),
                 "name": name,
                 "purpose": purpose,
                 "sha256": hashlib.sha256(data).hexdigest(),
