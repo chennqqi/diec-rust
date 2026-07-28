@@ -72,8 +72,9 @@ Hidden attribute 的文件被排除。显式三目标仍保持 argv 顺序，相
 
 报告 SHA-256 为
 `f4e2f4ced3190a51df3bfa34cbdf8ad949130aadab324c7e725365a2c7fa8e68`。
-尚未覆盖 UNC/extended-length、junction/reparse/cycle、ACL denial、ADS 和
-大小写敏感目录，不能据此关闭完整 Windows path gap。
+该特殊名称矩阵本身尚未覆盖 UNC/extended-length、junction/reparse/cycle、
+ACL denial、ADS 和大小写敏感目录，不能据此关闭完整 Windows path gap；
+其中 Junction/长路径/ADS 已分别由后续独立 Windows 报告首轮覆盖。
 
 ## 固定身份
 

@@ -94,7 +94,9 @@ SHA-256 为
 - 超过 `MAX_PATH` 的真实长路径由独立
   [`windows-long-path-behavior.md`](windows-long-path-behavior.md) 首轮覆盖；
   精确 namespace 上限仍未覆盖；
-- ACL denial、UNC share、alternate data stream 和大小写敏感目录。
+- alternate data stream 由独立
+  [`windows-ads-behavior.md`](windows-ads-behavior.md) 首轮覆盖；
+- ACL denial、UNC share 和大小写敏感目录。
 
 这些缺口分别需要受控权限主体、网络 share 或带硬超时/资源预算的隔离 harness，
 不能从本轮成功路径推断。

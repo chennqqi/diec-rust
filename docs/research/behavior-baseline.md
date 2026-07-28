@@ -56,6 +56,12 @@ Junction 目录及两跳 Junction 链均扫描成功；包含 alias 与 real 目
 执行，详见
 [`windows-long-path-behavior.md`](windows-long-path-behavior.md)。
 
+NTFS ADS fixture 再完成 5 case、10 次执行。显式普通/`\\?\` named stream
+均按其中 `minimal.pdf` 内容检测；扫描父目录只处理 carrier 默认的
+`plain.txt` stream，不主动枚举 named stream。八份 Windows runtime 报告累计
+942 次执行，详见
+[`windows-ads-behavior.md`](windows-ads-behavior.md)。
+
 ## 语料来源与安全
 
 所有样本由
@@ -335,6 +341,8 @@ Windows Qt5 的 Junction、两跳 Junction 链、alias 重复与普通长度 `\\
 [`windows-filesystem-behavior.md`](windows-filesystem-behavior.md)。
 Windows Qt5 的 324/325-code-unit 显式及递归发现路径见
 [`windows-long-path-behavior.md`](windows-long-path-behavior.md)。
+Windows Qt5 的显式 NTFS named stream 与目录不枚举 ADS 行为见
+[`windows-ads-behavior.md`](windows-ads-behavior.md)。
 
 数据库缺失/空/无效 ZIP、规则 parse/runtime error 和不可读输入行为见
 [`database-error-behavior.md`](database-error-behavior.md)。

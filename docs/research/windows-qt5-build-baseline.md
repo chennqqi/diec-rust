@@ -26,6 +26,8 @@ Windows 专用 8-case filesystem 矩阵再完成 16 次执行；固定 Junction 
 两跳 Junction 链、alias 重复扫描和普通长度 `\\?\` 命名空间。
 Windows 专用 7-case long-path 矩阵再完成 14 次执行；固定 324/325-code-unit
 显式文件、深目录和从短根目录递归发现长叶子。
+Windows 专用 5-case ADS 矩阵再完成 10 次执行；固定显式普通/`\\?\` named
+stream 按内容扫描，以及目录只枚举 carrier 默认 stream。
 
 本仓库用
 [`build_windows_qt5_oracle.ps1`](../../tools/upstream/build_windows_qt5_oracle.ps1)
@@ -44,7 +46,9 @@ Windows 专用 7-case long-path 矩阵再完成 14 次执行；固定 324/325-co
 和
 [`data/windows-qt5-cli-filesystem.json`](data/windows-qt5-cli-filesystem.json)。
 另见
-[`data/windows-qt5-cli-long-paths.json`](data/windows-qt5-cli-long-paths.json)。
+[`data/windows-qt5-cli-long-paths.json`](data/windows-qt5-cli-long-paths.json)
+和
+[`data/windows-qt5-cli-ads.json`](data/windows-qt5-cli-ads.json)。
 
 ## 固定环境
 
@@ -331,8 +335,8 @@ PDF 和 4 个有限 Junction 构造 8 个 case，每项运行两次。机器报�
 父目录同时包含 `alias -> real` 和 `real` 时，上游按 alias→real 扫描同一底层
 文件两次，不做目标身份去重。普通长度的 `\\?\` 文件和 Junction 目录输出与普通
 Win32 path 逐字节相同。普通用户无法创建 symbolic link，因此本轮不把 Junction
-行为泛化为其他 reparse tag；UNC、dangling/cycle、ACL denial 和
-alternate data stream 仍是显式缺口。
+行为泛化为其他 reparse tag；UNC、dangling/cycle 和 ACL denial 仍是显式
+缺口。alternate data stream 的独立证据见后文。
 
 ## Windows CLI 超过 MAX_PATH 的路径矩阵
 
@@ -347,6 +351,20 @@ root 全部成功扫描。14 次执行均退出 `0`、stderr 为空、JSON 有�
 tree 与固定 `minimal.pdf` reference 相同，且 stdout 与短 control 逐字节相同。
 这关闭真实超过传统 260-character boundary 的首轮缺口，但不覆盖精确
 32,767 namespace 上限、UTF-16 supplementary character 计数或 UNC 长路径。
+
+## Windows CLI NTFS Alternate Data Stream 矩阵
+
+独立调研
+[`windows-ads-behavior.md`](windows-ads-behavior.md) 在
+`carrier.bin` 默认 stream 保存 `plain.txt`，在 `:payload.pdf` named stream
+保存 `minimal.pdf`。5 个 case 各运行两次；机器报告 SHA-256 为
+`bfdec0a8a516dd5d86721a9331d1d914c7e66f29df0fe0d6115c6dcca079224e`。
+
+显式普通和 `\\?\` named stream 均按 PDF 内容检测，stdout 与独立 PDF control
+逐字节相同；扫描父目录只得到 carrier 默认 stream 的 Plain text detection，
+不会把 named stream 当作独立目标。10 次执行全部稳定、退出 `0`、stderr 为空
+且 JSON 有效。目录 stream、其他 NTFS stream type、Unicode/大小写/长度组合
+仍未覆盖。
 
 ## 可重复性边界
 

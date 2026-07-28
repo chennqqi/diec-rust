@@ -198,6 +198,19 @@
     "reference_projection_failures": 0,
     "all_stdout_byte_equal_to_control": true
   },
+  "windows_cli_ads": {
+    "path": "docs/research/data/windows-qt5-cli-ads.json",
+    "sha256": "bfdec0a8a516dd5d86721a9331d1d914c7e66f29df0fe0d6115c6dcca079224e",
+    "fixture_manifest_sha256": "9f3dfe34e5f728abd0ee8642a516e82cf1daba08343582315d9b78dbfbf1ab10",
+    "case_count": 5,
+    "execution_count": 10,
+    "determinism_failures": 0,
+    "expected_exit_failures": 0,
+    "json_failures": 0,
+    "reference_projection_failures": 0,
+    "named_stream_matches_pdf_control": true,
+    "directory_enumerates_only_default_stream": true
+  },
   "source_file_sha256": {
     ".github/workflows/builder.yml": "b8053dda9c53682b7c931230a427d6ef2880c20bf27fe023a3eb973409ab1d57",
     "build_win_generic_check.cmd": "f8e17d67b0a44f5f4be757627424f9178065f39c7b094f33756a797c28e6b349",
