@@ -15,8 +15,11 @@ Phase 0 计划形成：
   depth 64/约 32 MiB 累计展开量递增、peak RSS 与 cooperative cancellation
   证据（In Review）。
 - [`archive-iteration-boundary.md`](archive-iteration-boundary.md)：aggressive
-  archive 第 99999/100000/100001 条哨兵、源码循环顺序和受控分配失败证据
-  （In Review）。
+  archive 第 99999/100000/100001 条 Qt5/Qt6 哨兵、源码循环顺序、NUL dot-entry
+  差异和受控分配失败证据（In Review）。
+- [`qt6-count-boundary-runtime-evidence.md`](qt6-count-boundary-runtime-evidence.md)：
+  Qt6 archive 三点、resource 21/2001、Qt5/Qt6 ISO NUL 根因及
+  `CAP-NEST-004` 闭环证据（In Review）。
 - [`archive-adversarial-behavior.md`](archive-adversarial-behavior.md)：ZIP
   deflate/ZipCrypto、高压缩比、CRC/压缩流/offset/method 畸形、local-header
   fallback 与 mixed-member filter（In Review）。
@@ -256,6 +259,9 @@ Phase 0 计划形成：
   stderr 差异。
 - [`data/scan-option-boundary-fixture.json`](data/scan-option-boundary-fixture.json)：deep/aggressive 规则与 1/22/2002-resource PE 的 hash-bound 清单。
 - [`data/scan-option-boundaries-linux-qt5.json`](data/scan-option-boundaries-linux-qt5.json)：8-case 双 Qt5 scan-option oracle 的去重原始 streams、身份和派生事实。
+- [`data/scan-option-boundaries-linux-qt6.json`](data/scan-option-boundaries-linux-qt6.json)：
+  相同 8-case 的双轮 Qt6 raw-stable 复验、Qt5 摘要对比和 21/2001 count
+  边界。
 - [`data/capability-traceability.json`](data/capability-traceability.json)：68 个稳定
   `CAP-*` 的验证层级、证据路径、平台范围和三个开放 coverage gap。
 - [`data/capability-coverage.json`](data/capability-coverage.json)：68 行 × 4 平台
@@ -336,6 +342,12 @@ Phase 0 计划形成：
 - [`data/archive-iteration-boundary-engine-qt5.json`](data/archive-iteration-boundary-engine-qt5.json)：
   aggressive 第 100000 条可达、第 100001 条不可达的固定源码、镜像、原始输出
   和资源报告。
+- [`data/archive-iteration-boundary-engine-qt6.json`](data/archive-iteration-boundary-engine-qt6.json)：
+  第 99999 条可达、第 100000/100001 条不可达及每例额外 dot-entry Stream
+  的固定 Qt6 报告。
+- [`data/qt-null-filename-semantics-qt5-qt6.json`](data/qt-null-filename-semantics-qt5-qt6.json)：
+  单 NUL `QByteArray` 在 Qt5/Qt6 `QString::fromLatin1` 下的 direct root-cause
+  对照。
 - [`data/archive-adversarial-corpus.json`](data/archive-adversarial-corpus.json)：
   12 个项目生成 ZIP 压缩、加密、畸形和 filter 控制的 hash manifest。
 - [`data/archive-adversarial-engine-qt5.json`](data/archive-adversarial-engine-qt5.json)：

@@ -225,8 +225,13 @@ hideunknown 的可观察增量。完整输入哈希和输出见
   scanable member；resource 的 `<=` 判断也允许第 21 个，aggressive limit
   为 2000。resource 已精确观察默认 21/aggressive 2001；2002 项 fixture 分为
   三个合法 type directory，以满足 PE parser 每目录不超过 1000 项的前置限制。
-  archive aggressive 已精确观察第 100000 条可达、第 100001 条不可达，见
-  [`archive-iteration-boundary.md`](archive-iteration-boundary.md)；
+  Qt6 两轮 8-case resource probe 的 raw streams 稳定且摘要与 Qt5 相同。
+  archive aggressive 在 Qt5 已精确观察第 100000 条可达、第 100001 条不可达；
+  相同源码的 Qt6 因 ISO9660 单 NUL dot entry 未被过滤而每例多一个 Stream，
+  第 99999 条可达、第 100000/100001 条不可达。direct Qt probe 已固定
+  `QString::fromLatin1` 根因，见
+  [`archive-iteration-boundary.md`](archive-iteration-boundary.md) 与
+  [`qt6-count-boundary-runtime-evidence.md`](qt6-count-boundary-runtime-evidence.md)；
   ZIP 压缩/加密/畸形首轮矩阵见
   [`archive-adversarial-behavior.md`](archive-adversarial-behavior.md)；
   7Z/RAR4/CAB/ISO9660 EOF 前缀截断矩阵见

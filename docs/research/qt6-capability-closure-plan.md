@@ -11,10 +11,10 @@ Last updated: 2026-07-29
 [`data/qt6-capability-closure-plan.json`](data/qt6-capability-closure-plan.json)
 逐项列出当前证据和缺失实验：
 
-- 62 项已有证据完整覆盖能力行；
+- 63 项已有证据完整覆盖能力行；
 - 2 项只有部分证据；
-- 4 项没有可接纳的逐行 Qt6 运行时证据；
-- 因此仍有 6 项需要执行闭环实验。
+- 3 项没有可接纳的逐行 Qt6 运行时证据；
+- 因此仍有 5 项需要执行闭环实验。
 
 Linux Qt6 在能力覆盖报告中继续保持 `platform_missing`。本计划只负责把
 缺口变成可执行清单，不改变平台门禁状态。
@@ -86,12 +86,21 @@ release control；显式 archive option 的可达性、跨层传播及无 archiv
 CLI 等价关系均与 Qt5 相同。见
 [`qt6-archive-option-runtime-evidence.md`](qt6-archive-option-runtime-evidence.md)。
 
+第十四批 count-boundary 证据执行 archive 99999/100000/100001 三点和
+resource 21/2001 精确计数。resource 结果与 Qt5 相同；archive 因 Qt5/Qt6
+对单 NUL `QByteArray` 的 `QString::fromLatin1` 语义不同，Qt6 多保留一个
+ISO dot-entry Stream，使最后可达 PDF ordinal 从 100000 变为 99999。源码
+revision 相同，direct Qt probe 已固定根因。见
+[`qt6-count-boundary-runtime-evidence.md`](qt6-count-boundary-runtime-evidence.md)。
+
 下列结果只能算部分证据：
 
 - archive 只覆盖 TAR、gzip 和 ZIP，未覆盖完整 archive family；
-- archive 的 CLI non-extraction 已覆盖，engine-only archive option 尚未覆盖；
 - 目录枚举只覆盖基础目录，未覆盖复杂 filesystem/locale/TOCTOU/large
   directory 边界。
+
+此外，DOS/COM/BW dispatch、Amiga/Atari dispatch 和独立 depth/total
+extraction limit 仍没有可接纳的逐行 Qt6 运行时证据。
 
 这些边界由生成器中的显式 allow catalog 约束；未列入的能力默认是
 `missing`，不会因共享 evidence set 而自动晋级。
@@ -105,6 +114,8 @@ CLI 等价关系均与 Qt5 相同。见
 - global HostApi 报告有 49 处差异；
 - HostApi arity 报告有 45 处差异；
 - global typo 的规范化检测相同，但诊断文本不同。
+- ISO9660 三点边界的源码 revision 相同，但 Qt6 保留单 NUL dot entry，
+  因而多一个 Stream 并把最后可达 PDF ordinal 从 100000 改为 99999。
 
 规则运行时差异需要单独判断哪些属于 Qt5/Qt6 上游平台事实，哪些会成为
 Rust 兼容目标；在评审完成前不能简单忽略。
@@ -132,8 +143,9 @@ python tools/research/build_qt6_closure_plan.py
 ## 限制与下一步
 
 首组 Qt6 engine harness、规则编排、result-model、signature-path、
-debug-dispatch、resource-context 和 archive-option probe 已完成。后续应按
-机器清单继续复用既有 Qt5 fixture，集中关闭其余 dispatch、nested/archive
+debug-dispatch、resource-context、archive-option 和 count-boundary probe
+已完成。后续应按机器清单继续复用既有 Qt5 fixture，集中关闭 DOS/COM/BW、
+Amiga/Atari、完整 archive family dispatch、独立 depth/total extraction
 limit 和复杂目录边界。
 只有 68 行全部达到 `evidence_complete`，且差异完成评审，
 `CAP-GAP-007` 才能关闭。

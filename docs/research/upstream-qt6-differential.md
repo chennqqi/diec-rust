@@ -220,7 +220,9 @@ resource-context raw-first 差分见
 [`qt6-resource-context-runtime-evidence.md`](qt6-resource-context-runtime-evidence.md)。
 archive-option paired matrix 见
 [`qt6-archive-option-runtime-evidence.md`](qt6-archive-option-runtime-evidence.md)。
-十三批实验将 Linux Qt6 的逐行完整证据从 11 项增加到 62 项，但没有关闭
+archive/resource count-boundary 与 ISO NUL 根因见
+[`qt6-count-boundary-runtime-evidence.md`](qt6-count-boundary-runtime-evidence.md)。
+十四批实验将 Linux Qt6 的逐行完整证据从 11 项增加到 63 项，但没有关闭
 `CAP-GAP-007`。
 
 ## 限制与下一步
@@ -231,11 +233,12 @@ archive-option paired matrix 见
   [`global-host-api-runtime-differential.md`](global-host-api-runtime-differential.md)。
 - 四行 warning 的精确 Qt 调用点和 enabled heuristic 路径仍待最小表达式实验。
 - 普通输出、scan、special、基础 path 和首轮 nested gate 矩阵已完成；
-  path 的 filesystem/locale/TOCTOU/large-directory 边界、database
-  layer/cache 及其余 dispatch/nested engine harness 仍未完成；
+  path 的 filesystem/locale/TOCTOU/large-directory 边界及其余
+  dispatch/nested engine harness 仍未完成；
   已完成四入口、device/subdevice、filter、cancel 和 sort 的
   engine-contract harness、三层数据库/priority/init/type/mode gate 的规则编排
   差分、五组 result-model harness、private signature-path harness 和 paired
   debug-data dispatch harness、resource-context raw-first probe 和
-  archive-option paired matrix。
+  archive-option paired matrix，以及 archive 99999/100000/100001 与 resource
+  21/2001 count-boundary。
 - Windows、macOS 固定 oracle 仍缺失。

@@ -4,7 +4,7 @@ Status: Draft
 
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
 
-Last updated: 2026-07-28
+Last updated: 2026-07-29
 
 ## 1. 目的
 
@@ -32,6 +32,12 @@ Phase 0 报告固定四个平台：
 当前只有 Linux x86_64 Qt5 被 traceability manifest 接纳为完整 runtime baseline
 平台。已有 Linux Qt6 spot differential 不等于 68 项能力基线，因此在本报告中
 仍统一分类为 `platform_missing`。Windows 与 macOS 同理。
+
+独立的逐行
+[`qt6-capability-closure-plan.md`](qt6-capability-closure-plan.md)
+已接纳 63 项 `evidence_complete`、2 项 partial、3 项 missing；这表示 Qt6
+关闭工作已有可审计进度，但在剩余 5 项及差异评审完成前，不改变本报告
+68-cell `platform_missing` 的平台门禁语义。
 
 ## 3. 分类语义
 
@@ -162,6 +168,9 @@ RAR15/RAR20、RAR7 algorithm version 1、加密、多卷、恢复与损坏压缩
 闭合：项目生成的最小规则与 1/22/2002-resource PE 在 16 次双 Qt5 执行中固定
 deep 的 `DS`/`EP` 增量、aggressive/recursive gate、默认 21 与 aggressive
 2001 的精确 child count、枚举顺序，以及 PE parser 每目录 1000 项的前置限制。
+相同 8-case matrix 又在固定 Qt6 oracle 上执行两轮，raw 输出稳定且摘要与 Qt5
+相同；连同 archive 三点和 NUL 根因证据，现已关闭 Qt6 `CAP-NEST-004`，见
+[`qt6-count-boundary-runtime-evidence.md`](qt6-count-boundary-runtime-evidence.md)。
 
 原 `CAP-GAP-004` 已由
 [`cli-output-boundaries.md`](cli-output-boundaries.md)

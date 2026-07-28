@@ -81,10 +81,10 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
 
     def test_current_plan_is_conservatively_incomplete(self):
         summary = self.plan["summary"]
-        self.assertEqual(summary["evidence_complete"], 62)
+        self.assertEqual(summary["evidence_complete"], 63)
         self.assertEqual(summary["partial"], 2)
-        self.assertEqual(summary["missing"], 4)
-        self.assertEqual(summary["closure_required"], 6)
+        self.assertEqual(summary["missing"], 3)
+        self.assertEqual(summary["closure_required"], 5)
         self.assertFalse(summary["cap_gap_007_closed"])
         self.assertEqual(self.plan["result"], "incomplete")
 
@@ -142,6 +142,7 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
             "CAP-NEST-007",
             "CAP-NEST-006",
             "CAP-NEST-003",
+            "CAP-NEST-004",
         }
         for capability_id in promoted:
             with self.subTest(capability=capability_id):
@@ -156,6 +157,10 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
         self.assertEqual(rows["CAP-CLI-IN-003"]["status"], "partial")
         self.assertEqual(
             rows["CAP-NEST-003"]["status"],
+            "evidence_complete",
+        )
+        self.assertEqual(
+            rows["CAP-NEST-004"]["status"],
             "evidence_complete",
         )
         self.assertEqual(
@@ -402,6 +407,53 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
         with self.assertRaisesRegex(
             MODULE.ClosurePlanError,
             "output drift",
+        ):
+            MODULE.build_plan(
+                self.traceability,
+                self.traceability_raw,
+                changed_reports,
+                self.report_bytes,
+            )
+
+    def test_count_boundary_or_root_cause_drift_is_rejected(self):
+        changed_reports = json.loads(json.dumps(self.reports))
+        iteration = changed_reports[MODULE.REPORT_PATHS[35]]
+        iteration["cases"][0]["harness"]["pdf_node_count"] = 0
+        with self.assertRaisesRegex(
+            MODULE.ClosurePlanError,
+            "archive-iteration qt6 output drift",
+        ):
+            MODULE.build_plan(
+                self.traceability,
+                self.traceability_raw,
+                changed_reports,
+                self.report_bytes,
+            )
+
+        changed_reports = json.loads(json.dumps(self.reports))
+        nul_semantics = changed_reports[MODULE.REPORT_PATHS[36]]
+        nul_semantics["observations"]["qt6"]["result"][
+            "string_size"
+        ] = 0
+        with self.assertRaisesRegex(
+            MODULE.ClosurePlanError,
+            "Qt NUL semantics output drift",
+        ):
+            MODULE.build_plan(
+                self.traceability,
+                self.traceability_raw,
+                changed_reports,
+                self.report_bytes,
+            )
+
+        changed_reports = json.loads(json.dumps(self.reports))
+        scan_options = changed_reports[MODULE.REPORT_PATHS[38]]
+        scan_options["observation"]["cases"][
+            "recursive_aggressive_unclassified_2002"
+        ]["summary"]["resource_count"] = 2000
+        with self.assertRaisesRegex(
+            MODULE.ClosurePlanError,
+            "Qt6 scan-option output drift",
         ):
             MODULE.build_plan(
                 self.traceability,

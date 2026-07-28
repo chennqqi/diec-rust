@@ -4,7 +4,7 @@ Status: Draft
 
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
 
-Last updated: 2026-07-28
+Last updated: 2026-07-29
 
 ## 1. 目的
 
@@ -23,6 +23,15 @@ SHA-256 为
 content-addressed bytes（`zlib+base64` 可逆存储）、结构摘要、容器/二进制/
 源码身份和派生事实。
 
+Qt6 复验报告为
+[`scan-option-boundaries-linux-qt6.json`](data/scan-option-boundaries-linux-qt6.json)，
+95314 bytes，SHA-256
+`4f9f4e1c249ebc7b8b6277544ba4c5790bbab3a5ed2158580b79dd6356b6841f`。
+它在固定 CMake oracle 上执行两轮相同 8-case matrix；每例两轮 raw
+stdout/stderr 相同，全部摘要与 Qt5 CMake oracle 逐项相同。该报告与 archive
+三点证据共同关闭 Linux Qt6 `CAP-NEST-004`，见
+[`qt6-count-boundary-runtime-evidence.md`](qt6-count-boundary-runtime-evidence.md)。
+
 ## 2. 固定身份与资源边界
 
 | 项目 | 固定值 |
@@ -31,6 +40,8 @@ content-addressed bytes（`zlib+base64` 可逆存储）、结构摘要、容器/
 | qmake binary SHA-256 | `721ec846507a8567aae07e91dcd1f576182481ae0dc1595b1f19e4a3e859b79d` |
 | CMake image ID | `sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040` |
 | CMake binary SHA-256 | `da1fab49f7ba5970d1fc1c7fe3d4f380cf5e8775dd8097207e7b3c30f08236cf` |
+| Qt6 CMake image ID | `sha256:e015495c313d0715f0b80f395da983a113a439f2a135eb637e9f0638c225200b` |
+| Qt6 CMake binary SHA-256 | `e3321105af0349b29195325e79d5d2c7cc25ead2f28f84e242e3835b98f7283e` |
 | `xscanengine.cpp` SHA-256 | `e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498` |
 | `xpe.cpp` SHA-256 | `bfad885df2569b03bc33c040852a884bfe40d781a58bef5f6d8c53c16b488a0c` |
 | `main_console.cpp` SHA-256 | `ebb82a94fdd0f54722ea36589d6a35694ec4022bc9179030dae6a85e7a9d7e8f` |
@@ -110,7 +121,9 @@ JSON 增量。
 2001-child case 的第一个 offset 为 `96704`，最后一个为 `98704`；所有 child
 offset 严格递增，size 均为 `1`。因此第 2002 项确实被 limit 跳过，而不是 parser
 只枚举出 2001 项或 formatter 重排结果。两个 Qt5 构建的所有原始 streams
-逐字节相同。
+逐字节相同；Qt6 两轮 raw streams 也逐字节相同，且三项 resource count、
+完整 detection-name 顺序、offset/size 摘要均与 Qt5 CMake 相同。Qt6 本组
+所有 stderr 为空，未触发其他 PE 规则语料中的四行已知诊断。
 
 ## 7. 兼容与安全含义
 
@@ -149,10 +162,18 @@ python tools/upstream/probe_scan_option_boundaries.py \
   --fixture-dir <fixture-dir> \
   --output docs/research/data/scan-option-boundaries-linux-qt5.json
 
+python tools/upstream/probe_qt6_scan_option_boundaries.py \
+  --fixture-dir <fixture-dir> \
+  --output docs/research/data/scan-option-boundaries-linux-qt6.json
+
 python tools/tests/test_generate_scan_option_boundary_fixture.py
 python tools/tests/test_probe_scan_option_boundaries.py
+python tools/tests/test_probe_qt6_scan_option_boundaries.py
 ```
 
 probe 会先校验 manifest 的封闭目录/文件集合、每个文件的 size/SHA-256、两个
 image revision、二进制和三份固定源码，再执行 oracle。未知字段、输入漂移、
 非零退出、stderr、无效 JSON、计数/顺序差异或两构建 raw bytes 差异都会失败。
+Qt6 probe 还绑定 Qt5 报告 SHA-256，要求两轮 raw 完全一致，只接受空 stderr
+或精确四行已知诊断，并要求完整规范化摘要与 Qt5 相同；本次 affected case
+清单必须为空。

@@ -7,12 +7,13 @@ import argparse
 import base64
 import hashlib
 import json
+import zlib
 from pathlib import Path
 from typing import Any
 
 
 SCHEMA_VERSION = 1
-EVALUATED_ON = "2026-07-28"
+EVALUATED_ON = "2026-07-29"
 UPSTREAM_COMMIT = "74eaf505c250ab47e709024e9dc41657cd8f2254"
 RULES_COMMIT = "c2c17dfa5ea4e078ba31eab55d87430c96622fb6"
 PLATFORM = "linux-x86_64-qt6"
@@ -52,6 +53,11 @@ REPORT_PATHS = (
     "docs/research/data/resource-context-chain-qt5.json",
     "docs/research/data/resource-context-chain-qt6.json",
     "docs/research/data/archive-option-engine-qt5-qt6.json",
+    "docs/research/data/archive-iteration-boundary-engine-qt5.json",
+    "docs/research/data/archive-iteration-boundary-engine-qt6.json",
+    "docs/research/data/qt-null-filename-semantics-qt5-qt6.json",
+    "docs/research/data/scan-option-boundaries-linux-qt5.json",
+    "docs/research/data/scan-option-boundaries-linux-qt6.json",
 )
 EMPTY_SHA256 = hashlib.sha256(b"").hexdigest()
 QT6_UNIMPLEMENTED_SHA256 = (
@@ -152,6 +158,7 @@ COMPLETE: dict[str, str] = {
     "CAP-NEST-007": "public omission and direct debug-data positive control match Qt5 exactly",
     "CAP-NEST-006": "all four recursive/aggressive resource-context controls match Qt5 exactly",
     "CAP-NEST-003": "all 64 engine option cases and 32 release controls match Qt5",
+    "CAP-NEST-004": "Qt6 executes the 99999/100000/100001 archive iteration boundary and the inclusive 21/2001 resource-count boundary; the ISO NUL difference is classified",
 }
 
 PARTIAL: dict[str, str] = {
@@ -2022,6 +2029,378 @@ def _validate_archive_option_report(report: dict[str, Any]) -> None:
                 )
 
 
+def _validate_archive_iteration_reports(
+    qt5: dict[str, Any],
+    qt6: dict[str, Any],
+    nul_semantics: dict[str, Any],
+) -> None:
+    common_source = {
+        "path": "/opt/die-source/XScanEngine/xscanengine.cpp",
+        "sha256": (
+            "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498"
+        ),
+        "component_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83",
+    }
+    expected_platforms = {
+        "qt5": (
+            qt5,
+            "linux-x86_64-qt5",
+            "sha256:6cfc6dfb568e1287103bbe92f31e75864153b6bf5f196a744178d9c86ae19392",
+            "5fba6113410416fc828c8687f9d179d4875862115b53a5a7e993e0760eb87eaa",
+        ),
+        "qt6": (
+            qt6,
+            "linux-x86_64-qt6",
+            "sha256:a51310e8e03ada9fb907d6ea3d3d3b0a5d0c1917a3aaef971f3a07683486508f",
+            "d13b381bc5353f8e261a741c235a825e65461d8ab38cf9f9ba71c16fb94dfbcb",
+        ),
+    }
+    for name, (
+        report,
+        platform,
+        image_id,
+        binary_sha256,
+    ) in expected_platforms.items():
+        source = report.get("source_contract", {})
+        environment = report.get("environment", {})
+        if (
+            report.get("schema_version") != 1
+            or report.get("capability") != "CAP-GAP-006"
+            or report.get("upstream_commit") != UPSTREAM_COMMIT
+            or report.get("xscanengine_commit")
+            != common_source["component_commit"]
+            or report.get("corpus_manifest_sha256")
+            != "e7f5e3c7aaa04add2b987bbfbc12df5683a3418b227b64fe501b1c8038c08e10"
+            or report.get("passed") is not True
+            or report.get("failures") != []
+            or environment.get("platform") != platform
+            or environment.get("image_identity", {}).get("id") != image_id
+            or environment.get("image_identity", {}).get("revision")
+            != UPSTREAM_COMMIT
+            or report.get("harness_binary", {}).get("sha256")
+            != binary_sha256
+            or any(source.get(key) != value for key, value in common_source.items())
+            or source.get("source_order_verified") is not True
+        ):
+            raise ClosurePlanError(
+                f"archive-iteration {name} identity/source drift"
+            )
+
+    expected_assertions = {
+        "qt5": {
+            "aggressive_member_limit_is_unreachable_before_hard_guard",
+            "record_100000_is_reachable",
+            "record_100001_is_not_reachable",
+            "record_99999_is_reachable_control",
+        },
+        "qt6": {
+            "aggressive_member_limit_is_unreachable_before_hard_guard",
+            "dot_directory_entry_adds_one_stream",
+            "record_100000_is_not_reachable",
+            "record_100001_is_not_reachable",
+            "record_99999_is_reachable_control",
+        },
+    }
+    expected_counts = {
+        "qt5": {
+            "sentinel-099999.iso": (2, 1, 3, 1),
+            "sentinel-100000.iso": (2, 1, 3, 1),
+            "sentinel-100001.iso": (1, 0, 1, 0),
+        },
+        "qt6": {
+            "sentinel-099999.iso": (3, 1, 4, 2),
+            "sentinel-100000.iso": (2, 0, 2, 1),
+            "sentinel-100001.iso": (2, 0, 2, 1),
+        },
+    }
+    for name, report in (("qt5", qt5), ("qt6", qt6)):
+        assertions = report.get("assertions")
+        cases = report.get("cases")
+        if (
+            not isinstance(assertions, dict)
+            or set(assertions) != expected_assertions[name]
+            or not all(value is True for value in assertions.values())
+            or not isinstance(cases, list)
+            or {case.get("sample") for case in cases}
+            != set(expected_counts[name])
+        ):
+            raise ClosurePlanError(
+                f"archive-iteration {name} assertion/case drift"
+            )
+        for case in cases:
+            harness = case.get("harness", {})
+            observed = (
+                harness.get("node_count"),
+                harness.get("pdf_node_count"),
+                harness.get("record_count"),
+                harness.get("stream_node_count"),
+            )
+            if (
+                observed != expected_counts[name][case["sample"]]
+                or case.get("exit_code") != 0
+                or case.get("stderr") != ""
+                or case.get("stderr_sha256") != EMPTY_SHA256
+                or case.get("timed_out") is not False
+                or case.get("possible_oom_exit_137") is not False
+                or harness.get("error_count") != 0
+                or harness.get("pd_stopped") is not False
+            ):
+                raise ClosurePlanError(
+                    f"archive-iteration {name} output drift: "
+                    f"{case.get('sample')}"
+                )
+
+    if qt6.get("known_difference") != {
+        "qt5_last_reachable_pdf_ordinal": 100000,
+        "qt6_extra_stream_count_per_case": 1,
+        "qt6_last_reachable_pdf_ordinal": 99999,
+        "requires_qt_string_semantics_probe": True,
+        "scope": "ISO9660 NUL dot-entry filtering",
+        "source_revision_equal": True,
+    }:
+        raise ClosurePlanError("archive-iteration known difference drift")
+    if qt6.get("iso_source_contract") != {
+        "dot_filter_line": 546,
+        "dot_filter_pattern": (
+            'if (nFileNameLength == 1 && (sFileName == "\\x00" || '
+            'sFileName == "\\x01")) {'
+        ),
+        "dot_filter_pattern_count": 1,
+        "path": "/opt/die-source/XArchive/xiso9660.cpp",
+        "sha256": (
+            "d6e97c4ff2395b812b65da5ab480e937c6b365e6e6e8b0288ddf48b8fd398fb1"
+        ),
+    }:
+        raise ClosurePlanError("archive-iteration ISO source drift")
+
+    observations = nul_semantics.get("observations", {})
+    expected_results = {
+        "qt5": {
+            "equals_c_string": True,
+            "equals_explicit_null": False,
+            "first_code_unit": -1,
+            "qt_version": "5.15.13",
+            "string_size": 0,
+        },
+        "qt6": {
+            "equals_c_string": False,
+            "equals_explicit_null": True,
+            "first_code_unit": 0,
+            "qt_version": "6.4.2",
+            "string_size": 1,
+        },
+    }
+    if (
+        nul_semantics.get("schema_version") != 1
+        or nul_semantics.get("upstream_commit") != UPSTREAM_COMMIT
+        or nul_semantics.get("platform") != "linux-x86_64-qt5-qt6"
+        or nul_semantics.get("result") != "observed"
+        or set(observations) != {"qt5", "qt6"}
+        or not isinstance(nul_semantics.get("relationships"), dict)
+        or len(nul_semantics["relationships"]) != 5
+        or not all(nul_semantics["relationships"].values())
+    ):
+        raise ClosurePlanError("Qt NUL semantics identity drift")
+    for name, expected in expected_results.items():
+        observation = observations[name]
+        if (
+            observation.get("result") != expected
+            or observation.get("exit_code") != 0
+            or observation.get("stderr") != ""
+            or observation.get("stderr_sha256") != EMPTY_SHA256
+            or observation.get("revision") != UPSTREAM_COMMIT
+        ):
+            raise ClosurePlanError(f"Qt NUL semantics output drift: {name}")
+
+
+def _decode_zlib_artifacts(
+    report: dict[str, Any],
+    label: str,
+) -> dict[str, bytes]:
+    artifacts = report.get("raw_artifacts")
+    if not isinstance(artifacts, dict):
+        raise ClosurePlanError(f"{label} raw artifact catalog missing")
+    decoded = {}
+    for digest, artifact in artifacts.items():
+        try:
+            compressed = base64.b64decode(
+                artifact["base64"],
+                validate=True,
+            )
+            data = zlib.decompress(compressed)
+        except (KeyError, TypeError, ValueError, zlib.error) as error:
+            raise ClosurePlanError(
+                f"{label} raw artifact is invalid"
+            ) from error
+        if (
+            artifact.get("encoding") != "zlib+base64"
+            or len(compressed) != artifact.get("compressed_bytes")
+            or len(data) != artifact.get("bytes")
+            or sha256(data) != digest
+        ):
+            raise ClosurePlanError(f"{label} raw artifact drift")
+        decoded[digest] = data
+    return decoded
+
+
+def _validate_scan_option_boundary_reports(
+    qt5: dict[str, Any],
+    qt6: dict[str, Any],
+) -> None:
+    fixture_sha256 = (
+        "e444b6aa0bacaa29077eae1e9710546d8fc5a38f50059c486ce8a1807afd71b2"
+    )
+    if (
+        qt5.get("schema_version") != 1
+        or qt5.get("upstream_commit") != UPSTREAM_COMMIT
+        or qt5.get("platform") != "linux-x86_64-qt5"
+        or qt5.get("passed") is not True
+        or qt5.get("failures") != []
+        or qt5.get("fixture_manifest", {}).get("sha256")
+        != fixture_sha256
+        or qt6.get("schema_version") != 1
+        or qt6.get("upstream_commit") != UPSTREAM_COMMIT
+        or qt6.get("platform") != "linux-x86_64-qt6"
+        or qt6.get("passed") is not True
+        or qt6.get("failures") != []
+        or qt6.get("closed_capability") != "CAP-NEST-004"
+        or qt6.get("fixture_manifest", {}).get("sha256")
+        != fixture_sha256
+        or qt6.get("qt5_reference", {}).get("sha256")
+        != "f193a9f308b04a89dd7ceeda52a658eda2ef13eb82b9c0662c66215248bbf49d"
+    ):
+        raise ClosurePlanError("scan-option boundary identity drift")
+
+    qt5_artifacts = _decode_zlib_artifacts(qt5, "Qt5 scan-option")
+    qt6_artifacts = _decode_zlib_artifacts(qt6, "Qt6 scan-option")
+    expected_names = {
+        "deep_default": (["Binary normal"], 0),
+        "deep_enabled": (
+            ["Binary normal", "Binary deep", "Binary entrypoint"],
+            0,
+        ),
+        "aggressive_without_recursive": (["PE root"], 0),
+        "recursive_unclassified": (["PE root"], 0),
+        "recursive_aggressive_unclassified": (
+            ["PE root", "Binary normal"],
+            1,
+        ),
+        "recursive_pdf_22": (["PE root", *(["PDF child"] * 21)], 21),
+        "recursive_aggressive_pdf_22": (
+            ["PE root", *(["PDF child"] * 22)],
+            22,
+        ),
+        "recursive_aggressive_unclassified_2002": (
+            ["PE root", *(["Binary normal"] * 2001)],
+            2001,
+        ),
+    }
+    qt5_observations = qt5.get("observations", {})
+    if set(qt5_observations) != {
+        "linux-qt5-qmake",
+        "linux-qt5-cmake",
+    }:
+        raise ClosurePlanError("Qt5 scan-option oracle catalog drift")
+    qt5_cases_by_oracle = []
+    for oracle_name, oracle in qt5_observations.items():
+        cases = oracle.get("cases", {})
+        if set(cases) != set(expected_names):
+            raise ClosurePlanError(
+                f"Qt5 scan-option case catalog drift: {oracle_name}"
+            )
+        qt5_cases_by_oracle.append(cases)
+        for case_name, case in cases.items():
+            names, count = expected_names[case_name]
+            if (
+                case.get("exit_code") != 0
+                or case.get("summary", {}).get("detection_names") != names
+                or case.get("summary", {}).get("resource_count") != count
+            ):
+                raise ClosurePlanError(
+                    f"Qt5 scan-option output drift: {case_name}"
+                )
+            for stream_name in ("stdout", "stderr"):
+                stream = case.get(stream_name, {})
+                digest = stream.get("artifact_sha256")
+                if (
+                    digest not in qt5_artifacts
+                    or stream.get("sha256") != digest
+                    or len(qt5_artifacts[digest]) != stream.get("bytes")
+                ):
+                    raise ClosurePlanError(
+                        f"Qt5 scan-option raw reference drift: {case_name}"
+                    )
+    for case_name in expected_names:
+        if (
+            qt5_cases_by_oracle[0][case_name]["summary"]
+            != qt5_cases_by_oracle[1][case_name]["summary"]
+        ):
+            raise ClosurePlanError(
+                f"Qt5 scan-option oracle difference: {case_name}"
+            )
+
+    observation = qt6.get("observation", {})
+    qt6_cases = observation.get("cases", {})
+    if (
+        observation.get("image_id")
+        != "sha256:e015495c313d0715f0b80f395da983a113a439f2a135eb637e9f0638c225200b"
+        or observation.get("binary_sha256")
+        != "e3321105af0349b29195325e79d5d2c7cc25ead2f28f84e242e3835b98f7283e"
+        or observation.get("resource_source_sha256")
+        != "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498"
+        or observation.get("repetitions") != 2
+        or set(qt6_cases) != set(expected_names)
+    ):
+        raise ClosurePlanError("Qt6 scan-option oracle/case drift")
+    for case_name, case in qt6_cases.items():
+        names, count = expected_names[case_name]
+        executions = case.get("executions")
+        if (
+            case.get("summary", {}).get("detection_names") != names
+            or case.get("summary", {}).get("resource_count") != count
+            or case.get("summary")
+            != qt5_cases_by_oracle[1][case_name]["summary"]
+            or not isinstance(executions, list)
+            or len(executions) != 2
+            or executions[0] != executions[1]
+        ):
+            raise ClosurePlanError(
+                f"Qt6 scan-option output drift: {case_name}"
+            )
+        for execution in executions:
+            if execution.get("exit_code") != 0:
+                raise ClosurePlanError(
+                    f"Qt6 scan-option exit drift: {case_name}"
+                )
+            for stream_name in ("stdout", "stderr"):
+                stream = execution.get(stream_name, {})
+                digest = stream.get("artifact_sha256")
+                if (
+                    digest not in qt6_artifacts
+                    or stream.get("sha256") != digest
+                    or len(qt6_artifacts[digest]) != stream.get("bytes")
+                ):
+                    raise ClosurePlanError(
+                        f"Qt6 scan-option raw reference drift: {case_name}"
+                    )
+            if execution["stderr"]["sha256"] != EMPTY_SHA256:
+                raise ClosurePlanError(
+                    f"Qt6 scan-option stderr drift: {case_name}"
+                )
+    diagnostic = qt6.get("known_qt6_diagnostic", {})
+    if (
+        diagnostic.get("affected_cases") != []
+        or diagnostic.get("raw_streams_retained") is not True
+        or diagnostic.get("stderr_bytes_per_affected_execution") != 80
+        or diagnostic.get("stderr_sha256_per_affected_execution")
+        != QT6_UNIMPLEMENTED_SHA256
+        or not isinstance(qt6.get("facts"), dict)
+        or len(qt6["facts"]) != 7
+        or not all(qt6["facts"].values())
+    ):
+        raise ClosurePlanError("Qt6 scan-option diagnostic/fact drift")
+
+
 CAMPAIGNS: dict[str, dict[str, Any]] = {
     "cli_scan_baseline": {
         "fixture": "reuse baseline-corpus and scan-option-boundary fixtures",
@@ -2229,6 +2608,15 @@ def _validate_inputs(
         reports[REPORT_PATHS[31]], reports[REPORT_PATHS[32]]
     )
     _validate_archive_option_report(reports[REPORT_PATHS[33]])
+    _validate_archive_iteration_reports(
+        reports[REPORT_PATHS[34]],
+        reports[REPORT_PATHS[35]],
+        reports[REPORT_PATHS[36]],
+    )
+    _validate_scan_option_boundary_reports(
+        reports[REPORT_PATHS[37]],
+        reports[REPORT_PATHS[38]],
+    )
     return capabilities
 
 
@@ -2467,6 +2855,15 @@ def build_plan(
                 "difference_count": 60,
                 "all_stdout_equal": True,
                 "right_stderr_sha256": QT6_UNIMPLEMENTED_SHA256,
+            },
+            {
+                "source": REPORT_PATHS[35],
+                "root_cause_source": REPORT_PATHS[36],
+                "scope": "ISO9660 NUL dot-entry filtering shifts the Qt6 hard iteration boundary by one record",
+                "qt5_last_reachable_pdf_ordinal": 100000,
+                "qt6_last_reachable_pdf_ordinal": 99999,
+                "qt6_extra_stream_count_per_case": 1,
+                "source_revision_equal": True,
             },
         ],
         "rows": rows,

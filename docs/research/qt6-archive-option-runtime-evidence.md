@@ -56,13 +56,16 @@ Qt5/Qt6 release image ID 分别为
 ## 能力影响
 
 `CAP-NEST-003` 从 partial 提升为 Linux Qt6 `evidence_complete`。机器清单现在为
-62 项 complete、2 项 partial、4 项 missing；6 项仍需闭环，
-`CAP-GAP-007` 保持开放。
+63 项 complete、2 项 partial、3 项 missing；5 项仍需闭环，
+`CAP-GAP-007` 保持开放。这里的当前统计包含随后完成的 count-boundary
+批次；本 archive-option 批次完成当时为 62/2/4。
 
 本矩阵也再次观察默认 archive/resource count 为 21、aggressive 控制到达 22，
-但明确不足以关闭：
+但单独看仍不足以关闭 count/depth 能力。随后：
 
-- `CAP-NEST-004`：尚未在 Qt6 执行第 99999/100000/100001 条 iteration 边界；
+- `CAP-NEST-004` 已由
+  [`qt6-count-boundary-runtime-evidence.md`](qt6-count-boundary-runtime-evidence.md)
+  的 99999/100000/100001 archive 三点和 21/2001 resource 计数闭合；
 - `CAP-NEST-009`：尚未在 Qt6 执行 64 层、累计展开量与 cancellation 边界。
 
 ## 重现

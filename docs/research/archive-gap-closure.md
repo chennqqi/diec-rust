@@ -4,7 +4,7 @@ Status: Draft
 
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
 
-Last updated: 2026-07-28
+Last updated: 2026-07-29
 
 ## 结论
 
@@ -34,6 +34,12 @@ Last updated: 2026-07-28
 | `CAP-NEST-003` | 五类默认扫描均为 0 child，显式 archive 均产生 1 个 PDF child |
 | `CAP-NEST-004` | archive 第 99999、100000 条可达，第 100001 条不可达；resource 的 20/21 与 1000/1001 边界已由既有 option oracle 固定 |
 | `CAP-NEST-009` | 源码没有独立深度/累计展开量预算；运行到达 64 层和 33,554,546 bytes |
+
+该表是 Qt5 corpus-gap 闭环，不是跨 Qt major 的原始输出等价声明。后续固定
+Qt6 复验发现 ISO9660 单 NUL dot entry 多占一次 archive iteration：第 99999
+条 PDF 可达，第 100000/100001 条不可达；resource 21/2001 与 Qt5 相同。
+根因和完整机器证据见
+[`qt6-count-boundary-runtime-evidence.md`](qt6-count-boundary-runtime-evidence.md)。
 
 ## 三个集合不能混淆
 

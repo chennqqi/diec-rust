@@ -1,10 +1,10 @@
-# 上游 archive aggressive 100000 记录边界
+# 上游 Qt5/Qt6 archive aggressive 记录边界
 
 Status: In Review
 
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
 
-Last updated: 2026-07-28
+Last updated: 2026-07-29
 
 ## 结论
 
@@ -26,10 +26,25 @@ ZIP deflate/ZipCrypto/CRC/压缩流畸形已有
 以五类 engine family 闭集、成对 oracle 和 depth/total 证据关闭；其他方法、
 系统化畸形与真实资源耗尽仍作为扩展/安全风险，跨平台由独立 gap 跟踪。
 
-机器报告：
-[`archive-iteration-boundary-engine-qt5.json`](data/archive-iteration-boundary-engine-qt5.json)。
+相同上游源码的 Qt6 engine oracle 得到不同的 ISO9660 可观察边界：
 
-## 固定身份
+- 第 99999 条 PDF 可达，第 100000 和第 100001 条 PDF 均不可达；
+- 三例均比 Qt5 多一个 Stream，它来自未被过滤的 ISO `.` directory record；
+- direct Qt probe 证明 Qt 5.15.13 把单 NUL `QByteArray` 转为空 `QString`，
+  Qt 6.4.2 则保留一个 NUL code unit；固定 `xiso9660.cpp` 的 dot filter 因而
+  在两个 runtime 上得到不同比较结果；
+- `xscanengine.cpp`、`xiso9660.cpp` 与 corpus bytes 相同，因此该差异不是
+  上游 revision 或输入漂移。
+
+机器报告：
+[`archive-iteration-boundary-engine-qt5.json`](data/archive-iteration-boundary-engine-qt5.json)、
+[`archive-iteration-boundary-engine-qt6.json`](data/archive-iteration-boundary-engine-qt6.json)
+和
+[`qt-null-filename-semantics-qt5-qt6.json`](data/qt-null-filename-semantics-qt5-qt6.json)。
+完整 Qt6 闭环说明见
+[`qt6-count-boundary-runtime-evidence.md`](qt6-count-boundary-runtime-evidence.md)。
+
+## Qt5 固定身份
 
 | 项目 | 固定值 |
 | --- | --- |
@@ -41,6 +56,13 @@ ZIP deflate/ZipCrypto/CRC/压缩流畸形已有
 
 报告还保存每例原始 stdout/stderr 及其 SHA-256、退出码、timeout/OOM 标志、
 扫描耗时和进程 peak RSS。
+
+Qt6 harness image ID 为
+`sha256:a51310e8e03ada9fb907d6ea3d3d3b0a5d0c1917a3aaef971f3a07683486508f`，
+binary SHA-256 为
+`d13b381bc5353f8e261a741c235a825e65461d8ab38cf9f9ba71c16fb94dfbcb`。
+`xiso9660.cpp` SHA-256 为
+`d6e97c4ff2395b812b65da5ab480e937c6b365e6e6e8b0288ddf48b8fd398fb1`。
 
 ## 源码语义
 
@@ -116,6 +138,17 @@ wall timeout: 30 seconds
 elapsed/RSS 是本次环境描述值，只断言有效及 high-watermark 不倒退，不作为
 跨机器性能 golden。
 
+Qt6 使用相同 corpus 和故障注入，两次独立执行的稳定语义相同：
+
+| 哨兵 ordinal | PDF nodes | Stream nodes | record count |
+| ---: | ---: | ---: | ---: |
+| 99999 | 1 | 2 | 4 |
+| 100000 | 0 | 1 | 2 |
+| 100001 | 0 | 1 | 2 |
+
+Qt6 三例 stderr 同样为空。报告中的 timing/RSS 是描述性观测，不作为逐字节
+golden；node/PDF/record/Stream count、exit code 和 stderr hash 才是闭环断言。
+
 ## 复现
 
 ```powershell
@@ -126,14 +159,26 @@ docker build `
   -t diec-rust/upstream-archive-iteration-boundary-harness:74eaf505 `
   tools\upstream
 python tools\upstream\probe_archive_iteration_boundary_harness.py `
+  --platform qt5 `
   --image diec-rust/upstream-archive-iteration-boundary-harness:74eaf505 `
   --corpus-dir $corpusDir
+
+python tools\upstream\probe_archive_iteration_boundary_harness.py `
+  --platform qt6 `
+  --image diec-rust/archive-iteration-boundary-harness-qt6:74eaf505 `
+  --corpus-dir $corpusDir `
+  --output docs\research\data\archive-iteration-boundary-engine-qt6.json
+
+python tools\upstream\probe_qt_null_filename_semantics.py `
+  --output docs\research\data\qt-null-filename-semantics-qt5-qt6.json
 ```
 
 ## Rust 兼容要求
 
-- legacy compatibility profile 必须把单层 archive 的记录迭代硬上限定义为
-  100000，使用 one-based 语义描述为“第 100000 条可达，第 100001 条不可达”；
+- 若 legacy compatibility profile 选择 Qt5 基线，必须把单层 archive 的记录
+  迭代硬上限定义为 100000，使用 one-based 语义描述为“第 100000 条可达，
+  第 100001 条不可达”；若选择 Qt6 基线，还必须重现 ISO dot-entry 保留造成
+  的一条提前量；
 - 不应把 aggressive 的 `nLimit=100000` 实现成另一个会提前拒绝第 100000 条的
   scanable-member 上限；
 - 兼容测试需要保留 99999/100000/100001 三点哨兵，而不是只测一个大样本；
@@ -142,7 +187,8 @@ python tools\upstream\probe_archive_iteration_boundary_harness.py `
 
 ## 限制与剩余缺口
 
-- 只验证 Linux x86_64 Qt5、ISO9660 record enumeration 和一个 PDF 哨兵；
+- 只验证 Linux x86_64 Qt 5.15.13/Qt 6.4.2、ISO9660 record enumeration 和
+  一个 PDF 哨兵；
 - 故障注入刻意不测 10 万个成功解包成员的吞吐、结果树大小或真实磁盘耗尽；
 - 未验证 ZIP64、7Z/RAR/CAB 大记录数，以及压缩、加密、CRC/size 欺骗和截断；
-- 未验证 Windows、macOS、Linux Qt6 的临时文件与 archive backend 差异。
+- 未验证 Windows、macOS 或其他 Qt minor 的临时文件与 archive backend 差异。
