@@ -134,6 +134,9 @@ Phase 0 计划形成：
 - [`qt6-cli-runtime-evidence.md`](qt6-cli-runtime-evidence.md)：固定 Qt5/Qt6
   的 26 样本分派、五样本七 formatter 和 escaping/nested 输出差分，并保留
   PE 的 Qt6 stderr 差异（In Review）。
+- [`qt6-scan-nested-runtime-evidence.md`](qt6-scan-nested-runtime-evidence.md)：
+  固定五样本 scan options 与 8 样本 nested gate 差分，并保存 alltypes 的
+  Qt6 trailing MSDOS diagnostics（In Review）。
 - [`behavior-baseline.md`](behavior-baseline.md)：确定性安全语料、原始输出哈希和多格式行为（Draft）。
 - [`cli-json-schema-inventory.md`](cli-json-schema-inventory.md)：固定 CLI normal/entropy/info/struct JSON 字段、类型、顺序与失败边界（Draft）。
 - [`cli-output-boundaries.md`](cli-output-boundaries.md)：固定 JSON/XML/CSV/TSV/plain text 的 Unicode/控制字符转义、嵌套排序和格式缺陷；闭合 `CAP-GAP-004`（Draft）。
@@ -181,6 +184,12 @@ Phase 0 计划形成：
   10-case Qt5/Qt6 escaping/nested formatter 完整原始 streams、身份和派生事实。
 - [`data/cli-output-matrix-linux-qt5-qt6.json`](data/cli-output-matrix-linux-qt5-qt6.json)：
   26 样本分派与五样本七 formatter 的 Qt5/Qt6 成对流哈希和 detection tree。
+- [`data/cli-scan-nested-matrix-linux-qt5-qt6.json`](data/cli-scan-nested-matrix-linux-qt5-qt6.json)：
+  五样本八 scan-option 及 8 样本四 nested gate 的成对哈希、相对变化和
+  detection tree。
+- [`data/qt6-alltypes-diagnostics.json`](data/qt6-alltypes-diagnostics.json)：
+  alltypes/combined 三次重复的完整原始流、JSON 前缀、trailing diagnostics
+  与地址规范化事实。
 - [`data/scan-option-boundary-fixture.json`](data/scan-option-boundary-fixture.json)：deep/aggressive 规则与 1/22/2002-resource PE 的 hash-bound 清单。
 - [`data/scan-option-boundaries-linux-qt5.json`](data/scan-option-boundaries-linux-qt5.json)：8-case 双 Qt5 scan-option oracle 的去重原始 streams、身份和派生事实。
 - [`data/capability-traceability.json`](data/capability-traceability.json)：68 个稳定

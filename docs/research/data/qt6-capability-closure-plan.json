@@ -34,6 +34,19 @@
       "scope": "PE32/PE64 baseline and PE32 seven-formatter stderr streams",
       "source": "docs/research/data/cli-output-matrix-linux-qt5-qt6.json",
       "stdout_and_exit_equal": true
+    },
+    {
+      "detection_semantics_equal_except_trailing_diagnostics": true,
+      "difference_count": 32,
+      "scope": "scan-option and nested gate raw streams",
+      "source": "docs/research/data/cli-scan-nested-matrix-linux-qt5-qt6.json"
+    },
+    {
+      "json_documents_equal": true,
+      "raw_streams_retained_before_address_normalization": true,
+      "repetitions": 3,
+      "scope": "alltypes and combined trailing diagnostics",
+      "source": "docs/research/data/qt6-alltypes-diagnostics.json"
     }
   ],
   "limitations": [
@@ -149,55 +162,31 @@
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "cli_scan_baseline",
       "id": "CAP-CLI-OPT-001",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "recursive scan option",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "exit code and normalized detection tree are equal",
-          "raw stdout and stderr hashes are retained",
-          "each documented option boundary has a named paired control"
-        ],
-        "fixture": "reuse baseline-corpus and scan-option-boundary fixtures",
-        "harness": "run the pinned Qt5 and Qt6 CLI images with every scan-option vector"
-      },
-      "status": "missing"
+      "observed_scope": "all eight nested fixtures have equal recursive-scan detection trees",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "cli_scan_baseline",
       "id": "CAP-CLI-OPT-002",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "deep scan option",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "exit code and normalized detection tree are equal",
-          "raw stdout and stderr hashes are retained",
-          "each documented option boundary has a named paired control"
-        ],
-        "fixture": "reuse baseline-corpus and scan-option-boundary fixtures",
-        "harness": "run the pinned Qt5 and Qt6 CLI images with every scan-option vector"
-      },
-      "status": "missing"
+      "observed_scope": "the five-sample deep-scan matrix has equal stdout and exit codes",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "cli_scan_baseline",
       "id": "CAP-CLI-OPT-003",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "heuristic scan option",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "exit code and normalized detection tree are equal",
-          "raw stdout and stderr hashes are retained",
-          "each documented option boundary has a named paired control"
-        ],
-        "fixture": "reuse baseline-corpus and scan-option-boundary fixtures",
-        "harness": "run the pinned Qt5 and Qt6 CLI images with every scan-option vector"
-      },
-      "status": "missing"
+      "observed_scope": "the five-sample heuristic matrix has equal detection semantics",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
@@ -221,55 +210,31 @@
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "cli_scan_baseline",
       "id": "CAP-CLI-OPT-005",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "aggressive scan option",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "exit code and normalized detection tree are equal",
-          "raw stdout and stderr hashes are retained",
-          "each documented option boundary has a named paired control"
-        ],
-        "fixture": "reuse baseline-corpus and scan-option-boundary fixtures",
-        "harness": "run the pinned Qt5 and Qt6 CLI images with every scan-option vector"
-      },
-      "status": "missing"
+      "observed_scope": "the five-sample aggressive matrix has equal stdout and exit codes",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "cli_scan_baseline",
       "id": "CAP-CLI-OPT-006",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "all types option",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "exit code and normalized detection tree are equal",
-          "raw stdout and stderr hashes are retained",
-          "each documented option boundary has a named paired control"
-        ],
-        "fixture": "reuse baseline-corpus and scan-option-boundary fixtures",
-        "harness": "run the pinned Qt5 and Qt6 CLI images with every scan-option vector"
-      },
-      "status": "missing"
+      "observed_scope": "alltypes detections are equal; the complete Qt6 diagnostic difference is retained",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "cli_options",
       "id": "CAP-CLI-OPT-007",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "formatted result option",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "exit code and normalized detection output are equal",
-          "message and profiling channels retain raw output before normalization",
-          "no-op and malformed test-mode behaviors are exercised"
-        ],
-        "fixture": "reuse CLI option and binary rule-order fixtures",
-        "harness": "execute every short/long option and paired control on Qt5 and Qt6"
-      },
-      "status": "missing"
+      "observed_scope": "the five-sample format-result matrix has equal stdout and exit codes",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
@@ -311,19 +276,11 @@
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "cli_options",
       "id": "CAP-CLI-OPT-010",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "hide unknown option",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "exit code and normalized detection output are equal",
-          "message and profiling channels retain raw output before normalization",
-          "no-op and malformed test-mode behaviors are exercised"
-        ],
-        "fixture": "reuse CLI option and binary rule-order fixtures",
-        "harness": "execute every short/long option and paired control on Qt5 and Qt6"
-      },
-      "status": "missing"
+      "observed_scope": "the five-sample hide-unknown matrix has equal stdout and exit codes",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
@@ -611,9 +568,9 @@
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "rule_orchestration",
       "id": "CAP-RULE-005",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": "execute the remaining Qt5 capability boundary under the pinned Qt6 oracle",
       "name": "deep and heuristic rule filtering",
-      "observed_scope": null,
+      "observed_scope": "five-sample deep/heuristic effects are covered; independent rule-gate controls remain",
       "proposed_experiment": {
         "assertions": [
           "layer, priority, init, type, deep, heuristic, and fallback behavior is equal",
@@ -623,7 +580,7 @@
         "fixture": "reuse rule-orchestration and scan-option fixtures",
         "harness": "run the full rule gate/order/init/error matrix under both script engines"
       },
-      "status": "missing"
+      "status": "partial"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
@@ -859,9 +816,9 @@
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "nested_scan",
       "id": "CAP-NEST-001",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": "execute the remaining Qt5 capability boundary under the pinned Qt6 oracle",
       "name": "directory recursion versus internal recursion",
-      "observed_scope": null,
+      "observed_scope": "internal recursive scan is covered; Qt6 directory traversal remains",
       "proposed_experiment": {
         "assertions": [
           "CLI recursion and internal recursion gates are distinguished",
@@ -871,33 +828,25 @@
         "fixture": "reuse nested, resource, archive-limit, iteration, adversarial, and structure fixtures",
         "harness": "build Qt6 nested/resource/archive harness variants"
       },
-      "status": "missing"
+      "status": "partial"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "nested_scan",
       "id": "CAP-NEST-002",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "resource and overlay recursive scan",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "CLI recursion and internal recursion gates are distinguished",
-          "record-count, iteration, depth, and expanded-byte observations are equal",
-          "parent tree, context propagation, subdevice gates, and raw errors are compared"
-        ],
-        "fixture": "reuse nested, resource, archive-limit, iteration, adversarial, and structure fixtures",
-        "harness": "build Qt6 nested/resource/archive harness variants"
-      },
-      "status": "missing"
+      "observed_scope": "resource and overlay recursive-scan gates have equal detection trees",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "nested_scan",
       "id": "CAP-NEST-003",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": "execute the remaining Qt5 capability boundary under the pinned Qt6 oracle",
       "name": "archive scan is engine-only",
-      "observed_scope": null,
+      "observed_scope": "CLI non-extraction is covered; the Qt6 engine archive option remains",
       "proposed_experiment": {
         "assertions": [
           "CLI recursion and internal recursion gates are distinguished",
@@ -907,7 +856,7 @@
         "fixture": "reuse nested, resource, archive-limit, iteration, adversarial, and structure fixtures",
         "harness": "build Qt6 nested/resource/archive harness variants"
       },
-      "status": "missing"
+      "status": "partial"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
@@ -931,19 +880,11 @@
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "nested_scan",
       "id": "CAP-NEST-005",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "overlay and resource subdevice gate",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "CLI recursion and internal recursion gates are distinguished",
-          "record-count, iteration, depth, and expanded-byte observations are equal",
-          "parent tree, context propagation, subdevice gates, and raw errors are compared"
-        ],
-        "fixture": "reuse nested, resource, archive-limit, iteration, adversarial, and structure fixtures",
-        "harness": "build Qt6 nested/resource/archive harness variants"
-      },
-      "status": "missing"
+      "observed_scope": "overlay and resource subdevice gate controls have equal detection trees",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
@@ -1124,19 +1065,21 @@
     "docs/research/data/capability-traceability.json": "e1bb982feb52fb97e6678319c629cf71735650fe4239c8558a0f765c16c8cff3",
     "docs/research/data/cli-output-boundaries-linux-qt5-qt6.json": "b94817adf7d99aa67bb64397e97cad5a95af244cdb01b9cd51f79cf15c4dea84",
     "docs/research/data/cli-output-matrix-linux-qt5-qt6.json": "3e032534ce269597c98eee45c1e477796a11402ec1fb07b7a79a7806cad7ba2c",
+    "docs/research/data/cli-scan-nested-matrix-linux-qt5-qt6.json": "a81ed4e791286c78247ca1d758fcb49900ca93ac46941af3d0542801d7e603f8",
     "docs/research/data/global-host-api-qt5-qt6.json": "3895fde7bb3885e6197afe7216daf8540b7808562ff5287984615d5b022634eb",
     "docs/research/data/global-typo-errors-qt5-qt6.json": "59f9d28679513a939c70c3878ce8d39dcfa01e4b9006150e4b9aadb3311fba23",
     "docs/research/data/host-api-arity-qt5-qt6.json": "96d0b0023dd08ec1e45bc0c1059cf5801837496e09143acff6ffa0120328fa73",
-    "docs/research/data/qt5-qt6-cli.json": "30c4298f07f2aa64fc17a16c478f8554eb8eb9e4e5c13687cddbfe3785b88fdd"
+    "docs/research/data/qt5-qt6-cli.json": "30c4298f07f2aa64fc17a16c478f8554eb8eb9e4e5c13687cddbfe3785b88fdd",
+    "docs/research/data/qt6-alltypes-diagnostics.json": "58b76997e767147284c65a9f99105fd0afaee1fc055b849651e6cb27ae174df6"
   },
   "summary": {
     "all_capabilities_accounted_for": true,
     "cap_gap_007_closed": false,
     "capability_count": 68,
-    "closure_required": 49,
-    "evidence_complete": 19,
-    "missing": 39,
-    "partial": 10
+    "closure_required": 40,
+    "evidence_complete": 28,
+    "missing": 27,
+    "partial": 13
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
 }

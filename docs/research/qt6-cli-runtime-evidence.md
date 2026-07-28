@@ -85,8 +85,11 @@ fixture 目录和大型原始运行输出位于未跟踪的外部临时目录，
 ISO9660、TAR 和 gzip，但尚不能替代 NPM、generic Archive 以及各 archive
 adapter 的完整正反边界 harness。
 
-本切片使完整 Qt6 能力从 11 增至 19，仍有 10 项 partial、39 项 missing；
-`CAP-GAP-007` 保持开放。
+本切片当时使完整 Qt6 能力从 11 增至 19。后续 scan/nested 证据见
+[`qt6-scan-nested-runtime-evidence.md`](qt6-scan-nested-runtime-evidence.md)；
+当前汇总以
+[`qt6-capability-closure-plan.md`](qt6-capability-closure-plan.md)
+为准。`CAP-GAP-007` 保持开放。
 
 ## 重现
 

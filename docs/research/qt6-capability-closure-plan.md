@@ -11,10 +11,10 @@ Last updated: 2026-07-28
 [`data/qt6-capability-closure-plan.json`](data/qt6-capability-closure-plan.json)
 逐项列出当前证据和缺失实验：
 
-- 19 项已有证据完整覆盖能力行；
-- 10 项只有部分证据；
-- 39 项没有可接纳的逐行 Qt6 运行时证据；
-- 因此仍有 49 项需要执行闭环实验。
+- 28 项已有证据完整覆盖能力行；
+- 13 项只有部分证据；
+- 27 项没有可接纳的逐行 Qt6 运行时证据；
+- 因此仍有 40 项需要执行闭环实验。
 
 Linux Qt6 在能力覆盖报告中继续保持 `platform_missing`。本计划只负责把
 缺口变成可执行清单，不改变平台门禁状态。
@@ -28,6 +28,13 @@ formatter 边界。它足以直接证明单文件扫描、help/version/showstruc
 PE/ELF/Mach-O、DEX/Class/PYC、PDF/CFBF、JPEG/PNG/generic Image 和
 Binary fallback，以及 nested JSON 结果树。新增运行证据详见
 [`qt6-cli-runtime-evidence.md`](qt6-cli-runtime-evidence.md)。
+
+第二批 scan/nested 矩阵进一步完整覆盖 recursive、deep、heuristic、
+aggressive、alltypes、format、hideunknown，以及 resource/overlay gate；
+见
+[`qt6-scan-nested-runtime-evidence.md`](qt6-scan-nested-runtime-evidence.md)。
+其中 alltypes 的 detection JSON 相同，但 Qt6 在 JSON 后追加地址相关 MSDOS
+TypeError。该差异已完整保存和分类，不代表 Qt5/Qt6 原始 stdout 相同。
 
 下列结果只能算部分证据：
 

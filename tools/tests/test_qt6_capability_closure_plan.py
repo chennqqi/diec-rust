@@ -81,10 +81,10 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
 
     def test_current_plan_is_conservatively_incomplete(self):
         summary = self.plan["summary"]
-        self.assertEqual(summary["evidence_complete"], 19)
-        self.assertEqual(summary["partial"], 10)
-        self.assertEqual(summary["missing"], 39)
-        self.assertEqual(summary["closure_required"], 49)
+        self.assertEqual(summary["evidence_complete"], 28)
+        self.assertEqual(summary["partial"], 13)
+        self.assertEqual(summary["missing"], 27)
+        self.assertEqual(summary["closure_required"], 40)
         self.assertFalse(summary["cap_gap_007_closed"])
         self.assertEqual(self.plan["result"], "incomplete")
 
@@ -99,6 +99,15 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
             "CAP-DISPATCH-005",
             "CAP-DISPATCH-007",
             "CAP-NEST-008",
+            "CAP-CLI-OPT-001",
+            "CAP-CLI-OPT-002",
+            "CAP-CLI-OPT-003",
+            "CAP-CLI-OPT-005",
+            "CAP-CLI-OPT-006",
+            "CAP-CLI-OPT-007",
+            "CAP-CLI-OPT-010",
+            "CAP-NEST-002",
+            "CAP-NEST-005",
         }
         for capability_id in promoted:
             with self.subTest(capability=capability_id):
@@ -110,6 +119,9 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
             rows["CAP-DISPATCH-004"]["status"],
             "partial",
         )
+        self.assertEqual(rows["CAP-NEST-001"]["status"], "partial")
+        self.assertEqual(rows["CAP-NEST-003"]["status"], "partial")
+        self.assertEqual(rows["CAP-RULE-005"]["status"], "partial")
 
     def test_pinned_identity_and_duplicate_keys_are_enforced(self):
         changed = json.loads(json.dumps(self.traceability))
@@ -162,6 +174,22 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
         with self.assertRaisesRegex(
             MODULE.ClosurePlanError,
             "unexpected nested formatter difference",
+        ):
+            MODULE.build_plan(
+                self.traceability,
+                self.traceability_raw,
+                changed_reports,
+                self.report_bytes,
+            )
+
+        changed_reports = json.loads(json.dumps(self.reports))
+        diagnostics = changed_reports[MODULE.REPORT_PATHS[7]]
+        diagnostics["cases"]["alltypes"]["observations"]["qt6"][0][
+            "normalized_diagnostics"
+        ] = "silently changed"
+        with self.assertRaisesRegex(
+            MODULE.ClosurePlanError,
+            "unexpected Qt6 alltypes diagnostic",
         ):
             MODULE.build_plan(
                 self.traceability,

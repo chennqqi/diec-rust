@@ -196,8 +196,10 @@ detection tree 相同；PE32/PE64 与 nested PE 唯一保留差异仍是完全�
 `Unimplemented code.` stderr。
 
 机器证据和逐能力影响见
-[`qt6-cli-runtime-evidence.md`](qt6-cli-runtime-evidence.md)。该实验将 Linux
-Qt6 的逐行完整证据从 11 项增加到 19 项，但没有关闭 `CAP-GAP-007`。
+[`qt6-cli-runtime-evidence.md`](qt6-cli-runtime-evidence.md) 与
+[`qt6-scan-nested-runtime-evidence.md`](qt6-scan-nested-runtime-evidence.md)。
+两批实验将 Linux Qt6 的逐行完整证据从 11 项增加到 28 项，但没有关闭
+`CAP-GAP-007`。
 
 ## 限制与下一步
 
@@ -206,6 +208,6 @@ Qt6 的逐行完整证据从 11 项增加到 19 项，但没有关闭 `CAP-GAP-0
   仍未覆盖，见
   [`global-host-api-runtime-differential.md`](global-host-api-runtime-differential.md)。
 - 四行 warning 的精确 Qt 调用点和 enabled heuristic 路径仍待最小表达式实验。
-- 普通输出矩阵已完成；scan、special、path、database 和完整 nested scan 矩阵
-  仍未完成。
+- 普通输出、scan 和首轮 nested gate 矩阵已完成；special、path、database
+  以及 engine archive/resource 边界 harness 仍未完成。
 - Windows、macOS 固定 oracle 仍缺失。

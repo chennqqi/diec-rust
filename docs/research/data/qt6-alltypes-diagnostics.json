@@ -1,0 +1,672 @@
+{
+  "cases": {
+    "alltypes": {
+      "arguments": [
+        "--json",
+        "--alltypes",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/minimal.exe"
+      ],
+      "observations": {
+        "qt5": [
+          {
+            "diagnostics": "",
+            "exit_code": 0,
+            "json_document": {
+              "detects": [
+                {
+                  "filetype": "MSDOS",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "512",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Unknown",
+                      "string": "Unknown: Unknown",
+                      "type": "Unknown",
+                      "version": ""
+                    }
+                  ]
+                },
+                {
+                  "filetype": "PE32",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "512",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Unknown",
+                      "string": "Unknown: Unknown",
+                      "type": "Unknown",
+                      "version": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            "normalized_diagnostics": "",
+            "stderr_base64": "",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiTVNET1MiLAogICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAib2Zmc2V0IjogIjAiLAogICAgICAgICAgICAicGFyZW50ZmlsZXBhcnQiOiAiSGVhZGVyIiwKICAgICAgICAgICAgInNpemUiOiAiNTEyIiwKICAgICAgICAgICAgInZhbHVlcyI6IFsKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiVW5rbm93bjogVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAgICJmaWxldHlwZSI6ICJQRTMyIiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjUxMiIsCiAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJVbmtub3duIiwKICAgICAgICAgICAgICAgICAgICAic3RyaW5nIjogIlVua25vd246IFVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ2ZXJzaW9uIjogIiIKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgXQogICAgICAgIH0KICAgIF0KfQoKCg==",
+            "stdout_bytes": 907,
+            "stdout_sha256": "2fdba31fd3de4c64dbad1f19e61fa238cf3ab6c80885e5f1639c156720be82e1"
+          },
+          {
+            "diagnostics": "",
+            "exit_code": 0,
+            "json_document": {
+              "detects": [
+                {
+                  "filetype": "MSDOS",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "512",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Unknown",
+                      "string": "Unknown: Unknown",
+                      "type": "Unknown",
+                      "version": ""
+                    }
+                  ]
+                },
+                {
+                  "filetype": "PE32",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "512",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Unknown",
+                      "string": "Unknown: Unknown",
+                      "type": "Unknown",
+                      "version": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            "normalized_diagnostics": "",
+            "stderr_base64": "",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiTVNET1MiLAogICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAib2Zmc2V0IjogIjAiLAogICAgICAgICAgICAicGFyZW50ZmlsZXBhcnQiOiAiSGVhZGVyIiwKICAgICAgICAgICAgInNpemUiOiAiNTEyIiwKICAgICAgICAgICAgInZhbHVlcyI6IFsKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiVW5rbm93bjogVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAgICJmaWxldHlwZSI6ICJQRTMyIiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjUxMiIsCiAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJVbmtub3duIiwKICAgICAgICAgICAgICAgICAgICAic3RyaW5nIjogIlVua25vd246IFVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ2ZXJzaW9uIjogIiIKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgXQogICAgICAgIH0KICAgIF0KfQoKCg==",
+            "stdout_bytes": 907,
+            "stdout_sha256": "2fdba31fd3de4c64dbad1f19e61fa238cf3ab6c80885e5f1639c156720be82e1"
+          },
+          {
+            "diagnostics": "",
+            "exit_code": 0,
+            "json_document": {
+              "detects": [
+                {
+                  "filetype": "MSDOS",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "512",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Unknown",
+                      "string": "Unknown: Unknown",
+                      "type": "Unknown",
+                      "version": ""
+                    }
+                  ]
+                },
+                {
+                  "filetype": "PE32",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "512",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Unknown",
+                      "string": "Unknown: Unknown",
+                      "type": "Unknown",
+                      "version": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            "normalized_diagnostics": "",
+            "stderr_base64": "",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiTVNET1MiLAogICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAib2Zmc2V0IjogIjAiLAogICAgICAgICAgICAicGFyZW50ZmlsZXBhcnQiOiAiSGVhZGVyIiwKICAgICAgICAgICAgInNpemUiOiAiNTEyIiwKICAgICAgICAgICAgInZhbHVlcyI6IFsKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiVW5rbm93bjogVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAgICJmaWxldHlwZSI6ICJQRTMyIiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjUxMiIsCiAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJVbmtub3duIiwKICAgICAgICAgICAgICAgICAgICAic3RyaW5nIjogIlVua25vd246IFVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ2ZXJzaW9uIjogIiIKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgXQogICAgICAgIH0KICAgIF0KfQoKCg==",
+            "stdout_bytes": 907,
+            "stdout_sha256": "2fdba31fd3de4c64dbad1f19e61fa238cf3ab6c80885e5f1639c156720be82e1"
+          }
+        ],
+        "qt6": [
+          {
+            "diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x567eb33680f0) is not a function\n\n",
+            "exit_code": 0,
+            "json_document": {
+              "detects": [
+                {
+                  "filetype": "MSDOS",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "512",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Unknown",
+                      "string": "Unknown: Unknown",
+                      "type": "Unknown",
+                      "version": ""
+                    }
+                  ]
+                },
+                {
+                  "filetype": "PE32",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "512",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Unknown",
+                      "string": "Unknown: Unknown",
+                      "type": "Unknown",
+                      "version": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            "normalized_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(<address>) is not a function\n\n",
+            "stderr_base64": "VW5pbXBsZW1lbnRlZCBjb2RlLgpVbmltcGxlbWVudGVkIGNvZGUuClVuaW1wbGVtZW50ZWQgY29kZS4KVW5pbXBsZW1lbnRlZCBjb2RlLgo=",
+            "stderr_bytes": 80,
+            "stderr_sha256": "b303e6913e76b70a6f0d6a4d3ccd389bc342589e45e1615873a37334dea8c51b",
+            "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiTVNET1MiLAogICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAib2Zmc2V0IjogIjAiLAogICAgICAgICAgICAicGFyZW50ZmlsZXBhcnQiOiAiSGVhZGVyIiwKICAgICAgICAgICAgInNpemUiOiAiNTEyIiwKICAgICAgICAgICAgInZhbHVlcyI6IFsKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiVW5rbm93bjogVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAgICJmaWxldHlwZSI6ICJQRTMyIiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjUxMiIsCiAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJVbmtub3duIiwKICAgICAgICAgICAgICAgICAgICAic3RyaW5nIjogIlVua25vd246IFVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ2ZXJzaW9uIjogIiIKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgXQogICAgICAgIH0KICAgIF0KfQoKX2luaXQ6IE1TRE9TL19pbml0OiA0MTogVHlwZUVycm9yOiBDYW5ub3QgYXNzaWduIHRvIHJlYWQtb25seSBwcm9wZXJ0eSAiZ2V0RW50cnlQb2ludE9mZnNldCIKZXh0ZW5kZXJfRE9TNEcuMGEuc2c6IE1TRE9TL2V4dGVuZGVyX0RPUzRHLjBhLnNnOiAxMDogVHlwZUVycm9yOiBQcm9wZXJ0eSAnZ2V0TkVPZmZzZXQnIG9mIG9iamVjdCBNU0RPU19TY3JpcHQoMHg1NjdlYjMzNjgwZjApIGlzIG5vdCBhIGZ1bmN0aW9uCgo=",
+            "stdout_bytes": 1145,
+            "stdout_sha256": "72afbee221292bc7a9220a522e0e51e1784c906df99790b47c064e4216c02c32"
+          },
+          {
+            "diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x5847c06530f0) is not a function\n\n",
+            "exit_code": 0,
+            "json_document": {
+              "detects": [
+                {
+                  "filetype": "MSDOS",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "512",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Unknown",
+                      "string": "Unknown: Unknown",
+                      "type": "Unknown",
+                      "version": ""
+                    }
+                  ]
+                },
+                {
+                  "filetype": "PE32",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "512",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Unknown",
+                      "string": "Unknown: Unknown",
+                      "type": "Unknown",
+                      "version": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            "normalized_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(<address>) is not a function\n\n",
+            "stderr_base64": "VW5pbXBsZW1lbnRlZCBjb2RlLgpVbmltcGxlbWVudGVkIGNvZGUuClVuaW1wbGVtZW50ZWQgY29kZS4KVW5pbXBsZW1lbnRlZCBjb2RlLgo=",
+            "stderr_bytes": 80,
+            "stderr_sha256": "b303e6913e76b70a6f0d6a4d3ccd389bc342589e45e1615873a37334dea8c51b",
+            "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiTVNET1MiLAogICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAib2Zmc2V0IjogIjAiLAogICAgICAgICAgICAicGFyZW50ZmlsZXBhcnQiOiAiSGVhZGVyIiwKICAgICAgICAgICAgInNpemUiOiAiNTEyIiwKICAgICAgICAgICAgInZhbHVlcyI6IFsKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiVW5rbm93bjogVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAgICJmaWxldHlwZSI6ICJQRTMyIiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjUxMiIsCiAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJVbmtub3duIiwKICAgICAgICAgICAgICAgICAgICAic3RyaW5nIjogIlVua25vd246IFVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ2ZXJzaW9uIjogIiIKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgXQogICAgICAgIH0KICAgIF0KfQoKX2luaXQ6IE1TRE9TL19pbml0OiA0MTogVHlwZUVycm9yOiBDYW5ub3QgYXNzaWduIHRvIHJlYWQtb25seSBwcm9wZXJ0eSAiZ2V0RW50cnlQb2ludE9mZnNldCIKZXh0ZW5kZXJfRE9TNEcuMGEuc2c6IE1TRE9TL2V4dGVuZGVyX0RPUzRHLjBhLnNnOiAxMDogVHlwZUVycm9yOiBQcm9wZXJ0eSAnZ2V0TkVPZmZzZXQnIG9mIG9iamVjdCBNU0RPU19TY3JpcHQoMHg1ODQ3YzA2NTMwZjApIGlzIG5vdCBhIGZ1bmN0aW9uCgo=",
+            "stdout_bytes": 1145,
+            "stdout_sha256": "8aab00b50d8373c925fb40226c161edd051e190fb9ab90c80bd273abbdf9bcd8"
+          },
+          {
+            "diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x5e8cea8900f0) is not a function\n\n",
+            "exit_code": 0,
+            "json_document": {
+              "detects": [
+                {
+                  "filetype": "MSDOS",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "512",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Unknown",
+                      "string": "Unknown: Unknown",
+                      "type": "Unknown",
+                      "version": ""
+                    }
+                  ]
+                },
+                {
+                  "filetype": "PE32",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "512",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Unknown",
+                      "string": "Unknown: Unknown",
+                      "type": "Unknown",
+                      "version": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            "normalized_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(<address>) is not a function\n\n",
+            "stderr_base64": "VW5pbXBsZW1lbnRlZCBjb2RlLgpVbmltcGxlbWVudGVkIGNvZGUuClVuaW1wbGVtZW50ZWQgY29kZS4KVW5pbXBsZW1lbnRlZCBjb2RlLgo=",
+            "stderr_bytes": 80,
+            "stderr_sha256": "b303e6913e76b70a6f0d6a4d3ccd389bc342589e45e1615873a37334dea8c51b",
+            "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiTVNET1MiLAogICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAib2Zmc2V0IjogIjAiLAogICAgICAgICAgICAicGFyZW50ZmlsZXBhcnQiOiAiSGVhZGVyIiwKICAgICAgICAgICAgInNpemUiOiAiNTEyIiwKICAgICAgICAgICAgInZhbHVlcyI6IFsKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiVW5rbm93bjogVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAgICJmaWxldHlwZSI6ICJQRTMyIiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjUxMiIsCiAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJVbmtub3duIiwKICAgICAgICAgICAgICAgICAgICAic3RyaW5nIjogIlVua25vd246IFVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJ2ZXJzaW9uIjogIiIKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgXQogICAgICAgIH0KICAgIF0KfQoKX2luaXQ6IE1TRE9TL19pbml0OiA0MTogVHlwZUVycm9yOiBDYW5ub3QgYXNzaWduIHRvIHJlYWQtb25seSBwcm9wZXJ0eSAiZ2V0RW50cnlQb2ludE9mZnNldCIKZXh0ZW5kZXJfRE9TNEcuMGEuc2c6IE1TRE9TL2V4dGVuZGVyX0RPUzRHLjBhLnNnOiAxMDogVHlwZUVycm9yOiBQcm9wZXJ0eSAnZ2V0TkVPZmZzZXQnIG9mIG9iamVjdCBNU0RPU19TY3JpcHQoMHg1ZThjZWE4OTAwZjApIGlzIG5vdCBhIGZ1bmN0aW9uCgo=",
+            "stdout_bytes": 1145,
+            "stdout_sha256": "c31cb6923d4130b9d6d51a9f359809b73720c96951e0fbcbe19a1e09dddd8d68"
+          }
+        ]
+      },
+      "qt6_raw_diagnostic_variant_count": 3
+    },
+    "combined": {
+      "arguments": [
+        "--json",
+        "--deepscan",
+        "--heuristicscan",
+        "--aggressivecscan",
+        "--alltypes",
+        "--database",
+        "/opt/die-source/Detect-It-Easy/db",
+        "--extradatabase",
+        "/opt/die-source/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "/opt/die-source/Detect-It-Easy/db_custom",
+        "/fixture/minimal.exe"
+      ],
+      "observations": {
+        "qt5": [
+          {
+            "diagnostics": "",
+            "exit_code": 0,
+            "json_document": {
+              "detects": [
+                {
+                  "filetype": "MSDOS",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "512",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Unknown",
+                      "string": "Unknown: Unknown",
+                      "type": "Unknown",
+                      "version": ""
+                    }
+                  ]
+                },
+                {
+                  "filetype": "PE32",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "512",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Generic",
+                      "string": "(Heur)Protection: Generic",
+                      "type": "~protection",
+                      "version": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            "normalized_diagnostics": "",
+            "stderr_base64": "",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiTVNET1MiLAogICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAib2Zmc2V0IjogIjAiLAogICAgICAgICAgICAicGFyZW50ZmlsZXBhcnQiOiAiSGVhZGVyIiwKICAgICAgICAgICAgInNpemUiOiAiNTEyIiwKICAgICAgICAgICAgInZhbHVlcyI6IFsKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiVW5rbm93bjogVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAgICJmaWxldHlwZSI6ICJQRTMyIiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjUxMiIsCiAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJHZW5lcmljIiwKICAgICAgICAgICAgICAgICAgICAic3RyaW5nIjogIihIZXVyKVByb3RlY3Rpb246IEdlbmVyaWMiLAogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogIn5wcm90ZWN0aW9uIiwKICAgICAgICAgICAgICAgICAgICAidmVyc2lvbiI6ICIiCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIF0KICAgICAgICB9CiAgICBdCn0KCgo=",
+            "stdout_bytes": 920,
+            "stdout_sha256": "f96693d1bbf4f8ce584405203e39bbc385ccdf224c37dea118d523df0f8e5302"
+          },
+          {
+            "diagnostics": "",
+            "exit_code": 0,
+            "json_document": {
+              "detects": [
+                {
+                  "filetype": "MSDOS",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "512",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Unknown",
+                      "string": "Unknown: Unknown",
+                      "type": "Unknown",
+                      "version": ""
+                    }
+                  ]
+                },
+                {
+                  "filetype": "PE32",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "512",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Generic",
+                      "string": "(Heur)Protection: Generic",
+                      "type": "~protection",
+                      "version": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            "normalized_diagnostics": "",
+            "stderr_base64": "",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiTVNET1MiLAogICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAib2Zmc2V0IjogIjAiLAogICAgICAgICAgICAicGFyZW50ZmlsZXBhcnQiOiAiSGVhZGVyIiwKICAgICAgICAgICAgInNpemUiOiAiNTEyIiwKICAgICAgICAgICAgInZhbHVlcyI6IFsKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiVW5rbm93bjogVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAgICJmaWxldHlwZSI6ICJQRTMyIiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjUxMiIsCiAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJHZW5lcmljIiwKICAgICAgICAgICAgICAgICAgICAic3RyaW5nIjogIihIZXVyKVByb3RlY3Rpb246IEdlbmVyaWMiLAogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogIn5wcm90ZWN0aW9uIiwKICAgICAgICAgICAgICAgICAgICAidmVyc2lvbiI6ICIiCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIF0KICAgICAgICB9CiAgICBdCn0KCgo=",
+            "stdout_bytes": 920,
+            "stdout_sha256": "f96693d1bbf4f8ce584405203e39bbc385ccdf224c37dea118d523df0f8e5302"
+          },
+          {
+            "diagnostics": "",
+            "exit_code": 0,
+            "json_document": {
+              "detects": [
+                {
+                  "filetype": "MSDOS",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "512",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Unknown",
+                      "string": "Unknown: Unknown",
+                      "type": "Unknown",
+                      "version": ""
+                    }
+                  ]
+                },
+                {
+                  "filetype": "PE32",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "512",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Generic",
+                      "string": "(Heur)Protection: Generic",
+                      "type": "~protection",
+                      "version": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            "normalized_diagnostics": "",
+            "stderr_base64": "",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiTVNET1MiLAogICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAib2Zmc2V0IjogIjAiLAogICAgICAgICAgICAicGFyZW50ZmlsZXBhcnQiOiAiSGVhZGVyIiwKICAgICAgICAgICAgInNpemUiOiAiNTEyIiwKICAgICAgICAgICAgInZhbHVlcyI6IFsKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiVW5rbm93bjogVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAgICJmaWxldHlwZSI6ICJQRTMyIiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjUxMiIsCiAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJHZW5lcmljIiwKICAgICAgICAgICAgICAgICAgICAic3RyaW5nIjogIihIZXVyKVByb3RlY3Rpb246IEdlbmVyaWMiLAogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogIn5wcm90ZWN0aW9uIiwKICAgICAgICAgICAgICAgICAgICAidmVyc2lvbiI6ICIiCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIF0KICAgICAgICB9CiAgICBdCn0KCgo=",
+            "stdout_bytes": 920,
+            "stdout_sha256": "f96693d1bbf4f8ce584405203e39bbc385ccdf224c37dea118d523df0f8e5302"
+          }
+        ],
+        "qt6": [
+          {
+            "diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x5713bb5779f0) is not a function\n\n",
+            "exit_code": 0,
+            "json_document": {
+              "detects": [
+                {
+                  "filetype": "MSDOS",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "512",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Unknown",
+                      "string": "Unknown: Unknown",
+                      "type": "Unknown",
+                      "version": ""
+                    }
+                  ]
+                },
+                {
+                  "filetype": "PE32",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "512",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Generic",
+                      "string": "(Heur)Protection: Generic",
+                      "type": "~protection",
+                      "version": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            "normalized_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(<address>) is not a function\n\n",
+            "stderr_base64": "VW5pbXBsZW1lbnRlZCBjb2RlLgpVbmltcGxlbWVudGVkIGNvZGUuClVuaW1wbGVtZW50ZWQgY29kZS4KVW5pbXBsZW1lbnRlZCBjb2RlLgo=",
+            "stderr_bytes": 80,
+            "stderr_sha256": "b303e6913e76b70a6f0d6a4d3ccd389bc342589e45e1615873a37334dea8c51b",
+            "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiTVNET1MiLAogICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAib2Zmc2V0IjogIjAiLAogICAgICAgICAgICAicGFyZW50ZmlsZXBhcnQiOiAiSGVhZGVyIiwKICAgICAgICAgICAgInNpemUiOiAiNTEyIiwKICAgICAgICAgICAgInZhbHVlcyI6IFsKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiVW5rbm93bjogVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAgICJmaWxldHlwZSI6ICJQRTMyIiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjUxMiIsCiAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJHZW5lcmljIiwKICAgICAgICAgICAgICAgICAgICAic3RyaW5nIjogIihIZXVyKVByb3RlY3Rpb246IEdlbmVyaWMiLAogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogIn5wcm90ZWN0aW9uIiwKICAgICAgICAgICAgICAgICAgICAidmVyc2lvbiI6ICIiCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIF0KICAgICAgICB9CiAgICBdCn0KCl9pbml0OiBNU0RPUy9faW5pdDogNDE6IFR5cGVFcnJvcjogQ2Fubm90IGFzc2lnbiB0byByZWFkLW9ubHkgcHJvcGVydHkgImdldEVudHJ5UG9pbnRPZmZzZXQiCmV4dGVuZGVyX0RPUzRHLjBhLnNnOiBNU0RPUy9leHRlbmRlcl9ET1M0Ry4wYS5zZzogMTA6IFR5cGVFcnJvcjogUHJvcGVydHkgJ2dldE5FT2Zmc2V0JyBvZiBvYmplY3QgTVNET1NfU2NyaXB0KDB4NTcxM2JiNTc3OWYwKSBpcyBub3QgYSBmdW5jdGlvbgoK",
+            "stdout_bytes": 1158,
+            "stdout_sha256": "7416b4881ba214b1cf51f8f4fda28152ec49da96f0eaaaac2fe76817763ce239"
+          },
+          {
+            "diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x5940474699f0) is not a function\n\n",
+            "exit_code": 0,
+            "json_document": {
+              "detects": [
+                {
+                  "filetype": "MSDOS",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "512",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Unknown",
+                      "string": "Unknown: Unknown",
+                      "type": "Unknown",
+                      "version": ""
+                    }
+                  ]
+                },
+                {
+                  "filetype": "PE32",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "512",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Generic",
+                      "string": "(Heur)Protection: Generic",
+                      "type": "~protection",
+                      "version": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            "normalized_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(<address>) is not a function\n\n",
+            "stderr_base64": "VW5pbXBsZW1lbnRlZCBjb2RlLgpVbmltcGxlbWVudGVkIGNvZGUuClVuaW1wbGVtZW50ZWQgY29kZS4KVW5pbXBsZW1lbnRlZCBjb2RlLgo=",
+            "stderr_bytes": 80,
+            "stderr_sha256": "b303e6913e76b70a6f0d6a4d3ccd389bc342589e45e1615873a37334dea8c51b",
+            "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiTVNET1MiLAogICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAib2Zmc2V0IjogIjAiLAogICAgICAgICAgICAicGFyZW50ZmlsZXBhcnQiOiAiSGVhZGVyIiwKICAgICAgICAgICAgInNpemUiOiAiNTEyIiwKICAgICAgICAgICAgInZhbHVlcyI6IFsKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiVW5rbm93bjogVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAgICJmaWxldHlwZSI6ICJQRTMyIiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjUxMiIsCiAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJHZW5lcmljIiwKICAgICAgICAgICAgICAgICAgICAic3RyaW5nIjogIihIZXVyKVByb3RlY3Rpb246IEdlbmVyaWMiLAogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogIn5wcm90ZWN0aW9uIiwKICAgICAgICAgICAgICAgICAgICAidmVyc2lvbiI6ICIiCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIF0KICAgICAgICB9CiAgICBdCn0KCl9pbml0OiBNU0RPUy9faW5pdDogNDE6IFR5cGVFcnJvcjogQ2Fubm90IGFzc2lnbiB0byByZWFkLW9ubHkgcHJvcGVydHkgImdldEVudHJ5UG9pbnRPZmZzZXQiCmV4dGVuZGVyX0RPUzRHLjBhLnNnOiBNU0RPUy9leHRlbmRlcl9ET1M0Ry4wYS5zZzogMTA6IFR5cGVFcnJvcjogUHJvcGVydHkgJ2dldE5FT2Zmc2V0JyBvZiBvYmplY3QgTVNET1NfU2NyaXB0KDB4NTk0MDQ3NDY5OWYwKSBpcyBub3QgYSBmdW5jdGlvbgoK",
+            "stdout_bytes": 1158,
+            "stdout_sha256": "644e7e6a6284e720fad5883d112a6a36f0286f59d99bfeea2c24ff3d2c66d212"
+          },
+          {
+            "diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x60a6ce92e9f0) is not a function\n\n",
+            "exit_code": 0,
+            "json_document": {
+              "detects": [
+                {
+                  "filetype": "MSDOS",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "512",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Unknown",
+                      "string": "Unknown: Unknown",
+                      "type": "Unknown",
+                      "version": ""
+                    }
+                  ]
+                },
+                {
+                  "filetype": "PE32",
+                  "info": "",
+                  "offset": "0",
+                  "parentfilepart": "Header",
+                  "size": "512",
+                  "values": [
+                    {
+                      "info": "",
+                      "name": "Generic",
+                      "string": "(Heur)Protection: Generic",
+                      "type": "~protection",
+                      "version": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            "normalized_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(<address>) is not a function\n\n",
+            "stderr_base64": "VW5pbXBsZW1lbnRlZCBjb2RlLgpVbmltcGxlbWVudGVkIGNvZGUuClVuaW1wbGVtZW50ZWQgY29kZS4KVW5pbXBsZW1lbnRlZCBjb2RlLgo=",
+            "stderr_bytes": 80,
+            "stderr_sha256": "b303e6913e76b70a6f0d6a4d3ccd389bc342589e45e1615873a37334dea8c51b",
+            "stdout_base64": "ewogICAgImRldGVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgICAiZmlsZXR5cGUiOiAiTVNET1MiLAogICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAib2Zmc2V0IjogIjAiLAogICAgICAgICAgICAicGFyZW50ZmlsZXBhcnQiOiAiSGVhZGVyIiwKICAgICAgICAgICAgInNpemUiOiAiNTEyIiwKICAgICAgICAgICAgInZhbHVlcyI6IFsKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAiaW5mbyI6ICIiLAogICAgICAgICAgICAgICAgICAgICJuYW1lIjogIlVua25vd24iLAogICAgICAgICAgICAgICAgICAgICJzdHJpbmciOiAiVW5rbm93bjogVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiVW5rbm93biIsCiAgICAgICAgICAgICAgICAgICAgInZlcnNpb24iOiAiIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAgICJmaWxldHlwZSI6ICJQRTMyIiwKICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgIm9mZnNldCI6ICIwIiwKICAgICAgICAgICAgInBhcmVudGZpbGVwYXJ0IjogIkhlYWRlciIsCiAgICAgICAgICAgICJzaXplIjogIjUxMiIsCiAgICAgICAgICAgICJ2YWx1ZXMiOiBbCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgImluZm8iOiAiIiwKICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJHZW5lcmljIiwKICAgICAgICAgICAgICAgICAgICAic3RyaW5nIjogIihIZXVyKVByb3RlY3Rpb246IEdlbmVyaWMiLAogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogIn5wcm90ZWN0aW9uIiwKICAgICAgICAgICAgICAgICAgICAidmVyc2lvbiI6ICIiCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIF0KICAgICAgICB9CiAgICBdCn0KCl9pbml0OiBNU0RPUy9faW5pdDogNDE6IFR5cGVFcnJvcjogQ2Fubm90IGFzc2lnbiB0byByZWFkLW9ubHkgcHJvcGVydHkgImdldEVudHJ5UG9pbnRPZmZzZXQiCmV4dGVuZGVyX0RPUzRHLjBhLnNnOiBNU0RPUy9leHRlbmRlcl9ET1M0Ry4wYS5zZzogMTA6IFR5cGVFcnJvcjogUHJvcGVydHkgJ2dldE5FT2Zmc2V0JyBvZiBvYmplY3QgTVNET1NfU2NyaXB0KDB4NjBhNmNlOTJlOWYwKSBpcyBub3QgYSBmdW5jdGlvbgoK",
+            "stdout_bytes": 1158,
+            "stdout_sha256": "714be47b2289b13dbfb87279876a0280451ee6afe5a55b26af30309f12f117ef"
+          }
+        ]
+      },
+      "qt6_raw_diagnostic_variant_count": 3
+    }
+  },
+  "expected_normalized_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(<address>) is not a function\n\n",
+  "facts": {
+    "alltypes_all_exit_zero": true,
+    "alltypes_json_equal_across_oracles": true,
+    "alltypes_qt5_has_no_diagnostics": true,
+    "alltypes_qt5_stderr_is_empty": true,
+    "alltypes_qt6_diagnostics_normalize_exactly": true,
+    "alltypes_qt6_raw_diagnostics_contain_address": true,
+    "alltypes_qt6_stderr_is_known_warning": true,
+    "combined_all_exit_zero": true,
+    "combined_json_equal_across_oracles": true,
+    "combined_qt5_has_no_diagnostics": true,
+    "combined_qt5_stderr_is_empty": true,
+    "combined_qt6_diagnostics_normalize_exactly": true,
+    "combined_qt6_raw_diagnostics_contain_address": true,
+    "combined_qt6_stderr_is_known_warning": true
+  },
+  "fixture": {
+    "generator": "tools/corpus/generate_baseline_corpus.py",
+    "manifest_path": "docs/research/data/baseline-corpus.json",
+    "manifest_sha256": "f5adabeedeaf3bb69b8e52f8de20efd0f0b87bd4dcd247610d4e876b9266f329",
+    "sample": "minimal.exe",
+    "sample_sha256": "afb1bcd812caa45095075a60ff49599c7d5e767c7732226c3e0007708cb198a2",
+    "sample_size": 512
+  },
+  "generator": "tools/upstream/probe_qt6_alltypes_diagnostics.py",
+  "generator_sha256": "8320287a7c7c016caa80a49783cd585090521fcc5b070cd971423af1b289def0",
+  "limitations": [
+    "raw Qt6 diagnostic object addresses are process-specific",
+    "address normalization is applied only after raw streams are retained",
+    "this probe covers the alltypes and combined option vectors on minimal.exe"
+  ],
+  "oracles": {
+    "qt5": {
+      "binary": "/opt/die-build/src/console/diec",
+      "binary_sha256": "da1fab49f7ba5970d1fc1c7fe3d4f380cf5e8775dd8097207e7b3c30f08236cf",
+      "image": "diec-rust/upstream-oracle-cmake:74eaf505",
+      "image_id": "sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040",
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    },
+    "qt6": {
+      "binary": "/opt/die-build/src/console/diec",
+      "binary_sha256": "e3321105af0349b29195325e79d5d2c7cc25ead2f28f84e242e3835b98f7283e",
+      "image": "diec-rust/upstream-oracle-cmake-qt6:74eaf505",
+      "image_id": "sha256:e015495c313d0715f0b80f395da983a113a439f2a135eb637e9f0638c225200b",
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    }
+  },
+  "passed": true,
+  "platform": "linux-amd64-qt5-qt6",
+  "repetitions": 3,
+  "resource_limits": {
+    "cpus": 1,
+    "fixture_mount": "/fixture",
+    "memory_bytes": 536870912,
+    "mount_mode": "read-only",
+    "network": "none",
+    "pids": 128
+  },
+  "schema_version": 1,
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

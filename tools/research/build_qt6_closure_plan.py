@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import base64
 import hashlib
 import json
 from pathlib import Path
@@ -23,6 +24,8 @@ REPORT_PATHS = (
     "docs/research/data/global-typo-errors-qt5-qt6.json",
     "docs/research/data/cli-output-boundaries-linux-qt5-qt6.json",
     "docs/research/data/cli-output-matrix-linux-qt5-qt6.json",
+    "docs/research/data/cli-scan-nested-matrix-linux-qt5-qt6.json",
+    "docs/research/data/qt6-alltypes-diagnostics.json",
 )
 EMPTY_SHA256 = hashlib.sha256(b"").hexdigest()
 QT6_UNIMPLEMENTED_SHA256 = (
@@ -62,6 +65,13 @@ def sha256(value: bytes) -> str:
 # Qt6 comparison exercises the entire behavior named by the matrix row.
 COMPLETE: dict[str, str] = {
     "CAP-CLI-IN-001": "15 hash-bound corpus files exercise one positional target",
+    "CAP-CLI-OPT-001": "all eight nested fixtures have equal recursive-scan detection trees",
+    "CAP-CLI-OPT-002": "the five-sample deep-scan matrix has equal stdout and exit codes",
+    "CAP-CLI-OPT-003": "the five-sample heuristic matrix has equal detection semantics",
+    "CAP-CLI-OPT-005": "the five-sample aggressive matrix has equal stdout and exit codes",
+    "CAP-CLI-OPT-006": "alltypes detections are equal; the complete Qt6 diagnostic difference is retained",
+    "CAP-CLI-OPT-007": "the five-sample format-result matrix has equal stdout and exit codes",
+    "CAP-CLI-OPT-010": "the five-sample hide-unknown matrix has equal stdout and exit codes",
     "CAP-CLI-MODE-004": "--showstructs is equal both with and without a target",
     "CAP-CLI-MODE-005": "--help and no-argument help are byte-identical",
     "CAP-CLI-MODE-006": "--version is byte-identical",
@@ -79,6 +89,8 @@ COMPLETE: dict[str, str] = {
     "CAP-DISPATCH-006": "the PDF and CFBF fixtures have equal detection trees",
     "CAP-DISPATCH-007": "JPEG, PNG, and generic Image/BMP detection trees are equal",
     "CAP-DISPATCH-008": "empty and plain binary fallback fixtures are equal",
+    "CAP-NEST-002": "resource and overlay recursive-scan gates have equal detection trees",
+    "CAP-NEST-005": "overlay and resource subdevice gate controls have equal detection trees",
     "CAP-NEST-008": "all five nested formatter stdout streams, including the JSON tree, are equal",
 }
 
@@ -86,6 +98,9 @@ PARTIAL: dict[str, str] = {
     "CAP-CLI-MODE-001": "unreadable entropy JSON behavior only",
     "CAP-CLI-MODE-002": "unreadable info JSON behavior only",
     "CAP-DISPATCH-004": "TAR, gzip, and ZIP only; full archive family remains",
+    "CAP-NEST-001": "internal recursive scan is covered; Qt6 directory traversal remains",
+    "CAP-NEST-003": "CLI non-extraction is covered; the Qt6 engine archive option remains",
+    "CAP-RULE-005": "five-sample deep/heuristic effects are covered; independent rule-gate controls remain",
     "CAP-RULE-010": "global typo and HostApi failures expose diagnostics, not the full result error-list contract",
     "CAP-RESULT-001": "CLI JSON exposes only a projection of scalar engine metadata",
     "CAP-RESULT-002": "rule probes expose errors, but not all four engine lists",
@@ -280,6 +295,230 @@ def _validate_output_matrix_report(report: dict[str, Any]) -> None:
         raise ClosurePlanError("CLI output matrix derived failures drift")
 
 
+def _validate_scan_nested_report(report: dict[str, Any]) -> None:
+    if (
+        report.get("expected_revision") != UPSTREAM_COMMIT
+        or report.get("left_revision") != UPSTREAM_COMMIT
+        or report.get("right_revision") != UPSTREAM_COMMIT
+    ):
+        raise ClosurePlanError("CLI scan/nested matrix revision drift")
+    if report.get("equal") is not False:
+        raise ClosurePlanError(
+            "CLI scan/nested matrix must retain Qt6 differences"
+        )
+    cases = report.get("cases")
+    unreadable = report.get("unreadable_input")
+    corpus = report.get("corpus")
+    matrix = report.get("matrix")
+    nested = report.get("nested_corpus", {}).get("cases")
+    if not all(
+        isinstance(value, dict)
+        for value in (cases, unreadable, corpus, matrix, nested)
+    ):
+        raise ClosurePlanError("CLI scan/nested matrix sections are missing")
+    if len(corpus) != 26:
+        raise ClosurePlanError("CLI scan/nested corpus drift")
+    expected_samples = {
+        "empty.bin",
+        "minimal.exe",
+        "minimal.pdf",
+        "payload.zip",
+        "plain.txt",
+    }
+    if set(matrix) != expected_samples:
+        raise ClosurePlanError("CLI scan matrix sample catalog drift")
+    expected_scan_cases = {
+        "default",
+        "deep",
+        "heuristic",
+        "aggressive",
+        "alltypes",
+        "format",
+        "hideunknown",
+        "combined",
+    }
+    expected_nested_samples = {
+        "pdf-member.zip",
+        "nested-zip.zip",
+        "many-pdf-members.zip",
+        "pe-pdf-overlay.exe",
+        "pe-pdf-resource.exe",
+        "pe-many-pdf-resources.exe",
+        "pe-manifest-resource.exe",
+        "pe-zip-overlay.exe",
+    }
+    if set(nested) != expected_nested_samples:
+        raise ClosurePlanError("CLI nested sample catalog drift")
+    expected_nested_cases = {
+        "default",
+        "recursive",
+        "aggressive",
+        "recursive_aggressive",
+    }
+
+    observed_failures = set()
+    for name, record in cases.items():
+        _validate_paired_observation(record, {()}, f"cases.{name}")
+    for name, record in unreadable.items():
+        _validate_paired_observation(
+            record, {()}, f"unreadable_input.{name}"
+        )
+    for name, record in corpus.items():
+        differences = _validate_paired_observation(
+            record, {(), ("stderr",)}, f"corpus.{name}"
+        )
+        if differences:
+            observed_failures.add(f"corpus.{name}.{differences[0]}")
+        if record.get("left_detect_tree") != record.get("right_detect_tree"):
+            raise ClosurePlanError(f"corpus detection tree difference: {name}")
+
+    for sample, sample_record in matrix.items():
+        scan = sample_record.get("scan")
+        if not isinstance(scan, dict) or set(scan) != expected_scan_cases:
+            raise ClosurePlanError(f"CLI scan case catalog drift: {sample}")
+        for name, record in scan.items():
+            label = f"matrix.{sample}.scan.{name}"
+            differences = tuple(record.get("differences", []))
+            if sample == "minimal.exe" and name in {
+                "alltypes",
+                "combined",
+            }:
+                if differences != ("stdout", "stderr"):
+                    raise ClosurePlanError(
+                        f"alltypes diagnostic difference drift: {label}"
+                    )
+                if not _is_known_qt6_warning(
+                    record.get("left", {}), record.get("right", {})
+                ):
+                    raise ClosurePlanError(
+                        f"alltypes stderr difference drift: {label}"
+                    )
+                if (
+                    tuple(record.get("left_changes", []))
+                    != ("stdout",)
+                    or tuple(record.get("right_changes", []))
+                    != ("stdout",)
+                ):
+                    raise ClosurePlanError(
+                        f"alltypes relative effect drift: {label}"
+                    )
+            else:
+                differences = _validate_paired_observation(
+                    record, {(), ("stderr",)}, label
+                )
+                if record.get("left_changes") != record.get("right_changes"):
+                    raise ClosurePlanError(
+                        f"scan relative effect difference: {label}"
+                    )
+            for difference in differences:
+                observed_failures.add(f"{label}.{difference}")
+
+    for sample, sample_record in nested.items():
+        if set(sample_record) != expected_nested_cases:
+            raise ClosurePlanError(
+                f"CLI nested case catalog drift: {sample}"
+            )
+        for name, record in sample_record.items():
+            label = f"nested_corpus.{sample}.{name}"
+            differences = _validate_paired_observation(
+                record, {(), ("stderr",)}, label
+            )
+            if record.get("left_detect_tree") != record.get(
+                "right_detect_tree"
+            ):
+                raise ClosurePlanError(
+                    f"nested detection tree difference: {label}"
+                )
+            if record.get("left_changes") != record.get("right_changes"):
+                raise ClosurePlanError(
+                    f"nested relative effect difference: {label}"
+                )
+            for difference in differences:
+                observed_failures.add(f"{label}.{difference}")
+    if observed_failures != set(report.get("failures", [])):
+        raise ClosurePlanError("CLI scan/nested derived failures drift")
+
+
+def _validate_alltypes_diagnostics(report: dict[str, Any]) -> None:
+    if report.get("upstream_commit") != UPSTREAM_COMMIT:
+        raise ClosurePlanError("alltypes diagnostic revision drift")
+    if report.get("passed") is not True:
+        raise ClosurePlanError("alltypes diagnostic probe did not pass")
+    facts = report.get("facts")
+    if not isinstance(facts, dict) or not facts or not all(
+        value is True for value in facts.values()
+    ):
+        raise ClosurePlanError("alltypes diagnostic facts changed")
+    repetitions = report.get("repetitions")
+    if not isinstance(repetitions, int) or repetitions < 2:
+        raise ClosurePlanError("alltypes diagnostic repetitions drift")
+    cases = report.get("cases")
+    if not isinstance(cases, dict) or set(cases) != {
+        "alltypes",
+        "combined",
+    }:
+        raise ClosurePlanError("alltypes diagnostic case catalog drift")
+    expected = report.get("expected_normalized_diagnostics")
+    if not isinstance(expected, str) or "MSDOS_Script(<address>)" not in expected:
+        raise ClosurePlanError("alltypes normalized diagnostic drift")
+    for case_name, case in cases.items():
+        observations = case.get("observations")
+        if not isinstance(observations, dict) or set(observations) != {
+            "qt5",
+            "qt6",
+        }:
+            raise ClosurePlanError(
+                f"alltypes oracle catalog drift: {case_name}"
+            )
+        qt5 = observations["qt5"]
+        qt6 = observations["qt6"]
+        if len(qt5) != repetitions or len(qt6) != repetitions:
+            raise ClosurePlanError(
+                f"alltypes repetition count drift: {case_name}"
+            )
+        baseline_document = qt5[0].get("json_document")
+        for oracle_name, items in observations.items():
+            for index, item in enumerate(items):
+                label = f"{case_name}.{oracle_name}.{index}"
+                try:
+                    stdout = base64.b64decode(
+                        item["stdout_base64"], validate=True
+                    )
+                    stderr = base64.b64decode(
+                        item["stderr_base64"], validate=True
+                    )
+                except (KeyError, ValueError) as error:
+                    raise ClosurePlanError(
+                        f"invalid alltypes raw stream: {label}"
+                    ) from error
+                if (
+                    len(stdout) != item.get("stdout_bytes")
+                    or sha256(stdout) != item.get("stdout_sha256")
+                    or len(stderr) != item.get("stderr_bytes")
+                    or sha256(stderr) != item.get("stderr_sha256")
+                ):
+                    raise ClosurePlanError(
+                        f"alltypes raw stream identity drift: {label}"
+                    )
+                if item.get("json_document") != baseline_document:
+                    raise ClosurePlanError(
+                        f"alltypes JSON difference: {label}"
+                    )
+                if oracle_name == "qt5":
+                    if item.get("diagnostics") != "" or stderr != b"":
+                        raise ClosurePlanError(
+                            f"unexpected Qt5 alltypes diagnostic: {label}"
+                        )
+                elif (
+                    item.get("normalized_diagnostics") != expected
+                    or "0x" not in item.get("diagnostics", "")
+                    or stderr != b"Unimplemented code.\n" * 4
+                ):
+                    raise ClosurePlanError(
+                        f"unexpected Qt6 alltypes diagnostic: {label}"
+                    )
+
+
 CAMPAIGNS: dict[str, dict[str, Any]] = {
     "cli_scan_baseline": {
         "fixture": "reuse baseline-corpus and scan-option-boundary fixtures",
@@ -449,6 +688,8 @@ def _validate_inputs(
             raise ClosurePlanError(f"report rules commit drift: {path}")
     _validate_output_boundary_report(reports[REPORT_PATHS[4]])
     _validate_output_matrix_report(reports[REPORT_PATHS[5]])
+    _validate_scan_nested_report(reports[REPORT_PATHS[6]])
+    _validate_alltypes_diagnostics(reports[REPORT_PATHS[7]])
     return capabilities
 
 
@@ -563,6 +804,21 @@ def build_plan(
                 ),
                 "stdout_and_exit_equal": True,
                 "right_stderr_sha256": QT6_UNIMPLEMENTED_SHA256,
+            },
+            {
+                "source": REPORT_PATHS[6],
+                "scope": "scan-option and nested gate raw streams",
+                "difference_count": len(
+                    reports[REPORT_PATHS[6]]["failures"]
+                ),
+                "detection_semantics_equal_except_trailing_diagnostics": True,
+            },
+            {
+                "source": REPORT_PATHS[7],
+                "scope": "alltypes and combined trailing diagnostics",
+                "repetitions": reports[REPORT_PATHS[7]]["repetitions"],
+                "json_documents_equal": True,
+                "raw_streams_retained_before_address_normalization": True,
             },
         ],
         "rows": rows,
