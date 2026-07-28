@@ -97,9 +97,9 @@ class ProbeArchiveStructureHarnessTests(unittest.TestCase):
         )
         self.assertEqual(
             self.report["fixture_manifest"]["sample_count"],
-            33,
+            56,
         )
-        self.assertEqual(self.report["execution_count"], 132)
+        self.assertEqual(self.report["execution_count"], 224)
 
     def test_all_samples_have_four_exact_modes(self):
         self.assertEqual(
@@ -143,7 +143,15 @@ class ProbeArchiveStructureHarnessTests(unittest.TestCase):
                         mode=mode,
                     ):
                         self.assertEqual(case["exit_code"], 0)
-                        self.assertEqual(case["stderr"]["bytes"], 0)
+                        self.assertEqual(
+                            case["stderr"]["bytes"],
+                            len(
+                                MODULE.expected_stderr(
+                                    sample_name,
+                                    mode,
+                                )
+                            ),
+                        )
                         root_filetype, root_names = (
                             MODULE.expected_root(sample_name)
                         )
@@ -216,6 +224,94 @@ class ProbeArchiveStructureHarnessTests(unittest.TestCase):
                 cases[sample]["archive"]["summary"]["streams"],
                 [],
             )
+
+    def test_zero_and_max_extrema_are_exact(self):
+        cases = self.report["cases"]
+        for sample in (
+            "sevenzip-next-header-offset-zero.7z",
+            "sevenzip-next-header-offset-max-u64.7z",
+            "sevenzip-next-header-size-zero.7z",
+            "sevenzip-next-header-size-max-u64.7z",
+            "rar4-packed-size-zero.rar",
+            "rar4-unpacked-size-max-u32.rar",
+            "cab-file-size-max-u32.cab",
+            "cab-compressed-size-zero.cab",
+            "cab-compressed-size-max-u16.cab",
+            "iso9660-logical-block-size-zero.iso",
+            "iso9660-logical-block-size-max-u16.iso",
+            "iso9660-payload-size-max-u32.iso",
+        ):
+            with self.subTest(sample=sample):
+                self.assertEqual(
+                    cases[sample]["archive"]["summary"]["streams"],
+                    [],
+                )
+
+        for sample in (
+            "rar4-packed-size-max-u32.rar",
+            "rar4-name-size-zero.rar",
+            "rar4-name-size-max-u16.rar",
+            "cab-cabinet-size-zero.cab",
+            "cab-cabinet-size-max-u32.cab",
+            "iso9660-payload-record-length-max-u8.iso",
+        ):
+            with self.subTest(sample=sample):
+                self.assertEqual(
+                    cases[sample]["archive"]["summary"]["streams"],
+                    [MODULE.PDF_331],
+                )
+
+        for sample in (
+            "rar4-unpacked-size-zero.rar",
+            "cab-file-size-zero.cab",
+            "iso9660-payload-size-zero.iso",
+        ):
+            with self.subTest(sample=sample):
+                self.assertEqual(
+                    cases[sample]["archive"]["summary"]["streams"],
+                    [],
+                )
+                self.assertEqual(
+                    cases[sample]["archive_aggressive"]["summary"][
+                        "streams"
+                    ],
+                    [MODULE.EMPTY_0],
+                )
+
+        for sample in (
+            "iso9660-payload-extent-zero.iso",
+            "iso9660-payload-extent-max-u32.iso",
+        ):
+            with self.subTest(sample=sample):
+                self.assertEqual(
+                    cases[sample]["archive"]["summary"]["streams"],
+                    [],
+                )
+                self.assertEqual(
+                    cases[sample]["archive_aggressive"]["summary"][
+                        "streams"
+                    ],
+                    [MODULE.BINARY_331],
+                )
+
+    def test_iso_max_extent_stderr_is_exact(self):
+        cases = self.report["cases"][
+            "iso9660-payload-extent-max-u32.iso"
+        ]
+        expected_digest = hashlib.sha256(
+            MODULE.ISO_MAX_EXTENT_STDERR
+        ).hexdigest()
+        for mode in ("archive", "archive_aggressive"):
+            reference = cases[mode]["stderr"]
+            self.assertEqual(reference["sha256"], expected_digest)
+            artifact = self.report["raw_artifacts"][expected_digest]
+            raw = zlib.decompress(
+                base64.b64decode(
+                    artifact["base64"],
+                    validate=True,
+                )
+            )
+            self.assertEqual(raw, MODULE.ISO_MAX_EXTENT_STDERR)
 
     def test_raw_artifacts_are_content_addressed_and_exact(self):
         for digest, artifact in self.report["raw_artifacts"].items():

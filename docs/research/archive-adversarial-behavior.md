@@ -33,7 +33,7 @@ Last updated: 2026-07-28
 截断、central-directory 缺失、越界 offset、未知 method、路径 metadata、
 mixed-member filter 和 1 MiB/843.58:1 压缩比测试点。该 gap 仍因更高资源边界、
 ZIP AES、其他 ZIP 压缩算法、RAR 的压缩/加密、solid/multi-volume、
-结构字段极值/组合和跨平台行为保持开放。7Z、RAR4、CAB、ISO9660 的系统化 EOF
+剩余结构字段、大小端冲突/多记录组合和跨平台行为保持开放。7Z、RAR4、CAB、ISO9660 的系统化 EOF
 前缀截断阶梯已由
 [`archive-truncation-behavior.md`](archive-truncation-behavior.md) 固定。
 同四格式的首轮 CRC/size/offset/method/record-field 突变已由

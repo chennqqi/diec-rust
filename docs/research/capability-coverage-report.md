@@ -121,7 +121,7 @@ NPM 精确路径直接检测为真，但公共自动
 local-header fallback、1 MiB/843.58:1 和 mixed filter 也已固定；
 7Z/RAR4/CAB/ISO9660 的 26-case EOF 前缀阶梯进一步固定格式识别与 child
 展开阈值，包括 RAR4 无 end header、ISO9660 EOF−1 仍产生声明大小 child
-的边界；同四格式的 33-case CRC/size/offset/method/record-field 突变进一步
+的边界；同四格式的 56-case CRC/size/offset/method/record-field/0/max 突变进一步
 固定 CRC 容忍、静默无 child、aggressive-only Binary 输出与声明 child size
 边界；项目生成的 RAR5 Store 单成员及 solid 双成员又在 8 次固定执行中分别
 展开一/两个 PDF，普通与 aggressive archive 输出一致，fixture 不包含专有
@@ -135,7 +135,7 @@ local-header fallback、1 MiB/843.58:1 和 mixed filter 也已固定；
 [`archive-truncation-behavior.md`](archive-truncation-behavior.md)、
 [`archive-structure-behavior.md`](archive-structure-behavior.md)、
 [`archive-rar5-store-behavior.md`](archive-rar5-store-behavior.md)。
-RAR 压缩算法、其他结构字段极值/组合、真实资源耗尽和跨平台仍缺，因此 gap
+RAR 压缩算法、剩余字段/大小端冲突/多记录组合、真实资源耗尽和跨平台仍缺，因此 gap
 行数与状态均不变。
 
 原 `CAP-GAP-005` 已由

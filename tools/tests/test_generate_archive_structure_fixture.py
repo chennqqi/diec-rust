@@ -1,6 +1,8 @@
 import binascii
+import contextlib
 import hashlib
 import importlib.util
+import io
 import json
 from pathlib import Path
 import sys
@@ -80,7 +82,7 @@ class GenerateArchiveStructureFixtureTests(unittest.TestCase):
             root = Path(output_dir)
             manifest = MODULE.generate(root)
             controls = MODULE.controls()
-            self.assertEqual(len(manifest["samples"]), 33)
+            self.assertEqual(len(manifest["samples"]), 56)
             self.assertEqual(
                 {
                     sample["control_name"]
@@ -250,6 +252,76 @@ class GenerateArchiveStructureFixtureTests(unittest.TestCase):
                     "little",
                 ),
                 len(MODULE.FORMAT.PDF) + 1,
+            )
+            self.assertEqual(
+                int.from_bytes(
+                    samples[
+                        "sevenzip-next-header-offset-max-u64.7z"
+                    ][12:20],
+                    "little",
+                ),
+                0xFFFFFFFFFFFFFFFF,
+            )
+            self.assertEqual(
+                int.from_bytes(
+                    samples["rar4-name-size-max-u16.rar"][46:48],
+                    "little",
+                ),
+                0xFFFF,
+            )
+            self.assertEqual(
+                int.from_bytes(
+                    samples["cab-file-size-max-u32.cab"][44:48],
+                    "little",
+                ),
+                0xFFFFFFFF,
+            )
+            iso_max = samples[
+                "iso9660-payload-extent-max-u32.iso"
+            ]
+            self.assertEqual(
+                int.from_bytes(
+                    iso_max[
+                        MODULE.ISO_PAYLOAD_RECORD
+                        + 2 : MODULE.ISO_PAYLOAD_RECORD
+                        + 6
+                    ],
+                    "little",
+                ),
+                0xFFFFFFFF,
+            )
+            self.assertEqual(
+                int.from_bytes(
+                    iso_max[
+                        MODULE.ISO_PAYLOAD_RECORD
+                        + 6 : MODULE.ISO_PAYLOAD_RECORD
+                        + 10
+                    ],
+                    "big",
+                ),
+                0xFFFFFFFF,
+            )
+
+    def test_cli_can_write_a_separate_reference_manifest(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            fixture = root / "fixture"
+            reference = root / "reference.json"
+            original_argv = sys.argv
+            sys.argv = [
+                str(MODULE_PATH),
+                str(fixture),
+                "--manifest-output",
+                str(reference),
+            ]
+            try:
+                with contextlib.redirect_stdout(io.StringIO()):
+                    self.assertEqual(MODULE.main(), 0)
+            finally:
+                sys.argv = original_argv
+            self.assertEqual(
+                reference.read_bytes(),
+                (fixture / "manifest.json").read_bytes(),
             )
 
 

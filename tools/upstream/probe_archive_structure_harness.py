@@ -49,6 +49,10 @@ EXPECTED_NAMES = {
     "sevenzip-start-header-crc-bit-flip.7z",
     "sevenzip-next-header-offset-past-eof.7z",
     "sevenzip-next-header-size-past-eof.7z",
+    "sevenzip-next-header-offset-zero.7z",
+    "sevenzip-next-header-offset-max-u64.7z",
+    "sevenzip-next-header-size-zero.7z",
+    "sevenzip-next-header-size-max-u64.7z",
     "sevenzip-next-header-crc-bit-flip.7z",
     "sevenzip-packed-crc-bit-flip.7z",
     "sevenzip-unpacked-size-plus-one.7z",
@@ -60,6 +64,12 @@ EXPECTED_NAMES = {
     "rar4-data-crc-bit-flip.rar",
     "rar4-method-unknown-0x7f.rar",
     "rar4-name-size-plus-one.rar",
+    "rar4-packed-size-zero.rar",
+    "rar4-packed-size-max-u32.rar",
+    "rar4-unpacked-size-zero.rar",
+    "rar4-unpacked-size-max-u32.rar",
+    "rar4-name-size-zero.rar",
+    "rar4-name-size-max-u16.rar",
     "cab-control-none.cab",
     "cab-cabinet-size-minus-one.cab",
     "cab-files-offset-plus-one.cab",
@@ -69,6 +79,12 @@ EXPECTED_NAMES = {
     "cab-folder-offset-plus-one.cab",
     "cab-compressed-size-plus-one.cab",
     "cab-uncompressed-size-plus-one.cab",
+    "cab-cabinet-size-zero.cab",
+    "cab-cabinet-size-max-u32.cab",
+    "cab-file-size-zero.cab",
+    "cab-file-size-max-u32.cab",
+    "cab-compressed-size-zero.cab",
+    "cab-compressed-size-max-u16.cab",
     "iso9660-control-none.iso",
     "iso9660-descriptor-id-bit-flip.iso",
     "iso9660-volume-size-minus-one-block.iso",
@@ -78,6 +94,13 @@ EXPECTED_NAMES = {
     "iso9660-payload-record-length-zero.iso",
     "iso9660-payload-extent-plus-one-block.iso",
     "iso9660-payload-size-plus-one.iso",
+    "iso9660-logical-block-size-zero.iso",
+    "iso9660-logical-block-size-max-u16.iso",
+    "iso9660-payload-record-length-max-u8.iso",
+    "iso9660-payload-extent-zero.iso",
+    "iso9660-payload-extent-max-u32.iso",
+    "iso9660-payload-size-zero.iso",
+    "iso9660-payload-size-max-u32.iso",
 }
 PDF_331 = {
     "detection_names": ["PDF", "HeaderComment"],
@@ -99,6 +122,11 @@ BINARY_331 = {
     "filetype": "Binary",
     "size": "331",
 }
+EMPTY_0 = {
+    "detection_names": ["Empty file"],
+    "filetype": "Binary",
+    "size": "0",
+}
 NORMAL_CHILDREN = {
     "sevenzip-control-none.7z": [PDF_331],
     "sevenzip-start-header-crc-bit-flip.7z": [PDF_331],
@@ -109,18 +137,33 @@ NORMAL_CHILDREN = {
     "rar4-file-header-crc-bit-flip.rar": [PDF_331],
     "rar4-packed-size-plus-one.rar": [PDF_331],
     "rar4-name-size-plus-one.rar": [PDF_331],
+    "rar4-packed-size-max-u32.rar": [PDF_331],
+    "rar4-name-size-zero.rar": [PDF_331],
+    "rar4-name-size-max-u16.rar": [PDF_331],
     "cab-control-none.cab": [PDF_331],
     "cab-cabinet-size-minus-one.cab": [PDF_331],
     "cab-uncompressed-size-plus-one.cab": [PDF_331],
+    "cab-cabinet-size-zero.cab": [PDF_331],
+    "cab-cabinet-size-max-u32.cab": [PDF_331],
     "iso9660-control-none.iso": [PDF_331],
     "iso9660-volume-size-minus-one-block.iso": [PDF_331],
     "iso9660-root-size-minus-one.iso": [PDF_331],
     "iso9660-payload-size-plus-one.iso": [PDF_332],
+    "iso9660-payload-record-length-max-u8.iso": [PDF_331],
 }
 AGGRESSIVE_ONLY_CHILDREN = {
     "cab-files-offset-plus-one.cab": [BINARY_1],
     "cab-method-unknown-0xffff.cab": [BINARY_331],
+    "rar4-unpacked-size-zero.rar": [EMPTY_0],
+    "cab-file-size-zero.cab": [EMPTY_0],
+    "iso9660-payload-extent-zero.iso": [BINARY_331],
+    "iso9660-payload-extent-max-u32.iso": [BINARY_331],
+    "iso9660-payload-size-zero.iso": [EMPTY_0],
 }
+ISO_MAX_EXTENT_STDERR = (
+    b"QBuffer::seek: Invalid pos: 8796093020160\n"
+    b"QBuffer::seek: Invalid pos: 8796093020160\n"
+)
 
 
 class ProbeError(ValueError):
@@ -157,6 +200,15 @@ def expected_streams(
     ):
         return AGGRESSIVE_ONLY_CHILDREN[sample_name]
     return NORMAL_CHILDREN.get(sample_name, [])
+
+
+def expected_stderr(sample_name: str, mode: str) -> bytes:
+    if (
+        sample_name == "iso9660-payload-extent-max-u32.iso"
+        and mode in {"archive", "archive_aggressive"}
+    ):
+        return ISO_MAX_EXTENT_STDERR
+    return b""
 
 
 def load_fixture(
@@ -269,7 +321,7 @@ def validate_case(
 ) -> None:
     if process.returncode != 0:
         raise ProbeError(f"nonzero exit: {sample_name}/{mode}")
-    if process.stderr:
+    if process.stderr != expected_stderr(sample_name, mode):
         raise ProbeError(f"stderr changed: {sample_name}/{mode}")
     root_filetype, root_names = expected_root(sample_name)
     if (
@@ -402,10 +454,12 @@ def build_report(
         cases[sample_name] = sample_cases
 
     facts = {
-        "all_structure_cases_exit_zero_without_stderr": all(
-            case["exit_code"] == 0 and case["stderr"]["bytes"] == 0
-            for sample_cases in cases.values()
-            for case in sample_cases.values()
+        "all_structure_cases_exit_zero_with_exact_stderr": all(
+            case["exit_code"] == 0
+            and case["stderr"]["sha256"]
+            == sha256(expected_stderr(sample_name, mode))
+            for sample_name, sample_cases in cases.items()
+            for mode, case in sample_cases.items()
         ),
         "release_and_harness_default_outputs_are_equal": all(
             sample_cases["default"]["stdout"]
@@ -430,6 +484,15 @@ def build_report(
                 "sevenzip-unpacked-size-plus-one.7z",
             )
         ),
+        "sevenzip_zero_and_max_next_header_fields_suppress_child": all(
+            _case_stream_count(cases, sample) == 0
+            for sample in (
+                "sevenzip-next-header-offset-zero.7z",
+                "sevenzip-next-header-offset-max-u64.7z",
+                "sevenzip-next-header-size-zero.7z",
+                "sevenzip-next-header-size-max-u64.7z",
+            )
+        ),
         "rar4_header_crc_mutations_still_unpack": all(
             _case_stream_count(cases, sample) == 1
             for sample in (
@@ -451,6 +514,32 @@ def build_report(
                 "rar4-method-unknown-0x7f.rar",
                 "rar4-unpacked-size-plus-one.rar",
             )
+        ),
+        "rar4_packed_max_and_name_extremes_still_unpack": all(
+            _case_stream_count(cases, sample) == 1
+            for sample in (
+                "rar4-packed-size-max-u32.rar",
+                "rar4-name-size-zero.rar",
+                "rar4-name-size-max-u16.rar",
+            )
+        ),
+        "rar4_packed_zero_and_unpacked_max_suppress_child": all(
+            _case_stream_count(cases, sample) == 0
+            for sample in (
+                "rar4-packed-size-zero.rar",
+                "rar4-unpacked-size-max-u32.rar",
+            )
+        ),
+        "rar4_unpacked_zero_is_aggressive_empty_child": (
+            _case_stream_count(
+                cases,
+                "rar4-unpacked-size-zero.rar",
+            )
+            == 0
+            and cases["rar4-unpacked-size-zero.rar"][
+                "archive_aggressive"
+            ]["summary"]["streams"]
+            == [EMPTY_0]
         ),
         "cabinet_size_and_uncompressed_size_mutations_still_unpack": all(
             _case_stream_count(cases, sample) == 1
@@ -476,6 +565,28 @@ def build_report(
                 "cab-file-size-plus-one.cab",
                 "cab-folder-offset-plus-one.cab",
                 "cab-compressed-size-plus-one.cab",
+            )
+        ),
+        "cab_cabinet_size_extremes_still_unpack": all(
+            _case_stream_count(cases, sample) == 1
+            for sample in (
+                "cab-cabinet-size-zero.cab",
+                "cab-cabinet-size-max-u32.cab",
+            )
+        ),
+        "cab_file_zero_is_aggressive_empty_child": (
+            _case_stream_count(cases, "cab-file-size-zero.cab") == 0
+            and cases["cab-file-size-zero.cab"][
+                "archive_aggressive"
+            ]["summary"]["streams"]
+            == [EMPTY_0]
+        ),
+        "cab_file_max_and_compressed_extremes_suppress_child": all(
+            _case_stream_count(cases, sample) == 0
+            for sample in (
+                "cab-file-size-max-u32.cab",
+                "cab-compressed-size-zero.cab",
+                "cab-compressed-size-max-u16.cab",
             )
         ),
         "iso9660_descriptor_id_mutation_falls_back_to_binary": (
@@ -505,6 +616,54 @@ def build_report(
                 "iso9660-payload-record-length-zero.iso",
                 "iso9660-payload-extent-plus-one-block.iso",
             )
+        ),
+        "iso9660_block_extremes_and_payload_size_max_suppress_child": all(
+            _case_stream_count(cases, sample) == 0
+            for sample in (
+                "iso9660-logical-block-size-zero.iso",
+                "iso9660-logical-block-size-max-u16.iso",
+                "iso9660-payload-size-max-u32.iso",
+            )
+        ),
+        "iso9660_record_length_max_still_unpacks": (
+            _case_stream_count(
+                cases,
+                "iso9660-payload-record-length-max-u8.iso",
+            )
+            == 1
+        ),
+        "iso9660_zero_size_is_aggressive_empty_child": (
+            _case_stream_count(
+                cases,
+                "iso9660-payload-size-zero.iso",
+            )
+            == 0
+            and cases["iso9660-payload-size-zero.iso"][
+                "archive_aggressive"
+            ]["summary"]["streams"]
+            == [EMPTY_0]
+        ),
+        "iso9660_extent_extremes_are_aggressive_binary_children": all(
+            _case_stream_count(cases, sample) == 0
+            and cases[sample]["archive_aggressive"]["summary"][
+                "streams"
+            ]
+            == [BINARY_331]
+            for sample in (
+                "iso9660-payload-extent-zero.iso",
+                "iso9660-payload-extent-max-u32.iso",
+            )
+        ),
+        "iso9660_max_extent_emits_exact_seek_diagnostics": all(
+            cases["iso9660-payload-extent-max-u32.iso"][mode][
+                "stderr"
+            ]
+            == {
+                "artifact_sha256": sha256(ISO_MAX_EXTENT_STDERR),
+                "bytes": len(ISO_MAX_EXTENT_STDERR),
+                "sha256": sha256(ISO_MAX_EXTENT_STDERR),
+            }
+            for mode in ("archive", "archive_aggressive")
         ),
     }
     root = pathlib.Path(__file__).resolve().parents[2]

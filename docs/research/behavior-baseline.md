@@ -281,9 +281,9 @@ elapsed 值与固定规则执行序列另见
   [`archive-adversarial-behavior.md`](archive-adversarial-behavior.md) 固定；
   7Z/RAR4/CAB/ISO9660 的格式识别与 child 展开 EOF 前缀阶梯已由
   [`archive-truncation-behavior.md`](archive-truncation-behavior.md) 固定；
-  同四格式首轮 CRC/size/offset/method/record-field 突变已由
+  同四格式的 56-case CRC/size/offset/method/record-field/0/max 突变已由
   [`archive-structure-behavior.md`](archive-structure-behavior.md) 固定；
-  其他算法、结构字段极值/组合及更高资源边界仍待验证；
+  其他算法、剩余字段/大小端冲突/多记录组合及更高资源边界仍待验证；
   7Z Copy/LZMA/LZMA2/PPMd7/BZip2/Deflate/Deflate64、x86 BCJ+LZMA2、
   BCJ2+LZMA2 no-branch/E8/E9/JCC、
   ARM64-BCJ+LZMA2 BL/ADRP、

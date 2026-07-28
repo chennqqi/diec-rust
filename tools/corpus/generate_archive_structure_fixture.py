@@ -104,6 +104,26 @@ def _grow_7z_next_header_past_eof(data: bytearray) -> None:
     _recompute_7z_start_crc(data)
 
 
+def _set_7z_next_header_offset_zero(data: bytearray) -> None:
+    _write_u64(data, 12, 0)
+    _recompute_7z_start_crc(data)
+
+
+def _set_7z_next_header_offset_max(data: bytearray) -> None:
+    _write_u64(data, 12, 0xFFFFFFFFFFFFFFFF)
+    _recompute_7z_start_crc(data)
+
+
+def _set_7z_next_header_size_zero(data: bytearray) -> None:
+    _write_u64(data, 20, 0)
+    _recompute_7z_start_crc(data)
+
+
+def _set_7z_next_header_size_max(data: bytearray) -> None:
+    _write_u64(data, 20, 0xFFFFFFFFFFFFFFFF)
+    _recompute_7z_start_crc(data)
+
+
 def _flip_7z_next_header_crc(data: bytearray) -> None:
     data[28] ^= 1
     _recompute_7z_start_crc(data)
@@ -197,6 +217,36 @@ def _grow_rar_name_size(data: bytearray) -> None:
     _recompute_rar_header_crc(data, 20)
 
 
+def _set_rar_packed_size_zero(data: bytearray) -> None:
+    _write_u32(data, 27, 0)
+    _recompute_rar_header_crc(data, 20)
+
+
+def _set_rar_packed_size_max(data: bytearray) -> None:
+    _write_u32(data, 27, 0xFFFFFFFF)
+    _recompute_rar_header_crc(data, 20)
+
+
+def _set_rar_unpacked_size_zero(data: bytearray) -> None:
+    _write_u32(data, 31, 0)
+    _recompute_rar_header_crc(data, 20)
+
+
+def _set_rar_unpacked_size_max(data: bytearray) -> None:
+    _write_u32(data, 31, 0xFFFFFFFF)
+    _recompute_rar_header_crc(data, 20)
+
+
+def _set_rar_name_size_zero(data: bytearray) -> None:
+    _write_u16(data, 46, 0)
+    _recompute_rar_header_crc(data, 20)
+
+
+def _set_rar_name_size_max(data: bytearray) -> None:
+    _write_u16(data, 46, 0xFFFF)
+    _recompute_rar_header_crc(data, 20)
+
+
 def _shrink_cabinet_size(data: bytearray) -> None:
     _write_u32(data, 8, len(data) - 1)
 
@@ -227,6 +277,30 @@ def _grow_cab_compressed_size(data: bytearray) -> None:
 
 def _grow_cab_uncompressed_size(data: bytearray) -> None:
     _write_u16(data, 78, len(FORMAT.PDF) + 1)
+
+
+def _set_cab_cabinet_size_zero(data: bytearray) -> None:
+    _write_u32(data, 8, 0)
+
+
+def _set_cab_cabinet_size_max(data: bytearray) -> None:
+    _write_u32(data, 8, 0xFFFFFFFF)
+
+
+def _set_cab_file_size_zero(data: bytearray) -> None:
+    _write_u32(data, 44, 0)
+
+
+def _set_cab_file_size_max(data: bytearray) -> None:
+    _write_u32(data, 44, 0xFFFFFFFF)
+
+
+def _set_cab_compressed_size_zero(data: bytearray) -> None:
+    _write_u16(data, 76, 0)
+
+
+def _set_cab_compressed_size_max(data: bytearray) -> None:
+    _write_u16(data, 76, 0xFFFF)
 
 
 ISO_PVD = 16 * 2048
@@ -270,6 +344,34 @@ def _grow_iso_payload_size(data: bytearray) -> None:
     )
 
 
+def _set_iso_block_size_zero(data: bytearray) -> None:
+    _write_both16(data, ISO_PVD + 128, 0)
+
+
+def _set_iso_block_size_max(data: bytearray) -> None:
+    _write_both16(data, ISO_PVD + 128, 0xFFFF)
+
+
+def _set_iso_payload_record_length_max(data: bytearray) -> None:
+    data[ISO_PAYLOAD_RECORD] = 0xFF
+
+
+def _set_iso_payload_extent_zero(data: bytearray) -> None:
+    _write_both32(data, ISO_PAYLOAD_RECORD + 2, 0)
+
+
+def _set_iso_payload_extent_max(data: bytearray) -> None:
+    _write_both32(data, ISO_PAYLOAD_RECORD + 2, 0xFFFFFFFF)
+
+
+def _set_iso_payload_size_zero(data: bytearray) -> None:
+    _write_both32(data, ISO_PAYLOAD_RECORD + 10, 0)
+
+
+def _set_iso_payload_size_max(data: bytearray) -> None:
+    _write_both32(data, ISO_PAYLOAD_RECORD + 10, 0xFFFFFFFF)
+
+
 CASES: tuple[
     tuple[str, str, str, str, str, Mutation | None],
     ...,
@@ -298,6 +400,38 @@ CASES: tuple[
         "next-header-size",
         "past-eof",
         _grow_7z_next_header_past_eof,
+    ),
+    (
+        "sevenzip",
+        "7Z",
+        "7z",
+        "next-header-offset",
+        "zero",
+        _set_7z_next_header_offset_zero,
+    ),
+    (
+        "sevenzip",
+        "7Z",
+        "7z",
+        "next-header-offset",
+        "max-u64",
+        _set_7z_next_header_offset_max,
+    ),
+    (
+        "sevenzip",
+        "7Z",
+        "7z",
+        "next-header-size",
+        "zero",
+        _set_7z_next_header_size_zero,
+    ),
+    (
+        "sevenzip",
+        "7Z",
+        "7z",
+        "next-header-size",
+        "max-u64",
+        _set_7z_next_header_size_max,
     ),
     (
         "sevenzip",
@@ -380,6 +514,54 @@ CASES: tuple[
         "plus-one",
         _grow_rar_name_size,
     ),
+    (
+        "rar4",
+        "RAR4",
+        "rar",
+        "packed-size",
+        "zero",
+        _set_rar_packed_size_zero,
+    ),
+    (
+        "rar4",
+        "RAR4",
+        "rar",
+        "packed-size",
+        "max-u32",
+        _set_rar_packed_size_max,
+    ),
+    (
+        "rar4",
+        "RAR4",
+        "rar",
+        "unpacked-size",
+        "zero",
+        _set_rar_unpacked_size_zero,
+    ),
+    (
+        "rar4",
+        "RAR4",
+        "rar",
+        "unpacked-size",
+        "max-u32",
+        _set_rar_unpacked_size_max,
+    ),
+    (
+        "rar4",
+        "RAR4",
+        "rar",
+        "name-size",
+        "zero",
+        _set_rar_name_size_zero,
+    ),
+    (
+        "rar4",
+        "RAR4",
+        "rar",
+        "name-size",
+        "max-u16",
+        _set_rar_name_size_max,
+    ),
     ("cab", "CAB", "cab", "control", "none", None),
     (
         "cab",
@@ -445,6 +627,54 @@ CASES: tuple[
         "plus-one",
         _grow_cab_uncompressed_size,
     ),
+    (
+        "cab",
+        "CAB",
+        "cab",
+        "cabinet-size",
+        "zero",
+        _set_cab_cabinet_size_zero,
+    ),
+    (
+        "cab",
+        "CAB",
+        "cab",
+        "cabinet-size",
+        "max-u32",
+        _set_cab_cabinet_size_max,
+    ),
+    (
+        "cab",
+        "CAB",
+        "cab",
+        "file-size",
+        "zero",
+        _set_cab_file_size_zero,
+    ),
+    (
+        "cab",
+        "CAB",
+        "cab",
+        "file-size",
+        "max-u32",
+        _set_cab_file_size_max,
+    ),
+    (
+        "cab",
+        "CAB",
+        "cab",
+        "compressed-size",
+        "zero",
+        _set_cab_compressed_size_zero,
+    ),
+    (
+        "cab",
+        "CAB",
+        "cab",
+        "compressed-size",
+        "max-u16",
+        _set_cab_compressed_size_max,
+    ),
     ("iso9660", "ISO9660", "iso", "control", "none", None),
     (
         "iso9660",
@@ -509,6 +739,62 @@ CASES: tuple[
         "payload-size",
         "plus-one",
         _grow_iso_payload_size,
+    ),
+    (
+        "iso9660",
+        "ISO9660",
+        "iso",
+        "logical-block-size",
+        "zero",
+        _set_iso_block_size_zero,
+    ),
+    (
+        "iso9660",
+        "ISO9660",
+        "iso",
+        "logical-block-size",
+        "max-u16",
+        _set_iso_block_size_max,
+    ),
+    (
+        "iso9660",
+        "ISO9660",
+        "iso",
+        "payload-record-length",
+        "max-u8",
+        _set_iso_payload_record_length_max,
+    ),
+    (
+        "iso9660",
+        "ISO9660",
+        "iso",
+        "payload-extent",
+        "zero",
+        _set_iso_payload_extent_zero,
+    ),
+    (
+        "iso9660",
+        "ISO9660",
+        "iso",
+        "payload-extent",
+        "max-u32",
+        _set_iso_payload_extent_max,
+    ),
+    (
+        "iso9660",
+        "ISO9660",
+        "iso",
+        "payload-size",
+        "zero",
+        _set_iso_payload_size_zero,
+    ),
+    (
+        "iso9660",
+        "ISO9660",
+        "iso",
+        "payload-size",
+        "max-u32",
+        _set_iso_payload_size_max,
     ),
 )
 
@@ -617,8 +903,18 @@ def generate(output_dir: pathlib.Path) -> dict[str, object]:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("output_dir", type=pathlib.Path)
+    parser.add_argument("--manifest-output", type=pathlib.Path)
     args = parser.parse_args()
-    print(json.dumps(generate(args.output_dir), indent=2, sort_keys=True))
+    manifest = generate(args.output_dir)
+    serialized = json.dumps(manifest, indent=2, sort_keys=True) + "\n"
+    if args.manifest_output is not None:
+        args.manifest_output.parent.mkdir(parents=True, exist_ok=True)
+        args.manifest_output.write_text(
+            serialized,
+            encoding="utf-8",
+            newline="\n",
+        )
+    print(serialized, end="")
     return 0
 
 

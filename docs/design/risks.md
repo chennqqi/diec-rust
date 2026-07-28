@@ -312,15 +312,17 @@ baseline 的变更都要检查本表。
   ISO9660 的 26-case EOF 前缀阶梯：7Z/CAB EOF−1 识别格式但无 child，
   RAR4 不需要 end header，ISO9660 EOF−1 仍产生声明大小 child。详见
   [`archive-truncation-behavior.md`](../research/archive-truncation-behavior.md)。
-  后续 132-run oracle 又固定同四格式的 33-case CRC/size/offset/method/
-  record-field 突变，包括 7Z/RAR header CRC 容忍、RAR data CRC 拒绝、
-  CAB aggressive-only Binary 输出和 ISO9660 声明 size 驱动 child 大小，见
+  后续 224-run oracle 又固定同四格式的 56-case CRC/size/offset/method/
+  record-field/0/max 突变，包括 7Z/RAR header CRC 容忍、RAR data CRC 拒绝、
+  RAR/CAB/ISO zero-size aggressive child、CAB aggressive-only Binary 输出、
+  ISO9660 声明 size 驱动 child 大小及 max extent 的精确 Qt seek 诊断，见
   [`archive-structure-behavior.md`](../research/archive-structure-behavior.md)。
   另一个 8-run oracle 使用完全项目生成且不含专有压缩算法/第三方 binary 的
   RAR5 Store 单成员与 solid 双成员，证明公共 engine 分别展开一/两个 PDF，
   并绑定 RAR5 method/solid index 及 solid Store 分派源码，见
   [`archive-rar5-store-behavior.md`](../research/archive-rar5-store-behavior.md)。
-  这些兼容事实不允许安全实现越界读取，结构字段极值/组合仍未覆盖。详见
+  这些兼容事实不允许安全实现越界读取；剩余字段、大小端冲突、arithmetic wrap
+  与多记录组合仍未覆盖。详见
   [`archive-limit-behavior.md`](../research/archive-limit-behavior.md) 和
   [`archive-format-behavior.md`](../research/archive-format-behavior.md)、
   [`scan-option-boundaries.md`](../research/scan-option-boundaries.md)。

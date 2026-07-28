@@ -12,6 +12,132 @@
     }
   },
   "cases": {
+    "cab-cabinet-size-max-u32.cab": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/cab-cabinet-size-max-u32.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "6aafd3386cb1b23073a95fd19c6bc67f807df1e3a47c43800eb7b4acfc3bed19",
+          "bytes": 1398,
+          "sha256": "6aafd3386cb1b23073a95fd19c6bc67f807df1e3a47c43800eb7b4acfc3bed19"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/cab-cabinet-size-max-u32.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "6aafd3386cb1b23073a95fd19c6bc67f807df1e3a47c43800eb7b4acfc3bed19",
+          "bytes": 1398,
+          "sha256": "6aafd3386cb1b23073a95fd19c6bc67f807df1e3a47c43800eb7b4acfc3bed19"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/cab-cabinet-size-max-u32.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "cd401f98a4affc72c56241084ea1028c8a8301a1781cffd3f6b9be060863af10",
+          "bytes": 515,
+          "sha256": "cd401f98a4affc72c56241084ea1028c8a8301a1781cffd3f6b9be060863af10"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/cab-cabinet-size-max-u32.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "cd401f98a4affc72c56241084ea1028c8a8301a1781cffd3f6b9be060863af10",
+          "bytes": 515,
+          "sha256": "cd401f98a4affc72c56241084ea1028c8a8301a1781cffd3f6b9be060863af10"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
     "cab-cabinet-size-minus-one.cab": {
       "archive": {
         "arguments": [
@@ -138,6 +264,240 @@
         }
       }
     },
+    "cab-cabinet-size-zero.cab": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/cab-cabinet-size-zero.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "7ac2bf2e7a8e5ad5e32ab996bfda5d6dc7d6235e9f1dff6cd92d3d6b701a9c80",
+          "bytes": 1384,
+          "sha256": "7ac2bf2e7a8e5ad5e32ab996bfda5d6dc7d6235e9f1dff6cd92d3d6b701a9c80"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/cab-cabinet-size-zero.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "7ac2bf2e7a8e5ad5e32ab996bfda5d6dc7d6235e9f1dff6cd92d3d6b701a9c80",
+          "bytes": 1384,
+          "sha256": "7ac2bf2e7a8e5ad5e32ab996bfda5d6dc7d6235e9f1dff6cd92d3d6b701a9c80"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/cab-cabinet-size-zero.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "7babe0b37a516157c8e9d956aa1283f87b4d2076ea44db40d8ba840d830db7d5",
+          "bytes": 501,
+          "sha256": "7babe0b37a516157c8e9d956aa1283f87b4d2076ea44db40d8ba840d830db7d5"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/cab-cabinet-size-zero.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "7babe0b37a516157c8e9d956aa1283f87b4d2076ea44db40d8ba840d830db7d5",
+          "bytes": 501,
+          "sha256": "7babe0b37a516157c8e9d956aa1283f87b4d2076ea44db40d8ba840d830db7d5"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "cab-compressed-size-max-u16.cab": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/cab-compressed-size-max-u16.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "d54c72c325ef34e7fca23c49da90a79eb32d5ff9666f799051fb0618bd69b8e7",
+          "bytes": 501,
+          "sha256": "d54c72c325ef34e7fca23c49da90a79eb32d5ff9666f799051fb0618bd69b8e7"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/cab-compressed-size-max-u16.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "d54c72c325ef34e7fca23c49da90a79eb32d5ff9666f799051fb0618bd69b8e7",
+          "bytes": 501,
+          "sha256": "d54c72c325ef34e7fca23c49da90a79eb32d5ff9666f799051fb0618bd69b8e7"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/cab-compressed-size-max-u16.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "d54c72c325ef34e7fca23c49da90a79eb32d5ff9666f799051fb0618bd69b8e7",
+          "bytes": 501,
+          "sha256": "d54c72c325ef34e7fca23c49da90a79eb32d5ff9666f799051fb0618bd69b8e7"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/cab-compressed-size-max-u16.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "d54c72c325ef34e7fca23c49da90a79eb32d5ff9666f799051fb0618bd69b8e7",
+          "bytes": 501,
+          "sha256": "d54c72c325ef34e7fca23c49da90a79eb32d5ff9666f799051fb0618bd69b8e7"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
     "cab-compressed-size-plus-one.cab": {
       "archive": {
         "arguments": [
@@ -224,6 +584,114 @@
           "--customdatabase",
           "/opt/die-source/Detect-It-Easy/db_custom",
           "/fixture/cab-compressed-size-plus-one.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "d54c72c325ef34e7fca23c49da90a79eb32d5ff9666f799051fb0618bd69b8e7",
+          "bytes": 501,
+          "sha256": "d54c72c325ef34e7fca23c49da90a79eb32d5ff9666f799051fb0618bd69b8e7"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "cab-compressed-size-zero.cab": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/cab-compressed-size-zero.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "d54c72c325ef34e7fca23c49da90a79eb32d5ff9666f799051fb0618bd69b8e7",
+          "bytes": 501,
+          "sha256": "d54c72c325ef34e7fca23c49da90a79eb32d5ff9666f799051fb0618bd69b8e7"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/cab-compressed-size-zero.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "d54c72c325ef34e7fca23c49da90a79eb32d5ff9666f799051fb0618bd69b8e7",
+          "bytes": 501,
+          "sha256": "d54c72c325ef34e7fca23c49da90a79eb32d5ff9666f799051fb0618bd69b8e7"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/cab-compressed-size-zero.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "d54c72c325ef34e7fca23c49da90a79eb32d5ff9666f799051fb0618bd69b8e7",
+          "bytes": 501,
+          "sha256": "d54c72c325ef34e7fca23c49da90a79eb32d5ff9666f799051fb0618bd69b8e7"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/cab-compressed-size-zero.cab"
         ],
         "exit_code": 0,
         "stderr": {
@@ -480,6 +948,114 @@
         }
       }
     },
+    "cab-file-size-max-u32.cab": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/cab-file-size-max-u32.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "73496aceb615beaa823d5e042b2a7bc266bd6ee1bb9a1669ff7f0efbecf86692",
+          "bytes": 497,
+          "sha256": "73496aceb615beaa823d5e042b2a7bc266bd6ee1bb9a1669ff7f0efbecf86692"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/cab-file-size-max-u32.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "73496aceb615beaa823d5e042b2a7bc266bd6ee1bb9a1669ff7f0efbecf86692",
+          "bytes": 497,
+          "sha256": "73496aceb615beaa823d5e042b2a7bc266bd6ee1bb9a1669ff7f0efbecf86692"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/cab-file-size-max-u32.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "73496aceb615beaa823d5e042b2a7bc266bd6ee1bb9a1669ff7f0efbecf86692",
+          "bytes": 497,
+          "sha256": "73496aceb615beaa823d5e042b2a7bc266bd6ee1bb9a1669ff7f0efbecf86692"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/cab-file-size-max-u32.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "73496aceb615beaa823d5e042b2a7bc266bd6ee1bb9a1669ff7f0efbecf86692",
+          "bytes": 497,
+          "sha256": "73496aceb615beaa823d5e042b2a7bc266bd6ee1bb9a1669ff7f0efbecf86692"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
     "cab-file-size-plus-one.cab": {
       "archive": {
         "arguments": [
@@ -577,6 +1153,122 @@
           "artifact_sha256": "04431e40cff1ae79011cb960365c2ab14d095532f96cd26d0ef8b56ca7050bb0",
           "bytes": 501,
           "sha256": "04431e40cff1ae79011cb960365c2ab14d095532f96cd26d0ef8b56ca7050bb0"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "cab-file-size-zero.cab": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/cab-file-size-zero.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "c61b5378702453008314e67654f1c3d88b8076009aba905333b4657919bef601",
+          "bytes": 485,
+          "sha256": "c61b5378702453008314e67654f1c3d88b8076009aba905333b4657919bef601"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/cab-file-size-zero.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "18524478a96f954268bce1e525b525ed4edf12dee0dd971359ee4929fa1c6381",
+          "bytes": 1056,
+          "sha256": "18524478a96f954268bce1e525b525ed4edf12dee0dd971359ee4929fa1c6381"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "Empty file"
+              ],
+              "filetype": "Binary",
+              "size": "0"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/cab-file-size-zero.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "c61b5378702453008314e67654f1c3d88b8076009aba905333b4657919bef601",
+          "bytes": 485,
+          "sha256": "c61b5378702453008314e67654f1c3d88b8076009aba905333b4657919bef601"
+        },
+        "summary": {
+          "root_detection_names": [
+            "CAB"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/cab-file-size-zero.cab"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "c61b5378702453008314e67654f1c3d88b8076009aba905333b4657919bef601",
+          "bytes": 485,
+          "sha256": "c61b5378702453008314e67654f1c3d88b8076009aba905333b4657919bef601"
         },
         "summary": {
           "root_detection_names": [
@@ -1288,6 +1980,114 @@
         }
       }
     },
+    "iso9660-logical-block-size-max-u16.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-logical-block-size-max-u16.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-logical-block-size-max-u16.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-logical-block-size-max-u16.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-logical-block-size-max-u16.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
     "iso9660-logical-block-size-set-1024.iso": {
       "archive": {
         "arguments": [
@@ -1374,6 +2174,230 @@
           "--customdatabase",
           "/opt/die-source/Detect-It-Easy/db_custom",
           "/fixture/iso9660-logical-block-size-set-1024.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-logical-block-size-zero.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-logical-block-size-zero.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-logical-block-size-zero.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-logical-block-size-zero.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-logical-block-size-zero.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-payload-extent-max-u32.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-payload-extent-max-u32.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "33f69ff528d14d31ab770426b0e1d7e7e7ecd44c53c14d51c78c503f11a39f5c",
+          "bytes": 84,
+          "sha256": "33f69ff528d14d31ab770426b0e1d7e7e7ecd44c53c14d51c78c503f11a39f5c"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-payload-extent-max-u32.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "33f69ff528d14d31ab770426b0e1d7e7e7ecd44c53c14d51c78c503f11a39f5c",
+          "bytes": 84,
+          "sha256": "33f69ff528d14d31ab770426b0e1d7e7e7ecd44c53c14d51c78c503f11a39f5c"
+        },
+        "stdout": {
+          "artifact_sha256": "41949724d0fb3afa4f53e0055936966096766c9443359b9ca47ba79eeadaa36c",
+          "bytes": 1042,
+          "sha256": "41949724d0fb3afa4f53e0055936966096766c9443359b9ca47ba79eeadaa36c"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "Unknown"
+              ],
+              "filetype": "Binary",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-payload-extent-max-u32.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-payload-extent-max-u32.iso"
         ],
         "exit_code": 0,
         "stderr": {
@@ -1504,6 +2528,248 @@
         }
       }
     },
+    "iso9660-payload-extent-zero.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-payload-extent-zero.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-payload-extent-zero.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "41949724d0fb3afa4f53e0055936966096766c9443359b9ca47ba79eeadaa36c",
+          "bytes": 1042,
+          "sha256": "41949724d0fb3afa4f53e0055936966096766c9443359b9ca47ba79eeadaa36c"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "Unknown"
+              ],
+              "filetype": "Binary",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-payload-extent-zero.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-payload-extent-zero.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-payload-record-length-max-u8.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-payload-record-length-max-u8.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-payload-record-length-max-u8.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6",
+          "bytes": 1356,
+          "sha256": "f9af4e25d62879714ef1e3addb27675efa5fbdba34ebb86fdf1b9f51c1e5f5a6"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-payload-record-length-max-u8.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-payload-record-length-max-u8.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
     "iso9660-payload-record-length-zero.iso": {
       "archive": {
         "arguments": [
@@ -1590,6 +2856,114 @@
           "--customdatabase",
           "/opt/die-source/Detect-It-Easy/db_custom",
           "/fixture/iso9660-payload-record-length-zero.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-payload-size-max-u32.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-payload-size-max-u32.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-payload-size-max-u32.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-payload-size-max-u32.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-payload-size-max-u32.iso"
         ],
         "exit_code": 0,
         "stderr": {
@@ -1716,6 +3090,122 @@
           "--customdatabase",
           "/opt/die-source/Detect-It-Easy/db_custom",
           "/fixture/iso9660-payload-size-plus-one.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "iso9660-payload-size-zero.iso": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/iso9660-payload-size-zero.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/iso9660-payload-size-zero.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "605da289d5f5bc6d0ea414110672d10d54ec89999e08b00de4af7441b50686d7",
+          "bytes": 1044,
+          "sha256": "605da289d5f5bc6d0ea414110672d10d54ec89999e08b00de4af7441b50686d7"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "Empty file"
+              ],
+              "filetype": "Binary",
+              "size": "0"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/iso9660-payload-size-zero.iso"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f",
+          "bytes": 473,
+          "sha256": "0b3d878d61214f0f94cc359fe68bf1fd6a1a41ad40feb8f0ed3ce589abccca4f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "ISO 9660",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/iso9660-payload-size-zero.iso"
         ],
         "exit_code": 0,
         "stderr": {
@@ -2692,6 +4182,132 @@
         }
       }
     },
+    "rar4-name-size-max-u16.rar": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/rar4-name-size-max-u16.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f4e066ff964ffec387a14d8d35e27b5e4de0fca22c48cb8f5bb579d2151cdb2f",
+          "bytes": 1349,
+          "sha256": "f4e066ff964ffec387a14d8d35e27b5e4de0fca22c48cb8f5bb579d2151cdb2f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/rar4-name-size-max-u16.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f4e066ff964ffec387a14d8d35e27b5e4de0fca22c48cb8f5bb579d2151cdb2f",
+          "bytes": 1349,
+          "sha256": "f4e066ff964ffec387a14d8d35e27b5e4de0fca22c48cb8f5bb579d2151cdb2f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/rar4-name-size-max-u16.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74",
+          "bytes": 466,
+          "sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/rar4-name-size-max-u16.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74",
+          "bytes": 466,
+          "sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
     "rar4-name-size-plus-one.rar": {
       "archive": {
         "arguments": [
@@ -2796,6 +4412,258 @@
           "--customdatabase",
           "/opt/die-source/Detect-It-Easy/db_custom",
           "/fixture/rar4-name-size-plus-one.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74",
+          "bytes": 466,
+          "sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "rar4-name-size-zero.rar": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/rar4-name-size-zero.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f4e066ff964ffec387a14d8d35e27b5e4de0fca22c48cb8f5bb579d2151cdb2f",
+          "bytes": 1349,
+          "sha256": "f4e066ff964ffec387a14d8d35e27b5e4de0fca22c48cb8f5bb579d2151cdb2f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/rar4-name-size-zero.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f4e066ff964ffec387a14d8d35e27b5e4de0fca22c48cb8f5bb579d2151cdb2f",
+          "bytes": 1349,
+          "sha256": "f4e066ff964ffec387a14d8d35e27b5e4de0fca22c48cb8f5bb579d2151cdb2f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/rar4-name-size-zero.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74",
+          "bytes": 466,
+          "sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/rar4-name-size-zero.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74",
+          "bytes": 466,
+          "sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "rar4-packed-size-max-u32.rar": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/rar4-packed-size-max-u32.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f4e066ff964ffec387a14d8d35e27b5e4de0fca22c48cb8f5bb579d2151cdb2f",
+          "bytes": 1349,
+          "sha256": "f4e066ff964ffec387a14d8d35e27b5e4de0fca22c48cb8f5bb579d2151cdb2f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/rar4-packed-size-max-u32.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "f4e066ff964ffec387a14d8d35e27b5e4de0fca22c48cb8f5bb579d2151cdb2f",
+          "bytes": 1349,
+          "sha256": "f4e066ff964ffec387a14d8d35e27b5e4de0fca22c48cb8f5bb579d2151cdb2f"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "PDF",
+                "HeaderComment"
+              ],
+              "filetype": "PDF",
+              "size": "331"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/rar4-packed-size-max-u32.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74",
+          "bytes": 466,
+          "sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/rar4-packed-size-max-u32.rar"
         ],
         "exit_code": 0,
         "stderr": {
@@ -2944,6 +4812,222 @@
         }
       }
     },
+    "rar4-packed-size-zero.rar": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/rar4-packed-size-zero.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74",
+          "bytes": 466,
+          "sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/rar4-packed-size-zero.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74",
+          "bytes": 466,
+          "sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/rar4-packed-size-zero.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74",
+          "bytes": 466,
+          "sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/rar4-packed-size-zero.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74",
+          "bytes": 466,
+          "sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "rar4-unpacked-size-max-u32.rar": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/rar4-unpacked-size-max-u32.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74",
+          "bytes": 466,
+          "sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/rar4-unpacked-size-max-u32.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74",
+          "bytes": 466,
+          "sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/rar4-unpacked-size-max-u32.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74",
+          "bytes": 466,
+          "sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/rar4-unpacked-size-max-u32.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74",
+          "bytes": 466,
+          "sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
     "rar4-unpacked-size-plus-one.rar": {
       "archive": {
         "arguments": [
@@ -3030,6 +5114,122 @@
           "--customdatabase",
           "/opt/die-source/Detect-It-Easy/db_custom",
           "/fixture/rar4-unpacked-size-plus-one.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74",
+          "bytes": 466,
+          "sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "rar4-unpacked-size-zero.rar": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/rar4-unpacked-size-zero.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74",
+          "bytes": 466,
+          "sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/rar4-unpacked-size-zero.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "11ba8fde9198329789989661090cfe3c258f922ec60718f3720536f634505396",
+          "bytes": 1037,
+          "sha256": "11ba8fde9198329789989661090cfe3c258f922ec60718f3720536f634505396"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 1,
+          "streams": [
+            {
+              "detection_names": [
+                "Empty file"
+              ],
+              "filetype": "Binary",
+              "size": "0"
+            }
+          ]
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/rar4-unpacked-size-zero.rar"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74",
+          "bytes": 466,
+          "sha256": "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74"
+        },
+        "summary": {
+          "root_detection_names": [
+            "Unknown"
+          ],
+          "root_filetype": "RAR",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/rar4-unpacked-size-zero.rar"
         ],
         "exit_code": 0,
         "stderr": {
@@ -3304,6 +5504,114 @@
         }
       }
     },
+    "sevenzip-next-header-offset-max-u64.7z": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/sevenzip-next-header-offset-max-u64.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275",
+          "bytes": 473,
+          "sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/sevenzip-next-header-offset-max-u64.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275",
+          "bytes": 473,
+          "sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/sevenzip-next-header-offset-max-u64.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275",
+          "bytes": 473,
+          "sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/sevenzip-next-header-offset-max-u64.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275",
+          "bytes": 473,
+          "sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
     "sevenzip-next-header-offset-past-eof.7z": {
       "archive": {
         "arguments": [
@@ -3412,6 +5720,222 @@
         }
       }
     },
+    "sevenzip-next-header-offset-zero.7z": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/sevenzip-next-header-offset-zero.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275",
+          "bytes": 473,
+          "sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/sevenzip-next-header-offset-zero.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275",
+          "bytes": 473,
+          "sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/sevenzip-next-header-offset-zero.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275",
+          "bytes": 473,
+          "sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/sevenzip-next-header-offset-zero.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275",
+          "bytes": 473,
+          "sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "sevenzip-next-header-size-max-u64.7z": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/sevenzip-next-header-size-max-u64.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275",
+          "bytes": 473,
+          "sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/sevenzip-next-header-size-max-u64.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275",
+          "bytes": 473,
+          "sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/sevenzip-next-header-size-max-u64.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275",
+          "bytes": 473,
+          "sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/sevenzip-next-header-size-max-u64.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275",
+          "bytes": 473,
+          "sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
     "sevenzip-next-header-size-past-eof.7z": {
       "archive": {
         "arguments": [
@@ -3498,6 +6022,114 @@
           "--customdatabase",
           "/opt/die-source/Detect-It-Easy/db_custom",
           "/fixture/sevenzip-next-header-size-past-eof.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275",
+          "bytes": 473,
+          "sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      }
+    },
+    "sevenzip-next-header-size-zero.7z": {
+      "archive": {
+        "arguments": [
+          "--archive",
+          "/fixture/sevenzip-next-header-size-zero.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275",
+          "bytes": 473,
+          "sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "/fixture/sevenzip-next-header-size-zero.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275",
+          "bytes": 473,
+          "sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "default": {
+        "arguments": [
+          "/fixture/sevenzip-next-header-size-zero.7z"
+        ],
+        "exit_code": 0,
+        "stderr": {
+          "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "artifact_sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275",
+          "bytes": 473,
+          "sha256": "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275"
+        },
+        "summary": {
+          "root_detection_names": [
+            "7-Zip"
+          ],
+          "root_filetype": "Binary",
+          "stream_count": 0,
+          "streams": []
+        }
+      },
+      "release_default": {
+        "arguments": [
+          "--json",
+          "--database",
+          "/opt/die-source/Detect-It-Easy/db",
+          "--extradatabase",
+          "/opt/die-source/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "/opt/die-source/Detect-It-Easy/db_custom",
+          "/fixture/sevenzip-next-header-size-zero.7z"
         ],
         "exit_code": 0,
         "stderr": {
@@ -3881,31 +6513,43 @@
       }
     }
   },
-  "execution_count": 132,
+  "execution_count": 224,
   "facts": {
-    "all_structure_cases_exit_zero_without_stderr": true,
+    "all_structure_cases_exit_zero_with_exact_stderr": true,
+    "cab_cabinet_size_extremes_still_unpack": true,
     "cab_data_file_folder_and_compressed_size_mutations_suppress_child": true,
+    "cab_file_max_and_compressed_extremes_suppress_child": true,
+    "cab_file_zero_is_aggressive_empty_child": true,
     "cab_files_offset_and_unknown_method_are_aggressive_only": true,
     "cabinet_size_and_uncompressed_size_mutations_still_unpack": true,
     "iso9660_block_extent_and_record_mutations_suppress_child": true,
+    "iso9660_block_extremes_and_payload_size_max_suppress_child": true,
     "iso9660_descriptor_id_mutation_falls_back_to_binary": true,
+    "iso9660_extent_extremes_are_aggressive_binary_children": true,
+    "iso9660_max_extent_emits_exact_seek_diagnostics": true,
     "iso9660_payload_size_controls_declared_child_size": true,
+    "iso9660_record_length_max_still_unpacks": true,
     "iso9660_volume_and_root_size_mutations_still_unpack": true,
+    "iso9660_zero_size_is_aggressive_empty_child": true,
     "rar4_data_crc_method_and_unpacked_size_mutations_suppress_child": true,
     "rar4_header_crc_mutations_still_unpack": true,
     "rar4_packed_and_name_size_plus_one_still_unpack": true,
+    "rar4_packed_max_and_name_extremes_still_unpack": true,
+    "rar4_packed_zero_and_unpacked_max_suppress_child": true,
+    "rar4_unpacked_zero_is_aggressive_empty_child": true,
     "release_and_harness_default_outputs_are_equal": true,
     "sevenzip_past_eof_and_unpacked_size_mutations_suppress_child": true,
-    "sevenzip_start_next_and_packed_crc_mutations_still_unpack": true
+    "sevenzip_start_next_and_packed_crc_mutations_still_unpack": true,
+    "sevenzip_zero_and_max_next_header_fields_suppress_child": true
   },
   "failures": [],
   "fixture_manifest": {
     "path": "docs/research/data/archive-structure-corpus.json",
-    "sample_count": 33,
-    "sha256": "2aed2b24cbd05736d731782beb1f6cd73b241e8aa2ef6af446829fd4a812cf33"
+    "sample_count": 56,
+    "sha256": "b991ed396bba6c3e20e4b8ce366afc572eea31e618187119cd857703b8d33cdb"
   },
   "generator": "tools/upstream/probe_archive_structure_harness.py",
-  "generator_sha256": "fe7905846d2b3b64c828e75293f2eabe25a06821bd7556ccbc23fc4574950d7d",
+  "generator_sha256": "ca173361ef258cb6a04a55c418d45811b34266aa3202a7073f2cd9ab93da001d",
   "image": {
     "id": "sha256:771b9094a2ad6ab4f6250dd89307ab727c07a1aae885a894695abfa959bab5dc",
     "name": "diec-rust/upstream-archive-harness:74eaf505",
@@ -3917,7 +6561,7 @@
   "local_sources": {
     "fixture_generator": {
       "path": "tools/corpus/generate_archive_structure_fixture.py",
-      "sha256": "2ae8aed2c69ddbe98d316b935db134ca0072863d192ef158d61bd94378de070c"
+      "sha256": "5fecdf17c3fdc67dacc6d25eeafa60ff14343eb82aa096e3c6bb69841483f9d8"
     },
     "harness_dockerfile": {
       "path": "tools/upstream/Dockerfile.archive-harness-qt5",
@@ -3951,16 +6595,58 @@
       "compressed_bytes": 175,
       "encoding": "zlib+base64"
     },
+    "11ba8fde9198329789989661090cfe3c258f922ec60718f3720536f634505396": {
+      "base64": "eNqNkj0PwiAQhnd+BensoIlTN000zhon40D0MER7NHBqqvG/W1CrVoEykXuf4z5erozXJ9sCwYZslvOVD7hzbW4ekeoAVJVQM9l8NM9637JCqZ3UjmspLZBT+m2pFAaQ3Lv1zSMzEFswbc6qi6867A/a0kkcjvDd9v/2U302OorCF1viHvUZQ5glo3D3AeY8kfHaXQI7gbFKo2/xh7j1uo756dZYoTBVqGBqIWEDI0YuyIAogst7Ghp8MGJrfO6uU/3YPSlKqrgbIZXxdn6qTSEo591zX45In5mio1+h+RJ/lTWLc2/9EV+zG2PsDt8lyDE=",
+      "bytes": 1037,
+      "compressed_bytes": 242,
+      "encoding": "zlib+base64"
+    },
     "132cf6a282054718a0f8022692cea4ec44d75e31346811ee26ac55eb2603a275": {
       "base64": "eNqFkM8KgkAQxu/7FLKnghIJQfBWJ5+h8LDobA3YKrubYOK7504k7JY0p+H7fvN3ZNEcvAYLlTU8jy4kuBiXjBCJDdihg5nhJ1RCD3znE6hk69xQb6U0YJ2ThFYnNCjrWs8ZIQWIGnTIGXzS4PSQhVYvmgf4m/++4N+ei6/EnYZl+zN2a5CxGtXVYUdd3bCHPCJ+k8Tpdq3o8z/xLlnDetAGW0Ufi1P+BU2eUjJfL9nEGHsBGEZeRg==",
       "bytes": 473,
       "compressed_bytes": 184,
       "encoding": "zlib+base64"
     },
+    "18524478a96f954268bce1e525b525ed4edf12dee0dd971359ee4929fa1c6381": {
+      "base64": "eNqNkr1uwyAUhXeeAjElUlTFaiZvSdWqe8bIA0ouLVKMLbi15EZ+9wBO0gYbbCbE+e4f514ItYedAOGIhuX04B/cuTxuHhHyDNjWYBm2k4rrlq2eCalE5dTwvRLCADplHUo116DQpbY3j3wCP4EOOSN/feFNloVSw88/8Nz5+ASDPjPqCgf5HpTipS/5tt3FEINaqi8HbfXxWzaQU0svspf16/LQZy9isfev5H1kDGtAG1kp365NywZUt5o79qSBU0bOMDRh7B418DL6lTeDowkTNqfnnjvVwPj3ssY2tSIje/BR6ZJjTufH3h0RPnKK/rcOLEp2o0pB0tyf3r8XpCOEXAFx4cuR",
+      "bytes": 1056,
+      "compressed_bytes": 264,
+      "encoding": "zlib+base64"
+    },
+    "33f69ff528d14d31ab770426b0e1d7e7e7ecd44c53c14d51c78c503f11a39f5c": {
+      "base64": "eNoLdCpNS0stsrIqTk3NtlLwzCtLzMlMUSjIL7ZSsDC3NDOwNDYwMjA0M+AKJFolAGKsGMM=",
+      "bytes": 84,
+      "compressed_bytes": 53,
+      "encoding": "zlib+base64"
+    },
+    "41949724d0fb3afa4f53e0055936966096766c9443359b9ca47ba79eeadaa36c": {
+      "base64": "eNqdkrsOgjAUhvc+BWFmwGCIOjrp5GCcDEOjB9MIB9NWDBLeXaiK3MrFTs35v/Zc/pMSIz/mGSScpDBXxlEFipOWN4X4LACZ3CBnzO1+Zyxd1zatOsPQjwq9GY98X4AslNaTG+WAsvg8vylkA/QMvMkJ9lSp545tL5piTIM71Kvv7mKo0lJHGqp0B7xi9EAdJiRneKmAK2PgxXeEA1gMXLAIVYktIrPGtlk1bc2Q8kSXcGggegt7rNxLDjTUDu9jqePMtGPQG9vf+di+Jhr+v/ETF2DcIpQL0al4pJ/76e+4RzJCyAvouckt",
+      "bytes": 1042,
+      "compressed_bytes": 234,
+      "encoding": "zlib+base64"
+    },
+    "605da289d5f5bc6d0ea414110672d10d54ec89999e08b00de4af7441b50686d7": {
+      "base64": "eNqNkj1vwjAQhnf/CiszQyQqRDMigcrUATEhBquckQU5R/YVlCL+e2O3BEiwHU/Wvc/5Pl5fGG9OtgOCL7JZwTc+4M6lvXlEqiNQXUHDZMvVJ3+fTPJs9MwolNrp3biW0gI5pZdSCQNI7vHm5pEPEDswXc6qH1/6bZzn0654EsdveO7+9RSpTlsdRenLrfGA+owhzJJRuH8AC57IuK0wgZ3AWKXRt9gjrqOhYz6aNlMoTB0qmFpI2MKIlSsyIMrg8v4tDT4YsTU+99CpenbPy4pq7kZIZdydX2hTCir48NybI9JnpujoV2i/xEtly+LcXf+Lb9mVMfYLmEXJlg==",
+      "bytes": 1044,
+      "compressed_bytes": 253,
+      "encoding": "zlib+base64"
+    },
+    "6aafd3386cb1b23073a95fd19c6bc67f807df1e3a47c43800eb7b4acfc3bed19": {
+      "base64": "eNq9U11rgzAUffdXhMCgBSmNOkp9azvKHgd7LD4EvXYBjRIzoSv+98VYu/kR616Wp5Bz7tc5N1cLqYMjkBDKAvvopB/qc73fNCVmCchLDoqD94xTccF2l8F4nNVo/z2L4wJkjaz7UE4FcFmnVjdNeQUagejzCvalC3uE9KGSJp/Q7Xx8gkGfxNlunjcu2WxXzpONCKr76KW/B3Ga6g4Ou72JUkjB+Lkm7UT4wUrwkWIvyGrtLk+jxQJTqlZo2iQy0UoQBcu4HkZVwQNWZc8V5be9by9HU0WDxzO8nvD8XQqgqVHWm/euS4w6mHdgeuy5cw3WwCzRyDocM5FS6SMVpLbBWz6KbH2IddwjdmcJPGwkV/Z/idP84UOWpsro+TKpgDxhIHzUSbAAB9wwjtzZuoW3RH9Qrq0xId8oEljTvB+8eQ+syrKsb6f9Cxg=",
+      "bytes": 1398,
+      "compressed_bytes": 332,
+      "encoding": "zlib+base64"
+    },
     "7020da6aff1cf2e192fd8af11e2532888e6814d5c77dfee112bb7f785af32c74": {
       "base64": "eNqFkLEOwiAQhneegjA71MSpm5tzEyfTgdjDEOvRwNlGm767QGIjqIHp8n8f3B9mxv0RHRCcyYman2IQzrxOUVG6B3oM4B3R7BuxSbFGZQLKc6OUAwqkytEgLSCFd/0UlQPIDmzuOf2MW3fVNkej7O+Q1v5dv9Rz5ShvcdkRr2gm/Kc5shovH2LNCzfef1fQRrBOG4wVv4wlSVqW5i1bGGMvT5ZeNw==",
       "bytes": 466,
       "compressed_bytes": 166,
+      "encoding": "zlib+base64"
+    },
+    "73496aceb615beaa823d5e042b2a7bc266bd6ee1bb9a1669ff7f0efbecf86692": {
+      "base64": "eNp1kNEKgyAYhe99ChEGG0Qo21V3bTd7h+hC6ncTmoW6oEXvvnQspi2vfs75POfXEeH5kBosVNaQDBdecGdcJo8I2YAdOpgZcpaK64EkISGVaJ0b660QBqxzaGx1XIOyLnqePHIFXoOOOSNfvvjEWGz1vHlCuPn/F6z2pCndJZhhVx+lLqziD198yc9biLFaqpuDcl3dZQ8Znuk9S+nxUPx2lFsJ32/ln/tbWA/ayFY50oWTFTUFSolCvUQTQugNxrRjlQ==",
+      "bytes": 497,
+      "compressed_bytes": 196,
       "encoding": "zlib+base64"
     },
     "7635a29e1f91d500722f5c10ff33ca562ff94bbd575806878ef5d56bffc24ee4": {
@@ -3973,6 +6659,18 @@
       "base64": "eNq9k01rgzAYx+/5FEEYtCDFVE/e2o6y42DH4iHoky1Qo8RM6IrffUms3XyJdZflFPL8npf8/8kVYb28DBSkqvJifLIHZl3vO4swfgZ1KUEz3p4LKi+e3ye4YIWJDs8LxipQJhIMQyWVIJQprXcWeQGagRxyFf+yjSNChqGanj+hP/n0DUZzkmC7IU8+JtgMMKh7pwXNbevDbu9CKiW5eDfQTqYfvIYYa3pFNkG4PvW7JK4anbS0reDCapAVL4QdX5f3RlTjL5Xht6Gvz0dXR4erC9ydcflNSaC5U8+b22FInDq4XZ+/9tJ7jfx3SzTxDo6FzKmKsU7SzyBaP8rsfGA27xHdewSR54Qb/7/EaX/tochzbfRymXRCeeYgY9wrsIIthCnLwsW6pbdCf1Cu6zEj32QkQfPcT7w9T1CDEPoGa5YIFg==",
       "bytes": 1384,
       "compressed_bytes": 325,
+      "encoding": "zlib+base64"
+    },
+    "7ac2bf2e7a8e5ad5e32ab996bfda5d6dc7d6235e9f1dff6cd92d3d6b701a9c80": {
+      "base64": "eNq9k8FrgzAUxu/5K0Jg0IIrTfUwvLUdZcfBjsVD0JctoFFiJnTF/32J1m5qY91lnkLe730v+b54Rth8JAENsS5JiI/Nhv3O11WDcJGCPhVgGLITkqkT8fqEkDy31eF+znkJ2lbWw1LBFEhtpc2qQV6AJaCGXCm+msEBpcNSxdJP6J/89g1G53zc0NXTg4cptgcY6F5pybJm9H67cyGlVkK+W2ir4g9RQYgNvaCrtb889qdELo3OWtYquLAKVClyaUkrT0ZU7c214Xegr88H10RHqjPSnUj5TStgmdPPS9q+T50+uFOfvvbce43yd1t04x0ccpUxHWLTZJ5BsLzX2eXAm757dO8RBMQJ195/mdP+tfs8y0zQ820yDUUqQIW4J7CADfgxT/zZvsUXoT84182YsO9mJULT3E+93Y9QjRD6Bo0mCB4=",
+      "bytes": 1384,
+      "compressed_bytes": 326,
+      "encoding": "zlib+base64"
+    },
+    "7babe0b37a516157c8e9d956aa1283f87b4d2076ea44db40d8ba840d830db7d5": {
+      "base64": "eNp1kFELgjAUhd/3K8YgKChx1UP4pr30H8SHoXc1sCnbEkz877lFwmbep8s5H+eebUB4GlKBgdJokuDcCXaGeXMIFzWYvoWJIZmQTPVk7xNC8sa6od5wrsFYJw6tlimQxkZPm0NuwCpQIafF2x0+UxpaHatf4Df//4JFz8ORRpfNHlNsCwS5My3Z052+ptkaoo0S8m6hVJUP0UGCJ3pLo/i0y/0rxVrG72vZN2EN60Bp0UhL2niyoEZPKZCvF2hECH0AYlJkZQ==",
+      "bytes": 501,
+      "compressed_bytes": 199,
       "encoding": "zlib+base64"
     },
     "812b81c00ab5bfd5d7684ebc3d4e1021d47a1bdb09ab17897993755597322e9d": {
@@ -4003,6 +6701,18 @@
       "base64": "eNq9k01rgzAYx+/5FEEYtCDFVE/e2o6y42DH4iHoky1Qo8RM6IrffUms3XyJdZflFPL8npf8/8kVYb28DBSkqvJifLIHZl3vO4swfgZ1KUEz3p4LKi+e3ye4YIWJDs8LxipQJhIMQyWVIJQprXcWeQGagRxyFf+yjSNChqGanj+hP/n0DUZzkmC7iZ58TLAZYFD3Tgua29aH3d6FVEpy8W6gnUw/eA0x1vSKbIJwfep3SVw1OmlpW8GF1SArXgg7vi7vjajGXyrDb0Nfn4+ujg5XF7g74/KbkkBzp543t8OQOHVwuz5/7aX3GvnvlmjiHRwLmVMVY52kn0G0fpTZ+cBs3iO69wgizwk3/n+J0/7aQ5Hn2ujlMumE8sxBxrhXYAVbCFOWhYt1S2+F/qBc12NGvslIgua5n3h7nqAGIfQNhNQIHA==",
       "bytes": 1384,
       "compressed_bytes": 325,
+      "encoding": "zlib+base64"
+    },
+    "c61b5378702453008314e67654f1c3d88b8076009aba905333b4657919bef601": {
+      "base64": "eNp1kEEKwyAQRfeeQly1UEqkXWWXdNM7hCwkGVshNUGtkIbcvWpoQNPMavj/zZ/RCWFXpAUDjdEkx1UQfE1rFxAuOjDjAI4hpZBMjeQUE0Ly3rup3nOuwXgnS62BKZDGR7suIHdgLaiU0+ITFl8pTS3LujfEl/9/weZOiv3iJG+lJHuFlbei3EO0UUI+PFSo5iks5NjRB3rOLsdqSa/3Zn9fyZbJPcyC0qKX4VwXSzbUHCk1ivUazQihL1q6YZc=",
+      "bytes": 485,
+      "compressed_bytes": 191,
+      "encoding": "zlib+base64"
+    },
+    "cd401f98a4affc72c56241084ea1028c8a8301a1781cffd3f6b9be060863af10": {
+      "base64": "eNp1kEEKwjAQRfc5RQgIClKaqpS6a914h9JFsBMN1FSSWKji3U0iFhLtrIb/X2b+5ImwLdKCgZPRZI9rL7h6Tp1HuOjAjDewDKmEZGok65AQkvfOjfWecw3GOWls3ZgCadxo23nkCKwFFXNaPPziLaWxNbDuDmHy/xf85KRZke/yDc2LJFusMcUuRzR+eiTZ1Sc4lNUcoo0S8uygUp0uYoA9tvSSJulmVf9d1syN+n40+wyawwZQWvTSH2O3kB/qFSgNCvUGvRBCbzhFZ18=",
+      "bytes": 515,
+      "compressed_bytes": 206,
       "encoding": "zlib+base64"
     },
     "d54c72c325ef34e7fca23c49da90a79eb32d5ff9666f799051fb0618bd69b8e7": {

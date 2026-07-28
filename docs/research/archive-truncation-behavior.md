@@ -144,7 +144,9 @@ python tools\upstream\probe_archive_truncation_harness.py `
   record count；
   首轮 CRC/size/offset/method/record-field mutation 已由
   [`archive-structure-behavior.md`](archive-structure-behavior.md) 固定，但
-  0/max/overflow 与多记录组合仍缺；
+  已列字段的 0/max 见
+  [`archive-structure-behavior.md`](archive-structure-behavior.md)；大小端冲突、
+  arithmetic wrap 与多记录组合仍缺；
 - 7Z 仅覆盖 Copy 控制，其他 coder 的正向/密码行为由
   [`archive-format-behavior.md`](archive-format-behavior.md) 覆盖，但尚无同等
   截断阶梯；
