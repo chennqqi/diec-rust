@@ -1,0 +1,49 @@
+{
+  "cases": [
+    {
+      "bucket_count": 0,
+      "file_count": 0,
+      "files_per_bucket": 0,
+      "layout": "flat",
+      "name": "empty_0"
+    },
+    {
+      "bucket_count": 0,
+      "file_count": 1,
+      "files_per_bucket": 0,
+      "layout": "flat",
+      "name": "single_1"
+    },
+    {
+      "bucket_count": 0,
+      "file_count": 256,
+      "files_per_bucket": 0,
+      "layout": "flat",
+      "name": "flat_256"
+    },
+    {
+      "bucket_count": 0,
+      "file_count": 4096,
+      "files_per_bucket": 0,
+      "layout": "flat",
+      "name": "flat_4096"
+    },
+    {
+      "bucket_count": 16,
+      "file_count": 4096,
+      "files_per_bucket": 256,
+      "layout": "nested",
+      "name": "nested_4096"
+    }
+  ],
+  "generator": "tools/corpus/generate_large_path_fixture.py",
+  "license": "project-generated empty files and path names",
+  "materialization": {
+    "bucket_name_pattern": "bucket-{index:03d}",
+    "creation_order": "descending",
+    "file_name_pattern": "item-{index:06d}.empty",
+    "payload_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "payload_size": 0
+  },
+  "schema_version": 1
+}

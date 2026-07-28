@@ -316,7 +316,9 @@
       "acceptance_ready": false,
       "contract_tests": [
         "tools/tests/test_path_expansion_design.py",
-        "tools/tests/test_probe_path_filesystem_behavior.py"
+        "tools/tests/test_probe_path_filesystem_behavior.py",
+        "tools/tests/test_generate_large_path_fixture.py",
+        "tools/tests/test_probe_large_path_behavior.py"
       ],
       "required_headings": [
         "## 背景",

@@ -53,6 +53,10 @@ resource/overlay 递归。多目标顺序、filename prefix 和结构化输出�
 file/directory symlink follow、alias 重复、权限静默、depth-64 与 self-cycle
 运行边界见 [`path-filesystem-behavior.md`](path-filesystem-behavior.md)；
 循环终止来自 Linux 路径解析上限，不是 engine visited set 或预算。
+flat/nested 4096 项均完整枚举；Formats overload 虽按可选 `PDSTRUCT` 检查取消，
+发布 CLI 的两参数调用使用默认 `nullptr`，所以 target expansion 没有可达的
+cooperative cancellation。固定 source/runtime 证据见
+[`large-directory-behavior.md`](large-directory-behavior.md)。
 
 ## 扫描主流程
 

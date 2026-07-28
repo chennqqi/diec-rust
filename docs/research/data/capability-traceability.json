@@ -49,7 +49,14 @@
         "tools/corpus/generate_path_filesystem_fixture.py",
         "tools/upstream/probe_path_filesystem_behavior.py",
         "tools/tests/test_generate_path_filesystem_fixture.py",
-        "tools/tests/test_probe_path_filesystem_behavior.py"
+        "tools/tests/test_probe_path_filesystem_behavior.py",
+        "docs/research/large-directory-behavior.md",
+        "docs/research/data/large-path-fixture.json",
+        "docs/research/data/large-path-engine-qt5.json",
+        "tools/corpus/generate_large_path_fixture.py",
+        "tools/upstream/probe_large_path_behavior.py",
+        "tools/tests/test_generate_large_path_fixture.py",
+        "tools/tests/test_probe_large_path_behavior.py"
       ]
     },
     "engine_contract": {
@@ -403,7 +410,7 @@
   "coverage_gaps": [
     {
       "id": "CAP-GAP-003",
-      "scope": "large-directory/cancellation/TOCTOU and remaining Linux locale/filesystem path behavior",
+      "scope": "TOCTOU and remaining Linux locale/filesystem path behavior",
       "platforms": [
         "linux-x86_64-qt5"
       ]

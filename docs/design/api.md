@@ -20,6 +20,8 @@ Last updated: 2026-07-28
   UTF-8/特殊路径、无 normalization 与 native path 边界；
 - [`path-filesystem-behavior.md`](../research/path-filesystem-behavior.md)：Linux
   symlink、权限、深度与 self-cycle 的固定边界；
+- [`large-directory-behavior.md`](../research/large-directory-behavior.md)：Linux
+  4096-entry 顺序、资源和 CLI cancellation 接线边界；
 - [`cli-special-modes.md`](../research/cli-special-modes.md)：entropy/info/struct 分派；
 - [`database-error-behavior.md`](../research/database-error-behavior.md)：数据库和 I/O 错误；
 - [`nested-scan-behavior.md`](../research/nested-scan-behavior.md)：嵌套 file-part 及顺序；
@@ -542,6 +544,11 @@ typed item diagnostic。
 hard ceiling；self-cycle 不依赖 OS link 上限。完整策略、候选数值与
 SafetyDeviation 门禁见
 [`ADR 0014`](decisions/0014-bounded-path-expansion.md)。
+
+固定上游已在 flat/nested 4096 项内完整展开并先构造全量 file list；其 Formats
+overload 虽支持 `PDSTRUCT`，发布 CLI 两参数调用却使用默认 `nullptr`。modern
+实现不得据此省略 cancellation，也不能在没有 diagnostic 的情况下把 4096 设为
+隐式 cap。
 
 ## 15. CLI 命令面
 

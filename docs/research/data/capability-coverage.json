@@ -15,7 +15,7 @@
       "platforms": [
         "linux-x86_64-qt5"
       ],
-      "scope": "large-directory/cancellation/TOCTOU and remaining Linux locale/filesystem path behavior"
+      "scope": "TOCTOU and remaining Linux locale/filesystem path behavior"
     },
     {
       "capability_ids": [
@@ -188,7 +188,14 @@
         "tools/corpus/generate_path_filesystem_fixture.py",
         "tools/upstream/probe_path_filesystem_behavior.py",
         "tools/tests/test_generate_path_filesystem_fixture.py",
-        "tools/tests/test_probe_path_filesystem_behavior.py"
+        "tools/tests/test_probe_path_filesystem_behavior.py",
+        "docs/research/large-directory-behavior.md",
+        "docs/research/data/large-path-fixture.json",
+        "docs/research/data/large-path-engine-qt5.json",
+        "tools/corpus/generate_large_path_fixture.py",
+        "tools/upstream/probe_large_path_behavior.py",
+        "tools/tests/test_generate_large_path_fixture.py",
+        "tools/tests/test_probe_large_path_behavior.py"
       ]
     },
     "cli_scan_baseline": {
@@ -1499,7 +1506,7 @@
   "schema_version": 1,
   "source": {
     "path": "docs/research/data/capability-traceability.json",
-    "sha256": "d4e3efa0475e7c32f759f8ec203bf12e1cb3d57861f33501aa994d1121836a8a"
+    "sha256": "5044255d85e2f1c5359fc6f079733a6512800681b72bcd1305b183455a9e1e74"
   },
   "status_definitions": {
     "platform_missing": "no complete capability baseline is admitted for this platform",

@@ -224,7 +224,9 @@ filename prefix 行为单独记录在
 emoji、非 UTF-8 原始字节、控制字符、hidden、leading-dash 与固定目录顺序见
 [`special-path-behavior.md`](special-path-behavior.md)。Linux Qt5 的 file/
 directory/dangling symlink、alias 重复、mode-000 权限、depth-64 与 self-cycle
-边界见 [`path-filesystem-behavior.md`](path-filesystem-behavior.md)。
+边界见 [`path-filesystem-behavior.md`](path-filesystem-behavior.md)；flat/nested
+4096 项完整枚举、顺序、描述性资源和 CLI cancellation 接线见
+[`large-directory-behavior.md`](large-directory-behavior.md)。
 
 数据库缺失/空/无效 ZIP、规则 parse/runtime error 和不可读输入行为见
 [`database-error-behavior.md`](database-error-behavior.md)。
@@ -256,8 +258,8 @@ elapsed 值与固定规则执行序列另见
 - 新增 11 个格式的 scan/output/special 选项矩阵（当前仅固定 default JSON）。
 - 输出格式的转义和嵌套排序已由
   [`cli-output-boundaries.md`](cli-output-boundaries.md) 的 10-case 双 oracle
-  固定；首轮 Linux 特殊 filename、非 UTF-8、symlink/权限/深度已固定，大目录
-  取消/TOCTOU 与跨平台路径编码仍待覆盖。专用 struct/entropy 阈值
+  固定；首轮 Linux 特殊 filename、非 UTF-8、symlink/权限/深度及 4096 项目录
+  已固定，TOCTOU 与跨平台路径编码仍待覆盖。专用 struct/entropy 阈值
   边界已由 [`cli-special-modes.md`](cli-special-modes.md) 的 28-case 双 oracle
   固定。
 - deep 增量、aggressive resource filter 和默认 21/aggressive 2001 精确上限已由

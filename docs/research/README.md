@@ -104,6 +104,9 @@ Phase 0 计划形成：
 - [`path-filesystem-behavior.md`](path-filesystem-behavior.md)：固定 Linux Qt5 的
   file/directory/dangling symlink、alias 重复、mode-000 权限、depth-64 与
   self-cycle OS 边界（In Review）。
+- [`large-directory-behavior.md`](large-directory-behavior.md)：固定 Linux Qt5
+  flat/nested 4096-entry 完整枚举、顺序、描述性资源及 CLI 未接线
+  `PDSTRUCT` cancellation 的源码边界（In Review）。
 - [`cli-option-behavior.md`](cli-option-behavior.md)：verbose/messages/profiling channel 与 test/create test 遗留入口行为（Draft）。
 - [`database-error-behavior.md`](database-error-behavior.md)：数据库缺失/损坏、规则错误和不可读输入（Draft）。
 - [`database-archive-cache.md`](database-archive-cache.md)：ZIP 规则数据库边界、发布 CLI cache 可达性，以及 engine cache stale/corrupt/cancel 行为（Draft）。
@@ -173,6 +176,10 @@ Phase 0 计划形成：
   symlink、权限、64 层目录与 self-cycle 的 deterministic GNU tar 清单。
 - [`data/path-filesystem-engine-qt5.json`](data/path-filesystem-engine-qt5.json)：
   9-case 双 Qt5 文件系统路径 Oracle 的原始 streams、预检与冻结边界。
+- [`data/large-path-fixture.json`](data/large-path-fixture.json)：empty、single、
+  flat 256/4096 和 nested 4096 的 deterministic materialization plan。
+- [`data/large-path-engine-qt5.json`](data/large-path-engine-qt5.json)：5-case 双
+  Qt5 大目录 Oracle、完整原始 streams、source cancellation contract 与资源记录。
 - [`data/database-fixture.json`](data/database-fixture.json)：项目生成的数据库成功/故障 fixture。
 - [`data/database-archive-linux-qt5.json`](data/database-archive-linux-qt5.json)：两套固定 Qt5 oracle 的 17-case ZIP 数据库矩阵及两侧原始 stream。
 - [`data/database-cache-cli.json`](data/database-cache-cli.json)：发布 CLI cache-disabled 源码身份、删除副作用与 engine cache header 摘要。

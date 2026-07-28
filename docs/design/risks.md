@@ -496,7 +496,11 @@ baseline 的变更都要检查本表。
   mode-000 非特权静默、depth-64 可达，以及 self-cycle 依赖 Linux link 上限重复
   扫描 41 次；见
   [`path-filesystem-behavior.md`](../research/path-filesystem-behavior.md)。
-  大目录取消/预算、TOCTOU 和三平台矩阵仍缺；ADR 0014 现为 Proposed。
+  第三组 5-case 双 Oracle 又确认 flat/nested 4096 项无截断、descending
+  creation 不改变 name order；源码证明 Formats overload 有可选 `PDSTRUCT`
+  cancellation check，但发布 CLI 使用默认 `nullptr`。见
+  [`large-directory-behavior.md`](../research/large-directory-behavior.md)。
+  TOCTOU、剩余 locale/filesystem 和三平台矩阵仍缺；ADR 0014 现为 Proposed。
 - **验证**：隔离 path corpus 覆盖循环、权限、重复、特殊字符、TOCTOU、全部
   traversal limit 和三平台排序；legacy/canonical 差异有精确 waiver。
 - **关闭**：ADR 0014 Accepted，API/profile 数值冻结，handle-relative traversal

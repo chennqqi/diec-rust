@@ -30,8 +30,10 @@ Last updated: 2026-07-28
 artifact 去重。
 
 这批证据闭合 `CAP-GAP-003` 的 Linux Qt5 首轮 symlink、permission 与 depth
-子矩阵，但不关闭整个 gap。超大目录、取消/预算、locale/filesystem 排序以及
-Windows junction/reparse point、macOS alias/normalization 仍缺。
+子矩阵，但不关闭整个 gap。flat/nested 4096 项及发布 CLI cancellation 接线现由
+[`large-directory-behavior.md`](large-directory-behavior.md) 固定；TOCTOU、
+locale/filesystem 排序以及 Windows junction/reparse point、macOS
+alias/normalization 仍缺。
 
 ## 固定身份
 
@@ -187,7 +189,8 @@ python tools\upstream\probe_path_filesystem_behavior.py `
 
 ## 剩余缺口
 
-- 大目录 entry/count/time/memory 边界与 cooperative cancellation；
+- flat/nested 4096 entry、描述性 time/RSS 与 CLI cooperative cancellation 接线
+  已由大目录实验固定；
 - symlink target 在枚举/打开之间变化的 TOCTOU；
 - locale 改变、case/normalization 不同的 filesystem 排序；
 - Windows symlink/junction/reparse point、reserved path 与权限语义；

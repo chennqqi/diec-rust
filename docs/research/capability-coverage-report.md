@@ -71,20 +71,23 @@ traceability 中四个开放 `CAP-GAP-*` 现在显式映射到受影响能力；
 
 | Gap | 类型 | 能力行数 | 范围 |
 | --- | --- | ---: | --- |
-| `CAP-GAP-003` | corpus | 4 | 大目录/取消/TOCTOU 及剩余 Linux locale/filesystem 路径 |
+| `CAP-GAP-003` | corpus | 4 | TOCTOU 及剩余 Linux locale/filesystem 路径 |
 | `CAP-GAP-006` | corpus | 4 | archive 格式、深度和总解压限制 |
 | `CAP-GAP-007` | platform | 68 | 完整 Qt5/Qt6 capability matrix |
 | `CAP-GAP-008` | platform | 8 | Windows/macOS path 与 encoding |
 映射是保守的审计范围，不是“这些能力除此之外都已完备”的声明。
 
-`CAP-GAP-003` 已新增两组固定 Linux Qt5 双 Oracle 子矩阵。23-case
+`CAP-GAP-003` 已新增三组固定 Linux Qt5 双 Oracle 子矩阵。23-case
 [`special-path-behavior.md`](special-path-behavior.md)：NFC/NFD、中文、emoji、
 非 UTF-8 目录/显式 argv、tab/newline、colon/backslash、hidden、leading-dash
 与精确目录顺序均已有 raw-byte 证据；9-case
 [`path-filesystem-behavior.md`](path-filesystem-behavior.md) 又固定 file/
 directory/dangling symlink、alias 重复、mode-000 权限、depth-64 与 self-cycle
-OS 上限。大目录取消/预算、枚举—打开 TOCTOU 和剩余 Linux locale/filesystem
-行为仍使该 corpus gap 保持开放；Windows/macOS 由 `CAP-GAP-008` 单独跟踪。
+OS 上限；5-case
+[`large-directory-behavior.md`](large-directory-behavior.md) 固定 flat/nested
+4096 项完整顺序、描述性资源和发布 CLI 默认 null `PDSTRUCT` 的 cancellation
+不可达边界。枚举—打开 TOCTOU 和剩余 Linux locale/filesystem 行为仍使该
+corpus gap 保持开放；Windows/macOS 由 `CAP-GAP-008` 单独跟踪。
 
 `CAP-GAP-006` 已新增五组固定证据：7Z/RAR4/CAB/ISO9660 无压缩单 PDF 在显式
 archive 后各产生一个 PDF Stream child；NPM 精确路径直接检测为真，但公共自动

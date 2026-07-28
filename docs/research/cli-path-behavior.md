@@ -26,6 +26,11 @@ symlink、权限、64 层目录与自循环由独立的受限文件系统实验�
 上游跟随 file/directory symlink、不去重 alias、静默忽略不可读目录，并依赖 OS
 symlink resolution 上限而非 visited set 终止自循环。
 
+flat/nested 4096 项、descending creation 对照、描述性资源及取消接线由
+[`large-directory-behavior.md`](large-directory-behavior.md) 固定。Formats
+overload 支持可选 `PDSTRUCT`，但发布 CLI 使用默认 `nullptr`，因此 target
+expansion 没有可达的 cooperative cancellation。
+
 ## 源码语义
 
 固定上游
@@ -192,4 +197,5 @@ CSV 同样在记录之间插入不符合 CSV schema 的 filename/colon 行。pla
   边界仍缺。
 - Windows/macOS path separator、绝对路径和枚举顺序。
 - 能实际触发 resource/overlay 的 `--recursivescan` 样本。
-- 大目录的取消、时间、内存、最大文件数与枚举/打开间 TOCTOU。
+- flat/nested 4096 项、描述性时间/RSS 与 CLI cancellation 接线已覆盖；仍缺
+  枚举/打开间 TOCTOU 和剩余 locale/filesystem 边界。

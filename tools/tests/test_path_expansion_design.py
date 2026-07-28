@@ -13,6 +13,9 @@ ADR_PATH = (
 API_PATH = ROOT / "docs" / "design" / "api.md"
 RISKS_PATH = ROOT / "docs" / "design" / "risks.md"
 EVIDENCE_PATH = ROOT / "docs" / "research" / "path-filesystem-behavior.md"
+LARGE_EVIDENCE_PATH = (
+    ROOT / "docs" / "research" / "large-directory-behavior.md"
+)
 
 
 class PathExpansionDesignTest(unittest.TestCase):
@@ -22,6 +25,7 @@ class PathExpansionDesignTest(unittest.TestCase):
         cls.api = API_PATH.read_text(encoding="utf-8")
         cls.risks = RISKS_PATH.read_text(encoding="utf-8")
         cls.evidence = EVIDENCE_PATH.read_text(encoding="utf-8")
+        cls.large_evidence = LARGE_EVIDENCE_PATH.read_text(encoding="utf-8")
 
     def test_adr_is_proposed_and_has_review_sections(self) -> None:
         self.assertIn("Status: Proposed", self.adr)
@@ -59,6 +63,8 @@ class PathExpansionDesignTest(unittest.TestCase):
             self.assertIn(token, self.adr)
         self.assertIn("self-cycle", self.evidence)
         self.assertIn("41", self.evidence)
+        self.assertIn("4096", self.large_evidence)
+        self.assertIn("nullptr", self.large_evidence)
 
     def test_traversal_is_bounded_before_metadata_or_queue_work(self) -> None:
         for budget in (
