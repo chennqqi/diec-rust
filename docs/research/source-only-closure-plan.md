@@ -22,7 +22,7 @@ runtime corpus 和 ADR 0012 关闭 source-only 状态，但仍保留明确 corpu
 
 | 能力 | 关闭类型 | 结果 |
 | --- | --- | --- |
-| `CAP-NEST-009` | bounded escalation + ADR | 1—16 层与 2,162—2,097,266 累计展开 bytes 均到达最深 PDF；取消保留 partial；ADR 0012 固定有限预算策略 |
+| `CAP-NEST-009` | bounded escalation + ADR | 1—64 层与 2,162—33,554,546 累计展开 bytes 均到达最深 PDF；取消保留 partial；ADR 0012 固定有限预算策略 |
 
 证据见
 [`archive-limit-behavior.md`](archive-limit-behavior.md)、

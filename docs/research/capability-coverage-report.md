@@ -94,14 +94,16 @@ stable old/new、old→new 原子替换和 unlink，证明第二项按打开时�
 volume，冻结两个大小写排序 profile。Windows/macOS 仍由 `CAP-GAP-008`
 单独跟踪，不属于已闭合的 Linux Qt5 corpus gap。
 
-`CAP-GAP-006` 已新增五组固定证据：7Z Copy/LZMA/LZMA2/BZip2/Deflate 与
+`CAP-GAP-006` 已新增六组固定证据：单成员 ZIP 链已到达 64 层，固定两层
+累计展开量达到 33,554,546 bytes；7Z Copy/LZMA/LZMA2/BZip2/Deflate 与
 RAR4/CAB/ISO9660 单 PDF 在显式 archive 后各产生一个 PDF Stream child；
 NPM 精确路径直接检测为真，但公共自动
 扫描回退 `Binary / Unknown`，强制属性才进入 NPM 语言规则；generic Archive
 自然检测不满足 singleton 门控，强制 quiet/verbose 后则分别得到 Unknown 和
 具体 ZIP/TAR/GZIP adapter；aggressive archive 的第 100000 条记录可达，第
 100001 条不可达；ZIP deflate/ZipCrypto/CRC/压缩流/offset/method 畸形、
-local-header fallback、1 MiB/843.58:1 和 mixed filter 也已固定。五组增量见
+local-header fallback、1 MiB/843.58:1 和 mixed filter 也已固定。六组增量见
+[`archive-limit-behavior.md`](archive-limit-behavior.md)、
 [`archive-format-behavior.md`](archive-format-behavior.md) 和
 [`npm-dispatch-reachability.md`](npm-dispatch-reachability.md)、
 [`generic-archive-dispatch-reachability.md`](generic-archive-dispatch-reachability.md)、

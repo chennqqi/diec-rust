@@ -23,7 +23,10 @@ BASELINE_PATH = (
     ROOT / "docs" / "research" / "data" / "baseline-corpus.json"
 )
 ARCHIVE_PATH = (
-    ROOT / "docs" / "research" / "data" / "archive-limit-corpus.json"
+    ROOT
+    / "tools"
+    / "benchmark"
+    / "upstream-benchmark-archive-corpus-v1.json"
 )
 
 

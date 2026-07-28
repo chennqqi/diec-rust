@@ -30,8 +30,15 @@ def _load_baseline_module():
 
 BASELINE = _load_baseline_module()
 
-DEPTHS = (1, 2, 4, 8, 12, 16)
-EXPANDED_LEAF_SIZES = (1024, 65536, 262144, 1048576)
+DEPTHS = (1, 2, 4, 8, 12, 16, 32, 64)
+EXPANDED_LEAF_SIZES = (
+    1024,
+    65536,
+    262144,
+    1048576,
+    4 * 1024 * 1024,
+    16 * 1024 * 1024,
+)
 EXPANDED_DEPTH = 2
 
 

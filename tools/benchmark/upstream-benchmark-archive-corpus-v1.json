@@ -64,26 +64,6 @@
       "size": 2275
     },
     {
-      "cumulative_expanded_bytes": 70856,
-      "depth": 32,
-      "leaf_size": 331,
-      "member_count_per_level": 1,
-      "name": "depth-32.zip",
-      "series": "depth",
-      "sha256": "da5630d56886186ba264cf1c0f7c4745e2d2db3c2c0210e2dbda2035b8a52577",
-      "size": 4227
-    },
-    {
-      "cumulative_expanded_bytes": 266632,
-      "depth": 64,
-      "leaf_size": 331,
-      "member_count_per_level": 1,
-      "name": "depth-64.zip",
-      "series": "depth",
-      "sha256": "c3811f1e4fd5fc11b135e4bda19ed685c12ece92723f5dd90d100d61a80ca31b",
-      "size": 8131
-    },
-    {
       "cumulative_expanded_bytes": 2162,
       "depth": 2,
       "leaf_size": 1024,
@@ -122,26 +102,6 @@
       "series": "expanded_bytes",
       "sha256": "b8af36eb213de9b11d45fa15f8427950873474992f017a79aab4c6adcbae1fa1",
       "size": 1048812
-    },
-    {
-      "cumulative_expanded_bytes": 8388722,
-      "depth": 2,
-      "leaf_size": 4194304,
-      "member_count_per_level": 1,
-      "name": "expanded-4194304.zip",
-      "series": "expanded_bytes",
-      "sha256": "72f97d8cd9f79f3d2c5fe65609c3c4af72f3eea12cc0e04e02e14efea57673da",
-      "size": 4194540
-    },
-    {
-      "cumulative_expanded_bytes": 33554546,
-      "depth": 2,
-      "leaf_size": 16777216,
-      "member_count_per_level": 1,
-      "name": "expanded-16777216.zip",
-      "series": "expanded_bytes",
-      "sha256": "bea3f1ca1fb6701f55e7ed9d298b8b3b3d5c2ae250092e18cf2770fb6d3ba1c3",
-      "size": 16777452
     }
   ],
   "schema_version": 1

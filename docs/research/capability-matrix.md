@@ -216,8 +216,8 @@ hideunknown 的可观察增量。完整输入哈希和输出见
 - `CAP-NEST-008`：JSON 结果通过父 detection 的 `values` 表达树，并保留 file part、size 和
   offset。详见 [`nested-scan-behavior.md`](nested-scan-behavior.md)。
 - `CAP-NEST-009`：固定源码没有独立嵌套 depth 或全 scan 累计展开字节状态；
-  受限 Linux Qt5 oracle 的单成员 ZIP 到达 16 层，固定两层累计展开量达到
-  2,097,266 bytes，第一次 progress callback 取消保留 1 条 root partial record。
+  受限 Linux Qt5 oracle 的单成员 ZIP 到达 64 层，固定两层累计展开量达到
+  33,554,546 bytes，第一次 progress callback 取消保留 1 条 root partial record。
   状态为 Observed with gaps；7Z Copy/LZMA/LZMA2/BZip2/Deflate 与
   RAR4/CAB/ISO9660 正例已经固定，但
   ZIP 1 MiB/843.58:1 和首轮格式错误边界已固定；更高展开量、其他格式/算法、

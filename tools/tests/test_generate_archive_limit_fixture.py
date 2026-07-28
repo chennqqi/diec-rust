@@ -98,6 +98,7 @@ class GenerateArchiveLimitFixtureTests(unittest.TestCase):
             [sample["depth"] for sample in depth_series],
             list(MODULE.DEPTHS),
         )
+        self.assertEqual(depth_series[-1]["depth"], 64)
         self.assertEqual(
             len({sample["leaf_size"] for sample in depth_series}),
             1,
@@ -109,6 +110,14 @@ class GenerateArchiveLimitFixtureTests(unittest.TestCase):
         self.assertEqual(
             [sample["leaf_size"] for sample in expanded_series],
             list(MODULE.EXPANDED_LEAF_SIZES),
+        )
+        self.assertEqual(
+            expanded_series[-1]["leaf_size"],
+            16 * 1024 * 1024,
+        )
+        self.assertGreater(
+            expanded_series[-1]["cumulative_expanded_bytes"],
+            32 * 1024 * 1024,
         )
         self.assertTrue(
             all(

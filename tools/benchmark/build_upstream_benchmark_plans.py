@@ -268,10 +268,9 @@ def parse_args() -> argparse.Namespace:
         type=Path,
         default=(
             root
-            / "docs"
-            / "research"
-            / "data"
-            / "archive-limit-corpus.json"
+            / "tools"
+            / "benchmark"
+            / "upstream-benchmark-archive-corpus-v1.json"
         ),
     )
     parser.add_argument(

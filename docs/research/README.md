@@ -12,7 +12,8 @@ Phase 0 计划形成：
 - [`source-only-closure-plan.md`](source-only-closure-plan.md)：Linux Qt5
   source-only 闭集及最后一项 depth/expanded-byte 关闭证据（Draft）。
 - [`archive-limit-behavior.md`](archive-limit-behavior.md)：受资源约束的 archive
-  depth/累计展开量递增、peak RSS 与 cooperative cancellation 证据（In Review）。
+  depth 64/约 32 MiB 累计展开量递增、peak RSS 与 cooperative cancellation
+  证据（In Review）。
 - [`archive-iteration-boundary.md`](archive-iteration-boundary.md)：aggressive
   archive 第 99999/100000/100001 条哨兵、源码循环顺序和受控分配失败证据
   （In Review）。

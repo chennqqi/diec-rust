@@ -15,10 +15,10 @@ Last updated: 2026-07-28
   数量 `20/100000` 和循环 `100000` 次上限；它按成员声明的 uncompressed size
   分配 buffer，然后把完整 `SCAN_OPTIONS` 复制给递归 `scanProcess()`。该源码块没有
   独立 depth 或全 scan 累计展开字节状态。
-- 每层严格 1 个成员、叶子大小不变的 ZIP 序列从 1 增长到 16 层。固定 engine
+- 每层严格 1 个成员、叶子大小不变的 ZIP 序列从 1 增长到 64 层。固定 engine
   在每个 case 都到达最深 PDF，`Stream` node 数和最深 parent 链均精确等于声明
   depth。
-- depth 固定为 2 时，累计成员展开量从 2,162 增长到 2,097,266 bytes。四个 case
+- depth 固定为 2 时，累计成员展开量从 2,162 增长到 33,554,546 bytes。六个 case
   都到达第二层 PDF，没有观察到累计字节截断。
 - 第一次 upstream progress callback 在扫描线程内设置 stopped，会保留 1 条 root
   record、产生 0 个 Stream child；同输入未取消时产生 18 records 和 16 个
@@ -41,6 +41,8 @@ Last updated: 2026-07-28
 
 机器报告：
 [`archive-limit-engine-qt5.json`](data/archive-limit-engine-qt5.json)。
+SHA-256 为
+`e4786dcc578fb0714c86f71955161f981a06be26aefe663281d74202f5372ecd`。
 报告同时保存 image ID、binary/source hash、每次原始 stdout/stderr 及其 hash、
 退出码、timeout、possible OOM、扫描耗时和进程 peak RSS。
 
@@ -75,8 +77,8 @@ block 行范围和正向控制（entry limit、allocation、递归调用）出�
 
 | 序列 | 固定项 | 变化项 | 测试范围 |
 | --- | --- | --- | --- |
-| `depth` | 每层 1 member、leaf 331 bytes | archive depth | 1, 2, 4, 8, 12, 16 |
-| `expanded_bytes` | depth 2、每层 1 member | leaf/cumulative bytes | leaf 1 KiB—1 MiB；累计 2,162—2,097,266 |
+| `depth` | 每层 1 member、leaf 331 bytes | archive depth | 1, 2, 4, 8, 12, 16, 32, 64 |
+| `expanded_bytes` | depth 2、每层 1 member | leaf/cumulative bytes | leaf 1 KiB—16 MiB；累计 2,162—33,554,546 |
 
 `cumulative_expanded_bytes` 定义为引擎沿链为每个 archive member 请求的
 uncompressed size 之和；生成器测试通过逐层解包重新计算该值。store-only 避免把
@@ -116,11 +118,11 @@ python tools\upstream\probe_archive_limits_harness.py `
 
 ## 结果摘要
 
-所有 10 个 normal cases 与 1 个取消 control 均 exit 0、stderr 为空、未 timeout，
+所有 14 个 normal cases 与 1 个取消 control 均 exit 0、stderr 为空、未 timeout，
 也未以 137 退出。normal cases 没有 engine error 或 tree cycle。最大 case：
 
-- depth：16 层、16 个 Stream nodes、最深 PDF depth 16；
-- cumulative expanded：2,097,266 bytes、最深 PDF depth 2；
+- depth：64 层、64 个 Stream nodes、最深 PDF depth 64；
+- cumulative expanded：33,554,546 bytes、最深 PDF depth 2；
 - peak RSS：报告的是各独立进程“database 已加载后的进程高水位”和“scan 后进程
   高水位”，不是 archive allocation 的隔离增量；
 - elapsed/RSS 是本次环境描述值，断言只要求它们有效且 high-watermark 不倒退，
@@ -128,7 +130,7 @@ python tools\upstream\probe_archive_limits_harness.py `
 
 ## 限制与剩余缺口
 
-- 只验证 Linux x86_64 Qt5、ZIP store method、depth 16 和约 2 MiB 累计展开量。
+- 只验证 Linux x86_64 Qt5、ZIP store method、depth 64 和约 32 MiB 累计展开量。
 - 7Z Copy/LZMA/LZMA2/BZip2/Deflate 与 RAR4/CAB/ISO9660 的合法单成员正例已由
   [`archive-format-behavior.md`](archive-format-behavior.md) 固定；仍未验证
   7Z PPMd7/Deflate64/filter/AES 与 RAR/CAB 其他压缩/加密/损坏边界。

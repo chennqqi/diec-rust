@@ -6,8 +6,8 @@ Last updated: 2026-07-28
 ## 背景
 
 固定上游 archive scanner 有每层 entry 数量边界，却没有独立嵌套 depth 或全 scan
-累计展开字节计数。固定 Linux Qt5 oracle 已观察到单成员 ZIP 到达 16 层、固定两层
-累计展开 2,097,266 bytes，并证明取消返回部分 record。详见
+累计展开字节计数。固定 Linux Qt5 oracle 已观察到单成员 ZIP 到达 64 层、固定两层
+累计展开 33,554,546 bytes，并证明取消返回部分 record。详见
 [`archive-limit-behavior.md`](../../research/archive-limit-behavior.md)。
 aggressive 的精确记录边界为第 100000 条可达、第 100001 条不可达；ZIP
 1 MiB/843.58:1、ZipCrypto 无密码和首轮畸形矩阵也已固定，见

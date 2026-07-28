@@ -292,7 +292,7 @@ baseline 的变更都要检查本表。
 
 - **触发**：深链、循环、极高 entry count、声明长度欺骗、高压缩比或累计输出超限。
 - **当前证据**：固定 Linux Qt5 archive oracle 已在 256 MiB/1 CPU/30 s 外部边界
-  内到达 16 层和 2,097,266 累计展开 bytes；固定源码与 runtime 均未显示独立
+  内到达 64 层和 33,554,546 累计展开 bytes；固定源码与 runtime 均未显示独立
   depth/total cutoff。另一个双 Qt5 oracle 已固定 resource 默认 21/aggressive
   2001 child 上限、枚举顺序及 PE parser 每目录 1000 项限制。取消 control
   保留 root partial record。固定 archive harness 还证明 7Z

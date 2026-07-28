@@ -276,7 +276,7 @@ elapsed 值与固定规则执行序列另见
   [`archive-adversarial-behavior.md`](archive-adversarial-behavior.md) 固定；
   其他格式/算法及更高资源边界仍待验证；
   7Z Copy/LZMA/LZMA2/BZip2/Deflate、RAR4/CAB/ISO9660 正例及 ZIP
-  depth 16/约 2 MiB 累计展开量已有
+  depth 64/约 32 MiB 累计展开量已有
   专用报告。
 - 发布 CLI 的 ZIP database 截断/重复/`..`/根前缀边界及 cache-disabled
   副作用已由 [`database-archive-cache.md`](database-archive-cache.md) 覆盖；

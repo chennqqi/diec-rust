@@ -57,7 +57,13 @@ Last updated: 2026-07-28
 镜像内两份生成语料 manifest 分别固定为：
 
 - baseline：`f5adabeedeaf3bb69b8e52f8de20efd0f0b87bd4dcd247610d4e876b9266f329`；
-- archive limit：`1046b80963f82412616f150ff38b1664dcd7e82a0458e2b4484ab1532f223a36`。
+- archive benchmark v1 快照：
+  `1046b80963f82412616f150ff38b1664dcd7e82a0458e2b4484ab1532f223a36`。
+
+archive benchmark 只使用 `depth-16.zip`。其输入清单固定保存为
+[`upstream-benchmark-archive-corpus-v1.json`](../../tools/benchmark/upstream-benchmark-archive-corpus-v1.json)，
+避免后续扩展 archive-limit 研究语料时改变既有性能报告的测量身份；镜像重建会用该快照
+覆盖生成器写出的清单。
 
 ## 3. 测量分层
 

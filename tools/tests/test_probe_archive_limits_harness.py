@@ -143,12 +143,14 @@ class ProbeArchiveLimitsHarnessTests(unittest.TestCase):
         )
 
     def test_cancellation_is_a_nonempty_strict_prefix_control(self):
-        cancellation = self.report["cancellation_case"]["harness"]
+        cancellation_case = self.report["cancellation_case"]
+        cancellation = cancellation_case["harness"]
         full = next(
             case["harness"]
             for case in self.report["normal_cases"]
-            if case["sample"] == "depth-16.zip"
+            if case["sample"] == cancellation_case["sample"]
         )
+        self.assertEqual(cancellation_case["sample"], "depth-64.zip")
         self.assertTrue(cancellation["pd_stopped"])
         self.assertGreater(cancellation["record_count"], 0)
         self.assertLess(

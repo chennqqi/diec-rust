@@ -5,6 +5,8 @@ COPY upstream/upstream_benchmark_harness_main.cpp \
     /tmp/upstream_benchmark_harness_main.cpp
 COPY benchmark/run_process_benchmark.py \
     /opt/diec-benchmark/run_process_benchmark.py
+COPY benchmark/upstream-benchmark-archive-corpus-v1.json \
+    /opt/diec-benchmark/upstream-benchmark-archive-corpus-v1.json
 COPY corpus/generate_baseline_corpus.py \
     /opt/diec-benchmark/generate_baseline_corpus.py
 COPY corpus/generate_archive_limit_fixture.py \
@@ -30,6 +32,8 @@ RUN set -eux; \
         /bench/baseline >/tmp/baseline-manifest.json; \
     python3 /opt/diec-benchmark/generate_archive_limit_fixture.py \
         /bench/archive >/tmp/archive-manifest.json; \
+    cp /opt/diec-benchmark/upstream-benchmark-archive-corpus-v1.json \
+        /bench/archive/manifest.json; \
     /opt/die-build/src/console/diec-upstream-benchmark-harness \
         --noop >/tmp/benchmark-noop.json; \
     /opt/die-build/src/console/diec-upstream-benchmark-harness \
