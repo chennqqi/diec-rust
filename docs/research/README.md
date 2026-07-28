@@ -149,6 +149,9 @@ Phase 0 计划形成：
 - [`qt6-option-profiling-runtime-evidence.md`](qt6-option-profiling-runtime-evidence.md)：
   固定 verbose/profiling/test/createtest 九用例与 292 条 Binary 规则 profiling
   order 的 Qt5/Qt6 差分（In Review）。
+- [`qt6-engine-contract-runtime-evidence.md`](qt6-engine-contract-runtime-evidence.md)：
+  固定 37-case 四入口、device/subdevice、filter、cancel 与 sort 引擎契约，
+  并验证 23 条确定性关系与 Qt5 完全一致（In Review）。
 - [`behavior-baseline.md`](behavior-baseline.md)：确定性安全语料、原始输出哈希和多格式行为（Draft）。
 - [`cli-json-schema-inventory.md`](cli-json-schema-inventory.md)：固定 CLI normal/entropy/info/struct JSON 字段、类型、顺序与失败边界（Draft）。
 - [`cli-output-boundaries.md`](cli-output-boundaries.md)：固定 JSON/XML/CSV/TSV/plain text 的 Unicode/控制字符转义、嵌套排序和格式缺陷；闭合 `CAP-GAP-004`（Draft）。
@@ -218,6 +221,9 @@ Phase 0 计划形成：
   九用例 CLI option 的完整 canonical streams、两侧身份和关系断言。
 - [`data/binary-rule-order-linux-qt5-qt6.json`](data/binary-rule-order-linux-qt5-qt6.json)：
   两侧 292 条 Binary signature profiling announcements 的完整固定顺序。
+- [`data/engine-contract-linux-qt6.json`](data/engine-contract-linux-qt6.json)：
+  固定 Qt6 engine harness 的 37-case 原始身份、23 条关系、fixture 与源码审计，
+  并与 Qt5 确定性投影成对校验。
 - [`data/scan-option-boundary-fixture.json`](data/scan-option-boundary-fixture.json)：deep/aggressive 规则与 1/22/2002-resource PE 的 hash-bound 清单。
 - [`data/scan-option-boundaries-linux-qt5.json`](data/scan-option-boundaries-linux-qt5.json)：8-case 双 Qt5 scan-option oracle 的去重原始 streams、身份和派生事实。
 - [`data/capability-traceability.json`](data/capability-traceability.json)：68 个稳定

@@ -1,0 +1,1846 @@
+{
+  "capability_scope": [
+    "CAP-ENG-IN-001",
+    "CAP-ENG-IN-002",
+    "CAP-RULE-006",
+    "CAP-RULE-009",
+    "CAP-RULE-012"
+  ],
+  "fixture_manifest": {
+    "path": "docs/research/data/rule-orchestration-fixture.json",
+    "sha256": "535d96510e1a807a07af752ed60b0239bdbb91331ce51b1f89d2be043d07f23e"
+  },
+  "generator": "tools/upstream/probe_qt6_engine_contract.py",
+  "generator_sha256": "9ef9136d884b24c9d9fa10a1eaf9152be085fd0006bcc6cfcf7c9f349f883170",
+  "harness_inputs": {
+    "dockerfile": {
+      "path": "tools/upstream/Dockerfile.engine-contract-harness-qt6",
+      "sha256": "3f79f1dfc653d0fe81a6cd517f714a12dda92d6797d50365a27d5ec1e6207b72"
+    },
+    "source": {
+      "path": "tools/upstream/engine_contract_harness_main.cpp",
+      "sha256": "55efa51a59ada97064169df8f65f776d74176d859e2b8457d6a051d1bd0f29c6"
+    }
+  },
+  "harness_output": {
+    "case_count": 37,
+    "cases": [
+      {
+        "callback_events": [],
+        "database": "priority",
+        "database_loaded": true,
+        "deep": false,
+        "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
+        "id": "filter_all",
+        "method": "scanFile",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_not_canceled": true,
+        "pd_stopped": false,
+        "pd_success": true,
+        "pre_stopped": false,
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          },
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority two",
+            "priority": 12,
+            "signature": "a_priority.2.sg",
+            "signature_file": "/fixture/priority-main/Binary/a_priority.2.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          },
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority four",
+            "priority": 12,
+            "signature": "m_priority.4.sg",
+            "signature_file": "/fixture/priority-main/Binary/m_priority.4.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_size": 35,
+        "signature_name": "",
+        "sort": false
+      },
+      {
+        "callback_events": [],
+        "database": "orchestration",
+        "database_loaded": true,
+        "deep": false,
+        "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
+        "id": "filter_exact_extra",
+        "method": "scanFile",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_not_canceled": true,
+        "pd_stopped": false,
+        "pd_success": true,
+        "pre_stopped": false,
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Extra normal",
+            "priority": 12,
+            "signature": "a_extra.0.sg",
+            "signature_file": "/fixture/extra/Binary/a_extra.0.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "main-global:main-helper:main-type"
+          }
+        ],
+        "result_size": 35,
+        "signature_name": "a_extra.0.sg",
+        "sort": false
+      },
+      {
+        "callback_events": [],
+        "database": "priority",
+        "database_loaded": true,
+        "deep": false,
+        "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
+        "id": "filter_missing",
+        "method": "scanFile",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_not_canceled": true,
+        "pd_stopped": false,
+        "pd_success": true,
+        "pre_stopped": false,
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Unknown",
+            "priority": 0,
+            "signature": "",
+            "signature_file": "",
+            "type": "Unknown",
+            "unknown": true,
+            "version": ""
+          }
+        ],
+        "result_size": 35,
+        "signature_name": "missing.0.sg",
+        "sort": false
+      },
+      {
+        "callback_events": [],
+        "database": "priority",
+        "database_loaded": true,
+        "deep": false,
+        "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
+        "id": "filter_case_mismatch",
+        "method": "scanFile",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_not_canceled": true,
+        "pd_stopped": false,
+        "pd_success": true,
+        "pre_stopped": false,
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Unknown",
+            "priority": 0,
+            "signature": "",
+            "signature_file": "",
+            "type": "Unknown",
+            "unknown": true,
+            "version": ""
+          }
+        ],
+        "result_size": 35,
+        "signature_name": "Z_PRIORITY.1.SG",
+        "sort": false
+      },
+      {
+        "callback_events": [],
+        "database": "orchestration",
+        "database_loaded": true,
+        "deep": false,
+        "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
+        "id": "filter_deep_disabled",
+        "method": "scanFile",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_not_canceled": true,
+        "pd_stopped": false,
+        "pd_success": true,
+        "pre_stopped": false,
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Unknown",
+            "priority": 0,
+            "signature": "",
+            "signature_file": "",
+            "type": "Unknown",
+            "unknown": true,
+            "version": ""
+          }
+        ],
+        "result_size": 35,
+        "signature_name": "DS.deep.2.sg",
+        "sort": false
+      },
+      {
+        "callback_events": [],
+        "database": "orchestration",
+        "database_loaded": true,
+        "deep": true,
+        "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
+        "id": "filter_deep_enabled",
+        "method": "scanFile",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_not_canceled": true,
+        "pd_stopped": false,
+        "pd_success": true,
+        "pre_stopped": false,
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Main deep",
+            "priority": 12,
+            "signature": "DS.deep.2.sg",
+            "signature_file": "/fixture/main/Binary/DS.deep.2.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "main-global:main-helper:main-type"
+          }
+        ],
+        "result_size": 35,
+        "signature_name": "DS.deep.2.sg",
+        "sort": false
+      },
+      {
+        "callback_events": [],
+        "database": "sort",
+        "database_loaded": true,
+        "deep": false,
+        "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
+        "id": "sort_disabled",
+        "method": "scanFile",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_not_canceled": true,
+        "pd_stopped": false,
+        "pd_success": true,
+        "pre_stopped": false,
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Packer last",
+            "priority": 100,
+            "signature": "sort_records.1.sg",
+            "signature_file": "/fixture/sort-main/Binary/sort_records.1.sg",
+            "type": "packer",
+            "unknown": false,
+            "version": ""
+          },
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Format first",
+            "priority": 12,
+            "signature": "sort_records.1.sg",
+            "signature_file": "/fixture/sort-main/Binary/sort_records.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": ""
+          },
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Compiler middle",
+            "priority": 30,
+            "signature": "sort_records.1.sg",
+            "signature_file": "/fixture/sort-main/Binary/sort_records.1.sg",
+            "type": "compiler",
+            "unknown": false,
+            "version": ""
+          }
+        ],
+        "result_size": 35,
+        "signature_name": "",
+        "sort": false
+      },
+      {
+        "callback_events": [],
+        "database": "sort",
+        "database_loaded": true,
+        "deep": false,
+        "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
+        "id": "sort_enabled",
+        "method": "scanFile",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_not_canceled": true,
+        "pd_stopped": false,
+        "pd_success": true,
+        "pre_stopped": false,
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Format first",
+            "priority": 12,
+            "signature": "sort_records.1.sg",
+            "signature_file": "/fixture/sort-main/Binary/sort_records.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": ""
+          },
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Compiler middle",
+            "priority": 30,
+            "signature": "sort_records.1.sg",
+            "signature_file": "/fixture/sort-main/Binary/sort_records.1.sg",
+            "type": "compiler",
+            "unknown": false,
+            "version": ""
+          },
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Packer last",
+            "priority": 100,
+            "signature": "sort_records.1.sg",
+            "signature_file": "/fixture/sort-main/Binary/sort_records.1.sg",
+            "type": "packer",
+            "unknown": false,
+            "version": ""
+          }
+        ],
+        "result_size": 35,
+        "signature_name": "",
+        "sort": true
+      },
+      {
+        "callback_events": [
+          {
+            "current_index": 0,
+            "number_of_signatures": 3,
+            "signature": "z_priority.1.sg"
+          },
+          {
+            "current_index": 1,
+            "number_of_signatures": 3,
+            "signature": "a_priority.2.sg"
+          },
+          {
+            "current_index": 2,
+            "number_of_signatures": 3,
+            "signature": "m_priority.4.sg"
+          }
+        ],
+        "database": "priority",
+        "database_loaded": true,
+        "deep": false,
+        "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
+        "id": "callback_continue",
+        "method": "scanFile",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_not_canceled": true,
+        "pd_stopped": false,
+        "pd_success": true,
+        "pre_stopped": false,
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          },
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority two",
+            "priority": 12,
+            "signature": "a_priority.2.sg",
+            "signature_file": "/fixture/priority-main/Binary/a_priority.2.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          },
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority four",
+            "priority": 12,
+            "signature": "m_priority.4.sg",
+            "signature_file": "/fixture/priority-main/Binary/m_priority.4.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_size": 35,
+        "signature_name": "",
+        "sort": false
+      },
+      {
+        "callback_events": [
+          {
+            "current_index": 0,
+            "number_of_signatures": 3,
+            "signature": "z_priority.1.sg"
+          }
+        ],
+        "database": "priority",
+        "database_loaded": true,
+        "deep": false,
+        "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
+        "id": "callback_stop_first",
+        "method": "scanFile",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_not_canceled": false,
+        "pd_stopped": true,
+        "pd_success": false,
+        "pre_stopped": false,
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_size": 35,
+        "signature_name": "",
+        "sort": false
+      },
+      {
+        "callback_events": [
+          {
+            "current_index": 0,
+            "number_of_signatures": 3,
+            "signature": "z_priority.1.sg"
+          },
+          {
+            "current_index": 1,
+            "number_of_signatures": 3,
+            "signature": "a_priority.2.sg"
+          }
+        ],
+        "database": "priority",
+        "database_loaded": true,
+        "deep": false,
+        "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
+        "id": "callback_stop_second",
+        "method": "scanFile",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_not_canceled": false,
+        "pd_stopped": true,
+        "pd_success": false,
+        "pre_stopped": false,
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          },
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority two",
+            "priority": 12,
+            "signature": "a_priority.2.sg",
+            "signature_file": "/fixture/priority-main/Binary/a_priority.2.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_size": 35,
+        "signature_name": "",
+        "sort": false
+      },
+      {
+        "callback_events": [
+          {
+            "current_index": 0,
+            "number_of_signatures": 3,
+            "signature": "z_priority.1.sg"
+          },
+          {
+            "current_index": 1,
+            "number_of_signatures": 3,
+            "signature": "a_priority.2.sg"
+          },
+          {
+            "current_index": 2,
+            "number_of_signatures": 3,
+            "signature": "m_priority.4.sg"
+          }
+        ],
+        "database": "priority",
+        "database_loaded": true,
+        "deep": false,
+        "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
+        "id": "callback_stop_last",
+        "method": "scanFile",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_not_canceled": false,
+        "pd_stopped": true,
+        "pd_success": false,
+        "pre_stopped": false,
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          },
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority two",
+            "priority": 12,
+            "signature": "a_priority.2.sg",
+            "signature_file": "/fixture/priority-main/Binary/a_priority.2.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          },
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority four",
+            "priority": 12,
+            "signature": "m_priority.4.sg",
+            "signature_file": "/fixture/priority-main/Binary/m_priority.4.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_size": 35,
+        "signature_name": "",
+        "sort": false
+      },
+      {
+        "callback_events": [
+          {
+            "current_index": 0,
+            "number_of_signatures": 3,
+            "signature": "z_priority.1.sg"
+          },
+          {
+            "current_index": 1,
+            "number_of_signatures": 3,
+            "signature": "a_priority.2.sg"
+          }
+        ],
+        "database": "priority",
+        "database_loaded": true,
+        "deep": false,
+        "errors": [],
+        "external_stop_thread_distinct": true,
+        "external_stop_writes": 1,
+        "id": "external_stop_second",
+        "method": "scanFile",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_not_canceled": false,
+        "pd_stopped": true,
+        "pd_success": false,
+        "pre_stopped": false,
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          },
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority two",
+            "priority": 12,
+            "signature": "a_priority.2.sg",
+            "signature_file": "/fixture/priority-main/Binary/a_priority.2.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_size": 35,
+        "signature_name": "",
+        "sort": false
+      },
+      {
+        "callback_events": [],
+        "database": "break",
+        "database_loaded": true,
+        "deep": false,
+        "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
+        "id": "break_scan",
+        "method": "scanFile",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_not_canceled": false,
+        "pd_stopped": true,
+        "pd_success": false,
+        "pre_stopped": false,
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Break first",
+            "priority": 12,
+            "signature": "break_scan.1.sg",
+            "signature_file": "/fixture/break-main/Binary/break_scan.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": ""
+          }
+        ],
+        "result_size": 35,
+        "signature_name": "",
+        "sort": false
+      },
+      {
+        "callback_events": [],
+        "database": "priority",
+        "database_loaded": true,
+        "deep": false,
+        "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
+        "id": "pre_stopped",
+        "method": "scanFile",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_not_canceled": false,
+        "pd_stopped": true,
+        "pd_success": false,
+        "pre_stopped": true,
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Unknown",
+            "priority": 0,
+            "signature": "",
+            "signature_file": "",
+            "type": "Unknown",
+            "unknown": true,
+            "version": ""
+          }
+        ],
+        "result_size": 35,
+        "signature_name": "",
+        "sort": false
+      },
+      {
+        "callback_events": [],
+        "database": "priority",
+        "database_loaded": true,
+        "deep": false,
+        "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
+        "id": "entry_file",
+        "method": "scanFile",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_not_canceled": true,
+        "pd_stopped": false,
+        "pd_success": true,
+        "pre_stopped": false,
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_size": 35,
+        "signature_name": "z_priority.1.sg",
+        "sort": false
+      },
+      {
+        "callback_events": [],
+        "database": "priority",
+        "database_loaded": true,
+        "deep": false,
+        "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
+        "id": "entry_memory",
+        "method": "scanMemory",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_not_canceled": true,
+        "pd_stopped": false,
+        "pd_success": true,
+        "pre_stopped": false,
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_size": 35,
+        "signature_name": "z_priority.1.sg",
+        "sort": false
+      },
+      {
+        "callback_events": [],
+        "database": "priority",
+        "database_loaded": true,
+        "deep": false,
+        "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
+        "id": "entry_device",
+        "method": "scanDevice",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_not_canceled": true,
+        "pd_stopped": false,
+        "pd_success": true,
+        "pre_stopped": false,
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_size": 35,
+        "signature_name": "z_priority.1.sg",
+        "sort": false
+      },
+      {
+        "callback_events": [],
+        "database": "priority",
+        "database_loaded": true,
+        "deep": false,
+        "errors": [],
+        "external_stop_thread_distinct": false,
+        "external_stop_writes": 0,
+        "id": "entry_subdevice",
+        "method": "scanSubdevice",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_not_canceled": true,
+        "pd_stopped": false,
+        "pd_success": true,
+        "pre_stopped": false,
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_size": 35,
+        "signature_name": "z_priority.1.sg",
+        "sort": false
+      },
+      {
+        "canceled": {
+          "callback_events": [
+            {
+              "current_index": 0,
+              "number_of_signatures": 3,
+              "signature": "z_priority.1.sg"
+            },
+            {
+              "current_index": 1,
+              "number_of_signatures": 3,
+              "signature": "a_priority.2.sg"
+            }
+          ],
+          "errors": [],
+          "pd_finished": true,
+          "pd_n_finished": 2,
+          "pd_not_canceled": false,
+          "pd_stopped": true,
+          "pd_success": false,
+          "records": [
+            {
+              "aggressive_heuristic": false,
+              "heuristic": false,
+              "info": "",
+              "name": "Priority one",
+              "priority": 12,
+              "signature": "z_priority.1.sg",
+              "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+              "type": "format",
+              "unknown": false,
+              "version": "priority-only"
+            },
+            {
+              "aggressive_heuristic": false,
+              "heuristic": false,
+              "info": "",
+              "name": "Priority two",
+              "priority": 12,
+              "signature": "a_priority.2.sg",
+              "signature_file": "/fixture/priority-main/Binary/a_priority.2.sg",
+              "type": "format",
+              "unknown": false,
+              "version": "priority-only"
+            }
+          ]
+        },
+        "database_loaded": true,
+        "fresh": {
+          "callback_events": [
+            {
+              "current_index": 0,
+              "number_of_signatures": 3,
+              "signature": "z_priority.1.sg"
+            },
+            {
+              "current_index": 1,
+              "number_of_signatures": 3,
+              "signature": "a_priority.2.sg"
+            },
+            {
+              "current_index": 2,
+              "number_of_signatures": 3,
+              "signature": "m_priority.4.sg"
+            }
+          ],
+          "errors": [],
+          "pd_finished": true,
+          "pd_n_finished": 2,
+          "pd_not_canceled": true,
+          "pd_stopped": false,
+          "pd_success": true,
+          "records": [
+            {
+              "aggressive_heuristic": false,
+              "heuristic": false,
+              "info": "",
+              "name": "Priority one",
+              "priority": 12,
+              "signature": "z_priority.1.sg",
+              "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+              "type": "format",
+              "unknown": false,
+              "version": "priority-only"
+            },
+            {
+              "aggressive_heuristic": false,
+              "heuristic": false,
+              "info": "",
+              "name": "Priority two",
+              "priority": 12,
+              "signature": "a_priority.2.sg",
+              "signature_file": "/fixture/priority-main/Binary/a_priority.2.sg",
+              "type": "format",
+              "unknown": false,
+              "version": "priority-only"
+            },
+            {
+              "aggressive_heuristic": false,
+              "heuristic": false,
+              "info": "",
+              "name": "Priority four",
+              "priority": 12,
+              "signature": "m_priority.4.sg",
+              "signature_file": "/fixture/priority-main/Binary/m_priority.4.sg",
+              "type": "format",
+              "unknown": false,
+              "version": "priority-only"
+            }
+          ]
+        },
+        "id": "post_cancel_fresh_state_recovery",
+        "method": "scanFile_twice"
+      },
+      {
+        "behavior": "chunked",
+        "bytes_returned": 35,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 35,
+        "errors": [],
+        "final_position": 35,
+        "id": "device_chunked_read",
+        "initial_position": -1,
+        "method": "scanDevice",
+        "offset": 0,
+        "pd_error": "",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_stopped": false,
+        "pd_success": true,
+        "range_valid": false,
+        "read_calls": 12,
+        "read_requests": [
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384"
+        ],
+        "read_returns": [
+          "3",
+          "3",
+          "3",
+          "3",
+          "3",
+          "3",
+          "3",
+          "3",
+          "3",
+          "3",
+          "3",
+          "2"
+        ],
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_filetype": "Binary",
+        "result_size": 35,
+        "seek_calls": 1,
+        "seek_positions": [
+          "0"
+        ],
+        "size": 0
+      },
+      {
+        "behavior": "early_eof",
+        "bytes_returned": 5,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 35,
+        "errors": [],
+        "final_position": 5,
+        "id": "device_early_eof",
+        "initial_position": -1,
+        "method": "scanDevice",
+        "offset": 0,
+        "pd_error": "",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_stopped": false,
+        "pd_success": true,
+        "range_valid": false,
+        "read_calls": 2,
+        "read_requests": [
+          "16384",
+          "16384"
+        ],
+        "read_returns": [
+          "5",
+          "0"
+        ],
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_filetype": "Binary",
+        "result_size": 35,
+        "seek_calls": 1,
+        "seek_positions": [
+          "0"
+        ],
+        "size": 0
+      },
+      {
+        "behavior": "read_error",
+        "bytes_returned": 0,
+        "database_loaded": true,
+        "device_error": "injected read error",
+        "device_size": 35,
+        "errors": [],
+        "final_position": 0,
+        "id": "device_read_error",
+        "initial_position": -1,
+        "method": "scanDevice",
+        "offset": 0,
+        "pd_error": "",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_stopped": false,
+        "pd_success": true,
+        "range_valid": false,
+        "read_calls": 1,
+        "read_requests": [
+          "16384"
+        ],
+        "read_returns": [
+          "-1"
+        ],
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_filetype": "Binary",
+        "result_size": 35,
+        "seek_calls": 1,
+        "seek_positions": [
+          "0"
+        ],
+        "size": 0
+      },
+      {
+        "behavior": "seek_error",
+        "bytes_returned": 0,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 35,
+        "errors": [],
+        "final_position": 0,
+        "id": "device_seek_error",
+        "initial_position": -1,
+        "method": "scanDevice",
+        "offset": 0,
+        "pd_error": "",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_stopped": false,
+        "pd_success": true,
+        "range_valid": false,
+        "read_calls": 0,
+        "read_requests": [],
+        "read_returns": [],
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_filetype": "Binary",
+        "result_size": 35,
+        "seek_calls": 1,
+        "seek_positions": [
+          "0"
+        ],
+        "size": 0
+      },
+      {
+        "behavior": "sequential",
+        "bytes_returned": 0,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 35,
+        "errors": [],
+        "final_position": 0,
+        "id": "device_sequential",
+        "initial_position": -1,
+        "method": "scanDevice",
+        "offset": 0,
+        "pd_error": "",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_stopped": false,
+        "pd_success": true,
+        "range_valid": false,
+        "read_calls": 0,
+        "read_requests": [],
+        "read_returns": [],
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_filetype": "Binary",
+        "result_size": 35,
+        "seek_calls": 1,
+        "seek_positions": [
+          "0"
+        ],
+        "size": 0
+      },
+      {
+        "behavior": "normal",
+        "bytes_returned": 35,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 35,
+        "errors": [],
+        "final_position": 35,
+        "id": "device_initial_position",
+        "initial_position": 7,
+        "method": "scanDevice",
+        "offset": 0,
+        "pd_error": "",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_stopped": false,
+        "pd_success": true,
+        "range_valid": false,
+        "read_calls": 1,
+        "read_requests": [
+          "16384"
+        ],
+        "read_returns": [
+          "35"
+        ],
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_filetype": "Binary",
+        "result_size": 35,
+        "seek_calls": 2,
+        "seek_positions": [
+          "7",
+          "0"
+        ],
+        "size": 0
+      },
+      {
+        "behavior": "chunked",
+        "bytes_returned": 36,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 42,
+        "errors": [],
+        "final_position": 38,
+        "id": "subdevice_chunked_read",
+        "initial_position": -1,
+        "method": "scanSubdevice",
+        "offset": 3,
+        "pd_error": "",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_stopped": false,
+        "pd_success": true,
+        "range_valid": true,
+        "read_calls": 12,
+        "read_requests": [
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384",
+          "16384"
+        ],
+        "read_returns": [
+          "3",
+          "3",
+          "3",
+          "3",
+          "3",
+          "3",
+          "3",
+          "3",
+          "3",
+          "3",
+          "3",
+          "3"
+        ],
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_filetype": "Binary",
+        "result_size": 35,
+        "seek_calls": 2,
+        "seek_positions": [
+          "3",
+          "3"
+        ],
+        "size": 35
+      },
+      {
+        "behavior": "early_eof",
+        "bytes_returned": 5,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 42,
+        "errors": [],
+        "final_position": 8,
+        "id": "subdevice_early_eof",
+        "initial_position": -1,
+        "method": "scanSubdevice",
+        "offset": 3,
+        "pd_error": "",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_stopped": false,
+        "pd_success": true,
+        "range_valid": true,
+        "read_calls": 2,
+        "read_requests": [
+          "16384",
+          "16384"
+        ],
+        "read_returns": [
+          "5",
+          "0"
+        ],
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_filetype": "Binary",
+        "result_size": 35,
+        "seek_calls": 2,
+        "seek_positions": [
+          "3",
+          "3"
+        ],
+        "size": 35
+      },
+      {
+        "behavior": "read_error",
+        "bytes_returned": 0,
+        "database_loaded": true,
+        "device_error": "injected read error",
+        "device_size": 42,
+        "errors": [],
+        "final_position": 3,
+        "id": "subdevice_read_error",
+        "initial_position": -1,
+        "method": "scanSubdevice",
+        "offset": 3,
+        "pd_error": "",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_stopped": false,
+        "pd_success": true,
+        "range_valid": true,
+        "read_calls": 1,
+        "read_requests": [
+          "16384"
+        ],
+        "read_returns": [
+          "-1"
+        ],
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_filetype": "Binary",
+        "result_size": 35,
+        "seek_calls": 2,
+        "seek_positions": [
+          "3",
+          "3"
+        ],
+        "size": 35
+      },
+      {
+        "behavior": "seek_error",
+        "bytes_returned": 0,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 42,
+        "errors": [],
+        "final_position": 0,
+        "id": "subdevice_seek_error",
+        "initial_position": -1,
+        "method": "scanSubdevice",
+        "offset": 3,
+        "pd_error": "",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_stopped": false,
+        "pd_success": true,
+        "range_valid": true,
+        "read_calls": 0,
+        "read_requests": [],
+        "read_returns": [],
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_filetype": "Binary",
+        "result_size": 35,
+        "seek_calls": 2,
+        "seek_positions": [
+          "3",
+          "3"
+        ],
+        "size": 35
+      },
+      {
+        "behavior": "sequential",
+        "bytes_returned": 0,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 42,
+        "errors": [],
+        "final_position": 0,
+        "id": "subdevice_sequential",
+        "initial_position": -1,
+        "method": "scanSubdevice",
+        "offset": 3,
+        "pd_error": "",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_stopped": false,
+        "pd_success": true,
+        "range_valid": true,
+        "read_calls": 0,
+        "read_requests": [],
+        "read_returns": [],
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_filetype": "Binary",
+        "result_size": 35,
+        "seek_calls": 2,
+        "seek_positions": [
+          "3",
+          "3"
+        ],
+        "size": 35
+      },
+      {
+        "behavior": "normal",
+        "bytes_returned": 0,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 42,
+        "errors": [],
+        "final_position": 0,
+        "id": "subdevice_negative_offset",
+        "initial_position": -1,
+        "method": "scanSubdevice",
+        "offset": -1,
+        "pd_error": "",
+        "pd_finished": false,
+        "pd_n_finished": 0,
+        "pd_stopped": false,
+        "pd_success": false,
+        "range_valid": false,
+        "read_calls": 0,
+        "read_requests": [],
+        "read_returns": [],
+        "records": [],
+        "result_filetype": "Unknown",
+        "result_size": 0,
+        "seek_calls": 0,
+        "seek_positions": [],
+        "size": 1
+      },
+      {
+        "behavior": "normal",
+        "bytes_returned": 0,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 42,
+        "errors": [],
+        "final_position": 0,
+        "id": "subdevice_zero_size",
+        "initial_position": -1,
+        "method": "scanSubdevice",
+        "offset": 0,
+        "pd_error": "",
+        "pd_finished": false,
+        "pd_n_finished": 0,
+        "pd_stopped": false,
+        "pd_success": false,
+        "range_valid": false,
+        "read_calls": 0,
+        "read_requests": [],
+        "read_returns": [],
+        "records": [],
+        "result_filetype": "Unknown",
+        "result_size": 0,
+        "seek_calls": 0,
+        "seek_positions": [],
+        "size": 0
+      },
+      {
+        "behavior": "normal",
+        "bytes_returned": 0,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 42,
+        "errors": [],
+        "final_position": 0,
+        "id": "subdevice_negative_size",
+        "initial_position": -1,
+        "method": "scanSubdevice",
+        "offset": 0,
+        "pd_error": "",
+        "pd_finished": false,
+        "pd_n_finished": 0,
+        "pd_stopped": false,
+        "pd_success": false,
+        "range_valid": false,
+        "read_calls": 0,
+        "read_requests": [],
+        "read_returns": [],
+        "records": [],
+        "result_filetype": "Unknown",
+        "result_size": 0,
+        "seek_calls": 0,
+        "seek_positions": [],
+        "size": -1
+      },
+      {
+        "behavior": "normal",
+        "bytes_returned": 0,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 42,
+        "errors": [],
+        "final_position": 0,
+        "id": "subdevice_offset_at_end",
+        "initial_position": -1,
+        "method": "scanSubdevice",
+        "offset": 42,
+        "pd_error": "",
+        "pd_finished": false,
+        "pd_n_finished": 0,
+        "pd_stopped": false,
+        "pd_success": false,
+        "range_valid": false,
+        "read_calls": 0,
+        "read_requests": [],
+        "read_returns": [],
+        "records": [],
+        "result_filetype": "Unknown",
+        "result_size": 0,
+        "seek_calls": 0,
+        "seek_positions": [],
+        "size": 1
+      },
+      {
+        "behavior": "normal",
+        "bytes_returned": 0,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 42,
+        "errors": [],
+        "final_position": 0,
+        "id": "subdevice_crosses_end",
+        "initial_position": -1,
+        "method": "scanSubdevice",
+        "offset": 41,
+        "pd_error": "",
+        "pd_finished": false,
+        "pd_n_finished": 0,
+        "pd_stopped": false,
+        "pd_success": false,
+        "range_valid": false,
+        "read_calls": 0,
+        "read_requests": [],
+        "read_returns": [],
+        "records": [],
+        "result_filetype": "Unknown",
+        "result_size": 0,
+        "seek_calls": 0,
+        "seek_positions": [],
+        "size": 2
+      },
+      {
+        "behavior": "normal",
+        "bytes_returned": 1,
+        "database_loaded": true,
+        "device_error": "Unknown error",
+        "device_size": 42,
+        "errors": [],
+        "final_position": 42,
+        "id": "subdevice_exact_tail",
+        "initial_position": -1,
+        "method": "scanSubdevice",
+        "offset": 41,
+        "pd_error": "",
+        "pd_finished": true,
+        "pd_n_finished": 2,
+        "pd_stopped": false,
+        "pd_success": true,
+        "range_valid": true,
+        "read_calls": 1,
+        "read_requests": [
+          "16384"
+        ],
+        "read_returns": [
+          "1"
+        ],
+        "records": [
+          {
+            "aggressive_heuristic": false,
+            "heuristic": false,
+            "info": "",
+            "name": "Priority one",
+            "priority": 12,
+            "signature": "z_priority.1.sg",
+            "signature_file": "/fixture/priority-main/Binary/z_priority.1.sg",
+            "type": "format",
+            "unknown": false,
+            "version": "priority-only"
+          }
+        ],
+        "result_filetype": "Binary",
+        "result_size": 1,
+        "seek_calls": 2,
+        "seek_positions": [
+          "41",
+          "41"
+        ],
+        "size": 1
+      }
+    ],
+    "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+    "input_sha256": "b9e88c21a74e1be0f85e85465c3f6bb831a55ef1d626af3fa11164e5f353ac60",
+    "qt_version": "6.4.2",
+    "schema_version": 1,
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+  },
+  "limitations": [
+    "the report is one Qt6 execution of the fixed 37-case harness",
+    "random record identifiers are validated by invariants rather than raw equality",
+    "Qt5/Qt6 relationship equality is checked by the closure synthesis"
+  ],
+  "oracle": {
+    "binary": "/opt/die-build/src/console/diec-engine-contract-harness",
+    "binary_sha256": "8d4011ace3a8392f601b974f45aaeb0ad8b0115d89adc03090e1abedb1cfcfa9",
+    "exit_code": 0,
+    "image": "diec-rust/engine-contract-harness-qt6:74eaf505",
+    "image_id": "sha256:ffd09170f4c37a49bffff6a3c3c59469c19caabf6aa9c78f0981e1bd95591a6b",
+    "raw_stderr_bytes": 0,
+    "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "raw_stdout_bytes": 59410,
+    "raw_stdout_sha256": "a5e3b09f7d5ae5fb0dc3812b18c4ad157bbee30a2c0bf1c42b93f62d92760a81",
+    "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "platform": "linux-amd64-qt6",
+  "raw_artifacts": {
+    "storage": "untracked external directory selected by --raw-dir"
+  },
+  "relationships": {
+    "break_scan_keeps_current_then_stops": true,
+    "callback_false_at_last_keeps_complete_records_but_cancels": true,
+    "callback_false_at_second_keeps_two_record_prefix": true,
+    "callback_false_keeps_current_then_stops": true,
+    "chunked_direct_read_completes": true,
+    "chunked_subdevice_parent_overreads_one_buffered_byte": true,
+    "deep_filter_still_applies_to_exact_name": true,
+    "entry_points_are_semantically_equal": true,
+    "exact_tail_subdevice_is_accepted": true,
+    "fresh_state_recovers_same_engine_after_cancel": true,
+    "incomplete_device_reads_are_silent_success": true,
+    "initial_device_position_is_reset_then_consumed": true,
+    "invalid_subdevice_ranges_return_zero_without_io": true,
+    "missing_signature_adds_unknown": true,
+    "pre_stopped_adds_unknown": true,
+    "read_error_is_only_device_local": true,
+    "seek_failure_and_sequential_device_do_not_read": true,
+    "signature_name_exact_match_selects_one_rule": true,
+    "signature_name_is_case_sensitive": true,
+    "sort_disabled_preserves_insertion_order": true,
+    "sort_enabled_orders_by_type_priority": true,
+    "successful_boundary_cases_keep_forced_binary_result": true,
+    "synchronized_external_stop_at_second_keeps_current_rule": true
+  },
+  "result": "observed",
+  "schema_version": 1,
+  "source_audit": {
+    "cancellation_contracts": {
+      "stop_flag_is_plain_bool": true,
+      "stop_reader_is_plain_read": true,
+      "stop_setter_is_plain_assignment": true
+    },
+    "device_contracts": {
+      "range_gate_requires_positive_size_and_valid_last_byte": true,
+      "safe_read_stops_without_pd_error_on_nonpositive_read": true,
+      "scan_subdevice_uses_offset_size_gate": true,
+      "small_device_copy_ignores_read_count": true,
+      "subdevice_constructor_ignores_parent_seek_result": true
+    },
+    "implementation_process_detect_occurrences": 2,
+    "private_process_detect_has_signature_file_path": true,
+    "protected_process_detect_passes_empty_path": true,
+    "public_runtime_filter_reachable": false,
+    "public_scan_options_has_signature_file_path": false,
+    "public_scan_options_has_signature_name": true,
+    "sources": {
+      "/opt/die-source/Formats/subdevice.cpp": {
+        "bytes": 2850,
+        "sha256": "a1f0dc51e6f8f471bd33b88766b0b0824c52fcea58a37b57abe4ad53a9300215"
+      },
+      "/opt/die-source/Formats/xbinary.cpp": {
+        "bytes": 549347,
+        "sha256": "d82bd21326bb7ba07eb343020d50af0ae2cf7e8e534d8e08d07ffa8129913c34"
+      },
+      "/opt/die-source/Formats/xbinary.h": {
+        "bytes": 107804,
+        "sha256": "c0e92d317ca9d0c54edaeeaf2846e13c50abaf9d32b987a9454bb8b4d63b5838"
+      },
+      "/opt/die-source/XScanEngine/xscanengine.cpp": {
+        "bytes": 191204,
+        "sha256": "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498"
+      },
+      "/opt/die-source/XScanEngine/xscanengine.h": {
+        "bytes": 47079,
+        "sha256": "ddef8387f72cd8a740052d47813018fb0e6f74ed3d3a911827ad1b7b3ce15fe8"
+      },
+      "/opt/die-source/die_script/die_script.cpp": {
+        "bytes": 13503,
+        "sha256": "588da8f383725795c600bfe2a91a9649bdd5cefb9bfa294379752bfa132dab67"
+      },
+      "/opt/die-source/die_script/die_script.h": {
+        "bytes": 3636,
+        "sha256": "0f103fa639d0ad43d8af5991fc6a6ed11fe59534c89625221d5db8db4b3cc085"
+      }
+    }
+  },
+  "underlying_probe": {
+    "path": "tools/upstream/probe_engine_contract.py",
+    "sha256": "8030bdada4729626a9dc9eb6eea76f1d311166a39bee6b51d3eb18ccbd441b3d"
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

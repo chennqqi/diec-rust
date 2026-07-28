@@ -6,7 +6,7 @@ Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
 
 Rules: `horsicq/Detect-It-Easy@c2c17dfa5ea4e078ba31eab55d87430c96622fb6`
 
-Last updated: 2026-07-26
+Last updated: 2026-07-28
 
 ## 结论
 
@@ -206,7 +206,9 @@ database 矩阵见
 [`qt6-database-runtime-evidence.md`](qt6-database-runtime-evidence.md)。
 option/profiling 矩阵见
 [`qt6-option-profiling-runtime-evidence.md`](qt6-option-profiling-runtime-evidence.md)。
-六批实验将 Linux Qt6 的逐行完整证据从 11 项增加到 42 项，但没有关闭
+首批 engine-contract harness 见
+[`qt6-engine-contract-runtime-evidence.md`](qt6-engine-contract-runtime-evidence.md)。
+七批实验将 Linux Qt6 的逐行完整证据从 11 项增加到 47 项，但没有关闭
 `CAP-GAP-007`。
 
 ## 限制与下一步
@@ -218,5 +220,7 @@ option/profiling 矩阵见
 - 四行 warning 的精确 Qt 调用点和 enabled heuristic 路径仍待最小表达式实验。
 - 普通输出、scan、special、基础 path 和首轮 nested gate 矩阵已完成；
   path 的 filesystem/locale/TOCTOU/large-directory 边界、database
-  layer/cache engine harness 和 archive/resource harness 仍未完成。
+  layer/cache、其余 dispatch/nested/result engine harness 仍未完成；
+  四入口、device/subdevice、filter、cancel 和 sort 的 engine-contract
+  harness 已完成。
 - Windows、macOS 固定 oracle 仍缺失。

@@ -33,6 +33,8 @@ REPORT_PATHS = (
     "docs/research/data/qt6-database-diagnostics.json",
     "docs/research/data/cli-option-behavior-linux-qt5-qt6.json",
     "docs/research/data/binary-rule-order-linux-qt5-qt6.json",
+    "docs/research/data/engine-contract-linux-qt5.json",
+    "docs/research/data/engine-contract-linux-qt6.json",
 )
 EMPTY_SHA256 = hashlib.sha256(b"").hexdigest()
 QT6_UNIMPLEMENTED_SHA256 = (
@@ -113,6 +115,11 @@ COMPLETE: dict[str, str] = {
     "CAP-RULE-008": "an empty valid database produces the same sole Unknown fallback",
     "CAP-RULE-010": "parse/runtime errors are collected with exact runtime-specific diagnostics",
     "CAP-RULE-011": "all 292 Binary profiling announcements have identical order",
+    "CAP-ENG-IN-001": "all four public engine entry points produce equal records",
+    "CAP-ENG-IN-002": "device/subdevice read, seek, range, and failure boundaries match Qt5",
+    "CAP-RULE-006": "exact signature-name filtering, case, deep, and missing controls match Qt5",
+    "CAP-RULE-009": "callback, break, pre-stop, and synchronized stop boundaries match Qt5",
+    "CAP-RULE-012": "sort enabled/disabled ordering and priority metadata match Qt5",
 }
 
 PARTIAL: dict[str, str] = {
@@ -1120,6 +1127,58 @@ def _validate_binary_rule_order_report(report: dict[str, Any]) -> None:
             )
 
 
+def _validate_engine_contract_reports(
+    qt5: dict[str, Any], qt6: dict[str, Any]
+) -> None:
+    expected_scope = {
+        "CAP-ENG-IN-001",
+        "CAP-ENG-IN-002",
+        "CAP-RULE-006",
+        "CAP-RULE-009",
+        "CAP-RULE-012",
+    }
+    if (
+        qt6.get("schema_version") != 1
+        or qt6.get("upstream_commit") != UPSTREAM_COMMIT
+        or qt6.get("platform") != "linux-amd64-qt6"
+        or qt6.get("result") != "observed"
+        or set(qt6.get("capability_scope", [])) != expected_scope
+    ):
+        raise ClosurePlanError("Qt6 engine-contract identity/result drift")
+    oracle = qt6.get("oracle", {})
+    if (
+        oracle.get("image")
+        != "diec-rust/engine-contract-harness-qt6:74eaf505"
+        or oracle.get("image_id")
+        != "sha256:ffd09170f4c37a49bffff6a3c3c59469c19caabf6aa9c78f0981e1bd95591a6b"
+        or oracle.get("revision") != UPSTREAM_COMMIT
+        or oracle.get("exit_code") != 0
+        or oracle.get("raw_stderr_bytes") != 0
+        or oracle.get("raw_stderr_sha256") != EMPTY_SHA256
+    ):
+        raise ClosurePlanError("Qt6 engine-contract oracle drift")
+    output = qt6.get("harness_output", {})
+    if (
+        output.get("case_count") != 37
+        or not isinstance(output.get("cases"), list)
+        or len(output["cases"]) != 37
+    ):
+        raise ClosurePlanError("Qt6 engine-contract case catalog drift")
+    relationships = qt6.get("relationships")
+    if (
+        not isinstance(relationships, dict)
+        or len(relationships) != 23
+        or not all(value is True for value in relationships.values())
+    ):
+        raise ClosurePlanError("Qt6 engine-contract relationship drift")
+    if relationships != qt5.get("relationships"):
+        raise ClosurePlanError("Qt5/Qt6 engine-contract relationship drift")
+    if qt6.get("fixture_manifest") != qt5.get("fixture_manifest"):
+        raise ClosurePlanError("Qt5/Qt6 engine-contract fixture drift")
+    if qt6.get("source_audit") != qt5.get("source_audit"):
+        raise ClosurePlanError("Qt5/Qt6 engine-contract source audit drift")
+
+
 CAMPAIGNS: dict[str, dict[str, Any]] = {
     "cli_scan_baseline": {
         "fixture": "reuse baseline-corpus and scan-option-boundary fixtures",
@@ -1298,6 +1357,9 @@ def _validate_inputs(
     _validate_database_diagnostics(reports[REPORT_PATHS[12]])
     _validate_option_behavior_report(reports[REPORT_PATHS[13]])
     _validate_binary_rule_order_report(reports[REPORT_PATHS[14]])
+    _validate_engine_contract_reports(
+        reports[REPORT_PATHS[15]], reports[REPORT_PATHS[16]]
+    )
     return capabilities
 
 
@@ -1478,6 +1540,15 @@ def build_plan(
                 "order_sha256": reports[REPORT_PATHS[14]][
                     "order_sha256"
                 ],
+            },
+            {
+                "source": REPORT_PATHS[16],
+                "scope": "37-case public entry, device, filter, cancellation, and ordering contract",
+                "difference_count": 0,
+                "relationship_count": len(
+                    reports[REPORT_PATHS[16]]["relationships"]
+                ),
+                "qt5_relationships_equal": True,
             },
         ],
         "rows": rows,

@@ -11,10 +11,10 @@ Last updated: 2026-07-28
 [`data/qt6-capability-closure-plan.json`](data/qt6-capability-closure-plan.json)
 逐项列出当前证据和缺失实验：
 
-- 42 项已有证据完整覆盖能力行；
+- 47 项已有证据完整覆盖能力行；
 - 10 项只有部分证据；
-- 16 项没有可接纳的逐行 Qt6 运行时证据；
-- 因此仍有 26 项需要执行闭环实验。
+- 11 项没有可接纳的逐行 Qt6 运行时证据；
+- 因此仍有 21 项需要执行闭环实验。
 
 Linux Qt6 在能力覆盖报告中继续保持 `platform_missing`。本计划只负责把
 缺口变成可执行清单，不改变平台门禁状态。
@@ -52,6 +52,11 @@ harness。见
 第六批 option/profiling 证据完整覆盖 verbose、profiling、test、createtest
 和 292-rule script profiling order。见
 [`qt6-option-profiling-runtime-evidence.md`](qt6-option-profiling-runtime-evidence.md)。
+
+第七批 engine-contract harness 在相同 37-case fixture 上完整覆盖四个公共
+扫描入口、device/subdevice I/O、signature-name filter、取消与 record 排序，
+其 23 条确定性关系与 Qt5 完全一致。见
+[`qt6-engine-contract-runtime-evidence.md`](qt6-engine-contract-runtime-evidence.md)。
 
 下列结果只能算部分证据：
 
@@ -94,12 +99,12 @@ Rust 兼容目标；在评审完成前不能简单忽略。
 python tools/research/build_qt6_closure_plan.py
 ```
 
-清单对 traceability 和四份现有差分报告做 SHA-256 绑定，并拒绝重复 JSON
+清单对 traceability 和全部接纳报告做 SHA-256 绑定，并拒绝重复 JSON
 键、commit 漂移、能力数量变化和 evidence-set catalog 漂移。
 
 ## 限制与下一步
 
-本切片没有重新执行 Qt6 容器，也没有补建 14 组 Qt6 harness。后续应按
-机器清单优先复用 CLI 探针，随后批量建立 engine harness 的 Qt6 构建变体。
+本切片已经补建并执行第一组 Qt6 engine harness。后续应按机器清单继续复用
+既有 Qt5 fixture，依次建立剩余 engine harness 的 Qt6 构建变体。
 只有 68 行全部达到 `evidence_complete`，且差异完成评审，
 `CAP-GAP-007` 才能关闭。

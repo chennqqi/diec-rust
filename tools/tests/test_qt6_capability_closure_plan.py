@@ -81,10 +81,10 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
 
     def test_current_plan_is_conservatively_incomplete(self):
         summary = self.plan["summary"]
-        self.assertEqual(summary["evidence_complete"], 42)
+        self.assertEqual(summary["evidence_complete"], 47)
         self.assertEqual(summary["partial"], 10)
-        self.assertEqual(summary["missing"], 16)
-        self.assertEqual(summary["closure_required"], 26)
+        self.assertEqual(summary["missing"], 11)
+        self.assertEqual(summary["closure_required"], 21)
         self.assertFalse(summary["cap_gap_007_closed"])
         self.assertEqual(self.plan["result"], "incomplete")
 
@@ -122,6 +122,11 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
             "CAP-CLI-TEST-001",
             "CAP-CLI-TEST-002",
             "CAP-RULE-011",
+            "CAP-ENG-IN-001",
+            "CAP-ENG-IN-002",
+            "CAP-RULE-006",
+            "CAP-RULE-009",
+            "CAP-RULE-012",
         }
         for capability_id in promoted:
             with self.subTest(capability=capability_id):
@@ -266,6 +271,22 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
         with self.assertRaisesRegex(
             MODULE.ClosurePlanError,
             "order hash drift",
+        ):
+            MODULE.build_plan(
+                self.traceability,
+                self.traceability_raw,
+                changed_reports,
+                self.report_bytes,
+            )
+
+        changed_reports = json.loads(json.dumps(self.reports))
+        engine = changed_reports[MODULE.REPORT_PATHS[16]]
+        engine["relationships"][
+            "entry_points_are_semantically_equal"
+        ] = False
+        with self.assertRaisesRegex(
+            MODULE.ClosurePlanError,
+            "relationship drift",
         ):
             MODULE.build_plan(
                 self.traceability,

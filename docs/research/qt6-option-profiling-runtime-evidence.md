@@ -75,8 +75,10 @@ CMake 与 Qt6 CMake oracle，再调用原始 equality、关系、inventory 和 o
 `CAP-CLI-OPT-009` messages 已由前一批 database matrix 完整覆盖，本轮提供
 额外交叉验证。
 
-当前汇总为 42 项 complete、10 项 partial、16 项 missing；26 项仍需闭环，
-`CAP-GAP-007` 保持开放。
+完成本批时汇总为 42 项 complete、10 项 partial、16 项 missing。后续
+engine-contract 批次已将当前汇总推进到 47/10/11，见
+[`qt6-engine-contract-runtime-evidence.md`](qt6-engine-contract-runtime-evidence.md)；
+`CAP-GAP-007` 仍保持开放。
 
 ## 重现
 
