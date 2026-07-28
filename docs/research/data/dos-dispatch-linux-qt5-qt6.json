@@ -1,0 +1,3969 @@
+{
+  "capability": "CAP-DISPATCH-002",
+  "cases": {
+    "com-max-size.com": {
+      "case_kind": "boundary_positive",
+      "comparison": {
+        "raw_stream_differences": [
+          "stdout_json_fields"
+        ],
+        "semantic_dispatch_equal": true
+      },
+      "expected_dispatch": {
+        "absent_filetypes": [],
+        "present_filetypes": [
+          "COM"
+        ]
+      },
+      "qt5_cmake": {
+        "detect_tree": [
+          {
+            "filetype": "COM",
+            "offset": "0",
+            "parentfilepart": "Header",
+            "size": "65280",
+            "values": [
+              {
+                "name": "Unknown",
+                "type": "Unknown",
+                "version": ""
+              }
+            ]
+          }
+        ],
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 468,
+        "stdout_sha256": "7c732b50eed6bd57db128495e79820d267c782dfa32ec0eb54d539ec20cc45f3"
+      },
+      "qt6_executions": [
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/com-max-size.com"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "COM",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "65280",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "b46586d89b28077246e93313898f996642b18cc54f01f0817b5e822d9abdb164",
+          "normalized_diagnostics": "",
+          "normalized_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "7c732b50eed6bd57db128495e79820d267c782dfa32ec0eb54d539ec20cc45f3",
+            "bytes": 468,
+            "sha256": "7c732b50eed6bd57db128495e79820d267c782dfa32ec0eb54d539ec20cc45f3"
+          }
+        },
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/com-max-size.com"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "COM",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "65280",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "b46586d89b28077246e93313898f996642b18cc54f01f0817b5e822d9abdb164",
+          "normalized_diagnostics": "",
+          "normalized_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "7c732b50eed6bd57db128495e79820d267c782dfa32ec0eb54d539ec20cc45f3",
+            "bytes": 468,
+            "sha256": "7c732b50eed6bd57db128495e79820d267c782dfa32ec0eb54d539ec20cc45f3"
+          }
+        }
+      ],
+      "sha256": "64625dd1be1b038a32ae6aa3631049b91436a6453f382c18dd9b3a94c06dac8f",
+      "size": 65280,
+      "target_filetype": "COM"
+    },
+    "com-oversized.com": {
+      "case_kind": "oversized",
+      "comparison": {
+        "raw_stream_differences": [
+          "stdout_json_fields"
+        ],
+        "semantic_dispatch_equal": true
+      },
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "COM"
+        ],
+        "present_filetypes": []
+      },
+      "qt5_cmake": {
+        "detect_tree": [
+          {
+            "filetype": "Binary",
+            "offset": "0",
+            "parentfilepart": "Header",
+            "size": "65281",
+            "values": [
+              {
+                "name": "Unknown",
+                "type": "Unknown",
+                "version": ""
+              }
+            ]
+          }
+        ],
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 471,
+        "stdout_sha256": "321626a07e38420fc7beb6e7ede4a6bb7808a9af27e50164f70b29e89b40fcec"
+      },
+      "qt6_executions": [
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/com-oversized.com"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "Binary",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "65281",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "9ebe6381dfe1989a41cc7ead79c74282c93af2966cfeee2e9b19a4fa59d06fc1",
+          "normalized_diagnostics": "",
+          "normalized_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "321626a07e38420fc7beb6e7ede4a6bb7808a9af27e50164f70b29e89b40fcec",
+            "bytes": 471,
+            "sha256": "321626a07e38420fc7beb6e7ede4a6bb7808a9af27e50164f70b29e89b40fcec"
+          }
+        },
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/com-oversized.com"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "Binary",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "65281",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "9ebe6381dfe1989a41cc7ead79c74282c93af2966cfeee2e9b19a4fa59d06fc1",
+          "normalized_diagnostics": "",
+          "normalized_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "321626a07e38420fc7beb6e7ede4a6bb7808a9af27e50164f70b29e89b40fcec",
+            "bytes": 471,
+            "sha256": "321626a07e38420fc7beb6e7ede4a6bb7808a9af27e50164f70b29e89b40fcec"
+          }
+        }
+      ],
+      "sha256": "bce76f9599804c52141441b41a457eac0cd8f9638cc10c9609cd69618790deae",
+      "size": 65281,
+      "target_filetype": "COM"
+    },
+    "com-wrong-suffix.bin": {
+      "case_kind": "wrong_suffix",
+      "comparison": {
+        "raw_stream_differences": [
+          "stdout_json_fields"
+        ],
+        "semantic_dispatch_equal": true
+      },
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "COM"
+        ],
+        "present_filetypes": []
+      },
+      "qt5_cmake": {
+        "detect_tree": [
+          {
+            "filetype": "Binary",
+            "offset": "0",
+            "parentfilepart": "Header",
+            "size": "3",
+            "values": [
+              {
+                "name": "Unknown",
+                "type": "Unknown",
+                "version": ""
+              }
+            ]
+          }
+        ],
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 467,
+        "stdout_sha256": "26e939e8e3f24567e6652ea7e6a3dd3a2a31816fe39c96b62bdb7cc648932955"
+      },
+      "qt6_executions": [
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/com-wrong-suffix.bin"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "Binary",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "3",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "0a7fb352a645d5151a7f22061eda3b3f7d7c2e68892550924ad1a591578e2b2a",
+          "normalized_diagnostics": "",
+          "normalized_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "26e939e8e3f24567e6652ea7e6a3dd3a2a31816fe39c96b62bdb7cc648932955",
+            "bytes": 467,
+            "sha256": "26e939e8e3f24567e6652ea7e6a3dd3a2a31816fe39c96b62bdb7cc648932955"
+          }
+        },
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/com-wrong-suffix.bin"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "Binary",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "3",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "0a7fb352a645d5151a7f22061eda3b3f7d7c2e68892550924ad1a591578e2b2a",
+          "normalized_diagnostics": "",
+          "normalized_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "26e939e8e3f24567e6652ea7e6a3dd3a2a31816fe39c96b62bdb7cc648932955",
+            "bytes": 467,
+            "sha256": "26e939e8e3f24567e6652ea7e6a3dd3a2a31816fe39c96b62bdb7cc648932955"
+          }
+        }
+      ],
+      "sha256": "b98244cfb85d8bde554243e0175b0d9a6bffae8d6fb3736b477669d0c99aa0d7",
+      "size": 3,
+      "target_filetype": "COM"
+    },
+    "dos16m-near-bw.exe": {
+      "case_kind": "near_magic",
+      "comparison": {
+        "raw_stream_differences": [
+          "stdout_json_fields",
+          "stdout_diagnostics"
+        ],
+        "semantic_dispatch_equal": true
+      },
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "DOS/16M",
+          "DOS/4G"
+        ],
+        "present_filetypes": [
+          "MSDOS"
+        ]
+      },
+      "qt5_cmake": {
+        "detect_tree": [
+          {
+            "filetype": "MSDOS",
+            "offset": "0",
+            "parentfilepart": "Header",
+            "size": "1280",
+            "values": [
+              {
+                "name": "Unknown",
+                "type": "Unknown",
+                "version": ""
+              }
+            ]
+          }
+        ],
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 469,
+        "stdout_sha256": "e94a3bbab3dea67db7504ab8213c01f107903a239dca3828451bc0431ea7da10"
+      },
+      "qt6_executions": [
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/dos16m-near-bw.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "MSDOS",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "1280",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "7d5d7566232c3c0d3c65cc12b7d5f509650b28f6cebd3f0174a82a502849ac75",
+            "bytes": 239,
+            "sha256": "7d5d7566232c3c0d3c65cc12b7d5f509650b28f6cebd3f0174a82a502849ac75"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "e9591e1f2473b69ee5b94c01c813c23e7a07fa0229e6672d85a21bb1f66ea2ff",
+          "normalized_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x<address>) is not a function\n\n",
+          "normalized_diagnostics_sha256": "c6656b6859b2ae4f2f9db8bdddfa7129587757ec933bc89de232c84daade95c1",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "3145b4cc05668780704b200d3671223d78cd598ed9f0e74a27e602d5b395d0c2",
+            "bytes": 707,
+            "sha256": "3145b4cc05668780704b200d3671223d78cd598ed9f0e74a27e602d5b395d0c2"
+          }
+        },
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/dos16m-near-bw.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "MSDOS",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "1280",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "7ea443caff460eaa26e02284b9b47c4012dadd6bc39d570a3291ede9176ce46c",
+            "bytes": 239,
+            "sha256": "7ea443caff460eaa26e02284b9b47c4012dadd6bc39d570a3291ede9176ce46c"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "e9591e1f2473b69ee5b94c01c813c23e7a07fa0229e6672d85a21bb1f66ea2ff",
+          "normalized_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x<address>) is not a function\n\n",
+          "normalized_diagnostics_sha256": "c6656b6859b2ae4f2f9db8bdddfa7129587757ec933bc89de232c84daade95c1",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "399a9e69580a3d45145393a7b5c4505bfee62a2aed0ce833009f32e4f66eb0c2",
+            "bytes": 707,
+            "sha256": "399a9e69580a3d45145393a7b5c4505bfee62a2aed0ce833009f32e4f66eb0c2"
+          }
+        }
+      ],
+      "sha256": "4ed6f6179fb8e78bd83ed88d3cbaa269acb90e2af579ef866b708e57d9079f73",
+      "size": 1280,
+      "target_filetype": "DOS/16M"
+    },
+    "dos16m-truncated.exe": {
+      "case_kind": "truncated",
+      "comparison": {
+        "raw_stream_differences": [
+          "stdout_json_fields",
+          "stdout_diagnostics"
+        ],
+        "semantic_dispatch_equal": true
+      },
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "DOS/16M",
+          "DOS/4G"
+        ],
+        "present_filetypes": [
+          "MSDOS"
+        ]
+      },
+      "qt5_cmake": {
+        "detect_tree": [
+          {
+            "filetype": "MSDOS",
+            "offset": "0",
+            "parentfilepart": "Header",
+            "size": "1024",
+            "values": [
+              {
+                "name": "Unknown",
+                "type": "Unknown",
+                "version": ""
+              }
+            ]
+          }
+        ],
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 469,
+        "stdout_sha256": "9c9f71ed766e299a29d78b614d920d4d76a8ace03ee8d5cb3e42df13124b0e38"
+      },
+      "qt6_executions": [
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/dos16m-truncated.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "MSDOS",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "1024",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "73e6f2e4c40c30a0d5c4e4a6edfa7660ec543cdd95c7d9e1eaeb96686440761e",
+            "bytes": 239,
+            "sha256": "73e6f2e4c40c30a0d5c4e4a6edfa7660ec543cdd95c7d9e1eaeb96686440761e"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "7ed4a2d72eee0d8369c1f9379b5ef6a5c9d6d0800901495f83e427734c78d7d6",
+          "normalized_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x<address>) is not a function\n\n",
+          "normalized_diagnostics_sha256": "c6656b6859b2ae4f2f9db8bdddfa7129587757ec933bc89de232c84daade95c1",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "8b322af9a88fba3c9c8d8e406cdf45482e82eb8a3a952c82aaeb27b06a4e5a91",
+            "bytes": 707,
+            "sha256": "8b322af9a88fba3c9c8d8e406cdf45482e82eb8a3a952c82aaeb27b06a4e5a91"
+          }
+        },
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/dos16m-truncated.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "MSDOS",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "1024",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "1c396ef9307f6a7ec6bd3c1a87a929995212a0fd1fdafb7abde14280cf7b316e",
+            "bytes": 239,
+            "sha256": "1c396ef9307f6a7ec6bd3c1a87a929995212a0fd1fdafb7abde14280cf7b316e"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "7ed4a2d72eee0d8369c1f9379b5ef6a5c9d6d0800901495f83e427734c78d7d6",
+          "normalized_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x<address>) is not a function\n\n",
+          "normalized_diagnostics_sha256": "c6656b6859b2ae4f2f9db8bdddfa7129587757ec933bc89de232c84daade95c1",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "fa5f568bce175a51b9b0b29f589eb68bae94842ecc30bf21cb058f34d731011e",
+            "bytes": 707,
+            "sha256": "fa5f568bce175a51b9b0b29f589eb68bae94842ecc30bf21cb058f34d731011e"
+          }
+        }
+      ],
+      "sha256": "6c7148c5e3d5a07b7ad933b29b52a231969d8430cb3056c5b2f742623bab801e",
+      "size": 1024,
+      "target_filetype": "DOS/16M"
+    },
+    "dos4g-near-nested-magic.exe": {
+      "case_kind": "adjacent_dispatch",
+      "comparison": {
+        "raw_stream_differences": [
+          "stdout_json_fields"
+        ],
+        "semantic_dispatch_equal": true
+      },
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "DOS/4G"
+        ],
+        "present_filetypes": [
+          "DOS/16M"
+        ]
+      },
+      "qt5_cmake": {
+        "detect_tree": [
+          {
+            "filetype": "DOS/16M",
+            "offset": "0",
+            "parentfilepart": "Header",
+            "size": "1280",
+            "values": [
+              {
+                "name": "Watcom C",
+                "type": "compiler",
+                "version": ""
+              }
+            ]
+          }
+        ],
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 475,
+        "stdout_sha256": "de62e989de93156c184cfea8378504497ad5dc4415c976756a8c4c327f7f432b"
+      },
+      "qt6_executions": [
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/dos4g-near-nested-magic.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "DOS/16M",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "1280",
+              "values": [
+                {
+                  "name": "Watcom C",
+                  "type": "compiler",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Compiler: Watcom C"
+            }
+          ],
+          "json_document_sha256": "aacff8d3f3599625fd0d98e7b1e00e8fe9d01c02466ff0baf5a25ef4544653b7",
+          "normalized_diagnostics": "",
+          "normalized_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "de62e989de93156c184cfea8378504497ad5dc4415c976756a8c4c327f7f432b",
+            "bytes": 475,
+            "sha256": "de62e989de93156c184cfea8378504497ad5dc4415c976756a8c4c327f7f432b"
+          }
+        },
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/dos4g-near-nested-magic.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "DOS/16M",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "1280",
+              "values": [
+                {
+                  "name": "Watcom C",
+                  "type": "compiler",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Compiler: Watcom C"
+            }
+          ],
+          "json_document_sha256": "aacff8d3f3599625fd0d98e7b1e00e8fe9d01c02466ff0baf5a25ef4544653b7",
+          "normalized_diagnostics": "",
+          "normalized_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "de62e989de93156c184cfea8378504497ad5dc4415c976756a8c4c327f7f432b",
+            "bytes": 475,
+            "sha256": "de62e989de93156c184cfea8378504497ad5dc4415c976756a8c4c327f7f432b"
+          }
+        }
+      ],
+      "sha256": "a6321b8ecb43206014888687722bbe69562dffaa04931e5b23798088cb4b86d3",
+      "size": 1280,
+      "target_filetype": "DOS/4G"
+    },
+    "dos4g-truncated.exe": {
+      "case_kind": "truncated",
+      "comparison": {
+        "raw_stream_differences": [
+          "stdout_json_fields",
+          "stdout_diagnostics"
+        ],
+        "semantic_dispatch_equal": true
+      },
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "DOS/16M",
+          "DOS/4G"
+        ],
+        "present_filetypes": [
+          "MSDOS"
+        ]
+      },
+      "qt5_cmake": {
+        "detect_tree": [
+          {
+            "filetype": "MSDOS",
+            "offset": "0",
+            "parentfilepart": "Header",
+            "size": "1024",
+            "values": [
+              {
+                "name": "Unknown",
+                "type": "Unknown",
+                "version": ""
+              }
+            ]
+          }
+        ],
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 469,
+        "stdout_sha256": "9c9f71ed766e299a29d78b614d920d4d76a8ace03ee8d5cb3e42df13124b0e38"
+      },
+      "qt6_executions": [
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/dos4g-truncated.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "MSDOS",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "1024",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "1a16ac1bee2a91f36fd6f90b9dc14d58fc4666639093d870fda34d31281b1ec7",
+            "bytes": 239,
+            "sha256": "1a16ac1bee2a91f36fd6f90b9dc14d58fc4666639093d870fda34d31281b1ec7"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "7ed4a2d72eee0d8369c1f9379b5ef6a5c9d6d0800901495f83e427734c78d7d6",
+          "normalized_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x<address>) is not a function\n\n",
+          "normalized_diagnostics_sha256": "c6656b6859b2ae4f2f9db8bdddfa7129587757ec933bc89de232c84daade95c1",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "adb6dff0329ef8c2a08964d335350e6fc534ac3f1eab24aa090df2d2a5318db0",
+            "bytes": 707,
+            "sha256": "adb6dff0329ef8c2a08964d335350e6fc534ac3f1eab24aa090df2d2a5318db0"
+          }
+        },
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/dos4g-truncated.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "MSDOS",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "1024",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "3318d366e22153027cf4495b513dd50c6e4338e705241fb7c0a15aeebc3501f2",
+            "bytes": 239,
+            "sha256": "3318d366e22153027cf4495b513dd50c6e4338e705241fb7c0a15aeebc3501f2"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "7ed4a2d72eee0d8369c1f9379b5ef6a5c9d6d0800901495f83e427734c78d7d6",
+          "normalized_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x<address>) is not a function\n\n",
+          "normalized_diagnostics_sha256": "c6656b6859b2ae4f2f9db8bdddfa7129587757ec933bc89de232c84daade95c1",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "9bdde177c6afe1d2d2fecfd8e096b8eb4becbcb548aec6003601720f76739000",
+            "bytes": 707,
+            "sha256": "9bdde177c6afe1d2d2fecfd8e096b8eb4becbcb548aec6003601720f76739000"
+          }
+        }
+      ],
+      "sha256": "a2a4cc3938f612ebd5002082211638600fa38451729cf7163fe7e947937ac442",
+      "size": 1024,
+      "target_filetype": "DOS/4G"
+    },
+    "le-near-magic.exe": {
+      "case_kind": "near_magic",
+      "comparison": {
+        "raw_stream_differences": [
+          "stdout_json_fields",
+          "stdout_diagnostics"
+        ],
+        "semantic_dispatch_equal": true
+      },
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "LE"
+        ],
+        "present_filetypes": [
+          "MSDOS"
+        ]
+      },
+      "qt5_cmake": {
+        "detect_tree": [
+          {
+            "filetype": "MSDOS",
+            "offset": "0",
+            "parentfilepart": "Header",
+            "size": "256",
+            "values": [
+              {
+                "name": "Unknown",
+                "type": "Unknown",
+                "version": ""
+              }
+            ]
+          }
+        ],
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 468,
+        "stdout_sha256": "4913bfd25dbb9d25ca0cc555fcb0931fcfd0719563eec78050c408968e2af944"
+      },
+      "qt6_executions": [
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/le-near-magic.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "MSDOS",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "256",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "5c41539d06c02b8ae83ec8b45b65f3a217e92ac29ac63adfa770d65e03f62068",
+            "bytes": 239,
+            "sha256": "5c41539d06c02b8ae83ec8b45b65f3a217e92ac29ac63adfa770d65e03f62068"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "66321990c4b5222e788b0ca657fa901ad8fdb8a50ae2e88b707c01155687982e",
+          "normalized_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x<address>) is not a function\n\n",
+          "normalized_diagnostics_sha256": "c6656b6859b2ae4f2f9db8bdddfa7129587757ec933bc89de232c84daade95c1",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "d6cc0160197f9383abee8199aa3be15aeaac4baf385d4fb328abacf062cbe8cc",
+            "bytes": 706,
+            "sha256": "d6cc0160197f9383abee8199aa3be15aeaac4baf385d4fb328abacf062cbe8cc"
+          }
+        },
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/le-near-magic.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "MSDOS",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "256",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "6d26b9f7d0813d6600a22ba8f12cbc89a83bc45a0bae7f5ca89c5e484b008b69",
+            "bytes": 239,
+            "sha256": "6d26b9f7d0813d6600a22ba8f12cbc89a83bc45a0bae7f5ca89c5e484b008b69"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "66321990c4b5222e788b0ca657fa901ad8fdb8a50ae2e88b707c01155687982e",
+          "normalized_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x<address>) is not a function\n\n",
+          "normalized_diagnostics_sha256": "c6656b6859b2ae4f2f9db8bdddfa7129587757ec933bc89de232c84daade95c1",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "420ea2090c16866fbe1d67391872fc193314149e98ed219e8adb3986a0c3ccde",
+            "bytes": 706,
+            "sha256": "420ea2090c16866fbe1d67391872fc193314149e98ed219e8adb3986a0c3ccde"
+          }
+        }
+      ],
+      "sha256": "f7369555f33a3ec66e8a3975b8eb7ab2154c9e7295702a2ad4d11a7a317ad3a0",
+      "size": 256,
+      "target_filetype": "LE"
+    },
+    "lx-near-magic.exe": {
+      "case_kind": "near_magic",
+      "comparison": {
+        "raw_stream_differences": [
+          "stdout_json_fields",
+          "stdout_diagnostics"
+        ],
+        "semantic_dispatch_equal": true
+      },
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "LX"
+        ],
+        "present_filetypes": [
+          "MSDOS"
+        ]
+      },
+      "qt5_cmake": {
+        "detect_tree": [
+          {
+            "filetype": "MSDOS",
+            "offset": "0",
+            "parentfilepart": "Header",
+            "size": "256",
+            "values": [
+              {
+                "name": "Unknown",
+                "type": "Unknown",
+                "version": ""
+              }
+            ]
+          }
+        ],
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 468,
+        "stdout_sha256": "4913bfd25dbb9d25ca0cc555fcb0931fcfd0719563eec78050c408968e2af944"
+      },
+      "qt6_executions": [
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/lx-near-magic.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "MSDOS",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "256",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "b31679f717a87a17b67d15f41f98efd99907ac7c4d32ad1893f39af78d837f7a",
+            "bytes": 239,
+            "sha256": "b31679f717a87a17b67d15f41f98efd99907ac7c4d32ad1893f39af78d837f7a"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "66321990c4b5222e788b0ca657fa901ad8fdb8a50ae2e88b707c01155687982e",
+          "normalized_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x<address>) is not a function\n\n",
+          "normalized_diagnostics_sha256": "c6656b6859b2ae4f2f9db8bdddfa7129587757ec933bc89de232c84daade95c1",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "ce69439980a3fc28285635c4f6fd156a0dbc29d02dd8754f2806c7cb68f8bec4",
+            "bytes": 706,
+            "sha256": "ce69439980a3fc28285635c4f6fd156a0dbc29d02dd8754f2806c7cb68f8bec4"
+          }
+        },
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/lx-near-magic.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "MSDOS",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "256",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "36c62b1af30aadf04df6e43512e8ff0bdc7a92245d87f8e6111f2e7024211626",
+            "bytes": 239,
+            "sha256": "36c62b1af30aadf04df6e43512e8ff0bdc7a92245d87f8e6111f2e7024211626"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "66321990c4b5222e788b0ca657fa901ad8fdb8a50ae2e88b707c01155687982e",
+          "normalized_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x<address>) is not a function\n\n",
+          "normalized_diagnostics_sha256": "c6656b6859b2ae4f2f9db8bdddfa7129587757ec933bc89de232c84daade95c1",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "3f4f2a61e9ff632d27fc688e5d9506916afa06396138ec1a635ec0fa95fb3e2c",
+            "bytes": 706,
+            "sha256": "3f4f2a61e9ff632d27fc688e5d9506916afa06396138ec1a635ec0fa95fb3e2c"
+          }
+        }
+      ],
+      "sha256": "73b82ad87f2da00e10b29fa23e53fd631bf9827670cd35f223c5458416ce8b5e",
+      "size": 256,
+      "target_filetype": "LX"
+    },
+    "minimal-dos16m.exe": {
+      "case_kind": "positive",
+      "comparison": {
+        "raw_stream_differences": [
+          "stdout_json_fields"
+        ],
+        "semantic_dispatch_equal": true
+      },
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "NE",
+          "LE",
+          "LX",
+          "DOS/4G",
+          "COM"
+        ],
+        "present_filetypes": [
+          "DOS/16M"
+        ]
+      },
+      "qt5_cmake": {
+        "detect_tree": [
+          {
+            "filetype": "DOS/16M",
+            "offset": "0",
+            "parentfilepart": "Header",
+            "size": "1280",
+            "values": [
+              {
+                "name": "Watcom C",
+                "type": "compiler",
+                "version": ""
+              }
+            ]
+          }
+        ],
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 475,
+        "stdout_sha256": "de62e989de93156c184cfea8378504497ad5dc4415c976756a8c4c327f7f432b"
+      },
+      "qt6_executions": [
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/minimal-dos16m.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "DOS/16M",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "1280",
+              "values": [
+                {
+                  "name": "Watcom C",
+                  "type": "compiler",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Compiler: Watcom C"
+            }
+          ],
+          "json_document_sha256": "aacff8d3f3599625fd0d98e7b1e00e8fe9d01c02466ff0baf5a25ef4544653b7",
+          "normalized_diagnostics": "",
+          "normalized_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "de62e989de93156c184cfea8378504497ad5dc4415c976756a8c4c327f7f432b",
+            "bytes": 475,
+            "sha256": "de62e989de93156c184cfea8378504497ad5dc4415c976756a8c4c327f7f432b"
+          }
+        },
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/minimal-dos16m.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "DOS/16M",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "1280",
+              "values": [
+                {
+                  "name": "Watcom C",
+                  "type": "compiler",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Compiler: Watcom C"
+            }
+          ],
+          "json_document_sha256": "aacff8d3f3599625fd0d98e7b1e00e8fe9d01c02466ff0baf5a25ef4544653b7",
+          "normalized_diagnostics": "",
+          "normalized_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "de62e989de93156c184cfea8378504497ad5dc4415c976756a8c4c327f7f432b",
+            "bytes": 475,
+            "sha256": "de62e989de93156c184cfea8378504497ad5dc4415c976756a8c4c327f7f432b"
+          }
+        }
+      ],
+      "sha256": "1a60a7d6f44e23d0a1b0fcce8478b84f01e9911ac442b75ea6bf6d997c0b8a88",
+      "size": 1280,
+      "target_filetype": "DOS/16M"
+    },
+    "minimal-dos4g.exe": {
+      "case_kind": "positive",
+      "comparison": {
+        "raw_stream_differences": [
+          "stdout_json_fields"
+        ],
+        "semantic_dispatch_equal": true
+      },
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "NE",
+          "LE",
+          "LX",
+          "DOS/16M",
+          "COM"
+        ],
+        "present_filetypes": [
+          "DOS/4G"
+        ]
+      },
+      "qt5_cmake": {
+        "detect_tree": [
+          {
+            "filetype": "DOS/4G",
+            "offset": "0",
+            "parentfilepart": "Header",
+            "size": "1280",
+            "values": [
+              {
+                "name": "Watcom C",
+                "type": "compiler",
+                "version": ""
+              }
+            ]
+          }
+        ],
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 474,
+        "stdout_sha256": "77d136f313601798811228605ee17cb3e7e9928545a8f59c06bb77137ca54981"
+      },
+      "qt6_executions": [
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/minimal-dos4g.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "DOS/4G",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "1280",
+              "values": [
+                {
+                  "name": "Watcom C",
+                  "type": "compiler",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Compiler: Watcom C"
+            }
+          ],
+          "json_document_sha256": "01b3543323ee666e2270b5a10de828c0b71cbbd0b7e5eaea8e33d7554b51f6f1",
+          "normalized_diagnostics": "",
+          "normalized_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "77d136f313601798811228605ee17cb3e7e9928545a8f59c06bb77137ca54981",
+            "bytes": 474,
+            "sha256": "77d136f313601798811228605ee17cb3e7e9928545a8f59c06bb77137ca54981"
+          }
+        },
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/minimal-dos4g.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "DOS/4G",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "1280",
+              "values": [
+                {
+                  "name": "Watcom C",
+                  "type": "compiler",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Compiler: Watcom C"
+            }
+          ],
+          "json_document_sha256": "01b3543323ee666e2270b5a10de828c0b71cbbd0b7e5eaea8e33d7554b51f6f1",
+          "normalized_diagnostics": "",
+          "normalized_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "77d136f313601798811228605ee17cb3e7e9928545a8f59c06bb77137ca54981",
+            "bytes": 474,
+            "sha256": "77d136f313601798811228605ee17cb3e7e9928545a8f59c06bb77137ca54981"
+          }
+        }
+      ],
+      "sha256": "45cad3c831999cbc639cfdd6367dac6bb515b33ebbead237548deb9dddb28044",
+      "size": 1280,
+      "target_filetype": "DOS/4G"
+    },
+    "minimal-le.exe": {
+      "case_kind": "positive",
+      "comparison": {
+        "raw_stream_differences": [
+          "stdout_json_fields"
+        ],
+        "semantic_dispatch_equal": true
+      },
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "NE",
+          "LX",
+          "DOS/16M",
+          "DOS/4G",
+          "COM"
+        ],
+        "present_filetypes": [
+          "LE"
+        ]
+      },
+      "qt5_cmake": {
+        "detect_tree": [
+          {
+            "filetype": "LE",
+            "offset": "0",
+            "parentfilepart": "Header",
+            "size": "256",
+            "values": [
+              {
+                "name": "Unknown",
+                "type": "Unknown",
+                "version": ""
+              }
+            ]
+          }
+        ],
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 465,
+        "stdout_sha256": "f78469bb6d562260f21a113eaed68d5346320a2d477c7e0eec657eaafc8c8d07"
+      },
+      "qt6_executions": [
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/minimal-le.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "LE",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "256",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "85c82dba388a4776dbdd831bb7737d54f91ed79fbfe4397c0067a3b949b40233",
+          "normalized_diagnostics": "",
+          "normalized_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "f78469bb6d562260f21a113eaed68d5346320a2d477c7e0eec657eaafc8c8d07",
+            "bytes": 465,
+            "sha256": "f78469bb6d562260f21a113eaed68d5346320a2d477c7e0eec657eaafc8c8d07"
+          }
+        },
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/minimal-le.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "LE",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "256",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "85c82dba388a4776dbdd831bb7737d54f91ed79fbfe4397c0067a3b949b40233",
+          "normalized_diagnostics": "",
+          "normalized_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "f78469bb6d562260f21a113eaed68d5346320a2d477c7e0eec657eaafc8c8d07",
+            "bytes": 465,
+            "sha256": "f78469bb6d562260f21a113eaed68d5346320a2d477c7e0eec657eaafc8c8d07"
+          }
+        }
+      ],
+      "sha256": "8bc90cf1f8f246cda3c2899afea9a3f23d12d3eed66f717a3b22cd1fe243c65f",
+      "size": 256,
+      "target_filetype": "LE"
+    },
+    "minimal-lx.exe": {
+      "case_kind": "positive",
+      "comparison": {
+        "raw_stream_differences": [
+          "stdout_json_fields"
+        ],
+        "semantic_dispatch_equal": true
+      },
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "NE",
+          "LE",
+          "DOS/16M",
+          "DOS/4G",
+          "COM"
+        ],
+        "present_filetypes": [
+          "LX"
+        ]
+      },
+      "qt5_cmake": {
+        "detect_tree": [
+          {
+            "filetype": "LX",
+            "offset": "0",
+            "parentfilepart": "Header",
+            "size": "256",
+            "values": [
+              {
+                "name": "Unknown",
+                "type": "Unknown",
+                "version": ""
+              }
+            ]
+          }
+        ],
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 465,
+        "stdout_sha256": "cbe46686d5450eab245850ded6c244308dff57f93e5541f8effb2190a8f04e36"
+      },
+      "qt6_executions": [
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/minimal-lx.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "LX",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "256",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "b9f3216cab07b956baec381776b8dc8acd6452d221b320755d9588059b901a7b",
+          "normalized_diagnostics": "",
+          "normalized_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "cbe46686d5450eab245850ded6c244308dff57f93e5541f8effb2190a8f04e36",
+            "bytes": 465,
+            "sha256": "cbe46686d5450eab245850ded6c244308dff57f93e5541f8effb2190a8f04e36"
+          }
+        },
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/minimal-lx.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "LX",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "256",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "b9f3216cab07b956baec381776b8dc8acd6452d221b320755d9588059b901a7b",
+          "normalized_diagnostics": "",
+          "normalized_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "cbe46686d5450eab245850ded6c244308dff57f93e5541f8effb2190a8f04e36",
+            "bytes": 465,
+            "sha256": "cbe46686d5450eab245850ded6c244308dff57f93e5541f8effb2190a8f04e36"
+          }
+        }
+      ],
+      "sha256": "555bceadd838b53cd052fc5456d73524edb57a59d485d19faa709f76ec933584",
+      "size": 256,
+      "target_filetype": "LX"
+    },
+    "minimal-msdos.exe": {
+      "case_kind": "positive",
+      "comparison": {
+        "raw_stream_differences": [
+          "stdout_json_fields",
+          "stdout_diagnostics"
+        ],
+        "semantic_dispatch_equal": true
+      },
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "NE",
+          "LE",
+          "LX",
+          "DOS/16M",
+          "DOS/4G",
+          "COM"
+        ],
+        "present_filetypes": [
+          "MSDOS"
+        ]
+      },
+      "qt5_cmake": {
+        "detect_tree": [
+          {
+            "filetype": "MSDOS",
+            "offset": "0",
+            "parentfilepart": "Header",
+            "size": "128",
+            "values": [
+              {
+                "name": "Unknown",
+                "type": "Unknown",
+                "version": ""
+              }
+            ]
+          }
+        ],
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 468,
+        "stdout_sha256": "2d0986a135a5e66c889a00c01ee2a42a8598fc6a73bbe043dde19942ebf1d305"
+      },
+      "qt6_executions": [
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/minimal-msdos.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "MSDOS",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "128",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "1b93165d90f7929dde14530bc8b5cccfe32d8491abf609578b1b367e5d9786b9",
+            "bytes": 239,
+            "sha256": "1b93165d90f7929dde14530bc8b5cccfe32d8491abf609578b1b367e5d9786b9"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "3fff56fc440dcc05544dd4e814ebfaf77b30a131c4079ef577a3caeea7f84207",
+          "normalized_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x<address>) is not a function\n\n",
+          "normalized_diagnostics_sha256": "c6656b6859b2ae4f2f9db8bdddfa7129587757ec933bc89de232c84daade95c1",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "cf4595deefb59f84e50cf78dade2d180092e456fd6a75435903c5d8529f27203",
+            "bytes": 706,
+            "sha256": "cf4595deefb59f84e50cf78dade2d180092e456fd6a75435903c5d8529f27203"
+          }
+        },
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/minimal-msdos.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "MSDOS",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "128",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "35e74cde9d8fece61bd39dcd0cebfb967d497d68072cead3ecebc6066fda9bb1",
+            "bytes": 239,
+            "sha256": "35e74cde9d8fece61bd39dcd0cebfb967d497d68072cead3ecebc6066fda9bb1"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "3fff56fc440dcc05544dd4e814ebfaf77b30a131c4079ef577a3caeea7f84207",
+          "normalized_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x<address>) is not a function\n\n",
+          "normalized_diagnostics_sha256": "c6656b6859b2ae4f2f9db8bdddfa7129587757ec933bc89de232c84daade95c1",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "9d7832a74bfdf5c90407482be978cc951341502954eb0a3301e09e3deb77273b",
+            "bytes": 706,
+            "sha256": "9d7832a74bfdf5c90407482be978cc951341502954eb0a3301e09e3deb77273b"
+          }
+        }
+      ],
+      "sha256": "51747adac1d11576a4bfc5de353eb0351511779be1d06130aa5f30d1a09d0590",
+      "size": 128,
+      "target_filetype": "MSDOS"
+    },
+    "minimal-ne.exe": {
+      "case_kind": "positive",
+      "comparison": {
+        "raw_stream_differences": [
+          "stdout_json_fields"
+        ],
+        "semantic_dispatch_equal": true
+      },
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "LE",
+          "LX",
+          "DOS/16M",
+          "DOS/4G",
+          "COM"
+        ],
+        "present_filetypes": [
+          "NE"
+        ]
+      },
+      "qt5_cmake": {
+        "detect_tree": [
+          {
+            "filetype": "NE",
+            "offset": "0",
+            "parentfilepart": "Header",
+            "size": "256",
+            "values": [
+              {
+                "name": "Unknown",
+                "type": "Unknown",
+                "version": ""
+              }
+            ]
+          }
+        ],
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 465,
+        "stdout_sha256": "4225c1adab3796db73dfe3be825ebcc1722eff3743c003ac9032b6340f78243d"
+      },
+      "qt6_executions": [
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/minimal-ne.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "NE",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "256",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "ae4d8ed86f865c27d7ae09cb30d97c535007f09c91f25db6a8e641037358794f",
+          "normalized_diagnostics": "",
+          "normalized_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "4225c1adab3796db73dfe3be825ebcc1722eff3743c003ac9032b6340f78243d",
+            "bytes": 465,
+            "sha256": "4225c1adab3796db73dfe3be825ebcc1722eff3743c003ac9032b6340f78243d"
+          }
+        },
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/minimal-ne.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "NE",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "256",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "ae4d8ed86f865c27d7ae09cb30d97c535007f09c91f25db6a8e641037358794f",
+          "normalized_diagnostics": "",
+          "normalized_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "4225c1adab3796db73dfe3be825ebcc1722eff3743c003ac9032b6340f78243d",
+            "bytes": 465,
+            "sha256": "4225c1adab3796db73dfe3be825ebcc1722eff3743c003ac9032b6340f78243d"
+          }
+        }
+      ],
+      "sha256": "13fde0e883336db2a2dd5ee1de2831b52f6de4b1b216b48df23ed2151ccd0e1f",
+      "size": 256,
+      "target_filetype": "NE"
+    },
+    "minimal.com": {
+      "case_kind": "positive",
+      "comparison": {
+        "raw_stream_differences": [
+          "stdout_json_fields"
+        ],
+        "semantic_dispatch_equal": true
+      },
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "MSDOS",
+          "NE",
+          "LE",
+          "LX",
+          "DOS/16M",
+          "DOS/4G"
+        ],
+        "present_filetypes": [
+          "COM"
+        ]
+      },
+      "qt5_cmake": {
+        "detect_tree": [
+          {
+            "filetype": "COM",
+            "offset": "0",
+            "parentfilepart": "Header",
+            "size": "3",
+            "values": [
+              {
+                "name": "Unknown",
+                "type": "Unknown",
+                "version": ""
+              }
+            ]
+          }
+        ],
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 464,
+        "stdout_sha256": "2ce12f984efbb161ec20c78076e7bbffe2c94055d9d1f83c36fcde2ffa1dcbdb"
+      },
+      "qt6_executions": [
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/minimal.com"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "COM",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "3",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "22a60ddd2a0bf75dcf624498a820900df7342a643ca58f20d61935e347d7bae2",
+          "normalized_diagnostics": "",
+          "normalized_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "2ce12f984efbb161ec20c78076e7bbffe2c94055d9d1f83c36fcde2ffa1dcbdb",
+            "bytes": 464,
+            "sha256": "2ce12f984efbb161ec20c78076e7bbffe2c94055d9d1f83c36fcde2ffa1dcbdb"
+          }
+        },
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/minimal.com"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "COM",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "3",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "22a60ddd2a0bf75dcf624498a820900df7342a643ca58f20d61935e347d7bae2",
+          "normalized_diagnostics": "",
+          "normalized_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "2ce12f984efbb161ec20c78076e7bbffe2c94055d9d1f83c36fcde2ffa1dcbdb",
+            "bytes": 464,
+            "sha256": "2ce12f984efbb161ec20c78076e7bbffe2c94055d9d1f83c36fcde2ffa1dcbdb"
+          }
+        }
+      ],
+      "sha256": "b98244cfb85d8bde554243e0175b0d9a6bffae8d6fb3736b477669d0c99aa0d7",
+      "size": 3,
+      "target_filetype": "COM"
+    },
+    "msdos-near-magic.exe": {
+      "case_kind": "near_magic",
+      "comparison": {
+        "raw_stream_differences": [
+          "stdout_json_fields"
+        ],
+        "semantic_dispatch_equal": true
+      },
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "MSDOS"
+        ],
+        "present_filetypes": []
+      },
+      "qt5_cmake": {
+        "detect_tree": [
+          {
+            "filetype": "Binary",
+            "offset": "0",
+            "parentfilepart": "Header",
+            "size": "128",
+            "values": [
+              {
+                "name": "Unknown",
+                "type": "Unknown",
+                "version": ""
+              }
+            ]
+          }
+        ],
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 469,
+        "stdout_sha256": "8f77bcb8b1bcc9c9b5a59fd8f01d081045f62836a6ecdcd1ae5cfe5daae2a1c4"
+      },
+      "qt6_executions": [
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/msdos-near-magic.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "Binary",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "128",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "bec76dc5131adb66908c93188b7977b1547ca1330dfb79e025ea908915e3bf0a",
+          "normalized_diagnostics": "",
+          "normalized_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "8f77bcb8b1bcc9c9b5a59fd8f01d081045f62836a6ecdcd1ae5cfe5daae2a1c4",
+            "bytes": 469,
+            "sha256": "8f77bcb8b1bcc9c9b5a59fd8f01d081045f62836a6ecdcd1ae5cfe5daae2a1c4"
+          }
+        },
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/msdos-near-magic.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "Binary",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "128",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "bec76dc5131adb66908c93188b7977b1547ca1330dfb79e025ea908915e3bf0a",
+          "normalized_diagnostics": "",
+          "normalized_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "8f77bcb8b1bcc9c9b5a59fd8f01d081045f62836a6ecdcd1ae5cfe5daae2a1c4",
+            "bytes": 469,
+            "sha256": "8f77bcb8b1bcc9c9b5a59fd8f01d081045f62836a6ecdcd1ae5cfe5daae2a1c4"
+          }
+        }
+      ],
+      "sha256": "32ea0166a010857de94871754a3f3358a217ff582e52dd92579cd0624ef5ef61",
+      "size": 128,
+      "target_filetype": "MSDOS"
+    },
+    "ne-near-magic.exe": {
+      "case_kind": "near_magic",
+      "comparison": {
+        "raw_stream_differences": [
+          "stdout_json_fields",
+          "stdout_diagnostics"
+        ],
+        "semantic_dispatch_equal": true
+      },
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "NE"
+        ],
+        "present_filetypes": [
+          "MSDOS"
+        ]
+      },
+      "qt5_cmake": {
+        "detect_tree": [
+          {
+            "filetype": "MSDOS",
+            "offset": "0",
+            "parentfilepart": "Header",
+            "size": "256",
+            "values": [
+              {
+                "name": "Unknown",
+                "type": "Unknown",
+                "version": ""
+              }
+            ]
+          }
+        ],
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 468,
+        "stdout_sha256": "4913bfd25dbb9d25ca0cc555fcb0931fcfd0719563eec78050c408968e2af944"
+      },
+      "qt6_executions": [
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/ne-near-magic.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "MSDOS",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "256",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "52cb050ffb3017abf30a0882644953c99727ea63e289547129b5b7a6500ffe49",
+            "bytes": 239,
+            "sha256": "52cb050ffb3017abf30a0882644953c99727ea63e289547129b5b7a6500ffe49"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "66321990c4b5222e788b0ca657fa901ad8fdb8a50ae2e88b707c01155687982e",
+          "normalized_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x<address>) is not a function\n\n",
+          "normalized_diagnostics_sha256": "c6656b6859b2ae4f2f9db8bdddfa7129587757ec933bc89de232c84daade95c1",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "f3ddcce0e617803cd7187c7b1dbad8cc092fe2015692d2dc4d764df04570df92",
+            "bytes": 706,
+            "sha256": "f3ddcce0e617803cd7187c7b1dbad8cc092fe2015692d2dc4d764df04570df92"
+          }
+        },
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/ne-near-magic.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "MSDOS",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "256",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "9c776eff1e2fba03c951dbe522e71dc61c497858a290aa4154e8f22a479960c3",
+            "bytes": 239,
+            "sha256": "9c776eff1e2fba03c951dbe522e71dc61c497858a290aa4154e8f22a479960c3"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "66321990c4b5222e788b0ca657fa901ad8fdb8a50ae2e88b707c01155687982e",
+          "normalized_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x<address>) is not a function\n\n",
+          "normalized_diagnostics_sha256": "c6656b6859b2ae4f2f9db8bdddfa7129587757ec933bc89de232c84daade95c1",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "202c5f85d8cdf499857119b7ae896ed13d1a58193ffb0292239453f1234e8d25",
+            "bytes": 706,
+            "sha256": "202c5f85d8cdf499857119b7ae896ed13d1a58193ffb0292239453f1234e8d25"
+          }
+        }
+      ],
+      "sha256": "1143827bc788e7fcd813c47e43dc07b3aa52b409f3f2a9b8693b20e26bf5375a",
+      "size": 256,
+      "target_filetype": "NE"
+    },
+    "ne-truncated.exe": {
+      "case_kind": "truncated",
+      "comparison": {
+        "raw_stream_differences": [
+          "stdout_json_fields",
+          "stdout_diagnostics"
+        ],
+        "semantic_dispatch_equal": true
+      },
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "NE"
+        ],
+        "present_filetypes": [
+          "MSDOS"
+        ]
+      },
+      "qt5_cmake": {
+        "detect_tree": [
+          {
+            "filetype": "MSDOS",
+            "offset": "0",
+            "parentfilepart": "Header",
+            "size": "128",
+            "values": [
+              {
+                "name": "Unknown",
+                "type": "Unknown",
+                "version": ""
+              }
+            ]
+          }
+        ],
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 468,
+        "stdout_sha256": "2d0986a135a5e66c889a00c01ee2a42a8598fc6a73bbe043dde19942ebf1d305"
+      },
+      "qt6_executions": [
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/ne-truncated.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "MSDOS",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "128",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "f9a8edf9d8c6212306517371f9913c5a30dcf2db81a8d1992340c33c5993277b",
+            "bytes": 239,
+            "sha256": "f9a8edf9d8c6212306517371f9913c5a30dcf2db81a8d1992340c33c5993277b"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "3fff56fc440dcc05544dd4e814ebfaf77b30a131c4079ef577a3caeea7f84207",
+          "normalized_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x<address>) is not a function\n\n",
+          "normalized_diagnostics_sha256": "c6656b6859b2ae4f2f9db8bdddfa7129587757ec933bc89de232c84daade95c1",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "0d4a11e05fa92914317da6732d204fc1f616048775b1c11b8415f9f49226ffe9",
+            "bytes": 706,
+            "sha256": "0d4a11e05fa92914317da6732d204fc1f616048775b1c11b8415f9f49226ffe9"
+          }
+        },
+        {
+          "arguments": [
+            "--json",
+            "--database",
+            "/opt/die-source/Detect-It-Easy/db",
+            "--extradatabase",
+            "/opt/die-source/Detect-It-Easy/db_extra",
+            "--customdatabase",
+            "/opt/die-source/Detect-It-Easy/db_custom",
+            "/corpus/ne-truncated.exe"
+          ],
+          "detect_tree": [
+            {
+              "filetype": "MSDOS",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "128",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "diagnostics": {
+            "artifact_sha256": "a9e6eb5a630fdfc51e3dda453be8594746b70ecb514c562bb7e6411bddc0d10d",
+            "bytes": 239,
+            "sha256": "a9e6eb5a630fdfc51e3dda453be8594746b70ecb514c562bb7e6411bddc0d10d"
+          },
+          "exit_code": 0,
+          "formatter_extras": [
+            {
+              "path": "$.detects[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].info",
+              "value": ""
+            },
+            {
+              "path": "$.detects[0].values[0].string",
+              "value": "Unknown: Unknown"
+            }
+          ],
+          "json_document_sha256": "3fff56fc440dcc05544dd4e814ebfaf77b30a131c4079ef577a3caeea7f84207",
+          "normalized_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x<address>) is not a function\n\n",
+          "normalized_diagnostics_sha256": "c6656b6859b2ae4f2f9db8bdddfa7129587757ec933bc89de232c84daade95c1",
+          "stderr": {
+            "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "artifact_sha256": "50cfe8ffe2b81a7ba8d0e03265b2f619d2487eed25ae99b2e0c04552c08e01d3",
+            "bytes": 706,
+            "sha256": "50cfe8ffe2b81a7ba8d0e03265b2f619d2487eed25ae99b2e0c04552c08e01d3"
+          }
+        }
+      ],
+      "sha256": "886eca9da24b80a58c6babbe82483adf28b013f220212bf1b8c7648ce438e0de",
+      "size": 128,
+      "target_filetype": "NE"
+    }
+  },
+  "corpus_manifest": {
+    "path": "docs/research/data/dos-dispatch-corpus.json",
+    "sample_count": 19,
+    "sha256": "c6caeed47cbd3e0631a6aa04fd1b01fb2eb57a946f7f7c0cc217110e02cb067b"
+  },
+  "failures": [],
+  "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+  "generator": "tools/upstream/probe_qt6_dos_dispatch.py",
+  "generator_sha256": "dab032e8132601054f436236de2820645f057a99bb055b5572f37073d99118fe",
+  "known_differences": [
+    {
+      "case": "minimal-msdos.exe",
+      "normalized_stdout_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x<address>) is not a function\n\n",
+      "normalized_stdout_diagnostics_sha256": "c6656b6859b2ae4f2f9db8bdddfa7129587757ec933bc89de232c84daade95c1",
+      "qt5_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt6_formatter_extras": [
+        {
+          "path": "$.detects[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].string",
+          "value": "Unknown: Unknown"
+        }
+      ],
+      "qt6_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "semantic_dispatch_equal": true,
+      "streams": [
+        "stdout_json_fields",
+        "stdout_diagnostics"
+      ]
+    },
+    {
+      "case": "msdos-near-magic.exe",
+      "normalized_stdout_diagnostics": "",
+      "normalized_stdout_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt5_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt6_formatter_extras": [
+        {
+          "path": "$.detects[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].string",
+          "value": "Unknown: Unknown"
+        }
+      ],
+      "qt6_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "semantic_dispatch_equal": true,
+      "streams": [
+        "stdout_json_fields"
+      ]
+    },
+    {
+      "case": "minimal-ne.exe",
+      "normalized_stdout_diagnostics": "",
+      "normalized_stdout_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt5_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt6_formatter_extras": [
+        {
+          "path": "$.detects[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].string",
+          "value": "Unknown: Unknown"
+        }
+      ],
+      "qt6_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "semantic_dispatch_equal": true,
+      "streams": [
+        "stdout_json_fields"
+      ]
+    },
+    {
+      "case": "ne-truncated.exe",
+      "normalized_stdout_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x<address>) is not a function\n\n",
+      "normalized_stdout_diagnostics_sha256": "c6656b6859b2ae4f2f9db8bdddfa7129587757ec933bc89de232c84daade95c1",
+      "qt5_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt6_formatter_extras": [
+        {
+          "path": "$.detects[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].string",
+          "value": "Unknown: Unknown"
+        }
+      ],
+      "qt6_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "semantic_dispatch_equal": true,
+      "streams": [
+        "stdout_json_fields",
+        "stdout_diagnostics"
+      ]
+    },
+    {
+      "case": "ne-near-magic.exe",
+      "normalized_stdout_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x<address>) is not a function\n\n",
+      "normalized_stdout_diagnostics_sha256": "c6656b6859b2ae4f2f9db8bdddfa7129587757ec933bc89de232c84daade95c1",
+      "qt5_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt6_formatter_extras": [
+        {
+          "path": "$.detects[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].string",
+          "value": "Unknown: Unknown"
+        }
+      ],
+      "qt6_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "semantic_dispatch_equal": true,
+      "streams": [
+        "stdout_json_fields",
+        "stdout_diagnostics"
+      ]
+    },
+    {
+      "case": "minimal-le.exe",
+      "normalized_stdout_diagnostics": "",
+      "normalized_stdout_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt5_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt6_formatter_extras": [
+        {
+          "path": "$.detects[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].string",
+          "value": "Unknown: Unknown"
+        }
+      ],
+      "qt6_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "semantic_dispatch_equal": true,
+      "streams": [
+        "stdout_json_fields"
+      ]
+    },
+    {
+      "case": "le-near-magic.exe",
+      "normalized_stdout_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x<address>) is not a function\n\n",
+      "normalized_stdout_diagnostics_sha256": "c6656b6859b2ae4f2f9db8bdddfa7129587757ec933bc89de232c84daade95c1",
+      "qt5_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt6_formatter_extras": [
+        {
+          "path": "$.detects[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].string",
+          "value": "Unknown: Unknown"
+        }
+      ],
+      "qt6_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "semantic_dispatch_equal": true,
+      "streams": [
+        "stdout_json_fields",
+        "stdout_diagnostics"
+      ]
+    },
+    {
+      "case": "minimal-lx.exe",
+      "normalized_stdout_diagnostics": "",
+      "normalized_stdout_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt5_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt6_formatter_extras": [
+        {
+          "path": "$.detects[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].string",
+          "value": "Unknown: Unknown"
+        }
+      ],
+      "qt6_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "semantic_dispatch_equal": true,
+      "streams": [
+        "stdout_json_fields"
+      ]
+    },
+    {
+      "case": "lx-near-magic.exe",
+      "normalized_stdout_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x<address>) is not a function\n\n",
+      "normalized_stdout_diagnostics_sha256": "c6656b6859b2ae4f2f9db8bdddfa7129587757ec933bc89de232c84daade95c1",
+      "qt5_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt6_formatter_extras": [
+        {
+          "path": "$.detects[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].string",
+          "value": "Unknown: Unknown"
+        }
+      ],
+      "qt6_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "semantic_dispatch_equal": true,
+      "streams": [
+        "stdout_json_fields",
+        "stdout_diagnostics"
+      ]
+    },
+    {
+      "case": "minimal-dos16m.exe",
+      "normalized_stdout_diagnostics": "",
+      "normalized_stdout_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt5_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt6_formatter_extras": [
+        {
+          "path": "$.detects[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].string",
+          "value": "Compiler: Watcom C"
+        }
+      ],
+      "qt6_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "semantic_dispatch_equal": true,
+      "streams": [
+        "stdout_json_fields"
+      ]
+    },
+    {
+      "case": "dos16m-truncated.exe",
+      "normalized_stdout_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x<address>) is not a function\n\n",
+      "normalized_stdout_diagnostics_sha256": "c6656b6859b2ae4f2f9db8bdddfa7129587757ec933bc89de232c84daade95c1",
+      "qt5_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt6_formatter_extras": [
+        {
+          "path": "$.detects[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].string",
+          "value": "Unknown: Unknown"
+        }
+      ],
+      "qt6_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "semantic_dispatch_equal": true,
+      "streams": [
+        "stdout_json_fields",
+        "stdout_diagnostics"
+      ]
+    },
+    {
+      "case": "dos16m-near-bw.exe",
+      "normalized_stdout_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x<address>) is not a function\n\n",
+      "normalized_stdout_diagnostics_sha256": "c6656b6859b2ae4f2f9db8bdddfa7129587757ec933bc89de232c84daade95c1",
+      "qt5_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt6_formatter_extras": [
+        {
+          "path": "$.detects[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].string",
+          "value": "Unknown: Unknown"
+        }
+      ],
+      "qt6_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "semantic_dispatch_equal": true,
+      "streams": [
+        "stdout_json_fields",
+        "stdout_diagnostics"
+      ]
+    },
+    {
+      "case": "minimal-dos4g.exe",
+      "normalized_stdout_diagnostics": "",
+      "normalized_stdout_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt5_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt6_formatter_extras": [
+        {
+          "path": "$.detects[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].string",
+          "value": "Compiler: Watcom C"
+        }
+      ],
+      "qt6_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "semantic_dispatch_equal": true,
+      "streams": [
+        "stdout_json_fields"
+      ]
+    },
+    {
+      "case": "dos4g-truncated.exe",
+      "normalized_stdout_diagnostics": "_init: MSDOS/_init: 41: TypeError: Cannot assign to read-only property \"getEntryPointOffset\"\nextender_DOS4G.0a.sg: MSDOS/extender_DOS4G.0a.sg: 10: TypeError: Property 'getNEOffset' of object MSDOS_Script(0x<address>) is not a function\n\n",
+      "normalized_stdout_diagnostics_sha256": "c6656b6859b2ae4f2f9db8bdddfa7129587757ec933bc89de232c84daade95c1",
+      "qt5_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt6_formatter_extras": [
+        {
+          "path": "$.detects[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].string",
+          "value": "Unknown: Unknown"
+        }
+      ],
+      "qt6_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "semantic_dispatch_equal": true,
+      "streams": [
+        "stdout_json_fields",
+        "stdout_diagnostics"
+      ]
+    },
+    {
+      "case": "dos4g-near-nested-magic.exe",
+      "normalized_stdout_diagnostics": "",
+      "normalized_stdout_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt5_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt6_formatter_extras": [
+        {
+          "path": "$.detects[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].string",
+          "value": "Compiler: Watcom C"
+        }
+      ],
+      "qt6_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "semantic_dispatch_equal": true,
+      "streams": [
+        "stdout_json_fields"
+      ]
+    },
+    {
+      "case": "minimal.com",
+      "normalized_stdout_diagnostics": "",
+      "normalized_stdout_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt5_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt6_formatter_extras": [
+        {
+          "path": "$.detects[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].string",
+          "value": "Unknown: Unknown"
+        }
+      ],
+      "qt6_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "semantic_dispatch_equal": true,
+      "streams": [
+        "stdout_json_fields"
+      ]
+    },
+    {
+      "case": "com-wrong-suffix.bin",
+      "normalized_stdout_diagnostics": "",
+      "normalized_stdout_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt5_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt6_formatter_extras": [
+        {
+          "path": "$.detects[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].string",
+          "value": "Unknown: Unknown"
+        }
+      ],
+      "qt6_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "semantic_dispatch_equal": true,
+      "streams": [
+        "stdout_json_fields"
+      ]
+    },
+    {
+      "case": "com-max-size.com",
+      "normalized_stdout_diagnostics": "",
+      "normalized_stdout_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt5_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt6_formatter_extras": [
+        {
+          "path": "$.detects[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].string",
+          "value": "Unknown: Unknown"
+        }
+      ],
+      "qt6_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "semantic_dispatch_equal": true,
+      "streams": [
+        "stdout_json_fields"
+      ]
+    },
+    {
+      "case": "com-oversized.com",
+      "normalized_stdout_diagnostics": "",
+      "normalized_stdout_diagnostics_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt5_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "qt6_formatter_extras": [
+        {
+          "path": "$.detects[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].info",
+          "value": ""
+        },
+        {
+          "path": "$.detects[0].values[0].string",
+          "value": "Unknown: Unknown"
+        }
+      ],
+      "qt6_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "semantic_dispatch_equal": true,
+      "streams": [
+        "stdout_json_fields"
+      ]
+    }
+  ],
+  "platform": "linux-amd64-qt5-qt6",
+  "qt5_reference": {
+    "oracle": "linux-qt5-cmake",
+    "path": "docs/research/data/dos-dispatch-linux-qt5.json",
+    "sha256": "21abf20ac50e694fb135d31bc786d0d61c9d701530334900329f9360b9b5ee77"
+  },
+  "qt6_oracle": {
+    "binary": "/opt/die-build/src/console/diec",
+    "binary_sha256": "e3321105af0349b29195325e79d5d2c7cc25ead2f28f84e242e3835b98f7283e",
+    "image": "diec-rust/upstream-oracle-cmake-qt6:74eaf505",
+    "image_id": "sha256:e015495c313d0715f0b80f395da983a113a439f2a135eb637e9f0638c225200b",
+    "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "source_sha256": {
+      "/opt/die-source/Formats/xbinary.cpp": "d82bd21326bb7ba07eb343020d50af0ae2cf7e8e534d8e08d07ffa8129913c34",
+      "/opt/die-source/Formats/xformats.cpp": "674eba0046eb6cc947e547d1ac0b93ac695cbb30f68e11f135e5551d81e0b115",
+      "/opt/die-source/XScanEngine/xscanengine.cpp": "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498"
+    }
+  },
+  "raw_artifacts": {
+    "0d4a11e05fa92914317da6732d204fc1f616048775b1c11b8415f9f49226ffe9": {
+      "base64": "eNqFkkFPwkAQhe/7Kya9oIliIUCkV230opCgJ0PICrPNap1tdgekEv6720WIrRj2tJ339b3pTDcC/IkWyDhnFyXwEgrV2RxuAVE6Ry4L9Ez0MLkdTaKLOqBJmUps1o1SDrlS4qZUSIvElbO/BeQe5QJtk3P6K+R2utdNaSXzJdYbP/4Bp/o86CQ/QtgzvZP5pP8wx1ZT9gtM4MQb++mdwFZonTYUWvxDbGuVqajXp2IrxEyT5gTCjq5+HnqdBJ58fGqtsQncSCLDIJ3TGQEbsH7sl4byEgprCrRcQpQhp8S2HBtNPNotUeCakfyGZt68d9eOZdtl+6zjWieuRY/3/i3v/5jufFtgFJjXN/8P7rxmk7nVBZ/F60HcH3SH/cFQ9eJz0A5C46CWNGc/JSG+AQ60rug=",
+      "bytes": 706,
+      "compressed_bytes": 308,
+      "encoding": "zlib+base64"
+    },
+    "1a16ac1bee2a91f36fd6f90b9dc14d58fc4666639093d870fda34d31281b1ec7": {
+      "base64": "eNptzkELgkAQBeC7v2LoYh2yrRTCa0mnUrC7qI2yETPL7AT674vEQ9Dx8eB7r7JkNYVLecrLTTWFeJvCbXSYibCkcKyJWKH23vYEyiBY39dMzxGcsEPRERY9akYqY8GWNO86j7oIcFCkO0r1weNzZOrI9/PW/25rfqaL2Q8//jWb3BC4A24e2OpkVWUr1unSDEmCu0PSoNkfzAqsh+9x6F7UqmUKgjd5AVBr",
+      "bytes": 239,
+      "compressed_bytes": 171,
+      "encoding": "zlib+base64"
+    },
+    "1b93165d90f7929dde14530bc8b5cccfe32d8491abf609578b1b367e5d9786b9": {
+      "base64": "eNptzkELgkAQBeC7v2LwYh0yAyv0WtKpDOwuq87KRszI7AT575OkQ9Dx8eB7r3bkNIdzdSyrdT2HdJPDbRywEGHJ4WCIWMF473oCZRA03YrpMcIgPKDoCGGPWpDKeGVHWlrrUcMAX4rUodQTnp7ixMS+/2797zbJz/T160eTfylmNwK2wM0dW52tumrFDbpIXlvM0OyzZmfTZAnOw+c42Ce16piC4A2E5VDW",
+      "bytes": 239,
+      "compressed_bytes": 171,
+      "encoding": "zlib+base64"
+    },
+    "1c396ef9307f6a7ec6bd3c1a87a929995212a0fd1fdafb7abde14280cf7b316e": {
+      "base64": "eNptzkELgkAQBeC7v2LoUh0qLSXxWtKpDOwu2zrKRszI7AT675OkQ9Dx8eB7r3LkNINzeSzKTTWFOMrgNnSYi7BkcDBErGC8dy2BMgiaesX0HKAT7lB0gFmLmpPKcGVHWjSNR50F2CtSjVKNeHxah2bt2+/W/y4Kf6avX38++pd8cufADfD9gVYnqyqtuE4XYZ+kSWrq/dbu0nAJzsPnODQvsuqYguANeVJQcQ==",
+      "bytes": 239,
+      "compressed_bytes": 172,
+      "encoding": "zlib+base64"
+    },
+    "202c5f85d8cdf499857119b7ae896ed13d1a58193ffb0292239453f1234e8d25": {
+      "base64": "eNqFkk9PwkAQxe/7KSa9oIliUfBPr0r0opCgJ0PItsw2qzjb7A5IJXx3t4sQWzHsaTvv1/emM10J8CeaImPGLkrgNRSqs9rdAqL0DLks0DPR4+huMIpO6oAmZSqxWTdKOeRKiZtSIS0SV87+FpAHlFO0Tc7pr5B73rtsSgs5m2O98f0fcKjPnU7yI4S90DuZT/oPc2w15b/ABA68sZ3eAWyB1mlDocU/xLpWGYt6fSzWQkw0aU4g7Ojs56HbSeDZx/etNTaBW0lkGKRzOidgA9aP/dTQrITCmgItlxDlyH1iWw6NJh5slihwyUh+QxNv3r1vx7Lt8m3Wfq0T16KHW/+W93/qb3xbYBSY9M3/gxuvySizuuCjeNlTqbxIr65vVDc+Bu0gNA5qThn7KQnxDSj8r6U=",
+      "bytes": 706,
+      "compressed_bytes": 308,
+      "encoding": "zlib+base64"
+    },
+    "26e939e8e3f24567e6652ea7e6a3dd3a2a31816fe39c96b62bdb7cc648932955": {
+      "base64": "eNqFkDEOwjAMRXefIsrMgMTWkYkLMKEOEXVQRHGqxBSVqncniURFAiierP+f7S/PIELJDhnP7GUjTkmINa9dQrTpkacBAyP3hpSb5CYnDGkb3VK3Wnvk6GxLa1AOiePq0CXkgKpDV3LePNPhXWmMqr9jnvt3/lrK1Sd1S6eOdCX7oH+YZ2fo8gE2ojLxfl4FG9F5YylF/CKWTGkh11tYAOAFIN1fVQ==",
+      "bytes": 467,
+      "compressed_bytes": 166,
+      "encoding": "zlib+base64"
+    },
+    "2ce12f984efbb161ec20c78076e7bbffe2c94055d9d1f83c36fcde2ffa1dcbdb": {
+      "base64": "eNqFkLEKwjAQhvc8RcjsILh1dXERJyfpEOxFgvVSkrNFS9/d5sBiopJMx/99yf1kFHI+qgGCMwVVyRMH8YzLxIqxLdCjg9lR28NerVJs0biI8twZE4AiWeeo0x6Q4rvzxMoOdAM+94J98tZNDnrd3iEt/bt8qeXCUd941RGv6Ab8pwXyFi8fYiULN94/V9B68ME65IpfxpQktUjzWkxCiBeKNV3P",
+      "bytes": 464,
+      "compressed_bytes": 165,
+      "encoding": "zlib+base64"
+    },
+    "3145b4cc05668780704b200d3671223d78cd598ed9f0e74a27e602d5b395d0c2": {
+      "base64": "eNqFkkFPwkAQhe/7Kya9oIliq2hIr0r0opCgJ0LI0k6bVZxtdgekEv67260lFjDsaTvv63vTmW4EuBOkyJiwDWKY+EJ1NrubRzK1QC4LdEzwPH4YjoOLNqAo05W4X9dZZpErJdyXCmmQuHJ2N488oUzR7HNWffvc6Lp/4LGSiyW2Oz/+Baca3ekkP33aG32Q/qL/MMtGUf4HjOHEG834TmArNFZp8i0eENtWZSra9anYCjFTpDgGv6Sr34deFMOrix8Yo00M95JIM0hrVU7AGoyb+6WmRQmF0QUaLiHIkQfEphxpRTystyhwzUhuRTNn3nvshrJr8ybruBaFrehR499x/i+D2rcDOgM9f3c/Ye01GydGFXwWrm/70fwm7d/hPAnPQVnwjUO2pITdlIT4AavLr80=",
+      "bytes": 707,
+      "compressed_bytes": 308,
+      "encoding": "zlib+base64"
+    },
+    "321626a07e38420fc7beb6e7ede4a6bb7808a9af27e50164f70b29e89b40fcec": {
+      "base64": "eNqFkMEOwiAMhu88BeHsQU00ZkdPvoAnswNxxRBnWQBn5rJ3F5q4CGroqfn/r+0PI+OhRAMezt6Jip9IiDXOHSFKt+CHDgIj9hqlHcQiJTQqE91cN0o58NFZ5lYnLaCPq0NHyAFkAzbnnH7S4e1mvVvlZi/bO6TZf7+hlHT2Ud7o3BGvaB74D3Pearx8gBUvTLw/sID1YJ02SBG/iClRapbqNZsYYy+wT2Ao",
+      "bytes": 471,
+      "compressed_bytes": 171,
+      "encoding": "zlib+base64"
+    },
+    "3318d366e22153027cf4495b513dd50c6e4338e705241fb7c0a15aeebc3501f2": {
+      "base64": "eNptzkELgkAQBeC7v2LwUh2ylQzEa0mnMrC7bDorGzEjsxPkvy8SD0HHx4PvvcaT1wJO9aGqN80UsrSA6zhgKcJSwN4SsYINwfcEyiBouzXTY4RBeEDREeIetSSV8cKetHIuoMYRvhSpQ2k+eHZMjE1CP2/971LzM32Z/cXHP5eTuwB2wLc7tjpZTd2KH3RpXjtrbO5yNNvcrMAH+B4H96RWPVMUvQF+hlCY",
+      "bytes": 239,
+      "compressed_bytes": 171,
+      "encoding": "zlib+base64"
+    },
+    "35e74cde9d8fece61bd39dcd0cebfb967d497d68072cead3ecebc6066fda9bb1": {
+      "base64": "eNptzs0KglAQBeC9TzG4sRaZggW5LWlVCrYXf+bKjZiRuRPo2yeJi6Dl4cB3TmXJagq38pKX+2oJSZzCYxowE2FJ4VwTsULtnO0JlEGw7nZMrwkG4QFFJ/B71IxUpoItaW6MQ/U9HBWpQ6lmPLmGUR26ft3638XRz3Sx+sHs37PFDYANcPPEVherKluxg26i8dA1TXI6YmuSaAvWwfc4mDe1apk87wOI41D9",
+      "bytes": 239,
+      "compressed_bytes": 171,
+      "encoding": "zlib+base64"
+    },
+    "36c62b1af30aadf04df6e43512e8ff0bdc7a92245d87f8e6111f2e7024211626": {
+      "base64": "eNptzkELgkAQBeC7v2LoUh2qFZYCryWdSsHustmsbMSMzE6g/z5JPAQdHw++9+pAQTO4VKei2tVTsGkGt6HDXIQlg6MjYgUXY2gJlEHQPTZMrwE64Q5FB1i0qDmpDCUH0sL7iLpIsFekB0o94va8NW4b23nrf5ean+ly9pejf80ndwnsge9PbHSy6qqR0OnK9HvjnLd3e/DWrCFE+B4H/6ZGA1OSfACCw1DE",
+      "bytes": 239,
+      "compressed_bytes": 171,
+      "encoding": "zlib+base64"
+    },
+    "399a9e69580a3d45145393a7b5c4505bfee62a2aed0ce833009f32e4f66eb0c2": {
+      "base64": "eNqFkk9PwkAQxe/7KSa9oIli+WMkvSrRi0KCngghS5ltVnG22R2QSvjubrdCLGDY03ber+9NZ7oR4E80R8aUXZTAOBTKs9nfAqL0ArnI0TPR8+hhMIqu6oAmZUrxsG6UcsilEh9KubRIXDr7W0CeUM7RHnJOf4fcVrt35LGSiyXWOz/9Beca3eskP0PaG32Q+aL/MMdWU/YHTODMG7vxncFWaJ02FFo8Ira1ykTU6xOxFWKqSXMCYUk3vw/dVgKvPr5vrbEJ3EsiwyCd0xkBG7B+7teGFgXk1uRouYAoQ+4T22JoNPGg2qLANSP5FU29efexGcumy3ZZp7VWXIse7vwb3v+lX/k2wCgws3f/E1Ze01Fqdc4X8fq2d4cdqTrtWRpfgnYQGge1pJT9lIT4Aawcr8s=",
+      "bytes": 707,
+      "compressed_bytes": 308,
+      "encoding": "zlib+base64"
+    },
+    "3f4f2a61e9ff632d27fc688e5d9506916afa06396138ec1a635ec0fa95fb3e2c": {
+      "base64": "eNqFkkFPwkAQhe/7Kya9oIliMRWTXrXRi0KCngwhC8w2qzjb7A5IJfx3twsltmLY03be1/emM90I8CeaI+OMXZTCWyhUZ3O4BUTpBXJZoGeip9H9YBRdNAFNylRiu26UcsiVErelQlokrpz9LSCPKOdo25zT3yH3+qbfllZyscRm48c/4FSfB53kZwh7pQ8yX/Qf5thqyn+BKZx4o57eCWyF1mlDocU/xLZRGYtmfSy2Qkw0aU4h7Ohq/5D0Unjx8Zm1xqZwJ4kMg3RO5wRswPqxXxpalFBYU6DlEqIcOSO25dBo4sFuiQLXjOQ3NPHmyUM3ll2X11nHtV7ciB7W/h3v/5ztfDtgFJjpu/8Hd16T0czqgs/idT+WUiXT5FYl8TloB6FxUEuasZ+SED8m7K+Z",
+      "bytes": 706,
+      "compressed_bytes": 306,
+      "encoding": "zlib+base64"
+    },
+    "420ea2090c16866fbe1d67391872fc193314149e98ed219e8adb3986a0c3ccde": {
+      "base64": "eNqFkkFPwkAQhe/7Kya9oIliwUJCr0r0opCgJ0PIWmabVZxtdgekEv6720WIrRj2tJ339b3pTDcC/InmyJixi1J4CYXqbA63gCi9QC4L9Ez0MLkdTaKLOqBJmUps1o1SDrlS4qZUSIvElbO/BeQe5Rxtk3P6K+R2e/2mtJKLJdYbP/4Bp/o86CQ/QtgzvZP5pP8wx1ZT/gtM4cQb++mdwFZonTYUWvxDbGuVqajXp2IrxEyT5hTCjq5+HpJOCk8+fmitsSncSCLDIJ3TOQEbsH7sl4YWJRTWFGi5hChHHhLbcmw08Wi3RIFrRvIbmnnz5K4dy7bL91nHtU5cix7v/Vve/3G4822BUWBe3/w/uPOaTTKrCz6L171BN+ln2fVAJfE5aAehcVBLythPSYhvHNuvRg==",
+      "bytes": 706,
+      "compressed_bytes": 307,
+      "encoding": "zlib+base64"
+    },
+    "4225c1adab3796db73dfe3be825ebcc1722eff3743c003ac9032b6340f78243d": {
+      "base64": "eNqFkLEKwjAQhvc8RcjsIIIO3QUnNyfpEOxFgvVSkrOipe9ucmAxUWmm4/++5H4yCBmPaoDgREFV8shBOsM0sWJsC/ToIDpqv1WLnFo0LpEyd8YEoESWJeq0B6T0bJxY2YFuwJdesE9eulpvStTr9gZ569/t53pOHPWVlx3wgu6O/7RA3uL5Q6zkzI33181oPfhgHXLFL2PMklrkeS1GIcQLyKFd7Q==",
+      "bytes": 465,
+      "compressed_bytes": 166,
+      "encoding": "zlib+base64"
+    },
+    "50cfe8ffe2b81a7ba8d0e03265b2f619d2487eed25ae99b2e0c04552c08e01d3": {
+      "base64": "eNqFkk9PwkAQxe/7KSa9oIliQfyTXpXoRSFBToY0S5ltVnG22R2QSvjubhchtmLY03ber+9NZ7oW4E80Q8aMXZTAayhUZ72/BUTpOXJZoGeip9H9YBSd1QFNylRis26UcsiVEjelQlokrpz9LSCPKGdom5zTXyG3071tSks5X2C98cMfcKzPvU7yI4SN6Z3MJ/2HObaa8l9gAkfe2E3vCLZE67Sh0OIfYlOrTES9PhEbIVJNmhMIO7r4eeh1Enjx8X1rjU3gThIZBumczgnYgPVjPzc0L6GwpkDLJUQ5cp/YlkOjiQfbJQpcMZLfUOrNew/tWLZdvss6rHXiWvRw59/y/s/9rW8LjAIzffP/4NYrHWVWF3wSr67UpZLdm+m16sWnoB2ExkEtKGM/JSG+ASOnr54=",
+      "bytes": 706,
+      "compressed_bytes": 308,
+      "encoding": "zlib+base64"
+    },
+    "52cb050ffb3017abf30a0882644953c99727ea63e289547129b5b7a6500ffe49": {
+      "base64": "eNptzkELglAQBOC7v2LxYh0yBQv0WtKpFOwupvvkRezKvg303yeJh6DjMPDN1JasZnCtzkW1r5eQxBncpwFzEZYMTg0RKzTO2Z5AGQSbbsf0mmAQHlB0Ar9HzUllKtmSFsY4VN/DUZE6lHrGk0sYNaHr163/XRz9TJerH8z+LV/cANgAP57Y6mLVVSt20E00HpO0O7SpiU0SbcE6+B4H86ZWLZPnfQB+h1Ck",
+      "bytes": 239,
+      "compressed_bytes": 171,
+      "encoding": "zlib+base64"
+    },
+    "5c41539d06c02b8ae83ec8b45b65f3a217e92ac29ac63adfa770d65e03f62068": {
+      "base64": "eNptzs0KglAQBeC9TzG0sRaZhhK4LWlVCrYXf+bKjZiRuRPo2yeJi6Dl4cB3TmXJagq38pKXh2oJcZTCYxowE2FJ4VwTsULtnO0JlEGw7vZMrwkG4QFFJ9j0qBmpTAVb0twYh7rxcFSkDqWa8fgahHXg+nXrfxeFP9PF6vuzf88W1wc2wM0TW12sqmzFDroNx+QUJ03SHVsThzuwDr7HwbypVcvkeR983VCa",
+      "bytes": 239,
+      "compressed_bytes": 171,
+      "encoding": "zlib+base64"
+    },
+    "6d26b9f7d0813d6600a22ba8f12cbc89a83bc45a0bae7f5ca89c5e484b008b69": {
+      "base64": "eNptzkELgkAQBeC7v2LwUh0qKwvyWtKpFOwuts7KRszI7AT675PEQ9Dx8eB7r3TkNIFrcc6KdTmGeJPAvW8xFWFJ4FQRsULlvWsIlEGwqpdMrx5a4RZFewgb1JRU+pwdaWatRw0D7BSpRikHPL6somrlm2nrf7eJfqbzyZ8N/i0d3RmwBX480eholYUR1+o86vbHbXwwZne0cbQA5+F7HOybjDqmIPgAeLJQcQ==",
+      "bytes": 239,
+      "compressed_bytes": 172,
+      "encoding": "zlib+base64"
+    },
+    "73e6f2e4c40c30a0d5c4e4a6edfa7660ec543cdd95c7d9e1eaeb96686440761e": {
+      "base64": "eNptzkELgkAQBeC7v2LoUh0yzaLyWtKpFOwuZqNsxMwyO0H775PEQ9Dx8eB7rzJkNIVzeczLZTWEdZzC1VvMRFhSONRErFA7ZzoCZRCs7wumpwcrbFHUw6RDzUjFF2xI87Z1qJMA34p0R6l6fH0Kozp03bj1v4ujn+li9Ke9f8kGdwrcAt8e2OhgVWUjxuosem+aJNlt4/0q2UVzMA6+x6F9UaOGKQg+b5hQDw==",
+      "bytes": 239,
+      "compressed_bytes": 172,
+      "encoding": "zlib+base64"
+    },
+    "77d136f313601798811228605ee17cb3e7e9928545a8f59c06bb77137ca54981": {
+      "base64": "eNqFkD0LwjAQhvf8ipBZ8AMH6VpBNwcHB+kQ2osE2iQkZ0FL/7tJ0EJaS2863ve5z45QH6wChBIdy+g9CiG6IYuIkDXgy4Bn2PFyXe9PbJUSUgkd3LGuhXCAwdmMLcMtKAytfRaRM/AK7Jhz8h0Hb3eHSY+W109IV/9/wtKig694E6fdOJa6ofkc59BK9Qhkrhvjj7AZXar5vbD8VsxxLVgntYprTog+UQqS6gXpCSEfLBtfig==",
+      "bytes": 474,
+      "compressed_bytes": 181,
+      "encoding": "zlib+base64"
+    },
+    "7c732b50eed6bd57db128495e79820d267c782dfa32ec0eb54d539ec20cc45f3": {
+      "base64": "eNqr5lIAAqWU1JLU5JJiJSuFaLAACFTDWWAlaZk5qSWVBalANUrO/r5KOqjSmXlp+SApdPH8tLTi1BKQjAG6VEFiUWpeCchcIAusxCM1MSW1CF1dcWYV2FYzUyMLDEPKEnNKU1Edjt0DhFwKl89LzAVbF5qXnZdfnodLWXFJUWZeOpJCKwUCOmChR0BZWWpRcWZ+HtiJGCpqUURiuVDFY7lqubi4ABJ6XqE=",
+      "bytes": 468,
+      "compressed_bytes": 170,
+      "encoding": "zlib+base64"
+    },
+    "7d5d7566232c3c0d3c65cc12b7d5f509650b28f6cebd3f0174a82a502849ac75": {
+      "base64": "eNptzs0KglAQBeC9TzG4sRaZkoW4LWlVCrYXf0a5ETMydwJ9+yRxEbQ8HPjOKQ0ZTeBWXLJiXy4hChN4TAOmIiwJnCsiVqisNT2BMghW7Y7pNcEgPKDoBG6PmpLKlLMhzbrOoroOjorUopQzHl39oPJtv27978LgZzpffW/27+niesAdcP3ERherLBoxg26C8RiH9aGNT1g3wRaMhe9x6N7UqGFynA+BhlDK",
+      "bytes": 239,
+      "compressed_bytes": 171,
+      "encoding": "zlib+base64"
+    },
+    "7ea443caff460eaa26e02284b9b47c4012dadd6bc39d570a3291ede9176ce46c": {
+      "base64": "eNptzkELgkAQBeC7v2LoYh0qLaPwWtKpDOwuq83KRszI7AT675PEQ9Dx8eB7r3TkNIVLccqLdTmGJE7h3reYibCkcDRErGC8dw2BMgiax5Lp1UMr3KJoD7MGNSOV/saONLfWo84C7BTpgVIOeHJeRWblm2nrfxdHP9O3yQ8H/5qNbghsgasn1jpaZVGLa3UedbvDHrfGbjdVHS3AefgeB/umWh1TEHwAgddQyA==",
+      "bytes": 239,
+      "compressed_bytes": 172,
+      "encoding": "zlib+base64"
+    },
+    "8b322af9a88fba3c9c8d8e406cdf45482e82eb8a3a952c82aaeb27b06a4e5a91": {
+      "base64": "eNqFkkFPwkAQhe/7Kya9oIliCxixVyV6UUjQkyHNWqbNKs42uwNSCf/d7SLEVkz3tJ339b3pTDcC3AnmyJiyDWJ48YXqbA43j2RqgVwW6JjgYXo7ngZndUBRpiuxWddZZpErJWxKhTRIXDm7m0fuUc7RNDmrvnxuFPYGTW0lF0usd378C9oaPegkP3zaM72T/qT/MMtGUf4LjKHljf34WrAVGqs0+Rb/ENtaZSbq9ZnYCpEoUhyDX9LFz8MgiuHJxY+M0SaGG0mkGaS1KidgDcbN/VzTooTC6AINlxDkyCNiU060Ih7vtihwzUhuRYkzH9x1Q9m1+T7ruBaFtejJ3r/j/B9HO98O6Az065v7CXdeyTQ1quCTcH2Z9vvDq+i61x+Gp6As+MYhW1LKbkpCfAORi68O",
+      "bytes": 707,
+      "compressed_bytes": 309,
+      "encoding": "zlib+base64"
+    },
+    "8f77bcb8b1bcc9c9b5a59fd8f01d081045f62836a6ecdcd1ae5cfe5daae2a1c4": {
+      "base64": "eNqFkDEOwjAMRXefosrMAEyoIxMXYEIdIuqgiOJUSSgqVe9OYomKBFA8Wf8/2z+ZoAolWvR49k7U1YmFWNPSMaJ0h37sMTBir0naUaxSQpMy0c11o5RDH511bvXSIvm4OnSMHFC2aHPO6Scf3mx3uTXI7o5p8t8vKOVcfJI3PnakK5kH/cOct5ouH2BdFSbe31fABrROG+KIX8ScKA2kegMzALwA5mNfvQ==",
+      "bytes": 469,
+      "compressed_bytes": 169,
+      "encoding": "zlib+base64"
+    },
+    "9bdde177c6afe1d2d2fecfd8e096b8eb4becbcb548aec6003601720f76739000": {
+      "base64": "eNqFkkFPwkAQhe/7Kya9oIniVjFpelWiF4UEPRlCVphtVnG22R2QSvjvbhchtmLY03be1/emM10LCCeZIeOUfZLDSyzUZ72/RUSbOXJVYmCSh9HtYJScNQFD2tZiu2619si1IttSqRwS187hFpF7VDN0bc6br5ibysteW1uq+QKbnR/+gmON7nVSHzHtmd7JftJ/mGdnqPgF5nDkjd34jmBLdN5Yii3+ITaNylg062OxEWJiyHAOcUkXPw+9NIenEN93zrocbhSRZVDem4KALbgw93NL8wpKZ0t0XEFSIPeJXTW0hniw3aLAFSOFFU2Cee+uK1XXF7usw1oqG9HDnX8n+D/2t74dsBrs61v4Cbdek9HUmZJP5OpaSZXpDOVVJk/BeIiNg17QlMOUhPgGoHmvlw==",
+      "bytes": 707,
+      "compressed_bytes": 307,
+      "encoding": "zlib+base64"
+    },
+    "9c776eff1e2fba03c951dbe522e71dc61c497858a290aa4154e8f22a479960c3": {
+      "base64": "eNptzkELgkAQBeC7v2LwYh0qJaPyWtKpEuwuq83KRszI7AT675OkQ9Dx8eB7r3LkNINzebyWq2oKaZLBbegwF2HJ4GCIWMF471oCZRA09wXTc4BOuEPRAcIWNSeVoWBHerXWo4YB9op0R6lGPD0tY7P07Xfrf5fEP9PF149G/5JPbgRsgesHNjpZVdmI63QW9xtbm3W93e1tGs/BefgcB/uiRh1TELwBhNNQ0A==",
+      "bytes": 239,
+      "compressed_bytes": 172,
+      "encoding": "zlib+base64"
+    },
+    "9d7832a74bfdf5c90407482be978cc951341502954eb0a3301e09e3deb77273b": {
+      "base64": "eNqFkkFPwkAQhe/7Kya9oIliMdVor0r0opCgJ0LIUmabVZxtdgekEv67260QWzHsaTvv63vTmW4E+BPNkTFjF6UwDoXqbPa3gCi9QC4L9Ez0NLofjKKzJqBJmUps141SDrlS4rZUSIvElbO/BeQR5Rxtm3P6K+T2Lm/a0koulths/PAHHOtzr5P8CGGv9E7mk/7DHFtN+S8whSNv7KZ3BFuhddpQaPEPsW1UJqJZn4itEFNNmlMIO7r4eUh6Kbz4+L61xqZwJ4kMg3RO5wRswPqxnxtalFBYU6DlEqIcuU9sy6HRxIN6iQLXjOQ3NPXmyUM3ll2X77IOa724ET3c+Xe8/3O/9u2AUWBmb/4frL2mo8zqgk/i9dV8NkturzFTSXwK2kFoHNSSMvZTEuIbKOOv0A==",
+      "bytes": 706,
+      "compressed_bytes": 307,
+      "encoding": "zlib+base64"
+    },
+    "a9e6eb5a630fdfc51e3dda453be8594746b70ecb514c562bb7e6411bddc0d10d": {
+      "base64": "eNptzkELgkAQBeC7v2LoYh0yLSvwWtKpDOwum87KRszI7AT675OkQ9Dx8eB7r3LkNINzeSzKVTWFNMngNnSYi7BkcDBErGC8dy2BMgiaZsn0HKAT7lB0gFmLmpPKcGVHWljrUWcB9orUoFQjnp6i2ES+/W7975L4Z/r69cPRv+STGwJb4PsDa52sqqzFdTqP+63dWLPe33c2jRfgPHyOg31RrY4pCN6Dp1DL",
+      "bytes": 239,
+      "compressed_bytes": 171,
+      "encoding": "zlib+base64"
+    },
+    "adb6dff0329ef8c2a08964d335350e6fc534ac3f1eab24aa090df2d2a5318db0": {
+      "base64": "eNqFkk9PwkAQxe/7KSa9oInigpCQXrXRi0KCngwhC0yb1Trb7A5IJXx3t8uf2IphT9t5v743nelGgD/RAhnn7KIY3kKhOpvjLSCpzpHLAj0TPY3vh+Poqg5oSk0lNusmTR1ypcimVCiLxJWzvwXkEdUCbZNz+jvkdmS319RWKl9ivfPTX3Cu0aNO6jOkvdIHmS/6D3NsNWW/wBjOvHEY3xlshdZpQ6HFP8S2VpmIen0itkJMNWmOISzpZv/Q68Tw4uMTa42N4U4RGQblnM4I2ID1c782lJdQWFOg5RKiDDkhtuXIaOLhbosC14zkVzT15r2HtlRtlx2yTmsdWYseHfxb3v852fm2wKRgZu/+J9x5Tcdzqwu+kOt+H7uD/gzl7UBegnYQGod0SXP2UxLiB5r0r2o=",
+      "bytes": 707,
+      "compressed_bytes": 308,
+      "encoding": "zlib+base64"
+    },
+    "b31679f717a87a17b67d15f41f98efd99907ac7c4d32ad1893f39af78d837f7a": {
+      "base64": "eNptzkELgkAQBeC7v2LoYh0yFbt4LelUCnYXW2dlI2ZkdgL990niIej4ePC91zhymsO1Ppf1oVlCluRwnwYsRFhyOLVErNB673oCZRBsuz3Ta4JBeEDRCTY9akEqU8WOtLTWo24CHBWpQ2lmPLtEcRv5ft363yXxz3S1+uHs34rFDYEt8OOJRherqY24QbfxeDSmw9SkxmbxDpyH73GwbzLqmILgA414USM=",
+      "bytes": 239,
+      "compressed_bytes": 170,
+      "encoding": "zlib+base64"
+    },
+    "cbe46686d5450eab245850ded6c244308dff57f93e5541f8effb2190a8f04e36": {
+      "base64": "eNqFkLEKwjAQhvc8RcjsIIIOfQIHV0GQDsFeJFgvJTkrWvruJgcWE5VmOv7vS+4ng5DxqAYIThRUJY8cpDNMEyvGtkCPDqKjdge1yKlF4xIpc2dMAEpkWaJOe0BKz8aJlS3oBnzpBfvkpav1pkS9bm+Qt/7dfq7nxFFfedkeL+ju+E8L5C2eP8RKztx4f92M1oMP1iFX/DLGLKlFntdiFEK8AOPZXf4=",
+      "bytes": 465,
+      "compressed_bytes": 167,
+      "encoding": "zlib+base64"
+    },
+    "ce69439980a3fc28285635c4f6fd156a0dbc29d02dd8754f2806c7cb68f8bec4": {
+      "base64": "eNqFkkFPwkAQhe/7Kya9oIliIeChVyV6UUjQkyHNusw2qzjb7A5IJfx3t4sQWzHsaTvv63vTmW4EhJPMkVGxTzJ4iYX6bA63iGizQK5KDEzyML0dT5OLJmBI21ps163WHrlW0rZUSofEtXO4ReQe5Rxdm/PmK+b2h9dtaSUXS2w2fvwDTvV50El+xLBneif7Sf9hnp2h4heYwYk39tM7ga3QeWMptviH2DYqM9Gsz8RWiNyQ4Qzijq5+Hga9DJ5C/Mg56zK4kUSWQXpvCgK24MLYLy0tKiidLdFxBUmBPCJ21cQa4vFuiQLXjBQ2lAfzwV03lV1f7LOOa720ET3Z+3eC/+No59sBq8G+voV/cOeVT5UzJZ+l66FSc+yrvtKD9ByMh9g46CUpDlMS4hsxoa/4",
+      "bytes": 706,
+      "compressed_bytes": 306,
+      "encoding": "zlib+base64"
+    },
+    "cf4595deefb59f84e50cf78dade2d180092e456fd6a75435903c5d8529f27203": {
+      "base64": "eNqFkk9PwkAQxe/7KSa9oIliMfiHXpXoRSFBToY0C8w2qzjb7A5IJXx3t4sltmLY03ber+9NZ7oR4E80R8YZuyiB11Aoz2Z/C4jSC+QiR89ET6P7wSg6qwOalCnFZt0o5ZBLJW5KubRIXDr7W0AeUc7RNjmnv0Ju5/K2Ka3kYon1xg9/wLE+9zrJjxA2pncyn/Qf5thqyn6BCRx5o5reEWyF1mlDocU/xLZWmYh6fSK2QqSaNCcQdnTx89DtJPDi4/vWGpvAnSQyDNI5nRGwAevHfm5oUUBuTY6WC4gy5D6xLYZGEw92SxS4ZiS/odSbdx/asWy7rMo6rHXiWvSw8m95/+f+zrcFRoGZvvl/cOeVjmZW53wSr6+wh/KmN71W3fgUtIPQOKglzdhPSYhvJOWvqQ==",
+      "bytes": 706,
+      "compressed_bytes": 307,
+      "encoding": "zlib+base64"
+    },
+    "d6cc0160197f9383abee8199aa3be15aeaac4baf385d4fb328abacf062cbe8cc": {
+      "base64": "eNqFkkFPwkAQhe/7Kya9oIliIa0mvSrRi0KCngwhS5ltVnG22R2QSvjvbhchtmLY03be1/emM90I8CeaI2POLsrgNRTqszncAqL0Arkq0TPR4/huOI4umoAmZWqxXTdKOeRaidtSKS0S187+FpAHlHO0bc7pr5DbT6/b0koulths/PgHnOrzoJP8CGEv9E7mk/7DHFtNxS8wgxNv7Kd3AluhddpQaPEPsW1UJqJZn4itEFNNmjMIO7r6eUh6GTz7+IG1xmZwK4kMg3ROFwRswPqxXxpaVFBaU6LlCqICeUBsq5HRxMPdEgWuGclvaOrNk/tuLLuu2Gcd13pxI3q09+94/6fBzrcDRoGZvfl/cOc1HedWl3wWr9ObJJ2l836ukvgctIPQOKgl5eynJMQ3IQavbw==",
+      "bytes": 706,
+      "compressed_bytes": 307,
+      "encoding": "zlib+base64"
+    },
+    "de62e989de93156c184cfea8378504497ad5dc4415c976756a8c4c327f7f432b": {
+      "base64": "eNqFkD0LwjAQhvf8ipBZ0DqIdK2Di3RwcJAOob1IoE1Kcha09L+bBC2ktfSm432f++wJdcEqQCjRspTeg+CjH7OACFkDvlpwDDvl121yuLBNjEgltLenuhbCAnpnN7VabkCh7+2ygJyBV2CmnJXvMDnZH2c9Ol4/Id79/w1ri46+4k2YduNY6oZmS5xFI9XDk5luWneESelaze+H5bdiievAWKlVWHNGDJFSkFgvyEAI+QCWF1/D",
+      "bytes": 475,
+      "compressed_bytes": 183,
+      "encoding": "zlib+base64"
+    },
+    "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855": {
+      "base64": "eNoDAAAAAAE=",
+      "bytes": 0,
+      "compressed_bytes": 8,
+      "encoding": "zlib+base64"
+    },
+    "f3ddcce0e617803cd7187c7b1dbad8cc092fe2015692d2dc4d764df04570df92": {
+      "base64": "eNqFkkFPwkAQhe/7Kya9oIliMYWEXpXoRSFBT4aQtcw2qzjb7A5IJfx3t1shtmLY03be1/emM90K8CdaIGPGLkrhJRSqsz3cAqL0Erks0DPRw/R2PI0umoAmZSqxXTdKOeRKidtSIS0SV87+FpB7lAu0bc7pr5B73R+0pbVcrrDZ+PEPONXnQSf5EcKe6Z3MJ/2HObaa8l9gCife2E/vBLZG67Sh0OIfYteozESzPhM7IeaaNKcQdnT185D0Unjy8SNrjU3hRhIZBumczgnYgPVjvzS0LKGwpkDLJUQ58ojYlhOjicf1EgVuGMlvaO7Nk7tuLLsu32cd13pxI3qy9+94/8dR7dsBo8C8vvl/sPaaTzOrCz6LN4NkuOhnQ9VTSXwO2kFoHNSKMvZTEuIbIrCveQ==",
+      "bytes": 706,
+      "compressed_bytes": 307,
+      "encoding": "zlib+base64"
+    },
+    "f78469bb6d562260f21a113eaed68d5346320a2d477c7e0eec657eaafc8c8d07": {
+      "base64": "eNqFkLEKwjAQhvc8RcjsIIIO3QUHVyfpEOxFgvVSkrOipe9ucmAxUWmm4/++5H4yCBmPaoDgREFV8shBOsM0sWJsC/ToIDpqv1WLnFo0LpEyd8YEoESWJeq0B6T0bJxY2YFuwJdesE9eulpvStTr9gZ569/t53pOHPWVlx3wgu6O/7RA3uL5Q6zkzI33181oPfhgHXLFL2PMklrkeS1GIcQLxWtd6w==",
+      "bytes": 465,
+      "compressed_bytes": 166,
+      "encoding": "zlib+base64"
+    },
+    "f9a8edf9d8c6212306517371f9913c5a30dcf2db81a8d1992340c33c5993277b": {
+      "base64": "eNptzkELgkAQBeC7v2LoYh2yNUzQa0mnMrC7mM7KRszI7AT674ukQ9Dx8eB7r3bkNIdTdSirTT2HJM7hOg1YiLDksG+IWKHx3vUEyiDYdGumxwSD8ICiEyx61IJUpgs70tJaj7oIcFSkDqV+48kxMk3k++/W/y42P9OXrx++/XMxuyGwBb7dsdXZqqtW3KBLM6Zml26zXZrZxKzAefgcB/ukVh1TELwAbrRQFQ==",
+      "bytes": 239,
+      "compressed_bytes": 172,
+      "encoding": "zlib+base64"
+    },
+    "fa5f568bce175a51b9b0b29f589eb68bae94842ecc30bf21cb058f34d731011e": {
+      "base64": "eNqFkkFPwkAQhe/7Kya9oIliQYikVyV6UUjQEyHNWqbNKs42uwNSCf/d7dYSWzHsaTvv63vTme4EuBMskTFhG0Qw94Xy7A43j6RqhVzk6JjgcXY3mQUXTUBRqkuxXddpapFLJWxLuTRIXDq7m0ceUC7RtDmrvnxuL+wP2tpGrtbY7Pz4F5xq9KCT/PBpL/RO+pP+wywbRdkvMIITb9TjO4Ft0Filybf4h9g3KgvRrC/EXohYkeII/JKufh4GvQieXfzYGG0iuJVEmkFaqzIC1mDc3C81rQrIjc7RcAFBhjwmNsVUK+JJtUWBW0ZyK4qd+eC+G8quzeqs41ovbERPa/+O838aV74d0Cno1zf3E1Ze8SwxKuezcDscDUdyedNPrkfhOSgLvnFI15Swm5IQ35tFr3A=",
+      "bytes": 707,
+      "compressed_bytes": 308,
+      "encoding": "zlib+base64"
+    }
+  },
+  "relationships": {
+    "all_json_document_differences_are_classified": true,
+    "all_stdout_and_stderr_differences_are_classified": true,
+    "all_twelve_boundary_controls_match_qt5": true,
+    "com_size_and_suffix_boundaries_match_qt5": true,
+    "dos4g_near_magic_falls_back_to_dos16m": true,
+    "qt6_two_repetitions_are_equal_after_address_normalization": true,
+    "seven_public_filetype_positives_match_qt5": true
+  },
+  "repetitions": 2,
+  "resource_limits": {
+    "container_root": "read-only",
+    "cpus": 1,
+    "fixture_mount": "read-only",
+    "memory_bytes": 536870912,
+    "network": "none",
+    "pids": 128,
+    "timeout_seconds_per_execution": 60
+  },
+  "result": "pass",
+  "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+  "schema_version": 1,
+  "scope": {
+    "excluded_member": "BW DOS16M",
+    "excluded_member_evidence": "docs/research/data/dos-dispatch-source-audit.json",
+    "public_filetypes": [
+      "COM",
+      "DOS/16M",
+      "DOS/4G",
+      "LE",
+      "LX",
+      "MSDOS",
+      "NE"
+    ]
+  },
+  "shared_probe": "tools/upstream/probe_qt6_legacy_dispatch.py",
+  "shared_probe_sha256": "6bb0f443c85ac8678ac296833e561475618c697ddb1d46bf15d36159c313d859",
+  "source_audit": {
+    "path": "docs/research/data/dos-dispatch-source-audit.json",
+    "sha256": "07661cdefb773fb397870fdacbfefa010ae67fa1284253ddc000808ea7192c4c"
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "xarchive_commit": "0fcd4e8d3e9933baac3b12246d82ac026557ffd0"
+}

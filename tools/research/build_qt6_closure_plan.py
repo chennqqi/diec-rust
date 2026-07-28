@@ -59,6 +59,8 @@ REPORT_PATHS = (
     "docs/research/data/scan-option-boundaries-linux-qt5.json",
     "docs/research/data/scan-option-boundaries-linux-qt6.json",
     "docs/research/data/legacy-dispatch-linux-qt5-qt6.json",
+    "docs/research/data/dos-dispatch-linux-qt5-qt6.json",
+    "docs/research/data/bw-dispatch-engine-qt5-qt6.json",
 )
 EMPTY_SHA256 = hashlib.sha256(b"").hexdigest()
 QT6_UNIMPLEMENTED_SHA256 = (
@@ -161,6 +163,7 @@ COMPLETE: dict[str, str] = {
     "CAP-NEST-003": "all 64 engine option cases and 32 release controls match Qt5",
     "CAP-NEST-004": "Qt6 executes the 99999/100000/100001 archive iteration boundary and the inclusive 21/2001 resource-count boundary; the ISO NUL difference is classified",
     "CAP-DISPATCH-003": "all eight Amiga Hunk and Atari ST positive/truncated/endian/magic cases retain equal detector and scanner dispatch with raw-equal Qt5/Qt6 streams",
+    "CAP-DISPATCH-002": "all 19 public DOS/COM cases retain equal dispatch after classified Qt6 formatter/TypeError differences, and the BW property-only branch is raw-equal to Qt5",
 }
 
 PARTIAL: dict[str, str] = {
@@ -2544,6 +2547,276 @@ def _validate_legacy_dispatch_report(report: dict[str, Any]) -> None:
         raise ClosurePlanError("legacy-dispatch relationship drift")
 
 
+def _observed_filetypes(value: Any) -> set[str]:
+    result = set()
+    if isinstance(value, dict):
+        filetype = value.get("filetype")
+        if isinstance(filetype, str):
+            result.add(filetype)
+        for child in value.values():
+            result.update(_observed_filetypes(child))
+    elif isinstance(value, list):
+        for child in value:
+            result.update(_observed_filetypes(child))
+    return result
+
+
+def _validate_dos_dispatch_report(report: dict[str, Any]) -> None:
+    if (
+        report.get("schema_version") != 1
+        or report.get("result") != "pass"
+        or report.get("failures") != []
+        or report.get("upstream_commit") != UPSTREAM_COMMIT
+        or report.get("rules_commit") != RULES_COMMIT
+        or report.get("formats_commit")
+        != "1151e7254fdee3c0294ff7095edbdd7bfccf8201"
+        or report.get("xarchive_commit")
+        != "0fcd4e8d3e9933baac3b12246d82ac026557ffd0"
+        or report.get("platform") != "linux-amd64-qt5-qt6"
+        or report.get("capability") != "CAP-DISPATCH-002"
+        or report.get("repetitions") != 2
+        or report.get("corpus_manifest", {}).get("sha256")
+        != "c6caeed47cbd3e0631a6aa04fd1b01fb2eb57a946f7f7c0cc217110e02cb067b"
+        or report.get("corpus_manifest", {}).get("sample_count") != 19
+        or report.get("source_audit", {}).get("sha256")
+        != "07661cdefb773fb397870fdacbfefa010ae67fa1284253ddc000808ea7192c4c"
+        or report.get("qt5_reference", {}).get("sha256")
+        != "21abf20ac50e694fb135d31bc786d0d61c9d701530334900329f9360b9b5ee77"
+    ):
+        raise ClosurePlanError("DOS-dispatch identity/reference drift")
+    oracle = report.get("qt6_oracle", {})
+    if (
+        oracle.get("image_id")
+        != "sha256:e015495c313d0715f0b80f395da983a113a439f2a135eb637e9f0638c225200b"
+        or oracle.get("revision") != UPSTREAM_COMMIT
+        or oracle.get("binary_sha256")
+        != "e3321105af0349b29195325e79d5d2c7cc25ead2f28f84e242e3835b98f7283e"
+        or oracle.get("source_sha256")
+        != {
+            "/opt/die-source/Formats/xbinary.cpp": (
+                "d82bd21326bb7ba07eb343020d50af0ae2cf7e8e534d8e08d07ffa8129913c34"
+            ),
+            "/opt/die-source/Formats/xformats.cpp": (
+                "674eba0046eb6cc947e547d1ac0b93ac695cbb30f68e11f135e5551d81e0b115"
+            ),
+            "/opt/die-source/XScanEngine/xscanengine.cpp": (
+                "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498"
+            ),
+        }
+    ):
+        raise ClosurePlanError("DOS-dispatch Qt6 oracle drift")
+    artifacts = _decode_zlib_artifacts(report, "DOS-dispatch")
+    expected_cases = {
+        "minimal-msdos.exe",
+        "msdos-near-magic.exe",
+        "minimal-ne.exe",
+        "ne-truncated.exe",
+        "ne-near-magic.exe",
+        "minimal-le.exe",
+        "le-near-magic.exe",
+        "minimal-lx.exe",
+        "lx-near-magic.exe",
+        "minimal-dos16m.exe",
+        "dos16m-truncated.exe",
+        "dos16m-near-bw.exe",
+        "minimal-dos4g.exe",
+        "dos4g-truncated.exe",
+        "dos4g-near-nested-magic.exe",
+        "minimal.com",
+        "com-wrong-suffix.bin",
+        "com-max-size.com",
+        "com-oversized.com",
+    }
+    diagnostic_cases = {
+        "minimal-msdos.exe",
+        "ne-truncated.exe",
+        "ne-near-magic.exe",
+        "le-near-magic.exe",
+        "lx-near-magic.exe",
+        "dos16m-truncated.exe",
+        "dos16m-near-bw.exe",
+        "dos4g-truncated.exe",
+    }
+    cases = report.get("cases")
+    differences = report.get("known_differences")
+    if (
+        not isinstance(cases, dict)
+        or set(cases) != expected_cases
+        or not isinstance(differences, list)
+        or {item.get("case") for item in differences} != expected_cases
+    ):
+        raise ClosurePlanError("DOS-dispatch case/difference catalog drift")
+    difference_map = {item["case"]: item for item in differences}
+    for case_name, case in cases.items():
+        executions = case.get("qt6_executions")
+        qt5 = case.get("qt5_cmake", {})
+        comparison = case.get("comparison", {})
+        if (
+            not isinstance(executions, list)
+            or len(executions) != 2
+            or qt5.get("detect_tree")
+            != executions[0].get("detect_tree")
+            or executions[0].get("detect_tree")
+            != executions[1].get("detect_tree")
+            or comparison.get("semantic_dispatch_equal") is not True
+        ):
+            raise ClosurePlanError(
+                f"DOS-dispatch semantic/repetition drift: {case_name}"
+            )
+        observed = _observed_filetypes(executions[0]["detect_tree"])
+        expectation = case.get("expected_dispatch", {})
+        if (
+            not set(expectation.get("present_filetypes", [])) <= observed
+            or set(expectation.get("absent_filetypes", [])) & observed
+        ):
+            raise ClosurePlanError(
+                f"DOS-dispatch expectation drift: {case_name}"
+            )
+        expected_streams = ["stdout_json_fields"]
+        if case_name in diagnostic_cases:
+            expected_streams.append("stdout_diagnostics")
+        item = difference_map[case_name]
+        if (
+            comparison.get("raw_stream_differences")
+            != expected_streams
+            or item.get("streams") != expected_streams
+            or item.get("semantic_dispatch_equal") is not True
+            or len(item.get("qt6_formatter_extras", [])) != 3
+        ):
+            raise ClosurePlanError(
+                f"DOS-dispatch difference classification drift: {case_name}"
+            )
+        expected_diagnostic_sha256 = (
+            "c6656b6859b2ae4f2f9db8bdddfa7129587757ec933bc89de232c84daade95c1"
+            if case_name in diagnostic_cases
+            else EMPTY_SHA256
+        )
+        if item.get(
+            "normalized_stdout_diagnostics_sha256"
+        ) != expected_diagnostic_sha256:
+            raise ClosurePlanError(
+                f"DOS-dispatch diagnostic drift: {case_name}"
+            )
+        for execution in executions:
+            if (
+                execution.get("exit_code") != 0
+                or execution.get("stderr", {}).get("sha256")
+                != EMPTY_SHA256
+                or execution.get("normalized_diagnostics_sha256")
+                != expected_diagnostic_sha256
+                or execution.get("formatter_extras")
+                != item["qt6_formatter_extras"]
+            ):
+                raise ClosurePlanError(
+                    f"DOS-dispatch execution drift: {case_name}"
+                )
+            for stream_name in ("stdout", "stderr", "diagnostics"):
+                reference = execution.get(stream_name, {})
+                digest = reference.get("artifact_sha256")
+                if (
+                    digest not in artifacts
+                    or reference.get("sha256") != digest
+                    or len(artifacts[digest])
+                    != reference.get("bytes")
+                ):
+                    raise ClosurePlanError(
+                        f"DOS-dispatch raw reference drift: "
+                        f"{case_name}.{stream_name}"
+                    )
+    relationships = report.get("relationships")
+    if (
+        not isinstance(relationships, dict)
+        or len(relationships) != 7
+        or not all(relationships.values())
+    ):
+        raise ClosurePlanError("DOS-dispatch relationship drift")
+
+
+def _validate_bw_dispatch_report(report: dict[str, Any]) -> None:
+    if (
+        report.get("schema_version") != 1
+        or report.get("failures") != []
+        or report.get("upstream_commit") != UPSTREAM_COMMIT
+        or report.get("formats_commit")
+        != "1151e7254fdee3c0294ff7095edbdd7bfccf8201"
+        or report.get("xscanengine_commit")
+        != "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+        or report.get("platform") != "linux-amd64-qt5-qt6"
+        or report.get("capability") != "CAP-DISPATCH-002"
+        or report.get("repetitions") != 2
+        or report.get("qt5_reference", {}).get("sha256")
+        != "ab24ede4c85ab856e77639ad27f31ee47154c0d3e1885d88f9e0f6f8f4bfede8"
+        or report.get("harness", {}).get("source_sha256")
+        != "66376bdd27ea72177e7027980fac8bae75ef95010668ad0e2696f642d072c233"
+        or report.get("harness", {}).get("qt6_dockerfile_sha256")
+        != "a28aa0d60efbc0419b02253081c8b77eb5b908bcbf8cb40212afbb050163f5cd"
+    ):
+        raise ClosurePlanError("BW-dispatch identity/reference drift")
+    oracle = report.get("qt6_oracle", {})
+    if (
+        oracle.get("image_id")
+        != "sha256:f71568facffa71c29420f9f0701e58bce15db54ee1cb12603938bc19804f893e"
+        or oracle.get("revision") != UPSTREAM_COMMIT
+        or oracle.get("binary_sha256")
+        != "556c8ff8ed0b2f3a534305aa15184fd7ad33408068cdd6be1f3992de92c23f32"
+        or report.get("comparison")
+        != {
+            "raw_stream_differences": [],
+            "semantic_output_equal": True,
+        }
+    ):
+        raise ClosurePlanError("BW-dispatch oracle/comparison drift")
+    artifacts = _decode_zlib_artifacts(report, "BW-dispatch")
+    executions = report.get("executions")
+    if (
+        not isinstance(executions, list)
+        or len(executions) != 2
+        or executions[0] != executions[1]
+    ):
+        raise ClosurePlanError("BW-dispatch repetition drift")
+    for execution in executions:
+        if execution.get("exit_code") != 0:
+            raise ClosurePlanError("BW-dispatch exit drift")
+        for stream_name in ("stdout", "stderr"):
+            reference = execution.get(stream_name, {})
+            digest = reference.get("artifact_sha256")
+            if (
+                digest not in artifacts
+                or reference.get("sha256") != digest
+                or len(artifacts[digest]) != reference.get("bytes")
+            ):
+                raise ClosurePlanError(
+                    f"BW-dispatch raw reference drift: {stream_name}"
+                )
+    output = report.get("harness_output", {})
+    cases = output.get("cases")
+    if (
+        output.get("schema_version") != 1
+        or output.get("case_count") != 2
+        or not isinstance(cases, list)
+        or {case.get("id") for case in cases}
+        != {"automatic_detection", "forced_property"}
+    ):
+        raise ClosurePlanError("BW-dispatch harness output drift")
+    mapped = {case["id"]: case for case in cases}
+    automatic = mapped["automatic_detection"]
+    forced = mapped["forced_property"]
+    if (
+        "BWDOS16M" in automatic.get("detected_filetypes", "").split("|")
+        or automatic.get("initial_filetype") != "Binary"
+        or forced.get("property") != "BWDOS16M"
+        or forced.get("detected_filetypes") != "BWDOS16M"
+        or forced.get("initial_filetype") != "BW DOS16M"
+        or len(forced.get("records", [])) != 1
+        or forced["records"][0].get("filetype") != "BW DOS16M"
+        or forced["records"][0].get("unknown") is not True
+        or not isinstance(report.get("relationships"), dict)
+        or len(report["relationships"]) != 6
+        or not all(report["relationships"].values())
+    ):
+        raise ClosurePlanError("BW-dispatch semantic relationship drift")
+
+
 CAMPAIGNS: dict[str, dict[str, Any]] = {
     "cli_scan_baseline": {
         "fixture": "reuse baseline-corpus and scan-option-boundary fixtures",
@@ -2761,6 +3034,8 @@ def _validate_inputs(
         reports[REPORT_PATHS[38]],
     )
     _validate_legacy_dispatch_report(reports[REPORT_PATHS[39]])
+    _validate_dos_dispatch_report(reports[REPORT_PATHS[40]])
+    _validate_bw_dispatch_report(reports[REPORT_PATHS[41]])
     return capabilities
 
 

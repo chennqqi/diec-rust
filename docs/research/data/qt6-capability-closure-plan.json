@@ -631,19 +631,11 @@
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "dispatch_source",
       "id": "CAP-DISPATCH-002",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "DOS and COM public dispatch plus BW property-only branch",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "every format family and property-only or detector-only branch is exercised",
-          "normalized detection records and raw diagnostics are compared",
-          "archive adapters include positive, malformed, compressed, and boundary controls"
-        ],
-        "fixture": "reuse every dispatch fixture named by the Qt5 evidence set",
-        "harness": "build Qt6 variants of all public and private dispatch probes"
-      },
-      "status": "missing"
+      "observed_scope": "all 19 public DOS/COM cases retain equal dispatch after classified Qt6 formatter/TypeError differences, and the BW property-only branch is raw-equal to Qt5",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
@@ -879,6 +871,7 @@
     "docs/research/data/archive-iteration-boundary-engine-qt6.json": "50b23210a24620561c19c9bf902f165030e4dbb10b8ecda9ebe5bc996670ba65",
     "docs/research/data/archive-option-engine-qt5-qt6.json": "5cdadeb09d97a0afd03b2f73ebbb5eb4ffd227b9a21973d34d5a3db739bb8d65",
     "docs/research/data/binary-rule-order-linux-qt5-qt6.json": "58eba4dcab44a32412c65a8b80716325140bb5eba3a1e93a7753a67c35256852",
+    "docs/research/data/bw-dispatch-engine-qt5-qt6.json": "8bf95a3f81855e751880dd54d2747c2aac6c8458378c5a80c411561080143a6a",
     "docs/research/data/capability-traceability.json": "e1bb982feb52fb97e6678319c629cf71735650fe4239c8558a0f765c16c8cff3",
     "docs/research/data/cli-database-matrix-linux-qt5-qt6.json": "0bb7c6562e7d31604a6a16b3556fbc04ca70a02c089637be0f4849afa0006f4b",
     "docs/research/data/cli-option-behavior-linux-qt5-qt6.json": "a6e127a0a8439bfbb77b276430662e833ab11343330f11d6c41e3bfadfe649d3",
@@ -890,6 +883,7 @@
     "docs/research/data/cli-special-matrix-linux-qt5-qt6.json": "0da895e6d82c0b2cafcee8a1b7a951c462822a05faab381ef64d5c168d5653d1",
     "docs/research/data/debug-dispatch-engine-qt5.json": "6ec887de5ece0e041a920a82d79446e9070c7a868614d6c0218caf074930be88",
     "docs/research/data/debug-dispatch-engine-qt6.json": "4aa91c7ecc275c2d92549f66ee2b421ada6ab3f2c51fc7c0b1934f6cbf94b78f",
+    "docs/research/data/dos-dispatch-linux-qt5-qt6.json": "cb65823f885ce96b1356f6d9f657b7fba735891996009289f533060398c544f9",
     "docs/research/data/engine-contract-linux-qt5.json": "15b7795f54ea236219cac8b7865dc73289263db6de85312910096746094b5099",
     "docs/research/data/engine-contract-linux-qt6.json": "e2f11d0f8d4070fa3359af0237eca948e6c8a36962bbf8cba59d48f0fe7ac18e",
     "docs/research/data/global-host-api-qt5-qt6.json": "3895fde7bb3885e6197afe7216daf8540b7808562ff5287984615d5b022634eb",
@@ -921,9 +915,9 @@
     "all_capabilities_accounted_for": true,
     "cap_gap_007_closed": false,
     "capability_count": 68,
-    "closure_required": 4,
-    "evidence_complete": 64,
-    "missing": 2,
+    "closure_required": 3,
+    "evidence_complete": 65,
+    "missing": 1,
     "partial": 2
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"

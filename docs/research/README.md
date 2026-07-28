@@ -68,7 +68,8 @@ Phase 0 计划形成：
   的固定源码边界、8-case 生成语料、双 Qt5 与双轮 Qt6 detector/scanner
   分派门禁（Draft）。
 - [`dos-dispatch-reachability.md`](dos-dispatch-reachability.md)：DOS/COM 七个
-  公共 detector 成员与 BW DOS16M branch-only 路径的固定源码审计（Draft）。
+  公共 detector 成员与 BW DOS16M branch-only 路径的固定源码审计、双 Qt5
+  与双轮 Qt6 运行门禁（Draft）。
 - [`result-metadata-behavior.md`](result-metadata-behavior.md)：`SCAN_RESULT`
   四个标量字段、四个公共扫描入口的 filename/size/filetype/time 契约及
   Qt5 harness（Draft）。
@@ -288,8 +289,13 @@ Phase 0 计划形成：
   DOS/COM filetype 的 19-case 正例、截断、近似 magic、chain、后缀和大小边界。
 - [`data/dos-dispatch-linux-qt5.json`](data/dos-dispatch-linux-qt5.json)：
   七个公共 DOS/COM filetype 的 19-case 双 Qt5 runtime 基线。
+- [`data/dos-dispatch-linux-qt5-qt6.json`](data/dos-dispatch-linux-qt5-qt6.json)：
+  相同 19-case 的双轮 Qt6 detection-tree 对比、`info/string` extras 和
+  MSDOS TypeError raw-first 分类。
 - [`data/bw-dispatch-engine-qt5.json`](data/bw-dispatch-engine-qt5.json)：
   BW DOS16M automatic-negative 与 compact-property forced-positive 引擎基线。
+- [`data/bw-dispatch-engine-qt5-qt6.json`](data/bw-dispatch-engine-qt5-qt6.json)：
+  BW automatic/forced-property 双轮 Qt6 与 Qt5 完整 JSON/raw 等价报告。
 - [`data/result-metadata-engine-qt5.json`](data/result-metadata-engine-qt5.json)：
   四个公共扫描入口的 `SCAN_RESULT` 标量字段、filename 语义和原始流哈希。
 - [`data/result-list-fixture.json`](data/result-list-fixture.json)：两条重复

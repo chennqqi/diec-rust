@@ -129,7 +129,9 @@ priority、数据库分层、init/include、file type、deep/heuristic 和 Unkno
 - `CAP-DISPATCH-001`：PE32/PE64、ELF32/ELF64、Mach-O 32/64、Mach-O FAT。
 - `CAP-DISPATCH-002`：MS-DOS、NE、LE/LX、DOS/16M、DOS/4G、COM 公共分发，
   以及仅 compact `filetypes` property 可达的 BW DOS16M 分支；19-case 双
-  CLI oracle 与 forced-property engine 基线见
+  Qt5 CLI oracle、双轮 Qt6 CLI 和 forced-property Qt5/Qt6 engine 基线均已
+  完成。公共 detection tree 相同；Qt6 `info/string` JSON extras 与 8 个
+  MSDOS TypeError case 已 raw-first 分类；BW harness raw 完全相同。见
   [`dos-dispatch-reachability.md`](dos-dispatch-reachability.md)。
 - `CAP-DISPATCH-003`：Amiga Hunk 正常分发；Atari ST detector 命中但
   `scanProcess` 缺少对应分支并回退 Binary。两类各四个正负边界在双 Qt5

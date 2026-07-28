@@ -8,7 +8,7 @@ Formats: `horsicq/Formats@1151e7254fdee3c0294ff7095edbdd7bfccf8201`
 
 XScanEngine: `horsicq/XScanEngine@dfe4a419e4f491bb23688ba03c5a5bf39e34da83`
 
-Last updated: 2026-07-27
+Last updated: 2026-07-29
 
 ## 1. 结论
 
@@ -29,6 +29,18 @@ harness，或者通过 review 明确排除这个不可从本项目 CLI/FFI 表�
 
 两部分 runtime 实验现均通过。公共 CLI 输出使用 `DOS/16M`、`DOS/4G`
 显示字符串，而内部 enum/set token 为 `DOS16M`、`DOS4G`；兼容实现必须区分。
+
+相同公共矩阵和 BW harness 又在固定 Qt6 CMake oracle 上完成复验：
+
+- 19 个公共 case 的规范化 detection tree 全部与 Qt5 CMake 相同；
+- Qt6 JSON 每例新增两个空 `info` 和一个派生 `string` 字段，8 个 MSDOS
+  fallback case 还追加两条地址相关 TypeError；所有 raw bytes 均保留，地址只在
+  独立 diagnostic projection 中规范化；
+- BW automatic/forced-property 两个 case 的完整 harness JSON 和 raw streams
+  与 Qt5 逐字节相同。
+
+因此 `CAP-DISPATCH-002` 现达到 Linux Qt6 `evidence_complete`，但这仍不表示
+普通 CLI 能自动到达 BW。
 
 ## 2. 可重复源码审计
 
@@ -107,12 +119,36 @@ Amiga/Atari probe 的双 oracle 执行层；它要求临时 manifest 与提交�
 38 次 CLI 扫描的 raw stdout/stderr 共 17,810 bytes，stderr 均为空；逐流
 大小/SHA-256、两套 image ID、generator 和 manifest SHA-256 均保存在报告中。
 
+Qt5/Qt6 公共报告为
+[`dos-dispatch-linux-qt5-qt6.json`](data/dos-dispatch-linux-qt5-qt6.json)，
+150497 bytes，SHA-256
+`cb65823f885ce96b1356f6d9f657b7fba735891996009289f533060398c544f9`。
+19 case × 2 repetitions 共 38 次受限 Qt6 调用，使用禁网、1 CPU、512 MiB、
+128 PIDs、只读 root/corpus mount。43 个唯一 raw stream 以内容寻址保存。
+
+19 例的 raw JSON 都因 Qt6 `info/string` 字段而不同；其中以下 8 例另有同一
+normalized diagnostic SHA-256
+`c6656b6859b2ae4f2f9db8bdddfa7129587757ec933bc89de232c84daade95c1`：
+
+- `minimal-msdos.exe`；
+- `ne-truncated.exe`、`ne-near-magic.exe`；
+- `le-near-magic.exe`、`lx-near-magic.exe`；
+- `dos16m-truncated.exe`、`dos16m-near-bw.exe`；
+- `dos4g-truncated.exe`。
+
+两条诊断分别是 Qt6 对 `_init` 写只读 `getEntryPointOffset` 的 TypeError，
+以及 `MSDOS_Script(0x<address>)` 缺少 `getNEOffset` 的 TypeError。报告保留
+每轮真实地址 raw stdout；只有比较 projection 替换地址。所有 stderr 为空。
+
 ```text
 python tools/corpus/generate_dos_dispatch_corpus.py <corpus-dir>
 python tools/upstream/probe_dos_dispatch.py \
   --corpus-dir <corpus-dir> \
   --raw-dir <raw-dir> \
   --output <report.json>
+python tools/upstream/probe_qt6_dos_dispatch.py \
+  --corpus-dir <corpus-dir> \
+  --output docs/research/data/dos-dispatch-linux-qt5-qt6.json
 ```
 
 ## 5. BW forced-property harness
@@ -145,6 +181,13 @@ docker build \
 python tools/upstream/probe_bw_dispatch_harness.py \
   --raw-dir <raw-dir> \
   --output <report.json>
+
+docker build --network=none --provenance=false \
+  -f tools/upstream/Dockerfile.bw-dispatch-harness-qt6 \
+  -t diec-rust/bw-dispatch-harness-qt6:74eaf505 \
+  tools/upstream
+python tools/upstream/probe_qt6_bw_dispatch_harness.py \
+  --output docs/research/data/bw-dispatch-engine-qt5-qt6.json
 ```
 
 固定报告
@@ -156,3 +199,14 @@ stdout 1,335 bytes，stderr 为空。
 
 公共矩阵与 branch-only harness 同时通过后，`CAP-DISPATCH-002` 的 Linux Qt5
 状态提升为 runtime-observed。该状态不表示普通 CLI 可以自动到达 BW。
+
+Qt5/Qt6 BW 报告
+[`bw-dispatch-engine-qt5-qt6.json`](data/bw-dispatch-engine-qt5-qt6.json)
+为 5195 bytes，SHA-256
+`8bf95a3f81855e751880dd54d2747c2aac6c8458378c5a80c411561080143a6a`。
+Qt6 harness image ID 为
+`sha256:f71568facffa71c29420f9f0701e58bce15db54ee1cb12603938bc19804f893e`，
+binary SHA-256 为
+`556c8ff8ed0b2f3a534305aa15184fd7ad33408068cdd6be1f3992de92c23f32`。
+双轮 Qt6 stdout/stderr 完全相同，并与 Qt5 raw SHA、完整 harness JSON 和六项
+关系逐项相同。

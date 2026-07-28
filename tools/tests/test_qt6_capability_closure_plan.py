@@ -81,10 +81,10 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
 
     def test_current_plan_is_conservatively_incomplete(self):
         summary = self.plan["summary"]
-        self.assertEqual(summary["evidence_complete"], 64)
+        self.assertEqual(summary["evidence_complete"], 65)
         self.assertEqual(summary["partial"], 2)
-        self.assertEqual(summary["missing"], 2)
-        self.assertEqual(summary["closure_required"], 4)
+        self.assertEqual(summary["missing"], 1)
+        self.assertEqual(summary["closure_required"], 3)
         self.assertFalse(summary["cap_gap_007_closed"])
         self.assertEqual(self.plan["result"], "incomplete")
 
@@ -144,6 +144,7 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
             "CAP-NEST-003",
             "CAP-NEST-004",
             "CAP-DISPATCH-003",
+            "CAP-DISPATCH-002",
         }
         for capability_id in promoted:
             with self.subTest(capability=capability_id):
@@ -166,6 +167,10 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
         )
         self.assertEqual(
             rows["CAP-DISPATCH-003"]["status"],
+            "evidence_complete",
+        )
+        self.assertEqual(
+            rows["CAP-DISPATCH-002"]["status"],
             "evidence_complete",
         )
         self.assertEqual(
@@ -475,6 +480,38 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
         with self.assertRaisesRegex(
             MODULE.ClosurePlanError,
             "legacy-dispatch repetition/comparison drift",
+        ):
+            MODULE.build_plan(
+                self.traceability,
+                self.traceability_raw,
+                changed_reports,
+                self.report_bytes,
+            )
+
+        changed_reports = json.loads(json.dumps(self.reports))
+        dos_dispatch = changed_reports[MODULE.REPORT_PATHS[40]]
+        dos_dispatch["known_differences"][0][
+            "normalized_stdout_diagnostics_sha256"
+        ] = "0" * 64
+        with self.assertRaisesRegex(
+            MODULE.ClosurePlanError,
+            "DOS-dispatch diagnostic drift",
+        ):
+            MODULE.build_plan(
+                self.traceability,
+                self.traceability_raw,
+                changed_reports,
+                self.report_bytes,
+            )
+
+        changed_reports = json.loads(json.dumps(self.reports))
+        bw_dispatch = changed_reports[MODULE.REPORT_PATHS[41]]
+        bw_dispatch["harness_output"]["cases"][1][
+            "initial_filetype"
+        ] = "Binary"
+        with self.assertRaisesRegex(
+            MODULE.ClosurePlanError,
+            "BW-dispatch semantic relationship drift",
         ):
             MODULE.build_plan(
                 self.traceability,
