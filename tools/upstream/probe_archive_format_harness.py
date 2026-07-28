@@ -150,6 +150,11 @@ EXPECTED_ROOTS = {
         "root_names": ["7-Zip"],
         "archive_stream_count": 0,
     },
+    "pdf-member-bcj2-lzma2-aes.7z": {
+        "filetype": "Binary",
+        "root_names": ["7-Zip"],
+        "archive_stream_count": 0,
+    },
     "pdf-member-ppmd7.7z": {
         "filetype": "Binary",
         "root_names": ["7-Zip"],
@@ -300,6 +305,46 @@ def load_fixture(
     ):
         raise ProbeError("unexpected fixture license declaration")
     if manifest["generation_provenance"] != {
+        "sevenzip_bcj2_lzma2_aes_archive": {
+            "command": [
+                "7zz",
+                "a",
+                "pdf-member-bcj2-lzma2-aes.7z",
+                "payload.pdf",
+                "-t7z",
+                "-m0=BCJ2",
+                "-m1=LZMA2",
+                "-mx=9",
+                "-pDetectItEasy",
+                "-mhe=off",
+                "-mtm=off",
+                "-mtc=off",
+                "-mta=off",
+            ],
+            "password": SEVENZIP_AES_PASSWORD,
+            "payload_sha256": (
+                "47bd96bd99d3fd9d9edf09151f7c6299"
+                "9aaf71ed599bd975db9e46c4d6ef5d92"
+            ),
+            "tool": "7zz",
+            "tool_archive_sha256": (
+                "41aaba7b1235304ab5aa0624530c67ae8"
+                "29496cd29e875925271efdccc28c03e"
+            ),
+            "tool_binary_sha256": (
+                "1676a968815b92e865bc0ffeecee3fa28"
+                "4ba4402bf23dc2bec2412c4b502e922"
+            ),
+            "tool_license": (
+                "LGPL-2.1-or-later; unRAR restriction; "
+                "BSD-2-Clause and BSD-3-Clause components"
+            ),
+            "tool_source": (
+                "https://www.7-zip.org/a/"
+                "7z2602-linux-x64.tar.xz"
+            ),
+            "tool_version": "26.02",
+        },
         "sevenzip_lzma2_aes_archive": {
             "command": [
                 "7zz",
@@ -364,7 +409,7 @@ def load_fixture(
         }
     }:
         raise ProbeError("unexpected third-party fixture input")
-    if len(manifest["samples"]) != 20:
+    if len(manifest["samples"]) != 21:
         raise ProbeError("fixture sample count changed")
 
     declared = set()
@@ -661,7 +706,11 @@ def build_report(
             expected_stderr = (
                 SEVENZIP_AES_WARNING
                 if (
-                    sample_name == "pdf-member-lzma2-aes.7z"
+                    sample_name
+                    in {
+                        "pdf-member-lzma2-aes.7z",
+                        "pdf-member-bcj2-lzma2-aes.7z",
+                    }
                     and mode != "default"
                 )
                 else b""
@@ -720,6 +769,7 @@ def build_report(
         cases[sample_name] = sample_cases
 
     aes_path = "/fixture/pdf-member-lzma2-aes.7z"
+    bcj2_aes_path = "/fixture/pdf-member-bcj2-lzma2-aes.7z"
     empty_sha256 = sha256(b"")
     pdf_sha256 = (
         "47bd96bd99d3fd9d9edf09151f7c6299"
@@ -736,7 +786,7 @@ def build_report(
         expected_stderr,
     ) in (
         (
-            "missing_password",
+            "lzma2_missing_password",
             (aes_path,),
             False,
             False,
@@ -745,7 +795,7 @@ def build_report(
             SEVENZIP_AES_WARNING,
         ),
         (
-            "correct_password",
+            "lzma2_correct_password",
             ("--password", SEVENZIP_AES_PASSWORD, aes_path),
             True,
             True,
@@ -754,8 +804,39 @@ def build_report(
             b"",
         ),
         (
-            "wrong_password",
+            "lzma2_wrong_password",
             ("--password", "wrong", aes_path),
+            True,
+            False,
+            0,
+            empty_sha256,
+            b"",
+        ),
+        (
+            "bcj2_missing_password",
+            (bcj2_aes_path,),
+            False,
+            False,
+            0,
+            empty_sha256,
+            SEVENZIP_AES_WARNING,
+        ),
+        (
+            "bcj2_correct_password",
+            (
+                "--password",
+                SEVENZIP_AES_PASSWORD,
+                bcj2_aes_path,
+            ),
+            True,
+            False,
+            0,
+            empty_sha256,
+            SEVENZIP_AES_WARNING,
+        ),
+        (
+            "bcj2_wrong_password",
+            ("--password", "wrong", bcj2_aes_path),
             True,
             False,
             0,
@@ -815,6 +896,9 @@ def build_report(
         "sevenzip_aes_public_engine_has_no_password_and_no_child": True,
         "sevenzip_aes_direct_correct_password_reaches_payload": True,
         "sevenzip_aes_direct_missing_and_wrong_password_fail": True,
+        "sevenzip_bcj2_aes_public_engine_has_no_password_and_no_child": True,
+        "sevenzip_bcj2_aes_direct_correct_password_still_fails": True,
+        "sevenzip_bcj2_aes_missing_and_wrong_password_fail": True,
         "rar4_store_member_reaches_pdf_rules": True,
         "cab_store_member_reaches_pdf_rules": True,
         "cab_mszip_member_reaches_pdf_rules": True,

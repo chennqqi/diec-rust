@@ -43,7 +43,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
         report = self.report
         self.assertEqual(
             sha256(self.report_bytes),
-            "d28f963275d9ca280bd8647412f1cd06f97994f37679b6e12281549be18714f7",
+            "c7d39c4340a1fc860080f9885222de90164955fbd2fc703dd2fb74e24fa39daa",
         )
         self.assertEqual(report["schema_version"], 2)
         self.assertEqual(
@@ -65,7 +65,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
             report["fixture_manifest"],
             {
                 "path": "docs/research/data/archive-format-corpus.json",
-                "sample_count": 20,
+                "sample_count": 21,
                 "sha256": sha256(MANIFEST_PATH.read_bytes()),
             },
         )
@@ -182,7 +182,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
     def test_raw_artifacts_reconstruct_every_execution(self):
         report = self.report
         artifacts = report["raw_artifacts"]
-        self.assertEqual(len(artifacts), 41)
+        self.assertEqual(len(artifacts), 42)
         for digest, artifact in artifacts.items():
             with self.subTest(digest=digest):
                 self.assertEqual(artifact["encoding"], "zlib+base64")
@@ -244,6 +244,10 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
             "pdf-member-lzma.7z": ("Binary", ["7-Zip"]),
             "pdf-member-lzma2.7z": ("Binary", ["7-Zip"]),
             "pdf-member-lzma2-aes.7z": ("Binary", ["7-Zip"]),
+            "pdf-member-bcj2-lzma2-aes.7z": (
+                "Binary",
+                ["7-Zip"],
+            ),
             "pdf-member-ppmd7.7z": ("Binary", ["7-Zip"]),
             "pdf-member.cab": ("Binary", ["CAB"]),
             "pdf-member-mszip.cab": ("Binary", ["CAB"]),
@@ -279,7 +283,11 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
                         }
                         and mode == "archive"
                     ) or (
-                        sample_name == "pdf-member-lzma2-aes.7z"
+                        sample_name
+                        in {
+                            "pdf-member-lzma2-aes.7z",
+                            "pdf-member-bcj2-lzma2-aes.7z",
+                        }
                     ):
                         self.assertEqual(summary["stream_count"], 0)
                     elif sample_name in {
@@ -341,7 +349,10 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
                     cases["archive"]["stdout"],
                     cases["archive_aggressive"]["stdout"],
                 )
-            if sample_name == "pdf-member-lzma2-aes.7z":
+            if sample_name in {
+                "pdf-member-lzma2-aes.7z",
+                "pdf-member-bcj2-lzma2-aes.7z",
+            }:
                 warning_sha256 = (
                     "003e45244a40755beaf48f2a2b30bb756"
                     "344488874b4d6f23caa50b7b3bf011c"
@@ -360,9 +371,12 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
         self.assertEqual(
             set(cases),
             {
-                "correct_password",
-                "missing_password",
-                "wrong_password",
+                "bcj2_correct_password",
+                "bcj2_missing_password",
+                "bcj2_wrong_password",
+                "lzma2_correct_password",
+                "lzma2_missing_password",
+                "lzma2_wrong_password",
             },
         )
         empty_sha256 = (
@@ -374,15 +388,42 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
             "9aaf71ed599bd975db9e46c4d6ef5d92"
         )
         expected = {
-            "correct_password": (True, True, 331, pdf_sha256, 0),
-            "missing_password": (
+            "lzma2_correct_password": (
+                True,
+                True,
+                331,
+                pdf_sha256,
+                0,
+            ),
+            "lzma2_missing_password": (
                 False,
                 False,
                 0,
                 empty_sha256,
                 54,
             ),
-            "wrong_password": (
+            "lzma2_wrong_password": (
+                True,
+                False,
+                0,
+                empty_sha256,
+                0,
+            ),
+            "bcj2_correct_password": (
+                True,
+                False,
+                0,
+                empty_sha256,
+                54,
+            ),
+            "bcj2_missing_password": (
+                False,
+                False,
+                0,
+                empty_sha256,
+                54,
+            ),
+            "bcj2_wrong_password": (
                 True,
                 False,
                 0,
@@ -440,7 +481,7 @@ class ArchiveFormatHarnessProbeTests(unittest.TestCase):
         self.assertIn("CAP-GAP-006", document)
         self.assertIn("archive-format-engine-qt5.json", document)
         self.assertIn(
-            "d28f963275d9ca280bd8647412f1cd06f97994f37679b6e12281549be18714f7",
+            "c7d39c4340a1fc860080f9885222de90164955fbd2fc703dd2fb74e24fa39daa",
             document,
         )
 

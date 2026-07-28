@@ -32,7 +32,7 @@ Last updated: 2026-07-28
 这些结果关闭 `CAP-GAP-006` 中 ZIP deflate、ZipCrypto 无密码、CRC、压缩流损坏、
 截断、central-directory 缺失、越界 offset、未知 method、路径 metadata、
 mixed-member filter 和 1 MiB/843.58:1 压缩比测试点。该 gap 仍因更高资源边界、
-ZIP AES、其他 ZIP 压缩算法、RAR 的压缩/加密、7Z BCJ2+AES 组合、
+ZIP AES、其他 ZIP 压缩算法、RAR 的压缩/加密、其他 7Z AES 组合、
 solid/multi-volume、系统化畸形矩阵和跨平台行为保持开放。
 CAB Quantum 的合法方法边界已由
 [`archive-format-behavior.md`](archive-format-behavior.md) 单独固定。
@@ -168,7 +168,7 @@ python tools\upstream\probe_archive_adversarial_harness.py `
   与 CAB MSZIP
   正例及 7Z LZMA2+AES 的公共无密码、直接正确/缺失/错误密码边界已由后续
   [`archive-format-behavior.md`](archive-format-behavior.md) 固定；仍未覆盖
-  7Z BCJ2+AES 组合、RAR 压缩，以及其他加密、
+  其他 7Z AES 组合、RAR 压缩，以及其他加密、
   solid/multi-volume 和恢复记录；
 - 未测真实磁盘耗尽、16 MiB 临时文件分支、OOM、长时间取消与并发；
 - Windows、macOS 和 Linux Qt6 仍需固定对应 oracle。

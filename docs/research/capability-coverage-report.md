@@ -105,6 +105,8 @@ CAB Quantum 18 普通 archive 同样无 child、aggressive 扫描一个 59-byte
 Binary/Unknown Stream；
 7Z LZMA2+AES 在公共 archive 路径因无密码不产生 child，直接 `XSevenZip`
 正确密码还原 331-byte PDF，缺失/错误密码均失败；
+官方 BCJ2+LZMA2+4×AES 图在 7-Zip 26.02 正确密码验证成功，但固定 DIE
+直接 `XSevenZip` 正确密码仍失败并输出 0 bytes；
 NPM 精确路径直接检测为真，但公共自动
 扫描回退 `Binary / Unknown`，强制属性才进入 NPM 语言规则；generic Archive
 自然检测不满足 singleton 门控，强制 quiet/verbose 后则分别得到 Unknown 和
