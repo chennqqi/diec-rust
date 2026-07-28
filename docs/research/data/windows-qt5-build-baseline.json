@@ -120,6 +120,15 @@
       "detect_string": "Unknown: Unknown"
     }
   },
+  "windows_cli_baseline": {
+    "path": "docs/research/data/baseline-corpus-windows-qt5.json",
+    "sha256": "6beba732e88d90ed1414dd2584a4a783eac24dec70103fc54e6214eb12cca998",
+    "case_count": 6,
+    "corpus_count": 26,
+    "execution_count": 64,
+    "determinism_failures": 0,
+    "linux_qt5_projection_failures": 0
+  },
   "source_file_sha256": {
     ".github/workflows/builder.yml": "b8053dda9c53682b7c931230a427d6ef2880c20bf27fe023a3eb973409ab1d57",
     "build_win_generic_check.cmd": "f8e17d67b0a44f5f4be757627424f9178065f39c7b094f33756a797c28e6b349",

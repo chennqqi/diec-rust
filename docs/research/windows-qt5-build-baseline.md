@@ -10,7 +10,8 @@ Last updated: 2026-07-29
 5.15.2 环境中，从 tracked-clean 检出通过 qmake/jom 构建 `diec 4.0.0`。
 构建产物成功加载固定
 `Detect-It-Easy@c2c17dfa5ea4e078ba31eab55d87430c96622fb6` 规则，并对项目
-生成的最小 PE64 返回稳定 JSON 和退出码 `0`。
+生成的 26 个 baseline 样本各执行两次默认 JSON 扫描：64 次总执行全部原始输出
+稳定，26/26 detection projection 和退出码与 Linux Qt5 基线一致。
 
 本仓库用
 [`build_windows_qt5_oracle.ps1`](../../tools/upstream/build_windows_qt5_oracle.ps1)
@@ -19,7 +20,9 @@ Last updated: 2026-07-29
 保持 `platform_missing`，直到完整差分语料在该平台执行并归档。
 
 机器证据见
-[`data/windows-qt5-build-baseline.json`](data/windows-qt5-build-baseline.json)。
+[`data/windows-qt5-build-baseline.json`](data/windows-qt5-build-baseline.json)
+和
+[`data/baseline-corpus-windows-qt5.json`](data/baseline-corpus-windows-qt5.json)。
 
 ## 固定环境
 
@@ -146,6 +149,32 @@ stderr bytes: 0
 `Unknown: Unknown`。初步构建和后续 clean-script 构建的原始 stdout/stderr
 hash 相同。
 
+## 26 样本 Windows 基线
+
+[`collect_windows_cli_baseline.py`](../../tools/upstream/collect_windows_cli_baseline.py)
+在运行前验证固定 source/rules commit、58 个递归 submodule、tracked-clean
+状态、Qt 文件哈希、CLI 哈希，以及生成语料清单与版本化
+[`baseline-corpus.json`](data/baseline-corpus.json) 逐字节一致。
+
+采集范围是：
+
+- version、help、no-args、show-structs、show-database 和 missing path 六个 case；
+- 26 个安全生成样本各一次默认 JSON scan；
+- 每项连续执行两次，共 64 次，分别保存原始 stdout/stderr 长度和 SHA-256；
+- 每个 JSON detection tree 与固定 Linux Qt5 qmake/CMake 相同投影比较。
+
+两次完整采集生成的报告 SHA-256 均为
+`6beba732e88d90ed1414dd2584a4a783eac24dec70103fc54e6214eb12cca998`。
+结果为 0 个 determinism failure、0 个 Linux projection failure。Windows 的
+version stdout 是 11 bytes，而 Linux 为 10 bytes；报告保留 CRLF 导致的原始
+hash 差异，只在跨平台比较时使用明确的 detection projection 和退出码，不让
+normalizer 隐藏平台原始字节。
+
+这批证据直接覆盖单文件默认扫描、基本 CLI 控制以及 PE/ELF/Mach-O、DEX/
+Java/PYC、PDF/CFBF 和 Binary fallback 的 baseline dispatch。它尚不覆盖完整
+option/output/special/nested/path/database-error matrix，也不覆盖 engine-only
+harness，因此不足以把 Windows 的 68 行整体接纳为 runtime baseline。
+
 ## 可重复性边界
 
 当前证据证明“从一次独立 clean recursive checkout 可重复构建并运行”，不证明
@@ -155,14 +184,15 @@ bit-for-bit reproducible：
   SHA-256 不同；
 - 初步源树此前经过一次 CMake configure，因此两次产物不是严格同输入实验；
 - MSVC archive/PE 时间戳、绝对路径和其他非确定输入尚未逐项隔离；
-- 只完成 help/version 和一个 PE64 JSON smoke，尚未运行 68 项 Windows 差分；
+- 已完成 6 个控制 case 和 26 样本默认 JSON baseline，但尚未运行完整 option、
+  output、special、nested、path、database-error 与 engine-only Windows 矩阵；
 - 尚未验证 x86、ARM64、完整 GUI/lite、install/package 和官方 release zip；
 - `cl` 对 x64 的 `/arch:SSE2` 给出 D9002 ignored warning；x64 ABI 本身要求
   SSE2，但该 warning 仍应保留在构建日志中。
 
-下一步先让 Windows oracle 接入现有 corpus/differential harness，按能力矩阵保存
-原始与规范化输出；然后独立处理官方 CMake 路径和二进制确定性。macOS 固定构建
-仍是三平台基线的剩余大项。
+下一步扩展原生采集器的 option/output/special/nested/path/database-error
+矩阵，并为 engine-only 行建立 Windows harness；然后独立处理官方 CMake 路径
+和二进制确定性。macOS 固定构建仍是三平台基线的剩余大项。
 
 ## 上游证据
 

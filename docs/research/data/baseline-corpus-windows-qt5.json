@@ -1,0 +1,2196 @@
+{
+  "binary": {
+    "relative_path": "build/release/diec.exe",
+    "sha256": "e8579a6ed0d2536ea14af154bcbeeaaea6967c0c7559a595fb3fe52206ac635e",
+    "size": 3236352
+  },
+  "cases": {
+    "database": {
+      "arguments": [
+        "--showdatabase",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 548,
+        "stdout_sha256": "982e1bb4e6bf116e4f6a648fca77a62709f70bfc72d05324471feaf692bf2252"
+      },
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 548,
+        "stdout_sha256": "982e1bb4e6bf116e4f6a648fca77a62709f70bfc72d05324471feaf692bf2252"
+      }
+    },
+    "help": {
+      "arguments": [
+        "--help"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 2212,
+        "stdout_sha256": "ecade27356dbe8585601e6e8ca7aa19de6c5ee44ed1b2a0908b7d22b3c66c317"
+      },
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 2212,
+        "stdout_sha256": "ecade27356dbe8585601e6e8ca7aa19de6c5ee44ed1b2a0908b7d22b3c66c317"
+      }
+    },
+    "missing": {
+      "arguments": [
+        "<binary-dir>/does-not-exist"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 1,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 29,
+        "stdout_sha256": "b6283f748f7f8b5e6171ca210d27646066791a8cd64ff440bc59806075f768ea"
+      },
+      "second": {
+        "exit_code": 1,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 29,
+        "stdout_sha256": "b6283f748f7f8b5e6171ca210d27646066791a8cd64ff440bc59806075f768ea"
+      }
+    },
+    "no_args": {
+      "arguments": [],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 2212,
+        "stdout_sha256": "ecade27356dbe8585601e6e8ca7aa19de6c5ee44ed1b2a0908b7d22b3c66c317"
+      },
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 2212,
+        "stdout_sha256": "ecade27356dbe8585601e6e8ca7aa19de6c5ee44ed1b2a0908b7d22b3c66c317"
+      }
+    },
+    "show_structs": {
+      "arguments": [
+        "--showstructs"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 52,
+        "stdout_sha256": "d7da779bc4355e74e5756635e0c4559d1f69e8e27317a9cf62d0d881de99fc47"
+      },
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 52,
+        "stdout_sha256": "d7da779bc4355e74e5756635e0c4559d1f69e8e27317a9cf62d0d881de99fc47"
+      }
+    },
+    "version": {
+      "arguments": [
+        "--version"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 11,
+        "stdout_sha256": "a31a9381291acf56cacd2867a03ce865ccc56ebdca15794f1097ca156f4b97da"
+      },
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 11,
+        "stdout_sha256": "a31a9381291acf56cacd2867a03ce865ccc56ebdca15794f1097ca156f4b97da"
+      }
+    }
+  },
+  "corpus": {
+    "Minimal.class": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/Minimal.class"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 518,
+        "stdout_sha256": "22729d052a51768e331dbb4058a37ee50ea4897aa138eeba1dd532e10cf57e3c"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "Java Class",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "59",
+          "values": [
+            {
+              "name": "Java Class",
+              "type": "format",
+              "version": "Java SE 8"
+            }
+          ]
+        }
+      ],
+      "intended_format": "Java Class",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "Java Class",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "59",
+          "values": [
+            {
+              "name": "Java Class",
+              "type": "format",
+              "version": "Java SE 8"
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "ed3af378f328281c21e5b56e495377c3e68ba667643c79abc53ad30edb685b9e",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 518,
+        "stdout_sha256": "22729d052a51768e331dbb4058a37ee50ea4897aa138eeba1dd532e10cf57e3c"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "Java Class",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "59",
+          "values": [
+            {
+              "name": "Java Class",
+              "type": "format",
+              "version": "Java SE 8"
+            }
+          ]
+        }
+      ]
+    },
+    "empty.bin": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/empty.bin"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 493,
+        "stdout_sha256": "39c570b8d6ea0a0a45012ad178920caae171155d26a89a7f9b488e3d8d3d8a92"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "0",
+          "values": [
+            {
+              "name": "Empty file",
+              "type": "format",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "empty",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "0",
+          "values": [
+            {
+              "name": "Empty file",
+              "type": "format",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 493,
+        "stdout_sha256": "39c570b8d6ea0a0a45012ad178920caae171155d26a89a7f9b488e3d8d3d8a92"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "0",
+          "values": [
+            {
+              "name": "Empty file",
+              "type": "format",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "minimal-elf32.elf": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal-elf32.elf"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 489,
+        "stdout_sha256": "5722c598aca2a9d267ca2acb8da780c5b529cadacb6c92820da5d8525026c91e"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "ELF32",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "52",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "ELF32",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "ELF32",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "52",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "75952e884b6d6d4c4ed1023df8a126a816973178160bea43b482ceec0fc1e75d",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 489,
+        "stdout_sha256": "5722c598aca2a9d267ca2acb8da780c5b529cadacb6c92820da5d8525026c91e"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "ELF32",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "52",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "minimal-fat.macho": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal-fat.macho"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 493,
+        "stdout_sha256": "47701b5fbf69973a262fdc66bc14540a2fe4b339476f228d9aad080bd0f759d7"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "Mach-O FAT",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "360",
+          "values": [
+            {
+              "name": "lipo",
+              "type": "converter",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "Mach-O FAT",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "Mach-O FAT",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "360",
+          "values": [
+            {
+              "name": "lipo",
+              "type": "converter",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "ea343ae7de8a9ee2bdc00f0cc7f48f420e8609bd60510c927a75bed7b3470a67",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 493,
+        "stdout_sha256": "47701b5fbf69973a262fdc66bc14540a2fe4b339476f228d9aad080bd0f759d7"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "Mach-O FAT",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "360",
+          "values": [
+            {
+              "name": "lipo",
+              "type": "converter",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "minimal-macho32.macho": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal-macho32.macho"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 492,
+        "stdout_sha256": "272f8c7cb4efb223b8c13e3f0127b8c5916b13907f104a8526ce46b9d9c0be0e"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "Mach-O32",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "84",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "Mach-O 32",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "Mach-O32",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "84",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "496974f2f66ce0be4a7ef4e05ddaaf1872b5ba6f4a772f729e86de3f9d4cc3b5",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 492,
+        "stdout_sha256": "272f8c7cb4efb223b8c13e3f0127b8c5916b13907f104a8526ce46b9d9c0be0e"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "Mach-O32",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "84",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "minimal-pe64.exe": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal-pe64.exe"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 489,
+        "stdout_sha256": "12362e46500734dd6400230460718e7e100fddb39d069b9249d4d765034455c0"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PE64",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "512",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "PE64",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "PE64",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "512",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "63c706607b3d34624313df7356702ff99ce4080f09e6b07ec4b01dfe4dd5e1c3",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 489,
+        "stdout_sha256": "12362e46500734dd6400230460718e7e100fddb39d069b9249d4d765034455c0"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PE64",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "512",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "minimal.apk": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal.apk"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 488,
+        "stdout_sha256": "30401c382b9963f377ec68a1c4753d88d6e48777a6ad540e5fdc1fe328cef11a"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "APK",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "350",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "APK with manifest and DEX",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "APK",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "350",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "300eec1017b47ac5878bf21da0306b61a4a0dfc9e8249e9f0ff7e40c458ef557",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 488,
+        "stdout_sha256": "30401c382b9963f377ec68a1c4753d88d6e48777a6ad540e5fdc1fe328cef11a"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "APK",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "350",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "minimal.cfbf": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal.cfbf"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 765,
+        "stdout_sha256": "d4120f7aab698950ee348f47e0fcfd275d3f5640a91f6641e393bbbc5ba72f7d"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "CFBF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "512",
+          "values": [
+            {
+              "name": "CFBF",
+              "type": "format",
+              "version": "3.62"
+            },
+            {
+              "name": "Microsoft Office",
+              "type": "format",
+              "version": "1997-2003"
+            }
+          ]
+        }
+      ],
+      "intended_format": "CFBF",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "CFBF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "512",
+          "values": [
+            {
+              "name": "CFBF",
+              "type": "format",
+              "version": "3.62"
+            },
+            {
+              "name": "Microsoft Office",
+              "type": "format",
+              "version": "1997-2003"
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "bb973ef09e2e3bf7e6510e060960dd10a598c5595bfbe08fabc177d0b0911d37",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 765,
+        "stdout_sha256": "d4120f7aab698950ee348f47e0fcfd275d3f5640a91f6641e393bbbc5ba72f7d"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "CFBF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "512",
+          "values": [
+            {
+              "name": "CFBF",
+              "type": "format",
+              "version": "3.62"
+            },
+            {
+              "name": "Microsoft Office",
+              "type": "format",
+              "version": "1997-2003"
+            }
+          ]
+        }
+      ]
+    },
+    "minimal.dex": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal.dex"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 486,
+        "stdout_sha256": "cddbca6ba868509614d186eb581b0503c0a4aa1cc90cfbb25618041a37232ed6"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "DEX",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "112",
+          "values": [
+            {
+              "name": "DEX",
+              "type": "format",
+              "version": "035"
+            }
+          ]
+        }
+      ],
+      "intended_format": "DEX",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "DEX",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "112",
+          "values": [
+            {
+              "name": "DEX",
+              "type": "format",
+              "version": "035"
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "57cfe8878be74cad8bbc5e409b0964d4b13c35e8783d931ef7366881f8d548c2",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 486,
+        "stdout_sha256": "cddbca6ba868509614d186eb581b0503c0a4aa1cc90cfbb25618041a37232ed6"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "DEX",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "112",
+          "values": [
+            {
+              "name": "DEX",
+              "type": "format",
+              "version": "035"
+            }
+          ]
+        }
+      ]
+    },
+    "minimal.elf": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal.elf"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 489,
+        "stdout_sha256": "0d8ec5ed6b7c918e0b06484c72f458e0377299de94218078f2eb0523e43b03d6"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "ELF64",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "64",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "ELF64",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "ELF64",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "64",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "e717b57a377ce3486a932130454ee070fdd495d3c23a9d5a8a446ad32772e704",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 489,
+        "stdout_sha256": "0d8ec5ed6b7c918e0b06484c72f458e0377299de94218078f2eb0523e43b03d6"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "ELF64",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "64",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "minimal.exe": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal.exe"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 489,
+        "stdout_sha256": "0ed48d7816e5fa4149c6a4b0c6e70f5d259ed75f6d4d5aa4a7ed569a2b4206fd"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PE32",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "512",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "PE32",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "PE32",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "512",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "afb1bcd812caa45095075a60ff49599c7d5e767c7732226c3e0007708cb198a2",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 489,
+        "stdout_sha256": "0ed48d7816e5fa4149c6a4b0c6e70f5d259ed75f6d4d5aa4a7ed569a2b4206fd"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PE32",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "512",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "minimal.ipa": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal.ipa"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 521,
+        "stdout_sha256": "e02daefa987d87815822259c529d952615e5a3210a9ab05b8a5ca892f2143cde"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "300",
+          "values": [
+            {
+              "name": "Zip",
+              "type": "archive",
+              "version": "2.0"
+            }
+          ]
+        }
+      ],
+      "intended_format": "IPA with app Info.plist",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "300",
+          "values": [
+            {
+              "name": "Zip",
+              "type": "archive",
+              "version": "2.0"
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "142e16c353a59e152c6ee0b25d783dba0d6f6e9a8ca81b73d0d925dee1d54264",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 521,
+        "stdout_sha256": "e02daefa987d87815822259c529d952615e5a3210a9ab05b8a5ca892f2143cde"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "300",
+          "values": [
+            {
+              "name": "Zip",
+              "type": "archive",
+              "version": "2.0"
+            }
+          ]
+        }
+      ]
+    },
+    "minimal.iso": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal.iso"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 495,
+        "stdout_sha256": "78c2ac6910493264088b658af2f5852de54222a858246d4ad8d78bff12c0c8d3"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "ISO 9660",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "36864",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "ISO9660 primary volume",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "ISO 9660",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "36864",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "8723a9cc5cd319414b88d32dcce58e8dc7668b927553f8cdf0bdf4f52f4da90a",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 495,
+        "stdout_sha256": "78c2ac6910493264088b658af2f5852de54222a858246d4ad8d78bff12c0c8d3"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "ISO 9660",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "36864",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "minimal.jar": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal.jar"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 488,
+        "stdout_sha256": "9039c4b6e0ae9cd0b15eefd003f10c1b945ade93fd72d714fc89a9726122d853"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "JAR",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "324",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "JAR with manifest and class",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "JAR",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "324",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "a081dac459835af70f69de96b705764dc9b06bc356edcaa9857a8d6b630a7747",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 488,
+        "stdout_sha256": "9039c4b6e0ae9cd0b15eefd003f10c1b945ade93fd72d714fc89a9726122d853"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "JAR",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "324",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "minimal.macho": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal.macho"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 493,
+        "stdout_sha256": "80553682bad771f81cf15d6b64d9ef98b7ddfa7426865dbb1fcb7fa3f7d14911"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "Mach-O64",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "104",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "Mach-O 64",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "Mach-O64",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "104",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "60a536a7dff9522a8e4af5ab73ff742ebeffc33a34837beb9c5ac4a1a7eb5968",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 493,
+        "stdout_sha256": "80553682bad771f81cf15d6b64d9ef98b7ddfa7426865dbb1fcb7fa3f7d14911"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "Mach-O64",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "104",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "minimal.pdf": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal.pdf"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 756,
+        "stdout_sha256": "50eac08de24510fecccfb962f5e85eacf3f658d0712061e5de115daa3c6d7590"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "intended_format": "PDF",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 756,
+        "stdout_sha256": "50eac08de24510fecccfb962f5e85eacf3f658d0712061e5de115daa3c6d7590"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ]
+    },
+    "minimal.pyc": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal.pyc"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 525,
+        "stdout_sha256": "a6c10e2b048bc74c296ae9a2493ca1640998c9ab54ecbd0cbd6daa2d195d2b73"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "Python Bytecode",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "17",
+          "values": [
+            {
+              "name": "Python Bytecode",
+              "type": "format",
+              "version": "3.8b4"
+            }
+          ]
+        }
+      ],
+      "intended_format": "CPython 3.8 bytecode",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "Python Bytecode",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "17",
+          "values": [
+            {
+              "name": "Python Bytecode",
+              "type": "format",
+              "version": "3.8b4"
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "cb3c0319002c008adb69215aa4559e60ad7e333e33eed58ae918e0d32e241ecd",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 525,
+        "stdout_sha256": "a6c10e2b048bc74c296ae9a2493ca1640998c9ab54ecbd0cbd6daa2d195d2b73"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "Python Bytecode",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "17",
+          "values": [
+            {
+              "name": "Python Bytecode",
+              "type": "format",
+              "version": "3.8b4"
+            }
+          ]
+        }
+      ]
+    },
+    "minimal.rar": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal.rar"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 487,
+        "stdout_sha256": "85bb85b578938e98851f9c380ef16fba81bb5b58c3117195250d5889e036fa60"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "RAR",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "21",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "RAR4 empty archive header",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "RAR",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "21",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "f7a8865876257ca1bc0ea30fbe8d1e82d3355ff7509c0dbc1ca01fe202795728",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 487,
+        "stdout_sha256": "85bb85b578938e98851f9c380ef16fba81bb5b58c3117195250d5889e036fa60"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "RAR",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "21",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "payload.tar": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/payload.tar"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 484,
+        "stdout_sha256": "dd8514f6bc5d175d38482a94afde097b8c7dc939f93c80aca63b476e24a58334"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "2048",
+          "values": [
+            {
+              "name": "tar",
+              "type": "archive",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "TAR with text member",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "2048",
+          "values": [
+            {
+              "name": "tar",
+              "type": "archive",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "3af89e8d0f52e951a8ea4ad0bef3d10cf3464c06a5c7a0fc451abc0583289f2f",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 484,
+        "stdout_sha256": "dd8514f6bc5d175d38482a94afde097b8c7dc939f93c80aca63b476e24a58334"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "2048",
+          "values": [
+            {
+              "name": "tar",
+              "type": "archive",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "payload.txt.gz": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/payload.txt.gz"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 490,
+        "stdout_sha256": "5f8168fba7e26ce5f163d8f8c33dbb4a15df6d67c701e6fcfb96146757f7b9d9"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "54",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "GZIP with text member",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "54",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "f51df8f3b04ac2120ba283fbad7f22ec9aefce5a07c38a335deb771be560b39a",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 490,
+        "stdout_sha256": "5f8168fba7e26ce5f163d8f8c33dbb4a15df6d67c701e6fcfb96146757f7b9d9"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "54",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "payload.zip": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/payload.zip"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 488,
+        "stdout_sha256": "be099cdf37548f6c4663e5c6cd649d5c82e9229f5564ffd79d412ad12f034094"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "ZIP",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "151",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "ZIP with text member",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "ZIP",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "151",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "c29a3445c289e061a11d4675b36763657d4e550c4941821ea74905593a29acfe",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 488,
+        "stdout_sha256": "be099cdf37548f6c4663e5c6cd649d5c82e9229f5564ffd79d412ad12f034094"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "ZIP",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "151",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "pixel.bmp": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/pixel.bmp"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 526,
+        "stdout_sha256": "7e7f48174a3c2b65541240cca8c27eb748c2148fce042a45a7e812c52a84e74c"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "58",
+          "values": [
+            {
+              "name": "Windows Bitmap",
+              "type": "image",
+              "version": "3"
+            }
+          ]
+        }
+      ],
+      "intended_format": "BMP",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "58",
+          "values": [
+            {
+              "name": "Windows Bitmap",
+              "type": "image",
+              "version": "3"
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "f7cbd816abfb19030d23b8de5435d0141443665a81ed5ba12114c70b5f53b610",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 526,
+        "stdout_sha256": "7e7f48174a3c2b65541240cca8c27eb748c2148fce042a45a7e812c52a84e74c"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "58",
+          "values": [
+            {
+              "name": "Windows Bitmap",
+              "type": "image",
+              "version": "3"
+            }
+          ]
+        }
+      ]
+    },
+    "pixel.jpg": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/pixel.jpg"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 780,
+        "stdout_sha256": "1e77513f86574671d6e02d819925ffbbe5b04b58de11616dd8224e3d6d30bf4b"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "JPEG",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "56",
+          "values": [
+            {
+              "name": "JPEG",
+              "type": "format",
+              "version": "1.1"
+            },
+            {
+              "name": "DQT",
+              "type": "image",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "JPEG",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "JPEG",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "56",
+          "values": [
+            {
+              "name": "JPEG",
+              "type": "format",
+              "version": "1.1"
+            },
+            {
+              "name": "DQT",
+              "type": "image",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "69d4a48ed33b98f972561aa738a91b1d8cf76c876adee54d76e7b326df9276c5",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 780,
+        "stdout_sha256": "1e77513f86574671d6e02d819925ffbbe5b04b58de11616dd8224e3d6d30bf4b"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "JPEG",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "56",
+          "values": [
+            {
+              "name": "JPEG",
+              "type": "format",
+              "version": "1.1"
+            },
+            {
+              "name": "DQT",
+              "type": "image",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "pixel.png": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/pixel.png"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 511,
+        "stdout_sha256": "a10944fe7eedab7224dfb3ed291e91cd58a1e4d6ae901cc9a58e2bf4b4ce768a"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PNG",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "72",
+          "values": [
+            {
+              "name": "PNG",
+              "type": "format",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "PNG",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "PNG",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "72",
+          "values": [
+            {
+              "name": "PNG",
+              "type": "format",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "9ba3d63896d81dc3a55b80c1165fefa4523888b67fcbd4a95cabd3d0ab7e66e2",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 511,
+        "stdout_sha256": "a10944fe7eedab7224dfb3ed291e91cd58a1e4d6ae901cc9a58e2bf4b4ce768a"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PNG",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "72",
+          "values": [
+            {
+              "name": "PNG",
+              "type": "format",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "plain.txt": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/plain.txt"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 500,
+        "stdout_sha256": "707c32207ea576be8f83b214fab800c2c5c99ccf4fb4661ef563a94380ac6dc9"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "31",
+          "values": [
+            {
+              "name": "Plain text",
+              "type": "format",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "text",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "31",
+          "values": [
+            {
+              "name": "Plain text",
+              "type": "format",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "22b217bfba5795d402092bf48bfb28146c0ee4dd0036fd4d0c93e25bbe65e998",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 500,
+        "stdout_sha256": "707c32207ea576be8f83b214fab800c2c5c99ccf4fb4661ef563a94380ac6dc9"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "31",
+          "values": [
+            {
+              "name": "Plain text",
+              "type": "format",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "tone.wav": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/tone.wav"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 602,
+        "stdout_sha256": "9f9d7d4a7553295e0819a3138ba340ba4d968d0c4000eb78bfe41861ed7c3157"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "46",
+          "values": [
+            {
+              "name": "RIFF container/WAVE file (.WAV)",
+              "type": "audio",
+              "version": "Microsoft PCM8U (uncompressed)/le"
+            }
+          ]
+        }
+      ],
+      "intended_format": "WAV PCM",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "46",
+          "values": [
+            {
+              "name": "RIFF container/WAVE file (.WAV)",
+              "type": "audio",
+              "version": "Microsoft PCM8U (uncompressed)/le"
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "373324023416a5dc3809e647e041fc48a13db20648d5782ac989cba17014203b",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 602,
+        "stdout_sha256": "9f9d7d4a7553295e0819a3138ba340ba4d968d0c4000eb78bfe41861ed7c3157"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "46",
+          "values": [
+            {
+              "name": "RIFF container/WAVE file (.WAV)",
+              "type": "audio",
+              "version": "Microsoft PCM8U (uncompressed)/le"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "corpus_manifest": {
+    "path": "docs/research/data/baseline-corpus.json",
+    "sample_count": 26,
+    "sha256": "f5adabeedeaf3bb69b8e52f8de20efd0f0b87bd4dcd247610d4e876b9266f329"
+  },
+  "generator": "tools/upstream/collect_windows_cli_baseline.py",
+  "generator_sha256": "73b486be50e0628c39a2bc7092e3a5c5f2e089b377484995e6b0566a887b1c3b",
+  "limitations": [
+    "this baseline covers general CLI identity, database listing, missing-path handling, and one default JSON scan per baseline corpus sample",
+    "output/scan/special/nested/path/database-error matrices and engine-only harnesses require separate Windows evidence",
+    "raw stdout hashes are platform observations; only the named detection projection and exit code are compared cross-platform"
+  ],
+  "linux_qt5_reference": {
+    "path": "docs/research/data/baseline-corpus-linux-qt5.json",
+    "sha256": "98ac3dd272efae72038c96c0e051355a0482978933e729abe8b20f0e82057e9f"
+  },
+  "platform": "windows-x86_64-qt5",
+  "qt": {
+    "qmake_sha256": "e873ad3a689a0628c3037a6440221dcd2e426395edf14ffa6379612dede26d36",
+    "qmake_spec": "win32-msvc",
+    "qt5core_sha256": "8d2ff4ce9096ddccc4f4cd62c2e41fc854cfd1b0d6e8d296645a7f5fd4ae565a",
+    "qt5script_sha256": "0b58e5e79df13110a8258f14d7b3658d1dd0c8dddc337a164b89d4ac12a0638f",
+    "version": "5.15.2"
+  },
+  "schema_version": 1,
+  "source": {
+    "commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "recursive_submodule_count": 58,
+    "repository": "https://github.com/horsicq/DIE-engine",
+    "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6"
+  },
+  "summary": {
+    "case_count": 6,
+    "corpus_count": 26,
+    "determinism_failures": [],
+    "deterministic": true,
+    "execution_count": 64,
+    "linux_projection_equal": true,
+    "linux_projection_failures": []
+  }
+}

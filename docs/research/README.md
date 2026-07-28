@@ -501,5 +501,8 @@ Phase 0 计划形成：
 - [`data/windows-qt5-build-baseline.json`](data/windows-qt5-build-baseline.json)：
   Windows clean qmake build、Qt/MSVC 身份、官方 CMake xsimd 链接失败和最小
   PE64 runtime smoke 的机器证据。
+- [`data/baseline-corpus-windows-qt5.json`](data/baseline-corpus-windows-qt5.json)：
+  6 个 CLI 控制 case 与 26 个安全样本的 64 次原生 Windows Qt5 执行、原始
+  hash、确定性检查和 Linux Qt5 detection projection 差分。
 
 每份文档遵守 [`../README.md`](../README.md) 的证据和状态约定。实验附件如需版本化，应使用文本格式并放入主题对应的子目录。

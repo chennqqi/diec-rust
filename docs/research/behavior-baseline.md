@@ -2,7 +2,7 @@
 
 Status: Draft  
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`  
-Last updated: 2026-07-28
+Last updated: 2026-07-29
 
 ## 范围
 
@@ -14,6 +14,12 @@ Last updated: 2026-07-28
 逐字节相同。扫描开关矩阵仍覆盖首版 15 个样本；输出格式矩阵覆盖
 `empty.bin`、`minimal.exe`、`minimal.pdf`、`payload.zip` 和 `plain.txt`。
 这些结论不代表其他选项组合、畸形变体或平台已经兼容。
+
+Windows x86_64 Qt5 qmake candidate oracle 也已对相同 26 个样本各执行两次
+默认 JSON 扫描。64 次 Windows 执行均稳定，26/26 detection projection 和
+退出码与 Linux Qt5 相同；原始 stdout 保留 CRLF 等平台字节差异。详见
+[`windows-qt5-build-baseline.md`](windows-qt5-build-baseline.md) 和
+[`data/baseline-corpus-windows-qt5.json`](data/baseline-corpus-windows-qt5.json)。
 
 ## 语料来源与安全
 
@@ -74,6 +80,19 @@ python3 tools/upstream/compare_cli_oracles.py \
 
 工具先校验两个 image revision、语料清单、文件大小和哈希，再将同一 host 目录
 以只读方式挂载到 `/corpus`。任何输入身份或输出差异都会令命令非零退出。
+
+Windows 原生采集使用独立工具，避免改变并使既有 Docker 报告绑定的比较器
+SHA-256 失效：
+
+```powershell
+python tools\upstream\collect_windows_cli_baseline.py `
+  --binary <source>\build\release\diec.exe `
+  --source-dir <source> `
+  --qt-dir <qt-root>\5.15.2\msvc2019_64 `
+  --corpus-dir <generated-corpus> `
+  --expected-binary-sha256 e8579a6ed0d2536ea14af154bcbeeaaea6967c0c7559a595fb3fe52206ac635e `
+  --output <report.json>
+```
 
 扫描所有样本的开关矩阵使用：
 
