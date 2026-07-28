@@ -1,10 +1,10 @@
-# Linux Unicode、原始字节与特殊路径行为
+# Linux 与 Windows Unicode、原始字节和特殊路径行为
 
 Status: In Review
 
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
 
-Last updated: 2026-07-28
+Last updated: 2026-07-29
 
 ## 结论
 
@@ -42,7 +42,38 @@ content-addressed artifact 形式去重。
 这批证据闭合原 `CAP-GAP-003` 的 Linux UTF-8 与首轮非 UTF-8/特殊名称子矩阵。
 symlink/权限/超深或超大目录、locale/filesystem 差异在本页当时尚未覆盖，随后由
 专用路径实验补齐；跨平台路径差异仍由独立 gap 跟踪。
-Windows/macOS 路径与编码行为仍未覆盖。
+Windows 首轮可表示性/Unicode/Hidden/顺序矩阵现已补充如下；macOS 路径与编码
+行为仍未覆盖。
+
+## Windows Qt5 可表示性与特殊路径
+
+Windows fixture 和机器报告分别为
+[`windows-special-path-fixture.json`](data/windows-special-path-fixture.json)、
+[`windows-qt5-cli-special-paths.json`](data/windows-qt5-cli-special-paths.json)。
+固定 Windows x86_64 Qt5 qmake oracle 对 17 个 case 各运行两次，共 34 次，
+没有 determinism、expected-exit 或 minimal-PDF detection projection failure。
+
+默认 Win32/NTFS fixture 可以同时保留 NFC/NFD，并可创建中文、emoji、普通/
+前导空格、前导短横线和点号名称；默认大小写不敏感使 `A-case`/`a-case` 互为
+别名。尾随空格、colon、backslash、TAB/LF、任意非 UTF-8 bytes 不能作为同语义
+basename 一比一复用，原因逐项写入 fixture manifest。
+
+目录枚举稳定顺序为：
+
+```text
+leading_space, leading_dash, dot_hidden, ascii, upper_case,
+emoji, nfd, space, nfc, cjk
+```
+
+排除 Windows 特有的 dot-file 项后，与 Linux 共同可表示的 9 项相对顺序一致。
+`.dot-hidden.pdf` 没有 `FILE_ATTRIBUTE_HIDDEN`，因此在 Windows 被枚举；真正设置
+Hidden attribute 的文件被排除。显式三目标仍保持 argv 顺序，相对前导短横线
+仍需要 `--` terminator。
+
+报告 SHA-256 为
+`f4e2f4ced3190a51df3bfa34cbdf8ad949130aadab324c7e725365a2c7fa8e68`。
+尚未覆盖 UNC/extended-length、junction/reparse/cycle、ACL denial、ADS 和
+大小写敏感目录，不能据此关闭完整 Windows path gap。
 
 ## 固定身份
 

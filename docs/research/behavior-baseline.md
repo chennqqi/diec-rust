@@ -37,6 +37,12 @@ detection tree 均与 Linux Qt5 相同，且没有双轮漂移。三份 Windows 
 argument 替换回对应 Linux argument 并执行 CRLF→LF 后，18/18 stdout hash
 也完全相同。四份 Windows runtime 报告现累计 868 次执行。
 
+Windows 专用 Unicode/特殊路径 fixture 又完成 17 case、34 次执行。NFC/NFD
+保持独立，中文、emoji、空格和前导短横线均稳定；与 Linux 共同可表示的 9 个
+目录项相对顺序一致。普通点号文件在 Windows 没有 Hidden attribute，因而进入
+目录枚举；真正带 Hidden attribute 的文件被排除。五份 Windows runtime 报告
+累计 902 次执行。
+
 ## 语料来源与安全
 
 所有样本由

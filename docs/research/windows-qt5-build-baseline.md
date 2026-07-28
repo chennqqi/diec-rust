@@ -20,6 +20,8 @@ filename-prefix 顺序和 nested detection tree 均与 Linux Qt5 相同。
 随后 18-case database success/error 矩阵完成 36 次执行；退出码、load-error
 可见性、JSON validity 和受限 path/CRLF normalization 后的 stdout 均与
 Linux Qt5 相同。
+Windows 专用 17-case Unicode/特殊路径矩阵再完成 34 次执行；固定可表示名称、
+默认大小写别名、点号/Hidden attribute 过滤和目录/显式 target 顺序。
 
 本仓库用
 [`build_windows_qt5_oracle.ps1`](../../tools/upstream/build_windows_qt5_oracle.ps1)
@@ -33,7 +35,8 @@ Linux Qt5 相同。
 [`data/baseline-corpus-windows-qt5.json`](data/baseline-corpus-windows-qt5.json)、
 [`data/windows-qt5-cli-matrix.json`](data/windows-qt5-cli-matrix.json) 和
 [`data/windows-qt5-cli-path-nested.json`](data/windows-qt5-cli-path-nested.json)、
-[`data/windows-qt5-cli-database.json`](data/windows-qt5-cli-database.json)。
+[`data/windows-qt5-cli-database.json`](data/windows-qt5-cli-database.json)、
+[`data/windows-qt5-cli-special-paths.json`](data/windows-qt5-cli-special-paths.json)。
 
 ## 固定环境
 
@@ -270,6 +273,43 @@ extra/custom 和 entropy/info load-error framing，不覆盖 ZIP archive/cache
 边界、ACL/permission-denied database 或不可读 input 的 Windows 行为，也不
 替代 engine-only cache harness。
 
+## Windows CLI Unicode/特殊路径矩阵
+
+[`generate_windows_special_path_fixture.py`](../../tools/corpus/generate_windows_special_path_fixture.py)
+从固定 `minimal.pdf` 构造原生 Windows 目录，并生成版本化
+[`windows-special-path-fixture.json`](data/windows-special-path-fixture.json)。
+fixture 包含 12 个可表示目标，并明确列出默认 Win32/NTFS 模型无法与 Linux
+一比一表达的 6 类控制：
+
+- 尾随空格被默认 Win32 path parsing 裁剪；
+- colon 选择 NTFS alternate data stream，backslash 是目录分隔符；
+- TAB/LF 属于 Win32 禁止的 U+0001..U+001F；
+- Windows path identity 是 UTF-16，不能表达三个任意 raw-byte basename；
+- 默认大小写不敏感目录中 `A-case.pdf`/`a-case.pdf` 互为别名。
+
+[`collect_windows_cli_special_paths.py`](../../tools/upstream/collect_windows_cli_special_paths.py)
+对 12 个单目标以及目录、Unicode 目录、显式三目标顺序、前导短横线有/无
+terminator 共 17 个 case 各运行两次。机器报告 SHA-256 为
+`f4e2f4ced3190a51df3bfa34cbdf8ad949130aadab324c7e725365a2c7fa8e68`；
+结果为 0 个 determinism、expected-exit 或 minimal-PDF projection failure。
+
+特殊目录的稳定顺序为：
+
+```text
+leading_space, leading_dash, dot_hidden, ascii, upper_case,
+emoji, nfd, space, nfc, cjk
+```
+
+去除 Windows 特有的 `dot_hidden` 后，与 Linux 共同可表示的 9 项相对顺序完全
+相同。NFC/NFD 是两个独立文件；显式 `emoji -> NFC -> ASCII` 保持 argv 顺序；
+相对 `--leading-dash.pdf` 仍需 `--` terminator。Windows 上 `.dot-hidden.pdf`
+本身没有 Hidden attribute，因此被 `QDir` 枚举；设置
+`FILE_ATTRIBUTE_HIDDEN` 的 `attribute-hidden.pdf` 被排除。这与 Linux 上点号
+文件由名称过滤的机制不同，但可观察目录结果都不包含真正的 hidden control。
+
+该矩阵不覆盖 UNC/extended-length path、junction/reparse/cycle、ACL denial、
+alternate data stream 或大小写敏感目录。
+
 ## 可重复性边界
 
 当前证据证明“从一次独立 clean recursive checkout 可重复构建并运行”，不证明
@@ -281,16 +321,17 @@ bit-for-bit reproducible：
 - MSVC archive/PE 时间戳、绝对路径和其他非确定输入尚未逐项隔离；
 - 已完成 6 个控制 case、26 样本默认 JSON baseline、全 26 样本 scan 及
   5 个代表样本的 output/special，并完成首轮 path/nested/database；尚未运行
-  特殊路径/filesystem/ACL、database archive/cache/permission engine-only、
-  其他 engine-only 和其余样本的 output/special Windows 矩阵；
+  UNC/extended-length、reparse/filesystem/ACL、database
+  archive/cache/permission engine-only、其他 engine-only 和其余样本的
+  output/special Windows 矩阵；
 - 尚未验证 x86、ARM64、完整 GUI/lite、install/package 和官方 release zip；
 - `cl` 对 x64 的 `/arch:SSE2` 给出 D9002 ignored warning；x64 ABI 本身要求
   SSE2，但该 warning 仍应保留在构建日志中。
 
-下一步扩展原生采集器的特殊路径/filesystem/ACL 和其余样本的 output/special，
-并为 database archive/cache/permission 与其他 engine-only 行建立 Windows
-harness；然后独立处理官方 CMake 路径和二进制确定性。macOS 固定构建仍是
-三平台基线的剩余大项。
+下一步扩展原生采集器的 UNC/extended-length、reparse/filesystem/ACL 和其余
+样本的 output/special，并为 database archive/cache/permission 与其他
+engine-only 行建立 Windows harness；然后独立处理官方 CMake 路径和二进制
+确定性。macOS 固定构建仍是三平台基线的剩余大项。
 
 ## 上游证据
 

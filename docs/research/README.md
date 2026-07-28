@@ -511,5 +511,9 @@ Phase 0 计划形成：
 - [`data/windows-qt5-cli-database.json`](data/windows-qt5-cli-database.json)：
   18-case database success/error 的 36 次原生 Windows Qt5 执行及受限
   path/CRLF normalization 对照。
+- [`data/windows-special-path-fixture.json`](data/windows-special-path-fixture.json)：
+  Windows 可表示 Unicode/空格/Hidden 路径和不可表示 Linux 控制的固定清单。
+- [`data/windows-qt5-cli-special-paths.json`](data/windows-qt5-cli-special-paths.json)：
+  17-case Windows Unicode/特殊路径矩阵的 34 次原生 Qt5 执行。
 
 每份文档遵守 [`../README.md`](../README.md) 的证据和状态约定。实验附件如需版本化，应使用文本格式并放入主题对应的子目录。

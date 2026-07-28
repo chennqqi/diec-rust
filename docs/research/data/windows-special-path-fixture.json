@@ -1,0 +1,132 @@
+{
+  "directories": [
+    "special",
+    "目录 空格"
+  ],
+  "entries": [
+    {
+      "hidden_attribute": false,
+      "id": "ascii",
+      "path": "special/00-ascii.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331
+    },
+    {
+      "hidden_attribute": false,
+      "id": "upper_case",
+      "path": "special/A-case.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331
+    },
+    {
+      "hidden_attribute": false,
+      "id": "nfc",
+      "path": "special/é-nfc.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331
+    },
+    {
+      "hidden_attribute": false,
+      "id": "nfd",
+      "path": "special/é-nfd.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331
+    },
+    {
+      "hidden_attribute": false,
+      "id": "cjk",
+      "path": "special/中文.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331
+    },
+    {
+      "hidden_attribute": false,
+      "id": "emoji",
+      "path": "special/emoji-😀.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331
+    },
+    {
+      "hidden_attribute": false,
+      "id": "space",
+      "path": "special/space name.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331
+    },
+    {
+      "hidden_attribute": false,
+      "id": "leading_space",
+      "path": "special/ leading-space.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331
+    },
+    {
+      "hidden_attribute": false,
+      "id": "leading_dash",
+      "path": "special/--leading-dash.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331
+    },
+    {
+      "hidden_attribute": false,
+      "id": "dot_hidden",
+      "path": "special/.dot-hidden.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331
+    },
+    {
+      "hidden_attribute": true,
+      "id": "attribute_hidden",
+      "path": "special/attribute-hidden.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331
+    },
+    {
+      "hidden_attribute": false,
+      "id": "unicode_child",
+      "path": "目录 空格/子 文件.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331
+    }
+  ],
+  "filesystem_observations": {
+    "attribute_hidden_has_hidden_attribute": true,
+    "dot_file_has_hidden_attribute": false,
+    "lowercase_case_alias_exists": true,
+    "nfc_nfd_distinct": true
+  },
+  "generator": "tools/corpus/generate_windows_special_path_fixture.py",
+  "license": "project-generated paths; baseline corpus bytes only",
+  "payload": {
+    "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+    "size": 331,
+    "source": "minimal.pdf"
+  },
+  "schema_version": 1,
+  "unrepresentable_linux_controls": [
+    {
+      "linux_path": "paths/special/trailing-space.pdf ",
+      "reason": "Win32 path parsing trims trailing spaces by default"
+    },
+    {
+      "linux_path": "paths/special/colon:name.pdf",
+      "reason": "colon selects an NTFS alternate data stream"
+    },
+    {
+      "linux_path": "paths/special/backslash\\name.pdf",
+      "reason": "backslash is the native directory separator"
+    },
+    {
+      "linux_path": "paths/special/<TAB and LF names>",
+      "reason": "Win32 rejects control characters U+0001 through U+001F"
+    },
+    {
+      "linux_path": "paths/nonutf8/<three raw byte names>",
+      "reason": "Windows path identity is UTF-16, not an arbitrary byte string"
+    },
+    {
+      "linux_path": "paths/special/A-case.pdf + a-case.pdf",
+      "reason": "both names alias on the default case-insensitive fixture directory"
+    }
+  ]
+}
