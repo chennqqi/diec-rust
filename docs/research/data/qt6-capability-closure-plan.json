@@ -649,19 +649,11 @@
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
       "evidence_set": "dispatch_source",
       "id": "CAP-DISPATCH-003",
-      "missing_scope": "no row-complete Qt6 runtime evidence is currently admitted",
+      "missing_scope": null,
       "name": "Amiga Hunk dispatch and Atari ST detector-only fallback",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "every format family and property-only or detector-only branch is exercised",
-          "normalized detection records and raw diagnostics are compared",
-          "archive adapters include positive, malformed, compressed, and boundary controls"
-        ],
-        "fixture": "reuse every dispatch fixture named by the Qt5 evidence set",
-        "harness": "build Qt6 variants of all public and private dispatch probes"
-      },
-      "status": "missing"
+      "observed_scope": "all eight Amiga Hunk and Atari ST positive/truncated/endian/magic cases retain equal detector and scanner dispatch with raw-equal Qt5/Qt6 streams",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the full Linux Qt5 row boundary is executed against the pinned Qt6 oracle; raw and normalized outputs are retained; every difference is either zero or explicitly classified",
@@ -905,6 +897,7 @@
     "docs/research/data/global-host-api-qt6.json": "572b3a19d5260673c612accbf8cfe2bdd3bee76c55e3a1846a3ceac22e823a17",
     "docs/research/data/global-typo-errors-qt5-qt6.json": "59f9d28679513a939c70c3878ce8d39dcfa01e4b9006150e4b9aadb3311fba23",
     "docs/research/data/host-api-arity-qt5-qt6.json": "96d0b0023dd08ec1e45bc0c1059cf5801837496e09143acff6ffa0120328fa73",
+    "docs/research/data/legacy-dispatch-linux-qt5-qt6.json": "8ecbfe6502de89de58b56316cf5d27274cb9fecccc0f523aa9377d302a7bebfa",
     "docs/research/data/qt-null-filename-semantics-qt5-qt6.json": "0a62837f0a32b4147a379f1fdba3a4c286f658734bbcefc2c2b0e2e22493f8c2",
     "docs/research/data/qt5-qt6-cli.json": "30c4298f07f2aa64fc17a16c478f8554eb8eb9e4e5c13687cddbfe3785b88fdd",
     "docs/research/data/qt6-alltypes-diagnostics.json": "58b76997e767147284c65a9f99105fd0afaee1fc055b849651e6cb27ae174df6",
@@ -928,9 +921,9 @@
     "all_capabilities_accounted_for": true,
     "cap_gap_007_closed": false,
     "capability_count": 68,
-    "closure_required": 5,
-    "evidence_complete": 63,
-    "missing": 3,
+    "closure_required": 4,
+    "evidence_complete": 64,
+    "missing": 2,
     "partial": 2
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"

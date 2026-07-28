@@ -65,7 +65,8 @@ Phase 0 计划形成：
   同一 PE 的 resource 正控制、direct debug 正例与 recursive debug 负例
   （Draft）。
 - [`legacy-dispatch-oracle.md`](legacy-dispatch-oracle.md)：Amiga Hunk/Atari ST
-  的固定源码边界、8-case 生成语料和双 Qt5 oracle 执行门禁（Draft）。
+  的固定源码边界、8-case 生成语料、双 Qt5 与双轮 Qt6 detector/scanner
+  分派门禁（Draft）。
 - [`dos-dispatch-reachability.md`](dos-dispatch-reachability.md)：DOS/COM 七个
   公共 detector 成员与 BW DOS16M branch-only 路径的固定源码审计（Draft）。
 - [`result-metadata-behavior.md`](result-metadata-behavior.md)：`SCAN_RESULT`
@@ -277,6 +278,9 @@ Phase 0 计划形成：
   Amiga Hunk/Atari ST 正例、截断、错误端序和近似 magic 控制的 hash-bound 清单。
 - [`data/legacy-dispatch-linux-qt5.json`](data/legacy-dispatch-linux-qt5.json)：
   Amiga 正常分发及 Atari detector-only/Binary fallback 的双 Qt5 成对基线。
+- [`data/legacy-dispatch-linux-qt5-qt6.json`](data/legacy-dispatch-linux-qt5-qt6.json)：
+  相同 8-case 的双轮 Qt6 raw-stable 复验、Qt5 CMake 逐 stream 对比和
+  `CAP-DISPATCH-003` 闭环报告。
 - [`data/dos-dispatch-source-audit.json`](data/dos-dispatch-source-audit.json)：
   DOS/COM detector、BW legacy magic、scanner 分支和 property bypass 的
   SHA/line-bound 审计。

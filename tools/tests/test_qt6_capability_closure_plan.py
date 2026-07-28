@@ -81,10 +81,10 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
 
     def test_current_plan_is_conservatively_incomplete(self):
         summary = self.plan["summary"]
-        self.assertEqual(summary["evidence_complete"], 63)
+        self.assertEqual(summary["evidence_complete"], 64)
         self.assertEqual(summary["partial"], 2)
-        self.assertEqual(summary["missing"], 3)
-        self.assertEqual(summary["closure_required"], 5)
+        self.assertEqual(summary["missing"], 2)
+        self.assertEqual(summary["closure_required"], 4)
         self.assertFalse(summary["cap_gap_007_closed"])
         self.assertEqual(self.plan["result"], "incomplete")
 
@@ -143,6 +143,7 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
             "CAP-NEST-006",
             "CAP-NEST-003",
             "CAP-NEST-004",
+            "CAP-DISPATCH-003",
         }
         for capability_id in promoted:
             with self.subTest(capability=capability_id):
@@ -161,6 +162,10 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
         )
         self.assertEqual(
             rows["CAP-NEST-004"]["status"],
+            "evidence_complete",
+        )
+        self.assertEqual(
+            rows["CAP-DISPATCH-003"]["status"],
             "evidence_complete",
         )
         self.assertEqual(
@@ -454,6 +459,22 @@ class Qt6CapabilityClosurePlanTest(unittest.TestCase):
         with self.assertRaisesRegex(
             MODULE.ClosurePlanError,
             "Qt6 scan-option output drift",
+        ):
+            MODULE.build_plan(
+                self.traceability,
+                self.traceability_raw,
+                changed_reports,
+                self.report_bytes,
+            )
+
+        changed_reports = json.loads(json.dumps(self.reports))
+        legacy_dispatch = changed_reports[MODULE.REPORT_PATHS[39]]
+        legacy_dispatch["cases"]["minimal-atari-st.prg"][
+            "qt6_executions"
+        ][0]["detector_info"]["filetype"] = "Binary"
+        with self.assertRaisesRegex(
+            MODULE.ClosurePlanError,
+            "legacy-dispatch repetition/comparison drift",
         ):
             MODULE.build_plan(
                 self.traceability,

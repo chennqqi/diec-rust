@@ -6,7 +6,7 @@ Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
 
 Formats: `horsicq/Formats@1151e7254fdee3c0294ff7095edbdd7bfccf8201`
 
-Last updated: 2026-07-27
+Last updated: 2026-07-29
 
 ## 1. 结论
 
@@ -18,6 +18,11 @@ ABI 边界修正，最终 runtime 结论见第 5 节。
 - Amiga 正例已被既有 XAmigaHunk parser harness 判为 valid；
 - 8 个项目生成样本可重复、受 SHA-256 约束，正负控制跨越精确源码边界；
 - probe 会验证 qmake/CMake 输出相同，并强制检查预期 filetype 的存在/缺失。
+
+相同 8-case matrix 又在固定 Qt6 CMake oracle 上执行两轮。32 次 Qt6
+scan/info 调用的 raw streams 在两轮间逐字节稳定，并与 Qt5 CMake 的全部
+raw stream、detector filetype 和 scanner detection tree 相同。因此
+`CAP-DISPATCH-003` 现已达到 Linux Qt6 `evidence_complete`。
 
 ## 2. 固定源码事实
 
@@ -84,6 +89,10 @@ python tools/upstream/probe_legacy_dispatch.py \
   --corpus-dir <corpus-dir> \
   --raw-dir <raw-dir> \
   --output <report.json>
+
+python tools/upstream/probe_qt6_legacy_dispatch.py \
+  --corpus-dir <corpus-dir> \
+  --output docs/research/data/legacy-dispatch-linux-qt5-qt6.json
 ```
 
 ## 5. Runtime 观察
@@ -110,3 +119,26 @@ Atari 分支，最终将 `ftInit` 设为 `FT_BINARY`。Rust 兼容层必须保�
 固定 revision、generator SHA-256 与 corpus manifest SHA-256 都在报告中。
 报告 `result: pass` 且 failures 为空，因此 `CAP-DISPATCH-003` 的 Linux Qt5
 状态提升为 runtime-observed。
+
+Qt5/Qt6 报告为
+[`legacy-dispatch-linux-qt5-qt6.json`](data/legacy-dispatch-linux-qt5-qt6.json)，
+55781 bytes，SHA-256
+`8ecbfe6502de89de58b56316cf5d27274cb9fecccc0f523aa9377d302a7bebfa`。
+Qt6 固定身份为：
+
+- image ID
+  `sha256:e015495c313d0715f0b80f395da983a113a439f2a135eb637e9f0638c225200b`；
+- binary SHA-256
+  `e3321105af0349b29195325e79d5d2c7cc25ead2f28f84e242e3835b98f7283e`；
+- `xamigahunk.cpp` / `xatarist.cpp` / `xformats.cpp` / `xscanengine.cpp`
+  均绑定报告内的完整 SHA-256。
+
+Qt6 probe 执行 8 样本 × 2 mode × 2 repetitions，共 32 次受限容器调用；
+禁网、1 CPU、512 MiB、128 PIDs、只读 root 和只读 corpus mount。15 个唯一
+raw stream 以 `zlib+base64` 内容寻址保存，所有引用均可逆校验。最终
+`known_differences` 为空：
+
+- Amiga positive 的 info/scanner 均为 `Amiga Hunk`；
+- Atari positive 的 info 为 `Atari ST`，scanner 仍回退 `Binary`；
+- 六个 truncated/wrong-endian/near-magic 控制的 info/scanner 均为 `Binary`；
+- 两轮 Qt6 及 Qt5 CMake/Qt6 的每个 stdout/stderr 都逐字节相同。

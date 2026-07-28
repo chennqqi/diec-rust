@@ -1,0 +1,1512 @@
+{
+  "capability": "CAP-DISPATCH-003",
+  "cases": {
+    "amiga-hunk-near-magic.bin": {
+      "case_kind": "near_magic",
+      "comparison": {
+        "raw_stream_differences": [],
+        "semantic_dispatch_equal": true
+      },
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "Amiga Hunk",
+          "Atari ST"
+        ],
+        "info_filetype": "Binary",
+        "present_filetypes": []
+      },
+      "qt5_cmake": {
+        "detector_info": {
+          "exit_code": 0,
+          "filetype": "Binary",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 255,
+          "stdout_sha256": "94c2c0a8af715adfcf561d6e2301135d62b72569b2fd334bbe2d97c62445f003"
+        },
+        "scan": {
+          "detect_tree": [
+            {
+              "filetype": "Binary",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "52",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 468,
+          "stdout_sha256": "3f8b8df36c15dcf254748f1b92d20b0134c5a6498947eff00af4ab87547896f9"
+        }
+      },
+      "qt6_executions": [
+        {
+          "detector_info": {
+            "arguments": [
+              "--info",
+              "--json",
+              "/corpus/amiga-hunk-near-magic.bin"
+            ],
+            "exit_code": 0,
+            "filetype": "Binary",
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "94c2c0a8af715adfcf561d6e2301135d62b72569b2fd334bbe2d97c62445f003",
+              "bytes": 255,
+              "sha256": "94c2c0a8af715adfcf561d6e2301135d62b72569b2fd334bbe2d97c62445f003"
+            }
+          },
+          "scan": {
+            "arguments": [
+              "--json",
+              "--database",
+              "/opt/die-source/Detect-It-Easy/db",
+              "--extradatabase",
+              "/opt/die-source/Detect-It-Easy/db_extra",
+              "--customdatabase",
+              "/opt/die-source/Detect-It-Easy/db_custom",
+              "/corpus/amiga-hunk-near-magic.bin"
+            ],
+            "detect_tree": [
+              {
+                "filetype": "Binary",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "52",
+                "values": [
+                  {
+                    "name": "Unknown",
+                    "type": "Unknown",
+                    "version": ""
+                  }
+                ]
+              }
+            ],
+            "exit_code": 0,
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "3f8b8df36c15dcf254748f1b92d20b0134c5a6498947eff00af4ab87547896f9",
+              "bytes": 468,
+              "sha256": "3f8b8df36c15dcf254748f1b92d20b0134c5a6498947eff00af4ab87547896f9"
+            }
+          }
+        },
+        {
+          "detector_info": {
+            "arguments": [
+              "--info",
+              "--json",
+              "/corpus/amiga-hunk-near-magic.bin"
+            ],
+            "exit_code": 0,
+            "filetype": "Binary",
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "94c2c0a8af715adfcf561d6e2301135d62b72569b2fd334bbe2d97c62445f003",
+              "bytes": 255,
+              "sha256": "94c2c0a8af715adfcf561d6e2301135d62b72569b2fd334bbe2d97c62445f003"
+            }
+          },
+          "scan": {
+            "arguments": [
+              "--json",
+              "--database",
+              "/opt/die-source/Detect-It-Easy/db",
+              "--extradatabase",
+              "/opt/die-source/Detect-It-Easy/db_extra",
+              "--customdatabase",
+              "/opt/die-source/Detect-It-Easy/db_custom",
+              "/corpus/amiga-hunk-near-magic.bin"
+            ],
+            "detect_tree": [
+              {
+                "filetype": "Binary",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "52",
+                "values": [
+                  {
+                    "name": "Unknown",
+                    "type": "Unknown",
+                    "version": ""
+                  }
+                ]
+              }
+            ],
+            "exit_code": 0,
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "3f8b8df36c15dcf254748f1b92d20b0134c5a6498947eff00af4ab87547896f9",
+              "bytes": 468,
+              "sha256": "3f8b8df36c15dcf254748f1b92d20b0134c5a6498947eff00af4ab87547896f9"
+            }
+          }
+        }
+      ],
+      "sha256": "97bdaac5b5a9aa159186801236626ea125b921ea1fbaabd815182cc320668864",
+      "size": 52,
+      "target_filetype": "Amiga Hunk"
+    },
+    "amiga-hunk-truncated.bin": {
+      "case_kind": "truncated",
+      "comparison": {
+        "raw_stream_differences": [],
+        "semantic_dispatch_equal": true
+      },
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "Amiga Hunk",
+          "Atari ST"
+        ],
+        "info_filetype": "Binary",
+        "present_filetypes": []
+      },
+      "qt5_cmake": {
+        "detector_info": {
+          "exit_code": 0,
+          "filetype": "Binary",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 253,
+          "stdout_sha256": "cf6adab0e91147f4cd6efc8f3215462fdb668fc5c2b79a7f3de6817705f6a12f"
+        },
+        "scan": {
+          "detect_tree": [
+            {
+              "filetype": "Binary",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "8",
+              "values": [
+                {
+                  "name": "Amiga loadable file",
+                  "type": "format",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 489,
+          "stdout_sha256": "8ac26d917d7a305909c4745b5e7bdad9bad64080673319f635958bd56585b891"
+        }
+      },
+      "qt6_executions": [
+        {
+          "detector_info": {
+            "arguments": [
+              "--info",
+              "--json",
+              "/corpus/amiga-hunk-truncated.bin"
+            ],
+            "exit_code": 0,
+            "filetype": "Binary",
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "cf6adab0e91147f4cd6efc8f3215462fdb668fc5c2b79a7f3de6817705f6a12f",
+              "bytes": 253,
+              "sha256": "cf6adab0e91147f4cd6efc8f3215462fdb668fc5c2b79a7f3de6817705f6a12f"
+            }
+          },
+          "scan": {
+            "arguments": [
+              "--json",
+              "--database",
+              "/opt/die-source/Detect-It-Easy/db",
+              "--extradatabase",
+              "/opt/die-source/Detect-It-Easy/db_extra",
+              "--customdatabase",
+              "/opt/die-source/Detect-It-Easy/db_custom",
+              "/corpus/amiga-hunk-truncated.bin"
+            ],
+            "detect_tree": [
+              {
+                "filetype": "Binary",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "8",
+                "values": [
+                  {
+                    "name": "Amiga loadable file",
+                    "type": "format",
+                    "version": ""
+                  }
+                ]
+              }
+            ],
+            "exit_code": 0,
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "8ac26d917d7a305909c4745b5e7bdad9bad64080673319f635958bd56585b891",
+              "bytes": 489,
+              "sha256": "8ac26d917d7a305909c4745b5e7bdad9bad64080673319f635958bd56585b891"
+            }
+          }
+        },
+        {
+          "detector_info": {
+            "arguments": [
+              "--info",
+              "--json",
+              "/corpus/amiga-hunk-truncated.bin"
+            ],
+            "exit_code": 0,
+            "filetype": "Binary",
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "cf6adab0e91147f4cd6efc8f3215462fdb668fc5c2b79a7f3de6817705f6a12f",
+              "bytes": 253,
+              "sha256": "cf6adab0e91147f4cd6efc8f3215462fdb668fc5c2b79a7f3de6817705f6a12f"
+            }
+          },
+          "scan": {
+            "arguments": [
+              "--json",
+              "--database",
+              "/opt/die-source/Detect-It-Easy/db",
+              "--extradatabase",
+              "/opt/die-source/Detect-It-Easy/db_extra",
+              "--customdatabase",
+              "/opt/die-source/Detect-It-Easy/db_custom",
+              "/corpus/amiga-hunk-truncated.bin"
+            ],
+            "detect_tree": [
+              {
+                "filetype": "Binary",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "8",
+                "values": [
+                  {
+                    "name": "Amiga loadable file",
+                    "type": "format",
+                    "version": ""
+                  }
+                ]
+              }
+            ],
+            "exit_code": 0,
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "8ac26d917d7a305909c4745b5e7bdad9bad64080673319f635958bd56585b891",
+              "bytes": 489,
+              "sha256": "8ac26d917d7a305909c4745b5e7bdad9bad64080673319f635958bd56585b891"
+            }
+          }
+        }
+      ],
+      "sha256": "8aa396ceebd680b89754b12dc87ce34ba559b8ba601a2b3e2b66ca3fd3f4f396",
+      "size": 8,
+      "target_filetype": "Amiga Hunk"
+    },
+    "amiga-hunk-wrong-endian.bin": {
+      "case_kind": "wrong_endian",
+      "comparison": {
+        "raw_stream_differences": [],
+        "semantic_dispatch_equal": true
+      },
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "Amiga Hunk",
+          "Atari ST"
+        ],
+        "info_filetype": "Binary",
+        "present_filetypes": []
+      },
+      "qt5_cmake": {
+        "detector_info": {
+          "exit_code": 0,
+          "filetype": "Binary",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 257,
+          "stdout_sha256": "40d914f418b31dc13158fecf0bbb520dd2f1318a97107e7bfce8ca4199eecaee"
+        },
+        "scan": {
+          "detect_tree": [
+            {
+              "filetype": "Binary",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "52",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 468,
+          "stdout_sha256": "3f8b8df36c15dcf254748f1b92d20b0134c5a6498947eff00af4ab87547896f9"
+        }
+      },
+      "qt6_executions": [
+        {
+          "detector_info": {
+            "arguments": [
+              "--info",
+              "--json",
+              "/corpus/amiga-hunk-wrong-endian.bin"
+            ],
+            "exit_code": 0,
+            "filetype": "Binary",
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "40d914f418b31dc13158fecf0bbb520dd2f1318a97107e7bfce8ca4199eecaee",
+              "bytes": 257,
+              "sha256": "40d914f418b31dc13158fecf0bbb520dd2f1318a97107e7bfce8ca4199eecaee"
+            }
+          },
+          "scan": {
+            "arguments": [
+              "--json",
+              "--database",
+              "/opt/die-source/Detect-It-Easy/db",
+              "--extradatabase",
+              "/opt/die-source/Detect-It-Easy/db_extra",
+              "--customdatabase",
+              "/opt/die-source/Detect-It-Easy/db_custom",
+              "/corpus/amiga-hunk-wrong-endian.bin"
+            ],
+            "detect_tree": [
+              {
+                "filetype": "Binary",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "52",
+                "values": [
+                  {
+                    "name": "Unknown",
+                    "type": "Unknown",
+                    "version": ""
+                  }
+                ]
+              }
+            ],
+            "exit_code": 0,
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "3f8b8df36c15dcf254748f1b92d20b0134c5a6498947eff00af4ab87547896f9",
+              "bytes": 468,
+              "sha256": "3f8b8df36c15dcf254748f1b92d20b0134c5a6498947eff00af4ab87547896f9"
+            }
+          }
+        },
+        {
+          "detector_info": {
+            "arguments": [
+              "--info",
+              "--json",
+              "/corpus/amiga-hunk-wrong-endian.bin"
+            ],
+            "exit_code": 0,
+            "filetype": "Binary",
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "40d914f418b31dc13158fecf0bbb520dd2f1318a97107e7bfce8ca4199eecaee",
+              "bytes": 257,
+              "sha256": "40d914f418b31dc13158fecf0bbb520dd2f1318a97107e7bfce8ca4199eecaee"
+            }
+          },
+          "scan": {
+            "arguments": [
+              "--json",
+              "--database",
+              "/opt/die-source/Detect-It-Easy/db",
+              "--extradatabase",
+              "/opt/die-source/Detect-It-Easy/db_extra",
+              "--customdatabase",
+              "/opt/die-source/Detect-It-Easy/db_custom",
+              "/corpus/amiga-hunk-wrong-endian.bin"
+            ],
+            "detect_tree": [
+              {
+                "filetype": "Binary",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "52",
+                "values": [
+                  {
+                    "name": "Unknown",
+                    "type": "Unknown",
+                    "version": ""
+                  }
+                ]
+              }
+            ],
+            "exit_code": 0,
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "3f8b8df36c15dcf254748f1b92d20b0134c5a6498947eff00af4ab87547896f9",
+              "bytes": 468,
+              "sha256": "3f8b8df36c15dcf254748f1b92d20b0134c5a6498947eff00af4ab87547896f9"
+            }
+          }
+        }
+      ],
+      "sha256": "91bed7e6912643dfeec5e168358394d7c93b3b61ec3aeb93f2263696d119c3c7",
+      "size": 52,
+      "target_filetype": "Amiga Hunk"
+    },
+    "atari-st-near-magic.prg": {
+      "case_kind": "near_magic",
+      "comparison": {
+        "raw_stream_differences": [],
+        "semantic_dispatch_equal": true
+      },
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "Amiga Hunk",
+          "Atari ST"
+        ],
+        "info_filetype": "Binary",
+        "present_filetypes": []
+      },
+      "qt5_cmake": {
+        "detector_info": {
+          "exit_code": 0,
+          "filetype": "Binary",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 253,
+          "stdout_sha256": "5e9c70708bba6742e59f5d2f846218280dc6522c8faf0e647ce1d271cef7afd8"
+        },
+        "scan": {
+          "detect_tree": [
+            {
+              "filetype": "Binary",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "32",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 468,
+          "stdout_sha256": "a83801b603861ffef94f3d377aa9e1c4c22770e9d0cc89c3bac1b5a18c2c41cc"
+        }
+      },
+      "qt6_executions": [
+        {
+          "detector_info": {
+            "arguments": [
+              "--info",
+              "--json",
+              "/corpus/atari-st-near-magic.prg"
+            ],
+            "exit_code": 0,
+            "filetype": "Binary",
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "5e9c70708bba6742e59f5d2f846218280dc6522c8faf0e647ce1d271cef7afd8",
+              "bytes": 253,
+              "sha256": "5e9c70708bba6742e59f5d2f846218280dc6522c8faf0e647ce1d271cef7afd8"
+            }
+          },
+          "scan": {
+            "arguments": [
+              "--json",
+              "--database",
+              "/opt/die-source/Detect-It-Easy/db",
+              "--extradatabase",
+              "/opt/die-source/Detect-It-Easy/db_extra",
+              "--customdatabase",
+              "/opt/die-source/Detect-It-Easy/db_custom",
+              "/corpus/atari-st-near-magic.prg"
+            ],
+            "detect_tree": [
+              {
+                "filetype": "Binary",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "32",
+                "values": [
+                  {
+                    "name": "Unknown",
+                    "type": "Unknown",
+                    "version": ""
+                  }
+                ]
+              }
+            ],
+            "exit_code": 0,
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "a83801b603861ffef94f3d377aa9e1c4c22770e9d0cc89c3bac1b5a18c2c41cc",
+              "bytes": 468,
+              "sha256": "a83801b603861ffef94f3d377aa9e1c4c22770e9d0cc89c3bac1b5a18c2c41cc"
+            }
+          }
+        },
+        {
+          "detector_info": {
+            "arguments": [
+              "--info",
+              "--json",
+              "/corpus/atari-st-near-magic.prg"
+            ],
+            "exit_code": 0,
+            "filetype": "Binary",
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "5e9c70708bba6742e59f5d2f846218280dc6522c8faf0e647ce1d271cef7afd8",
+              "bytes": 253,
+              "sha256": "5e9c70708bba6742e59f5d2f846218280dc6522c8faf0e647ce1d271cef7afd8"
+            }
+          },
+          "scan": {
+            "arguments": [
+              "--json",
+              "--database",
+              "/opt/die-source/Detect-It-Easy/db",
+              "--extradatabase",
+              "/opt/die-source/Detect-It-Easy/db_extra",
+              "--customdatabase",
+              "/opt/die-source/Detect-It-Easy/db_custom",
+              "/corpus/atari-st-near-magic.prg"
+            ],
+            "detect_tree": [
+              {
+                "filetype": "Binary",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "32",
+                "values": [
+                  {
+                    "name": "Unknown",
+                    "type": "Unknown",
+                    "version": ""
+                  }
+                ]
+              }
+            ],
+            "exit_code": 0,
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "a83801b603861ffef94f3d377aa9e1c4c22770e9d0cc89c3bac1b5a18c2c41cc",
+              "bytes": 468,
+              "sha256": "a83801b603861ffef94f3d377aa9e1c4c22770e9d0cc89c3bac1b5a18c2c41cc"
+            }
+          }
+        }
+      ],
+      "sha256": "281baaab9cffba6507473a8192c282d5be5ce3505cc311e06c9cba757817d6b5",
+      "size": 32,
+      "target_filetype": "Atari ST"
+    },
+    "atari-st-truncated.prg": {
+      "case_kind": "truncated",
+      "comparison": {
+        "raw_stream_differences": [],
+        "semantic_dispatch_equal": true
+      },
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "Amiga Hunk",
+          "Atari ST"
+        ],
+        "info_filetype": "Binary",
+        "present_filetypes": []
+      },
+      "qt5_cmake": {
+        "detector_info": {
+          "exit_code": 0,
+          "filetype": "Binary",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 252,
+          "stdout_sha256": "19f69d947dc9011fe88d5f0ceae9cc388983459b1522fdbe53ede72e19aed5b8"
+        },
+        "scan": {
+          "detect_tree": [
+            {
+              "filetype": "Binary",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "31",
+              "values": [
+                {
+                  "name": "Atari ST TOS executable",
+                  "type": "format",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 498,
+          "stdout_sha256": "2c52da629f3319f38479a20527885e6c4bb5d24a3aaf065e4da9c95ea0c7e4c5"
+        }
+      },
+      "qt6_executions": [
+        {
+          "detector_info": {
+            "arguments": [
+              "--info",
+              "--json",
+              "/corpus/atari-st-truncated.prg"
+            ],
+            "exit_code": 0,
+            "filetype": "Binary",
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "19f69d947dc9011fe88d5f0ceae9cc388983459b1522fdbe53ede72e19aed5b8",
+              "bytes": 252,
+              "sha256": "19f69d947dc9011fe88d5f0ceae9cc388983459b1522fdbe53ede72e19aed5b8"
+            }
+          },
+          "scan": {
+            "arguments": [
+              "--json",
+              "--database",
+              "/opt/die-source/Detect-It-Easy/db",
+              "--extradatabase",
+              "/opt/die-source/Detect-It-Easy/db_extra",
+              "--customdatabase",
+              "/opt/die-source/Detect-It-Easy/db_custom",
+              "/corpus/atari-st-truncated.prg"
+            ],
+            "detect_tree": [
+              {
+                "filetype": "Binary",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "31",
+                "values": [
+                  {
+                    "name": "Atari ST TOS executable",
+                    "type": "format",
+                    "version": ""
+                  }
+                ]
+              }
+            ],
+            "exit_code": 0,
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "2c52da629f3319f38479a20527885e6c4bb5d24a3aaf065e4da9c95ea0c7e4c5",
+              "bytes": 498,
+              "sha256": "2c52da629f3319f38479a20527885e6c4bb5d24a3aaf065e4da9c95ea0c7e4c5"
+            }
+          }
+        },
+        {
+          "detector_info": {
+            "arguments": [
+              "--info",
+              "--json",
+              "/corpus/atari-st-truncated.prg"
+            ],
+            "exit_code": 0,
+            "filetype": "Binary",
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "19f69d947dc9011fe88d5f0ceae9cc388983459b1522fdbe53ede72e19aed5b8",
+              "bytes": 252,
+              "sha256": "19f69d947dc9011fe88d5f0ceae9cc388983459b1522fdbe53ede72e19aed5b8"
+            }
+          },
+          "scan": {
+            "arguments": [
+              "--json",
+              "--database",
+              "/opt/die-source/Detect-It-Easy/db",
+              "--extradatabase",
+              "/opt/die-source/Detect-It-Easy/db_extra",
+              "--customdatabase",
+              "/opt/die-source/Detect-It-Easy/db_custom",
+              "/corpus/atari-st-truncated.prg"
+            ],
+            "detect_tree": [
+              {
+                "filetype": "Binary",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "31",
+                "values": [
+                  {
+                    "name": "Atari ST TOS executable",
+                    "type": "format",
+                    "version": ""
+                  }
+                ]
+              }
+            ],
+            "exit_code": 0,
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "2c52da629f3319f38479a20527885e6c4bb5d24a3aaf065e4da9c95ea0c7e4c5",
+              "bytes": 498,
+              "sha256": "2c52da629f3319f38479a20527885e6c4bb5d24a3aaf065e4da9c95ea0c7e4c5"
+            }
+          }
+        }
+      ],
+      "sha256": "04ff05e96019b83a5913a55e27423367c61b7fd7b788fd3722a0242096a8344e",
+      "size": 31,
+      "target_filetype": "Atari ST"
+    },
+    "atari-st-wrong-endian.prg": {
+      "case_kind": "wrong_endian",
+      "comparison": {
+        "raw_stream_differences": [],
+        "semantic_dispatch_equal": true
+      },
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "Amiga Hunk",
+          "Atari ST"
+        ],
+        "info_filetype": "Binary",
+        "present_filetypes": []
+      },
+      "qt5_cmake": {
+        "detector_info": {
+          "exit_code": 0,
+          "filetype": "Binary",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 255,
+          "stdout_sha256": "94d96c9c60cea237eeaf3f4b8b5ea788d5d6ccab256a623a8d227e4ed41ce978"
+        },
+        "scan": {
+          "detect_tree": [
+            {
+              "filetype": "Binary",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "32",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 468,
+          "stdout_sha256": "a83801b603861ffef94f3d377aa9e1c4c22770e9d0cc89c3bac1b5a18c2c41cc"
+        }
+      },
+      "qt6_executions": [
+        {
+          "detector_info": {
+            "arguments": [
+              "--info",
+              "--json",
+              "/corpus/atari-st-wrong-endian.prg"
+            ],
+            "exit_code": 0,
+            "filetype": "Binary",
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "94d96c9c60cea237eeaf3f4b8b5ea788d5d6ccab256a623a8d227e4ed41ce978",
+              "bytes": 255,
+              "sha256": "94d96c9c60cea237eeaf3f4b8b5ea788d5d6ccab256a623a8d227e4ed41ce978"
+            }
+          },
+          "scan": {
+            "arguments": [
+              "--json",
+              "--database",
+              "/opt/die-source/Detect-It-Easy/db",
+              "--extradatabase",
+              "/opt/die-source/Detect-It-Easy/db_extra",
+              "--customdatabase",
+              "/opt/die-source/Detect-It-Easy/db_custom",
+              "/corpus/atari-st-wrong-endian.prg"
+            ],
+            "detect_tree": [
+              {
+                "filetype": "Binary",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "32",
+                "values": [
+                  {
+                    "name": "Unknown",
+                    "type": "Unknown",
+                    "version": ""
+                  }
+                ]
+              }
+            ],
+            "exit_code": 0,
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "a83801b603861ffef94f3d377aa9e1c4c22770e9d0cc89c3bac1b5a18c2c41cc",
+              "bytes": 468,
+              "sha256": "a83801b603861ffef94f3d377aa9e1c4c22770e9d0cc89c3bac1b5a18c2c41cc"
+            }
+          }
+        },
+        {
+          "detector_info": {
+            "arguments": [
+              "--info",
+              "--json",
+              "/corpus/atari-st-wrong-endian.prg"
+            ],
+            "exit_code": 0,
+            "filetype": "Binary",
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "94d96c9c60cea237eeaf3f4b8b5ea788d5d6ccab256a623a8d227e4ed41ce978",
+              "bytes": 255,
+              "sha256": "94d96c9c60cea237eeaf3f4b8b5ea788d5d6ccab256a623a8d227e4ed41ce978"
+            }
+          },
+          "scan": {
+            "arguments": [
+              "--json",
+              "--database",
+              "/opt/die-source/Detect-It-Easy/db",
+              "--extradatabase",
+              "/opt/die-source/Detect-It-Easy/db_extra",
+              "--customdatabase",
+              "/opt/die-source/Detect-It-Easy/db_custom",
+              "/corpus/atari-st-wrong-endian.prg"
+            ],
+            "detect_tree": [
+              {
+                "filetype": "Binary",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "32",
+                "values": [
+                  {
+                    "name": "Unknown",
+                    "type": "Unknown",
+                    "version": ""
+                  }
+                ]
+              }
+            ],
+            "exit_code": 0,
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "a83801b603861ffef94f3d377aa9e1c4c22770e9d0cc89c3bac1b5a18c2c41cc",
+              "bytes": 468,
+              "sha256": "a83801b603861ffef94f3d377aa9e1c4c22770e9d0cc89c3bac1b5a18c2c41cc"
+            }
+          }
+        }
+      ],
+      "sha256": "aab0b23b5e1898a29b157ff8d4dbf158ee402dded285405c34a11e5966c55720",
+      "size": 32,
+      "target_filetype": "Atari ST"
+    },
+    "minimal-amiga-hunk.bin": {
+      "case_kind": "positive",
+      "comparison": {
+        "raw_stream_differences": [],
+        "semantic_dispatch_equal": true
+      },
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "Atari ST"
+        ],
+        "info_filetype": "Amiga Hunk",
+        "present_filetypes": [
+          "Amiga Hunk"
+        ]
+      },
+      "qt5_cmake": {
+        "detector_info": {
+          "exit_code": 0,
+          "filetype": "Amiga Hunk",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 425,
+          "stdout_sha256": "c911c2561821fde100842c12fd4030981bf30a36aa33b6ead3cf3179c1849b5c"
+        },
+        "scan": {
+          "detect_tree": [
+            {
+              "filetype": "Amiga Hunk",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "52",
+              "values": [
+                {
+                  "name": "Unknown",
+                  "type": "Unknown",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 472,
+          "stdout_sha256": "13a8f2acf3ee51c2ccabfc5f156b6dd423560b9bb3eba8824b0eaff8f1c16823"
+        }
+      },
+      "qt6_executions": [
+        {
+          "detector_info": {
+            "arguments": [
+              "--info",
+              "--json",
+              "/corpus/minimal-amiga-hunk.bin"
+            ],
+            "exit_code": 0,
+            "filetype": "Amiga Hunk",
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "c911c2561821fde100842c12fd4030981bf30a36aa33b6ead3cf3179c1849b5c",
+              "bytes": 425,
+              "sha256": "c911c2561821fde100842c12fd4030981bf30a36aa33b6ead3cf3179c1849b5c"
+            }
+          },
+          "scan": {
+            "arguments": [
+              "--json",
+              "--database",
+              "/opt/die-source/Detect-It-Easy/db",
+              "--extradatabase",
+              "/opt/die-source/Detect-It-Easy/db_extra",
+              "--customdatabase",
+              "/opt/die-source/Detect-It-Easy/db_custom",
+              "/corpus/minimal-amiga-hunk.bin"
+            ],
+            "detect_tree": [
+              {
+                "filetype": "Amiga Hunk",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "52",
+                "values": [
+                  {
+                    "name": "Unknown",
+                    "type": "Unknown",
+                    "version": ""
+                  }
+                ]
+              }
+            ],
+            "exit_code": 0,
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "13a8f2acf3ee51c2ccabfc5f156b6dd423560b9bb3eba8824b0eaff8f1c16823",
+              "bytes": 472,
+              "sha256": "13a8f2acf3ee51c2ccabfc5f156b6dd423560b9bb3eba8824b0eaff8f1c16823"
+            }
+          }
+        },
+        {
+          "detector_info": {
+            "arguments": [
+              "--info",
+              "--json",
+              "/corpus/minimal-amiga-hunk.bin"
+            ],
+            "exit_code": 0,
+            "filetype": "Amiga Hunk",
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "c911c2561821fde100842c12fd4030981bf30a36aa33b6ead3cf3179c1849b5c",
+              "bytes": 425,
+              "sha256": "c911c2561821fde100842c12fd4030981bf30a36aa33b6ead3cf3179c1849b5c"
+            }
+          },
+          "scan": {
+            "arguments": [
+              "--json",
+              "--database",
+              "/opt/die-source/Detect-It-Easy/db",
+              "--extradatabase",
+              "/opt/die-source/Detect-It-Easy/db_extra",
+              "--customdatabase",
+              "/opt/die-source/Detect-It-Easy/db_custom",
+              "/corpus/minimal-amiga-hunk.bin"
+            ],
+            "detect_tree": [
+              {
+                "filetype": "Amiga Hunk",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "52",
+                "values": [
+                  {
+                    "name": "Unknown",
+                    "type": "Unknown",
+                    "version": ""
+                  }
+                ]
+              }
+            ],
+            "exit_code": 0,
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "13a8f2acf3ee51c2ccabfc5f156b6dd423560b9bb3eba8824b0eaff8f1c16823",
+              "bytes": 472,
+              "sha256": "13a8f2acf3ee51c2ccabfc5f156b6dd423560b9bb3eba8824b0eaff8f1c16823"
+            }
+          }
+        }
+      ],
+      "sha256": "47ea2e9a8424130cb9c36591d0d82b4fbb3707adc994070fdaf28f02ae7c8cbb",
+      "size": 52,
+      "target_filetype": "Amiga Hunk"
+    },
+    "minimal-atari-st.prg": {
+      "case_kind": "positive",
+      "comparison": {
+        "raw_stream_differences": [],
+        "semantic_dispatch_equal": true
+      },
+      "expected_dispatch": {
+        "absent_filetypes": [
+          "Amiga Hunk",
+          "Atari ST"
+        ],
+        "info_filetype": "Atari ST",
+        "present_filetypes": []
+      },
+      "qt5_cmake": {
+        "detector_info": {
+          "exit_code": 0,
+          "filetype": "Atari ST",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 254,
+          "stdout_sha256": "7a690b14bd337dd9b4794fdc5e1057fe51c432538ecb3f0bbaaa05c62e2d48af"
+        },
+        "scan": {
+          "detect_tree": [
+            {
+              "filetype": "Binary",
+              "offset": "0",
+              "parentfilepart": "Header",
+              "size": "32",
+              "values": [
+                {
+                  "name": "Atari ST TOS executable",
+                  "type": "format",
+                  "version": ""
+                }
+              ]
+            }
+          ],
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 498,
+          "stdout_sha256": "dd2533ff29abc31348cc2340b8036a4952d79a5bd944712482ac6c7aaadb20f3"
+        }
+      },
+      "qt6_executions": [
+        {
+          "detector_info": {
+            "arguments": [
+              "--info",
+              "--json",
+              "/corpus/minimal-atari-st.prg"
+            ],
+            "exit_code": 0,
+            "filetype": "Atari ST",
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "7a690b14bd337dd9b4794fdc5e1057fe51c432538ecb3f0bbaaa05c62e2d48af",
+              "bytes": 254,
+              "sha256": "7a690b14bd337dd9b4794fdc5e1057fe51c432538ecb3f0bbaaa05c62e2d48af"
+            }
+          },
+          "scan": {
+            "arguments": [
+              "--json",
+              "--database",
+              "/opt/die-source/Detect-It-Easy/db",
+              "--extradatabase",
+              "/opt/die-source/Detect-It-Easy/db_extra",
+              "--customdatabase",
+              "/opt/die-source/Detect-It-Easy/db_custom",
+              "/corpus/minimal-atari-st.prg"
+            ],
+            "detect_tree": [
+              {
+                "filetype": "Binary",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "32",
+                "values": [
+                  {
+                    "name": "Atari ST TOS executable",
+                    "type": "format",
+                    "version": ""
+                  }
+                ]
+              }
+            ],
+            "exit_code": 0,
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "dd2533ff29abc31348cc2340b8036a4952d79a5bd944712482ac6c7aaadb20f3",
+              "bytes": 498,
+              "sha256": "dd2533ff29abc31348cc2340b8036a4952d79a5bd944712482ac6c7aaadb20f3"
+            }
+          }
+        },
+        {
+          "detector_info": {
+            "arguments": [
+              "--info",
+              "--json",
+              "/corpus/minimal-atari-st.prg"
+            ],
+            "exit_code": 0,
+            "filetype": "Atari ST",
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "7a690b14bd337dd9b4794fdc5e1057fe51c432538ecb3f0bbaaa05c62e2d48af",
+              "bytes": 254,
+              "sha256": "7a690b14bd337dd9b4794fdc5e1057fe51c432538ecb3f0bbaaa05c62e2d48af"
+            }
+          },
+          "scan": {
+            "arguments": [
+              "--json",
+              "--database",
+              "/opt/die-source/Detect-It-Easy/db",
+              "--extradatabase",
+              "/opt/die-source/Detect-It-Easy/db_extra",
+              "--customdatabase",
+              "/opt/die-source/Detect-It-Easy/db_custom",
+              "/corpus/minimal-atari-st.prg"
+            ],
+            "detect_tree": [
+              {
+                "filetype": "Binary",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "32",
+                "values": [
+                  {
+                    "name": "Atari ST TOS executable",
+                    "type": "format",
+                    "version": ""
+                  }
+                ]
+              }
+            ],
+            "exit_code": 0,
+            "stderr": {
+              "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "artifact_sha256": "dd2533ff29abc31348cc2340b8036a4952d79a5bd944712482ac6c7aaadb20f3",
+              "bytes": 498,
+              "sha256": "dd2533ff29abc31348cc2340b8036a4952d79a5bd944712482ac6c7aaadb20f3"
+            }
+          }
+        }
+      ],
+      "sha256": "6f9c2042681c85fa43ffefcf84981a2e041410fdc7bc59fb87acda47f1bd5efc",
+      "size": 32,
+      "target_filetype": "Atari ST"
+    }
+  },
+  "closed_capability": "CAP-DISPATCH-003",
+  "corpus_manifest": {
+    "path": "docs/research/data/legacy-dispatch-corpus.json",
+    "sample_count": 8,
+    "sha256": "7c0d55a9b7b93d3443cefb7c198223e33c11a48f9855e21fd2d6a104105388c0"
+  },
+  "failures": [],
+  "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+  "generator": "tools/upstream/probe_qt6_legacy_dispatch.py",
+  "generator_sha256": "6bb0f443c85ac8678ac296833e561475618c697ddb1d46bf15d36159c313d859",
+  "known_differences": [],
+  "platform": "linux-amd64-qt5-qt6",
+  "qt5_reference": {
+    "oracle": "linux-qt5-cmake",
+    "path": "docs/research/data/legacy-dispatch-linux-qt5.json",
+    "sha256": "9dd1d4de3535fc035d4624205a24405d05d1b9a9589ca89b4a1e0a4cfdace5fc"
+  },
+  "qt6_oracle": {
+    "binary": "/opt/die-build/src/console/diec",
+    "binary_sha256": "e3321105af0349b29195325e79d5d2c7cc25ead2f28f84e242e3835b98f7283e",
+    "image": "diec-rust/upstream-oracle-cmake-qt6:74eaf505",
+    "image_id": "sha256:e015495c313d0715f0b80f395da983a113a439f2a135eb637e9f0638c225200b",
+    "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "source_sha256": {
+      "/opt/die-source/Formats/exec/xamigahunk.cpp": "7cee077d4e9d6ab66fde355e06f62908d835a8d1818c9d0a47b59b9269d3e8a1",
+      "/opt/die-source/Formats/exec/xatarist.cpp": "7aeda5dda76eb0027bb735dbedd8925cb901f1049a0fcedeb2e2f01a443f1fd2",
+      "/opt/die-source/Formats/xformats.cpp": "674eba0046eb6cc947e547d1ac0b93ac695cbb30f68e11f135e5551d81e0b115",
+      "/opt/die-source/XScanEngine/xscanengine.cpp": "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498"
+    }
+  },
+  "raw_artifacts": {
+    "13a8f2acf3ee51c2ccabfc5f156b6dd423560b9bb3eba8824b0eaff8f1c16823": {
+      "base64": "eNqFkLEKwyAQhnefQpw7lEKXbN3yAp1KBmnOcCQ5g5qENuTdq0JDtS256fj/7+5+XRj3JWpwcHdWFPwWhVDL1kVEYQfuMYBnxKXHRvJypFYcUgpJ6UDkulbKggvOMbcGaYBcWO+7iJQgazA5Z/EZj59PuTPJboQ0/O9H7MXcfJJ9vHWllvRM/zDrDFLzARZ8Z+L9gzvYBMaiphjxi1gTpWKpXrGVMfYCo+xguQ==",
+      "bytes": 472,
+      "compressed_bytes": 172,
+      "encoding": "zlib+base64"
+    },
+    "19f69d947dc9011fe88d5f0ceae9cc388983459b1522fdbe53ede72e19aed5b8": {
+      "base64": "eNqr5lIAAqWUxJJEJSuFajAPLOKZl5aPIgIWdcvMSVXIS8xNBUop6SfnFxWUFusD9RZl6haX6JYUleYlJ5akpugVFKUr6WDRWlJZANbqlJmXWFSJrsTX09cVJJtYUJCTCTQoMz9PPz+5JLUEaHhRamIuuvrgzCqwacaGGDIlRZl56Ug2waVruSBkLRcXADYSPZA=",
+      "bytes": 252,
+      "compressed_bytes": 146,
+      "encoding": "zlib+base64"
+    },
+    "2c52da629f3319f38479a20527885e6c4bb5d24a3aaf065e4da9c95ea0c7e4c5": {
+      "base64": "eNqVkD0PgjAQhvf+iobZQePGpoNxc4DNMJxwNU2gJe1BRMJ/lzaRpFVivOnyvs99jozPkVRIWJJNUn71gotxyTwiZI00tDgzyVEqMEOyCQmphHZurGshLJJztrHVgkFFrvWceeSMUKGJOSuffvB+Fzs91B2Gi38/4Neai6+g8bMOBEbyLOf5JeP4wLIjuNW4VmbJSHV3hSdtGqCU/9ng/Vzhy9eoHo2VWvkDPogpUAoW6gWbGGMvdVBo2A==",
+      "bytes": 498,
+      "compressed_bytes": 187,
+      "encoding": "zlib+base64"
+    },
+    "3f8b8df36c15dcf254748f1b92d20b0134c5a6498947eff00af4ab87547896f9": {
+      "base64": "eNqFkDEOwjAMRfecosrMgJBYOjJxASbUIaIOsihOlZhWperdSSJRkQCKJ+v/Z/sns6h8yRYYLuxkXZ2jEGpeu4ho7ICnHjwjD0jKTnKTEkjaBDfXjdYOODjb3OqVBeKw2ncROYJqweacw2c8vN/lzqC6B6TBfz+gFHP1Sd3jrRPdyIz0D3Nska4fYF0VJt6/V8AGsA4NxYhfxJIojUj1RixCiBeDi1+J",
+      "bytes": 468,
+      "compressed_bytes": 168,
+      "encoding": "zlib+base64"
+    },
+    "40d914f418b31dc13158fecf0bbb520dd2f1318a97107e7bfce8ca4199eecaee": {
+      "base64": "eNptjcEKwjAQRO/5ipCzsSB48Sgo9NBTv2BNY1xsNiHdIrX0360RRKt7WNh5M7OjkPOoBhjUTo75ykpJ5/ClZPWIrZUE3s5IFSak2HcFeHSgLz1d9S0FctpSg0DrE5Ja/cnzEHN+jwRpWFqqsjo8KcTYogHGQEUwbFl3nCz4pb/Ge27bbn4IJyT38emNJ/HakxAPwqw/Pw==",
+      "bytes": 257,
+      "compressed_bytes": 151,
+      "encoding": "zlib+base64"
+    },
+    "5e9c70708bba6742e59f5d2f846218280dc6522c8faf0e647ce1d271cef7afd8": {
+      "base64": "eNptjUELwjAMhe/9FaVna0FvHgWFHXbyF4RaR2BNS5Yd5th/t1YQneYQyPvee5mVLmOuIGAOeq5XVRq6pS+lqmfsgyaIoSDjfOI8Dq5kGe0glgKwjdCh32buzOZPVqZcs0ck4GltaZv29KSQc48eBBO55CVIaecAce2/4L227Xc/RBip+/j0xot67UWpB1G3PZs=",
+      "bytes": 253,
+      "compressed_bytes": 146,
+      "encoding": "zlib+base64"
+    },
+    "7a690b14bd337dd9b4794fdc5e1057fe51c432538ecb3f0bbaaa05c62e2d48af": {
+      "base64": "eNqr5lIAAqWUxJJEJSuFajAPLOKZl5aPIgIWdcvMSVXIS8xNBUop6SfnFxWUFuvnZuZl5ibm6ALNKMrULS7RKyhKV9LBorGksgCs0RGkUCE4BF2Rr6evK0g+saAgJzM5sSQzP08/P7kktQRoaFFqYi66+uDMKrB5xkYYMiVFmXnpKHbBFdRyQchaLi4AWZI9VA==",
+      "bytes": 254,
+      "compressed_bytes": 145,
+      "encoding": "zlib+base64"
+    },
+    "8ac26d917d7a305909c4745b5e7bdad9bad64080673319f635958bd56585b891": {
+      "base64": "eNqVkMEKwjAQRO/5ipCzB4/Smx7Ef5AeVrspC2lSkrVQS//dJmAh0SLuaZl5kx0yCbmMapDxzkFV8pqEONO6JUSTQR57XBh1Igt+VLucIKtddEvdaR2Qo7MvrR48Wo5PL1tCLggN+pIL9EyHD6UxgHlg3vt7/18tV99Cl04dO2pBGgcN3AzK2HErEtiTbWPo7HwHXMk/wu8/1Sm6RQ3oAzmbin8Qc6bUItdrMQshXnjNZnI=",
+      "bytes": 489,
+      "compressed_bytes": 179,
+      "encoding": "zlib+base64"
+    },
+    "94c2c0a8af715adfcf561d6e2301135d62b72569b2fd334bbe2d97c62445f003": {
+      "base64": "eNptjcEKwjAQRO/5ipCzMSB48Sgo9NBTv2CNMS42m5BuD7X0360RRKt7WNh5M7OjkPOoMzConRzLVZSKLvFLKeoRWycJgpuRMjbm1HcGAnrQ155umhxkHcCjXZ+Q1OpPmodU0nskyMPSUlf14UkhpRYtMEYy0bJj3XF2EJb+Bu+lbbv5IZyR/MenN57Ea09CPADxQz5K",
+      "bytes": 255,
+      "compressed_bytes": 150,
+      "encoding": "zlib+base64"
+    },
+    "94d96c9c60cea237eeaf3f4b8b5ea788d5d6ccab256a623a8d227e4ed41ce978": {
+      "base64": "eNptjUELwjAMhe/9FaVn60BvHgWFHXbyF4SulsCWlixD5th/t1YQneYQyPvee5mVzmNaEDAHPZerKDVd45dS1DN2XhP0PiNTuchpHKqcZbSD2BtHCtZTi0DbxMFs/qRlSiV9RAKe1pambk5PCil16EAwUhWdeMn97KFf+y94L2373Q8RRgofn954Ua+9KPUAIaY+kA==",
+      "bytes": 255,
+      "compressed_bytes": 148,
+      "encoding": "zlib+base64"
+    },
+    "a83801b603861ffef94f3d377aa9e1c4c22770e9d0cc89c3bac1b5a18c2c41cc": {
+      "base64": "eNqFkDEOwjAMRfecosrMgGDryMQFmFCHiDrIojhVYlqVqncniURFAiierP+f7Z/MovIlW2C4sJN1dY5CqHntIqKxA5568Iw8ICk7yU1KIGkT3Fw3Wjvg4Gxzq1cWiMNq30XkCKoFm3MOn/Hwfpc7g+oekAb//YBSzNUndY+3TnQjM9I/zLFFun6AdVWYeP9eARvAOjQUI34RS6I0ItUbsQghXoFBX4c=",
+      "bytes": 468,
+      "compressed_bytes": 167,
+      "encoding": "zlib+base64"
+    },
+    "c911c2561821fde100842c12fd4030981bf30a36aa33b6ead3cf3179c1849b5c": {
+      "base64": "eNp9j80KwjAQhO99ipCztSgo4k0hooh40IPXbRvbxWYbkhT8wXe3jVK0ijksZOabSfYWsPrwFBzwKbv5m1dWdCw/FK/OTJKjk4mrjKxdPp6see8TEZQiEElrG2Auuv4CC8kIlM9HSWl0ZSOFhAqKEBRmEOYVnfox0s+ou2gfnTUoW9ZoF9usNqIhQOsCE3BYUnR+q/7iy9Q3DsZhjK7rbrU0voPZi3VStW93wR1efc1o+OU4g5T9//T+tZY4CN469+A570HwALClZMA=",
+      "bytes": 425,
+      "compressed_bytes": 203,
+      "encoding": "zlib+base64"
+    },
+    "cf6adab0e91147f4cd6efc8f3215462fdb668fc5c2b79a7f3de6817705f6a12f": {
+      "base64": "eNptjbEOwjAMRPd8RZWZkBUxIoHUoRNf4KahWDROlDpDqfrvhCAhKHiw5Ht351lUeWQHDHJfzeUqSk0X/6UU9YSDrQiczUhq42NIowaHPahropvimMgA227bIsnNnzBPoYQPSBCntaWpm+OTQggD5iL0pL1hy2rkaMGt/We8l7bdD+CI1H88euNFvPYixAOX3j4R",
+      "bytes": 253,
+      "compressed_bytes": 147,
+      "encoding": "zlib+base64"
+    },
+    "dd2533ff29abc31348cc2340b8036a4952d79a5bd944712482ac6c7aaadb20f3": {
+      "base64": "eNqVkD0PgjAQhvf+iobZwejGpoNxc4DNMJxwNU2gJe1BRMJ/lzaRpFVivOnyvs99jozPkVRIWJJNUn71gotxyTwiZI00tDgzyVEqMEOyCQmphHZurGshLJJztrHVgkFFrvWceeSMUKGJOSuffvB+Fzs91B2Gi38/4Neai6+g8bMOBEbyLOf5JeP4wLIjuNW4VmbJSHV3hSdtGqCU/9ng/Vzhy9eoHo2VWvkDPogpUAoW6gWbGGMvdpJo2Q==",
+      "bytes": 498,
+      "compressed_bytes": 187,
+      "encoding": "zlib+base64"
+    },
+    "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855": {
+      "base64": "eNoDAAAAAAE=",
+      "bytes": 0,
+      "compressed_bytes": 8,
+      "encoding": "zlib+base64"
+    }
+  },
+  "relationships": {
+    "all_raw_differences_are_retained": true,
+    "amiga_positive_detector_is_amiga_hunk": true,
+    "amiga_positive_scanner_dispatches_amiga_hunk": true,
+    "atari_positive_detector_is_atari_st": true,
+    "atari_positive_scanner_falls_back_to_binary": true,
+    "qt5_qt6_semantic_dispatch_is_equal": true,
+    "qt6_two_repetitions_are_raw_equal": true,
+    "six_boundary_controls_remain_binary": true
+  },
+  "repetitions": 2,
+  "resource_limits": {
+    "container_root": "read-only",
+    "cpus": 1,
+    "fixture_mount": "read-only",
+    "memory_bytes": 536870912,
+    "network": "none",
+    "pids": 128,
+    "timeout_seconds_per_execution": 60
+  },
+  "result": "pass",
+  "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+  "schema_version": 1,
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

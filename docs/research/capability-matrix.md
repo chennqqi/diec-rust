@@ -132,7 +132,9 @@ priority、数据库分层、init/include、file type、deep/heuristic 和 Unkno
   CLI oracle 与 forced-property engine 基线见
   [`dos-dispatch-reachability.md`](dos-dispatch-reachability.md)。
 - `CAP-DISPATCH-003`：Amiga Hunk 正常分发；Atari ST detector 命中但
-  `scanProcess` 缺少对应分支并回退 Binary。双 Qt5 成对基线见
+  `scanProcess` 缺少对应分支并回退 Binary。两类各四个正负边界在双 Qt5
+  与双轮 Qt6 中保持相同 detector/scanner projection，全部 Qt5 CMake/Qt6
+  raw streams 逐字节相同，见
   [`legacy-dispatch-oracle.md`](legacy-dispatch-oracle.md)。
 - `CAP-DISPATCH-004`：APK、IPA、JAR、ZIP、RAR、NPM、ISO9660、通用 Archive。
 - `CAP-DISPATCH-005`：DEX、Java Class、PYC。

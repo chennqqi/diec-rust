@@ -58,6 +58,7 @@ REPORT_PATHS = (
     "docs/research/data/qt-null-filename-semantics-qt5-qt6.json",
     "docs/research/data/scan-option-boundaries-linux-qt5.json",
     "docs/research/data/scan-option-boundaries-linux-qt6.json",
+    "docs/research/data/legacy-dispatch-linux-qt5-qt6.json",
 )
 EMPTY_SHA256 = hashlib.sha256(b"").hexdigest()
 QT6_UNIMPLEMENTED_SHA256 = (
@@ -159,6 +160,7 @@ COMPLETE: dict[str, str] = {
     "CAP-NEST-006": "all four recursive/aggressive resource-context controls match Qt5 exactly",
     "CAP-NEST-003": "all 64 engine option cases and 32 release controls match Qt5",
     "CAP-NEST-004": "Qt6 executes the 99999/100000/100001 archive iteration boundary and the inclusive 21/2001 resource-count boundary; the ISO NUL difference is classified",
+    "CAP-DISPATCH-003": "all eight Amiga Hunk and Atari ST positive/truncated/endian/magic cases retain equal detector and scanner dispatch with raw-equal Qt5/Qt6 streams",
 }
 
 PARTIAL: dict[str, str] = {
@@ -2401,6 +2403,147 @@ def _validate_scan_option_boundary_reports(
         raise ClosurePlanError("Qt6 scan-option diagnostic/fact drift")
 
 
+def _validate_legacy_dispatch_report(report: dict[str, Any]) -> None:
+    if (
+        report.get("schema_version") != 1
+        or report.get("result") != "pass"
+        or report.get("failures") != []
+        or report.get("upstream_commit") != UPSTREAM_COMMIT
+        or report.get("rules_commit") != RULES_COMMIT
+        or report.get("formats_commit")
+        != "1151e7254fdee3c0294ff7095edbdd7bfccf8201"
+        or report.get("platform") != "linux-amd64-qt5-qt6"
+        or report.get("capability") != "CAP-DISPATCH-003"
+        or report.get("closed_capability") != "CAP-DISPATCH-003"
+        or report.get("corpus_manifest", {}).get("sha256")
+        != "7c0d55a9b7b93d3443cefb7c198223e33c11a48f9855e21fd2d6a104105388c0"
+        or report.get("corpus_manifest", {}).get("sample_count") != 8
+        or report.get("qt5_reference", {}).get("sha256")
+        != "9dd1d4de3535fc035d4624205a24405d05d1b9a9589ca89b4a1e0a4cfdace5fc"
+        or report.get("repetitions") != 2
+        or report.get("known_differences") != []
+    ):
+        raise ClosurePlanError("legacy-dispatch identity/reference drift")
+    oracle = report.get("qt6_oracle", {})
+    if (
+        oracle.get("image_id")
+        != "sha256:e015495c313d0715f0b80f395da983a113a439f2a135eb637e9f0638c225200b"
+        or oracle.get("revision") != UPSTREAM_COMMIT
+        or oracle.get("binary_sha256")
+        != "e3321105af0349b29195325e79d5d2c7cc25ead2f28f84e242e3835b98f7283e"
+        or oracle.get("source_sha256")
+        != {
+            "/opt/die-source/Formats/exec/xamigahunk.cpp": (
+                "7cee077d4e9d6ab66fde355e06f62908d835a8d1818c9d0a47b59b9269d3e8a1"
+            ),
+            "/opt/die-source/Formats/exec/xatarist.cpp": (
+                "7aeda5dda76eb0027bb735dbedd8925cb901f1049a0fcedeb2e2f01a443f1fd2"
+            ),
+            "/opt/die-source/Formats/xformats.cpp": (
+                "674eba0046eb6cc947e547d1ac0b93ac695cbb30f68e11f135e5551d81e0b115"
+            ),
+            "/opt/die-source/XScanEngine/xscanengine.cpp": (
+                "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498"
+            ),
+        }
+    ):
+        raise ClosurePlanError("legacy-dispatch Qt6 oracle drift")
+    if report.get("resource_limits") != {
+        "network": "none",
+        "cpus": 1,
+        "memory_bytes": 536870912,
+        "pids": 128,
+        "timeout_seconds_per_execution": 60,
+        "fixture_mount": "read-only",
+        "container_root": "read-only",
+    }:
+        raise ClosurePlanError("legacy-dispatch resource limit drift")
+
+    artifacts = _decode_zlib_artifacts(report, "legacy-dispatch")
+    expected = {
+        "minimal-amiga-hunk.bin": ("Amiga Hunk", "Amiga Hunk"),
+        "minimal-atari-st.prg": ("Atari ST", "Binary"),
+        "amiga-hunk-truncated.bin": ("Binary", "Binary"),
+        "amiga-hunk-wrong-endian.bin": ("Binary", "Binary"),
+        "amiga-hunk-near-magic.bin": ("Binary", "Binary"),
+        "atari-st-truncated.prg": ("Binary", "Binary"),
+        "atari-st-wrong-endian.prg": ("Binary", "Binary"),
+        "atari-st-near-magic.prg": ("Binary", "Binary"),
+    }
+    cases = report.get("cases")
+    if not isinstance(cases, dict) or set(cases) != set(expected):
+        raise ClosurePlanError("legacy-dispatch case catalog drift")
+    for case_name, (info_filetype, scan_filetype) in expected.items():
+        case = cases[case_name]
+        executions = case.get("qt6_executions")
+        if (
+            not isinstance(executions, list)
+            or len(executions) != 2
+            or executions[0] != executions[1]
+            or case.get("comparison")
+            != {
+                "raw_stream_differences": [],
+                "semantic_dispatch_equal": True,
+            }
+        ):
+            raise ClosurePlanError(
+                f"legacy-dispatch repetition/comparison drift: {case_name}"
+            )
+        execution = executions[0]
+        qt5 = case.get("qt5_cmake", {})
+        scan_tree = execution.get("scan", {}).get("detect_tree")
+        if (
+            not isinstance(scan_tree, list)
+            or not scan_tree
+            or not isinstance(scan_tree[0], dict)
+            or scan_tree[0].get("filetype") != scan_filetype
+            or execution.get("detector_info", {}).get("filetype")
+            != info_filetype
+            or qt5.get("scan", {}).get("detect_tree")
+            != scan_tree
+            or qt5.get("detector_info", {}).get("filetype")
+            != info_filetype
+        ):
+            raise ClosurePlanError(
+                f"legacy-dispatch semantic output drift: {case_name}"
+            )
+        for repeated in executions:
+            for mode in ("scan", "detector_info"):
+                qt5_mode = qt5[mode]
+                qt6_mode = repeated[mode]
+                if (
+                    qt6_mode.get("exit_code") != 0
+                    or qt5_mode.get("exit_code") != 0
+                ):
+                    raise ClosurePlanError(
+                        f"legacy-dispatch exit drift: {case_name}.{mode}"
+                    )
+                for stream_name in ("stdout", "stderr"):
+                    reference = qt6_mode.get(stream_name, {})
+                    digest = reference.get("artifact_sha256")
+                    if (
+                        digest not in artifacts
+                        or reference.get("sha256") != digest
+                        or len(artifacts[digest])
+                        != reference.get("bytes")
+                        or qt5_mode.get(f"{stream_name}_sha256")
+                        != digest
+                        or qt5_mode.get(f"{stream_name}_bytes")
+                        != len(artifacts[digest])
+                    ):
+                        raise ClosurePlanError(
+                            "legacy-dispatch raw output drift: "
+                            f"{case_name}.{mode}.{stream_name}"
+                        )
+    relationships = report.get("relationships")
+    if (
+        not isinstance(relationships, dict)
+        or len(relationships) != 8
+        or not all(relationships.values())
+    ):
+        raise ClosurePlanError("legacy-dispatch relationship drift")
+
+
 CAMPAIGNS: dict[str, dict[str, Any]] = {
     "cli_scan_baseline": {
         "fixture": "reuse baseline-corpus and scan-option-boundary fixtures",
@@ -2617,6 +2760,7 @@ def _validate_inputs(
         reports[REPORT_PATHS[37]],
         reports[REPORT_PATHS[38]],
     )
+    _validate_legacy_dispatch_report(reports[REPORT_PATHS[39]])
     return capabilities
 
 
