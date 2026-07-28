@@ -34,6 +34,10 @@ SOURCE_PATHS = {
     "sevenzip": "/opt/die-source/XArchive/xsevenzip.cpp",
     "sevenzip_methods": "/opt/die-source/XArchive/xsevenzip.cpp",
     "sevenzip_filters": "/opt/die-source/XArchive/xsevenzip.cpp",
+    "decompress_dispatch": "/opt/die-source/XArchive/xdecompress.cpp",
+    "deflate_decoder": (
+        "/opt/die-source/XArchive/Algos/xdeflatedecoder.cpp"
+    ),
     "rar": "/opt/die-source/XArchive/xrar.cpp",
     "cab": "/opt/die-source/XArchive/xcab.cpp",
     "iso9660": "/opt/die-source/XArchive/xiso9660.cpp",
@@ -56,6 +60,10 @@ SOURCE_PATTERNS = {
         "HANDLE_METHOD_BCJ,\n"
         "        HANDLE_METHOD_ARM64_BCJ"
     ),
+    "decompress_dispatch": (
+        "compressMethod == XBinary::HANDLE_METHOD_DEFLATE64"
+    ),
+    "deflate_decoder": "bool XDeflateDecoder::decompress64(",
     "rar": "bool XRar::initUnpack(",
     "cab": "bool XCab::initUnpack(",
     "iso9660": "bool XISO9660::initUnpack(",
@@ -84,6 +92,11 @@ EXPECTED_ROOTS = {
     "pdf-member-deflate.7z": {
         "filetype": "Binary",
         "root_names": ["7-Zip"],
+    },
+    "pdf-member-deflate64.7z": {
+        "filetype": "Binary",
+        "root_names": ["7-Zip"],
+        "stream_size": "32772",
     },
     "pdf-member-bcj-lzma2.7z": {
         "filetype": "Binary",
@@ -161,13 +174,17 @@ def load_fixture(
     if manifest["generator"] != FIXTURE_GENERATOR:
         raise ProbeError("unexpected fixture generator")
     if manifest["generator_dependencies"] != {
+        "inflate64": {
+            "license": "LGPL-2.1-or-later",
+            "version": "1.0.4",
+        },
         "pyppmd": {
             "license": "LGPL-2.1-or-later",
             "version": "1.3.1",
         }
     }:
         raise ProbeError("unexpected fixture generator dependencies")
-    if len(manifest["samples"]) != 12:
+    if len(manifest["samples"]) != 13:
         raise ProbeError("fixture sample count changed")
 
     declared = set()
@@ -486,6 +503,7 @@ def build_report(
         "sevenzip_ppmd7_member_reaches_pdf_rules": True,
         "sevenzip_bzip2_member_reaches_pdf_rules": True,
         "sevenzip_deflate_member_reaches_pdf_rules": True,
+        "sevenzip_deflate64_distance_32769_member_reaches_pdf_rules": True,
         "sevenzip_bcj_lzma2_member_reaches_pdf_rules": True,
         "sevenzip_arm64_bcj_lzma2_bl_and_adrp_reach_pdf_rules": True,
         "rar4_store_member_reaches_pdf_rules": True,

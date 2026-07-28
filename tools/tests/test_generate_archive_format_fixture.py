@@ -9,6 +9,7 @@ import tempfile
 import unittest
 import zlib
 
+import inflate64
 import pyppmd
 
 
@@ -53,6 +54,7 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
                     "pdf-member-ppmd7.7z",
                     "pdf-member-bzip2.7z",
                     "pdf-member-deflate.7z",
+                    "pdf-member-deflate64.7z",
                     "pdf-member-bcj-lzma2.7z",
                     "pdf-member-arm64-bcj-lzma2.7z",
                     "pdf-member.rar",
@@ -160,6 +162,9 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
             ).decode(value, len(module.PDF)),
             "BZip2": bz2.decompress,
             "Deflate": lambda value: zlib.decompress(value, wbits=-15),
+            "Deflate64": lambda value: inflate64.Inflater().inflate(
+                value
+            ),
         }
         expected_properties = {
             "Copy": b"",
@@ -168,21 +173,27 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
             "PPMd7": b"\x06\x00\x00\x10\x00",
             "BZip2": b"",
             "Deflate": b"",
+            "Deflate64": b"",
         }
         for method, decoder in decoders.items():
             with self.subTest(method=method):
+                payload = (
+                    module.DEFLATE64_PDF
+                    if method == "Deflate64"
+                    else module.PDF
+                )
                 packed, properties = module.encode_7z_payload(
                     method,
-                    module.PDF,
+                    payload,
                 )
                 self.assertEqual(
                     properties,
                     expected_properties[method],
                 )
-                self.assertEqual(decoder(packed), module.PDF)
+                self.assertEqual(decoder(packed), payload)
                 archive = module.make_7z_single(
                     module.PAYLOAD_NAME,
-                    module.PDF,
+                    payload,
                     method,
                 )
                 self.assertTrue(
@@ -195,6 +206,35 @@ class ArchiveFormatFixtureTests(unittest.TestCase):
 
         with self.assertRaisesRegex(ValueError, "unsupported 7Z method"):
             module.encode_7z_payload("Unknown", module.PDF)
+
+    def test_deflate64_vector_requires_the_extended_distance_code(self):
+        module = load_module()
+        self.assertEqual(
+            len(module.DEFLATE64_PDF),
+            module.DEFLATE64_DISTANCE + 3,
+        )
+        self.assertEqual(
+            module.DEFLATE64_PDF[-3:],
+            module.DEFLATE64_PDF[:3],
+        )
+        packed, properties = module.encode_7z_payload(
+            "Deflate64",
+            module.DEFLATE64_PDF,
+        )
+        self.assertEqual(properties, b"")
+        decoder = inflate64.Inflater()
+        self.assertEqual(
+            decoder.inflate(packed),
+            module.DEFLATE64_PDF,
+        )
+        self.assertTrue(decoder.eof)
+        with self.assertRaises(zlib.error):
+            zlib.decompress(packed, wbits=-15)
+        with self.assertRaisesRegex(
+            ValueError,
+            "unexpected Deflate64 distance vector payload",
+        ):
+            module.encode_7z_payload("Deflate64", module.PDF)
 
     def test_7z_bcj_lzma2_chain_round_trips_independently(self):
         module = load_module()

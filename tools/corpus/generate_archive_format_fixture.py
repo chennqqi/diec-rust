@@ -20,8 +20,10 @@ import zlib
 GENERATOR = "tools/corpus/generate_archive_format_fixture.py"
 PAYLOAD_NAME = "payload.pdf"
 PYPPMD_VERSION = "1.3.1"
+INFLATE64_VERSION = "1.0.4"
 PPMD7_ORDER = 6
 PPMD7_MEMORY_SIZE = 1 << 20
+DEFLATE64_DISTANCE = 32769
 
 
 def _load_baseline_module():
@@ -46,6 +48,7 @@ ARM64_PDF = (
     (PDF + b"\n" + struct.pack("<I", 0x94000002)).ljust(4096, b"\0")
     + struct.pack("<I", 0x90000001)
 )
+DEFLATE64_PDF = PDF.ljust(DEFLATE64_DISTANCE, b"\0") + PDF[:3]
 
 
 def sevenzip_uint64(value: int) -> bytes:
@@ -70,9 +73,92 @@ SEVENZIP_CODER_IDS = {
     "PPMd7": b"\x03\x04\x01",
     "BZip2": b"\x04\x02\x02",
     "Deflate": b"\x04\x01\x08",
+    "Deflate64": b"\x04\x01\x09",
     "BCJ": b"\x03\x03\x01\x03",
     "ARM64-BCJ": b"\x0a",
 }
+
+
+class BitWriter:
+    def __init__(self) -> None:
+        self._value = 0
+        self._count = 0
+        self._output = bytearray()
+
+    def write(self, value: int, count: int) -> None:
+        self._value |= value << self._count
+        self._count += count
+        while self._count >= 8:
+            self._output.append(self._value & 0xFF)
+            self._value >>= 8
+            self._count -= 8
+
+    def finish(self) -> bytes:
+        if self._count:
+            self._output.append(self._value & 0xFF)
+        return bytes(self._output)
+
+
+def reverse_bits(value: int, count: int) -> int:
+    result = 0
+    for _ in range(count):
+        result = (result << 1) | (value & 1)
+        value >>= 1
+    return result
+
+
+def fixed_literal_code(symbol: int) -> tuple[int, int]:
+    if 0 <= symbol <= 143:
+        return reverse_bits(0x30 + symbol, 8), 8
+    if 144 <= symbol <= 255:
+        return reverse_bits(0x190 + symbol - 144, 9), 9
+    if 256 <= symbol <= 279:
+        return reverse_bits(symbol - 256, 7), 7
+    if 280 <= symbol <= 287:
+        return reverse_bits(0xC0 + symbol - 280, 8), 8
+    raise ValueError("fixed Huffman symbol is out of range")
+
+
+def encode_deflate64_distance_vector(payload: bytes) -> bytes:
+    prefix = payload[:DEFLATE64_DISTANCE]
+    if (
+        len(payload) != DEFLATE64_DISTANCE + 3
+        or payload[DEFLATE64_DISTANCE:] != prefix[:3]
+    ):
+        raise ValueError("unexpected Deflate64 distance vector payload")
+
+    writer = BitWriter()
+    writer.write(1, 1)  # BFINAL
+    writer.write(1, 2)  # BTYPE=fixed Huffman
+    for value in prefix:
+        code, count = fixed_literal_code(value)
+        writer.write(code, count)
+
+    code, count = fixed_literal_code(257)  # length 3
+    writer.write(code, count)
+    writer.write(reverse_bits(30, 5), 5)
+    writer.write(0, 14)  # distance code 30 base: 32769
+    code, count = fixed_literal_code(256)  # end of block
+    writer.write(code, count)
+    packed = writer.finish()
+
+    try:
+        import inflate64
+    except ImportError as error:
+        raise RuntimeError(
+            "Deflate64 fixture generation requires "
+            "tools/corpus/requirements-archive-format.txt"
+        ) from error
+    actual_version = importlib.metadata.version("inflate64")
+    if actual_version != INFLATE64_VERSION:
+        raise RuntimeError(
+            f"expected inflate64 {INFLATE64_VERSION}, "
+            f"got {actual_version}"
+        )
+    decoder = inflate64.Inflater()
+    if decoder.inflate(packed) != payload or not decoder.eof:
+        raise RuntimeError("generated Deflate64 vector did not round-trip")
+    return packed
 
 
 def encode_ppmd7(payload: bytes) -> tuple[bytes, bytes]:
@@ -144,6 +230,8 @@ def encode_7z_payload(
     if method == "Deflate":
         compressor = zlib.compressobj(level=9, wbits=-15)
         return compressor.compress(payload) + compressor.flush(), b""
+    if method == "Deflate64":
+        return encode_deflate64_distance_vector(payload), b""
     raise ValueError(f"unsupported 7Z method: {method}")
 
 
@@ -659,6 +747,16 @@ FIXTURES = (
         ),
     ),
     (
+        "pdf-member-deflate64.7z",
+        "7Z Deflate64 distance-32769 archive containing one PDF",
+        "Deflate64",
+        lambda name, payload: make_7z_single(
+            name,
+            payload,
+            "Deflate64",
+        ),
+    ),
+    (
         "pdf-member-bcj-lzma2.7z",
         "7Z x86 BCJ plus LZMA2 archive containing one PDF",
         "BCJ+LZMA2",
@@ -704,7 +802,11 @@ def generate(output_dir: pathlib.Path) -> dict[str, object]:
         payload = (
             ARM64_PDF
             if compression_method == "ARM64-BCJ+LZMA2"
-            else PDF
+            else (
+                DEFLATE64_PDF
+                if compression_method == "Deflate64"
+                else PDF
+            )
         )
         data = factory(PAYLOAD_NAME, payload)
         (output_dir / name).write_bytes(data)
@@ -724,6 +826,10 @@ def generate(output_dir: pathlib.Path) -> dict[str, object]:
         "schema_version": 1,
         "generator": GENERATOR,
         "generator_dependencies": {
+            "inflate64": {
+                "license": "LGPL-2.1-or-later",
+                "version": INFLATE64_VERSION,
+            },
             "pyppmd": {
                 "license": "LGPL-2.1-or-later",
                 "version": PYPPMD_VERSION,
