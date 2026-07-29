@@ -12,10 +12,10 @@ Last updated: 2026-07-28
 文件和 XArchive 固定源码关联起来。XArchive 固定到
 `0fcd4e8d3e9933baac3b12246d82ac026557ffd0`。
 
-`diec` 的 XArchive 闭包包含：
+`diec` 的 XArchive 构建/link-input 闭包包含：
 
 - 84 个直接编译进 `diec` 的 XArchive C++ 单元，其中 32 个位于 `Algos/`；
-- 22 个经四个静态 archive 链接的 C 单元：bzip2 8、LZMA 2、PPMd 4、zlib 8；
+- 四个 link-line archive 构建的 22 个 C 单元：bzip2 8、LZMA 2、PPMd 4、zlib 8；
 - 合计 106 个唯一编译源文件；
 - 展开 `.o.d` 后，合计 217 个 XArchive 源码/头文件依赖；
 - 最终链接行没有 XYara/YARA。
@@ -24,6 +24,12 @@ Last updated: 2026-07-28
 [`data/xarchive-license-closure-linux.json`](data/xarchive-license-closure-linux.json)。
 它逐项保存编译源、链接方式、dependency file、闭包文件 hash、许可证/来源标记，
 并固定 link line、image、component lock 和生成器 hash。
+
+后续 [`xarchive-final-link-closure.md`](xarchive-final-link-closure.md) 已通过
+byte-identical 链接重放和 GNU ld map 进一步区分构建与抽取：22 个 archive
+member 中仅 `liblzma.a(LzmaDec.c.o)` 进入最终 ELF。因此最终 XArchive
+compile-source contribution 是 84 个直接对象加 1 个 archive member，共 85 个；
+本页 106/217 仍作为构建、源码和许可证候选闭包保留。
 
 ## 文件级许可证证据
 
@@ -95,8 +101,8 @@ python tools\upstream\audit_xarchive_license_closure.py `
 
 - 当前只证明固定 Linux Qt5 CMake Release CLI；qmake、Qt6、Windows、macOS 和
   GUI/all-target closure 仍需分别验证。
-- `.o.d` 证明编译依赖，link line 证明对象/archive 输入；不判断链接器 section
-  GC、LTO 或最终机器码贡献。
+- `.o.d` 证明编译依赖，link line 证明对象/archive 输入；member 抽取已由后续
+  GNU ld map 报告闭合，但不判断 section GC、LTO 或最终机器码 reachability。
 - 文本 marker 是审计线索，不替代 SPDX/license 法律复核。
 - XYara 未进入本次 CLI 产物，但默认全目标构建会生成 YARA archive，仍需独立
   文件级许可证清单。

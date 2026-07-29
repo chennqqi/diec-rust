@@ -127,10 +127,10 @@ LICENSE 的 vendored 代码。
 |---|---:|---|---|
 | `Formats/xsimd` | 是 | `xsimd/src/xsimd.c` 文件头 | MIT；该目录是 horsicq 自有实现，不是同名外部 C++ xsimd 项目的快照 |
 | `XCapstone/3rdparty/Capstone` | 是 | `LICENSE.TXT`、`LICENSE_LLVM.TXT` | BSD-3-Clause；部分来源另有 NCSA/LLVM license |
-| `XArchive/3rdparty/bzip2` | 是 | `src/LICENSE` | bzip2 许可 |
-| `XArchive/3rdparty/lzma` | 是 | `LzmaDec.c` 等文件头 | Public Domain 声明；需要逐个实际编译文件复核 |
-| `XArchive/3rdparty/ppmd` | 是 | `Ppmd7.c` 等文件头 | Public Domain 声明；需要逐个实际编译文件复核 |
-| `XArchive/3rdparty/zlib` | 是 | `src/zlib.h` | zlib License |
+| `XArchive/3rdparty/bzip2` | archive 在 link line；8/8 member 未抽取 | `src/LICENSE`、GNU ld map | bzip2 许可；仍是构建/archive 内容，不是本配置最终 ELF member |
+| `XArchive/3rdparty/lzma` | archive 在 link line；`LzmaDec.c.o` 1/2 被抽取 | `LzmaDec.c`、GNU ld inclusion reason | Igor Pavlov Public Domain；最终五文件依赖闭包已固定 |
+| `XArchive/3rdparty/ppmd` | archive 在 link line；4/4 member 未抽取 | `Ppmd7.c`、GNU ld map | Public Domain；仍是构建/archive 内容 |
+| `XArchive/3rdparty/zlib` | archive 在 link line；8/8 member 未抽取 | `src/zlib.h`、GNU ld map | zlib License；仍是构建/archive 内容 |
 | `XArchive/Algos` | 是，作为聚合源码 | `xarchive.cmake`、RAR token 来源报告 | Brotli/Zstd 已追溯；RAR decoder 与 UnRAR 7.1.10 高度重合但 notice 不一致；其余实现仍待逐文件分类 |
 | `XCppfilt/3rdparty/cppfilt` | 否；默认构建 target | `cp-demangle.c` 等文件头 | GPL-2.0-or-later，并带文件级不限制链接的额外许可；另有 Public Domain 文件 |
 | `XYara/3rdparty/yara` | 否；51-object 默认构建 target | 官方 YARA v4.5.2 内容映射与 109-file `.o.d` closure | 主体为 BSD-3-Clause；vendored tree 未保存官方 `COPYING` |
@@ -163,7 +163,11 @@ LICENSE 的 vendored 代码。
 
 固定 Linux Qt5 CMake CLI 的 XArchive 实际闭包已由
 [`xarchive-license-closure.md`](xarchive-license-closure.md) 展开为 84 个直接对象、
-22 个 archive 对象和 217 个源码/头文件依赖。该证据确认 XYara 未链接进 `diec`，
+22 个 archive 构建对象和 217 个源码/头文件依赖。后续
+[`xarchive-final-link-closure.md`](xarchive-final-link-closure.md) 通过
+byte-identical 链接重放和 GNU ld map 证明 22 个 member 中仅
+`LzmaDec.c.o` 被抽取，最终贡献为 84+1=85 个编译源；另有八个未抽取 member
+具有非空最终符号名交集，不能用 `nm` 交集代替 linker map。该证据确认 XYara 未链接进 `diec`，
 同时发现实际编译的 Brotli/Zstandard 聚合源没有保留许可证声明。后续
 [`embedded-compression-origins.md`](embedded-compression-origins.md) 已把它们
 分别固定到 Brotli 1.2.0 MIT 和 Zstandard 1.6.0-dev BSD/GPLv2 官方来源。
@@ -195,7 +199,8 @@ XYara/YARA 当前 Linux target 也已由
 
 ## 尚未完成
 
-- 已为 XCapstone 与 Formats/xsimd 保存最终 ELF member 符号见证；其余组件仍需补全 CMake
+- 已为 XArchive 保存 GNU ld member extraction map，并为 XCapstone 与
+  Formats/xsimd 保存最终 ELF member 符号见证；其余组件仍需补全 CMake
   target graph、link map、动态依赖和符号表。
 - 为 XArchive 聚合 Brotli/Zstandard 恢复独立 LICENSE/NOTICE/attribution，
   完成 Brotli 剩余约 1.4% token 分类，并对 RAR decoder 的 UnRAR notice/

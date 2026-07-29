@@ -109,7 +109,10 @@ python tools\upstream\audit_component_licenses.py `
 - [`xarchive-license-closure.md`](xarchive-license-closure.md) 已固定 Linux Qt5
   CMake CLI 的 106 个 XArchive 编译单元和 217 个依赖文件；其中聚合
   Brotli/Zstandard 已完成固定官方版本/许可证追溯，但 XArchive 未保存对应文本，
-  且 Brotli 仍有约 1.4% 的 64-token 区域未逐段分类；
+  且 Brotli 仍有约 1.4% 的 64-token 区域未逐段分类；后续
+  [`xarchive-final-link-closure.md`](xarchive-final-link-closure.md) 将 106 个
+  构建源进一步收窄为 84 个直接对象 + 1/22 个抽取 member 的 85-source 最终
+  contribution，并证明 bzip2/PPMd/zlib archive member 均未进入本配置 ELF；
 - XCapstone/Capstone 的固定 Linux Qt5 最终 ELF source/license closure 已完成；
   qmake、Qt6、Windows、macOS 和最终 Rust backend 仍需独立闭包；
 - Formats/xsimd 的固定 Linux Qt5 最终 ELF member/source/license closure 已完成；

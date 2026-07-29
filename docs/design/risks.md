@@ -218,8 +218,11 @@ baseline 的变更都要检查本表。
   全部首行为 MIT、共有 12 个文本 hash，且无嵌套 `.gitmodules`；103 个按名称
   发现的 license files 中 45 个位于 bundled/build-tool 路径。该结果关闭直接
   component root/submodule inventory，不覆盖 XArchive/XYara 文件头、规则数据或
-  候选 Rust 依赖组合。固定 Linux CLI 又证明 XArchive 有 106 个实际编译单元和
-  217 个依赖文件；其中 Brotli/Zstandard 聚合源进入链接闭包但没有文件内
+  候选 Rust 依赖组合。固定 Linux CLI 又证明 XArchive 有 106 个构建/link-input
+  编译单元和 217 个依赖文件；GNU ld map 进一步证明四个 archive 的 22 个
+  member 中仅 `LzmaDec.c.o` 被抽取，最终贡献为 84 个直接对象 + 1 个 archive
+  member；八个未抽取 member 仍有最终符号名交集，禁止用 `nm` 交集替代
+  linker map。其中 Brotli/Zstandard 聚合源作为直接对象进入链接闭包但没有文件内
   license marker。内容追溯已固定到 Brotli 1.2.0 MIT 和 Zstandard
   1.6.0-dev BSD/GPLv2（后者官方 token 精确一致），但 XArchive 未携带相应
   license/attribution，仍是明确未关闭的发布缺口。实际编译的 XArchive RAR

@@ -135,6 +135,9 @@ Phase 0 计划形成：
 - [`rust-toolchain-upgrade-1.97.1.md`](rust-toolchain-upgrade-1.97.1.md)：固定默认 Rust 1.97.1、保留 MSRV 1.88 的 Rust 门禁与 Windows/Linux static-link 复验（Draft）。
 - [`cli-dependency-and-license.md`](cli-dependency-and-license.md)：CLI 源码/链接依赖闭包与许可证初审（Draft）。
 - [`xarchive-license-closure.md`](xarchive-license-closure.md)：固定 Linux Qt5 CMake CLI 的 XArchive 编译单元、头文件依赖与文件级许可证证据（Draft）。
+- [`xarchive-final-link-closure.md`](xarchive-final-link-closure.md)：固定 Linux
+  Qt5 CMake CLI 的 XArchive 四个 archive、22 个构建 member 与 GNU ld
+  最终抽取闭包；证明仅 `LzmaDec.c.o` 被抽取并记录符号交集假阳性边界（In Review）。
 - [`xcapstone-license-closure.md`](xcapstone-license-closure.md)：固定 Linux
   Qt5 CMake CLI 的 XCapstone direct object、Capstone x86 archive 10/11
   member 最终 ELF 符号见证、71-file 依赖闭包及 MIT/BSD/LLVM-NCSA 三份
@@ -282,6 +285,9 @@ Phase 0 计划形成：
 - [`nested-scan-behavior.md`](nested-scan-behavior.md)：archive/resource/overlay 的选项可达性、结果树和资源限制（Draft）。
 - [`data/cli-dependencies.toml`](data/cli-dependencies.toml)：固定组件依赖边、LICENSE blob 和 bundled code 证据。
 - [`data/xarchive-license-closure-linux.json`](data/xarchive-license-closure-linux.json)：XArchive 106 个实际编译单元、217 个依赖文件及许可证/来源标记。
+- [`data/xarchive-final-link-closure-linux.json`](data/xarchive-final-link-closure-linux.json)：
+  XArchive 四个 archive 的 22-built/1-included/21-excluded GNU ld map、byte-identical
+  链接重放、LZMA 五文件闭包及八个符号交集假阳性。
 - [`data/xcapstone-license-closure-linux.json`](data/xcapstone-license-closure-linux.json)：
   XCapstone direct object、Capstone x86 archive 11 个构建/10 个抽取 member、
   最终 ELF 符号见证、71 个文件及三份许可证 hash。
