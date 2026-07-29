@@ -2,7 +2,7 @@
 
 Status: Proposed
 
-Last updated: 2026-07-27
+Last updated: 2026-07-30
 
 ## Context
 
@@ -18,6 +18,8 @@ Boa 0.21.1 与 rquickjs 0.12.1 都拒绝 Qt 5 接受的 Nintendo legacy 规则�
 - rquickjs 已验证 interrupt、heap/stack limit 后同 context 恢复、跨线程
   cancel、VM/native deadline、合作式 native HostApi 取消，以及 native callback
   panic 在 C ABI 内捕获并于 Rust eval 边界恢复；
+- 候选 custom allocator 已在 Windows 完整 Binary 语料上执行 live-heap 硬限制、
+  瞬时 high-water 观测和 runtime drop 后归零；
 - rquickjs 的精确、等长、source-pinned compatibility overlay 与 per-rule
   lexical wrapper 已让固定 292 条 Binary 顶层规则全部加载；
 - 固定生命周期下 14 个生成 Binary header 样本已分别调用全部 292 个
@@ -71,7 +73,8 @@ workspace 建立时重新生成并审计，不允许浮动到其他 minor/patch 
 
 资源与恢复：
 
-- 启用 VM interrupt、heap/stack limit 和 wall-clock deadline；
+- 启用 VM interrupt、可观测且可执行 hard limit 的 heap allocator、stack limit
+  和 wall-clock deadline；
 - 所有 signature、parser bridge、decompression 及 native HostApi 长循环合作检查
   同一 cancel/deadline/budget；
 - runtime exception、OOM/limit、panic 和 native fault 分开分类；只有 Rust
@@ -97,16 +100,24 @@ workspace 建立时重新生成并审计，不允许浮动到其他 minor/patch 
   最大观察 `malloc_size=654,562`、
   `memory_used_size=623,012`。operation anchor 不等于 VM instruction，也不能从
   单一 Binary corpus 的 poll/checkpoint count 推导跨格式 fuel；signature
-  checkpoint 也不代表所有 HostApi 已覆盖，memory checkpoint 不是 eval 内瞬时
-  heap high-water。另有 PE/ELF/Mach-O/DEX/APK/Archive/PDF 七条代表性规则的
+  checkpoint 也不代表所有 HostApi 已覆盖，默认 allocator 的 memory checkpoint
+  不是 eval 内瞬时 heap high-water。候选 `TrackingLimitAllocator` 已在相同
+  14-sample/4088-detect oracle 上连续三轮记录 4,411,368-byte 最大瞬时
+  high-water，32 MiB limit 下 0 次拒绝，42/42 runtime drop 后归零；稳定投影
+  SHA-256 为
+  `d9f3b47535f6d61e7f7b21f6db7731cf290fa0cb8f5277d906ba5b2906dff4f4`。
+  这仍只是 Windows 候选 allocator 证据，不是 production backend 或跨平台证明。
+  另有 PE/ELF/Mach-O/DEX/APK/Archive/PDF 七条代表性规则的
   25-case 矩阵连续三轮固定为每轮 25 次 poll、75 个 lifecycle memory
   checkpoint，最大 `malloc_size=124,485`；但这不是所有格式/规则的 scaling，
   因此这些数字仍保持 `review_candidate_not_admitted`。
 - fuel quantum 是 pinned backend 的 VM interrupt poll 或 native cooperative
   checkpoint，共享单调 counter，rule/include/child 不重置；runtime 升级必须
   重新定标。script deadline 是首次 runtime work 起算的 absolute deadline，并
-  与 scan deadline 取较早者。QuickJS heap limit 使用默认 allocator；custom/
-  rust allocator 未证明等价限制前禁止启用。
+  与 scan deadline 取较早者。rquickjs 的 `set_memory_limit()` 在 custom
+  allocator 下是 no-op；若采用候选 `TrackingLimitAllocator`，hard limit 必须
+  由 wrapper 自身执行，并在 sanitizer、Windows/Linux/macOS 与 production
+  lifecycle acceptance 完成前保持未准入。
 
 构建与发布：
 

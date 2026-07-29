@@ -5,7 +5,7 @@
     "production backend extends native checkpoints to every HostApi and validates VM poll scaling across formats",
     "limit-1/exact/+1 covers all four fields without reset",
     "infinite JS and native loops stop under fuel and deadline",
-    "custom allocator is rejected or proves an equivalent heap limit",
+    "custom allocator passes sanitizer and cross-platform acceptance before production backend adoption",
     "all format lifecycles pass resource-bound differentials",
     "Windows, Linux, and macOS CPU/heap/stack evidence passes",
     "Rust, CLI, JSON, C, Go, and Python expose one failure contract"
@@ -26,6 +26,7 @@
     "legacy_stack_multiple": 8,
     "modern_deadline_fraction_of_scan": "1/3",
     "modern_fuel_formula": "next_power_of_two(4 * operation_anchor)",
+    "modern_heap_candidate_to_tracked_high_water_ratio_floor": 7,
     "modern_heap_formula": "next_power_of_two(8 * fixed_program_source_bytes)",
     "modern_stack_multiple": 2,
     "not_observed_runtime_maxima": true,
@@ -48,6 +49,16 @@
   "evaluated_on": "2026-07-30",
   "evidence_boundary": {
     "all_format_rule_lifecycles_measured": false,
+    "candidate_custom_allocator_all_runtimes_released_to_zero": true,
+    "candidate_custom_allocator_cross_platform_measured": false,
+    "candidate_custom_allocator_denied_allocation_count": 0,
+    "candidate_custom_allocator_is_production_backend": false,
+    "candidate_custom_allocator_limit_bytes_per_sample_runtime": 33554432,
+    "candidate_custom_allocator_maximum_high_water_bytes": 4411368,
+    "candidate_custom_allocator_maximum_high_water_sample": "ps3-type-1-elf.self",
+    "candidate_custom_allocator_real_corpus_heap_high_water_measured": true,
+    "candidate_custom_allocator_repeat_count": 3,
+    "candidate_custom_allocator_stable_projection_sha256": "d9f3b47535f6d61e7f7b21f6db7731cf290fa0cb8f5277d906ba5b2906dff4f4",
     "does_not_prove": [
       "production heap, stack, fuel, or deadline acceptability",
       "operation-anchor to VM-poll conversion",
@@ -126,7 +137,7 @@
   "source_bindings": {
     "adr_runtime": {
       "path": "docs/design/decisions/0006-rquickjs-rule-runtime.md",
-      "sha256": "b0a5367ae03403471d37758ba4c6fde831e88bc47c3aa6456c316ecf4a44e991"
+      "sha256": "ee7317c5f016fa391b05ec627dce4a39fd912808677d828a2007f579f3029e34"
     },
     "adr_scan": {
       "path": "docs/design/decisions/0012-bounded-nested-scan-budget.md",
@@ -146,11 +157,11 @@
     },
     "runtime_report": {
       "path": "docs/research/data/rquickjs-rule-runtime.json",
-      "sha256": "b26397e85e512503ef9984162c844940acf6649a54d66e94831ed65666ae1184"
+      "sha256": "5867ef5092a500e54f2c36b9aac681628dfa9dc377c2cd2aa949c3c1c08bef3e"
     },
     "runtime_research": {
       "path": "docs/research/rquickjs-rule-runtime-spike.md",
-      "sha256": "11752c42e7875bbe993720e55da95452173b4c03b8870a9e9b08f1c1faf1645e"
+      "sha256": "75b5e943e6e03e5e9e73bbf991771574340167f5e802d7842faa6bef8fb4b5b8"
     }
   },
   "units": {

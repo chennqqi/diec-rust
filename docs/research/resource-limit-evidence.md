@@ -43,9 +43,11 @@ Last updated: 2026-07-30
   三轮 Windows MSVC full Binary corpus 每轮正常 VM poll 均为 28 次，4,130 个
   lifecycle memory checkpoint 最大 observed `malloc_size` 为 654,562 bytes；
   Binary signature HostApi 每轮 native checkpoint 固定 16,439 次，并已有
-  4095/4096 候选边界及单次 native search 中断测试。但瞬时 heap high-water、
-  其余 HostApi checkpoint、跨格式 scaling 及三平台资源证据仍缺失，因此候选
-  不得 admitted。
+  4095/4096 候选边界及单次 native search 中断测试。候选 custom allocator
+  又在相同语料的三轮运行中固定最大瞬时 live heap 为 4,411,368 bytes，
+  32 MiB hard limit 下 0 次拒绝，42/42 runtime drop 后归零。它不是默认
+  allocator 或 production backend 的测量；其余 HostApi checkpoint、完整跨格式
+  scaling、sanitizer 及三平台资源证据仍缺失，因此候选不得 admitted。
 - PE/ELF/Mach-O/DEX/APK/Archive/PDF 七类代表性规则的 25-case runtime 矩阵
   已连续三轮固定为每轮 25 次正常 VM poll、75 个 lifecycle memory
   checkpoint，最大 observed `malloc_size` 为 124,485 bytes。每类仅覆盖一条
@@ -69,7 +71,7 @@ Last updated: 2026-07-30
 | root input bytes | [`../design/data/input-budget-candidate.json`](../design/data/input-budget-candidate.json) | root logical length、入口触发时机、1 GiB/8 GiB 候选及与累计 I/O/分配的独立关系 |
 | total allocation bytes | [`../design/data/allocation-budget-candidate.json`](../design/data/allocation-budget-candidate.json) | scan-owned capacity 单调累计、two-phase reserve、1 GiB/8 GiB 候选与 whole-process RSS 证据边界 |
 | script runtime | [`../design/data/script-runtime-budget-candidate.json`](../design/data/script-runtime-budget-candidate.json) | heap/JS stack/fuel/deadline 的联合候选、共享/不重置语义及真实 runtime 测量缺口 |
-| runtime hard-stop wiring | [`data/rquickjs-rule-runtime.json`](data/rquickjs-rule-runtime.json) | heap/stack/deadline 能被 runtime 拒绝且 context 可恢复 |
+| runtime hard-stop wiring | [`data/rquickjs-rule-runtime.json`](data/rquickjs-rule-runtime.json) | 默认/custom heap、stack、deadline 能受控拒绝并恢复；custom allocator 另记录完整 Binary 语料瞬时 high-water 与 drop 归零 |
 
 这些报告均固定到同一 DIE-engine commit。生成器
 [`build_resource_limit_policy.py`](../../tools/research/build_resource_limit_policy.py)
@@ -93,10 +95,11 @@ Last updated: 2026-07-30
 ### spike 限额不是 runtime profile
 
 4 MiB heap、128 KiB stack 和 25 ms deadline 的目的，是证明 rquickjs/
-QuickJS-NG 的 limit 与 interrupt 接线能够触发和恢复。完整固定规则加载量、真实
-HostApi、不同格式输入、并发 scanner 和三平台峰值内存尚未用这些数值验证，因此
-机器策略将它们放在 `runtime_spike_only`，并强制
-`production_default_candidate=false`。
+QuickJS-NG 的 limit 与 interrupt 接线能够触发和恢复。32 MiB custom-allocator
+完整 Binary 语料实验是候选 backend 的真实 high-water 证据，但完整固定规则
+有效输入、不同格式全生命周期、并发 scanner、sanitizer 和三平台峰值内存尚未
+验证，因此机器策略继续保持 `review_candidate_not_admitted`；4 MiB fault
+条件仍为 `runtime_spike_only.production_default_candidate=false`。
 
 ### 上游无界不等于 Rust 应当无界
 
@@ -122,9 +125,9 @@ python -m unittest discover -s tools\tests -p "test_resource_limit_policy.py"
 
 ## 剩余证据
 
-- 对 script 候选补齐真实全库瞬时 heap high-water、native HostApi cooperative
-  checkpoint、全格式正反例生命周期与 VM poll scaling、三平台 CPU/heap/stack
-  和 `limit-1/exact/+1`；
+- 对 script 候选把当前 Windows Binary custom-allocator high-water 扩展到
+  production backend、全部格式正反例和三平台；补齐 sanitizer、native HostApi
+  cooperative checkpoint、VM poll scaling 与 `limit-1/exact/+1`；
 - 对 root input 候选补齐 production `Bytes`/`ByteSource`/`Path`/FFI
   `limit-1/exact/+1`、并发 truncate/grow 和 CPU/peak-memory；
 - 对 total allocation 候选补齐 production budgeted containers/decompressor

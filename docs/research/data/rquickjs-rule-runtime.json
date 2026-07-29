@@ -20,7 +20,8 @@
   "experiment": {
     "cargo_lock_sha256": "f389eb266779a88939fea9793effdff29d01ea0e1184915698f4fa0f9441d0ad",
     "cargo_toml_sha256": "82c5bb97749f50212e5364c2ac7d1f81eaec4d460a9bf47710b4b42f9204a79f",
-    "source_sha256": "3c99cae6186119de7b250812e819e153776e929901ad788b7a6a5239e1d5e218",
+    "source_sha256": "61b12506ca1948eccd9ff7fe755fe8438c0d559b38a171c3436a9eba740c7e8b",
+    "tracking_allocator_source_sha256": "1409b40627d5fd4cf108e24bef6a8d3cc580ca90ace06f685522ea55e7b4bb32",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -41,6 +42,18 @@
     "memory_limit_observed": true,
     "memory_limit_same_context_recovered": true,
     "memory_limit_same_context_recovery_result": "42",
+    "tracking_allocator": {
+      "accounting": "RustAllocator usable bytes including alignment rounding, excluding allocator header",
+      "denied_allocation_count": 1,
+      "high_water_bytes": 100368,
+      "limit_bytes": 4194304,
+      "live_bytes_after_drop": 0,
+      "live_bytes_before_drop": 99400,
+      "oversized_allocation_error": "out of memory",
+      "same_context_recovered": true,
+      "same_context_recovery_result": "42",
+      "set_memory_limit_used": false
+    },
     "native_host_panic": {
       "caught_at_rust_eval_boundary": true,
       "payload_matches_sentinel": true,
@@ -1429,6 +1442,41 @@
     "signature_search_call_total": 154,
     "signature_search_error_total": 0,
     "unambiguous_priority_sample_count": 14
+  },
+  "full_binary_corpus_tracked_heap": {
+    "accepted_detect_count": 4088,
+    "all_match": true,
+    "attempted_detect_count": 4088,
+    "command": "verify-binary-corpus-tracked-heap",
+    "detect_error_count": 0,
+    "fallback_call_total": 0,
+    "matched_count": 14,
+    "runtime_measurement": {
+      "environment": {
+        "profile": "release",
+        "target": "x86_64-pc-windows-msvc",
+        "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
+      },
+      "memory": {
+        "accounting": "RustAllocator usable bytes including alignment rounding, excluding allocator header",
+        "all_runtimes_released_to_zero": true,
+        "backend": "rquickjs RustAllocator wrapped by TrackingLimitAllocator",
+        "denied_allocation_count": 0,
+        "limit_bytes_per_sample_runtime": 33554432,
+        "maximum_high_water_bytes": 4411368,
+        "maximum_high_water_sample": "ps3-type-1-elf.self",
+        "set_memory_limit_used": false,
+        "transient_high_water_measured": true
+      },
+      "projection_hash_emitted_by_spike": true,
+      "projection_hash_independently_recomputed": true,
+      "repeat_count": 3,
+      "sample_runtime_count_per_repeat": 14,
+      "stable_projection_equal": true,
+      "stable_projection_sha256": "d9f3b47535f6d61e7f7b21f6db7731cf290fa0cb8f5277d906ba5b2906dff4f4"
+    },
+    "sample_count": 14,
+    "scope": "the same full Binary corpus oracle under a custom tracking/limit allocator; Windows x86_64 MSVC evidence for the candidate allocator, not default-allocator or cross-platform proof"
   },
   "isolated_eval": {
     "bytes": 2902881,

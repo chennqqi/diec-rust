@@ -183,14 +183,18 @@ aggressive archive 只让 ordinal 100000 可达，ordinal 100001 不可达。
 ## 5. 候选完整性与未准入状态
 
 当前策略有 0 个 unresolved 项：所有必需字段都有非零候选。但这只关闭
-“缺少候选值”的结构缺口，策略仍不得 admitted。Script runtime 的真实全库 heap
-high-water、native HostApi checkpoint、所有格式规则生命周期和三平台资源证据
-尚未完整采集；ADR 0006 也仍为 Proposed。正常 Binary corpus VM poll 已连续三轮
+“缺少候选值”的结构缺口，策略仍不得 admitted。Script runtime 的 candidate
+custom allocator 已在 Windows 完整 Binary 语料测得瞬时 heap high-water，但
+production backend、native HostApi checkpoint、所有格式规则生命周期、
+sanitizer 和三平台资源证据尚未完整采集；ADR 0006 也仍为 Proposed。正常 Binary
+corpus VM poll 已连续三轮
 观察为每轮 28 次，Binary signature HostApi native checkpoint 每轮固定 16,439
 次（compare 16,285、search 154），并有 4095/4096 候选边界及单次调用中断测试。
-其他 HostApi 与完整跨格式 scaling 仍未覆盖。4,130 个 lifecycle memory checkpoint 的最大 observed
-`malloc_size` 为 654,562 bytes，但该单一 corpus 不能证明跨格式 fuel scaling，
-checkpoint 也不能替代瞬时 high-water。
+其他 HostApi 与完整跨格式 scaling 仍未覆盖。4,130 个默认 allocator lifecycle
+memory checkpoint 的最大 observed `malloc_size` 为 654,562 bytes；custom
+allocator 三轮稳定测得最大 transient live heap 为 4,411,368 bytes，32 MiB
+hard limit 下无拒绝且每个 runtime drop 后归零。该单一 Binary corpus 和单平台
+候选 backend 仍不能证明跨格式 fuel/heap scaling 或 production 适用性。
 
 已有的 PE/ELF/Mach-O/DEX/APK/Archive/PDF 差分另形成七类、25-case 的代表性
 矩阵：连续三轮均为 25/25 匹配，每轮 25 次正常 VM poll、75 个 lifecycle
@@ -198,8 +202,9 @@ memory checkpoint，最大 observed `malloc_size` 为 124,485 bytes。它只缩�
 “Binary 单格式观察”的证据缺口；每类仅一条短规则，不能将
 `all_format_rule_lifecycles_measured` 置为 true。
 
-QuickJS spike 的 4 MiB heap、128 KiB stack 和 25 ms deadline 只在机器契约的
-`runtime_spike_only` 中保存，明确不是候选的定值依据。script 候选的精确单位、
+QuickJS spike 的 4 MiB fault heap、128 KiB stack 和 25 ms deadline 只作为
+故障注入证据保存，明确不是候选的定值依据；32 MiB custom allocator 测量则以
+未准入的 candidate-backend evidence 单独记录。script 候选的精确单位、
 共享/不重置语义、推导和缺失证据见
 [`script-runtime-budget-candidate.json`](data/script-runtime-budget-candidate.json)。
 include 两项已有

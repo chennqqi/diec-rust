@@ -144,6 +144,7 @@ const NINTENDO_CORPUS_MANIFEST_SHA256: &str =
 const NINTENDO_BASELINE_SHA256: &str =
     "683d2d85abc7053321785f53224842cd2047427d4d8ce6d591248453e2f29503";
 const BINARY_SIGNATURE_COUNT: usize = 292;
+const TRACKED_BINARY_CORPUS_LIMIT_BYTES: usize = 32 * 1024 * 1024;
 const PE_RULE_SUFFIX: &str = "PE/compiler_Cygwin32.4.sg";
 const PE_RULE_BYTES: usize = 240;
 const PE_RULE_SHA256: &str = "de563e3333c54b966efb7aa3d678acd56ca5fa9b83a7b8356b3a4e71e47dc4cd";
@@ -4126,6 +4127,18 @@ fn trace_binary_detects_report_with_data(
     order_path: &Path,
     data: Vec<u8>,
 ) -> Result<Value, String> {
+    trace_binary_detects_report_with_data_and_tracking(
+        rule_root, input_path, order_path, data, None,
+    )
+}
+
+fn trace_binary_detects_report_with_data_and_tracking(
+    rule_root: &Path,
+    input_path: &Path,
+    order_path: &Path,
+    data: Vec<u8>,
+    tracking_limit_bytes: Option<usize>,
+) -> Result<Value, String> {
     let order_document: Value = serde_json::from_slice(
         &fs::read(order_path)
             .map_err(|error| format!("cannot read {}: {error}", order_path.display()))?,
@@ -4133,7 +4146,12 @@ fn trace_binary_detects_report_with_data(
     .map_err(|error| format!("cannot parse {}: {error}", order_path.display()))?;
     let order = parse_binary_order(&order_document)?;
     let input_size = data.len();
-    let runtime = new_runtime()?;
+    let (runtime, tracking_stats) = if let Some(limit) = tracking_limit_bytes {
+        let (runtime, stats) = new_tracking_runtime(limit)?;
+        (runtime, Some(stats))
+    } else {
+        (new_runtime()?, None)
+    };
     let runtime_created_memory = runtime_memory_snapshot(&runtime)?;
     let interrupt_ticks_per_rule = Arc::new(AtomicUsize::new(0));
     let interrupt_ticks_per_rule_for_handler = Arc::clone(&interrupt_ticks_per_rule);
@@ -4538,7 +4556,7 @@ fn trace_binary_detects_report_with_data(
     let native_checkpoint_total = compare_native_checkpoint_total
         .checked_add(search_native_checkpoint_total)
         .ok_or_else(|| "native checkpoint total overflow".to_owned())?;
-    Ok(json!({
+    let mut report = json!({
         "schema_version": 1,
         "operation": "diagnostic invocation of all fixed-order Binary detect functions",
         "scope": "fallback-tolerant gap inventory; detections are not compatibility evidence",
@@ -4633,7 +4651,36 @@ fn trace_binary_detects_report_with_data(
         },
         "elapsed_ms": started.elapsed().as_millis(),
         "completed": true,
-    }))
+    });
+    let tracking_before_drop = tracking_stats.as_ref().map(|stats| {
+        (
+            stats.live_bytes(),
+            stats.high_water_bytes(),
+            stats.denied_allocation_count(),
+        )
+    });
+    drop(context);
+    drop(runtime);
+    if let (Some(limit_bytes), Some(stats), Some((live_before_drop, high_water_bytes, denied))) =
+        (tracking_limit_bytes, tracking_stats, tracking_before_drop)
+    {
+        let live_after_drop = stats.live_bytes();
+        report["runtime_measurement"]["memory"]["scope"] = json!(
+            "post-operation lifecycle checkpoints plus allocator-observed transient live-byte high-water"
+        );
+        report["runtime_measurement"]["memory"]["transient_high_water_measured"] = json!(true);
+        report["runtime_measurement"]["memory"]["tracking_allocator"] = json!({
+            "backend": "rquickjs RustAllocator wrapped by TrackingLimitAllocator",
+            "limit_bytes": limit_bytes,
+            "set_memory_limit_used": false,
+            "accounting": "RustAllocator usable bytes including alignment rounding, excluding allocator header",
+            "live_bytes_before_drop": live_before_drop,
+            "high_water_bytes": high_water_bytes,
+            "denied_allocation_count": denied,
+            "live_bytes_after_drop": live_after_drop,
+        });
+    }
+    Ok(report)
 }
 
 fn trace_binary_detects_report(
@@ -6509,6 +6556,24 @@ fn verify_binary_corpus(
     baseline_path: &Path,
     order_path: &Path,
 ) -> Result<bool, String> {
+    verify_binary_corpus_with_tracking(
+        rule_root,
+        corpus_root,
+        corpus_manifest_path,
+        baseline_path,
+        order_path,
+        None,
+    )
+}
+
+fn verify_binary_corpus_with_tracking(
+    rule_root: &Path,
+    corpus_root: &Path,
+    corpus_manifest_path: &Path,
+    baseline_path: &Path,
+    order_path: &Path,
+    tracking_limit_bytes: Option<usize>,
+) -> Result<bool, String> {
     let corpus_manifest_bytes = fs::read(corpus_manifest_path).map_err(|error| {
         format!(
             "cannot read corpus manifest {}: {error}",
@@ -6611,6 +6676,9 @@ fn verify_binary_corpus(
     let mut maximum_observed_malloc_size_sample = String::new();
     let mut maximum_observed_memory_used_size = 0_u64;
     let mut maximum_observed_memory_used_size_sample = String::new();
+    let mut maximum_tracked_high_water_bytes = 0_u64;
+    let mut maximum_tracked_high_water_sample = String::new();
+    let mut tracking_denied_allocation_count = 0_u64;
     for (name, baseline_sample) in baseline_samples {
         let expected = parse_detection_triples(
             baseline_sample
@@ -6633,9 +6701,14 @@ fn verify_binary_corpus(
             ));
         }
 
-        let trace =
-            trace_binary_detects_report_with_data(rule_root, &input_path, order_path, input)
-                .map_err(|error| format!("{name}: {error}"))?;
+        let trace = trace_binary_detects_report_with_data_and_tracking(
+            rule_root,
+            &input_path,
+            order_path,
+            input,
+            tracking_limit_bytes,
+        )
+        .map_err(|error| format!("{name}: {error}"))?;
         let actual = parse_runtime_detections(&trace, name)?;
         let execution_order = actual
             .iter()
@@ -6758,6 +6831,78 @@ fn verify_binary_corpus(
             .ok_or_else(|| {
                 format!("{name}: runtime memory transient high-water boundary is missing")
             })?;
+        let sample_tracking = if let Some(expected_limit) = tracking_limit_bytes {
+            let prefix = "/runtime_measurement/memory/tracking_allocator";
+            let limit = trace
+                .pointer(&format!("{prefix}/limit_bytes"))
+                .and_then(Value::as_u64)
+                .ok_or_else(|| format!("{name}: tracking allocator limit is missing"))?;
+            let live_before_drop = trace
+                .pointer(&format!("{prefix}/live_bytes_before_drop"))
+                .and_then(Value::as_u64)
+                .ok_or_else(|| {
+                    format!("{name}: tracking allocator live-before-drop value is missing")
+                })?;
+            let high_water = trace
+                .pointer(&format!("{prefix}/high_water_bytes"))
+                .and_then(Value::as_u64)
+                .ok_or_else(|| format!("{name}: tracking allocator high-water value is missing"))?;
+            let denied = trace
+                .pointer(&format!("{prefix}/denied_allocation_count"))
+                .and_then(Value::as_u64)
+                .ok_or_else(|| {
+                    format!("{name}: tracking allocator denied-allocation count is missing")
+                })?;
+            let live_after_drop = trace
+                .pointer(&format!("{prefix}/live_bytes_after_drop"))
+                .and_then(Value::as_u64)
+                .ok_or_else(|| {
+                    format!("{name}: tracking allocator live-after-drop value is missing")
+                })?;
+            let set_memory_limit_used = trace
+                .pointer(&format!("{prefix}/set_memory_limit_used"))
+                .and_then(Value::as_bool)
+                .ok_or_else(|| {
+                    format!("{name}: tracking allocator set-memory-limit marker is missing")
+                })?;
+            Some((
+                limit,
+                live_before_drop,
+                high_water,
+                denied,
+                live_after_drop,
+                set_memory_limit_used,
+                expected_limit as u64,
+            ))
+        } else {
+            None
+        };
+        let tracking_measurement_ok = match sample_tracking {
+            Some((
+                limit,
+                live_before_drop,
+                high_water,
+                denied,
+                live_after_drop,
+                set_memory_limit_used,
+                expected_limit,
+            )) => {
+                sample_transient_high_water_measured
+                    && limit == expected_limit
+                    && live_before_drop > 0
+                    && live_before_drop <= high_water
+                    && high_water <= limit
+                    && denied == 0
+                    && live_after_drop == 0
+                    && !set_memory_limit_used
+            }
+            None => {
+                !sample_transient_high_water_measured
+                    && trace
+                        .pointer("/runtime_measurement/memory/tracking_allocator")
+                        .is_none()
+            }
+        };
         let completed = trace.get("completed").and_then(Value::as_bool) == Some(true);
         let runtime_measurement_ok = sample_detect_interrupt_sum
             .checked_add(sample_interrupt_outside_detects)
@@ -6774,7 +6919,7 @@ fn verify_binary_corpus(
             && sample_memory_checkpoint_count == (BINARY_SIGNATURE_COUNT as u64 + 3)
             && sample_maximum_malloc_size > 0
             && sample_maximum_memory_used_size > 0
-            && !sample_transient_high_water_measured;
+            && tracking_measurement_ok;
         let lifecycle_ok = attempted == BINARY_SIGNATURE_COUNT as u64
             && accepted == BINARY_SIGNATURE_COUNT as u64
             && errors == 0
@@ -6855,6 +7000,15 @@ fn verify_binary_corpus(
             maximum_observed_memory_used_size = sample_maximum_memory_used_size;
             maximum_observed_memory_used_size_sample = name.clone();
         }
+        if let Some((_, _, high_water, denied, _, _, _)) = sample_tracking {
+            tracking_denied_allocation_count = tracking_denied_allocation_count
+                .checked_add(denied)
+                .ok_or_else(|| "tracking denied-allocation aggregate overflow".to_owned())?;
+            if high_water > maximum_tracked_high_water_bytes {
+                maximum_tracked_high_water_bytes = high_water;
+                maximum_tracked_high_water_sample = name.clone();
+            }
+        }
 
         sample_reports.push(json!({
             "name": name,
@@ -6886,7 +7040,7 @@ fn verify_binary_corpus(
         }));
     }
 
-    let runtime_measurement = json!({
+    let mut runtime_measurement = json!({
         "sample_runtime_count": sample_reports.len(),
         "native_checkpoint": {
             "semantics":
@@ -6923,6 +7077,22 @@ fn verify_binary_corpus(
             "transient_high_water_measured": false,
         },
     });
+    if let Some(limit_bytes) = tracking_limit_bytes {
+        runtime_measurement["memory"]["scope"] = json!(
+            "post-operation lifecycle checkpoints plus allocator-observed transient live-byte high-water over all 14 sample runtimes"
+        );
+        runtime_measurement["memory"]["transient_high_water_measured"] = json!(true);
+        runtime_measurement["memory"]["tracking_allocator"] = json!({
+            "backend": "rquickjs RustAllocator wrapped by TrackingLimitAllocator",
+            "limit_bytes_per_sample_runtime": limit_bytes,
+            "set_memory_limit_used": false,
+            "accounting": "RustAllocator usable bytes including alignment rounding, excluding allocator header",
+            "maximum_high_water_bytes": maximum_tracked_high_water_bytes,
+            "maximum_high_water_sample": maximum_tracked_high_water_sample,
+            "denied_allocation_count": tracking_denied_allocation_count,
+            "all_runtimes_released_to_zero": true,
+        });
+    }
     let sample_measurements = sample_reports
         .iter()
         .map(|sample| {
@@ -7645,6 +7815,9 @@ fn usage() -> ExitCode {
          diec-rquickjs-rule-runtime-spike verify-binary-corpus \
          <main-rule-root> <corpus-dir> <corpus-manifest-json> \
          <baseline-json> <binary-order-json>\n       \
+         diec-rquickjs-rule-runtime-spike verify-binary-corpus-tracked-heap \
+         <main-rule-root> <corpus-dir> <corpus-manifest-json> \
+         <baseline-json> <binary-order-json>\n       \
          diec-rquickjs-rule-runtime-spike verify-pe-rule \
          <main-rule-root> <pe-fixture-json> <qt5-baseline-json>\n       \
          diec-rquickjs-rule-runtime-spike verify-elf-rule \
@@ -7700,6 +7873,15 @@ fn main() -> ExitCode {
         trace_binary_detects(&roots[0], &roots[1], &roots[2])
     } else if command == "verify-binary-corpus" && roots.len() == 5 {
         verify_binary_corpus(&roots[0], &roots[1], &roots[2], &roots[3], &roots[4])
+    } else if command == "verify-binary-corpus-tracked-heap" && roots.len() == 5 {
+        verify_binary_corpus_with_tracking(
+            &roots[0],
+            &roots[1],
+            &roots[2],
+            &roots[3],
+            &roots[4],
+            Some(TRACKED_BINARY_CORPUS_LIMIT_BYTES),
+        )
     } else if command == "verify-pe-rule" && roots.len() == 3 {
         verify_pe_rule(&roots[0], &roots[1], &roots[2])
     } else if command == "verify-elf-rule" && roots.len() == 3 {

@@ -65,6 +65,16 @@ snapshots are lifecycle checkpoints, not a transient in-eval allocator
 high-water measurement. Large raw reports belong in temporary storage; only
 the stable projection and its reproducible summary are versioned.
 
+`verify-binary-corpus-tracked-heap` repeats that exact oracle under a custom
+allocator which wraps rquickjs's pinned `RustAllocator`. It accounts live
+usable bytes, records the transient high-water mark, rejects growth above
+32 MiB per sample runtime, and verifies that every runtime releases its live
+allocation count to zero. rquickjs documents `Runtime::set_memory_limit()` as
+ineffective with a custom allocator, so this command deliberately enforces the
+limit in the wrapper and reports `set_memory_limit_used: false`. This is
+Windows candidate-backend evidence, not a measurement of the default allocator
+or cross-platform proof.
+
 The `verify-pe-rule`, `verify-elf-rule`, `verify-macho-rule`,
 `verify-dex-rule`, `verify-apk-rule`, `verify-archive-rule`, and
 `verify-pdf-rule` reports also include one normal interrupt counter and three

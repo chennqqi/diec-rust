@@ -56,6 +56,13 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
                 / "src"
                 / "main.rs"
             ),
+            "tracking_allocator_source_sha256": (
+                ROOT
+                / "spikes"
+                / "rquickjs-rule-runtime"
+                / "src"
+                / "tracking_allocator.rs"
+            ),
         }
         for field, path in paths.items():
             with self.subTest(field=field):
@@ -100,6 +107,24 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
         self.assertEqual(
             fixture["memory_limit_same_context_recovery_result"],
             "42",
+        )
+        self.assertEqual(
+            fixture["tracking_allocator"],
+            {
+                "accounting": (
+                    "RustAllocator usable bytes including alignment rounding, "
+                    "excluding allocator header"
+                ),
+                "denied_allocation_count": 1,
+                "high_water_bytes": 100_368,
+                "limit_bytes": 4 * 1024 * 1024,
+                "live_bytes_after_drop": 0,
+                "live_bytes_before_drop": 99_400,
+                "oversized_allocation_error": "out of memory",
+                "same_context_recovered": True,
+                "same_context_recovery_result": "42",
+                "set_memory_limit_used": False,
+            },
         )
         self.assertEqual(
             fixture["stack_limit"],
@@ -359,6 +384,43 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
         )
         self.assertFalse(memory["transient_high_water_measured"])
         self.assertIn("transient in-eval", memory["scope"])
+
+    def test_full_binary_corpus_tracked_heap_is_stable_bounded_and_scoped(self):
+        evidence = self.reference["full_binary_corpus_tracked_heap"]
+        self.assertTrue(evidence["all_match"])
+        self.assertEqual(evidence["sample_count"], 14)
+        self.assertEqual(evidence["matched_count"], 14)
+        self.assertEqual(evidence["attempted_detect_count"], 14 * 292)
+        self.assertEqual(evidence["accepted_detect_count"], 14 * 292)
+        self.assertEqual(evidence["detect_error_count"], 0)
+        self.assertEqual(evidence["fallback_call_total"], 0)
+        measurement = evidence["runtime_measurement"]
+        self.assertEqual(measurement["repeat_count"], 3)
+        self.assertEqual(measurement["sample_runtime_count_per_repeat"], 14)
+        self.assertTrue(measurement["stable_projection_equal"])
+        self.assertTrue(measurement["projection_hash_emitted_by_spike"])
+        self.assertTrue(
+            measurement["projection_hash_independently_recomputed"]
+        )
+        self.assertEqual(
+            measurement["stable_projection_sha256"],
+            "d9f3b47535f6d61e7f7b21f6db7731cf290fa0cb8f5277d906ba5b2906dff4f4",
+        )
+        memory = measurement["memory"]
+        self.assertTrue(memory["transient_high_water_measured"])
+        self.assertEqual(memory["limit_bytes_per_sample_runtime"], 32 * 1024 * 1024)
+        self.assertEqual(memory["maximum_high_water_bytes"], 4_411_368)
+        self.assertEqual(
+            memory["maximum_high_water_sample"],
+            "ps3-type-1-elf.self",
+        )
+        self.assertEqual(memory["denied_allocation_count"], 0)
+        self.assertTrue(memory["all_runtimes_released_to_zero"])
+        self.assertFalse(memory["set_memory_limit_used"])
+        self.assertIn("custom tracking/limit allocator", evidence["scope"])
+        self.assertIn("not default-allocator", evidence["scope"])
+        self.assertIn("not", evidence["scope"])
+        self.assertIn("cross-platform proof", evidence["scope"])
 
     def test_representative_format_runtime_matrix_is_stable_and_scoped(self):
         matrix = self.reference["representative_format_runtime_matrix"]

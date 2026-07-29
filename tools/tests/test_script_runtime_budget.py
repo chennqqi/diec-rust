@@ -74,6 +74,12 @@ class ScriptRuntimeBudgetTests(unittest.TestCase):
             derivation["binary_corpus_operation_anchor"]["total"],
             20_947,
         )
+        self.assertEqual(
+            derivation[
+                "modern_heap_candidate_to_tracked_high_water_ratio_floor"
+            ],
+            7,
+        )
         self.assertTrue(derivation["not_observed_runtime_maxima"])
 
     def test_units_do_not_conflate_heap_stack_fuel_and_time(self):
@@ -114,6 +120,60 @@ class ScriptRuntimeBudgetTests(unittest.TestCase):
         )
         self.assertFalse(
             evidence["real_corpus_heap_high_water_measured"]
+        )
+        self.assertTrue(
+            evidence[
+                "candidate_custom_allocator_real_corpus_heap_high_water_measured"
+            ]
+        )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_limit_bytes_per_sample_runtime"
+            ],
+            32 * 1024**2,
+        )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_maximum_high_water_bytes"
+            ],
+            4_411_368,
+        )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_maximum_high_water_sample"
+            ],
+            "ps3-type-1-elf.self",
+        )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_denied_allocation_count"
+            ],
+            0,
+        )
+        self.assertTrue(
+            evidence[
+                "candidate_custom_allocator_all_runtimes_released_to_zero"
+            ]
+        )
+        self.assertEqual(
+            evidence["candidate_custom_allocator_repeat_count"],
+            3,
+        )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_stable_projection_sha256"
+            ],
+            "d9f3b47535f6d61e7f7b21f6db7731cf290fa0cb8f5277d906ba5b2906dff4f4",
+        )
+        self.assertFalse(
+            evidence[
+                "candidate_custom_allocator_cross_platform_measured"
+            ]
+        )
+        self.assertFalse(
+            evidence[
+                "candidate_custom_allocator_is_production_backend"
+            ]
         )
         self.assertTrue(
             evidence["real_corpus_interrupt_poll_count_measured"]

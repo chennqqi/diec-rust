@@ -57,8 +57,13 @@ impl TrackingLimitAllocator {
     }
 
     fn rounded_size(size: usize) -> Option<usize> {
-        size.checked_add(ALLOC_ALIGNMENT - 1)
-            .map(|value| value / ALLOC_ALIGNMENT * ALLOC_ALIGNMENT)
+        let rounded = size
+            .checked_add(ALLOC_ALIGNMENT - 1)
+            .map(|value| value / ALLOC_ALIGNMENT * ALLOC_ALIGNMENT)?;
+        // `RustAllocator` prepends one alignment-sized header. Reject the request
+        // before delegation when that internal layout calculation would overflow.
+        rounded.checked_add(ALLOC_ALIGNMENT)?;
+        Some(rounded)
     }
 
     fn projected_live(&self, previous_size: usize, new_size: usize) -> Option<usize> {
@@ -166,5 +171,15 @@ unsafe impl Allocator for TrackingLimitAllocator {
         // SAFETY: the trait caller guarantees that `allocation` is live and belongs
         // to this allocator, which delegates its layout to `RustAllocator`.
         unsafe { RustAllocator::usable_size(allocation) }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::TrackingLimitAllocator;
+
+    #[test]
+    fn rounded_size_rejects_request_that_would_overflow_allocator_header() {
+        assert_eq!(TrackingLimitAllocator::rounded_size(usize::MAX), None);
     }
 }

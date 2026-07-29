@@ -120,8 +120,11 @@ def validate_sources(root: Path) -> tuple[
             "operation anchor 不等于 VM instruction，也不能从\n"
             "  单一 Binary corpus 的 poll/checkpoint count 推导跨格式 fuel",
             "signature\n  checkpoint 也不代表所有 HostApi 已覆盖",
-            "memory checkpoint 不是 eval 内瞬时\n  heap high-water",
-            "custom/\n  rust allocator 未证明等价限制前禁止启用",
+            "默认 allocator 的 memory checkpoint\n"
+            "  不是 eval 内瞬时 heap high-water",
+            "4,411,368-byte 最大瞬时\n  high-water",
+            "rquickjs 的 `set_memory_limit()` 在 custom\n"
+            "  allocator 下是 no-op",
         ),
         SOURCES["adr_runtime"],
     )
@@ -169,6 +172,8 @@ def validate_sources(root: Path) -> tuple[
             "每轮正常生命周期共触发 28 次 QuickJS-NG interrupt callback",
             "每轮固定 16,439 次，其中 compare 16,285 次、search\n154 次",
             "4,130 个 `Runtime::memory_usage()` checkpoint",
+            "`verify-binary-corpus-tracked-heap` 使用包裹 pinned",
+            "最大瞬时 high-water 为\n4,411,368 bytes",
             "七条原样上游规则。七类代表性格式规则共\n25 个 case",
             "不能观察 eval 内部瞬时 allocator high-water",
         ),
@@ -191,6 +196,7 @@ def validate_sources(root: Path) -> tuple[
     )
     isolated = runtime.get("isolated_eval_with_compatibility_overlay")
     corpus = runtime.get("full_binary_corpus_oracle")
+    tracked_corpus = runtime.get("full_binary_corpus_tracked_heap")
     format_matrix = runtime.get("representative_format_runtime_matrix")
     measurement = (
         corpus.get("runtime_measurement")
@@ -279,10 +285,69 @@ def validate_sources(root: Path) -> tuple[
         "full Binary runtime measurement evidence drift",
     )
     require(
+        isinstance(tracked_corpus, dict)
+        and tracked_corpus.get("all_match") is True
+        and tracked_corpus.get("sample_count") == 14
+        and tracked_corpus.get("matched_count") == 14
+        and tracked_corpus.get("attempted_detect_count") == 4088
+        and tracked_corpus.get("accepted_detect_count") == 4088
+        and tracked_corpus.get("detect_error_count") == 0
+        and tracked_corpus.get("fallback_call_total") == 0
+        and tracked_corpus.get("runtime_measurement", {}).get(
+            "repeat_count"
+        )
+        == 3
+        and tracked_corpus.get("runtime_measurement", {}).get(
+            "stable_projection_equal"
+        )
+        is True
+        and tracked_corpus.get("runtime_measurement", {}).get(
+            "projection_hash_independently_recomputed"
+        )
+        is True
+        and tracked_corpus.get("runtime_measurement", {}).get(
+            "stable_projection_sha256"
+        )
+        == "d9f3b47535f6d61e7f7b21f6db7731cf290fa0cb8f5277d906ba5b2906dff4f4"
+        and tracked_corpus.get("runtime_measurement", {})
+        .get("memory", {})
+        .get("limit_bytes_per_sample_runtime")
+        == 32 * MIB
+        and tracked_corpus.get("runtime_measurement", {})
+        .get("memory", {})
+        .get("maximum_high_water_bytes")
+        == 4_411_368
+        and tracked_corpus.get("runtime_measurement", {})
+        .get("memory", {})
+        .get("denied_allocation_count")
+        == 0
+        and tracked_corpus.get("runtime_measurement", {})
+        .get("memory", {})
+        .get("all_runtimes_released_to_zero")
+        is True
+        and tracked_corpus.get("runtime_measurement", {})
+        .get("memory", {})
+        .get("set_memory_limit_used")
+        is False,
+        "tracked full Binary heap evidence drift",
+    )
+    require(
         isinstance(fixture, dict)
         and fixture.get("interrupt_handler_calls") == 17
         and fixture.get("memory_limit_bytes") == 4 * MIB
         and fixture.get("memory_limit_observed") is True
+        and fixture.get("tracking_allocator", {}).get(
+            "denied_allocation_count"
+        )
+        == 1
+        and fixture.get("tracking_allocator", {}).get(
+            "live_bytes_after_drop"
+        )
+        == 0
+        and fixture.get("tracking_allocator", {}).get(
+            "same_context_recovered"
+        )
+        is True
         and fixture.get("stack_limit", {}).get("bytes") == 128 * KIB
         and fixture.get("stack_limit", {}).get("overflow_observed")
         is True
@@ -350,7 +415,10 @@ def build_candidate(root: Path) -> dict[str, Any]:
     runtime = reports["runtime_report"]
     isolated = runtime["isolated_eval_with_compatibility_overlay"]
     corpus = runtime["full_binary_corpus_oracle"]
+    tracked_corpus = runtime["full_binary_corpus_tracked_heap"]
     measurement = corpus["runtime_measurement"]
+    tracked_measurement = tracked_corpus["runtime_measurement"]
+    tracked_memory = tracked_measurement["memory"]
     format_matrix = runtime["representative_format_runtime_matrix"]
     rule_bytes = isolated["bytes"]
     operation_anchor = (
@@ -460,6 +528,9 @@ def build_candidate(root: Path) -> dict[str, Any]:
             "modern_deadline_fraction_of_scan": "1/3",
             "legacy_deadline_fraction_of_scan": "1/2",
             "not_observed_runtime_maxima": True,
+            "modern_heap_candidate_to_tracked_high_water_ratio_floor": (
+                modern_heap // tracked_memory["maximum_high_water_bytes"]
+            ),
         },
         "evidence_boundary": {
             "fault_injection_only": {
@@ -471,6 +542,30 @@ def build_candidate(root: Path) -> dict[str, Any]:
             "maximum_active_include_depth_observed": 2,
             "maximum_include_evaluations_observed": 30,
             "real_corpus_heap_high_water_measured": False,
+            "candidate_custom_allocator_real_corpus_heap_high_water_measured": True,
+            "candidate_custom_allocator_limit_bytes_per_sample_runtime": (
+                tracked_memory["limit_bytes_per_sample_runtime"]
+            ),
+            "candidate_custom_allocator_maximum_high_water_bytes": (
+                tracked_memory["maximum_high_water_bytes"]
+            ),
+            "candidate_custom_allocator_maximum_high_water_sample": (
+                tracked_memory["maximum_high_water_sample"]
+            ),
+            "candidate_custom_allocator_denied_allocation_count": (
+                tracked_memory["denied_allocation_count"]
+            ),
+            "candidate_custom_allocator_all_runtimes_released_to_zero": (
+                tracked_memory["all_runtimes_released_to_zero"]
+            ),
+            "candidate_custom_allocator_repeat_count": tracked_measurement[
+                "repeat_count"
+            ],
+            "candidate_custom_allocator_stable_projection_sha256": (
+                tracked_measurement["stable_projection_sha256"]
+            ),
+            "candidate_custom_allocator_cross_platform_measured": False,
+            "candidate_custom_allocator_is_production_backend": False,
             "real_corpus_lifecycle_memory_checkpoints_measured": True,
             "real_corpus_memory_checkpoint_count": measurement[
                 "memory"
@@ -574,7 +669,10 @@ def build_candidate(root: Path) -> dict[str, Any]:
             ),
             "limit-1/exact/+1 covers all four fields without reset",
             "infinite JS and native loops stop under fuel and deadline",
-            "custom allocator is rejected or proves an equivalent heap limit",
+            (
+                "custom allocator passes sanitizer and cross-platform "
+                "acceptance before production backend adoption"
+            ),
             "all format lifecycles pass resource-bound differentials",
             "Windows, Linux, and macOS CPU/heap/stack evidence passes",
             "Rust, CLI, JSON, C, Go, and Python expose one failure contract",
