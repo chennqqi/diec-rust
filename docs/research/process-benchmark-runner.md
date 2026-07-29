@@ -147,4 +147,6 @@ python tools/benchmark/run_process_benchmark.py \
    overhead 分层；
 3. 对相同 bytes/options 采集 Rust 与 upstream 成对报告；
 4. 评审并冻结 latency、p95、peak memory、产物/部署大小和默认资源限制；
-5. 在 Windows/macOS 重复验证，并明确无法等价的 case。
+5. Windows 已明确只复用 warm；在 macOS 执行已固定的
+   `MS_INVALIDATE` + `mincore` runtime candidate，并只在逐路径后验等价时接入
+   平台 controller。

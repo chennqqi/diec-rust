@@ -31,7 +31,7 @@ ADR 0007 已被 ADR 0011 Superseded，不属于当前待接受集合。机器清
 | 0012 | 全 scan 嵌套预算有限，legacy high-resource 仍有 hard ceiling | production budget、Rust 全 limit 边界与固定 high-ratio/畸形 corpus 的 sanitizer/fuzz replay、跨平台资源与 waiver |
 | 0013 | short read/I/O/seek/range fail closed，不复制未初始化尾部 | production ByteSource、跨 adapter typed error、fuzz/sanitizer 与 waiver |
 | 0014 | safe canonical 不跟随枚举 link；legacy alias 仍受 cycle/TOCTOU/budget hard stop | production TargetExpander、边界/TOCTOU/root confinement、Windows/macOS 与跨语言 waiver |
-| 0015 | warm、file-content-nonresident-metadata-warm、dedicated system-cold 三层，拒绝通用 cold | dedicated authority/isolation、macOS 策略 |
+| 0015 | warm、file-content-nonresident-metadata-warm、dedicated system-cold 三层，拒绝通用 cold | dedicated authority/isolation、macOS runtime candidate/closure |
 
 ## 评审约束
 
@@ -50,7 +50,9 @@ ADR 0007 已被 ADR 0011 Superseded，不属于当前待接受集合。机器清
   的 warm/file-content 配对，但不能外推到 dedicated system-cold。Windows
   策略评审输入已用 native read-only probe 固定为 warm 可复用、第二层
   unsupported、system-cold 需 dedicated infrastructure；这不替代 macOS
-  strategy 或 Windows dedicated 实验。
+  runtime 或 Windows dedicated 实验。macOS 策略评审输入已进一步固定
+  XNU flag 契约与 `MS_INVALIDATE` + `mincore` 候选，但预执行计划不能替代
+  Darwin 双轮 runtime 或 fixed-closure integration。
 
 ## 可重复校验
 

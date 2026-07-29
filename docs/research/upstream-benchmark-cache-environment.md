@@ -144,7 +144,11 @@ SHA-256；在两个独立断网容器中执行只读观察，要求结果完全�
 
 - 对 cache-state taxonomy 的 ADR 评审；
 - dedicated VM/裸机的 `system-cold` 实验；
-- macOS 的等价或明确不可等价 cache-state contract；Windows 已由
+- macOS 已由
+  [`macos-benchmark-cache-state.md`](macos-benchmark-cache-state.md)
+  固定 `MS_INVALIDATE` + `mincore` runtime candidate，仍需在 Darwin
+  x86_64/APFS 双轮执行并据结果维持 unsupported 或推进 closure integration；
+  Windows 已由
   [`windows-benchmark-cache-state.md`](windows-benchmark-cache-state.md)
   固定为 warm 可复用、第二层 unsupported、system-cold 待 dedicated
   infrastructure；

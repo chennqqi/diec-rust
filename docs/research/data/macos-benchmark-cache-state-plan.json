@@ -1,0 +1,103 @@
+{
+  "admission": {
+    "file_content_state_admitted": false,
+    "reason": "Apple contracts identify a testable per-file candidate, but no Darwin runtime report or benchmark-closure integration exists; dedicated system-cold is also missing",
+    "system_cold_admitted": false,
+    "warm_admitted": true
+  },
+  "candidate_experiment": {
+    "collector": "tools/benchmark/collect_macos_cache_state_candidate.py",
+    "compiler_arguments": [
+      "-std=c11",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror"
+    ],
+    "fixture": "16 MiB deterministic regular file, unlinked before any cache operation",
+    "host": "native Darwin x86_64",
+    "repetitions": 2,
+    "required_observations": [
+      "all fixture pages resident after explicit touch",
+      "residency immediately after fd-local F_NOCACHE toggle",
+      "residency after MS_SYNC|MS_INVALIDATE",
+      "byte-identical structured observations across two fixtures"
+    ],
+    "safety": {
+      "benchmark_files_touched": false,
+      "system_cache_flush_executed": false,
+      "temporary_fixture_unlinked_before_probe": true
+    },
+    "validator": "tools/benchmark/validate_macos_cache_state_candidate.py"
+  },
+  "darwin_contract": {
+    "official_manuals": [
+      {
+        "contract": "turns data caching off or on for the file descriptor",
+        "interface": "fcntl(F_NOCACHE)",
+        "url": "https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/fcntl.2.html"
+      },
+      {
+        "contract": "returns current in-core residency per mapped page",
+        "interface": "mincore",
+        "url": "https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/mincore.2.html"
+      },
+      {
+        "contract": "invalidates cached data in the mapped range",
+        "interface": "msync(MS_INVALIDATE)",
+        "url": "https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/msync.2.html"
+      },
+      {
+        "contract": "advises that the mapped range is not expected to be accessed soon; it is not an eviction proof",
+        "interface": "madvise(MADV_DONTNEED)",
+        "url": "https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/madvise.2.html"
+      }
+    ],
+    "xnu_commit": "f6217f891ac0bb64f3d375211650a4c1ff8ca1ea",
+    "xnu_repository": "https://github.com/apple-oss-distributions/xnu",
+    "xnu_sources": {
+      "bsd/kern/kern_descrip.c": {
+        "evidence": "F_NOCACHE toggles fileglob FNOCACHE and F_GLOBAL_NOCACHE toggles vnode nocache; neither fcntl case performs an eviction or residency check",
+        "sha256": "480cfed4e987be874bd71fb6933c254adf9fb1f36de8496dee8f351b18da13b1",
+        "url": "https://raw.githubusercontent.com/apple-oss-distributions/xnu/f6217f891ac0bb64f3d375211650a4c1ff8ca1ea/bsd/kern/kern_descrip.c"
+      },
+      "bsd/sys/fcntl.h": {
+        "evidence": "F_NOCACHE is fd-local and F_GLOBAL_NOCACHE is global for the file",
+        "sha256": "0f93c8918a70ffafe20bfe9c72e671fde67438cbee9f9de8c2f87b5c704c9a9e",
+        "url": "https://raw.githubusercontent.com/apple-oss-distributions/xnu/f6217f891ac0bb64f3d375211650a4c1ff8ca1ea/bsd/sys/fcntl.h"
+      }
+    }
+  },
+  "evaluated_on": "2026-07-30",
+  "platform": "macos-x86_64-cache-state",
+  "result": "infrastructure_ready_runtime_missing",
+  "schema_version": 1,
+  "sources": {
+    "tools/benchmark/collect_macos_cache_state_candidate.py": "106af91160d71990ac48bcb3f6e09c9196ae2fb2d71bcc8fbe21cafa54a2aad3",
+    "tools/benchmark/probe_macos_file_content_cache.c": "4243aaf385bdf9a789ab76e4887dff174c76aede4878308e24d102370f7d07ea",
+    "tools/benchmark/validate_macos_cache_state_candidate.py": "c876453afd39d91523d98b727156c419414d1f53379fc5e58fd6dc779d97a569"
+  },
+  "strategy": {
+    "file_content_nonresident_metadata_warm": {
+      "candidate": "fully warm an mmap, apply msync(MS_SYNC|MS_INVALIDATE), then require per-page mincore residency to be zero",
+      "rejected_substitutes": [
+        "F_NOCACHE or F_GLOBAL_NOCACHE without eviction proof",
+        "MADV_DONTNEED without mincore postcondition",
+        "a successful control call without per-page evidence"
+      ],
+      "status": "runtime_candidate_not_admitted"
+    },
+    "generic_cold": {
+      "status": "forbidden"
+    },
+    "system_cold": {
+      "basis": "no reviewed public per-process contract proves system-wide file data and metadata cold; use a disposable dedicated reboot boundary",
+      "status": "dedicated_reboot_only_not_admitted"
+    },
+    "warm": {
+      "basis": "runner-defined warmup with no eviction",
+      "status": "portable_name_allowed"
+    }
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

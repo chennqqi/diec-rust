@@ -165,5 +165,6 @@ PIDs。
 - 若选择全局 cold，建立隔离 VM/裸机 controller 与前后验证；
 - 三次独立 session、跨 reboot/日期与 physical-core/SMT/frequency 控制；
 - Rust/upstream 随机化成对测量；
-- Windows/macOS 等价或明确不可等价策略；
+- macOS `MS_INVALIDATE` + `mincore` runtime candidate 的 Darwin 执行与
+  fixed-closure integration；Windows 已固定为只复用 warm；
 - 评审后的 latency/p95/RSS/size/default-limit thresholds。

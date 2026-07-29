@@ -87,7 +87,25 @@ Windows 策略评审输入已固定到原生 build 26100/NTFS 的双次只读观
 
 机器证据和官方 Win32 契约见
 [`windows-benchmark-cache-state.md`](../../research/windows-benchmark-cache-state.md)。
-macOS strategy 仍待单独评审。
+
+macOS 策略评审输入固定 Apple XNU
+`f6217f891ac0bb64f3d375211650a4c1ff8ca1ea` 与 archived system-call
+manual：
+
+- `warm` 可复用；
+- `F_NOCACHE` 只切换 fd-local flag，`F_GLOBAL_NOCACHE` 切换 vnode
+  nocache flag；固定 XNU `fcntl` case 本身没有 eviction/residency 操作；
+- `MADV_DONTNEED` 只是 advice，不满足后验；
+- `msync(MS_SYNC|MS_INVALIDATE)` + per-page `mincore=0` 是
+  `file-content-nonresident-metadata-warm` 的 runtime candidate，但在固定
+  Darwin x86_64/APFS 双轮报告与 benchmark closure 集成前不得 admission；
+- `system-cold` 只接受 disposable dedicated host 的 reboot boundary，当前
+  未建立。
+
+预执行计划、候选 collector/validator 与源码证据见
+[`macos-benchmark-cache-state.md`](../../research/macos-benchmark-cache-state.md)。
+它只操作 unlink 后的 temporary fixture，不是 runtime evidence 或 performance
+baseline。
 
 ## Alternatives considered
 
@@ -152,6 +170,7 @@ load 对内容 I/O 的敏感性。
 - [`upstream-benchmark-linux-qt5-cache-environment.json`](../../research/data/upstream-benchmark-linux-qt5-cache-environment.json)
 - [`upstream-benchmark-linux-qt5-file-content-performance.json`](../../research/data/upstream-benchmark-linux-qt5-file-content-performance.json)
 - [`upstream-benchmark-windows-cache-environment.json`](../../research/data/upstream-benchmark-windows-cache-environment.json)
+- [`macos-benchmark-cache-state-plan.json`](../../research/data/macos-benchmark-cache-state-plan.json)
 - Linux kernel `drop_caches`、Linux man-pages namespaces/fadvise 与 Docker
   overlay2 page-cache 官方文档，链接见调研正文。
 
@@ -165,5 +184,6 @@ load 对内容 I/O 的敏感性。
   before-run 0-resident 证明；
 - future system-cold job 必须验证 dedicated authority/isolation；
 - testing design、风险和 Phase 0 gate 使用相同 taxonomy；
-- Windows 策略完成明确评审；macOS 策略仍须完成；
+- Windows/macOS 策略完成明确评审；macOS runtime candidate 仍须在 Darwin
+  执行并按结果保持 unsupported 或推进 closure integration；
 - 本 ADR 获得 Accepted/Rejected/Superseded 评审结论。

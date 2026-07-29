@@ -106,6 +106,6 @@ non-finite JSON 或 scope 发生变化都 fail closed。
   post-state 实验；
 - Windows 第二层是否存在可审计的 per-file eviction/residency 组合；在找到前
   保持 unsupported；
-- macOS 的等价或明确不可等价策略；
+- macOS 已固定的 `MS_INVALIDATE` + `mincore` candidate 的 Darwin runtime；
 - Rust/upstream 成对、跨 reboot/日期长期 session、physical-core/topology 和
   评审阈值。

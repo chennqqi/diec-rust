@@ -701,12 +701,18 @@ namespace；见
 第二层保持 unsupported，system-cold 等待 dedicated Windows infrastructure，
 见
 [`windows-benchmark-cache-state.md`](../research/windows-benchmark-cache-state.md)。
+macOS 又固定 Apple XNU `fcntl` flag 语义，并将
+`msync(MS_SYNC|MS_INVALIDATE)` + per-page `mincore=0` 定义为第二层的
+runtime candidate；候选只操作 unlink 后的 16 MiB temporary fixture，双轮
+Darwin 报告及 benchmark closure 尚未执行，因此仍不 admission，见
+[`macos-benchmark-cache-state.md`](../research/macos-benchmark-cache-state.md)。
 固定 Linux Qt5 的 ELF、realpath 去重动态依赖闭包和 2,268 个规则资产 size
 口径见
 [`upstream-deployment-size.md`](../research/upstream-deployment-size.md)；
 同时保留 binary+rules 与 full-closure+rules，禁止只用动态链接 ELF 本体比较。
-这些证据尚无 Rust 成对数据、dedicated system-cold、macOS cache-state
-strategy、可证明 topology 的 physical-core 或跨 reboot/日期长期 session，
+这些证据尚无 Rust 成对数据、dedicated system-cold、macOS runtime candidate
+与 fixed-closure integration、可证明 topology 的 physical-core 或跨
+reboot/日期长期 session，
 也无跨平台发行包，且未冻结阈值或默认限制。
 
 回归阈值在首个 Rust vertical slice 形成同 bytes/options 成对报告后冻结。小于

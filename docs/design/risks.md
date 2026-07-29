@@ -508,12 +508,17 @@ baseline 的变更都要检查本表。
   `FILE_FLAG_NO_BUFFERING` 与 process-local `EmptyWorkingSet` 均不能证明
   Linux 第二层等价；Windows 因而只复用 warm，见
   [`windows-benchmark-cache-state.md`](../research/windows-benchmark-cache-state.md)。
+  macOS 策略也已固定 Apple XNU flag 语义，并只把
+  `MS_SYNC|MS_INVALIDATE` + per-page `mincore=0` 作为尚未运行的候选；临时
+  fixture capability 不 admission benchmark state，见
+  [`macos-benchmark-cache-state.md`](../research/macos-benchmark-cache-state.md)。
   同一固定 ELF 的 16 个 realpath 去重动态依赖、2,268 个规则资产及两种部署
   size 口径也已绑定，见
   [`upstream-deployment-size.md`](../research/upstream-deployment-size.md)。
 - **验证**：Rust 同 bytes/options 成对报告后冻结回归阈值，持续 trend；补
   dedicated system-cold 基础设施、physical-core/topology 与跨 reboot/日期长期
-  session、macOS cache-state strategy、Rust 成对/发行包 size 和目标平台；
+  session、macOS runtime candidate/closure integration、Rust 成对/发行包
+  size 和目标平台；
   每个已支持 cache state 分别验证和冻结阈值。
 - **关闭**：Phase 6 目标及阈值通过。阈值未冻结前不得声称性能更优。
 

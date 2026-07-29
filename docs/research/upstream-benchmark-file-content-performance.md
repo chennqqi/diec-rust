@@ -151,7 +151,7 @@ reclaim、overlayfs host cache 或 system-global cold 状态。`system-cold` 仍
   100 个成对 performance samples，且每个 measured run 都携带 plan、preflight、
   controller identity 与 before-run page evidence；
 - `P0-BLOCK-006` 仍为 Open：没有 Rust 同 case 配对、dedicated system-cold、
-  长期 session、跨平台 cache-state 策略或评审阈值；
+  长期 session、跨平台 cache-state runtime/closure 或评审阈值；
 - 不能把本报告与历史 warm baseline 的绝对 RSS/latency 拼接为同一 trend，因为
   launcher、计时边界、warm 定义和 RSS collector 不同；
 - Phase 1/6 应把已形成的 v2 contract 纳入 Linux CI，并为 Windows/macOS 采用
@@ -175,5 +175,6 @@ timing，因此再次执行不会要求输出逐字节相同；可重复的是�
 - 对相同 case 建立 upstream/Rust 随机化或交错配对；
 - 至少跨日期/重启的长期 session 与 physical-core/topology/frequency 证据；
 - dedicated system-cold authority/isolation/controller；
-- Windows/macOS 等价或明确不可等价的 cache-state 策略；
+- macOS `MS_INVALIDATE` + `mincore` runtime candidate 的 Darwin 执行与
+  fixed-closure integration；Windows 已固定为只复用 warm；
 - 经评审的 latency/p95/RSS、发行包 size 和默认资源限制阈值。

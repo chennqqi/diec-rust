@@ -204,6 +204,11 @@ Phase 0 计划形成：
   cache flush 需要当前 token 不具备的 privilege，并明确
   `NO_BUFFERING`、flush 与 process working-set 操作不能冒充 Linux per-file
   nonresident 或 dedicated system-cold（In Review）。
+- [`macos-benchmark-cache-state.md`](macos-benchmark-cache-state.md)：
+  固定 Apple XNU commit、`fcntl`/`mincore`/`msync`/`madvise` 契约，并建立
+  unlink 后 temporary fixture 的双轮 `MS_INVALIDATE` + residency
+  runtime-candidate 计划；当前仍无 Darwin observation，不 admission 第二层或
+  system-cold（In Review）。
 - [`upstream-build-baseline.md`](upstream-build-baseline.md)：固定 Linux Qt5/qmake CLI 构建与行为实验（Draft）。
 - [`upstream-cmake-differential.md`](upstream-cmake-differential.md)：官方 CMake CLI 构建及与 qmake 的原始输出差分（Draft）。
 - [`upstream-qt6-differential.md`](upstream-qt6-differential.md)：固定 Qt 6 CMake CLI 构建、Qt 5/Qt 6 原始差分与规则 warning 最小化（Draft）。
