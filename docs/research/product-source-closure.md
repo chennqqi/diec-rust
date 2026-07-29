@@ -172,8 +172,8 @@ python -m unittest discover -s tools\tests `
 - crate/backend 划分应由能力和单向依赖决定，不应照抄 13 组件或 237 源文件图。
 - Rust 可以替换 native backend，但每项删除或替换都要由能力矩阵和差分结果证明，
   不能仅以 archive 未抽取为由缩小功能。
-- 禁止直接翻译组合授权未评审的 XUCL 与条款未闭合的 RAR decoder；优先选择
-  来源、许可证和资源边界明确的纯 Rust 实现。
+- 禁止直接翻译组合授权未评审的 XUCL 与 notice/归属书面评审未闭合的 RAR
+  decoder；优先选择来源、许可证和资源边界明确的纯 Rust 实现。
 - Phase 1 建立 workspace 后，最终 Rust staticlib 和 CLI 必须按 target/feature
   自动生成 compile/native/SBOM/NOTICE 闭包，并与本报告的能力范围而非代码行
   做比较。

@@ -153,8 +153,8 @@ Phase 0 计划形成：
   六文件依赖闭包和 MIT/copyright 归属（In Review）。
 - [`embedded-compression-origins.md`](embedded-compression-origins.md)：XArchive 聚合 Brotli/Zstandard 的固定官方源码、token 指纹与许可证追溯（Draft）。
 - [`rar-decoder-provenance.md`](rar-decoder-provenance.md)：XArchive RAR
-  decoder 与固定 UnRAR 7.1.10 的 token 来源、许可证 notice 差异和 Rust
-  复用门禁（Draft）。
+  decoder 与 RARLAB 官方 UnRAR 7.13 归档/固定镜像的逐文件来源、许可证及
+  acknowledgments 差异和 Rust 复用门禁（Draft）。
 - [`yara-license-closure.md`](yara-license-closure.md)：XYara 内嵌 YARA v4.5.2 的实际构建闭包、官方内容映射、TLSH/Authenticode/Bison 许可证和 compiler warning（Draft）。
 - [`rule-asset-provenance.md`](rule-asset-provenance.md)：Detect release 与 XYara/XPEID/signatures 数据树的逐文件哈希、历史、可见许可信号、CLI 可达性和打包路径（Draft）。
 - [`runtime-rule-assets-license.md`](runtime-rule-assets-license.md)：`db`/`db_extra`/
@@ -308,8 +308,8 @@ Phase 0 计划形成：
   CUDA 排除关系和根 MIT LICENSE hash。
 - [`data/embedded-compression-origins.json`](data/embedded-compression-origins.json)：聚合 Brotli/Zstandard 与固定官方 commit/生成物/许可证的内容对照。
 - [`data/rar-decoder-origin.json`](data/rar-decoder-origin.json)：固定
-  XArchive RAR decoder 的引入历史、UnRAR 7.1.10 镜像、两档 token shingle
-  与开放法律评审。
+  XArchive RAR decoder 的引入历史、RARLAB 官方归档与镜像的 159-file closure、
+  两档 token shingle、许可证/归属证据与开放法律评审。
 - [`data/yara-license-closure-linux.json`](data/yara-license-closure-linux.json)：YARA 51-object target、109-file dependency closure、官方 v4.5.2/TLSH 来源链和文件级许可证证据。
 - [`data/rule-assets.json`](data/rule-assets.json)：五组固定 YARA/PEiD/signature 资产、逐文件历史/哈希、release/component 差异及 CLI/GUI/打包可达性证据。
 - [`data/runtime-rule-assets-license.json`](data/runtime-rule-assets-license.json)：

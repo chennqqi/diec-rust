@@ -10,6 +10,7 @@ import pathlib
 import re
 import subprocess
 import sys
+import tarfile
 from typing import Any
 
 
@@ -21,8 +22,25 @@ XARCHIVE_INTRODUCTION_COMMIT = (
 XARCHIVE_REMOTE = "https://github.com/horsicq/XArchive.git"
 UNRAR_COMMIT = "9f1ce54025e0175634cbdb21b06341aa29eba591"
 UNRAR_REMOTE = "https://github.com/pmachapman/unrar.git"
-UNRAR_RELEASE = "7.1.10"
-UNRAR_OFFICIAL_SOURCE_URL = "https://www.rarlab.com/rar_add.htm"
+UNRAR_MIRROR_UPDATE_LABEL = "7.1.10"
+UNRAR_SOURCE_VERSION = "7.13"
+UNRAR_SOURCE_DATE = "2025-07-28"
+UNRAR_OFFICIAL_SOURCE_PAGE = "https://www.rarlab.com/rar_add.htm"
+UNRAR_OFFICIAL_ARCHIVE_URL = (
+    "https://www.rarlab.com/rar/unrarsrc-7.1.10.tar.gz"
+)
+UNRAR_OFFICIAL_ARCHIVE_SHA256 = (
+    "72a9ccca146174f41876e8b21ab27e973f039c6d10b13aabcb320e7055b9bb98"
+)
+UNRAR_OFFICIAL_ROOT = "unrar"
+EXPECTED_LINE_ENDING_ONLY_PATHS = {
+    "UnRAR.vcxproj",
+    "UnRARDll.vcxproj",
+    "acknow.txt",
+    "dll.def",
+    "dll.rc",
+    "dll_nocrypt.def",
+}
 SHINGLE_LENGTHS = (12, 64)
 TOKEN_PATTERN = re.compile(
     r"""//[^\n]*|/\*.*?\*/|"""
@@ -108,6 +126,87 @@ def source_files(root: pathlib.Path) -> list[pathlib.Path]:
         for path in root.iterdir()
         if path.is_file() and path.suffix in {".cpp", ".hpp"}
     )
+
+
+def read_official_archive(
+    path: pathlib.Path,
+    expected_sha256: str = UNRAR_OFFICIAL_ARCHIVE_SHA256,
+) -> dict[str, bytes]:
+    archive_bytes = path.read_bytes()
+    if sha256(archive_bytes) != expected_sha256:
+        raise ValueError("official UnRAR archive SHA-256 mismatch")
+    result = {}
+    with tarfile.open(path, mode="r:gz") as archive:
+        for member in archive.getmembers():
+            pure = pathlib.PurePosixPath(member.name)
+            if pure.is_absolute() or ".." in pure.parts:
+                raise ValueError(
+                    f"unsafe official archive member: {member.name}"
+                )
+            if not member.isfile():
+                continue
+            if (
+                not pure.parts
+                or pure.parts[0] != UNRAR_OFFICIAL_ROOT
+                or len(pure.parts) != 2
+            ):
+                raise ValueError(
+                    f"unexpected official archive path: {member.name}"
+                )
+            relative = pure.parts[1]
+            if relative in result:
+                raise ValueError(
+                    f"duplicate official archive member: {member.name}"
+                )
+            extracted = archive.extractfile(member)
+            if extracted is None:
+                raise ValueError(
+                    f"cannot read official archive member: {member.name}"
+                )
+            result[relative] = extracted.read()
+    if not result:
+        raise ValueError("official UnRAR archive is empty")
+    return result
+
+
+def normalize_line_endings(data: bytes) -> bytes:
+    return data.replace(b"\r\n", b"\n")
+
+
+def official_archive_comparison(
+    archive_files: dict[str, bytes],
+    mirror_root: pathlib.Path,
+) -> dict[str, Any]:
+    missing = sorted(
+        path
+        for path in archive_files
+        if not (mirror_root / path).is_file()
+    )
+    if missing:
+        raise ValueError(f"official files missing in mirror: {missing}")
+    exact = []
+    line_ending_only = []
+    content_mismatch = []
+    for relative, official_data in sorted(archive_files.items()):
+        mirror_data = (mirror_root / relative).read_bytes()
+        if official_data == mirror_data:
+            exact.append(relative)
+        elif normalize_line_endings(
+            official_data
+        ) == normalize_line_endings(mirror_data):
+            line_ending_only.append(relative)
+        else:
+            content_mismatch.append(relative)
+    return {
+        "official_regular_file_count": len(archive_files),
+        "byte_identical_file_count": len(exact),
+        "line_ending_only_file_count": len(line_ending_only),
+        "line_ending_only_files": line_ending_only,
+        "content_mismatch_file_count": len(content_mismatch),
+        "content_mismatch_files": content_mismatch,
+        "missing_in_mirror_count": len(missing),
+        "missing_in_mirror": missing,
+    }
 
 
 def file_record(path: pathlib.Path, root: pathlib.Path) -> dict[str, Any]:
@@ -213,11 +312,17 @@ def introduction_record(xarchive_root: pathlib.Path) -> dict[str, Any]:
 def build_report(
     xarchive_root: pathlib.Path,
     unrar_root: pathlib.Path,
+    official_archive: pathlib.Path,
 ) -> dict[str, Any]:
     verify_checkout(
         xarchive_root, XARCHIVE_COMMIT, XARCHIVE_REMOTE
     )
     verify_checkout(unrar_root, UNRAR_COMMIT, UNRAR_REMOTE)
+    archive_bytes = official_archive.read_bytes()
+    archive_files = read_official_archive(official_archive)
+    archive_comparison = official_archive_comparison(
+        archive_files, unrar_root
+    )
     decoder_paths = [
         xarchive_root / "Algos/xrardecoder.cpp",
         xarchive_root / "Algos/xrardecoder.h",
@@ -240,6 +345,15 @@ def build_report(
     ]
     license_data = (unrar_root / "license.txt").read_bytes()
     readme_data = (unrar_root / "readme.txt").read_bytes()
+    version_data = (unrar_root / "version.hpp").read_bytes()
+    official_license_data = archive_files["license.txt"]
+    official_readme_data = archive_files["readme.txt"]
+    official_acknowledgments_data = archive_files["acknow.txt"]
+    official_source_paths = sorted(
+        path
+        for path in archive_files
+        if pathlib.PurePosixPath(path).suffix in {".cpp", ".hpp"}
+    )
     latest_before_introduction = run_git(
         unrar_root,
         "log",
@@ -277,12 +391,63 @@ def build_report(
         "reference_readme_identifies_generated_unrar_source": (
             b"generated from RAR source automatically" in readme_data
         ),
+        "official_archive_sha256_is_fixed": (
+            sha256(archive_bytes) == UNRAR_OFFICIAL_ARCHIVE_SHA256
+        ),
+        "official_and_mirror_declare_unrar_7_13": (
+            b"#define RARVER_MAJOR     7" in version_data
+            and b"#define RARVER_MINOR    13" in version_data
+            and b"#define RARVER_DAY      28" in version_data
+            and b"#define RARVER_MONTH     7" in version_data
+            and b"#define RARVER_YEAR   2025" in version_data
+            and archive_files["version.hpp"] == version_data
+        ),
+        "all_150_official_source_files_are_byte_identical_to_mirror": (
+            len(official_source_paths) == 150
+            and all(
+                archive_files[path] == (unrar_root / path).read_bytes()
+                for path in official_source_paths
+            )
+        ),
+        "all_159_official_files_match_after_line_ending_normalization": (
+            archive_comparison["official_regular_file_count"] == 159
+            and archive_comparison["byte_identical_file_count"] == 153
+            and set(archive_comparison["line_ending_only_files"])
+            == EXPECTED_LINE_ENDING_ONLY_PATHS
+            and archive_comparison["content_mismatch_file_count"] == 0
+            and archive_comparison["missing_in_mirror_count"] == 0
+        ),
+        "official_and_mirror_license_are_byte_identical": (
+            official_license_data == license_data
+        ),
+        "official_and_mirror_readme_are_byte_identical": (
+            official_readme_data == readme_data
+        ),
+        "official_acknowledgments_contain_third_party_evidence": (
+            b"Dmitry Shkarin PPMII" in official_acknowledgments_data
+            and b"Szymon Stefanek AES" in official_acknowledgments_data
+            and b"Copyright (c) 2004-2006 Intel Corporation"
+            in official_acknowledgments_data
+            and b"Redistribution and use in source and binary forms"
+            in official_acknowledgments_data
+        ),
+        "decoder_files_omit_official_third_party_acknowledgments": (
+            all(
+                marker not in data
+                for data in decoder_data
+                for marker in (
+                    b"Dmitry Shkarin",
+                    b"Szymon Stefanek",
+                    b"Intel Corporation",
+                )
+            )
+        ),
     }
     if not all(relationships.values()):
         raise ValueError("RAR decoder origin relationships failed")
 
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "generator": "tools/upstream/audit_rar_decoder_origin.py",
         "generator_sha256": sha256(pathlib.Path(__file__).read_bytes()),
         "upstream_commit": UPSTREAM_COMMIT,
@@ -300,8 +465,9 @@ def build_report(
             "kind": "Git mirror of RARLAB portable UnRAR source",
             "remote": UNRAR_REMOTE,
             "commit": UNRAR_COMMIT,
-            "mirror_release": UNRAR_RELEASE,
-            "official_source_url": UNRAR_OFFICIAL_SOURCE_URL,
+            "mirror_update_label": UNRAR_MIRROR_UPDATE_LABEL,
+            "source_version": UNRAR_SOURCE_VERSION,
+            "source_date": UNRAR_SOURCE_DATE,
             "source_file_count": len(reference_files),
             "license": file_record(
                 unrar_root / "license.txt", unrar_root
@@ -309,6 +475,32 @@ def build_report(
             "readme": file_record(
                 unrar_root / "readme.txt", unrar_root
             ),
+        },
+        "official_release": {
+            "source_page": UNRAR_OFFICIAL_SOURCE_PAGE,
+            "archive_url": UNRAR_OFFICIAL_ARCHIVE_URL,
+            "archive_path_label": "unrarsrc-7.1.10.tar.gz",
+            "archive_bytes": len(archive_bytes),
+            "archive_sha256": sha256(archive_bytes),
+            "archive_root": UNRAR_OFFICIAL_ROOT,
+            "source_version": UNRAR_SOURCE_VERSION,
+            "source_date": UNRAR_SOURCE_DATE,
+            "license": {
+                "path": "license.txt",
+                "bytes": len(official_license_data),
+                "sha256": sha256(official_license_data),
+            },
+            "readme": {
+                "path": "readme.txt",
+                "bytes": len(official_readme_data),
+                "sha256": sha256(official_readme_data),
+            },
+            "acknowledgments": {
+                "path": "acknow.txt",
+                "bytes": len(archive_files["acknow.txt"]),
+                "sha256": sha256(archive_files["acknow.txt"]),
+            },
+            "archive_to_mirror": archive_comparison,
         },
         "comparison": {
             "tokenization": (
@@ -320,8 +512,13 @@ def build_report(
         "license_observation": {
             "decoder_files_contain_mit_permission": True,
             "decoder_files_contain_unrar_distribution_notice": False,
+            "decoder_files_contain_official_third_party_acknowledgments":
+                False,
             "reference_requires_notice_for_modified_distribution": True,
             "reference_restricts_rar_compression_recreation": True,
+            "official_acknowledgments_include_public_domain_and_bsd":
+                True,
+            "third_party_attribution_review_complete": False,
             "legal_review_complete": False,
         },
         "implementation_constraint": {
@@ -345,11 +542,15 @@ def main() -> int:
     parser.add_argument(
         "--unrar-root", type=pathlib.Path, required=True
     )
+    parser.add_argument(
+        "--official-archive", type=pathlib.Path, required=True
+    )
     parser.add_argument("--output", type=pathlib.Path)
     args = parser.parse_args()
     report = build_report(
         args.xarchive_root.resolve(),
         args.unrar_root.resolve(),
+        args.official_archive.resolve(),
     )
     serialized = json.dumps(report, indent=2, sort_keys=True) + "\n"
     if args.output is None:

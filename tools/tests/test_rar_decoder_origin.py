@@ -1,12 +1,22 @@
 import hashlib
+import importlib.util
+import io
 import json
 import pathlib
+import tarfile
+import tempfile
 import unittest
 
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 REPORT_PATH = ROOT / "docs/research/data/rar-decoder-origin.json"
 TOOL_PATH = ROOT / "tools/upstream/audit_rar_decoder_origin.py"
+SPEC = importlib.util.spec_from_file_location(
+    "audit_rar_decoder_origin", TOOL_PATH
+)
+MODULE = importlib.util.module_from_spec(SPEC)
+assert SPEC is not None and SPEC.loader is not None
+SPEC.loader.exec_module(MODULE)
 
 
 class RarDecoderOriginReportTests(unittest.TestCase):
@@ -15,7 +25,7 @@ class RarDecoderOriginReportTests(unittest.TestCase):
         cls.report = json.loads(REPORT_PATH.read_text(encoding="utf-8"))
 
     def test_report_identity_and_relationships_are_fixed(self):
-        self.assertEqual(self.report["schema_version"], 1)
+        self.assertEqual(self.report["schema_version"], 2)
         self.assertEqual(
             self.report["generator"],
             "tools/upstream/audit_rar_decoder_origin.py",
@@ -80,7 +90,9 @@ class RarDecoderOriginReportTests(unittest.TestCase):
             reference["commit"],
             "9f1ce54025e0175634cbdb21b06341aa29eba591",
         )
-        self.assertEqual(reference["mirror_release"], "7.1.10")
+        self.assertEqual(reference["mirror_update_label"], "7.1.10")
+        self.assertEqual(reference["source_version"], "7.13")
+        self.assertEqual(reference["source_date"], "2025-07-28")
         self.assertEqual(reference["source_file_count"], 150)
         self.assertEqual(
             reference["license"]["sha256"],
@@ -120,10 +132,51 @@ class RarDecoderOriginReportTests(unittest.TestCase):
             },
         )
 
+    def test_official_archive_closes_the_mirror_identity(self):
+        official = self.report["official_release"]
+        self.assertEqual(
+            official["archive_url"], MODULE.UNRAR_OFFICIAL_ARCHIVE_URL
+        )
+        self.assertEqual(
+            official["archive_sha256"],
+            MODULE.UNRAR_OFFICIAL_ARCHIVE_SHA256,
+        )
+        self.assertEqual(official["archive_bytes"], 268008)
+        self.assertEqual(official["source_version"], "7.13")
+        self.assertEqual(official["source_date"], "2025-07-28")
+        self.assertEqual(
+            official["license"], self.report["reference"]["license"]
+        )
+        self.assertEqual(
+            official["readme"], self.report["reference"]["readme"]
+        )
+        comparison = official["archive_to_mirror"]
+        self.assertEqual(comparison["official_regular_file_count"], 159)
+        self.assertEqual(comparison["byte_identical_file_count"], 153)
+        self.assertEqual(
+            set(comparison["line_ending_only_files"]),
+            MODULE.EXPECTED_LINE_ENDING_ONLY_PATHS,
+        )
+        self.assertEqual(comparison["content_mismatch_files"], [])
+        self.assertEqual(comparison["missing_in_mirror"], [])
+
     def test_reuse_and_fixture_decisions_remain_closed(self):
         observation = self.report["license_observation"]
         constraint = self.report["implementation_constraint"]
         self.assertFalse(observation["legal_review_complete"])
+        self.assertFalse(
+            observation["third_party_attribution_review_complete"]
+        )
+        self.assertFalse(
+            observation[
+                "decoder_files_contain_official_third_party_acknowledgments"
+            ]
+        )
+        self.assertTrue(
+            observation[
+                "official_acknowledgments_include_public_domain_and_bsd"
+            ]
+        )
         self.assertFalse(constraint["copy_or_translation_approved"])
         self.assertFalse(
             constraint["compressed_fixture_redistribution_approved"]
@@ -131,6 +184,36 @@ class RarDecoderOriginReportTests(unittest.TestCase):
         self.assertFalse(
             constraint["oracle_use_copies_decoder_into_project"]
         )
+
+    def test_official_archive_parser_rejects_unsafe_paths(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = pathlib.Path(directory) / "unsafe.tar.gz"
+            with tarfile.open(path, "w:gz") as archive:
+                info = tarfile.TarInfo("../escape")
+                payload = b"unsafe"
+                info.size = len(payload)
+                archive.addfile(info, io.BytesIO(payload))
+            with self.assertRaisesRegex(
+                ValueError, "unsafe official archive member"
+            ):
+                MODULE.read_official_archive(
+                    path, hashlib.sha256(path.read_bytes()).hexdigest()
+                )
+
+    def test_line_ending_normalization_is_narrow(self):
+        self.assertEqual(
+            MODULE.normalize_line_endings(b"a\r\nb\n"), b"a\nb\n"
+        )
+        self.assertNotEqual(
+            MODULE.normalize_line_endings(b"content-a"),
+            MODULE.normalize_line_endings(b"content-b"),
+        )
+
+    def test_report_has_no_checkout_or_local_archive_paths(self):
+        serialized = REPORT_PATH.read_text(encoding="utf-8")
+        self.assertNotIn(str(ROOT), serialized)
+        self.assertNotIn("I:\\\\tmp", serialized)
+        self.assertNotIn("/tmp/", serialized)
 
 
 if __name__ == "__main__":

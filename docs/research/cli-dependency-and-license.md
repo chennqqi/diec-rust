@@ -134,7 +134,7 @@ LICENSE 的 vendored 代码。
 | `XArchive/3rdparty/lzma` | archive 在 link line；`LzmaDec.c.o` 1/2 被抽取 | `LzmaDec.c`、GNU ld inclusion reason | Igor Pavlov Public Domain；最终五文件依赖闭包已固定 |
 | `XArchive/3rdparty/ppmd` | archive 在 link line；4/4 member 未抽取 | `Ppmd7.c`、GNU ld map | Public Domain；仍是构建/archive 内容 |
 | `XArchive/3rdparty/zlib` | archive 在 link line；8/8 member 未抽取 | `src/zlib.h`、GNU ld map | zlib License；仍是构建/archive 内容 |
-| `XArchive/Algos` | 是，作为聚合源码 | `xarchive.cmake`、RAR token 来源报告 | Brotli/Zstd 已追溯；RAR decoder 与 UnRAR 7.1.10 高度重合但 notice 不一致；其余实现仍待逐文件分类 |
+| `XArchive/Algos` | 是，作为聚合源码 | `xarchive.cmake`、RAR 官方归档/token 来源报告 | Brotli/Zstd 已追溯；RAR decoder 与官方自报 UnRAR 7.13 高度重合但 notice/acknowledgments 不一致；其余实现仍待逐文件分类 |
 | `XArchive/Algos/xucldecoder.cpp` | 是；84 个 direct object 之一 | product source closure、官方 UCL 1.03 来源映射 | 外层 horsicq MIT；内嵌 UCL 技术分类为 GPL-2.0-or-later，XArchive 缺失 `ACC_LICENSE`；组合与不同书面授权仍须评审 |
 | `XCppfilt/3rdparty/cppfilt` | 否；默认构建 target | `cp-demangle.c` 等文件头 | GPL-2.0-or-later，并带文件级不限制链接的额外许可；另有 Public Domain 文件 |
 | `XYara/3rdparty/yara` | 否；51-object 默认构建 target | 官方 YARA v4.5.2 内容映射与 109-file `.o.d` closure | 主体为 BSD-3-Clause；vendored tree 未保存官方 `COPYING` |
@@ -187,9 +187,10 @@ byte-identical 链接重放和 GNU ld map 证明 22 个 member 中仅
 [`embedded-compression-origins.md`](embedded-compression-origins.md) 已把它们
 分别固定到 Brotli 1.2.0 MIT 和 Zstandard 1.6.0-dev BSD/GPLv2 官方来源。
 [`rar-decoder-provenance.md`](rar-decoder-provenance.md) 又把实际编译的
-RAR decoder 固定到 UnRAR 7.1.10 镜像：12-token 覆盖 94.21%、64-token
-覆盖 74.21%，但 XArchive 文件没有 UnRAR 修改分发 notice。书面评审前不得把
-该 decoder 直接复制或翻译进 Rust。
+RAR decoder 固定到自报 UnRAR 7.13 的 RARLAB 官方归档与镜像：官方 150 个
+`.cpp/.hpp` 与镜像逐字节相同，decoder 的 12/64-token 覆盖为
+94.21%/74.21%。XArchive 文件没有 UnRAR 修改分发 notice 或官方
+acknowledgments；书面评审前不得直接复制或翻译进 Rust。
 
 XCapstone/Capstone 的最终 ELF 贡献现已由
 [`xcapstone-license-closure.md`](xcapstone-license-closure.md) 固定：
@@ -219,8 +220,9 @@ XYara/YARA 当前 Linux target 也已由
 - XUCL 1.03 官方来源和精确 `ACC_LICENSE` 已完成；仍须取得 MIT/GPL 组合、
   不同书面授权和发布责任人的书面结论。
 - 为 XArchive 聚合 Brotli/Zstandard 恢复独立 LICENSE/NOTICE/attribution，
-  完成 Brotli 剩余约 1.4% token 分类，并对 RAR decoder 的 UnRAR notice/
-  复用边界取得书面结论；为 YARA/TLSH 恢复独立
+  完成 Brotli 剩余约 1.4% token 分类；RAR decoder 的官方源码/条款技术闭包
+  已完成，仍须对 UnRAR notice、第三方归属和复用边界取得书面结论；为
+  YARA/TLSH 恢复独立
   COPYING/LICENSE/NOTICE，并补 Windows/macOS/OpenSSL/qmake 闭包。
 - 区分正常扫描、`--info`、`--struct`、YARA/PEiD 数据和 GUI-only 路径的最小产物闭包。
 - YARA/PEiD/signatures 的 CLI 可达性已关闭；其 GUI/辅助 engine 运行闭包、

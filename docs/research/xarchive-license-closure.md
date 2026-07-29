@@ -68,10 +68,11 @@ LICENSE 文件。
 
 同一闭包中的 `Algos/xrardecoder.cpp/.h` 已由
 [`rar-decoder-provenance.md`](rar-decoder-provenance.md) 单独追溯：固定
-decoder 的 26,627 个 token 与 UnRAR 7.1.10 在 12-token 下覆盖 94.21%，
+decoder 的 26,627 个 token 与官方自报 UnRAR 7.13 在 12-token 下覆盖 94.21%，
 64-token 下仍覆盖 74.21%，跨 17 个长连续唯一来源文件。XArchive 文件只携带
-horsicq MIT，没有 UnRAR 修改分发 notice。该证据禁止本项目在书面评审前直接
-复制或翻译 decoder，但不构成法律结论。
+horsicq MIT，没有 UnRAR 修改分发 notice 或官方 acknowledgments。RARLAB 官方
+归档与固定镜像的 150 个 `.cpp/.hpp` 已逐字节闭合；该证据禁止本项目在书面评审
+前直接复制或翻译 decoder，但不构成法律结论。
 
 `xdeflatedecoder.cpp`、`xbzip2decoder.cpp` 和 `xalgo_local.h` 也是聚合源码，但其中
 保留了 MIT 包装声明及对应 zlib、bzip2 或 Public Domain 文本；它们仍需发布责任人
