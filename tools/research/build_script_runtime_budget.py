@@ -116,7 +116,10 @@ def validate_sources(root: Path) -> tuple[
             "| JS VM stack | 512 KiB | 2 MiB |",
             "| VM/native fuel quanta | 131,072 | 1,048,576 |",
             "| cumulative script deadline | 10 s | 60 s |",
-            "operation anchor 不等于实测 VM instruction 或\n  poll count",
+            "每轮正常\n  runtime 共观察 28 次 interrupt callback",
+            "operation anchor 不等于 VM instruction，也不能从\n"
+            "  单一 Binary corpus 的 poll count 推导跨格式 fuel",
+            "checkpoint 不是 eval 内瞬时\n  heap high-water",
             "custom/\n  rust allocator 未证明等价限制前禁止启用",
         ),
         SOURCES["adr_runtime"],
@@ -162,8 +165,9 @@ def validate_sources(root: Path) -> tuple[
             "17 次 handler callback 后无限循环返回",
             "4 MiB runtime limit 拒绝 16 MiB `ArrayBuffer`",
             "默认 VM stack 为\n`256 * 1024` bytes",
-            "没有在真实全库生命周期保存 heap high-water",
-            "没有汇总正常规则的 interrupt\npoll ticks",
+            "每轮正常生命周期共触发 28 次 QuickJS-NG interrupt callback",
+            "4,130 个 `Runtime::memory_usage()` checkpoint",
+            "不能观察 eval 内部瞬时 allocator high-water",
         ),
         SOURCES["runtime_research"],
     )
@@ -184,6 +188,11 @@ def validate_sources(root: Path) -> tuple[
     )
     isolated = runtime.get("isolated_eval_with_compatibility_overlay")
     corpus = runtime.get("full_binary_corpus_oracle")
+    measurement = (
+        corpus.get("runtime_measurement")
+        if isinstance(corpus, dict)
+        else None
+    )
     fixture = runtime.get("fixture")
     require(
         isolated
@@ -210,6 +219,47 @@ def validate_sources(root: Path) -> tuple[
         and corpus.get("signature_compare_call_total") == 16_285
         and corpus.get("signature_search_call_total") == 154,
         "full Binary corpus operation evidence drift",
+    )
+    require(
+        isinstance(measurement, dict)
+        and measurement.get("repeat_count") == 3
+        and measurement.get("sample_runtime_count_per_repeat") == 14
+        and measurement.get("stable_projection_equal") is True
+        and measurement.get("projection_hash_emitted_by_spike") is True
+        and measurement.get("stable_projection_sha256")
+        == "723862e669846c4e3af813c19ce61007ea114942ba926162cbed072d65a54f87"
+        and measurement.get("interrupt")
+        == {
+            "detect_handler_call_sum": 9,
+            "handler_call_total": 28,
+            "handler_calls_outside_detects": 19,
+            "handler_semantics": (
+                "one QuickJS-NG interrupt callback invocation; each "
+                "sample uses one monotonic runtime counter"
+            ),
+            "maximum_handler_calls_per_rule": 1,
+        }
+        and measurement.get("memory", {}).get("checkpoint_count")
+        == 4130
+        and measurement.get("memory", {}).get(
+            "maximum_observed_malloc_size"
+        )
+        == {
+            "bytes": 654_562,
+            "sample": "ps3-type-1-elf.self",
+        }
+        and measurement.get("memory", {}).get(
+            "maximum_observed_memory_used_size"
+        )
+        == {
+            "bytes": 623_012,
+            "sample": "ps3-type-1-elf.self",
+        }
+        and measurement.get("memory", {}).get(
+            "transient_high_water_measured"
+        )
+        is False,
+        "full Binary runtime measurement evidence drift",
     )
     require(
         isinstance(fixture, dict)
@@ -252,6 +302,7 @@ def build_candidate(root: Path) -> dict[str, Any]:
     runtime = reports["runtime_report"]
     isolated = runtime["isolated_eval_with_compatibility_overlay"]
     corpus = runtime["full_binary_corpus_oracle"]
+    measurement = corpus["runtime_measurement"]
     rule_bytes = isolated["bytes"]
     operation_anchor = (
         corpus["attempted_detect_count"]
@@ -371,7 +422,33 @@ def build_candidate(root: Path) -> dict[str, Any]:
             "maximum_active_include_depth_observed": 2,
             "maximum_include_evaluations_observed": 30,
             "real_corpus_heap_high_water_measured": False,
-            "real_corpus_interrupt_poll_count_measured": False,
+            "real_corpus_lifecycle_memory_checkpoints_measured": True,
+            "real_corpus_memory_checkpoint_count": measurement[
+                "memory"
+            ]["checkpoint_count"],
+            "real_corpus_maximum_observed_malloc_size_bytes": (
+                measurement["memory"]["maximum_observed_malloc_size"][
+                    "bytes"
+                ]
+            ),
+            "real_corpus_maximum_observed_memory_used_size_bytes": (
+                measurement["memory"][
+                    "maximum_observed_memory_used_size"
+                ]["bytes"]
+            ),
+            "real_corpus_interrupt_poll_count_measured": True,
+            "real_corpus_interrupt_poll_repeat_count": measurement[
+                "repeat_count"
+            ],
+            "real_corpus_interrupt_poll_total_per_repeat": measurement[
+                "interrupt"
+            ]["handler_call_total"],
+            "real_corpus_interrupt_poll_stable_projection_equal": (
+                measurement["stable_projection_equal"]
+            ),
+            "real_corpus_runtime_measurement_projection_sha256": (
+                measurement["stable_projection_sha256"]
+            ),
             "native_host_checkpoint_count_measured": False,
             "all_format_rule_lifecycles_measured": False,
             "does_not_prove": [
@@ -393,7 +470,10 @@ def build_candidate(root: Path) -> dict[str, Any]:
         "acceptance_requirements": [
             "ADR 0006 receives explicit review disposition",
             "production backend measures real-corpus heap high-water",
-            "production backend records VM polls and native checkpoints",
+            (
+                "production backend records native checkpoints and "
+                "validates VM poll scaling across formats"
+            ),
             "limit-1/exact/+1 covers all four fields without reset",
             "infinite JS and native loops stop under fuel and deadline",
             "custom allocator is rejected or proves an equivalent heap limit",

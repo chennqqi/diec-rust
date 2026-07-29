@@ -40,8 +40,10 @@ Last updated: 2026-07-30
   失败并恢复同一 context，但这些数值是故障注入条件，不是生产默认候选。
 - 固定 2,902,881-byte 程序源、20,947-operation Binary corpus anchor、pinned
   256 KiB VM stack 默认值和 scan deadline 已形成联合 script runtime 候选；
-  报告同时固定真实 heap high-water、正常 VM poll、native checkpoint、全格式
-  生命周期及三平台资源证据仍缺失，因此候选不得 admitted。
+  三轮 Windows MSVC full Binary corpus 每轮正常 VM poll 均为 28 次，4,130 个
+  lifecycle memory checkpoint 最大 observed `malloc_size` 为 654,562 bytes。
+  但瞬时 heap high-water、native checkpoint、跨格式 scaling 及三平台资源证据
+  仍缺失，因此候选不得 admitted。
 
 项目候选值属于设计决策，见
 [`../design/resource-limit-policy.md`](../design/resource-limit-policy.md)；本页只
@@ -114,9 +116,9 @@ python -m unittest discover -s tools\tests -p "test_resource_limit_policy.py"
 
 ## 剩余证据
 
-- 对 script 候选补齐真实全库 heap high-water、正常 VM interrupt poll、native
-  HostApi cooperative checkpoint、全格式正反例生命周期、三平台
-  CPU/heap/stack 和 `limit-1/exact/+1`；
+- 对 script 候选补齐真实全库瞬时 heap high-water、native HostApi cooperative
+  checkpoint、全格式正反例生命周期与 VM poll scaling、三平台 CPU/heap/stack
+  和 `limit-1/exact/+1`；
 - 对 root input 候选补齐 production `Bytes`/`ByteSource`/`Path`/FFI
   `limit-1/exact/+1`、并发 truncate/grow 和 CPU/peak-memory；
 - 对 total allocation 候选补齐 production budgeted containers/decompressor

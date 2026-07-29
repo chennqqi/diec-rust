@@ -2,7 +2,7 @@
   "acceptance_requirements": [
     "ADR 0006 receives explicit review disposition",
     "production backend measures real-corpus heap high-water",
-    "production backend records VM polls and native checkpoints",
+    "production backend records native checkpoints and validates VM poll scaling across formats",
     "limit-1/exact/+1 covers all four fields without reset",
     "infinite JS and native loops stop under fuel and deadline",
     "custom allocator is rejected or proves an equivalent heap limit",
@@ -64,7 +64,15 @@
     "maximum_include_evaluations_observed": 30,
     "native_host_checkpoint_count_measured": false,
     "real_corpus_heap_high_water_measured": false,
-    "real_corpus_interrupt_poll_count_measured": false
+    "real_corpus_interrupt_poll_count_measured": true,
+    "real_corpus_interrupt_poll_repeat_count": 3,
+    "real_corpus_interrupt_poll_stable_projection_equal": true,
+    "real_corpus_interrupt_poll_total_per_repeat": 28,
+    "real_corpus_lifecycle_memory_checkpoints_measured": true,
+    "real_corpus_maximum_observed_malloc_size_bytes": 654562,
+    "real_corpus_maximum_observed_memory_used_size_bytes": 623012,
+    "real_corpus_memory_checkpoint_count": 4130,
+    "real_corpus_runtime_measurement_projection_sha256": "723862e669846c4e3af813c19ce61007ea114942ba926162cbed072d65a54f87"
   },
   "failure_contract": {
     "cancel_has_independent_typed_reason": true,
@@ -101,7 +109,7 @@
   "source_bindings": {
     "adr_runtime": {
       "path": "docs/design/decisions/0006-rquickjs-rule-runtime.md",
-      "sha256": "29f4c42e73c4ccfe7f4d447165a29e3ac1f60509b77c4beb0c08423327b5f7bd"
+      "sha256": "35dacdbe916b7b7889299f634d6f457ca8c10caf1d90ac5bfe38283526ab83c3"
     },
     "adr_scan": {
       "path": "docs/design/decisions/0012-bounded-nested-scan-budget.md",
@@ -121,11 +129,11 @@
     },
     "runtime_report": {
       "path": "docs/research/data/rquickjs-rule-runtime.json",
-      "sha256": "4f9c5d4f207ceeaa50b28553d5cd8f02d63c92218f8e9fe877e5b99239743ac9"
+      "sha256": "cb51e195c7523530d41737db6a88327bb36e083ec072d417d6da4e47dda265b1"
     },
     "runtime_research": {
       "path": "docs/research/rquickjs-rule-runtime-spike.md",
-      "sha256": "559f0c33981e0c3524b2a74f40b0d386ef8b5fae8fe78d90e62f5e18c5e6a874"
+      "sha256": "db575f03429425419f606c3d7f95e20c070c6100ce3008a89e93a385c44bfad4"
     }
   },
   "units": {

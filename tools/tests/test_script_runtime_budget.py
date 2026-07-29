@@ -115,8 +115,48 @@ class ScriptRuntimeBudgetTests(unittest.TestCase):
         self.assertFalse(
             evidence["real_corpus_heap_high_water_measured"]
         )
-        self.assertFalse(
+        self.assertTrue(
             evidence["real_corpus_interrupt_poll_count_measured"]
+        )
+        self.assertEqual(
+            evidence["real_corpus_interrupt_poll_repeat_count"],
+            3,
+        )
+        self.assertEqual(
+            evidence["real_corpus_interrupt_poll_total_per_repeat"],
+            28,
+        )
+        self.assertTrue(
+            evidence[
+                "real_corpus_interrupt_poll_stable_projection_equal"
+            ]
+        )
+        self.assertEqual(
+            evidence[
+                "real_corpus_runtime_measurement_projection_sha256"
+            ],
+            "723862e669846c4e3af813c19ce61007ea114942ba926162cbed072d65a54f87",
+        )
+        self.assertTrue(
+            evidence[
+                "real_corpus_lifecycle_memory_checkpoints_measured"
+            ]
+        )
+        self.assertEqual(
+            evidence["real_corpus_memory_checkpoint_count"],
+            4130,
+        )
+        self.assertEqual(
+            evidence[
+                "real_corpus_maximum_observed_malloc_size_bytes"
+            ],
+            654_562,
+        )
+        self.assertEqual(
+            evidence[
+                "real_corpus_maximum_observed_memory_used_size_bytes"
+            ],
+            623_012,
         )
         self.assertFalse(evidence["all_format_rule_lifecycles_measured"])
         self.assertIn(

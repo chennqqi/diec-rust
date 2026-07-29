@@ -121,6 +121,16 @@ Vita 的实际规则执行顺序是 audio→format，而上游输出顺序是 fo
 因此本轮也替换了此前仅对两种目标类型硬编码的投影。多结果样本的优先级均互异；
 上游 `std::sort` 对同优先级没有稳定顺序契约，该边界仍明确拒绝外推。
 
+同一命令在 Windows x86_64 MSVC release profile 连续运行三轮；每轮 14 个
+runtime 的稳定计量投影逐字节等价，SHA-256 均为
+`723862e669846c4e3af813c19ce61007ea114942ba926162cbed072d65a54f87`。
+每轮正常生命周期共触发 28 次 QuickJS-NG interrupt callback，其中 9 次发生在
+`detect` 内、19 次发生在 init/include/诊断辅助边界，每规则最大 1 次。每轮
+4,130 个 `Runtime::memory_usage()` checkpoint 的最大 `malloc_size` 为
+654,562 bytes，最大 `memory_used_size` 为 623,012 bytes，均出现在
+`ps3-type-1-elf.self`。checkpoint 在 runtime 创建、init、每条规则返回后和最终
+报告边界采集，不能观察 eval 内部瞬时 allocator high-water。
+
 ## 实验边界
 
 验证程序位于
@@ -250,9 +260,11 @@ context”。
 
 pinned `rquickjs-core 0.12.1/src/runtime/base.rs` 还记录默认 VM stack 为
 `256 * 1024` bytes，并公开 `memory_usage()`/`JS_ComputeMemoryUsage`。当前机器
-报告没有在真实全库生命周期保存 heap high-water，也没有汇总正常规则的 interrupt
-poll ticks；因此 4 MiB/128 KiB/25 ms 只能证明故障注入与恢复接线，不能直接充当
-production heap、stack、fuel 或 deadline 候选的观察最大值。
+报告已在三轮真实 Binary corpus 生命周期汇总正常 interrupt poll，并保存 4,130 个
+post-operation memory checkpoint；但 handler callback 不是 JS instruction，
+checkpoint 也不是 eval 内瞬时 heap high-water。因此 4 MiB/128 KiB/25 ms 仍只能
+证明故障注入与恢复接线，不能直接充当 production heap、stack、fuel 或 deadline
+候选的观察最大值。
 
 stack fixture 使用显式递归函数而不是 include graph，因此只证明 QuickJS-NG
 `set_max_stack_size` 对脚本调用栈生效且 exception 后 context 可恢复。它不替代
@@ -552,6 +564,11 @@ false，短路使 `getScanID`、`isFilePart` 和 `isUnicodeText` 在此样本上
 | 结果记录 | 21 |
 | Signature compare/search | 16,285 / 154 |
 | Baseline 匹配 | 14 / 14 |
+| 正常 interrupt callback（每轮） | 28 |
+| `detect` 内 callback（每轮） | 9 |
+| Memory checkpoints（每轮） | 4,130 |
+| 最大 observed `malloc_size` | 654,562 bytes |
+| 最大 observed `memory_used_size` | 623,012 bytes |
 
 结果排序不再使用 `format, audio` 特例。固定
 `XScanEngine@dfe4a419e4f491bb23688ba03c5a5bf39e34da83` 的
@@ -874,6 +891,11 @@ fixture/lifecycle 命令预期退出 0；原始 isolated、shared 和
 JSON。运行前先执行
 `tools/verify_upstream.py` 和 Python 清单测试，确保 cryptographic source identity。
 `elapsed_ms` 只用于本机观察，不做跨机器精确断言。
+本轮在 Windows x86_64 MSVC release profile 将 `verify-binary-corpus` 重复三次，
+原始 JSON 保存在临时目录且不提交；比较时排除 `elapsed_ms` 和路径，只保留兼容
+计数、每样本 runtime measurement 与汇总 measurement，三份 canonical projection
+得到相同 SHA-256。最终 spike 自身输出 `stable_projection_sha256`，并已与独立
+Python canonical JSON/SHA-256 计算逐值核对。
 
 ## 对设计的约束
 

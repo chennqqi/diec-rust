@@ -84,8 +84,9 @@ Accepted。
 提出 1 GiB/8 GiB，并与累计 I/O、allocation counter 分离；total allocation 又按
 scan-owned capacity 单调累计提出 1 GiB/8 GiB；script runtime 又为
 heap/JS stack/fuel/deadline 提出联合候选。必需字段现有 0 个 unresolved，
-但真实全库 heap/VM poll/native checkpoint、全格式生命周期、三平台资源证据和
-ADR 评审仍缺。该策略仍为
+三轮 full Binary corpus 已固定每轮 28 次正常 VM poll 与 4,130 个 lifecycle
+memory checkpoint；但瞬时 heap high-water、native checkpoint、跨格式 scaling、
+三平台资源证据和 ADR 评审仍缺。该策略仍为
 `admitted=false`，因此 blocker 状态不变。
 
 ## 下一步顺序

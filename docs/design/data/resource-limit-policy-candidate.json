@@ -174,11 +174,11 @@
     },
     "runtime_spike": {
       "path": "docs/research/data/rquickjs-rule-runtime.json",
-      "sha256": "4f9c5d4f207ceeaa50b28553d5cd8f02d63c92218f8e9fe877e5b99239743ac9"
+      "sha256": "cb51e195c7523530d41737db6a88327bb36e083ec072d417d6da4e47dda265b1"
     },
     "script_budget": {
       "path": "docs/design/data/script-runtime-budget-candidate.json",
-      "sha256": "f0e9f5e6e352f47974c7967438b9ad522fa8b5b325e8c469a459ab33eb06e6ff"
+      "sha256": "2ba037f2bdc9400d41eb61ed29dbd7f0ba1b14ba04e59b59ca8c4adec5a4fcea"
     },
     "traversal_attempt": {
       "path": "docs/design/data/traversal-attempt-budget-candidate.json",
@@ -246,7 +246,14 @@
       "fault_injection_values_are_candidate_basis": false,
       "native_host_checkpoint_count_measured": false,
       "real_corpus_heap_high_water_measured": false,
-      "real_corpus_interrupt_poll_count_measured": false
+      "real_corpus_interrupt_poll_count_measured": true,
+      "real_corpus_interrupt_poll_repeat_count": 3,
+      "real_corpus_interrupt_poll_total_per_repeat": 28,
+      "real_corpus_lifecycle_memory_checkpoints_measured": true,
+      "real_corpus_maximum_observed_malloc_size_bytes": 654562,
+      "real_corpus_maximum_observed_memory_used_size_bytes": 623012,
+      "real_corpus_memory_checkpoint_count": 4130,
+      "real_corpus_runtime_measurement_projection_sha256": "723862e669846c4e3af813c19ce61007ea114942ba926162cbed072d65a54f87"
     }
   }
 }

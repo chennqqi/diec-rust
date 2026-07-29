@@ -184,8 +184,11 @@ aggressive archive 只让 ordinal 100000 可达，ordinal 100001 不可达。
 
 当前策略有 0 个 unresolved 项：所有必需字段都有非零候选。但这只关闭
 “缺少候选值”的结构缺口，策略仍不得 admitted。Script runtime 的真实全库 heap
-high-water、正常 VM interrupt poll、native HostApi checkpoint、所有格式规则
-生命周期和三平台资源证据尚未采集；ADR 0006 也仍为 Proposed。
+high-water、native HostApi checkpoint、所有格式规则生命周期和三平台资源证据
+尚未采集；ADR 0006 也仍为 Proposed。正常 Binary corpus VM poll 已连续三轮
+观察为每轮 28 次，4,130 个 lifecycle memory checkpoint 的最大 observed
+`malloc_size` 为 654,562 bytes，但该单一 corpus 不能证明跨格式 fuel scaling，
+checkpoint 也不能替代瞬时 high-water。
 
 QuickJS spike 的 4 MiB heap、128 KiB stack 和 25 ms deadline 只在机器契约的
 `runtime_spike_only` 中保存，明确不是候选的定值依据。script 候选的精确单位、

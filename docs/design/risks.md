@@ -600,8 +600,10 @@ baseline 的变更都要检查本表。
   同一 fixture 的 128 KiB stack limit 也已捕获无界递归并恢复 context，但真实
   include graph 仍必须由 ADR 0010 的静态/active-stack budget 提前拒绝。
   script runtime 联合候选进一步规定每 scan 共享且不重置的 fuel 与 absolute
-  monotonic deadline；但真实全库 VM poll/native checkpoint 和三平台资源证据
-  未采集，所以该候选仍为 `review_candidate_not_admitted`。
+  monotonic deadline；三轮 full Binary corpus 每轮正常 VM poll 已稳定为 28 次，
+  4,130 个 memory checkpoint 的最大 observed `malloc_size` 为 654,562 bytes。
+  但瞬时 high-water、native checkpoint、跨格式 scaling 和三平台资源证据未采集，
+  所以该候选仍为 `review_candidate_not_admitted`。
 - **缓解**：runtime 选型硬门禁；fuel/deadline/heap；受控检查点；不可中断 backend
   不得采用。
 - **验证**：每个 scan stage deterministic fake clock/cancel；恶意长循环在期限内

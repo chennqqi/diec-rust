@@ -120,7 +120,7 @@ consumer。随后依次增加真实 PE32/Cygwin32、ELF32/ELF64/Burneye、
 Mach-O64 x86_64/arm64 Rust compiler、DEX035/QDBH、APK/ZIP QDBH、
 Archive/ZIP metadata 和 PDF Tools object/string
 规则差分；当前 source SHA-256 为
-`1a32cf5c3666bc45c985087f0307c17ea3037f86d3789d52fbc9a2b2341e35e3`。
+`4f9baf76a5e3960e569fdad778fcf861d07f7f61ffbc142040ef34589a63056a`。
 两套工具链均通过 38 项测试，release 差分分别为 3/3、6/6、4/4、3/3、
 3/3、3/3 和 3/3，且未新增 Cargo 依赖。
 

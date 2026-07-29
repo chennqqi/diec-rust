@@ -90,8 +90,12 @@ workspace 建立时重新生成并审计，不允许浮动到其他 minor/patch 
   相对 pinned QuickJS 256 KiB default 取 2×/8×；modern fuel 是固定 14-sample
   Binary corpus 的 20,947 个 detect/compare/search/include operation anchor
   乘 4 后向上取二次幂，legacy-high 再取 8×；deadline 分别是 30 s/120 s
-  scan deadline 的 1/3 与 1/2。operation anchor 不等于实测 VM instruction 或
-  poll count，这些数字保持 `review_candidate_not_admitted`。
+  scan deadline 的 1/3 与 1/2。三轮 Windows MSVC full Binary corpus 每轮正常
+  runtime 共观察 28 次 interrupt callback，稳定投影相同；4,130 个 lifecycle
+  memory checkpoint 最大观察 `malloc_size=654,562`、
+  `memory_used_size=623,012`。operation anchor 不等于 VM instruction，也不能从
+  单一 Binary corpus 的 poll count 推导跨格式 fuel；checkpoint 不是 eval 内瞬时
+  heap high-water，因此这些数字仍保持 `review_candidate_not_admitted`。
 - fuel quantum 是 pinned backend 的 VM interrupt poll 或 native cooperative
   checkpoint，共享单调 counter，rule/include/child 不重置；runtime 升级必须
   重新定标。script deadline 是首次 runtime work 起算的 absolute deadline，并

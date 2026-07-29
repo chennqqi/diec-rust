@@ -52,3 +52,12 @@ calls are also traced; 15 focused Qt5 wrapper cases cover their deterministic
 behavior.
 Its accepted calls and emitted detections are gap-inventory data, not
 compatibility evidence.
+
+`verify-binary-corpus` runs the same 292-rule lifecycle over all 14 generated
+Nintendo samples and compares ordered results with the pinned Qt oracle. It
+also counts every normal QuickJS-NG interrupt callback with one monotonic
+counter per sample runtime and records `Runtime::memory_usage()` after runtime
+creation, initialization, every rule, and final reporting. These memory
+snapshots are lifecycle checkpoints, not a transient in-eval allocator
+high-water measurement. Large raw reports belong in temporary storage; only
+the stable projection and its reproducible summary are versioned.

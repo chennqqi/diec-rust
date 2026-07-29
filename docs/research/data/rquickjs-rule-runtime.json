@@ -20,7 +20,7 @@
   "experiment": {
     "cargo_lock_sha256": "f389eb266779a88939fea9793effdff29d01ea0e1184915698f4fa0f9441d0ad",
     "cargo_toml_sha256": "82c5bb97749f50212e5364c2ac7d1f81eaec4d460a9bf47710b4b42f9204a79f",
-    "source_sha256": "1a32cf5c3666bc45c985087f0307c17ea3037f86d3789d52fbc9a2b2341e35e3",
+    "source_sha256": "4f9baf76a5e3960e569fdad778fcf861d07f7f61ffbc142040ef34589a63056a",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -1291,6 +1291,39 @@
       "component": "horsicq/XScanEngine@dfe4a419e4f491bb23688ba03c5a5bf39e34da83",
       "equal_priority_limitation": "upstream std::sort has no stable tie-order contract; every multi-detection sample in this corpus has distinct priorities",
       "source": "xscanengine.cpp::_sortItems, sortRecords, typeToPrio"
+    },
+    "runtime_measurement": {
+      "environment": {
+        "profile": "release",
+        "target": "x86_64-pc-windows-msvc",
+        "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
+      },
+      "interrupt": {
+        "detect_handler_call_sum": 9,
+        "handler_call_total": 28,
+        "handler_calls_outside_detects": 19,
+        "handler_semantics": "one QuickJS-NG interrupt callback invocation; each sample uses one monotonic runtime counter",
+        "maximum_handler_calls_per_rule": 1
+      },
+      "memory": {
+        "api": "rquickjs Runtime::memory_usage / QuickJS-NG JS_ComputeMemoryUsage",
+        "checkpoint_count": 4130,
+        "maximum_observed_malloc_size": {
+          "bytes": 654562,
+          "sample": "ps3-type-1-elf.self"
+        },
+        "maximum_observed_memory_used_size": {
+          "bytes": 623012,
+          "sample": "ps3-type-1-elf.self"
+        },
+        "scope": "post-operation lifecycle checkpoints over all 14 sample runtimes; transient in-eval allocator high-water is not observed",
+        "transient_high_water_measured": false
+      },
+      "projection_hash_emitted_by_spike": true,
+      "repeat_count": 3,
+      "sample_runtime_count_per_repeat": 14,
+      "stable_projection_equal": true,
+      "stable_projection_sha256": "723862e669846c4e3af813c19ce61007ea114942ba926162cbed072d65a54f87"
     },
     "rule_count_per_sample": 292,
     "sample_count": 14,

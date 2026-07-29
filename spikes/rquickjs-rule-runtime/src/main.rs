@@ -1875,6 +1875,57 @@ fn new_runtime() -> Result<Runtime, String> {
     Runtime::new().map_err(|error| error.to_string())
 }
 
+#[derive(Clone, Copy)]
+struct RuntimeMemorySnapshot {
+    malloc_size: u64,
+    memory_used_size: u64,
+    malloc_count: u64,
+    memory_used_count: u64,
+    atom_count: u64,
+    object_count: u64,
+    js_function_count: u64,
+    js_function_code_size: u64,
+    binary_object_count: u64,
+    binary_object_size: u64,
+}
+
+impl RuntimeMemorySnapshot {
+    fn to_json(self) -> Value {
+        json!({
+            "malloc_size": self.malloc_size,
+            "memory_used_size": self.memory_used_size,
+            "malloc_count": self.malloc_count,
+            "memory_used_count": self.memory_used_count,
+            "atom_count": self.atom_count,
+            "object_count": self.object_count,
+            "js_function_count": self.js_function_count,
+            "js_function_code_size": self.js_function_code_size,
+            "binary_object_count": self.binary_object_count,
+            "binary_object_size": self.binary_object_size,
+        })
+    }
+}
+
+fn runtime_memory_snapshot(runtime: &Runtime) -> Result<RuntimeMemorySnapshot, String> {
+    let usage = runtime.memory_usage();
+    let nonnegative = |name: &str, value: i64| {
+        u64::try_from(value)
+            .map_err(|_| format!("runtime memory field {name} is negative: {value}"))
+    };
+    Ok(RuntimeMemorySnapshot {
+        malloc_size: nonnegative("malloc_size", usage.malloc_size)?,
+        memory_used_size: nonnegative("memory_used_size", usage.memory_used_size)?,
+        malloc_count: nonnegative("malloc_count", usage.malloc_count)?,
+        memory_used_count: nonnegative("memory_used_count", usage.memory_used_count)?,
+        atom_count: nonnegative("atom_count", usage.atom_count)?,
+        object_count: nonnegative("obj_count", usage.obj_count)?,
+        js_function_count: nonnegative("js_func_count", usage.js_func_count)?,
+        js_function_code_size: nonnegative("js_func_code_size", usage.js_func_code_size)?,
+        binary_object_count: nonnegative("binary_object_count", usage.binary_object_count)?,
+        binary_object_size: nonnegative("binary_object_size", usage.binary_object_size)?,
+    })
+}
+
 fn new_context(runtime: &Runtime) -> Result<Context, String> {
     Context::full(runtime).map_err(|error| error.to_string())
 }
@@ -3982,10 +4033,14 @@ fn trace_binary_detects_report_with_data(
     let order = parse_binary_order(&order_document)?;
     let input_size = data.len();
     let runtime = new_runtime()?;
-    let interrupt_ticks = Arc::new(AtomicUsize::new(0));
-    let interrupt_ticks_for_handler = Arc::clone(&interrupt_ticks);
+    let runtime_created_memory = runtime_memory_snapshot(&runtime)?;
+    let interrupt_ticks_per_rule = Arc::new(AtomicUsize::new(0));
+    let interrupt_ticks_per_rule_for_handler = Arc::clone(&interrupt_ticks_per_rule);
+    let interrupt_ticks_total = Arc::new(AtomicUsize::new(0));
+    let interrupt_ticks_total_for_handler = Arc::clone(&interrupt_ticks_total);
     runtime.set_interrupt_handler(Some(Box::new(move || {
-        interrupt_ticks_for_handler.fetch_add(1, Ordering::Relaxed) >= 1_000_000
+        interrupt_ticks_total_for_handler.fetch_add(1, Ordering::Relaxed);
+        interrupt_ticks_per_rule_for_handler.fetch_add(1, Ordering::Relaxed) >= 1_000_000
     })));
     let context = new_context(&runtime)?;
     let detections = Arc::new(Mutex::new(Vec::new()));
@@ -4004,6 +4059,20 @@ fn trace_binary_detects_report_with_data(
         eval_unit(&context, &source)
             .map_err(|error| format!("cannot eval {}: {error}", path.display()))?;
     }
+    let initialized_memory = runtime_memory_snapshot(&runtime)?;
+    let mut maximum_malloc_size = runtime_created_memory.malloc_size;
+    let mut maximum_malloc_size_stage = "runtime_created".to_owned();
+    let mut maximum_memory_used_size = runtime_created_memory.memory_used_size;
+    let mut maximum_memory_used_size_stage = "runtime_created".to_owned();
+    if initialized_memory.malloc_size > maximum_malloc_size {
+        maximum_malloc_size = initialized_memory.malloc_size;
+        maximum_malloc_size_stage = "initialized".to_owned();
+    }
+    if initialized_memory.memory_used_size > maximum_memory_used_size {
+        maximum_memory_used_size = initialized_memory.memory_used_size;
+        maximum_memory_used_size_stage = "initialized".to_owned();
+    }
+    let mut memory_checkpoint_count = 2_u64;
 
     let started = Instant::now();
     let mut observations = Vec::with_capacity(order.len());
@@ -4012,6 +4081,8 @@ fn trace_binary_detects_report_with_data(
     let mut fallback_rule_count = 0;
     let mut fallback_call_total = 0_u64;
     let mut fallback_paths = BTreeSet::new();
+    let mut detect_interrupt_handler_call_sum = 0_u64;
+    let mut maximum_interrupt_handler_calls_per_rule = 0_u64;
     for (index, name) in order.iter().enumerate() {
         let path = rule_root.join("Binary").join(name);
         let source =
@@ -4067,7 +4138,7 @@ fn trace_binary_detects_report_with_data(
         let is_debug_data_calls_before =
             signature_trace.is_debug_data_calls.load(Ordering::Relaxed);
         let is_file_part_calls_before = signature_trace.is_file_part_calls.load(Ordering::Relaxed);
-        interrupt_ticks.store(0, Ordering::Relaxed);
+        interrupt_ticks_per_rule.store(0, Ordering::Relaxed);
         let detect_result = eval_rule_lexical(&context, &evaluated, true);
         let signature_call_count = signature_trace
             .calls
@@ -4173,13 +4244,33 @@ fn trace_binary_detects_report_with_data(
             .is_file_part_calls
             .load(Ordering::Relaxed)
             .saturating_sub(is_file_part_calls_before);
-        let interrupt_handler_calls = interrupt_ticks.load(Ordering::Relaxed);
+        let interrupt_handler_calls =
+            u64::try_from(interrupt_ticks_per_rule.load(Ordering::Relaxed))
+                .map_err(|_| "per-rule interrupt handler count exceeds u64".to_owned())?;
+        detect_interrupt_handler_call_sum = detect_interrupt_handler_call_sum
+            .checked_add(interrupt_handler_calls)
+            .ok_or_else(|| "detect interrupt handler call sum overflow".to_owned())?;
+        maximum_interrupt_handler_calls_per_rule =
+            maximum_interrupt_handler_calls_per_rule.max(interrupt_handler_calls);
         let fallback_text = eval_string(
             &context,
             b"JSON.stringify({calls: __fallbackCalls, total: __fallbackTotal})",
         )?;
         let fallback: Value = serde_json::from_str(&fallback_text)
             .map_err(|error| format!("cannot parse fallback report for {name}: {error}"))?;
+        let memory_after_rule = runtime_memory_snapshot(&runtime)?;
+        memory_checkpoint_count = memory_checkpoint_count
+            .checked_add(1)
+            .ok_or_else(|| "runtime memory checkpoint count overflow".to_owned())?;
+        let memory_stage = format!("after_rule:{index}:{name}");
+        if memory_after_rule.malloc_size > maximum_malloc_size {
+            maximum_malloc_size = memory_after_rule.malloc_size;
+            maximum_malloc_size_stage = memory_stage.clone();
+        }
+        if memory_after_rule.memory_used_size > maximum_memory_used_size {
+            maximum_memory_used_size = memory_after_rule.memory_used_size;
+            maximum_memory_used_size_stage = memory_stage;
+        }
         let fallback_total = fallback
             .get("total")
             .and_then(Value::as_u64)
@@ -4250,6 +4341,7 @@ fn trace_binary_detects_report_with_data(
                 "is_file_part": is_file_part_call_count,
             },
             "interrupt_handler_calls": interrupt_handler_calls,
+            "runtime_memory_after_rule": memory_after_rule.to_json(),
             "detections": emitted,
         }));
     }
@@ -4260,6 +4352,23 @@ fn trace_binary_detects_report_with_data(
     let include_trace_text = eval_string(&context, b"JSON.stringify(__includeTrace)")?;
     let include_trace: Value = serde_json::from_str(&include_trace_text)
         .map_err(|error| format!("cannot parse include trace: {error}"))?;
+    let final_memory = runtime_memory_snapshot(&runtime)?;
+    memory_checkpoint_count = memory_checkpoint_count
+        .checked_add(1)
+        .ok_or_else(|| "runtime memory checkpoint count overflow".to_owned())?;
+    if final_memory.malloc_size > maximum_malloc_size {
+        maximum_malloc_size = final_memory.malloc_size;
+        maximum_malloc_size_stage = "after_final_reporting".to_owned();
+    }
+    if final_memory.memory_used_size > maximum_memory_used_size {
+        maximum_memory_used_size = final_memory.memory_used_size;
+        maximum_memory_used_size_stage = "after_final_reporting".to_owned();
+    }
+    let interrupt_handler_call_total = u64::try_from(interrupt_ticks_total.load(Ordering::Relaxed))
+        .map_err(|_| "total interrupt handler count exceeds u64".to_owned())?;
+    let interrupt_handler_calls_outside_detects = interrupt_handler_call_total
+        .checked_sub(detect_interrupt_handler_call_sum)
+        .ok_or_else(|| "interrupt handler call partition underflow".to_owned())?;
     let include_call_count = include_trace.as_array().map_or(0, Vec::len);
     let signature_unique_quirks = signature_trace
         .unique_quirks
@@ -4352,6 +4461,35 @@ fn trace_binary_detects_report_with_data(
         "detections": all_detections,
         "observations": observations,
         "interrupt_handler_call_limit_per_rule": 1_000_000,
+        "runtime_measurement": {
+            "interrupt": {
+                "handler_semantics":
+                    "one QuickJS-NG interrupt callback invocation; counter is monotonic for the sample runtime",
+                "handler_call_total": interrupt_handler_call_total,
+                "detect_handler_call_sum": detect_interrupt_handler_call_sum,
+                "handler_calls_outside_detects": interrupt_handler_calls_outside_detects,
+                "maximum_handler_calls_per_rule":
+                    maximum_interrupt_handler_calls_per_rule,
+            },
+            "memory": {
+                "api": "rquickjs Runtime::memory_usage / QuickJS-NG JS_ComputeMemoryUsage",
+                "scope":
+                    "post-operation lifecycle checkpoints; transient in-eval allocator high-water is not observed",
+                "checkpoint_count": memory_checkpoint_count,
+                "runtime_created": runtime_created_memory.to_json(),
+                "initialized": initialized_memory.to_json(),
+                "after_final_reporting": final_memory.to_json(),
+                "maximum_observed_malloc_size": {
+                    "bytes": maximum_malloc_size,
+                    "stage": maximum_malloc_size_stage,
+                },
+                "maximum_observed_memory_used_size": {
+                    "bytes": maximum_memory_used_size,
+                    "stage": maximum_memory_used_size_stage,
+                },
+                "transient_high_water_measured": false,
+            },
+        },
         "elapsed_ms": started.elapsed().as_millis(),
         "completed": true,
     }))
@@ -6184,6 +6322,24 @@ fn report_u64(report: &Value, field: &str, sample_name: &str) -> Result<u64, Str
         .ok_or_else(|| format!("{sample_name}: runtime report field {field} is missing"))
 }
 
+fn report_nested_u64(report: &Value, path: &[&str], sample_name: &str) -> Result<u64, String> {
+    let mut value = report;
+    for field in path {
+        value = value.get(*field).ok_or_else(|| {
+            format!(
+                "{sample_name}: runtime report field {} is missing",
+                path.join(".")
+            )
+        })?;
+    }
+    value.as_u64().ok_or_else(|| {
+        format!(
+            "{sample_name}: runtime report field {} is not an unsigned integer",
+            path.join(".")
+        )
+    })
+}
+
 fn verify_binary_corpus(
     rule_root: &Path,
     corpus_root: &Path,
@@ -6281,6 +6437,15 @@ fn verify_binary_corpus(
     let mut unambiguous_priority_sample_count = 0_usize;
     let mut nintendo_info_matched_count = 0_usize;
     let mut elapsed_ms = 0_u64;
+    let mut interrupt_handler_call_total = 0_u64;
+    let mut detect_interrupt_handler_call_sum = 0_u64;
+    let mut interrupt_handler_calls_outside_detects = 0_u64;
+    let mut maximum_interrupt_handler_calls_per_rule = 0_u64;
+    let mut memory_checkpoint_count = 0_u64;
+    let mut maximum_observed_malloc_size = 0_u64;
+    let mut maximum_observed_malloc_size_sample = String::new();
+    let mut maximum_observed_memory_used_size = 0_u64;
+    let mut maximum_observed_memory_used_size_sample = String::new();
     for (name, baseline_sample) in baseline_samples {
         let expected = parse_detection_triples(
             baseline_sample
@@ -6329,7 +6494,77 @@ fn verify_binary_corpus(
         let include_calls = report_u64(&trace, "include_call_count", name)?;
         let compare_errors = report_u64(&trace, "signature_compare_error_total", name)?;
         let search_errors = report_u64(&trace, "signature_search_error_total", name)?;
+        let sample_interrupt_total = report_nested_u64(
+            &trace,
+            &["runtime_measurement", "interrupt", "handler_call_total"],
+            name,
+        )?;
+        let sample_detect_interrupt_sum = report_nested_u64(
+            &trace,
+            &[
+                "runtime_measurement",
+                "interrupt",
+                "detect_handler_call_sum",
+            ],
+            name,
+        )?;
+        let sample_interrupt_outside_detects = report_nested_u64(
+            &trace,
+            &[
+                "runtime_measurement",
+                "interrupt",
+                "handler_calls_outside_detects",
+            ],
+            name,
+        )?;
+        let sample_maximum_interrupt_per_rule = report_nested_u64(
+            &trace,
+            &[
+                "runtime_measurement",
+                "interrupt",
+                "maximum_handler_calls_per_rule",
+            ],
+            name,
+        )?;
+        let sample_memory_checkpoint_count = report_nested_u64(
+            &trace,
+            &["runtime_measurement", "memory", "checkpoint_count"],
+            name,
+        )?;
+        let sample_maximum_malloc_size = report_nested_u64(
+            &trace,
+            &[
+                "runtime_measurement",
+                "memory",
+                "maximum_observed_malloc_size",
+                "bytes",
+            ],
+            name,
+        )?;
+        let sample_maximum_memory_used_size = report_nested_u64(
+            &trace,
+            &[
+                "runtime_measurement",
+                "memory",
+                "maximum_observed_memory_used_size",
+                "bytes",
+            ],
+            name,
+        )?;
+        let sample_transient_high_water_measured = trace
+            .pointer("/runtime_measurement/memory/transient_high_water_measured")
+            .and_then(Value::as_bool)
+            .ok_or_else(|| {
+                format!("{name}: runtime memory transient high-water boundary is missing")
+            })?;
         let completed = trace.get("completed").and_then(Value::as_bool) == Some(true);
+        let runtime_measurement_ok = sample_detect_interrupt_sum
+            .checked_add(sample_interrupt_outside_detects)
+            == Some(sample_interrupt_total)
+            && sample_memory_checkpoint_count == (BINARY_SIGNATURE_COUNT as u64 + 3)
+            && sample_maximum_malloc_size > 0
+            && sample_maximum_memory_used_size > 0
+            && !sample_transient_high_water_measured;
         let lifecycle_ok = attempted == BINARY_SIGNATURE_COUNT as u64
             && accepted == BINARY_SIGNATURE_COUNT as u64
             && errors == 0
@@ -6338,6 +6573,7 @@ fn verify_binary_corpus(
             && include_calls == 30
             && compare_errors == 0
             && search_errors == 0
+            && runtime_measurement_ok
             && completed;
         let matches = lifecycle_ok
             && output_priorities_unambiguous
@@ -6378,6 +6614,28 @@ fn verify_binary_corpus(
         detection_count = detection_count
             .checked_add(actual.len() as u64)
             .ok_or_else(|| "detection aggregate overflow".to_owned())?;
+        interrupt_handler_call_total = interrupt_handler_call_total
+            .checked_add(sample_interrupt_total)
+            .ok_or_else(|| "interrupt handler aggregate overflow".to_owned())?;
+        detect_interrupt_handler_call_sum = detect_interrupt_handler_call_sum
+            .checked_add(sample_detect_interrupt_sum)
+            .ok_or_else(|| "detect interrupt aggregate overflow".to_owned())?;
+        interrupt_handler_calls_outside_detects = interrupt_handler_calls_outside_detects
+            .checked_add(sample_interrupt_outside_detects)
+            .ok_or_else(|| "outside-detect interrupt aggregate overflow".to_owned())?;
+        maximum_interrupt_handler_calls_per_rule =
+            maximum_interrupt_handler_calls_per_rule.max(sample_maximum_interrupt_per_rule);
+        memory_checkpoint_count = memory_checkpoint_count
+            .checked_add(sample_memory_checkpoint_count)
+            .ok_or_else(|| "memory checkpoint aggregate overflow".to_owned())?;
+        if sample_maximum_malloc_size > maximum_observed_malloc_size {
+            maximum_observed_malloc_size = sample_maximum_malloc_size;
+            maximum_observed_malloc_size_sample = name.clone();
+        }
+        if sample_maximum_memory_used_size > maximum_observed_memory_used_size {
+            maximum_observed_memory_used_size = sample_maximum_memory_used_size;
+            maximum_observed_memory_used_size_sample = name.clone();
+        }
 
         sample_reports.push(json!({
             "name": name,
@@ -6400,13 +6658,69 @@ fn verify_binary_corpus(
                 "include_call_count": include_calls,
                 "signature_compare_error_total": compare_errors,
                 "signature_search_error_total": search_errors,
+                "runtime_measurement_ok": runtime_measurement_ok,
                 "completed": completed,
                 "matches": lifecycle_ok,
             },
+            "runtime_measurement": trace["runtime_measurement"],
             "matches": matches,
         }));
     }
 
+    let runtime_measurement = json!({
+        "sample_runtime_count": sample_reports.len(),
+        "interrupt": {
+            "handler_semantics":
+                "one QuickJS-NG interrupt callback invocation; each sample uses one monotonic runtime counter",
+            "handler_call_total": interrupt_handler_call_total,
+            "detect_handler_call_sum": detect_interrupt_handler_call_sum,
+            "handler_calls_outside_detects":
+                interrupt_handler_calls_outside_detects,
+            "maximum_handler_calls_per_rule":
+                maximum_interrupt_handler_calls_per_rule,
+        },
+        "memory": {
+            "api": "rquickjs Runtime::memory_usage / QuickJS-NG JS_ComputeMemoryUsage",
+            "scope":
+                "post-operation lifecycle checkpoints over all 14 sample runtimes; transient in-eval allocator high-water is not observed",
+            "checkpoint_count": memory_checkpoint_count,
+            "maximum_observed_malloc_size": {
+                "bytes": maximum_observed_malloc_size,
+                "sample": maximum_observed_malloc_size_sample,
+            },
+            "maximum_observed_memory_used_size": {
+                "bytes": maximum_observed_memory_used_size,
+                "sample": maximum_observed_memory_used_size_sample,
+            },
+            "transient_high_water_measured": false,
+        },
+    });
+    let sample_measurements = sample_reports
+        .iter()
+        .map(|sample| {
+            json!({
+                "name": sample["name"],
+                "runtime_measurement": sample["runtime_measurement"],
+            })
+        })
+        .collect::<Vec<_>>();
+    let stable_projection = json!({
+        "all_match": all_match,
+        "matched_count":
+            sample_reports.iter().filter(|sample| sample["matches"] == true).count(),
+        "attempted_detect_count": attempted_detect_count,
+        "accepted_detect_count": accepted_detect_count,
+        "detect_error_count": detect_error_count,
+        "fallback_call_total": fallback_call_total,
+        "signature_compare_call_total": signature_compare_call_total,
+        "signature_search_call_total": signature_search_call_total,
+        "runtime_measurement": runtime_measurement,
+        "sample_measurements": sample_measurements,
+    });
+    let stable_projection_sha256 = sha256_hex(
+        &serde_json::to_vec(&stable_projection)
+            .map_err(|error| format!("cannot serialize stable runtime projection: {error}"))?,
+    );
     let report = json!({
         "schema_version": 1,
         "operation": "all fixed-order Binary detect functions over the generated Nintendo corpus",
@@ -6441,6 +6755,8 @@ fn verify_binary_corpus(
         "nintendo_info_matched_count": nintendo_info_matched_count,
         "signature_compare_call_total": signature_compare_call_total,
         "signature_search_call_total": signature_search_call_total,
+        "runtime_measurement": runtime_measurement,
+        "stable_projection_sha256": stable_projection_sha256,
         "elapsed_ms": elapsed_ms,
         "samples": sample_reports,
         "all_match": all_match,

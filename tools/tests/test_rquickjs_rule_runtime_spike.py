@@ -304,6 +304,46 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
             "not all-rule or all-format compatibility",
             oracle["scope"],
         )
+        measurement = oracle["runtime_measurement"]
+        self.assertEqual(measurement["repeat_count"], 3)
+        self.assertEqual(measurement["sample_runtime_count_per_repeat"], 14)
+        self.assertTrue(measurement["stable_projection_equal"])
+        self.assertTrue(measurement["projection_hash_emitted_by_spike"])
+        self.assertEqual(
+            measurement["stable_projection_sha256"],
+            "723862e669846c4e3af813c19ce61007ea114942ba926162cbed072d65a54f87",
+        )
+        self.assertEqual(
+            measurement["interrupt"],
+            {
+                "detect_handler_call_sum": 9,
+                "handler_call_total": 28,
+                "handler_calls_outside_detects": 19,
+                "handler_semantics": (
+                    "one QuickJS-NG interrupt callback invocation; "
+                    "each sample uses one monotonic runtime counter"
+                ),
+                "maximum_handler_calls_per_rule": 1,
+            },
+        )
+        memory = measurement["memory"]
+        self.assertEqual(memory["checkpoint_count"], 14 * (292 + 3))
+        self.assertEqual(
+            memory["maximum_observed_malloc_size"],
+            {
+                "bytes": 654_562,
+                "sample": "ps3-type-1-elf.self",
+            },
+        )
+        self.assertEqual(
+            memory["maximum_observed_memory_used_size"],
+            {
+                "bytes": 623_012,
+                "sample": "ps3-type-1-elf.self",
+            },
+        )
+        self.assertFalse(memory["transient_high_water_measured"])
+        self.assertIn("transient in-eval", memory["scope"])
 
     def test_basic_host_api_increment_records_remaining_dynamic_gaps(self):
         increment = self.reference["basic_host_api_increment"]
