@@ -484,12 +484,18 @@ baseline 的变更都要检查本表。
   archive median 1.7704、PE median 1.3940 与 batch p95 1.6848 的 max/min，
   证明单 session 不足以冻结阈值；见
   [`upstream-performance-repeated-sessions.md`](../research/upstream-performance-repeated-sessions.md)。
+  五个 case 的双次 ptrace 又固定 2,283-file successful regular-file union，
+  补齐 kernel `PT_INTERP` mapping，并把 2,268 个规则资产区分为 2,235 个成功
+  打开的 `.sg` 与 33 个非脚本差集；它仍保持 cold/page-residency/fadvise 为
+  false，见
+  [`upstream-benchmark-file-access.md`](../research/upstream-benchmark-file-access.md)。
   同一固定 ELF 的 16 个 realpath 去重动态依赖、2,268 个规则资产及两种部署
   size 口径也已绑定，见
   [`upstream-deployment-size.md`](../research/upstream-deployment-size.md)。
 - **验证**：Rust 同 bytes/options 成对报告后冻结回归阈值，持续 trend；补
-  cold controller、physical-core/topology 与跨 reboot/日期长期 session、
-  Rust 成对/发行包 size 和目标平台。
+  residency/eviction cold controller、目录/metadata cache 口径、
+  physical-core/topology 与跨 reboot/日期长期 session、Rust 成对/发行包 size
+  和目标平台。
 - **关闭**：Phase 6 目标及阈值通过。阈值未冻结前不得声称性能更优。
 
 ### R-013：上游同步漂移

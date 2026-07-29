@@ -670,6 +670,12 @@ control 的 partial-RSS 审计边界见
 [`upstream-performance-repeated-sessions.md`](../research/upstream-performance-repeated-sessions.md)；
 archive median max/min 1.7704 和 batch p95 max/min 1.6848 证明单 session
 不能冻结阈值。
+同五个 case 的双次 Linux x86_64 ptrace 已固定 2,283-file/
+73,560,058-byte successful regular-file union，并证明 database path 成功打开
+2,235 个 `.sg`、未打开 33 个非脚本资产，见
+[`upstream-benchmark-file-access.md`](../research/upstream-benchmark-file-access.md)。
+该 union 只是 eviction candidate；page residency/fadvise、failed lookup、目录和
+dentry/inode cache 未闭合，因此不得把它标成 cold。
 固定 Linux Qt5 的 ELF、realpath 去重动态依赖闭包和 2,268 个规则资产 size
 口径见
 [`upstream-deployment-size.md`](../research/upstream-deployment-size.md)；

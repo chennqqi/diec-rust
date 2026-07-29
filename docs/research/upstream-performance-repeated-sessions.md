@@ -89,6 +89,12 @@ scheduler、CPU frequency、SMT sibling、宿主后台负载或其他状态影�
 或 SMT sibling 证明。三个 session 没有跨 reboot、日期、主机或随机化实现顺序；
 plans 仍声明 warm cache，不能据此回答 cold baseline。
 
+后续
+[`upstream-benchmark-file-access.md`](upstream-benchmark-file-access.md)
+已用每 case 两次 ptrace 固定 2,283-file successful regular-file union；它只解决
+future eviction candidate 的身份，不改变本报告的
+`cold_cache_controlled=false`。
+
 ## 复现
 
 在已有 session 1 的基础上，顺序运行两次：
@@ -120,7 +126,8 @@ scope 和 verifier 关系保持有效，不要求新 observation 与本报告逐
 
 ## 尚未完成
 
-- 定义完整 file-access closure 后实现可审计 cold-cache controller 与 cold baseline；
+- 在已固定 successful regular-file union 上增加 page residency observation、
+  advisory eviction 验证和目录/metadata cache 边界，再建立 cold baseline；
 - 在裸机或可证明 topology 的环境控制 physical core、SMT、frequency/governor，
   并跨 reboot/日期重复 session；
 - Windows、macOS 的相同 case 和最终发行包口径；

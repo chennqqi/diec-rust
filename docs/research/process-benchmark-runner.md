@@ -18,6 +18,9 @@ WSL2/Linux vCPU affinity 首轮复验见
 [`upstream-performance-affinity.md`](upstream-performance-affinity.md)；同一
 affinity suite 的三次独立 invocation 汇总见
 [`upstream-performance-repeated-sessions.md`](upstream-performance-repeated-sessions.md)。
+五个 case 的 successful regular-file access closure 见
+[`upstream-benchmark-file-access.md`](upstream-benchmark-file-access.md)；
+它固定 future eviction candidate，但仍未观察 page residency 或执行 fadvise。
 Rust 成对报告、跨平台/cold、可证明的 physical-core affinity 和评审阈值仍缺，因此
 `P0-BLOCK-006` 保持 Open，当前证据不得用于“Rust 更快”之类结论。
 
@@ -96,8 +99,9 @@ python tools/benchmark/run_process_benchmark.py \
 
 1. Linux warm-process baseline 已覆盖 process control、database、单文件、batch、
    nested 和 CLI JSON；单 vCPU affinity、三次连续 invocation 与部署 closure
-   size 已有证据，继续补 cold controller、physical-core/topology 控制及跨
-   reboot/日期的长期重复 session；
+   size 已有证据；successful regular-file candidate 已由双次 ptrace 固定，
+   继续补 residency/eviction cold controller、目录/metadata cache 边界、
+   physical-core/topology 控制及跨 reboot/日期的长期重复 session；
 2. Phase 1 增加已加载 session 的 in-process scan/serialization 与 Rust C ABI
    overhead 分层；
 3. 对相同 bytes/options 采集 Rust 与 upstream 成对报告；
