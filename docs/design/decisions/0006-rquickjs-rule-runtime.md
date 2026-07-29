@@ -111,7 +111,9 @@ workspace 建立时重新生成并审计，不允许浮动到其他 minor/patch 
   固定 `db`/`db_extra` 的全部 2,235 个程序文件又在同一 custom-allocator
   runtime 内完成三轮隔离顶层 parse/eval，稳定 high-water 为 3,486,384 bytes、
   0 次拒绝且 drop 后归零；该实验没有调用 `detect` 或复刻各 file type
-  lifecycle。
+  lifecycle。逐规则独立 runtime 复验又固定 p50/p95/p99
+  118,752/127,776/153,648 bytes，最大 3,489,576 bytes 来自
+  `Binary/audio.1.sg`，全部 2,235 个 runtime 零拒绝并在 drop 后归零。
   这仍只是 Windows 候选 allocator 证据，不是 production backend 或跨平台证明。
   另有 PE/ELF/Mach-O/DEX/APK/Archive/PDF 七条代表性规则的
   25-case 矩阵连续三轮固定为每轮 25 次 poll、75 个 lifecycle memory

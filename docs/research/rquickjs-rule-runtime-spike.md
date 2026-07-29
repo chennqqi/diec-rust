@@ -168,6 +168,22 @@ Nintendo overlay。Windows x86_64 MSVC release 连续三轮均为 2,235/2,235
 `detect`，也没有复刻各 file type 的上游顺序、include 生命周期或真实 HostApi，
 所以不能替代 Binary oracle 或七类代表性差分。
 
+为排除同一 runtime 内 atom/全局状态累计对上述 high-water 的影响，
+`measure-rule-corpus-isolated-heap` 又为每条规则分别创建并销毁一个
+custom-allocator runtime。三轮的完整稳定投影均为
+`cd091b6ebfe146d21c5b5f8e153bb99b283de9f709f1f95100673b4dd9990c43`；
+36 个 root/type scope 明细哈希均为
+`88f8d040fcadec2d4279aebcbd34d9b5b91bd2528a3381e828a3bf0fd690591c`，
+Top-20 明细哈希均为
+`c17089727d805fb7dabd599d77647e3d03bcfa8dd4c938242550a468c0181db3`，
+三者都由独立 canonical JSON 重算一致。2,235 个 runtime 全部零拒绝、drop
+归零；heap nearest-rank 分布为 minimum/p50 `118,752`、p95 `127,776`、p99
+`153,648`、maximum `3,489,576` bytes。最大规则是 603,640-byte
+`db/Binary/audio.1.sg`；第二名是 375,553-byte
+`db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg` 的 `1,224,608` bytes。
+每条顶层 eval 恰好触发一次正常 interrupt poll，合计 2,235 次。该分布消除了
+共享 runtime 累计状态这一混杂因素，但仍不调用 `detect` 或 include。
+
 为避免只观察 Binary 全规则生命周期，本轮又复用已通过 Qt5 差分的 PE、ELF、
 Mach-O、DEX、APK、Archive 和 PDF 七条原样上游规则。七类代表性格式规则共
 25 个 case，每个 case 使用独立 runtime，并在 runtime 创建、HostApi/结果 shim
@@ -893,6 +909,10 @@ cargo +1.88.0 run --release --locked -- eval-isolated-compat \
   ../../upstream/Detect-It-Easy/db_extra
 
 cargo +1.88.0 run --release --locked -- eval-isolated-compat-tracked-heap \
+  ../../upstream/Detect-It-Easy/db \
+  ../../upstream/Detect-It-Easy/db_extra
+
+cargo +1.88.0 run --release --locked -- measure-rule-corpus-isolated-heap \
   ../../upstream/Detect-It-Easy/db \
   ../../upstream/Detect-It-Easy/db_extra
 

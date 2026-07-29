@@ -176,6 +176,8 @@ def validate_sources(root: Path) -> tuple[
             "最大瞬时 high-water 为\n4,478,992 bytes",
             "`eval-isolated-compat-tracked-heap`",
             "瞬时 high-water 为 3,486,384 bytes",
+            "`measure-rule-corpus-isolated-heap`",
+            "`153,648`、maximum `3,489,576` bytes",
             "七条原样上游规则。七类代表性格式规则共\n25 个 case",
             "全矩阵最大瞬时 high-water 为 134,792 bytes",
             "不能观察 eval 内部瞬时 allocator high-water",
@@ -201,6 +203,7 @@ def validate_sources(root: Path) -> tuple[
     corpus = runtime.get("full_binary_corpus_oracle")
     tracked_corpus = runtime.get("full_binary_corpus_tracked_heap")
     full_rule_tracked = runtime.get("full_rule_corpus_tracked_heap")
+    isolated_rule_heap = runtime.get("isolated_rule_runtime_heap")
     format_matrix = runtime.get("representative_format_runtime_matrix")
     measurement = (
         corpus.get("runtime_measurement")
@@ -252,6 +255,92 @@ def validate_sources(root: Path) -> tuple[
             ),
         },
         "full rule-corpus tracked heap evidence drift",
+    )
+    require(
+        isinstance(isolated_rule_heap, dict)
+        and isolated_rule_heap.get("repeat_count") == 3
+        and isolated_rule_heap.get("stable_projection_equal") is True
+        and isolated_rule_heap.get("projection_hash_emitted_by_spike")
+        is True
+        and isolated_rule_heap.get(
+            "projection_hash_independently_recomputed"
+        )
+        is True
+        and isolated_rule_heap.get(
+            "scope_maxima_hash_independently_recomputed"
+        )
+        is True
+        and isolated_rule_heap.get(
+            "top_rules_hash_independently_recomputed"
+        )
+        is True
+        and isolated_rule_heap.get("stable_projection_sha256")
+        == "cd091b6ebfe146d21c5b5f8e153bb99b283de9f709f1f95100673b4dd9990c43",
+        "isolated per-rule heap repetition evidence drift",
+    )
+    isolated_projection = isolated_rule_heap.get("stable_projection")
+    require(
+        isinstance(isolated_projection, dict)
+        and isolated_projection.get("upstream_commit")
+        == UPSTREAM_COMMIT
+        and isolated_projection.get("rules_commit") == RULES_COMMIT
+        and isolated_projection.get("files") == 2235
+        and isolated_projection.get("bytes") == 2_902_881
+        and isolated_projection.get("eval_error_count") == 0
+        and isolated_projection.get("runtime_isolation")
+        == "one custom-allocator runtime and realm per rule"
+        and isolated_projection.get("compatibility_overlay")
+        == {
+            "applied_paths": [
+                "db/Binary/format_bin.Nintendo-certified-file.1.sg"
+            ],
+            "id": "nintendo-unused-var-tp-v1",
+        }
+        and isolated_projection.get("heap_distribution_bytes")
+        == {
+            "maximum": 3_489_576,
+            "maximum_rule": "db/Binary/audio.1.sg",
+            "maximum_rule_source_bytes": 603_640,
+            "minimum": 118_752,
+            "p50_nearest_rank": 118_752,
+            "p95_nearest_rank": 127_776,
+            "p99_nearest_rank": 153_648,
+        }
+        and isolated_projection.get("interrupt")
+        == {
+            "handler_call_total": 2235,
+            "maximum_handler_calls_per_rule": 1,
+            "maximum_rule": "db/ACE",
+        }
+        and isolated_projection.get("scope_maxima")
+        == {
+            "scope_count": 36,
+            "sha256": (
+                "88f8d040fcadec2d4279aebcbd34d9b5b91bd2528a3381e828a3bf0fd690591c"
+            ),
+        }
+        and isolated_projection.get("top_rules_by_high_water")
+        == {
+            "rule_count": 20,
+            "sha256": (
+                "c17089727d805fb7dabd599d77647e3d03bcfa8dd4c938242550a468c0181db3"
+            ),
+        }
+        and isolated_projection.get("tracking_allocator")
+        == {
+            "accounting": (
+                "RustAllocator allocation Layout bytes: aligned payload "
+                "plus internal header"
+            ),
+            "all_rule_runtimes_released_to_zero": True,
+            "backend": (
+                "rquickjs RustAllocator wrapped by TrackingLimitAllocator"
+            ),
+            "denied_allocation_count": 0,
+            "limit_bytes_per_rule_runtime": 32 * MIB,
+            "set_memory_limit_used": False,
+        },
+        "isolated per-rule heap stable projection drift",
     )
     require(
         isinstance(corpus, dict)
@@ -511,6 +600,8 @@ def build_candidate(root: Path) -> dict[str, Any]:
     corpus = runtime["full_binary_corpus_oracle"]
     tracked_corpus = runtime["full_binary_corpus_tracked_heap"]
     full_rule_tracked = runtime["full_rule_corpus_tracked_heap"]
+    isolated_rule_heap = runtime["isolated_rule_runtime_heap"]
+    isolated_rule_projection = isolated_rule_heap["stable_projection"]
     measurement = corpus["runtime_measurement"]
     tracked_measurement = tracked_corpus["runtime_measurement"]
     tracked_memory = tracked_measurement["memory"]
@@ -685,6 +776,35 @@ def build_candidate(root: Path) -> dict[str, Any]:
                 full_rule_tracked["stable_projection_sha256"]
             ),
             "candidate_custom_allocator_full_rule_top_level_detect_invoked": False,
+            "candidate_custom_allocator_isolated_rule_heap_distribution_bytes": (
+                isolated_rule_projection["heap_distribution_bytes"]
+            ),
+            "candidate_custom_allocator_isolated_rule_interrupt": (
+                isolated_rule_projection["interrupt"]
+            ),
+            "candidate_custom_allocator_isolated_rule_scope_count": (
+                isolated_rule_projection["scope_maxima"]["scope_count"]
+            ),
+            "candidate_custom_allocator_isolated_rule_scope_sha256": (
+                isolated_rule_projection["scope_maxima"]["sha256"]
+            ),
+            "candidate_custom_allocator_isolated_rule_top_count": (
+                isolated_rule_projection["top_rules_by_high_water"][
+                    "rule_count"
+                ]
+            ),
+            "candidate_custom_allocator_isolated_rule_top_sha256": (
+                isolated_rule_projection["top_rules_by_high_water"][
+                    "sha256"
+                ]
+            ),
+            "candidate_custom_allocator_isolated_rule_repeat_count": (
+                isolated_rule_heap["repeat_count"]
+            ),
+            "candidate_custom_allocator_isolated_rule_stable_projection_sha256": (
+                isolated_rule_heap["stable_projection_sha256"]
+            ),
+            "candidate_custom_allocator_isolated_rule_detect_invoked": False,
             "candidate_custom_allocator_cross_platform_measured": False,
             "candidate_custom_allocator_is_production_backend": False,
             "real_corpus_lifecycle_memory_checkpoints_measured": True,

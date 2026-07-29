@@ -47,7 +47,7 @@
     "spikes/c-static-link/c/smoke.c": "9e70deb13e007358fc6b1dc0aec908331b0fc6d355e5e766c7d77b0f5eb68807",
     "spikes/rquickjs-rule-runtime/Cargo.toml": "82c5bb97749f50212e5364c2ac7d1f81eaec4d460a9bf47710b4b42f9204a79f",
     "spikes/rquickjs-rule-runtime/Cargo.lock": "f389eb266779a88939fea9793effdff29d01ea0e1184915698f4fa0f9441d0ad",
-    "spikes/rquickjs-rule-runtime/src/main.rs": "c6d56d26e863752616ad11d8a58bbd539b8a5fa474c25ef274f85d4601145669",
+    "spikes/rquickjs-rule-runtime/src/main.rs": "a89b8b701638630c9067c97e157840efa89651993fb143558730d9c7c41a9452",
     "spikes/rquickjs-rule-runtime/src/tracking_allocator.rs": "0686ad30b9ef4f05fd6a54c39f7a5173d80321564a68a321d2b553e76cf84965",
     "spikes/rquickjs-static-link/Cargo.toml": "160117e2885abc7ca3d5f5d5b9fe77c1fbfc8337a20a709548ff7ef157b96bf0",
     "spikes/rquickjs-static-link/Cargo.lock": "e80e1d8f87c753d7accba7dc3625a926b67221e4ed07c38d13a9d0b9e94c0e80",
@@ -84,13 +84,13 @@
       "default": {
         "fmt": "pass",
         "clippy": "pass",
-        "unit_tests": 44,
+        "unit_tests": 46,
         "doc_tests": 0
       },
       "msrv": {
         "fmt": "pass",
         "clippy": "pass",
-        "unit_tests": 44,
+        "unit_tests": 46,
         "doc_tests": 0
       }
     },

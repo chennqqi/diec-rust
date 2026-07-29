@@ -1554,6 +1554,90 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
         self.assertIn("not default-allocator", evidence["scope"])
         self.assertIn("cross-platform evidence", evidence["scope"])
 
+    def test_isolated_rule_heap_distribution_is_stable_and_hash_bound(self):
+        evidence = self.reference["isolated_rule_runtime_heap"]
+        self.assertEqual(evidence["repeat_count"], 3)
+        self.assertTrue(evidence["stable_projection_equal"])
+        self.assertTrue(evidence["projection_hash_emitted_by_spike"])
+        self.assertTrue(
+            evidence["projection_hash_independently_recomputed"]
+        )
+        self.assertTrue(
+            evidence["scope_maxima_hash_independently_recomputed"]
+        )
+        self.assertTrue(
+            evidence["top_rules_hash_independently_recomputed"]
+        )
+        self.assertEqual(
+            evidence["stable_projection_sha256"],
+            "cd091b6ebfe146d21c5b5f8e153bb99b283de9f709f1f95100673b4dd9990c43",
+        )
+        projection = evidence["stable_projection"]
+        self.assertEqual(projection["files"], 2235)
+        self.assertEqual(projection["bytes"], 2_902_881)
+        self.assertEqual(projection["eval_error_count"], 0)
+        self.assertEqual(
+            projection["heap_distribution_bytes"],
+            {
+                "maximum": 3_489_576,
+                "maximum_rule": "db/Binary/audio.1.sg",
+                "maximum_rule_source_bytes": 603_640,
+                "minimum": 118_752,
+                "p50_nearest_rank": 118_752,
+                "p95_nearest_rank": 127_776,
+                "p99_nearest_rank": 153_648,
+            },
+        )
+        self.assertEqual(
+            projection["interrupt"],
+            {
+                "handler_call_total": 2235,
+                "maximum_handler_calls_per_rule": 1,
+                "maximum_rule": "db/ACE",
+            },
+        )
+        self.assertEqual(
+            projection["scope_maxima"],
+            {
+                "scope_count": 36,
+                "sha256": (
+                    "88f8d040fcadec2d4279aebcbd34d9b5b91bd2528a3381e828a3bf0fd690591c"
+                ),
+            },
+        )
+        self.assertEqual(
+            projection["top_rules_by_high_water"],
+            {
+                "rule_count": 20,
+                "sha256": (
+                    "c17089727d805fb7dabd599d77647e3d03bcfa8dd4c938242550a468c0181db3"
+                ),
+            },
+        )
+        self.assertTrue(
+            projection["tracking_allocator"][
+                "all_rule_runtimes_released_to_zero"
+            ]
+        )
+        self.assertEqual(
+            projection["tracking_allocator"][
+                "denied_allocation_count"
+            ],
+            0,
+        )
+        canonical = json.dumps(
+            projection,
+            ensure_ascii=False,
+            separators=(",", ":"),
+            sort_keys=True,
+        ).encode()
+        self.assertEqual(
+            hashlib.sha256(canonical).hexdigest(),
+            evidence["stable_projection_sha256"],
+        )
+        self.assertIn("detect functions are not called", evidence["scope"])
+        self.assertIn("not upstream lifecycle", evidence["scope"])
+
     def test_script_scope_probe_records_qt5_incompatibility(self):
         scope = self.reference["script_scope"]
         self.assertEqual(scope["rule_count"], 7)

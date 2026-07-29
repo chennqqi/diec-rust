@@ -85,6 +85,15 @@ a path-independent stable projection hash, rejects any allocation above the
 zero. It does not call `detect`, reproduce upstream file-type ordering, measure
 the default allocator, or establish cross-platform behavior.
 
+`measure-rule-corpus-isolated-heap` removes shared-runtime accumulation from
+that measurement. It creates and destroys one tracked runtime and realm per
+fixed rule, then emits nearest-rank heap percentiles, per-root/type maxima,
+the top 20 rules, and normal interrupt-poll totals. The stable projection
+contains hashes of the larger scope and ranking details. Every rule runtime
+must stay below 32 MiB, deny no allocation, and release all live bytes. This
+still evaluates top-level code only and does not model upstream lifecycle or
+`detect`.
+
 The `verify-pe-rule`, `verify-elf-rule`, `verify-macho-rule`,
 `verify-dex-rule`, `verify-apk-rule`, `verify-archive-rule`, and
 `verify-pdf-rule` reports also include one normal interrupt counter and three

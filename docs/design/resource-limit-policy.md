@@ -204,6 +204,11 @@ bytes，0 denied allocation，runtime drop 后归零。该结果扩展了 source
 coverage，但没有调用 `detect`，也没有复刻各 file type 的顺序、include 或
 真实 HostApi，因而不改变未准入状态。
 
+逐规则独立 runtime 复验进一步消除了共享 atom/全局状态累计：2,235 个 runtime
+的 nearest-rank p50/p95/p99 为 118,752/127,776/153,648 bytes，最大
+3,489,576 bytes 来自 `Binary/audio.1.sg`；全部零拒绝并在 drop 后归零。
+每条顶层 eval 各触发一次正常 poll。它仍不覆盖 `detect` 或真实 lifecycle。
+
 已有的 PE/ELF/Mach-O/DEX/APK/Archive/PDF 差分另形成七类、25-case 的代表性
 矩阵：连续三轮均为 25/25 匹配，每轮 25 次正常 VM poll、75 个 lifecycle
 memory checkpoint，最大 observed `malloc_size` 为 124,485 bytes。同一矩阵的

@@ -89,7 +89,7 @@ cargo +1.97.1 test --manifest-path <manifest> --all-features
 | --- | --- | --- | ---: | ---: |
 | `boa-rule-runtime` | pass | pass | 2 | 0 |
 | `c-static-link` | pass | pass | 3 | 0 |
-| `rquickjs-rule-runtime` | pass | pass | 44 | 0 |
+| `rquickjs-rule-runtime` | pass | pass | 46 | 0 |
 | `rquickjs-static-link` | pass | pass | 2 | 0 |
 | `signature-parser` | pass | pass | 17 | 0 |
 
@@ -121,10 +121,10 @@ consumer。随后依次增加真实 PE32/Cygwin32、ELF32/ELF64/Burneye、
 Mach-O64 x86_64/arm64 Rust compiler、DEX035/QDBH、APK/ZIP QDBH、
 Archive/ZIP metadata 和 PDF Tools object/string
 规则差分；当前 source SHA-256 为
-`c6d56d26e863752616ad11d8a58bbd539b8a5fa474c25ef274f85d4601145669`，
+`a89b8b701638630c9067c97e157840efa89651993fb143558730d9c7c41a9452`，
 custom tracking allocator 模块 SHA-256 为
 `0686ad30b9ef4f05fd6a54c39f7a5173d80321564a68a321d2b553e76cf84965`。
-两套工具链均通过 44 项测试，release 差分分别为 3/3、6/6、4/4、3/3、
+两套工具链均通过 46 项测试，release 差分分别为 3/3、6/6、4/4、3/3、
 3/3、3/3 和 3/3；Binary signature native checkpoint 的接线与计量也未新增
 Cargo 依赖。新增规则 case runtime probe 测试固定三点 lifecycle memory 报告
 结构；七类代表性格式的 release 报告三轮稳定。新增 `unsafe Allocator` wrapper

@@ -218,6 +218,71 @@ class ScriptRuntimeBudgetTests(unittest.TestCase):
                 "candidate_custom_allocator_full_rule_top_level_detect_invoked"
             ]
         )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_isolated_rule_heap_distribution_bytes"
+            ],
+            {
+                "maximum": 3_489_576,
+                "maximum_rule": "db/Binary/audio.1.sg",
+                "maximum_rule_source_bytes": 603_640,
+                "minimum": 118_752,
+                "p50_nearest_rank": 118_752,
+                "p95_nearest_rank": 127_776,
+                "p99_nearest_rank": 153_648,
+            },
+        )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_isolated_rule_interrupt"
+            ],
+            {
+                "handler_call_total": 2235,
+                "maximum_handler_calls_per_rule": 1,
+                "maximum_rule": "db/ACE",
+            },
+        )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_isolated_rule_scope_count"
+            ],
+            36,
+        )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_isolated_rule_scope_sha256"
+            ],
+            "88f8d040fcadec2d4279aebcbd34d9b5b91bd2528a3381e828a3bf0fd690591c",
+        )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_isolated_rule_top_count"
+            ],
+            20,
+        )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_isolated_rule_top_sha256"
+            ],
+            "c17089727d805fb7dabd599d77647e3d03bcfa8dd4c938242550a468c0181db3",
+        )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_isolated_rule_repeat_count"
+            ],
+            3,
+        )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_isolated_rule_stable_projection_sha256"
+            ],
+            "cd091b6ebfe146d21c5b5f8e153bb99b283de9f709f1f95100673b4dd9990c43",
+        )
+        self.assertFalse(
+            evidence[
+                "candidate_custom_allocator_isolated_rule_detect_invoked"
+            ]
+        )
         self.assertFalse(
             evidence[
                 "candidate_custom_allocator_cross_platform_measured"

@@ -7403,6 +7403,271 @@ fn evaluate_corpus(
     Ok(errors.is_empty())
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
+struct IsolatedRuleHeapObservation {
+    logical_path: String,
+    source_bytes: u64,
+    high_water_bytes: u64,
+    live_bytes_before_drop: u64,
+    interrupt_calls: u64,
+}
+
+fn rule_logical_path(roots: &[PathBuf], path: &Path) -> Result<String, String> {
+    for root in roots {
+        if let Ok(relative) = path.strip_prefix(root) {
+            let root_name = root
+                .file_name()
+                .ok_or_else(|| format!("rule root has no file name: {}", root.display()))?;
+            return Ok(format!(
+                "{}/{}",
+                root_name.to_string_lossy(),
+                normalized_path(relative)
+            ));
+        }
+    }
+    Err(format!(
+        "rule path is outside configured roots: {}",
+        path.display()
+    ))
+}
+
+fn rule_logical_scope(logical_path: &str) -> String {
+    let mut components = logical_path.split('/');
+    let root = components.next().unwrap_or("_unknown");
+    let relative_head = components.next().unwrap_or("_root");
+    let scope = if components.next().is_some() {
+        relative_head
+    } else {
+        "_root"
+    };
+    format!("{root}/{scope}")
+}
+
+fn nearest_rank_percentile(sorted_values: &[u64], percentile: usize) -> Result<u64, String> {
+    if sorted_values.is_empty() {
+        return Err("cannot calculate a percentile from no observations".to_owned());
+    }
+    if !(1..=100).contains(&percentile) {
+        return Err(format!("percentile must be in 1..=100, got {percentile}"));
+    }
+    let numerator = sorted_values
+        .len()
+        .checked_mul(percentile)
+        .ok_or_else(|| "percentile rank overflow".to_owned())?;
+    let rank = numerator
+        .checked_add(99)
+        .ok_or_else(|| "percentile rank rounding overflow".to_owned())?
+        / 100;
+    Ok(sorted_values[rank - 1])
+}
+
+fn measure_rule_corpus_isolated_heap(roots: &[PathBuf]) -> Result<bool, String> {
+    let mut files = Vec::new();
+    for root in roots {
+        collect_rule_files(root, &mut files)?;
+    }
+    files.sort_by_key(|path| normalized_path(path));
+
+    let started = Instant::now();
+    let mut observations = Vec::with_capacity(files.len());
+    let mut errors = Vec::new();
+    let mut total_bytes = 0_u64;
+    let mut overlay_paths = Vec::new();
+
+    for path in &files {
+        let original_bytes =
+            fs::read(path).map_err(|error| format!("cannot read {}: {error}", path.display()))?;
+        let source_bytes = u64::try_from(original_bytes.len())
+            .map_err(|_| format!("rule size does not fit u64: {}", path.display()))?;
+        total_bytes = total_bytes
+            .checked_add(source_bytes)
+            .ok_or_else(|| "rule byte count overflow".to_owned())?;
+        let (evaluated_bytes, overlay_applied) =
+            apply_compatibility_overlay(path, &original_bytes)?;
+        let logical_path = rule_logical_path(roots, path)?;
+        if overlay_applied {
+            overlay_paths.push(logical_path.clone());
+        }
+
+        let (runtime, probe) =
+            new_rule_case_runtime_with_tracking(Some(TRACKED_RULE_RUNTIME_LIMIT_BYTES))?;
+        let context = new_context(&runtime)?;
+        install_host_shim(&context)?;
+        let initialized = runtime_memory_snapshot(&runtime)?;
+        let eval_error = eval_unit(&context, &evaluated_bytes).err();
+        let measurement = probe.finish(runtime, context, initialized)?;
+        if let Some(error) = eval_error {
+            errors.push(json!({
+                "path": logical_path,
+                "error": error,
+            }));
+        }
+        let tracking = &measurement["memory"]["tracking_allocator"];
+        let high_water_bytes = tracking["high_water_bytes"]
+            .as_u64()
+            .ok_or_else(|| "tracked rule high-water is missing".to_owned())?;
+        let live_bytes_before_drop = tracking["live_bytes_before_drop"]
+            .as_u64()
+            .ok_or_else(|| "tracked rule live-before-drop is missing".to_owned())?;
+        let interrupt_calls = measurement["interrupt"]["handler_call_total"]
+            .as_u64()
+            .ok_or_else(|| "tracked rule interrupt count is missing".to_owned())?;
+        observations.push(IsolatedRuleHeapObservation {
+            logical_path,
+            source_bytes,
+            high_water_bytes,
+            live_bytes_before_drop,
+            interrupt_calls,
+        });
+    }
+
+    if observations.is_empty() {
+        return Err("tracked rule corpus is empty".to_owned());
+    }
+
+    let mut heap_values = observations
+        .iter()
+        .map(|observation| observation.high_water_bytes)
+        .collect::<Vec<_>>();
+    heap_values.sort_unstable();
+    let mut ranked = observations.clone();
+    ranked.sort_by(|left, right| {
+        right
+            .high_water_bytes
+            .cmp(&left.high_water_bytes)
+            .then_with(|| left.logical_path.cmp(&right.logical_path))
+    });
+    let maximum = ranked
+        .first()
+        .ok_or_else(|| "tracked rule corpus maximum is missing".to_owned())?;
+    let maximum_interrupt = observations
+        .iter()
+        .max_by(|left, right| {
+            left.interrupt_calls
+                .cmp(&right.interrupt_calls)
+                .then_with(|| right.logical_path.cmp(&left.logical_path))
+        })
+        .ok_or_else(|| "tracked rule interrupt maximum is missing".to_owned())?;
+    let total_interrupt_calls = observations.iter().try_fold(0_u64, |total, observation| {
+        total
+            .checked_add(observation.interrupt_calls)
+            .ok_or_else(|| "tracked rule interrupt total overflow".to_owned())
+    })?;
+
+    let mut scopes = BTreeMap::<String, Vec<&IsolatedRuleHeapObservation>>::new();
+    for observation in &observations {
+        scopes
+            .entry(rule_logical_scope(&observation.logical_path))
+            .or_default()
+            .push(observation);
+    }
+    let scope_projection = scopes
+        .into_iter()
+        .map(|(scope, members)| {
+            let maximum = members
+                .iter()
+                .copied()
+                .max_by(|left, right| {
+                    left.high_water_bytes
+                        .cmp(&right.high_water_bytes)
+                        .then_with(|| right.logical_path.cmp(&left.logical_path))
+                })
+                .ok_or_else(|| format!("tracked rule scope {scope} is empty"))?;
+            Ok((
+                scope,
+                json!({
+                    "rule_count": members.len(),
+                    "maximum_high_water_bytes": maximum.high_water_bytes,
+                    "maximum_rule": maximum.logical_path,
+                }),
+            ))
+        })
+        .collect::<Result<BTreeMap<_, _>, String>>()?;
+    let top_rules = ranked
+        .iter()
+        .take(20)
+        .map(|observation| {
+            json!({
+                "path": observation.logical_path,
+                "source_bytes": observation.source_bytes,
+                "high_water_bytes": observation.high_water_bytes,
+                "live_bytes_before_drop": observation.live_bytes_before_drop,
+                "interrupt_calls": observation.interrupt_calls,
+            })
+        })
+        .collect::<Vec<_>>();
+    let scope_projection_bytes = serde_json::to_vec(&scope_projection)
+        .map_err(|error| format!("cannot serialize isolated rule heap scopes: {error}"))?;
+    let top_rules_bytes = serde_json::to_vec(&top_rules)
+        .map_err(|error| format!("cannot serialize isolated rule heap ranking: {error}"))?;
+    let stable_projection = json!({
+        "schema_version": 1,
+        "upstream_commit": UPSTREAM_COMMIT,
+        "rules_commit": RULES_COMMIT,
+        "runtime_isolation": "one custom-allocator runtime and realm per rule",
+        "selection": "recursive files with .sg or no extension",
+        "files": observations.len(),
+        "bytes": total_bytes,
+        "eval_error_count": errors.len(),
+        "compatibility_overlay": {
+            "id": "nintendo-unused-var-tp-v1",
+            "applied_paths": overlay_paths,
+        },
+        "tracking_allocator": {
+            "backend": "rquickjs RustAllocator wrapped by TrackingLimitAllocator",
+            "limit_bytes_per_rule_runtime": TRACKED_RULE_RUNTIME_LIMIT_BYTES,
+            "set_memory_limit_used": false,
+            "accounting":
+                "RustAllocator allocation Layout bytes: aligned payload plus internal header",
+            "denied_allocation_count": 0,
+            "all_rule_runtimes_released_to_zero": true,
+        },
+        "heap_distribution_bytes": {
+            "minimum": heap_values[0],
+            "p50_nearest_rank": nearest_rank_percentile(&heap_values, 50)?,
+            "p95_nearest_rank": nearest_rank_percentile(&heap_values, 95)?,
+            "p99_nearest_rank": nearest_rank_percentile(&heap_values, 99)?,
+            "maximum": maximum.high_water_bytes,
+            "maximum_rule": maximum.logical_path,
+            "maximum_rule_source_bytes": maximum.source_bytes,
+        },
+        "interrupt": {
+            "handler_call_total": total_interrupt_calls,
+            "maximum_handler_calls_per_rule": maximum_interrupt.interrupt_calls,
+            "maximum_rule": maximum_interrupt.logical_path,
+        },
+        "scope_maxima": {
+            "scope_count": scope_projection.len(),
+            "sha256": sha256_hex(&scope_projection_bytes),
+        },
+        "top_rules_by_high_water": {
+            "rule_count": top_rules.len(),
+            "sha256": sha256_hex(&top_rules_bytes),
+        },
+    });
+    let stable_projection_bytes = serde_json::to_vec(&stable_projection)
+        .map_err(|error| format!("cannot serialize isolated rule heap projection: {error}"))?;
+    let report = json!({
+        "schema_version": 1,
+        "operation": "isolated per-rule top-level parse/eval with custom allocator",
+        "stable_projection_sha256": sha256_hex(&stable_projection_bytes),
+        "stable_projection": stable_projection,
+        "scope_maxima": scope_projection,
+        "top_rules_by_high_water": top_rules,
+        "eval_errors": errors,
+        "elapsed_ms": started.elapsed().as_millis(),
+        "scope":
+            "all fixed rule programs evaluated separately; detect functions are not called and \
+             this is not upstream lifecycle, default-allocator, or cross-platform evidence",
+    });
+    println!(
+        "{}",
+        serde_json::to_string_pretty(&report)
+            .map_err(|error| format!("cannot serialize isolated rule heap report: {error}"))?
+    );
+    Ok(errors.is_empty())
+}
+
 fn run_fixture(rule_root: &Path) -> Result<bool, String> {
     let started = Instant::now();
     let runtime = new_runtime()?;
@@ -7934,6 +8199,8 @@ fn usage() -> ExitCode {
          <eval-isolated|eval-isolated-compat|eval-shared> <rule-root>...\n       \
          diec-rquickjs-rule-runtime-spike \
          eval-isolated-compat-tracked-heap <rule-root>...\n       \
+         diec-rquickjs-rule-runtime-spike \
+         measure-rule-corpus-isolated-heap <rule-root>...\n       \
          diec-rquickjs-rule-runtime-spike fixture <main-rule-root>\n       \
          diec-rquickjs-rule-runtime-spike \
          <eval-binary-lifecycle|eval-binary-lifecycle-raw|eval-binary-lifecycle-lexical> \
@@ -7995,6 +8262,8 @@ fn main() -> ExitCode {
         evaluate_corpus(&roots, false, true, None)
     } else if command == "eval-isolated-compat-tracked-heap" {
         evaluate_corpus(&roots, false, true, Some(TRACKED_RULE_RUNTIME_LIMIT_BYTES))
+    } else if command == "measure-rule-corpus-isolated-heap" {
+        measure_rule_corpus_isolated_heap(&roots)
     } else if command == "eval-shared" {
         evaluate_corpus(&roots, true, false, None)
     } else if command == "fixture" && roots.len() == 1 {
@@ -8112,12 +8381,13 @@ mod tests {
         collect_rule_files, elf_matcher_map_projection, eval_rule_lexical, eval_string, eval_unit,
         install_diagnostic_host_fallbacks, install_nintendo_host,
         install_nintendo_host_with_context, install_nintendo_host_with_context_and_strings,
-        macho_matcher_map_projection, new_context, new_rule_case_runtime_with_tracking,
-        new_runtime, new_tracking_runtime, nonnegative_index, normalized_path,
-        parse_detection_triples, parse_scope_detections, parse_scope_fixture_order,
-        pe_physical_map_projection, qt5_matcher_map_projection, qt5_pe_physical_map_projection,
-        read_ascii, read_byte_array, read_signed, read_unsigned, runtime_memory_snapshot,
-        sha256_hex, shift_right_unsigned, sorted_detection_projection, upstream_type_priority,
+        macho_matcher_map_projection, nearest_rank_percentile, new_context,
+        new_rule_case_runtime_with_tracking, new_runtime, new_tracking_runtime, nonnegative_index,
+        normalized_path, parse_detection_triples, parse_scope_detections,
+        parse_scope_fixture_order, pe_physical_map_projection, qt5_matcher_map_projection,
+        qt5_pe_physical_map_projection, read_ascii, read_byte_array, read_signed, read_unsigned,
+        rule_logical_path, rule_logical_scope, runtime_memory_snapshot, sha256_hex,
+        shift_right_unsigned, sorted_detection_projection, upstream_type_priority,
     };
     use std::fs;
     use std::path::{Path, PathBuf};
@@ -8146,6 +8416,29 @@ mod tests {
                 u8::from_str_radix(text, 16).expect("hex fixture must contain digits")
             })
             .collect()
+    }
+
+    #[test]
+    fn nearest_rank_percentile_checks_boundaries_and_rounds_up() {
+        let values = [10, 20, 30, 40];
+        assert_eq!(nearest_rank_percentile(&values, 1).unwrap(), 10);
+        assert_eq!(nearest_rank_percentile(&values, 50).unwrap(), 20);
+        assert_eq!(nearest_rank_percentile(&values, 51).unwrap(), 30);
+        assert_eq!(nearest_rank_percentile(&values, 100).unwrap(), 40);
+        assert!(nearest_rank_percentile(&[], 50).is_err());
+        assert!(nearest_rank_percentile(&values, 0).is_err());
+        assert!(nearest_rank_percentile(&values, 101).is_err());
+    }
+
+    #[test]
+    fn rule_logical_identity_is_root_relative_and_scope_stable() {
+        let root = PathBuf::from("rules").join("db");
+        let path = root.join("PE").join("compiler.sg");
+        let logical = rule_logical_path(std::slice::from_ref(&root), &path).unwrap();
+        assert_eq!(logical, "db/PE/compiler.sg");
+        assert_eq!(rule_logical_scope(&logical), "db/PE");
+        assert_eq!(rule_logical_scope("db/_init"), "db/_root");
+        assert!(rule_logical_path(&[root], Path::new("outside/rule.sg")).is_err());
     }
 
     #[test]

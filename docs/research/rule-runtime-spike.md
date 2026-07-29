@@ -168,8 +168,8 @@ JSON 报告写到 stdout。报告包含环境无关的计数和错误列表，�
 
 - Boa 尚未按上游 file type、priority、database、init/include 顺序做全库 eval；
   QuickJS 已完成固定 Binary 顶层顺序，并对全部 2,235 个程序文件完成隔离顶层
-  parse/eval 与 heap 计量；其他 file type 的真实顺序、include 和 detect
-  lifecycle 仍未完成。
+  parse/eval、共享 runtime heap 计量及逐规则独立 runtime 分布；其他 file
+  type 的真实顺序、include 和 detect lifecycle 仍未完成。
 - 规则侧已清点 429 个第一层宿主 receiver/method 和 464 个 arity 形状；
   337 个 C++ slot 与 13 个脚本扩展静态覆盖 460 个形状。共享 Qt 5/Qt 6
   QObject 探针已闭合三个额外实参形状和一个缺失方法异常，并发现代表性

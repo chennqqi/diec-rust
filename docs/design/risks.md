@@ -608,8 +608,11 @@ baseline 的变更都要检查本表。
   拒绝且 42/42 runtime drop 后归零；但它尚非 production backend，也未通过
   sanitizer 或三平台验证。全部 2,235 个固定程序文件的隔离顶层 parse/eval
   另在三轮中稳定测得 3,486,384-byte high-water、0 次拒绝并在 drop 后归零，
-  但没有调用 `detect` 或复刻各 file type lifecycle。其余 HostApi checkpoint
-  与完整跨格式 scaling 仍未采集。七类代表性格式规则的 25-case
+  逐规则独立 runtime 又固定 p50/p95/p99 为
+  118,752/127,776/153,648 bytes、最大 3,489,576 bytes，全部 2,235 个
+  runtime 零拒绝并在 drop 后归零；但两者都没有调用 `detect` 或复刻各 file
+  type lifecycle。其余 HostApi checkpoint 与完整跨格式 scaling 仍未采集。
+  七类代表性格式规则的 25-case
   矩阵虽已三轮固定为每轮 25 次 poll、75 个 memory checkpoint，其 custom
   allocator 变体也固定最大 134,792-byte transient high-water、0 次拒绝与
   75/75 drop 归零；但每类仅一条短规则，所以该候选仍为
