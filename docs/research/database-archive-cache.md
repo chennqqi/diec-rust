@@ -8,7 +8,7 @@ Components:
 `horsicq/XScanEngine@dfe4a419e4f491bb23688ba03c5a5bf39e34da83`,
 `horsicq/XArchive@0fcd4e8d3e9933baac3b12246d82ac026557ffd0`
 
-Last updated: 2026-07-28
+Last updated: 2026-07-29
 
 ## 1. 范围
 
@@ -21,13 +21,16 @@ Last updated: 2026-07-28
 
 机器差分报告为
 [`data/database-archive-linux-qt5.json`](data/database-archive-linux-qt5.json)，
+原生 Windows Qt5 复验为
+[`data/windows-qt5-cli-database-archive.json`](data/windows-qt5-cli-database-archive.json)，
 CLI cache 源码/容器探针摘要为
 [`data/database-cache-cli.json`](data/database-cache-cli.json)，
 engine `bUseCache=true` 专用 harness 报告为
 [`data/database-cache-engine-qt5.json`](data/database-cache-engine-qt5.json)。
 
-本轮证明 Linux Qt5 qmake/CMake 固定 CLI oracle，以及链接未修改上游 engine
-的 Qt5 CMake 专用 harness。cache 结论不外推到 Qt6、Windows 或 macOS。
+本轮证明 Linux Qt5 qmake/CMake 固定 CLI oracle、原生 Windows Qt5 qmake
+CLI oracle，以及链接未修改上游 engine 的 Linux Qt5 CMake 专用 harness。
+engine cache 结论不外推到 Qt6、Windows 或 macOS。
 
 ## 2. 固定身份
 
@@ -138,6 +141,18 @@ CLI 仍退出 0，错误追加 stdout 并破坏 JSON。29-byte local header 也�
 差分规范化不得按名称去重、把 `..` entry 静默拒绝，或自动剥离任意公共根目录，
 否则会隐藏真实兼容差异。现代安全 profile 可以拒绝危险名称，但必须形成明确
 diagnostic/SafetyDeviation，而不是改变 legacy profile 后仍声称等价。
+
+### 4.3 原生 Windows Qt5 复验
+
+[`collect_windows_cli_database_archives.py`](../../tools/upstream/collect_windows_cli_database_archives.py)
+直接复用上述 17 个 case，在固定 Windows Qt5 oracle 上每项连续运行两次，共
+34 次。全部双轮稳定；17/17 exit code、stderr 和受限规范化后的 stdout
+SHA-256 与 Linux Qt5 相同，10 个 scan case 的 JSON validity 也逐项相同。
+
+跨平台规范化只把实际 Windows path argument 替换成对应 `/dbfx/...` argument，
+并把 CRLF 改为 LF；不解析 JSON、不改写 ZIP entry、不删除 diagnostic 或排序
+record。完整身份、复现命令和逐项结论见
+[`windows-database-archive-behavior.md`](windows-database-archive-behavior.md)。
 
 ## 5. 发布 CLI 的 cache 可达性
 
@@ -296,4 +311,5 @@ cache，也不得把部分/空状态暴露给后续扫描。若 legacy engine pr
   原子 publish，本项目不把未定义调度结果作为 golden output；
 - deflate/其他 method、encrypted ZIP、CRC mismatch、data descriptor、ZIP64；
 - 超大 entry count、声明长度欺骗、压缩比和总解压预算；
-- Windows/macOS path、QStandardPaths 和 archive filename encoding。
+- Windows engine cache/app-data/ACL、macOS path/QStandardPaths，以及
+  archive filename encoding。

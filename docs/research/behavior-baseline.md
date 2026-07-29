@@ -74,6 +74,11 @@ special 优先级关系 21/21 成立。十份 Windows runtime 报告累计 2,034
 详见
 [`windows-special-matrix-extension.md`](windows-special-matrix-extension.md)。
 
+同一固定 Windows oracle 又完成 17-case ZIP database 双轮矩阵，共 34 次执行。
+全部稳定；exit code、stderr、JSON validity 和只经 path/CRLF 规范化的 stdout
+均与 Linux Qt5 相同。十一份 Windows runtime 报告累计 2,068 次执行，详见
+[`windows-database-archive-behavior.md`](windows-database-archive-behavior.md)。
+
 同一剩余 21 样本 × 19-case special 矩阵又在固定 Linux Qt5/Qt6 image 上
 各执行一次，共 798 次容器执行。399/399 raw observations 逐字节相同；231 个
 JSON/XML projection 在 Qt5/Qt6 及 Windows/Linux Qt5 间相同，跨 Windows 时

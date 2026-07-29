@@ -20,6 +20,9 @@ filename-prefix 顺序和 nested detection tree 均与 Linux Qt5 相同。
 随后 18-case database success/error 矩阵完成 36 次执行；退出码、load-error
 可见性、JSON validity 和受限 path/CRLF normalization 后的 stdout 均与
 Linux Qt5 相同。
+17-case ZIP database 矩阵再完成 34 次执行；完整/空/截断、重复/`..` entry
+和额外根前缀的退出码、stderr、JSON validity 及受限规范化 stdout 均与
+Linux Qt5 相同。
 Windows 专用 17-case Unicode/特殊路径矩阵再完成 34 次执行；固定可表示名称、
 默认大小写别名、点号/Hidden attribute 过滤和目录/显式 target 顺序。
 Windows 专用 8-case filesystem 矩阵再完成 16 次执行；固定 Junction 目录、
@@ -46,6 +49,7 @@ JSON continuity、CSV 优先级及四个带空格 filetype 的 invalid XML。
 [`data/windows-qt5-cli-matrix.json`](data/windows-qt5-cli-matrix.json) 和
 [`data/windows-qt5-cli-path-nested.json`](data/windows-qt5-cli-path-nested.json)、
 [`data/windows-qt5-cli-database.json`](data/windows-qt5-cli-database.json)、
+[`data/windows-qt5-cli-database-archive.json`](data/windows-qt5-cli-database-archive.json)、
 [`data/windows-qt5-cli-special-paths.json`](data/windows-qt5-cli-special-paths.json)
 和
 [`data/windows-qt5-cli-filesystem.json`](data/windows-qt5-cli-filesystem.json)。
@@ -316,9 +320,27 @@ source/rules/submodule、Qt 和二进制身份。每个 case 连续运行两次�
 `Error: database fixture`，两者继续破坏 JSON framing；所有 stderr 为空。
 
 该矩阵覆盖 missing/empty/invalid/malformed/throwing/valid main、missing
-extra/custom 和 entropy/info load-error framing，不覆盖 ZIP archive/cache
-边界、ACL/permission-denied database 或不可读 input 的 Windows 行为，也不
-替代 engine-only cache harness。
+extra/custom 和 entropy/info load-error framing。ZIP archive 由下一节的
+独立矩阵覆盖；ACL/permission-denied database、不可读 input 和 engine-only
+cache harness 仍不在本矩阵范围内。
+
+## Windows CLI ZIP database 矩阵
+
+[`collect_windows_cli_database_archives.py`](../../tools/upstream/collect_windows_cli_database_archives.py)
+复用 Linux `probe_database_archives.py` 的 17 个 case，并验证相同 fixture、
+source/rules/submodule、Qt、二进制和固定 Linux 报告身份。每个 case 连续运行
+两次，共 34 次。
+
+机器报告 SHA-256 为
+`53c673620cc4388f0da7ffe36af7a325a099bceb0e29912c1f733119f942d748`。
+结果为 0 个 determinism failure；17/17 exit code 和 stderr、10/10 JSON
+validity、17/17 受限 path/CRLF normalization 后 stdout 与 Linux Qt5 相同。
+完整、空、无 EOCD、只含 local record、两种 payload 截断、local-header
+截断、重复 entry、`..` entry 和额外根前缀的行为均被固定。详见
+[`windows-database-archive-behavior.md`](windows-database-archive-behavior.md)。
+
+该矩阵不覆盖 Windows 原生 `bUseCache=true`、cache/app-data ACL、不可读
+database 或 cache write denial；这些需要单独的 engine harness。
 
 ## Windows CLI Unicode/特殊路径矩阵
 
@@ -414,14 +436,14 @@ bit-for-bit reproducible：
   全 26 样本普通 output 和全 26 样本 19-case special，并完成首轮
   path/nested/database；尚未运行
   UNC、精确 namespace 上限、symbolic link/reparse cycle/ACL、database
-  archive/cache/permission engine-only 和其他 engine-only 矩阵；
+  cache/permission engine-only 和其他 engine-only 矩阵；
 - 尚未验证 x86、ARM64、完整 GUI/lite、install/package 和官方 release zip；
 - `cl` 对 x64 的 `/arch:SSE2` 给出 D9002 ignored warning；x64 ABI 本身要求
   SSE2，但该 warning 仍应保留在构建日志中。
 
 下一步扩展原生采集器的 UNC、精确 namespace 上限、symbolic link/reparse
-cycle/ACL，并为 database archive/cache/permission 与其他 engine-only 行建立
-Windows harness；然后
+cycle/ACL，并为 database cache/permission 与其他 engine-only 行建立 Windows
+harness；然后
 独立处理官方 CMake 路径和二进制
 确定性。macOS 固定构建仍是三平台基线的剩余大项。
 

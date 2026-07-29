@@ -225,6 +225,9 @@ Phase 0 计划形成：
 - [`cli-option-behavior.md`](cli-option-behavior.md)：verbose/messages/profiling channel 与 test/create test 遗留入口行为（Draft）。
 - [`database-error-behavior.md`](database-error-behavior.md)：数据库缺失/损坏、规则错误和不可读输入（Draft）。
 - [`database-archive-cache.md`](database-archive-cache.md)：ZIP 规则数据库边界、发布 CLI cache 可达性，以及 engine cache stale/corrupt/cancel 行为（Draft）。
+- [`windows-database-archive-behavior.md`](windows-database-archive-behavior.md)：
+  原生 Windows Qt5 的 17-case ZIP database 双轮差分、受限跨平台规范化和
+  剩余 engine cache/ACL 缺口（Draft）。
 - [`database-layer-behavior.md`](database-layer-behavior.md)：main/extra/custom 同名规则、分层顺序、加载与运行时 gate（Draft）。
 - [`engine-contract-behavior.md`](engine-contract-behavior.md)：engine 过滤/排序/停止/入口，以及 device/subdevice short-read、I/O、seek 和范围边界；闭合 `CAP-GAP-009` 与 `CAP-GAP-011`（Draft）。
 - [`nested-scan-behavior.md`](nested-scan-behavior.md)：archive/resource/overlay 的选项可达性、结果树和资源限制（Draft）。
@@ -371,6 +374,9 @@ Phase 0 计划形成：
   Qt5 行为投影对照。
 - [`data/database-fixture.json`](data/database-fixture.json)：项目生成的数据库成功/故障 fixture。
 - [`data/database-archive-linux-qt5.json`](data/database-archive-linux-qt5.json)：两套固定 Qt5 oracle 的 17-case ZIP 数据库矩阵及两侧原始 stream。
+- [`data/windows-qt5-cli-database-archive.json`](data/windows-qt5-cli-database-archive.json)：
+  原生 Windows Qt5 的 17-case ZIP database、双轮 raw summary 及 Linux Qt5
+  精确差分。
 - [`data/database-cache-cli.json`](data/database-cache-cli.json)：发布 CLI cache-disabled 源码身份、删除副作用与 engine cache header 摘要。
 - [`data/database-cache-engine-qt5.json`](data/database-cache-engine-qt5.json)：
   固定 Qt5 engine harness 的 cache miss/hit/stale、header/record corruption、

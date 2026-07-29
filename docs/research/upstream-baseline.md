@@ -161,10 +161,11 @@ vendored 目录仍需独立 source/license 审计。
   及 Windows 首轮 option/output/special/path/nested/database 矩阵；特殊路径、
   Unicode/Hidden/前导短横线、Junction/`\\?\`、324/325-code-unit 长路径首轮
   矩阵、显式 ADS/目录不枚举 named stream 及 26-sample 普通 output/special
-  也已完成；Linux Qt5/Qt6 的全 26-sample output/special 扩展也已完成；
+  以及 17-case ZIP database 也已完成；Linux Qt5/Qt6 的全 26-sample
+  output/special 扩展也已完成；
   UNC、精确 namespace
   上限、symbolic link/reparse cycle/ACL、database
-  archive/cache/permission engine-only、其他 engine-only、畸形矩阵和其余
+  cache/permission engine-only、其他 engine-only、畸形矩阵和其余
   跨平台原始输出仍待采集。
 
 ## 主要证据
