@@ -283,6 +283,82 @@ class ScriptRuntimeBudgetTests(unittest.TestCase):
                 "candidate_custom_allocator_isolated_rule_detect_invoked"
             ]
         )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_scope_lifecycle_scope_count"
+            ],
+            30,
+        )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_scope_lifecycle_program_file_count"
+            ],
+            2205,
+        )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_scope_lifecycle_ordinary_rule_count"
+            ],
+            2175,
+        )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_scope_lifecycle_include_evaluation_count"
+            ],
+            151,
+        )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_scope_lifecycle_maximum_include_depth"
+            ],
+            2,
+        )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_scope_lifecycle_heap_distribution_bytes"
+            ],
+            {
+                "maximum": 4_468_192,
+                "maximum_scope": "Binary",
+                "minimum": 348_080,
+                "p50_nearest_rank": 348_080,
+                "p95_nearest_rank": 1_825_768,
+            },
+        )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_scope_lifecycle_interrupt_total"
+            ],
+            31,
+        )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_scope_lifecycle_layer_order"
+            ],
+            "db normalized path, then db_extra normalized path",
+        )
+        self.assertFalse(
+            evidence[
+                "candidate_custom_allocator_scope_lifecycle_layer_order_is_upstream_equivalent"
+            ]
+        )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_scope_lifecycle_repeat_count"
+            ],
+            3,
+        )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_scope_lifecycle_stable_projection_sha256"
+            ],
+            "7635b3cbf3a73f52a64326d7ce72fcb4808b44a1977b0cff39a1a6b3fa773296",
+        )
+        self.assertFalse(
+            evidence[
+                "candidate_custom_allocator_scope_lifecycle_detect_invoked"
+            ]
+        )
         self.assertFalse(
             evidence[
                 "candidate_custom_allocator_cross_platform_measured"

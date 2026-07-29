@@ -1638,6 +1638,109 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
         self.assertIn("detect functions are not called", evidence["scope"])
         self.assertIn("not upstream lifecycle", evidence["scope"])
 
+    def test_scope_lifecycle_heap_closes_static_include_graph_dynamically(self):
+        evidence = self.reference["scope_lifecycle_tracked_heap"]
+        self.assertEqual(evidence["repeat_count"], 3)
+        self.assertTrue(evidence["stable_projection_equal"])
+        self.assertTrue(evidence["projection_hash_emitted_by_spike"])
+        self.assertTrue(
+            evidence["projection_hash_independently_recomputed"]
+        )
+        self.assertTrue(
+            evidence["scope_results_hash_independently_recomputed"]
+        )
+        self.assertEqual(
+            evidence["stable_projection_sha256"],
+            "7635b3cbf3a73f52a64326d7ce72fcb4808b44a1977b0cff39a1a6b3fa773296",
+        )
+        projection = evidence["stable_projection"]
+        self.assertEqual(projection["scope_count"], 30)
+        self.assertEqual(projection["program_file_count"], 2205)
+        self.assertEqual(projection["type_init_count"], 30)
+        self.assertEqual(
+            projection["ordinary_rule_evaluation_count"], 2175
+        )
+        self.assertEqual(projection["include_evaluation_count"], 151)
+        self.assertEqual(projection["maximum_active_include_depth"], 2)
+        self.assertEqual(projection["interrupt_handler_call_total"], 31)
+        self.assertFalse(
+            projection["layer_order_is_upstream_equivalent"]
+        )
+        self.assertEqual(
+            projection["heap_distribution_bytes"],
+            {
+                "maximum": 4_468_192,
+                "maximum_scope": "Binary",
+                "minimum": 348_080,
+                "p50_nearest_rank": 348_080,
+                "p95_nearest_rank": 1_825_768,
+            },
+        )
+        self.assertEqual(
+            projection["scope_results"],
+            {
+                "count": 30,
+                "sha256": (
+                    "5034f491327f20f8850c5bc7dc46d1c624afd00cc0ac9da77abed8bfc72ed424"
+                ),
+            },
+        )
+        self.assertTrue(
+            projection["tracking_allocator"][
+                "all_scope_runtimes_released_to_zero"
+            ]
+        )
+        self.assertEqual(
+            projection["tracking_allocator"][
+                "denied_allocation_count"
+            ],
+            0,
+        )
+        self.assertEqual(
+            evidence["selected_scope_results"],
+            {
+                "Binary": {
+                    "high_water_bytes": 4_468_192,
+                    "include_evaluation_count": 30,
+                    "include_trace_sha256": (
+                        "e0f3e1cbf2b41976af8f01cdcda7876d680f8484bde6914a896c66b0ebbdeddb"
+                    ),
+                    "interrupt_calls": 1,
+                },
+                "MSDOS": {
+                    "high_water_bytes": 690_136,
+                    "include_evaluation_count": 10,
+                    "include_trace_sha256": (
+                        "83e7740987b1a055df0bf07ea4d5c69ca88baea33ba368b3aac5bef3e632a938"
+                    ),
+                    "interrupt_calls": 1,
+                },
+                "PE": {
+                    "high_water_bytes": 1_825_768,
+                    "include_evaluation_count": 30,
+                    "include_trace_sha256": (
+                        "6d93964af03d66e88b5cada8d28915a87d1953f73d5f410db3cd5b21f2820c09"
+                    ),
+                    "interrupt_calls": 2,
+                },
+            },
+        )
+        canonical = json.dumps(
+            projection,
+            ensure_ascii=False,
+            separators=(",", ":"),
+            sort_keys=True,
+        ).encode()
+        self.assertEqual(
+            hashlib.sha256(canonical).hexdigest(),
+            evidence["stable_projection_sha256"],
+        )
+        self.assertIn("detect functions are not called", evidence["scope"])
+        self.assertIn(
+            "order is not claimed as upstream equivalent",
+            evidence["scope"],
+        )
+
     def test_script_scope_probe_records_qt5_incompatibility(self):
         scope = self.reference["script_scope"]
         self.assertEqual(scope["rule_count"], 7)

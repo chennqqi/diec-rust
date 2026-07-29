@@ -88,6 +88,24 @@
     "candidate_custom_allocator_maximum_high_water_sample": "ps3-type-1-elf.self",
     "candidate_custom_allocator_real_corpus_heap_high_water_measured": true,
     "candidate_custom_allocator_repeat_count": 3,
+    "candidate_custom_allocator_scope_lifecycle_detect_invoked": false,
+    "candidate_custom_allocator_scope_lifecycle_heap_distribution_bytes": {
+      "maximum": 4468192,
+      "maximum_scope": "Binary",
+      "minimum": 348080,
+      "p50_nearest_rank": 348080,
+      "p95_nearest_rank": 1825768
+    },
+    "candidate_custom_allocator_scope_lifecycle_include_evaluation_count": 151,
+    "candidate_custom_allocator_scope_lifecycle_interrupt_total": 31,
+    "candidate_custom_allocator_scope_lifecycle_layer_order": "db normalized path, then db_extra normalized path",
+    "candidate_custom_allocator_scope_lifecycle_layer_order_is_upstream_equivalent": false,
+    "candidate_custom_allocator_scope_lifecycle_maximum_include_depth": 2,
+    "candidate_custom_allocator_scope_lifecycle_ordinary_rule_count": 2175,
+    "candidate_custom_allocator_scope_lifecycle_program_file_count": 2205,
+    "candidate_custom_allocator_scope_lifecycle_repeat_count": 3,
+    "candidate_custom_allocator_scope_lifecycle_scope_count": 30,
+    "candidate_custom_allocator_scope_lifecycle_stable_projection_sha256": "7635b3cbf3a73f52a64326d7ce72fcb4808b44a1977b0cff39a1a6b3fa773296",
     "candidate_custom_allocator_stable_projection_sha256": "c455f6932322ff8161a4f6c9288710b5ed792ff5486b4459e11ef27e794e45c4",
     "does_not_prove": [
       "production heap, stack, fuel, or deadline acceptability",
@@ -175,7 +193,7 @@
   "source_bindings": {
     "adr_runtime": {
       "path": "docs/design/decisions/0006-rquickjs-rule-runtime.md",
-      "sha256": "8cec0f722afa4cdf8132dc9e636e436417a92ff98b2d2c69059143806d6d3d65"
+      "sha256": "f08c14979542c9c274e24014cb301b81133eb34faa2f0612ce6bcbdc1bbbcce8"
     },
     "adr_scan": {
       "path": "docs/design/decisions/0012-bounded-nested-scan-budget.md",
@@ -195,11 +213,11 @@
     },
     "runtime_report": {
       "path": "docs/research/data/rquickjs-rule-runtime.json",
-      "sha256": "6a3eb18e19cde1a17cc752e6c299b1e2a83b403dc5bffb64f5115c5f1c365f94"
+      "sha256": "c5290bf27f8b0551add14e23fc271b667422cbd4fc6db8a80b8b54315d2c89c4"
     },
     "runtime_research": {
       "path": "docs/research/rquickjs-rule-runtime-spike.md",
-      "sha256": "576f9ad82478f50530f66cda688fb36414edf270840caa34fdf774f8a1f00e0f"
+      "sha256": "58732a6fa1deb02abb2eb730412ead1154200a40f0d4f6718476ee0f5515f8dc"
     }
   },
   "units": {

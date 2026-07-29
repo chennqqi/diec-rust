@@ -178,6 +178,8 @@ def validate_sources(root: Path) -> tuple[
             "瞬时 high-water 为 3,486,384 bytes",
             "`measure-rule-corpus-isolated-heap`",
             "`153,648`、maximum `3,489,576` bytes",
+            "`verify-scope-lifecycles-tracked-heap`",
+            "scope heap minimum/p50 为 348,080、p95 为 1,825,768，最大 4,468,192 bytes",
             "七条原样上游规则。七类代表性格式规则共\n25 个 case",
             "全矩阵最大瞬时 high-water 为 134,792 bytes",
             "不能观察 eval 内部瞬时 allocator high-water",
@@ -204,6 +206,7 @@ def validate_sources(root: Path) -> tuple[
     tracked_corpus = runtime.get("full_binary_corpus_tracked_heap")
     full_rule_tracked = runtime.get("full_rule_corpus_tracked_heap")
     isolated_rule_heap = runtime.get("isolated_rule_runtime_heap")
+    scope_lifecycle = runtime.get("scope_lifecycle_tracked_heap")
     format_matrix = runtime.get("representative_format_runtime_matrix")
     measurement = (
         corpus.get("runtime_measurement")
@@ -341,6 +344,75 @@ def validate_sources(root: Path) -> tuple[
             "set_memory_limit_used": False,
         },
         "isolated per-rule heap stable projection drift",
+    )
+    require(
+        isinstance(scope_lifecycle, dict)
+        and scope_lifecycle.get("repeat_count") == 3
+        and scope_lifecycle.get("stable_projection_equal") is True
+        and scope_lifecycle.get("projection_hash_emitted_by_spike")
+        is True
+        and scope_lifecycle.get(
+            "projection_hash_independently_recomputed"
+        )
+        is True
+        and scope_lifecycle.get(
+            "scope_results_hash_independently_recomputed"
+        )
+        is True
+        and scope_lifecycle.get("stable_projection_sha256")
+        == "7635b3cbf3a73f52a64326d7ce72fcb4808b44a1977b0cff39a1a6b3fa773296",
+        "scope lifecycle repetition evidence drift",
+    )
+    scope_projection = scope_lifecycle.get("stable_projection")
+    require(
+        isinstance(scope_projection, dict)
+        and scope_projection.get("upstream_commit") == UPSTREAM_COMMIT
+        and scope_projection.get("rules_commit") == RULES_COMMIT
+        and scope_projection.get("include_graph_sizing_sha256")
+        == "b957d8d672b1cf3c746180661918e16954f3428a57941b7783d82e693f8aede1"
+        and scope_projection.get("scope_count") == 30
+        and scope_projection.get("program_file_count") == 2205
+        and scope_projection.get("type_init_count") == 30
+        and scope_projection.get("ordinary_rule_evaluation_count")
+        == 2175
+        and scope_projection.get("compatibility_overlay_count") == 1
+        and scope_projection.get("include_evaluation_count") == 151
+        and scope_projection.get("maximum_active_include_depth") == 2
+        and scope_projection.get("interrupt_handler_call_total") == 31
+        and scope_projection.get("layer_order")
+        == "db normalized path, then db_extra normalized path"
+        and scope_projection.get("layer_order_is_upstream_equivalent")
+        is False
+        and scope_projection.get("heap_distribution_bytes")
+        == {
+            "maximum": 4_468_192,
+            "maximum_scope": "Binary",
+            "minimum": 348_080,
+            "p50_nearest_rank": 348_080,
+            "p95_nearest_rank": 1_825_768,
+        }
+        and scope_projection.get("scope_results")
+        == {
+            "count": 30,
+            "sha256": (
+                "5034f491327f20f8850c5bc7dc46d1c624afd00cc0ac9da77abed8bfc72ed424"
+            ),
+        }
+        and scope_projection.get("tracking_allocator")
+        == {
+            "accounting": (
+                "RustAllocator allocation Layout bytes: aligned payload "
+                "plus internal header"
+            ),
+            "all_scope_runtimes_released_to_zero": True,
+            "backend": (
+                "rquickjs RustAllocator wrapped by TrackingLimitAllocator"
+            ),
+            "denied_allocation_count": 0,
+            "limit_bytes_per_scope_runtime": 32 * MIB,
+            "set_memory_limit_used": False,
+        },
+        "scope lifecycle stable projection drift",
     )
     require(
         isinstance(corpus, dict)
@@ -602,6 +674,8 @@ def build_candidate(root: Path) -> dict[str, Any]:
     full_rule_tracked = runtime["full_rule_corpus_tracked_heap"]
     isolated_rule_heap = runtime["isolated_rule_runtime_heap"]
     isolated_rule_projection = isolated_rule_heap["stable_projection"]
+    scope_lifecycle = runtime["scope_lifecycle_tracked_heap"]
+    scope_projection = scope_lifecycle["stable_projection"]
     measurement = corpus["runtime_measurement"]
     tracked_measurement = tracked_corpus["runtime_measurement"]
     tracked_memory = tracked_measurement["memory"]
@@ -805,6 +879,40 @@ def build_candidate(root: Path) -> dict[str, Any]:
                 isolated_rule_heap["stable_projection_sha256"]
             ),
             "candidate_custom_allocator_isolated_rule_detect_invoked": False,
+            "candidate_custom_allocator_scope_lifecycle_scope_count": (
+                scope_projection["scope_count"]
+            ),
+            "candidate_custom_allocator_scope_lifecycle_program_file_count": (
+                scope_projection["program_file_count"]
+            ),
+            "candidate_custom_allocator_scope_lifecycle_ordinary_rule_count": (
+                scope_projection["ordinary_rule_evaluation_count"]
+            ),
+            "candidate_custom_allocator_scope_lifecycle_include_evaluation_count": (
+                scope_projection["include_evaluation_count"]
+            ),
+            "candidate_custom_allocator_scope_lifecycle_maximum_include_depth": (
+                scope_projection["maximum_active_include_depth"]
+            ),
+            "candidate_custom_allocator_scope_lifecycle_heap_distribution_bytes": (
+                scope_projection["heap_distribution_bytes"]
+            ),
+            "candidate_custom_allocator_scope_lifecycle_interrupt_total": (
+                scope_projection["interrupt_handler_call_total"]
+            ),
+            "candidate_custom_allocator_scope_lifecycle_layer_order": (
+                scope_projection["layer_order"]
+            ),
+            "candidate_custom_allocator_scope_lifecycle_layer_order_is_upstream_equivalent": (
+                scope_projection["layer_order_is_upstream_equivalent"]
+            ),
+            "candidate_custom_allocator_scope_lifecycle_repeat_count": (
+                scope_lifecycle["repeat_count"]
+            ),
+            "candidate_custom_allocator_scope_lifecycle_stable_projection_sha256": (
+                scope_lifecycle["stable_projection_sha256"]
+            ),
+            "candidate_custom_allocator_scope_lifecycle_detect_invoked": False,
             "candidate_custom_allocator_cross_platform_measured": False,
             "candidate_custom_allocator_is_production_backend": False,
             "real_corpus_lifecycle_memory_checkpoints_measured": True,

@@ -20,7 +20,7 @@
   "experiment": {
     "cargo_lock_sha256": "f389eb266779a88939fea9793effdff29d01ea0e1184915698f4fa0f9441d0ad",
     "cargo_toml_sha256": "82c5bb97749f50212e5364c2ac7d1f81eaec4d460a9bf47710b4b42f9204a79f",
-    "source_sha256": "a89b8b701638630c9067c97e157840efa89651993fb143558730d9c7c41a9452",
+    "source_sha256": "97a78f6030166ad99381285b2250280ca984c5a47c70c3936b1c871da049c617",
     "tracking_allocator_source_sha256": "0686ad30b9ef4f05fd6a54c39f7a5173d80321564a68a321d2b553e76cf84965",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
@@ -1625,6 +1625,71 @@
         "limit_bytes_per_rule_runtime": 33554432,
         "set_memory_limit_used": false
       },
+      "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    }
+  },
+  "scope_lifecycle_tracked_heap": {
+    "projection_hash_emitted_by_spike": true,
+    "projection_hash_independently_recomputed": true,
+    "repeat_count": 3,
+    "scope": "all 30 fixed scope top-level/include lifecycles under an explicit diagnostic rule order; detect functions are not called, the order is not claimed as upstream equivalent, and this is not default-allocator or cross-platform evidence",
+    "scope_results_hash_independently_recomputed": true,
+    "stable_projection_equal": true,
+    "stable_projection_sha256": "7635b3cbf3a73f52a64326d7ce72fcb4808b44a1977b0cff39a1a6b3fa773296",
+    "selected_scope_results": {
+      "Binary": {
+        "high_water_bytes": 4468192,
+        "include_evaluation_count": 30,
+        "include_trace_sha256": "e0f3e1cbf2b41976af8f01cdcda7876d680f8484bde6914a896c66b0ebbdeddb",
+        "interrupt_calls": 1
+      },
+      "MSDOS": {
+        "high_water_bytes": 690136,
+        "include_evaluation_count": 10,
+        "include_trace_sha256": "83e7740987b1a055df0bf07ea4d5c69ca88baea33ba368b3aac5bef3e632a938",
+        "interrupt_calls": 1
+      },
+      "PE": {
+        "high_water_bytes": 1825768,
+        "include_evaluation_count": 30,
+        "include_trace_sha256": "6d93964af03d66e88b5cada8d28915a87d1953f73d5f410db3cd5b21f2820c09",
+        "interrupt_calls": 2
+      }
+    },
+    "stable_projection": {
+      "compatibility_overlay_count": 1,
+      "global_init": "db/_init",
+      "heap_distribution_bytes": {
+        "maximum": 4468192,
+        "maximum_scope": "Binary",
+        "minimum": 348080,
+        "p50_nearest_rank": 348080,
+        "p95_nearest_rank": 1825768
+      },
+      "include_evaluation_count": 151,
+      "include_graph_sizing_sha256": "b957d8d672b1cf3c746180661918e16954f3428a57941b7783d82e693f8aede1",
+      "interrupt_handler_call_total": 31,
+      "layer_order": "db normalized path, then db_extra normalized path",
+      "layer_order_is_upstream_equivalent": false,
+      "maximum_active_include_depth": 2,
+      "ordinary_rule_evaluation_count": 2175,
+      "program_file_count": 2205,
+      "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+      "schema_version": 1,
+      "scope_count": 30,
+      "scope_results": {
+        "count": 30,
+        "sha256": "5034f491327f20f8850c5bc7dc46d1c624afd00cc0ac9da77abed8bfc72ed424"
+      },
+      "tracking_allocator": {
+        "accounting": "RustAllocator allocation Layout bytes: aligned payload plus internal header",
+        "all_scope_runtimes_released_to_zero": true,
+        "backend": "rquickjs RustAllocator wrapped by TrackingLimitAllocator",
+        "denied_allocation_count": 0,
+        "limit_bytes_per_scope_runtime": 33554432,
+        "set_memory_limit_used": false
+      },
+      "type_init_count": 30,
       "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
     }
   },

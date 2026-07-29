@@ -91,8 +91,9 @@ memory checkpoint，并固定每轮 16,439 次 Binary signature native checkpoin
 PE/ELF/Mach-O/DEX/APK/Archive/PDF 七类代表性规则的 25-case 矩阵已三轮稳定，
 全部 2,235 个固定程序文件的隔离顶层 parse/eval 也已三轮固定 custom-allocator
 high-water，逐规则独立 runtime 的分位数与最大规则也已固定；这些实验不调用
-`detect` 或复刻各 file type lifecycle，七类矩阵又每类仅一条短规则，仍不能
-关闭上述完整性缺口。该策略仍为
+`detect`。30-scope init/顶层规则/include 动态闭包也已固定，但使用显式诊断序，
+不替代平台规则顺序；七类矩阵又每类仅一条短规则，仍不能关闭上述完整性缺口。
+该策略仍为
 `admitted=false`，因此 blocker 状态不变。
 
 ## 下一步顺序

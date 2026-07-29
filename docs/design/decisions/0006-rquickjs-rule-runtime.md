@@ -114,6 +114,9 @@ workspace 建立时重新生成并审计，不允许浮动到其他 minor/patch 
   lifecycle。逐规则独立 runtime 复验又固定 p50/p95/p99
   118,752/127,776/153,648 bytes，最大 3,489,576 bytes 来自
   `Binary/audio.1.sg`，全部 2,235 个 runtime 零拒绝并在 drop 后归零。
+  30-scope shared-runtime 顶层 lifecycle 又动态验证 2,205 个 scoped programs、
+  151 次 include 和最大 depth 2；scope heap 最大 4,468,192 bytes，全部零拒绝
+  并释放归零。该实验使用显式诊断规则序，不作为上游顺序或 `detect` 证明。
   这仍只是 Windows 候选 allocator 证据，不是 production backend 或跨平台证明。
   另有 PE/ELF/Mach-O/DEX/APK/Archive/PDF 七条代表性规则的
   25-case 矩阵连续三轮固定为每轮 25 次 poll、75 个 lifecycle memory

@@ -139,6 +139,8 @@ const XSCANENGINE_COMMIT: &str = "dfe4a419e4f491bb23688ba03c5a5bf39e34da83";
 const RULES_COMMIT: &str = "c2c17dfa5ea4e078ba31eab55d87430c96622fb6";
 const LINUX_QT5_BINARY_ORDER_SHA256: &str =
     "27138d68ed788dd2609b7c533fecf540593fa2e4ddb7195adc26b1a9ff0e1ff3";
+const INCLUDE_GRAPH_SIZING_SHA256: &str =
+    "b957d8d672b1cf3c746180661918e16954f3428a57941b7783d82e693f8aede1";
 const NINTENDO_CORPUS_MANIFEST_SHA256: &str =
     "eac3ad62c7f21d5112ee1ca73fbb6cc4e5306b6004357aeaf86144fa3ef51a03";
 const NINTENDO_BASELINE_SHA256: &str =
@@ -7668,6 +7670,373 @@ fn measure_rule_corpus_isolated_heap(roots: &[PathBuf]) -> Result<bool, String> 
     Ok(errors.is_empty())
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
+struct ScopeInitExpectation {
+    scope: String,
+    selected_init: String,
+    program_file_count: u64,
+    transitive_include_evaluation_count: u64,
+    maximum_active_include_depth: u64,
+}
+
+fn parse_scope_init_expectations(
+    manifest_path: &Path,
+) -> Result<Vec<ScopeInitExpectation>, String> {
+    let bytes = fs::read(manifest_path)
+        .map_err(|error| format!("cannot read {}: {error}", manifest_path.display()))?;
+    if sha256_hex(&bytes) != INCLUDE_GRAPH_SIZING_SHA256 {
+        return Err("include graph sizing SHA-256 mismatch".to_owned());
+    }
+    let document: Value = serde_json::from_slice(&bytes)
+        .map_err(|error| format!("cannot parse {}: {error}", manifest_path.display()))?;
+    if document.get("upstream_commit").and_then(Value::as_str) != Some(UPSTREAM_COMMIT) {
+        return Err("include graph sizing upstream commit mismatch".to_owned());
+    }
+    if document.get("rules_commit").and_then(Value::as_str) != Some(RULES_COMMIT) {
+        return Err("include graph sizing rules commit mismatch".to_owned());
+    }
+    let sizing = document
+        .get("sizing")
+        .and_then(Value::as_object)
+        .ok_or_else(|| "include graph sizing object is missing".to_owned())?;
+    if sizing.get("scope_count").and_then(Value::as_u64) != Some(30)
+        || sizing
+            .get("maximum_transitive_include_evaluations")
+            .and_then(Value::as_u64)
+            != Some(30)
+        || sizing
+            .get("maximum_active_include_depth")
+            .and_then(Value::as_u64)
+            != Some(2)
+    {
+        return Err("include graph sizing summary drift".to_owned());
+    }
+    let records = sizing
+        .get("scopes")
+        .and_then(Value::as_array)
+        .ok_or_else(|| "include graph sizing scopes are missing".to_owned())?;
+    let mut expectations = Vec::with_capacity(records.len());
+    for record in records {
+        let scope = record
+            .get("scope")
+            .and_then(Value::as_str)
+            .ok_or_else(|| "include graph scope name is missing".to_owned())?;
+        if scope.is_empty()
+            || !scope
+                .bytes()
+                .all(|byte| byte.is_ascii_alphanumeric() || byte == b'_')
+        {
+            return Err(format!("invalid include graph scope name: {scope}"));
+        }
+        let selected_init = record
+            .get("selected_init")
+            .and_then(Value::as_str)
+            .ok_or_else(|| format!("selected init is missing for scope {scope}"))?;
+        if selected_init != format!("db/{scope}/_init") {
+            return Err(format!(
+                "unexpected selected init for scope {scope}: {selected_init}"
+            ));
+        }
+        let program_file_count = record
+            .get("program_file_count")
+            .and_then(Value::as_u64)
+            .ok_or_else(|| format!("program file count is missing for scope {scope}"))?;
+        let transitive_include_evaluation_count = record
+            .get("transitive_include_evaluation_count")
+            .and_then(Value::as_u64)
+            .ok_or_else(|| format!("include evaluation count is missing for scope {scope}"))?;
+        let maximum_active_include_depth = record
+            .get("maximum_active_include_depth")
+            .and_then(Value::as_u64)
+            .ok_or_else(|| format!("include depth is missing for scope {scope}"))?;
+        if program_file_count == 0
+            || transitive_include_evaluation_count == 0
+            || maximum_active_include_depth == 0
+        {
+            return Err(format!("zero include sizing value for scope {scope}"));
+        }
+        expectations.push(ScopeInitExpectation {
+            scope: scope.to_owned(),
+            selected_init: selected_init.to_owned(),
+            program_file_count,
+            transitive_include_evaluation_count,
+            maximum_active_include_depth,
+        });
+    }
+    expectations.sort_by(|left, right| left.scope.cmp(&right.scope));
+    if expectations.len() != 30
+        || expectations
+            .windows(2)
+            .any(|pair| pair[0].scope == pair[1].scope)
+    {
+        return Err("include graph scope inventory is incomplete or duplicated".to_owned());
+    }
+    Ok(expectations)
+}
+
+fn install_scope_include_probe(context: &Context, rule_root: &Path) -> Result<(), String> {
+    install_main_include_registry(context, rule_root)?;
+    eval_unit(
+        context,
+        br#"
+        globalThis.__includeDepth = 0;
+        globalThis.__includeMaximumDepth = 0;
+        globalThis.__includeRegistryEval = includeScript;
+        includeScript = function (name) {
+            __includeDepth++;
+            if (__includeDepth > __includeMaximumDepth) {
+                __includeMaximumDepth = __includeDepth;
+            }
+            try {
+                return __includeRegistryEval(name);
+            } finally {
+                __includeDepth--;
+            }
+        };
+        "#,
+    )
+}
+
+fn verify_scope_lifecycles_tracked_heap(
+    rule_root: &Path,
+    extra_rule_root: &Path,
+    manifest_path: &Path,
+) -> Result<bool, String> {
+    let expectations = parse_scope_init_expectations(manifest_path)?;
+    let global_init_path = rule_root.join("_init");
+    let global_init = fs::read(&global_init_path)
+        .map_err(|error| format!("cannot read {}: {error}", global_init_path.display()))?;
+    let started = Instant::now();
+    let mut scope_results = Vec::with_capacity(expectations.len());
+    let mut heap_values = Vec::with_capacity(expectations.len());
+    let mut total_program_files = 0_u64;
+    let mut total_include_evaluations = 0_u64;
+    let mut total_interrupt_calls = 0_u64;
+    let mut total_compatibility_overlays = 0_u64;
+
+    for expectation in &expectations {
+        let relative_init = expectation
+            .selected_init
+            .strip_prefix("db/")
+            .ok_or_else(|| format!("selected init is outside db: {}", expectation.selected_init))?;
+        let type_init_path = rule_root.join(relative_init);
+        let type_init = fs::read(&type_init_path)
+            .map_err(|error| format!("cannot read {}: {error}", type_init_path.display()))?;
+        let (runtime, probe) =
+            new_rule_case_runtime_with_tracking(Some(TRACKED_RULE_RUNTIME_LIMIT_BYTES))?;
+        let context = new_context(&runtime)?;
+        install_host_shim(&context)?;
+        install_scope_include_probe(&context, rule_root)?;
+        eval_unit(&context, &global_init)
+            .map_err(|error| format!("cannot eval {}: {error}", global_init_path.display()))?;
+        let initialized = runtime_memory_snapshot(&runtime)?;
+        eval_unit(&context, &type_init)
+            .map_err(|error| format!("cannot eval {}: {error}", type_init_path.display()))?;
+        let mut scope_rule_files = Vec::new();
+        for layer_root in [rule_root, extra_rule_root] {
+            let scope_root = layer_root.join(&expectation.scope);
+            if !scope_root.is_dir() {
+                continue;
+            }
+            let entries = fs::read_dir(&scope_root)
+                .map_err(|error| format!("cannot read {}: {error}", scope_root.display()))?;
+            let mut layer_files = Vec::new();
+            for entry in entries {
+                let entry = entry.map_err(|error| {
+                    format!("cannot enumerate {}: {error}", scope_root.display())
+                })?;
+                let path = entry.path();
+                let file_type = entry
+                    .file_type()
+                    .map_err(|error| format!("cannot inspect {}: {error}", path.display()))?;
+                if file_type.is_file()
+                    && path.file_name().and_then(|name| name.to_str()) != Some("_init")
+                    && (path.extension().is_none()
+                        || path.extension().is_some_and(|extension| extension == "sg"))
+                {
+                    layer_files.push(path);
+                }
+            }
+            layer_files.sort_by_key(|path| normalized_path(path));
+            scope_rule_files.extend(layer_files);
+        }
+        let observed_program_count = u64::try_from(scope_rule_files.len())
+            .map_err(|_| format!("{} rule count overflow", expectation.scope))?
+            .checked_add(1)
+            .ok_or_else(|| format!("{} program count overflow", expectation.scope))?;
+        if observed_program_count != expectation.program_file_count {
+            return Err(format!(
+                "{} program count mismatch: {observed_program_count}/{}",
+                expectation.scope, expectation.program_file_count
+            ));
+        }
+        let mut scope_overlay_count = 0_u64;
+        let mut non_function_detects = Vec::new();
+        for path in &scope_rule_files {
+            let source = fs::read(path)
+                .map_err(|error| format!("cannot read {}: {error}", path.display()))?;
+            let (evaluated, overlay_applied) = apply_compatibility_overlay(path, &source)?;
+            if overlay_applied {
+                scope_overlay_count = scope_overlay_count
+                    .checked_add(1)
+                    .ok_or_else(|| "scope overlay count overflow".to_owned())?;
+            }
+            let detect_type = eval_rule_lexical(&context, &evaluated, false)
+                .map_err(|error| format!("cannot eval {}: {error}", path.display()))?;
+            if detect_type != "function" {
+                non_function_detects.push(normalized_path(path));
+            }
+        }
+        if !non_function_detects.is_empty() {
+            return Err(format!(
+                "{} contains non-function detect bindings: {}",
+                expectation.scope,
+                non_function_detects.join(", ")
+            ));
+        }
+        let trace_text = eval_string(&context, b"JSON.stringify(__includeTrace)")?;
+        let trace: Value = serde_json::from_str(&trace_text).map_err(|error| {
+            format!("cannot parse {} include trace: {error}", expectation.scope)
+        })?;
+        let trace_values = trace
+            .as_array()
+            .ok_or_else(|| format!("{} include trace is not an array", expectation.scope))?;
+        let include_evaluation_count = u64::try_from(trace_values.len())
+            .map_err(|_| format!("{} include trace count overflow", expectation.scope))?;
+        let maximum_depth = eval_string(&context, b"String(__includeMaximumDepth)")?
+            .parse::<u64>()
+            .map_err(|error| {
+                format!("cannot parse {} include depth: {error}", expectation.scope)
+            })?;
+        if include_evaluation_count != expectation.transitive_include_evaluation_count
+            || maximum_depth != expectation.maximum_active_include_depth
+        {
+            return Err(format!(
+                "{} include trace mismatch: evaluations={include_evaluation_count}/{} \
+                 depth={maximum_depth}/{}",
+                expectation.scope,
+                expectation.transitive_include_evaluation_count,
+                expectation.maximum_active_include_depth
+            ));
+        }
+        let trace_bytes = serde_json::to_vec(&trace).map_err(|error| {
+            format!(
+                "cannot serialize {} include trace: {error}",
+                expectation.scope
+            )
+        })?;
+        let measurement = probe.finish(runtime, context, initialized)?;
+        let tracking = &measurement["memory"]["tracking_allocator"];
+        let high_water_bytes = tracking["high_water_bytes"]
+            .as_u64()
+            .ok_or_else(|| format!("{} high-water is missing", expectation.scope))?;
+        let live_bytes_before_drop = tracking["live_bytes_before_drop"]
+            .as_u64()
+            .ok_or_else(|| format!("{} live-before-drop is missing", expectation.scope))?;
+        let interrupt_calls = measurement["interrupt"]["handler_call_total"]
+            .as_u64()
+            .ok_or_else(|| format!("{} interrupt count is missing", expectation.scope))?;
+        heap_values.push(high_water_bytes);
+        total_program_files = total_program_files
+            .checked_add(expectation.program_file_count)
+            .ok_or_else(|| "scope program file total overflow".to_owned())?;
+        total_include_evaluations = total_include_evaluations
+            .checked_add(include_evaluation_count)
+            .ok_or_else(|| "scope include evaluation total overflow".to_owned())?;
+        total_interrupt_calls = total_interrupt_calls
+            .checked_add(interrupt_calls)
+            .ok_or_else(|| "scope interrupt total overflow".to_owned())?;
+        total_compatibility_overlays = total_compatibility_overlays
+            .checked_add(scope_overlay_count)
+            .ok_or_else(|| "scope compatibility overlay total overflow".to_owned())?;
+        scope_results.push(json!({
+            "scope": expectation.scope,
+            "selected_init": expectation.selected_init,
+            "program_file_count": expectation.program_file_count,
+            "ordinary_rule_evaluation_count": scope_rule_files.len(),
+            "compatibility_overlay_count": scope_overlay_count,
+            "include_evaluation_count": include_evaluation_count,
+            "maximum_active_include_depth": maximum_depth,
+            "include_trace_sha256": sha256_hex(&trace_bytes),
+            "high_water_bytes": high_water_bytes,
+            "live_bytes_before_drop": live_bytes_before_drop,
+            "interrupt_calls": interrupt_calls,
+        }));
+    }
+
+    heap_values.sort_unstable();
+    let maximum_scope = scope_results
+        .iter()
+        .max_by(|left, right| {
+            left["high_water_bytes"]
+                .as_u64()
+                .cmp(&right["high_water_bytes"].as_u64())
+                .then_with(|| right["scope"].as_str().cmp(&left["scope"].as_str()))
+        })
+        .ok_or_else(|| "scope heap maximum is missing".to_owned())?;
+    let scope_results_bytes = serde_json::to_vec(&scope_results)
+        .map_err(|error| format!("cannot serialize scope init results: {error}"))?;
+    let stable_projection = json!({
+        "schema_version": 1,
+        "upstream_commit": UPSTREAM_COMMIT,
+        "rules_commit": RULES_COMMIT,
+        "include_graph_sizing_sha256": INCLUDE_GRAPH_SIZING_SHA256,
+        "scope_count": expectations.len(),
+        "program_file_count": total_program_files,
+        "global_init": "db/_init",
+        "type_init_count": expectations.len(),
+        "ordinary_rule_evaluation_count": total_program_files - expectations.len() as u64,
+        "compatibility_overlay_count": total_compatibility_overlays,
+        "layer_order": "db normalized path, then db_extra normalized path",
+        "layer_order_is_upstream_equivalent": false,
+        "include_evaluation_count": total_include_evaluations,
+        "maximum_active_include_depth": 2,
+        "scope_results": {
+            "count": scope_results.len(),
+            "sha256": sha256_hex(&scope_results_bytes),
+        },
+        "heap_distribution_bytes": {
+            "minimum": heap_values[0],
+            "p50_nearest_rank": nearest_rank_percentile(&heap_values, 50)?,
+            "p95_nearest_rank": nearest_rank_percentile(&heap_values, 95)?,
+            "maximum": maximum_scope["high_water_bytes"],
+            "maximum_scope": maximum_scope["scope"],
+        },
+        "interrupt_handler_call_total": total_interrupt_calls,
+        "tracking_allocator": {
+            "backend": "rquickjs RustAllocator wrapped by TrackingLimitAllocator",
+            "limit_bytes_per_scope_runtime": TRACKED_RULE_RUNTIME_LIMIT_BYTES,
+            "set_memory_limit_used": false,
+            "accounting":
+                "RustAllocator allocation Layout bytes: aligned payload plus internal header",
+            "denied_allocation_count": 0,
+            "all_scope_runtimes_released_to_zero": true,
+        },
+    });
+    let stable_projection_bytes = serde_json::to_vec(&stable_projection)
+        .map_err(|error| format!("cannot serialize scope init projection: {error}"))?;
+    let report = json!({
+        "schema_version": 1,
+        "operation":
+            "one tracked runtime per fixed file-type scope: global init, type init, normalized-path lexical rule eval, recursive includes",
+        "stable_projection_sha256": sha256_hex(&stable_projection_bytes),
+        "stable_projection": stable_projection,
+        "scope_results": scope_results,
+        "elapsed_ms": started.elapsed().as_millis(),
+        "passed": true,
+        "scope":
+            "all 30 fixed scope top-level/include lifecycles under an explicit diagnostic rule \
+             order; detect functions are not called, the order is not claimed as upstream \
+             equivalent, and this is not default-allocator or cross-platform evidence",
+    });
+    println!(
+        "{}",
+        serde_json::to_string_pretty(&report)
+            .map_err(|error| format!("cannot serialize scope init report: {error}"))?
+    );
+    Ok(true)
+}
+
 fn run_fixture(rule_root: &Path) -> Result<bool, String> {
     let started = Instant::now();
     let runtime = new_runtime()?;
@@ -8201,6 +8570,9 @@ fn usage() -> ExitCode {
          eval-isolated-compat-tracked-heap <rule-root>...\n       \
          diec-rquickjs-rule-runtime-spike \
          measure-rule-corpus-isolated-heap <rule-root>...\n       \
+         diec-rquickjs-rule-runtime-spike \
+         verify-scope-lifecycles-tracked-heap \
+         <main-rule-root> <extra-rule-root> <include-graph-sizing-json>\n       \
          diec-rquickjs-rule-runtime-spike fixture <main-rule-root>\n       \
          diec-rquickjs-rule-runtime-spike \
          <eval-binary-lifecycle|eval-binary-lifecycle-raw|eval-binary-lifecycle-lexical> \
@@ -8264,6 +8636,8 @@ fn main() -> ExitCode {
         evaluate_corpus(&roots, false, true, Some(TRACKED_RULE_RUNTIME_LIMIT_BYTES))
     } else if command == "measure-rule-corpus-isolated-heap" {
         measure_rule_corpus_isolated_heap(&roots)
+    } else if command == "verify-scope-lifecycles-tracked-heap" && roots.len() == 3 {
+        verify_scope_lifecycles_tracked_heap(&roots[0], &roots[1], &roots[2])
     } else if command == "eval-shared" {
         evaluate_corpus(&roots, true, false, None)
     } else if command == "fixture" && roots.len() == 1 {
@@ -8379,15 +8753,15 @@ mod tests {
         NINTENDO_RULE_BYTES, NINTENDO_VAR_DECLARATION, PdfRuleContext, PeRuleContext,
         TextUnicodeType, apply_compatibility_overlay, apply_exact_lifecycle_overlay,
         collect_rule_files, elf_matcher_map_projection, eval_rule_lexical, eval_string, eval_unit,
-        install_diagnostic_host_fallbacks, install_nintendo_host,
+        install_diagnostic_host_fallbacks, install_host_shim, install_nintendo_host,
         install_nintendo_host_with_context, install_nintendo_host_with_context_and_strings,
-        macho_matcher_map_projection, nearest_rank_percentile, new_context,
-        new_rule_case_runtime_with_tracking, new_runtime, new_tracking_runtime, nonnegative_index,
-        normalized_path, parse_detection_triples, parse_scope_detections,
-        parse_scope_fixture_order, pe_physical_map_projection, qt5_matcher_map_projection,
-        qt5_pe_physical_map_projection, read_ascii, read_byte_array, read_signed, read_unsigned,
-        rule_logical_path, rule_logical_scope, runtime_memory_snapshot, sha256_hex,
-        shift_right_unsigned, sorted_detection_projection, upstream_type_priority,
+        install_scope_include_probe, macho_matcher_map_projection, nearest_rank_percentile,
+        new_context, new_rule_case_runtime_with_tracking, new_runtime, new_tracking_runtime,
+        nonnegative_index, normalized_path, parse_detection_triples, parse_scope_detections,
+        parse_scope_fixture_order, parse_scope_init_expectations, pe_physical_map_projection,
+        qt5_matcher_map_projection, qt5_pe_physical_map_projection, read_ascii, read_byte_array,
+        read_signed, read_unsigned, rule_logical_path, rule_logical_scope, runtime_memory_snapshot,
+        sha256_hex, shift_right_unsigned, sorted_detection_projection, upstream_type_priority,
     };
     use std::fs;
     use std::path::{Path, PathBuf};
@@ -8439,6 +8813,66 @@ mod tests {
         assert_eq!(rule_logical_scope(&logical), "db/PE");
         assert_eq!(rule_logical_scope("db/_init"), "db/_root");
         assert!(rule_logical_path(&[root], Path::new("outside/rule.sg")).is_err());
+    }
+
+    #[test]
+    fn scope_init_manifest_is_pinned_and_complete() {
+        let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .join("../../docs/research/data/include-graph-sizing.json");
+        let expectations =
+            parse_scope_init_expectations(&path).expect("fixed include sizing should parse");
+        assert_eq!(expectations.len(), 30);
+        assert_eq!(
+            expectations
+                .iter()
+                .map(|record| record.program_file_count)
+                .sum::<u64>(),
+            2205
+        );
+        assert_eq!(
+            expectations
+                .iter()
+                .map(|record| record.transitive_include_evaluation_count)
+                .sum::<u64>(),
+            151
+        );
+        assert_eq!(
+            expectations
+                .iter()
+                .filter(|record| record.maximum_active_include_depth == 2)
+                .map(|record| record.scope.as_str())
+                .collect::<Vec<_>>(),
+            ["Binary", "MSDOS", "PE"]
+        );
+    }
+
+    #[test]
+    fn scope_include_probe_counts_nested_depth_and_duplicate_evaluations() {
+        let root = temporary_directory();
+        fs::create_dir_all(&root).expect("temporary include root should be created");
+        fs::write(root.join("first"), "includeScript('second');")
+            .expect("first helper should be written");
+        fs::write(root.join("second"), "globalThis.includeValue = 42;")
+            .expect("second helper should be written");
+
+        let runtime = new_runtime().expect("runtime should be created");
+        let context = new_context(&runtime).expect("context should be created");
+        install_host_shim(&context).expect("host shim should be installed");
+        install_scope_include_probe(&context, &root).expect("include probe should be installed");
+        eval_unit(&context, b"includeScript('first'); includeScript('first');")
+            .expect("nested duplicate includes should evaluate");
+        assert_eq!(
+            eval_string(
+                &context,
+                b"JSON.stringify([__includeTrace, __includeMaximumDepth, includeValue])",
+            )
+            .expect("include trace should serialize"),
+            r#"[["first","second","first","second"],2,42]"#
+        );
+
+        drop(context);
+        drop(runtime);
+        fs::remove_dir_all(&root).expect("temporary include root should be removed");
     }
 
     #[test]

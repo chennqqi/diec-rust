@@ -611,7 +611,10 @@ baseline 的变更都要检查本表。
   逐规则独立 runtime 又固定 p50/p95/p99 为
   118,752/127,776/153,648 bytes、最大 3,489,576 bytes，全部 2,235 个
   runtime 零拒绝并在 drop 后归零；但两者都没有调用 `detect` 或复刻各 file
-  type lifecycle。其余 HostApi checkpoint 与完整跨格式 scaling 仍未采集。
+  type lifecycle。30-scope shared-runtime 顶层 lifecycle 又验证 2,205 个
+  scoped programs、151 次动态 include、最大 4,468,192-byte heap 和 31 次
+  poll，但使用诊断规则序且仍不调用 `detect`。其余 HostApi checkpoint 与完整
+  跨格式 `detect` scaling 仍未采集。
   七类代表性格式规则的 25-case
   矩阵虽已三轮固定为每轮 25 次 poll、75 个 memory checkpoint，其 custom
   allocator 变体也固定最大 134,792-byte transient high-water、0 次拒绝与

@@ -209,6 +209,12 @@ coverage，但没有调用 `detect`，也没有复刻各 file type 的顺序、i
 3,489,576 bytes 来自 `Binary/audio.1.sg`；全部零拒绝并在 drop 后归零。
 每条顶层 eval 各触发一次正常 poll。它仍不覆盖 `detect` 或真实 lifecycle。
 
+30-scope shared-runtime 顶层 lifecycle 又覆盖 global/type init、2,175 个普通
+规则和 151 次动态 include；scope p50/p95/maximum heap 为
+348,080/1,825,768/4,468,192 bytes，合计 31 次正常 poll，所有 runtime 零拒绝
+并释放归零。层内使用规范化路径诊断序，因此这些数字仍不是平台规则顺序或
+`detect` scaling 证明。
+
 已有的 PE/ELF/Mach-O/DEX/APK/Archive/PDF 差分另形成七类、25-case 的代表性
 矩阵：连续三轮均为 25/25 匹配，每轮 25 次正常 VM poll、75 个 lifecycle
 memory checkpoint，最大 observed `malloc_size` 为 124,485 bytes。同一矩阵的

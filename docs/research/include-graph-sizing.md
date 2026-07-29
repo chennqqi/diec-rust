@@ -20,6 +20,13 @@ Last updated: 2026-07-30
 - Binary 的静态 23 个直接调用展开为 30 次 evaluation，与既有 rquickjs 动态
   lifecycle trace 的 30 次完全一致。
 
+后续
+[`verify-scope-lifecycles-tracked-heap`](rquickjs-rule-runtime-spike.md)
+又对 30 个 scope 分别执行 global/type init 与全部 2,175 个普通规则的顶层
+lexical eval，动态得到合计 151 次 evaluation 和最大 depth 2，与本清单逐
+scope 完全一致。该实验使用明确的层内规范化路径诊断序，不是平台相关的上游
+规则顺序 oracle，也不调用 `detect`。
+
 机器报告为
 [`data/include-graph-sizing.json`](data/include-graph-sizing.json)，生成器为
 [`analyze_include_graph.py`](../../tools/rules/analyze_include_graph.py)。
@@ -96,8 +103,8 @@ production active-stack/budget 未实现、dynamic/user database 边界未测试
 
 - static literal closure 不证明未来或用户规则不会使用动态 include name；
 - 最大 depth/evaluation 不证明 QuickJS heap、stack、fuel 或 deadline 值；
-- 30 次静态 evaluation 与 Binary 动态 trace 一致，不等于 PE/MSDOS 已完成新的
-  runtime trace；
+- 30-scope 动态 trace 已验证固定库的 include 数量与深度，但不证明诊断规则序
+  等于 Linux/MSVC/libc++ 上游顺序，也不覆盖 `detect` 内条件分支；
 - helper graph 无 cycle 不替代恶意 self/two-node/dynamic cycle 的
   `limit-1/exact/+1` 与 SafetyDeviation 测试；
 - program bytes 不是 runtime heap usage，不能用于选择 script heap limit。

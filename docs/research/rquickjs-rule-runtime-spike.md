@@ -184,6 +184,29 @@ Top-20 明细哈希均为
 每条顶层 eval 恰好触发一次正常 interrupt poll，合计 2,235 次。该分布消除了
 共享 runtime 累计状态这一混杂因素，但仍不调用 `detect` 或 include。
 
+`verify-scope-lifecycles-tracked-heap` 随后将 static include 闭包变为完整动态
+验证：30 个 file-type scope 各使用一个共享 custom-allocator runtime，依次执行
+真实 global `_init`、选中的 type `_init`，再按“main 规范化路径 → extra
+规范化路径”的显式诊断序用 lexical wrapper 执行普通规则。三轮都覆盖 2,205
+个 scoped program files、2,175 个普通规则、30 个 type init、151 次递归
+include，最大 active depth 2；全部 scope 为 0 allocation rejection 且 drop
+归零。稳定投影 SHA-256 均为
+`7635b3cbf3a73f52a64326d7ce72fcb4808b44a1977b0cff39a1a6b3fa773296`，
+30-scope 明细 SHA-256 均为
+`5034f491327f20f8850c5bc7dc46d1c624afd00cc0ac9da77abed8bfc72ed424`，
+两者均由独立 canonical JSON 重算一致。
+
+scope heap minimum/p50 为 348,080、p95 为 1,825,768，最大 4,468,192 bytes
+来自 Binary；30 个 runtime 共触发 31 次正常 interrupt poll，PE 为 2 次，其余
+scope 各 1 次。Binary/MSDOS/PE 的动态 include 次数分别为 30/10/30，trace
+SHA-256 分别为
+`e0f3e1cbf2b41976af8f01cdcda7876d680f8484bde6914a896c66b0ebbdeddb`、
+`83e7740987b1a055df0bf07ea4d5c69ca88baea33ba368b3aac5bef3e632a938`、
+`6d93964af03d66e88b5cada8d28915a87d1953f73d5f410db3cd5b21f2820c09`。
+该实验闭合固定规则库的动态 include 数量/深度与 scope heap，但上游
+`sort_signature_prio()` 在 `_init` 周围不是严格弱序，因此诊断序明确不作为
+Linux/MSVC/libc++ 的执行顺序 oracle；`detect` 也没有调用。
+
 为避免只观察 Binary 全规则生命周期，本轮又复用已通过 Qt5 差分的 PE、ELF、
 Mach-O、DEX、APK、Archive 和 PDF 七条原样上游规则。七类代表性格式规则共
 25 个 case，每个 case 使用独立 runtime，并在 runtime 创建、HostApi/结果 shim
@@ -916,6 +939,11 @@ cargo +1.88.0 run --release --locked -- measure-rule-corpus-isolated-heap \
   ../../upstream/Detect-It-Easy/db \
   ../../upstream/Detect-It-Easy/db_extra
 
+cargo +1.88.0 run --release --locked -- verify-scope-lifecycles-tracked-heap \
+  ../../upstream/Detect-It-Easy/db \
+  ../../upstream/Detect-It-Easy/db_extra \
+  ../../docs/research/data/include-graph-sizing.json
+
 cargo +1.88.0 run --release --locked -- eval-shared \
   ../../upstream/Detect-It-Easy/db \
   ../../upstream/Detect-It-Easy/db_extra
@@ -1058,8 +1086,9 @@ Python canonical JSON/SHA-256 计算逐值核对。
 - Binary 已按固定 Linux 顺序完成 292 条顶层 eval、全 `detect` 缺口采集，并在
   14 个生成 header 样本上完成 4088 次零 fallback 调用和完整有序结果 oracle；
   全部 2,235 个程序文件的隔离顶层 parse/eval 又已有 custom-allocator
-  high-water，但尚未为 292 条 Binary 规则分别提供正/反例 Qt oracle，也未完成
-  其他 file type/file-part 的完整 lifecycle/detect 和 Windows/macOS 顺序。
+  high-water，30 个 scope 的 init/全部顶层规则/include 动态闭包也已完成；
+  但尚未为 292 条 Binary 规则分别提供正/反例 Qt oracle，也未完成其他 file
+  type/file-part 的完整 `detect` 和 Windows/macOS 规则顺序。
 - 首个格式专用分支已用真实 Rust PE32 context、native `PE.compareEP` 和原样
   Cygwin32 规则完成 positive/negative/truncated Qt5 差分 3/3；入口点、physical
   memory records、boolean 和完整 detection tuple 均一致。证据见

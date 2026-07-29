@@ -94,6 +94,16 @@ must stay below 32 MiB, deny no allocation, and release all live bytes. This
 still evaluates top-level code only and does not model upstream lifecycle or
 `detect`.
 
+`verify-scope-lifecycles-tracked-heap` creates one tracked shared runtime for
+each of the 30 fixed file-type scopes. In every runtime it evaluates the real
+global and selected type init, then every main and extra ordinary rule through
+the lexical wrapper, while executing recursive root includes. It validates all
+2,205 scoped program files, 151 include evaluations, and maximum include depth
+2 against the pinned static include manifest. Main precedes extra, but each
+layer deliberately uses normalized-path diagnostic order because the upstream
+comparator is non-transitive around `_init`; the command does not claim this
+order is platform-equivalent and does not invoke `detect`.
+
 The `verify-pe-rule`, `verify-elf-rule`, `verify-macho-rule`,
 `verify-dex-rule`, `verify-apk-rule`, `verify-archive-rule`, and
 `verify-pdf-rule` reports also include one normal interrupt counter and three
