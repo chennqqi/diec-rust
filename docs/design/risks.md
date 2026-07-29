@@ -231,6 +231,12 @@ baseline 的变更都要检查本表。
   XArchive 两个文件声明 horsicq MIT，却没有 UnRAR 修改分发 notice。机器报告
   保持 `copy_or_translation_approved=false` 和
   `legal_review_complete=false`，因此 Rust 不能直接翻译该 decoder。
+  全局 product closure 又把最终 ELF 固定为 223 个直接对象 +
+  14 个 archive member = 237 个 compile source，并发现 direct-link
+  `XArchive/Algos/xucldecoder.cpp` 的内嵌 UCL 代码明确声明 GNU GPL、要求查阅
+  `ACC_LICENSE`，但组件中不存在该文件。该项记录为
+  `PRODUCT-LICENSE-GAP-001`；在恢复官方 UCL 1.03 精确来源/许可证并书面评审前，
+  同样禁止复制或翻译。
   XYara 的 Linux YARA target
   又固定了 51 个编译单元/109 个依赖文件：YARA 主体映射官方 v4.5.2，
   6 个 Bison 生成文件含 GPL-3.0-or-later + special exception，6 个 TLSH 文件

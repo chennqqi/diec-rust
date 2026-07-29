@@ -134,6 +134,9 @@ Phase 0 计划形成：
 - [`c-static-link-spike.md`](c-static-link-spike.md)：Windows/Linux C staticlib、所有权、panic/CRT 和系统依赖验证（Draft）。
 - [`rust-toolchain-upgrade-1.97.1.md`](rust-toolchain-upgrade-1.97.1.md)：固定默认 Rust 1.97.1、保留 MSRV 1.88 的 Rust 门禁与 Windows/Linux static-link 复验（Draft）。
 - [`cli-dependency-and-license.md`](cli-dependency-and-license.md)：CLI 源码/链接依赖闭包与许可证初审（Draft）。
+- [`product-source-closure.md`](product-source-closure.md)：固定 Linux Qt5
+  `diec` 的 223 个直接对象、8 archive/36-built/14-included member、
+  237-source 产品闭包、AUTOMOC 来源和 XUCL 缺失 `ACC_LICENSE` 旗标（In Review）。
 - [`xarchive-license-closure.md`](xarchive-license-closure.md)：固定 Linux Qt5 CMake CLI 的 XArchive 编译单元、头文件依赖与文件级许可证证据（Draft）。
 - [`xarchive-final-link-closure.md`](xarchive-final-link-closure.md)：固定 Linux
   Qt5 CMake CLI 的 XArchive 四个 archive、22 个构建 member 与 GNU ld
@@ -284,6 +287,9 @@ Phase 0 计划形成：
 - [`engine-contract-behavior.md`](engine-contract-behavior.md)：engine 过滤/排序/停止/入口，以及 device/subdevice short-read、I/O、seek 和范围边界；闭合 `CAP-GAP-009` 与 `CAP-GAP-011`（Draft）。
 - [`nested-scan-behavior.md`](nested-scan-behavior.md)：archive/resource/overlay 的选项可达性、结果树和资源限制（Draft）。
 - [`data/cli-dependencies.toml`](data/cli-dependencies.toml)：固定组件依赖边、LICENSE blob 和 bundled code 证据。
+- [`data/product-source-closure-linux-qt5.json`](data/product-source-closure-linux-qt5.json)：
+  固定最终 ELF 的 237 个 compile source、逐组件/direct/archive/AUTOMOC 身份、
+  根许可证及 `PRODUCT-LICENSE-GAP-001`。
 - [`data/xarchive-license-closure-linux.json`](data/xarchive-license-closure-linux.json)：XArchive 106 个实际编译单元、217 个依赖文件及许可证/来源标记。
 - [`data/xarchive-final-link-closure-linux.json`](data/xarchive-final-link-closure-linux.json)：
   XArchive 四个 archive 的 22-built/1-included/21-excluded GNU ld map、byte-identical

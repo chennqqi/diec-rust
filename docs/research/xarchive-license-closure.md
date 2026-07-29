@@ -77,6 +77,12 @@ horsicq MIT，没有 UnRAR 修改分发 notice。该证据禁止本项目在书�
 保留了 MIT 包装声明及对应 zlib、bzip2 或 Public Domain 文本；它们仍需发布责任人
 复核组合义务，证据强度高于上述两个无声明文件。
 
+后续全局 [`product-source-closure.md`](product-source-closure.md) 又确认
+`Algos/xucldecoder.cpp` 是直接进入最终 ELF 的 84 个对象之一。该文件外层为
+horsicq MIT，但内嵌 UCL 1.03 代码在第 842 行声明 GNU GPL 并引用
+`ACC_LICENSE`；固定 XArchive tree 未保存该文件。此项记录为
+`PRODUCT-LICENSE-GAP-001`，在官方来源和精确条款闭合前不得复制或翻译。
+
 ## 方法与复现
 
 工具

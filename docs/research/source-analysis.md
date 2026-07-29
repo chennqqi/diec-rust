@@ -28,6 +28,13 @@ signatures/*                     binary crypto/junk signatures
 
 `StaticScan` 在顶层作为 submodule 存在，但当前 `src/console/CMakeLists.txt` 没有直接包含它。它是否属于目标“能力相同”的 engine 范围，需要从产品行为而非仓库名称决定。
 
+固定 Linux Qt5 CMake 最终产品的实际源码贡献已由
+[`product-source-closure.md`](product-source-closure.md) 闭合：13 个上述/辅助
+组件贡献 220 个 direct object，DIE-engine 根源码贡献 2 个，AUTOMOC 贡献 1 个；
+八个 archive 构建 36 个 member、GNU ld 实际抽取 14 个，最终为 237 个 compile
+source。该清单证明 XYara/YARA、XCppfilt 和 StaticScan 不在此 `diec` ELF，也
+避免把本节逻辑关系图误当作 crate 或最终链接图。
+
 ## CLI 主流程
 
 [`main_console.cpp`](https://github.com/horsicq/DIE-engine/blob/74eaf505c250ab47e709024e9dc41657cd8f2254/src/console/main_console.cpp) 的流程：

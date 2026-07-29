@@ -106,6 +106,11 @@ python tools\upstream\audit_component_licenses.py `
 
 ## 尚未完成
 
+- [`product-source-closure.md`](product-source-closure.md) 已将固定 Linux Qt5
+  CMake `diec` 收口为 237 个 compile source、14 个贡献代码库根 LICENSE 和
+  8 archive/36-built/14-included member；同时发现 direct-link
+  `XArchive/Algos/xucldecoder.cpp` 的 GNU GPL 声明引用缺失 `ACC_LICENSE`，
+  该项必须完成官方来源/许可证追溯与书面评审；
 - [`xarchive-license-closure.md`](xarchive-license-closure.md) 已固定 Linux Qt5
   CMake CLI 的 106 个 XArchive 编译单元和 217 个依赖文件；其中聚合
   Brotli/Zstandard 已完成固定官方版本/许可证追溯，但 XArchive 未保存对应文本，
@@ -120,7 +125,8 @@ python tools\upstream\audit_component_licenses.py `
 - XYara 内 bundled YARA 已完成当前 Linux CMake target 的 51-object/109-file
   审计及 TLSH/Authenticode/Bison 分类；仍缺 Windows/macOS/OpenSSL/qmake
   闭包和书面组合评审；
-- qmake/CMake、普通 scan/info/struct 和 GUI 的实际 object/link map 对应关系；
+- qmake、Qt6、Windows、macOS、普通 scan/info/struct 最小变体、GUI 和发布包的
+  实际 object/link map 对应关系；固定 Linux Qt5 CMake 默认 CLI 已完成；
 - `db*` JavaScript rules 的逐路径许可结论；YARA/PEiD/signatures 已完成
   路径/hash/可见标记审计，但原始第三方许可和书面组合评审仍未关闭；
 - 候选 Rust dependency graph、最终 static library 和发布包的 SBOM/NOTICE；

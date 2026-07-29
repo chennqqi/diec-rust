@@ -110,7 +110,10 @@ diec
 `cppfilt` 和 `yara` 没有出现在 `diec` 的直接或已观察到的传递链接列表中。因此当前证据
 只能证明它们属于默认构建图，不能证明其代码进入 `diec` 二进制。
 
-这一区分仍需用实际构建后的 link map 和二进制符号表复核。
+固定 Linux Qt5 CMake 的这一区分现已由
+[`product-source-closure.md`](product-source-closure.md) 用 byte-identical
+链接重放、GNU ld map 和 237-source 清单复核；其他平台、qmake、GUI 与发布包
+仍须分别建立闭包。
 
 ## 组件根许可证
 
@@ -132,6 +135,7 @@ LICENSE 的 vendored 代码。
 | `XArchive/3rdparty/ppmd` | archive 在 link line；4/4 member 未抽取 | `Ppmd7.c`、GNU ld map | Public Domain；仍是构建/archive 内容 |
 | `XArchive/3rdparty/zlib` | archive 在 link line；8/8 member 未抽取 | `src/zlib.h`、GNU ld map | zlib License；仍是构建/archive 内容 |
 | `XArchive/Algos` | 是，作为聚合源码 | `xarchive.cmake`、RAR token 来源报告 | Brotli/Zstd 已追溯；RAR decoder 与 UnRAR 7.1.10 高度重合但 notice 不一致；其余实现仍待逐文件分类 |
+| `XArchive/Algos/xucldecoder.cpp` | 是；84 个 direct object 之一 | product source closure、文件第 842 行 | 外层 horsicq MIT；内嵌 UCL 声明 GNU GPL 并引用缺失的 `ACC_LICENSE`，必须追溯和书面评审 |
 | `XCppfilt/3rdparty/cppfilt` | 否；默认构建 target | `cp-demangle.c` 等文件头 | GPL-2.0-or-later，并带文件级不限制链接的额外许可；另有 Public Domain 文件 |
 | `XYara/3rdparty/yara` | 否；51-object 默认构建 target | 官方 YARA v4.5.2 内容映射与 109-file `.o.d` closure | 主体为 BSD-3-Clause；vendored tree 未保存官方 `COPYING` |
 | YARA 生成 parser 文件 | 否；6 个 `.c/.h` 实际进入 `yara` closure | `grammar.c/.h`、`hex_grammar.c/.h`、`re_grammar.c/.h` | GPL-3.0-or-later + Bison parser-skeleton special exception |
@@ -160,6 +164,13 @@ LICENSE 的 vendored 代码。
 [`component-license-inventory.md`](component-license-inventory.md) 补齐：全部根
 许可证为 MIT、共有 12 个文本 hash，且没有组件含递归 git submodule。该清单同时
 发现 45 个 nested license candidates，但不替代文件级 bundled code 审计。
+
+固定 Linux Qt5 CMake `diec` 的全局产品闭包已由
+[`product-source-closure.md`](product-source-closure.md) 收口为 223 个直接对象、
+8 个 archive 的 36-built/14-included member 和 237 个 compile source；逐组件
+计数、237 个源码 hash、14 个根 LICENSE、AUTOMOC 的 13 组件来源均已绑定。
+该清单同时发现实际 direct-link 的 `xucldecoder.cpp` 内嵌 GPL 声明并引用缺失的
+`ACC_LICENSE`，记录为 `PRODUCT-LICENSE-GAP-001`。
 
 固定 Linux Qt5 CMake CLI 的 XArchive 实际闭包已由
 [`xarchive-license-closure.md`](xarchive-license-closure.md) 展开为 84 个直接对象、
@@ -199,9 +210,9 @@ XYara/YARA 当前 Linux target 也已由
 
 ## 尚未完成
 
-- 已为 XArchive 保存 GNU ld member extraction map，并为 XCapstone 与
-  Formats/xsimd 保存最终 ELF member 符号见证；其余组件仍需补全 CMake
-  target graph、link map、动态依赖和符号表。
+- 固定 Linux Qt5 CMake CLI 的全局 237-source/link-map 闭包已完成；仍需
+  qmake、Qt6、Windows、macOS、GUI 和发布包的对应 object/link/dependency 闭包。
+- 追溯 XUCL 1.03 官方来源、恢复精确 `ACC_LICENSE` 并取得书面组合结论。
 - 为 XArchive 聚合 Brotli/Zstandard 恢复独立 LICENSE/NOTICE/attribution，
   完成 Brotli 剩余约 1.4% token 分类，并对 RAR decoder 的 UnRAR notice/
   复用边界取得书面结论；为 YARA/TLSH 恢复独立

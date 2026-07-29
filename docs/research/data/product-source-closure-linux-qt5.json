@@ -1,0 +1,3475 @@
+{
+  "archives": [
+    {
+      "archive": "../XArchive/3rdparty/bzip2/libbzip2.a",
+      "built_member_count": 8,
+      "component": "XArchive",
+      "excluded_members": [
+        "blocksort.c.o",
+        "bzip2.c.o",
+        "bzlib.c.o",
+        "compress.c.o",
+        "crctable.c.o",
+        "decompress.c.o",
+        "huffman.c.o",
+        "randtable.c.o"
+      ],
+      "included_member_count": 0,
+      "sha256": "bf586b5a049514b66507fccadce0fd34568287917be46a6611c38590d59f8305"
+    },
+    {
+      "archive": "../XArchive/3rdparty/lzma/liblzma.a",
+      "built_member_count": 2,
+      "component": "XArchive",
+      "excluded_members": [
+        "Lzma2Dec.c.o"
+      ],
+      "included_member_count": 1,
+      "sha256": "b00a2ef5ef4a83076bc0f26294f0276bbfa4a594832e2eb200713087ecb785de"
+    },
+    {
+      "archive": "../XArchive/3rdparty/ppmd/libppmd.a",
+      "built_member_count": 4,
+      "component": "XArchive",
+      "excluded_members": [
+        "Ppmd7.c.o",
+        "Ppmd7Dec.c.o",
+        "Ppmd8.c.o",
+        "Ppmd8Dec.c.o"
+      ],
+      "included_member_count": 0,
+      "sha256": "34dd0bc1fb8b7f92f934334e89805b4d3d56980c19c963bb40ad0d7904e64307"
+    },
+    {
+      "archive": "../XArchive/3rdparty/zlib/libzlib.a",
+      "built_member_count": 8,
+      "component": "XArchive",
+      "excluded_members": [
+        "adler32.c.o",
+        "crc32.c.o",
+        "deflate.c.o",
+        "inffast.c.o",
+        "inflate.c.o",
+        "inftrees.c.o",
+        "trees.c.o",
+        "zutil.c.o"
+      ],
+      "included_member_count": 0,
+      "sha256": "d306537c392978554ddc10d47c5c573181aedd8b26760e6950af791a53f14d4b"
+    },
+    {
+      "archive": "../XCapstone_86/libcapstone_x86.a",
+      "built_member_count": 11,
+      "component": "XCapstone",
+      "excluded_members": [
+        "MCInstrDesc.c.o"
+      ],
+      "included_member_count": 10,
+      "sha256": "486c733009d5f14ec99eedddc665aeb7990e42cca1009edee022c7cafae99505"
+    },
+    {
+      "archive": "../XSIMD/libxsimd.a",
+      "built_member_count": 1,
+      "component": "Formats",
+      "excluded_members": [],
+      "included_member_count": 1,
+      "sha256": "191e4d13d5b522459f77df9f492d7d9a6a146c603d7a5c3acc97e8e117e1a77b"
+    },
+    {
+      "archive": "../XSIMD/libxsimd_avx2.a",
+      "built_member_count": 1,
+      "component": "Formats",
+      "excluded_members": [],
+      "included_member_count": 1,
+      "sha256": "03b5de490217c929903691b545d13922aba4903c7b5491d46bf29f884d572e9e"
+    },
+    {
+      "archive": "../XSIMD/libxsimd_sse2.a",
+      "built_member_count": 1,
+      "component": "Formats",
+      "excluded_members": [],
+      "included_member_count": 1,
+      "sha256": "eab901e6c823ab49dc86ad4d744348cf5a92f1732e084eee102bde897e273a15"
+    }
+  ],
+  "build": {
+    "artifact_path": "src/console/diec",
+    "artifact_sha256": "da1fab49f7ba5970d1fc1c7fe3d4f380cf5e8775dd8097207e7b3c30f08236cf",
+    "built_project_archive_member_count": 36,
+    "compile_source_count": 237,
+    "direct_object_count": 223,
+    "excluded_project_archive_member_count": 22,
+    "included_project_archive_member_count": 14,
+    "link_map_sha256": "9cdf167d355b6d0aad4d04c100a3602f9aa90139f78ac47be517b2518bf8f566",
+    "link_path": "src/console/CMakeFiles/diec.dir/link.txt",
+    "link_sha256": "b2a4c7953997137d45f06eb3541d5da2efe127e85905c62311f5e03e5a500afb",
+    "project_archive_count": 8,
+    "replayed_artifact_sha256": "da1fab49f7ba5970d1fc1c7fe3d4f380cf5e8775dd8097207e7b3c30f08236cf"
+  },
+  "compile_source_counts": {
+    "DIE-engine": 2,
+    "Formats": 40,
+    "SpecAbstract": 30,
+    "XArchive": 85,
+    "XCapstone": 11,
+    "XDEX": 2,
+    "XDisasmCore": 5,
+    "XEntropyWidget": 1,
+    "XFileInfo": 4,
+    "XOptions": 5,
+    "XPDF": 1,
+    "XScanEngine": 34,
+    "XStaticUnpacker": 11,
+    "die_script": 5,
+    "generated": 1
+  },
+  "compile_sources": [
+    {
+      "bytes": 1718,
+      "component": "DIE-engine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/consoleoutput.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "041cc284d83a319fd84bbaa026e3407515c962e850543195b122be240a89f08b",
+      "source": "src/console/consoleoutput.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 17949,
+      "component": "DIE-engine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/main_console.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "ebb82a94fdd0f54722ea36589d6a35694ec4022bc9179030dae6a85e7a9d7e8f",
+      "source": "src/console/main_console.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 15350,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/audio/xmp3.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "8df2cef93b147cf002de4c9ff282e4dd3b8bcf155d8e27469f835216f472f94f",
+      "source": "Formats/audio/xmp3.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 2161,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/audio/xwav.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "70142dc1c92fbd7d9135e780406b607a885fcdae9d11e882233145e1b7fe5d68",
+      "source": "Formats/audio/xwav.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 32678,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/audio/xxm.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "35d64d51f03cc0876f928678340b22bdc1bec9a165151be1ae46ee2f3a645092",
+      "source": "Formats/audio/xxm.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 22674,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/exec/xamigahunk.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "7cee077d4e9d6ab66fde355e06f62908d835a8d1818c9d0a47b59b9269d3e8a1",
+      "source": "Formats/exec/xamigahunk.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 8437,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/exec/xatarist.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "7aeda5dda76eb0027bb735dbedd8925cb901f1049a0fcedeb2e2f01a443f1fd2",
+      "source": "Formats/exec/xatarist.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 6625,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/exec/xcliassembly.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "47b437074cd54079b5171d7c29ff4925f8830de13b0b7c2240823af90bf4ae72",
+      "source": "Formats/exec/xcliassembly.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 7444,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/exec/xcom.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "9c9fa3fb16a9a223be5b8746cbfde1b0bdc8d4eda7e6231c434183a60929c848",
+      "source": "Formats/exec/xcom.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 192378,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/exec/xelf.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "b4521f62b02cde5eb90e9fc443c624d7ff2d729fa123e775d16882f4a8f3a83c",
+      "source": "Formats/exec/xelf.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 47106,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/exec/xle.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "ddc65a4863ba3d03d4ec8a00b99eb318fd306deeef4ab5556069ab286e235d8c",
+      "source": "Formats/exec/xle.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 247707,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/exec/xmach.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "6f416a8462d1e958671db3a64a32c269c666456413900909f042fd62e25cacab",
+      "source": "Formats/exec/xmach.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 32353,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/exec/xmsdos.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "461983db6e640adabb1e4454d5bf6eb2ab66c0b1d6b69056d634490c2789b29c",
+      "source": "Formats/exec/xmsdos.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 48576,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/exec/xne.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "3e484e84129f8c8f16e9a25762fa3df500545f20f4e14b358ec714239999cecf",
+      "source": "Formats/exec/xne.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 644990,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/exec/xpe.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "bfad885df2569b03bc33c040852a884bfe40d781a58bef5f6d8c53c16b488a0c",
+      "source": "Formats/exec/xpe.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 3694,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/formats/xder.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "bd17f9af53e6ea8a0b36e542f0ee08e93d93880578d68c13b1cd8ae4c0213b93",
+      "source": "Formats/formats/xder.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 17441,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/formats/xdjvu.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "34f22ee46f325643c30c3f194d5d643c82d50797ef6336940ed067c63a26c9c1",
+      "source": "Formats/formats/xdjvu.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 32055,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/formats/xjavaclass.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "d1260aab043b5804fcef0b7b4d42c48a895de0a8736a7cc1375fe22412932c4a",
+      "source": "Formats/formats/xjavaclass.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 41437,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/formats/xpyc.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "1f2fe8e873e1339237697c24c726c17d3914aa19cd524345e51775949da5f373",
+      "source": "Formats/formats/xpyc.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 8432,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/formats/xriff.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "77a42568999b8fd7dd51933d4866d6d9734e6bc7b9788baca03f4c31dc5fedaf",
+      "source": "Formats/formats/xriff.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 12931,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/formats/xttf.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "7b1283b0f623bf15d0d7bba42c7c80ded676f2b806b3fa106e74022f90b74ba5",
+      "source": "Formats/formats/xttf.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 12731,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/images/xbmp.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "ba3479536e79eec871c07610563729f73cc056597f919e421df6d80bda9e7763",
+      "source": "Formats/images/xbmp.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 17821,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/images/xgif.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "249fbf0fc5dd7147c14afd9a98969ea8e71c2eda3bbf1fe3874753bdc8203228",
+      "source": "Formats/images/xgif.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 15784,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/images/xicc.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "393e3c2b8a91e09caa60081513f7cd2ddff7ea168f1cea7505d6b7f0de7d6ae8",
+      "source": "Formats/images/xicc.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 13808,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/images/xicon.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "cbcc6f1605f52dc8512220dc0fd8becfe529c94459fb9798603be307f7f23784",
+      "source": "Formats/images/xicon.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 14288,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/images/xjpeg.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "25a754454306d9b9af6ef7bcc5735bc34ed9b397d9454f5fe4159d57860a621f",
+      "source": "Formats/images/xjpeg.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 33145,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/images/xpng.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "b8fb558ea87c7c94c6943f242ea1cee6114f8d1899b8501fc359b9d0ee765a08",
+      "source": "Formats/images/xpng.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 17055,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/images/xtiff.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "e2029ccc4aef4fea9d570376d55b790f0cc84a3a1b2172f8acb246f99f952453",
+      "source": "Formats/images/xtiff.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1535,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/images/xwebp.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [],
+      "linkage": "direct-object",
+      "sha256": "8d3214f25d11d3481880da034d7f7c561ce9556a071a0abda7dfced5cafb3866",
+      "source": "Formats/images/xwebp.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 2850,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/subdevice.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "a1f0dc51e6f8f471bd33b88766b0b0824c52fcea58a37b57abe4ad53a9300215",
+      "source": "Formats/subdevice.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 17254,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/texts/xtext.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "cdd64b9f4ac7f46f281bbe7eb5d05767e8eb0804850b4298f292da4c715d01d6",
+      "source": "Formats/texts/xtext.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 7759,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/video/xavi.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "d05ef13b6f9e32c4141ecea5e6de0a969bbce4852a2a3bf7fa26a988b7bd8688",
+      "source": "Formats/video/xavi.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 7514,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/video/xmp4.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "feaef2fa11db6b3ad96e07b4deab6025aa1f3408d5c8dee0a7b0b4b4445f9ef7",
+      "source": "Formats/video/xmp4.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 549347,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/xbinary.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "d82bd21326bb7ba07eb343020d50af0ae2cf7e8e534d8e08d07ffa8129913c34",
+      "source": "Formats/xbinary.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 3766,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/xfilepart.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "65983e316b7ba263ef5113cc58627b639221238ec1885f5abc5545b3fcbf6533",
+      "source": "Formats/xfilepart.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 93160,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/xformats.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "674eba0046eb6cc947e547d1ac0b93ac695cbb30f68e11f135e5551d81e0b115",
+      "source": "Formats/xformats.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 3817,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/xhandler.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "50fd6a460e537447b05092e5d27dcdb8d8b2837a0ee5f65ac6a05d2ba4cccc53",
+      "source": "Formats/xhandler.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 2961,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/xiodevice.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "ee936abd82b84efc988ff63d53d180bda23d58e2019b666120a098f1ef174a37",
+      "source": "Formats/xiodevice.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 5998,
+      "component": "Formats",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/Formats/xsearchprocess.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "f64a6537e8024b4fc46152eaf3711006e75daa5795a1becc5cf0156c958240c7",
+      "source": "Formats/xsearchprocess.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 43413,
+      "component": "Formats",
+      "dependency_file": "src/XSIMD/CMakeFiles/xsimd.dir/src/xsimd.c.o.d",
+      "inclusion_reason": "CMakeFiles/diec.dir/__/__/Formats/xbinary.cpp.o (xsimd_is_avx2_enabled)",
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "../XSIMD/libxsimd.a(xsimd.c.o)",
+      "sha256": "816727b72bb59036d195179eb957b32de404b957e1f8e31cdc2867cd5c06e007",
+      "source": "Formats/xsimd/src/xsimd.c",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 55292,
+      "component": "Formats",
+      "dependency_file": "src/XSIMD/CMakeFiles/xsimd_avx2.dir/src/xsimd_avx2.c.o.d",
+      "inclusion_reason": "../XSIMD/libxsimd.a(xsimd.c.o) (_xsimd_find_byte_AVX2)",
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "../XSIMD/libxsimd_avx2.a(xsimd_avx2.c.o)",
+      "sha256": "c6232b9d3a2e309f2405915da5323eb11b44af5c90712f4f2406fa1b5074d3c1",
+      "source": "Formats/xsimd/src/xsimd_avx2.c",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 65612,
+      "component": "Formats",
+      "dependency_file": "src/XSIMD/CMakeFiles/xsimd_sse2.dir/src/xsimd_sse2.c.o.d",
+      "inclusion_reason": "../XSIMD/libxsimd.a(xsimd.c.o) (_xsimd_find_byte_SSE2)",
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "../XSIMD/libxsimd_sse2.a(xsimd_sse2.c.o)",
+      "sha256": "2d2e75d85848ababa762c7acfe393448bdde4c4b9d10a08e0b1dab9502fb3f73",
+      "source": "Formats/xsimd/src/xsimd_sse2.c",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 2312,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_amiga.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "447284b068834faad6895d24ddf391967cb93e9ca2637a5ed295d856b1107bd4",
+      "source": "SpecAbstract/modules/nfd_amiga.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 59801,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_apk.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "a8d8c6c734d670cc93d3b6be67a2f571df25a57fc88ce95827053fd37ea80498",
+      "source": "SpecAbstract/modules/nfd_apk.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1356,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_archive.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "6b00fc6bf5c678f2044e5ac0af9905bdf4ca1a6336427481458f6359a5951e9b",
+      "source": "SpecAbstract/modules/nfd_archive.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 2573,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_atarist.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "cfae9a6c63c6dc143e8bcf36bbd780354dc1d98909342bbd8a6bcc7268454f7d",
+      "source": "SpecAbstract/modules/nfd_atarist.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 192220,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_binary.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "0da0062ace36ee62661dd8fda97c98f1e73d100375a4c99861dc0573ee21bad2",
+      "source": "SpecAbstract/modules/nfd_binary.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 3095,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_cfbf.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "3bf8fa3b7fcdbe9ecde3a3b975f70c1e8593b664f52101a1bd43a13e77b65ddd",
+      "source": "SpecAbstract/modules/nfd_cfbf.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 10378,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_com.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "3191989628912822c03d216f5a4fae122e89ed4a6faf07624c11f5e12ff1dd46",
+      "source": "SpecAbstract/modules/nfd_com.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 31360,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_dex.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "f31afd6d4d58b68b56302762513b5e0fdf6a5b824c1523501db51ff480d178a1",
+      "source": "SpecAbstract/modules/nfd_dex.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1348,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_dos16m.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "71683409d57bea413882658fabac32caa1c9c58fc774169a76dd8515a2358683",
+      "source": "SpecAbstract/modules/nfd_dos16m.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1344,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_dos4g.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "4acc72aa8454da60bc90547b5b32147b7822a5723ed8cf7075a263fccd8b2472",
+      "source": "SpecAbstract/modules/nfd_dos4g.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 64874,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_elf.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "1b138c87e87b54f7b120db4b92cdb6e17934f0ed33807d9e33bfd1c39fa5c832",
+      "source": "SpecAbstract/modules/nfd_elf.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1343,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_image.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "f4cf92daea42624d7e45fce57540279930367468dec38b1e4e279e3231c3e8da",
+      "source": "SpecAbstract/modules/nfd_image.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1324,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_ipa.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "c69008d3e6ea60254f8d88dacd973fc578826d628f333a595c7939118a4cdd4b",
+      "source": "SpecAbstract/modules/nfd_ipa.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 8801,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_jar.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "7f208c18d33de6a03171db5cf9353033d03bb839b8d8ddd602d592fc6848325b",
+      "source": "SpecAbstract/modules/nfd_jar.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 2170,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_javaclass.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "68ee373045f74d9c89ab3864248b90b93226b190ed2b80f2bf401c66efe994e2",
+      "source": "SpecAbstract/modules/nfd_javaclass.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 2395,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_jpeg.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "e6f1e971fcbdcee9b11210c659acafebd1d240e4a52c8e4b38ad9c7d12b07209",
+      "source": "SpecAbstract/modules/nfd_jpeg.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 5126,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_le.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "7deed70f87a2a639a23cc1225f46d75286fd4d03b036391d009849ac5624f46f",
+      "source": "SpecAbstract/modules/nfd_le.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 8604,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_lx.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "e9222ba75be6ac931c09c419b41727d8666eb79d8218310d6a626a722511b163",
+      "source": "SpecAbstract/modules/nfd_lx.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 21464,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_mach.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "f76bee393900a2f046c5a812268b37ee047635ff0d598a628705c82fc0af33f0",
+      "source": "SpecAbstract/modules/nfd_mach.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1363,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_machofat.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "c92fad66cdd6e7d476dcba2f0cfb0144b7fe044b588c9c92c9ceac22e7fe986d",
+      "source": "SpecAbstract/modules/nfd_machofat.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 90630,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_msdos.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "80d1903b3b31a7b53a4a5aac94d774319732730299aad5143cef1963fac2cd4a",
+      "source": "SpecAbstract/modules/nfd_msdos.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 5254,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_ne.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "13fe1b01422219135bd9bec1f036d1085c56dd20eb4b081e3cc9133baeaf8519",
+      "source": "SpecAbstract/modules/nfd_ne.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1324,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_npm.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "ec0e54a5e6e82a3c10f2a57de71c282fd131f65fccc36ae6b42a03424ec2dce0",
+      "source": "SpecAbstract/modules/nfd_npm.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 4173,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_pdf.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "35eb1bd83bb5ed49bb6d0e94c9c1a43ddc7250e18e2ec9b163f7971dd8094008",
+      "source": "SpecAbstract/modules/nfd_pdf.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 548567,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_pe.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "f8a784f10912cde76bd5931fb5f6f87cfca8e3919274c38c0b9c7f126a3ddacd",
+      "source": "SpecAbstract/modules/nfd_pe.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1324,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_png.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "ebae1287bfa3ddf117991aaf97fde834912d6211f9096c60eb5ca27ff614e153",
+      "source": "SpecAbstract/modules/nfd_png.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 3060,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_rar.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "11a602fd840aced3a747bb1b7d048cd1b90a3e9e39ca0cbf8324b2b961316333",
+      "source": "SpecAbstract/modules/nfd_rar.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 2393,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_text.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "9173b5b99b1fb1a09d20823cef1af399d6bb63715b93a0ba89b82ddc6fbe1ed6",
+      "source": "SpecAbstract/modules/nfd_text.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 8297,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/modules/nfd_zip.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "3d12157109222e795c1566c0b89796bf56f3c3df87d305bd947e8b18064557a0",
+      "source": "SpecAbstract/modules/nfd_zip.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 7005,
+      "component": "SpecAbstract",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/SpecAbstract/specabstract.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "dd14ab01f05f1a53ab7a6052d2a66109b51bb76f643b6c8a97c582cc9347476a",
+      "source": "SpecAbstract/specabstract.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 38106,
+      "component": "XArchive",
+      "dependency_file": "src/XArchive/3rdparty/lzma/CMakeFiles/lzma.dir/src/LzmaDec.c.o.d",
+      "inclusion_reason": "CMakeFiles/diec.dir/__/__/XStaticUnpacker/xnsis.cpp.o (LzmaDec_Init)",
+      "license_markers": [
+        "public-domain"
+      ],
+      "linkage": "../XArchive/3rdparty/lzma/liblzma.a(LzmaDec.c.o)",
+      "sha256": "6e96899def1c643f24435563c96b1cffe9be589ffecaa3f663d6cab77845e3e6",
+      "source": "XArchive/3rdparty/lzma/src/LzmaDec.c",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 18969,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/algo_utils.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "47b50b5c89018c91e1d3f16f0550fecf5ac94de0ef9d05f537fb786e1d4acd54",
+      "source": "XArchive/Algos/algo_utils.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 21628,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xacedecoder.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "b02f2d26874abf38cfc276234c1567d4ec446c2b21a429b90f864861b9095e12",
+      "source": "XArchive/Algos/xacedecoder.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 44440,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xaesdecoder.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "f05f7cbe2235c937efe17caf088156d03951dc09a30507c4caa4f0732ecbc3ad",
+      "source": "XArchive/Algos/xaesdecoder.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 22845,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xarjdecoder.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "8d2e454f26975a2cfa65648e3ffe47ff1cd54b65360757a4e630fa199ed8f286",
+      "source": "XArchive/Algos/xarjdecoder.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 6511,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xascii85decoder.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "85575648b2335fc62772430c698394a91ab1b724ae5653d1d9f54d2cf5c93936",
+      "source": "XArchive/Algos/xascii85decoder.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 8121,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xbcj2decoder.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "254d9773c5f709e4700d917815afba07f87325300bfbd0c14ee314a501b3018a",
+      "source": "XArchive/Algos/xbcj2decoder.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 12421,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xblake2sp.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "4411bb60d37486797d1add6188c49a314cb1297ac1e2a49bc829bfc80bce9996",
+      "source": "XArchive/Algos/xblake2sp.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 5038,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xbrotlidecoder.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "35a5172f7a5f6ac8b7b2f83dfcdd7fc458d5f2f787c90954a7c7b0256d9f3b2b",
+      "source": "XArchive/Algos/xbrotlidecoder.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 72818,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xbzip2decoder.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "41dd7f621d9711ae289bc6ccc14f8c4d887eaa2d399dd17b383178747c3cec7f",
+      "source": "XArchive/Algos/xbzip2decoder.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 8929,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xcompressdecoder.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "e4c853ec9f7925be67042ec8a6871c11c4492cca4994ee0bed66e260c7a83540",
+      "source": "XArchive/Algos/xcompressdecoder.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 412636,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xdeflatedecoder.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "cb74b248ded89fea38940ee2ea8135f77a6a4d3b11bc1edd5dea1eb49e5627a6",
+      "source": "XArchive/Algos/xdeflatedecoder.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 33024,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/ximplodedecoder.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "161aab723639e33362f942fb239b5f3861cd78cd173fe9977496a42d55b09768",
+      "source": "XArchive/Algos/ximplodedecoder.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 9811,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xit214decoder.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "f6033563acdaac96a42fcbee7c8e527dd0b1664ff9b04bbbeb58d9b273bece4e",
+      "source": "XArchive/Algos/xit214decoder.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 40592,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xlzhdecoder.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "fbfc9577f37b3e70cda53cd1c239d2e3a80a72263e05e10040ff7dc8b4487379",
+      "source": "XArchive/Algos/xlzhdecoder.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 72309,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xlzmadecoder.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission",
+        "public-domain"
+      ],
+      "linkage": "direct-object",
+      "sha256": "5fd76d23badb01d7132b7ea14a7350d8023ff82ea199b08d9d842c6462ce17f3",
+      "source": "XArchive/Algos/xlzmadecoder.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 11802,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xlzodecoder.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "3a6ff49a38d6caae5c0f1ecd1cc49a6aa1501281d1e2762a83dd1464a4a4f49d",
+      "source": "XArchive/Algos/xlzodecoder.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 6853,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xlzssdecoder.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "4e87e8971a54b78ca860f1f198e7cd6d885d3fd94befcdb8a556391e1867c81c",
+      "source": "XArchive/Algos/xlzssdecoder.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 11363,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xlzwdecoder.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "3874e01bd40371b3971d23be72b40212ed375752ea18367cb3bda440f860b943",
+      "source": "XArchive/Algos/xlzwdecoder.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 3154,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xppmd7model.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "9a7ea17e9b5ae33431d82d6d2dab84626436308627000f84eb3d83c7511d05ea",
+      "source": "XArchive/Algos/xppmd7model.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 100211,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xppmddecoder.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission",
+        "public-domain"
+      ],
+      "linkage": "direct-object",
+      "sha256": "3c2427f61dc1d9d895e97d943d291d7ea1e6683986bd15a35065b9478cc6803a",
+      "source": "XArchive/Algos/xppmddecoder.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 3630,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xppmdmodel.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "89c06093e533338e3bd1c538e73fb1ee1ff43ab216db6b96e5d7ca1df29bdb26",
+      "source": "XArchive/Algos/xppmdmodel.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 3291,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xppmdrangedecoder.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "2286efe274fd55b227335b769f4c189b2cfebcbf44c6f77b2e23d7565444d8ce",
+      "source": "XArchive/Algos/xppmdrangedecoder.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 128003,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xrardecoder.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "55f36d7b0188f5093ffad5723637fedafae32321b1fde3cf2f81ff5983e94026",
+      "source": "XArchive/Algos/xrardecoder.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 13274,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xreducedecoder.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "6e84d2d669bd019fe552ddc0d79e3a25ac77d243dd76b980cb9b62019f2de4d2",
+      "source": "XArchive/Algos/xreducedecoder.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 6115,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xsha256decoder.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "44b95200e7be17438651a2ac45333f3fd4bd8114dca320a81ae5508c4ee4352a",
+      "source": "XArchive/Algos/xsha256decoder.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 15247,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xshrinkdecoder.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "a1cdd2f5e4b5d5f79f7f90b8564c52d86b929152e25d873ca73d6a7cf1993d57",
+      "source": "XArchive/Algos/xshrinkdecoder.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 2868,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xstoredecoder.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "8f54fab15fd3b29ae8b6253bab084769133ecba8c0b791b56b9ae8e2bb5e8c7b",
+      "source": "XArchive/Algos/xstoredecoder.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 129921,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xucldecoder.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "gpl",
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "f2f2fe4e11beaa122c2474a44c7c1c97242e9d211eacc15d0c7f3c646b2a45cf",
+      "source": "XArchive/Algos/xucldecoder.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 10745,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xzipcryptodecoder.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "adec3b4ff6c70d2c92f23cd35cff3da3e9d322f21905852436022453c65d12bf",
+      "source": "XArchive/Algos/xzipcryptodecoder.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 4441,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/xzstddecoder.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "030069b78dce98c08401c997c3e749bf0c0fe17d139bf426d0c1096d5c0fb5c0",
+      "source": "XArchive/Algos/xzstddecoder.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 524843,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/Algos/zstddeclib.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [],
+      "linkage": "direct-object",
+      "sha256": "61e7028570039c299dad5689483d82341f558388ba06f4b2c4819e0ba489e812",
+      "source": "XArchive/Algos/zstddeclib.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 35058,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/x_ar.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "4d4c3120ded19a10db48c64d8d16f018bb4b60760848a0f1ef47f9f27f5507ac",
+      "source": "XArchive/x_ar.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 26074,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xace.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "c86cd47cace16d4108d452fd8d54ceb0a62a866a928d2c1537ac5f6f5a38c169",
+      "source": "XArchive/xace.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 9431,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xapk.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "2bc3d7badc71d1f1569f6f0ad01ca1dcffcf8a98d529c84fdc7c7290d7d137d8",
+      "source": "XArchive/xapk.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 2854,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xapks.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "6b544411a48f997777258be43ab878020de5b0cb7bdb80e1e11adc97e015d2ed",
+      "source": "XArchive/xapks.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 41092,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xarchive.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "f5a128fd35e13cf7cb8881521a48f3899121408ebd7f482e084bbd5ea3a6099f",
+      "source": "XArchive/xarchive.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 12707,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xarchives.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "114517c9bad1ced506d84d0d4b18dfb3704ad09310870a651a1b1196ddcebe4b",
+      "source": "XArchive/xarchives.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 26341,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xarj.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "88b5e7dbf0fa8f465338c62753440c44daf2f0d2e3e5c4087b62b1825ae8a7bc",
+      "source": "XArchive/xarj.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 12596,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xbrotli.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "518126a65d899df4b402a7556f21da08fd88fea4db53e3bb7a13e662ad332b68",
+      "source": "XArchive/xbrotli.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 15011,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xbzip2.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "441e601d24c89602ee0323eec05d7b69f0d3926e6624b9dc1f6ae08245c9890b",
+      "source": "XArchive/xbzip2.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 38683,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xcab.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "a0ce130f4d81ba3aeb018e485a3ee8c046d4cbb570d6318f7aa8817aff28035b",
+      "source": "XArchive/xcab.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 43368,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xcfbf.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "05740b020ea292c8d2602bf5ff7649e8c5a092e40b0ee388ead4212325f6f03a",
+      "source": "XArchive/xcfbf.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 35530,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xcompress.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "d6827edd8b7d2ba10ca039c837baedd7d4ef45f888af7d77e9fa220d6b84812c",
+      "source": "XArchive/xcompress.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 4107,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xcompresseddevice.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "4e2aab9c58ab49608ca5625062818baf944ee48a82c75aa8dc9f4d1158b73e78",
+      "source": "XArchive/xcompresseddevice.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 16514,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xcompressz.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "69bf7df92313a813d583ef5de83591b16fd050b0c04f581d42e7f0e6d7e51b4e",
+      "source": "XArchive/xcompressz.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 35436,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xcpio.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "f1167cf80a9681ce7fd47b3b096f9eb7021453a6a0fcf2025722b232c4df91cc",
+      "source": "XArchive/xcpio.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 3621,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xdeb.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "3d437b6a520338c0a9ea2c2d73ae1c8be4f27d9fc8728afe79fc8558f506f5dc",
+      "source": "XArchive/xdeb.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 74478,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xdecompress.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "4f52eefa06674ea5b7e3f7e1b989502147be84d83e32e8086a7087839ed2728d",
+      "source": "XArchive/xdecompress.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 22438,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xdmg.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "5b53f3748cc721ff029f149193b31fe5fa94b12dac91bd41d27c0f9e86e0a988",
+      "source": "XArchive/xdmg.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 16048,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xdos16.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "cc2d997e7e83f076feac654577c8237a995b619688e6a7f93626d79490fb8ab7",
+      "source": "XArchive/xdos16.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 14202,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xfreearc.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "a318907b12be5fa4372292b23f53005948fffff162f24cb05d1f40578a261c32",
+      "source": "XArchive/xfreearc.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 19664,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xgzip.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "68a72c51e269ad53c839f208335fdff402d457366845301ba15585b6e35b3948",
+      "source": "XArchive/xgzip.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1676,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xipa.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "00798e3828b9a9c822d7036ba4aa4f032c327ce82bf6fd64a5ced5e412dcf3cb",
+      "source": "XArchive/xipa.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 39955,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xiso9660.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "d6e97c4ff2395b812b65da5ab480e937c6b365e6e6e8b0288ddf48b8fd398fb1",
+      "source": "XArchive/xiso9660.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 4628,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xjar.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "8e4c3878226c35b3c062f635679412dc248f7fdf92e76b98194cd09847bd71e4",
+      "source": "XArchive/xjar.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 21387,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xlha.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "456ddb8b2b5ad3ec54e79f3820ef3fa902767f7bd6df6a71fedf6859f51c61ed",
+      "source": "XArchive/xlha.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 9527,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xlz4.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "aff47779401094b7dd982866981c6517ff44b7fe7b78a7f113e11cfd57578661",
+      "source": "XArchive/xlz4.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 15388,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xlzip.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "bb0715dfd703e24971a2a80e9e4b30bee8e0bfb8b2bb8de5c8a929e893fb3faa",
+      "source": "XArchive/xlzip.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 10139,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xlzma.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "1f6a228a83cf0d16acf093cb9fc3bedd2419a7b17814a5e9fba95693ac67cfc1",
+      "source": "XArchive/xlzma.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 13352,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xlzo.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "a31320f7599876977eaef3501cfeb4fac317b2584e93858b5352d9e094fbd40e",
+      "source": "XArchive/xlzo.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 22069,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xmachofat.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "6dee790070b3e3803b90f748fe3f26f42bceeee2368e0644b03458242bbddc0e",
+      "source": "XArchive/xmachofat.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 29387,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xminidump.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "e55023341f8d73584dc3f0c939d8633e53e945e8febb2e5334f25f8fd8302cab",
+      "source": "XArchive/xminidump.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 3343,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xnpm.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "7ef5f9cdf7c50a047802cd25d2b71a919a5a50ca9f6fcbbeb2bc1cb9b7441b91",
+      "source": "XArchive/xnpm.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 95968,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xrar.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "23721187a6118edce8b9511680f34c404727f831ec8c7ed66e0ed0868260ccb8",
+      "source": "XArchive/xrar.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 20043,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xseaarc.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "d0509860715262df95683e32c609b7bf39da23e5a4e0072d6c63b57151ef53a2",
+      "source": "XArchive/xseaarc.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 124109,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xsevenzip.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "d8da44bdcd1dfab07f1403ae19a0113238fd54620ef9b4307410097d7d8e5554",
+      "source": "XArchive/xsevenzip.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 5975,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xsquashfs.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "ca687d35573e2b57d4bf6b36cd07f1f12119b77b47ca1e20e2014be853f55a39",
+      "source": "XArchive/xsquashfs.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 14634,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xszdd.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "39ebee243a38ed88995b73326d7a4125ce2cfbc1247366b3409fc10489a4969d",
+      "source": "XArchive/xszdd.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 32353,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xtar.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "2134ce45ccd4e6a7b1bc57d494e5dcaa42f780014e5febfd9014025306d2b4a4",
+      "source": "XArchive/xtar.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 2714,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xtar_bzip2.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "ea63b9f70d7ddbad1b15cfb7b482385cea3c4f62315c4dac6acf22ffc43f1ba0",
+      "source": "XArchive/xtar_bzip2.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 2471,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xtar_compress.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "5a8289de867916e24b9324b3fd3d37e81508d9f7623c8a7e526880a3940f217a",
+      "source": "XArchive/xtar_compress.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 3366,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xtar_gz.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "b3a1d03309d77d0aae71312fa1213658976d68e284f6e413fea3e80312837e98",
+      "source": "XArchive/xtar_gz.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 2933,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xtar_lzip.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "0036d628dd53fc563c0894567d253457c25d37a65c6f874eeed1f271704d18cc",
+      "source": "XArchive/xtar_lzip.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 2917,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xtar_lzma.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "6b9f0c0ca346e51a262b57de3e381b1db2f4d78832eedaca6be4a65cf0e250e3",
+      "source": "XArchive/xtar_lzma.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 2855,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xtar_lzop.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "6c31b8f3cb0303af35abfa48fadfba99ddafbca1aede3966eefb2ba659ffe0e8",
+      "source": "XArchive/xtar_lzop.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 3049,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xtar_xz.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "9ebdac04b34a4274b94bb54a13e302f4476411a4c80d051e3aa5c9bdc9a6773b",
+      "source": "XArchive/xtar_xz.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 2914,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xtar_zstd.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "99dfd3a638a70638bb641b789d672ca54a4067a91282d5b145793a65e4c81a9f",
+      "source": "XArchive/xtar_zstd.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 10354,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xtarcompressed.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "aa4c8bf7c5bb99199c5104fc0f46ee16f7fbd3e3ca21c3cbb7c4ffd913504b49",
+      "source": "XArchive/xtarcompressed.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 28295,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xudf.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "6410a65d147be4618228860e8c54b8e7d2df1d0ae264fa5cb69e669f1ff12051",
+      "source": "XArchive/xudf.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 32164,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xwim.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "0b3873470a62561010f77209761750d8ffbe0f5c10db99cf8209392be1a87382",
+      "source": "XArchive/xwim.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 19390,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xxz.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "e6961271267a43ba706a44ae4171a6fa6688f9e3189f1c619cee9f68c506695c",
+      "source": "XArchive/xxz.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 114959,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xzip.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "f20ab74f3f919bf8db666b7f7b9e6a0206c9d087a11b4ff60fb2a395162213b7",
+      "source": "XArchive/xzip.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 19075,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xzlib.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "f56d3f9854210692a27c91c7affe791c1ec19e133959d44c3ec3fecff8f5e782",
+      "source": "XArchive/xzlib.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 15681,
+      "component": "XArchive",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XArchive/xzstd.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "56572be4586fce6838f4ad78101c424c00d207d8bd4b08d95fc348c304c20271",
+      "source": "XArchive/xzstd.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 3464,
+      "component": "XCapstone",
+      "dependency_file": "src/XCapstone_86/CMakeFiles/capstone_x86.dir/__/3rdparty/Capstone/src/MCInst.c.o.d",
+      "inclusion_reason": "../XCapstone_86/libcapstone_x86.a(cs.c.o) (MCInst_Init)",
+      "license_markers": [],
+      "linkage": "../XCapstone_86/libcapstone_x86.a(MCInst.c.o)",
+      "sha256": "8a725f623a9c1cc166e91022c3848da9c9c1ce913096fceffe099c54e6774c59",
+      "source": "XCapstone/3rdparty/Capstone/src/MCInst.c",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 3700,
+      "component": "XCapstone",
+      "dependency_file": "src/XCapstone_86/CMakeFiles/capstone_x86.dir/__/3rdparty/Capstone/src/MCRegisterInfo.c.o.d",
+      "inclusion_reason": "../XCapstone_86/libcapstone_x86.a(X86Disassembler.c.o) (MCRegisterInfo_InitMCRegisterInfo)",
+      "license_markers": [
+        "llvm-ncsa"
+      ],
+      "linkage": "../XCapstone_86/libcapstone_x86.a(MCRegisterInfo.c.o)",
+      "sha256": "88d2e53abf3904cf4d646b691813e77aa7a167c8f7b136151be2fbdddef4fa6b",
+      "source": "XCapstone/3rdparty/Capstone/src/MCRegisterInfo.c",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 3873,
+      "component": "XCapstone",
+      "dependency_file": "src/XCapstone_86/CMakeFiles/capstone_x86.dir/__/3rdparty/Capstone/src/SStream.c.o.d",
+      "inclusion_reason": "../XCapstone_86/libcapstone_x86.a(cs.c.o) (SStream_Init)",
+      "license_markers": [],
+      "linkage": "../XCapstone_86/libcapstone_x86.a(SStream.c.o)",
+      "sha256": "7723056cdea99157ffef22c56f8eb14e2f06f8dc891ae3aaff06f2449ef9fcc8",
+      "source": "XCapstone/3rdparty/Capstone/src/SStream.c",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 39982,
+      "component": "XCapstone",
+      "dependency_file": "src/XCapstone_86/CMakeFiles/capstone_x86.dir/__/3rdparty/Capstone/src/arch/X86/X86Disassembler.c.o.d",
+      "inclusion_reason": "../XCapstone_86/libcapstone_x86.a(X86Module.c.o) (X86_init)",
+      "license_markers": [
+        "llvm-ncsa"
+      ],
+      "linkage": "../XCapstone_86/libcapstone_x86.a(X86Disassembler.c.o)",
+      "sha256": "0f928ff3f91827823681f3a917e6cc73ac570f2fd55d203e24e2247a1fb39a3d",
+      "source": "XCapstone/3rdparty/Capstone/src/arch/X86/X86Disassembler.c",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 70651,
+      "component": "XCapstone",
+      "dependency_file": "src/XCapstone_86/CMakeFiles/capstone_x86.dir/__/3rdparty/Capstone/src/arch/X86/X86DisassemblerDecoder.c.o.d",
+      "inclusion_reason": "../XCapstone_86/libcapstone_x86.a(X86Disassembler.c.o) (decodeInstruction)",
+      "license_markers": [
+        "llvm-ncsa"
+      ],
+      "linkage": "../XCapstone_86/libcapstone_x86.a(X86DisassemblerDecoder.c.o)",
+      "sha256": "e5794c9f42ec6c4fe56e3aacfa2c059a020b945520cf64e22c90a994741ce766",
+      "source": "XCapstone/3rdparty/Capstone/src/arch/X86/X86DisassemblerDecoder.c",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 30720,
+      "component": "XCapstone",
+      "dependency_file": "src/XCapstone_86/CMakeFiles/capstone_x86.dir/__/3rdparty/Capstone/src/arch/X86/X86IntelInstPrinter.c.o.d",
+      "inclusion_reason": "../XCapstone_86/libcapstone_x86.a(X86Module.c.o) (X86_Intel_printInst)",
+      "license_markers": [
+        "llvm-ncsa"
+      ],
+      "linkage": "../XCapstone_86/libcapstone_x86.a(X86IntelInstPrinter.c.o)",
+      "sha256": "658618b8ff79a256e26288ae62d8dfd2dc68cb0977697ebbfb2fcc1b23556e30",
+      "source": "XCapstone/3rdparty/Capstone/src/arch/X86/X86IntelInstPrinter.c",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 65057,
+      "component": "XCapstone",
+      "dependency_file": "src/XCapstone_86/CMakeFiles/capstone_x86.dir/__/3rdparty/Capstone/src/arch/X86/X86Mapping.c.o.d",
+      "inclusion_reason": "../XCapstone_86/libcapstone_x86.a(X86Disassembler.c.o) (x86_map_sib_base)",
+      "license_markers": [],
+      "linkage": "../XCapstone_86/libcapstone_x86.a(X86Mapping.c.o)",
+      "sha256": "572535c1008cf20058bfda714fccbebd75c009209198d78f610dea1045c2889a",
+      "source": "XCapstone/3rdparty/Capstone/src/arch/X86/X86Mapping.c",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 2263,
+      "component": "XCapstone",
+      "dependency_file": "src/XCapstone_86/CMakeFiles/capstone_x86.dir/__/3rdparty/Capstone/src/arch/X86/X86Module.c.o.d",
+      "inclusion_reason": "../XCapstone_86/libcapstone_x86.a(cs.c.o) (X86_global_init)",
+      "license_markers": [],
+      "linkage": "../XCapstone_86/libcapstone_x86.a(X86Module.c.o)",
+      "sha256": "19f9bc98bcd54d84e7b5712aa645a032ecee0820ae45c716639c586dff4d7003",
+      "source": "XCapstone/3rdparty/Capstone/src/arch/X86/X86Module.c",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 41210,
+      "component": "XCapstone",
+      "dependency_file": "src/XCapstone_86/CMakeFiles/capstone_x86.dir/__/3rdparty/Capstone/src/cs.c.o.d",
+      "inclusion_reason": "CMakeFiles/diec.dir/__/__/XDisasmCore/Modules/capstone_bridge.cpp.o (cs_errno)",
+      "license_markers": [],
+      "linkage": "../XCapstone_86/libcapstone_x86.a(cs.c.o)",
+      "sha256": "623df2a5c35510a17415e675a68297b3e153deed45876460461135fe283c4528",
+      "source": "XCapstone/3rdparty/Capstone/src/cs.c",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 3401,
+      "component": "XCapstone",
+      "dependency_file": "src/XCapstone_86/CMakeFiles/capstone_x86.dir/__/3rdparty/Capstone/src/utils.c.o.d",
+      "inclusion_reason": "../XCapstone_86/libcapstone_x86.a(cs.c.o) (cs_snprintf)",
+      "license_markers": [],
+      "linkage": "../XCapstone_86/libcapstone_x86.a(utils.c.o)",
+      "sha256": "876a150a58717115222e4dfbaebceda7cb14b72edc108e47908e78ade1a7336e",
+      "source": "XCapstone/3rdparty/Capstone/src/utils.c",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 12086,
+      "component": "XCapstone",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XCapstone/xcapstone.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "9da458c516980e3d8c2df711f492226f25f866501b0cbdd95f1b129cdfc36d18",
+      "source": "XCapstone/xcapstone.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 23609,
+      "component": "XDEX",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XDEX/xandroidbinary.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "1ef0b429415e39f6c460b4ef4dad32de770533a6e54d4353f2aedfa789e49806",
+      "source": "XDEX/xandroidbinary.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 74331,
+      "component": "XDEX",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XDEX/xdex.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "414772ed321f0624ea7f18d20c91c03aab511c3854d9050160e3f3cbed434aaa",
+      "source": "XDEX/xdex.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 11163,
+      "component": "XDisasmCore",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XDisasmCore/Modules/capstone_bridge.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "6e48876f5037df54f2960dbcc81f4a9011bb4238c80b649f3680c80003a29df7",
+      "source": "XDisasmCore/Modules/capstone_bridge.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 13079,
+      "component": "XDisasmCore",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XDisasmCore/Modules/x7zip_properties.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "72e5717a61b01e7df4aac41cb7759919a67660a978fe0d660527649e0158b59b",
+      "source": "XDisasmCore/Modules/x7zip_properties.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 12949,
+      "component": "XDisasmCore",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XDisasmCore/Modules/xmacho_commands.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "e77ba535ca97f23c2ce58807dd6ccd743db6c7a7caaf275a5f3d7848f61c518c",
+      "source": "XDisasmCore/Modules/xmacho_commands.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 22127,
+      "component": "XDisasmCore",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XDisasmCore/xdisasmabstract.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "87259a6bc8acab090223caaf1e9531bc38cacddadf636956efdc07e72f1627bb",
+      "source": "XDisasmCore/xdisasmabstract.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 23623,
+      "component": "XDisasmCore",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XDisasmCore/xdisasmcore.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "e1f6addb0cf2b405f41115813c4acb22d85ba5be489304ce7fe5d943c5899af4",
+      "source": "XDisasmCore/xdisasmcore.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 10409,
+      "component": "XEntropyWidget",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XEntropyWidget/entropyprocess.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "4ef05f58dc1d52bb1fbd02cbe77bc205ec41bd8021b901ce267c29bedbcde8d8",
+      "source": "XEntropyWidget/entropyprocess.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 76738,
+      "component": "XFileInfo",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XFileInfo/xfileinfo.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "432d1f7169c9b82c4cc88ae09c50f6a58245dc246d7026ae82b52ddd40bba75e",
+      "source": "XFileInfo/xfileinfo.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 2492,
+      "component": "XFileInfo",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XFileInfo/xfileinfoitem.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "d347a1eb340879673df47e20a6df95cc3a16c5f112ae2850c3af05dc7643a728",
+      "source": "XFileInfo/xfileinfoitem.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 8257,
+      "component": "XFileInfo",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XFileInfo/xfileinfomodel.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "cbb965a4022599839bc99be4c74b8eed4645e4ac3a42609ad53d2d9db3af6e4b",
+      "source": "XFileInfo/xfileinfomodel.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 40893,
+      "component": "XFileInfo",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XFileInfo/xfileinfovalues.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "1a6f4ba08d9fc2c0b5a5c6c0df04d00f2d96899f1f2bf0489dcda5d749478deb",
+      "source": "XFileInfo/xfileinfovalues.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 8051,
+      "component": "XOptions",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XOptions/codecs/codec_cp437.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "92f8d2d39cc21d9c2dc814a47517a3b9697fcf39230056e1779e44b5622d9531",
+      "source": "XOptions/codecs/codec_cp437.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 12427,
+      "component": "XOptions",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XOptions/xcolorstring.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "90f925c6ba0aa1ddbb63633f455aab58926693535bc1ff1affb90d1bec334061",
+      "source": "XOptions/xcolorstring.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1626,
+      "component": "XOptions",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XOptions/xconsoloutput.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "1eb46e53df99cec002d7ed559fff85d9f7e81b6faa30e82904ec92a20b843b7a",
+      "source": "XOptions/xconsoloutput.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 125930,
+      "component": "XOptions",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XOptions/xoptions.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "4a6c8cc79e84a0cd830a752453610bcfbdb3503e5230203936b63ae6b741e6f4",
+      "source": "XOptions/xoptions.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 2023,
+      "component": "XOptions",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XOptions/xthreadobject.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "940865bd322a05097b84db99d0353b4254c553fac5ae591c4dc24a5aef7b24f5",
+      "source": "XOptions/xthreadobject.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 72630,
+      "component": "XPDF",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XPDF/xpdf.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "558779ca994ef747d2eae64178835889982198e1fc126fb5cb465c85b363572e",
+      "source": "XPDF/xpdf.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1809,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/amiga_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "f1fb84f4ff0141fa40533deadecdf6de93bf339b25f7700875f6c4dbe9cced18",
+      "source": "XScanEngine/modules/amiga_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 2089,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/apk_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "53e6de9648312fc00c75cdac2243003b458476745a0e8bb1f6ef804774b1c62b",
+      "source": "XScanEngine/modules/apk_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 3155,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/archive_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "a76cef7b34ba6e6f440a130333a152befa28b01d194c4da59557cde0bb11538a",
+      "source": "XScanEngine/modules/archive_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1418,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/atarist_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "e4b1bcd2673561111be0f6b9620814673741da399db8bf17297912261d4f2fa5",
+      "source": "XScanEngine/modules/atarist_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 34351,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/binary_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "2948396dc7984ea4629931e9834b48739785f5646b793304742d83260e6afca7",
+      "source": "XScanEngine/modules/binary_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1437,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/cfbf_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "7f922fddb218e5bedc040b4c48768418e5c466cccf69a330bc93a06c8c72c8a6",
+      "source": "XScanEngine/modules/cfbf_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1366,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/com_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "67fdad88a274101486b9da307ce825e583312bec7f1c0a36f5a1f306d2f343b3",
+      "source": "XScanEngine/modules/com_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 2335,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/dex_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "5e59445a138d3fa35286a6ae13e96cc2a4951229536ef1b759b6710489e89c01",
+      "source": "XScanEngine/modules/dex_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1457,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/dos16m_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "cd1adc35b6e717621763c7d60841bf699dd13435c62251fac79552cbb4d4e3c3",
+      "source": "XScanEngine/modules/dos16m_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1451,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/dos4g_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "448d14441c76e8b67aaca60c3e8fbca3fc393b121f1cc3aeedcd828d7404c4d1",
+      "source": "XScanEngine/modules/dos4g_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 5460,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/elf_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "74a506f63b65c3202132ff82a4b8e2aeef812f8891a1ae04535be8660c1ca7c9",
+      "source": "XScanEngine/modules/elf_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1379,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/image_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "96ae3b0f1dd7d8575d484bbf97d5679e9235865fa824fed5d1a2f5ee55a66649",
+      "source": "XScanEngine/modules/image_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1424,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/ipa_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "b7842f901dfd08699f970b9c90c9fca267e6154ad4711bed2288f3619efe5062",
+      "source": "XScanEngine/modules/ipa_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 2801,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/iso9660_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "0cbebbae92df536da42e81ba96c46899711afab91bbf2be7225acf3e6df720c5",
+      "source": "XScanEngine/modules/iso9660_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1819,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/jar_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "96ace731bf04277da26af0c8e321bfb5a240fbedc44a944a8c243a71777c9661",
+      "source": "XScanEngine/modules/jar_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1487,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/javaclass_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "24912162d140e6ead923efef7db56026d3d49d5262df8aadc74c8fc9cf1e6867",
+      "source": "XScanEngine/modules/javaclass_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 2152,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/jpeg_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "9354aa56ec6fc0c77c869e965d0d1f2026ea617ab6d922d3a77cdc58528a52e7",
+      "source": "XScanEngine/modules/jpeg_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1411,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/le_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "6ddaebe687f4fb18588ecb31bb9dd55d25691d755b8d85e9d3743e845847b1fa",
+      "source": "XScanEngine/modules/le_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1411,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/lx_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "b710f4a4124330d7caee3e86b7e8a74ef169c9a84b2d29c94cfef0300b5c2a80",
+      "source": "XScanEngine/modules/lx_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 3590,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/mach_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "23744a4182c9193eccbe53094e18c198dfa2040c868720a77527a13b741b65dd",
+      "source": "XScanEngine/modules/mach_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1478,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/machofat_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "7dce60970aad4e12de0ccae8d28b885b80b0cf4ff1c9869d65bef5cd56b0f99d",
+      "source": "XScanEngine/modules/machofat_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 3436,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/msdos_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "d1a733cd15d9dec93acf1c585e0a29d68c4fc75f32ea78a29bcbd281a579806e",
+      "source": "XScanEngine/modules/msdos_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1405,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/ne_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "1b148c54e651fccfbb30599f99d0e5bc3123f4c3df4de0c07dc60a3cea49b5eb",
+      "source": "XScanEngine/modules/ne_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1884,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/npm_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "4867fc3406352d2f4d2658dad5d81a55997e36595dc6575ec35703dbfc786232",
+      "source": "XScanEngine/modules/npm_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 2997,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/pdf_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "d87000b77b42d93dfb2204cc267b67c6a877b7315cdbe24f29a3da0fdf8c3fd8",
+      "source": "XScanEngine/modules/pdf_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 17333,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/pe_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "973522fd984283f4d43d24e155a5ce2e053e414d75b3c0c5749f41ff7e157ed2",
+      "source": "XScanEngine/modules/pe_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 2745,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/png_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "3c623fe084708ea7fb5f279205013d56612a14661a0412fdb3d5d350658f67f2",
+      "source": "XScanEngine/modules/png_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1594,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/pyc_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "82f3ada98813e6b65b805c4f635f056bedea36b0e93dcafaac60de2194a8ac6e",
+      "source": "XScanEngine/modules/pyc_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1428,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/rar_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "6f827b5c79b0361f3c167e33c3f19e56b0fee1494c69424662a4adae8c8b737b",
+      "source": "XScanEngine/modules/rar_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1367,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/modules/zip_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "fc4c726c5fb9b65fb16ea104bc2523adfd91d3533aa0c51c55d7cb3b0f8f8993",
+      "source": "XScanEngine/modules/zip_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 3334,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/scanitem.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "79903a8697635147da2c373e5eb91eaa449ae29c39abfd188ccbb27c78e13399",
+      "source": "XScanEngine/scanitem.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 15718,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/scanitemmodel.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "53299fa3811510ab9dd791ed2d9ac51e82289f9fbbed303eabf991d642ac6037",
+      "source": "XScanEngine/scanitemmodel.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 191204,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/xscanengine.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498",
+      "source": "XScanEngine/xscanengine.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 15045,
+      "component": "XScanEngine",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XScanEngine/xscanengineprocess.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "76c00410ee8e8ef1109a7ac5e745abed499c8f6a1c66fc33489492a196d088fb",
+      "source": "XScanEngine/xscanengineprocess.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 19667,
+      "component": "XStaticUnpacker",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XStaticUnpacker/xaspack.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [],
+      "linkage": "direct-object",
+      "sha256": "8acdf82bcf328e2219881ba62f4f1449f0192c3480262e4d0428bb9a1ca99bfc",
+      "source": "XStaticUnpacker/xaspack.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 12692,
+      "component": "XStaticUnpacker",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XStaticUnpacker/xautoit.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [],
+      "linkage": "direct-object",
+      "sha256": "2ad5fe7a507acd7d6c0c4497eb765c4eb7bd38fe89c337933c9cbb2fa67db9f1",
+      "source": "XStaticUnpacker/xautoit.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 20242,
+      "component": "XStaticUnpacker",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XStaticUnpacker/xfsg.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [],
+      "linkage": "direct-object",
+      "sha256": "f6844806546d926502a04acc51e1c546da75e7116db14651e03b19ec76dcca18",
+      "source": "XStaticUnpacker/xfsg.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 40130,
+      "component": "XStaticUnpacker",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XStaticUnpacker/xinnosetup.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [],
+      "linkage": "direct-object",
+      "sha256": "1c9499a8aed16ca48b80d4009db3f7f2fa55753c2583e8e0c58affd0872cd516",
+      "source": "XStaticUnpacker/xinnosetup.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 21137,
+      "component": "XStaticUnpacker",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XStaticUnpacker/xmew.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [],
+      "linkage": "direct-object",
+      "sha256": "46e64bf7aab1d2bf3e3b6a7bd162f21e391be6e860c33f52c6c12762b1516eab",
+      "source": "XStaticUnpacker/xmew.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 52878,
+      "component": "XStaticUnpacker",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XStaticUnpacker/xnsis.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [],
+      "linkage": "direct-object",
+      "sha256": "98d27a8e0ddc7a95e56d96fb127637d14519edca77fdaa482cf663ddaaa7f942",
+      "source": "XStaticUnpacker/xnsis.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 31580,
+      "component": "XStaticUnpacker",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XStaticUnpacker/xnspack.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [],
+      "linkage": "direct-object",
+      "sha256": "bb00b06a7d9f3471e75c025118bf964d74ae4b2e15af55f39f65abc5976b6655",
+      "source": "XStaticUnpacker/xnspack.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 24312,
+      "component": "XStaticUnpacker",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XStaticUnpacker/xpetite.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [],
+      "linkage": "direct-object",
+      "sha256": "276873fea6c8c0759c9d134ca3e5443d341e1920ebcb3f7bc0617ae2104dbda1",
+      "source": "XStaticUnpacker/xpetite.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 8348,
+      "component": "XStaticUnpacker",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XStaticUnpacker/xsfx.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [],
+      "linkage": "direct-object",
+      "sha256": "275b7a9c4d640d0efb0a24109cab477854ec09a9ecc99de66f71f28b005a2b38",
+      "source": "XStaticUnpacker/xsfx.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 100457,
+      "component": "XStaticUnpacker",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XStaticUnpacker/xupx.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [],
+      "linkage": "direct-object",
+      "sha256": "27005c3b85fe47bf3494ba6a81ff084853790bc0e1a35efab305499a6f515822",
+      "source": "XStaticUnpacker/xupx.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 11064,
+      "component": "XStaticUnpacker",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/XStaticUnpacker/xyoda.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [],
+      "linkage": "direct-object",
+      "sha256": "87fa98b0bfeb142cc2c302decdfc5baafde7a5ab155699aaa5d95f3ea826bc38",
+      "source": "XStaticUnpacker/xyoda.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 3666,
+      "component": "die_script",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/die_script/die_global_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "52d94ad9c427baa814f1766ae187680fc717eb41fde05aa24468f2ae84b28fe9",
+      "source": "die_script/die_global_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 13503,
+      "component": "die_script",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/die_script/die_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "588da8f383725795c600bfe2a91a9649bdd5cefb9bfa294379752bfa132dab67",
+      "source": "die_script/die_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 30878,
+      "component": "die_script",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/die_script/die_scriptengine.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "f9b9d69a17dc930556c7308fce46d3287d18dd9f927c91d6733ce994594fcb72",
+      "source": "die_script/die_scriptengine.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 2402,
+      "component": "die_script",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/die_script/util_script.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "53442736e3d1231ce9f48e998c0ba5c72ec18a7248cdab0887e931ee6147a1fb",
+      "source": "die_script/util_script.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 1671,
+      "component": "die_script",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/__/__/die_script/xscriptengine.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "direct-object",
+      "sha256": "1655527e65b4426527a755dbddc616fedfe3bdedfdc45f25f0e4cae86ced2fbe",
+      "source": "die_script/xscriptengine.cpp",
+      "source_kind": "upstream-source"
+    },
+    {
+      "bytes": 8281,
+      "component": "generated",
+      "dependency_file": "src/console/CMakeFiles/diec.dir/diec_autogen/mocs_compilation.cpp.o.d",
+      "inclusion_reason": null,
+      "license_markers": [],
+      "linkage": "direct-object",
+      "sha256": "bdeacea44a521f1860764e94eac834c8a6321bb9f570755165d01670ac1822bd",
+      "source": "@build/src/console/diec_autogen/mocs_compilation.cpp",
+      "source_kind": "cmake-automoc-generated"
+    }
+  ],
+  "component_lock": {
+    "path": "upstream/components.lock.toml",
+    "sha256": "9fabcaf6a0062fcae7007ea5af13a98876e8a6e08b3e2e4727fdff06d974c63c"
+  },
+  "direct_object_counts": {
+    "components": {
+      "Formats": 37,
+      "SpecAbstract": 30,
+      "XArchive": 84,
+      "XCapstone": 1,
+      "XDEX": 2,
+      "XDisasmCore": 5,
+      "XEntropyWidget": 1,
+      "XFileInfo": 4,
+      "XOptions": 5,
+      "XPDF": 1,
+      "XScanEngine": 34,
+      "XStaticUnpacker": 11,
+      "die_script": 5
+    },
+    "generated": 1,
+    "root": 2
+  },
+  "generated_automoc": {
+    "origin_components": [
+      "Formats",
+      "SpecAbstract",
+      "XArchive",
+      "XCapstone",
+      "XDEX",
+      "XDisasmCore",
+      "XEntropyWidget",
+      "XFileInfo",
+      "XOptions",
+      "XPDF",
+      "XScanEngine",
+      "XStaticUnpacker",
+      "die_script"
+    ],
+    "source": "@build/src/console/diec_autogen/mocs_compilation.cpp"
+  },
+  "generator": "tools/upstream/audit_product_source_closure.py",
+  "generator_sha256": "068fc592ef65a339bd0709d7705c5b5d909db95c4042f238ea60cdea4e12a95b",
+  "limitations": [
+    "the report covers the fixed Linux x86_64 Qt5 CMake Release diec product only",
+    "compile-source contribution is not function- or section-level runtime reachability and does not waive source attribution",
+    "component root MIT files do not override the separately documented XArchive and XCapstone bundled-code terms",
+    "license markers and source/link identities are technical evidence, not legal approval"
+  ],
+  "marker_counts": {
+    "gpl": 1,
+    "llvm-ncsa": 4,
+    "mit-permission": 212,
+    "public-domain": 3
+  },
+  "notable_license_findings": [
+    {
+      "boundary": "the source's GPL statement and missing referenced license are technical evidence; this report does not select a GPL version or provide a legal conclusion",
+      "classification": "release-legal-review-required",
+      "component": "XArchive",
+      "gpl_marker_lines": [
+        842
+      ],
+      "id": "PRODUCT-LICENSE-GAP-001",
+      "linkage": "direct-object",
+      "matching_license_paths_in_component": [],
+      "referenced_license_file": "ACC_LICENSE",
+      "source": "XArchive/Algos/xucldecoder.cpp",
+      "source_sha256": "f2f2fe4e11beaa122c2474a44c7c1c97242e9d211eacc15d0c7f3c646b2a45cf"
+    }
+  ],
+  "prior_reports": {
+    "xarchive_final_link": {
+      "path": "docs/research/data/xarchive-final-link-closure-linux.json",
+      "sha256": "c3089b94e87bb299e4a45a10725e8cd9d483e6bb8f7999c717e45c652e3d665d"
+    },
+    "xcapstone": {
+      "path": "docs/research/data/xcapstone-license-closure-linux.json",
+      "sha256": "0d992ed25c475293ce5bc2ec9167052a2ad83fb01681bc6b4a33b45f8752f893"
+    },
+    "xsimd": {
+      "path": "docs/research/data/xsimd-license-closure-linux.json",
+      "sha256": "67e06d674f070b2964ce76d82bab6c1d1385e07c347e8a29c83bf500aab75abe"
+    }
+  },
+  "relationships": {
+    "all_contributing_component_root_licenses_exist": true,
+    "automoc_contributes_one_generated_direct_object": true,
+    "automoc_origin_component_set_is_exact": true,
+    "compile_source_component_counts_are_exact": true,
+    "compile_source_marker_counts_are_exact": true,
+    "direct_object_count_is_223": true,
+    "eight_project_archives_are_linked_once": true,
+    "link_map_includes_14_project_archive_members": true,
+    "product_compile_source_count_is_237": true,
+    "project_archives_build_36_members": true,
+    "replayed_link_is_byte_identical": true,
+    "root_contributes_two_direct_objects": true,
+    "thirteen_components_contribute_220_direct_objects": true,
+    "three_prior_member_reports_are_bound": true,
+    "twenty_two_project_archive_members_are_not_included": true,
+    "xucl_is_the_only_gpl_marker_compile_source": true,
+    "xucl_references_missing_acc_license_at_line_842": true
+  },
+  "root_license_evidence": [
+    {
+      "bytes": 1085,
+      "component": "DIE-engine",
+      "dependency_file": "",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "license-evidence",
+      "sha256": "be0fe2d727cd0a754fb0b2fdc579ead8f19ef575840b4daef221be201701eaad",
+      "source": "LICENSE",
+      "source_kind": "license-text"
+    },
+    {
+      "bytes": 1085,
+      "component": "Formats",
+      "dependency_file": "",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "license-evidence",
+      "sha256": "5f1133d595966880a5c4af69f448d5cc6ebbad6989033bb2f8c2c874e861c5ca",
+      "source": "Formats/LICENSE",
+      "source_kind": "license-text"
+    },
+    {
+      "bytes": 1085,
+      "component": "SpecAbstract",
+      "dependency_file": "",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "license-evidence",
+      "sha256": "5f1133d595966880a5c4af69f448d5cc6ebbad6989033bb2f8c2c874e861c5ca",
+      "source": "SpecAbstract/LICENSE",
+      "source_kind": "license-text"
+    },
+    {
+      "bytes": 1085,
+      "component": "XArchive",
+      "dependency_file": "",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "license-evidence",
+      "sha256": "abdeb212f229d2b93a5c315763df4d7201c7d74f580ad9dc77d77dec7cbc6c69",
+      "source": "XArchive/LICENSE",
+      "source_kind": "license-text"
+    },
+    {
+      "bytes": 1085,
+      "component": "XCapstone",
+      "dependency_file": "",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "license-evidence",
+      "sha256": "abdeb212f229d2b93a5c315763df4d7201c7d74f580ad9dc77d77dec7cbc6c69",
+      "source": "XCapstone/LICENSE",
+      "source_kind": "license-text"
+    },
+    {
+      "bytes": 1085,
+      "component": "XDEX",
+      "dependency_file": "",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "license-evidence",
+      "sha256": "94248d08e0cf1d2b4b5bce907450c6d742e2fd8af93d1b837ce937e95cb29a3a",
+      "source": "XDEX/LICENSE",
+      "source_kind": "license-text"
+    },
+    {
+      "bytes": 1085,
+      "component": "XDisasmCore",
+      "dependency_file": "",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "license-evidence",
+      "sha256": "fef46fae59c09542d5edfdd0ffea6e5b33247145434f937ed8fab6027c8481bb",
+      "source": "XDisasmCore/LICENSE",
+      "source_kind": "license-text"
+    },
+    {
+      "bytes": 1085,
+      "component": "XEntropyWidget",
+      "dependency_file": "",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "license-evidence",
+      "sha256": "abdeb212f229d2b93a5c315763df4d7201c7d74f580ad9dc77d77dec7cbc6c69",
+      "source": "XEntropyWidget/LICENSE",
+      "source_kind": "license-text"
+    },
+    {
+      "bytes": 1085,
+      "component": "XFileInfo",
+      "dependency_file": "",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "license-evidence",
+      "sha256": "b15e85faef7d7294e40453fd4bf6fcb09138836312b2e61d1a17512e57e35a45",
+      "source": "XFileInfo/LICENSE",
+      "source_kind": "license-text"
+    },
+    {
+      "bytes": 1085,
+      "component": "XOptions",
+      "dependency_file": "",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "license-evidence",
+      "sha256": "94248d08e0cf1d2b4b5bce907450c6d742e2fd8af93d1b837ce937e95cb29a3a",
+      "source": "XOptions/LICENSE",
+      "source_kind": "license-text"
+    },
+    {
+      "bytes": 1085,
+      "component": "XPDF",
+      "dependency_file": "",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "license-evidence",
+      "sha256": "44fc93c0e4e0bdaff0209afeecb51e34456ad22327fbe8f226cfddc49a34290d",
+      "source": "XPDF/LICENSE",
+      "source_kind": "license-text"
+    },
+    {
+      "bytes": 1085,
+      "component": "XScanEngine",
+      "dependency_file": "",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "license-evidence",
+      "sha256": "ac4f868b0034a4047dd1394409e412a25b03013a42f75f20fb0a4f9b4692a827",
+      "source": "XScanEngine/LICENSE",
+      "source_kind": "license-text"
+    },
+    {
+      "bytes": 1085,
+      "component": "XStaticUnpacker",
+      "dependency_file": "",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "license-evidence",
+      "sha256": "abdeb212f229d2b93a5c315763df4d7201c7d74f580ad9dc77d77dec7cbc6c69",
+      "source": "XStaticUnpacker/LICENSE",
+      "source_kind": "license-text"
+    },
+    {
+      "bytes": 1085,
+      "component": "die_script",
+      "dependency_file": "",
+      "inclusion_reason": null,
+      "license_markers": [
+        "mit-permission"
+      ],
+      "linkage": "license-evidence",
+      "sha256": "abdeb212f229d2b93a5c315763df4d7201c7d74f580ad9dc77d77dec7cbc6c69",
+      "source": "die_script/LICENSE",
+      "source_kind": "license-text"
+    }
+  ],
+  "schema_version": 1,
+  "scope_classification": {
+    "build_only_targets": "XYara/YARA and XCppfilt are absent from the diec link",
+    "compiled_product_sources": 237,
+    "dynamic_system_dependencies": "separate deployment-size and runtime dependency closure",
+    "runtime_rule_assets": "separate 2268-file closure; not compile sources"
+  },
+  "source_image": {
+    "image": "diec-rust/upstream-oracle-cmake:74eaf505",
+    "image_id": "sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040",
+    "network": "none",
+    "repository_mount": "readonly",
+    "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}
