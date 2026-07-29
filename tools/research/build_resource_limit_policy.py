@@ -35,6 +35,9 @@ SOURCES = {
     "traversal_attempt": (
         "docs/design/data/traversal-attempt-budget-candidate.json"
     ),
+    "diagnostic_budget": (
+        "docs/design/data/diagnostic-budget-candidate.json"
+    ),
 }
 
 MIB = 1024 * 1024
@@ -142,12 +145,17 @@ def validate_sources(root: Path) -> dict[str, dict[str, Any]]:
             "| total archive entries considered | 4,096 |",
             "| maximum queued items | 4,096 |",
             "| maximum result nodes | 100,000 |",
+            "| maximum diagnostics | 4,096 |",
             "| maximum single expanded object/allocation | 128 MiB |",
             "| total expanded bytes | 512 MiB |",
             "| total source bytes read/mapped | 1 GiB |",
-            "depth\n   64、total entries 100,001、single object 512 MiB、"
+            "depth\n   64、total entries 100,001、queued items 131,072、"
+            "result nodes 1,048,576、",
+            "diagnostics 131,072、single object 512 MiB、"
             "total expanded 4 GiB、",
-            "total source read 8 GiB、deadline 120 s",
+            "source read 8 GiB、deadline 120 s",
+            "queued items 131,072、result nodes 1,048,576、",
+            "diagnostics 131,072",
         ),
         SOURCES["adr_scan"],
     )
@@ -191,6 +199,7 @@ def validate_sources(root: Path) -> dict[str, dict[str, Any]]:
             "pub max_single_allocation_bytes: u64",
             "pub max_nodes: u64",
             "pub max_diagnostics: u64",
+            "Modern 候选为 4,096，legacy-high 为\n131,072",
             "pub max_archive_entries: u64",
             "pub max_depth: u32",
             "pub max_queue_items: u64",
@@ -224,6 +233,7 @@ def validate_reports(root: Path) -> dict[str, Any]:
     include_graph = load_json(root / SOURCES["include_graph"])
     database_sizing = load_json(root / SOURCES["database_sizing"])
     traversal_attempt = load_json(root / SOURCES["traversal_attempt"])
+    diagnostic_budget = load_json(root / SOURCES["diagnostic_budget"])
 
     for name, report in (
         ("archive_limit", archive),
@@ -233,6 +243,7 @@ def validate_reports(root: Path) -> dict[str, Any]:
         ("include_graph", include_graph),
         ("database_sizing", database_sizing),
         ("traversal_attempt", traversal_attempt),
+        ("diagnostic_budget", diagnostic_budget),
     ):
         require(
             report.get("upstream_commit") == UPSTREAM_COMMIT,
@@ -448,6 +459,63 @@ def validate_reports(root: Path) -> dict[str, Any]:
         is True,
         "traversal attempt evidence boundary drift",
     )
+    diagnostic_profiles = diagnostic_budget.get(
+        "candidate_derivation", {}
+    ).get("profiles")
+    diagnostic_evidence = diagnostic_budget.get(
+        "upstream_evidence_boundary"
+    )
+    diagnostic_closure = diagnostic_budget.get("profile_closure")
+    require(
+        diagnostic_budget.get("rules_commit")
+        == "c2c17dfa5ea4e078ba31eab55d87430c96622fb6"
+        and diagnostic_budget.get("result")
+        == "review_candidate_not_admitted"
+        and diagnostic_profiles
+        == {
+            "modern_default": {
+                "maximum_archive_entries_considered": 4096,
+                "maximum_queued_items": 4096,
+                "maximum_result_nodes": 100_000,
+                "maximum_diagnostics": 4096,
+            },
+            "legacy_high_resource": {
+                "maximum_archive_entries_considered": 100_001,
+                "maximum_queued_items": 131_072,
+                "maximum_result_nodes": 1_048_576,
+                "maximum_diagnostics": 131_072,
+            },
+        },
+        "diagnostic budget profile drift",
+    )
+    require(
+        isinstance(diagnostic_evidence, dict)
+        and diagnostic_evidence.get("qt5_typo", {}).get("scan_count") == 4
+        and diagnostic_evidence.get("qt5_qt6_typo", {}).get(
+            "scan_count"
+        )
+        == 6
+        and diagnostic_evidence.get("qt5_qt6_typo", {}).get(
+            "diagnostic_text_equal"
+        )
+        is False
+        and isinstance(diagnostic_closure, dict)
+        and diagnostic_closure.get("field_sets_must_match") is True,
+        "diagnostic budget evidence boundary drift",
+    )
+    validate_nested_bindings(
+        root,
+        diagnostic_budget,
+        {
+            "adr",
+            "api",
+            "database_error_research",
+            "windows_database",
+            "qt5_typo",
+            "qt5_qt6_typo",
+        },
+        "diagnostic budget",
+    )
 
     return {
         "observations": {
@@ -491,8 +559,19 @@ def validate_reports(root: Path) -> dict[str, Any]:
                 "windows_complete_flat_entries": 4096,
                 "enumerate_then_reopen_toctou_observed": True,
             },
+            "diagnostic_evidence_boundary": {
+                "qt5_typo_scan_count": 4,
+                "qt5_qt6_typo_scan_count": 6,
+                "maximum_observed_lines_per_scan": 1,
+                "diagnostic_text_equal_across_qt5_qt6": False,
+                "observed_maximum_is_candidate_basis": False,
+            },
         },
         "database_profiles": database_profiles,
+        "diagnostic_profiles": diagnostic_profiles,
+        "required_scan_fields": diagnostic_closure[
+            "scan_fields_required_in_both_profiles"
+        ],
     }
 
 
@@ -501,6 +580,49 @@ def build_policy(root: Path) -> dict[str, Any]:
     validated = validate_reports(root)
     observations = validated["observations"]
     database_profiles = validated["database_profiles"]
+    diagnostic_profiles = validated["diagnostic_profiles"]
+    required_scan_fields = set(validated["required_scan_fields"])
+    modern_diagnostic = diagnostic_profiles["modern_default"]
+    legacy_diagnostic = diagnostic_profiles["legacy_high_resource"]
+    modern_scan = {
+        "wall_deadline_milliseconds": 30_000,
+        "maximum_nested_depth": 32,
+        "total_archive_entries_considered": 4096,
+        "maximum_queued_items": modern_diagnostic[
+            "maximum_queued_items"
+        ],
+        "maximum_result_nodes": modern_diagnostic[
+            "maximum_result_nodes"
+        ],
+        "maximum_diagnostics": modern_diagnostic[
+            "maximum_diagnostics"
+        ],
+        "maximum_single_expanded_object_bytes": 128 * MIB,
+        "total_expanded_bytes": 512 * MIB,
+        "total_source_bytes_read_or_mapped": GIB,
+    }
+    legacy_scan = {
+        "wall_deadline_milliseconds": 120_000,
+        "maximum_nested_depth": 64,
+        "total_archive_entries_considered": 100_001,
+        "maximum_queued_items": legacy_diagnostic[
+            "maximum_queued_items"
+        ],
+        "maximum_result_nodes": legacy_diagnostic[
+            "maximum_result_nodes"
+        ],
+        "maximum_diagnostics": legacy_diagnostic[
+            "maximum_diagnostics"
+        ],
+        "maximum_single_expanded_object_bytes": 512 * MIB,
+        "total_expanded_bytes": 4 * GIB,
+        "total_source_bytes_read_or_mapped": 8 * GIB,
+    }
+    require(
+        set(modern_scan) == required_scan_fields
+        and set(legacy_scan) == required_scan_fields,
+        "modern and legacy-high scan field sets differ",
+    )
     return {
         "schema_version": SCHEMA_VERSION,
         "evaluated_on": EVALUATED_ON,
@@ -525,16 +647,7 @@ def build_policy(root: Path) -> dict[str, Any]:
         "profiles": {
             "modern_default": {
                 "status": "review_candidate_not_admitted",
-                "scan": {
-                    "wall_deadline_milliseconds": 30_000,
-                    "maximum_nested_depth": 32,
-                    "total_archive_entries_considered": 4096,
-                    "maximum_queued_items": 4096,
-                    "maximum_result_nodes": 100_000,
-                    "maximum_single_expanded_object_bytes": 128 * MIB,
-                    "total_expanded_bytes": 512 * MIB,
-                    "total_source_bytes_read_or_mapped": GIB,
-                },
+                "scan": modern_scan,
                 "traversal": {
                     "wall_deadline_milliseconds": 30_000,
                     "maximum_directory_depth": 64,
@@ -553,14 +666,7 @@ def build_policy(root: Path) -> dict[str, Any]:
             "legacy_high_resource": {
                 "status": "review_candidate_not_admitted",
                 "default_for_any_adapter": False,
-                "scan": {
-                    "wall_deadline_milliseconds": 120_000,
-                    "maximum_nested_depth": 64,
-                    "total_archive_entries_considered": 100_001,
-                    "maximum_single_expanded_object_bytes": 512 * MIB,
-                    "total_expanded_bytes": 4 * GIB,
-                    "total_source_bytes_read_or_mapped": 8 * GIB,
-                },
+                "scan": legacy_scan,
                 "traversal": {
                     "wall_deadline_milliseconds": 120_000,
                     "maximum_directory_depth": 256,
@@ -581,10 +687,6 @@ def build_policy(root: Path) -> dict[str, Any]:
         "unresolved_required_budgets": [
             {
                 "id": "scan.maximum_input_bytes",
-                "required_by": "docs/design/api.md#8-scanlimits",
-            },
-            {
-                "id": "scan.maximum_diagnostics",
                 "required_by": "docs/design/api.md#8-scanlimits",
             },
             {

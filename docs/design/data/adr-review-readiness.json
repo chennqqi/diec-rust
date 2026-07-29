@@ -266,7 +266,8 @@
         "tools/tests/test_generate_archive_iteration_boundary_fixture.py",
         "tools/tests/test_probe_archive_iteration_boundary_harness.py",
         "tools/tests/test_generate_archive_adversarial_fixture.py",
-        "tools/tests/test_probe_archive_adversarial_harness.py"
+        "tools/tests/test_probe_archive_adversarial_harness.py",
+        "tools/tests/test_diagnostic_budget.py"
       ],
       "required_headings": [
         "## 背景",

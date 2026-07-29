@@ -1,7 +1,7 @@
 # ADR 0012：嵌套扫描采用全局有限资源预算
 
 Status: Proposed
-Last updated: 2026-07-28
+Last updated: 2026-07-30
 
 ## 背景
 
@@ -36,6 +36,7 @@ Proposed：
    | total archive entries considered | 4,096 |
    | maximum queued items | 4,096 |
    | maximum result nodes | 100,000 |
+   | maximum diagnostics | 4,096 |
    | maximum single expanded object/allocation | 128 MiB |
    | total expanded bytes | 512 MiB |
    | total source bytes read/mapped | 1 GiB |
@@ -49,10 +50,13 @@ Proposed：
    第 100,001 个 scanable-member allowance。全 scan 仍须有有限、调用方可见的
    global budget；默认不得静默升级到 aggressive ceiling。
 6. 为差分测试可提供 `LegacyHighResource` profile，但 hard ceilings 仍有限：depth
-   64、total entries 100,001、single object 512 MiB、total expanded 4 GiB、
-   total source read 8 GiB、deadline 120 s。它需要显式构造，不是 CLI、C ABI 或
+   64、total entries 100,001、queued items 131,072、result nodes 1,048,576、
+   diagnostics 131,072、single object 512 MiB、total expanded 4 GiB、total
+   source read 8 GiB、deadline 120 s。它需要显式构造，不是 CLI、C ABI 或
    library 默认。`total entries 100,001` 是全 scan budget，不改变单 container
-   只迭代前 100,000 条的 legacy policy。
+   只迭代前 100,000 条的 legacy policy。queue/diagnostic 候选是该 entry ceiling
+   向上取二次幂；node 候选是 `8 * total entries` 再向上取二次幂，为每个 work
+   item 的结构与检测结果保留独立 headroom。
 7. 在 exact upstream 行为超出 hard ceiling 时，结果分类为 `SafetyDeviation`，
    绑定 upstream/case/limit/ADR 0012 的精确 waiver；normalizer 不得隐藏差异。
 8. 到达确定性预算边界使用 `Completion::Limited` 并保留已完成的稳定前缀；外部
@@ -60,6 +64,11 @@ Proposed：
    前缀作为成功 report。
 9. checked cumulative counter、allocator reservation、decompressor output sink 和
    result arena 使用同一预算事实来源；CLI/JSON/FFI 不得各自实现或覆盖计数。
+10. `max_diagnostics` 计数 canonical typed diagnostic facts，不计 renderer 行数。
+    在复制 path/message 或构造 detail 前 reserve；失败时不创建第 `limit+1` 项，
+    停止产生新 work，并由不占 diagnostic arena slot 的 completion
+    `LimitReached` 保存 limit/requested/consumed/stage。不得静默丢弃、合并不同
+    facts，或让 legacy/canonical renderer 各自产生新的计数事实。
 
 ## 考虑过的替代方案
 
@@ -102,18 +111,20 @@ subprocess。进程隔离可作为服务部署的第二层防线，不能替代 
 - [`archive-iteration-boundary-engine-qt5.json`](../../research/data/archive-iteration-boundary-engine-qt5.json)
 - [`archive-adversarial-behavior.md`](../../research/archive-adversarial-behavior.md)
 - [`archive-adversarial-engine-qt5.json`](../../research/data/archive-adversarial-engine-qt5.json)
+- [`diagnostic-budget-candidate.json`](../data/diagnostic-budget-candidate.json)
 - [`upstream-performance-baseline.md`](../../research/upstream-performance-baseline.md)
 - `XScanEngine@dfe4a419.../xscanengine.cpp::scanProcess`
 - [`architecture.md` §11](../architecture.md#11-嵌套扫描-work-queue)
 - [`api.md` §8—10](../api.md#8-scanlimits)
 - [`risks.md` R-005](../risks.md#r-005嵌套和解压资源耗尽)
+- [`test_diagnostic_budget.py`](../../../tools/tests/test_diagnostic_budget.py)
 
 ## 验收条件
 
 - production `ScanBudget` 对每个表列预算有 `limit-1/exact/+1` unit/property tests；
 - 每个 archive backend 通过相同的 cumulative reserve API，不能先分配后记账；
-- depth、entry、single object、total expanded、queue、node 和 deadline 触发点有
-  system tests，结果包含稳定 `LimitReached` 字段；
+- depth、entry、single object、total expanded、queue、node、diagnostic 和
+  deadline 触发点有 system tests，结果包含稳定 `LimitReached` 字段；
 - 已固定的 1 MiB/843.58:1 high-ratio、CRC/deflate/offset/method 畸形上游
   corpus，以及后续 declared-size mismatch、deep chain 和扩展 malformed archive
   在 Rust sanitizer/fuzz 下无 panic、stack overflow、OOM 或 hang；

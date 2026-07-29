@@ -1,0 +1,110 @@
+{
+  "acceptance_requirements": [
+    "ADR 0012 receives explicit review disposition",
+    "limit-1/exact/+1 proves no diagnostic allocation after overflow",
+    "all parsers, rules, children, and archive backends share one counter",
+    "canonical completion preserves LimitReached without a diagnostic slot",
+    "modern and legacy-high CPU and peak-memory benchmarks pass",
+    "Rust, CLI, JSON, C, Go, and Python expose the same fact count and usage"
+  ],
+  "candidate_derivation": {
+    "legacy_high_resource": "queue and diagnostics are next_power_of_two(100,001); result nodes are next_power_of_two(8*100,001)",
+    "modern_default": "diagnostics equals the existing 4,096 work-queue ceiling",
+    "not_upstream_observed_maximum": true,
+    "profiles": {
+      "legacy_high_resource": {
+        "maximum_archive_entries_considered": 100001,
+        "maximum_diagnostics": 131072,
+        "maximum_queued_items": 131072,
+        "maximum_result_nodes": 1048576
+      },
+      "modern_default": {
+        "maximum_archive_entries_considered": 4096,
+        "maximum_diagnostics": 4096,
+        "maximum_queued_items": 4096,
+        "maximum_result_nodes": 100000
+      }
+    }
+  },
+  "diagnostic_unit": {
+    "child_work_shares_parent_counter": true,
+    "definition": "one canonical typed diagnostic fact",
+    "overflow_behavior": "do not create limit+1; stop new work; put LimitReached in completion outside the diagnostic arena",
+    "renderer_lines_or_views_do_not_count": true,
+    "reserve_before_message_path_or_detail_copy": true,
+    "silent_drop_or_fact_merge_forbidden": true
+  },
+  "evaluated_on": "2026-07-30",
+  "generator": "tools/research/build_diagnostic_budget.py",
+  "profile_closure": {
+    "field_sets_must_match": true,
+    "scan_fields_required_in_both_profiles": [
+      "wall_deadline_milliseconds",
+      "maximum_nested_depth",
+      "total_archive_entries_considered",
+      "maximum_queued_items",
+      "maximum_result_nodes",
+      "maximum_diagnostics",
+      "maximum_single_expanded_object_bytes",
+      "total_expanded_bytes",
+      "total_source_bytes_read_or_mapped"
+    ]
+  },
+  "result": "review_candidate_not_admitted",
+  "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+  "schema_version": 1,
+  "source_bindings": {
+    "adr": {
+      "path": "docs/design/decisions/0012-bounded-nested-scan-budget.md",
+      "sha256": "d47583b657f0dd710f2b9ee042775f9297d82c41146d7915c9f4bda60b94431a"
+    },
+    "api": {
+      "path": "docs/design/api.md",
+      "sha256": "c2de6e02ef83d7e1564af60c25f8ae79772e208a3c933a5094e8eb9cb63966fd"
+    },
+    "database_error_research": {
+      "path": "docs/research/database-error-behavior.md",
+      "sha256": "918baf05903b54cf95326bae62e86cfbfa0e63713ae6e5e84cfc3967d9e83b10"
+    },
+    "qt5_qt6_typo": {
+      "path": "docs/research/data/global-typo-errors-qt5-qt6.json",
+      "sha256": "59f9d28679513a939c70c3878ce8d39dcfa01e4b9006150e4b9aadb3311fba23"
+    },
+    "qt5_typo": {
+      "path": "docs/research/data/global-typo-errors-qt5.json",
+      "sha256": "cc251a16ba137644b0bb0924328c3c3a4dc1556bb8fe50785df316ab931f70be"
+    },
+    "windows_database": {
+      "path": "docs/research/data/windows-qt5-cli-database.json",
+      "sha256": "13e58a8d1b0cc4feb3998c06140e0afe7adb754cb59e5198b0e5b3079a3d5f8c"
+    }
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "upstream_evidence_boundary": {
+    "does_not_prove": [
+      "maximum diagnostics produced by arbitrary input",
+      "candidate memory or latency acceptability",
+      "renderer line count as a canonical diagnostic count"
+    ],
+    "qt5_qt6_typo": {
+      "diagnostic_text_equal": false,
+      "maximum_diagnostic_lines_per_scan": 1,
+      "minimum_diagnostic_lines_per_scan": 1,
+      "normalized_detections_equal": true,
+      "oracle_count": 3,
+      "scan_count": 6
+    },
+    "qt5_typo": {
+      "maximum_diagnostic_lines_per_scan": 1,
+      "minimum_diagnostic_lines_per_scan": 1,
+      "oracle_count": 2,
+      "scan_count": 4
+    },
+    "windows_database_matrix": {
+      "case_count": 18,
+      "deterministic": true,
+      "execution_count": 36,
+      "linux_semantic_projection_equal": true
+    }
+  }
+}

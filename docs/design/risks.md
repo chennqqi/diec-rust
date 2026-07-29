@@ -321,6 +321,12 @@ baseline 的变更都要检查本表。
   `DatabaseLimits` 候选。见
   [`database-load-sizing.md`](../research/database-load-sizing.md) 和
   [`database-load-sizing.json`](../research/data/database-load-sizing.json)。
+  固定 database-error/typo 报告又证明错误可在成功退出后追加到 stdout 并破坏
+  JSON，Qt5/Qt6 diagnostic text 也不相同；已测 case 每 scan 只有一行，不能据此
+  推断任意输入上限。未准入的
+  [`diagnostic-budget-candidate.json`](data/diagnostic-budget-candidate.json)
+  按 typed fact 而非 renderer line 计数，提出 modern 4,096、legacy-high
+  131,072，并补齐两个 scan profile 的 queue/node/diagnostic 字段闭包。
   37-case engine oracle 又确认小输入整体复制忽略实际读取数：EOF、read/seek
   error 和 sequential source 均可扫描未初始化尾部并报告成功；Qt subdevice
   chunked case 还从父设备读取 slice 后一字节。非法 range 则静默返回全零结果。
@@ -329,10 +335,13 @@ baseline 的变更都要检查本表。
 - **缓解**：checked `u64` range、allocation cap、`try_reserve`、无 panic parser；
   cache key 绑定完整内容 manifest；decode/build/publish 事务化；失败或取消不提交
   cache；unsafe 最小化；unit/property/fuzz/sanitizer/Miri。
+  diagnostic 在复制 path/message/detail 前共享 reserve，overflow 通过不占
+  diagnostic arena slot 的 completion `LimitReached` 报告，禁止静默丢弃。
 - **验证**：每个 parser 的合法/截断/畸形/边界/fuzz target 通过，历史 crash 全部
   晋升 regression；cache 每字段截断、伪造 count/length、取消时序、写失败和并发
   writer 证明无部分发布或 poisoned cache；directory/archive/embedded/cache
-  对每个 database counter 执行 `limit-1/exact/+1` 并证明 fallback 不重置预算。
+  对每个 database counter 执行 `limit-1/exact/+1` 并证明 fallback 不重置预算；
+  多错误放大 corpus 证明 diagnostic exact/+1 不产生第 `limit+1` 个分配。
 - **关闭**：这是持续风险；单个格式只有在对应证据通过后可关闭其子风险。
 
 ### R-005：嵌套和解压资源耗尽

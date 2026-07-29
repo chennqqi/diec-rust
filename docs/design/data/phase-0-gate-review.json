@@ -206,10 +206,11 @@
         "docs/research/database-load-sizing.md",
         "docs/research/data/database-load-sizing.json",
         "docs/design/data/traversal-attempt-budget-candidate.json",
+        "docs/design/data/diagnostic-budget-candidate.json",
         "docs/design/resource-limit-policy.md",
         "docs/design/data/resource-limit-policy-candidate.json"
       ],
-      "resource_limit_policy_status": "review_candidate_incomplete_and_unadmitted_with_7_unresolved_budgets",
+      "resource_limit_policy_status": "review_candidate_incomplete_and_unadmitted_with_6_unresolved_budgets",
       "closure_evidence": "reviewed benchmark identity, baseline report, and measurable latency, memory, size, and resource-limit targets"
     }
   ]

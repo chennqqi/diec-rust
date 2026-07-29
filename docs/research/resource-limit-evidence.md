@@ -24,6 +24,9 @@ Last updated: 2026-07-30
 - Linux/Windows 都完整枚举 4,096-entry flat/nested fixture，并观察到先列举后
   reopen 的 TOCTOU；报告未测 filesystem attempt 次数。ADR 0014 因此按结构模型
   提出 524,288/8,388,608 的未准入 metadata/open attempt 候选。
+- 固定 database-error 与真实 typo 报告证明 diagnostic 会追加到 stdout、破坏
+  JSON，且 Qt5/Qt6 文本不同；已测 scan 每次只有一行，不能作为最大值。
+  Diagnostics 候选按 work ceiling 提出 4,096/131,072。
 - QuickJS-NG spike 中 4 MiB heap、128 KiB stack 与 25 ms deadline 能触发受控
   失败并恢复同一 context，但这些数值是故障注入条件，不是生产默认候选。
 
@@ -41,6 +44,7 @@ Last updated: 2026-07-30
 | include graph sizing | [`data/include-graph-sizing.json`](data/include-graph-sizing.json) | 30 scope 的最大 depth 2/evaluations 30，Binary 静态 30 与动态 trace 相同 |
 | database load sizing | [`data/database-load-sizing.json`](data/database-load-sizing.json) | 完整固定 bundle 的 source/entry/path/container 观察量和非零候选；不证明 production 适用性 |
 | traversal metadata/open | [`../design/data/traversal-attempt-budget-candidate.json`](../design/data/traversal-attempt-budget-candidate.json) | 绑定 Linux/Windows 4,096-entry、cycle 与 TOCTOU 报告；明确 attempt 数不是上游实测 |
+| scan diagnostics | [`../design/data/diagnostic-budget-candidate.json`](../design/data/diagnostic-budget-candidate.json) | typed fact 计数、overflow completion、profile 字段闭包及 Qt5/Qt6 文本差异 |
 | runtime hard-stop wiring | [`data/rquickjs-rule-runtime.json`](data/rquickjs-rule-runtime.json) | heap/stack/deadline 能被 runtime 拒绝且 context 可恢复 |
 
 这些报告均固定到同一 DIE-engine commit。生成器
@@ -80,6 +84,7 @@ ADR 0004/0010/0012/0014 记录精确 `SafetyDeviation`。
 
 ```powershell
 python tools\research\build_traversal_attempt_budget.py --check
+python tools\research\build_diagnostic_budget.py --check
 python tools\research\build_resource_limit_policy.py --check
 python -m unittest discover -s tools\tests -p "test_resource_limit_policy.py"
 ```
@@ -90,8 +95,9 @@ python -m unittest discover -s tools\tests -p "test_resource_limit_policy.py"
 
 ## 剩余证据
 
-- 为 input、diagnostic、total allocation 和 script budgets 建立数值候选及
-  边界依据；
+- 为 input、total allocation 和 script budgets 建立数值候选及边界依据；
+- 对 diagnostic 候选补齐真实多错误放大 corpus、typed fact
+  `limit-1/exact/+1` 和 production memory/latency；
 - 对 traversal metadata/open 候选补齐 mock adapter `limit-1/exact/+1`、
   三平台 handle-relative system test 和 production CPU/latency；
 - 对 database load 候选补齐完整 cache overhead、ZIP64/compression ratio、

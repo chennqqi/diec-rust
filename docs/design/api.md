@@ -297,6 +297,13 @@ depth 和 integer limits 永远存在。
 [`database-load-sizing.md`](../research/database-load-sizing.md)；候选仍是
 `review_candidate_not_admitted`，不是已冻结默认。
 
+`max_diagnostics` 计数核心产生的 typed diagnostic facts，不计 CLI 文本行、
+JSON object 数或 FFI view 次数。Modern 候选为 4,096，legacy-high 为
+131,072。每项在复制 message/path/detail 前 reserve；达到上限时不静默截断，
+不创建第 `limit+1` 项，`completion` 直接携带不占 diagnostic slot 的
+`LimitReached`。child、parser、rule runtime 和 archive backend 共享该 counter，
+renderer 不得重新计数或制造事实。
+
 limits 是全 scan 累计预算。child work 不重置额度。所有触发点记录：
 
 - `LimitKind`；
@@ -315,10 +322,10 @@ profile。ADR Accepted 前这些数字是评审候选；实现不得以 `0` 或�
 [`resource-limit-policy.md`](resource-limit-policy.md) 与
 [`data/resource-limit-policy-candidate.json`](data/resource-limit-policy-candidate.json)。
 它把 ADR 0012 的 scan profile 与 ADR 0014 的 traversal profile 放入同一契约，
-同时列出 input、diagnostic、total allocation 和 script 的 7 个未定值预算；
+同时列出 input、total allocation 和 script 的 6 个未定值预算；
 include 已由全库 sizing 提出 modern 16/256 与 legacy-high 64/4096，database
 load 已有 10 个非零候选字段，traversal metadata/open 已有
-524,288/8,388,608 候选。当前结果仍为
+524,288/8,388,608 候选，diagnostics 已有 4,096/131,072 候选。当前结果仍为
 `review_candidate_incomplete`/`admitted=false`；QuickJS spike 的 4 MiB heap、
 128 KiB stack 和 25 ms deadline 不作为生产默认。
 

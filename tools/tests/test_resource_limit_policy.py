@@ -72,11 +72,27 @@ class ResourceLimitPolicyTests(unittest.TestCase):
                 "total_archive_entries_considered": 4096,
                 "maximum_queued_items": 4096,
                 "maximum_result_nodes": 100_000,
+                "maximum_diagnostics": 4096,
                 "maximum_single_expanded_object_bytes": 128 * 1024**2,
                 "total_expanded_bytes": 512 * 1024**2,
                 "total_source_bytes_read_or_mapped": 1024**3,
             },
         )
+        self.assertEqual(
+            legacy["scan"],
+            {
+                "wall_deadline_milliseconds": 120_000,
+                "maximum_nested_depth": 64,
+                "total_archive_entries_considered": 100_001,
+                "maximum_queued_items": 131_072,
+                "maximum_result_nodes": 1_048_576,
+                "maximum_diagnostics": 131_072,
+                "maximum_single_expanded_object_bytes": 512 * 1024**2,
+                "total_expanded_bytes": 4 * 1024**3,
+                "total_source_bytes_read_or_mapped": 8 * 1024**3,
+            },
+        )
+        self.assertEqual(set(modern["scan"]), set(legacy["scan"]))
         self.assertEqual(
             modern["traversal"],
             {
@@ -212,17 +228,26 @@ class ResourceLimitPolicyTests(unittest.TestCase):
                 "enumerate_then_reopen_toctou_observed": True,
             },
         )
+        self.assertEqual(
+            facts["diagnostic_evidence_boundary"],
+            {
+                "qt5_typo_scan_count": 4,
+                "qt5_qt6_typo_scan_count": 6,
+                "maximum_observed_lines_per_scan": 1,
+                "diagnostic_text_equal_across_qt5_qt6": False,
+                "observed_maximum_is_candidate_basis": False,
+            },
+        )
 
     def test_unresolved_budgets_keep_policy_unadmitted(self):
         unresolved = self.policy["unresolved_required_budgets"]
         ids = [item["id"] for item in unresolved]
-        self.assertEqual(len(ids), 7)
+        self.assertEqual(len(ids), 6)
         self.assertEqual(len(ids), len(set(ids)))
         self.assertEqual(
             set(ids),
             {
                 "scan.maximum_input_bytes",
-                "scan.maximum_diagnostics",
                 "scan.maximum_total_allocated_bytes",
                 "script.maximum_heap_bytes",
                 "script.maximum_stack_bytes",
@@ -248,19 +273,30 @@ class ResourceLimitPolicyTests(unittest.TestCase):
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(ROOT / relative, destination)
 
+            for source_name in (
+                "traversal_attempt",
+                "diagnostic_budget",
+            ):
+                nested_path = root / self.builder.SOURCES[source_name]
+                nested = json.loads(
+                    nested_path.read_text(encoding="utf-8")
+                )
+                for binding in nested["source_bindings"].values():
+                    relative = binding["path"]
+                    destination = root / relative
+                    if not destination.exists():
+                        destination.parent.mkdir(
+                            parents=True,
+                            exist_ok=True,
+                        )
+                        shutil.copy2(ROOT / relative, destination)
+
             attempt_path = (
                 root / self.builder.SOURCES["traversal_attempt"]
             )
             attempt = json.loads(
                 attempt_path.read_text(encoding="utf-8")
             )
-            for binding in attempt["source_bindings"].values():
-                relative = binding["path"]
-                destination = root / relative
-                if not destination.exists():
-                    destination.parent.mkdir(parents=True, exist_ok=True)
-                    shutil.copy2(ROOT / relative, destination)
-
             attempt["source_bindings"]["linux_path"]["sha256"] = "0" * 64
             attempt_path.write_text(
                 json.dumps(attempt, indent=2) + "\n",
@@ -324,7 +360,7 @@ class ResourceLimitPolicyTests(unittest.TestCase):
         self.assertIn("Status: In Review", design)
         self.assertIn("review_candidate_incomplete", design)
         self.assertIn("`admitted=false`", design)
-        self.assertIn("7 个明确 unresolved 项", design)
+        self.assertIn("6 个明确 unresolved 项", design)
         self.assertIn("production_default_candidate=false", research)
         self.assertIn("不是已冻结的发布", design)
         self.assertIn("不是生产默认候选", research)
@@ -344,7 +380,7 @@ class ResourceLimitPolicyTests(unittest.TestCase):
             blocker["resource_limit_policy_status"],
             (
                 "review_candidate_incomplete_and_unadmitted_"
-                "with_7_unresolved_budgets"
+                "with_6_unresolved_budgets"
             ),
         )
         self.assertEqual(
@@ -359,6 +395,7 @@ class ResourceLimitPolicyTests(unittest.TestCase):
                     "docs/design/data/"
                     "traversal-attempt-budget-candidate.json"
                 ),
+                "docs/design/data/diagnostic-budget-candidate.json",
                 "docs/design/resource-limit-policy.md",
                 (
                     "docs/design/data/"

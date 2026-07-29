@@ -46,7 +46,7 @@
     },
     "api": {
       "path": "docs/design/api.md",
-      "sha256": "e922aabeef7ce28db3ff5287e7abee14f1cbf442df11c8d975399c5234949f5d"
+      "sha256": "c2de6e02ef83d7e1564af60c25f8ae79772e208a3c933a5094e8eb9cb63966fd"
     },
     "linux_large": {
       "path": "docs/research/data/large-path-engine-qt5.json",
