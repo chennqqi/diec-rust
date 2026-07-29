@@ -874,19 +874,11 @@
       ],
       "evidence_set": "nested_scan",
       "id": "CAP-NEST-006",
-      "missing_scope": "recursive/aggressive resource context propagation",
+      "missing_scope": null,
       "name": "resource context propagation",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "direct engine options are separated from release CLI flags",
-          "count, depth, and cumulative-byte sentinel boundaries execute",
-          "context propagation, debug omission, cancellation, and resource projections are retained"
-        ],
-        "fixture": "docs/research/data/nested-corpus.json",
-        "harness": "port the archive-option, iteration, resource-context, debug, and archive-limit probes under tools/upstream/"
-      },
-      "status": "missing"
+      "observed_scope": "the four-mode manifest-resource matrix proves recursive and aggressive context propagation exactly as on Linux Qt5",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
@@ -1073,9 +1065,9 @@
   "summary": {
     "all_capabilities_accounted_for": true,
     "capability_count": 68,
-    "closure_required": 6,
-    "evidence_complete": 62,
-    "missing": 5,
+    "closure_required": 5,
+    "evidence_complete": 63,
+    "missing": 4,
     "partial": 1,
     "windows_baseline_admitted": false,
     "windows_process_execution_count": 2210,

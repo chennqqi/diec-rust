@@ -269,6 +269,10 @@ hideunknown 的可观察增量。完整输入哈希和输出见
   固定 Qt6 四模式完整 raw stdout 与 detection tree 均相同，仅每次保留已分类
   的四行 PE warning，见
   [`qt6-resource-context-runtime-evidence.md`](qt6-resource-context-runtime-evidence.md)。
+  既有 Windows `windows-qt5-cli-path-nested.json` 也已对同一样本执行四模式
+  各两轮：只有 recursive+aggressive 产生 offset 608、size 20 的
+  `Binary / Resource / Manifest` child，四个 projection 均与 Linux Qt5
+  相同，因此 Windows 行也已闭合。
 - `CAP-NEST-007`：Observed；同一 PE 的 Formats 枚举同时产生 resource/debug
   part，recursive+aggressive 只调度 Manifest resource child；枚举出的 RSDS
   bytes 在 direct `FILEPART_DEBUGDATA` context 被原样规则识别为 PDB link，
@@ -387,8 +391,8 @@ platform-missing。全部行已分类不等于 Phase 0 覆盖完成。
 
 Windows 的独立逐行审计见
 [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)：
-现有 18 份报告支持 62 complete、1 partial、5 missing。该 62 行只是 closure
-内部结论；6 个开放行关闭并经 coverage builder 接纳前，Windows 的 68 个
+现有 18 份报告支持 63 complete、1 partial、4 missing。该 63 行只是 closure
+内部结论；5 个开放行关闭并经 coverage builder 接纳前，Windows 的 68 个
 platform-missing 不变。
 
 其中

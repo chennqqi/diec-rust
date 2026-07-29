@@ -118,7 +118,7 @@ case observation。scalar、四类列表、flags、IDs 和 enums 的完整语义
 以及 BW、NPM、通用 Archive 的三个直连 harness 双轮矩阵：86 次进程执行、
 72 次 case observation 全部稳定，公开语义投影及三个完整 harness JSON 文档
 均与 Linux Qt5 相同。十八份 Windows runtime 报告累计 2,210 次执行；逐行
-审计更新为 62 complete、1 partial、5 missing，下一优先批次转为五项
+审计更新为 63 complete、1 partial、4 missing，下一优先批次转为四项
 nested-engine harness，详见
 [`windows-dispatch-behavior.md`](windows-dispatch-behavior.md)。
 上述 18 份报告由

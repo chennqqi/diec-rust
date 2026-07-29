@@ -40,18 +40,18 @@ Last updated: 2026-07-29
 
 | 分类 | 行数 |
 | --- | ---: |
-| Evidence complete | 62 |
+| Evidence complete | 63 |
 | Partial | 1 |
-| Missing | 5 |
+| Missing | 4 |
 | Total | 68 |
 
-所有行均恰好分类一次，但仍有 6 行需要 closure，因此
+所有行均恰好分类一次，但仍有 5 行需要 closure，因此
 `windows_baseline_admitted=false`。现有
 [`capability-coverage.json`](data/capability-coverage.json) 继续把 Windows
 68 行标记为 `platform_missing` 是正确的保守行为；本计划提供逐行升级路径，
 不直接改变平台接纳状态。
 
-62 个已闭合行主要来自：
+63 个已闭合行主要来自：
 
 - 26 样本的 single-target、scan option、output、entropy/info/struct；
 - help/version/show-structs；
@@ -71,6 +71,8 @@ Last updated: 2026-07-29
   result-model 边界。
 - DOS/COM/BW、Amiga Hunk/Atari ST 以及 NPM/通用 Archive 的公共或
   property-only dispatch 边界。
+- manifest resource 的 default/recursive/aggressive/combined 四模式上下文
+  传播边界。
 
 这些行仍受各自报告中已经写明的全局平台限制约束，但没有把其他能力行的缺口
 反向扩散到本行。
@@ -84,25 +86,24 @@ Last updated: 2026-07-29
 Partial 行不能计入 Windows runtime baseline。机器报告为每行保存
 `observed_scope`、`missing_scope`、`proposed_experiment` 和 evidence paths。
 
-## 4. Missing：5 行
+## 4. Missing：4 行
 
-### 4.1 Nested engine boundaries：5 行
+### 4.1 Nested engine boundaries：4 行
 
 - `CAP-NEST-003`
 - `CAP-NEST-004`
-- `CAP-NEST-006`
 - `CAP-NEST-007`
 - `CAP-NEST-009`
 
 分别需要 direct archive option、archive/resource count sentinel、
-resource-context propagation、debug-data direct control 以及 depth/cumulative
+debug-data direct control 以及 depth/cumulative
 expansion limit。它们不能由 release CLI aggressive/recursive case 替代。
 
 ## 5. 执行顺序
 
 按“每次固定构建关闭最多能力行”的原则：
 
-1. Windows nested engine harnesses：处理 5 个 missing；
+1. Windows nested engine harnesses：处理 4 个 missing；
 2. Windows path closure：最后处理 `CAP-CLI-IN-003`，其中 domain/UNC 等需要
    明确环境能力，不把无法在当前主机合法构造的 profile 写成已观察。
 

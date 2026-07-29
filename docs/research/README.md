@@ -239,7 +239,7 @@ Phase 0 计划形成：
   和平台 cache-byte 差异（Draft）。
 - [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)：
   将 18 份 Windows runtime 报告逐项映射到 68 行能力清单，当前为
-  62 complete、1 partial、5 missing（Draft）。
+  63 complete、1 partial、4 missing（Draft）。
 - [`windows-cli-option-behavior.md`](windows-cli-option-behavior.md)：
   固定 Windows verbose/test/create-test/messages 和 292-rule profiling
   顺序，保留 `image_ICNS.sg` 的精确平台移动差异（Draft）。

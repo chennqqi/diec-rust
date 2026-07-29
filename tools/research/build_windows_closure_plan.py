@@ -167,6 +167,7 @@ COMPLETE: dict[str, str] = {
     "CAP-NEST-001": "directory traversal and internal recursive-scan controls are both fixed",
     "CAP-NEST-002": "resource and overlay recursive-scan projections are fixed",
     "CAP-NEST-005": "overlay and resource recursive/aggressive gate projections are fixed",
+    "CAP-NEST-006": "the four-mode manifest-resource matrix proves recursive and aggressive context propagation exactly as on Linux Qt5",
     "CAP-NEST-008": "nested result trees are fixed across 32 CLI cases",
 }
 
@@ -188,10 +189,6 @@ MISSING: dict[str, tuple[str, str]] = {
     "CAP-NEST-004": (
         "99999/100000/100001 archive and 21/2001 resource count boundaries",
         "port the archive/resource iteration harnesses to Windows",
-    ),
-    "CAP-NEST-006": (
-        "recursive/aggressive resource context propagation",
-        "port the resource-context chain harness to Windows",
     ),
     "CAP-NEST-007": (
         "public debug-data omission plus direct positive control",
@@ -717,6 +714,62 @@ def validate_inputs(
         )
     ):
         raise ClosurePlanError("Windows result-model facts drift")
+
+    path_nested = reports[
+        "docs/research/data/windows-qt5-cli-path-nested.json"
+    ]
+    resource_modes = (
+        path_nested.get("nested", {})
+        .get("cases", {})
+        .get("pe-manifest-resource.exe", {})
+    )
+    expected_modes = {
+        "default",
+        "recursive",
+        "aggressive",
+        "recursive_aggressive",
+    }
+    if set(resource_modes) != expected_modes:
+        raise ClosurePlanError("Windows resource-context modes drift")
+    for mode, case in resource_modes.items():
+        first_tree = case.get("first_detect_tree")
+        second_tree = case.get("second_detect_tree")
+        if (
+            case.get("determinism_differences") != []
+            or case.get("linux_qt5_detect_tree_equal") is not True
+            or first_tree != second_tree
+            or case.get("first", {}).get("exit_code") != 0
+            or case.get("second", {}).get("exit_code") != 0
+            or case.get("first", {}).get("stderr_bytes") != 0
+            or case.get("second", {}).get("stderr_bytes") != 0
+        ):
+            raise ClosurePlanError(
+                f"Windows resource-context case drift: {mode}"
+            )
+    root_tree = resource_modes["default"]["first_detect_tree"]
+    for mode in ("recursive", "aggressive"):
+        if resource_modes[mode]["first_detect_tree"] != root_tree:
+            raise ClosurePlanError(
+                f"Windows resource context leaks in {mode}"
+            )
+    combined_tree = resource_modes["recursive_aggressive"][
+        "first_detect_tree"
+    ]
+    try:
+        resource_child = combined_tree[0]["values"][1]
+    except (IndexError, KeyError, TypeError) as error:
+        raise ClosurePlanError(
+            "Windows resource-context child is missing"
+        ) from error
+    if (
+        resource_child.get("filetype") != "Binary"
+        or resource_child.get("parentfilepart") != "Resource"
+        or resource_child.get("offset") != "608"
+        or resource_child.get("size") != "20"
+        or resource_child.get("values")
+        != [{"name": "Manifest", "type": "format", "version": ""}]
+    ):
+        raise ClosurePlanError("Windows resource-context child drift")
 
     dispatch = reports[
         "docs/research/data/dispatch-engine-windows-qt5.json"
