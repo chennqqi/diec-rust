@@ -65,7 +65,7 @@ pub struct Database { /* immutable, private */ }
 pub struct Scanner { /* reusable, !Sync until proven otherwise */ }
 
 impl DatabaseBuilder {
-    pub fn new() -> Self;
+    pub fn new(limits: DatabaseLimits) -> Result<Self, DatabaseError>;
     pub fn add_layer(&mut self, layer: DatabaseLayer) -> Result<&mut Self, DatabaseError>;
     pub fn build(self) -> Result<Database, DatabaseError>;
 }
@@ -261,13 +261,41 @@ pub struct ScanLimits {
 }
 ```
 
+数据库加载在创建 scanner 前也处理不可信目录、archive、embedded bundle 或
+cache，因此使用独立、非零的累计预算：
+
+```rust
+pub struct DatabaseLimits {
+    pub max_sources: u32,
+    pub max_entries: u64,
+    pub max_single_entry_bytes: u64,
+    pub max_total_entry_bytes: u64,
+    pub max_single_container_bytes: u64,
+    pub max_total_container_bytes: u64,
+    pub max_single_logical_path_bytes: u32,
+    pub max_total_logical_path_bytes: u64,
+    pub max_cache_bytes: u64,
+    pub max_cache_records: u64,
+}
+```
+
+`logical_path` 是相对单个 database source 的 UTF-8 规则路径，不包含调用方提供
+的 native source root；后者仍受 path/traversal 契约约束。directory、ZIP、
+embedded、cache hit 和 fallback 必须共享同一 `DatabaseBudget`，fallback 不得
+重置 consumed。container、entry count/path/bytes 都在读取、分配或 materialize
+前 reserve；cache decode、database build 和 publish 事务化。builder 构造时
+校验并持有 `DatabaseLimits`，任何 layer 或 fallback 都不能替换/放宽它。
+
 每个字段有非零安全 hard maximum；调用方可降低，不能越过编译/发布策略上限。
 `Duration::ZERO` 在 Rust API 中不表示“无限”，而表示使用 project default。
 需要禁用某个 soft deadline 时使用显式 enum，而不是魔法值；hard allocation、
 depth 和 integer limits 永远存在。
 
 `ScriptLimits` 至少控制 heap、stack、instruction/fuel 和 runtime deadline。
-数据库 load 也有独立 `DatabaseLimits`，防止在 scan 前耗尽资源。
+数据库 load 的独立 `DatabaseLimits` 防止在 scan 前耗尽资源。固定三层 bundle
+的可重复观察与 modern/legacy-high 候选见
+[`database-load-sizing.md`](../research/database-load-sizing.md)；候选仍是
+`review_candidate_not_admitted`，不是已冻结默认。
 
 limits 是全 scan 累计预算。child work 不重置额度。所有触发点记录：
 
@@ -287,9 +315,9 @@ profile。ADR Accepted 前这些数字是评审候选；实现不得以 `0` 或�
 [`resource-limit-policy.md`](resource-limit-policy.md) 与
 [`data/resource-limit-policy-candidate.json`](data/resource-limit-policy-candidate.json)。
 它把 ADR 0012 的 scan profile 与 ADR 0014 的 traversal profile 放入同一契约，
-同时列出 input、diagnostic、total allocation、metadata/open、script 和
-database 的 9 个未定值预算；include 已由全库 sizing 提出 modern 16/256 与
-legacy-high 64/4096。当前结果仍为
+同时列出 input、diagnostic、total allocation、metadata/open 和 script 的
+8 个未定值预算；include 已由全库 sizing 提出 modern 16/256 与 legacy-high
+64/4096，database load 已有 10 个非零候选字段。当前结果仍为
 `review_candidate_incomplete`/`admitted=false`；QuickJS spike 的 4 MiB heap、
 128 KiB stack 和 25 ms deadline 不作为生产默认。
 

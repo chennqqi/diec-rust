@@ -23,6 +23,20 @@
   },
   "profiles": {
     "legacy_high_resource": {
+      "database": {
+        "default_for_any_adapter": false,
+        "maximum_cache_bytes": 536870912,
+        "maximum_cache_records": 262144,
+        "maximum_entries": 262144,
+        "maximum_single_container_bytes": 268435456,
+        "maximum_single_entry_bytes": 67108864,
+        "maximum_single_logical_path_bytes": 4096,
+        "maximum_sources": 256,
+        "maximum_total_container_bytes": 268435456,
+        "maximum_total_entry_bytes": 268435456,
+        "maximum_total_logical_path_bytes": 4194304,
+        "status": "review_candidate_not_admitted"
+      },
       "default_for_any_adapter": false,
       "include": {
         "maximum_active_depth": 64,
@@ -47,6 +61,19 @@
       }
     },
     "modern_default": {
+      "database": {
+        "maximum_cache_bytes": 67108864,
+        "maximum_cache_records": 32768,
+        "maximum_entries": 32768,
+        "maximum_single_container_bytes": 33554432,
+        "maximum_single_entry_bytes": 8388608,
+        "maximum_single_logical_path_bytes": 512,
+        "maximum_sources": 32,
+        "maximum_total_container_bytes": 33554432,
+        "maximum_total_entry_bytes": 33554432,
+        "maximum_total_logical_path_bytes": 524288,
+        "status": "review_candidate_not_admitted"
+      },
       "include": {
         "maximum_active_depth": 16,
         "maximum_total_evaluations": 256,
@@ -89,7 +116,7 @@
     },
     "api": {
       "path": "docs/design/api.md",
-      "sha256": "27e0dba90cc7daa01bf541303f126016c0591bdb973676205c1afe6369c43eb8"
+      "sha256": "9294ef7ba9ff4447a0001d72c8b7f7fb23a58916086d65c43e06cb86a6ecf766"
     },
     "archive_iteration": {
       "path": "docs/research/data/archive-iteration-boundary-engine-qt5.json",
@@ -98,6 +125,10 @@
     "archive_limit": {
       "path": "docs/research/data/archive-limit-engine-qt5.json",
       "sha256": "e4786dcc578fb0714c86f71955161f981a06be26aefe663281d74202f5372ecd"
+    },
+    "database_sizing": {
+      "path": "docs/research/data/database-load-sizing.json",
+      "sha256": "261025baf6d5500030b746f4c535e12cf0904dedad8821f7ba5bec557ba9ae1f"
     },
     "include_graph": {
       "path": "docs/research/data/include-graph-sizing.json",
@@ -144,10 +175,6 @@
     {
       "id": "script.runtime_deadline",
       "required_by": "docs/design/api.md#8-scanlimits"
-    },
-    {
-      "id": "database.all_load_limits",
-      "required_by": "docs/design/api.md#8-scanlimits"
     }
   ],
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
@@ -155,6 +182,13 @@
     "archive_depth_maximum_tested": 64,
     "archive_expanded_bytes_maximum_tested": 33554546,
     "archive_has_no_independent_depth_or_total_limit": true,
+    "fixed_database_bundle": {
+      "entry_count": 2268,
+      "maximum_single_entry_bytes": 603640,
+      "source_count": 3,
+      "total_container_bytes": 3201508,
+      "total_entry_bytes": 2909316
+    },
     "fixed_rule_include_graph": {
       "binary_dynamic_trace_matches": true,
       "literal_call_count": 56,

@@ -18,6 +18,9 @@ Last updated: 2026-07-30
 - aggressive archive 循环的第 100000 条 record 可达，第 100001 条不可达。
 - 固定全库 2,235 个程序文件的 include 图为 56 个 literal 调用、0 缺失/动态/环；
   最大 active depth 2、每 scope 最大传递 evaluations 30。
+- 固定三层 database bundle 为 2,268 entries、2,909,316 entry bytes；无
+  extra/comment 的规范 `ZIP_STORED` 模型合计 3,201,508 bytes。8×/64× sizing
+  已形成未准入的 database load 候选。
 - QuickJS-NG spike 中 4 MiB heap、128 KiB stack 与 25 ms deadline 能触发受控
   失败并恢复同一 context，但这些数值是故障注入条件，不是生产默认候选。
 
@@ -33,9 +36,10 @@ Last updated: 2026-07-30
 | aggressive archive record | [`data/archive-iteration-boundary-engine-qt5.json`](data/archive-iteration-boundary-engine-qt5.json) | ordinal 100000 可达，100001 不可达 |
 | PE resource child count | [`data/scan-option-boundaries-linux-qt5.json`](data/scan-option-boundaries-linux-qt5.json) | normal 21、aggressive 2001 为 inclusive 边界 |
 | include graph sizing | [`data/include-graph-sizing.json`](data/include-graph-sizing.json) | 30 scope 的最大 depth 2/evaluations 30，Binary 静态 30 与动态 trace 相同 |
+| database load sizing | [`data/database-load-sizing.json`](data/database-load-sizing.json) | 完整固定 bundle 的 source/entry/path/container 观察量和非零候选；不证明 production 适用性 |
 | runtime hard-stop wiring | [`data/rquickjs-rule-runtime.json`](data/rquickjs-rule-runtime.json) | heap/stack/deadline 能被 runtime 拒绝且 context 可恢复 |
 
-四份报告均固定到同一 DIE-engine commit。生成器
+这些报告均固定到同一 DIE-engine commit。生成器
 [`build_resource_limit_policy.py`](../../tools/research/build_resource_limit_policy.py)
 会严格验证 commit、关键断言、临界 case 和文件 SHA-256；任一证据漂移都会拒绝
 重新生成候选策略。
@@ -81,8 +85,10 @@ python -m unittest discover -s tools\tests -p "test_resource_limit_policy.py"
 
 ## 剩余证据
 
-- 为 input、diagnostic、total allocation、metadata/open attempts、script 和
-  database budgets 建立数值候选及边界依据；
+- 为 input、diagnostic、total allocation、metadata/open attempts 和 script
+  budgets 建立数值候选及边界依据；
+- 对 database load 候选补齐完整 cache overhead、ZIP64/compression ratio、
+  `limit-1/exact/+1` 和 production CPU/peak-memory；
 - 对 include 16/256 与 64/4096 候选补齐 dynamic/custom database、
   `limit-1/exact/+1` 和 production CPU/peak-memory；
 - 在 production `ScanBudget`/`TraversalBudget`/runtime adapter 出现后执行每项

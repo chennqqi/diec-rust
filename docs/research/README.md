@@ -298,6 +298,8 @@ Phase 0 计划形成：
 - [`cli-option-behavior.md`](cli-option-behavior.md)：verbose/messages/profiling channel 与 test/create test 遗留入口行为（Draft）。
 - [`database-error-behavior.md`](database-error-behavior.md)：数据库缺失/损坏、规则错误和不可读输入（Draft）。
 - [`database-archive-cache.md`](database-archive-cache.md)：ZIP 规则数据库边界、发布 CLI cache 可达性，以及 engine cache stale/corrupt/cancel 行为（Draft）。
+- [`database-load-sizing.md`](database-load-sizing.md)：固定三层规则树、规范
+  `ZIP_STORED` 尺寸及 directory/archive/cache 共用资源上限候选（In Review）。
 - [`windows-database-archive-behavior.md`](windows-database-archive-behavior.md)：
   原生 Windows Qt5 的 17-case ZIP database 双轮差分、受限跨平台规范化和
   与 engine-only cache 证据的 reachability 边界（Draft）。
@@ -509,6 +511,9 @@ Phase 0 计划形成：
 - [`data/database-cache-engine-qt5.json`](data/database-cache-engine-qt5.json)：
   固定 Qt5 engine harness 的 cache miss/hit/stale、header/record corruption、
   cancel、write/permission failure 和 8-writer concurrency 十九状态原始报告。
+- [`data/database-load-sizing.json`](data/database-load-sizing.json)：完整固定
+  三层规则树的文件/path/container 观察量、8×/64× 候选 profile 和行为报告
+  hash bindings。
 - [`data/database-cache-engine-windows-qt5.json`](data/database-cache-engine-windows-qt5.json)：
   原生 Windows Qt5 的相同十九状态、两轮 raw stream hash、DACL 权限投影及
   Linux Qt5 cache-size 对照。

@@ -17,6 +17,7 @@ Last updated: 2026-07-30
 - [ADR 0010](decisions/0010-bounded-include-graph.md)；
 - [ADR 0012](decisions/0012-bounded-nested-scan-budget.md)；
 - [ADR 0014](decisions/0014-bounded-path-expansion.md)；
+- [数据库加载规模](../research/database-load-sizing.md)；
 - [`api.md` 的 `ScanLimits`](api.md#8-scanlimits)。
 
 ## 2. 共同不变量
@@ -68,7 +69,26 @@ Last updated: 2026-07-30
 `30 × 8 = 240` 向上取 2 次幂。证据见
 [`include-graph-sizing.md`](../research/include-graph-sizing.md)。
 
-这些值来自 ADR 0012/0014 的 Proposed 表，不是从“上游最大已测值”机械推导。
+### Database load
+
+| Counter | 候选值 |
+| --- | ---: |
+| maximum sources | 32 |
+| maximum entries/cache records | 32,768 |
+| maximum single entry | 8,388,608 bytes |
+| maximum total entry bytes | 33,554,432 bytes |
+| maximum single/total container | 33,554,432 bytes |
+| maximum single logical path | 512 bytes |
+| maximum total logical path bytes | 524,288 bytes |
+| maximum cache bytes | 67,108,864 bytes |
+
+固定 bundle 有 3 个 source、2,268 个文件、2,909,316 bytes；规范
+`ZIP_STORED` 三层合计 3,201,508 bytes。候选使用观察值 8× 后向上取二次幂，
+cache bytes 再保留一倍 record metadata 空间。该推导和 archive/cache 行为绑定
+见 [`database-load-sizing.md`](../research/database-load-sizing.md)。
+
+Scan/traversal 值来自 ADR 0012/0014 的 Proposed 表；database 值来自固定
+bundle sizing。两类都只是评审候选。
 
 ## 4. Legacy-high 候选
 
@@ -103,13 +123,26 @@ library 默认。
 | maximum active include depth | 64 |
 | maximum total include evaluations | 4,096 |
 
+### Database load
+
+| Counter | 候选值 |
+| --- | ---: |
+| maximum sources | 256 |
+| maximum entries/cache records | 262,144 |
+| maximum single entry | 67,108,864 bytes |
+| maximum total entry bytes | 268,435,456 bytes |
+| maximum single/total container | 268,435,456 bytes |
+| maximum single logical path | 4,096 bytes |
+| maximum total logical path bytes | 4,194,304 bytes |
+| maximum cache bytes | 536,870,912 bytes |
+
 profile 的 global archive-entry budget 不改变固定 upstream 的局部兼容语义：
 normal resource child inclusive 边界为 21，aggressive resource child 为 2001；
 aggressive archive 只让 ordinal 100000 可达，ordinal 100001 不可达。
 
 ## 5. 尚未定值的必需预算
 
-当前策略有 9 个明确 unresolved 项，因此不得 admitted：
+当前策略有 8 个明确 unresolved 项，因此不得 admitted：
 
 1. root `maximum_input_bytes`；
 2. `maximum_diagnostics`；
@@ -118,13 +151,14 @@ aggressive archive 只让 ordinal 100000 可达，ordinal 100001 不可达。
 5. script maximum heap bytes；
 6. script maximum stack bytes；
 7. script maximum instruction/fuel；
-8. script runtime deadline；
-9. database load 的完整 limits。
+8. script runtime deadline。
 
 QuickJS spike 的 4 MiB heap、128 KiB stack 和 25 ms deadline 只在机器契约的
 `runtime_spike_only` 中保存；它们不能填充第 5—8 项。include 两项已有
 16/256 与 64/4096 候选，但仍需 ADR 0010 评审、dynamic/custom database 和
-production 边界测试。
+production 边界测试。database load 的 10 个字段已有非零候选，但仍保持
+`review_candidate_not_admitted`，并需要完整 cache overhead、ZIP64/compression
+ratio 和跨平台 benchmark。
 
 ## 6. 统一计数语义
 
@@ -171,7 +205,7 @@ In Review，候选仍不得 admitted。
 ## 8. 接受条件
 
 - ADR 0010、0012、0014 获得明确 review disposition；
-- 9 个 unresolved 项都有非零候选与证据；
+- 8 个 unresolved 项都有非零候选与证据；
 - 每个 production counter 有 `limit-1/exact/+1`；
 - 所有 archive backend 使用同一 reserve API；
 - modern/legacy-high 的 CPU 和 peak-memory benchmark 通过；

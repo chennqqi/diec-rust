@@ -1,0 +1,176 @@
+{
+  "candidate_derivation": {
+    "legacy_high_resource": "next_power_of_two(observed * 64); cache bytes are twice the resulting total-entry ceiling",
+    "modern_default": "next_power_of_two(observed * 8); cache bytes are twice the resulting total-entry ceiling for record metadata",
+    "not_proven": [
+      "production CPU or peak-memory acceptability",
+      "maximum future upstream or user database size",
+      "ZIP extra fields, comments, ZIP64, or compression ratio",
+      "serialized cache overhead for the complete fixed bundle"
+    ]
+  },
+  "evaluated_on": "2026-07-30",
+  "generator": "tools/rules/analyze_database_load_sizing.py",
+  "measurement_contract": {
+    "canonical_archive": "ZIP_STORED; one local and central record per file; no extra fields, comments, data descriptors, or ZIP64",
+    "canonical_archive_size_formula": "sum(file_bytes + 76 + 2*utf8_path_bytes) + 22",
+    "database_order": [
+      "db",
+      "db_extra",
+      "db_custom"
+    ],
+    "logical_path": "UTF-8 path relative to one database source",
+    "program_file": "case-insensitive .sg suffix or no suffix",
+    "symlinks": "rejected"
+  },
+  "observed_fixed_bundle": {
+    "entry_count": 2268,
+    "layers": [
+      {
+        "byte_count": 2832469,
+        "canonical_stored_zip_bytes": 3105701,
+        "database": "db",
+        "extension_counts": {
+          ".ini": 1,
+          ".json": 1,
+          ".png": 22,
+          ".sg": 2037,
+          ".txt": 3,
+          "<none>": 60
+        },
+        "file_count": 2124,
+        "largest_file": {
+          "bytes": 603640,
+          "path": "Binary/audio.1.sg",
+          "program": true
+        },
+        "longest_path": {
+          "path": "PE/installer_Nullsoft_Scriptable_Install_System.1.sg",
+          "utf8_bytes": 52
+        },
+        "maximum_components": 3,
+        "program_byte_count": 2826734,
+        "program_file_count": 2097,
+        "total_path_bytes": 55893
+      },
+      {
+        "byte_count": 76651,
+        "canonical_stored_zip_bytes": 95361,
+        "database": "db_extra",
+        "extension_counts": {
+          ".ini": 1,
+          ".json": 1,
+          ".sg": 138,
+          ".txt": 2
+        },
+        "file_count": 142,
+        "largest_file": {
+          "bytes": 8601,
+          "path": "PE/compiler_EP.MSVC.4.sg",
+          "program": true
+        },
+        "longest_path": {
+          "path": "PE/protector_ID_Application_Protector_NoNamePacker.2.sg",
+          "utf8_bytes": 55
+        },
+        "maximum_components": 2,
+        "program_byte_count": 76147,
+        "program_file_count": 138,
+        "total_path_bytes": 3948
+      },
+      {
+        "byte_count": 196,
+        "canonical_stored_zip_bytes": 446,
+        "database": "db_custom",
+        "extension_counts": {
+          ".json": 1,
+          ".txt": 1
+        },
+        "file_count": 2,
+        "largest_file": {
+          "bytes": 130,
+          "path": ".vscode/about.txt",
+          "program": false
+        },
+        "longest_path": {
+          "path": ".vscode/settings.json",
+          "utf8_bytes": 21
+        },
+        "maximum_components": 2,
+        "program_byte_count": 0,
+        "program_file_count": 0,
+        "total_path_bytes": 38
+      }
+    ],
+    "maximum_bundle_relative_path_bytes": 64,
+    "maximum_path_components": 3,
+    "maximum_single_container_bytes": 3105701,
+    "maximum_single_entry_bytes": 603640,
+    "maximum_single_logical_path_bytes": 55,
+    "program_entry_bytes": 2902881,
+    "program_entry_count": 2235,
+    "source_count": 3,
+    "total_container_bytes": 3201508,
+    "total_entry_bytes": 2909316,
+    "total_logical_path_bytes": 59879
+  },
+  "profiles": {
+    "legacy_high_resource": {
+      "default_for_any_adapter": false,
+      "maximum_cache_bytes": 536870912,
+      "maximum_cache_records": 262144,
+      "maximum_entries": 262144,
+      "maximum_single_container_bytes": 268435456,
+      "maximum_single_entry_bytes": 67108864,
+      "maximum_single_logical_path_bytes": 4096,
+      "maximum_sources": 256,
+      "maximum_total_container_bytes": 268435456,
+      "maximum_total_entry_bytes": 268435456,
+      "maximum_total_logical_path_bytes": 4194304,
+      "status": "review_candidate_not_admitted"
+    },
+    "modern_default": {
+      "maximum_cache_bytes": 67108864,
+      "maximum_cache_records": 32768,
+      "maximum_entries": 32768,
+      "maximum_single_container_bytes": 33554432,
+      "maximum_single_entry_bytes": 8388608,
+      "maximum_single_logical_path_bytes": 512,
+      "maximum_sources": 32,
+      "maximum_total_container_bytes": 33554432,
+      "maximum_total_entry_bytes": 33554432,
+      "maximum_total_logical_path_bytes": 524288,
+      "status": "review_candidate_not_admitted"
+    }
+  },
+  "required_loader_invariants": [
+    "reserve container bytes before reading an archive or cache",
+    "reserve entry count and logical path bytes before materializing",
+    "reserve declared and actual entry bytes before allocation",
+    "directory, archive, embedded, cache-hit, and fallback paths share limits",
+    "decode, database build, and cache publish are transactional",
+    "unknown syntax and malformed data produce explicit diagnostics"
+  ],
+  "result": "review_candidate_not_admitted",
+  "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+  "schema_version": 1,
+  "source_bindings": {
+    "archive_behavior": {
+      "path": "docs/research/data/database-archive-linux-qt5.json",
+      "sha256": "fca0dc355c5e12bfd955317534c369a123587df3f475615865225caced9be0ac"
+    },
+    "cache_behavior": {
+      "path": "docs/research/data/database-cache-engine-qt5.json",
+      "sha256": "a04b1ca26a2c51fc5801ecdbdea79dd6e2bd7f330007b8c70620bd09555c5fc0"
+    },
+    "layer_behavior": {
+      "path": "docs/research/data/database-layers-engine-qt5.json",
+      "sha256": "a320ca559de2dab7a4e163af17059870003df25ed9647b0716050cacfaa83c3e"
+    },
+    "rule_assets": {
+      "path": "docs/research/data/runtime-rule-assets-license.json",
+      "sha256": "c1d1fe07ccdd0ff74a4428372e9c18b4f4dbda2f4a1dd0e3082b7702d8370dbb"
+    }
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

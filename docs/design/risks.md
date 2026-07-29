@@ -315,6 +315,12 @@ baseline 的变更都要检查本表。
   被缓存为空 database，而不可读 ZIP 静默失败；8 个同输入并发 writer 的观察
   结果有效，但源码 publish 无锁、非原子。机器证据见
   [`database-cache-engine-qt5.json`](../research/data/database-cache-engine-qt5.json)。
+  固定三层规则树现另有完整 sizing：2,268 entries、2,909,316 entry bytes、
+  603,640-byte 最大 entry，以及无 extra/comment 的规范 `ZIP_STORED`
+  3,201,508-byte 合计容器模型；8×/64× profile 已形成非零但未准入的
+  `DatabaseLimits` 候选。见
+  [`database-load-sizing.md`](../research/database-load-sizing.md) 和
+  [`database-load-sizing.json`](../research/data/database-load-sizing.json)。
   37-case engine oracle 又确认小输入整体复制忽略实际读取数：EOF、read/seek
   error 和 sequential source 均可扫描未初始化尾部并报告成功；Qt subdevice
   chunked case 还从父设备读取 slice 后一字节。非法 range 则静默返回全零结果。
@@ -325,7 +331,8 @@ baseline 的变更都要检查本表。
   cache；unsafe 最小化；unit/property/fuzz/sanitizer/Miri。
 - **验证**：每个 parser 的合法/截断/畸形/边界/fuzz target 通过，历史 crash 全部
   晋升 regression；cache 每字段截断、伪造 count/length、取消时序、写失败和并发
-  writer 证明无部分发布或 poisoned cache。
+  writer 证明无部分发布或 poisoned cache；directory/archive/embedded/cache
+  对每个 database counter 执行 `limit-1/exact/+1` 并证明 fallback 不重置预算。
 - **关闭**：这是持续风险；单个格式只有在对应证据通过后可关闭其子风险。
 
 ### R-005：嵌套和解压资源耗尽

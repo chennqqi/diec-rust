@@ -96,6 +96,39 @@ class ResourceLimitPolicyTests(unittest.TestCase):
             },
         )
         self.assertEqual(
+            modern["database"],
+            {
+                "status": "review_candidate_not_admitted",
+                "maximum_sources": 32,
+                "maximum_entries": 32_768,
+                "maximum_single_entry_bytes": 8 * 1024**2,
+                "maximum_total_entry_bytes": 32 * 1024**2,
+                "maximum_single_container_bytes": 32 * 1024**2,
+                "maximum_total_container_bytes": 32 * 1024**2,
+                "maximum_single_logical_path_bytes": 512,
+                "maximum_total_logical_path_bytes": 512 * 1024,
+                "maximum_cache_bytes": 64 * 1024**2,
+                "maximum_cache_records": 32_768,
+            },
+        )
+        self.assertEqual(
+            legacy["database"],
+            {
+                "status": "review_candidate_not_admitted",
+                "default_for_any_adapter": False,
+                "maximum_sources": 256,
+                "maximum_entries": 262_144,
+                "maximum_single_entry_bytes": 64 * 1024**2,
+                "maximum_total_entry_bytes": 256 * 1024**2,
+                "maximum_single_container_bytes": 256 * 1024**2,
+                "maximum_total_container_bytes": 256 * 1024**2,
+                "maximum_single_logical_path_bytes": 4096,
+                "maximum_total_logical_path_bytes": 4 * 1024**2,
+                "maximum_cache_bytes": 512 * 1024**2,
+                "maximum_cache_records": 262_144,
+            },
+        )
+        self.assertEqual(
             legacy["include"],
             {
                 "maximum_active_depth": 64,
@@ -159,11 +192,21 @@ class ResourceLimitPolicyTests(unittest.TestCase):
                 "binary_dynamic_trace_matches": True,
             },
         )
+        self.assertEqual(
+            facts["fixed_database_bundle"],
+            {
+                "source_count": 3,
+                "entry_count": 2268,
+                "total_entry_bytes": 2_909_316,
+                "maximum_single_entry_bytes": 603_640,
+                "total_container_bytes": 3_201_508,
+            },
+        )
 
     def test_unresolved_budgets_keep_policy_unadmitted(self):
         unresolved = self.policy["unresolved_required_budgets"]
         ids = [item["id"] for item in unresolved]
-        self.assertEqual(len(ids), 9)
+        self.assertEqual(len(ids), 8)
         self.assertEqual(len(ids), len(set(ids)))
         self.assertEqual(
             set(ids),
@@ -176,7 +219,6 @@ class ResourceLimitPolicyTests(unittest.TestCase):
                 "script.maximum_stack_bytes",
                 "script.maximum_instruction_or_fuel",
                 "script.runtime_deadline",
-                "database.all_load_limits",
             },
         )
         self.assertEqual(
@@ -245,7 +287,7 @@ class ResourceLimitPolicyTests(unittest.TestCase):
         self.assertIn("Status: In Review", design)
         self.assertIn("review_candidate_incomplete", design)
         self.assertIn("`admitted=false`", design)
-        self.assertIn("9 个明确 unresolved 项", design)
+        self.assertIn("8 个明确 unresolved 项", design)
         self.assertIn("production_default_candidate=false", research)
         self.assertIn("不是已冻结的发布", design)
         self.assertIn("不是生产默认候选", research)
@@ -265,7 +307,7 @@ class ResourceLimitPolicyTests(unittest.TestCase):
             blocker["resource_limit_policy_status"],
             (
                 "review_candidate_incomplete_and_unadmitted_"
-                "with_9_unresolved_budgets"
+                "with_8_unresolved_budgets"
             ),
         )
         self.assertEqual(
@@ -274,6 +316,8 @@ class ResourceLimitPolicyTests(unittest.TestCase):
                 "docs/research/resource-limit-evidence.md",
                 "docs/research/include-graph-sizing.md",
                 "docs/research/data/include-graph-sizing.json",
+                "docs/research/database-load-sizing.md",
+                "docs/research/data/database-load-sizing.json",
                 "docs/design/resource-limit-policy.md",
                 (
                     "docs/design/data/"

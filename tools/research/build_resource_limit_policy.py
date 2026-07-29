@@ -29,6 +29,9 @@ SOURCES = {
     ),
     "runtime_spike": "docs/research/data/rquickjs-rule-runtime.json",
     "include_graph": "docs/research/data/include-graph-sizing.json",
+    "database_sizing": (
+        "docs/research/data/database-load-sizing.json"
+    ),
 }
 
 MIB = 1024 * 1024
@@ -153,7 +156,19 @@ def validate_sources(root: Path) -> dict[str, dict[str, Any]]:
             "pub max_depth: u32",
             "pub max_queue_items: u64",
             "`ScriptLimits` 至少控制 heap、stack、instruction/fuel 和 runtime deadline",
-            "数据库 load 也有独立 `DatabaseLimits`",
+            "pub struct DatabaseLimits",
+            "pub fn new(limits: DatabaseLimits) -> Result<Self, DatabaseError>",
+            "pub max_sources: u32",
+            "pub max_entries: u64",
+            "pub max_single_entry_bytes: u64",
+            "pub max_total_entry_bytes: u64",
+            "pub max_single_container_bytes: u64",
+            "pub max_total_container_bytes: u64",
+            "pub max_single_logical_path_bytes: u32",
+            "pub max_total_logical_path_bytes: u64",
+            "pub max_cache_bytes: u64",
+            "pub max_cache_records: u64",
+            "数据库 load 的独立 `DatabaseLimits`",
         ),
         SOURCES["api"],
     )
@@ -166,6 +181,7 @@ def validate_reports(root: Path) -> dict[str, Any]:
     resource = load_json(root / SOURCES["resource_count"])
     runtime = load_json(root / SOURCES["runtime_spike"])
     include_graph = load_json(root / SOURCES["include_graph"])
+    database_sizing = load_json(root / SOURCES["database_sizing"])
 
     for name, report in (
         ("archive_limit", archive),
@@ -173,6 +189,7 @@ def validate_reports(root: Path) -> dict[str, Any]:
         ("resource_count", resource),
         ("runtime_spike", runtime),
         ("include_graph", include_graph),
+        ("database_sizing", database_sizing),
     ):
         require(
             report.get("upstream_commit") == UPSTREAM_COMMIT,
@@ -289,34 +306,101 @@ def validate_reports(root: Path) -> dict[str, Any]:
         "include graph sizing drift",
     )
 
+    database_observed = database_sizing.get("observed_fixed_bundle")
+    database_profiles = database_sizing.get("profiles")
+    require(
+        database_sizing.get("rules_commit")
+        == "c2c17dfa5ea4e078ba31eab55d87430c96622fb6"
+        and database_sizing.get("result")
+        == "review_candidate_not_admitted"
+        and isinstance(database_observed, dict)
+        and database_observed.get("source_count") == 3
+        and database_observed.get("entry_count") == 2268
+        and database_observed.get("total_entry_bytes") == 2_909_316
+        and database_observed.get("maximum_single_entry_bytes") == 603_640
+        and database_observed.get("total_container_bytes") == 3_201_508,
+        "database sizing observations drift",
+    )
+    require(
+        isinstance(database_profiles, dict)
+        and database_profiles.get("modern_default")
+        == {
+            "status": "review_candidate_not_admitted",
+            "maximum_sources": 32,
+            "maximum_entries": 32_768,
+            "maximum_single_entry_bytes": 8 * MIB,
+            "maximum_total_entry_bytes": 32 * MIB,
+            "maximum_single_container_bytes": 32 * MIB,
+            "maximum_total_container_bytes": 32 * MIB,
+            "maximum_single_logical_path_bytes": 512,
+            "maximum_total_logical_path_bytes": 512 * 1024,
+            "maximum_cache_bytes": 64 * MIB,
+            "maximum_cache_records": 32_768,
+        }
+        and database_profiles.get("legacy_high_resource")
+        == {
+            "status": "review_candidate_not_admitted",
+            "default_for_any_adapter": False,
+            "maximum_sources": 256,
+            "maximum_entries": 262_144,
+            "maximum_single_entry_bytes": 64 * MIB,
+            "maximum_total_entry_bytes": 256 * MIB,
+            "maximum_single_container_bytes": 256 * MIB,
+            "maximum_total_container_bytes": 256 * MIB,
+            "maximum_single_logical_path_bytes": 4096,
+            "maximum_total_logical_path_bytes": 4 * MIB,
+            "maximum_cache_bytes": 512 * MIB,
+            "maximum_cache_records": 262_144,
+        },
+        "database sizing profiles drift",
+    )
+
     return {
-        "archive_depth_maximum_tested": 64,
-        "archive_expanded_bytes_maximum_tested": 33_554_546,
-        "archive_has_no_independent_depth_or_total_limit": True,
-        "legacy_default_resource_children_inclusive": 21,
-        "legacy_aggressive_resource_children_inclusive": 2001,
-        "legacy_aggressive_archive_record_reachable": 100_000,
-        "legacy_aggressive_archive_record_not_reachable": 100_001,
-        "runtime_spike_only": {
-            "memory_limit_bytes": 4 * MIB,
-            "stack_limit_bytes": 128 * 1024,
-            "deadline_milliseconds": 25,
-            "production_default_candidate": False,
+        "observations": {
+            "archive_depth_maximum_tested": 64,
+            "archive_expanded_bytes_maximum_tested": 33_554_546,
+            "archive_has_no_independent_depth_or_total_limit": True,
+            "legacy_default_resource_children_inclusive": 21,
+            "legacy_aggressive_resource_children_inclusive": 2001,
+            "legacy_aggressive_archive_record_reachable": 100_000,
+            "legacy_aggressive_archive_record_not_reachable": 100_001,
+            "runtime_spike_only": {
+                "memory_limit_bytes": 4 * MIB,
+                "stack_limit_bytes": 128 * 1024,
+                "deadline_milliseconds": 25,
+                "production_default_candidate": False,
+            },
+            "fixed_rule_include_graph": {
+                "program_file_count": 2235,
+                "literal_call_count": 56,
+                "maximum_transitive_evaluations": 30,
+                "maximum_active_depth": 2,
+                "non_literal_or_unresolved_or_cyclic_count": 0,
+                "binary_dynamic_trace_matches": True,
+            },
+            "fixed_database_bundle": {
+                "source_count": database_observed["source_count"],
+                "entry_count": database_observed["entry_count"],
+                "total_entry_bytes": database_observed[
+                    "total_entry_bytes"
+                ],
+                "maximum_single_entry_bytes": database_observed[
+                    "maximum_single_entry_bytes"
+                ],
+                "total_container_bytes": database_observed[
+                    "total_container_bytes"
+                ],
+            },
         },
-        "fixed_rule_include_graph": {
-            "program_file_count": 2235,
-            "literal_call_count": 56,
-            "maximum_transitive_evaluations": 30,
-            "maximum_active_depth": 2,
-            "non_literal_or_unresolved_or_cyclic_count": 0,
-            "binary_dynamic_trace_matches": True,
-        },
+        "database_profiles": database_profiles,
     }
 
 
 def build_policy(root: Path) -> dict[str, Any]:
     bindings = validate_sources(root)
-    observations = validate_reports(root)
+    validated = validate_reports(root)
+    observations = validated["observations"]
+    database_profiles = validated["database_profiles"]
     return {
         "schema_version": SCHEMA_VERSION,
         "evaluated_on": EVALUATED_ON,
@@ -363,6 +447,7 @@ def build_policy(root: Path) -> dict[str, Any]:
                     "maximum_total_evaluations": 256,
                     "status": "review_candidate_not_admitted",
                 },
+                "database": database_profiles["modern_default"],
             },
             "legacy_high_resource": {
                 "status": "review_candidate_not_admitted",
@@ -387,6 +472,7 @@ def build_policy(root: Path) -> dict[str, Any]:
                     "maximum_total_evaluations": 4096,
                     "status": "review_candidate_not_admitted",
                 },
+                "database": database_profiles["legacy_high_resource"],
             },
         },
         "upstream_compatibility_observations": observations,
@@ -424,10 +510,6 @@ def build_policy(root: Path) -> dict[str, Any]:
             },
             {
                 "id": "script.runtime_deadline",
-                "required_by": "docs/design/api.md#8-scanlimits",
-            },
-            {
-                "id": "database.all_load_limits",
                 "required_by": "docs/design/api.md#8-scanlimits",
             },
         ],
