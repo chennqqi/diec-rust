@@ -1,5 +1,7 @@
 #![recursion_limit = "256"]
 
+mod tracking_allocator;
+
 use std::collections::{BTreeMap, BTreeSet};
 use std::env;
 use std::fs;
@@ -21,6 +23,7 @@ use rquickjs::{
 };
 use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
+use tracking_allocator::{TrackingAllocatorStats, TrackingLimitAllocator};
 
 const HOST_SHIM: &[u8] = br#"
     var included = [];
@@ -1877,6 +1880,15 @@ fn apply_binary_lifecycle_overlay(
 
 fn new_runtime() -> Result<Runtime, String> {
     Runtime::new().map_err(|error| error.to_string())
+}
+
+fn new_tracking_runtime(
+    maximum_live_bytes: usize,
+) -> Result<(Runtime, Arc<TrackingAllocatorStats>), String> {
+    let (allocator, stats) = TrackingLimitAllocator::new(maximum_live_bytes);
+    Runtime::new_with_alloc(allocator)
+        .map(|runtime| (runtime, stats))
+        .map_err(|error| error.to_string())
 }
 
 #[derive(Clone, Copy)]
@@ -7370,6 +7382,22 @@ fn run_fixture(rule_root: &Path) -> Result<bool, String> {
     .err();
     let memory_limit_recovery = eval_string(&memory_context, b"String(6 * 7)");
 
+    const TRACKING_ALLOCATOR_LIMIT_BYTES: usize = 4 * 1024 * 1024;
+    let (tracking_runtime, tracking_stats) = new_tracking_runtime(TRACKING_ALLOCATOR_LIMIT_BYTES)?;
+    let tracking_context = new_context(&tracking_runtime)?;
+    let tracking_limit_error = eval_unit(
+        &tracking_context,
+        b"globalThis.large = new ArrayBuffer(16 * 1024 * 1024);",
+    )
+    .err();
+    let tracking_limit_recovery = eval_string(&tracking_context, b"String(6 * 7)");
+    let tracking_live_bytes_before_drop = tracking_stats.live_bytes();
+    let tracking_high_water_bytes = tracking_stats.high_water_bytes();
+    let tracking_denied_allocation_count = tracking_stats.denied_allocation_count();
+    drop(tracking_context);
+    drop(tracking_runtime);
+    let tracking_live_bytes_after_drop = tracking_stats.live_bytes();
+
     const STACK_LIMIT_BYTES: usize = 128 * 1024;
     let stack_runtime = new_runtime()?;
     stack_runtime.set_max_stack_size(STACK_LIMIT_BYTES);
@@ -7439,6 +7467,12 @@ fn run_fixture(rule_root: &Path) -> Result<bool, String> {
         && numeric_result == numeric_expected
         && memory_limit_error.is_some()
         && memory_limit_recovery.as_deref() == Ok("42")
+        && tracking_limit_error.is_some()
+        && tracking_limit_recovery.as_deref() == Ok("42")
+        && tracking_denied_allocation_count > 0
+        && tracking_live_bytes_before_drop <= TRACKING_ALLOCATOR_LIMIT_BYTES
+        && tracking_high_water_bytes <= TRACKING_ALLOCATOR_LIMIT_BYTES
+        && tracking_live_bytes_after_drop == 0
         && stack_limit_error.is_some()
         && stack_limit_recovery.as_deref() == Ok("42")
         && native_panic_payload.as_deref() == Some(PANIC_SENTINEL)
@@ -7548,6 +7582,19 @@ fn run_fixture(rule_root: &Path) -> Result<bool, String> {
                 "result": memory_limit_recovery.as_deref().ok(),
                 "error": memory_limit_recovery.as_ref().err(),
             },
+        },
+        "tracking_allocator": {
+            "limit_bytes": TRACKING_ALLOCATOR_LIMIT_BYTES,
+            "error": tracking_limit_error,
+            "denied_allocation_count": tracking_denied_allocation_count,
+            "live_bytes_before_drop": tracking_live_bytes_before_drop,
+            "high_water_bytes": tracking_high_water_bytes,
+            "live_bytes_after_drop": tracking_live_bytes_after_drop,
+            "same_context_recovery": {
+                "result": tracking_limit_recovery.as_deref().ok(),
+                "error": tracking_limit_recovery.as_ref().err(),
+            },
+            "set_memory_limit_used": false,
         },
         "stack_limit": {
             "bytes": STACK_LIMIT_BYTES,
@@ -7691,11 +7738,11 @@ mod tests {
         install_diagnostic_host_fallbacks, install_nintendo_host,
         install_nintendo_host_with_context, install_nintendo_host_with_context_and_strings,
         macho_matcher_map_projection, new_context, new_rule_case_runtime, new_runtime,
-        nonnegative_index, normalized_path, parse_detection_triples, parse_scope_detections,
-        parse_scope_fixture_order, pe_physical_map_projection, qt5_matcher_map_projection,
-        qt5_pe_physical_map_projection, read_ascii, read_byte_array, read_signed, read_unsigned,
-        runtime_memory_snapshot, sha256_hex, shift_right_unsigned, sorted_detection_projection,
-        upstream_type_priority,
+        new_tracking_runtime, nonnegative_index, normalized_path, parse_detection_triples,
+        parse_scope_detections, parse_scope_fixture_order, pe_physical_map_projection,
+        qt5_matcher_map_projection, qt5_pe_physical_map_projection, read_ascii, read_byte_array,
+        read_signed, read_unsigned, runtime_memory_snapshot, sha256_hex, shift_right_unsigned,
+        sorted_detection_projection, upstream_type_priority,
     };
     use std::fs;
     use std::path::{Path, PathBuf};
@@ -7764,6 +7811,31 @@ mod tests {
                 .and_then(serde_json::Value::as_u64)
                 .is_some()
         );
+    }
+
+    #[test]
+    fn tracking_allocator_enforces_limit_recovers_and_releases_all_live_bytes() {
+        const LIMIT: usize = 1024 * 1024;
+        let (runtime, stats) =
+            new_tracking_runtime(LIMIT).expect("tracking runtime should be created");
+        let context = new_context(&runtime).expect("tracking context should be created");
+        let error = eval_unit(
+            &context,
+            b"globalThis.large = new ArrayBuffer(16 * 1024 * 1024);",
+        )
+        .expect_err("tracking allocator should reject oversized live heap");
+        assert!(!error.is_empty());
+        assert!(stats.denied_allocation_count() > 0);
+        assert!(stats.live_bytes() <= LIMIT);
+        assert!(stats.high_water_bytes() <= LIMIT);
+        assert_eq!(
+            eval_string(&context, b"String(6 * 7)")
+                .expect("same context should recover after allocator OOM"),
+            "42"
+        );
+        drop(context);
+        drop(runtime);
+        assert_eq!(stats.live_bytes(), 0);
     }
 
     #[test]
