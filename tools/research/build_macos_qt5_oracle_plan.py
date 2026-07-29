@@ -11,11 +11,12 @@ from typing import Any
 
 
 SCHEMA_VERSION = 1
-EVALUATED_ON = "2026-07-29"
+EVALUATED_ON = "2026-07-30"
 UPSTREAM_COMMIT = "74eaf505c250ab47e709024e9dc41657cd8f2254"
 RULES_COMMIT = "c2c17dfa5ea4e078ba31eab55d87430c96622fb6"
 PLATFORM = "macos-x86_64-qt5"
 SOURCE_PATHS = (
+    ".github/workflows/macos-qt5-oracle-candidate.yml",
     "upstream/DIE-engine/.github/workflows/builder.yml",
     "upstream/DIE-engine/build.pri",
     "upstream/DIE-engine/build_mac.sh",
@@ -77,6 +78,17 @@ def build_plan(root: Path) -> dict[str, Any]:
             "commit_policy": (
                 "sanitize local paths before committing a collected report"
             ),
+        },
+        "dispatch_workflow": {
+            "path": (
+                ".github/workflows/"
+                "macos-qt5-oracle-candidate.yml"
+            ),
+            "trigger": "workflow_dispatch",
+            "runner": "macos-15-intel",
+            "qt_installer": "aqtinstall==3.3.0",
+            "artifact_retention_days": 14,
+            "automatically_admits_evidence": False,
         },
         "runtime_closure": {
             "required_capability_count": 68,

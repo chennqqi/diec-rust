@@ -15,7 +15,15 @@
     "contains_local_paths": true,
     "validator": "tools/upstream/validate_macos_qt5_oracle_report.py"
   },
-  "evaluated_on": "2026-07-29",
+  "dispatch_workflow": {
+    "artifact_retention_days": 14,
+    "automatically_admits_evidence": false,
+    "path": ".github/workflows/macos-qt5-oracle-candidate.yml",
+    "qt_installer": "aqtinstall==3.3.0",
+    "runner": "macos-15-intel",
+    "trigger": "workflow_dispatch"
+  },
+  "evaluated_on": "2026-07-30",
   "fixed_contract": {
     "build_system": "qmake",
     "configuration": "release",
@@ -44,6 +52,7 @@
   },
   "schema_version": 1,
   "sources": {
+    ".github/workflows/macos-qt5-oracle-candidate.yml": "10351ae788c2b03c7017c12f2cef0ec19ac5ef38fbdaca555f82127d0203d518",
     "tools/upstream/build_macos_qt5_oracle.sh": "db5970a4b932e8a2390af79f9d1ddbc1ac18076bea3377688449d1b3309dd94c",
     "tools/upstream/validate_macos_qt5_oracle_report.py": "64891dc319bfd7d958406aeeae31b4424385868b40d462c7f841ebbc5a8ff2e7",
     "upstream/DIE-engine/.github/workflows/builder.yml": "b8053dda9c53682b7c931230a427d6ef2880c20bf27fe023a3eb973409ab1d57",

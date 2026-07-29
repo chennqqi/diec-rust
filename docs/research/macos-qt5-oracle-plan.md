@@ -1,10 +1,10 @@
 # macOS x86_64 Qt5 oracle bootstrap 计划
 
-Status: Draft
+Status: In Review
 
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
 
-Last updated: 2026-07-29
+Last updated: 2026-07-30
 
 ## 1. 当前结论
 
@@ -23,6 +23,18 @@ macOS x86_64 Qt5 CLI oracle 的可执行 bootstrap，但当前 Windows 主机不
 确定性生成。其结果必须保持
 `infrastructure_ready_runtime_missing`，直到独立 macOS 主机产出并验证候选
 构建记录。
+
+仓库现在还提供只允许手动触发的
+[`macos-qt5-oracle-candidate.yml`](../../.github/workflows/macos-qt5-oracle-candidate.yml)。
+它固定使用 `macos-15-intel`、Qt 5.15.2 `clang_64`、QtScript、上游 commit
+和完整递归 submodule，并同时运行 oracle identity 与临时文件 cache-state
+candidate。所有第三方 Action 都绑定完整 commit SHA，checkout 不持久化
+凭据，工作流权限仅为 `contents: read`。上传物保留 14 天，仍包含 runner
+本地路径，仅供下载评审；工作流本身不会提交报告或修改能力矩阵。
+
+GitHub 托管 runner label 不是不可变镜像锁。实际运行仍须以报告中的 macOS、
+Xcode、clang、CMake、qmake 和 Qt 文件 hash 为准，并在评审后决定是否建立
+独立的已审 toolchain lock。
 
 ## 2. 上游 macOS 入口审计
 
@@ -73,6 +85,10 @@ admission guard。报告保留本机绝对路径，只能存放在外部证据�
 必须另行去路径并绑定原始报告 hash。
 
 ## 4. 在 macOS x86_64 上执行
+
+首选从 GitHub Actions 页面手动运行 `macOS Qt5 oracle candidate`。成功后下载
+`macos-qt5-candidates-<run-id>-<attempt>`，先核对 `SHA256SUMS`，再审计两份
+candidate JSON。该动作不会自动纳入或提交证据。
 
 先准备固定递归 checkout 和 Qt 5.15.2 `clang_64`，其中必须包含 QtScript。
 build/report 目录必须在 source tree 之外：

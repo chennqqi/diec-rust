@@ -13,6 +13,9 @@ VALIDATOR_PATH = (
 )
 PLAN_SCRIPT = ROOT / "tools/research/build_macos_qt5_oracle_plan.py"
 PLAN_PATH = ROOT / "docs/research/data/macos-qt5-oracle-plan.json"
+WORKFLOW_PATH = (
+    ROOT / ".github/workflows/macos-qt5-oracle-candidate.yml"
+)
 
 
 def load_module(name: str, path: Path):
@@ -153,6 +156,55 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
         self.assertNotIn("rm -rf", text)
         self.assertNotIn("gui_source", text)
         self.assertNotIn("lite_source", text)
+
+    def test_dispatch_workflow_is_manual_pinned_and_non_admitting(self):
+        text = WORKFLOW_PATH.read_text(encoding="utf-8")
+        for required in (
+            "workflow_dispatch:",
+            "runs-on: macos-15-intel",
+            "contents: read",
+            "persist-credentials: false",
+            "aqtinstall==${AQTINSTALL_VERSION}",
+            "mac desktop 5.15.2 clang_64",
+            "--modules qtscript",
+            VALIDATOR.UPSTREAM_COMMIT,
+            "submodule update",
+            "--init --recursive --depth=1 --jobs 4",
+            "build_macos_qt5_oracle.sh",
+            "validate_macos_qt5_oracle_report.py",
+            "collect_macos_cache_state_candidate.py",
+            "validate_macos_cache_state_candidate.py",
+            (
+                "actions/checkout@"
+                "de0fac2e4500dabe0009e67214ff5f5447ce83dd"
+            ),
+            (
+                "actions/upload-artifact@"
+                "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"
+            ),
+            "retention-days: 14",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, text)
+        for forbidden in (
+            "macos-latest",
+            "pull_request:",
+            "push:",
+            "@v4",
+            "@v5",
+            "@v6",
+            "@v7",
+            "platform_admitted",
+            "cache_state_admitted",
+        ):
+            with self.subTest(forbidden=forbidden):
+                self.assertNotIn(forbidden, text)
+
+        report = json.loads(PLAN_PATH.read_text(encoding="utf-8"))
+        workflow = report["dispatch_workflow"]
+        self.assertEqual(workflow["trigger"], "workflow_dispatch")
+        self.assertEqual(workflow["runner"], "macos-15-intel")
+        self.assertFalse(workflow["automatically_admits_evidence"])
 
     def test_candidate_validator_accepts_complete_report(self):
         VALIDATOR.validate_report(candidate_report())

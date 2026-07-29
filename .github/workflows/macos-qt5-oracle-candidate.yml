@@ -1,0 +1,107 @@
+name: macOS Qt5 oracle candidate
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: macos-qt5-oracle-candidate-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    name: Collect non-admitted macOS candidates
+    runs-on: macos-15-intel
+    timeout-minutes: 120
+    env:
+      AQTINSTALL_VERSION: "3.3.0"
+      EVIDENCE_DIR: ${{ runner.temp }}/diec-macos-candidate-evidence
+      QT_ROOT: ${{ runner.temp }}/Qt
+      UPSTREAM_BUILD: ${{ runner.temp }}/DIE-engine-qmake-build
+      UPSTREAM_COMMIT: 74eaf505c250ab47e709024e9dc41657cd8f2254
+      UPSTREAM_SOURCE: ${{ runner.temp }}/DIE-engine-74eaf505
+
+    steps:
+      - name: Check out Phase 0 infrastructure
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: false
+
+      - name: Install the fixed Qt downloader
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install \
+            --disable-pip-version-check \
+            --no-input \
+            "aqtinstall==${AQTINSTALL_VERSION}"
+          python3 -m pip show aqtinstall
+
+      - name: Install Qt 5.15.2 clang_64 with QtScript
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m aqt install-qt \
+            --outputdir "$QT_ROOT" \
+            mac desktop 5.15.2 clang_64 \
+            --modules qtscript
+          test "$("$QT_ROOT/5.15.2/clang_64/bin/qmake" -query QT_VERSION)" \
+            = "5.15.2"
+
+      - name: Materialize the fixed recursive upstream checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          git init "$UPSTREAM_SOURCE"
+          git -C "$UPSTREAM_SOURCE" remote add origin \
+            https://github.com/horsicq/DIE-engine.git
+          git -C "$UPSTREAM_SOURCE" fetch \
+            --depth=1 --no-tags origin "$UPSTREAM_COMMIT"
+          git -C "$UPSTREAM_SOURCE" checkout --detach FETCH_HEAD
+          git -C "$UPSTREAM_SOURCE" submodule sync --recursive
+          git -C "$UPSTREAM_SOURCE" -c protocol.version=2 submodule update \
+            --init --recursive --depth=1 --jobs 4
+          test "$(git -C "$UPSTREAM_SOURCE" rev-parse HEAD)" \
+            = "$UPSTREAM_COMMIT"
+
+      - name: Build and validate the oracle identity candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE_DIR"
+          bash tools/upstream/build_macos_qt5_oracle.sh \
+            --source-dir "$UPSTREAM_SOURCE" \
+            --qt-dir "$QT_ROOT/5.15.2/clang_64" \
+            --build-dir "$UPSTREAM_BUILD" \
+            --output "$EVIDENCE_DIR/oracle-candidate.json" \
+            --jobs 4
+          python3 tools/upstream/validate_macos_qt5_oracle_report.py \
+            "$EVIDENCE_DIR/oracle-candidate.json"
+
+      - name: Collect and validate the cache-state candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/benchmark/collect_macos_cache_state_candidate.py \
+            --output "$EVIDENCE_DIR/cache-state-candidate.json"
+          python3 tools/benchmark/validate_macos_cache_state_candidate.py \
+            "$EVIDENCE_DIR/cache-state-candidate.json"
+          shasum -a 256 \
+            "$EVIDENCE_DIR/oracle-candidate.json" \
+            "$EVIDENCE_DIR/cache-state-candidate.json" \
+            >"$EVIDENCE_DIR/SHA256SUMS"
+
+      - name: Upload candidate evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: macos-qt5-candidates-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/diec-macos-candidate-evidence/oracle-candidate.json
+            ${{ runner.temp }}/diec-macos-candidate-evidence/cache-state-candidate.json
+            ${{ runner.temp }}/diec-macos-candidate-evidence/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 14
