@@ -79,6 +79,12 @@ special 优先级关系 21/21 成立。十份 Windows runtime 报告累计 2,034
 均与 Linux Qt5 相同。十一份 Windows runtime 报告累计 2,068 次执行，详见
 [`windows-database-archive-behavior.md`](windows-database-archive-behavior.md)。
 
+原生 Windows engine cache/DACL harness 再连续运行两轮，包含 38 个 case
+observations。两轮 raw stream 相同；19/19 语义投影和 18/18 非身份关系与
+Linux Qt5 相同，同时保留 populated cache 的 `403` vs `399` byte 差异。
+十二份 Windows runtime 报告累计 2,070 次进程执行，详见
+[`windows-database-cache-behavior.md`](windows-database-cache-behavior.md)。
+
 同一剩余 21 样本 × 19-case special 矩阵又在固定 Linux Qt5/Qt6 image 上
 各执行一次，共 798 次容器执行。399/399 raw observations 逐字节相同；231 个
 JSON/XML projection 在 Qt5/Qt6 及 Windows/Linux Qt5 间相同，跨 Windows 时

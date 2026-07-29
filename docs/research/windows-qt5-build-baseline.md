@@ -23,6 +23,9 @@ Linux Qt5 相同。
 17-case ZIP database 矩阵再完成 34 次执行；完整/空/截断、重复/`..` entry
 和额外根前缀的退出码、stderr、JSON validity 及受限规范化 stdout 均与
 Linux Qt5 相同。
+19-case engine `bUseCache=true` harness 连续运行两轮；raw stream 稳定，
+19/19 语义投影和 18/18 非身份关系与 Linux Qt5 相同，并固定 Windows DACL
+write/read denial 与 403-byte populated cache。
 Windows 专用 17-case Unicode/特殊路径矩阵再完成 34 次执行；固定可表示名称、
 默认大小写别名、点号/Hidden attribute 过滤和目录/显式 target 顺序。
 Windows 专用 8-case filesystem 矩阵再完成 16 次执行；固定 Junction 目录、
@@ -50,6 +53,7 @@ JSON continuity、CSV 优先级及四个带空格 filetype 的 invalid XML。
 [`data/windows-qt5-cli-path-nested.json`](data/windows-qt5-cli-path-nested.json)、
 [`data/windows-qt5-cli-database.json`](data/windows-qt5-cli-database.json)、
 [`data/windows-qt5-cli-database-archive.json`](data/windows-qt5-cli-database-archive.json)、
+[`data/database-cache-engine-windows-qt5.json`](data/database-cache-engine-windows-qt5.json)、
 [`data/windows-qt5-cli-special-paths.json`](data/windows-qt5-cli-special-paths.json)
 和
 [`data/windows-qt5-cli-filesystem.json`](data/windows-qt5-cli-filesystem.json)。
@@ -339,8 +343,30 @@ validity、17/17 受限 path/CRLF normalization 后 stdout 与 Linux Qt5 相同�
 截断、重复 entry、`..` entry 和额外根前缀的行为均被固定。详见
 [`windows-database-archive-behavior.md`](windows-database-archive-behavior.md)。
 
-该矩阵不覆盖 Windows 原生 `bUseCache=true`、cache/app-data ACL、不可读
-database 或 cache write denial；这些需要单独的 engine harness。
+该矩阵本身不覆盖 Windows 原生 `bUseCache=true`、cache/app-data ACL、
+不可读 database 或 cache write denial；这些由下一节的独立 engine harness
+覆盖，不改变发布 CLI 的 `bUseCache=false` 可达性。
+
+## Windows engine database cache/DACL 矩阵
+
+[`build_windows_database_cache_harness.ps1`](../../tools/upstream/build_windows_database_cache_harness.ps1)
+只替换固定 qmake Release 构建的 `main_console.obj`，继续链接同一批未修改
+engine objects。Windows adapter 把 POSIX file time/mode cases 映射为 Qt file
+time 和当前用户 SID 的真实 DACL deny/restore，并启用 Qt test mode 隔离
+app-data cache。
+
+[`collect_windows_database_cache_harness.py`](../../tools/upstream/collect_windows_database_cache_harness.py)
+在非提升 token 下连续运行两轮 19-case harness。机器报告 SHA-256 为
+`d1cbcbe741e4cf3999f54f4696f6eee59472b59bd3aaf9d98f94bb337b1e16da`；
+两轮 raw stdout/stderr 逐字节相同。19/19 load/cancel/count/scan/
+cache-existence 投影与 Linux Qt5 相同，18/18 非身份关系成立。
+
+Windows populated cache 为 403 bytes，比 Linux Qt5 多 4 bytes；三类
+empty cache 两侧均为 42 bytes。cache write deny 静默且非致命，DACL 恢复后
+重建；继承 DACL 拒绝整棵 database tree 时成功加载 0 records 并写空 cache；
+拒绝 ZIP file read 时 load 返回 false；canceled miss 同样产生可被后续命中的
+poisoned empty cache。详见
+[`windows-database-cache-behavior.md`](windows-database-cache-behavior.md)。
 
 ## Windows CLI Unicode/特殊路径矩阵
 
@@ -435,15 +461,15 @@ bit-for-bit reproducible：
 - 已完成 6 个控制 case、26 样本默认 JSON baseline、全 26 样本 scan、
   全 26 样本普通 output 和全 26 样本 19-case special，并完成首轮
   path/nested/database；尚未运行
-  UNC、精确 namespace 上限、symbolic link/reparse cycle/ACL、database
-  cache/permission engine-only 和其他 engine-only 矩阵；
+  UNC、精确 namespace 上限、symbolic link/reparse cycle、domain/group
+  DACL、network share/EFS/integrity level 和其他 engine-only 矩阵；
 - 尚未验证 x86、ARM64、完整 GUI/lite、install/package 和官方 release zip；
 - `cl` 对 x64 的 `/arch:SSE2` 给出 D9002 ignored warning；x64 ABI 本身要求
   SSE2，但该 warning 仍应保留在构建日志中。
 
 下一步扩展原生采集器的 UNC、精确 namespace 上限、symbolic link/reparse
-cycle/ACL，并为 database cache/permission 与其他 engine-only 行建立 Windows
-harness；然后
+cycle、domain/group DACL、network share/EFS/integrity level 和其他
+engine-only 行；然后
 独立处理官方 CMake 路径和二进制
 确定性。macOS 固定构建仍是三平台基线的剩余大项。
 

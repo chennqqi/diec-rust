@@ -1,0 +1,505 @@
+{
+  "binary": {
+    "filename": "diec-database-cache-harness.exe",
+    "sha256": "f7a9aed9c6eedb323dfbed8be01020df3b4c759c20668d79dcf75b7421aa1bf7",
+    "size": 3107840
+  },
+  "build_manifest": {
+    "identity": {
+      "artifact": {
+        "filename": "diec-database-cache-harness.exe",
+        "sha256": "f7a9aed9c6eedb323dfbed8be01020df3b4c759c20668d79dcf75b7421aa1bf7",
+        "size": 3107840
+      },
+      "baseline": {
+        "cli_sha256": "e8579a6ed0d2536ea14af154bcbeeaaea6967c0c7559a595fb3fe52206ac635e",
+        "commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+        "recursive_submodule_count": 58,
+        "repository": "https://github.com/horsicq/DIE-engine",
+        "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6"
+      },
+      "build": {
+        "elapsed_milliseconds": 13395,
+        "harness_object": "release/database_cache_harness_windows_adapter.obj",
+        "original_main_object_sha256": "47180c01c4fb12359a8621ecc829afd899f5ee8b6262c6caafb320b50a928abf",
+        "original_makefile_sha256": "5250c5d08d120c914351b858ff115442baebfdf31efb799d1a70fad4890a0293",
+        "replaced_object": "release/main_console.obj",
+        "system": "patched-qmake-release-makefile",
+        "tool": "nmake"
+      },
+      "qt": {
+        "qmake_sha256": "e873ad3a689a0628c3037a6440221dcd2e426395edf14ffa6379612dede26d36",
+        "qmake_spec": "win32-msvc",
+        "qt5core_sha256": "8d2ff4ce9096ddccc4f4cd62c2e41fc854cfd1b0d6e8d296645a7f5fd4ae565a",
+        "qt5script_sha256": "0b58e5e79df13110a8258f14d7b3658d1dd0c8dddc337a164b89d4ac12a0638f",
+        "version": "5.15.2"
+      },
+      "schema_version": 1,
+      "source_hashes": {
+        "builder": "617e180bf1a9c751220bd6deef649a52b3f8db608c2469552e76a5144cfb8553",
+        "shared_harness": "b26ba79a14fc26332c9e3030e6291dfcc600a03f97f4d38de7ca22b996fe792e",
+        "windows_adapter": "aa05bc6d56d16864bf2ad6e7febdbd110debd2d07f71cce77b6def3743401756",
+        "windows_compat_header": "9878f4aa17c6f9afd120e6dcba3f31c2cba8ff0e8bb2dab46a05e941464ea9c8"
+      }
+    },
+    "sha256": "7619ec122d2f851909d51d7a50b67e1da7ad71cb7aee3f021cff2b2cc22263bd"
+  },
+  "failures": [],
+  "fixture": {
+    "manifest": "docs/research/data/database-fixture.json",
+    "sha256": "90b6ce18e5656fa30c2dfd55573df4612825a74e77cb9e2f4fc1baa81fd7223c"
+  },
+  "generator": "tools/upstream/collect_windows_database_cache_harness.py",
+  "generator_sha256": "e2c54e487a43e7a8dfa54ce3e757f73bfba4d6f3e22105d77f217a9266baa0cb",
+  "host": {
+    "architecture": "AMD64",
+    "os_build": "10.0.26100",
+    "token_elevated": false
+  },
+  "limitations": [
+    "the adapter maps POSIX chmod cases to explicit current-user Windows DACL deny/restore operations",
+    "QStandardPaths test mode isolates the harness from the ordinary user application-data namespace",
+    "the report covers a non-elevated local token and local NTFS paths; domain ACLs, network shares, EFS and alternate integrity levels are not covered",
+    "the Windows harness links Advapi32 only for research DACL setup; the unmodified engine object set is reused"
+  ],
+  "linux_qt5_comparison": {
+    "all_named_relationships_hold": true,
+    "cache_size_deltas": {
+      "bad_magic_fallback": 4,
+      "bad_version_fallback": 4,
+      "cache_write_recovery": 4,
+      "canceled_cache_hit": 4,
+      "canceled_cache_miss": 0,
+      "concurrent_identical_writers": 4,
+      "database_directory_permission_denied": 0,
+      "empty_cache_fallback": 4,
+      "initial_miss": 4,
+      "magic_only_fallback": 4,
+      "magic_version_only_fallback": 4,
+      "poisoned_empty_cache_hit": 0,
+      "record_tail_truncated_fallback": 4,
+      "same_stats_stale_hit": 4,
+      "stats_changed_rebuild": 4,
+      "truncated_record_fallback": 4,
+      "unchanged_hit": 4
+    },
+    "case_projection_differences": []
+  },
+  "linux_qt5_reference": {
+    "path": "docs/research/data/database-cache-engine-qt5.json",
+    "sha256": "a04b1ca26a2c51fc5801ecdbdea79dd6e2bd7f330007b8c70620bd09555c5fc0"
+  },
+  "normalization": {
+    "not_performed": [
+      "case removal or reordering",
+      "cache hash/size rewriting",
+      "scan result or error rewriting",
+      "raw stdout/stderr hash rewriting"
+    ],
+    "operations": [
+      "replace fixed harness database/rule paths with <work>",
+      "replace verified Qt test-mode APPDATA prefix with <qt-test-appdata>",
+      "convert cache_path backslashes to forward slashes"
+    ]
+  },
+  "normalized_outputs_equal": true,
+  "observation": {
+    "cache_path": "<qt-test-appdata>/NTInfo/die/db_cache/d9d5b944c079f4e6ef9d7421764295f7.cache",
+    "cases": [
+      {
+        "binary_signature_count": 1,
+        "cache": {
+          "exists": true,
+          "sha256": "c70da5aa9630a0986959ba5dc36a6a07b3fee501a33ea59062e09cd136a8e172",
+          "size": 403
+        },
+        "id": "initial_miss",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Fixture"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 1,
+        "cache": {
+          "exists": true,
+          "sha256": "c70da5aa9630a0986959ba5dc36a6a07b3fee501a33ea59062e09cd136a8e172",
+          "size": 403
+        },
+        "id": "unchanged_hit",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Fixture"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 1,
+        "cache": {
+          "exists": true,
+          "sha256": "c70da5aa9630a0986959ba5dc36a6a07b3fee501a33ea59062e09cd136a8e172",
+          "size": 403
+        },
+        "id": "same_stats_stale_hit",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Fixture"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 1,
+        "cache": {
+          "exists": true,
+          "sha256": "c13fe083fb1f19bd2244b561700491dff318d5483fb5994f4626abe63e992487",
+          "size": 403
+        },
+        "id": "stats_changed_rebuild",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Changed"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 1,
+        "cache": {
+          "exists": true,
+          "sha256": "c13fe083fb1f19bd2244b561700491dff318d5483fb5994f4626abe63e992487",
+          "size": 403
+        },
+        "id": "bad_magic_fallback",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Changed"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 1,
+        "cache": {
+          "exists": true,
+          "sha256": "c13fe083fb1f19bd2244b561700491dff318d5483fb5994f4626abe63e992487",
+          "size": 403
+        },
+        "id": "bad_version_fallback",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Changed"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 1,
+        "cache": {
+          "exists": true,
+          "sha256": "c13fe083fb1f19bd2244b561700491dff318d5483fb5994f4626abe63e992487",
+          "size": 403
+        },
+        "id": "empty_cache_fallback",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Changed"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 1,
+        "cache": {
+          "exists": true,
+          "sha256": "c13fe083fb1f19bd2244b561700491dff318d5483fb5994f4626abe63e992487",
+          "size": 403
+        },
+        "id": "magic_only_fallback",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Changed"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 1,
+        "cache": {
+          "exists": true,
+          "sha256": "c13fe083fb1f19bd2244b561700491dff318d5483fb5994f4626abe63e992487",
+          "size": 403
+        },
+        "id": "magic_version_only_fallback",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Changed"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 2,
+        "cache": {
+          "exists": true,
+          "sha256": "c13fe083fb1f19bd2244b561700491dff318d5483fb5994f4626abe63e992487",
+          "size": 403
+        },
+        "id": "truncated_record_fallback",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Changed"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 2,
+        "cache": {
+          "exists": true,
+          "sha256": "c13fe083fb1f19bd2244b561700491dff318d5483fb5994f4626abe63e992487",
+          "size": 403
+        },
+        "id": "record_tail_truncated_fallback",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Changed",
+          "Changed"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 1,
+        "cache": {
+          "exists": false,
+          "sha256": "",
+          "size": 0
+        },
+        "id": "cache_write_denied",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Changed"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 1,
+        "cache": {
+          "exists": true,
+          "sha256": "c13fe083fb1f19bd2244b561700491dff318d5483fb5994f4626abe63e992487",
+          "size": 403
+        },
+        "id": "cache_write_recovery",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Changed"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 1,
+        "cache": {
+          "exists": true,
+          "sha256": "c13fe083fb1f19bd2244b561700491dff318d5483fb5994f4626abe63e992487",
+          "size": 403
+        },
+        "id": "concurrent_identical_writers",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Changed"
+        ],
+        "stop_before_load": false,
+        "writer_count": 8,
+        "writer_loaded": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "writer_signature_counts": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "binary_signature_count": 0,
+        "cache": {
+          "exists": true,
+          "sha256": "30f861766f4c9a21d320fe36fa25a987feaa870e297643a1e44e9abe09144570",
+          "size": 42
+        },
+        "id": "database_directory_permission_denied",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Unknown"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 0,
+        "cache": {
+          "exists": false,
+          "sha256": "",
+          "size": 0
+        },
+        "id": "database_file_permission_denied",
+        "load_pd_not_canceled": true,
+        "loaded": false,
+        "scan_errors": [],
+        "scan_names": [
+          "Unknown"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 0,
+        "cache": {
+          "exists": true,
+          "sha256": "c13fe083fb1f19bd2244b561700491dff318d5483fb5994f4626abe63e992487",
+          "size": 403
+        },
+        "id": "canceled_cache_hit",
+        "load_pd_not_canceled": false,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Unknown"
+        ],
+        "stop_before_load": true
+      },
+      {
+        "binary_signature_count": 0,
+        "cache": {
+          "exists": true,
+          "sha256": "9c6d8e481a2b89dcffc604dba21d08b6cad4e1731f0b7c6b76cbc70e21d4ffd2",
+          "size": 42
+        },
+        "id": "canceled_cache_miss",
+        "load_pd_not_canceled": false,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Unknown"
+        ],
+        "stop_before_load": true
+      },
+      {
+        "binary_signature_count": 0,
+        "cache": {
+          "exists": true,
+          "sha256": "9c6d8e481a2b89dcffc604dba21d08b6cad4e1731f0b7c6b76cbc70e21d4ffd2",
+          "size": 42
+        },
+        "id": "poisoned_empty_cache_hit",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Unknown"
+        ],
+        "stop_before_load": false
+      }
+    ],
+    "database_path": "<work>/database",
+    "effective_gid": -1,
+    "effective_uid": -1,
+    "fixed_mtime_nanoseconds": 123000000,
+    "fixed_mtime_seconds": 1700000000,
+    "rule_path": "<work>/database/Binary/fixture.1.sg",
+    "schema_version": 1,
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+  },
+  "passed": true,
+  "platform": "windows-x86_64-qt5",
+  "qt": {
+    "qmake_sha256": "e873ad3a689a0628c3037a6440221dcd2e426395edf14ffa6379612dede26d36",
+    "qmake_spec": "win32-msvc",
+    "qt5core_sha256": "8d2ff4ce9096ddccc4f4cd62c2e41fc854cfd1b0d6e8d296645a7f5fd4ae565a",
+    "qt5script_sha256": "0b58e5e79df13110a8258f14d7b3658d1dd0c8dddc337a164b89d4ac12a0638f",
+    "version": "5.15.2"
+  },
+  "raw_outputs_equal": true,
+  "relationships": {
+    "all_scan_error_lists_are_empty": true,
+    "bad_magic_falls_back_and_rewrites": true,
+    "bad_version_falls_back_and_rewrites": true,
+    "cache_write_failure_is_silent_and_nonfatal": true,
+    "cache_write_recovers_after_permission_restore": true,
+    "canceled_cache_hit_reports_success_with_zero_records": true,
+    "canceled_miss_saves_empty_cache": true,
+    "concurrent_identical_writers_finish_with_valid_cache": true,
+    "header_truncations_fall_back_without_partial_records": true,
+    "initial_load_creates_one_record_cache": true,
+    "mtime_change_rebuilds_changed_rule": true,
+    "permission_denied_directory_is_silent_empty_success": true,
+    "permission_denied_file_is_silent_failure": true,
+    "record_truncation_injects_partial_record_before_fallback": true,
+    "same_size_mtime_content_change_is_stale_hit": true,
+    "tail_truncation_injects_partial_record_before_fallback": true,
+    "uncanceled_load_reuses_poisoned_empty_cache": true,
+    "unchanged_load_reuses_identical_cache": true
+  },
+  "repetitions": 2,
+  "runs": [
+    {
+      "exit_code": 0,
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 11161,
+      "stdout_sha256": "644c9486ed80f8acb21e8a800d145ec7384abe3410b9c91dbfac6e71399164ea"
+    },
+    {
+      "exit_code": 0,
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 11161,
+      "stdout_sha256": "644c9486ed80f8acb21e8a800d145ec7384abe3410b9c91dbfac6e71399164ea"
+    }
+  ],
+  "schema_version": 1,
+  "source": {
+    "commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "recursive_submodule_count": 58,
+    "repository": "https://github.com/horsicq/DIE-engine",
+    "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6"
+  },
+  "source_hashes": {
+    "fixture_generator": "10aaa85de36126a2c33808b3be7f3e14eef60382b6048c8499e99ee5570a5fc1",
+    "linux_probe": "2336303cf50a36d264ddac5c76b999ffbce29883bcdeb8bc04c1a14f8e68d87d",
+    "shared_helper": "06e128b938f362978d983d3d984213535eabd02161b71886ef989e33838b15b4"
+  }
+}

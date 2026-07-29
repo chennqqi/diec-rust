@@ -171,6 +171,19 @@
     "linux_qt5_document_validity_failures": 0,
     "linux_qt5_normalized_stdout_failures": 0
   },
+  "windows_engine_database_cache": {
+    "path": "docs/research/data/database-cache-engine-windows-qt5.json",
+    "sha256": "d1cbcbe741e4cf3999f54f4696f6eee59472b59bd3aaf9d98f94bb337b1e16da",
+    "binary_sha256": "f7a9aed9c6eedb323dfbed8be01020df3b4c759c20668d79dcf75b7421aa1bf7",
+    "case_count": 19,
+    "repetitions": 2,
+    "execution_count": 2,
+    "raw_determinism_failures": 0,
+    "semantic_projection_failures": 0,
+    "named_relationship_failures": 0,
+    "populated_cache_size_delta_from_linux_qt5": 4,
+    "empty_cache_size_delta_from_linux_qt5": 0
+  },
   "windows_cli_special_paths": {
     "path": "docs/research/data/windows-qt5-cli-special-paths.json",
     "sha256": "f4e2f4ced3190a51df3bfa34cbdf8ad949130aadab324c7e725365a2c7fa8e68",

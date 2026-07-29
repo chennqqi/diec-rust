@@ -366,9 +366,10 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
   8-case filesystem 矩阵进一步固定 Junction、两跳链、alias 重复及普通长度
   `\\?\` 命名空间；7-case long-path 矩阵固定 324/325-code-unit 显式及递归
   发现路径；5-case ADS 矩阵固定显式 named stream 与目录枚举边界；17-case
-  ZIP database 矩阵固定完整/空/截断、重复/`..` entry 和根前缀；UNC、
-  精确 namespace 上限、symlink/reparse cycle/ACL、database
-  cache/permission engine-only、其他 engine-only 及跨平台扩展仍缺失。
+  ZIP database 矩阵固定完整/空/截断、重复/`..` entry 和根前缀；19-case
+  engine cache/DACL harness 又固定 stale/corrupt/cancel/write/read denial；
+  UNC、精确 namespace 上限、symlink/reparse cycle、domain/group DACL、
+  network share/EFS/integrity level、其他 engine-only 及跨平台扩展仍缺失。
 - Linux、Windows、macOS 路径与编码差异。
 
 ## 证据

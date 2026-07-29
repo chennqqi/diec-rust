@@ -25,8 +25,10 @@ SHA-256 为
 
 因此，在本矩阵范围内，完整/空/多种截断 ZIP、重复 entry、`..` entry 和额外
 根前缀的加载、规则执行、错误 framing 与 Linux Qt5 没有语义差异。这个结论只
-覆盖发布 CLI 的 ZIP database 分支，不覆盖 CLI 不可达的 engine cache 控制、
-Windows ACL 或 cache/app-data 权限行为。
+覆盖发布 CLI 的 ZIP database 分支。CLI 不可达的首轮 engine cache/DACL
+行为已由
+[`windows-database-cache-behavior.md`](windows-database-cache-behavior.md)
+单独固定；两份报告的 reachability 和构建边界不同，不能合并。
 
 ## 2. 固定身份
 
@@ -100,8 +102,8 @@ Windows 与 Linux Qt5 精确一致的关键行为包括：
 
 ## 5. 剩余边界
 
-- Windows 原生 engine `bUseCache=true` harness；
-- Windows cache/app-data 路径、ACL、不可读 database 和 cache write denial；
+- Windows domain/group 复杂 DACL、UNC/network share、EFS/integrity level；
+- Windows changed-during-read、不同内容 writer 和恶意 cache resource 边界；
 - macOS ZIP database 与 cache/path 行为；
 - deflate/其他 method、encrypted ZIP、CRC mismatch、data descriptor、ZIP64；
 - 超大 entry count、声明长度、压缩比和总解压预算。

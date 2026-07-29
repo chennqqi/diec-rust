@@ -23,14 +23,16 @@ Last updated: 2026-07-29
 [`data/database-archive-linux-qt5.json`](data/database-archive-linux-qt5.json)，
 原生 Windows Qt5 复验为
 [`data/windows-qt5-cli-database-archive.json`](data/windows-qt5-cli-database-archive.json)，
+Windows engine cache/DACL harness 为
+[`data/database-cache-engine-windows-qt5.json`](data/database-cache-engine-windows-qt5.json)，
 CLI cache 源码/容器探针摘要为
 [`data/database-cache-cli.json`](data/database-cache-cli.json)，
 engine `bUseCache=true` 专用 harness 报告为
 [`data/database-cache-engine-qt5.json`](data/database-cache-engine-qt5.json)。
 
 本轮证明 Linux Qt5 qmake/CMake 固定 CLI oracle、原生 Windows Qt5 qmake
-CLI oracle，以及链接未修改上游 engine 的 Linux Qt5 CMake 专用 harness。
-engine cache 结论不外推到 Qt6、Windows 或 macOS。
+CLI oracle，以及链接未修改上游 engine 的 Linux/Windows Qt5 专用 harness。
+engine cache 结论不外推到 Qt6 或 macOS。
 
 ## 2. 固定身份
 
@@ -285,6 +287,22 @@ Rust cache decode 必须事务化：完整校验成功后才能发布 records；
 cache，也不得把部分/空状态暴露给后续扫描。若 legacy engine profile 确需模拟这些
 差异，必须以类型化兼容选项和差分测试隔离，不能污染默认安全路径。
 
+### 6.2 原生 Windows Qt5 engine harness
+
+Windows adapter 复用同一 19-case harness，仅将 POSIX file-time/permission
+设施映射为 Qt file time 与当前用户 SID 的 DACL deny/restore，并只替换固定
+qmake Release 构建中的 `main_console.obj`。两轮原生进程执行 raw stream
+逐字节稳定；19/19 load/cancel/count/scan/cache-existence 投影与 Linux Qt5
+相同，18/18 非身份行为关系全部成立。
+
+有 record 的 cache 在 Windows 为 403 bytes、Linux 为 399 bytes；42-byte
+空 cache 两侧相同。报告保留这一平台字节差异。Windows 权限 case 使用继承
+DACL 拒绝整棵 database tree；只拒绝根目录不能替代 POSIX mode `0000`，
+因为 Windows token 的 traverse bypass 允许访问已知子路径。入口启用 Qt
+test mode，将 cache 隔离到 `qttest` app-data 命名空间。完整构建身份、DACL
+模型和复现命令见
+[`windows-database-cache-behavior.md`](windows-database-cache-behavior.md)。
+
 ## 7. 对 Rust 实现的约束
 
 - ZIP database loader 必须把 archive 结构状态与规则 parse/runtime 状态分开；
@@ -311,5 +329,5 @@ cache，也不得把部分/空状态暴露给后续扫描。若 legacy engine pr
   原子 publish，本项目不把未定义调度结果作为 golden output；
 - deflate/其他 method、encrypted ZIP、CRC mismatch、data descriptor、ZIP64；
 - 超大 entry count、声明长度欺骗、压缩比和总解压预算；
-- Windows engine cache/app-data/ACL、macOS path/QStandardPaths，以及
-  archive filename encoding。
+- Windows domain/group DACL、UNC/network share/EFS/integrity level，
+  macOS path/QStandardPaths，以及 archive filename encoding。
