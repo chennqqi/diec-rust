@@ -231,6 +231,9 @@ Phase 0 计划形成：
 - [`windows-database-cache-behavior.md`](windows-database-cache-behavior.md)：
   原生 Windows Qt5 的 19-case engine cache/DACL 双轮基线、Linux 语义投影
   和平台 cache-byte 差异（Draft）。
+- [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)：
+  将 12 份 Windows runtime 报告逐项映射到 68 行能力清单，当前为
+  37 complete、12 partial、19 missing（Draft）。
 - [`database-layer-behavior.md`](database-layer-behavior.md)：main/extra/custom 同名规则、分层顺序、加载与运行时 gate（Draft）。
 - [`engine-contract-behavior.md`](engine-contract-behavior.md)：engine 过滤/排序/停止/入口，以及 device/subdevice short-read、I/O、seek 和范围边界；闭合 `CAP-GAP-009` 与 `CAP-GAP-011`（Draft）。
 - [`nested-scan-behavior.md`](nested-scan-behavior.md)：archive/resource/overlay 的选项可达性、结果树和资源限制（Draft）。
@@ -387,6 +390,8 @@ Phase 0 计划形成：
 - [`data/database-cache-engine-windows-qt5.json`](data/database-cache-engine-windows-qt5.json)：
   原生 Windows Qt5 的相同十九状态、两轮 raw stream hash、DACL 权限投影及
   Linux Qt5 cache-size 对照。
+- [`data/windows-capability-closure-plan.json`](data/windows-capability-closure-plan.json)：
+  hash-bound 的 Windows 68 行 closure 状态、证据路径、缺失范围和建议实验。
 - [`data/database-layer-fixture.json`](data/database-layer-fixture.json)：三层同名/priority 规则的项目生成 fixture 清单。
 - [`data/database-layers-engine-qt5.json`](data/database-layers-engine-qt5.json)：固定 Qt5 engine 的三层 materialization、同名保留和 runtime gate 原始报告。
 - [`data/nested-corpus.json`](data/nested-corpus.json)：安全的 archive/resource/overlay 嵌套语料清单。

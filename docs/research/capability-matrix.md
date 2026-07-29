@@ -385,6 +385,12 @@ validator 要求本文 68 个 `CAP-*` 与 manifest 完全相等，并拒绝缺�
 0 observed with corpus gaps、0 source-only；Windows 和 macOS 各有 68 个
 platform-missing。全部行已分类不等于 Phase 0 覆盖完成。
 
+Windows 的独立逐行审计见
+[`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)：
+现有 12 份报告支持 37 complete、12 partial、19 missing。该 37 行只是 closure
+内部结论；31 个开放行关闭并经 coverage builder 接纳前，Windows 的 68 个
+platform-missing 不变。
+
 - [CLI main](https://github.com/horsicq/DIE-engine/blob/74eaf505c250ab47e709024e9dc41657cd8f2254/src/console/main_console.cpp)
 - [XOptions option table](https://github.com/horsicq/XOptions/blob/810d78d0654f45d39bf07bcda5dc92ce287a4aeb/xoptions.cpp)
 - [XScanEngine result/options model](https://github.com/horsicq/XScanEngine/blob/dfe4a419e4f491bb23688ba03c5a5bf39e34da83/xscanengine.h#L996)

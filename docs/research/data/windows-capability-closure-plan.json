@@ -1,0 +1,1238 @@
+{
+  "capabilities": [
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json",
+        "docs/research/data/windows-qt5-cli-matrix.json"
+      ],
+      "evidence_set": "cli_scan_baseline",
+      "id": "CAP-CLI-IN-001",
+      "missing_scope": null,
+      "name": "single file scan",
+      "observed_scope": "26 hash-bound corpus files exercise one positional target with deterministic Linux-equal detection projections",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-path-nested.json",
+        "docs/research/data/windows-qt5-cli-special-paths.json",
+        "docs/research/data/windows-qt5-cli-filesystem.json",
+        "docs/research/data/windows-qt5-cli-long-paths.json",
+        "docs/research/data/windows-qt5-cli-ads.json"
+      ],
+      "evidence_set": "cli_path",
+      "id": "CAP-CLI-IN-002",
+      "missing_scope": null,
+      "name": "multiple target scan",
+      "observed_scope": "ordered multi-target, duplicate, missing-plus-valid, and directory-plus-file cases are fixed",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-path-nested.json",
+        "docs/research/data/windows-qt5-cli-special-paths.json",
+        "docs/research/data/windows-qt5-cli-filesystem.json",
+        "docs/research/data/windows-qt5-cli-long-paths.json",
+        "docs/research/data/windows-qt5-cli-ads.json"
+      ],
+      "evidence_set": "cli_path",
+      "id": "CAP-CLI-IN-003",
+      "missing_scope": "UNC, reparse cycles, 4096-entry ordering, TOCTOU, and domain/network ACL profiles",
+      "name": "directory enumeration",
+      "observed_scope": "special names, Junction aliases/chains, ADS, and 324/325-code-unit paths are fixed",
+      "proposed_experiment": {
+        "assertions": [
+          "two raw observations per case are deterministic",
+          "complete enumeration order and alias multiplicity are retained",
+          "platform errors, resource use, and unsupported profiles are explicitly classified"
+        ],
+        "fixture": "extend the committed Windows path fixtures with UNC, reparse cycle, 4096-entry, TOCTOU, and ACL profiles",
+        "harness": "native Windows CLI/path collector using the pinned qmake oracle"
+      },
+      "status": "partial"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-path-nested.json",
+        "docs/research/data/windows-qt5-cli-special-paths.json",
+        "docs/research/data/windows-qt5-cli-filesystem.json",
+        "docs/research/data/windows-qt5-cli-long-paths.json",
+        "docs/research/data/windows-qt5-cli-ads.json"
+      ],
+      "evidence_set": "cli_path",
+      "id": "CAP-CLI-IN-004",
+      "missing_scope": null,
+      "name": "single-file and empty directory",
+      "observed_scope": "single-file directory and empty-directory behavior is fixed",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [],
+      "evidence_set": "engine_contract",
+      "id": "CAP-ENG-IN-001",
+      "missing_scope": "public engine memory/file/device entry-point equivalence",
+      "name": "memory scan",
+      "observed_scope": null,
+      "proposed_experiment": {
+        "assertions": [
+          "all public engine entry points retain the Linux row projection",
+          "short-read, seek, range, and failure cases preserve exact error/list behavior",
+          "signature filter, sorting, and cancellation controls are deterministic"
+        ],
+        "fixture": "docs/research/data/engine-contract-linux-qt5.json",
+        "harness": "tools/upstream/engine_contract_harness_main.cpp"
+      },
+      "status": "missing"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [],
+      "evidence_set": "engine_contract",
+      "id": "CAP-ENG-IN-002",
+      "missing_scope": "device/subdevice short-read, seek, range, and failure boundaries",
+      "name": "device and subdevice scan",
+      "observed_scope": null,
+      "proposed_experiment": {
+        "assertions": [
+          "all public engine entry points retain the Linux row projection",
+          "short-read, seek, range, and failure cases preserve exact error/list behavior",
+          "signature filter, sorting, and cancellation controls are deterministic"
+        ],
+        "fixture": "docs/research/data/engine-contract-linux-qt5.json",
+        "harness": "tools/upstream/engine_contract_harness_main.cpp"
+      },
+      "status": "missing"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json",
+        "docs/research/data/windows-qt5-cli-matrix.json"
+      ],
+      "evidence_set": "cli_scan_baseline",
+      "id": "CAP-CLI-OPT-001",
+      "missing_scope": null,
+      "name": "recursive scan option",
+      "observed_scope": "eight nested fixtures have stable recursive-scan detection trees equal to Linux Qt5",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json",
+        "docs/research/data/windows-qt5-cli-matrix.json"
+      ],
+      "evidence_set": "cli_scan_baseline",
+      "id": "CAP-CLI-OPT-002",
+      "missing_scope": null,
+      "name": "deep scan option",
+      "observed_scope": "all 26 baseline samples execute the deep-scan option twice",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json",
+        "docs/research/data/windows-qt5-cli-matrix.json"
+      ],
+      "evidence_set": "cli_scan_baseline",
+      "id": "CAP-CLI-OPT-003",
+      "missing_scope": null,
+      "name": "heuristic scan option",
+      "observed_scope": "all 26 baseline samples execute the heuristic option twice",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json",
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-database.json"
+      ],
+      "evidence_set": "cli_options",
+      "id": "CAP-CLI-OPT-004",
+      "missing_scope": "Windows verbose OS-record channel behavior",
+      "name": "verbose option",
+      "observed_scope": null,
+      "proposed_experiment": {
+        "assertions": [
+          "verbose/messages/profiling channels retain raw stdout and stderr",
+          "the complete profiling announcement order is compared",
+          "test and createtest complete/missing argument exit and text behavior are fixed"
+        ],
+        "fixture": "docs/research/data/cli-option-behavior-linux.json",
+        "harness": "tools/upstream/probe_cli_option_behavior.py"
+      },
+      "status": "missing"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json",
+        "docs/research/data/windows-qt5-cli-matrix.json"
+      ],
+      "evidence_set": "cli_scan_baseline",
+      "id": "CAP-CLI-OPT-005",
+      "missing_scope": null,
+      "name": "aggressive scan option",
+      "observed_scope": "all 26 baseline samples execute the aggressive option twice",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json",
+        "docs/research/data/windows-qt5-cli-matrix.json"
+      ],
+      "evidence_set": "cli_scan_baseline",
+      "id": "CAP-CLI-OPT-006",
+      "missing_scope": null,
+      "name": "all types option",
+      "observed_scope": "all 26 baseline samples execute all-types twice",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json",
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-database.json"
+      ],
+      "evidence_set": "cli_options",
+      "id": "CAP-CLI-OPT-007",
+      "missing_scope": null,
+      "name": "formatted result option",
+      "observed_scope": "all 26 baseline samples execute formatted-result mode twice",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json",
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-database.json"
+      ],
+      "evidence_set": "cli_options",
+      "id": "CAP-CLI-OPT-008",
+      "missing_scope": "Windows profiling channel and complete rule announcement order",
+      "name": "profiling option",
+      "observed_scope": null,
+      "proposed_experiment": {
+        "assertions": [
+          "verbose/messages/profiling channels retain raw stdout and stderr",
+          "the complete profiling announcement order is compared",
+          "test and createtest complete/missing argument exit and text behavior are fixed"
+        ],
+        "fixture": "docs/research/data/cli-option-behavior-linux.json",
+        "harness": "tools/upstream/probe_cli_option_behavior.py"
+      },
+      "status": "missing"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json",
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-database.json"
+      ],
+      "evidence_set": "cli_options",
+      "id": "CAP-CLI-OPT-009",
+      "missing_scope": null,
+      "name": "messages option",
+      "observed_scope": "database messages and structured-output contamination match Linux Qt5",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json",
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-database.json"
+      ],
+      "evidence_set": "cli_options",
+      "id": "CAP-CLI-OPT-010",
+      "missing_scope": null,
+      "name": "hide unknown option",
+      "observed_scope": "all 26 baseline samples execute hide-unknown twice",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-special-remaining.json"
+      ],
+      "evidence_set": "cli_special",
+      "id": "CAP-CLI-MODE-001",
+      "missing_scope": null,
+      "name": "entropy mode",
+      "observed_scope": "entropy covers all 26 samples and six formatters with stable priority",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-special-remaining.json"
+      ],
+      "evidence_set": "cli_special",
+      "id": "CAP-CLI-MODE-002",
+      "missing_scope": null,
+      "name": "info mode",
+      "observed_scope": "info covers all 26 samples and six formatters with stable priority",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-special-remaining.json"
+      ],
+      "evidence_set": "cli_special",
+      "id": "CAP-CLI-MODE-003",
+      "missing_scope": null,
+      "name": "struct mode",
+      "observed_scope": "generic Hash/MD5/unknown struct cases cover all 26 samples",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-special-remaining.json"
+      ],
+      "evidence_set": "cli_special",
+      "id": "CAP-CLI-MODE-004",
+      "missing_scope": null,
+      "name": "show structs mode",
+      "observed_scope": "show-structs is fixed as a control case",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json"
+      ],
+      "evidence_set": "cli_control",
+      "id": "CAP-CLI-MODE-005",
+      "missing_scope": null,
+      "name": "help mode and no-target help",
+      "observed_scope": "help and no-argument help are fixed controls",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json"
+      ],
+      "evidence_set": "cli_control",
+      "id": "CAP-CLI-MODE-006",
+      "missing_scope": null,
+      "name": "version mode",
+      "observed_scope": "version is a fixed control",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-output-remaining.json"
+      ],
+      "evidence_set": "cli_output",
+      "id": "CAP-CLI-OUT-001",
+      "missing_scope": null,
+      "name": "XML output",
+      "observed_scope": "XML runs across all 26 samples with the four stable invalid-document cases retained",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-output-remaining.json"
+      ],
+      "evidence_set": "cli_output",
+      "id": "CAP-CLI-OUT-002",
+      "missing_scope": null,
+      "name": "JSON output",
+      "observed_scope": "JSON detection projections cover all 26 samples",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-output-remaining.json"
+      ],
+      "evidence_set": "cli_output",
+      "id": "CAP-CLI-OUT-003",
+      "missing_scope": null,
+      "name": "CSV output",
+      "observed_scope": "CSV covers all 26 samples and all-output precedence remains CSV-first",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-output-remaining.json"
+      ],
+      "evidence_set": "cli_output",
+      "id": "CAP-CLI-OUT-004",
+      "missing_scope": null,
+      "name": "TSV output",
+      "observed_scope": "TSV covers all 26 samples",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-output-remaining.json"
+      ],
+      "evidence_set": "cli_output",
+      "id": "CAP-CLI-OUT-005",
+      "missing_scope": null,
+      "name": "plain text output",
+      "observed_scope": "plain text covers all 26 samples",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-database.json",
+        "docs/research/data/windows-qt5-cli-database-archive.json",
+        "docs/research/data/database-cache-engine-windows-qt5.json"
+      ],
+      "evidence_set": "database",
+      "id": "CAP-CLI-DB-001",
+      "missing_scope": null,
+      "name": "main database path",
+      "observed_scope": "main database success, missing, invalid ZIP, malformed, throwing, and ZIP boundaries are fixed",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-database.json",
+        "docs/research/data/windows-qt5-cli-database-archive.json",
+        "docs/research/data/database-cache-engine-windows-qt5.json"
+      ],
+      "evidence_set": "database",
+      "id": "CAP-CLI-DB-002",
+      "missing_scope": null,
+      "name": "extra database path",
+      "observed_scope": "extra database missing/success behavior is fixed",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-database.json",
+        "docs/research/data/windows-qt5-cli-database-archive.json",
+        "docs/research/data/database-cache-engine-windows-qt5.json"
+      ],
+      "evidence_set": "database",
+      "id": "CAP-CLI-DB-003",
+      "missing_scope": null,
+      "name": "custom database path",
+      "observed_scope": "custom database missing/success behavior is fixed",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-database.json",
+        "docs/research/data/windows-qt5-cli-database-archive.json",
+        "docs/research/data/database-cache-engine-windows-qt5.json"
+      ],
+      "evidence_set": "database",
+      "id": "CAP-CLI-DB-004",
+      "missing_scope": null,
+      "name": "show database mode",
+      "observed_scope": "show-database directory and 17 ZIP boundary cases are fixed",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json",
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-database.json"
+      ],
+      "evidence_set": "cli_options",
+      "id": "CAP-CLI-TEST-001",
+      "missing_scope": "Windows --test complete/missing argument behavior",
+      "name": "test mode no-op",
+      "observed_scope": null,
+      "proposed_experiment": {
+        "assertions": [
+          "verbose/messages/profiling channels retain raw stdout and stderr",
+          "the complete profiling announcement order is compared",
+          "test and createtest complete/missing argument exit and text behavior are fixed"
+        ],
+        "fixture": "docs/research/data/cli-option-behavior-linux.json",
+        "harness": "tools/upstream/probe_cli_option_behavior.py"
+      },
+      "status": "missing"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json",
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-database.json"
+      ],
+      "evidence_set": "cli_options",
+      "id": "CAP-CLI-TEST-002",
+      "missing_scope": "Windows --createtest complete/missing argument behavior",
+      "name": "create test mode no-op",
+      "observed_scope": null,
+      "proposed_experiment": {
+        "assertions": [
+          "verbose/messages/profiling channels retain raw stdout and stderr",
+          "the complete profiling announcement order is compared",
+          "test and createtest complete/missing argument exit and text behavior are fixed"
+        ],
+        "fixture": "docs/research/data/cli-option-behavior-linux.json",
+        "harness": "tools/upstream/probe_cli_option_behavior.py"
+      },
+      "status": "missing"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-database.json"
+      ],
+      "evidence_set": "rule_orchestration",
+      "id": "CAP-RULE-001",
+      "missing_scope": "engine append order and same-name records across all three database layers",
+      "name": "three database layers",
+      "observed_scope": "CLI main/extra/custom path acceptance and missing-layer behavior are fixed",
+      "proposed_experiment": {
+        "assertions": [
+          "three-layer append and same-name records are retained",
+          "global/type init, priority, lexical, and include precedence are fixed",
+          "wrong-type, deep, entry-point, and heuristic gates are independently exercised"
+        ],
+        "fixture": "tools/corpus/generate_rule_orchestration_fixture.py",
+        "harness": "tools/upstream/probe_rule_orchestration.py"
+      },
+      "status": "partial"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-database.json"
+      ],
+      "evidence_set": "rule_orchestration",
+      "id": "CAP-RULE-002",
+      "missing_scope": "priority, lexical, missing, empty, and type-init rule ordering",
+      "name": "rule priority ordering",
+      "observed_scope": "formatter precedence and stable public detection order are fixed",
+      "proposed_experiment": {
+        "assertions": [
+          "three-layer append and same-name records are retained",
+          "global/type init, priority, lexical, and include precedence are fixed",
+          "wrong-type, deep, entry-point, and heuristic gates are independently exercised"
+        ],
+        "fixture": "tools/corpus/generate_rule_orchestration_fixture.py",
+        "harness": "tools/upstream/probe_rule_orchestration.py"
+      },
+      "status": "partial"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-database.json"
+      ],
+      "evidence_set": "rule_orchestration",
+      "id": "CAP-RULE-003",
+      "missing_scope": "global init, type init, and same-name include precedence",
+      "name": "global and type init rules",
+      "observed_scope": null,
+      "proposed_experiment": {
+        "assertions": [
+          "three-layer append and same-name records are retained",
+          "global/type init, priority, lexical, and include precedence are fixed",
+          "wrong-type, deep, entry-point, and heuristic gates are independently exercised"
+        ],
+        "fixture": "tools/corpus/generate_rule_orchestration_fixture.py",
+        "harness": "tools/upstream/probe_rule_orchestration.py"
+      },
+      "status": "missing"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-database.json"
+      ],
+      "evidence_set": "rule_orchestration",
+      "id": "CAP-RULE-004",
+      "missing_scope": "wrong-file-type custom rules under all four scan modes",
+      "name": "file type rule filtering",
+      "observed_scope": "26 public format projections establish ordinary type dispatch",
+      "proposed_experiment": {
+        "assertions": [
+          "three-layer append and same-name records are retained",
+          "global/type init, priority, lexical, and include precedence are fixed",
+          "wrong-type, deep, entry-point, and heuristic gates are independently exercised"
+        ],
+        "fixture": "tools/corpus/generate_rule_orchestration_fixture.py",
+        "harness": "tools/upstream/probe_rule_orchestration.py"
+      },
+      "status": "partial"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-database.json"
+      ],
+      "evidence_set": "rule_orchestration",
+      "id": "CAP-RULE-005",
+      "missing_scope": "independent deep, entry-point, and heuristic custom-rule gates",
+      "name": "deep and heuristic rule filtering",
+      "observed_scope": "deep and heuristic public CLI options execute across 26 samples",
+      "proposed_experiment": {
+        "assertions": [
+          "three-layer append and same-name records are retained",
+          "global/type init, priority, lexical, and include precedence are fixed",
+          "wrong-type, deep, entry-point, and heuristic gates are independently exercised"
+        ],
+        "fixture": "tools/corpus/generate_rule_orchestration_fixture.py",
+        "harness": "tools/upstream/probe_rule_orchestration.py"
+      },
+      "status": "partial"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [],
+      "evidence_set": "engine_contract",
+      "id": "CAP-RULE-006",
+      "missing_scope": "exact signature-name filter, case, deep, and missing controls",
+      "name": "single signature filtering",
+      "observed_scope": null,
+      "proposed_experiment": {
+        "assertions": [
+          "all public engine entry points retain the Linux row projection",
+          "short-read, seek, range, and failure cases preserve exact error/list behavior",
+          "signature filter, sorting, and cancellation controls are deterministic"
+        ],
+        "fixture": "docs/research/data/engine-contract-linux-qt5.json",
+        "harness": "tools/upstream/engine_contract_harness_main.cpp"
+      },
+      "status": "missing"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [],
+      "evidence_set": "signature_path_filter",
+      "id": "CAP-RULE-007",
+      "missing_scope": "private signature-path filter boundaries",
+      "name": "signature path filtering",
+      "observed_scope": null,
+      "proposed_experiment": {
+        "assertions": [
+          "exact, empty, missing, case, dot-dot, deep, and disabled cases execute",
+          "raw rule-path values are retained without platform rewriting",
+          "two runs preserve record and error projections"
+        ],
+        "fixture": "tools/corpus/generate_signature_path_fixture.py",
+        "harness": "tools/upstream/signature_path_harness_main.cpp"
+      },
+      "status": "missing"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-database.json"
+      ],
+      "evidence_set": "rule_orchestration",
+      "id": "CAP-RULE-008",
+      "missing_scope": null,
+      "name": "unknown fallback",
+      "observed_scope": "empty database and ordinary unknown inputs produce stable Unknown fallback",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [],
+      "evidence_set": "engine_contract",
+      "id": "CAP-RULE-009",
+      "missing_scope": "sort enabled/disabled engine record ordering",
+      "name": "result sorting option",
+      "observed_scope": null,
+      "proposed_experiment": {
+        "assertions": [
+          "all public engine entry points retain the Linux row projection",
+          "short-read, seek, range, and failure cases preserve exact error/list behavior",
+          "signature filter, sorting, and cancellation controls are deterministic"
+        ],
+        "fixture": "docs/research/data/engine-contract-linux-qt5.json",
+        "harness": "tools/upstream/engine_contract_harness_main.cpp"
+      },
+      "status": "missing"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-database.json"
+      ],
+      "evidence_set": "rule_orchestration",
+      "id": "CAP-RULE-010",
+      "missing_scope": null,
+      "name": "script error collection",
+      "observed_scope": "malformed and throwing database rules retain exact diagnostic visibility and JSON invalidity",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json",
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-database.json"
+      ],
+      "evidence_set": "cli_options",
+      "id": "CAP-RULE-011",
+      "missing_scope": "complete Windows script profiling order",
+      "name": "script profiling",
+      "observed_scope": null,
+      "proposed_experiment": {
+        "assertions": [
+          "verbose/messages/profiling channels retain raw stdout and stderr",
+          "the complete profiling announcement order is compared",
+          "test and createtest complete/missing argument exit and text behavior are fixed"
+        ],
+        "fixture": "docs/research/data/cli-option-behavior-linux.json",
+        "harness": "tools/upstream/probe_cli_option_behavior.py"
+      },
+      "status": "missing"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [],
+      "evidence_set": "engine_contract",
+      "id": "CAP-RULE-012",
+      "missing_scope": "callback break, pre-stop, and synchronized cancellation",
+      "name": "cancellation and stop",
+      "observed_scope": null,
+      "proposed_experiment": {
+        "assertions": [
+          "all public engine entry points retain the Linux row projection",
+          "short-read, seek, range, and failure cases preserve exact error/list behavior",
+          "signature filter, sorting, and cancellation controls are deterministic"
+        ],
+        "fixture": "docs/research/data/engine-contract-linux-qt5.json",
+        "harness": "tools/upstream/engine_contract_harness_main.cpp"
+      },
+      "status": "missing"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json",
+        "docs/research/data/windows-qt5-cli-matrix.json"
+      ],
+      "evidence_set": "dispatch_source",
+      "id": "CAP-DISPATCH-001",
+      "missing_scope": null,
+      "name": "PE ELF and Mach-O dispatch",
+      "observed_scope": "PE32/64, ELF32/64, and Mach-O 32/64/FAT projections are fixed",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json",
+        "docs/research/data/windows-qt5-cli-matrix.json"
+      ],
+      "evidence_set": "dispatch_source",
+      "id": "CAP-DISPATCH-002",
+      "missing_scope": "DOS/COM public dispatch and BW property-only branch",
+      "name": "DOS and COM public dispatch plus BW property-only branch",
+      "observed_scope": null,
+      "proposed_experiment": {
+        "assertions": [
+          "DOS/COM and Amiga/Atari positive and negative cases execute",
+          "public dispatch and detector/property-only branches are distinguished",
+          "raw and structured Windows/Linux differences are classified"
+        ],
+        "fixture": "tools/corpus/generate_legacy_dispatch_corpus.py",
+        "harness": "tools/upstream/probe_legacy_dispatch.py"
+      },
+      "status": "missing"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json",
+        "docs/research/data/windows-qt5-cli-matrix.json"
+      ],
+      "evidence_set": "dispatch_source",
+      "id": "CAP-DISPATCH-003",
+      "missing_scope": "Amiga Hunk public dispatch and Atari ST detector-only fallback",
+      "name": "Amiga Hunk dispatch and Atari ST detector-only fallback",
+      "observed_scope": null,
+      "proposed_experiment": {
+        "assertions": [
+          "DOS/COM and Amiga/Atari positive and negative cases execute",
+          "public dispatch and detector/property-only branches are distinguished",
+          "raw and structured Windows/Linux differences are classified"
+        ],
+        "fixture": "tools/corpus/generate_legacy_dispatch_corpus.py",
+        "harness": "tools/upstream/probe_legacy_dispatch.py"
+      },
+      "status": "missing"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json",
+        "docs/research/data/windows-qt5-cli-matrix.json"
+      ],
+      "evidence_set": "dispatch_source",
+      "id": "CAP-DISPATCH-004",
+      "missing_scope": "NPM auto/forced dispatch and direct Archive property-only controls",
+      "name": "archive family dispatch",
+      "observed_scope": "APK, IPA, JAR, ZIP, RAR, ISO9660, TAR, and GZip public projections are fixed",
+      "proposed_experiment": {
+        "assertions": [
+          "NPM auto and forced paths execute",
+          "direct Archive property-only controls execute",
+          "dispatch names, child trees, and errors are compared to Linux Qt5"
+        ],
+        "fixture": "tools/corpus/generate_generic_archive_dispatch_fixture.py",
+        "harness": "tools/upstream/probe_generic_archive_dispatch_harness.py"
+      },
+      "status": "partial"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json",
+        "docs/research/data/windows-qt5-cli-matrix.json"
+      ],
+      "evidence_set": "dispatch_source",
+      "id": "CAP-DISPATCH-005",
+      "missing_scope": null,
+      "name": "DEX Java Class and PYC dispatch",
+      "observed_scope": "DEX, Java Class, and PYC projections are fixed",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json",
+        "docs/research/data/windows-qt5-cli-matrix.json"
+      ],
+      "evidence_set": "dispatch_source",
+      "id": "CAP-DISPATCH-006",
+      "missing_scope": null,
+      "name": "PDF and CFBF dispatch",
+      "observed_scope": "PDF and CFBF projections are fixed",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json",
+        "docs/research/data/windows-qt5-cli-matrix.json"
+      ],
+      "evidence_set": "dispatch_source",
+      "id": "CAP-DISPATCH-007",
+      "missing_scope": null,
+      "name": "image dispatch",
+      "observed_scope": "JPEG, PNG, and BMP/Image projections are fixed",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json",
+        "docs/research/data/windows-qt5-cli-matrix.json"
+      ],
+      "evidence_set": "dispatch_source",
+      "id": "CAP-DISPATCH-008",
+      "missing_scope": null,
+      "name": "binary fallback dispatch",
+      "observed_scope": "empty and plain binary fallback projections are fixed",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-path-nested.json"
+      ],
+      "evidence_set": "nested_scan",
+      "id": "CAP-NEST-001",
+      "missing_scope": null,
+      "name": "directory recursion versus internal recursion",
+      "observed_scope": "directory traversal and internal recursive-scan controls are both fixed",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-path-nested.json"
+      ],
+      "evidence_set": "nested_scan",
+      "id": "CAP-NEST-002",
+      "missing_scope": null,
+      "name": "resource and overlay recursive scan",
+      "observed_scope": "resource and overlay recursive-scan projections are fixed",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-path-nested.json"
+      ],
+      "evidence_set": "nested_scan",
+      "id": "CAP-NEST-003",
+      "missing_scope": "direct engine archive option independent of aggressive",
+      "name": "archive scan is engine-only",
+      "observed_scope": null,
+      "proposed_experiment": {
+        "assertions": [
+          "direct engine options are separated from release CLI flags",
+          "count, depth, and cumulative-byte sentinel boundaries execute",
+          "context propagation, debug omission, cancellation, and resource projections are retained"
+        ],
+        "fixture": "docs/research/data/nested-corpus.json",
+        "harness": "port the archive-option, iteration, resource-context, debug, and archive-limit probes under tools/upstream/"
+      },
+      "status": "missing"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-path-nested.json"
+      ],
+      "evidence_set": "nested_scan",
+      "id": "CAP-NEST-004",
+      "missing_scope": "99999/100000/100001 archive and 21/2001 resource count boundaries",
+      "name": "archive and resource count boundary",
+      "observed_scope": null,
+      "proposed_experiment": {
+        "assertions": [
+          "direct engine options are separated from release CLI flags",
+          "count, depth, and cumulative-byte sentinel boundaries execute",
+          "context propagation, debug omission, cancellation, and resource projections are retained"
+        ],
+        "fixture": "docs/research/data/nested-corpus.json",
+        "harness": "port the archive-option, iteration, resource-context, debug, and archive-limit probes under tools/upstream/"
+      },
+      "status": "missing"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-path-nested.json"
+      ],
+      "evidence_set": "nested_scan",
+      "id": "CAP-NEST-005",
+      "missing_scope": null,
+      "name": "overlay and resource subdevice gate",
+      "observed_scope": "overlay and resource recursive/aggressive gate projections are fixed",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-path-nested.json"
+      ],
+      "evidence_set": "nested_scan",
+      "id": "CAP-NEST-006",
+      "missing_scope": "recursive/aggressive resource context propagation",
+      "name": "resource context propagation",
+      "observed_scope": null,
+      "proposed_experiment": {
+        "assertions": [
+          "direct engine options are separated from release CLI flags",
+          "count, depth, and cumulative-byte sentinel boundaries execute",
+          "context propagation, debug omission, cancellation, and resource projections are retained"
+        ],
+        "fixture": "docs/research/data/nested-corpus.json",
+        "harness": "port the archive-option, iteration, resource-context, debug, and archive-limit probes under tools/upstream/"
+      },
+      "status": "missing"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [],
+      "evidence_set": "debug_data_dispatch",
+      "id": "CAP-NEST-007",
+      "missing_scope": "public debug-data omission plus direct positive control",
+      "name": "debug data is not scanner dispatched",
+      "observed_scope": null,
+      "proposed_experiment": {
+        "assertions": [
+          "direct engine options are separated from release CLI flags",
+          "count, depth, and cumulative-byte sentinel boundaries execute",
+          "context propagation, debug omission, cancellation, and resource projections are retained"
+        ],
+        "fixture": "docs/research/data/nested-corpus.json",
+        "harness": "port the archive-option, iteration, resource-context, debug, and archive-limit probes under tools/upstream/"
+      },
+      "status": "missing"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-path-nested.json"
+      ],
+      "evidence_set": "nested_scan",
+      "id": "CAP-NEST-008",
+      "missing_scope": null,
+      "name": "nested JSON result tree",
+      "observed_scope": "nested result trees are fixed across 32 CLI cases",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/windows-qt5-cli-path-nested.json"
+      ],
+      "evidence_set": "nested_scan",
+      "id": "CAP-NEST-009",
+      "missing_scope": "depth-64 and 33,554,546-byte cumulative expansion behavior",
+      "name": "no independent depth or total extraction limit",
+      "observed_scope": null,
+      "proposed_experiment": {
+        "assertions": [
+          "direct engine options are separated from release CLI flags",
+          "count, depth, and cumulative-byte sentinel boundaries execute",
+          "context propagation, debug omission, cancellation, and resource projections are retained"
+        ],
+        "fixture": "docs/research/data/nested-corpus.json",
+        "harness": "port the archive-option, iteration, resource-context, debug, and archive-limit probes under tools/upstream/"
+      },
+      "status": "missing"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json",
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-path-nested.json",
+        "docs/research/data/windows-qt5-cli-database.json"
+      ],
+      "evidence_set": "result_model",
+      "id": "CAP-RESULT-001",
+      "missing_scope": "engine scalar fields across memory/device entry points including scan time treatment",
+      "name": "scan result scalar metadata",
+      "observed_scope": "CLI filetype, offset, size, parent part, and detection strings are fixed",
+      "proposed_experiment": {
+        "assertions": [
+          "scalar fields and all result lists are captured",
+          "flags, identifiers, and enum raw/canonical forms are retained",
+          "version, info, rule path/name, priority, and nondeterministic fields are classified"
+        ],
+        "fixture": "docs/research/data/result-list-fixture.json, docs/research/data/result-flag-fixture.json, and docs/research/data/result-enum-fixture.json; metadata and ID harnesses are self-contained",
+        "harness": "port result_metadata/result_lists/result_ids/result_flags/result_enums harnesses under tools/upstream/"
+      },
+      "status": "partial"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json",
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-path-nested.json",
+        "docs/research/data/windows-qt5-cli-database.json"
+      ],
+      "evidence_set": "result_model",
+      "id": "CAP-RESULT-002",
+      "missing_scope": "engine record/error/debug/handler list inventory",
+      "name": "scan result record error debug and handler lists",
+      "observed_scope": "CLI detection records and database error framing are fixed",
+      "proposed_experiment": {
+        "assertions": [
+          "scalar fields and all result lists are captured",
+          "flags, identifiers, and enum raw/canonical forms are retained",
+          "version, info, rule path/name, priority, and nondeterministic fields are classified"
+        ],
+        "fixture": "docs/research/data/result-list-fixture.json, docs/research/data/result-flag-fixture.json, and docs/research/data/result-enum-fixture.json; metadata and ID harnesses are self-contained",
+        "harness": "port result_metadata/result_lists/result_ids/result_flags/result_enums harnesses under tools/upstream/"
+      },
+      "status": "partial"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json",
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-path-nested.json",
+        "docs/research/data/windows-qt5-cli-database.json"
+      ],
+      "evidence_set": "result_model",
+      "id": "CAP-RESULT-003",
+      "missing_scope": "engine heuristic, advanced-heuristic, and unknown flag truth table",
+      "name": "heuristic and unknown flags",
+      "observed_scope": "public heuristic and Unknown projections are fixed",
+      "proposed_experiment": {
+        "assertions": [
+          "scalar fields and all result lists are captured",
+          "flags, identifiers, and enum raw/canonical forms are retained",
+          "version, info, rule path/name, priority, and nondeterministic fields are classified"
+        ],
+        "fixture": "docs/research/data/result-list-fixture.json, docs/research/data/result-flag-fixture.json, and docs/research/data/result-enum-fixture.json; metadata and ID harnesses are self-contained",
+        "harness": "port result_metadata/result_lists/result_ids/result_flags/result_enums harnesses under tools/upstream/"
+      },
+      "status": "partial"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json",
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-path-nested.json",
+        "docs/research/data/windows-qt5-cli-database.json"
+      ],
+      "evidence_set": "result_model",
+      "id": "CAP-RESULT-004",
+      "missing_scope": "record and parent identifier invariants modulo UUID values",
+      "name": "record and parent identifiers",
+      "observed_scope": "nested CLI parent/child tree shape is fixed",
+      "proposed_experiment": {
+        "assertions": [
+          "scalar fields and all result lists are captured",
+          "flags, identifiers, and enum raw/canonical forms are retained",
+          "version, info, rule path/name, priority, and nondeterministic fields are classified"
+        ],
+        "fixture": "docs/research/data/result-list-fixture.json, docs/research/data/result-flag-fixture.json, and docs/research/data/result-enum-fixture.json; metadata and ID harnesses are self-contained",
+        "harness": "port result_metadata/result_lists/result_ids/result_flags/result_enums harnesses under tools/upstream/"
+      },
+      "status": "partial"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json",
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-path-nested.json",
+        "docs/research/data/windows-qt5-cli-database.json"
+      ],
+      "evidence_set": "result_model",
+      "id": "CAP-RESULT-005",
+      "missing_scope": "raw, numeric, reserved, and fallback enum mapping",
+      "name": "record type and name representations",
+      "observed_scope": "canonical CLI type/name strings across 26 samples are fixed",
+      "proposed_experiment": {
+        "assertions": [
+          "scalar fields and all result lists are captured",
+          "flags, identifiers, and enum raw/canonical forms are retained",
+          "version, info, rule path/name, priority, and nondeterministic fields are classified"
+        ],
+        "fixture": "docs/research/data/result-list-fixture.json, docs/research/data/result-flag-fixture.json, and docs/research/data/result-enum-fixture.json; metadata and ID harnesses are self-contained",
+        "harness": "port result_metadata/result_lists/result_ids/result_flags/result_enums harnesses under tools/upstream/"
+      },
+      "status": "partial"
+    },
+    {
+      "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
+      "evidence_paths": [
+        "docs/research/data/baseline-corpus-windows-qt5.json",
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/windows-qt5-cli-path-nested.json",
+        "docs/research/data/windows-qt5-cli-database.json"
+      ],
+      "evidence_set": "result_model",
+      "id": "CAP-RESULT-006",
+      "missing_scope": "engine version/info/rule-name/rule-path/priority fields",
+      "name": "record version info rule and priority",
+      "observed_scope": "normal CLI record strings and priority outcomes are fixed",
+      "proposed_experiment": {
+        "assertions": [
+          "scalar fields and all result lists are captured",
+          "flags, identifiers, and enum raw/canonical forms are retained",
+          "version, info, rule path/name, priority, and nondeterministic fields are classified"
+        ],
+        "fixture": "docs/research/data/result-list-fixture.json, docs/research/data/result-flag-fixture.json, and docs/research/data/result-enum-fixture.json; metadata and ID harnesses are self-contained",
+        "harness": "port result_metadata/result_lists/result_ids/result_flags/result_enums harnesses under tools/upstream/"
+      },
+      "status": "partial"
+    }
+  ],
+  "evaluated_on": "2026-07-29",
+  "platform": "windows-x86_64-qt5",
+  "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+  "schema_version": 1,
+  "sources": {
+    "docs/research/data/baseline-corpus-windows-qt5.json": "6beba732e88d90ed1414dd2584a4a783eac24dec70103fc54e6214eb12cca998",
+    "docs/research/data/capability-traceability.json": "e1bb982feb52fb97e6678319c629cf71735650fe4239c8558a0f765c16c8cff3",
+    "docs/research/data/database-cache-engine-windows-qt5.json": "d1cbcbe741e4cf3999f54f4696f6eee59472b59bd3aaf9d98f94bb337b1e16da",
+    "docs/research/data/windows-qt5-build-baseline.json": "2a5b163fe27941a8a84dc201d0a374485e4c8c6971e9b99305fc834d5f174fef",
+    "docs/research/data/windows-qt5-cli-ads.json": "bfdec0a8a516dd5d86721a9331d1d914c7e66f29df0fe0d6115c6dcca079224e",
+    "docs/research/data/windows-qt5-cli-database-archive.json": "53c673620cc4388f0da7ffe36af7a325a099bceb0e29912c1f733119f942d748",
+    "docs/research/data/windows-qt5-cli-database.json": "13e58a8d1b0cc4feb3998c06140e0afe7adb754cb59e5198b0e5b3079a3d5f8c",
+    "docs/research/data/windows-qt5-cli-filesystem.json": "bab9ce41f5bc82e56cba42a2d577669e8d8a6a372da030b0957fcb8b888fa02f",
+    "docs/research/data/windows-qt5-cli-long-paths.json": "54084feff726a1da17e8b4b7ff40eed46733bd6eb2f5f900e4f02ec43bfb6cf5",
+    "docs/research/data/windows-qt5-cli-matrix.json": "0ab0b636361da958ad6ac32272f9ce261c830e2f3654bc42d99a2dfd474be959",
+    "docs/research/data/windows-qt5-cli-output-remaining.json": "672370ebb6f689366098af2e2262be60569a37f7f80c781a1b49b044c4887376",
+    "docs/research/data/windows-qt5-cli-path-nested.json": "e877e112deb244ab1cbf9edf221e94e155cda711a182f216478eeaf9da40e21b",
+    "docs/research/data/windows-qt5-cli-special-paths.json": "f4e2f4ced3190a51df3bfa34cbdf8ad949130aadab324c7e725365a2c7fa8e68",
+    "docs/research/data/windows-qt5-cli-special-remaining.json": "194f1a1610a18f8fe22814315e67e345ed967c3f61df2604ac3089abbc538cc2"
+  },
+  "summary": {
+    "all_capabilities_accounted_for": true,
+    "capability_count": 68,
+    "closure_required": 31,
+    "evidence_complete": 37,
+    "missing": 19,
+    "partial": 12,
+    "windows_baseline_admitted": false,
+    "windows_process_execution_count": 2070,
+    "windows_report_count": 12
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

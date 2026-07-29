@@ -85,6 +85,12 @@ Linux Qt5 相同，同时保留 populated cache 的 `403` vs `399` byte 差异�
 十二份 Windows runtime 报告累计 2,070 次进程执行，详见
 [`windows-database-cache-behavior.md`](windows-database-cache-behavior.md)。
 
+上述 12 份报告现由
+[`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)
+逐行投影到 68 个稳定能力 ID：37 complete、12 partial、19 missing。该审计
+阻止局部 runtime 结果被误当作完整 Windows baseline，并把下一优先批次固定为
+engine contract 的 5 个 missing 行。
+
 同一剩余 21 样本 × 19-case special 矩阵又在固定 Linux Qt5/Qt6 image 上
 各执行一次，共 798 次容器执行。399/399 raw observations 逐字节相同；231 个
 JSON/XML projection 在 Qt5/Qt6 及 Windows/Linux Qt5 间相同，跨 Windows 时

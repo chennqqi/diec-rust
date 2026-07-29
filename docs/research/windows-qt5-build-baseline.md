@@ -44,6 +44,10 @@ JSON continuity、CSV 优先级及四个带空格 filetype 的 invalid XML。
 固定源码、规则、Qt 二进制身份和构建目标。它产生的是 **Windows Qt5 qmake CLI
 候选 oracle**，不是固定上游官方 workflow 的发布包。Windows 的 68 项能力仍
 保持 `platform_missing`，直到完整差分语料在该平台执行并归档。
+逐行
+[`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)
+已把当前证据审计为 37 complete、12 partial、19 missing；31 个开放行均有
+命名验收实验。
 
 机器证据见
 [`data/windows-qt5-build-baseline.json`](data/windows-qt5-build-baseline.json)
@@ -65,6 +69,8 @@ JSON continuity、CSV 优先级及四个带空格 filetype 的 invalid XML。
 [`data/windows-qt5-cli-output-remaining.json`](data/windows-qt5-cli-output-remaining.json)。
 special 扩展见
 [`data/windows-qt5-cli-special-remaining.json`](data/windows-qt5-cli-special-remaining.json)。
+68 行 closure 机器报告见
+[`data/windows-capability-closure-plan.json`](data/windows-capability-closure-plan.json)。
 
 ## 固定环境
 

@@ -63,6 +63,14 @@ share/EFS/integrity level、其他 engine-only 能力以及跨平台扩展
 仍缺失，coverage 生成器尚不接纳 Windows 为完整 runtime
 baseline，68 行继续保守标记为 `platform_missing`。
 
+独立的 hash-bound
+[`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)
+现已把这 68 行逐项审计为 37 `evidence_complete`、12 partial、19 missing，
+机器报告 SHA-256 为
+`f581f521991d8d074da8ff3d21ec7034558774c42eb5143e430dcf56e28a8cda`。
+该报告绑定上述 12 份 Windows runtime 证据并为 31 个开放行给出验收实验；
+在 68 行全部 complete 前，coverage 生成器不消费它来提升平台状态。
+
 另有 798 次 Linux Qt5/Qt6 special 扩展执行把剩余 21 样本的 399 对 raw
 observations 固定为逐字节相同，并证明 231 个 JSON/XML projection 在
 Qt5/Qt6 及规范化后的 Windows/Linux Qt5 间相同。这加强 special 证据，但不
@@ -108,7 +116,9 @@ raw 完全相同，7 个 PE64 case 只保留已知 Qt6 stderr；21 个 JSON tree
 - Linux Qt5 source-only 能力已清零；
 - Linux Qt5 已命名 corpus gap 已清零；
 - Linux Qt6 的 68 行已全部接纳为 runtime observed；
-- Windows 与 macOS 各有 68 个 `platform_missing`；
+- Windows 的独立 closure 审计为 37 complete/12 partial/19 missing，但尚未
+  接纳，因此 coverage 仍显示 68 个 `platform_missing`；
+- macOS 有 68 个 `platform_missing`，且尚无固定 oracle；
 - `phase_0_coverage_complete` 必须保持 `false`。
 
 ## 5. 缺口映射
@@ -273,6 +283,9 @@ python tools/tests/test_capability_coverage.py
 有已知状态；Linux Qt5/Qt6 各保持 68 个 `runtime_observed`；Windows 与 macOS
 各保持 68 个 `platform_missing`；closed/open gap 均映射到已知能力；所有
 `with_corpus_gaps` 状态都至少关联一个具名 corpus gap。
+
+Windows 的 37/12/19 closure 由独立生成器验证；在其达到 68/0/0 并显式接入
+coverage builder 前，不改变本段机器契约。
 
 ## 7. 对 Phase 0 门禁的影响
 
