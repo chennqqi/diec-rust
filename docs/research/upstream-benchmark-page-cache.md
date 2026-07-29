@@ -131,6 +131,13 @@ nonresident”，不能简写成“cold run”。下一阶段 controller 设计�
 任何选择都不能用一次 `fadvise` 返回 0 代替 `mincore` 后验，也不能把 container
 边界自动当成独立 host page cache。
 
+后续
+[`upstream-benchmark-cache-environment.md`](upstream-benchmark-cache-environment.md)
+已固定当前 overlayfs、namespace、capability 与 `drop_caches=EROFS` 边界；
+ADR 0015 提议采用选项 1 的精确名称
+`file-content-nonresident-metadata-warm`，并把完整层命名为只允许 dedicated
+environment 的 `system-cold`。该决策仍待评审。
+
 ## 复现
 
 ```powershell
@@ -145,7 +152,8 @@ PIDs。
 
 ## 尚未完成
 
-- 评审并命名 metadata-warm/file-content-nonresident benchmark 层；
+- 评审 ADR 0015 的 `file-content-nonresident-metadata-warm` 与
+  `system-cold` taxonomy；
 - failed lookup、directory、dentry/inode 与 overlayfs cache 口径；
 - 若选择全局 cold，建立隔离 VM/裸机 controller 与前后验证；
 - 三次独立 session、跨 reboot/日期与 physical-core/SMT/frequency 控制；

@@ -45,3 +45,9 @@
 - [`0013-fail-closed-incomplete-input.md`](0013-fail-closed-incomplete-input.md)：
   short read、I/O/seek 失败与非法 subdevice 范围必须类型化失败，不复制上游
   未初始化尾部或 slice 外读取（Proposed）。
+- [`0014-bounded-path-expansion.md`](0014-bounded-path-expansion.md)：
+  safe canonical 不跟随枚举 link；legacy alias 仍受 cycle、TOCTOU recheck 与
+  hard budget 约束（Proposed）。
+- [`0015-benchmark-cache-state-model.md`](0015-benchmark-cache-state-model.md)：
+  显式区分 warm、file-content-nonresident-metadata-warm 与 dedicated
+  system-cold，永久禁止含混的 cold 标签（Proposed）。

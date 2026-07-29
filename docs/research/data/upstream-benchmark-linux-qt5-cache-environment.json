@@ -1,0 +1,207 @@
+{
+  "decision_inputs": {
+    "file_content_nonresident_metadata_warm": "eligible only with per-path mincore proof immediately before every measured command",
+    "generic_cold": "forbidden because it is ambiguous",
+    "system_cold": "requires a disposable dedicated VM or bare-metal host, explicit authority, global drop validation and no unrelated workloads",
+    "warm": "existing runner contract; explicit process warmups"
+  },
+  "environment": {
+    "cgroup": {
+      "cpu_max": "100000 100000",
+      "cpuset_effective": "0",
+      "memory_max": "536870912",
+      "pids_max": "128"
+    },
+    "container_limits": {
+      "cpus": "1",
+      "memory": "512m",
+      "network": "none",
+      "pids": 128
+    },
+    "cpu_affinity": {
+      "requested_cpuset_cpu": "0",
+      "scope": "linux_vcpu"
+    },
+    "image": "diec-rust/upstream-benchmark-qt5:74eaf505",
+    "image_identity": {
+      "id": "sha256:9f1d70a8d4513404cdc457074e00dec4a9b8a6f043a572ffc17465bbe699eb09",
+      "repo_digests": [
+        "diec-rust/upstream-benchmark-qt5@sha256:9f1d70a8d4513404cdc457074e00dec4a9b8a6f043a572ffc17465bbe699eb09"
+      ],
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    },
+    "network": "none"
+  },
+  "generator": "tools/benchmark/probe_upstream_benchmark_cache_environment.py",
+  "generator_sha256": "3d45c9ddb293658fa98d1f36bba2a88924624c15e386f82f475d3e97a936eb45",
+  "kernel_contract_sources": [
+    {
+      "claim": "drop_caches values 1/2/3 reclaim clean page cache, dentries and inodes; use may cause performance problems",
+      "url": "https://docs.kernel.org/6.6/admin-guide/sysctl/vm.html#drop-caches"
+    },
+    {
+      "claim": "POSIX_FADV_DONTNEED attempts to free file pages and mincore can snapshot file-page residency",
+      "url": "https://man7.org/linux/man-pages/man2/posix_fadvise.2.html"
+    },
+    {
+      "claim": "Linux exposes cgroup, IPC, mount, network, PID, time, user and UTS namespaces, not a page-cache namespace",
+      "url": "https://man7.org/linux/man-pages/man7/namespaces.7.html"
+    },
+    {
+      "claim": "Docker overlay2 containers accessing the same file share a page-cache entry",
+      "url": "https://docs.docker.com/engine/storage/drivers/overlayfs-driver/#page-caching"
+    }
+  ],
+  "limitations": [
+    "the immutable image does not pin the Docker Desktop WSL2 kernel, so the exact observed kernel identity remains part of the report",
+    "mount namespaces isolate mount views, not page-cache instances; overlay2 may share page-cache entries across containers",
+    "the benchmark container has no CAP_SYS_ADMIN and /proc/sys is read-only; no privileged container was attempted",
+    "writing drop_caches would affect kernel-wide caches and can harm unrelated workloads, so it is outside this probe's authority",
+    "the existing per-file fadvise/mincore evidence remains valid only for the named file-content-nonresident metadata-warm layer"
+  ],
+  "observation": {
+    "kernel": {
+      "machine": "x86_64",
+      "release": "6.6.87.2-microsoft-standard-WSL2",
+      "system": "Linux",
+      "version": "#1 SMP PREEMPT_DYNAMIC Thu Jun  5 18:30:46 UTC 2025"
+    },
+    "mounts": {
+      "/": {
+        "filesystem_type": "overlay",
+        "mount_options": [
+          "relatime",
+          "rw"
+        ],
+        "source": "overlay",
+        "super_options": [
+          "rw"
+        ],
+        "volatile_super_option_presence": {
+          "lowerdir": true,
+          "upperdir": true,
+          "workdir": true
+        }
+      },
+      "/proc/sys": {
+        "filesystem_type": "proc",
+        "mount_options": [
+          "nodev",
+          "noexec",
+          "nosuid",
+          "relatime",
+          "ro"
+        ],
+        "source": "proc",
+        "super_options": [
+          "rw"
+        ],
+        "volatile_super_option_presence": {
+          "lowerdir": false,
+          "upperdir": false,
+          "workdir": false
+        }
+      },
+      "/sys/fs/cgroup": {
+        "filesystem_type": "cgroup2",
+        "mount_options": [
+          "nodev",
+          "noexec",
+          "nosuid",
+          "relatime",
+          "ro"
+        ],
+        "source": "cgroup",
+        "super_options": [
+          "rw"
+        ],
+        "volatile_super_option_presence": {
+          "lowerdir": false,
+          "upperdir": false,
+          "workdir": false
+        }
+      }
+    },
+    "process": {
+      "cap_sys_admin_bit": 21,
+      "cap_sys_admin_effective": false,
+      "effective_capabilities_hex": "00000000a80425fb",
+      "initial_user_namespace_uid_map": true,
+      "namespace_types": [
+        "cgroup",
+        "ipc",
+        "mnt",
+        "net",
+        "pid",
+        "pid_for_children",
+        "time",
+        "time_for_children",
+        "user",
+        "uts"
+      ],
+      "no_new_privileges": 0,
+      "page_cache_namespace_exposed": false,
+      "seccomp_mode": 2
+    },
+    "schema_version": 1,
+    "scope": {
+      "cache_state_changed": false,
+      "read_only_observation": true
+    },
+    "vm": {
+      "drop_caches": {
+        "drop_caches_executed": false,
+        "gid": 0,
+        "is_regular_file": true,
+        "open_write_errno": 30,
+        "open_write_error": "EROFS",
+        "open_write_without_write_succeeded": false,
+        "os_access_read": false,
+        "os_access_write": false,
+        "path": "/proc/sys/vm/drop_caches",
+        "permission_bits_octal": "0200",
+        "sync_executed": false,
+        "uid": 0,
+        "write_attempted": false
+      },
+      "vfs_cache_pressure": 100
+    }
+  },
+  "observer": {
+    "path": "tools/benchmark/observe_linux_cache_environment.py",
+    "repetitions": 2,
+    "sha256": "405e8d727cfdf7de1dbb734ac1946881778dd7c0b219435ee921481627586b06"
+  },
+  "page_cache_evidence": {
+    "bytes": 1509261,
+    "path": "docs/research/data/upstream-benchmark-linux-qt5-page-cache.json",
+    "sha256": "081ab455705587089a03401935c8109cdc271f426e11295b2c848f4186b933eb"
+  },
+  "plan_suite": {
+    "bytes": 12832,
+    "path": "docs/research/data/upstream-benchmark-plans.json",
+    "sha256": "f93672c9603db16050047095f15d5f5ea6d9d58663b4574ed901f819f0106e1a"
+  },
+  "relationships": {
+    "cap_sys_admin_is_absent": true,
+    "container_root_is_overlayfs": true,
+    "drop_caches_open_is_rejected_with_erofs": true,
+    "generic_cold_label_is_rejected": true,
+    "no_cache_state_was_changed": true,
+    "no_page_cache_namespace_is_exposed": true,
+    "overlayfs_page_cache_may_be_shared": true,
+    "proc_sys_is_read_only": true,
+    "repeated_observations_identical": true
+  },
+  "schema_version": 1,
+  "scope": {
+    "cap_sys_admin_added": false,
+    "container_page_cache_isolation_proven": false,
+    "directory_dentry_inode_eviction_proven": false,
+    "host_global_drop_caches_executed": false,
+    "privileged_container_started": false,
+    "read_only_probe": true,
+    "system_cold_cache_controlled": false
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

@@ -24,7 +24,12 @@ affinity suite 的三次独立 invocation 汇总见
 前所有候选页 nonresident，见
 [`upstream-benchmark-page-cache.md`](upstream-benchmark-page-cache.md)。
 目录/metadata、failed lookup 和 overlayfs/host isolation 仍未控制。
-Rust 成对报告、跨平台/cold、可证明的 physical-core affinity 和评审阈值仍缺，因此
+[`upstream-benchmark-cache-environment.md`](upstream-benchmark-cache-environment.md)
+进一步证明当前容器不能独立执行 system-global cache drop；ADR 0015 因而定义
+`warm`、`file-content-nonresident-metadata-warm` 与 dedicated
+`system-cold`，通用 `cold` 保持 fail closed。
+Rust 成对报告、跨平台 cache-state、可证明的 physical-core affinity 和评审阈值
+仍缺，因此
 `P0-BLOCK-006` 保持 Open，当前证据不得用于“Rust 更快”之类结论。
 
 ## 2. Plan 契约
@@ -35,7 +40,9 @@ plan schema 版本固定为 `1`，未知字段、重复 JSON key、`NaN`/`Infini
 - `producer`：实现名、源码 commit、规则 commit、profile 和 toolchain；
 - `input_artifacts`：仓库内相对路径、字节数和 SHA-256；
 - `command`/`working_directory`：直接进程 argv 和仓库内工作目录；
-- `cache_state`：v1 只接受声明的 `warm`；
+- `cache_state`：v1 只接受声明的 `warm`；future schema 按 ADR 0015 增加
+  `file-content-nonresident-metadata-warm`/`system-cold` 时必须同时绑定
+  structured controller evidence，通用 `cold` 永久拒绝；
 - `warmup_runs`/`measured_runs`：最多 20 次预热，测量至少 3 次、最多 100 次；
 - `work_bytes`/`work_definition`：throughput 分母及其明确语义；
 - timeout、stdout/stderr 上限、输出确定性和 peak RSS 要求。
@@ -104,8 +111,9 @@ python tools/benchmark/run_process_benchmark.py \
    nested 和 CLI JSON；单 vCPU affinity、三次连续 invocation 与部署 closure
    size 已有证据；successful regular-file candidate 已由双次 ptrace 固定，且
    静态 controller 已观测完整 warm、fadvise 后 0 resident 与 post-run
-   residency；继续补目录/metadata cache、failed lookup、overlayfs/host
-   isolation、physical-core/topology 及跨 reboot/日期的长期重复 session；
+   residency；环境 probe 已固定当前容器不具备 system-global cache isolation。
+   继续把 file-content controller 接入 runner，并在 dedicated 环境补
+   system-cold、physical-core/topology 及跨 reboot/日期的长期重复 session；
 2. Phase 1 增加已加载 session 的 in-process scan/serialization 与 Rust C ABI
    overhead 分层；
 3. 对相同 bytes/options 采集 Rust 与 upstream 成对报告；

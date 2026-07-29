@@ -492,13 +492,18 @@ baseline 的变更都要检查本表。
   后续静态 controller 已在每个 case 双次验证完整 warm、fadvise 后所有候选页
   nonresident 与相同 post-run vector，但仍明确保持 cold false，见
   [`upstream-benchmark-page-cache.md`](../research/upstream-benchmark-page-cache.md)。
+  固定容器环境又证明 overlayfs 可共享 page cache、`/proc/sys` ro、无
+  `CAP_SYS_ADMIN` 且 `drop_caches` open 返回 `EROFS`；ADR 0015 因此分离
+  `warm`、`file-content-nonresident-metadata-warm` 与 dedicated
+  `system-cold`，见
+  [`upstream-benchmark-cache-environment.md`](../research/upstream-benchmark-cache-environment.md)。
   同一固定 ELF 的 16 个 realpath 去重动态依赖、2,268 个规则资产及两种部署
   size 口径也已绑定，见
   [`upstream-deployment-size.md`](../research/upstream-deployment-size.md)。
 - **验证**：Rust 同 bytes/options 成对报告后冻结回归阈值，持续 trend；补
-  目录/metadata、failed lookup、overlayfs/host isolation 口径，
+  file-content controller 的 runner 接入与 dedicated system-cold 基础设施，
   physical-core/topology 与跨 reboot/日期长期 session、Rust 成对/发行包 size
-  和目标平台；评审 metadata-warm/file-content-nonresident 与完整 cold 是否分层。
+  和目标平台；三个 cache state 分别验证和冻结阈值。
 - **关闭**：Phase 6 目标及阈值通过。阈值未冻结前不得声称性能更优。
 
 ### R-013：上游同步漂移

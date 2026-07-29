@@ -681,6 +681,13 @@ archive median max/min 1.7704 和 batch p95 max/min 1.6848 证明单 session
 failed lookup、目录、dentry/inode、overlayfs/host isolation 仍未闭合，因此不得
 把它标成 cold；若采用 metadata-warm/file-content-nonresident 层，名称和比较组
 必须与完整 cold 分开。
+固定容器的只读环境 probe 又证明根是 overlayfs、`/proc/sys` ro、无
+`CAP_SYS_ADMIN`、`drop_caches` write-open 返回 `EROFS`，且不存在 page-cache
+namespace；见
+[`upstream-benchmark-cache-environment.md`](../research/upstream-benchmark-cache-environment.md)。
+因此 cache state 采用 ADR 0015 的三个互斥名称：`warm`、
+`file-content-nonresident-metadata-warm`、`system-cold`；通用 `cold` 永久
+拒绝。前两层和 system-cold 必须分别建立 baseline/trend/threshold，不能合并。
 固定 Linux Qt5 的 ELF、realpath 去重动态依赖闭包和 2,268 个规则资产 size
 口径见
 [`upstream-deployment-size.md`](../research/upstream-deployment-size.md)；
