@@ -320,7 +320,8 @@
         "tools/tests/test_generate_large_path_fixture.py",
         "tools/tests/test_probe_large_path_behavior.py",
         "tools/tests/test_generate_path_toctou_fixture.py",
-        "tools/tests/test_probe_path_toctou_behavior.py"
+        "tools/tests/test_probe_path_toctou_behavior.py",
+        "tools/tests/test_traversal_attempt_budget.py"
       ],
       "required_headings": [
         "## 背景",
@@ -332,7 +333,7 @@
       ],
       "review_question": "是否接受 safe canonical 默认不跟随枚举 link、legacy 保留非循环 alias 但所有 profile 均采用 ancestry cycle detection、handle recheck 与 hard budget？",
       "remaining_acceptance_evidence": [
-        "metadata/open budget remains unresolved; production shared TargetExpander and typed traversal diagnostics",
+        "metadata/open candidate remains unadmitted; production shared TargetExpander and typed traversal diagnostics",
         "limit-1/exact/+1, cancellation, TOCTOU, and root-confinement tests",
         "Windows/macOS oracle plus cross-language SafetyDeviation conformance"
       ]

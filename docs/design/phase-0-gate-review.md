@@ -78,7 +78,8 @@ Accepted。
 21/2001/100000 临界值与 QuickJS spike-only 限额已分离；全库 include sizing
 又提出 modern 16/256 与 legacy-high 64/4096；database load sizing 绑定完整
 三层 2,268-entry bundle 和规范 stored ZIP，提出 10 个 modern/legacy-high
-非零字段。仍有 8 个尚无生产候选的预算被显式列出。该策略仍为
+非零字段；traversal metadata/open 又以逐 adapter call reserve 的结构模型提出
+524,288/8,388,608。仍有 7 个尚无生产候选的预算被显式列出。该策略仍为
 `admitted=false`，因此 blocker 状态不变。
 
 ## 下一步顺序

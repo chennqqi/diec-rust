@@ -46,13 +46,21 @@ Proposed：
    `max_directory_depth`、`max_entries_considered`、
    `max_files_emitted`、`max_total_path_bytes`、metadata/open attempts、
    deadline 和 cancellation。每个 entry 在 metadata、分配 path 或入队前 reserve；
-   child 不重置额度。
+   child 不重置额度。一次 metadata/open attempt 是 adapter 对 filesystem 发起的
+   一次 metadata/type/identity/read-link 查询，或一次 file/directory/reparse
+   handle acquire/reacquire；失败调用也计数，内部重试必须再次 reserve。已经随
+   handle 保存的事实若未刷新不重复计数。
 6. 初始 `SafeCanonical` 候选值为 depth 64、considered/emitted files 各
-   100,000、累计 native path encoding 64 MiB、deadline 30 s。
+   100,000、累计 native path encoding 64 MiB、metadata/open attempts
+   524,288、deadline 30 s。
    `LegacyHighResource` 需要显式构造，候选 hard ceiling 为 depth 256、
    considered/emitted files 各 1,000,000、累计 path encoding 1 GiB、
-   deadline 120 s。数值在本 ADR Accepted 前可经 benchmark 评审调整，但任何
-   profile 都不得用 `0`、整数最大值或缺省表示无界。
+   metadata/open attempts 8,388,608、deadline 120 s。attempt 候选按
+   `4 + 4*entries_considered + files_emitted` 建立普通 entry 的 metadata/open/
+   post-open verification 与 emitted-file handoff allowance，再向上取二次幂。
+   复杂 link/reparse 或失败可更快耗尽该独立预算，不保证总能同时达到所有 counter
+   最大值。数值在本 ADR Accepted 前可经 benchmark 评审调整，但任何 profile
+   都不得用 `0`、整数最大值或缺省表示无界。
 7. `SafeCanonical` 在支持的平台使用 directory handle 相对枚举/open，并在打开后
    以 `fstat`/handle identity 复验 type、root confinement 和枚举时 identity。
    identity/type/parent 发生变化时返回 `ChangedDuringTraversal`，不扫描替换后的
@@ -125,6 +133,7 @@ Proposed：
 - [`path-locale-filesystem-behavior.md`](../../research/path-locale-filesystem-behavior.md)
 - [`path-locale-filesystem-engine-qt5.json`](../../research/data/path-locale-filesystem-engine-qt5.json)
 - [`path-locale-fixture.json`](../../research/data/path-locale-fixture.json)
+- [`traversal-attempt-budget-candidate.json`](../data/traversal-attempt-budget-candidate.json)
 - [`special-path-behavior.md`](../../research/special-path-behavior.md)
 - [`cli-path-behavior.md`](../../research/cli-path-behavior.md)
 - [`test_probe_path_filesystem_behavior.py`](../../../tools/tests/test_probe_path_filesystem_behavior.py)
@@ -135,6 +144,7 @@ Proposed：
 - [`test_generate_path_toctou_fixture.py`](../../../tools/tests/test_generate_path_toctou_fixture.py)
 - [`test_probe_path_locale_filesystem_behavior.py`](../../../tools/tests/test_probe_path_locale_filesystem_behavior.py)
 - [`test_generate_path_locale_fixture.py`](../../../tools/tests/test_generate_path_locale_fixture.py)
+- [`test_traversal_attempt_budget.py`](../../../tools/tests/test_traversal_attempt_budget.py)
 - `Formats@1151e725.../xbinary.cpp::findFiles`
 - [`api.md` §14](../api.md#14-batch-与目录枚举)
 - [`risks.md` R-019](../risks.md#r-019路径枚举和编码安全)
@@ -148,6 +158,8 @@ Proposed：
   depth-64/self-cycle 的 legacy 与 canonical 预期均有 system tests；
 - 每个 traversal limit 有 `limit-1/exact/+1` unit/property tests，取消/deadline
   在大目录中有有界响应并保留稳定前缀与 usage；
+- metadata/open 的成功、失败、retry、link/reparse 和 TOCTOU revalidation
+  都逐 attempt reserve；mock adapter 证明 exact/+1 不发生越界调用；
 - Unix stable identity、Windows junction/reparse point、macOS case/normalization
   及三平台排序都有固定 upstream/Rust differential；
 - handle-relative open 的 rename/link/target-swap adversarial tests 证明 root
@@ -156,4 +168,5 @@ Proposed：
   CLI、C、Go、Python 中映射为同一 typed fact；
 - legacy 的 alias 重复/顺序保持 exact；所有 hard-stop 差异具有 ADR 0004
   machine-readable SafetyDeviation waiver；
-- benchmark 评审确认或调整两个 profile 的 depth/entry/path-byte/deadline 数值。
+- benchmark 评审确认或调整两个 profile 的
+  depth/entry/path-byte/metadata-open/deadline 数值。

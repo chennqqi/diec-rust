@@ -625,7 +625,8 @@ baseline 的变更都要检查本表。
   UTF-8/UTF-16 边界或 locale-dependent ordering。
 - **缓解**：CLI `TargetExpander` 与 engine 分离；不默认跟随 directory link；
   stable identity/ancestry cycle detection；handle-relative open 与 identity
-  recheck；depth/entry/path-byte/time budgets；native path 保留无损 identity。
+  recheck；depth/entry/path-byte/metadata-open/time budgets；native path
+  保留无损 identity。
 - **当前证据**：固定 Linux Qt5 双 Oracle 已覆盖 NFC/NFD、非 UTF-8 目录与显式
   raw argv、空白与控制字符、hidden、leading-dash 和目录顺序。新增 9-case 双
   Oracle 确认 file/directory symlink follow、alias 不去重、dangling not-found、
@@ -643,9 +644,15 @@ baseline 的变更都要检查本表。
   上不改变 stdout，而 tmpfs 与 `ext2/ext3` volume 会交换 `A-case`/`a-case`
   顺序；见
   [`path-locale-filesystem-behavior.md`](../research/path-locale-filesystem-behavior.md)。
-  Linux Qt5 的原 `CAP-GAP-003` 已闭合，三平台矩阵仍缺；ADR 0014 现为 Proposed。
+  Linux/Windows 4,096-entry 与 TOCTOU 报告现被
+  [`traversal-attempt-budget-candidate.json`](data/traversal-attempt-budget-candidate.json)
+  hash-bound；它明确没有上游 syscall count，并按逐 adapter call reserve 的
+  结构模型提出 modern 524,288、legacy-high 8,388,608。Linux Qt5 的原
+  `CAP-GAP-003` 已闭合，三平台矩阵仍缺；ADR 0014 现为 Proposed。
 - **验证**：隔离 path corpus 覆盖循环、权限、重复、特殊字符、TOCTOU、全部
-  traversal limit 和三平台排序；legacy/canonical 差异有精确 waiver。
+  traversal limit 和三平台排序；mock adapter 对成功、失败、retry、link/
+  reparse 与 revalidation 执行 `limit-1/exact/+1`；legacy/canonical 差异有
+  精确 waiver。
 - **关闭**：ADR 0014 Accepted，API/profile 数值冻结，handle-relative traversal
   与三平台 system/property tests 通过。
 

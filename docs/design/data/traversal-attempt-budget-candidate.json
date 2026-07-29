@@ -1,0 +1,83 @@
+{
+  "acceptance_requirements": [
+    "ADR 0014 receives explicit review disposition",
+    "every adapter attempt reserves before touching the filesystem",
+    "success, failure, retry, link, reparse, and TOCTOU paths have limit-1/exact/+1 tests",
+    "modern and legacy-high traversal benchmarks pass on supported platforms",
+    "Rust, CLI, JSON, C, Go, and Python expose the same limit and consumed usage"
+  ],
+  "attempt_unit": {
+    "automatic_retries_count_again": true,
+    "cached_facts_without_refresh_count": false,
+    "definition": "one project-issued filesystem adapter request for metadata, type, identity, read-link, or file/directory/reparse handle acquire or reacquire",
+    "failed_attempts_count": true,
+    "reserve_before_adapter_call": true
+  },
+  "derivation": {
+    "formula": "next_power_of_two(4 + 4*maximum_entries_considered + maximum_files_emitted)",
+    "interpretation": "structural sizing allowance, not an upstream syscall measurement or a guarantee that all counters reach max",
+    "legacy_high_resource": {
+      "maximum_entries_considered": 1000000,
+      "maximum_files_emitted": 1000000,
+      "maximum_metadata_open_attempts": 8388608,
+      "per_considered_entry_attempt_allowance": 4,
+      "per_emitted_file_handoff_allowance": 1,
+      "raw_structural_allowance": 5000004,
+      "root_attempt_allowance": 4
+    },
+    "modern_default": {
+      "maximum_entries_considered": 100000,
+      "maximum_files_emitted": 100000,
+      "maximum_metadata_open_attempts": 524288,
+      "per_considered_entry_attempt_allowance": 4,
+      "per_emitted_file_handoff_allowance": 1,
+      "raw_structural_allowance": 500004,
+      "root_attempt_allowance": 4
+    }
+  },
+  "evaluated_on": "2026-07-30",
+  "generator": "tools/research/build_traversal_attempt_budget.py",
+  "result": "review_candidate_not_admitted",
+  "schema_version": 1,
+  "source_bindings": {
+    "adr": {
+      "path": "docs/design/decisions/0014-bounded-path-expansion.md",
+      "sha256": "10d4d4792e0172fb3e4c04943040d09608d373fd736a88cde09fd28c523ad024"
+    },
+    "api": {
+      "path": "docs/design/api.md",
+      "sha256": "e922aabeef7ce28db3ff5287e7abee14f1cbf442df11c8d975399c5234949f5d"
+    },
+    "linux_large": {
+      "path": "docs/research/data/large-path-engine-qt5.json",
+      "sha256": "100562d79fa661055fd79e0efe6ce8f58a31b8e4faebedf410f80f51e817883b"
+    },
+    "linux_path": {
+      "path": "docs/research/data/path-filesystem-engine-qt5.json",
+      "sha256": "97549da236a57cc5502b43a8157f81865fa6d9a0ab626035ebcf63df97792dbb"
+    },
+    "linux_toctou": {
+      "path": "docs/research/data/path-toctou-engine-qt5.json",
+      "sha256": "733b136667c39f46e2d32bfb6a15c7da7077eee98232d7ff3a06a812f6913cf9"
+    },
+    "windows_closure": {
+      "path": "docs/research/data/windows-path-closure-qt5.json",
+      "sha256": "a88f64018bada18f4104278e5f79323009fce79916c64a5a061ed3864cbf3dd1"
+    }
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "upstream_evidence_boundary": {
+    "does_not_prove": [
+      "production adapter call count per entry",
+      "macOS handle-relative traversal behavior",
+      "candidate CPU or latency acceptability"
+    ],
+    "enumerate_then_reopen_toctou_observed": true,
+    "filesystem_attempt_count_measured": false,
+    "linux_complete_flat_entries": 4096,
+    "linux_complete_nested_files": 4096,
+    "symlink_or_reparse_cycle_without_identity_dedup_observed": true,
+    "windows_complete_flat_entries": 4096,
+    "windows_complete_nested_files": 4096
+  }
+}

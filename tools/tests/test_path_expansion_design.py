@@ -92,12 +92,17 @@ class PathExpansionDesignTest(unittest.TestCase):
             "`max_entries_considered`",
             "`max_files_emitted`",
             "`max_total_path_bytes`",
+            "metadata/open attempts",
             "deadline",
             "cancellation",
         ):
             self.assertIn(budget, self.adr)
         self.assertIn("metadata、分配 path 或入队前 reserve", self.adr)
         self.assertIn("child 不重置额度", self.adr)
+        self.assertIn("失败调用也计数", self.adr)
+        self.assertIn("524,288", self.adr)
+        self.assertIn("8,388,608", self.adr)
+        self.assertIn("pub max_metadata_open_attempts: u64", self.api)
 
     def test_toctou_and_permission_are_typed_not_silent(self) -> None:
         for token in (

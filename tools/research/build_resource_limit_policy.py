@@ -32,6 +32,9 @@ SOURCES = {
     "database_sizing": (
         "docs/research/data/database-load-sizing.json"
     ),
+    "traversal_attempt": (
+        "docs/design/data/traversal-attempt-budget-candidate.json"
+    ),
 }
 
 MIB = 1024 * 1024
@@ -83,6 +86,40 @@ def require_text(text: str, fragments: tuple[str, ...], source: str) -> None:
         require(fragment in text, f"{source} contract drift: {fragment}")
 
 
+def validate_nested_bindings(
+    root: Path,
+    report: dict[str, Any],
+    expected_names: set[str],
+    label: str,
+) -> None:
+    bindings = report.get("source_bindings")
+    require(isinstance(bindings, dict), f"{label} source bindings missing")
+    require(
+        set(bindings) == expected_names,
+        f"{label} source binding set drift",
+    )
+    for name, binding in bindings.items():
+        require(
+            isinstance(binding, dict),
+            f"{label} source binding invalid: {name}",
+        )
+        relative = binding.get("path")
+        require(
+            isinstance(relative, str)
+            and relative
+            and "\\" not in relative
+            and not Path(relative).is_absolute()
+            and ".." not in Path(relative).parts,
+            f"{label} source path invalid: {name}",
+        )
+        path = root / relative
+        require(path.is_file(), f"{label} nested source missing: {relative}")
+        require(
+            binding.get("sha256") == sha256(path.read_bytes()),
+            f"{label} nested source hash drift: {name}",
+        )
+
+
 def validate_sources(root: Path) -> dict[str, dict[str, Any]]:
     bindings: dict[str, dict[str, Any]] = {}
     raw_by_name: dict[str, bytes] = {}
@@ -120,9 +157,11 @@ def validate_sources(root: Path) -> dict[str, dict[str, Any]]:
         adr_traversal,
         (
             "depth 64、considered/emitted files 各\n   100,000、"
-            "累计 native path encoding 64 MiB、deadline 30 s",
+            "累计 native path encoding 64 MiB、metadata/open attempts\n"
+            "   524,288、deadline 30 s",
             "depth 256、\n   considered/emitted files 各 1,000,000、"
-            "累计 path encoding 1 GiB、\n   deadline 120 s",
+            "累计 path encoding 1 GiB、\n   metadata/open attempts "
+            "8,388,608、deadline 120 s",
             "metadata/open attempts",
         ),
         SOURCES["adr_traversal"],
@@ -169,6 +208,8 @@ def validate_sources(root: Path) -> dict[str, dict[str, Any]]:
             "pub max_cache_bytes: u64",
             "pub max_cache_records: u64",
             "数据库 load 的独立 `DatabaseLimits`",
+            "pub max_metadata_open_attempts: u64",
+            "Modern 候选为 524,288，legacy-high 为 8,388,608",
         ),
         SOURCES["api"],
     )
@@ -182,6 +223,7 @@ def validate_reports(root: Path) -> dict[str, Any]:
     runtime = load_json(root / SOURCES["runtime_spike"])
     include_graph = load_json(root / SOURCES["include_graph"])
     database_sizing = load_json(root / SOURCES["database_sizing"])
+    traversal_attempt = load_json(root / SOURCES["traversal_attempt"])
 
     for name, report in (
         ("archive_limit", archive),
@@ -190,6 +232,7 @@ def validate_reports(root: Path) -> dict[str, Any]:
         ("runtime_spike", runtime),
         ("include_graph", include_graph),
         ("database_sizing", database_sizing),
+        ("traversal_attempt", traversal_attempt),
     ):
         require(
             report.get("upstream_commit") == UPSTREAM_COMMIT,
@@ -354,6 +397,57 @@ def validate_reports(root: Path) -> dict[str, Any]:
         },
         "database sizing profiles drift",
     )
+    attempt_derivation = traversal_attempt.get("derivation")
+    attempt_evidence = traversal_attempt.get(
+        "upstream_evidence_boundary"
+    )
+    require(
+        traversal_attempt.get("result")
+        == "review_candidate_not_admitted"
+        and isinstance(attempt_derivation, dict)
+        and attempt_derivation.get("modern_default", {}).get(
+            "maximum_metadata_open_attempts"
+        )
+        == 524_288
+        and attempt_derivation.get("legacy_high_resource", {}).get(
+            "maximum_metadata_open_attempts"
+        )
+        == 8_388_608
+        and attempt_derivation.get("modern_default", {}).get(
+            "raw_structural_allowance"
+        )
+        == 500_004
+        and attempt_derivation.get("legacy_high_resource", {}).get(
+            "raw_structural_allowance"
+        )
+        == 5_000_004,
+        "traversal attempt candidate drift",
+    )
+    validate_nested_bindings(
+        root,
+        traversal_attempt,
+        {
+            "adr",
+            "api",
+            "linux_path",
+            "linux_large",
+            "linux_toctou",
+            "windows_closure",
+        },
+        "traversal attempt",
+    )
+    require(
+        isinstance(attempt_evidence, dict)
+        and attempt_evidence.get("filesystem_attempt_count_measured")
+        is False
+        and attempt_evidence.get("linux_complete_flat_entries") == 4096
+        and attempt_evidence.get("windows_complete_flat_entries") == 4096
+        and attempt_evidence.get(
+            "enumerate_then_reopen_toctou_observed"
+        )
+        is True,
+        "traversal attempt evidence boundary drift",
+    )
 
     return {
         "observations": {
@@ -390,6 +484,12 @@ def validate_reports(root: Path) -> dict[str, Any]:
                 "total_container_bytes": database_observed[
                     "total_container_bytes"
                 ],
+            },
+            "path_traversal_attempt_boundary": {
+                "filesystem_attempt_count_measured": False,
+                "linux_complete_flat_entries": 4096,
+                "windows_complete_flat_entries": 4096,
+                "enumerate_then_reopen_toctou_observed": True,
             },
         },
         "database_profiles": database_profiles,
@@ -441,6 +541,7 @@ def build_policy(root: Path) -> dict[str, Any]:
                     "maximum_entries_considered": 100_000,
                     "maximum_files_emitted": 100_000,
                     "maximum_total_native_path_bytes": 64 * MIB,
+                    "maximum_metadata_open_attempts": 524_288,
                 },
                 "include": {
                     "maximum_active_depth": 16,
@@ -466,6 +567,7 @@ def build_policy(root: Path) -> dict[str, Any]:
                     "maximum_entries_considered": 1_000_000,
                     "maximum_files_emitted": 1_000_000,
                     "maximum_total_native_path_bytes": GIB,
+                    "maximum_metadata_open_attempts": 8_388_608,
                 },
                 "include": {
                     "maximum_active_depth": 64,
@@ -488,13 +590,6 @@ def build_policy(root: Path) -> dict[str, Any]:
             {
                 "id": "scan.maximum_total_allocated_bytes",
                 "required_by": "untrusted-input allocation safety",
-            },
-            {
-                "id": "traversal.maximum_metadata_open_attempts",
-                "required_by": (
-                    "docs/design/decisions/"
-                    "0014-bounded-path-expansion.md"
-                ),
             },
             {
                 "id": "script.maximum_heap_bytes",

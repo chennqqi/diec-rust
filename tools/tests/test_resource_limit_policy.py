@@ -85,6 +85,7 @@ class ResourceLimitPolicyTests(unittest.TestCase):
                 "maximum_entries_considered": 100_000,
                 "maximum_files_emitted": 100_000,
                 "maximum_total_native_path_bytes": 64 * 1024**2,
+                "maximum_metadata_open_attempts": 524_288,
             },
         )
         self.assertEqual(
@@ -202,11 +203,20 @@ class ResourceLimitPolicyTests(unittest.TestCase):
                 "total_container_bytes": 3_201_508,
             },
         )
+        self.assertEqual(
+            facts["path_traversal_attempt_boundary"],
+            {
+                "filesystem_attempt_count_measured": False,
+                "linux_complete_flat_entries": 4096,
+                "windows_complete_flat_entries": 4096,
+                "enumerate_then_reopen_toctou_observed": True,
+            },
+        )
 
     def test_unresolved_budgets_keep_policy_unadmitted(self):
         unresolved = self.policy["unresolved_required_budgets"]
         ids = [item["id"] for item in unresolved]
-        self.assertEqual(len(ids), 8)
+        self.assertEqual(len(ids), 7)
         self.assertEqual(len(ids), len(set(ids)))
         self.assertEqual(
             set(ids),
@@ -214,7 +224,6 @@ class ResourceLimitPolicyTests(unittest.TestCase):
                 "scan.maximum_input_bytes",
                 "scan.maximum_diagnostics",
                 "scan.maximum_total_allocated_bytes",
-                "traversal.maximum_metadata_open_attempts",
                 "script.maximum_heap_bytes",
                 "script.maximum_stack_bytes",
                 "script.maximum_instruction_or_fuel",
@@ -238,6 +247,34 @@ class ResourceLimitPolicyTests(unittest.TestCase):
                 destination = root / relative
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(ROOT / relative, destination)
+
+            attempt_path = (
+                root / self.builder.SOURCES["traversal_attempt"]
+            )
+            attempt = json.loads(
+                attempt_path.read_text(encoding="utf-8")
+            )
+            for binding in attempt["source_bindings"].values():
+                relative = binding["path"]
+                destination = root / relative
+                if not destination.exists():
+                    destination.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copy2(ROOT / relative, destination)
+
+            attempt["source_bindings"]["linux_path"]["sha256"] = "0" * 64
+            attempt_path.write_text(
+                json.dumps(attempt, indent=2) + "\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(
+                self.builder.PolicyError,
+                "traversal attempt nested source hash drift",
+            ):
+                self.builder.build_policy(root)
+            shutil.copy2(
+                ROOT / self.builder.SOURCES["traversal_attempt"],
+                attempt_path,
+            )
 
             report_path = (
                 root / self.builder.SOURCES["archive_iteration"]
@@ -287,7 +324,7 @@ class ResourceLimitPolicyTests(unittest.TestCase):
         self.assertIn("Status: In Review", design)
         self.assertIn("review_candidate_incomplete", design)
         self.assertIn("`admitted=false`", design)
-        self.assertIn("8 个明确 unresolved 项", design)
+        self.assertIn("7 个明确 unresolved 项", design)
         self.assertIn("production_default_candidate=false", research)
         self.assertIn("不是已冻结的发布", design)
         self.assertIn("不是生产默认候选", research)
@@ -307,7 +344,7 @@ class ResourceLimitPolicyTests(unittest.TestCase):
             blocker["resource_limit_policy_status"],
             (
                 "review_candidate_incomplete_and_unadmitted_"
-                "with_8_unresolved_budgets"
+                "with_7_unresolved_budgets"
             ),
         )
         self.assertEqual(
@@ -318,6 +355,10 @@ class ResourceLimitPolicyTests(unittest.TestCase):
                 "docs/research/data/include-graph-sizing.json",
                 "docs/research/database-load-sizing.md",
                 "docs/research/data/database-load-sizing.json",
+                (
+                    "docs/design/data/"
+                    "traversal-attempt-budget-candidate.json"
+                ),
                 "docs/design/resource-limit-policy.md",
                 (
                     "docs/design/data/"

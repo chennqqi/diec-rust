@@ -315,9 +315,10 @@ profile。ADR Accepted 前这些数字是评审候选；实现不得以 `0` 或�
 [`resource-limit-policy.md`](resource-limit-policy.md) 与
 [`data/resource-limit-policy-candidate.json`](data/resource-limit-policy-candidate.json)。
 它把 ADR 0012 的 scan profile 与 ADR 0014 的 traversal profile 放入同一契约，
-同时列出 input、diagnostic、total allocation、metadata/open 和 script 的
-8 个未定值预算；include 已由全库 sizing 提出 modern 16/256 与 legacy-high
-64/4096，database load 已有 10 个非零候选字段。当前结果仍为
+同时列出 input、diagnostic、total allocation 和 script 的 7 个未定值预算；
+include 已由全库 sizing 提出 modern 16/256 与 legacy-high 64/4096，database
+load 已有 10 个非零候选字段，traversal metadata/open 已有
+524,288/8,388,608 候选。当前结果仍为
 `review_candidate_incomplete`/`admitted=false`；QuickJS spike 的 4 MiB heap、
 128 KiB stack 和 25 ms deadline 不作为生产默认。
 
@@ -550,7 +551,17 @@ usage
 pub struct BatchRequest {
     pub targets: Vec<OsString>,
     pub traversal: TraversalPolicy,
+    pub limits: TraversalLimits,
     pub scan: ScanRequest,
+}
+
+pub struct TraversalLimits {
+    pub timeout: Duration,
+    pub max_directory_depth: u32,
+    pub max_entries_considered: u64,
+    pub max_files_emitted: u64,
+    pub max_total_native_path_bytes: u64,
+    pub max_metadata_open_attempts: u64,
 }
 
 pub struct BatchReport {
@@ -577,6 +588,11 @@ pub enum TraversalProfile {
 安全 traversal 必须有目录深度、considered/emitted entry、累计 native path
 encoding、metadata/open、deadline 和 cancellation 的共享 checked budget；
 child 不重置额度。
+
+metadata/open attempt 的单位与 ADR 0014 一致：每次 metadata/type/identity/
+read-link 查询或 handle acquire/reacquire 在调用 filesystem adapter 前 reserve；
+失败和 retry 也计数。Modern 候选为 524,288，legacy-high 为 8,388,608；该
+counter 与 entry/file counter 独立，不能用其中一个推算另一个的 consumed。
 
 `SafeCanonical` 候选默认不跟随枚举发现的 symlink/junction/reparse point，
 使用 stable file identity、ancestry cycle detection 和 handle-relative

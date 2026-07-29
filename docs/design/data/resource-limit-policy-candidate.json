@@ -56,6 +56,7 @@
         "maximum_directory_depth": 256,
         "maximum_entries_considered": 1000000,
         "maximum_files_emitted": 1000000,
+        "maximum_metadata_open_attempts": 8388608,
         "maximum_total_native_path_bytes": 1073741824,
         "wall_deadline_milliseconds": 120000
       }
@@ -94,6 +95,7 @@
         "maximum_directory_depth": 64,
         "maximum_entries_considered": 100000,
         "maximum_files_emitted": 100000,
+        "maximum_metadata_open_attempts": 524288,
         "maximum_total_native_path_bytes": 67108864,
         "wall_deadline_milliseconds": 30000
       }
@@ -112,11 +114,11 @@
     },
     "adr_traversal": {
       "path": "docs/design/decisions/0014-bounded-path-expansion.md",
-      "sha256": "cd9831f78f6c277073dd381c2a497200f37492f4af685df2ed47c7d937d1a118"
+      "sha256": "10d4d4792e0172fb3e4c04943040d09608d373fd736a88cde09fd28c523ad024"
     },
     "api": {
       "path": "docs/design/api.md",
-      "sha256": "9294ef7ba9ff4447a0001d72c8b7f7fb23a58916086d65c43e06cb86a6ecf766"
+      "sha256": "e922aabeef7ce28db3ff5287e7abee14f1cbf442df11c8d975399c5234949f5d"
     },
     "archive_iteration": {
       "path": "docs/research/data/archive-iteration-boundary-engine-qt5.json",
@@ -141,6 +143,10 @@
     "runtime_spike": {
       "path": "docs/research/data/rquickjs-rule-runtime.json",
       "sha256": "4f9c5d4f207ceeaa50b28553d5cd8f02d63c92218f8e9fe877e5b99239743ac9"
+    },
+    "traversal_attempt": {
+      "path": "docs/design/data/traversal-attempt-budget-candidate.json",
+      "sha256": "d616d91fc9935df724677ca0eadc4141a8be43792098c352b74f5d80d32ff948"
     }
   },
   "unresolved_required_budgets": [
@@ -155,10 +161,6 @@
     {
       "id": "scan.maximum_total_allocated_bytes",
       "required_by": "untrusted-input allocation safety"
-    },
-    {
-      "id": "traversal.maximum_metadata_open_attempts",
-      "required_by": "docs/design/decisions/0014-bounded-path-expansion.md"
     },
     {
       "id": "script.maximum_heap_bytes",
@@ -201,6 +203,12 @@
     "legacy_aggressive_archive_record_reachable": 100000,
     "legacy_aggressive_resource_children_inclusive": 2001,
     "legacy_default_resource_children_inclusive": 21,
+    "path_traversal_attempt_boundary": {
+      "enumerate_then_reopen_toctou_observed": true,
+      "filesystem_attempt_count_measured": false,
+      "linux_complete_flat_entries": 4096,
+      "windows_complete_flat_entries": 4096
+    },
     "runtime_spike_only": {
       "deadline_milliseconds": 25,
       "memory_limit_bytes": 4194304,
