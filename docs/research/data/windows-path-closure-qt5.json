@@ -1,0 +1,1653 @@
+{
+  "acl_cases": {
+    "local_denied_directory": {
+      "runs": [
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 20340,
+          "projection": {
+            "detect_tree": null,
+            "exit_code": 0,
+            "minimal_pdf_equal": false,
+            "normalized_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "timed_out": false,
+            "valid_json": false
+          },
+          "raw_stderr": "acl.local_denied_directory.run-1.stderr",
+          "raw_stdout": "acl.local_denied_directory.run-1.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 0,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1226
+        },
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 20524,
+          "projection": {
+            "detect_tree": null,
+            "exit_code": 0,
+            "minimal_pdf_equal": false,
+            "normalized_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "timed_out": false,
+            "valid_json": false
+          },
+          "raw_stderr": "acl.local_denied_directory.run-2.stderr",
+          "raw_stdout": "acl.local_denied_directory.run-2.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 0,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1177
+        }
+      ],
+      "semantic_deterministic": true
+    },
+    "local_denied_file": {
+      "runs": [
+        {
+          "exit_code": 1,
+          "peak_working_set_kib": 20628,
+          "projection": {
+            "detect_tree": null,
+            "exit_code": 1,
+            "minimal_pdf_equal": false,
+            "normalized_stdout_sha256": "f80ed1f4dd57af0ed3d1e4202de124a2de21cef0d6ded66e3f39a25172369847",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "timed_out": false,
+            "valid_json": false
+          },
+          "raw_stderr": "acl.local_denied_file.run-1.stderr",
+          "raw_stdout": "acl.local_denied_file.run-1.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 81,
+          "stdout_sha256": "25453af2f8c22a58adbcff187e5072e4fccb050d02e14bd6ce9245685874c8ff",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1232
+        },
+        {
+          "exit_code": 1,
+          "peak_working_set_kib": 20360,
+          "projection": {
+            "detect_tree": null,
+            "exit_code": 1,
+            "minimal_pdf_equal": false,
+            "normalized_stdout_sha256": "f80ed1f4dd57af0ed3d1e4202de124a2de21cef0d6ded66e3f39a25172369847",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "timed_out": false,
+            "valid_json": false
+          },
+          "raw_stderr": "acl.local_denied_file.run-2.stderr",
+          "raw_stdout": "acl.local_denied_file.run-2.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 81,
+          "stdout_sha256": "25453af2f8c22a58adbcff187e5072e4fccb050d02e14bd6ce9245685874c8ff",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1157
+        }
+      ],
+      "semantic_deterministic": true
+    },
+    "local_directory_with_denied_child": {
+      "runs": [
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 22516,
+          "projection": {
+            "detect_tree": [
+              {
+                "filetype": "PDF",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "331",
+                "values": [
+                  {
+                    "name": "PDF",
+                    "type": "format",
+                    "version": "1.4"
+                  },
+                  {
+                    "name": "HeaderComment",
+                    "type": "complier",
+                    "version": "e2e3cfd3"
+                  }
+                ]
+              }
+            ],
+            "exit_code": 0,
+            "minimal_pdf_equal": true,
+            "normalized_stdout_sha256": "50eac08de24510fecccfb962f5e85eacf3f658d0712061e5de115daa3c6d7590",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "timed_out": false,
+            "valid_json": true
+          },
+          "raw_stderr": "acl.local_directory_with_denied_child.run-1.stderr",
+          "raw_stdout": "acl.local_directory_with_denied_child.run-1.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 756,
+          "stdout_sha256": "50eac08de24510fecccfb962f5e85eacf3f658d0712061e5de115daa3c6d7590",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1194
+        },
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 22496,
+          "projection": {
+            "detect_tree": [
+              {
+                "filetype": "PDF",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "331",
+                "values": [
+                  {
+                    "name": "PDF",
+                    "type": "format",
+                    "version": "1.4"
+                  },
+                  {
+                    "name": "HeaderComment",
+                    "type": "complier",
+                    "version": "e2e3cfd3"
+                  }
+                ]
+              }
+            ],
+            "exit_code": 0,
+            "minimal_pdf_equal": true,
+            "normalized_stdout_sha256": "50eac08de24510fecccfb962f5e85eacf3f658d0712061e5de115daa3c6d7590",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "timed_out": false,
+            "valid_json": true
+          },
+          "raw_stderr": "acl.local_directory_with_denied_child.run-2.stderr",
+          "raw_stdout": "acl.local_directory_with_denied_child.run-2.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 756,
+          "stdout_sha256": "50eac08de24510fecccfb962f5e85eacf3f658d0712061e5de115daa3c6d7590",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1000
+        }
+      ],
+      "semantic_deterministic": true
+    }
+  },
+  "binary": {
+    "relative_path": "build/release/diec.exe",
+    "sha256": "e8579a6ed0d2536ea14af154bcbeeaaea6967c0c7559a595fb3fe52206ac635e",
+    "size": 3236352
+  },
+  "capability": "CAP-CLI-IN-003",
+  "case_count": 23,
+  "case_observation_count": 46,
+  "execution_count": 46,
+  "failures": [],
+  "fixture": {
+    "identity": {
+      "acl": {
+        "ace": "explicit deny (OI)(CI)F on a disposable directory",
+        "cases": [
+          "local_denied_file",
+          "local_denied_directory",
+          "local_directory_with_denied_child"
+        ],
+        "provider": "NTFS DACL applied to the current local user SID",
+        "recovery": "remove deny and reset the exact disposable directory before recursive cleanup"
+      },
+      "capability": "CAP-CLI-IN-003",
+      "environment_classification": {
+        "administrative_share": "record availability only; the experiment does not create or modify a machine SMB share",
+        "domain_identity": "record whether the current account prefix equals the machine name; domain membership is descriptive",
+        "source_contract": "bind QFileInfo/QDir enumeration and the frozen-list open loop; verify no ACL/domain/UNC-specific branch"
+      },
+      "generator": "tools/corpus/generate_windows_path_closure_fixture.py",
+      "large_directory": {
+        "cases": [
+          "empty_0",
+          "single_1",
+          "flat_256",
+          "flat_4096",
+          "nested_4096"
+        ],
+        "creation_order": "descending",
+        "payload_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "payload_size": 0,
+        "reference_manifest": "docs/research/data/large-path-fixture.json"
+      },
+      "license": "project-generated paths and byte patterns; minimal PDF comes from the project-generated baseline corpus",
+      "payload": {
+        "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+        "size": 331,
+        "source": "baseline-corpus/minimal.pdf"
+      },
+      "reparse": {
+        "cases": [
+          "dangling_explicit",
+          "dangling_parent",
+          "two_node_cycle"
+        ],
+        "cycle_graph": {
+          "a/to-b": "b",
+          "b/to-a": "a"
+        },
+        "cycle_payloads": [
+          "a/payload.pdf",
+          "b/payload.pdf"
+        ],
+        "kind": "ordinary-user directory junction"
+      },
+      "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+      "schema_version": 1,
+      "toctou": {
+        "blocker_count": 128,
+        "blocker_payload_sha256": "fbbab289f7f94b25736c58be46a994c441fd02552cc6022352e3d86d2fab7c83",
+        "blocker_size": 1048576,
+        "cases": [
+          {
+            "action": "none",
+            "expected_open_target": "old",
+            "name": "stable_old"
+          },
+          {
+            "action": "none",
+            "expected_open_target": "new",
+            "name": "stable_new"
+          },
+          {
+            "action": "replace_junction_with_new_target",
+            "expected_open_target": "new",
+            "name": "swap_old_to_new"
+          },
+          {
+            "action": "remove_junction",
+            "expected_open_target": "missing",
+            "name": "remove_after_enumeration"
+          }
+        ],
+        "kind": "directory junction target swap after enumeration",
+        "new_target": {
+          "recipe": "bytes(range(256)) repeated 16 times",
+          "sha256": "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193",
+          "size": 4096
+        },
+        "old_target": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "stdout_sync_threshold_bytes": 4096
+      },
+      "unc": {
+        "cases": [
+          "unc_file",
+          "unc_directory",
+          "extended_unc_file",
+          "extended_unc_directory",
+          "unc_missing",
+          "unc_denied_file",
+          "unc_denied_directory",
+          "unc_directory_with_denied_child"
+        ],
+        "provider": "WSL UNC redirector",
+        "required_prefixes": [
+          "\\\\wsl.localhost\\<distro>\\",
+          "\\\\?\\UNC\\wsl.localhost\\<distro>\\"
+        ]
+      },
+      "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    },
+    "path": "docs/research/data/windows-path-closure-fixture.json",
+    "sha256": "e9a1c9dad894818c58bfdaced0a67fb62330059163720b1e96b62d89fee3fdbf"
+  },
+  "generator": "tools/upstream/collect_windows_path_closure.py",
+  "generator_sha256": "91513ec248301f6d05cb3c3f538eac8557b6181dcb9b64a0c7a02f68fd5c18e6",
+  "host": {
+    "acl": {
+      "ace": "explicit deny (OI)(CI)F",
+      "current_sid_sha256": "d8123f5851c20667591985efc11b7cea5e68f482737f14b09a64560ecf71dbff",
+      "provider": "NTFS DACL",
+      "python_access_denied_while_ace_active": true,
+      "recovery_verified": true
+    },
+    "architecture": "AMD64",
+    "os_build": "10.0.26100",
+    "unc": {
+      "allowed_payload_readable_from_windows": true,
+      "distro": "Ubuntu",
+      "extended_prefix": "\\\\?\\UNC\\wsl.localhost\\Ubuntu\\<fixture>",
+      "ordinary_prefix": "\\\\wsl.localhost\\Ubuntu\\<fixture>",
+      "provider": "WSL UNC redirector"
+    },
+    "user": {
+      "account_prefix_equals_machine": true,
+      "account_sha256": "9be8dbb06b003a70d2f55c76f7db391ce996c54cdfe3106b0ae9ba0ceec55bda",
+      "classification": "local-account",
+      "sid_sha256": "d8123f5851c20667591985efc11b7cea5e68f482737f14b09a64560ecf71dbff"
+    }
+  },
+  "large_directory_cases": {
+    "empty_0": {
+      "file_count": 0,
+      "layout": "flat",
+      "runs": [
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 20560,
+          "projection": {
+            "complete_expected_order": true,
+            "document_count": 0,
+            "expected_relative_prefixes_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "first_prefix": null,
+            "last_prefix": null,
+            "prefix_count": 0,
+            "relative_prefixes_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "raw_stderr": "large.empty_0.run-1.stderr",
+          "raw_stdout": "large.empty_0.run-1.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 0,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1003
+        },
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 20320,
+          "projection": {
+            "complete_expected_order": true,
+            "document_count": 0,
+            "expected_relative_prefixes_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "first_prefix": null,
+            "last_prefix": null,
+            "prefix_count": 0,
+            "relative_prefixes_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "raw_stderr": "large.empty_0.run-2.stderr",
+          "raw_stdout": "large.empty_0.run-2.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 0,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1007
+        }
+      ],
+      "semantic_deterministic": true
+    },
+    "flat_256": {
+      "file_count": 256,
+      "layout": "flat",
+      "runs": [
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 21088,
+          "projection": {
+            "complete_expected_order": true,
+            "document_count": 256,
+            "expected_relative_prefixes_sha256": "b502ac3aaa2912748b1af7ad87b2727042fdd8d6fa8a5bafdc9fef5ae64ea506",
+            "first_prefix": "item-000000.empty",
+            "last_prefix": "item-000255.empty",
+            "prefix_count": 256,
+            "relative_prefixes_sha256": "b502ac3aaa2912748b1af7ad87b2727042fdd8d6fa8a5bafdc9fef5ae64ea506"
+          },
+          "raw_stderr": "large.flat_256.run-1.stderr",
+          "raw_stdout": "large.flat_256.run-1.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 82176,
+          "stdout_sha256": "effaf50602d0904809365c026b9155fdd820fae90626ed9b1fe57e01bd59c1d3",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1515
+        },
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 21088,
+          "projection": {
+            "complete_expected_order": true,
+            "document_count": 256,
+            "expected_relative_prefixes_sha256": "b502ac3aaa2912748b1af7ad87b2727042fdd8d6fa8a5bafdc9fef5ae64ea506",
+            "first_prefix": "item-000000.empty",
+            "last_prefix": "item-000255.empty",
+            "prefix_count": 256,
+            "relative_prefixes_sha256": "b502ac3aaa2912748b1af7ad87b2727042fdd8d6fa8a5bafdc9fef5ae64ea506"
+          },
+          "raw_stderr": "large.flat_256.run-2.stderr",
+          "raw_stdout": "large.flat_256.run-2.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 82176,
+          "stdout_sha256": "effaf50602d0904809365c026b9155fdd820fae90626ed9b1fe57e01bd59c1d3",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1313
+        }
+      ],
+      "semantic_deterministic": true
+    },
+    "flat_4096": {
+      "file_count": 4096,
+      "layout": "flat",
+      "runs": [
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 26204,
+          "projection": {
+            "complete_expected_order": true,
+            "document_count": 4096,
+            "expected_relative_prefixes_sha256": "e492c0d00c9530887581e179926037afd28fe01ca592b1c58ae51b7f5f4390dd",
+            "first_prefix": "item-000000.empty",
+            "last_prefix": "item-004095.empty",
+            "prefix_count": 4096,
+            "relative_prefixes_sha256": "e492c0d00c9530887581e179926037afd28fe01ca592b1c58ae51b7f5f4390dd"
+          },
+          "raw_stderr": "large.flat_4096.run-1.stderr",
+          "raw_stdout": "large.flat_4096.run-1.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 1318912,
+          "stdout_sha256": "596554ce2b5d6e7a546a64b728f0b3115efc196588502319699a76aa6450d276",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 3216
+        },
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 26096,
+          "projection": {
+            "complete_expected_order": true,
+            "document_count": 4096,
+            "expected_relative_prefixes_sha256": "e492c0d00c9530887581e179926037afd28fe01ca592b1c58ae51b7f5f4390dd",
+            "first_prefix": "item-000000.empty",
+            "last_prefix": "item-004095.empty",
+            "prefix_count": 4096,
+            "relative_prefixes_sha256": "e492c0d00c9530887581e179926037afd28fe01ca592b1c58ae51b7f5f4390dd"
+          },
+          "raw_stderr": "large.flat_4096.run-2.stderr",
+          "raw_stdout": "large.flat_4096.run-2.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 1318912,
+          "stdout_sha256": "596554ce2b5d6e7a546a64b728f0b3115efc196588502319699a76aa6450d276",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 3121
+        }
+      ],
+      "semantic_deterministic": true
+    },
+    "nested_4096": {
+      "file_count": 4096,
+      "layout": "nested",
+      "runs": [
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 22028,
+          "projection": {
+            "complete_expected_order": true,
+            "document_count": 4096,
+            "expected_relative_prefixes_sha256": "a2e78895528c5111523f9292b4e1b8c636bc8c876d4a3831a654863dd4ec127b",
+            "first_prefix": "bucket-000/item-000000.empty",
+            "last_prefix": "bucket-015/item-004095.empty",
+            "prefix_count": 4096,
+            "relative_prefixes_sha256": "a2e78895528c5111523f9292b4e1b8c636bc8c876d4a3831a654863dd4ec127b"
+          },
+          "raw_stderr": "large.nested_4096.run-1.stderr",
+          "raw_stdout": "large.nested_4096.run-1.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 1372160,
+          "stdout_sha256": "d8f186751ad82dfd24e12c396aaa6a9485b24c5a8733e32d44d8f7ff4220154d",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 3220
+        },
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 22200,
+          "projection": {
+            "complete_expected_order": true,
+            "document_count": 4096,
+            "expected_relative_prefixes_sha256": "a2e78895528c5111523f9292b4e1b8c636bc8c876d4a3831a654863dd4ec127b",
+            "first_prefix": "bucket-000/item-000000.empty",
+            "last_prefix": "bucket-015/item-004095.empty",
+            "prefix_count": 4096,
+            "relative_prefixes_sha256": "a2e78895528c5111523f9292b4e1b8c636bc8c876d4a3831a654863dd4ec127b"
+          },
+          "raw_stderr": "large.nested_4096.run-2.stderr",
+          "raw_stdout": "large.nested_4096.run-2.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 1372160,
+          "stdout_sha256": "d8f186751ad82dfd24e12c396aaa6a9485b24c5a8733e32d44d8f7ff4220154d",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 3208
+        }
+      ],
+      "semantic_deterministic": true
+    },
+    "single_1": {
+      "file_count": 1,
+      "layout": "flat",
+      "runs": [
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 20964,
+          "projection": {
+            "complete_expected_order": true,
+            "document_count": 1,
+            "expected_relative_prefixes_sha256": "5d773f3f11edc53a04f4fc25459cc359672f5fb6794bc8d8b1d32080e90caf19",
+            "first_prefix": null,
+            "last_prefix": null,
+            "prefix_count": 0,
+            "relative_prefixes_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "raw_stderr": "large.single_1.run-1.stderr",
+          "raw_stdout": "large.single_1.run-1.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 241,
+          "stdout_sha256": "b4bd7a7058b745c9c2f84ad18d2ad627ed37a80c779a0c598e20702ce2e96ad2",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 965
+        },
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 20908,
+          "projection": {
+            "complete_expected_order": true,
+            "document_count": 1,
+            "expected_relative_prefixes_sha256": "5d773f3f11edc53a04f4fc25459cc359672f5fb6794bc8d8b1d32080e90caf19",
+            "first_prefix": null,
+            "last_prefix": null,
+            "prefix_count": 0,
+            "relative_prefixes_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "raw_stderr": "large.single_1.run-2.stderr",
+          "raw_stdout": "large.single_1.run-2.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 241,
+          "stdout_sha256": "b4bd7a7058b745c9c2f84ad18d2ad627ed37a80c779a0c598e20702ce2e96ad2",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1173
+        }
+      ],
+      "semantic_deterministic": true
+    }
+  },
+  "limitations": [
+    "successful UNC cases use the installed WSL redirector; no machine SMB share is created or modified",
+    "the WSL redirector accepts ordinary UNC but the fixed Qt5 CLI rejects the corresponding extended UNC form",
+    "ACL behavior is exercised with the current local SID and WSL Unix modes; Active Directory identity is not an independent branch in the fixed source",
+    "the reparse cycle is bounded by the collector wall timeout if upstream does not terminate first",
+    "4096 entries and the tested path/resource bounds do not justify an unbounded Rust default"
+  ],
+  "passed": true,
+  "platform": "windows-x86_64-qt5",
+  "qt": {
+    "qmake_sha256": "e873ad3a689a0628c3037a6440221dcd2e426395edf14ffa6379612dede26d36",
+    "qmake_spec": "win32-msvc",
+    "qt5core_sha256": "8d2ff4ce9096ddccc4f4cd62c2e41fc854cfd1b0d6e8d296645a7f5fd4ae565a",
+    "qt5script_sha256": "0b58e5e79df13110a8258f14d7b3658d1dd0c8dddc337a164b89d4ac12a0638f",
+    "version": "5.15.2"
+  },
+  "raw_artifacts": {
+    "directory_role": "native CLI stdout/stderr, excluded from repository",
+    "file_count": 92,
+    "retained_externally": true
+  },
+  "references": {
+    "large_manifest": {
+      "path": "docs/research/data/large-path-fixture.json",
+      "sha256": "67a29846d009f10b6448021f651d6b7e8bed0c16124f16c2b07f55085e2dd26a"
+    },
+    "linux_qt5_large": {
+      "path": "docs/research/data/large-path-engine-qt5.json",
+      "sha256": "100562d79fa661055fd79e0efe6ce8f58a31b8e4faebedf410f80f51e817883b"
+    },
+    "linux_qt5_toctou": {
+      "path": "docs/research/data/path-toctou-engine-qt5.json",
+      "sha256": "733b136667c39f46e2d32bfb6a15c7da7077eee98232d7ff3a06a812f6913cf9"
+    },
+    "windows_default": {
+      "path": "docs/research/data/baseline-corpus-windows-qt5.json",
+      "sample": "minimal.pdf",
+      "sha256": "6beba732e88d90ed1414dd2584a4a783eac24dec70103fc54e6214eb12cca998"
+    }
+  },
+  "relationships": {
+    "large_all_cases_are_semantically_deterministic": true,
+    "large_flat_4096_is_complete_and_ordered": true,
+    "large_nested_4096_is_complete_and_ordered": true,
+    "local_acl_all_cases_are_semantically_deterministic": true,
+    "local_acl_denials_do_not_expose_pdf": true,
+    "local_acl_is_denied_to_current_process": true,
+    "local_acl_mixed_directory_retains_visible_pdf": true,
+    "local_acl_recovery_is_verified": true,
+    "reparse_all_cases_are_semantically_deterministic": true,
+    "reparse_cycle_is_bounded_and_repeats_without_deduplication": true,
+    "source_freezes_list_before_open": true,
+    "source_has_no_platform_specific_path_branch": true,
+    "toctou_all_cases_are_semantically_deterministic": true,
+    "toctou_remove_retains_missing_result_shape": true,
+    "toctou_swap_opens_new_target": true,
+    "unc_all_cases_are_semantically_deterministic": true,
+    "unc_missing_is_not_reported_as_pdf": true,
+    "unc_mixed_directory_retains_visible_pdf": true,
+    "unc_ordinary_succeeds_and_extended_is_rejected": true,
+    "unc_permission_denials_do_not_expose_pdf": true,
+    "unc_provider_is_readable": true
+  },
+  "reparse_cases": {
+    "dangling_explicit": {
+      "externally_bounded": true,
+      "runs": [
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 20520,
+          "projection": {
+            "all_documents_match_minimal_pdf": null,
+            "document_count": null,
+            "exit_code": 0,
+            "max_prefix_code_units": null,
+            "normalized_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "relative_prefixes_sha256": null,
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 0,
+            "timed_out": false
+          },
+          "raw_stderr": "reparse.dangling_explicit.run-1.stderr",
+          "raw_stdout": "reparse.dangling_explicit.run-1.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 0,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 949
+        },
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 20552,
+          "projection": {
+            "all_documents_match_minimal_pdf": null,
+            "document_count": null,
+            "exit_code": 0,
+            "max_prefix_code_units": null,
+            "normalized_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "relative_prefixes_sha256": null,
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 0,
+            "timed_out": false
+          },
+          "raw_stderr": "reparse.dangling_explicit.run-2.stderr",
+          "raw_stdout": "reparse.dangling_explicit.run-2.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 0,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 942
+        }
+      ],
+      "semantic_deterministic": true
+    },
+    "dangling_parent": {
+      "externally_bounded": true,
+      "runs": [
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 20440,
+          "projection": {
+            "all_documents_match_minimal_pdf": null,
+            "document_count": null,
+            "exit_code": 0,
+            "max_prefix_code_units": null,
+            "normalized_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "relative_prefixes_sha256": null,
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 0,
+            "timed_out": false
+          },
+          "raw_stderr": "reparse.dangling_parent.run-1.stderr",
+          "raw_stdout": "reparse.dangling_parent.run-1.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 0,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1029
+        },
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 20332,
+          "projection": {
+            "all_documents_match_minimal_pdf": null,
+            "document_count": null,
+            "exit_code": 0,
+            "max_prefix_code_units": null,
+            "normalized_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "relative_prefixes_sha256": null,
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 0,
+            "timed_out": false
+          },
+          "raw_stderr": "reparse.dangling_parent.run-2.stderr",
+          "raw_stdout": "reparse.dangling_parent.run-2.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 0,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 980
+        }
+      ],
+      "semantic_deterministic": true
+    },
+    "two_node_cycle": {
+      "externally_bounded": true,
+      "runs": [
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 22872,
+          "projection": {
+            "all_documents_match_minimal_pdf": true,
+            "document_count": 64,
+            "exit_code": 0,
+            "max_prefix_code_units": 328,
+            "normalized_stdout_sha256": "e323e5356202c5db897385c364de242b190430dd397b7033153589edcb772fad",
+            "relative_prefixes_sha256": "82da75a3c712b6cc986403794dfc63fc4a3af335dc90551ff1e19a4b8ece5ab4",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 63264,
+            "timed_out": false
+          },
+          "raw_stderr": "reparse.two_node_cycle.run-1.stderr",
+          "raw_stdout": "reparse.two_node_cycle.run-1.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 63264,
+          "stdout_sha256": "0357e9d216914d594b24d25132e8c7552b28b8fc69b466fda640ff8b4bf0b9ba",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 2067
+        },
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 22840,
+          "projection": {
+            "all_documents_match_minimal_pdf": true,
+            "document_count": 64,
+            "exit_code": 0,
+            "max_prefix_code_units": 328,
+            "normalized_stdout_sha256": "e323e5356202c5db897385c364de242b190430dd397b7033153589edcb772fad",
+            "relative_prefixes_sha256": "82da75a3c712b6cc986403794dfc63fc4a3af335dc90551ff1e19a4b8ece5ab4",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 63264,
+            "timed_out": false
+          },
+          "raw_stderr": "reparse.two_node_cycle.run-2.stderr",
+          "raw_stdout": "reparse.two_node_cycle.run-2.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 63264,
+          "stdout_sha256": "0357e9d216914d594b24d25132e8c7552b28b8fc69b466fda640ff8b4bf0b9ba",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 2040
+        }
+      ],
+      "semantic_deterministic": true
+    }
+  },
+  "repetitions": 2,
+  "schema_version": 1,
+  "source": {
+    "commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "recursive_submodule_count": 58,
+    "repository": "https://github.com/horsicq/DIE-engine",
+    "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6"
+  },
+  "source_contract": {
+    "find_files_end_line": 2475,
+    "find_files_start_line": 2452,
+    "negative_platform_token_counts": {
+      "acl": 0,
+      "domain": 0,
+      "reparse": 0,
+      "securitydescriptor": 0,
+      "unc": 0
+    },
+    "paths": {
+      "console": "<source>/src/console/main_console.cpp",
+      "xbinary": "<source>/Formats/xbinary.cpp"
+    },
+    "required_pattern_counts": {
+      "cli_freezes_file_count": 1,
+      "cli_opens_frozen_path": 1,
+      "find_files_append": 3,
+      "find_files_entry_list": 4,
+      "find_files_recursive_call": 1
+    },
+    "scan_files_end_line": 208,
+    "scan_files_start_line": 92,
+    "sha256": {
+      "console": "ebb82a94fdd0f54722ea36589d6a35694ec4022bc9179030dae6a85e7a9d7e8f",
+      "xbinary": "d82bd21326bb7ba07eb343020d50af0ae2cf7e8e534d8e08d07ffa8129913c34"
+    }
+  },
+  "toctou_cases": {
+    "remove_after_enumeration": {
+      "action": "remove_junction",
+      "expected_open_target": "missing",
+      "runs": [
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 21028,
+          "projection": {
+            "blocker_prefix_count": 128,
+            "document_count": 129,
+            "link_document": {
+              "records": [],
+              "status": "",
+              "total": 0
+            },
+            "link_prefix": "z-link/payload.bin",
+            "observed_open_target": "missing",
+            "sync_threshold_reached": true
+          },
+          "raw_stderr": "toctou.remove_after_enumeration.run-1.stderr",
+          "raw_stdout": "toctou.remove_after_enumeration.run-1.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 40593,
+          "stdout_sha256": "212c39e73cabc402cbf8007a6c8aed387eaf0b6f9aa2a26f9178b8c80dcaf199",
+          "sync_threshold_reached": true,
+          "timed_out": false,
+          "wall_elapsed_ms": 1190
+        },
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 21080,
+          "projection": {
+            "blocker_prefix_count": 128,
+            "document_count": 129,
+            "link_document": {
+              "records": [],
+              "status": "",
+              "total": 0
+            },
+            "link_prefix": "z-link/payload.bin",
+            "observed_open_target": "missing",
+            "sync_threshold_reached": true
+          },
+          "raw_stderr": "toctou.remove_after_enumeration.run-2.stderr",
+          "raw_stdout": "toctou.remove_after_enumeration.run-2.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 40593,
+          "stdout_sha256": "212c39e73cabc402cbf8007a6c8aed387eaf0b6f9aa2a26f9178b8c80dcaf199",
+          "sync_threshold_reached": true,
+          "timed_out": false,
+          "wall_elapsed_ms": 1203
+        }
+      ],
+      "semantic_deterministic": true
+    },
+    "stable_new": {
+      "action": "none",
+      "expected_open_target": "new",
+      "runs": [
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 21196,
+          "projection": {
+            "blocker_prefix_count": 128,
+            "document_count": 129,
+            "link_document": {
+              "records": [
+                {
+                  "entropy": 8,
+                  "name": "Data",
+                  "offset": 0,
+                  "size": 4096,
+                  "status": "packed"
+                }
+              ],
+              "status": "packed",
+              "total": 8
+            },
+            "link_prefix": "z-link/payload.bin",
+            "observed_open_target": "new",
+            "sync_threshold_reached": null
+          },
+          "raw_stderr": "toctou.stable_new.run-1.stderr",
+          "raw_stdout": "toctou.stable_new.run-1.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 40762,
+          "stdout_sha256": "cfae41ab2c89662a225984d4e26df13d9ca3365eb7dab8f7953d25e7034af159",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1250
+        },
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 21172,
+          "projection": {
+            "blocker_prefix_count": 128,
+            "document_count": 129,
+            "link_document": {
+              "records": [
+                {
+                  "entropy": 8,
+                  "name": "Data",
+                  "offset": 0,
+                  "size": 4096,
+                  "status": "packed"
+                }
+              ],
+              "status": "packed",
+              "total": 8
+            },
+            "link_prefix": "z-link/payload.bin",
+            "observed_open_target": "new",
+            "sync_threshold_reached": null
+          },
+          "raw_stderr": "toctou.stable_new.run-2.stderr",
+          "raw_stdout": "toctou.stable_new.run-2.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 40762,
+          "stdout_sha256": "cfae41ab2c89662a225984d4e26df13d9ca3365eb7dab8f7953d25e7034af159",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1211
+        }
+      ],
+      "semantic_deterministic": true
+    },
+    "stable_old": {
+      "action": "none",
+      "expected_open_target": "old",
+      "runs": [
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 21200,
+          "projection": {
+            "blocker_prefix_count": 128,
+            "document_count": 129,
+            "link_document": {
+              "records": [
+                {
+                  "entropy": 0,
+                  "name": "Data",
+                  "offset": 0,
+                  "size": 0,
+                  "status": "not packed"
+                }
+              ],
+              "status": "not packed",
+              "total": 0
+            },
+            "link_prefix": "z-link/payload.bin",
+            "observed_open_target": "old",
+            "sync_threshold_reached": null
+          },
+          "raw_stderr": "toctou.stable_old.run-1.stderr",
+          "raw_stdout": "toctou.stable_old.run-1.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 40767,
+          "stdout_sha256": "684c3d463f7cd7cbe5f83bc664ceb72416d9e93d01a280a7120e28b4b2d4bdc7",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1276
+        },
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 21076,
+          "projection": {
+            "blocker_prefix_count": 128,
+            "document_count": 129,
+            "link_document": {
+              "records": [
+                {
+                  "entropy": 0,
+                  "name": "Data",
+                  "offset": 0,
+                  "size": 0,
+                  "status": "not packed"
+                }
+              ],
+              "status": "not packed",
+              "total": 0
+            },
+            "link_prefix": "z-link/payload.bin",
+            "observed_open_target": "old",
+            "sync_threshold_reached": null
+          },
+          "raw_stderr": "toctou.stable_old.run-2.stderr",
+          "raw_stdout": "toctou.stable_old.run-2.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 40767,
+          "stdout_sha256": "684c3d463f7cd7cbe5f83bc664ceb72416d9e93d01a280a7120e28b4b2d4bdc7",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1303
+        }
+      ],
+      "semantic_deterministic": true
+    },
+    "swap_old_to_new": {
+      "action": "replace_junction_with_new_target",
+      "expected_open_target": "new",
+      "runs": [
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 21156,
+          "projection": {
+            "blocker_prefix_count": 128,
+            "document_count": 129,
+            "link_document": {
+              "records": [
+                {
+                  "entropy": 8,
+                  "name": "Data",
+                  "offset": 0,
+                  "size": 4096,
+                  "status": "packed"
+                }
+              ],
+              "status": "packed",
+              "total": 8
+            },
+            "link_prefix": "z-link/payload.bin",
+            "observed_open_target": "new",
+            "sync_threshold_reached": true
+          },
+          "raw_stderr": "toctou.swap_old_to_new.run-1.stderr",
+          "raw_stdout": "toctou.swap_old_to_new.run-1.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 40762,
+          "stdout_sha256": "cfae41ab2c89662a225984d4e26df13d9ca3365eb7dab8f7953d25e7034af159",
+          "sync_threshold_reached": true,
+          "timed_out": false,
+          "wall_elapsed_ms": 1222
+        },
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 21188,
+          "projection": {
+            "blocker_prefix_count": 128,
+            "document_count": 129,
+            "link_document": {
+              "records": [
+                {
+                  "entropy": 8,
+                  "name": "Data",
+                  "offset": 0,
+                  "size": 4096,
+                  "status": "packed"
+                }
+              ],
+              "status": "packed",
+              "total": 8
+            },
+            "link_prefix": "z-link/payload.bin",
+            "observed_open_target": "new",
+            "sync_threshold_reached": true
+          },
+          "raw_stderr": "toctou.swap_old_to_new.run-2.stderr",
+          "raw_stdout": "toctou.swap_old_to_new.run-2.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 40762,
+          "stdout_sha256": "cfae41ab2c89662a225984d4e26df13d9ca3365eb7dab8f7953d25e7034af159",
+          "sync_threshold_reached": true,
+          "timed_out": false,
+          "wall_elapsed_ms": 1194
+        }
+      ],
+      "semantic_deterministic": true
+    }
+  },
+  "unc_cases": {
+    "extended_unc_directory": {
+      "runs": [
+        {
+          "exit_code": 1,
+          "peak_working_set_kib": 20468,
+          "projection": {
+            "detect_tree": null,
+            "exit_code": 1,
+            "minimal_pdf_equal": false,
+            "normalized_stdout_sha256": "752ce14883926ff9dbdda0697a8fa120d98ce97d22fcea4c14f1ef9bb9d10114",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "timed_out": false,
+            "valid_json": false
+          },
+          "raw_stderr": "unc.extended_unc_directory.run-1.stderr",
+          "raw_stdout": "unc.extended_unc_directory.run-1.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 106,
+          "stdout_sha256": "3a856e4ffc1fb6047d9b6ebdb7d552a7b13bac0cbdb4fc4320a1b643023b678f",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1144
+        },
+        {
+          "exit_code": 1,
+          "peak_working_set_kib": 20480,
+          "projection": {
+            "detect_tree": null,
+            "exit_code": 1,
+            "minimal_pdf_equal": false,
+            "normalized_stdout_sha256": "752ce14883926ff9dbdda0697a8fa120d98ce97d22fcea4c14f1ef9bb9d10114",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "timed_out": false,
+            "valid_json": false
+          },
+          "raw_stderr": "unc.extended_unc_directory.run-2.stderr",
+          "raw_stdout": "unc.extended_unc_directory.run-2.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 106,
+          "stdout_sha256": "3a856e4ffc1fb6047d9b6ebdb7d552a7b13bac0cbdb4fc4320a1b643023b678f",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1178
+        }
+      ],
+      "semantic_deterministic": true
+    },
+    "extended_unc_file": {
+      "runs": [
+        {
+          "exit_code": 1,
+          "peak_working_set_kib": 20436,
+          "projection": {
+            "detect_tree": null,
+            "exit_code": 1,
+            "minimal_pdf_equal": false,
+            "normalized_stdout_sha256": "b434b549a3197fbd08fa3b549f5edbbd693d9c18176c9c8dd4fbcee0b7c46723",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "timed_out": false,
+            "valid_json": false
+          },
+          "raw_stderr": "unc.extended_unc_file.run-1.stderr",
+          "raw_stdout": "unc.extended_unc_file.run-1.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 116,
+          "stdout_sha256": "fd02451fb6af0235e3369487be08cf7a0c8cbee0d8166c70d6d1066f2cce80a5",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1248
+        },
+        {
+          "exit_code": 1,
+          "peak_working_set_kib": 20488,
+          "projection": {
+            "detect_tree": null,
+            "exit_code": 1,
+            "minimal_pdf_equal": false,
+            "normalized_stdout_sha256": "b434b549a3197fbd08fa3b549f5edbbd693d9c18176c9c8dd4fbcee0b7c46723",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "timed_out": false,
+            "valid_json": false
+          },
+          "raw_stderr": "unc.extended_unc_file.run-2.stderr",
+          "raw_stdout": "unc.extended_unc_file.run-2.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 116,
+          "stdout_sha256": "fd02451fb6af0235e3369487be08cf7a0c8cbee0d8166c70d6d1066f2cce80a5",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1211
+        }
+      ],
+      "semantic_deterministic": true
+    },
+    "unc_denied_directory": {
+      "runs": [
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 20604,
+          "projection": {
+            "detect_tree": null,
+            "exit_code": 0,
+            "minimal_pdf_equal": false,
+            "normalized_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "timed_out": false,
+            "valid_json": false
+          },
+          "raw_stderr": "unc.unc_denied_directory.run-1.stderr",
+          "raw_stdout": "unc.unc_denied_directory.run-1.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 0,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1177
+        },
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 20452,
+          "projection": {
+            "detect_tree": null,
+            "exit_code": 0,
+            "minimal_pdf_equal": false,
+            "normalized_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "timed_out": false,
+            "valid_json": false
+          },
+          "raw_stderr": "unc.unc_denied_directory.run-2.stderr",
+          "raw_stdout": "unc.unc_denied_directory.run-2.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 0,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1149
+        }
+      ],
+      "semantic_deterministic": true
+    },
+    "unc_denied_file": {
+      "runs": [
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 20604,
+          "projection": {
+            "detect_tree": null,
+            "exit_code": 0,
+            "minimal_pdf_equal": false,
+            "normalized_stdout_sha256": "53d7a48a4838b73f1b1dc11f48423344a43290930ac6d0384a6037e60b4af9f6",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "timed_out": false,
+            "valid_json": true
+          },
+          "raw_stderr": "unc.unc_denied_file.run-1.stderr",
+          "raw_stdout": "unc.unc_denied_file.run-1.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 105,
+          "stdout_sha256": "53d7a48a4838b73f1b1dc11f48423344a43290930ac6d0384a6037e60b4af9f6",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1288
+        },
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 20652,
+          "projection": {
+            "detect_tree": null,
+            "exit_code": 0,
+            "minimal_pdf_equal": false,
+            "normalized_stdout_sha256": "53d7a48a4838b73f1b1dc11f48423344a43290930ac6d0384a6037e60b4af9f6",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "timed_out": false,
+            "valid_json": true
+          },
+          "raw_stderr": "unc.unc_denied_file.run-2.stderr",
+          "raw_stdout": "unc.unc_denied_file.run-2.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 105,
+          "stdout_sha256": "53d7a48a4838b73f1b1dc11f48423344a43290930ac6d0384a6037e60b4af9f6",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1201
+        }
+      ],
+      "semantic_deterministic": true
+    },
+    "unc_directory": {
+      "runs": [
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 22468,
+          "projection": {
+            "detect_tree": [
+              {
+                "filetype": "PDF",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "331",
+                "values": [
+                  {
+                    "name": "PDF",
+                    "type": "format",
+                    "version": "1.4"
+                  },
+                  {
+                    "name": "HeaderComment",
+                    "type": "complier",
+                    "version": "e2e3cfd3"
+                  }
+                ]
+              }
+            ],
+            "exit_code": 0,
+            "minimal_pdf_equal": true,
+            "normalized_stdout_sha256": "50eac08de24510fecccfb962f5e85eacf3f658d0712061e5de115daa3c6d7590",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "timed_out": false,
+            "valid_json": true
+          },
+          "raw_stderr": "unc.unc_directory.run-1.stderr",
+          "raw_stdout": "unc.unc_directory.run-1.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 756,
+          "stdout_sha256": "50eac08de24510fecccfb962f5e85eacf3f658d0712061e5de115daa3c6d7590",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1187
+        },
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 22484,
+          "projection": {
+            "detect_tree": [
+              {
+                "filetype": "PDF",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "331",
+                "values": [
+                  {
+                    "name": "PDF",
+                    "type": "format",
+                    "version": "1.4"
+                  },
+                  {
+                    "name": "HeaderComment",
+                    "type": "complier",
+                    "version": "e2e3cfd3"
+                  }
+                ]
+              }
+            ],
+            "exit_code": 0,
+            "minimal_pdf_equal": true,
+            "normalized_stdout_sha256": "50eac08de24510fecccfb962f5e85eacf3f658d0712061e5de115daa3c6d7590",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "timed_out": false,
+            "valid_json": true
+          },
+          "raw_stderr": "unc.unc_directory.run-2.stderr",
+          "raw_stdout": "unc.unc_directory.run-2.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 756,
+          "stdout_sha256": "50eac08de24510fecccfb962f5e85eacf3f658d0712061e5de115daa3c6d7590",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1306
+        }
+      ],
+      "semantic_deterministic": true
+    },
+    "unc_directory_with_denied_child": {
+      "runs": [
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 22444,
+          "projection": {
+            "detect_tree": [
+              {
+                "filetype": "PDF",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "331",
+                "values": [
+                  {
+                    "name": "PDF",
+                    "type": "format",
+                    "version": "1.4"
+                  },
+                  {
+                    "name": "HeaderComment",
+                    "type": "complier",
+                    "version": "e2e3cfd3"
+                  }
+                ]
+              }
+            ],
+            "exit_code": 0,
+            "minimal_pdf_equal": true,
+            "normalized_stdout_sha256": "50eac08de24510fecccfb962f5e85eacf3f658d0712061e5de115daa3c6d7590",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "timed_out": false,
+            "valid_json": true
+          },
+          "raw_stderr": "unc.unc_directory_with_denied_child.run-1.stderr",
+          "raw_stdout": "unc.unc_directory_with_denied_child.run-1.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 756,
+          "stdout_sha256": "50eac08de24510fecccfb962f5e85eacf3f658d0712061e5de115daa3c6d7590",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1299
+        },
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 22492,
+          "projection": {
+            "detect_tree": [
+              {
+                "filetype": "PDF",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "331",
+                "values": [
+                  {
+                    "name": "PDF",
+                    "type": "format",
+                    "version": "1.4"
+                  },
+                  {
+                    "name": "HeaderComment",
+                    "type": "complier",
+                    "version": "e2e3cfd3"
+                  }
+                ]
+              }
+            ],
+            "exit_code": 0,
+            "minimal_pdf_equal": true,
+            "normalized_stdout_sha256": "50eac08de24510fecccfb962f5e85eacf3f658d0712061e5de115daa3c6d7590",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "timed_out": false,
+            "valid_json": true
+          },
+          "raw_stderr": "unc.unc_directory_with_denied_child.run-2.stderr",
+          "raw_stdout": "unc.unc_directory_with_denied_child.run-2.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 756,
+          "stdout_sha256": "50eac08de24510fecccfb962f5e85eacf3f658d0712061e5de115daa3c6d7590",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1193
+        }
+      ],
+      "semantic_deterministic": true
+    },
+    "unc_file": {
+      "runs": [
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 22484,
+          "projection": {
+            "detect_tree": [
+              {
+                "filetype": "PDF",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "331",
+                "values": [
+                  {
+                    "name": "PDF",
+                    "type": "format",
+                    "version": "1.4"
+                  },
+                  {
+                    "name": "HeaderComment",
+                    "type": "complier",
+                    "version": "e2e3cfd3"
+                  }
+                ]
+              }
+            ],
+            "exit_code": 0,
+            "minimal_pdf_equal": true,
+            "normalized_stdout_sha256": "50eac08de24510fecccfb962f5e85eacf3f658d0712061e5de115daa3c6d7590",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "timed_out": false,
+            "valid_json": true
+          },
+          "raw_stderr": "unc.unc_file.run-1.stderr",
+          "raw_stdout": "unc.unc_file.run-1.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 756,
+          "stdout_sha256": "50eac08de24510fecccfb962f5e85eacf3f658d0712061e5de115daa3c6d7590",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1382
+        },
+        {
+          "exit_code": 0,
+          "peak_working_set_kib": 22532,
+          "projection": {
+            "detect_tree": [
+              {
+                "filetype": "PDF",
+                "offset": "0",
+                "parentfilepart": "Header",
+                "size": "331",
+                "values": [
+                  {
+                    "name": "PDF",
+                    "type": "format",
+                    "version": "1.4"
+                  },
+                  {
+                    "name": "HeaderComment",
+                    "type": "complier",
+                    "version": "e2e3cfd3"
+                  }
+                ]
+              }
+            ],
+            "exit_code": 0,
+            "minimal_pdf_equal": true,
+            "normalized_stdout_sha256": "50eac08de24510fecccfb962f5e85eacf3f658d0712061e5de115daa3c6d7590",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "timed_out": false,
+            "valid_json": true
+          },
+          "raw_stderr": "unc.unc_file.run-2.stderr",
+          "raw_stdout": "unc.unc_file.run-2.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 756,
+          "stdout_sha256": "50eac08de24510fecccfb962f5e85eacf3f658d0712061e5de115daa3c6d7590",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1172
+        }
+      ],
+      "semantic_deterministic": true
+    },
+    "unc_missing": {
+      "runs": [
+        {
+          "exit_code": 1,
+          "peak_working_set_kib": 20420,
+          "projection": {
+            "detect_tree": null,
+            "exit_code": 1,
+            "minimal_pdf_equal": false,
+            "normalized_stdout_sha256": "1749c9c992cbba080de6615052f810846576e865a4e986ad0b73cce93c3355e0",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "timed_out": false,
+            "valid_json": false
+          },
+          "raw_stderr": "unc.unc_missing.run-1.stderr",
+          "raw_stdout": "unc.unc_missing.run-1.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 102,
+          "stdout_sha256": "deed8fd74781d30477659fac7883e643f9f623248a733c4061bdbfb7647e91f8",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1177
+        },
+        {
+          "exit_code": 1,
+          "peak_working_set_kib": 20496,
+          "projection": {
+            "detect_tree": null,
+            "exit_code": 1,
+            "minimal_pdf_equal": false,
+            "normalized_stdout_sha256": "1749c9c992cbba080de6615052f810846576e865a4e986ad0b73cce93c3355e0",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "timed_out": false,
+            "valid_json": false
+          },
+          "raw_stderr": "unc.unc_missing.run-2.stderr",
+          "raw_stdout": "unc.unc_missing.run-2.stdout",
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 102,
+          "stdout_sha256": "deed8fd74781d30477659fac7883e643f9f623248a733c4061bdbfb7647e91f8",
+          "sync_threshold_reached": null,
+          "timed_out": false,
+          "wall_elapsed_ms": 1165
+        }
+      ],
+      "semantic_deterministic": true
+    }
+  }
+}

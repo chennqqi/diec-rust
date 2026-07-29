@@ -1,0 +1,112 @@
+{
+  "acl": {
+    "ace": "explicit deny (OI)(CI)F on a disposable directory",
+    "cases": [
+      "local_denied_file",
+      "local_denied_directory",
+      "local_directory_with_denied_child"
+    ],
+    "provider": "NTFS DACL applied to the current local user SID",
+    "recovery": "remove deny and reset the exact disposable directory before recursive cleanup"
+  },
+  "capability": "CAP-CLI-IN-003",
+  "environment_classification": {
+    "administrative_share": "record availability only; the experiment does not create or modify a machine SMB share",
+    "domain_identity": "record whether the current account prefix equals the machine name; domain membership is descriptive",
+    "source_contract": "bind QFileInfo/QDir enumeration and the frozen-list open loop; verify no ACL/domain/UNC-specific branch"
+  },
+  "generator": "tools/corpus/generate_windows_path_closure_fixture.py",
+  "large_directory": {
+    "cases": [
+      "empty_0",
+      "single_1",
+      "flat_256",
+      "flat_4096",
+      "nested_4096"
+    ],
+    "creation_order": "descending",
+    "payload_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "payload_size": 0,
+    "reference_manifest": "docs/research/data/large-path-fixture.json"
+  },
+  "license": "project-generated paths and byte patterns; minimal PDF comes from the project-generated baseline corpus",
+  "payload": {
+    "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+    "size": 331,
+    "source": "baseline-corpus/minimal.pdf"
+  },
+  "reparse": {
+    "cases": [
+      "dangling_explicit",
+      "dangling_parent",
+      "two_node_cycle"
+    ],
+    "cycle_graph": {
+      "a/to-b": "b",
+      "b/to-a": "a"
+    },
+    "cycle_payloads": [
+      "a/payload.pdf",
+      "b/payload.pdf"
+    ],
+    "kind": "ordinary-user directory junction"
+  },
+  "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+  "schema_version": 1,
+  "toctou": {
+    "blocker_count": 128,
+    "blocker_payload_sha256": "fbbab289f7f94b25736c58be46a994c441fd02552cc6022352e3d86d2fab7c83",
+    "blocker_size": 1048576,
+    "cases": [
+      {
+        "action": "none",
+        "expected_open_target": "old",
+        "name": "stable_old"
+      },
+      {
+        "action": "none",
+        "expected_open_target": "new",
+        "name": "stable_new"
+      },
+      {
+        "action": "replace_junction_with_new_target",
+        "expected_open_target": "new",
+        "name": "swap_old_to_new"
+      },
+      {
+        "action": "remove_junction",
+        "expected_open_target": "missing",
+        "name": "remove_after_enumeration"
+      }
+    ],
+    "kind": "directory junction target swap after enumeration",
+    "new_target": {
+      "recipe": "bytes(range(256)) repeated 16 times",
+      "sha256": "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193",
+      "size": 4096
+    },
+    "old_target": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "stdout_sync_threshold_bytes": 4096
+  },
+  "unc": {
+    "cases": [
+      "unc_file",
+      "unc_directory",
+      "extended_unc_file",
+      "extended_unc_directory",
+      "unc_missing",
+      "unc_denied_file",
+      "unc_denied_directory",
+      "unc_directory_with_denied_child"
+    ],
+    "provider": "WSL UNC redirector",
+    "required_prefixes": [
+      "\\\\wsl.localhost\\<distro>\\",
+      "\\\\?\\UNC\\wsl.localhost\\<distro>\\"
+    ]
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}
