@@ -127,7 +127,9 @@ duration 顺序和 RSS。宿主临时路径不写入提交报告。
 - warm cache 是显式声明；没有可靠 drop OS page cache，未采集 cold baseline。
 - CPU quota 为 1，但没有 physical-core affinity、governor、frequency 或后台负载
   控制；单 WSL2/Linux vCPU 的后续复验见
-  [`upstream-performance-affinity.md`](upstream-performance-affinity.md)。
+  [`upstream-performance-affinity.md`](upstream-performance-affinity.md)，三次
+  连续 invocation 的跨 session 漂移见
+  [`upstream-performance-repeated-sessions.md`](upstream-performance-repeated-sessions.md)。
   host/WSL2 更新后必须新建 baseline identity，不能就地覆盖历史。
 - RSS 只测直接进程，不含任意 descendant tree；这些命令不得派生持久子进程。
 - throughput 对 control/database 不解释；对 512-byte PE 也没有工程意义。batch 与
@@ -139,9 +141,9 @@ duration 顺序和 RSS。宿主临时路径不写入提交报告。
 - 固定 Linux Qt5 的 ELF、动态依赖闭包和规则 size 已另行采集，见
   [`upstream-deployment-size.md`](upstream-deployment-size.md)；它不等于跨平台
   发行包口径。
-- 尚缺 Linux cold、可证明 topology 的 physical-core affinity 与重复 session、
-  Windows/macOS 基线、Rust 相同 bytes/options 与 size 的成对报告，以及评审后的
-  latency/p95/RSS/size/default limit targets。
+- 尚缺 Linux cold、可证明 topology 的 physical-core affinity、跨 reboot/日期的
+  长期 session，Windows/macOS 基线、Rust 相同 bytes/options 与 size 的成对报告，
+  以及评审后的 latency/p95/RSS/size/default limit targets。
 
 只有上述成对证据存在后，才能冻结“Rust 相对固定 upstream 的改善百分比”和发布
 回归阈值。

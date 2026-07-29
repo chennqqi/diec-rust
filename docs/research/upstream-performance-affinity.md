@@ -76,7 +76,9 @@ control 的 MAD/median 为 `0.14065761019178033`，p95/median 为
 
 单 vCPU 复验的 PE、archive 和 batch 出现明显 scheduler/tail 变化。它与早先
 quota-only 报告不是同一次成对随机化实验，不能把两个报告的差值解释为 affinity
-收益或损失；这些数值反而证明冻结阈值前仍需专用 benchmark host 和重复 session。
+收益或损失；后续同一 affinity 条件的三次独立 invocation 见
+[`upstream-performance-repeated-sessions.md`](upstream-performance-repeated-sessions.md)，
+它进一步证明冻结阈值前仍需专用 benchmark host 和更强的长期重复 session。
 
 ## 4. control RSS 的审计口径
 
@@ -116,7 +118,8 @@ python tools\benchmark\probe_upstream_benchmark.py `
 `P0-BLOCK-006` 仍保持 Open。仍需：
 
 - 可审计的 cold-cache controller 和 cold baseline；
-- 裸机或可证明 topology 的 physical-core/SMT/频率控制与重复 session；
+- 裸机或可证明 topology 的 physical-core/SMT/频率控制，以及跨 reboot/日期的
+  长期重复 session；
 - Windows、macOS 的相同上游 case 与发行包口径；
 - Phase 1 Rust 相同 bytes/options 的成对 latency/p95/RSS/size；
 - 人工评审后的 regression thresholds 和默认资源限制。

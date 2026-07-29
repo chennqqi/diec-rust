@@ -1,0 +1,275 @@
+{
+  "baseline_scope": "descriptive_upstream_only",
+  "cases": {
+    "upstream.archive-depth16.v1": {
+      "duration_median_across_sessions_ns": 68040262,
+      "duration_median_max_over_min": 1.770355331955294,
+      "duration_p95_max_over_min": 1.7582607951589584,
+      "peak_rss_median_max_over_min": 1.0,
+      "session_duration_mad_ns": [
+        1339497,
+        199400,
+        95993
+      ],
+      "session_duration_median_ns": [
+        120414988,
+        68040262,
+        68017412
+      ],
+      "session_duration_p95_nearest_rank_ns": [
+        123824080,
+        70424183,
+        117917544
+      ],
+      "session_peak_rss_max_bytes": [
+        24600576,
+        24604672,
+        24604672
+      ],
+      "session_peak_rss_median_bytes": [
+        24424448,
+        24424448,
+        24424448
+      ],
+      "session_peak_rss_sample_count": [
+        15,
+        15,
+        15
+      ],
+      "stderr_hashes_identical_across_sessions": true,
+      "stdout_hashes_identical_across_sessions": true
+    },
+    "upstream.cli-baseline-batch-json.v1": {
+      "duration_median_across_sessions_ns": 1320091845,
+      "duration_median_max_over_min": 1.0405643500419495,
+      "duration_p95_max_over_min": 1.684834064853549,
+      "peak_rss_median_max_over_min": 1.000253910217347,
+      "session_duration_mad_ns": [
+        53233459,
+        139867,
+        489904
+      ],
+      "session_duration_median_ns": [
+        1373344674,
+        1320091845,
+        1319807539
+      ],
+      "session_duration_p95_nearest_rank_ns": [
+        2228018042,
+        1370396597,
+        1322396127
+      ],
+      "session_peak_rss_max_bytes": [
+        80789504,
+        80953344,
+        80916480
+      ],
+      "session_peak_rss_median_bytes": [
+        80658432,
+        80670720,
+        80678912
+      ],
+      "session_peak_rss_sample_count": [
+        15,
+        15,
+        15
+      ],
+      "stderr_hashes_identical_across_sessions": true,
+      "stdout_hashes_identical_across_sessions": true
+    },
+    "upstream.cli-pe32-json.v1": {
+      "duration_median_across_sessions_ns": 119921145,
+      "duration_median_max_over_min": 1.3939892310428412,
+      "duration_p95_max_over_min": 1.4223122431370112,
+      "peak_rss_median_max_over_min": 1.0036651013629596,
+      "session_duration_mad_ns": [
+        3802670,
+        142952,
+        68472
+      ],
+      "session_duration_median_ns": [
+        167140608,
+        119921145,
+        119900932
+      ],
+      "session_duration_p95_nearest_rank_ns": [
+        170943278,
+        120307443,
+        120186885
+      ],
+      "session_peak_rss_max_bytes": [
+        36020224,
+        36024320,
+        36147200
+      ],
+      "session_peak_rss_median_bytes": [
+        35762176,
+        35893248,
+        35762176
+      ],
+      "session_peak_rss_sample_count": [
+        15,
+        15,
+        15
+      ],
+      "stderr_hashes_identical_across_sessions": true,
+      "stdout_hashes_identical_across_sessions": true
+    },
+    "upstream.database-load.v1": {
+      "duration_median_across_sessions_ns": 67994390,
+      "duration_median_max_over_min": 1.0007945354656302,
+      "duration_p95_max_over_min": 1.0038227234159158,
+      "peak_rss_median_max_over_min": 1.0133276919822298,
+      "session_duration_mad_ns": [
+        63072,
+        83680,
+        129734
+      ],
+      "session_duration_median_ns": [
+        68003126,
+        67949138,
+        67994390
+      ],
+      "session_duration_p95_nearest_rank_ns": [
+        68200654,
+        68192221,
+        68452901
+      ],
+      "session_peak_rss_max_bytes": [
+        19881984,
+        19877888,
+        20103168
+      ],
+      "session_peak_rss_median_bytes": [
+        19361792,
+        19488768,
+        19619840
+      ],
+      "session_peak_rss_sample_count": [
+        15,
+        15,
+        15
+      ],
+      "stderr_hashes_identical_across_sessions": true,
+      "stdout_hashes_identical_across_sessions": true
+    },
+    "upstream.qt-process-control.v1": {
+      "duration_median_across_sessions_ns": 3962494,
+      "duration_median_max_over_min": 1.0571124261236469,
+      "duration_p95_max_over_min": 1.3141047992162598,
+      "peak_rss_median_max_over_min": 1.7474747474747474,
+      "session_duration_mad_ns": [
+        558977,
+        541341,
+        301270
+      ],
+      "session_duration_median_ns": [
+        3974026,
+        3962494,
+        3759322
+      ],
+      "session_duration_p95_nearest_rank_ns": [
+        5033301,
+        6614285,
+        5211807
+      ],
+      "session_peak_rss_max_bytes": [
+        11927552,
+        12845056,
+        13238272
+      ],
+      "session_peak_rss_median_bytes": [
+        8519680,
+        11337728,
+        6488064
+      ],
+      "session_peak_rss_sample_count": [
+        9,
+        12,
+        12
+      ],
+      "stderr_hashes_identical_across_sessions": true,
+      "stdout_hashes_identical_across_sessions": true
+    }
+  },
+  "fixed_environment": {
+    "cgroup": {
+      "cpu_max": "100000 100000",
+      "cpuset_effective": "0",
+      "memory_max": "536870912",
+      "pids_max": "128"
+    },
+    "container_limits": {
+      "cpus": "1",
+      "memory": "512m",
+      "network": "none",
+      "pids": 128
+    },
+    "cpu_affinity": {
+      "requested_cpuset_cpu": "0",
+      "scope": "linux_vcpu"
+    },
+    "image": "diec-rust/upstream-benchmark-qt5:74eaf505",
+    "image_identity": {
+      "id": "sha256:9f1d70a8d4513404cdc457074e00dec4a9b8a6f043a572ffc17465bbe699eb09",
+      "repo_digests": [
+        "diec-rust/upstream-benchmark-qt5@sha256:9f1d70a8d4513404cdc457074e00dec4a9b8a6f043a572ffc17465bbe699eb09"
+      ],
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    }
+  },
+  "generator": "tools/benchmark/summarize_upstream_benchmark_sessions.py",
+  "generator_sha256": "4645bdcf406ea0203973a2c2ac153179693d26c090d8c63f983749a598348ba1",
+  "limitations": [
+    "the three sessions are consecutive invocations on one Docker Desktop/WSL2 host, not independent machines, reboots, days, or randomized implementation pairs",
+    "cpuset.cpus.effective=0 proves a Linux vCPU constraint but not physical-core, SMT-sibling, power, frequency, or host-load control",
+    "the plans declare warm cache and do not forcibly control the OS page cache",
+    "the short process control retains partial RSS samples and is not product RSS evidence",
+    "cross-session ratios are descriptive observations and are not approved regression thresholds"
+  ],
+  "plan_suite_sha256": "f93672c9603db16050047095f15d5f5ea6d9d58663b4574ed901f819f0106e1a",
+  "relationships": {
+    "all_product_cases_have_complete_rss_samples": true,
+    "all_sessions_pass_probe_verifier": true,
+    "all_sessions_use_exact_image_plan_environment_and_cpuset": true,
+    "case_sets_are_identical": true,
+    "outputs_are_deterministic_across_sessions": true,
+    "partial_control_rss_is_preserved_not_imputed": true,
+    "session_reports_are_distinct": true,
+    "targets_remain_unfrozen": true
+  },
+  "schema_version": 1,
+  "scope": {
+    "cold_cache_controlled": false,
+    "cpu_affinity": "single Linux vCPU 0",
+    "long_horizon_variability_measured": false,
+    "physical_core_topology_proven": false,
+    "platform": "Linux x86_64 under Docker Desktop/WSL2",
+    "power_and_frequency_controlled": false,
+    "regression_thresholds_approved": false,
+    "sessions_are_same_host_and_consecutive": true,
+    "sessions_are_separate_probe_invocations": true
+  },
+  "session_count": 3,
+  "source_reports": [
+    {
+      "bytes": 83809,
+      "path": "docs/research/data/upstream-benchmark-linux-qt5-affinity.json",
+      "sha256": "67e6d594a5b93e1b791c11ef89bdb12e85399964cea9bee87baf591047f5d7de"
+    },
+    {
+      "bytes": 83824,
+      "path": "docs/research/data/upstream-benchmark-linux-qt5-affinity-session-2.json",
+      "sha256": "3329d85989efec599b8621013f644aa3933ecacf86bdd3fb737c831010f5f011"
+    },
+    {
+      "bytes": 83815,
+      "path": "docs/research/data/upstream-benchmark-linux-qt5-affinity-session-3.json",
+      "sha256": "c6c171899b7366e3858f2ac039ed9346b48b9ba154ef4beee3607dcb4b376128"
+    }
+  ],
+  "targets_frozen": false,
+  "total_measured_runs": 270,
+  "total_warmup_runs": 51,
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

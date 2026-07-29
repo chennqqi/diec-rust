@@ -15,8 +15,10 @@ Last updated: 2026-07-28
 固定 Linux Qt5 的首份描述性上游基线现已形成，见
 [`upstream-performance-baseline.md`](upstream-performance-baseline.md)；单
 WSL2/Linux vCPU affinity 首轮复验见
-[`upstream-performance-affinity.md`](upstream-performance-affinity.md)。Rust
-成对报告、跨平台/cold、可证明的 physical-core affinity 和评审阈值仍缺，因此
+[`upstream-performance-affinity.md`](upstream-performance-affinity.md)；同一
+affinity suite 的三次独立 invocation 汇总见
+[`upstream-performance-repeated-sessions.md`](upstream-performance-repeated-sessions.md)。
+Rust 成对报告、跨平台/cold、可证明的 physical-core affinity 和评审阈值仍缺，因此
 `P0-BLOCK-006` 保持 Open，当前证据不得用于“Rust 更快”之类结论。
 
 ## 2. Plan 契约
@@ -93,8 +95,9 @@ python tools/benchmark/run_process_benchmark.py \
 ## 6. 关闭 `P0-BLOCK-006` 尚需
 
 1. Linux warm-process baseline 已覆盖 process control、database、单文件、batch、
-   nested 和 CLI JSON；单 vCPU affinity 与部署 closure size 已有首轮证据，继续
-   补 cold controller、physical-core/topology 控制与重复 session；
+   nested 和 CLI JSON；单 vCPU affinity、三次连续 invocation 与部署 closure
+   size 已有证据，继续补 cold controller、physical-core/topology 控制及跨
+   reboot/日期的长期重复 session；
 2. Phase 1 增加已加载 session 的 in-process scan/serialization 与 Rust C ABI
    overhead 分层；
 3. 对相同 bytes/options 采集 Rust 与 upstream 成对报告；

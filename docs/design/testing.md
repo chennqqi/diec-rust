@@ -665,12 +665,17 @@ calibration 见
 单 WSL2/Linux vCPU affinity 首轮复验、`cpuset.cpus.effective=0` 证明和短
 control 的 partial-RSS 审计边界见
 [`upstream-performance-affinity.md`](../research/upstream-performance-affinity.md)。
+同一固定 affinity suite 的三次独立 invocation、51 warmup/270 measured 与
+跨 session median/p95/RSS 漂移见
+[`upstream-performance-repeated-sessions.md`](../research/upstream-performance-repeated-sessions.md)；
+archive median max/min 1.7704 和 batch p95 max/min 1.6848 证明单 session
+不能冻结阈值。
 固定 Linux Qt5 的 ELF、realpath 去重动态依赖闭包和 2,268 个规则资产 size
 口径见
 [`upstream-deployment-size.md`](../research/upstream-deployment-size.md)；
 同时保留 binary+rules 与 full-closure+rules，禁止只用动态链接 ELF 本体比较。
-这些证据尚无 Rust 成对数据、cold、可证明 topology 的 physical-core 重复
-session 或跨平台发行包，也未冻结阈值或默认限制。
+这些证据尚无 Rust 成对数据、cold、可证明 topology 的 physical-core 或跨
+reboot/日期长期 session，也无跨平台发行包，且未冻结阈值或默认限制。
 
 回归阈值在首个 Rust vertical slice 形成同 bytes/options 成对报告后冻结。小于
 50 ms median 的 direct-process case 当前不具备 regression eligibility；阈值必须
