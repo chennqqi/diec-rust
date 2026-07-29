@@ -126,7 +126,8 @@ Linux CMake staging 内容清单，不关闭 AppImage/portable/压缩包或法�
 AppImage pre-linuxdeploy tree 只有 GUI binary，却携带完整 runtime rules 以及
 YARA/PEiD/signature；portable 同时携带三产品，却遗漏 `db_extra`/`db_custom`，
 又携带 YARA/signature。两者均无 LICENSE/NOTICE；portable 在固定 Debian
-multiarch Qt prefix 下也复制不到 Qt。最终 linuxdeploy/tar.gz 仍未闭合。
+multiarch Qt prefix 下也复制不到 Qt。两次原始 portable tar 命令已证明
+mtime 驱动的字节非确定性；最终 linuxdeploy 与规范化 tar.gz 仍未闭合。
 
 ## 组件根许可证
 

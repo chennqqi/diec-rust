@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import collections
+import gzip
 import hashlib
 import json
 import os
@@ -13,7 +14,9 @@ import shutil
 import stat
 import subprocess
 import sys
+import tarfile
 import tempfile
+import time
 from typing import Any
 
 
@@ -76,6 +79,14 @@ def sha256(data: bytes) -> str:
 def file_sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as stream:
+        while block := stream.read(1024 * 1024):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def compressed_stream_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with gzip.open(path, "rb") as stream:
         while block := stream.read(1024 * 1024):
             digest.update(block)
     return digest.hexdigest()
@@ -677,6 +688,135 @@ def make_portable_tree(
     }
 
 
+def tar_inventory(path: Path) -> dict[str, Any]:
+    records = []
+    mtimes = {}
+    with tarfile.open(path, "r:gz") as archive:
+        for member in archive:
+            payload_sha256 = None
+            if member.isreg():
+                stream = archive.extractfile(member)
+                if stream is None:
+                    raise AuditError(
+                        f"tar regular member has no payload: {member.name}"
+                    )
+                digest = hashlib.sha256()
+                while block := stream.read(1024 * 1024):
+                    digest.update(block)
+                payload_sha256 = digest.hexdigest()
+            records.append(
+                {
+                    "path": member.name,
+                    "type": member.type.hex(),
+                    "mode": member.mode,
+                    "uid": member.uid,
+                    "gid": member.gid,
+                    "uname": member.uname,
+                    "gname": member.gname,
+                    "size": member.size,
+                    "linkname": member.linkname,
+                    "devmajor": member.devmajor,
+                    "devminor": member.devminor,
+                    "payload_sha256": payload_sha256,
+                }
+            )
+            mtimes[member.name] = member.mtime
+    return {
+        "member_count": len(records),
+        "records": records,
+        "records_sha256": sha256(canonical_json(records)),
+        "mtimes": mtimes,
+    }
+
+
+def create_portable_archive_replay(
+    temporary: Path,
+    stage: Path,
+) -> dict[str, Any]:
+    package_name = "die_4.0.0_portable"
+    runs = []
+    minimum_delay_seconds = 1.1
+    for number in (1, 2):
+        parent = temporary / f"archive-run-{number}"
+        package_root = parent / package_name
+        parent.mkdir()
+        tree = make_portable_tree(package_root, stage, None)
+        archive_path = parent / f"{package_name}.tar.gz"
+        completed = subprocess.run(
+            ["tar", "-czf", str(archive_path), package_name],
+            cwd=parent,
+            capture_output=True,
+        )
+        if (
+            completed.returncode != 0
+            or completed.stdout
+            or completed.stderr
+            or not archive_path.is_file()
+            or archive_path.stat().st_size == 0
+        ):
+            raise AuditError(
+                f"portable archive replay failed on run {number}"
+            )
+        runs.append(
+            {
+                "tree_records_sha256": tree["inventory"][
+                    "records_sha256"
+                ],
+                "archive_sha256": file_sha256(archive_path),
+                "uncompressed_tar_sha256": compressed_stream_sha256(
+                    archive_path
+                ),
+                "tar": tar_inventory(archive_path),
+            }
+        )
+        if number == 1:
+            time.sleep(minimum_delay_seconds)
+
+    first, second = runs
+    if first["tar"]["records"] != second["tar"]["records"]:
+        raise AuditError("portable tar semantic records differ")
+    first_mtimes = first["tar"]["mtimes"]
+    second_mtimes = second["tar"]["mtimes"]
+    if set(first_mtimes) != set(second_mtimes):
+        raise AuditError("portable tar member path sets differ")
+    differing_mtime_paths = sorted(
+        path
+        for path in first_mtimes
+        if first_mtimes[path] != second_mtimes[path]
+    )
+    return {
+        "command": ["tar", "-czf", "<ARCHIVE>", package_name],
+        "run_count": 2,
+        "minimum_inter_run_delay_seconds": minimum_delay_seconds,
+        "archives_nonempty": True,
+        "archive_hashes_intentionally_omitted": True,
+        "tree_records_identical": (
+            first["tree_records_sha256"]
+            == second["tree_records_sha256"]
+        ),
+        "tar_member_count": first["tar"]["member_count"],
+        "tar_semantic_records_sha256": first["tar"][
+            "records_sha256"
+        ],
+        "tar_semantic_records_identical": True,
+        "differing_mtime_path_count": len(differing_mtime_paths),
+        "differing_mtime_paths_sha256": sha256(
+            canonical_json(differing_mtime_paths)
+        ),
+        "differing_mtime_path_sample": differing_mtime_paths[:20],
+        "differing_mtime_path_sample_truncated": (
+            len(differing_mtime_paths) > 20
+        ),
+        "uncompressed_tar_byte_identical": (
+            first["uncompressed_tar_sha256"]
+            == second["uncompressed_tar_sha256"]
+        ),
+        "compressed_tar_gz_byte_identical": (
+            first["archive_sha256"] == second["archive_sha256"]
+        ),
+    }
+
+
 def validate_script_contracts() -> dict[str, Any]:
     appimage = APPIMAGE_SCRIPT.read_bytes()
     portable = PORTABLE_SCRIPT.read_bytes()
@@ -782,6 +922,10 @@ def inside_report() -> dict[str, Any]:
             stage,
             Path(qt_layout["prefix"]),
         )
+        portable_archive = create_portable_archive_replay(
+            temporary,
+            stage,
+        )
     relationships = {
         "appimage_pre_tree_has_only_gui_product": (
             set(appimage["inventory"]["binaries"]) == {"usr/bin/die"}
@@ -846,6 +990,13 @@ def inside_report() -> dict[str, Any]:
             and not variant["data_trees"]["peid"]["present"]
             for variant in (portable_system, portable_qt)
         ),
+        "portable_tar_replay_proves_metadata_nondeterminism": (
+            portable_archive["tree_records_identical"]
+            and portable_archive["tar_semantic_records_identical"]
+            and portable_archive["differing_mtime_path_count"] > 0
+            and not portable_archive["uncompressed_tar_byte_identical"]
+            and not portable_archive["compressed_tar_gz_byte_identical"]
+        ),
     }
     if not all(relationships.values()):
         failed = sorted(
@@ -868,6 +1019,7 @@ def inside_report() -> dict[str, Any]:
             "portable_system_qt": portable_system,
             "portable_qmake_prefix": portable_qt,
         },
+        "portable_archive_replay": portable_archive,
         "relationships": relationships,
     }
 
@@ -965,7 +1117,8 @@ def host_report(repo: Path) -> dict[str, Any]:
             "kind": "post-build-release-tree-replay",
             "original_scripts_executed_end_to_end": False,
             "final_appimage_available": False,
-            "compressed_portable_archive_generated": False,
+            "compressed_portable_archive_generated": True,
+            "portable_archive_byte_reproducible": False,
             "legal_review_complete": False,
             "release_approved": False,
         },
@@ -973,7 +1126,7 @@ def host_report(repo: Path) -> dict[str, Any]:
             "the replay uses fixed built executables and reproduces script copy/layout semantics instead of reconfiguring and rebuilding",
             "the AppImage pre-tree uses the fixed CMake GUI executable as a surrogate for create_appimage.sh build/release/die; an actual qmake-workflow binary is not claimed",
             "linuxdeploy is absent, so the final AppImage dependency closure and mutations are not observed",
-            "the portable tar.gz is not generated because the script does not normalize archive metadata",
+            "two portable tar.gz replays use the original tar command and prove mtime-driven byte differences; their unstable archive hashes are intentionally omitted",
             "technical content and provenance closure is not legal approval",
         ],
     }

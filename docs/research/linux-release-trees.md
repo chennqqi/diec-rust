@@ -19,8 +19,9 @@ Last updated: 2026-07-29
 - 两棵树按标准文件名都没有任何 LICENSE、COPYING、NOTICE 或 COPYRIGHT；
 - portable 默认不捆绑 Qt。即使传入固定环境的真实 qmake prefix `/usr`，脚本也
   因 Debian multiarch 布局查错目录而复制零个 Qt 文件，得到逐字节相同的 tree；
-- portable 直接执行 `tar -czf`，没有固定顺序、mtime、owner/group 或
-  `SOURCE_DATE_EPOCH`，不能声称压缩包可重复。
+- 两次隔离 portable tree 内容和 2,522 条 tar 成员语义完全相同，但普通
+  `tar -czf` 保留八个新建路径的不同 mtime，导致未压缩 tar 与最终 tar.gz
+  均逐字节不同；上游压缩包已被实验证明不可重复。
 
 这些事实进一步说明 Rust CLI 必须有自己的显式 artifact manifest：只包含一个 CLI、
 一个核心运行闭包、完整且原样的三层 runtime rules、必需归属/SBOM，不继承 GUI、
@@ -32,12 +33,13 @@ lite、Qt、YARA、PEiD 或 signature 数据。
 
 - `original_scripts_executed_end_to_end=false`；
 - `final_appimage_available=false`；
-- `compressed_portable_archive_generated=false`；
+- `compressed_portable_archive_generated=true`；
+- `portable_archive_byte_reproducible=false`；
 - `legal_review_complete=false`；
 - `release_approved=false`。
 
-因此本报告关闭的是固定脚本的复制/布局技术清单，不是最终 AppImage、tar.gz、
-动态依赖或法律评审。
+因此本报告关闭的是固定脚本的复制/布局技术清单和原始 portable tar 命令的
+非确定性复演，不是最终 AppImage、规范化 tar.gz、动态依赖或法律评审。
 
 ## 固定脚本身份
 
@@ -63,7 +65,8 @@ lite、Qt、YARA、PEiD 或 signature 数据。
 3. 逐条复演两个脚本的 mkdir/cp/fallback/launcher 布局语义；
 4. 对每个 regular file 保存 path、mode、bytes、SHA-256 和
    source/build/system/generated 来源，再只提交摘要及完整 records hash；
-5. 不运行缺失的 `linuxdeploy`，也不生成未规范化的 tar.gz。
+5. 不运行缺失的 `linuxdeploy`；在两个隔离 package root 上执行原脚本相同的
+   `tar -czf <ARCHIVE> die_4.0.0_portable`，比较 tree、tar 语义、mtime 和字节。
 
 AppImage 脚本引用 `build/release/die`，它属于与固定 CMake build 不同的构建路径。
 本实验用固定 CMake GUI ELF 代替该位置，只验证复制树；不声称实际 AppImage workflow
@@ -192,9 +195,19 @@ portable 最后使用普通 `tar -czf`。脚本没有：
 - `SOURCE_DATE_EPOCH`；
 - gzip header 规范化。
 
-本实验因此不生成 tar.gz，也不提交偶然 hash。正式 Rust 发布流程必须从规范化
-manifest 生成 archive，并以两次 clean build/extract/tree/archive hash 相同作为
-门禁。
+本实验以至少 1.1 秒间隔创建两个隔离 package root，并分别执行原始 tar 命令。
+两次未压缩 tree 的 records hash 相同；各 tar 都有 2,522 个成员，排除 mtime
+后的完整成员语义 hash 同为
+`27d38544770412dbf8a080ad16d94d4307f4eac3a5415ba0c7a422fdcc040376`。
+发生 mtime 差异的八个路径是 package root、`base`、`base/platforms`、
+`base/signatures`、`base/sqldrivers` 和三个 launcher；路径集合 hash 为
+`ea384a2e43e9f0d15a9d55eb68ce8c9122a27d573c2e5b4164692adcd3733c86`。
+这些差异使未压缩 tar 和 tar.gz 的字节比较都为 false。
+
+报告只提交稳定比较结果，刻意省略两次偶然 archive hash。正式 Rust 发布流程必须
+从规范化 manifest 生成 archive，并以两次 clean build/extract/tree/archive hash
+相同作为门禁；本次 post-build replay 证明上游原命令失败，不代替 Rust clean-build
+发布验证。
 
 ## 复现
 

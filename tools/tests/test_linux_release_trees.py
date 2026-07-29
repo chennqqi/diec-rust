@@ -200,11 +200,12 @@ class LinuxReleaseTreeTests(unittest.TestCase):
         for field in (
             "original_scripts_executed_end_to_end",
             "final_appimage_available",
-            "compressed_portable_archive_generated",
+            "portable_archive_byte_reproducible",
             "legal_review_complete",
             "release_approved",
         ):
             self.assertFalse(scope[field])
+        self.assertTrue(scope["compressed_portable_archive_generated"])
         limitations = "\n".join(self.report["limitations"])
         for text in ("surrogate", "linuxdeploy", "tar.gz", "legal"):
             self.assertIn(text, limitations)
@@ -309,6 +310,63 @@ class LinuxReleaseTreeTests(unittest.TestCase):
         self.assertEqual(prefix["qt_prefix_argument"], "/usr")
         self.assertEqual(system["inventory"], prefix["inventory"])
 
+    def test_portable_archive_replay_proves_mtime_nondeterminism(self):
+        replay = self.release["portable_archive_replay"]
+        self.assertEqual(
+            replay["command"],
+            [
+                "tar",
+                "-czf",
+                "<ARCHIVE>",
+                "die_4.0.0_portable",
+            ],
+        )
+        self.assertEqual(replay["run_count"], 2)
+        self.assertEqual(
+            replay["minimum_inter_run_delay_seconds"],
+            1.1,
+        )
+        self.assertTrue(replay["archives_nonempty"])
+        self.assertTrue(
+            replay["archive_hashes_intentionally_omitted"]
+        )
+        self.assertTrue(replay["tree_records_identical"])
+        self.assertTrue(replay["tar_semantic_records_identical"])
+        self.assertEqual(replay["tar_member_count"], 2522)
+        self.assertEqual(replay["differing_mtime_path_count"], 8)
+        self.assertEqual(
+            replay["differing_mtime_path_sample"],
+            [
+                "die_4.0.0_portable",
+                "die_4.0.0_portable/base",
+                "die_4.0.0_portable/base/platforms",
+                "die_4.0.0_portable/base/signatures",
+                "die_4.0.0_portable/base/sqldrivers",
+                "die_4.0.0_portable/die.sh",
+                "die_4.0.0_portable/diec.sh",
+                "die_4.0.0_portable/diel.sh",
+            ],
+        )
+        self.assertFalse(
+            replay["differing_mtime_path_sample_truncated"]
+        )
+        self.assertEqual(
+            replay["differing_mtime_paths_sha256"],
+            (
+                "ea384a2e43e9f0d15a9d55eb68ce8c9"
+                "122a27d573c2e5b4164692adcd3733c86"
+            ),
+        )
+        self.assertEqual(
+            replay["tar_semantic_records_sha256"],
+            (
+                "27d38544770412dbf8a080ad16d94d43"
+                "07f4eac3a5415ba0c7a422fdcc040376"
+            ),
+        )
+        self.assertFalse(replay["uncompressed_tar_byte_identical"])
+        self.assertFalse(replay["compressed_tar_gz_byte_identical"])
+
     def test_binary_and_launcher_identities_are_exact(self):
         variants = self.release["variants"]
         portable = variants["portable_system_qt"]
@@ -364,7 +422,8 @@ class LinuxReleaseTreeTests(unittest.TestCase):
             "76,847 bytes",
             "original_scripts_executed_end_to_end=false",
             "final_appimage_available=false",
-            "compressed_portable_archive_generated=false",
+            "compressed_portable_archive_generated=true",
+            "portable_archive_byte_reproducible=false",
         ):
             self.assertIn(text, document)
         for path in (INDEX_PATH, GATE_PATH, GATE_DATA_PATH):

@@ -142,7 +142,8 @@ Phase 0 计划形成：
   来源映射、runtime rules 和 LICENSE/NOTICE 边界（In Review）。
 - [`linux-release-trees.md`](linux-release-trees.md)：固定 Linux Qt5 AppImage
   pre-linuxdeploy 与 portable post-build tree 的脚本忠实复演、产品/规则/Qt
-  内容差异、multiarch 路径缺口和 LICENSE/archive 边界（In Review）。
+  内容差异、multiarch 路径缺口、LICENSE 边界和两次原始 tar 命令的
+  mtime 非确定性（In Review）。
 - [`xucl-origin.md`](xucl-origin.md)：将 XArchive 的 XUCL 两个内嵌文件固定到
   官方 UCL 1.03，保存 token 来源映射、精确 `ACC_LICENSE` 和
   `GPL-2.0-or-later` 技术分类（In Review）。

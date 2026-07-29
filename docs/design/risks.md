@@ -272,7 +272,8 @@ baseline 的变更都要检查本表。
   后续 [`linux-release-trees.md`](../research/linux-release-trees.md) 已复演
   AppImage pre-linuxdeploy 与 portable post-build tree：前者只有 GUI product
   却带完整 runtime/YARA/PEiD/signature，后者带三产品却漏 extra/custom 并额外
-  带 YARA/signature；两者都没有 LICENSE candidate。最终 linuxdeploy、tar.gz
+  带 YARA/signature；两者都没有 LICENSE candidate。两次原始 portable tar
+  命令又实证 mtime 驱动的 archive 字节差异；最终 linuxdeploy、规范化 tar.gz
   和书面归属仍未关闭。
   固定 Linux Qt5 最终 ELF 还证明 Formats/xsimd 的三个单 member archive 均被
   抽取，形成三个 compile source/六文件闭包；六文件和根 LICENSE 均保留同一
@@ -546,7 +547,8 @@ baseline 的变更都要检查本表。
 - **触发**：APT 未 snapshot、base/toolchain 变化、binary hash 改变、oracle crash、
   qmake/CMake 分歧。
 - **当前缓解**：image digest、Dockerfile/toolchain/binary hash、Qt 5
-  qmake/CMake 双 oracle 和独立 Qt 6 CMake profile 比较。
+  qmake/CMake 双 oracle、独立 Qt 6 CMake profile 比较，以及固定 portable tree
+  的两次原始 tar 重放；后者证明相同内容/成员语义仍会因 mtime 产生不同 archive。
 - **缓解**：固定 package snapshot/OCI digest；identity mismatch 作为
   infrastructure failure；baseline namespace 不覆盖。
 - **验证**：clean environment rebuild、行为 matrix、产物/依赖证据。

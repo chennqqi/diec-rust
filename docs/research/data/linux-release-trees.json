@@ -13,27 +13,27 @@
       "sha256": "de07021627c71d7bcc81c2904cc6a37c590f23f8a64bd270daa25dabd29e64b2"
     },
     "inside_script": {
-      "image_sha256": "6ba3d15c90261f7590ee7cca8ea0cb9d3794b83d9f0e4b74895490443e4b58bd",
+      "image_sha256": "21273c1f31c8b3141736c48762adc8da1dea71ea150f130a9d0e2419916e4dfc",
       "path": "/opt/diec-release/audit_linux_release_trees.py",
-      "repository_sha256": "6ba3d15c90261f7590ee7cca8ea0cb9d3794b83d9f0e4b74895490443e4b58bd"
+      "repository_sha256": "21273c1f31c8b3141736c48762adc8da1dea71ea150f130a9d0e2419916e4dfc"
     },
     "network": "none",
     "release_image": {
-      "id": "sha256:55d331fb065501adaae617c28f1b1b5f0997db944a3ce3ff119ef8925beb8506",
+      "id": "sha256:515a901aff311ef8ef50bea04189c7d1055141a2809d0f8b3094510c1024bf7a",
       "image": "diec-rust/upstream-release-trees-qt5:74eaf505",
       "repo_digests": [
-        "diec-rust/upstream-release-trees-qt5@sha256:55d331fb065501adaae617c28f1b1b5f0997db944a3ce3ff119ef8925beb8506"
+        "diec-rust/upstream-release-trees-qt5@sha256:515a901aff311ef8ef50bea04189c7d1055141a2809d0f8b3094510c1024bf7a"
       ],
       "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
     }
   },
   "generator": "tools/upstream/audit_linux_release_trees.py",
-  "generator_sha256": "6ba3d15c90261f7590ee7cca8ea0cb9d3794b83d9f0e4b74895490443e4b58bd",
+  "generator_sha256": "21273c1f31c8b3141736c48762adc8da1dea71ea150f130a9d0e2419916e4dfc",
   "limitations": [
     "the replay uses fixed built executables and reproduces script copy/layout semantics instead of reconfiguring and rebuilding",
     "the AppImage pre-tree uses the fixed CMake GUI executable as a surrogate for create_appimage.sh build/release/die; an actual qmake-workflow binary is not claimed",
     "linuxdeploy is absent, so the final AppImage dependency closure and mutations are not observed",
-    "the portable tar.gz is not generated because the script does not normalize archive metadata",
+    "two portable tar.gz replays use the original tar command and prove mtime-driven byte differences; their unstable archive hashes are intentionally omitted",
     "technical content and provenance closure is not legal approval"
   ],
   "prior_report": {
@@ -50,6 +50,7 @@
     "portable_default_bundles_no_qt_files": true,
     "portable_includes_yara_and_signatures_but_not_peid": true,
     "portable_qmake_prefix_bundles_no_qt_on_multiarch_image": true,
+    "portable_tar_replay_proves_metadata_nondeterminism": true,
     "portable_variants_contain_exact_main_rule_tree": true,
     "portable_variants_have_exactly_three_products": true,
     "portable_variants_omit_extra_and_custom_rules": true,
@@ -62,6 +63,37 @@
       "stderr_bytes": 0,
       "stdout_bytes": 503878,
       "stdout_sha256": "11fb212cf571c1c327d26504eab0397a31fd3caaf45777ea1febbf6826cdaff5"
+    },
+    "portable_archive_replay": {
+      "archive_hashes_intentionally_omitted": true,
+      "archives_nonempty": true,
+      "command": [
+        "tar",
+        "-czf",
+        "<ARCHIVE>",
+        "die_4.0.0_portable"
+      ],
+      "compressed_tar_gz_byte_identical": false,
+      "differing_mtime_path_count": 8,
+      "differing_mtime_path_sample": [
+        "die_4.0.0_portable",
+        "die_4.0.0_portable/base",
+        "die_4.0.0_portable/base/platforms",
+        "die_4.0.0_portable/base/signatures",
+        "die_4.0.0_portable/base/sqldrivers",
+        "die_4.0.0_portable/die.sh",
+        "die_4.0.0_portable/diec.sh",
+        "die_4.0.0_portable/diel.sh"
+      ],
+      "differing_mtime_path_sample_truncated": false,
+      "differing_mtime_paths_sha256": "ea384a2e43e9f0d15a9d55eb68ce8c9122a27d573c2e5b4164692adcd3733c86",
+      "minimum_inter_run_delay_seconds": 1.1,
+      "run_count": 2,
+      "tar_member_count": 2522,
+      "tar_semantic_records_identical": true,
+      "tar_semantic_records_sha256": "27d38544770412dbf8a080ad16d94d4307f4eac3a5415ba0c7a422fdcc040376",
+      "tree_records_identical": true,
+      "uncompressed_tar_byte_identical": false
     },
     "qt_layout": {
       "libraries": "/usr/lib/x86_64-linux-gnu",
@@ -78,6 +110,7 @@
       "portable_default_bundles_no_qt_files": true,
       "portable_includes_yara_and_signatures_but_not_peid": true,
       "portable_qmake_prefix_bundles_no_qt_on_multiarch_image": true,
+      "portable_tar_replay_proves_metadata_nondeterminism": true,
       "portable_variants_contain_exact_main_rule_tree": true,
       "portable_variants_have_exactly_three_products": true,
       "portable_variants_omit_extra_and_custom_rules": true,
@@ -678,12 +711,13 @@
   },
   "schema_version": 1,
   "scope": {
-    "compressed_portable_archive_generated": false,
+    "compressed_portable_archive_generated": true,
     "final_appimage_available": false,
     "kind": "post-build-release-tree-replay",
     "legal_review_complete": false,
     "original_scripts_executed_end_to_end": false,
     "platform": "Linux x86_64",
+    "portable_archive_byte_reproducible": false,
     "qt": "5",
     "release_approved": false
   },

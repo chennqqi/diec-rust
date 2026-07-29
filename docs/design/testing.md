@@ -729,7 +729,10 @@ session 或跨平台发行包，也未冻结阈值或默认限制。
   [`linux-release-trees.md`](../research/linux-release-trees.md)；
 - archive reproducibility：固定 path order、mtime、mode、owner/group、压缩器
   与 `SOURCE_DATE_EPOCH`；两次隔离 clean build 必须同时得到相同解包 tree hash
-  和 archive hash。普通 `tar -czf` 成功退出不能作为可重复发布证据；
+  和 archive hash。普通 `tar -czf` 成功退出不能作为可重复发布证据；固定上游
+  的两次 post-build replay 已实际观察到相同 tree/成员语义却因八个 mtime
+  差异产生不同 tar 与 tar.gz，见
+  [`linux-release-trees.md`](../research/linux-release-trees.md)；
 - fuzz corpus replay、零未分类 crash；
 - benchmark 与 size/resource gate；
 - release binary/library hash、依赖和签名清单。
