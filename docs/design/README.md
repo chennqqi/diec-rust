@@ -13,6 +13,8 @@ Phase 0 计划形成：
 - [`c-abi.md`](c-abi.md)：C ABI、所有权、线程安全和静态链接（In Review）。
 - [`testing.md`](testing.md)：语料、oracle、差分、fuzz、benchmark 和 CI（In Review）。
 - [`risks.md`](risks.md)：Phase 0 风险、触发条件、缓解和关闭证据（In Review）。
+- [`resource-limit-policy.md`](resource-limit-policy.md)：统一 scan/traversal 候选
+  profile、未定值预算和准入条件（In Review，尚未冻结）。
 - [`phase-0-gate-review.md`](phase-0-gate-review.md)：Phase 0 退出条件、阻塞项及
   关闭证据的审计总账（In Review）。
 - [`design-review-readiness.md`](design-review-readiness.md)：五份必需设计从

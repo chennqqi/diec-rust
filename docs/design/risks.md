@@ -2,7 +2,7 @@
 
 Status: In Review
 
-Last updated: 2026-07-29
+Last updated: 2026-07-30
 
 ## 1. 用途与依据
 
@@ -379,7 +379,12 @@ baseline 的变更都要检查本表。
   [`scan-option-boundaries.md`](../research/scan-option-boundaries.md)。
 - **缓解**：显式 work queue；全 scan depth/node/entry/read/decompressed/time
   hard budgets；cycle hint；不复刻无界调用栈；ADR 0012 提议有限 default 与
-  legacy high-resource ceiling。
+  legacy high-resource ceiling。统一候选策略已把 ADR 0012/0014 数值、固定上游
+  21/2001/100000 临界值与 QuickJS spike-only 限额分离，并显式保留 11 个未定值
+  budget，见
+  [`resource-limit-policy.md`](resource-limit-policy.md) 和
+  [`resource-limit-evidence.md`](../research/resource-limit-evidence.md)；
+  当前 `admitted=false`，不能被实现当作已冻结配置。
 - **验证**：每种 limit 的 `-1/exact/+1`、zip-bomb synthetic case、取消和 peak
   memory；安全偏差有 ADR/waiver。
 - **关闭**：所有 extractor 共享预算且 sanitizer/fuzz/资源测试通过。

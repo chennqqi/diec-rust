@@ -2,7 +2,7 @@
 
 Status: In Review
 
-Last updated: 2026-07-29
+Last updated: 2026-07-30
 
 ## 结论
 
@@ -26,11 +26,11 @@ ADR 0007 已被 ADR 0011 Superseded，不属于当前待接受集合。机器清
 | 0006 | rquickjs/QuickJS-NG 作为首个私有 backend | 全 HostApi、正式资源测试、三平台/sanitizer、许可证/SBOM |
 | 0008 | 固定 order manifest 取代非传递 comparator | 全规则 manifest、Rust loader、Windows/macOS order |
 | 0009 | modern cancel 不返回 partial detections | production Rust/JSON/C mapping、race/recovery、legacy waiver |
-| 0010 | include cycle 提前有界失败 | production graph/stack、边界/fuzz、SafetyDeviation |
+| 0010 | include cycle 提前有界失败 | 统一策略已列 unresolved include depth/evaluations；仍缺具体非零值、production graph/stack、边界/fuzz、SafetyDeviation |
 | 0011 | 默认 Rust 1.97.1、MSRV 1.88 | Phase 1 default/MSRV CI jobs |
-| 0012 | 全 scan 嵌套预算有限，legacy high-resource 仍有 hard ceiling | production budget、Rust 全 limit 边界与固定 high-ratio/畸形 corpus 的 sanitizer/fuzz replay、跨平台资源与 waiver |
+| 0012 | 全 scan 嵌套预算有限，legacy high-resource 仍有 hard ceiling | scan/traversal 候选已机器统一但未 admitted；仍缺 production budget、Rust 全 limit 边界与固定 high-ratio/畸形 corpus 的 sanitizer/fuzz replay、跨平台资源与 waiver |
 | 0013 | short read/I/O/seek/range fail closed，不复制未初始化尾部 | production ByteSource、跨 adapter typed error、fuzz/sanitizer 与 waiver |
-| 0014 | safe canonical 不跟随枚举 link；legacy alias 仍受 cycle/TOCTOU/budget hard stop | production TargetExpander、边界/TOCTOU/root confinement、Windows/macOS 与跨语言 waiver |
+| 0014 | safe canonical 不跟随枚举 link；legacy alias 仍受 cycle/TOCTOU/budget hard stop | traversal 候选已机器统一但 metadata/open 次数未定；仍缺 production TargetExpander、边界/TOCTOU/root confinement、Windows/macOS 与跨语言 waiver |
 | 0015 | warm、file-content-nonresident-metadata-warm、dedicated system-cold 三层，拒绝通用 cold | dedicated authority/isolation、macOS runtime candidate/closure |
 
 ## 评审约束

@@ -608,6 +608,12 @@ Phase 0 计划形成：
   对照。
 - [`data/boa-rule-runtime.json`](data/boa-rule-runtime.json)：Boa spike 输入哈希、固定版本和稳定结果摘要。
 - [`data/rquickjs-rule-runtime.json`](data/rquickjs-rule-runtime.json)：rquickjs spike 输入哈希、固定版本和稳定结果摘要。
+- [`resource-limit-evidence.md`](resource-limit-evidence.md)：区分固定上游
+  archive/resource 临界值、oracle container 外部限额与 QuickJS 故障注入值，
+  明确哪些证据不能直接升格为生产默认。
+- [`../design/data/resource-limit-policy-candidate.json`](../design/data/resource-limit-policy-candidate.json)：
+  由固定报告、ADR 与 API SHA-256 绑定的统一资源限制评审候选；保留 11 个
+  unresolved budget 和 `admitted=false`。
 - [`data/rquickjs-static-link.json`](data/rquickjs-static-link.json)：rquickjs staticlib 三条 native smoke、链接依赖和 18-package 许可证清单。
 - [`data/context-rule-qt5.json`](data/context-rule-qt5.json)：三条原样 Binary 规则在 resource/debugdata/text context 下的 8-case Qt5 基线。
 - [`data/pe-rule-fixture.json`](data/pe-rule-fixture.json)：原样 Cygwin32 PE 规则的项目生成正例、反例和截断 PE32 输入。

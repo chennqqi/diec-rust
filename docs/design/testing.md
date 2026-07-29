@@ -2,7 +2,7 @@
 
 Status: In Review
 
-Last updated: 2026-07-29
+Last updated: 2026-07-30
 
 ## 1. 状态与证据
 
@@ -713,7 +713,12 @@ Darwin 报告及 benchmark closure 尚未执行，因此仍不 admission，见
 这些证据尚无 Rust 成对数据、dedicated system-cold、macOS runtime candidate
 与 fixed-closure integration、可证明 topology 的 physical-core 或跨
 reboot/日期长期 session，
-也无跨平台发行包，且未冻结阈值或默认限制。
+也无跨平台发行包，且未冻结阈值或默认限制。现有 scan/traversal 数值、上游临界值、
+QuickJS spike-only 限额与 11 个未定值预算已由
+[`resource-limit-policy.md`](resource-limit-policy.md) 和
+[`data/resource-limit-policy-candidate.json`](data/resource-limit-policy-candidate.json)
+统一为 `admitted=false` 的评审候选；这减少配置漂移，但不替代 production
+limit benchmark 或评审结论。
 
 回归阈值在首个 Rust vertical slice 形成同 bytes/options 成对报告后冻结。小于
 50 ms median 的 direct-process case 当前不具备 regression eligibility；阈值必须

@@ -2,7 +2,7 @@
 
 Status: In Review
 
-Last updated: 2026-07-28
+Last updated: 2026-07-30
 
 ## 1. 状态与证据
 
@@ -282,6 +282,15 @@ limits 是全 scan 累计预算。child work 不重置额度。所有触发点�
 profile。ADR Accepted 前这些数字是评审候选；实现不得以 `0` 或整数最大值回退为
 无界。对应上游证据见
 [`archive-limit-behavior.md`](../research/archive-limit-behavior.md)。
+
+统一机器候选见
+[`resource-limit-policy.md`](resource-limit-policy.md) 与
+[`data/resource-limit-policy-candidate.json`](data/resource-limit-policy-candidate.json)。
+它把 ADR 0012 的 scan profile 与 ADR 0014 的 traversal profile 放入同一契约，
+同时列出 input、diagnostic、total allocation、metadata/open、include、script
+和 database 的 11 个未定值预算。当前结果仍为
+`review_candidate_incomplete`/`admitted=false`；QuickJS spike 的 4 MiB heap、
+128 KiB stack 和 25 ms deadline 不作为生产默认。
 
 ## 9. Cancellation 与 deadline
 

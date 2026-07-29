@@ -1,0 +1,163 @@
+{
+  "acceptance_requirements": [
+    "ADRs 0010, 0012, and 0014 receive explicit review disposition",
+    "every unresolved required budget receives a nonzero candidate",
+    "limit-1/exact/+1 tests cover every production counter",
+    "all archive backends reserve through one shared budget",
+    "modern and legacy-high CPU and peak-memory benchmarks pass",
+    "Rust, CLI, JSON, C, Go, and Python observe one limit contract",
+    "cross-platform path and runtime limit evidence is recorded"
+  ],
+  "decision_status": {
+    "admitted": false,
+    "reason": "ADRs 0010, 0012, and 0014 remain Proposed; several required budgets have no production candidate value; production and cross-platform limit benchmarks are missing"
+  },
+  "evaluated_on": "2026-07-30",
+  "invariants": {
+    "all_numeric_limits_nonzero": true,
+    "caller_may_lower_but_not_disable_hard_limits": true,
+    "child_work_shares_parent_budget": true,
+    "legacy_high_resource_requires_explicit_opt_in": true,
+    "limit_difference_requires_safety_deviation_waiver": true,
+    "reserve_before_read_allocate_decompress_or_enqueue": true
+  },
+  "profiles": {
+    "legacy_high_resource": {
+      "default_for_any_adapter": false,
+      "scan": {
+        "maximum_nested_depth": 64,
+        "maximum_single_expanded_object_bytes": 536870912,
+        "total_archive_entries_considered": 100001,
+        "total_expanded_bytes": 4294967296,
+        "total_source_bytes_read_or_mapped": 8589934592,
+        "wall_deadline_milliseconds": 120000
+      },
+      "status": "review_candidate_not_admitted",
+      "traversal": {
+        "maximum_directory_depth": 256,
+        "maximum_entries_considered": 1000000,
+        "maximum_files_emitted": 1000000,
+        "maximum_total_native_path_bytes": 1073741824,
+        "wall_deadline_milliseconds": 120000
+      }
+    },
+    "modern_default": {
+      "scan": {
+        "maximum_nested_depth": 32,
+        "maximum_queued_items": 4096,
+        "maximum_result_nodes": 100000,
+        "maximum_single_expanded_object_bytes": 134217728,
+        "total_archive_entries_considered": 4096,
+        "total_expanded_bytes": 536870912,
+        "total_source_bytes_read_or_mapped": 1073741824,
+        "wall_deadline_milliseconds": 30000
+      },
+      "status": "review_candidate_not_admitted",
+      "traversal": {
+        "maximum_directory_depth": 64,
+        "maximum_entries_considered": 100000,
+        "maximum_files_emitted": 100000,
+        "maximum_total_native_path_bytes": 67108864,
+        "wall_deadline_milliseconds": 30000
+      }
+    }
+  },
+  "result": "review_candidate_incomplete",
+  "schema_version": 1,
+  "source_bindings": {
+    "adr_include": {
+      "path": "docs/design/decisions/0010-bounded-include-graph.md",
+      "sha256": "051a8ce7eb9fe4e3238aaa52002f3528a7ff3575c4cafedafcdf6f3f317bb5f5"
+    },
+    "adr_scan": {
+      "path": "docs/design/decisions/0012-bounded-nested-scan-budget.md",
+      "sha256": "8f049b38cab04c72704256a1ad50f3378fac8185af6f3833499d062757f5cb03"
+    },
+    "adr_traversal": {
+      "path": "docs/design/decisions/0014-bounded-path-expansion.md",
+      "sha256": "cd9831f78f6c277073dd381c2a497200f37492f4af685df2ed47c7d937d1a118"
+    },
+    "api": {
+      "path": "docs/design/api.md",
+      "sha256": "2e1cd8142a5188c61f43fccbfdea69b5af7355ea8c99a76f2410da02571a1c28"
+    },
+    "archive_iteration": {
+      "path": "docs/research/data/archive-iteration-boundary-engine-qt5.json",
+      "sha256": "57a78308860d6842bf2b33367451d696a7c3252d1411de2ed5c32d9659c29533"
+    },
+    "archive_limit": {
+      "path": "docs/research/data/archive-limit-engine-qt5.json",
+      "sha256": "e4786dcc578fb0714c86f71955161f981a06be26aefe663281d74202f5372ecd"
+    },
+    "resource_count": {
+      "path": "docs/research/data/scan-option-boundaries-linux-qt5.json",
+      "sha256": "f193a9f308b04a89dd7ceeda52a658eda2ef13eb82b9c0662c66215248bbf49d"
+    },
+    "runtime_spike": {
+      "path": "docs/research/data/rquickjs-rule-runtime.json",
+      "sha256": "4f9c5d4f207ceeaa50b28553d5cd8f02d63c92218f8e9fe877e5b99239743ac9"
+    }
+  },
+  "unresolved_required_budgets": [
+    {
+      "id": "scan.maximum_input_bytes",
+      "required_by": "docs/design/api.md#8-scanlimits"
+    },
+    {
+      "id": "scan.maximum_diagnostics",
+      "required_by": "docs/design/api.md#8-scanlimits"
+    },
+    {
+      "id": "scan.maximum_total_allocated_bytes",
+      "required_by": "untrusted-input allocation safety"
+    },
+    {
+      "id": "traversal.maximum_metadata_open_attempts",
+      "required_by": "docs/design/decisions/0014-bounded-path-expansion.md"
+    },
+    {
+      "id": "include.maximum_depth",
+      "required_by": "docs/design/decisions/0010-bounded-include-graph.md"
+    },
+    {
+      "id": "include.maximum_total_evaluations",
+      "required_by": "docs/design/decisions/0010-bounded-include-graph.md"
+    },
+    {
+      "id": "script.maximum_heap_bytes",
+      "required_by": "docs/design/api.md#8-scanlimits"
+    },
+    {
+      "id": "script.maximum_stack_bytes",
+      "required_by": "docs/design/api.md#8-scanlimits"
+    },
+    {
+      "id": "script.maximum_instruction_or_fuel",
+      "required_by": "docs/design/api.md#8-scanlimits"
+    },
+    {
+      "id": "script.runtime_deadline",
+      "required_by": "docs/design/api.md#8-scanlimits"
+    },
+    {
+      "id": "database.all_load_limits",
+      "required_by": "docs/design/api.md#8-scanlimits"
+    }
+  ],
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "upstream_compatibility_observations": {
+    "archive_depth_maximum_tested": 64,
+    "archive_expanded_bytes_maximum_tested": 33554546,
+    "archive_has_no_independent_depth_or_total_limit": true,
+    "legacy_aggressive_archive_record_not_reachable": 100001,
+    "legacy_aggressive_archive_record_reachable": 100000,
+    "legacy_aggressive_resource_children_inclusive": 2001,
+    "legacy_default_resource_children_inclusive": 21,
+    "runtime_spike_only": {
+      "deadline_milliseconds": 25,
+      "memory_limit_bytes": 4194304,
+      "production_default_candidate": false,
+      "stack_limit_bytes": 131072
+    }
+  }
+}

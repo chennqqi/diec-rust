@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "evaluated_on": "2026-07-28",
+  "evaluated_on": "2026-07-30",
   "phase": 0,
   "result": "review_pending",
   "adrs": [
@@ -225,7 +225,7 @@
       ],
       "review_question": "是否接受 include cycle 提前有界失败这一显式安全偏差？",
       "remaining_acceptance_evidence": [
-        "production include graph and active stack",
+        "nonzero include depth/evaluation candidates plus production include graph and active stack",
         "depth/evaluation limit boundary tests",
         "SafetyDeviation waiver plus fuzz/property coverage"
       ]
@@ -278,7 +278,7 @@
       ],
       "review_question": "是否接受有限的全 scan 嵌套资源预算，以及 legacy 高资源模式仍受 hard ceiling 约束？",
       "remaining_acceptance_evidence": [
-        "production shared ScanBudget and extractor reservation",
+        "unified candidate remains unadmitted; production shared ScanBudget and extractor reservation",
         "Rust limit-1/exact/+1 tests and sanitizer/fuzz replay of the fixed high-ratio and malformed archive corpus",
         "cross-platform CPU/peak-memory evidence and SafetyDeviation waiver"
       ]
@@ -332,7 +332,7 @@
       ],
       "review_question": "是否接受 safe canonical 默认不跟随枚举 link、legacy 保留非循环 alias 但所有 profile 均采用 ancestry cycle detection、handle recheck 与 hard budget？",
       "remaining_acceptance_evidence": [
-        "production shared TargetExpander and typed traversal diagnostics",
+        "metadata/open budget remains unresolved; production shared TargetExpander and typed traversal diagnostics",
         "limit-1/exact/+1, cancellation, TOCTOU, and root-confinement tests",
         "Windows/macOS oracle plus cross-language SafetyDeviation conformance"
       ]
