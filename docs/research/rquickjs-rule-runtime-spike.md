@@ -136,6 +136,21 @@ runtime 的稳定计量投影逐字节等价，SHA-256 均为
 `ps3-type-1-elf.self`。checkpoint 在 runtime 创建、init、每条规则返回后和最终
 报告边界采集，不能观察 eval 内部瞬时 allocator high-water。
 
+为避免只观察 Binary 全规则生命周期，本轮又复用已通过 Qt5 差分的 PE、ELF、
+Mach-O、DEX、APK、Archive 和 PDF 七条原样上游规则。七类代表性格式规则共
+25 个 case，每个 case 使用独立 runtime，并在 runtime 创建、HostApi/结果 shim
+初始化后、规则返回后采集三个 memory snapshot。Windows x86_64 MSVC release
+连续三轮均为 25/25 oracle 匹配、每 case 恰好 1 次正常 QuickJS-NG interrupt
+callback，因此每轮合计 25 次 callback 和 75 个 memory checkpoint；七份完整
+canonical JSON 报告各自三轮相同。全矩阵最大 `malloc_size` 为 124,485 bytes，
+最大 `memory_used_size` 为 113,926 bytes，均出现在 Archive
+`verbose_stored_zip` 的 `after_rule` 阶段。
+
+该矩阵证明同一探针在七类既有格式差分上的确定性和代表性量级，不是所有格式或
+全部固定规则的 runtime scaling。每个 case 只执行一条短规则，观察到的“一次
+poll”不能转换为 VM instruction 数，也不能替代 full lifecycle、瞬时 allocator
+high-water 或跨平台测量。
+
 ## 实验边界
 
 验证程序位于

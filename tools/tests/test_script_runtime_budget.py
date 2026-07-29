@@ -192,6 +192,54 @@ class ScriptRuntimeBudgetTests(unittest.TestCase):
         self.assertTrue(
             evidence["native_checkpoint_can_interrupt_single_call"]
         )
+        self.assertTrue(
+            evidence[
+                "representative_cross_format_rule_runtime_measured"
+            ]
+        )
+        self.assertEqual(
+            evidence["representative_cross_format_repeat_count"],
+            3,
+        )
+        self.assertEqual(
+            evidence["representative_cross_format_count"],
+            7,
+        )
+        self.assertEqual(
+            evidence[
+                "representative_cross_format_case_count_per_repeat"
+            ],
+            25,
+        )
+        self.assertEqual(
+            evidence[
+                "representative_cross_format_interrupt_poll_total_per_repeat"
+            ],
+            25,
+        )
+        self.assertEqual(
+            evidence[
+                "representative_cross_format_memory_checkpoint_count_per_repeat"
+            ],
+            75,
+        )
+        self.assertTrue(
+            evidence[
+                "representative_cross_format_stable_reports_equal"
+            ]
+        )
+        self.assertEqual(
+            evidence[
+                "representative_cross_format_maximum_observed_malloc_size_bytes"
+            ],
+            124_485,
+        )
+        self.assertEqual(
+            evidence[
+                "representative_cross_format_maximum_observed_memory_used_size_bytes"
+            ],
+            113_926,
+        )
         self.assertFalse(evidence["all_format_rule_lifecycles_measured"])
         self.assertIn(
             "operation-anchor to VM-poll conversion",
@@ -199,6 +247,10 @@ class ScriptRuntimeBudgetTests(unittest.TestCase):
         )
         self.assertIn(
             "native checkpoint coverage for every HostApi",
+            evidence["does_not_prove"],
+        )
+        self.assertIn(
+            "all fixed rules or all supported formats runtime scaling",
             evidence["does_not_prove"],
         )
 

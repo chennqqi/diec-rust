@@ -360,6 +360,97 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
         self.assertFalse(memory["transient_high_water_measured"])
         self.assertIn("transient in-eval", memory["scope"])
 
+    def test_representative_format_runtime_matrix_is_stable_and_scoped(self):
+        matrix = self.reference["representative_format_runtime_matrix"]
+        self.assertTrue(matrix["all_match"])
+        self.assertEqual(matrix["repeat_count"], 3)
+        self.assertEqual(matrix["format_count"], 7)
+        self.assertEqual(matrix["case_count_per_repeat"], 25)
+        self.assertEqual(matrix["matched_count_per_repeat"], 25)
+        self.assertEqual(
+            matrix["interrupt_handler_call_total_per_repeat"],
+            25,
+        )
+        self.assertEqual(matrix["memory_checkpoint_count_per_repeat"], 75)
+        self.assertTrue(matrix["stable_canonical_reports_equal"])
+        self.assertFalse(matrix["transient_high_water_measured"])
+        self.assertIn("representative", matrix["scope"])
+        self.assertIn("not all formats", matrix["scope"])
+        formats = matrix["formats"]
+        self.assertEqual(
+            {name: value["case_count"] for name, value in formats.items()},
+            {
+                "apk": 3,
+                "archive": 3,
+                "dex": 3,
+                "elf": 6,
+                "macho": 4,
+                "pdf": 3,
+                "pe": 3,
+            },
+        )
+        self.assertTrue(
+            all(
+                value["interrupt_handler_call_total"]
+                == value["case_count"]
+                for value in formats.values()
+            )
+        )
+        self.assertTrue(
+            all(
+                value["memory_checkpoint_count"]
+                == 3 * value["case_count"]
+                for value in formats.values()
+            )
+        )
+        self.assertEqual(
+            matrix["maximum_observed_malloc_size"],
+            {
+                "bytes": 124_485,
+                "case": "verbose_stored_zip",
+                "format": "archive",
+                "stage": "after_rule",
+            },
+        )
+        self.assertEqual(
+            matrix["maximum_observed_memory_used_size"],
+            {
+                "bytes": 113_926,
+                "case": "verbose_stored_zip",
+                "format": "archive",
+                "stage": "after_rule",
+            },
+        )
+        self.assertEqual(
+            {
+                name: value["canonical_report_sha256"]
+                for name, value in formats.items()
+            },
+            {
+                "apk": (
+                    "86f6eb3869c53a74ad1f80bb1880777f55a8f65fea6ab5dfa3571fb41646c75c"
+                ),
+                "archive": (
+                    "aaba2413d96771bc5bd10f4733a320c015bc92bd97acfe344a7f54acbe988107"
+                ),
+                "dex": (
+                    "28e38b2520406a5d9348c251befbb13abe5169ed222a34101ccff716d9681d8d"
+                ),
+                "elf": (
+                    "f5a2277b1ef10a31448ddcb1d176d3ece74917d978a8606048f82990163f6ce8"
+                ),
+                "macho": (
+                    "fd12966f6243a6c7995bc8f565ecdd72ee9d7b210f8e2be00f24f63c116a12f6"
+                ),
+                "pdf": (
+                    "a4f8efe49ec4e0bb28954780b4539e298201eb6e20aa6b5d0e5fd3f00ed2f8c8"
+                ),
+                "pe": (
+                    "13b6436d8eb326aa0f8075527bc9acd16132cba4e9a4ee4981c7f3dccfa3ca7e"
+                ),
+            },
+        )
+
     def test_basic_host_api_increment_records_remaining_dynamic_gaps(self):
         increment = self.reference["basic_host_api_increment"]
         numeric_oracle = increment["numeric_oracle"]

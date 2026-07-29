@@ -604,7 +604,9 @@ baseline 的变更都要检查本表。
   Binary signature native checkpoint 固定为 16,439 次，且 4095/4096 候选边界
   与单次 search 中断已有回归；4,130 个 memory checkpoint 的最大 observed
   `malloc_size` 为 654,562 bytes。但瞬时 high-water、其余 HostApi checkpoint、
-  跨格式 scaling 和三平台资源证据未采集，所以该候选仍为
+  完整跨格式 scaling 和三平台资源证据未采集。七类代表性格式规则的 25-case
+  矩阵虽已三轮固定为每轮 25 次 poll、75 个 memory checkpoint，但每类仅一条
+  短规则，所以该候选仍为
   `review_candidate_not_admitted`。
 - **缓解**：runtime 选型硬门禁；fuel/deadline/heap；受控检查点；不可中断 backend
   不得采用。

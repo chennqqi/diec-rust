@@ -169,6 +169,7 @@ def validate_sources(root: Path) -> tuple[
             "每轮正常生命周期共触发 28 次 QuickJS-NG interrupt callback",
             "每轮固定 16,439 次，其中 compare 16,285 次、search\n154 次",
             "4,130 个 `Runtime::memory_usage()` checkpoint",
+            "七条原样上游规则。七类代表性格式规则共\n25 个 case",
             "不能观察 eval 内部瞬时 allocator high-water",
         ),
         SOURCES["runtime_research"],
@@ -190,6 +191,7 @@ def validate_sources(root: Path) -> tuple[
     )
     isolated = runtime.get("isolated_eval_with_compatibility_overlay")
     corpus = runtime.get("full_binary_corpus_oracle")
+    format_matrix = runtime.get("representative_format_runtime_matrix")
     measurement = (
         corpus.get("runtime_measurement")
         if isinstance(corpus, dict)
@@ -294,6 +296,37 @@ def validate_sources(root: Path) -> tuple[
         is True,
         "runtime fault-injection evidence drift",
     )
+    require(
+        isinstance(format_matrix, dict)
+        and format_matrix.get("all_match") is True
+        and format_matrix.get("repeat_count") == 3
+        and format_matrix.get("format_count") == 7
+        and format_matrix.get("case_count_per_repeat") == 25
+        and format_matrix.get("matched_count_per_repeat") == 25
+        and format_matrix.get(
+            "interrupt_handler_call_total_per_repeat"
+        )
+        == 25
+        and format_matrix.get("memory_checkpoint_count_per_repeat")
+        == 75
+        and format_matrix.get("stable_canonical_reports_equal") is True
+        and format_matrix.get("transient_high_water_measured") is False
+        and format_matrix.get("maximum_observed_malloc_size")
+        == {
+            "bytes": 124_485,
+            "case": "verbose_stored_zip",
+            "format": "archive",
+            "stage": "after_rule",
+        }
+        and format_matrix.get("maximum_observed_memory_used_size")
+        == {
+            "bytes": 113_926,
+            "case": "verbose_stored_zip",
+            "format": "archive",
+            "stage": "after_rule",
+        },
+        "representative cross-format runtime evidence drift",
+    )
 
     include = reports["include_sizing"]
     require(
@@ -318,6 +351,7 @@ def build_candidate(root: Path) -> dict[str, Any]:
     isolated = runtime["isolated_eval_with_compatibility_overlay"]
     corpus = runtime["full_binary_corpus_oracle"]
     measurement = corpus["runtime_measurement"]
+    format_matrix = runtime["representative_format_runtime_matrix"]
     rule_bytes = isolated["bytes"]
     operation_anchor = (
         corpus["attempted_detect_count"]
@@ -485,11 +519,39 @@ def build_candidate(root: Path) -> dict[str, Any]:
                     "can_interrupt_single_native_call"
                 ]
             ),
+            "representative_cross_format_rule_runtime_measured": True,
+            "representative_cross_format_repeat_count": format_matrix[
+                "repeat_count"
+            ],
+            "representative_cross_format_count": format_matrix[
+                "format_count"
+            ],
+            "representative_cross_format_case_count_per_repeat": (
+                format_matrix["case_count_per_repeat"]
+            ),
+            "representative_cross_format_interrupt_poll_total_per_repeat": (
+                format_matrix["interrupt_handler_call_total_per_repeat"]
+            ),
+            "representative_cross_format_memory_checkpoint_count_per_repeat": (
+                format_matrix["memory_checkpoint_count_per_repeat"]
+            ),
+            "representative_cross_format_stable_reports_equal": (
+                format_matrix["stable_canonical_reports_equal"]
+            ),
+            "representative_cross_format_maximum_observed_malloc_size_bytes": (
+                format_matrix["maximum_observed_malloc_size"]["bytes"]
+            ),
+            "representative_cross_format_maximum_observed_memory_used_size_bytes": (
+                format_matrix[
+                    "maximum_observed_memory_used_size"
+                ]["bytes"]
+            ),
             "all_format_rule_lifecycles_measured": False,
             "does_not_prove": [
                 "production heap, stack, fuel, or deadline acceptability",
                 "operation-anchor to VM-poll conversion",
                 "native checkpoint coverage for every HostApi",
+                "all fixed rules or all supported formats runtime scaling",
                 "cross-platform runtime resource equality",
                 "all fixed rules on valid positive and negative inputs",
             ],

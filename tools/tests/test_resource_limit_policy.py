@@ -302,6 +302,23 @@ class ResourceLimitPolicyTests(unittest.TestCase):
                 "real_corpus_search_native_checkpoint_total_per_repeat": 154,
                 "real_corpus_native_checkpoint_candidate_interval": 4096,
                 "native_checkpoint_can_interrupt_single_call": True,
+                "representative_cross_format_rule_runtime_measured": True,
+                "representative_cross_format_repeat_count": 3,
+                "representative_cross_format_count": 7,
+                "representative_cross_format_case_count_per_repeat": 25,
+                "representative_cross_format_interrupt_poll_total_per_repeat": (
+                    25
+                ),
+                "representative_cross_format_memory_checkpoint_count_per_repeat": (
+                    75
+                ),
+                "representative_cross_format_stable_reports_equal": True,
+                "representative_cross_format_maximum_observed_malloc_size_bytes": (
+                    124_485
+                ),
+                "representative_cross_format_maximum_observed_memory_used_size_bytes": (
+                    113_926
+                ),
                 "all_format_rule_lifecycles_measured": False,
                 "fault_injection_values_are_candidate_basis": False,
             },

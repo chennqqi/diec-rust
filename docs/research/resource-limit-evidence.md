@@ -46,6 +46,10 @@ Last updated: 2026-07-30
   4095/4096 候选边界及单次 native search 中断测试。但瞬时 heap high-water、
   其余 HostApi checkpoint、跨格式 scaling 及三平台资源证据仍缺失，因此候选
   不得 admitted。
+- PE/ELF/Mach-O/DEX/APK/Archive/PDF 七类代表性规则的 25-case runtime 矩阵
+  已连续三轮固定为每轮 25 次正常 VM poll、75 个 lifecycle memory
+  checkpoint，最大 observed `malloc_size` 为 124,485 bytes。每类仅覆盖一条
+  短规则，不能据此宣称全部固定规则或所有支持格式的 scaling 已完成。
 
 项目候选值属于设计决策，见
 [`../design/resource-limit-policy.md`](../design/resource-limit-policy.md)；本页只

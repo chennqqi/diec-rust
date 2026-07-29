@@ -64,3 +64,10 @@ initialization, every rule, and final reporting. These memory
 snapshots are lifecycle checkpoints, not a transient in-eval allocator
 high-water measurement. Large raw reports belong in temporary storage; only
 the stable projection and its reproducible summary are versioned.
+
+The `verify-pe-rule`, `verify-elf-rule`, `verify-macho-rule`,
+`verify-dex-rule`, `verify-apk-rule`, `verify-archive-rule`, and
+`verify-pdf-rule` reports also include one normal interrupt counter and three
+memory lifecycle checkpoints for every isolated case runtime. Together they
+form a 25-case representative cross-format matrix; they do not claim full
+format or all-rule runtime scaling.

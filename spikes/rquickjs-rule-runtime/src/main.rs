@@ -1930,6 +1930,77 @@ fn runtime_memory_snapshot(runtime: &Runtime) -> Result<RuntimeMemorySnapshot, S
     })
 }
 
+struct RuleCaseRuntimeProbe {
+    interrupt_calls: Arc<AtomicUsize>,
+    runtime_created: RuntimeMemorySnapshot,
+}
+
+impl RuleCaseRuntimeProbe {
+    fn finish(
+        &self,
+        runtime: &Runtime,
+        initialized: RuntimeMemorySnapshot,
+    ) -> Result<Value, String> {
+        let after_rule = runtime_memory_snapshot(runtime)?;
+        let checkpoints = [
+            ("runtime_created", self.runtime_created),
+            ("initialized", initialized),
+            ("after_rule", after_rule),
+        ];
+        let maximum_malloc = checkpoints
+            .iter()
+            .max_by_key(|(_, snapshot)| snapshot.malloc_size)
+            .ok_or_else(|| "rule runtime malloc checkpoints are empty".to_owned())?;
+        let maximum_memory_used = checkpoints
+            .iter()
+            .max_by_key(|(_, snapshot)| snapshot.memory_used_size)
+            .ok_or_else(|| "rule runtime memory-used checkpoints are empty".to_owned())?;
+        Ok(json!({
+            "interrupt": {
+                "handler_semantics":
+                    "one QuickJS-NG interrupt callback invocation over one isolated rule-case runtime",
+                "handler_call_total": self.interrupt_calls.load(Ordering::Relaxed),
+            },
+            "memory": {
+                "api": "rquickjs Runtime::memory_usage / QuickJS-NG JS_ComputeMemoryUsage",
+                "scope":
+                    "three post-operation lifecycle checkpoints; transient in-eval allocator high-water is not observed",
+                "checkpoint_count": checkpoints.len(),
+                "runtime_created": self.runtime_created.to_json(),
+                "initialized": initialized.to_json(),
+                "after_rule": after_rule.to_json(),
+                "maximum_observed_malloc_size": {
+                    "bytes": maximum_malloc.1.malloc_size,
+                    "stage": maximum_malloc.0,
+                },
+                "maximum_observed_memory_used_size": {
+                    "bytes": maximum_memory_used.1.memory_used_size,
+                    "stage": maximum_memory_used.0,
+                },
+                "transient_high_water_measured": false,
+            },
+        }))
+    }
+}
+
+fn new_rule_case_runtime() -> Result<(Runtime, RuleCaseRuntimeProbe), String> {
+    let runtime = new_runtime()?;
+    let runtime_created = runtime_memory_snapshot(&runtime)?;
+    let interrupt_calls = Arc::new(AtomicUsize::new(0));
+    let interrupt_calls_for_handler = Arc::clone(&interrupt_calls);
+    runtime.set_interrupt_handler(Some(Box::new(move || {
+        interrupt_calls_for_handler.fetch_add(1, Ordering::Relaxed);
+        false
+    })));
+    Ok((
+        runtime,
+        RuleCaseRuntimeProbe {
+            interrupt_calls,
+            runtime_created,
+        },
+    ))
+}
+
 fn new_context(runtime: &Runtime) -> Result<Context, String> {
     Context::full(runtime).map_err(|error| error.to_string())
 }
@@ -4859,14 +4930,16 @@ fn verify_pe_rule(
         let actual_map = pe_physical_map_projection(&pe_context);
         let expected_map = qt5_pe_physical_map_projection(&baseline_case["memory_map"])?;
 
-        let runtime = new_runtime()?;
+        let (runtime, runtime_probe) = new_rule_case_runtime()?;
         let context = new_context(&runtime)?;
         let detections = Arc::new(Mutex::new(Vec::new()));
         install_nintendo_host(&context, Arc::new(data.clone()), Arc::clone(&detections))?;
         let pe_trace = install_pe_host(&context, Arc::new(data), pe_context.clone())?;
         eval_unit(&context, FORMAT_RESULT_SHIM)?;
+        let initialized_memory = runtime_memory_snapshot(&runtime)?;
         let detect_result = eval_rule_lexical(&context, &rule_source, true)
             .map_err(|error| format!("{id}: fixed PE rule failed: {error}"))?;
+        let runtime_measurement = runtime_probe.finish(&runtime, initialized_memory)?;
         let actual_detections = detections
             .lock()
             .map_err(|_| "PE detection result mutex poisoned".to_owned())?
@@ -4920,6 +4993,7 @@ fn verify_pe_rule(
             "pe_compare_ep_fast_paths": fast_paths,
             "pe_compare_ep_generic_paths": generic_paths,
             "pe_compare_ep_errors": errors,
+            "runtime_measurement": runtime_measurement,
             "matches": matches,
         }));
     }
@@ -5057,14 +5131,16 @@ fn verify_elf_rule(
         let expected_projection = qt5_matcher_map_projection(&baseline_case["memory_map"])?;
         let memory_map_matches = actual_map == expected_projection.matcher_map;
 
-        let runtime = new_runtime()?;
+        let (runtime, runtime_probe) = new_rule_case_runtime()?;
         let context = new_context(&runtime)?;
         let detections = Arc::new(Mutex::new(Vec::new()));
         install_nintendo_host(&context, Arc::new(data.clone()), Arc::clone(&detections))?;
         let elf_trace = install_elf_host(&context, Arc::new(data), elf_context.clone())?;
         eval_unit(&context, FORMAT_RESULT_SHIM)?;
+        let initialized_memory = runtime_memory_snapshot(&runtime)?;
         let detect_result = eval_rule_lexical(&context, &rule_source, true)
             .map_err(|error| format!("{id}: fixed ELF rule failed: {error}"))?;
+        let runtime_measurement = runtime_probe.finish(&runtime, initialized_memory)?;
         let actual_detections = detections
             .lock()
             .map_err(|_| "ELF detection result mutex poisoned".to_owned())?
@@ -5132,6 +5208,7 @@ fn verify_elf_rule(
             "elf_compare_ep_fast_paths": fast_paths,
             "elf_compare_ep_generic_paths": generic_paths,
             "elf_compare_ep_errors": errors,
+            "runtime_measurement": runtime_measurement,
             "matches": matches,
         }));
     }
@@ -5275,14 +5352,16 @@ fn verify_macho_rule(
         let expected_projection = qt5_matcher_map_projection(&baseline_case["memory_map"])?;
         let memory_map_matches = actual_map == expected_projection.matcher_map;
 
-        let runtime = new_runtime()?;
+        let (runtime, runtime_probe) = new_rule_case_runtime()?;
         let context = new_context(&runtime)?;
         let detections = Arc::new(Mutex::new(Vec::new()));
         install_nintendo_host(&context, Arc::new(data.clone()), Arc::clone(&detections))?;
         let macho_trace = install_macho_host(&context, Arc::new(data), macho_context.clone())?;
         eval_unit(&context, FORMAT_RESULT_SHIM)?;
+        let initialized_memory = runtime_memory_snapshot(&runtime)?;
         let detect_result = eval_rule_lexical(&context, &rule_source, true)
             .map_err(|error| format!("{id}: fixed Mach-O rule failed: {error}"))?;
+        let runtime_measurement = runtime_probe.finish(&runtime, initialized_memory)?;
         let actual_detections = detections
             .lock()
             .map_err(|_| "Mach-O detection result mutex poisoned".to_owned())?
@@ -5368,6 +5447,7 @@ fn verify_macho_rule(
             "macho_compare_ep_fast_paths": fast_paths,
             "macho_compare_ep_generic_paths": generic_paths,
             "macho_compare_ep_errors": errors,
+            "runtime_measurement": runtime_measurement,
             "matches": matches,
         }));
     }
@@ -5503,14 +5583,16 @@ fn verify_dex_rule(
             .ok_or_else(|| format!("{id}: Qt5 native result is missing"))?;
         let rust_native_present = dex_context.strings.iter().any(|value| value == "/qdbh");
 
-        let runtime = new_runtime()?;
+        let (runtime, runtime_probe) = new_rule_case_runtime()?;
         let context = new_context(&runtime)?;
         let detections = Arc::new(Mutex::new(Vec::new()));
         install_nintendo_host(&context, Arc::new(data), Arc::clone(&detections))?;
         let dex_trace = install_dex_host(&context, dex_context.clone())?;
         eval_unit(&context, FORMAT_RESULT_SHIM)?;
+        let initialized_memory = runtime_memory_snapshot(&runtime)?;
         let detect_result = eval_rule_lexical(&context, &rule_source, true)
             .map_err(|error| format!("{id}: fixed DEX rule failed: {error}"))?;
+        let runtime_measurement = runtime_probe.finish(&runtime, initialized_memory)?;
         let actual_detections = detections
             .lock()
             .map_err(|_| "DEX detection result mutex poisoned".to_owned())?
@@ -5569,6 +5651,7 @@ fn verify_dex_rule(
                 "rust": actual_detections,
             },
             "dex_is_string_present_calls": calls,
+            "runtime_measurement": runtime_measurement,
             "matches": matches,
         }));
     }
@@ -5707,14 +5790,16 @@ fn verify_apk_rule(
             .iter()
             .any(|value| value == "assets/qdbh");
 
-        let runtime = new_runtime()?;
+        let (runtime, runtime_probe) = new_rule_case_runtime()?;
         let context = new_context(&runtime)?;
         let detections = Arc::new(Mutex::new(Vec::new()));
         install_nintendo_host(&context, Arc::new(data), Arc::clone(&detections))?;
         let apk_trace = install_apk_host(&context, apk_context.clone())?;
         eval_unit(&context, FORMAT_RESULT_SHIM)?;
+        let initialized_memory = runtime_memory_snapshot(&runtime)?;
         let detect_result = eval_rule_lexical(&context, &rule_source, true)
             .map_err(|error| format!("{id}: fixed APK rule failed: {error}"))?;
+        let runtime_measurement = runtime_probe.finish(&runtime, initialized_memory)?;
         let actual_detections = detections
             .lock()
             .map_err(|_| "APK detection result mutex poisoned".to_owned())?
@@ -5775,6 +5860,7 @@ fn verify_apk_rule(
                 "rust": actual_detections,
             },
             "apk_is_archive_record_present_calls": calls,
+            "runtime_measurement": runtime_measurement,
             "matches": matches,
         }));
     }
@@ -5913,14 +5999,16 @@ fn verify_archive_rule(
             && archive_context.file_format_version == baseline_case["native_format_version"]
             && archive_context.file_format_options == baseline_case["native_format_options"];
 
-        let runtime = new_runtime()?;
+        let (runtime, runtime_probe) = new_rule_case_runtime()?;
         let context = new_context(&runtime)?;
         let detections = Arc::new(Mutex::new(Vec::new()));
         install_nintendo_host(&context, Arc::new(data), Arc::clone(&detections))?;
         let archive_trace = install_archive_host(&context, archive_context.clone())?;
         eval_unit(&context, FORMAT_RESULT_SHIM)?;
+        let initialized_memory = runtime_memory_snapshot(&runtime)?;
         let detect_result = eval_rule_lexical(&context, &rule_source, true)
             .map_err(|error| format!("{id}: fixed Archive rule failed: {error}"))?;
+        let runtime_measurement = runtime_probe.finish(&runtime, initialized_memory)?;
         let actual_detections = detections
             .lock()
             .map_err(|_| "Archive detection result mutex poisoned".to_owned())?
@@ -5992,6 +6080,7 @@ fn verify_archive_rule(
                 "get_file_format_version": calls[2],
                 "get_file_format_options": calls[3],
             },
+            "runtime_measurement": runtime_measurement,
             "matches": matches,
         }));
     }
@@ -6142,14 +6231,16 @@ fn verify_pdf_rule(
             && pdf_context.producer_values == expected_producers
             && pdf_context.header_comment_hex == expected_header;
 
-        let runtime = new_runtime()?;
+        let (runtime, runtime_probe) = new_rule_case_runtime()?;
         let context = new_context(&runtime)?;
         let detections = Arc::new(Mutex::new(Vec::new()));
         install_nintendo_host(&context, Arc::new(data), Arc::clone(&detections))?;
         let pdf_trace = install_pdf_host(&context, pdf_context.clone())?;
         eval_unit(&context, FORMAT_RESULT_SHIM)?;
+        let initialized_memory = runtime_memory_snapshot(&runtime)?;
         let detect_result = eval_rule_lexical(&context, &rule_source, true)
             .map_err(|error| format!("{id}: fixed PDF rule failed: {error}"))?;
+        let runtime_measurement = runtime_probe.finish(&runtime, initialized_memory)?;
         let actual_detections = detections
             .lock()
             .map_err(|_| "PDF detection result mutex poisoned".to_owned())?
@@ -6212,6 +6303,7 @@ fn verify_pdf_rule(
                 "get_string_values_by_key": values_calls,
                 "get_header_comment_as_hex": header_calls,
             },
+            "runtime_measurement": runtime_measurement,
             "matches": matches,
         }));
     }
@@ -7598,11 +7690,12 @@ mod tests {
         collect_rule_files, elf_matcher_map_projection, eval_rule_lexical, eval_string, eval_unit,
         install_diagnostic_host_fallbacks, install_nintendo_host,
         install_nintendo_host_with_context, install_nintendo_host_with_context_and_strings,
-        macho_matcher_map_projection, new_context, new_runtime, nonnegative_index, normalized_path,
-        parse_detection_triples, parse_scope_detections, parse_scope_fixture_order,
-        pe_physical_map_projection, qt5_matcher_map_projection, qt5_pe_physical_map_projection,
-        read_ascii, read_byte_array, read_signed, read_unsigned, sha256_hex, shift_right_unsigned,
-        sorted_detection_projection, upstream_type_priority,
+        macho_matcher_map_projection, new_context, new_rule_case_runtime, new_runtime,
+        nonnegative_index, normalized_path, parse_detection_triples, parse_scope_detections,
+        parse_scope_fixture_order, pe_physical_map_projection, qt5_matcher_map_projection,
+        qt5_pe_physical_map_projection, read_ascii, read_byte_array, read_signed, read_unsigned,
+        runtime_memory_snapshot, sha256_hex, shift_right_unsigned, sorted_detection_projection,
+        upstream_type_priority,
     };
     use std::fs;
     use std::path::{Path, PathBuf};
@@ -7631,6 +7724,46 @@ mod tests {
                 u8::from_str_radix(text, 16).expect("hex fixture must contain digits")
             })
             .collect()
+    }
+
+    #[test]
+    fn isolated_rule_case_runtime_probe_records_three_bounded_checkpoints() {
+        let (runtime, probe) = new_rule_case_runtime().expect("measured runtime should be created");
+        let context = new_context(&runtime).expect("measured context should be created");
+        eval_unit(&context, b"globalThis.fixtureValue = 41;")
+            .expect("fixture initialization should succeed");
+        let initialized =
+            runtime_memory_snapshot(&runtime).expect("initialized memory should be readable");
+        eval_unit(&context, b"fixtureValue += 1;").expect("fixture rule evaluation should succeed");
+        let measurement = probe
+            .finish(&runtime, initialized)
+            .expect("runtime measurement should finish");
+        assert_eq!(
+            measurement.pointer("/memory/checkpoint_count"),
+            Some(&serde_json::json!(3))
+        );
+        assert_eq!(
+            measurement.pointer("/memory/transient_high_water_measured"),
+            Some(&serde_json::json!(false))
+        );
+        assert!(
+            measurement
+                .pointer("/memory/maximum_observed_malloc_size/bytes")
+                .and_then(serde_json::Value::as_u64)
+                .is_some_and(|bytes| bytes > 0)
+        );
+        assert!(
+            measurement
+                .pointer("/memory/maximum_observed_memory_used_size/bytes")
+                .and_then(serde_json::Value::as_u64)
+                .is_some_and(|bytes| bytes > 0)
+        );
+        assert!(
+            measurement
+                .pointer("/interrupt/handler_call_total")
+                .and_then(serde_json::Value::as_u64)
+                .is_some()
+        );
     }
 
     #[test]

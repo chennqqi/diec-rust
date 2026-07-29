@@ -89,7 +89,7 @@ cargo +1.97.1 test --manifest-path <manifest> --all-features
 | --- | --- | --- | ---: | ---: |
 | `boa-rule-runtime` | pass | pass | 2 | 0 |
 | `c-static-link` | pass | pass | 3 | 0 |
-| `rquickjs-rule-runtime` | pass | pass | 38 | 0 |
+| `rquickjs-rule-runtime` | pass | pass | 39 | 0 |
 | `rquickjs-static-link` | pass | pass | 2 | 0 |
 | `signature-parser` | pass | pass | 17 | 0 |
 
@@ -121,10 +121,11 @@ consumer。随后依次增加真实 PE32/Cygwin32、ELF32/ELF64/Burneye、
 Mach-O64 x86_64/arm64 Rust compiler、DEX035/QDBH、APK/ZIP QDBH、
 Archive/ZIP metadata 和 PDF Tools object/string
 规则差分；当前 source SHA-256 为
-`c2d2efa1db4249aa03cefef7308e27e2c67a1876f01f7d42ee216ff3266940e1`。
-两套工具链均通过 38 项测试，release 差分分别为 3/3、6/6、4/4、3/3、
+`3c99cae6186119de7b250812e819e153776e929901ad788b7a6a5239e1d5e218`。
+两套工具链均通过 39 项测试，release 差分分别为 3/3、6/6、4/4、3/3、
 3/3、3/3 和 3/3；Binary signature native checkpoint 的接线与计量也未新增
-Cargo 依赖。
+Cargo 依赖。新增规则 case runtime probe 测试固定三点 lifecycle memory 报告
+结构；七类代表性格式的 release 报告三轮稳定。
 
 ## 5. Native static-link 结果
 
