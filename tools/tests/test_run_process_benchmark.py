@@ -74,6 +74,32 @@ class ProcessBenchmarkRunnerTest(unittest.TestCase):
             "notes": ["synthetic runner contract test; not a product baseline"],
         }
 
+    def controlled_plan(self):
+        plan = self.plan()
+        plan["benchmark_plan_schema"] = 2
+        plan["cache_state"] = MODULE.FILE_CONTENT
+        plan["warmup_runs"] = 0
+        plan["measured_runs"] = 1
+        plan["timeout_ms"] = 120_000
+        plan["cache_controller"] = {
+            "kind": MODULE.FILE_CONTENT_CONTROLLER_KIND,
+            "binary": {
+                "path": "/io/file-content-measure",
+                "bytes": 804_240,
+                "sha256": "1" * 64,
+            },
+            "manifest": {
+                "path": "/io/candidates.manifest",
+                "bytes": 128,
+                "sha256": "2" * 64,
+            },
+            "page_size": 4096,
+            "file_count": 2,
+            "logical_pages": 3,
+            "working_directory": "/bench",
+        }
+        return plan
+
     def test_benchmark_binds_identity_and_reports_required_statistics(self):
         plan = self.plan()
         report = MODULE.run_benchmark(plan, ROOT)
@@ -160,6 +186,13 @@ class ProcessBenchmarkRunnerTest(unittest.TestCase):
         with self.assertRaisesRegex(MODULE.BenchmarkError, "unknown fields"):
             MODULE.validate_plan(plan)
         plan = self.plan()
+        plan["benchmark_plan_schema"] = True
+        with self.assertRaisesRegex(
+            MODULE.BenchmarkError,
+            "unsupported benchmark_plan_schema",
+        ):
+            MODULE.validate_plan(plan)
+        plan = self.plan()
         plan["cache_state"] = "cold"
         with self.assertRaisesRegex(
             MODULE.BenchmarkError,
@@ -170,6 +203,105 @@ class ProcessBenchmarkRunnerTest(unittest.TestCase):
         plan["measured_runs"] = 2
         with self.assertRaisesRegex(MODULE.BenchmarkError, "3..100"):
             MODULE.validate_plan(plan)
+
+    def test_schema_v2_requires_exact_controller_and_rejects_cold(self):
+        plan = self.controlled_plan()
+        validated = MODULE.validate_plan(plan)
+        self.assertEqual(validated, plan)
+        self.assertEqual(validated["measured_runs"], 1)
+
+        missing = self.controlled_plan()
+        del missing["cache_controller"]
+        with self.assertRaisesRegex(
+            MODULE.BenchmarkError,
+            "requires plan.cache_controller",
+        ):
+            MODULE.validate_plan(missing)
+        cold = self.controlled_plan()
+        cold["cache_state"] = "cold"
+        with self.assertRaisesRegex(
+            MODULE.BenchmarkError,
+            "schema v2 cache_state",
+        ):
+            MODULE.validate_plan(cold)
+        timeout = self.controlled_plan()
+        timeout["timeout_ms"] = 10_000
+        with self.assertRaisesRegex(
+            MODULE.BenchmarkError,
+            "requires timeout_ms=120000",
+        ):
+            MODULE.validate_plan(timeout)
+        warmup = self.controlled_plan()
+        warmup["warmup_runs"] = 1
+        with self.assertRaisesRegex(
+            MODULE.BenchmarkError,
+            "pairing belongs to the suite",
+        ):
+            MODULE.validate_plan(warmup)
+        unknown = self.controlled_plan()
+        unknown["cache_controller"]["authority"] = "privileged"
+        with self.assertRaisesRegex(
+            MODULE.BenchmarkError,
+            "unknown fields",
+        ):
+            MODULE.validate_plan(unknown)
+
+    def test_controller_measurement_parser_is_exact_and_fail_closed(self):
+        plan = MODULE.validate_plan(self.controlled_plan())
+        controller = plan["cache_controller"]
+        valid = (
+            b"schema_version\t1\n"
+            b"cache_state\tfile-content-nonresident-metadata-warm\n"
+            b"fadvise_executed\t1\n"
+            b"page_size\t4096\n"
+            b"file_count\t2\n"
+            b"logical_pages\t3\n"
+            b"resident_pages_after_warm\t3\n"
+            b"resident_pages_before_run\t0\n"
+            b"before_run_page_state_verified\t1\n"
+            b"duration_ns\t100\n"
+            b"peak_rss_bytes\t4096\n"
+            b"exit_code\t0\n"
+            b"timed_out\t0\n"
+        )
+        parsed = MODULE.parse_controller_measurement(
+            valid,
+            MODULE.FILE_CONTENT,
+            controller,
+        )
+        self.assertEqual(parsed["duration_ns"], 100)
+        evidence = parsed["cache_controller_evidence"]
+        self.assertTrue(evidence["fadvise_executed"])
+        self.assertEqual(evidence["resident_pages_before_run"], 0)
+        with self.assertRaisesRegex(
+            MODULE.BenchmarkError,
+            "duplicate cache controller field",
+        ):
+            MODULE.parse_controller_measurement(
+                valid + b"duration_ns\t101\n",
+                MODULE.FILE_CONTENT,
+                controller,
+            )
+        with self.assertRaisesRegex(
+            MODULE.BenchmarkError,
+            "measurement invariant failed",
+        ):
+            MODULE.parse_controller_measurement(
+                valid.replace(
+                    b"resident_pages_before_run\t0",
+                    b"resident_pages_before_run\t1",
+                ),
+                MODULE.FILE_CONTENT,
+                controller,
+            )
+
+    def test_schema_v2_rejects_in_process_execution(self):
+        plan = self.controlled_plan()
+        with self.assertRaisesRegex(
+            MODULE.BenchmarkError,
+            "preflight/exec/finalize",
+        ):
+            MODULE.run_benchmark(plan, ROOT)
 
     def test_duplicate_json_keys_and_non_finite_values_are_rejected(self):
         with tempfile.TemporaryDirectory() as directory:

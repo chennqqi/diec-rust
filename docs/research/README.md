@@ -191,8 +191,9 @@ Phase 0 计划形成：
   `POSIX_FADV_DONTNEED`、前后 `mincore` 与双次 per-path residency
   复验，同时保留 metadata/overlayfs/cold 边界（In Review）。
 - [`upstream-benchmark-file-content-performance.md`](upstream-benchmark-file-content-performance.md)：
-  同一静态 controller 对 warm/file-content 两状态的五 case × 十组 ABBA
-  成对 latency/direct-child peak-RSS 测量、逐 run 页状态证据与明确的
+  process runner plan/report schema v2 通过 preflight/exec/finalize 链接入同一
+  静态 controller，对 warm/file-content 两状态完成五 case × 十组 ABBA
+  latency/direct-child peak-RSS 测量、逐 run 身份/页状态证据与明确的
   system-cold/Rust/阈值边界（In Review）。
 - [`upstream-benchmark-cache-environment.md`](upstream-benchmark-cache-environment.md)：
   固定容器 overlayfs、namespace、capability、只读 `/proc/sys` 与

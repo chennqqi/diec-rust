@@ -35,16 +35,18 @@ benchmark cache-state vocabulary 固定为三个互斥值：
 - `warm`
   - 由 plan 声明 warmup 数量和顺序；
   - measured runs 不执行 eviction；
-  - 继续作为 runner v1 唯一可执行状态。
+  - runner v1 保持 warm-only；schema v2 也可用同一静态 controller 显式
+    验证全部候选页 resident，以便与 file-content 状态同口径配对。
 - `file-content-nonresident-metadata-warm`
   - manifest 必须绑定 exact successful-file closure；
   - 每个 measured command 前完整 warm candidate，执行 per-file advisory
     eviction，再逐文件证明所有目标页 nonresident；
   - pathname/dentry/inode/failed lookup 明确视为 warm 或 uncontrolled；
   - controller/observation 失败必须终止，不能退化为 `warm`；
-  - Phase 0 独立 measurement spike 可以在相同 controller/clock/RSS 口径下
-    保留 descriptive timing/RSS，但在接入通用 plan schema 前不得称为
-    production runner、trend 或 threshold。
+  - runner plan/report schema v2 必须绑定 controller/manifest identity、
+    page count 与 before-run evidence；Python preflight 必须 `execve` 静态
+    controller，测量完成后才启动 finalizer，禁止存活的动态 runner pin 页面；
+  - 单 session descriptive timing/RSS 仍不能称为 trend 或 threshold。
 - `system-cold`
   - 只允许 disposable、dedicated VM 或裸机；
   - 必须固定 kernel/filesystem/device/mount/machine identity，获得明确的
@@ -56,14 +58,14 @@ benchmark cache-state vocabulary 固定为三个互斥值：
 通用字符串 `cold` 永久禁止。三种状态拥有独立 baseline、trend 和 threshold；
 不能把一个状态的结果用于另一个状态的回归结论。
 
-runner 的 future schema 增加非 warm 状态时，必须同时增加结构化
-`cache_controller` identity/evidence，而不是只放一个字符串。至少包含：
+runner schema v2 已为非 warm 状态增加结构化 `cache_controller`
+identity/evidence，而不是只放一个字符串，包括：
 
 - controller implementation、source/binary SHA-256；
 - target platform/kernel/filesystem；
 - candidate manifest 或 system controller identity；
 - before/after observations；
-- authority/isolation declaration；
+- 精确 taxonomy 所需的 authority/isolation 边界；
 - controller failure 与 timeout。
 
 Windows/macOS 只有在语义和证据等价时才能复用同名状态；否则使用平台限定的
@@ -138,9 +140,9 @@ load 对内容 I/O 的敏感性。
 
 - cache-environment 报告在两个独立容器中逐字节重复；
 - runner 继续拒绝通用 `cold`；
-- 独立 file-content measurement spike 的 100 个 direct child 全部绑定同一
-  controller、ABBA 顺序、before-run 页状态和未变输出；
-- future file-content plan 必须逐 measured run 绑定 manifest、controller 和
+- runner-integrated file-content report 的 100 个 direct child 全部绑定
+  plan schema v2、同一 controller、ABBA 顺序、before-run 页状态和未变输出；
+- file-content plan 逐 measured run 绑定 manifest、controller、preflight 与
   before-run 0-resident 证明；
 - future system-cold job 必须验证 dedicated authority/isolation；
 - testing design、风险和 Phase 0 gate 使用相同 taxonomy；

@@ -142,8 +142,8 @@ environment 的 `system-cold`。该决策仍待评审。
 [`upstream-benchmark-file-content-performance.md`](upstream-benchmark-file-content-performance.md)
 已让同一静态 measurement controller 在每个 measured run 前验证 warm 或
 file-content 页状态，并完成五 case × 10 组 ABBA latency/direct-child RSS
-配对。它是独立技术 spike，仍未升级通用 runner schema，也没有改变本报告的
-system-cold 边界。
+配对。通用 process runner plan/report schema v2 已通过 preflight/exec/finalize
+链接入该 controller；这仍没有改变本报告的 system-cold 边界。
 
 ## 复现
 

@@ -678,11 +678,12 @@ archive median max/min 1.7704 和 batch p95 max/min 1.6848 证明单 session
 逐文件 0 resident、post-run vector 相同，且不保留受 controller 污染的 timing，
 见
 [`upstream-benchmark-page-cache.md`](../research/upstream-benchmark-page-cache.md)。
-独立 measurement spike 随后以同一静态 controller、clock 与 `wait4`
-direct-child RSS 口径，对每个 case 采集 10 组 ABBA warm/file-content 配对，
-共 100 个 measured child；每个 run 都绑定 before-run 页状态和未变输出，见
+process runner plan/report schema v2 随后通过 preflight/exec/finalize 链接入
+同一静态 controller、clock 与 `wait4` direct-child RSS 口径，对每个 case
+采集 10 组 ABBA warm/file-content 配对，共 100 个 measured child；每个 run
+都绑定 plan/controller/manifest identity、before-run 页状态和未变输出，见
 [`upstream-benchmark-file-content-performance.md`](../research/upstream-benchmark-file-content-performance.md)。
-该证据仍是单次 WSL2 session，且尚未纳入通用 runner plan schema。
+该证据仍只是单次 WSL2 session。
 failed lookup、目录、dentry/inode、overlayfs/host isolation 仍未闭合，因此不得
 把它标成 cold；若采用 metadata-warm/file-content-nonresident 层，名称和比较组
 必须与完整 cold 分开。
@@ -697,8 +698,8 @@ namespace；见
 口径见
 [`upstream-deployment-size.md`](../research/upstream-deployment-size.md)；
 同时保留 binary+rules 与 full-closure+rules，禁止只用动态链接 ELF 本体比较。
-这些证据尚无 Rust 成对数据、production runner file-content 接入、
-system-cold、可证明 topology 的 physical-core 或跨 reboot/日期长期 session，
+这些证据尚无 Rust 成对数据、system-cold、可证明 topology 的 physical-core
+或跨 reboot/日期长期 session，
 也无跨平台发行包，且未冻结阈值或默认限制。
 
 回归阈值在首个 Rust vertical slice 形成同 bytes/options 成对报告后冻结。小于

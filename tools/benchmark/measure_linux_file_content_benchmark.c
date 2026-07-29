@@ -178,15 +178,26 @@ static void write_measurement(const char *path, file_record *records,
 
 int main(int argc, char **argv)
 {
-    if (argc < 13 || strcmp(argv[1], "--cache-state") != 0 ||
+    if (argc < 25 || strcmp(argv[1], "--cache-state") != 0 ||
         strcmp(argv[3], "--manifest") != 0 ||
         strcmp(argv[5], "--output") != 0 ||
         strcmp(argv[7], "--stdout") != 0 ||
         strcmp(argv[9], "--stderr") != 0 ||
-        strcmp(argv[11], "--") != 0) {
+        strcmp(argv[11], "--finalizer-python") != 0 ||
+        strcmp(argv[13], "--finalizer-script") != 0 ||
+        strcmp(argv[15], "--final-report") != 0 ||
+        strcmp(argv[17], "--plan") != 0 ||
+        strcmp(argv[19], "--preflight") != 0 ||
+        strcmp(argv[21], "--repo-root") != 0 ||
+        strcmp(argv[23], "--") != 0) {
         fail_message("usage: measure --cache-state STATE "
                      "--manifest PATH --output PATH "
-                     "--stdout PATH --stderr PATH -- COMMAND [ARG...]");
+                     "--stdout PATH --stderr PATH "
+                     "--finalizer-python PATH "
+                     "--finalizer-script PATH "
+                     "--final-report PATH --plan PATH "
+                     "--preflight PATH --repo-root PATH "
+                     "-- COMMAND [ARG...]");
     }
     bool evicted;
     if (strcmp(argv[2], CACHE_STATE_WARM) == 0) {
@@ -221,12 +232,33 @@ int main(int argc, char **argv)
     uint64_t duration_ns = 0;
     uint64_t peak_rss_bytes = 0;
     int exit_code = run_measured_command(
-        &argv[12], argv[8], argv[10], &duration_ns, &peak_rss_bytes);
+        &argv[24], argv[8], argv[10], &duration_ns, &peak_rss_bytes);
     write_measurement(argv[6], records, count, page_size, argv[2],
                       evicted, exit_code, duration_ns, peak_rss_bytes);
     for (size_t index = 0; index < count; index++) {
         free(records[index].path);
     }
     free(records);
-    return exit_code == 0 ? 0 : 2;
+    char *finalizer_arguments[] = {
+        argv[12],
+        argv[14],
+        "--finalize-controlled",
+        "--plan",
+        argv[18],
+        "--measurement",
+        argv[6],
+        "--stdout",
+        argv[8],
+        "--stderr",
+        argv[10],
+        "--output",
+        argv[16],
+        "--preflight",
+        argv[20],
+        "--repo-root",
+        argv[22],
+        NULL,
+    };
+    execv(argv[12], finalizer_arguments);
+    fail_errno("execv", argv[12]);
 }

@@ -1,4 +1,4 @@
-# 固定 Linux Qt5 benchmark 的 warm/file-content 成对性能测量
+# 固定 Linux Qt5 benchmark 的 runner-integrated warm/file-content 成对测量
 
 Status: In Review
 
@@ -8,7 +8,9 @@ Last updated: 2026-07-29
 
 ## 结论
 
-固定 Linux Qt5 五个 benchmark case 已完成 `warm` 与
+通用 process benchmark runner 的 plan/report schema v2 已接入
+`linux-file-content-v1` controller，并对固定 Linux Qt5 五个 benchmark case
+完成 `warm` 与
 `file-content-nonresident-metadata-warm` 的成对测量。每个 case 有 10 对，
 按 pair index 交替采用 AB/BA 顺序，共 100 个直接子进程：
 
@@ -23,14 +25,14 @@ Last updated: 2026-07-29
   state 之间也完全相同；
 - 10 对样本中所有 `file-content - warm` latency delta 均为正。
 
-本轮观察到的 paired median ratio 为 1.244956—8.789222 倍。该结果只说明固定
+本轮观察到的 paired median ratio 为 1.333355—8.760115 倍。该结果只说明固定
 上游 binary 在这一个连续 WSL2/Linux-vCPU session 中对指定 successful-file
 content residency 的敏感性，不是 Rust/upstream 性能比较，也不构成回归阈值。
 
 机器报告为
 [`data/upstream-benchmark-linux-qt5-file-content-performance.json`](data/upstream-benchmark-linux-qt5-file-content-performance.json)，
 SHA-256 为
-`6370d44ca5777be3b0d2e9fbe2f3e8b07166ea404cfbba0bba627c4d1d6f5a91`。
+`d27775639c8b7ab4ee171ff4e0e2f0b4077ea76d185e33e11b2b80c7a26012ac`。
 
 ## 固定身份与测量边界
 
@@ -43,10 +45,11 @@ SHA-256 为
 | successful-file closure | `4edfe49fc68861bbfbb04f7b3a8309b65eb4f6eba884985b4fe08e5f5ed3f922` |
 | page-cache evidence | `081ab455705587089a03401935c8109cdc271f426e11295b2c848f4186b933eb` |
 | cache-environment evidence | `77ef746852a3a05fd29b8e8a8650f0febb22d123dd3b007451265b4597c72811` |
-| measurement source | `3f8cdece2ebdfd6c12572c9671d24a17be24cdd8da0b0629a5849187f5b3c906` |
+| measurement source | `056514706dfa8df76d5cb0f4fa5cb1c9e5fed4d0950d1e786d7c36be62069e51` |
 | page controller source | `be86dc84568f64e8ac2bd6ee9d53e45ab15a8401186b0f34b4f9b9318f8dc2b7` |
-| measurement ELF | 804,240 bytes；`3f572449ddf0330e3e1e4a9b254edb78bb45ec575abfcfb463dd37d1a02a73bf` |
-| host generator | `0e2dbff928c176235759e2128b51faa2653d12987158618c1c12dfdeb11ebf24` |
+| measurement ELF | 804,184 bytes；`2a0c02d469a7f6829c04fc356cd33e9a8ac67b21adf22213a5d9596da2550a31` |
+| process runner | v2；`7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf` |
+| host generator | `9d9bd9612916c4b227d78ec36e03818d6041476947af8dc981a6f55136cadaa6` |
 | scheduling | 10 pairs/case，ABBA alternating by pair index |
 | process count | 5 cases × 10 pairs × 2 states = 100 |
 | cgroup | `cpu.max=100000 100000`；`cpuset.cpus.effective=0`；512 MiB；128 PIDs |
@@ -65,19 +68,29 @@ program headers；该 ELF 无 `PT_INTERP` 和 `PT_DYNAMIC`，因此测量器本�
 
 ## 方法
 
-每个 pair 的两个状态使用相同 manifest 和 command。偶数 pair 先 warm 后
+每个 pair 的两个状态使用相同 manifest 和 command。每个 sample 都动态构造
+严格的 plan schema v2，绑定 controller binary/manifest 的绝对路径、bytes、
+SHA-256、page size、file count、logical pages、cache state 和 `/bench`
+working-directory contract。偶数 pair 先 warm 后
 file-content，奇数 pair 反向，用交错顺序降低单调漂移偏差：
 
-1. 新容器加载 hash-bound manifest，打开并核对所有 regular file 的长度；
-2. 完整 `pread` 所有候选文件，再以 `mmap(PROT_NONE)` + `mincore` 证明所有
+1. Python runner 验证 plan、目标 executable、input artifacts、controller、
+   manifest、host 与 finalizer 身份，把精确 preflight 写入有界 exchange；
+2. runner 通过 `os.execve` **替换自身**为静态 controller，确保测量期间没有
+   Python/loader/libc 映射继续 pin candidate pages；
+3. controller 加载 hash-bound manifest，打开并核对所有 regular file 的长度；
+4. 完整 `pread` 所有候选文件，再以 `mmap(PROT_NONE)` + `mincore` 证明所有
    content pages resident；
-3. warm 状态保持这些页 resident；file-content 状态对每个文件执行
+5. warm 状态保持这些页 resident；file-content 状态对每个文件执行
    `POSIX_FADV_DONTNEED` 并逐文件证明 0 resident；
-4. 只有 before-run page-state invariant 成立后才启动单个 timed child；
-5. `wait4` 返回 latency、peak RSS 和退出状态；controller 输出严格 TSV；
-6. host 拒绝未知/重复字段、状态不匹配、非十进制数、页状态不符、超时、非零
+6. 只有 before-run page-state invariant 成立后才启动单个 timed child；
+7. `wait4` 返回 latency、peak RSS 和退出状态；controller 输出严格 TSV；
+8. controller 完成测量后再 `execve` Python finalizer；finalizer 重新验证
+   preflight、plan、executable、inputs、controller/manifest 与自身身份，生成
+   report schema v2；
+9. runner 拒绝未知/重复字段、状态不匹配、非十进制数、页状态不符、超时、非零
    退出或越界输出；
-7. host 核对 stdout/stderr 与 affinity baseline，并从 10 个 raw pair 重算
+10. host probe 核对 stdout/stderr 与 affinity baseline，并从 10 个 raw pair 重算
    min/median/nearest-rank p95/max/MAD、paired delta 和 scaled ratio。
 
 `warm` 与 file-content 状态都会执行 pathname lookup、open、fstat 和完整 warm，
@@ -92,14 +105,14 @@ median 的简单相除。
 
 | Case | Warm median | File-content median | Paired delta median | Paired ratio median | Warm/File peak RSS median |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| Qt/process control | 10.748 ms | 56.135 ms | 44.738 ms | 5.212505× | 14,090,240 / 13,369,344 B |
-| database load | 61.371 ms | 531.202 ms | 469.870 ms | 8.789222× | 20,496,384 / 19,709,952 B |
-| PE32 JSON | 162.445 ms | 633.004 ms | 472.373 ms | 3.873532× | 36,202,496 / 35,497,984 B |
-| baseline batch JSON | 1,441.800 ms | 1,792.036 ms | 330.137 ms | 1.244956× | 80,986,112 / 80,386,048 B |
-| depth-16 archive | 77.289 ms | 490.358 ms | 411.421 ms | 6.624679× | 24,780,800 / 23,949,312 B |
+| Qt/process control | 12.035 ms | 66.312 ms | 53.524 ms | 5.683948× | 14,090,240 / 13,369,344 B |
+| database load | 97.396 ms | 933.205 ms | 813.255 ms | 8.760115× | 20,432,896 / 19,644,416 B |
+| PE32 JSON | 253.032 ms | 999.514 ms | 753.471 ms | 4.114096× | 36,282,368 / 35,497,984 B |
+| baseline batch JSON | 3,041.579 ms | 4,171.030 ms | 1,063.506 ms | 1.333355× | 81,139,712 / 80,273,408 B |
+| depth-16 archive | 160.986 ms | 1,104.170 ms | 944.330 ms | 6.589210× | 24,813,568 / 23,953,408 B |
 
 database load 对 file-content residency 的 paired median ratio 最大；batch case
-需要较多 CPU 扫描工作，因此相同内容页扰动只表现为约 1.245 倍。这个解释是由
+需要较多 CPU 扫描工作，因此相同内容页扰动只表现为约 1.333 倍。这个解释是由
 case 工作定义和观测比例得到的合理推断，不是 CPU/I/O profiling 证明。
 
 RSS 两状态的 median 很接近，且 file-content 多数略低；不能据此声称 cache
@@ -111,6 +124,7 @@ state 降低内存。`ru_maxrss` 是进程地址空间 resident high-water mark�
 机器 scope 固定：
 
 - `descriptive_upstream_cache_state_spike=true`；
+- `runner_plan_integration_present=true`；
 - `direct_child_process_only=true`；
 - `same_launcher_clock_and_rss_method_across_states=true`；
 - `metadata_cache_controlled=false`；
@@ -121,8 +135,9 @@ state 降低内存。`ru_maxrss` 是进程地址空间 resident high-water mark�
 - `regression_thresholds_frozen=false`。
 
 因此本报告填补了“同一 controller 下实际测量两个精确 cache state”的技术
-证据，但没有把 generic process benchmark runner v1 升级为 production
-file-content runner。它也没有控制 failed lookup、directory、dentry/inode
+证据，并将 generic process benchmark runner 从 warm-only v1 扩展为严格的
+Linux file-content plan/report schema v2。它仍没有控制 failed lookup、
+directory、dentry/inode
 reclaim、overlayfs host cache 或 system-global cold 状态。`system-cold` 仍然
 只能在得到授权的 disposable dedicated VM/裸机上采集，通用 `cold` 标签仍禁止。
 
@@ -132,14 +147,15 @@ reclaim、overlayfs host cache 或 system-global cold 状态。`system-cold` 仍
 
 ## 对 Phase 0 的影响
 
-- ADR 0015 的第二层 cache-state 已从纯 residency spike 推进到 100 个成对
-  performance samples，且每个 measured run 都携带 before-run page evidence；
-- `P0-BLOCK-006` 仍为 Open：没有 Rust 同 case 配对、生产 runner schema 接入、
-  dedicated system-cold、长期 session、跨平台 cache-state 策略或评审阈值；
+- ADR 0015 的第二层 cache-state 已从纯 residency spike 推进到 runner-integrated
+  100 个成对 performance samples，且每个 measured run 都携带 plan、preflight、
+  controller identity 与 before-run page evidence；
+- `P0-BLOCK-006` 仍为 Open：没有 Rust 同 case 配对、dedicated system-cold、
+  长期 session、跨平台 cache-state 策略或评审阈值；
 - 不能把本报告与历史 warm baseline 的绝对 RSS/latency 拼接为同一 trend，因为
   launcher、计时边界、warm 定义和 RSS collector 不同；
-- Phase 1/6 的正式 runner 应复用这里的 controller identity/evidence contract，
-  但仍需把 orchestration 纳入统一 plan schema 和跨平台 CI。
+- Phase 1/6 应把已形成的 v2 contract 纳入 Linux CI，并为 Windows/macOS 采用
+  经评审的等价或明确不等价 controller。
 
 ## 复现
 

@@ -13,6 +13,9 @@ PROBE_PATH = (
     / "tools/benchmark/"
     "probe_upstream_benchmark_file_content_performance.py"
 )
+RUNNER_PATH = (
+    ROOT / "tools/benchmark/run_process_benchmark.py"
+)
 MEASUREMENT_PATH = (
     ROOT / "tools/benchmark/measure_linux_file_content_benchmark.c"
 )
@@ -42,6 +45,10 @@ def load_module(name, path):
 PROBE = load_module(
     "probe_upstream_benchmark_file_content_performance_test",
     PROBE_PATH,
+)
+RUNNER = load_module(
+    "run_process_benchmark_file_content_performance_test",
+    RUNNER_PATH,
 )
 
 
@@ -96,12 +103,12 @@ class UpstreamBenchmarkFileContentPerformanceTests(
                 PAGE_CONTROLLER_PATH.read_bytes()
             ).hexdigest(),
         )
-        self.assertEqual(controller["binary_bytes"], 804_240)
+        self.assertEqual(controller["binary_bytes"], 804_184)
         self.assertEqual(
             controller["binary_sha256"],
             (
-                "3f572449ddf0330e3e1e4a9b254edb78"
-                "bb45ec575abfcfb463dd37d1a02a73bf"
+                "2a0c02d469a7f6829c04fc356cd33e9a"
+                "8ac67b21adf22213a5d9596da2550a31"
             ),
         )
         self.assertTrue(controller["statically_linked"])
@@ -115,38 +122,50 @@ class UpstreamBenchmarkFileContentPerformanceTests(
             controller["peak_rss_method"],
             "wait4 child rusage.ru_maxrss * 1024",
         )
+        runner = report["runner_integration"]
+        self.assertEqual(runner["runner"], RUNNER.RUNNER)
+        self.assertEqual(runner["plan_schema"], 2)
+        self.assertEqual(runner["report_schema"], 2)
+        self.assertEqual(
+            runner["controller_kind"],
+            RUNNER.FILE_CONTENT_CONTROLLER_KIND,
+        )
+        self.assertEqual(
+            runner["source_sha256"],
+            hashlib.sha256(RUNNER_PATH.read_bytes()).hexdigest(),
+        )
 
     def test_case_medians_and_pair_counts_are_exact(self):
         expected = {
             "upstream.archive-depth16.v1": (
-                77_288_697,
-                490_357_729,
-                6_624_679,
-                411_420_636,
+                160_986_221,
+                1_104_170_445,
+                6_589_210,
+                944_330_166,
             ),
             "upstream.cli-baseline-batch-json.v1": (
-                1_441_799_607,
-                1_792_035_861,
-                1_244_956,
-                330_137_173,
+                3_041_579_296,
+                4_171_030_428,
+                1_333_355,
+                1_063_505_759,
             ),
             "upstream.cli-pe32-json.v1": (
-                162_445_090,
-                633_004_307,
-                3_873_532,
-                472_373_340,
+                253_032_207,
+                999_513_549,
+                4_114_096,
+                753_470_668,
             ),
             "upstream.database-load.v1": (
-                61_371_452,
-                531_202_153,
-                8_789_222,
-                469_870_467,
+                97_396_370,
+                933_205_003,
+                8_760_115,
+                813_255_314,
             ),
             "upstream.qt-process-control.v1": (
-                10_747_731,
-                56_134_714,
-                5_212_505,
-                44_738_476,
+                12_034_763,
+                66_311_523,
+                5_683_948,
+                53_524_125,
             ),
         }
         self.assertEqual(set(self.report["cases"]), set(expected))
@@ -238,6 +257,30 @@ class UpstreamBenchmarkFileContentPerformanceTests(
                 )
                 self.assertEqual(warm["stdout"], file_content["stdout"])
                 self.assertEqual(warm["stderr"], file_content["stderr"])
+                for run in (warm, file_content):
+                    runner = run["runner_evidence"]
+                    self.assertEqual(
+                        runner["benchmark_report_schema"],
+                        2,
+                    )
+                    self.assertEqual(
+                        runner["runner"],
+                        RUNNER.RUNNER,
+                    )
+                    self.assertEqual(
+                        runner["runner_source_sha256"],
+                        hashlib.sha256(
+                            RUNNER_PATH.read_bytes()
+                        ).hexdigest(),
+                    )
+                    self.assertEqual(
+                        runner["controller_kind"],
+                        RUNNER.FILE_CONTENT_CONTROLLER_KIND,
+                    )
+                    self.assertEqual(
+                        runner["measurement"]["clock"],
+                        "clock_gettime(CLOCK_MONOTONIC)",
+                    )
                 total += 2
         self.assertEqual(total, 100)
         self.assertEqual(
@@ -286,6 +329,7 @@ class UpstreamBenchmarkFileContentPerformanceTests(
         for field in (
             "descriptive_upstream_cache_state_spike",
             "direct_child_process_only",
+            "runner_plan_integration_present",
             "same_launcher_clock_and_rss_method_across_states",
         ):
             self.assertTrue(scope[field])
@@ -315,30 +359,38 @@ class UpstreamBenchmarkFileContentPerformanceTests(
             b"exit_code\t0\n"
             b"timed_out\t0\n"
         )
-        parsed = PROBE.parse_measurement(valid, PROBE.WARM, 2, 3)
+        controller = {
+            "kind": RUNNER.FILE_CONTENT_CONTROLLER_KIND,
+            "page_size": 4096,
+            "file_count": 2,
+            "logical_pages": 3,
+        }
+        parsed = RUNNER.parse_controller_measurement(
+            valid,
+            RUNNER.WARM,
+            controller,
+        )
         self.assertEqual(parsed["duration_ns"], 100)
         with self.assertRaisesRegex(
-            PROBE.FileContentPerformanceError,
-            "duplicate measurement field",
+            RUNNER.BenchmarkError,
+            "duplicate cache controller field",
         ):
-            PROBE.parse_measurement(
+            RUNNER.parse_controller_measurement(
                 valid + b"duration_ns\t101\n",
-                PROBE.WARM,
-                2,
-                3,
+                RUNNER.WARM,
+                controller,
             )
         with self.assertRaisesRegex(
-            PROBE.FileContentPerformanceError,
+            RUNNER.BenchmarkError,
             "measurement invariant failed",
         ):
-            PROBE.parse_measurement(
+            RUNNER.parse_controller_measurement(
                 valid.replace(
                     b"resident_pages_before_run\t3",
                     b"resident_pages_before_run\t0",
                 ),
-                PROBE.WARM,
-                2,
-                3,
+                RUNNER.WARM,
+                controller,
             )
 
         elf = bytearray(120)
@@ -369,17 +421,28 @@ class UpstreamBenchmarkFileContentPerformanceTests(
             "RLIMIT_FSIZE",
             "SIGKILL",
             "file-content-nonresident-metadata-warm",
+            "--finalizer-python",
+            "--preflight",
         ):
             self.assertIn(text, source)
         for text in ("POSIX_FADV_DONTNEED", "mincore("):
             self.assertIn(text, page_source)
         self.assertNotIn("system(", source + page_source)
+        runner_source = RUNNER_PATH.read_text(encoding="utf-8")
+        for text in (
+            "os.execve(",
+            "exec_controlled_benchmark",
+            "finalize_controlled_benchmark",
+            "preflight/exec/finalize",
+        ):
+            self.assertIn(text, runner_source)
 
         document = DOCUMENT_PATH.read_text(encoding="utf-8")
         for text in (
             "100",
             "ABBA",
-            "8.789222",
+            "8.760115",
+            "plan schema v2",
             "system-cold",
             "regression_thresholds_frozen=false",
             "rust_paired_measurements_present=false",

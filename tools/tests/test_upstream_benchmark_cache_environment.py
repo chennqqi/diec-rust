@@ -230,13 +230,18 @@ class UpstreamBenchmarkCacheEnvironmentTests(unittest.TestCase):
             self.assertIn(value, adr)
         runner = RUNNER_PATH.read_text(encoding="utf-8")
         self.assertIn(
-            'if cache_state != "warm":',
+            "if schema == 1 and cache_state != WARM:",
             runner,
         )
         self.assertIn(
             "only explicit warm cache_state is supported",
             runner,
         )
+        self.assertIn(
+            "if cache_state not in {WARM, FILE_CONTENT}:",
+            runner,
+        )
+        self.assertNotIn('"cold"', runner)
 
     def test_document_and_report_are_hash_bound_and_portable(self):
         document = DOCUMENT_PATH.read_text(encoding="utf-8")

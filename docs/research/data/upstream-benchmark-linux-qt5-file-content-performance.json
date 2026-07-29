@@ -26,25 +26,25 @@
       "pair_count": 10,
       "paired_effect": {
         "duration_delta_ns": {
-          "mad": 12646799,
-          "max": 459982376,
-          "median": 411420636,
-          "min": 392028893,
-          "p95_nearest_rank": 459982376
+          "mad": 62186568,
+          "max": 1069936680,
+          "median": 944330166,
+          "min": 632109296,
+          "p95_nearest_rank": 1069936680
         },
         "duration_ratio_file_over_warm_scaled_1e6": {
-          "mad": 378305,
-          "max": 7047506,
-          "median": 6624679,
-          "min": 5508572,
-          "p95_nearest_rank": 7047506
+          "mad": 715650,
+          "max": 8086753,
+          "median": 6589210,
+          "min": 5040487,
+          "p95_nearest_rank": 8086753
         },
         "negative_delta_pair_count": 0
       },
       "pairs": [
         {
-          "duration_delta_ns": 433991725,
-          "duration_ratio_file_over_warm": 6.110206109845951,
+          "duration_delta_ns": 858780197,
+          "duration_ratio_file_over_warm": 6.877797518497916,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -54,9 +54,27 @@
               "resident_pages_after_warm": 17832,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 518918187,
+            "duration_ns": 1004885978,
             "exit_code": 0,
-            "peak_rss_bytes": 24064000,
+            "peak_rss_bytes": 23945216,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "60af1c0d1297c9ffe8eab72e42368739565f4d32d6a01d4d29d05c325ded1239",
+                "sha256": "600e008e593130349323572d37b72e8df48728c681d970fdf0e4c46cb9be2b0a"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -80,9 +98,27 @@
               "resident_pages_after_warm": 17832,
               "resident_pages_before_run": 17832
             },
-            "duration_ns": 84926462,
+            "duration_ns": 146105781,
             "exit_code": 0,
-            "peak_rss_bytes": 24821760,
+            "peak_rss_bytes": 24469504,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "2b60bf3d88a43399b11869adaf04383b57de963ecbee038728df286a29021df5",
+                "sha256": "b5798e8dce18c18f8f386a2ce75e4196e6d5d6329f17780addfef86f994c5611"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -94,8 +130,8 @@
           }
         },
         {
-          "duration_delta_ns": 403498599,
-          "duration_ratio_file_over_warm": 5.805383255535675,
+          "duration_delta_ns": 858462288,
+          "duration_ratio_file_over_warm": 5.628114766416738,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -105,9 +141,27 @@
               "resident_pages_after_warm": 17832,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 487466636,
+            "duration_ns": 1043950836,
             "exit_code": 0,
-            "peak_rss_bytes": 23900160,
+            "peak_rss_bytes": 24211456,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "60af1c0d1297c9ffe8eab72e42368739565f4d32d6a01d4d29d05c325ded1239",
+                "sha256": "600e008e593130349323572d37b72e8df48728c681d970fdf0e4c46cb9be2b0a"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -131,9 +185,27 @@
               "resident_pages_after_warm": 17832,
               "resident_pages_before_run": 17832
             },
-            "duration_ns": 83968037,
+            "duration_ns": 185488548,
             "exit_code": 0,
-            "peak_rss_bytes": 24604672,
+            "peak_rss_bytes": 24821760,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "2b60bf3d88a43399b11869adaf04383b57de963ecbee038728df286a29021df5",
+                "sha256": "b5798e8dce18c18f8f386a2ce75e4196e6d5d6329f17780addfef86f994c5611"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -145,8 +217,8 @@
           }
         },
         {
-          "duration_delta_ns": 399133020,
-          "duration_ratio_file_over_warm": 5.508572429905829,
+          "duration_delta_ns": 907893544,
+          "duration_ratio_file_over_warm": 6.10017289984338,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -156,9 +228,27 @@
               "resident_pages_after_warm": 17832,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 487660603,
+            "duration_ns": 1085905851,
             "exit_code": 0,
-            "peak_rss_bytes": 24080384,
+            "peak_rss_bytes": 23818240,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "60af1c0d1297c9ffe8eab72e42368739565f4d32d6a01d4d29d05c325ded1239",
+                "sha256": "600e008e593130349323572d37b72e8df48728c681d970fdf0e4c46cb9be2b0a"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -182,9 +272,27 @@
               "resident_pages_after_warm": 17832,
               "resident_pages_before_run": 17832
             },
-            "duration_ns": 88527583,
+            "duration_ns": 178012307,
             "exit_code": 0,
-            "peak_rss_bytes": 24600576,
+            "peak_rss_bytes": 24944640,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "2b60bf3d88a43399b11869adaf04383b57de963ecbee038728df286a29021df5",
+                "sha256": "b5798e8dce18c18f8f386a2ce75e4196e6d5d6329f17780addfef86f994c5611"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -196,8 +304,8 @@
           }
         },
         {
-          "duration_delta_ns": 459982376,
-          "duration_ratio_file_over_warm": 6.644433890857474,
+          "duration_delta_ns": 1029329581,
+          "duration_ratio_file_over_warm": 8.086753316449128,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -207,9 +315,27 @@
               "resident_pages_after_warm": 17832,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 541475469,
+            "duration_ns": 1174576570,
             "exit_code": 0,
-            "peak_rss_bytes": 23953408,
+            "peak_rss_bytes": 23818240,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "60af1c0d1297c9ffe8eab72e42368739565f4d32d6a01d4d29d05c325ded1239",
+                "sha256": "600e008e593130349323572d37b72e8df48728c681d970fdf0e4c46cb9be2b0a"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -233,9 +359,27 @@
               "resident_pages_after_warm": 17832,
               "resident_pages_before_run": 17832
             },
-            "duration_ns": 81493093,
+            "duration_ns": 145246989,
             "exit_code": 0,
-            "peak_rss_bytes": 24739840,
+            "peak_rss_bytes": 24604672,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "2b60bf3d88a43399b11869adaf04383b57de963ecbee038728df286a29021df5",
+                "sha256": "b5798e8dce18c18f8f386a2ce75e4196e6d5d6329f17780addfef86f994c5611"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -247,8 +391,8 @@
           }
         },
         {
-          "duration_delta_ns": 392028893,
-          "duration_ratio_file_over_warm": 5.848877778410916,
+          "duration_delta_ns": 931753899,
+          "duration_ratio_file_over_warm": 7.787944679637052,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -258,9 +402,27 @@
               "resident_pages_after_warm": 17832,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 472878300,
+            "duration_ns": 1069019882,
             "exit_code": 0,
-            "peak_rss_bytes": 23945216,
+            "peak_rss_bytes": 23949312,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "60af1c0d1297c9ffe8eab72e42368739565f4d32d6a01d4d29d05c325ded1239",
+                "sha256": "600e008e593130349323572d37b72e8df48728c681d970fdf0e4c46cb9be2b0a"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -284,9 +446,27 @@
               "resident_pages_after_warm": 17832,
               "resident_pages_before_run": 17832
             },
-            "duration_ns": 80849407,
+            "duration_ns": 137265983,
             "exit_code": 0,
-            "peak_rss_bytes": 24346624,
+            "peak_rss_bytes": 24948736,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "2b60bf3d88a43399b11869adaf04383b57de963ecbee038728df286a29021df5",
+                "sha256": "b5798e8dce18c18f8f386a2ce75e4196e6d5d6329f17780addfef86f994c5611"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -298,8 +478,8 @@
           }
         },
         {
-          "duration_delta_ns": 401689630,
-          "duration_ratio_file_over_warm": 6.7876619854169915,
+          "duration_delta_ns": 1069936680,
+          "duration_ratio_file_over_warm": 6.013619130909851,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -309,9 +489,27 @@
               "resident_pages_after_warm": 17832,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 471094103,
+            "duration_ns": 1283342735,
             "exit_code": 0,
-            "peak_rss_bytes": 23945216,
+            "peak_rss_bytes": 24080384,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "60af1c0d1297c9ffe8eab72e42368739565f4d32d6a01d4d29d05c325ded1239",
+                "sha256": "600e008e593130349323572d37b72e8df48728c681d970fdf0e4c46cb9be2b0a"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -335,9 +533,27 @@
               "resident_pages_after_warm": 17832,
               "resident_pages_before_run": 17832
             },
-            "duration_ns": 69404473,
+            "duration_ns": 213406055,
             "exit_code": 0,
-            "peak_rss_bytes": 24997888,
+            "peak_rss_bytes": 24813568,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "2b60bf3d88a43399b11869adaf04383b57de963ecbee038728df286a29021df5",
+                "sha256": "b5798e8dce18c18f8f386a2ce75e4196e6d5d6329f17780addfef86f994c5611"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -349,8 +565,8 @@
           }
         },
         {
-          "duration_delta_ns": 419342673,
-          "duration_ratio_file_over_warm": 6.687699941031892,
+          "duration_delta_ns": 956906433,
+          "duration_ratio_file_over_warm": 6.780912739753799,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -360,9 +576,27 @@
               "resident_pages_after_warm": 17832,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 493070661,
+            "duration_ns": 1122435040,
             "exit_code": 0,
-            "peak_rss_bytes": 23953408,
+            "peak_rss_bytes": 24031232,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "60af1c0d1297c9ffe8eab72e42368739565f4d32d6a01d4d29d05c325ded1239",
+                "sha256": "600e008e593130349323572d37b72e8df48728c681d970fdf0e4c46cb9be2b0a"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -386,9 +620,27 @@
               "resident_pages_after_warm": 17832,
               "resident_pages_before_run": 17832
             },
-            "duration_ns": 73727988,
+            "duration_ns": 165528607,
             "exit_code": 0,
-            "peak_rss_bytes": 24735744,
+            "peak_rss_bytes": 24739840,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "2b60bf3d88a43399b11869adaf04383b57de963ecbee038728df286a29021df5",
+                "sha256": "b5798e8dce18c18f8f386a2ce75e4196e6d5d6329f17780addfef86f994c5611"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -400,8 +652,8 @@
           }
         },
         {
-          "duration_delta_ns": 422197992,
-          "duration_ratio_file_over_warm": 6.9584629367518005,
+          "duration_delta_ns": 983703887,
+          "duration_ratio_file_over_warm": 7.444920227245535,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -411,9 +663,27 @@
               "resident_pages_after_warm": 17832,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 493054855,
+            "duration_ns": 1136336325,
             "exit_code": 0,
             "peak_rss_bytes": 23953408,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "60af1c0d1297c9ffe8eab72e42368739565f4d32d6a01d4d29d05c325ded1239",
+                "sha256": "600e008e593130349323572d37b72e8df48728c681d970fdf0e4c46cb9be2b0a"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -437,9 +707,27 @@
               "resident_pages_after_warm": 17832,
               "resident_pages_before_run": 17832
             },
-            "duration_ns": 70856863,
+            "duration_ns": 152632438,
             "exit_code": 0,
-            "peak_rss_bytes": 24870912,
+            "peak_rss_bytes": 24735744,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "2b60bf3d88a43399b11869adaf04383b57de963ecbee038728df286a29021df5",
+                "sha256": "b5798e8dce18c18f8f386a2ce75e4196e6d5d6329f17780addfef86f994c5611"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -451,8 +739,8 @@
           }
         },
         {
-          "duration_delta_ns": 427055652,
-          "duration_ratio_file_over_warm": 7.047505618561786,
+          "duration_delta_ns": 983039174,
+          "duration_ratio_file_over_warm": 6.397507891468008,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -462,9 +750,27 @@
               "resident_pages_after_warm": 17832,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 497672478,
+            "duration_ns": 1165167518,
             "exit_code": 0,
-            "peak_rss_bytes": 23900160,
+            "peak_rss_bytes": 24084480,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "60af1c0d1297c9ffe8eab72e42368739565f4d32d6a01d4d29d05c325ded1239",
+                "sha256": "600e008e593130349323572d37b72e8df48728c681d970fdf0e4c46cb9be2b0a"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -488,9 +794,27 @@
               "resident_pages_after_warm": 17832,
               "resident_pages_before_run": 17832
             },
-            "duration_ns": 70616826,
+            "duration_ns": 182128344,
             "exit_code": 0,
-            "peak_rss_bytes": 24866816,
+            "peak_rss_bytes": 24813568,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "2b60bf3d88a43399b11869adaf04383b57de963ecbee038728df286a29021df5",
+                "sha256": "b5798e8dce18c18f8f386a2ce75e4196e6d5d6329f17780addfef86f994c5611"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -502,8 +826,8 @@
           }
         },
         {
-          "duration_delta_ns": 398414654,
-          "duration_ratio_file_over_warm": 6.604923817621924,
+          "duration_delta_ns": 632109296,
+          "duration_ratio_file_over_warm": 5.04048709238047,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -513,9 +837,27 @@
               "resident_pages_after_warm": 17832,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 469497628,
+            "duration_ns": 788553131,
             "exit_code": 0,
-            "peak_rss_bytes": 23822336,
+            "peak_rss_bytes": 23953408,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "60af1c0d1297c9ffe8eab72e42368739565f4d32d6a01d4d29d05c325ded1239",
+                "sha256": "600e008e593130349323572d37b72e8df48728c681d970fdf0e4c46cb9be2b0a"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -539,9 +881,27 @@
               "resident_pages_after_warm": 17832,
               "resident_pages_before_run": 17832
             },
-            "duration_ns": 71082974,
+            "duration_ns": 156443835,
             "exit_code": 0,
-            "peak_rss_bytes": 24948736,
+            "peak_rss_bytes": 24817664,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "2b60bf3d88a43399b11869adaf04383b57de963ecbee038728df286a29021df5",
+                "sha256": "b5798e8dce18c18f8f386a2ce75e4196e6d5d6329f17780addfef86f994c5611"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -557,15 +917,15 @@
       "state_summaries": {
         "file-content-nonresident-metadata-warm": {
           "duration_ns": {
-            "mad": 12397089,
-            "max": 541475469,
-            "median": 490357729,
-            "min": 469497628,
-            "p95_nearest_rank": 541475469
+            "mad": 60608341,
+            "max": 1283342735,
+            "median": 1104170445,
+            "min": 788553131,
+            "p95_nearest_rank": 1283342735
           },
           "peak_rss_bytes": {
-            "max": 24080384,
-            "median": 23949312,
+            "max": 24211456,
+            "median": 23953408,
             "sample_count": 10
           },
           "sample_count": 10,
@@ -575,19 +935,19 @@
           "stdout_unique_sha256": [
             "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
           ],
-          "throughput_bytes_per_second_at_median": 40411.313675857244
+          "throughput_bytes_per_second_at_median": 17946.504626828697
         },
         "warm": {
           "duration_ns": {
-            "mad": 6551852,
-            "max": 88527583,
-            "median": 77288697,
-            "min": 69404473,
-            "p95_nearest_rank": 88527583
+            "mad": 16382659,
+            "max": 213406055,
+            "median": 160986221,
+            "min": 137265983,
+            "p95_nearest_rank": 213406055
           },
           "peak_rss_bytes": {
-            "max": 24997888,
-            "median": 24780800,
+            "max": 24948736,
+            "median": 24813568,
             "sample_count": 10
           },
           "sample_count": 10,
@@ -597,7 +957,7 @@
           "stdout_unique_sha256": [
             "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
           ],
-          "throughput_bytes_per_second_at_median": 256389.36570505257
+          "throughput_bytes_per_second_at_median": 123091.27996737062
         }
       },
       "work_bytes": 19816,
@@ -617,25 +977,25 @@
       "pair_count": 10,
       "paired_effect": {
         "duration_delta_ns": {
-          "mad": 90808367,
-          "max": 574031945,
-          "median": 330137173,
-          "min": 25385768,
-          "p95_nearest_rank": 574031945
+          "mad": 237192379,
+          "max": 2750231764,
+          "median": 1063505759,
+          "min": 799689307,
+          "p95_nearest_rank": 2750231764
         },
         "duration_ratio_file_over_warm_scaled_1e6": {
-          "mad": 70712,
-          "max": 1424126,
-          "median": 1244956,
-          "min": 1014463,
-          "p95_nearest_rank": 1424126
+          "mad": 73844,
+          "max": 2106009,
+          "median": 1333355,
+          "min": 1244899,
+          "p95_nearest_rank": 2106009
         },
         "negative_delta_pair_count": 0
       },
       "pairs": [
         {
-          "duration_delta_ns": 574031945,
-          "duration_ratio_file_over_warm": 1.4241262182226644,
+          "duration_delta_ns": 1045830372,
+          "duration_ratio_file_over_warm": 1.3343947004282914,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -645,9 +1005,27 @@
               "resident_pages_after_warm": 17869,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 1927477972,
+            "duration_ns": 4173363107,
             "exit_code": 0,
-            "peak_rss_bytes": 80502784,
+            "peak_rss_bytes": 79888384,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "da69c045244e840352545049061526724362cfd1a918a00b4c7d087462dd7c95",
+                "sha256": "92a5aacba7a08251b052717373443977342d8a99f6f160740c6bd494ff4826ba"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -671,9 +1049,27 @@
               "resident_pages_after_warm": 17869,
               "resident_pages_before_run": 17869
             },
-            "duration_ns": 1353446027,
+            "duration_ns": 3127532735,
             "exit_code": 0,
-            "peak_rss_bytes": 81235968,
+            "peak_rss_bytes": 81039360,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "bc760c0903d888999256603659ba4dac897d1845f6567afcc9d9f30f3c5128c8",
+                "sha256": "ff1ab94366f8d20bbcaf0c347f495e5a572df84b6c83a2eb8c439f73c8832940"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -685,8 +1081,8 @@
           }
         },
         {
-          "duration_delta_ns": 432487836,
-          "duration_ratio_file_over_warm": 1.3154646773197831,
+          "duration_delta_ns": 2452243926,
+          "duration_ratio_file_over_warm": 2.106009043040084,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -696,9 +1092,27 @@
               "resident_pages_after_warm": 17869,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 1803442707,
+            "duration_ns": 4669444537,
             "exit_code": 0,
-            "peak_rss_bytes": 80515072,
+            "peak_rss_bytes": 80408576,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "da69c045244e840352545049061526724362cfd1a918a00b4c7d087462dd7c95",
+                "sha256": "92a5aacba7a08251b052717373443977342d8a99f6f160740c6bd494ff4826ba"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -722,9 +1136,27 @@
               "resident_pages_after_warm": 17869,
               "resident_pages_before_run": 17869
             },
-            "duration_ns": 1370954871,
+            "duration_ns": 2217200611,
             "exit_code": 0,
-            "peak_rss_bytes": 81072128,
+            "peak_rss_bytes": 81166336,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "bc760c0903d888999256603659ba4dac897d1845f6567afcc9d9f30f3c5128c8",
+                "sha256": "ff1ab94366f8d20bbcaf0c347f495e5a572df84b6c83a2eb8c439f73c8832940"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -736,8 +1168,8 @@
           }
         },
         {
-          "duration_delta_ns": 148277960,
-          "duration_ratio_file_over_warm": 1.0975394427949912,
+          "duration_delta_ns": 982199868,
+          "duration_ratio_file_over_warm": 1.332315358975994,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -747,9 +1179,27 @@
               "resident_pages_after_warm": 17869,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 1668462572,
+            "duration_ns": 3937825726,
             "exit_code": 0,
-            "peak_rss_bytes": 80359424,
+            "peak_rss_bytes": 78774272,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "da69c045244e840352545049061526724362cfd1a918a00b4c7d087462dd7c95",
+                "sha256": "92a5aacba7a08251b052717373443977342d8a99f6f160740c6bd494ff4826ba"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -773,9 +1223,27 @@
               "resident_pages_after_warm": 17869,
               "resident_pages_before_run": 17869
             },
-            "duration_ns": 1520184612,
+            "duration_ns": 2955625858,
             "exit_code": 0,
-            "peak_rss_bytes": 81174528,
+            "peak_rss_bytes": 79261696,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "bc760c0903d888999256603659ba4dac897d1845f6567afcc9d9f30f3c5128c8",
+                "sha256": "ff1ab94366f8d20bbcaf0c347f495e5a572df84b6c83a2eb8c439f73c8832940"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -787,8 +1255,8 @@
           }
         },
         {
-          "duration_delta_ns": 328765843,
-          "duration_ratio_file_over_warm": 1.2500278985367008,
+          "duration_delta_ns": 1542853641,
+          "duration_ratio_file_over_warm": 1.7374955746665388,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -798,9 +1266,27 @@
               "resident_pages_after_warm": 17869,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 1643682478,
+            "duration_ns": 3634871131,
             "exit_code": 0,
-            "peak_rss_bytes": 80351232,
+            "peak_rss_bytes": 80388096,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "da69c045244e840352545049061526724362cfd1a918a00b4c7d087462dd7c95",
+                "sha256": "92a5aacba7a08251b052717373443977342d8a99f6f160740c6bd494ff4826ba"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -824,9 +1310,27 @@
               "resident_pages_after_warm": 17869,
               "resident_pages_before_run": 17869
             },
-            "duration_ns": 1314916635,
+            "duration_ns": 2092017490,
             "exit_code": 0,
-            "peak_rss_bytes": 80777216,
+            "peak_rss_bytes": 81113088,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "bc760c0903d888999256603659ba4dac897d1845f6567afcc9d9f30f3c5128c8",
+                "sha256": "ff1ab94366f8d20bbcaf0c347f495e5a572df84b6c83a2eb8c439f73c8832940"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -838,8 +1342,8 @@
           }
         },
         {
-          "duration_delta_ns": 25385768,
-          "duration_ratio_file_over_warm": 1.0144628204913413,
+          "duration_delta_ns": 1081181147,
+          "duration_ratio_file_over_warm": 1.3035769063651395,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -849,9 +1353,27 @@
               "resident_pages_after_warm": 17869,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 1780629015,
+            "duration_ns": 4642654778,
             "exit_code": 0,
-            "peak_rss_bytes": 80388096,
+            "peak_rss_bytes": 79904768,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "da69c045244e840352545049061526724362cfd1a918a00b4c7d087462dd7c95",
+                "sha256": "92a5aacba7a08251b052717373443977342d8a99f6f160740c6bd494ff4826ba"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -875,9 +1397,27 @@
               "resident_pages_after_warm": 17869,
               "resident_pages_before_run": 17869
             },
-            "duration_ns": 1755243247,
+            "duration_ns": 3561473631,
             "exit_code": 0,
-            "peak_rss_bytes": 80850944,
+            "peak_rss_bytes": 81203200,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "bc760c0903d888999256603659ba4dac897d1845f6567afcc9d9f30f3c5128c8",
+                "sha256": "ff1ab94366f8d20bbcaf0c347f495e5a572df84b6c83a2eb8c439f73c8832940"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -889,8 +1429,8 @@
           }
         },
         {
-          "duration_delta_ns": 490586188,
-          "duration_ratio_file_over_warm": 1.3158707259169644,
+          "duration_delta_ns": 1618718995,
+          "duration_ratio_file_over_warm": 1.55560261034894,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -900,9 +1440,27 @@
               "resident_pages_after_warm": 17869,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 2043709500,
+            "duration_ns": 4532166421,
             "exit_code": 0,
-            "peak_rss_bytes": 80142336,
+            "peak_rss_bytes": 80289792,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "da69c045244e840352545049061526724362cfd1a918a00b4c7d087462dd7c95",
+                "sha256": "92a5aacba7a08251b052717373443977342d8a99f6f160740c6bd494ff4826ba"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -926,9 +1484,27 @@
               "resident_pages_after_warm": 17869,
               "resident_pages_before_run": 17869
             },
-            "duration_ns": 1553123312,
+            "duration_ns": 2913447426,
             "exit_code": 0,
-            "peak_rss_bytes": 81076224,
+            "peak_rss_bytes": 81174528,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "bc760c0903d888999256603659ba4dac897d1845f6567afcc9d9f30f3c5128c8",
+                "sha256": "ff1ab94366f8d20bbcaf0c347f495e5a572df84b6c83a2eb8c439f73c8832940"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -940,8 +1516,8 @@
           }
         },
         {
-          "duration_delta_ns": 262145842,
-          "duration_ratio_file_over_warm": 1.180771373179632,
+          "duration_delta_ns": 852937452,
+          "duration_ratio_file_over_warm": 1.320786242109359,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -951,9 +1527,27 @@
               "resident_pages_after_warm": 17869,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 1712297143,
+            "duration_ns": 3511834063,
             "exit_code": 0,
-            "peak_rss_bytes": 80281600,
+            "peak_rss_bytes": 80384000,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "da69c045244e840352545049061526724362cfd1a918a00b4c7d087462dd7c95",
+                "sha256": "92a5aacba7a08251b052717373443977342d8a99f6f160740c6bd494ff4826ba"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -977,9 +1571,27 @@
               "resident_pages_after_warm": 17869,
               "resident_pages_before_run": 17869
             },
-            "duration_ns": 1450151301,
+            "duration_ns": 2658896611,
             "exit_code": 0,
-            "peak_rss_bytes": 81059840,
+            "peak_rss_bytes": 81170432,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "bc760c0903d888999256603659ba4dac897d1845f6567afcc9d9f30f3c5128c8",
+                "sha256": "ff1ab94366f8d20bbcaf0c347f495e5a572df84b6c83a2eb8c439f73c8832940"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -991,8 +1603,8 @@
           }
         },
         {
-          "duration_delta_ns": 331508504,
-          "duration_ratio_file_over_warm": 1.2398850030492365,
+          "duration_delta_ns": 2750231764,
+          "duration_ratio_file_over_warm": 1.8697245626929888,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -1002,9 +1614,27 @@
               "resident_pages_after_warm": 17869,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 1713456103,
+            "duration_ns": 5912418831,
             "exit_code": 0,
-            "peak_rss_bytes": 80646144,
+            "peak_rss_bytes": 80252928,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "da69c045244e840352545049061526724362cfd1a918a00b4c7d087462dd7c95",
+                "sha256": "92a5aacba7a08251b052717373443977342d8a99f6f160740c6bd494ff4826ba"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1028,9 +1658,27 @@
               "resident_pages_after_warm": 17869,
               "resident_pages_before_run": 17869
             },
-            "duration_ns": 1381947599,
+            "duration_ns": 3162187067,
             "exit_code": 0,
-            "peak_rss_bytes": 80695296,
+            "peak_rss_bytes": 80953344,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "bc760c0903d888999256603659ba4dac897d1845f6567afcc9d9f30f3c5128c8",
+                "sha256": "ff1ab94366f8d20bbcaf0c347f495e5a572df84b6c83a2eb8c439f73c8832940"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1042,8 +1690,8 @@
           }
         },
         {
-          "duration_delta_ns": 250871101,
-          "duration_ratio_file_over_warm": 1.155752722351406,
+          "duration_delta_ns": 896876608,
+          "duration_ratio_file_over_warm": 1.2741215272317357,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -1053,9 +1701,27 @@
               "resident_pages_after_warm": 17869,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 1861572328,
+            "duration_ns": 4168697749,
             "exit_code": 0,
-            "peak_rss_bytes": 85688320,
+            "peak_rss_bytes": 80416768,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "da69c045244e840352545049061526724362cfd1a918a00b4c7d087462dd7c95",
+                "sha256": "92a5aacba7a08251b052717373443977342d8a99f6f160740c6bd494ff4826ba"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1079,9 +1745,27 @@
               "resident_pages_after_warm": 17869,
               "resident_pages_before_run": 17869
             },
-            "duration_ns": 1610701227,
+            "duration_ns": 3271821141,
             "exit_code": 0,
-            "peak_rss_bytes": 80912384,
+            "peak_rss_bytes": 81182720,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "bc760c0903d888999256603659ba4dac897d1845f6567afcc9d9f30f3c5128c8",
+                "sha256": "ff1ab94366f8d20bbcaf0c347f495e5a572df84b6c83a2eb8c439f73c8832940"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1093,8 +1777,8 @@
           }
         },
         {
-          "duration_delta_ns": 398849008,
-          "duration_ratio_file_over_warm": 1.2782445069015602,
+          "duration_delta_ns": 799689307,
+          "duration_ratio_file_over_warm": 1.2448989693781651,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -1104,9 +1788,27 @@
               "resident_pages_after_warm": 17869,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 1832296922,
+            "duration_ns": 4065073841,
             "exit_code": 0,
-            "peak_rss_bytes": 80384000,
+            "peak_rss_bytes": 80257024,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "da69c045244e840352545049061526724362cfd1a918a00b4c7d087462dd7c95",
+                "sha256": "92a5aacba7a08251b052717373443977342d8a99f6f160740c6bd494ff4826ba"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1130,9 +1832,27 @@
               "resident_pages_after_warm": 17869,
               "resident_pages_before_run": 17869
             },
-            "duration_ns": 1433447914,
+            "duration_ns": 3265384534,
             "exit_code": 0,
-            "peak_rss_bytes": 80879616,
+            "peak_rss_bytes": 81108992,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "bc760c0903d888999256603659ba4dac897d1845f6567afcc9d9f30f3c5128c8",
+                "sha256": "ff1ab94366f8d20bbcaf0c347f495e5a572df84b6c83a2eb8c439f73c8832940"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1148,15 +1868,15 @@
       "state_summaries": {
         "file-content-nonresident-metadata-warm": {
           "duration_ns": {
-            "mad": 79159238,
-            "max": 2043709500,
-            "median": 1792035861,
-            "min": 1643682478,
-            "p95_nearest_rank": 2043709500
+            "mad": 416380171,
+            "max": 5912418831,
+            "median": 4171030428,
+            "min": 3511834063,
+            "p95_nearest_rank": 5912418831
           },
           "peak_rss_bytes": {
-            "max": 85688320,
-            "median": 80386048,
+            "max": 80416768,
+            "median": 80273408,
             "sample_count": 10
           },
           "sample_count": 10,
@@ -1166,19 +1886,19 @@
           "stdout_unique_sha256": [
             "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
           ],
-          "throughput_bytes_per_second_at_median": 26821.449863831716
+          "throughput_bytes_per_second_at_median": 11523.531374247745
         },
         "warm": {
           "duration_ns": {
-            "mad": 83369292,
-            "max": 1755243247,
-            "median": 1441799607,
-            "min": 1314916635,
-            "p95_nearest_rank": 1755243247
+            "mad": 227023541,
+            "max": 3561473631,
+            "median": 3041579296,
+            "min": 2092017490,
+            "p95_nearest_rank": 3561473631
           },
           "peak_rss_bytes": {
-            "max": 81235968,
-            "median": 80986112,
+            "max": 81203200,
+            "median": 81139712,
             "sample_count": 10
           },
           "sample_count": 10,
@@ -1188,7 +1908,7 @@
           "stdout_unique_sha256": [
             "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
           ],
-          "throughput_bytes_per_second_at_median": 33336.81030750898
+          "throughput_bytes_per_second_at_median": 15802.645705542047
         }
       },
       "work_bytes": 48065,
@@ -1208,25 +1928,25 @@
       "pair_count": 10,
       "paired_effect": {
         "duration_delta_ns": {
-          "mad": 46096665,
-          "max": 572855797,
-          "median": 472373340,
-          "min": 387523193,
-          "p95_nearest_rank": 572855797
+          "mad": 49781038,
+          "max": 891781496,
+          "median": 753470668,
+          "min": 648349501,
+          "p95_nearest_rank": 891781496
         },
         "duration_ratio_file_over_warm_scaled_1e6": {
-          "mad": 207578,
-          "max": 4184939,
-          "median": 3873532,
-          "min": 3365394,
-          "p95_nearest_rank": 4184939
+          "mad": 189015,
+          "max": 4467533,
+          "median": 4114096,
+          "min": 3214726,
+          "p95_nearest_rank": 4467533
         },
         "negative_delta_pair_count": 0
       },
       "pairs": [
         {
-          "duration_delta_ns": 474235075,
-          "duration_ratio_file_over_warm": 4.076859381770885,
+          "duration_delta_ns": 891781496,
+          "duration_ratio_file_over_warm": 4.214660453546165,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -1236,9 +1956,27 @@
               "resident_pages_after_warm": 17835,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 628364665,
+            "duration_ns": 1169192286,
             "exit_code": 0,
-            "peak_rss_bytes": 35606528,
+            "peak_rss_bytes": 35758080,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "c649e12de8ecd1dcac10c716f79e57aa236defbaa795cd657d0c039e0b960d29",
+                "sha256": "94534cc65c5b4ca40895b89161474c8f618e3562951efe6cf47d9a1b45adc435"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1262,9 +2000,27 @@
               "resident_pages_after_warm": 17835,
               "resident_pages_before_run": 17835
             },
-            "duration_ns": 154129590,
+            "duration_ns": 277410790,
             "exit_code": 0,
-            "peak_rss_bytes": 35889152,
+            "peak_rss_bytes": 36286464,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "73fb22855d8293e2f8b02d8b37988235a468b24c969cba97f517045a1c41c8ad",
+                "sha256": "23efe50fd3f3fa77847986652fcab4b462c845ff83809c3fc930dc120fa32a5e"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1276,8 +2032,8 @@
           }
         },
         {
-          "duration_delta_ns": 470511606,
-          "duration_ratio_file_over_warm": 3.687466949755529,
+          "duration_delta_ns": 796622580,
+          "duration_ratio_file_over_warm": 3.627102446836156,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -1287,9 +2043,27 @@
               "resident_pages_after_warm": 17835,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 645587845,
+            "duration_ns": 1099854980,
             "exit_code": 0,
-            "peak_rss_bytes": 35364864,
+            "peak_rss_bytes": 35500032,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "c649e12de8ecd1dcac10c716f79e57aa236defbaa795cd657d0c039e0b960d29",
+                "sha256": "94534cc65c5b4ca40895b89161474c8f618e3562951efe6cf47d9a1b45adc435"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1313,9 +2087,27 @@
               "resident_pages_after_warm": 17835,
               "resident_pages_before_run": 17835
             },
-            "duration_ns": 175076239,
+            "duration_ns": 303232400,
             "exit_code": 0,
             "peak_rss_bytes": 36282368,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "73fb22855d8293e2f8b02d8b37988235a468b24c969cba97f517045a1c41c8ad",
+                "sha256": "23efe50fd3f3fa77847986652fcab4b462c845ff83809c3fc930dc120fa32a5e"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1327,8 +2119,8 @@
           }
         },
         {
-          "duration_delta_ns": 526709386,
-          "duration_ratio_file_over_warm": 4.08536061256655,
+          "duration_delta_ns": 726228603,
+          "duration_ratio_file_over_warm": 3.8341790948545014,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -1338,9 +2130,27 @@
               "resident_pages_after_warm": 17835,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 697421809,
+            "duration_ns": 982468092,
             "exit_code": 0,
-            "peak_rss_bytes": 35364864,
+            "peak_rss_bytes": 35631104,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "c649e12de8ecd1dcac10c716f79e57aa236defbaa795cd657d0c039e0b960d29",
+                "sha256": "94534cc65c5b4ca40895b89161474c8f618e3562951efe6cf47d9a1b45adc435"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1364,9 +2174,27 @@
               "resident_pages_after_warm": 17835,
               "resident_pages_before_run": 17835
             },
-            "duration_ns": 170712423,
+            "duration_ns": 256239489,
             "exit_code": 0,
-            "peak_rss_bytes": 36155392,
+            "peak_rss_bytes": 36409344,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "73fb22855d8293e2f8b02d8b37988235a468b24c969cba97f517045a1c41c8ad",
+                "sha256": "23efe50fd3f3fa77847986652fcab4b462c845ff83809c3fc930dc120fa32a5e"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1378,8 +2206,8 @@
           }
         },
         {
-          "duration_delta_ns": 481204951,
-          "duration_ratio_file_over_warm": 3.714715885621644,
+          "duration_delta_ns": 712929509,
+          "duration_ratio_file_over_warm": 4.46753309123344,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -1389,9 +2217,27 @@
               "resident_pages_after_warm": 17835,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 658462893,
+            "duration_ns": 918530866,
             "exit_code": 0,
-            "peak_rss_bytes": 35631104,
+            "peak_rss_bytes": 35495936,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "c649e12de8ecd1dcac10c716f79e57aa236defbaa795cd657d0c039e0b960d29",
+                "sha256": "94534cc65c5b4ca40895b89161474c8f618e3562951efe6cf47d9a1b45adc435"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1415,9 +2261,27 @@
               "resident_pages_after_warm": 17835,
               "resident_pages_before_run": 17835
             },
-            "duration_ns": 177257942,
+            "duration_ns": 205601357,
             "exit_code": 0,
-            "peak_rss_bytes": 36016128,
+            "peak_rss_bytes": 36020224,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "73fb22855d8293e2f8b02d8b37988235a468b24c969cba97f517045a1c41c8ad",
+                "sha256": "23efe50fd3f3fa77847986652fcab4b462c845ff83809c3fc930dc120fa32a5e"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1429,8 +2293,8 @@
           }
         },
         {
-          "duration_delta_ns": 389941776,
-          "duration_ratio_file_over_warm": 3.365393909691038,
+          "duration_delta_ns": 648349501,
+          "duration_ratio_file_over_warm": 3.21472614718462,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -1440,9 +2304,27 @@
               "resident_pages_after_warm": 17835,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 554794562,
+            "duration_ns": 941094273,
             "exit_code": 0,
-            "peak_rss_bytes": 35622912,
+            "peak_rss_bytes": 35495936,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "c649e12de8ecd1dcac10c716f79e57aa236defbaa795cd657d0c039e0b960d29",
+                "sha256": "94534cc65c5b4ca40895b89161474c8f618e3562951efe6cf47d9a1b45adc435"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1466,9 +2348,27 @@
               "resident_pages_after_warm": 17835,
               "resident_pages_before_run": 17835
             },
-            "duration_ns": 164852786,
+            "duration_ns": 292744772,
             "exit_code": 0,
-            "peak_rss_bytes": 36413440,
+            "peak_rss_bytes": 36282368,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "73fb22855d8293e2f8b02d8b37988235a468b24c969cba97f517045a1c41c8ad",
+                "sha256": "23efe50fd3f3fa77847986652fcab4b462c845ff83809c3fc930dc120fa32a5e"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1480,8 +2380,8 @@
           }
         },
         {
-          "duration_delta_ns": 572855797,
-          "duration_ratio_file_over_warm": 4.184938639026583,
+          "duration_delta_ns": 697060503,
+          "duration_ratio_file_over_warm": 3.9567639814844084,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -1491,9 +2391,27 @@
               "resident_pages_after_warm": 17835,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 752719795,
+            "duration_ns": 932811651,
             "exit_code": 0,
-            "peak_rss_bytes": 35500032,
+            "peak_rss_bytes": 35233792,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "c649e12de8ecd1dcac10c716f79e57aa236defbaa795cd657d0c039e0b960d29",
+                "sha256": "94534cc65c5b4ca40895b89161474c8f618e3562951efe6cf47d9a1b45adc435"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1517,9 +2435,27 @@
               "resident_pages_after_warm": 17835,
               "resident_pages_before_run": 17835
             },
-            "duration_ns": 179863998,
+            "duration_ns": 235751148,
             "exit_code": 0,
-            "peak_rss_bytes": 36151296,
+            "peak_rss_bytes": 36417536,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "73fb22855d8293e2f8b02d8b37988235a468b24c969cba97f517045a1c41c8ad",
+                "sha256": "23efe50fd3f3fa77847986652fcab4b462c845ff83809c3fc930dc120fa32a5e"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1531,8 +2467,8 @@
           }
         },
         {
-          "duration_delta_ns": 477606555,
-          "duration_ratio_file_over_warm": 3.9843434903720065,
+          "duration_delta_ns": 780712734,
+          "duration_ratio_file_over_warm": 4.125039401092585,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -1542,9 +2478,27 @@
               "resident_pages_after_warm": 17835,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 637643949,
+            "duration_ns": 1030537659,
             "exit_code": 0,
-            "peak_rss_bytes": 35495936,
+            "peak_rss_bytes": 35500032,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "c649e12de8ecd1dcac10c716f79e57aa236defbaa795cd657d0c039e0b960d29",
+                "sha256": "94534cc65c5b4ca40895b89161474c8f618e3562951efe6cf47d9a1b45adc435"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1568,9 +2522,27 @@
               "resident_pages_after_warm": 17835,
               "resident_pages_before_run": 17835
             },
-            "duration_ns": 160037394,
+            "duration_ns": 249824925,
             "exit_code": 0,
-            "peak_rss_bytes": 36151296,
+            "peak_rss_bytes": 36155392,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "73fb22855d8293e2f8b02d8b37988235a468b24c969cba97f517045a1c41c8ad",
+                "sha256": "23efe50fd3f3fa77847986652fcab4b462c845ff83809c3fc930dc120fa32a5e"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1582,8 +2554,8 @@
           }
         },
         {
-          "duration_delta_ns": 405747112,
-          "duration_ratio_file_over_warm": 3.7627211396129123,
+          "duration_delta_ns": 782047524,
+          "duration_ratio_file_over_warm": 4.334794160164856,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -1593,9 +2565,27 @@
               "resident_pages_after_warm": 17835,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 552612138,
+            "duration_ns": 1016559007,
             "exit_code": 0,
-            "peak_rss_bytes": 35500032,
+            "peak_rss_bytes": 35364864,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "c649e12de8ecd1dcac10c716f79e57aa236defbaa795cd657d0c039e0b960d29",
+                "sha256": "94534cc65c5b4ca40895b89161474c8f618e3562951efe6cf47d9a1b45adc435"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1619,9 +2609,27 @@
               "resident_pages_after_warm": 17835,
               "resident_pages_before_run": 17835
             },
-            "duration_ns": 146865026,
+            "duration_ns": 234511483,
             "exit_code": 0,
-            "peak_rss_bytes": 36417536,
+            "peak_rss_bytes": 36020224,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "73fb22855d8293e2f8b02d8b37988235a468b24c969cba97f517045a1c41c8ad",
+                "sha256": "23efe50fd3f3fa77847986652fcab4b462c845ff83809c3fc930dc120fa32a5e"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1633,8 +2641,8 @@
           }
         },
         {
-          "duration_delta_ns": 434516055,
-          "duration_ratio_file_over_warm": 4.0988070575650575,
+          "duration_delta_ns": 661973778,
+          "duration_ratio_file_over_warm": 4.241495712983937,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -1644,9 +2652,27 @@
               "resident_pages_after_warm": 17835,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 574736484,
+            "duration_ns": 866192397,
             "exit_code": 0,
-            "peak_rss_bytes": 35360768,
+            "peak_rss_bytes": 35364864,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "c649e12de8ecd1dcac10c716f79e57aa236defbaa795cd657d0c039e0b960d29",
+                "sha256": "94534cc65c5b4ca40895b89161474c8f618e3562951efe6cf47d9a1b45adc435"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1670,9 +2696,27 @@
               "resident_pages_after_warm": 17835,
               "resident_pages_before_run": 17835
             },
-            "duration_ns": 140220429,
+            "duration_ns": 204218619,
             "exit_code": 0,
-            "peak_rss_bytes": 36286464,
+            "peak_rss_bytes": 35946496,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "73fb22855d8293e2f8b02d8b37988235a468b24c969cba97f517045a1c41c8ad",
+                "sha256": "23efe50fd3f3fa77847986652fcab4b462c845ff83809c3fc930dc120fa32a5e"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1684,8 +2728,8 @@
           }
         },
         {
-          "duration_delta_ns": 387523193,
-          "duration_ratio_file_over_warm": 3.659101051745672,
+          "duration_delta_ns": 845224176,
+          "duration_ratio_file_over_warm": 4.103154279685221,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -1695,9 +2739,27 @@
               "resident_pages_after_warm": 17835,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 533257855,
+            "duration_ns": 1117599991,
             "exit_code": 0,
-            "peak_rss_bytes": 35368960,
+            "peak_rss_bytes": 35627008,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "c649e12de8ecd1dcac10c716f79e57aa236defbaa795cd657d0c039e0b960d29",
+                "sha256": "94534cc65c5b4ca40895b89161474c8f618e3562951efe6cf47d9a1b45adc435"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1721,9 +2783,27 @@
               "resident_pages_after_warm": 17835,
               "resident_pages_before_run": 17835
             },
-            "duration_ns": 145734662,
+            "duration_ns": 272375815,
             "exit_code": 0,
-            "peak_rss_bytes": 36249600,
+            "peak_rss_bytes": 36417536,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "73fb22855d8293e2f8b02d8b37988235a468b24c969cba97f517045a1c41c8ad",
+                "sha256": "23efe50fd3f3fa77847986652fcab4b462c845ff83809c3fc930dc120fa32a5e"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1739,14 +2819,14 @@
       "state_summaries": {
         "file-content-nonresident-metadata-warm": {
           "duration_ns": {
-            "mad": 61342662,
-            "max": 752719795,
-            "median": 633004307,
-            "min": 533257855,
-            "p95_nearest_rank": 752719795
+            "mad": 73842290,
+            "max": 1169192286,
+            "median": 999513549,
+            "min": 866192397,
+            "p95_nearest_rank": 1169192286
           },
           "peak_rss_bytes": {
-            "max": 35631104,
+            "max": 35758080,
             "median": 35497984,
             "sample_count": 10
           },
@@ -1757,19 +2837,19 @@
           "stdout_unique_sha256": [
             "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
           ],
-          "throughput_bytes_per_second_at_median": 808.8412580105872
+          "throughput_bytes_per_second_at_median": 512.2491841278681
         },
         "warm": {
           "duration_ns": {
-            "mad": 13722000,
-            "max": 179863998,
-            "median": 162445090,
-            "min": 140220429,
-            "p95_nearest_rank": 179863998
+            "mad": 21861095,
+            "max": 303232400,
+            "median": 253032207,
+            "min": 204218619,
+            "p95_nearest_rank": 303232400
           },
           "peak_rss_bytes": {
             "max": 36417536,
-            "median": 36202496,
+            "median": 36282368,
             "sample_count": 10
           },
           "sample_count": 10,
@@ -1779,7 +2859,7 @@
           "stdout_unique_sha256": [
             "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
           ],
-          "throughput_bytes_per_second_at_median": 3151.8342598104996
+          "throughput_bytes_per_second_at_median": 2023.4578280384678
         }
       },
       "work_bytes": 512,
@@ -1799,25 +2879,25 @@
       "pair_count": 10,
       "paired_effect": {
         "duration_delta_ns": {
-          "mad": 29150763,
-          "max": 570642356,
-          "median": 469870467,
-          "min": 404063600,
-          "p95_nearest_rank": 570642356
+          "mad": 165029915,
+          "max": 1151396855,
+          "median": 813255314,
+          "min": 420112080,
+          "p95_nearest_rank": 1151396855
         },
         "duration_ratio_file_over_warm_scaled_1e6": {
-          "mad": 489423,
-          "max": 10030446,
-          "median": 8789222,
-          "min": 7566725,
-          "p95_nearest_rank": 10030446
+          "mad": 1649801,
+          "max": 12509806,
+          "median": 8760115,
+          "min": 5740280,
+          "p95_nearest_rank": 12509806
         },
         "negative_delta_pair_count": 0
       },
       "pairs": [
         {
-          "duration_delta_ns": 440472756,
-          "duration_ratio_file_over_warm": 8.302577583039174,
+          "duration_delta_ns": 452380202,
+          "duration_ratio_file_over_warm": 7.962910566118946,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -1827,9 +2907,27 @@
               "resident_pages_after_warm": 17831,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 500790192,
+            "duration_ns": 517350188,
             "exit_code": 0,
-            "peak_rss_bytes": 19714048,
+            "peak_rss_bytes": 19841024,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "32bc9f327a58db4cbad370255174fc8d1e21e8e84e73f2821a5db5ed74493cfc",
+                "sha256": "3d212dadcc5b441be5a8b9b6b71b03260024dadd1c4a5323dd18a9bea619bd14"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1853,9 +2951,27 @@
               "resident_pages_after_warm": 17831,
               "resident_pages_before_run": 17831
             },
-            "duration_ns": 60317436,
+            "duration_ns": 64969986,
             "exit_code": 0,
-            "peak_rss_bytes": 20627456,
+            "peak_rss_bytes": 20500480,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "c5b14ca07a091221859fae2b45748c1e9d58b07e1df99bc78b6377fd59040fd4",
+                "sha256": "9e76f5d2529c06f7d9dde552206aabdc1939e7ca2c131c67568ee76b034fbbe8"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1867,8 +2983,8 @@
           }
         },
         {
-          "duration_delta_ns": 440966651,
-          "duration_ratio_file_over_warm": 7.566725327892755,
+          "duration_delta_ns": 420112080,
+          "duration_ratio_file_over_warm": 5.740279851034247,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -1878,9 +2994,27 @@
               "resident_pages_after_warm": 17831,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 508118333,
+            "duration_ns": 508738088,
             "exit_code": 0,
-            "peak_rss_bytes": 19451904,
+            "peak_rss_bytes": 19578880,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "32bc9f327a58db4cbad370255174fc8d1e21e8e84e73f2821a5db5ed74493cfc",
+                "sha256": "3d212dadcc5b441be5a8b9b6b71b03260024dadd1c4a5323dd18a9bea619bd14"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1904,9 +3038,27 @@
               "resident_pages_after_warm": 17831,
               "resident_pages_before_run": 17831
             },
-            "duration_ns": 67151682,
+            "duration_ns": 88626008,
             "exit_code": 0,
-            "peak_rss_bytes": 20496384,
+            "peak_rss_bytes": 20369408,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "c5b14ca07a091221859fae2b45748c1e9d58b07e1df99bc78b6377fd59040fd4",
+                "sha256": "9e76f5d2529c06f7d9dde552206aabdc1939e7ca2c131c67568ee76b034fbbe8"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1918,8 +3070,8 @@
           }
         },
         {
-          "duration_delta_ns": 512272497,
-          "duration_ratio_file_over_warm": 9.149581355022173,
+          "duration_delta_ns": 1013354645,
+          "duration_ratio_file_over_warm": 12.509805682522954,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -1929,9 +3081,27 @@
               "resident_pages_after_warm": 17831,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 575131247,
+            "duration_ns": 1101397369,
             "exit_code": 0,
-            "peak_rss_bytes": 19578880,
+            "peak_rss_bytes": 19709952,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "32bc9f327a58db4cbad370255174fc8d1e21e8e84e73f2821a5db5ed74493cfc",
+                "sha256": "3d212dadcc5b441be5a8b9b6b71b03260024dadd1c4a5323dd18a9bea619bd14"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1955,9 +3125,27 @@
               "resident_pages_after_warm": 17831,
               "resident_pages_before_run": 17831
             },
-            "duration_ns": 62858750,
+            "duration_ns": 88042724,
             "exit_code": 0,
-            "peak_rss_bytes": 20463616,
+            "peak_rss_bytes": 20365312,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "c5b14ca07a091221859fae2b45748c1e9d58b07e1df99bc78b6377fd59040fd4",
+                "sha256": "9e76f5d2529c06f7d9dde552206aabdc1939e7ca2c131c67568ee76b034fbbe8"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -1969,8 +3157,8 @@
           }
         },
         {
-          "duration_delta_ns": 570642356,
-          "duration_ratio_file_over_warm": 10.030446185661086,
+          "duration_delta_ns": 1151396855,
+          "duration_ratio_file_over_warm": 11.17693404767462,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -1980,9 +3168,27 @@
               "resident_pages_after_warm": 17831,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 633833293,
+            "duration_ns": 1264534746,
             "exit_code": 0,
-            "peak_rss_bytes": 19709952,
+            "peak_rss_bytes": 19554304,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "32bc9f327a58db4cbad370255174fc8d1e21e8e84e73f2821a5db5ed74493cfc",
+                "sha256": "3d212dadcc5b441be5a8b9b6b71b03260024dadd1c4a5323dd18a9bea619bd14"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2006,9 +3212,27 @@
               "resident_pages_after_warm": 17831,
               "resident_pages_before_run": 17831
             },
-            "duration_ns": 63190937,
+            "duration_ns": 113137891,
             "exit_code": 0,
-            "peak_rss_bytes": 20103168,
+            "peak_rss_bytes": 20369408,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "c5b14ca07a091221859fae2b45748c1e9d58b07e1df99bc78b6377fd59040fd4",
+                "sha256": "9e76f5d2529c06f7d9dde552206aabdc1939e7ca2c131c67568ee76b034fbbe8"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2020,8 +3244,8 @@
           }
         },
         {
-          "duration_delta_ns": 449636786,
-          "duration_ratio_file_over_warm": 8.297020405853491,
+          "duration_delta_ns": 795386587,
+          "duration_ratio_file_over_warm": 8.947024435603877,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -2031,9 +3255,27 @@
               "resident_pages_after_warm": 17831,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 511256017,
+            "duration_ns": 895472675,
             "exit_code": 0,
-            "peak_rss_bytes": 19714048,
+            "peak_rss_bytes": 20103168,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "32bc9f327a58db4cbad370255174fc8d1e21e8e84e73f2821a5db5ed74493cfc",
+                "sha256": "3d212dadcc5b441be5a8b9b6b71b03260024dadd1c4a5323dd18a9bea619bd14"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2057,9 +3299,27 @@
               "resident_pages_after_warm": 17831,
               "resident_pages_before_run": 17831
             },
-            "duration_ns": 61619231,
+            "duration_ns": 100086088,
             "exit_code": 0,
-            "peak_rss_bytes": 20103168,
+            "peak_rss_bytes": 20508672,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "c5b14ca07a091221859fae2b45748c1e9d58b07e1df99bc78b6377fd59040fd4",
+                "sha256": "9e76f5d2529c06f7d9dde552206aabdc1939e7ca2c131c67568ee76b034fbbe8"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2071,8 +3331,8 @@
           }
         },
         {
-          "duration_delta_ns": 520416324,
-          "duration_ratio_file_over_warm": 9.102486639607017,
+          "duration_delta_ns": 741371552,
+          "duration_ratio_file_over_warm": 8.573207265000919,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -2082,9 +3342,27 @@
               "resident_pages_after_warm": 17831,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 584645535,
+            "duration_ns": 839265552,
             "exit_code": 0,
-            "peak_rss_bytes": 19709952,
+            "peak_rss_bytes": 19972096,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "32bc9f327a58db4cbad370255174fc8d1e21e8e84e73f2821a5db5ed74493cfc",
+                "sha256": "3d212dadcc5b441be5a8b9b6b71b03260024dadd1c4a5323dd18a9bea619bd14"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2108,9 +3386,27 @@
               "resident_pages_after_warm": 17831,
               "resident_pages_before_run": 17831
             },
-            "duration_ns": 64229211,
+            "duration_ns": 97894000,
             "exit_code": 0,
-            "peak_rss_bytes": 20754432,
+            "peak_rss_bytes": 20369408,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "c5b14ca07a091221859fae2b45748c1e9d58b07e1df99bc78b6377fd59040fd4",
+                "sha256": "9e76f5d2529c06f7d9dde552206aabdc1939e7ca2c131c67568ee76b034fbbe8"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2122,8 +3418,8 @@
           }
         },
         {
-          "duration_delta_ns": 404063600,
-          "duration_ratio_file_over_warm": 7.672264211514604,
+          "duration_delta_ns": 785237247,
+          "duration_ratio_file_over_warm": 9.103688933416471,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -2133,9 +3429,27 @@
               "resident_pages_after_warm": 17831,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 464622293,
+            "duration_ns": 882135987,
             "exit_code": 0,
-            "peak_rss_bytes": 19836928,
+            "peak_rss_bytes": 19578880,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "32bc9f327a58db4cbad370255174fc8d1e21e8e84e73f2821a5db5ed74493cfc",
+                "sha256": "3d212dadcc5b441be5a8b9b6b71b03260024dadd1c4a5323dd18a9bea619bd14"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2159,9 +3473,27 @@
               "resident_pages_after_warm": 17831,
               "resident_pages_before_run": 17831
             },
-            "duration_ns": 60558693,
+            "duration_ns": 96898740,
             "exit_code": 0,
-            "peak_rss_bytes": 20496384,
+            "peak_rss_bytes": 20099072,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "c5b14ca07a091221859fae2b45748c1e9d58b07e1df99bc78b6377fd59040fd4",
+                "sha256": "9e76f5d2529c06f7d9dde552206aabdc1939e7ca2c131c67568ee76b034fbbe8"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2173,8 +3505,8 @@
           }
         },
         {
-          "duration_delta_ns": 448335466,
-          "duration_ratio_file_over_warm": 8.560206148809511,
+          "duration_delta_ns": 831124042,
+          "duration_ratio_file_over_warm": 6.944528177543065,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -2184,9 +3516,27 @@
               "resident_pages_after_warm": 17831,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 507637482,
+            "duration_ns": 970937332,
             "exit_code": 0,
-            "peak_rss_bytes": 19714048,
+            "peak_rss_bytes": 19845120,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "32bc9f327a58db4cbad370255174fc8d1e21e8e84e73f2821a5db5ed74493cfc",
+                "sha256": "3d212dadcc5b441be5a8b9b6b71b03260024dadd1c4a5323dd18a9bea619bd14"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2210,9 +3560,27 @@
               "resident_pages_after_warm": 17831,
               "resident_pages_before_run": 17831
             },
-            "duration_ns": 59302016,
+            "duration_ns": 139813290,
             "exit_code": 0,
-            "peak_rss_bytes": 20627456,
+            "peak_rss_bytes": 20631552,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "c5b14ca07a091221859fae2b45748c1e9d58b07e1df99bc78b6377fd59040fd4",
+                "sha256": "9e76f5d2529c06f7d9dde552206aabdc1939e7ca2c131c67568ee76b034fbbe8"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2224,8 +3592,8 @@
           }
         },
         {
-          "duration_delta_ns": 495608220,
-          "duration_ratio_file_over_warm": 9.92343543901611,
+          "duration_delta_ns": 943215814,
+          "duration_ratio_file_over_warm": 12.344862336336837,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -2235,9 +3603,27 @@
               "resident_pages_after_warm": 17831,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 551148289,
+            "duration_ns": 1026356163,
             "exit_code": 0,
             "peak_rss_bytes": 19574784,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "32bc9f327a58db4cbad370255174fc8d1e21e8e84e73f2821a5db5ed74493cfc",
+                "sha256": "3d212dadcc5b441be5a8b9b6b71b03260024dadd1c4a5323dd18a9bea619bd14"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2261,9 +3647,27 @@
               "resident_pages_after_warm": 17831,
               "resident_pages_before_run": 17831
             },
-            "duration_ns": 55540069,
+            "duration_ns": 83140349,
             "exit_code": 0,
-            "peak_rss_bytes": 20492288,
+            "peak_rss_bytes": 20627456,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "c5b14ca07a091221859fae2b45748c1e9d58b07e1df99bc78b6377fd59040fd4",
+                "sha256": "9e76f5d2529c06f7d9dde552206aabdc1939e7ca2c131c67568ee76b034fbbe8"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2275,8 +3679,8 @@
           }
         },
         {
-          "duration_delta_ns": 490104148,
-          "duration_ratio_file_over_warm": 9.018237712608702,
+          "duration_delta_ns": 1017284616,
+          "duration_ratio_file_over_warm": 7.276099160979029,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -2286,9 +3690,27 @@
               "resident_pages_after_warm": 17831,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 551227822,
+            "duration_ns": 1179373294,
             "exit_code": 0,
             "peak_rss_bytes": 19443712,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "32bc9f327a58db4cbad370255174fc8d1e21e8e84e73f2821a5db5ed74493cfc",
+                "sha256": "3d212dadcc5b441be5a8b9b6b71b03260024dadd1c4a5323dd18a9bea619bd14"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2312,9 +3734,27 @@
               "resident_pages_after_warm": 17831,
               "resident_pages_before_run": 17831
             },
-            "duration_ns": 61123674,
+            "duration_ns": 162088678,
             "exit_code": 0,
-            "peak_rss_bytes": 20627456,
+            "peak_rss_bytes": 20496384,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "c5b14ca07a091221859fae2b45748c1e9d58b07e1df99bc78b6377fd59040fd4",
+                "sha256": "9e76f5d2529c06f7d9dde552206aabdc1939e7ca2c131c67568ee76b034fbbe8"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2330,15 +3770,15 @@
       "state_summaries": {
         "file-content-nonresident-metadata-warm": {
           "duration_ns": {
-            "mad": 26988316,
-            "max": 633833293,
-            "median": 531202153,
-            "min": 464622293,
-            "p95_nearest_rank": 633833293
+            "mad": 131065908,
+            "max": 1264534746,
+            "median": 933205003,
+            "min": 508738088,
+            "p95_nearest_rank": 1264534746
           },
           "peak_rss_bytes": {
-            "max": 19836928,
-            "median": 19709952,
+            "max": 20103168,
+            "median": 19644416,
             "sample_count": 10
           },
           "sample_count": 10,
@@ -2348,19 +3788,19 @@
           "stdout_unique_sha256": [
             "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
           ],
-          "throughput_bytes_per_second_at_median": 1.8825224904538367
+          "throughput_bytes_per_second_at_median": 1.0715759096718
         },
         "warm": {
           "duration_ns": {
-            "mad": 1653391,
-            "max": 67151682,
-            "median": 61371452,
-            "min": 55540069,
-            "p95_nearest_rank": 67151682
+            "mad": 11804833,
+            "max": 162088678,
+            "median": 97396370,
+            "min": 64969986,
+            "p95_nearest_rank": 162088678
           },
           "peak_rss_bytes": {
-            "max": 20754432,
-            "median": 20496384,
+            "max": 20631552,
+            "median": 20432896,
             "sample_count": 10
           },
           "sample_count": 10,
@@ -2370,7 +3810,7 @@
           "stdout_unique_sha256": [
             "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
           ],
-          "throughput_bytes_per_second_at_median": 16.294220967755496
+          "throughput_bytes_per_second_at_median": 10.267323104546914
         }
       },
       "work_bytes": 1,
@@ -2390,25 +3830,25 @@
       "pair_count": 10,
       "paired_effect": {
         "duration_delta_ns": {
-          "mad": 7103143,
-          "max": 60005512,
-          "median": 44738476,
-          "min": 37021548,
-          "p95_nearest_rank": 60005512
+          "mad": 4258264,
+          "max": 62612194,
+          "median": 53524125,
+          "min": 41321932,
+          "p95_nearest_rank": 62612194
         },
         "duration_ratio_file_over_warm_scaled_1e6": {
-          "mad": 1101080,
-          "max": 6880688,
-          "median": 5212505,
-          "min": 3272275,
-          "p95_nearest_rank": 6880688
+          "mad": 666347,
+          "max": 6357359,
+          "median": 5683948,
+          "min": 3923465,
+          "p95_nearest_rank": 6357359
         },
         "negative_delta_pair_count": 0
       },
       "pairs": [
         {
-          "duration_delta_ns": 37021548,
-          "duration_ratio_file_over_warm": 4.388328492674213,
+          "duration_delta_ns": 53028684,
+          "duration_ratio_file_over_warm": 5.829387520472813,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -2418,9 +3858,27 @@
               "resident_pages_after_warm": 15231,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 47947746,
+            "duration_ns": 64009100,
             "exit_code": 0,
-            "peak_rss_bytes": 13369344,
+            "peak_rss_bytes": 13631488,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "4dbcd08e7bbf7f1d872535cb6f5cb91ca66ae5ce60a636e7edacdbdba1ab2f21",
+                "sha256": "1d7db62296a7c1fe4399f1aa85aa6cddfc248b97d2c5904acb717b133afce377"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2444,9 +3902,27 @@
               "resident_pages_after_warm": 15231,
               "resident_pages_before_run": 15231
             },
-            "duration_ns": 10926198,
+            "duration_ns": 10980416,
             "exit_code": 0,
-            "peak_rss_bytes": 13893632,
+            "peak_rss_bytes": 14286848,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "084d180334762d9a89e543b434d8b4b8aed987adbbaa298b6d5e098598feb447",
+                "sha256": "13c52d5c58f6099366dbabfbf3b9100d1a3aa486d5f219618bccff7e81bda2dc"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2458,8 +3934,8 @@
           }
         },
         {
-          "duration_delta_ns": 40488989,
-          "duration_ratio_file_over_warm": 4.830823524625411,
+          "duration_delta_ns": 51137707,
+          "duration_ratio_file_over_warm": 4.210998092528865,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -2469,9 +3945,27 @@
               "resident_pages_after_warm": 15231,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 51058254,
+            "duration_ns": 67063505,
             "exit_code": 0,
-            "peak_rss_bytes": 13500416,
+            "peak_rss_bytes": 13631488,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "4dbcd08e7bbf7f1d872535cb6f5cb91ca66ae5ce60a636e7edacdbdba1ab2f21",
+                "sha256": "1d7db62296a7c1fe4399f1aa85aa6cddfc248b97d2c5904acb717b133afce377"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2495,9 +3989,27 @@
               "resident_pages_after_warm": 15231,
               "resident_pages_before_run": 15231
             },
-            "duration_ns": 10569265,
+            "duration_ns": 15925798,
             "exit_code": 0,
-            "peak_rss_bytes": 13893632,
+            "peak_rss_bytes": 14024704,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "084d180334762d9a89e543b434d8b4b8aed987adbbaa298b6d5e098598feb447",
+                "sha256": "13c52d5c58f6099366dbabfbf3b9100d1a3aa486d5f219618bccff7e81bda2dc"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2509,8 +4021,8 @@
           }
         },
         {
-          "duration_delta_ns": 37521151,
-          "duration_ratio_file_over_warm": 3.895621748940472,
+          "duration_delta_ns": 46012782,
+          "duration_ratio_file_over_warm": 4.800001519578363,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -2520,9 +4032,27 @@
               "resident_pages_after_warm": 15231,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 50479042,
+            "duration_ns": 58121404,
             "exit_code": 0,
-            "peak_rss_bytes": 13238272,
+            "peak_rss_bytes": 13500416,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "4dbcd08e7bbf7f1d872535cb6f5cb91ca66ae5ce60a636e7edacdbdba1ab2f21",
+                "sha256": "1d7db62296a7c1fe4399f1aa85aa6cddfc248b97d2c5904acb717b133afce377"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2546,9 +4076,27 @@
               "resident_pages_after_warm": 15231,
               "resident_pages_before_run": 15231
             },
-            "duration_ns": 12957891,
+            "duration_ns": 12108622,
             "exit_code": 0,
-            "peak_rss_bytes": 13893632,
+            "peak_rss_bytes": 14286848,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "084d180334762d9a89e543b434d8b4b8aed987adbbaa298b6d5e098598feb447",
+                "sha256": "13c52d5c58f6099366dbabfbf3b9100d1a3aa486d5f219618bccff7e81bda2dc"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2560,8 +4108,8 @@
           }
         },
         {
-          "duration_delta_ns": 37101657,
-          "duration_ratio_file_over_warm": 3.272275465879878,
+          "duration_delta_ns": 61543255,
+          "duration_ratio_file_over_warm": 5.877157061035097,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -2571,9 +4119,27 @@
               "resident_pages_after_warm": 15231,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 53429632,
+            "duration_ns": 74161929,
             "exit_code": 0,
             "peak_rss_bytes": 13369344,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "4dbcd08e7bbf7f1d872535cb6f5cb91ca66ae5ce60a636e7edacdbdba1ab2f21",
+                "sha256": "1d7db62296a7c1fe4399f1aa85aa6cddfc248b97d2c5904acb717b133afce377"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2597,9 +4163,27 @@
               "resident_pages_after_warm": 15231,
               "resident_pages_before_run": 15231
             },
-            "duration_ns": 16327975,
+            "duration_ns": 12618674,
             "exit_code": 0,
-            "peak_rss_bytes": 14155776,
+            "peak_rss_bytes": 14417920,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "084d180334762d9a89e543b434d8b4b8aed987adbbaa298b6d5e098598feb447",
+                "sha256": "13c52d5c58f6099366dbabfbf3b9100d1a3aa486d5f219618bccff7e81bda2dc"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2611,8 +4195,8 @@
           }
         },
         {
-          "duration_delta_ns": 51727438,
-          "duration_ratio_file_over_warm": 6.275817983525945,
+          "duration_delta_ns": 48925196,
+          "duration_ratio_file_over_warm": 4.904686914399071,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -2622,9 +4206,27 @@
               "resident_pages_after_warm": 15231,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 61532067,
+            "duration_ns": 61455060,
             "exit_code": 0,
             "peak_rss_bytes": 13369344,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "4dbcd08e7bbf7f1d872535cb6f5cb91ca66ae5ce60a636e7edacdbdba1ab2f21",
+                "sha256": "1d7db62296a7c1fe4399f1aa85aa6cddfc248b97d2c5904acb717b133afce377"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2648,9 +4250,27 @@
               "resident_pages_after_warm": 15231,
               "resident_pages_before_run": 15231
             },
-            "duration_ns": 9804629,
+            "duration_ns": 12529864,
             "exit_code": 0,
             "peak_rss_bytes": 14024704,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "084d180334762d9a89e543b434d8b4b8aed987adbbaa298b6d5e098598feb447",
+                "sha256": "13c52d5c58f6099366dbabfbf3b9100d1a3aa486d5f219618bccff7e81bda2dc"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2662,8 +4282,8 @@
           }
         },
         {
-          "duration_delta_ns": 46754425,
-          "duration_ratio_file_over_warm": 5.594187404470826,
+          "duration_delta_ns": 62612194,
+          "duration_ratio_file_over_warm": 6.343230949885817,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -2673,9 +4293,27 @@
               "resident_pages_after_warm": 15231,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 56931290,
+            "duration_ns": 74330234,
             "exit_code": 0,
             "peak_rss_bytes": 13369344,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "4dbcd08e7bbf7f1d872535cb6f5cb91ca66ae5ce60a636e7edacdbdba1ab2f21",
+                "sha256": "1d7db62296a7c1fe4399f1aa85aa6cddfc248b97d2c5904acb717b133afce377"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2699,9 +4337,27 @@
               "resident_pages_after_warm": 15231,
               "resident_pages_before_run": 15231
             },
-            "duration_ns": 10176865,
+            "duration_ns": 11718040,
             "exit_code": 0,
-            "peak_rss_bytes": 14024704,
+            "peak_rss_bytes": 14155776,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "084d180334762d9a89e543b434d8b4b8aed987adbbaa298b6d5e098598feb447",
+                "sha256": "13c52d5c58f6099366dbabfbf3b9100d1a3aa486d5f219618bccff7e81bda2dc"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2713,8 +4369,8 @@
           }
         },
         {
-          "duration_delta_ns": 48920240,
-          "duration_ratio_file_over_warm": 6.351352528025821,
+          "duration_delta_ns": 54019566,
+          "duration_ratio_file_over_warm": 5.6810813124741335,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -2724,9 +4380,27 @@
               "resident_pages_after_warm": 15231,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 58061899,
+            "duration_ns": 65559542,
             "exit_code": 0,
-            "peak_rss_bytes": 13107200,
+            "peak_rss_bytes": 13500416,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "4dbcd08e7bbf7f1d872535cb6f5cb91ca66ae5ce60a636e7edacdbdba1ab2f21",
+                "sha256": "1d7db62296a7c1fe4399f1aa85aa6cddfc248b97d2c5904acb717b133afce377"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2750,9 +4424,27 @@
               "resident_pages_after_warm": 15231,
               "resident_pages_before_run": 15231
             },
-            "duration_ns": 9141659,
+            "duration_ns": 11539976,
             "exit_code": 0,
-            "peak_rss_bytes": 14155776,
+            "peak_rss_bytes": 13893632,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "084d180334762d9a89e543b434d8b4b8aed987adbbaa298b6d5e098598feb447",
+                "sha256": "13c52d5c58f6099366dbabfbf3b9100d1a3aa486d5f219618bccff7e81bda2dc"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2764,8 +4456,8 @@
           }
         },
         {
-          "duration_delta_ns": 42722528,
-          "duration_ratio_file_over_warm": 4.386481082842519,
+          "duration_delta_ns": 56058559,
+          "duration_ratio_file_over_warm": 5.68681623061267,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -2775,9 +4467,27 @@
               "resident_pages_after_warm": 15231,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 55338139,
+            "duration_ns": 68019463,
             "exit_code": 0,
-            "peak_rss_bytes": 13107200,
+            "peak_rss_bytes": 13238272,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "4dbcd08e7bbf7f1d872535cb6f5cb91ca66ae5ce60a636e7edacdbdba1ab2f21",
+                "sha256": "1d7db62296a7c1fe4399f1aa85aa6cddfc248b97d2c5904acb717b133afce377"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2801,9 +4511,27 @@
               "resident_pages_after_warm": 15231,
               "resident_pages_before_run": 15231
             },
-            "duration_ns": 12615611,
+            "duration_ns": 11960904,
             "exit_code": 0,
-            "peak_rss_bytes": 14286848,
+            "peak_rss_bytes": 13893632,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "084d180334762d9a89e543b434d8b4b8aed987adbbaa298b6d5e098598feb447",
+                "sha256": "13c52d5c58f6099366dbabfbf3b9100d1a3aa486d5f219618bccff7e81bda2dc"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2815,8 +4543,8 @@
           }
         },
         {
-          "duration_delta_ns": 55555502,
-          "duration_ratio_file_over_warm": 6.880688155498153,
+          "duration_delta_ns": 57441724,
+          "duration_ratio_file_over_warm": 6.357359274211524,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -2826,9 +4554,27 @@
               "resident_pages_after_warm": 15231,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 65002611,
+            "duration_ns": 68163746,
             "exit_code": 0,
-            "peak_rss_bytes": 13369344,
+            "peak_rss_bytes": 13107200,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "4dbcd08e7bbf7f1d872535cb6f5cb91ca66ae5ce60a636e7edacdbdba1ab2f21",
+                "sha256": "1d7db62296a7c1fe4399f1aa85aa6cddfc248b97d2c5904acb717b133afce377"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2852,9 +4598,27 @@
               "resident_pages_after_warm": 15231,
               "resident_pages_before_run": 15231
             },
-            "duration_ns": 9447109,
+            "duration_ns": 10722022,
             "exit_code": 0,
             "peak_rss_bytes": 14155776,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "084d180334762d9a89e543b434d8b4b8aed987adbbaa298b6d5e098598feb447",
+                "sha256": "13c52d5c58f6099366dbabfbf3b9100d1a3aa486d5f219618bccff7e81bda2dc"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2866,8 +4630,8 @@
           }
         },
         {
-          "duration_delta_ns": 60005512,
-          "duration_ratio_file_over_warm": 6.379672443904136,
+          "duration_delta_ns": 41321932,
+          "duration_ratio_file_over_warm": 3.9234651800234785,
           "file-content-nonresident-metadata-warm": {
             "controller_evidence": {
               "before_run_page_state_verified": true,
@@ -2877,9 +4641,27 @@
               "resident_pages_after_warm": 15231,
               "resident_pages_before_run": 0
             },
-            "duration_ns": 71159632,
+            "duration_ns": 55456505,
             "exit_code": 0,
-            "peak_rss_bytes": 13500416,
+            "peak_rss_bytes": 13238272,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "4dbcd08e7bbf7f1d872535cb6f5cb91ca66ae5ce60a636e7edacdbdba1ab2f21",
+                "sha256": "1d7db62296a7c1fe4399f1aa85aa6cddfc248b97d2c5904acb717b133afce377"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2903,9 +4685,27 @@
               "resident_pages_after_warm": 15231,
               "resident_pages_before_run": 15231
             },
-            "duration_ns": 11154120,
+            "duration_ns": 14134573,
             "exit_code": 0,
-            "peak_rss_bytes": 14286848,
+            "peak_rss_bytes": 13893632,
+            "runner_evidence": {
+              "benchmark_report_schema": 2,
+              "controller_kind": "linux-file-content-v1",
+              "measurement": {
+                "clock": "clock_gettime(CLOCK_MONOTONIC)",
+                "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+                "timed_process_scope": "direct child"
+              },
+              "plan_artifact": {
+                "canonical_sha256": "084d180334762d9a89e543b434d8b4b8aed987adbbaa298b6d5e098598feb447",
+                "sha256": "13c52d5c58f6099366dbabfbf3b9100d1a3aa486d5f219618bccff7e81bda2dc"
+              },
+              "runner": {
+                "name": "diec-process-benchmark",
+                "version": 2
+              },
+              "runner_source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+            },
             "stderr": {
               "bytes": 0,
               "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2921,14 +4721,14 @@
       "state_summaries": {
         "file-content-nonresident-metadata-warm": {
           "duration_ns": {
-            "mad": 5236906,
-            "max": 71159632,
-            "median": 56134714,
-            "min": 47947746,
-            "p95_nearest_rank": 71159632
+            "mad": 3579443,
+            "max": 74330234,
+            "median": 66311523,
+            "min": 55456505,
+            "p95_nearest_rank": 74330234
           },
           "peak_rss_bytes": {
-            "max": 13500416,
+            "max": 13631488,
             "median": 13369344,
             "sample_count": 10
           },
@@ -2939,18 +4739,18 @@
           "stdout_unique_sha256": [
             "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
           ],
-          "throughput_bytes_per_second_at_median": 17.81428867705641
+          "throughput_bytes_per_second_at_median": 15.080335283507212
         },
         "warm": {
           "duration_ns": {
-            "mad": 1121862,
-            "max": 16327975,
-            "median": 10747731,
-            "min": 9141659,
-            "p95_nearest_rank": 16327975
+            "mad": 539506,
+            "max": 15925798,
+            "median": 12034763,
+            "min": 10722022,
+            "p95_nearest_rank": 15925798
           },
           "peak_rss_bytes": {
-            "max": 14286848,
+            "max": 14417920,
             "median": 14090240,
             "sample_count": 10
           },
@@ -2961,7 +4761,7 @@
           "stdout_unique_sha256": [
             "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
           ],
-          "throughput_bytes_per_second_at_median": 93.04289435602733
+          "throughput_bytes_per_second_at_median": 83.0926209348701
         }
       },
       "work_bytes": 1,
@@ -2969,8 +4769,8 @@
     }
   },
   "controller": {
-    "binary_bytes": 804240,
-    "binary_sha256": "3f572449ddf0330e3e1e4a9b254edb78bb45ec575abfcfb463dd37d1a02a73bf",
+    "binary_bytes": 804184,
+    "binary_sha256": "2a0c02d469a7f6829c04fc356cd33e9a8ac67b21adf22213a5d9596da2550a31",
     "clock": "clock_gettime(CLOCK_MONOTONIC)",
     "compile_arguments": [
       "-static",
@@ -2987,7 +4787,7 @@
     "machine": "x86_64",
     "max_capture_bytes_per_stream": 67108864,
     "measurement_source": "tools/benchmark/measure_linux_file_content_benchmark.c",
-    "measurement_source_sha256": "3f8cdece2ebdfd6c12572c9671d24a17be24cdd8da0b0629a5849187f5b3c906",
+    "measurement_source_sha256": "056514706dfa8df76d5cb0f4fa5cb1c9e5fed4d0950d1e786d7c36be62069e51",
     "page_controller_source": "tools/benchmark/control_linux_page_cache.c",
     "page_controller_source_sha256": "be86dc84568f64e8ac2bd6ee9d53e45ab15a8401186b0f34b4f9b9318f8dc2b7",
     "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
@@ -3026,7 +4826,7 @@
     "page_size": 4096
   },
   "generator": "tools/benchmark/probe_upstream_benchmark_file_content_performance.py",
-  "generator_sha256": "0e2dbff928c176235759e2128b51faa2653d12987158618c1c12dfdeb11ebf24",
+  "generator_sha256": "9d9bd9612916c4b227d78ec36e03818d6041476947af8dc981a6f55136cadaa6",
   "inputs": {
     "affinity_baseline": {
       "bytes": 83809,
@@ -3068,11 +4868,23 @@
     "all_file_content_runs_verify_every_candidate_page_nonresident": true,
     "all_outputs_identical_across_cache_states": true,
     "all_outputs_match_affinity_baseline": true,
+    "all_runs_use_process_benchmark_runner_schema_v2": true,
     "all_warm_runs_verify_every_candidate_page_resident": true,
     "container_start_time_is_excluded": true,
     "generic_cold_is_not_claimed": true,
     "preparation_time_is_excluded": true,
     "regression_thresholds_are_not_frozen": true
+  },
+  "runner_integration": {
+    "controller_kind": "linux-file-content-v1",
+    "plan_schema": 2,
+    "report_schema": 2,
+    "runner": {
+      "name": "diec-process-benchmark",
+      "version": 2
+    },
+    "source": "tools/benchmark/run_process_benchmark.py",
+    "source_sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
   },
   "schema_version": 1,
   "scope": {
@@ -3082,6 +4894,7 @@
     "metadata_cache_controlled": false,
     "physical_core_topology_proven": false,
     "regression_thresholds_frozen": false,
+    "runner_plan_integration_present": true,
     "rust_paired_measurements_present": false,
     "same_launcher_clock_and_rss_method_across_states": true,
     "system_cold_cache_controlled": false

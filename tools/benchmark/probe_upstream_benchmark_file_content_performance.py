@@ -296,100 +296,6 @@ def compile_controller(
     }
 
 
-def parse_tsv(raw: bytes) -> dict[str, str]:
-    try:
-        lines = raw.decode("utf-8").splitlines()
-    except UnicodeDecodeError as error:
-        raise FileContentPerformanceError(
-            f"measurement output is not UTF-8: {error}"
-        ) from error
-    result = {}
-    for line in lines:
-        name, separator, value = line.partition("\t")
-        if not separator or not name or name in result:
-            raise FileContentPerformanceError(
-                "invalid or duplicate measurement field"
-            )
-        result[name] = value
-    expected = {
-        "schema_version",
-        "cache_state",
-        "fadvise_executed",
-        "page_size",
-        "file_count",
-        "logical_pages",
-        "resident_pages_after_warm",
-        "resident_pages_before_run",
-        "before_run_page_state_verified",
-        "duration_ns",
-        "peak_rss_bytes",
-        "exit_code",
-        "timed_out",
-    }
-    if set(result) != expected:
-        raise FileContentPerformanceError(
-            "measurement fields changed"
-        )
-    return result
-
-
-def parse_measurement(
-    raw: bytes,
-    cache_state: str,
-    file_count: int,
-    logical_pages: int,
-) -> dict[str, Any]:
-    fields = parse_tsv(raw)
-    integers = {}
-    for name, value in fields.items():
-        if name == "cache_state":
-            continue
-        if not value.isascii() or not value.isdecimal():
-            raise FileContentPerformanceError(
-                f"measurement {name} is not an unsigned integer"
-            )
-        integers[name] = int(value)
-    expected_before = (
-        logical_pages if cache_state == WARM else 0
-    )
-    if (
-        fields["cache_state"] != cache_state
-        or integers["schema_version"] != 1
-        or integers["fadvise_executed"]
-        != (0 if cache_state == WARM else 1)
-        or integers["page_size"] != EXPECTED_PAGE_SIZE
-        or integers["file_count"] != file_count
-        or integers["logical_pages"] != logical_pages
-        or integers["resident_pages_after_warm"]
-        != logical_pages
-        or integers["resident_pages_before_run"]
-        != expected_before
-        or integers["before_run_page_state_verified"] != 1
-        or integers["duration_ns"] <= 0
-        or integers["peak_rss_bytes"] <= 0
-        or integers["exit_code"] != 0
-        or integers["timed_out"] != 0
-    ):
-        raise FileContentPerformanceError(
-            "measurement invariant failed"
-        )
-    return {
-        "duration_ns": integers["duration_ns"],
-        "peak_rss_bytes": integers["peak_rss_bytes"],
-        "exit_code": 0,
-        "controller_evidence": {
-            "fadvise_executed": (
-                integers["fadvise_executed"] == 1
-            ),
-            "file_count": file_count,
-            "logical_pages": logical_pages,
-            "resident_pages_after_warm": logical_pages,
-            "resident_pages_before_run": expected_before,
-            "before_run_page_state_verified": True,
-        },
-    }
-
-
 def run_sample(
     image: str,
     limits: dict[str, Any],
@@ -402,10 +308,49 @@ def run_sample(
     logical_pages: int,
     baseline_case: dict[str, Any],
     prefix: str,
+    runner_source: Path,
+    process_runner: Any,
 ) -> dict[str, Any]:
-    result_path = exchange / f"{prefix}.tsv"
-    stdout_path = exchange / f"{prefix}.stdout"
-    stderr_path = exchange / f"{prefix}.stderr"
+    runner_plan = dict(plan)
+    runner_plan.update(
+        {
+            "benchmark_plan_schema": 2,
+            "cache_state": cache_state,
+            "warmup_runs": 0,
+            "measured_runs": 1,
+            "timeout_ms": 120_000,
+            "cache_controller": {
+                "kind": (
+                    process_runner.FILE_CONTENT_CONTROLLER_KIND
+                ),
+                "binary": {
+                    "path": f"/io/{binary.name}",
+                    "bytes": binary.stat().st_size,
+                    "sha256": sha256(binary.read_bytes()),
+                },
+                "manifest": {
+                    "path": f"/io/{manifest.name}",
+                    "bytes": manifest.stat().st_size,
+                    "sha256": sha256(manifest.read_bytes()),
+                },
+                "page_size": EXPECTED_PAGE_SIZE,
+                "file_count": file_count,
+                "logical_pages": logical_pages,
+                "working_directory": "/bench",
+            },
+            "notes": [
+                *plan["notes"],
+                (
+                    "schema v2 measurement uses the hash-bound "
+                    "linux-file-content-v1 controller"
+                ),
+            ],
+        }
+    )
+    process_runner.validate_plan(runner_plan)
+    plan_path = exchange / f"{prefix}.plan.json"
+    report_path = exchange / f"{prefix}.report.json"
+    plan_path.write_bytes(serialize(runner_plan))
     command = [
         "docker",
         "run",
@@ -416,6 +361,11 @@ def run_sample(
             f"type=bind,source={exchange.resolve()},"
             "target=/io"
         ),
+        "--mount",
+        (
+            f"type=bind,source={runner_source.resolve()},"
+            "target=/runner.py,readonly"
+        ),
     ]
     for key in sorted(plan["environment"]):
         command.extend(
@@ -424,20 +374,15 @@ def run_sample(
     command.extend(
         [
             "--entrypoint",
-            f"/io/{binary.name}",
+            "python3",
             image,
-            "--cache-state",
-            cache_state,
-            "--manifest",
-            f"/io/{manifest.name}",
+            "/runner.py",
+            "--plan",
+            f"/io/{plan_path.name}",
             "--output",
-            f"/io/{result_path.name}",
-            "--stdout",
-            f"/io/{stdout_path.name}",
-            "--stderr",
-            f"/io/{stderr_path.name}",
-            "--",
-            *plan["command"],
+            f"/io/{report_path.name}",
+            "--repo-root",
+            "/bench",
         ]
     )
     completed = subprocess.run(
@@ -452,39 +397,104 @@ def run_sample(
         )
     if completed.stdout or completed.stderr:
         raise FileContentPerformanceError(
-            "measurement controller emitted output"
+            "process benchmark runner emitted output"
         )
-    measurement = parse_measurement(
-        result_path.read_bytes(),
-        cache_state,
-        file_count,
-        logical_pages,
+    runner_report = parse_json(
+        report_path.read_bytes(),
+        f"{plan['benchmark_id']} runner report",
     )
-    stdout_raw = stdout_path.read_bytes()
-    stderr_raw = stderr_path.read_bytes()
+    runs = runner_report.get("runs")
+    expected_controller = runner_plan["cache_controller"]
+    expected_runner_source = {
+        "path": "/runner.py",
+        "bytes": runner_source.stat().st_size,
+        "sha256": sha256(runner_source.read_bytes()),
+    }
     if (
-        len(stdout_raw)
+        runner_report.get("benchmark_report_schema") != 2
+        or runner_report.get("runner") != process_runner.RUNNER
+        or runner_report.get("runner_source")
+        != expected_runner_source
+        or runner_report.get("result") != "pass"
+        or runner_report.get("benchmark_id") != plan["benchmark_id"]
+        or not isinstance(runs, list)
+        or len(runs) != 1
+        or runner_report.get("cache_controller", {}).get("kind")
+        != expected_controller["kind"]
+        or runner_report.get("cache_controller", {}).get("binary")
+        != expected_controller["binary"]
+        or runner_report.get("cache_controller", {}).get("manifest")
+        != expected_controller["manifest"]
+        or runner_report.get("execution", {}).get("cache_state")
+        != cache_state
+        or runner_report.get("execution", {}).get("measured_runs")
+        != 1
+        or runner_report.get("execution", {}).get("warmup_runs")
+        != 0
+    ):
+        raise FileContentPerformanceError(
+            f"{plan['benchmark_id']} runner contract mismatch"
+        )
+    run = runs[0]
+    evidence = run.get("cache_controller_evidence")
+    expected_before = logical_pages if cache_state == WARM else 0
+    if (
+        not isinstance(evidence, dict)
+        or evidence.get("kind")
+        != process_runner.FILE_CONTENT_CONTROLLER_KIND
+        or evidence.get("before_run_page_state_verified") is not True
+        or evidence.get("fadvise_executed")
+        != (cache_state == FILE_CONTENT)
+        or evidence.get("page_size") != EXPECTED_PAGE_SIZE
+        or evidence.get("file_count") != file_count
+        or evidence.get("logical_pages") != logical_pages
+        or evidence.get("resident_pages_after_warm")
+        != logical_pages
+        or evidence.get("resident_pages_before_run")
+        != expected_before
+    ):
+        raise FileContentPerformanceError(
+            f"{plan['benchmark_id']} runner page evidence mismatch"
+        )
+    stdout = run.get("stdout", {})
+    stderr = run.get("stderr", {})
+    if (
+        stdout.get("bytes", plan["max_stdout_bytes"] + 1)
         > plan["max_stdout_bytes"]
-        or len(stderr_raw)
+        or stderr.get("bytes", plan["max_stderr_bytes"] + 1)
         > plan["max_stderr_bytes"]
-        or stderr_raw
-        or len(stdout_raw)
+        or stderr.get("bytes") != 0
+        or stdout.get("bytes")
         != baseline_case["runs"][0]["stdout"]["bytes"]
-        or sha256(stdout_raw)
+        or stdout.get("sha256")
         not in baseline_case["summary"]["stdout_unique_sha256"]
+        or stderr.get("sha256") != sha256(b"")
     ):
         raise FileContentPerformanceError(
             f"{plan['benchmark_id']} output identity mismatch"
         )
-    measurement["stdout"] = {
-        "bytes": len(stdout_raw),
-        "sha256": sha256(stdout_raw),
+    return {
+        "duration_ns": run["duration_ns"],
+        "peak_rss_bytes": run["peak_rss_bytes"],
+        "exit_code": run["exit_code"],
+        "controller_evidence": {
+            key: value
+            for key, value in evidence.items()
+            if key != "kind" and key != "page_size"
+        },
+        "runner_evidence": {
+            "benchmark_report_schema": 2,
+            "runner": runner_report["runner"],
+            "runner_source_sha256": (
+                runner_report["runner_source"]["sha256"]
+            ),
+            "plan_artifact": runner_report["plan_artifact"],
+            "controller_kind": evidence["kind"],
+            "measurement": runner_report["execution"]["measurement"],
+        },
+        "stdout": stdout,
+        "stderr": stderr,
     }
-    measurement["stderr"] = {
-        "bytes": 0,
-        "sha256": sha256(b""),
-    }
-    return measurement
 
 
 def nearest_rank(values: list[int], percentile: float) -> int:
@@ -518,6 +528,7 @@ def build_case(
     baseline_case: dict[str, Any],
     page_probe: Any,
     process_runner: Any,
+    runner_source: Path,
 ) -> dict[str, Any]:
     benchmark_id = plan["benchmark_id"]
     manifest = exchange / (
@@ -554,6 +565,8 @@ def build_case(
                 logical_pages,
                 baseline_case,
                 prefix,
+                runner_source,
+                process_runner,
             )
             state_runs[cache_state].append(run)
             pair[cache_state] = run
@@ -723,6 +736,10 @@ def build_report(
                 baseline_case=baseline_case,
                 page_probe=page_probe,
                 process_runner=process_runner,
+                runner_source=(
+                    repo
+                    / "tools/benchmark/run_process_benchmark.py"
+                ),
             )
             if not case["outputs_identical_across_states"]:
                 raise FileContentPerformanceError(
@@ -731,6 +748,23 @@ def build_report(
             cases[benchmark_id] = case
     relationships = {
         "all_cases_use_identical_measurement_controller": True,
+        "all_runs_use_process_benchmark_runner_schema_v2": all(
+            run["runner_evidence"]["benchmark_report_schema"] == 2
+            and run["runner_evidence"]["runner"]
+            == process_runner.RUNNER
+            and run["runner_evidence"]["runner_source_sha256"]
+            == sha256(
+                (
+                    repo
+                    / "tools/benchmark/run_process_benchmark.py"
+                ).read_bytes()
+            )
+            and run["runner_evidence"]["controller_kind"]
+            == process_runner.FILE_CONTENT_CONTROLLER_KIND
+            for case in cases.values()
+            for pair in case["pairs"]
+            for run in (pair[WARM], pair[FILE_CONTENT])
+        ),
         "all_cases_have_ten_abba_pairs": all(
             case["pair_count"] == PAIRS_PER_CASE
             for case in cases.values()
@@ -765,6 +799,23 @@ def build_report(
             "page_size": EXPECTED_PAGE_SIZE,
         },
         "controller": controller,
+        "runner_integration": {
+            "source": (
+                "tools/benchmark/run_process_benchmark.py"
+            ),
+            "source_sha256": sha256(
+                (
+                    repo
+                    / "tools/benchmark/run_process_benchmark.py"
+                ).read_bytes()
+            ),
+            "runner": process_runner.RUNNER,
+            "plan_schema": 2,
+            "report_schema": 2,
+            "controller_kind": (
+                process_runner.FILE_CONTENT_CONTROLLER_KIND
+            ),
+        },
         "inputs": {
             "plan_suite": {
                 "path": plans_path.relative_to(repo).as_posix(),
@@ -816,6 +867,7 @@ def build_report(
         "relationships": relationships,
         "scope": {
             "descriptive_upstream_cache_state_spike": True,
+            "runner_plan_integration_present": True,
             "same_launcher_clock_and_rss_method_across_states": True,
             "direct_child_process_only": True,
             "metadata_cache_controlled": False,
