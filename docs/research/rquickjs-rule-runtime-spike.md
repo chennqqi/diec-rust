@@ -248,6 +248,12 @@ context”。
 自定义 allocator 时 `set_memory_limit` 是 no-op，因此未来不能在未验证的情况
 下同时启用这两个选项。
 
+pinned `rquickjs-core 0.12.1/src/runtime/base.rs` 还记录默认 VM stack 为
+`256 * 1024` bytes，并公开 `memory_usage()`/`JS_ComputeMemoryUsage`。当前机器
+报告没有在真实全库生命周期保存 heap high-water，也没有汇总正常规则的 interrupt
+poll ticks；因此 4 MiB/128 KiB/25 ms 只能证明故障注入与恢复接线，不能直接充当
+production heap、stack、fuel 或 deadline 候选的观察最大值。
+
 stack fixture 使用显式递归函数而不是 include graph，因此只证明 QuickJS-NG
 `set_max_stack_size` 对脚本调用栈生效且 exception 后 context 可恢复。它不替代
 固定 Qt include-cycle 的深度、signal 数或错误传播差分；正式 runtime 仍按

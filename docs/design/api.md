@@ -260,6 +260,13 @@ pub struct ScanLimits {
     pub max_queue_items: u64,
     pub script: ScriptLimits,
 }
+
+pub struct ScriptLimits {
+    pub max_heap_bytes: u64,
+    pub max_stack_bytes: u64,
+    pub max_fuel_quanta: u64,
+    pub runtime_deadline: Duration,
+}
 ```
 
 数据库加载在创建 scanner 前也处理不可信目录、archive、embedded bundle 或
@@ -293,6 +300,24 @@ embedded、cache hit 和 fallback 必须共享同一 `DatabaseBudget`，fallback
 depth 和 integer limits 永远存在。
 
 `ScriptLimits` 至少控制 heap、stack、instruction/fuel 和 runtime deadline。
+Modern 评审候选为
+32 MiB live VM heap、512 KiB JS VM stack、131,072 fuel quanta 和 10 s
+累计 script deadline；显式 legacy-high 候选为 256 MiB、2 MiB、1,048,576
+quanta 和 60 s。候选均为 `review_candidate_not_admitted`。
+
+fuel unit 是固定 runtime/backend 版本的一次 VM interrupt poll quantum 或一个
+native HostApi cooperative checkpoint；VM 和 native 路径消费同一全 scan 单调
+counter。global/type init、include、rule、child 和异常恢复不得重置 fuel。
+QuickJS poll cadence 不是跨版本的“JavaScript instruction”定义，因此任何 runtime
+升级都必须重新采集并评审；公共 API 使用 project fuel semantics，不暴露 QuickJS
+内部计数器。
+
+script deadline 是从首次 runtime work 起算的绝对累计 deadline，覆盖 init、
+include、detect 和 native HostApi，并与 scan absolute deadline 取较早者；进入
+child 或下一规则不重置。heap 是 per-scan runtime 的 live VM allocator limit，
+不是 ADR 0012 的单调 allocation counter；stack 只限制 JS VM stack，native
+HostApi 禁止对不可信输入递归。使用 custom/rust allocator 时，若不能证明 heap
+limit 仍有效则 backend 构造失败。
 数据库 load 的独立 `DatabaseLimits` 防止在 scan 前耗尽资源。固定三层 bundle
 的可重复观察与 modern/legacy-high 候选见
 [`database-load-sizing.md`](../research/database-load-sizing.md)；候选仍是
@@ -346,13 +371,14 @@ limits 是全 scan 累计预算。child work 不重置额度。所有触发点�
 [`resource-limit-policy.md`](resource-limit-policy.md) 与
 [`data/resource-limit-policy-candidate.json`](data/resource-limit-policy-candidate.json)。
 它把 ADR 0012 的 scan profile 与 ADR 0014 的 traversal profile 放入同一契约，
-同时列出 script 的 4 个未定值预算；
+所有必需预算现已有非零候选；
 include 已由全库 sizing 提出 modern 16/256 与 legacy-high 64/4096，database
 load 已有 10 个非零候选字段，traversal metadata/open 已有
 524,288/8,388,608 候选，diagnostics 已有 4,096/131,072 候选，root input 已有
-1 GiB/8 GiB 候选，total allocation 已有 1 GiB/8 GiB 候选。当前结果仍为
-`review_candidate_incomplete`/`admitted=false`；QuickJS spike 的 4 MiB heap、
-128 KiB stack 和 25 ms deadline 不作为生产默认。
+1 GiB/8 GiB 候选，total allocation 已有 1 GiB/8 GiB 候选，script 四项也已有
+联合候选。当前结果为 `review_candidate_complete_unadmitted`/
+`admitted=false`；QuickJS spike 的 4 MiB heap、128 KiB stack 和 25 ms deadline
+仍只作为故障注入证据，不作为生产默认。
 
 ## 9. Cancellation 与 deadline
 

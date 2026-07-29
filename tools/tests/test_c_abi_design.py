@@ -20,6 +20,13 @@ class CAbiDesignTests(unittest.TestCase):
         self.assertIn("../research/c-static-link-spike.md", text)
         self.assertIn("../research/source-analysis.md", text)
         self.assertIn("max_total_allocation_bytes", text)
+        for field in (
+            "script_heap_bytes",
+            "script_stack_bytes",
+            "script_fuel_quanta",
+            "script_deadline_ms",
+        ):
+            self.assertIn(field, text)
         for heading in (
             "## 三种独立版本",
             "## 公共 C 类型",

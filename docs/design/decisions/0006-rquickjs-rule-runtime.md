@@ -77,6 +77,26 @@ workspace 建立时重新生成并审计，不允许浮动到其他 minor/patch 
 - runtime exception、OOM/limit、panic 和 native fault 分开分类；只有 Rust
   unwind panic 可由 ABI 边界最后防护，native crash 不伪装成普通脚本错误；
 - context 在 interrupt/exception 后只有通过明确恢复测试才能复用。
+- script 资源使用同一个全 scan `ScriptBudget`，初始评审候选为：
+
+  | Counter | Modern | LegacyHighResource |
+  | --- | ---: | ---: |
+  | live VM heap | 32 MiB | 256 MiB |
+  | JS VM stack | 512 KiB | 2 MiB |
+  | VM/native fuel quanta | 131,072 | 1,048,576 |
+  | cumulative script deadline | 10 s | 60 s |
+
+  heap 由固定 2,902,881-byte 全库程序集按 8×/64× 后向上取二次幂；stack
+  相对 pinned QuickJS 256 KiB default 取 2×/8×；modern fuel 是固定 14-sample
+  Binary corpus 的 20,947 个 detect/compare/search/include operation anchor
+  乘 4 后向上取二次幂，legacy-high 再取 8×；deadline 分别是 30 s/120 s
+  scan deadline 的 1/3 与 1/2。operation anchor 不等于实测 VM instruction 或
+  poll count，这些数字保持 `review_candidate_not_admitted`。
+- fuel quantum 是 pinned backend 的 VM interrupt poll 或 native cooperative
+  checkpoint，共享单调 counter，rule/include/child 不重置；runtime 升级必须
+  重新定标。script deadline 是首次 runtime work 起算的 absolute deadline，并
+  与 scan deadline 取较早者。QuickJS heap limit 使用默认 allocator；custom/
+  rust allocator 未证明等价限制前禁止启用。
 
 构建与发布：
 
@@ -166,6 +186,8 @@ lexical 不兼容。
 - [`archive-rule-runtime-differential.md`](../../research/archive-rule-runtime-differential.md)
 - [`pdf-rule-runtime-differential.md`](../../research/pdf-rule-runtime-differential.md)
 - [`c-static-link-spike.md`](../../research/c-static-link-spike.md)
+- [`script-runtime-budget-candidate.json`](../data/script-runtime-budget-candidate.json)
+- [`test_script_runtime_budget.py`](../../../tools/tests/test_script_runtime_budget.py)
 
 ## Acceptance conditions
 

@@ -142,7 +142,10 @@ typedef struct diec_v1_scan_options {
     uint32_t max_recursion_depth;
     uint32_t reserved_0;
     uint64_t max_total_allocation_bytes;
-    uint64_t reserved_2;
+    uint64_t script_heap_bytes;
+    uint64_t script_stack_bytes;
+    uint64_t script_fuel_quanta;
+    uint64_t script_deadline_ms;
 } diec_v1_scan_options;
 ```
 
@@ -159,9 +162,12 @@ typedef struct diec_v1_scan_options {
 | `max_recursion_depth` | 40 | 0 表示默认深度 |
 | `reserved_0` | 44 | 必须为 0 |
 | `max_total_allocation_bytes` | 48 | 0 表示项目安全默认值；全 scan 单调累计 allocation capacity，不表示无限 |
-| `reserved_2` | 56 | 必须为 0 |
+| `script_heap_bytes` | 56 | 0 表示安全默认；per-scan live VM heap |
+| `script_stack_bytes` | 64 | 0 表示安全默认；JS VM stack，不含 native stack |
+| `script_fuel_quanta` | 72 | 0 表示安全默认；全 scan VM/native cooperative fuel |
+| `script_deadline_ms` | 80 | 0 表示安全默认；累计 absolute script deadline |
 
-预期 x64 size 为 64 bytes；32 位和 arm64 必须用 C/Rust 双侧 `sizeof`,
+预期 x64 size 为 88 bytes；32 位和 arm64 必须用 C/Rust 双侧 `sizeof`,
 `alignof` 和 `offsetof` 测试确认，不能从 x64 外推。
 
 初始化：

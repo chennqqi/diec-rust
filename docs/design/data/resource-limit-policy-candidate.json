@@ -126,11 +126,11 @@
     },
     "allocation_budget": {
       "path": "docs/design/data/allocation-budget-candidate.json",
-      "sha256": "3aeb5fb47754c87eeda2d8099295919d57148c48e6400086079aab609bac6442"
+      "sha256": "831617c3eef8986f0c3f5d1be4bdf227b082eeff3091caef1a4d51356c17332a"
     },
     "api": {
       "path": "docs/design/api.md",
-      "sha256": "36b1c65a9ee0174f939ec2d4918425f7ca3e1b9472cd1ea1f8e28f47d2112048"
+      "sha256": "a4d60ec7ad4b0f32e429f608d9030ae665818eacebc033c489f45714420b1e24"
     },
     "archive_iteration": {
       "path": "docs/research/data/archive-iteration-boundary-engine-qt5.json",
@@ -146,7 +146,7 @@
     },
     "diagnostic_budget": {
       "path": "docs/design/data/diagnostic-budget-candidate.json",
-      "sha256": "5fd02c3c01b8d5f3db481207f829311e28bcee573b591b827037c966a4f37890"
+      "sha256": "bd8fa4758d32b6429c15fcacf0013ae0826f14c47b3665688f32e99e0b6446b6"
     },
     "include_graph": {
       "path": "docs/research/data/include-graph-sizing.json",
@@ -154,7 +154,7 @@
     },
     "input_budget": {
       "path": "docs/design/data/input-budget-candidate.json",
-      "sha256": "4602394b8b97a8af0ed89b0ef905f2e0d1310bc6d4b9e623c72409a12640b999"
+      "sha256": "f1b9fdc2861033de39d9fa42bec5f2cb0d1dec607795aa5bf98fa9c838914052"
     },
     "resource_count": {
       "path": "docs/research/data/scan-option-boundaries-linux-qt5.json",
@@ -166,7 +166,7 @@
     },
     "traversal_attempt": {
       "path": "docs/design/data/traversal-attempt-budget-candidate.json",
-      "sha256": "d0d28a23787035c0e1c1d28ab770fae7f7ee1d05cbe0ab61435f77a8a5cd0bda"
+      "sha256": "fd81dcbbd811eeb705a7f5e10c3e8a12608acf36c762196fdd0783def42ebd5d"
     }
   },
   "unresolved_required_budgets": [
