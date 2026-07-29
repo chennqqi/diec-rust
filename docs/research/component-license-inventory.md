@@ -53,6 +53,12 @@ Linux Qt5 最终 ELF：`capstone_x86` 构建 11 个 member、实际抽取 10 个
 一个 direct wrapper 后为 11 个 compile source/71 个依赖文件；11 个文件含
 LLVM/NCSA 来源标记，三份许可证文本均已 hash-bind。
 
+Formats 根目录没有 nested license candidate，但这不代表其静态 archive 无需
+文件级核对。[`xsimd-license-closure.md`](xsimd-license-closure.md) 已固定
+Linux Qt5 最终 ELF 的三个 XSIMD archive：三个单 member 均有符号见证，闭包为
+三个 compile source/六个依赖文件，六个文件均含 horsicq copyright 与完整 MIT
+marker；CUDA 两文件不在该闭包，根 `Formats/LICENSE` 已单独 hash-bind。
+
 XYara 的根 license candidate 只有组件 MIT，但
 [`yara-license-closure.md`](yara-license-closure.md) 已证明其 bundled YARA
 目录没有独立 license candidate。实际 YARA build closure 另含 YARA
@@ -106,6 +112,8 @@ python tools\upstream\audit_component_licenses.py `
   且 Brotli 仍有约 1.4% 的 64-token 区域未逐段分类；
 - XCapstone/Capstone 的固定 Linux Qt5 最终 ELF source/license closure 已完成；
   qmake、Qt6、Windows、macOS 和最终 Rust backend 仍需独立闭包；
+- Formats/xsimd 的固定 Linux Qt5 最终 ELF member/source/license closure 已完成；
+  qmake、Qt6、Windows、macOS、CUDA 与最终 Rust SIMD backend 仍需独立闭包；
 - XYara 内 bundled YARA 已完成当前 Linux CMake target 的 51-object/109-file
   审计及 TLSH/Authenticode/Bison 分类；仍缺 Windows/macOS/OpenSSL/qmake
   闭包和书面组合评审；

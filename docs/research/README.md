@@ -139,6 +139,9 @@ Phase 0 计划形成：
   Qt5 CMake CLI 的 XCapstone direct object、Capstone x86 archive 10/11
   member 最终 ELF 符号见证、71-file 依赖闭包及 MIT/BSD/LLVM-NCSA 三份
   许可证文本（In Review）。
+- [`xsimd-license-closure.md`](xsimd-license-closure.md)：固定 Linux Qt5
+  CMake CLI 的 Formats/xsimd 三个单 member archive、最终 ELF 符号见证、
+  六文件依赖闭包和 MIT/copyright 归属（In Review）。
 - [`embedded-compression-origins.md`](embedded-compression-origins.md)：XArchive 聚合 Brotli/Zstandard 的固定官方源码、token 指纹与许可证追溯（Draft）。
 - [`rar-decoder-provenance.md`](rar-decoder-provenance.md)：XArchive RAR
   decoder 与固定 UnRAR 7.1.10 的 token 来源、许可证 notice 差异和 Rust
@@ -282,6 +285,9 @@ Phase 0 计划形成：
 - [`data/xcapstone-license-closure-linux.json`](data/xcapstone-license-closure-linux.json)：
   XCapstone direct object、Capstone x86 archive 11 个构建/10 个抽取 member、
   最终 ELF 符号见证、71 个文件及三份许可证 hash。
+- [`data/xsimd-license-closure-linux.json`](data/xsimd-license-closure-linux.json)：
+  Formats/xsimd 三个单 member archive 的最终 ELF 符号见证、六文件依赖闭包、
+  CUDA 排除关系和根 MIT LICENSE hash。
 - [`data/embedded-compression-origins.json`](data/embedded-compression-origins.json)：聚合 Brotli/Zstandard 与固定官方 commit/生成物/许可证的内容对照。
 - [`data/rar-decoder-origin.json`](data/rar-decoder-origin.json)：固定
   XArchive RAR decoder 的引入历史、UnRAR 7.1.10 镜像、两档 token shingle

@@ -249,6 +249,10 @@ baseline 的变更都要检查本表。
   两个来源 commit 当时均有 MIT LICENSE，但无签名/sign-off 或贡献政策文件。
   artwork 原创/授权、历史贡献适用性和发布责任人书面结论仍缺，机器报告明确
   保持 `legal_review_complete=false`，所以 R-002/P0-BLOCK-004 继续 Open。
+  固定 Linux Qt5 最终 ELF 还证明 Formats/xsimd 的三个单 member archive 均被
+  抽取，形成三个 compile source/六文件闭包；六文件和根 LICENSE 均保留同一
+  horsicq copyright/MIT 文本，CUDA 源码不在此闭包。该结果关闭本平台 XSIMD
+  的文件级分类，但不能外推到其他平台、CUDA 或未来 Rust backend。
 - **缓解**：每次导入/同步前生成 source/license inventory；保留原始 LICENSE、
   commit、path、hash 和 attribution；选型前由发布责任人复核组合。
 - **验证**：规则 bundle、source closure、binary dependency、samples 和 release

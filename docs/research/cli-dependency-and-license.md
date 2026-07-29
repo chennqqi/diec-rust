@@ -179,6 +179,12 @@ XCapstone/Capstone 的最终 ELF 贡献现已由
 11 个 compile source/71 个依赖文件，必须分别保留 XCapstone MIT、Capstone
 BSD-3-Clause 和 LLVM University of Illinois/NCSA 文本。
 
+Formats/xsimd 的最终 ELF 贡献也已由
+[`xsimd-license-closure.md`](xsimd-license-closure.md) 固定：三个链接 archive
+各只有一个 member，三个 member 均有最终 ELF 全局符号见证；实际闭包为三个
+compile source/六个依赖文件，全部含 horsicq copyright 与完整 MIT marker。
+根 `Formats/LICENSE` 已单独 hash-bind，CUDA 两文件不在该 Linux Qt5 闭包。
+
 XYara/YARA 当前 Linux target 也已由
 [`yara-license-closure.md`](yara-license-closure.md) 固定：51 个编译单元、
 109 个依赖文件，132 个 vendored YARA 文件全部映射官方 v4.5.2（129 个内容
@@ -189,7 +195,7 @@ XYara/YARA 当前 Linux target 也已由
 
 ## 尚未完成
 
-- 已为 XCapstone 保存最终 ELF member 符号见证；其余组件仍需补全 CMake
+- 已为 XCapstone 与 Formats/xsimd 保存最终 ELF member 符号见证；其余组件仍需补全 CMake
   target graph、link map、动态依赖和符号表。
 - 为 XArchive 聚合 Brotli/Zstandard 恢复独立 LICENSE/NOTICE/attribution，
   完成 Brotli 剩余约 1.4% token 分类，并对 RAR decoder 的 UnRAR notice/
