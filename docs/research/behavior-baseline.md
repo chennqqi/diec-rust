@@ -80,6 +80,12 @@ JSON/XML projection 在 Qt5/Qt6 及 Windows/Linux Qt5 间相同，跨 Windows �
 只规范化已验证的 info `File name`。详见
 [`cross-platform-special-matrix-extension.md`](cross-platform-special-matrix-extension.md)。
 
+剩余 21 样本的 7-case 普通 output 矩阵也在固定 Linux Qt5/Qt6 image 上各
+执行一次，共 294 次。唯一 raw 差异为 `minimal-pe64.exe` 的 7 个 Qt6 stderr；
+全部 stdout、21 个 JSON detection tree、文档有效性和 CSV-first 优先级均满足
+精确三方契约。详见
+[`cross-platform-output-matrix-extension.md`](cross-platform-output-matrix-extension.md)。
+
 ## 语料来源与安全
 
 所有样本由
@@ -401,7 +407,7 @@ elapsed 值与固定规则执行序列另见
   [`generic-archive-dispatch-reachability.md`](generic-archive-dispatch-reachability.md)
   固定。
 - 新增 11 个格式的 Windows scan、output 和 special 矩阵已固定；Linux
-  special 扩展已完成，普通 output 扩展仍待采集。
+  output/special 扩展也已完成。
 - 输出格式的转义和嵌套排序已由
   [`cli-output-boundaries.md`](cli-output-boundaries.md) 的 10-case 双 oracle
   固定；首轮 Linux 特殊 filename、非 UTF-8、symlink/权限/深度及 4096 项目录

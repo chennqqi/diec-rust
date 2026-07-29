@@ -61,6 +61,10 @@ observations 固定为逐字节相同，并证明 231 个 JSON/XML projection �
 Qt5/Qt6 及规范化后的 Windows/Linux Qt5 间相同。这加强 special 证据，但不
 替代上述 Windows engine-only/path 门禁。
 
+同一 21 样本的普通 output 又完成 294 次 Linux Qt5/Qt6 执行：140/147 对
+raw 完全相同，7 个 PE64 case 只保留已知 Qt6 stderr；21 个 JSON tree、
+4-invalid/17-valid XML 集合和 CSV-first priority 均与 Windows 契约一致。
+
 独立的逐行
 [`qt6-capability-closure-plan.md`](qt6-capability-closure-plan.md)
 已接纳 68 项 `evidence_complete`、0 项 partial、0 项 missing，并把

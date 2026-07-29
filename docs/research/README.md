@@ -194,6 +194,9 @@ Phase 0 计划形成：
 - [`windows-output-matrix-extension.md`](windows-output-matrix-extension.md)：
   将 Windows 普通输出的 7-case 矩阵扩展到全部 26 个 baseline 样本，并固定
   四个动态 filetype 元素名导致的 invalid XML（Draft）。
+- [`cross-platform-output-matrix-extension.md`](cross-platform-output-matrix-extension.md)：
+  将剩余 21 样本的 7-case output 矩阵接入 Linux Qt5/Qt6，并与 Windows JSON
+  projection、文档有效性及 priority 做三方差分（Draft）。
 - [`scan-option-boundaries.md`](scan-option-boundaries.md)：固定 deep 实际增量、aggressive resource gate、默认 21/aggressive 2001 精确计数及 PE 每目录 1000 项 parser 限制；闭合 `CAP-GAP-005`（Draft）。
 - [`cli-special-modes.md`](cli-special-modes.md)：entropy/info/struct 的 schema、优先级、临界熵、层级 filter、格式方法和多目标行为；闭合 `CAP-GAP-001`（Draft）。
 - [`windows-special-matrix-extension.md`](windows-special-matrix-extension.md)：
@@ -518,6 +521,9 @@ Phase 0 计划形成：
 - [`data/windows-qt5-cli-output-remaining.json`](data/windows-qt5-cli-output-remaining.json)：
   剩余 21 个 baseline 样本 × 7 个普通输出 case 的 294 次原生 Windows Qt5
   执行、JSON continuity 和结构化输出有效性检查。
+- [`data/linux-qt5-qt6-cli-output-remaining.json`](data/linux-qt5-qt6-cli-output-remaining.json)：
+  剩余 21 个 baseline 样本 × 7 个普通输出 case 的 294 次 Linux Qt5/Qt6
+  容器执行、精确 PE warning 和 Windows JSON projection 对照。
 - [`data/windows-qt5-cli-special-remaining.json`](data/windows-qt5-cli-special-remaining.json)：
   剩余 21 个 baseline 样本 × 19 个 entropy/info/struct case 的 798 次原生
   Windows Qt5 执行、结构化 projection 和优先级检查。

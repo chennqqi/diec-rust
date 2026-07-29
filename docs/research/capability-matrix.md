@@ -49,11 +49,11 @@ CLI 主入口为 [`src/console/main_console.cpp`](https://github.com/horsicq/DIE
 | `CAP-CLI-MODE-004` | `-w` | `--showstructs` | 列出可用结构方法 | Observed；仅列 4 个通用方法，target 被忽略 |
 | `CAP-CLI-MODE-005` | — | `--help` | 显示 Qt command-line help | Observed；无参数与 `--help` 原始 stdout 相同，退出 0、stderr 为空 |
 | `CAP-CLI-MODE-006` | — | `--version` | 显示应用版本 | Observed；双 oracle 原始 stdout 10 bytes，退出 0、stderr 为空 |
-| `CAP-CLI-OUT-001` | `-x` | `--xml` | XML | Observed；Linux 5 个代表样本、Windows 全 26 样本 |
-| `CAP-CLI-OUT-002` | `-j` | `--json` | JSON | Observed；Linux 与 Windows baseline 原始输出已固定哈希，Windows 覆盖全 26 样本 |
-| `CAP-CLI-OUT-003` | `-c` | `--csv` | CSV | Observed；Linux 5 个代表样本、Windows 全 26 样本；normal scan 多格式开关中优先级最高 |
-| `CAP-CLI-OUT-004` | `-t` | `--tsv` | TSV | Observed；Linux 5 个代表样本、Windows 全 26 样本 |
-| `CAP-CLI-OUT-005` | `-p` | `--plaintext` | plain text | Observed；Linux 5 个代表样本、Windows 全 26 样本 |
+| `CAP-CLI-OUT-001` | `-x` | `--xml` | XML | Observed；Linux Qt5/Qt6 与 Windows Qt5 全 26 样本 |
+| `CAP-CLI-OUT-002` | `-j` | `--json` | JSON | Observed；Linux Qt5/Qt6 与 Windows Qt5 全 26 样本，JSON tree 三方一致 |
+| `CAP-CLI-OUT-003` | `-c` | `--csv` | CSV | Observed；Linux Qt5/Qt6 与 Windows Qt5 全 26 样本；normal scan 多格式开关中优先级最高 |
+| `CAP-CLI-OUT-004` | `-t` | `--tsv` | TSV | Observed；Linux Qt5/Qt6 与 Windows Qt5 全 26 样本 |
+| `CAP-CLI-OUT-005` | `-p` | `--plaintext` | plain text | Observed；Linux Qt5/Qt6 与 Windows Qt5 全 26 样本 |
 | `CAP-CLI-DB-001` | `-D` | `--database <path>` | 主数据库路径 | Observed |
 | `CAP-CLI-DB-002` | `-E` | `--extradatabase <path>` | extra 数据库路径 | Observed |
 | `CAP-CLI-DB-003` | `-C` | `--customdatabase <path>` | custom 数据库路径 | Observed |
@@ -357,6 +357,8 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
   output/scan/special/path/database/nested 矩阵及其他 Qt 6 minor。
 - Windows Qt5 已完成 26-sample scan、26-sample 普通 output 和 26-sample
   19-case special 矩阵；普通 output 另固定 4 个带空格 filetype 的 invalid XML；
+  Linux Qt5/Qt6 的同 26-sample output 矩阵也已完成，除 7 个 PE64 Qt6
+  stderr 外 stdout/JSON tree/有效性/priority 均满足精确差分契约；
   Linux Qt5/Qt6 的同 26-sample special 矩阵也已完成，399 对 raw stream 与
   231 个结构化 projection 均相同；
   14-case path、32-case nested 和 18-case database 首轮矩阵也已完成；

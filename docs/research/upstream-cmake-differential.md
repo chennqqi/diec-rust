@@ -171,6 +171,11 @@ JSON 中只有输入二进制的 `size` 不同。
 
 - 5 个代表样本 × 7 个输出模式，70 次 oracle 执行；
 - 15 个样本 × 8 个扫描模式，240 次 oracle 执行。
+
+后续
+[`cross-platform-output-matrix-extension.md`](cross-platform-output-matrix-extension.md)
+把输出矩阵扩展到首轮未包含的 21 个样本：新增 147 对中仅 PE64 的 7 对 stderr
+不同，全部 stdout 与 JSON detection tree 相同。
 - 5 个代表样本 × 19 个 entropy/info/struct 模式，190 次 oracle 执行。
 - 14 个多目标/目录/错误路径 case，28 次 oracle 执行。
 - 18 个数据库状态 case，36 次 oracle 执行。

@@ -47,6 +47,9 @@ Qt5 stderr 为空。差异不影响退出码、stdout 或 detection tree，但�
 
 - [`data/cli-output-matrix-linux-qt5-qt6.json`](data/cli-output-matrix-linux-qt5-qt6.json)
   保存 26 样本及五样本输出矩阵的身份、参数、退出码和流哈希；
+- [`data/linux-qt5-qt6-cli-output-remaining.json`](data/linux-qt5-qt6-cli-output-remaining.json)
+  将 7-case 输出矩阵扩展到其余 21 个样本，固定 7 个 PE64 stderr 差异、JSON
+  tree、文档有效性和普通输出 priority；
 - [`data/cli-output-boundaries-linux-qt5-qt6.json`](data/cli-output-boundaries-linux-qt5-qt6.json)
   额外保存 escaping/nested 十个用例的完整 base64 原始流和派生事实；
 - [`data/qt6-capability-closure-plan.json`](data/qt6-capability-closure-plan.json)

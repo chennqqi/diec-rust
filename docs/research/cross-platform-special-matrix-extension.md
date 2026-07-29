@@ -27,7 +27,9 @@ Windows 后续已把 19 个 entropy/info/struct case 扩展到剩余 21 个 base
 
 与既有 5-sample 报告合并后，Linux Qt5、Linux Qt6 和 Windows Qt5 的
 19-case special baseline matrix 都覆盖全部 26 个样本。macOS、更多格式专用
-struct method 和剩余 21 样本的普通 output 跨平台矩阵仍不在本结论内。
+struct method 仍不在本结论内。剩余 21 样本的普通 output 跨平台矩阵随后由
+[`cross-platform-output-matrix-extension.md`](cross-platform-output-matrix-extension.md)
+闭合。
 
 ## 唯一规范化字段
 
@@ -82,7 +84,6 @@ SHA-256 为
 
 ## 尚未覆盖
 
-- Linux/Windows 剩余 21 样本的 7-case 普通 output 跨平台矩阵；
 - macOS Qt5 的相同 output/special matrix；
 - Windows 非结构化 text/CSV/TSV 的语义比较；Windows 报告只保留 raw hash，
   且 CRLF/LF 已知不同；

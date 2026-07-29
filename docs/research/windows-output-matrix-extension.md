@@ -29,6 +29,9 @@ Last updated: 2026-07-29
 [`windows-special-matrix-extension.md`](windows-special-matrix-extension.md)，
 不能从本报告本身外推。
 
+后续 Linux Qt5/Qt6 同矩阵及 Windows JSON projection 三方差分见
+[`cross-platform-output-matrix-extension.md`](cross-platform-output-matrix-extension.md)。
+
 ## 四个 invalid XML 边界
 
 四个失败样本的 detection filetype 分别为 `Mach-O FAT`、`Java Class`、
@@ -79,6 +82,6 @@ projection，不保存 raw stream 或本机绝对路径。
 
 ## 尚未覆盖
 
-- 这 21 个样本的 Linux/macOS 同 case output，用于跨平台 raw/semantic 差分；
+- macOS 同 case output，用于三大桌面平台 raw/semantic 差分；
 - 新增格式 corpus 的普通 output/special 扩展；
 - formatter 注入字符边界之外的系统化 XML element-name 字符集合。
