@@ -186,6 +186,10 @@ Phase 0 计划形成：
 - [`upstream-benchmark-file-access.md`](upstream-benchmark-file-access.md)：五个
   固定 case 双次 ptrace 的 2,283-file successful regular-file union、实际
   `.sg` 打开集合、33 个非脚本差集与 cold-controller 边界（In Review）。
+- [`upstream-benchmark-page-cache.md`](upstream-benchmark-page-cache.md)：
+  静态 controller 对相同 case 的完整 warm、逐文件
+  `POSIX_FADV_DONTNEED`、前后 `mincore` 与双次 per-path residency
+  复验，同时保留 metadata/overlayfs/cold 边界（In Review）。
 - [`upstream-build-baseline.md`](upstream-build-baseline.md)：固定 Linux Qt5/qmake CLI 构建与行为实验（Draft）。
 - [`upstream-cmake-differential.md`](upstream-cmake-differential.md)：官方 CMake CLI 构建及与 qmake 的原始输出差分（Draft）。
 - [`upstream-qt6-differential.md`](upstream-qt6-differential.md)：固定 Qt 6 CMake CLI 构建、Qt 5/Qt 6 原始差分与规则 warning 最小化（Draft）。

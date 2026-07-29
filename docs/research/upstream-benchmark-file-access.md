@@ -129,6 +129,13 @@ database 的四个 case 都成功打开相同的 2,097 个 main `.sg` 与 138 �
 前后状态，并把 directory/dentry/inode、failed lookup、overlayfs 和共享 host page
 cache 边界继续留在报告中。在这些证据存在前，runner 继续拒绝 `cache_state=cold`。
 
+后续
+[`upstream-benchmark-page-cache.md`](upstream-benchmark-page-cache.md)
+已用完全静态 controller 对每个 case 双次验证完整 warm、fadvise 后逐文件
+0 resident 与确定性 post-run vector。该后续证据关闭本报告的
+page-residency/advisory-eviction 技术缺口，但目录/metadata、failed lookup、
+overlayfs/host isolation 仍使 `cold_cache_controlled=false`。
+
 ## 复现
 
 ```powershell
@@ -143,8 +150,8 @@ host probe 只读 bind-mount 当前 tracer，运行前后由报告绑定 tracer 
 
 ## 尚未完成
 
-- page residency observation 与可验证的 advisory regular-file eviction；
 - failed lookup、目录和 dentry/inode cache 的可控口径；
+- overlayfs 与宿主 cache isolation 的可审计边界；
 - controlled-cold plans、三次 session 和 upstream/Rust 随机化配对；
 - physical-core/SMT/frequency/governor 与跨 reboot/日期环境；
 - Windows/macOS 对应 cold controller 或明确不可等价策略；

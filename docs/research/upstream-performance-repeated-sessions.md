@@ -94,6 +94,11 @@ plans 仍声明 warm cache，不能据此回答 cold baseline。
 已用每 case 两次 ptrace 固定 2,283-file successful regular-file union；它只解决
 future eviction candidate 的身份，不改变本报告的
 `cold_cache_controlled=false`。
+再后续
+[`upstream-benchmark-page-cache.md`](upstream-benchmark-page-cache.md)
+已用静态 controller 证明相同 candidate 在命令前逐文件 0 resident；目录、
+metadata、failed lookup 与 overlayfs/host isolation 仍未控制，同样不改变本报告
+的 warm scope。
 
 ## 复现
 
@@ -126,8 +131,9 @@ scope 和 verifier 关系保持有效，不要求新 observation 与本报告逐
 
 ## 尚未完成
 
-- 在已固定 successful regular-file union 上增加 page residency observation、
-  advisory eviction 验证和目录/metadata cache 边界，再建立 cold baseline；
+- 在已验证 page residency/advisory eviction 的 successful-file candidate 上
+  补目录/metadata、failed lookup 与 overlayfs/host isolation，再评审
+  metadata-warm/file-content-nonresident 或完整 cold baseline 的命名；
 - 在裸机或可证明 topology 的环境控制 physical core、SMT、frequency/governor，
   并跨 reboot/日期重复 session；
 - Windows、macOS 的相同 case 和最终发行包口径；

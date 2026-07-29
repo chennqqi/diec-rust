@@ -674,8 +674,13 @@ archive median max/min 1.7704 和 batch p95 max/min 1.6848 证明单 session
 73,560,058-byte successful regular-file union，并证明 database path 成功打开
 2,235 个 `.sg`、未打开 33 个非脚本资产，见
 [`upstream-benchmark-file-access.md`](../research/upstream-benchmark-file-access.md)。
-该 union 只是 eviction candidate；page residency/fadvise、failed lookup、目录和
-dentry/inode cache 未闭合，因此不得把它标成 cold。
+静态 controller 随后对每个 case 双次证明所有候选页完整 resident、fadvise 后
+逐文件 0 resident、post-run vector 相同，且不保留受 controller 污染的 timing，
+见
+[`upstream-benchmark-page-cache.md`](../research/upstream-benchmark-page-cache.md)。
+failed lookup、目录、dentry/inode、overlayfs/host isolation 仍未闭合，因此不得
+把它标成 cold；若采用 metadata-warm/file-content-nonresident 层，名称和比较组
+必须与完整 cold 分开。
 固定 Linux Qt5 的 ELF、realpath 去重动态依赖闭包和 2,268 个规则资产 size
 口径见
 [`upstream-deployment-size.md`](../research/upstream-deployment-size.md)；

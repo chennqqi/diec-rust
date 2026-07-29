@@ -489,13 +489,16 @@ baseline 的变更都要检查本表。
   打开的 `.sg` 与 33 个非脚本差集；它仍保持 cold/page-residency/fadvise 为
   false，见
   [`upstream-benchmark-file-access.md`](../research/upstream-benchmark-file-access.md)。
+  后续静态 controller 已在每个 case 双次验证完整 warm、fadvise 后所有候选页
+  nonresident 与相同 post-run vector，但仍明确保持 cold false，见
+  [`upstream-benchmark-page-cache.md`](../research/upstream-benchmark-page-cache.md)。
   同一固定 ELF 的 16 个 realpath 去重动态依赖、2,268 个规则资产及两种部署
   size 口径也已绑定，见
   [`upstream-deployment-size.md`](../research/upstream-deployment-size.md)。
 - **验证**：Rust 同 bytes/options 成对报告后冻结回归阈值，持续 trend；补
-  residency/eviction cold controller、目录/metadata cache 口径、
+  目录/metadata、failed lookup、overlayfs/host isolation 口径，
   physical-core/topology 与跨 reboot/日期长期 session、Rust 成对/发行包 size
-  和目标平台。
+  和目标平台；评审 metadata-warm/file-content-nonresident 与完整 cold 是否分层。
 - **关闭**：Phase 6 目标及阈值通过。阈值未冻结前不得声称性能更优。
 
 ### R-013：上游同步漂移

@@ -120,7 +120,10 @@ python tools\benchmark\probe_upstream_benchmark.py `
 - 可审计的 cold-cache controller 和 cold baseline；
 - successful regular-file candidate 已由
   [`upstream-benchmark-file-access.md`](upstream-benchmark-file-access.md)
-  固定；仍缺 residency/eviction 与非文件 cache 口径；
+  固定，且
+  [`upstream-benchmark-page-cache.md`](upstream-benchmark-page-cache.md)
+  已验证 page residency 与 advisory eviction；仍缺目录/metadata、failed
+  lookup、overlayfs/host isolation 等非文件 cache 口径；
 - 裸机或可证明 topology 的 physical-core/SMT/频率控制，以及跨 reboot/日期的
   长期重复 session；
 - Windows、macOS 的相同上游 case 与发行包口径；
