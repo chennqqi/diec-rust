@@ -346,7 +346,11 @@ def collect(
             binary, qt_dir, arguments, timeout_seconds=timeout_seconds
         )
         paired = pair_report(
-            common, bundle_dir, f"cases/{case.name}", first, second
+            common,
+            bundle_dir,
+            f"cli-baseline/cases/{case.name}",
+            first,
+            second,
         )
         paired["arguments"] = list(case.report_arguments)
         case_reports[case.name] = paired
@@ -371,7 +375,11 @@ def collect(
             binary, qt_dir, arguments, timeout_seconds=timeout_seconds
         )
         paired = pair_report(
-            common, bundle_dir, f"corpus/{name}", first, second
+            common,
+            bundle_dir,
+            f"cli-baseline/corpus/{name}",
+            first,
+            second,
         )
         first_tree = common.json_detect_tree(first.stdout)
         second_tree = common.json_detect_tree(second.stdout)

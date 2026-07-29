@@ -350,7 +350,7 @@ def validate_report(
             value,
             report_path.parent,
             f"cases.{case.name}",
-            f"cases/{case.name}",
+            f"cli-baseline/cases/{case.name}",
         )
         if first != second:
             determinism_failures.append(f"cases.{case.name}")
@@ -400,7 +400,7 @@ def validate_report(
             value,
             report_path.parent,
             f"corpus.{name}",
-            f"corpus/{name}",
+            f"cli-baseline/corpus/{name}",
         )
         first_tree = common.json_detect_tree(first[1])
         second_tree = common.json_detect_tree(second[1])
@@ -468,7 +468,7 @@ def validate_report(
         ]
         for stream in ("stdout", "stderr")
     }
-    raw_root = report_path.parent / "raw"
+    raw_root = report_path.parent / "raw" / "cli-baseline"
     actual_raw_paths = {
         path.relative_to(report_path.parent).as_posix()
         for path in raw_root.rglob("*")

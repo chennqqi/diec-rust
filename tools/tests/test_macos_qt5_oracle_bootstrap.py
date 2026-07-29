@@ -22,6 +22,12 @@ CLI_COLLECTOR_PATH = (
 CLI_VALIDATOR_PATH = (
     ROOT / "tools/upstream/validate_macos_cli_baseline.py"
 )
+MATRIX_COLLECTOR_PATH = (
+    ROOT / "tools/upstream/collect_macos_cli_matrix.py"
+)
+MATRIX_VALIDATOR_PATH = (
+    ROOT / "tools/upstream/validate_macos_cli_matrix.py"
+)
 
 
 def load_module(name: str, path: Path):
@@ -44,6 +50,20 @@ CLI_VALIDATOR = load_module(
 CLI_COMMON = load_module(
     "collect_windows_cli_baseline_for_macos_test",
     ROOT / "tools/upstream/collect_windows_cli_baseline.py",
+)
+MATRIX_COLLECTOR = load_module(
+    "collect_macos_cli_matrix", MATRIX_COLLECTOR_PATH
+)
+MATRIX_VALIDATOR = load_module(
+    "validate_macos_cli_matrix", MATRIX_VALIDATOR_PATH
+)
+MATRIX_HELPER = load_module(
+    "collect_windows_cli_matrix_for_macos_test",
+    ROOT / "tools/upstream/collect_windows_cli_matrix.py",
+)
+MATRIX_DEFINITIONS = load_module(
+    "compare_cli_oracles_for_macos_test",
+    ROOT / "tools/upstream/compare_cli_oracles.py",
 )
 
 
@@ -139,7 +159,7 @@ def write_cli_candidate_bundle(directory: Path) -> Path:
         pair = CLI_COLLECTOR.pair_report(
             CLI_COMMON,
             directory,
-            f"cases/{case.name}",
+            f"cli-baseline/cases/{case.name}",
             observation,
             observation,
         )
@@ -173,7 +193,7 @@ def write_cli_candidate_bundle(directory: Path) -> Path:
         pair = CLI_COLLECTOR.pair_report(
             CLI_COMMON,
             directory,
-            f"corpus/{name}",
+            f"cli-baseline/corpus/{name}",
             observation,
             observation,
         )
@@ -280,6 +300,228 @@ def write_cli_candidate_bundle(directory: Path) -> Path:
     return report_path
 
 
+def write_cli_matrix_candidate_bundle(
+    directory: Path,
+    baseline_path: Path,
+) -> Path:
+    baseline = CLI_VALIDATOR.load_json(baseline_path)[0]
+    oracle_path = directory / "oracle-candidate.json"
+    manifest = json.loads(
+        (
+            ROOT / "docs/research/data/baseline-corpus.json"
+        ).read_bytes()
+    )
+    sample_names = [sample["name"] for sample in manifest["samples"]]
+    cases_by_kind = {
+        "output": MATRIX_DEFINITIONS.OUTPUT_MATRIX,
+        "scan": MATRIX_DEFINITIONS.SCAN_MATRIX,
+        "special": MATRIX_DEFINITIONS.SPECIAL_MATRIX,
+    }
+    selection = {
+        "output": list(MATRIX_COLLECTOR.OUTPUT_SAMPLES),
+        "scan": sample_names,
+        "special": list(MATRIX_COLLECTOR.SPECIAL_SAMPLES),
+    }
+    linux_reports = {}
+    linux_bindings = {}
+    for kind, relative in MATRIX_COLLECTOR.LINUX_REFERENCES.items():
+        raw = (ROOT / relative).read_bytes()
+        linux_reports[kind] = json.loads(raw)
+        linux_bindings[kind] = {
+            "path": relative,
+            "sha256": hashlib.sha256(raw).hexdigest(),
+        }
+
+    matrix = {}
+    for kind in ("output", "scan", "special"):
+        for sample_name in selection[kind]:
+            kind_report = matrix.setdefault(sample_name, {}).setdefault(
+                kind, {}
+            )
+            baseline_entry = baseline["corpus"][sample_name]
+            baseline_observations = {}
+            for side in ("first", "second"):
+                item = baseline_entry[side]
+                baseline_observations[side] = CLI_COMMON.Observation(
+                    item["exit_code"],
+                    (directory / item["stdout_path"]).read_bytes(),
+                    (directory / item["stderr_path"]).read_bytes(),
+                )
+            observations = {}
+            for case in cases_by_kind[kind]:
+                if kind == "scan":
+                    stdout = baseline_observations["first"].stdout
+                    stderr = baseline_observations["first"].stderr
+                    exit_code = baseline_observations["first"].exit_code
+                else:
+                    stdout = b"stable"
+                    stderr = b""
+                    exit_code = 0
+                if sample_name in MATRIX_COLLECTOR.OUTPUT_SAMPLES:
+                    exit_code = linux_reports[kind]["matrix"][
+                        sample_name
+                    ][kind][case.name]["left"]["exit_code"]
+                observation = CLI_COMMON.Observation(
+                    exit_code, stdout, stderr
+                )
+                observations[case.name] = (
+                    observation,
+                    observation,
+                )
+                pair = CLI_COLLECTOR.pair_report(
+                    CLI_COMMON,
+                    directory,
+                    (
+                        "cli-matrix/"
+                        f"{sample_name}/{kind}/{case.name}"
+                    ),
+                    observation,
+                    observation,
+                )
+                pair["arguments"] = [
+                    *MATRIX_HELPER.translate_arguments(
+                        case.arguments,
+                        Path("<source>"),
+                        report=True,
+                    ),
+                    f"<corpus>/{sample_name}",
+                ]
+                if kind == "scan":
+                    tree = CLI_COMMON.json_detect_tree(stdout)
+                    pair["first_detect_tree"] = tree
+                    pair["second_detect_tree"] = tree
+                if sample_name in MATRIX_COLLECTOR.OUTPUT_SAMPLES:
+                    pair["linux_qt5_exit_code"] = exit_code
+                    pair["linux_qt5_exit_code_equal"] = True
+                kind_report[case.name] = pair
+
+            if kind == "scan":
+                default_first, default_second = observations["default"]
+                default = kind_report["default"]
+                reference_equal = (
+                    default_first.summary()
+                    == MATRIX_COLLECTOR.observation_identity(
+                        baseline_entry["first"]
+                    )
+                    and default_second.summary()
+                    == MATRIX_COLLECTOR.observation_identity(
+                        baseline_entry["second"]
+                    )
+                    and default["first_detect_tree"]
+                    == baseline_entry["first_detect_tree"]
+                    and default["second_detect_tree"]
+                    == baseline_entry["second_detect_tree"]
+                )
+                default["cli_baseline_reference_equal"] = reference_equal
+                for case_name, (first, second) in observations.items():
+                    entry = kind_report[case_name]
+                    entry["first_changes_from_default"] = (
+                        MATRIX_HELPER.observation_differences(
+                            default_first, first
+                        )
+                    )
+                    entry["second_changes_from_default"] = (
+                        MATRIX_HELPER.observation_differences(
+                            default_second, second
+                        )
+                    )
+
+    case_counts = {
+        kind: len(selection[kind]) * len(cases_by_kind[kind])
+        for kind in selection
+    }
+    case_count = sum(case_counts.values())
+    report = {
+        "schema_version": 1,
+        "result": "candidate",
+        "platform": MATRIX_COLLECTOR.PLATFORM,
+        "generator": {
+            "path": MATRIX_VALIDATOR.COLLECTOR,
+            "sha256": hashlib.sha256(
+                MATRIX_COLLECTOR_PATH.read_bytes()
+            ).hexdigest(),
+            "validator_path": (
+                "tools/upstream/validate_macos_cli_matrix.py"
+            ),
+            "validator_sha256": hashlib.sha256(
+                MATRIX_VALIDATOR_PATH.read_bytes()
+            ).hexdigest(),
+            "baseline_collector_path": (
+                MATRIX_VALIDATOR.BASELINE_COLLECTOR
+            ),
+            "baseline_collector_sha256": hashlib.sha256(
+                CLI_COLLECTOR_PATH.read_bytes()
+            ).hexdigest(),
+            "baseline_validator_path": (
+                MATRIX_VALIDATOR.BASELINE_VALIDATOR
+            ),
+            "baseline_validator_sha256": hashlib.sha256(
+                CLI_VALIDATOR_PATH.read_bytes()
+            ).hexdigest(),
+            "windows_matrix_helper_path": (
+                MATRIX_VALIDATOR.WINDOWS_MATRIX_HELPER
+            ),
+            "windows_matrix_helper_sha256": hashlib.sha256(
+                (
+                    ROOT
+                    / MATRIX_VALIDATOR.WINDOWS_MATRIX_HELPER
+                ).read_bytes()
+            ).hexdigest(),
+            "matrix_definitions_path": (
+                MATRIX_VALIDATOR.MATRIX_DEFINITIONS
+            ),
+            "matrix_definitions_sha256": hashlib.sha256(
+                (
+                    ROOT / MATRIX_VALIDATOR.MATRIX_DEFINITIONS
+                ).read_bytes()
+            ).hexdigest(),
+        },
+        "oracle_report": {
+            "path": "oracle-candidate.json",
+            "sha256": hashlib.sha256(
+                oracle_path.read_bytes()
+            ).hexdigest(),
+        },
+        "cli_baseline_report": {
+            "path": "cli-baseline-candidate.json",
+            "sha256": hashlib.sha256(
+                baseline_path.read_bytes()
+            ).hexdigest(),
+        },
+        "source": baseline["source"],
+        "qt": baseline["qt"],
+        "binary": baseline["binary"],
+        "corpus_manifest": baseline["corpus_manifest"],
+        "linux_qt5_references": linux_bindings,
+        "selection": selection,
+        "matrix": matrix,
+        "summary": {
+            "sample_count": len(sample_names),
+            "case_counts": case_counts,
+            "case_count": case_count,
+            "execution_count": 2 * case_count,
+            "raw_stream_count": 4 * case_count,
+            "determinism_failures": [],
+            "default_reference_failures": [],
+            "linux_exit_code_failures": [],
+            "deterministic": True,
+            "default_reference_equal": True,
+            "linux_exit_codes_equal": True,
+        },
+        "admission": {
+            "platform_admitted": False,
+            "capability_rows_admitted": 0,
+            "reason": MATRIX_COLLECTOR.ADMISSION_REASON,
+        },
+        "limitations": MATRIX_COLLECTOR.LIMITATIONS,
+    }
+    report_path = directory / "cli-matrix-candidate.json"
+    report_path.write_text(
+        json.dumps(report, sort_keys=True), encoding="utf-8"
+    )
+    return report_path
+
+
 class MacosQt5OracleBootstrapTests(unittest.TestCase):
     def test_plan_is_exact_generator_output_and_source_bound(self):
         report = json.loads(PLAN_PATH.read_text(encoding="utf-8"))
@@ -356,7 +598,10 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             "generate_baseline_corpus.py",
             "collect_macos_cli_baseline.py",
             "validate_macos_cli_baseline.py",
+            "collect_macos_cli_matrix.py",
+            "validate_macos_cli_matrix.py",
             "cli-baseline-candidate.json",
+            "cli-matrix-candidate.json",
             "diec-macos-candidate-evidence/raw",
             (
                 "actions/checkout@"
@@ -396,7 +641,14 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
                 "oracle-candidate.json",
                 "cache-state-candidate.json",
                 "cli-baseline-candidate.json",
+                "cli-matrix-candidate.json",
             ],
+        )
+        self.assertEqual(
+            workflow["general_cli_execution_count"], 740
+        )
+        self.assertEqual(
+            workflow["general_cli_raw_stream_count"], 1480
         )
 
     def test_cli_candidate_tools_are_bound_and_fail_closed(self):
@@ -479,9 +731,13 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
                     oracle_path=oracle_path,
                     root=ROOT,
                 )
-
             report["admission"]["platform_admitted"] = False
-            (directory / "raw" / "undeclared").write_bytes(b"x")
+            (
+                directory
+                / "raw"
+                / "cli-baseline"
+                / "undeclared"
+            ).write_bytes(b"x")
             with self.assertRaisesRegex(
                 CLI_VALIDATOR.ReportError,
                 "raw file inventory",
@@ -490,6 +746,82 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
                     report,
                     report_path=report_path,
                     oracle_path=oracle_path,
+                    root=ROOT,
+                )
+
+    def test_cli_matrix_validator_recomputes_full_raw_matrix(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            baseline_path = write_cli_candidate_bundle(directory)
+            matrix_path = write_cli_matrix_candidate_bundle(
+                directory, baseline_path
+            )
+            report = CLI_VALIDATOR.load_json(matrix_path)[0]
+            oracle_path = directory / "oracle-candidate.json"
+            MATRIX_VALIDATOR.validate_report(
+                report,
+                report_path=matrix_path,
+                oracle_path=oracle_path,
+                baseline_path=baseline_path,
+                root=ROOT,
+            )
+            self.assertEqual(report["summary"]["case_count"], 338)
+            self.assertEqual(
+                report["summary"]["execution_count"], 676
+            )
+            self.assertEqual(
+                report["summary"]["raw_stream_count"], 1352
+            )
+
+            first = report["matrix"]["empty.bin"]["output"][
+                "json"
+            ]["first"]
+            raw_path = directory / first["stdout_path"]
+            original = raw_path.read_bytes()
+            raw_path.write_bytes(b"tampered")
+            with self.assertRaisesRegex(
+                MATRIX_VALIDATOR.ReportError,
+                "raw stream identity mismatch",
+            ):
+                MATRIX_VALIDATOR.validate_report(
+                    report,
+                    report_path=matrix_path,
+                    oracle_path=oracle_path,
+                    baseline_path=baseline_path,
+                    root=ROOT,
+                )
+            raw_path.write_bytes(original)
+
+            report["admission"]["platform_admitted"] = True
+            with self.assertRaisesRegex(
+                MATRIX_VALIDATOR.ReportError,
+                "must not admit",
+            ):
+                MATRIX_VALIDATOR.validate_report(
+                    report,
+                    report_path=matrix_path,
+                    oracle_path=oracle_path,
+                    baseline_path=baseline_path,
+                    root=ROOT,
+                )
+            report["admission"]["platform_admitted"] = False
+
+            extra = (
+                directory
+                / "raw"
+                / "cli-matrix"
+                / "undeclared"
+            )
+            extra.write_bytes(b"x")
+            with self.assertRaisesRegex(
+                MATRIX_VALIDATOR.ReportError,
+                "raw file inventory",
+            ):
+                MATRIX_VALIDATOR.validate_report(
+                    report,
+                    report_path=matrix_path,
+                    oracle_path=oracle_path,
+                    baseline_path=baseline_path,
                     root=ROOT,
                 )
 
