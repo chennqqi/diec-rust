@@ -46,7 +46,7 @@ JSON continuity、CSV 优先级及四个带空格 filetype 的 invalid XML。
 保持 `platform_missing`，直到完整差分语料在该平台执行并归档。
 逐行
 [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)
-已把当前证据审计为 63 complete、1 partial、4 missing；5 个开放行均有
+已把当前证据审计为 64 complete、1 partial、3 missing；4 个开放行均有
 命名验收实验。
 
 机器证据见
@@ -460,6 +460,22 @@ engine-contract，六个 result-model 行均具备直接证据。报告 SHA-256 
 Qt5 相同，关闭 `CAP-DISPATCH-002..004`。报告 SHA-256 为
 `398b30af7ab44a9a13591822581a1a5145cb84b2b7b1f233f243a8e39085e617`，
 详见 [`windows-dispatch-behavior.md`](windows-dispatch-behavior.md)。
+
+## Windows Qt5 debug-data paired harness
+
+[`build_windows_debug_dispatch_harness.ps1`](../../tools/upstream/build_windows_debug_dispatch_harness.ps1)
+复用固定 qmake Release engine objects，只替换 console main object，并以
+MSVC `/alternatename` bridge 调用固定 `die_script.obj` 中的 private
+`processDetect()`。
+[`collect_windows_debug_dispatch.py`](../../tools/upstream/collect_windows_debug_dispatch.py)
+对同一 PE 的 Formats 枚举、public recursive+aggressive scan 和 direct
+debug context 连续运行两轮，共 2 次进程执行、6 次 case observation。
+两轮 raw 输出相同，九项关系全部成立；只归一化三个已验证
+`signature_path` 根前缀后，完整文档与 Linux Qt5 相同，关闭
+`CAP-NEST-007`。报告 SHA-256 为
+`14c9901d40a0689e1dee91d8f40d7a35bf17e74604525a71e0ada9fc67006b9a`，
+详见
+[`windows-debug-dispatch-behavior.md`](windows-debug-dispatch-behavior.md)。
 
 ## Windows CLI Unicode/特殊路径矩阵
 

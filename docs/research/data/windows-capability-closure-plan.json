@@ -826,10 +826,10 @@
         "assertions": [
           "direct engine options are separated from release CLI flags",
           "count, depth, and cumulative-byte sentinel boundaries execute",
-          "context propagation, debug omission, cancellation, and resource projections are retained"
+          "cancellation and archive/resource projections are retained"
         ],
         "fixture": "docs/research/data/nested-corpus.json",
-        "harness": "port the archive-option, iteration, resource-context, debug, and archive-limit probes under tools/upstream/"
+        "harness": "port the archive-option, archive/resource iteration, and archive-limit probes under tools/upstream/"
       },
       "status": "missing"
     },
@@ -847,10 +847,10 @@
         "assertions": [
           "direct engine options are separated from release CLI flags",
           "count, depth, and cumulative-byte sentinel boundaries execute",
-          "context propagation, debug omission, cancellation, and resource projections are retained"
+          "cancellation and archive/resource projections are retained"
         ],
         "fixture": "docs/research/data/nested-corpus.json",
-        "harness": "port the archive-option, iteration, resource-context, debug, and archive-limit probes under tools/upstream/"
+        "harness": "port the archive-option, archive/resource iteration, and archive-limit probes under tools/upstream/"
       },
       "status": "missing"
     },
@@ -882,22 +882,16 @@
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
-      "evidence_paths": [],
+      "evidence_paths": [
+        "docs/research/data/debug-dispatch-engine-windows-qt5.json"
+      ],
       "evidence_set": "debug_data_dispatch",
       "id": "CAP-NEST-007",
-      "missing_scope": "public debug-data omission plus direct positive control",
+      "missing_scope": null,
       "name": "debug data is not scanner dispatched",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "direct engine options are separated from release CLI flags",
-          "count, depth, and cumulative-byte sentinel boundaries execute",
-          "context propagation, debug omission, cancellation, and resource projections are retained"
-        ],
-        "fixture": "docs/research/data/nested-corpus.json",
-        "harness": "port the archive-option, iteration, resource-context, debug, and archive-limit probes under tools/upstream/"
-      },
-      "status": "missing"
+      "observed_scope": "format enumeration, public scanner omission, and direct RSDS rule detection match Linux Qt5",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
@@ -926,10 +920,10 @@
         "assertions": [
           "direct engine options are separated from release CLI flags",
           "count, depth, and cumulative-byte sentinel boundaries execute",
-          "context propagation, debug omission, cancellation, and resource projections are retained"
+          "cancellation and archive/resource projections are retained"
         ],
         "fixture": "docs/research/data/nested-corpus.json",
-        "harness": "port the archive-option, iteration, resource-context, debug, and archive-limit probes under tools/upstream/"
+        "harness": "port the archive-option, archive/resource iteration, and archive-limit probes under tools/upstream/"
       },
       "status": "missing"
     },
@@ -1044,12 +1038,13 @@
     "docs/research/data/baseline-corpus-windows-qt5.json": "6beba732e88d90ed1414dd2584a4a783eac24dec70103fc54e6214eb12cca998",
     "docs/research/data/capability-traceability.json": "e1bb982feb52fb97e6678319c629cf71735650fe4239c8558a0f765c16c8cff3",
     "docs/research/data/database-cache-engine-windows-qt5.json": "d1cbcbe741e4cf3999f54f4696f6eee59472b59bd3aaf9d98f94bb337b1e16da",
+    "docs/research/data/debug-dispatch-engine-windows-qt5.json": "14c9901d40a0689e1dee91d8f40d7a35bf17e74604525a71e0ada9fc67006b9a",
     "docs/research/data/dispatch-engine-windows-qt5.json": "398b30af7ab44a9a13591822581a1a5145cb84b2b7b1f233f243a8e39085e617",
     "docs/research/data/engine-contract-windows-qt5.json": "4f7d1629d4c0cf627fd8f5fa1ff6adaf838f8c9fc910e95fac0c50bfd105233e",
     "docs/research/data/result-model-engine-windows-qt5.json": "611c111c38f85d7fbbe42fe41e5f6d922a7f168e084a1950b5bb6a70a5e3fc65",
     "docs/research/data/rule-orchestration-windows-qt5.json": "e6c7d47b35f89abdb10719e8578a550dcf5c9caf882a5d7825d3e0dbde3cf9da",
     "docs/research/data/signature-path-engine-windows-qt5.json": "54e0d24e363cf86353365ea93fffeaf03a5dfadb9f32f0c976ec3234b646ad48",
-    "docs/research/data/windows-qt5-build-baseline.json": "836b668bf5cc7c956669876925a95a2a8e4a5b774873d4584c7ec9f2dc1c0e28",
+    "docs/research/data/windows-qt5-build-baseline.json": "585a46f8ddb83a7f88f6b3fff07c1296ad2b777be64f79ebfbf20668cec73e25",
     "docs/research/data/windows-qt5-cli-ads.json": "bfdec0a8a516dd5d86721a9331d1d914c7e66f29df0fe0d6115c6dcca079224e",
     "docs/research/data/windows-qt5-cli-database-archive.json": "53c673620cc4388f0da7ffe36af7a325a099bceb0e29912c1f733119f942d748",
     "docs/research/data/windows-qt5-cli-database.json": "13e58a8d1b0cc4feb3998c06140e0afe7adb754cb59e5198b0e5b3079a3d5f8c",
@@ -1065,13 +1060,13 @@
   "summary": {
     "all_capabilities_accounted_for": true,
     "capability_count": 68,
-    "closure_required": 5,
-    "evidence_complete": 63,
-    "missing": 4,
+    "closure_required": 4,
+    "evidence_complete": 64,
+    "missing": 3,
     "partial": 1,
     "windows_baseline_admitted": false,
-    "windows_process_execution_count": 2210,
-    "windows_report_count": 18
+    "windows_process_execution_count": 2212,
+    "windows_report_count": 19
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
 }

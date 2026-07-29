@@ -41,6 +41,9 @@ REPORT_KEYS = {
     "docs/research/data/dispatch-engine-windows-qt5.json": (
         "windows_dispatch"
     ),
+    "docs/research/data/debug-dispatch-engine-windows-qt5.json": (
+        "windows_debug_dispatch"
+    ),
     "docs/research/data/windows-qt5-cli-path-nested.json": (
         "windows_cli_path_nested"
     ),
@@ -168,6 +171,7 @@ COMPLETE: dict[str, str] = {
     "CAP-NEST-002": "resource and overlay recursive-scan projections are fixed",
     "CAP-NEST-005": "overlay and resource recursive/aggressive gate projections are fixed",
     "CAP-NEST-006": "the four-mode manifest-resource matrix proves recursive and aggressive context propagation exactly as on Linux Qt5",
+    "CAP-NEST-007": "format enumeration, public scanner omission, and direct RSDS rule detection match Linux Qt5",
     "CAP-NEST-008": "nested result trees are fixed across 32 CLI cases",
 }
 
@@ -189,10 +193,6 @@ MISSING: dict[str, tuple[str, str]] = {
     "CAP-NEST-004": (
         "99999/100000/100001 archive and 21/2001 resource count boundaries",
         "port the archive/resource iteration harnesses to Windows",
-    ),
-    "CAP-NEST-007": (
-        "public debug-data omission plus direct positive control",
-        "port the debug-dispatch harness to Windows",
     ),
     "CAP-NEST-009": (
         "depth-64 and 33,554,546-byte cumulative expansion behavior",
@@ -261,7 +261,9 @@ EVIDENCE_PATHS = {
     "signature_path_filter": (
         "docs/research/data/signature-path-engine-windows-qt5.json",
     ),
-    "debug_data_dispatch": (),
+    "debug_data_dispatch": (
+        "docs/research/data/debug-dispatch-engine-windows-qt5.json",
+    ),
 }
 
 
@@ -337,13 +339,13 @@ EXPERIMENTS: dict[str, dict[str, Any]] = {
     "nested_engine": {
         "fixture": "docs/research/data/nested-corpus.json",
         "harness": (
-            "port the archive-option, iteration, resource-context, debug, "
-            "and archive-limit probes under tools/upstream/"
+            "port the archive-option, archive/resource iteration, and "
+            "archive-limit probes under tools/upstream/"
         ),
         "assertions": [
             "direct engine options are separated from release CLI flags",
             "count, depth, and cumulative-byte sentinel boundaries execute",
-            "context propagation, debug omission, cancellation, and resource projections are retained",
+            "cancellation and archive/resource projections are retained",
         ],
     },
     "result_model": {
@@ -807,6 +809,30 @@ def validate_inputs(
     ):
         raise ClosurePlanError("Windows dispatch facts drift")
 
+    debug_dispatch = reports[
+        "docs/research/data/debug-dispatch-engine-windows-qt5.json"
+    ]
+    if (
+        debug_dispatch.get("passed") is not True
+        or debug_dispatch.get("failures") != []
+        or debug_dispatch.get("capability") != "CAP-NEST-007"
+        or debug_dispatch.get("repetitions") != 2
+        or debug_dispatch.get("execution_count") != 2
+        or debug_dispatch.get("case_observation_count") != 6
+        or debug_dispatch.get("raw_outputs_equal") is not True
+        or debug_dispatch.get("normalized_outputs_equal") is not True
+        or debug_dispatch.get("relationships_equal") is not True
+        or debug_dispatch.get("linux_qt5_semantic_document_equal")
+        is not True
+        or len(debug_dispatch.get("relationships", {})) != 9
+        or not all(debug_dispatch.get("relationships", {}).values())
+        or debug_dispatch.get("harness_output", {}).get(
+            "enumerated_part_count"
+        )
+        != 2
+    ):
+        raise ClosurePlanError("Windows debug-dispatch facts drift")
+
     for evidence_set, paths in EVIDENCE_PATHS.items():
         for path in paths:
             if path not in reports:
@@ -918,7 +944,7 @@ def build_plan(root: Path) -> dict[str, Any]:
             "windows_baseline_admitted": (
                 not PARTIAL and not MISSING
             ),
-            "windows_process_execution_count": 2210,
+            "windows_process_execution_count": 2212,
             "windows_report_count": len(REPORT_KEYS),
         },
     }

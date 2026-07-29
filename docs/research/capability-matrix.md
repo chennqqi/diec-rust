@@ -278,6 +278,9 @@ hideunknown 的可观察增量。完整输入哈希和输出见
   bytes 在 direct `FILEPART_DEBUGDATA` context 被原样规则识别为 PDB link，
   但公共扫描没有 debug child。详见
   [`debug-data-dispatch-behavior.md`](debug-data-dispatch-behavior.md)。
+  原生 Windows Qt5 双轮 paired harness 的九项关系及完整归一化文档与 Linux
+  Qt5 相同，详见
+  [`windows-debug-dispatch-behavior.md`](windows-debug-dispatch-behavior.md)。
 - `CAP-NEST-008`：JSON 结果通过父 detection 的 `values` 表达树，并保留 file part、size 和
   offset。详见 [`nested-scan-behavior.md`](nested-scan-behavior.md)。
 - `CAP-NEST-009`：固定源码没有独立嵌套 depth 或全 scan 累计展开字节状态；
@@ -391,8 +394,8 @@ platform-missing。全部行已分类不等于 Phase 0 覆盖完成。
 
 Windows 的独立逐行审计见
 [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)：
-现有 18 份报告支持 63 complete、1 partial、4 missing。该 63 行只是 closure
-内部结论；5 个开放行关闭并经 coverage builder 接纳前，Windows 的 68 个
+现有 19 份报告支持 64 complete、1 partial、3 missing。该 64 行只是 closure
+内部结论；4 个开放行关闭并经 coverage builder 接纳前，Windows 的 68 个
 platform-missing 不变。
 
 其中

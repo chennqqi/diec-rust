@@ -10,7 +10,9 @@ Last updated: 2026-07-28
 
 `CAP-NEST-007` 已由同一 PE 输入上的成对运行时实验关闭；固定 Linux Qt6
 对照见
-[`qt6-debug-dispatch-runtime-evidence.md`](qt6-debug-dispatch-runtime-evidence.md)：
+[`qt6-debug-dispatch-runtime-evidence.md`](qt6-debug-dispatch-runtime-evidence.md)，
+原生 Windows Qt5 对照见
+[`windows-debug-dispatch-behavior.md`](windows-debug-dispatch-behavior.md)：
 
 - Formats 层从父 PE 同时枚举出 offset 608 的 Manifest resource 和 offset
   1088 的 CodeView/RSDS debug-data file part；

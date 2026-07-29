@@ -93,6 +93,9 @@ Phase 0 计划形成：
 - [`windows-dispatch-behavior.md`](windows-dispatch-behavior.md)：
   DOS/COM、Amiga/Atari 公共 CLI 与 BW/NPM/Archive 直连 harness 的原生
   Windows Qt5 双轮证据，关闭三个 dispatch 能力行（Draft）。
+- [`windows-debug-dispatch-behavior.md`](windows-debug-dispatch-behavior.md)：
+  原生 Windows Qt5 的 resource/debug paired harness、九项分派关系与 Linux
+  Qt5 完整语义文档对照，关闭 `CAP-NEST-007`（Draft）。
 - [`source-analysis.md`](source-analysis.md)：模块关系及扫描/规则调用链（Draft）。
 - [`rule-compatibility.md`](rule-compatibility.md)：规则语法、内建函数和宿主 API（Draft）。
 - [`rule-runtime-spike.md`](rule-runtime-spike.md)：Boa 全库解析、真实复杂规则、宿主绑定和资源限制验证（Draft）。
@@ -238,8 +241,8 @@ Phase 0 计划形成：
   原生 Windows Qt5 的 19-case engine cache/DACL 双轮基线、Linux 语义投影
   和平台 cache-byte 差异（Draft）。
 - [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)：
-  将 18 份 Windows runtime 报告逐项映射到 68 行能力清单，当前为
-  63 complete、1 partial、4 missing（Draft）。
+  将 19 份 Windows runtime 报告逐项映射到 68 行能力清单，当前为
+  64 complete、1 partial、3 missing（Draft）。
 - [`windows-cli-option-behavior.md`](windows-cli-option-behavior.md)：
   固定 Windows verbose/test/create-test/messages 和 292-rule profiling
   顺序，保留 `image_ICNS.sg` 的精确平台移动差异（Draft）。
@@ -496,6 +499,9 @@ Phase 0 计划形成：
 - [`data/debug-dispatch-engine-qt5.json`](data/debug-dispatch-engine-qt5.json)：
   Formats 枚举、public recursive omission 与 direct debug detection 的 paired
   Qt5 报告。
+- [`data/debug-dispatch-engine-windows-qt5.json`](data/debug-dispatch-engine-windows-qt5.json)：
+  原生 Windows Qt5 两轮 paired harness、九项关系及 Linux Qt5 完整语义文档
+  对照。
 - [`data/boa-rule-runtime.json`](data/boa-rule-runtime.json)：Boa spike 输入哈希、固定版本和稳定结果摘要。
 - [`data/rquickjs-rule-runtime.json`](data/rquickjs-rule-runtime.json)：rquickjs spike 输入哈希、固定版本和稳定结果摘要。
 - [`data/rquickjs-static-link.json`](data/rquickjs-static-link.json)：rquickjs staticlib 三条 native smoke、链接依赖和 18-package 许可证清单。

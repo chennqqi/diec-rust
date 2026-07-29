@@ -1,0 +1,294 @@
+{
+  "build_manifest": {
+    "identity": {
+      "artifact": {
+        "filename": "diec-debug-dispatch-harness.exe",
+        "sha256": "a35c8600dcd857de3dea23c337fedf4f64d6cf55e9e736e6362451c782aaff85",
+        "size": 3097600
+      },
+      "baseline": {
+        "cli_sha256": "e8579a6ed0d2536ea14af154bcbeeaaea6967c0c7559a595fb3fe52206ac635e",
+        "commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+        "recursive_submodule_count": 58,
+        "repository": "https://github.com/horsicq/DIE-engine",
+        "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6"
+      },
+      "build": {
+        "access_bridge": {
+          "from_public_declaration": "?processDetect@DiE_Script@@QEAAXPEAUSCANID@XScanEngine@@PEAUSCAN_RESULT@3@PEAVQIODevice@@AEBU23@W4FT@XBinary@@PEAUSCAN_OPTIONS@3@AEBVQString@@_NPEAUPDSTRUCT@7@@Z",
+          "kind": "msvc-alternatename",
+          "to_private_definition": "?processDetect@DiE_Script@@AEAAXPEAUSCANID@XScanEngine@@PEAUSCAN_RESULT@3@PEAVQIODevice@@AEBU23@W4FT@XBinary@@PEAUSCAN_OPTIONS@3@AEBVQString@@_NPEAUPDSTRUCT@7@@Z"
+        },
+        "database_root": "<working-directory>/Detect-It-Easy",
+        "elapsed_milliseconds": 16657,
+        "engine_objects_modified": false,
+        "host_architecture": "amd64",
+        "original_die_script_object_sha256": "f74138c8acbf6a7427c90761c7bfbf7715c3dfda6e1c4def3715d348ac159a19",
+        "original_main_object_sha256": "ff736a313b4d8d53747a7b113fff5a310c31c4218555ffbf1570537af15dd6be",
+        "original_makefile_sha256": "e6f7710cd32be5050e10234f3282d2512b58d28170d5de14f96c30478ac03725",
+        "replaced_object": "release/main_console.obj",
+        "runtime_working_directory_contract": "verified-source-root",
+        "system": "patched-qmake-release-makefile",
+        "target_architecture": "amd64",
+        "tool": "nmake"
+      },
+      "qt": {
+        "qmake_sha256": "e873ad3a689a0628c3037a6440221dcd2e426395edf14ffa6379612dede26d36",
+        "qmake_spec": "win32-msvc",
+        "qt5core_sha256": "8d2ff4ce9096ddccc4f4cd62c2e41fc854cfd1b0d6e8d296645a7f5fd4ae565a",
+        "qt5script_sha256": "0b58e5e79df13110a8258f14d7b3658d1dd0c8dddc337a164b89d4ac12a0638f",
+        "version": "5.15.2"
+      },
+      "schema_version": 1,
+      "source_hashes": {
+        "builder": "be5aa2fa01d77d2f4a4d849af423801d81f39651c9910161764df952ee80446b",
+        "harness": {
+          "adapted_sha256": "aec97a3117da0c31c48f3fe9fa183eb2444359cb5e7e550924772ad962996ea6",
+          "database_path_replacements": [
+            {
+              "count": 1,
+              "from": "/opt/die-source/Detect-It-Easy/db_custom",
+              "to": "Detect-It-Easy/db_custom"
+            },
+            {
+              "count": 1,
+              "from": "/opt/die-source/Detect-It-Easy/db_extra",
+              "to": "Detect-It-Easy/db_extra"
+            },
+            {
+              "count": 3,
+              "from": "/opt/die-source/Detect-It-Easy/db",
+              "to": "Detect-It-Easy/db"
+            }
+          ],
+          "original_sha256": "9d2cfb6c3f0cce529938270d67864e09948c483a9632830545973e0be725a381",
+          "path": "tools/upstream/debug_dispatch_harness_main.cpp"
+        }
+      }
+    },
+    "sha256": "54433fbb3dcfb635dd8fd5038c8c0bdececc57237d965cf810534933318247b6"
+  },
+  "capability": "CAP-NEST-007",
+  "case_observation_count": 6,
+  "execution_count": 2,
+  "failures": [],
+  "fixture": {
+    "path": "docs/research/data/debug-dispatch-fixture.json",
+    "sha256": "ed52306253c1f989677f15ebd3d4de35ab4ea7904afbeafac0672bbe35a0c1dc"
+  },
+  "generator": "tools/upstream/collect_windows_debug_dispatch.py",
+  "generator_sha256": "2eca5e81b519c5169d3d3b83b29534f213c94546576b5dbb1d21c93c11aed7a9",
+  "harness_output": {
+    "database_loaded": true,
+    "debug_rule_sha256": "381b6259b239f2633b92fbd84fd0d99b972751e20cab12b6e09139a260f1f47d",
+    "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+    "direct_debug_scan": {
+      "error_count": 0,
+      "record_count": 1,
+      "records": [
+        {
+          "id": {
+            "filepart": 128,
+            "filepart_string": "Debug data",
+            "filetype": 4,
+            "filetype_string": "Binary",
+            "offset": 0,
+            "size": 38
+          },
+          "info": "",
+          "name": "PDB file link",
+          "parent_id": {
+            "filepart": 128,
+            "filepart_string": "Debug data",
+            "filetype": 16,
+            "filetype_string": "PE32",
+            "offset": 1088,
+            "size": 38
+          },
+          "signature": "debug_data_debugData.1.sg",
+          "signature_path": "/opt/die-source/Detect-It-Easy/db/Binary/debug_data_debugData.1.sg",
+          "type": "debug data",
+          "unknown": false,
+          "version": "7.0"
+        }
+      ],
+      "scan_not_canceled": true,
+      "signature_filter": "debug_data_debugData.1.sg",
+      "source_part": {
+        "filepart": 128,
+        "filepart_string": "Debug data",
+        "name": "2",
+        "offset": 1088,
+        "resource_id": "",
+        "sha256": "f4062413bf0504b8eb9b30dc76d27a576f75827f0b13822a43eea00706709e5f",
+        "size": 38
+      }
+    },
+    "enumerated_part_count": 2,
+    "enumerated_parts": [
+      {
+        "filepart": 64,
+        "filepart_string": "Resource",
+        "name": "Resource 0",
+        "offset": 608,
+        "resource_id": "24",
+        "sha256": "96f63fca235e4a359900fa17b076d2cb3d16945855b25fcb3c391eb49215428b",
+        "size": 20
+      },
+      {
+        "filepart": 128,
+        "filepart_string": "Debug data",
+        "name": "2",
+        "offset": 1088,
+        "resource_id": "",
+        "sha256": "f4062413bf0504b8eb9b30dc76d27a576f75827f0b13822a43eea00706709e5f",
+        "size": 38
+      }
+    ],
+    "enumeration_not_canceled": true,
+    "format_filetype": "PE32",
+    "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+    "load_not_canceled": true,
+    "public_recursive_scan": {
+      "aggressive": true,
+      "error_count": 0,
+      "initial_filetype": "PE32",
+      "record_count": 2,
+      "records": [
+        {
+          "id": {
+            "filepart": 16,
+            "filepart_string": "Header",
+            "filetype": 16,
+            "filetype_string": "PE32",
+            "offset": 0,
+            "size": 1536
+          },
+          "info": "CodeView",
+          "name": "Records",
+          "parent_id": {
+            "filepart": 16,
+            "filepart_string": "Header",
+            "filetype": 0,
+            "filetype_string": "Unknown",
+            "offset": 0,
+            "size": 0
+          },
+          "signature": "_debug_data.5.sg",
+          "signature_path": "/opt/die-source/Detect-It-Easy/db/PE/_debug_data.5.sg",
+          "type": "debug data",
+          "unknown": false,
+          "version": ""
+        },
+        {
+          "id": {
+            "filepart": 64,
+            "filepart_string": "Resource",
+            "filetype": 4,
+            "filetype_string": "Binary",
+            "offset": 608,
+            "size": 20
+          },
+          "info": "Resources",
+          "name": "Manifest",
+          "parent_id": {
+            "filepart": 64,
+            "filepart_string": "Resource",
+            "filetype": 16,
+            "filetype_string": "PE32",
+            "offset": 608,
+            "size": 20
+          },
+          "signature": "win_resources.1.sg",
+          "signature_path": "/opt/die-source/Detect-It-Easy/db/Binary/win_resources.1.sg",
+          "type": "format",
+          "unknown": false,
+          "version": ""
+        }
+      ],
+      "recursive": true,
+      "scan_not_canceled": true
+    },
+    "resource_rule_sha256": "2fdad41d666d32467cabe83dae7d16625ade5935e3061c58dfefeb1fb7b99db7",
+    "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+    "sample_name": "pe-resource-debug.exe",
+    "sample_sha256": "58e2b8e73ba187977564e719d39022079b8fb9172c5bcdf40c495ed825b38ea1",
+    "sample_size": 1536,
+    "schema_version": 1,
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+  },
+  "host": {
+    "architecture": "AMD64",
+    "os_build": "10.0.26100"
+  },
+  "linux_qt5_reference": {
+    "path": "docs/research/data/debug-dispatch-engine-qt5.json",
+    "sha256": "6ec887de5ece0e041a920a82d79446e9070c7a868614d6c0218caf074930be88"
+  },
+  "linux_qt5_semantic_document_equal": true,
+  "normalization": {
+    "not_performed": [
+      "record or field removal/reordering",
+      "filetype, rule, result, or error text rewriting",
+      "raw stdout/stderr hash rewriting"
+    ],
+    "operation": "replace only three verified signature_path prefixes under the fixed source/Detect-It-Easy root with the Linux reference root"
+  },
+  "normalized_outputs_equal": true,
+  "passed": true,
+  "platform": "windows-x86_64-qt5",
+  "qt": {
+    "qmake_sha256": "e873ad3a689a0628c3037a6440221dcd2e426395edf14ffa6379612dede26d36",
+    "qmake_spec": "win32-msvc",
+    "qt5core_sha256": "8d2ff4ce9096ddccc4f4cd62c2e41fc854cfd1b0d6e8d296645a7f5fd4ae565a",
+    "qt5script_sha256": "0b58e5e79df13110a8258f14d7b3658d1dd0c8dddc337a164b89d4ac12a0638f",
+    "version": "5.15.2"
+  },
+  "raw_artifacts": {
+    "stdout_and_stderr_retained_for_every_execution": true,
+    "storage": "untracked external directory selected by --raw-dir"
+  },
+  "raw_outputs_equal": true,
+  "relationships": {
+    "all_operations_complete_without_errors": true,
+    "direct_debug_rule_detects_rsds": true,
+    "direct_debug_uses_enumerated_part": true,
+    "format_layer_enumerates_debug_data": true,
+    "format_layer_enumerates_resource": true,
+    "parent_debug_metadata_is_header_record": true,
+    "public_mode_is_recursive_and_aggressive": true,
+    "public_scanner_omits_debug_data_child": true,
+    "recursive_resource_is_positive_control": true
+  },
+  "relationships_equal": true,
+  "repetitions": 2,
+  "runs": [
+    {
+      "exit_code": 0,
+      "raw_stderr": "run-1.stderr",
+      "raw_stdout": "run-1.stdout",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 5279,
+      "stdout_sha256": "3d720cac4bfbfa0a271c07be109588758dcc82db2949eddb9a33347df2f91cc3"
+    },
+    {
+      "exit_code": 0,
+      "raw_stderr": "run-2.stderr",
+      "raw_stdout": "run-2.stdout",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 5279,
+      "stdout_sha256": "3d720cac4bfbfa0a271c07be109588758dcc82db2949eddb9a33347df2f91cc3"
+    }
+  ],
+  "schema_version": 1,
+  "semantic_case_count_per_execution": 3,
+  "source": {
+    "commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "recursive_submodule_count": 58,
+    "repository": "https://github.com/horsicq/DIE-engine",
+    "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6"
+  }
+}

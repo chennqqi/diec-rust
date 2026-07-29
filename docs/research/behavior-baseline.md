@@ -117,11 +117,13 @@ case observation。scalar、四类列表、flags、IDs 和 enums 的完整语义
 固定 Windows Qt5 oracle 随后完成 DOS/COM、Amiga/Atari 的公开 CLI 双轮矩阵，
 以及 BW、NPM、通用 Archive 的三个直连 harness 双轮矩阵：86 次进程执行、
 72 次 case observation 全部稳定，公开语义投影及三个完整 harness JSON 文档
-均与 Linux Qt5 相同。十八份 Windows runtime 报告累计 2,210 次执行；逐行
-审计更新为 63 complete、1 partial、4 missing，下一优先批次转为四项
+均与 Linux Qt5 相同。随后 Windows debug-data paired harness 双轮又关闭
+`CAP-NEST-007`。十九份 Windows runtime 报告累计 2,212 次执行；逐行审计
+更新为 64 complete、1 partial、3 missing，下一优先批次转为三项 archive
 nested-engine harness，详见
-[`windows-dispatch-behavior.md`](windows-dispatch-behavior.md)。
-上述 18 份报告由
+[`windows-dispatch-behavior.md`](windows-dispatch-behavior.md) 与
+[`windows-debug-dispatch-behavior.md`](windows-debug-dispatch-behavior.md)。
+上述 19 份报告由
 [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)
 逐行投影，继续阻止局部 runtime 结果被误当作完整 Windows baseline。
 
