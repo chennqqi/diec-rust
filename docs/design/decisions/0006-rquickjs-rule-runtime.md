@@ -102,15 +102,17 @@ workspace 建立时重新生成并审计，不允许浮动到其他 minor/patch 
   单一 Binary corpus 的 poll/checkpoint count 推导跨格式 fuel；signature
   checkpoint 也不代表所有 HostApi 已覆盖，默认 allocator 的 memory checkpoint
   不是 eval 内瞬时 heap high-water。候选 `TrackingLimitAllocator` 已在相同
-  14-sample/4088-detect oracle 上连续三轮记录 4,411,368-byte 最大瞬时
+  14-sample/4088-detect oracle 上连续三轮记录 4,478,992-byte 最大瞬时
   high-water，32 MiB limit 下 0 次拒绝，42/42 runtime drop 后归零；稳定投影
   SHA-256 为
-  `d9f3b47535f6d61e7f7b21f6db7731cf290fa0cb8f5277d906ba5b2906dff4f4`。
+  `c455f6932322ff8161a4f6c9288710b5ed792ff5486b4459e11ef27e794e45c4`。
+  计费单位是 pinned `RustAllocator` 的实际 `Layout` bytes（对齐 payload 加
+  internal header），不是只计 `usable_size()`。
   这仍只是 Windows 候选 allocator 证据，不是 production backend 或跨平台证明。
   另有 PE/ELF/Mach-O/DEX/APK/Archive/PDF 七条代表性规则的
   25-case 矩阵连续三轮固定为每轮 25 次 poll、75 个 lifecycle memory
   checkpoint，最大 `malloc_size=124,485`；同一矩阵的 custom allocator
-  三轮最大瞬时 high-water 为 124,080 bytes，0 次拒绝且 75/75 runtime drop
+  三轮最大瞬时 high-water 为 134,792 bytes，0 次拒绝且 75/75 runtime drop
   后归零。但这不是所有格式/规则的 scaling，因此这些数字仍保持
   `review_candidate_not_admitted`。
 - fuel quantum 是 pinned backend 的 VM interrupt poll 或 native cooperative

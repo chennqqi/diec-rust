@@ -127,6 +127,13 @@ class ScriptRuntimeBudgetTests(unittest.TestCase):
             ]
         )
         self.assertEqual(
+            evidence["candidate_custom_allocator_accounting"],
+            (
+                "RustAllocator allocation Layout bytes: aligned payload "
+                "plus internal header"
+            ),
+        )
+        self.assertEqual(
             evidence[
                 "candidate_custom_allocator_limit_bytes_per_sample_runtime"
             ],
@@ -136,7 +143,7 @@ class ScriptRuntimeBudgetTests(unittest.TestCase):
             evidence[
                 "candidate_custom_allocator_maximum_high_water_bytes"
             ],
-            4_411_368,
+            4_478_992,
         )
         self.assertEqual(
             evidence[
@@ -163,7 +170,7 @@ class ScriptRuntimeBudgetTests(unittest.TestCase):
             evidence[
                 "candidate_custom_allocator_stable_projection_sha256"
             ],
-            "d9f3b47535f6d61e7f7b21f6db7731cf290fa0cb8f5277d906ba5b2906dff4f4",
+            "c455f6932322ff8161a4f6c9288710b5ed792ff5486b4459e11ef27e794e45c4",
         )
         self.assertFalse(
             evidence[
@@ -303,7 +310,7 @@ class ScriptRuntimeBudgetTests(unittest.TestCase):
             evidence[
                 "representative_cross_format_maximum_high_water_bytes"
             ],
-            124_080,
+            134_792,
         )
         self.assertEqual(
             evidence[

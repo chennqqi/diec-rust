@@ -281,6 +281,10 @@ class ResourceLimitPolicyTests(unittest.TestCase):
         self.assertEqual(
             facts["script_runtime_evidence_boundary"],
             {
+                "candidate_custom_allocator_accounting": (
+                    "RustAllocator allocation Layout bytes: aligned payload "
+                    "plus internal header"
+                ),
                 "real_corpus_heap_high_water_measured": False,
                 "real_corpus_interrupt_poll_count_measured": True,
                 "real_corpus_interrupt_poll_repeat_count": 3,
@@ -324,7 +328,7 @@ class ResourceLimitPolicyTests(unittest.TestCase):
                     32 * 1024**2
                 ),
                 "representative_cross_format_maximum_high_water_bytes": (
-                    124_080
+                    134_792
                 ),
                 "representative_cross_format_maximum_high_water_format": (
                     "macho"

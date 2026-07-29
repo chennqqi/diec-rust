@@ -192,14 +192,16 @@ corpus VM poll 已连续三轮
 次（compare 16,285、search 154），并有 4095/4096 候选边界及单次调用中断测试。
 其他 HostApi 与完整跨格式 scaling 仍未覆盖。4,130 个默认 allocator lifecycle
 memory checkpoint 的最大 observed `malloc_size` 为 654,562 bytes；custom
-allocator 三轮稳定测得最大 transient live heap 为 4,411,368 bytes，32 MiB
+allocator 三轮稳定测得最大 transient live heap 为 4,478,992 bytes，32 MiB
 hard limit 下无拒绝且每个 runtime drop 后归零。该单一 Binary corpus 和单平台
-候选 backend 仍不能证明跨格式 fuel/heap scaling 或 production 适用性。
+候选 backend 仍不能证明跨格式 fuel/heap scaling 或 production 适用性。这里
+的 live heap 按 `RustAllocator` 实际 `Layout` bytes 计费，包含对齐 payload
+和 internal header。
 
 已有的 PE/ELF/Mach-O/DEX/APK/Archive/PDF 差分另形成七类、25-case 的代表性
 矩阵：连续三轮均为 25/25 匹配，每轮 25 次正常 VM poll、75 个 lifecycle
 memory checkpoint，最大 observed `malloc_size` 为 124,485 bytes。同一矩阵的
-custom allocator 三轮最大 transient live heap 为 124,080 bytes，0 denied
+custom allocator 三轮最大 transient live heap 为 134,792 bytes，0 denied
 allocation 且全部 75 个 runtime drop 后归零。它只缩小“Binary 单格式观察”的
 证据缺口；每类仅一条短规则，不能将
 `all_format_rule_lifecycles_measured` 置为 true。

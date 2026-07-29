@@ -20,8 +20,8 @@
   "experiment": {
     "cargo_lock_sha256": "f389eb266779a88939fea9793effdff29d01ea0e1184915698f4fa0f9441d0ad",
     "cargo_toml_sha256": "82c5bb97749f50212e5364c2ac7d1f81eaec4d460a9bf47710b4b42f9204a79f",
-    "source_sha256": "7b999509a4abe78672be73564b443998221e9ff3b44ec2078b457827d759ed4f",
-    "tracking_allocator_source_sha256": "1409b40627d5fd4cf108e24bef6a8d3cc580ca90ace06f685522ea55e7b4bb32",
+    "source_sha256": "4b818bd45a6a142206427d74a81c430b45feda6070725a7f31f2c7cf2e2ba486",
+    "tracking_allocator_source_sha256": "0686ad30b9ef4f05fd6a54c39f7a5173d80321564a68a321d2b553e76cf84965",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -43,12 +43,12 @@
     "memory_limit_same_context_recovered": true,
     "memory_limit_same_context_recovery_result": "42",
     "tracking_allocator": {
-      "accounting": "RustAllocator usable bytes including alignment rounding, excluding allocator header",
+      "accounting": "RustAllocator allocation Layout bytes: aligned payload plus internal header",
       "denied_allocation_count": 1,
-      "high_water_bytes": 100368,
+      "high_water_bytes": 109056,
       "limit_bytes": 4194304,
       "live_bytes_after_drop": 0,
-      "live_bytes_before_drop": 99400,
+      "live_bytes_before_drop": 107976,
       "oversized_allocation_error": "out of memory",
       "same_context_recovered": true,
       "same_context_recovery_result": "42",
@@ -1363,56 +1363,57 @@
     "scope": "one byte-identical upstream rule each for PE, ELF, Mach-O, DEX, APK, Archive, and PDF over 25 generated positive/negative/truncated cases; representative cross-format runtime evidence, not all formats or all fixed rules",
     "stable_canonical_reports_equal": true,
     "tracked_heap": {
+      "accounting": "RustAllocator allocation Layout bytes: aligned payload plus internal header",
       "all_match": true,
       "all_runtimes_released_to_zero": true,
       "case_count_per_repeat": 25,
       "denied_allocation_count_per_repeat": 0,
       "formats": {
         "apk": {
-          "canonical_report_sha256": "4c9eb9450ee09f9763bf354cf93a6d5b2e549b336ecf5388e4ecfabc7f554ecb",
+          "canonical_report_sha256": "4de395c973069adbb40a4c1d3405f428154d41722b4b015d7c71f9358050f5dd",
           "case_count": 3,
-          "maximum_high_water_bytes": 118512,
+          "maximum_high_water_bytes": 129160,
           "maximum_high_water_case": "qdbh_archive_record_match"
         },
         "archive": {
-          "canonical_report_sha256": "9ff282f52019c10c96eea9fa094258cfc3c057c90f9b942295b74ba0b1c85cca",
+          "canonical_report_sha256": "6b82e6c324736dc88e54a780ae5c1b29cceb5e14bb46c94b982a34fa64c3ffd5",
           "case_count": 3,
-          "maximum_high_water_bytes": 119856,
+          "maximum_high_water_bytes": 130560,
           "maximum_high_water_case": "verbose_stored_zip"
         },
         "dex": {
-          "canonical_report_sha256": "3f028c9456b586f4de6467f61c0db230e18ab349e123ef0c53ca2e5850507571",
+          "canonical_report_sha256": "9f795bba6ac85ab204ac410a3767535ce9aa26b54708a52a2cfe62dd72c78c48",
           "case_count": 3,
-          "maximum_high_water_bytes": 118488,
+          "maximum_high_water_bytes": 129136,
           "maximum_high_water_case": "qdbh_string_match"
         },
         "elf": {
-          "canonical_report_sha256": "66422fea62649d4c012a53406812721d690f445fb87551f18666a3e368016cd2",
+          "canonical_report_sha256": "94e9ca327c8fb56d11d148631d23a3bf4fedf0489003a32807e38c4d30e6d9a5",
           "case_count": 6,
-          "maximum_high_water_bytes": 118736,
+          "maximum_high_water_bytes": 129392,
           "maximum_high_water_case": "burneye_elf32_entry_point_match"
         },
         "macho": {
-          "canonical_report_sha256": "5c29b45188faed63b89a568d8b48a2e0a8930376d9d048c864b5626a7791e2ce",
+          "canonical_report_sha256": "08a48936c916ca1536cef1363c9ba700919214bc2c832015509776dccadccb36",
           "case_count": 4,
-          "maximum_high_water_bytes": 124080,
+          "maximum_high_water_bytes": 134792,
           "maximum_high_water_case": "rust_macho64_x86_64_entry_point_match"
         },
         "pdf": {
-          "canonical_report_sha256": "1e154f896079455f8b5904f296bb3c4a9271b02ab151a5d97d07b0f38a2833ef",
+          "canonical_report_sha256": "7f8005e862c19b3d12c34bdbda133b59a4ac230ef5384b4d6293421d12a0bbf4",
           "case_count": 3,
-          "maximum_high_water_bytes": 120976,
+          "maximum_high_water_bytes": 131704,
           "maximum_high_water_case": "tools_string_values"
         },
         "pe": {
-          "canonical_report_sha256": "b88e1775f0f19299525ba7c5817efa129523eed94da9d7afae5040cef58c20de",
+          "canonical_report_sha256": "b646a1a918a689100914c14606e61d29ee11461a70d8f037b7df04572bcd6145",
           "case_count": 3,
-          "maximum_high_water_bytes": 118528,
+          "maximum_high_water_bytes": 129176,
           "maximum_high_water_case": "cygwin32_entry_point_match"
         }
       },
       "limit_bytes_per_case_runtime": 33554432,
-      "maximum_high_water_bytes": 124080,
+      "maximum_high_water_bytes": 134792,
       "maximum_high_water_case": "rust_macho64_x86_64_entry_point_match",
       "maximum_high_water_format": "macho",
       "repeat_count": 3,
@@ -1517,12 +1518,12 @@
         "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
       },
       "memory": {
-        "accounting": "RustAllocator usable bytes including alignment rounding, excluding allocator header",
+        "accounting": "RustAllocator allocation Layout bytes: aligned payload plus internal header",
         "all_runtimes_released_to_zero": true,
         "backend": "rquickjs RustAllocator wrapped by TrackingLimitAllocator",
         "denied_allocation_count": 0,
         "limit_bytes_per_sample_runtime": 33554432,
-        "maximum_high_water_bytes": 4411368,
+        "maximum_high_water_bytes": 4478992,
         "maximum_high_water_sample": "ps3-type-1-elf.self",
         "set_memory_limit_used": false,
         "transient_high_water_measured": true
@@ -1532,7 +1533,7 @@
       "repeat_count": 3,
       "sample_runtime_count_per_repeat": 14,
       "stable_projection_equal": true,
-      "stable_projection_sha256": "d9f3b47535f6d61e7f7b21f6db7731cf290fa0cb8f5277d906ba5b2906dff4f4"
+      "stable_projection_sha256": "c455f6932322ff8161a4f6c9288710b5ed792ff5486b4459e11ef27e794e45c4"
     },
     "sample_count": 14,
     "scope": "the same full Binary corpus oracle under a custom tracking/limit allocator; Windows x86_64 MSVC evidence for the candidate allocator, not default-allocator or cross-platform proof"

@@ -779,10 +779,15 @@ def validate_reports(root: Path) -> dict[str, Any]:
             "representative_cross_format_tracking_limit_bytes"
         )
         == 32 * MIB
+        and script_evidence.get("candidate_custom_allocator_accounting")
+        == (
+            "RustAllocator allocation Layout bytes: aligned payload plus "
+            "internal header"
+        )
         and script_evidence.get(
             "representative_cross_format_maximum_high_water_bytes"
         )
-        == 124_080
+        == 134_792
         and script_evidence.get(
             "representative_cross_format_maximum_high_water_format"
         )
@@ -886,6 +891,10 @@ def validate_reports(root: Path) -> dict[str, Any]:
                 "observed_maximum_is_candidate_basis": False,
             },
             "script_runtime_evidence_boundary": {
+                "candidate_custom_allocator_accounting": (
+                    "RustAllocator allocation Layout bytes: aligned payload "
+                    "plus internal header"
+                ),
                 "real_corpus_heap_high_water_measured": False,
                 "real_corpus_interrupt_poll_count_measured": True,
                 "real_corpus_interrupt_poll_repeat_count": 3,
@@ -928,7 +937,7 @@ def validate_reports(root: Path) -> dict[str, Any]:
                 "representative_cross_format_tracking_limit_bytes": 32
                 * MIB,
                 "representative_cross_format_maximum_high_water_bytes": (
-                    124_080
+                    134_792
                 ),
                 "representative_cross_format_maximum_high_water_format": (
                     "macho"

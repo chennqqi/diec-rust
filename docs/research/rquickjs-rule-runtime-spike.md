@@ -144,15 +144,16 @@ runtime 的稳定计量投影逐字节等价，SHA-256 均为
 三轮仍为 14/14 oracle 匹配、4088/4088 无异常、0 fallback、0 allocation
 rejection，且全部 42 个 runtime 在 drop 后 live bytes 归零。三轮稳定投影
 SHA-256 均为
-`d9f3b47535f6d61e7f7b21f6db7731cf290fa0cb8f5277d906ba5b2906dff4f4`，
+`c455f6932322ff8161a4f6c9288710b5ed792ff5486b4459e11ef27e794e45c4`，
 并由独立 canonical JSON 实现重算一致。最大瞬时 high-water 为
-4,411,368 bytes，仍出现在 `ps3-type-1-elf.self`。
+4,478,992 bytes，仍出现在 `ps3-type-1-elf.self`。
 
-该数字统计 `RustAllocator::usable_size()` 返回的对齐后 payload，不含其内部
-allocator header，也不等于进程 RSS。它证明 Windows x86_64 MSVC 上这个候选
-custom allocator 能在完整 Binary 语料路径中同时执行硬限制与瞬时观测；不证明
-默认 libc allocator 的 high-water，也不替代 Linux/macOS、sanitizer 或更广
-规则/格式语料验证。
+该数字统计 `RustAllocator` 实际 `Layout` bytes：8-byte 对齐后的 payload 加
+`max(sizeof(usize), 8)` internal header；QuickJS 所需的 `usable_size()` 仍只
+返回 payload。它不等于进程 RSS。该计费避免每个 live allocation 漏掉 header，
+并证明 Windows x86_64 MSVC 上这个候选 custom allocator 能在完整 Binary 语料
+路径中同时执行硬限制与瞬时观测；不证明默认 libc allocator 的 high-water，也
+不替代 Linux/macOS、sanitizer 或更广规则/格式语料验证。
 
 为避免只观察 Binary 全规则生命周期，本轮又复用已通过 Qt5 差分的 PE、ELF、
 Mach-O、DEX、APK、Archive 和 PDF 七条原样上游规则。七类代表性格式规则共
@@ -167,10 +168,10 @@ canonical JSON 报告各自三轮相同。全矩阵最大 `malloc_size` 为 124,
 七个 `-tracked-heap` 变体又在完全相同的 25 个 case 上执行 32 MiB custom
 allocator hard limit。三轮均为 25/25 oracle 匹配、0 allocation rejection，
 共 75/75 runtime drop 后 live bytes 归零；每类完整 canonical 报告在三轮间
-分别相同。全矩阵最大瞬时 high-water 为 124,080 bytes，出现在 Mach-O
-`rust_macho64_x86_64_entry_point_match`。各类最大值为 PE 118,528、ELF
-118,736、Mach-O 124,080、DEX 118,488、APK 118,512、Archive 119,856、
-PDF 120,976 bytes；逐类 stable report SHA-256 记录在机器证据中。
+分别相同。全矩阵最大瞬时 high-water 为 134,792 bytes，出现在 Mach-O
+`rust_macho64_x86_64_entry_point_match`。各类最大值为 PE 129,176、ELF
+129,392、Mach-O 134,792、DEX 129,136、APK 129,160、Archive 130,560、
+PDF 131,704 bytes；逐类 stable report SHA-256 记录在机器证据中。
 
 该矩阵证明同一探针在七类既有格式差分上的确定性和代表性量级，不是所有格式或
 全部固定规则的 runtime scaling。每个 case 只执行一条短规则，观察到的“一次
@@ -201,10 +202,12 @@ proxy 只用于语法/顶层执行覆盖，不代表宿主 API 兼容，也不�
 custom allocator 需要实现 rquickjs 的 `unsafe Allocator` trait。spike 将
 `unsafe` 限制在 `tracking_allocator.rs`：所有 pointer 创建、realloc、释放和
 layout metadata 仍委托给 pinned `RustAllocator`；wrapper 只在 allocation
-存活期读取 `usable_size`、检查投影 live bytes 并更新原子计数。超限 realloc
-在委托前返回 null，保留原 allocation 所有权；calloc 乘法、alignment rounding
-和 allocator header 加法均先检查溢出。该模块仍是候选实现，需要 sanitizer
-与跨平台验证后才能进入正式 backend。
+存活期读取 `usable_size`，再加上 pinned source 定义的 header，检查投影 live
+`Layout` bytes 并更新原子计数。超限 realloc 在委托前返回 null，保留原
+allocation 所有权；calloc 乘法、alignment rounding 和 allocator header 加法
+均先检查溢出。单元测试固定“精确 limit 成功、limit−1 拒绝、最大 payload+1
+因对齐越界而拒绝”，并验证 denied realloc 不改变原 allocation/accounting。
+该模块仍是候选实现，需要 sanitizer 与跨平台验证后才能进入正式 backend。
 
 ## 构建与依赖
 
@@ -321,7 +324,7 @@ pinned `rquickjs-core 0.12.1/src/runtime/base.rs` 还记录默认 VM stack 为
 报告已在三轮真实 Binary corpus 生命周期汇总正常 interrupt poll，并保存 4,130 个
 post-operation memory checkpoint；但 handler callback 不是 JS instruction，
 默认 allocator checkpoint 仍不是 eval 内瞬时 heap high-water。custom
-allocator 已在本机完整 Binary 语料中测得 4,411,368-byte high-water，但它仍是
+allocator 已在本机完整 Binary 语料中测得 4,478,992-byte high-water，但它仍是
 单平台、单候选 backend 的观测值；4 MiB fault/128 KiB stack/25 ms deadline
 只证明故障注入与恢复接线，不能直接充当 production heap、stack、fuel 或
 deadline 候选的最终预算。

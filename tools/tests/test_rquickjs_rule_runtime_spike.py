@@ -112,14 +112,14 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
             fixture["tracking_allocator"],
             {
                 "accounting": (
-                    "RustAllocator usable bytes including alignment rounding, "
-                    "excluding allocator header"
+                    "RustAllocator allocation Layout bytes: aligned payload "
+                    "plus internal header"
                 ),
                 "denied_allocation_count": 1,
-                "high_water_bytes": 100_368,
+                "high_water_bytes": 109_056,
                 "limit_bytes": 4 * 1024 * 1024,
                 "live_bytes_after_drop": 0,
-                "live_bytes_before_drop": 99_400,
+                "live_bytes_before_drop": 107_976,
                 "oversized_allocation_error": "out of memory",
                 "same_context_recovered": True,
                 "same_context_recovery_result": "42",
@@ -404,12 +404,12 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
         )
         self.assertEqual(
             measurement["stable_projection_sha256"],
-            "d9f3b47535f6d61e7f7b21f6db7731cf290fa0cb8f5277d906ba5b2906dff4f4",
+            "c455f6932322ff8161a4f6c9288710b5ed792ff5486b4459e11ef27e794e45c4",
         )
         memory = measurement["memory"]
         self.assertTrue(memory["transient_high_water_measured"])
         self.assertEqual(memory["limit_bytes_per_sample_runtime"], 32 * 1024 * 1024)
-        self.assertEqual(memory["maximum_high_water_bytes"], 4_411_368)
+        self.assertEqual(memory["maximum_high_water_bytes"], 4_478_992)
         self.assertEqual(
             memory["maximum_high_water_sample"],
             "ps3-type-1-elf.self",
@@ -525,7 +525,7 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
         self.assertTrue(tracked["stable_canonical_reports_equal"])
         self.assertTrue(tracked["transient_high_water_measured"])
         self.assertFalse(tracked["set_memory_limit_used"])
-        self.assertEqual(tracked["maximum_high_water_bytes"], 124_080)
+        self.assertEqual(tracked["maximum_high_water_bytes"], 134_792)
         self.assertEqual(tracked["maximum_high_water_format"], "macho")
         self.assertEqual(
             tracked["maximum_high_water_case"],
@@ -538,13 +538,13 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
                 for name, value in tracked_formats.items()
             },
             {
-                "apk": 118_512,
-                "archive": 119_856,
-                "dex": 118_488,
-                "elf": 118_736,
-                "macho": 124_080,
-                "pdf": 120_976,
-                "pe": 118_528,
+                "apk": 129_160,
+                "archive": 130_560,
+                "dex": 129_136,
+                "elf": 129_392,
+                "macho": 134_792,
+                "pdf": 131_704,
+                "pe": 129_176,
             },
         )
         self.assertEqual(
@@ -554,25 +554,25 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
             },
             {
                 "apk": (
-                    "4c9eb9450ee09f9763bf354cf93a6d5b2e549b336ecf5388e4ecfabc7f554ecb"
+                    "4de395c973069adbb40a4c1d3405f428154d41722b4b015d7c71f9358050f5dd"
                 ),
                 "archive": (
-                    "9ff282f52019c10c96eea9fa094258cfc3c057c90f9b942295b74ba0b1c85cca"
+                    "6b82e6c324736dc88e54a780ae5c1b29cceb5e14bb46c94b982a34fa64c3ffd5"
                 ),
                 "dex": (
-                    "3f028c9456b586f4de6467f61c0db230e18ab349e123ef0c53ca2e5850507571"
+                    "9f795bba6ac85ab204ac410a3767535ce9aa26b54708a52a2cfe62dd72c78c48"
                 ),
                 "elf": (
-                    "66422fea62649d4c012a53406812721d690f445fb87551f18666a3e368016cd2"
+                    "94e9ca327c8fb56d11d148631d23a3bf4fedf0489003a32807e38c4d30e6d9a5"
                 ),
                 "macho": (
-                    "5c29b45188faed63b89a568d8b48a2e0a8930376d9d048c864b5626a7791e2ce"
+                    "08a48936c916ca1536cef1363c9ba700919214bc2c832015509776dccadccb36"
                 ),
                 "pdf": (
-                    "1e154f896079455f8b5904f296bb3c4a9271b02ab151a5d97d07b0f38a2833ef"
+                    "7f8005e862c19b3d12c34bdbda133b59a4ac230ef5384b4d6293421d12a0bbf4"
                 ),
                 "pe": (
-                    "b88e1775f0f19299525ba7c5817efa129523eed94da9d7afae5040cef58c20de"
+                    "b646a1a918a689100914c14606e61d29ee11461a70d8f037b7df04572bcd6145"
                 ),
             },
         )

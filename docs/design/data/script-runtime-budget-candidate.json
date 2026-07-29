@@ -49,16 +49,17 @@
   "evaluated_on": "2026-07-30",
   "evidence_boundary": {
     "all_format_rule_lifecycles_measured": false,
+    "candidate_custom_allocator_accounting": "RustAllocator allocation Layout bytes: aligned payload plus internal header",
     "candidate_custom_allocator_all_runtimes_released_to_zero": true,
     "candidate_custom_allocator_cross_platform_measured": false,
     "candidate_custom_allocator_denied_allocation_count": 0,
     "candidate_custom_allocator_is_production_backend": false,
     "candidate_custom_allocator_limit_bytes_per_sample_runtime": 33554432,
-    "candidate_custom_allocator_maximum_high_water_bytes": 4411368,
+    "candidate_custom_allocator_maximum_high_water_bytes": 4478992,
     "candidate_custom_allocator_maximum_high_water_sample": "ps3-type-1-elf.self",
     "candidate_custom_allocator_real_corpus_heap_high_water_measured": true,
     "candidate_custom_allocator_repeat_count": 3,
-    "candidate_custom_allocator_stable_projection_sha256": "d9f3b47535f6d61e7f7b21f6db7731cf290fa0cb8f5277d906ba5b2906dff4f4",
+    "candidate_custom_allocator_stable_projection_sha256": "c455f6932322ff8161a4f6c9288710b5ed792ff5486b4459e11ef27e794e45c4",
     "does_not_prove": [
       "production heap, stack, fuel, or deadline acceptability",
       "operation-anchor to VM-poll conversion",
@@ -95,7 +96,7 @@
     "representative_cross_format_case_count_per_repeat": 25,
     "representative_cross_format_count": 7,
     "representative_cross_format_interrupt_poll_total_per_repeat": 25,
-    "representative_cross_format_maximum_high_water_bytes": 124080,
+    "representative_cross_format_maximum_high_water_bytes": 134792,
     "representative_cross_format_maximum_high_water_case": "rust_macho64_x86_64_entry_point_match",
     "representative_cross_format_maximum_high_water_format": "macho",
     "representative_cross_format_maximum_observed_malloc_size_bytes": 124485,
@@ -145,7 +146,7 @@
   "source_bindings": {
     "adr_runtime": {
       "path": "docs/design/decisions/0006-rquickjs-rule-runtime.md",
-      "sha256": "7f49477b06f9877fec1cb4009ac8a916b1887ae28e07a84ac6fc2adce13c14e9"
+      "sha256": "6e16bd51f0c3eee7d04be379a3e3a6091ae74327b4bc1419b08af7e7fa56525f"
     },
     "adr_scan": {
       "path": "docs/design/decisions/0012-bounded-nested-scan-budget.md",
@@ -165,11 +166,11 @@
     },
     "runtime_report": {
       "path": "docs/research/data/rquickjs-rule-runtime.json",
-      "sha256": "6b341b35dd69816c365c62d9289fbcfcc54a69f5663c2045fc150c89bc24b2cc"
+      "sha256": "bba3470098489df35f109f2a35c3377152128cca5e2c83f9a908a67f9a31873e"
     },
     "runtime_research": {
       "path": "docs/research/rquickjs-rule-runtime-spike.md",
-      "sha256": "856bcc6dcc54dda382307922bb345886a4e9bb2ffe662d2d0855908c5c61446e"
+      "sha256": "59986645a650a3b9a84221f3ce9a4f6b8eb6b41994ee7b865776c0678e6d92ad"
     }
   },
   "units": {

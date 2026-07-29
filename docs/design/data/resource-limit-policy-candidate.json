@@ -174,11 +174,11 @@
     },
     "runtime_spike": {
       "path": "docs/research/data/rquickjs-rule-runtime.json",
-      "sha256": "6b341b35dd69816c365c62d9289fbcfcc54a69f5663c2045fc150c89bc24b2cc"
+      "sha256": "bba3470098489df35f109f2a35c3377152128cca5e2c83f9a908a67f9a31873e"
     },
     "script_budget": {
       "path": "docs/design/data/script-runtime-budget-candidate.json",
-      "sha256": "2ff9361582960f29984a8d955df85fd08d9395d1554b7eec02e914c8565a9c6b"
+      "sha256": "5462ab36199390acf00720c85ac253f228026b4b3ef588290fa79b80d83b60d4"
     },
     "traversal_attempt": {
       "path": "docs/design/data/traversal-attempt-budget-candidate.json",
@@ -243,6 +243,7 @@
     },
     "script_runtime_evidence_boundary": {
       "all_format_rule_lifecycles_measured": false,
+      "candidate_custom_allocator_accounting": "RustAllocator allocation Layout bytes: aligned payload plus internal header",
       "fault_injection_values_are_candidate_basis": false,
       "native_checkpoint_can_interrupt_single_call": true,
       "native_host_checkpoint_count_measured": true,
@@ -263,7 +264,7 @@
       "representative_cross_format_case_count_per_repeat": 25,
       "representative_cross_format_count": 7,
       "representative_cross_format_interrupt_poll_total_per_repeat": 25,
-      "representative_cross_format_maximum_high_water_bytes": 124080,
+      "representative_cross_format_maximum_high_water_bytes": 134792,
       "representative_cross_format_maximum_high_water_format": "macho",
       "representative_cross_format_maximum_observed_malloc_size_bytes": 124485,
       "representative_cross_format_maximum_observed_memory_used_size_bytes": 113926,

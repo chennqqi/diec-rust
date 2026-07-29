@@ -122,7 +122,7 @@ def validate_sources(root: Path) -> tuple[
             "signature\n  checkpoint 也不代表所有 HostApi 已覆盖",
             "默认 allocator 的 memory checkpoint\n"
             "  不是 eval 内瞬时 heap high-water",
-            "4,411,368-byte 最大瞬时\n  high-water",
+            "4,478,992-byte 最大瞬时\n  high-water",
             "rquickjs 的 `set_memory_limit()` 在 custom\n"
             "  allocator 下是 no-op",
         ),
@@ -173,9 +173,9 @@ def validate_sources(root: Path) -> tuple[
             "每轮固定 16,439 次，其中 compare 16,285 次、search\n154 次",
             "4,130 个 `Runtime::memory_usage()` checkpoint",
             "`verify-binary-corpus-tracked-heap` 使用包裹 pinned",
-            "最大瞬时 high-water 为\n4,411,368 bytes",
+            "最大瞬时 high-water 为\n4,478,992 bytes",
             "七条原样上游规则。七类代表性格式规则共\n25 个 case",
-            "全矩阵最大瞬时 high-water 为 124,080 bytes",
+            "全矩阵最大瞬时 high-water 为 134,792 bytes",
             "不能观察 eval 内部瞬时 allocator high-water",
         ),
         SOURCES["runtime_research"],
@@ -309,7 +309,14 @@ def validate_sources(root: Path) -> tuple[
         and tracked_corpus.get("runtime_measurement", {}).get(
             "stable_projection_sha256"
         )
-        == "d9f3b47535f6d61e7f7b21f6db7731cf290fa0cb8f5277d906ba5b2906dff4f4"
+        == "c455f6932322ff8161a4f6c9288710b5ed792ff5486b4459e11ef27e794e45c4"
+        and tracked_corpus.get("runtime_measurement", {})
+        .get("memory", {})
+        .get("accounting")
+        == (
+            "RustAllocator allocation Layout bytes: aligned payload plus "
+            "internal header"
+        )
         and tracked_corpus.get("runtime_measurement", {})
         .get("memory", {})
         .get("limit_bytes_per_sample_runtime")
@@ -317,7 +324,7 @@ def validate_sources(root: Path) -> tuple[
         and tracked_corpus.get("runtime_measurement", {})
         .get("memory", {})
         .get("maximum_high_water_bytes")
-        == 4_411_368
+        == 4_478_992
         and tracked_corpus.get("runtime_measurement", {})
         .get("memory", {})
         .get("denied_allocation_count")
@@ -337,6 +344,13 @@ def validate_sources(root: Path) -> tuple[
         and fixture.get("interrupt_handler_calls") == 17
         and fixture.get("memory_limit_bytes") == 4 * MIB
         and fixture.get("memory_limit_observed") is True
+        and fixture.get("tracking_allocator", {}).get(
+            "accounting"
+        )
+        == (
+            "RustAllocator allocation Layout bytes: aligned payload plus "
+            "internal header"
+        )
         and fixture.get("tracking_allocator", {}).get(
             "denied_allocation_count"
         )
@@ -392,6 +406,11 @@ def validate_sources(root: Path) -> tuple[
             "stage": "after_rule",
         }
         and format_matrix.get("tracked_heap", {}).get("all_match") is True
+        and format_matrix.get("tracked_heap", {}).get("accounting")
+        == (
+            "RustAllocator allocation Layout bytes: aligned payload plus "
+            "internal header"
+        )
         and format_matrix.get("tracked_heap", {}).get("repeat_count") == 3
         and format_matrix.get("tracked_heap", {}).get(
             "case_count_per_repeat"
@@ -404,7 +423,7 @@ def validate_sources(root: Path) -> tuple[
         and format_matrix.get("tracked_heap", {}).get(
             "maximum_high_water_bytes"
         )
-        == 124_080
+        == 134_792
         and format_matrix.get("tracked_heap", {}).get(
             "maximum_high_water_format"
         )
@@ -583,6 +602,9 @@ def build_candidate(root: Path) -> dict[str, Any]:
             "maximum_include_evaluations_observed": 30,
             "real_corpus_heap_high_water_measured": False,
             "candidate_custom_allocator_real_corpus_heap_high_water_measured": True,
+            "candidate_custom_allocator_accounting": tracked_memory[
+                "accounting"
+            ],
             "candidate_custom_allocator_limit_bytes_per_sample_runtime": (
                 tracked_memory["limit_bytes_per_sample_runtime"]
             ),

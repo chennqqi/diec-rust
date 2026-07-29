@@ -44,14 +44,15 @@ Last updated: 2026-07-30
   lifecycle memory checkpoint 最大 observed `malloc_size` 为 654,562 bytes；
   Binary signature HostApi 每轮 native checkpoint 固定 16,439 次，并已有
   4095/4096 候选边界及单次 native search 中断测试。候选 custom allocator
-  又在相同语料的三轮运行中固定最大瞬时 live heap 为 4,411,368 bytes，
+  又在相同语料的三轮运行中固定最大瞬时 live heap 为 4,478,992 bytes，
   32 MiB hard limit 下 0 次拒绝，42/42 runtime drop 后归零。它不是默认
-  allocator 或 production backend 的测量；其余 HostApi checkpoint、完整跨格式
+  allocator 或 production backend 的测量；计费包含对齐 payload 与 internal
+  header。其余 HostApi checkpoint、完整跨格式
   scaling、sanitizer 及三平台资源证据仍缺失，因此候选不得 admitted。
 - PE/ELF/Mach-O/DEX/APK/Archive/PDF 七类代表性规则的 25-case runtime 矩阵
   已连续三轮固定为每轮 25 次正常 VM poll、75 个 lifecycle memory
   checkpoint，最大 observed `malloc_size` 为 124,485 bytes；同一矩阵的 custom
-  allocator 三轮最大瞬时 high-water 为 124,080 bytes，0 次拒绝且 75/75
+  allocator 三轮最大瞬时 high-water 为 134,792 bytes，0 次拒绝且 75/75
   runtime drop 后归零。每类仅覆盖一条短规则，不能据此宣称全部固定规则或所有
   支持格式的 scaling 已完成。
 

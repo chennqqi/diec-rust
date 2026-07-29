@@ -6,6 +6,11 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 use rquickjs::allocator::{Allocator, RustAllocator};
 
 const ALLOC_ALIGNMENT: usize = mem::align_of::<u64>();
+const ALLOC_HEADER_SIZE: usize = if mem::size_of::<usize>() > ALLOC_ALIGNMENT {
+    mem::size_of::<usize>()
+} else {
+    ALLOC_ALIGNMENT
+};
 
 #[derive(Default)]
 pub(crate) struct TrackingAllocatorStats {
@@ -56,14 +61,19 @@ impl TrackingLimitAllocator {
         )
     }
 
-    fn rounded_size(size: usize) -> Option<usize> {
-        let rounded = size
+    fn accounted_size_for_request(size: usize) -> Option<usize> {
+        let rounded_payload = size
             .checked_add(ALLOC_ALIGNMENT - 1)
             .map(|value| value / ALLOC_ALIGNMENT * ALLOC_ALIGNMENT)?;
-        // `RustAllocator` prepends one alignment-sized header. Reject the request
-        // before delegation when that internal layout calculation would overflow.
-        rounded.checked_add(ALLOC_ALIGNMENT)?;
-        Some(rounded)
+        rounded_payload.checked_add(ALLOC_HEADER_SIZE)
+    }
+
+    fn accounted_size_for_allocation(allocation: *mut u8) -> usize {
+        // SAFETY: callers invoke this helper only for a live pointer returned by
+        // the delegated `RustAllocator`. Its successful `Layout` construction
+        // already proved that usable payload plus this exact header fits `usize`.
+        let usable = unsafe { RustAllocator::usable_size(allocation) };
+        usable + ALLOC_HEADER_SIZE
     }
 
     fn projected_live(&self, previous_size: usize, new_size: usize) -> Option<usize> {
@@ -79,7 +89,7 @@ impl TrackingLimitAllocator {
         requested_size: usize,
         allocate: impl FnOnce(&mut RustAllocator) -> *mut u8,
     ) -> *mut u8 {
-        let Some(expected_size) = Self::rounded_size(requested_size) else {
+        let Some(expected_size) = Self::accounted_size_for_request(requested_size) else {
             self.stats.deny();
             return ptr::null_mut();
         };
@@ -94,7 +104,7 @@ impl TrackingLimitAllocator {
         }
         // SAFETY: `allocation` was returned by this `RustAllocator` call and has not
         // been freed or reallocated.
-        let actual_size = unsafe { RustAllocator::usable_size(allocation) };
+        let actual_size = Self::accounted_size_for_allocation(allocation);
         if self.projected_live(0, actual_size).is_none() {
             // SAFETY: the pointer was returned by `RustAllocator` immediately above
             // and ownership has not escaped this function.
@@ -132,7 +142,7 @@ unsafe impl Allocator for TrackingLimitAllocator {
         // SAFETY: the trait caller guarantees that `allocation` is live and was
         // created by this allocator; this wrapper delegates to the same pinned
         // `RustAllocator` instance semantics used for creation.
-        let size = unsafe { RustAllocator::usable_size(allocation) };
+        let size = Self::accounted_size_for_allocation(allocation);
         self.stats.replace_live(size, 0);
         unsafe { RustAllocator.dealloc(allocation) };
     }
@@ -143,8 +153,8 @@ unsafe impl Allocator for TrackingLimitAllocator {
         }
         // SAFETY: the trait caller guarantees that `allocation` is live and was
         // created by this allocator.
-        let previous_size = unsafe { RustAllocator::usable_size(allocation) };
-        let Some(expected_size) = Self::rounded_size(new_size) else {
+        let previous_size = Self::accounted_size_for_allocation(allocation);
+        let Some(expected_size) = Self::accounted_size_for_request(new_size) else {
             self.stats.deny();
             return ptr::null_mut();
         };
@@ -159,7 +169,7 @@ unsafe impl Allocator for TrackingLimitAllocator {
             return resized;
         }
         // SAFETY: `resized` is the live pointer returned by the successful realloc.
-        let actual_size = unsafe { RustAllocator::usable_size(resized) };
+        let actual_size = Self::accounted_size_for_allocation(resized);
         self.stats.replace_live(previous_size, actual_size);
         resized
     }
@@ -176,10 +186,59 @@ unsafe impl Allocator for TrackingLimitAllocator {
 
 #[cfg(test)]
 mod tests {
-    use super::TrackingLimitAllocator;
+    use rquickjs::allocator::Allocator;
+
+    use super::{ALLOC_ALIGNMENT, ALLOC_HEADER_SIZE, TrackingLimitAllocator};
 
     #[test]
-    fn rounded_size_rejects_request_that_would_overflow_allocator_header() {
-        assert_eq!(TrackingLimitAllocator::rounded_size(usize::MAX), None);
+    fn accounted_size_rejects_request_that_would_overflow_allocator_header() {
+        assert_eq!(
+            TrackingLimitAllocator::accounted_size_for_request(usize::MAX),
+            None
+        );
+    }
+
+    #[test]
+    fn allocator_limit_boundary_counts_alignment_and_header() {
+        let exact_limit = ALLOC_HEADER_SIZE + ALLOC_ALIGNMENT;
+        let (mut exact, exact_stats) = TrackingLimitAllocator::new(exact_limit);
+        let exact_allocation = exact.alloc(ALLOC_ALIGNMENT);
+        assert!(!exact_allocation.is_null());
+        assert_eq!(exact_stats.live_bytes(), exact_limit);
+        assert_eq!(exact_stats.high_water_bytes(), exact_limit);
+        assert_eq!(exact_stats.denied_allocation_count(), 0);
+        // SAFETY: the pointer is live and belongs to `exact`.
+        unsafe { exact.dealloc(exact_allocation) };
+        assert_eq!(exact_stats.live_bytes(), 0);
+
+        let (mut limit_minus_one, below_stats) = TrackingLimitAllocator::new(exact_limit - 1);
+        assert!(limit_minus_one.alloc(ALLOC_ALIGNMENT).is_null());
+        assert_eq!(below_stats.live_bytes(), 0);
+        assert_eq!(below_stats.denied_allocation_count(), 1);
+
+        let (mut payload_plus_one, above_stats) = TrackingLimitAllocator::new(exact_limit);
+        assert!(payload_plus_one.alloc(ALLOC_ALIGNMENT + 1).is_null());
+        assert_eq!(above_stats.live_bytes(), 0);
+        assert_eq!(above_stats.denied_allocation_count(), 1);
+    }
+
+    #[test]
+    fn denied_realloc_preserves_original_allocation_and_accounting() {
+        let exact_limit = ALLOC_HEADER_SIZE + ALLOC_ALIGNMENT;
+        let (mut allocator, stats) = TrackingLimitAllocator::new(exact_limit);
+        let allocation = allocator.alloc(ALLOC_ALIGNMENT);
+        assert!(!allocation.is_null());
+
+        // SAFETY: `allocation` is live and belongs to `allocator`. A null return
+        // preserves the original allocation according to the allocator contract.
+        let resized = unsafe { allocator.realloc(allocation, ALLOC_ALIGNMENT + 1) };
+        assert!(resized.is_null());
+        assert_eq!(stats.live_bytes(), exact_limit);
+        assert_eq!(stats.high_water_bytes(), exact_limit);
+        assert_eq!(stats.denied_allocation_count(), 1);
+
+        // SAFETY: the failed realloc left the original pointer live.
+        unsafe { allocator.dealloc(allocation) };
+        assert_eq!(stats.live_bytes(), 0);
     }
 }

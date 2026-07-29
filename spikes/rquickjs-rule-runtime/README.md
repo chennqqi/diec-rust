@@ -67,8 +67,9 @@ the stable projection and its reproducible summary are versioned.
 
 `verify-binary-corpus-tracked-heap` repeats that exact oracle under a custom
 allocator which wraps rquickjs's pinned `RustAllocator`. It accounts live
-usable bytes, records the transient high-water mark, rejects growth above
-32 MiB per sample runtime, and verifies that every runtime releases its live
+allocation `Layout` bytes (aligned payload plus the allocator's internal
+header), records the transient high-water mark, rejects growth above 32 MiB
+per sample runtime, and verifies that every runtime releases its live
 allocation count to zero. rquickjs documents `Runtime::set_memory_limit()` as
 ineffective with a custom allocator, so this command deliberately enforces the
 limit in the wrapper and reports `set_memory_limit_used: false`. This is

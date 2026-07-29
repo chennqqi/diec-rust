@@ -89,7 +89,7 @@ cargo +1.97.1 test --manifest-path <manifest> --all-features
 | --- | --- | --- | ---: | ---: |
 | `boa-rule-runtime` | pass | pass | 2 | 0 |
 | `c-static-link` | pass | pass | 3 | 0 |
-| `rquickjs-rule-runtime` | pass | pass | 42 | 0 |
+| `rquickjs-rule-runtime` | pass | pass | 44 | 0 |
 | `rquickjs-static-link` | pass | pass | 2 | 0 |
 | `signature-parser` | pass | pass | 17 | 0 |
 
@@ -121,15 +121,17 @@ consumer。随后依次增加真实 PE32/Cygwin32、ELF32/ELF64/Burneye、
 Mach-O64 x86_64/arm64 Rust compiler、DEX035/QDBH、APK/ZIP QDBH、
 Archive/ZIP metadata 和 PDF Tools object/string
 规则差分；当前 source SHA-256 为
-`7b999509a4abe78672be73564b443998221e9ff3b44ec2078b457827d759ed4f`，
+`4b818bd45a6a142206427d74a81c430b45feda6070725a7f31f2c7cf2e2ba486`，
 custom tracking allocator 模块 SHA-256 为
-`1409b40627d5fd4cf108e24bef6a8d3cc580ca90ace06f685522ea55e7b4bb32`。
-两套工具链均通过 42 项测试，release 差分分别为 3/3、6/6、4/4、3/3、
+`0686ad30b9ef4f05fd6a54c39f7a5173d80321564a68a321d2b553e76cf84965`。
+两套工具链均通过 44 项测试，release 差分分别为 3/3、6/6、4/4、3/3、
 3/3、3/3 和 3/3；Binary signature native checkpoint 的接线与计量也未新增
 Cargo 依赖。新增规则 case runtime probe 测试固定三点 lifecycle memory 报告
 结构；七类代表性格式的 release 报告三轮稳定。新增 `unsafe Allocator` wrapper
-只委托 pinned `RustAllocator` 完成 layout/pointer 操作，并增加 overflow、OOM、
-恢复和释放归零测试；七类格式的 tracked-heap 变体三轮也保持 25/25 oracle
+只委托 pinned `RustAllocator` 完成 layout/pointer 操作，按实际 aligned
+payload + internal header `Layout` bytes 计费，并增加 overflow、
+limit−1/exact/payload+1、denied realloc、OOM、恢复和释放归零测试；七类格式的
+tracked-heap 变体三轮也保持 25/25 oracle
 匹配、0 denied allocation 和 75/75 runtime drop 归零。正式采用前仍需
 sanitizer 与跨平台门禁。
 
