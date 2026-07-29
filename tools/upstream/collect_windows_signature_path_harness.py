@@ -182,6 +182,11 @@ def replace_fixture_paths(value: Any, fixture_dir: Path) -> Any:
     return value
 
 
+def qt_path_argument(path: Path) -> str:
+    """Spell a verified Windows path the same way Qt stores file paths."""
+    return path.as_posix()
+
+
 def observe(
     binary: Path,
     qt_dir: Path,
@@ -200,7 +205,7 @@ def observe(
         + environment.get(path_key, "")
     )
     process = subprocess.run(
-        [binary.name, str(fixture_dir)],
+        [binary.name, qt_path_argument(fixture_dir)],
         executable=str(binary),
         cwd=working_dir,
         env=environment,
@@ -410,6 +415,10 @@ def main() -> int:
             "msvc_abi": (
                 "linker alternatename from public access-mangled "
                 "declaration to the private symbol in fixed die_script.obj"
+            ),
+            "fixture_argument": (
+                "verified absolute fixture path spelled with forward "
+                "slashes to match Qt QFileInfo::absoluteFilePath storage"
             ),
             "engine_objects_modified": False,
         },

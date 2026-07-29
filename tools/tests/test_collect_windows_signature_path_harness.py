@@ -72,6 +72,20 @@ class CollectWindowsSignaturePathHarnessTests(unittest.TestCase):
         )
         self.assertEqual(normalized["basename"], "shared.1.sg")
 
+    def test_fixture_argument_uses_qt_path_spelling(self):
+        self.assertEqual(
+            MODULE.qt_path_argument(
+                Path("I:/controlled/fixture")
+            ),
+            "I:/controlled/fixture",
+        )
+        self.assertNotIn(
+            "\\",
+            MODULE.qt_path_argument(
+                Path("I:/controlled/fixture")
+            ),
+        )
+
     def test_linux_reference_remains_valid(self):
         report = json.loads(
             LINUX_REFERENCE.read_text(encoding="utf-8")

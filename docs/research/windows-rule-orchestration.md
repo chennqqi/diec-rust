@@ -124,7 +124,9 @@ init、file-type filter 和 deep/heuristic filter 五行。它不证明：
 - include cycle、重复 include 或脚本异常行为；
 - private signature-path filter。
 
-最后一项仍由独立 signature-path harness 跟踪，不能从公共 CLI 结果外推。
+最后一项不能从本公共 CLI 报告外推，现已由独立的原生 Windows engine
+harness 直接闭合，见
+[`signature-path-filter-behavior.md`](signature-path-filter-behavior.md)。
 
 ## 复现
 

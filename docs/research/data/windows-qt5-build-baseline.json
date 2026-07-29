@@ -161,6 +161,17 @@
     "relationship_failures": 0,
     "linux_qt5_case_differences": 0
   },
+  "windows_signature_path": {
+    "path": "docs/research/data/signature-path-engine-windows-qt5.json",
+    "sha256": "54e0d24e363cf86353365ea93fffeaf03a5dfadb9f32f0c976ec3234b646ad48",
+    "case_count": 7,
+    "repetitions": 2,
+    "execution_count": 2,
+    "case_observation_count": 14,
+    "raw_determinism_failures": 0,
+    "semantic_projection_failures": 0,
+    "named_relationship_failures": 0
+  },
   "windows_cli_path_nested": {
     "path": "docs/research/data/windows-qt5-cli-path-nested.json",
     "sha256": "e877e112deb244ab1cbf9edf221e94e155cda711a182f216478eeaf9da40e21b",

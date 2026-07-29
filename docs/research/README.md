@@ -65,8 +65,8 @@ Phase 0 计划形成：
   ZIP/TAR/GZIP 自然分派、singleton `FT_ARCHIVE` 门控、强制通用 adapter
   重检测及双 Qt5 quiet/verbose 对照（Draft）。
 - [`signature-path-filter-behavior.md`](signature-path-filter-behavior.md)：
-  private signature-file path comparator 的严格绝对路径语义及公共不可达边界
-  （Draft）。
+  private signature-file path comparator 的严格绝对路径语义、公共不可达边界，
+  以及 Linux Qt5/Qt6 与原生 Windows Qt5 配对证据（Draft）。
 - [`debug-data-dispatch-behavior.md`](debug-data-dispatch-behavior.md)：
   同一 PE 的 resource 正控制、direct debug 正例与 recursive debug 负例
   （Draft）。
@@ -232,8 +232,8 @@ Phase 0 计划形成：
   原生 Windows Qt5 的 19-case engine cache/DACL 双轮基线、Linux 语义投影
   和平台 cache-byte 差异（Draft）。
 - [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)：
-  将 15 份 Windows runtime 报告逐项映射到 68 行能力清单，当前为
-  52 complete、8 partial、8 missing（Draft）。
+  将 16 份 Windows runtime 报告逐项映射到 68 行能力清单，当前为
+  53 complete、8 partial、7 missing（Draft）。
 - [`windows-cli-option-behavior.md`](windows-cli-option-behavior.md)：
   固定 Windows verbose/test/create-test/messages 和 292-rule profiling
   顺序，保留 `image_ICNS.sg` 的精确平台移动差异（Draft）。

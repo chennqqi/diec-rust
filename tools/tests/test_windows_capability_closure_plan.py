@@ -70,10 +70,10 @@ class WindowsCapabilityClosurePlanTests(unittest.TestCase):
 
     def test_status_counts_are_conservative(self):
         summary = self.report["summary"]
-        self.assertEqual(summary["evidence_complete"], 52)
+        self.assertEqual(summary["evidence_complete"], 53)
         self.assertEqual(summary["partial"], 8)
-        self.assertEqual(summary["missing"], 8)
-        self.assertEqual(summary["closure_required"], 16)
+        self.assertEqual(summary["missing"], 7)
+        self.assertEqual(summary["closure_required"], 15)
         self.assertFalse(summary["windows_baseline_admitted"])
         statuses = {
             row["status"] for row in self.report["capabilities"]
@@ -152,7 +152,10 @@ class WindowsCapabilityClosurePlanTests(unittest.TestCase):
             rows["CAP-RULE-012"]["status"],
             "evidence_complete",
         )
-        self.assertEqual(rows["CAP-RULE-007"]["status"], "missing")
+        self.assertEqual(
+            rows["CAP-RULE-007"]["status"],
+            "evidence_complete",
+        )
         self.assertEqual(rows["CAP-NEST-003"]["status"], "missing")
         self.assertEqual(rows["CAP-RESULT-001"]["status"], "partial")
         self.assertEqual(
@@ -164,14 +167,14 @@ class WindowsCapabilityClosurePlanTests(unittest.TestCase):
             "evidence_complete",
         )
 
-    def test_machine_report_binds_all_15_windows_reports(self):
+    def test_machine_report_binds_all_16_windows_reports(self):
         self.assertEqual(
             self.report["summary"]["windows_report_count"],
-            15,
+            16,
         )
         self.assertEqual(
             self.report["summary"]["windows_process_execution_count"],
-            2112,
+            2114,
         )
         report_sources = {
             path
@@ -183,7 +186,7 @@ class WindowsCapabilityClosurePlanTests(unittest.TestCase):
                 "docs/research/data/windows-qt5-build-baseline.json"
             }
         }
-        self.assertEqual(len(report_sources), 15)
+        self.assertEqual(len(report_sources), 16)
 
     def test_document_names_every_open_row_and_machine_report(self):
         text = DOCUMENT.read_text(encoding="utf-8")

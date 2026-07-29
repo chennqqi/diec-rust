@@ -4,12 +4,12 @@ Status: Draft
 
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
 
-Last updated: 2026-07-28
+Last updated: 2026-07-29
 
 ## 1. 结论与范围
 
-`CAP-RULE-007` 的路径比较器已在固定 Linux Qt5 engine 上运行观察，不再只是
-源码推断；相同七用例的 Linux Qt6 对照也已完成，见
+`CAP-RULE-007` 的路径比较器已在固定 Linux Qt5、Linux Qt6 和原生 Windows
+Qt5 engine 上运行观察，不再只是源码推断；Linux Qt6 对照见
 [`qt6-signature-path-runtime-evidence.md`](qt6-signature-path-runtime-evidence.md)：
 
 - 规则数据库把磁盘规则保存为绝对文件路径；
@@ -88,7 +88,7 @@ Last updated: 2026-07-28
 
 ## 4. 运行结果
 
-机器报告：
+Linux Qt5 机器报告：
 [`signature-path-engine-qt5.json`](data/signature-path-engine-qt5.json)。
 
 | Case | Filter | 结果 |
@@ -122,7 +122,38 @@ record 都导出 signature `shared.1.sg`，但 `signature_path` 分别为
 版本化报告绑定 generator、manifest、harness source、Dockerfile、image、
 binary 和原始流哈希。
 
-## 5. Rust 兼容约束
+## 5. Windows Qt5 配对结果
+
+原生 Windows x86_64、Qt 5.15.2 使用相同 fixture 和共享 harness，七个 case
+连续运行两轮，共 2 次 harness 进程执行、14 次 case observation：
+
+- 两轮 raw stdout/stderr 哈希完全相同；
+- 11/11 命名关系全部成立；
+- 只把已验证 fixture 根前缀替换为 `/fixture` 后，完整结构化文档与固定
+  Linux Qt5 报告相同；
+- 未做大小写折叠、点段清理、basename 替换、case/record 删除或重排。
+
+机器报告为
+[`signature-path-engine-windows-qt5.json`](data/signature-path-engine-windows-qt5.json)，
+SHA-256 为
+`54e0d24e363cf86353365ea93fffeaf03a5dfadb9f32f0c976ec3234b646ad48`。
+固定 harness binary 为 3,052,032 bytes，SHA-256
+`cda13af7bb82a09e7957d4014bd94d8a800cc502ddea1d6e9e04eb1f0a9476d1`。
+
+Windows 构建复用固定 qmake Release 的未修改 engine objects，只替换 console
+main object。MSVC 把 access level 编入 decorated name：研究 translation unit
+经 `private` access shim 引用 public-spelled symbol，而固定 `die_script.obj`
+导出 private-spelled symbol。因此
+[`build_windows_signature_path_harness.ps1`](../../tools/upstream/build_windows_signature_path_harness.ps1)
+在研究链接步骤使用精确 `/alternatename` 映射；清单同时绑定原始 Makefile、
+`main_console.obj` 和 `die_script.obj` 哈希，未重新编译或修改 engine object。
+
+上游加载规则时由 `QFileInfo::absoluteFilePath()` 保存 `/` 分隔形式。Windows
+采集器因此把已验证的绝对 fixture argument 以 Qt 的 `/` 拼写传入 harness，
+避免由命令行 `\` 加手工 `/` 形成并非已加载 identity 的混合字符串。该步骤
+不改写 filter 输出；大小写变化和 `..` 仍按原字符串传入并明确不命中。
+
+## 6. Rust 兼容约束
 
 后续实现若保留内部 path-filter 能力，应区分两个概念：
 
@@ -134,7 +165,7 @@ canonicalization、case folding 或 basename fallback。公共 Rust API、CLI �
 C ABI 是否暴露该私有上游能力仍属于设计决策；无论是否暴露，内部差分测试都
 应保留本实验的七行矩阵，避免重构时改变上游规则选择语义。
 
-## 6. 复现
+## 7. 复现
 
 ```text
 python tools/corpus/generate_signature_path_fixture.py <fixture-dir>
@@ -154,6 +185,29 @@ python -m unittest discover -s tools/tests \
   -p "test_*signature_path*.py"
 ```
 
+Windows 配对采集：
+
+```powershell
+powershell -File tools\upstream\build_windows_signature_path_harness.ps1 `
+  -SourceDir <fixed-clean-source> `
+  -BuildDir <fixed-qmake-build> `
+  -QtDir <fixed-qt-5.15.2> `
+  -VsDevCmd <VsDevCmd.bat> `
+  -OutputBinary <harness.exe> `
+  -OutputJson <build-manifest.json>
+
+python tools\upstream\collect_windows_signature_path_harness.py `
+  --binary <harness.exe> `
+  --source-dir <fixed-clean-source> `
+  --qt-dir <fixed-qt-5.15.2> `
+  --fixture-dir <fixture-dir> `
+  --working-dir <empty-working-dir> `
+  --build-manifest <build-manifest.json> `
+  --raw-dir <external-raw-dir> `
+  --output docs\research\data\signature-path-engine-windows-qt5.json
+```
+
 重跑必须保持固定组件 SHA、manifest 逐字节一致、镜像 revision label、只读
-夹具挂载和 `--network=none`；任一 identity 或十一项行为关系变化都应失败，
-不能只比较最终 record 数量。
+夹具挂载和 `--network=none`；Windows 还必须保持固定 Qt、CLI、engine object
+与 build manifest identity。任一 identity、十一项行为关系或跨平台完整文档
+变化都应失败，不能只比较最终 record 数量。

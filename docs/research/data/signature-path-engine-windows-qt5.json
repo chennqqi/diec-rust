@@ -1,0 +1,270 @@
+{
+  "access_method": {
+    "engine_objects_modified": false,
+    "fixture_argument": "verified absolute fixture path spelled with forward slashes to match Qt QFileInfo::absoluteFilePath storage",
+    "msvc_abi": "linker alternatename from public access-mangled declaration to the private symbol in fixed die_script.obj",
+    "translation_unit": "private-to-public macro in the shared research harness"
+  },
+  "binary": {
+    "filename": "diec-signature-path-harness.exe",
+    "sha256": "cda13af7bb82a09e7957d4014bd94d8a800cc502ddea1d6e9e04eb1f0a9476d1",
+    "size": 3052032
+  },
+  "build_manifest": {
+    "identity": {
+      "artifact": {
+        "filename": "diec-signature-path-harness.exe",
+        "sha256": "cda13af7bb82a09e7957d4014bd94d8a800cc502ddea1d6e9e04eb1f0a9476d1",
+        "size": 3052032
+      },
+      "baseline": {
+        "cli_sha256": "e8579a6ed0d2536ea14af154bcbeeaaea6967c0c7559a595fb3fe52206ac635e",
+        "commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+        "recursive_submodule_count": 58,
+        "repository": "https://github.com/horsicq/DIE-engine",
+        "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6"
+      },
+      "build": {
+        "elapsed_milliseconds": 11477,
+        "harness_object": "release/signature_path_harness_main.obj",
+        "host_architecture": "amd64",
+        "msvc_access_symbol_alias": {
+          "from_public_declaration": "?processDetect@DiE_Script@@QEAAXPEAUSCANID@XScanEngine@@PEAUSCAN_RESULT@3@PEAVQIODevice@@AEBU23@W4FT@XBinary@@PEAUSCAN_OPTIONS@3@AEBVQString@@_NPEAUPDSTRUCT@7@@Z",
+          "to_private_definition": "?processDetect@DiE_Script@@AEAAXPEAUSCANID@XScanEngine@@PEAUSCAN_RESULT@3@PEAVQIODevice@@AEBU23@W4FT@XBinary@@PEAUSCAN_OPTIONS@3@AEBVQString@@_NPEAUPDSTRUCT@7@@Z"
+        },
+        "original_die_script_object_sha256": "f74138c8acbf6a7427c90761c7bfbf7715c3dfda6e1c4def3715d348ac159a19",
+        "original_main_object_sha256": "ff736a313b4d8d53747a7b113fff5a310c31c4218555ffbf1570537af15dd6be",
+        "original_makefile_sha256": "e6f7710cd32be5050e10234f3282d2512b58d28170d5de14f96c30478ac03725",
+        "replaced_object": "release/main_console.obj",
+        "system": "patched-qmake-release-makefile",
+        "target_architecture": "amd64",
+        "tool": "nmake"
+      },
+      "qt": {
+        "qmake_sha256": "e873ad3a689a0628c3037a6440221dcd2e426395edf14ffa6379612dede26d36",
+        "qmake_spec": "win32-msvc",
+        "qt5core_sha256": "8d2ff4ce9096ddccc4f4cd62c2e41fc854cfd1b0d6e8d296645a7f5fd4ae565a",
+        "qt5script_sha256": "0b58e5e79df13110a8258f14d7b3658d1dd0c8dddc337a164b89d4ac12a0638f",
+        "version": "5.15.2"
+      },
+      "schema_version": 1,
+      "source_hashes": {
+        "builder": "9d1f012a12331f5a1237408c0a90fdbbe2bb1d048c67ad43213ca7f899f39ec8",
+        "shared_harness": "c7f2ab7ab162ded9c528f760f05602f9dcc68836824160de4796a13fb43d0b31"
+      }
+    },
+    "sha256": "81d94df1369ed8c656f1005077825f5302ae01eb67ff8c0ca5bf0aca14051087"
+  },
+  "capability": "CAP-RULE-007",
+  "case_observation_count": 14,
+  "execution_count": 2,
+  "failures": [],
+  "fixture": {
+    "generator": "tools/corpus/generate_signature_path_fixture.py",
+    "generator_sha256": "d85d969ace2fd5d1705e122c1de5fcece25ef3a3f5d1c6ad50d6ce30400bdd76",
+    "manifest": "docs/research/data/signature-path-fixture.json",
+    "manifest_sha256": "0eb415c1655737ed66e9d3e1b35cbfa2006799a9e216962e60caecd7aa02df90"
+  },
+  "generator": "tools/upstream/collect_windows_signature_path_harness.py",
+  "generator_sha256": "843e96667a3bd9b779e6427f96d11322be87535c4d06b1af9d5e604351023c62",
+  "harness_output": {
+    "case_count": 7,
+    "cases": [
+      {
+        "error_count": 0,
+        "filter": "",
+        "id": "empty_filter",
+        "record_count": 2,
+        "records": [
+          {
+            "filetype": "Binary",
+            "name": "main-path",
+            "signature": "shared.1.sg",
+            "signature_path": "/fixture/main/Binary/shared.1.sg",
+            "type": "format",
+            "unknown": false
+          },
+          {
+            "filetype": "Binary",
+            "name": "extra-path",
+            "signature": "shared.1.sg",
+            "signature_path": "/fixture/extra/Binary/shared.1.sg",
+            "type": "format",
+            "unknown": false
+          }
+        ],
+        "scan_not_canceled": true
+      },
+      {
+        "error_count": 0,
+        "filter": "/fixture/main/Binary/shared.1.sg",
+        "id": "exact_main",
+        "record_count": 1,
+        "records": [
+          {
+            "filetype": "Binary",
+            "name": "main-path",
+            "signature": "shared.1.sg",
+            "signature_path": "/fixture/main/Binary/shared.1.sg",
+            "type": "format",
+            "unknown": false
+          }
+        ],
+        "scan_not_canceled": true
+      },
+      {
+        "error_count": 0,
+        "filter": "/fixture/extra/Binary/shared.1.sg",
+        "id": "exact_extra",
+        "record_count": 1,
+        "records": [
+          {
+            "filetype": "Binary",
+            "name": "extra-path",
+            "signature": "shared.1.sg",
+            "signature_path": "/fixture/extra/Binary/shared.1.sg",
+            "type": "format",
+            "unknown": false
+          }
+        ],
+        "scan_not_canceled": true
+      },
+      {
+        "error_count": 0,
+        "filter": "/fixture/main/Binary/missing.1.sg",
+        "id": "missing",
+        "record_count": 0,
+        "records": [],
+        "scan_not_canceled": true
+      },
+      {
+        "error_count": 0,
+        "filter": "/fixture/main/Binary/SHARED.1.SG",
+        "id": "case_mismatch",
+        "record_count": 0,
+        "records": [],
+        "scan_not_canceled": true
+      },
+      {
+        "error_count": 0,
+        "filter": "/fixture/main/Binary/../Binary/shared.1.sg",
+        "id": "dot_segment",
+        "record_count": 0,
+        "records": [],
+        "scan_not_canceled": true
+      },
+      {
+        "error_count": 0,
+        "filter": "shared.1.sg",
+        "id": "basename_only",
+        "record_count": 0,
+        "records": [],
+        "scan_not_canceled": true
+      }
+    ],
+    "database_loaded": true,
+    "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
+    "fixture_root": "/fixture",
+    "formats_commit": "1151e7254fdee3c0294ff7095edbdd7bfccf8201",
+    "input_sha256": "ec19bc91132237e7293ac3a67caab394c86acad9e7f6dec4a403bfee42d95f8e",
+    "load_not_canceled": true,
+    "loaded_signatures": [
+      {
+        "database_type": 0,
+        "file_path": "/fixture/main/Binary/shared.1.sg",
+        "name": "shared.1.sg"
+      },
+      {
+        "database_type": 1,
+        "file_path": "/fixture/extra/Binary/shared.1.sg",
+        "name": "shared.1.sg"
+      }
+    ],
+    "schema_version": 1,
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+  },
+  "host": {
+    "architecture": "AMD64",
+    "os_build": "10.0.26100"
+  },
+  "linux_qt5_comparison": {
+    "path_normalization_only": true,
+    "platform_difference_classification": "none_observed_after_verified_fixture_prefix_mapping",
+    "relationships_equal": true,
+    "semantic_document_equal": true
+  },
+  "linux_qt5_reference": {
+    "path": "docs/research/data/signature-path-engine-qt5.json",
+    "sha256": "cfb0673b84c87e5c1a1df114b6b28a44b5f22b431af59427dcabf910feb7cc4e"
+  },
+  "normalization": {
+    "not_performed": [
+      "case or record removal/reordering",
+      "path canonicalization or dot-segment cleanup",
+      "case folding or basename substitution",
+      "raw stdout/stderr hash rewriting"
+    ],
+    "operations": [
+      "replace only the verified fixture-root prefix in structured strings with /fixture",
+      "convert separators only inside a replaced fixture-root string"
+    ]
+  },
+  "normalized_outputs_equal": true,
+  "passed": true,
+  "platform": "windows-x86_64-qt5",
+  "qt": {
+    "qmake_sha256": "e873ad3a689a0628c3037a6440221dcd2e426395edf14ffa6379612dede26d36",
+    "qmake_spec": "win32-msvc",
+    "qt5core_sha256": "8d2ff4ce9096ddccc4f4cd62c2e41fc854cfd1b0d6e8d296645a7f5fd4ae565a",
+    "qt5script_sha256": "0b58e5e79df13110a8258f14d7b3658d1dd0c8dddc337a164b89d4ac12a0638f",
+    "version": "5.15.2"
+  },
+  "raw_artifacts": {
+    "files": [
+      "run-1.stdout",
+      "run-1.stderr",
+      "run-2.stdout",
+      "run-2.stderr"
+    ],
+    "storage": "untracked external directory selected by --raw-dir"
+  },
+  "raw_outputs_equal": true,
+  "relationships": {
+    "all_runs_complete_without_errors": true,
+    "basename_is_not_a_path_match": true,
+    "both_fixture_rules_loaded_with_absolute_paths": true,
+    "comparison_does_not_clean_dot_segments": true,
+    "comparison_is_case_sensitive": true,
+    "empty_filter_executes_both_layers": true,
+    "exact_extra_selects_only_extra": true,
+    "exact_main_selects_only_main": true,
+    "filters_are_passed_verbatim": true,
+    "nonexistent_path_matches_nothing": true,
+    "same_basename_does_not_conflate_layers": true
+  },
+  "repetitions": 2,
+  "runs": [
+    {
+      "exit_code": 0,
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 4510,
+      "stdout_sha256": "e850de29e908ea1dd0f8c32979c69a07c98ce1a50c5989cc6c20740c09047358"
+    },
+    {
+      "exit_code": 0,
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 4510,
+      "stdout_sha256": "e850de29e908ea1dd0f8c32979c69a07c98ce1a50c5989cc6c20740c09047358"
+    }
+  ],
+  "schema_version": 1,
+  "source": {
+    "commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "recursive_submodule_count": 58,
+    "repository": "https://github.com/horsicq/DIE-engine",
+    "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6"
+  }
+}

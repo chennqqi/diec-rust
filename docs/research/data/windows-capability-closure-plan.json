@@ -583,22 +583,16 @@
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
-      "evidence_paths": [],
+      "evidence_paths": [
+        "docs/research/data/signature-path-engine-windows-qt5.json"
+      ],
       "evidence_set": "signature_path_filter",
       "id": "CAP-RULE-007",
-      "missing_scope": "private signature-path filter boundaries",
+      "missing_scope": null,
       "name": "signature path filtering",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "exact, empty, missing, case, dot-dot, deep, and disabled cases execute",
-          "raw rule-path values are retained without platform rewriting",
-          "two runs preserve record and error projections"
-        ],
-        "fixture": "tools/corpus/generate_signature_path_fixture.py",
-        "harness": "tools/upstream/signature_path_harness_main.cpp"
-      },
-      "status": "missing"
+      "observed_scope": "the private exact-path filter's empty, exact, missing, case, dot-segment, and basename boundaries match Linux Qt5",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
@@ -1118,7 +1112,8 @@
     "docs/research/data/database-cache-engine-windows-qt5.json": "d1cbcbe741e4cf3999f54f4696f6eee59472b59bd3aaf9d98f94bb337b1e16da",
     "docs/research/data/engine-contract-windows-qt5.json": "4f7d1629d4c0cf627fd8f5fa1ff6adaf838f8c9fc910e95fac0c50bfd105233e",
     "docs/research/data/rule-orchestration-windows-qt5.json": "e6c7d47b35f89abdb10719e8578a550dcf5c9caf882a5d7825d3e0dbde3cf9da",
-    "docs/research/data/windows-qt5-build-baseline.json": "6922423c595914f046249e267af36354a9769fbdabbcd048c1856e8617d61f38",
+    "docs/research/data/signature-path-engine-windows-qt5.json": "54e0d24e363cf86353365ea93fffeaf03a5dfadb9f32f0c976ec3234b646ad48",
+    "docs/research/data/windows-qt5-build-baseline.json": "fcdbe6360101ed642b3b611214676c95225352eb03b5b91dc4ca8f4d43abbde5",
     "docs/research/data/windows-qt5-cli-ads.json": "bfdec0a8a516dd5d86721a9331d1d914c7e66f29df0fe0d6115c6dcca079224e",
     "docs/research/data/windows-qt5-cli-database-archive.json": "53c673620cc4388f0da7ffe36af7a325a099bceb0e29912c1f733119f942d748",
     "docs/research/data/windows-qt5-cli-database.json": "13e58a8d1b0cc4feb3998c06140e0afe7adb754cb59e5198b0e5b3079a3d5f8c",
@@ -1134,13 +1129,13 @@
   "summary": {
     "all_capabilities_accounted_for": true,
     "capability_count": 68,
-    "closure_required": 16,
-    "evidence_complete": 52,
-    "missing": 8,
+    "closure_required": 15,
+    "evidence_complete": 53,
+    "missing": 7,
     "partial": 8,
     "windows_baseline_admitted": false,
-    "windows_process_execution_count": 2112,
-    "windows_report_count": 15
+    "windows_process_execution_count": 2114,
+    "windows_report_count": 16
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
 }

@@ -46,7 +46,7 @@ JSON continuity、CSV 优先级及四个带空格 filetype 的 invalid XML。
 保持 `platform_missing`，直到完整差分语料在该平台执行并归档。
 逐行
 [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)
-已把当前证据审计为 52 complete、8 partial、8 missing；16 个开放行均有
+已把当前证据审计为 53 complete、8 partial、7 missing；15 个开放行均有
 命名验收实验。
 
 机器证据见
@@ -421,6 +421,20 @@ priority/lexical/missing/empty/type-init order、wrong-file-type 排除和
 deep/entry-point/heuristic gate 共 14 条关系全部成立。Windows canonical
 case 与 Linux Qt5 qmake/CMake reference 逐字段相同。详见
 [`windows-rule-orchestration.md`](windows-rule-orchestration.md)。
+
+## Windows Qt5 private signature-path 矩阵
+
+[`build_windows_signature_path_harness.ps1`](../../tools/upstream/build_windows_signature_path_harness.ps1)
+复用固定 qmake Release engine objects，只替换 console main object；精确记录
+MSVC access-level decorated-symbol `/alternatename`、原始 Makefile、main object
+和 `die_script.obj` 身份。
+[`collect_windows_signature_path_harness.py`](../../tools/upstream/collect_windows_signature_path_harness.py)
+对七个 private path-filter case 连续运行两轮，共 2 次进程执行和 14 次 case
+observation。两轮 raw 输出完全相同，11/11 关系成立；只替换已验证 fixture
+根前缀后，完整结构化文档与 Linux Qt5 相同。报告 SHA-256 为
+`54e0d24e363cf86353365ea93fffeaf03a5dfadb9f32f0c976ec3234b646ad48`，
+详见
+[`signature-path-filter-behavior.md`](signature-path-filter-behavior.md)。
 
 ## Windows CLI Unicode/特殊路径矩阵
 

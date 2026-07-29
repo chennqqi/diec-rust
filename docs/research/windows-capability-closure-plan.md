@@ -20,10 +20,10 @@ Last updated: 2026-07-29
 
 - 固定上游、规则和 68 行 traceability；
 - [`windows-qt5-build-baseline.json`](data/windows-qt5-build-baseline.json)；
-- 15 份 Windows runtime 报告的完整 SHA-256；
+- 16 份 Windows runtime 报告的完整 SHA-256；
 - 每份报告的 source/platform 身份和命名 summary facts；
-- 2,112 次 Windows 进程执行，其中新增 rule-orchestration 十个 case
-  各运行两轮。
+- 2,114 次 Windows 进程执行，其中 signature-path engine harness 新增两轮、
+  14 次 case observation。
 
 报告只接受三种状态：
 
@@ -40,18 +40,18 @@ Last updated: 2026-07-29
 
 | 分类 | 行数 |
 | --- | ---: |
-| Evidence complete | 52 |
+| Evidence complete | 53 |
 | Partial | 8 |
-| Missing | 8 |
+| Missing | 7 |
 | Total | 68 |
 
-所有行均恰好分类一次，但仍有 16 行需要 closure，因此
+所有行均恰好分类一次，但仍有 15 行需要 closure，因此
 `windows_baseline_admitted=false`。现有
 [`capability-coverage.json`](data/capability-coverage.json) 继续把 Windows
 68 行标记为 `platform_missing` 是正确的保守行为；本计划提供逐行升级路径，
 不直接改变平台接纳状态。
 
-52 个已闭合行主要来自：
+53 个已闭合行主要来自：
 
 - 26 样本的 single-target、scan option、output、entropy/info/struct；
 - help/version/show-structs；
@@ -66,6 +66,7 @@ Last updated: 2026-07-29
   292-rule Windows profiling order。
 - main/extra/custom 层顺序、global/type init、priority 边界、四模式
   deep/entry-point/heuristic gate 和 wrong-file-type 排除。
+- private signature-path 的空、精确、缺失、大小写、点段和 basename 边界。
 
 这些行仍受各自报告中已经写明的全局平台限制约束，但没有把其他能力行的缺口
 反向扩散到本行。
@@ -86,17 +87,9 @@ Last updated: 2026-07-29
 Partial 行不能计入 Windows runtime baseline。机器报告为每行保存
 `observed_scope`、`missing_scope`、`proposed_experiment` 和 evidence paths。
 
-## 4. Missing：8 行
+## 4. Missing：7 行
 
-### 4.1 Private signature-path filter：1 行
-
-- `CAP-RULE-007`
-
-global/type init/include precedence、层顺序、priority 以及 mode/type gate
-已由 Windows rule-orchestration 报告闭合。剩余 private signature-path
-filter 必须运行直接 engine harness；公共 CLI 无法提供等价正例。
-
-### 4.2 Legacy dispatch：2 行
+### 4.1 Legacy dispatch：2 行
 
 - `CAP-DISPATCH-002`
 - `CAP-DISPATCH-003`
@@ -105,7 +98,7 @@ filter 必须运行直接 engine harness；公共 CLI 无法提供等价正例�
 `CAP-DISPATCH-004` 另补 NPM 和 direct property control 后即可从 partial
 提升。
 
-### 4.3 Nested engine boundaries：5 行
+### 4.2 Nested engine boundaries：5 行
 
 - `CAP-NEST-003`
 - `CAP-NEST-004`
@@ -121,12 +114,10 @@ expansion limit。它们不能由 release CLI aggressive/recursive case 替代�
 
 按“每次固定构建关闭最多能力行”的原则：
 
-1. Windows signature-path：处理 1 个 missing，并复用已闭合
-   engine-contract 的 filter 结果；
-2. Windows result-model harness：处理 6 个 partial；
-3. Windows legacy/archive dispatch：处理 2 个 missing、1 个 partial；
-4. Windows nested engine harnesses：处理 5 个 missing；
-5. Windows path closure：最后处理 `CAP-CLI-IN-003`，其中 domain/UNC 等需要
+1. Windows result-model harness：处理 6 个 partial；
+2. Windows legacy/archive dispatch：处理 2 个 missing、1 个 partial；
+3. Windows nested engine harnesses：处理 5 个 missing；
+4. Windows path closure：最后处理 `CAP-CLI-IN-003`，其中 domain/UNC 等需要
    明确环境能力，不把无法在当前主机合法构造的 profile 写成已观察。
 
 每批的接纳条件相同：固定 source/rules/toolchain/binary 或 object identity；

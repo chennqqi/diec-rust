@@ -32,6 +32,9 @@ REPORT_KEYS = {
     "docs/research/data/rule-orchestration-windows-qt5.json": (
         "windows_rule_orchestration"
     ),
+    "docs/research/data/signature-path-engine-windows-qt5.json": (
+        "windows_signature_path"
+    ),
     "docs/research/data/windows-qt5-cli-path-nested.json": (
         "windows_cli_path_nested"
     ),
@@ -140,6 +143,7 @@ COMPLETE: dict[str, str] = {
     "CAP-RULE-003": "main global init, type init, and same-name include precedence exactly match Linux Qt5",
     "CAP-RULE-004": "the wrong-file-type decoy is excluded in all four scan modes exactly as on Linux Qt5",
     "CAP-RULE-005": "deep, entry-point, and heuristic gates are independently fixed across all four scan modes",
+    "CAP-RULE-007": "the private exact-path filter's empty, exact, missing, case, dot-segment, and basename boundaries match Linux Qt5",
     "CAP-DISPATCH-001": "PE32/64, ELF32/64, and Mach-O 32/64/FAT projections are fixed",
     "CAP-DISPATCH-005": "DEX, Java Class, and PYC projections are fixed",
     "CAP-DISPATCH-006": "PDF and CFBF projections are fixed",
@@ -197,10 +201,6 @@ PARTIAL: dict[str, tuple[str, str, str]] = {
 
 
 MISSING: dict[str, tuple[str, str]] = {
-    "CAP-RULE-007": (
-        "private signature-path filter boundaries",
-        "port the signature-path engine harness to Windows",
-    ),
     "CAP-DISPATCH-002": (
         "DOS/COM public dispatch and BW property-only branch",
         "run the fixed DOS/COM/BW dispatch corpus on Windows",
@@ -287,7 +287,9 @@ EVIDENCE_PATHS = {
     "engine_contract": (
         "docs/research/data/engine-contract-windows-qt5.json",
     ),
-    "signature_path_filter": (),
+    "signature_path_filter": (
+        "docs/research/data/signature-path-engine-windows-qt5.json",
+    ),
     "debug_data_dispatch": (),
 }
 
@@ -689,6 +691,31 @@ def validate_inputs(
     ):
         raise ClosurePlanError("Windows rule-orchestration facts drift")
 
+    signature_path = reports[
+        "docs/research/data/signature-path-engine-windows-qt5.json"
+    ]
+    if (
+        signature_path.get("passed") is not True
+        or signature_path.get("failures") != []
+        or signature_path.get("repetitions") != 2
+        or signature_path.get("execution_count") != 2
+        or signature_path.get("case_observation_count") != 14
+        or signature_path.get("raw_outputs_equal") is not True
+        or signature_path.get("normalized_outputs_equal") is not True
+        or signature_path.get("harness_output", {}).get("case_count") != 7
+        or len(signature_path.get("relationships", {})) != 11
+        or not all(signature_path.get("relationships", {}).values())
+        or signature_path.get("linux_qt5_comparison", {}).get(
+            "semantic_document_equal"
+        )
+        is not True
+        or signature_path.get("linux_qt5_comparison", {}).get(
+            "relationships_equal"
+        )
+        is not True
+    ):
+        raise ClosurePlanError("Windows signature-path facts drift")
+
     for evidence_set, paths in EVIDENCE_PATHS.items():
         for path in paths:
             if path not in reports:
@@ -800,7 +827,7 @@ def build_plan(root: Path) -> dict[str, Any]:
             "windows_baseline_admitted": (
                 not PARTIAL and not MISSING
             ),
-            "windows_process_execution_count": 2112,
+            "windows_process_execution_count": 2114,
             "windows_report_count": len(REPORT_KEYS),
         },
     }
