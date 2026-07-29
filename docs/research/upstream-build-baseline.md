@@ -190,7 +190,8 @@ environment 的字节级复现：
 2. 扩大 qmake/CMake 差分语料和扫描模式，并采集可重复性能数据。
 3. 在独立 clean builder 上重复两次并比较 `diec` 哈希；若不能相同，定位
    build-id、时间戳或生成代码中的非确定输入。
-4. 分别建立 Windows 和 macOS 的固定构建记录。
+4. Windows 固定构建记录已建立；macOS 已具备 CLI-only bootstrap，但仍需在
+   Darwin x86_64 主机执行、固定 toolchain lock 并完成第二次 clean build。
 
 ## 上游证据
 

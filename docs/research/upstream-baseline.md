@@ -151,8 +151,10 @@ vendored 目录仍需独立 source/license 审计。
   filesystem、7-case long-path、5-case ADS、剩余 21-sample 普通 output 和
   21-sample special 矩阵已归档；同 special 矩阵的 Linux Qt5/Qt6 raw 与
   Windows structured projection 三方差分，以及同 output 矩阵的 Linux
-  Qt5/Qt6/Windows JSON 与有效性差分也已完成。完整能力差分、CMake 发布打包、
-  bit-for-bit 验证及 macOS 构建仍待完成。
+  Qt5/Qt6/Windows JSON 与有效性差分也已完成。完整能力差分、CMake 发布打包
+  和 bit-for-bit 验证仍待完成；macOS 已建立固定 x86_64/Qt5 CLI-only
+  bootstrap 与候选报告 validator，但尚未在 Darwin 主机执行，见
+  [`macos-qt5-oracle-plan.md`](macos-qt5-oracle-plan.md)。
 - release workflow、预编译包与源码构建之间的数据资产差异。
 - bundled code、规则原始来源和最终发布组合的许可证审计；YARA/PEiD/signature
   资产路径与可见标记已固定，但 GPL/未知来源仍需书面评审。
@@ -174,7 +176,8 @@ vendored 目录仍需独立 source/license 审计。
   CLI profiling 保留 `image_ICNS.sg`
   的精确 Windows/Linux 顺序差异，而规则编排 canonical 语义完全相同；
   23-case path closure 已固定 4096-entry、reparse cycle、同步 TOCTOU、
-  WSL UNC/extended-UNC 及本地/redirector access denial；macOS、其他 UNC
+  WSL UNC/extended-UNC 及本地/redirector access denial；macOS runtime、
+  其他 UNC
   provider、EFS/integrity level、畸形扩展矩阵和其余跨平台原始输出仍待采集。
 
 ## 主要证据

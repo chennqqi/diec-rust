@@ -68,7 +68,7 @@ Accepted。
 | `P0-BLOCK-002` | Open | 五份设计已 review-ready/In Review；仍缺 architecture、API、C ABI、testing、risks 的明确评审结论 |
 | `P0-BLOCK-003` | Open | 十三个 ADR 已 review-ready、但 acceptance-ready 均为 false；仍需 Accepted/Rejected/Superseded 评审结论 |
 | `P0-BLOCK-004` | Open | runtime `db*` 2,268 文件身份及根 MIT/marker 已闭合；22 个 PNG 已固定到两个 DosX 来源 commit、20 个 blob、C100/R100、PNG metadata、来源时 MIT LICENSE 和贡献政策/sign-off 边界；XArchive RAR decoder 已固定到 UnRAR 7.1.10 的 94.21%/74.21% 两档 token 覆盖及 MIT/UnRAR notice 差异，并明确禁止未评审复制/翻译；仍需 artwork 授权/历史贡献适用性、RAR decoder 条款、其余 source closure 和发布责任人书面评审 |
-| `P0-BLOCK-005` | Open | 68 行 × 4 平台 coverage report 已建立且无未分类 cell；Linux Qt5/Qt6 与 Windows Qt5 的 68 项均为 runtime-observed，source-only 与 corpus-gap 均为 0；Windows closure 绑定 23 份报告、2,438 次执行并以 path closure 关闭最后一行；CAP-GAP-008 的 Windows 部分 closed；仍缺 macOS 的 68 个 platform-missing |
+| `P0-BLOCK-005` | Open | 68 行 × 4 平台 coverage report 已建立且无未分类 cell；Linux Qt5/Qt6 与 Windows Qt5 的 68 项均为 runtime-observed，source-only 与 corpus-gap 均为 0；Windows closure 绑定 23 份报告、2,438 次执行并以 path closure 关闭最后一行；CAP-GAP-008 的 Windows 部分 closed；macOS x86_64/Qt5 CLI-only bootstrap、候选报告 validator 与 hash-bound 预执行计划已就绪，但尚未在 Darwin 主机采集，仍有 68 个 platform-missing |
 | `P0-BLOCK-006` | Open | 固定 Linux Qt5 五层 warm baseline 已保留 17 warmup/90 measured 的 latency/MAD/p95/RSS、cgroup 和确定性输出；[单 vCPU affinity 复验](../research/upstream-performance-affinity.md)进一步证明 `cpuset.cpus.effective=0` 并保留短 control 的部分 RSS 边界；[体积基线](../research/upstream-deployment-size.md)也已固定 ELF、16 个去重动态依赖与 2,268 个规则的两种口径；仍需 Rust 成对、cold、physical-core/topology 重复 session、跨平台发行包、评审阈值和默认资源限制 |
 
 ## 下一步顺序
@@ -76,7 +76,8 @@ Accepted。
 1. `P0-BLOCK-001` 已关闭；后续能力增删必须同时修改 matrix/manifest，validator
    会拒绝 ID、固定 commit、证据路径或汇总计数漂移。
 2. Linux Qt5/Qt6 与 Windows Qt5 的 source-only、corpus-gap 与 platform gap
-   已清零；下一步建立 macOS 完整 baseline。
+   已清零；下一步在 Darwin x86_64 执行已固定 bootstrap、冻结 toolchain
+   lock，再建立 macOS 68 行完整 baseline。
 3. 并行准备许可证和 benchmark 评审材料；不得用技术可行性替代许可证结论，
    也不得在没有固定环境时声称性能改善。
 4. 技术 blocker 清零后提交设计/ADR 评审；只有评审结论落盘后才能更新

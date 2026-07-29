@@ -8,6 +8,10 @@ Phase 0 计划形成：
 - [`windows-qt5-build-baseline.md`](windows-qt5-build-baseline.md)：固定
   Windows x64/MSVC 2019/Qt 5.15.2 的 clean qmake CLI 构建、官方 CMake
   xsimd 断点、二进制身份与最小 PE64 smoke（Draft）。
+- [`macos-qt5-oracle-plan.md`](macos-qt5-oracle-plan.md)：固定
+  macOS x86_64/Qt 5.15.2 CLI-only qmake bootstrap、候选报告 validator 和
+  68 行 runtime closure 接纳门禁；当前仅 infrastructure ready，未采集
+  runtime（Draft）。
 - [`capability-matrix.md`](capability-matrix.md)：CLI/engine 能力与证据索引（Draft）。
 - [`capability-coverage-report.md`](capability-coverage-report.md)：68 个稳定能力在
   Linux Qt5/Qt6、Windows 和 macOS 上的 runtime/source-only、corpus-missing
@@ -340,6 +344,9 @@ Phase 0 计划形成：
   `CAP-*` 的验证层级、证据路径、平台范围和三个开放 coverage gap。
 - [`data/capability-coverage.json`](data/capability-coverage.json)：68 行 × 4 平台
   的 272-cell 闭集分类、closed/open gap 到能力的显式映射和未分类计数。
+- [`data/macos-qt5-oracle-plan.json`](data/macos-qt5-oracle-plan.json)：
+  hash-bind macOS Qt5 CLI oracle bootstrap、validator 与上游构建入口，并明确
+  保持 `platform_missing` 的预执行计划。
 - [`data/qt6-capability-closure-plan.json`](data/qt6-capability-closure-plan.json)：
   将固定 Qt6 证据映射到全部 68 项能力并证明 closure required 为 0。
 - [`data/archive-limit-engine-qt5-qt6.json`](data/archive-limit-engine-qt5-qt6.json)：

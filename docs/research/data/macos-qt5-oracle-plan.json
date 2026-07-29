@@ -1,0 +1,56 @@
+{
+  "admission": {
+    "coverage_status": "platform_missing",
+    "platform_admitted": false,
+    "reason": "the build script and validator are ready, but no macOS candidate report or 68-row runtime closure has been collected"
+  },
+  "candidate_report_contract": {
+    "captures": [
+      "clean root and 58 recursive submodule identities",
+      "Qt qmake, QtCore, and QtScript SHA-256",
+      "macOS, x86_64 CPU, Xcode, clang, CMake, and qmake identity",
+      "CLI size, SHA-256, Mach-O architecture, dependencies, and version smoke"
+    ],
+    "commit_policy": "sanitize local paths before committing a collected report",
+    "contains_local_paths": true,
+    "validator": "tools/upstream/validate_macos_qt5_oracle_report.py"
+  },
+  "evaluated_on": "2026-07-29",
+  "fixed_contract": {
+    "build_system": "qmake",
+    "configuration": "release",
+    "host_architecture": "x86_64",
+    "qmake_spec": "macx-clang",
+    "qt_version": "5.15.2",
+    "recursive_submodule_count": 58,
+    "targets": [
+      "sub-build_libs-make_first",
+      "sub-console_source-make_first"
+    ],
+    "version_stdout": "die 4.0.0"
+  },
+  "platform": "macos-x86_64-qt5",
+  "result": "infrastructure_ready_runtime_missing",
+  "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+  "runtime_closure": {
+    "minimum_repetitions_per_case": 2,
+    "required_capability_count": 68,
+    "required_evidence": [
+      "hash-bound safe corpus and raw stdout/stderr",
+      "complete CLI and engine capability projections",
+      "macOS path, normalization, case, permission, and filesystem profiles",
+      "determinism and Linux Qt5 semantic comparisons with classified differences"
+    ]
+  },
+  "schema_version": 1,
+  "sources": {
+    "tools/upstream/build_macos_qt5_oracle.sh": "db5970a4b932e8a2390af79f9d1ddbc1ac18076bea3377688449d1b3309dd94c",
+    "tools/upstream/validate_macos_qt5_oracle_report.py": "64891dc319bfd7d958406aeeae31b4424385868b40d462c7f841ebbc5a8ff2e7",
+    "upstream/DIE-engine/.github/workflows/builder.yml": "b8053dda9c53682b7c931230a427d6ef2880c20bf27fe023a3eb973409ab1d57",
+    "upstream/DIE-engine/build.pri": "a1e09eda22d1e85a51d6d56e8a6669885e6a07a96c2fceb1948c1ce49ec28e1f",
+    "upstream/DIE-engine/build_mac.sh": "b5055e2bfe3c9dd5da38629f88d4c89fd511288699c0ffa02b4d2423caee9512",
+    "upstream/DIE-engine/console_source/console_source.pro": "29d00c74ae2c7d81f0deaa9443e0bb21f6f3e44ba44eb8fdde422896ed58d38c",
+    "upstream/DIE-engine/die_source.pro": "9c888455d1e35276a7aad2069ebe04818e30be96a714383f00659449a6f0bf4b"
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}
