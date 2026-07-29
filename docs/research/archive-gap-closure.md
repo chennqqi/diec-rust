@@ -144,7 +144,8 @@ OOM、超时或触发平台资源限制。
 - 本闭集生成时 Windows、macOS 和 Linux Qt6 baseline 仍由
   `CAP-GAP-007/008` 跟踪；后续
   [`qt6-capability-closure-plan.md`](qt6-capability-closure-plan.md)
-  已关闭 Linux Qt6 `CAP-GAP-007`，Windows/macOS 仍开放；
+  已关闭 Linux Qt6 `CAP-GAP-007`；后续 Windows 68 行 closure 也已关闭
+  `CAP-GAP-008` 的 Windows 部分，macOS 仍开放；
 - 历史 oracle 中的 `remaining_gap: CAP-GAP-006` 保留原始生成时结论，不修改
   固定报告；本 synthesis 报告及当前 traceability 是后续闭合证据。
 

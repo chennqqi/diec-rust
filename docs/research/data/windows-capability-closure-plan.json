@@ -38,23 +38,16 @@
         "docs/research/data/windows-qt5-cli-special-paths.json",
         "docs/research/data/windows-qt5-cli-filesystem.json",
         "docs/research/data/windows-qt5-cli-long-paths.json",
-        "docs/research/data/windows-qt5-cli-ads.json"
+        "docs/research/data/windows-qt5-cli-ads.json",
+        "docs/research/data/windows-path-closure-qt5.json"
       ],
       "evidence_set": "cli_path",
       "id": "CAP-CLI-IN-003",
-      "missing_scope": "UNC, reparse cycles, 4096-entry ordering, TOCTOU, and domain/network ACL profiles",
+      "missing_scope": null,
       "name": "directory enumeration",
-      "observed_scope": "special names, Junction aliases/chains, ADS, and 324/325-code-unit paths are fixed",
-      "proposed_experiment": {
-        "assertions": [
-          "two raw observations per case are deterministic",
-          "complete enumeration order and alias multiplicity are retained",
-          "platform errors, resource use, and unsupported profiles are explicitly classified"
-        ],
-        "fixture": "extend the committed Windows path fixtures with UNC, reparse cycle, 4096-entry, TOCTOU, and ACL profiles",
-        "harness": "native Windows CLI/path collector using the pinned qmake oracle"
-      },
-      "status": "partial"
+      "observed_scope": "23 path-closure cases fix 4096-entry order, dangling and cyclic reparse behavior, synchronized TOCTOU, WSL UNC/extended-UNC boundaries, and local/redirector access denial across 46 deterministic executions",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
@@ -1026,7 +1019,8 @@
     "docs/research/data/result-model-engine-windows-qt5.json": "611c111c38f85d7fbbe42fe41e5f6d922a7f168e084a1950b5bb6a70a5e3fc65",
     "docs/research/data/rule-orchestration-windows-qt5.json": "e6c7d47b35f89abdb10719e8578a550dcf5c9caf882a5d7825d3e0dbde3cf9da",
     "docs/research/data/signature-path-engine-windows-qt5.json": "54e0d24e363cf86353365ea93fffeaf03a5dfadb9f32f0c976ec3234b646ad48",
-    "docs/research/data/windows-qt5-build-baseline.json": "faedf9e1e33387881059a55566bd565ed9e5c984b5af85081f9beca113369bea",
+    "docs/research/data/windows-path-closure-qt5.json": "a88f64018bada18f4104278e5f79323009fce79916c64a5a061ed3864cbf3dd1",
+    "docs/research/data/windows-qt5-build-baseline.json": "67eb52992f308cb42955edf65cead252115e5a8948b7a3f1560eb1585c86dd92",
     "docs/research/data/windows-qt5-cli-ads.json": "bfdec0a8a516dd5d86721a9331d1d914c7e66f29df0fe0d6115c6dcca079224e",
     "docs/research/data/windows-qt5-cli-database-archive.json": "53c673620cc4388f0da7ffe36af7a325a099bceb0e29912c1f733119f942d748",
     "docs/research/data/windows-qt5-cli-database.json": "13e58a8d1b0cc4feb3998c06140e0afe7adb754cb59e5198b0e5b3079a3d5f8c",
@@ -1042,13 +1036,13 @@
   "summary": {
     "all_capabilities_accounted_for": true,
     "capability_count": 68,
-    "closure_required": 1,
-    "evidence_complete": 67,
+    "closure_required": 0,
+    "evidence_complete": 68,
     "missing": 0,
-    "partial": 1,
-    "windows_baseline_admitted": false,
-    "windows_process_execution_count": 2392,
-    "windows_report_count": 22
+    "partial": 0,
+    "windows_baseline_admitted": true,
+    "windows_process_execution_count": 2438,
+    "windows_report_count": 23
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
 }

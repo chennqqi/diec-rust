@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "evaluated_on": "2026-07-28",
+  "evaluated_on": "2026-07-29",
   "phase": 0,
   "result": "not_ready",
   "roadmap_status": "IN PROGRESS",
@@ -98,7 +98,7 @@
         "docs/research/upstream-build-baseline.md",
         "docs/research/behavior-baseline.md"
       ],
-      "limitation": "the reproducible oracle is Linux-only"
+      "limitation": "Linux Qt5/Qt6 and Windows Qt5 are reproducible; macOS is still missing"
     }
   ],
   "exit_conditions": [
@@ -187,10 +187,10 @@
     },
     {
       "id": "P0-BLOCK-005",
-      "title": "Windows and macOS capability baselines are incomplete",
+      "title": "macOS capability baseline is incomplete",
       "owner": "compatibility",
       "status": "open",
-      "progress_evidence": "docs/research/capability-coverage-report.md and docs/research/data/capability-coverage.json classify all 68 capability rows across four platforms with zero unclassified cells; Linux Qt5 and Linux Qt6 each have 68 runtime-observed rows, zero source-only rows, and zero corpus-gap rows; docs/research/data/qt6-capability-closure-plan.json closes CAP-GAP-007 with 68 evidence-complete rows, including paired depth 64, 33554546 cumulative expanded bytes, and cancellation-prefix evidence for CAP-NEST-009; Windows and macOS each retain 68 platform-missing rows",
+      "progress_evidence": "docs/research/capability-coverage-report.md and docs/research/data/capability-coverage.json classify all 68 capability rows across four platforms with zero unclassified cells; Linux Qt5, Linux Qt6, and Windows Qt5 each have 68 runtime-observed rows, zero source-only rows, and zero corpus-gap rows; docs/research/data/windows-capability-closure-plan.json binds 23 Windows reports and 2438 process executions with 68 evidence-complete rows, closing the Windows part of CAP-GAP-008; macOS retains 68 platform-missing rows",
       "closure_evidence": "pinned reproducible baselines with no Phase 0 source-only, corpus-missing, platform-missing, or unclassified capability rows"
     },
     {

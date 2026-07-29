@@ -35,7 +35,8 @@ git -C DIE-engine submodule status --recursive
 [`upstream-build-baseline.md`](upstream-build-baseline.md) 与
 [`upstream-cmake-differential.md`](upstream-cmake-differential.md) 与
 [`upstream-qt6-differential.md`](upstream-qt6-differential.md)。实验尚未
-覆盖完整发布打包及 Windows/macOS，因此本文件仍为 Draft。
+覆盖完整发布打包及 macOS；Windows Qt5 的 68 行能力基线虽已闭合，但不是
+官方发布包复现，因此本文件仍为 Draft。
 
 本仓库目前还物化了两个可审计快照：
 
@@ -167,14 +168,14 @@ vendored 目录仍需独立 source/license 审计。
   10-case rule-orchestration 双轮及 private signature-path engine harness
   双轮、五组 result-model harness 各双轮，再加入 86 次 legacy/archive
   dispatch、debug-data paired harness 双轮、archive-option 128 次及
-  count-boundary 22 次及 archive-limit 30 次执行后，Windows 68 行 closure
-  已分类为 67 complete、1 partial、0 missing；
+  count-boundary 22 次、archive-limit 30 次及 path closure 46 次执行后，
+  Windows 68 行 closure 已分类为 68 complete、0 partial、0 missing，并已由
+  总覆盖生成器接纳；
   CLI profiling 保留 `image_ICNS.sg`
   的精确 Windows/Linux 顺序差异，而规则编排 canonical 语义完全相同；
-  UNC、精确 namespace
-  上限、symbolic link/reparse cycle、domain/group DACL、network
-  share/EFS/integrity level、其他 engine-only、畸形矩阵和其余
-  跨平台原始输出仍待采集。
+  23-case path closure 已固定 4096-entry、reparse cycle、同步 TOCTOU、
+  WSL UNC/extended-UNC 及本地/redirector access denial；macOS、其他 UNC
+  provider、EFS/integrity level、畸形扩展矩阵和其余跨平台原始输出仍待采集。
 
 ## 主要证据
 

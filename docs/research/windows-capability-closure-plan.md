@@ -1,6 +1,6 @@
-# Windows Qt5 68 行能力闭合计划
+# Windows Qt5 68 行能力闭合报告
 
-Status: Draft
+Status: In Review
 
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
 
@@ -9,8 +9,7 @@ Last updated: 2026-07-29
 ## 1. 目的
 
 本文把 [`capability-traceability.json`](data/capability-traceability.json)
-中的 68 个稳定能力 ID 逐行映射到现有 Windows Qt5 runtime 证据，避免把
-“已有很多实验”误写成“平台能力已闭合”。机器报告为
+中的 68 个稳定能力 ID 逐行映射到 Windows Qt5 runtime 证据。机器报告为
 [`data/windows-capability-closure-plan.json`](data/windows-capability-closure-plan.json)，
 由
 [`build_windows_closure_plan.py`](../../tools/research/build_windows_closure_plan.py)
@@ -20,13 +19,14 @@ Last updated: 2026-07-29
 
 - 固定上游、规则和 68 行 traceability；
 - [`windows-qt5-build-baseline.json`](data/windows-qt5-build-baseline.json)；
-- 22 份 Windows runtime 报告的完整 SHA-256；
+- 23 份 Windows runtime 报告的完整 SHA-256；
 - 每份报告的 source/platform 身份和命名 summary facts；
-- 2,392 次 Windows 进程执行，其中 legacy/archive dispatch 86 次执行、
+- 2,438 次 Windows 进程执行，其中 legacy/archive dispatch 86 次执行、
   72 次 case observation，debug-data paired harness 2 次执行、6 次 case
   observation，archive-option matrix 128 次执行、128 次 case observation，
   count-boundary 22 次执行、22 次 case observation，archive-limit
-  30 次执行、30 次 case observation。
+  30 次执行、30 次 case observation，以及最终 path closure 46 次执行、
+  46 次 case observation。
 
 报告只接受三种状态：
 
@@ -43,18 +43,16 @@ Last updated: 2026-07-29
 
 | 分类 | 行数 |
 | --- | ---: |
-| Evidence complete | 67 |
-| Partial | 1 |
+| Evidence complete | 68 |
+| Partial | 0 |
 | Missing | 0 |
 | Total | 68 |
 
-所有行均恰好分类一次，但仍有 1 行需要 closure，因此
-`windows_baseline_admitted=false`。现有
-[`capability-coverage.json`](data/capability-coverage.json) 继续把 Windows
-68 行标记为 `platform_missing` 是正确的保守行为；本计划提供逐行升级路径，
-不直接改变平台接纳状态。
+所有行均恰好分类一次，`closure_required=0` 且
+`windows_baseline_admitted=true`。总覆盖生成器已 hash-bind 本报告，并把
+Windows 68 行接纳为 `runtime_observed`。
 
-67 个已闭合行主要来自：
+68 个已闭合行主要来自：
 
 - 26 样本的 single-target、scan option、output、entropy/info/struct；
 - help/version/show-structs；
@@ -83,18 +81,18 @@ Last updated: 2026-07-29
 - archive 99999/100000/100001 和 resource inclusive 21/2001 精确计数边界。
 - archive depth 64、累计展开量 33,554,546 bytes 和 root-only cancellation
   prefix。
+- 23-case path closure 固定 4096-entry 顺序、dangling/cyclic reparse、
+  同步 TOCTOU、WSL UNC/extended-UNC 以及本地/redirector access denial。
 
 这些行仍受各自报告中已经写明的全局平台限制约束，但没有把其他能力行的缺口
 反向扩散到本行。
 
-## 3. Partial：1 行
+## 3. Partial：0 行
 
-| ID | 已观察范围 | 仍缺 |
-| --- | --- | --- |
-| `CAP-CLI-IN-003` | Unicode/特殊名、Junction alias/chain、ADS、324/325-code-unit path | UNC、reparse cycle、4096-entry ordering、TOCTOU、domain/network ACL |
-
-Partial 行不能计入 Windows runtime baseline。机器报告为每行保存
-`observed_scope`、`missing_scope`、`proposed_experiment` 和 evidence paths。
+最后一行 `CAP-CLI-IN-003` 已由
+[`windows-path-closure-behavior.md`](windows-path-closure-behavior.md)
+闭合。机器报告仍为每行保留 `observed_scope` 和 evidence paths，并要求
+complete 行的 `missing_scope`、`proposed_experiment` 均为 null。
 
 ## 4. Missing：0 行
 
@@ -103,20 +101,15 @@ Partial 行不能计入 Windows runtime baseline。机器报告为每行保存
 闭合：相同 14-case corpus 和取消 control 各双运行，达到 depth 64 与
 33,554,546 bytes，确定性投影与 Linux Qt5 相等。
 
-## 5. 执行顺序
+## 5. 后续维护
 
-按“每次固定构建关闭最多能力行”的原则：
-
-1. Windows path closure：最后处理 `CAP-CLI-IN-003`，其中 domain/UNC 等需要
-   明确环境能力，不把无法在当前主机合法构造的 profile 写成已观察。
-
-每批的接纳条件相同：固定 source/rules/toolchain/binary 或 object identity；
+新增或变更能力时，接纳条件仍为：固定 source/rules/toolchain/binary 或 object identity；
 项目生成的 hash-bound 输入；至少双轮确定性；保留 raw 与结构化投影；差异逐项
 分类；报告和 generator hash 进入本 closure manifest。
 
 ## 6. 与 Phase 0 门禁的关系
 
-Windows closure 达到 68 `evidence_complete` 后，coverage 生成器才可以接纳
+Windows closure 已达到 68 `evidence_complete`，coverage 生成器已接纳
 `windows-x86_64-qt5`，并把 `CAP-GAP-008` 的 Windows 部分标为 closed。
 macOS 仍需独立 fixed oracle 和同样的 68 行审计。Windows closure 本身也不
 替代 Phase 0 的设计文档评审、许可证审计或规则运行时/C ABI 技术验证。

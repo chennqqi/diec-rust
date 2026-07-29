@@ -53,6 +53,9 @@ REPORT_KEYS = {
     "docs/research/data/archive-limit-engine-windows-qt5.json": (
         "windows_archive_limits"
     ),
+    "docs/research/data/windows-path-closure-qt5.json": (
+        "windows_path_closure"
+    ),
     "docs/research/data/windows-qt5-cli-path-nested.json": (
         "windows_cli_path_nested"
     ),
@@ -120,6 +123,7 @@ def sha256(value: bytes) -> str:
 COMPLETE: dict[str, str] = {
     "CAP-CLI-IN-001": "26 hash-bound corpus files exercise one positional target with deterministic Linux-equal detection projections",
     "CAP-CLI-IN-002": "ordered multi-target, duplicate, missing-plus-valid, and directory-plus-file cases are fixed",
+    "CAP-CLI-IN-003": "23 path-closure cases fix 4096-entry order, dangling and cyclic reparse behavior, synchronized TOCTOU, WSL UNC/extended-UNC boundaries, and local/redirector access denial across 46 deterministic executions",
     "CAP-CLI-IN-004": "single-file directory and empty-directory behavior is fixed",
     "CAP-ENG-IN-001": "file, memory, device, and exact subdevice entry points have identical complete record arrays",
     "CAP-ENG-IN-002": "chunked, short-read, read/seek failure, sequential, position, and subdevice range boundaries match Linux Qt5",
@@ -188,13 +192,7 @@ COMPLETE: dict[str, str] = {
 }
 
 
-PARTIAL: dict[str, tuple[str, str, str]] = {
-    "CAP-CLI-IN-003": (
-        "special names, Junction aliases/chains, ADS, and 324/325-code-unit paths are fixed",
-        "UNC, reparse cycles, 4096-entry ordering, TOCTOU, and domain/network ACL profiles",
-        "run a Windows path closure harness covering the named filesystem profiles with raw order and resource retention",
-    ),
-}
+PARTIAL: dict[str, tuple[str, str, str]] = {}
 
 
 MISSING: dict[str, tuple[str, str]] = {}
@@ -266,6 +264,9 @@ EVIDENCE_PATHS = {
 }
 
 CAPABILITY_EVIDENCE_PATHS = {
+    "CAP-CLI-IN-003": (
+        "docs/research/data/windows-path-closure-qt5.json",
+    ),
     "CAP-NEST-003": (
         "docs/research/data/archive-option-engine-windows-qt5.json",
     ),
@@ -896,6 +897,29 @@ def validate_inputs(
     ):
         raise ClosurePlanError("Windows archive-limit facts drift")
 
+    path_closure = reports[
+        "docs/research/data/windows-path-closure-qt5.json"
+    ]
+    if (
+        path_closure.get("passed") is not True
+        or path_closure.get("failures") != []
+        or path_closure.get("capability") != "CAP-CLI-IN-003"
+        or path_closure.get("source", {}).get("rules_commit")
+        != RULES_COMMIT
+        or path_closure.get("repetitions") != 2
+        or path_closure.get("case_count") != 23
+        or path_closure.get("execution_count") != 46
+        or path_closure.get("case_observation_count") != 46
+        or len(path_closure.get("large_directory_cases", {})) != 5
+        or len(path_closure.get("reparse_cases", {})) != 3
+        or len(path_closure.get("toctou_cases", {})) != 4
+        or len(path_closure.get("unc_cases", {})) != 8
+        or len(path_closure.get("acl_cases", {})) != 3
+        or len(path_closure.get("relationships", {})) != 21
+        or not all(path_closure.get("relationships", {}).values())
+    ):
+        raise ClosurePlanError("Windows path-closure facts drift")
+
     for evidence_set, paths in EVIDENCE_PATHS.items():
         for path in paths:
             if path not in reports:
@@ -1016,7 +1040,7 @@ def build_plan(root: Path) -> dict[str, Any]:
             "windows_baseline_admitted": (
                 not PARTIAL and not MISSING
             ),
-            "windows_process_execution_count": 2392,
+            "windows_process_execution_count": 2438,
             "windows_report_count": len(REPORT_KEYS),
         },
     }

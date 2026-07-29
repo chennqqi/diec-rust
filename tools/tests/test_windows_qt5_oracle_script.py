@@ -88,9 +88,10 @@ class WindowsQt5OracleScriptTests(unittest.TestCase):
         self.assertEqual(self.evidence["runtime_smoke"]["exit_code"], 0)
         self.assertEqual(self.evidence["runtime_smoke"]["stderr_size"], 0)
 
-    def test_research_does_not_close_windows_capability_coverage(self):
-        self.assertIn("Windows 的 68 项能力仍", self.research)
-        self.assertIn("保持 `platform_missing`", self.research)
+    def test_research_scopes_build_record_and_platform_admission(self):
+        self.assertIn("Windows 的 68 项能力已", self.research)
+        self.assertIn("接纳为 `runtime_observed`", self.research)
+        self.assertIn("该单份报告本身不足以接纳", self.research)
         self.assertIn("46 个 `LNK2019`", self.research)
         self.assertIn("bit-for-bit reproducible", self.research)
 

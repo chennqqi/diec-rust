@@ -260,8 +260,10 @@ TAR 只展开到每个隔离 container 的 `/work` tmpfs，不写宿主路径。
 - locale 改变后的排序，以及不同 filesystem normalization/case 行为；
 - Linux Qt6 的完整能力矩阵已由
   [`qt6-path-boundary-runtime-evidence.md`](qt6-path-boundary-runtime-evidence.md)
-  重放；Windows/macOS 仍缺；
-- Windows/macOS separator、绝对路径、reserved name、Unicode normalization、
+  重放；Windows 后续也由
+  [`windows-path-closure-behavior.md`](windows-path-closure-behavior.md)
+  与既有 Windows path 矩阵闭合，macOS 仍缺；
+- macOS separator、绝对路径、reserved name、Unicode normalization、
   case sensitivity 与枚举顺序。
 
 本页完成时 `CAP-GAP-003` 尚保持开放；后续
@@ -269,5 +271,6 @@ TAR 只展开到每个隔离 container 的 `/work` tmpfs，不写宿主路径。
 [`large-directory-behavior.md`](large-directory-behavior.md)、
 [`path-toctou-behavior.md`](path-toctou-behavior.md) 与
 [`path-locale-filesystem-behavior.md`](path-locale-filesystem-behavior.md)
-已闭合其余 Linux Qt5 子矩阵。`CAP-GAP-007` 和 `CAP-GAP-008` 仍保持开放，
-不能把局部 Linux 证据提升为跨平台完成声明。
+已闭合其余 Linux Qt5 子矩阵。后续 Qt6 与 Windows closure 分别关闭对应平台
+部分；`CAP-GAP-008` 仍为 macOS 保持开放，不能把局部 Linux 证据提升为完整
+跨平台声明。

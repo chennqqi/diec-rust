@@ -111,4 +111,4 @@ python tools\research\build_qt6_closure_plan.py
 - Qt6 与 Qt5 相等不改变 ADR 0012 的安全结论：Rust 默认必须有独立 depth、
   entry、single-object、cumulative expanded、node、allocation 和 deadline
   预算。
-- Windows 与 macOS 仍没有完整能力基线。
+- Windows 后续已由独立 68 行 closure 接纳；macOS 仍没有完整能力基线。

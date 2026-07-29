@@ -42,12 +42,12 @@ JSON continuity、CSV 优先级及四个带空格 filetype 的 invalid XML。
 本仓库用
 [`build_windows_qt5_oracle.ps1`](../../tools/upstream/build_windows_qt5_oracle.ps1)
 固定源码、规则、Qt 二进制身份和构建目标。它产生的是 **Windows Qt5 qmake CLI
-候选 oracle**，不是固定上游官方 workflow 的发布包。Windows 的 68 项能力仍
-保持 `platform_missing`，直到完整差分语料在该平台执行并归档。
+候选 oracle**，不是固定上游官方 workflow 的发布包。围绕该候选 oracle 的
+完整逐行差分语料现已执行并归档，Windows 的 68 项能力已由 coverage builder
+接纳为 `runtime_observed`。
 逐行
 [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)
-已把当前证据审计为 67 complete、1 partial、0 missing；最后 1 个开放行有
-命名验收实验。
+已把当前证据审计为 68 complete、0 partial、0 missing。
 
 机器证据见
 [`data/windows-qt5-build-baseline.json`](data/windows-qt5-build-baseline.json)
@@ -222,8 +222,9 @@ normalizer 隐藏平台原始字节。
 这批证据直接覆盖单文件默认扫描、基本 CLI 控制以及 PE/ELF/Mach-O、DEX/
 Java/PYC、PDF/CFBF 和 Binary fallback 的 baseline dispatch。单独看该报告
 不覆盖后续章节的 option/output/special/path/nested/database，也不覆盖
-engine-only harness，因此不足以把 Windows 的 68 行整体接纳为 runtime
-baseline。
+engine-only harness，因此该单份报告本身不足以接纳 Windows 68 行；平台准入
+依赖 23 份报告组成的完整
+[`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)。
 
 ## Windows CLI option/output/special 矩阵
 

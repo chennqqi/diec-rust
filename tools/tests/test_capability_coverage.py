@@ -18,6 +18,13 @@ QT6_CLOSURE = (
     / "data"
     / "qt6-capability-closure-plan.json"
 )
+WINDOWS_CLOSURE = (
+    ROOT
+    / "docs"
+    / "research"
+    / "data"
+    / "windows-capability-closure-plan.json"
+)
 SPEC = importlib.util.spec_from_file_location(
     "build_capability_coverage",
     SCRIPT,
@@ -32,6 +39,9 @@ class CapabilityCoverageTest(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.traceability, cls.raw = MODULE.load_json(TRACEABILITY)
         cls.qt6_closure, cls.qt6_raw = MODULE.load_json(QT6_CLOSURE)
+        cls.windows_closure, cls.windows_raw = MODULE.load_json(
+            WINDOWS_CLOSURE
+        )
         cls.report = json.loads(REPORT.read_text(encoding="utf-8"))
 
     def test_committed_report_is_exact_generator_output(self):
@@ -40,6 +50,8 @@ class CapabilityCoverageTest(unittest.TestCase):
             self.raw,
             self.qt6_closure,
             self.qt6_raw,
+            self.windows_closure,
+            self.windows_raw,
         )
         self.assertEqual(self.report, expected)
         self.assertEqual(REPORT.read_bytes(), MODULE.serialize(expected))
@@ -86,11 +98,13 @@ class CapabilityCoverageTest(unittest.TestCase):
         self.assertEqual(qt6["runtime_observed"], 68)
         self.assertEqual(qt6["platform_missing"], 0)
 
-        for platform in (
-            "windows-x86_64-qt5",
-            "macos-x86_64-qt5",
-        ):
-            self.assertEqual(counts[platform]["platform_missing"], 68)
+        windows = counts["windows-x86_64-qt5"]
+        self.assertEqual(windows["runtime_observed"], 68)
+        self.assertEqual(windows["platform_missing"], 0)
+        self.assertEqual(
+            counts["macos-x86_64-qt5"]["platform_missing"],
+            68,
+        )
 
         rows = {row["id"]: row for row in self.report["rows"]}
         self.assertEqual(
@@ -178,6 +192,10 @@ class CapabilityCoverageTest(unittest.TestCase):
                 row["platform_status"]["linux-x86_64-qt6"],
                 "runtime_observed",
             )
+            self.assertEqual(
+                row["platform_status"]["windows-x86_64-qt5"],
+                "runtime_observed",
+            )
 
     def test_every_declared_gap_maps_to_known_capabilities(self):
         row_ids = {row["id"] for row in self.report["rows"]}
@@ -202,6 +220,19 @@ class CapabilityCoverageTest(unittest.TestCase):
         self.assertEqual(
             gap_by_id["CAP-GAP-008"]["kind"],
             "platform_missing",
+        )
+        self.assertEqual(
+            gap_by_id["CAP-GAP-008"]["platform_status"],
+            {
+                "windows-x86_64-qt5": "closed",
+                "macos-x86_64-qt5": "open",
+            },
+        )
+        self.assertEqual(
+            gap_by_id["CAP-GAP-008"]["closures"][
+                "windows-x86_64-qt5"
+            ]["path"],
+            MODULE.WINDOWS_CLOSURE_PATH,
         )
 
     def test_every_with_gaps_status_has_a_named_corpus_gap(self):
@@ -237,6 +268,8 @@ class CapabilityCoverageTest(unittest.TestCase):
                 self.raw,
                 self.qt6_closure,
                 self.qt6_raw,
+                self.windows_closure,
+                self.windows_raw,
             )
 
         changed_closure = dict(self.qt6_closure)
@@ -250,6 +283,26 @@ class CapabilityCoverageTest(unittest.TestCase):
                 self.raw,
                 changed_closure,
                 self.qt6_raw,
+                self.windows_closure,
+                self.windows_raw,
+            )
+
+        changed_windows = dict(self.windows_closure)
+        changed_windows["summary"] = {
+            **self.windows_closure["summary"],
+            "windows_baseline_admitted": False,
+        }
+        with self.assertRaisesRegex(
+            MODULE.CoverageError,
+            "Windows closure",
+        ):
+            MODULE.build_report(
+                self.traceability,
+                self.raw,
+                self.qt6_closure,
+                self.qt6_raw,
+                changed_windows,
+                self.windows_raw,
             )
 
 

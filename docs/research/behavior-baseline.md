@@ -121,17 +121,20 @@ case observation。scalar、四类列表、flags、IDs 和 enums 的完整语义
 `CAP-NEST-007`。Windows archive-option matrix 随后以 128 次执行关闭
 `CAP-NEST-003`。Windows count-boundary 批次又以 22 次执行关闭
 `CAP-NEST-004`。Windows archive-limit 批次再以 30 次执行关闭
-`CAP-NEST-009`。二十二份 Windows runtime 报告累计 2,392 次执行；逐行审计
-更新为 67 complete、1 partial、0 missing，最后只剩 path profile partial，
+`CAP-NEST-009`。Windows path closure 最后以 46 次执行关闭
+`CAP-CLI-IN-003`。二十三份 Windows runtime 报告累计 2,438 次执行；逐行审计
+更新为 68 complete、0 partial、0 missing，Windows baseline 已由总覆盖生成器
+接纳，
 详见
 [`windows-dispatch-behavior.md`](windows-dispatch-behavior.md) 与
 [`windows-debug-dispatch-behavior.md`](windows-debug-dispatch-behavior.md)、
 [`windows-archive-option-behavior.md`](windows-archive-option-behavior.md) 与
 [`windows-count-boundary-behavior.md`](windows-count-boundary-behavior.md)、
-[`windows-archive-limit-behavior.md`](windows-archive-limit-behavior.md)。
-上述 22 份报告由
+[`windows-archive-limit-behavior.md`](windows-archive-limit-behavior.md) 与
+[`windows-path-closure-behavior.md`](windows-path-closure-behavior.md)。
+上述 23 份报告由
 [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)
-逐行投影，继续阻止局部 runtime 结果被误当作完整 Windows baseline。
+逐行投影并由 hash-bound 总覆盖生成器接纳。
 
 同一剩余 21 样本 × 19-case special 矩阵又在固定 Linux Qt5/Qt6 image 上
 各执行一次，共 798 次容器执行。399/399 raw observations 逐字节相同；231 个

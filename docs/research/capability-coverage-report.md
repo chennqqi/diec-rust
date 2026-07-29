@@ -19,7 +19,8 @@ Last updated: 2026-07-29
 [`data/capability-coverage.json`](data/capability-coverage.json)，由
 [`build_capability_coverage.py`](../../tools/research/build_capability_coverage.py)
 确定性生成。报告绑定 traceability 原始文件 SHA-256、上游 commit 和规则 commit。
-Linux Qt6 状态还绑定完整 closure 报告的原始 SHA-256。
+Linux Qt6 与 Windows Qt5 状态还分别绑定完整 68 行 closure 报告的原始
+SHA-256。
 
 ## 2. 目标平台闭集
 
@@ -31,8 +32,8 @@ Phase 0 报告固定四个平台：
 - `macos-x86_64-qt5`
 
 Linux x86_64 Qt5 由 traceability manifest 接纳为完整 runtime baseline；
-Linux x86_64 Qt6 由 hash-bound 的 68 行 closure 报告接纳为第二个完整 runtime
-baseline。Windows 与 macOS 仍为 `platform_missing`。
+Linux x86_64 Qt6 与 Windows x86_64 Qt5 分别由 hash-bound 的 68 行 closure
+报告接纳。macOS 仍为 `platform_missing`。
 
 Windows 已有 clean candidate oracle、6-control/26-sample 默认 JSON baseline、
 338-case option/output/special 矩阵，以及首轮 14-case path/32-case nested
@@ -45,8 +46,8 @@ Windows 特殊路径矩阵和
 双轮后，再加入十个 rule-orchestration case 双轮与两轮 private
 signature-path engine harness、五组 result-model harness 各两轮，再加入
 legacy/archive dispatch 的 86 次执行、debug-data paired harness 双轮、
-archive-option matrix 128 次、count-boundary 22 次及 archive-limit
-30 次执行，二十二批共 2,392 次
+archive-option matrix 128 次、count-boundary 22 次、archive-limit
+30 次及 path closure 46 次执行，二十三批共 2,438 次
 Windows 进程执行；默认 detection
 projection 与 Linux Qt5 26/26 相同，
 251 个直接重叠矩阵 case 的退出码也全部相同，path 相对输出顺序、nested
@@ -72,19 +73,19 @@ profiling order；Windows 将 `image_ICNS.sg` 从 Linux index 248 移到末尾�
 [`windows-cli-option-behavior.md`](windows-cli-option-behavior.md)。
 规则编排的 10/10 canonical case 和 14/14 关系又与 Linux Qt5 完全相同，
 见 [`windows-rule-orchestration.md`](windows-rule-orchestration.md)。
-由于 UNC、
-精确 namespace 上限、symlink/reparse cycle、domain/group DACL、network
-share/EFS/integrity level、其他 engine-only 能力以及跨平台扩展
-仍缺失，coverage 生成器尚不接纳 Windows 为完整 runtime
-baseline，68 行继续保守标记为 `platform_missing`。
+最终 path closure 又以 23 个 case 双轮固定 4096-entry 完整顺序、
+dangling/cyclic reparse、同步 TOCTOU、WSL UNC/extended-UNC 以及本地
+NTFS/redirector access denial，见
+[`windows-path-closure-behavior.md`](windows-path-closure-behavior.md)。
 
 独立的 hash-bound
 [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)
-现已把这 68 行逐项审计为 67 `evidence_complete`、1 partial、0 missing，
+现已把这 68 行逐项审计为 68 `evidence_complete`、0 partial、0 missing，
 机器报告 SHA-256 为
-`2f21960e90534ce68f96cf55350c0c18e7ba6566a7cdb5183833df415882c3df`。
-该报告绑定上述 22 份 Windows runtime 证据并为 1 个开放行给出验收实验；
-在 68 行全部 complete 前，coverage 生成器不消费它来提升平台状态。
+`fc3abd694ab1644999d0bfe39ab1eed79c22fe5f944a20f739ba9c56768e84dd`。
+该报告绑定上述 23 份 Windows runtime 证据；coverage 生成器严格校验行顺序、
+complete 字段、报告/执行计数和 commit 身份后，将 Windows 68 行提升为
+`runtime_observed`。
 
 另有 798 次 Linux Qt5/Qt6 special 扩展执行把剩余 21 样本的 399 对 raw
 observations 固定为逐字节相同，并证明 231 个 JSON/XML projection 在
@@ -122,7 +123,7 @@ raw 完全相同，7 个 PE64 case 只保留已知 Qt6 stderr；21 个 JSON tree
 | --- | ---: | ---: | ---: | ---: | ---: |
 | Linux x86_64 Qt5 | 68 | 0 | 0 | 0 | 0 |
 | Linux x86_64 Qt6 | 68 | 0 | 0 | 0 | 0 |
-| Windows x86_64 Qt5 | 0 | 0 | 0 | 0 | 68 |
+| Windows x86_64 Qt5 | 68 | 0 | 0 | 0 | 0 |
 | macOS x86_64 Qt5 | 0 | 0 | 0 | 0 | 68 |
 
 所有 68 个能力行和 272 个平台 cell 都已分类，未分类计数为 0。这只证明审计
@@ -131,20 +132,20 @@ raw 完全相同，7 个 PE64 case 只保留已知 Qt6 stderr；21 个 JSON tree
 - Linux Qt5 source-only 能力已清零；
 - Linux Qt5 已命名 corpus gap 已清零；
 - Linux Qt6 的 68 行已全部接纳为 runtime observed；
-- Windows 的独立 closure 审计为 67 complete/1 partial/0 missing，但尚未
-  接纳，因此 coverage 仍显示 68 个 `platform_missing`；
+- Windows 的独立 closure 为 68 complete/0 partial/0 missing，68 行已接纳为
+  `runtime_observed`；
 - macOS 有 68 个 `platform_missing`，且尚无固定 oracle；
 - `phase_0_coverage_complete` 必须保持 `false`。
 
 ## 5. 缺口映射
 
 traceability 中两个 `CAP-GAP-*` 均保留身份；coverage 报告将 Qt6 gap 投影为
-closed，并保留 Windows/macOS path gap 为 open：
+closed，并将 Windows/macOS path gap 记录为 Windows closed、macOS open：
 
 | Gap | 类型 | 能力行数 | 范围 |
 | --- | --- | ---: | --- |
 | `CAP-GAP-007` | closed | 68 | 完整 Qt5/Qt6 capability matrix |
-| `CAP-GAP-008` | platform/open | 8 | Windows/macOS path 与 encoding |
+| `CAP-GAP-008` | platform/open | 8 | Windows closed；macOS path 与 encoding open |
 
 映射是保守的审计范围，不是“这些能力除此之外都已完备”的声明。
 
@@ -163,8 +164,9 @@ stable old/new、old→new 原子替换和 unlink，证明第二项按打开时�
 最终
 [`path-locale-filesystem-behavior.md`](path-locale-filesystem-behavior.md)
 覆盖固定镜像的全部 `C`/`C.utf8`/`POSIX` locale 与 tmpfs/`ext2/ext3`
-volume，冻结两个大小写排序 profile。Windows/macOS 仍由 `CAP-GAP-008`
-单独跟踪，不属于已闭合的 Linux Qt5 corpus gap。
+volume，冻结两个大小写排序 profile。Windows 部分由独立 68 行 closure
+关闭；macOS 仍由 `CAP-GAP-008` 单独跟踪，不属于已闭合的 Linux Qt5 corpus
+gap。
 
 原 `CAP-GAP-006` 已由十二组固定证据及最终闭集审计关闭：单成员 ZIP 链已到达
 64 层，固定两层
@@ -228,7 +230,7 @@ RAR15/RAR20、RAR7 algorithm version 1、加密、多卷、恢复与损坏压缩
 记录图和真实资源耗尽仍是 format-method 扩展与安全风险，不能外推为已验证或
 安全；Linux Qt6 同边界由
 [`qt6-archive-limit-runtime-evidence.md`](qt6-archive-limit-runtime-evidence.md)
-闭合，Windows/macOS 路径缺口由 `CAP-GAP-008` 保留。
+闭合；`CAP-GAP-008` 只保留 macOS 路径缺口。
 
 原 `CAP-GAP-005` 已由
 [`scan-option-boundaries.md`](scan-option-boundaries.md)
@@ -296,12 +298,13 @@ python tools/tests/test_capability_coverage.py
 
 测试要求 committed report 与生成结果逐字节一致；68 个 ID 与 traceability 完全
 相等；Qt6 closure 必须为 68 complete/0 partial/0 missing；全部平台 cell
-有已知状态；Linux Qt5/Qt6 各保持 68 个 `runtime_observed`；Windows 与 macOS
-各保持 68 个 `platform_missing`；closed/open gap 均映射到已知能力；所有
+有已知状态；Linux Qt5/Qt6 与 Windows Qt5 各保持 68 个
+`runtime_observed`；macOS 保持 68 个 `platform_missing`；closed/open gap
+均映射到已知能力；所有
 `with_corpus_gaps` 状态都至少关联一个具名 corpus gap。
 
-Windows 的 66/1/1 closure 由独立生成器验证；在其达到 68/0/0 并显式接入
-coverage builder 前，不改变本段机器契约。
+Windows 的 68/0/0 closure 由独立生成器验证并已显式接入 coverage builder；
+任何行降级、顺序/commit/报告计数漂移都会拒绝重新生成总报告。
 
 ## 7. 对 Phase 0 门禁的影响
 
@@ -312,6 +315,7 @@ coverage builder 前，不改变本段机器契约。
    [`source-only-closure-plan.md`](source-only-closure-plan.md)
    的 Linux source-only 闭集为空，新增或降级能力必须重新进入 closure catalog；
 2. 保持 `CAP-GAP-006` closure 的五类 family 闭集、记录/深度/总量断言不漂移；
-3. 保持 Linux Qt6 的 68 行 closure 不降级，并固定 Windows、macOS oracle；
+3. 保持 Linux Qt6 和 Windows Qt5 的 68 行 closure 不降级，并固定 macOS
+   oracle；
 4. 重新生成报告，且经评审确认 Phase 0 所需行不再为 source-only、
    corpus-missing 或 platform-missing。

@@ -239,6 +239,17 @@
     "semantic_projection_failures": 0,
     "named_relationship_failures": 0
   },
+  "windows_path_closure": {
+    "path": "docs/research/data/windows-path-closure-qt5.json",
+    "sha256": "a88f64018bada18f4104278e5f79323009fce79916c64a5a061ed3864cbf3dd1",
+    "capability_count": 1,
+    "repetitions": 2,
+    "case_count": 23,
+    "execution_count": 46,
+    "case_observation_count": 46,
+    "semantic_projection_failures": 0,
+    "named_relationship_failures": 0
+  },
   "windows_cli_path_nested": {
     "path": "docs/research/data/windows-qt5-cli-path-nested.json",
     "sha256": "e877e112deb244ab1cbf9edf221e94e155cda711a182f216478eeaf9da40e21b",
@@ -389,7 +400,7 @@
     "notes": [
       "A preliminary build in a different absolute path produced the same size and runtime-smoke hashes but a different executable SHA-256.",
       "The preliminary source tree had first passed through CMake configure, so the two artifact hashes are not a controlled bit-for-bit reproducibility experiment.",
-      "The capability matrix remains platform_missing on Windows until the complete differential suite is captured."
+      "The 23-report Windows capability closure now admits all 68 rows as runtime_observed; this build record alone is not the admission evidence."
     ]
   }
 }

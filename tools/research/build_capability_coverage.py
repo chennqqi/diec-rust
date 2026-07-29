@@ -16,6 +16,9 @@ TRACEABILITY_PATH = "docs/research/data/capability-traceability.json"
 QT6_CLOSURE_PATH = (
     "docs/research/data/qt6-capability-closure-plan.json"
 )
+WINDOWS_CLOSURE_PATH = (
+    "docs/research/data/windows-capability-closure-plan.json"
+)
 TARGET_PLATFORMS = (
     "linux-x86_64-qt5",
     "linux-x86_64-qt6",
@@ -163,11 +166,53 @@ def validate_qt6_closure(
         raise CoverageError("Qt6 closure report is not complete")
 
 
+def validate_windows_closure(
+    closure: dict[str, Any],
+    capability_ids: set[str],
+    traceability: dict[str, Any],
+) -> None:
+    rows = closure.get("capabilities")
+    summary = closure.get("summary", {})
+    expected_order = [
+        capability["id"] for capability in traceability["capabilities"]
+    ]
+    if (
+        closure.get("schema_version") != 1
+        or closure.get("platform") != "windows-x86_64-qt5"
+        or closure.get("upstream_commit")
+        != traceability["upstream_commit"]
+        or closure.get("rules_commit") != traceability["rules_commit"]
+        or not isinstance(rows, list)
+        or [row.get("id") for row in rows] != expected_order
+        or {row.get("id") for row in rows} != capability_ids
+        or any(
+            row.get("status") != "evidence_complete"
+            or not row.get("observed_scope")
+            or row.get("missing_scope") is not None
+            or row.get("proposed_experiment") is not None
+            or not row.get("evidence_paths")
+            for row in rows
+        )
+        or summary.get("capability_count") != len(capability_ids)
+        or summary.get("evidence_complete") != len(capability_ids)
+        or summary.get("partial") != 0
+        or summary.get("missing") != 0
+        or summary.get("closure_required") != 0
+        or summary.get("all_capabilities_accounted_for") is not True
+        or summary.get("windows_baseline_admitted") is not True
+        or summary.get("windows_process_execution_count") != 2438
+        or summary.get("windows_report_count") != 23
+    ):
+        raise CoverageError("Windows closure report is not complete")
+
+
 def build_report(
     traceability: dict[str, Any],
     traceability_bytes: bytes,
     qt6_closure: dict[str, Any],
     qt6_closure_bytes: bytes,
+    windows_closure: dict[str, Any],
+    windows_closure_bytes: bytes,
 ) -> dict[str, Any]:
     validate_traceability(traceability)
     capabilities = traceability["capabilities"]
@@ -177,16 +222,33 @@ def build_report(
         capability_ids,
         traceability,
     )
+    validate_windows_closure(
+        windows_closure,
+        capability_ids,
+        traceability,
+    )
     gap_map = build_gap_map(capability_ids)
     gap_records = []
     for gap in traceability["coverage_gaps"]:
         gap_id = gap["id"]
         closed = gap_id == "CAP-GAP-007"
+        platform_status = (
+            {
+                "linux-x86_64-qt5": "closed",
+                "linux-x86_64-qt6": "closed",
+            }
+            if gap_id == "CAP-GAP-007"
+            else {
+                "windows-x86_64-qt5": "closed",
+                "macos-x86_64-qt5": "open",
+            }
+        )
         gap_records.append(
             {
                 **gap,
                 "kind": "closed" if closed else "platform_missing",
                 "status": "closed" if closed else "open",
+                "platform_status": platform_status,
                 "capability_ids": gap_map[gap_id],
                 **(
                     {
@@ -198,6 +260,20 @@ def build_report(
                         }
                     }
                     if closed
+                    else {}
+                ),
+                **(
+                    {
+                        "closures": {
+                            "windows-x86_64-qt5": {
+                                "path": WINDOWS_CLOSURE_PATH,
+                                "sha256": sha256_bytes(
+                                    windows_closure_bytes
+                                ),
+                            }
+                        }
+                    }
+                    if gap_id == "CAP-GAP-008"
                     else {}
                 ),
             }
@@ -230,7 +306,7 @@ def build_report(
                         verification
                     ],
                     "linux-x86_64-qt6": "runtime_observed",
-                    "windows-x86_64-qt5": "platform_missing",
+                    "windows-x86_64-qt5": "runtime_observed",
                     "macos-x86_64-qt5": "platform_missing",
                 },
                 "corpus_gap_ids": [
@@ -283,11 +359,15 @@ def build_report(
         "sources": {
             TRACEABILITY_PATH: sha256_bytes(traceability_bytes),
             QT6_CLOSURE_PATH: sha256_bytes(qt6_closure_bytes),
+            WINDOWS_CLOSURE_PATH: sha256_bytes(
+                windows_closure_bytes
+            ),
         },
         "target_platforms": list(TARGET_PLATFORMS),
         "admitted_runtime_baseline_platforms": [
             "linux-x86_64-qt5",
             "linux-x86_64-qt6",
+            "windows-x86_64-qt5",
         ],
         "status_definitions": {
             "runtime_observed": (
@@ -337,6 +417,11 @@ def build_report(
                 "hash-bound 68-row closure report"
             ),
             (
+                "the complete Windows Qt5 baseline is admitted through "
+                "the hash-bound 68-row closure report; CAP-GAP-008 "
+                "remains open only for macOS"
+            ),
+            (
                 "a zero unclassified-row count means classification is "
                 "complete, not that capability coverage is complete"
             ),
@@ -371,6 +456,11 @@ def parse_args() -> argparse.Namespace:
         default=root / TRACEABILITY_PATH,
     )
     parser.add_argument(
+        "--windows-closure",
+        type=Path,
+        default=root / WINDOWS_CLOSURE_PATH,
+    )
+    parser.add_argument(
         "--output",
         type=Path,
         default=(
@@ -388,11 +478,14 @@ def main() -> int:
     args = parse_args()
     traceability, raw = load_json(args.traceability)
     qt6_closure, qt6_raw = load_json(args.qt6_closure)
+    windows_closure, windows_raw = load_json(args.windows_closure)
     report = build_report(
         traceability,
         raw,
         qt6_closure,
         qt6_raw,
+        windows_closure,
+        windows_raw,
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_bytes(serialize(report))

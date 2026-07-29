@@ -131,5 +131,5 @@ SHA-256 和对应语义投影。
   container 或超时后的清理。
 - `PeakWorkingSetSize` 包含数据库加载形成的历史高水位，不能解释为单个 archive
   allocation。
-- macOS 仍需独立固定 oracle；Windows 能力闭环仍有 `CAP-CLI-IN-003` path profile
-  缺口，因此 Windows 平台尚未接纳为完整 baseline。
+- macOS 仍需独立固定 oracle；后续 Windows path closure 已关闭
+  `CAP-CLI-IN-003`，Windows 平台现已接纳为完整 baseline。

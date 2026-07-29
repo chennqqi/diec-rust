@@ -248,8 +248,12 @@ Phase 0 计划形成：
   原生 Windows Qt5 的 19-case engine cache/DACL 双轮基线、Linux 语义投影
   和平台 cache-byte 差异（Draft）。
 - [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)：
-  将 22 份 Windows runtime 报告逐项映射到 68 行能力清单，当前为
-  67 complete、1 partial、0 missing（Draft）。
+  将 23 份 Windows runtime 报告逐项映射到 68 行能力清单，当前为
+  68 complete、0 partial、0 missing，且已接入总覆盖报告（In Review）。
+- [`windows-path-closure-behavior.md`](windows-path-closure-behavior.md)：
+  固定 Windows Qt5 的 4096-entry 顺序、dangling/cyclic reparse、同步
+  TOCTOU、WSL UNC/extended-UNC 与本地/redirector access denial，关闭
+  `CAP-CLI-IN-003`（In Review）。
 - [`windows-archive-limit-behavior.md`](windows-archive-limit-behavior.md)：
   固定 Windows Qt5 的 depth 64、33,554,546-byte 累计展开量和取消部分前缀，
   30 次执行的确定性语义投影与 Linux Qt5 相等（In Review）。

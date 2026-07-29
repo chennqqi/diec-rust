@@ -15,7 +15,7 @@ traceability manifest 中记录替代关系，不得复用旧 ID 表示不同语
 | --- | --- | --- | --- | --- |
 | `CAP-CLI-IN-001` | 单文件扫描 | positional `target` | Observed | 15 个确定性样本；见 `behavior-baseline.md` |
 | `CAP-CLI-IN-002` | 多目标扫描 | 多个 positional `target` | Observed | 保持参数顺序、不去重；结构化输出不是有效聚合文档 |
-| `CAP-CLI-IN-003` | 目录枚举 | positional directory | Observed | 无条件 depth-first；Linux 跟随 link、alias 不去重、权限静默，self-cycle 依赖 OS；4096 完整；TOCTOU 按打开时 path；locale 不改变顺序，tmpfs/volume 大小写 tie 不同；47-case 双轮 Qt6 与 Qt5 相同，见 `qt6-path-boundary-runtime-evidence.md`；跨平台仍缺 |
+| `CAP-CLI-IN-003` | 目录枚举 | positional directory | Observed | 无条件 depth-first；Linux 跟随 link、alias 不去重、权限静默，self-cycle 依赖 OS；4096 完整；TOCTOU 按打开时 path；locale 不改变顺序，tmpfs/volume 大小写 tie 不同；47-case 双轮 Qt6 与 Qt5 相同；Windows 23-case 双轮另固定 4096-entry、reparse cycle、TOCTOU、UNC 与 access denial，见 `windows-path-closure-behavior.md`；macOS 仍缺 |
 | `CAP-CLI-IN-004` | 单文件目录/空目录 | positional directory | Observed | 单文件不加 prefix；空目录退出 0 且无输出 |
 | `CAP-ENG-IN-001` | 内存扫描 | engine `scanMemory()` | Observed | Binary fixture 与 file/device/subdevice record 一致；CLI 不暴露 |
 | `CAP-ENG-IN-002` | device/subdevice 扫描 | engine API | Observed | 37-case fixture 固定 chunked/EOF/read/seek/sequential、position 与合法/非法 subdevice 范围；见 `engine-contract-behavior.md` |
@@ -351,8 +351,8 @@ Rust 内部结果模型和差分规范化不能在检查各输出 formatter 前�
   OOM/调度结果采纳为 compatibility golden。
 - Linux Qt5 UTF-8、首轮非 UTF-8/特殊 filename、symlink/权限/depth-64/
   self-cycle、flat/nested 4096、CLI cancellation 接线、old→new/unlink TOCTOU
-  及 `C`/`C.utf8`/`POSIX` × tmpfs/volume 排序已固定；仍缺 Windows/macOS
-  的路径和枚举差异。
+  及 `C`/`C.utf8`/`POSIX` × tmpfs/volume 排序已固定；Windows 对应闭集也已
+  固定并接纳，仍缺 macOS 的路径和枚举差异。
 - formatter 转义与嵌套排序已闭合；跨平台编码差异仍归入路径/平台缺口。
 - deep 与 aggressive resource 过滤/计数边界已由
   [`scan-option-boundaries.md`](scan-option-boundaries.md) 闭合。
@@ -396,15 +396,14 @@ validator 要求本文 68 个 `CAP-*` 与 manifest 完全相等，并拒绝缺�
 不能提升为 Rust 已实现或跨平台兼容。
 
 [`capability-coverage-report.md`](capability-coverage-report.md) 进一步把该清单
-投影为 68 行 × 4 平台的闭集：Linux Qt5 与 Linux Qt6 各为 68 observed、
-0 observed with corpus gaps、0 source-only；Windows 和 macOS 各有 68 个
+投影为 68 行 × 4 平台的闭集：Linux Qt5、Linux Qt6 与 Windows Qt5 各为
+68 observed、0 observed with corpus gaps、0 source-only；macOS 有 68 个
 platform-missing。全部行已分类不等于 Phase 0 覆盖完成。
 
 Windows 的独立逐行审计见
 [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)：
-现有 22 份报告支持 67 complete、1 partial、0 missing。该 67 行只是 closure
-内部结论；最后 1 个开放行关闭并经 coverage builder 接纳前，Windows 的 68 个
-platform-missing 不变。
+现有 23 份报告支持 68 complete、0 partial、0 missing。coverage builder 已
+严格校验并接纳该 closure，Windows 68 行均为 runtime observed。
 
 其中
 [`windows-engine-contract-behavior.md`](windows-engine-contract-behavior.md)
