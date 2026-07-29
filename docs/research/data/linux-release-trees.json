@@ -1,0 +1,691 @@
+{
+  "environment": {
+    "base_image": {
+      "id": "sha256:6f7a378ea1c5a07745d45083c0e596430fefc6526273528366a7dc7e11230368",
+      "image": "diec-rust/upstream-install-qt5:74eaf505",
+      "repo_digests": [
+        "diec-rust/upstream-install-qt5@sha256:6f7a378ea1c5a07745d45083c0e596430fefc6526273528366a7dc7e11230368"
+      ],
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    },
+    "dockerfile": {
+      "path": "tools/upstream/Dockerfile.upstream-release-trees-qt5",
+      "sha256": "de07021627c71d7bcc81c2904cc6a37c590f23f8a64bd270daa25dabd29e64b2"
+    },
+    "inside_script": {
+      "image_sha256": "6ba3d15c90261f7590ee7cca8ea0cb9d3794b83d9f0e4b74895490443e4b58bd",
+      "path": "/opt/diec-release/audit_linux_release_trees.py",
+      "repository_sha256": "6ba3d15c90261f7590ee7cca8ea0cb9d3794b83d9f0e4b74895490443e4b58bd"
+    },
+    "network": "none",
+    "release_image": {
+      "id": "sha256:55d331fb065501adaae617c28f1b1b5f0997db944a3ce3ff119ef8925beb8506",
+      "image": "diec-rust/upstream-release-trees-qt5:74eaf505",
+      "repo_digests": [
+        "diec-rust/upstream-release-trees-qt5@sha256:55d331fb065501adaae617c28f1b1b5f0997db944a3ce3ff119ef8925beb8506"
+      ],
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    }
+  },
+  "generator": "tools/upstream/audit_linux_release_trees.py",
+  "generator_sha256": "6ba3d15c90261f7590ee7cca8ea0cb9d3794b83d9f0e4b74895490443e4b58bd",
+  "limitations": [
+    "the replay uses fixed built executables and reproduces script copy/layout semantics instead of reconfiguring and rebuilding",
+    "the AppImage pre-tree uses the fixed CMake GUI executable as a surrogate for create_appimage.sh build/release/die; an actual qmake-workflow binary is not claimed",
+    "linuxdeploy is absent, so the final AppImage dependency closure and mutations are not observed",
+    "the portable tar.gz is not generated because the script does not normalize archive metadata",
+    "technical content and provenance closure is not legal approval"
+  ],
+  "prior_report": {
+    "path": "docs/research/data/linux-cmake-install-tree.json",
+    "sha256": "148439d4c6b2c5dd011a58e0baf82c70667e6dacfd75714786873e7bcc021c54"
+  },
+  "relationships": {
+    "all_replayed_trees_have_no_license_candidate": true,
+    "all_replayed_trees_have_no_symlinks": true,
+    "appimage_final_artifact_is_unavailable_without_linuxdeploy": true,
+    "appimage_includes_yara_peid_and_signature_data": true,
+    "appimage_pre_tree_contains_complete_runtime_rules": true,
+    "appimage_pre_tree_has_only_gui_product": true,
+    "portable_default_bundles_no_qt_files": true,
+    "portable_includes_yara_and_signatures_but_not_peid": true,
+    "portable_qmake_prefix_bundles_no_qt_on_multiarch_image": true,
+    "portable_variants_contain_exact_main_rule_tree": true,
+    "portable_variants_have_exactly_three_products": true,
+    "portable_variants_omit_extra_and_custom_rules": true,
+    "prior_cmake_install_report_is_valid": true,
+    "script_findings_are_true": true
+  },
+  "release": {
+    "build_tools_commit": "5dd5bcc8abf3b178d9ed47100f6f37ebecceb23e",
+    "cmake_stage": {
+      "stderr_bytes": 0,
+      "stdout_bytes": 503878,
+      "stdout_sha256": "11fb212cf571c1c327d26504eab0397a31fd3caaf45777ea1febbf6826cdaff5"
+    },
+    "qt_layout": {
+      "libraries": "/usr/lib/x86_64-linux-gnu",
+      "plugins": "/usr/lib/x86_64-linux-gnu/qt5/plugins",
+      "prefix": "/usr"
+    },
+    "relationships": {
+      "all_replayed_trees_have_no_license_candidate": true,
+      "all_replayed_trees_have_no_symlinks": true,
+      "appimage_final_artifact_is_unavailable_without_linuxdeploy": true,
+      "appimage_includes_yara_peid_and_signature_data": true,
+      "appimage_pre_tree_contains_complete_runtime_rules": true,
+      "appimage_pre_tree_has_only_gui_product": true,
+      "portable_default_bundles_no_qt_files": true,
+      "portable_includes_yara_and_signatures_but_not_peid": true,
+      "portable_qmake_prefix_bundles_no_qt_on_multiarch_image": true,
+      "portable_variants_contain_exact_main_rule_tree": true,
+      "portable_variants_have_exactly_three_products": true,
+      "portable_variants_omit_extra_and_custom_rules": true,
+      "script_findings_are_true": true
+    },
+    "release_version": "4.0.0",
+    "schema_version": 1,
+    "scripts": {
+      "build_linux_portable": {
+        "bytes": 3218,
+        "path": "build_linux_portable.sh",
+        "sha256": "91fb88e2f7841362b927b3471bbcb473c663ea9421859f2ec8ceae9d2b35052a"
+      },
+      "build_tools_linux": {
+        "bytes": 5272,
+        "commit": "5dd5bcc8abf3b178d9ed47100f6f37ebecceb23e",
+        "path": "build_tools/linux.sh",
+        "sha256": "81d8c06a40b94ac73951a92a94c6db7d1da87bd20ca7e3dd937ee019794850a3"
+      },
+      "create_appimage": {
+        "bytes": 2415,
+        "path": "create_appimage.sh",
+        "sha256": "3b4cfc5b8118eda8bfbbe199001520bc022858955667d0ed8f851f82a2646075"
+      },
+      "derived_findings": {
+        "appimage_cli_and_lite_copy_commands_are_commented": true,
+        "appimage_copies_gui_only_before_linuxdeploy": true,
+        "portable_copies_all_three_products": true,
+        "portable_has_no_db_extra_or_db_custom_copy": true,
+        "portable_tar_metadata_is_not_normalized": true,
+        "portable_uses_lib_die_staging_data": true
+      }
+    },
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "variants": {
+      "appimage_pre_linuxdeploy": {
+        "binary_replay": "fixed CMake gui binary substitutes for create_appimage.sh build/release/die",
+        "data_trees": {
+          "images": {
+            "bytes": 2180397,
+            "file_count": 202,
+            "path": "images",
+            "present": true,
+            "tree_sha256": "bc23dd0715d1e2208f4cbad8753f630432b82f62b7b03cd0d91faca1ac50f012"
+          },
+          "info": {
+            "bytes": 122340,
+            "file_count": 118,
+            "path": "info",
+            "present": true,
+            "tree_sha256": "a7a5490d055f3386b1f09e0bc63370fe3070b074a6c2784d48533c2964cdd7e8"
+          },
+          "peid": {
+            "bytes": 1157703,
+            "file_count": 14,
+            "path": "peid",
+            "present": true,
+            "tree_sha256": "a3e47a869d06cdde4077abd73463760eacee60c2988aae8a74bcc2a73cc854ab"
+          },
+          "qss": {
+            "bytes": 79018,
+            "file_count": 15,
+            "path": "qss",
+            "present": true,
+            "tree_sha256": "7ed7341346090df5a50f2957eae5928c47f12be0a9df4dd39a2fe2fa2aa58604"
+          },
+          "signatures": {
+            "bytes": 3085459,
+            "file_count": 1,
+            "path": "signatures",
+            "present": true,
+            "tree_sha256": "167a65c6e86276509b276cdf9f4b06c14e800708cd18dd987166c6bcd9859ef4"
+          },
+          "yara_rules": {
+            "bytes": 3900619,
+            "file_count": 10,
+            "path": "yara_rules",
+            "present": true,
+            "tree_sha256": "591533f7bc965904ae5822fa2e76643608a139ab0668ab1ec5494f47898c729c"
+          }
+        },
+        "inventory": {
+          "binaries": {
+            "usr/bin/die": {
+              "bytes": 25293840,
+              "mode": 493,
+              "origin": {
+                "kind": "build",
+                "path": "src/gui/die"
+              },
+              "path": "usr/bin/die",
+              "route": "usr/bin",
+              "sha256": "28a28aabeb6e942060e5bf9333b09374c96944aed4d5e2c99a8a78fa958be2d3"
+            }
+          },
+          "bytes": 38920508,
+          "directory_count": 83,
+          "file_count": 2640,
+          "license_candidate_paths": [],
+          "origin_summary": [
+            {
+              "bytes": 25293840,
+              "file_count": 1,
+              "kind": "build"
+            },
+            {
+              "bytes": 13469084,
+              "file_count": 2636,
+              "kind": "source"
+            },
+            {
+              "bytes": 157584,
+              "file_count": 3,
+              "kind": "system"
+            }
+          ],
+          "records_sha256": "795314ec3393e6e4abfcc81c3ea3de61a1e825f5c3f9402bc6873a60d191f039",
+          "route_summary": [
+            {
+              "bytes": 25293840,
+              "file_count": 1,
+              "route": "usr/bin"
+            },
+            {
+              "bytes": 13434852,
+              "file_count": 2628,
+              "route": "usr/lib/die"
+            },
+            {
+              "bytes": 157584,
+              "file_count": 3,
+              "route": "usr/lib/qt5"
+            },
+            {
+              "bytes": 226,
+              "file_count": 1,
+              "route": "usr/share/applications"
+            },
+            {
+              "bytes": 31561,
+              "file_count": 6,
+              "route": "usr/share/icons"
+            },
+            {
+              "bytes": 2445,
+              "file_count": 1,
+              "route": "usr/share/metainfo"
+            }
+          ],
+          "symlinks": []
+        },
+        "kind": "pre-linuxdeploy-appdir",
+        "linuxdeploy_available": false,
+        "runtime_rules": {
+          "bytes": 2909316,
+          "combined_tree_sha256": "20f2b74effc2bdaf069e3b2e13060432b8890d38364511f5cde56a337348bfda",
+          "file_count": 2268,
+          "trees": {
+            "db": {
+              "bytes": 2832469,
+              "file_count": 2124,
+              "path": "db",
+              "present": true,
+              "tree_sha256": "8000138ce96a6a892aaa3cba8dee60960694c42dcfa24b3787f02c25858f1650"
+            },
+            "db_custom": {
+              "bytes": 196,
+              "file_count": 2,
+              "path": "db_custom",
+              "present": true,
+              "tree_sha256": "36c10cd4d87826c78f07a0c801c1ae374f4b6364936056d44a045e9150ba5815"
+            },
+            "db_extra": {
+              "bytes": 76651,
+              "file_count": 142,
+              "path": "db_extra",
+              "present": true,
+              "tree_sha256": "77c4e0da796baa9a71ec1a699a37e61ed73783c0d3dc5d49044185dc80a38ec1"
+            }
+          }
+        }
+      },
+      "portable_qmake_prefix": {
+        "build_replay": "fixed complete CMake build substitutes for the script's fresh configure and build",
+        "bundled_qt_files": [],
+        "data_trees": {
+          "images": {
+            "bytes": 2180397,
+            "file_count": 202,
+            "path": "images",
+            "present": true,
+            "tree_sha256": "bc23dd0715d1e2208f4cbad8753f630432b82f62b7b03cd0d91faca1ac50f012"
+          },
+          "info": {
+            "bytes": 122340,
+            "file_count": 118,
+            "path": "info",
+            "present": true,
+            "tree_sha256": "a7a5490d055f3386b1f09e0bc63370fe3070b074a6c2784d48533c2964cdd7e8"
+          },
+          "peid": {
+            "bytes": 0,
+            "file_count": 0,
+            "path": "peid",
+            "present": false,
+            "tree_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "qss": {
+            "bytes": 79018,
+            "file_count": 15,
+            "path": "qss",
+            "present": true,
+            "tree_sha256": "7ed7341346090df5a50f2957eae5928c47f12be0a9df4dd39a2fe2fa2aa58604"
+          },
+          "signatures": {
+            "bytes": 3085459,
+            "file_count": 1,
+            "path": "signatures",
+            "present": true,
+            "tree_sha256": "167a65c6e86276509b276cdf9f4b06c14e800708cd18dd987166c6bcd9859ef4"
+          },
+          "yara_rules": {
+            "bytes": 3900619,
+            "file_count": 10,
+            "path": "yara_rules",
+            "present": true,
+            "tree_sha256": "591533f7bc965904ae5822fa2e76643608a139ab0668ab1ec5494f47898c729c"
+          }
+        },
+        "inventory": {
+          "binaries": {
+            "base/die": {
+              "bytes": 25293840,
+              "mode": 493,
+              "origin": {
+                "kind": "build",
+                "path": "src/gui/die"
+              },
+              "path": "base/die",
+              "route": "base/die",
+              "sha256": "28a28aabeb6e942060e5bf9333b09374c96944aed4d5e2c99a8a78fa958be2d3"
+            },
+            "base/diec": {
+              "bytes": 8248008,
+              "mode": 493,
+              "origin": {
+                "kind": "build",
+                "path": "src/console/diec"
+              },
+              "path": "base/diec",
+              "route": "base/diec",
+              "sha256": "da1fab49f7ba5970d1fc1c7fe3d4f380cf5e8775dd8097207e7b3c30f08236cf"
+            },
+            "base/diel": {
+              "bytes": 7009064,
+              "mode": 493,
+              "origin": {
+                "kind": "build",
+                "path": "src/lite/diel"
+              },
+              "path": "base/diel",
+              "route": "base/diel",
+              "sha256": "69facb4d8de1b61856ed749f469c2956623e6c6f9663c1b66be43470de4253da"
+            }
+          },
+          "bytes": 52751519,
+          "directory_count": 45,
+          "file_count": 2476,
+          "license_candidate_paths": [],
+          "origin_summary": [
+            {
+              "bytes": 40550912,
+              "file_count": 3,
+              "kind": "build"
+            },
+            {
+              "bytes": 305,
+              "file_count": 3,
+              "kind": "generated"
+            },
+            {
+              "bytes": 12200302,
+              "file_count": 2470,
+              "kind": "source"
+            }
+          ],
+          "records_sha256": "fa9938f9456d6a3b92a6e5537f9da47ec6d7f5a00d4727eaed9f3e3005ae20b5",
+          "route_summary": [
+            {
+              "bytes": 305,
+              "file_count": 3,
+              "route": "<root>"
+            },
+            {
+              "bytes": 2832469,
+              "file_count": 2124,
+              "route": "base/db"
+            },
+            {
+              "bytes": 25293840,
+              "file_count": 1,
+              "route": "base/die"
+            },
+            {
+              "bytes": 8248008,
+              "file_count": 1,
+              "route": "base/diec"
+            },
+            {
+              "bytes": 7009064,
+              "file_count": 1,
+              "route": "base/diel"
+            },
+            {
+              "bytes": 2180397,
+              "file_count": 202,
+              "route": "base/images"
+            },
+            {
+              "bytes": 122340,
+              "file_count": 118,
+              "route": "base/info"
+            },
+            {
+              "bytes": 79018,
+              "file_count": 15,
+              "route": "base/qss"
+            },
+            {
+              "bytes": 3085459,
+              "file_count": 1,
+              "route": "base/signatures"
+            },
+            {
+              "bytes": 3900619,
+              "file_count": 10,
+              "route": "base/yara_rules"
+            }
+          ],
+          "symlinks": []
+        },
+        "kind": "portable-tree-with-qmake-qt-prefix",
+        "launchers": {
+          "die": {
+            "mode": 493,
+            "path": "die.sh",
+            "sha256": "c5e7e34466b14c4d3b6612a8c3a2ff443fb20193dcb1c0b7be4afd18179485d7"
+          },
+          "diec": {
+            "mode": 493,
+            "path": "diec.sh",
+            "sha256": "bbfaaa8910f7e4d32c2f7a69672f6dd53f18e8f237a026c0bb7d731dfe6c5499"
+          },
+          "diel": {
+            "mode": 493,
+            "path": "diel.sh",
+            "sha256": "36b954139c62f75e0019080ff399dc7591ef4902d06100b1740bb3a486609ab7"
+          }
+        },
+        "qt_prefix_argument": "/usr",
+        "runtime_rules": {
+          "bytes": 2832469,
+          "combined_tree_sha256": "8000138ce96a6a892aaa3cba8dee60960694c42dcfa24b3787f02c25858f1650",
+          "file_count": 2124,
+          "trees": {
+            "db": {
+              "bytes": 2832469,
+              "file_count": 2124,
+              "path": "db",
+              "present": true,
+              "tree_sha256": "8000138ce96a6a892aaa3cba8dee60960694c42dcfa24b3787f02c25858f1650"
+            },
+            "db_custom": {
+              "bytes": 0,
+              "file_count": 0,
+              "path": "db_custom",
+              "present": false,
+              "tree_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "db_extra": {
+              "bytes": 0,
+              "file_count": 0,
+              "path": "db_extra",
+              "present": false,
+              "tree_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          }
+        }
+      },
+      "portable_system_qt": {
+        "build_replay": "fixed complete CMake build substitutes for the script's fresh configure and build",
+        "bundled_qt_files": [],
+        "data_trees": {
+          "images": {
+            "bytes": 2180397,
+            "file_count": 202,
+            "path": "images",
+            "present": true,
+            "tree_sha256": "bc23dd0715d1e2208f4cbad8753f630432b82f62b7b03cd0d91faca1ac50f012"
+          },
+          "info": {
+            "bytes": 122340,
+            "file_count": 118,
+            "path": "info",
+            "present": true,
+            "tree_sha256": "a7a5490d055f3386b1f09e0bc63370fe3070b074a6c2784d48533c2964cdd7e8"
+          },
+          "peid": {
+            "bytes": 0,
+            "file_count": 0,
+            "path": "peid",
+            "present": false,
+            "tree_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "qss": {
+            "bytes": 79018,
+            "file_count": 15,
+            "path": "qss",
+            "present": true,
+            "tree_sha256": "7ed7341346090df5a50f2957eae5928c47f12be0a9df4dd39a2fe2fa2aa58604"
+          },
+          "signatures": {
+            "bytes": 3085459,
+            "file_count": 1,
+            "path": "signatures",
+            "present": true,
+            "tree_sha256": "167a65c6e86276509b276cdf9f4b06c14e800708cd18dd987166c6bcd9859ef4"
+          },
+          "yara_rules": {
+            "bytes": 3900619,
+            "file_count": 10,
+            "path": "yara_rules",
+            "present": true,
+            "tree_sha256": "591533f7bc965904ae5822fa2e76643608a139ab0668ab1ec5494f47898c729c"
+          }
+        },
+        "inventory": {
+          "binaries": {
+            "base/die": {
+              "bytes": 25293840,
+              "mode": 493,
+              "origin": {
+                "kind": "build",
+                "path": "src/gui/die"
+              },
+              "path": "base/die",
+              "route": "base/die",
+              "sha256": "28a28aabeb6e942060e5bf9333b09374c96944aed4d5e2c99a8a78fa958be2d3"
+            },
+            "base/diec": {
+              "bytes": 8248008,
+              "mode": 493,
+              "origin": {
+                "kind": "build",
+                "path": "src/console/diec"
+              },
+              "path": "base/diec",
+              "route": "base/diec",
+              "sha256": "da1fab49f7ba5970d1fc1c7fe3d4f380cf5e8775dd8097207e7b3c30f08236cf"
+            },
+            "base/diel": {
+              "bytes": 7009064,
+              "mode": 493,
+              "origin": {
+                "kind": "build",
+                "path": "src/lite/diel"
+              },
+              "path": "base/diel",
+              "route": "base/diel",
+              "sha256": "69facb4d8de1b61856ed749f469c2956623e6c6f9663c1b66be43470de4253da"
+            }
+          },
+          "bytes": 52751519,
+          "directory_count": 45,
+          "file_count": 2476,
+          "license_candidate_paths": [],
+          "origin_summary": [
+            {
+              "bytes": 40550912,
+              "file_count": 3,
+              "kind": "build"
+            },
+            {
+              "bytes": 305,
+              "file_count": 3,
+              "kind": "generated"
+            },
+            {
+              "bytes": 12200302,
+              "file_count": 2470,
+              "kind": "source"
+            }
+          ],
+          "records_sha256": "fa9938f9456d6a3b92a6e5537f9da47ec6d7f5a00d4727eaed9f3e3005ae20b5",
+          "route_summary": [
+            {
+              "bytes": 305,
+              "file_count": 3,
+              "route": "<root>"
+            },
+            {
+              "bytes": 2832469,
+              "file_count": 2124,
+              "route": "base/db"
+            },
+            {
+              "bytes": 25293840,
+              "file_count": 1,
+              "route": "base/die"
+            },
+            {
+              "bytes": 8248008,
+              "file_count": 1,
+              "route": "base/diec"
+            },
+            {
+              "bytes": 7009064,
+              "file_count": 1,
+              "route": "base/diel"
+            },
+            {
+              "bytes": 2180397,
+              "file_count": 202,
+              "route": "base/images"
+            },
+            {
+              "bytes": 122340,
+              "file_count": 118,
+              "route": "base/info"
+            },
+            {
+              "bytes": 79018,
+              "file_count": 15,
+              "route": "base/qss"
+            },
+            {
+              "bytes": 3085459,
+              "file_count": 1,
+              "route": "base/signatures"
+            },
+            {
+              "bytes": 3900619,
+              "file_count": 10,
+              "route": "base/yara_rules"
+            }
+          ],
+          "symlinks": []
+        },
+        "kind": "portable-tree-with-system-qt",
+        "launchers": {
+          "die": {
+            "mode": 493,
+            "path": "die.sh",
+            "sha256": "c5e7e34466b14c4d3b6612a8c3a2ff443fb20193dcb1c0b7be4afd18179485d7"
+          },
+          "diec": {
+            "mode": 493,
+            "path": "diec.sh",
+            "sha256": "bbfaaa8910f7e4d32c2f7a69672f6dd53f18e8f237a026c0bb7d731dfe6c5499"
+          },
+          "diel": {
+            "mode": 493,
+            "path": "diel.sh",
+            "sha256": "36b954139c62f75e0019080ff399dc7591ef4902d06100b1740bb3a486609ab7"
+          }
+        },
+        "qt_prefix_argument": null,
+        "runtime_rules": {
+          "bytes": 2832469,
+          "combined_tree_sha256": "8000138ce96a6a892aaa3cba8dee60960694c42dcfa24b3787f02c25858f1650",
+          "file_count": 2124,
+          "trees": {
+            "db": {
+              "bytes": 2832469,
+              "file_count": 2124,
+              "path": "db",
+              "present": true,
+              "tree_sha256": "8000138ce96a6a892aaa3cba8dee60960694c42dcfa24b3787f02c25858f1650"
+            },
+            "db_custom": {
+              "bytes": 0,
+              "file_count": 0,
+              "path": "db_custom",
+              "present": false,
+              "tree_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "db_extra": {
+              "bytes": 0,
+              "file_count": 0,
+              "path": "db_extra",
+              "present": false,
+              "tree_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          }
+        }
+      }
+    }
+  },
+  "schema_version": 1,
+  "scope": {
+    "compressed_portable_archive_generated": false,
+    "final_appimage_available": false,
+    "kind": "post-build-release-tree-replay",
+    "legal_review_complete": false,
+    "original_scripts_executed_end_to_end": false,
+    "platform": "Linux x86_64",
+    "qt": "5",
+    "release_approved": false
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

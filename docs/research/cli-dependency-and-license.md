@@ -122,6 +122,12 @@ CMake install staging tree：它不是 CLI-only 发布物，而是同时安装
 LICENSE candidate，不能覆盖实际分发的多来源代码和数据。该证据关闭的是固定
 Linux CMake staging 内容清单，不关闭 AppImage/portable/压缩包或法律评审。
 
+[`linux-release-trees.md`](linux-release-trees.md) 进一步忠实复演固定打包脚本：
+AppImage pre-linuxdeploy tree 只有 GUI binary，却携带完整 runtime rules 以及
+YARA/PEiD/signature；portable 同时携带三产品，却遗漏 `db_extra`/`db_custom`，
+又携带 YARA/signature。两者均无 LICENSE/NOTICE；portable 在固定 Debian
+multiarch Qt prefix 下也复制不到 Qt。最终 linuxdeploy/tar.gz 仍未闭合。
+
 ## 组件根许可证
 
 16 个组件的根 `LICENSE` 首行均为 `MIT License`。每个固定 LICENSE 的 Git blob SHA
@@ -223,9 +229,10 @@ XYara/YARA 当前 Linux target 也已由
 ## 尚未完成
 
 - 固定 Linux Qt5 CMake CLI 的全局 237-source/link-map 闭包和默认
-  4,916-file CMake install staging tree 已完成；仍需 qmake、Qt6、Windows、
-  macOS，以及 AppImage/portable/压缩发布包的对应 object/link/dependency/content
-  闭包。
+  4,916-file CMake install staging tree 已完成；AppImage pre-linuxdeploy 与
+  portable post-build tree 也已完成复制内容复演。仍需 qmake、Qt6、Windows、
+  macOS，以及最终 linuxdeploy AppImage、规范化 tar.gz 和其他压缩发布包的
+  object/link/dependency/content 闭包。
 - XUCL 1.03 官方来源和精确 `ACC_LICENSE` 已完成；仍须取得 MIT/GPL 组合、
   不同书面授权和发布责任人的书面结论。
 - 为 XArchive 聚合 Brotli/Zstandard 恢复独立 LICENSE/NOTICE/attribution，

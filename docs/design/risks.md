@@ -269,6 +269,11 @@ baseline 的变更都要检查本表。
   但按标准文件名只安装一个根 LICENSE。CLI-only build 不能使用该 install
   definition，且 AppImage/portable/压缩发布物仍是独立闭包。这进一步证明发布
   LICENSE/NOTICE 必须按实际 artifact 内容生成，不能沿用上游默认 staging。
+  后续 [`linux-release-trees.md`](../research/linux-release-trees.md) 已复演
+  AppImage pre-linuxdeploy 与 portable post-build tree：前者只有 GUI product
+  却带完整 runtime/YARA/PEiD/signature，后者带三产品却漏 extra/custom 并额外
+  带 YARA/signature；两者都没有 LICENSE candidate。最终 linuxdeploy、tar.gz
+  和书面归属仍未关闭。
   固定 Linux Qt5 最终 ELF 还证明 Formats/xsimd 的三个单 member archive 均被
   抽取，形成三个 compile source/六文件闭包；六文件和根 LICENSE 均保留同一
   horsicq copyright/MIT 文本，CUDA 源码不在此闭包。该结果关闭本平台 XSIMD
@@ -500,11 +505,15 @@ baseline 的变更都要检查本表。
   Windows MSVC `/MD`、`/MT` 和断网/只读/offline Linux GNU 共六条 C consumer
   均成功，native system library 集合未相对历史 1.88 报告增加。结果绑定到
   [`rust-toolchain-upgrade-1.97.1.json`](../research/data/rust-toolchain-upgrade-1.97.1.json)。
+  固定上游 portable 脚本在真实 qmake prefix `/usr` 下因 Debian multiarch 布局
+  错配而静默复制零个 Qt 文件，且 `tar -czf` 没有 order/mtime/owner/gzip
+  规范化；见
+  [`linux-release-trees.md`](../research/linux-release-trees.md)。
   Phase 1 双版本 CI、advisory/license CI、SBOM 和 clean release build 仍未建立。
 - **缓解**：lockfile、明确 features/MSRV、依赖/许可证/audit policy、离线 release
-  build、SBOM。
+  build、规范化 archive、SBOM。
 - **验证**：clean locked build、minimal feature builds、dependency diff review、
-  advisory/license CI。
+  advisory/license CI、两次 clean build 的解包 tree 与 archive hash。
 - **关闭**：Phase 1 建立门禁；每次 release 重新验证。
 
 ### R-015：取消与 timeout 不可靠

@@ -140,6 +140,9 @@ Phase 0 计划形成：
 - [`linux-cmake-install-tree.md`](linux-cmake-install-tree.md)：固定 Linux Qt5
   默认 CMake install 的 4,916-file staging tree、三产品/资产布局、重复路径、
   来源映射、runtime rules 和 LICENSE/NOTICE 边界（In Review）。
+- [`linux-release-trees.md`](linux-release-trees.md)：固定 Linux Qt5 AppImage
+  pre-linuxdeploy 与 portable post-build tree 的脚本忠实复演、产品/规则/Qt
+  内容差异、multiarch 路径缺口和 LICENSE/archive 边界（In Review）。
 - [`xucl-origin.md`](xucl-origin.md)：将 XArchive 的 XUCL 两个内嵌文件固定到
   官方 UCL 1.03，保存 token 来源映射、精确 `ACC_LICENSE` 和
   `GPL-2.0-or-later` 技术分类（In Review）。
@@ -299,6 +302,9 @@ Phase 0 计划形成：
 - [`data/linux-cmake-install-tree.json`](data/linux-cmake-install-tree.json)：
   固定默认 CMake install 的 manifest、完整 staging tree identity、来源/路由、
   三产品二进制、重复内容和 CLI-only install 失败边界。
+- [`data/linux-release-trees.json`](data/linux-release-trees.json)：固定 AppImage
+  前置 AppDir 和两种 portable tree 的逐文件身份摘要、来源、规则/数据、qmake
+  multiarch 布局及 fail-closed scope。
 - [`data/xucl-origin.json`](data/xucl-origin.json)：官方 UCL 1.03 归档身份、
   XUCL 两文件的 12/64-token shingle 映射、许可证正文 hash 与 fail-closed
   复制/翻译结论。

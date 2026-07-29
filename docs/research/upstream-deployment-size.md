@@ -41,6 +41,11 @@ CMake `DESTDIR`：4,916 个 regular file、60,881,050 bytes。该数字同时包
 不能替代本报告的 CLI runtime closure，也不是压缩发布包大小。后续体积比较必须
 同时标注产品范围、是否包含系统库、规则是否去重以及压缩方式。
 
+[`linux-release-trees.md`](linux-release-trees.md) 又给出两个不同口径：
+AppImage pre-linuxdeploy tree 为 38,920,508 bytes，portable 未压缩 tree 为
+52,751,519 bytes。前者尚未经过 linuxdeploy，后者未捆绑 Qt 且没有生成 tar.gz；
+两者产品和规则集合也不同，仍不能当作可直接比较的最终发行包大小。
+
 ## 2. 固定身份
 
 | 项目 | 固定值 |

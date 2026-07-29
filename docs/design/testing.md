@@ -724,7 +724,12 @@ session 或跨平台发行包，也未冻结阈值或默认限制。
   CLI-only artifact 混入 GUI/lite/不可达数据、同一规则多份复制、manifest
   重复覆盖或未分类文件。固定上游 Linux Qt5 CMake staging 基线见
   [`linux-cmake-install-tree.md`](../research/linux-cmake-install-tree.md)，但
-  不得把它外推为 AppImage/portable/压缩包；
+  不得把它外推为 AppImage/portable/压缩包；上游 AppImage pre-linuxdeploy 与
+  portable post-build 反例见
+  [`linux-release-trees.md`](../research/linux-release-trees.md)；
+- archive reproducibility：固定 path order、mtime、mode、owner/group、压缩器
+  与 `SOURCE_DATE_EPOCH`；两次隔离 clean build 必须同时得到相同解包 tree hash
+  和 archive hash。普通 `tar -czf` 成功退出不能作为可重复发布证据；
 - fuzz corpus replay、零未分类 crash；
 - benchmark 与 size/resource gate；
 - release binary/library hash、依赖和签名清单。

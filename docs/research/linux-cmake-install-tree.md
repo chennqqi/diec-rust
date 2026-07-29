@@ -187,7 +187,9 @@ python tools\upstream\audit_linux_cmake_install.py `
 
 ## 尚未完成
 
-- AppImage、portable、DEB/RPM/archive 的实际压缩内容和动态库 closure；
+- [`linux-release-trees.md`](linux-release-trees.md) 已闭合 AppImage
+  pre-linuxdeploy 与 portable post-build 复制树；仍缺最终 AppImage、
+  规范化 tar.gz、DEB/RPM/archive 的实际压缩内容和动态库 closure；
 - Windows 与 macOS 发布树；
 - GUI/lite 与非 CLI 数据是否发布的产品范围决定；
 - XUCL、UnRAR、artwork、YARA/PEiD/signature 等书面许可证/归属结论；
