@@ -137,6 +137,9 @@ Phase 0 计划形成：
 - [`product-source-closure.md`](product-source-closure.md)：固定 Linux Qt5
   `diec` 的 223 个直接对象、8 archive/36-built/14-included member、
   237-source 产品闭包、AUTOMOC 来源和 XUCL 缺失 `ACC_LICENSE` 旗标（In Review）。
+- [`linux-cmake-install-tree.md`](linux-cmake-install-tree.md)：固定 Linux Qt5
+  默认 CMake install 的 4,916-file staging tree、三产品/资产布局、重复路径、
+  来源映射、runtime rules 和 LICENSE/NOTICE 边界（In Review）。
 - [`xucl-origin.md`](xucl-origin.md)：将 XArchive 的 XUCL 两个内嵌文件固定到
   官方 UCL 1.03，保存 token 来源映射、精确 `ACC_LICENSE` 和
   `GPL-2.0-or-later` 技术分类（In Review）。
@@ -293,6 +296,9 @@ Phase 0 计划形成：
 - [`data/product-source-closure-linux-qt5.json`](data/product-source-closure-linux-qt5.json)：
   固定最终 ELF 的 237 个 compile source、逐组件/direct/archive/AUTOMOC 身份、
   根许可证及 `PRODUCT-LICENSE-GAP-001`。
+- [`data/linux-cmake-install-tree.json`](data/linux-cmake-install-tree.json)：
+  固定默认 CMake install 的 manifest、完整 staging tree identity、来源/路由、
+  三产品二进制、重复内容和 CLI-only install 失败边界。
 - [`data/xucl-origin.json`](data/xucl-origin.json)：官方 UCL 1.03 归档身份、
   XUCL 两文件的 12/64-token shingle 映射、许可证正文 hash 与 fail-closed
   复制/翻译结论。

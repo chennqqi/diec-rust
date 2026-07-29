@@ -264,6 +264,11 @@ baseline 的变更都要检查本表。
   两个来源 commit 当时均有 MIT LICENSE，但无签名/sign-off 或贡献政策文件。
   artwork 原创/授权、历史贡献适用性和发布责任人书面结论仍缺，机器报告明确
   保持 `legal_review_complete=false`，所以 R-002/P0-BLOCK-004 继续 Open。
+  固定 Linux Qt5 默认 CMake install staging tree 也已闭合：4,916 个文件中同时
+  存在 `die`/`diec`/`diel`、两套重复 `db`/`info`/YARA subtree 和多来源数据，
+  但按标准文件名只安装一个根 LICENSE。CLI-only build 不能使用该 install
+  definition，且 AppImage/portable/压缩发布物仍是独立闭包。这进一步证明发布
+  LICENSE/NOTICE 必须按实际 artifact 内容生成，不能沿用上游默认 staging。
   固定 Linux Qt5 最终 ELF 还证明 Formats/xsimd 的三个单 member archive 均被
   抽取，形成三个 compile source/六文件闭包；六文件和根 LICENSE 均保留同一
   horsicq copyright/MIT 文本，CUDA 源码不在此闭包。该结果关闭本平台 XSIMD

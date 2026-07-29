@@ -115,6 +115,13 @@ diec
 链接重放、GNU ld map 和 237-source 清单复核；其他平台、qmake、GUI 与发布包
 仍须分别建立闭包。
 
+[`linux-cmake-install-tree.md`](linux-cmake-install-tree.md) 又固定了完整默认
+CMake install staging tree：它不是 CLI-only 发布物，而是同时安装
+`die`/`diec`/`diel` 与 GUI/YARA/info/rules 等 4,916 个文件；CLI-only build
+执行该 install 会在复制部分数据后因缺少 GUI binary 失败。tree 只携带一个根
+LICENSE candidate，不能覆盖实际分发的多来源代码和数据。该证据关闭的是固定
+Linux CMake staging 内容清单，不关闭 AppImage/portable/压缩包或法律评审。
+
 ## 组件根许可证
 
 16 个组件的根 `LICENSE` 首行均为 `MIT License`。每个固定 LICENSE 的 Git blob SHA
@@ -215,8 +222,10 @@ XYara/YARA 当前 Linux target 也已由
 
 ## 尚未完成
 
-- 固定 Linux Qt5 CMake CLI 的全局 237-source/link-map 闭包已完成；仍需
-  qmake、Qt6、Windows、macOS、GUI 和发布包的对应 object/link/dependency 闭包。
+- 固定 Linux Qt5 CMake CLI 的全局 237-source/link-map 闭包和默认
+  4,916-file CMake install staging tree 已完成；仍需 qmake、Qt6、Windows、
+  macOS，以及 AppImage/portable/压缩发布包的对应 object/link/dependency/content
+  闭包。
 - XUCL 1.03 官方来源和精确 `ACC_LICENSE` 已完成；仍须取得 MIT/GPL 组合、
   不同书面授权和发布责任人的书面结论。
 - 为 XArchive 聚合 Brotli/Zstandard 恢复独立 LICENSE/NOTICE/attribution，
@@ -225,7 +234,8 @@ XYara/YARA 当前 Linux target 也已由
   YARA/TLSH 恢复独立
   COPYING/LICENSE/NOTICE，并补 Windows/macOS/OpenSSL/qmake 闭包。
 - 区分正常扫描、`--info`、`--struct`、YARA/PEiD 数据和 GUI-only 路径的最小产物闭包。
-- YARA/PEiD/signatures 的 CLI 可达性已关闭；其 GUI/辅助 engine 运行闭包、
-  第三方数据来源许可和 release artifact 内容仍待关闭。
+- YARA/PEiD/signatures 的 CLI 可达性已关闭；默认 CMake staging 仍实际安装
+  YARA 数据。其 GUI/辅助 engine 运行闭包、第三方数据来源许可和其他 release
+  artifact 内容仍待关闭。
 - 对 Qt 5 与 Qt 6 构建分别记录链接依赖和规则运行时行为。
 - 形成发布时必须携带的 LICENSE/NOTICE 清单；在审计完成前不得把当前表当作发布许可结论。

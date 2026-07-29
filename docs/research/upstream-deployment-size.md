@@ -4,7 +4,7 @@ Status: In Review
 
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
 
-Last updated: 2026-07-28
+Last updated: 2026-07-29
 
 ## 1. 结论
 
@@ -34,6 +34,12 @@ Last updated: 2026-07-28
 [`upstream-deployment-size-linux-qt5.json`](data/upstream-deployment-size-linux-qt5.json)。
 它是 `descriptive_upstream_only`，且 `targets_frozen=false`；没有 Rust 产物和其他
 平台数据，不能据此声称体积改善或冻结发布阈值。
+
+后续 [`linux-cmake-install-tree.md`](linux-cmake-install-tree.md) 又固定了默认
+CMake `DESTDIR`：4,916 个 regular file、60,881,050 bytes。该数字同时包含
+`die`/`diec`/`diel` 和重复 GUI/lite 数据，却不包含 16 个系统动态依赖，因此既
+不能替代本报告的 CLI runtime closure，也不是压缩发布包大小。后续体积比较必须
+同时标注产品范围、是否包含系统库、规则是否去重以及压缩方式。
 
 ## 2. 固定身份
 

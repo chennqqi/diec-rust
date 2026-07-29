@@ -9,6 +9,7 @@ import hashlib
 import json
 import os
 from pathlib import Path, PurePosixPath
+import re
 import stat
 import subprocess
 import sys
@@ -25,6 +26,7 @@ BASE_IMAGE_ID = (
 )
 FULL_IMAGE = "diec-rust/upstream-install-qt5:74eaf505"
 INSIDE_SCRIPT = "/opt/diec-install/audit_linux_cmake_install.py"
+DOCKERFILE = "tools/upstream/Dockerfile.upstream-install-qt5"
 SOURCE_ROOT = Path("/opt/die-source")
 BUILD_ROOT = Path("/opt/die-build")
 INSTALL_PREFIX = "/usr"
@@ -198,6 +200,51 @@ def subtree_identity(
     }
 
 
+def bounded_list(values: list[Any], limit: int = 20) -> dict[str, Any]:
+    return {
+        "count": len(values),
+        "entries_sha256": sha256(canonical_json(values)),
+        "sample": values[:limit],
+        "sample_truncated": len(values) > limit,
+    }
+
+
+def inspect_install_components() -> dict[str, Any]:
+    scripts = sorted(
+        BUILD_ROOT.rglob("cmake_install.cmake"),
+        key=lambda path: path.relative_to(BUILD_ROOT)
+        .as_posix()
+        .encode("utf-8"),
+    )
+    if not scripts:
+        raise AuditError("no generated CMake install scripts")
+    components = set()
+    records = []
+    pattern = re.compile(
+        r'CMAKE_INSTALL_COMPONENT STREQUAL "([^"]+)"'
+    )
+    for path in scripts:
+        raw = path.read_bytes()
+        text = raw.decode("utf-8", errors="strict")
+        components.update(pattern.findall(text))
+        records.append(
+            {
+                "path": path.relative_to(BUILD_ROOT).as_posix(),
+                "bytes": len(raw),
+                "sha256": sha256(raw),
+            }
+        )
+    if not components:
+        raise AuditError("generated install component set is empty")
+    return {
+        "script_count": len(records),
+        "scripts_sha256": sha256(canonical_json(records)),
+        "components": sorted(
+            components, key=lambda value: value.encode("utf-8")
+        ),
+    }
+
+
 def inspect_stage(stage: Path) -> dict[str, Any]:
     paths = []
     symlinks = []
@@ -286,6 +333,12 @@ def inspect_stage(stage: Path) -> dict[str, Any]:
         for (size, digest), duplicate_paths in sorted(by_hash.items())
         if len(duplicate_paths) > 1
     ]
+    duplicate_groups.sort(
+        key=lambda item: (
+            -(item["bytes_each"] * (item["path_count"] - 1)),
+            item["sha256"],
+        )
+    )
     license_paths = [
         record["path"]
         for record in records
@@ -341,7 +394,8 @@ def inspect_stage(stage: Path) -> dict[str, Any]:
         "file_count": len(records),
         "bytes": sum(record["bytes"] for record in records),
         "tree_sha256": tree_sha256(records),
-        "symlinks": symlinks,
+        "records_sha256": sha256(canonical_json(records)),
+        "symlinks": bounded_list(symlinks),
         "route_summary": [
             {"route": name, **values}
             for name, values in sorted(groups.items())
@@ -350,14 +404,25 @@ def inspect_stage(stage: Path) -> dict[str, Any]:
             {"kind": name, **values}
             for name, values in sorted(origin_groups.items())
         ],
+        "usr_bin_paths": [
+            record["path"]
+            for record in records
+            if record["path"].startswith("usr/bin/")
+        ],
         "license_candidate_paths": license_paths,
-        "unmatched_origin_paths": unmatched,
+        "unmatched_origins": bounded_list(unmatched),
         "duplicate_content": {
             "group_count": len(duplicate_groups),
             "path_count": sum(
                 item["path_count"] for item in duplicate_groups
             ),
-            "groups": duplicate_groups,
+            "redundant_bytes": sum(
+                item["bytes_each"] * (item["path_count"] - 1)
+                for item in duplicate_groups
+            ),
+            "groups_sha256": sha256(canonical_json(duplicate_groups)),
+            "largest_groups": duplicate_groups[:20],
+            "largest_groups_truncated": len(duplicate_groups) > 20,
         },
         "mirrored_subtrees": mirror_pairs,
         "runtime_rules": {
@@ -368,7 +433,7 @@ def inspect_stage(stage: Path) -> dict[str, Any]:
             ),
             "trees": runtime_trees,
         },
-        "files": records,
+        "_records": records,
     }
 
 
@@ -423,7 +488,9 @@ def inside_report() -> dict[str, Any]:
         manifest_unique = sorted(
             manifest_counts, key=lambda value: value.encode("utf-8")
         )
-        installed_paths = [record["path"] for record in inventory["files"]]
+        installed_paths = [
+            record["path"] for record in inventory["_records"]
+        ]
         if set(manifest_unique) != set(installed_paths):
             raise AuditError("install manifest and staging tree differ")
         manifest_duplicates = [
@@ -434,11 +501,15 @@ def inside_report() -> dict[str, Any]:
         normalized_stdout = completed.stdout.replace(
             str(stage).encode("utf-8"), b"<DESTDIR>"
         )
+    records = inventory.pop("_records")
     binaries = {
         record["path"]: record
-        for record in inventory["files"]
+        for record in records
         if record["path"] in EXPECTED_BINARIES
     }
+    manifest_duplicates.sort(
+        key=lambda item: (-item["entry_count"], item["path"])
+    )
     return {
         "schema_version": SCHEMA_VERSION,
         "upstream_commit": UPSTREAM_COMMIT,
@@ -446,6 +517,7 @@ def inside_report() -> dict[str, Any]:
             "configuration": "Release",
             "prefix": INSTALL_PREFIX,
             "destdir_is_ephemeral": True,
+            "components": inspect_install_components(),
             "stdout_bytes": len(normalized_stdout),
             "stdout_sha256": sha256(normalized_stdout),
             "stdout_paths_normalized": True,
@@ -456,7 +528,14 @@ def inside_report() -> dict[str, Any]:
                 "duplicate_entry_count": (
                     len(normalized_manifest) - len(manifest_unique)
                 ),
-                "duplicate_paths": manifest_duplicates,
+                "duplicate_path_count": len(manifest_duplicates),
+                "duplicate_paths_sha256": sha256(
+                    canonical_json(manifest_duplicates)
+                ),
+                "highest_multiplicity_paths": manifest_duplicates[:20],
+                "highest_multiplicity_paths_truncated": (
+                    len(manifest_duplicates) > 20
+                ),
                 "normalized_entries_sha256": sha256(
                     canonical_json(normalized_manifest)
                 ),
@@ -566,6 +645,7 @@ def host_report(repo: Path) -> dict[str, Any]:
         capture_output=True,
     ).stdout
     local_script = Path(__file__).read_bytes()
+    dockerfile = (repo / DOCKERFILE).read_bytes()
     if image_script != local_script:
         raise AuditError("image audit script differs from repository")
     completed = subprocess.run(
@@ -578,11 +658,8 @@ def host_report(repo: Path) -> dict[str, Any]:
         raise AuditError("full install audit emitted stderr")
     inside = json.loads(completed.stdout)
     inventory = inside["inventory"]
-    installed_bin_paths = {
-        record["path"]
-        for record in inventory["files"]
-        if record["path"].startswith("usr/bin/")
-    }
+    installed_bin_paths = set(inventory["usr_bin_paths"])
+    base_failure = base_install_failure()
     prior_reports = {}
     prior_valid = True
     for name, relative in PRIOR_REPORTS.items():
@@ -596,9 +673,17 @@ def host_report(repo: Path) -> dict[str, Any]:
             "sha256": sha256(raw),
         }
     relationships = {
-        "base_image_contains_only_cli_build_and_install_fails_on_gui": True,
+        "cli_base_install_copies_partial_tree_then_fails_on_missing_gui": (
+            base_failure["return_code"] != 0
+            and base_failure["missing_path"] == "src/gui/die"
+            and base_failure["copied_partial_tree_before_failure"]
+        ),
         "full_image_install_succeeds_without_stderr": (
             inside["install"]["stderr_bytes"] == 0
+        ),
+        "generated_install_has_only_unspecified_component": (
+            inside["install"]["components"]["components"]
+            == ["Unspecified"]
         ),
         "install_manifest_unique_paths_equal_staging_tree": (
             inside["install"]["manifest"]["unique_path_count"]
@@ -616,9 +701,9 @@ def host_report(repo: Path) -> dict[str, Any]:
             inside["binaries"]["usr/bin/diec"]["sha256"]
             == EXPECTED_CLI_SHA256
         ),
-        "install_tree_has_no_symlinks": not inventory["symlinks"],
+        "install_tree_has_no_symlinks": inventory["symlinks"]["count"] == 0,
         "every_installed_file_has_source_or_build_origin": (
-            not inventory["unmatched_origin_paths"]
+            inventory["unmatched_origins"]["count"] == 0
         ),
         "db_info_and_yara_are_duplicated_between_two_prefixes": all(
             item["identical"] and item["detect_it_easy"]["file_count"] > 0
@@ -657,8 +742,12 @@ def host_report(repo: Path) -> dict[str, Any]:
                 "image_sha256": sha256(image_script),
                 "repository_sha256": sha256(local_script),
             },
+            "dockerfile": {
+                "path": DOCKERFILE,
+                "sha256": sha256(dockerfile),
+            },
         },
-        "cli_only_install_attempt": base_install_failure(),
+        "cli_only_install_attempt": base_failure,
         "full_install": inside,
         "prior_reports": prior_reports,
         "relationships": relationships,
@@ -667,6 +756,7 @@ def host_report(repo: Path) -> dict[str, Any]:
             "qt": "5",
             "build_system": "CMake",
             "kind": "cmake-install-staging-tree-not-compressed-package",
+            "image_rebuild_reproducibility_verified": False,
             "legal_review_complete": False,
             "release_approved": False,
         },
@@ -674,6 +764,7 @@ def host_report(repo: Path) -> dict[str, Any]:
             "this is the CMake install staging tree, not an AppImage, DEB, RPM, or archive",
             "system dynamic libraries are not copied into the staging tree",
             "the full default install includes GUI and lite products outside the current Rust deliverable",
+            "the GUI binary is bound to the exact full image ID; independent image rebuild reproducibility is not claimed",
             "technical file and origin closure is not legal approval",
         ],
     }

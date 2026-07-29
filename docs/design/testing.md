@@ -719,6 +719,12 @@ session 或跨平台发行包，也未冻结阈值或默认限制。
   LICENSE/NOTICE；
 - native compiler diagnostics：保存规范化 warning path/line/option 和原始输出
   hash；新增、消失或分类变化均需评审，不能把 warning 静默视为通过；
+- artifact content closure：对每个平台和发布格式固定安装/解包后的 path、
+  type、mode、bytes、content hash、来源和 LICENSE/NOTICE/SBOM 覆盖；拒绝
+  CLI-only artifact 混入 GUI/lite/不可达数据、同一规则多份复制、manifest
+  重复覆盖或未分类文件。固定上游 Linux Qt5 CMake staging 基线见
+  [`linux-cmake-install-tree.md`](../research/linux-cmake-install-tree.md)，但
+  不得把它外推为 AppImage/portable/压缩包；
 - fuzz corpus replay、零未分类 crash；
 - benchmark 与 size/resource gate；
 - release binary/library hash、依赖和签名清单。

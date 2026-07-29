@@ -126,8 +126,11 @@ python tools\upstream\audit_component_licenses.py `
 - XYara 内 bundled YARA 已完成当前 Linux CMake target 的 51-object/109-file
   审计及 TLSH/Authenticode/Bison 分类；仍缺 Windows/macOS/OpenSSL/qmake
   闭包和书面组合评审；
-- qmake、Qt6、Windows、macOS、普通 scan/info/struct 最小变体、GUI 和发布包的
-  实际 object/link map 对应关系；固定 Linux Qt5 CMake 默认 CLI 已完成；
+- 固定 Linux Qt5 默认 CMake install staging tree 已由
+  [`linux-cmake-install-tree.md`](linux-cmake-install-tree.md) 闭合为 4,916 个
+  文件，并证明只携带一个根 LICENSE candidate；仍缺 qmake、Qt6、Windows、
+  macOS、普通 scan/info/struct 最小变体、AppImage/portable/压缩发布包的实际
+  object/link/content 对应关系；
 - `db*` JavaScript rules 的逐路径许可结论；YARA/PEiD/signatures 已完成
   路径/hash/可见标记审计，但原始第三方许可和书面组合评审仍未关闭；
 - 候选 Rust dependency graph、最终 static library 和发布包的 SBOM/NOTICE；

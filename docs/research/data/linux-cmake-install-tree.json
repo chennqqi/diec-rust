@@ -1,0 +1,596 @@
+{
+  "cli_only_install_attempt": {
+    "copied_partial_tree_before_failure": true,
+    "missing_path": "src/gui/die",
+    "partial_tree": {
+      "bytes": 11178908,
+      "file_count": 2434
+    },
+    "return_code": 1,
+    "stderr_bytes": 300,
+    "stderr_sha256": "c6ba054d5af6193e336ab477fd520a28c5b79ad7ac7ef40f5f98d82e16ecfa64",
+    "stdout_bytes": 14
+  },
+  "environment": {
+    "base_image": {
+      "id": "sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040",
+      "image": "diec-rust/upstream-oracle-cmake:74eaf505",
+      "repo_digests": [
+        "diec-rust/upstream-oracle-cmake@sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040"
+      ],
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    },
+    "dockerfile": {
+      "path": "tools/upstream/Dockerfile.upstream-install-qt5",
+      "sha256": "5a1caee065f0b3f3b5ad3848d70b87cad5fd37d57372c095ad0c2e726241ba5b"
+    },
+    "full_image": {
+      "id": "sha256:6f7a378ea1c5a07745d45083c0e596430fefc6526273528366a7dc7e11230368",
+      "image": "diec-rust/upstream-install-qt5:74eaf505",
+      "repo_digests": [
+        "diec-rust/upstream-install-qt5@sha256:6f7a378ea1c5a07745d45083c0e596430fefc6526273528366a7dc7e11230368"
+      ],
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    },
+    "inside_script": {
+      "image_path": "/opt/diec-install/audit_linux_cmake_install.py",
+      "image_sha256": "83c566983c5d5e26a3eaa4c32376645348dfc9b414bebb1513837df9a947095b",
+      "repository_sha256": "83c566983c5d5e26a3eaa4c32376645348dfc9b414bebb1513837df9a947095b"
+    },
+    "network": "none"
+  },
+  "full_install": {
+    "binaries": {
+      "usr/bin/die": {
+        "bytes": 25293840,
+        "mode": 493,
+        "origin": {
+          "candidate_count": 1,
+          "candidate_paths": [
+            "src/gui/die"
+          ],
+          "candidate_paths_truncated": false,
+          "candidates_sha256": "13bb6ce36d1c24a8a4be1c4d3c9be62df26deb2a7ea74aecd3a1799ce0d45729",
+          "kind": "build"
+        },
+        "path": "usr/bin/die",
+        "route": "usr/bin",
+        "sha256": "28a28aabeb6e942060e5bf9333b09374c96944aed4d5e2c99a8a78fa958be2d3"
+      },
+      "usr/bin/diec": {
+        "bytes": 8248008,
+        "mode": 493,
+        "origin": {
+          "candidate_count": 1,
+          "candidate_paths": [
+            "src/console/diec"
+          ],
+          "candidate_paths_truncated": false,
+          "candidates_sha256": "caba28ec54a5f01261dd82015fb95698b62cec1c325380fd080a4bf61bd37f72",
+          "kind": "build"
+        },
+        "path": "usr/bin/diec",
+        "route": "usr/bin",
+        "sha256": "da1fab49f7ba5970d1fc1c7fe3d4f380cf5e8775dd8097207e7b3c30f08236cf"
+      },
+      "usr/bin/diel": {
+        "bytes": 7009064,
+        "mode": 493,
+        "origin": {
+          "candidate_count": 1,
+          "candidate_paths": [
+            "src/lite/diel"
+          ],
+          "candidate_paths_truncated": false,
+          "candidates_sha256": "f02bdef12110ad1b5189bec4dfe6499ca08bdae50232cd153c7e6ed45f288b46",
+          "kind": "build"
+        },
+        "path": "usr/bin/diel",
+        "route": "usr/bin",
+        "sha256": "69facb4d8de1b61856ed749f469c2956623e6c6f9663c1b66be43470de4253da"
+      }
+    },
+    "install": {
+      "components": {
+        "components": [
+          "Unspecified"
+        ],
+        "script_count": 16,
+        "scripts_sha256": "39fffae274be48257910e165c988a3ff30a485079c1f29137346a6feb066509d"
+      },
+      "configuration": "Release",
+      "destdir_is_ephemeral": true,
+      "manifest": {
+        "duplicate_entry_count": 2448,
+        "duplicate_path_count": 2278,
+        "duplicate_paths_sha256": "f8c5361b69fa687e160397155a47398400122c518ae68e7abfc7f36e974dc48c",
+        "entry_count": 7364,
+        "highest_multiplicity_paths": [
+          {
+            "entry_count": 19,
+            "path": "usr/lib/DetectItEasy/yara_rules/DiE_BasicHeuristics_by_DosX.yar"
+          },
+          {
+            "entry_count": 19,
+            "path": "usr/lib/DetectItEasy/yara_rules/DiE_EnhancedHeuristics_by_DosX.yar"
+          },
+          {
+            "entry_count": 19,
+            "path": "usr/lib/DetectItEasy/yara_rules/DiE_InterestingThings_by_DosX.yar"
+          },
+          {
+            "entry_count": 19,
+            "path": "usr/lib/DetectItEasy/yara_rules/DosX_Heuristic.yar"
+          },
+          {
+            "entry_count": 19,
+            "path": "usr/lib/DetectItEasy/yara_rules/crypto_signature.yar"
+          },
+          {
+            "entry_count": 19,
+            "path": "usr/lib/DetectItEasy/yara_rules/info.ini"
+          },
+          {
+            "entry_count": 19,
+            "path": "usr/lib/DetectItEasy/yara_rules/malware_analisys.yar"
+          },
+          {
+            "entry_count": 19,
+            "path": "usr/lib/DetectItEasy/yara_rules/packer.yar"
+          },
+          {
+            "entry_count": 19,
+            "path": "usr/lib/DetectItEasy/yara_rules/packer_compiler_signatures.yar"
+          },
+          {
+            "entry_count": 19,
+            "path": "usr/lib/DetectItEasy/yara_rules/peid.yar"
+          },
+          {
+            "entry_count": 2,
+            "path": "usr/lib/DetectItEasy/db/.vscode/about.txt"
+          },
+          {
+            "entry_count": 2,
+            "path": "usr/lib/DetectItEasy/db/.vscode/settings.json"
+          },
+          {
+            "entry_count": 2,
+            "path": "usr/lib/DetectItEasy/db/ACE"
+          },
+          {
+            "entry_count": 2,
+            "path": "usr/lib/DetectItEasy/db/APK/_APK.0.sg"
+          },
+          {
+            "entry_count": 2,
+            "path": "usr/lib/DetectItEasy/db/APK/_init"
+          },
+          {
+            "entry_count": 2,
+            "path": "usr/lib/DetectItEasy/db/APK/library_IL2CPP.4.sg"
+          },
+          {
+            "entry_count": 2,
+            "path": "usr/lib/DetectItEasy/db/APK/library_SandHook.4.sg"
+          },
+          {
+            "entry_count": 2,
+            "path": "usr/lib/DetectItEasy/db/APK/library_UnicomSDK.4.sg"
+          },
+          {
+            "entry_count": 2,
+            "path": "usr/lib/DetectItEasy/db/APK/library_Unity.4.sg"
+          },
+          {
+            "entry_count": 2,
+            "path": "usr/lib/DetectItEasy/db/APK/package_PackageName.1.sg"
+          }
+        ],
+        "highest_multiplicity_paths_truncated": true,
+        "normalized_entries_sha256": "87ffdd9ddaa0e6b19085628505fc8f63cdbbcbf6b96469bad69e1ef5dcfdcfa9",
+        "unique_path_count": 4916,
+        "unique_paths_sha256": "61f82aaa2813653d93d8faddd8bb439590d825ad88ce71eb0f4df4c0efe914bd"
+      },
+      "prefix": "/usr",
+      "stderr_bytes": 0,
+      "stdout_bytes": 549088,
+      "stdout_paths_normalized": true,
+      "stdout_sha256": "21e0ecf4c3a75432c6fe4779764914eda7eb054bc5eec531cb7cae17cf56136b"
+    },
+    "inventory": {
+      "bytes": 60881050,
+      "duplicate_content": {
+        "group_count": 2247,
+        "groups_sha256": "3456ce174011a19d60ef9771c4c72cb4cdc00d703d522c55a1b8a00c98b05282",
+        "largest_groups": [
+          {
+            "bytes_each": 2689175,
+            "path_count": 2,
+            "paths": [
+              "usr/lib/DetectItEasy/yara_rules/peid.yar",
+              "usr/lib/die/yara_rules/peid.yar"
+            ],
+            "sha256": "ea9589904e9c62b0e50b9363bfb427875be5e2eb7b3738b44c3badd695246b01"
+          },
+          {
+            "bytes_each": 603640,
+            "path_count": 2,
+            "paths": [
+              "usr/lib/DetectItEasy/db/Binary/audio.1.sg",
+              "usr/lib/die/db/Binary/audio.1.sg"
+            ],
+            "sha256": "998c2476ddc07a88c83598192faf1ffb4b35d60c4b2d6c1fafcfa4b153a9892f"
+          },
+          {
+            "bytes_each": 596085,
+            "path_count": 2,
+            "paths": [
+              "usr/lib/DetectItEasy/yara_rules/packer.yar",
+              "usr/lib/die/yara_rules/packer.yar"
+            ],
+            "sha256": "3eab8d072c83155d7a24fa851268e726255c01b88d451656f28d161a71766ba3"
+          },
+          {
+            "bytes_each": 487229,
+            "path_count": 2,
+            "paths": [
+              "usr/lib/DetectItEasy/yara_rules/malware_analisys.yar",
+              "usr/lib/die/yara_rules/malware_analisys.yar"
+            ],
+            "sha256": "ba6c0aa1b0ff6651b843de22cc83010addbb27f7c2d53db81a87d52b2fc32999"
+          },
+          {
+            "bytes_each": 375553,
+            "path_count": 2,
+            "paths": [
+              "usr/lib/DetectItEasy/db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg",
+              "usr/lib/die/db/PE/__GenericHeuristicAnalysis_By_DosX.7.sg"
+            ],
+            "sha256": "c84a375fdc66508c66ae10440ab46be23d345d602b2ae6d79e26e66393ebadde"
+          },
+          {
+            "bytes_each": 92951,
+            "path_count": 2,
+            "paths": [
+              "usr/lib/DetectItEasy/db/Binary/ROM_1.sg",
+              "usr/lib/die/db/Binary/ROM_1.sg"
+            ],
+            "sha256": "ebf638e6d98c526ccb624d9acc2c6e590d2ec281689d7f9f8de01f91454be32e"
+          },
+          {
+            "bytes_each": 76593,
+            "path_count": 2,
+            "paths": [
+              "usr/lib/DetectItEasy/yara_rules/crypto_signature.yar",
+              "usr/lib/die/yara_rules/crypto_signature.yar"
+            ],
+            "sha256": "886ffb7bff349189b4cfe6d7d702040f504d036fb02e66e2233e6554a9346145"
+          },
+          {
+            "bytes_each": 67277,
+            "path_count": 2,
+            "paths": [
+              "usr/lib/DetectItEasy/info/Functions.txt",
+              "usr/lib/die/info/Functions.txt"
+            ],
+            "sha256": "592f58be1d34545964ebd04ed08e0abb115dec136f2bf809045865f74648794b"
+          },
+          {
+            "bytes_each": 58227,
+            "path_count": 2,
+            "paths": [
+              "usr/lib/DetectItEasy/db/PE/_Microsoft.6.sg",
+              "usr/lib/die/db/PE/_Microsoft.6.sg"
+            ],
+            "sha256": "ab9c186692346da3eacc07004ea6161c622b5e355c165b5abb93add5aa7b4a9f"
+          },
+          {
+            "bytes_each": 47690,
+            "path_count": 2,
+            "paths": [
+              "usr/lib/DetectItEasy/db/read",
+              "usr/lib/die/db/read"
+            ],
+            "sha256": "7a3eafdb18e9d5ec8bcd90d19f463407773645097bfcc445aa69f94265caee04"
+          },
+          {
+            "bytes_each": 29897,
+            "path_count": 2,
+            "paths": [
+              "usr/lib/DetectItEasy/db/bytecodeparsers",
+              "usr/lib/die/db/bytecodeparsers"
+            ],
+            "sha256": "296834fa10842fe1008293a0c19cf4ec0fe615e585a90d6839a098f5d1d6483e"
+          },
+          {
+            "bytes_each": 23054,
+            "path_count": 2,
+            "paths": [
+              "usr/lib/DetectItEasy/db/Binary/archive_archives.ancient.sg",
+              "usr/lib/die/db/Binary/archive_archives.ancient.sg"
+            ],
+            "sha256": "8e526be36c1a517e98204cc6fbf57270818acd220c7b096a8c40c23cb7729b87"
+          },
+          {
+            "bytes_each": 22411,
+            "path_count": 2,
+            "paths": [
+              "usr/lib/DetectItEasy/db/Binary/audio_WAV.1.sg",
+              "usr/lib/die/db/Binary/audio_WAV.1.sg"
+            ],
+            "sha256": "18a5d32abd6d82413134526ee666146300796400cebad0beca6e3838983f0375"
+          },
+          {
+            "bytes_each": 21958,
+            "path_count": 2,
+            "paths": [
+              "usr/lib/DetectItEasy/db/Binary/__MiniExtensionsHeuristic_By_DosX.7.sg",
+              "usr/lib/die/db/Binary/__MiniExtensionsHeuristic_By_DosX.7.sg"
+            ],
+            "sha256": "e8eac22087d7814bdb6c80fd3626b1dbad721c16a5ce4ab290b9eedcc165c12d"
+          },
+          {
+            "bytes_each": 20394,
+            "path_count": 2,
+            "paths": [
+              "usr/lib/DetectItEasy/yara_rules/packer_compiler_signatures.yar",
+              "usr/lib/die/yara_rules/packer_compiler_signatures.yar"
+            ],
+            "sha256": "f0ff37acfbc518e1211e7a44fbe4668a6d6510e60add4e834cd3bf7e717bdbee"
+          },
+          {
+            "bytes_each": 19410,
+            "path_count": 2,
+            "paths": [
+              "usr/lib/DetectItEasy/yara_rules/DiE_EnhancedHeuristics_by_DosX.yar",
+              "usr/lib/die/yara_rules/DiE_EnhancedHeuristics_by_DosX.yar"
+            ],
+            "sha256": "edc1ad43a4d6ae4dfff5591e75a841e3002c9c5ee9eca4315d24f1dcd07d6379"
+          },
+          {
+            "bytes_each": 17605,
+            "path_count": 2,
+            "paths": [
+              "usr/lib/DetectItEasy/db/Binary/data_overlays.6.sg",
+              "usr/lib/die/db/Binary/data_overlays.6.sg"
+            ],
+            "sha256": "eb28fd4cea21f625b641c310c1b411f0b4267a826fe5733d2e15bda919d6af0a"
+          },
+          {
+            "bytes_each": 13753,
+            "path_count": 2,
+            "paths": [
+              "usr/lib/DetectItEasy/info/PE.sections.txt",
+              "usr/lib/die/info/PE.sections.txt"
+            ],
+            "sha256": "32036ce8d8cfa00dee79d603d498b013be90d1cd841e3fab1059d808b391d0bc"
+          },
+          {
+            "bytes_each": 13467,
+            "path_count": 2,
+            "paths": [
+              "usr/lib/DetectItEasy/db/Binary/format_bin.Python.1.sg",
+              "usr/lib/die/db/Binary/format_bin.Python.1.sg"
+            ],
+            "sha256": "179cfcced156ee32431af6fb2a72b25a63052d2a955dff7be8375fd63dc3a94a"
+          },
+          {
+            "bytes_each": 13143,
+            "path_count": 2,
+            "paths": [
+              "usr/lib/DetectItEasy/db/Binary/bin.RPGMaker2Kdata.1.sg",
+              "usr/lib/die/db/Binary/bin.RPGMaker2Kdata.1.sg"
+            ],
+            "sha256": "39b9a0dc956e7377acbe424c698f96b84aba462c35e50f1ac6984fcafbc0b7f0"
+          }
+        ],
+        "largest_groups_truncated": true,
+        "path_count": 4509,
+        "redundant_bytes": 6857345
+      },
+      "file_count": 4916,
+      "license_candidate_paths": [
+        "usr/share/doc/DetectItEasy/detect-it-easy/LICENSE"
+      ],
+      "mirrored_subtrees": [
+        {
+          "detect_it_easy": {
+            "bytes": 2832469,
+            "file_count": 2124,
+            "prefix": "usr/lib/DetectItEasy/db",
+            "tree_sha256": "006c6789e364f2a31c2ab2a18e374c34d548c60405f9c4128d1b8ea31aca6a7a"
+          },
+          "die": {
+            "bytes": 2832469,
+            "file_count": 2124,
+            "prefix": "usr/lib/die/db",
+            "tree_sha256": "006c6789e364f2a31c2ab2a18e374c34d548c60405f9c4128d1b8ea31aca6a7a"
+          },
+          "identical": true,
+          "name": "db"
+        },
+        {
+          "detect_it_easy": {
+            "bytes": 122340,
+            "file_count": 118,
+            "prefix": "usr/lib/DetectItEasy/info",
+            "tree_sha256": "42db9c7018459af1499ad8da59c612454f9f6056543a96e1df9193ea2afca843"
+          },
+          "die": {
+            "bytes": 122340,
+            "file_count": 118,
+            "prefix": "usr/lib/die/info",
+            "tree_sha256": "42db9c7018459af1499ad8da59c612454f9f6056543a96e1df9193ea2afca843"
+          },
+          "identical": true,
+          "name": "info"
+        },
+        {
+          "detect_it_easy": {
+            "bytes": 3900619,
+            "file_count": 10,
+            "prefix": "usr/lib/DetectItEasy/yara_rules",
+            "tree_sha256": "190872d30fec728e99a3b19056ef86bb319ec6d7f17708414c3c66f95932cead"
+          },
+          "die": {
+            "bytes": 3900619,
+            "file_count": 10,
+            "prefix": "usr/lib/die/yara_rules",
+            "tree_sha256": "190872d30fec728e99a3b19056ef86bb319ec6d7f17708414c3c66f95932cead"
+          },
+          "identical": true,
+          "name": "yara_rules"
+        }
+      ],
+      "origin_summary": [
+        {
+          "bytes": 40554609,
+          "file_count": 26,
+          "kind": "build"
+        },
+        {
+          "bytes": 20326441,
+          "file_count": 4890,
+          "kind": "source"
+        }
+      ],
+      "records_sha256": "b89d8ac4d6f901ec5bf91d5be1e07bc8f18aa363a4a1f8ca11850ca60ddd4906",
+      "route_summary": [
+        {
+          "bytes": 40550912,
+          "file_count": 3,
+          "route": "usr/bin"
+        },
+        {
+          "bytes": 3430,
+          "file_count": 22,
+          "route": "usr/lang"
+        },
+        {
+          "bytes": 11175478,
+          "file_count": 2412,
+          "route": "usr/lib/DetectItEasy"
+        },
+        {
+          "bytes": 9114843,
+          "file_count": 2469,
+          "route": "usr/lib/die"
+        },
+        {
+          "bytes": 267,
+          "file_count": 1,
+          "route": "usr/share/applications"
+        },
+        {
+          "bytes": 2114,
+          "file_count": 2,
+          "route": "usr/share/doc"
+        },
+        {
+          "bytes": 31561,
+          "file_count": 6,
+          "route": "usr/share/icons"
+        },
+        {
+          "bytes": 2445,
+          "file_count": 1,
+          "route": "usr/share/metainfo"
+        }
+      ],
+      "runtime_rules": {
+        "bytes": 2909316,
+        "combined_tree_sha256": "20f2b74effc2bdaf069e3b2e13060432b8890d38364511f5cde56a337348bfda",
+        "file_count": 2268,
+        "trees": [
+          {
+            "bytes": 2832469,
+            "file_count": 2124,
+            "path": "db",
+            "tree_sha256": "8000138ce96a6a892aaa3cba8dee60960694c42dcfa24b3787f02c25858f1650"
+          },
+          {
+            "bytes": 76651,
+            "file_count": 142,
+            "path": "db_extra",
+            "tree_sha256": "77c4e0da796baa9a71ec1a699a37e61ed73783c0d3dc5d49044185dc80a38ec1"
+          },
+          {
+            "bytes": 196,
+            "file_count": 2,
+            "path": "db_custom",
+            "tree_sha256": "36c10cd4d87826c78f07a0c801c1ae374f4b6364936056d44a045e9150ba5815"
+          }
+        ]
+      },
+      "symlinks": {
+        "count": 0,
+        "entries_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "sample": [],
+        "sample_truncated": false
+      },
+      "tree_sha256": "c5860284e27d6048f69f065d494ac7e919da263a8be43833a755df2d6e8806b4",
+      "unmatched_origins": {
+        "count": 0,
+        "entries_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "sample": [],
+        "sample_truncated": false
+      },
+      "usr_bin_paths": [
+        "usr/bin/die",
+        "usr/bin/diec",
+        "usr/bin/diel"
+      ]
+    },
+    "schema_version": 1,
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "generator": "tools/upstream/audit_linux_cmake_install.py",
+  "generator_sha256": "83c566983c5d5e26a3eaa4c32376645348dfc9b414bebb1513837df9a947095b",
+  "limitations": [
+    "this is the CMake install staging tree, not an AppImage, DEB, RPM, or archive",
+    "system dynamic libraries are not copied into the staging tree",
+    "the full default install includes GUI and lite products outside the current Rust deliverable",
+    "the GUI binary is bound to the exact full image ID; independent image rebuild reproducibility is not claimed",
+    "technical file and origin closure is not legal approval"
+  ],
+  "prior_reports": {
+    "product_source_closure": {
+      "path": "docs/research/data/product-source-closure-linux-qt5.json",
+      "sha256": "6a617f00b2adc052934fcc3c46093805e09480532f13ea9dbb4d6b43499288c4"
+    },
+    "rule_assets": {
+      "path": "docs/research/data/rule-assets.json",
+      "sha256": "fc57412548c03b69ad9a03a4be60e8442dc56fe2ebdd6b5acd17d65516e2b07d"
+    },
+    "runtime_rule_assets": {
+      "path": "docs/research/data/runtime-rule-assets-license.json",
+      "sha256": "c1d1fe07ccdd0ff74a4428372e9c18b4f4dbda2f4a1dd0e3082b7702d8370dbb"
+    }
+  },
+  "relationships": {
+    "cli_base_install_copies_partial_tree_then_fails_on_missing_gui": true,
+    "db_info_and_yara_are_duplicated_between_two_prefixes": true,
+    "every_installed_file_has_source_or_build_origin": true,
+    "full_image_install_succeeds_without_stderr": true,
+    "generated_install_has_only_unspecified_component": true,
+    "install_manifest_unique_paths_equal_staging_tree": true,
+    "install_tree_has_no_symlinks": true,
+    "installed_cli_matches_fixed_product_binary": true,
+    "installed_runtime_rules_match_prior_identity": true,
+    "only_one_license_candidate_is_installed": true,
+    "prior_asset_and_source_reports_are_valid": true,
+    "usr_bin_contains_exactly_three_product_binaries": true
+  },
+  "schema_version": 1,
+  "scope": {
+    "build_system": "CMake",
+    "image_rebuild_reproducibility_verified": false,
+    "kind": "cmake-install-staging-tree-not-compressed-package",
+    "legal_review_complete": false,
+    "platform": "Linux x86_64",
+    "qt": "5",
+    "release_approved": false
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}
