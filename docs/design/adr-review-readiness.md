@@ -23,12 +23,12 @@ ADR 0007 已被 ADR 0011 Superseded，不属于当前待接受集合。机器清
 | 0003 | legacy raw 与 modern canonical 永久分离 | modern schema、跨 Rust/C/CLI canonical bytes、默认 profile |
 | 0004 | 默认拒绝且 evidence-bound 的精确 waiver | 真实 owner workflow、modern/engine variants、release signing |
 | 0005 | deterministic text facts 取代未初始化状态 | Phase 1 SafetyDeviation 与 production HostApi |
-| 0006 | rquickjs/QuickJS-NG 作为首个私有 backend | 全 HostApi、正式资源测试、三平台/sanitizer、许可证/SBOM |
+| 0006 | rquickjs/QuickJS-NG 作为首个私有 backend | heap/JS stack/fuel/deadline 已有联合候选但未准入；仍缺全 HostApi、真实 runtime 计量、正式边界测试、三平台/sanitizer、许可证/SBOM |
 | 0008 | 固定 order manifest 取代非传递 comparator | 全规则 manifest、Rust loader、Windows/macOS order |
 | 0009 | modern cancel 不返回 partial detections | production Rust/JSON/C mapping、race/recovery、legacy waiver |
 | 0010 | include cycle 提前有界失败 | 全库 sizing 已提出 16/256 与 64/4096；仍缺 dynamic/custom database、production graph/stack、边界/fuzz、CPU/peak-memory 与 SafetyDeviation |
 | 0011 | 默认 Rust 1.97.1、MSRV 1.88 | Phase 1 default/MSRV CI jobs |
-| 0012 | 全 scan 嵌套预算有限，legacy high-resource 仍有 hard ceiling | scan/traversal 候选已机器统一，diagnostic、root input 与 total allocation 已有独立候选但均未 admitted；仍缺 production budget、Rust 全 limit 边界与固定 high-ratio/畸形 corpus 的 sanitizer/fuzz replay、跨平台资源与 waiver |
+| 0012 | 全 scan 嵌套预算有限，legacy high-resource 仍有 hard ceiling | scan/traversal 候选已机器统一，diagnostic、root input、total allocation 与 script runtime 均有独立候选但未 admitted；必需字段已有 0 个 unresolved，仍缺 production budget、Rust 全 limit 边界与固定 high-ratio/畸形 corpus 的 sanitizer/fuzz replay、跨平台资源与 waiver |
 | 0013 | short read/I/O/seek/range fail closed，不复制未初始化尾部 | production ByteSource、跨 adapter typed error、fuzz/sanitizer 与 waiver |
 | 0014 | safe canonical 不跟随枚举 link；legacy alias 仍受 cycle/TOCTOU/budget hard stop | traversal 候选已机器统一但 metadata/open 次数未定；仍缺 production TargetExpander、边界/TOCTOU/root confinement、Windows/macOS 与跨语言 waiver |
 | 0015 | warm、file-content-nonresident-metadata-warm、dedicated system-cold 三层，拒绝通用 cold | dedicated authority/isolation、macOS runtime candidate/closure |

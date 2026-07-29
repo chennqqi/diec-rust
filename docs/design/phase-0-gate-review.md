@@ -82,8 +82,10 @@ Accepted。
 524,288/8,388,608；diagnostics 以 typed fact/overflow completion 模型提出
 4,096/131,072，并补齐 Legacy-high queue/node 字段；root input 又按稳定逻辑长度
 提出 1 GiB/8 GiB，并与累计 I/O、allocation counter 分离；total allocation 又按
-scan-owned capacity 单调累计提出 1 GiB/8 GiB。仍有 4 个尚无生产候选的
-预算被显式列出。该策略仍为
+scan-owned capacity 单调累计提出 1 GiB/8 GiB；script runtime 又为
+heap/JS stack/fuel/deadline 提出联合候选。必需字段现有 0 个 unresolved，
+但真实全库 heap/VM poll/native checkpoint、全格式生命周期、三平台资源证据和
+ADR 评审仍缺。该策略仍为
 `admitted=false`，因此 blocker 状态不变。
 
 ## 下一步顺序

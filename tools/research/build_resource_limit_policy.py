@@ -44,6 +44,9 @@ SOURCES = {
     "allocation_budget": (
         "docs/design/data/allocation-budget-candidate.json"
     ),
+    "script_budget": (
+        "docs/design/data/script-runtime-budget-candidate.json"
+    ),
 }
 
 MIB = 1024 * 1024
@@ -250,6 +253,7 @@ def validate_reports(root: Path) -> dict[str, Any]:
     diagnostic_budget = load_json(root / SOURCES["diagnostic_budget"])
     input_budget = load_json(root / SOURCES["input_budget"])
     allocation_budget = load_json(root / SOURCES["allocation_budget"])
+    script_budget = load_json(root / SOURCES["script_budget"])
 
     for name, report in (
         ("archive_limit", archive),
@@ -262,6 +266,7 @@ def validate_reports(root: Path) -> dict[str, Any]:
         ("diagnostic_budget", diagnostic_budget),
         ("input_budget", input_budget),
         ("allocation_budget", allocation_budget),
+        ("script_budget", script_budget),
     ):
         require(
             report.get("upstream_commit") == UPSTREAM_COMMIT,
@@ -640,6 +645,68 @@ def validate_reports(root: Path) -> dict[str, Any]:
         },
         "allocation budget",
     )
+    script_profiles = script_budget.get(
+        "candidate_derivation", {}
+    ).get("profiles")
+    script_evidence = script_budget.get("evidence_boundary")
+    require(
+        script_budget.get("rules_commit")
+        == "c2c17dfa5ea4e078ba31eab55d87430c96622fb6"
+        and script_budget.get("result")
+        == "review_candidate_not_admitted"
+        and script_profiles
+        == {
+            "modern_default": {
+                "maximum_fuel_quanta": 131_072,
+                "maximum_js_vm_stack_bytes": 512 * 1024,
+                "maximum_live_vm_heap_bytes": 32 * MIB,
+                "runtime_deadline_milliseconds": 10_000,
+            },
+            "legacy_high_resource": {
+                "maximum_fuel_quanta": 1_048_576,
+                "maximum_js_vm_stack_bytes": 2 * MIB,
+                "maximum_live_vm_heap_bytes": 256 * MIB,
+                "runtime_deadline_milliseconds": 60_000,
+            },
+        },
+        "script runtime budget profile drift",
+    )
+    require(
+        isinstance(script_evidence, dict)
+        and script_evidence.get("real_corpus_heap_high_water_measured")
+        is False
+        and script_evidence.get(
+            "real_corpus_interrupt_poll_count_measured"
+        )
+        is False
+        and script_evidence.get(
+            "native_host_checkpoint_count_measured"
+        )
+        is False
+        and script_evidence.get(
+            "all_format_rule_lifecycles_measured"
+        )
+        is False
+        and script_budget.get("sharing_and_reset", {}).get(
+            "rule_include_child_or_exception_resets_forbidden"
+        )
+        is True,
+        "script runtime budget evidence boundary drift",
+    )
+    validate_nested_bindings(
+        root,
+        script_budget,
+        {
+            "adr_runtime",
+            "adr_scan",
+            "api",
+            "c_abi",
+            "runtime_research",
+            "runtime_report",
+            "include_sizing",
+        },
+        "script runtime budget",
+    )
 
     return {
         "observations": {
@@ -702,11 +769,19 @@ def validate_reports(root: Path) -> dict[str, Any]:
                 "measurements_are_scan_owned_allocations": False,
                 "observed_maximum_is_candidate_basis": False,
             },
+            "script_runtime_evidence_boundary": {
+                "real_corpus_heap_high_water_measured": False,
+                "real_corpus_interrupt_poll_count_measured": False,
+                "native_host_checkpoint_count_measured": False,
+                "all_format_rule_lifecycles_measured": False,
+                "fault_injection_values_are_candidate_basis": False,
+            },
         },
         "database_profiles": database_profiles,
         "diagnostic_profiles": diagnostic_profiles,
         "input_profiles": input_profiles,
         "allocation_profiles": allocation_profiles,
+        "script_profiles": script_profiles,
         "required_scan_fields": diagnostic_closure[
             "scan_fields_required_in_both_profiles"
         ],
@@ -721,6 +796,7 @@ def build_policy(root: Path) -> dict[str, Any]:
     diagnostic_profiles = validated["diagnostic_profiles"]
     input_profiles = validated["input_profiles"]
     allocation_profiles = validated["allocation_profiles"]
+    script_profiles = validated["script_profiles"]
     required_scan_fields = set(validated["required_scan_fields"])
     modern_diagnostic = diagnostic_profiles["modern_default"]
     legacy_diagnostic = diagnostic_profiles["legacy_high_resource"]
@@ -783,13 +859,13 @@ def build_policy(root: Path) -> dict[str, Any]:
         "schema_version": SCHEMA_VERSION,
         "evaluated_on": EVALUATED_ON,
         "upstream_commit": UPSTREAM_COMMIT,
-        "result": "review_candidate_incomplete",
+        "result": "review_candidate_complete_unadmitted",
         "decision_status": {
             "admitted": False,
             "reason": (
-                "ADRs 0010, 0012, and 0014 remain Proposed; several "
-                "required budgets have no production candidate value; "
-                "production and cross-platform limit benchmarks are missing"
+                "ADRs 0006, 0010, 0012, and 0014 remain Proposed; all "
+                "required budgets have candidate values, but production "
+                "and cross-platform limit benchmarks are missing"
             ),
         },
         "invariants": {
@@ -818,6 +894,7 @@ def build_policy(root: Path) -> dict[str, Any]:
                     "status": "review_candidate_not_admitted",
                 },
                 "database": database_profiles["modern_default"],
+                "script": script_profiles["modern_default"],
             },
             "legacy_high_resource": {
                 "status": "review_candidate_not_admitted",
@@ -837,30 +914,14 @@ def build_policy(root: Path) -> dict[str, Any]:
                     "status": "review_candidate_not_admitted",
                 },
                 "database": database_profiles["legacy_high_resource"],
+                "script": script_profiles["legacy_high_resource"],
             },
         },
         "upstream_compatibility_observations": observations,
-        "unresolved_required_budgets": [
-            {
-                "id": "script.maximum_heap_bytes",
-                "required_by": "docs/design/api.md#8-scanlimits",
-            },
-            {
-                "id": "script.maximum_stack_bytes",
-                "required_by": "docs/design/api.md#8-scanlimits",
-            },
-            {
-                "id": "script.maximum_instruction_or_fuel",
-                "required_by": "docs/design/api.md#8-scanlimits",
-            },
-            {
-                "id": "script.runtime_deadline",
-                "required_by": "docs/design/api.md#8-scanlimits",
-            },
-        ],
+        "unresolved_required_budgets": [],
         "acceptance_requirements": [
             "ADRs 0010, 0012, and 0014 receive explicit review disposition",
-            "every unresolved required budget receives a nonzero candidate",
+            "every required budget candidate receives explicit review",
             "limit-1/exact/+1 tests cover every production counter",
             "all archive backends reserve through one shared budget",
             "modern and legacy-high CPU and peak-memory benchmarks pass",

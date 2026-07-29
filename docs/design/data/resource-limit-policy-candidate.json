@@ -1,7 +1,7 @@
 {
   "acceptance_requirements": [
     "ADRs 0010, 0012, and 0014 receive explicit review disposition",
-    "every unresolved required budget receives a nonzero candidate",
+    "every required budget candidate receives explicit review",
     "limit-1/exact/+1 tests cover every production counter",
     "all archive backends reserve through one shared budget",
     "modern and legacy-high CPU and peak-memory benchmarks pass",
@@ -10,7 +10,7 @@
   ],
   "decision_status": {
     "admitted": false,
-    "reason": "ADRs 0010, 0012, and 0014 remain Proposed; several required budgets have no production candidate value; production and cross-platform limit benchmarks are missing"
+    "reason": "ADRs 0006, 0010, 0012, and 0014 remain Proposed; all required budgets have candidate values, but production and cross-platform limit benchmarks are missing"
   },
   "evaluated_on": "2026-07-30",
   "invariants": {
@@ -56,6 +56,12 @@
         "total_source_bytes_read_or_mapped": 8589934592,
         "wall_deadline_milliseconds": 120000
       },
+      "script": {
+        "maximum_fuel_quanta": 1048576,
+        "maximum_js_vm_stack_bytes": 2097152,
+        "maximum_live_vm_heap_bytes": 268435456,
+        "runtime_deadline_milliseconds": 60000
+      },
       "status": "review_candidate_not_admitted",
       "traversal": {
         "maximum_directory_depth": 256,
@@ -98,6 +104,12 @@
         "total_source_bytes_read_or_mapped": 1073741824,
         "wall_deadline_milliseconds": 30000
       },
+      "script": {
+        "maximum_fuel_quanta": 131072,
+        "maximum_js_vm_stack_bytes": 524288,
+        "maximum_live_vm_heap_bytes": 33554432,
+        "runtime_deadline_milliseconds": 10000
+      },
       "status": "review_candidate_not_admitted",
       "traversal": {
         "maximum_directory_depth": 64,
@@ -109,7 +121,7 @@
       }
     }
   },
-  "result": "review_candidate_incomplete",
+  "result": "review_candidate_complete_unadmitted",
   "schema_version": 1,
   "source_bindings": {
     "adr_include": {
@@ -164,29 +176,16 @@
       "path": "docs/research/data/rquickjs-rule-runtime.json",
       "sha256": "4f9c5d4f207ceeaa50b28553d5cd8f02d63c92218f8e9fe877e5b99239743ac9"
     },
+    "script_budget": {
+      "path": "docs/design/data/script-runtime-budget-candidate.json",
+      "sha256": "f0e9f5e6e352f47974c7967438b9ad522fa8b5b325e8c469a459ab33eb06e6ff"
+    },
     "traversal_attempt": {
       "path": "docs/design/data/traversal-attempt-budget-candidate.json",
       "sha256": "fd81dcbbd811eeb705a7f5e10c3e8a12608acf36c762196fdd0783def42ebd5d"
     }
   },
-  "unresolved_required_budgets": [
-    {
-      "id": "script.maximum_heap_bytes",
-      "required_by": "docs/design/api.md#8-scanlimits"
-    },
-    {
-      "id": "script.maximum_stack_bytes",
-      "required_by": "docs/design/api.md#8-scanlimits"
-    },
-    {
-      "id": "script.maximum_instruction_or_fuel",
-      "required_by": "docs/design/api.md#8-scanlimits"
-    },
-    {
-      "id": "script.runtime_deadline",
-      "required_by": "docs/design/api.md#8-scanlimits"
-    }
-  ],
+  "unresolved_required_budgets": [],
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
   "upstream_compatibility_observations": {
     "allocation_evidence_boundary": {
@@ -241,6 +240,13 @@
       "memory_limit_bytes": 4194304,
       "production_default_candidate": false,
       "stack_limit_bytes": 131072
+    },
+    "script_runtime_evidence_boundary": {
+      "all_format_rule_lifecycles_measured": false,
+      "fault_injection_values_are_candidate_basis": false,
+      "native_host_checkpoint_count_measured": false,
+      "real_corpus_heap_high_water_measured": false,
+      "real_corpus_interrupt_poll_count_measured": false
     }
   }
 }

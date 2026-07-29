@@ -136,7 +136,8 @@
       "acceptance_ready": false,
       "contract_tests": [
         "tools/tests/test_rquickjs_rule_runtime_spike.py",
-        "tools/tests/test_rquickjs_static_link_spike.py"
+        "tools/tests/test_rquickjs_static_link_spike.py",
+        "tools/tests/test_script_runtime_budget.py"
       ],
       "required_headings": [
         "## Context",
@@ -269,7 +270,8 @@
         "tools/tests/test_probe_archive_adversarial_harness.py",
         "tools/tests/test_diagnostic_budget.py",
         "tools/tests/test_input_budget.py",
-        "tools/tests/test_allocation_budget.py"
+        "tools/tests/test_allocation_budget.py",
+        "tools/tests/test_script_runtime_budget.py"
       ],
       "required_headings": [
         "## 背景",

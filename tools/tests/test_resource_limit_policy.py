@@ -133,6 +133,15 @@ class ResourceLimitPolicyTests(unittest.TestCase):
             },
         )
         self.assertEqual(
+            modern["script"],
+            {
+                "maximum_fuel_quanta": 131_072,
+                "maximum_js_vm_stack_bytes": 512 * 1024,
+                "maximum_live_vm_heap_bytes": 32 * 1024**2,
+                "runtime_deadline_milliseconds": 10_000,
+            },
+        )
+        self.assertEqual(
             legacy["database"],
             {
                 "status": "review_candidate_not_admitted",
@@ -155,6 +164,15 @@ class ResourceLimitPolicyTests(unittest.TestCase):
                 "maximum_active_depth": 64,
                 "maximum_total_evaluations": 4096,
                 "status": "review_candidate_not_admitted",
+            },
+        )
+        self.assertEqual(
+            legacy["script"],
+            {
+                "maximum_fuel_quanta": 1_048_576,
+                "maximum_js_vm_stack_bytes": 2 * 1024**2,
+                "maximum_live_vm_heap_bytes": 256 * 1024**2,
+                "runtime_deadline_milliseconds": 60_000,
             },
         )
         self.assertFalse(legacy["default_for_any_adapter"])
@@ -260,28 +278,27 @@ class ResourceLimitPolicyTests(unittest.TestCase):
                 "observed_maximum_is_candidate_basis": False,
             },
         )
-
-    def test_unresolved_budgets_keep_policy_unadmitted(self):
-        unresolved = self.policy["unresolved_required_budgets"]
-        ids = [item["id"] for item in unresolved]
-        self.assertEqual(len(ids), 4)
-        self.assertEqual(len(ids), len(set(ids)))
         self.assertEqual(
-            set(ids),
+            facts["script_runtime_evidence_boundary"],
             {
-                "script.maximum_heap_bytes",
-                "script.maximum_stack_bytes",
-                "script.maximum_instruction_or_fuel",
-                "script.runtime_deadline",
+                "real_corpus_heap_high_water_measured": False,
+                "real_corpus_interrupt_poll_count_measured": False,
+                "native_host_checkpoint_count_measured": False,
+                "all_format_rule_lifecycles_measured": False,
+                "fault_injection_values_are_candidate_basis": False,
             },
         )
+
+    def test_complete_candidate_remains_unadmitted(self):
+        unresolved = self.policy["unresolved_required_budgets"]
+        self.assertEqual(unresolved, [])
         self.assertEqual(
             self.policy["result"],
-            "review_candidate_incomplete",
+            "review_candidate_complete_unadmitted",
         )
         self.assertFalse(self.policy["decision_status"]["admitted"])
         self.assertIn(
-            "ADRs 0010, 0012, and 0014 remain Proposed",
+            "ADRs 0006, 0010, 0012, and 0014 remain Proposed",
             self.policy["decision_status"]["reason"],
         )
 
@@ -298,6 +315,7 @@ class ResourceLimitPolicyTests(unittest.TestCase):
                 "diagnostic_budget",
                 "input_budget",
                 "allocation_budget",
+                "script_budget",
             ):
                 nested_path = root / self.builder.SOURCES[source_name]
                 nested = json.loads(
@@ -380,9 +398,9 @@ class ResourceLimitPolicyTests(unittest.TestCase):
             research,
         )
         self.assertIn("Status: In Review", design)
-        self.assertIn("review_candidate_incomplete", design)
+        self.assertIn("review_candidate_complete_unadmitted", design)
         self.assertIn("`admitted=false`", design)
-        self.assertIn("4 个明确 unresolved 项", design)
+        self.assertIn("0 个 unresolved 项", design)
         self.assertIn("production_default_candidate=false", research)
         self.assertIn("不是已冻结的发布", design)
         self.assertIn("不是生产默认候选", research)
@@ -401,8 +419,8 @@ class ResourceLimitPolicyTests(unittest.TestCase):
         self.assertEqual(
             blocker["resource_limit_policy_status"],
             (
-                "review_candidate_incomplete_and_unadmitted_"
-                "with_4_unresolved_budgets"
+                "review_candidate_complete_but_unadmitted_"
+                "with_0_unresolved_budgets"
             ),
         )
         self.assertEqual(
@@ -420,6 +438,10 @@ class ResourceLimitPolicyTests(unittest.TestCase):
                 "docs/design/data/diagnostic-budget-candidate.json",
                 "docs/design/data/input-budget-candidate.json",
                 "docs/design/data/allocation-budget-candidate.json",
+                (
+                    "docs/design/data/"
+                    "script-runtime-budget-candidate.json"
+                ),
                 "docs/design/resource-limit-policy.md",
                 (
                     "docs/design/data/"

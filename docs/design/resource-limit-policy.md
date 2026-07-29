@@ -9,11 +9,13 @@ Last updated: 2026-07-30
 本文把 API 与 ADR 中分散的资源限制整理为一个可评审候选。它不是已冻结的发布
 默认值，也不允许 Phase 0 提前实现 production `ScanBudget`。机器可读契约为
 [`data/resource-limit-policy-candidate.json`](data/resource-limit-policy-candidate.json)，
-当前结果必须保持 `review_candidate_incomplete`、`admitted=false`。
+当前结果必须保持 `review_candidate_complete_unadmitted`、`admitted=false`。
+“complete”只表示每个必需字段都有非零评审候选，不表示数值已获准入。
 
 候选依赖：
 
 - [资源限制证据边界](../research/resource-limit-evidence.md)；
+- [ADR 0006](decisions/0006-rquickjs-rule-runtime.md)；
 - [ADR 0010](decisions/0010-bounded-include-graph.md)；
 - [ADR 0012](decisions/0012-bounded-nested-scan-budget.md)；
 - [ADR 0014](decisions/0014-bounded-path-expansion.md)；
@@ -22,6 +24,7 @@ Last updated: 2026-07-30
 - [Diagnostic count 候选](data/diagnostic-budget-candidate.json)；
 - [Root input 候选](data/input-budget-candidate.json)；
 - [Total allocation 候选](data/allocation-budget-candidate.json)；
+- [Script runtime 候选](data/script-runtime-budget-candidate.json)；
 - [`api.md` 的 `ScanLimits`](api.md#8-scanlimits)。
 
 ## 2. 共同不变量
@@ -95,8 +98,22 @@ Last updated: 2026-07-30
 cache bytes 再保留一倍 record metadata 空间。该推导和 archive/cache 行为绑定
 见 [`database-load-sizing.md`](../research/database-load-sizing.md)。
 
+### Script runtime
+
+| Counter | 候选值 |
+| --- | ---: |
+| maximum live VM heap bytes | 33,554,432 bytes |
+| maximum JS VM stack bytes | 524,288 bytes |
+| maximum fuel quanta | 131,072 |
+| runtime deadline | 10,000 ms |
+
+heap 候选为固定 2,902,881-byte 程序源总量的 8 倍后向上取 2 次幂；stack
+候选为 pinned 256 KiB backend 默认值的 2 倍；fuel 候选把 20,947-operation
+Binary corpus anchor 乘 4 后向上取 2 次幂；script deadline 是 30 秒 scan
+deadline 的三分之一。它们是结构推导，不是观察到的 runtime 最大值。
+
 Scan/traversal 值来自 ADR 0012/0014 的 Proposed 表；database 值来自固定
-bundle sizing。两类都只是评审候选。
+bundle sizing；script 值来自 ADR 0006 的联合预算推导。三类都只是评审候选。
 
 ## 4. Legacy-high 候选
 
@@ -150,21 +167,31 @@ library 默认。
 | maximum total logical path bytes | 4,194,304 bytes |
 | maximum cache bytes | 536,870,912 bytes |
 
+### Script runtime
+
+| Counter | 候选值 |
+| --- | ---: |
+| maximum live VM heap bytes | 268,435,456 bytes |
+| maximum JS VM stack bytes | 2,097,152 bytes |
+| maximum fuel quanta | 1,048,576 |
+| runtime deadline | 60,000 ms |
+
 profile 的 global archive-entry budget 不改变固定 upstream 的局部兼容语义：
 normal resource child inclusive 边界为 21，aggressive resource child 为 2001；
 aggressive archive 只让 ordinal 100000 可达，ordinal 100001 不可达。
 
-## 5. 尚未定值的必需预算
+## 5. 候选完整性与未准入状态
 
-当前策略有 4 个明确 unresolved 项，因此不得 admitted：
-
-1. script maximum heap bytes；
-2. script maximum stack bytes；
-3. script maximum instruction/fuel；
-4. script runtime deadline。
+当前策略有 0 个 unresolved 项：所有必需字段都有非零候选。但这只关闭
+“缺少候选值”的结构缺口，策略仍不得 admitted。Script runtime 的真实全库 heap
+high-water、正常 VM interrupt poll、native HostApi checkpoint、所有格式规则
+生命周期和三平台资源证据尚未采集；ADR 0006 也仍为 Proposed。
 
 QuickJS spike 的 4 MiB heap、128 KiB stack 和 25 ms deadline 只在机器契约的
-`runtime_spike_only` 中保存；它们不能填充第 1—4 项。include 两项已有
+`runtime_spike_only` 中保存，明确不是候选的定值依据。script 候选的精确单位、
+共享/不重置语义、推导和缺失证据见
+[`script-runtime-budget-candidate.json`](data/script-runtime-budget-candidate.json)。
+include 两项已有
 16/256 与 64/4096 候选，但仍需 ADR 0010 评审、dynamic/custom database 和
 production 边界测试。database load 的 10 个字段已有非零候选，但仍保持
 `review_candidate_not_admitted`，并需要完整 cache overhead、ZIP64/compression
@@ -205,20 +232,25 @@ counter 使用 checked integer；失败不改变 `consumed`，不执行部分 al
 
 scan 与 traversal 当前都提出 30/120 秒 deadline，但它们不是两个互不相关的
 计时器。最终实现必须从同一绝对 deadline 派生 remaining duration，不能让进入
-path expansion 或 child scan 时重新获得完整时长。
+path expansion 或 child scan 时重新获得完整时长。script deadline 从首次
+runtime work 起按 monotonic absolute deadline 计算，并与 scan deadline 取较早
+者；rule、include、child 或 exception 都不得重置 deadline 或 fuel。
 
 ## 7. 生成与漂移门禁
 
 ```powershell
 python tools\research\build_traversal_attempt_budget.py --check
 python tools\research\build_diagnostic_budget.py --check
+python tools\research\build_input_budget.py --check
+python tools\research\build_allocation_budget.py --check
+python tools\research\build_script_runtime_budget.py --check
 python tools\research\build_resource_limit_policy.py --check
 ```
 
 生成器验证：
 
 - 固定上游 commit；
-- ADR 0010/0012/0014 与 API 的精确契约片段；
+- ADR 0006/0010/0012/0014、API 与 C ABI 的精确契约片段；
 - archive depth/expanded、archive iteration、resource count 和 runtime spike
   报告的关键断言；
 - 全部 source SHA-256；
@@ -229,8 +261,8 @@ In Review，候选仍不得 admitted。
 
 ## 8. 接受条件
 
-- ADR 0010、0012、0014 获得明确 review disposition；
-- 6 个 unresolved 项都有非零候选与证据；
+- ADR 0006、0010、0012、0014 获得明确 review disposition；
+- 每个必需预算候选获得明确评审；
 - 每个 production counter 有 `limit-1/exact/+1`；
 - 所有 archive backend 使用同一 reserve API；
 - modern/legacy-high 的 CPU 和 peak-memory benchmark 通过；

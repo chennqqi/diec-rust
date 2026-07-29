@@ -14,7 +14,7 @@ Phase 0 计划形成：
 - [`testing.md`](testing.md)：语料、oracle、差分、fuzz、benchmark 和 CI（In Review）。
 - [`risks.md`](risks.md)：Phase 0 风险、触发条件、缓解和关闭证据（In Review）。
 - [`resource-limit-policy.md`](resource-limit-policy.md)：统一 scan/traversal 候选
-  profile、未定值预算和准入条件（In Review，尚未冻结）。
+  profile、完整但未准入的预算集和准入条件（In Review，尚未冻结）。
 - [`data/traversal-attempt-budget-candidate.json`](data/traversal-attempt-budget-candidate.json)：
   metadata/open attempt 单位、结构推导、跨平台上游证据边界和准入条件。
 - [`data/diagnostic-budget-candidate.json`](data/diagnostic-budget-candidate.json)：
@@ -23,6 +23,8 @@ Phase 0 计划形成：
   root logical length 单位、1 GiB/8 GiB 候选及与读取/分配 counter 的边界。
 - [`data/allocation-budget-candidate.json`](data/allocation-budget-candidate.json)：
   scan-owned capacity 的单调累计语义、1 GiB/8 GiB 候选及 RSS 范围边界。
+- [`data/script-runtime-budget-candidate.json`](data/script-runtime-budget-candidate.json)：
+  script heap、JS VM stack、fuel、deadline 联合候选及 runtime 证据边界。
 - [`phase-0-gate-review.md`](phase-0-gate-review.md)：Phase 0 退出条件、阻塞项及
   关闭证据的审计总账（In Review）。
 - [`design-review-readiness.md`](design-review-readiness.md)：五份必需设计从

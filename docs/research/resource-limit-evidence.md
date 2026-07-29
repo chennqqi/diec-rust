@@ -38,6 +38,10 @@ Last updated: 2026-07-30
   2× total-expanded 结构关系提出 1 GiB/8 GiB，不以观察 RSS 定值。
 - QuickJS-NG spike 中 4 MiB heap、128 KiB stack 与 25 ms deadline 能触发受控
   失败并恢复同一 context，但这些数值是故障注入条件，不是生产默认候选。
+- 固定 2,902,881-byte 程序源、20,947-operation Binary corpus anchor、pinned
+  256 KiB VM stack 默认值和 scan deadline 已形成联合 script runtime 候选；
+  报告同时固定真实 heap high-water、正常 VM poll、native checkpoint、全格式
+  生命周期及三平台资源证据仍缺失，因此候选不得 admitted。
 
 项目候选值属于设计决策，见
 [`../design/resource-limit-policy.md`](../design/resource-limit-policy.md)；本页只
@@ -56,6 +60,7 @@ Last updated: 2026-07-30
 | scan diagnostics | [`../design/data/diagnostic-budget-candidate.json`](../design/data/diagnostic-budget-candidate.json) | typed fact 计数、overflow completion、profile 字段闭包及 Qt5/Qt6 文本差异 |
 | root input bytes | [`../design/data/input-budget-candidate.json`](../design/data/input-budget-candidate.json) | root logical length、入口触发时机、1 GiB/8 GiB 候选及与累计 I/O/分配的独立关系 |
 | total allocation bytes | [`../design/data/allocation-budget-candidate.json`](../design/data/allocation-budget-candidate.json) | scan-owned capacity 单调累计、two-phase reserve、1 GiB/8 GiB 候选与 whole-process RSS 证据边界 |
+| script runtime | [`../design/data/script-runtime-budget-candidate.json`](../design/data/script-runtime-budget-candidate.json) | heap/JS stack/fuel/deadline 的联合候选、共享/不重置语义及真实 runtime 测量缺口 |
 | runtime hard-stop wiring | [`data/rquickjs-rule-runtime.json`](data/rquickjs-rule-runtime.json) | heap/stack/deadline 能被 runtime 拒绝且 context 可恢复 |
 
 这些报告均固定到同一 DIE-engine commit。生成器
@@ -98,6 +103,7 @@ python tools\research\build_traversal_attempt_budget.py --check
 python tools\research\build_diagnostic_budget.py --check
 python tools\research\build_input_budget.py --check
 python tools\research\build_allocation_budget.py --check
+python tools\research\build_script_runtime_budget.py --check
 python tools\research\build_resource_limit_policy.py --check
 python -m unittest discover -s tools\tests -p "test_resource_limit_policy.py"
 ```
@@ -108,7 +114,9 @@ python -m unittest discover -s tools\tests -p "test_resource_limit_policy.py"
 
 ## 剩余证据
 
-- 为 script budgets 建立数值候选及边界依据；
+- 对 script 候选补齐真实全库 heap high-water、正常 VM interrupt poll、native
+  HostApi cooperative checkpoint、全格式正反例生命周期、三平台
+  CPU/heap/stack 和 `limit-1/exact/+1`；
 - 对 root input 候选补齐 production `Bytes`/`ByteSource`/`Path`/FFI
   `limit-1/exact/+1`、并发 truncate/grow 和 CPU/peak-memory；
 - 对 total allocation 候选补齐 production budgeted containers/decompressor

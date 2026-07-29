@@ -42,9 +42,9 @@ Roadmap 点名的五份设计正文已经从 Draft 进入 In Review：
 | 文档 | 已具备的评审输入 | 仍阻止 Accepted |
 | --- | --- | --- |
 | Architecture | workspace/DAG、checked input、queue、runtime port、结果与 adapter 边界 | ADR 0002/0006、canonical result、limits、许可证和平台门禁 |
-| API | source/request/limits/cancel/report/diagnostic、legacy/modern 分离；scan/traversal/include 候选已统一并列出 6 个 unresolved budget | ADR 0003、modern schema、未决 limits、thread/path policy |
+| API | source/request/limits/cancel/report/diagnostic、legacy/modern 分离；scan/traversal/include/script 候选已统一且 0 个 unresolved | ADR 0003、modern schema、候选准入、thread/path policy |
 | C ABI | opaque handle、布局、状态、所有权、panic、thread/static link | ADR 0001、runtime thread model、三平台和 Go/Python 验证 |
-| Testing | capability/raw/semantic/waiver、fuzz、FFI、performance、CI/release；limit 候选具备 hash-bound 机器契约 | ADR 0004、Windows/macOS oracle、Rust 成对/cold/size benchmark、6 个未决 limits、release integration |
+| Testing | capability/raw/semantic/waiver、fuzz、FFI、performance、CI/release；完整但未准入的 limit 候选具备 hash-bound 机器契约 | ADR 0004、Windows/macOS oracle、Rust 成对/cold/size benchmark、production limit 验证与评审、release integration |
 | Risks | 20 项完整风险、owner、触发/缓解/验证/关闭、Phase 0 gate | 设计/ADR 评审结论及 runtime/license/platform/performance blocker |
 
 ## 可重复校验

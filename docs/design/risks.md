@@ -404,8 +404,9 @@ baseline 的变更都要检查本表。
   legacy high-resource ceiling。统一候选策略已把 ADR 0012/0014 数值、固定上游
   21/2001/100000 临界值与 QuickJS spike-only 限额分离；固定全库 include
   depth 2/evaluations 30 又形成 16/256 与 64/4096 候选，root input 形成
-  1 GiB/8 GiB 候选，total allocation 形成 1 GiB/8 GiB 候选，剩余 4 个未定值
-  budget 仍显式保留，见
+  1 GiB/8 GiB 候选，total allocation 形成 1 GiB/8 GiB 候选，script
+  heap/JS stack/fuel/deadline 也形成联合候选；必需预算已无未定值，但真实 runtime
+  测量、边界测试与评审仍缺，见
   [`resource-limit-policy.md`](resource-limit-policy.md) 和
   [`resource-limit-evidence.md`](../research/resource-limit-evidence.md)；
   当前 `admitted=false`，不能被实现当作已冻结配置。
@@ -598,6 +599,9 @@ baseline 的变更都要检查本表。
   `bool`，所以未同步跨线程取消属于数据竞争，不能作为 Rust API 模板。
   同一 fixture 的 128 KiB stack limit 也已捕获无界递归并恢复 context，但真实
   include graph 仍必须由 ADR 0010 的静态/active-stack budget 提前拒绝。
+  script runtime 联合候选进一步规定每 scan 共享且不重置的 fuel 与 absolute
+  monotonic deadline；但真实全库 VM poll/native checkpoint 和三平台资源证据
+  未采集，所以该候选仍为 `review_candidate_not_admitted`。
 - **缓解**：runtime 选型硬门禁；fuel/deadline/heap；受控检查点；不可中断 backend
   不得采用。
 - **验证**：每个 scan stage deterministic fake clock/cancel；恶意长循环在期限内
