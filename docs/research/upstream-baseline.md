@@ -165,8 +165,9 @@ vendored 目录仍需独立 source/license 审计。
   output/special 扩展也已完成；Windows 19-case engine cache/DACL harness
   也已完成两轮；新增 37-case engine-contract、CLI option/profiling 和
   10-case rule-orchestration 双轮及 private signature-path engine harness
-  双轮、五组 result-model harness 各双轮后，Windows 68 行 closure 已分类为
-  59 complete、2 partial、7 missing；
+  双轮、五组 result-model harness 各双轮，再加入 86 次 legacy/archive
+  dispatch 执行后，Windows 68 行 closure 已分类为
+  62 complete、1 partial、5 missing；
   CLI profiling 保留 `image_ICNS.sg`
   的精确 Windows/Linux 顺序差异，而规则编排 canonical 语义完全相同；
   UNC、精确 namespace

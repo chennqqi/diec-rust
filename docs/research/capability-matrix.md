@@ -387,8 +387,8 @@ platform-missing。全部行已分类不等于 Phase 0 覆盖完成。
 
 Windows 的独立逐行审计见
 [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)：
-现有 17 份报告支持 59 complete、2 partial、7 missing。该 59 行只是 closure
-内部结论；9 个开放行关闭并经 coverage builder 接纳前，Windows 的 68 个
+现有 18 份报告支持 62 complete、1 partial、5 missing。该 62 行只是 closure
+内部结论；6 个开放行关闭并经 coverage builder 接纳前，Windows 的 68 个
 platform-missing 不变。
 
 其中
@@ -397,6 +397,9 @@ platform-missing 不变。
 边界；[`windows-result-model-behavior.md`](windows-result-model-behavior.md)
 用五组双轮 harness 关闭 scalar/list/flag/ID/enum/record metadata 六行
 缺口；完整结构化语义除 Qt 版本身份外与 Linux Qt5 相同。
+[`windows-dispatch-behavior.md`](windows-dispatch-behavior.md) 又用 86 次
+双轮执行关闭 DOS/COM/BW、Amiga/Atari 和 NPM/通用 Archive 三个 dispatch
+行；三个直连 harness 完整 JSON 文档与 Linux Qt5 相同。
 [`windows-cli-option-behavior.md`](windows-cli-option-behavior.md)
 另固定 option/test/profiling 五行，并保留 292-rule order 的单项平台移动。
 [`windows-rule-orchestration.md`](windows-rule-orchestration.md)

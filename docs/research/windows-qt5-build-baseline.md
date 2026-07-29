@@ -46,7 +46,7 @@ JSON continuity、CSV 优先级及四个带空格 filetype 的 invalid XML。
 保持 `platform_missing`，直到完整差分语料在该平台执行并归档。
 逐行
 [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)
-已把当前证据审计为 59 complete、2 partial、7 missing；9 个开放行均有
+已把当前证据审计为 62 complete、1 partial、5 missing；6 个开放行均有
 命名验收实验。
 
 机器证据见
@@ -449,6 +449,17 @@ engine-contract，六个 result-model 行均具备直接证据。报告 SHA-256 
 `611c111c38f85d7fbbe42fe41e5f6d922a7f168e084a1950b5bb6a70a5e3fc65`，
 详见
 [`windows-result-model-behavior.md`](windows-result-model-behavior.md)。
+
+## Windows Qt5 legacy/archive dispatch 矩阵
+
+[`build_windows_dispatch_harnesses.ps1`](../../tools/upstream/build_windows_dispatch_harnesses.ps1)
+复用固定 qmake Release engine objects，构建 BW、NPM 和通用 Archive 三个
+直连 harness；[`collect_windows_dispatch.py`](../../tools/upstream/collect_windows_dispatch.py)
+另以固定 CLI 执行 DOS/COM 与 Amiga/Atari corpus。两轮合计 86 次进程执行、
+72 次 case observation。公开语义投影及三个完整 harness JSON 文档均与 Linux
+Qt5 相同，关闭 `CAP-DISPATCH-002..004`。报告 SHA-256 为
+`398b30af7ab44a9a13591822581a1a5145cb84b2b7b1f233f243a8e39085e617`，
+详见 [`windows-dispatch-behavior.md`](windows-dispatch-behavior.md)。
 
 ## Windows CLI Unicode/特殊路径矩阵
 

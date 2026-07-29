@@ -670,7 +670,8 @@
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
       "evidence_paths": [
         "docs/research/data/baseline-corpus-windows-qt5.json",
-        "docs/research/data/windows-qt5-cli-matrix.json"
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/dispatch-engine-windows-qt5.json"
       ],
       "evidence_set": "dispatch_source",
       "id": "CAP-DISPATCH-001",
@@ -684,73 +685,53 @@
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
       "evidence_paths": [
         "docs/research/data/baseline-corpus-windows-qt5.json",
-        "docs/research/data/windows-qt5-cli-matrix.json"
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/dispatch-engine-windows-qt5.json"
       ],
       "evidence_set": "dispatch_source",
       "id": "CAP-DISPATCH-002",
-      "missing_scope": "DOS/COM public dispatch and BW property-only branch",
+      "missing_scope": null,
       "name": "DOS and COM public dispatch plus BW property-only branch",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "DOS/COM and Amiga/Atari positive and negative cases execute",
-          "public dispatch and detector/property-only branches are distinguished",
-          "raw and structured Windows/Linux differences are classified"
-        ],
-        "fixture": "tools/corpus/generate_legacy_dispatch_corpus.py",
-        "harness": "tools/upstream/probe_legacy_dispatch.py"
-      },
-      "status": "missing"
+      "observed_scope": "all 19 DOS/COM public cases and the two-case BW property-only branch match Linux Qt5",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
       "evidence_paths": [
         "docs/research/data/baseline-corpus-windows-qt5.json",
-        "docs/research/data/windows-qt5-cli-matrix.json"
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/dispatch-engine-windows-qt5.json"
       ],
       "evidence_set": "dispatch_source",
       "id": "CAP-DISPATCH-003",
-      "missing_scope": "Amiga Hunk public dispatch and Atari ST detector-only fallback",
+      "missing_scope": null,
       "name": "Amiga Hunk dispatch and Atari ST detector-only fallback",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "DOS/COM and Amiga/Atari positive and negative cases execute",
-          "public dispatch and detector/property-only branches are distinguished",
-          "raw and structured Windows/Linux differences are classified"
-        ],
-        "fixture": "tools/corpus/generate_legacy_dispatch_corpus.py",
-        "harness": "tools/upstream/probe_legacy_dispatch.py"
-      },
-      "status": "missing"
+      "observed_scope": "all eight Amiga Hunk/Atari ST scanner and detector cases match Linux Qt5",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
       "evidence_paths": [
         "docs/research/data/baseline-corpus-windows-qt5.json",
-        "docs/research/data/windows-qt5-cli-matrix.json"
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/dispatch-engine-windows-qt5.json"
       ],
       "evidence_set": "dispatch_source",
       "id": "CAP-DISPATCH-004",
-      "missing_scope": "NPM auto/forced dispatch and direct Archive property-only controls",
+      "missing_scope": null,
       "name": "archive family dispatch",
-      "observed_scope": "APK, IPA, JAR, ZIP, RAR, ISO9660, TAR, and GZip public projections are fixed",
-      "proposed_experiment": {
-        "assertions": [
-          "NPM auto and forced paths execute",
-          "direct Archive property-only controls execute",
-          "dispatch names, child trees, and errors are compared to Linux Qt5"
-        ],
-        "fixture": "tools/corpus/generate_generic_archive_dispatch_fixture.py",
-        "harness": "tools/upstream/probe_generic_archive_dispatch_harness.py"
-      },
-      "status": "partial"
+      "observed_scope": "NPM automatic/forced and generic Archive property-only harness documents match Linux Qt5",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
       "evidence_paths": [
         "docs/research/data/baseline-corpus-windows-qt5.json",
-        "docs/research/data/windows-qt5-cli-matrix.json"
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/dispatch-engine-windows-qt5.json"
       ],
       "evidence_set": "dispatch_source",
       "id": "CAP-DISPATCH-005",
@@ -764,7 +745,8 @@
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
       "evidence_paths": [
         "docs/research/data/baseline-corpus-windows-qt5.json",
-        "docs/research/data/windows-qt5-cli-matrix.json"
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/dispatch-engine-windows-qt5.json"
       ],
       "evidence_set": "dispatch_source",
       "id": "CAP-DISPATCH-006",
@@ -778,7 +760,8 @@
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
       "evidence_paths": [
         "docs/research/data/baseline-corpus-windows-qt5.json",
-        "docs/research/data/windows-qt5-cli-matrix.json"
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/dispatch-engine-windows-qt5.json"
       ],
       "evidence_set": "dispatch_source",
       "id": "CAP-DISPATCH-007",
@@ -792,7 +775,8 @@
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
       "evidence_paths": [
         "docs/research/data/baseline-corpus-windows-qt5.json",
-        "docs/research/data/windows-qt5-cli-matrix.json"
+        "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/dispatch-engine-windows-qt5.json"
       ],
       "evidence_set": "dispatch_source",
       "id": "CAP-DISPATCH-008",
@@ -1068,11 +1052,12 @@
     "docs/research/data/baseline-corpus-windows-qt5.json": "6beba732e88d90ed1414dd2584a4a783eac24dec70103fc54e6214eb12cca998",
     "docs/research/data/capability-traceability.json": "e1bb982feb52fb97e6678319c629cf71735650fe4239c8558a0f765c16c8cff3",
     "docs/research/data/database-cache-engine-windows-qt5.json": "d1cbcbe741e4cf3999f54f4696f6eee59472b59bd3aaf9d98f94bb337b1e16da",
+    "docs/research/data/dispatch-engine-windows-qt5.json": "398b30af7ab44a9a13591822581a1a5145cb84b2b7b1f233f243a8e39085e617",
     "docs/research/data/engine-contract-windows-qt5.json": "4f7d1629d4c0cf627fd8f5fa1ff6adaf838f8c9fc910e95fac0c50bfd105233e",
     "docs/research/data/result-model-engine-windows-qt5.json": "611c111c38f85d7fbbe42fe41e5f6d922a7f168e084a1950b5bb6a70a5e3fc65",
     "docs/research/data/rule-orchestration-windows-qt5.json": "e6c7d47b35f89abdb10719e8578a550dcf5c9caf882a5d7825d3e0dbde3cf9da",
     "docs/research/data/signature-path-engine-windows-qt5.json": "54e0d24e363cf86353365ea93fffeaf03a5dfadb9f32f0c976ec3234b646ad48",
-    "docs/research/data/windows-qt5-build-baseline.json": "242dc3b5aa2f0b4a6f8588f0b6dbe1d55c563b934cf162aa907fa8180b4357fd",
+    "docs/research/data/windows-qt5-build-baseline.json": "836b668bf5cc7c956669876925a95a2a8e4a5b774873d4584c7ec9f2dc1c0e28",
     "docs/research/data/windows-qt5-cli-ads.json": "bfdec0a8a516dd5d86721a9331d1d914c7e66f29df0fe0d6115c6dcca079224e",
     "docs/research/data/windows-qt5-cli-database-archive.json": "53c673620cc4388f0da7ffe36af7a325a099bceb0e29912c1f733119f942d748",
     "docs/research/data/windows-qt5-cli-database.json": "13e58a8d1b0cc4feb3998c06140e0afe7adb754cb59e5198b0e5b3079a3d5f8c",
@@ -1088,13 +1073,13 @@
   "summary": {
     "all_capabilities_accounted_for": true,
     "capability_count": 68,
-    "closure_required": 9,
-    "evidence_complete": 59,
-    "missing": 7,
-    "partial": 2,
+    "closure_required": 6,
+    "evidence_complete": 62,
+    "missing": 5,
+    "partial": 1,
     "windows_baseline_admitted": false,
-    "windows_process_execution_count": 2124,
-    "windows_report_count": 17
+    "windows_process_execution_count": 2210,
+    "windows_report_count": 18
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
 }

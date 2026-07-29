@@ -70,10 +70,10 @@ class WindowsCapabilityClosurePlanTests(unittest.TestCase):
 
     def test_status_counts_are_conservative(self):
         summary = self.report["summary"]
-        self.assertEqual(summary["evidence_complete"], 59)
-        self.assertEqual(summary["partial"], 2)
-        self.assertEqual(summary["missing"], 7)
-        self.assertEqual(summary["closure_required"], 9)
+        self.assertEqual(summary["evidence_complete"], 62)
+        self.assertEqual(summary["partial"], 1)
+        self.assertEqual(summary["missing"], 5)
+        self.assertEqual(summary["closure_required"], 6)
         self.assertFalse(summary["windows_baseline_admitted"])
         statuses = {
             row["status"] for row in self.report["capabilities"]
@@ -178,15 +178,25 @@ class WindowsCapabilityClosurePlanTests(unittest.TestCase):
             rows["CAP-CLI-DB-004"]["status"],
             "evidence_complete",
         )
+        for capability_id in (
+            "CAP-DISPATCH-002",
+            "CAP-DISPATCH-003",
+            "CAP-DISPATCH-004",
+        ):
+            with self.subTest(capability=capability_id):
+                self.assertEqual(
+                    rows[capability_id]["status"],
+                    "evidence_complete",
+                )
 
-    def test_machine_report_binds_all_17_windows_reports(self):
+    def test_machine_report_binds_all_18_windows_reports(self):
         self.assertEqual(
             self.report["summary"]["windows_report_count"],
-            17,
+            18,
         )
         self.assertEqual(
             self.report["summary"]["windows_process_execution_count"],
-            2124,
+            2210,
         )
         report_sources = {
             path
@@ -198,7 +208,7 @@ class WindowsCapabilityClosurePlanTests(unittest.TestCase):
                 "docs/research/data/windows-qt5-build-baseline.json"
             }
         }
-        self.assertEqual(len(report_sources), 17)
+        self.assertEqual(len(report_sources), 18)
 
     def test_document_names_every_open_row_and_machine_report(self):
         text = DOCUMENT.read_text(encoding="utf-8")

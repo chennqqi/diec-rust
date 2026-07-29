@@ -134,5 +134,6 @@ raw stdout/stderr、harness binary、临时 Makefile/object 和 build manifest �
   路径仍不在固定 37-case 契约；
 - 强制 Binary 规则隔离入口/I/O 语义，不把 short-read 未初始化尾部字节作为
   compatibility golden；
-- 本实验不关闭 Windows CLI option/test、完整 rule orchestration、
-  result model、legacy/archive dispatch、nested engine 或 path profile 缺口。
+- 本实验自身不关闭其他能力；后续证据已关闭 CLI option/test、完整 rule
+  orchestration、result model 和 legacy/archive dispatch，当前仍开放
+  nested engine 与 path profile 缺口。

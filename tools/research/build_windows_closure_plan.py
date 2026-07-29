@@ -38,6 +38,9 @@ REPORT_KEYS = {
     "docs/research/data/result-model-engine-windows-qt5.json": (
         "windows_result_model"
     ),
+    "docs/research/data/dispatch-engine-windows-qt5.json": (
+        "windows_dispatch"
+    ),
     "docs/research/data/windows-qt5-cli-path-nested.json": (
         "windows_cli_path_nested"
     ),
@@ -154,6 +157,9 @@ COMPLETE: dict[str, str] = {
     "CAP-RESULT-005": "raw, numeric, canonical, reserved, and fallback enum behavior exactly matches Linux Qt5",
     "CAP-RESULT-006": "nonempty version/info and rule name/path priorities 12, 30, and 100 are directly fixed",
     "CAP-DISPATCH-001": "PE32/64, ELF32/64, and Mach-O 32/64/FAT projections are fixed",
+    "CAP-DISPATCH-002": "all 19 DOS/COM public cases and the two-case BW property-only branch match Linux Qt5",
+    "CAP-DISPATCH-003": "all eight Amiga Hunk/Atari ST scanner and detector cases match Linux Qt5",
+    "CAP-DISPATCH-004": "NPM automatic/forced and generic Archive property-only harness documents match Linux Qt5",
     "CAP-DISPATCH-005": "DEX, Java Class, and PYC projections are fixed",
     "CAP-DISPATCH-006": "PDF and CFBF projections are fixed",
     "CAP-DISPATCH-007": "JPEG, PNG, and BMP/Image projections are fixed",
@@ -171,23 +177,10 @@ PARTIAL: dict[str, tuple[str, str, str]] = {
         "UNC, reparse cycles, 4096-entry ordering, TOCTOU, and domain/network ACL profiles",
         "run a Windows path closure harness covering the named filesystem profiles with raw order and resource retention",
     ),
-    "CAP-DISPATCH-004": (
-        "APK, IPA, JAR, ZIP, RAR, ISO9660, TAR, and GZip public projections are fixed",
-        "NPM auto/forced dispatch and direct Archive property-only controls",
-        "run the fixed archive-dispatch corpus and direct property harness on Windows",
-    ),
 }
 
 
 MISSING: dict[str, tuple[str, str]] = {
-    "CAP-DISPATCH-002": (
-        "DOS/COM public dispatch and BW property-only branch",
-        "run the fixed DOS/COM/BW dispatch corpus on Windows",
-    ),
-    "CAP-DISPATCH-003": (
-        "Amiga Hunk public dispatch and Atari ST detector-only fallback",
-        "run the fixed Amiga/Atari dispatch corpus on Windows",
-    ),
     "CAP-NEST-003": (
         "direct engine archive option independent of aggressive",
         "port the 64-case archive-option harness to Windows",
@@ -253,6 +246,7 @@ EVIDENCE_PATHS = {
     "dispatch_source": (
         "docs/research/data/baseline-corpus-windows-qt5.json",
         "docs/research/data/windows-qt5-cli-matrix.json",
+        "docs/research/data/dispatch-engine-windows-qt5.json",
     ),
     "nested_scan": (
         "docs/research/data/windows-qt5-cli-path-nested.json",
@@ -724,6 +718,42 @@ def validate_inputs(
     ):
         raise ClosurePlanError("Windows result-model facts drift")
 
+    dispatch = reports[
+        "docs/research/data/dispatch-engine-windows-qt5.json"
+    ]
+    public_dispatch = dispatch.get("public_cli", {})
+    private_dispatch = dispatch.get("private_harnesses", {})
+    if (
+        dispatch.get("passed") is not True
+        or dispatch.get("failures") != []
+        or dispatch.get("repetitions") != 2
+        or dispatch.get("execution_count") != 86
+        or dispatch.get("case_observation_count") != 72
+        or dispatch.get("capability_scope")
+        != [
+            "CAP-DISPATCH-002",
+            "CAP-DISPATCH-003",
+            "CAP-DISPATCH-004",
+        ]
+        or public_dispatch.get("dos", {}).get("case_count") != 19
+        or public_dispatch.get("dos", {}).get("execution_count") != 38
+        or public_dispatch.get("legacy", {}).get("case_count") != 8
+        or public_dispatch.get("legacy", {}).get("execution_count") != 32
+        or not all(
+            suite.get("all_linux_qt5_semantic_projections_equal") is True
+            and suite.get("all_semantic_outputs_equal") is True
+            for suite in public_dispatch.values()
+        )
+        or set(private_dispatch) != {"bw", "npm", "generic_archive"}
+        or not all(
+            suite.get("all_full_documents_equal_linux_qt5") is True
+            for suite in private_dispatch.values()
+        )
+        or len(dispatch.get("relationships", {})) != 9
+        or not all(dispatch.get("relationships", {}).values())
+    ):
+        raise ClosurePlanError("Windows dispatch facts drift")
+
     for evidence_set, paths in EVIDENCE_PATHS.items():
         for path in paths:
             if path not in reports:
@@ -835,7 +865,7 @@ def build_plan(root: Path) -> dict[str, Any]:
             "windows_baseline_admitted": (
                 not PARTIAL and not MISSING
             ),
-            "windows_process_execution_count": 2124,
+            "windows_process_execution_count": 2210,
             "windows_report_count": len(REPORT_KEYS),
         },
     }

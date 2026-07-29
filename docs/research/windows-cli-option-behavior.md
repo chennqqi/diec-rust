@@ -136,9 +136,9 @@ profiling 五行提供直接 Windows runtime 证据。完整行为已执行、ra
 证据已保留、唯一跨平台顺序差异已精确分类，因此五行可从 `missing` 提升为
 `evidence_complete`。
 
-这不表示 Windows 平台已经接纳。rule orchestration/private filter、
-result model、legacy/archive dispatch、nested engine 和 path profile 的 21
-行仍开放。
+这不表示 Windows 平台已经接纳。本实验自身不关闭其他能力；后续证据已关闭
+rule orchestration、private filter、result model 和 legacy/archive dispatch，
+当前仍开放 nested engine 五行与 path profile 一行。
 
 ## 6. 复现
 
