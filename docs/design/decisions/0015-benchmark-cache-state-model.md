@@ -42,8 +42,9 @@ benchmark cache-state vocabulary 固定为三个互斥值：
     eviction，再逐文件证明所有目标页 nonresident；
   - pathname/dentry/inode/failed lookup 明确视为 warm 或 uncontrolled；
   - controller/observation 失败必须终止，不能退化为 `warm`；
-  - 未接入 runner 前，Phase 0 page-cache probe 只作为 controller 技术证据，
-    不保留 timing/RSS。
+  - Phase 0 独立 measurement spike 可以在相同 controller/clock/RSS 口径下
+    保留 descriptive timing/RSS，但在接入通用 plan schema 前不得称为
+    production runner、trend 或 threshold。
 - `system-cold`
   - 只允许 disposable、dedicated VM 或裸机；
   - 必须固定 kernel/filesystem/device/mount/machine identity，获得明确的
@@ -129,6 +130,7 @@ load 对内容 I/O 的敏感性。
 - [`upstream-benchmark-linux-qt5-file-access.json`](../../research/data/upstream-benchmark-linux-qt5-file-access.json)
 - [`upstream-benchmark-linux-qt5-page-cache.json`](../../research/data/upstream-benchmark-linux-qt5-page-cache.json)
 - [`upstream-benchmark-linux-qt5-cache-environment.json`](../../research/data/upstream-benchmark-linux-qt5-cache-environment.json)
+- [`upstream-benchmark-linux-qt5-file-content-performance.json`](../../research/data/upstream-benchmark-linux-qt5-file-content-performance.json)
 - Linux kernel `drop_caches`、Linux man-pages namespaces/fadvise 与 Docker
   overlay2 page-cache 官方文档，链接见调研正文。
 
@@ -136,6 +138,8 @@ load 对内容 I/O 的敏感性。
 
 - cache-environment 报告在两个独立容器中逐字节重复；
 - runner 继续拒绝通用 `cold`；
+- 独立 file-content measurement spike 的 100 个 direct child 全部绑定同一
+  controller、ABBA 顺序、before-run 页状态和未变输出；
 - future file-content plan 必须逐 measured run 绑定 manifest、controller 和
   before-run 0-resident 证明；
 - future system-cold job 必须验证 dedicated authority/isolation；

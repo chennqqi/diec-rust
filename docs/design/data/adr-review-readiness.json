@@ -346,6 +346,7 @@
       "contract_tests": [
         "tools/tests/test_upstream_benchmark_page_cache.py",
         "tools/tests/test_upstream_benchmark_cache_environment.py",
+        "tools/tests/test_upstream_benchmark_file_content_performance.py",
         "tools/tests/test_run_process_benchmark.py"
       ],
       "required_headings": [
@@ -359,7 +360,7 @@
       ],
       "review_question": "是否接受 warm、file-content-nonresident-metadata-warm 与 dedicated system-cold 三层 cache-state，并永久拒绝通用 cold 标签？",
       "remaining_acceptance_evidence": [
-        "runner-integrated per-measured-run file-content controller evidence",
+        "production runner plan integration for the proven per-measured-run file-content controller evidence",
         "dedicated system-cold infrastructure and authority/isolation proof",
         "Windows/macOS equivalent or explicitly non-equivalent cache-state review"
       ]

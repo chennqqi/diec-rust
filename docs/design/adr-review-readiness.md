@@ -31,7 +31,7 @@ ADR 0007 已被 ADR 0011 Superseded，不属于当前待接受集合。机器清
 | 0012 | 全 scan 嵌套预算有限，legacy high-resource 仍有 hard ceiling | production budget、Rust 全 limit 边界与固定 high-ratio/畸形 corpus 的 sanitizer/fuzz replay、跨平台资源与 waiver |
 | 0013 | short read/I/O/seek/range fail closed，不复制未初始化尾部 | production ByteSource、跨 adapter typed error、fuzz/sanitizer 与 waiver |
 | 0014 | safe canonical 不跟随枚举 link；legacy alias 仍受 cycle/TOCTOU/budget hard stop | production TargetExpander、边界/TOCTOU/root confinement、Windows/macOS 与跨语言 waiver |
-| 0015 | warm、file-content-nonresident-metadata-warm、dedicated system-cold 三层，拒绝通用 cold | runner-integrated file-content controller、dedicated authority/isolation、Windows/macOS 策略 |
+| 0015 | warm、file-content-nonresident-metadata-warm、dedicated system-cold 三层，拒绝通用 cold | production runner plan 集成、dedicated authority/isolation、Windows/macOS 策略 |
 
 ## 评审约束
 
@@ -45,7 +45,9 @@ ADR 0007 已被 ADR 0011 Superseded，不属于当前待接受集合。机器清
   waiver 与原始上游证据；不能在 normalizer 中隐藏。
 - ADR 0011 的本机双工具链门禁不能替代 Phase 1 CI。
 - ADR 0015 的 per-file `mincore=0` 不能外推为 system-cold；当前工具不得通过
-  privileged container 触碰共享 kernel cache。
+  privileged container 触碰共享 kernel cache。100 个独立 spike measured
+  child 已证明同一 controller 的 warm/file-content 配对可行，但不等于
+  production runner schema 已接入。
 
 ## 可重复校验
 

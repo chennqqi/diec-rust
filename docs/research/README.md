@@ -190,6 +190,10 @@ Phase 0 计划形成：
   静态 controller 对相同 case 的完整 warm、逐文件
   `POSIX_FADV_DONTNEED`、前后 `mincore` 与双次 per-path residency
   复验，同时保留 metadata/overlayfs/cold 边界（In Review）。
+- [`upstream-benchmark-file-content-performance.md`](upstream-benchmark-file-content-performance.md)：
+  同一静态 controller 对 warm/file-content 两状态的五 case × 十组 ABBA
+  成对 latency/direct-child peak-RSS 测量、逐 run 页状态证据与明确的
+  system-cold/Rust/阈值边界（In Review）。
 - [`upstream-benchmark-cache-environment.md`](upstream-benchmark-cache-environment.md)：
   固定容器 overlayfs、namespace、capability、只读 `/proc/sys` 与
   `drop_caches=EROFS` 的双次只读观察，以及三层 cache-state taxonomy 的环境

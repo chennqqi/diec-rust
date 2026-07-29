@@ -497,6 +497,12 @@ baseline 的变更都要检查本表。
   `warm`、`file-content-nonresident-metadata-warm` 与 dedicated
   `system-cold`，见
   [`upstream-benchmark-cache-environment.md`](../research/upstream-benchmark-cache-environment.md)。
+  独立 measurement spike 已进一步使用同一静态 controller、clock 和 `wait4`
+  direct-child RSS 对五 case 各采集 10 组 ABBA 配对，共 100 个 measured
+  child；所有 warm/file-content 页状态及输出 invariant 成立，但它只有一个
+  WSL2 session、没有 Rust、没有 system-cold，也没有 production runner schema
+  接入或阈值，见
+  [`upstream-benchmark-file-content-performance.md`](../research/upstream-benchmark-file-content-performance.md)。
   同一固定 ELF 的 16 个 realpath 去重动态依赖、2,268 个规则资产及两种部署
   size 口径也已绑定，见
   [`upstream-deployment-size.md`](../research/upstream-deployment-size.md)。

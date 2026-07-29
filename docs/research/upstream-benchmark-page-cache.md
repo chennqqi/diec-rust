@@ -138,6 +138,13 @@ ADR 0015 提议采用选项 1 的精确名称
 `file-content-nonresident-metadata-warm`，并把完整层命名为只允许 dedicated
 environment 的 `system-cold`。该决策仍待评审。
 
+再后续的
+[`upstream-benchmark-file-content-performance.md`](upstream-benchmark-file-content-performance.md)
+已让同一静态 measurement controller 在每个 measured run 前验证 warm 或
+file-content 页状态，并完成五 case × 10 组 ABBA latency/direct-child RSS
+配对。它是独立技术 spike，仍未升级通用 runner schema，也没有改变本报告的
+system-cold 边界。
+
 ## 复现
 
 ```powershell

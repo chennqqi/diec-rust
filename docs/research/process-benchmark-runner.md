@@ -4,7 +4,7 @@ Status: Draft
 
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
 
-Last updated: 2026-07-28
+Last updated: 2026-07-29
 
 ## 1. 目的与结论
 
@@ -23,6 +23,11 @@ affinity suite 的三次独立 invocation 汇总见
 后续静态 controller 已对该 candidate 执行 fadvise 并以双次 `mincore` 证明命令
 前所有候选页 nonresident，见
 [`upstream-benchmark-page-cache.md`](upstream-benchmark-page-cache.md)。
+独立 measurement spike 又用同一个静态 controller、clock 与 `wait4` RSS
+口径完成五个 case × 10 组 ABBA warm/file-content 配对，见
+[`upstream-benchmark-file-content-performance.md`](upstream-benchmark-file-content-performance.md)。
+该 spike 每个 measured run 都携带 before-run page evidence，但尚未接入本
+runner 的通用 plan schema，不能称为 runner v2 或 production integration。
 目录/metadata、failed lookup 和 overlayfs/host isolation 仍未控制。
 [`upstream-benchmark-cache-environment.md`](upstream-benchmark-cache-environment.md)
 进一步证明当前容器不能独立执行 system-global cache drop；ADR 0015 因而定义
