@@ -46,7 +46,7 @@ JSON continuity、CSV 优先级及四个带空格 filetype 的 invalid XML。
 保持 `platform_missing`，直到完整差分语料在该平台执行并归档。
 逐行
 [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)
-已把当前证据审计为 47 complete、12 partial、9 missing；21 个开放行均有
+已把当前证据审计为 52 complete、8 partial、8 missing；16 个开放行均有
 命名验收实验。
 
 机器证据见
@@ -405,6 +405,22 @@ Unknown→Unix、profiling-without-messages 和 messages stdout channel 均固�
 `image_ICNS.sg` 从 Linux index 248 移到末尾 index 291，造成 44 个位置差异。
 报告保留该差异为 compatibility defect，不重排或删除 profiling lines。详见
 [`windows-cli-option-behavior.md`](windows-cli-option-behavior.md)。
+
+## Windows Qt5 规则编排矩阵
+
+[`collect_windows_rule_orchestration.py`](../../tools/upstream/collect_windows_rule_orchestration.py)
+使用固定发布 CLI 和项目生成的 35-byte Binary/规则 fixture，执行 default、
+deep、heuristic、combined、五个 priority 边界以及 empty-database 共十个
+case，各运行两轮，共 20 次原生进程执行。
+
+机器报告 SHA-256 为
+`e6c7d47b35f89abdb10719e8578a550dcf5c9caf882a5d7825d3e0dbde3cf9da`。
+20/20 exit `0`、stderr 为空；十个 case 的 raw stdout 与 canonical 语义均
+双轮稳定。main/extra/custom append、global/type init、同名 include、
+priority/lexical/missing/empty/type-init order、wrong-file-type 排除和
+deep/entry-point/heuristic gate 共 14 条关系全部成立。Windows canonical
+case 与 Linux Qt5 qmake/CMake reference 逐字段相同。详见
+[`windows-rule-orchestration.md`](windows-rule-orchestration.md)。
 
 ## Windows CLI Unicode/特殊路径矩阵
 

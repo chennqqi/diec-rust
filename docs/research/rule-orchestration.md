@@ -35,6 +35,10 @@ fixture 清单为
 保留每个 mode/oracle 的原始 stdout/stderr 长度与 SHA-256、规范化执行顺序和完整
 detection 字段；原始流保存在 `--raw-dir` 指定的非版本化目录。
 
+固定 Windows Qt5 的相同十个 case 已完成，见
+[`windows-rule-orchestration.md`](windows-rule-orchestration.md)。Windows
+canonical case、14 条关系及 `_init` 实际顺序均与 Linux Qt5 完全相同。
+
 ## 固定身份
 
 | Oracle | Image ID | Binary |
@@ -193,8 +197,9 @@ image revision、执行顺序、detection 集合、init 值、Unknown 以及双 
   `PDSTRUCT` 已由 [`engine-contract-behavior.md`](engine-contract-behavior.md)
   覆盖；`sSignatureFilePath` 经源码审计确认公共扫描 API 不可达；
 - scan 运行期间由其他线程设置 `PDSTRUCT` 的精确时序仍未覆盖；
-- 非 Binary file type、Windows 和 macOS 的排序/层行为；固定 Linux Qt6
+- 非 Binary file type 和 macOS 的排序/层行为；固定 Windows Qt5 与 Linux Qt6
   对照已完成，见
+  [`windows-rule-orchestration.md`](windows-rule-orchestration.md) 和
   [`qt6-rule-orchestration-runtime-evidence.md`](qt6-rule-orchestration-runtime-evidence.md)；
 - include 重复、循环及异常传播。
 

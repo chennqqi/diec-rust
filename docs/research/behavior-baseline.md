@@ -97,11 +97,16 @@ Windows CLI option/profiling 再增加 20 次进程执行：九个 option/test c
 且未被规范化。十四份 Windows runtime 报告累计 2,092 次进程执行，详见
 [`windows-cli-option-behavior.md`](windows-cli-option-behavior.md)。
 
-上述 14 份报告现由
+Windows rule-orchestration 再增加 20 次进程执行：十个 case 双轮 raw 与
+canonical 语义稳定，14/14 关系及完整 canonical case 均与 Linux Qt5 相同。
+十五份 Windows runtime 报告累计 2,112 次进程执行，详见
+[`windows-rule-orchestration.md`](windows-rule-orchestration.md)。
+
+上述 15 份报告现由
 [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)
-逐行投影到 68 个稳定能力 ID：47 complete、12 partial、9 missing。该审计
+逐行投影到 68 个稳定能力 ID：52 complete、8 partial、8 missing。该审计
 阻止局部 runtime 结果被误当作完整 Windows baseline，并把下一优先批次固定为
-rule orchestration/private filter 的 4 个 partial 和 2 个 missing 行。
+private signature-path filter 以及 6 个 result-model partial 行。
 
 同一剩余 21 样本 × 19-case special 矩阵又在固定 Linux Qt5/Qt6 image 上
 各执行一次，共 798 次容器执行。399/399 raw observations 逐字节相同；231 个

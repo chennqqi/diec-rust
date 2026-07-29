@@ -42,7 +42,8 @@ Windows 特殊路径矩阵和
 21-sample × 7-case 普通输出和 21-sample × 19-case special 扩展。十一批共
 2,068 次 CLI 执行均稳定；另有一批 19-case engine cache/DACL harness
 连续运行两轮；加入 37-case engine-contract 和 10-case CLI option/profiling
-双轮后，十四批共 2,092 次 Windows 进程执行；默认 detection
+双轮后，再加入十个 rule-orchestration case 双轮，十五批共 2,112 次
+Windows 进程执行；默认 detection
 projection 与 Linux Qt5 26/26 相同，
 251 个直接重叠矩阵 case 的退出码也全部相同，path 相对输出顺序、nested
 detection tree、database load-error/JSON framing 与 ZIP database 没有差异；
@@ -65,6 +66,8 @@ CLI option 双轮又固定 verbose/test/create-test/messages 关系及 292-rule
 profiling order；Windows 将 `image_ICNS.sg` 从 Linux index 248 移到末尾，
 该差异被保留为缺陷，见
 [`windows-cli-option-behavior.md`](windows-cli-option-behavior.md)。
+规则编排的 10/10 canonical case 和 14/14 关系又与 Linux Qt5 完全相同，
+见 [`windows-rule-orchestration.md`](windows-rule-orchestration.md)。
 由于 UNC、
 精确 namespace 上限、symlink/reparse cycle、domain/group DACL、network
 share/EFS/integrity level、其他 engine-only 能力以及跨平台扩展
@@ -73,10 +76,10 @@ baseline，68 行继续保守标记为 `platform_missing`。
 
 独立的 hash-bound
 [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)
-现已把这 68 行逐项审计为 47 `evidence_complete`、12 partial、9 missing，
+现已把这 68 行逐项审计为 52 `evidence_complete`、8 partial、8 missing，
 机器报告 SHA-256 为
-`9cb134d437701ad507e6421d10c03a397ab0d9f9d1358d7edd41a0b7a0a84066`。
-该报告绑定上述 14 份 Windows runtime 证据并为 21 个开放行给出验收实验；
+`2680cd873f1d8930fe0b615471c06071a073e2de7a9759090f984c4dd0502173`。
+该报告绑定上述 15 份 Windows runtime 证据并为 16 个开放行给出验收实验；
 在 68 行全部 complete 前，coverage 生成器不消费它来提升平台状态。
 
 另有 798 次 Linux Qt5/Qt6 special 扩展执行把剩余 21 样本的 399 对 raw
@@ -124,7 +127,7 @@ raw 完全相同，7 个 PE64 case 只保留已知 Qt6 stderr；21 个 JSON tree
 - Linux Qt5 source-only 能力已清零；
 - Linux Qt5 已命名 corpus gap 已清零；
 - Linux Qt6 的 68 行已全部接纳为 runtime observed；
-- Windows 的独立 closure 审计为 47 complete/12 partial/9 missing，但尚未
+- Windows 的独立 closure 审计为 52 complete/8 partial/8 missing，但尚未
   接纳，因此 coverage 仍显示 68 个 `platform_missing`；
 - macOS 有 68 个 `platform_missing`，且尚无固定 oracle；
 - `phase_0_coverage_complete` 必须保持 `false`。
@@ -262,9 +265,10 @@ plain `bool` 数据竞争而明确排除在可移植 compatibility golden 之外
 分支及其 null-adapter error 均有固定机器证据。
 
 原 `CAP-GAP-010` 已由
-[`rule-orchestration.md`](rule-orchestration.md)
+[`rule-orchestration.md`](rule-orchestration.md) 和
+[`windows-rule-orchestration.md`](windows-rule-orchestration.md)
 闭合：同 priority、字符串 priority、缺失/空 priority 段、跨层 append 与
-`_init` 比较环均有固定双 Qt5 oracle 证据。
+`_init` 比较环均有固定 Linux/Windows Qt5 oracle 证据。
 
 原 `CAP-GAP-009` 已由
 [`engine-contract-behavior.md`](engine-contract-behavior.md)

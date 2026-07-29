@@ -20,9 +20,9 @@ Last updated: 2026-07-29
 
 - 固定上游、规则和 68 行 traceability；
 - [`windows-qt5-build-baseline.json`](data/windows-qt5-build-baseline.json)；
-- 14 份 Windows runtime 报告的完整 SHA-256；
+- 15 份 Windows runtime 报告的完整 SHA-256；
 - 每份报告的 source/platform 身份和命名 summary facts；
-- 2,092 次 Windows 进程执行，其中新增 CLI option/profiling 十个 case
+- 2,112 次 Windows 进程执行，其中新增 rule-orchestration 十个 case
   各运行两轮。
 
 报告只接受三种状态：
@@ -40,18 +40,18 @@ Last updated: 2026-07-29
 
 | 分类 | 行数 |
 | --- | ---: |
-| Evidence complete | 47 |
-| Partial | 12 |
-| Missing | 9 |
+| Evidence complete | 52 |
+| Partial | 8 |
+| Missing | 8 |
 | Total | 68 |
 
-所有行均恰好分类一次，但仍有 21 行需要 closure，因此
+所有行均恰好分类一次，但仍有 16 行需要 closure，因此
 `windows_baseline_admitted=false`。现有
 [`capability-coverage.json`](data/capability-coverage.json) 继续把 Windows
 68 行标记为 `platform_missing` 是正确的保守行为；本计划提供逐行升级路径，
 不直接改变平台接纳状态。
 
-47 个已闭合行主要来自：
+52 个已闭合行主要来自：
 
 - 26 样本的 single-target、scan option、output、entropy/info/struct；
 - help/version/show-structs；
@@ -64,19 +64,17 @@ Last updated: 2026-07-29
   filter、record sort 和 cancellation。
 - verbose、profiling/messages channel、test/create-test no-op 及完整
   292-rule Windows profiling order。
+- main/extra/custom 层顺序、global/type init、priority 边界、四模式
+  deep/entry-point/heuristic gate 和 wrong-file-type 排除。
 
 这些行仍受各自报告中已经写明的全局平台限制约束，但没有把其他能力行的缺口
 反向扩散到本行。
 
-## 3. Partial：12 行
+## 3. Partial：8 行
 
 | ID | 已观察范围 | 仍缺 |
 | --- | --- | --- |
 | `CAP-CLI-IN-003` | Unicode/特殊名、Junction alias/chain、ADS、324/325-code-unit path | UNC、reparse cycle、4096-entry ordering、TOCTOU、domain/network ACL |
-| `CAP-RULE-001` | main/extra/custom CLI path 与 missing-layer | engine 三层 append 和 same-name records |
-| `CAP-RULE-002` | formatter precedence 与公共 detection order | priority/lexical/missing/empty/type-init rule order |
-| `CAP-RULE-004` | 26 格式公共 dispatch | wrong-file-type custom rules × 四 scan modes |
-| `CAP-RULE-005` | 26 样本 deep/heuristic CLI | deep/entry-point/heuristic 独立 rule gates |
 | `CAP-DISPATCH-004` | APK/IPA/JAR/ZIP/RAR/ISO/TAR/GZip | NPM auto/forced 与 Archive property-only |
 | `CAP-RESULT-001` | CLI filetype/offset/size/parent/string | engine scalar fields 与 scan-time treatment |
 | `CAP-RESULT-002` | CLI records 与 database error framing | record/error/debug/handler lists |
@@ -88,18 +86,15 @@ Last updated: 2026-07-29
 Partial 行不能计入 Windows runtime baseline。机器报告为每行保存
 `observed_scope`、`missing_scope`、`proposed_experiment` 和 evidence paths。
 
-## 4. Missing：9 行
+## 4. Missing：8 行
 
-### 4.1 Rule orchestration/private filter：2 行
+### 4.1 Private signature-path filter：1 行
 
-- `CAP-RULE-003`
 - `CAP-RULE-007`
 
-需要固定 global/type init/include precedence 与 private signature-path filter
-harness。
-与本组相关的 partial 行 `CAP-RULE-001`、`CAP-RULE-002`、
-`CAP-RULE-004`、`CAP-RULE-005` 应在同一 Windows rule-orchestration
-批次中闭合，避免重复构建。
+global/type init/include precedence、层顺序、priority 以及 mode/type gate
+已由 Windows rule-orchestration 报告闭合。剩余 private signature-path
+filter 必须运行直接 engine harness；公共 CLI 无法提供等价正例。
 
 ### 4.2 Legacy dispatch：2 行
 
@@ -126,8 +121,8 @@ expansion limit。它们不能由 release CLI aggressive/recursive case 替代�
 
 按“每次固定构建关闭最多能力行”的原则：
 
-1. Windows rule-orchestration + signature-path：处理 4 个 partial、2 个
-   missing，并复用已闭合 engine-contract 的 ordering 结果；
+1. Windows signature-path：处理 1 个 missing，并复用已闭合
+   engine-contract 的 filter 结果；
 2. Windows result-model harness：处理 6 个 partial；
 3. Windows legacy/archive dispatch：处理 2 个 missing、1 个 partial；
 4. Windows nested engine harnesses：处理 5 个 missing；

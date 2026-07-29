@@ -1,0 +1,1022 @@
+{
+  "binary": {
+    "filename": "diec.exe",
+    "sha256": "e8579a6ed0d2536ea14af154bcbeeaaea6967c0c7559a595fb3fe52206ac635e",
+    "size": 3236352
+  },
+  "canonical_cases": {
+    "combined": {
+      "detections": [
+        {
+          "info": "",
+          "name": "Main deep",
+          "type": "format",
+          "version": "main-global:main-helper:main-type"
+        },
+        {
+          "info": "",
+          "name": "Main heuristic",
+          "type": "format",
+          "version": "main-global:main-helper:main-type"
+        },
+        {
+          "info": "",
+          "name": "Main entrypoint",
+          "type": "format",
+          "version": "main-global:main-helper:main-type"
+        },
+        {
+          "info": "",
+          "name": "Main normal",
+          "type": "format",
+          "version": "main-global:main-helper:main-type"
+        },
+        {
+          "info": "",
+          "name": "Extra normal",
+          "type": "format",
+          "version": "main-global:main-helper:main-type"
+        },
+        {
+          "info": "",
+          "name": "Custom normal",
+          "type": "format",
+          "version": "main-global:main-helper:main-type"
+        }
+      ],
+      "execution_order": [
+        "DS.deep.2.sg",
+        "HEUR.heuristic.3.sg",
+        "EP.entrypoint.4.sg",
+        "z_normal.1.sg",
+        "a_extra.0.sg",
+        "a_custom.0.sg"
+      ]
+    },
+    "deep": {
+      "detections": [
+        {
+          "info": "",
+          "name": "Main deep",
+          "type": "format",
+          "version": "main-global:main-helper:main-type"
+        },
+        {
+          "info": "",
+          "name": "Main entrypoint",
+          "type": "format",
+          "version": "main-global:main-helper:main-type"
+        },
+        {
+          "info": "",
+          "name": "Main normal",
+          "type": "format",
+          "version": "main-global:main-helper:main-type"
+        },
+        {
+          "info": "",
+          "name": "Extra normal",
+          "type": "format",
+          "version": "main-global:main-helper:main-type"
+        },
+        {
+          "info": "",
+          "name": "Custom normal",
+          "type": "format",
+          "version": "main-global:main-helper:main-type"
+        }
+      ],
+      "execution_order": [
+        "DS.deep.2.sg",
+        "EP.entrypoint.4.sg",
+        "z_normal.1.sg",
+        "a_extra.0.sg",
+        "a_custom.0.sg"
+      ]
+    },
+    "default": {
+      "detections": [
+        {
+          "info": "",
+          "name": "Main normal",
+          "type": "format",
+          "version": "main-global:main-helper:main-type"
+        },
+        {
+          "info": "",
+          "name": "Extra normal",
+          "type": "format",
+          "version": "main-global:main-helper:main-type"
+        },
+        {
+          "info": "",
+          "name": "Custom normal",
+          "type": "format",
+          "version": "main-global:main-helper:main-type"
+        }
+      ],
+      "execution_order": [
+        "z_normal.1.sg",
+        "a_extra.0.sg",
+        "a_custom.0.sg"
+      ]
+    },
+    "empty_priority": {
+      "detections": [
+        {
+          "info": "",
+          "name": "Empty segment",
+          "type": "format",
+          "version": "ordering-edge"
+        },
+        {
+          "info": "",
+          "name": "Empty ranked",
+          "type": "format",
+          "version": "ordering-edge"
+        }
+      ],
+      "execution_order": [
+        "a_empty..sg",
+        "z_empty_ranked.1.sg"
+      ]
+    },
+    "equal_priority": {
+      "detections": [
+        {
+          "info": "",
+          "name": "Equal a",
+          "type": "format",
+          "version": "ordering-edge"
+        },
+        {
+          "info": "",
+          "name": "Equal m",
+          "type": "format",
+          "version": "ordering-edge"
+        },
+        {
+          "info": "",
+          "name": "Equal z",
+          "type": "format",
+          "version": "ordering-edge"
+        }
+      ],
+      "execution_order": [
+        "a_equal.2.sg",
+        "m_equal.2.sg",
+        "z_equal.2.sg"
+      ]
+    },
+    "heuristic": {
+      "detections": [
+        {
+          "info": "",
+          "name": "Main heuristic",
+          "type": "format",
+          "version": "main-global:main-helper:main-type"
+        },
+        {
+          "info": "",
+          "name": "Main normal",
+          "type": "format",
+          "version": "main-global:main-helper:main-type"
+        },
+        {
+          "info": "",
+          "name": "Extra normal",
+          "type": "format",
+          "version": "main-global:main-helper:main-type"
+        },
+        {
+          "info": "",
+          "name": "Custom normal",
+          "type": "format",
+          "version": "main-global:main-helper:main-type"
+        }
+      ],
+      "execution_order": [
+        "HEUR.heuristic.3.sg",
+        "z_normal.1.sg",
+        "a_extra.0.sg",
+        "a_custom.0.sg"
+      ]
+    },
+    "lexical_priority": {
+      "detections": [
+        {
+          "info": "",
+          "name": "Lexical ten",
+          "type": "format",
+          "version": "ordering-edge"
+        },
+        {
+          "info": "",
+          "name": "Lexical two",
+          "type": "format",
+          "version": "ordering-edge"
+        }
+      ],
+      "execution_order": [
+        "z_ten.10.sg",
+        "a_two.2.sg"
+      ]
+    },
+    "missing_priority": {
+      "detections": [
+        {
+          "info": "",
+          "name": "Missing plain",
+          "type": "format",
+          "version": "ordering-edge"
+        },
+        {
+          "info": "",
+          "name": "Missing ranked",
+          "type": "format",
+          "version": "ordering-edge"
+        }
+      ],
+      "execution_order": [
+        "a_plain.sg",
+        "z_ranked.1.sg"
+      ]
+    },
+    "priority_only": {
+      "detections": [
+        {
+          "info": "",
+          "name": "Priority one",
+          "type": "format",
+          "version": "priority-only"
+        },
+        {
+          "info": "",
+          "name": "Priority two",
+          "type": "format",
+          "version": "priority-only"
+        },
+        {
+          "info": "",
+          "name": "Priority four",
+          "type": "format",
+          "version": "priority-only"
+        }
+      ],
+      "execution_order": [
+        "z_priority.1.sg",
+        "a_priority.2.sg",
+        "m_priority.4.sg"
+      ]
+    },
+    "unknown": {
+      "detections": [
+        {
+          "info": "",
+          "name": "Unknown",
+          "type": "Unknown",
+          "version": ""
+        }
+      ],
+      "execution_order": []
+    }
+  },
+  "case_count": 10,
+  "cases": {
+    "combined": {
+      "arguments": [
+        "--profiling",
+        "--messages",
+        "--json",
+        "--deepscan",
+        "--heuristicscan",
+        "--database",
+        "/fixture/main",
+        "--extradatabase",
+        "/fixture/extra",
+        "--customdatabase",
+        "/fixture/custom",
+        "/fixture/input/probe.bin"
+      ],
+      "canonical": {
+        "detections": [
+          {
+            "info": "",
+            "name": "Main deep",
+            "type": "format",
+            "version": "main-global:main-helper:main-type"
+          },
+          {
+            "info": "",
+            "name": "Main heuristic",
+            "type": "format",
+            "version": "main-global:main-helper:main-type"
+          },
+          {
+            "info": "",
+            "name": "Main entrypoint",
+            "type": "format",
+            "version": "main-global:main-helper:main-type"
+          },
+          {
+            "info": "",
+            "name": "Main normal",
+            "type": "format",
+            "version": "main-global:main-helper:main-type"
+          },
+          {
+            "info": "",
+            "name": "Extra normal",
+            "type": "format",
+            "version": "main-global:main-helper:main-type"
+          },
+          {
+            "info": "",
+            "name": "Custom normal",
+            "type": "format",
+            "version": "main-global:main-helper:main-type"
+          }
+        ],
+        "execution_order": [
+          "DS.deep.2.sg",
+          "HEUR.heuristic.3.sg",
+          "EP.entrypoint.4.sg",
+          "z_normal.1.sg",
+          "a_extra.0.sg",
+          "a_custom.0.sg"
+        ]
+      },
+      "raw_stderr_equal": true,
+      "raw_stdout_equal": true,
+      "runs": [
+        {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 2386,
+          "stdout_sha256": "68d116ff467bb30b25d4abe835821685749abd98458df36595902cca10b026e4"
+        },
+        {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 2386,
+          "stdout_sha256": "68d116ff467bb30b25d4abe835821685749abd98458df36595902cca10b026e4"
+        }
+      ],
+      "semantic_runs_equal": true
+    },
+    "deep": {
+      "arguments": [
+        "--profiling",
+        "--messages",
+        "--json",
+        "--deepscan",
+        "--database",
+        "/fixture/main",
+        "--extradatabase",
+        "/fixture/extra",
+        "--customdatabase",
+        "/fixture/custom",
+        "/fixture/input/probe.bin"
+      ],
+      "canonical": {
+        "detections": [
+          {
+            "info": "",
+            "name": "Main deep",
+            "type": "format",
+            "version": "main-global:main-helper:main-type"
+          },
+          {
+            "info": "",
+            "name": "Main entrypoint",
+            "type": "format",
+            "version": "main-global:main-helper:main-type"
+          },
+          {
+            "info": "",
+            "name": "Main normal",
+            "type": "format",
+            "version": "main-global:main-helper:main-type"
+          },
+          {
+            "info": "",
+            "name": "Extra normal",
+            "type": "format",
+            "version": "main-global:main-helper:main-type"
+          },
+          {
+            "info": "",
+            "name": "Custom normal",
+            "type": "format",
+            "version": "main-global:main-helper:main-type"
+          }
+        ],
+        "execution_order": [
+          "DS.deep.2.sg",
+          "EP.entrypoint.4.sg",
+          "z_normal.1.sg",
+          "a_extra.0.sg",
+          "a_custom.0.sg"
+        ]
+      },
+      "raw_stderr_equal": true,
+      "raw_stdout_equal": true,
+      "runs": [
+        {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 2018,
+          "stdout_sha256": "74e6fe6787d4cc2be428b87b908b6e3287cad422abefc6a48664ae5ecd33b954"
+        },
+        {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 2018,
+          "stdout_sha256": "74e6fe6787d4cc2be428b87b908b6e3287cad422abefc6a48664ae5ecd33b954"
+        }
+      ],
+      "semantic_runs_equal": true
+    },
+    "default": {
+      "arguments": [
+        "--profiling",
+        "--messages",
+        "--json",
+        "--database",
+        "/fixture/main",
+        "--extradatabase",
+        "/fixture/extra",
+        "--customdatabase",
+        "/fixture/custom",
+        "/fixture/input/probe.bin"
+      ],
+      "canonical": {
+        "detections": [
+          {
+            "info": "",
+            "name": "Main normal",
+            "type": "format",
+            "version": "main-global:main-helper:main-type"
+          },
+          {
+            "info": "",
+            "name": "Extra normal",
+            "type": "format",
+            "version": "main-global:main-helper:main-type"
+          },
+          {
+            "info": "",
+            "name": "Custom normal",
+            "type": "format",
+            "version": "main-global:main-helper:main-type"
+          }
+        ],
+        "execution_order": [
+          "z_normal.1.sg",
+          "a_extra.0.sg",
+          "a_custom.0.sg"
+        ]
+      },
+      "raw_stderr_equal": true,
+      "raw_stdout_equal": true,
+      "runs": [
+        {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 1306,
+          "stdout_sha256": "1f543e76610c93982626974ef39d269ae540baec51fd2d37630f00c532718e28"
+        },
+        {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 1306,
+          "stdout_sha256": "1f543e76610c93982626974ef39d269ae540baec51fd2d37630f00c532718e28"
+        }
+      ],
+      "semantic_runs_equal": true
+    },
+    "empty_priority": {
+      "arguments": [
+        "--profiling",
+        "--messages",
+        "--json",
+        "--database",
+        "/fixture/empty-priority-main",
+        "--extradatabase",
+        "/fixture/empty-priority-extra",
+        "--customdatabase",
+        "/fixture/empty-priority-custom",
+        "/fixture/input/probe.bin"
+      ],
+      "canonical": {
+        "detections": [
+          {
+            "info": "",
+            "name": "Empty segment",
+            "type": "format",
+            "version": "ordering-edge"
+          },
+          {
+            "info": "",
+            "name": "Empty ranked",
+            "type": "format",
+            "version": "ordering-edge"
+          }
+        ],
+        "execution_order": [
+          "a_empty..sg",
+          "z_empty_ranked.1.sg"
+        ]
+      },
+      "raw_stderr_equal": true,
+      "raw_stdout_equal": true,
+      "runs": [
+        {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 886,
+          "stdout_sha256": "8741bf0c73f5da4594f9718617ee0fd8a9269be3a38713d1babb028e4f88e8c8"
+        },
+        {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 886,
+          "stdout_sha256": "8741bf0c73f5da4594f9718617ee0fd8a9269be3a38713d1babb028e4f88e8c8"
+        }
+      ],
+      "semantic_runs_equal": true
+    },
+    "equal_priority": {
+      "arguments": [
+        "--profiling",
+        "--messages",
+        "--json",
+        "--database",
+        "/fixture/equal-main",
+        "--extradatabase",
+        "/fixture/equal-extra",
+        "--customdatabase",
+        "/fixture/equal-custom",
+        "/fixture/input/probe.bin"
+      ],
+      "canonical": {
+        "detections": [
+          {
+            "info": "",
+            "name": "Equal a",
+            "type": "format",
+            "version": "ordering-edge"
+          },
+          {
+            "info": "",
+            "name": "Equal m",
+            "type": "format",
+            "version": "ordering-edge"
+          },
+          {
+            "info": "",
+            "name": "Equal z",
+            "type": "format",
+            "version": "ordering-edge"
+          }
+        ],
+        "execution_order": [
+          "a_equal.2.sg",
+          "m_equal.2.sg",
+          "z_equal.2.sg"
+        ]
+      },
+      "raw_stderr_equal": true,
+      "raw_stdout_equal": true,
+      "runs": [
+        {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 1152,
+          "stdout_sha256": "a72ffbebecc6985f1403df0578953e6f5e5c5ec218c6bdf4ce12490e90260b6f"
+        },
+        {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 1152,
+          "stdout_sha256": "a72ffbebecc6985f1403df0578953e6f5e5c5ec218c6bdf4ce12490e90260b6f"
+        }
+      ],
+      "semantic_runs_equal": true
+    },
+    "heuristic": {
+      "arguments": [
+        "--profiling",
+        "--messages",
+        "--json",
+        "--heuristicscan",
+        "--database",
+        "/fixture/main",
+        "--extradatabase",
+        "/fixture/extra",
+        "--customdatabase",
+        "/fixture/custom",
+        "/fixture/input/probe.bin"
+      ],
+      "canonical": {
+        "detections": [
+          {
+            "info": "",
+            "name": "Main heuristic",
+            "type": "format",
+            "version": "main-global:main-helper:main-type"
+          },
+          {
+            "info": "",
+            "name": "Main normal",
+            "type": "format",
+            "version": "main-global:main-helper:main-type"
+          },
+          {
+            "info": "",
+            "name": "Extra normal",
+            "type": "format",
+            "version": "main-global:main-helper:main-type"
+          },
+          {
+            "info": "",
+            "name": "Custom normal",
+            "type": "format",
+            "version": "main-global:main-helper:main-type"
+          }
+        ],
+        "execution_order": [
+          "HEUR.heuristic.3.sg",
+          "z_normal.1.sg",
+          "a_extra.0.sg",
+          "a_custom.0.sg"
+        ]
+      },
+      "raw_stderr_equal": true,
+      "raw_stdout_equal": true,
+      "runs": [
+        {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 1674,
+          "stdout_sha256": "275dbc2cffb0d7d7901ca9cc8cf4d79113693ef566741242e2692f827fc912c0"
+        },
+        {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 1674,
+          "stdout_sha256": "275dbc2cffb0d7d7901ca9cc8cf4d79113693ef566741242e2692f827fc912c0"
+        }
+      ],
+      "semantic_runs_equal": true
+    },
+    "lexical_priority": {
+      "arguments": [
+        "--profiling",
+        "--messages",
+        "--json",
+        "--database",
+        "/fixture/lexical-priority-main",
+        "--extradatabase",
+        "/fixture/lexical-priority-extra",
+        "--customdatabase",
+        "/fixture/lexical-priority-custom",
+        "/fixture/input/probe.bin"
+      ],
+      "canonical": {
+        "detections": [
+          {
+            "info": "",
+            "name": "Lexical ten",
+            "type": "format",
+            "version": "ordering-edge"
+          },
+          {
+            "info": "",
+            "name": "Lexical two",
+            "type": "format",
+            "version": "ordering-edge"
+          }
+        ],
+        "execution_order": [
+          "z_ten.10.sg",
+          "a_two.2.sg"
+        ]
+      },
+      "raw_stderr_equal": true,
+      "raw_stdout_equal": true,
+      "runs": [
+        {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 862,
+          "stdout_sha256": "670e9992250246b283c5bf64c65c7adf9541fddbc9daecdf260d6e21fc0581e0"
+        },
+        {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 862,
+          "stdout_sha256": "670e9992250246b283c5bf64c65c7adf9541fddbc9daecdf260d6e21fc0581e0"
+        }
+      ],
+      "semantic_runs_equal": true
+    },
+    "missing_priority": {
+      "arguments": [
+        "--profiling",
+        "--messages",
+        "--json",
+        "--database",
+        "/fixture/missing-priority-main",
+        "--extradatabase",
+        "/fixture/missing-priority-extra",
+        "--customdatabase",
+        "/fixture/missing-priority-custom",
+        "/fixture/input/probe.bin"
+      ],
+      "canonical": {
+        "detections": [
+          {
+            "info": "",
+            "name": "Missing plain",
+            "type": "format",
+            "version": "ordering-edge"
+          },
+          {
+            "info": "",
+            "name": "Missing ranked",
+            "type": "format",
+            "version": "ordering-edge"
+          }
+        ],
+        "execution_order": [
+          "a_plain.sg",
+          "z_ranked.1.sg"
+        ]
+      },
+      "raw_stderr_equal": true,
+      "raw_stdout_equal": true,
+      "runs": [
+        {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 876,
+          "stdout_sha256": "c6160c291cb5ec0460e46a28c045784d4ed52fb463f3d245c1daacdfee7cce33"
+        },
+        {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 876,
+          "stdout_sha256": "c6160c291cb5ec0460e46a28c045784d4ed52fb463f3d245c1daacdfee7cce33"
+        }
+      ],
+      "semantic_runs_equal": true
+    },
+    "priority_only": {
+      "arguments": [
+        "--profiling",
+        "--messages",
+        "--json",
+        "--database",
+        "/fixture/priority-main",
+        "--extradatabase",
+        "/fixture/priority-extra",
+        "--customdatabase",
+        "/fixture/priority-custom",
+        "/fixture/input/probe.bin"
+      ],
+      "canonical": {
+        "detections": [
+          {
+            "info": "",
+            "name": "Priority one",
+            "type": "format",
+            "version": "priority-only"
+          },
+          {
+            "info": "",
+            "name": "Priority two",
+            "type": "format",
+            "version": "priority-only"
+          },
+          {
+            "info": "",
+            "name": "Priority four",
+            "type": "format",
+            "version": "priority-only"
+          }
+        ],
+        "execution_order": [
+          "z_priority.1.sg",
+          "a_priority.2.sg",
+          "m_priority.4.sg"
+        ]
+      },
+      "raw_stderr_equal": true,
+      "raw_stdout_equal": true,
+      "runs": [
+        {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 1202,
+          "stdout_sha256": "17cd1ad755537c92c49ae53a207255ca42c2f313b928135763385565716c5ea7"
+        },
+        {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 1202,
+          "stdout_sha256": "17cd1ad755537c92c49ae53a207255ca42c2f313b928135763385565716c5ea7"
+        }
+      ],
+      "semantic_runs_equal": true
+    },
+    "unknown": {
+      "arguments": [
+        "--profiling",
+        "--messages",
+        "--json",
+        "--database",
+        "/fixture/empty-main",
+        "--extradatabase",
+        "/fixture/empty-extra",
+        "--customdatabase",
+        "/fixture/empty-custom",
+        "/fixture/input/probe.bin"
+      ],
+      "canonical": {
+        "detections": [
+          {
+            "info": "",
+            "name": "Unknown",
+            "type": "Unknown",
+            "version": ""
+          }
+        ],
+        "execution_order": []
+      },
+      "raw_stderr_equal": true,
+      "raw_stdout_equal": true,
+      "runs": [
+        {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 490,
+          "stdout_sha256": "f1a6307ec387fdbca9f7cd2a6e829e9a8dca1e6ad9d283c07eaa3c48aefaa3df"
+        },
+        {
+          "exit_code": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 490,
+          "stdout_sha256": "f1a6307ec387fdbca9f7cd2a6e829e9a8dca1e6ad9d283c07eaa3c48aefaa3df"
+        }
+      ],
+      "semantic_runs_equal": true
+    }
+  },
+  "determinism": {
+    "profiling_elapsed_is_nondeterministic": true,
+    "raw_stderr_equal_case_count": 10,
+    "raw_stdout_equal_case_count": 10,
+    "semantic_case_failures": []
+  },
+  "execution_count": 20,
+  "failures": [],
+  "fixture": {
+    "generator": "tools/corpus/generate_rule_orchestration_fixture.py",
+    "generator_sha256": "c14047a59d0068f464efe64e03be89651fee450d9a797e52679d8ebdf126e717",
+    "manifest": "docs/research/data/rule-orchestration-fixture.json",
+    "manifest_sha256": "535d96510e1a807a07af752ed60b0239bdbb91331ce51b1f89d2be043d07f23e"
+  },
+  "generator": "tools/upstream/collect_windows_rule_orchestration.py",
+  "generator_sha256": "277a6c24bf83d0ac33f08849a4345a5b8b831e7fa994952d725b47c86035a273",
+  "host": {
+    "architecture": "AMD64",
+    "os_build": "10.0.26100"
+  },
+  "limitations": [
+    "the fixture uses generated Binary rules and does not exercise every real database file type",
+    "the observed _init comparator order is fixed for this MSVC/Qt5 oracle and is not generalized to other toolchains",
+    "include cycles, duplicate include calls, and script exceptions remain outside this ten-case experiment"
+  ],
+  "linux_qt5_comparison": {
+    "canonical_cases_equal": true,
+    "case_differences": [],
+    "platform_difference_classification": "none_observed_in_semantic_projection",
+    "relationships_equal": true
+  },
+  "linux_qt5_reference": {
+    "path": "docs/research/data/rule-orchestration-linux-qt5.json",
+    "sha256": "6787b8a67ee9ee3692d38c668f392a85861d2f517b6827117b478d63df678a5e"
+  },
+  "normalization": {
+    "not_performed": [
+      "rule or detection removal/reordering",
+      "profiling elapsed-time rewriting",
+      "path, case, version, or field-value rewriting",
+      "raw stdout/stderr hash rewriting"
+    ],
+    "semantic_projection": [
+      "extract exact profiling rule basenames",
+      "extract type/name/version/info from every JSON detection value"
+    ]
+  },
+  "passed": true,
+  "platform": "windows-x86_64-qt5",
+  "qt": {
+    "qmake_sha256": "e873ad3a689a0628c3037a6440221dcd2e426395edf14ffa6379612dede26d36",
+    "qmake_spec": "win32-msvc",
+    "qt5core_sha256": "8d2ff4ce9096ddccc4f4cd62c2e41fc854cfd1b0d6e8d296645a7f5fd4ae565a",
+    "qt5script_sha256": "0b58e5e79df13110a8258f14d7b3658d1dd0c8dddc337a164b89d4ac12a0638f",
+    "version": "5.15.2"
+  },
+  "raw_artifacts": {
+    "files": [
+      "default-run-1.stdout",
+      "default-run-1.stderr",
+      "default-run-2.stdout",
+      "default-run-2.stderr",
+      "deep-run-1.stdout",
+      "deep-run-1.stderr",
+      "deep-run-2.stdout",
+      "deep-run-2.stderr",
+      "heuristic-run-1.stdout",
+      "heuristic-run-1.stderr",
+      "heuristic-run-2.stdout",
+      "heuristic-run-2.stderr",
+      "combined-run-1.stdout",
+      "combined-run-1.stderr",
+      "combined-run-2.stdout",
+      "combined-run-2.stderr",
+      "priority_only-run-1.stdout",
+      "priority_only-run-1.stderr",
+      "priority_only-run-2.stdout",
+      "priority_only-run-2.stderr",
+      "empty_priority-run-1.stdout",
+      "empty_priority-run-1.stderr",
+      "empty_priority-run-2.stdout",
+      "empty_priority-run-2.stderr",
+      "equal_priority-run-1.stdout",
+      "equal_priority-run-1.stderr",
+      "equal_priority-run-2.stdout",
+      "equal_priority-run-2.stderr",
+      "lexical_priority-run-1.stdout",
+      "lexical_priority-run-1.stderr",
+      "lexical_priority-run-2.stdout",
+      "lexical_priority-run-2.stderr",
+      "missing_priority-run-1.stdout",
+      "missing_priority-run-1.stderr",
+      "missing_priority-run-2.stdout",
+      "missing_priority-run-2.stderr",
+      "unknown-run-1.stdout",
+      "unknown-run-1.stderr",
+      "unknown-run-2.stdout",
+      "unknown-run-2.stderr"
+    ],
+    "storage": "untracked external directory selected by --raw-dir"
+  },
+  "relationships": {
+    "database_layers_are_appended_main_extra_custom": true,
+    "ds_and_ep_require_deep": true,
+    "empty_database_adds_unknown": true,
+    "empty_priority_disables_pairwise_priority": true,
+    "equal_priority_falls_back_to_name": true,
+    "heur_requires_heuristic": true,
+    "main_global_init_wins": true,
+    "main_same_name_include_wins": true,
+    "main_type_init_wins": true,
+    "missing_priority_disables_pairwise_priority": true,
+    "priority_only_beats_lexical_name": true,
+    "priority_segments_are_lexicographic": true,
+    "type_init_list_order_is_not_pure_priority": true,
+    "wrong_file_type_rule_never_executes": true
+  },
+  "repetitions": 2,
+  "schema_version": 1,
+  "source": {
+    "commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "recursive_submodule_count": 58,
+    "repository": "https://github.com/horsicq/DIE-engine",
+    "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6"
+  },
+  "working_directory_role": "existing controlled process context; not a fixture input"
+}

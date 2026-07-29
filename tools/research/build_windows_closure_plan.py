@@ -29,6 +29,9 @@ REPORT_KEYS = {
     "docs/research/data/windows-qt5-cli-option-behavior.json": (
         "windows_cli_option_behavior"
     ),
+    "docs/research/data/rule-orchestration-windows-qt5.json": (
+        "windows_rule_orchestration"
+    ),
     "docs/research/data/windows-qt5-cli-path-nested.json": (
         "windows_cli_path_nested"
     ),
@@ -132,6 +135,11 @@ COMPLETE: dict[str, str] = {
     "CAP-RULE-010": "malformed and throwing database rules retain exact diagnostic visibility and JSON invalidity",
     "CAP-RULE-011": "all 292 Binary profiling announcements are present in a stable Windows order with image_ICNS.sg moved to the end versus Linux",
     "CAP-RULE-012": "callback, synchronized external stop, rule break, pre-stop, and fresh-state recovery match Linux Qt5",
+    "CAP-RULE-001": "three generated database layers retain main-extra-custom append order and main same-name records win",
+    "CAP-RULE-002": "priority, equal, lexical, missing, empty, and type-init ordering exactly match Linux Qt5",
+    "CAP-RULE-003": "main global init, type init, and same-name include precedence exactly match Linux Qt5",
+    "CAP-RULE-004": "the wrong-file-type decoy is excluded in all four scan modes exactly as on Linux Qt5",
+    "CAP-RULE-005": "deep, entry-point, and heuristic gates are independently fixed across all four scan modes",
     "CAP-DISPATCH-001": "PE32/64, ELF32/64, and Mach-O 32/64/FAT projections are fixed",
     "CAP-DISPATCH-005": "DEX, Java Class, and PYC projections are fixed",
     "CAP-DISPATCH-006": "PDF and CFBF projections are fixed",
@@ -149,26 +157,6 @@ PARTIAL: dict[str, tuple[str, str, str]] = {
         "special names, Junction aliases/chains, ADS, and 324/325-code-unit paths are fixed",
         "UNC, reparse cycles, 4096-entry ordering, TOCTOU, and domain/network ACL profiles",
         "run a Windows path closure harness covering the named filesystem profiles with raw order and resource retention",
-    ),
-    "CAP-RULE-001": (
-        "CLI main/extra/custom path acceptance and missing-layer behavior are fixed",
-        "engine append order and same-name records across all three database layers",
-        "port the database-layer engine harness to the fixed Windows object set",
-    ),
-    "CAP-RULE-002": (
-        "formatter precedence and stable public detection order are fixed",
-        "priority, lexical, missing, empty, and type-init rule ordering",
-        "port the rule-orchestration ordering harness to Windows",
-    ),
-    "CAP-RULE-004": (
-        "26 public format projections establish ordinary type dispatch",
-        "wrong-file-type custom rules under all four scan modes",
-        "run the fixed scan-option boundary fixture through a Windows engine harness",
-    ),
-    "CAP-RULE-005": (
-        "deep and heuristic public CLI options execute across 26 samples",
-        "independent deep, entry-point, and heuristic custom-rule gates",
-        "run the fixed scan-option boundary fixture through a Windows engine harness",
     ),
     "CAP-DISPATCH-004": (
         "APK, IPA, JAR, ZIP, RAR, ISO9660, TAR, and GZip public projections are fixed",
@@ -209,10 +197,6 @@ PARTIAL: dict[str, tuple[str, str, str]] = {
 
 
 MISSING: dict[str, tuple[str, str]] = {
-    "CAP-RULE-003": (
-        "global init, type init, and same-name include precedence",
-        "port the rule-orchestration engine harness to Windows",
-    ),
     "CAP-RULE-007": (
         "private signature-path filter boundaries",
         "port the signature-path engine harness to Windows",
@@ -285,6 +269,7 @@ EVIDENCE_PATHS = {
     "rule_orchestration": (
         "docs/research/data/windows-qt5-cli-matrix.json",
         "docs/research/data/windows-qt5-cli-database.json",
+        "docs/research/data/rule-orchestration-windows-qt5.json",
     ),
     "dispatch_source": (
         "docs/research/data/baseline-corpus-windows-qt5.json",
@@ -661,6 +646,49 @@ def validate_inputs(
     ):
         raise ClosurePlanError("Windows engine-contract facts drift")
 
+    orchestration = reports[
+        "docs/research/data/rule-orchestration-windows-qt5.json"
+    ]
+    if (
+        orchestration.get("passed") is not True
+        or orchestration.get("failures") != []
+        or orchestration.get("repetitions") != 2
+        or orchestration.get("case_count") != 10
+        or orchestration.get("execution_count") != 20
+        or set(orchestration.get("canonical_cases", {}))
+        != {
+            "default",
+            "deep",
+            "heuristic",
+            "combined",
+            "priority_only",
+            "equal_priority",
+            "lexical_priority",
+            "missing_priority",
+            "empty_priority",
+            "unknown",
+        }
+        or not all(
+            case.get("semantic_runs_equal") is True
+            for case in orchestration.get("cases", {}).values()
+        )
+        or len(orchestration.get("relationships", {})) != 14
+        or not all(orchestration.get("relationships", {}).values())
+        or orchestration.get("linux_qt5_comparison", {}).get(
+            "case_differences"
+        )
+        != []
+        or orchestration.get("linux_qt5_comparison", {}).get(
+            "canonical_cases_equal"
+        )
+        is not True
+        or orchestration.get("linux_qt5_comparison", {}).get(
+            "relationships_equal"
+        )
+        is not True
+    ):
+        raise ClosurePlanError("Windows rule-orchestration facts drift")
+
     for evidence_set, paths in EVIDENCE_PATHS.items():
         for path in paths:
             if path not in reports:
@@ -772,7 +800,7 @@ def build_plan(root: Path) -> dict[str, Any]:
             "windows_baseline_admitted": (
                 not PARTIAL and not MISSING
             ),
-            "windows_process_execution_count": 2092,
+            "windows_process_execution_count": 2112,
             "windows_report_count": len(REPORT_KEYS),
         },
     }

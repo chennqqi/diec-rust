@@ -150,6 +150,17 @@
     "profiling_order_matches_linux_qt5": false,
     "profiling_order_difference_classified": true
   },
+  "windows_rule_orchestration": {
+    "path": "docs/research/data/rule-orchestration-windows-qt5.json",
+    "sha256": "e6c7d47b35f89abdb10719e8578a550dcf5c9caf882a5d7825d3e0dbde3cf9da",
+    "case_count": 10,
+    "repetitions": 2,
+    "execution_count": 20,
+    "semantic_determinism_failures": 0,
+    "raw_stdout_equal_case_count": 10,
+    "relationship_failures": 0,
+    "linux_qt5_case_differences": 0
+  },
   "windows_cli_path_nested": {
     "path": "docs/research/data/windows-qt5-cli-path-nested.json",
     "sha256": "e877e112deb244ab1cbf9edf221e94e155cda711a182f216478eeaf9da40e21b",
