@@ -118,8 +118,10 @@ Rust legacy-compatible engine 必须保留：
 - child 枚举顺序。
 
 这些数值是固定上游的可观察契约，不应按注释中的 20/2000 或直觉中的
-99999 静默“修正”。`CAP-NEST-009` 的 depth/cumulative expansion limit
-仍需独立 Windows 证据。
+99999 静默“修正”。后续
+[`windows-archive-limit-behavior.md`](windows-archive-limit-behavior.md)
+已用独立 Windows 证据关闭 `CAP-NEST-009` 的 depth/cumulative expansion
+与 cancellation 边界。
 
 ## 6. 复现
 

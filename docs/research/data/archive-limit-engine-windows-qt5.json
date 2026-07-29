@@ -1,0 +1,1454 @@
+{
+  "build_manifest": {
+    "identity": {
+      "artifact": {
+        "filename": "diec-archive-limits-harness.exe",
+        "sha256": "7ff116ba367b2c40218c463f658f38b3212d3507837cbed07b8f7f4b98d25392",
+        "size": 3090432
+      },
+      "baseline": {
+        "cli_sha256": "e8579a6ed0d2536ea14af154bcbeeaaea6967c0c7559a595fb3fe52206ac635e",
+        "commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+        "recursive_submodule_count": 58,
+        "repository": "https://github.com/horsicq/DIE-engine",
+        "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6"
+      },
+      "build": {
+        "database_root": "<working-directory>/Detect-It-Easy",
+        "elapsed_milliseconds": 12391,
+        "engine_objects_modified": false,
+        "host_architecture": "amd64",
+        "original_main_object_sha256": "ff736a313b4d8d53747a7b113fff5a310c31c4218555ffbf1570537af15dd6be",
+        "original_makefile_sha256": "e6f7710cd32be5050e10234f3282d2512b58d28170d5de14f96c30478ac03725",
+        "platform_adaptation": {
+          "engine_semantics_changed": false,
+          "kind": "harness-only-peak-rss",
+          "unix_api": "getrusage(RUSAGE_SELF)",
+          "windows_api": "GetProcessMemoryInfo"
+        },
+        "replaced_object": "release/main_console.obj",
+        "runtime_working_directory_contract": "verified-source-root",
+        "system": "patched-qmake-release-makefile",
+        "target_architecture": "amd64",
+        "tool": "nmake"
+      },
+      "qt": {
+        "qmake_sha256": "e873ad3a689a0628c3037a6440221dcd2e426395edf14ffa6379612dede26d36",
+        "qmake_spec": "win32-msvc",
+        "qt5core_sha256": "8d2ff4ce9096ddccc4f4cd62c2e41fc854cfd1b0d6e8d296645a7f5fd4ae565a",
+        "qt5script_sha256": "0b58e5e79df13110a8258f14d7b3658d1dd0c8dddc337a164b89d4ac12a0638f",
+        "version": "5.15.2"
+      },
+      "schema_version": 1,
+      "source_hashes": {
+        "builder": "3acb7c032624090df6b114772de042632325119244ebaddf5a7fef5a115943e0",
+        "harness": {
+          "adapted_sha256": "b33630b803679d3fe29244e85d996d120ce4b95e894b5e9110a8ac34bd10d24c",
+          "database_path_replacements": [
+            {
+              "count": 1,
+              "from": "/opt/die-source/Detect-It-Easy/db_custom",
+              "to": "Detect-It-Easy/db_custom"
+            },
+            {
+              "count": 1,
+              "from": "/opt/die-source/Detect-It-Easy/db_extra",
+              "to": "Detect-It-Easy/db_extra"
+            },
+            {
+              "count": 1,
+              "from": "/opt/die-source/Detect-It-Easy/db",
+              "to": "Detect-It-Easy/db"
+            }
+          ],
+          "original_sha256": "9bba1c21cf01b93a1ac80ab5cea4145330e1b2621d9f2b6e4275ab04723a68a4",
+          "path": "tools/upstream/archive_limits_harness_main.cpp"
+        }
+      }
+    },
+    "sha256": "116619941583ad3b37a5923f83510f2048290770c5656fbcf328b1aa2a408906"
+  },
+  "cancellation_case": {
+    "linux_qt5_semantic_projection": {
+      "cancel_after_callbacks": 1,
+      "cyclic_node_count": 0,
+      "debug_record_count": 0,
+      "deepest_pdf_depth": -1,
+      "error_count": 0,
+      "handler_count": 0,
+      "max_depth": 0,
+      "max_stream_depth": 0,
+      "node_count": 1,
+      "pd_stopped": true,
+      "pdf_node_count": 0,
+      "record_count": 1,
+      "stream_node_count": 0
+    },
+    "runs": [
+      {
+        "exit_code": 0,
+        "linux_qt5_semantic_equal": true,
+        "metrics": {
+          "callback_calls": 1,
+          "elapsed_ms": 1,
+          "peak_rss_after_kib": 21864,
+          "peak_rss_before_kib": 20280,
+          "scan_result_time_ms": 1
+        },
+        "raw_stderr": "cancel.depth-64.run-1.stderr",
+        "raw_stdout": "cancel.depth-64.run-1.stdout",
+        "semantic_projection": {
+          "cancel_after_callbacks": 1,
+          "cyclic_node_count": 0,
+          "debug_record_count": 0,
+          "deepest_pdf_depth": -1,
+          "error_count": 0,
+          "handler_count": 0,
+          "max_depth": 0,
+          "max_stream_depth": 0,
+          "node_count": 1,
+          "pd_stopped": true,
+          "pdf_node_count": 0,
+          "record_count": 1,
+          "stream_node_count": 0
+        },
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 371,
+        "stdout_sha256": "37d76f75056aada375c5dc066bc262070813032b28d8c7c2afead1b725c1ce9b"
+      },
+      {
+        "exit_code": 0,
+        "linux_qt5_semantic_equal": true,
+        "metrics": {
+          "callback_calls": 1,
+          "elapsed_ms": 1,
+          "peak_rss_after_kib": 21792,
+          "peak_rss_before_kib": 20204,
+          "scan_result_time_ms": 1
+        },
+        "raw_stderr": "cancel.depth-64.run-2.stderr",
+        "raw_stdout": "cancel.depth-64.run-2.stdout",
+        "semantic_projection": {
+          "cancel_after_callbacks": 1,
+          "cyclic_node_count": 0,
+          "debug_record_count": 0,
+          "deepest_pdf_depth": -1,
+          "error_count": 0,
+          "handler_count": 0,
+          "max_depth": 0,
+          "max_stream_depth": 0,
+          "node_count": 1,
+          "pd_stopped": true,
+          "pdf_node_count": 0,
+          "record_count": 1,
+          "stream_node_count": 0
+        },
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 371,
+        "stdout_sha256": "9efca7efed06966ccbce3b9b3159d3008c4cfb05b7b418629913cab3057942b2"
+      }
+    ],
+    "sample": "depth-64.zip",
+    "semantic_deterministic": true
+  },
+  "cancellation_case_count": 1,
+  "capability": "CAP-NEST-009",
+  "case_observation_count": 30,
+  "execution_count": 30,
+  "failures": [],
+  "fixture": {
+    "path": "docs/research/data/archive-limit-corpus.json",
+    "sample_count": 14,
+    "sha256": "09e31c8373cd151c68d41aab18fefd7e18fff54c29b8d56c16196276660c5cd5"
+  },
+  "generator": "tools/upstream/collect_windows_archive_limits.py",
+  "generator_sha256": "9012431aa5b0ef6bdd4f89baf95a271b2178dcc81309be85d68506a7785f4c01",
+  "host": {
+    "architecture": "AMD64",
+    "os_build": "10.0.26100"
+  },
+  "linux_qt5_reference": {
+    "path": "docs/research/data/archive-limit-engine-qt5.json",
+    "sha256": "e4786dcc578fb0714c86f71955161f981a06be26aefe663281d74202f5372ecd"
+  },
+  "normal_case_count": 14,
+  "normal_cases": {
+    "depth-01.zip": {
+      "cumulative_expanded_bytes": 331,
+      "depth": 1,
+      "linux_qt5_semantic_projection": {
+        "cancel_after_callbacks": 0,
+        "cyclic_node_count": 0,
+        "debug_record_count": 0,
+        "deepest_pdf_depth": 1,
+        "error_count": 0,
+        "handler_count": 0,
+        "max_depth": 1,
+        "max_stream_depth": 1,
+        "node_count": 2,
+        "pd_stopped": false,
+        "pdf_node_count": 1,
+        "record_count": 3,
+        "stream_node_count": 1
+      },
+      "runs": [
+        {
+          "exit_code": 0,
+          "linux_qt5_semantic_equal": true,
+          "metrics": {
+            "callback_calls": 1,
+            "elapsed_ms": 4,
+            "peak_rss_after_kib": 22540,
+            "peak_rss_before_kib": 20224,
+            "scan_result_time_ms": 4
+          },
+          "raw_stderr": "normal.depth-01.zip.run-1.stderr",
+          "raw_stdout": "normal.depth-01.zip.run-1.stdout",
+          "semantic_projection": {
+            "cancel_after_callbacks": 0,
+            "cyclic_node_count": 0,
+            "debug_record_count": 0,
+            "deepest_pdf_depth": 1,
+            "error_count": 0,
+            "handler_count": 0,
+            "max_depth": 1,
+            "max_stream_depth": 1,
+            "node_count": 2,
+            "pd_stopped": false,
+            "pdf_node_count": 1,
+            "record_count": 3,
+            "stream_node_count": 1
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 371,
+          "stdout_sha256": "9fefb38994d3a117c203e708adb562fa4bd8adf15d90c9ee11022ff8a261f237"
+        },
+        {
+          "exit_code": 0,
+          "linux_qt5_semantic_equal": true,
+          "metrics": {
+            "callback_calls": 1,
+            "elapsed_ms": 4,
+            "peak_rss_after_kib": 22500,
+            "peak_rss_before_kib": 20128,
+            "scan_result_time_ms": 4
+          },
+          "raw_stderr": "normal.depth-01.zip.run-2.stderr",
+          "raw_stdout": "normal.depth-01.zip.run-2.stdout",
+          "semantic_projection": {
+            "cancel_after_callbacks": 0,
+            "cyclic_node_count": 0,
+            "debug_record_count": 0,
+            "deepest_pdf_depth": 1,
+            "error_count": 0,
+            "handler_count": 0,
+            "max_depth": 1,
+            "max_stream_depth": 1,
+            "node_count": 2,
+            "pd_stopped": false,
+            "pdf_node_count": 1,
+            "record_count": 3,
+            "stream_node_count": 1
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 371,
+          "stdout_sha256": "ea577f4eaaba7847c0b555aa6f0618052f17b8072726ad43f794b0a49f277139"
+        }
+      ],
+      "semantic_deterministic": true,
+      "series": "depth"
+    },
+    "depth-02.zip": {
+      "cumulative_expanded_bytes": 776,
+      "depth": 2,
+      "linux_qt5_semantic_projection": {
+        "cancel_after_callbacks": 0,
+        "cyclic_node_count": 0,
+        "debug_record_count": 0,
+        "deepest_pdf_depth": 2,
+        "error_count": 0,
+        "handler_count": 0,
+        "max_depth": 2,
+        "max_stream_depth": 2,
+        "node_count": 3,
+        "pd_stopped": false,
+        "pdf_node_count": 1,
+        "record_count": 4,
+        "stream_node_count": 2
+      },
+      "runs": [
+        {
+          "exit_code": 0,
+          "linux_qt5_semantic_equal": true,
+          "metrics": {
+            "callback_calls": 1,
+            "elapsed_ms": 6,
+            "peak_rss_after_kib": 22500,
+            "peak_rss_before_kib": 20184,
+            "scan_result_time_ms": 6
+          },
+          "raw_stderr": "normal.depth-02.zip.run-1.stderr",
+          "raw_stdout": "normal.depth-02.zip.run-1.stdout",
+          "semantic_projection": {
+            "cancel_after_callbacks": 0,
+            "cyclic_node_count": 0,
+            "debug_record_count": 0,
+            "deepest_pdf_depth": 2,
+            "error_count": 0,
+            "handler_count": 0,
+            "max_depth": 2,
+            "max_stream_depth": 2,
+            "node_count": 3,
+            "pd_stopped": false,
+            "pdf_node_count": 1,
+            "record_count": 4,
+            "stream_node_count": 2
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 371,
+          "stdout_sha256": "d0ddfd3f021e890b0ba62596ad8813fae2c28bc5528d41c6bcd9e2953e57818c"
+        },
+        {
+          "exit_code": 0,
+          "linux_qt5_semantic_equal": true,
+          "metrics": {
+            "callback_calls": 1,
+            "elapsed_ms": 5,
+            "peak_rss_after_kib": 22536,
+            "peak_rss_before_kib": 20164,
+            "scan_result_time_ms": 5
+          },
+          "raw_stderr": "normal.depth-02.zip.run-2.stderr",
+          "raw_stdout": "normal.depth-02.zip.run-2.stdout",
+          "semantic_projection": {
+            "cancel_after_callbacks": 0,
+            "cyclic_node_count": 0,
+            "debug_record_count": 0,
+            "deepest_pdf_depth": 2,
+            "error_count": 0,
+            "handler_count": 0,
+            "max_depth": 2,
+            "max_stream_depth": 2,
+            "node_count": 3,
+            "pd_stopped": false,
+            "pdf_node_count": 1,
+            "record_count": 4,
+            "stream_node_count": 2
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 371,
+          "stdout_sha256": "9be7a75f30020f441233f6d2a065fe2e7f98c903a5ace602762137d487b58eaf"
+        }
+      ],
+      "semantic_deterministic": true,
+      "series": "depth"
+    },
+    "depth-04.zip": {
+      "cumulative_expanded_bytes": 2032,
+      "depth": 4,
+      "linux_qt5_semantic_projection": {
+        "cancel_after_callbacks": 0,
+        "cyclic_node_count": 0,
+        "debug_record_count": 0,
+        "deepest_pdf_depth": 4,
+        "error_count": 0,
+        "handler_count": 0,
+        "max_depth": 4,
+        "max_stream_depth": 4,
+        "node_count": 5,
+        "pd_stopped": false,
+        "pdf_node_count": 1,
+        "record_count": 6,
+        "stream_node_count": 4
+      },
+      "runs": [
+        {
+          "exit_code": 0,
+          "linux_qt5_semantic_equal": true,
+          "metrics": {
+            "callback_calls": 1,
+            "elapsed_ms": 6,
+            "peak_rss_after_kib": 22496,
+            "peak_rss_before_kib": 20124,
+            "scan_result_time_ms": 6
+          },
+          "raw_stderr": "normal.depth-04.zip.run-1.stderr",
+          "raw_stdout": "normal.depth-04.zip.run-1.stdout",
+          "semantic_projection": {
+            "cancel_after_callbacks": 0,
+            "cyclic_node_count": 0,
+            "debug_record_count": 0,
+            "deepest_pdf_depth": 4,
+            "error_count": 0,
+            "handler_count": 0,
+            "max_depth": 4,
+            "max_stream_depth": 4,
+            "node_count": 5,
+            "pd_stopped": false,
+            "pdf_node_count": 1,
+            "record_count": 6,
+            "stream_node_count": 4
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 371,
+          "stdout_sha256": "bc131bb73116ba4214ea1b2f1aac153839b5849c9bed6c64a24ef4ab59cfb1cc"
+        },
+        {
+          "exit_code": 0,
+          "linux_qt5_semantic_equal": true,
+          "metrics": {
+            "callback_calls": 1,
+            "elapsed_ms": 7,
+            "peak_rss_after_kib": 22500,
+            "peak_rss_before_kib": 20108,
+            "scan_result_time_ms": 7
+          },
+          "raw_stderr": "normal.depth-04.zip.run-2.stderr",
+          "raw_stdout": "normal.depth-04.zip.run-2.stdout",
+          "semantic_projection": {
+            "cancel_after_callbacks": 0,
+            "cyclic_node_count": 0,
+            "debug_record_count": 0,
+            "deepest_pdf_depth": 4,
+            "error_count": 0,
+            "handler_count": 0,
+            "max_depth": 4,
+            "max_stream_depth": 4,
+            "node_count": 5,
+            "pd_stopped": false,
+            "pdf_node_count": 1,
+            "record_count": 6,
+            "stream_node_count": 4
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 371,
+          "stdout_sha256": "933bb97787f05c5d638772aa98306ff87faa56d20f3f5de17955e10b014b75a1"
+        }
+      ],
+      "semantic_deterministic": true,
+      "series": "depth"
+    },
+    "depth-08.zip": {
+      "cumulative_expanded_bytes": 6008,
+      "depth": 8,
+      "linux_qt5_semantic_projection": {
+        "cancel_after_callbacks": 0,
+        "cyclic_node_count": 0,
+        "debug_record_count": 0,
+        "deepest_pdf_depth": 8,
+        "error_count": 0,
+        "handler_count": 0,
+        "max_depth": 8,
+        "max_stream_depth": 8,
+        "node_count": 9,
+        "pd_stopped": false,
+        "pdf_node_count": 1,
+        "record_count": 10,
+        "stream_node_count": 8
+      },
+      "runs": [
+        {
+          "exit_code": 0,
+          "linux_qt5_semantic_equal": true,
+          "metrics": {
+            "callback_calls": 1,
+            "elapsed_ms": 10,
+            "peak_rss_after_kib": 22608,
+            "peak_rss_before_kib": 20220,
+            "scan_result_time_ms": 10
+          },
+          "raw_stderr": "normal.depth-08.zip.run-1.stderr",
+          "raw_stdout": "normal.depth-08.zip.run-1.stdout",
+          "semantic_projection": {
+            "cancel_after_callbacks": 0,
+            "cyclic_node_count": 0,
+            "debug_record_count": 0,
+            "deepest_pdf_depth": 8,
+            "error_count": 0,
+            "handler_count": 0,
+            "max_depth": 8,
+            "max_stream_depth": 8,
+            "node_count": 9,
+            "pd_stopped": false,
+            "pdf_node_count": 1,
+            "record_count": 10,
+            "stream_node_count": 8
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 374,
+          "stdout_sha256": "e0e280a3bb55bc80784baa48052871bf131d0ed781bdb8e44ee6a7147b52af18"
+        },
+        {
+          "exit_code": 0,
+          "linux_qt5_semantic_equal": true,
+          "metrics": {
+            "callback_calls": 1,
+            "elapsed_ms": 9,
+            "peak_rss_after_kib": 22532,
+            "peak_rss_before_kib": 20180,
+            "scan_result_time_ms": 9
+          },
+          "raw_stderr": "normal.depth-08.zip.run-2.stderr",
+          "raw_stdout": "normal.depth-08.zip.run-2.stdout",
+          "semantic_projection": {
+            "cancel_after_callbacks": 0,
+            "cyclic_node_count": 0,
+            "debug_record_count": 0,
+            "deepest_pdf_depth": 8,
+            "error_count": 0,
+            "handler_count": 0,
+            "max_depth": 8,
+            "max_stream_depth": 8,
+            "node_count": 9,
+            "pd_stopped": false,
+            "pdf_node_count": 1,
+            "record_count": 10,
+            "stream_node_count": 8
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 372,
+          "stdout_sha256": "2e68dbb1de7b2ade48e73c2d8a7fa1d0d7822718391f64bf378310e0d9c9ff47"
+        }
+      ],
+      "semantic_deterministic": true,
+      "series": "depth"
+    },
+    "depth-12.zip": {
+      "cumulative_expanded_bytes": 11936,
+      "depth": 12,
+      "linux_qt5_semantic_projection": {
+        "cancel_after_callbacks": 0,
+        "cyclic_node_count": 0,
+        "debug_record_count": 0,
+        "deepest_pdf_depth": 12,
+        "error_count": 0,
+        "handler_count": 0,
+        "max_depth": 12,
+        "max_stream_depth": 12,
+        "node_count": 13,
+        "pd_stopped": false,
+        "pdf_node_count": 1,
+        "record_count": 14,
+        "stream_node_count": 12
+      },
+      "runs": [
+        {
+          "exit_code": 0,
+          "linux_qt5_semantic_equal": true,
+          "metrics": {
+            "callback_calls": 1,
+            "elapsed_ms": 13,
+            "peak_rss_after_kib": 22568,
+            "peak_rss_before_kib": 20164,
+            "scan_result_time_ms": 13
+          },
+          "raw_stderr": "normal.depth-12.zip.run-1.stderr",
+          "raw_stdout": "normal.depth-12.zip.run-1.stdout",
+          "semantic_projection": {
+            "cancel_after_callbacks": 0,
+            "cyclic_node_count": 0,
+            "debug_record_count": 0,
+            "deepest_pdf_depth": 12,
+            "error_count": 0,
+            "handler_count": 0,
+            "max_depth": 12,
+            "max_stream_depth": 12,
+            "node_count": 13,
+            "pd_stopped": false,
+            "pdf_node_count": 1,
+            "record_count": 14,
+            "stream_node_count": 12
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 379,
+          "stdout_sha256": "d422b2260907ae70d00686dc7c872343e7195a0786f85c81ad2c24ac44a0ee68"
+        },
+        {
+          "exit_code": 0,
+          "linux_qt5_semantic_equal": true,
+          "metrics": {
+            "callback_calls": 1,
+            "elapsed_ms": 13,
+            "peak_rss_after_kib": 22560,
+            "peak_rss_before_kib": 20172,
+            "scan_result_time_ms": 13
+          },
+          "raw_stderr": "normal.depth-12.zip.run-2.stderr",
+          "raw_stdout": "normal.depth-12.zip.run-2.stdout",
+          "semantic_projection": {
+            "cancel_after_callbacks": 0,
+            "cyclic_node_count": 0,
+            "debug_record_count": 0,
+            "deepest_pdf_depth": 12,
+            "error_count": 0,
+            "handler_count": 0,
+            "max_depth": 12,
+            "max_stream_depth": 12,
+            "node_count": 13,
+            "pd_stopped": false,
+            "pdf_node_count": 1,
+            "record_count": 14,
+            "stream_node_count": 12
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 379,
+          "stdout_sha256": "40613644cab75bc3f76a8dc045ea60cddbaf2f76962927b2bb06738b79e0e182"
+        }
+      ],
+      "semantic_deterministic": true,
+      "series": "depth"
+    },
+    "depth-16.zip": {
+      "cumulative_expanded_bytes": 19816,
+      "depth": 16,
+      "linux_qt5_semantic_projection": {
+        "cancel_after_callbacks": 0,
+        "cyclic_node_count": 0,
+        "debug_record_count": 0,
+        "deepest_pdf_depth": 16,
+        "error_count": 0,
+        "handler_count": 0,
+        "max_depth": 16,
+        "max_stream_depth": 16,
+        "node_count": 17,
+        "pd_stopped": false,
+        "pdf_node_count": 1,
+        "record_count": 18,
+        "stream_node_count": 16
+      },
+      "runs": [
+        {
+          "exit_code": 0,
+          "linux_qt5_semantic_equal": true,
+          "metrics": {
+            "callback_calls": 1,
+            "elapsed_ms": 17,
+            "peak_rss_after_kib": 22736,
+            "peak_rss_before_kib": 20256,
+            "scan_result_time_ms": 16
+          },
+          "raw_stderr": "normal.depth-16.zip.run-1.stderr",
+          "raw_stdout": "normal.depth-16.zip.run-1.stdout",
+          "semantic_projection": {
+            "cancel_after_callbacks": 0,
+            "cyclic_node_count": 0,
+            "debug_record_count": 0,
+            "deepest_pdf_depth": 16,
+            "error_count": 0,
+            "handler_count": 0,
+            "max_depth": 16,
+            "max_stream_depth": 16,
+            "node_count": 17,
+            "pd_stopped": false,
+            "pdf_node_count": 1,
+            "record_count": 18,
+            "stream_node_count": 16
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 379,
+          "stdout_sha256": "d271e75edb8d08f24a242d6f13c6fa34cf3f5e19ee4aeee05366fd82136108c2"
+        },
+        {
+          "exit_code": 0,
+          "linux_qt5_semantic_equal": true,
+          "metrics": {
+            "callback_calls": 1,
+            "elapsed_ms": 20,
+            "peak_rss_after_kib": 22628,
+            "peak_rss_before_kib": 20120,
+            "scan_result_time_ms": 19
+          },
+          "raw_stderr": "normal.depth-16.zip.run-2.stderr",
+          "raw_stdout": "normal.depth-16.zip.run-2.stdout",
+          "semantic_projection": {
+            "cancel_after_callbacks": 0,
+            "cyclic_node_count": 0,
+            "debug_record_count": 0,
+            "deepest_pdf_depth": 16,
+            "error_count": 0,
+            "handler_count": 0,
+            "max_depth": 16,
+            "max_stream_depth": 16,
+            "node_count": 17,
+            "pd_stopped": false,
+            "pdf_node_count": 1,
+            "record_count": 18,
+            "stream_node_count": 16
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 379,
+          "stdout_sha256": "a9de701b4ee18314a17c01c92f63feec931f9a32a238b9f7ee4d90191af91bfc"
+        }
+      ],
+      "semantic_deterministic": true,
+      "series": "depth"
+    },
+    "depth-32.zip": {
+      "cumulative_expanded_bytes": 70856,
+      "depth": 32,
+      "linux_qt5_semantic_projection": {
+        "cancel_after_callbacks": 0,
+        "cyclic_node_count": 0,
+        "debug_record_count": 0,
+        "deepest_pdf_depth": 32,
+        "error_count": 0,
+        "handler_count": 0,
+        "max_depth": 32,
+        "max_stream_depth": 32,
+        "node_count": 33,
+        "pd_stopped": false,
+        "pdf_node_count": 1,
+        "record_count": 34,
+        "stream_node_count": 32
+      },
+      "runs": [
+        {
+          "exit_code": 0,
+          "linux_qt5_semantic_equal": true,
+          "metrics": {
+            "callback_calls": 1,
+            "elapsed_ms": 30,
+            "peak_rss_after_kib": 22884,
+            "peak_rss_before_kib": 20148,
+            "scan_result_time_ms": 30
+          },
+          "raw_stderr": "normal.depth-32.zip.run-1.stderr",
+          "raw_stdout": "normal.depth-32.zip.run-1.stdout",
+          "semantic_projection": {
+            "cancel_after_callbacks": 0,
+            "cyclic_node_count": 0,
+            "debug_record_count": 0,
+            "deepest_pdf_depth": 32,
+            "error_count": 0,
+            "handler_count": 0,
+            "max_depth": 32,
+            "max_stream_depth": 32,
+            "node_count": 33,
+            "pd_stopped": false,
+            "pdf_node_count": 1,
+            "record_count": 34,
+            "stream_node_count": 32
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 379,
+          "stdout_sha256": "31e065a784fc82dbefdf9d26e31ba7b25923e84e181bf2ca0f155ade928409e3"
+        },
+        {
+          "exit_code": 0,
+          "linux_qt5_semantic_equal": true,
+          "metrics": {
+            "callback_calls": 1,
+            "elapsed_ms": 31,
+            "peak_rss_after_kib": 22884,
+            "peak_rss_before_kib": 20220,
+            "scan_result_time_ms": 31
+          },
+          "raw_stderr": "normal.depth-32.zip.run-2.stderr",
+          "raw_stdout": "normal.depth-32.zip.run-2.stdout",
+          "semantic_projection": {
+            "cancel_after_callbacks": 0,
+            "cyclic_node_count": 0,
+            "debug_record_count": 0,
+            "deepest_pdf_depth": 32,
+            "error_count": 0,
+            "handler_count": 0,
+            "max_depth": 32,
+            "max_stream_depth": 32,
+            "node_count": 33,
+            "pd_stopped": false,
+            "pdf_node_count": 1,
+            "record_count": 34,
+            "stream_node_count": 32
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 379,
+          "stdout_sha256": "b792e4ecd03ba89dd54ff49ce35d75ac5da34dba03159bdb29fb2564c3951028"
+        }
+      ],
+      "semantic_deterministic": true,
+      "series": "depth"
+    },
+    "depth-64.zip": {
+      "cumulative_expanded_bytes": 266632,
+      "depth": 64,
+      "linux_qt5_semantic_projection": {
+        "cancel_after_callbacks": 0,
+        "cyclic_node_count": 0,
+        "debug_record_count": 0,
+        "deepest_pdf_depth": 64,
+        "error_count": 0,
+        "handler_count": 0,
+        "max_depth": 64,
+        "max_stream_depth": 64,
+        "node_count": 65,
+        "pd_stopped": false,
+        "pdf_node_count": 1,
+        "record_count": 66,
+        "stream_node_count": 64
+      },
+      "runs": [
+        {
+          "exit_code": 0,
+          "linux_qt5_semantic_equal": true,
+          "metrics": {
+            "callback_calls": 1,
+            "elapsed_ms": 67,
+            "peak_rss_after_kib": 23440,
+            "peak_rss_before_kib": 20156,
+            "scan_result_time_ms": 67
+          },
+          "raw_stderr": "normal.depth-64.zip.run-1.stderr",
+          "raw_stdout": "normal.depth-64.zip.run-1.stdout",
+          "semantic_projection": {
+            "cancel_after_callbacks": 0,
+            "cyclic_node_count": 0,
+            "debug_record_count": 0,
+            "deepest_pdf_depth": 64,
+            "error_count": 0,
+            "handler_count": 0,
+            "max_depth": 64,
+            "max_stream_depth": 64,
+            "node_count": 65,
+            "pd_stopped": false,
+            "pdf_node_count": 1,
+            "record_count": 66,
+            "stream_node_count": 64
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 379,
+          "stdout_sha256": "ed0c92c1a5719262d74bf6f9cc2a06050b8c7c9c7305076e568f8157b31ee1c9"
+        },
+        {
+          "exit_code": 0,
+          "linux_qt5_semantic_equal": true,
+          "metrics": {
+            "callback_calls": 1,
+            "elapsed_ms": 66,
+            "peak_rss_after_kib": 23456,
+            "peak_rss_before_kib": 20220,
+            "scan_result_time_ms": 66
+          },
+          "raw_stderr": "normal.depth-64.zip.run-2.stderr",
+          "raw_stdout": "normal.depth-64.zip.run-2.stdout",
+          "semantic_projection": {
+            "cancel_after_callbacks": 0,
+            "cyclic_node_count": 0,
+            "debug_record_count": 0,
+            "deepest_pdf_depth": 64,
+            "error_count": 0,
+            "handler_count": 0,
+            "max_depth": 64,
+            "max_stream_depth": 64,
+            "node_count": 65,
+            "pd_stopped": false,
+            "pdf_node_count": 1,
+            "record_count": 66,
+            "stream_node_count": 64
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 379,
+          "stdout_sha256": "ee59f9a0e70c74881510446a6165ed687cf3fc605abbc8899e288bf489182bbe"
+        }
+      ],
+      "semantic_deterministic": true,
+      "series": "depth"
+    },
+    "expanded-0001024.zip": {
+      "cumulative_expanded_bytes": 2162,
+      "depth": 2,
+      "linux_qt5_semantic_projection": {
+        "cancel_after_callbacks": 0,
+        "cyclic_node_count": 0,
+        "debug_record_count": 0,
+        "deepest_pdf_depth": 2,
+        "error_count": 0,
+        "handler_count": 0,
+        "max_depth": 2,
+        "max_stream_depth": 2,
+        "node_count": 3,
+        "pd_stopped": false,
+        "pdf_node_count": 1,
+        "record_count": 4,
+        "stream_node_count": 2
+      },
+      "runs": [
+        {
+          "exit_code": 0,
+          "linux_qt5_semantic_equal": true,
+          "metrics": {
+            "callback_calls": 1,
+            "elapsed_ms": 5,
+            "peak_rss_after_kib": 22488,
+            "peak_rss_before_kib": 20160,
+            "scan_result_time_ms": 5
+          },
+          "raw_stderr": "normal.expanded-0001024.zip.run-1.stderr",
+          "raw_stdout": "normal.expanded-0001024.zip.run-1.stdout",
+          "semantic_projection": {
+            "cancel_after_callbacks": 0,
+            "cyclic_node_count": 0,
+            "debug_record_count": 0,
+            "deepest_pdf_depth": 2,
+            "error_count": 0,
+            "handler_count": 0,
+            "max_depth": 2,
+            "max_stream_depth": 2,
+            "node_count": 3,
+            "pd_stopped": false,
+            "pdf_node_count": 1,
+            "record_count": 4,
+            "stream_node_count": 2
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 371,
+          "stdout_sha256": "b875f4b4c79adc0d52cd87499579fcdac5fa077fd1eaf22609ebb50b6f8acf48"
+        },
+        {
+          "exit_code": 0,
+          "linux_qt5_semantic_equal": true,
+          "metrics": {
+            "callback_calls": 1,
+            "elapsed_ms": 5,
+            "peak_rss_after_kib": 22508,
+            "peak_rss_before_kib": 20128,
+            "scan_result_time_ms": 4
+          },
+          "raw_stderr": "normal.expanded-0001024.zip.run-2.stderr",
+          "raw_stdout": "normal.expanded-0001024.zip.run-2.stdout",
+          "semantic_projection": {
+            "cancel_after_callbacks": 0,
+            "cyclic_node_count": 0,
+            "debug_record_count": 0,
+            "deepest_pdf_depth": 2,
+            "error_count": 0,
+            "handler_count": 0,
+            "max_depth": 2,
+            "max_stream_depth": 2,
+            "node_count": 3,
+            "pd_stopped": false,
+            "pdf_node_count": 1,
+            "record_count": 4,
+            "stream_node_count": 2
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 371,
+          "stdout_sha256": "7c95392d2bb42334870b959aa471da0ea5dff470eb3542a39588a9a26ccf01cf"
+        }
+      ],
+      "semantic_deterministic": true,
+      "series": "expanded_bytes"
+    },
+    "expanded-0065536.zip": {
+      "cumulative_expanded_bytes": 131186,
+      "depth": 2,
+      "linux_qt5_semantic_projection": {
+        "cancel_after_callbacks": 0,
+        "cyclic_node_count": 0,
+        "debug_record_count": 0,
+        "deepest_pdf_depth": 2,
+        "error_count": 0,
+        "handler_count": 0,
+        "max_depth": 2,
+        "max_stream_depth": 2,
+        "node_count": 3,
+        "pd_stopped": false,
+        "pdf_node_count": 1,
+        "record_count": 4,
+        "stream_node_count": 2
+      },
+      "runs": [
+        {
+          "exit_code": 0,
+          "linux_qt5_semantic_equal": true,
+          "metrics": {
+            "callback_calls": 1,
+            "elapsed_ms": 6,
+            "peak_rss_after_kib": 22836,
+            "peak_rss_before_kib": 20260,
+            "scan_result_time_ms": 5
+          },
+          "raw_stderr": "normal.expanded-0065536.zip.run-1.stderr",
+          "raw_stdout": "normal.expanded-0065536.zip.run-1.stdout",
+          "semantic_projection": {
+            "cancel_after_callbacks": 0,
+            "cyclic_node_count": 0,
+            "debug_record_count": 0,
+            "deepest_pdf_depth": 2,
+            "error_count": 0,
+            "handler_count": 0,
+            "max_depth": 2,
+            "max_stream_depth": 2,
+            "node_count": 3,
+            "pd_stopped": false,
+            "pdf_node_count": 1,
+            "record_count": 4,
+            "stream_node_count": 2
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 371,
+          "stdout_sha256": "955a90d8f3af09a5ee31260f90d9603b35920ba2f5b98103713e01d4724354e9"
+        },
+        {
+          "exit_code": 0,
+          "linux_qt5_semantic_equal": true,
+          "metrics": {
+            "callback_calls": 1,
+            "elapsed_ms": 5,
+            "peak_rss_after_kib": 22828,
+            "peak_rss_before_kib": 20132,
+            "scan_result_time_ms": 5
+          },
+          "raw_stderr": "normal.expanded-0065536.zip.run-2.stderr",
+          "raw_stdout": "normal.expanded-0065536.zip.run-2.stdout",
+          "semantic_projection": {
+            "cancel_after_callbacks": 0,
+            "cyclic_node_count": 0,
+            "debug_record_count": 0,
+            "deepest_pdf_depth": 2,
+            "error_count": 0,
+            "handler_count": 0,
+            "max_depth": 2,
+            "max_stream_depth": 2,
+            "node_count": 3,
+            "pd_stopped": false,
+            "pdf_node_count": 1,
+            "record_count": 4,
+            "stream_node_count": 2
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 371,
+          "stdout_sha256": "0f57feca85cd53262edf93fd10f44bef53e23180b0b7de6f49019e90fdf17002"
+        }
+      ],
+      "semantic_deterministic": true,
+      "series": "expanded_bytes"
+    },
+    "expanded-0262144.zip": {
+      "cumulative_expanded_bytes": 524402,
+      "depth": 2,
+      "linux_qt5_semantic_projection": {
+        "cancel_after_callbacks": 0,
+        "cyclic_node_count": 0,
+        "debug_record_count": 0,
+        "deepest_pdf_depth": 2,
+        "error_count": 0,
+        "handler_count": 0,
+        "max_depth": 2,
+        "max_stream_depth": 2,
+        "node_count": 3,
+        "pd_stopped": false,
+        "pdf_node_count": 1,
+        "record_count": 4,
+        "stream_node_count": 2
+      },
+      "runs": [
+        {
+          "exit_code": 0,
+          "linux_qt5_semantic_equal": true,
+          "metrics": {
+            "callback_calls": 1,
+            "elapsed_ms": 7,
+            "peak_rss_after_kib": 24020,
+            "peak_rss_before_kib": 20172,
+            "scan_result_time_ms": 6
+          },
+          "raw_stderr": "normal.expanded-0262144.zip.run-1.stderr",
+          "raw_stdout": "normal.expanded-0262144.zip.run-1.stdout",
+          "semantic_projection": {
+            "cancel_after_callbacks": 0,
+            "cyclic_node_count": 0,
+            "debug_record_count": 0,
+            "deepest_pdf_depth": 2,
+            "error_count": 0,
+            "handler_count": 0,
+            "max_depth": 2,
+            "max_stream_depth": 2,
+            "node_count": 3,
+            "pd_stopped": false,
+            "pdf_node_count": 1,
+            "record_count": 4,
+            "stream_node_count": 2
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 371,
+          "stdout_sha256": "6a1a38276d65e551bd51c746aec058e68590731d360f5d2c964432f36e57df04"
+        },
+        {
+          "exit_code": 0,
+          "linux_qt5_semantic_equal": true,
+          "metrics": {
+            "callback_calls": 1,
+            "elapsed_ms": 6,
+            "peak_rss_after_kib": 23720,
+            "peak_rss_before_kib": 20144,
+            "scan_result_time_ms": 6
+          },
+          "raw_stderr": "normal.expanded-0262144.zip.run-2.stderr",
+          "raw_stdout": "normal.expanded-0262144.zip.run-2.stdout",
+          "semantic_projection": {
+            "cancel_after_callbacks": 0,
+            "cyclic_node_count": 0,
+            "debug_record_count": 0,
+            "deepest_pdf_depth": 2,
+            "error_count": 0,
+            "handler_count": 0,
+            "max_depth": 2,
+            "max_stream_depth": 2,
+            "node_count": 3,
+            "pd_stopped": false,
+            "pdf_node_count": 1,
+            "record_count": 4,
+            "stream_node_count": 2
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 371,
+          "stdout_sha256": "c24ab518fd02283ee1725d1bbfd55d07f5a545fb2eb21f6c075fa348983f73ce"
+        }
+      ],
+      "semantic_deterministic": true,
+      "series": "expanded_bytes"
+    },
+    "expanded-1048576.zip": {
+      "cumulative_expanded_bytes": 2097266,
+      "depth": 2,
+      "linux_qt5_semantic_projection": {
+        "cancel_after_callbacks": 0,
+        "cyclic_node_count": 0,
+        "debug_record_count": 0,
+        "deepest_pdf_depth": 2,
+        "error_count": 0,
+        "handler_count": 0,
+        "max_depth": 2,
+        "max_stream_depth": 2,
+        "node_count": 3,
+        "pd_stopped": false,
+        "pdf_node_count": 1,
+        "record_count": 4,
+        "stream_node_count": 2
+      },
+      "runs": [
+        {
+          "exit_code": 0,
+          "linux_qt5_semantic_equal": true,
+          "metrics": {
+            "callback_calls": 1,
+            "elapsed_ms": 11,
+            "peak_rss_after_kib": 27268,
+            "peak_rss_before_kib": 20224,
+            "scan_result_time_ms": 11
+          },
+          "raw_stderr": "normal.expanded-1048576.zip.run-1.stderr",
+          "raw_stdout": "normal.expanded-1048576.zip.run-1.stdout",
+          "semantic_projection": {
+            "cancel_after_callbacks": 0,
+            "cyclic_node_count": 0,
+            "debug_record_count": 0,
+            "deepest_pdf_depth": 2,
+            "error_count": 0,
+            "handler_count": 0,
+            "max_depth": 2,
+            "max_stream_depth": 2,
+            "node_count": 3,
+            "pd_stopped": false,
+            "pdf_node_count": 1,
+            "record_count": 4,
+            "stream_node_count": 2
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 373,
+          "stdout_sha256": "633d0e06c1cb1cfb64cd56f1a0332c79e9dc332abdf77a7e7cc7d05de76f512f"
+        },
+        {
+          "exit_code": 0,
+          "linux_qt5_semantic_equal": true,
+          "metrics": {
+            "callback_calls": 1,
+            "elapsed_ms": 11,
+            "peak_rss_after_kib": 27276,
+            "peak_rss_before_kib": 20272,
+            "scan_result_time_ms": 10
+          },
+          "raw_stderr": "normal.expanded-1048576.zip.run-2.stderr",
+          "raw_stdout": "normal.expanded-1048576.zip.run-2.stdout",
+          "semantic_projection": {
+            "cancel_after_callbacks": 0,
+            "cyclic_node_count": 0,
+            "debug_record_count": 0,
+            "deepest_pdf_depth": 2,
+            "error_count": 0,
+            "handler_count": 0,
+            "max_depth": 2,
+            "max_stream_depth": 2,
+            "node_count": 3,
+            "pd_stopped": false,
+            "pdf_node_count": 1,
+            "record_count": 4,
+            "stream_node_count": 2
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 373,
+          "stdout_sha256": "322567fccc7569d5bc26312d7d75645023c44e107e34e725be0e530dfb42a01f"
+        }
+      ],
+      "semantic_deterministic": true,
+      "series": "expanded_bytes"
+    },
+    "expanded-16777216.zip": {
+      "cumulative_expanded_bytes": 33554546,
+      "depth": 2,
+      "linux_qt5_semantic_projection": {
+        "cancel_after_callbacks": 0,
+        "cyclic_node_count": 0,
+        "debug_record_count": 0,
+        "deepest_pdf_depth": 2,
+        "error_count": 0,
+        "handler_count": 0,
+        "max_depth": 2,
+        "max_stream_depth": 2,
+        "node_count": 3,
+        "pd_stopped": false,
+        "pdf_node_count": 1,
+        "record_count": 4,
+        "stream_node_count": 2
+      },
+      "runs": [
+        {
+          "exit_code": 0,
+          "linux_qt5_semantic_equal": true,
+          "metrics": {
+            "callback_calls": 2,
+            "elapsed_ms": 129,
+            "peak_rss_after_kib": 55372,
+            "peak_rss_before_kib": 20180,
+            "scan_result_time_ms": 128
+          },
+          "raw_stderr": "normal.expanded-16777216.zip.run-1.stderr",
+          "raw_stdout": "normal.expanded-16777216.zip.run-1.stdout",
+          "semantic_projection": {
+            "cancel_after_callbacks": 0,
+            "cyclic_node_count": 0,
+            "debug_record_count": 0,
+            "deepest_pdf_depth": 2,
+            "error_count": 0,
+            "handler_count": 0,
+            "max_depth": 2,
+            "max_stream_depth": 2,
+            "node_count": 3,
+            "pd_stopped": false,
+            "pdf_node_count": 1,
+            "record_count": 4,
+            "stream_node_count": 2
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 375,
+          "stdout_sha256": "9df8e549f2e8fd4214d16f4a4300c0cef684594721e89dd6aebcd919da62fefb"
+        },
+        {
+          "exit_code": 0,
+          "linux_qt5_semantic_equal": true,
+          "metrics": {
+            "callback_calls": 2,
+            "elapsed_ms": 131,
+            "peak_rss_after_kib": 55348,
+            "peak_rss_before_kib": 20128,
+            "scan_result_time_ms": 130
+          },
+          "raw_stderr": "normal.expanded-16777216.zip.run-2.stderr",
+          "raw_stdout": "normal.expanded-16777216.zip.run-2.stdout",
+          "semantic_projection": {
+            "cancel_after_callbacks": 0,
+            "cyclic_node_count": 0,
+            "debug_record_count": 0,
+            "deepest_pdf_depth": 2,
+            "error_count": 0,
+            "handler_count": 0,
+            "max_depth": 2,
+            "max_stream_depth": 2,
+            "node_count": 3,
+            "pd_stopped": false,
+            "pdf_node_count": 1,
+            "record_count": 4,
+            "stream_node_count": 2
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 375,
+          "stdout_sha256": "1a6624e44b6298e5871ff1419de40a45c216eea2ca56cfbaa86a77b2bae105f3"
+        }
+      ],
+      "semantic_deterministic": true,
+      "series": "expanded_bytes"
+    },
+    "expanded-4194304.zip": {
+      "cumulative_expanded_bytes": 8388722,
+      "depth": 2,
+      "linux_qt5_semantic_projection": {
+        "cancel_after_callbacks": 0,
+        "cyclic_node_count": 0,
+        "debug_record_count": 0,
+        "deepest_pdf_depth": 2,
+        "error_count": 0,
+        "handler_count": 0,
+        "max_depth": 2,
+        "max_stream_depth": 2,
+        "node_count": 3,
+        "pd_stopped": false,
+        "pdf_node_count": 1,
+        "record_count": 4,
+        "stream_node_count": 2
+      },
+      "runs": [
+        {
+          "exit_code": 0,
+          "linux_qt5_semantic_equal": true,
+          "metrics": {
+            "callback_calls": 1,
+            "elapsed_ms": 30,
+            "peak_rss_after_kib": 42652,
+            "peak_rss_before_kib": 20244,
+            "scan_result_time_ms": 29
+          },
+          "raw_stderr": "normal.expanded-4194304.zip.run-1.stderr",
+          "raw_stdout": "normal.expanded-4194304.zip.run-1.stdout",
+          "semantic_projection": {
+            "cancel_after_callbacks": 0,
+            "cyclic_node_count": 0,
+            "debug_record_count": 0,
+            "deepest_pdf_depth": 2,
+            "error_count": 0,
+            "handler_count": 0,
+            "max_depth": 2,
+            "max_stream_depth": 2,
+            "node_count": 3,
+            "pd_stopped": false,
+            "pdf_node_count": 1,
+            "record_count": 4,
+            "stream_node_count": 2
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 373,
+          "stdout_sha256": "133f30523a6bdbba607a05d807e983d2a4f0abe04b3ee5f9d6f3955cea7ca7fd"
+        },
+        {
+          "exit_code": 0,
+          "linux_qt5_semantic_equal": true,
+          "metrics": {
+            "callback_calls": 1,
+            "elapsed_ms": 30,
+            "peak_rss_after_kib": 42616,
+            "peak_rss_before_kib": 20144,
+            "scan_result_time_ms": 30
+          },
+          "raw_stderr": "normal.expanded-4194304.zip.run-2.stderr",
+          "raw_stdout": "normal.expanded-4194304.zip.run-2.stdout",
+          "semantic_projection": {
+            "cancel_after_callbacks": 0,
+            "cyclic_node_count": 0,
+            "debug_record_count": 0,
+            "deepest_pdf_depth": 2,
+            "error_count": 0,
+            "handler_count": 0,
+            "max_depth": 2,
+            "max_stream_depth": 2,
+            "node_count": 3,
+            "pd_stopped": false,
+            "pdf_node_count": 1,
+            "record_count": 4,
+            "stream_node_count": 2
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 373,
+          "stdout_sha256": "206cd5cc8a2efeacdfe9bc086fa0ef495285301940a6c0afc5b305d0fc477054"
+        }
+      ],
+      "semantic_deterministic": true,
+      "series": "expanded_bytes"
+    }
+  },
+  "passed": true,
+  "platform": "windows-x86_64-qt5",
+  "qt": {
+    "qmake_sha256": "e873ad3a689a0628c3037a6440221dcd2e426395edf14ffa6379612dede26d36",
+    "qmake_spec": "win32-msvc",
+    "qt5core_sha256": "8d2ff4ce9096ddccc4f4cd62c2e41fc854cfd1b0d6e8d296645a7f5fd4ae565a",
+    "qt5script_sha256": "0b58e5e79df13110a8258f14d7b3658d1dd0c8dddc337a164b89d4ac12a0638f",
+    "version": "5.15.2"
+  },
+  "raw_artifacts": {
+    "directory_role": "native harness stdout/stderr, excluded from repository",
+    "file_count": 60,
+    "retained_externally": true
+  },
+  "relationships": {
+    "all_normal_runs_exit_zero_without_stderr": true,
+    "all_normal_semantics_are_deterministic": true,
+    "all_normal_semantics_match_linux_qt5": true,
+    "cancellation_is_deterministic": true,
+    "cancellation_matches_linux_qt5": true,
+    "cancellation_retains_root_only_prefix": true,
+    "depth_series_reaches_64": true,
+    "depth_series_reaches_deepest_pdf": true,
+    "expanded_series_reaches_33554546_bytes": true,
+    "expanded_series_reaches_depth_2_pdf": true,
+    "source_has_no_independent_depth_or_total_token": true,
+    "source_has_required_recursive_archive_contract": true
+  },
+  "repetitions": 2,
+  "schema_version": 1,
+  "source": {
+    "commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "recursive_submodule_count": 58,
+    "repository": "https://github.com/horsicq/DIE-engine",
+    "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6"
+  },
+  "source_contract": {
+    "archive_block_end_line": 2932,
+    "archive_block_start_line": 2835,
+    "component_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83",
+    "negative_token_counts": {
+      "cumulative": 0,
+      "depth": 0,
+      "totaldecompressed": 0,
+      "totalextracted": 0
+    },
+    "path": "<source>/XScanEngine/xscanengine.cpp",
+    "required_pattern_counts": {
+      "aggressive_per_level_limit": 1,
+      "archive_option_guard": 2,
+      "declared_size_allocation": 1,
+      "default_per_level_limit": 2,
+      "hard_iteration_guard": 1,
+      "recursive_scan_call": 1
+    },
+    "sha256": "e088bebb7c8345ce5832cc51de712c05a8b239873d7f092db3ae5566a761b498"
+  }
+}

@@ -20,12 +20,13 @@ Last updated: 2026-07-29
 
 - 固定上游、规则和 68 行 traceability；
 - [`windows-qt5-build-baseline.json`](data/windows-qt5-build-baseline.json)；
-- 21 份 Windows runtime 报告的完整 SHA-256；
+- 22 份 Windows runtime 报告的完整 SHA-256；
 - 每份报告的 source/platform 身份和命名 summary facts；
-- 2,362 次 Windows 进程执行，其中 legacy/archive dispatch 86 次执行、
+- 2,392 次 Windows 进程执行，其中 legacy/archive dispatch 86 次执行、
   72 次 case observation，debug-data paired harness 2 次执行、6 次 case
   observation，archive-option matrix 128 次执行、128 次 case observation，
-  count-boundary 22 次执行、22 次 case observation。
+  count-boundary 22 次执行、22 次 case observation，archive-limit
+  30 次执行、30 次 case observation。
 
 报告只接受三种状态：
 
@@ -42,18 +43,18 @@ Last updated: 2026-07-29
 
 | 分类 | 行数 |
 | --- | ---: |
-| Evidence complete | 66 |
+| Evidence complete | 67 |
 | Partial | 1 |
-| Missing | 1 |
+| Missing | 0 |
 | Total | 68 |
 
-所有行均恰好分类一次，但仍有 2 行需要 closure，因此
+所有行均恰好分类一次，但仍有 1 行需要 closure，因此
 `windows_baseline_admitted=false`。现有
 [`capability-coverage.json`](data/capability-coverage.json) 继续把 Windows
 68 行标记为 `platform_missing` 是正确的保守行为；本计划提供逐行升级路径，
 不直接改变平台接纳状态。
 
-66 个已闭合行主要来自：
+67 个已闭合行主要来自：
 
 - 26 样本的 single-target、scan option、output、entropy/info/struct；
 - help/version/show-structs；
@@ -80,6 +81,8 @@ Last updated: 2026-07-29
 - 64-case archive-option engine matrix、32 个 Windows release 控制以及
   nested ZIP option 传播边界。
 - archive 99999/100000/100001 和 resource inclusive 21/2001 精确计数边界。
+- archive depth 64、累计展开量 33,554,546 bytes 和 root-only cancellation
+  prefix。
 
 这些行仍受各自报告中已经写明的全局平台限制约束，但没有把其他能力行的缺口
 反向扩散到本行。
@@ -93,21 +96,18 @@ Last updated: 2026-07-29
 Partial 行不能计入 Windows runtime baseline。机器报告为每行保存
 `observed_scope`、`missing_scope`、`proposed_experiment` 和 evidence paths。
 
-## 4. Missing：1 行
+## 4. Missing：0 行
 
-### 4.1 Archive nested engine boundary：1 行
-
-- `CAP-NEST-009`
-
-需要 depth 64、累计展开量与 cancellation 边界；不能由 release CLI
-aggressive/recursive case 或 count-boundary 故障注入替代。
+最后一个 archive nested engine 缺口 `CAP-NEST-009` 已由
+[`windows-archive-limit-behavior.md`](windows-archive-limit-behavior.md)
+闭合：相同 14-case corpus 和取消 control 各双运行，达到 depth 64 与
+33,554,546 bytes，确定性投影与 Linux Qt5 相等。
 
 ## 5. 执行顺序
 
 按“每次固定构建关闭最多能力行”的原则：
 
-1. Windows archive depth/cumulative limit harness：处理 1 个 missing；
-2. Windows path closure：最后处理 `CAP-CLI-IN-003`，其中 domain/UNC 等需要
+1. Windows path closure：最后处理 `CAP-CLI-IN-003`，其中 domain/UNC 等需要
    明确环境能力，不把无法在当前主机合法构造的 profile 写成已观察。
 
 每批的接纳条件相同：固定 source/rules/toolchain/binary 或 object identity；

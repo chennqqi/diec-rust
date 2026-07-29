@@ -248,8 +248,11 @@ Phase 0 计划形成：
   原生 Windows Qt5 的 19-case engine cache/DACL 双轮基线、Linux 语义投影
   和平台 cache-byte 差异（Draft）。
 - [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)：
-  将 21 份 Windows runtime 报告逐项映射到 68 行能力清单，当前为
-  66 complete、1 partial、1 missing（Draft）。
+  将 22 份 Windows runtime 报告逐项映射到 68 行能力清单，当前为
+  67 complete、1 partial、0 missing（Draft）。
+- [`windows-archive-limit-behavior.md`](windows-archive-limit-behavior.md)：
+  固定 Windows Qt5 的 depth 64、33,554,546-byte 累计展开量和取消部分前缀，
+  30 次执行的确定性语义投影与 Linux Qt5 相等（In Review）。
 - [`windows-cli-option-behavior.md`](windows-cli-option-behavior.md)：
   固定 Windows verbose/test/create-test/messages 和 292-rule profiling
   顺序，保留 `image_ICNS.sg` 的精确平台移动差异（Draft）。
@@ -338,6 +341,9 @@ Phase 0 计划形成：
 - [`data/archive-limit-engine-qt5-qt6.json`](data/archive-limit-engine-qt5-qt6.json)：
   14 个正常 archive-limit case、取消 control、Qt6 raw streams 和 Qt5 稳定
   projection 对照。
+- [`data/archive-limit-engine-windows-qt5.json`](data/archive-limit-engine-windows-qt5.json)：
+  相同 14 个正常 case 和取消 control 的 Windows Qt5 双轮执行、Linux Qt5
+  稳定语义对照及 harness/build 身份。
 - [`image-dispatch-behavior.md`](image-dispatch-behavior.md)：固定七种非
   JPEG/PNG 图像的自然 Binary fallback、强制 generic Image null adapter 和
   `CAP-GAP-012` 闭合证据。

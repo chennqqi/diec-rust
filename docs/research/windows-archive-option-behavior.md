@@ -96,10 +96,11 @@ stderr 和 18 个唯一 detection tree。
 - nested ZIP option 传播；
 - archive/resource 默认 21 和 aggressive 22 的相邻控制。
 
-21/22 只作为本 option matrix 的控制，不关闭精确计数能力。
-`CAP-NEST-004` 仍需 Windows 上的 archive 99999/100000/100001 和 resource
-21/2001 sentinel；`CAP-NEST-009` 仍需 depth 64、累计展开量和 cancellation
-专用 harness。
+21/22 只作为本 option matrix 的控制，不单独关闭精确计数能力。
+后续 [`windows-count-boundary-behavior.md`](windows-count-boundary-behavior.md)
+已关闭 archive 99999/100000/100001 与 resource 21/2001；
+[`windows-archive-limit-behavior.md`](windows-archive-limit-behavior.md)
+已关闭 depth 64、累计展开量和 cancellation 边界。
 
 ## 5. 兼容性影响
 

@@ -46,7 +46,7 @@ JSON continuity、CSV 优先级及四个带空格 filetype 的 invalid XML。
 保持 `platform_missing`，直到完整差分语料在该平台执行并归档。
 逐行
 [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)
-已把当前证据审计为 66 complete、1 partial、1 missing；2 个开放行均有
+已把当前证据审计为 67 complete、1 partial、0 missing；最后 1 个开放行有
 命名验收实验。
 
 机器证据见

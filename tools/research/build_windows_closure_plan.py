@@ -50,6 +50,9 @@ REPORT_KEYS = {
     "docs/research/data/count-boundaries-windows-qt5.json": (
         "windows_count_boundaries"
     ),
+    "docs/research/data/archive-limit-engine-windows-qt5.json": (
+        "windows_archive_limits"
+    ),
     "docs/research/data/windows-qt5-cli-path-nested.json": (
         "windows_cli_path_nested"
     ),
@@ -181,6 +184,7 @@ COMPLETE: dict[str, str] = {
     "CAP-NEST-006": "the four-mode manifest-resource matrix proves recursive and aggressive context propagation exactly as on Linux Qt5",
     "CAP-NEST-007": "format enumeration, public scanner omission, and direct RSDS rule detection match Linux Qt5",
     "CAP-NEST-008": "nested result trees are fixed across 32 CLI cases",
+    "CAP-NEST-009": "the same 14-case corpus reaches depth 64 and 33,554,546 cumulative expanded bytes, while deterministic cancellation retains the same root-only prefix as Linux Qt5",
 }
 
 
@@ -193,12 +197,7 @@ PARTIAL: dict[str, tuple[str, str, str]] = {
 }
 
 
-MISSING: dict[str, tuple[str, str]] = {
-    "CAP-NEST-009": (
-        "depth-64 and 33,554,546-byte cumulative expansion behavior",
-        "run the fixed archive-limit corpus through a Windows engine harness",
-    ),
-}
+MISSING: dict[str, tuple[str, str]] = {}
 
 
 EVIDENCE_PATHS = {
@@ -272,6 +271,9 @@ CAPABILITY_EVIDENCE_PATHS = {
     ),
     "CAP-NEST-004": (
         "docs/research/data/count-boundaries-windows-qt5.json",
+    ),
+    "CAP-NEST-009": (
+        "docs/research/data/archive-limit-engine-windows-qt5.json",
     ),
 }
 
@@ -877,6 +879,23 @@ def validate_inputs(
     ):
         raise ClosurePlanError("Windows count-boundary facts drift")
 
+    archive_limits = reports[
+        "docs/research/data/archive-limit-engine-windows-qt5.json"
+    ]
+    if (
+        archive_limits.get("passed") is not True
+        or archive_limits.get("failures") != []
+        or archive_limits.get("capability") != "CAP-NEST-009"
+        or archive_limits.get("repetitions") != 2
+        or archive_limits.get("normal_case_count") != 14
+        or archive_limits.get("cancellation_case_count") != 1
+        or archive_limits.get("execution_count") != 30
+        or archive_limits.get("case_observation_count") != 30
+        or len(archive_limits.get("relationships", {})) != 12
+        or not all(archive_limits.get("relationships", {}).values())
+    ):
+        raise ClosurePlanError("Windows archive-limit facts drift")
+
     for evidence_set, paths in EVIDENCE_PATHS.items():
         for path in paths:
             if path not in reports:
@@ -997,7 +1016,7 @@ def build_plan(root: Path) -> dict[str, Any]:
             "windows_baseline_admitted": (
                 not PARTIAL and not MISSING
             ),
-            "windows_process_execution_count": 2362,
+            "windows_process_execution_count": 2392,
             "windows_report_count": len(REPORT_KEYS),
         },
     }

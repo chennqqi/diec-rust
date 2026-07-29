@@ -45,8 +45,8 @@ Windows 特殊路径矩阵和
 双轮后，再加入十个 rule-orchestration case 双轮与两轮 private
 signature-path engine harness、五组 result-model harness 各两轮，再加入
 legacy/archive dispatch 的 86 次执行、debug-data paired harness 双轮、
-archive-option matrix 128 次及 count-boundary 22 次执行，二十一批共
-2,362 次
+archive-option matrix 128 次、count-boundary 22 次及 archive-limit
+30 次执行，二十二批共 2,392 次
 Windows 进程执行；默认 detection
 projection 与 Linux Qt5 26/26 相同，
 251 个直接重叠矩阵 case 的退出码也全部相同，path 相对输出顺序、nested
@@ -80,10 +80,10 @@ baseline，68 行继续保守标记为 `platform_missing`。
 
 独立的 hash-bound
 [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)
-现已把这 68 行逐项审计为 66 `evidence_complete`、1 partial、1 missing，
+现已把这 68 行逐项审计为 67 `evidence_complete`、1 partial、0 missing，
 机器报告 SHA-256 为
-`976c6943820cec43d650cd1d426eff406ce1c7a90dbee0ede52543c90adc8e51`。
-该报告绑定上述 21 份 Windows runtime 证据并为 2 个开放行给出验收实验；
+`2f21960e90534ce68f96cf55350c0c18e7ba6566a7cdb5183833df415882c3df`。
+该报告绑定上述 22 份 Windows runtime 证据并为 1 个开放行给出验收实验；
 在 68 行全部 complete 前，coverage 生成器不消费它来提升平台状态。
 
 另有 798 次 Linux Qt5/Qt6 special 扩展执行把剩余 21 样本的 399 对 raw
@@ -131,7 +131,7 @@ raw 完全相同，7 个 PE64 case 只保留已知 Qt6 stderr；21 个 JSON tree
 - Linux Qt5 source-only 能力已清零；
 - Linux Qt5 已命名 corpus gap 已清零；
 - Linux Qt6 的 68 行已全部接纳为 runtime observed；
-- Windows 的独立 closure 审计为 66 complete/1 partial/1 missing，但尚未
+- Windows 的独立 closure 审计为 67 complete/1 partial/0 missing，但尚未
   接纳，因此 coverage 仍显示 68 个 `platform_missing`；
 - macOS 有 68 个 `platform_missing`，且尚无固定 oracle；
 - `phase_0_coverage_complete` 必须保持 `false`。

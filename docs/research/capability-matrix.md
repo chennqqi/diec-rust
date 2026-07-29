@@ -402,8 +402,8 @@ platform-missing。全部行已分类不等于 Phase 0 覆盖完成。
 
 Windows 的独立逐行审计见
 [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)：
-现有 21 份报告支持 66 complete、1 partial、1 missing。该 66 行只是 closure
-内部结论；2 个开放行关闭并经 coverage builder 接纳前，Windows 的 68 个
+现有 22 份报告支持 67 complete、1 partial、0 missing。该 67 行只是 closure
+内部结论；最后 1 个开放行关闭并经 coverage builder 接纳前，Windows 的 68 个
 platform-missing 不变。
 
 其中

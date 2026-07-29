@@ -158,7 +158,9 @@ python tools\upstream\probe_archive_limits_harness.py `
   partial/cancellation 使用 upstream 同线程 callback 单独验证。
 - `ru_maxrss` 包含 database load 形成的历史高水位，不可解释为单个 sample 的精确
   allocation；性能/内存结论仍需专用 benchmark/profiler。
-- Windows 和 macOS 仍为平台缺口；Linux Qt6 已由配对报告闭合。
+- Windows 已由
+  [`windows-archive-limit-behavior.md`](windows-archive-limit-behavior.md)
+  的同语料双轮证据闭合；macOS 仍为平台缺口。Linux Qt6 已由配对报告闭合。
 
 resource filtering/count 已由
 [`scan-option-boundaries.md`](scan-option-boundaries.md) 闭合；本能力在本报告
