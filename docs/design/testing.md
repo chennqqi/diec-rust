@@ -694,12 +694,19 @@ namespace；见
 因此 cache state 采用 ADR 0015 的三个互斥名称：`warm`、
 `file-content-nonresident-metadata-warm`、`system-cold`；通用 `cold` 永久
 拒绝。前两层和 system-cold 必须分别建立 baseline/trend/threshold，不能合并。
+原生 Windows build 26100/NTFS 的双次只读观察进一步证明：当前 token 没有
+`SeIncreaseQuotaPrivilege`，`SetSystemFileCacheSize` 是全局特权操作，
+`FILE_FLAG_NO_BUFFERING` 会改变被测 handle 的 I/O 契约，
+`EmptyWorkingSet` 只作用于进程 working set。因此 Windows 只复用 `warm`；
+第二层保持 unsupported，system-cold 等待 dedicated Windows infrastructure，
+见
+[`windows-benchmark-cache-state.md`](../research/windows-benchmark-cache-state.md)。
 固定 Linux Qt5 的 ELF、realpath 去重动态依赖闭包和 2,268 个规则资产 size
 口径见
 [`upstream-deployment-size.md`](../research/upstream-deployment-size.md)；
 同时保留 binary+rules 与 full-closure+rules，禁止只用动态链接 ELF 本体比较。
-这些证据尚无 Rust 成对数据、system-cold、可证明 topology 的 physical-core
-或跨 reboot/日期长期 session，
+这些证据尚无 Rust 成对数据、dedicated system-cold、macOS cache-state
+strategy、可证明 topology 的 physical-core 或跨 reboot/日期长期 session，
 也无跨平台发行包，且未冻结阈值或默认限制。
 
 回归阈值在首个 Rust vertical slice 形成同 bytes/options 成对报告后冻结。小于

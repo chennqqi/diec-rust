@@ -2,7 +2,7 @@
 
 Status: Proposed
 
-Last updated: 2026-07-29
+Last updated: 2026-07-30
 
 ## Context
 
@@ -71,6 +71,24 @@ identity/evidence，而不是只放一个字符串，包括：
 Windows/macOS 只有在语义和证据等价时才能复用同名状态；否则使用平台限定的
 新状态并禁止跨状态阈值比较。
 
+Windows 策略评审输入已固定到原生 build 26100/NTFS 的双次只读观察：
+
+- `warm` 可复用；
+- `SetSystemFileCacheSize(-1, -1, 0)` 是需要
+  `SeIncreaseQuotaPrivilege` 的 system-global flush，本机 ordinary token
+  不持有该 privilege，仓库 probe 也不得启用或调用它；
+- `FILE_FLAG_NO_BUFFERING` 改变被测 handle 的 I/O 路径和对齐契约，
+  `FlushFileBuffers` 是 write-to-device，`EmptyWorkingSet` 是
+  process-working-set 操作；三者都不提供 Linux 第二层所需的
+  per-file eviction + pre-run residency 证明；
+- 因此 Windows 的 `file-content-nonresident-metadata-warm` 当前为
+  unsupported，而不是伪造等价 controller；`system-cold` 仍需 disposable
+  dedicated Windows VM/裸机、显式全局授权及 post-state evidence。
+
+机器证据和官方 Win32 契约见
+[`windows-benchmark-cache-state.md`](../../research/windows-benchmark-cache-state.md)。
+macOS strategy 仍待单独评审。
+
 ## Alternatives considered
 
 ### 把 fadvise/mincore 结果称为 cold
@@ -133,6 +151,7 @@ load 对内容 I/O 的敏感性。
 - [`upstream-benchmark-linux-qt5-page-cache.json`](../../research/data/upstream-benchmark-linux-qt5-page-cache.json)
 - [`upstream-benchmark-linux-qt5-cache-environment.json`](../../research/data/upstream-benchmark-linux-qt5-cache-environment.json)
 - [`upstream-benchmark-linux-qt5-file-content-performance.json`](../../research/data/upstream-benchmark-linux-qt5-file-content-performance.json)
+- [`upstream-benchmark-windows-cache-environment.json`](../../research/data/upstream-benchmark-windows-cache-environment.json)
 - Linux kernel `drop_caches`、Linux man-pages namespaces/fadvise 与 Docker
   overlay2 page-cache 官方文档，链接见调研正文。
 
@@ -146,5 +165,5 @@ load 对内容 I/O 的敏感性。
   before-run 0-resident 证明；
 - future system-cold job 必须验证 dedicated authority/isolation；
 - testing design、风险和 Phase 0 gate 使用相同 taxonomy；
-- Windows/macOS 策略完成明确评审；
+- Windows 策略完成明确评审；macOS 策略仍须完成；
 - 本 ADR 获得 Accepted/Rejected/Superseded 评审结论。

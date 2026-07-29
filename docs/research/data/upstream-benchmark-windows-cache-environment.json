@@ -1,0 +1,136 @@
+{
+  "cache_state_assessment": {
+    "file_content_nonresident_metadata_warm": {
+      "basis": "no reviewed native Windows pair provides both per-file eviction and pre-run residency proof; NO_BUFFERING would alter the measured handle",
+      "portable_name_allowed": false
+    },
+    "generic_cold": {
+      "allowed": false,
+      "basis": "ADR 0015 permanently rejects the ambiguous name"
+    },
+    "system_cold": {
+      "basis": "the documented flush is system-global and privileged; dedicated-machine isolation and post-state evidence are not established",
+      "portable_name_allowed": false
+    },
+    "warm": {
+      "basis": "runner-defined warmup and no eviction",
+      "portable_name_allowed": true
+    }
+  },
+  "generated_at": "2026-07-30",
+  "generator": "tools/benchmark/probe_windows_benchmark_cache_environment.py",
+  "generator_sha256": "2f7c62908fb554f3fb39a1b3864f1aaa4cf8a991f0794af70d77d61ac7bc5053",
+  "limitations": [
+    "This ordinary native Windows observation does not grant permission to enable SeIncreaseQuotaPrivilege or flush the global system file cache.",
+    "API availability does not prove an equivalent cache state; the state must also have pre-run evidence and dedicated isolation where required.",
+    "macOS cache-state strategy and any dedicated Windows system-cold experiment remain separate work."
+  ],
+  "observation": {
+    "api_availability": {
+      "empty_working_set": true,
+      "flush_file_buffers": true,
+      "get_system_file_cache_size": true,
+      "set_system_file_cache_size": true
+    },
+    "platform": {
+      "allocation_granularity": 65536,
+      "logical_processor_count": 22,
+      "machine": "AMD64",
+      "page_size": 4096,
+      "pointer_width_bits": 64,
+      "system_file_cache_limits": {
+        "flags": 0,
+        "maximum_bytes": 17592186044416,
+        "maximum_hard_enabled": false,
+        "minimum_bytes": 1048576,
+        "minimum_hard_enabled": false
+      },
+      "windows_version": {
+        "build": 26100,
+        "major": 10,
+        "minor": 0,
+        "platform": 2,
+        "service_pack": ""
+      }
+    },
+    "process": {
+      "elevated": false,
+      "elevation_type": "limited",
+      "set_system_file_cache_privilege": {
+        "attributes": null,
+        "enabled": false,
+        "name": "SeIncreaseQuotaPrivilege",
+        "present": false
+      }
+    },
+    "schema_version": 1,
+    "scope": {
+      "cache_state_changed": false,
+      "empty_working_set_called": false,
+      "flush_file_buffers_called": false,
+      "no_buffering_handle_opened": false,
+      "read_only_observation": true,
+      "set_system_file_cache_size_called": false
+    },
+    "target_volume": {
+      "bytes_per_sector": 512,
+      "drive_type": "fixed",
+      "filesystem": "NTFS",
+      "filesystem_flags": 65482495,
+      "maximum_component_length": 255,
+      "sectors_per_cluster": 8,
+      "target_path_recorded": false,
+      "volume_identity_recorded": false
+    }
+  },
+  "observer": {
+    "path": "tools/benchmark/observe_windows_cache_environment.py",
+    "repetitions": 2,
+    "sha256": "46ed59d4e456d831c5bcfcfab5b51bef0f816de3a8d5be3e882bb1b8c9d18c93"
+  },
+  "official_contract_sources": [
+    {
+      "claim": "GetSystemFileCacheSize observes the system-cache working-set limits and whether hard limits are enabled",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-getsystemfilecachesize"
+    },
+    {
+      "claim": "SetSystemFileCacheSize changes a system-global cache working set, uses -1/-1 to flush it, and requires the enabled SeIncreaseQuotaPrivilege",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-setsystemfilecachesize"
+    },
+    {
+      "claim": "FILE_FLAG_NO_BUFFERING selects uncached I/O for the handle and imposes sector and buffer alignment requirements",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/fileio/file-buffering"
+    },
+    {
+      "claim": "FlushFileBuffers writes buffered file data to its target; it is not a file-page nonresidency observation",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-flushfilebuffers"
+    },
+    {
+      "claim": "EmptyWorkingSet removes as many pages as possible from one process working set, not the system file cache",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/psapi/working-set-information"
+    }
+  ],
+  "relationships": {
+    "current_token_global_flush_authorized": false,
+    "global_flush_requires_named_privilege": true,
+    "no_cache_state_changed": true,
+    "no_per_file_eviction_and_residency_contract_identified": true,
+    "observation_was_read_only": true,
+    "two_native_observations_identical": true,
+    "windows_file_content_state_equivalent_to_linux_proven": false,
+    "windows_system_cold_state_proven": false
+  },
+  "schema_version": 1,
+  "scope": {
+    "benchmark_process_started": false,
+    "cache_state_changed": false,
+    "empty_working_set_called": false,
+    "flush_file_buffers_called": false,
+    "no_buffering_handle_opened": false,
+    "performance_baseline": false,
+    "read_only_probe": true,
+    "set_system_file_cache_size_called": false,
+    "windows_strategy_review_input": true
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

@@ -143,8 +143,9 @@ SHA-256；在两个独立断网容器中执行只读观察，要求结果完全�
 ## 尚未完成
 
 - 对 cache-state taxonomy 的 ADR 评审；
-- 将 `file-content-nonresident-metadata-warm` controller 安全接入 benchmark
-  runner，并保证每个 measured run 前验证；
 - dedicated VM/裸机的 `system-cold` 实验；
-- Windows/macOS 的等价或明确不可等价 cache-state contract；
+- macOS 的等价或明确不可等价 cache-state contract；Windows 已由
+  [`windows-benchmark-cache-state.md`](windows-benchmark-cache-state.md)
+  固定为 warm 可复用、第二层 unsupported、system-cold 待 dedicated
+  infrastructure；
 - Rust/upstream 成对、长期 session、physical-core/topology 与评审阈值。

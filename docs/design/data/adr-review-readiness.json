@@ -361,7 +361,7 @@
       "review_question": "是否接受 warm、file-content-nonresident-metadata-warm 与 dedicated system-cold 三层 cache-state，并永久拒绝通用 cold 标签？",
       "remaining_acceptance_evidence": [
         "dedicated system-cold infrastructure and authority/isolation proof",
-        "Windows/macOS equivalent or explicitly non-equivalent cache-state review"
+        "macOS equivalent or explicitly non-equivalent cache-state review"
       ]
     }
   ],

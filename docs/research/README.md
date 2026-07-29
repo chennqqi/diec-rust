@@ -199,6 +199,11 @@ Phase 0 计划形成：
   固定容器 overlayfs、namespace、capability、只读 `/proc/sys` 与
   `drop_caches=EROFS` 的双次只读观察，以及三层 cache-state taxonomy 的环境
   边界（In Review）。
+- [`windows-benchmark-cache-state.md`](windows-benchmark-cache-state.md)：
+  固定原生 Windows build 26100/NTFS 的双次只读 API/token 观察，证明全局
+  cache flush 需要当前 token 不具备的 privilege，并明确
+  `NO_BUFFERING`、flush 与 process working-set 操作不能冒充 Linux per-file
+  nonresident 或 dedicated system-cold（In Review）。
 - [`upstream-build-baseline.md`](upstream-build-baseline.md)：固定 Linux Qt5/qmake CLI 构建与行为实验（Draft）。
 - [`upstream-cmake-differential.md`](upstream-cmake-differential.md)：官方 CMake CLI 构建及与 qmake 的原始输出差分（Draft）。
 - [`upstream-qt6-differential.md`](upstream-qt6-differential.md)：固定 Qt 6 CMake CLI 构建、Qt 5/Qt 6 原始差分与规则 warning 最小化（Draft）。
