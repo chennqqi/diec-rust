@@ -215,6 +215,18 @@
     "semantic_projection_failures": 0,
     "named_relationship_failures": 0
   },
+  "windows_count_boundaries": {
+    "path": "docs/research/data/count-boundaries-windows-qt5.json",
+    "sha256": "87e901f31408c7187033266318fb2d12fe0838a9b007a8bf93e8e6b332bd97a5",
+    "capability_count": 1,
+    "repetitions": 2,
+    "archive_case_count": 3,
+    "resource_case_count": 8,
+    "execution_count": 22,
+    "case_observation_count": 22,
+    "semantic_projection_failures": 0,
+    "named_relationship_failures": 0
+  },
   "windows_cli_path_nested": {
     "path": "docs/research/data/windows-qt5-cli-path-nested.json",
     "sha256": "e877e112deb244ab1cbf9edf221e94e155cda711a182f216478eeaf9da40e21b",

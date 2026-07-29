@@ -47,6 +47,9 @@ REPORT_KEYS = {
     "docs/research/data/archive-option-engine-windows-qt5.json": (
         "windows_archive_option"
     ),
+    "docs/research/data/count-boundaries-windows-qt5.json": (
+        "windows_count_boundaries"
+    ),
     "docs/research/data/windows-qt5-cli-path-nested.json": (
         "windows_cli_path_nested"
     ),
@@ -173,6 +176,7 @@ COMPLETE: dict[str, str] = {
     "CAP-NEST-001": "directory traversal and internal recursive-scan controls are both fixed",
     "CAP-NEST-002": "resource and overlay recursive-scan projections are fixed",
     "CAP-NEST-003": "all 64 direct engine option cases match Linux Qt5 and the 32 no-archive controls match the Windows release CLI",
+    "CAP-NEST-004": "the archive 99999/100000/100001 sentinels and resource inclusive 21/2001 boundaries match Linux Qt5",
     "CAP-NEST-005": "overlay and resource recursive/aggressive gate projections are fixed",
     "CAP-NEST-006": "the four-mode manifest-resource matrix proves recursive and aggressive context propagation exactly as on Linux Qt5",
     "CAP-NEST-007": "format enumeration, public scanner omission, and direct RSDS rule detection match Linux Qt5",
@@ -190,10 +194,6 @@ PARTIAL: dict[str, tuple[str, str, str]] = {
 
 
 MISSING: dict[str, tuple[str, str]] = {
-    "CAP-NEST-004": (
-        "99999/100000/100001 archive and 21/2001 resource count boundaries",
-        "port the archive/resource iteration harnesses to Windows",
-    ),
     "CAP-NEST-009": (
         "depth-64 and 33,554,546-byte cumulative expansion behavior",
         "run the fixed archive-limit corpus through a Windows engine harness",
@@ -269,6 +269,9 @@ EVIDENCE_PATHS = {
 CAPABILITY_EVIDENCE_PATHS = {
     "CAP-NEST-003": (
         "docs/research/data/archive-option-engine-windows-qt5.json",
+    ),
+    "CAP-NEST-004": (
+        "docs/research/data/count-boundaries-windows-qt5.json",
     ),
 }
 
@@ -857,6 +860,23 @@ def validate_inputs(
     ):
         raise ClosurePlanError("Windows archive-option facts drift")
 
+    count_boundaries = reports[
+        "docs/research/data/count-boundaries-windows-qt5.json"
+    ]
+    if (
+        count_boundaries.get("passed") is not True
+        or count_boundaries.get("failures") != []
+        or count_boundaries.get("capability") != "CAP-NEST-004"
+        or count_boundaries.get("repetitions") != 2
+        or count_boundaries.get("archive_case_count") != 3
+        or count_boundaries.get("resource_case_count") != 8
+        or count_boundaries.get("execution_count") != 22
+        or count_boundaries.get("case_observation_count") != 22
+        or len(count_boundaries.get("relationships", {})) != 14
+        or not all(count_boundaries.get("relationships", {}).values())
+    ):
+        raise ClosurePlanError("Windows count-boundary facts drift")
+
     for evidence_set, paths in EVIDENCE_PATHS.items():
         for path in paths:
             if path not in reports:
@@ -977,7 +997,7 @@ def build_plan(root: Path) -> dict[str, Any]:
             "windows_baseline_admitted": (
                 not PARTIAL and not MISSING
             ),
-            "windows_process_execution_count": 2340,
+            "windows_process_execution_count": 2362,
             "windows_report_count": len(REPORT_KEYS),
         },
     }

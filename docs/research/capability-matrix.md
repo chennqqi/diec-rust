@@ -243,6 +243,10 @@ hideunknown 的可观察增量。完整输入哈希和输出见
   `QString::fromLatin1` 根因，见
   [`archive-iteration-boundary.md`](archive-iteration-boundary.md) 与
   [`qt6-count-boundary-runtime-evidence.md`](qt6-count-boundary-runtime-evidence.md)；
+  原生 Windows Qt5 已双轮执行 archive 99999/100000/100001 及完整
+  resource 8-case matrix；archive 投影和 resource 完整 JSON 均与 Linux Qt5
+  相同，见
+  [`windows-count-boundary-behavior.md`](windows-count-boundary-behavior.md)。
   ZIP 压缩/加密/畸形首轮矩阵见
   [`archive-adversarial-behavior.md`](archive-adversarial-behavior.md)；
   7Z/RAR4/CAB/ISO9660 EOF 前缀截断矩阵见
@@ -398,8 +402,8 @@ platform-missing。全部行已分类不等于 Phase 0 覆盖完成。
 
 Windows 的独立逐行审计见
 [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)：
-现有 20 份报告支持 65 complete、1 partial、2 missing。该 65 行只是 closure
-内部结论；3 个开放行关闭并经 coverage builder 接纳前，Windows 的 68 个
+现有 21 份报告支持 66 complete、1 partial、1 missing。该 66 行只是 closure
+内部结论；2 个开放行关闭并经 coverage builder 接纳前，Windows 的 68 个
 platform-missing 不变。
 
 其中

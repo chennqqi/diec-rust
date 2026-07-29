@@ -135,5 +135,5 @@ python tools\upstream\collect_windows_dispatch.py `
 ```
 
 本报告把三个能力行提升为 Windows `evidence_complete`，不关闭
-`CAP-CLI-IN-003` 或其余两项 archive nested-engine 缺口，也不代表 Windows
+`CAP-CLI-IN-003` 或其余一项 archive nested-engine 缺口，也不代表 Windows
 68 行基线已经接纳。

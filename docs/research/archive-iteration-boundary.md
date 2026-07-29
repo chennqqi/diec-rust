@@ -42,7 +42,9 @@ ZIP deflate/ZipCrypto/CRC/压缩流畸形已有
 和
 [`qt-null-filename-semantics-qt5-qt6.json`](data/qt-null-filename-semantics-qt5-qt6.json)。
 完整 Qt6 闭环说明见
-[`qt6-count-boundary-runtime-evidence.md`](qt6-count-boundary-runtime-evidence.md)。
+[`qt6-count-boundary-runtime-evidence.md`](qt6-count-boundary-runtime-evidence.md)；
+原生 Windows Qt5 双轮对照见
+[`windows-count-boundary-behavior.md`](windows-count-boundary-behavior.md)。
 
 ## Qt5 固定身份
 

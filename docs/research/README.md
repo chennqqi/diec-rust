@@ -100,6 +100,9 @@ Phase 0 计划形成：
   原生 Windows Qt5 的 64-case engine archive-option 双轮矩阵、Windows
   release 控制和 Linux Qt5 detection tree 对照，关闭 `CAP-NEST-003`
   （Draft）。
+- [`windows-count-boundary-behavior.md`](windows-count-boundary-behavior.md)：
+  原生 Windows Qt5 的 archive 99999/100000/100001 和 resource 21/2001
+  双轮精确边界，关闭 `CAP-NEST-004`（Draft）。
 - [`source-analysis.md`](source-analysis.md)：模块关系及扫描/规则调用链（Draft）。
 - [`rule-compatibility.md`](rule-compatibility.md)：规则语法、内建函数和宿主 API（Draft）。
 - [`rule-runtime-spike.md`](rule-runtime-spike.md)：Boa 全库解析、真实复杂规则、宿主绑定和资源限制验证（Draft）。
@@ -245,8 +248,8 @@ Phase 0 计划形成：
   原生 Windows Qt5 的 19-case engine cache/DACL 双轮基线、Linux 语义投影
   和平台 cache-byte 差异（Draft）。
 - [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)：
-  将 20 份 Windows runtime 报告逐项映射到 68 行能力清单，当前为
-  65 complete、1 partial、2 missing（Draft）。
+  将 21 份 Windows runtime 报告逐项映射到 68 行能力清单，当前为
+  66 complete、1 partial、1 missing（Draft）。
 - [`windows-cli-option-behavior.md`](windows-cli-option-behavior.md)：
   固定 Windows verbose/test/create-test/messages 和 292-rule profiling
   顺序，保留 `image_ICNS.sg` 的精确平台移动差异（Draft）。
@@ -500,6 +503,9 @@ Phase 0 计划形成：
 - [`data/archive-option-engine-windows-qt5.json`](data/archive-option-engine-windows-qt5.json)：
   128 次原生 Windows Qt5 engine 执行、32 个 release control、18 个
   detection tree 与 11 项 option/gate 关系。
+- [`data/count-boundaries-windows-qt5.json`](data/count-boundaries-windows-qt5.json)：
+  archive 三点和 resource 八案各双轮的 22 次原生 Windows Qt5 执行、
+  完整 Linux Qt5 对照及十四项关系。
 - [`data/subdevice-source-audit.json`](data/subdevice-source-audit.json)：固定 XScanEngine/Formats 源码哈希、resource/overlay 调度及 debug-data 可达性审计。
 - [`data/debug-dispatch-fixture.json`](data/debug-dispatch-fixture.json)：
   同时含 RT_MANIFEST resource 与 CodeView/RSDS debug directory 的项目生成 PE。

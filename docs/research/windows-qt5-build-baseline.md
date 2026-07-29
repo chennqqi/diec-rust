@@ -46,7 +46,7 @@ JSON continuity、CSV 优先级及四个带空格 filetype 的 invalid XML。
 保持 `platform_missing`，直到完整差分语料在该平台执行并归档。
 逐行
 [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)
-已把当前证据审计为 65 complete、1 partial、2 missing；3 个开放行均有
+已把当前证据审计为 66 complete、1 partial、1 missing；2 个开放行均有
 命名验收实验。
 
 机器证据见
@@ -491,6 +491,22 @@ archive/resource 相邻控制，关闭 `CAP-NEST-003`。报告 SHA-256 为
 `c848a85640d2c89648d749ab4c3a723d9782e4095bf55ab29cc4614b75d3d00e`，
 详见
 [`windows-archive-option-behavior.md`](windows-archive-option-behavior.md)。
+
+## Windows Qt5 archive/resource 精确计数边界
+
+[`build_windows_archive_iteration_harness.ps1`](../../tools/upstream/build_windows_archive_iteration_harness.ps1)
+只替换固定 qmake Release console main object；harness-only peak-RSS 采集从
+Unix `getrusage` 适配为 WinAPI `GetProcessMemoryInfo`，engine objects 未修改。
+Windows 用普通文件作为 `TEMP/TMP` root，等价触发占位 record 的
+`QTemporaryFile` 创建失败。
+
+archive 99999/100000/100001 三点及 resource 八案各连续运行两轮，共 22 次
+执行。archive 六份语义投影与 Linux Qt5 相同；resource 十六份完整 JSON 与
+Linux Qt5 相同，精确固定默认 21、aggressive 2001 和严格递增顺序，关闭
+`CAP-NEST-004`。报告 SHA-256 为
+`87e901f31408c7187033266318fb2d12fe0838a9b007a8bf93e8e6b332bd97a5`，
+详见
+[`windows-count-boundary-behavior.md`](windows-count-boundary-behavior.md)。
 
 ## Windows CLI Unicode/特殊路径矩阵
 

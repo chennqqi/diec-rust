@@ -6,6 +6,9 @@ Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
 
 Last updated: 2026-07-29
 
+原生 Windows Qt5 对相同八个 case 的完整 JSON 双轮对照见
+[`windows-count-boundary-behavior.md`](windows-count-boundary-behavior.md)。
+
 ## 1. 目的
 
 本实验闭合 `CAP-GAP-005`，回答此前普通语料无法回答的四个问题：

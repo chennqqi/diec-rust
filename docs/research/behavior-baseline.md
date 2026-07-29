@@ -119,13 +119,15 @@ case observation。scalar、四类列表、flags、IDs 和 enums 的完整语义
 72 次 case observation 全部稳定，公开语义投影及三个完整 harness JSON 文档
 均与 Linux Qt5 相同。随后 Windows debug-data paired harness 双轮又关闭
 `CAP-NEST-007`。Windows archive-option matrix 随后以 128 次执行关闭
-`CAP-NEST-003`。二十份 Windows runtime 报告累计 2,340 次执行；逐行审计
-更新为 65 complete、1 partial、2 missing，下一优先批次转为 archive
-count/limit harness，详见
+`CAP-NEST-003`。Windows count-boundary 批次又以 22 次执行关闭
+`CAP-NEST-004`。二十一份 Windows runtime 报告累计 2,362 次执行；逐行审计
+更新为 66 complete、1 partial、1 missing，下一优先批次转为 archive
+depth/cumulative limit harness，详见
 [`windows-dispatch-behavior.md`](windows-dispatch-behavior.md) 与
 [`windows-debug-dispatch-behavior.md`](windows-debug-dispatch-behavior.md)、
-[`windows-archive-option-behavior.md`](windows-archive-option-behavior.md)。
-上述 20 份报告由
+[`windows-archive-option-behavior.md`](windows-archive-option-behavior.md) 与
+[`windows-count-boundary-behavior.md`](windows-count-boundary-behavior.md)。
+上述 21 份报告由
 [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)
 逐行投影，继续阻止局部 runtime 结果被误当作完整 Windows baseline。
 
