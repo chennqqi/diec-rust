@@ -172,6 +172,13 @@ RAR decoder 固定到 UnRAR 7.1.10 镜像：12-token 覆盖 94.21%、64-token
 覆盖 74.21%，但 XArchive 文件没有 UnRAR 修改分发 notice。书面评审前不得把
 该 decoder 直接复制或翻译进 Rust。
 
+XCapstone/Capstone 的最终 ELF 贡献现已由
+[`xcapstone-license-closure.md`](xcapstone-license-closure.md) 固定：
+`xcapstone.cpp.o` 直接链接，`libcapstone_x86.a` 构建 11 个 member，但只有
+10 个具有最终 ELF 全局符号见证；`MCInstrDesc.c.o` 未被抽取。实际闭包为
+11 个 compile source/71 个依赖文件，必须分别保留 XCapstone MIT、Capstone
+BSD-3-Clause 和 LLVM University of Illinois/NCSA 文本。
+
 XYara/YARA 当前 Linux target 也已由
 [`yara-license-closure.md`](yara-license-closure.md) 固定：51 个编译单元、
 109 个依赖文件，132 个 vendored YARA 文件全部映射官方 v4.5.2（129 个内容
@@ -182,7 +189,8 @@ XYara/YARA 当前 Linux target 也已由
 
 ## 尚未完成
 
-- 构建固定上游并保存 CMake target graph、link map、动态依赖和符号表。
+- 已为 XCapstone 保存最终 ELF member 符号见证；其余组件仍需补全 CMake
+  target graph、link map、动态依赖和符号表。
 - 为 XArchive 聚合 Brotli/Zstandard 恢复独立 LICENSE/NOTICE/attribution，
   完成 Brotli 剩余约 1.4% token 分类，并对 RAR decoder 的 UnRAR notice/
   复用边界取得书面结论；为 YARA/TLSH 恢复独立
