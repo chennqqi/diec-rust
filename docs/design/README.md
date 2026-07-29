@@ -19,6 +19,8 @@ Phase 0 计划形成：
   metadata/open attempt 单位、结构推导、跨平台上游证据边界和准入条件。
 - [`data/diagnostic-budget-candidate.json`](data/diagnostic-budget-candidate.json)：
   typed diagnostic fact 上限、overflow completion 和 scan profile 字段闭包。
+- [`data/input-budget-candidate.json`](data/input-budget-candidate.json)：
+  root logical length 单位、1 GiB/8 GiB 候选及与读取/分配 counter 的边界。
 - [`phase-0-gate-review.md`](phase-0-gate-review.md)：Phase 0 退出条件、阻塞项及
   关闭证据的审计总账（In Review）。
 - [`design-review-readiness.md`](design-review-readiness.md)：五份必需设计从

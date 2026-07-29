@@ -28,7 +28,7 @@ ADR 0007 已被 ADR 0011 Superseded，不属于当前待接受集合。机器清
 | 0009 | modern cancel 不返回 partial detections | production Rust/JSON/C mapping、race/recovery、legacy waiver |
 | 0010 | include cycle 提前有界失败 | 全库 sizing 已提出 16/256 与 64/4096；仍缺 dynamic/custom database、production graph/stack、边界/fuzz、CPU/peak-memory 与 SafetyDeviation |
 | 0011 | 默认 Rust 1.97.1、MSRV 1.88 | Phase 1 default/MSRV CI jobs |
-| 0012 | 全 scan 嵌套预算有限，legacy high-resource 仍有 hard ceiling | scan/traversal 候选已机器统一但未 admitted；仍缺 production budget、Rust 全 limit 边界与固定 high-ratio/畸形 corpus 的 sanitizer/fuzz replay、跨平台资源与 waiver |
+| 0012 | 全 scan 嵌套预算有限，legacy high-resource 仍有 hard ceiling | scan/traversal 候选已机器统一，diagnostic 与 root input 已有独立候选但均未 admitted；仍缺 production budget、Rust 全 limit 边界与固定 high-ratio/畸形 corpus 的 sanitizer/fuzz replay、跨平台资源与 waiver |
 | 0013 | short read/I/O/seek/range fail closed，不复制未初始化尾部 | production ByteSource、跨 adapter typed error、fuzz/sanitizer 与 waiver |
 | 0014 | safe canonical 不跟随枚举 link；legacy alias 仍受 cycle/TOCTOU/budget hard stop | traversal 候选已机器统一但 metadata/open 次数未定；仍缺 production TargetExpander、边界/TOCTOU/root confinement、Windows/macOS 与跨语言 waiver |
 | 0015 | warm、file-content-nonresident-metadata-warm、dedicated system-cold 三层，拒绝通用 cold | dedicated authority/isolation、macOS runtime candidate/closure |

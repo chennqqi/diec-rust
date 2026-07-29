@@ -304,6 +304,17 @@ JSON object 数或 FFI view 次数。Modern 候选为 4,096，legacy-high 为
 `LimitReached`。child、parser、rule runtime 和 archive backend 共享该 counter，
 renderer 不得重新计数或制造事实。
 
+`max_input_bytes` 只计 root source 的稳定逻辑长度，不计 child 或展开对象：
+`Bytes` 使用 slice length，`ByteSource` 使用契约验证后的声明长度，`Path` 使用
+打开稳定 handle 后取得的长度。Modern 候选为 1 GiB，legacy-high 为 8 GiB；
+exact 可进入扫描，`limit+1` 必须在 parser、rule、mapping、bulk read 或
+input-sized allocation 前以 `LimitReached` 失败，且不返回 partial report。
+该字段不是累计 I/O：实际 read、re-read 和 exposed mapped range 仍独立计入
+`max_total_read_bytes`。接受根长度不能授权等量 allocation，
+`max_single_allocation_bytes` 和待定的 total-allocation budget 仍独立生效。
+未知长度 streaming 不属于 v1；source 在扫描期间截断或增长按 ADR 0013
+fail closed。
+
 limits 是全 scan 累计预算。child work 不重置额度。所有触发点记录：
 
 - `LimitKind`；
@@ -312,10 +323,10 @@ limits 是全 scan 累计预算。child work 不重置额度。所有触发点�
 - 结果是否完整。
 
 [`ADR 0012`](decisions/0012-bounded-nested-scan-budget.md) 现提议首版有限默认：
-30 s、depth 32、全 scan 4,096 archive entries、单对象 128 MiB、累计展开
-512 MiB 和累计读取 1 GiB，并为显式 `LegacyHighResource` 提议更高但仍有限的
-profile。ADR Accepted 前这些数字是评审候选；实现不得以 `0` 或整数最大值回退为
-无界。对应上游证据见
+30 s、depth 32、全 scan 4,096 archive entries、根输入 1 GiB、单对象
+128 MiB、累计展开 512 MiB 和累计读取 1 GiB，并为显式
+`LegacyHighResource` 提议更高但仍有限的 profile。ADR Accepted 前这些数字是
+评审候选；实现不得以 `0` 或整数最大值回退为无界。对应上游证据见
 [`archive-limit-behavior.md`](../research/archive-limit-behavior.md)。
 
 统一机器候选见

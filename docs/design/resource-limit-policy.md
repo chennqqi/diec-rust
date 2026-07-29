@@ -20,6 +20,7 @@ Last updated: 2026-07-30
 - [数据库加载规模](../research/database-load-sizing.md)；
 - [Traversal attempt 候选](data/traversal-attempt-budget-candidate.json)；
 - [Diagnostic count 候选](data/diagnostic-budget-candidate.json)；
+- [Root input 候选](data/input-budget-candidate.json)；
 - [`api.md` 的 `ScanLimits`](api.md#8-scanlimits)。
 
 ## 2. 共同不变量
@@ -47,6 +48,7 @@ Last updated: 2026-07-30
 | maximum queued items | 4,096 |
 | maximum result nodes | 100,000 |
 | maximum diagnostics | 4,096 |
+| maximum root input bytes | 1,073,741,824 bytes |
 | maximum single expanded object/allocation | 134,217,728 bytes |
 | total expanded bytes | 536,870,912 bytes |
 | total source bytes read/mapped | 1,073,741,824 bytes |
@@ -109,6 +111,7 @@ library 默认。
 | maximum queued items | 131,072 |
 | maximum result nodes | 1,048,576 |
 | maximum diagnostics | 131,072 |
+| maximum root input bytes | 8,589,934,592 bytes |
 | maximum single expanded object | 536,870,912 bytes |
 | total expanded bytes | 4,294,967,296 bytes |
 | total source bytes read/mapped | 8,589,934,592 bytes |
@@ -150,21 +153,26 @@ aggressive archive 只让 ordinal 100000 可达，ordinal 100001 不可达。
 
 ## 5. 尚未定值的必需预算
 
-当前策略有 6 个明确 unresolved 项，因此不得 admitted：
+当前策略有 5 个明确 unresolved 项，因此不得 admitted：
 
-1. root `maximum_input_bytes`；
-2. `maximum_total_allocated_bytes`；
-3. script maximum heap bytes；
-4. script maximum stack bytes；
-5. script maximum instruction/fuel；
-6. script runtime deadline。
+1. `maximum_total_allocated_bytes`；
+2. script maximum heap bytes；
+3. script maximum stack bytes；
+4. script maximum instruction/fuel；
+5. script runtime deadline。
 
 QuickJS spike 的 4 MiB heap、128 KiB stack 和 25 ms deadline 只在机器契约的
-`runtime_spike_only` 中保存；它们不能填充第 3—6 项。include 两项已有
+`runtime_spike_only` 中保存；它们不能填充第 2—5 项。include 两项已有
 16/256 与 64/4096 候选，但仍需 ADR 0010 评审、dynamic/custom database 和
 production 边界测试。database load 的 10 个字段已有非零候选，但仍保持
 `review_candidate_not_admitted`，并需要完整 cache overhead、ZIP64/compression
 ratio 和跨平台 benchmark。
+
+root input 已有独立、未准入候选：modern 为 1 GiB，legacy-high 为 8 GiB，
+只计稳定 root logical length。该值恰好等于各 profile 的累计 read/mapped ceiling，
+但两个 counter 独立：root 长度检查不消费累计 I/O，不允许等量 allocation；
+re-read、mapping 和 child work 仍可能耗尽累计读取预算。精确计数和固定证据边界见
+[`input-budget-candidate.json`](data/input-budget-candidate.json)。
 
 ## 6. 统一计数语义
 

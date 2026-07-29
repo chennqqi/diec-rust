@@ -311,6 +311,7 @@ def build_candidate(root: Path) -> dict[str, Any]:
                 "maximum_queued_items",
                 "maximum_result_nodes",
                 "maximum_diagnostics",
+                "maximum_root_input_bytes",
                 "maximum_single_expanded_object_bytes",
                 "total_expanded_bytes",
                 "total_source_bytes_read_or_mapped",

@@ -38,6 +38,9 @@ SOURCES = {
     "diagnostic_budget": (
         "docs/design/data/diagnostic-budget-candidate.json"
     ),
+    "input_budget": (
+        "docs/design/data/input-budget-candidate.json"
+    ),
 }
 
 MIB = 1024 * 1024
@@ -146,14 +149,17 @@ def validate_sources(root: Path) -> dict[str, dict[str, Any]]:
             "| maximum queued items | 4,096 |",
             "| maximum result nodes | 100,000 |",
             "| maximum diagnostics | 4,096 |",
+            "| maximum root input bytes | 1 GiB |",
             "| maximum single expanded object/allocation | 128 MiB |",
             "| total expanded bytes | 512 MiB |",
             "| total source bytes read/mapped | 1 GiB |",
             "depth\n   64、total entries 100,001、queued items 131,072、"
             "result nodes 1,048,576、",
-            "diagnostics 131,072、single object 512 MiB、"
-            "total expanded 4 GiB、",
+            "diagnostics 131,072、root input 8 GiB、single object "
+            "512 MiB、total\n   expanded 4 GiB、",
             "source read 8 GiB、deadline 120 s",
+            "root input 8 GiB",
+            "根输入稳定逻辑长度",
             "queued items 131,072、result nodes 1,048,576、",
             "diagnostics 131,072",
         ),
@@ -200,6 +206,8 @@ def validate_sources(root: Path) -> dict[str, dict[str, Any]]:
             "pub max_nodes: u64",
             "pub max_diagnostics: u64",
             "Modern 候选为 4,096，legacy-high 为\n131,072",
+            "`max_input_bytes` 只计 root source 的稳定逻辑长度",
+            "Modern 候选为 1 GiB，legacy-high 为 8 GiB",
             "pub max_archive_entries: u64",
             "pub max_depth: u32",
             "pub max_queue_items: u64",
@@ -234,6 +242,7 @@ def validate_reports(root: Path) -> dict[str, Any]:
     database_sizing = load_json(root / SOURCES["database_sizing"])
     traversal_attempt = load_json(root / SOURCES["traversal_attempt"])
     diagnostic_budget = load_json(root / SOURCES["diagnostic_budget"])
+    input_budget = load_json(root / SOURCES["input_budget"])
 
     for name, report in (
         ("archive_limit", archive),
@@ -244,6 +253,7 @@ def validate_reports(root: Path) -> dict[str, Any]:
         ("database_sizing", database_sizing),
         ("traversal_attempt", traversal_attempt),
         ("diagnostic_budget", diagnostic_budget),
+        ("input_budget", input_budget),
     ):
         require(
             report.get("upstream_commit") == UPSTREAM_COMMIT,
@@ -516,6 +526,52 @@ def validate_reports(root: Path) -> dict[str, Any]:
         },
         "diagnostic budget",
     )
+    input_profiles = input_budget.get(
+        "candidate_derivation", {}
+    ).get("profiles")
+    input_evidence = input_budget.get("upstream_evidence_boundary")
+    require(
+        input_budget.get("result") == "review_candidate_not_admitted"
+        and input_profiles
+        == {
+            "modern_default": {
+                "maximum_root_input_bytes": GIB,
+                "total_source_bytes_read_or_mapped": GIB,
+            },
+            "legacy_high_resource": {
+                "maximum_root_input_bytes": 8 * GIB,
+                "total_source_bytes_read_or_mapped": 8 * GIB,
+            },
+        },
+        "input budget profile drift",
+    )
+    require(
+        isinstance(input_evidence, dict)
+        and input_evidence.get("engine_contract_case_count") == 37
+        and input_evidence.get("maximum_observed_root_archive_bytes")
+        == 16_777_452
+        and input_evidence.get(
+            "maximum_observed_cumulative_expanded_bytes"
+        )
+        == 33_554_546
+        and input_budget.get("counter_relationships", {}).get(
+            "root_length_does_not_authorize_equal_allocation"
+        )
+        is True,
+        "input budget evidence boundary drift",
+    )
+    validate_nested_bindings(
+        root,
+        input_budget,
+        {
+            "adr_scan",
+            "adr_input",
+            "api",
+            "engine_contract",
+            "archive_limit",
+        },
+        "input budget",
+    )
 
     return {
         "observations": {
@@ -566,9 +622,16 @@ def validate_reports(root: Path) -> dict[str, Any]:
                 "diagnostic_text_equal_across_qt5_qt6": False,
                 "observed_maximum_is_candidate_basis": False,
             },
+            "root_input_evidence_boundary": {
+                "engine_contract_case_count": 37,
+                "maximum_observed_root_archive_bytes": 16_777_452,
+                "maximum_observed_cumulative_expanded_bytes": 33_554_546,
+                "observed_maximum_is_candidate_basis": False,
+            },
         },
         "database_profiles": database_profiles,
         "diagnostic_profiles": diagnostic_profiles,
+        "input_profiles": input_profiles,
         "required_scan_fields": diagnostic_closure[
             "scan_fields_required_in_both_profiles"
         ],
@@ -581,9 +644,12 @@ def build_policy(root: Path) -> dict[str, Any]:
     observations = validated["observations"]
     database_profiles = validated["database_profiles"]
     diagnostic_profiles = validated["diagnostic_profiles"]
+    input_profiles = validated["input_profiles"]
     required_scan_fields = set(validated["required_scan_fields"])
     modern_diagnostic = diagnostic_profiles["modern_default"]
     legacy_diagnostic = diagnostic_profiles["legacy_high_resource"]
+    modern_input = input_profiles["modern_default"]
+    legacy_input = input_profiles["legacy_high_resource"]
     modern_scan = {
         "wall_deadline_milliseconds": 30_000,
         "maximum_nested_depth": 32,
@@ -596,6 +662,9 @@ def build_policy(root: Path) -> dict[str, Any]:
         ],
         "maximum_diagnostics": modern_diagnostic[
             "maximum_diagnostics"
+        ],
+        "maximum_root_input_bytes": modern_input[
+            "maximum_root_input_bytes"
         ],
         "maximum_single_expanded_object_bytes": 128 * MIB,
         "total_expanded_bytes": 512 * MIB,
@@ -613,6 +682,9 @@ def build_policy(root: Path) -> dict[str, Any]:
         ],
         "maximum_diagnostics": legacy_diagnostic[
             "maximum_diagnostics"
+        ],
+        "maximum_root_input_bytes": legacy_input[
+            "maximum_root_input_bytes"
         ],
         "maximum_single_expanded_object_bytes": 512 * MIB,
         "total_expanded_bytes": 4 * GIB,
@@ -685,10 +757,6 @@ def build_policy(root: Path) -> dict[str, Any]:
         },
         "upstream_compatibility_observations": observations,
         "unresolved_required_budgets": [
-            {
-                "id": "scan.maximum_input_bytes",
-                "required_by": "docs/design/api.md#8-scanlimits",
-            },
             {
                 "id": "scan.maximum_total_allocated_bytes",
                 "required_by": "untrusted-input allocation safety",

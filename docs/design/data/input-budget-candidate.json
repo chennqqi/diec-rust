@@ -1,0 +1,90 @@
+{
+  "acceptance_requirements": [
+    "ADR 0012 receives explicit review disposition",
+    "Bytes, ByteSource, Path, and FFI use one root-length gate",
+    "limit-1/exact/+1 runs before parser, rule, map, and allocation",
+    "rereads and mappings independently charge cumulative I/O",
+    "concurrent truncate/grow and unknown-length sources fail closed",
+    "modern and legacy-high CPU and peak-memory benchmarks pass",
+    "Rust, CLI, JSON, C, Go, and Python expose the same limit result"
+  ],
+  "candidate_derivation": {
+    "not_a_memory_allocation_target": true,
+    "not_upstream_observed_maximum": true,
+    "profiles": {
+      "legacy_high_resource": {
+        "maximum_root_input_bytes": 8589934592,
+        "total_source_bytes_read_or_mapped": 8589934592
+      },
+      "modern_default": {
+        "maximum_root_input_bytes": 1073741824,
+        "total_source_bytes_read_or_mapped": 1073741824
+      }
+    },
+    "relationship": "each profile's root-length ceiling equals its existing total read/mapped ceiling; a root at that ceiling has budget for at most one full-size pass, while smaller roots may be reread only until cumulative I/O is exhausted"
+  },
+  "counter_relationships": {
+    "mapping_charges_exposed_mapped_range": true,
+    "re_reads_can_exhaust_total_read_or_mapped": true,
+    "root_length_does_not_authorize_equal_allocation": true,
+    "root_length_is_not_cumulative_io": true,
+    "single_and_total_allocation_limits_remain_independent": true,
+    "total_read_or_mapped_is_charged_independently": true
+  },
+  "enforcement": {
+    "concurrent_length_change_fails_closed_under_adr_0013": true,
+    "exact_limit_is_allowed": true,
+    "length_check_uses_checked_u64": true,
+    "over_limit_behavior": "reject before parser/rule work with LimitReached; return no partial scan report",
+    "reserve_stage": "after source identity/open validation and before parser, rule, mapping, bulk read, or input-sized allocation"
+  },
+  "evaluated_on": "2026-07-30",
+  "generator": "tools/research/build_input_budget.py",
+  "result": "review_candidate_not_admitted",
+  "root_input_unit": {
+    "byte_source_measurement": "declared stable length after source validation",
+    "bytes_source_measurement": "borrowed slice length",
+    "child_or_expanded_objects_do_not_count_again": true,
+    "definition": "stable logical byte length of the root ScanSource",
+    "path_measurement": "length from the opened stable file handle, before parsing",
+    "root_only": true,
+    "unknown_length_streaming_supported": false
+  },
+  "schema_version": 1,
+  "source_bindings": {
+    "adr_input": {
+      "path": "docs/design/decisions/0013-fail-closed-incomplete-input.md",
+      "sha256": "2d0ca51bfb90c4f156021a8f8a5788d07f78fab018d3e0c50ad88db4fde8a51c"
+    },
+    "adr_scan": {
+      "path": "docs/design/decisions/0012-bounded-nested-scan-budget.md",
+      "sha256": "173591f3933b7b926e8ddb2b0b7c89987bb6f84ac40788cf628dd4766aa9691f"
+    },
+    "api": {
+      "path": "docs/design/api.md",
+      "sha256": "fb16636da39564e3993aa834b86e2df97cc13ef06267d97a54224f44e87b4062"
+    },
+    "archive_limit": {
+      "path": "docs/research/data/archive-limit-engine-qt5.json",
+      "sha256": "e4786dcc578fb0714c86f71955161f981a06be26aefe663281d74202f5372ecd"
+    },
+    "engine_contract": {
+      "path": "docs/research/data/engine-contract-linux-qt5.json",
+      "sha256": "15b7795f54ea236219cac8b7865dc73289263db6de85312910096746094b5099"
+    }
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "upstream_evidence_boundary": {
+    "chunked_positive_progress_completes": true,
+    "does_not_prove": [
+      "maximum root input accepted by arbitrary upstream paths",
+      "1 GiB or 8 GiB memory or latency acceptability",
+      "whole-input allocation is required or permitted"
+    ],
+    "engine_contract_case_count": 37,
+    "maximum_observed_cumulative_expanded_bytes": 33554546,
+    "maximum_observed_root_archive_bytes": 16777452,
+    "qt_subdevice_can_overread_one_parent_byte": true,
+    "short_or_failed_reads_can_silently_succeed_upstream": true
+  }
+}

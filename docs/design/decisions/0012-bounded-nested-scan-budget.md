@@ -37,6 +37,7 @@ Proposed：
    | maximum queued items | 4,096 |
    | maximum result nodes | 100,000 |
    | maximum diagnostics | 4,096 |
+   | maximum root input bytes | 1 GiB |
    | maximum single expanded object/allocation | 128 MiB |
    | total expanded bytes | 512 MiB |
    | total source bytes read/mapped | 1 GiB |
@@ -51,8 +52,9 @@ Proposed：
    global budget；默认不得静默升级到 aggressive ceiling。
 6. 为差分测试可提供 `LegacyHighResource` profile，但 hard ceilings 仍有限：depth
    64、total entries 100,001、queued items 131,072、result nodes 1,048,576、
-   diagnostics 131,072、single object 512 MiB、total expanded 4 GiB、total
-   source read 8 GiB、deadline 120 s。它需要显式构造，不是 CLI、C ABI 或
+   diagnostics 131,072、root input 8 GiB、single object 512 MiB、total
+   expanded 4 GiB、total source read 8 GiB、deadline 120 s。它需要显式构造，
+   不是 CLI、C ABI 或
    library 默认。`total entries 100,001` 是全 scan budget，不改变单 container
    只迭代前 100,000 条的 legacy policy。queue/diagnostic 候选是该 entry ceiling
    向上取二次幂；node 候选是 `8 * total entries` 再向上取二次幂，为每个 work
@@ -69,6 +71,15 @@ Proposed：
     停止产生新 work，并由不占 diagnostic arena slot 的 completion
     `LimitReached` 保存 limit/requested/consumed/stage。不得静默丢弃、合并不同
     facts，或让 legacy/canonical renderer 各自产生新的计数事实。
+11. `max_input_bytes` 只检查根输入稳定逻辑长度：borrowed bytes 使用 slice
+    length，`ByteSource` 使用验证后的声明长度，path 使用已打开稳定 handle 的
+    长度。exact 可进入扫描，`limit+1` 在 parser、rule、mapping、bulk read 或
+    input-sized allocation 前返回 `LimitReached`，且不返回 partial report。
+    child/expanded object 不重复计入 root length；它们受 single/total expanded
+    counter 约束。根输入长度不是累计 I/O：所有实际 read/re-read/mapped range
+    仍独立计入 `total source bytes read/mapped`。接受某个长度不授权等量分配，
+    single/total allocation counter 仍独立生效。未知长度 streaming 不属于 v1；
+    扫描期间长度变化按 ADR 0013 fail closed。
 
 ## 考虑过的替代方案
 
@@ -112,19 +123,22 @@ subprocess。进程隔离可作为服务部署的第二层防线，不能替代 
 - [`archive-adversarial-behavior.md`](../../research/archive-adversarial-behavior.md)
 - [`archive-adversarial-engine-qt5.json`](../../research/data/archive-adversarial-engine-qt5.json)
 - [`diagnostic-budget-candidate.json`](../data/diagnostic-budget-candidate.json)
+- [`input-budget-candidate.json`](../data/input-budget-candidate.json)
 - [`upstream-performance-baseline.md`](../../research/upstream-performance-baseline.md)
 - `XScanEngine@dfe4a419.../xscanengine.cpp::scanProcess`
 - [`architecture.md` §11](../architecture.md#11-嵌套扫描-work-queue)
 - [`api.md` §8—10](../api.md#8-scanlimits)
 - [`risks.md` R-005](../risks.md#r-005嵌套和解压资源耗尽)
 - [`test_diagnostic_budget.py`](../../../tools/tests/test_diagnostic_budget.py)
+- [`test_input_budget.py`](../../../tools/tests/test_input_budget.py)
 
 ## 验收条件
 
 - production `ScanBudget` 对每个表列预算有 `limit-1/exact/+1` unit/property tests；
 - 每个 archive backend 通过相同的 cumulative reserve API，不能先分配后记账；
-- depth、entry、single object、total expanded、queue、node、diagnostic 和
-  deadline 触发点有 system tests，结果包含稳定 `LimitReached` 字段；
+- root input、depth、entry、single object、total expanded、queue、node、
+  diagnostic 和 deadline 触发点有 system tests，结果包含稳定
+  `LimitReached` 字段；
 - 已固定的 1 MiB/843.58:1 high-ratio、CRC/deflate/offset/method 畸形上游
   corpus，以及后续 declared-size mismatch、deep chain 和扩展 malformed archive
   在 Rust sanitizer/fuzz 下无 panic、stack overflow、OOM 或 hang；

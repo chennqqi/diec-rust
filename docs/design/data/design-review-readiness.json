@@ -42,7 +42,7 @@
       ],
       "blocking_items": [
         "ADR 0003 remains Proposed",
-        "canonical modern schema is not frozen and 6 required resource budgets have no candidate value",
+        "canonical modern schema is not frozen and 5 required resource budgets have no candidate value",
         "thread and path policies remain open"
       ]
     },
@@ -85,7 +85,7 @@
       "blocking_items": [
         "ADR 0004 remains Proposed",
         "Linux Qt5 source-only and corpus-gap rows are closed; Windows/macOS/complete Qt6 oracles remain open",
-        "Rust-paired/cold/cross-platform benchmark and package-size targets, 6 unresolved resource budgets, reviewed limits, and release integration are incomplete"
+        "Rust-paired/cold/cross-platform benchmark and package-size targets, 5 unresolved resource budgets, reviewed limits, and release integration are incomplete"
       ]
     },
     {

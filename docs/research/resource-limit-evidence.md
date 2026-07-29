@@ -27,6 +27,10 @@ Last updated: 2026-07-30
 - 固定 database-error 与真实 typo 报告证明 diagnostic 会追加到 stdout、破坏
   JSON，且 Qt5/Qt6 文本不同；已测 scan 每次只有一行，不能作为最大值。
   Diagnostics 候选按 work ceiling 提出 4,096/131,072。
+- 固定 37-case engine contract 证明上游小输入 copy 会忽略 short/error read，
+  subdevice 还可能越界多读一字节；archive sizing 的最大 root fixture 只有
+  16,777,452 bytes，不能作为输入上限。Root input 候选按设计关系提出
+  1 GiB/8 GiB，并明确不是上游观察最大值或 allocation 目标。
 - QuickJS-NG spike 中 4 MiB heap、128 KiB stack 与 25 ms deadline 能触发受控
   失败并恢复同一 context，但这些数值是故障注入条件，不是生产默认候选。
 
@@ -45,6 +49,7 @@ Last updated: 2026-07-30
 | database load sizing | [`data/database-load-sizing.json`](data/database-load-sizing.json) | 完整固定 bundle 的 source/entry/path/container 观察量和非零候选；不证明 production 适用性 |
 | traversal metadata/open | [`../design/data/traversal-attempt-budget-candidate.json`](../design/data/traversal-attempt-budget-candidate.json) | 绑定 Linux/Windows 4,096-entry、cycle 与 TOCTOU 报告；明确 attempt 数不是上游实测 |
 | scan diagnostics | [`../design/data/diagnostic-budget-candidate.json`](../design/data/diagnostic-budget-candidate.json) | typed fact 计数、overflow completion、profile 字段闭包及 Qt5/Qt6 文本差异 |
+| root input bytes | [`../design/data/input-budget-candidate.json`](../design/data/input-budget-candidate.json) | root logical length、入口触发时机、1 GiB/8 GiB 候选及与累计 I/O/分配的独立关系 |
 | runtime hard-stop wiring | [`data/rquickjs-rule-runtime.json`](data/rquickjs-rule-runtime.json) | heap/stack/deadline 能被 runtime 拒绝且 context 可恢复 |
 
 这些报告均固定到同一 DIE-engine commit。生成器
@@ -85,6 +90,7 @@ ADR 0004/0010/0012/0014 记录精确 `SafetyDeviation`。
 ```powershell
 python tools\research\build_traversal_attempt_budget.py --check
 python tools\research\build_diagnostic_budget.py --check
+python tools\research\build_input_budget.py --check
 python tools\research\build_resource_limit_policy.py --check
 python -m unittest discover -s tools\tests -p "test_resource_limit_policy.py"
 ```
@@ -95,7 +101,9 @@ python -m unittest discover -s tools\tests -p "test_resource_limit_policy.py"
 
 ## 剩余证据
 
-- 为 input、total allocation 和 script budgets 建立数值候选及边界依据；
+- 为 total allocation 和 script budgets 建立数值候选及边界依据；
+- 对 root input 候选补齐 production `Bytes`/`ByteSource`/`Path`/FFI
+  `limit-1/exact/+1`、并发 truncate/grow 和 CPU/peak-memory；
 - 对 diagnostic 候选补齐真实多错误放大 corpus、typed fact
   `limit-1/exact/+1` 和 production memory/latency；
 - 对 traversal metadata/open 候选补齐 mock adapter `limit-1/exact/+1`、
