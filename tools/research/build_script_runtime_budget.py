@@ -174,6 +174,8 @@ def validate_sources(root: Path) -> tuple[
             "4,130 个 `Runtime::memory_usage()` checkpoint",
             "`verify-binary-corpus-tracked-heap` 使用包裹 pinned",
             "最大瞬时 high-water 为\n4,478,992 bytes",
+            "`eval-isolated-compat-tracked-heap`",
+            "瞬时 high-water 为 3,486,384 bytes",
             "七条原样上游规则。七类代表性格式规则共\n25 个 case",
             "全矩阵最大瞬时 high-water 为 134,792 bytes",
             "不能观察 eval 内部瞬时 allocator high-water",
@@ -198,6 +200,7 @@ def validate_sources(root: Path) -> tuple[
     isolated = runtime.get("isolated_eval_with_compatibility_overlay")
     corpus = runtime.get("full_binary_corpus_oracle")
     tracked_corpus = runtime.get("full_binary_corpus_tracked_heap")
+    full_rule_tracked = runtime.get("full_rule_corpus_tracked_heap")
     format_matrix = runtime.get("representative_format_runtime_matrix")
     measurement = (
         corpus.get("runtime_measurement")
@@ -216,6 +219,39 @@ def validate_sources(root: Path) -> tuple[
             "preserves_source_file": True,
         },
         "full rule-source sizing evidence drift",
+    )
+    require(
+        full_rule_tracked
+        == {
+            "all_eval_accepted": True,
+            "all_runtimes_released_to_zero": True,
+            "bytes": 2_902_881,
+            "compatibility_overlay_count": 1,
+            "denied_allocation_count": 0,
+            "files": 2235,
+            "high_water_bytes": 3_486_384,
+            "limit_bytes": 32 * MIB,
+            "live_bytes_before_drop": 171_272,
+            "projection_hash_emitted_by_spike": True,
+            "projection_hash_independently_recomputed": True,
+            "repeat_count": 3,
+            "scope": (
+                "all fixed rule programs parsed and evaluated at top level "
+                "in isolated realms within one custom-allocator runtime; "
+                "detect functions are not called and this is not "
+                "default-allocator or cross-platform evidence"
+            ),
+            "set_memory_limit_used": False,
+            "stable_projection_equal": True,
+            "stable_projection_sha256": (
+                "582d5af0995925fa9c2188a38d999e0bcb3373b91fe22510798786828cbc5f58"
+            ),
+            "tracking_accounting": (
+                "RustAllocator allocation Layout bytes: aligned payload "
+                "plus internal header"
+            ),
+        },
+        "full rule-corpus tracked heap evidence drift",
     )
     require(
         isinstance(corpus, dict)
@@ -474,6 +510,7 @@ def build_candidate(root: Path) -> dict[str, Any]:
     isolated = runtime["isolated_eval_with_compatibility_overlay"]
     corpus = runtime["full_binary_corpus_oracle"]
     tracked_corpus = runtime["full_binary_corpus_tracked_heap"]
+    full_rule_tracked = runtime["full_rule_corpus_tracked_heap"]
     measurement = corpus["runtime_measurement"]
     tracked_measurement = tracked_corpus["runtime_measurement"]
     tracked_memory = tracked_measurement["memory"]
@@ -626,6 +663,28 @@ def build_candidate(root: Path) -> dict[str, Any]:
             "candidate_custom_allocator_stable_projection_sha256": (
                 tracked_measurement["stable_projection_sha256"]
             ),
+            "candidate_custom_allocator_full_rule_top_level_program_count": (
+                full_rule_tracked["files"]
+            ),
+            "candidate_custom_allocator_full_rule_top_level_source_bytes": (
+                full_rule_tracked["bytes"]
+            ),
+            "candidate_custom_allocator_full_rule_top_level_high_water_bytes": (
+                full_rule_tracked["high_water_bytes"]
+            ),
+            "candidate_custom_allocator_full_rule_top_level_denied_allocation_count": (
+                full_rule_tracked["denied_allocation_count"]
+            ),
+            "candidate_custom_allocator_full_rule_top_level_released_to_zero": (
+                full_rule_tracked["all_runtimes_released_to_zero"]
+            ),
+            "candidate_custom_allocator_full_rule_top_level_repeat_count": (
+                full_rule_tracked["repeat_count"]
+            ),
+            "candidate_custom_allocator_full_rule_top_level_stable_projection_sha256": (
+                full_rule_tracked["stable_projection_sha256"]
+            ),
+            "candidate_custom_allocator_full_rule_top_level_detect_invoked": False,
             "candidate_custom_allocator_cross_platform_measured": False,
             "candidate_custom_allocator_is_production_backend": False,
             "real_corpus_lifecycle_memory_checkpoints_measured": True,

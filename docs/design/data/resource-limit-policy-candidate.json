@@ -174,11 +174,11 @@
     },
     "runtime_spike": {
       "path": "docs/research/data/rquickjs-rule-runtime.json",
-      "sha256": "bba3470098489df35f109f2a35c3377152128cca5e2c83f9a908a67f9a31873e"
+      "sha256": "235192d2d906ff4ac4ab9ffe1ae85cfdf62fcc9479bca2535d90ec890465ba6e"
     },
     "script_budget": {
       "path": "docs/design/data/script-runtime-budget-candidate.json",
-      "sha256": "5462ab36199390acf00720c85ac253f228026b4b3ef588290fa79b80d83b60d4"
+      "sha256": "db1f84a314da7938fb35f981a6f42b2ecb77d84470ec7512487144cce8605c3e"
     },
     "traversal_attempt": {
       "path": "docs/design/data/traversal-attempt-budget-candidate.json",

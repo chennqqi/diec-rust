@@ -89,7 +89,9 @@ memory checkpoint，并固定每轮 16,439 次 Binary signature native checkpoin
 4095/4096 候选边界和单次 native search 中断已有回归。但瞬时 heap high-water、
 其余 HostApi checkpoint、完整跨格式 scaling、三平台资源证据和 ADR 评审仍缺。
 PE/ELF/Mach-O/DEX/APK/Archive/PDF 七类代表性规则的 25-case 矩阵已三轮稳定，
-但每类仅一条短规则，不能关闭上述完整性缺口。该策略仍为
+全部 2,235 个固定程序文件的隔离顶层 parse/eval 也已三轮固定 custom-allocator
+high-water；后者不调用 `detect` 或复刻各 file type lifecycle，前者每类仅一条
+短规则，二者仍不能关闭上述完整性缺口。该策略仍为
 `admitted=false`，因此 blocker 状态不变。
 
 ## 下一步顺序

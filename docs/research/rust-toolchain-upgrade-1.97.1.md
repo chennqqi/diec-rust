@@ -121,7 +121,7 @@ consumer。随后依次增加真实 PE32/Cygwin32、ELF32/ELF64/Burneye、
 Mach-O64 x86_64/arm64 Rust compiler、DEX035/QDBH、APK/ZIP QDBH、
 Archive/ZIP metadata 和 PDF Tools object/string
 规则差分；当前 source SHA-256 为
-`4b818bd45a6a142206427d74a81c430b45feda6070725a7f31f2c7cf2e2ba486`，
+`c6d56d26e863752616ad11d8a58bbd539b8a5fa474c25ef274f85d4601145669`，
 custom tracking allocator 模块 SHA-256 为
 `0686ad30b9ef4f05fd6a54c39f7a5173d80321564a68a321d2b553e76cf84965`。
 两套工具链均通过 44 项测试，release 差分分别为 3/3、6/6、4/4、3/3、

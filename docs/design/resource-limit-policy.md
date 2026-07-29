@@ -198,6 +198,12 @@ hard limit 下无拒绝且每个 runtime drop 后归零。该单一 Binary corpu
 的 live heap 按 `RustAllocator` 实际 `Layout` bytes 计费，包含对齐 payload
 和 internal header。
 
+固定 `db`/`db_extra` 的全部 2,235 个程序文件另在一个 custom-allocator
+runtime 内逐个完成隔离顶层 parse/eval：三轮稳定 high-water 为 3,486,384
+bytes，0 denied allocation，runtime drop 后归零。该结果扩展了 source
+coverage，但没有调用 `detect`，也没有复刻各 file type 的顺序、include 或
+真实 HostApi，因而不改变未准入状态。
+
 已有的 PE/ELF/Mach-O/DEX/APK/Archive/PDF 差分另形成七类、25-case 的代表性
 矩阵：连续三轮均为 25/25 匹配，每轮 25 次正常 VM poll、75 个 lifecycle
 memory checkpoint，最大 observed `malloc_size` 为 124,485 bytes。同一矩阵的

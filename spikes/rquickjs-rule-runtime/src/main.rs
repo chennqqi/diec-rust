@@ -7229,6 +7229,7 @@ fn evaluate_corpus(
     roots: &[PathBuf],
     shared_realm: bool,
     compatibility_overlay: bool,
+    tracking_limit_bytes: Option<usize>,
 ) -> Result<bool, String> {
     let mut files = Vec::new();
     for root in roots {
@@ -7237,7 +7238,12 @@ fn evaluate_corpus(
     files.sort_by_key(|path| normalized_path(path));
 
     let started = Instant::now();
-    let runtime = new_runtime()?;
+    let (runtime, tracking) = if let Some(limit) = tracking_limit_bytes {
+        let (runtime, stats) = new_tracking_runtime(limit)?;
+        (runtime, Some((limit, stats)))
+    } else {
+        (new_runtime()?, None)
+    };
     let interrupt_ticks = Arc::new(AtomicUsize::new(0));
     let interrupt_ticks_for_handler = Arc::clone(&interrupt_ticks);
     runtime.set_interrupt_handler(Some(Box::new(move || {
@@ -7285,7 +7291,48 @@ fn evaluate_corpus(
         }
     }
 
-    let report = json!({
+    let tracking_before_drop = tracking.as_ref().map(|(_, stats)| {
+        (
+            stats.live_bytes(),
+            stats.high_water_bytes(),
+            stats.denied_allocation_count(),
+        )
+    });
+    drop(shared_context);
+    drop(runtime);
+    let tracking_report = if let (
+        Some((limit_bytes, stats)),
+        Some((live_before_drop, high_water_bytes, denied_allocation_count)),
+    ) = (tracking, tracking_before_drop)
+    {
+        let live_after_drop = stats.live_bytes();
+        if live_before_drop == 0
+            || high_water_bytes < live_before_drop
+            || high_water_bytes > limit_bytes
+            || denied_allocation_count != 0
+            || live_after_drop != 0
+        {
+            return Err(format!(
+                "tracked corpus runtime invariant failed: limit={limit_bytes} \
+                 live_before_drop={live_before_drop} high_water={high_water_bytes} \
+                 denied={denied_allocation_count} live_after_drop={live_after_drop}"
+            ));
+        }
+        Some(json!({
+            "backend": "rquickjs RustAllocator wrapped by TrackingLimitAllocator",
+            "limit_bytes": limit_bytes,
+            "set_memory_limit_used": false,
+            "accounting":
+                "RustAllocator allocation Layout bytes: aligned payload plus internal header",
+            "live_bytes_before_drop": live_before_drop,
+            "high_water_bytes": high_water_bytes,
+            "denied_allocation_count": denied_allocation_count,
+            "live_bytes_after_drop": live_after_drop,
+        }))
+    } else {
+        None
+    };
+    let mut report = json!({
         "schema_version": 1,
         "runtime": {
             "crate": "rquickjs",
@@ -7321,6 +7368,33 @@ fn evaluate_corpus(
         "eval_error_count": errors.len(),
         "elapsed_ms": started.elapsed().as_millis(),
     });
+    if let Some(tracking_report) = tracking_report {
+        let stable_projection = json!({
+            "schema_version": 1,
+            "upstream_commit": UPSTREAM_COMMIT,
+            "rules_commit": RULES_COMMIT,
+            "realm_mode": "isolated",
+            "selection": "recursive files with .sg or no extension",
+            "files": files.len(),
+            "bytes": total_bytes,
+            "eval_error_count": errors.len(),
+            "compatibility_overlay": {
+                "id": "nintendo-unused-var-tp-v1",
+                "applied_count": overlays_applied.len(),
+            },
+            "tracking_allocator": tracking_report.clone(),
+        });
+        let stable_projection_bytes = serde_json::to_vec(&stable_projection)
+            .map_err(|error| format!("cannot serialize tracked corpus projection: {error}"))?;
+        report["stable_projection_sha256"] = json!(sha256_hex(&stable_projection_bytes));
+        report["stable_projection"] = stable_projection;
+        report["tracking_allocator"] = tracking_report;
+        report["scope"] = json!(
+            "all fixed rule programs parsed and evaluated at top level in isolated realms \
+             within one custom-allocator runtime; detect functions are not called and this \
+             is not default-allocator or cross-platform evidence"
+        );
+    }
     println!(
         "{}",
         serde_json::to_string_pretty(&report)
@@ -7858,6 +7932,8 @@ fn usage() -> ExitCode {
     eprintln!(
         "usage: diec-rquickjs-rule-runtime-spike \
          <eval-isolated|eval-isolated-compat|eval-shared> <rule-root>...\n       \
+         diec-rquickjs-rule-runtime-spike \
+         eval-isolated-compat-tracked-heap <rule-root>...\n       \
          diec-rquickjs-rule-runtime-spike fixture <main-rule-root>\n       \
          diec-rquickjs-rule-runtime-spike \
          <eval-binary-lifecycle|eval-binary-lifecycle-raw|eval-binary-lifecycle-lexical> \
@@ -7914,11 +7990,13 @@ fn main() -> ExitCode {
     }
 
     let result = if command == "eval-isolated" {
-        evaluate_corpus(&roots, false, false)
+        evaluate_corpus(&roots, false, false, None)
     } else if command == "eval-isolated-compat" {
-        evaluate_corpus(&roots, false, true)
+        evaluate_corpus(&roots, false, true, None)
+    } else if command == "eval-isolated-compat-tracked-heap" {
+        evaluate_corpus(&roots, false, true, Some(TRACKED_RULE_RUNTIME_LIMIT_BYTES))
     } else if command == "eval-shared" {
-        evaluate_corpus(&roots, true, false)
+        evaluate_corpus(&roots, true, false, None)
     } else if command == "fixture" && roots.len() == 1 {
         run_fixture(&roots[0])
     } else if command == "eval-binary-lifecycle" && roots.len() == 2 {

@@ -108,6 +108,10 @@ workspace 建立时重新生成并审计，不允许浮动到其他 minor/patch 
   `c455f6932322ff8161a4f6c9288710b5ed792ff5486b4459e11ef27e794e45c4`。
   计费单位是 pinned `RustAllocator` 的实际 `Layout` bytes（对齐 payload 加
   internal header），不是只计 `usable_size()`。
+  固定 `db`/`db_extra` 的全部 2,235 个程序文件又在同一 custom-allocator
+  runtime 内完成三轮隔离顶层 parse/eval，稳定 high-water 为 3,486,384 bytes、
+  0 次拒绝且 drop 后归零；该实验没有调用 `detect` 或复刻各 file type
+  lifecycle。
   这仍只是 Windows 候选 allocator 证据，不是 production backend 或跨平台证明。
   另有 PE/ELF/Mach-O/DEX/APK/Archive/PDF 七条代表性规则的
   25-case 矩阵连续三轮固定为每轮 25 次 poll、75 个 lifecycle memory

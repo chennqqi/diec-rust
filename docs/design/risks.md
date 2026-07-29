@@ -606,8 +606,10 @@ baseline 的变更都要检查本表。
   `malloc_size` 为 654,562 bytes。candidate custom allocator 又在相同 Binary
   oracle 三轮稳定测得 4,478,992-byte 瞬时 high-water，32 MiB limit 下 0 次
   拒绝且 42/42 runtime drop 后归零；但它尚非 production backend，也未通过
-  sanitizer 或三平台验证。其余 HostApi checkpoint 与完整跨格式 scaling 仍未
-  采集。七类代表性格式规则的 25-case
+  sanitizer 或三平台验证。全部 2,235 个固定程序文件的隔离顶层 parse/eval
+  另在三轮中稳定测得 3,486,384-byte high-water、0 次拒绝并在 drop 后归零，
+  但没有调用 `detect` 或复刻各 file type lifecycle。其余 HostApi checkpoint
+  与完整跨格式 scaling 仍未采集。七类代表性格式规则的 25-case
   矩阵虽已三轮固定为每轮 25 次 poll、75 个 memory checkpoint，其 custom
   allocator 变体也固定最大 134,792-byte transient high-water、0 次拒绝与
   75/75 drop 归零；但每类仅一条短规则，所以该候选仍为

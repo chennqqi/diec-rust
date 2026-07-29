@@ -172,6 +172,52 @@ class ScriptRuntimeBudgetTests(unittest.TestCase):
             ],
             "c455f6932322ff8161a4f6c9288710b5ed792ff5486b4459e11ef27e794e45c4",
         )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_full_rule_top_level_program_count"
+            ],
+            2235,
+        )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_full_rule_top_level_source_bytes"
+            ],
+            2_902_881,
+        )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_full_rule_top_level_high_water_bytes"
+            ],
+            3_486_384,
+        )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_full_rule_top_level_denied_allocation_count"
+            ],
+            0,
+        )
+        self.assertTrue(
+            evidence[
+                "candidate_custom_allocator_full_rule_top_level_released_to_zero"
+            ]
+        )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_full_rule_top_level_repeat_count"
+            ],
+            3,
+        )
+        self.assertEqual(
+            evidence[
+                "candidate_custom_allocator_full_rule_top_level_stable_projection_sha256"
+            ],
+            "582d5af0995925fa9c2188a38d999e0bcb3373b91fe22510798786828cbc5f58",
+        )
+        self.assertFalse(
+            evidence[
+                "candidate_custom_allocator_full_rule_top_level_detect_invoked"
+            ]
+        )
         self.assertFalse(
             evidence[
                 "candidate_custom_allocator_cross_platform_measured"

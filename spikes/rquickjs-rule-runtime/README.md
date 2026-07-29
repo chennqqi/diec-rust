@@ -76,6 +76,15 @@ limit in the wrapper and reports `set_memory_limit_used: false`. This is
 Windows candidate-backend evidence, not a measurement of the default allocator
 or cross-platform proof.
 
+`eval-isolated-compat-tracked-heap` measures a different boundary: all 2,235
+fixed `db` and `db_extra` rule programs are parsed and evaluated at top level
+in isolated realms inside one custom-allocator runtime. It applies only the
+same source-identity-guarded Nintendo overlay as `eval-isolated-compat`, emits
+a path-independent stable projection hash, rejects any allocation above the
+32 MiB live limit, and requires runtime destruction to return live bytes to
+zero. It does not call `detect`, reproduce upstream file-type ordering, measure
+the default allocator, or establish cross-platform behavior.
+
 The `verify-pe-rule`, `verify-elf-rule`, `verify-macho-rule`,
 `verify-dex-rule`, `verify-apk-rule`, `verify-archive-rule`, and
 `verify-pdf-rule` reports also include one normal interrupt counter and three

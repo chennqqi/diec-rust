@@ -140,7 +140,8 @@ runtime 的稳定计量投影逐字节等价，SHA-256 均为
 
 为闭合这个观测缺口，`verify-binary-corpus-tracked-heap` 使用包裹 pinned
 `RustAllocator` 的 `TrackingLimitAllocator` 重跑完全相同的 14 个样本与
-4088 次 `detect`。每个样本 runtime 独立设置 32 MiB live usable-byte 硬上限；
+4088 次 `detect`。每个样本 runtime 独立设置 32 MiB live allocation
+`Layout`-byte 硬上限；
 三轮仍为 14/14 oracle 匹配、4088/4088 无异常、0 fallback、0 allocation
 rejection，且全部 42 个 runtime 在 drop 后 live bytes 归零。三轮稳定投影
 SHA-256 均为
@@ -154,6 +155,18 @@ SHA-256 均为
 并证明 Windows x86_64 MSVC 上这个候选 custom allocator 能在完整 Binary 语料
 路径中同时执行硬限制与瞬时观测；不证明默认 libc allocator 的 high-water，也
 不替代 Linux/macOS、sanitizer 或更广规则/格式语料验证。
+
+另一个独立实验 `eval-isolated-compat-tracked-heap` 将固定 `db` 与 `db_extra`
+中的全部 2,235 个程序文件（2,902,881 source bytes）在同一个 custom-allocator
+runtime 内逐个建立隔离 realm、执行顶层 parse/eval，并应用已锁定的一处
+Nintendo overlay。Windows x86_64 MSVC release 连续三轮均为 2,235/2,235
+接受、0 allocation rejection，runtime drop 后 live bytes 归零；三轮稳定投影
+及独立 JSON 哈希都等于
+`582d5af0995925fa9c2188a38d999e0bcb3373b91fe22510798786828cbc5f58`。
+瞬时 high-water 为 3,486,384 bytes，drop 前仅保留 171,272 live bytes。
+这闭合“全规则源码 parse/eval 没有瞬时 heap 观测”的缺口，但没有调用
+`detect`，也没有复刻各 file type 的上游顺序、include 生命周期或真实 HostApi，
+所以不能替代 Binary oracle 或七类代表性差分。
 
 为避免只观察 Binary 全规则生命周期，本轮又复用已通过 Qt5 差分的 PE、ELF、
 Mach-O、DEX、APK、Archive 和 PDF 七条原样上游规则。七类代表性格式规则共
@@ -879,6 +892,10 @@ cargo +1.88.0 run --release --locked -- eval-isolated-compat \
   ../../upstream/Detect-It-Easy/db \
   ../../upstream/Detect-It-Easy/db_extra
 
+cargo +1.88.0 run --release --locked -- eval-isolated-compat-tracked-heap \
+  ../../upstream/Detect-It-Easy/db \
+  ../../upstream/Detect-It-Easy/db_extra
+
 cargo +1.88.0 run --release --locked -- eval-shared \
   ../../upstream/Detect-It-Easy/db \
   ../../upstream/Detect-It-Easy/db_extra
@@ -1020,8 +1037,9 @@ Python canonical JSON/SHA-256 计算逐值核对。
 
 - Binary 已按固定 Linux 顺序完成 292 条顶层 eval、全 `detect` 缺口采集，并在
   14 个生成 header 样本上完成 4088 次零 fallback 调用和完整有序结果 oracle；
-  尚未为 292 条规则分别提供正/反例 Qt oracle，也未完成其他 file type/file-part
-  和 Windows/macOS 顺序。
+  全部 2,235 个程序文件的隔离顶层 parse/eval 又已有 custom-allocator
+  high-water，但尚未为 292 条 Binary 规则分别提供正/反例 Qt oracle，也未完成
+  其他 file type/file-part 的完整 lifecycle/detect 和 Windows/macOS 顺序。
 - 首个格式专用分支已用真实 Rust PE32 context、native `PE.compareEP` 和原样
   Cygwin32 规则完成 positive/negative/truncated Qt5 差分 3/3；入口点、physical
   memory records、boolean 和完整 detection tuple 均一致。证据见

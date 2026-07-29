@@ -1476,6 +1476,84 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
         self.assertEqual(corpus["error_count"], 0)
         self.assertTrue(corpus["preserves_source_file"])
 
+    def test_full_rule_corpus_tracked_heap_is_stable_bounded_and_scoped(self):
+        evidence = self.reference["full_rule_corpus_tracked_heap"]
+        self.assertTrue(evidence["all_eval_accepted"])
+        self.assertEqual(evidence["files"], 2235)
+        self.assertEqual(evidence["bytes"], 2_902_881)
+        self.assertEqual(evidence["compatibility_overlay_count"], 1)
+        self.assertEqual(evidence["repeat_count"], 3)
+        self.assertTrue(evidence["stable_projection_equal"])
+        self.assertTrue(evidence["projection_hash_emitted_by_spike"])
+        self.assertTrue(
+            evidence["projection_hash_independently_recomputed"]
+        )
+        self.assertEqual(
+            evidence["stable_projection_sha256"],
+            "582d5af0995925fa9c2188a38d999e0bcb3373b91fe22510798786828cbc5f58",
+        )
+        self.assertEqual(evidence["limit_bytes"], 32 * 1024**2)
+        self.assertEqual(evidence["high_water_bytes"], 3_486_384)
+        self.assertEqual(evidence["live_bytes_before_drop"], 171_272)
+        self.assertEqual(evidence["denied_allocation_count"], 0)
+        self.assertTrue(evidence["all_runtimes_released_to_zero"])
+        self.assertFalse(evidence["set_memory_limit_used"])
+        self.assertEqual(
+            evidence["tracking_accounting"],
+            (
+                "RustAllocator allocation Layout bytes: aligned payload "
+                "plus internal header"
+            ),
+        )
+        projection = {
+            "bytes": evidence["bytes"],
+            "compatibility_overlay": {
+                "applied_count": evidence[
+                    "compatibility_overlay_count"
+                ],
+                "id": "nintendo-unused-var-tp-v1",
+            },
+            "eval_error_count": 0,
+            "files": evidence["files"],
+            "realm_mode": "isolated",
+            "rules_commit": self.reference["rules_commit"],
+            "schema_version": 1,
+            "selection": "recursive files with .sg or no extension",
+            "tracking_allocator": {
+                "accounting": evidence["tracking_accounting"],
+                "backend": (
+                    "rquickjs RustAllocator wrapped by "
+                    "TrackingLimitAllocator"
+                ),
+                "denied_allocation_count": evidence[
+                    "denied_allocation_count"
+                ],
+                "high_water_bytes": evidence["high_water_bytes"],
+                "limit_bytes": evidence["limit_bytes"],
+                "live_bytes_after_drop": 0,
+                "live_bytes_before_drop": evidence[
+                    "live_bytes_before_drop"
+                ],
+                "set_memory_limit_used": evidence[
+                    "set_memory_limit_used"
+                ],
+            },
+            "upstream_commit": self.reference["upstream_commit"],
+        }
+        canonical = json.dumps(
+            projection,
+            ensure_ascii=False,
+            separators=(",", ":"),
+            sort_keys=True,
+        ).encode()
+        self.assertEqual(
+            hashlib.sha256(canonical).hexdigest(),
+            evidence["stable_projection_sha256"],
+        )
+        self.assertIn("detect functions are not called", evidence["scope"])
+        self.assertIn("not default-allocator", evidence["scope"])
+        self.assertIn("cross-platform evidence", evidence["scope"])
+
     def test_script_scope_probe_records_qt5_incompatibility(self):
         scope = self.reference["script_scope"]
         self.assertEqual(scope["rule_count"], 7)

@@ -53,6 +53,14 @@
     "candidate_custom_allocator_all_runtimes_released_to_zero": true,
     "candidate_custom_allocator_cross_platform_measured": false,
     "candidate_custom_allocator_denied_allocation_count": 0,
+    "candidate_custom_allocator_full_rule_top_level_denied_allocation_count": 0,
+    "candidate_custom_allocator_full_rule_top_level_detect_invoked": false,
+    "candidate_custom_allocator_full_rule_top_level_high_water_bytes": 3486384,
+    "candidate_custom_allocator_full_rule_top_level_program_count": 2235,
+    "candidate_custom_allocator_full_rule_top_level_released_to_zero": true,
+    "candidate_custom_allocator_full_rule_top_level_repeat_count": 3,
+    "candidate_custom_allocator_full_rule_top_level_source_bytes": 2902881,
+    "candidate_custom_allocator_full_rule_top_level_stable_projection_sha256": "582d5af0995925fa9c2188a38d999e0bcb3373b91fe22510798786828cbc5f58",
     "candidate_custom_allocator_is_production_backend": false,
     "candidate_custom_allocator_limit_bytes_per_sample_runtime": 33554432,
     "candidate_custom_allocator_maximum_high_water_bytes": 4478992,
@@ -146,7 +154,7 @@
   "source_bindings": {
     "adr_runtime": {
       "path": "docs/design/decisions/0006-rquickjs-rule-runtime.md",
-      "sha256": "6e16bd51f0c3eee7d04be379a3e3a6091ae74327b4bc1419b08af7e7fa56525f"
+      "sha256": "26bc465a4eb61d9f485fcf4f35162afc4e279f54f913d9e69d3278464887901b"
     },
     "adr_scan": {
       "path": "docs/design/decisions/0012-bounded-nested-scan-budget.md",
@@ -166,11 +174,11 @@
     },
     "runtime_report": {
       "path": "docs/research/data/rquickjs-rule-runtime.json",
-      "sha256": "bba3470098489df35f109f2a35c3377152128cca5e2c83f9a908a67f9a31873e"
+      "sha256": "235192d2d906ff4ac4ab9ffe1ae85cfdf62fcc9479bca2535d90ec890465ba6e"
     },
     "runtime_research": {
       "path": "docs/research/rquickjs-rule-runtime-spike.md",
-      "sha256": "59986645a650a3b9a84221f3ce9a4f6b8eb6b41994ee7b865776c0678e6d92ad"
+      "sha256": "672aebd8cd12e5044c4f3049fd80120c94a0993b610bebec54053c1a03e5ef52"
     }
   },
   "units": {

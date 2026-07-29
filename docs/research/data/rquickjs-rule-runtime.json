@@ -20,7 +20,7 @@
   "experiment": {
     "cargo_lock_sha256": "f389eb266779a88939fea9793effdff29d01ea0e1184915698f4fa0f9441d0ad",
     "cargo_toml_sha256": "82c5bb97749f50212e5364c2ac7d1f81eaec4d460a9bf47710b4b42f9204a79f",
-    "source_sha256": "4b818bd45a6a142206427d74a81c430b45feda6070725a7f31f2c7cf2e2ba486",
+    "source_sha256": "c6d56d26e863752616ad11d8a58bbd539b8a5fa474c25ef274f85d4601145669",
     "tracking_allocator_source_sha256": "0686ad30b9ef4f05fd6a54c39f7a5173d80321564a68a321d2b553e76cf84965",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
@@ -1537,6 +1537,25 @@
     },
     "sample_count": 14,
     "scope": "the same full Binary corpus oracle under a custom tracking/limit allocator; Windows x86_64 MSVC evidence for the candidate allocator, not default-allocator or cross-platform proof"
+  },
+  "full_rule_corpus_tracked_heap": {
+    "all_eval_accepted": true,
+    "bytes": 2902881,
+    "compatibility_overlay_count": 1,
+    "denied_allocation_count": 0,
+    "files": 2235,
+    "high_water_bytes": 3486384,
+    "limit_bytes": 33554432,
+    "live_bytes_before_drop": 171272,
+    "projection_hash_emitted_by_spike": true,
+    "projection_hash_independently_recomputed": true,
+    "repeat_count": 3,
+    "scope": "all fixed rule programs parsed and evaluated at top level in isolated realms within one custom-allocator runtime; detect functions are not called and this is not default-allocator or cross-platform evidence",
+    "set_memory_limit_used": false,
+    "stable_projection_equal": true,
+    "stable_projection_sha256": "582d5af0995925fa9c2188a38d999e0bcb3373b91fe22510798786828cbc5f58",
+    "tracking_accounting": "RustAllocator allocation Layout bytes: aligned payload plus internal header",
+    "all_runtimes_released_to_zero": true
   },
   "isolated_eval": {
     "bytes": 2902881,
