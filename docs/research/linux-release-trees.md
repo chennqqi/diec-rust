@@ -21,7 +21,10 @@ Last updated: 2026-07-29
   因 Debian multiarch 布局查错目录而复制零个 Qt 文件，得到逐字节相同的 tree；
 - 两次隔离 portable tree 内容和 2,522 条 tar 成员语义完全相同，但普通
   `tar -czf` 保留八个新建路径的不同 mtime，导致未压缩 tar 与最终 tar.gz
-  均逐字节不同；上游压缩包已被实验证明不可重复。
+  均逐字节不同；上游压缩包已被实验证明不可重复；
+- 对同两棵 tree 使用固定顺序、mtime、owner/group、GNU tar format 和
+  `gzip -n -9` 后，两份 17,463,573-byte 控制归档逐字节相同，证明规范化机制
+  足以消除本实验观察到的元数据差异。
 
 这些事实进一步说明 Rust CLI 必须有自己的显式 artifact manifest：只包含一个 CLI、
 一个核心运行闭包、完整且原样的三层 runtime rules、必需归属/SBOM，不继承 GUI、
@@ -35,11 +38,14 @@ lite、Qt、YARA、PEiD 或 signature 数据。
 - `final_appimage_available=false`；
 - `compressed_portable_archive_generated=true`；
 - `portable_archive_byte_reproducible=false`；
+- `normalized_portable_archive_control_generated=true`；
+- `normalized_portable_archive_control_byte_reproducible=true`；
 - `legal_review_complete=false`；
 - `release_approved=false`。
 
 因此本报告关闭的是固定脚本的复制/布局技术清单和原始 portable tar 命令的
-非确定性复演，不是最终 AppImage、规范化 tar.gz、动态依赖或法律评审。
+非确定性复演，并验证规范化 post-build control；它不是最终 AppImage、获批 Rust
+artifact manifest、两次 clean build、动态依赖或法律评审。
 
 ## 固定脚本身份
 
@@ -66,7 +72,9 @@ lite、Qt、YARA、PEiD 或 signature 数据。
 4. 对每个 regular file 保存 path、mode、bytes、SHA-256 和
    source/build/system/generated 来源，再只提交摘要及完整 records hash；
 5. 不运行缺失的 `linuxdeploy`；在两个隔离 package root 上执行原脚本相同的
-   `tar -czf <ARCHIVE> die_4.0.0_portable`，比较 tree、tar 语义、mtime 和字节。
+   `tar -czf <ARCHIVE> die_4.0.0_portable`，比较 tree、tar 语义、mtime 和字节；
+6. 对同两个 package root 执行固定 GNU tar/gzip 控制命令，验证元数据和
+   tar/tar.gz 字节是否一致。
 
 AppImage 脚本引用 `build/release/die`，它属于与固定 CMake build 不同的构建路径。
 本实验用固定 CMake GUI ELF 代替该位置，只验证复制树；不声称实际 AppImage workflow
@@ -209,6 +217,22 @@ portable 最后使用普通 `tar -czf`。脚本没有：
 相同作为门禁；本次 post-build replay 证明上游原命令失败，不代替 Rust clean-build
 发布验证。
 
+规范化控制命令为：
+
+```text
+tar --sort=name --mtime=@0 --owner=0 --group=0 --numeric-owner \
+  --format=gnu -cf <TAR> die_4.0.0_portable
+gzip -n -9 -c <TAR>
+```
+
+两个控制 tar 的全部 2,522 个成员 mtime 均为 0，uid/gid 均为 0，uname/gname
+均为空；未压缩 tar SHA-256 均为
+`355c1e1883cee7158fb6e75d28c1912b9d557c1a372ef8d6e2309d58c20c8227`，
+17,463,573-byte tar.gz SHA-256 均为
+`7a0ed887eec767590393f8994229f97b2a0de04b9d41bc7e3cdb8addaf366fbc`。
+控制归档内容仍是上游错误的三产品/incomplete-rules portable tree；这个结果只验证
+归档机制，不批准其内容或把它定义为 Rust 发布格式。
+
 ## 复现
 
 ```powershell
@@ -231,6 +255,6 @@ commit、release version、prior report、CMake staging、规则身份、产品�
 - 在固定 `linuxdeploy` 版本和依赖源上执行并解包最终 AppImage；
 - 原脚本各自完整 configure/build 的 binary identity 和 GUI RCC 非确定性；
 - 使用真实、布局兼容的独立 Qt SDK 验证 portable bundling branch；
-- 规范化 tar.gz 的两次 clean-build 可重复性；
+- 基于获批 Rust artifact manifest 的两次 clean-build 规范化 tar.gz 可重复性；
 - DEB/RPM、Windows、macOS 发布树；
 - 各实际 artifact 的完整 ELF dependency、LICENSE/NOTICE/SBOM 与书面发布评审。

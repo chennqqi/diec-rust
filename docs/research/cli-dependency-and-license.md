@@ -127,7 +127,8 @@ AppImage pre-linuxdeploy tree 只有 GUI binary，却携带完整 runtime rules 
 YARA/PEiD/signature；portable 同时携带三产品，却遗漏 `db_extra`/`db_custom`，
 又携带 YARA/signature。两者均无 LICENSE/NOTICE；portable 在固定 Debian
 multiarch Qt prefix 下也复制不到 Qt。两次原始 portable tar 命令已证明
-mtime 驱动的字节非确定性；最终 linuxdeploy 与规范化 tar.gz 仍未闭合。
+mtime 驱动的字节非确定性；规范化 post-build control 已逐字节可重复，但最终
+linuxdeploy、获批内容 manifest 与 clean-build tar.gz 仍未闭合。
 
 ## 组件根许可证
 
@@ -232,8 +233,9 @@ XYara/YARA 当前 Linux target 也已由
 - 固定 Linux Qt5 CMake CLI 的全局 237-source/link-map 闭包和默认
   4,916-file CMake install staging tree 已完成；AppImage pre-linuxdeploy 与
   portable post-build tree 也已完成复制内容复演。仍需 qmake、Qt6、Windows、
-  macOS，以及最终 linuxdeploy AppImage、规范化 tar.gz 和其他压缩发布包的
-  object/link/dependency/content 闭包。
+  macOS，以及最终 linuxdeploy AppImage、基于获批 manifest 的 clean-build
+  tar.gz 和其他压缩发布包的 object/link/dependency/content 闭包；现有
+  规范化 post-build control 只证明归档机制可重复。
 - XUCL 1.03 官方来源和精确 `ACC_LICENSE` 已完成；仍须取得 MIT/GPL 组合、
   不同书面授权和发布责任人的书面结论。
 - 为 XArchive 聚合 Brotli/Zstandard 恢复独立 LICENSE/NOTICE/attribution，

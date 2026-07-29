@@ -206,8 +206,22 @@ class LinuxReleaseTreeTests(unittest.TestCase):
         ):
             self.assertFalse(scope[field])
         self.assertTrue(scope["compressed_portable_archive_generated"])
+        self.assertTrue(
+            scope["normalized_portable_archive_control_generated"]
+        )
+        self.assertTrue(
+            scope[
+                "normalized_portable_archive_control_byte_reproducible"
+            ]
+        )
         limitations = "\n".join(self.report["limitations"])
-        for text in ("surrogate", "linuxdeploy", "tar.gz", "legal"):
+        for text in (
+            "surrogate",
+            "linuxdeploy",
+            "tar.gz",
+            "post-build control",
+            "legal",
+        ):
             self.assertIn(text, limitations)
 
     def test_appimage_pre_tree_identity_and_content_are_exact(self):
@@ -367,6 +381,61 @@ class LinuxReleaseTreeTests(unittest.TestCase):
         self.assertFalse(replay["uncompressed_tar_byte_identical"])
         self.assertFalse(replay["compressed_tar_gz_byte_identical"])
 
+        normalized = replay["normalized_control"]
+        self.assertEqual(
+            normalized["tar_command"],
+            [
+                "tar",
+                "--sort=name",
+                "--mtime=@0",
+                "--owner=0",
+                "--group=0",
+                "--numeric-owner",
+                "--format=gnu",
+                "-cf",
+                "<TAR>",
+                "die_4.0.0_portable",
+            ],
+        )
+        self.assertEqual(
+            normalized["gzip_command"],
+            ["gzip", "-n", "-9", "-c", "<TAR>"],
+        )
+        self.assertEqual(normalized["run_count"], 2)
+        self.assertTrue(normalized["metadata_is_fixed"])
+        self.assertEqual(normalized["tar_member_count"], 2522)
+        self.assertTrue(
+            normalized["tar_semantic_records_identical"]
+        )
+        self.assertEqual(
+            normalized["tar_semantic_records_sha256"],
+            (
+                "b142b9f01493d11fe8ce5c42d3741536"
+                "101591943cac487e7cfe67a5feb2e3a7"
+            ),
+        )
+        self.assertTrue(
+            normalized["uncompressed_tar_byte_identical"]
+        )
+        self.assertEqual(
+            normalized["uncompressed_tar_sha256"],
+            (
+                "355c1e1883cee7158fb6e75d28c1912b"
+                "9d557c1a372ef8d6e2309d58c20c8227"
+            ),
+        )
+        self.assertTrue(
+            normalized["compressed_tar_gz_byte_identical"]
+        )
+        self.assertEqual(normalized["archive_bytes"], 17_463_573)
+        self.assertEqual(
+            normalized["archive_sha256"],
+            (
+                "7a0ed887eec767590393f8994229f97b"
+                "2a0de04b9d41bc7e3cdb8addaf366fbc"
+            ),
+        )
+
     def test_binary_and_launcher_identities_are_exact(self):
         variants = self.release["variants"]
         portable = variants["portable_system_qt"]
@@ -424,6 +493,11 @@ class LinuxReleaseTreeTests(unittest.TestCase):
             "final_appimage_available=false",
             "compressed_portable_archive_generated=true",
             "portable_archive_byte_reproducible=false",
+            "normalized_portable_archive_control_generated=true",
+            (
+                "normalized_portable_archive_control_"
+                "byte_reproducible=true"
+            ),
         ):
             self.assertIn(text, document)
         for path in (INDEX_PATH, GATE_PATH, GATE_DATA_PATH):

@@ -729,6 +729,71 @@ def tar_inventory(path: Path) -> dict[str, Any]:
     }
 
 
+def create_normalized_portable_archive(
+    parent: Path,
+    package_name: str,
+) -> dict[str, Any]:
+    tar_path = parent / f"{package_name}.normalized.tar"
+    archive_path = parent / f"{package_name}.normalized.tar.gz"
+    tar_command = [
+        "tar",
+        "--sort=name",
+        "--mtime=@0",
+        "--owner=0",
+        "--group=0",
+        "--numeric-owner",
+        "--format=gnu",
+        "-cf",
+        str(tar_path),
+        package_name,
+    ]
+    completed = subprocess.run(
+        tar_command,
+        cwd=parent,
+        capture_output=True,
+    )
+    if (
+        completed.returncode != 0
+        or completed.stdout
+        or completed.stderr
+        or not tar_path.is_file()
+        or tar_path.stat().st_size == 0
+    ):
+        raise AuditError("normalized portable tar creation failed")
+    gzip_command = ["gzip", "-n", "-9", "-c", str(tar_path)]
+    with archive_path.open("wb") as output:
+        completed = subprocess.run(
+            gzip_command,
+            stdout=output,
+            stderr=subprocess.PIPE,
+        )
+    if (
+        completed.returncode != 0
+        or completed.stderr
+        or not archive_path.is_file()
+        or archive_path.stat().st_size == 0
+    ):
+        raise AuditError("normalized portable gzip creation failed")
+    return {
+        "tar_command": [
+            *tar_command[:-2],
+            "<TAR>",
+            package_name,
+        ],
+        "gzip_command": [
+            "gzip",
+            "-n",
+            "-9",
+            "-c",
+            "<TAR>",
+        ],
+        "archive_bytes": archive_path.stat().st_size,
+        "archive_sha256": file_sha256(archive_path),
+        "uncompressed_tar_sha256": file_sha256(tar_path),
+        "tar": tar_inventory(archive_path),
+    }
+
+
 def create_portable_archive_replay(
     temporary: Path,
     stage: Path,
@@ -767,6 +832,10 @@ def create_portable_archive_replay(
                     archive_path
                 ),
                 "tar": tar_inventory(archive_path),
+                "normalized": create_normalized_portable_archive(
+                    parent,
+                    package_name,
+                ),
             }
         )
         if number == 1:
@@ -783,6 +852,25 @@ def create_portable_archive_replay(
         path
         for path in first_mtimes
         if first_mtimes[path] != second_mtimes[path]
+    )
+    first_normalized = first["normalized"]
+    second_normalized = second["normalized"]
+    if (
+        first_normalized["tar"]["records"]
+        != second_normalized["tar"]["records"]
+    ):
+        raise AuditError("normalized tar semantic records differ")
+    normalized_metadata = first_normalized["tar"]
+    normalized_metadata_is_fixed = all(
+        set(run["normalized"]["tar"]["mtimes"].values()) == {0}
+        and all(
+            record["uid"] == 0
+            and record["gid"] == 0
+            and not record["uname"]
+            and not record["gname"]
+            for record in run["normalized"]["tar"]["records"]
+        )
+        for run in (first, second)
     )
     return {
         "command": ["tar", "-czf", "<ARCHIVE>", package_name],
@@ -814,6 +902,30 @@ def create_portable_archive_replay(
         "compressed_tar_gz_byte_identical": (
             first["archive_sha256"] == second["archive_sha256"]
         ),
+        "normalized_control": {
+            "tar_command": first_normalized["tar_command"],
+            "gzip_command": first_normalized["gzip_command"],
+            "run_count": 2,
+            "metadata_is_fixed": normalized_metadata_is_fixed,
+            "tar_member_count": normalized_metadata["member_count"],
+            "tar_semantic_records_identical": True,
+            "tar_semantic_records_sha256": normalized_metadata[
+                "records_sha256"
+            ],
+            "uncompressed_tar_byte_identical": (
+                first_normalized["uncompressed_tar_sha256"]
+                == second_normalized["uncompressed_tar_sha256"]
+            ),
+            "uncompressed_tar_sha256": first_normalized[
+                "uncompressed_tar_sha256"
+            ],
+            "compressed_tar_gz_byte_identical": (
+                first_normalized["archive_sha256"]
+                == second_normalized["archive_sha256"]
+            ),
+            "archive_bytes": first_normalized["archive_bytes"],
+            "archive_sha256": first_normalized["archive_sha256"],
+        },
     }
 
 
@@ -997,6 +1109,20 @@ def inside_report() -> dict[str, Any]:
             and not portable_archive["uncompressed_tar_byte_identical"]
             and not portable_archive["compressed_tar_gz_byte_identical"]
         ),
+        "normalized_portable_archive_control_is_byte_reproducible": (
+            portable_archive["normalized_control"][
+                "metadata_is_fixed"
+            ]
+            and portable_archive["normalized_control"][
+                "tar_semantic_records_identical"
+            ]
+            and portable_archive["normalized_control"][
+                "uncompressed_tar_byte_identical"
+            ]
+            and portable_archive["normalized_control"][
+                "compressed_tar_gz_byte_identical"
+            ]
+        ),
     }
     if not all(relationships.values()):
         failed = sorted(
@@ -1119,6 +1245,10 @@ def host_report(repo: Path) -> dict[str, Any]:
             "final_appimage_available": False,
             "compressed_portable_archive_generated": True,
             "portable_archive_byte_reproducible": False,
+            "normalized_portable_archive_control_generated": True,
+            "normalized_portable_archive_control_byte_reproducible": (
+                True
+            ),
             "legal_review_complete": False,
             "release_approved": False,
         },
@@ -1127,6 +1257,7 @@ def host_report(repo: Path) -> dict[str, Any]:
             "the AppImage pre-tree uses the fixed CMake GUI executable as a surrogate for create_appimage.sh build/release/die; an actual qmake-workflow binary is not claimed",
             "linuxdeploy is absent, so the final AppImage dependency closure and mutations are not observed",
             "two portable tar.gz replays use the original tar command and prove mtime-driven byte differences; their unstable archive hashes are intentionally omitted",
+            "the byte-reproducible normalized archive is a post-build control over the upstream portable tree, not an upstream artifact, clean-build proof, or approved Rust release manifest",
             "technical content and provenance closure is not legal approval",
         ],
     }

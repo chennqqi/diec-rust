@@ -132,7 +132,8 @@ python tools\upstream\audit_component_licenses.py `
   [`linux-release-trees.md`](linux-release-trees.md) 又证明 AppImage 前置树和
   portable tree 均没有 LICENSE candidate，且产品/规则/数据集合互不一致。仍缺
   qmake、Qt6、Windows、macOS、普通 scan/info/struct 最小变体、最终 AppImage/
-  规范化 tar.gz/其他压缩发布包的实际 object/link/content 对应关系；
+  基于获批 manifest 的 clean-build tar.gz/其他压缩发布包的实际
+  object/link/content 对应关系；规范化 post-build control 不替代该闭包；
 - `db*` JavaScript rules 的逐路径许可结论；YARA/PEiD/signatures 已完成
   路径/hash/可见标记审计，但原始第三方许可和书面组合评审仍未关闭；
 - 候选 Rust dependency graph、最终 static library 和发布包的 SBOM/NOTICE；

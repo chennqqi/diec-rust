@@ -273,8 +273,9 @@ baseline 的变更都要检查本表。
   AppImage pre-linuxdeploy 与 portable post-build tree：前者只有 GUI product
   却带完整 runtime/YARA/PEiD/signature，后者带三产品却漏 extra/custom 并额外
   带 YARA/signature；两者都没有 LICENSE candidate。两次原始 portable tar
-  命令又实证 mtime 驱动的 archive 字节差异；最终 linuxdeploy、规范化 tar.gz
-  和书面归属仍未关闭。
+  命令又实证 mtime 驱动的 archive 字节差异，同 tree 的规范化 control 则得到
+  两份逐字节相同的 tar/tar.gz；最终 linuxdeploy、获批 Rust manifest 的
+  clean-build archive 和书面归属仍未关闭。
   固定 Linux Qt5 最终 ELF 还证明 Formats/xsimd 的三个单 member archive 均被
   抽取，形成三个 compile source/六文件闭包；六文件和根 LICENSE 均保留同一
   horsicq copyright/MIT 文本，CUDA 源码不在此闭包。该结果关闭本平台 XSIMD
@@ -548,7 +549,8 @@ baseline 的变更都要检查本表。
   qmake/CMake 分歧。
 - **当前缓解**：image digest、Dockerfile/toolchain/binary hash、Qt 5
   qmake/CMake 双 oracle、独立 Qt 6 CMake profile 比较，以及固定 portable tree
-  的两次原始 tar 重放；后者证明相同内容/成员语义仍会因 mtime 产生不同 archive。
+  的两次原始/规范化 tar 重放；它们分别证明相同内容仍会因 mtime 产生不同
+  archive，以及固定全部归档元数据后可恢复逐字节一致。
 - **缓解**：固定 package snapshot/OCI digest；identity mismatch 作为
   infrastructure failure；baseline namespace 不覆盖。
 - **验证**：clean environment rebuild、行为 matrix、产物/依赖证据。

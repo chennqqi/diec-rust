@@ -13,27 +13,28 @@
       "sha256": "de07021627c71d7bcc81c2904cc6a37c590f23f8a64bd270daa25dabd29e64b2"
     },
     "inside_script": {
-      "image_sha256": "21273c1f31c8b3141736c48762adc8da1dea71ea150f130a9d0e2419916e4dfc",
+      "image_sha256": "f9e7d8f0dd17ba06aafc9b80a728f69e9eb24c5f77244561618bce278440e845",
       "path": "/opt/diec-release/audit_linux_release_trees.py",
-      "repository_sha256": "21273c1f31c8b3141736c48762adc8da1dea71ea150f130a9d0e2419916e4dfc"
+      "repository_sha256": "f9e7d8f0dd17ba06aafc9b80a728f69e9eb24c5f77244561618bce278440e845"
     },
     "network": "none",
     "release_image": {
-      "id": "sha256:515a901aff311ef8ef50bea04189c7d1055141a2809d0f8b3094510c1024bf7a",
+      "id": "sha256:90d5221ba1c9859a1f7a3d76c1827500c2bc37cd8ddea62e57badc4eadc6ea59",
       "image": "diec-rust/upstream-release-trees-qt5:74eaf505",
       "repo_digests": [
-        "diec-rust/upstream-release-trees-qt5@sha256:515a901aff311ef8ef50bea04189c7d1055141a2809d0f8b3094510c1024bf7a"
+        "diec-rust/upstream-release-trees-qt5@sha256:90d5221ba1c9859a1f7a3d76c1827500c2bc37cd8ddea62e57badc4eadc6ea59"
       ],
       "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
     }
   },
   "generator": "tools/upstream/audit_linux_release_trees.py",
-  "generator_sha256": "21273c1f31c8b3141736c48762adc8da1dea71ea150f130a9d0e2419916e4dfc",
+  "generator_sha256": "f9e7d8f0dd17ba06aafc9b80a728f69e9eb24c5f77244561618bce278440e845",
   "limitations": [
     "the replay uses fixed built executables and reproduces script copy/layout semantics instead of reconfiguring and rebuilding",
     "the AppImage pre-tree uses the fixed CMake GUI executable as a surrogate for create_appimage.sh build/release/die; an actual qmake-workflow binary is not claimed",
     "linuxdeploy is absent, so the final AppImage dependency closure and mutations are not observed",
     "two portable tar.gz replays use the original tar command and prove mtime-driven byte differences; their unstable archive hashes are intentionally omitted",
+    "the byte-reproducible normalized archive is a post-build control over the upstream portable tree, not an upstream artifact, clean-build proof, or approved Rust release manifest",
     "technical content and provenance closure is not legal approval"
   ],
   "prior_report": {
@@ -47,6 +48,7 @@
     "appimage_includes_yara_peid_and_signature_data": true,
     "appimage_pre_tree_contains_complete_runtime_rules": true,
     "appimage_pre_tree_has_only_gui_product": true,
+    "normalized_portable_archive_control_is_byte_reproducible": true,
     "portable_default_bundles_no_qt_files": true,
     "portable_includes_yara_and_signatures_but_not_peid": true,
     "portable_qmake_prefix_bundles_no_qt_on_multiarch_image": true,
@@ -88,6 +90,37 @@
       "differing_mtime_path_sample_truncated": false,
       "differing_mtime_paths_sha256": "ea384a2e43e9f0d15a9d55eb68ce8c9122a27d573c2e5b4164692adcd3733c86",
       "minimum_inter_run_delay_seconds": 1.1,
+      "normalized_control": {
+        "archive_bytes": 17463573,
+        "archive_sha256": "7a0ed887eec767590393f8994229f97b2a0de04b9d41bc7e3cdb8addaf366fbc",
+        "compressed_tar_gz_byte_identical": true,
+        "gzip_command": [
+          "gzip",
+          "-n",
+          "-9",
+          "-c",
+          "<TAR>"
+        ],
+        "metadata_is_fixed": true,
+        "run_count": 2,
+        "tar_command": [
+          "tar",
+          "--sort=name",
+          "--mtime=@0",
+          "--owner=0",
+          "--group=0",
+          "--numeric-owner",
+          "--format=gnu",
+          "-cf",
+          "<TAR>",
+          "die_4.0.0_portable"
+        ],
+        "tar_member_count": 2522,
+        "tar_semantic_records_identical": true,
+        "tar_semantic_records_sha256": "b142b9f01493d11fe8ce5c42d3741536101591943cac487e7cfe67a5feb2e3a7",
+        "uncompressed_tar_byte_identical": true,
+        "uncompressed_tar_sha256": "355c1e1883cee7158fb6e75d28c1912b9d557c1a372ef8d6e2309d58c20c8227"
+      },
       "run_count": 2,
       "tar_member_count": 2522,
       "tar_semantic_records_identical": true,
@@ -107,6 +140,7 @@
       "appimage_includes_yara_peid_and_signature_data": true,
       "appimage_pre_tree_contains_complete_runtime_rules": true,
       "appimage_pre_tree_has_only_gui_product": true,
+      "normalized_portable_archive_control_is_byte_reproducible": true,
       "portable_default_bundles_no_qt_files": true,
       "portable_includes_yara_and_signatures_but_not_peid": true,
       "portable_qmake_prefix_bundles_no_qt_on_multiarch_image": true,
@@ -715,6 +749,8 @@
     "final_appimage_available": false,
     "kind": "post-build-release-tree-replay",
     "legal_review_complete": false,
+    "normalized_portable_archive_control_byte_reproducible": true,
+    "normalized_portable_archive_control_generated": true,
     "original_scripts_executed_end_to_end": false,
     "platform": "Linux x86_64",
     "portable_archive_byte_reproducible": false,
