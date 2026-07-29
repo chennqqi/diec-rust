@@ -184,6 +184,18 @@
     "populated_cache_size_delta_from_linux_qt5": 4,
     "empty_cache_size_delta_from_linux_qt5": 0
   },
+  "windows_engine_contract": {
+    "path": "docs/research/data/engine-contract-windows-qt5.json",
+    "sha256": "4f7d1629d4c0cf627fd8f5fa1ff6adaf838f8c9fc910e95fac0c50bfd105233e",
+    "binary_sha256": "7ec7af525c3eb9fec28600b6792d895d6bcd6414658f79ba0fa5b5a203245e83",
+    "case_count": 37,
+    "repetitions": 2,
+    "execution_count": 2,
+    "case_observation_count": 74,
+    "raw_determinism_failures": 0,
+    "semantic_projection_failures": 0,
+    "named_relationship_failures": 0
+  },
   "windows_cli_special_paths": {
     "path": "docs/research/data/windows-qt5-cli-special-paths.json",
     "sha256": "f4e2f4ced3190a51df3bfa34cbdf8ad949130aadab324c7e725365a2c7fa8e68",

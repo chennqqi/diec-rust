@@ -232,8 +232,11 @@ Phase 0 计划形成：
   原生 Windows Qt5 的 19-case engine cache/DACL 双轮基线、Linux 语义投影
   和平台 cache-byte 差异（Draft）。
 - [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)：
-  将 12 份 Windows runtime 报告逐项映射到 68 行能力清单，当前为
-  37 complete、12 partial、19 missing（Draft）。
+  将 13 份 Windows runtime 报告逐项映射到 68 行能力清单，当前为
+  42 complete、12 partial、14 missing（Draft）。
+- [`windows-engine-contract-behavior.md`](windows-engine-contract-behavior.md)：
+  固定 Windows Qt5 的 37-case engine 入口、I/O/range、filter、sort 与
+  cancellation 双轮证据，除 Qt 版本身份外与 Linux Qt5 完整语义相同（Draft）。
 - [`database-layer-behavior.md`](database-layer-behavior.md)：main/extra/custom 同名规则、分层顺序、加载与运行时 gate（Draft）。
 - [`engine-contract-behavior.md`](engine-contract-behavior.md)：engine 过滤/排序/停止/入口，以及 device/subdevice short-read、I/O、seek 和范围边界；闭合 `CAP-GAP-009` 与 `CAP-GAP-011`（Draft）。
 - [`nested-scan-behavior.md`](nested-scan-behavior.md)：archive/resource/overlay 的选项可达性、结果树和资源限制（Draft）。
@@ -281,6 +284,9 @@ Phase 0 计划形成：
 - [`data/engine-contract-linux-qt6.json`](data/engine-contract-linux-qt6.json)：
   固定 Qt6 engine harness 的 37-case 原始身份、23 条关系、fixture 与源码审计，
   并与 Qt5 确定性投影成对校验。
+- [`data/engine-contract-windows-qt5.json`](data/engine-contract-windows-qt5.json)：
+  固定原生 Windows Qt5 engine-contract harness 的构建身份、双轮 raw、
+  37-case/23-relationship Linux Qt5 比较与七文件源码审计。
 - [`data/rule-orchestration-linux-qt5-qt6.json`](data/rule-orchestration-linux-qt5-qt6.json)：
   固定 Qt5/Qt6 CMake oracle 的 10-case 规则执行顺序、detection、原始流身份和
   14 条关系。

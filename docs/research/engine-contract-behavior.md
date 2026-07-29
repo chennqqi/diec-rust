@@ -22,6 +22,9 @@ Last updated: 2026-07-28
 - subdevice 合法/非法范围、父设备短读/error 和 slice 边界；
 - 源码中存在但公共扫描入口不可达的 `sSignatureFilePath`。
 
+同一 37-case harness 的固定 Windows Qt5 结果见
+[`windows-engine-contract-behavior.md`](windows-engine-contract-behavior.md)。
+
 固定 Linux amd64、Qt 5.15.13 CMake oracle。harness 替换上游 console main 后链接
 同一组已构建对象；输入和规则均由项目生成，不包含外部样本。机器报告为
 [`data/engine-contract-linux-qt5.json`](data/engine-contract-linux-qt5.json)。
@@ -172,4 +175,4 @@ hash、fixture 全集/hash、37 个 case 关系和源码可达性；raw streams 
   `nOffset + nSize` 的 C++ signed-overflow 路径未执行；
 - 本轮强制 Binary 规则不读取输入内容，因此未把未初始化尾部的偶然字节保存为
   兼容 golden；该路径只作为源码证明的安全缺陷；
-- 相同契约的 Qt 6、Windows 和 macOS 行为。
+- 相同契约的 macOS 行为。

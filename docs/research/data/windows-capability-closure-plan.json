@@ -75,41 +75,29 @@
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
-      "evidence_paths": [],
+      "evidence_paths": [
+        "docs/research/data/engine-contract-windows-qt5.json"
+      ],
       "evidence_set": "engine_contract",
       "id": "CAP-ENG-IN-001",
-      "missing_scope": "public engine memory/file/device entry-point equivalence",
+      "missing_scope": null,
       "name": "memory scan",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "all public engine entry points retain the Linux row projection",
-          "short-read, seek, range, and failure cases preserve exact error/list behavior",
-          "signature filter, sorting, and cancellation controls are deterministic"
-        ],
-        "fixture": "docs/research/data/engine-contract-linux-qt5.json",
-        "harness": "tools/upstream/engine_contract_harness_main.cpp"
-      },
-      "status": "missing"
+      "observed_scope": "file, memory, device, and exact subdevice entry points have identical complete record arrays",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
-      "evidence_paths": [],
+      "evidence_paths": [
+        "docs/research/data/engine-contract-windows-qt5.json"
+      ],
       "evidence_set": "engine_contract",
       "id": "CAP-ENG-IN-002",
-      "missing_scope": "device/subdevice short-read, seek, range, and failure boundaries",
+      "missing_scope": null,
       "name": "device and subdevice scan",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "all public engine entry points retain the Linux row projection",
-          "short-read, seek, range, and failure cases preserve exact error/list behavior",
-          "signature filter, sorting, and cancellation controls are deterministic"
-        ],
-        "fixture": "docs/research/data/engine-contract-linux-qt5.json",
-        "harness": "tools/upstream/engine_contract_harness_main.cpp"
-      },
-      "status": "missing"
+      "observed_scope": "chunked, short-read, read/seek failure, sequential, position, and subdevice range boundaries match Linux Qt5",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
@@ -642,22 +630,16 @@
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
-      "evidence_paths": [],
+      "evidence_paths": [
+        "docs/research/data/engine-contract-windows-qt5.json"
+      ],
       "evidence_set": "engine_contract",
       "id": "CAP-RULE-006",
-      "missing_scope": "exact signature-name filter, case, deep, and missing controls",
+      "missing_scope": null,
       "name": "single signature filtering",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "all public engine entry points retain the Linux row projection",
-          "short-read, seek, range, and failure cases preserve exact error/list behavior",
-          "signature filter, sorting, and cancellation controls are deterministic"
-        ],
-        "fixture": "docs/research/data/engine-contract-linux-qt5.json",
-        "harness": "tools/upstream/engine_contract_harness_main.cpp"
-      },
-      "status": "missing"
+      "observed_scope": "exact, missing, case-mismatched, and deep-gated signature-name filters match Linux Qt5",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
@@ -694,22 +676,16 @@
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
-      "evidence_paths": [],
+      "evidence_paths": [
+        "docs/research/data/engine-contract-windows-qt5.json"
+      ],
       "evidence_set": "engine_contract",
       "id": "CAP-RULE-009",
-      "missing_scope": "sort enabled/disabled engine record ordering",
+      "missing_scope": null,
       "name": "result sorting option",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "all public engine entry points retain the Linux row projection",
-          "short-read, seek, range, and failure cases preserve exact error/list behavior",
-          "signature filter, sorting, and cancellation controls are deterministic"
-        ],
-        "fixture": "docs/research/data/engine-contract-linux-qt5.json",
-        "harness": "tools/upstream/engine_contract_harness_main.cpp"
-      },
-      "status": "missing"
+      "observed_scope": "sort-disabled insertion order and sort-enabled type-priority order match Linux Qt5",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
@@ -750,22 +726,16 @@
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
-      "evidence_paths": [],
+      "evidence_paths": [
+        "docs/research/data/engine-contract-windows-qt5.json"
+      ],
       "evidence_set": "engine_contract",
       "id": "CAP-RULE-012",
-      "missing_scope": "callback break, pre-stop, and synchronized cancellation",
+      "missing_scope": null,
       "name": "cancellation and stop",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "all public engine entry points retain the Linux row projection",
-          "short-read, seek, range, and failure cases preserve exact error/list behavior",
-          "signature filter, sorting, and cancellation controls are deterministic"
-        ],
-        "fixture": "docs/research/data/engine-contract-linux-qt5.json",
-        "harness": "tools/upstream/engine_contract_harness_main.cpp"
-      },
-      "status": "missing"
+      "observed_scope": "callback, synchronized external stop, rule break, pre-stop, and fresh-state recovery match Linux Qt5",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
@@ -1211,7 +1181,8 @@
     "docs/research/data/baseline-corpus-windows-qt5.json": "6beba732e88d90ed1414dd2584a4a783eac24dec70103fc54e6214eb12cca998",
     "docs/research/data/capability-traceability.json": "e1bb982feb52fb97e6678319c629cf71735650fe4239c8558a0f765c16c8cff3",
     "docs/research/data/database-cache-engine-windows-qt5.json": "d1cbcbe741e4cf3999f54f4696f6eee59472b59bd3aaf9d98f94bb337b1e16da",
-    "docs/research/data/windows-qt5-build-baseline.json": "2a5b163fe27941a8a84dc201d0a374485e4c8c6971e9b99305fc834d5f174fef",
+    "docs/research/data/engine-contract-windows-qt5.json": "4f7d1629d4c0cf627fd8f5fa1ff6adaf838f8c9fc910e95fac0c50bfd105233e",
+    "docs/research/data/windows-qt5-build-baseline.json": "b596fc71ce97cf948fd86ff464f6c2f2110e66475547946094be1a52555b31fe",
     "docs/research/data/windows-qt5-cli-ads.json": "bfdec0a8a516dd5d86721a9331d1d914c7e66f29df0fe0d6115c6dcca079224e",
     "docs/research/data/windows-qt5-cli-database-archive.json": "53c673620cc4388f0da7ffe36af7a325a099bceb0e29912c1f733119f942d748",
     "docs/research/data/windows-qt5-cli-database.json": "13e58a8d1b0cc4feb3998c06140e0afe7adb754cb59e5198b0e5b3079a3d5f8c",
@@ -1226,13 +1197,13 @@
   "summary": {
     "all_capabilities_accounted_for": true,
     "capability_count": 68,
-    "closure_required": 31,
-    "evidence_complete": 37,
-    "missing": 19,
+    "closure_required": 26,
+    "evidence_complete": 42,
+    "missing": 14,
     "partial": 12,
     "windows_baseline_admitted": false,
-    "windows_process_execution_count": 2070,
-    "windows_report_count": 12
+    "windows_process_execution_count": 2072,
+    "windows_report_count": 13
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
 }

@@ -20,9 +20,10 @@ Last updated: 2026-07-29
 
 - 固定上游、规则和 68 行 traceability；
 - [`windows-qt5-build-baseline.json`](data/windows-qt5-build-baseline.json)；
-- 12 份 Windows runtime 报告的完整 SHA-256；
+- 13 份 Windows runtime 报告的完整 SHA-256；
 - 每份报告的 source/platform 身份和命名 summary facts；
-- 2,070 次 Windows 进程执行，其中 19-case engine cache harness 运行两轮。
+- 2,072 次 Windows 进程执行，其中 19-case cache 与 37-case
+  engine-contract harness 各运行两轮。
 
 报告只接受三种状态：
 
@@ -39,18 +40,18 @@ Last updated: 2026-07-29
 
 | 分类 | 行数 |
 | --- | ---: |
-| Evidence complete | 37 |
+| Evidence complete | 42 |
 | Partial | 12 |
-| Missing | 19 |
+| Missing | 14 |
 | Total | 68 |
 
-所有行均恰好分类一次，但仍有 31 行需要 closure，因此
+所有行均恰好分类一次，但仍有 26 行需要 closure，因此
 `windows_baseline_admitted=false`。现有
 [`capability-coverage.json`](data/capability-coverage.json) 继续把 Windows
 68 行标记为 `platform_missing` 是正确的保守行为；本计划提供逐行升级路径，
 不直接改变平台接纳状态。
 
-37 个已闭合行主要来自：
+42 个已闭合行主要来自：
 
 - 26 样本的 single-target、scan option、output、entropy/info/struct；
 - help/version/show-structs；
@@ -59,6 +60,8 @@ Last updated: 2026-07-29
 - Unknown fallback、parse/runtime error collection；
 - PE/ELF/Mach-O、DEX/Java/PYC、PDF/CFBF、image、binary fallback dispatch；
 - directory/internal recursion、resource/overlay gates 与 nested result tree。
+- engine file/memory/device/subdevice 入口、I/O/range 边界、signature-name
+  filter、record sort 和 cancellation。
 
 这些行仍受各自报告中已经写明的全局平台限制约束，但没有把其他能力行的缺口
 反向扩散到本行。
@@ -83,24 +86,9 @@ Last updated: 2026-07-29
 Partial 行不能计入 Windows runtime baseline。机器报告为每行保存
 `observed_scope`、`missing_scope`、`proposed_experiment` 和 evidence paths。
 
-## 4. Missing：19 行
+## 4. Missing：14 行
 
-### 4.1 Engine contract 与 cancellation：5 行
-
-- `CAP-ENG-IN-001`
-- `CAP-ENG-IN-002`
-- `CAP-RULE-006`
-- `CAP-RULE-009`
-- `CAP-RULE-012`
-
-首选下一批工作是把固定 Linux
-[`engine-contract-behavior.md`](engine-contract-behavior.md) harness 移植到
-Windows qmake object set。一次成组实验可以同时覆盖 memory/file/device/
-subdevice entry、short-read/seek/range/error、signature-name filter、
-sort ordering 和 callback/pre-stop/synchronized cancellation；这是当前收益
-最高的 closure 批次。
-
-### 4.2 CLI option/test/profiling：5 行
+### 4.1 CLI option/test/profiling：5 行
 
 - `CAP-CLI-OPT-004`
 - `CAP-CLI-OPT-008`
@@ -112,19 +100,18 @@ sort ordering 和 callback/pre-stop/synchronized cancellation；这是当前收�
 OS record、完整 profiling announcement order，以及 `--test`/`--createtest`
 完整与缺参行为。
 
-### 4.3 Rule orchestration/private filter：3 行
+### 4.2 Rule orchestration/private filter：2 行
 
 - `CAP-RULE-003`
 - `CAP-RULE-007`
-- `CAP-RULE-009`
 
-其中 `CAP-RULE-009` 同时由 engine-contract 批次处理；其余两行需要固定
-global/type init/include precedence 与 private signature-path filter harness。
+需要固定 global/type init/include precedence 与 private signature-path filter
+harness。
 与本组相关的 partial 行 `CAP-RULE-001`、`CAP-RULE-002`、
 `CAP-RULE-004`、`CAP-RULE-005` 应在同一 Windows rule-orchestration
 批次中闭合，避免重复构建。
 
-### 4.4 Legacy dispatch：2 行
+### 4.3 Legacy dispatch：2 行
 
 - `CAP-DISPATCH-002`
 - `CAP-DISPATCH-003`
@@ -133,7 +120,7 @@ global/type init/include precedence 与 private signature-path filter harness。
 `CAP-DISPATCH-004` 另补 NPM 和 direct property control 后即可从 partial
 提升。
 
-### 4.5 Nested engine boundaries：5 行
+### 4.4 Nested engine boundaries：5 行
 
 - `CAP-NEST-003`
 - `CAP-NEST-004`
@@ -149,14 +136,13 @@ expansion limit。它们不能由 release CLI aggressive/recursive case 替代�
 
 按“每次固定构建关闭最多能力行”的原则：
 
-1. Windows engine-contract harness：直接处理 5 个 missing；
-2. Windows CLI option/test harness：处理 5 个 missing；
-3. Windows rule-orchestration + signature-path：处理 4 个 partial、2 个
-   missing，并复用 engine-contract 的 ordering 结果；
-4. Windows result-model harness：处理 6 个 partial；
-5. Windows legacy/archive dispatch：处理 2 个 missing、1 个 partial；
-6. Windows nested engine harnesses：处理 5 个 missing；
-7. Windows path closure：最后处理 `CAP-CLI-IN-003`，其中 domain/UNC 等需要
+1. Windows CLI option/test harness：处理 5 个 missing；
+2. Windows rule-orchestration + signature-path：处理 4 个 partial、2 个
+   missing，并复用已闭合 engine-contract 的 ordering 结果；
+3. Windows result-model harness：处理 6 个 partial；
+4. Windows legacy/archive dispatch：处理 2 个 missing、1 个 partial；
+5. Windows nested engine harnesses：处理 5 个 missing；
+6. Windows path closure：最后处理 `CAP-CLI-IN-003`，其中 domain/UNC 等需要
    明确环境能力，不把无法在当前主机合法构造的 profile 写成已观察。
 
 每批的接纳条件相同：固定 source/rules/toolchain/binary 或 object identity；

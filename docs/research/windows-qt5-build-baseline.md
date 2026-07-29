@@ -46,7 +46,7 @@ JSON continuity、CSV 优先级及四个带空格 filetype 的 invalid XML。
 保持 `platform_missing`，直到完整差分语料在该平台执行并归档。
 逐行
 [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)
-已把当前证据审计为 37 complete、12 partial、19 missing；31 个开放行均有
+已把当前证据审计为 42 complete、12 partial、14 missing；26 个开放行均有
 命名验收实验。
 
 机器证据见
@@ -373,6 +373,21 @@ empty cache 两侧均为 42 bytes。cache write deny 静默且非致命，DACL �
 拒绝 ZIP file read 时 load 返回 false；canceled miss 同样产生可被后续命中的
 poisoned empty cache。详见
 [`windows-database-cache-behavior.md`](windows-database-cache-behavior.md)。
+
+## Windows engine contract 矩阵
+
+[`build_windows_engine_contract_harness.ps1`](../../tools/upstream/build_windows_engine_contract_harness.ps1)
+显式进入 MSVC amd64 host/target 环境，只替换固定 qmake Release 构建的
+`main_console.obj`，继续链接同一组 engine objects。harness binary SHA-256
+为 `7ec7af525c3eb9fec28600b6792d895d6bcd6414658f79ba0fa5b5a203245e83`。
+
+[`collect_windows_engine_contract_harness.py`](../../tools/upstream/collect_windows_engine_contract_harness.py)
+连续运行两轮共享 37-case harness。机器报告 SHA-256 为
+`4f7d1629d4c0cf627fd8f5fa1ff6adaf838f8c9fc910e95fac0c50bfd105233e`；
+两轮 63,145-byte raw stdout 和空 stderr 逐字节相同。23/23 命名关系与
+37/37 case 均与 Linux Qt5 相同；明确排除 Qt 5.15.2/5.15.13 版本身份后，
+完整结构化文档相同。详见
+[`windows-engine-contract-behavior.md`](windows-engine-contract-behavior.md)。
 
 ## Windows CLI Unicode/特殊路径矩阵
 

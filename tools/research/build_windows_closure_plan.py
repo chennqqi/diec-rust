@@ -38,6 +38,9 @@ REPORT_KEYS = {
     "docs/research/data/database-cache-engine-windows-qt5.json": (
         "windows_engine_database_cache"
     ),
+    "docs/research/data/engine-contract-windows-qt5.json": (
+        "windows_engine_contract"
+    ),
     "docs/research/data/windows-qt5-cli-special-paths.json": (
         "windows_cli_special_paths"
     ),
@@ -91,6 +94,8 @@ COMPLETE: dict[str, str] = {
     "CAP-CLI-IN-001": "26 hash-bound corpus files exercise one positional target with deterministic Linux-equal detection projections",
     "CAP-CLI-IN-002": "ordered multi-target, duplicate, missing-plus-valid, and directory-plus-file cases are fixed",
     "CAP-CLI-IN-004": "single-file directory and empty-directory behavior is fixed",
+    "CAP-ENG-IN-001": "file, memory, device, and exact subdevice entry points have identical complete record arrays",
+    "CAP-ENG-IN-002": "chunked, short-read, read/seek failure, sequential, position, and subdevice range boundaries match Linux Qt5",
     "CAP-CLI-OPT-001": "eight nested fixtures have stable recursive-scan detection trees equal to Linux Qt5",
     "CAP-CLI-OPT-002": "all 26 baseline samples execute the deep-scan option twice",
     "CAP-CLI-OPT-003": "all 26 baseline samples execute the heuristic option twice",
@@ -115,7 +120,10 @@ COMPLETE: dict[str, str] = {
     "CAP-CLI-DB-003": "custom database missing/success behavior is fixed",
     "CAP-CLI-DB-004": "show-database directory and 17 ZIP boundary cases are fixed",
     "CAP-RULE-008": "empty database and ordinary unknown inputs produce stable Unknown fallback",
+    "CAP-RULE-006": "exact, missing, case-mismatched, and deep-gated signature-name filters match Linux Qt5",
+    "CAP-RULE-009": "sort-disabled insertion order and sort-enabled type-priority order match Linux Qt5",
     "CAP-RULE-010": "malformed and throwing database rules retain exact diagnostic visibility and JSON invalidity",
+    "CAP-RULE-012": "callback, synchronized external stop, rule break, pre-stop, and fresh-state recovery match Linux Qt5",
     "CAP-DISPATCH-001": "PE32/64, ELF32/64, and Mach-O 32/64/FAT projections are fixed",
     "CAP-DISPATCH-005": "DEX, Java Class, and PYC projections are fixed",
     "CAP-DISPATCH-006": "PDF and CFBF projections are fixed",
@@ -193,14 +201,6 @@ PARTIAL: dict[str, tuple[str, str, str]] = {
 
 
 MISSING: dict[str, tuple[str, str]] = {
-    "CAP-ENG-IN-001": (
-        "public engine memory/file/device entry-point equivalence",
-        "port the four-entry engine-contract harness to Windows",
-    ),
-    "CAP-ENG-IN-002": (
-        "device/subdevice short-read, seek, range, and failure boundaries",
-        "port the device/subdevice engine-contract harness to Windows",
-    ),
     "CAP-CLI-OPT-004": (
         "Windows verbose OS-record channel behavior",
         "run the fixed CLI option harness on the Windows oracle",
@@ -221,25 +221,13 @@ MISSING: dict[str, tuple[str, str]] = {
         "global init, type init, and same-name include precedence",
         "port the rule-orchestration engine harness to Windows",
     ),
-    "CAP-RULE-006": (
-        "exact signature-name filter, case, deep, and missing controls",
-        "port the signature-path/name engine harness to Windows",
-    ),
     "CAP-RULE-007": (
         "private signature-path filter boundaries",
         "port the signature-path engine harness to Windows",
     ),
-    "CAP-RULE-009": (
-        "sort enabled/disabled engine record ordering",
-        "port the engine-contract ordering harness to Windows",
-    ),
     "CAP-RULE-011": (
         "complete Windows script profiling order",
         "run the fixed CLI option/profiling harness on Windows",
-    ),
-    "CAP-RULE-012": (
-        "callback break, pre-stop, and synchronized cancellation",
-        "port the engine-contract cancellation harness to Windows",
     ),
     "CAP-DISPATCH-002": (
         "DOS/COM public dispatch and BW property-only branch",
@@ -322,7 +310,9 @@ EVIDENCE_PATHS = {
         "docs/research/data/windows-qt5-cli-path-nested.json",
         "docs/research/data/windows-qt5-cli-database.json",
     ),
-    "engine_contract": (),
+    "engine_contract": (
+        "docs/research/data/engine-contract-windows-qt5.json",
+    ),
     "signature_path_filter": (),
     "debug_data_dispatch": (),
 }
@@ -430,16 +420,6 @@ EXPERIMENTS: dict[str, dict[str, Any]] = {
 
 EXPERIMENT_GROUPS: dict[str, str] = {
     "CAP-CLI-IN-003": "windows_path",
-    **{
-        capability_id: "engine_contract"
-        for capability_id in (
-            "CAP-ENG-IN-001",
-            "CAP-ENG-IN-002",
-            "CAP-RULE-006",
-            "CAP-RULE-009",
-            "CAP-RULE-012",
-        )
-    },
     **{
         capability_id: "cli_options"
         for capability_id in (
@@ -623,6 +603,34 @@ def validate_inputs(
     ):
         raise ClosurePlanError("Windows cache harness facts drift")
 
+    engine = reports[
+        "docs/research/data/engine-contract-windows-qt5.json"
+    ]
+    if (
+        engine.get("passed") is not True
+        or engine.get("failures") != []
+        or engine.get("repetitions") != 2
+        or engine.get("execution_count") != 2
+        or engine.get("case_observation_count") != 74
+        or engine.get("raw_outputs_equal") is not True
+        or engine.get("normalized_outputs_equal") is not True
+        or engine.get("observation", {}).get("case_count") != 37
+        or engine.get("linux_qt5_comparison", {}).get(
+            "case_differences"
+        )
+        != []
+        or engine.get("linux_qt5_comparison", {}).get(
+            "semantic_document_equal"
+        )
+        is not True
+        or engine.get("linux_qt5_comparison", {}).get(
+            "all_named_relationships_equal"
+        )
+        is not True
+        or not all(engine.get("relationships", {}).values())
+    ):
+        raise ClosurePlanError("Windows engine-contract facts drift")
+
     for evidence_set, paths in EVIDENCE_PATHS.items():
         for path in paths:
             if path not in reports:
@@ -734,7 +742,7 @@ def build_plan(root: Path) -> dict[str, Any]:
             "windows_baseline_admitted": (
                 not PARTIAL and not MISSING
             ),
-            "windows_process_execution_count": 2070,
+            "windows_process_execution_count": 2072,
             "windows_report_count": len(REPORT_KEYS),
         },
     }

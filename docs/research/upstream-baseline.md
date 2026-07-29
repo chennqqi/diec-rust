@@ -163,8 +163,8 @@ vendored 目录仍需独立 source/license 审计。
   矩阵、显式 ADS/目录不枚举 named stream 及 26-sample 普通 output/special
   以及 17-case ZIP database 也已完成；Linux Qt5/Qt6 的全 26-sample
   output/special 扩展也已完成；Windows 19-case engine cache/DACL harness
-  也已完成两轮；Windows 68 行 closure 已分类为 37 complete、12 partial、
-  19 missing；
+  也已完成两轮；新增 37-case engine-contract 双轮后，Windows 68 行 closure
+  已分类为 42 complete、12 partial、14 missing；
   UNC、精确 namespace
   上限、symbolic link/reparse cycle、domain/group DACL、network
   share/EFS/integrity level、其他 engine-only、畸形矩阵和其余
