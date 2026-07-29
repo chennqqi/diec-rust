@@ -28,6 +28,12 @@ MATRIX_COLLECTOR_PATH = (
 MATRIX_VALIDATOR_PATH = (
     ROOT / "tools/upstream/validate_macos_cli_matrix.py"
 )
+REMAINING_COLLECTOR_PATH = (
+    ROOT / "tools/upstream/collect_macos_cli_remaining.py"
+)
+REMAINING_VALIDATOR_PATH = (
+    ROOT / "tools/upstream/validate_macos_cli_remaining.py"
+)
 
 
 def load_module(name: str, path: Path):
@@ -64,6 +70,20 @@ MATRIX_HELPER = load_module(
 MATRIX_DEFINITIONS = load_module(
     "compare_cli_oracles_for_macos_test",
     ROOT / "tools/upstream/compare_cli_oracles.py",
+)
+REMAINING_COLLECTOR = load_module(
+    "collect_macos_cli_remaining", REMAINING_COLLECTOR_PATH
+)
+REMAINING_VALIDATOR = load_module(
+    "validate_macos_cli_remaining", REMAINING_VALIDATOR_PATH
+)
+REMAINING_OUTPUT_HELPER = load_module(
+    "collect_windows_cli_output_remaining_for_macos_test",
+    ROOT / "tools/upstream/collect_windows_cli_output_remaining.py",
+)
+REMAINING_SPECIAL_HELPER = load_module(
+    "collect_windows_cli_special_remaining_for_macos_test",
+    ROOT / "tools/upstream/collect_windows_cli_special_remaining.py",
 )
 
 
@@ -522,6 +542,321 @@ def write_cli_matrix_candidate_bundle(
     return report_path
 
 
+def write_cli_remaining_candidate_bundle(
+    directory: Path,
+    baseline_path: Path,
+    primary_path: Path,
+) -> Path:
+    baseline = CLI_VALIDATOR.load_json(baseline_path)[0]
+    manifest = json.loads(
+        (
+            ROOT / "docs/research/data/baseline-corpus.json"
+        ).read_bytes()
+    )
+    covered = set(
+        REMAINING_OUTPUT_HELPER.ALREADY_COVERED
+    )
+    selection = [
+        sample["name"]
+        for sample in manifest["samples"]
+        if sample["name"] not in covered
+    ]
+    cases_by_kind = {
+        "output": MATRIX_DEFINITIONS.OUTPUT_MATRIX,
+        "special": MATRIX_DEFINITIONS.SPECIAL_MATRIX,
+    }
+    matrix = {}
+    for sample_name in selection:
+        sample_report = matrix.setdefault(sample_name, {})
+        for kind in ("output", "special"):
+            kind_report = sample_report.setdefault(kind, {})
+            observations = {}
+            for case in cases_by_kind[kind]:
+                if kind == "output" and case.name == "json":
+                    baseline_entry = baseline["corpus"][sample_name]
+                    pair_observations = tuple(
+                        CLI_COMMON.Observation(
+                            baseline_entry[side]["exit_code"],
+                            (
+                                directory
+                                / baseline_entry[side]["stdout_path"]
+                            ).read_bytes(),
+                            (
+                                directory
+                                / baseline_entry[side]["stderr_path"]
+                            ).read_bytes(),
+                        )
+                        for side in ("first", "second")
+                    )
+                else:
+                    if kind == "output":
+                        stdout = (
+                            b"<invalid"
+                            if (
+                                case.name == "xml"
+                                and sample_name
+                                in REMAINING_OUTPUT_HELPER.EXPECTED_INVALID_XML
+                            )
+                            else (
+                                b"<root/>"
+                                if case.name == "xml"
+                                else b"text"
+                            )
+                        )
+                    elif case.name in {
+                        "info_json",
+                        "info_all_output_flags",
+                    }:
+                        stdout = json.dumps(
+                            {
+                                "data": {
+                                    "Info": {
+                                        "File name": (
+                                            "/tmp/corpus/"
+                                            f"{sample_name}"
+                                        )
+                                    }
+                                }
+                            },
+                            separators=(",", ":"),
+                        ).encode("utf-8")
+                    elif (
+                        case.name
+                        in REMAINING_SPECIAL_HELPER.JSON_CASES
+                    ):
+                        stdout = b"{}"
+                    elif (
+                        case.name
+                        in REMAINING_SPECIAL_HELPER.XML_CASES
+                    ):
+                        stdout = b"<root/>"
+                    else:
+                        stdout = b"text"
+                    observation = CLI_COMMON.Observation(
+                        0, stdout, b""
+                    )
+                    pair_observations = (
+                        observation,
+                        observation,
+                    )
+                first, second = pair_observations
+                observations[case.name] = pair_observations
+                entry = CLI_COLLECTOR.pair_report(
+                    CLI_COMMON,
+                    directory,
+                    (
+                        "cli-remaining/"
+                        f"{sample_name}/{kind}/{case.name}"
+                    ),
+                    first,
+                    second,
+                )
+                entry.update(
+                    {
+                        "arguments": [
+                            *MATRIX_HELPER.translate_arguments(
+                                case.arguments,
+                                Path("<source>"),
+                                report=True,
+                            ),
+                            f"<corpus>/{sample_name}",
+                        ],
+                        "expected_exit_code": 0,
+                        "expected_exit_code_equal": True,
+                        "expected_empty_stderr": True,
+                        "first_stderr_empty": True,
+                        "second_stderr_empty": True,
+                    }
+                )
+                if kind == "output":
+                    expected_valid = not (
+                        case.name == "xml"
+                        and sample_name
+                        in REMAINING_OUTPUT_HELPER.EXPECTED_INVALID_XML
+                    )
+                    first_valid = (
+                        REMAINING_OUTPUT_HELPER.output_validity(
+                            case.name, first.stdout
+                        )
+                    )
+                    second_valid = (
+                        REMAINING_OUTPUT_HELPER.output_validity(
+                            case.name, second.stdout
+                        )
+                    )
+                    entry.update(
+                        {
+                            "first_output_valid": first_valid,
+                            "second_output_valid": second_valid,
+                            "expected_output_valid": expected_valid,
+                            "output_validity_expected_equal": True,
+                        }
+                    )
+                    if case.name == "json":
+                        first_tree = CLI_COMMON.json_detect_tree(
+                            first.stdout
+                        )
+                        second_tree = CLI_COMMON.json_detect_tree(
+                            second.stdout
+                        )
+                        entry.update(
+                            {
+                                "first_detect_tree": first_tree,
+                                "second_detect_tree": second_tree,
+                                "cli_baseline_reference_equal": True,
+                            }
+                        )
+                else:
+                    first_valid, first_projection = (
+                        REMAINING_SPECIAL_HELPER.parse_output(
+                            case.name, first.stdout
+                        )
+                    )
+                    second_valid, second_projection = (
+                        REMAINING_SPECIAL_HELPER.parse_output(
+                            case.name, second.stdout
+                        )
+                    )
+                    first_projection = (
+                        REMAINING_SPECIAL_HELPER.normalize_projection(
+                            case.name,
+                            first_projection,
+                            sample_name,
+                        )
+                    )
+                    second_projection = (
+                        REMAINING_SPECIAL_HELPER.normalize_projection(
+                            case.name,
+                            second_projection,
+                            sample_name,
+                        )
+                    )
+                    entry.update(
+                        {
+                            "first_output_valid": first_valid,
+                            "second_output_valid": second_valid,
+                        }
+                    )
+                    if (
+                        case.name
+                        in REMAINING_SPECIAL_HELPER.JSON_CASES
+                        or case.name
+                        in REMAINING_SPECIAL_HELPER.XML_CASES
+                    ):
+                        entry.update(
+                            {
+                                "first_projection": first_projection,
+                                "second_projection": second_projection,
+                            }
+                        )
+                kind_report[case.name] = entry
+
+            if kind == "output":
+                kind_report["all_output_flags"][
+                    "csv_priority_reference_equal"
+                ] = (
+                    observations["all_output_flags"]
+                    == observations["csv"]
+                )
+            else:
+                for case_name, reference_name in (
+                    REMAINING_SPECIAL_HELPER.PRIORITY_REFERENCES.items()
+                ):
+                    entry = kind_report[case_name]
+                    entry["priority_reference_case"] = reference_name
+                    entry["priority_reference_equal"] = (
+                        observations[case_name]
+                        == observations[reference_name]
+                    )
+
+    case_counts = {
+        kind: len(selection) * len(cases)
+        for kind, cases in cases_by_kind.items()
+    }
+    case_count = sum(case_counts.values())
+    report = {
+        "schema_version": 1,
+        "result": "candidate",
+        "platform": REMAINING_COLLECTOR.PLATFORM,
+        "generator": REMAINING_COLLECTOR._generator_bindings(ROOT),
+        "oracle_report": {
+            "path": "oracle-candidate.json",
+            "sha256": hashlib.sha256(
+                (directory / "oracle-candidate.json").read_bytes()
+            ).hexdigest(),
+        },
+        "cli_baseline_report": {
+            "path": "cli-baseline-candidate.json",
+            "sha256": hashlib.sha256(
+                baseline_path.read_bytes()
+            ).hexdigest(),
+        },
+        "cli_primary_matrix_report": {
+            "path": "cli-matrix-candidate.json",
+            "sha256": hashlib.sha256(
+                primary_path.read_bytes()
+            ).hexdigest(),
+        },
+        "source": baseline["source"],
+        "qt": baseline["qt"],
+        "binary": baseline["binary"],
+        "corpus_manifest": baseline["corpus_manifest"],
+        "selection": selection,
+        "cases": {
+            kind: [case.name for case in cases]
+            for kind, cases in cases_by_kind.items()
+        },
+        "output_classification": {
+            "expected_invalid_xml_samples": list(
+                REMAINING_OUTPUT_HELPER.EXPECTED_INVALID_XML
+            ),
+            "special_json": list(
+                REMAINING_SPECIAL_HELPER.JSON_CASES
+            ),
+            "special_xml": list(
+                REMAINING_SPECIAL_HELPER.XML_CASES
+            ),
+        },
+        "priority_references": {
+            "output_all_flags": "csv",
+            "special": (
+                REMAINING_SPECIAL_HELPER.PRIORITY_REFERENCES
+            ),
+        },
+        "matrix": matrix,
+        "summary": {
+            "sample_count": len(selection),
+            "case_counts": case_counts,
+            "case_count": case_count,
+            "execution_count": 2 * case_count,
+            "raw_stream_count": 4 * case_count,
+            "determinism_failures": [],
+            "expected_exit_failures": [],
+            "stderr_failures": [],
+            "validity_failures": [],
+            "json_reference_failures": [],
+            "priority_failures": [],
+            "deterministic": True,
+            "expected_exits_equal": True,
+            "stderr_empty": True,
+            "outputs_valid_as_expected": True,
+            "json_baseline_references_equal": True,
+            "priority_references_equal": True,
+        },
+        "admission": {
+            "platform_admitted": False,
+            "capability_rows_admitted": 0,
+            "reason": REMAINING_COLLECTOR.ADMISSION_REASON,
+        },
+        "limitations": REMAINING_COLLECTOR.LIMITATIONS,
+    }
+    report_path = directory / "cli-remaining-candidate.json"
+    report_path.write_text(
+        json.dumps(report, sort_keys=True), encoding="utf-8"
+    )
+    return report_path
+
+
 class MacosQt5OracleBootstrapTests(unittest.TestCase):
     def test_plan_is_exact_generator_output_and_source_bound(self):
         report = json.loads(PLAN_PATH.read_text(encoding="utf-8"))
@@ -600,8 +935,11 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             "validate_macos_cli_baseline.py",
             "collect_macos_cli_matrix.py",
             "validate_macos_cli_matrix.py",
+            "collect_macos_cli_remaining.py",
+            "validate_macos_cli_remaining.py",
             "cli-baseline-candidate.json",
             "cli-matrix-candidate.json",
+            "cli-remaining-candidate.json",
             "diec-macos-candidate-evidence/raw",
             (
                 "actions/checkout@"
@@ -642,13 +980,17 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
                 "cache-state-candidate.json",
                 "cli-baseline-candidate.json",
                 "cli-matrix-candidate.json",
+                "cli-remaining-candidate.json",
             ],
         )
         self.assertEqual(
-            workflow["general_cli_execution_count"], 740
+            workflow["remaining_cli_execution_count"], 1092
         )
         self.assertEqual(
-            workflow["general_cli_raw_stream_count"], 1480
+            workflow["general_cli_execution_count"], 1832
+        )
+        self.assertEqual(
+            workflow["general_cli_raw_stream_count"], 3664
         )
 
     def test_cli_candidate_tools_are_bound_and_fail_closed(self):
@@ -822,6 +1164,89 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
                     report_path=matrix_path,
                     oracle_path=oracle_path,
                     baseline_path=baseline_path,
+                    root=ROOT,
+                )
+
+    def test_cli_remaining_validator_recomputes_full_raw_matrix(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            baseline_path = write_cli_candidate_bundle(directory)
+            primary_path = write_cli_matrix_candidate_bundle(
+                directory, baseline_path
+            )
+            report_path = write_cli_remaining_candidate_bundle(
+                directory, baseline_path, primary_path
+            )
+            report = CLI_VALIDATOR.load_json(report_path)[0]
+            oracle_path = directory / "oracle-candidate.json"
+            REMAINING_VALIDATOR.validate_report(
+                report,
+                report_path=report_path,
+                oracle_path=oracle_path,
+                baseline_path=baseline_path,
+                primary_path=primary_path,
+                root=ROOT,
+            )
+            self.assertEqual(report["summary"]["case_count"], 546)
+            self.assertEqual(
+                report["summary"]["execution_count"], 1092
+            )
+            self.assertEqual(
+                report["summary"]["raw_stream_count"], 2184
+            )
+
+            first = report["matrix"]["Minimal.class"]["output"][
+                "json"
+            ]["first"]
+            raw_path = directory / first["stdout_path"]
+            original = raw_path.read_bytes()
+            raw_path.write_bytes(b"tampered")
+            with self.assertRaisesRegex(
+                REMAINING_VALIDATOR.ReportError,
+                "raw stream identity mismatch",
+            ):
+                REMAINING_VALIDATOR.validate_report(
+                    report,
+                    report_path=report_path,
+                    oracle_path=oracle_path,
+                    baseline_path=baseline_path,
+                    primary_path=primary_path,
+                    root=ROOT,
+                )
+            raw_path.write_bytes(original)
+
+            report["admission"]["platform_admitted"] = True
+            with self.assertRaisesRegex(
+                REMAINING_VALIDATOR.ReportError,
+                "must not admit",
+            ):
+                REMAINING_VALIDATOR.validate_report(
+                    report,
+                    report_path=report_path,
+                    oracle_path=oracle_path,
+                    baseline_path=baseline_path,
+                    primary_path=primary_path,
+                    root=ROOT,
+                )
+            report["admission"]["platform_admitted"] = False
+
+            extra = (
+                directory
+                / "raw"
+                / "cli-remaining"
+                / "undeclared"
+            )
+            extra.write_bytes(b"x")
+            with self.assertRaisesRegex(
+                REMAINING_VALIDATOR.ReportError,
+                "raw file inventory",
+            ):
+                REMAINING_VALIDATOR.validate_report(
+                    report,
+                    report_path=report_path,
+                    oracle_path=oracle_path,
+                    baseline_path=baseline_path,
+                    primary_path=primary_path,
                     root=ROOT,
                 )
 

@@ -30,9 +30,12 @@ macOS x86_64 Qt5 CLI oracle 的可执行 bootstrap，但当前 Windows 主机不
 和完整递归 submodule，并同时运行 oracle identity 与临时文件 cache-state
 candidate。它还对 26 个项目生成的基础样本各执行两轮默认 JSON 扫描，保留
 64 次通用 CLI/corpus 执行的每份原始 stdout/stderr；在同一输入上继续运行
-338 个 primary option/output/special case 的双轮矩阵。合计 740 次执行和
-1,480 个 raw stream，并与固定 Linux Qt5 detection projection 或 exit code
-比较。所有第三方 Action 都绑定完整
+338 个 primary option/output/special case 的双轮矩阵，再把普通 output 与
+entropy/info/struct special 的 26-case 组合扩展到其余 21 个样本，增加 546
+个 case 的双轮矩阵。合计 1,832 次执行和 3,664 个 raw stream，并与固定
+Linux Qt5 detection projection 或 exit code 比较；remaining 矩阵在尚无
+Linux 对应全矩阵时保留结构、有效性与 priority 约束，不伪造跨平台等价。
+所有第三方 Action 都绑定完整
 commit SHA，checkout 不持久化凭据，工作流权限仅为 `contents: read`。
 上传物保留 14 天，仍包含 runner 本地路径，仅供下载评审；工作流本身不会提交
 报告或修改能力矩阵。
@@ -92,8 +95,8 @@ admission guard。报告保留本机绝对路径，只能存放在外部证据�
 ## 4. 在 macOS x86_64 上执行
 
 首选从 GitHub Actions 页面手动运行 `macOS Qt5 oracle candidate`。成功后下载
-`macos-qt5-candidates-<run-id>-<attempt>`，先核对 `SHA256SUMS`，再审计四份
-candidate JSON 和 `raw/` 原始流。通用 CLI bundle 的 validator 会重新计算
+`macos-qt5-candidates-<run-id>-<attempt>`，先核对 `SHA256SUMS`，再审计五份
+candidate JSON 和 `raw/` 原始流。其中 CLI validator 会重新计算
 raw hash、determinism、Linux projection 和完整文件闭集；差异会被原样记录，
 不会被 normalizer 隐藏。该动作不会自动纳入或提交证据。
 
@@ -134,9 +137,10 @@ python3 tools/upstream/validate_macos_qt5_oracle_report.py \
    总覆盖生成器接纳该平台。
 
 当前机器计划明确要求 68 行和至少双轮；它本身不替代任何 runtime evidence。
-新加入的通用 CLI/corpus bundle 也只覆盖第一块候选证据：
-普通 output/special 在其余 21 个样本上的全矩阵、nested/path/database-error
-与 engine-only harness 仍须分别采集，`capability_rows_admitted` 必须保持 0。
+通用 CLI/corpus、primary matrix 与 remaining matrix 已把普通
+output/special 扩展到全部 26 个生成样本，但仍只属于候选证据：
+nested/path/database-error 与 engine-only harness 仍须分别采集，
+`capability_rows_admitted` 必须保持 0。
 
 ## 6. 本机可执行验证
 

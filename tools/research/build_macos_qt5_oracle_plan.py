@@ -24,8 +24,10 @@ SOURCE_PATHS = (
     "tools/upstream/build_macos_qt5_oracle.sh",
     "tools/upstream/collect_macos_cli_baseline.py",
     "tools/upstream/collect_macos_cli_matrix.py",
+    "tools/upstream/collect_macos_cli_remaining.py",
     "tools/upstream/validate_macos_cli_baseline.py",
     "tools/upstream/validate_macos_cli_matrix.py",
+    "tools/upstream/validate_macos_cli_remaining.py",
     "tools/upstream/validate_macos_qt5_oracle_report.py",
 )
 
@@ -97,10 +99,12 @@ def build_plan(root: Path) -> dict[str, Any]:
                 "cache-state-candidate.json",
                 "cli-baseline-candidate.json",
                 "cli-matrix-candidate.json",
+                "cli-remaining-candidate.json",
             ],
             "raw_cli_streams_retained": True,
-            "general_cli_execution_count": 740,
-            "general_cli_raw_stream_count": 1480,
+            "remaining_cli_execution_count": 1092,
+            "general_cli_execution_count": 1832,
+            "general_cli_raw_stream_count": 3664,
         },
         "runtime_closure": {
             "required_capability_count": 68,
