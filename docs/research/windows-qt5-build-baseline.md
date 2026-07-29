@@ -46,7 +46,7 @@ JSON continuity、CSV 优先级及四个带空格 filetype 的 invalid XML。
 保持 `platform_missing`，直到完整差分语料在该平台执行并归档。
 逐行
 [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)
-已把当前证据审计为 53 complete、8 partial、7 missing；15 个开放行均有
+已把当前证据审计为 59 complete、2 partial、7 missing；9 个开放行均有
 命名验收实验。
 
 机器证据见
@@ -435,6 +435,20 @@ observation。两轮 raw 输出完全相同，11/11 关系成立；只替换已�
 `54e0d24e363cf86353365ea93fffeaf03a5dfadb9f32f0c976ec3234b646ad48`，
 详见
 [`signature-path-filter-behavior.md`](signature-path-filter-behavior.md)。
+
+## Windows Qt5 result-model 矩阵
+
+[`build_windows_result_model_harnesses.ps1`](../../tools/upstream/build_windows_result_model_harnesses.ps1)
+复用固定 qmake Release engine objects，分别只替换 console main object，构建
+metadata/lists/flags/IDs/enums 五个 harness。
+[`collect_windows_result_model_harnesses.py`](../../tools/upstream/collect_windows_result_model_harnesses.py)
+各运行两轮，共 10 次进程执行、30 次 case observation。原 probe 的全部命名
+关系成立；保留 scan time/debug elapsed/UUID 原值，并只对受控路径表达与这些
+非确定字段建立语义投影后，五份完整文档均与 Linux Qt5 相同。结合既有
+engine-contract，六个 result-model 行均具备直接证据。报告 SHA-256 为
+`611c111c38f85d7fbbe42fe41e5f6d922a7f168e084a1950b5bb6a70a5e3fc65`，
+详见
+[`windows-result-model-behavior.md`](windows-result-model-behavior.md)。
 
 ## Windows CLI Unicode/特殊路径矩阵
 

@@ -963,23 +963,16 @@
         "docs/research/data/baseline-corpus-windows-qt5.json",
         "docs/research/data/windows-qt5-cli-matrix.json",
         "docs/research/data/windows-qt5-cli-path-nested.json",
-        "docs/research/data/windows-qt5-cli-database.json"
+        "docs/research/data/windows-qt5-cli-database.json",
+        "docs/research/data/result-model-engine-windows-qt5.json"
       ],
       "evidence_set": "result_model",
       "id": "CAP-RESULT-001",
-      "missing_scope": "engine scalar fields across memory/device entry points including scan time treatment",
+      "missing_scope": null,
       "name": "scan result scalar metadata",
-      "observed_scope": "CLI filetype, offset, size, parent part, and detection strings are fixed",
-      "proposed_experiment": {
-        "assertions": [
-          "scalar fields and all result lists are captured",
-          "flags, identifiers, and enum raw/canonical forms are retained",
-          "version, info, rule path/name, priority, and nondeterministic fields are classified"
-        ],
-        "fixture": "docs/research/data/result-list-fixture.json, docs/research/data/result-flag-fixture.json, and docs/research/data/result-enum-fixture.json; metadata and ID harnesses are self-contained",
-        "harness": "port result_metadata/result_lists/result_ids/result_flags/result_enums harnesses under tools/upstream/"
-      },
-      "status": "partial"
+      "observed_scope": "four public entry points preserve scalar filename, size, file type, and typed nonnegative scan-time behavior",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
@@ -987,23 +980,16 @@
         "docs/research/data/baseline-corpus-windows-qt5.json",
         "docs/research/data/windows-qt5-cli-matrix.json",
         "docs/research/data/windows-qt5-cli-path-nested.json",
-        "docs/research/data/windows-qt5-cli-database.json"
+        "docs/research/data/windows-qt5-cli-database.json",
+        "docs/research/data/result-model-engine-windows-qt5.json"
       ],
       "evidence_set": "result_model",
       "id": "CAP-RESULT-002",
-      "missing_scope": "engine record/error/debug/handler list inventory",
+      "missing_scope": null,
       "name": "scan result record error debug and handler lists",
-      "observed_scope": "CLI detection records and database error framing are fixed",
-      "proposed_experiment": {
-        "assertions": [
-          "scalar fields and all result lists are captured",
-          "flags, identifiers, and enum raw/canonical forms are retained",
-          "version, info, rule path/name, priority, and nondeterministic fields are classified"
-        ],
-        "fixture": "docs/research/data/result-list-fixture.json, docs/research/data/result-flag-fixture.json, and docs/research/data/result-enum-fixture.json; metadata and ID harnesses are self-contained",
-        "harness": "port result_metadata/result_lists/result_ids/result_flags/result_enums harnesses under tools/upstream/"
-      },
-      "status": "partial"
+      "observed_scope": "record, error, debug, and handler lists preserve complete values, duplicates, and order exactly as Linux Qt5",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
@@ -1011,23 +997,16 @@
         "docs/research/data/baseline-corpus-windows-qt5.json",
         "docs/research/data/windows-qt5-cli-matrix.json",
         "docs/research/data/windows-qt5-cli-path-nested.json",
-        "docs/research/data/windows-qt5-cli-database.json"
+        "docs/research/data/windows-qt5-cli-database.json",
+        "docs/research/data/result-model-engine-windows-qt5.json"
       ],
       "evidence_set": "result_model",
       "id": "CAP-RESULT-003",
-      "missing_scope": "engine heuristic, advanced-heuristic, and unknown flag truth table",
+      "missing_scope": null,
       "name": "heuristic and unknown flags",
-      "observed_scope": "public heuristic and Unknown projections are fixed",
-      "proposed_experiment": {
-        "assertions": [
-          "scalar fields and all result lists are captured",
-          "flags, identifiers, and enum raw/canonical forms are retained",
-          "version, info, rule path/name, priority, and nondeterministic fields are classified"
-        ],
-        "fixture": "docs/research/data/result-list-fixture.json, docs/research/data/result-flag-fixture.json, and docs/research/data/result-enum-fixture.json; metadata and ID harnesses are self-contained",
-        "harness": "port result_metadata/result_lists/result_ids/result_flags/result_enums harnesses under tools/upstream/"
-      },
-      "status": "partial"
+      "observed_scope": "normal, heuristic, advanced-heuristic, and Unknown flag combinations exactly match Linux Qt5",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
@@ -1035,23 +1014,16 @@
         "docs/research/data/baseline-corpus-windows-qt5.json",
         "docs/research/data/windows-qt5-cli-matrix.json",
         "docs/research/data/windows-qt5-cli-path-nested.json",
-        "docs/research/data/windows-qt5-cli-database.json"
+        "docs/research/data/windows-qt5-cli-database.json",
+        "docs/research/data/result-model-engine-windows-qt5.json"
       ],
       "evidence_set": "result_model",
       "id": "CAP-RESULT-004",
-      "missing_scope": "record and parent identifier invariants modulo UUID values",
+      "missing_scope": null,
       "name": "record and parent identifiers",
-      "observed_scope": "nested CLI parent/child tree shape is fixed",
-      "proposed_experiment": {
-        "assertions": [
-          "scalar fields and all result lists are captured",
-          "flags, identifiers, and enum raw/canonical forms are retained",
-          "version, info, rule path/name, priority, and nondeterministic fields are classified"
-        ],
-        "fixture": "docs/research/data/result-list-fixture.json, docs/research/data/result-flag-fixture.json, and docs/research/data/result-enum-fixture.json; metadata and ID harnesses are self-contained",
-        "harness": "port result_metadata/result_lists/result_ids/result_flags/result_enums harnesses under tools/upstream/"
-      },
-      "status": "partial"
+      "observed_scope": "record and parent identifier fields and equality links match Linux Qt5 modulo retained UUID values",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
@@ -1059,23 +1031,16 @@
         "docs/research/data/baseline-corpus-windows-qt5.json",
         "docs/research/data/windows-qt5-cli-matrix.json",
         "docs/research/data/windows-qt5-cli-path-nested.json",
-        "docs/research/data/windows-qt5-cli-database.json"
+        "docs/research/data/windows-qt5-cli-database.json",
+        "docs/research/data/result-model-engine-windows-qt5.json"
       ],
       "evidence_set": "result_model",
       "id": "CAP-RESULT-005",
-      "missing_scope": "raw, numeric, reserved, and fallback enum mapping",
+      "missing_scope": null,
       "name": "record type and name representations",
-      "observed_scope": "canonical CLI type/name strings across 26 samples are fixed",
-      "proposed_experiment": {
-        "assertions": [
-          "scalar fields and all result lists are captured",
-          "flags, identifiers, and enum raw/canonical forms are retained",
-          "version, info, rule path/name, priority, and nondeterministic fields are classified"
-        ],
-        "fixture": "docs/research/data/result-list-fixture.json, docs/research/data/result-flag-fixture.json, and docs/research/data/result-enum-fixture.json; metadata and ID harnesses are self-contained",
-        "harness": "port result_metadata/result_lists/result_ids/result_flags/result_enums harnesses under tools/upstream/"
-      },
-      "status": "partial"
+      "observed_scope": "raw, numeric, canonical, reserved, and fallback enum behavior exactly matches Linux Qt5",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
@@ -1083,23 +1048,16 @@
         "docs/research/data/baseline-corpus-windows-qt5.json",
         "docs/research/data/windows-qt5-cli-matrix.json",
         "docs/research/data/windows-qt5-cli-path-nested.json",
-        "docs/research/data/windows-qt5-cli-database.json"
+        "docs/research/data/windows-qt5-cli-database.json",
+        "docs/research/data/result-model-engine-windows-qt5.json"
       ],
       "evidence_set": "result_model",
       "id": "CAP-RESULT-006",
-      "missing_scope": "engine version/info/rule-name/rule-path/priority fields",
+      "missing_scope": null,
       "name": "record version info rule and priority",
-      "observed_scope": "normal CLI record strings and priority outcomes are fixed",
-      "proposed_experiment": {
-        "assertions": [
-          "scalar fields and all result lists are captured",
-          "flags, identifiers, and enum raw/canonical forms are retained",
-          "version, info, rule path/name, priority, and nondeterministic fields are classified"
-        ],
-        "fixture": "docs/research/data/result-list-fixture.json, docs/research/data/result-flag-fixture.json, and docs/research/data/result-enum-fixture.json; metadata and ID harnesses are self-contained",
-        "harness": "port result_metadata/result_lists/result_ids/result_flags/result_enums harnesses under tools/upstream/"
-      },
-      "status": "partial"
+      "observed_scope": "nonempty version/info and rule name/path priorities 12, 30, and 100 are directly fixed",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     }
   ],
   "evaluated_on": "2026-07-29",
@@ -1111,9 +1069,10 @@
     "docs/research/data/capability-traceability.json": "e1bb982feb52fb97e6678319c629cf71735650fe4239c8558a0f765c16c8cff3",
     "docs/research/data/database-cache-engine-windows-qt5.json": "d1cbcbe741e4cf3999f54f4696f6eee59472b59bd3aaf9d98f94bb337b1e16da",
     "docs/research/data/engine-contract-windows-qt5.json": "4f7d1629d4c0cf627fd8f5fa1ff6adaf838f8c9fc910e95fac0c50bfd105233e",
+    "docs/research/data/result-model-engine-windows-qt5.json": "611c111c38f85d7fbbe42fe41e5f6d922a7f168e084a1950b5bb6a70a5e3fc65",
     "docs/research/data/rule-orchestration-windows-qt5.json": "e6c7d47b35f89abdb10719e8578a550dcf5c9caf882a5d7825d3e0dbde3cf9da",
     "docs/research/data/signature-path-engine-windows-qt5.json": "54e0d24e363cf86353365ea93fffeaf03a5dfadb9f32f0c976ec3234b646ad48",
-    "docs/research/data/windows-qt5-build-baseline.json": "fcdbe6360101ed642b3b611214676c95225352eb03b5b91dc4ca8f4d43abbde5",
+    "docs/research/data/windows-qt5-build-baseline.json": "242dc3b5aa2f0b4a6f8588f0b6dbe1d55c563b934cf162aa907fa8180b4357fd",
     "docs/research/data/windows-qt5-cli-ads.json": "bfdec0a8a516dd5d86721a9331d1d914c7e66f29df0fe0d6115c6dcca079224e",
     "docs/research/data/windows-qt5-cli-database-archive.json": "53c673620cc4388f0da7ffe36af7a325a099bceb0e29912c1f733119f942d748",
     "docs/research/data/windows-qt5-cli-database.json": "13e58a8d1b0cc4feb3998c06140e0afe7adb754cb59e5198b0e5b3079a3d5f8c",
@@ -1129,13 +1088,13 @@
   "summary": {
     "all_capabilities_accounted_for": true,
     "capability_count": 68,
-    "closure_required": 15,
-    "evidence_complete": 53,
+    "closure_required": 9,
+    "evidence_complete": 59,
     "missing": 7,
-    "partial": 8,
+    "partial": 2,
     "windows_baseline_admitted": false,
-    "windows_process_execution_count": 2114,
-    "windows_report_count": 16
+    "windows_process_execution_count": 2124,
+    "windows_report_count": 17
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
 }

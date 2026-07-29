@@ -108,11 +108,17 @@ Windows private signature-path engine harness 再连续运行两轮：7 个 case
 2,114 次进程执行，详见
 [`signature-path-filter-behavior.md`](signature-path-filter-behavior.md)。
 
-上述 16 份报告现由
+五组 Windows result-model harness 再各运行两轮，共 10 次进程执行、30 次
+case observation。scalar、四类列表、flags、IDs 和 enums 的完整语义文档均
+与 Linux Qt5 相同；nonempty version/info 与 rule name/path/priority 也有
+直接证据。十七份 Windows runtime 报告累计 2,124 次进程执行，详见
+[`windows-result-model-behavior.md`](windows-result-model-behavior.md)。
+
+上述 17 份报告现由
 [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)
-逐行投影到 68 个稳定能力 ID：53 complete、8 partial、7 missing。该审计
-阻止局部 runtime 结果被误当作完整 Windows baseline，并把下一优先批次固定为
-6 个 result-model partial 行。
+逐行投影到 68 个稳定能力 ID：59 complete、2 partial、7 missing。该审计
+阻止局部 runtime 结果被误当作完整 Windows baseline；下一优先批次转为
+legacy/archive dispatch。
 
 同一剩余 21 样本 × 19-case special 矩阵又在固定 Linux Qt5/Qt6 image 上
 各执行一次，共 798 次容器执行。399/399 raw observations 逐字节相同；231 个

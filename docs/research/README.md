@@ -87,6 +87,9 @@ Phase 0 计划形成：
   `parentId` 的完整字段及 resource edge/UUID 父子关系（Draft）。
 - [`result-enum-behavior.md`](result-enum-behavior.md)：`SCANSTRUCT` 原始
   type/name、数值 enum、规范字符串及 Unknown 边界（Draft）。
+- [`windows-result-model-behavior.md`](windows-result-model-behavior.md)：
+  五组原生 Windows Qt5 result-model harness 双轮、Linux Qt5 完整文档配对和
+  六个 result-model 能力行闭环（Draft）。
 - [`source-analysis.md`](source-analysis.md)：模块关系及扫描/规则调用链（Draft）。
 - [`rule-compatibility.md`](rule-compatibility.md)：规则语法、内建函数和宿主 API（Draft）。
 - [`rule-runtime-spike.md`](rule-runtime-spike.md)：Boa 全库解析、真实复杂规则、宿主绑定和资源限制验证（Draft）。
@@ -232,8 +235,8 @@ Phase 0 计划形成：
   原生 Windows Qt5 的 19-case engine cache/DACL 双轮基线、Linux 语义投影
   和平台 cache-byte 差异（Draft）。
 - [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)：
-  将 16 份 Windows runtime 报告逐项映射到 68 行能力清单，当前为
-  53 complete、8 partial、7 missing（Draft）。
+  将 17 份 Windows runtime 报告逐项映射到 68 行能力清单，当前为
+  59 complete、2 partial、7 missing（Draft）。
 - [`windows-cli-option-behavior.md`](windows-cli-option-behavior.md)：
   固定 Windows verbose/test/create-test/messages 和 292-rule profiling
   顺序，保留 `image_ICNS.sg` 的精确平台移动差异（Draft）。
@@ -515,6 +518,8 @@ Phase 0 计划形成：
 - [`data/rule-orchestration-fixture.json`](data/rule-orchestration-fixture.json)：项目生成的规则编排数据库、输入和期望模式顺序清单。
 - [`data/rule-orchestration-linux-qt5.json`](data/rule-orchestration-linux-qt5.json)：固定 qmake/CMake oracle 的规则编排原始哈希与规范化基线。
 - [`data/rule-orchestration-windows-qt5.json`](data/rule-orchestration-windows-qt5.json)：固定 Windows Qt5 oracle 的十个规则编排 case、双轮 raw 身份和 Linux Qt5 逐字段对照。
+- [`data/signature-path-engine-windows-qt5.json`](data/signature-path-engine-windows-qt5.json)：固定 Windows Qt5 private signature-path harness 的七用例双轮与 Linux Qt5 完整文档对照。
+- [`data/result-model-engine-windows-qt5.json`](data/result-model-engine-windows-qt5.json)：五组固定 Windows Qt5 result-model harness 的双轮、30 次 case observation 与六行闭环证据。
 - [`data/cli-option-behavior-linux.json`](data/cli-option-behavior-linux.json)：固定 qmake/CMake oracle 的 verbose/messages/profiling 与 test/create test 原始 CLI 基线。
 - [`data/script-scope-fixture.json`](data/script-scope-fixture.json)：项目生成的跨规则作用域 fixture 清单。
 - [`data/script-scope-qt5.json`](data/script-scope-qt5.json)：固定 qmake/CMake oracle 的作用域行为基线。

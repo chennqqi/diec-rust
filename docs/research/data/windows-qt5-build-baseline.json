@@ -172,6 +172,17 @@
     "semantic_projection_failures": 0,
     "named_relationship_failures": 0
   },
+  "windows_result_model": {
+    "path": "docs/research/data/result-model-engine-windows-qt5.json",
+    "sha256": "611c111c38f85d7fbbe42fe41e5f6d922a7f168e084a1950b5bb6a70a5e3fc65",
+    "harness_count": 5,
+    "capability_count": 6,
+    "repetitions": 2,
+    "execution_count": 10,
+    "case_observation_count": 30,
+    "semantic_projection_failures": 0,
+    "named_relationship_failures": 0
+  },
   "windows_cli_path_nested": {
     "path": "docs/research/data/windows-qt5-cli-path-nested.json",
     "sha256": "e877e112deb244ab1cbf9edf221e94e155cda711a182f216478eeaf9da40e21b",

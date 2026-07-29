@@ -35,6 +35,9 @@ REPORT_KEYS = {
     "docs/research/data/signature-path-engine-windows-qt5.json": (
         "windows_signature_path"
     ),
+    "docs/research/data/result-model-engine-windows-qt5.json": (
+        "windows_result_model"
+    ),
     "docs/research/data/windows-qt5-cli-path-nested.json": (
         "windows_cli_path_nested"
     ),
@@ -144,6 +147,12 @@ COMPLETE: dict[str, str] = {
     "CAP-RULE-004": "the wrong-file-type decoy is excluded in all four scan modes exactly as on Linux Qt5",
     "CAP-RULE-005": "deep, entry-point, and heuristic gates are independently fixed across all four scan modes",
     "CAP-RULE-007": "the private exact-path filter's empty, exact, missing, case, dot-segment, and basename boundaries match Linux Qt5",
+    "CAP-RESULT-001": "four public entry points preserve scalar filename, size, file type, and typed nonnegative scan-time behavior",
+    "CAP-RESULT-002": "record, error, debug, and handler lists preserve complete values, duplicates, and order exactly as Linux Qt5",
+    "CAP-RESULT-003": "normal, heuristic, advanced-heuristic, and Unknown flag combinations exactly match Linux Qt5",
+    "CAP-RESULT-004": "record and parent identifier fields and equality links match Linux Qt5 modulo retained UUID values",
+    "CAP-RESULT-005": "raw, numeric, canonical, reserved, and fallback enum behavior exactly matches Linux Qt5",
+    "CAP-RESULT-006": "nonempty version/info and rule name/path priorities 12, 30, and 100 are directly fixed",
     "CAP-DISPATCH-001": "PE32/64, ELF32/64, and Mach-O 32/64/FAT projections are fixed",
     "CAP-DISPATCH-005": "DEX, Java Class, and PYC projections are fixed",
     "CAP-DISPATCH-006": "PDF and CFBF projections are fixed",
@@ -166,36 +175,6 @@ PARTIAL: dict[str, tuple[str, str, str]] = {
         "APK, IPA, JAR, ZIP, RAR, ISO9660, TAR, and GZip public projections are fixed",
         "NPM auto/forced dispatch and direct Archive property-only controls",
         "run the fixed archive-dispatch corpus and direct property harness on Windows",
-    ),
-    "CAP-RESULT-001": (
-        "CLI filetype, offset, size, parent part, and detection strings are fixed",
-        "engine scalar fields across memory/device entry points including scan time treatment",
-        "port the result-model scalar harness to Windows",
-    ),
-    "CAP-RESULT-002": (
-        "CLI detection records and database error framing are fixed",
-        "engine record/error/debug/handler list inventory",
-        "port the result-list harness to Windows",
-    ),
-    "CAP-RESULT-003": (
-        "public heuristic and Unknown projections are fixed",
-        "engine heuristic, advanced-heuristic, and unknown flag truth table",
-        "port the result-flag harness to Windows",
-    ),
-    "CAP-RESULT-004": (
-        "nested CLI parent/child tree shape is fixed",
-        "record and parent identifier invariants modulo UUID values",
-        "port the result-ID harness to Windows",
-    ),
-    "CAP-RESULT-005": (
-        "canonical CLI type/name strings across 26 samples are fixed",
-        "raw, numeric, reserved, and fallback enum mapping",
-        "port the result-enum harness to Windows",
-    ),
-    "CAP-RESULT-006": (
-        "normal CLI record strings and priority outcomes are fixed",
-        "engine version/info/rule-name/rule-path/priority fields",
-        "port the result-model field harness to Windows",
     ),
 }
 
@@ -283,6 +262,7 @@ EVIDENCE_PATHS = {
         "docs/research/data/windows-qt5-cli-matrix.json",
         "docs/research/data/windows-qt5-cli-path-nested.json",
         "docs/research/data/windows-qt5-cli-database.json",
+        "docs/research/data/result-model-engine-windows-qt5.json",
     ),
     "engine_contract": (
         "docs/research/data/engine-contract-windows-qt5.json",
@@ -716,6 +696,34 @@ def validate_inputs(
     ):
         raise ClosurePlanError("Windows signature-path facts drift")
 
+    result_model = reports[
+        "docs/research/data/result-model-engine-windows-qt5.json"
+    ]
+    result_reports = result_model.get("reports", {})
+    if (
+        result_model.get("passed") is not True
+        or result_model.get("failures") != []
+        or result_model.get("repetitions") != 2
+        or result_model.get("execution_count") != 10
+        or result_model.get("case_observation_count") != 30
+        or result_model.get("capability_scope")
+        != [f"CAP-RESULT-00{index}" for index in range(1, 7)]
+        or set(result_reports) != {"metadata", "lists", "flags", "ids", "enums"}
+        or not all(
+            profile.get("normalized_outputs_equal") is True
+            and profile.get("relationships_equal") is True
+            and profile.get("linux_qt5_semantic_document_equal") is True
+            and all(profile.get("relationships", {}).values())
+            for profile in result_reports.values()
+        )
+        or not all(
+            result_model.get("record_metadata_evidence", {})
+            .get("facts", {})
+            .values()
+        )
+    ):
+        raise ClosurePlanError("Windows result-model facts drift")
+
     for evidence_set, paths in EVIDENCE_PATHS.items():
         for path in paths:
             if path not in reports:
@@ -827,7 +835,7 @@ def build_plan(root: Path) -> dict[str, Any]:
             "windows_baseline_admitted": (
                 not PARTIAL and not MISSING
             ),
-            "windows_process_execution_count": 2114,
+            "windows_process_execution_count": 2124,
             "windows_report_count": len(REPORT_KEYS),
         },
     }
