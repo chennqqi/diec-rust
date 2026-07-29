@@ -288,6 +288,51 @@ class ScriptRuntimeBudgetTests(unittest.TestCase):
                 "representative_cross_format_stable_reports_equal"
             ]
         )
+        self.assertTrue(
+            evidence[
+                "representative_cross_format_transient_heap_measured"
+            ]
+        )
+        self.assertEqual(
+            evidence[
+                "representative_cross_format_tracking_limit_bytes"
+            ],
+            32 * 1024**2,
+        )
+        self.assertEqual(
+            evidence[
+                "representative_cross_format_maximum_high_water_bytes"
+            ],
+            124_080,
+        )
+        self.assertEqual(
+            evidence[
+                "representative_cross_format_maximum_high_water_format"
+            ],
+            "macho",
+        )
+        self.assertEqual(
+            evidence[
+                "representative_cross_format_maximum_high_water_case"
+            ],
+            "rust_macho64_x86_64_entry_point_match",
+        )
+        self.assertEqual(
+            evidence[
+                "representative_cross_format_tracking_denied_allocation_count"
+            ],
+            0,
+        )
+        self.assertTrue(
+            evidence[
+                "representative_cross_format_tracking_all_runtimes_released_to_zero"
+            ]
+        )
+        self.assertTrue(
+            evidence[
+                "representative_cross_format_tracking_stable_reports_equal"
+            ]
+        )
         self.assertEqual(
             evidence[
                 "representative_cross_format_maximum_observed_malloc_size_bytes"

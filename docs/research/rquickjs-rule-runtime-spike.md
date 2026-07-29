@@ -164,10 +164,19 @@ canonical JSON 报告各自三轮相同。全矩阵最大 `malloc_size` 为 124,
 最大 `memory_used_size` 为 113,926 bytes，均出现在 Archive
 `verbose_stored_zip` 的 `after_rule` 阶段。
 
+七个 `-tracked-heap` 变体又在完全相同的 25 个 case 上执行 32 MiB custom
+allocator hard limit。三轮均为 25/25 oracle 匹配、0 allocation rejection，
+共 75/75 runtime drop 后 live bytes 归零；每类完整 canonical 报告在三轮间
+分别相同。全矩阵最大瞬时 high-water 为 124,080 bytes，出现在 Mach-O
+`rust_macho64_x86_64_entry_point_match`。各类最大值为 PE 118,528、ELF
+118,736、Mach-O 124,080、DEX 118,488、APK 118,512、Archive 119,856、
+PDF 120,976 bytes；逐类 stable report SHA-256 记录在机器证据中。
+
 该矩阵证明同一探针在七类既有格式差分上的确定性和代表性量级，不是所有格式或
 全部固定规则的 runtime scaling。每个 case 只执行一条短规则，观察到的“一次
-poll”不能转换为 VM instruction 数，也不能替代 full lifecycle、瞬时 allocator
-high-water 或跨平台测量。
+poll”不能转换为 VM instruction 数。tracked 结果补齐了这些代表性 case 的
+瞬时 allocator high-water，但不能替代全部格式/规则的 full lifecycle、
+production backend、sanitizer 或跨平台测量。
 
 ## 实验边界
 
@@ -958,7 +967,23 @@ cargo +1.88.0 run --release --locked -- verify-apk-rule \
   ../../upstream/Detect-It-Easy/db \
   ../../docs/research/data/apk-rule-fixture.json \
   ../../docs/research/data/apk-rule-qt5.json
+
+cargo +1.88.0 run --release --locked -- verify-archive-rule \
+  ../../upstream/Detect-It-Easy/db \
+  ../../docs/research/data/archive-rule-fixture.json \
+  ../../docs/research/data/archive-rule-qt5.json
+
+cargo +1.88.0 run --release --locked -- verify-pdf-rule \
+  ../../upstream/Detect-It-Easy/db \
+  ../../docs/research/data/pdf-rule-fixture.json \
+  ../../docs/research/data/pdf-rule-qt5.json
 ```
+
+七个格式命令分别将命令名替换为
+`verify-<format>-rule-tracked-heap`，即可复现同一 oracle 下的 32 MiB custom
+allocator 报告。默认与 tracked 命令各连续运行三轮；完整 JSON canonicalize
+后逐类 SHA-256 必须稳定，tracked 报告还必须逐 case 满足 0 denied allocation
+和 drop 后 live bytes 为 0。
 
 `fixture`、`eval-isolated-compat`、`eval-binary-lifecycle`、两个 lexical
 fixture/lifecycle 命令预期退出 0；原始 isolated、shared 和

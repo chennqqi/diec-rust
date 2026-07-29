@@ -198,8 +198,10 @@ hard limit 下无拒绝且每个 runtime drop 后归零。该单一 Binary corpu
 
 已有的 PE/ELF/Mach-O/DEX/APK/Archive/PDF 差分另形成七类、25-case 的代表性
 矩阵：连续三轮均为 25/25 匹配，每轮 25 次正常 VM poll、75 个 lifecycle
-memory checkpoint，最大 observed `malloc_size` 为 124,485 bytes。它只缩小
-“Binary 单格式观察”的证据缺口；每类仅一条短规则，不能将
+memory checkpoint，最大 observed `malloc_size` 为 124,485 bytes。同一矩阵的
+custom allocator 三轮最大 transient live heap 为 124,080 bytes，0 denied
+allocation 且全部 75 个 runtime drop 后归零。它只缩小“Binary 单格式观察”的
+证据缺口；每类仅一条短规则，不能将
 `all_format_rule_lifecycles_measured` 置为 true。
 
 QuickJS spike 的 4 MiB fault heap、128 KiB stack 和 25 ms deadline 只作为

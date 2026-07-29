@@ -174,11 +174,11 @@
     },
     "runtime_spike": {
       "path": "docs/research/data/rquickjs-rule-runtime.json",
-      "sha256": "5867ef5092a500e54f2c36b9aac681628dfa9dc377c2cd2aa949c3c1c08bef3e"
+      "sha256": "6b341b35dd69816c365c62d9289fbcfcc54a69f5663c2045fc150c89bc24b2cc"
     },
     "script_budget": {
       "path": "docs/design/data/script-runtime-budget-candidate.json",
-      "sha256": "3a3f34bb3db13c41c4bc072eb05a55784619356aab56a996befeef30f241395b"
+      "sha256": "2ff9361582960f29984a8d955df85fd08d9395d1554b7eec02e914c8565a9c6b"
     },
     "traversal_attempt": {
       "path": "docs/design/data/traversal-attempt-budget-candidate.json",
@@ -263,12 +263,19 @@
       "representative_cross_format_case_count_per_repeat": 25,
       "representative_cross_format_count": 7,
       "representative_cross_format_interrupt_poll_total_per_repeat": 25,
+      "representative_cross_format_maximum_high_water_bytes": 124080,
+      "representative_cross_format_maximum_high_water_format": "macho",
       "representative_cross_format_maximum_observed_malloc_size_bytes": 124485,
       "representative_cross_format_maximum_observed_memory_used_size_bytes": 113926,
       "representative_cross_format_memory_checkpoint_count_per_repeat": 75,
       "representative_cross_format_repeat_count": 3,
       "representative_cross_format_rule_runtime_measured": true,
-      "representative_cross_format_stable_reports_equal": true
+      "representative_cross_format_stable_reports_equal": true,
+      "representative_cross_format_tracking_all_runtimes_released_to_zero": true,
+      "representative_cross_format_tracking_denied_allocation_count": 0,
+      "representative_cross_format_tracking_limit_bytes": 33554432,
+      "representative_cross_format_tracking_stable_reports_equal": true,
+      "representative_cross_format_transient_heap_measured": true
     }
   }
 }

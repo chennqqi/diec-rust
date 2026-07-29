@@ -109,8 +109,10 @@ workspace 建立时重新生成并审计，不允许浮动到其他 minor/patch 
   这仍只是 Windows 候选 allocator 证据，不是 production backend 或跨平台证明。
   另有 PE/ELF/Mach-O/DEX/APK/Archive/PDF 七条代表性规则的
   25-case 矩阵连续三轮固定为每轮 25 次 poll、75 个 lifecycle memory
-  checkpoint，最大 `malloc_size=124,485`；但这不是所有格式/规则的 scaling，
-  因此这些数字仍保持 `review_candidate_not_admitted`。
+  checkpoint，最大 `malloc_size=124,485`；同一矩阵的 custom allocator
+  三轮最大瞬时 high-water 为 124,080 bytes，0 次拒绝且 75/75 runtime drop
+  后归零。但这不是所有格式/规则的 scaling，因此这些数字仍保持
+  `review_candidate_not_admitted`。
 - fuel quantum 是 pinned backend 的 VM interrupt poll 或 native cooperative
   checkpoint，共享单调 counter，rule/include/child 不重置；runtime 升级必须
   重新定标。script deadline 是首次 runtime work 起算的 absolute deadline，并

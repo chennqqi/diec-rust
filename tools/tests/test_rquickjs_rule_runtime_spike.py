@@ -512,6 +512,73 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
                 ),
             },
         )
+        tracked = matrix["tracked_heap"]
+        self.assertTrue(tracked["all_match"])
+        self.assertEqual(tracked["repeat_count"], 3)
+        self.assertEqual(tracked["case_count_per_repeat"], 25)
+        self.assertEqual(
+            tracked["limit_bytes_per_case_runtime"],
+            32 * 1024 * 1024,
+        )
+        self.assertEqual(tracked["denied_allocation_count_per_repeat"], 0)
+        self.assertTrue(tracked["all_runtimes_released_to_zero"])
+        self.assertTrue(tracked["stable_canonical_reports_equal"])
+        self.assertTrue(tracked["transient_high_water_measured"])
+        self.assertFalse(tracked["set_memory_limit_used"])
+        self.assertEqual(tracked["maximum_high_water_bytes"], 124_080)
+        self.assertEqual(tracked["maximum_high_water_format"], "macho")
+        self.assertEqual(
+            tracked["maximum_high_water_case"],
+            "rust_macho64_x86_64_entry_point_match",
+        )
+        tracked_formats = tracked["formats"]
+        self.assertEqual(
+            {
+                name: value["maximum_high_water_bytes"]
+                for name, value in tracked_formats.items()
+            },
+            {
+                "apk": 118_512,
+                "archive": 119_856,
+                "dex": 118_488,
+                "elf": 118_736,
+                "macho": 124_080,
+                "pdf": 120_976,
+                "pe": 118_528,
+            },
+        )
+        self.assertEqual(
+            {
+                name: value["canonical_report_sha256"]
+                for name, value in tracked_formats.items()
+            },
+            {
+                "apk": (
+                    "4c9eb9450ee09f9763bf354cf93a6d5b2e549b336ecf5388e4ecfabc7f554ecb"
+                ),
+                "archive": (
+                    "9ff282f52019c10c96eea9fa094258cfc3c057c90f9b942295b74ba0b1c85cca"
+                ),
+                "dex": (
+                    "3f028c9456b586f4de6467f61c0db230e18ab349e123ef0c53ca2e5850507571"
+                ),
+                "elf": (
+                    "66422fea62649d4c012a53406812721d690f445fb87551f18666a3e368016cd2"
+                ),
+                "macho": (
+                    "5c29b45188faed63b89a568d8b48a2e0a8930376d9d048c864b5626a7791e2ce"
+                ),
+                "pdf": (
+                    "1e154f896079455f8b5904f296bb3c4a9271b02ab151a5d97d07b0f38a2833ef"
+                ),
+                "pe": (
+                    "b88e1775f0f19299525ba7c5817efa129523eed94da9d7afae5040cef58c20de"
+                ),
+            },
+        )
+        self.assertIn("not all-format", tracked["scope"])
+        self.assertIn("not", tracked["scope"])
+        self.assertIn("cross-platform proof", tracked["scope"])
 
     def test_basic_host_api_increment_records_remaining_dynamic_gaps(self):
         increment = self.reference["basic_host_api_increment"]

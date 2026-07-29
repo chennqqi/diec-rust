@@ -81,3 +81,10 @@ The `verify-pe-rule`, `verify-elf-rule`, `verify-macho-rule`,
 memory lifecycle checkpoints for every isolated case runtime. Together they
 form a 25-case representative cross-format matrix; they do not claim full
 format or all-rule runtime scaling.
+
+Each format command also has a `-tracked-heap` variant. These variants run the
+same oracle with the 32 MiB custom allocator limit, add transient high-water
+and drop-to-zero fields to every case, and fail if any normal allocation is
+denied or any live bytes remain after the runtime is dropped. The default
+commands retain their byte-stable reports so allocator evidence cannot
+silently replace the existing compatibility baseline.

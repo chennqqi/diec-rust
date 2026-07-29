@@ -50,8 +50,10 @@ Last updated: 2026-07-30
   scaling、sanitizer 及三平台资源证据仍缺失，因此候选不得 admitted。
 - PE/ELF/Mach-O/DEX/APK/Archive/PDF 七类代表性规则的 25-case runtime 矩阵
   已连续三轮固定为每轮 25 次正常 VM poll、75 个 lifecycle memory
-  checkpoint，最大 observed `malloc_size` 为 124,485 bytes。每类仅覆盖一条
-  短规则，不能据此宣称全部固定规则或所有支持格式的 scaling 已完成。
+  checkpoint，最大 observed `malloc_size` 为 124,485 bytes；同一矩阵的 custom
+  allocator 三轮最大瞬时 high-water 为 124,080 bytes，0 次拒绝且 75/75
+  runtime drop 后归零。每类仅覆盖一条短规则，不能据此宣称全部固定规则或所有
+  支持格式的 scaling 已完成。
 
 项目候选值属于设计决策，见
 [`../design/resource-limit-policy.md`](../design/resource-limit-policy.md)；本页只
@@ -125,9 +127,10 @@ python -m unittest discover -s tools\tests -p "test_resource_limit_policy.py"
 
 ## 剩余证据
 
-- 对 script 候选把当前 Windows Binary custom-allocator high-water 扩展到
-  production backend、全部格式正反例和三平台；补齐 sanitizer、native HostApi
-  cooperative checkpoint、VM poll scaling 与 `limit-1/exact/+1`；
+- 对 script 候选把当前 Windows Binary 与七类代表性规则的 custom-allocator
+  high-water 扩展到 production backend、全部格式正反例和三平台；补齐
+  sanitizer、native HostApi cooperative checkpoint、VM poll scaling 与
+  `limit-1/exact/+1`；
 - 对 root input 候选补齐 production `Bytes`/`ByteSource`/`Path`/FFI
   `limit-1/exact/+1`、并发 truncate/grow 和 CPU/peak-memory；
 - 对 total allocation 候选补齐 production budgeted containers/decompressor

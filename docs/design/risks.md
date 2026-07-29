@@ -608,8 +608,9 @@ baseline 的变更都要检查本表。
   拒绝且 42/42 runtime drop 后归零；但它尚非 production backend，也未通过
   sanitizer 或三平台验证。其余 HostApi checkpoint 与完整跨格式 scaling 仍未
   采集。七类代表性格式规则的 25-case
-  矩阵虽已三轮固定为每轮 25 次 poll、75 个 memory checkpoint，但每类仅一条
-  短规则，所以该候选仍为
+  矩阵虽已三轮固定为每轮 25 次 poll、75 个 memory checkpoint，其 custom
+  allocator 变体也固定最大 124,080-byte transient high-water、0 次拒绝与
+  75/75 drop 归零；但每类仅一条短规则，所以该候选仍为
   `review_candidate_not_admitted`。
 - **缓解**：runtime 选型硬门禁；fuel/deadline/heap；受控检查点；不可中断 backend
   不得采用。

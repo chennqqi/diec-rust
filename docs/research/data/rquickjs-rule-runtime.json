@@ -20,7 +20,7 @@
   "experiment": {
     "cargo_lock_sha256": "f389eb266779a88939fea9793effdff29d01ea0e1184915698f4fa0f9441d0ad",
     "cargo_toml_sha256": "82c5bb97749f50212e5364c2ac7d1f81eaec4d460a9bf47710b4b42f9204a79f",
-    "source_sha256": "61b12506ca1948eccd9ff7fe755fe8438c0d559b38a171c3436a9eba740c7e8b",
+    "source_sha256": "7b999509a4abe78672be73564b443998221e9ff3b44ec2078b457827d759ed4f",
     "tracking_allocator_source_sha256": "1409b40627d5fd4cf108e24bef6a8d3cc580ca90ace06f685522ea55e7b4bb32",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
@@ -1362,6 +1362,65 @@
     "repeat_count": 3,
     "scope": "one byte-identical upstream rule each for PE, ELF, Mach-O, DEX, APK, Archive, and PDF over 25 generated positive/negative/truncated cases; representative cross-format runtime evidence, not all formats or all fixed rules",
     "stable_canonical_reports_equal": true,
+    "tracked_heap": {
+      "all_match": true,
+      "all_runtimes_released_to_zero": true,
+      "case_count_per_repeat": 25,
+      "denied_allocation_count_per_repeat": 0,
+      "formats": {
+        "apk": {
+          "canonical_report_sha256": "4c9eb9450ee09f9763bf354cf93a6d5b2e549b336ecf5388e4ecfabc7f554ecb",
+          "case_count": 3,
+          "maximum_high_water_bytes": 118512,
+          "maximum_high_water_case": "qdbh_archive_record_match"
+        },
+        "archive": {
+          "canonical_report_sha256": "9ff282f52019c10c96eea9fa094258cfc3c057c90f9b942295b74ba0b1c85cca",
+          "case_count": 3,
+          "maximum_high_water_bytes": 119856,
+          "maximum_high_water_case": "verbose_stored_zip"
+        },
+        "dex": {
+          "canonical_report_sha256": "3f028c9456b586f4de6467f61c0db230e18ab349e123ef0c53ca2e5850507571",
+          "case_count": 3,
+          "maximum_high_water_bytes": 118488,
+          "maximum_high_water_case": "qdbh_string_match"
+        },
+        "elf": {
+          "canonical_report_sha256": "66422fea62649d4c012a53406812721d690f445fb87551f18666a3e368016cd2",
+          "case_count": 6,
+          "maximum_high_water_bytes": 118736,
+          "maximum_high_water_case": "burneye_elf32_entry_point_match"
+        },
+        "macho": {
+          "canonical_report_sha256": "5c29b45188faed63b89a568d8b48a2e0a8930376d9d048c864b5626a7791e2ce",
+          "case_count": 4,
+          "maximum_high_water_bytes": 124080,
+          "maximum_high_water_case": "rust_macho64_x86_64_entry_point_match"
+        },
+        "pdf": {
+          "canonical_report_sha256": "1e154f896079455f8b5904f296bb3c4a9271b02ab151a5d97d07b0f38a2833ef",
+          "case_count": 3,
+          "maximum_high_water_bytes": 120976,
+          "maximum_high_water_case": "tools_string_values"
+        },
+        "pe": {
+          "canonical_report_sha256": "b88e1775f0f19299525ba7c5817efa129523eed94da9d7afae5040cef58c20de",
+          "case_count": 3,
+          "maximum_high_water_bytes": 118528,
+          "maximum_high_water_case": "cygwin32_entry_point_match"
+        }
+      },
+      "limit_bytes_per_case_runtime": 33554432,
+      "maximum_high_water_bytes": 124080,
+      "maximum_high_water_case": "rust_macho64_x86_64_entry_point_match",
+      "maximum_high_water_format": "macho",
+      "repeat_count": 3,
+      "scope": "the same representative 25-case cross-format matrix under the candidate custom allocator; Windows x86_64 MSVC evidence, not all-format, production-backend, or cross-platform proof",
+      "set_memory_limit_used": false,
+      "stable_canonical_reports_equal": true,
+      "transient_high_water_measured": true
+    },
     "transient_high_water_measured": false
   },
   "full_binary_corpus_oracle": {

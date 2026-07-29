@@ -772,6 +772,34 @@ def validate_reports(root: Path) -> dict[str, Any]:
         )
         == 113_926
         and script_evidence.get(
+            "representative_cross_format_transient_heap_measured"
+        )
+        is True
+        and script_evidence.get(
+            "representative_cross_format_tracking_limit_bytes"
+        )
+        == 32 * MIB
+        and script_evidence.get(
+            "representative_cross_format_maximum_high_water_bytes"
+        )
+        == 124_080
+        and script_evidence.get(
+            "representative_cross_format_maximum_high_water_format"
+        )
+        == "macho"
+        and script_evidence.get(
+            "representative_cross_format_tracking_denied_allocation_count"
+        )
+        == 0
+        and script_evidence.get(
+            "representative_cross_format_tracking_all_runtimes_released_to_zero"
+        )
+        is True
+        and script_evidence.get(
+            "representative_cross_format_tracking_stable_reports_equal"
+        )
+        is True
+        and script_evidence.get(
             "all_format_rule_lifecycles_measured"
         )
         is False
@@ -895,6 +923,24 @@ def validate_reports(root: Path) -> dict[str, Any]:
                 ),
                 "representative_cross_format_maximum_observed_memory_used_size_bytes": (
                     113_926
+                ),
+                "representative_cross_format_transient_heap_measured": True,
+                "representative_cross_format_tracking_limit_bytes": 32
+                * MIB,
+                "representative_cross_format_maximum_high_water_bytes": (
+                    124_080
+                ),
+                "representative_cross_format_maximum_high_water_format": (
+                    "macho"
+                ),
+                "representative_cross_format_tracking_denied_allocation_count": (
+                    0
+                ),
+                "representative_cross_format_tracking_all_runtimes_released_to_zero": (
+                    True
+                ),
+                "representative_cross_format_tracking_stable_reports_equal": (
+                    True
                 ),
                 "all_format_rule_lifecycles_measured": False,
                 "fault_injection_values_are_candidate_basis": False,

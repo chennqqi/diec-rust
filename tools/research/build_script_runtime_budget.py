@@ -175,6 +175,7 @@ def validate_sources(root: Path) -> tuple[
             "`verify-binary-corpus-tracked-heap` 使用包裹 pinned",
             "最大瞬时 high-water 为\n4,411,368 bytes",
             "七条原样上游规则。七类代表性格式规则共\n25 个 case",
+            "全矩阵最大瞬时 high-water 为 124,080 bytes",
             "不能观察 eval 内部瞬时 allocator high-water",
         ),
         SOURCES["runtime_research"],
@@ -389,7 +390,45 @@ def validate_sources(root: Path) -> tuple[
             "case": "verbose_stored_zip",
             "format": "archive",
             "stage": "after_rule",
-        },
+        }
+        and format_matrix.get("tracked_heap", {}).get("all_match") is True
+        and format_matrix.get("tracked_heap", {}).get("repeat_count") == 3
+        and format_matrix.get("tracked_heap", {}).get(
+            "case_count_per_repeat"
+        )
+        == 25
+        and format_matrix.get("tracked_heap", {}).get(
+            "limit_bytes_per_case_runtime"
+        )
+        == 32 * MIB
+        and format_matrix.get("tracked_heap", {}).get(
+            "maximum_high_water_bytes"
+        )
+        == 124_080
+        and format_matrix.get("tracked_heap", {}).get(
+            "maximum_high_water_format"
+        )
+        == "macho"
+        and format_matrix.get("tracked_heap", {}).get(
+            "maximum_high_water_case"
+        )
+        == "rust_macho64_x86_64_entry_point_match"
+        and format_matrix.get("tracked_heap", {}).get(
+            "denied_allocation_count_per_repeat"
+        )
+        == 0
+        and format_matrix.get("tracked_heap", {}).get(
+            "all_runtimes_released_to_zero"
+        )
+        is True
+        and format_matrix.get("tracked_heap", {}).get(
+            "stable_canonical_reports_equal"
+        )
+        is True
+        and format_matrix.get("tracked_heap", {}).get(
+            "transient_high_water_measured"
+        )
+        is True,
         "representative cross-format runtime evidence drift",
     )
 
@@ -420,6 +459,7 @@ def build_candidate(root: Path) -> dict[str, Any]:
     tracked_measurement = tracked_corpus["runtime_measurement"]
     tracked_memory = tracked_measurement["memory"]
     format_matrix = runtime["representative_format_runtime_matrix"]
+    tracked_format_matrix = format_matrix["tracked_heap"]
     rule_bytes = isolated["bytes"]
     operation_anchor = (
         corpus["attempted_detect_count"]
@@ -632,6 +672,28 @@ def build_candidate(root: Path) -> dict[str, Any]:
             ),
             "representative_cross_format_stable_reports_equal": (
                 format_matrix["stable_canonical_reports_equal"]
+            ),
+            "representative_cross_format_transient_heap_measured": True,
+            "representative_cross_format_tracking_limit_bytes": (
+                tracked_format_matrix["limit_bytes_per_case_runtime"]
+            ),
+            "representative_cross_format_maximum_high_water_bytes": (
+                tracked_format_matrix["maximum_high_water_bytes"]
+            ),
+            "representative_cross_format_maximum_high_water_format": (
+                tracked_format_matrix["maximum_high_water_format"]
+            ),
+            "representative_cross_format_maximum_high_water_case": (
+                tracked_format_matrix["maximum_high_water_case"]
+            ),
+            "representative_cross_format_tracking_denied_allocation_count": (
+                tracked_format_matrix["denied_allocation_count_per_repeat"]
+            ),
+            "representative_cross_format_tracking_all_runtimes_released_to_zero": (
+                tracked_format_matrix["all_runtimes_released_to_zero"]
+            ),
+            "representative_cross_format_tracking_stable_reports_equal": (
+                tracked_format_matrix["stable_canonical_reports_equal"]
             ),
             "representative_cross_format_maximum_observed_malloc_size_bytes": (
                 format_matrix["maximum_observed_malloc_size"]["bytes"]
