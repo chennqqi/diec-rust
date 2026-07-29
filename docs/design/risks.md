@@ -2,7 +2,7 @@
 
 Status: In Review
 
-Last updated: 2026-07-28
+Last updated: 2026-07-29
 
 ## 1. 用途与依据
 
@@ -235,8 +235,12 @@ baseline 的变更都要检查本表。
   14 个 archive member = 237 个 compile source，并发现 direct-link
   `XArchive/Algos/xucldecoder.cpp` 的内嵌 UCL 代码明确声明 GNU GPL、要求查阅
   `ACC_LICENSE`，但组件中不存在该文件。该项记录为
-  `PRODUCT-LICENSE-GAP-001`；在恢复官方 UCL 1.03 精确来源/许可证并书面评审前，
-  同样禁止复制或翻译。
+  `PRODUCT-LICENSE-GAP-001`。后续来源审计把两个 XUCL 文件固定到官方 UCL 1.03：
+  合并 12/64-token 覆盖为 94.76%/89.08%，官方源码头为
+  `GPL-2.0-or-later`，`COPYING` 与 `acc/ACC_LICENSE` 都是 GPL v2 正文；
+  XArchive 的 ACC 聚合头却省略官方版权/GPL 提示。机器报告仍保持
+  `copy_or_translation_approved=false`、`legal_review_complete=false`；
+  MIT/GPL 组合及不同书面授权完成评审前，同样禁止复制或翻译。
   XYara 的 Linux YARA target
   又固定了 51 个编译单元/109 个依赖文件：YARA 主体映射官方 v4.5.2，
   6 个 Bison 生成文件含 GPL-3.0-or-later + special exception，6 个 TLSH 文件

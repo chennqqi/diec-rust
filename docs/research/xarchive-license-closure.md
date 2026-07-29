@@ -4,7 +4,7 @@ Status: Draft
 
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
 
-Last updated: 2026-07-28
+Last updated: 2026-07-29
 
 ## 范围与结论
 
@@ -81,7 +81,10 @@ horsicq MIT，没有 UnRAR 修改分发 notice。该证据禁止本项目在书�
 `Algos/xucldecoder.cpp` 是直接进入最终 ELF 的 84 个对象之一。该文件外层为
 horsicq MIT，但内嵌 UCL 1.03 代码在第 842 行声明 GNU GPL 并引用
 `ACC_LICENSE`；固定 XArchive tree 未保存该文件。此项记录为
-`PRODUCT-LICENSE-GAP-001`，在官方来源和精确条款闭合前不得复制或翻译。
+`PRODUCT-LICENSE-GAP-001`。后续 [`xucl-origin.md`](xucl-origin.md) 已将两个
+内嵌文件映射到官方 UCL 1.03，技术分类为 `GPL-2.0-or-later`，并恢复精确
+`ACC_LICENSE` 证据；但 MIT/GPL 组合与不同书面授权仍须评审，评审前不得复制
+或翻译。
 
 ## 方法与复现
 

@@ -91,7 +91,7 @@ QObject headers，生成代码由这些输入派生；报告将其单独标记�
 义务；XArchive RAR、Brotli、Zstandard 和 XCapstone 的详细来源结论仍以各自
 专项报告为准。
 
-## 新发现：XUCL 引用缺失的 ACC_LICENSE
+## XUCL 引用缺失的 ACC_LICENSE
 
 `XArchive/Algos/xucldecoder.cpp` 是 84 个 XArchive 直接对象之一，因此确定进入
 最终 ELF。固定文件 SHA-256 为：
@@ -112,9 +112,12 @@ GNU General Public License 授权，并要求查阅 `ACC_LICENSE`。固定 XArch
 - `matching_license_paths_in_component=[]`；
 - `classification=release-legal-review-required`。
 
-这证明根 MIT 不能代表该聚合文件的完整条款。报告没有据此猜测 GPL 版本，也不
-构成法律结论；在追溯官方 UCL 1.03 来源、恢复精确许可证文本并取得书面评审前，
-不得直接复制或翻译该 decoder 到 Rust。
+后续 [`xucl-origin.md`](xucl-origin.md) 已把两个内嵌文件追溯到固定官方
+UCL 1.03 归档：合并 12/64-token shingle 覆盖为 94.76%/89.08%，官方源码头为
+GPL-2.0-or-later，且官方 `COPYING` 与 `acc/ACC_LICENSE` 都是 GPL v2 正文。
+XArchive 仍没有保存该正文，`xucldecoder_acc.h` 还省略官方 ACC 版权/GPL 头。
+这证明根 MIT 不能代表聚合文件的完整条款；在 MIT/GPL 组合与可能存在的不同书面
+授权完成评审前，仍不得直接复制或翻译该 decoder 到 Rust。
 
 ## 产品范围分层
 
@@ -169,15 +172,16 @@ python -m unittest discover -s tools\tests `
 - crate/backend 划分应由能力和单向依赖决定，不应照抄 13 组件或 237 源文件图。
 - Rust 可以替换 native backend，但每项删除或替换都要由能力矩阵和差分结果证明，
   不能仅以 archive 未抽取为由缩小功能。
-- 禁止直接翻译来源/条款未闭合的 XUCL 与 RAR decoder；优先选择来源、许可证和
-  资源边界明确的纯 Rust 实现。
+- 禁止直接翻译组合授权未评审的 XUCL 与条款未闭合的 RAR decoder；优先选择
+  来源、许可证和资源边界明确的纯 Rust 实现。
 - Phase 1 建立 workspace 后，最终 Rust staticlib 和 CLI 必须按 target/feature
   自动生成 compile/native/SBOM/NOTICE 闭包，并与本报告的能力范围而非代码行
   做比较。
 
 ## 尚未完成
 
-- XUCL 1.03 官方来源、精确 `ACC_LICENSE`、内容映射和书面组合评审；
+- XUCL 的官方来源、精确 `ACC_LICENSE` 和内容映射已完成；仍缺 MIT/GPL 组合、
+  可能存在的不同书面授权及发布责任人的书面评审；
 - qmake、Qt6、Windows、macOS 及发布包的同类 product-level closure；
 - GUI 与 build-only target 的发布物边界；
 - Rust dependency graph、staticlib/CLI archive extraction、SBOM 和 NOTICE；

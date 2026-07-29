@@ -4,7 +4,7 @@ Status: Draft
 
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
 
-Last updated: 2026-07-27
+Last updated: 2026-07-29
 
 ## 范围与结论
 
@@ -109,8 +109,9 @@ python tools\upstream\audit_component_licenses.py `
 - [`product-source-closure.md`](product-source-closure.md) 已将固定 Linux Qt5
   CMake `diec` 收口为 237 个 compile source、14 个贡献代码库根 LICENSE 和
   8 archive/36-built/14-included member；同时发现 direct-link
-  `XArchive/Algos/xucldecoder.cpp` 的 GNU GPL 声明引用缺失 `ACC_LICENSE`，
-  该项必须完成官方来源/许可证追溯与书面评审；
+  `XArchive/Algos/xucldecoder.cpp` 的 GNU GPL 声明引用缺失 `ACC_LICENSE`；
+  [`xucl-origin.md`](xucl-origin.md) 已完成官方 UCL 1.03、内容映射与
+  `GPL-2.0-or-later` 技术分类，仍须完成 MIT/GPL 组合及不同书面授权的书面评审；
 - [`xarchive-license-closure.md`](xarchive-license-closure.md) 已固定 Linux Qt5
   CMake CLI 的 106 个 XArchive 编译单元和 217 个依赖文件；其中聚合
   Brotli/Zstandard 已完成固定官方版本/许可证追溯，但 XArchive 未保存对应文本，

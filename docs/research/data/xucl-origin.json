@@ -1,0 +1,968 @@
+{
+  "combined_shingle_evidence": [
+    {
+      "coverage": 0.9476303771159789,
+      "covered_token_count": 34652,
+      "embedded_token_count": 36567,
+      "matching_window_count": 32712,
+      "shingle_length": 12,
+      "unique_origin_file_count": 35,
+      "unique_origin_files": [
+        {
+          "bytes": 2259,
+          "path": "acc/acc.h",
+          "sha256": "1b9f8c2b38a066d1abecc8a9ad321cfc1bb43b64262ed843313124137b4ba12a",
+          "unique_matching_window_count": 230
+        },
+        {
+          "bytes": 4080,
+          "path": "acc/acc_arch.h",
+          "sha256": "75ab21e7dce8218bb1133fcd8d7fd185f5c34ba7f8d35a77d6af71196f960c92",
+          "unique_matching_window_count": 354
+        },
+        {
+          "bytes": 17426,
+          "path": "acc/acc_auto.h",
+          "sha256": "245824c36bb520cafd56dc232779b3d75417936d9a042b726f606028d2fcf1aa",
+          "unique_matching_window_count": 2399
+        },
+        {
+          "bytes": 5207,
+          "path": "acc/acc_cc.h",
+          "sha256": "763f15cdb881d5818644fe9e6a48b5c38fd49b923657cc1c7cd941189a45d100",
+          "unique_matching_window_count": 622
+        },
+        {
+          "bytes": 16198,
+          "path": "acc/acc_chk.ch",
+          "sha256": "7e77c02d3f5d70d84257621ae3c6b67146b1df7fe9735578def5305c4fea5c1a",
+          "unique_matching_window_count": 1999
+        },
+        {
+          "bytes": 3010,
+          "path": "acc/acc_chkr.ch",
+          "sha256": "efd020e50b3557fe92164e17db8d9ab6aff52a8bbe797cd3dee006e614a1b044",
+          "unique_matching_window_count": 1
+        },
+        {
+          "bytes": 6593,
+          "path": "acc/acc_defs.h",
+          "sha256": "04f78311f2112457bd950f0d2efe8f3434d46c5d2a8b18ad63407389e7035b66",
+          "unique_matching_window_count": 996
+        },
+        {
+          "bytes": 1263,
+          "path": "acc/acc_incd.h",
+          "sha256": "abcbeee33297e3fc9dc6a7b039b7aba5d70730a3e5dfd33414c7edb27c3513f8",
+          "unique_matching_window_count": 162
+        },
+        {
+          "bytes": 1650,
+          "path": "acc/acc_ince.h",
+          "sha256": "8bec142d66de40a9ee6d10e921bd9f8af1c5fc3f1103671085d8aa0cd6b74c23",
+          "unique_matching_window_count": 301
+        },
+        {
+          "bytes": 2753,
+          "path": "acc/acc_inci.h",
+          "sha256": "b5c3a5ca150617a98a18d2e3bcbfbc3304295bc3244f29deb6754d1267d73277",
+          "unique_matching_window_count": 501
+        },
+        {
+          "bytes": 6477,
+          "path": "acc/acc_init.h",
+          "sha256": "8765feea8acfbe7d35106efedbe46223b09661339b5c1c1c48c3e0ea324cc20b",
+          "unique_matching_window_count": 868
+        },
+        {
+          "bytes": 18853,
+          "path": "acc/acc_lib.h",
+          "sha256": "e6d89e7dedbb1a632e107fa7de20a735f699ced16af88f95ee19d45ad8cce901",
+          "unique_matching_window_count": 2
+        },
+        {
+          "bytes": 5415,
+          "path": "acc/acc_mm.h",
+          "sha256": "58e87125a6a65b508c10bcfbf0cdc336d180facbb79e1b9be16ae95dba4fb2c8",
+          "unique_matching_window_count": 819
+        },
+        {
+          "bytes": 6725,
+          "path": "acc/acc_os.h",
+          "sha256": "38a52a6ca1181d7f6ebabe2053ed57a402b0bddad0ba4a39770dfdff65bcf6be",
+          "unique_matching_window_count": 660
+        },
+        {
+          "bytes": 10582,
+          "path": "acc/acc_type.h",
+          "sha256": "1eb452609021faa68171d9cb20f860dd750c71c69fc1fbf37ab394b0ccd78c5a",
+          "unique_matching_window_count": 1538
+        },
+        {
+          "bytes": 3987,
+          "path": "acc/acclib/halloc.ch",
+          "sha256": "b333279a9d91f3bfe3f1cd0a15d1d7921eb25dd2eaea8d2b7fa83d5e64e40dad",
+          "unique_matching_window_count": 702
+        },
+        {
+          "bytes": 2483,
+          "path": "acc/acclib/hmemcpy.ch",
+          "sha256": "b8238f79dbac0e54c85f7b0ce8b27afd297000fc4118098a66100dab674b3634",
+          "unique_matching_window_count": 417
+        },
+        {
+          "bytes": 11004,
+          "path": "include/ucl/ucl.h",
+          "sha256": "cc0e98031c98563bb77960ceded45b416e0b510018099d7a027b6ba979b22302",
+          "unique_matching_window_count": 487
+        },
+        {
+          "bytes": 15002,
+          "path": "include/ucl/uclconf.h",
+          "sha256": "ae434a596918e96e07475c9c40877a76f47f22e91c171986c355495b3781640a",
+          "unique_matching_window_count": 1620
+        },
+        {
+          "bytes": 2990,
+          "path": "src/alloc.c",
+          "sha256": "843eda643083f3d9d8cc30411af254b749b3bcfe0a5007d4ec953e6990c71239",
+          "unique_matching_window_count": 238
+        },
+        {
+          "bytes": 2078,
+          "path": "src/getbit.h",
+          "sha256": "ceb6a62150492fb3229b61935b43c936412a39809c5bdab295d5fb096a53856c",
+          "unique_matching_window_count": 269
+        },
+        {
+          "bytes": 4925,
+          "path": "src/n2b_d.c",
+          "sha256": "35fe4158db0b223f81c5a89441a6bb5b4e2bd7c79f845f00b43c21d973eca819",
+          "unique_matching_window_count": 614
+        },
+        {
+          "bytes": 1327,
+          "path": "src/n2b_ds.c",
+          "sha256": "553d383db9ef7035460e0399fe6b0e896a3a30f1528489dbf1fe21857209adbe",
+          "unique_matching_window_count": 5
+        },
+        {
+          "bytes": 5088,
+          "path": "src/n2d_d.c",
+          "sha256": "59827506378c78e7877c7c073e599abe9f6274abed4e843b9206ec4a710f2d36",
+          "unique_matching_window_count": 134
+        },
+        {
+          "bytes": 1327,
+          "path": "src/n2d_ds.c",
+          "sha256": "b00b1ae1bb7f8dc503984f19a7a16af28a7005738946baac70b8f0d584d8d9da",
+          "unique_matching_window_count": 5
+        },
+        {
+          "bytes": 5159,
+          "path": "src/n2e_d.c",
+          "sha256": "af9520924bb3c0056dd237899b82cb5ea9bad5dbeebe40d329822c02ccfb1fe1",
+          "unique_matching_window_count": 454
+        },
+        {
+          "bytes": 1327,
+          "path": "src/n2e_ds.c",
+          "sha256": "7a4a4b8958de49bc7c0c9a75242f547a1897a646818454b5bb865bfa06c63eec",
+          "unique_matching_window_count": 5
+        },
+        {
+          "bytes": 6671,
+          "path": "src/ucl_conf.h",
+          "sha256": "22336f2e9c8bec026e5d6f9f4e6034ed798ba24c18d5aed6e5d439467d7583b0",
+          "unique_matching_window_count": 794
+        },
+        {
+          "bytes": 6002,
+          "path": "src/ucl_crc.c",
+          "sha256": "a7c3de32b71dbf9f35d667b1c4a478d48be06da0db43a9ed51477d1531f6edf4",
+          "unique_matching_window_count": 975
+        },
+        {
+          "bytes": 1660,
+          "path": "src/ucl_dll.ch",
+          "sha256": "228dd391e6142a8cab0707345a3084095f252b1e9b249c173bb828f1ced243b8",
+          "unique_matching_window_count": 69
+        },
+        {
+          "bytes": 10359,
+          "path": "src/ucl_init.c",
+          "sha256": "6464361264c22a6bfb860a349f2703072eca1e26d0308e7d59fbba16ee39e4da",
+          "unique_matching_window_count": 1743
+        },
+        {
+          "bytes": 2067,
+          "path": "src/ucl_ptr.c",
+          "sha256": "e680a357685afb72040999e93813b522bf194c3f9c41705db14b0ec8d97f4658",
+          "unique_matching_window_count": 147
+        },
+        {
+          "bytes": 3779,
+          "path": "src/ucl_ptr.h",
+          "sha256": "3a78cae2332000ff3192f58fddb69436ecd2fd7e922ab179e54095f79af4a798",
+          "unique_matching_window_count": 345
+        },
+        {
+          "bytes": 1852,
+          "path": "src/ucl_str.c",
+          "sha256": "cd81873938ff3d05beadcc563414fa7fd7bbb583ff7db56a1324a24aed196bf4",
+          "unique_matching_window_count": 55
+        },
+        {
+          "bytes": 4240,
+          "path": "src/ucl_util.c",
+          "sha256": "f6fda7ef5a028c15be02229ce47eb010992bfb20f9d46fc987bab423cd31ec49",
+          "unique_matching_window_count": 322
+        }
+      ]
+    },
+    {
+      "coverage": 0.8908305302595236,
+      "covered_token_count": 32575,
+      "embedded_token_count": 36567,
+      "matching_window_count": 26283,
+      "shingle_length": 64,
+      "unique_origin_file_count": 30,
+      "unique_origin_files": [
+        {
+          "bytes": 2259,
+          "path": "acc/acc.h",
+          "sha256": "1b9f8c2b38a066d1abecc8a9ad321cfc1bb43b64262ed843313124137b4ba12a",
+          "unique_matching_window_count": 171
+        },
+        {
+          "bytes": 4080,
+          "path": "acc/acc_arch.h",
+          "sha256": "75ab21e7dce8218bb1133fcd8d7fd185f5c34ba7f8d35a77d6af71196f960c92",
+          "unique_matching_window_count": 285
+        },
+        {
+          "bytes": 17426,
+          "path": "acc/acc_auto.h",
+          "sha256": "245824c36bb520cafd56dc232779b3d75417936d9a042b726f606028d2fcf1aa",
+          "unique_matching_window_count": 2290
+        },
+        {
+          "bytes": 5207,
+          "path": "acc/acc_cc.h",
+          "sha256": "763f15cdb881d5818644fe9e6a48b5c38fd49b923657cc1c7cd941189a45d100",
+          "unique_matching_window_count": 570
+        },
+        {
+          "bytes": 16198,
+          "path": "acc/acc_chk.ch",
+          "sha256": "7e77c02d3f5d70d84257621ae3c6b67146b1df7fe9735578def5305c4fea5c1a",
+          "unique_matching_window_count": 1439
+        },
+        {
+          "bytes": 6593,
+          "path": "acc/acc_defs.h",
+          "sha256": "04f78311f2112457bd950f0d2efe8f3434d46c5d2a8b18ad63407389e7035b66",
+          "unique_matching_window_count": 845
+        },
+        {
+          "bytes": 1263,
+          "path": "acc/acc_incd.h",
+          "sha256": "abcbeee33297e3fc9dc6a7b039b7aba5d70730a3e5dfd33414c7edb27c3513f8",
+          "unique_matching_window_count": 116
+        },
+        {
+          "bytes": 1650,
+          "path": "acc/acc_ince.h",
+          "sha256": "8bec142d66de40a9ee6d10e921bd9f8af1c5fc3f1103671085d8aa0cd6b74c23",
+          "unique_matching_window_count": 250
+        },
+        {
+          "bytes": 2753,
+          "path": "acc/acc_inci.h",
+          "sha256": "b5c3a5ca150617a98a18d2e3bcbfbc3304295bc3244f29deb6754d1267d73277",
+          "unique_matching_window_count": 456
+        },
+        {
+          "bytes": 6477,
+          "path": "acc/acc_init.h",
+          "sha256": "8765feea8acfbe7d35106efedbe46223b09661339b5c1c1c48c3e0ea324cc20b",
+          "unique_matching_window_count": 892
+        },
+        {
+          "bytes": 5415,
+          "path": "acc/acc_mm.h",
+          "sha256": "58e87125a6a65b508c10bcfbf0cdc336d180facbb79e1b9be16ae95dba4fb2c8",
+          "unique_matching_window_count": 779
+        },
+        {
+          "bytes": 6725,
+          "path": "acc/acc_os.h",
+          "sha256": "38a52a6ca1181d7f6ebabe2053ed57a402b0bddad0ba4a39770dfdff65bcf6be",
+          "unique_matching_window_count": 777
+        },
+        {
+          "bytes": 10582,
+          "path": "acc/acc_type.h",
+          "sha256": "1eb452609021faa68171d9cb20f860dd750c71c69fc1fbf37ab394b0ccd78c5a",
+          "unique_matching_window_count": 1447
+        },
+        {
+          "bytes": 3987,
+          "path": "acc/acclib/halloc.ch",
+          "sha256": "b333279a9d91f3bfe3f1cd0a15d1d7921eb25dd2eaea8d2b7fa83d5e64e40dad",
+          "unique_matching_window_count": 719
+        },
+        {
+          "bytes": 2483,
+          "path": "acc/acclib/hmemcpy.ch",
+          "sha256": "b8238f79dbac0e54c85f7b0ce8b27afd297000fc4118098a66100dab674b3634",
+          "unique_matching_window_count": 379
+        },
+        {
+          "bytes": 11004,
+          "path": "include/ucl/ucl.h",
+          "sha256": "cc0e98031c98563bb77960ceded45b416e0b510018099d7a027b6ba979b22302",
+          "unique_matching_window_count": 716
+        },
+        {
+          "bytes": 15002,
+          "path": "include/ucl/uclconf.h",
+          "sha256": "ae434a596918e96e07475c9c40877a76f47f22e91c171986c355495b3781640a",
+          "unique_matching_window_count": 1672
+        },
+        {
+          "bytes": 2990,
+          "path": "src/alloc.c",
+          "sha256": "843eda643083f3d9d8cc30411af254b749b3bcfe0a5007d4ec953e6990c71239",
+          "unique_matching_window_count": 149
+        },
+        {
+          "bytes": 2078,
+          "path": "src/getbit.h",
+          "sha256": "ceb6a62150492fb3229b61935b43c936412a39809c5bdab295d5fb096a53856c",
+          "unique_matching_window_count": 18
+        },
+        {
+          "bytes": 4925,
+          "path": "src/n2b_d.c",
+          "sha256": "35fe4158db0b223f81c5a89441a6bb5b4e2bd7c79f845f00b43c21d973eca819",
+          "unique_matching_window_count": 1440
+        },
+        {
+          "bytes": 5088,
+          "path": "src/n2d_d.c",
+          "sha256": "59827506378c78e7877c7c073e599abe9f6274abed4e843b9206ec4a710f2d36",
+          "unique_matching_window_count": 568
+        },
+        {
+          "bytes": 5159,
+          "path": "src/n2e_d.c",
+          "sha256": "af9520924bb3c0056dd237899b82cb5ea9bad5dbeebe40d329822c02ccfb1fe1",
+          "unique_matching_window_count": 768
+        },
+        {
+          "bytes": 6671,
+          "path": "src/ucl_conf.h",
+          "sha256": "22336f2e9c8bec026e5d6f9f4e6034ed798ba24c18d5aed6e5d439467d7583b0",
+          "unique_matching_window_count": 641
+        },
+        {
+          "bytes": 6002,
+          "path": "src/ucl_crc.c",
+          "sha256": "a7c3de32b71dbf9f35d667b1c4a478d48be06da0db43a9ed51477d1531f6edf4",
+          "unique_matching_window_count": 830
+        },
+        {
+          "bytes": 1660,
+          "path": "src/ucl_dll.ch",
+          "sha256": "228dd391e6142a8cab0707345a3084095f252b1e9b249c173bb828f1ced243b8",
+          "unique_matching_window_count": 17
+        },
+        {
+          "bytes": 10359,
+          "path": "src/ucl_init.c",
+          "sha256": "6464361264c22a6bfb860a349f2703072eca1e26d0308e7d59fbba16ee39e4da",
+          "unique_matching_window_count": 1450
+        },
+        {
+          "bytes": 2067,
+          "path": "src/ucl_ptr.c",
+          "sha256": "e680a357685afb72040999e93813b522bf194c3f9c41705db14b0ec8d97f4658",
+          "unique_matching_window_count": 41
+        },
+        {
+          "bytes": 3779,
+          "path": "src/ucl_ptr.h",
+          "sha256": "3a78cae2332000ff3192f58fddb69436ecd2fd7e922ab179e54095f79af4a798",
+          "unique_matching_window_count": 295
+        },
+        {
+          "bytes": 1852,
+          "path": "src/ucl_str.c",
+          "sha256": "cd81873938ff3d05beadcc563414fa7fd7bbb583ff7db56a1324a24aed196bf4",
+          "unique_matching_window_count": 3
+        },
+        {
+          "bytes": 4240,
+          "path": "src/ucl_util.c",
+          "sha256": "f6fda7ef5a028c15be02229ce47eb010992bfb20f9d46fc987bab423cd31ec49",
+          "unique_matching_window_count": 200
+        }
+      ]
+    }
+  ],
+  "component_lock": {
+    "path": "upstream/components.lock.toml",
+    "sha256": "9fabcaf6a0062fcae7007ea5af13a98876e8a6e08b3e2e4727fdff06d974c63c"
+  },
+  "distribution_requirements": [
+    "treat the embedded UCL-derived source as GPL-2.0-or-later technical evidence unless a different written license grant is produced and reviewed",
+    "restore the exact UCL 1.03 COPYING/ACC_LICENSE and copyright/source attribution for any authorized distribution",
+    "do not copy or translate XUCL into Rust before release/legal review resolves the upstream MIT/GPL combination"
+  ],
+  "embedded_files": [
+    {
+      "bytes": 129921,
+      "path": "Algos/xucldecoder.cpp",
+      "sha256": "f2f2fe4e11beaa122c2474a44c7c1c97242e9d211eacc15d0c7f3c646b2a45cf"
+    },
+    {
+      "bytes": 86349,
+      "path": "Algos/xucldecoder_acc.h",
+      "sha256": "f53d934a8efdb4f1b483e7fddf5ffe749d6914a2830bbaf7d68428b91fecc669"
+    }
+  ],
+  "generator": "tools/upstream/audit_xucl_origin.py",
+  "generator_sha256": "bd270f36b11b770d66255bcd49b1b9b586cdea02fb0159e76ac21cbe3b7baa30",
+  "license_classification": {
+    "basis": [
+      "official UCL 1.03 source headers state version 2 or any later version",
+      "official COPYING and acc/ACC_LICENSE contain the GNU GPL version 2 text",
+      "the author release page says UCL and its implementations are distributed under the GPL"
+    ],
+    "copy_or_translation_approved": false,
+    "legal_review_complete": false,
+    "special_or_commercial_license_evidence_in_xarchive": false,
+    "technical_spdx_expression": "GPL-2.0-or-later"
+  },
+  "limitations": [
+    "token shingle coverage proves substantial source origin, not byte identity or a legal conclusion",
+    "the official archive is external and is hash-bound but not committed to this repository",
+    "this report does not establish a commercial or special license grant to horsicq or this project"
+  ],
+  "official_license_evidence": [
+    {
+      "bytes": 6168,
+      "path": "README",
+      "sha256": "179c5419b5604bda56868a1ad40741e4ce1a4a2fbffe9729202d01200acdaf20"
+    },
+    {
+      "bytes": 18094,
+      "path": "COPYING",
+      "sha256": "70439f6e2b47057a408d2390ed6663b9875f5a08066a06a060a357ef1df89a8c"
+    },
+    {
+      "bytes": 18094,
+      "path": "acc/ACC_LICENSE",
+      "sha256": "70439f6e2b47057a408d2390ed6663b9875f5a08066a06a060a357ef1df89a8c"
+    }
+  ],
+  "official_release": {
+    "archive_bytes": 534881,
+    "archive_root": "ucl-1.03",
+    "archive_sha1": "5847003d136fbbca1334dd5de10554c76c755f7c",
+    "archive_sha256": "b865299ffd45d73412293369c9754b07637680e5c826915f097577cd27350348",
+    "archive_url": "https://www.oberhumer.com/opensource/ucl/download/ucl-1.03.tar.gz",
+    "copyright_holder": "Markus Franz Xaver Johannes Oberhumer",
+    "indexed_source_file_count": 62,
+    "name": "UCL",
+    "regular_file_count": 622,
+    "release_page": "https://www.oberhumer.com/opensource/ucl/",
+    "released_on": "2004-07-20",
+    "version": "1.03"
+  },
+  "official_source_evidence": [
+    {
+      "bytes": 16328,
+      "path": "src/n2_99.ch",
+      "sha256": "c39464853f36ddd4bf32ca44fc8083ce47987096bbf5b08a0e6e40e83eeacfae"
+    },
+    {
+      "bytes": 4925,
+      "path": "src/n2b_d.c",
+      "sha256": "35fe4158db0b223f81c5a89441a6bb5b4e2bd7c79f845f00b43c21d973eca819"
+    }
+  ],
+  "per_file_shingle_evidence": {
+    "Algos/xucldecoder.cpp": [
+      {
+        "coverage": 0.9330023761031908,
+        "covered_token_count": 21989,
+        "embedded_token_count": 23568,
+        "matching_window_count": 20442,
+        "shingle_length": 12,
+        "unique_origin_file_count": 20,
+        "unique_origin_files": [
+          {
+            "bytes": 3010,
+            "path": "acc/acc_chkr.ch",
+            "sha256": "efd020e50b3557fe92164e17db8d9ab6aff52a8bbe797cd3dee006e614a1b044",
+            "unique_matching_window_count": 1
+          },
+          {
+            "bytes": 3987,
+            "path": "acc/acclib/halloc.ch",
+            "sha256": "b333279a9d91f3bfe3f1cd0a15d1d7921eb25dd2eaea8d2b7fa83d5e64e40dad",
+            "unique_matching_window_count": 702
+          },
+          {
+            "bytes": 11004,
+            "path": "include/ucl/ucl.h",
+            "sha256": "cc0e98031c98563bb77960ceded45b416e0b510018099d7a027b6ba979b22302",
+            "unique_matching_window_count": 487
+          },
+          {
+            "bytes": 15002,
+            "path": "include/ucl/uclconf.h",
+            "sha256": "ae434a596918e96e07475c9c40877a76f47f22e91c171986c355495b3781640a",
+            "unique_matching_window_count": 1620
+          },
+          {
+            "bytes": 2990,
+            "path": "src/alloc.c",
+            "sha256": "843eda643083f3d9d8cc30411af254b749b3bcfe0a5007d4ec953e6990c71239",
+            "unique_matching_window_count": 238
+          },
+          {
+            "bytes": 2078,
+            "path": "src/getbit.h",
+            "sha256": "ceb6a62150492fb3229b61935b43c936412a39809c5bdab295d5fb096a53856c",
+            "unique_matching_window_count": 269
+          },
+          {
+            "bytes": 4925,
+            "path": "src/n2b_d.c",
+            "sha256": "35fe4158db0b223f81c5a89441a6bb5b4e2bd7c79f845f00b43c21d973eca819",
+            "unique_matching_window_count": 614
+          },
+          {
+            "bytes": 1327,
+            "path": "src/n2b_ds.c",
+            "sha256": "553d383db9ef7035460e0399fe6b0e896a3a30f1528489dbf1fe21857209adbe",
+            "unique_matching_window_count": 5
+          },
+          {
+            "bytes": 5088,
+            "path": "src/n2d_d.c",
+            "sha256": "59827506378c78e7877c7c073e599abe9f6274abed4e843b9206ec4a710f2d36",
+            "unique_matching_window_count": 134
+          },
+          {
+            "bytes": 1327,
+            "path": "src/n2d_ds.c",
+            "sha256": "b00b1ae1bb7f8dc503984f19a7a16af28a7005738946baac70b8f0d584d8d9da",
+            "unique_matching_window_count": 5
+          },
+          {
+            "bytes": 5159,
+            "path": "src/n2e_d.c",
+            "sha256": "af9520924bb3c0056dd237899b82cb5ea9bad5dbeebe40d329822c02ccfb1fe1",
+            "unique_matching_window_count": 454
+          },
+          {
+            "bytes": 1327,
+            "path": "src/n2e_ds.c",
+            "sha256": "7a4a4b8958de49bc7c0c9a75242f547a1897a646818454b5bb865bfa06c63eec",
+            "unique_matching_window_count": 5
+          },
+          {
+            "bytes": 6671,
+            "path": "src/ucl_conf.h",
+            "sha256": "22336f2e9c8bec026e5d6f9f4e6034ed798ba24c18d5aed6e5d439467d7583b0",
+            "unique_matching_window_count": 794
+          },
+          {
+            "bytes": 6002,
+            "path": "src/ucl_crc.c",
+            "sha256": "a7c3de32b71dbf9f35d667b1c4a478d48be06da0db43a9ed51477d1531f6edf4",
+            "unique_matching_window_count": 975
+          },
+          {
+            "bytes": 1660,
+            "path": "src/ucl_dll.ch",
+            "sha256": "228dd391e6142a8cab0707345a3084095f252b1e9b249c173bb828f1ced243b8",
+            "unique_matching_window_count": 69
+          },
+          {
+            "bytes": 10359,
+            "path": "src/ucl_init.c",
+            "sha256": "6464361264c22a6bfb860a349f2703072eca1e26d0308e7d59fbba16ee39e4da",
+            "unique_matching_window_count": 1743
+          },
+          {
+            "bytes": 2067,
+            "path": "src/ucl_ptr.c",
+            "sha256": "e680a357685afb72040999e93813b522bf194c3f9c41705db14b0ec8d97f4658",
+            "unique_matching_window_count": 147
+          },
+          {
+            "bytes": 3779,
+            "path": "src/ucl_ptr.h",
+            "sha256": "3a78cae2332000ff3192f58fddb69436ecd2fd7e922ab179e54095f79af4a798",
+            "unique_matching_window_count": 344
+          },
+          {
+            "bytes": 1852,
+            "path": "src/ucl_str.c",
+            "sha256": "cd81873938ff3d05beadcc563414fa7fd7bbb583ff7db56a1324a24aed196bf4",
+            "unique_matching_window_count": 55
+          },
+          {
+            "bytes": 4240,
+            "path": "src/ucl_util.c",
+            "sha256": "f6fda7ef5a028c15be02229ce47eb010992bfb20f9d46fc987bab423cd31ec49",
+            "unique_matching_window_count": 322
+          }
+        ]
+      },
+      {
+        "coverage": 0.8537423625254582,
+        "covered_token_count": 20121,
+        "embedded_token_count": 23568,
+        "matching_window_count": 15587,
+        "shingle_length": 64,
+        "unique_origin_file_count": 16,
+        "unique_origin_files": [
+          {
+            "bytes": 3987,
+            "path": "acc/acclib/halloc.ch",
+            "sha256": "b333279a9d91f3bfe3f1cd0a15d1d7921eb25dd2eaea8d2b7fa83d5e64e40dad",
+            "unique_matching_window_count": 719
+          },
+          {
+            "bytes": 11004,
+            "path": "include/ucl/ucl.h",
+            "sha256": "cc0e98031c98563bb77960ceded45b416e0b510018099d7a027b6ba979b22302",
+            "unique_matching_window_count": 716
+          },
+          {
+            "bytes": 15002,
+            "path": "include/ucl/uclconf.h",
+            "sha256": "ae434a596918e96e07475c9c40877a76f47f22e91c171986c355495b3781640a",
+            "unique_matching_window_count": 1672
+          },
+          {
+            "bytes": 2990,
+            "path": "src/alloc.c",
+            "sha256": "843eda643083f3d9d8cc30411af254b749b3bcfe0a5007d4ec953e6990c71239",
+            "unique_matching_window_count": 149
+          },
+          {
+            "bytes": 2078,
+            "path": "src/getbit.h",
+            "sha256": "ceb6a62150492fb3229b61935b43c936412a39809c5bdab295d5fb096a53856c",
+            "unique_matching_window_count": 18
+          },
+          {
+            "bytes": 4925,
+            "path": "src/n2b_d.c",
+            "sha256": "35fe4158db0b223f81c5a89441a6bb5b4e2bd7c79f845f00b43c21d973eca819",
+            "unique_matching_window_count": 1440
+          },
+          {
+            "bytes": 5088,
+            "path": "src/n2d_d.c",
+            "sha256": "59827506378c78e7877c7c073e599abe9f6274abed4e843b9206ec4a710f2d36",
+            "unique_matching_window_count": 568
+          },
+          {
+            "bytes": 5159,
+            "path": "src/n2e_d.c",
+            "sha256": "af9520924bb3c0056dd237899b82cb5ea9bad5dbeebe40d329822c02ccfb1fe1",
+            "unique_matching_window_count": 768
+          },
+          {
+            "bytes": 6671,
+            "path": "src/ucl_conf.h",
+            "sha256": "22336f2e9c8bec026e5d6f9f4e6034ed798ba24c18d5aed6e5d439467d7583b0",
+            "unique_matching_window_count": 641
+          },
+          {
+            "bytes": 6002,
+            "path": "src/ucl_crc.c",
+            "sha256": "a7c3de32b71dbf9f35d667b1c4a478d48be06da0db43a9ed51477d1531f6edf4",
+            "unique_matching_window_count": 830
+          },
+          {
+            "bytes": 1660,
+            "path": "src/ucl_dll.ch",
+            "sha256": "228dd391e6142a8cab0707345a3084095f252b1e9b249c173bb828f1ced243b8",
+            "unique_matching_window_count": 17
+          },
+          {
+            "bytes": 10359,
+            "path": "src/ucl_init.c",
+            "sha256": "6464361264c22a6bfb860a349f2703072eca1e26d0308e7d59fbba16ee39e4da",
+            "unique_matching_window_count": 1450
+          },
+          {
+            "bytes": 2067,
+            "path": "src/ucl_ptr.c",
+            "sha256": "e680a357685afb72040999e93813b522bf194c3f9c41705db14b0ec8d97f4658",
+            "unique_matching_window_count": 41
+          },
+          {
+            "bytes": 3779,
+            "path": "src/ucl_ptr.h",
+            "sha256": "3a78cae2332000ff3192f58fddb69436ecd2fd7e922ab179e54095f79af4a798",
+            "unique_matching_window_count": 295
+          },
+          {
+            "bytes": 1852,
+            "path": "src/ucl_str.c",
+            "sha256": "cd81873938ff3d05beadcc563414fa7fd7bbb583ff7db56a1324a24aed196bf4",
+            "unique_matching_window_count": 3
+          },
+          {
+            "bytes": 4240,
+            "path": "src/ucl_util.c",
+            "sha256": "f6fda7ef5a028c15be02229ce47eb010992bfb20f9d46fc987bab423cd31ec49",
+            "unique_matching_window_count": 200
+          }
+        ]
+      }
+    ],
+    "Algos/xucldecoder_acc.h": [
+      {
+        "coverage": 0.9741518578352181,
+        "covered_token_count": 12663,
+        "embedded_token_count": 12999,
+        "matching_window_count": 12270,
+        "shingle_length": 12,
+        "unique_origin_file_count": 16,
+        "unique_origin_files": [
+          {
+            "bytes": 2259,
+            "path": "acc/acc.h",
+            "sha256": "1b9f8c2b38a066d1abecc8a9ad321cfc1bb43b64262ed843313124137b4ba12a",
+            "unique_matching_window_count": 230
+          },
+          {
+            "bytes": 4080,
+            "path": "acc/acc_arch.h",
+            "sha256": "75ab21e7dce8218bb1133fcd8d7fd185f5c34ba7f8d35a77d6af71196f960c92",
+            "unique_matching_window_count": 354
+          },
+          {
+            "bytes": 17426,
+            "path": "acc/acc_auto.h",
+            "sha256": "245824c36bb520cafd56dc232779b3d75417936d9a042b726f606028d2fcf1aa",
+            "unique_matching_window_count": 2399
+          },
+          {
+            "bytes": 5207,
+            "path": "acc/acc_cc.h",
+            "sha256": "763f15cdb881d5818644fe9e6a48b5c38fd49b923657cc1c7cd941189a45d100",
+            "unique_matching_window_count": 622
+          },
+          {
+            "bytes": 16198,
+            "path": "acc/acc_chk.ch",
+            "sha256": "7e77c02d3f5d70d84257621ae3c6b67146b1df7fe9735578def5305c4fea5c1a",
+            "unique_matching_window_count": 1999
+          },
+          {
+            "bytes": 6593,
+            "path": "acc/acc_defs.h",
+            "sha256": "04f78311f2112457bd950f0d2efe8f3434d46c5d2a8b18ad63407389e7035b66",
+            "unique_matching_window_count": 996
+          },
+          {
+            "bytes": 1263,
+            "path": "acc/acc_incd.h",
+            "sha256": "abcbeee33297e3fc9dc6a7b039b7aba5d70730a3e5dfd33414c7edb27c3513f8",
+            "unique_matching_window_count": 162
+          },
+          {
+            "bytes": 1650,
+            "path": "acc/acc_ince.h",
+            "sha256": "8bec142d66de40a9ee6d10e921bd9f8af1c5fc3f1103671085d8aa0cd6b74c23",
+            "unique_matching_window_count": 301
+          },
+          {
+            "bytes": 2753,
+            "path": "acc/acc_inci.h",
+            "sha256": "b5c3a5ca150617a98a18d2e3bcbfbc3304295bc3244f29deb6754d1267d73277",
+            "unique_matching_window_count": 501
+          },
+          {
+            "bytes": 6477,
+            "path": "acc/acc_init.h",
+            "sha256": "8765feea8acfbe7d35106efedbe46223b09661339b5c1c1c48c3e0ea324cc20b",
+            "unique_matching_window_count": 868
+          },
+          {
+            "bytes": 18853,
+            "path": "acc/acc_lib.h",
+            "sha256": "e6d89e7dedbb1a632e107fa7de20a735f699ced16af88f95ee19d45ad8cce901",
+            "unique_matching_window_count": 2
+          },
+          {
+            "bytes": 5415,
+            "path": "acc/acc_mm.h",
+            "sha256": "58e87125a6a65b508c10bcfbf0cdc336d180facbb79e1b9be16ae95dba4fb2c8",
+            "unique_matching_window_count": 819
+          },
+          {
+            "bytes": 6725,
+            "path": "acc/acc_os.h",
+            "sha256": "38a52a6ca1181d7f6ebabe2053ed57a402b0bddad0ba4a39770dfdff65bcf6be",
+            "unique_matching_window_count": 660
+          },
+          {
+            "bytes": 10582,
+            "path": "acc/acc_type.h",
+            "sha256": "1eb452609021faa68171d9cb20f860dd750c71c69fc1fbf37ab394b0ccd78c5a",
+            "unique_matching_window_count": 1538
+          },
+          {
+            "bytes": 2483,
+            "path": "acc/acclib/hmemcpy.ch",
+            "sha256": "b8238f79dbac0e54c85f7b0ce8b27afd297000fc4118098a66100dab674b3634",
+            "unique_matching_window_count": 417
+          },
+          {
+            "bytes": 3779,
+            "path": "src/ucl_ptr.h",
+            "sha256": "3a78cae2332000ff3192f58fddb69436ecd2fd7e922ab179e54095f79af4a798",
+            "unique_matching_window_count": 1
+          }
+        ]
+      },
+      {
+        "coverage": 0.9580736979767674,
+        "covered_token_count": 12454,
+        "embedded_token_count": 12999,
+        "matching_window_count": 10696,
+        "shingle_length": 64,
+        "unique_origin_file_count": 14,
+        "unique_origin_files": [
+          {
+            "bytes": 2259,
+            "path": "acc/acc.h",
+            "sha256": "1b9f8c2b38a066d1abecc8a9ad321cfc1bb43b64262ed843313124137b4ba12a",
+            "unique_matching_window_count": 171
+          },
+          {
+            "bytes": 4080,
+            "path": "acc/acc_arch.h",
+            "sha256": "75ab21e7dce8218bb1133fcd8d7fd185f5c34ba7f8d35a77d6af71196f960c92",
+            "unique_matching_window_count": 285
+          },
+          {
+            "bytes": 17426,
+            "path": "acc/acc_auto.h",
+            "sha256": "245824c36bb520cafd56dc232779b3d75417936d9a042b726f606028d2fcf1aa",
+            "unique_matching_window_count": 2290
+          },
+          {
+            "bytes": 5207,
+            "path": "acc/acc_cc.h",
+            "sha256": "763f15cdb881d5818644fe9e6a48b5c38fd49b923657cc1c7cd941189a45d100",
+            "unique_matching_window_count": 570
+          },
+          {
+            "bytes": 16198,
+            "path": "acc/acc_chk.ch",
+            "sha256": "7e77c02d3f5d70d84257621ae3c6b67146b1df7fe9735578def5305c4fea5c1a",
+            "unique_matching_window_count": 1439
+          },
+          {
+            "bytes": 6593,
+            "path": "acc/acc_defs.h",
+            "sha256": "04f78311f2112457bd950f0d2efe8f3434d46c5d2a8b18ad63407389e7035b66",
+            "unique_matching_window_count": 845
+          },
+          {
+            "bytes": 1263,
+            "path": "acc/acc_incd.h",
+            "sha256": "abcbeee33297e3fc9dc6a7b039b7aba5d70730a3e5dfd33414c7edb27c3513f8",
+            "unique_matching_window_count": 116
+          },
+          {
+            "bytes": 1650,
+            "path": "acc/acc_ince.h",
+            "sha256": "8bec142d66de40a9ee6d10e921bd9f8af1c5fc3f1103671085d8aa0cd6b74c23",
+            "unique_matching_window_count": 250
+          },
+          {
+            "bytes": 2753,
+            "path": "acc/acc_inci.h",
+            "sha256": "b5c3a5ca150617a98a18d2e3bcbfbc3304295bc3244f29deb6754d1267d73277",
+            "unique_matching_window_count": 456
+          },
+          {
+            "bytes": 6477,
+            "path": "acc/acc_init.h",
+            "sha256": "8765feea8acfbe7d35106efedbe46223b09661339b5c1c1c48c3e0ea324cc20b",
+            "unique_matching_window_count": 892
+          },
+          {
+            "bytes": 5415,
+            "path": "acc/acc_mm.h",
+            "sha256": "58e87125a6a65b508c10bcfbf0cdc336d180facbb79e1b9be16ae95dba4fb2c8",
+            "unique_matching_window_count": 779
+          },
+          {
+            "bytes": 6725,
+            "path": "acc/acc_os.h",
+            "sha256": "38a52a6ca1181d7f6ebabe2053ed57a402b0bddad0ba4a39770dfdff65bcf6be",
+            "unique_matching_window_count": 777
+          },
+          {
+            "bytes": 10582,
+            "path": "acc/acc_type.h",
+            "sha256": "1eb452609021faa68171d9cb20f860dd750c71c69fc1fbf37ab394b0ccd78c5a",
+            "unique_matching_window_count": 1447
+          },
+          {
+            "bytes": 2483,
+            "path": "acc/acclib/hmemcpy.ch",
+            "sha256": "b8238f79dbac0e54c85f7b0ce8b27afd297000fc4118098a66100dab674b3634",
+            "unique_matching_window_count": 379
+          }
+        ]
+      }
+    ]
+  },
+  "prior_product_source_closure": {
+    "path": "docs/research/data/product-source-closure-linux-qt5.json",
+    "sha256": "6a617f00b2adc052934fcc3c46093805e09480532f13ea9dbb4d6b43499288c4"
+  },
+  "relationships": {
+    "combined_12_token_coverage_exceeds_90_percent": true,
+    "combined_64_token_coverage_exceeds_80_percent": true,
+    "copying_and_acc_license_are_gpl_version_2": true,
+    "embedded_acc_omits_official_copyright_header": true,
+    "embedded_cpp_declares_ucl_version_1_03": true,
+    "embedded_cpp_references_acc_license": true,
+    "official_archive_sha1_matches_author_page": true,
+    "official_archive_sha256_is_fixed": true,
+    "official_header_declares_version_1_03": true,
+    "official_readme_declares_gpl": true,
+    "official_readme_still_labels_version_1_02": true,
+    "official_source_declares_gpl_2_or_later": true,
+    "prior_product_report_binds_embedded_cpp": true
+  },
+  "schema_version": 1,
+  "source_image": {
+    "image": "diec-rust/upstream-oracle-cmake:74eaf505",
+    "image_id": "sha256:466102628c3a94b7ab1048f0c24261b1920e61a40029b128763cf79370255040",
+    "network": "none",
+    "official_archive_mount": "readonly",
+    "repository_mount": "readonly",
+    "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "xarchive_commit": "0fcd4e8d3e9933baac3b12246d82ac026557ffd0"
+}

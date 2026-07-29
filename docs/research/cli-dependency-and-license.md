@@ -4,7 +4,7 @@ Status: Draft
 
 Upstream: https://github.com/horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254
 
-Last updated: 2026-07-27
+Last updated: 2026-07-29
 
 ## 目的与范围
 
@@ -135,7 +135,7 @@ LICENSE 的 vendored 代码。
 | `XArchive/3rdparty/ppmd` | archive 在 link line；4/4 member 未抽取 | `Ppmd7.c`、GNU ld map | Public Domain；仍是构建/archive 内容 |
 | `XArchive/3rdparty/zlib` | archive 在 link line；8/8 member 未抽取 | `src/zlib.h`、GNU ld map | zlib License；仍是构建/archive 内容 |
 | `XArchive/Algos` | 是，作为聚合源码 | `xarchive.cmake`、RAR token 来源报告 | Brotli/Zstd 已追溯；RAR decoder 与 UnRAR 7.1.10 高度重合但 notice 不一致；其余实现仍待逐文件分类 |
-| `XArchive/Algos/xucldecoder.cpp` | 是；84 个 direct object 之一 | product source closure、文件第 842 行 | 外层 horsicq MIT；内嵌 UCL 声明 GNU GPL 并引用缺失的 `ACC_LICENSE`，必须追溯和书面评审 |
+| `XArchive/Algos/xucldecoder.cpp` | 是；84 个 direct object 之一 | product source closure、官方 UCL 1.03 来源映射 | 外层 horsicq MIT；内嵌 UCL 技术分类为 GPL-2.0-or-later，XArchive 缺失 `ACC_LICENSE`；组合与不同书面授权仍须评审 |
 | `XCppfilt/3rdparty/cppfilt` | 否；默认构建 target | `cp-demangle.c` 等文件头 | GPL-2.0-or-later，并带文件级不限制链接的额外许可；另有 Public Domain 文件 |
 | `XYara/3rdparty/yara` | 否；51-object 默认构建 target | 官方 YARA v4.5.2 内容映射与 109-file `.o.d` closure | 主体为 BSD-3-Clause；vendored tree 未保存官方 `COPYING` |
 | YARA 生成 parser 文件 | 否；6 个 `.c/.h` 实际进入 `yara` closure | `grammar.c/.h`、`hex_grammar.c/.h`、`re_grammar.c/.h` | GPL-3.0-or-later + Bison parser-skeleton special exception |
@@ -171,6 +171,10 @@ LICENSE 的 vendored 代码。
 计数、237 个源码 hash、14 个根 LICENSE、AUTOMOC 的 13 组件来源均已绑定。
 该清单同时发现实际 direct-link 的 `xucldecoder.cpp` 内嵌 GPL 声明并引用缺失的
 `ACC_LICENSE`，记录为 `PRODUCT-LICENSE-GAP-001`。
+后续 [`xucl-origin.md`](xucl-origin.md) 将两个内嵌文件固定到官方 UCL 1.03：
+合并 12/64-token 覆盖为 94.76%/89.08%，官方源码技术分类为
+`GPL-2.0-or-later`，`COPYING` 与 `acc/ACC_LICENSE` 均已精确 hash-bind。
+XArchive 未保留正文或 ACC 原版权/GPL 头，书面组合评审仍未完成。
 
 固定 Linux Qt5 CMake CLI 的 XArchive 实际闭包已由
 [`xarchive-license-closure.md`](xarchive-license-closure.md) 展开为 84 个直接对象、
@@ -212,7 +216,8 @@ XYara/YARA 当前 Linux target 也已由
 
 - 固定 Linux Qt5 CMake CLI 的全局 237-source/link-map 闭包已完成；仍需
   qmake、Qt6、Windows、macOS、GUI 和发布包的对应 object/link/dependency 闭包。
-- 追溯 XUCL 1.03 官方来源、恢复精确 `ACC_LICENSE` 并取得书面组合结论。
+- XUCL 1.03 官方来源和精确 `ACC_LICENSE` 已完成；仍须取得 MIT/GPL 组合、
+  不同书面授权和发布责任人的书面结论。
 - 为 XArchive 聚合 Brotli/Zstandard 恢复独立 LICENSE/NOTICE/attribution，
   完成 Brotli 剩余约 1.4% token 分类，并对 RAR decoder 的 UnRAR notice/
   复用边界取得书面结论；为 YARA/TLSH 恢复独立
