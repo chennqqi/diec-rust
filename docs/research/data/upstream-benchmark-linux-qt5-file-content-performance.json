@@ -1,0 +1,3091 @@
+{
+  "cache_states": {
+    "file-content-nonresident-metadata-warm": {
+      "candidate_content_pages_before_run": "all nonresident",
+      "fadvise": true,
+      "metadata": "warm"
+    },
+    "warm": {
+      "candidate_content_pages_before_run": "all resident",
+      "fadvise": false,
+      "metadata": "warm"
+    }
+  },
+  "cases": {
+    "upstream.archive-depth16.v1": {
+      "benchmark_id": "upstream.archive-depth16.v1",
+      "manifest": {
+        "bytes": 148526,
+        "file_bytes": 65263871,
+        "file_count": 2254,
+        "logical_pages": 17832,
+        "sha256": "fdd78785596a43be893d786ac23e3505eb43e5b2f84660e10fa0b2381a19e12b"
+      },
+      "order_policy": "ABBA alternating by pair index",
+      "outputs_identical_across_states": true,
+      "pair_count": 10,
+      "paired_effect": {
+        "duration_delta_ns": {
+          "mad": 12646799,
+          "max": 459982376,
+          "median": 411420636,
+          "min": 392028893,
+          "p95_nearest_rank": 459982376
+        },
+        "duration_ratio_file_over_warm_scaled_1e6": {
+          "mad": 378305,
+          "max": 7047506,
+          "median": 6624679,
+          "min": 5508572,
+          "p95_nearest_rank": 7047506
+        },
+        "negative_delta_pair_count": 0
+      },
+      "pairs": [
+        {
+          "duration_delta_ns": 433991725,
+          "duration_ratio_file_over_warm": 6.110206109845951,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2254,
+              "logical_pages": 17832,
+              "resident_pages_after_warm": 17832,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 518918187,
+            "exit_code": 0,
+            "peak_rss_bytes": 24064000,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          },
+          "order": [
+            "warm",
+            "file-content-nonresident-metadata-warm"
+          ],
+          "pair_index": 0,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2254,
+              "logical_pages": 17832,
+              "resident_pages_after_warm": 17832,
+              "resident_pages_before_run": 17832
+            },
+            "duration_ns": 84926462,
+            "exit_code": 0,
+            "peak_rss_bytes": 24821760,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 403498599,
+          "duration_ratio_file_over_warm": 5.805383255535675,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2254,
+              "logical_pages": 17832,
+              "resident_pages_after_warm": 17832,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 487466636,
+            "exit_code": 0,
+            "peak_rss_bytes": 23900160,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          },
+          "order": [
+            "file-content-nonresident-metadata-warm",
+            "warm"
+          ],
+          "pair_index": 1,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2254,
+              "logical_pages": 17832,
+              "resident_pages_after_warm": 17832,
+              "resident_pages_before_run": 17832
+            },
+            "duration_ns": 83968037,
+            "exit_code": 0,
+            "peak_rss_bytes": 24604672,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 399133020,
+          "duration_ratio_file_over_warm": 5.508572429905829,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2254,
+              "logical_pages": 17832,
+              "resident_pages_after_warm": 17832,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 487660603,
+            "exit_code": 0,
+            "peak_rss_bytes": 24080384,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          },
+          "order": [
+            "warm",
+            "file-content-nonresident-metadata-warm"
+          ],
+          "pair_index": 2,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2254,
+              "logical_pages": 17832,
+              "resident_pages_after_warm": 17832,
+              "resident_pages_before_run": 17832
+            },
+            "duration_ns": 88527583,
+            "exit_code": 0,
+            "peak_rss_bytes": 24600576,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 459982376,
+          "duration_ratio_file_over_warm": 6.644433890857474,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2254,
+              "logical_pages": 17832,
+              "resident_pages_after_warm": 17832,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 541475469,
+            "exit_code": 0,
+            "peak_rss_bytes": 23953408,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          },
+          "order": [
+            "file-content-nonresident-metadata-warm",
+            "warm"
+          ],
+          "pair_index": 3,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2254,
+              "logical_pages": 17832,
+              "resident_pages_after_warm": 17832,
+              "resident_pages_before_run": 17832
+            },
+            "duration_ns": 81493093,
+            "exit_code": 0,
+            "peak_rss_bytes": 24739840,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 392028893,
+          "duration_ratio_file_over_warm": 5.848877778410916,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2254,
+              "logical_pages": 17832,
+              "resident_pages_after_warm": 17832,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 472878300,
+            "exit_code": 0,
+            "peak_rss_bytes": 23945216,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          },
+          "order": [
+            "warm",
+            "file-content-nonresident-metadata-warm"
+          ],
+          "pair_index": 4,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2254,
+              "logical_pages": 17832,
+              "resident_pages_after_warm": 17832,
+              "resident_pages_before_run": 17832
+            },
+            "duration_ns": 80849407,
+            "exit_code": 0,
+            "peak_rss_bytes": 24346624,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 401689630,
+          "duration_ratio_file_over_warm": 6.7876619854169915,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2254,
+              "logical_pages": 17832,
+              "resident_pages_after_warm": 17832,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 471094103,
+            "exit_code": 0,
+            "peak_rss_bytes": 23945216,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          },
+          "order": [
+            "file-content-nonresident-metadata-warm",
+            "warm"
+          ],
+          "pair_index": 5,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2254,
+              "logical_pages": 17832,
+              "resident_pages_after_warm": 17832,
+              "resident_pages_before_run": 17832
+            },
+            "duration_ns": 69404473,
+            "exit_code": 0,
+            "peak_rss_bytes": 24997888,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 419342673,
+          "duration_ratio_file_over_warm": 6.687699941031892,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2254,
+              "logical_pages": 17832,
+              "resident_pages_after_warm": 17832,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 493070661,
+            "exit_code": 0,
+            "peak_rss_bytes": 23953408,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          },
+          "order": [
+            "warm",
+            "file-content-nonresident-metadata-warm"
+          ],
+          "pair_index": 6,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2254,
+              "logical_pages": 17832,
+              "resident_pages_after_warm": 17832,
+              "resident_pages_before_run": 17832
+            },
+            "duration_ns": 73727988,
+            "exit_code": 0,
+            "peak_rss_bytes": 24735744,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 422197992,
+          "duration_ratio_file_over_warm": 6.9584629367518005,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2254,
+              "logical_pages": 17832,
+              "resident_pages_after_warm": 17832,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 493054855,
+            "exit_code": 0,
+            "peak_rss_bytes": 23953408,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          },
+          "order": [
+            "file-content-nonresident-metadata-warm",
+            "warm"
+          ],
+          "pair_index": 7,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2254,
+              "logical_pages": 17832,
+              "resident_pages_after_warm": 17832,
+              "resident_pages_before_run": 17832
+            },
+            "duration_ns": 70856863,
+            "exit_code": 0,
+            "peak_rss_bytes": 24870912,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 427055652,
+          "duration_ratio_file_over_warm": 7.047505618561786,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2254,
+              "logical_pages": 17832,
+              "resident_pages_after_warm": 17832,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 497672478,
+            "exit_code": 0,
+            "peak_rss_bytes": 23900160,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          },
+          "order": [
+            "warm",
+            "file-content-nonresident-metadata-warm"
+          ],
+          "pair_index": 8,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2254,
+              "logical_pages": 17832,
+              "resident_pages_after_warm": 17832,
+              "resident_pages_before_run": 17832
+            },
+            "duration_ns": 70616826,
+            "exit_code": 0,
+            "peak_rss_bytes": 24866816,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 398414654,
+          "duration_ratio_file_over_warm": 6.604923817621924,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2254,
+              "logical_pages": 17832,
+              "resident_pages_after_warm": 17832,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 469497628,
+            "exit_code": 0,
+            "peak_rss_bytes": 23822336,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          },
+          "order": [
+            "file-content-nonresident-metadata-warm",
+            "warm"
+          ],
+          "pair_index": 9,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2254,
+              "logical_pages": 17832,
+              "resident_pages_after_warm": 17832,
+              "resident_pages_before_run": 17832
+            },
+            "duration_ns": 71082974,
+            "exit_code": 0,
+            "peak_rss_bytes": 24948736,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 97,
+              "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+            }
+          }
+        }
+      ],
+      "sample_count": 20,
+      "state_summaries": {
+        "file-content-nonresident-metadata-warm": {
+          "duration_ns": {
+            "mad": 12397089,
+            "max": 541475469,
+            "median": 490357729,
+            "min": 469497628,
+            "p95_nearest_rank": 541475469
+          },
+          "peak_rss_bytes": {
+            "max": 24080384,
+            "median": 23949312,
+            "sample_count": 10
+          },
+          "sample_count": 10,
+          "stderr_unique_sha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ],
+          "stdout_unique_sha256": [
+            "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+          ],
+          "throughput_bytes_per_second_at_median": 40411.313675857244
+        },
+        "warm": {
+          "duration_ns": {
+            "mad": 6551852,
+            "max": 88527583,
+            "median": 77288697,
+            "min": 69404473,
+            "p95_nearest_rank": 88527583
+          },
+          "peak_rss_bytes": {
+            "max": 24997888,
+            "median": 24780800,
+            "sample_count": 10
+          },
+          "sample_count": 10,
+          "stderr_unique_sha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ],
+          "stdout_unique_sha256": [
+            "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+          ],
+          "throughput_bytes_per_second_at_median": 256389.36570505257
+        }
+      },
+      "work_bytes": 19816,
+      "work_definition": "cumulative uncompressed member bytes traversed through a single-member 16-level store-only ZIP chain"
+    },
+    "upstream.cli-baseline-batch-json.v1": {
+      "benchmark_id": "upstream.cli-baseline-batch-json.v1",
+      "manifest": {
+        "bytes": 149376,
+        "file_bytes": 65319431,
+        "file_count": 2281,
+        "logical_pages": 17869,
+        "sha256": "a37419e26433a3579e54b7df84a93e3bb2d8e8d29fba71f80e22fdf809fe40a6"
+      },
+      "order_policy": "ABBA alternating by pair index",
+      "outputs_identical_across_states": true,
+      "pair_count": 10,
+      "paired_effect": {
+        "duration_delta_ns": {
+          "mad": 90808367,
+          "max": 574031945,
+          "median": 330137173,
+          "min": 25385768,
+          "p95_nearest_rank": 574031945
+        },
+        "duration_ratio_file_over_warm_scaled_1e6": {
+          "mad": 70712,
+          "max": 1424126,
+          "median": 1244956,
+          "min": 1014463,
+          "p95_nearest_rank": 1424126
+        },
+        "negative_delta_pair_count": 0
+      },
+      "pairs": [
+        {
+          "duration_delta_ns": 574031945,
+          "duration_ratio_file_over_warm": 1.4241262182226644,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2281,
+              "logical_pages": 17869,
+              "resident_pages_after_warm": 17869,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 1927477972,
+            "exit_code": 0,
+            "peak_rss_bytes": 80502784,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          },
+          "order": [
+            "warm",
+            "file-content-nonresident-metadata-warm"
+          ],
+          "pair_index": 0,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2281,
+              "logical_pages": 17869,
+              "resident_pages_after_warm": 17869,
+              "resident_pages_before_run": 17869
+            },
+            "duration_ns": 1353446027,
+            "exit_code": 0,
+            "peak_rss_bytes": 81235968,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 432487836,
+          "duration_ratio_file_over_warm": 1.3154646773197831,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2281,
+              "logical_pages": 17869,
+              "resident_pages_after_warm": 17869,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 1803442707,
+            "exit_code": 0,
+            "peak_rss_bytes": 80515072,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          },
+          "order": [
+            "file-content-nonresident-metadata-warm",
+            "warm"
+          ],
+          "pair_index": 1,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2281,
+              "logical_pages": 17869,
+              "resident_pages_after_warm": 17869,
+              "resident_pages_before_run": 17869
+            },
+            "duration_ns": 1370954871,
+            "exit_code": 0,
+            "peak_rss_bytes": 81072128,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 148277960,
+          "duration_ratio_file_over_warm": 1.0975394427949912,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2281,
+              "logical_pages": 17869,
+              "resident_pages_after_warm": 17869,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 1668462572,
+            "exit_code": 0,
+            "peak_rss_bytes": 80359424,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          },
+          "order": [
+            "warm",
+            "file-content-nonresident-metadata-warm"
+          ],
+          "pair_index": 2,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2281,
+              "logical_pages": 17869,
+              "resident_pages_after_warm": 17869,
+              "resident_pages_before_run": 17869
+            },
+            "duration_ns": 1520184612,
+            "exit_code": 0,
+            "peak_rss_bytes": 81174528,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 328765843,
+          "duration_ratio_file_over_warm": 1.2500278985367008,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2281,
+              "logical_pages": 17869,
+              "resident_pages_after_warm": 17869,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 1643682478,
+            "exit_code": 0,
+            "peak_rss_bytes": 80351232,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          },
+          "order": [
+            "file-content-nonresident-metadata-warm",
+            "warm"
+          ],
+          "pair_index": 3,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2281,
+              "logical_pages": 17869,
+              "resident_pages_after_warm": 17869,
+              "resident_pages_before_run": 17869
+            },
+            "duration_ns": 1314916635,
+            "exit_code": 0,
+            "peak_rss_bytes": 80777216,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 25385768,
+          "duration_ratio_file_over_warm": 1.0144628204913413,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2281,
+              "logical_pages": 17869,
+              "resident_pages_after_warm": 17869,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 1780629015,
+            "exit_code": 0,
+            "peak_rss_bytes": 80388096,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          },
+          "order": [
+            "warm",
+            "file-content-nonresident-metadata-warm"
+          ],
+          "pair_index": 4,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2281,
+              "logical_pages": 17869,
+              "resident_pages_after_warm": 17869,
+              "resident_pages_before_run": 17869
+            },
+            "duration_ns": 1755243247,
+            "exit_code": 0,
+            "peak_rss_bytes": 80850944,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 490586188,
+          "duration_ratio_file_over_warm": 1.3158707259169644,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2281,
+              "logical_pages": 17869,
+              "resident_pages_after_warm": 17869,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 2043709500,
+            "exit_code": 0,
+            "peak_rss_bytes": 80142336,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          },
+          "order": [
+            "file-content-nonresident-metadata-warm",
+            "warm"
+          ],
+          "pair_index": 5,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2281,
+              "logical_pages": 17869,
+              "resident_pages_after_warm": 17869,
+              "resident_pages_before_run": 17869
+            },
+            "duration_ns": 1553123312,
+            "exit_code": 0,
+            "peak_rss_bytes": 81076224,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 262145842,
+          "duration_ratio_file_over_warm": 1.180771373179632,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2281,
+              "logical_pages": 17869,
+              "resident_pages_after_warm": 17869,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 1712297143,
+            "exit_code": 0,
+            "peak_rss_bytes": 80281600,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          },
+          "order": [
+            "warm",
+            "file-content-nonresident-metadata-warm"
+          ],
+          "pair_index": 6,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2281,
+              "logical_pages": 17869,
+              "resident_pages_after_warm": 17869,
+              "resident_pages_before_run": 17869
+            },
+            "duration_ns": 1450151301,
+            "exit_code": 0,
+            "peak_rss_bytes": 81059840,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 331508504,
+          "duration_ratio_file_over_warm": 1.2398850030492365,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2281,
+              "logical_pages": 17869,
+              "resident_pages_after_warm": 17869,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 1713456103,
+            "exit_code": 0,
+            "peak_rss_bytes": 80646144,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          },
+          "order": [
+            "file-content-nonresident-metadata-warm",
+            "warm"
+          ],
+          "pair_index": 7,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2281,
+              "logical_pages": 17869,
+              "resident_pages_after_warm": 17869,
+              "resident_pages_before_run": 17869
+            },
+            "duration_ns": 1381947599,
+            "exit_code": 0,
+            "peak_rss_bytes": 80695296,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 250871101,
+          "duration_ratio_file_over_warm": 1.155752722351406,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2281,
+              "logical_pages": 17869,
+              "resident_pages_after_warm": 17869,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 1861572328,
+            "exit_code": 0,
+            "peak_rss_bytes": 85688320,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          },
+          "order": [
+            "warm",
+            "file-content-nonresident-metadata-warm"
+          ],
+          "pair_index": 8,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2281,
+              "logical_pages": 17869,
+              "resident_pages_after_warm": 17869,
+              "resident_pages_before_run": 17869
+            },
+            "duration_ns": 1610701227,
+            "exit_code": 0,
+            "peak_rss_bytes": 80912384,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 398849008,
+          "duration_ratio_file_over_warm": 1.2782445069015602,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2281,
+              "logical_pages": 17869,
+              "resident_pages_after_warm": 17869,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 1832296922,
+            "exit_code": 0,
+            "peak_rss_bytes": 80384000,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          },
+          "order": [
+            "file-content-nonresident-metadata-warm",
+            "warm"
+          ],
+          "pair_index": 9,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2281,
+              "logical_pages": 17869,
+              "resident_pages_after_warm": 17869,
+              "resident_pages_before_run": 17869
+            },
+            "duration_ns": 1433447914,
+            "exit_code": 0,
+            "peak_rss_bytes": 80879616,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 14531,
+              "sha256": "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+            }
+          }
+        }
+      ],
+      "sample_count": 20,
+      "state_summaries": {
+        "file-content-nonresident-metadata-warm": {
+          "duration_ns": {
+            "mad": 79159238,
+            "max": 2043709500,
+            "median": 1792035861,
+            "min": 1643682478,
+            "p95_nearest_rank": 2043709500
+          },
+          "peak_rss_bytes": {
+            "max": 85688320,
+            "median": 80386048,
+            "sample_count": 10
+          },
+          "sample_count": 10,
+          "stderr_unique_sha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ],
+          "stdout_unique_sha256": [
+            "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+          ],
+          "throughput_bytes_per_second_at_median": 26821.449863831716
+        },
+        "warm": {
+          "duration_ns": {
+            "mad": 83369292,
+            "max": 1755243247,
+            "median": 1441799607,
+            "min": 1314916635,
+            "p95_nearest_rank": 1755243247
+          },
+          "peak_rss_bytes": {
+            "max": 81235968,
+            "median": 80986112,
+            "sample_count": 10
+          },
+          "sample_count": 10,
+          "stderr_unique_sha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ],
+          "stdout_unique_sha256": [
+            "ca32a0aedd11bcdc72fa828e0261b0b634f389765e73590e71113501e1877f16"
+          ],
+          "throughput_bytes_per_second_at_median": 33336.81030750898
+        }
+      },
+      "work_bytes": 48065,
+      "work_definition": "all files in generated baseline directory, including manifest.json, scanned once with JSON rendering"
+    },
+    "upstream.cli-pe32-json.v1": {
+      "benchmark_id": "upstream.cli-pe32-json.v1",
+      "manifest": {
+        "bytes": 148530,
+        "file_bytes": 65271878,
+        "file_count": 2255,
+        "logical_pages": 17835,
+        "sha256": "4f3afe8edf58d55bf9bf04ab4c24f252400295366f3421466038fed48faf4561"
+      },
+      "order_policy": "ABBA alternating by pair index",
+      "outputs_identical_across_states": true,
+      "pair_count": 10,
+      "paired_effect": {
+        "duration_delta_ns": {
+          "mad": 46096665,
+          "max": 572855797,
+          "median": 472373340,
+          "min": 387523193,
+          "p95_nearest_rank": 572855797
+        },
+        "duration_ratio_file_over_warm_scaled_1e6": {
+          "mad": 207578,
+          "max": 4184939,
+          "median": 3873532,
+          "min": 3365394,
+          "p95_nearest_rank": 4184939
+        },
+        "negative_delta_pair_count": 0
+      },
+      "pairs": [
+        {
+          "duration_delta_ns": 474235075,
+          "duration_ratio_file_over_warm": 4.076859381770885,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2255,
+              "logical_pages": 17835,
+              "resident_pages_after_warm": 17835,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 628364665,
+            "exit_code": 0,
+            "peak_rss_bytes": 35606528,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          },
+          "order": [
+            "warm",
+            "file-content-nonresident-metadata-warm"
+          ],
+          "pair_index": 0,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2255,
+              "logical_pages": 17835,
+              "resident_pages_after_warm": 17835,
+              "resident_pages_before_run": 17835
+            },
+            "duration_ns": 154129590,
+            "exit_code": 0,
+            "peak_rss_bytes": 35889152,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 470511606,
+          "duration_ratio_file_over_warm": 3.687466949755529,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2255,
+              "logical_pages": 17835,
+              "resident_pages_after_warm": 17835,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 645587845,
+            "exit_code": 0,
+            "peak_rss_bytes": 35364864,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          },
+          "order": [
+            "file-content-nonresident-metadata-warm",
+            "warm"
+          ],
+          "pair_index": 1,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2255,
+              "logical_pages": 17835,
+              "resident_pages_after_warm": 17835,
+              "resident_pages_before_run": 17835
+            },
+            "duration_ns": 175076239,
+            "exit_code": 0,
+            "peak_rss_bytes": 36282368,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 526709386,
+          "duration_ratio_file_over_warm": 4.08536061256655,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2255,
+              "logical_pages": 17835,
+              "resident_pages_after_warm": 17835,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 697421809,
+            "exit_code": 0,
+            "peak_rss_bytes": 35364864,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          },
+          "order": [
+            "warm",
+            "file-content-nonresident-metadata-warm"
+          ],
+          "pair_index": 2,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2255,
+              "logical_pages": 17835,
+              "resident_pages_after_warm": 17835,
+              "resident_pages_before_run": 17835
+            },
+            "duration_ns": 170712423,
+            "exit_code": 0,
+            "peak_rss_bytes": 36155392,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 481204951,
+          "duration_ratio_file_over_warm": 3.714715885621644,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2255,
+              "logical_pages": 17835,
+              "resident_pages_after_warm": 17835,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 658462893,
+            "exit_code": 0,
+            "peak_rss_bytes": 35631104,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          },
+          "order": [
+            "file-content-nonresident-metadata-warm",
+            "warm"
+          ],
+          "pair_index": 3,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2255,
+              "logical_pages": 17835,
+              "resident_pages_after_warm": 17835,
+              "resident_pages_before_run": 17835
+            },
+            "duration_ns": 177257942,
+            "exit_code": 0,
+            "peak_rss_bytes": 36016128,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 389941776,
+          "duration_ratio_file_over_warm": 3.365393909691038,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2255,
+              "logical_pages": 17835,
+              "resident_pages_after_warm": 17835,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 554794562,
+            "exit_code": 0,
+            "peak_rss_bytes": 35622912,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          },
+          "order": [
+            "warm",
+            "file-content-nonresident-metadata-warm"
+          ],
+          "pair_index": 4,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2255,
+              "logical_pages": 17835,
+              "resident_pages_after_warm": 17835,
+              "resident_pages_before_run": 17835
+            },
+            "duration_ns": 164852786,
+            "exit_code": 0,
+            "peak_rss_bytes": 36413440,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 572855797,
+          "duration_ratio_file_over_warm": 4.184938639026583,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2255,
+              "logical_pages": 17835,
+              "resident_pages_after_warm": 17835,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 752719795,
+            "exit_code": 0,
+            "peak_rss_bytes": 35500032,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          },
+          "order": [
+            "file-content-nonresident-metadata-warm",
+            "warm"
+          ],
+          "pair_index": 5,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2255,
+              "logical_pages": 17835,
+              "resident_pages_after_warm": 17835,
+              "resident_pages_before_run": 17835
+            },
+            "duration_ns": 179863998,
+            "exit_code": 0,
+            "peak_rss_bytes": 36151296,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 477606555,
+          "duration_ratio_file_over_warm": 3.9843434903720065,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2255,
+              "logical_pages": 17835,
+              "resident_pages_after_warm": 17835,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 637643949,
+            "exit_code": 0,
+            "peak_rss_bytes": 35495936,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          },
+          "order": [
+            "warm",
+            "file-content-nonresident-metadata-warm"
+          ],
+          "pair_index": 6,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2255,
+              "logical_pages": 17835,
+              "resident_pages_after_warm": 17835,
+              "resident_pages_before_run": 17835
+            },
+            "duration_ns": 160037394,
+            "exit_code": 0,
+            "peak_rss_bytes": 36151296,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 405747112,
+          "duration_ratio_file_over_warm": 3.7627211396129123,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2255,
+              "logical_pages": 17835,
+              "resident_pages_after_warm": 17835,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 552612138,
+            "exit_code": 0,
+            "peak_rss_bytes": 35500032,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          },
+          "order": [
+            "file-content-nonresident-metadata-warm",
+            "warm"
+          ],
+          "pair_index": 7,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2255,
+              "logical_pages": 17835,
+              "resident_pages_after_warm": 17835,
+              "resident_pages_before_run": 17835
+            },
+            "duration_ns": 146865026,
+            "exit_code": 0,
+            "peak_rss_bytes": 36417536,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 434516055,
+          "duration_ratio_file_over_warm": 4.0988070575650575,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2255,
+              "logical_pages": 17835,
+              "resident_pages_after_warm": 17835,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 574736484,
+            "exit_code": 0,
+            "peak_rss_bytes": 35360768,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          },
+          "order": [
+            "warm",
+            "file-content-nonresident-metadata-warm"
+          ],
+          "pair_index": 8,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2255,
+              "logical_pages": 17835,
+              "resident_pages_after_warm": 17835,
+              "resident_pages_before_run": 17835
+            },
+            "duration_ns": 140220429,
+            "exit_code": 0,
+            "peak_rss_bytes": 36286464,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 387523193,
+          "duration_ratio_file_over_warm": 3.659101051745672,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2255,
+              "logical_pages": 17835,
+              "resident_pages_after_warm": 17835,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 533257855,
+            "exit_code": 0,
+            "peak_rss_bytes": 35368960,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          },
+          "order": [
+            "file-content-nonresident-metadata-warm",
+            "warm"
+          ],
+          "pair_index": 9,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2255,
+              "logical_pages": 17835,
+              "resident_pages_after_warm": 17835,
+              "resident_pages_before_run": 17835
+            },
+            "duration_ns": 145734662,
+            "exit_code": 0,
+            "peak_rss_bytes": 36249600,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 467,
+              "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+            }
+          }
+        }
+      ],
+      "sample_count": 20,
+      "state_summaries": {
+        "file-content-nonresident-metadata-warm": {
+          "duration_ns": {
+            "mad": 61342662,
+            "max": 752719795,
+            "median": 633004307,
+            "min": 533257855,
+            "p95_nearest_rank": 752719795
+          },
+          "peak_rss_bytes": {
+            "max": 35631104,
+            "median": 35497984,
+            "sample_count": 10
+          },
+          "sample_count": 10,
+          "stderr_unique_sha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ],
+          "stdout_unique_sha256": [
+            "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+          ],
+          "throughput_bytes_per_second_at_median": 808.8412580105872
+        },
+        "warm": {
+          "duration_ns": {
+            "mad": 13722000,
+            "max": 179863998,
+            "median": 162445090,
+            "min": 140220429,
+            "p95_nearest_rank": 179863998
+          },
+          "peak_rss_bytes": {
+            "max": 36417536,
+            "median": 36202496,
+            "sample_count": 10
+          },
+          "sample_count": 10,
+          "stderr_unique_sha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ],
+          "stdout_unique_sha256": [
+            "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+          ],
+          "throughput_bytes_per_second_at_median": 3151.8342598104996
+        }
+      },
+      "work_bytes": 512,
+      "work_definition": "minimal PE32 input bytes scanned once with JSON rendering"
+    },
+    "upstream.database-load.v1": {
+      "benchmark_id": "upstream.database-load.v1",
+      "manifest": {
+        "bytes": 148493,
+        "file_bytes": 65261596,
+        "file_count": 2253,
+        "logical_pages": 17831,
+        "sha256": "1c8e500f9858b2251829947f5a6ded49b682aad8ca66053bc6cf2dce3bb1a3fa"
+      },
+      "order_policy": "ABBA alternating by pair index",
+      "outputs_identical_across_states": true,
+      "pair_count": 10,
+      "paired_effect": {
+        "duration_delta_ns": {
+          "mad": 29150763,
+          "max": 570642356,
+          "median": 469870467,
+          "min": 404063600,
+          "p95_nearest_rank": 570642356
+        },
+        "duration_ratio_file_over_warm_scaled_1e6": {
+          "mad": 489423,
+          "max": 10030446,
+          "median": 8789222,
+          "min": 7566725,
+          "p95_nearest_rank": 10030446
+        },
+        "negative_delta_pair_count": 0
+      },
+      "pairs": [
+        {
+          "duration_delta_ns": 440472756,
+          "duration_ratio_file_over_warm": 8.302577583039174,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2253,
+              "logical_pages": 17831,
+              "resident_pages_after_warm": 17831,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 500790192,
+            "exit_code": 0,
+            "peak_rss_bytes": 19714048,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          },
+          "order": [
+            "warm",
+            "file-content-nonresident-metadata-warm"
+          ],
+          "pair_index": 0,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2253,
+              "logical_pages": 17831,
+              "resident_pages_after_warm": 17831,
+              "resident_pages_before_run": 17831
+            },
+            "duration_ns": 60317436,
+            "exit_code": 0,
+            "peak_rss_bytes": 20627456,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 440966651,
+          "duration_ratio_file_over_warm": 7.566725327892755,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2253,
+              "logical_pages": 17831,
+              "resident_pages_after_warm": 17831,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 508118333,
+            "exit_code": 0,
+            "peak_rss_bytes": 19451904,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          },
+          "order": [
+            "file-content-nonresident-metadata-warm",
+            "warm"
+          ],
+          "pair_index": 1,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2253,
+              "logical_pages": 17831,
+              "resident_pages_after_warm": 17831,
+              "resident_pages_before_run": 17831
+            },
+            "duration_ns": 67151682,
+            "exit_code": 0,
+            "peak_rss_bytes": 20496384,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 512272497,
+          "duration_ratio_file_over_warm": 9.149581355022173,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2253,
+              "logical_pages": 17831,
+              "resident_pages_after_warm": 17831,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 575131247,
+            "exit_code": 0,
+            "peak_rss_bytes": 19578880,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          },
+          "order": [
+            "warm",
+            "file-content-nonresident-metadata-warm"
+          ],
+          "pair_index": 2,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2253,
+              "logical_pages": 17831,
+              "resident_pages_after_warm": 17831,
+              "resident_pages_before_run": 17831
+            },
+            "duration_ns": 62858750,
+            "exit_code": 0,
+            "peak_rss_bytes": 20463616,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 570642356,
+          "duration_ratio_file_over_warm": 10.030446185661086,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2253,
+              "logical_pages": 17831,
+              "resident_pages_after_warm": 17831,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 633833293,
+            "exit_code": 0,
+            "peak_rss_bytes": 19709952,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          },
+          "order": [
+            "file-content-nonresident-metadata-warm",
+            "warm"
+          ],
+          "pair_index": 3,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2253,
+              "logical_pages": 17831,
+              "resident_pages_after_warm": 17831,
+              "resident_pages_before_run": 17831
+            },
+            "duration_ns": 63190937,
+            "exit_code": 0,
+            "peak_rss_bytes": 20103168,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 449636786,
+          "duration_ratio_file_over_warm": 8.297020405853491,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2253,
+              "logical_pages": 17831,
+              "resident_pages_after_warm": 17831,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 511256017,
+            "exit_code": 0,
+            "peak_rss_bytes": 19714048,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          },
+          "order": [
+            "warm",
+            "file-content-nonresident-metadata-warm"
+          ],
+          "pair_index": 4,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2253,
+              "logical_pages": 17831,
+              "resident_pages_after_warm": 17831,
+              "resident_pages_before_run": 17831
+            },
+            "duration_ns": 61619231,
+            "exit_code": 0,
+            "peak_rss_bytes": 20103168,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 520416324,
+          "duration_ratio_file_over_warm": 9.102486639607017,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2253,
+              "logical_pages": 17831,
+              "resident_pages_after_warm": 17831,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 584645535,
+            "exit_code": 0,
+            "peak_rss_bytes": 19709952,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          },
+          "order": [
+            "file-content-nonresident-metadata-warm",
+            "warm"
+          ],
+          "pair_index": 5,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2253,
+              "logical_pages": 17831,
+              "resident_pages_after_warm": 17831,
+              "resident_pages_before_run": 17831
+            },
+            "duration_ns": 64229211,
+            "exit_code": 0,
+            "peak_rss_bytes": 20754432,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 404063600,
+          "duration_ratio_file_over_warm": 7.672264211514604,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2253,
+              "logical_pages": 17831,
+              "resident_pages_after_warm": 17831,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 464622293,
+            "exit_code": 0,
+            "peak_rss_bytes": 19836928,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          },
+          "order": [
+            "warm",
+            "file-content-nonresident-metadata-warm"
+          ],
+          "pair_index": 6,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2253,
+              "logical_pages": 17831,
+              "resident_pages_after_warm": 17831,
+              "resident_pages_before_run": 17831
+            },
+            "duration_ns": 60558693,
+            "exit_code": 0,
+            "peak_rss_bytes": 20496384,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 448335466,
+          "duration_ratio_file_over_warm": 8.560206148809511,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2253,
+              "logical_pages": 17831,
+              "resident_pages_after_warm": 17831,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 507637482,
+            "exit_code": 0,
+            "peak_rss_bytes": 19714048,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          },
+          "order": [
+            "file-content-nonresident-metadata-warm",
+            "warm"
+          ],
+          "pair_index": 7,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2253,
+              "logical_pages": 17831,
+              "resident_pages_after_warm": 17831,
+              "resident_pages_before_run": 17831
+            },
+            "duration_ns": 59302016,
+            "exit_code": 0,
+            "peak_rss_bytes": 20627456,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 495608220,
+          "duration_ratio_file_over_warm": 9.92343543901611,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2253,
+              "logical_pages": 17831,
+              "resident_pages_after_warm": 17831,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 551148289,
+            "exit_code": 0,
+            "peak_rss_bytes": 19574784,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          },
+          "order": [
+            "warm",
+            "file-content-nonresident-metadata-warm"
+          ],
+          "pair_index": 8,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2253,
+              "logical_pages": 17831,
+              "resident_pages_after_warm": 17831,
+              "resident_pages_before_run": 17831
+            },
+            "duration_ns": 55540069,
+            "exit_code": 0,
+            "peak_rss_bytes": 20492288,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 490104148,
+          "duration_ratio_file_over_warm": 9.018237712608702,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 2253,
+              "logical_pages": 17831,
+              "resident_pages_after_warm": 17831,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 551227822,
+            "exit_code": 0,
+            "peak_rss_bytes": 19443712,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          },
+          "order": [
+            "file-content-nonresident-metadata-warm",
+            "warm"
+          ],
+          "pair_index": 9,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 2253,
+              "logical_pages": 17831,
+              "resident_pages_after_warm": 17831,
+              "resident_pages_before_run": 17831
+            },
+            "duration_ns": 61123674,
+            "exit_code": 0,
+            "peak_rss_bytes": 20627456,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 48,
+              "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+            }
+          }
+        }
+      ],
+      "sample_count": 20,
+      "state_summaries": {
+        "file-content-nonresident-metadata-warm": {
+          "duration_ns": {
+            "mad": 26988316,
+            "max": 633833293,
+            "median": 531202153,
+            "min": 464622293,
+            "p95_nearest_rank": 633833293
+          },
+          "peak_rss_bytes": {
+            "max": 19836928,
+            "median": 19709952,
+            "sample_count": 10
+          },
+          "sample_count": 10,
+          "stderr_unique_sha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ],
+          "stdout_unique_sha256": [
+            "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+          ],
+          "throughput_bytes_per_second_at_median": 1.8825224904538367
+        },
+        "warm": {
+          "duration_ns": {
+            "mad": 1653391,
+            "max": 67151682,
+            "median": 61371452,
+            "min": 55540069,
+            "p95_nearest_rank": 67151682
+          },
+          "peak_rss_bytes": {
+            "max": 20754432,
+            "median": 20496384,
+            "sample_count": 10
+          },
+          "sample_count": 10,
+          "stderr_unique_sha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ],
+          "stdout_unique_sha256": [
+            "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+          ],
+          "throughput_bytes_per_second_at_median": 16.294220967755496
+        }
+      },
+      "work_bytes": 1,
+      "work_definition": "one full pinned main/extra/custom database load; throughput is not interpreted"
+    },
+    "upstream.qt-process-control.v1": {
+      "benchmark_id": "upstream.qt-process-control.v1",
+      "manifest": {
+        "bytes": 926,
+        "file_bytes": 62358715,
+        "file_count": 18,
+        "logical_pages": 15231,
+        "sha256": "76ded9f8d5d17860e1c2f6d5b3f93f6567119b5eaeca71c59572f3b696eb2ee0"
+      },
+      "order_policy": "ABBA alternating by pair index",
+      "outputs_identical_across_states": true,
+      "pair_count": 10,
+      "paired_effect": {
+        "duration_delta_ns": {
+          "mad": 7103143,
+          "max": 60005512,
+          "median": 44738476,
+          "min": 37021548,
+          "p95_nearest_rank": 60005512
+        },
+        "duration_ratio_file_over_warm_scaled_1e6": {
+          "mad": 1101080,
+          "max": 6880688,
+          "median": 5212505,
+          "min": 3272275,
+          "p95_nearest_rank": 6880688
+        },
+        "negative_delta_pair_count": 0
+      },
+      "pairs": [
+        {
+          "duration_delta_ns": 37021548,
+          "duration_ratio_file_over_warm": 4.388328492674213,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 18,
+              "logical_pages": 15231,
+              "resident_pages_after_warm": 15231,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 47947746,
+            "exit_code": 0,
+            "peak_rss_bytes": 13369344,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          "order": [
+            "warm",
+            "file-content-nonresident-metadata-warm"
+          ],
+          "pair_index": 0,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 18,
+              "logical_pages": 15231,
+              "resident_pages_after_warm": 15231,
+              "resident_pages_before_run": 15231
+            },
+            "duration_ns": 10926198,
+            "exit_code": 0,
+            "peak_rss_bytes": 13893632,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 40488989,
+          "duration_ratio_file_over_warm": 4.830823524625411,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 18,
+              "logical_pages": 15231,
+              "resident_pages_after_warm": 15231,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 51058254,
+            "exit_code": 0,
+            "peak_rss_bytes": 13500416,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          "order": [
+            "file-content-nonresident-metadata-warm",
+            "warm"
+          ],
+          "pair_index": 1,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 18,
+              "logical_pages": 15231,
+              "resident_pages_after_warm": 15231,
+              "resident_pages_before_run": 15231
+            },
+            "duration_ns": 10569265,
+            "exit_code": 0,
+            "peak_rss_bytes": 13893632,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 37521151,
+          "duration_ratio_file_over_warm": 3.895621748940472,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 18,
+              "logical_pages": 15231,
+              "resident_pages_after_warm": 15231,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 50479042,
+            "exit_code": 0,
+            "peak_rss_bytes": 13238272,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          "order": [
+            "warm",
+            "file-content-nonresident-metadata-warm"
+          ],
+          "pair_index": 2,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 18,
+              "logical_pages": 15231,
+              "resident_pages_after_warm": 15231,
+              "resident_pages_before_run": 15231
+            },
+            "duration_ns": 12957891,
+            "exit_code": 0,
+            "peak_rss_bytes": 13893632,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 37101657,
+          "duration_ratio_file_over_warm": 3.272275465879878,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 18,
+              "logical_pages": 15231,
+              "resident_pages_after_warm": 15231,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 53429632,
+            "exit_code": 0,
+            "peak_rss_bytes": 13369344,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          "order": [
+            "file-content-nonresident-metadata-warm",
+            "warm"
+          ],
+          "pair_index": 3,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 18,
+              "logical_pages": 15231,
+              "resident_pages_after_warm": 15231,
+              "resident_pages_before_run": 15231
+            },
+            "duration_ns": 16327975,
+            "exit_code": 0,
+            "peak_rss_bytes": 14155776,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 51727438,
+          "duration_ratio_file_over_warm": 6.275817983525945,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 18,
+              "logical_pages": 15231,
+              "resident_pages_after_warm": 15231,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 61532067,
+            "exit_code": 0,
+            "peak_rss_bytes": 13369344,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          "order": [
+            "warm",
+            "file-content-nonresident-metadata-warm"
+          ],
+          "pair_index": 4,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 18,
+              "logical_pages": 15231,
+              "resident_pages_after_warm": 15231,
+              "resident_pages_before_run": 15231
+            },
+            "duration_ns": 9804629,
+            "exit_code": 0,
+            "peak_rss_bytes": 14024704,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 46754425,
+          "duration_ratio_file_over_warm": 5.594187404470826,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 18,
+              "logical_pages": 15231,
+              "resident_pages_after_warm": 15231,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 56931290,
+            "exit_code": 0,
+            "peak_rss_bytes": 13369344,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          "order": [
+            "file-content-nonresident-metadata-warm",
+            "warm"
+          ],
+          "pair_index": 5,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 18,
+              "logical_pages": 15231,
+              "resident_pages_after_warm": 15231,
+              "resident_pages_before_run": 15231
+            },
+            "duration_ns": 10176865,
+            "exit_code": 0,
+            "peak_rss_bytes": 14024704,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 48920240,
+          "duration_ratio_file_over_warm": 6.351352528025821,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 18,
+              "logical_pages": 15231,
+              "resident_pages_after_warm": 15231,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 58061899,
+            "exit_code": 0,
+            "peak_rss_bytes": 13107200,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          "order": [
+            "warm",
+            "file-content-nonresident-metadata-warm"
+          ],
+          "pair_index": 6,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 18,
+              "logical_pages": 15231,
+              "resident_pages_after_warm": 15231,
+              "resident_pages_before_run": 15231
+            },
+            "duration_ns": 9141659,
+            "exit_code": 0,
+            "peak_rss_bytes": 14155776,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 42722528,
+          "duration_ratio_file_over_warm": 4.386481082842519,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 18,
+              "logical_pages": 15231,
+              "resident_pages_after_warm": 15231,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 55338139,
+            "exit_code": 0,
+            "peak_rss_bytes": 13107200,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          "order": [
+            "file-content-nonresident-metadata-warm",
+            "warm"
+          ],
+          "pair_index": 7,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 18,
+              "logical_pages": 15231,
+              "resident_pages_after_warm": 15231,
+              "resident_pages_before_run": 15231
+            },
+            "duration_ns": 12615611,
+            "exit_code": 0,
+            "peak_rss_bytes": 14286848,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 55555502,
+          "duration_ratio_file_over_warm": 6.880688155498153,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 18,
+              "logical_pages": 15231,
+              "resident_pages_after_warm": 15231,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 65002611,
+            "exit_code": 0,
+            "peak_rss_bytes": 13369344,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          "order": [
+            "warm",
+            "file-content-nonresident-metadata-warm"
+          ],
+          "pair_index": 8,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 18,
+              "logical_pages": 15231,
+              "resident_pages_after_warm": 15231,
+              "resident_pages_before_run": 15231
+            },
+            "duration_ns": 9447109,
+            "exit_code": 0,
+            "peak_rss_bytes": 14155776,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          }
+        },
+        {
+          "duration_delta_ns": 60005512,
+          "duration_ratio_file_over_warm": 6.379672443904136,
+          "file-content-nonresident-metadata-warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": true,
+              "file_count": 18,
+              "logical_pages": 15231,
+              "resident_pages_after_warm": 15231,
+              "resident_pages_before_run": 0
+            },
+            "duration_ns": 71159632,
+            "exit_code": 0,
+            "peak_rss_bytes": 13500416,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          },
+          "order": [
+            "file-content-nonresident-metadata-warm",
+            "warm"
+          ],
+          "pair_index": 9,
+          "warm": {
+            "controller_evidence": {
+              "before_run_page_state_verified": true,
+              "fadvise_executed": false,
+              "file_count": 18,
+              "logical_pages": 15231,
+              "resident_pages_after_warm": 15231,
+              "resident_pages_before_run": 15231
+            },
+            "duration_ns": 11154120,
+            "exit_code": 0,
+            "peak_rss_bytes": 14286848,
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stdout": {
+              "bytes": 16,
+              "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+            }
+          }
+        }
+      ],
+      "sample_count": 20,
+      "state_summaries": {
+        "file-content-nonresident-metadata-warm": {
+          "duration_ns": {
+            "mad": 5236906,
+            "max": 71159632,
+            "median": 56134714,
+            "min": 47947746,
+            "p95_nearest_rank": 71159632
+          },
+          "peak_rss_bytes": {
+            "max": 13500416,
+            "median": 13369344,
+            "sample_count": 10
+          },
+          "sample_count": 10,
+          "stderr_unique_sha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ],
+          "stdout_unique_sha256": [
+            "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          ],
+          "throughput_bytes_per_second_at_median": 17.81428867705641
+        },
+        "warm": {
+          "duration_ns": {
+            "mad": 1121862,
+            "max": 16327975,
+            "median": 10747731,
+            "min": 9141659,
+            "p95_nearest_rank": 16327975
+          },
+          "peak_rss_bytes": {
+            "max": 14286848,
+            "median": 14090240,
+            "sample_count": 10
+          },
+          "sample_count": 10,
+          "stderr_unique_sha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ],
+          "stdout_unique_sha256": [
+            "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          ],
+          "throughput_bytes_per_second_at_median": 93.04289435602733
+        }
+      },
+      "work_bytes": 1,
+      "work_definition": "one QCoreApplication process startup; throughput is not interpreted"
+    }
+  },
+  "controller": {
+    "binary_bytes": 804240,
+    "binary_sha256": "3f572449ddf0330e3e1e4a9b254edb78bb45ec575abfcfb463dd37d1a02a73bf",
+    "clock": "clock_gettime(CLOCK_MONOTONIC)",
+    "compile_arguments": [
+      "-static",
+      "-O2",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "/src/measure_linux_file_content_benchmark.c",
+      "-o",
+      "/io/file-content-measure"
+    ],
+    "elf_class": "ELF64",
+    "machine": "x86_64",
+    "max_capture_bytes_per_stream": 67108864,
+    "measurement_source": "tools/benchmark/measure_linux_file_content_benchmark.c",
+    "measurement_source_sha256": "3f8cdece2ebdfd6c12572c9671d24a17be24cdd8da0b0629a5849187f5b3c906",
+    "page_controller_source": "tools/benchmark/control_linux_page_cache.c",
+    "page_controller_source_sha256": "be86dc84568f64e8ac2bd6ee9d53e45ab15a8401186b0f34b4f9b9318f8dc2b7",
+    "peak_rss_method": "wait4 child rusage.ru_maxrss * 1024",
+    "program_header_count": 10,
+    "pt_dynamic_present": false,
+    "pt_interp_present": false,
+    "statically_linked": true,
+    "timeout_seconds": 120
+  },
+  "environment": {
+    "cgroup": {
+      "cpu_max": "100000 100000",
+      "cpuset_effective": "0",
+      "memory_max": "536870912",
+      "pids_max": "128"
+    },
+    "container_limits": {
+      "cpus": "1",
+      "memory": "512m",
+      "network": "none",
+      "pids": 128
+    },
+    "cpu_affinity": {
+      "requested_cpuset_cpu": "0",
+      "scope": "linux_vcpu"
+    },
+    "image": "diec-rust/upstream-benchmark-qt5:74eaf505",
+    "image_identity": {
+      "id": "sha256:9f1d70a8d4513404cdc457074e00dec4a9b8a6f043a572ffc17465bbe699eb09",
+      "repo_digests": [
+        "diec-rust/upstream-benchmark-qt5@sha256:9f1d70a8d4513404cdc457074e00dec4a9b8a6f043a572ffc17465bbe699eb09"
+      ],
+      "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+    },
+    "network": "none",
+    "page_size": 4096
+  },
+  "generator": "tools/benchmark/probe_upstream_benchmark_file_content_performance.py",
+  "generator_sha256": "0e2dbff928c176235759e2128b51faa2653d12987158618c1c12dfdeb11ebf24",
+  "inputs": {
+    "affinity_baseline": {
+      "bytes": 83809,
+      "path": "docs/research/data/upstream-benchmark-linux-qt5-affinity.json",
+      "sha256": "67e6d594a5b93e1b791c11ef89bdb12e85399964cea9bee87baf591047f5d7de"
+    },
+    "cache_environment": {
+      "bytes": 6938,
+      "path": "docs/research/data/upstream-benchmark-linux-qt5-cache-environment.json",
+      "sha256": "77ef746852a3a05fd29b8e8a8650f0febb22d123dd3b007451265b4597c72811"
+    },
+    "page_cache": {
+      "bytes": 1509261,
+      "path": "docs/research/data/upstream-benchmark-linux-qt5-page-cache.json",
+      "sha256": "081ab455705587089a03401935c8109cdc271f426e11295b2c848f4186b933eb"
+    },
+    "plan_suite": {
+      "bytes": 12832,
+      "path": "docs/research/data/upstream-benchmark-plans.json",
+      "sha256": "f93672c9603db16050047095f15d5f5ea6d9d58663b4574ed901f819f0106e1a"
+    },
+    "successful_file_access": {
+      "bytes": 1163609,
+      "path": "docs/research/data/upstream-benchmark-linux-qt5-file-access.json",
+      "sha256": "4edfe49fc68861bbfbb04f7b3a8309b65eb4f6eba884985b4fe08e5f5ed3f922"
+    }
+  },
+  "limitations": [
+    "each sample starts a fresh Docker container, but container creation and cache preparation are outside the measured interval",
+    "both states deliberately warm pathname, dentry and inode metadata; only candidate content-page residency differs",
+    "wait4 ru_maxrss measures the direct child and is not interchangeable with the historical Python polling RSS method",
+    "the ABBA order reduces monotonic drift but this is one consecutive session on one WSL2 Linux vCPU",
+    "no Rust implementation exists for same-case randomized pairing and no regression threshold is frozen"
+  ],
+  "pairs_per_case": 10,
+  "relationships": {
+    "all_cases_have_ten_abba_pairs": true,
+    "all_cases_use_identical_measurement_controller": true,
+    "all_file_content_runs_verify_every_candidate_page_nonresident": true,
+    "all_outputs_identical_across_cache_states": true,
+    "all_outputs_match_affinity_baseline": true,
+    "all_warm_runs_verify_every_candidate_page_resident": true,
+    "container_start_time_is_excluded": true,
+    "generic_cold_is_not_claimed": true,
+    "preparation_time_is_excluded": true,
+    "regression_thresholds_are_not_frozen": true
+  },
+  "schema_version": 1,
+  "scope": {
+    "descriptive_upstream_cache_state_spike": true,
+    "direct_child_process_only": true,
+    "long_horizon_sessions_present": false,
+    "metadata_cache_controlled": false,
+    "physical_core_topology_proven": false,
+    "regression_thresholds_frozen": false,
+    "rust_paired_measurements_present": false,
+    "same_launcher_clock_and_rss_method_across_states": true,
+    "system_cold_cache_controlled": false
+  },
+  "total_measured_processes": 100,
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}
