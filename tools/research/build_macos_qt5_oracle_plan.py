@@ -9,7 +9,6 @@ import json
 from pathlib import Path
 from typing import Any
 
-
 SCHEMA_VERSION = 1
 EVALUATED_ON = "2026-07-30"
 UPSTREAM_COMMIT = "74eaf505c250ab47e709024e9dc41657cd8f2254"
@@ -23,6 +22,8 @@ SOURCE_PATHS = (
     "upstream/DIE-engine/console_source/console_source.pro",
     "upstream/DIE-engine/die_source.pro",
     "tools/upstream/build_macos_qt5_oracle.sh",
+    "tools/upstream/collect_macos_cli_baseline.py",
+    "tools/upstream/validate_macos_cli_baseline.py",
     "tools/upstream/validate_macos_qt5_oracle_report.py",
 )
 
@@ -89,6 +90,12 @@ def build_plan(root: Path) -> dict[str, Any]:
             "qt_installer": "aqtinstall==3.3.0",
             "artifact_retention_days": 14,
             "automatically_admits_evidence": False,
+            "candidate_reports": [
+                "oracle-candidate.json",
+                "cache-state-candidate.json",
+                "cli-baseline-candidate.json",
+            ],
+            "raw_cli_streams_retained": True,
         },
         "runtime_closure": {
             "required_capability_count": 68,

@@ -18,8 +18,14 @@
   "dispatch_workflow": {
     "artifact_retention_days": 14,
     "automatically_admits_evidence": false,
+    "candidate_reports": [
+      "oracle-candidate.json",
+      "cache-state-candidate.json",
+      "cli-baseline-candidate.json"
+    ],
     "path": ".github/workflows/macos-qt5-oracle-candidate.yml",
     "qt_installer": "aqtinstall==3.3.0",
+    "raw_cli_streams_retained": true,
     "runner": "macos-15-intel",
     "trigger": "workflow_dispatch"
   },
@@ -52,8 +58,10 @@
   },
   "schema_version": 1,
   "sources": {
-    ".github/workflows/macos-qt5-oracle-candidate.yml": "10351ae788c2b03c7017c12f2cef0ec19ac5ef38fbdaca555f82127d0203d518",
+    ".github/workflows/macos-qt5-oracle-candidate.yml": "8b198a54ef3694e344f8d06076fe6b31cb8c594f7cf9ac05b8d191336fc51fcc",
     "tools/upstream/build_macos_qt5_oracle.sh": "db5970a4b932e8a2390af79f9d1ddbc1ac18076bea3377688449d1b3309dd94c",
+    "tools/upstream/collect_macos_cli_baseline.py": "89f3b9a1e8b80d8e1cf6e7fd7d5e8a0bb10f3a062d03f9a4699aea65c63050b0",
+    "tools/upstream/validate_macos_cli_baseline.py": "bff81db7e07f5274c87c09aad252b4891042e9475bd35dbce2410b078d910232",
     "tools/upstream/validate_macos_qt5_oracle_report.py": "64891dc319bfd7d958406aeeae31b4424385868b40d462c7f841ebbc5a8ff2e7",
     "upstream/DIE-engine/.github/workflows/builder.yml": "b8053dda9c53682b7c931230a427d6ef2880c20bf27fe023a3eb973409ab1d57",
     "upstream/DIE-engine/build.pri": "a1e09eda22d1e85a51d6d56e8a6669885e6a07a96c2fceb1948c1ce49ec28e1f",

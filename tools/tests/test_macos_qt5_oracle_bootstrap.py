@@ -1,10 +1,10 @@
 import hashlib
 import importlib.util
 import json
-from pathlib import Path
+import sys
 import tempfile
 import unittest
-
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 BUILD_SCRIPT = ROOT / "tools/upstream/build_macos_qt5_oracle.sh"
@@ -16,18 +16,35 @@ PLAN_PATH = ROOT / "docs/research/data/macos-qt5-oracle-plan.json"
 WORKFLOW_PATH = (
     ROOT / ".github/workflows/macos-qt5-oracle-candidate.yml"
 )
+CLI_COLLECTOR_PATH = (
+    ROOT / "tools/upstream/collect_macos_cli_baseline.py"
+)
+CLI_VALIDATOR_PATH = (
+    ROOT / "tools/upstream/validate_macos_cli_baseline.py"
+)
 
 
 def load_module(name: str, path: Path):
     spec = importlib.util.spec_from_file_location(name, path)
     module = importlib.util.module_from_spec(spec)
     assert spec is not None and spec.loader is not None
+    sys.modules[spec.name] = module
     spec.loader.exec_module(module)
     return module
 
 
 VALIDATOR = load_module("validate_macos_qt5_oracle_report", VALIDATOR_PATH)
 PLAN = load_module("build_macos_qt5_oracle_plan", PLAN_SCRIPT)
+CLI_COLLECTOR = load_module(
+    "collect_macos_cli_baseline", CLI_COLLECTOR_PATH
+)
+CLI_VALIDATOR = load_module(
+    "validate_macos_cli_baseline", CLI_VALIDATOR_PATH
+)
+CLI_COMMON = load_module(
+    "collect_windows_cli_baseline_for_macos_test",
+    ROOT / "tools/upstream/collect_windows_cli_baseline.py",
+)
 
 
 def candidate_report() -> dict:
@@ -99,6 +116,168 @@ def candidate_report() -> dict:
             "artifact": "/private/tmp/source/build/release/diec",
         },
     }
+
+
+def write_cli_candidate_bundle(directory: Path) -> Path:
+    oracle = candidate_report()
+    oracle_path = directory / "oracle-candidate.json"
+    oracle_path.write_text(
+        json.dumps(oracle, sort_keys=True), encoding="utf-8"
+    )
+    manifest_raw = (
+        ROOT / "docs/research/data/baseline-corpus.json"
+    ).read_bytes()
+    manifest = json.loads(manifest_raw)
+    linux_raw = (
+        ROOT / "docs/research/data/baseline-corpus-linux-qt5.json"
+    ).read_bytes()
+    linux = json.loads(linux_raw)
+
+    cases = {}
+    for case in CLI_COLLECTOR.expected_cases(CLI_COMMON):
+        observation = CLI_COMMON.Observation(0, b"stable", b"")
+        pair = CLI_COLLECTOR.pair_report(
+            CLI_COMMON,
+            directory,
+            f"cases/{case.name}",
+            observation,
+            observation,
+        )
+        pair["arguments"] = list(case.report_arguments)
+        cases[case.name] = pair
+
+    database_args = [
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+    ]
+    corpus = {}
+    for sample in manifest["samples"]:
+        name = sample["name"]
+        linux_item = linux["corpus"][name]
+        linux_tree = linux_item["left_detect_tree"]
+        stdout = (
+            b""
+            if linux_tree is None
+            else json.dumps(
+                {"detects": linux_tree},
+                separators=(",", ":"),
+            ).encode("utf-8")
+        )
+        observation = CLI_COMMON.Observation(
+            linux_item["left"]["exit_code"], stdout, b""
+        )
+        pair = CLI_COLLECTOR.pair_report(
+            CLI_COMMON,
+            directory,
+            f"corpus/{name}",
+            observation,
+            observation,
+        )
+        projected = CLI_COMMON.json_detect_tree(stdout)
+        pair.update(
+            {
+                "arguments": [
+                    "--json",
+                    *database_args,
+                    f"<corpus>/{name}",
+                ],
+                "intended_format": sample["intended_format"],
+                "sample_sha256": sample["sha256"],
+                "first_detect_tree": projected,
+                "second_detect_tree": projected,
+                "linux_qt5_detect_tree": linux_tree,
+                "linux_projection_equal": projected == linux_tree,
+                "linux_exit_code_equal": True,
+            }
+        )
+        corpus[name] = pair
+
+    report = {
+        "schema_version": 1,
+        "result": "candidate",
+        "platform": CLI_VALIDATOR.PLATFORM,
+        "generator": {
+            "path": CLI_VALIDATOR.COLLECTOR,
+            "sha256": hashlib.sha256(
+                CLI_COLLECTOR_PATH.read_bytes()
+            ).hexdigest(),
+            "shared_collector_path": (
+                CLI_VALIDATOR.SHARED_COLLECTOR
+            ),
+            "shared_collector_sha256": hashlib.sha256(
+                (
+                    ROOT
+                    / CLI_VALIDATOR.SHARED_COLLECTOR
+                ).read_bytes()
+            ).hexdigest(),
+            "validator_path": (
+                "tools/upstream/validate_macos_cli_baseline.py"
+            ),
+            "validator_sha256": hashlib.sha256(
+                CLI_VALIDATOR_PATH.read_bytes()
+            ).hexdigest(),
+        },
+        "oracle_report": {
+            "path": "oracle-candidate.json",
+            "sha256": hashlib.sha256(
+                oracle_path.read_bytes()
+            ).hexdigest(),
+        },
+        "source": {
+            "repository": "https://github.com/horsicq/DIE-engine",
+            "commit": VALIDATOR.UPSTREAM_COMMIT,
+            "recursive_submodule_count": 58,
+            "rules_commit": VALIDATOR.RULES_COMMIT,
+            "tracked_files_clean_before_and_after": True,
+        },
+        "qt": {
+            "version": oracle["qt"]["version"],
+            "qmake_spec": oracle["qt"]["qmake_spec"],
+            "qmake_sha256": oracle["qt"]["qmake_sha256"],
+            "qtcore_sha256": oracle["qt"]["qtcore_sha256"],
+            "qtscript_sha256": oracle["qt"]["qtscript_sha256"],
+        },
+        "binary": {
+            "size": oracle["artifact"]["size"],
+            "sha256": oracle["artifact"]["sha256"],
+            "relative_path": "build/release/diec",
+        },
+        "corpus_manifest": {
+            "path": CLI_VALIDATOR.BASELINE_MANIFEST,
+            "sha256": hashlib.sha256(manifest_raw).hexdigest(),
+            "sample_count": len(manifest["samples"]),
+        },
+        "linux_qt5_reference": {
+            "path": CLI_VALIDATOR.LINUX_REFERENCE,
+            "sha256": hashlib.sha256(linux_raw).hexdigest(),
+        },
+        "cases": cases,
+        "corpus": corpus,
+        "summary": {
+            "case_count": len(cases),
+            "corpus_count": len(corpus),
+            "execution_count": 2 * (len(cases) + len(corpus)),
+            "determinism_failures": [],
+            "linux_projection_failures": [],
+            "deterministic": True,
+            "linux_projection_equal": True,
+        },
+        "admission": {
+            "platform_admitted": False,
+            "capability_rows_admitted": 0,
+            "reason": CLI_VALIDATOR.EXPECTED_ADMISSION_REASON,
+        },
+        "limitations": CLI_VALIDATOR.EXPECTED_LIMITATIONS,
+    }
+    report_path = directory / "cli-baseline-candidate.json"
+    report_path.write_text(
+        json.dumps(report, sort_keys=True), encoding="utf-8"
+    )
+    return report_path
 
 
 class MacosQt5OracleBootstrapTests(unittest.TestCase):
@@ -174,6 +353,11 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             "validate_macos_qt5_oracle_report.py",
             "collect_macos_cache_state_candidate.py",
             "validate_macos_cache_state_candidate.py",
+            "generate_baseline_corpus.py",
+            "collect_macos_cli_baseline.py",
+            "validate_macos_cli_baseline.py",
+            "cli-baseline-candidate.json",
+            "diec-macos-candidate-evidence/raw",
             (
                 "actions/checkout@"
                 "de0fac2e4500dabe0009e67214ff5f5447ce83dd"
@@ -205,6 +389,109 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
         self.assertEqual(workflow["trigger"], "workflow_dispatch")
         self.assertEqual(workflow["runner"], "macos-15-intel")
         self.assertFalse(workflow["automatically_admits_evidence"])
+        self.assertTrue(workflow["raw_cli_streams_retained"])
+        self.assertEqual(
+            workflow["candidate_reports"],
+            [
+                "oracle-candidate.json",
+                "cache-state-candidate.json",
+                "cli-baseline-candidate.json",
+            ],
+        )
+
+    def test_cli_candidate_tools_are_bound_and_fail_closed(self):
+        collector = CLI_COLLECTOR_PATH.read_text(encoding="utf-8")
+        validator = CLI_VALIDATOR_PATH.read_text(encoding="utf-8")
+        for required in (
+            "native Darwin x86_64",
+            "oracle-candidate.json",
+            "baseline-corpus-linux-qt5.json",
+            "platform_admitted",
+            "capability_rows_admitted",
+            "write_observation",
+            "determinism_failures",
+            "linux_projection_failures",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, collector)
+        for required in (
+            "bundle-local oracle-candidate.json",
+            "raw file inventory differs from report",
+            "raw path escaped bundle",
+            "candidate must not admit capability evidence",
+            "determinism projection drift",
+            "corpus projection drift",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, validator)
+        self.assertEqual(
+            CLI_COLLECTOR.ADMISSION_REASON,
+            CLI_VALIDATOR.EXPECTED_ADMISSION_REASON,
+        )
+        self.assertEqual(
+            CLI_COLLECTOR.LIMITATIONS,
+            CLI_VALIDATOR.EXPECTED_LIMITATIONS,
+        )
+
+    def test_cli_candidate_validator_recomputes_raw_bundle(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            report_path = write_cli_candidate_bundle(directory)
+            report = CLI_VALIDATOR.load_json(report_path)[0]
+            oracle_path = directory / "oracle-candidate.json"
+            CLI_VALIDATOR.validate_report(
+                report,
+                report_path=report_path,
+                oracle_path=oracle_path,
+                root=ROOT,
+            )
+
+            raw_path = directory / report["cases"]["help"]["first"][
+                "stdout_path"
+            ]
+            raw_path.write_bytes(b"tampered")
+            with self.assertRaisesRegex(
+                CLI_VALIDATOR.ReportError,
+                "raw stream identity mismatch",
+            ):
+                CLI_VALIDATOR.validate_report(
+                    report,
+                    report_path=report_path,
+                    oracle_path=oracle_path,
+                    root=ROOT,
+                )
+
+    def test_cli_candidate_validator_rejects_admission_and_extra_raw(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            report_path = write_cli_candidate_bundle(directory)
+            report = CLI_VALIDATOR.load_json(report_path)[0]
+            oracle_path = directory / "oracle-candidate.json"
+
+            report["admission"]["platform_admitted"] = True
+            with self.assertRaisesRegex(
+                CLI_VALIDATOR.ReportError,
+                "must not admit",
+            ):
+                CLI_VALIDATOR.validate_report(
+                    report,
+                    report_path=report_path,
+                    oracle_path=oracle_path,
+                    root=ROOT,
+                )
+
+            report["admission"]["platform_admitted"] = False
+            (directory / "raw" / "undeclared").write_bytes(b"x")
+            with self.assertRaisesRegex(
+                CLI_VALIDATOR.ReportError,
+                "raw file inventory",
+            ):
+                CLI_VALIDATOR.validate_report(
+                    report,
+                    report_path=report_path,
+                    oracle_path=oracle_path,
+                    root=ROOT,
+                )
 
     def test_candidate_validator_accepts_complete_report(self):
         VALIDATOR.validate_report(candidate_report())

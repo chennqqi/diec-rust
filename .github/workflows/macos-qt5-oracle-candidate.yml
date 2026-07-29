@@ -18,6 +18,7 @@ jobs:
     env:
       AQTINSTALL_VERSION: "3.3.0"
       EVIDENCE_DIR: ${{ runner.temp }}/diec-macos-candidate-evidence
+      CORPUS_DIR: ${{ runner.temp }}/diec-baseline-corpus
       QT_ROOT: ${{ runner.temp }}/Qt
       UPSTREAM_BUILD: ${{ runner.temp }}/DIE-engine-qmake-build
       UPSTREAM_COMMIT: 74eaf505c250ab47e709024e9dc41657cd8f2254
@@ -90,10 +91,28 @@ jobs:
             --output "$EVIDENCE_DIR/cache-state-candidate.json"
           python3 tools/benchmark/validate_macos_cache_state_candidate.py \
             "$EVIDENCE_DIR/cache-state-candidate.json"
-          shasum -a 256 \
-            "$EVIDENCE_DIR/oracle-candidate.json" \
-            "$EVIDENCE_DIR/cache-state-candidate.json" \
-            >"$EVIDENCE_DIR/SHA256SUMS"
+
+      - name: Collect and validate the general CLI baseline candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/corpus/generate_baseline_corpus.py "$CORPUS_DIR"
+          python3 tools/upstream/collect_macos_cli_baseline.py \
+            --binary "$UPSTREAM_SOURCE/build/release/diec" \
+            --source-dir "$UPSTREAM_SOURCE" \
+            --qt-dir "$QT_ROOT/5.15.2/clang_64" \
+            --corpus-dir "$CORPUS_DIR" \
+            --oracle-report "$EVIDENCE_DIR/oracle-candidate.json" \
+            --output "$EVIDENCE_DIR/cli-baseline-candidate.json"
+          python3 tools/upstream/validate_macos_cli_baseline.py \
+            "$EVIDENCE_DIR/cli-baseline-candidate.json" \
+            --oracle-report "$EVIDENCE_DIR/oracle-candidate.json"
+          (
+            cd "$EVIDENCE_DIR"
+            find . -type f ! -name SHA256SUMS \
+              -exec shasum -a 256 {} \; |
+              LC_ALL=C sort -k2 >SHA256SUMS
+          )
 
       - name: Upload candidate evidence
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
@@ -102,6 +121,8 @@ jobs:
           path: |
             ${{ runner.temp }}/diec-macos-candidate-evidence/oracle-candidate.json
             ${{ runner.temp }}/diec-macos-candidate-evidence/cache-state-candidate.json
+            ${{ runner.temp }}/diec-macos-candidate-evidence/cli-baseline-candidate.json
+            ${{ runner.temp }}/diec-macos-candidate-evidence/raw
             ${{ runner.temp }}/diec-macos-candidate-evidence/SHA256SUMS
           if-no-files-found: error
           retention-days: 14
