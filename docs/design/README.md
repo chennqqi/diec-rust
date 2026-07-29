@@ -21,6 +21,8 @@ Phase 0 计划形成：
   typed diagnostic fact 上限、overflow completion 和 scan profile 字段闭包。
 - [`data/input-budget-candidate.json`](data/input-budget-candidate.json)：
   root logical length 单位、1 GiB/8 GiB 候选及与读取/分配 counter 的边界。
+- [`data/allocation-budget-candidate.json`](data/allocation-budget-candidate.json)：
+  scan-owned capacity 的单调累计语义、1 GiB/8 GiB 候选及 RSS 范围边界。
 - [`phase-0-gate-review.md`](phase-0-gate-review.md)：Phase 0 退出条件、阻塞项及
   关闭证据的审计总账（In Review）。
 - [`design-review-readiness.md`](design-review-readiness.md)：五份必需设计从

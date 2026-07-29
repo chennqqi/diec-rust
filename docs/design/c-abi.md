@@ -141,7 +141,7 @@ typedef struct diec_v1_scan_options {
     uint64_t timeout_ms;
     uint32_t max_recursion_depth;
     uint32_t reserved_0;
-    uint64_t reserved_1;
+    uint64_t max_total_allocation_bytes;
     uint64_t reserved_2;
 } diec_v1_scan_options;
 ```
@@ -158,7 +158,7 @@ typedef struct diec_v1_scan_options {
 | `timeout_ms` | 32 | 0 表示默认 timeout |
 | `max_recursion_depth` | 40 | 0 表示默认深度 |
 | `reserved_0` | 44 | 必须为 0 |
-| `reserved_1` | 48 | 必须为 0 |
+| `max_total_allocation_bytes` | 48 | 0 表示项目安全默认值；全 scan 单调累计 allocation capacity，不表示无限 |
 | `reserved_2` | 56 | 必须为 0 |
 
 预期 x64 size 为 64 bytes；32 位和 arm64 必须用 C/Rust 双侧 `sizeof`,

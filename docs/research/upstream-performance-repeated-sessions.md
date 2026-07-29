@@ -14,7 +14,7 @@ Last updated: 2026-07-29
 - 每个 session 有 17 次 warmup、90 次 measured，合计 51 warmup、270 measured；
 - 三个 session 全部通过原 probe semantic verifier，stderr 为空，五个 case 的
   stdout/stderr hash 跨 session 一致；
-- 四个产品 case 的 225 个 measured run 全部取得 peak RSS；短 control 分别只有
+- 四个产品 case 的 180 个 measured run 全部取得 peak RSS；短 control 分别只有
   9/30、12/30、12/30，原始缺失值没有插补；
 - database median 的跨 session max/min 只有 1.0008，但 PE32 与 depth-16 archive
   median 分别达到 1.3940 和 1.7704；batch median 为 1.0406，p95 却达到

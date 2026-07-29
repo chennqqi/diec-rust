@@ -313,6 +313,7 @@ def build_candidate(root: Path) -> dict[str, Any]:
                 "maximum_diagnostics",
                 "maximum_root_input_bytes",
                 "maximum_single_expanded_object_bytes",
+                "maximum_total_allocation_bytes",
                 "total_expanded_bytes",
                 "total_source_bytes_read_or_mapped",
             ],

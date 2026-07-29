@@ -39,6 +39,7 @@ Proposed：
    | maximum diagnostics | 4,096 |
    | maximum root input bytes | 1 GiB |
    | maximum single expanded object/allocation | 128 MiB |
+   | maximum total allocation bytes | 1 GiB |
    | total expanded bytes | 512 MiB |
    | total source bytes read/mapped | 1 GiB |
 
@@ -53,8 +54,8 @@ Proposed：
 6. 为差分测试可提供 `LegacyHighResource` profile，但 hard ceilings 仍有限：depth
    64、total entries 100,001、queued items 131,072、result nodes 1,048,576、
    diagnostics 131,072、root input 8 GiB、single object 512 MiB、total
-   expanded 4 GiB、total source read 8 GiB、deadline 120 s。它需要显式构造，
-   不是 CLI、C ABI 或
+   allocation 8 GiB、total expanded 4 GiB、total source read 8 GiB、
+   deadline 120 s。它需要显式构造，不是 CLI、C ABI 或
    library 默认。`total entries 100,001` 是全 scan budget，不改变单 container
    只迭代前 100,000 条的 legacy policy。queue/diagnostic 候选是该 entry ceiling
    向上取二次幂；node 候选是 `8 * total entries` 再向上取二次幂，为每个 work
@@ -80,6 +81,19 @@ Proposed：
     仍独立计入 `total source bytes read/mapped`。接受某个长度不授权等量分配，
     single/total allocation counter 仍独立生效。未知长度 streaming 不属于 v1；
     扫描期间长度变化按 ADR 0013 fail closed。
+12. `max_total_allocation_bytes` 是全 scan 单调累计的 scan-owned allocation
+    capacity commitment，不是当前 RSS 或 live heap。新 buffer/clone/arena
+    chunk 按完整 requested capacity 在 allocator 前 reserve；可能搬迁的 grow/
+    replacement 按完整新 capacity 收费，释放不退款，复用已提交 capacity 不重复
+    收费。达到 exact 后仍可复用已有 capacity；第一个正增量返回
+    `LimitReached`，不得先分配。byte buffer 按 capacity bytes；typed storage
+    使用版本化 portable element charge，且所有 admitted target 都必须以
+    compile-time assertion 证明该 charge 不小于 checked `Layout::array` 的实际
+    payload bytes，避免平台 layout 改变 limit 边界。allocator metadata、stack、
+    mmap/page cache、database-owned memory 和 script heap 不混入该 counter，
+    分别由对应预算或 benchmark 约束。Modern 候选 1 GiB 是 total expanded
+    512 MiB 的 2 倍，legacy-high 8 GiB 是 4 GiB 的 2 倍；它们是结构候选，不是
+    上游 RSS 最大值或 production memory target。
 
 ## 考虑过的替代方案
 
@@ -124,6 +138,7 @@ subprocess。进程隔离可作为服务部署的第二层防线，不能替代 
 - [`archive-adversarial-engine-qt5.json`](../../research/data/archive-adversarial-engine-qt5.json)
 - [`diagnostic-budget-candidate.json`](../data/diagnostic-budget-candidate.json)
 - [`input-budget-candidate.json`](../data/input-budget-candidate.json)
+- [`allocation-budget-candidate.json`](../data/allocation-budget-candidate.json)
 - [`upstream-performance-baseline.md`](../../research/upstream-performance-baseline.md)
 - `XScanEngine@dfe4a419.../xscanengine.cpp::scanProcess`
 - [`architecture.md` §11](../architecture.md#11-嵌套扫描-work-queue)
@@ -131,13 +146,14 @@ subprocess。进程隔离可作为服务部署的第二层防线，不能替代 
 - [`risks.md` R-005](../risks.md#r-005嵌套和解压资源耗尽)
 - [`test_diagnostic_budget.py`](../../../tools/tests/test_diagnostic_budget.py)
 - [`test_input_budget.py`](../../../tools/tests/test_input_budget.py)
+- [`test_allocation_budget.py`](../../../tools/tests/test_allocation_budget.py)
 
 ## 验收条件
 
 - production `ScanBudget` 对每个表列预算有 `limit-1/exact/+1` unit/property tests；
 - 每个 archive backend 通过相同的 cumulative reserve API，不能先分配后记账；
-- root input、depth、entry、single object、total expanded、queue、node、
-  diagnostic 和 deadline 触发点有 system tests，结果包含稳定
+- root input、single/total allocation、depth、entry、single object、total
+  expanded、queue、node、diagnostic 和 deadline 触发点有 system tests，结果包含稳定
   `LimitReached` 字段；
 - 已固定的 1 MiB/843.58:1 high-ratio、CRC/deflate/offset/method 畸形上游
   corpus，以及后续 declared-size mismatch、deep chain 和扩展 malformed archive

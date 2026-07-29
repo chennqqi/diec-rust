@@ -252,6 +252,7 @@ pub struct ScanLimits {
     pub max_total_read_bytes: u64,
     pub max_total_decompressed_bytes: u64,
     pub max_single_allocation_bytes: u64,
+    pub max_total_allocation_bytes: u64,
     pub max_nodes: u64,
     pub max_diagnostics: u64,
     pub max_archive_entries: u64,
@@ -311,9 +312,21 @@ exact 可进入扫描，`limit+1` 必须在 parser、rule、mapping、bulk read 
 input-sized allocation 前以 `LimitReached` 失败，且不返回 partial report。
 该字段不是累计 I/O：实际 read、re-read 和 exposed mapped range 仍独立计入
 `max_total_read_bytes`。接受根长度不能授权等量 allocation，
-`max_single_allocation_bytes` 和待定的 total-allocation budget 仍独立生效。
+`max_single_allocation_bytes` 和 `max_total_allocation_bytes` 仍独立生效。
 未知长度 streaming 不属于 v1；source 在扫描期间截断或增长按 ADR 0013
 fail closed。
+
+`max_total_allocation_bytes` 计全 scan 单调累计的 scan-owned allocation
+capacity commitment，不等于 RSS 或当前 live heap。Modern 候选为 1 GiB，
+legacy-high 为 8 GiB。新 buffer、clone、arena chunk 和可能搬迁的 grow/
+replacement 在 allocator 前按完整 requested capacity reserve；释放不退款，
+复用已提交 capacity 不重复收费。byte storage 按 capacity，typed storage 按
+版本化 portable element charge，且 admitted target 必须以 compile-time assertion
+证明 charge 不小于 checked `Layout::array` 实际 payload bytes；失败不得先分配。
+allocator metadata、stack、mmap/page cache、database-owned memory 和 script
+heap 分属其他预算或 benchmark。该候选分别是 512 MiB/4 GiB total-expanded
+ceiling 的 2 倍，但仍为
+`review_candidate_not_admitted`，不是 RSS 保证或已冻结默认值。
 
 limits 是全 scan 累计预算。child work 不重置额度。所有触发点记录：
 
@@ -333,10 +346,11 @@ limits 是全 scan 累计预算。child work 不重置额度。所有触发点�
 [`resource-limit-policy.md`](resource-limit-policy.md) 与
 [`data/resource-limit-policy-candidate.json`](data/resource-limit-policy-candidate.json)。
 它把 ADR 0012 的 scan profile 与 ADR 0014 的 traversal profile 放入同一契约，
-同时列出 input、total allocation 和 script 的 6 个未定值预算；
+同时列出 script 的 4 个未定值预算；
 include 已由全库 sizing 提出 modern 16/256 与 legacy-high 64/4096，database
 load 已有 10 个非零候选字段，traversal metadata/open 已有
-524,288/8,388,608 候选，diagnostics 已有 4,096/131,072 候选。当前结果仍为
+524,288/8,388,608 候选，diagnostics 已有 4,096/131,072 候选，root input 已有
+1 GiB/8 GiB 候选，total allocation 已有 1 GiB/8 GiB 候选。当前结果仍为
 `review_candidate_incomplete`/`admitted=false`；QuickJS spike 的 4 MiB heap、
 128 KiB stack 和 25 ms deadline 不作为生产默认。
 

@@ -70,6 +70,7 @@ class ApiDesignTest(unittest.TestCase):
         for contract in (
             "max_total_decompressed_bytes",
             "max_single_allocation_bytes",
+            "max_total_allocation_bytes",
             "max_archive_entries",
             "max_queue_items",
             "max_diagnostics",

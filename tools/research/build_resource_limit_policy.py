@@ -41,6 +41,9 @@ SOURCES = {
     "input_budget": (
         "docs/design/data/input-budget-candidate.json"
     ),
+    "allocation_budget": (
+        "docs/design/data/allocation-budget-candidate.json"
+    ),
 }
 
 MIB = 1024 * 1024
@@ -151,13 +154,15 @@ def validate_sources(root: Path) -> dict[str, dict[str, Any]]:
             "| maximum diagnostics | 4,096 |",
             "| maximum root input bytes | 1 GiB |",
             "| maximum single expanded object/allocation | 128 MiB |",
+            "| maximum total allocation bytes | 1 GiB |",
             "| total expanded bytes | 512 MiB |",
             "| total source bytes read/mapped | 1 GiB |",
             "depth\n   64、total entries 100,001、queued items 131,072、"
             "result nodes 1,048,576、",
             "diagnostics 131,072、root input 8 GiB、single object "
-            "512 MiB、total\n   expanded 4 GiB、",
-            "source read 8 GiB、deadline 120 s",
+            "512 MiB、total\n   allocation 8 GiB、total expanded "
+            "4 GiB、",
+            "source read 8 GiB、\n   deadline 120 s",
             "root input 8 GiB",
             "根输入稳定逻辑长度",
             "queued items 131,072、result nodes 1,048,576、",
@@ -203,6 +208,7 @@ def validate_sources(root: Path) -> dict[str, dict[str, Any]]:
             "pub max_total_read_bytes: u64",
             "pub max_total_decompressed_bytes: u64",
             "pub max_single_allocation_bytes: u64",
+            "pub max_total_allocation_bytes: u64",
             "pub max_nodes: u64",
             "pub max_diagnostics: u64",
             "Modern 候选为 4,096，legacy-high 为\n131,072",
@@ -243,6 +249,7 @@ def validate_reports(root: Path) -> dict[str, Any]:
     traversal_attempt = load_json(root / SOURCES["traversal_attempt"])
     diagnostic_budget = load_json(root / SOURCES["diagnostic_budget"])
     input_budget = load_json(root / SOURCES["input_budget"])
+    allocation_budget = load_json(root / SOURCES["allocation_budget"])
 
     for name, report in (
         ("archive_limit", archive),
@@ -254,6 +261,7 @@ def validate_reports(root: Path) -> dict[str, Any]:
         ("traversal_attempt", traversal_attempt),
         ("diagnostic_budget", diagnostic_budget),
         ("input_budget", input_budget),
+        ("allocation_budget", allocation_budget),
     ):
         require(
             report.get("upstream_commit") == UPSTREAM_COMMIT,
@@ -572,6 +580,66 @@ def validate_reports(root: Path) -> dict[str, Any]:
         },
         "input budget",
     )
+    allocation_profiles = allocation_budget.get(
+        "candidate_derivation", {}
+    ).get("profiles")
+    allocation_evidence = allocation_budget.get(
+        "upstream_evidence_boundary"
+    )
+    require(
+        allocation_budget.get("result")
+        == "review_candidate_not_admitted"
+        and allocation_profiles
+        == {
+            "modern_default": {
+                "maximum_single_allocation_bytes": 128 * MIB,
+                "maximum_total_allocation_bytes": GIB,
+                "total_expanded_bytes": 512 * MIB,
+            },
+            "legacy_high_resource": {
+                "maximum_single_allocation_bytes": 512 * MIB,
+                "maximum_total_allocation_bytes": 8 * GIB,
+                "total_expanded_bytes": 4 * GIB,
+            },
+        },
+        "allocation budget profile drift",
+    )
+    require(
+        isinstance(allocation_evidence, dict)
+        and allocation_evidence.get(
+            "archive_maximum_process_peak_rss_kib"
+        )
+        == 56_472
+        and allocation_evidence.get(
+            "repeated_product_maximum_process_peak_rss_bytes"
+        )
+        == 80_953_344
+        and allocation_evidence.get(
+            "measurements_are_not_scan_owned_allocations"
+        )
+        is True
+        and allocation_budget.get("allocation_unit", {}).get(
+            "deallocation_refunds"
+        )
+        is False
+        and allocation_budget.get("allocation_unit", {}).get(
+            "cross_target_compile_time_size_assertion_required"
+        )
+        is True,
+        "allocation budget evidence boundary drift",
+    )
+    validate_nested_bindings(
+        root,
+        allocation_budget,
+        {
+            "adr",
+            "api",
+            "c_abi",
+            "archive_limit",
+            "repeated_benchmark",
+        },
+        "allocation budget",
+    )
 
     return {
         "observations": {
@@ -628,10 +696,17 @@ def validate_reports(root: Path) -> dict[str, Any]:
                 "maximum_observed_cumulative_expanded_bytes": 33_554_546,
                 "observed_maximum_is_candidate_basis": False,
             },
+            "allocation_evidence_boundary": {
+                "archive_maximum_process_peak_rss_kib": 56_472,
+                "repeated_product_maximum_process_peak_rss_bytes": 80_953_344,
+                "measurements_are_scan_owned_allocations": False,
+                "observed_maximum_is_candidate_basis": False,
+            },
         },
         "database_profiles": database_profiles,
         "diagnostic_profiles": diagnostic_profiles,
         "input_profiles": input_profiles,
+        "allocation_profiles": allocation_profiles,
         "required_scan_fields": diagnostic_closure[
             "scan_fields_required_in_both_profiles"
         ],
@@ -645,11 +720,14 @@ def build_policy(root: Path) -> dict[str, Any]:
     database_profiles = validated["database_profiles"]
     diagnostic_profiles = validated["diagnostic_profiles"]
     input_profiles = validated["input_profiles"]
+    allocation_profiles = validated["allocation_profiles"]
     required_scan_fields = set(validated["required_scan_fields"])
     modern_diagnostic = diagnostic_profiles["modern_default"]
     legacy_diagnostic = diagnostic_profiles["legacy_high_resource"]
     modern_input = input_profiles["modern_default"]
     legacy_input = input_profiles["legacy_high_resource"]
+    modern_allocation = allocation_profiles["modern_default"]
+    legacy_allocation = allocation_profiles["legacy_high_resource"]
     modern_scan = {
         "wall_deadline_milliseconds": 30_000,
         "maximum_nested_depth": 32,
@@ -665,6 +743,9 @@ def build_policy(root: Path) -> dict[str, Any]:
         ],
         "maximum_root_input_bytes": modern_input[
             "maximum_root_input_bytes"
+        ],
+        "maximum_total_allocation_bytes": modern_allocation[
+            "maximum_total_allocation_bytes"
         ],
         "maximum_single_expanded_object_bytes": 128 * MIB,
         "total_expanded_bytes": 512 * MIB,
@@ -685,6 +766,9 @@ def build_policy(root: Path) -> dict[str, Any]:
         ],
         "maximum_root_input_bytes": legacy_input[
             "maximum_root_input_bytes"
+        ],
+        "maximum_total_allocation_bytes": legacy_allocation[
+            "maximum_total_allocation_bytes"
         ],
         "maximum_single_expanded_object_bytes": 512 * MIB,
         "total_expanded_bytes": 4 * GIB,
@@ -757,10 +841,6 @@ def build_policy(root: Path) -> dict[str, Any]:
         },
         "upstream_compatibility_observations": observations,
         "unresolved_required_budgets": [
-            {
-                "id": "scan.maximum_total_allocated_bytes",
-                "required_by": "untrusted-input allocation safety",
-            },
             {
                 "id": "script.maximum_heap_bytes",
                 "required_by": "docs/design/api.md#8-scanlimits",

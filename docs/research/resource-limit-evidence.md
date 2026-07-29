@@ -31,6 +31,11 @@ Last updated: 2026-07-30
   subdevice 还可能越界多读一字节；archive sizing 的最大 root fixture 只有
   16,777,452 bytes，不能作为输入上限。Root input 候选按设计关系提出
   1 GiB/8 GiB，并明确不是上游观察最大值或 allocation 目标。
+- 三次固定 affinity session 的四个产品 case 共 180 个 measured run 都有
+  peak RSS，最大为 80,953,344 bytes；archive limit 的 14 个 normal case 最大
+  process RSS 为 56,472 KiB、before/after 差值最大 37,572 KiB。这些是整个上游
+  进程的 RSS，不是 scan-owned cumulative allocation。Total-allocation 候选按
+  2× total-expanded 结构关系提出 1 GiB/8 GiB，不以观察 RSS 定值。
 - QuickJS-NG spike 中 4 MiB heap、128 KiB stack 与 25 ms deadline 能触发受控
   失败并恢复同一 context，但这些数值是故障注入条件，不是生产默认候选。
 
@@ -50,6 +55,7 @@ Last updated: 2026-07-30
 | traversal metadata/open | [`../design/data/traversal-attempt-budget-candidate.json`](../design/data/traversal-attempt-budget-candidate.json) | 绑定 Linux/Windows 4,096-entry、cycle 与 TOCTOU 报告；明确 attempt 数不是上游实测 |
 | scan diagnostics | [`../design/data/diagnostic-budget-candidate.json`](../design/data/diagnostic-budget-candidate.json) | typed fact 计数、overflow completion、profile 字段闭包及 Qt5/Qt6 文本差异 |
 | root input bytes | [`../design/data/input-budget-candidate.json`](../design/data/input-budget-candidate.json) | root logical length、入口触发时机、1 GiB/8 GiB 候选及与累计 I/O/分配的独立关系 |
+| total allocation bytes | [`../design/data/allocation-budget-candidate.json`](../design/data/allocation-budget-candidate.json) | scan-owned capacity 单调累计、two-phase reserve、1 GiB/8 GiB 候选与 whole-process RSS 证据边界 |
 | runtime hard-stop wiring | [`data/rquickjs-rule-runtime.json`](data/rquickjs-rule-runtime.json) | heap/stack/deadline 能被 runtime 拒绝且 context 可恢复 |
 
 这些报告均固定到同一 DIE-engine commit。生成器
@@ -91,6 +97,7 @@ ADR 0004/0010/0012/0014 记录精确 `SafetyDeviation`。
 python tools\research\build_traversal_attempt_budget.py --check
 python tools\research\build_diagnostic_budget.py --check
 python tools\research\build_input_budget.py --check
+python tools\research\build_allocation_budget.py --check
 python tools\research\build_resource_limit_policy.py --check
 python -m unittest discover -s tools\tests -p "test_resource_limit_policy.py"
 ```
@@ -101,9 +108,11 @@ python -m unittest discover -s tools\tests -p "test_resource_limit_policy.py"
 
 ## 剩余证据
 
-- 为 total allocation 和 script budgets 建立数值候选及边界依据；
+- 为 script budgets 建立数值候选及边界依据；
 - 对 root input 候选补齐 production `Bytes`/`ByteSource`/`Path`/FFI
   `limit-1/exact/+1`、并发 truncate/grow 和 CPU/peak-memory；
+- 对 total allocation 候选补齐 production budgeted containers/decompressor
+  sinks、mock allocator、`limit-1/exact/+1`、allocation trace 与 peak-RSS；
 - 对 diagnostic 候选补齐真实多错误放大 corpus、typed fact
   `limit-1/exact/+1` 和 production memory/latency；
 - 对 traversal metadata/open 候选补齐 mock adapter `limit-1/exact/+1`、

@@ -1,0 +1,118 @@
+{
+  "acceptance_requirements": [
+    "ADR 0012 receives explicit review disposition",
+    "all input-dependent scan-owned allocations use one protocol",
+    "all admitted targets prove portable charges cover actual layouts",
+    "limit-1/exact/+1 covers allocate, clone, grow, free, and reuse",
+    "mock allocator proves no call after budget rejection",
+    "decompressors cannot bypass budgeted output sinks",
+    "script/database/adapter scopes have independent enforced limits",
+    "modern and legacy-high CPU, allocation, and peak-RSS reports pass",
+    "Rust, CLI, JSON, C, Go, and Python expose the same limit result"
+  ],
+  "allocation_unit": {
+    "byte_storage_charge": "requested capacity bytes",
+    "cross_target_compile_time_size_assertion_required": true,
+    "deallocation_refunds": false,
+    "definition": "monotonic sum of successful scan-owned allocation capacity commitments",
+    "failed_allocator_attempt_commits_charge": false,
+    "moving_grow_or_replacement_charges_full_new_capacity": true,
+    "new_clone_or_arena_chunk_charges_full_capacity": true,
+    "reuse_within_committed_capacity_charges_zero": true,
+    "typed_storage_charge": "versioned portable element charge not smaller than checked Layout::array payload bytes on admitted targets"
+  },
+  "candidate_derivation": {
+    "formula": "maximum total allocation = 2 * total expanded bytes",
+    "legacy_single_allocation_minimum_multiple": 16,
+    "modern_single_allocation_multiple": 8,
+    "not_production_memory_target": true,
+    "not_upstream_observed_maximum": true,
+    "profiles": {
+      "legacy_high_resource": {
+        "maximum_single_allocation_bytes": 536870912,
+        "maximum_total_allocation_bytes": 8589934592,
+        "total_expanded_bytes": 4294967296
+      },
+      "modern_default": {
+        "maximum_single_allocation_bytes": 134217728,
+        "maximum_total_allocation_bytes": 1073741824,
+        "total_expanded_bytes": 536870912
+      }
+    }
+  },
+  "evaluated_on": "2026-07-30",
+  "generator": "tools/research/build_allocation_budget.py",
+  "reservation_protocol": {
+    "allocator_failure": "release tentative hold and return AllocationFailed",
+    "budget_rejection_allocates": false,
+    "counter_overflow": "fail closed before allocator call",
+    "exact_limit_can_reuse_existing_capacity": true,
+    "first_positive_increment_after_exact_limit": "LimitReached",
+    "order": [
+      "checked logical size, portable charge, and Layout conversion",
+      "hold budget reservation before allocator call",
+      "try allocator operation",
+      "commit charge only after allocator success",
+      "publish capacity to scan work"
+    ]
+  },
+  "result": "review_candidate_not_admitted",
+  "schema_version": 1,
+  "scope": {
+    "excluded": {
+      "allocator_metadata_or_fragmentation": "benchmark/RSS",
+      "caller_and_adapter_memory": "outside ScanBudget",
+      "database_owned_memory": "DatabaseLimits",
+      "mmap_and_page_cache": "total read/mapped budget",
+      "script_heap": "ScriptLimits",
+      "stack": "script and native stack policies"
+    },
+    "included": [
+      "core byte buffers and owned strings",
+      "parser and extractor typed storage",
+      "work queue, result arena, and diagnostic arena capacity",
+      "scan-owned decompressor output capacity"
+    ],
+    "not_an_os_or_process_rss_cap": true
+  },
+  "source_bindings": {
+    "adr": {
+      "path": "docs/design/decisions/0012-bounded-nested-scan-budget.md",
+      "sha256": "070e66859f5444744f9c4485c923a5ccb80c70e8d148673140422184db9d4c01"
+    },
+    "api": {
+      "path": "docs/design/api.md",
+      "sha256": "36b1c65a9ee0174f939ec2d4918425f7ca3e1b9472cd1ea1f8e28f47d2112048"
+    },
+    "archive_limit": {
+      "path": "docs/research/data/archive-limit-engine-qt5.json",
+      "sha256": "e4786dcc578fb0714c86f71955161f981a06be26aefe663281d74202f5372ecd"
+    },
+    "c_abi": {
+      "path": "docs/design/c-abi.md",
+      "sha256": "719dc5bc152b3f51f2d6892b4769a77a297cf63ae0dbd1969bd703fb4869d843"
+    },
+    "repeated_benchmark": {
+      "path": "docs/research/data/upstream-benchmark-linux-qt5-affinity-repeated.json",
+      "sha256": "c7e8acbc0d78f2576c94f0d1a578a3436224205e3bdb2a29809dd75d790f6584"
+    }
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+  "upstream_evidence_boundary": {
+    "archive_maximum_process_peak_rss_delta_kib": 37572,
+    "archive_maximum_process_peak_rss_kib": 56472,
+    "archive_normal_case_count": 14,
+    "benchmark_targets_frozen": false,
+    "does_not_prove": [
+      "cumulative allocation capacity used by upstream",
+      "1 GiB or 8 GiB production memory acceptability",
+      "allocator metadata, fragmentation, or transient peak bounds",
+      "Rust implementation allocation behavior"
+    ],
+    "measurements_are_not_scan_owned_allocations": true,
+    "measurements_are_whole_process_rss": true,
+    "repeated_product_maximum_process_peak_rss_bytes": 80953344,
+    "repeated_product_measured_run_count": 180,
+    "repeated_session_count": 3
+  }
+}

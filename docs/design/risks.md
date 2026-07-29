@@ -335,6 +335,9 @@ baseline 的变更都要检查本表。
   [`input-budget-candidate.json`](data/input-budget-candidate.json)进一步把
   root stable logical length 定义为独立门禁，提出 modern 1 GiB、legacy-high
   8 GiB；它不授权等量 allocation，re-read/mapping 仍计累计 I/O。
+  [`allocation-budget-candidate.json`](data/allocation-budget-candidate.json)
+  又把 scan-owned capacity 定义为释放不退款的单调累计 counter，提出
+  1 GiB/8 GiB；固定 RSS 只作为 whole-process 证据边界，不用于定值。
 - **缓解**：checked `u64` range、allocation cap、`try_reserve`、无 panic parser；
   cache key 绑定完整内容 manifest；decode/build/publish 事务化；失败或取消不提交
   cache；unsafe 最小化；unit/property/fuzz/sanitizer/Miri。
@@ -401,7 +404,7 @@ baseline 的变更都要检查本表。
   legacy high-resource ceiling。统一候选策略已把 ADR 0012/0014 数值、固定上游
   21/2001/100000 临界值与 QuickJS spike-only 限额分离；固定全库 include
   depth 2/evaluations 30 又形成 16/256 与 64/4096 候选，root input 形成
-  1 GiB/8 GiB 候选，剩余 5 个未定值
+  1 GiB/8 GiB 候选，total allocation 形成 1 GiB/8 GiB 候选，剩余 4 个未定值
   budget 仍显式保留，见
   [`resource-limit-policy.md`](resource-limit-policy.md) 和
   [`resource-limit-evidence.md`](../research/resource-limit-evidence.md)；

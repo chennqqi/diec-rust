@@ -82,7 +82,7 @@ class DiagnosticBudgetTests(unittest.TestCase):
         self.assertTrue(closure["field_sets_must_match"])
         self.assertEqual(
             len(closure["scan_fields_required_in_both_profiles"]),
-            10,
+            11,
         )
         self.assertIn(
             "maximum_diagnostics",
@@ -90,6 +90,10 @@ class DiagnosticBudgetTests(unittest.TestCase):
         )
         self.assertIn(
             "maximum_root_input_bytes",
+            closure["scan_fields_required_in_both_profiles"],
+        )
+        self.assertIn(
+            "maximum_total_allocation_bytes",
             closure["scan_fields_required_in_both_profiles"],
         )
 

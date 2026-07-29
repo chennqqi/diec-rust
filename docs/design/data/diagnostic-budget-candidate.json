@@ -47,6 +47,7 @@
       "maximum_diagnostics",
       "maximum_root_input_bytes",
       "maximum_single_expanded_object_bytes",
+      "maximum_total_allocation_bytes",
       "total_expanded_bytes",
       "total_source_bytes_read_or_mapped"
     ]
@@ -57,11 +58,11 @@
   "source_bindings": {
     "adr": {
       "path": "docs/design/decisions/0012-bounded-nested-scan-budget.md",
-      "sha256": "173591f3933b7b926e8ddb2b0b7c89987bb6f84ac40788cf628dd4766aa9691f"
+      "sha256": "070e66859f5444744f9c4485c923a5ccb80c70e8d148673140422184db9d4c01"
     },
     "api": {
       "path": "docs/design/api.md",
-      "sha256": "fb16636da39564e3993aa834b86e2df97cc13ef06267d97a54224f44e87b4062"
+      "sha256": "36b1c65a9ee0174f939ec2d4918425f7ca3e1b9472cd1ea1f8e28f47d2112048"
     },
     "database_error_research": {
       "path": "docs/research/database-error-behavior.md",

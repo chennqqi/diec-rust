@@ -50,6 +50,7 @@
         "maximum_result_nodes": 1048576,
         "maximum_root_input_bytes": 8589934592,
         "maximum_single_expanded_object_bytes": 536870912,
+        "maximum_total_allocation_bytes": 8589934592,
         "total_archive_entries_considered": 100001,
         "total_expanded_bytes": 4294967296,
         "total_source_bytes_read_or_mapped": 8589934592,
@@ -91,6 +92,7 @@
         "maximum_result_nodes": 100000,
         "maximum_root_input_bytes": 1073741824,
         "maximum_single_expanded_object_bytes": 134217728,
+        "maximum_total_allocation_bytes": 1073741824,
         "total_archive_entries_considered": 4096,
         "total_expanded_bytes": 536870912,
         "total_source_bytes_read_or_mapped": 1073741824,
@@ -116,15 +118,19 @@
     },
     "adr_scan": {
       "path": "docs/design/decisions/0012-bounded-nested-scan-budget.md",
-      "sha256": "173591f3933b7b926e8ddb2b0b7c89987bb6f84ac40788cf628dd4766aa9691f"
+      "sha256": "070e66859f5444744f9c4485c923a5ccb80c70e8d148673140422184db9d4c01"
     },
     "adr_traversal": {
       "path": "docs/design/decisions/0014-bounded-path-expansion.md",
       "sha256": "10d4d4792e0172fb3e4c04943040d09608d373fd736a88cde09fd28c523ad024"
     },
+    "allocation_budget": {
+      "path": "docs/design/data/allocation-budget-candidate.json",
+      "sha256": "3aeb5fb47754c87eeda2d8099295919d57148c48e6400086079aab609bac6442"
+    },
     "api": {
       "path": "docs/design/api.md",
-      "sha256": "fb16636da39564e3993aa834b86e2df97cc13ef06267d97a54224f44e87b4062"
+      "sha256": "36b1c65a9ee0174f939ec2d4918425f7ca3e1b9472cd1ea1f8e28f47d2112048"
     },
     "archive_iteration": {
       "path": "docs/research/data/archive-iteration-boundary-engine-qt5.json",
@@ -140,7 +146,7 @@
     },
     "diagnostic_budget": {
       "path": "docs/design/data/diagnostic-budget-candidate.json",
-      "sha256": "80e60a9af3c93040d9ebe3140f5828175ba07a437d2fd9a3fff101d2ddd8e1e1"
+      "sha256": "5fd02c3c01b8d5f3db481207f829311e28bcee573b591b827037c966a4f37890"
     },
     "include_graph": {
       "path": "docs/research/data/include-graph-sizing.json",
@@ -148,7 +154,7 @@
     },
     "input_budget": {
       "path": "docs/design/data/input-budget-candidate.json",
-      "sha256": "8f9c1a23d66b9ee9316d0a759b5a6b55bd2236895e1e2e38e16807244d764cbe"
+      "sha256": "4602394b8b97a8af0ed89b0ef905f2e0d1310bc6d4b9e623c72409a12640b999"
     },
     "resource_count": {
       "path": "docs/research/data/scan-option-boundaries-linux-qt5.json",
@@ -160,14 +166,10 @@
     },
     "traversal_attempt": {
       "path": "docs/design/data/traversal-attempt-budget-candidate.json",
-      "sha256": "4696a420b5bb489da43e828d7aa5163961a9641844ca2d42f5d463862baad862"
+      "sha256": "d0d28a23787035c0e1c1d28ab770fae7f7ee1d05cbe0ab61435f77a8a5cd0bda"
     }
   },
   "unresolved_required_budgets": [
-    {
-      "id": "scan.maximum_total_allocated_bytes",
-      "required_by": "untrusted-input allocation safety"
-    },
     {
       "id": "script.maximum_heap_bytes",
       "required_by": "docs/design/api.md#8-scanlimits"
@@ -187,6 +189,12 @@
   ],
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
   "upstream_compatibility_observations": {
+    "allocation_evidence_boundary": {
+      "archive_maximum_process_peak_rss_kib": 56472,
+      "measurements_are_scan_owned_allocations": false,
+      "observed_maximum_is_candidate_basis": false,
+      "repeated_product_maximum_process_peak_rss_bytes": 80953344
+    },
     "archive_depth_maximum_tested": 64,
     "archive_expanded_bytes_maximum_tested": 33554546,
     "archive_has_no_independent_depth_or_total_limit": true,
