@@ -57,6 +57,17 @@ Last updated: 2026-07-30
 | maximum files emitted | 100,000 |
 | maximum native path bytes | 67,108,864 bytes |
 
+### Include
+
+| Counter | 候选值 |
+| --- | ---: |
+| maximum active include depth | 16 |
+| maximum total include evaluations | 256 |
+
+固定全库观察最大值为 depth 2/evaluations 30；候选使用 8× headroom，并将
+`30 × 8 = 240` 向上取 2 次幂。证据见
+[`include-graph-sizing.md`](../research/include-graph-sizing.md)。
+
 这些值来自 ADR 0012/0014 的 Proposed 表，不是从“上游最大已测值”机械推导。
 
 ## 4. Legacy-high 候选
@@ -85,28 +96,35 @@ library 默认。
 | maximum files emitted | 1,000,000 |
 | maximum native path bytes | 1,073,741,824 bytes |
 
+### Include
+
+| Counter | 候选值 |
+| --- | ---: |
+| maximum active include depth | 64 |
+| maximum total include evaluations | 4,096 |
+
 profile 的 global archive-entry budget 不改变固定 upstream 的局部兼容语义：
 normal resource child inclusive 边界为 21，aggressive resource child 为 2001；
 aggressive archive 只让 ordinal 100000 可达，ordinal 100001 不可达。
 
 ## 5. 尚未定值的必需预算
 
-当前策略有 11 个明确 unresolved 项，因此不得 admitted：
+当前策略有 9 个明确 unresolved 项，因此不得 admitted：
 
 1. root `maximum_input_bytes`；
 2. `maximum_diagnostics`；
 3. `maximum_total_allocated_bytes`；
 4. traversal `maximum_metadata_open_attempts`；
-5. include maximum depth；
-6. include maximum total evaluations；
-7. script maximum heap bytes；
-8. script maximum stack bytes；
-9. script maximum instruction/fuel；
-10. script runtime deadline；
-11. database load 的完整 limits。
+5. script maximum heap bytes；
+6. script maximum stack bytes；
+7. script maximum instruction/fuel；
+8. script runtime deadline；
+9. database load 的完整 limits。
 
 QuickJS spike 的 4 MiB heap、128 KiB stack 和 25 ms deadline 只在机器契约的
-`runtime_spike_only` 中保存；它们不能填充第 7—10 项。
+`runtime_spike_only` 中保存；它们不能填充第 5—8 项。include 两项已有
+16/256 与 64/4096 候选，但仍需 ADR 0010 评审、dynamic/custom database 和
+production 边界测试。
 
 ## 6. 统一计数语义
 
@@ -153,7 +171,7 @@ In Review，候选仍不得 admitted。
 ## 8. 接受条件
 
 - ADR 0010、0012、0014 获得明确 review disposition；
-- 11 个 unresolved 项都有非零候选与证据；
+- 9 个 unresolved 项都有非零候选与证据；
 - 每个 production counter 有 `limit-1/exact/+1`；
 - 所有 archive backend 使用同一 reserve API；
 - modern/legacy-high 的 CPU 和 peak-memory benchmark 通过；

@@ -75,8 +75,9 @@ Accepted。
 [`resource-limit-policy.md`](resource-limit-policy.md) 和
 [`data/resource-limit-policy-candidate.json`](data/resource-limit-policy-candidate.json)
 作为 hash-bound 评审输入：ADR 0012/0014 的 scan/traversal 数值已统一，上游
-21/2001/100000 临界值与 QuickJS spike-only 限额已分离，11 个尚无生产候选的
-预算被显式列出。该策略仍为 `admitted=false`，因此 blocker 状态不变。
+21/2001/100000 临界值与 QuickJS spike-only 限额已分离；全库 include sizing
+又提出 modern 16/256 与 legacy-high 64/4096，9 个尚无生产候选的预算被显式
+列出。该策略仍为 `admitted=false`，因此 blocker 状态不变。
 
 ## 下一步顺序
 

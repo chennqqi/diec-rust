@@ -714,7 +714,7 @@ Darwin 报告及 benchmark closure 尚未执行，因此仍不 admission，见
 与 fixed-closure integration、可证明 topology 的 physical-core 或跨
 reboot/日期长期 session，
 也无跨平台发行包，且未冻结阈值或默认限制。现有 scan/traversal 数值、上游临界值、
-QuickJS spike-only 限额与 11 个未定值预算已由
+QuickJS spike-only 限额、include sizing 候选与 9 个未定值预算已由
 [`resource-limit-policy.md`](resource-limit-policy.md) 和
 [`data/resource-limit-policy-candidate.json`](data/resource-limit-policy-candidate.json)
 统一为 `admitted=false` 的评审候选；这减少配置漂移，但不替代 production

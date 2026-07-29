@@ -24,6 +24,11 @@
   "profiles": {
     "legacy_high_resource": {
       "default_for_any_adapter": false,
+      "include": {
+        "maximum_active_depth": 64,
+        "maximum_total_evaluations": 4096,
+        "status": "review_candidate_not_admitted"
+      },
       "scan": {
         "maximum_nested_depth": 64,
         "maximum_single_expanded_object_bytes": 536870912,
@@ -42,6 +47,11 @@
       }
     },
     "modern_default": {
+      "include": {
+        "maximum_active_depth": 16,
+        "maximum_total_evaluations": 256,
+        "status": "review_candidate_not_admitted"
+      },
       "scan": {
         "maximum_nested_depth": 32,
         "maximum_queued_items": 4096,
@@ -67,7 +77,7 @@
   "source_bindings": {
     "adr_include": {
       "path": "docs/design/decisions/0010-bounded-include-graph.md",
-      "sha256": "051a8ce7eb9fe4e3238aaa52002f3528a7ff3575c4cafedafcdf6f3f317bb5f5"
+      "sha256": "afdcb942c35f387fbcbb03eab3540d975910f7f6e1006aa8d69eb938b00293ee"
     },
     "adr_scan": {
       "path": "docs/design/decisions/0012-bounded-nested-scan-budget.md",
@@ -79,7 +89,7 @@
     },
     "api": {
       "path": "docs/design/api.md",
-      "sha256": "2e1cd8142a5188c61f43fccbfdea69b5af7355ea8c99a76f2410da02571a1c28"
+      "sha256": "27e0dba90cc7daa01bf541303f126016c0591bdb973676205c1afe6369c43eb8"
     },
     "archive_iteration": {
       "path": "docs/research/data/archive-iteration-boundary-engine-qt5.json",
@@ -88,6 +98,10 @@
     "archive_limit": {
       "path": "docs/research/data/archive-limit-engine-qt5.json",
       "sha256": "e4786dcc578fb0714c86f71955161f981a06be26aefe663281d74202f5372ecd"
+    },
+    "include_graph": {
+      "path": "docs/research/data/include-graph-sizing.json",
+      "sha256": "b957d8d672b1cf3c746180661918e16954f3428a57941b7783d82e693f8aede1"
     },
     "resource_count": {
       "path": "docs/research/data/scan-option-boundaries-linux-qt5.json",
@@ -116,14 +130,6 @@
       "required_by": "docs/design/decisions/0014-bounded-path-expansion.md"
     },
     {
-      "id": "include.maximum_depth",
-      "required_by": "docs/design/decisions/0010-bounded-include-graph.md"
-    },
-    {
-      "id": "include.maximum_total_evaluations",
-      "required_by": "docs/design/decisions/0010-bounded-include-graph.md"
-    },
-    {
       "id": "script.maximum_heap_bytes",
       "required_by": "docs/design/api.md#8-scanlimits"
     },
@@ -149,6 +155,14 @@
     "archive_depth_maximum_tested": 64,
     "archive_expanded_bytes_maximum_tested": 33554546,
     "archive_has_no_independent_depth_or_total_limit": true,
+    "fixed_rule_include_graph": {
+      "binary_dynamic_trace_matches": true,
+      "literal_call_count": 56,
+      "maximum_active_depth": 2,
+      "maximum_transitive_evaluations": 30,
+      "non_literal_or_unresolved_or_cyclic_count": 0,
+      "program_file_count": 2235
+    },
     "legacy_aggressive_archive_record_not_reachable": 100001,
     "legacy_aggressive_archive_record_reachable": 100000,
     "legacy_aggressive_resource_children_inclusive": 2001,

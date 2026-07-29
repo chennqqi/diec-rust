@@ -28,6 +28,7 @@ SOURCES = {
         "docs/research/data/scan-option-boundaries-linux-qt5.json"
     ),
     "runtime_spike": "docs/research/data/rquickjs-rule-runtime.json",
+    "include_graph": "docs/research/data/include-graph-sizing.json",
 }
 
 MIB = 1024 * 1024
@@ -130,6 +131,9 @@ def validate_sources(root: Path) -> dict[str, dict[str, Any]]:
         (
             "include depth、总 include evaluations 和 script fuel",
             "cycle detection 不能替代 hard cap",
+            "include depth 16、每个 scan context 累计 include\n"
+            "  evaluations 256",
+            "`LegacyHighResource` 候选为 depth 64、evaluations\n  4096",
             "`limit-1/exact/+1` 覆盖 include depth 和总 evaluation budget",
         ),
         SOURCES["adr_include"],
@@ -161,12 +165,14 @@ def validate_reports(root: Path) -> dict[str, Any]:
     iteration = load_json(root / SOURCES["archive_iteration"])
     resource = load_json(root / SOURCES["resource_count"])
     runtime = load_json(root / SOURCES["runtime_spike"])
+    include_graph = load_json(root / SOURCES["include_graph"])
 
     for name, report in (
         ("archive_limit", archive),
         ("archive_iteration", iteration),
         ("resource_count", resource),
         ("runtime_spike", runtime),
+        ("include_graph", include_graph),
     ):
         require(
             report.get("upstream_commit") == UPSTREAM_COMMIT,
@@ -255,6 +261,34 @@ def validate_reports(root: Path) -> dict[str, Any]:
         "runtime spike deadline evidence drift",
     )
 
+    require(
+        include_graph.get("rules_commit")
+        == "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+        "include graph rules commit drift",
+    )
+    graph = include_graph.get("graph")
+    sizing = include_graph.get("sizing")
+    require(
+        isinstance(graph, dict)
+        and graph.get("literal_include_call_count") == 56
+        and graph.get("non_literal_include_sites") == []
+        and graph.get("missing_literal_includes") == []
+        and graph.get("helper_cycles") == [],
+        "include graph closure drift",
+    )
+    require(
+        isinstance(sizing, dict)
+        and sizing.get("scope_count") == 30
+        and sizing.get("maximum_transitive_include_evaluations") == 30
+        and sizing.get("maximum_evaluation_scopes") == ["Binary", "PE"]
+        and sizing.get("maximum_active_include_depth") == 2
+        and sizing.get("maximum_depth_scopes")
+        == ["Binary", "MSDOS", "PE"]
+        and sizing.get("binary_runtime_trace_continuity", {}).get("matches")
+        is True,
+        "include graph sizing drift",
+    )
+
     return {
         "archive_depth_maximum_tested": 64,
         "archive_expanded_bytes_maximum_tested": 33_554_546,
@@ -268,6 +302,14 @@ def validate_reports(root: Path) -> dict[str, Any]:
             "stack_limit_bytes": 128 * 1024,
             "deadline_milliseconds": 25,
             "production_default_candidate": False,
+        },
+        "fixed_rule_include_graph": {
+            "program_file_count": 2235,
+            "literal_call_count": 56,
+            "maximum_transitive_evaluations": 30,
+            "maximum_active_depth": 2,
+            "non_literal_or_unresolved_or_cyclic_count": 0,
+            "binary_dynamic_trace_matches": True,
         },
     }
 
@@ -316,6 +358,11 @@ def build_policy(root: Path) -> dict[str, Any]:
                     "maximum_files_emitted": 100_000,
                     "maximum_total_native_path_bytes": 64 * MIB,
                 },
+                "include": {
+                    "maximum_active_depth": 16,
+                    "maximum_total_evaluations": 256,
+                    "status": "review_candidate_not_admitted",
+                },
             },
             "legacy_high_resource": {
                 "status": "review_candidate_not_admitted",
@@ -334,6 +381,11 @@ def build_policy(root: Path) -> dict[str, Any]:
                     "maximum_entries_considered": 1_000_000,
                     "maximum_files_emitted": 1_000_000,
                     "maximum_total_native_path_bytes": GIB,
+                },
+                "include": {
+                    "maximum_active_depth": 64,
+                    "maximum_total_evaluations": 4096,
+                    "status": "review_candidate_not_admitted",
                 },
             },
         },
@@ -356,20 +408,6 @@ def build_policy(root: Path) -> dict[str, Any]:
                 "required_by": (
                     "docs/design/decisions/"
                     "0014-bounded-path-expansion.md"
-                ),
-            },
-            {
-                "id": "include.maximum_depth",
-                "required_by": (
-                    "docs/design/decisions/"
-                    "0010-bounded-include-graph.md"
-                ),
-            },
-            {
-                "id": "include.maximum_total_evaluations",
-                "required_by": (
-                    "docs/design/decisions/"
-                    "0010-bounded-include-graph.md"
                 ),
             },
             {

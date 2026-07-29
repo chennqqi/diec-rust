@@ -380,8 +380,9 @@ baseline 的变更都要检查本表。
 - **缓解**：显式 work queue；全 scan depth/node/entry/read/decompressed/time
   hard budgets；cycle hint；不复刻无界调用栈；ADR 0012 提议有限 default 与
   legacy high-resource ceiling。统一候选策略已把 ADR 0012/0014 数值、固定上游
-  21/2001/100000 临界值与 QuickJS spike-only 限额分离，并显式保留 11 个未定值
-  budget，见
+  21/2001/100000 临界值与 QuickJS spike-only 限额分离；固定全库 include
+  depth 2/evaluations 30 又形成 16/256 与 64/4096 候选，剩余 9 个未定值
+  budget 仍显式保留，见
   [`resource-limit-policy.md`](resource-limit-policy.md) 和
   [`resource-limit-evidence.md`](../research/resource-limit-evidence.md)；
   当前 `admitted=false`，不能被实现当作已冻结配置。

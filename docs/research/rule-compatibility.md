@@ -5,7 +5,7 @@ Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
 Rules: `horsicq/Detect-It-Easy@c2c17dfa5ea4e078ba31eab55d87430c96622fb6`  
 Runtime: `horsicq/die_script@5d82316c110abf0eb863b50bc679d330e05067b6`  
 Host API: `horsicq/XScanEngine@dfe4a419e4f491bb23688ba03c5a5bf39e34da83`  
-Last updated: 2026-07-27
+Last updated: 2026-07-30
 
 ## 结论摘要
 
@@ -74,13 +74,23 @@ Extra database 为 Amiga 2、COM 2、ELF 1、MSDOS 2、PE 131。
 1. 数据库根目录 `_init`：定义通用 `meta()` / `result()`，并 include `_debug`、`_runtime_helpers`、`language`。
 2. 当前类型目录 `_init`：为 PE、ELF 等宿主对象增加 JavaScript helper、属性和别名。
 
-本轮在 `db` 与 `db_extra` 中静态发现 56 次 `includeScript("...")`，涉及 27 个不同目标。include 是按 signature name 从已加载记录中查找并在当前引擎/全局作用域求值，不是 ECMAScript module。
+全库
+[`include-graph-sizing`](include-graph-sizing.md)
+现绑定 `db`/`db_extra`/`db_custom` 的 2,235 个程序文件：56 次
+`includeScript("...")` 全部为 literal，涉及 48 个 caller 和 27 个不同 helper，
+不存在 missing target、non-literal site 或固定 helper cycle。按 database
+layer、case-insensitive first-match 和“每次调用都重新求值”展开后，30 个规则
+scope 的最大 active depth 为 2，最大传递 evaluations 为 30；Binary 静态
+23→30 与既有动态 trace 相同。include 是按 signature name 从已加载记录中查找并
+在当前引擎/全局作用域求值，不是 ECMAScript module。
 
-需要验证：
+仍需验证：
 
-- 重复 include 是否重复求值。
-- 循环 include 行为。
-- main/extra/custom 存在同名 helper 时的选择顺序。
+- future/custom database 的同名 helper、深无环链与 dynamic include name；
+- 16/256 modern 和 64/4096 legacy-high 候选的 `limit-1/exact/+1`；
+- self/two-node/dynamic cycle 在 production active stack 中的 typed error 与
+  SafetyDeviation；
+- PE/MSDOS 完整 runtime trace 与 CPU/peak-memory。
 - include 异常对当前 signature 和后续 signature 的影响。
 
 ### 排序

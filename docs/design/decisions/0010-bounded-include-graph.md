@@ -1,7 +1,7 @@
 # ADR 0010：静态 include 图和运行时 active stack 必须有界
 
 Status: Proposed  
-Last updated: 2026-07-27
+Last updated: 2026-07-30
 
 ## 背景
 
@@ -26,6 +26,12 @@ Proposed：
   path 时，在 evaluate 前返回 `RuleDiagnostic::IncludeCycle`；
 - include depth、总 include evaluations 和 script fuel 同时受 scan budget 限制，
   cycle detection 不能替代 hard cap；
+- 初始 modern default 候选为 include depth 16、每个 scan context 累计 include
+  evaluations 256；显式 `LegacyHighResource` 候选为 depth 64、evaluations
+  4096。固定全库 2,235 个程序文件的最大观察值为 depth 2/evaluations 30；
+  modern 候选采用 8× depth headroom，以及 `30 × 8 = 240` 向上取 2 次幂得到
+  256。数值在本 ADR Accepted 前仍可评审调整，任何 profile 都不得用 `0`、
+  整数最大值或缺省表示无界；
 - 实现不得依赖 Rust/native stack overflow、VM 默认 recursion limit 或进程崩溃；
 - legacy differential 保留固定上游 28+1 raw diagnostics；Rust 的单一 typed
   cycle error 明确分类为 `SafetyDeviation`，不得规范化成 exact；
@@ -62,14 +68,17 @@ stack，不能作为安全边界。
 
 - [`include-lifecycle-behavior.md`](../../research/include-lifecycle-behavior.md)
 - [`include-lifecycle-linux-qt5.json`](../../research/data/include-lifecycle-linux-qt5.json)
+- [`include-graph-sizing.md`](../../research/include-graph-sizing.md)
+- [`include-graph-sizing.json`](../../research/data/include-graph-sizing.json)
 - `die_script@5d82316.../die_scriptengine.cpp::includeScriptSlot`
 
 ## 验收条件
 
 - self、two-node、long acyclic chain 和 dynamic cycle 各有 unit/system test；
 - `limit-1/exact/+1` 覆盖 include depth 和总 evaluation budget；
+- 固定全库 sizing、future/custom database 和 dynamic include cases 证明或调整
+  16/256 与 64/4096 两组候选，且 production CPU/peak-memory 有界；
 - duplicate include 在非 active 状态继续重新求值；
 - cycle diagnostic 含完整稳定 path/source locations；
 - Rust/upstream 差分报告保留两侧 raw hashes，并仅用精确 SafetyDeviation waiver；
 - fuzz/property test 不能产生 stack overflow、panic、hang 或无界 diagnostics。
-

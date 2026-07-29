@@ -1,0 +1,640 @@
+{
+  "generator": "tools/rules/analyze_include_graph.py",
+  "graph": {
+    "calls": [
+      {
+        "caller": "db/ACE",
+        "ordinal": 0,
+        "resolved_path": "db/archive-file",
+        "target": "archive-file"
+      },
+      {
+        "caller": "db/Binary/_init",
+        "ordinal": 0,
+        "resolved_path": "db/read",
+        "target": "read"
+      },
+      {
+        "caller": "db/Binary/archive_ACE.1.sg",
+        "ordinal": 0,
+        "resolved_path": "db/ACE",
+        "target": "ACE"
+      },
+      {
+        "caller": "db/Binary/archive_AR.1.sg",
+        "ordinal": 0,
+        "resolved_path": "db/archive-file",
+        "target": "archive-file"
+      },
+      {
+        "caller": "db/Binary/archive_ARJ.1.sg",
+        "ordinal": 0,
+        "resolved_path": "db/arj",
+        "target": "arj"
+      },
+      {
+        "caller": "db/Binary/archive_Cab.1.sg",
+        "ordinal": 0,
+        "resolved_path": "db/cab",
+        "target": "cab"
+      },
+      {
+        "caller": "db/Binary/archive_RAR.1.sg",
+        "ordinal": 0,
+        "resolved_path": "db/rar-file",
+        "target": "rar-file"
+      },
+      {
+        "caller": "db/Binary/archive_ZIP.1.sg",
+        "ordinal": 0,
+        "resolved_path": "db/zip-file",
+        "target": "zip-file"
+      },
+      {
+        "caller": "db/Binary/archive_ZLIB.1.sg",
+        "ordinal": 0,
+        "resolved_path": "db/zlib",
+        "target": "zlib"
+      },
+      {
+        "caller": "db/Binary/audio.1.sg",
+        "ordinal": 0,
+        "resolved_path": "db/chunkparsers",
+        "target": "chunkparsers"
+      },
+      {
+        "caller": "db/Binary/audio.1.sg",
+        "ordinal": 1,
+        "resolved_path": "db/soundchips",
+        "target": "soundchips"
+      },
+      {
+        "caller": "db/Binary/audio.1.sg",
+        "ordinal": 2,
+        "resolved_path": "db/bytecodeparsers",
+        "target": "bytecodeparsers"
+      },
+      {
+        "caller": "db/Binary/audio_WEM.1.sg",
+        "ordinal": 0,
+        "resolved_path": "db/vgmcodingutils",
+        "target": "vgmcodingutils"
+      },
+      {
+        "caller": "db/Binary/audio_mp3.2.sg",
+        "ordinal": 0,
+        "resolved_path": "db/duration",
+        "target": "duration"
+      },
+      {
+        "caller": "db/Binary/bin.IDA.1.sg",
+        "ordinal": 0,
+        "resolved_path": "db/zlib",
+        "target": "zlib"
+      },
+      {
+        "caller": "db/Binary/format_bin.SWF.1.sg",
+        "ordinal": 0,
+        "resolved_path": "db/zlib",
+        "target": "zlib"
+      },
+      {
+        "caller": "db/Binary/formats.1.sg",
+        "ordinal": 0,
+        "resolved_path": "db/zlib",
+        "target": "zlib"
+      },
+      {
+        "caller": "db/Binary/image_CUR.1.sg",
+        "ordinal": 0,
+        "resolved_path": "db/CurIcoBPP",
+        "target": "CurIcoBPP"
+      },
+      {
+        "caller": "db/Binary/image_ICO.1.sg",
+        "ordinal": 0,
+        "resolved_path": "db/CurIcoBPP",
+        "target": "CurIcoBPP"
+      },
+      {
+        "caller": "db/Binary/script_text.Shell.1.sg",
+        "ordinal": 0,
+        "resolved_path": "db/shell-script",
+        "target": "shell-script"
+      },
+      {
+        "caller": "db/Binary/text.script.2.sg",
+        "ordinal": 0,
+        "resolved_path": "db/shell-script",
+        "target": "shell-script"
+      },
+      {
+        "caller": "db/MSDOS/ACE.6.sg",
+        "ordinal": 0,
+        "resolved_path": "db/ACE",
+        "target": "ACE"
+      },
+      {
+        "caller": "db/MSDOS/RAR.6.sg",
+        "ordinal": 0,
+        "resolved_path": "db/rar-file",
+        "target": "rar-file"
+      },
+      {
+        "caller": "db/MSDOS/Zip.6.sg",
+        "ordinal": 0,
+        "resolved_path": "db/zip-file",
+        "target": "zip-file"
+      },
+      {
+        "caller": "db/MSDOS/protector_PROTECT.2.sg",
+        "ordinal": 0,
+        "resolved_path": "db/read",
+        "target": "read"
+      },
+      {
+        "caller": "db/PE/ACE.6.sg",
+        "ordinal": 0,
+        "resolved_path": "db/ACE",
+        "target": "ACE"
+      },
+      {
+        "caller": "db/PE/Cab.6.sg",
+        "ordinal": 0,
+        "resolved_path": "db/cab",
+        "target": "cab"
+      },
+      {
+        "caller": "db/PE/_linkers.6.sg",
+        "ordinal": 0,
+        "resolved_path": "db/FASM",
+        "target": "FASM"
+      },
+      {
+        "caller": "db/PE/_linkers.6.sg",
+        "ordinal": 1,
+        "resolved_path": "db/RosASM",
+        "target": "RosASM"
+      },
+      {
+        "caller": "db/PE/_linkers.6.sg",
+        "ordinal": 2,
+        "resolved_path": "db/SpASM",
+        "target": "SpASM"
+      },
+      {
+        "caller": "db/PE/_linkers.6.sg",
+        "ordinal": 3,
+        "resolved_path": "db/FPC",
+        "target": "FPC"
+      },
+      {
+        "caller": "db/PE/arj.6.sg",
+        "ordinal": 0,
+        "resolved_path": "db/arj",
+        "target": "arj"
+      },
+      {
+        "caller": "db/PE/compiler_Borland_C++.6.sg",
+        "ordinal": 0,
+        "resolved_path": "db/Borland",
+        "target": "Borland"
+      },
+      {
+        "caller": "db/PE/compiler_Delphi.4.sg",
+        "ordinal": 0,
+        "resolved_path": "db/Borland",
+        "target": "Borland"
+      },
+      {
+        "caller": "db/PE/compiler_FASM.4.sg",
+        "ordinal": 0,
+        "resolved_path": "db/FASM",
+        "target": "FASM"
+      },
+      {
+        "caller": "db/PE/compiler_Free_Pascal.6.sg",
+        "ordinal": 0,
+        "resolved_path": "db/FPC",
+        "target": "FPC"
+      },
+      {
+        "caller": "db/PE/compiler_MinGW.6.sg",
+        "ordinal": 0,
+        "resolved_path": "db/FPC",
+        "target": "FPC"
+      },
+      {
+        "caller": "db/PE/compiler_RosASM.4.sg",
+        "ordinal": 0,
+        "resolved_path": "db/RosASM",
+        "target": "RosASM"
+      },
+      {
+        "caller": "db/PE/compiler_SpASM.4.sg",
+        "ordinal": 0,
+        "resolved_path": "db/SpASM",
+        "target": "SpASM"
+      },
+      {
+        "caller": "db/PE/compiler_TASM32.4.sg",
+        "ordinal": 0,
+        "resolved_path": "db/Borland",
+        "target": "Borland"
+      },
+      {
+        "caller": "db/PE/compiler_TASM32.4.sg",
+        "ordinal": 1,
+        "resolved_path": "db/TASM32",
+        "target": "TASM32"
+      },
+      {
+        "caller": "db/PE/library_LCL.5.sg",
+        "ordinal": 0,
+        "resolved_path": "db/FPC",
+        "target": "FPC"
+      },
+      {
+        "caller": "db/PE/library_Qt.4.sg",
+        "ordinal": 0,
+        "resolved_path": "db/QtFramework",
+        "target": "QtFramework"
+      },
+      {
+        "caller": "db/PE/library_wxWidgets.5.sg",
+        "ordinal": 0,
+        "resolved_path": "db/wxWidgets",
+        "target": "wxWidgets"
+      },
+      {
+        "caller": "db/PE/packer_PyInstaller.2.sg",
+        "ordinal": 0,
+        "resolved_path": "db/python",
+        "target": "python"
+      },
+      {
+        "caller": "db/PE/rar.6.sg",
+        "ordinal": 0,
+        "resolved_path": "db/rar-file",
+        "target": "rar-file"
+      },
+      {
+        "caller": "db/PE/zip.6.sg",
+        "ordinal": 0,
+        "resolved_path": "db/zip-file",
+        "target": "zip-file"
+      },
+      {
+        "caller": "db/_init",
+        "ordinal": 0,
+        "resolved_path": "db/_debug",
+        "target": "_debug"
+      },
+      {
+        "caller": "db/_init",
+        "ordinal": 1,
+        "resolved_path": "db/_runtime_helpers",
+        "target": "_runtime_helpers"
+      },
+      {
+        "caller": "db/_init",
+        "ordinal": 2,
+        "resolved_path": "db/language",
+        "target": "language"
+      },
+      {
+        "caller": "db/arj",
+        "ordinal": 0,
+        "resolved_path": "db/archive-file",
+        "target": "archive-file"
+      },
+      {
+        "caller": "db/cab",
+        "ordinal": 0,
+        "resolved_path": "db/archive-file",
+        "target": "archive-file"
+      },
+      {
+        "caller": "db/chunkparsers",
+        "ordinal": 0,
+        "resolved_path": "db/read",
+        "target": "read"
+      },
+      {
+        "caller": "db/rar-file",
+        "ordinal": 0,
+        "resolved_path": "db/archive-file",
+        "target": "archive-file"
+      },
+      {
+        "caller": "db/vgmcodingutils",
+        "ordinal": 0,
+        "resolved_path": "db/read",
+        "target": "read"
+      },
+      {
+        "caller": "db/zip-file",
+        "ordinal": 0,
+        "resolved_path": "db/archive-file",
+        "target": "archive-file"
+      }
+    ],
+    "helper_cycles": [],
+    "literal_include_call_count": 56,
+    "missing_literal_includes": [],
+    "non_literal_include_sites": [],
+    "unique_calling_file_count": 48,
+    "unique_resolved_helper_count": 27
+  },
+  "resolution_contract": {
+    "database_order": [
+      "db",
+      "db_extra",
+      "db_custom"
+    ],
+    "duplicate_include_policy": "evaluate every call; no include-once cache",
+    "duplicate_policy": "first matching database-layer record",
+    "name_matching": "case-insensitive",
+    "target_scope": "global program records only"
+  },
+  "rule_assets": {
+    "combined_tree_sha256": "20f2b74effc2bdaf069e3b2e13060432b8890d38364511f5cde56a337348bfda",
+    "program_byte_count": 2902881,
+    "program_file_count": 2235,
+    "report": "docs/research/data/runtime-rule-assets-license.json",
+    "report_sha256": "c1d1fe07ccdd0ff74a4428372e9c18b4f4dbda2f4a1dd0e3082b7702d8370dbb"
+  },
+  "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+  "schema_version": 1,
+  "scope": {
+    "covers": "all fixed db/db_extra/db_custom program files and literal includeScript calls",
+    "does_not_prove": [
+      "production runtime memory or instruction limits",
+      "future or user-supplied database include shape",
+      "runtime behavior for dynamically computed include names"
+    ]
+  },
+  "sizing": {
+    "binary_runtime_trace_continuity": {
+      "direct_calls": 23,
+      "expected_dynamic_trace_evaluations": 30,
+      "matches": true,
+      "transitive_evaluations": 30
+    },
+    "maximum_active_include_depth": 2,
+    "maximum_depth_scopes": [
+      "Binary",
+      "MSDOS",
+      "PE"
+    ],
+    "maximum_evaluation_scopes": [
+      "Binary",
+      "PE"
+    ],
+    "maximum_transitive_include_evaluations": 30,
+    "scope_count": 30,
+    "scopes": [
+      {
+        "direct_include_call_count": 3,
+        "maximum_active_include_depth": 1,
+        "program_file_count": 53,
+        "scope": "APK",
+        "selected_init": "db/APK/_init",
+        "transitive_include_evaluation_count": 3
+      },
+      {
+        "direct_include_call_count": 3,
+        "maximum_active_include_depth": 1,
+        "program_file_count": 99,
+        "scope": "Amiga",
+        "selected_init": "db/Amiga/_init",
+        "transitive_include_evaluation_count": 3
+      },
+      {
+        "direct_include_call_count": 3,
+        "maximum_active_include_depth": 1,
+        "program_file_count": 2,
+        "scope": "Archive",
+        "selected_init": "db/Archive/_init",
+        "transitive_include_evaluation_count": 3
+      },
+      {
+        "direct_include_call_count": 3,
+        "maximum_active_include_depth": 1,
+        "program_file_count": 2,
+        "scope": "AtariST",
+        "selected_init": "db/AtariST/_init",
+        "transitive_include_evaluation_count": 3
+      },
+      {
+        "direct_include_call_count": 23,
+        "maximum_active_include_depth": 2,
+        "program_file_count": 293,
+        "scope": "Binary",
+        "selected_init": "db/Binary/_init",
+        "transitive_include_evaluation_count": 30
+      },
+      {
+        "direct_include_call_count": 3,
+        "maximum_active_include_depth": 1,
+        "program_file_count": 4,
+        "scope": "CFBF",
+        "selected_init": "db/CFBF/_init",
+        "transitive_include_evaluation_count": 3
+      },
+      {
+        "direct_include_call_count": 3,
+        "maximum_active_include_depth": 1,
+        "program_file_count": 248,
+        "scope": "COM",
+        "selected_init": "db/COM/_init",
+        "transitive_include_evaluation_count": 3
+      },
+      {
+        "direct_include_call_count": 3,
+        "maximum_active_include_depth": 1,
+        "program_file_count": 30,
+        "scope": "DEX",
+        "selected_init": "db/DEX/_init",
+        "transitive_include_evaluation_count": 3
+      },
+      {
+        "direct_include_call_count": 3,
+        "maximum_active_include_depth": 1,
+        "program_file_count": 3,
+        "scope": "DOS16M",
+        "selected_init": "db/DOS16M/_init",
+        "transitive_include_evaluation_count": 3
+      },
+      {
+        "direct_include_call_count": 3,
+        "maximum_active_include_depth": 1,
+        "program_file_count": 3,
+        "scope": "DOS4G",
+        "selected_init": "db/DOS4G/_init",
+        "transitive_include_evaluation_count": 3
+      },
+      {
+        "direct_include_call_count": 3,
+        "maximum_active_include_depth": 1,
+        "program_file_count": 48,
+        "scope": "ELF",
+        "selected_init": "db/ELF/_init",
+        "transitive_include_evaluation_count": 3
+      },
+      {
+        "direct_include_call_count": 3,
+        "maximum_active_include_depth": 1,
+        "program_file_count": 1,
+        "scope": "IPA",
+        "selected_init": "db/IPA/_init",
+        "transitive_include_evaluation_count": 3
+      },
+      {
+        "direct_include_call_count": 3,
+        "maximum_active_include_depth": 1,
+        "program_file_count": 24,
+        "scope": "ISO9660",
+        "selected_init": "db/ISO9660/_init",
+        "transitive_include_evaluation_count": 3
+      },
+      {
+        "direct_include_call_count": 3,
+        "maximum_active_include_depth": 1,
+        "program_file_count": 2,
+        "scope": "Image",
+        "selected_init": "db/Image/_init",
+        "transitive_include_evaluation_count": 3
+      },
+      {
+        "direct_include_call_count": 3,
+        "maximum_active_include_depth": 1,
+        "program_file_count": 3,
+        "scope": "JAR",
+        "selected_init": "db/JAR/_init",
+        "transitive_include_evaluation_count": 3
+      },
+      {
+        "direct_include_call_count": 3,
+        "maximum_active_include_depth": 1,
+        "program_file_count": 6,
+        "scope": "JPEG",
+        "selected_init": "db/JPEG/_init",
+        "transitive_include_evaluation_count": 3
+      },
+      {
+        "direct_include_call_count": 3,
+        "maximum_active_include_depth": 1,
+        "program_file_count": 2,
+        "scope": "JavaClass",
+        "selected_init": "db/JavaClass/_init",
+        "transitive_include_evaluation_count": 3
+      },
+      {
+        "direct_include_call_count": 3,
+        "maximum_active_include_depth": 1,
+        "program_file_count": 4,
+        "scope": "LE",
+        "selected_init": "db/LE/_init",
+        "transitive_include_evaluation_count": 3
+      },
+      {
+        "direct_include_call_count": 3,
+        "maximum_active_include_depth": 1,
+        "program_file_count": 6,
+        "scope": "LX",
+        "selected_init": "db/LX/_init",
+        "transitive_include_evaluation_count": 3
+      },
+      {
+        "direct_include_call_count": 3,
+        "maximum_active_include_depth": 1,
+        "program_file_count": 13,
+        "scope": "MACH",
+        "selected_init": "db/MACH/_init",
+        "transitive_include_evaluation_count": 3
+      },
+      {
+        "direct_include_call_count": 3,
+        "maximum_active_include_depth": 1,
+        "program_file_count": 3,
+        "scope": "MACHOFAT",
+        "selected_init": "db/MACHOFAT/_init",
+        "transitive_include_evaluation_count": 3
+      },
+      {
+        "direct_include_call_count": 7,
+        "maximum_active_include_depth": 2,
+        "program_file_count": 352,
+        "scope": "MSDOS",
+        "selected_init": "db/MSDOS/_init",
+        "transitive_include_evaluation_count": 10
+      },
+      {
+        "direct_include_call_count": 3,
+        "maximum_active_include_depth": 1,
+        "program_file_count": 14,
+        "scope": "NE",
+        "selected_init": "db/NE/_init",
+        "transitive_include_evaluation_count": 3
+      },
+      {
+        "direct_include_call_count": 3,
+        "maximum_active_include_depth": 1,
+        "program_file_count": 5,
+        "scope": "NPM",
+        "selected_init": "db/NPM/_init",
+        "transitive_include_evaluation_count": 3
+      },
+      {
+        "direct_include_call_count": 3,
+        "maximum_active_include_depth": 1,
+        "program_file_count": 8,
+        "scope": "PDF",
+        "selected_init": "db/PDF/_init",
+        "transitive_include_evaluation_count": 3
+      },
+      {
+        "direct_include_call_count": 25,
+        "maximum_active_include_depth": 2,
+        "program_file_count": 966,
+        "scope": "PE",
+        "selected_init": "db/PE/_init",
+        "transitive_include_evaluation_count": 30
+      },
+      {
+        "direct_include_call_count": 3,
+        "maximum_active_include_depth": 1,
+        "program_file_count": 2,
+        "scope": "PNG",
+        "selected_init": "db/PNG/_init",
+        "transitive_include_evaluation_count": 3
+      },
+      {
+        "direct_include_call_count": 3,
+        "maximum_active_include_depth": 1,
+        "program_file_count": 3,
+        "scope": "PYC",
+        "selected_init": "db/PYC/_init",
+        "transitive_include_evaluation_count": 3
+      },
+      {
+        "direct_include_call_count": 3,
+        "maximum_active_include_depth": 1,
+        "program_file_count": 2,
+        "scope": "RAR",
+        "selected_init": "db/RAR/_init",
+        "transitive_include_evaluation_count": 3
+      },
+      {
+        "direct_include_call_count": 3,
+        "maximum_active_include_depth": 1,
+        "program_file_count": 4,
+        "scope": "ZIP",
+        "selected_init": "db/ZIP/_init",
+        "transitive_include_evaluation_count": 3
+      }
+    ]
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

@@ -225,7 +225,7 @@
       ],
       "review_question": "是否接受 include cycle 提前有界失败这一显式安全偏差？",
       "remaining_acceptance_evidence": [
-        "nonzero include depth/evaluation candidates plus production include graph and active stack",
+        "dynamic/custom database evidence plus production include graph and active stack for the 16/256 and 64/4096 candidates",
         "depth/evaluation limit boundary tests",
         "SafetyDeviation waiver plus fuzz/property coverage"
       ]

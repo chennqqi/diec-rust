@@ -611,8 +611,13 @@ Phase 0 计划形成：
 - [`resource-limit-evidence.md`](resource-limit-evidence.md)：区分固定上游
   archive/resource 临界值、oracle container 外部限额与 QuickJS 故障注入值，
   明确哪些证据不能直接升格为生产默认。
+- [`include-graph-sizing.md`](include-graph-sizing.md)：全库 2,235 个程序文件的
+  56 个 literal include 调用闭包、30 个 scope 的传递 evaluation/depth sizing，
+  以及 Binary 静态结果与已有动态 trace 的连续性。
+- [`data/include-graph-sizing.json`](data/include-graph-sizing.json)：绑定固定规则树、
+  资产报告和逐 scope 计数的机器可读 include sizing。
 - [`../design/data/resource-limit-policy-candidate.json`](../design/data/resource-limit-policy-candidate.json)：
-  由固定报告、ADR 与 API SHA-256 绑定的统一资源限制评审候选；保留 11 个
+  由固定报告、ADR 与 API SHA-256 绑定的统一资源限制评审候选；保留 9 个
   unresolved budget 和 `admitted=false`。
 - [`data/rquickjs-static-link.json`](data/rquickjs-static-link.json)：rquickjs staticlib 三条 native smoke、链接依赖和 18-package 许可证清单。
 - [`data/context-rule-qt5.json`](data/context-rule-qt5.json)：三条原样 Binary 规则在 resource/debugdata/text context 下的 8-case Qt5 基线。

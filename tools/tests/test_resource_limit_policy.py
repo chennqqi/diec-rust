@@ -87,6 +87,22 @@ class ResourceLimitPolicyTests(unittest.TestCase):
                 "maximum_total_native_path_bytes": 64 * 1024**2,
             },
         )
+        self.assertEqual(
+            modern["include"],
+            {
+                "maximum_active_depth": 16,
+                "maximum_total_evaluations": 256,
+                "status": "review_candidate_not_admitted",
+            },
+        )
+        self.assertEqual(
+            legacy["include"],
+            {
+                "maximum_active_depth": 64,
+                "maximum_total_evaluations": 4096,
+                "status": "review_candidate_not_admitted",
+            },
+        )
         self.assertFalse(legacy["default_for_any_adapter"])
         self.assertGreater(
             legacy["scan"]["total_expanded_bytes"],
@@ -132,11 +148,22 @@ class ResourceLimitPolicyTests(unittest.TestCase):
         self.assertEqual(spike["stack_limit_bytes"], 128 * 1024)
         self.assertEqual(spike["deadline_milliseconds"], 25)
         self.assertFalse(spike["production_default_candidate"])
+        self.assertEqual(
+            facts["fixed_rule_include_graph"],
+            {
+                "program_file_count": 2235,
+                "literal_call_count": 56,
+                "maximum_transitive_evaluations": 30,
+                "maximum_active_depth": 2,
+                "non_literal_or_unresolved_or_cyclic_count": 0,
+                "binary_dynamic_trace_matches": True,
+            },
+        )
 
     def test_unresolved_budgets_keep_policy_unadmitted(self):
         unresolved = self.policy["unresolved_required_budgets"]
         ids = [item["id"] for item in unresolved]
-        self.assertEqual(len(ids), 11)
+        self.assertEqual(len(ids), 9)
         self.assertEqual(len(ids), len(set(ids)))
         self.assertEqual(
             set(ids),
@@ -145,8 +172,6 @@ class ResourceLimitPolicyTests(unittest.TestCase):
                 "scan.maximum_diagnostics",
                 "scan.maximum_total_allocated_bytes",
                 "traversal.maximum_metadata_open_attempts",
-                "include.maximum_depth",
-                "include.maximum_total_evaluations",
                 "script.maximum_heap_bytes",
                 "script.maximum_stack_bytes",
                 "script.maximum_instruction_or_fuel",
@@ -220,7 +245,7 @@ class ResourceLimitPolicyTests(unittest.TestCase):
         self.assertIn("Status: In Review", design)
         self.assertIn("review_candidate_incomplete", design)
         self.assertIn("`admitted=false`", design)
-        self.assertIn("11 个明确 unresolved 项", design)
+        self.assertIn("9 个明确 unresolved 项", design)
         self.assertIn("production_default_candidate=false", research)
         self.assertIn("不是已冻结的发布", design)
         self.assertIn("不是生产默认候选", research)
@@ -240,13 +265,15 @@ class ResourceLimitPolicyTests(unittest.TestCase):
             blocker["resource_limit_policy_status"],
             (
                 "review_candidate_incomplete_and_unadmitted_"
-                "with_11_unresolved_budgets"
+                "with_9_unresolved_budgets"
             ),
         )
         self.assertEqual(
             blocker["resource_limit_policy_evidence"],
             [
                 "docs/research/resource-limit-evidence.md",
+                "docs/research/include-graph-sizing.md",
+                "docs/research/data/include-graph-sizing.json",
                 "docs/design/resource-limit-policy.md",
                 (
                     "docs/design/data/"
