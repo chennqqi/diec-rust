@@ -85,8 +85,9 @@ Accepted。
 scan-owned capacity 单调累计提出 1 GiB/8 GiB；script runtime 又为
 heap/JS stack/fuel/deadline 提出联合候选。必需字段现有 0 个 unresolved，
 三轮 full Binary corpus 已固定每轮 28 次正常 VM poll 与 4,130 个 lifecycle
-memory checkpoint；但瞬时 heap high-water、native checkpoint、跨格式 scaling、
-三平台资源证据和 ADR 评审仍缺。该策略仍为
+memory checkpoint，并固定每轮 16,439 次 Binary signature native checkpoint；
+4095/4096 候选边界和单次 native search 中断已有回归。但瞬时 heap high-water、
+其余 HostApi checkpoint、跨格式 scaling、三平台资源证据和 ADR 评审仍缺。该策略仍为
 `admitted=false`，因此 blocker 状态不变。
 
 ## 下一步顺序

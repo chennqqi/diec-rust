@@ -123,9 +123,14 @@ Vita 的实际规则执行顺序是 audio→format，而上游输出顺序是 fo
 
 同一命令在 Windows x86_64 MSVC release profile 连续运行三轮；每轮 14 个
 runtime 的稳定计量投影逐字节等价，SHA-256 均为
-`723862e669846c4e3af813c19ce61007ea114942ba926162cbed072d65a54f87`。
+`286e778c3891dd3b289446526f2910601f9e25932feec25489ee74adbcc5c326`。
 每轮正常生命周期共触发 28 次 QuickJS-NG interrupt callback，其中 9 次发生在
-`detect` 内、19 次发生在 init/include/诊断辅助边界，每规则最大 1 次。每轮
+`detect` 内、19 次发生在 init/include/诊断辅助边界，每规则最大 1 次。Binary
+签名 HostApi 同时按“每次 compare/search 入口一次，之后每扫描 4096 个候选位置
+一次”记录原生协作检查点；每轮固定 16,439 次，其中 compare 16,285 次、search
+154 次。因为本语料的搜索区间都未达到第二个检查点，三项恰好等于 HostApi
+调用数；独立边界测试另证明第 4096 个候选位置触发第二次回调，且该回调能在
+单次 native search 尚未返回时产生显式 `Interrupted`。每轮
 4,130 个 `Runtime::memory_usage()` checkpoint 的最大 `malloc_size` 为
 654,562 bytes，最大 `memory_used_size` 为 623,012 bytes，均出现在
 `ps3-type-1-elf.self`。checkpoint 在 runtime 创建、init、每条规则返回后和最终
@@ -332,6 +337,23 @@ hard-stop=false，迭代数为 200..1,511。迭代数由调度决定，不进入
 问题，但不允许把所有 native 调用视为天然可取消。正式 HostApi 必须把
 token/deadline 传入可能长时间运行的 signature、字符串搜索、解压和遍历循环；
 一次不可分割的阻塞系统/native 调用仍不能由 QuickJS interrupt 抢占。
+
+### 真实 Binary signature HostApi 检查点
+
+相邻 pure-Rust signature spike 为 Binary compare/search wrapper 增加显式
+checkpoint callback。callback 在 HostApi 入口执行一次；所有由不可信输入搜索
+范围放大的 exact、SigByte 和 control fallback 候选循环共享同一计数器，并在
+第 4096、8192……个候选比较前再次执行。callback 返回 false 时以
+`MatchError::Interrupted` 退出，不把取消伪装成 mismatch。原有无 callback API
+仍使用恒为 true 的适配器，因此 oracle 行为不变。
+
+边界回归固定三件事：短 compare 只有一个入口 checkpoint；4095 个候选的无匹配
+搜索只有一个 checkpoint，4096 个候选精确触发两个；在第二个 callback 返回
+false 时，同一 native search 在完成前返回 `Interrupted`。随后 14-sample
+full Binary corpus 三轮均记录 16,439 次，compare/search 分区均为
+16,285/154，且兼容结果和 runtime 稳定投影三轮相同。这证明 Binary signature
+路径的确定性检查点接线与正常工作量计量，不证明其他字符串、解压、遍历或格式
+HostApi 已覆盖，也不能由这些短搜索样本推导跨格式 fuel。
 
 ### Monotonic wall-clock deadline
 

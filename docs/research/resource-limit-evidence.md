@@ -41,9 +41,11 @@ Last updated: 2026-07-30
 - 固定 2,902,881-byte 程序源、20,947-operation Binary corpus anchor、pinned
   256 KiB VM stack 默认值和 scan deadline 已形成联合 script runtime 候选；
   三轮 Windows MSVC full Binary corpus 每轮正常 VM poll 均为 28 次，4,130 个
-  lifecycle memory checkpoint 最大 observed `malloc_size` 为 654,562 bytes。
-  但瞬时 heap high-water、native checkpoint、跨格式 scaling 及三平台资源证据
-  仍缺失，因此候选不得 admitted。
+  lifecycle memory checkpoint 最大 observed `malloc_size` 为 654,562 bytes；
+  Binary signature HostApi 每轮 native checkpoint 固定 16,439 次，并已有
+  4095/4096 候选边界及单次 native search 中断测试。但瞬时 heap high-water、
+  其余 HostApi checkpoint、跨格式 scaling 及三平台资源证据仍缺失，因此候选
+  不得 admitted。
 
 项目候选值属于设计决策，见
 [`../design/resource-limit-policy.md`](../design/resource-limit-policy.md)；本页只

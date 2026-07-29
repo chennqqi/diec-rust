@@ -185,8 +185,10 @@ aggressive archive 只让 ordinal 100000 可达，ordinal 100001 不可达。
 当前策略有 0 个 unresolved 项：所有必需字段都有非零候选。但这只关闭
 “缺少候选值”的结构缺口，策略仍不得 admitted。Script runtime 的真实全库 heap
 high-water、native HostApi checkpoint、所有格式规则生命周期和三平台资源证据
-尚未采集；ADR 0006 也仍为 Proposed。正常 Binary corpus VM poll 已连续三轮
-观察为每轮 28 次，4,130 个 lifecycle memory checkpoint 的最大 observed
+尚未完整采集；ADR 0006 也仍为 Proposed。正常 Binary corpus VM poll 已连续三轮
+观察为每轮 28 次，Binary signature HostApi native checkpoint 每轮固定 16,439
+次（compare 16,285、search 154），并有 4095/4096 候选边界及单次调用中断测试。
+其他 HostApi 与跨格式 scaling 仍未覆盖。4,130 个 lifecycle memory checkpoint 的最大 observed
 `malloc_size` 为 654,562 bytes，但该单一 corpus 不能证明跨格式 fuel scaling，
 checkpoint 也不能替代瞬时 high-water。
 

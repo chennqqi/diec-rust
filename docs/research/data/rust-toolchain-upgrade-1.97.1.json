@@ -47,14 +47,14 @@
     "spikes/c-static-link/c/smoke.c": "9e70deb13e007358fc6b1dc0aec908331b0fc6d355e5e766c7d77b0f5eb68807",
     "spikes/rquickjs-rule-runtime/Cargo.toml": "82c5bb97749f50212e5364c2ac7d1f81eaec4d460a9bf47710b4b42f9204a79f",
     "spikes/rquickjs-rule-runtime/Cargo.lock": "f389eb266779a88939fea9793effdff29d01ea0e1184915698f4fa0f9441d0ad",
-    "spikes/rquickjs-rule-runtime/src/main.rs": "4f9baf76a5e3960e569fdad778fcf861d07f7f61ffbc142040ef34589a63056a",
+    "spikes/rquickjs-rule-runtime/src/main.rs": "c2d2efa1db4249aa03cefef7308e27e2c67a1876f01f7d42ee216ff3266940e1",
     "spikes/rquickjs-static-link/Cargo.toml": "160117e2885abc7ca3d5f5d5b9fe77c1fbfc8337a20a709548ff7ef157b96bf0",
     "spikes/rquickjs-static-link/Cargo.lock": "e80e1d8f87c753d7accba7dc3625a926b67221e4ed07c38d13a9d0b9e94c0e80",
     "spikes/rquickjs-static-link/src/lib.rs": "2b2c489e94b4c33135904429939428a531766a7bcac072d797b3d117386cea67",
     "spikes/rquickjs-static-link/c/smoke.c": "2d94779a37ac1417795f9de50bfd61840d375562920191b1f1ce7d0e56399943",
     "spikes/signature-parser/Cargo.toml": "17386601a0aab388d5174f84d4c38c0b5e430e6c74b95ce6fb37cf5c6492fefa",
     "spikes/signature-parser/Cargo.lock": "2985224550a817be8fe4dea19a12c2db06cc21f199b985fba12fc23dedfa9279",
-    "spikes/signature-parser/src/lib.rs": "e1ea895cfefd22a31aea05c89323008f95df44fec71480afb6da202b45cec958"
+    "spikes/signature-parser/src/lib.rs": "26fab9b6f36209c4c7448ac1888d02617cecb20270b30d9377dccd99766e06b5"
   },
   "rust_gates": [
     {
@@ -109,13 +109,13 @@
       "default": {
         "fmt": "pass",
         "clippy": "pass",
-        "unit_tests": 15,
+        "unit_tests": 17,
         "doc_tests": 0
       },
       "msrv": {
         "fmt": "pass",
         "clippy": "pass",
-        "unit_tests": 15,
+        "unit_tests": 17,
         "doc_tests": 0
       }
     }

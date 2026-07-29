@@ -565,6 +565,9 @@ oracle schema v3 允许每个项目自有向量显式注入 `_MEMORY_MAP`，但�
 - relative offset/address 在没有上下文时明确返回 `MemoryMapRequired`，传入显式
   `MemoryMap` 后覆盖通用映射、端序、COM/MS-DOS 和 AmigaHunk 特殊分支；
 - 空串、奇数 token、未知字符、无 find needle 和未闭合结构均有结构化错误；
+- Binary compare/search wrapper 在入口及每 4096 个搜索候选位置执行协作
+  checkpoint；4095/4096 边界和第二次回调中断单次 search 已有确定性回归，
+  拒绝时返回 `Interrupted` 而不是静默 mismatch；
 - 16 个 context-free `compareSignature` 向量与固定 Qt 5 XBinary oracle 16/16
   一致，7 个合成 memory-map 向量 7/7 一致，9 个真实格式 parser map 向量
   9/9 一致；
@@ -585,13 +588,15 @@ oracle schema v3 允许每个项目自有向量显式注入 `_MEMORY_MAP`，但�
 1. 对剩余 3 个输入相关 Number→QString signature 参数做受控 runtime-assisted
    求值；`byteCode` 已闭合为 97 个值，全规则调用清单已确认已知宿主 receiver
    上动态 computed method name 为 0。不得把 5628 个通用静态值当作完整值域。
-2. 扩展现有 XBinary oracle，覆盖更多畸形组合、buffer boundary 和取消行为。
+2. 扩展现有 XBinary oracle，覆盖更多畸形组合和 buffer boundary；将已验证的
+   Binary search checkpoint 模式扩展到其他可能长时间运行的 HostApi。
 3. 补齐畸形/重叠/virtual-only map 的项目生成文件，端到端验证各格式
    `getMemoryMap` 边界。
 4. 扩展 `Binary_Script` wrapper oracle 到不存在/短小 overlay、无效 entry point
    和非 PE parser，确认错误与 fallback 行为。
 5. 扩展 `find_signature` 差分到 malformed partial-parse、更多 buffer boundary
-   和锚点优化组合，并验证取消行为；现有 19-case spike 不作为完整性证明。
+   和锚点优化组合；现有 19-case oracle 与独立 checkpoint 边界测试不作为
+   完整性证明。
 6. rquickjs diagnostic 已用本 spike 实现 `c`/`compare`、`fSig`、
    `findSignature` 和 `isSignaturePresent`；首个 PE32 parser/context 已把原样
    Cygwin32 规则的 positive/negative/truncated 差分做到 3/3，见

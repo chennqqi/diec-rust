@@ -25,6 +25,13 @@ selection and class-table differences. They are not implemented as a loop over
 the raw matcher. `find_binary_wrapper` adds the pinned `Binary_Script` range
 normalization used by `findSignature`, `fSig`, and `isSignaturePresent`, while
 keeping parse quirks and errors explicit.
+The Binary compare/search wrappers also expose an optional cooperative
+checkpoint callback. It runs once at native-call entry and before every 4096th
+searched candidate across exact, SigByte, and control fallback loops. Returning
+false produces an explicit `Interrupted` match error, so one long native search
+can be cancelled without being reported as a mismatch. Boundary tests pin the
+4095/4096 transition and in-flight interruption; this is a spike contract, not
+a stable public API.
 
 Tests consume
 `docs/research/data/signature-pattern-inventory.json`, a deterministic

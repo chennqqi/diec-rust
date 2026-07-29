@@ -89,9 +89,9 @@ cargo +1.97.1 test --manifest-path <manifest> --all-features
 | --- | --- | --- | ---: | ---: |
 | `boa-rule-runtime` | pass | pass | 2 | 0 |
 | `c-static-link` | pass | pass | 3 | 0 |
-| `rquickjs-rule-runtime` | pass | pass | 30 | 0 |
+| `rquickjs-rule-runtime` | pass | pass | 38 | 0 |
 | `rquickjs-static-link` | pass | pass | 2 | 0 |
-| `signature-parser` | pass | pass | 15 | 0 |
+| `signature-parser` | pass | pass | 17 | 0 |
 
 1.97.1 Clippy 在 `signature-parser` 报告五处新 diagnostic：
 
@@ -103,9 +103,10 @@ cargo +1.97.1 test --manifest-path <manifest> --all-features
 source SHA-256 当时为
 `fbfe13ea5135baff6c4ea0d24d0c837990536799a18133976c92bd16740c32f6`。
 后续增加 `compareEP` cache/generic wrapper 与回归后，当前 source SHA-256 为
-`e1ea895cfefd22a31aea05c89323008f95df44fec71480afb6da202b45cec958`；
-同一源码在 1.88.0 和 1.97.1 下分别通过 rustfmt、`-D warnings` 和全部 15 项
-测试，因此没有提高 MSRV。
+`26fab9b6f36209c4c7448ac1888d02617cecb20270b30d9377dccd99766e06b5`；
+同一源码在 1.88.0 和 1.97.1 下分别通过 rustfmt、`-D warnings` 和全部 17 项
+测试，因此没有提高 MSRV。新增两项测试固定 native checkpoint 的
+4095/4096 候选边界与单次搜索中断。
 
 后续 `rquickjs-rule-runtime` 增加 128 KiB VM stack-limit/recovery、native
 callback panic-recovery fixture，以及带 SHA-256 输入 identity 的 292-rule
@@ -120,9 +121,10 @@ consumer。随后依次增加真实 PE32/Cygwin32、ELF32/ELF64/Burneye、
 Mach-O64 x86_64/arm64 Rust compiler、DEX035/QDBH、APK/ZIP QDBH、
 Archive/ZIP metadata 和 PDF Tools object/string
 规则差分；当前 source SHA-256 为
-`4f9baf76a5e3960e569fdad778fcf861d07f7f61ffbc142040ef34589a63056a`。
+`c2d2efa1db4249aa03cefef7308e27e2c67a1876f01f7d42ee216ff3266940e1`。
 两套工具链均通过 38 项测试，release 差分分别为 3/3、6/6、4/4、3/3、
-3/3、3/3 和 3/3，且未新增 Cargo 依赖。
+3/3、3/3 和 3/3；Binary signature native checkpoint 的接线与计量也未新增
+Cargo 依赖。
 
 ## 5. Native static-link 结果
 

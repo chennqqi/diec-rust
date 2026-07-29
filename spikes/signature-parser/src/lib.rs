@@ -2,6 +2,36 @@
 
 use std::fmt;
 
+pub const NATIVE_CHECKPOINT_INTERVAL: usize = 4096;
+
+struct NativeCheckpoint<'a> {
+    callback: &'a mut dyn FnMut() -> bool,
+    candidates_until_next: usize,
+}
+
+impl<'a> NativeCheckpoint<'a> {
+    fn enter(callback: &'a mut dyn FnMut() -> bool) -> Result<Self, MatchError> {
+        if !callback() {
+            return Err(MatchError::Interrupted);
+        }
+        Ok(Self {
+            callback,
+            candidates_until_next: NATIVE_CHECKPOINT_INTERVAL,
+        })
+    }
+
+    fn candidate(&mut self) -> Result<(), MatchError> {
+        self.candidates_until_next -= 1;
+        if self.candidates_until_next == 0 {
+            if !(self.callback)() {
+                return Err(MatchError::Interrupted);
+            }
+            self.candidates_until_next = NATIVE_CHECKPOINT_INTERVAL;
+        }
+        Ok(())
+    }
+}
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum Operation {
     CompareBytes(Vec<u8>),
@@ -238,6 +268,16 @@ impl Pattern {
         data: &[u8],
         offset: i64,
     ) -> Result<BinaryCompareReport, BinaryCompareError> {
+        Self::compare_binary_wrapper_with_checkpoint(source, data, offset, &mut || true)
+    }
+
+    pub fn compare_binary_wrapper_with_checkpoint(
+        source: &str,
+        data: &[u8],
+        offset: i64,
+        checkpoint: &mut dyn FnMut() -> bool,
+    ) -> Result<BinaryCompareReport, BinaryCompareError> {
+        let mut checkpoint = NativeCheckpoint::enter(checkpoint)?;
         let mut normalization_quirks = Vec::new();
         let normalized = normalize(source, true, &mut normalization_quirks)?;
         let header_size = data.len().min(256);
@@ -288,7 +328,7 @@ impl Pattern {
         };
         let matched = parsed
             .pattern
-            .matches_with_memory_map(data, offset, &memory_map)?;
+            .matches(data, offset, Some(&memory_map), &mut checkpoint)?;
         Ok(BinaryCompareReport {
             matched,
             header_fast_path: false,
@@ -357,6 +397,17 @@ impl Pattern {
         offset: i64,
         size: i64,
     ) -> Result<BinarySearchReport, BinarySearchError> {
+        Self::find_binary_wrapper_with_checkpoint(source, data, offset, size, &mut || true)
+    }
+
+    pub fn find_binary_wrapper_with_checkpoint(
+        source: &str,
+        data: &[u8],
+        offset: i64,
+        size: i64,
+        checkpoint: &mut dyn FnMut() -> bool,
+    ) -> Result<BinarySearchReport, BinarySearchError> {
+        let mut checkpoint = NativeCheckpoint::enter(checkpoint)?;
         let parsed = Self::parse_upstream_compatible(source)?;
         let Some((offset, size)) = normalize_binary_search_range(data.len(), offset, size) else {
             return Ok(BinarySearchReport {
@@ -377,7 +428,7 @@ impl Pattern {
         };
         let found = parsed
             .pattern
-            .find_with_memory_map(data, offset, size, &memory_map)?;
+            .find(data, offset, size, Some(&memory_map), &mut checkpoint)?;
         Ok(BinarySearchReport {
             found,
             quirks: parsed.quirks,
@@ -385,7 +436,9 @@ impl Pattern {
     }
 
     pub fn matches_raw(&self, data: &[u8], offset: usize) -> Result<bool, MatchError> {
-        self.matches(data, offset, None)
+        let mut continue_matching = || true;
+        let mut checkpoint = NativeCheckpoint::enter(&mut continue_matching)?;
+        self.matches(data, offset, None, &mut checkpoint)
     }
 
     pub fn matches_with_memory_map(
@@ -394,7 +447,9 @@ impl Pattern {
         offset: usize,
         memory_map: &MemoryMap,
     ) -> Result<bool, MatchError> {
-        self.matches(data, offset, Some(memory_map))
+        let mut continue_matching = || true;
+        let mut checkpoint = NativeCheckpoint::enter(&mut continue_matching)?;
+        self.matches(data, offset, Some(memory_map), &mut checkpoint)
     }
 
     pub fn find_raw(
@@ -403,7 +458,9 @@ impl Pattern {
         offset: usize,
         size: usize,
     ) -> Result<Option<FindResult>, MatchError> {
-        self.find(data, offset, size, None)
+        let mut continue_matching = || true;
+        let mut checkpoint = NativeCheckpoint::enter(&mut continue_matching)?;
+        self.find(data, offset, size, None, &mut checkpoint)
     }
 
     pub fn find_with_memory_map(
@@ -413,7 +470,9 @@ impl Pattern {
         size: usize,
         memory_map: &MemoryMap,
     ) -> Result<Option<FindResult>, MatchError> {
-        self.find(data, offset, size, Some(memory_map))
+        let mut continue_matching = || true;
+        let mut checkpoint = NativeCheckpoint::enter(&mut continue_matching)?;
+        self.find(data, offset, size, Some(memory_map), &mut checkpoint)
     }
 
     fn find(
@@ -422,6 +481,7 @@ impl Pattern {
         offset: usize,
         size: usize,
         memory_map: Option<&MemoryMap>,
+        checkpoint: &mut NativeCheckpoint<'_>,
     ) -> Result<Option<FindResult>, MatchError> {
         let Some(end) = offset
             .checked_add(size)
@@ -439,7 +499,7 @@ impl Pattern {
             )
         });
         let found = if has_control {
-            self.find_control(data, offset, end, memory_map)?
+            self.find_control(data, offset, end, memory_map, checkpoint)?
         } else if self.operations.iter().any(|operation| {
             matches!(
                 operation,
@@ -451,9 +511,9 @@ impl Pattern {
                     | Operation::DecimalDigit(_)
             )
         }) {
-            self.find_sigbytes(data, offset, end)?
+            self.find_sigbytes(data, offset, end, checkpoint)?
         } else {
-            self.find_plain(data, offset, end)
+            self.find_plain(data, offset, end, checkpoint)?
         };
         Ok(found.map(|offset| FindResult {
             offset,
@@ -465,15 +525,21 @@ impl Pattern {
         }))
     }
 
-    fn find_plain(&self, data: &[u8], offset: usize, end: usize) -> Option<usize> {
+    fn find_plain(
+        &self,
+        data: &[u8],
+        offset: usize,
+        end: usize,
+        checkpoint: &mut NativeCheckpoint<'_>,
+    ) -> Result<Option<usize>, MatchError> {
         let mut needle = Vec::new();
         for operation in &self.operations {
             let Operation::CompareBytes(bytes) = operation else {
-                return None;
+                return Ok(None);
             };
             needle.extend_from_slice(bytes);
         }
-        find_exact(data, offset, end, &needle)
+        find_exact(data, offset, end, &needle, checkpoint)
     }
 
     fn find_sigbytes(
@@ -481,6 +547,7 @@ impl Pattern {
         data: &[u8],
         offset: usize,
         end: usize,
+        checkpoint: &mut NativeCheckpoint<'_>,
     ) -> Result<Option<usize>, MatchError> {
         let mut predicates: Vec<SigPredicate> = Vec::new();
         for operation in &self.operations {
@@ -526,12 +593,14 @@ impl Pattern {
             if fixed.len() >= 3 {
                 let mut search_from = offset;
                 while search_from < end {
-                    let Some(found) = find_exact(data, search_from, end, &fixed) else {
+                    let Some(found) = find_exact(data, search_from, end, &fixed, checkpoint)?
+                    else {
                         break;
                     };
                     match found.checked_sub(leading_non_exact) {
                         Some(candidate)
-                            if candidate >= offset && self.matches(data, candidate, None)? =>
+                            if candidate >= offset
+                                && self.matches(data, candidate, None, checkpoint)? =>
                         {
                             return Ok(Some(candidate));
                         }
@@ -542,7 +611,7 @@ impl Pattern {
                 return Ok(None);
             }
         }
-        Ok(find_predicates(data, offset, end, &predicates))
+        find_predicates(data, offset, end, &predicates, checkpoint)
     }
 
     fn find_control(
@@ -551,6 +620,7 @@ impl Pattern {
         offset: usize,
         end: usize,
         memory_map: Option<&MemoryMap>,
+        checkpoint: &mut NativeCheckpoint<'_>,
     ) -> Result<Option<usize>, MatchError> {
         let contains_find = self
             .operations
@@ -588,12 +658,14 @@ impl Pattern {
             let anchor = &self.operations[anchor_index];
             let mut search_from = anchor_start;
             while search_from < end {
-                let Some(found) = find_control_anchor(data, search_from, end, anchor) else {
+                let Some(found) = find_control_anchor(data, search_from, end, anchor, checkpoint)?
+                else {
                     break;
                 };
                 match found.checked_sub(anchor_delta) {
                     Some(candidate)
-                        if candidate >= offset && self.matches(data, candidate, memory_map)? =>
+                        if candidate >= offset
+                            && self.matches(data, candidate, memory_map, checkpoint)? =>
                     {
                         return Ok(Some(candidate));
                     }
@@ -608,10 +680,12 @@ impl Pattern {
             Some(first) if is_searchable_control_anchor(first) => {
                 let mut search_from = offset;
                 while search_from < end {
-                    let Some(found) = find_control_anchor(data, search_from, end, first) else {
+                    let Some(found) =
+                        find_control_anchor(data, search_from, end, first, checkpoint)?
+                    else {
                         break;
                     };
-                    if self.matches(data, found, memory_map)? {
+                    if self.matches(data, found, memory_map, checkpoint)? {
                         return Ok(Some(found));
                     }
                     search_from = found.saturating_add(1);
@@ -622,7 +696,8 @@ impl Pattern {
         }
 
         for candidate in offset..end {
-            if self.matches(data, candidate, memory_map)? {
+            checkpoint.candidate()?;
+            if self.matches(data, candidate, memory_map, checkpoint)? {
                 return Ok(Some(candidate));
             }
         }
@@ -634,6 +709,7 @@ impl Pattern {
         data: &[u8],
         offset: usize,
         memory_map: Option<&MemoryMap>,
+        checkpoint: &mut NativeCheckpoint<'_>,
     ) -> Result<bool, MatchError> {
         let mut cursor = offset;
         for operation in &self.operations {
@@ -691,9 +767,8 @@ impl Pattern {
                     let Some(haystack) = bounded_slice(data, cursor, search_size) else {
                         return Ok(false);
                     };
-                    let Some(relative) = haystack
-                        .windows(bytes.len())
-                        .position(|candidate| candidate == bytes)
+                    let Some(relative) =
+                        find_exact(haystack, 0, haystack.len(), bytes, checkpoint)?
                     else {
                         return Ok(false);
                     };
@@ -812,15 +887,26 @@ impl SigPredicate {
     }
 }
 
-fn find_exact(data: &[u8], offset: usize, end: usize, needle: &[u8]) -> Option<usize> {
+fn find_exact(
+    data: &[u8],
+    offset: usize,
+    end: usize,
+    needle: &[u8],
+    checkpoint: &mut NativeCheckpoint<'_>,
+) -> Result<Option<usize>, MatchError> {
     if needle.is_empty() || offset > end {
-        return None;
+        return Ok(None);
     }
-    let region = data.get(offset..end)?;
-    region
-        .windows(needle.len())
-        .position(|candidate| candidate == needle)
-        .and_then(|relative| offset.checked_add(relative))
+    let Some(region) = data.get(offset..end) else {
+        return Ok(None);
+    };
+    for (relative, candidate) in region.windows(needle.len()).enumerate() {
+        checkpoint.candidate()?;
+        if candidate == needle {
+            return Ok(offset.checked_add(relative));
+        }
+    }
+    Ok(None)
 }
 
 fn find_predicates(
@@ -828,21 +914,26 @@ fn find_predicates(
     offset: usize,
     end: usize,
     predicates: &[SigPredicate],
-) -> Option<usize> {
+    checkpoint: &mut NativeCheckpoint<'_>,
+) -> Result<Option<usize>, MatchError> {
     if predicates.is_empty() || offset > end {
-        return None;
+        return Ok(None);
     }
-    let region = data.get(offset..end)?;
-    region
-        .windows(predicates.len())
-        .position(|candidate| {
-            predicates
-                .iter()
-                .copied()
-                .zip(candidate.iter().copied())
-                .all(|(predicate, byte)| predicate.matches(byte))
-        })
-        .and_then(|relative| offset.checked_add(relative))
+    let Some(region) = data.get(offset..end) else {
+        return Ok(None);
+    };
+    for (relative, candidate) in region.windows(predicates.len()).enumerate() {
+        checkpoint.candidate()?;
+        if predicates
+            .iter()
+            .copied()
+            .zip(candidate.iter().copied())
+            .all(|(predicate, byte)| predicate.matches(byte))
+        {
+            return Ok(offset.checked_add(relative));
+        }
+    }
+    Ok(None)
 }
 
 fn operation_span(operation: &Operation) -> usize {
@@ -877,32 +968,50 @@ fn find_control_anchor(
     offset: usize,
     end: usize,
     operation: &Operation,
-) -> Option<usize> {
+    checkpoint: &mut NativeCheckpoint<'_>,
+) -> Result<Option<usize>, MatchError> {
     match operation {
         Operation::CompareBytes(bytes) | Operation::FindBytes { bytes, .. } => {
-            find_exact(data, offset, end, bytes)
+            find_exact(data, offset, end, bytes, checkpoint)
         }
-        Operation::NotNull(size) => {
-            find_predicates(data, offset, end, &vec![SigPredicate::NotNull; *size])
-        }
-        Operation::Ansi(size) => {
-            find_predicates(data, offset, end, &vec![SigPredicate::RecordAnsi; *size])
-        }
-        Operation::NotAnsi(size) => {
-            find_predicates(data, offset, end, &vec![SigPredicate::RecordNotAnsi; *size])
-        }
+        Operation::NotNull(size) => find_predicates(
+            data,
+            offset,
+            end,
+            &vec![SigPredicate::NotNull; *size],
+            checkpoint,
+        ),
+        Operation::Ansi(size) => find_predicates(
+            data,
+            offset,
+            end,
+            &vec![SigPredicate::RecordAnsi; *size],
+            checkpoint,
+        ),
+        Operation::NotAnsi(size) => find_predicates(
+            data,
+            offset,
+            end,
+            &vec![SigPredicate::RecordNotAnsi; *size],
+            checkpoint,
+        ),
         Operation::NotAnsiAndNotNull(size) => find_predicates(
             data,
             offset,
             end,
             &vec![SigPredicate::RecordNotAnsiAndNotNull; *size],
+            checkpoint,
         ),
-        Operation::DecimalDigit(size) => {
-            find_predicates(data, offset, end, &vec![SigPredicate::DecimalDigit; *size])
-        }
+        Operation::DecimalDigit(size) => find_predicates(
+            data,
+            offset,
+            end,
+            &vec![SigPredicate::DecimalDigit; *size],
+            checkpoint,
+        ),
         Operation::Skip(_)
         | Operation::RelativeOffset { .. }
-        | Operation::AbsoluteAddress { .. } => None,
+        | Operation::AbsoluteAddress { .. } => Ok(None),
     }
 }
 
@@ -1380,6 +1489,7 @@ impl fmt::Display for ParseErrorKind {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum MatchError {
     MemoryMapRequired,
+    Interrupted,
 }
 
 impl fmt::Display for MatchError {
@@ -1388,6 +1498,7 @@ impl fmt::Display for MatchError {
             Self::MemoryMapRequired => {
                 formatter.write_str("signature operation requires a format memory map")
             }
+            Self::Interrupted => formatter.write_str("signature operation interrupted"),
         }
     }
 }
@@ -1397,8 +1508,8 @@ impl std::error::Error for MatchError {}
 #[cfg(test)]
 mod tests {
     use super::{
-        CompatibilityQuirk, Endian, FileType, FindResult, MatchError, MemoryMap, MemoryRecord,
-        Operation, ParseErrorKind, Pattern,
+        BinarySearchError, CompatibilityQuirk, Endian, FileType, FindResult, MatchError, MemoryMap,
+        MemoryRecord, NATIVE_CHECKPOINT_INTERVAL, Operation, ParseErrorKind, Pattern,
     };
     use serde_json::Value;
     use std::collections::BTreeSet;
@@ -1931,6 +2042,53 @@ mod tests {
                 .expect("a valid pattern with an invalid range is not an adapter error");
             assert_eq!(actual.found, None, "range ({offset}, {size})");
         }
+    }
+
+    #[test]
+    fn binary_wrappers_checkpoint_entry_and_bounded_search_work() {
+        let mut compare_checkpoints = 0;
+        let compared = Pattern::compare_binary_wrapper_with_checkpoint("41", b"A", 0, &mut || {
+            compare_checkpoints += 1;
+            true
+        })
+        .expect("short compare should complete");
+        assert!(compared.matched);
+        assert_eq!(compare_checkpoints, 1);
+
+        let data = vec![0_u8; NATIVE_CHECKPOINT_INTERVAL - 1];
+        let mut short_search_checkpoints = 0;
+        let searched =
+            Pattern::find_binary_wrapper_with_checkpoint("41", &data, 0, -1, &mut || {
+                short_search_checkpoints += 1;
+                true
+            })
+            .expect("bounded short search should complete");
+        assert_eq!(searched.found, None);
+        assert_eq!(short_search_checkpoints, 1);
+
+        let data = vec![0_u8; NATIVE_CHECKPOINT_INTERVAL];
+        let mut boundary_checkpoints = 0;
+        let searched =
+            Pattern::find_binary_wrapper_with_checkpoint("41", &data, 0, -1, &mut || {
+                boundary_checkpoints += 1;
+                true
+            })
+            .expect("checkpoint boundary search should complete");
+        assert_eq!(searched.found, None);
+        assert_eq!(boundary_checkpoints, 2);
+    }
+
+    #[test]
+    fn binary_search_checkpoint_can_interrupt_a_single_native_call() {
+        let data = vec![0_u8; NATIVE_CHECKPOINT_INTERVAL + 1];
+        let mut checkpoints = 0;
+        let error = Pattern::find_binary_wrapper_with_checkpoint("41", &data, 0, -1, &mut || {
+            checkpoints += 1;
+            checkpoints < 2
+        })
+        .expect_err("second checkpoint should interrupt the native search");
+        assert_eq!(error, BinarySearchError::Match(MatchError::Interrupted));
+        assert_eq!(checkpoints, 2);
     }
 
     #[test]

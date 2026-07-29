@@ -83,7 +83,7 @@ class ToolchainUpgradeTests(unittest.TestCase):
             "c-static-link": 3,
             "rquickjs-rule-runtime": 38,
             "rquickjs-static-link": 2,
-            "signature-parser": 15,
+            "signature-parser": 17,
         }
         for name, gate in gates.items():
             with self.subTest(spike=name):
@@ -109,7 +109,7 @@ class ToolchainUpgradeTests(unittest.TestCase):
             {
                 "fmt": "pass",
                 "clippy": "pass",
-                "unit_tests": 15,
+                "unit_tests": 17,
                 "doc_tests": 0,
             },
         )

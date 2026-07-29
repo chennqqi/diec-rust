@@ -12,7 +12,9 @@ use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 use std::thread;
 use std::time::{Duration, Instant};
 
-use diec_signature_parser_spike::{Endian, FileType, MemoryMap, MemoryRecord, Pattern};
+use diec_signature_parser_spike::{
+    Endian, FileType, MemoryMap, MemoryRecord, NATIVE_CHECKPOINT_INTERVAL, Pattern,
+};
 
 use rquickjs::{
     CatchResultExt, Context, Error, Function, Object, Runtime, context::EvalOptions, function::Opt,
@@ -221,6 +223,7 @@ type SharedHostTrace = Arc<HostTrace>;
 #[derive(Default)]
 struct HostTrace {
     calls: AtomicUsize,
+    compare_native_checkpoints: AtomicUsize,
     fast_paths: AtomicUsize,
     generic_paths: AtomicUsize,
     quirks: AtomicUsize,
@@ -228,6 +231,7 @@ struct HostTrace {
     unique_quirks: Mutex<BTreeSet<String>>,
     unique_errors: Mutex<BTreeSet<String>>,
     search_calls: AtomicUsize,
+    search_native_checkpoints: AtomicUsize,
     find_signature_calls: AtomicUsize,
     f_sig_calls: AtomicUsize,
     is_signature_present_calls: AtomicUsize,
@@ -2323,7 +2327,14 @@ fn search_signature(
     pattern: &str,
 ) -> rquickjs::Result<Option<usize>> {
     trace.search_calls.fetch_add(1, Ordering::Relaxed);
-    match Pattern::find_binary_wrapper(pattern, data, offset, size) {
+    let mut checkpoint = || {
+        trace
+            .search_native_checkpoints
+            .fetch_add(1, Ordering::Relaxed);
+        true
+    };
+    match Pattern::find_binary_wrapper_with_checkpoint(pattern, data, offset, size, &mut checkpoint)
+    {
         Ok(report) => {
             trace
                 .search_matches
@@ -2736,10 +2747,17 @@ fn install_nintendo_host_with_context_and_strings(
                 name,
                 Function::new(ctx.clone(), move |pattern: String, offset: Opt<i64>| {
                     compare_trace.calls.fetch_add(1, Ordering::Relaxed);
-                    match Pattern::compare_binary_wrapper(
+                    let mut checkpoint = || {
+                        compare_trace
+                            .compare_native_checkpoints
+                            .fetch_add(1, Ordering::Relaxed);
+                        true
+                    };
+                    match Pattern::compare_binary_wrapper_with_checkpoint(
                         &pattern,
                         &compare_data,
                         offset.0.unwrap_or(0),
+                        &mut checkpoint,
                     ) {
                         Ok(report) => {
                             if report.header_fast_path {
@@ -4095,11 +4113,17 @@ fn trace_binary_detects_report_with_data(
             .map_err(|_| "Binary trace result mutex poisoned".to_owned())?
             .len();
         let signature_calls_before = signature_trace.calls.load(Ordering::Relaxed);
+        let compare_native_checkpoints_before = signature_trace
+            .compare_native_checkpoints
+            .load(Ordering::Relaxed);
         let signature_fast_paths_before = signature_trace.fast_paths.load(Ordering::Relaxed);
         let signature_generic_paths_before = signature_trace.generic_paths.load(Ordering::Relaxed);
         let signature_quirks_before = signature_trace.quirks.load(Ordering::Relaxed);
         let signature_errors_before = signature_trace.errors.load(Ordering::Relaxed);
         let signature_search_calls_before = signature_trace.search_calls.load(Ordering::Relaxed);
+        let search_native_checkpoints_before = signature_trace
+            .search_native_checkpoints
+            .load(Ordering::Relaxed);
         let signature_find_signature_calls_before =
             signature_trace.find_signature_calls.load(Ordering::Relaxed);
         let signature_f_sig_calls_before = signature_trace.f_sig_calls.load(Ordering::Relaxed);
@@ -4144,6 +4168,10 @@ fn trace_binary_detects_report_with_data(
             .calls
             .load(Ordering::Relaxed)
             .saturating_sub(signature_calls_before);
+        let compare_native_checkpoint_count = signature_trace
+            .compare_native_checkpoints
+            .load(Ordering::Relaxed)
+            .saturating_sub(compare_native_checkpoints_before);
         let signature_fast_path_count = signature_trace
             .fast_paths
             .load(Ordering::Relaxed)
@@ -4164,6 +4192,10 @@ fn trace_binary_detects_report_with_data(
             .search_calls
             .load(Ordering::Relaxed)
             .saturating_sub(signature_search_calls_before);
+        let search_native_checkpoint_count = signature_trace
+            .search_native_checkpoints
+            .load(Ordering::Relaxed)
+            .saturating_sub(search_native_checkpoints_before);
         let signature_find_signature_call_count = signature_trace
             .find_signature_calls
             .load(Ordering::Relaxed)
@@ -4308,11 +4340,15 @@ fn trace_binary_detects_report_with_data(
             "fallback_calls": calls,
             "fallback_calls_truncated": fallback_total > calls.len() as u64,
             "signature_compare_call_count": signature_call_count,
+            "signature_compare_native_checkpoint_count":
+                compare_native_checkpoint_count,
             "signature_compare_fast_path_count": signature_fast_path_count,
             "signature_compare_generic_path_count": signature_generic_path_count,
             "signature_compare_quirk_count": signature_quirk_count,
             "signature_compare_error_count": signature_error_count,
             "signature_search_call_count": signature_search_call_count,
+            "signature_search_native_checkpoint_count":
+                search_native_checkpoint_count,
             "signature_find_signature_call_count": signature_find_signature_call_count,
             "signature_f_sig_call_count": signature_f_sig_call_count,
             "signature_is_signature_present_call_count":
@@ -4410,6 +4446,15 @@ fn trace_binary_detects_report_with_data(
         "is_debug_data": signature_trace.is_debug_data_calls.load(Ordering::Relaxed),
         "is_file_part": signature_trace.is_file_part_calls.load(Ordering::Relaxed),
     });
+    let compare_native_checkpoint_total = signature_trace
+        .compare_native_checkpoints
+        .load(Ordering::Relaxed);
+    let search_native_checkpoint_total = signature_trace
+        .search_native_checkpoints
+        .load(Ordering::Relaxed);
+    let native_checkpoint_total = compare_native_checkpoint_total
+        .checked_add(search_native_checkpoint_total)
+        .ok_or_else(|| "native checkpoint total overflow".to_owned())?;
     Ok(json!({
         "schema_version": 1,
         "operation": "diagnostic invocation of all fixed-order Binary detect functions",
@@ -4432,6 +4477,8 @@ fn trace_binary_detects_report_with_data(
         "fallback_call_total": fallback_call_total,
         "fallback_paths": fallback_paths,
         "signature_compare_call_total": signature_trace.calls.load(Ordering::Relaxed),
+        "signature_compare_native_checkpoint_total":
+            compare_native_checkpoint_total,
         "signature_compare_fast_path_total":
             signature_trace.fast_paths.load(Ordering::Relaxed),
         "signature_compare_generic_path_total":
@@ -4441,6 +4488,8 @@ fn trace_binary_detects_report_with_data(
         "signature_compare_unique_quirks": signature_unique_quirks,
         "signature_compare_unique_errors": signature_unique_errors,
         "signature_search_call_total": signature_trace.search_calls.load(Ordering::Relaxed),
+        "signature_search_native_checkpoint_total":
+            search_native_checkpoint_total,
         "signature_find_signature_call_total":
             signature_trace.find_signature_calls.load(Ordering::Relaxed),
         "signature_f_sig_call_total": signature_trace.f_sig_calls.load(Ordering::Relaxed),
@@ -4462,6 +4511,15 @@ fn trace_binary_detects_report_with_data(
         "observations": observations,
         "interrupt_handler_call_limit_per_rule": 1_000_000,
         "runtime_measurement": {
+            "native_checkpoint": {
+                "semantics":
+                    "one callback at each Binary signature compare/search entry and then before every 4096th searched candidate position within the same native call",
+                "candidate_interval": NATIVE_CHECKPOINT_INTERVAL,
+                "call_total": native_checkpoint_total,
+                "compare_call_total": compare_native_checkpoint_total,
+                "search_call_total": search_native_checkpoint_total,
+                "can_interrupt_single_native_call": true,
+            },
             "interrupt": {
                 "handler_semantics":
                     "one QuickJS-NG interrupt callback invocation; counter is monotonic for the sample runtime",
@@ -6427,6 +6485,9 @@ fn verify_binary_corpus(
     let mut all_match = true;
     let mut signature_compare_call_total = 0_u64;
     let mut signature_search_call_total = 0_u64;
+    let mut native_checkpoint_total = 0_u64;
+    let mut compare_native_checkpoint_total = 0_u64;
+    let mut search_native_checkpoint_total = 0_u64;
     let mut attempted_detect_count = 0_u64;
     let mut accepted_detect_count = 0_u64;
     let mut detect_error_count = 0_u64;
@@ -6494,6 +6555,42 @@ fn verify_binary_corpus(
         let include_calls = report_u64(&trace, "include_call_count", name)?;
         let compare_errors = report_u64(&trace, "signature_compare_error_total", name)?;
         let search_errors = report_u64(&trace, "signature_search_error_total", name)?;
+        let sample_native_checkpoint_total = report_nested_u64(
+            &trace,
+            &["runtime_measurement", "native_checkpoint", "call_total"],
+            name,
+        )?;
+        let sample_compare_native_checkpoint_total = report_nested_u64(
+            &trace,
+            &[
+                "runtime_measurement",
+                "native_checkpoint",
+                "compare_call_total",
+            ],
+            name,
+        )?;
+        let sample_search_native_checkpoint_total = report_nested_u64(
+            &trace,
+            &[
+                "runtime_measurement",
+                "native_checkpoint",
+                "search_call_total",
+            ],
+            name,
+        )?;
+        let sample_native_checkpoint_interval = report_nested_u64(
+            &trace,
+            &[
+                "runtime_measurement",
+                "native_checkpoint",
+                "candidate_interval",
+            ],
+            name,
+        )?;
+        let sample_native_checkpoint_can_interrupt = trace
+            .pointer("/runtime_measurement/native_checkpoint/can_interrupt_single_native_call")
+            .and_then(Value::as_bool)
+            .ok_or_else(|| format!("{name}: native checkpoint interrupt capability is missing"))?;
         let sample_interrupt_total = report_nested_u64(
             &trace,
             &["runtime_measurement", "interrupt", "handler_call_total"],
@@ -6561,6 +6658,15 @@ fn verify_binary_corpus(
         let runtime_measurement_ok = sample_detect_interrupt_sum
             .checked_add(sample_interrupt_outside_detects)
             == Some(sample_interrupt_total)
+            && sample_compare_native_checkpoint_total
+                >= report_u64(&trace, "signature_compare_call_total", name)?
+            && sample_search_native_checkpoint_total
+                >= report_u64(&trace, "signature_search_call_total", name)?
+            && sample_compare_native_checkpoint_total
+                .checked_add(sample_search_native_checkpoint_total)
+                == Some(sample_native_checkpoint_total)
+            && sample_native_checkpoint_interval == NATIVE_CHECKPOINT_INTERVAL as u64
+            && sample_native_checkpoint_can_interrupt
             && sample_memory_checkpoint_count == (BINARY_SIGNATURE_COUNT as u64 + 3)
             && sample_maximum_malloc_size > 0
             && sample_maximum_memory_used_size > 0
@@ -6589,6 +6695,15 @@ fn verify_binary_corpus(
         signature_search_call_total = signature_search_call_total
             .checked_add(report_u64(&trace, "signature_search_call_total", name)?)
             .ok_or_else(|| "signature search aggregate overflow".to_owned())?;
+        native_checkpoint_total = native_checkpoint_total
+            .checked_add(sample_native_checkpoint_total)
+            .ok_or_else(|| "native checkpoint aggregate overflow".to_owned())?;
+        compare_native_checkpoint_total = compare_native_checkpoint_total
+            .checked_add(sample_compare_native_checkpoint_total)
+            .ok_or_else(|| "compare native checkpoint aggregate overflow".to_owned())?;
+        search_native_checkpoint_total = search_native_checkpoint_total
+            .checked_add(sample_search_native_checkpoint_total)
+            .ok_or_else(|| "search native checkpoint aggregate overflow".to_owned())?;
         elapsed_ms = elapsed_ms
             .checked_add(report_u64(&trace, "elapsed_ms", name)?)
             .ok_or_else(|| "elapsed millisecond aggregate overflow".to_owned())?;
@@ -6669,6 +6784,15 @@ fn verify_binary_corpus(
 
     let runtime_measurement = json!({
         "sample_runtime_count": sample_reports.len(),
+        "native_checkpoint": {
+            "semantics":
+                "one callback at each Binary signature compare/search entry and then before every 4096th searched candidate position within the same native call",
+            "candidate_interval": NATIVE_CHECKPOINT_INTERVAL,
+            "call_total": native_checkpoint_total,
+            "compare_call_total": compare_native_checkpoint_total,
+            "search_call_total": search_native_checkpoint_total,
+            "can_interrupt_single_native_call": true,
+        },
         "interrupt": {
             "handler_semantics":
                 "one QuickJS-NG interrupt callback invocation; each sample uses one monotonic runtime counter",
@@ -8312,11 +8436,13 @@ mod tests {
         eval_unit(&context, b"Binary.findSignature(0, -1, 'unsupported')")
             .expect_err("unknown search syntax must be an explicit diagnostic");
         assert_eq!(trace.calls.load(Ordering::Relaxed), 3);
+        assert_eq!(trace.compare_native_checkpoints.load(Ordering::Relaxed), 3);
         assert_eq!(trace.fast_paths.load(Ordering::Relaxed), 1);
         assert_eq!(trace.generic_paths.load(Ordering::Relaxed), 1);
         assert_eq!(trace.quirks.load(Ordering::Relaxed), 1);
         assert_eq!(trace.errors.load(Ordering::Relaxed), 1);
         assert_eq!(trace.search_calls.load(Ordering::Relaxed), 4);
+        assert_eq!(trace.search_native_checkpoints.load(Ordering::Relaxed), 4);
         assert_eq!(trace.find_signature_calls.load(Ordering::Relaxed), 2);
         assert_eq!(trace.f_sig_calls.load(Ordering::Relaxed), 1);
         assert_eq!(trace.is_signature_present_calls.load(Ordering::Relaxed), 1);

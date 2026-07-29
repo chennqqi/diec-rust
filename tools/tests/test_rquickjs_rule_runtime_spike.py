@@ -311,7 +311,22 @@ class RQuickJsRuleRuntimeSpikeTests(unittest.TestCase):
         self.assertTrue(measurement["projection_hash_emitted_by_spike"])
         self.assertEqual(
             measurement["stable_projection_sha256"],
-            "723862e669846c4e3af813c19ce61007ea114942ba926162cbed072d65a54f87",
+            "286e778c3891dd3b289446526f2910601f9e25932feec25489ee74adbcc5c326",
+        )
+        self.assertEqual(
+            measurement["native_checkpoint"],
+            {
+                "call_total": 16_439,
+                "can_interrupt_single_native_call": True,
+                "candidate_interval": 4096,
+                "compare_call_total": 16_285,
+                "search_call_total": 154,
+                "semantics": (
+                    "one callback at each Binary signature compare/search "
+                    "entry and then before every 4096th searched candidate "
+                    "position within the same native call"
+                ),
+            },
         )
         self.assertEqual(
             measurement["interrupt"],

@@ -23,7 +23,7 @@ ADR 0007 已被 ADR 0011 Superseded，不属于当前待接受集合。机器清
 | 0003 | legacy raw 与 modern canonical 永久分离 | modern schema、跨 Rust/C/CLI canonical bytes、默认 profile |
 | 0004 | 默认拒绝且 evidence-bound 的精确 waiver | 真实 owner workflow、modern/engine variants、release signing |
 | 0005 | deterministic text facts 取代未初始化状态 | Phase 1 SafetyDeviation 与 production HostApi |
-| 0006 | rquickjs/QuickJS-NG 作为首个私有 backend | heap/JS stack/fuel/deadline 已有联合候选，Binary 正常 poll/checkpoint 已三轮计量但未准入；仍缺全 HostApi、瞬时 high-water/native checkpoint/跨格式 scaling、正式边界测试、三平台/sanitizer、许可证/SBOM |
+| 0006 | rquickjs/QuickJS-NG 作为首个私有 backend | heap/JS stack/fuel/deadline 已有联合候选，Binary 正常 VM poll 与 signature native checkpoint 已三轮计量且 4095/4096 边界、单次中断已测，但未准入；仍缺其余 HostApi、瞬时 high-water、跨格式 scaling、完整正式边界测试、三平台/sanitizer、许可证/SBOM |
 | 0008 | 固定 order manifest 取代非传递 comparator | 全规则 manifest、Rust loader、Windows/macOS order |
 | 0009 | modern cancel 不返回 partial detections | production Rust/JSON/C mapping、race/recovery、legacy waiver |
 | 0010 | include cycle 提前有界失败 | 全库 sizing 已提出 16/256 与 64/4096；仍缺 dynamic/custom database、production graph/stack、边界/fuzz、CPU/peak-memory 与 SafetyDeviation |

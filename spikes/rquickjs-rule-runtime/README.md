@@ -56,8 +56,11 @@ compatibility evidence.
 `verify-binary-corpus` runs the same 292-rule lifecycle over all 14 generated
 Nintendo samples and compares ordered results with the pinned Qt oracle. It
 also counts every normal QuickJS-NG interrupt callback with one monotonic
-counter per sample runtime and records `Runtime::memory_usage()` after runtime
-creation, initialization, every rule, and final reporting. These memory
+counter per sample runtime. Binary signature compare/search also records one
+native cooperative checkpoint at HostApi entry and before every 4096th
+searched candidate; a rejected callback interrupts a single in-flight native
+search. The command records `Runtime::memory_usage()` after runtime creation,
+initialization, every rule, and final reporting. These memory
 snapshots are lifecycle checkpoints, not a transient in-eval allocator
 high-water measurement. Large raw reports belong in temporary storage; only
 the stable projection and its reproducible summary are versioned.

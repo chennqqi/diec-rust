@@ -2,7 +2,7 @@
   "acceptance_requirements": [
     "ADR 0006 receives explicit review disposition",
     "production backend measures real-corpus heap high-water",
-    "production backend records native checkpoints and validates VM poll scaling across formats",
+    "production backend extends native checkpoints to every HostApi and validates VM poll scaling across formats",
     "limit-1/exact/+1 covers all four fields without reset",
     "infinite JS and native loops stop under fuel and deadline",
     "custom allocator is rejected or proves an equivalent heap limit",
@@ -51,6 +51,7 @@
     "does_not_prove": [
       "production heap, stack, fuel, or deadline acceptability",
       "operation-anchor to VM-poll conversion",
+      "native checkpoint coverage for every HostApi",
       "cross-platform runtime resource equality",
       "all fixed rules on valid positive and negative inputs"
     ],
@@ -62,7 +63,9 @@
     },
     "maximum_active_include_depth_observed": 2,
     "maximum_include_evaluations_observed": 30,
-    "native_host_checkpoint_count_measured": false,
+    "native_checkpoint_can_interrupt_single_call": true,
+    "native_host_checkpoint_count_measured": true,
+    "real_corpus_compare_native_checkpoint_total_per_repeat": 16285,
     "real_corpus_heap_high_water_measured": false,
     "real_corpus_interrupt_poll_count_measured": true,
     "real_corpus_interrupt_poll_repeat_count": 3,
@@ -72,7 +75,11 @@
     "real_corpus_maximum_observed_malloc_size_bytes": 654562,
     "real_corpus_maximum_observed_memory_used_size_bytes": 623012,
     "real_corpus_memory_checkpoint_count": 4130,
-    "real_corpus_runtime_measurement_projection_sha256": "723862e669846c4e3af813c19ce61007ea114942ba926162cbed072d65a54f87"
+    "real_corpus_native_checkpoint_candidate_interval": 4096,
+    "real_corpus_native_checkpoint_repeat_count": 3,
+    "real_corpus_native_checkpoint_total_per_repeat": 16439,
+    "real_corpus_runtime_measurement_projection_sha256": "286e778c3891dd3b289446526f2910601f9e25932feec25489ee74adbcc5c326",
+    "real_corpus_search_native_checkpoint_total_per_repeat": 154
   },
   "failure_contract": {
     "cancel_has_independent_typed_reason": true,
@@ -109,7 +116,7 @@
   "source_bindings": {
     "adr_runtime": {
       "path": "docs/design/decisions/0006-rquickjs-rule-runtime.md",
-      "sha256": "35dacdbe916b7b7889299f634d6f457ca8c10caf1d90ac5bfe38283526ab83c3"
+      "sha256": "e626f6c591b445902b9218b86755250d52b772e2fe1d116593954947d6c681b1"
     },
     "adr_scan": {
       "path": "docs/design/decisions/0012-bounded-nested-scan-budget.md",
@@ -129,11 +136,11 @@
     },
     "runtime_report": {
       "path": "docs/research/data/rquickjs-rule-runtime.json",
-      "sha256": "cb51e195c7523530d41737db6a88327bb36e083ec072d417d6da4e47dda265b1"
+      "sha256": "ca6e64bfbf233cda93e211e0729cd67ee4738d2df0302ca46617b640347410fd"
     },
     "runtime_research": {
       "path": "docs/research/rquickjs-rule-runtime-spike.md",
-      "sha256": "db575f03429425419f606c3d7f95e20c070c6100ce3008a89e93a385c44bfad4"
+      "sha256": "da719f62b8e3c69165e93bf1eb6ff3126581d9c5c4b144fe20812befaf528be5"
     }
   },
   "units": {

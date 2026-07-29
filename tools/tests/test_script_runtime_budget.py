@@ -135,7 +135,7 @@ class ScriptRuntimeBudgetTests(unittest.TestCase):
             evidence[
                 "real_corpus_runtime_measurement_projection_sha256"
             ],
-            "723862e669846c4e3af813c19ce61007ea114942ba926162cbed072d65a54f87",
+            "286e778c3891dd3b289446526f2910601f9e25932feec25489ee74adbcc5c326",
         )
         self.assertTrue(
             evidence[
@@ -158,9 +158,47 @@ class ScriptRuntimeBudgetTests(unittest.TestCase):
             ],
             623_012,
         )
+        self.assertTrue(
+            evidence["native_host_checkpoint_count_measured"]
+        )
+        self.assertEqual(
+            evidence["real_corpus_native_checkpoint_repeat_count"],
+            3,
+        )
+        self.assertEqual(
+            evidence[
+                "real_corpus_native_checkpoint_total_per_repeat"
+            ],
+            16_439,
+        )
+        self.assertEqual(
+            evidence[
+                "real_corpus_compare_native_checkpoint_total_per_repeat"
+            ],
+            16_285,
+        )
+        self.assertEqual(
+            evidence[
+                "real_corpus_search_native_checkpoint_total_per_repeat"
+            ],
+            154,
+        )
+        self.assertEqual(
+            evidence[
+                "real_corpus_native_checkpoint_candidate_interval"
+            ],
+            4096,
+        )
+        self.assertTrue(
+            evidence["native_checkpoint_can_interrupt_single_call"]
+        )
         self.assertFalse(evidence["all_format_rule_lifecycles_measured"])
         self.assertIn(
             "operation-anchor to VM-poll conversion",
+            evidence["does_not_prove"],
+        )
+        self.assertIn(
+            "native checkpoint coverage for every HostApi",
             evidence["does_not_prove"],
         )
 

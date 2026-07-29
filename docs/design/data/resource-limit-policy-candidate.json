@@ -174,11 +174,11 @@
     },
     "runtime_spike": {
       "path": "docs/research/data/rquickjs-rule-runtime.json",
-      "sha256": "cb51e195c7523530d41737db6a88327bb36e083ec072d417d6da4e47dda265b1"
+      "sha256": "ca6e64bfbf233cda93e211e0729cd67ee4738d2df0302ca46617b640347410fd"
     },
     "script_budget": {
       "path": "docs/design/data/script-runtime-budget-candidate.json",
-      "sha256": "2ba037f2bdc9400d41eb61ed29dbd7f0ba1b14ba04e59b59ca8c4adec5a4fcea"
+      "sha256": "8e5360345ae25583df7d968d5078ec9f574ac5f8efcd645ffcf3d61ba33ec2f4"
     },
     "traversal_attempt": {
       "path": "docs/design/data/traversal-attempt-budget-candidate.json",
@@ -244,7 +244,9 @@
     "script_runtime_evidence_boundary": {
       "all_format_rule_lifecycles_measured": false,
       "fault_injection_values_are_candidate_basis": false,
-      "native_host_checkpoint_count_measured": false,
+      "native_checkpoint_can_interrupt_single_call": true,
+      "native_host_checkpoint_count_measured": true,
+      "real_corpus_compare_native_checkpoint_total_per_repeat": 16285,
       "real_corpus_heap_high_water_measured": false,
       "real_corpus_interrupt_poll_count_measured": true,
       "real_corpus_interrupt_poll_repeat_count": 3,
@@ -253,7 +255,11 @@
       "real_corpus_maximum_observed_malloc_size_bytes": 654562,
       "real_corpus_maximum_observed_memory_used_size_bytes": 623012,
       "real_corpus_memory_checkpoint_count": 4130,
-      "real_corpus_runtime_measurement_projection_sha256": "723862e669846c4e3af813c19ce61007ea114942ba926162cbed072d65a54f87"
+      "real_corpus_native_checkpoint_candidate_interval": 4096,
+      "real_corpus_native_checkpoint_repeat_count": 3,
+      "real_corpus_native_checkpoint_total_per_repeat": 16439,
+      "real_corpus_runtime_measurement_projection_sha256": "286e778c3891dd3b289446526f2910601f9e25932feec25489ee74adbcc5c326",
+      "real_corpus_search_native_checkpoint_total_per_repeat": 154
     }
   }
 }

@@ -118,8 +118,9 @@ def validate_sources(root: Path) -> tuple[
             "| cumulative script deadline | 10 s | 60 s |",
             "每轮正常\n  runtime 共观察 28 次 interrupt callback",
             "operation anchor 不等于 VM instruction，也不能从\n"
-            "  单一 Binary corpus 的 poll count 推导跨格式 fuel",
-            "checkpoint 不是 eval 内瞬时\n  heap high-water",
+            "  单一 Binary corpus 的 poll/checkpoint count 推导跨格式 fuel",
+            "signature\n  checkpoint 也不代表所有 HostApi 已覆盖",
+            "memory checkpoint 不是 eval 内瞬时\n  heap high-water",
             "custom/\n  rust allocator 未证明等价限制前禁止启用",
         ),
         SOURCES["adr_runtime"],
@@ -166,6 +167,7 @@ def validate_sources(root: Path) -> tuple[
             "4 MiB runtime limit 拒绝 16 MiB `ArrayBuffer`",
             "默认 VM stack 为\n`256 * 1024` bytes",
             "每轮正常生命周期共触发 28 次 QuickJS-NG interrupt callback",
+            "每轮固定 16,439 次，其中 compare 16,285 次、search\n154 次",
             "4,130 个 `Runtime::memory_usage()` checkpoint",
             "不能观察 eval 内部瞬时 allocator high-water",
         ),
@@ -227,7 +229,20 @@ def validate_sources(root: Path) -> tuple[
         and measurement.get("stable_projection_equal") is True
         and measurement.get("projection_hash_emitted_by_spike") is True
         and measurement.get("stable_projection_sha256")
-        == "723862e669846c4e3af813c19ce61007ea114942ba926162cbed072d65a54f87"
+        == "286e778c3891dd3b289446526f2910601f9e25932feec25489ee74adbcc5c326"
+        and measurement.get("native_checkpoint")
+        == {
+            "call_total": 16_439,
+            "can_interrupt_single_native_call": True,
+            "candidate_interval": 4096,
+            "compare_call_total": 16_285,
+            "search_call_total": 154,
+            "semantics": (
+                "one callback at each Binary signature compare/search "
+                "entry and then before every 4096th searched candidate "
+                "position within the same native call"
+            ),
+        }
         and measurement.get("interrupt")
         == {
             "detect_handler_call_sum": 9,
@@ -449,11 +464,32 @@ def build_candidate(root: Path) -> dict[str, Any]:
             "real_corpus_runtime_measurement_projection_sha256": (
                 measurement["stable_projection_sha256"]
             ),
-            "native_host_checkpoint_count_measured": False,
+            "native_host_checkpoint_count_measured": True,
+            "real_corpus_native_checkpoint_repeat_count": measurement[
+                "repeat_count"
+            ],
+            "real_corpus_native_checkpoint_total_per_repeat": (
+                measurement["native_checkpoint"]["call_total"]
+            ),
+            "real_corpus_compare_native_checkpoint_total_per_repeat": (
+                measurement["native_checkpoint"]["compare_call_total"]
+            ),
+            "real_corpus_search_native_checkpoint_total_per_repeat": (
+                measurement["native_checkpoint"]["search_call_total"]
+            ),
+            "real_corpus_native_checkpoint_candidate_interval": (
+                measurement["native_checkpoint"]["candidate_interval"]
+            ),
+            "native_checkpoint_can_interrupt_single_call": (
+                measurement["native_checkpoint"][
+                    "can_interrupt_single_native_call"
+                ]
+            ),
             "all_format_rule_lifecycles_measured": False,
             "does_not_prove": [
                 "production heap, stack, fuel, or deadline acceptability",
                 "operation-anchor to VM-poll conversion",
+                "native checkpoint coverage for every HostApi",
                 "cross-platform runtime resource equality",
                 "all fixed rules on valid positive and negative inputs",
             ],
@@ -471,8 +507,8 @@ def build_candidate(root: Path) -> dict[str, Any]:
             "ADR 0006 receives explicit review disposition",
             "production backend measures real-corpus heap high-water",
             (
-                "production backend records native checkpoints and "
-                "validates VM poll scaling across formats"
+                "production backend extends native checkpoints to every "
+                "HostApi and validates VM poll scaling across formats"
             ),
             "limit-1/exact/+1 covers all four fields without reset",
             "infinite JS and native loops stop under fuel and deadline",

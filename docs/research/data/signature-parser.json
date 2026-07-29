@@ -187,7 +187,7 @@
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)",
     "cargo_toml_sha256": "17386601a0aab388d5174f84d4c38c0b5e430e6c74b95ce6fb37cf5c6492fefa",
     "cargo_lock_sha256": "2985224550a817be8fe4dea19a12c2db06cc21f199b985fba12fc23dedfa9279",
-    "source_sha256": "e1ea895cfefd22a31aea05c89323008f95df44fec71480afb6da202b45cec958",
+    "source_sha256": "26fab9b6f36209c4c7448ac1888d02617cecb20270b30d9377dccd99766e06b5",
     "runtime_dependencies": 0,
     "strict_parse_count": 312,
     "compatible_parse_count": 317,
@@ -207,6 +207,16 @@
       "relative offset",
       "absolute address"
     ],
+    "native_checkpoint": {
+      "candidate_interval": 4096,
+      "can_interrupt_single_binary_search_call": true,
+      "entry_checkpoint": true,
+      "error": "Interrupted",
+      "tested_candidate_boundaries": [
+        4095,
+        4096
+      ]
+    },
     "unknown_syntax_is_diagnostic": true,
     "pinned_xbinary_compare_differential": {
       "case_count": 16,

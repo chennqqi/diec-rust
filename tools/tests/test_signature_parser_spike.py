@@ -80,6 +80,18 @@ class SignatureParserSpikeTests(unittest.TestCase):
                     spike[field],
                 )
 
+    def test_native_checkpoint_boundary_is_explicit(self):
+        self.assertEqual(
+            self.evidence["spike"]["native_checkpoint"],
+            {
+                "candidate_interval": 4096,
+                "can_interrupt_single_binary_search_call": True,
+                "entry_checkpoint": True,
+                "error": "Interrupted",
+                "tested_candidate_boundaries": [4095, 4096],
+            },
+        )
+
     def test_qtscript_object_enumeration_provenance_matches_files(self):
         summary = self.evidence["qtscript_object_enumeration"]
         evidence = self.qtscript_object_enumeration

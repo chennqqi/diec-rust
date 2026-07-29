@@ -690,7 +690,7 @@ def validate_reports(root: Path) -> dict[str, Any]:
         and script_evidence.get(
             "real_corpus_runtime_measurement_projection_sha256"
         )
-        == "723862e669846c4e3af813c19ce61007ea114942ba926162cbed072d65a54f87"
+        == "286e778c3891dd3b289446526f2910601f9e25932feec25489ee74adbcc5c326"
         and script_evidence.get(
             "real_corpus_lifecycle_memory_checkpoints_measured"
         )
@@ -710,7 +710,31 @@ def validate_reports(root: Path) -> dict[str, Any]:
         and script_evidence.get(
             "native_host_checkpoint_count_measured"
         )
-        is False
+        is True
+        and script_evidence.get(
+            "real_corpus_native_checkpoint_repeat_count"
+        )
+        == 3
+        and script_evidence.get(
+            "real_corpus_native_checkpoint_total_per_repeat"
+        )
+        == 16_439
+        and script_evidence.get(
+            "real_corpus_compare_native_checkpoint_total_per_repeat"
+        )
+        == 16_285
+        and script_evidence.get(
+            "real_corpus_search_native_checkpoint_total_per_repeat"
+        )
+        == 154
+        and script_evidence.get(
+            "real_corpus_native_checkpoint_candidate_interval"
+        )
+        == 4096
+        and script_evidence.get(
+            "native_checkpoint_can_interrupt_single_call"
+        )
+        is True
         and script_evidence.get(
             "all_format_rule_lifecycles_measured"
         )
@@ -803,14 +827,22 @@ def validate_reports(root: Path) -> dict[str, Any]:
                 "real_corpus_interrupt_poll_repeat_count": 3,
                 "real_corpus_interrupt_poll_total_per_repeat": 28,
                 "real_corpus_runtime_measurement_projection_sha256": (
-                    "723862e669846c4e3af813c19ce61007ea114942ba926162"
-                    "cbed072d65a54f87"
+                    "286e778c3891dd3b289446526f2910601f9e25932feec254"
+                    "89ee74adbcc5c326"
                 ),
                 "real_corpus_lifecycle_memory_checkpoints_measured": True,
                 "real_corpus_memory_checkpoint_count": 4130,
                 "real_corpus_maximum_observed_malloc_size_bytes": 654_562,
                 "real_corpus_maximum_observed_memory_used_size_bytes": 623_012,
-                "native_host_checkpoint_count_measured": False,
+                "native_host_checkpoint_count_measured": True,
+                "real_corpus_native_checkpoint_repeat_count": 3,
+                "real_corpus_native_checkpoint_total_per_repeat": 16_439,
+                "real_corpus_compare_native_checkpoint_total_per_repeat": (
+                    16_285
+                ),
+                "real_corpus_search_native_checkpoint_total_per_repeat": 154,
+                "real_corpus_native_checkpoint_candidate_interval": 4096,
+                "native_checkpoint_can_interrupt_single_call": True,
                 "all_format_rule_lifecycles_measured": False,
                 "fault_injection_values_are_candidate_basis": False,
             },

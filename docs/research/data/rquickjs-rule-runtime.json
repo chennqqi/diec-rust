@@ -20,7 +20,7 @@
   "experiment": {
     "cargo_lock_sha256": "f389eb266779a88939fea9793effdff29d01ea0e1184915698f4fa0f9441d0ad",
     "cargo_toml_sha256": "82c5bb97749f50212e5364c2ac7d1f81eaec4d460a9bf47710b4b42f9204a79f",
-    "source_sha256": "4f9baf76a5e3960e569fdad778fcf861d07f7f61ffbc142040ef34589a63056a",
+    "source_sha256": "c2d2efa1db4249aa03cefef7308e27e2c67a1876f01f7d42ee216ff3266940e1",
     "toolchain": "rustc 1.88.0 (6b00bc388 2025-06-23)"
   },
   "fixture": {
@@ -1319,11 +1319,19 @@
         "scope": "post-operation lifecycle checkpoints over all 14 sample runtimes; transient in-eval allocator high-water is not observed",
         "transient_high_water_measured": false
       },
+      "native_checkpoint": {
+        "call_total": 16439,
+        "can_interrupt_single_native_call": true,
+        "candidate_interval": 4096,
+        "compare_call_total": 16285,
+        "search_call_total": 154,
+        "semantics": "one callback at each Binary signature compare/search entry and then before every 4096th searched candidate position within the same native call"
+      },
       "projection_hash_emitted_by_spike": true,
       "repeat_count": 3,
       "sample_runtime_count_per_repeat": 14,
       "stable_projection_equal": true,
-      "stable_projection_sha256": "723862e669846c4e3af813c19ce61007ea114942ba926162cbed072d65a54f87"
+      "stable_projection_sha256": "286e778c3891dd3b289446526f2910601f9e25932feec25489ee74adbcc5c326"
     },
     "rule_count_per_sample": 292,
     "sample_count": 14,
