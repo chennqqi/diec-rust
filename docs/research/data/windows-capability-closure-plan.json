@@ -146,23 +146,16 @@
       "evidence_paths": [
         "docs/research/data/baseline-corpus-windows-qt5.json",
         "docs/research/data/windows-qt5-cli-matrix.json",
-        "docs/research/data/windows-qt5-cli-database.json"
+        "docs/research/data/windows-qt5-cli-database.json",
+        "docs/research/data/windows-qt5-cli-option-behavior.json"
       ],
       "evidence_set": "cli_options",
       "id": "CAP-CLI-OPT-004",
-      "missing_scope": "Windows verbose OS-record channel behavior",
+      "missing_scope": null,
       "name": "verbose option",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "verbose/messages/profiling channels retain raw stdout and stderr",
-          "the complete profiling announcement order is compared",
-          "test and createtest complete/missing argument exit and text behavior are fixed"
-        ],
-        "fixture": "docs/research/data/cli-option-behavior-linux.json",
-        "harness": "tools/upstream/probe_cli_option_behavior.py"
-      },
-      "status": "missing"
+      "observed_scope": "verbose changes the structured result on the same generated ELF exactly as Linux Qt5",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
@@ -197,7 +190,8 @@
       "evidence_paths": [
         "docs/research/data/baseline-corpus-windows-qt5.json",
         "docs/research/data/windows-qt5-cli-matrix.json",
-        "docs/research/data/windows-qt5-cli-database.json"
+        "docs/research/data/windows-qt5-cli-database.json",
+        "docs/research/data/windows-qt5-cli-option-behavior.json"
       ],
       "evidence_set": "cli_options",
       "id": "CAP-CLI-OPT-007",
@@ -212,30 +206,24 @@
       "evidence_paths": [
         "docs/research/data/baseline-corpus-windows-qt5.json",
         "docs/research/data/windows-qt5-cli-matrix.json",
-        "docs/research/data/windows-qt5-cli-database.json"
+        "docs/research/data/windows-qt5-cli-database.json",
+        "docs/research/data/windows-qt5-cli-option-behavior.json"
       ],
       "evidence_set": "cli_options",
       "id": "CAP-CLI-OPT-008",
-      "missing_scope": "Windows profiling channel and complete rule announcement order",
+      "missing_scope": null,
       "name": "profiling option",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "verbose/messages/profiling channels retain raw stdout and stderr",
-          "the complete profiling announcement order is compared",
-          "test and createtest complete/missing argument exit and text behavior are fixed"
-        ],
-        "fixture": "docs/research/data/cli-option-behavior-linux.json",
-        "harness": "tools/upstream/probe_cli_option_behavior.py"
-      },
-      "status": "missing"
+      "observed_scope": "profiling without messages is output-inert and the 292-name messages order is fixed with its Windows permutation retained",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
       "evidence_paths": [
         "docs/research/data/baseline-corpus-windows-qt5.json",
         "docs/research/data/windows-qt5-cli-matrix.json",
-        "docs/research/data/windows-qt5-cli-database.json"
+        "docs/research/data/windows-qt5-cli-database.json",
+        "docs/research/data/windows-qt5-cli-option-behavior.json"
       ],
       "evidence_set": "cli_options",
       "id": "CAP-CLI-OPT-009",
@@ -250,7 +238,8 @@
       "evidence_paths": [
         "docs/research/data/baseline-corpus-windows-qt5.json",
         "docs/research/data/windows-qt5-cli-matrix.json",
-        "docs/research/data/windows-qt5-cli-database.json"
+        "docs/research/data/windows-qt5-cli-database.json",
+        "docs/research/data/windows-qt5-cli-option-behavior.json"
       ],
       "evidence_set": "cli_options",
       "id": "CAP-CLI-OPT-010",
@@ -477,46 +466,32 @@
       "evidence_paths": [
         "docs/research/data/baseline-corpus-windows-qt5.json",
         "docs/research/data/windows-qt5-cli-matrix.json",
-        "docs/research/data/windows-qt5-cli-database.json"
+        "docs/research/data/windows-qt5-cli-database.json",
+        "docs/research/data/windows-qt5-cli-option-behavior.json"
       ],
       "evidence_set": "cli_options",
       "id": "CAP-CLI-TEST-001",
-      "missing_scope": "Windows --test complete/missing argument behavior",
+      "missing_scope": null,
       "name": "test mode no-op",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "verbose/messages/profiling channels retain raw stdout and stderr",
-          "the complete profiling announcement order is compared",
-          "test and createtest complete/missing argument exit and text behavior are fixed"
-        ],
-        "fixture": "docs/research/data/cli-option-behavior-linux.json",
-        "harness": "tools/upstream/probe_cli_option_behavior.py"
-      },
-      "status": "missing"
+      "observed_scope": "existing and missing --test directory values both load the database then return an empty successful no-op",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
       "evidence_paths": [
         "docs/research/data/baseline-corpus-windows-qt5.json",
         "docs/research/data/windows-qt5-cli-matrix.json",
-        "docs/research/data/windows-qt5-cli-database.json"
+        "docs/research/data/windows-qt5-cli-database.json",
+        "docs/research/data/windows-qt5-cli-option-behavior.json"
       ],
       "evidence_set": "cli_options",
       "id": "CAP-CLI-TEST-002",
-      "missing_scope": "Windows --createtest complete/missing argument behavior",
+      "missing_scope": null,
       "name": "create test mode no-op",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "verbose/messages/profiling channels retain raw stdout and stderr",
-          "the complete profiling announcement order is compared",
-          "test and createtest complete/missing argument exit and text behavior are fixed"
-        ],
-        "fixture": "docs/research/data/cli-option-behavior-linux.json",
-        "harness": "tools/upstream/probe_cli_option_behavior.py"
-      },
-      "status": "missing"
+      "observed_scope": "complete --createtest only announces while missing positionals exit 4 with the legacy --addtest diagnostic",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
@@ -706,23 +681,16 @@
       "evidence_paths": [
         "docs/research/data/baseline-corpus-windows-qt5.json",
         "docs/research/data/windows-qt5-cli-matrix.json",
-        "docs/research/data/windows-qt5-cli-database.json"
+        "docs/research/data/windows-qt5-cli-database.json",
+        "docs/research/data/windows-qt5-cli-option-behavior.json"
       ],
       "evidence_set": "cli_options",
       "id": "CAP-RULE-011",
-      "missing_scope": "complete Windows script profiling order",
+      "missing_scope": null,
       "name": "script profiling",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "verbose/messages/profiling channels retain raw stdout and stderr",
-          "the complete profiling announcement order is compared",
-          "test and createtest complete/missing argument exit and text behavior are fixed"
-        ],
-        "fixture": "docs/research/data/cli-option-behavior-linux.json",
-        "harness": "tools/upstream/probe_cli_option_behavior.py"
-      },
-      "status": "missing"
+      "observed_scope": "all 292 Binary profiling announcements are present in a stable Windows order with image_ICNS.sg moved to the end versus Linux",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
@@ -1182,13 +1150,14 @@
     "docs/research/data/capability-traceability.json": "e1bb982feb52fb97e6678319c629cf71735650fe4239c8558a0f765c16c8cff3",
     "docs/research/data/database-cache-engine-windows-qt5.json": "d1cbcbe741e4cf3999f54f4696f6eee59472b59bd3aaf9d98f94bb337b1e16da",
     "docs/research/data/engine-contract-windows-qt5.json": "4f7d1629d4c0cf627fd8f5fa1ff6adaf838f8c9fc910e95fac0c50bfd105233e",
-    "docs/research/data/windows-qt5-build-baseline.json": "b596fc71ce97cf948fd86ff464f6c2f2110e66475547946094be1a52555b31fe",
+    "docs/research/data/windows-qt5-build-baseline.json": "8389a9d48c06691f0ea277f89a24ad24fe9d6a2563c4d9e2788ab3645c193f2b",
     "docs/research/data/windows-qt5-cli-ads.json": "bfdec0a8a516dd5d86721a9331d1d914c7e66f29df0fe0d6115c6dcca079224e",
     "docs/research/data/windows-qt5-cli-database-archive.json": "53c673620cc4388f0da7ffe36af7a325a099bceb0e29912c1f733119f942d748",
     "docs/research/data/windows-qt5-cli-database.json": "13e58a8d1b0cc4feb3998c06140e0afe7adb754cb59e5198b0e5b3079a3d5f8c",
     "docs/research/data/windows-qt5-cli-filesystem.json": "bab9ce41f5bc82e56cba42a2d577669e8d8a6a372da030b0957fcb8b888fa02f",
     "docs/research/data/windows-qt5-cli-long-paths.json": "54084feff726a1da17e8b4b7ff40eed46733bd6eb2f5f900e4f02ec43bfb6cf5",
     "docs/research/data/windows-qt5-cli-matrix.json": "0ab0b636361da958ad6ac32272f9ce261c830e2f3654bc42d99a2dfd474be959",
+    "docs/research/data/windows-qt5-cli-option-behavior.json": "538b58ed461eb174dc73d9a621110b23f6b0b6b1e6f2e7d6acf4cf62df7b6f1c",
     "docs/research/data/windows-qt5-cli-output-remaining.json": "672370ebb6f689366098af2e2262be60569a37f7f80c781a1b49b044c4887376",
     "docs/research/data/windows-qt5-cli-path-nested.json": "e877e112deb244ab1cbf9edf221e94e155cda711a182f216478eeaf9da40e21b",
     "docs/research/data/windows-qt5-cli-special-paths.json": "f4e2f4ced3190a51df3bfa34cbdf8ad949130aadab324c7e725365a2c7fa8e68",
@@ -1197,13 +1166,13 @@
   "summary": {
     "all_capabilities_accounted_for": true,
     "capability_count": 68,
-    "closure_required": 26,
-    "evidence_complete": 42,
-    "missing": 14,
+    "closure_required": 21,
+    "evidence_complete": 47,
+    "missing": 9,
     "partial": 12,
     "windows_baseline_admitted": false,
-    "windows_process_execution_count": 2072,
-    "windows_report_count": 13
+    "windows_process_execution_count": 2092,
+    "windows_report_count": 14
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
 }

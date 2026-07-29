@@ -41,8 +41,8 @@ Windows 特殊路径矩阵和
 8-case Junction/扩展命名空间、7-case 真实超长路径和 5-case ADS 矩阵，另有
 21-sample × 7-case 普通输出和 21-sample × 19-case special 扩展。十一批共
 2,068 次 CLI 执行均稳定；另有一批 19-case engine cache/DACL harness
-连续运行两轮；加入 37-case engine-contract 双轮后，十三批共 2,072 次
-Windows 进程执行；默认 detection
+连续运行两轮；加入 37-case engine-contract 和 10-case CLI option/profiling
+双轮后，十四批共 2,092 次 Windows 进程执行；默认 detection
 projection 与 Linux Qt5 26/26 相同，
 251 个直接重叠矩阵 case 的退出码也全部相同，path 相对输出顺序、nested
 detection tree、database load-error/JSON framing 与 ZIP database 没有差异；
@@ -61,6 +61,10 @@ harness 的 19/19 语义投影和 18/18 非身份关系与 Linux Qt5 相同，�
 新增 engine-contract 双轮的 37/37 case 和 23/23 命名关系也与 Linux Qt5
 相同，见
 [`windows-engine-contract-behavior.md`](windows-engine-contract-behavior.md)。
+CLI option 双轮又固定 verbose/test/create-test/messages 关系及 292-rule
+profiling order；Windows 将 `image_ICNS.sg` 从 Linux index 248 移到末尾，
+该差异被保留为缺陷，见
+[`windows-cli-option-behavior.md`](windows-cli-option-behavior.md)。
 由于 UNC、
 精确 namespace 上限、symlink/reparse cycle、domain/group DACL、network
 share/EFS/integrity level、其他 engine-only 能力以及跨平台扩展
@@ -69,10 +73,10 @@ baseline，68 行继续保守标记为 `platform_missing`。
 
 独立的 hash-bound
 [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)
-现已把这 68 行逐项审计为 42 `evidence_complete`、12 partial、14 missing，
+现已把这 68 行逐项审计为 47 `evidence_complete`、12 partial、9 missing，
 机器报告 SHA-256 为
-`ddfb02b89f1da29bb3c6149ee82ed7ba06301d4d1a368ca084642ab2e1d35941`。
-该报告绑定上述 13 份 Windows runtime 证据并为 26 个开放行给出验收实验；
+`9cb134d437701ad507e6421d10c03a397ab0d9f9d1358d7edd41a0b7a0a84066`。
+该报告绑定上述 14 份 Windows runtime 证据并为 21 个开放行给出验收实验；
 在 68 行全部 complete 前，coverage 生成器不消费它来提升平台状态。
 
 另有 798 次 Linux Qt5/Qt6 special 扩展执行把剩余 21 样本的 399 对 raw
@@ -120,7 +124,7 @@ raw 完全相同，7 个 PE64 case 只保留已知 Qt6 stderr；21 个 JSON tree
 - Linux Qt5 source-only 能力已清零；
 - Linux Qt5 已命名 corpus gap 已清零；
 - Linux Qt6 的 68 行已全部接纳为 runtime observed；
-- Windows 的独立 closure 审计为 42 complete/12 partial/14 missing，但尚未
+- Windows 的独立 closure 审计为 47 complete/12 partial/9 missing，但尚未
   接纳，因此 coverage 仍显示 68 个 `platform_missing`；
 - macOS 有 68 个 `platform_missing`，且尚无固定 oracle；
 - `phase_0_coverage_complete` 必须保持 `false`。
@@ -288,7 +292,7 @@ python tools/tests/test_capability_coverage.py
 各保持 68 个 `platform_missing`；closed/open gap 均映射到已知能力；所有
 `with_corpus_gaps` 状态都至少关联一个具名 corpus gap。
 
-Windows 的 42/12/14 closure 由独立生成器验证；在其达到 68/0/0 并显式接入
+Windows 的 47/12/9 closure 由独立生成器验证；在其达到 68/0/0 并显式接入
 coverage builder 前，不改变本段机器契约。
 
 ## 7. 对 Phase 0 门禁的影响

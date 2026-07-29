@@ -70,10 +70,10 @@ class WindowsCapabilityClosurePlanTests(unittest.TestCase):
 
     def test_status_counts_are_conservative(self):
         summary = self.report["summary"]
-        self.assertEqual(summary["evidence_complete"], 42)
+        self.assertEqual(summary["evidence_complete"], 47)
         self.assertEqual(summary["partial"], 12)
-        self.assertEqual(summary["missing"], 14)
-        self.assertEqual(summary["closure_required"], 26)
+        self.assertEqual(summary["missing"], 9)
+        self.assertEqual(summary["closure_required"], 21)
         self.assertFalse(summary["windows_baseline_admitted"])
         statuses = {
             row["status"] for row in self.report["capabilities"]
@@ -115,6 +115,18 @@ class WindowsCapabilityClosurePlanTests(unittest.TestCase):
             row["id"]: row for row in self.report["capabilities"]
         }
         self.assertEqual(rows["CAP-CLI-IN-003"]["status"], "partial")
+        for capability_id in (
+            "CAP-CLI-OPT-004",
+            "CAP-CLI-OPT-008",
+            "CAP-CLI-TEST-001",
+            "CAP-CLI-TEST-002",
+            "CAP-RULE-011",
+        ):
+            with self.subTest(capability=capability_id):
+                self.assertEqual(
+                    rows[capability_id]["status"],
+                    "evidence_complete",
+                )
         self.assertEqual(
             rows["CAP-ENG-IN-001"]["status"],
             "evidence_complete",
@@ -147,14 +159,14 @@ class WindowsCapabilityClosurePlanTests(unittest.TestCase):
             "evidence_complete",
         )
 
-    def test_machine_report_binds_all_13_windows_reports(self):
+    def test_machine_report_binds_all_14_windows_reports(self):
         self.assertEqual(
             self.report["summary"]["windows_report_count"],
-            13,
+            14,
         )
         self.assertEqual(
             self.report["summary"]["windows_process_execution_count"],
-            2072,
+            2092,
         )
         report_sources = {
             path
@@ -166,7 +178,7 @@ class WindowsCapabilityClosurePlanTests(unittest.TestCase):
                 "docs/research/data/windows-qt5-build-baseline.json"
             }
         }
-        self.assertEqual(len(report_sources), 13)
+        self.assertEqual(len(report_sources), 14)
 
     def test_document_names_every_open_row_and_machine_report(self):
         text = DOCUMENT.read_text(encoding="utf-8")

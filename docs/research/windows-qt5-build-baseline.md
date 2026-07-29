@@ -46,7 +46,7 @@ JSON continuity、CSV 优先级及四个带空格 filetype 的 invalid XML。
 保持 `platform_missing`，直到完整差分语料在该平台执行并归档。
 逐行
 [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)
-已把当前证据审计为 42 complete、12 partial、14 missing；26 个开放行均有
+已把当前证据审计为 47 complete、12 partial、9 missing；21 个开放行均有
 命名验收实验。
 
 机器证据见
@@ -54,6 +54,7 @@ JSON continuity、CSV 优先级及四个带空格 filetype 的 invalid XML。
 和
 [`data/baseline-corpus-windows-qt5.json`](data/baseline-corpus-windows-qt5.json)、
 [`data/windows-qt5-cli-matrix.json`](data/windows-qt5-cli-matrix.json) 和
+[`data/windows-qt5-cli-option-behavior.json`](data/windows-qt5-cli-option-behavior.json)、
 [`data/windows-qt5-cli-path-nested.json`](data/windows-qt5-cli-path-nested.json)、
 [`data/windows-qt5-cli-database.json`](data/windows-qt5-cli-database.json)、
 [`data/windows-qt5-cli-database-archive.json`](data/windows-qt5-cli-database-archive.json)、
@@ -388,6 +389,22 @@ poisoned empty cache。详见
 37/37 case 均与 Linux Qt5 相同；明确排除 Qt 5.15.2/5.15.13 版本身份后，
 完整结构化文档相同。详见
 [`windows-engine-contract-behavior.md`](windows-engine-contract-behavior.md)。
+
+## Windows CLI option/test/profiling 矩阵
+
+[`collect_windows_cli_option_behavior.py`](../../tools/upstream/collect_windows_cli_option_behavior.py)
+使用固定发布 CLI 和两个项目生成样本，执行九个确定性 option/test case 与一个
+292-rule profiling-order case，各运行两轮，共 20 次 Windows 进程执行；另以
+固定 Linux qmake oracle 对同一个 minimal ELF 执行三个 control。
+
+机器报告 SHA-256 为
+`538b58ed461eb174dc73d9a621110b23f6b0b6b1e6f2e7d6acf4cf62df7b6f1c`。
+九个 option case 两轮 raw 完全相同，test/create-test no-op、verbose
+Unknown→Unix、profiling-without-messages 和 messages stdout channel 均固定。
+292 条 profiling 规则集合完整、两轮顺序相同；Windows 把
+`image_ICNS.sg` 从 Linux index 248 移到末尾 index 291，造成 44 个位置差异。
+报告保留该差异为 compatibility defect，不重排或删除 profiling lines。详见
+[`windows-cli-option-behavior.md`](windows-cli-option-behavior.md)。
 
 ## Windows CLI Unicode/特殊路径矩阵
 

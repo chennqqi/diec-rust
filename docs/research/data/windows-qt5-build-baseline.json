@@ -138,6 +138,18 @@
     "default_reference_failures": 0,
     "linux_qt5_exit_code_failures": 0
   },
+  "windows_cli_option_behavior": {
+    "path": "docs/research/data/windows-qt5-cli-option-behavior.json",
+    "sha256": "538b58ed461eb174dc73d9a621110b23f6b0b6b1e6f2e7d6acf4cf62df7b6f1c",
+    "case_count": 10,
+    "execution_count": 20,
+    "linux_control_execution_count": 3,
+    "determinism_failures": 0,
+    "relationship_failures": 0,
+    "profiling_order_count": 292,
+    "profiling_order_matches_linux_qt5": false,
+    "profiling_order_difference_classified": true
+  },
   "windows_cli_path_nested": {
     "path": "docs/research/data/windows-qt5-cli-path-nested.json",
     "sha256": "e877e112deb244ab1cbf9edf221e94e155cda711a182f216478eeaf9da40e21b",

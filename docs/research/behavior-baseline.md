@@ -91,11 +91,17 @@ observations。两轮 raw stream 相同；37/37 case、23/23 命名关系和除 
 报告累计 2,072 次进程执行，详见
 [`windows-engine-contract-behavior.md`](windows-engine-contract-behavior.md)。
 
-上述 13 份报告现由
+Windows CLI option/profiling 再增加 20 次进程执行：九个 option/test case
+双轮 raw 完全稳定；292-rule 双轮集合和顺序稳定。Windows 唯一顺序差异是把
+`image_ICNS.sg` 从 Linux index 248 移到 index 291，导致 44 个位置不同，
+且未被规范化。十四份 Windows runtime 报告累计 2,092 次进程执行，详见
+[`windows-cli-option-behavior.md`](windows-cli-option-behavior.md)。
+
+上述 14 份报告现由
 [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)
-逐行投影到 68 个稳定能力 ID：42 complete、12 partial、14 missing。该审计
+逐行投影到 68 个稳定能力 ID：47 complete、12 partial、9 missing。该审计
 阻止局部 runtime 结果被误当作完整 Windows baseline，并把下一优先批次固定为
-CLI option/test/profiling 的 5 个 missing 行。
+rule orchestration/private filter 的 4 个 partial 和 2 个 missing 行。
 
 同一剩余 21 样本 × 19-case special 矩阵又在固定 Linux Qt5/Qt6 image 上
 各执行一次，共 798 次容器执行。399/399 raw observations 逐字节相同；231 个

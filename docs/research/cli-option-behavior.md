@@ -16,6 +16,9 @@ Last updated: 2026-07-27
 - `--test <directory>`；
 - `--createtest <filename>`。
 
+同一边界的固定 Windows Qt5 结果及 292-rule 平台顺序差异见
+[`windows-cli-option-behavior.md`](windows-cli-option-behavior.md)。
+
 确定性选项探针同时运行固定 Linux Qt5 qmake 与 CMake oracle。两个镜像的 revision
 均为 `74eaf505...`，共同的 `/usr/bin/true` SHA-256 为
 `4b5a5694e3c0e8b1d58fc52ac6ef076e55e72c2f53195243ac86d5ff517cc2f6`。
@@ -135,6 +138,9 @@ message。
 [`binary-rule-lifecycle.md`](binary-rule-lifecycle.md#linux-qt5-实测顺序) 与
 [`binary-rule-order-linux-qt5.json`](data/binary-rule-order-linux-qt5.json)。
 规范化只去除非确定 elapsed 值，不能忽略规则顺序、缺失、重复或附加 diagnostics。
+Windows 证据没有去除 elapsed，而是从完整 raw stream 提取规则名；规则集合相同，
+但 `image_ICNS.sg` 从 Linux index 248 移到 Windows index 291，详见上述
+Windows companion 文档。
 
 ## 复现
 

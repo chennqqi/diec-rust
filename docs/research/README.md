@@ -232,8 +232,11 @@ Phase 0 计划形成：
   原生 Windows Qt5 的 19-case engine cache/DACL 双轮基线、Linux 语义投影
   和平台 cache-byte 差异（Draft）。
 - [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)：
-  将 13 份 Windows runtime 报告逐项映射到 68 行能力清单，当前为
-  42 complete、12 partial、14 missing（Draft）。
+  将 14 份 Windows runtime 报告逐项映射到 68 行能力清单，当前为
+  47 complete、12 partial、9 missing（Draft）。
+- [`windows-cli-option-behavior.md`](windows-cli-option-behavior.md)：
+  固定 Windows verbose/test/create-test/messages 和 292-rule profiling
+  顺序，保留 `image_ICNS.sg` 的精确平台移动差异（Draft）。
 - [`windows-engine-contract-behavior.md`](windows-engine-contract-behavior.md)：
   固定 Windows Qt5 的 37-case engine 入口、I/O/range、filter、sort 与
   cancellation 双轮证据，除 Qt 版本身份外与 Linux Qt5 完整语义相同（Draft）。
@@ -287,6 +290,9 @@ Phase 0 计划形成：
 - [`data/engine-contract-windows-qt5.json`](data/engine-contract-windows-qt5.json)：
   固定原生 Windows Qt5 engine-contract harness 的构建身份、双轮 raw、
   37-case/23-relationship Linux Qt5 比较与七文件源码审计。
+- [`data/windows-qt5-cli-option-behavior.json`](data/windows-qt5-cli-option-behavior.json)：
+  固定九个确定性 option case、292-rule 双轮 order、三个同样本 Linux
+  control 和精确 Windows/Linux 顺序差异。
 - [`data/rule-orchestration-linux-qt5-qt6.json`](data/rule-orchestration-linux-qt5-qt6.json)：
   固定 Qt5/Qt6 CMake oracle 的 10-case 规则执行顺序、detection、原始流身份和
   14 条关系。

@@ -26,6 +26,9 @@ REPORT_KEYS = {
     "docs/research/data/windows-qt5-cli-matrix.json": (
         "windows_cli_matrix"
     ),
+    "docs/research/data/windows-qt5-cli-option-behavior.json": (
+        "windows_cli_option_behavior"
+    ),
     "docs/research/data/windows-qt5-cli-path-nested.json": (
         "windows_cli_path_nested"
     ),
@@ -99,9 +102,11 @@ COMPLETE: dict[str, str] = {
     "CAP-CLI-OPT-001": "eight nested fixtures have stable recursive-scan detection trees equal to Linux Qt5",
     "CAP-CLI-OPT-002": "all 26 baseline samples execute the deep-scan option twice",
     "CAP-CLI-OPT-003": "all 26 baseline samples execute the heuristic option twice",
+    "CAP-CLI-OPT-004": "verbose changes the structured result on the same generated ELF exactly as Linux Qt5",
     "CAP-CLI-OPT-005": "all 26 baseline samples execute the aggressive option twice",
     "CAP-CLI-OPT-006": "all 26 baseline samples execute all-types twice",
     "CAP-CLI-OPT-007": "all 26 baseline samples execute formatted-result mode twice",
+    "CAP-CLI-OPT-008": "profiling without messages is output-inert and the 292-name messages order is fixed with its Windows permutation retained",
     "CAP-CLI-OPT-009": "database messages and structured-output contamination match Linux Qt5",
     "CAP-CLI-OPT-010": "all 26 baseline samples execute hide-unknown twice",
     "CAP-CLI-MODE-001": "entropy covers all 26 samples and six formatters with stable priority",
@@ -119,10 +124,13 @@ COMPLETE: dict[str, str] = {
     "CAP-CLI-DB-002": "extra database missing/success behavior is fixed",
     "CAP-CLI-DB-003": "custom database missing/success behavior is fixed",
     "CAP-CLI-DB-004": "show-database directory and 17 ZIP boundary cases are fixed",
+    "CAP-CLI-TEST-001": "existing and missing --test directory values both load the database then return an empty successful no-op",
+    "CAP-CLI-TEST-002": "complete --createtest only announces while missing positionals exit 4 with the legacy --addtest diagnostic",
     "CAP-RULE-008": "empty database and ordinary unknown inputs produce stable Unknown fallback",
     "CAP-RULE-006": "exact, missing, case-mismatched, and deep-gated signature-name filters match Linux Qt5",
     "CAP-RULE-009": "sort-disabled insertion order and sort-enabled type-priority order match Linux Qt5",
     "CAP-RULE-010": "malformed and throwing database rules retain exact diagnostic visibility and JSON invalidity",
+    "CAP-RULE-011": "all 292 Binary profiling announcements are present in a stable Windows order with image_ICNS.sg moved to the end versus Linux",
     "CAP-RULE-012": "callback, synchronized external stop, rule break, pre-stop, and fresh-state recovery match Linux Qt5",
     "CAP-DISPATCH-001": "PE32/64, ELF32/64, and Mach-O 32/64/FAT projections are fixed",
     "CAP-DISPATCH-005": "DEX, Java Class, and PYC projections are fixed",
@@ -201,22 +209,6 @@ PARTIAL: dict[str, tuple[str, str, str]] = {
 
 
 MISSING: dict[str, tuple[str, str]] = {
-    "CAP-CLI-OPT-004": (
-        "Windows verbose OS-record channel behavior",
-        "run the fixed CLI option harness on the Windows oracle",
-    ),
-    "CAP-CLI-OPT-008": (
-        "Windows profiling channel and complete rule announcement order",
-        "run the fixed CLI option/profiling harness on the Windows oracle",
-    ),
-    "CAP-CLI-TEST-001": (
-        "Windows --test complete/missing argument behavior",
-        "run the fixed CLI test-entry matrix on the Windows oracle",
-    ),
-    "CAP-CLI-TEST-002": (
-        "Windows --createtest complete/missing argument behavior",
-        "run the fixed CLI test-entry matrix on the Windows oracle",
-    ),
     "CAP-RULE-003": (
         "global init, type init, and same-name include precedence",
         "port the rule-orchestration engine harness to Windows",
@@ -224,10 +216,6 @@ MISSING: dict[str, tuple[str, str]] = {
     "CAP-RULE-007": (
         "private signature-path filter boundaries",
         "port the signature-path engine harness to Windows",
-    ),
-    "CAP-RULE-011": (
-        "complete Windows script profiling order",
-        "run the fixed CLI option/profiling harness on Windows",
     ),
     "CAP-DISPATCH-002": (
         "DOS/COM public dispatch and BW property-only branch",
@@ -276,6 +264,7 @@ EVIDENCE_PATHS = {
         "docs/research/data/baseline-corpus-windows-qt5.json",
         "docs/research/data/windows-qt5-cli-matrix.json",
         "docs/research/data/windows-qt5-cli-database.json",
+        "docs/research/data/windows-qt5-cli-option-behavior.json",
     ),
     "cli_special": (
         "docs/research/data/windows-qt5-cli-matrix.json",
@@ -420,16 +409,6 @@ EXPERIMENTS: dict[str, dict[str, Any]] = {
 
 EXPERIMENT_GROUPS: dict[str, str] = {
     "CAP-CLI-IN-003": "windows_path",
-    **{
-        capability_id: "cli_options"
-        for capability_id in (
-            "CAP-CLI-OPT-004",
-            "CAP-CLI-OPT-008",
-            "CAP-CLI-TEST-001",
-            "CAP-CLI-TEST-002",
-            "CAP-RULE-011",
-        )
-    },
     **{
         capability_id: "rule_orchestration"
         for capability_id in (
@@ -603,6 +582,57 @@ def validate_inputs(
     ):
         raise ClosurePlanError("Windows cache harness facts drift")
 
+    cli_options = reports[
+        "docs/research/data/windows-qt5-cli-option-behavior.json"
+    ]
+    order_difference = cli_options.get("profiling_order", {}).get(
+        "linux_qt5_difference",
+        {},
+    )
+    same_sample_cases = (
+        cli_options.get("linux_references", {})
+        .get("same_sample_control", {})
+        .get("cases", {})
+    )
+    if (
+        cli_options.get("passed") is not True
+        or cli_options.get("failures") != []
+        or cli_options.get("repetitions") != 2
+        or cli_options.get("summary", {}).get("case_count") != 10
+        or cli_options.get("summary", {}).get("execution_count") != 20
+        or cli_options.get("summary", {}).get(
+            "determinism_failures"
+        )
+        != 0
+        or cli_options.get("summary", {}).get(
+            "relationship_failures"
+        )
+        != 0
+        or cli_options.get("profiling_order", {}).get(
+            "order_runs_equal"
+        )
+        is not True
+        or cli_options.get("profiling_order", {}).get("order_count")
+        != 292
+        or order_difference.get("classification")
+        != "single_rule_moved_to_end"
+        or order_difference.get("moved_rule") != "image_ICNS.sg"
+        or order_difference.get("linux_index") != 248
+        or order_difference.get("windows_index") != 291
+        or order_difference.get("differing_position_count") != 44
+        or set(same_sample_cases)
+        != {
+            "scan_default_json",
+            "scan_verbose_json",
+            "scan_profiling_without_messages_json",
+        }
+        or not all(
+            case.get("windows_semantic_equal") is True
+            for case in same_sample_cases.values()
+        )
+    ):
+        raise ClosurePlanError("Windows CLI option facts drift")
+
     engine = reports[
         "docs/research/data/engine-contract-windows-qt5.json"
     ]
@@ -742,7 +772,7 @@ def build_plan(root: Path) -> dict[str, Any]:
             "windows_baseline_admitted": (
                 not PARTIAL and not MISSING
             ),
-            "windows_process_execution_count": 2072,
+            "windows_process_execution_count": 2092,
             "windows_report_count": len(REPORT_KEYS),
         },
     }
