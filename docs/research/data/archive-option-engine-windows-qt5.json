@@ -1,0 +1,4383 @@
+{
+  "build_manifest": {
+    "identity": {
+      "artifact": {
+        "filename": "diec-archive-option-harness.exe",
+        "sha256": "1c7d14386ded050e9a88231ec8996c13bd430dd2bf292c66e8f85df6006f89fe",
+        "size": 3102720
+      },
+      "baseline": {
+        "cli_sha256": "e8579a6ed0d2536ea14af154bcbeeaaea6967c0c7559a595fb3fe52206ac635e",
+        "commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+        "recursive_submodule_count": 58,
+        "repository": "https://github.com/horsicq/DIE-engine",
+        "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6"
+      },
+      "build": {
+        "database_root": "<working-directory>/Detect-It-Easy",
+        "elapsed_milliseconds": 15393,
+        "engine_objects_modified": false,
+        "host_architecture": "amd64",
+        "original_main_object_sha256": "ff736a313b4d8d53747a7b113fff5a310c31c4218555ffbf1570537af15dd6be",
+        "original_makefile_sha256": "e6f7710cd32be5050e10234f3282d2512b58d28170d5de14f96c30478ac03725",
+        "replaced_object": "release/main_console.obj",
+        "runtime_working_directory_contract": "verified-source-root",
+        "system": "patched-qmake-release-makefile",
+        "target_architecture": "amd64",
+        "tool": "nmake"
+      },
+      "qt": {
+        "qmake_sha256": "e873ad3a689a0628c3037a6440221dcd2e426395edf14ffa6379612dede26d36",
+        "qmake_spec": "win32-msvc",
+        "qt5core_sha256": "8d2ff4ce9096ddccc4f4cd62c2e41fc854cfd1b0d6e8d296645a7f5fd4ae565a",
+        "qt5script_sha256": "0b58e5e79df13110a8258f14d7b3658d1dd0c8dddc337a164b89d4ac12a0638f",
+        "version": "5.15.2"
+      },
+      "schema_version": 1,
+      "source_hashes": {
+        "builder": "194480b3ef8f30388a1427baee3bd8558b4c6761d6d867370beca26f2fe294e6",
+        "harness": {
+          "adapted_sha256": "104cb1dcacc197f4da17cf5f5b9df1b09ed8218f33d97f6cefc51bfddccb01a0",
+          "database_path_replacements": [
+            {
+              "count": 1,
+              "from": "/opt/die-source/Detect-It-Easy/db_custom",
+              "to": "Detect-It-Easy/db_custom"
+            },
+            {
+              "count": 1,
+              "from": "/opt/die-source/Detect-It-Easy/db_extra",
+              "to": "Detect-It-Easy/db_extra"
+            },
+            {
+              "count": 1,
+              "from": "/opt/die-source/Detect-It-Easy/db",
+              "to": "Detect-It-Easy/db"
+            }
+          ],
+          "original_sha256": "bd67e06915809d5f9a8065f1d3471a1c9f44d614e1f7d5f176a691088dc6e86d",
+          "path": "tools/upstream/archive_harness_main.cpp"
+        }
+      }
+    },
+    "sha256": "77d8448cb9de64114b3ce4befc6749888bd7783d35d36e5ca6b0d98df8653bb9"
+  },
+  "capability": "CAP-NEST-003",
+  "case_count": 64,
+  "case_observation_count": 128,
+  "cases": {
+    "many-pdf-members.zip": {
+      "aggressive": {
+        "arguments": [
+          "--aggressive",
+          "<fixture>/many-pdf-members.zip"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "5a341d19d3a57ff84e5872af2365e92720066c090bc4768903766318cdf836cb",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "5a341d19d3a57ff84e5872af2365e92720066c090bc4768903766318cdf836cb",
+            "exit_code": 0,
+            "raw_stderr": "many-pdf-members.zip.aggressive.run-1.stderr",
+            "raw_stdout": "many-pdf-members.zip.aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 489,
+            "stdout_sha256": "18aefcd46057fe92017a00dae316b1799229cdba1d7da4d69bb58cbff2e43217"
+          },
+          {
+            "detect_tree_sha256": "5a341d19d3a57ff84e5872af2365e92720066c090bc4768903766318cdf836cb",
+            "exit_code": 0,
+            "raw_stderr": "many-pdf-members.zip.aggressive.run-2.stderr",
+            "raw_stdout": "many-pdf-members.zip.aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 489,
+            "stdout_sha256": "18aefcd46057fe92017a00dae316b1799229cdba1d7da4d69bb58cbff2e43217"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      },
+      "archive": {
+        "arguments": [
+          "--archive",
+          "<fixture>/many-pdf-members.zip"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "4e969cf03aa8ce3837c258b3ca5894532f96936f1295ec073e6b67b4bef8171d",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "4e969cf03aa8ce3837c258b3ca5894532f96936f1295ec073e6b67b4bef8171d",
+            "exit_code": 0,
+            "raw_stderr": "many-pdf-members.zip.archive.run-1.stderr",
+            "raw_stdout": "many-pdf-members.zip.archive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 19515,
+            "stdout_sha256": "640ab8867103b2b83e440a069eb38d08b75a3d4070949f97457ede0ba9ee53ac"
+          },
+          {
+            "detect_tree_sha256": "4e969cf03aa8ce3837c258b3ca5894532f96936f1295ec073e6b67b4bef8171d",
+            "exit_code": 0,
+            "raw_stderr": "many-pdf-members.zip.archive.run-2.stderr",
+            "raw_stdout": "many-pdf-members.zip.archive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 19515,
+            "stdout_sha256": "640ab8867103b2b83e440a069eb38d08b75a3d4070949f97457ede0ba9ee53ac"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 21,
+        "windows_release_semantic_equal": null
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "<fixture>/many-pdf-members.zip"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "1c53840ae51e16b49c69a2f70dda6c2e474ec88ae623349632b37da0933bd821",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "1c53840ae51e16b49c69a2f70dda6c2e474ec88ae623349632b37da0933bd821",
+            "exit_code": 0,
+            "raw_stderr": "many-pdf-members.zip.archive_aggressive.run-1.stderr",
+            "raw_stdout": "many-pdf-members.zip.archive_aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 20421,
+            "stdout_sha256": "b740b4b310be1d7f7dec620f9d6eb7ee60efb95ec60575e0d10f6f5292a37883"
+          },
+          {
+            "detect_tree_sha256": "1c53840ae51e16b49c69a2f70dda6c2e474ec88ae623349632b37da0933bd821",
+            "exit_code": 0,
+            "raw_stderr": "many-pdf-members.zip.archive_aggressive.run-2.stderr",
+            "raw_stdout": "many-pdf-members.zip.archive_aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 20421,
+            "stdout_sha256": "b740b4b310be1d7f7dec620f9d6eb7ee60efb95ec60575e0d10f6f5292a37883"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 22,
+        "windows_release_semantic_equal": null
+      },
+      "archive_recursive": {
+        "arguments": [
+          "--archive",
+          "--recursive",
+          "<fixture>/many-pdf-members.zip"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "4e969cf03aa8ce3837c258b3ca5894532f96936f1295ec073e6b67b4bef8171d",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "4e969cf03aa8ce3837c258b3ca5894532f96936f1295ec073e6b67b4bef8171d",
+            "exit_code": 0,
+            "raw_stderr": "many-pdf-members.zip.archive_recursive.run-1.stderr",
+            "raw_stdout": "many-pdf-members.zip.archive_recursive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 19515,
+            "stdout_sha256": "640ab8867103b2b83e440a069eb38d08b75a3d4070949f97457ede0ba9ee53ac"
+          },
+          {
+            "detect_tree_sha256": "4e969cf03aa8ce3837c258b3ca5894532f96936f1295ec073e6b67b4bef8171d",
+            "exit_code": 0,
+            "raw_stderr": "many-pdf-members.zip.archive_recursive.run-2.stderr",
+            "raw_stdout": "many-pdf-members.zip.archive_recursive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 19515,
+            "stdout_sha256": "640ab8867103b2b83e440a069eb38d08b75a3d4070949f97457ede0ba9ee53ac"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 21,
+        "windows_release_semantic_equal": null
+      },
+      "archive_recursive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--recursive",
+          "--aggressive",
+          "<fixture>/many-pdf-members.zip"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "1c53840ae51e16b49c69a2f70dda6c2e474ec88ae623349632b37da0933bd821",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "1c53840ae51e16b49c69a2f70dda6c2e474ec88ae623349632b37da0933bd821",
+            "exit_code": 0,
+            "raw_stderr": "many-pdf-members.zip.archive_recursive_aggressive.run-1.stderr",
+            "raw_stdout": "many-pdf-members.zip.archive_recursive_aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 20421,
+            "stdout_sha256": "b740b4b310be1d7f7dec620f9d6eb7ee60efb95ec60575e0d10f6f5292a37883"
+          },
+          {
+            "detect_tree_sha256": "1c53840ae51e16b49c69a2f70dda6c2e474ec88ae623349632b37da0933bd821",
+            "exit_code": 0,
+            "raw_stderr": "many-pdf-members.zip.archive_recursive_aggressive.run-2.stderr",
+            "raw_stdout": "many-pdf-members.zip.archive_recursive_aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 20421,
+            "stdout_sha256": "b740b4b310be1d7f7dec620f9d6eb7ee60efb95ec60575e0d10f6f5292a37883"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 22,
+        "windows_release_semantic_equal": null
+      },
+      "default": {
+        "arguments": [
+          "<fixture>/many-pdf-members.zip"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "5a341d19d3a57ff84e5872af2365e92720066c090bc4768903766318cdf836cb",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "5a341d19d3a57ff84e5872af2365e92720066c090bc4768903766318cdf836cb",
+            "exit_code": 0,
+            "raw_stderr": "many-pdf-members.zip.default.run-1.stderr",
+            "raw_stdout": "many-pdf-members.zip.default.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 489,
+            "stdout_sha256": "18aefcd46057fe92017a00dae316b1799229cdba1d7da4d69bb58cbff2e43217"
+          },
+          {
+            "detect_tree_sha256": "5a341d19d3a57ff84e5872af2365e92720066c090bc4768903766318cdf836cb",
+            "exit_code": 0,
+            "raw_stderr": "many-pdf-members.zip.default.run-2.stderr",
+            "raw_stdout": "many-pdf-members.zip.default.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 489,
+            "stdout_sha256": "18aefcd46057fe92017a00dae316b1799229cdba1d7da4d69bb58cbff2e43217"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      },
+      "recursive": {
+        "arguments": [
+          "--recursive",
+          "<fixture>/many-pdf-members.zip"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "5a341d19d3a57ff84e5872af2365e92720066c090bc4768903766318cdf836cb",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "5a341d19d3a57ff84e5872af2365e92720066c090bc4768903766318cdf836cb",
+            "exit_code": 0,
+            "raw_stderr": "many-pdf-members.zip.recursive.run-1.stderr",
+            "raw_stdout": "many-pdf-members.zip.recursive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 489,
+            "stdout_sha256": "18aefcd46057fe92017a00dae316b1799229cdba1d7da4d69bb58cbff2e43217"
+          },
+          {
+            "detect_tree_sha256": "5a341d19d3a57ff84e5872af2365e92720066c090bc4768903766318cdf836cb",
+            "exit_code": 0,
+            "raw_stderr": "many-pdf-members.zip.recursive.run-2.stderr",
+            "raw_stdout": "many-pdf-members.zip.recursive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 489,
+            "stdout_sha256": "18aefcd46057fe92017a00dae316b1799229cdba1d7da4d69bb58cbff2e43217"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      },
+      "recursive_aggressive": {
+        "arguments": [
+          "--recursive",
+          "--aggressive",
+          "<fixture>/many-pdf-members.zip"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "5a341d19d3a57ff84e5872af2365e92720066c090bc4768903766318cdf836cb",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "5a341d19d3a57ff84e5872af2365e92720066c090bc4768903766318cdf836cb",
+            "exit_code": 0,
+            "raw_stderr": "many-pdf-members.zip.recursive_aggressive.run-1.stderr",
+            "raw_stdout": "many-pdf-members.zip.recursive_aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 489,
+            "stdout_sha256": "18aefcd46057fe92017a00dae316b1799229cdba1d7da4d69bb58cbff2e43217"
+          },
+          {
+            "detect_tree_sha256": "5a341d19d3a57ff84e5872af2365e92720066c090bc4768903766318cdf836cb",
+            "exit_code": 0,
+            "raw_stderr": "many-pdf-members.zip.recursive_aggressive.run-2.stderr",
+            "raw_stdout": "many-pdf-members.zip.recursive_aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 489,
+            "stdout_sha256": "18aefcd46057fe92017a00dae316b1799229cdba1d7da4d69bb58cbff2e43217"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      }
+    },
+    "nested-zip.zip": {
+      "aggressive": {
+        "arguments": [
+          "--aggressive",
+          "<fixture>/nested-zip.zip"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "77e1a78084483ac0000d2fb145557a0159eb0a5da2faae9ed0db2b22e9652eb1",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "77e1a78084483ac0000d2fb145557a0159eb0a5da2faae9ed0db2b22e9652eb1",
+            "exit_code": 0,
+            "raw_stderr": "nested-zip.zip.aggressive.run-1.stderr",
+            "raw_stdout": "nested-zip.zip.aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 488,
+            "stdout_sha256": "cbd84eb996340e5a3a4e46fb8edf41ad7cd0713c7e1a30ed98adf1989c2e32b7"
+          },
+          {
+            "detect_tree_sha256": "77e1a78084483ac0000d2fb145557a0159eb0a5da2faae9ed0db2b22e9652eb1",
+            "exit_code": 0,
+            "raw_stderr": "nested-zip.zip.aggressive.run-2.stderr",
+            "raw_stdout": "nested-zip.zip.aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 488,
+            "stdout_sha256": "cbd84eb996340e5a3a4e46fb8edf41ad7cd0713c7e1a30ed98adf1989c2e32b7"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      },
+      "archive": {
+        "arguments": [
+          "--archive",
+          "<fixture>/nested-zip.zip"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "a344945b686716514e9a316e5988410b164ffd2e914cfad89255150ab2692d9c",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "a344945b686716514e9a316e5988410b164ffd2e914cfad89255150ab2692d9c",
+            "exit_code": 0,
+            "raw_stderr": "nested-zip.zip.archive.run-1.stderr",
+            "raw_stdout": "nested-zip.zip.archive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 2160,
+            "stdout_sha256": "ca12a205b6b654510e89f250ef073a5762966ea3a6b131870566e9a68004b681"
+          },
+          {
+            "detect_tree_sha256": "a344945b686716514e9a316e5988410b164ffd2e914cfad89255150ab2692d9c",
+            "exit_code": 0,
+            "raw_stderr": "nested-zip.zip.archive.run-2.stderr",
+            "raw_stdout": "nested-zip.zip.archive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 2160,
+            "stdout_sha256": "ca12a205b6b654510e89f250ef073a5762966ea3a6b131870566e9a68004b681"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 2,
+        "windows_release_semantic_equal": null
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "<fixture>/nested-zip.zip"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "a344945b686716514e9a316e5988410b164ffd2e914cfad89255150ab2692d9c",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "a344945b686716514e9a316e5988410b164ffd2e914cfad89255150ab2692d9c",
+            "exit_code": 0,
+            "raw_stderr": "nested-zip.zip.archive_aggressive.run-1.stderr",
+            "raw_stdout": "nested-zip.zip.archive_aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 2160,
+            "stdout_sha256": "ca12a205b6b654510e89f250ef073a5762966ea3a6b131870566e9a68004b681"
+          },
+          {
+            "detect_tree_sha256": "a344945b686716514e9a316e5988410b164ffd2e914cfad89255150ab2692d9c",
+            "exit_code": 0,
+            "raw_stderr": "nested-zip.zip.archive_aggressive.run-2.stderr",
+            "raw_stdout": "nested-zip.zip.archive_aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 2160,
+            "stdout_sha256": "ca12a205b6b654510e89f250ef073a5762966ea3a6b131870566e9a68004b681"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 2,
+        "windows_release_semantic_equal": null
+      },
+      "archive_recursive": {
+        "arguments": [
+          "--archive",
+          "--recursive",
+          "<fixture>/nested-zip.zip"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "a344945b686716514e9a316e5988410b164ffd2e914cfad89255150ab2692d9c",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "a344945b686716514e9a316e5988410b164ffd2e914cfad89255150ab2692d9c",
+            "exit_code": 0,
+            "raw_stderr": "nested-zip.zip.archive_recursive.run-1.stderr",
+            "raw_stdout": "nested-zip.zip.archive_recursive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 2160,
+            "stdout_sha256": "ca12a205b6b654510e89f250ef073a5762966ea3a6b131870566e9a68004b681"
+          },
+          {
+            "detect_tree_sha256": "a344945b686716514e9a316e5988410b164ffd2e914cfad89255150ab2692d9c",
+            "exit_code": 0,
+            "raw_stderr": "nested-zip.zip.archive_recursive.run-2.stderr",
+            "raw_stdout": "nested-zip.zip.archive_recursive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 2160,
+            "stdout_sha256": "ca12a205b6b654510e89f250ef073a5762966ea3a6b131870566e9a68004b681"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 2,
+        "windows_release_semantic_equal": null
+      },
+      "archive_recursive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--recursive",
+          "--aggressive",
+          "<fixture>/nested-zip.zip"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "a344945b686716514e9a316e5988410b164ffd2e914cfad89255150ab2692d9c",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "a344945b686716514e9a316e5988410b164ffd2e914cfad89255150ab2692d9c",
+            "exit_code": 0,
+            "raw_stderr": "nested-zip.zip.archive_recursive_aggressive.run-1.stderr",
+            "raw_stdout": "nested-zip.zip.archive_recursive_aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 2160,
+            "stdout_sha256": "ca12a205b6b654510e89f250ef073a5762966ea3a6b131870566e9a68004b681"
+          },
+          {
+            "detect_tree_sha256": "a344945b686716514e9a316e5988410b164ffd2e914cfad89255150ab2692d9c",
+            "exit_code": 0,
+            "raw_stderr": "nested-zip.zip.archive_recursive_aggressive.run-2.stderr",
+            "raw_stdout": "nested-zip.zip.archive_recursive_aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 2160,
+            "stdout_sha256": "ca12a205b6b654510e89f250ef073a5762966ea3a6b131870566e9a68004b681"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 2,
+        "windows_release_semantic_equal": null
+      },
+      "default": {
+        "arguments": [
+          "<fixture>/nested-zip.zip"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "77e1a78084483ac0000d2fb145557a0159eb0a5da2faae9ed0db2b22e9652eb1",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "77e1a78084483ac0000d2fb145557a0159eb0a5da2faae9ed0db2b22e9652eb1",
+            "exit_code": 0,
+            "raw_stderr": "nested-zip.zip.default.run-1.stderr",
+            "raw_stdout": "nested-zip.zip.default.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 488,
+            "stdout_sha256": "cbd84eb996340e5a3a4e46fb8edf41ad7cd0713c7e1a30ed98adf1989c2e32b7"
+          },
+          {
+            "detect_tree_sha256": "77e1a78084483ac0000d2fb145557a0159eb0a5da2faae9ed0db2b22e9652eb1",
+            "exit_code": 0,
+            "raw_stderr": "nested-zip.zip.default.run-2.stderr",
+            "raw_stdout": "nested-zip.zip.default.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 488,
+            "stdout_sha256": "cbd84eb996340e5a3a4e46fb8edf41ad7cd0713c7e1a30ed98adf1989c2e32b7"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      },
+      "recursive": {
+        "arguments": [
+          "--recursive",
+          "<fixture>/nested-zip.zip"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "77e1a78084483ac0000d2fb145557a0159eb0a5da2faae9ed0db2b22e9652eb1",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "77e1a78084483ac0000d2fb145557a0159eb0a5da2faae9ed0db2b22e9652eb1",
+            "exit_code": 0,
+            "raw_stderr": "nested-zip.zip.recursive.run-1.stderr",
+            "raw_stdout": "nested-zip.zip.recursive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 488,
+            "stdout_sha256": "cbd84eb996340e5a3a4e46fb8edf41ad7cd0713c7e1a30ed98adf1989c2e32b7"
+          },
+          {
+            "detect_tree_sha256": "77e1a78084483ac0000d2fb145557a0159eb0a5da2faae9ed0db2b22e9652eb1",
+            "exit_code": 0,
+            "raw_stderr": "nested-zip.zip.recursive.run-2.stderr",
+            "raw_stdout": "nested-zip.zip.recursive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 488,
+            "stdout_sha256": "cbd84eb996340e5a3a4e46fb8edf41ad7cd0713c7e1a30ed98adf1989c2e32b7"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      },
+      "recursive_aggressive": {
+        "arguments": [
+          "--recursive",
+          "--aggressive",
+          "<fixture>/nested-zip.zip"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "77e1a78084483ac0000d2fb145557a0159eb0a5da2faae9ed0db2b22e9652eb1",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "77e1a78084483ac0000d2fb145557a0159eb0a5da2faae9ed0db2b22e9652eb1",
+            "exit_code": 0,
+            "raw_stderr": "nested-zip.zip.recursive_aggressive.run-1.stderr",
+            "raw_stdout": "nested-zip.zip.recursive_aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 488,
+            "stdout_sha256": "cbd84eb996340e5a3a4e46fb8edf41ad7cd0713c7e1a30ed98adf1989c2e32b7"
+          },
+          {
+            "detect_tree_sha256": "77e1a78084483ac0000d2fb145557a0159eb0a5da2faae9ed0db2b22e9652eb1",
+            "exit_code": 0,
+            "raw_stderr": "nested-zip.zip.recursive_aggressive.run-2.stderr",
+            "raw_stdout": "nested-zip.zip.recursive_aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 488,
+            "stdout_sha256": "cbd84eb996340e5a3a4e46fb8edf41ad7cd0713c7e1a30ed98adf1989c2e32b7"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      }
+    },
+    "pdf-member.zip": {
+      "aggressive": {
+        "arguments": [
+          "--aggressive",
+          "<fixture>/pdf-member.zip"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "cb36611736a1c21ede94f22a3681fcc29ca7a8df776ffe2f47a3ed2114f765a8",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "cb36611736a1c21ede94f22a3681fcc29ca7a8df776ffe2f47a3ed2114f765a8",
+            "exit_code": 0,
+            "raw_stderr": "pdf-member.zip.aggressive.run-1.stderr",
+            "raw_stdout": "pdf-member.zip.aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 488,
+            "stdout_sha256": "c1f8abee3fb304a221a820ebc00aa3ff34719bee8b83a0540edc3cfa646d809f"
+          },
+          {
+            "detect_tree_sha256": "cb36611736a1c21ede94f22a3681fcc29ca7a8df776ffe2f47a3ed2114f765a8",
+            "exit_code": 0,
+            "raw_stderr": "pdf-member.zip.aggressive.run-2.stderr",
+            "raw_stdout": "pdf-member.zip.aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 488,
+            "stdout_sha256": "c1f8abee3fb304a221a820ebc00aa3ff34719bee8b83a0540edc3cfa646d809f"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      },
+      "archive": {
+        "arguments": [
+          "--archive",
+          "<fixture>/pdf-member.zip"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "a6d5cfb8741027c4742f20cb423d92bbc21b7ab11c43f90eaf8b8192f53dd04c",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "a6d5cfb8741027c4742f20cb423d92bbc21b7ab11c43f90eaf8b8192f53dd04c",
+            "exit_code": 0,
+            "raw_stderr": "pdf-member.zip.archive.run-1.stderr",
+            "raw_stdout": "pdf-member.zip.archive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1394,
+            "stdout_sha256": "8f6f5fd07b141fb7b622ed80294a8cfcf4aa32eb0b5a04cc5e66d13980d8f863"
+          },
+          {
+            "detect_tree_sha256": "a6d5cfb8741027c4742f20cb423d92bbc21b7ab11c43f90eaf8b8192f53dd04c",
+            "exit_code": 0,
+            "raw_stderr": "pdf-member.zip.archive.run-2.stderr",
+            "raw_stdout": "pdf-member.zip.archive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1394,
+            "stdout_sha256": "8f6f5fd07b141fb7b622ed80294a8cfcf4aa32eb0b5a04cc5e66d13980d8f863"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 1,
+        "windows_release_semantic_equal": null
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "<fixture>/pdf-member.zip"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "a6d5cfb8741027c4742f20cb423d92bbc21b7ab11c43f90eaf8b8192f53dd04c",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "a6d5cfb8741027c4742f20cb423d92bbc21b7ab11c43f90eaf8b8192f53dd04c",
+            "exit_code": 0,
+            "raw_stderr": "pdf-member.zip.archive_aggressive.run-1.stderr",
+            "raw_stdout": "pdf-member.zip.archive_aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1394,
+            "stdout_sha256": "8f6f5fd07b141fb7b622ed80294a8cfcf4aa32eb0b5a04cc5e66d13980d8f863"
+          },
+          {
+            "detect_tree_sha256": "a6d5cfb8741027c4742f20cb423d92bbc21b7ab11c43f90eaf8b8192f53dd04c",
+            "exit_code": 0,
+            "raw_stderr": "pdf-member.zip.archive_aggressive.run-2.stderr",
+            "raw_stdout": "pdf-member.zip.archive_aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1394,
+            "stdout_sha256": "8f6f5fd07b141fb7b622ed80294a8cfcf4aa32eb0b5a04cc5e66d13980d8f863"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 1,
+        "windows_release_semantic_equal": null
+      },
+      "archive_recursive": {
+        "arguments": [
+          "--archive",
+          "--recursive",
+          "<fixture>/pdf-member.zip"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "a6d5cfb8741027c4742f20cb423d92bbc21b7ab11c43f90eaf8b8192f53dd04c",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "a6d5cfb8741027c4742f20cb423d92bbc21b7ab11c43f90eaf8b8192f53dd04c",
+            "exit_code": 0,
+            "raw_stderr": "pdf-member.zip.archive_recursive.run-1.stderr",
+            "raw_stdout": "pdf-member.zip.archive_recursive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1394,
+            "stdout_sha256": "8f6f5fd07b141fb7b622ed80294a8cfcf4aa32eb0b5a04cc5e66d13980d8f863"
+          },
+          {
+            "detect_tree_sha256": "a6d5cfb8741027c4742f20cb423d92bbc21b7ab11c43f90eaf8b8192f53dd04c",
+            "exit_code": 0,
+            "raw_stderr": "pdf-member.zip.archive_recursive.run-2.stderr",
+            "raw_stdout": "pdf-member.zip.archive_recursive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1394,
+            "stdout_sha256": "8f6f5fd07b141fb7b622ed80294a8cfcf4aa32eb0b5a04cc5e66d13980d8f863"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 1,
+        "windows_release_semantic_equal": null
+      },
+      "archive_recursive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--recursive",
+          "--aggressive",
+          "<fixture>/pdf-member.zip"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "a6d5cfb8741027c4742f20cb423d92bbc21b7ab11c43f90eaf8b8192f53dd04c",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "a6d5cfb8741027c4742f20cb423d92bbc21b7ab11c43f90eaf8b8192f53dd04c",
+            "exit_code": 0,
+            "raw_stderr": "pdf-member.zip.archive_recursive_aggressive.run-1.stderr",
+            "raw_stdout": "pdf-member.zip.archive_recursive_aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1394,
+            "stdout_sha256": "8f6f5fd07b141fb7b622ed80294a8cfcf4aa32eb0b5a04cc5e66d13980d8f863"
+          },
+          {
+            "detect_tree_sha256": "a6d5cfb8741027c4742f20cb423d92bbc21b7ab11c43f90eaf8b8192f53dd04c",
+            "exit_code": 0,
+            "raw_stderr": "pdf-member.zip.archive_recursive_aggressive.run-2.stderr",
+            "raw_stdout": "pdf-member.zip.archive_recursive_aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1394,
+            "stdout_sha256": "8f6f5fd07b141fb7b622ed80294a8cfcf4aa32eb0b5a04cc5e66d13980d8f863"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 1,
+        "windows_release_semantic_equal": null
+      },
+      "default": {
+        "arguments": [
+          "<fixture>/pdf-member.zip"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "cb36611736a1c21ede94f22a3681fcc29ca7a8df776ffe2f47a3ed2114f765a8",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "cb36611736a1c21ede94f22a3681fcc29ca7a8df776ffe2f47a3ed2114f765a8",
+            "exit_code": 0,
+            "raw_stderr": "pdf-member.zip.default.run-1.stderr",
+            "raw_stdout": "pdf-member.zip.default.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 488,
+            "stdout_sha256": "c1f8abee3fb304a221a820ebc00aa3ff34719bee8b83a0540edc3cfa646d809f"
+          },
+          {
+            "detect_tree_sha256": "cb36611736a1c21ede94f22a3681fcc29ca7a8df776ffe2f47a3ed2114f765a8",
+            "exit_code": 0,
+            "raw_stderr": "pdf-member.zip.default.run-2.stderr",
+            "raw_stdout": "pdf-member.zip.default.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 488,
+            "stdout_sha256": "c1f8abee3fb304a221a820ebc00aa3ff34719bee8b83a0540edc3cfa646d809f"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      },
+      "recursive": {
+        "arguments": [
+          "--recursive",
+          "<fixture>/pdf-member.zip"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "cb36611736a1c21ede94f22a3681fcc29ca7a8df776ffe2f47a3ed2114f765a8",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "cb36611736a1c21ede94f22a3681fcc29ca7a8df776ffe2f47a3ed2114f765a8",
+            "exit_code": 0,
+            "raw_stderr": "pdf-member.zip.recursive.run-1.stderr",
+            "raw_stdout": "pdf-member.zip.recursive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 488,
+            "stdout_sha256": "c1f8abee3fb304a221a820ebc00aa3ff34719bee8b83a0540edc3cfa646d809f"
+          },
+          {
+            "detect_tree_sha256": "cb36611736a1c21ede94f22a3681fcc29ca7a8df776ffe2f47a3ed2114f765a8",
+            "exit_code": 0,
+            "raw_stderr": "pdf-member.zip.recursive.run-2.stderr",
+            "raw_stdout": "pdf-member.zip.recursive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 488,
+            "stdout_sha256": "c1f8abee3fb304a221a820ebc00aa3ff34719bee8b83a0540edc3cfa646d809f"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      },
+      "recursive_aggressive": {
+        "arguments": [
+          "--recursive",
+          "--aggressive",
+          "<fixture>/pdf-member.zip"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "cb36611736a1c21ede94f22a3681fcc29ca7a8df776ffe2f47a3ed2114f765a8",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "cb36611736a1c21ede94f22a3681fcc29ca7a8df776ffe2f47a3ed2114f765a8",
+            "exit_code": 0,
+            "raw_stderr": "pdf-member.zip.recursive_aggressive.run-1.stderr",
+            "raw_stdout": "pdf-member.zip.recursive_aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 488,
+            "stdout_sha256": "c1f8abee3fb304a221a820ebc00aa3ff34719bee8b83a0540edc3cfa646d809f"
+          },
+          {
+            "detect_tree_sha256": "cb36611736a1c21ede94f22a3681fcc29ca7a8df776ffe2f47a3ed2114f765a8",
+            "exit_code": 0,
+            "raw_stderr": "pdf-member.zip.recursive_aggressive.run-2.stderr",
+            "raw_stdout": "pdf-member.zip.recursive_aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 488,
+            "stdout_sha256": "c1f8abee3fb304a221a820ebc00aa3ff34719bee8b83a0540edc3cfa646d809f"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      }
+    },
+    "pe-manifest-resource.exe": {
+      "aggressive": {
+        "arguments": [
+          "--aggressive",
+          "<fixture>/pe-manifest-resource.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+            "exit_code": 0,
+            "raw_stderr": "pe-manifest-resource.exe.aggressive.run-1.stderr",
+            "raw_stdout": "pe-manifest-resource.exe.aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 490,
+            "stdout_sha256": "6baccf46107e5aba4ba60b86f53592a738fc816a2c57d4d9eda72968ae0e8c4e"
+          },
+          {
+            "detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+            "exit_code": 0,
+            "raw_stderr": "pe-manifest-resource.exe.aggressive.run-2.stderr",
+            "raw_stdout": "pe-manifest-resource.exe.aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 490,
+            "stdout_sha256": "6baccf46107e5aba4ba60b86f53592a738fc816a2c57d4d9eda72968ae0e8c4e"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      },
+      "archive": {
+        "arguments": [
+          "--archive",
+          "<fixture>/pe-manifest-resource.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+            "exit_code": 0,
+            "raw_stderr": "pe-manifest-resource.exe.archive.run-1.stderr",
+            "raw_stdout": "pe-manifest-resource.exe.archive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 490,
+            "stdout_sha256": "6baccf46107e5aba4ba60b86f53592a738fc816a2c57d4d9eda72968ae0e8c4e"
+          },
+          {
+            "detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+            "exit_code": 0,
+            "raw_stderr": "pe-manifest-resource.exe.archive.run-2.stderr",
+            "raw_stdout": "pe-manifest-resource.exe.archive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 490,
+            "stdout_sha256": "6baccf46107e5aba4ba60b86f53592a738fc816a2c57d4d9eda72968ae0e8c4e"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": null
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "<fixture>/pe-manifest-resource.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+            "exit_code": 0,
+            "raw_stderr": "pe-manifest-resource.exe.archive_aggressive.run-1.stderr",
+            "raw_stdout": "pe-manifest-resource.exe.archive_aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 490,
+            "stdout_sha256": "6baccf46107e5aba4ba60b86f53592a738fc816a2c57d4d9eda72968ae0e8c4e"
+          },
+          {
+            "detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+            "exit_code": 0,
+            "raw_stderr": "pe-manifest-resource.exe.archive_aggressive.run-2.stderr",
+            "raw_stdout": "pe-manifest-resource.exe.archive_aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 490,
+            "stdout_sha256": "6baccf46107e5aba4ba60b86f53592a738fc816a2c57d4d9eda72968ae0e8c4e"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": null
+      },
+      "archive_recursive": {
+        "arguments": [
+          "--archive",
+          "--recursive",
+          "<fixture>/pe-manifest-resource.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+            "exit_code": 0,
+            "raw_stderr": "pe-manifest-resource.exe.archive_recursive.run-1.stderr",
+            "raw_stdout": "pe-manifest-resource.exe.archive_recursive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 490,
+            "stdout_sha256": "6baccf46107e5aba4ba60b86f53592a738fc816a2c57d4d9eda72968ae0e8c4e"
+          },
+          {
+            "detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+            "exit_code": 0,
+            "raw_stderr": "pe-manifest-resource.exe.archive_recursive.run-2.stderr",
+            "raw_stdout": "pe-manifest-resource.exe.archive_recursive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 490,
+            "stdout_sha256": "6baccf46107e5aba4ba60b86f53592a738fc816a2c57d4d9eda72968ae0e8c4e"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": null
+      },
+      "archive_recursive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--recursive",
+          "--aggressive",
+          "<fixture>/pe-manifest-resource.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "1017c817a1927a213a7a2d76dcb9396b7a8295dd35048cb7423e9aa1d01b3307",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "1017c817a1927a213a7a2d76dcb9396b7a8295dd35048cb7423e9aa1d01b3307",
+            "exit_code": 0,
+            "raw_stderr": "pe-manifest-resource.exe.archive_recursive_aggressive.run-1.stderr",
+            "raw_stdout": "pe-manifest-resource.exe.archive_recursive_aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1098,
+            "stdout_sha256": "51482a7c7b3cfa94497e20420796f85818639dcad6b78916096ca074670617d4"
+          },
+          {
+            "detect_tree_sha256": "1017c817a1927a213a7a2d76dcb9396b7a8295dd35048cb7423e9aa1d01b3307",
+            "exit_code": 0,
+            "raw_stderr": "pe-manifest-resource.exe.archive_recursive_aggressive.run-2.stderr",
+            "raw_stdout": "pe-manifest-resource.exe.archive_recursive_aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1098,
+            "stdout_sha256": "51482a7c7b3cfa94497e20420796f85818639dcad6b78916096ca074670617d4"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 1,
+        "stream_count": 0,
+        "windows_release_semantic_equal": null
+      },
+      "default": {
+        "arguments": [
+          "<fixture>/pe-manifest-resource.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+            "exit_code": 0,
+            "raw_stderr": "pe-manifest-resource.exe.default.run-1.stderr",
+            "raw_stdout": "pe-manifest-resource.exe.default.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 490,
+            "stdout_sha256": "6baccf46107e5aba4ba60b86f53592a738fc816a2c57d4d9eda72968ae0e8c4e"
+          },
+          {
+            "detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+            "exit_code": 0,
+            "raw_stderr": "pe-manifest-resource.exe.default.run-2.stderr",
+            "raw_stdout": "pe-manifest-resource.exe.default.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 490,
+            "stdout_sha256": "6baccf46107e5aba4ba60b86f53592a738fc816a2c57d4d9eda72968ae0e8c4e"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      },
+      "recursive": {
+        "arguments": [
+          "--recursive",
+          "<fixture>/pe-manifest-resource.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+            "exit_code": 0,
+            "raw_stderr": "pe-manifest-resource.exe.recursive.run-1.stderr",
+            "raw_stdout": "pe-manifest-resource.exe.recursive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 490,
+            "stdout_sha256": "6baccf46107e5aba4ba60b86f53592a738fc816a2c57d4d9eda72968ae0e8c4e"
+          },
+          {
+            "detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+            "exit_code": 0,
+            "raw_stderr": "pe-manifest-resource.exe.recursive.run-2.stderr",
+            "raw_stdout": "pe-manifest-resource.exe.recursive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 490,
+            "stdout_sha256": "6baccf46107e5aba4ba60b86f53592a738fc816a2c57d4d9eda72968ae0e8c4e"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      },
+      "recursive_aggressive": {
+        "arguments": [
+          "--recursive",
+          "--aggressive",
+          "<fixture>/pe-manifest-resource.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "1017c817a1927a213a7a2d76dcb9396b7a8295dd35048cb7423e9aa1d01b3307",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "1017c817a1927a213a7a2d76dcb9396b7a8295dd35048cb7423e9aa1d01b3307",
+            "exit_code": 0,
+            "raw_stderr": "pe-manifest-resource.exe.recursive_aggressive.run-1.stderr",
+            "raw_stdout": "pe-manifest-resource.exe.recursive_aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1098,
+            "stdout_sha256": "51482a7c7b3cfa94497e20420796f85818639dcad6b78916096ca074670617d4"
+          },
+          {
+            "detect_tree_sha256": "1017c817a1927a213a7a2d76dcb9396b7a8295dd35048cb7423e9aa1d01b3307",
+            "exit_code": 0,
+            "raw_stderr": "pe-manifest-resource.exe.recursive_aggressive.run-2.stderr",
+            "raw_stdout": "pe-manifest-resource.exe.recursive_aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1098,
+            "stdout_sha256": "51482a7c7b3cfa94497e20420796f85818639dcad6b78916096ca074670617d4"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 1,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      }
+    },
+    "pe-many-pdf-resources.exe": {
+      "aggressive": {
+        "arguments": [
+          "--aggressive",
+          "<fixture>/pe-many-pdf-resources.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "20b3bbea89269c7be8f432dd2fbbb7fd2cf373914b9efc7e747fde403d3a2993",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "20b3bbea89269c7be8f432dd2fbbb7fd2cf373914b9efc7e747fde403d3a2993",
+            "exit_code": 0,
+            "raw_stderr": "pe-many-pdf-resources.exe.aggressive.run-1.stderr",
+            "raw_stdout": "pe-many-pdf-resources.exe.aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 490,
+            "stdout_sha256": "74985b4c559ec9bdd71c95d53506c29621854b2e5e798274d08be929f3f4c268"
+          },
+          {
+            "detect_tree_sha256": "20b3bbea89269c7be8f432dd2fbbb7fd2cf373914b9efc7e747fde403d3a2993",
+            "exit_code": 0,
+            "raw_stderr": "pe-many-pdf-resources.exe.aggressive.run-2.stderr",
+            "raw_stdout": "pe-many-pdf-resources.exe.aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 490,
+            "stdout_sha256": "74985b4c559ec9bdd71c95d53506c29621854b2e5e798274d08be929f3f4c268"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      },
+      "archive": {
+        "arguments": [
+          "--archive",
+          "<fixture>/pe-many-pdf-resources.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "20b3bbea89269c7be8f432dd2fbbb7fd2cf373914b9efc7e747fde403d3a2993",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "20b3bbea89269c7be8f432dd2fbbb7fd2cf373914b9efc7e747fde403d3a2993",
+            "exit_code": 0,
+            "raw_stderr": "pe-many-pdf-resources.exe.archive.run-1.stderr",
+            "raw_stdout": "pe-many-pdf-resources.exe.archive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 490,
+            "stdout_sha256": "74985b4c559ec9bdd71c95d53506c29621854b2e5e798274d08be929f3f4c268"
+          },
+          {
+            "detect_tree_sha256": "20b3bbea89269c7be8f432dd2fbbb7fd2cf373914b9efc7e747fde403d3a2993",
+            "exit_code": 0,
+            "raw_stderr": "pe-many-pdf-resources.exe.archive.run-2.stderr",
+            "raw_stdout": "pe-many-pdf-resources.exe.archive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 490,
+            "stdout_sha256": "74985b4c559ec9bdd71c95d53506c29621854b2e5e798274d08be929f3f4c268"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": null
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "<fixture>/pe-many-pdf-resources.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "20b3bbea89269c7be8f432dd2fbbb7fd2cf373914b9efc7e747fde403d3a2993",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "20b3bbea89269c7be8f432dd2fbbb7fd2cf373914b9efc7e747fde403d3a2993",
+            "exit_code": 0,
+            "raw_stderr": "pe-many-pdf-resources.exe.archive_aggressive.run-1.stderr",
+            "raw_stdout": "pe-many-pdf-resources.exe.archive_aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 490,
+            "stdout_sha256": "74985b4c559ec9bdd71c95d53506c29621854b2e5e798274d08be929f3f4c268"
+          },
+          {
+            "detect_tree_sha256": "20b3bbea89269c7be8f432dd2fbbb7fd2cf373914b9efc7e747fde403d3a2993",
+            "exit_code": 0,
+            "raw_stderr": "pe-many-pdf-resources.exe.archive_aggressive.run-2.stderr",
+            "raw_stdout": "pe-many-pdf-resources.exe.archive_aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 490,
+            "stdout_sha256": "74985b4c559ec9bdd71c95d53506c29621854b2e5e798274d08be929f3f4c268"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": null
+      },
+      "archive_recursive": {
+        "arguments": [
+          "--archive",
+          "--recursive",
+          "<fixture>/pe-many-pdf-resources.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "692f1a852e227a6988d19c4c58c0a84d3afe916f2375cd0cf29108d9d20f8519",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "692f1a852e227a6988d19c4c58c0a84d3afe916f2375cd0cf29108d9d20f8519",
+            "exit_code": 0,
+            "raw_stderr": "pe-many-pdf-resources.exe.archive_recursive.run-1.stderr",
+            "raw_stdout": "pe-many-pdf-resources.exe.archive_recursive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 19621,
+            "stdout_sha256": "32adbaa930eff50c128e82f0fcac8ea51387590caa485c2b2af424e0347ee635"
+          },
+          {
+            "detect_tree_sha256": "692f1a852e227a6988d19c4c58c0a84d3afe916f2375cd0cf29108d9d20f8519",
+            "exit_code": 0,
+            "raw_stderr": "pe-many-pdf-resources.exe.archive_recursive.run-2.stderr",
+            "raw_stdout": "pe-many-pdf-resources.exe.archive_recursive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 19621,
+            "stdout_sha256": "32adbaa930eff50c128e82f0fcac8ea51387590caa485c2b2af424e0347ee635"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 21,
+        "stream_count": 0,
+        "windows_release_semantic_equal": null
+      },
+      "archive_recursive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--recursive",
+          "--aggressive",
+          "<fixture>/pe-many-pdf-resources.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "5115a8418464d2f49105102e62b28f44e90ff76037efda7c4a7d65544e11417e",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "5115a8418464d2f49105102e62b28f44e90ff76037efda7c4a7d65544e11417e",
+            "exit_code": 0,
+            "raw_stderr": "pe-many-pdf-resources.exe.archive_recursive_aggressive.run-1.stderr",
+            "raw_stdout": "pe-many-pdf-resources.exe.archive_recursive_aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 20532,
+            "stdout_sha256": "3fcc39614ab77d881a690291c070f5653f9969292a727b68bc8c9c8b7d62b833"
+          },
+          {
+            "detect_tree_sha256": "5115a8418464d2f49105102e62b28f44e90ff76037efda7c4a7d65544e11417e",
+            "exit_code": 0,
+            "raw_stderr": "pe-many-pdf-resources.exe.archive_recursive_aggressive.run-2.stderr",
+            "raw_stdout": "pe-many-pdf-resources.exe.archive_recursive_aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 20532,
+            "stdout_sha256": "3fcc39614ab77d881a690291c070f5653f9969292a727b68bc8c9c8b7d62b833"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 22,
+        "stream_count": 0,
+        "windows_release_semantic_equal": null
+      },
+      "default": {
+        "arguments": [
+          "<fixture>/pe-many-pdf-resources.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "20b3bbea89269c7be8f432dd2fbbb7fd2cf373914b9efc7e747fde403d3a2993",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "20b3bbea89269c7be8f432dd2fbbb7fd2cf373914b9efc7e747fde403d3a2993",
+            "exit_code": 0,
+            "raw_stderr": "pe-many-pdf-resources.exe.default.run-1.stderr",
+            "raw_stdout": "pe-many-pdf-resources.exe.default.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 490,
+            "stdout_sha256": "74985b4c559ec9bdd71c95d53506c29621854b2e5e798274d08be929f3f4c268"
+          },
+          {
+            "detect_tree_sha256": "20b3bbea89269c7be8f432dd2fbbb7fd2cf373914b9efc7e747fde403d3a2993",
+            "exit_code": 0,
+            "raw_stderr": "pe-many-pdf-resources.exe.default.run-2.stderr",
+            "raw_stdout": "pe-many-pdf-resources.exe.default.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 490,
+            "stdout_sha256": "74985b4c559ec9bdd71c95d53506c29621854b2e5e798274d08be929f3f4c268"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      },
+      "recursive": {
+        "arguments": [
+          "--recursive",
+          "<fixture>/pe-many-pdf-resources.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "692f1a852e227a6988d19c4c58c0a84d3afe916f2375cd0cf29108d9d20f8519",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "692f1a852e227a6988d19c4c58c0a84d3afe916f2375cd0cf29108d9d20f8519",
+            "exit_code": 0,
+            "raw_stderr": "pe-many-pdf-resources.exe.recursive.run-1.stderr",
+            "raw_stdout": "pe-many-pdf-resources.exe.recursive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 19621,
+            "stdout_sha256": "32adbaa930eff50c128e82f0fcac8ea51387590caa485c2b2af424e0347ee635"
+          },
+          {
+            "detect_tree_sha256": "692f1a852e227a6988d19c4c58c0a84d3afe916f2375cd0cf29108d9d20f8519",
+            "exit_code": 0,
+            "raw_stderr": "pe-many-pdf-resources.exe.recursive.run-2.stderr",
+            "raw_stdout": "pe-many-pdf-resources.exe.recursive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 19621,
+            "stdout_sha256": "32adbaa930eff50c128e82f0fcac8ea51387590caa485c2b2af424e0347ee635"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 21,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      },
+      "recursive_aggressive": {
+        "arguments": [
+          "--recursive",
+          "--aggressive",
+          "<fixture>/pe-many-pdf-resources.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "5115a8418464d2f49105102e62b28f44e90ff76037efda7c4a7d65544e11417e",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "5115a8418464d2f49105102e62b28f44e90ff76037efda7c4a7d65544e11417e",
+            "exit_code": 0,
+            "raw_stderr": "pe-many-pdf-resources.exe.recursive_aggressive.run-1.stderr",
+            "raw_stdout": "pe-many-pdf-resources.exe.recursive_aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 20532,
+            "stdout_sha256": "3fcc39614ab77d881a690291c070f5653f9969292a727b68bc8c9c8b7d62b833"
+          },
+          {
+            "detect_tree_sha256": "5115a8418464d2f49105102e62b28f44e90ff76037efda7c4a7d65544e11417e",
+            "exit_code": 0,
+            "raw_stderr": "pe-many-pdf-resources.exe.recursive_aggressive.run-2.stderr",
+            "raw_stdout": "pe-many-pdf-resources.exe.recursive_aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 20532,
+            "stdout_sha256": "3fcc39614ab77d881a690291c070f5653f9969292a727b68bc8c9c8b7d62b833"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 22,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      }
+    },
+    "pe-pdf-overlay.exe": {
+      "aggressive": {
+        "arguments": [
+          "--aggressive",
+          "<fixture>/pe-pdf-overlay.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "19c4dd2cb791be14c4bcf79cbd25c58022c42ef766ca8923235dd793d2b2e913",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "19c4dd2cb791be14c4bcf79cbd25c58022c42ef766ca8923235dd793d2b2e913",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-overlay.exe.aggressive.run-1.stderr",
+            "raw_stdout": "pe-pdf-overlay.exe.aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 489,
+            "stdout_sha256": "c9f567b1847dc255c36ab827a81cf836db6fef475fe162e201a256d3ba100823"
+          },
+          {
+            "detect_tree_sha256": "19c4dd2cb791be14c4bcf79cbd25c58022c42ef766ca8923235dd793d2b2e913",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-overlay.exe.aggressive.run-2.stderr",
+            "raw_stdout": "pe-pdf-overlay.exe.aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 489,
+            "stdout_sha256": "c9f567b1847dc255c36ab827a81cf836db6fef475fe162e201a256d3ba100823"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      },
+      "archive": {
+        "arguments": [
+          "--archive",
+          "<fixture>/pe-pdf-overlay.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "19c4dd2cb791be14c4bcf79cbd25c58022c42ef766ca8923235dd793d2b2e913",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "19c4dd2cb791be14c4bcf79cbd25c58022c42ef766ca8923235dd793d2b2e913",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-overlay.exe.archive.run-1.stderr",
+            "raw_stdout": "pe-pdf-overlay.exe.archive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 489,
+            "stdout_sha256": "c9f567b1847dc255c36ab827a81cf836db6fef475fe162e201a256d3ba100823"
+          },
+          {
+            "detect_tree_sha256": "19c4dd2cb791be14c4bcf79cbd25c58022c42ef766ca8923235dd793d2b2e913",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-overlay.exe.archive.run-2.stderr",
+            "raw_stdout": "pe-pdf-overlay.exe.archive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 489,
+            "stdout_sha256": "c9f567b1847dc255c36ab827a81cf836db6fef475fe162e201a256d3ba100823"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": null
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "<fixture>/pe-pdf-overlay.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "19c4dd2cb791be14c4bcf79cbd25c58022c42ef766ca8923235dd793d2b2e913",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "19c4dd2cb791be14c4bcf79cbd25c58022c42ef766ca8923235dd793d2b2e913",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-overlay.exe.archive_aggressive.run-1.stderr",
+            "raw_stdout": "pe-pdf-overlay.exe.archive_aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 489,
+            "stdout_sha256": "c9f567b1847dc255c36ab827a81cf836db6fef475fe162e201a256d3ba100823"
+          },
+          {
+            "detect_tree_sha256": "19c4dd2cb791be14c4bcf79cbd25c58022c42ef766ca8923235dd793d2b2e913",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-overlay.exe.archive_aggressive.run-2.stderr",
+            "raw_stdout": "pe-pdf-overlay.exe.archive_aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 489,
+            "stdout_sha256": "c9f567b1847dc255c36ab827a81cf836db6fef475fe162e201a256d3ba100823"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": null
+      },
+      "archive_recursive": {
+        "arguments": [
+          "--archive",
+          "--recursive",
+          "<fixture>/pe-pdf-overlay.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "efe64dc103610dade051c7db311b42a55d7f33925600b800eed168f665596135",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "efe64dc103610dade051c7db311b42a55d7f33925600b800eed168f665596135",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-overlay.exe.archive_recursive.run-1.stderr",
+            "raw_stdout": "pe-pdf-overlay.exe.archive_recursive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1398,
+            "stdout_sha256": "1adfd480d69d05f0bd36a907fd2fd61fa474f777276b4aa3921d8be9348d6ebc"
+          },
+          {
+            "detect_tree_sha256": "efe64dc103610dade051c7db311b42a55d7f33925600b800eed168f665596135",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-overlay.exe.archive_recursive.run-2.stderr",
+            "raw_stdout": "pe-pdf-overlay.exe.archive_recursive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1398,
+            "stdout_sha256": "1adfd480d69d05f0bd36a907fd2fd61fa474f777276b4aa3921d8be9348d6ebc"
+          }
+        ],
+        "overlay_count": 1,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": null
+      },
+      "archive_recursive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--recursive",
+          "--aggressive",
+          "<fixture>/pe-pdf-overlay.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "efe64dc103610dade051c7db311b42a55d7f33925600b800eed168f665596135",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "efe64dc103610dade051c7db311b42a55d7f33925600b800eed168f665596135",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-overlay.exe.archive_recursive_aggressive.run-1.stderr",
+            "raw_stdout": "pe-pdf-overlay.exe.archive_recursive_aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1398,
+            "stdout_sha256": "1adfd480d69d05f0bd36a907fd2fd61fa474f777276b4aa3921d8be9348d6ebc"
+          },
+          {
+            "detect_tree_sha256": "efe64dc103610dade051c7db311b42a55d7f33925600b800eed168f665596135",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-overlay.exe.archive_recursive_aggressive.run-2.stderr",
+            "raw_stdout": "pe-pdf-overlay.exe.archive_recursive_aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1398,
+            "stdout_sha256": "1adfd480d69d05f0bd36a907fd2fd61fa474f777276b4aa3921d8be9348d6ebc"
+          }
+        ],
+        "overlay_count": 1,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": null
+      },
+      "default": {
+        "arguments": [
+          "<fixture>/pe-pdf-overlay.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "19c4dd2cb791be14c4bcf79cbd25c58022c42ef766ca8923235dd793d2b2e913",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "19c4dd2cb791be14c4bcf79cbd25c58022c42ef766ca8923235dd793d2b2e913",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-overlay.exe.default.run-1.stderr",
+            "raw_stdout": "pe-pdf-overlay.exe.default.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 489,
+            "stdout_sha256": "c9f567b1847dc255c36ab827a81cf836db6fef475fe162e201a256d3ba100823"
+          },
+          {
+            "detect_tree_sha256": "19c4dd2cb791be14c4bcf79cbd25c58022c42ef766ca8923235dd793d2b2e913",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-overlay.exe.default.run-2.stderr",
+            "raw_stdout": "pe-pdf-overlay.exe.default.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 489,
+            "stdout_sha256": "c9f567b1847dc255c36ab827a81cf836db6fef475fe162e201a256d3ba100823"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      },
+      "recursive": {
+        "arguments": [
+          "--recursive",
+          "<fixture>/pe-pdf-overlay.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "efe64dc103610dade051c7db311b42a55d7f33925600b800eed168f665596135",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "efe64dc103610dade051c7db311b42a55d7f33925600b800eed168f665596135",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-overlay.exe.recursive.run-1.stderr",
+            "raw_stdout": "pe-pdf-overlay.exe.recursive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1398,
+            "stdout_sha256": "1adfd480d69d05f0bd36a907fd2fd61fa474f777276b4aa3921d8be9348d6ebc"
+          },
+          {
+            "detect_tree_sha256": "efe64dc103610dade051c7db311b42a55d7f33925600b800eed168f665596135",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-overlay.exe.recursive.run-2.stderr",
+            "raw_stdout": "pe-pdf-overlay.exe.recursive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1398,
+            "stdout_sha256": "1adfd480d69d05f0bd36a907fd2fd61fa474f777276b4aa3921d8be9348d6ebc"
+          }
+        ],
+        "overlay_count": 1,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      },
+      "recursive_aggressive": {
+        "arguments": [
+          "--recursive",
+          "--aggressive",
+          "<fixture>/pe-pdf-overlay.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "efe64dc103610dade051c7db311b42a55d7f33925600b800eed168f665596135",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "efe64dc103610dade051c7db311b42a55d7f33925600b800eed168f665596135",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-overlay.exe.recursive_aggressive.run-1.stderr",
+            "raw_stdout": "pe-pdf-overlay.exe.recursive_aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1398,
+            "stdout_sha256": "1adfd480d69d05f0bd36a907fd2fd61fa474f777276b4aa3921d8be9348d6ebc"
+          },
+          {
+            "detect_tree_sha256": "efe64dc103610dade051c7db311b42a55d7f33925600b800eed168f665596135",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-overlay.exe.recursive_aggressive.run-2.stderr",
+            "raw_stdout": "pe-pdf-overlay.exe.recursive_aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1398,
+            "stdout_sha256": "1adfd480d69d05f0bd36a907fd2fd61fa474f777276b4aa3921d8be9348d6ebc"
+          }
+        ],
+        "overlay_count": 1,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      }
+    },
+    "pe-pdf-resource.exe": {
+      "aggressive": {
+        "arguments": [
+          "--aggressive",
+          "<fixture>/pe-pdf-resource.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-resource.exe.aggressive.run-1.stderr",
+            "raw_stdout": "pe-pdf-resource.exe.aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 490,
+            "stdout_sha256": "6baccf46107e5aba4ba60b86f53592a738fc816a2c57d4d9eda72968ae0e8c4e"
+          },
+          {
+            "detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-resource.exe.aggressive.run-2.stderr",
+            "raw_stdout": "pe-pdf-resource.exe.aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 490,
+            "stdout_sha256": "6baccf46107e5aba4ba60b86f53592a738fc816a2c57d4d9eda72968ae0e8c4e"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      },
+      "archive": {
+        "arguments": [
+          "--archive",
+          "<fixture>/pe-pdf-resource.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-resource.exe.archive.run-1.stderr",
+            "raw_stdout": "pe-pdf-resource.exe.archive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 490,
+            "stdout_sha256": "6baccf46107e5aba4ba60b86f53592a738fc816a2c57d4d9eda72968ae0e8c4e"
+          },
+          {
+            "detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-resource.exe.archive.run-2.stderr",
+            "raw_stdout": "pe-pdf-resource.exe.archive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 490,
+            "stdout_sha256": "6baccf46107e5aba4ba60b86f53592a738fc816a2c57d4d9eda72968ae0e8c4e"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": null
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "<fixture>/pe-pdf-resource.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-resource.exe.archive_aggressive.run-1.stderr",
+            "raw_stdout": "pe-pdf-resource.exe.archive_aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 490,
+            "stdout_sha256": "6baccf46107e5aba4ba60b86f53592a738fc816a2c57d4d9eda72968ae0e8c4e"
+          },
+          {
+            "detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-resource.exe.archive_aggressive.run-2.stderr",
+            "raw_stdout": "pe-pdf-resource.exe.archive_aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 490,
+            "stdout_sha256": "6baccf46107e5aba4ba60b86f53592a738fc816a2c57d4d9eda72968ae0e8c4e"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": null
+      },
+      "archive_recursive": {
+        "arguments": [
+          "--archive",
+          "--recursive",
+          "<fixture>/pe-pdf-resource.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "a8700145a5c815f2c5ef683fcdf2117242c6ef4f81761b0d3130b6d94a0bbce1",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "a8700145a5c815f2c5ef683fcdf2117242c6ef4f81761b0d3130b6d94a0bbce1",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-resource.exe.archive_recursive.run-1.stderr",
+            "raw_stdout": "pe-pdf-resource.exe.archive_recursive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1400,
+            "stdout_sha256": "daf622f392db990ba52b7b702b5499ad2ac42623f4654a21d5398c54e47aa036"
+          },
+          {
+            "detect_tree_sha256": "a8700145a5c815f2c5ef683fcdf2117242c6ef4f81761b0d3130b6d94a0bbce1",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-resource.exe.archive_recursive.run-2.stderr",
+            "raw_stdout": "pe-pdf-resource.exe.archive_recursive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1400,
+            "stdout_sha256": "daf622f392db990ba52b7b702b5499ad2ac42623f4654a21d5398c54e47aa036"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 1,
+        "stream_count": 0,
+        "windows_release_semantic_equal": null
+      },
+      "archive_recursive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--recursive",
+          "--aggressive",
+          "<fixture>/pe-pdf-resource.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "a8700145a5c815f2c5ef683fcdf2117242c6ef4f81761b0d3130b6d94a0bbce1",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "a8700145a5c815f2c5ef683fcdf2117242c6ef4f81761b0d3130b6d94a0bbce1",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-resource.exe.archive_recursive_aggressive.run-1.stderr",
+            "raw_stdout": "pe-pdf-resource.exe.archive_recursive_aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1400,
+            "stdout_sha256": "daf622f392db990ba52b7b702b5499ad2ac42623f4654a21d5398c54e47aa036"
+          },
+          {
+            "detect_tree_sha256": "a8700145a5c815f2c5ef683fcdf2117242c6ef4f81761b0d3130b6d94a0bbce1",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-resource.exe.archive_recursive_aggressive.run-2.stderr",
+            "raw_stdout": "pe-pdf-resource.exe.archive_recursive_aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1400,
+            "stdout_sha256": "daf622f392db990ba52b7b702b5499ad2ac42623f4654a21d5398c54e47aa036"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 1,
+        "stream_count": 0,
+        "windows_release_semantic_equal": null
+      },
+      "default": {
+        "arguments": [
+          "<fixture>/pe-pdf-resource.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-resource.exe.default.run-1.stderr",
+            "raw_stdout": "pe-pdf-resource.exe.default.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 490,
+            "stdout_sha256": "6baccf46107e5aba4ba60b86f53592a738fc816a2c57d4d9eda72968ae0e8c4e"
+          },
+          {
+            "detect_tree_sha256": "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-resource.exe.default.run-2.stderr",
+            "raw_stdout": "pe-pdf-resource.exe.default.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 490,
+            "stdout_sha256": "6baccf46107e5aba4ba60b86f53592a738fc816a2c57d4d9eda72968ae0e8c4e"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      },
+      "recursive": {
+        "arguments": [
+          "--recursive",
+          "<fixture>/pe-pdf-resource.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "a8700145a5c815f2c5ef683fcdf2117242c6ef4f81761b0d3130b6d94a0bbce1",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "a8700145a5c815f2c5ef683fcdf2117242c6ef4f81761b0d3130b6d94a0bbce1",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-resource.exe.recursive.run-1.stderr",
+            "raw_stdout": "pe-pdf-resource.exe.recursive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1400,
+            "stdout_sha256": "daf622f392db990ba52b7b702b5499ad2ac42623f4654a21d5398c54e47aa036"
+          },
+          {
+            "detect_tree_sha256": "a8700145a5c815f2c5ef683fcdf2117242c6ef4f81761b0d3130b6d94a0bbce1",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-resource.exe.recursive.run-2.stderr",
+            "raw_stdout": "pe-pdf-resource.exe.recursive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1400,
+            "stdout_sha256": "daf622f392db990ba52b7b702b5499ad2ac42623f4654a21d5398c54e47aa036"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 1,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      },
+      "recursive_aggressive": {
+        "arguments": [
+          "--recursive",
+          "--aggressive",
+          "<fixture>/pe-pdf-resource.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "a8700145a5c815f2c5ef683fcdf2117242c6ef4f81761b0d3130b6d94a0bbce1",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "a8700145a5c815f2c5ef683fcdf2117242c6ef4f81761b0d3130b6d94a0bbce1",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-resource.exe.recursive_aggressive.run-1.stderr",
+            "raw_stdout": "pe-pdf-resource.exe.recursive_aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1400,
+            "stdout_sha256": "daf622f392db990ba52b7b702b5499ad2ac42623f4654a21d5398c54e47aa036"
+          },
+          {
+            "detect_tree_sha256": "a8700145a5c815f2c5ef683fcdf2117242c6ef4f81761b0d3130b6d94a0bbce1",
+            "exit_code": 0,
+            "raw_stderr": "pe-pdf-resource.exe.recursive_aggressive.run-2.stderr",
+            "raw_stdout": "pe-pdf-resource.exe.recursive_aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1400,
+            "stdout_sha256": "daf622f392db990ba52b7b702b5499ad2ac42623f4654a21d5398c54e47aa036"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 1,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      }
+    },
+    "pe-zip-overlay.exe": {
+      "aggressive": {
+        "arguments": [
+          "--aggressive",
+          "<fixture>/pe-zip-overlay.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "d8892b37964adf0e8fbfe81208d93258eab2d059fad9e264d5a913d2f2fd6e0f",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "d8892b37964adf0e8fbfe81208d93258eab2d059fad9e264d5a913d2f2fd6e0f",
+            "exit_code": 0,
+            "raw_stderr": "pe-zip-overlay.exe.aggressive.run-1.stderr",
+            "raw_stdout": "pe-zip-overlay.exe.aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 519,
+            "stdout_sha256": "51c588c986b6e71e9a872c67be61e2706ea66b4538fd43e02755562ea31def07"
+          },
+          {
+            "detect_tree_sha256": "d8892b37964adf0e8fbfe81208d93258eab2d059fad9e264d5a913d2f2fd6e0f",
+            "exit_code": 0,
+            "raw_stderr": "pe-zip-overlay.exe.aggressive.run-2.stderr",
+            "raw_stdout": "pe-zip-overlay.exe.aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 519,
+            "stdout_sha256": "51c588c986b6e71e9a872c67be61e2706ea66b4538fd43e02755562ea31def07"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      },
+      "archive": {
+        "arguments": [
+          "--archive",
+          "<fixture>/pe-zip-overlay.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "d8892b37964adf0e8fbfe81208d93258eab2d059fad9e264d5a913d2f2fd6e0f",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "d8892b37964adf0e8fbfe81208d93258eab2d059fad9e264d5a913d2f2fd6e0f",
+            "exit_code": 0,
+            "raw_stderr": "pe-zip-overlay.exe.archive.run-1.stderr",
+            "raw_stdout": "pe-zip-overlay.exe.archive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 519,
+            "stdout_sha256": "51c588c986b6e71e9a872c67be61e2706ea66b4538fd43e02755562ea31def07"
+          },
+          {
+            "detect_tree_sha256": "d8892b37964adf0e8fbfe81208d93258eab2d059fad9e264d5a913d2f2fd6e0f",
+            "exit_code": 0,
+            "raw_stderr": "pe-zip-overlay.exe.archive.run-2.stderr",
+            "raw_stdout": "pe-zip-overlay.exe.archive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 519,
+            "stdout_sha256": "51c588c986b6e71e9a872c67be61e2706ea66b4538fd43e02755562ea31def07"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": null
+      },
+      "archive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--aggressive",
+          "<fixture>/pe-zip-overlay.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "d8892b37964adf0e8fbfe81208d93258eab2d059fad9e264d5a913d2f2fd6e0f",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "d8892b37964adf0e8fbfe81208d93258eab2d059fad9e264d5a913d2f2fd6e0f",
+            "exit_code": 0,
+            "raw_stderr": "pe-zip-overlay.exe.archive_aggressive.run-1.stderr",
+            "raw_stdout": "pe-zip-overlay.exe.archive_aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 519,
+            "stdout_sha256": "51c588c986b6e71e9a872c67be61e2706ea66b4538fd43e02755562ea31def07"
+          },
+          {
+            "detect_tree_sha256": "d8892b37964adf0e8fbfe81208d93258eab2d059fad9e264d5a913d2f2fd6e0f",
+            "exit_code": 0,
+            "raw_stderr": "pe-zip-overlay.exe.archive_aggressive.run-2.stderr",
+            "raw_stdout": "pe-zip-overlay.exe.archive_aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 519,
+            "stdout_sha256": "51c588c986b6e71e9a872c67be61e2706ea66b4538fd43e02755562ea31def07"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": null
+      },
+      "archive_recursive": {
+        "arguments": [
+          "--archive",
+          "--recursive",
+          "<fixture>/pe-zip-overlay.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "4215e3f12c495eca86a8ba3526bf941b0c82c3f55d2feea952de16a44753cb49",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "4215e3f12c495eca86a8ba3526bf941b0c82c3f55d2feea952de16a44753cb49",
+            "exit_code": 0,
+            "raw_stderr": "pe-zip-overlay.exe.archive_recursive.run-1.stderr",
+            "raw_stdout": "pe-zip-overlay.exe.archive_recursive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 2194,
+            "stdout_sha256": "c37481338b793b92ed447c8e5b3b8b072c7090bc2c372b55b60c4082549d70e9"
+          },
+          {
+            "detect_tree_sha256": "4215e3f12c495eca86a8ba3526bf941b0c82c3f55d2feea952de16a44753cb49",
+            "exit_code": 0,
+            "raw_stderr": "pe-zip-overlay.exe.archive_recursive.run-2.stderr",
+            "raw_stdout": "pe-zip-overlay.exe.archive_recursive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 2194,
+            "stdout_sha256": "c37481338b793b92ed447c8e5b3b8b072c7090bc2c372b55b60c4082549d70e9"
+          }
+        ],
+        "overlay_count": 1,
+        "resource_count": 0,
+        "stream_count": 1,
+        "windows_release_semantic_equal": null
+      },
+      "archive_recursive_aggressive": {
+        "arguments": [
+          "--archive",
+          "--recursive",
+          "--aggressive",
+          "<fixture>/pe-zip-overlay.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "4215e3f12c495eca86a8ba3526bf941b0c82c3f55d2feea952de16a44753cb49",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "4215e3f12c495eca86a8ba3526bf941b0c82c3f55d2feea952de16a44753cb49",
+            "exit_code": 0,
+            "raw_stderr": "pe-zip-overlay.exe.archive_recursive_aggressive.run-1.stderr",
+            "raw_stdout": "pe-zip-overlay.exe.archive_recursive_aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 2194,
+            "stdout_sha256": "c37481338b793b92ed447c8e5b3b8b072c7090bc2c372b55b60c4082549d70e9"
+          },
+          {
+            "detect_tree_sha256": "4215e3f12c495eca86a8ba3526bf941b0c82c3f55d2feea952de16a44753cb49",
+            "exit_code": 0,
+            "raw_stderr": "pe-zip-overlay.exe.archive_recursive_aggressive.run-2.stderr",
+            "raw_stdout": "pe-zip-overlay.exe.archive_recursive_aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 2194,
+            "stdout_sha256": "c37481338b793b92ed447c8e5b3b8b072c7090bc2c372b55b60c4082549d70e9"
+          }
+        ],
+        "overlay_count": 1,
+        "resource_count": 0,
+        "stream_count": 1,
+        "windows_release_semantic_equal": null
+      },
+      "default": {
+        "arguments": [
+          "<fixture>/pe-zip-overlay.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "d8892b37964adf0e8fbfe81208d93258eab2d059fad9e264d5a913d2f2fd6e0f",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "d8892b37964adf0e8fbfe81208d93258eab2d059fad9e264d5a913d2f2fd6e0f",
+            "exit_code": 0,
+            "raw_stderr": "pe-zip-overlay.exe.default.run-1.stderr",
+            "raw_stdout": "pe-zip-overlay.exe.default.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 519,
+            "stdout_sha256": "51c588c986b6e71e9a872c67be61e2706ea66b4538fd43e02755562ea31def07"
+          },
+          {
+            "detect_tree_sha256": "d8892b37964adf0e8fbfe81208d93258eab2d059fad9e264d5a913d2f2fd6e0f",
+            "exit_code": 0,
+            "raw_stderr": "pe-zip-overlay.exe.default.run-2.stderr",
+            "raw_stdout": "pe-zip-overlay.exe.default.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 519,
+            "stdout_sha256": "51c588c986b6e71e9a872c67be61e2706ea66b4538fd43e02755562ea31def07"
+          }
+        ],
+        "overlay_count": 0,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      },
+      "recursive": {
+        "arguments": [
+          "--recursive",
+          "<fixture>/pe-zip-overlay.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "22cf94009866b0c335353cbc405dcc1b94eff5a445aac933a8660bc41abc23a5",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "22cf94009866b0c335353cbc405dcc1b94eff5a445aac933a8660bc41abc23a5",
+            "exit_code": 0,
+            "raw_stderr": "pe-zip-overlay.exe.recursive.run-1.stderr",
+            "raw_stdout": "pe-zip-overlay.exe.recursive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1104,
+            "stdout_sha256": "f21521eb95d4fb6236ffea3919e0fbf7a874bf33db8b14902cd696c69837d471"
+          },
+          {
+            "detect_tree_sha256": "22cf94009866b0c335353cbc405dcc1b94eff5a445aac933a8660bc41abc23a5",
+            "exit_code": 0,
+            "raw_stderr": "pe-zip-overlay.exe.recursive.run-2.stderr",
+            "raw_stdout": "pe-zip-overlay.exe.recursive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1104,
+            "stdout_sha256": "f21521eb95d4fb6236ffea3919e0fbf7a874bf33db8b14902cd696c69837d471"
+          }
+        ],
+        "overlay_count": 1,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      },
+      "recursive_aggressive": {
+        "arguments": [
+          "--recursive",
+          "--aggressive",
+          "<fixture>/pe-zip-overlay.exe"
+        ],
+        "deterministic": true,
+        "linux_qt5_detect_tree_sha256": "22cf94009866b0c335353cbc405dcc1b94eff5a445aac933a8660bc41abc23a5",
+        "linux_qt5_semantic_equal": true,
+        "observations": [
+          {
+            "detect_tree_sha256": "22cf94009866b0c335353cbc405dcc1b94eff5a445aac933a8660bc41abc23a5",
+            "exit_code": 0,
+            "raw_stderr": "pe-zip-overlay.exe.recursive_aggressive.run-1.stderr",
+            "raw_stdout": "pe-zip-overlay.exe.recursive_aggressive.run-1.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1104,
+            "stdout_sha256": "f21521eb95d4fb6236ffea3919e0fbf7a874bf33db8b14902cd696c69837d471"
+          },
+          {
+            "detect_tree_sha256": "22cf94009866b0c335353cbc405dcc1b94eff5a445aac933a8660bc41abc23a5",
+            "exit_code": 0,
+            "raw_stderr": "pe-zip-overlay.exe.recursive_aggressive.run-2.stderr",
+            "raw_stdout": "pe-zip-overlay.exe.recursive_aggressive.run-2.stdout",
+            "stderr_bytes": 0,
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1104,
+            "stdout_sha256": "f21521eb95d4fb6236ffea3919e0fbf7a874bf33db8b14902cd696c69837d471"
+          }
+        ],
+        "overlay_count": 1,
+        "resource_count": 0,
+        "stream_count": 0,
+        "windows_release_semantic_equal": true
+      }
+    }
+  },
+  "detection_trees": {
+    "0bfa9d9d2cd62f5f8c52e06e553b0a64fb37eccaf72be34c9e0b836dc2a046e9": [
+      {
+        "filetype": "PE32",
+        "offset": "0",
+        "parentfilepart": "Header",
+        "size": "1024",
+        "values": [
+          {
+            "name": "Unknown",
+            "type": "Unknown",
+            "version": ""
+          }
+        ]
+      }
+    ],
+    "1017c817a1927a213a7a2d76dcb9396b7a8295dd35048cb7423e9aa1d01b3307": [
+      {
+        "filetype": "PE32",
+        "offset": "0",
+        "parentfilepart": "Header",
+        "size": "1024",
+        "values": [
+          {
+            "name": "Unknown",
+            "type": "Unknown",
+            "version": ""
+          },
+          {
+            "filetype": "Binary",
+            "offset": "608",
+            "parentfilepart": "Resource",
+            "size": "20",
+            "values": [
+              {
+                "name": "Manifest",
+                "type": "format",
+                "version": ""
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "19c4dd2cb791be14c4bcf79cbd25c58022c42ef766ca8923235dd793d2b2e913": [
+      {
+        "filetype": "PE32",
+        "offset": "0",
+        "parentfilepart": "Header",
+        "size": "843",
+        "values": [
+          {
+            "name": "Unknown",
+            "type": "Unknown",
+            "version": ""
+          }
+        ]
+      }
+    ],
+    "1c53840ae51e16b49c69a2f70dda6c2e474ec88ae623349632b37da0933bd821": [
+      {
+        "filetype": "ZIP",
+        "offset": "0",
+        "parentfilepart": "Header",
+        "size": "9548",
+        "values": [
+          {
+            "name": "Unknown",
+            "type": "Unknown",
+            "version": ""
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "20b3bbea89269c7be8f432dd2fbbb7fd2cf373914b9efc7e747fde403d3a2993": [
+      {
+        "filetype": "PE32",
+        "offset": "0",
+        "parentfilepart": "Header",
+        "size": "9216",
+        "values": [
+          {
+            "name": "Unknown",
+            "type": "Unknown",
+            "version": ""
+          }
+        ]
+      }
+    ],
+    "22cf94009866b0c335353cbc405dcc1b94eff5a445aac933a8660bc41abc23a5": [
+      {
+        "filetype": "PE32",
+        "offset": "0",
+        "parentfilepart": "Header",
+        "size": "965",
+        "values": [
+          {
+            "name": "Zip",
+            "type": "archive",
+            "version": "2.0"
+          },
+          {
+            "filetype": "ZIP",
+            "offset": "512",
+            "parentfilepart": "Overlay",
+            "size": "453",
+            "values": [
+              {
+                "name": "Unknown",
+                "type": "Unknown",
+                "version": ""
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "4215e3f12c495eca86a8ba3526bf941b0c82c3f55d2feea952de16a44753cb49": [
+      {
+        "filetype": "PE32",
+        "offset": "0",
+        "parentfilepart": "Header",
+        "size": "965",
+        "values": [
+          {
+            "name": "Zip",
+            "type": "archive",
+            "version": "2.0"
+          },
+          {
+            "filetype": "ZIP",
+            "offset": "512",
+            "parentfilepart": "Overlay",
+            "size": "453",
+            "values": [
+              {
+                "name": "Unknown",
+                "type": "Unknown",
+                "version": ""
+              },
+              {
+                "filetype": "PDF",
+                "offset": "0",
+                "parentfilepart": "Stream",
+                "size": "331",
+                "values": [
+                  {
+                    "name": "PDF",
+                    "type": "format",
+                    "version": "1.4"
+                  },
+                  {
+                    "name": "HeaderComment",
+                    "type": "complier",
+                    "version": "e2e3cfd3"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "4e969cf03aa8ce3837c258b3ca5894532f96936f1295ec073e6b67b4bef8171d": [
+      {
+        "filetype": "ZIP",
+        "offset": "0",
+        "parentfilepart": "Header",
+        "size": "9548",
+        "values": [
+          {
+            "name": "Unknown",
+            "type": "Unknown",
+            "version": ""
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "5115a8418464d2f49105102e62b28f44e90ff76037efda7c4a7d65544e11417e": [
+      {
+        "filetype": "PE32",
+        "offset": "0",
+        "parentfilepart": "Header",
+        "size": "9216",
+        "values": [
+          {
+            "name": "Unknown",
+            "type": "Unknown",
+            "version": ""
+          },
+          {
+            "filetype": "PDF",
+            "offset": "1616",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "1947",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "2278",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "2609",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "2940",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "3271",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "3602",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "3933",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "4264",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "4595",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "4926",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "5257",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "5588",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "5919",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "6250",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "6581",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "6912",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "7243",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "7574",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "7905",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "8236",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "8567",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "5a341d19d3a57ff84e5872af2365e92720066c090bc4768903766318cdf836cb": [
+      {
+        "filetype": "ZIP",
+        "offset": "0",
+        "parentfilepart": "Header",
+        "size": "9548",
+        "values": [
+          {
+            "name": "Unknown",
+            "type": "Unknown",
+            "version": ""
+          }
+        ]
+      }
+    ],
+    "692f1a852e227a6988d19c4c58c0a84d3afe916f2375cd0cf29108d9d20f8519": [
+      {
+        "filetype": "PE32",
+        "offset": "0",
+        "parentfilepart": "Header",
+        "size": "9216",
+        "values": [
+          {
+            "name": "Unknown",
+            "type": "Unknown",
+            "version": ""
+          },
+          {
+            "filetype": "PDF",
+            "offset": "1616",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "1947",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "2278",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "2609",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "2940",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "3271",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "3602",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "3933",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "4264",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "4595",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "4926",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "5257",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "5588",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "5919",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "6250",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "6581",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "6912",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "7243",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "7574",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "7905",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          },
+          {
+            "filetype": "PDF",
+            "offset": "8236",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "77e1a78084483ac0000d2fb145557a0159eb0a5da2faae9ed0db2b22e9652eb1": [
+      {
+        "filetype": "ZIP",
+        "offset": "0",
+        "parentfilepart": "Header",
+        "size": "569",
+        "values": [
+          {
+            "name": "Unknown",
+            "type": "Unknown",
+            "version": ""
+          }
+        ]
+      }
+    ],
+    "a344945b686716514e9a316e5988410b164ffd2e914cfad89255150ab2692d9c": [
+      {
+        "filetype": "ZIP",
+        "offset": "0",
+        "parentfilepart": "Header",
+        "size": "569",
+        "values": [
+          {
+            "name": "Unknown",
+            "type": "Unknown",
+            "version": ""
+          },
+          {
+            "filetype": "ZIP",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "453",
+            "values": [
+              {
+                "name": "Unknown",
+                "type": "Unknown",
+                "version": ""
+              },
+              {
+                "filetype": "PDF",
+                "offset": "0",
+                "parentfilepart": "Stream",
+                "size": "331",
+                "values": [
+                  {
+                    "name": "PDF",
+                    "type": "format",
+                    "version": "1.4"
+                  },
+                  {
+                    "name": "HeaderComment",
+                    "type": "complier",
+                    "version": "e2e3cfd3"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "a6d5cfb8741027c4742f20cb423d92bbc21b7ab11c43f90eaf8b8192f53dd04c": [
+      {
+        "filetype": "ZIP",
+        "offset": "0",
+        "parentfilepart": "Header",
+        "size": "453",
+        "values": [
+          {
+            "name": "Unknown",
+            "type": "Unknown",
+            "version": ""
+          },
+          {
+            "filetype": "PDF",
+            "offset": "0",
+            "parentfilepart": "Stream",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "a8700145a5c815f2c5ef683fcdf2117242c6ef4f81761b0d3130b6d94a0bbce1": [
+      {
+        "filetype": "PE32",
+        "offset": "0",
+        "parentfilepart": "Header",
+        "size": "1024",
+        "values": [
+          {
+            "name": "Unknown",
+            "type": "Unknown",
+            "version": ""
+          },
+          {
+            "filetype": "PDF",
+            "offset": "608",
+            "parentfilepart": "Resource",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "cb36611736a1c21ede94f22a3681fcc29ca7a8df776ffe2f47a3ed2114f765a8": [
+      {
+        "filetype": "ZIP",
+        "offset": "0",
+        "parentfilepart": "Header",
+        "size": "453",
+        "values": [
+          {
+            "name": "Unknown",
+            "type": "Unknown",
+            "version": ""
+          }
+        ]
+      }
+    ],
+    "d8892b37964adf0e8fbfe81208d93258eab2d059fad9e264d5a913d2f2fd6e0f": [
+      {
+        "filetype": "PE32",
+        "offset": "0",
+        "parentfilepart": "Header",
+        "size": "965",
+        "values": [
+          {
+            "name": "Zip",
+            "type": "archive",
+            "version": "2.0"
+          }
+        ]
+      }
+    ],
+    "efe64dc103610dade051c7db311b42a55d7f33925600b800eed168f665596135": [
+      {
+        "filetype": "PE32",
+        "offset": "0",
+        "parentfilepart": "Header",
+        "size": "843",
+        "values": [
+          {
+            "name": "Unknown",
+            "type": "Unknown",
+            "version": ""
+          },
+          {
+            "filetype": "PDF",
+            "offset": "512",
+            "parentfilepart": "Overlay",
+            "size": "331",
+            "values": [
+              {
+                "name": "PDF",
+                "type": "format",
+                "version": "1.4"
+              },
+              {
+                "name": "HeaderComment",
+                "type": "complier",
+                "version": "e2e3cfd3"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "execution_count": 128,
+  "failures": [],
+  "fixture": {
+    "path": "docs/research/data/nested-corpus.json",
+    "sample_count": 8,
+    "sha256": "b382bd0a903cd4dda5a8128508f7a3f514a67a721baacda4c6722c99aefc4229"
+  },
+  "generator": "tools/upstream/collect_windows_archive_option.py",
+  "generator_sha256": "f6ab0db9d7e2a57e619b27b27fba84a0b98b5a85f62e5b1feee60862771a2c30",
+  "host": {
+    "architecture": "AMD64",
+    "os_build": "10.0.26100"
+  },
+  "limitations": [
+    "the matrix covers the eight project-generated nested fixtures",
+    "count observations stop at 22 and do not close the 100000 iteration boundary",
+    "depth and cumulative expanded-byte limits require the separate limit harness"
+  ],
+  "linux_qt5_reference": {
+    "path": "docs/research/data/archive-option-engine-qt5-qt6.json",
+    "sha256": "5cdadeb09d97a0afd03b2f73ebbb5eb4ffd227b9a21973d34d5a3db739bb8d65"
+  },
+  "passed": true,
+  "platform": "windows-x86_64-qt5",
+  "qt": {
+    "qmake_sha256": "e873ad3a689a0628c3037a6440221dcd2e426395edf14ffa6379612dede26d36",
+    "qmake_spec": "win32-msvc",
+    "qt5core_sha256": "8d2ff4ce9096ddccc4f4cd62c2e41fc854cfd1b0d6e8d296645a7f5fd4ae565a",
+    "qt5script_sha256": "0b58e5e79df13110a8258f14d7b3658d1dd0c8dddc337a164b89d4ac12a0638f",
+    "version": "5.15.2"
+  },
+  "raw_artifacts": {
+    "stdout_and_stderr_retained_for_every_execution": true,
+    "storage": "untracked external directory selected by --raw-dir"
+  },
+  "relationships": {
+    "aggressive_archive_member_control_reaches_22": true,
+    "aggressive_resource_control_reaches_22": true,
+    "all_32_no_archive_cases_match_windows_release": true,
+    "all_64_cases_are_deterministic": true,
+    "all_64_cases_match_linux_qt5": true,
+    "archive_option_is_independent_of_aggressive": true,
+    "archive_samples_have_no_stream_without_archive_option": true,
+    "archive_samples_have_streams_with_archive_option": true,
+    "default_archive_member_control_stops_at_21": true,
+    "default_resource_control_stops_at_21": true,
+    "nested_archive_option_propagates_to_inner_zip": true
+  },
+  "release_control_count": 32,
+  "repetitions": 2,
+  "schema_version": 1,
+  "source": {
+    "commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "recursive_submodule_count": 58,
+    "repository": "https://github.com/horsicq/DIE-engine",
+    "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6"
+  },
+  "unique_raw_stderr_count": 1,
+  "unique_raw_stdout_count": 18,
+  "windows_release_reference": {
+    "path": "docs/research/data/windows-qt5-cli-path-nested.json",
+    "sha256": "e877e112deb244ab1cbf9edf221e94e155cda711a182f216478eeaf9da40e21b"
+  }
+}

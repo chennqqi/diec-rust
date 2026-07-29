@@ -20,11 +20,11 @@ Last updated: 2026-07-29
 
 - 固定上游、规则和 68 行 traceability；
 - [`windows-qt5-build-baseline.json`](data/windows-qt5-build-baseline.json)；
-- 19 份 Windows runtime 报告的完整 SHA-256；
+- 20 份 Windows runtime 报告的完整 SHA-256；
 - 每份报告的 source/platform 身份和命名 summary facts；
-- 2,212 次 Windows 进程执行，其中 legacy/archive dispatch 86 次执行、
+- 2,340 次 Windows 进程执行，其中 legacy/archive dispatch 86 次执行、
   72 次 case observation，debug-data paired harness 2 次执行、6 次 case
-  observation。
+  observation，archive-option matrix 128 次执行、128 次 case observation。
 
 报告只接受三种状态：
 
@@ -41,18 +41,18 @@ Last updated: 2026-07-29
 
 | 分类 | 行数 |
 | --- | ---: |
-| Evidence complete | 64 |
+| Evidence complete | 65 |
 | Partial | 1 |
-| Missing | 3 |
+| Missing | 2 |
 | Total | 68 |
 
-所有行均恰好分类一次，但仍有 4 行需要 closure，因此
+所有行均恰好分类一次，但仍有 3 行需要 closure，因此
 `windows_baseline_admitted=false`。现有
 [`capability-coverage.json`](data/capability-coverage.json) 继续把 Windows
 68 行标记为 `platform_missing` 是正确的保守行为；本计划提供逐行升级路径，
 不直接改变平台接纳状态。
 
-64 个已闭合行主要来自：
+65 个已闭合行主要来自：
 
 - 26 样本的 single-target、scan option、output、entropy/info/struct；
 - help/version/show-structs；
@@ -76,6 +76,8 @@ Last updated: 2026-07-29
   传播边界。
 - resource/debug paired harness 的 Formats 枚举、resource 正分派、
   public debug 不分派和 direct debug 规则正例。
+- 64-case archive-option engine matrix、32 个 Windows release 控制以及
+  nested ZIP option 传播边界。
 
 这些行仍受各自报告中已经写明的全局平台限制约束，但没有把其他能力行的缺口
 反向扩散到本行。
@@ -89,23 +91,22 @@ Last updated: 2026-07-29
 Partial 行不能计入 Windows runtime baseline。机器报告为每行保存
 `observed_scope`、`missing_scope`、`proposed_experiment` 和 evidence paths。
 
-## 4. Missing：3 行
+## 4. Missing：2 行
 
-### 4.1 Archive nested engine boundaries：3 行
+### 4.1 Archive nested engine boundaries：2 行
 
-- `CAP-NEST-003`
 - `CAP-NEST-004`
 - `CAP-NEST-009`
 
-分别需要 direct archive option、archive/resource count sentinel、
-以及 depth/cumulative expansion limit。它们不能由 release CLI
+分别需要 archive/resource count sentinel 和 depth/cumulative expansion
+limit。它们不能由 release CLI
 aggressive/recursive case 替代。
 
 ## 5. 执行顺序
 
 按“每次固定构建关闭最多能力行”的原则：
 
-1. Windows archive nested engine harnesses：处理 3 个 missing；
+1. Windows archive count/limit harnesses：处理 2 个 missing；
 2. Windows path closure：最后处理 `CAP-CLI-IN-003`，其中 domain/UNC 等需要
    明确环境能力，不把无法在当前主机合法构造的 profile 写成已观察。
 

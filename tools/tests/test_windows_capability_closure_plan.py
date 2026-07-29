@@ -70,10 +70,10 @@ class WindowsCapabilityClosurePlanTests(unittest.TestCase):
 
     def test_status_counts_are_conservative(self):
         summary = self.report["summary"]
-        self.assertEqual(summary["evidence_complete"], 64)
+        self.assertEqual(summary["evidence_complete"], 65)
         self.assertEqual(summary["partial"], 1)
-        self.assertEqual(summary["missing"], 3)
-        self.assertEqual(summary["closure_required"], 4)
+        self.assertEqual(summary["missing"], 2)
+        self.assertEqual(summary["closure_required"], 3)
         self.assertFalse(summary["windows_baseline_admitted"])
         statuses = {
             row["status"] for row in self.report["capabilities"]
@@ -156,7 +156,14 @@ class WindowsCapabilityClosurePlanTests(unittest.TestCase):
             rows["CAP-RULE-007"]["status"],
             "evidence_complete",
         )
-        self.assertEqual(rows["CAP-NEST-003"]["status"], "missing")
+        self.assertEqual(
+            rows["CAP-NEST-003"]["status"],
+            "evidence_complete",
+        )
+        self.assertIn(
+            "docs/research/data/archive-option-engine-windows-qt5.json",
+            rows["CAP-NEST-003"]["evidence_paths"],
+        )
         self.assertEqual(
             rows["CAP-NEST-006"]["status"],
             "evidence_complete",
@@ -197,14 +204,14 @@ class WindowsCapabilityClosurePlanTests(unittest.TestCase):
                     "evidence_complete",
                 )
 
-    def test_machine_report_binds_all_19_windows_reports(self):
+    def test_machine_report_binds_all_20_windows_reports(self):
         self.assertEqual(
             self.report["summary"]["windows_report_count"],
-            19,
+            20,
         )
         self.assertEqual(
             self.report["summary"]["windows_process_execution_count"],
-            2212,
+            2340,
         )
         report_sources = {
             path
@@ -216,7 +223,7 @@ class WindowsCapabilityClosurePlanTests(unittest.TestCase):
                 "docs/research/data/windows-qt5-build-baseline.json"
             }
         }
-        self.assertEqual(len(report_sources), 19)
+        self.assertEqual(len(report_sources), 20)
 
     def test_document_names_every_open_row_and_machine_report(self):
         text = DOCUMENT.read_text(encoding="utf-8")

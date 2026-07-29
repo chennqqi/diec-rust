@@ -46,7 +46,7 @@ JSON continuity、CSV 优先级及四个带空格 filetype 的 invalid XML。
 保持 `platform_missing`，直到完整差分语料在该平台执行并归档。
 逐行
 [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)
-已把当前证据审计为 64 complete、1 partial、3 missing；4 个开放行均有
+已把当前证据审计为 65 complete、1 partial、2 missing；3 个开放行均有
 命名验收实验。
 
 机器证据见
@@ -476,6 +476,21 @@ debug context 连续运行两轮，共 2 次进程执行、6 次 case observatio
 `14c9901d40a0689e1dee91d8f40d7a35bf17e74604525a71e0ada9fc67006b9a`，
 详见
 [`windows-debug-dispatch-behavior.md`](windows-debug-dispatch-behavior.md)。
+
+## Windows Qt5 engine-only archive option 矩阵
+
+[`build_windows_archive_option_harness.ps1`](../../tools/upstream/build_windows_archive_option_harness.ps1)
+复用固定 qmake Release engine objects，只替换 console main object，直接暴露
+`bIsArchivesScan`。八个项目生成 nested fixture 分别执行八种
+archive/recursive/aggressive 组合，各连续运行两轮，共 128 次进程执行。
+
+64 个 engine case 的 detection tree 全部与 Linux Qt5 相同；32 个无 archive
+case 又与现有 Windows release CLI tree 相同。十一项关系全部成立，包括
+archive option 与 aggressive 独立、nested ZIP option 传播，以及 21/22
+archive/resource 相邻控制，关闭 `CAP-NEST-003`。报告 SHA-256 为
+`c848a85640d2c89648d749ab4c3a723d9782e4095bf55ab29cc4614b75d3d00e`，
+详见
+[`windows-archive-option-behavior.md`](windows-archive-option-behavior.md)。
 
 ## Windows CLI Unicode/特殊路径矩阵
 

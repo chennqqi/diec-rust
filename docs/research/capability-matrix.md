@@ -228,6 +228,10 @@ hideunknown 的可观察增量。完整输入哈希和输出见
   nested fixture × 8 种 engine 组合及 32 个 release control，全部 stdout
   和 detection tree 与 Qt5 相同，见
   [`qt6-archive-option-runtime-evidence.md`](qt6-archive-option-runtime-evidence.md)。
+  原生 Windows Qt5 又完成同一 64-case engine matrix 的双轮执行；全部
+  detection tree 与 Linux Qt5 相同，32 个无 archive case 也与 Windows
+  release CLI 相同，见
+  [`windows-archive-option-behavior.md`](windows-archive-option-behavior.md)。
 - `CAP-NEST-004`：archive 源码 `nLimit` 为 20/100000，但默认 `>` 判断实际允许第 21 个
   scanable member；resource 的 `<=` 判断也允许第 21 个，aggressive limit
   为 2000。resource 已精确观察默认 21/aggressive 2001；2002 项 fixture 分为
@@ -394,8 +398,8 @@ platform-missing。全部行已分类不等于 Phase 0 覆盖完成。
 
 Windows 的独立逐行审计见
 [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)：
-现有 19 份报告支持 64 complete、1 partial、3 missing。该 64 行只是 closure
-内部结论；4 个开放行关闭并经 coverage builder 接纳前，Windows 的 68 个
+现有 20 份报告支持 65 complete、1 partial、2 missing。该 65 行只是 closure
+内部结论；3 个开放行关闭并经 coverage builder 接纳前，Windows 的 68 个
 platform-missing 不变。
 
 其中

@@ -44,6 +44,9 @@ REPORT_KEYS = {
     "docs/research/data/debug-dispatch-engine-windows-qt5.json": (
         "windows_debug_dispatch"
     ),
+    "docs/research/data/archive-option-engine-windows-qt5.json": (
+        "windows_archive_option"
+    ),
     "docs/research/data/windows-qt5-cli-path-nested.json": (
         "windows_cli_path_nested"
     ),
@@ -169,6 +172,7 @@ COMPLETE: dict[str, str] = {
     "CAP-DISPATCH-008": "empty and plain binary fallback projections are fixed",
     "CAP-NEST-001": "directory traversal and internal recursive-scan controls are both fixed",
     "CAP-NEST-002": "resource and overlay recursive-scan projections are fixed",
+    "CAP-NEST-003": "all 64 direct engine option cases match Linux Qt5 and the 32 no-archive controls match the Windows release CLI",
     "CAP-NEST-005": "overlay and resource recursive/aggressive gate projections are fixed",
     "CAP-NEST-006": "the four-mode manifest-resource matrix proves recursive and aggressive context propagation exactly as on Linux Qt5",
     "CAP-NEST-007": "format enumeration, public scanner omission, and direct RSDS rule detection match Linux Qt5",
@@ -186,10 +190,6 @@ PARTIAL: dict[str, tuple[str, str, str]] = {
 
 
 MISSING: dict[str, tuple[str, str]] = {
-    "CAP-NEST-003": (
-        "direct engine archive option independent of aggressive",
-        "port the 64-case archive-option harness to Windows",
-    ),
     "CAP-NEST-004": (
         "99999/100000/100001 archive and 21/2001 resource count boundaries",
         "port the archive/resource iteration harnesses to Windows",
@@ -263,6 +263,12 @@ EVIDENCE_PATHS = {
     ),
     "debug_data_dispatch": (
         "docs/research/data/debug-dispatch-engine-windows-qt5.json",
+    ),
+}
+
+CAPABILITY_EVIDENCE_PATHS = {
+    "CAP-NEST-003": (
+        "docs/research/data/archive-option-engine-windows-qt5.json",
     ),
 }
 
@@ -833,6 +839,24 @@ def validate_inputs(
     ):
         raise ClosurePlanError("Windows debug-dispatch facts drift")
 
+    archive_option = reports[
+        "docs/research/data/archive-option-engine-windows-qt5.json"
+    ]
+    if (
+        archive_option.get("passed") is not True
+        or archive_option.get("failures") != []
+        or archive_option.get("capability") != "CAP-NEST-003"
+        or archive_option.get("repetitions") != 2
+        or archive_option.get("case_count") != 64
+        or archive_option.get("execution_count") != 128
+        or archive_option.get("case_observation_count") != 128
+        or archive_option.get("release_control_count") != 32
+        or len(archive_option.get("relationships", {})) != 11
+        or not all(archive_option.get("relationships", {}).values())
+        or len(archive_option.get("detection_trees", {})) != 18
+    ):
+        raise ClosurePlanError("Windows archive-option facts drift")
+
     for evidence_set, paths in EVIDENCE_PATHS.items():
         for path in paths:
             if path not in reports:
@@ -908,7 +932,16 @@ def build_plan(root: Path) -> dict[str, Any]:
                 "id": capability_id,
                 "name": capability["name"],
                 "evidence_set": evidence_set,
-                "evidence_paths": list(EVIDENCE_PATHS[evidence_set]),
+                "evidence_paths": list(
+                    dict.fromkeys(
+                        (
+                            *EVIDENCE_PATHS[evidence_set],
+                            *CAPABILITY_EVIDENCE_PATHS.get(
+                                capability_id, ()
+                            ),
+                        )
+                    )
+                ),
                 "status": status,
                 "observed_scope": observed_scope,
                 "missing_scope": missing_scope,
@@ -944,7 +977,7 @@ def build_plan(root: Path) -> dict[str, Any]:
             "windows_baseline_admitted": (
                 not PARTIAL and not MISSING
             ),
-            "windows_process_execution_count": 2212,
+            "windows_process_execution_count": 2340,
             "windows_report_count": len(REPORT_KEYS),
         },
     }

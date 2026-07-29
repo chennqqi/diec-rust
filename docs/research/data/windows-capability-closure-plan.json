@@ -815,23 +815,16 @@
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
       "evidence_paths": [
-        "docs/research/data/windows-qt5-cli-path-nested.json"
+        "docs/research/data/windows-qt5-cli-path-nested.json",
+        "docs/research/data/archive-option-engine-windows-qt5.json"
       ],
       "evidence_set": "nested_scan",
       "id": "CAP-NEST-003",
-      "missing_scope": "direct engine archive option independent of aggressive",
+      "missing_scope": null,
       "name": "archive scan is engine-only",
-      "observed_scope": null,
-      "proposed_experiment": {
-        "assertions": [
-          "direct engine options are separated from release CLI flags",
-          "count, depth, and cumulative-byte sentinel boundaries execute",
-          "cancellation and archive/resource projections are retained"
-        ],
-        "fixture": "docs/research/data/nested-corpus.json",
-        "harness": "port the archive-option, archive/resource iteration, and archive-limit probes under tools/upstream/"
-      },
-      "status": "missing"
+      "observed_scope": "all 64 direct engine option cases match Linux Qt5 and the 32 no-archive controls match the Windows release CLI",
+      "proposed_experiment": null,
+      "status": "evidence_complete"
     },
     {
       "acceptance": "the complete Linux Qt5 row boundary is executed on the pinned Windows Qt5 oracle with raw/structured evidence and every platform difference classified",
@@ -1035,6 +1028,7 @@
   "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
   "schema_version": 1,
   "sources": {
+    "docs/research/data/archive-option-engine-windows-qt5.json": "c848a85640d2c89648d749ab4c3a723d9782e4095bf55ab29cc4614b75d3d00e",
     "docs/research/data/baseline-corpus-windows-qt5.json": "6beba732e88d90ed1414dd2584a4a783eac24dec70103fc54e6214eb12cca998",
     "docs/research/data/capability-traceability.json": "e1bb982feb52fb97e6678319c629cf71735650fe4239c8558a0f765c16c8cff3",
     "docs/research/data/database-cache-engine-windows-qt5.json": "d1cbcbe741e4cf3999f54f4696f6eee59472b59bd3aaf9d98f94bb337b1e16da",
@@ -1044,7 +1038,7 @@
     "docs/research/data/result-model-engine-windows-qt5.json": "611c111c38f85d7fbbe42fe41e5f6d922a7f168e084a1950b5bb6a70a5e3fc65",
     "docs/research/data/rule-orchestration-windows-qt5.json": "e6c7d47b35f89abdb10719e8578a550dcf5c9caf882a5d7825d3e0dbde3cf9da",
     "docs/research/data/signature-path-engine-windows-qt5.json": "54e0d24e363cf86353365ea93fffeaf03a5dfadb9f32f0c976ec3234b646ad48",
-    "docs/research/data/windows-qt5-build-baseline.json": "585a46f8ddb83a7f88f6b3fff07c1296ad2b777be64f79ebfbf20668cec73e25",
+    "docs/research/data/windows-qt5-build-baseline.json": "96387503c3b8fe956f4094b99896b3c3d2ae8cc05d00df69737c226d1726487a",
     "docs/research/data/windows-qt5-cli-ads.json": "bfdec0a8a516dd5d86721a9331d1d914c7e66f29df0fe0d6115c6dcca079224e",
     "docs/research/data/windows-qt5-cli-database-archive.json": "53c673620cc4388f0da7ffe36af7a325a099bceb0e29912c1f733119f942d748",
     "docs/research/data/windows-qt5-cli-database.json": "13e58a8d1b0cc4feb3998c06140e0afe7adb754cb59e5198b0e5b3079a3d5f8c",
@@ -1060,13 +1054,13 @@
   "summary": {
     "all_capabilities_accounted_for": true,
     "capability_count": 68,
-    "closure_required": 4,
-    "evidence_complete": 64,
-    "missing": 3,
+    "closure_required": 3,
+    "evidence_complete": 65,
+    "missing": 2,
     "partial": 1,
     "windows_baseline_admitted": false,
-    "windows_process_execution_count": 2212,
-    "windows_report_count": 19
+    "windows_process_execution_count": 2340,
+    "windows_report_count": 20
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
 }
