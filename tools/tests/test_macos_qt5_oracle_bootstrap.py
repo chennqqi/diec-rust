@@ -4,7 +4,7 @@ import json
 import sys
 import tempfile
 import unittest
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 ROOT = Path(__file__).resolve().parents[2]
 BUILD_SCRIPT = ROOT / "tools/upstream/build_macos_qt5_oracle.sh"
@@ -33,6 +33,12 @@ REMAINING_COLLECTOR_PATH = (
 )
 REMAINING_VALIDATOR_PATH = (
     ROOT / "tools/upstream/validate_macos_cli_remaining.py"
+)
+DATABASE_COLLECTOR_PATH = (
+    ROOT / "tools/upstream/collect_macos_cli_database.py"
+)
+DATABASE_VALIDATOR_PATH = (
+    ROOT / "tools/upstream/validate_macos_cli_database.py"
 )
 
 
@@ -84,6 +90,16 @@ REMAINING_OUTPUT_HELPER = load_module(
 REMAINING_SPECIAL_HELPER = load_module(
     "collect_windows_cli_special_remaining_for_macos_test",
     ROOT / "tools/upstream/collect_windows_cli_special_remaining.py",
+)
+DATABASE_COLLECTOR = load_module(
+    "collect_macos_cli_database", DATABASE_COLLECTOR_PATH
+)
+DATABASE_VALIDATOR = load_module(
+    "validate_macos_cli_database", DATABASE_VALIDATOR_PATH
+)
+DATABASE_HELPER = load_module(
+    "collect_windows_cli_database_for_macos_test",
+    ROOT / "tools/upstream/collect_windows_cli_database.py",
 )
 
 
@@ -857,6 +873,208 @@ def write_cli_remaining_candidate_bundle(
     return report_path
 
 
+def write_cli_database_candidate_bundle(directory: Path) -> Path:
+    oracle_path = directory / "oracle-candidate.json"
+    oracle = json.loads(oracle_path.read_bytes())
+    fixture_raw = (
+        ROOT / DATABASE_COLLECTOR.FIXTURE_MANIFEST
+    ).read_bytes()
+    fixture = json.loads(fixture_raw)
+    linux_raw = (
+        ROOT / DATABASE_COLLECTOR.LINUX_REFERENCE
+    ).read_bytes()
+    linux = json.loads(linux_raw)
+    linux_cases = DATABASE_HELPER.validate_linux_reference(linux)
+    source_dir = PurePosixPath(oracle["local_paths"]["source_dir"])
+    fixture_dir = PurePosixPath("/private/tmp/database-fixture")
+
+    cases = {}
+    determinism_failures = []
+    exit_failures = []
+    load_error_failures = []
+    validity_failures = []
+    normalized_failures = []
+    for case in MATRIX_DEFINITIONS.DATABASE_CASES:
+        actual_arguments = DATABASE_HELPER.translate_arguments(
+            case.arguments,
+            source_dir,
+            fixture_dir,
+            report=False,
+        )
+        report_arguments = DATABASE_HELPER.translate_arguments(
+            case.arguments,
+            source_dir,
+            fixture_dir,
+            report=True,
+        )
+        linux_case = linux_cases[case.name]
+        if "malformed" in case.name:
+            stdout = b"SyntaxError: Parse error"
+        elif "throwing" in case.name:
+            stdout = b"Error: database fixture"
+        elif linux_case["left_reports_load_error"]:
+            database_index = actual_arguments.index("--database") + 1
+            stdout = (
+                b"Cannot load database: "
+                + actual_arguments[database_index].encode("utf-8")
+            )
+        elif case.name.endswith("_json"):
+            stdout = b"{}"
+        else:
+            stdout = b"text"
+        observation = CLI_COMMON.Observation(
+            linux_case["left"]["exit_code"],
+            stdout,
+            b"",
+        )
+        entry = CLI_COLLECTOR.pair_report(
+            CLI_COMMON,
+            directory,
+            f"cli-database/{case.name}",
+            observation,
+            observation,
+        )
+        first_load_error = b"Cannot load database:" in stdout
+        linux_load_error = linux_case["left_reports_load_error"]
+        normalized = (
+            DATABASE_HELPER.normalize_windows_stdout_for_linux(
+                stdout,
+                actual_arguments,
+                case.arguments,
+            )
+        )
+        normalized_sha256 = hashlib.sha256(normalized).hexdigest()
+        normalized_equal = (
+            normalized_sha256
+            == linux_case["left"]["stdout_sha256"]
+        )
+        entry.update(
+            {
+                "arguments": list(report_arguments),
+                "first_reports_load_error": first_load_error,
+                "second_reports_load_error": first_load_error,
+                "linux_qt5_reports_load_error": linux_load_error,
+                "linux_qt5_reports_load_error_equal": (
+                    first_load_error == linux_load_error
+                ),
+                "reports_parse_error": (
+                    b"SyntaxError: Parse error" in stdout
+                ),
+                "reports_runtime_error": (
+                    b"Error: database fixture" in stdout
+                ),
+                "linux_qt5_raw_differences": (
+                    DATABASE_COLLECTOR._raw_differences(
+                        observation.summary(),
+                        linux_case["left"],
+                    )
+                ),
+                "linux_normalized_stdout_sha256": normalized_sha256,
+                "linux_qt5_normalized_stdout_equal": normalized_equal,
+            }
+        )
+        if case.name.endswith("_json"):
+            valid = MATRIX_DEFINITIONS.document_is_valid(
+                stdout, "json"
+            )
+            linux_valid = linux_case["left_valid_json"]
+            entry.update(
+                {
+                    "first_valid_json": valid,
+                    "second_valid_json": valid,
+                    "linux_qt5_valid_json": linux_valid,
+                    "linux_qt5_valid_json_equal": valid == linux_valid,
+                }
+            )
+            if valid != linux_valid:
+                validity_failures.append(case.name)
+        cases[case.name] = entry
+        if entry["determinism_differences"]:
+            determinism_failures.append(case.name)
+        if observation.exit_code != linux_case["left"]["exit_code"]:
+            exit_failures.append(case.name)
+        if first_load_error != linux_load_error:
+            load_error_failures.append(case.name)
+        if not normalized_equal:
+            normalized_failures.append(case.name)
+
+    case_count = len(MATRIX_DEFINITIONS.DATABASE_CASES)
+    report = {
+        "schema_version": 1,
+        "result": "candidate",
+        "platform": DATABASE_COLLECTOR.PLATFORM,
+        "generator": DATABASE_COLLECTOR._generator_bindings(ROOT),
+        "oracle_report": {
+            "path": "oracle-candidate.json",
+            "sha256": hashlib.sha256(
+                oracle_path.read_bytes()
+            ).hexdigest(),
+        },
+        "source": {
+            "repository": (
+                "https://github.com/horsicq/DIE-engine"
+            ),
+            "commit": VALIDATOR.UPSTREAM_COMMIT,
+            "recursive_submodule_count": 58,
+            "rules_commit": VALIDATOR.RULES_COMMIT,
+            "tracked_files_clean_before_and_after": True,
+        },
+        "qt": {
+            "version": oracle["qt"]["version"],
+            "qmake_spec": oracle["qt"]["qmake_spec"],
+            "qmake_sha256": oracle["qt"]["qmake_sha256"],
+            "qtcore_sha256": oracle["qt"]["qtcore_sha256"],
+            "qtscript_sha256": oracle["qt"]["qtscript_sha256"],
+        },
+        "binary": {
+            "size": oracle["artifact"]["size"],
+            "sha256": oracle["artifact"]["sha256"],
+            "relative_path": "build/release/diec",
+        },
+        "fixture": {
+            "manifest": DATABASE_COLLECTOR.FIXTURE_MANIFEST,
+            "sha256": hashlib.sha256(fixture_raw).hexdigest(),
+            "directories": fixture["directories"],
+            "entries": fixture["entries"],
+        },
+        "linux_qt5_reference": {
+            "path": DATABASE_COLLECTOR.LINUX_REFERENCE,
+            "sha256": hashlib.sha256(linux_raw).hexdigest(),
+        },
+        "local_paths": {
+            "fixture_dir": str(fixture_dir),
+        },
+        "cases": cases,
+        "summary": {
+            "case_count": case_count,
+            "execution_count": 2 * case_count,
+            "raw_stream_count": 4 * case_count,
+            "determinism_failures": determinism_failures,
+            "linux_exit_code_failures": exit_failures,
+            "linux_load_error_failures": load_error_failures,
+            "linux_document_validity_failures": validity_failures,
+            "linux_normalized_stdout_failures": normalized_failures,
+            "deterministic": not determinism_failures,
+            "linux_exit_codes_equal": not exit_failures,
+            "linux_load_errors_equal": not load_error_failures,
+            "linux_document_validity_equal": not validity_failures,
+            "linux_normalized_stdout_equal": not normalized_failures,
+        },
+        "normalization": DATABASE_COLLECTOR.NORMALIZATION,
+        "admission": {
+            "platform_admitted": False,
+            "capability_rows_admitted": 0,
+            "reason": DATABASE_COLLECTOR.ADMISSION_REASON,
+        },
+        "limitations": DATABASE_COLLECTOR.LIMITATIONS,
+    }
+    report_path = directory / "cli-database-candidate.json"
+    report_path.write_text(
+        json.dumps(report, sort_keys=True), encoding="utf-8"
+    )
+    return report_path
+
+
 class MacosQt5OracleBootstrapTests(unittest.TestCase):
     def test_plan_is_exact_generator_output_and_source_bound(self):
         report = json.loads(PLAN_PATH.read_text(encoding="utf-8"))
@@ -937,9 +1155,13 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             "validate_macos_cli_matrix.py",
             "collect_macos_cli_remaining.py",
             "validate_macos_cli_remaining.py",
+            "generate_database_fixture.py",
+            "collect_macos_cli_database.py",
+            "validate_macos_cli_database.py",
             "cli-baseline-candidate.json",
             "cli-matrix-candidate.json",
             "cli-remaining-candidate.json",
+            "cli-database-candidate.json",
             "diec-macos-candidate-evidence/raw",
             (
                 "actions/checkout@"
@@ -981,16 +1203,20 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
                 "cli-baseline-candidate.json",
                 "cli-matrix-candidate.json",
                 "cli-remaining-candidate.json",
+                "cli-database-candidate.json",
             ],
         )
         self.assertEqual(
             workflow["remaining_cli_execution_count"], 1092
         )
         self.assertEqual(
-            workflow["general_cli_execution_count"], 1832
+            workflow["database_cli_execution_count"], 36
         )
         self.assertEqual(
-            workflow["general_cli_raw_stream_count"], 3664
+            workflow["general_cli_execution_count"], 1868
+        )
+        self.assertEqual(
+            workflow["general_cli_raw_stream_count"], 3736
         )
 
     def test_cli_candidate_tools_are_bound_and_fail_closed(self):
@@ -1247,6 +1473,81 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
                     oracle_path=oracle_path,
                     baseline_path=baseline_path,
                     primary_path=primary_path,
+                    root=ROOT,
+                )
+
+    def test_cli_database_validator_recomputes_full_raw_matrix(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            oracle_path = directory / "oracle-candidate.json"
+            oracle_path.write_text(
+                json.dumps(candidate_report(), sort_keys=True),
+                encoding="utf-8",
+            )
+            report_path = write_cli_database_candidate_bundle(
+                directory
+            )
+            report = CLI_VALIDATOR.load_json(report_path)[0]
+            DATABASE_VALIDATOR.validate_report(
+                report,
+                report_path=report_path,
+                oracle_path=oracle_path,
+                root=ROOT,
+            )
+            self.assertEqual(report["summary"]["case_count"], 18)
+            self.assertEqual(
+                report["summary"]["execution_count"], 36
+            )
+            self.assertEqual(
+                report["summary"]["raw_stream_count"], 72
+            )
+
+            first = report["cases"][
+                "scan_malformed_main_json"
+            ]["first"]
+            raw_path = directory / first["stdout_path"]
+            original = raw_path.read_bytes()
+            raw_path.write_bytes(b"tampered")
+            with self.assertRaisesRegex(
+                DATABASE_VALIDATOR.ReportError,
+                "raw stream identity mismatch",
+            ):
+                DATABASE_VALIDATOR.validate_report(
+                    report,
+                    report_path=report_path,
+                    oracle_path=oracle_path,
+                    root=ROOT,
+                )
+            raw_path.write_bytes(original)
+
+            report["admission"]["platform_admitted"] = True
+            with self.assertRaisesRegex(
+                DATABASE_VALIDATOR.ReportError,
+                "must not admit",
+            ):
+                DATABASE_VALIDATOR.validate_report(
+                    report,
+                    report_path=report_path,
+                    oracle_path=oracle_path,
+                    root=ROOT,
+                )
+            report["admission"]["platform_admitted"] = False
+
+            extra = (
+                directory
+                / "raw"
+                / "cli-database"
+                / "undeclared"
+            )
+            extra.write_bytes(b"x")
+            with self.assertRaisesRegex(
+                DATABASE_VALIDATOR.ReportError,
+                "raw file inventory",
+            ):
+                DATABASE_VALIDATOR.validate_report(
+                    report,
+                    report_path=report_path,
+                    oracle_path=oracle_path,
                     root=ROOT,
                 )
 

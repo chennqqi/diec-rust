@@ -19,6 +19,7 @@ jobs:
       AQTINSTALL_VERSION: "3.3.0"
       EVIDENCE_DIR: ${{ runner.temp }}/diec-macos-candidate-evidence
       CORPUS_DIR: ${{ runner.temp }}/diec-baseline-corpus
+      DATABASE_FIXTURE_DIR: ${{ runner.temp }}/diec-database-fixture
       QT_ROOT: ${{ runner.temp }}/Qt
       UPSTREAM_BUILD: ${{ runner.temp }}/DIE-engine-qmake-build
       UPSTREAM_COMMIT: 74eaf505c250ab47e709024e9dc41657cd8f2254
@@ -139,6 +140,18 @@ jobs:
               "$EVIDENCE_DIR/cli-baseline-candidate.json" \
             --cli-primary-matrix-report \
               "$EVIDENCE_DIR/cli-matrix-candidate.json"
+          python3 tools/corpus/generate_database_fixture.py \
+            "$DATABASE_FIXTURE_DIR"
+          python3 tools/upstream/collect_macos_cli_database.py \
+            --binary "$UPSTREAM_SOURCE/build/release/diec" \
+            --source-dir "$UPSTREAM_SOURCE" \
+            --qt-dir "$QT_ROOT/5.15.2/clang_64" \
+            --fixture-dir "$DATABASE_FIXTURE_DIR" \
+            --oracle-report "$EVIDENCE_DIR/oracle-candidate.json" \
+            --output "$EVIDENCE_DIR/cli-database-candidate.json"
+          python3 tools/upstream/validate_macos_cli_database.py \
+            "$EVIDENCE_DIR/cli-database-candidate.json" \
+            --oracle-report "$EVIDENCE_DIR/oracle-candidate.json"
           (
             cd "$EVIDENCE_DIR"
             find . -type f ! -name SHA256SUMS \
@@ -156,6 +169,7 @@ jobs:
             ${{ runner.temp }}/diec-macos-candidate-evidence/cli-baseline-candidate.json
             ${{ runner.temp }}/diec-macos-candidate-evidence/cli-matrix-candidate.json
             ${{ runner.temp }}/diec-macos-candidate-evidence/cli-remaining-candidate.json
+            ${{ runner.temp }}/diec-macos-candidate-evidence/cli-database-candidate.json
             ${{ runner.temp }}/diec-macos-candidate-evidence/raw
             ${{ runner.temp }}/diec-macos-candidate-evidence/SHA256SUMS
           if-no-files-found: error
