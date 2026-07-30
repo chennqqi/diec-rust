@@ -22,3 +22,16 @@
 ### 环境约束
 - 当前环境为 Windows, 无法执行 macOS 基线采集
 - macOS 基线需要 Darwin 主机执行
+
+### 2026-07-30: 修复与评审准备
+
+#### 修复
+- 修复 global_host_api_harness_main.cpp 源码 identity 漂移（上次提交添加了新 case 但未更新 JSON 报告中的 bytes/sha256）
+- 级联更新: qt5/qt6 报告 -> 合并报告 -> result-model -> closure plan -> coverage -> source-only closure
+- 全部 1547 测试通过
+
+#### 评审准备
+- 创建 `docs/design/phase-0-review-preparation.md` 汇总三个阻塞项的当前证据和缺口
+- P0-BLOCK-004 许可证: 14 份技术证据文档已完成，6 个剩余缺口，可提交书面评审
+- P0-BLOCK-002/003 设计/ADR: 5 份设计文档 + 14 ADR 评审输入完整，需人工评审结论
+- P0-BLOCK-006 性能: 上游 baseline 方法已验证，limit 候选需评审冻结，Rust 侧需实现后执行
