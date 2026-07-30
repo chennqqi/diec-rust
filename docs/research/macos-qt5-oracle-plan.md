@@ -49,8 +49,16 @@ self-cycle、mode-000 目录和 64 层目录 fixture，执行 8 个 case 的双�
 filesystem-path 矩阵；self-cycle 单轮上限固定为 10 秒，timeout 及部分输出
 也作为观察保留。工作流再按固定计划物化 empty、single、flat 256、flat
 4096 和 16×256 nested 4096 五种大目录，执行双轮 entropy/JSON 扫描并核对
-完整 prefix 顺序；这只回答 entry count/order，不冒充 long-path 证据。总量
-因此增至 2,066 次执行和 4,132 个 raw stream。
+完整 prefix 顺序；这只回答 entry count/order，不冒充 long-path 证据。
+随后由动态 long-path fixture 单独补齐路径长度边界。fixture 绑定 Apple XNU
+[`f6217f891`](https://github.com/apple-oss-distributions/xnu/blob/f6217f891ac0bb64f3d375211650a4c1ff8ca1ea/bsd/sys/syslimits.h)
+的 `NAME_MAX=255`、`PATH_MAX=1024` 和 kernel-private
+`MAXLONGPATHLEN=8192`，并从 runner 实际 `pathconf` 复核前两项；通过
+dir-fd relative 操作尝试物化 254/255/256-byte component，以及
+1023/1024/1025 和 8191/8192/8193-byte 完整绝对路径，保留每次 create
+成功或 errno。CLI 再对 control、六种完整路径的 explicit/short-root
+discovery、三个 component explicit 和 component directory 共 17 个 case
+双轮采集。总量因此增至 2,100 次执行和 4,200 个 raw stream。
 remaining 矩阵在尚无
 Linux 对应全矩阵时保留结构、有效性与 priority 约束，不伪造跨平台等价。
 database 矩阵则只做明确列出的实参路径替换与 CRLF→LF，再与固定 Linux
@@ -115,7 +123,7 @@ admission guard。报告保留本机绝对路径，只能存放在外部证据�
 ## 4. 在 macOS x86_64 上执行
 
 首选从 GitHub Actions 页面手动运行 `macOS Qt5 oracle candidate`。成功后下载
-`macos-qt5-candidates-<run-id>-<attempt>`，先核对 `SHA256SUMS`，再审计十二份
+`macos-qt5-candidates-<run-id>-<attempt>`，先核对 `SHA256SUMS`，再审计十四份
 candidate JSON 和 `raw/` 原始流。其中 CLI validator 会重新计算
 raw hash、determinism、Linux projection 和完整文件闭集；差异会被原样记录，
 不会被 normalizer 隐藏。该动作不会自动纳入或提交证据。
@@ -165,8 +173,10 @@ database/error、46-case path/nested 和 17-case ZIP-database release CLI
 再固定 file/directory symlink、dangling link、self-cycle、非 root mode-000
 权限和 64 层目录候选；5-case large-directory CLI 又固定 0/1/256/4096
 flat 与 4096 nested 的完整处理数和 name-order projection。它们仍未在
-Darwin runner 实际采集，root/ACL/ownership、long-path、TOCTOU 等平台 path
-profile，database cache/permission 与 engine-only harness 也仍须分别采集，
+Darwin runner 实际采集；17-case long-path CLI 又固定 NAME_MAX、PATH_MAX
+和 kernel-private MAXLONGPATHLEN 周围的物化、explicit/discovery 与 errno
+候选。root/ACL/ownership、TOCTOU 等平台 path profile，database
+cache/permission 与 engine-only harness 仍须分别采集，
 `capability_rows_admitted` 必须保持 0。
 
 ## 6. 本机可执行验证

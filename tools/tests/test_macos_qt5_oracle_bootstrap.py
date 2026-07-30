@@ -1,3 +1,4 @@
+import errno
 import hashlib
 import importlib.util
 import json
@@ -69,6 +70,18 @@ LARGE_DIRECTORY_COLLECTOR_PATH = (
 )
 LARGE_DIRECTORY_VALIDATOR_PATH = (
     ROOT / "tools/upstream/validate_macos_cli_large_directory.py"
+)
+LONG_PATH_FIXTURE_GENERATOR_PATH = (
+    ROOT / "tools/corpus/generate_macos_long_path_fixture.py"
+)
+LONG_PATH_FIXTURE_VALIDATOR_PATH = (
+    ROOT / "tools/corpus/validate_macos_long_path_fixture.py"
+)
+LONG_PATH_COLLECTOR_PATH = (
+    ROOT / "tools/upstream/collect_macos_cli_long_paths.py"
+)
+LONG_PATH_VALIDATOR_PATH = (
+    ROOT / "tools/upstream/validate_macos_cli_long_paths.py"
 )
 
 
@@ -184,6 +197,24 @@ LARGE_DIRECTORY_VALIDATOR = load_module(
 LARGE_DIRECTORY_MATERIALIZER = load_module(
     "materialize_large_path_fixture_for_macos_test",
     ROOT / "tools/corpus/materialize_large_path_fixture.py",
+)
+LONG_PATH_FIXTURE_GENERATOR = load_module(
+    "generate_macos_long_path_fixture_for_cli_test",
+    LONG_PATH_FIXTURE_GENERATOR_PATH,
+)
+LONG_PATH_FIXTURE_VALIDATOR = load_module(
+    "validate_macos_long_path_fixture_for_cli_test",
+    LONG_PATH_FIXTURE_VALIDATOR_PATH,
+)
+LONG_PATH_COLLECTOR = load_module(
+    "collect_macos_cli_long_paths", LONG_PATH_COLLECTOR_PATH
+)
+LONG_PATH_VALIDATOR = load_module(
+    "validate_macos_cli_long_paths", LONG_PATH_VALIDATOR_PATH
+)
+BASELINE_CORPUS_GENERATOR = load_module(
+    "generate_baseline_corpus_for_long_path_cli_test",
+    ROOT / "tools/corpus/generate_baseline_corpus.py",
 )
 
 
@@ -2433,6 +2464,290 @@ def write_cli_large_directory_candidate_bundle(
     return report_path
 
 
+def write_long_path_fixture_candidate_bundle(
+    directory: Path,
+) -> Path:
+    generator = LONG_PATH_FIXTURE_GENERATOR
+    base = PurePosixPath("/private/tmp/diec-macos-long-path")
+    payload = BASELINE_CORPUS_GENERATOR.make_pdf()
+    cases = []
+
+    def append(
+        case_id,
+        kind,
+        relative,
+        boundary,
+        target,
+        *,
+        created=True,
+    ):
+        attempt = (
+            {"created": True, "errno": None, "errno_name": None}
+            if created
+            else {
+                "created": False,
+                "errno": errno.ENAMETOOLONG,
+                "errno_name": "ENAMETOOLONG",
+            }
+        )
+        cases.append(
+            generator._case_record(
+                case_id=case_id,
+                kind=kind,
+                fixture_dir=base,
+                relative=relative,
+                attempt=attempt,
+                payload=payload,
+                target_boundary=boundary,
+                target_bytes=target,
+            )
+        )
+
+    control = "control/target.pdf"
+    append(
+        "control",
+        "control",
+        control,
+        "control",
+        len(f"{base}/{control}".encode("ascii")),
+    )
+    for boundary, value in (
+        ("path_max", generator.XNU_PATH_MAX),
+        ("max_long_path", generator.XNU_MAXLONGPATHLEN),
+    ):
+        for delta in generator.FULL_PATH_DELTAS:
+            target = value + delta
+            append(
+                f"{boundary}_{delta:+d}",
+                "full_path",
+                generator.build_full_relative_path(base, target),
+                boundary,
+                target,
+            )
+    for delta in generator.COMPONENT_DELTAS:
+        target = generator.XNU_NAME_MAX + delta
+        append(
+            f"name_max_{delta:+d}",
+            "component",
+            (
+                "components/"
+                + generator.build_component_name(target)
+            ),
+            "name_max",
+            target,
+            created=delta <= 0,
+        )
+    baseline_raw = (
+        ROOT / generator.BASELINE_MANIFEST
+    ).read_bytes()
+    report = {
+        "schema_version": generator.SCHEMA_VERSION,
+        "result": "candidate",
+        "platform": generator.PLATFORM,
+        "generator": generator.generator_binding(ROOT),
+        "xnu_reference": {
+            "repository": (
+                "https://github.com/apple-oss-distributions/xnu"
+            ),
+            "commit": generator.XNU_COMMIT,
+            "source": generator.XNU_SOURCE,
+            "source_url": generator.XNU_SOURCE_URL,
+            "source_sha256": generator.XNU_SOURCE_SHA256,
+            "name_max": generator.XNU_NAME_MAX,
+            "path_max": generator.XNU_PATH_MAX,
+            "kernel_private_max_long_path": (
+                generator.XNU_MAXLONGPATHLEN
+            ),
+        },
+        "baseline": {
+            "manifest": generator.BASELINE_MANIFEST,
+            "manifest_sha256": hashlib.sha256(
+                baseline_raw
+            ).hexdigest(),
+            "sample": generator.SOURCE_NAME,
+            "payload_size": len(payload),
+            "payload_sha256": hashlib.sha256(payload).hexdigest(),
+        },
+        "filesystem_limits": {
+            "pathconf_name_max": generator.XNU_NAME_MAX,
+            "pathconf_path_max": generator.XNU_PATH_MAX,
+        },
+        "fixture": {
+            "local_path": str(base),
+            "local_path_bytes": len(str(base).encode("ascii")),
+            "case_ids": [case["id"] for case in cases],
+            "cases": cases,
+        },
+        "admission": {
+            "platform_admitted": False,
+            "capability_rows_admitted": 0,
+            "reason": generator.ADMISSION_REASON,
+        },
+        "limitations": generator.LIMITATIONS,
+    }
+    path = directory / "long-path-fixture-candidate.json"
+    path.write_text(
+        json.dumps(report, sort_keys=True), encoding="utf-8"
+    )
+    return path
+
+
+def write_cli_long_path_candidate_bundle(
+    directory: Path,
+    baseline_path: Path,
+    fixture_path: Path,
+) -> Path:
+    baseline = CLI_VALIDATOR.load_json(baseline_path)[0]
+    oracle_path = directory / "oracle-candidate.json"
+    fixture = LONG_PATH_FIXTURE_VALIDATOR.load_json(
+        fixture_path
+    )[0]
+    reference_tree = baseline["corpus"]["minimal.pdf"][
+        "first_detect_tree"
+    ]
+    body = json.dumps(
+        {"detects": reference_tree}, separators=(",", ":")
+    ).encode("utf-8")
+    report_db = LONG_PATH_COLLECTOR.database_arguments(
+        Path("<source>"), report=True
+    )
+    fixture_records = {
+        case["id"]: case for case in fixture["fixture"]["cases"]
+    }
+    cases = {}
+    for case in LONG_PATH_COLLECTOR.build_cases(fixture):
+        if case.mode == "component_directory":
+            created = [
+                record
+                for record in fixture_records.values()
+                if record["kind"] == "component"
+                and record["attempt"]["created"]
+            ]
+            stdout = b"".join(
+                (
+                    record["absolute_path"].encode("ascii")
+                    + b":\n"
+                    + body
+                    + b"\n"
+                )
+                for record in created
+            )
+            exit_code = 0
+        elif case.reference_projection_applies:
+            stdout = body
+            exit_code = 0
+        else:
+            stdout = b"Cannot find: fixture\n"
+            exit_code = 1
+        observation = CLI_COMMON.Observation(
+            exit_code, stdout, b""
+        )
+        entry = CLI_COLLECTOR.pair_report(
+            CLI_COMMON,
+            directory,
+            f"cli-long-path/{case.name}",
+            observation,
+            observation,
+        )
+        tree = CLI_COMMON.json_detect_tree(stdout)
+        reference_equal = (
+            tree == reference_tree
+            if case.reference_projection_applies
+            else None
+        )
+        entry.update(
+            {
+                "arguments": [
+                    "--json",
+                    *report_db,
+                    case.report_target,
+                ],
+                "mode": case.mode,
+                "fixture_case_id": case.fixture_case_id,
+                "reference_projection_applies": (
+                    case.reference_projection_applies
+                ),
+                "timeout_seconds": 120,
+                "first_timed_out": False,
+                "second_timed_out": False,
+                "first_valid_json": (
+                    LONG_PATH_COLLECTOR.valid_json(stdout)
+                ),
+                "second_valid_json": (
+                    LONG_PATH_COLLECTOR.valid_json(stdout)
+                ),
+                "first_detect_tree": tree,
+                "second_detect_tree": tree,
+                "minimal_pdf_detect_tree_equal": reference_equal,
+                "first_prefix_case_ids": (
+                    LONG_PATH_COLLECTOR.prefix_case_ids(
+                        stdout, fixture
+                    )
+                ),
+                "second_prefix_case_ids": (
+                    LONG_PATH_COLLECTOR.prefix_case_ids(
+                        stdout, fixture
+                    )
+                ),
+            }
+        )
+        cases[case.name] = entry
+    count = len(cases)
+    report = {
+        "schema_version": 1,
+        "result": "candidate",
+        "platform": LONG_PATH_COLLECTOR.PLATFORM,
+        "generator": LONG_PATH_COLLECTOR._generator_bindings(ROOT),
+        "oracle_report": {
+            "path": "oracle-candidate.json",
+            "sha256": hashlib.sha256(
+                oracle_path.read_bytes()
+            ).hexdigest(),
+        },
+        "cli_baseline_report": {
+            "path": "cli-baseline-candidate.json",
+            "sha256": hashlib.sha256(
+                baseline_path.read_bytes()
+            ).hexdigest(),
+        },
+        "fixture_report": {
+            "path": "long-path-fixture-candidate.json",
+            "sha256": hashlib.sha256(
+                fixture_path.read_bytes()
+            ).hexdigest(),
+        },
+        "source": baseline["source"],
+        "qt": baseline["qt"],
+        "binary": baseline["binary"],
+        "selection": {
+            "case_names": list(cases),
+            "minimum_repetitions_per_case": 2,
+        },
+        "cases": cases,
+        "summary": {
+            "case_count": count,
+            "execution_count": 2 * count,
+            "raw_stream_count": 4 * count,
+            "determinism_failures": [],
+            "timeout_cases": [],
+            "reference_projection_failures": [],
+            "deterministic": True,
+            "reference_projections_equal": True,
+        },
+        "admission": {
+            "platform_admitted": False,
+            "capability_rows_admitted": 0,
+            "reason": LONG_PATH_COLLECTOR.ADMISSION_REASON,
+        },
+        "limitations": LONG_PATH_COLLECTOR.LIMITATIONS,
+    }
+    path = directory / "cli-long-path-candidate.json"
+    path.write_text(
+        json.dumps(report, sort_keys=True), encoding="utf-8"
+    )
+    return path
+
+
 class MacosQt5OracleBootstrapTests(unittest.TestCase):
     def test_plan_is_exact_generator_output_and_source_bound(self):
         report = json.loads(PLAN_PATH.read_text(encoding="utf-8"))
@@ -2521,6 +2836,8 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             "generate_macos_special_path_fixture.py",
             "generate_path_filesystem_fixture.py",
             "materialize_large_path_fixture.py",
+            "generate_macos_long_path_fixture.py",
+            "validate_macos_long_path_fixture.py",
             "validate_macos_special_path_fixture.py",
             "collect_macos_cli_path_nested.py",
             "validate_macos_cli_path_nested.py",
@@ -2532,6 +2849,8 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             "validate_macos_cli_filesystem.py",
             "collect_macos_cli_large_directory.py",
             "validate_macos_cli_large_directory.py",
+            "collect_macos_cli_long_paths.py",
+            "validate_macos_cli_long_paths.py",
             "cli-baseline-candidate.json",
             "cli-matrix-candidate.json",
             "cli-remaining-candidate.json",
@@ -2542,6 +2861,8 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             "cli-special-path-candidate.json",
             "cli-filesystem-candidate.json",
             "cli-large-directory-candidate.json",
+            "long-path-fixture-candidate.json",
+            "cli-long-path-candidate.json",
             "diec-macos-candidate-evidence/raw",
             (
                 "actions/checkout@"
@@ -2590,6 +2911,8 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
                 "cli-special-path-candidate.json",
                 "cli-filesystem-candidate.json",
                 "cli-large-directory-candidate.json",
+                "long-path-fixture-candidate.json",
+                "cli-long-path-candidate.json",
             ],
         )
         self.assertTrue(workflow["special_path_fixture_candidate"])
@@ -2599,6 +2922,7 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
         self.assertTrue(
             workflow["large_directory_fixture_candidate"]
         )
+        self.assertTrue(workflow["long_path_fixture_candidate"])
         self.assertEqual(
             workflow["remaining_cli_execution_count"], 1092
         )
@@ -2621,10 +2945,13 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             workflow["large_directory_cli_execution_count"], 10
         )
         self.assertEqual(
-            workflow["general_cli_execution_count"], 2066
+            workflow["long_path_cli_execution_count"], 34
         )
         self.assertEqual(
-            workflow["general_cli_raw_stream_count"], 4132
+            workflow["general_cli_execution_count"], 2100
+        )
+        self.assertEqual(
+            workflow["general_cli_raw_stream_count"], 4200
         )
 
     def test_cli_candidate_tools_are_bound_and_fail_closed(self):
@@ -3355,6 +3682,95 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
                     report_path=report_path,
                     oracle_path=oracle_path,
                     baseline_path=baseline_path,
+                    root=ROOT,
+                )
+
+    def test_cli_long_path_validator_recomputes_raw_matrix(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            baseline_path = write_cli_candidate_bundle(directory)
+            fixture_path = write_long_path_fixture_candidate_bundle(
+                directory
+            )
+            report_path = write_cli_long_path_candidate_bundle(
+                directory, baseline_path, fixture_path
+            )
+            report = CLI_VALIDATOR.load_json(report_path)[0]
+            oracle_path = directory / "oracle-candidate.json"
+            LONG_PATH_VALIDATOR.validate_report(
+                report,
+                report_path=report_path,
+                oracle_path=oracle_path,
+                baseline_path=baseline_path,
+                fixture_report_path=fixture_path,
+                root=ROOT,
+            )
+            self.assertEqual(report["summary"]["case_count"], 17)
+            self.assertEqual(
+                report["summary"]["execution_count"], 34
+            )
+            self.assertEqual(
+                report["summary"]["raw_stream_count"], 68
+            )
+            self.assertEqual(
+                report["cases"]["component_directory"][
+                    "first_prefix_case_ids"
+                ],
+                ["name_max_-1", "name_max_+0"],
+            )
+
+            first = report["cases"]["path_max_+0_explicit"][
+                "first"
+            ]
+            raw_path = directory / first["stdout_path"]
+            original = raw_path.read_bytes()
+            raw_path.write_bytes(b"tampered")
+            with self.assertRaisesRegex(
+                LONG_PATH_VALIDATOR.ReportError,
+                "raw stream identity mismatch",
+            ):
+                LONG_PATH_VALIDATOR.validate_report(
+                    report,
+                    report_path=report_path,
+                    oracle_path=oracle_path,
+                    baseline_path=baseline_path,
+                    fixture_report_path=fixture_path,
+                    root=ROOT,
+                )
+            raw_path.write_bytes(original)
+
+            report["admission"]["platform_admitted"] = True
+            with self.assertRaisesRegex(
+                LONG_PATH_VALIDATOR.ReportError,
+                "must not admit",
+            ):
+                LONG_PATH_VALIDATOR.validate_report(
+                    report,
+                    report_path=report_path,
+                    oracle_path=oracle_path,
+                    baseline_path=baseline_path,
+                    fixture_report_path=fixture_path,
+                    root=ROOT,
+                )
+            report["admission"]["platform_admitted"] = False
+
+            extra = (
+                directory
+                / "raw"
+                / "cli-long-path"
+                / "undeclared"
+            )
+            extra.write_bytes(b"x")
+            with self.assertRaisesRegex(
+                LONG_PATH_VALIDATOR.ReportError,
+                "raw file inventory",
+            ):
+                LONG_PATH_VALIDATOR.validate_report(
+                    report,
+                    report_path=report_path,
+                    oracle_path=oracle_path,
+                    baseline_path=baseline_path,
+                    fixture_report_path=fixture_path,
                     root=ROOT,
                 )
 
