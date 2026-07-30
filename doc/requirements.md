@@ -21,3 +21,21 @@
 - signatures：SearchSignatures GUI widget，使用 crypto.db/junks.db
 - 三者均不进入 diec CLI（源码/CMake/link 证据），但未来 GUI 需要集成
 - 已在 phase-0-review-preparation.md 记录未来 GUI 准备信息
+
+## 2026-07-30: P0-BLOCK-005 macOS Qt5 oracle candidate 构建成功
+- 环境: macOS 12.7.6 Monterey, x86_64, Apple clang 14.0.0, Qt 5.15.2 (aqtinstall), CMake 3.27.7
+- 产物: diec Mach-O x86_64, 7452296 bytes, version "die 4.0.0", SHA-256 f4c69824...
+- 构建修复: Formats/xbinary.h 第 114 行 #include <CoreFoundation/CoreFoundation.h> 在 macOS 上导致编译失败
+  - 原因: xdeflatedecoder.cpp 是 10581 行拼接文件，第 9482 行 include xbinary.h 时有 9 个未闭合大括号
+  - CoreFoundation.h 的 CF_EXPORT (extern) typedef 在函数作用域内无效
+  - xbinary.h 未使用任何 CoreFoundation 类型，include 标记为 "// Check"
+  - Linux/Windows 不受影响（Q_OS_MAC 未定义）
+- candidate report: ~/dev/tmp/diec-macos-work/diec-macos-candidate.json
+- 下一步: 需要评审 source patch 并执行 runtime oracle 采集（68 行 capability baseline）
+
+## 2026-07-30: P0-BLOCK-002/003 设计文档与 ADR 评审
+- 评审对象: architecture / api / c-abi / testing / risks 5 份设计文档 + 14 Proposed ADR
+- 机器校验: design/ADR review readiness、5 份 contract test、phase-0-review-preparation 全部通过
+- 评审结论: 5 份设计文档结构完整、已进入 In Review，但 blocking items 未关闭，acceptance_ready=false；14 个 ADR 均为 Proposed，review_ready=true，acceptance conditions 尚未满足
+- 处置: P0-BLOCK-002/003 仍为 Open；本次完成"输入完整 + 结构审查"，不提前改为 Accepted
+- 关闭条件: 需 P0-BLOCK-004/005/006 关闭后，在 Phase 1 实现中逐项满足 acceptance conditions 并重新验证

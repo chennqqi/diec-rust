@@ -73,3 +73,29 @@
 - 三者均不进入 diec CLI（main_console.cpp/CMakeLists.txt/link.txt 证据）
 - XScanEngine 是独立开源仓库（MIT），不是私有代码
 - 已在 phase-0-review-preparation.md 记录未来 GUI 集成准备信息
+
+### 2026-07-30: P0-BLOCK-005 macOS Qt5 oracle candidate 构建
+
+#### 环境
+- macOS 12.7.6 Monterey, x86_64, 8 core, 16GB RAM
+- Apple clang 14.0.0 (CommandLineTools only, no full Xcode)
+- Qt 5.15.2 clang_64 (aqtinstall), CMake 3.27.7
+- 默认 SDK 13.1 (MacOSX.sdk -> MacOSX13.1.sdk)
+
+#### 构建结果
+- diec CLI 构建成功: Mach-O x86_64, 7.45MB, version "die 4.0.0"
+- 依赖: QtConcurrent, QtScript, QtCore, DiskArbitration, IOKit, libc++, libSystem
+
+#### 构建修复
+- Formats/xbinary.h 第 114 行 `#include <CoreFoundation/CoreFoundation.h>` 在 macOS 上导致编译失败
+- 根因: xdeflatedecoder.cpp (10581 行拼接文件) 在函数作用域内 include xbinary.h → CoreFoundation.h
+- CFMessagePort.h 的 CF_EXPORT (extern) typedef 在函数内无效
+- xbinary.h 未使用任何 CoreFoundation 类型，include 标记为 "// Check"
+- Linux/Windows 不受影响（Q_OS_MAC 未定义）
+- bootstrap 脚本的 tracked source 检查需要修改以允许此 patch
+
+#### 下一步
+- 评审并记录 source patch 为已知 macOS 构建修复
+- 修改 bootstrap 脚本支持 macOS 构建修复
+- 执行 runtime oracle 采集（68 行 capability baseline）
+- 需要在 macOS 上运行项目生成的安全语料和 CLI 矩阵
