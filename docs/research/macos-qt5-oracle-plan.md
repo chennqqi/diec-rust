@@ -38,6 +38,10 @@ path tree 和八个 nested fixture，执行 14 个 path case 与 8 × 4 个 nest
 case 的双轮矩阵；同一 database fixture 再执行 17 个 ZIP database case 的
 双轮矩阵。合计 1,994 次执行和 3,988 个 raw stream，并与固定 Linux Qt5
 detection projection 或 exit code 比较。
+在运行 CLI 前，工作流还会在 runner 的实际文件系统上生成 special-path
+fixture candidate：分别记录大小写 alias、NFC/NFD alias、实际目录项字节名，
+并尝试三个非法 UTF-8 basename；不支持时保留明确 errno，而不是把平台行为
+硬编码成 Linux 或 Windows 结论。该 fixture 本身不增加 CLI 执行数。
 remaining 矩阵在尚无
 Linux 对应全矩阵时保留结构、有效性与 priority 约束，不伪造跨平台等价。
 database 矩阵则只做明确列出的实参路径替换与 CRLF→LF，再与固定 Linux
@@ -102,7 +106,7 @@ admission guard。报告保留本机绝对路径，只能存放在外部证据�
 ## 4. 在 macOS x86_64 上执行
 
 首选从 GitHub Actions 页面手动运行 `macOS Qt5 oracle candidate`。成功后下载
-`macos-qt5-candidates-<run-id>-<attempt>`，先核对 `SHA256SUMS`，再审计八份
+`macos-qt5-candidates-<run-id>-<attempt>`，先核对 `SHA256SUMS`，再审计九份
 candidate JSON 和 `raw/` 原始流。其中 CLI validator 会重新计算
 raw hash、determinism、Linux projection 和完整文件闭集；差异会被原样记录，
 不会被 normalizer 隐藏。该动作不会自动纳入或提交证据。
@@ -152,6 +156,8 @@ Unicode normalization、symlink/cycle、permission、large-directory、
 filesystem-order、TOCTOU 等平台 path profile，database cache/permission
 与 engine-only harness 仍须分别采集，
 `capability_rows_admitted` 必须保持 0。
+其中大小写、NFC/NFD 和非法 UTF-8 basename 已有 fixture-level candidate
+生成/验证契约，但尚无 CLI observation，不能据此缩小上述 runtime 缺口。
 
 ## 6. 本机可执行验证
 

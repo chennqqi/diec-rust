@@ -22,6 +22,7 @@ jobs:
       DATABASE_FIXTURE_DIR: ${{ runner.temp }}/diec-database-fixture
       PATH_CORPUS_DIR: ${{ runner.temp }}/diec-path-corpus
       NESTED_CORPUS_DIR: ${{ runner.temp }}/diec-nested-corpus
+      SPECIAL_PATH_FIXTURE_DIR: ${{ runner.temp }}/diec-special-path
       QT_ROOT: ${{ runner.temp }}/Qt
       UPSTREAM_BUILD: ${{ runner.temp }}/DIE-engine-qmake-build
       UPSTREAM_COMMIT: 74eaf505c250ab47e709024e9dc41657cd8f2254
@@ -100,6 +101,14 @@ jobs:
         run: |
           set -euo pipefail
           python3 tools/corpus/generate_baseline_corpus.py "$CORPUS_DIR"
+          python3 tools/corpus/generate_macos_special_path_fixture.py \
+            --baseline-dir "$CORPUS_DIR" \
+            --fixture-dir "$SPECIAL_PATH_FIXTURE_DIR" \
+            --output \
+              "$EVIDENCE_DIR/special-path-fixture-candidate.json"
+          python3 tools/corpus/validate_macos_special_path_fixture.py \
+            "$EVIDENCE_DIR/special-path-fixture-candidate.json" \
+            --fixture-dir "$SPECIAL_PATH_FIXTURE_DIR"
           python3 tools/upstream/collect_macos_cli_baseline.py \
             --binary "$UPSTREAM_SOURCE/build/release/diec" \
             --source-dir "$UPSTREAM_SOURCE" \
@@ -200,6 +209,7 @@ jobs:
             ${{ runner.temp }}/diec-macos-candidate-evidence/cli-database-candidate.json
             ${{ runner.temp }}/diec-macos-candidate-evidence/cli-database-archive-candidate.json
             ${{ runner.temp }}/diec-macos-candidate-evidence/cli-path-nested-candidate.json
+            ${{ runner.temp }}/diec-macos-candidate-evidence/special-path-fixture-candidate.json
             ${{ runner.temp }}/diec-macos-candidate-evidence/raw
             ${{ runner.temp }}/diec-macos-candidate-evidence/SHA256SUMS
           if-no-files-found: error

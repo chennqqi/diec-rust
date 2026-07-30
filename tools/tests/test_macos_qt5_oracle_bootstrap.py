@@ -1747,6 +1747,8 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             "validate_macos_cli_database.py",
             "generate_path_corpus.py",
             "generate_nested_corpus.py",
+            "generate_macos_special_path_fixture.py",
+            "validate_macos_special_path_fixture.py",
             "collect_macos_cli_path_nested.py",
             "validate_macos_cli_path_nested.py",
             "collect_macos_cli_database_archives.py",
@@ -1757,6 +1759,7 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             "cli-database-candidate.json",
             "cli-path-nested-candidate.json",
             "cli-database-archive-candidate.json",
+            "special-path-fixture-candidate.json",
             "diec-macos-candidate-evidence/raw",
             (
                 "actions/checkout@"
@@ -1801,8 +1804,10 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
                 "cli-database-candidate.json",
                 "cli-path-nested-candidate.json",
                 "cli-database-archive-candidate.json",
+                "special-path-fixture-candidate.json",
             ],
         )
+        self.assertTrue(workflow["special_path_fixture_candidate"])
         self.assertEqual(
             workflow["remaining_cli_execution_count"], 1092
         )

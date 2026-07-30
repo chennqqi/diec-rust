@@ -26,7 +26,8 @@
       "cli-remaining-candidate.json",
       "cli-database-candidate.json",
       "cli-path-nested-candidate.json",
-      "cli-database-archive-candidate.json"
+      "cli-database-archive-candidate.json",
+      "special-path-fixture-candidate.json"
     ],
     "database_archive_cli_execution_count": 34,
     "database_cli_execution_count": 36,
@@ -38,6 +39,7 @@
     "raw_cli_streams_retained": true,
     "remaining_cli_execution_count": 1092,
     "runner": "macos-15-intel",
+    "special_path_fixture_candidate": true,
     "trigger": "workflow_dispatch"
   },
   "evaluated_on": "2026-07-30",
@@ -69,10 +71,12 @@
   },
   "schema_version": 1,
   "sources": {
-    ".github/workflows/macos-qt5-oracle-candidate.yml": "ba4af6c8fe5b8ef0ea9e703e7f421760ef49b94b712adeaccd43696a167d4e53",
+    ".github/workflows/macos-qt5-oracle-candidate.yml": "5d657ec691ec5fc9b4ff3c689956f59ce3ef54767230c4f7e1f386c50189aa62",
     "tools/corpus/generate_database_fixture.py": "10aaa85de36126a2c33808b3be7f3e14eef60382b6048c8499e99ee5570a5fc1",
+    "tools/corpus/generate_macos_special_path_fixture.py": "2922916037fe069df428684d1139dc9e06ae0b2af5557edf4d9ec514872d866c",
     "tools/corpus/generate_nested_corpus.py": "aba92d9cf74a31048b219f2991d52f42570cf5a83396f7559c484aa8d38b41a6",
     "tools/corpus/generate_path_corpus.py": "8ec84596b2459254331a09230e3f97fe7fa570854243c15713a79d85288c0133",
+    "tools/corpus/validate_macos_special_path_fixture.py": "bd206ba3e6f892a528d1d42b74bae2778174c655840ba735191a367aaccd66d2",
     "tools/upstream/build_macos_qt5_oracle.sh": "db5970a4b932e8a2390af79f9d1ddbc1ac18076bea3377688449d1b3309dd94c",
     "tools/upstream/collect_macos_cli_baseline.py": "113354cc888d132e6e2f666f886a1ba10bf3354ffcefab119eef50bc1e273113",
     "tools/upstream/collect_macos_cli_database.py": "087c4e99ccf12ba5855418dd1d1efa4746f6fb6526877bf848099555ead80d03",
