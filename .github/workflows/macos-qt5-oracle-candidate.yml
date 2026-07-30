@@ -119,6 +119,24 @@ jobs:
           python3 tools/upstream/validate_macos_cli_baseline.py \
             "$EVIDENCE_DIR/cli-baseline-candidate.json" \
             --oracle-report "$EVIDENCE_DIR/oracle-candidate.json"
+          python3 tools/upstream/collect_macos_cli_special_paths.py \
+            --binary "$UPSTREAM_SOURCE/build/release/diec" \
+            --source-dir "$UPSTREAM_SOURCE" \
+            --qt-dir "$QT_ROOT/5.15.2/clang_64" \
+            --fixture-dir "$SPECIAL_PATH_FIXTURE_DIR" \
+            --oracle-report "$EVIDENCE_DIR/oracle-candidate.json" \
+            --cli-baseline-report \
+              "$EVIDENCE_DIR/cli-baseline-candidate.json" \
+            --fixture-report \
+              "$EVIDENCE_DIR/special-path-fixture-candidate.json" \
+            --output "$EVIDENCE_DIR/cli-special-path-candidate.json"
+          python3 tools/upstream/validate_macos_cli_special_paths.py \
+            "$EVIDENCE_DIR/cli-special-path-candidate.json" \
+            --oracle-report "$EVIDENCE_DIR/oracle-candidate.json" \
+            --cli-baseline-report \
+              "$EVIDENCE_DIR/cli-baseline-candidate.json" \
+            --fixture-report \
+              "$EVIDENCE_DIR/special-path-fixture-candidate.json"
           python3 tools/upstream/collect_macos_cli_matrix.py \
             --binary "$UPSTREAM_SOURCE/build/release/diec" \
             --source-dir "$UPSTREAM_SOURCE" \
@@ -210,6 +228,7 @@ jobs:
             ${{ runner.temp }}/diec-macos-candidate-evidence/cli-database-archive-candidate.json
             ${{ runner.temp }}/diec-macos-candidate-evidence/cli-path-nested-candidate.json
             ${{ runner.temp }}/diec-macos-candidate-evidence/special-path-fixture-candidate.json
+            ${{ runner.temp }}/diec-macos-candidate-evidence/cli-special-path-candidate.json
             ${{ runner.temp }}/diec-macos-candidate-evidence/raw
             ${{ runner.temp }}/diec-macos-candidate-evidence/SHA256SUMS
           if-no-files-found: error

@@ -52,6 +52,12 @@ DATABASE_ARCHIVE_COLLECTOR_PATH = (
 DATABASE_ARCHIVE_VALIDATOR_PATH = (
     ROOT / "tools/upstream/validate_macos_cli_database_archives.py"
 )
+SPECIAL_PATH_COLLECTOR_PATH = (
+    ROOT / "tools/upstream/collect_macos_cli_special_paths.py"
+)
+SPECIAL_PATH_VALIDATOR_PATH = (
+    ROOT / "tools/upstream/validate_macos_cli_special_paths.py"
+)
 
 
 def load_module(name: str, path: Path):
@@ -134,6 +140,20 @@ DATABASE_ARCHIVE_VALIDATOR = load_module(
 DATABASE_ARCHIVE_HELPER = load_module(
     "collect_windows_cli_database_archives_for_macos_test",
     ROOT / "tools/upstream/collect_windows_cli_database_archives.py",
+)
+SPECIAL_PATH_COLLECTOR = load_module(
+    "collect_macos_cli_special_paths", SPECIAL_PATH_COLLECTOR_PATH
+)
+SPECIAL_PATH_VALIDATOR = load_module(
+    "validate_macos_cli_special_paths", SPECIAL_PATH_VALIDATOR_PATH
+)
+SPECIAL_FIXTURE_GENERATOR = load_module(
+    "generate_macos_special_path_fixture_for_cli_test",
+    ROOT / "tools/corpus/generate_macos_special_path_fixture.py",
+)
+SPECIAL_FIXTURE_VALIDATOR = load_module(
+    "validate_macos_special_path_fixture_for_cli_test",
+    ROOT / "tools/corpus/validate_macos_special_path_fixture.py",
 )
 
 
@@ -1662,6 +1682,323 @@ def write_cli_database_archive_candidate_bundle(
     return report_path
 
 
+def write_special_path_fixture_candidate_bundle(
+    directory: Path,
+) -> Path:
+    manifest_raw = (
+        ROOT / SPECIAL_FIXTURE_GENERATOR.BASELINE_MANIFEST
+    ).read_bytes()
+    manifest = json.loads(manifest_raw)
+    sample = next(
+        item
+        for item in manifest["samples"]
+        if item["name"] == SPECIAL_FIXTURE_GENERATOR.SOURCE_NAME
+    )
+    entries = []
+    inventory = {
+        name: [] for name in SPECIAL_FIXTURE_GENERATOR.DIRECTORIES
+    }
+    for case_id, relative in (
+        SPECIAL_FIXTURE_GENERATOR.STABLE_ENTRIES
+    ):
+        parent, name = relative.rsplit("/", 1)
+        name_hex = name.encode().hex()
+        entries.append(
+            {
+                "id": case_id,
+                "path": relative,
+                "directory_name_bytes_hex": name_hex,
+                "size": sample["size"],
+                "sha256": sample["sha256"],
+            }
+        )
+        inventory[parent].append(name_hex)
+    raw_attempts = []
+    for name in SPECIAL_FIXTURE_GENERATOR.RAW_NAMES:
+        item = {
+            "name_bytes_hex": name.hex(),
+            "created": True,
+            "errno": None,
+            "size": sample["size"],
+            "sha256": sample["sha256"],
+        }
+        raw_attempts.append(item)
+        inventory["nonutf8"].append(item["name_bytes_hex"])
+    report = {
+        "schema_version": 1,
+        "result": "candidate",
+        "platform": SPECIAL_FIXTURE_GENERATOR.PLATFORM,
+        "generator": {
+            "path": SPECIAL_FIXTURE_GENERATOR.GENERATOR,
+            "sha256": hashlib.sha256(
+                (
+                    ROOT
+                    / SPECIAL_FIXTURE_GENERATOR.GENERATOR
+                ).read_bytes()
+            ).hexdigest(),
+            "validator_path": SPECIAL_FIXTURE_GENERATOR.VALIDATOR,
+            "validator_sha256": hashlib.sha256(
+                (
+                    ROOT
+                    / SPECIAL_FIXTURE_GENERATOR.VALIDATOR
+                ).read_bytes()
+            ).hexdigest(),
+        },
+        "source": {
+            "manifest": (
+                SPECIAL_FIXTURE_GENERATOR.BASELINE_MANIFEST
+            ),
+            "manifest_sha256": hashlib.sha256(
+                manifest_raw
+            ).hexdigest(),
+            "sample": SPECIAL_FIXTURE_GENERATOR.SOURCE_NAME,
+            "size": sample["size"],
+            "sha256": sample["sha256"],
+        },
+        "fixture": {
+            "local_path": "/private/tmp/macos-special-path",
+            "directories": list(
+                SPECIAL_FIXTURE_GENERATOR.DIRECTORIES
+            ),
+            "entries": entries,
+            "raw_attempts": raw_attempts,
+            "directory_inventory_name_bytes_hex": inventory,
+        },
+        "filesystem_observations": {
+            "lowercase_alias_exists_after_upper_create": True,
+            "lowercase_alias_is_same_file": True,
+            "case_distinct_names_materialized": False,
+            "nfd_alias_exists_after_nfc_create": True,
+            "nfd_alias_is_same_file": True,
+            "nfc_nfd_distinct_names_materialized": False,
+        },
+        "admission": {
+            "fixture_admitted": False,
+            "capability_rows_admitted": 0,
+            "reason": SPECIAL_FIXTURE_GENERATOR.ADMISSION_REASON,
+        },
+        "limitations": SPECIAL_FIXTURE_GENERATOR.LIMITATIONS,
+    }
+    report_path = directory / "special-path-fixture-candidate.json"
+    report_path.write_text(
+        json.dumps(report, sort_keys=True), encoding="utf-8"
+    )
+    return report_path
+
+
+def write_cli_special_path_candidate_bundle(
+    directory: Path,
+    baseline_path: Path,
+    fixture_path: Path,
+) -> Path:
+    baseline = CLI_VALIDATOR.load_json(baseline_path)[0]
+    fixture_report = SPECIAL_FIXTURE_VALIDATOR.load_json(
+        fixture_path
+    )[0]
+    oracle_path = directory / "oracle-candidate.json"
+    source_dir = PurePosixPath(
+        "/private/tmp/source"
+    )
+    fixture_dir = PurePosixPath(
+        fixture_report["fixture"]["local_path"]
+    )
+    binary_dir = PurePosixPath(
+        "/private/tmp/source/build/release"
+    )
+    case_contracts = SPECIAL_PATH_COLLECTOR.build_cases(
+        source_dir=source_dir,
+        fixture_dir=fixture_dir,
+        binary_dir=binary_dir,
+        fixture_generator=SPECIAL_FIXTURE_GENERATOR,
+    )
+    reference_tree = baseline["corpus"]["minimal.pdf"][
+        "first_detect_tree"
+    ]
+    entries_by_id = {
+        entry["id"]: entry
+        for entry in fixture_report["fixture"]["entries"]
+    }
+    raw_tokens = [
+        f"raw:{attempt['name_bytes_hex']}"
+        for attempt in fixture_report["fixture"]["raw_attempts"]
+        if attempt["created"]
+    ]
+
+    def prefix_line(token: str) -> bytes:
+        if token.startswith("raw:"):
+            name = bytes.fromhex(token.removeprefix("raw:"))
+            parent = str(fixture_dir / "nonutf8").encode()
+        else:
+            entry = entries_by_id[token]
+            relative = entry["path"]
+            parent_name = relative.rsplit("/", 1)[0]
+            parent = str(
+                fixture_dir.joinpath(*parent_name.split("/"))
+            ).encode()
+            name = bytes.fromhex(
+                entry["directory_name_bytes_hex"]
+            )
+        return parent + b"/" + name + b":\n"
+
+    special_sequence = [
+        entry["id"]
+        for entry in fixture_report["fixture"]["entries"]
+        if entry["path"].startswith("special/")
+    ]
+    reports = {}
+    determinism_failures = []
+    exit_failures = []
+    projection_failures = []
+    for case in case_contracts:
+        if case.name == "directory_special":
+            tokens = special_sequence
+            stdout = b"".join(prefix_line(token) for token in tokens)
+        elif case.name == "directory_nonutf8":
+            tokens = raw_tokens
+            stdout = b"".join(prefix_line(token) for token in tokens)
+        elif case.name == "explicit_order":
+            tokens = ["emoji", "nfc", "ascii"]
+            stdout = b"".join(prefix_line(token) for token in tokens)
+        elif case.name == "leading_dash_relative_unescaped":
+            tokens = []
+            stdout = b""
+        else:
+            tokens = []
+            stdout = json.dumps(
+                {"detects": reference_tree},
+                separators=(",", ":"),
+            ).encode()
+        observation = CLI_COMMON.Observation(
+            case.expected_exit, stdout, b""
+        )
+        entry = CLI_COLLECTOR.pair_report(
+            CLI_COMMON,
+            directory,
+            f"cli-special-path/{case.name}",
+            observation,
+            observation,
+        )
+        tree = CLI_COMMON.json_detect_tree(stdout)
+        projection_equal = (
+            tree == reference_tree
+            if case.reference_projection_applies
+            else None
+        )
+        entry.update(
+            {
+                "cwd": case.report_cwd,
+                "arguments": list(case.report_arguments),
+                "expected_exit_code": case.expected_exit,
+                "expected_exit_code_equal": True,
+                "first_valid_json": (
+                    SPECIAL_PATH_COLLECTOR.valid_json(stdout)
+                ),
+                "second_valid_json": (
+                    SPECIAL_PATH_COLLECTOR.valid_json(stdout)
+                ),
+                "first_detect_tree": tree,
+                "second_detect_tree": tree,
+                "reference_projection_applies": (
+                    case.reference_projection_applies
+                ),
+                "minimal_pdf_detect_tree_equal": projection_equal,
+                "first_prefix_tokens": tokens,
+                "second_prefix_tokens": tokens,
+            }
+        )
+        reports[case.name] = entry
+        if entry["determinism_differences"]:
+            determinism_failures.append(case.name)
+        if observation.exit_code != case.expected_exit:
+            exit_failures.append(case.name)
+        if (
+            case.reference_projection_applies
+            and tree != reference_tree
+        ):
+            projection_failures.append(case.name)
+
+    logical = SPECIAL_PATH_COLLECTOR.logical_entries(
+        SPECIAL_FIXTURE_GENERATOR
+    )
+    case_count = len(case_contracts)
+    report = {
+        "schema_version": 1,
+        "result": "candidate",
+        "platform": SPECIAL_PATH_COLLECTOR.PLATFORM,
+        "generator": SPECIAL_PATH_COLLECTOR._generator_bindings(
+            ROOT
+        ),
+        "oracle_report": {
+            "path": "oracle-candidate.json",
+            "sha256": hashlib.sha256(
+                oracle_path.read_bytes()
+            ).hexdigest(),
+        },
+        "cli_baseline_report": {
+            "path": "cli-baseline-candidate.json",
+            "sha256": hashlib.sha256(
+                baseline_path.read_bytes()
+            ).hexdigest(),
+        },
+        "fixture_report": {
+            "path": "special-path-fixture-candidate.json",
+            "sha256": hashlib.sha256(
+                fixture_path.read_bytes()
+            ).hexdigest(),
+        },
+        "source": baseline["source"],
+        "qt": baseline["qt"],
+        "binary": baseline["binary"],
+        "selection": {
+            "logical_entries": [
+                {"id": case_id, "path": relative}
+                for case_id, relative in logical
+            ],
+            "case_names": [case.name for case in case_contracts],
+        },
+        "cases": reports,
+        "findings": {
+            "logical_single_case_count": len(logical),
+            "directory_special_sequence": special_sequence,
+            "directory_nonutf8_sequence": raw_tokens,
+            "explicit_target_sequence": [
+                "emoji",
+                "nfc",
+                "ascii",
+            ],
+            "explicit_target_order_is_preserved": True,
+            "case_alias_same_file": True,
+            "unicode_alias_same_file": True,
+            "created_raw_name_count": len(raw_tokens),
+            (
+                "leading_dash_requires_option_terminator_when_relative"
+            ): True,
+        },
+        "summary": {
+            "case_count": case_count,
+            "execution_count": 2 * case_count,
+            "raw_stream_count": 4 * case_count,
+            "determinism_failures": determinism_failures,
+            "expected_exit_failures": exit_failures,
+            "reference_projection_failures": projection_failures,
+            "deterministic": not determinism_failures,
+            "expected_exits_equal": not exit_failures,
+            "reference_projections_equal": not projection_failures,
+        },
+        "admission": {
+            "platform_admitted": False,
+            "capability_rows_admitted": 0,
+            "reason": SPECIAL_PATH_COLLECTOR.ADMISSION_REASON,
+        },
+        "limitations": SPECIAL_PATH_COLLECTOR.LIMITATIONS,
+    }
+    report_path = directory / "cli-special-path-candidate.json"
+    report_path.write_text(
+        json.dumps(report, sort_keys=True), encoding="utf-8"
+    )
+    return report_path
+
+
 class MacosQt5OracleBootstrapTests(unittest.TestCase):
     def test_plan_is_exact_generator_output_and_source_bound(self):
         report = json.loads(PLAN_PATH.read_text(encoding="utf-8"))
@@ -1753,6 +2090,8 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             "validate_macos_cli_path_nested.py",
             "collect_macos_cli_database_archives.py",
             "validate_macos_cli_database_archives.py",
+            "collect_macos_cli_special_paths.py",
+            "validate_macos_cli_special_paths.py",
             "cli-baseline-candidate.json",
             "cli-matrix-candidate.json",
             "cli-remaining-candidate.json",
@@ -1760,6 +2099,7 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             "cli-path-nested-candidate.json",
             "cli-database-archive-candidate.json",
             "special-path-fixture-candidate.json",
+            "cli-special-path-candidate.json",
             "diec-macos-candidate-evidence/raw",
             (
                 "actions/checkout@"
@@ -1805,6 +2145,7 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
                 "cli-path-nested-candidate.json",
                 "cli-database-archive-candidate.json",
                 "special-path-fixture-candidate.json",
+                "cli-special-path-candidate.json",
             ],
         )
         self.assertTrue(workflow["special_path_fixture_candidate"])
@@ -1821,10 +2162,13 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             workflow["database_archive_cli_execution_count"], 34
         )
         self.assertEqual(
-            workflow["general_cli_execution_count"], 1994
+            workflow["special_path_cli_execution_count"], 46
         )
         self.assertEqual(
-            workflow["general_cli_raw_stream_count"], 3988
+            workflow["general_cli_execution_count"], 2040
+        )
+        self.assertEqual(
+            workflow["general_cli_raw_stream_count"], 4080
         )
 
     def test_cli_candidate_tools_are_bound_and_fail_closed(self):
@@ -2308,6 +2652,91 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
                     report,
                     report_path=report_path,
                     oracle_path=oracle_path,
+                    root=ROOT,
+                )
+
+    def test_cli_special_path_validator_recomputes_raw_matrix(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            baseline_path = write_cli_candidate_bundle(directory)
+            fixture_path = (
+                write_special_path_fixture_candidate_bundle(
+                    directory
+                )
+            )
+            report_path = write_cli_special_path_candidate_bundle(
+                directory, baseline_path, fixture_path
+            )
+            report = CLI_VALIDATOR.load_json(report_path)[0]
+            oracle_path = directory / "oracle-candidate.json"
+            SPECIAL_PATH_VALIDATOR.validate_report(
+                report,
+                report_path=report_path,
+                oracle_path=oracle_path,
+                baseline_path=baseline_path,
+                fixture_report_path=fixture_path,
+                root=ROOT,
+            )
+            self.assertEqual(report["summary"]["case_count"], 23)
+            self.assertEqual(
+                report["summary"]["execution_count"], 46
+            )
+            self.assertEqual(
+                report["summary"]["raw_stream_count"], 92
+            )
+
+            first = report["cases"]["directory_nonutf8"][
+                "first"
+            ]
+            raw_path = directory / first["stdout_path"]
+            original = raw_path.read_bytes()
+            raw_path.write_bytes(b"tampered")
+            with self.assertRaisesRegex(
+                SPECIAL_PATH_VALIDATOR.ReportError,
+                "raw stream identity mismatch",
+            ):
+                SPECIAL_PATH_VALIDATOR.validate_report(
+                    report,
+                    report_path=report_path,
+                    oracle_path=oracle_path,
+                    baseline_path=baseline_path,
+                    fixture_report_path=fixture_path,
+                    root=ROOT,
+                )
+            raw_path.write_bytes(original)
+
+            report["admission"]["platform_admitted"] = True
+            with self.assertRaisesRegex(
+                SPECIAL_PATH_VALIDATOR.ReportError,
+                "must not admit",
+            ):
+                SPECIAL_PATH_VALIDATOR.validate_report(
+                    report,
+                    report_path=report_path,
+                    oracle_path=oracle_path,
+                    baseline_path=baseline_path,
+                    fixture_report_path=fixture_path,
+                    root=ROOT,
+                )
+            report["admission"]["platform_admitted"] = False
+
+            extra = (
+                directory
+                / "raw"
+                / "cli-special-path"
+                / "undeclared"
+            )
+            extra.write_bytes(b"x")
+            with self.assertRaisesRegex(
+                SPECIAL_PATH_VALIDATOR.ReportError,
+                "raw file inventory",
+            ):
+                SPECIAL_PATH_VALIDATOR.validate_report(
+                    report,
+                    report_path=report_path,
+                    oracle_path=oracle_path,
+                    baseline_path=baseline_path,
+                    fixture_report_path=fixture_path,
                     root=ROOT,
                 )
 
