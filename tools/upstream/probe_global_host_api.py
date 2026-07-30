@@ -87,6 +87,38 @@ QT6_EXPECTED_STDERR = (
     b"%entry@file:query-conversion-extra_count_arguments.js:1\n"
     b"Too many arguments, ignoring 1\n"
 )
+ISOLATED_QUERY_CASES = {
+    "cyclic_plain_object_count": {
+        "record_type": "[object Object]",
+        "record_name": "PlainObject",
+        "qt5": 1,
+        "qt6": 1,
+    },
+    "cyclic_array_count": {
+        "record_type": "seed",
+        "record_name": "Seed",
+        "qt5": 1,
+        "qt6": None,
+    },
+    "proxy_object_count": {
+        "record_type": "proxy-type",
+        "record_name": "Proxy",
+        "qt5": -1,
+        "qt6": 1,
+    },
+    "bigint_count": {
+        "record_type": "1",
+        "record_name": "BigInt",
+        "qt5": -1,
+        "qt6": -1,
+    },
+    "symbol_count": {
+        "record_type": "Symbol(probe)",
+        "record_name": "Symbol",
+        "qt5": -1,
+        "qt6": 1,
+    },
+}
 
 
 def sha256(data: bytes) -> str:
@@ -101,6 +133,103 @@ def _record_names(step: dict[str, Any]) -> list[str]:
     return [record["name"] for record in step["records"]]
 
 
+def _decode_byte_snapshot(
+    snapshot: dict[str, Any],
+    label: str,
+) -> bytes:
+    if set(snapshot) != {"bytes", "sha256", "base64"}:
+        raise ValueError(f"unexpected {label} byte snapshot fields")
+    try:
+        data = base64.b64decode(snapshot["base64"], validate=True)
+    except (TypeError, ValueError) as error:
+        raise ValueError(f"invalid {label} base64") from error
+    if len(data) != snapshot["bytes"] or sha256(data) != snapshot["sha256"]:
+        raise ValueError(f"{label} byte identity drift")
+    return data
+
+
+def validate_isolated_query_conversions(
+    observations: dict[str, Any],
+    runtime: str,
+) -> None:
+    if set(observations) != set(ISOLATED_QUERY_CASES):
+        raise ValueError("isolated query case inventory drift")
+    record_fields = {
+        "started",
+        "finished",
+        "timed_out",
+        "exit_code",
+        "exit_status",
+        "process_error_code",
+        "stdout",
+        "stderr",
+    }
+    for case_name, expected in ISOLATED_QUERY_CASES.items():
+        record = observations[case_name]
+        expected_result = expected[runtime]
+        expected_fields = record_fields | (
+            set() if expected_result is None else {"observation"}
+        )
+        if set(record) != expected_fields:
+            raise ValueError(f"isolated query record drift: {case_name}")
+        stdout = _decode_byte_snapshot(
+            record["stdout"],
+            f"{case_name} stdout",
+        )
+        stderr = _decode_byte_snapshot(
+            record["stderr"],
+            f"{case_name} stderr",
+        )
+        if (
+            record["started"] is not True
+            or record["finished"] is not True
+            or record["timed_out"] is not False
+            or stderr
+        ):
+            raise ValueError(f"isolated query lifecycle drift: {case_name}")
+        if expected_result is None:
+            if (
+                runtime != "qt6"
+                or case_name != "cyclic_array_count"
+                or record["exit_status"] != "crash"
+                or record["exit_code"] != 11
+                or record["process_error_code"] != 1
+                or stdout
+            ):
+                raise ValueError("Qt6 cyclic array crash behavior drift")
+            continue
+        if (
+            record["exit_status"] != "normal"
+            or record["exit_code"] != 0
+            or record["process_error_code"] != 5
+        ):
+            raise ValueError(f"isolated query exit drift: {case_name}")
+        try:
+            decoded = json.loads(stdout)
+        except (UnicodeDecodeError, json.JSONDecodeError) as error:
+            raise ValueError(
+                f"isolated query stdout is not JSON: {case_name}"
+            ) from error
+        if decoded != record["observation"]:
+            raise ValueError(
+                f"isolated query replay drift: {case_name}"
+            )
+        observation = record["observation"]
+        if (
+            observation.get("schema_version") != 1
+            or observation.get("case") != case_name
+            or observation["evaluation"].get("number") != expected_result
+            or len(observation["final_records"]) != 1
+            or observation["final_records"][0]["type"]
+            != expected["record_type"]
+            or observation["final_records"][0]["name"]
+            != expected["record_name"]
+        ):
+            raise ValueError(
+                f"isolated query observation drift: {case_name}"
+            )
+
+
 def validate_observation(
     observation: dict[str, Any],
     runtime: str = "qt5",
@@ -108,7 +237,7 @@ def validate_observation(
     if runtime not in {"qt5", "qt6"}:
         raise ValueError("unsupported runtime profile")
     identities = {
-        "schema_version": 3,
+        "schema_version": 4,
         "upstream_commit": UPSTREAM_COMMIT,
         "die_script_commit": DIE_SCRIPT_COMMIT,
         "rules_commit": RULES_COMMIT,
@@ -235,12 +364,23 @@ def validate_observation(
 
     conversions = observation["query_conversions"]
     if (
-        conversions["seed_record_count"] != 9
-        or len(conversions["final_records"]) != 10
-        or conversions["final_records"][-1]["name"] != "Surrogate"
-        or conversions["final_records"][-1]["type"] != "\ud800"
+        conversions["seed_record_count"] != 17
+        or len(conversions["final_records"]) != 23
     ):
         raise ValueError("query conversion fixture drift")
+    expected_utf16_records = [
+        ("Surrogate", "\ud800"),
+        ("LoneLowSurrogate", "\udc00"),
+        ("DoubleHighSurrogate", "\ud800\ud800"),
+        ("DoubleLowSurrogate", "\udc00\udc00"),
+        ("ReversedSurrogate", "\udc00\ud800"),
+        ("ValidSurrogatePair", "\U00010000"),
+    ]
+    if [
+        (record["name"], record["type"])
+        for record in conversions["final_records"][-6:]
+    ] != expected_utf16_records:
+        raise ValueError("query conversion UTF-16 records drift")
     evaluations = conversions["evaluations"]
     expected_names = {
         "undefined_count",
@@ -256,7 +396,21 @@ def validate_observation(
         "negative_infinity_count",
         "negative_zero_count",
         "large_integer_count",
+        "proxy_type",
+        "bigint_type",
+        "symbol_type",
+        "max_safe_integer_count",
+        "above_max_safe_literal_count",
+        "above_max_safe_even_count",
+        "negative_max_safe_integer_count",
+        "negative_large_integer_count",
+        "negative_above_max_safe_even_count",
         "invalid_utf16_count",
+        "lone_low_surrogate_count",
+        "double_high_surrogate_count",
+        "double_low_surrogate_count",
+        "reversed_surrogate_count",
+        "valid_surrogate_pair_count",
         "extra_present_arguments",
         "extra_count_arguments",
     }
@@ -278,7 +432,18 @@ def validate_observation(
         "negative_infinity_count",
         "negative_zero_count",
         "large_integer_count",
+        "max_safe_integer_count",
+        "above_max_safe_literal_count",
+        "above_max_safe_even_count",
+        "negative_max_safe_integer_count",
+        "negative_large_integer_count",
+        "negative_above_max_safe_even_count",
         "invalid_utf16_count",
+        "lone_low_surrogate_count",
+        "double_high_surrogate_count",
+        "double_low_surrogate_count",
+        "reversed_surrogate_count",
+        "valid_surrogate_pair_count",
         "extra_count_arguments",
     ):
         if evaluations[name].get("number") != 1:
@@ -288,14 +453,24 @@ def validate_observation(
             evaluations["undefined_count"].get("number") != 0
             or evaluations["null_count"].get("number") != 0
             or not evaluations["throwing_object_count"]["is_error"]
+            or evaluations["proxy_type"].get("string") != "undefined"
+            or evaluations["bigint_type"].get("string") != "undefined"
+            or evaluations["symbol_type"].get("string") != "undefined"
         ):
             raise ValueError("Qt5 query conversion behavior drift")
     elif (
-        evaluations["undefined_count"].get("number") != 9
-        or evaluations["null_count"].get("number") != 9
+        evaluations["undefined_count"].get("number") != 17
+        or evaluations["null_count"].get("number") != 17
         or evaluations["throwing_object_count"].get("number") != 0
+        or evaluations["proxy_type"].get("string") != "function"
+        or evaluations["bigint_type"].get("string") != "undefined"
+        or evaluations["symbol_type"].get("string") != "function"
     ):
         raise ValueError("Qt6 query conversion behavior drift")
+    validate_isolated_query_conversions(
+        observation["isolated_query_conversions"],
+        runtime,
+    )
 
     stop = observation["stop"]
     if stop["compiler"]["records"]:
@@ -580,7 +755,7 @@ def build_report(
     }
     validate_streams(streams, observation, runtime)
     return {
-        "schema_version": 3,
+        "schema_version": 4,
         "generator": "tools/upstream/probe_global_host_api.py",
         "runtime_profile": runtime,
         "image": {

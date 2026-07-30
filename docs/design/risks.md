@@ -194,11 +194,14 @@ baseline 的变更都要检查本表。
   仍未验证。共享 Qt 5/Qt 6 global harness 已确认 Qt 5 缺参 `"undefined"`
   转换与 Qt 6 `Insufficient arguments` 严格错误不同；null 字符串化和
   `_encodingList` 也不同，而重复结果、单项删除/block、数组字符串化、双 stop
-  状态和重复 include 相同。schema v2 的 16-case query conversion 又固定
-  数组、普通/自定义/抛异常对象、NaN/±Infinity/-0、2^53、孤立 surrogate 和
-  extra arguments：显式 undefined/null 在 Qt 5 返回 0、Qt 6 因空 type wildcard
-  返回 9；throwing `toString` 只在 Qt 5 执行并传播；Qt 6 额外保留 176-byte
-  stderr warning。两侧 raw stdout/stderr 均可 hash-bound 重放。受限 Qt5 CLI
+  状态和重复 include 相同。schema v4 的 30-case 进程内 query conversion 与
+  五个隔离 child 又固定数组、普通/自定义/抛异常/cyclic/proxy 对象、
+  Proxy/BigInt/Symbol availability、NaN/±Infinity/-0、2^53 邻域、六类 UTF-16
+  和 extra arguments：显式 undefined/null 在 Qt 5 返回 0、Qt 6 因空 type
+  wildcard 返回 17；throwing `toString` 只在 Qt 5 执行并传播；Qt 6 额外保留
+  176-byte stderr warning。Qt 6 cyclic array 的 QString 参数转换以 signal 11
+  崩溃、child stdout/stderr 均空；Qt 5 同案转为空串并 wildcard 命中。两次
+  完整重采集逐文件同 hash，父/子 raw stdout/stderr 均可重放。受限 Qt5 CLI
   fixture 又证明 self/two-node include
   cycle 依赖 VM 栈上限，产生 28 条 signal 和一条 init error 后继续规则；
   ADR 0010 提议静态图与 active stack 提前拒绝该循环。固定 QuickJS-NG fixture
@@ -207,9 +210,9 @@ baseline 的变更都要检查本表。
   错误传播兼容。固定 native `Function` callback panic 也已由 rquickjs 在 C ABI
   trampoline 内捕获、在 Rust eval 边界恢复原 payload；调用方捕获后同一 context
   继续返回 `"42"`。4 MiB heap limit 拒绝 16 MiB 分配后同一 context 也已恢复
-  `"42"`。这些结果不覆盖正式 HostApi adapter 或 native crash/abort。完整
-  format HostApi 矩阵、cyclic/proxy/BigInt/Symbol 等转换边界和逐规则 execution
-  仍是开放风险。
+  `"42"`。这些结果不覆盖正式 HostApi adapter；cyclic array 已证明 native
+  crash 可达。完整 format HostApi 矩阵、更深 cyclic graph、proxy
+  trap/revocation、typed return 和逐规则 execution 仍是开放风险。
 - **缓解**：保持 `RuleRuntime`/`HostApi` port；建立全规则 inventory、最小失败
   fixture、host call trace；基于证据选 runtime，禁止静默转换规则。
 - **验证**：固定规则 100% discovered/parsed/loaded，zero silent unsupported；
@@ -344,16 +347,22 @@ baseline 的变更都要检查本表。
   [`allocation-budget-candidate.json`](data/allocation-budget-candidate.json)
   又把 scan-owned capacity 定义为释放不退款的单调累计 counter，提出
   1 GiB/8 GiB；固定 RSS 只作为 whole-process 证据边界，不用于定值。
+  固定 Qt 6.4.2 global HostApi 隔离 child 还证明 self-referential array 传给
+  QString query 参数会以 signal 11 崩溃，且无 stdout/stderr；Qt 5 同案正常。
+  Rust adapter 必须把 cyclic JS graph 当作不可信边界，不能复刻 native stack
+  overflow。
 - **缓解**：checked `u64` range、allocation cap、`try_reserve`、无 panic parser；
   cache key 绑定完整内容 manifest；decode/build/publish 事务化；失败或取消不提交
-  cache；unsafe 最小化；unit/property/fuzz/sanitizer/Miri。
+  cache；HostApi value conversion 使用 cycle detection 与受控 depth；unsafe
+  最小化；unit/property/fuzz/sanitizer/Miri。
   diagnostic 在复制 path/message/detail 前共享 reserve，overflow 通过不占
   diagnostic arena slot 的 completion `LimitReached` 报告，禁止静默丢弃。
 - **验证**：每个 parser 的合法/截断/畸形/边界/fuzz target 通过，历史 crash 全部
   晋升 regression；cache 每字段截断、伪造 count/length、取消时序、写失败和并发
   writer 证明无部分发布或 poisoned cache；directory/archive/embedded/cache
   对每个 database counter 执行 `limit-1/exact/+1` 并证明 fallback 不重置预算；
-  多错误放大 corpus 证明 diagnostic exact/+1 不产生第 `limit+1` 个分配。
+  多错误放大 corpus 证明 diagnostic exact/+1 不产生第 `limit+1` 个分配；
+  self/two-node/deep cyclic JS graph 均返回 typed diagnostic 而非 panic/abort。
 - **关闭**：这是持续风险；单个格式只有在对应证据通过后可关闭其子风险。
 
 ### R-005：嵌套和解压资源耗尽

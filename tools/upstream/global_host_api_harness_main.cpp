@@ -9,6 +9,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QProcess>
 #ifdef QT_SCRIPT_LIB
 #include <QScriptValue>
 #else
@@ -115,6 +116,23 @@ QJsonArray messageSnapshot(const QStringList &messages)
         output.append(message);
     }
     return output;
+}
+
+QJsonObject byteSnapshot(const QByteArray &bytes)
+{
+    return QJsonObject{
+        {"bytes", bytes.size()},
+        {
+            "sha256",
+            QString::fromLatin1(
+                QCryptographicHash::hash(
+                    bytes,
+                    QCryptographicHash::Sha256
+                ).toHex()
+            )
+        },
+        {"base64", QString::fromLatin1(bytes.toBase64())},
+    };
 }
 
 class EngineFixture {
@@ -372,6 +390,14 @@ QJsonObject queryConversionObservations()
              "-Infinity",
              "0",
              "9007199254740992",
+             "proxy-type",
+             "1",
+             "Symbol(probe)",
+             "9007199254740991",
+             "9007199254740994",
+             "-9007199254740991",
+             "-9007199254740992",
+             "-9007199254740994",
          }) {
         evaluate(
             fixture.engine,
@@ -436,9 +462,75 @@ QJsonObject queryConversionObservations()
             "_getNumberOfResults(9007199254740992)",
         },
         {
+            "proxy_type",
+            "typeof Proxy",
+        },
+        {
+            "bigint_type",
+            "typeof BigInt",
+        },
+        {
+            "symbol_type",
+            "typeof Symbol",
+        },
+        {
+            "max_safe_integer_count",
+            "_getNumberOfResults(9007199254740991)",
+        },
+        {
+            "above_max_safe_literal_count",
+            "_getNumberOfResults(9007199254740993)",
+        },
+        {
+            "above_max_safe_even_count",
+            "_getNumberOfResults(9007199254740994)",
+        },
+        {
+            "negative_max_safe_integer_count",
+            "_getNumberOfResults(-9007199254740991)",
+        },
+        {
+            "negative_large_integer_count",
+            "_getNumberOfResults(-9007199254740992)",
+        },
+        {
+            "negative_above_max_safe_even_count",
+            "_getNumberOfResults(-9007199254740994)",
+        },
+        {
             "invalid_utf16_count",
             "(function(){var s=String.fromCharCode(0xD800);"
             "_setResult(s,'Surrogate','','');"
+            "return _getNumberOfResults(s);})()",
+        },
+        {
+            "lone_low_surrogate_count",
+            "(function(){var s=String.fromCharCode(0xDC00);"
+            "_setResult(s,'LoneLowSurrogate','','');"
+            "return _getNumberOfResults(s);})()",
+        },
+        {
+            "double_high_surrogate_count",
+            "(function(){var s=String.fromCharCode(0xD800,0xD800);"
+            "_setResult(s,'DoubleHighSurrogate','','');"
+            "return _getNumberOfResults(s);})()",
+        },
+        {
+            "double_low_surrogate_count",
+            "(function(){var s=String.fromCharCode(0xDC00,0xDC00);"
+            "_setResult(s,'DoubleLowSurrogate','','');"
+            "return _getNumberOfResults(s);})()",
+        },
+        {
+            "reversed_surrogate_count",
+            "(function(){var s=String.fromCharCode(0xDC00,0xD800);"
+            "_setResult(s,'ReversedSurrogate','','');"
+            "return _getNumberOfResults(s);})()",
+        },
+        {
+            "valid_surrogate_pair_count",
+            "(function(){var s=String.fromCharCode(0xD800,0xDC00);"
+            "_setResult(s,'ValidSurrogatePair','','');"
             "return _getNumberOfResults(s);})()",
         },
         {
@@ -462,10 +554,143 @@ QJsonObject queryConversionObservations()
         );
     }
     return QJsonObject{
-        {"seed_record_count", 9},
+        {"seed_record_count", 17},
         {"evaluations", evaluations},
         {"final_records", recordSnapshot(fixture.records)},
     };
+}
+
+QJsonObject isolatedQueryConversionObservation(const QString &caseName)
+{
+    EngineFixture fixture;
+    QString source;
+    if (caseName == "cyclic_plain_object_count") {
+        evaluate(
+            fixture.engine,
+            "_setResult('[object Object]','PlainObject','','')",
+            "isolated-query-seed-plain-object.js"
+        );
+        source =
+            "(function(){var value={};value.self=value;"
+            "return _getNumberOfResults(value);})()";
+    } else if (caseName == "cyclic_array_count") {
+        evaluate(
+            fixture.engine,
+            "_setResult('seed','Seed','','')",
+            "isolated-query-seed-array.js"
+        );
+        source =
+            "(function(){var value=[];value[0]=value;"
+            "return _getNumberOfResults(value);})()";
+    } else if (caseName == "proxy_object_count") {
+        evaluate(
+            fixture.engine,
+            "_setResult('proxy-type','Proxy','','')",
+            "isolated-query-seed-proxy.js"
+        );
+        source =
+            "(function(){if(typeof Proxy!=='function')return -1;"
+            "var value=new Proxy({},"
+            "{get:function(target,key){"
+            "if(key==='toString')return function(){return 'proxy-type';};"
+            "return target[key];}});"
+            "return _getNumberOfResults(value);})()";
+    } else if (caseName == "bigint_count") {
+        evaluate(
+            fixture.engine,
+            "_setResult('1','BigInt','','')",
+            "isolated-query-seed-bigint.js"
+        );
+        source =
+            "(function(){if(typeof BigInt!=='function')return -1;"
+            "return _getNumberOfResults(BigInt(1));})()";
+    } else if (caseName == "symbol_count") {
+        evaluate(
+            fixture.engine,
+            "_setResult('Symbol(probe)','Symbol','','')",
+            "isolated-query-seed-symbol.js"
+        );
+        source =
+            "(function(){if(typeof Symbol!=='function')return -1;"
+            "return _getNumberOfResults(Symbol('probe'));})()";
+    } else {
+        return QJsonObject{
+            {"schema_version", 1},
+            {"case", caseName},
+            {"error", "unknown isolated query case"},
+        };
+    }
+    return QJsonObject{
+        {"schema_version", 1},
+        {"case", caseName},
+        {
+            "evaluation",
+            evaluate(
+                fixture.engine,
+                source,
+                QString("isolated-query-%1.js").arg(caseName)
+            )
+        },
+        {"final_records", recordSnapshot(fixture.records)},
+    };
+}
+
+QJsonObject isolatedQueryConversionObservations()
+{
+    const QStringList cases = {
+        "cyclic_plain_object_count",
+        "cyclic_array_count",
+        "proxy_object_count",
+        "bigint_count",
+        "symbol_count",
+    };
+    QJsonObject output;
+    for (const QString &caseName : cases) {
+        QProcess process;
+        process.setProgram(QCoreApplication::applicationFilePath());
+        process.setArguments(
+            {"--isolated-query-case", caseName}
+        );
+        process.start();
+        bool started = process.waitForStarted(5000);
+        bool finished = started && process.waitForFinished(5000);
+        bool timedOut = started && !finished;
+        if (timedOut) {
+            process.kill();
+            process.waitForFinished(5000);
+        }
+        QByteArray stdoutBytes = process.readAllStandardOutput();
+        QByteArray stderrBytes = process.readAllStandardError();
+        QJsonObject record{
+            {"started", started},
+            {"finished", finished},
+            {"timed_out", timedOut},
+            {"exit_code", started ? process.exitCode() : -1},
+            {
+                "exit_status",
+                started && process.exitStatus() == QProcess::NormalExit
+                    ? "normal"
+                    : "crash"
+            },
+            {
+                "process_error_code",
+                static_cast<qint32>(process.error())
+            },
+            {"stdout", byteSnapshot(stdoutBytes)},
+            {"stderr", byteSnapshot(stderrBytes)},
+        };
+        QJsonParseError parseError;
+        QJsonDocument document =
+            QJsonDocument::fromJson(stdoutBytes, &parseError);
+        if (
+            parseError.error == QJsonParseError::NoError
+            && document.isObject()
+        ) {
+            record.insert("observation", document.object());
+        }
+        output.insert(caseName, record);
+    }
+    return output;
 }
 
 QJsonObject stopObservations()
@@ -793,15 +1018,33 @@ QJsonObject modeObservations()
 int main(int argc, char *argv[])
 {
     QCoreApplication application(argc, argv);
+    QCoreApplication::setApplicationName("die");
+    QCoreApplication::setApplicationVersion("9.9.9");
+    if (
+        argc == 3
+        && QString::fromLocal8Bit(argv[1]) == "--isolated-query-case"
+    ) {
+        QJsonObject observation = isolatedQueryConversionObservation(
+            QString::fromLocal8Bit(argv[2])
+        );
+        QByteArray serialized =
+            QJsonDocument(observation).toJson(QJsonDocument::Compact);
+        std::fwrite(
+            serialized.constData(),
+            1,
+            static_cast<size_t>(serialized.size()),
+            stdout
+        );
+        std::fputc('\n', stdout);
+        return observation.contains("error") ? 2 : 0;
+    }
     if (argc != 1) {
         std::fprintf(stderr, "global HostApi harness takes no arguments\n");
         return 2;
     }
-    QCoreApplication::setApplicationName("die");
-    QCoreApplication::setApplicationVersion("9.9.9");
 
     QJsonObject output;
-    output.insert("schema_version", 3);
+    output.insert("schema_version", 4);
     output.insert("upstream_commit", UPSTREAM_COMMIT);
     output.insert("die_script_commit", DIE_SCRIPT_COMMIT);
     output.insert("rules_commit", RULES_COMMIT);
@@ -811,6 +1054,10 @@ int main(int argc, char *argv[])
     output.insert("array_removal", arrayRemovalObservations());
     output.insert("missing_arguments", missingArgumentObservations());
     output.insert("query_conversions", queryConversionObservations());
+    output.insert(
+        "isolated_query_conversions",
+        isolatedQueryConversionObservations()
+    );
     output.insert("stop", stopObservations());
     output.insert("include", includeObservations());
     output.insert("info", infoObservations());

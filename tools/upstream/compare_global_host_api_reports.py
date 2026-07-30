@@ -101,7 +101,7 @@ def load_report(path: pathlib.Path, runtime: str) -> tuple[dict[str, Any], str]:
     data = path.read_bytes()
     report = json.loads(data)
     if (
-        report.get("schema_version") != 3
+        report.get("schema_version") != 4
         or report.get("generator")
         != "tools/upstream/probe_global_host_api.py"
         or report.get("runtime_profile") != runtime
@@ -137,7 +137,7 @@ def build_report(
     source_path = repo / "tools/upstream/compare_global_host_api_reports.py"
     source = source_path.read_bytes()
     return {
-        "schema_version": 3,
+        "schema_version": 4,
         "generator": (
             "tools/upstream/compare_global_host_api_reports.py"
         ),

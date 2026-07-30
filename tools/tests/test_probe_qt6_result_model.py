@@ -123,11 +123,15 @@ class ProbeQt6ResultModelTest(unittest.TestCase):
             self.report["capability_scope"],
         )
         comparison = self.report["record_metadata_comparison"]
-        self.assertEqual(comparison["common_record_count"], 30)
+        self.assertEqual(comparison["common_record_count"], 47)
         self.assertTrue(all(comparison["facts"].values()))
         self.assertEqual(
             comparison["qt5_only_record_paths"],
             [
+                (
+                    "isolated_query_conversions/cyclic_array_count/"
+                    "observation/final_records/0"
+                ),
                 "missing_arguments/count/records/0",
                 "missing_arguments/is_present/records/0",
                 "missing_arguments/set_result/records/0",

@@ -23,18 +23,19 @@ Last updated: 2026-07-30
 比较器保留这些原始值，不删除字段。除上述路径外的全部 harness output、
 relationships 和 fixture identity 相同。
 
-`CAP-RESULT-006` 由两组已固定证据组合闭合：Qt5/Qt6 global HostApi 的 30 个
+`CAP-RESULT-006` 由两组已固定证据组合闭合：Qt5/Qt6 global HostApi 的 47 个
 共同正常 record 完全相同，覆盖非空 version/info 及 priority 30/70/90；
 engine-contract 覆盖 signature basename、absolute signature path 及 priority
-12/30/100。Qt5 缺参调用额外产生三个 `"undefined"` record、Qt6 不产生，
-该已知 runtime 差异仍完整保留，不被当作正常 record 契约。
+12/30/100。Qt5 缺参调用额外产生三个 `"undefined"` record；隔离 cyclic-array
+case 还产生一个正常 record，而 Qt6 对应 child 以 signal 11 崩溃、没有
+observation。四条 Qt5-only runtime 差异均完整保留，不被当作共同 record 契约。
 
 ## 固定身份
 
 机器报告：
 [`data/result-model-engine-qt6.json`](data/result-model-engine-qt6.json)，
 SHA-256
-`15e3cd6ba5c7e54ba69438965cfe35611d1be968f142261d2ecb9994048a71f8`。
+`f9d8a703ac364a50a4dd1e4e52248e20c50b518f086ecf882ea85fc62ba3e9ce`。
 
 | Profile | Qt6 image ID | Binary SHA-256 | Cases / records |
 | --- | --- | --- | ---: |

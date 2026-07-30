@@ -55,6 +55,27 @@ EXPECTED_PATHS = {
     "$.info.missing.evaluation.string",
     "$.info.pd_info_after_missing",
     "$.info.pd_info_after_null",
+    "$.isolated_query_conversions.cyclic_array_count.exit_code",
+    "$.isolated_query_conversions.cyclic_array_count.exit_status",
+    "$.isolated_query_conversions.cyclic_array_count.observation",
+    "$.isolated_query_conversions.cyclic_array_count.process_error_code",
+    "$.isolated_query_conversions.cyclic_array_count.stdout.base64",
+    "$.isolated_query_conversions.cyclic_array_count.stdout.bytes",
+    "$.isolated_query_conversions.cyclic_array_count.stdout.sha256",
+    (
+        "$.isolated_query_conversions.proxy_object_count."
+        "observation.evaluation.number"
+    ),
+    "$.isolated_query_conversions.proxy_object_count.stdout.base64",
+    "$.isolated_query_conversions.proxy_object_count.stdout.bytes",
+    "$.isolated_query_conversions.proxy_object_count.stdout.sha256",
+    (
+        "$.isolated_query_conversions.symbol_count."
+        "observation.evaluation.number"
+    ),
+    "$.isolated_query_conversions.symbol_count.stdout.base64",
+    "$.isolated_query_conversions.symbol_count.stdout.bytes",
+    "$.isolated_query_conversions.symbol_count.stdout.sha256",
     "$.missing_arguments.count.evaluation.backtrace",
     "$.missing_arguments.count.evaluation.error_line",
     "$.missing_arguments.count.evaluation.error_message",
@@ -85,6 +106,8 @@ EXPECTED_PATHS = {
     "$.modes.qt_version",
     "$.qt_version",
     "$.query_conversions.evaluations.null_count.number",
+    "$.query_conversions.evaluations.proxy_type.string",
+    "$.query_conversions.evaluations.symbol_type.string",
     (
         "$.query_conversions.evaluations."
         "throwing_object_count.backtrace"
@@ -165,7 +188,7 @@ class CompareGlobalHostApiReportsTests(unittest.TestCase):
         )
         report = json.loads(path.read_text(encoding="utf-8"))
         self.assertFalse(report["equal"])
-        self.assertEqual(report["difference_count"], 77)
+        self.assertEqual(report["difference_count"], 94)
         self.assertEqual(
             {item["path"] for item in report["differences"]},
             EXPECTED_PATHS,

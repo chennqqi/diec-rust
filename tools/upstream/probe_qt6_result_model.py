@@ -183,6 +183,10 @@ def build_record_metadata_comparison(root: Path) -> dict[str, Any]:
     qt5_only = sorted(set(qt5_records) - set(qt6_records))
     qt6_only = sorted(set(qt6_records) - set(qt5_records))
     expected_qt5_only = [
+        (
+            "isolated_query_conversions/cyclic_array_count/"
+            "observation/final_records/0"
+        ),
         "missing_arguments/count/records/0",
         "missing_arguments/is_present/records/0",
         "missing_arguments/set_result/records/0",
@@ -200,7 +204,7 @@ def build_record_metadata_comparison(root: Path) -> dict[str, Any]:
     ]
     facts = {
         "common_hostapi_records_equal": common_equal,
-        "missing_argument_difference_is_exact": (
+        "runtime_specific_record_difference_is_exact": (
             qt5_only == expected_qt5_only and not qt6_only
         ),
         "nonempty_version_and_info_are_observed": any(

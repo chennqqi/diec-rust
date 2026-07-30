@@ -93,7 +93,7 @@
     }
   },
   "generator": "tools/upstream/probe_qt6_result_model.py",
-  "generator_sha256": "5ec5708fac88cb3aa8fefcb4577e6ce67b6f7aebfb6d52726173f6600ff91f27",
+  "generator_sha256": "ab6d10a042984d0190ec89eb39dba17dd6097179c197af11fa5640611a4df5e8",
   "limitations": [
     "scan times, debug elapsed times, and UUID values are nondeterministic",
     "Qt5 comparison and field-specific normalization are performed by the closure synthesis",
@@ -104,16 +104,17 @@
     "storage": "untracked external directory selected by --raw-dir"
   },
   "record_metadata_comparison": {
-    "common_record_count": 30,
+    "common_record_count": 47,
     "facts": {
       "common_hostapi_records_equal": true,
       "engine_rule_name_and_path_are_observed": true,
       "engine_rule_priorities_are_observed": true,
       "hostapi_priorities_cover_multiple_types": true,
-      "missing_argument_difference_is_exact": true,
+      "runtime_specific_record_difference_is_exact": true,
       "nonempty_version_and_info_are_observed": true
     },
     "qt5_only_record_paths": [
+      "isolated_query_conversions/cyclic_array_count/observation/final_records/0",
       "missing_arguments/count/records/0",
       "missing_arguments/is_present/records/0",
       "missing_arguments/set_result/records/0"
@@ -121,8 +122,8 @@
     "qt6_only_record_paths": [],
     "sources": {
       "docs/research/data/engine-contract-linux-qt6.json": "e2f11d0f8d4070fa3359af0237eca948e6c8a36962bbf8cba59d48f0fe7ac18e",
-      "docs/research/data/global-host-api-qt5.json": "bd1071fa5d849c03826b872dd99302a6b433d500e2ad1b45a6793c320f1744e6",
-      "docs/research/data/global-host-api-qt6.json": "8f9b5af2e51c9650b915a05a5b9fa80f00bee396388ef8453025befa1f37e4df"
+      "docs/research/data/global-host-api-qt5.json": "5b7c268b83cd7c94929eca335265785f7a8fcd9939aa7ec6c14146b01e4b51ac",
+      "docs/research/data/global-host-api-qt6.json": "ea66d3b9df04a70281245b9dff04c4afcf321a84bb5dbc8a11e27a26d99f0ffd"
     }
   },
   "reports": {

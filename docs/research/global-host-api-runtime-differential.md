@@ -24,6 +24,10 @@ Last updated: 2026-07-30
   QString，并触发“空 type 统计全部结果”的 wildcard；
 - Qt 5 query 会执行对象的自定义 `toString` 并传播异常；Qt 6 QObject 参数转换
   不执行该方法；
+- Qt 5 不提供 Proxy、BigInt 或 Symbol；Qt 6.4.2 提供 Proxy 和 Symbol、仍不
+  提供 BigInt，两个可用类型都能转换并命中预置结果；
+- self-referential plain object 两侧都能转换；self-referential array 在 Qt 5
+  转为空串并触发 wildcard，在 Qt 6 QString 参数转换中以 signal 11 崩溃；
 - Qt 6 对额外 query 实参执行调用但向 stderr 发出精确 warning，Qt 5 静默忽略；
 - include 内部 parse/runtime error 两侧都发出 `errorMessage`；Qt 5 还把嵌套
   engine exception 传播为外层 `includeScript(...)` error，Qt 6 外层仍返回
@@ -60,12 +64,13 @@ harness 替换固定 CLI 的 `main_console.cpp.o`，其余编译对象和 link c
 | --- | --- | --- |
 | Runtime | Qt Script 5.15.13 | QJSEngine 6.4.2 |
 | Base oracle | `upstream-oracle-cmake:74eaf505` | `upstream-oracle-cmake-qt6:74eaf505` |
-| Harness image ID | `sha256:261165a67ce80a4a72272d1c8898ba57e4a1f688cc7200c825fdbdf6f682a6fc` | `sha256:2f2e2fcc7e42f67d83a52254dd06846d99a40e445b5b6b1f86672744de966d2b` |
-| Harness binary SHA-256 | `5f93b3418a9a644dde6945efd19c371e9fd6e0407ebea6b5cf11084649be706e` | `1864da96f327737e96ba7f25f2eafd9225b5e1701099baf478c96be5fb71257e` |
+| Harness image ID | `sha256:05995575f18600609573da78721fd20bd871b0130d8484e7d3c36324feb92946` | `sha256:d89d17b0ce4543d34d17a880ac217e6ad754470f1228b1938c7d934f98aa0a2d` |
+| Harness binary SHA-256 | `80459d27e3e340228be461bceb2670f275ec3cee0b18efb25aed1bc3a22c822c` | `af620c9863ae820ff25cc7d51fc084b7b60c47e2f23e4ca7979b76c758c10b3f` |
 | OCI revision | `74eaf505...2254` | `74eaf505...2254` |
 
-本轮共享 harness schema v3 新增 include error 与 PDSTRUCT info matrix，并重建
-两侧镜像；因此 image、binary 和 report identity 都相对 schema v2 改变。它是
+本轮共享 harness schema v4 新增对象图、runtime type、2^53 邻域与 UTF-16
+matrix，并把五个可能崩溃的 case 隔离到子进程；因此 image、binary 和 report
+identity 都相对 schema v3 改变。它是
 project-generated 研究入口的变化，不是上游对象变化。
 
 ## 复现与机器报告
@@ -90,17 +95,19 @@ python tools/upstream/compare_global_host_api_reports.py
 
 | Report | SHA-256 |
 | --- | --- |
-| [`global-host-api-qt5.json`](data/global-host-api-qt5.json) | `bd1071fa5d849c03826b872dd99302a6b433d500e2ad1b45a6793c320f1744e6` |
-| [`global-host-api-qt6.json`](data/global-host-api-qt6.json) | `8f9b5af2e51c9650b915a05a5b9fa80f00bee396388ef8453025befa1f37e4df` |
-| [`global-host-api-qt5-qt6.json`](data/global-host-api-qt5-qt6.json) | `d71f50357d119b09188e15d3eae821ce4519cb648575e66f1ddb4c7a367ac55e` |
+| [`global-host-api-qt5.json`](data/global-host-api-qt5.json) | `5b7c268b83cd7c94929eca335265785f7a8fcd9939aa7ec6c14146b01e4b51ac` |
+| [`global-host-api-qt6.json`](data/global-host-api-qt6.json) | `ea66d3b9df04a70281245b9dff04c4afcf321a84bb5dbc8a11e27a26d99f0ffd` |
+| [`global-host-api-qt5-qt6.json`](data/global-host-api-qt5-qt6.json) | `8f19feab55d14028759021a7e0259f79f155fd7c658698844391e4f69c863dae` |
 
 probe 在写报告前严格验证全部预期行为、非零退出、额外 stdout、身份漂移和
-非预期 JavaScript error。schema v3 把 stdout/stderr 原始字节以 Base64、长度和
+非预期 JavaScript error。schema v4 把父进程及五个隔离子进程的 stdout/stderr
+原始字节以 Base64、长度和
 SHA-256 保存并从中重放 observation；Qt 5 stderr 必须为空，Qt 6 stderr 必须
 逐字节等于两个 extra-argument warning。比较器再次重放两份输入，随后递归比较
 原始 observation，保留 missing key、类型和值的差异。
 
-报告有 77 个原始字段差异。这个数字不是 77 项独立语义：一个 error object 会
+两次完整重采集得到逐文件相同 SHA-256。报告有 94 个原始字段差异。这个数字
+不是 94 项独立语义：一个 error object 或 raw child stream 会
 引入 name/message/line/stack/type 等多个字段，必须按下列行为组解释。
 
 ## Global surface
@@ -144,7 +151,7 @@ string: Error: Insufficient arguments
 
 stack 分别指向对应 fixture 文件的第一行。error 作为 `QJSValue` 返回给 harness；
 进程仍 exit 0，stdout 是单个 JSON document；这四个调用本身不产生 warning，
-但同一 schema v3 进程的 extra-argument cases 会产生后述 stderr。Qt 5 static wrapper
+但同一 schema v4 进程的 extra-argument cases 会产生后述 stderr。Qt 5 static wrapper
 直接读取不存在的 `QScriptContext::argument(i)` 并调用 `toString()`，所以得到
 `"undefined"`；Qt 6 QObject wrapper 在进入 slot 前执行 arity 检查。
 
@@ -153,7 +160,8 @@ Qt 6 而不是当前 primary Qt 5 profile。
 
 ## Query 参数转换边界
 
-共享 fixture 预置 9 条结果，再运行 16 个 query case。两侧共同观察到：
+共享 fixture 预置 17 条结果，再运行 30 个进程内 query case，并另以五个子进程
+隔离复杂对象/类型 case。两侧共同观察到：
 
 - `["compiler"]`、`["Rust"]` 和 `["compiler","linker"]` 分别字符串化为
   `"compiler"`、`"Rust"` 和 `"compiler,linker"`；
@@ -164,6 +172,11 @@ Qt 6 而不是当前 primary Qt 5 profile。
   `"9007199254740992"`；
 - 孤立 high surrogate `U+D800` 能在 `_setResult` 后被同值 query 命中；
   QJsonDocument 原样输出 `\ud800`，报告因此使用 ASCII JSON escape；
+- `2^53-1`、`2^53`、源码字面量 `2^53+1`、`2^53+2` 及三个对应负值都按
+  ECMAScript Number 字符串化命中；`2^53+1` 因 binary64 舍入命中
+  `"9007199254740992"`；
+- lone low、double high、double low、low-high 逆序和合法 high-low pair 都能
+  原样加入并由同一 JavaScript 字符串命中；合法 pair 在 JSON 解码后为 U+10000；
 - 额外实参不改变返回值。
 
 三项 runtime 差异不能被统一 normalizer 隐藏：
@@ -174,6 +187,22 @@ Qt 6 而不是当前 primary Qt 5 profile。
 | `_getNumberOfResults(null)` | 以 `"null"` 查询，返回 0 | 转为空 QString，wildcard 返回 9 |
 | throwing `toString` object | 执行方法并传播 `Error: conversion-boom` | 不执行方法，空查询结果返回 0 |
 | 两个 extra-argument query | 静默忽略 | 返回值不变，stderr 各发一条 warning |
+
+对象图与 runtime type 的隔离结果：
+
+| Case | Qt 5 | Qt 6 |
+| --- | --- | --- |
+| `typeof Proxy / BigInt / Symbol` | 全部 `undefined` | `function / undefined / function` |
+| cyclic plain object | `"[object Object]"`，命中 1 | 相同 |
+| cyclic array | 转为空串，wildcard 命中 1 | signal 11；exit status crash；stdout/stderr 均空 |
+| custom Proxy `toString` | runtime 不支持，sentinel -1 | 转为 `"proxy-type"`，命中 1 |
+| `BigInt(1)` | runtime 不支持，sentinel -1 | runtime 不支持，sentinel -1 |
+| `Symbol("probe")` | runtime 不支持，sentinel -1 | 转为 `"Symbol(probe)"`，命中 1 |
+
+cyclic array 不是 harness 自身整体崩溃：父进程通过 `QProcess` 每案启动同一固定
+binary，保存 child exit code/status、process error enum 和 raw streams；Qt 5
+五案及 Qt 6 其余四案均 exit 0，只有 Qt 6 cyclic array 为 crash/11。两次完整
+报告哈希相同，排除了偶然采集差异。
 
 Qt 6 的 stderr 共 176 bytes，精确包含 fixture URL、行号和
 `Too many arguments, ignoring 1`。Rust primary Qt 5 profile 不得产生这些
@@ -243,6 +272,10 @@ Qt 6 image 构建日期不同。该 raw 差异由 binary/image identity 保存�
   extra-argument cases 的非空 stderr；不能把整个进程概括为“空 stderr”。
 - query conversion 必须保留数组/对象的 runtime-specific coercion、throwing
   `toString`、空 type wildcard、孤立 surrogate 和 extra-argument diagnostics。
+- 不可信规则值必须在 Rust 边界防止 cyclic graph 导致 native stack overflow；
+  兼容 oracle 会保留 Qt 6 crash 事实，但安全实现不得照搬崩溃。
+- Proxy/Symbol/BigInt availability 与转换必须按 runtime profile 显式声明；
+  “引擎支持该语法”不等于 QObject/HostApi 转换语义一致。
 - include parse/runtime error 必须分别比较 signal、外层 evaluation、已执行
   side effect 和未执行 tail；Qt 5 与 Qt 6 不可共用同一个错误传播约定。
 - `_log` 必须同时测试 signal 和 `PDSTRUCT.sInfoString`，不能把它实现为纯日志；
@@ -255,8 +288,8 @@ Qt 6 image 构建日期不同。该 raw 差异由 binary/image identity 保存�
 
 ## 尚未覆盖
 
-- 更复杂的 cyclic/proxy 对象、BigInt/Symbol、多个 invalid UTF-16 code unit、
-  2^53 邻域和 qint32/qint64 typed return 边界；
+- 更复杂的 proxy trap/error/revocation、嵌套 cyclic graph，以及 qint32/qint64
+  typed return 边界；
 - `PDSTRUCT.sInfoString` 在真实后续 scan consumer/callback 中的读取时机；
 - library=true 的可达宿主条件；
 - Qt 6 其他 minor、Windows 和 macOS；

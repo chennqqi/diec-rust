@@ -106,8 +106,8 @@ class GlobalHostApiProbeTests(unittest.TestCase):
         conversions = self.qt6_observation["query_conversions"][
             "evaluations"
         ]
-        self.assertEqual(conversions["undefined_count"]["number"], 9)
-        self.assertEqual(conversions["null_count"]["number"], 9)
+        self.assertEqual(conversions["undefined_count"]["number"], 17)
+        self.assertEqual(conversions["null_count"]["number"], 17)
         self.assertEqual(
             conversions["throwing_object_count"]["number"],
             0,
@@ -122,7 +122,57 @@ class GlobalHostApiProbeTests(unittest.TestCase):
         throwing = evaluations["throwing_object_count"]
         self.assertTrue(throwing["is_error"])
         self.assertEqual(throwing["error_message"], "conversion-boom")
-        self.assertEqual(conversions["final_records"][-1]["type"], "\ud800")
+        self.assertEqual(
+            [
+                record["type"]
+                for record in conversions["final_records"][-6:]
+            ],
+            [
+                "\ud800",
+                "\udc00",
+                "\ud800\ud800",
+                "\udc00\udc00",
+                "\udc00\ud800",
+                "\U00010000",
+            ],
+        )
+
+    def test_isolated_query_conversions_preserve_qt6_crash(self):
+        qt5 = self.observation["isolated_query_conversions"]
+        qt6 = self.qt6_observation["isolated_query_conversions"]
+        self.assertEqual(
+            qt5["cyclic_array_count"]["observation"]["evaluation"]["number"],
+            1,
+        )
+        qt6_cycle = qt6["cyclic_array_count"]
+        self.assertEqual(qt6_cycle["exit_status"], "crash")
+        self.assertEqual(qt6_cycle["exit_code"], 11)
+        self.assertEqual(qt6_cycle["process_error_code"], 1)
+        self.assertNotIn("observation", qt6_cycle)
+        self.assertEqual(qt6_cycle["stdout"]["bytes"], 0)
+        self.assertEqual(
+            qt5["proxy_object_count"]["observation"]["evaluation"]["number"],
+            -1,
+        )
+        self.assertEqual(
+            qt6["proxy_object_count"]["observation"]["evaluation"]["number"],
+            1,
+        )
+        self.assertEqual(
+            qt5["symbol_count"]["observation"]["evaluation"]["number"],
+            -1,
+        )
+        self.assertEqual(
+            qt6["symbol_count"]["observation"]["evaluation"]["number"],
+            1,
+        )
+        for observations in (qt5, qt6):
+            self.assertEqual(
+                observations["bigint_count"]["observation"]["evaluation"][
+                    "number"
+                ],
+                -1,
+            )
 
     def test_include_errors_and_pdstruct_side_effects_are_preserved(self):
         qt5_include = self.observation["include"]
@@ -176,6 +226,27 @@ class GlobalHostApiProbeTests(unittest.TestCase):
         changed["stdout"]["sha256"] = "0" * 64
         with self.assertRaisesRegex(ValueError, "stdout stream identity"):
             MODULE.validate_streams(changed, self.observation, "qt5")
+
+    def test_isolated_query_stream_and_crash_drift_are_rejected(self):
+        changed = json.loads(json.dumps(self.observation))
+        changed["isolated_query_conversions"]["proxy_object_count"][
+            "stdout"
+        ]["sha256"] = "0" * 64
+        with self.assertRaisesRegex(
+            ValueError,
+            "proxy_object_count stdout byte identity",
+        ):
+            MODULE.validate_observation(changed, "qt5")
+
+        changed = json.loads(json.dumps(self.qt6_observation))
+        changed["isolated_query_conversions"]["cyclic_array_count"][
+            "exit_code"
+        ] = 0
+        with self.assertRaisesRegex(
+            ValueError,
+            "cyclic array crash behavior",
+        ):
+            MODULE.validate_observation(changed, "qt6")
 
     def test_qt6_unexpected_error_is_rejected(self):
         changed = json.loads(json.dumps(self.qt6_observation))

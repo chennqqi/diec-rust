@@ -147,9 +147,10 @@ Qt 6 机器基线和逐字段差分分别见
 signal 相同但外层传播不同。
 完整实验身份、差分解释与限制见
 [`global-host-api-runtime-differential.md`](global-host-api-runtime-differential.md)。
-schema v3 又补齐 16 个 query conversion case、include parse/runtime error 和
-`PDSTRUCT.sInfoString` 副作用，并把 raw stdout/stderr 以 Base64、长度和
-SHA-256 保存后重放。
+schema v4 又补齐 30 个进程内 query conversion case、五个隔离
+cyclic/proxy/BigInt/Symbol case、include parse/runtime error 和
+`PDSTRUCT.sInfoString` 副作用，并把父/子进程 raw stdout/stderr 以 Base64、
+长度和 SHA-256 保存后重放。
 
 复现：
 
@@ -174,9 +175,13 @@ python tools/upstream/probe_global_host_api.py
 - `_encodingList()` 返回 boolean false，同时按固定顺序发出 104 条消息；首项为空
   字符串、末项为 `TIS-620`，NUL 分隔 UTF-8 列表 SHA-256 为
   `4ca2afaa9d6924630d5329ad327d6651deb705e8bc4ecc9b46fecaf030474d02`。
-- 数组、普通/自定义对象、NaN、±Infinity、-0、2^53、孤立 high surrogate 和
-  额外实参 query 已有两侧 runtime 观察；Qt 5/Qt 6 在显式 undefined/null、
-  throwing `toString` 和 extra-argument stderr 上不同。
+- 数组、普通/自定义/cyclic/proxy 对象、NaN、±Infinity、-0、2^53 邻域、
+  六类 UTF-16 序列、BigInt/Symbol availability 和额外实参 query 已有两侧
+  runtime 观察；Qt 5/Qt 6 在显式 undefined/null、throwing `toString`、
+  Proxy/Symbol availability、cyclic array crash 和 extra-argument stderr
+  上不同；
+- Qt 6 cyclic array 转换以 signal 11 崩溃，隔离 child stdout/stderr 为空；
+  Rust 安全边界不得把这一上游事实实现成自身崩溃。
 
 ### 6.2 结果列表语义
 
@@ -230,8 +235,8 @@ python tools/upstream/probe_global_host_api.py
 
 ## 8. 尚未完成
 
-- Qt 5 仍缺 `_isResultPresent`/`_getNumberOfResults` 的 cyclic/proxy 对象、
-  BigInt/Symbol、多个 invalid UTF-16 code unit 和 2^53 邻域；
+- `_isResultPresent`/`_getNumberOfResults` 仍缺更复杂的 proxy
+  trap/error/revocation、嵌套 cyclic graph 和 typed qint32/qint64 return 边界；
 - `PDSTRUCT.sInfoString` 在真实后续 scan consumer/callback 中的读取时机，以及
   library=true 可达条件；
 - 两个拼写错误分支的 Qt 6/Windows/macOS 对照、不带 `--messages` 行为及
