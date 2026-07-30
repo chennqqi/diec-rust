@@ -1,6 +1,6 @@
 {
   "die_script_commit": "5d82316c110abf0eb863b50bc679d330e05067b6",
-  "difference_count": 49,
+  "difference_count": 59,
   "differences": [
     {
       "kind": "missing_right",
@@ -287,6 +287,64 @@
     },
     {
       "kind": "value",
+      "left": 0,
+      "path": "$.query_conversions.evaluations.null_count.number",
+      "right": 9
+    },
+    {
+      "kind": "missing_right",
+      "left": [
+        "<anonymous>() at query-conversion-throwing_object_count.js:1",
+        "<native>(Error: conversion-boom) at -1",
+        "<global>() at query-conversion-throwing_object_count.js:1"
+      ],
+      "path": "$.query_conversions.evaluations.throwing_object_count.backtrace"
+    },
+    {
+      "kind": "missing_right",
+      "left": 1,
+      "path": "$.query_conversions.evaluations.throwing_object_count.error_line"
+    },
+    {
+      "kind": "missing_right",
+      "left": "conversion-boom",
+      "path": "$.query_conversions.evaluations.throwing_object_count.error_message"
+    },
+    {
+      "kind": "missing_right",
+      "left": "Error",
+      "path": "$.query_conversions.evaluations.throwing_object_count.error_name"
+    },
+    {
+      "kind": "value",
+      "left": true,
+      "path": "$.query_conversions.evaluations.throwing_object_count.is_error",
+      "right": false
+    },
+    {
+      "kind": "value",
+      "left": false,
+      "path": "$.query_conversions.evaluations.throwing_object_count.is_number",
+      "right": true
+    },
+    {
+      "kind": "missing_left",
+      "path": "$.query_conversions.evaluations.throwing_object_count.number",
+      "right": 0
+    },
+    {
+      "kind": "missing_right",
+      "left": "Error: conversion-boom",
+      "path": "$.query_conversions.evaluations.throwing_object_count.string"
+    },
+    {
+      "kind": "value",
+      "left": 0,
+      "path": "$.query_conversions.evaluations.undefined_count.number",
+      "right": 9
+    },
+    {
+      "kind": "value",
       "left": true,
       "path": "$.surface.methods._getQtVersion.length.is_null",
       "right": false
@@ -315,36 +373,36 @@
     "qt5": {
       "binary": {
         "path": "/opt/die-build/src/console/diec-global-host-api-harness",
-        "sha256": "b7ca1e67ba929670e7c288c5e4ed2ebd7f43d99dbcb5fbbce828501eaa40a432"
+        "sha256": "2889fc8268db0379594098d9866245b082e070909ea5f470c89d6f71153980c9"
       },
       "image": {
-        "id": "sha256:c9f9360714fbb4fc50bcb9a28d4e97253002ebf2e96fc94c479c1784c5032a11",
+        "id": "sha256:0511795cffb9bde645e4c904c074697aba0e6f28b338f266f5e06ef67cefb88b",
         "name": "diec-rust/upstream-global-host-api-harness:74eaf505",
         "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
       },
       "path": "docs/research/data/global-host-api-qt5.json",
-      "sha256": "99c4085d6f267ff95e3743c0b0be91a577e4bab4e5ebfdd4ee29910f9b43f81b"
+      "sha256": "034e9cb78391d78c5607411b11ebdfefd46afe6e204e076b9f9279b9512a719e"
     },
     "qt6": {
       "binary": {
         "path": "/opt/die-build/src/console/diec-global-host-api-harness",
-        "sha256": "036799bef3dd38cb222f0f09e5e3b123fa5442da03262782f42a307a3a84bde0"
+        "sha256": "a8c67f717a90ee9514add6920e4d6aace087367df894d1c82cf93dd300c8eb45"
       },
       "image": {
-        "id": "sha256:96954960b811a109967862640201fdde268a026d332b3e3034c99facf1eca0b3",
+        "id": "sha256:1d4b39017c54ea2a51c495d4e05f06b77f821573c1763ebf0e8a838fc783419f",
         "name": "diec-rust/upstream-global-host-api-harness-qt6:74eaf505",
         "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
       },
       "path": "docs/research/data/global-host-api-qt6.json",
-      "sha256": "572b3a19d5260673c612accbf8cfe2bdd3bee76c55e3a1846a3ceac22e823a17"
+      "sha256": "711c2615c5e5c45b32a4656239f69b5384d2c96decc669e932595aa0ca1810ed"
     }
   },
   "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
-  "schema_version": 1,
+  "schema_version": 2,
   "source": {
-    "bytes": 5968,
+    "bytes": 6077,
     "path": "tools/upstream/compare_global_host_api_reports.py",
-    "sha256": "367c39026786e70bc1b7cfb0c01eb2b30722f7d0b5947c92f0ebde4f8794503a"
+    "sha256": "e2ec8ba1b93c63e0f35627bc5dc44b012831f08f961c3a494d02ce40ff95cc9e"
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
 }

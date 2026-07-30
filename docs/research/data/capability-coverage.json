@@ -78,7 +78,7 @@
       ],
       "closure": {
         "path": "docs/research/data/qt6-capability-closure-plan.json",
-        "sha256": "86dcac38ebe3a55f25722bc85e5524c6140a75544941afc9e25c4162064b340b"
+        "sha256": "6afe998499c81846fdfe91e2e3822c69a0ef68aa250bc4c0c0429728a32f0549"
       },
       "id": "CAP-GAP-007",
       "kind": "closed",
@@ -1465,7 +1465,7 @@
   "schema_version": 1,
   "sources": {
     "docs/research/data/capability-traceability.json": "e1bb982feb52fb97e6678319c629cf71735650fe4239c8558a0f765c16c8cff3",
-    "docs/research/data/qt6-capability-closure-plan.json": "86dcac38ebe3a55f25722bc85e5524c6140a75544941afc9e25c4162064b340b",
+    "docs/research/data/qt6-capability-closure-plan.json": "6afe998499c81846fdfe91e2e3822c69a0ef68aa250bc4c0c0429728a32f0549",
     "docs/research/data/windows-capability-closure-plan.json": "fc3abd694ab1644999d0bfe39ab1eed79c22fe5f944a20f739ba9c56768e84dd"
   },
   "status_definitions": {

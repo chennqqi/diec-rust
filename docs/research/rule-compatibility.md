@@ -470,7 +470,9 @@ global。`_getEngineVersion` 还把编译日期写入可观察结果。
   fixture；四个静态未解释形状及代表性 Binary/PE 边界已完成两侧对照。
 - Qt 5 与 Qt 6 的 conformance oracle。
 - include 同名、重复、循环和异常实验。
-- native global 主行为已完成 Qt 5/Qt 6 对照，仍缺两侧数组、对象、数值等边界；
+- native global 主行为及首轮数组/对象/数值/UTF-16/额外实参 query conversion
+  已完成 Qt 5/Qt 6 对照；仍缺 cyclic/proxy、BigInt/Symbol、多个 invalid
+  UTF-16 code unit、2^53 邻域和 include/PDSTRUCT 边界；
   两个拼写错误分支仍缺
   Qt 6/Windows/macOS、不带 `--messages` 和多错误/后续规则传播。
 - ZIP database 的合法/截断/重复/`..`/根前缀行为与发布 CLI cache-disabled

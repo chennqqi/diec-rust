@@ -328,7 +328,7 @@
     },
     "numeric_oracle": {
       "comparison_report": "docs/research/data/host-api-arity-qt5-qt6.json",
-      "comparison_report_sha256": "96d0b0023dd08ec1e45bc0c1059cf5801837496e09143acff6ffa0120328fa73",
+      "comparison_report_sha256": "66c501d3f2ccb87c599d72fa533d6fed16aaeba8ae00fea12080b9b89e75c25f",
       "qt5_report": "docs/research/data/host-api-arity-qt5.json",
       "qt5_report_sha256": "ba26cf199228aa4a4e109f897776fd4787ba88e6f468e341e12cfce3a7409f53",
       "qt6_report": "docs/research/data/host-api-arity-qt6.json",

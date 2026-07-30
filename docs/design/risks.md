@@ -194,7 +194,12 @@ baseline 的变更都要检查本表。
   仍未验证。共享 Qt 5/Qt 6 global harness 已确认 Qt 5 缺参 `"undefined"`
   转换与 Qt 6 `Insufficient arguments` 严格错误不同；null 字符串化和
   `_encodingList` 也不同，而重复结果、单项删除/block、数组字符串化、双 stop
-  状态和重复 include 相同。受限 Qt5 CLI fixture 又证明 self/two-node include
+  状态和重复 include 相同。schema v2 的 16-case query conversion 又固定
+  数组、普通/自定义/抛异常对象、NaN/±Infinity/-0、2^53、孤立 surrogate 和
+  extra arguments：显式 undefined/null 在 Qt 5 返回 0、Qt 6 因空 type wildcard
+  返回 9；throwing `toString` 只在 Qt 5 执行并传播；Qt 6 额外保留 176-byte
+  stderr warning。两侧 raw stdout/stderr 均可 hash-bound 重放。受限 Qt5 CLI
+  fixture 又证明 self/two-node include
   cycle 依赖 VM 栈上限，产生 28 条 signal 和一条 init error 后继续规则；
   ADR 0010 提议静态图与 active stack 提前拒绝该循环。固定 QuickJS-NG fixture
   已用 128 KiB stack limit 使无界 JavaScript 递归产生明确异常，并在同一
@@ -203,7 +208,8 @@ baseline 的变更都要检查本表。
   trampoline 内捕获、在 Rust eval 边界恢复原 payload；调用方捕获后同一 context
   继续返回 `"42"`。4 MiB heap limit 拒绝 16 MiB 分配后同一 context 也已恢复
   `"42"`。这些结果不覆盖正式 HostApi adapter 或 native crash/abort。完整
-  format HostApi 矩阵、更多参数/转换边界和逐规则 execution 仍是开放风险。
+  format HostApi 矩阵、cyclic/proxy/BigInt/Symbol 等转换边界和逐规则 execution
+  仍是开放风险。
 - **缓解**：保持 `RuleRuntime`/`HostApi` port；建立全规则 inventory、最小失败
   fixture、host call trace；基于证据选 runtime，禁止静默转换规则。
 - **验证**：固定规则 100% discovered/parsed/loaded，zero silent unsupported；

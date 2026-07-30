@@ -66,6 +66,40 @@ EXPECTED_PATHS = {
     "$.modes.engine_version.string",
     "$.modes.qt_version",
     "$.qt_version",
+    "$.query_conversions.evaluations.null_count.number",
+    (
+        "$.query_conversions.evaluations."
+        "throwing_object_count.backtrace"
+    ),
+    (
+        "$.query_conversions.evaluations."
+        "throwing_object_count.error_line"
+    ),
+    (
+        "$.query_conversions.evaluations."
+        "throwing_object_count.error_message"
+    ),
+    (
+        "$.query_conversions.evaluations."
+        "throwing_object_count.error_name"
+    ),
+    (
+        "$.query_conversions.evaluations."
+        "throwing_object_count.is_error"
+    ),
+    (
+        "$.query_conversions.evaluations."
+        "throwing_object_count.is_number"
+    ),
+    (
+        "$.query_conversions.evaluations."
+        "throwing_object_count.number"
+    ),
+    (
+        "$.query_conversions.evaluations."
+        "throwing_object_count.string"
+    ),
+    "$.query_conversions.evaluations.undefined_count.number",
     "$.surface.methods._getQtVersion.length.is_null",
     "$.surface.methods._getQtVersion.length.is_number",
     "$.surface.methods._getQtVersion.length.number",
@@ -113,7 +147,7 @@ class CompareGlobalHostApiReportsTests(unittest.TestCase):
         )
         report = json.loads(path.read_text(encoding="utf-8"))
         self.assertFalse(report["equal"])
-        self.assertEqual(report["difference_count"], 49)
+        self.assertEqual(report["difference_count"], 59)
         self.assertEqual(
             {item["path"] for item in report["differences"]},
             EXPECTED_PATHS,

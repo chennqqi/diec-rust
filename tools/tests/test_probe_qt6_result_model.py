@@ -85,7 +85,9 @@ class ProbeQt6ResultModelTest(unittest.TestCase):
 
     def test_all_qt5_differences_are_explicitly_classified(self):
         expected_paths = {
-            "metadata": {"cases/0/nScanTime"},
+            "metadata": {
+                f"cases/{index}/nScanTime" for index in range(4)
+            },
             "lists": {"cases/1/errors/1/message"},
             "ids": {
                 "records/0/id/uuid",
@@ -121,7 +123,7 @@ class ProbeQt6ResultModelTest(unittest.TestCase):
             self.report["capability_scope"],
         )
         comparison = self.report["record_metadata_comparison"]
-        self.assertEqual(comparison["common_record_count"], 20)
+        self.assertEqual(comparison["common_record_count"], 30)
         self.assertTrue(all(comparison["facts"].values()))
         self.assertEqual(
             comparison["qt5_only_record_paths"],
@@ -139,6 +141,17 @@ class ProbeQt6ResultModelTest(unittest.TestCase):
                 expected_hash,
                 hashlib.sha256((ROOT / relative_path).read_bytes()).hexdigest(),
             )
+
+    def test_research_document_binds_current_report_and_images(self):
+        document = (
+            ROOT / "docs/research/qt6-result-model-runtime-evidence.md"
+        ).read_text(encoding="utf-8")
+        self.assertIn(
+            hashlib.sha256(REPORT_PATH.read_bytes()).hexdigest(),
+            document,
+        )
+        for image_id in IMAGE_IDS.values():
+            self.assertIn(image_id, document)
 
 
 if __name__ == "__main__":

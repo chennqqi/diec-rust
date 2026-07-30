@@ -334,6 +334,131 @@ QJsonObject missingArgumentObservations()
     };
 }
 
+QJsonObject queryConversionObservations()
+{
+    EngineFixture fixture;
+    evaluate(
+        fixture.engine,
+        "_setResult('compiler','Rust','','')",
+        "query-conversion-seed-compiler.js"
+    );
+    evaluate(
+        fixture.engine,
+        "_setResult('compiler,linker','ArrayName','','')",
+        "query-conversion-seed-array.js"
+    );
+    evaluate(
+        fixture.engine,
+        "_setResult('[object Object]','PlainObject','','')",
+        "query-conversion-seed-plain-object.js"
+    );
+    evaluate(
+        fixture.engine,
+        "_setResult('custom-type','CustomObject','','')",
+        "query-conversion-seed-custom-object.js"
+    );
+    for (const QString &type : {
+             "NaN",
+             "Infinity",
+             "-Infinity",
+             "0",
+             "9007199254740992",
+         }) {
+        evaluate(
+            fixture.engine,
+            QString("_setResult('%1','Numeric','','')").arg(type),
+            QString("query-conversion-seed-%1.js").arg(type)
+        );
+    }
+
+    const QList<QPair<QString, QString>> probes = {
+        {
+            "undefined_count",
+            "_getNumberOfResults(undefined)",
+        },
+        {
+            "null_count",
+            "_getNumberOfResults(null)",
+        },
+        {
+            "array_single_present",
+            "_isResultPresent(['compiler'],['Rust'])",
+        },
+        {
+            "array_multiple_present",
+            "_isResultPresent(['compiler','linker'],'ArrayName')",
+        },
+        {
+            "array_count",
+            "_getNumberOfResults(['compiler'])",
+        },
+        {
+            "plain_object_count",
+            "_getNumberOfResults({})",
+        },
+        {
+            "custom_object_count",
+            "_getNumberOfResults({"
+            "toString:function(){return 'custom-type';}})",
+        },
+        {
+            "throwing_object_count",
+            "_getNumberOfResults({"
+            "toString:function(){throw new Error('conversion-boom');}})",
+        },
+        {
+            "nan_count",
+            "_getNumberOfResults(NaN)",
+        },
+        {
+            "positive_infinity_count",
+            "_getNumberOfResults(Infinity)",
+        },
+        {
+            "negative_infinity_count",
+            "_getNumberOfResults(-Infinity)",
+        },
+        {
+            "negative_zero_count",
+            "_getNumberOfResults(-0)",
+        },
+        {
+            "large_integer_count",
+            "_getNumberOfResults(9007199254740992)",
+        },
+        {
+            "invalid_utf16_count",
+            "(function(){var s=String.fromCharCode(0xD800);"
+            "_setResult(s,'Surrogate','','');"
+            "return _getNumberOfResults(s);})()",
+        },
+        {
+            "extra_present_arguments",
+            "_isResultPresent('compiler','Rust','ignored')",
+        },
+        {
+            "extra_count_arguments",
+            "_getNumberOfResults('compiler','ignored')",
+        },
+    };
+    QJsonObject evaluations;
+    for (const auto &probe : probes) {
+        evaluations.insert(
+            probe.first,
+            evaluate(
+                fixture.engine,
+                probe.second,
+                QString("query-conversion-%1.js").arg(probe.first)
+            )
+        );
+    }
+    return QJsonObject{
+        {"seed_record_count", 9},
+        {"evaluations", evaluations},
+        {"final_records", recordSnapshot(fixture.records)},
+    };
+}
+
 QJsonObject stopObservations()
 {
     EngineFixture fixture(true);
@@ -610,7 +735,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationVersion("9.9.9");
 
     QJsonObject output;
-    output.insert("schema_version", 1);
+    output.insert("schema_version", 2);
     output.insert("upstream_commit", UPSTREAM_COMMIT);
     output.insert("die_script_commit", DIE_SCRIPT_COMMIT);
     output.insert("rules_commit", RULES_COMMIT);
@@ -619,6 +744,7 @@ int main(int argc, char *argv[])
     output.insert("results", resultObservations());
     output.insert("array_removal", arrayRemovalObservations());
     output.insert("missing_arguments", missingArgumentObservations());
+    output.insert("query_conversions", queryConversionObservations());
     output.insert("stop", stopObservations());
     output.insert("include", includeObservations());
     output.insert("info", infoObservations());

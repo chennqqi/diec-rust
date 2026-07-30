@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import base64
 import hashlib
 import json
 import pathlib
@@ -41,6 +42,24 @@ QT6_ALLOWED_ERRORS = {
     "_isResultPresent()": "%entry@file:missing-is-present.js:1",
     "_getNumberOfResults()": "%entry@file:missing-count.js:1",
 }
+QT5_THROWING_CONVERSION_SOURCE = (
+    "_getNumberOfResults({toString:function(){"
+    "throw new Error('conversion-boom');}})"
+)
+QT5_THROWING_CONVERSION_BACKTRACE = [
+    (
+        "<anonymous>() at "
+        "query-conversion-throwing_object_count.js:1"
+    ),
+    "<native>(Error: conversion-boom) at -1",
+    "<global>() at query-conversion-throwing_object_count.js:1",
+]
+QT6_EXPECTED_STDERR = (
+    b"%entry@file:query-conversion-extra_present_arguments.js:1\n"
+    b"Too many arguments, ignoring 1\n"
+    b"%entry@file:query-conversion-extra_count_arguments.js:1\n"
+    b"Too many arguments, ignoring 1\n"
+)
 
 
 def sha256(data: bytes) -> str:
@@ -62,7 +81,7 @@ def validate_observation(
     if runtime not in {"qt5", "qt6"}:
         raise ValueError("unsupported runtime profile")
     identities = {
-        "schema_version": 1,
+        "schema_version": 2,
         "upstream_commit": UPSTREAM_COMMIT,
         "die_script_commit": DIE_SCRIPT_COMMIT,
         "rules_commit": RULES_COMMIT,
@@ -78,18 +97,37 @@ def validate_observation(
         if isinstance(value, dict):
             if value.get("is_error") is True:
                 source = value.get("source", "")
-                if runtime != "qt6" or source not in QT6_ALLOWED_ERRORS:
-                    raise ValueError("unexpected JavaScript error")
-                if (
-                    value.get("error_name") != "Error"
-                    or value.get("error_message") != "Insufficient arguments"
-                    or value.get("error_line") != 1
-                    or value.get("string")
-                    != "Error: Insufficient arguments"
-                    or value.get("backtrace")
-                    != [QT6_ALLOWED_ERRORS[source]]
+                if runtime == "qt6" and source in QT6_ALLOWED_ERRORS:
+                    if (
+                        value.get("error_name") != "Error"
+                        or value.get("error_message")
+                        != "Insufficient arguments"
+                        or value.get("error_line") != 1
+                        or value.get("string")
+                        != "Error: Insufficient arguments"
+                        or value.get("backtrace")
+                        != [QT6_ALLOWED_ERRORS[source]]
+                    ):
+                        raise ValueError(
+                            "unexpected Qt6 missing-argument error"
+                        )
+                elif (
+                    runtime == "qt5"
+                    and source == QT5_THROWING_CONVERSION_SOURCE
                 ):
-                    raise ValueError("unexpected Qt6 missing-argument error")
+                    if (
+                        value.get("error_name") != "Error"
+                        or value.get("error_message") != "conversion-boom"
+                        or value.get("error_line") != 1
+                        or value.get("string") != "Error: conversion-boom"
+                        or value.get("backtrace")
+                        != QT5_THROWING_CONVERSION_BACKTRACE
+                    ):
+                        raise ValueError(
+                            "unexpected Qt5 conversion error"
+                        )
+                else:
+                    raise ValueError("unexpected JavaScript error")
                 observed_errors[source] = value["error_message"]
             for child in value.values():
                 validate_errors(child)
@@ -99,7 +137,9 @@ def validate_observation(
 
     validate_errors(observation)
     expected_error_sources = (
-        set() if runtime == "qt5" else set(QT6_ALLOWED_ERRORS)
+        {QT5_THROWING_CONVERSION_SOURCE}
+        if runtime == "qt5"
+        else set(QT6_ALLOWED_ERRORS)
     )
     if set(observed_errors) != expected_error_sources:
         raise ValueError("missing expected JavaScript error")
@@ -171,6 +211,70 @@ def validate_observation(
         or not _evaluation(missing["count"])["is_error"]
     ):
         raise ValueError("Qt6 missing arguments did not fail atomically")
+
+    conversions = observation["query_conversions"]
+    if (
+        conversions["seed_record_count"] != 9
+        or len(conversions["final_records"]) != 10
+        or conversions["final_records"][-1]["name"] != "Surrogate"
+        or conversions["final_records"][-1]["type"] != "\ud800"
+    ):
+        raise ValueError("query conversion fixture drift")
+    evaluations = conversions["evaluations"]
+    expected_names = {
+        "undefined_count",
+        "null_count",
+        "array_single_present",
+        "array_multiple_present",
+        "array_count",
+        "plain_object_count",
+        "custom_object_count",
+        "throwing_object_count",
+        "nan_count",
+        "positive_infinity_count",
+        "negative_infinity_count",
+        "negative_zero_count",
+        "large_integer_count",
+        "invalid_utf16_count",
+        "extra_present_arguments",
+        "extra_count_arguments",
+    }
+    if set(evaluations) != expected_names:
+        raise ValueError("query conversion case inventory drift")
+    for name in (
+        "array_single_present",
+        "array_multiple_present",
+        "extra_present_arguments",
+    ):
+        if evaluations[name].get("boolean") is not True:
+            raise ValueError(f"query conversion boolean drift: {name}")
+    for name in (
+        "array_count",
+        "plain_object_count",
+        "custom_object_count",
+        "nan_count",
+        "positive_infinity_count",
+        "negative_infinity_count",
+        "negative_zero_count",
+        "large_integer_count",
+        "invalid_utf16_count",
+        "extra_count_arguments",
+    ):
+        if evaluations[name].get("number") != 1:
+            raise ValueError(f"query conversion count drift: {name}")
+    if runtime == "qt5":
+        if (
+            evaluations["undefined_count"].get("number") != 0
+            or evaluations["null_count"].get("number") != 0
+            or not evaluations["throwing_object_count"]["is_error"]
+        ):
+            raise ValueError("Qt5 query conversion behavior drift")
+    elif (
+        evaluations["undefined_count"].get("number") != 9
+        or evaluations["null_count"].get("number") != 9
+        or evaluations["throwing_object_count"].get("number") != 0
+    ):
+        raise ValueError("Qt6 query conversion behavior drift")
 
     stop = observation["stop"]
     if stop["compiler"]["records"]:
@@ -257,8 +361,9 @@ def parse_observation(
 ) -> dict[str, Any]:
     if returncode != 0:
         raise ValueError(f"harness exited with {returncode}")
-    if stderr:
-        raise ValueError("harness wrote stderr")
+    expected_stderr = b"" if runtime == "qt5" else QT6_EXPECTED_STDERR
+    if stderr != expected_stderr:
+        raise ValueError("harness stderr changed")
     try:
         text = stdout.decode("utf-8")
         observation, end = json.JSONDecoder().raw_decode(text)
@@ -268,6 +373,45 @@ def parse_observation(
         raise ValueError("harness emitted trailing stdout")
     validate_observation(observation, runtime)
     return observation
+
+
+def stream_record(data: bytes) -> dict[str, Any]:
+    return {
+        "bytes": len(data),
+        "sha256": sha256(data),
+        "base64": base64.b64encode(data).decode("ascii"),
+    }
+
+
+def validate_streams(
+    streams: dict[str, Any],
+    observation: dict[str, Any],
+    runtime: str,
+) -> None:
+    if set(streams) != {"exit_code", "stdout", "stderr"}:
+        raise ValueError("unexpected stream fields")
+    if streams["exit_code"] != 0:
+        raise ValueError("recorded harness exit changed")
+    decoded = {}
+    for name in ("stdout", "stderr"):
+        record = streams[name]
+        if set(record) != {"bytes", "sha256", "base64"}:
+            raise ValueError(f"unexpected {name} stream fields")
+        try:
+            data = base64.b64decode(record["base64"], validate=True)
+        except (TypeError, ValueError) as error:
+            raise ValueError(f"invalid {name} base64") from error
+        if len(data) != record["bytes"] or sha256(data) != record["sha256"]:
+            raise ValueError(f"{name} stream identity drift")
+        decoded[name] = data
+    replayed = parse_observation(
+        decoded["stdout"],
+        decoded["stderr"],
+        streams["exit_code"],
+        runtime,
+    )
+    if replayed != observation:
+        raise ValueError("raw stdout does not match observation")
 
 
 def inspect_image(image: str) -> tuple[str, str]:
@@ -348,8 +492,14 @@ def build_report(
     ):
         data = (repo / relative).read_bytes()
         sources[relative] = {"bytes": len(data), "sha256": sha256(data)}
+    streams = {
+        "exit_code": process.returncode,
+        "stdout": stream_record(process.stdout),
+        "stderr": stream_record(process.stderr),
+    }
+    validate_streams(streams, observation, runtime)
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "generator": "tools/upstream/probe_global_host_api.py",
         "runtime_profile": runtime,
         "image": {
@@ -359,6 +509,7 @@ def build_report(
         },
         "binary": {"path": binary, "sha256": binary_sha256(image, binary)},
         "sources": sources,
+        "streams": streams,
         "observation": observation,
     }
 
@@ -376,7 +527,7 @@ def main() -> int:
     )
     report = build_report(repo, args.runtime, args.image, args.binary)
     output.write_text(
-        json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        json.dumps(report, ensure_ascii=True, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
         newline="\n",
     )

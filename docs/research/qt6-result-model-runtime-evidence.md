@@ -2,7 +2,7 @@
 
 Status: In Review
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`
-Last updated: 2026-07-28
+Last updated: 2026-07-30
 
 ## 结论
 
@@ -10,9 +10,9 @@ Last updated: 2026-07-28
 的 scalar、四类列表、flags、IDs、type/name enum 和 record metadata。
 所有原 Qt5 关系断言在 Qt6 上通过，所有进程 exit 0、stderr 为空。
 
-逐字段 Qt5/Qt6 比较只得到五处已分类差异：
+逐字段 Qt5/Qt6 比较只得到八处已分类差异：
 
-- metadata：一个 `nScanTime` 实测值，属于非确定性耗时；
+- metadata：四个 case 的 `nScanTime` 实测值，均属于非确定性耗时；
 - IDs：root UUID、child UUID 和 child parent UUID 三个随机值；shape、非空、
   唯一性及 parent 指向关系保持；
 - lists：parse-error 文本从 Qt5
@@ -23,7 +23,7 @@ Last updated: 2026-07-28
 比较器保留这些原始值，不删除字段。除上述路径外的全部 harness output、
 relationships 和 fixture identity 相同。
 
-`CAP-RESULT-006` 由两组已固定证据组合闭合：Qt5/Qt6 global HostApi 的 20 个
+`CAP-RESULT-006` 由两组已固定证据组合闭合：Qt5/Qt6 global HostApi 的 30 个
 共同正常 record 完全相同，覆盖非空 version/info 及 priority 30/70/90；
 engine-contract 覆盖 signature basename、absolute signature path 及 priority
 12/30/100。Qt5 缺参调用额外产生三个 `"undefined"` record、Qt6 不产生，
@@ -34,7 +34,7 @@ engine-contract 覆盖 signature basename、absolute signature path 及 priority
 机器报告：
 [`data/result-model-engine-qt6.json`](data/result-model-engine-qt6.json)，
 SHA-256
-`bb61f7c1bf25fa54c8f25047d9461b6184c08fe24a61fd512be423a84981ba6f`。
+`0a0f03b2f153b99b1e9a9c08866fa6697a147d4925347054ca467cc3623fc0f1`。
 
 | Profile | Qt6 image ID | Binary SHA-256 | Cases / records |
 | --- | --- | --- | ---: |

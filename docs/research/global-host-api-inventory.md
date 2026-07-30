@@ -6,7 +6,7 @@ Upstream: die_script@5d82316c110abf0eb863b50bc679d330e05067b6
 
 Rules: Detect-It-Easy@c2c17dfa5ea4e078ba31eab55d87430c96622fb6
 
-Last updated: 2026-07-26
+Last updated: 2026-07-30
 
 ## 1. 目的与边界
 
@@ -146,6 +146,8 @@ Qt 6 机器基线和逐字段差分分别见
 `_encodingList()` 因固定源码的 Qt 版本 guard 不发出消息；其余已测行为相同。
 完整实验身份、差分解释与限制见
 [`global-host-api-runtime-differential.md`](global-host-api-runtime-differential.md)。
+schema v2 又补齐 16 个 query conversion case，并把 raw stdout/stderr 以
+Base64、长度和 SHA-256 保存后重放。
 
 复现：
 
@@ -170,6 +172,9 @@ python tools/upstream/probe_global_host_api.py
 - `_encodingList()` 返回 boolean false，同时按固定顺序发出 104 条消息；首项为空
   字符串、末项为 `TIS-620`，NUL 分隔 UTF-8 列表 SHA-256 为
   `4ca2afaa9d6924630d5329ad327d6651deb705e8bc4ecc9b46fecaf030474d02`。
+- 数组、普通/自定义对象、NaN、±Infinity、-0、2^53、孤立 high surrogate 和
+  额外实参 query 已有两侧 runtime 观察；Qt 5/Qt 6 在显式 undefined/null、
+  throwing `toString` 和 extra-argument stderr 上不同。
 
 ### 6.2 结果列表语义
 
@@ -218,10 +223,10 @@ python tools/upstream/probe_global_host_api.py
 
 ## 8. 尚未完成
 
-- Qt 5 仍缺 `_isResultPresent`/`_getNumberOfResults` 更多数组、对象和异常转换，
-  include 语法错误、`_log` 的 PDSTRUCT 副作用及 library=true 可达条件；
-- Qt 5/Qt 6 native global 的 arrays/objects、数值/UTF-16 边界、额外实参、
-  include error 和 PDSTRUCT 后续可见性；
+- Qt 5 仍缺 `_isResultPresent`/`_getNumberOfResults` 的 cyclic/proxy 对象、
+  BigInt/Symbol、多个 invalid UTF-16 code unit 和 2^53 邻域；
+- Qt 5/Qt 6 native global 的 include error、`_log` PDSTRUCT 后续可见性及
+  library=true 可达条件；
 - 两个拼写错误分支的 Qt 6/Windows/macOS 对照、不带 `--messages` 行为及
   多错误/后续规则传播；
 - 55 个跨文件规则函数候选的逐调用 include 可达性证明；

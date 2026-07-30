@@ -101,13 +101,18 @@ def load_report(path: pathlib.Path, runtime: str) -> tuple[dict[str, Any], str]:
     data = path.read_bytes()
     report = json.loads(data)
     if (
-        report.get("schema_version") != 1
+        report.get("schema_version") != 2
         or report.get("generator")
         != "tools/upstream/probe_global_host_api.py"
         or report.get("runtime_profile") != runtime
     ):
         raise ValueError(f"unexpected {runtime} report identity")
     probe.validate_observation(report["observation"], runtime)
+    probe.validate_streams(
+        report["streams"],
+        report["observation"],
+        runtime,
+    )
     return report, sha256(data)
 
 
@@ -132,7 +137,7 @@ def build_report(
     source_path = repo / "tools/upstream/compare_global_host_api_reports.py"
     source = source_path.read_bytes()
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "generator": (
             "tools/upstream/compare_global_host_api_reports.py"
         ),

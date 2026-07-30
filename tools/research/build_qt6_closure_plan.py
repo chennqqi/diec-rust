@@ -2155,7 +2155,9 @@ def _validate_result_model_reports(
         "enums": "sha256:ea9e04d6ad279f7c058e58571ace05313c95ff3cb4e4c8a05d322d999810c434",
     }
     expected_paths = {
-        "metadata": {"cases/0/nScanTime"},
+        "metadata": {
+            f"cases/{index}/nScanTime" for index in range(4)
+        },
         "lists": {"cases/1/errors/1/message"},
         "ids": {
             "records/0/id/uuid",

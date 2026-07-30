@@ -1,3 +1,4 @@
+import hashlib
 import importlib.util
 import json
 import pathlib
@@ -26,6 +27,16 @@ class GlobalHostApiProbeTests(unittest.TestCase):
     def test_committed_observation_satisfies_oracle_contract(self):
         MODULE.validate_observation(self.observation)
         MODULE.validate_observation(self.qt6_observation, "qt6")
+        MODULE.validate_streams(
+            self.report["streams"],
+            self.observation,
+            "qt5",
+        )
+        MODULE.validate_streams(
+            self.qt6_report["streams"],
+            self.qt6_observation,
+            "qt6",
+        )
 
     def test_committed_source_identities_are_current(self):
         for report in (self.report, self.qt6_report):
@@ -33,6 +44,21 @@ class GlobalHostApiProbeTests(unittest.TestCase):
                 data = (ROOT / relative).read_bytes()
                 self.assertEqual(len(data), identity["bytes"])
                 self.assertEqual(MODULE.sha256(data), identity["sha256"])
+
+    def test_research_document_binds_report_and_artifact_identities(self):
+        document = (
+            ROOT / "docs/research/global-host-api-runtime-differential.md"
+        ).read_text(encoding="utf-8")
+        for name in (
+            "global-host-api-qt5.json",
+            "global-host-api-qt6.json",
+            "global-host-api-qt5-qt6.json",
+        ):
+            data = (ROOT / "docs/research/data" / name).read_bytes()
+            self.assertIn(hashlib.sha256(data).hexdigest(), document)
+        for report in (self.report, self.qt6_report):
+            self.assertIn(report["image"]["id"], document)
+            self.assertIn(report["binary"]["sha256"], document)
 
     def test_qt6_missing_arguments_are_exact_errors(self):
         expected = {
@@ -77,6 +103,32 @@ class GlobalHostApiProbeTests(unittest.TestCase):
         self.assertTrue(
             info["encoding_call"]["evaluation"]["is_undefined"]
         )
+        conversions = self.qt6_observation["query_conversions"][
+            "evaluations"
+        ]
+        self.assertEqual(conversions["undefined_count"]["number"], 9)
+        self.assertEqual(conversions["null_count"]["number"], 9)
+        self.assertEqual(
+            conversions["throwing_object_count"]["number"],
+            0,
+        )
+        self.assertEqual(self.qt6_report["streams"]["stderr"]["bytes"], 176)
+
+    def test_qt5_query_conversion_error_and_surrogate_are_preserved(self):
+        conversions = self.observation["query_conversions"]
+        evaluations = conversions["evaluations"]
+        self.assertEqual(evaluations["undefined_count"]["number"], 0)
+        self.assertEqual(evaluations["null_count"]["number"], 0)
+        throwing = evaluations["throwing_object_count"]
+        self.assertTrue(throwing["is_error"])
+        self.assertEqual(throwing["error_message"], "conversion-boom")
+        self.assertEqual(conversions["final_records"][-1]["type"], "\ud800")
+
+    def test_raw_stream_drift_is_rejected(self):
+        changed = json.loads(json.dumps(self.report["streams"]))
+        changed["stdout"]["sha256"] = "0" * 64
+        with self.assertRaisesRegex(ValueError, "stdout stream identity"):
+            MODULE.validate_streams(changed, self.observation, "qt5")
 
     def test_qt6_unexpected_error_is_rejected(self):
         changed = json.loads(json.dumps(self.qt6_observation))

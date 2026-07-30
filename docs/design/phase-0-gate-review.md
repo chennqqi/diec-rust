@@ -50,9 +50,10 @@ Accepted。
 
 ## 三项技术验证
 
-1. 规则 runtime：固定规则、生命周期、语法/HostApi inventory、资源限制和七类
-   专用规则差分已有证据；ADR 0006 的全量 HostApi、跨平台 static archive、
-   许可证和正式 backend 门禁尚未满足。
+1. 规则 runtime：固定规则、生命周期、语法/HostApi inventory、Qt5/Qt6 native
+   global query conversion raw 差分、资源限制和七类专用规则差分已有证据；
+   ADR 0006 的全量 HostApi、跨平台 static archive、许可证和正式 backend 门禁
+   尚未满足。
 2. C static link：Windows/Linux x64 的首轮 `.lib`/`.a`、C 调用、所有权、
    panic containment 和依赖证据已存在；它不是最终 C ABI 或三平台发布证明。
 3. upstream oracle：固定 SHA 的 Linux Qt5 qmake/CMake、Linux Qt6 与

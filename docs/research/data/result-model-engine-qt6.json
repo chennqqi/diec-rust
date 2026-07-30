@@ -31,17 +31,17 @@
         {
           "path": "records/0/id/uuid",
           "qt5": "bab1c300-218f-415d-bd93-92e433a4a512",
-          "qt6": "b769f772-c005-41e7-9ef2-9d4a9043c3fd"
+          "qt6": "719e4fc7-51e4-41cb-815d-0428e6fdc192"
         },
         {
           "path": "records/1/id/uuid",
           "qt5": "cf1bd0f7-5c04-4651-a748-bfb029e6a9b1",
-          "qt6": "2b3720f3-2c30-44c1-833c-21e7d75f30ab"
+          "qt6": "67aa280c-9315-4c6d-9447-163b181cf668"
         },
         {
           "path": "records/1/parent_id/uuid",
           "qt5": "bab1c300-218f-415d-bd93-92e433a4a512",
-          "qt6": "b769f772-c005-41e7-9ef2-9d4a9043c3fd"
+          "qt6": "719e4fc7-51e4-41cb-815d-0428e6fdc192"
         }
       ],
       "qt5_report": "docs/research/data/result-ids-engine-qt5.json",
@@ -69,6 +69,21 @@
         {
           "path": "cases/0/nScanTime",
           "qt5": 9,
+          "qt6": 24
+        },
+        {
+          "path": "cases/1/nScanTime",
+          "qt5": 0,
+          "qt6": 1
+        },
+        {
+          "path": "cases/2/nScanTime",
+          "qt5": 0,
+          "qt6": 1
+        },
+        {
+          "path": "cases/3/nScanTime",
+          "qt5": 0,
           "qt6": 1
         }
       ],
@@ -89,7 +104,7 @@
     "storage": "untracked external directory selected by --raw-dir"
   },
   "record_metadata_comparison": {
-    "common_record_count": 20,
+    "common_record_count": 30,
     "facts": {
       "common_hostapi_records_equal": true,
       "engine_rule_name_and_path_are_observed": true,
@@ -106,8 +121,8 @@
     "qt6_only_record_paths": [],
     "sources": {
       "docs/research/data/engine-contract-linux-qt6.json": "e2f11d0f8d4070fa3359af0237eca948e6c8a36962bbf8cba59d48f0fe7ac18e",
-      "docs/research/data/global-host-api-qt5.json": "99c4085d6f267ff95e3743c0b0be91a577e4bab4e5ebfdd4ee29910f9b43f81b",
-      "docs/research/data/global-host-api-qt6.json": "572b3a19d5260673c612accbf8cfe2bdd3bee76c55e3a1846a3ceac22e823a17"
+      "docs/research/data/global-host-api-qt5.json": "034e9cb78391d78c5607411b11ebdfefd46afe6e204e076b9f9279b9512a719e",
+      "docs/research/data/global-host-api-qt6.json": "711c2615c5e5c45b32a4656239f69b5384d2c96decc669e932595aa0ca1810ed"
     }
   },
   "reports": {
@@ -522,7 +537,7 @@
               "offset": 0,
               "original_name": "",
               "size": 1024,
-              "uuid": "b769f772-c005-41e7-9ef2-9d4a9043c3fd",
+              "uuid": "719e4fc7-51e4-41cb-815d-0428e6fdc192",
               "version": ""
             },
             "name": "Unknown",
@@ -551,7 +566,7 @@
               "offset": 608,
               "original_name": "",
               "size": 20,
-              "uuid": "2b3720f3-2c30-44c1-833c-21e7d75f30ab",
+              "uuid": "67aa280c-9315-4c6d-9447-163b181cf668",
               "version": ""
             },
             "name": "Unknown",
@@ -564,7 +579,7 @@
               "offset": 608,
               "original_name": "",
               "size": 20,
-              "uuid": "b769f772-c005-41e7-9ef2-9d4a9043c3fd",
+              "uuid": "719e4fc7-51e4-41cb-815d-0428e6fdc192",
               "version": ""
             },
             "type": "Unknown",
@@ -588,7 +603,7 @@
         "raw_stderr_bytes": 0,
         "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "raw_stdout_bytes": 2384,
-        "raw_stdout_sha256": "ccbd4952b0d68a67864f76da7d52cd9c950d4ced0a8739af5ec9025bdf2d13ba",
+        "raw_stdout_sha256": "32f58759a2d9de54078c4a2a9a2c7dc48d1ab10d488d378368b6b339d5241da2",
         "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
       },
       "platform": "linux-amd64-qt6",
@@ -783,7 +798,7 @@
             "ftInit": 9,
             "ftInit_string": "MSDOS",
             "id": "file",
-            "nScanTime": 1,
+            "nScanTime": 24,
             "nSize": 128,
             "record_count": 1,
             "sFileName": "/tmp/diec-result-metadata-input.exe",
@@ -794,7 +809,7 @@
             "ftInit": 9,
             "ftInit_string": "MSDOS",
             "id": "memory",
-            "nScanTime": 0,
+            "nScanTime": 1,
             "nSize": 128,
             "record_count": 1,
             "sFileName": "",
@@ -805,7 +820,7 @@
             "ftInit": 9,
             "ftInit_string": "MSDOS",
             "id": "device",
-            "nScanTime": 0,
+            "nScanTime": 1,
             "nSize": 128,
             "record_count": 1,
             "sFileName": "named-device.exe",
@@ -816,7 +831,7 @@
             "ftInit": 9,
             "ftInit_string": "MSDOS",
             "id": "subdevice",
-            "nScanTime": 0,
+            "nScanTime": 1,
             "nSize": 128,
             "record_count": 1,
             "sFileName": "",
@@ -840,8 +855,8 @@
         "image_id": "sha256:50a28ac93d422b86246be12da48e0c25ed71786cb8a069b32d436fcf44679cfa",
         "raw_stderr_bytes": 0,
         "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "raw_stdout_bytes": 1876,
-        "raw_stdout_sha256": "52153419b7c5b14bb034950ff485b62c167f264fd036bbc781ab5c02e72a5bbf",
+        "raw_stdout_bytes": 1877,
+        "raw_stdout_sha256": "1b7d9988bb201631162094b29296a30dd00af4f0f573eaa201c141831fe12634",
         "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
       },
       "platform": "linux-amd64-qt6",

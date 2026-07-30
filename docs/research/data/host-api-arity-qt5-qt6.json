@@ -284,8 +284,8 @@
   "schema_version": 1,
   "sources": {
     "tools/upstream/compare_global_host_api_reports.py": {
-      "bytes": 5968,
-      "sha256": "367c39026786e70bc1b7cfb0c01eb2b30722f7d0b5947c92f0ebde4f8794503a"
+      "bytes": 6077,
+      "sha256": "e2ec8ba1b93c63e0f35627bc5dc44b012831f08f961c3a494d02ce40ff95cc9e"
     },
     "tools/upstream/compare_host_api_arity_reports.py": {
       "bytes": 4382,
