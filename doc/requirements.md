@@ -11,5 +11,6 @@
 
 ## 2026-07-30: P0-BLOCK-004 许可证范围修正
 - Rust 从零重写，不复制/翻译/链接上游 C++ 源码，上游 GPL/UnRAR 等许可证不传染 Rust 二进制
-- P0-BLOCK-004 收窄为：规则资产分发许可 + Rust crate SBOM 方案
-- 更新 phase-0-review-preparation.md 和 phase-0-gate-review 反映修正后范围
+- 引擎与规则分离：diec-rust 是引擎，不包含 db* 规则（用户自行获取），不实现 YARA/PEiD/signatures（GUI 专属）
+- P0-BLOCK-004 剩余项仅为 Phase 1 常规工作：cargo deny/about 许可证清单 + NOTICE 文件
+- 更新 phase-0-review-preparation.md、phase-0-gate-review.md、phase-0-gate-review.json

@@ -53,10 +53,10 @@
 ### 2026-07-30: P0-BLOCK-004 许可证范围修正
 
 #### 背景
-用户确认：Rust 从零重写，不复制/翻译/链接上游 C++ 源码。上游 GPL/UnRAR/Brotli/Zstandard 许可证不传染 Rust 二进制。
+用户确认：(1) 引擎与规则分离，db* 规则由用户自行获取，引擎项目不包含规则；(2) YARA/PEiD/signatures 不进入 diec CLI（源码证据）；(3)(4) NOTICE/SBOM 按 Rust 标准做法（cargo deny/about），Phase 1 常规工作。
 
 #### 修正内容
-- P0-BLOCK-004 从"上游 C++ 许可证冲突"收窄为"规则资产分发许可 + Rust crate SBOM 方案"
-- 不再阻塞：XUCL GPL/MIT、RAR notice、Brotli/Zstandard 声明剥离、XArchive/XCapstone/XSIMD 编译闭包、Windows/macOS/Qt6 闭包
-- 仍需评审：db* 规则资产（2,268 文件、22 PNG）分发许可、YARA/PEiD/signatures 分发决策、NOTICE/SBOM 内容、Rust crate SBOM 方案
-- 更新 phase-0-review-preparation.md、phase-0-gate-review.md、phase-0-gate-review.json
+- 引擎不包含/不分发 db* 规则、YARA/PEiD/signatures 资产
+- 上游 C++ 许可证（GPL/UnRAR/Brotli/Zstandard）不传染 Rust 二进制
+- P0-BLOCK-004 剩余项仅为 Phase 1 常规工作：cargo deny/about + NOTICE
+- 建议将 P0-BLOCK-004 从 Open 降为 Review Ready

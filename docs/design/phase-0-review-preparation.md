@@ -14,16 +14,18 @@ Last updated: 2026-07-30
 
 ### 实现方式与许可证边界
 
-本项目用 Rust 从零重写上游功能，不复制、翻译或链接上游 C++ 源码。上游二进制
-仅作为固定 oracle 运行。因此：
+本项目用 Rust 从零重写上游 `diec` CLI 的扫描引擎，不复制、翻译或链接上游 C++
+源码。上游二进制仅作为固定 oracle 运行。因此：
 
 - **上游 C++ 组件许可证不传染 Rust 二进制**：XUCL (GPL)、UnRAR、Brotli、
   Zstandard 等组件的许可证约束仅适用于上游 C++ 编译产物，不影响独立重写的
   Rust 实现。
 - **Rust 三方 crate 各自带许可证**：选用 `bzip2`、`lzma`、`zstd`、`brotli` 等
   crate 时，按 crate 自身许可证评估，与 XArchive 剥离声明无关。
-- **上游 C++ 许可证审计仍有参考价值**：明确哪些组件不能直接复制代码，以及
-  上游发布物中存在哪些归属缺口。
+- **引擎与规则分离**：`diec-rust` 是扫描引擎，不包含检测规则。`db*` 规则文件
+  来自独立的 `Detect-It-Easy` 仓库，由用户自行获取。引擎加载外部规则数据，
+  不构成对规则代码的引用或衍生，引擎项目的许可证不约束规则文件。
+- **上游 C++ 许可证审计仍有参考价值**：明确哪些组件不能直接复制代码。
 
 ### 上游 C++ 审计证据（参考性）
 
@@ -36,20 +38,29 @@ Last updated: 2026-07-30
 | 产品源码闭包 | `product-source-closure.md` | 237 compile source；仅参考，不约束 Rust |
 | XYara 构建闭包 | `yara-license-closure.md` | YARA build-only；不进入 `diec` CLI |
 
-### 剩余缺口（按实际影响排序）
+### YARA/PEiD/signatures 不进入引擎范围
 
-1. **db\* 规则资产分发许可**：2,268 个文件（2,235 个 `.sg` 规则 + 33 个
-   metadata/PNG）来自 `Detect-It-Easy@c2c17df`，根 LICENSE 为 MIT，但仅 1 条
-   规则含显式 MIT 声明。如果 Rust 项目原样分发完整 `db*` 树，需确认根 MIT
-   对全部历史贡献及 22 个 PNG artwork 的适用性。替代方案：通过 ADR 定义
-   最小分发树，用可重复实验证明 PNG 不可达后排除。
-2. **YARA/PEiD/signatures 资产分发许可**：这些资产不进入 `diec` CLI 的
-   扫描能力，但可能随发布包分发。逐文件证据不足以批准原样分发全部资产。
-   替代方案：Rust CLI 不分发这些资产。
-3. **NOTICE/SBOM 最终内容**：需在发布前确定 NOTICE 文件和 SBOM 的精确内容，
-   包括上游归属保留和 Rust crate 许可证清单。
-4. **Rust dependency SBOM**：候选 crate graph 需在 Phase 1 crate 选定后
-   构建。属于实现期任务，但需在 Phase 0 评审中确认 SBOM 方案和工具链。
+源码级证据（`rule-asset-provenance.md`）：
+
+- `src/console/main_console.cpp` 只构造 `DiE_Script`，只注册 `db`/`db_extra`/
+  `db_custom` 三类数据库路径
+- `src/console/CMakeLists.txt` 不包含 XYara/XPEID/FormatWidgets
+- `diec.dir/link.txt` 无 YARA、PEiD 或 signatures token
+- YARA/PEiD/signatures 仅在 GUI 中使用（`WITH_YARA=ON`、qmake GUI 收集
+  `XYara/xyara.cpp` 和 `XPEID/xpeid.cpp`、`SearchSignatures` 使用
+  `$data/signatures`）
+
+结论：`diec` CLI 的扫描能力 = `DiE_Script` 引擎 + `db*` 规则。YARA/PEiD/
+signatures 是 GUI 专属功能，不是 CLI 的可观察能力。Rust 项目目标为 1:1 兼容
+`diec` CLI，因此不实现 YARA/PEiD/signatures，也不分发这些资产。
+
+### 剩余缺口
+
+1. **Rust crate 许可证清单**：Phase 1 crate 选定后，用 `cargo deny` 或
+   `cargo about` 生成依赖许可证清单。这是 Rust 项目的标准实践，不属于
+   Phase 0 评审范围。
+2. **NOTICE 文件**：发布前按 Rust crate 自身 LICENSE 要求生成 NOTICE 文件。
+   同样是 Phase 1 实现期常规工作。
 
 ### 不再阻塞的事项
 
@@ -58,14 +69,15 @@ Last updated: 2026-07-30
 - ~~Brotli/Zstandard 声明剥离~~：Rust 侧用对应 crate，各自带 LICENSE
 - ~~XArchive/XCapstone/XSIMD 编译闭包~~：不编译上游 C++ 组件
 - ~~Windows/macOS/Qt6 闭包~~：不编译上游，平台闭包无许可证意义
+- ~~db\* 规则资产分发许可~~：引擎项目不包含规则，规则由用户自行获取
+- ~~YARA/PEiD/signatures 分发许可~~：不进入 CLI 范围，不分发
+- ~~NOTICE/SBOM Phase 0 评审~~：Phase 1 实现期常规工作
 
 ### 评审输入准备状态
 
-核心问题已从"上游 C++ 许可证冲突"收窄为"规则资产可分发性确认"和"Rust crate
-SBOM 方案"。建议：
-- 规则资产分发许可提交发布/法律责任人书面评审
-- Rust crate SBOM 方案在 Phase 0 确认工具链，Phase 1 实现
-- 上游 C++ 审计证据保留为参考，不作为 Rust 二进制的许可证约束
+P0-BLOCK-004 的许可证阻塞已基本消解。上游 C++ 审计证据保留为参考文档。
+剩余的 Rust crate 许可证清单和 NOTICE 文件是 Phase 1 实现期标准工作。
+建议将 P0-BLOCK-004 状态从 Open 降为 Review Ready，等待评审确认关闭。
 
 ## P0-BLOCK-002/003: 设计文档与 ADR 评审
 
