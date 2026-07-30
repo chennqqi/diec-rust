@@ -58,6 +58,12 @@ SPECIAL_PATH_COLLECTOR_PATH = (
 SPECIAL_PATH_VALIDATOR_PATH = (
     ROOT / "tools/upstream/validate_macos_cli_special_paths.py"
 )
+FILESYSTEM_COLLECTOR_PATH = (
+    ROOT / "tools/upstream/collect_macos_cli_filesystem.py"
+)
+FILESYSTEM_VALIDATOR_PATH = (
+    ROOT / "tools/upstream/validate_macos_cli_filesystem.py"
+)
 
 
 def load_module(name: str, path: Path):
@@ -154,6 +160,12 @@ SPECIAL_FIXTURE_GENERATOR = load_module(
 SPECIAL_FIXTURE_VALIDATOR = load_module(
     "validate_macos_special_path_fixture_for_cli_test",
     ROOT / "tools/corpus/validate_macos_special_path_fixture.py",
+)
+FILESYSTEM_COLLECTOR = load_module(
+    "collect_macos_cli_filesystem", FILESYSTEM_COLLECTOR_PATH
+)
+FILESYSTEM_VALIDATOR = load_module(
+    "validate_macos_cli_filesystem", FILESYSTEM_VALIDATOR_PATH
 )
 
 
@@ -1999,6 +2011,220 @@ def write_cli_special_path_candidate_bundle(
     return report_path
 
 
+def write_cli_filesystem_candidate_bundle(
+    directory: Path, baseline_path: Path
+) -> Path:
+    oracle_path = directory / "oracle-candidate.json"
+    baseline = CLI_VALIDATOR.load_json(baseline_path)[0]
+    fixture_raw = (
+        ROOT / FILESYSTEM_COLLECTOR.FIXTURE_MANIFEST
+    ).read_bytes()
+    fixture = json.loads(fixture_raw)
+    linux_raw = (
+        ROOT / FILESYSTEM_COLLECTOR.LINUX_REFERENCE
+    ).read_bytes()
+    linux = json.loads(linux_raw)
+    fixture_dir = PurePosixPath("/private/tmp/filesystem-fixture")
+    reference_tree = baseline["corpus"]["minimal.pdf"][
+        "first_detect_tree"
+    ]
+    body = json.dumps(
+        {"detects": reference_tree}, separators=(",", ":")
+    ).encode("utf-8")
+
+    def observation_for(case):
+        projection = FILESYSTEM_COLLECTOR._linux_projection(
+            linux, case.linux_case
+        )
+        if case.name == "dangling_symlink":
+            stdout = b"Cannot find: fixture\n"
+        elif case.name == "denied_as_runner":
+            stdout = b""
+        elif case.name == "symlink_tree":
+            relative_paths = [
+                "paths/symlink/dir-link/child.pdf",
+                "paths/symlink/dir-target/child.pdf",
+                "paths/symlink/file-link.pdf",
+                "paths/symlink/target.pdf",
+            ]
+            stdout = b"".join(
+                (
+                    str(fixture_dir / relative).encode("utf-8")
+                    + b":\n"
+                    + body
+                    + b"\n"
+                )
+                for relative in relative_paths
+            )
+        elif case.name == "self_cycle":
+            stdout = b"".join(
+                (
+                    str(
+                        fixture_dir
+                        / "paths"
+                        / "cycle"
+                        / Path(*(["loop"] * depth))
+                        / "root.pdf"
+                    ).encode("utf-8")
+                    + b":\n"
+                    + body
+                    + b"\n"
+                )
+                for depth in range(40, -1, -1)
+            )
+        else:
+            stdout = body
+        observation = CLI_COMMON.Observation(
+            projection["exit_code"], stdout, b""
+        )
+        assert (
+            FILESYSTEM_COLLECTOR.stdout_summary(stdout)
+            == projection["stdout_summary"]
+        )
+        return observation
+
+    report_db = FILESYSTEM_COLLECTOR.database_arguments(
+        Path("<source>"), report=True
+    )
+    cases = {}
+    for case in FILESYSTEM_COLLECTOR.CASES:
+        observation = observation_for(case)
+        entry = CLI_COLLECTOR.pair_report(
+            CLI_COMMON,
+            directory,
+            f"cli-filesystem/{case.name}",
+            observation,
+            observation,
+        )
+        tree = CLI_COMMON.json_detect_tree(observation.stdout)
+        projection = FILESYSTEM_COLLECTOR._linux_projection(
+            linux, case.linux_case
+        )
+        summary = FILESYSTEM_COLLECTOR.stdout_summary(
+            observation.stdout
+        )
+        entry.update(
+            {
+                "arguments": [
+                    "--json",
+                    *report_db,
+                    f"<fixture>/{case.relative}",
+                ],
+                "timeout_seconds": (
+                    case.timeout_cap_seconds or 120
+                ),
+                "first_timed_out": False,
+                "second_timed_out": False,
+                "first_stdout_summary": summary,
+                "second_stdout_summary": summary,
+                "first_prefix_paths": (
+                    FILESYSTEM_COLLECTOR.prefix_paths(
+                        observation.stdout, fixture_dir
+                    )
+                ),
+                "second_prefix_paths": (
+                    FILESYSTEM_COLLECTOR.prefix_paths(
+                        observation.stdout, fixture_dir
+                    )
+                ),
+                "first_detect_tree": tree,
+                "second_detect_tree": tree,
+                "reference_tree_applies": (
+                    case.reference_tree_applies
+                ),
+                "minimal_pdf_detect_tree_equal": (
+                    tree == reference_tree
+                    if case.reference_tree_applies
+                    else None
+                ),
+                "linux_case": case.linux_case,
+                "linux_qt5_projection": projection,
+                "linux_qt5_semantic_equal": True,
+            }
+        )
+        cases[case.name] = entry
+
+    count = len(FILESYSTEM_COLLECTOR.CASES)
+    report = {
+        "schema_version": 1,
+        "result": "candidate",
+        "platform": FILESYSTEM_COLLECTOR.PLATFORM,
+        "generator": FILESYSTEM_COLLECTOR._generator_bindings(ROOT),
+        "oracle_report": {
+            "path": "oracle-candidate.json",
+            "sha256": hashlib.sha256(
+                oracle_path.read_bytes()
+            ).hexdigest(),
+        },
+        "cli_baseline_report": {
+            "path": "cli-baseline-candidate.json",
+            "sha256": hashlib.sha256(
+                baseline_path.read_bytes()
+            ).hexdigest(),
+        },
+        "source": baseline["source"],
+        "qt": baseline["qt"],
+        "binary": baseline["binary"],
+        "fixture": {
+            "manifest": FILESYSTEM_COLLECTOR.FIXTURE_MANIFEST,
+            "manifest_sha256": hashlib.sha256(
+                fixture_raw
+            ).hexdigest(),
+            "archive_sha256": fixture["archive"]["sha256"],
+            "archive_size": fixture["archive"]["size"],
+            "entry_count": len(fixture["entries"]),
+            "live_preflight": {
+                "effective_uid": 501,
+                "effective_gid": 20,
+                "denied_mode": 0,
+                "denied_read_execute_access": False,
+                "deep_component_count": 64,
+                "symlink_targets": {
+                    "file_link": "target.pdf",
+                    "directory_link": "dir-target",
+                    "dangling_link": "missing.pdf",
+                    "cycle_link": ".",
+                },
+            },
+        },
+        "linux_qt5_reference": {
+            "path": FILESYSTEM_COLLECTOR.LINUX_REFERENCE,
+            "sha256": hashlib.sha256(linux_raw).hexdigest(),
+        },
+        "local_paths": {"fixture_dir": str(fixture_dir)},
+        "selection": {
+            "case_names": [
+                case.name for case in FILESYSTEM_COLLECTOR.CASES
+            ],
+            "minimum_repetitions_per_case": 2,
+        },
+        "cases": cases,
+        "summary": {
+            "case_count": count,
+            "execution_count": 2 * count,
+            "raw_stream_count": 4 * count,
+            "determinism_failures": [],
+            "timeout_cases": [],
+            "linux_semantic_failures": [],
+            "reference_projection_failures": [],
+            "deterministic": True,
+            "linux_semantics_equal": True,
+            "reference_projections_equal": True,
+        },
+        "admission": {
+            "platform_admitted": False,
+            "capability_rows_admitted": 0,
+            "reason": FILESYSTEM_COLLECTOR.ADMISSION_REASON,
+        },
+        "limitations": FILESYSTEM_COLLECTOR.LIMITATIONS,
+    }
+    report_path = directory / "cli-filesystem-candidate.json"
+    report_path.write_text(
+        json.dumps(report, sort_keys=True), encoding="utf-8"
+    )
+    return report_path
+
+
 class MacosQt5OracleBootstrapTests(unittest.TestCase):
     def test_plan_is_exact_generator_output_and_source_bound(self):
         report = json.loads(PLAN_PATH.read_text(encoding="utf-8"))
@@ -2085,6 +2311,7 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             "generate_path_corpus.py",
             "generate_nested_corpus.py",
             "generate_macos_special_path_fixture.py",
+            "generate_path_filesystem_fixture.py",
             "validate_macos_special_path_fixture.py",
             "collect_macos_cli_path_nested.py",
             "validate_macos_cli_path_nested.py",
@@ -2092,6 +2319,8 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             "validate_macos_cli_database_archives.py",
             "collect_macos_cli_special_paths.py",
             "validate_macos_cli_special_paths.py",
+            "collect_macos_cli_filesystem.py",
+            "validate_macos_cli_filesystem.py",
             "cli-baseline-candidate.json",
             "cli-matrix-candidate.json",
             "cli-remaining-candidate.json",
@@ -2100,6 +2329,7 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             "cli-database-archive-candidate.json",
             "special-path-fixture-candidate.json",
             "cli-special-path-candidate.json",
+            "cli-filesystem-candidate.json",
             "diec-macos-candidate-evidence/raw",
             (
                 "actions/checkout@"
@@ -2146,9 +2376,13 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
                 "cli-database-archive-candidate.json",
                 "special-path-fixture-candidate.json",
                 "cli-special-path-candidate.json",
+                "cli-filesystem-candidate.json",
             ],
         )
         self.assertTrue(workflow["special_path_fixture_candidate"])
+        self.assertTrue(
+            workflow["filesystem_path_fixture_candidate"]
+        )
         self.assertEqual(
             workflow["remaining_cli_execution_count"], 1092
         )
@@ -2165,10 +2399,13 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             workflow["special_path_cli_execution_count"], 46
         )
         self.assertEqual(
-            workflow["general_cli_execution_count"], 2040
+            workflow["filesystem_cli_execution_count"], 16
         )
         self.assertEqual(
-            workflow["general_cli_raw_stream_count"], 4080
+            workflow["general_cli_execution_count"], 2056
+        )
+        self.assertEqual(
+            workflow["general_cli_raw_stream_count"], 4112
         )
 
     def test_cli_candidate_tools_are_bound_and_fail_closed(self):
@@ -2737,6 +2974,88 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
                     oracle_path=oracle_path,
                     baseline_path=baseline_path,
                     fixture_report_path=fixture_path,
+                    root=ROOT,
+                )
+
+    def test_cli_filesystem_validator_recomputes_raw_matrix(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            baseline_path = write_cli_candidate_bundle(directory)
+            report_path = write_cli_filesystem_candidate_bundle(
+                directory, baseline_path
+            )
+            report = CLI_VALIDATOR.load_json(report_path)[0]
+            oracle_path = directory / "oracle-candidate.json"
+            FILESYSTEM_VALIDATOR.validate_report(
+                report,
+                report_path=report_path,
+                oracle_path=oracle_path,
+                baseline_path=baseline_path,
+                root=ROOT,
+            )
+            self.assertEqual(report["summary"]["case_count"], 8)
+            self.assertEqual(
+                report["summary"]["execution_count"], 16
+            )
+            self.assertEqual(
+                report["summary"]["raw_stream_count"], 32
+            )
+            self.assertEqual(
+                len(
+                    report["cases"]["self_cycle"][
+                        "first_prefix_paths"
+                    ]
+                ),
+                41,
+            )
+
+            first = report["cases"]["self_cycle"]["first"]
+            raw_path = directory / first["stdout_path"]
+            original = raw_path.read_bytes()
+            raw_path.write_bytes(b"tampered")
+            with self.assertRaisesRegex(
+                FILESYSTEM_VALIDATOR.ReportError,
+                "raw stream identity mismatch",
+            ):
+                FILESYSTEM_VALIDATOR.validate_report(
+                    report,
+                    report_path=report_path,
+                    oracle_path=oracle_path,
+                    baseline_path=baseline_path,
+                    root=ROOT,
+                )
+            raw_path.write_bytes(original)
+
+            report["admission"]["platform_admitted"] = True
+            with self.assertRaisesRegex(
+                FILESYSTEM_VALIDATOR.ReportError,
+                "must not admit",
+            ):
+                FILESYSTEM_VALIDATOR.validate_report(
+                    report,
+                    report_path=report_path,
+                    oracle_path=oracle_path,
+                    baseline_path=baseline_path,
+                    root=ROOT,
+                )
+            report["admission"]["platform_admitted"] = False
+
+            extra = (
+                directory
+                / "raw"
+                / "cli-filesystem"
+                / "undeclared"
+            )
+            extra.write_bytes(b"x")
+            with self.assertRaisesRegex(
+                FILESYSTEM_VALIDATOR.ReportError,
+                "raw file inventory",
+            ):
+                FILESYSTEM_VALIDATOR.validate_report(
+                    report,
+                    report_path=report_path,
+                    oracle_path=oracle_path,
+                    baseline_path=baseline_path,
                     root=ROOT,
                 )
 
