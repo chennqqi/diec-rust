@@ -46,6 +46,12 @@ PATH_NESTED_COLLECTOR_PATH = (
 PATH_NESTED_VALIDATOR_PATH = (
     ROOT / "tools/upstream/validate_macos_cli_path_nested.py"
 )
+DATABASE_ARCHIVE_COLLECTOR_PATH = (
+    ROOT / "tools/upstream/collect_macos_cli_database_archives.py"
+)
+DATABASE_ARCHIVE_VALIDATOR_PATH = (
+    ROOT / "tools/upstream/validate_macos_cli_database_archives.py"
+)
 
 
 def load_module(name: str, path: Path):
@@ -116,6 +122,18 @@ PATH_NESTED_VALIDATOR = load_module(
 PATH_NESTED_HELPER = load_module(
     "collect_windows_cli_path_nested_for_macos_test",
     ROOT / "tools/upstream/collect_windows_cli_path_nested.py",
+)
+DATABASE_ARCHIVE_COLLECTOR = load_module(
+    "collect_macos_cli_database_archives",
+    DATABASE_ARCHIVE_COLLECTOR_PATH,
+)
+DATABASE_ARCHIVE_VALIDATOR = load_module(
+    "validate_macos_cli_database_archives",
+    DATABASE_ARCHIVE_VALIDATOR_PATH,
+)
+DATABASE_ARCHIVE_HELPER = load_module(
+    "collect_windows_cli_database_archives_for_macos_test",
+    ROOT / "tools/upstream/collect_windows_cli_database_archives.py",
 )
 
 
@@ -1437,6 +1455,213 @@ def write_cli_path_nested_candidate_bundle(directory: Path) -> Path:
     return report_path
 
 
+def write_cli_database_archive_candidate_bundle(
+    directory: Path,
+) -> Path:
+    oracle_path = directory / "oracle-candidate.json"
+    oracle = json.loads(oracle_path.read_bytes())
+    fixture_raw = (
+        ROOT / DATABASE_ARCHIVE_COLLECTOR.FIXTURE_MANIFEST
+    ).read_bytes()
+    fixture = json.loads(fixture_raw)
+    fixture_sha256 = hashlib.sha256(fixture_raw).hexdigest()
+    linux_raw = (
+        ROOT / DATABASE_ARCHIVE_COLLECTOR.LINUX_REFERENCE
+    ).read_bytes()
+    linux = json.loads(linux_raw)
+    linux_cases = (
+        DATABASE_ARCHIVE_HELPER.validate_linux_reference(
+            linux, fixture_sha256
+        )
+    )
+    database_helper = DATABASE_ARCHIVE_HELPER.windows_database
+    definitions = DATABASE_ARCHIVE_HELPER.archive_definitions
+    source_dir = PurePosixPath(
+        oracle["local_paths"]["source_dir"]
+    )
+    fixture_dir = PurePosixPath("/private/tmp/database-fixture")
+
+    cases = {}
+    determinism_failures = []
+    exit_failures = []
+    stderr_failures = []
+    validity_failures = []
+    normalized_failures = []
+    for case in definitions.ARCHIVE_CASES:
+        actual_arguments = database_helper.translate_arguments(
+            case.arguments,
+            source_dir,
+            fixture_dir,
+            report=False,
+        )
+        report_arguments = database_helper.translate_arguments(
+            case.arguments,
+            source_dir,
+            fixture_dir,
+            report=True,
+        )
+        linux_case = linux_cases[case.name]
+        if "payload_structure_truncated" in case.name:
+            stdout = b"SyntaxError: Parse error"
+        elif case.name.endswith("_json"):
+            stdout = b"{}"
+        else:
+            stdout = b"text"
+        observation = CLI_COMMON.Observation(
+            linux_case["left"]["exit_code"], stdout, b""
+        )
+        entry = CLI_COLLECTOR.pair_report(
+            CLI_COMMON,
+            directory,
+            f"cli-database-archive/{case.name}",
+            observation,
+            observation,
+        )
+        normalized = (
+            database_helper.normalize_windows_stdout_for_linux(
+                stdout,
+                actual_arguments,
+                case.arguments,
+            )
+        )
+        normalized_sha256 = hashlib.sha256(normalized).hexdigest()
+        normalized_equal = (
+            normalized_sha256
+            == linux_case["left"]["stdout_sha256"]
+        )
+        stderr_equal = (
+            observation.summary()["stderr_sha256"]
+            == linux_case["left"]["stderr_sha256"]
+        )
+        entry.update(
+            {
+                "arguments": list(report_arguments),
+                "reports_parse_error": (
+                    b"SyntaxError: Parse error" in stdout
+                ),
+                "linux_qt5_raw_differences": (
+                    database_helper.raw_differences(
+                        observation.summary(),
+                        linux_case["left"],
+                    )
+                ),
+                "linux_normalized_stdout_sha256": normalized_sha256,
+                "linux_qt5_normalized_stdout_equal": normalized_equal,
+                "linux_qt5_stderr_equal": stderr_equal,
+            }
+        )
+        if case.name.endswith("_json"):
+            valid = (
+                database_helper.matrix_definitions.document_is_valid(
+                    stdout, "json"
+                )
+            )
+            linux_valid = linux_case["left_valid_json"]
+            entry.update(
+                {
+                    "first_valid_json": valid,
+                    "second_valid_json": valid,
+                    "linux_qt5_valid_json": linux_valid,
+                    "linux_qt5_valid_json_equal": (
+                        valid == linux_valid
+                    ),
+                }
+            )
+            if valid != linux_valid:
+                validity_failures.append(case.name)
+        cases[case.name] = entry
+        if entry["determinism_differences"]:
+            determinism_failures.append(case.name)
+        if observation.exit_code != linux_case["left"]["exit_code"]:
+            exit_failures.append(case.name)
+        if not stderr_equal:
+            stderr_failures.append(case.name)
+        if not normalized_equal:
+            normalized_failures.append(case.name)
+
+    case_count = len(definitions.ARCHIVE_CASES)
+    report = {
+        "schema_version": 1,
+        "result": "candidate",
+        "platform": DATABASE_ARCHIVE_COLLECTOR.PLATFORM,
+        "generator": (
+            DATABASE_ARCHIVE_COLLECTOR._generator_bindings(ROOT)
+        ),
+        "oracle_report": {
+            "path": "oracle-candidate.json",
+            "sha256": hashlib.sha256(
+                oracle_path.read_bytes()
+            ).hexdigest(),
+        },
+        "source": {
+            "repository": (
+                "https://github.com/horsicq/DIE-engine"
+            ),
+            "commit": VALIDATOR.UPSTREAM_COMMIT,
+            "recursive_submodule_count": 58,
+            "rules_commit": VALIDATOR.RULES_COMMIT,
+            "tracked_files_clean_before_and_after": True,
+        },
+        "qt": {
+            "version": oracle["qt"]["version"],
+            "qmake_spec": oracle["qt"]["qmake_spec"],
+            "qmake_sha256": oracle["qt"]["qmake_sha256"],
+            "qtcore_sha256": oracle["qt"]["qtcore_sha256"],
+            "qtscript_sha256": oracle["qt"]["qtscript_sha256"],
+        },
+        "binary": {
+            "size": oracle["artifact"]["size"],
+            "sha256": oracle["artifact"]["sha256"],
+            "relative_path": "build/release/diec",
+        },
+        "fixture": {
+            "manifest": (
+                DATABASE_ARCHIVE_COLLECTOR.FIXTURE_MANIFEST
+            ),
+            "sha256": fixture_sha256,
+            "directories": fixture["directories"],
+            "entries": fixture["entries"],
+        },
+        "linux_qt5_reference": {
+            "path": DATABASE_ARCHIVE_COLLECTOR.LINUX_REFERENCE,
+            "sha256": hashlib.sha256(linux_raw).hexdigest(),
+        },
+        "local_paths": {
+            "fixture_dir": str(fixture_dir),
+        },
+        "cases": cases,
+        "summary": {
+            "case_count": case_count,
+            "execution_count": 2 * case_count,
+            "raw_stream_count": 4 * case_count,
+            "determinism_failures": determinism_failures,
+            "linux_exit_code_failures": exit_failures,
+            "linux_stderr_failures": stderr_failures,
+            "linux_document_validity_failures": validity_failures,
+            "linux_normalized_stdout_failures": normalized_failures,
+            "deterministic": not determinism_failures,
+            "linux_exit_codes_equal": not exit_failures,
+            "linux_stderr_equal": not stderr_failures,
+            "linux_document_validity_equal": not validity_failures,
+            "linux_normalized_stdout_equal": not normalized_failures,
+        },
+        "normalization": DATABASE_ARCHIVE_COLLECTOR.NORMALIZATION,
+        "admission": {
+            "platform_admitted": False,
+            "capability_rows_admitted": 0,
+            "reason": DATABASE_ARCHIVE_COLLECTOR.ADMISSION_REASON,
+        },
+        "limitations": DATABASE_ARCHIVE_COLLECTOR.LIMITATIONS,
+    }
+    report_path = (
+        directory / "cli-database-archive-candidate.json"
+    )
+    report_path.write_text(
+        json.dumps(report, sort_keys=True), encoding="utf-8"
+    )
+    return report_path
+
+
 class MacosQt5OracleBootstrapTests(unittest.TestCase):
     def test_plan_is_exact_generator_output_and_source_bound(self):
         report = json.loads(PLAN_PATH.read_text(encoding="utf-8"))
@@ -1524,11 +1749,14 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             "generate_nested_corpus.py",
             "collect_macos_cli_path_nested.py",
             "validate_macos_cli_path_nested.py",
+            "collect_macos_cli_database_archives.py",
+            "validate_macos_cli_database_archives.py",
             "cli-baseline-candidate.json",
             "cli-matrix-candidate.json",
             "cli-remaining-candidate.json",
             "cli-database-candidate.json",
             "cli-path-nested-candidate.json",
+            "cli-database-archive-candidate.json",
             "diec-macos-candidate-evidence/raw",
             (
                 "actions/checkout@"
@@ -1572,6 +1800,7 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
                 "cli-remaining-candidate.json",
                 "cli-database-candidate.json",
                 "cli-path-nested-candidate.json",
+                "cli-database-archive-candidate.json",
             ],
         )
         self.assertEqual(
@@ -1584,10 +1813,13 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             workflow["path_nested_cli_execution_count"], 92
         )
         self.assertEqual(
-            workflow["general_cli_execution_count"], 1960
+            workflow["database_archive_cli_execution_count"], 34
         )
         self.assertEqual(
-            workflow["general_cli_raw_stream_count"], 3920
+            workflow["general_cli_execution_count"], 1994
+        )
+        self.assertEqual(
+            workflow["general_cli_raw_stream_count"], 3988
         )
 
     def test_cli_candidate_tools_are_bound_and_fail_closed(self):
@@ -1991,6 +2223,83 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
                 "raw file inventory",
             ):
                 PATH_NESTED_VALIDATOR.validate_report(
+                    report,
+                    report_path=report_path,
+                    oracle_path=oracle_path,
+                    root=ROOT,
+                )
+
+    def test_cli_database_archive_validator_recomputes_raw_matrix(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            oracle_path = directory / "oracle-candidate.json"
+            oracle_path.write_text(
+                json.dumps(candidate_report(), sort_keys=True),
+                encoding="utf-8",
+            )
+            report_path = (
+                write_cli_database_archive_candidate_bundle(
+                    directory
+                )
+            )
+            report = CLI_VALIDATOR.load_json(report_path)[0]
+            DATABASE_ARCHIVE_VALIDATOR.validate_report(
+                report,
+                report_path=report_path,
+                oracle_path=oracle_path,
+                root=ROOT,
+            )
+            self.assertEqual(report["summary"]["case_count"], 17)
+            self.assertEqual(
+                report["summary"]["execution_count"], 34
+            )
+            self.assertEqual(
+                report["summary"]["raw_stream_count"], 68
+            )
+
+            first = report["cases"][
+                "scan_payload_structure_truncated_archive_json"
+            ]["first"]
+            raw_path = directory / first["stdout_path"]
+            original = raw_path.read_bytes()
+            raw_path.write_bytes(b"tampered")
+            with self.assertRaisesRegex(
+                DATABASE_ARCHIVE_VALIDATOR.ReportError,
+                "raw stream identity mismatch",
+            ):
+                DATABASE_ARCHIVE_VALIDATOR.validate_report(
+                    report,
+                    report_path=report_path,
+                    oracle_path=oracle_path,
+                    root=ROOT,
+                )
+            raw_path.write_bytes(original)
+
+            report["admission"]["platform_admitted"] = True
+            with self.assertRaisesRegex(
+                DATABASE_ARCHIVE_VALIDATOR.ReportError,
+                "must not admit",
+            ):
+                DATABASE_ARCHIVE_VALIDATOR.validate_report(
+                    report,
+                    report_path=report_path,
+                    oracle_path=oracle_path,
+                    root=ROOT,
+                )
+            report["admission"]["platform_admitted"] = False
+
+            extra = (
+                directory
+                / "raw"
+                / "cli-database-archive"
+                / "undeclared"
+            )
+            extra.write_bytes(b"x")
+            with self.assertRaisesRegex(
+                DATABASE_ARCHIVE_VALIDATOR.ReportError,
+                "raw file inventory",
+            ):
+                DATABASE_ARCHIVE_VALIDATOR.validate_report(
                     report,
                     report_path=report_path,
                     oracle_path=oracle_path,

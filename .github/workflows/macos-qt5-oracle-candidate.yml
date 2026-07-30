@@ -154,6 +154,17 @@ jobs:
           python3 tools/upstream/validate_macos_cli_database.py \
             "$EVIDENCE_DIR/cli-database-candidate.json" \
             --oracle-report "$EVIDENCE_DIR/oracle-candidate.json"
+          python3 tools/upstream/collect_macos_cli_database_archives.py \
+            --binary "$UPSTREAM_SOURCE/build/release/diec" \
+            --source-dir "$UPSTREAM_SOURCE" \
+            --qt-dir "$QT_ROOT/5.15.2/clang_64" \
+            --fixture-dir "$DATABASE_FIXTURE_DIR" \
+            --oracle-report "$EVIDENCE_DIR/oracle-candidate.json" \
+            --output \
+              "$EVIDENCE_DIR/cli-database-archive-candidate.json"
+          python3 tools/upstream/validate_macos_cli_database_archives.py \
+            "$EVIDENCE_DIR/cli-database-archive-candidate.json" \
+            --oracle-report "$EVIDENCE_DIR/oracle-candidate.json"
           python3 tools/corpus/generate_path_corpus.py \
             "$CORPUS_DIR" "$PATH_CORPUS_DIR"
           python3 tools/corpus/generate_nested_corpus.py \
@@ -187,6 +198,7 @@ jobs:
             ${{ runner.temp }}/diec-macos-candidate-evidence/cli-matrix-candidate.json
             ${{ runner.temp }}/diec-macos-candidate-evidence/cli-remaining-candidate.json
             ${{ runner.temp }}/diec-macos-candidate-evidence/cli-database-candidate.json
+            ${{ runner.temp }}/diec-macos-candidate-evidence/cli-database-archive-candidate.json
             ${{ runner.temp }}/diec-macos-candidate-evidence/cli-path-nested-candidate.json
             ${{ runner.temp }}/diec-macos-candidate-evidence/raw
             ${{ runner.temp }}/diec-macos-candidate-evidence/SHA256SUMS
