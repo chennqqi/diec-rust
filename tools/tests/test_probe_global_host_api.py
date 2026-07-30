@@ -174,6 +174,25 @@ class GlobalHostApiProbeTests(unittest.TestCase):
                 -1,
             )
 
+    def test_empty_argv0_reaches_library_mode_in_both_runtimes(self):
+        for observation in (self.observation, self.qt6_observation):
+            regular = observation["modes"]["empty_requested"]
+            self.assertEqual(
+                regular["application_name"],
+                "diec-global-host-api-harness",
+            )
+            self.assertFalse(regular["library"]["boolean"])
+
+            process = observation["modes"]["empty_argv0_process"]
+            self.assertEqual(process["exit_status"], "normal")
+            self.assertEqual(process["stderr"]["bytes"], 0)
+            embedded = process["observation"]
+            self.assertEqual(embedded["application_name"], "")
+            self.assertFalse(embedded["console"]["boolean"])
+            self.assertFalse(embedded["gui"]["boolean"])
+            self.assertFalse(embedded["lite"]["boolean"])
+            self.assertTrue(embedded["library"]["boolean"])
+
     def test_include_errors_and_pdstruct_side_effects_are_preserved(self):
         qt5_include = self.observation["include"]
         qt6_include = self.qt6_observation["include"]
@@ -247,6 +266,17 @@ class GlobalHostApiProbeTests(unittest.TestCase):
             "cyclic array crash behavior",
         ):
             MODULE.validate_observation(changed, "qt6")
+
+    def test_empty_argv0_raw_stream_drift_is_rejected(self):
+        changed = json.loads(json.dumps(self.observation))
+        changed["modes"]["empty_argv0_process"]["stdout"]["sha256"] = (
+            "0" * 64
+        )
+        with self.assertRaisesRegex(
+            ValueError,
+            r"empty argv\[0\] stdout byte identity",
+        ):
+            MODULE.validate_observation(changed, "qt5")
 
     def test_qt6_unexpected_error_is_rejected(self):
         changed = json.loads(json.dumps(self.qt6_observation))

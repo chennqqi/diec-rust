@@ -194,15 +194,17 @@ baseline 的变更都要检查本表。
   仍未验证。共享 Qt 5/Qt 6 global harness 已确认 Qt 5 缺参 `"undefined"`
   转换与 Qt 6 `Insufficient arguments` 严格错误不同；null 字符串化和
   `_encodingList` 也不同，而重复结果、单项删除/block、数组字符串化、双 stop
-  状态和重复 include 相同。schema v4 的 30-case 进程内 query conversion 与
-  五个隔离 child 又固定数组、普通/自定义/抛异常/cyclic/proxy 对象、
+  状态和重复 include 相同。schema v5 的 30-case 进程内 query conversion 与
+  六个隔离 child 又固定数组、普通/自定义/抛异常/cyclic/proxy 对象、
   Proxy/BigInt/Symbol availability、NaN/±Infinity/-0、2^53 邻域、六类 UTF-16
   和 extra arguments：显式 undefined/null 在 Qt 5 返回 0、Qt 6 因空 type
   wildcard 返回 17；throwing `toString` 只在 Qt 5 执行并传播；Qt 6 额外保留
   176-byte stderr warning。Qt 6 cyclic array 的 QString 参数转换以 signal 11
   崩溃、child stdout/stderr 均空；Qt 5 同案转为空串并 wildcard 命中。两次
-  完整重采集逐文件同 hash，父/子 raw stdout/stderr 均可重放。受限 Qt5 CLI
-  fixture 又证明 self/two-node include
+  完整重采集逐文件同 hash，父/子 raw stdout/stderr 均可重放。隔离 mode
+  fixture 同时证明空 `argv[0]` 构造 Qt application 才能令 library=true，普通
+  `setApplicationName("")` 会回退到 executable name；Rust 静态库不得据此
+  推断宿主进程状态。受限 Qt5 CLI fixture 又证明 self/two-node include
   cycle 依赖 VM 栈上限，产生 28 条 signal 和一条 init error 后继续规则；
   ADR 0010 提议静态图与 active stack 提前拒绝该循环。固定 QuickJS-NG fixture
   已用 128 KiB stack limit 使无界 JavaScript 递归产生明确异常，并在同一

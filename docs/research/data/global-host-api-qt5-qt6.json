@@ -602,36 +602,36 @@
     "qt5": {
       "binary": {
         "path": "/opt/die-build/src/console/diec-global-host-api-harness",
-        "sha256": "80459d27e3e340228be461bceb2670f275ec3cee0b18efb25aed1bc3a22c822c"
+        "sha256": "e6bcc2470dd5b5e1d3abebfe5db680cecfaef338f054eaadfbfebec03af54801"
       },
       "image": {
-        "id": "sha256:05995575f18600609573da78721fd20bd871b0130d8484e7d3c36324feb92946",
+        "id": "sha256:bfdf599045d6c32753b7620d2e663e22b2544ccbad485ac6e36a982d4e918b3e",
         "name": "diec-rust/upstream-global-host-api-harness:74eaf505",
         "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
       },
       "path": "docs/research/data/global-host-api-qt5.json",
-      "sha256": "5b7c268b83cd7c94929eca335265785f7a8fcd9939aa7ec6c14146b01e4b51ac"
+      "sha256": "087e4181562af80b3ff07d1cc501dc1b64db3c34d12bee236bf6b04a4accd96e"
     },
     "qt6": {
       "binary": {
         "path": "/opt/die-build/src/console/diec-global-host-api-harness",
-        "sha256": "af620c9863ae820ff25cc7d51fc084b7b60c47e2f23e4ca7979b76c758c10b3f"
+        "sha256": "ec0bbeb4ae629011f1e53984603a5cdc5437cf99c8d16ac853a5c8f286003e1e"
       },
       "image": {
-        "id": "sha256:d89d17b0ce4543d34d17a880ac217e6ad754470f1228b1938c7d934f98aa0a2d",
+        "id": "sha256:f24edee99353945ed4a83ee8361cdcdf6eae7377b48a6059302fdb84e63611a8",
         "name": "diec-rust/upstream-global-host-api-harness-qt6:74eaf505",
         "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
       },
       "path": "docs/research/data/global-host-api-qt6.json",
-      "sha256": "ea66d3b9df04a70281245b9dff04c4afcf321a84bb5dbc8a11e27a26d99f0ffd"
+      "sha256": "983f1d717b4b459c98daafd70f45cdefb72a9644b5e0ae7c15a8dd32665cb197"
     }
   },
   "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
-  "schema_version": 4,
+  "schema_version": 5,
   "source": {
     "bytes": 6077,
     "path": "tools/upstream/compare_global_host_api_reports.py",
-    "sha256": "37785b418f17b5d95c161a7fdd1530185e65a68586b4105dbe4185845fa89e64"
+    "sha256": "c9162aea198af9a23bc83ea31e4b5d5e3f396760dc066bf23ea2d615c4575576"
   },
   "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
 }

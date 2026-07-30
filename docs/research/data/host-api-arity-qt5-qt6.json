@@ -285,7 +285,7 @@
   "sources": {
     "tools/upstream/compare_global_host_api_reports.py": {
       "bytes": 6077,
-      "sha256": "37785b418f17b5d95c161a7fdd1530185e65a68586b4105dbe4185845fa89e64"
+      "sha256": "c9162aea198af9a23bc83ea31e4b5d5e3f396760dc066bf23ea2d615c4575576"
     },
     "tools/upstream/compare_host_api_arity_reports.py": {
       "bytes": 4382,

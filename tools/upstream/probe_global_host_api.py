@@ -237,7 +237,7 @@ def validate_observation(
     if runtime not in {"qt5", "qt6"}:
         raise ValueError("unsupported runtime profile")
     identities = {
-        "schema_version": 4,
+        "schema_version": 5,
         "upstream_commit": UPSTREAM_COMMIT,
         "die_script_commit": DIE_SCRIPT_COMMIT,
         "rules_commit": RULES_COMMIT,
@@ -597,6 +597,50 @@ def validate_observation(
         or modes["empty_requested"]["library"].get("boolean") is not False
     ):
         raise ValueError("empty application-name fallback changed")
+    embedded = modes["empty_argv0_process"]
+    if set(embedded) != {
+        "started",
+        "finished",
+        "timed_out",
+        "exit_code",
+        "exit_status",
+        "process_error_code",
+        "stdout",
+        "stderr",
+        "observation",
+    }:
+        raise ValueError("empty argv[0] process record drift")
+    embedded_stdout = _decode_byte_snapshot(
+        embedded["stdout"],
+        "empty argv[0] stdout",
+    )
+    embedded_stderr = _decode_byte_snapshot(
+        embedded["stderr"],
+        "empty argv[0] stderr",
+    )
+    try:
+        replayed_embedded = json.loads(embedded_stdout)
+    except (UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise ValueError("empty argv[0] stdout is not JSON") from error
+    embedded_observation = embedded.get("observation", {})
+    if (
+        embedded["started"] is not True
+        or embedded["finished"] is not True
+        or embedded["timed_out"] is not False
+        or embedded["exit_code"] != 0
+        or embedded["exit_status"] != "normal"
+        or embedded["process_error_code"] != 5
+        or embedded_stderr
+        or replayed_embedded != embedded_observation
+        or embedded_observation.get("schema_version") != 1
+        or embedded_observation.get("case") != "empty_argv0_mode"
+        or embedded_observation.get("application_name") != ""
+        or embedded_observation.get("console", {}).get("boolean") is not False
+        or embedded_observation.get("gui", {}).get("boolean") is not False
+        or embedded_observation.get("lite", {}).get("boolean") is not False
+        or embedded_observation.get("library", {}).get("boolean") is not True
+    ):
+        raise ValueError("empty argv[0] library-mode behavior changed")
     version = modes["engine_version"].get("string", "")
     if not re.fullmatch(r"9\.9\.9\.\d{4}\.\d{2}\.\d{2}", version):
         raise ValueError("engine version does not expose the compile date")
@@ -755,7 +799,7 @@ def build_report(
     }
     validate_streams(streams, observation, runtime)
     return {
-        "schema_version": 4,
+        "schema_version": 5,
         "generator": "tools/upstream/probe_global_host_api.py",
         "runtime_profile": runtime,
         "image": {

@@ -36,6 +36,9 @@ Last updated: 2026-07-30
   `_encodingList()` 不会覆盖该字段；
 - `_encodingList()` 在 Qt 5 返回 false 并发出 104 条 encoding 消息，Qt 6
   返回 undefined 且不发消息；
+- `_isLibraryMode()` 在两侧都只由空 application name 触发；普通
+  `setApplicationName("")` 会回退到可执行文件名，但以空 `argv[0]` 构造
+  `QCoreApplication` 时两侧都得到 library=true；
 - 结果增删/block、数组字符串化、first-wrapper stop、正常/缺失
   `includeScript`、application mode 和 `_getOS` 在当前 fixture 中相同。
 
@@ -64,14 +67,14 @@ harness 替换固定 CLI 的 `main_console.cpp.o`，其余编译对象和 link c
 | --- | --- | --- |
 | Runtime | Qt Script 5.15.13 | QJSEngine 6.4.2 |
 | Base oracle | `upstream-oracle-cmake:74eaf505` | `upstream-oracle-cmake-qt6:74eaf505` |
-| Harness image ID | `sha256:05995575f18600609573da78721fd20bd871b0130d8484e7d3c36324feb92946` | `sha256:d89d17b0ce4543d34d17a880ac217e6ad754470f1228b1938c7d934f98aa0a2d` |
-| Harness binary SHA-256 | `80459d27e3e340228be461bceb2670f275ec3cee0b18efb25aed1bc3a22c822c` | `af620c9863ae820ff25cc7d51fc084b7b60c47e2f23e4ca7979b76c758c10b3f` |
+| Harness image ID | `sha256:bfdf599045d6c32753b7620d2e663e22b2544ccbad485ac6e36a982d4e918b3e` | `sha256:f24edee99353945ed4a83ee8361cdcdf6eae7377b48a6059302fdb84e63611a8` |
+| Harness binary SHA-256 | `e6bcc2470dd5b5e1d3abebfe5db680cecfaef338f054eaadfbfebec03af54801` | `ec0bbeb4ae629011f1e53984603a5cdc5437cf99c8d16ac853a5c8f286003e1e` |
 | OCI revision | `74eaf505...2254` | `74eaf505...2254` |
 
-本轮共享 harness schema v4 新增对象图、runtime type、2^53 邻域与 UTF-16
-matrix，并把五个可能崩溃的 case 隔离到子进程；因此 image、binary 和 report
-identity 都相对 schema v3 改变。它是
-project-generated 研究入口的变化，不是上游对象变化。
+本轮共享 harness schema v5 在 v4 的对象图、runtime type、2^53 邻域与
+UTF-16 matrix 基础上，新增空 `argv[0]` 的隔离进程模式实验；因此 image、
+binary 和 report identity 都相对 schema v4 改变。它是 project-generated
+研究入口的变化，不是上游对象变化。
 
 ## 复现与机器报告
 
@@ -95,12 +98,12 @@ python tools/upstream/compare_global_host_api_reports.py
 
 | Report | SHA-256 |
 | --- | --- |
-| [`global-host-api-qt5.json`](data/global-host-api-qt5.json) | `5b7c268b83cd7c94929eca335265785f7a8fcd9939aa7ec6c14146b01e4b51ac` |
-| [`global-host-api-qt6.json`](data/global-host-api-qt6.json) | `ea66d3b9df04a70281245b9dff04c4afcf321a84bb5dbc8a11e27a26d99f0ffd` |
-| [`global-host-api-qt5-qt6.json`](data/global-host-api-qt5-qt6.json) | `8f19feab55d14028759021a7e0259f79f155fd7c658698844391e4f69c863dae` |
+| [`global-host-api-qt5.json`](data/global-host-api-qt5.json) | `087e4181562af80b3ff07d1cc501dc1b64db3c34d12bee236bf6b04a4accd96e` |
+| [`global-host-api-qt6.json`](data/global-host-api-qt6.json) | `983f1d717b4b459c98daafd70f45cdefb72a9644b5e0ae7c15a8dd32665cb197` |
+| [`global-host-api-qt5-qt6.json`](data/global-host-api-qt5-qt6.json) | `467e6f3bb5dc66ed19d59144d5a9a707c52dfd0f134bb985d5002de667227a62` |
 
 probe 在写报告前严格验证全部预期行为、非零退出、额外 stdout、身份漂移和
-非预期 JavaScript error。schema v4 把父进程及五个隔离子进程的 stdout/stderr
+非预期 JavaScript error。schema v5 把父进程及六个隔离子进程的 stdout/stderr
 原始字节以 Base64、长度和
 SHA-256 保存并从中重放 observation；Qt 5 stderr 必须为空，Qt 6 stderr 必须
 逐字节等于两个 extra-argument warning。比较器再次重放两份输入，随后递归比较
@@ -151,7 +154,7 @@ string: Error: Insufficient arguments
 
 stack 分别指向对应 fixture 文件的第一行。error 作为 `QJSValue` 返回给 harness；
 进程仍 exit 0，stdout 是单个 JSON document；这四个调用本身不产生 warning，
-但同一 schema v4 进程的 extra-argument cases 会产生后述 stderr。Qt 5 static wrapper
+但同一 schema v5 进程的 extra-argument cases 会产生后述 stderr。Qt 5 static wrapper
 直接读取不存在的 `QScriptContext::argument(i)` 并调用 `toString()`，所以得到
 `"undefined"`；Qt 6 QObject wrapper 在进入 slot 前执行 arity 检查。
 
@@ -255,8 +258,28 @@ exception 会决定外层返回值，而 QJSEngine QObject slot 只把错误留�
 - array 参数转换成单个 `"Enigma,Denuvo"` 字符串；
 - first-wrapper compiler 丢弃、protection 保留及 internal/PDSTRUCT 双 stop；
 - include 名称大小写不敏感、重复 include 重新求值、缺失 include 只发 signal；
-- `die`/`diel`/空 application name 的 mode 结果；
+- `die`/`diel`/空 application name 与空 `argv[0]` 的 mode 结果；
 - `_getOS() == "Linux Ubuntu x64"`。
+
+### Library mode 的可达条件
+
+固定上游
+[`die_scriptengine.cpp`](https://github.com/horsicq/die_script/blob/5d82316c110abf0eb863b50bc679d330e05067b6/die_scriptengine.cpp#L773-L799)
+表明四个 mode slot 都在每次调用时读取 `qApp->applicationName()`：
+console/gui 还受 build 是否含 GUI 约束并要求名称为 `die`，lite 要求 `diel`，
+library 则精确要求空字符串。
+
+同一正常进程中的 `setApplicationName("")` 不能触发 library：Qt5/Qt6 都把读取值
+恢复为 `diec-global-host-api-harness`。schema v5 另以同一 binary 启动隔离子进程，
+在构造 `QCoreApplication` 前把唯一的 `argv[0]` 设为空。两侧子进程均 exit 0、
+stderr 为空、effective application name 为空，且
+`console/gui/lite/library == false/false/false/true`；710-byte stdout 逐字节相同，
+SHA-256 为
+`297e0f5dba1d2d3da7458a7087079f0103035d9407dbfd745316eafca6aa91dd`。
+
+因此上游 library mode 可达，但它把嵌入语义偶然绑定到 Qt 进程初始化。Rust
+静态库不能从宿主可执行文件名推断该事实；正式 HostApi/options 设计需要显式表达
+运行模式，并用 legacy adapter 复现上述 mode 函数的可观察值。
 
 `_getEngineVersion()` 的末尾日期来自上游对象编译时的 `__DATE__`，本轮 Qt 5 与
 Qt 6 image 构建日期不同。该 raw 差异由 binary/image identity 保存，但不能用来
@@ -280,6 +303,8 @@ Qt 6 image 构建日期不同。该 raw 差异由 binary/image identity 保存�
   side effect 和未执行 tail；Qt 5 与 Qt 6 不可共用同一个错误传播约定。
 - `_log` 必须同时测试 signal 和 `PDSTRUCT.sInfoString`，不能把它实现为纯日志；
   encoding signal 又不能误写该字段。
+- library mode 必须由显式宿主配置进入核心层；C/Go/Python 静态库调用不能依赖
+  `argv[0]` 或调用方进程名。legacy Qt oracle 仍保留空 application name 的判定。
 - raw differential 保留 build-date 字段；semantic projection 可以把它标为
   build identity，但需要显式规则，不能全局删除版本字符串。
 - format QObject 的首轮 arity/转换差分见
@@ -291,6 +316,5 @@ Qt 6 image 构建日期不同。该 raw 差异由 binary/image identity 保存�
 - 更复杂的 proxy trap/error/revocation、嵌套 cyclic graph，以及 qint32/qint64
   typed return 边界；
 - `PDSTRUCT.sInfoString` 在真实后续 scan consumer/callback 中的读取时机；
-- library=true 的可达宿主条件；
 - Qt 6 其他 minor、Windows 和 macOS；
 - 其余 format QObject 完整矩阵与逐规则 execution conformance。

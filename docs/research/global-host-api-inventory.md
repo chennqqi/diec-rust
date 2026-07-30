@@ -147,8 +147,9 @@ Qt 6 机器基线和逐字段差分分别见
 signal 相同但外层传播不同。
 完整实验身份、差分解释与限制见
 [`global-host-api-runtime-differential.md`](global-host-api-runtime-differential.md)。
-schema v4 又补齐 30 个进程内 query conversion case、五个隔离
-cyclic/proxy/BigInt/Symbol case、include parse/runtime error 和
+schema v5 又补齐 30 个进程内 query conversion case、五个隔离
+cyclic/proxy/BigInt/Symbol case、一个空 `argv[0]` mode case、include
+parse/runtime error 和
 `PDSTRUCT.sInfoString` 副作用，并把父/子进程 raw stdout/stderr 以 Base64、
 长度和 SHA-256 保存后重放。
 
@@ -214,8 +215,9 @@ python tools/upstream/probe_global_host_api.py
 - console 目标中 application name 为 `die` 时 console=true、GUI/lite/library
   均为 false；`diel` 时 lite=true；
 - 请求把 application name 设为空后，Qt 恢复为可执行文件名
-  `diec-global-host-api-harness`，所以 library=false。这个实验不能证明嵌入式宿主
-  中 library=true 的可达条件；
+  `diec-global-host-api-harness`，所以 library=false；但以空 `argv[0]` 构造
+  `QCoreApplication` 的隔离子进程中 effective application name 为空，
+  console/gui/lite/library 精确为 false/false/false/true，Qt 5 与 Qt 6 一致；
 - `_getOS()` 在固定镜像返回 `Linux Ubuntu x64`；
 - `_getEngineVersion()` 返回 `9.9.9.2026.07.25`。前缀来自探针设置的 application
   version，日期来自上游对象编译时的 `__DATE__`，因此输出受构建日期影响；固定
@@ -225,6 +227,8 @@ python tools/upstream/probe_global_host_api.py
 
 - Rust `HostApi` 的非格式 native surface 以 16 个 slot 为声明基线，并显式记录
   Qt 5 的 `_getQtVersion` omission 以及 Qt 5/Qt 6 的 arity/转换差异；
+- 静态库宿主模式必须显式传入核心层，不能从调用方进程名或 `argv[0]` 推断；
+  legacy adapter 需保留固定上游的 mode 返回值；
 - `meta`、`result`、语言 helper 和 prototype 扩展必须来自原样规则脚本及真实
   init/include 生命周期；
 - 未声明直接调用不得自动变成 permissive stub；未分类项必须产生兼容诊断；
@@ -237,8 +241,7 @@ python tools/upstream/probe_global_host_api.py
 
 - `_isResultPresent`/`_getNumberOfResults` 仍缺更复杂的 proxy
   trap/error/revocation、嵌套 cyclic graph 和 typed qint32/qint64 return 边界；
-- `PDSTRUCT.sInfoString` 在真实后续 scan consumer/callback 中的读取时机，以及
-  library=true 可达条件；
+- `PDSTRUCT.sInfoString` 在真实后续 scan consumer/callback 中的读取时机；
 - 两个拼写错误分支的 Qt 6/Windows/macOS 对照、不带 `--messages` 行为及
   多错误/后续规则传播；
 - 55 个跨文件规则函数候选的逐调用 include 可达性证明；

@@ -677,8 +677,8 @@ Phase 0 计划形成：
 - [`data/host-api-arity-qt6.json`](data/host-api-arity-qt6.json)：固定 Qt 6 QObject wrapper 的参数转换、diagnostic 与异常基线。
 - [`data/host-api-arity-qt5-qt6.json`](data/host-api-arity-qt5-qt6.json)：两个格式 QObject runtime observation 的逐字段机器差分。
 - [`data/global-host-api-inventory.json`](data/global-host-api-inventory.json)：固定 die_script global 注册面、规则函数和 undeclared direct-call 分类。
-- [`data/global-host-api-qt5.json`](data/global-host-api-qt5.json)：真实 `DiE_ScriptEngine` 的 Qt 5 native global/query conversion、隔离对象图、include error、PDSTRUCT、raw streams 与副作用基线。
-- [`data/global-host-api-qt6.json`](data/global-host-api-qt6.json)：真实 `DiE_ScriptEngine` 的 Qt 6 native global/query conversion、cyclic-array crash、include error、PDSTRUCT、raw stderr 与副作用基线。
+- [`data/global-host-api-qt5.json`](data/global-host-api-qt5.json)：真实 `DiE_ScriptEngine` 的 Qt 5 native global/query conversion、隔离对象图、空 `argv[0]` library mode、include error、PDSTRUCT、raw streams 与副作用基线。
+- [`data/global-host-api-qt6.json`](data/global-host-api-qt6.json)：真实 `DiE_ScriptEngine` 的 Qt 6 native global/query conversion、cyclic-array crash、空 `argv[0]` library mode、include error、PDSTRUCT、raw stderr 与副作用基线。
 - [`data/global-host-api-qt5-qt6.json`](data/global-host-api-qt5-qt6.json)：两个 runtime observation 的 94-field 逐字段机器差分。
 - [`data/global-typo-corpus.json`](data/global-typo-corpus.json)：两个未定义 global 分支的 project-generated 安全最小语料及规则哈希。
 - [`data/global-typo-errors-qt5.json`](data/global-typo-errors-qt5.json)：固定 qmake/CMake oracle 的 detection、trailing diagnostic 与原始输出哈希。

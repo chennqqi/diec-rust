@@ -18,6 +18,7 @@
 #include <QStringList>
 
 #include <cstdio>
+#include <cstring>
 
 namespace {
 
@@ -987,6 +988,49 @@ QJsonObject modeObservations()
             },
         }
     );
+    QProcess embeddedProcess;
+    embeddedProcess.setProgram(QCoreApplication::applicationFilePath());
+    embeddedProcess.setArguments({"--isolated-empty-argv0-mode"});
+    embeddedProcess.start();
+    bool embeddedStarted = embeddedProcess.waitForStarted(5000);
+    bool embeddedFinished =
+        embeddedStarted && embeddedProcess.waitForFinished(5000);
+    bool embeddedTimedOut = embeddedStarted && !embeddedFinished;
+    if (embeddedTimedOut) {
+        embeddedProcess.kill();
+        embeddedProcess.waitForFinished(5000);
+    }
+    QByteArray embeddedStdout = embeddedProcess.readAllStandardOutput();
+    QByteArray embeddedStderr = embeddedProcess.readAllStandardError();
+    QJsonObject embeddedRecord{
+        {"started", embeddedStarted},
+        {"finished", embeddedFinished},
+        {"timed_out", embeddedTimedOut},
+        {"exit_code", embeddedStarted ? embeddedProcess.exitCode() : -1},
+        {
+            "exit_status",
+            embeddedStarted
+                    && embeddedProcess.exitStatus() == QProcess::NormalExit
+                ? "normal"
+                : "crash"
+        },
+        {
+            "process_error_code",
+            static_cast<qint32>(embeddedProcess.error())
+        },
+        {"stdout", byteSnapshot(embeddedStdout)},
+        {"stderr", byteSnapshot(embeddedStderr)},
+    };
+    QJsonParseError embeddedParseError;
+    QJsonDocument embeddedDocument =
+        QJsonDocument::fromJson(embeddedStdout, &embeddedParseError);
+    if (
+        embeddedParseError.error == QJsonParseError::NoError
+        && embeddedDocument.isObject()
+    ) {
+        embeddedRecord.insert("observation", embeddedDocument.object());
+    }
+    output.insert("empty_argv0_process", embeddedRecord);
     QCoreApplication::setApplicationName("die");
     output.insert(
         "engine_version",
@@ -1017,6 +1061,66 @@ QJsonObject modeObservations()
 
 int main(int argc, char *argv[])
 {
+    if (
+        argc == 2
+        && std::strcmp(argv[1], "--isolated-empty-argv0-mode") == 0
+    ) {
+        int embeddedArgc = 1;
+        char emptyArgv0[] = "";
+        char *embeddedArgv[] = {emptyArgv0, nullptr};
+        QCoreApplication application(embeddedArgc, embeddedArgv);
+        EngineFixture fixture;
+        QJsonObject observation{
+            {"schema_version", 1},
+            {"case", "empty_argv0_mode"},
+            {
+                "application_name",
+                QCoreApplication::applicationName()
+            },
+            {
+                "console",
+                evaluate(
+                    fixture.engine,
+                    "_isConsoleMode()",
+                    "empty-argv0-console.js"
+                )
+            },
+            {
+                "gui",
+                evaluate(
+                    fixture.engine,
+                    "_isGuiMode()",
+                    "empty-argv0-gui.js"
+                )
+            },
+            {
+                "lite",
+                evaluate(
+                    fixture.engine,
+                    "_isLiteMode()",
+                    "empty-argv0-lite.js"
+                )
+            },
+            {
+                "library",
+                evaluate(
+                    fixture.engine,
+                    "_isLibraryMode()",
+                    "empty-argv0-library.js"
+                )
+            },
+        };
+        QByteArray serialized =
+            QJsonDocument(observation).toJson(QJsonDocument::Compact);
+        std::fwrite(
+            serialized.constData(),
+            1,
+            static_cast<size_t>(serialized.size()),
+            stdout
+        );
+        std::fputc('\n', stdout);
+        return 0;
+    }
     QCoreApplication application(argc, argv);
     QCoreApplication::setApplicationName("die");
     QCoreApplication::setApplicationVersion("9.9.9");
@@ -1044,7 +1148,7 @@ int main(int argc, char *argv[])
     }
 
     QJsonObject output;
-    output.insert("schema_version", 4);
+    output.insert("schema_version", 5);
     output.insert("upstream_commit", UPSTREAM_COMMIT);
     output.insert("die_script_commit", DIE_SCRIPT_COMMIT);
     output.insert("rules_commit", RULES_COMMIT);
