@@ -1,6 +1,6 @@
 # DIE 规则兼容性调研
 
-Status: Draft  
+Status: In Review  
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`  
 Rules: `horsicq/Detect-It-Easy@c2c17dfa5ea4e078ba31eab55d87430c96622fb6`  
 Runtime: `horsicq/die_script@5d82316c110abf0eb863b50bc679d330e05067b6`  

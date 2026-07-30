@@ -1,6 +1,6 @@
 # 上游源码分析
 
-Status: Draft  
+Status: In Review  
 Upstream: `horsicq/DIE-engine@74eaf505c250ab47e709024e9dc41657cd8f2254`  
 Last updated: 2026-07-29
 

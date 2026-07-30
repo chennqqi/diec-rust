@@ -9,7 +9,7 @@
     {
       "id": "P0-RES-001",
       "path": "docs/research/upstream-baseline.md",
-      "document_status": "Draft",
+      "document_status": "In Review",
       "gate_status": "review_pending"
     },
     {
@@ -21,13 +21,13 @@
     {
       "id": "P0-RES-003",
       "path": "docs/research/source-analysis.md",
-      "document_status": "Draft",
+      "document_status": "In Review",
       "gate_status": "review_pending"
     },
     {
       "id": "P0-RES-004",
       "path": "docs/research/rule-compatibility.md",
-      "document_status": "Draft",
+      "document_status": "In Review",
       "gate_status": "review_pending"
     },
     {

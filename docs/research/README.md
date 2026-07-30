@@ -4,7 +4,7 @@
 
 Phase 0 计划形成：
 
-- [`upstream-baseline.md`](upstream-baseline.md)：版本、构建、submodule、依赖和许可证（Draft）。
+- [`upstream-baseline.md`](upstream-baseline.md)：版本、构建、submodule、依赖和许可证（In Review）。
 - [`windows-qt5-build-baseline.md`](windows-qt5-build-baseline.md)：固定
   Windows x64/MSVC 2019/Qt 5.15.2 的 clean qmake CLI 构建、官方 CMake
   xsimd 断点、二进制身份与最小 PE64 smoke（Draft）。
@@ -111,8 +111,8 @@ Phase 0 计划形成：
 - [`windows-count-boundary-behavior.md`](windows-count-boundary-behavior.md)：
   原生 Windows Qt5 的 archive 99999/100000/100001 和 resource 21/2001
   双轮精确边界，关闭 `CAP-NEST-004`（Draft）。
-- [`source-analysis.md`](source-analysis.md)：模块关系及扫描/规则调用链（Draft）。
-- [`rule-compatibility.md`](rule-compatibility.md)：规则语法、内建函数和宿主 API（Draft）。
+- [`source-analysis.md`](source-analysis.md)：模块关系及扫描/规则调用链（In Review）。
+- [`rule-compatibility.md`](rule-compatibility.md)：规则语法、内建函数和宿主 API（In Review）。
 - [`rule-runtime-spike.md`](rule-runtime-spike.md)：Boa 全库解析、真实复杂规则、宿主绑定和资源限制验证（Draft）。
 - [`rquickjs-rule-runtime-spike.md`](rquickjs-rule-runtime-spike.md)：rquickjs/QuickJS-NG 全库执行、sloppy 语义、native 构建和资源限制验证（Draft）。
 - [`rquickjs-static-link.md`](rquickjs-static-link.md)：rquickjs/QuickJS-NG 的 Windows/Linux Rust staticlib、C 链接、CRT、系统依赖和许可证闭包（Draft）。
