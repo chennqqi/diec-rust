@@ -12,6 +12,10 @@ Phase 0 计划形成：
   macOS x86_64/Qt 5.15.2 CLI-only qmake bootstrap、候选报告 validator 和
   68 行 runtime closure 接纳门禁；当前仅 infrastructure ready，未采集
   runtime（Draft）。
+- [`macos-privilege-path-candidate.md`](macos-privilege-path-candidate.md)：
+  受限 runner-temp fixture 上的 root/runner、mode、ACL deny-read/search 与
+  ownership 12-case 候选矩阵、安全清理和 raw replay 契约；当前未采集 Darwin
+  runtime（Draft）。
 - [`capability-matrix.md`](capability-matrix.md)：CLI/engine 能力与证据索引（Draft）。
 - [`capability-coverage-report.md`](capability-coverage-report.md)：68 个稳定能力在
   Linux Qt5/Qt6、Windows 和 macOS 上的 runtime/source-only、corpus-missing

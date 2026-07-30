@@ -24,6 +24,7 @@ jobs:
       NESTED_CORPUS_DIR: ${{ runner.temp }}/diec-nested-corpus
       SPECIAL_PATH_FIXTURE_DIR: ${{ runner.temp }}/diec-special-path
       FILESYSTEM_FIXTURE_DIR: ${{ runner.temp }}/diec-filesystem-path
+      PRIVILEGE_PATH_FIXTURE_DIR: ${{ runner.temp }}/diec-macos-privilege-path
       LARGE_DIRECTORY_FIXTURE_DIR: ${{ runner.temp }}/diec-large-directory
       LONG_PATH_FIXTURE_DIR: ${{ runner.temp }}/diec-macos-long-path
       TOCTOU_FIXTURE_DIR: ${{ runner.temp }}/diec-macos-toctou
@@ -274,6 +275,22 @@ jobs:
             --oracle-report "$EVIDENCE_DIR/oracle-candidate.json" \
             --cli-baseline-report \
               "$EVIDENCE_DIR/cli-baseline-candidate.json"
+          python3 tools/upstream/collect_macos_cli_privilege_paths.py \
+            --binary "$UPSTREAM_SOURCE/build/release/diec" \
+            --source-dir "$UPSTREAM_SOURCE" \
+            --qt-dir "$QT_ROOT/5.15.2/clang_64" \
+            --corpus-dir "$CORPUS_DIR" \
+            --fixture-dir "$PRIVILEGE_PATH_FIXTURE_DIR" \
+            --oracle-report "$EVIDENCE_DIR/oracle-candidate.json" \
+            --cli-baseline-report \
+              "$EVIDENCE_DIR/cli-baseline-candidate.json" \
+            --output \
+              "$EVIDENCE_DIR/cli-privilege-path-candidate.json"
+          python3 tools/upstream/validate_macos_cli_privilege_paths.py \
+            "$EVIDENCE_DIR/cli-privilege-path-candidate.json" \
+            --oracle-report "$EVIDENCE_DIR/oracle-candidate.json" \
+            --cli-baseline-report \
+              "$EVIDENCE_DIR/cli-baseline-candidate.json"
           python3 tools/upstream/collect_macos_cli_large_directory.py \
             --binary "$UPSTREAM_SOURCE/build/release/diec" \
             --source-dir "$UPSTREAM_SOURCE" \
@@ -344,6 +361,7 @@ jobs:
             ${{ runner.temp }}/diec-macos-candidate-evidence/special-path-fixture-candidate.json
             ${{ runner.temp }}/diec-macos-candidate-evidence/cli-special-path-candidate.json
             ${{ runner.temp }}/diec-macos-candidate-evidence/cli-filesystem-candidate.json
+            ${{ runner.temp }}/diec-macos-candidate-evidence/cli-privilege-path-candidate.json
             ${{ runner.temp }}/diec-macos-candidate-evidence/cli-large-directory-candidate.json
             ${{ runner.temp }}/diec-macos-candidate-evidence/long-path-fixture-candidate.json
             ${{ runner.temp }}/diec-macos-candidate-evidence/cli-long-path-candidate.json

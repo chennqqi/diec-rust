@@ -125,8 +125,11 @@ runtime。上传物包含 build report、harness artifact、engine report、
 - 4 个 engine runtime raw stream；
 - 2 个单列 build stdout/stderr。
 
-CLI 原口径仍为 2,108 次执行/4,216 个 raw stream；候选 runtime 合计为
-2,110 次执行/4,220 个 raw stream。build log 不计入 runtime stream。
+本 database-cache 增量落地时，CLI 口径为 2,108 次执行/4,216 个 raw stream，
+加上本 harness 后候选 runtime 为 2,110 次执行/4,220 个 raw stream。后续
+privilege-path candidate 已把当前总口径更新到
+[`macos-qt5-oracle-plan.md`](macos-qt5-oracle-plan.md)；build log 始终不计入
+runtime stream。
 
 ## 尚未证明
 
@@ -134,8 +137,11 @@ CLI 原口径仍为 2,108 次执行/4,216 个 raw stream；候选 runtime 合计
 - 尚未知道 macOS cache bytes/size、19 项 relationship 或 Linux projection
   是否相同；
 - POSIX mode denial 只覆盖 hosted-runner 当前非 root 用户；
-- root、ACL、ownership、sandbox profile、network filesystem、
-  changed-during-read、不同内容 writer、crash-interrupted publish 和恶意超大
+- database-cache harness 自身仍未覆盖 root、ACL、ownership、sandbox profile、
+  network filesystem；
+- 独立 privilege-path CLI candidate 已覆盖 root/ACL/ownership 的受限矩阵，
+  但尚未在 Darwin 运行，且不能替代 engine cache 行为；
+- changed-during-read、不同内容 writer、crash-interrupted publish 和恶意超大
   cache 输入仍缺；
 - 本候选不是 Rust cache 格式、锁、事务化 publish 或资源限制设计的验证。
 
