@@ -38,21 +38,64 @@ Last updated: 2026-07-30
 | 产品源码闭包 | `product-source-closure.md` | 237 compile source；仅参考，不约束 Rust |
 | XYara 构建闭包 | `yara-license-closure.md` | YARA build-only；不进入 `diec` CLI |
 
-### YARA/PEiD/signatures 不进入引擎范围
+### YARA/PEiD/signatures 不进入当前 CLI 范围（但为未来 GUI 记录）
 
-源码级证据（`rule-asset-provenance.md`）：
+#### 源码级证据
+
+`diec` CLI 不集成 YARA/PEiD/signatures（`rule-asset-provenance.md`）：
 
 - `src/console/main_console.cpp` 只构造 `DiE_Script`，只注册 `db`/`db_extra`/
   `db_custom` 三类数据库路径
 - `src/console/CMakeLists.txt` 不包含 XYara/XPEID/FormatWidgets
 - `diec.dir/link.txt` 无 YARA、PEiD 或 signatures token
-- YARA/PEiD/signatures 仅在 GUI 中使用（`WITH_YARA=ON`、qmake GUI 收集
-  `XYara/xyara.cpp` 和 `XPEID/xpeid.cpp`、`SearchSignatures` 使用
-  `$data/signatures`）
 
-结论：`diec` CLI 的扫描能力 = `DiE_Script` 引擎 + `db*` 规则。YARA/PEiD/
-signatures 是 GUI 专属功能，不是 CLI 的可观察能力。Rust 项目目标为 1:1 兼容
-`diec` CLI，因此不实现 YARA/PEiD/signatures，也不分发这些资产。
+#### 三个辅助引擎的作用
+
+**YARA**（XYara，MIT 许可证）：
+- 独立的 YARA 扫描线程类，继承 `XThreadObject`
+- 加载 `.yar` 规则文件，编译 YARA 规则，对文件执行 YARA 扫描
+- 返回 `SCAN_STRUCT`（rule name、offset、size）
+- 与 DiE_Script 规则引擎是**两个独立的并行检测通道**
+- GUI CMake 默认 `WITH_YARA=ON`，链接 `yara` 库
+- 规则文件：`Detect-It-Easy/yara_rules/`（8 文件，10,056 条规则）和
+  `XYara/yara_rules/`（10 文件，10,069 条规则），两套不是镜像
+- 部分规则文件含 GPLv2 标记（`crypto_signature.yar`、`packer.yar`、
+  `packer_compiler_signatures.yar`）
+
+**PEiD**（XPEID，MIT 许可证）：
+- 继承 `XScanEngine`，是 PEiD `userdb.txt` 解析器和扫描器
+- 重写 `_processDetect()` 和 `getSignaturesFromData()`
+- 使用 PEiD 格式签名数据库识别 PE 文件的 packer/compiler
+- GUI qmake 收集 `XPEID/xpeid.cpp`
+- 规则文件：`Detect-It-Easy/peid_rules/`（11 文件，8,890 sections）和
+  `XPEID/peid/`（14 文件，4,136 sections），两套不是镜像
+
+**Signatures**（SearchSignatures，MIT 许可证）：
+- GUI widget（在 `FormatWidgets/` 下），使用 `$data/signatures`
+- 包含 `crypto.db`（3,085,459 bytes，crypto 签名）和 `junks.db`（junk 代码签名）
+- `signatures.cmake` 只在定义 `X_RESOURCES` 时安装
+- 四个数据文件无文件内许可证/来源标记，只有 component root MIT
+
+#### 当前结论
+
+`diec` CLI 的扫描能力 = `DiE_Script` 引擎 + `db*` 规则。YARA/PEiD/signatures
+是 GUI 专属的辅助检测通道，不是 CLI 的可观察能力。Phase 0-6 不实现这些辅助
+引擎，也不分发这些资产。
+
+#### 未来 GUI 准备记录
+
+ROADMAP Phase Future 明确 GUI 在核心库、CLI 和 C ABI 稳定后调研。当 Rust 项目
+实现 GUI 时，需要：
+
+1. **YARA 集成**：Rust 侧可用 `yara-rust` crate 或 FFI 绑定 YARA 库；需单独
+   建立 YARA 规则的 capability matrix 和 runtime differential
+2. **PEiD 集成**：需实现 PEiD userdb.txt 解析器；上游两套数据树不是镜像，
+   需选择 Detect release tree 或 component tree
+3. **Signatures 集成**：需实现 crypto/junk 签名数据库扫描器
+4. **许可证门禁**：YARA 规则文件含 GPLv2 标记，PEiD/signatures 数据文件来源
+   未完全确认；未来 GUI 分发这些资产时需完成许可证评审
+5. **独立 capability matrix**：YARA/PEiD/signatures 不能伪装为 CLI 必需能力，
+   需单独建立运行时差分和规则完整性门禁
 
 ### 剩余缺口
 

@@ -60,3 +60,16 @@
 - 上游 C++ 许可证（GPL/UnRAR/Brotli/Zstandard）不传染 Rust 二进制
 - P0-BLOCK-004 剩余项仅为 Phase 1 常规工作：cargo deny/about + NOTICE
 - 建议将 P0-BLOCK-004 从 Open 降为 Review Ready
+
+### 2026-07-30: YARA/PEiD/signatures 深入调查
+
+#### 背景
+用户指出需要深入调查 YARA/PEiD/signatures 的作用，且未来要实现 GUI。
+
+#### 调查结果
+- XYara：独立 YARA 扫描线程类（XThreadObject），与 DiE_Script 并行的检测通道，GUI 默认 WITH_YARA=ON
+- XPEID：继承 XScanEngine，PEiD userdb.txt 解析器，识别 PE packer/compiler
+- SearchSignatures：GUI widget，使用 crypto.db/junks.db
+- 三者均不进入 diec CLI（main_console.cpp/CMakeLists.txt/link.txt 证据）
+- XScanEngine 是独立开源仓库（MIT），不是私有代码
+- 已在 phase-0-review-preparation.md 记录未来 GUI 集成准备信息
