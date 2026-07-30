@@ -306,6 +306,10 @@ Phase 0 计划形成：
 - [`windows-database-cache-behavior.md`](windows-database-cache-behavior.md)：
   原生 Windows Qt5 的 19-case engine cache/DACL 双轮基线、Linux 语义投影
   和平台 cache-byte 差异（Draft）。
+- [`macos-database-cache-candidate.md`](macos-database-cache-candidate.md)：
+  macOS Qt5 的 qmake main-object 替换 build closure、test-HOME 隔离、
+  19-case engine cache/permission 双轮候选与离线 raw-replay validator；
+  尚无 Darwin runtime（Draft）。
 - [`windows-capability-closure-plan.md`](windows-capability-closure-plan.md)：
   将 23 份 Windows runtime 报告逐项映射到 68 行能力清单，当前为
   68 complete、0 partial、0 missing，且已接入总覆盖报告（In Review）。

@@ -69,6 +69,19 @@ prefix 尚未出现；窗口丢失会使采集失败。变更完成后才发送 
 普通 pipe baseline，这一 transport 差异明确保留为 limitation，并由两个
 stable control 与完整 document 投影约束。总量因此增至 2,108 次执行和 4,216 个
 raw stream。
+另一个
+[`database-cache engine candidate`](macos-database-cache-candidate.md)
+不混入 CLI 计数：workflow 从固定 qmake console
+Makefile 只替换 `main_console.cpp/.o` 为 project-generated macOS adapter，复用
+其余 object/link closure；adapter 在调用共享 19-case database-cache harness
+前启用 `QStandardPaths` test mode。build bundle 保存原始/补丁 Makefile、
+共享 harness、adapter、artifact identity 及两份编译日志。随后以非 root runner
+和 collector-owned `HOME` 运行 harness 两轮，保留 4 个 runtime raw stream，
+覆盖 miss/hit、同 size+mtime stale、cache header/record truncation、write
+denial/recovery、8 writer、directory/ZIP permission denial 和 cancellation
+poisoning，并逐 case 与固定 Linux Qt5 投影比较。故候选 runtime 总口径为
+2,110 次 process execution、4,220 个 raw stream；两份 build log 单列，不冒充
+runtime stream。
 remaining 矩阵在尚无
 Linux 对应全矩阵时保留结构、有效性与 priority 约束，不伪造跨平台等价。
 database 矩阵则只做明确列出的实参路径替换与 CRLF→LF，再与固定 Linux
@@ -187,8 +200,9 @@ Darwin runner 实际采集；17-case long-path CLI 又固定 NAME_MAX、PATH_MAX
 和 kernel-private MAXLONGPATHLEN 周围的物化、explicit/discovery 与 errno
 候选；4-case TOCTOU CLI 则固定 PTY 行缓冲、`SIGSTOP`/
 `waitpid(WUNTRACED)` 确认、pre-open prefix guard 和停止态 mutation。
-root/ACL/ownership、database cache/permission 与 engine-only harness
-仍缺独立候选；上述 TOCTOU 候选也仍须在 Darwin 实际采集和评审，
+database cache/permission 已有上述 19-case engine build/run candidate，但
+尚未在 Darwin 实际采集；root/ACL/ownership 和其余 engine-only harness
+仍缺独立候选。上述 TOCTOU 候选同样仍须在 Darwin 实际采集和评审，
 `capability_rows_admitted` 必须保持 0。
 
 ## 6. 本机可执行验证

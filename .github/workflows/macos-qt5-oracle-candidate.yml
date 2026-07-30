@@ -27,6 +27,7 @@ jobs:
       LARGE_DIRECTORY_FIXTURE_DIR: ${{ runner.temp }}/diec-large-directory
       LONG_PATH_FIXTURE_DIR: ${{ runner.temp }}/diec-macos-long-path
       TOCTOU_FIXTURE_DIR: ${{ runner.temp }}/diec-macos-toctou
+      DATABASE_CACHE_WORKING_DIR: ${{ runner.temp }}/diec-macos-database-cache
       QT_ROOT: ${{ runner.temp }}/Qt
       UPSTREAM_BUILD: ${{ runner.temp }}/DIE-engine-qmake-build
       UPSTREAM_COMMIT: 74eaf505c250ab47e709024e9dc41657cd8f2254
@@ -189,6 +190,40 @@ jobs:
               "$EVIDENCE_DIR/cli-matrix-candidate.json"
           python3 tools/corpus/generate_database_fixture.py \
             "$DATABASE_FIXTURE_DIR"
+          python3 tools/upstream/build_macos_database_cache_harness.py \
+            --source-dir "$UPSTREAM_SOURCE" \
+            --qt-dir "$QT_ROOT/5.15.2/clang_64" \
+            --build-dir "$UPSTREAM_BUILD" \
+            --oracle-report "$EVIDENCE_DIR/oracle-candidate.json" \
+            --output-binary \
+              "$EVIDENCE_DIR/database-cache-harness-candidate" \
+            --output-report \
+              "$EVIDENCE_DIR/database-cache-harness-build-candidate.json"
+          python3 \
+            tools/upstream/validate_macos_database_cache_harness_build.py \
+            "$EVIDENCE_DIR/database-cache-harness-build-candidate.json" \
+            --oracle-report "$EVIDENCE_DIR/oracle-candidate.json" \
+            --artifact \
+              "$EVIDENCE_DIR/database-cache-harness-candidate"
+          python3 tools/upstream/collect_macos_database_cache_harness.py \
+            --binary \
+              "$EVIDENCE_DIR/database-cache-harness-candidate" \
+            --source-dir "$UPSTREAM_SOURCE" \
+            --qt-dir "$QT_ROOT/5.15.2/clang_64" \
+            --fixture-dir "$DATABASE_FIXTURE_DIR" \
+            --working-dir "$DATABASE_CACHE_WORKING_DIR" \
+            --oracle-report "$EVIDENCE_DIR/oracle-candidate.json" \
+            --build-report \
+              "$EVIDENCE_DIR/database-cache-harness-build-candidate.json" \
+            --output \
+              "$EVIDENCE_DIR/database-cache-engine-candidate.json"
+          python3 tools/upstream/validate_macos_database_cache_harness.py \
+            "$EVIDENCE_DIR/database-cache-engine-candidate.json" \
+            --oracle-report "$EVIDENCE_DIR/oracle-candidate.json" \
+            --build-report \
+              "$EVIDENCE_DIR/database-cache-harness-build-candidate.json" \
+            --binary \
+              "$EVIDENCE_DIR/database-cache-harness-candidate"
           python3 tools/upstream/collect_macos_cli_database.py \
             --binary "$UPSTREAM_SOURCE/build/release/diec" \
             --source-dir "$UPSTREAM_SOURCE" \
@@ -313,6 +348,10 @@ jobs:
             ${{ runner.temp }}/diec-macos-candidate-evidence/long-path-fixture-candidate.json
             ${{ runner.temp }}/diec-macos-candidate-evidence/cli-long-path-candidate.json
             ${{ runner.temp }}/diec-macos-candidate-evidence/cli-toctou-candidate.json
+            ${{ runner.temp }}/diec-macos-candidate-evidence/database-cache-harness-build-candidate.json
+            ${{ runner.temp }}/diec-macos-candidate-evidence/database-cache-harness-candidate
+            ${{ runner.temp }}/diec-macos-candidate-evidence/database-cache-engine-candidate.json
+            ${{ runner.temp }}/diec-macos-candidate-evidence/build-input
             ${{ runner.temp }}/diec-macos-candidate-evidence/raw
             ${{ runner.temp }}/diec-macos-candidate-evidence/SHA256SUMS
           if-no-files-found: error

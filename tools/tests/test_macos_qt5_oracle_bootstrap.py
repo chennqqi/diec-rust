@@ -2853,6 +2853,14 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             "validate_macos_cli_long_paths.py",
             "collect_macos_cli_toctou.py",
             "validate_macos_cli_toctou.py",
+            "build_macos_database_cache_harness.py",
+            "validate_macos_database_cache_harness_build.py",
+            "collect_macos_database_cache_harness.py",
+            "validate_macos_database_cache_harness.py",
+            "database-cache-harness-build-candidate.json",
+            "database-cache-harness-candidate",
+            "database-cache-engine-candidate.json",
+            "diec-macos-candidate-evidence/build-input",
             "cli-baseline-candidate.json",
             "cli-matrix-candidate.json",
             "cli-remaining-candidate.json",
@@ -2866,6 +2874,8 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             "long-path-fixture-candidate.json",
             "cli-long-path-candidate.json",
             "cli-toctou-candidate.json",
+            "database-cache-harness-build-candidate.json",
+            "database-cache-engine-candidate.json",
             "diec-macos-candidate-evidence/raw",
             (
                 "actions/checkout@"
@@ -2917,6 +2927,8 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
                 "long-path-fixture-candidate.json",
                 "cli-long-path-candidate.json",
                 "cli-toctou-candidate.json",
+                "database-cache-harness-build-candidate.json",
+                "database-cache-engine-candidate.json",
             ],
         )
         self.assertTrue(workflow["special_path_fixture_candidate"])
@@ -2928,6 +2940,9 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
         )
         self.assertTrue(workflow["long_path_fixture_candidate"])
         self.assertTrue(workflow["toctou_cli_candidate"])
+        self.assertTrue(
+            workflow["database_cache_engine_candidate"]
+        )
         self.assertEqual(
             workflow["remaining_cli_execution_count"], 1092
         )
@@ -2960,6 +2975,19 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
         )
         self.assertEqual(
             workflow["general_cli_raw_stream_count"], 4216
+        )
+        self.assertEqual(
+            workflow["engine_cache_execution_count"], 2
+        )
+        self.assertEqual(
+            workflow["engine_cache_raw_stream_count"], 4
+        )
+        self.assertEqual(workflow["build_raw_stream_count"], 2)
+        self.assertEqual(
+            workflow["candidate_runtime_execution_count"], 2110
+        )
+        self.assertEqual(
+            workflow["candidate_runtime_raw_stream_count"], 4220
         )
 
     def test_cli_candidate_tools_are_bound_and_fail_closed(self):
