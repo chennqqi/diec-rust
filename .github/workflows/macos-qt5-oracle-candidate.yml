@@ -24,6 +24,7 @@ jobs:
       NESTED_CORPUS_DIR: ${{ runner.temp }}/diec-nested-corpus
       SPECIAL_PATH_FIXTURE_DIR: ${{ runner.temp }}/diec-special-path
       FILESYSTEM_FIXTURE_DIR: ${{ runner.temp }}/diec-filesystem-path
+      LARGE_DIRECTORY_FIXTURE_DIR: ${{ runner.temp }}/diec-large-directory
       QT_ROOT: ${{ runner.temp }}/Qt
       UPSTREAM_BUILD: ${{ runner.temp }}/DIE-engine-qmake-build
       UPSTREAM_COMMIT: 74eaf505c250ab47e709024e9dc41657cd8f2254
@@ -107,6 +108,8 @@ jobs:
           tar -xf \
             "$FILESYSTEM_FIXTURE_DIR/path-filesystem-fixture.tar" \
             -C "$FILESYSTEM_FIXTURE_DIR"
+          python3 tools/corpus/materialize_large_path_fixture.py \
+            --output-dir "$LARGE_DIRECTORY_FIXTURE_DIR" >/dev/null
           python3 tools/corpus/generate_macos_special_path_fixture.py \
             --baseline-dir "$CORPUS_DIR" \
             --fixture-dir "$SPECIAL_PATH_FIXTURE_DIR" \
@@ -227,6 +230,21 @@ jobs:
             --oracle-report "$EVIDENCE_DIR/oracle-candidate.json" \
             --cli-baseline-report \
               "$EVIDENCE_DIR/cli-baseline-candidate.json"
+          python3 tools/upstream/collect_macos_cli_large_directory.py \
+            --binary "$UPSTREAM_SOURCE/build/release/diec" \
+            --source-dir "$UPSTREAM_SOURCE" \
+            --qt-dir "$QT_ROOT/5.15.2/clang_64" \
+            --fixture-dir "$LARGE_DIRECTORY_FIXTURE_DIR" \
+            --oracle-report "$EVIDENCE_DIR/oracle-candidate.json" \
+            --cli-baseline-report \
+              "$EVIDENCE_DIR/cli-baseline-candidate.json" \
+            --output \
+              "$EVIDENCE_DIR/cli-large-directory-candidate.json"
+          python3 tools/upstream/validate_macos_cli_large_directory.py \
+            "$EVIDENCE_DIR/cli-large-directory-candidate.json" \
+            --oracle-report "$EVIDENCE_DIR/oracle-candidate.json" \
+            --cli-baseline-report \
+              "$EVIDENCE_DIR/cli-baseline-candidate.json"
           (
             cd "$EVIDENCE_DIR"
             find . -type f ! -name SHA256SUMS \
@@ -250,6 +268,7 @@ jobs:
             ${{ runner.temp }}/diec-macos-candidate-evidence/special-path-fixture-candidate.json
             ${{ runner.temp }}/diec-macos-candidate-evidence/cli-special-path-candidate.json
             ${{ runner.temp }}/diec-macos-candidate-evidence/cli-filesystem-candidate.json
+            ${{ runner.temp }}/diec-macos-candidate-evidence/cli-large-directory-candidate.json
             ${{ runner.temp }}/diec-macos-candidate-evidence/raw
             ${{ runner.temp }}/diec-macos-candidate-evidence/SHA256SUMS
           if-no-files-found: error

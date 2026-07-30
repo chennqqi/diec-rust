@@ -64,6 +64,12 @@ FILESYSTEM_COLLECTOR_PATH = (
 FILESYSTEM_VALIDATOR_PATH = (
     ROOT / "tools/upstream/validate_macos_cli_filesystem.py"
 )
+LARGE_DIRECTORY_COLLECTOR_PATH = (
+    ROOT / "tools/upstream/collect_macos_cli_large_directory.py"
+)
+LARGE_DIRECTORY_VALIDATOR_PATH = (
+    ROOT / "tools/upstream/validate_macos_cli_large_directory.py"
+)
 
 
 def load_module(name: str, path: Path):
@@ -166,6 +172,18 @@ FILESYSTEM_COLLECTOR = load_module(
 )
 FILESYSTEM_VALIDATOR = load_module(
     "validate_macos_cli_filesystem", FILESYSTEM_VALIDATOR_PATH
+)
+LARGE_DIRECTORY_COLLECTOR = load_module(
+    "collect_macos_cli_large_directory",
+    LARGE_DIRECTORY_COLLECTOR_PATH,
+)
+LARGE_DIRECTORY_VALIDATOR = load_module(
+    "validate_macos_cli_large_directory",
+    LARGE_DIRECTORY_VALIDATOR_PATH,
+)
+LARGE_DIRECTORY_MATERIALIZER = load_module(
+    "materialize_large_path_fixture_for_macos_test",
+    ROOT / "tools/corpus/materialize_large_path_fixture.py",
 )
 
 
@@ -2225,6 +2243,196 @@ def write_cli_filesystem_candidate_bundle(
     return report_path
 
 
+def write_cli_large_directory_candidate_bundle(
+    directory: Path, baseline_path: Path
+) -> Path:
+    oracle_path = directory / "oracle-candidate.json"
+    baseline = CLI_VALIDATOR.load_json(baseline_path)[0]
+    fixture_raw = (
+        ROOT / LARGE_DIRECTORY_COLLECTOR.FIXTURE_MANIFEST
+    ).read_bytes()
+    fixture = json.loads(fixture_raw)
+    linux_raw = (
+        ROOT / LARGE_DIRECTORY_COLLECTOR.LINUX_REFERENCE
+    ).read_bytes()
+    linux = json.loads(linux_raw)
+    fixture_dir = PurePosixPath(
+        "/private/tmp/large-directory-fixture"
+    )
+    body = b'{"total": 0}'
+    report_db = LARGE_DIRECTORY_COLLECTOR.database_arguments(
+        Path("<source>"), report=True
+    )
+    cases = {}
+    for case in fixture["cases"]:
+        name = case["name"]
+        expected = LARGE_DIRECTORY_COLLECTOR.expected_prefixes(
+            LARGE_DIRECTORY_MATERIALIZER, case
+        )
+        if not expected and case["file_count"] == 0:
+            stdout = b""
+        elif not expected:
+            stdout = body
+        else:
+            case_dir = fixture_dir / name
+            stdout = b"".join(
+                (
+                    str(case_dir / relative).encode("utf-8")
+                    + b":\n"
+                    + body
+                    + b"\n"
+                )
+                for relative in expected
+            )
+        observation = CLI_COMMON.Observation(0, stdout, b"")
+        entry = CLI_COLLECTOR.pair_report(
+            CLI_COMMON,
+            directory,
+            f"cli-large-directory/{name}",
+            observation,
+            observation,
+        )
+        prefixes = LARGE_DIRECTORY_COLLECTOR.prefix_relatives(
+            stdout, fixture_dir / name
+        )
+        documents = (
+            LARGE_DIRECTORY_COLLECTOR.entropy_document_count(
+                stdout
+            )
+        )
+        projection = LARGE_DIRECTORY_COLLECTOR.linux_projection(
+            linux, name
+        )
+        entry.update(
+            {
+                "arguments": [
+                    "--entropy",
+                    "--json",
+                    *report_db,
+                    f"<fixture>/{name}",
+                ],
+                "timeout_seconds": 60,
+                "first_timed_out": False,
+                "second_timed_out": False,
+                "first_entropy_document_count": documents,
+                "second_entropy_document_count": documents,
+                "first_prefix_count": len(prefixes),
+                "second_prefix_count": len(prefixes),
+                "first_prefix": (
+                    prefixes[0] if prefixes else None
+                ),
+                "last_prefix": (
+                    prefixes[-1] if prefixes else None
+                ),
+                "first_prefixes_sha256": (
+                    LARGE_DIRECTORY_COLLECTOR.sequence_sha256(
+                        prefixes
+                    )
+                ),
+                "second_prefixes_sha256": (
+                    LARGE_DIRECTORY_COLLECTOR.sequence_sha256(
+                        prefixes
+                    )
+                ),
+                "expected_name_order_sha256": (
+                    LARGE_DIRECTORY_COLLECTOR.sequence_sha256(
+                        expected
+                    )
+                ),
+                "complete_name_order_equal": prefixes == expected,
+                "linux_qt5_projection": projection,
+                "linux_qt5_semantic_equal": (
+                    observation.exit_code
+                    == projection["exit_code"]
+                    and documents
+                    == projection["entropy_document_count"]
+                    and len(prefixes) == projection["prefix_count"]
+                ),
+            }
+        )
+        cases[name] = entry
+
+    preflight = {
+        case["name"]: LARGE_DIRECTORY_MATERIALIZER.preflight(case)
+        for case in fixture["cases"]
+    }
+    count = len(fixture["cases"])
+    report = {
+        "schema_version": 1,
+        "result": "candidate",
+        "platform": LARGE_DIRECTORY_COLLECTOR.PLATFORM,
+        "generator": LARGE_DIRECTORY_COLLECTOR._generator_bindings(
+            ROOT
+        ),
+        "oracle_report": {
+            "path": "oracle-candidate.json",
+            "sha256": hashlib.sha256(
+                oracle_path.read_bytes()
+            ).hexdigest(),
+        },
+        "cli_baseline_report": {
+            "path": "cli-baseline-candidate.json",
+            "sha256": hashlib.sha256(
+                baseline_path.read_bytes()
+            ).hexdigest(),
+        },
+        "source": baseline["source"],
+        "qt": baseline["qt"],
+        "binary": baseline["binary"],
+        "fixture": {
+            "manifest": LARGE_DIRECTORY_COLLECTOR.FIXTURE_MANIFEST,
+            "manifest_sha256": hashlib.sha256(
+                fixture_raw
+            ).hexdigest(),
+            "materializer": (
+                LARGE_DIRECTORY_COLLECTOR.FIXTURE_MATERIALIZER
+            ),
+            "case_count": count,
+            "planned_file_count": sum(
+                case["file_count"] for case in fixture["cases"]
+            ),
+            "live_preflight": preflight,
+        },
+        "linux_qt5_reference": {
+            "path": LARGE_DIRECTORY_COLLECTOR.LINUX_REFERENCE,
+            "sha256": hashlib.sha256(linux_raw).hexdigest(),
+        },
+        "local_paths": {"fixture_dir": str(fixture_dir)},
+        "selection": {
+            "case_names": [
+                case["name"] for case in fixture["cases"]
+            ],
+            "minimum_repetitions_per_case": 2,
+        },
+        "cases": cases,
+        "summary": {
+            "case_count": count,
+            "execution_count": 2 * count,
+            "raw_stream_count": 4 * count,
+            "determinism_failures": [],
+            "timeout_cases": [],
+            "linux_semantic_failures": [],
+            "name_order_failures": [],
+            "deterministic": True,
+            "linux_semantics_equal": True,
+            "complete_name_order_equal": True,
+        },
+        "admission": {
+            "platform_admitted": False,
+            "capability_rows_admitted": 0,
+            "reason": LARGE_DIRECTORY_COLLECTOR.ADMISSION_REASON,
+        },
+        "limitations": LARGE_DIRECTORY_COLLECTOR.LIMITATIONS,
+    }
+    report_path = (
+        directory / "cli-large-directory-candidate.json"
+    )
+    report_path.write_text(
+        json.dumps(report, sort_keys=True), encoding="utf-8"
+    )
+    return report_path
+
+
 class MacosQt5OracleBootstrapTests(unittest.TestCase):
     def test_plan_is_exact_generator_output_and_source_bound(self):
         report = json.loads(PLAN_PATH.read_text(encoding="utf-8"))
@@ -2312,6 +2520,7 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             "generate_nested_corpus.py",
             "generate_macos_special_path_fixture.py",
             "generate_path_filesystem_fixture.py",
+            "materialize_large_path_fixture.py",
             "validate_macos_special_path_fixture.py",
             "collect_macos_cli_path_nested.py",
             "validate_macos_cli_path_nested.py",
@@ -2321,6 +2530,8 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             "validate_macos_cli_special_paths.py",
             "collect_macos_cli_filesystem.py",
             "validate_macos_cli_filesystem.py",
+            "collect_macos_cli_large_directory.py",
+            "validate_macos_cli_large_directory.py",
             "cli-baseline-candidate.json",
             "cli-matrix-candidate.json",
             "cli-remaining-candidate.json",
@@ -2330,6 +2541,7 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             "special-path-fixture-candidate.json",
             "cli-special-path-candidate.json",
             "cli-filesystem-candidate.json",
+            "cli-large-directory-candidate.json",
             "diec-macos-candidate-evidence/raw",
             (
                 "actions/checkout@"
@@ -2377,11 +2589,15 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
                 "special-path-fixture-candidate.json",
                 "cli-special-path-candidate.json",
                 "cli-filesystem-candidate.json",
+                "cli-large-directory-candidate.json",
             ],
         )
         self.assertTrue(workflow["special_path_fixture_candidate"])
         self.assertTrue(
             workflow["filesystem_path_fixture_candidate"]
+        )
+        self.assertTrue(
+            workflow["large_directory_fixture_candidate"]
         )
         self.assertEqual(
             workflow["remaining_cli_execution_count"], 1092
@@ -2402,10 +2618,13 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             workflow["filesystem_cli_execution_count"], 16
         )
         self.assertEqual(
-            workflow["general_cli_execution_count"], 2056
+            workflow["large_directory_cli_execution_count"], 10
         )
         self.assertEqual(
-            workflow["general_cli_raw_stream_count"], 4112
+            workflow["general_cli_execution_count"], 2066
+        )
+        self.assertEqual(
+            workflow["general_cli_raw_stream_count"], 4132
         )
 
     def test_cli_candidate_tools_are_bound_and_fail_closed(self):
@@ -3052,6 +3271,86 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
                 "raw file inventory",
             ):
                 FILESYSTEM_VALIDATOR.validate_report(
+                    report,
+                    report_path=report_path,
+                    oracle_path=oracle_path,
+                    baseline_path=baseline_path,
+                    root=ROOT,
+                )
+
+    def test_cli_large_directory_validator_recomputes_raw_matrix(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            baseline_path = write_cli_candidate_bundle(directory)
+            report_path = write_cli_large_directory_candidate_bundle(
+                directory, baseline_path
+            )
+            report = CLI_VALIDATOR.load_json(report_path)[0]
+            oracle_path = directory / "oracle-candidate.json"
+            LARGE_DIRECTORY_VALIDATOR.validate_report(
+                report,
+                report_path=report_path,
+                oracle_path=oracle_path,
+                baseline_path=baseline_path,
+                root=ROOT,
+            )
+            self.assertEqual(report["summary"]["case_count"], 5)
+            self.assertEqual(
+                report["summary"]["execution_count"], 10
+            )
+            self.assertEqual(
+                report["summary"]["raw_stream_count"], 20
+            )
+            self.assertEqual(
+                report["cases"]["flat_4096"][
+                    "first_prefix_count"
+                ],
+                4096,
+            )
+
+            first = report["cases"]["flat_4096"]["first"]
+            raw_path = directory / first["stdout_path"]
+            original = raw_path.read_bytes()
+            raw_path.write_bytes(b"tampered")
+            with self.assertRaisesRegex(
+                LARGE_DIRECTORY_VALIDATOR.ReportError,
+                "raw stream identity mismatch",
+            ):
+                LARGE_DIRECTORY_VALIDATOR.validate_report(
+                    report,
+                    report_path=report_path,
+                    oracle_path=oracle_path,
+                    baseline_path=baseline_path,
+                    root=ROOT,
+                )
+            raw_path.write_bytes(original)
+
+            report["admission"]["platform_admitted"] = True
+            with self.assertRaisesRegex(
+                LARGE_DIRECTORY_VALIDATOR.ReportError,
+                "must not admit",
+            ):
+                LARGE_DIRECTORY_VALIDATOR.validate_report(
+                    report,
+                    report_path=report_path,
+                    oracle_path=oracle_path,
+                    baseline_path=baseline_path,
+                    root=ROOT,
+                )
+            report["admission"]["platform_admitted"] = False
+
+            extra = (
+                directory
+                / "raw"
+                / "cli-large-directory"
+                / "undeclared"
+            )
+            extra.write_bytes(b"x")
+            with self.assertRaisesRegex(
+                LARGE_DIRECTORY_VALIDATOR.ReportError,
+                "raw file inventory",
+            ):
+                LARGE_DIRECTORY_VALIDATOR.validate_report(
                     report,
                     report_path=report_path,
                     oracle_path=oracle_path,
