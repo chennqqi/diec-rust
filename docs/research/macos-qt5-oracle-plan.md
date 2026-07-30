@@ -58,7 +58,17 @@ dir-fd relative 操作尝试物化 254/255/256-byte component，以及
 1023/1024/1025 和 8191/8192/8193-byte 完整绝对路径，保留每次 create
 成功或 errno。CLI 再对 control、六种完整路径的 explicit/short-root
 discovery、三个 component explicit 和 component directory 共 17 个 case
-双轮采集。总量因此增至 2,100 次执行和 4,200 个 raw stream。
+双轮采集。最后复用固定 Linux TOCTOU fixture 的 stable-old/stable-new、
+old→new 原子 symlink 替换和枚举后 unlink 四个 case，各执行两轮。macOS
+collector 不依赖缺失的 GNU `stdbuf`：它用关闭 `OPOST` 的 PTY 取得逐行
+stdout，在收到 blocker prefix 后发送 `SIGSTOP`，以
+`waitpid(WUNTRACED)` 确认进程已停止，并在 mutation 前验证第二个 logical
+prefix 尚未出现；窗口丢失会使采集失败。变更完成后才发送 `SIGCONT`，报告
+同时保存前后 symlink/target identity、两份 entropy document 和 raw stream，
+再与固定 Linux Qt5 语义投影比较。PTY 会令 stdout 的 `isatty` 状态不同于
+普通 pipe baseline，这一 transport 差异明确保留为 limitation，并由两个
+stable control 与完整 document 投影约束。总量因此增至 2,108 次执行和 4,216 个
+raw stream。
 remaining 矩阵在尚无
 Linux 对应全矩阵时保留结构、有效性与 priority 约束，不伪造跨平台等价。
 database 矩阵则只做明确列出的实参路径替换与 CRLF→LF，再与固定 Linux
@@ -175,8 +185,10 @@ database/error、46-case path/nested 和 17-case ZIP-database release CLI
 flat 与 4096 nested 的完整处理数和 name-order projection。它们仍未在
 Darwin runner 实际采集；17-case long-path CLI 又固定 NAME_MAX、PATH_MAX
 和 kernel-private MAXLONGPATHLEN 周围的物化、explicit/discovery 与 errno
-候选。root/ACL/ownership、TOCTOU 等平台 path profile，database
-cache/permission 与 engine-only harness 仍须分别采集，
+候选；4-case TOCTOU CLI 则固定 PTY 行缓冲、`SIGSTOP`/
+`waitpid(WUNTRACED)` 确认、pre-open prefix guard 和停止态 mutation。
+root/ACL/ownership、database cache/permission 与 engine-only harness
+仍缺独立候选；上述 TOCTOU 候选也仍须在 Darwin 实际采集和评审，
 `capability_rows_admitted` 必须保持 0。
 
 ## 6. 本机可执行验证

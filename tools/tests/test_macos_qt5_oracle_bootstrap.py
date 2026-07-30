@@ -2851,6 +2851,8 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             "validate_macos_cli_large_directory.py",
             "collect_macos_cli_long_paths.py",
             "validate_macos_cli_long_paths.py",
+            "collect_macos_cli_toctou.py",
+            "validate_macos_cli_toctou.py",
             "cli-baseline-candidate.json",
             "cli-matrix-candidate.json",
             "cli-remaining-candidate.json",
@@ -2863,6 +2865,7 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             "cli-large-directory-candidate.json",
             "long-path-fixture-candidate.json",
             "cli-long-path-candidate.json",
+            "cli-toctou-candidate.json",
             "diec-macos-candidate-evidence/raw",
             (
                 "actions/checkout@"
@@ -2913,6 +2916,7 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
                 "cli-large-directory-candidate.json",
                 "long-path-fixture-candidate.json",
                 "cli-long-path-candidate.json",
+                "cli-toctou-candidate.json",
             ],
         )
         self.assertTrue(workflow["special_path_fixture_candidate"])
@@ -2923,6 +2927,7 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             workflow["large_directory_fixture_candidate"]
         )
         self.assertTrue(workflow["long_path_fixture_candidate"])
+        self.assertTrue(workflow["toctou_cli_candidate"])
         self.assertEqual(
             workflow["remaining_cli_execution_count"], 1092
         )
@@ -2948,10 +2953,13 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             workflow["long_path_cli_execution_count"], 34
         )
         self.assertEqual(
-            workflow["general_cli_execution_count"], 2100
+            workflow["toctou_cli_execution_count"], 8
         )
         self.assertEqual(
-            workflow["general_cli_raw_stream_count"], 4200
+            workflow["general_cli_execution_count"], 2108
+        )
+        self.assertEqual(
+            workflow["general_cli_raw_stream_count"], 4216
         )
 
     def test_cli_candidate_tools_are_bound_and_fail_closed(self):

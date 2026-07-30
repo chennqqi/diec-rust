@@ -26,6 +26,7 @@ jobs:
       FILESYSTEM_FIXTURE_DIR: ${{ runner.temp }}/diec-filesystem-path
       LARGE_DIRECTORY_FIXTURE_DIR: ${{ runner.temp }}/diec-large-directory
       LONG_PATH_FIXTURE_DIR: ${{ runner.temp }}/diec-macos-long-path
+      TOCTOU_FIXTURE_DIR: ${{ runner.temp }}/diec-macos-toctou
       QT_ROOT: ${{ runner.temp }}/Qt
       UPSTREAM_BUILD: ${{ runner.temp }}/DIE-engine-qmake-build
       UPSTREAM_COMMIT: 74eaf505c250ab47e709024e9dc41657cd8f2254
@@ -271,6 +272,20 @@ jobs:
               "$EVIDENCE_DIR/cli-baseline-candidate.json" \
             --fixture-report \
               "$EVIDENCE_DIR/long-path-fixture-candidate.json"
+          python3 tools/upstream/collect_macos_cli_toctou.py \
+            --binary "$UPSTREAM_SOURCE/build/release/diec" \
+            --source-dir "$UPSTREAM_SOURCE" \
+            --qt-dir "$QT_ROOT/5.15.2/clang_64" \
+            --fixture-dir "$TOCTOU_FIXTURE_DIR" \
+            --oracle-report "$EVIDENCE_DIR/oracle-candidate.json" \
+            --cli-baseline-report \
+              "$EVIDENCE_DIR/cli-baseline-candidate.json" \
+            --output "$EVIDENCE_DIR/cli-toctou-candidate.json"
+          python3 tools/upstream/validate_macos_cli_toctou.py \
+            "$EVIDENCE_DIR/cli-toctou-candidate.json" \
+            --oracle-report "$EVIDENCE_DIR/oracle-candidate.json" \
+            --cli-baseline-report \
+              "$EVIDENCE_DIR/cli-baseline-candidate.json"
           (
             cd "$EVIDENCE_DIR"
             find . -type f ! -name SHA256SUMS \
@@ -297,6 +312,7 @@ jobs:
             ${{ runner.temp }}/diec-macos-candidate-evidence/cli-large-directory-candidate.json
             ${{ runner.temp }}/diec-macos-candidate-evidence/long-path-fixture-candidate.json
             ${{ runner.temp }}/diec-macos-candidate-evidence/cli-long-path-candidate.json
+            ${{ runner.temp }}/diec-macos-candidate-evidence/cli-toctou-candidate.json
             ${{ runner.temp }}/diec-macos-candidate-evidence/raw
             ${{ runner.temp }}/diec-macos-candidate-evidence/SHA256SUMS
           if-no-files-found: error
