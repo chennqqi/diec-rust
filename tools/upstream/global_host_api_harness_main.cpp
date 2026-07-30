@@ -596,6 +596,53 @@ QJsonObject isolatedQueryConversionObservation(const QString &caseName)
             "if(key==='toString')return function(){return 'proxy-type';};"
             "return target[key];}});"
             "return _getNumberOfResults(value);})()";
+    } else if (caseName == "proxy_throwing_get_count") {
+        evaluate(
+            fixture.engine,
+            "_setResult('seed-proxy-get','ProxyThrowingGet','','')",
+            "isolated-query-seed-proxy-throwing-get.js"
+        );
+        source =
+            "(function(){if(typeof Proxy!=='function')return -1;"
+            "var value=new Proxy({},"
+            "{get:function(){throw new Error('proxy-get-boom');}});"
+            "return _getNumberOfResults(value);})()";
+    } else if (caseName == "proxy_throwing_to_string_count") {
+        evaluate(
+            fixture.engine,
+            "_setResult('seed-proxy-to-string',"
+            "'ProxyThrowingToString','','')",
+            "isolated-query-seed-proxy-throwing-to-string.js"
+        );
+        source =
+            "(function(){if(typeof Proxy!=='function')return -1;"
+            "var value=new Proxy({},"
+            "{get:function(target,key){"
+            "if(key==='toString')return function(){"
+            "throw new Error('proxy-to-string-boom');};"
+            "return target[key];}});"
+            "return _getNumberOfResults(value);})()";
+    } else if (caseName == "revoked_proxy_count") {
+        evaluate(
+            fixture.engine,
+            "_setResult('seed-revoked-proxy','RevokedProxy','','')",
+            "isolated-query-seed-revoked-proxy.js"
+        );
+        source =
+            "(function(){if(typeof Proxy!=='function')return -1;"
+            "if(typeof Proxy.revocable!=='function')return -2;"
+            "var pair=Proxy.revocable({},{});pair.revoke();"
+            "return _getNumberOfResults(pair.proxy);})()";
+    } else if (caseName == "two_node_cyclic_array_count") {
+        evaluate(
+            fixture.engine,
+            "_setResult('seed-two-node-array','TwoNodeArray','','')",
+            "isolated-query-seed-two-node-array.js"
+        );
+        source =
+            "(function(){var first=[];var second=[];"
+            "first[0]=second;second[0]=first;"
+            "return _getNumberOfResults(first);})()";
     } else if (caseName == "bigint_count") {
         evaluate(
             fixture.engine,
@@ -642,6 +689,10 @@ QJsonObject isolatedQueryConversionObservations()
         "cyclic_plain_object_count",
         "cyclic_array_count",
         "proxy_object_count",
+        "proxy_throwing_get_count",
+        "proxy_throwing_to_string_count",
+        "revoked_proxy_count",
+        "two_node_cyclic_array_count",
         "bigint_count",
         "symbol_count",
     };
