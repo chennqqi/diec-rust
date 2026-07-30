@@ -213,7 +213,7 @@
     },
     "runtime_report": {
       "path": "docs/research/data/rquickjs-rule-runtime.json",
-      "sha256": "9dc14c4985b6e74cfcfb789c35278a14de51fa1324aaea350c0dc8cd72e18627"
+      "sha256": "437cf5ed62a3332b433005a966d2d1fee79aa75c57b3ebb885a929fcd579a1fc"
     },
     "runtime_research": {
       "path": "docs/research/rquickjs-rule-runtime-spike.md",

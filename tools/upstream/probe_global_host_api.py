@@ -54,6 +54,33 @@ QT5_THROWING_CONVERSION_BACKTRACE = [
     "<native>(Error: conversion-boom) at -1",
     "<global>() at query-conversion-throwing_object_count.js:1",
 ]
+QT5_ALLOWED_ERRORS = {
+    QT5_THROWING_CONVERSION_SOURCE: {
+        "error_name": "Error",
+        "error_message": "conversion-boom",
+        "error_line": 1,
+        "string": "Error: conversion-boom",
+        "backtrace": QT5_THROWING_CONVERSION_BACKTRACE,
+    },
+    "includeScript('probe-include-parse-error')": {
+        "error_name": "SyntaxError",
+        "error_message": "Parse error",
+        "error_line": 1,
+        "string": "SyntaxError: Parse error",
+        "backtrace": ["<global>() at include-parse-error.js:1"],
+    },
+    "includeScript('probe-include-runtime-error')": {
+        "error_name": "Error",
+        "error_message": "include-runtime-boom",
+        "error_line": 1,
+        "string": "Error: include-runtime-boom",
+        "backtrace": [
+            "<eval>() at probe-include-runtime-error:1",
+            "<native>('probe-include-runtime-error') at -1",
+            "<global>() at include-runtime-error.js:1",
+        ],
+    },
+}
 QT6_EXPECTED_STDERR = (
     b"%entry@file:query-conversion-extra_present_arguments.js:1\n"
     b"Too many arguments, ignoring 1\n"
@@ -81,7 +108,7 @@ def validate_observation(
     if runtime not in {"qt5", "qt6"}:
         raise ValueError("unsupported runtime profile")
     identities = {
-        "schema_version": 2,
+        "schema_version": 3,
         "upstream_commit": UPSTREAM_COMMIT,
         "die_script_commit": DIE_SCRIPT_COMMIT,
         "rules_commit": RULES_COMMIT,
@@ -111,20 +138,14 @@ def validate_observation(
                         raise ValueError(
                             "unexpected Qt6 missing-argument error"
                         )
-                elif (
-                    runtime == "qt5"
-                    and source == QT5_THROWING_CONVERSION_SOURCE
-                ):
-                    if (
-                        value.get("error_name") != "Error"
-                        or value.get("error_message") != "conversion-boom"
-                        or value.get("error_line") != 1
-                        or value.get("string") != "Error: conversion-boom"
-                        or value.get("backtrace")
-                        != QT5_THROWING_CONVERSION_BACKTRACE
+                elif runtime == "qt5" and source in QT5_ALLOWED_ERRORS:
+                    expected = QT5_ALLOWED_ERRORS[source]
+                    if any(
+                        value.get(key) != expected_value
+                        for key, expected_value in expected.items()
                     ):
                         raise ValueError(
-                            "unexpected Qt5 conversion error"
+                            "unexpected Qt5 JavaScript error"
                         )
                 else:
                     raise ValueError("unexpected JavaScript error")
@@ -137,7 +158,7 @@ def validate_observation(
 
     validate_errors(observation)
     expected_error_sources = (
-        {QT5_THROWING_CONVERSION_SOURCE}
+        set(QT5_ALLOWED_ERRORS)
         if runtime == "qt5"
         else set(QT6_ALLOWED_ERRORS)
     )
@@ -293,13 +314,65 @@ def validate_observation(
         raise ValueError("case-insensitive include failed")
     if _evaluation(include["value_after_second"]).get("number") != 2:
         raise ValueError("repeated include did not re-evaluate")
-    if include["error_messages"] != ["Cannot find: missing-include"]:
+    missing_include_error = "Cannot find: missing-include"
+    parse_include_error = (
+        "includeScript probe-include-parse-error: 1: "
+        + (
+            "SyntaxError: Parse error"
+            if runtime == "qt5"
+            else "SyntaxError: Expected token `}'"
+        )
+    )
+    runtime_include_error = (
+        "includeScript probe-include-runtime-error: 1: "
+        "Error: include-runtime-boom"
+    )
+    if include["errors_after_missing"] != [missing_include_error]:
         raise ValueError("unexpected missing include diagnostic")
+    if include["errors_after_parse"] != [
+        missing_include_error,
+        parse_include_error,
+    ]:
+        raise ValueError("unexpected parse include diagnostic")
+    if include["errors_after_runtime"] != [
+        missing_include_error,
+        parse_include_error,
+        runtime_include_error,
+    ]:
+        raise ValueError("unexpected runtime include diagnostic")
+    if _evaluation(include["parse_visibility"]).get("string") != "undefined":
+        raise ValueError("parse-error include executed source")
+    if (
+        _evaluation(include["runtime_before_visibility"]).get("string")
+        != "number"
+        or _evaluation(include["runtime_after_visibility"]).get("string")
+        != "undefined"
+    ):
+        raise ValueError("runtime-error include execution boundary changed")
+    if runtime == "qt5":
+        if (
+            not _evaluation(include["parse_error"])["is_error"]
+            or not _evaluation(include["runtime_error"])["is_error"]
+        ):
+            raise ValueError("Qt5 include errors did not propagate")
+    elif (
+        not _evaluation(include["parse_error"])["is_undefined"]
+        or not _evaluation(include["runtime_error"])["is_undefined"]
+    ):
+        raise ValueError("Qt6 include errors unexpectedly propagated")
 
     info = observation["info"]
     if runtime == "qt5":
         if info["log_messages"] != ["undefined", "null", "42"]:
             raise ValueError("_log conversion behavior changed")
+        if [
+            info["pd_info_initial"],
+            info["pd_info_after_missing"],
+            info["pd_info_after_null"],
+            info["pd_info_after_number"],
+            info["pd_info_after_encoding"],
+        ] != ["", "undefined", "null", "42", "42"]:
+            raise ValueError("Qt5 _log PDSTRUCT behavior changed")
         if _evaluation(info["encoding_call"]).get("boolean") is not False:
             raise ValueError("_encodingList return value changed")
         if (
@@ -316,6 +389,14 @@ def validate_observation(
     elif (
         info["log_messages"] != ["", "42"]
         or not _evaluation(info["missing"])["is_error"]
+        or [
+            info["pd_info_initial"],
+            info["pd_info_after_missing"],
+            info["pd_info_after_null"],
+            info["pd_info_after_number"],
+            info["pd_info_after_encoding"],
+        ]
+        != ["", "", "", "42", "42"]
         or not _evaluation(info["encoding_call"])["is_undefined"]
         or info["encoding_message_count"] != 0
         or info["encoding_first"] != ""
@@ -499,7 +580,7 @@ def build_report(
     }
     validate_streams(streams, observation, runtime)
     return {
-        "schema_version": 2,
+        "schema_version": 3,
         "generator": "tools/upstream/probe_global_host_api.py",
         "runtime_profile": runtime,
         "image": {

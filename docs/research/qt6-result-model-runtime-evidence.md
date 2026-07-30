@@ -34,7 +34,7 @@ engine-contract 覆盖 signature basename、absolute signature path 及 priority
 机器报告：
 [`data/result-model-engine-qt6.json`](data/result-model-engine-qt6.json)，
 SHA-256
-`0a0f03b2f153b99b1e9a9c08866fa6697a147d4925347054ca467cc3623fc0f1`。
+`15e3cd6ba5c7e54ba69438965cfe35611d1be968f142261d2ecb9994048a71f8`。
 
 | Profile | Qt6 image ID | Binary SHA-256 | Cases / records |
 | --- | --- | --- | ---: |

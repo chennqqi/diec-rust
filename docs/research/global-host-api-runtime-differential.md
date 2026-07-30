@@ -25,10 +25,15 @@ Last updated: 2026-07-30
 - Qt 5 query 会执行对象的自定义 `toString` 并传播异常；Qt 6 QObject 参数转换
   不执行该方法；
 - Qt 6 对额外 query 实参执行调用但向 stderr 发出精确 warning，Qt 5 静默忽略；
+- include 内部 parse/runtime error 两侧都发出 `errorMessage`；Qt 5 还把嵌套
+  engine exception 传播为外层 `includeScript(...)` error，Qt 6 外层仍返回
+  undefined；
+- `_log` 两侧都把转换后的文本直接写入 `PDSTRUCT.sInfoString`，后续
+  `_encodingList()` 不会覆盖该字段；
 - `_encodingList()` 在 Qt 5 返回 false 并发出 104 条 encoding 消息，Qt 6
   返回 undefined 且不发消息；
-- 结果增删/block、数组字符串化、first-wrapper stop、`includeScript`、
-  application mode 和 `_getOS` 在当前 fixture 中相同。
+- 结果增删/block、数组字符串化、first-wrapper stop、正常/缺失
+  `includeScript`、application mode 和 `_getOS` 在当前 fixture 中相同。
 
 因此 Rust runtime 不能只实现一个“合理”的 native function 签名再声称兼容两个
 上游 runtime。当前 primary Qt 5 legacy profile 必须保存宽松缺参和字符串转换；
@@ -55,12 +60,12 @@ harness 替换固定 CLI 的 `main_console.cpp.o`，其余编译对象和 link c
 | --- | --- | --- |
 | Runtime | Qt Script 5.15.13 | QJSEngine 6.4.2 |
 | Base oracle | `upstream-oracle-cmake:74eaf505` | `upstream-oracle-cmake-qt6:74eaf505` |
-| Harness image ID | `sha256:0511795cffb9bde645e4c904c074697aba0e6f28b338f266f5e06ef67cefb88b` | `sha256:1d4b39017c54ea2a51c495d4e05f06b77f821573c1763ebf0e8a838fc783419f` |
-| Harness binary SHA-256 | `2889fc8268db0379594098d9866245b082e070909ea5f470c89d6f71153980c9` | `a8c67f717a90ee9514add6920e4d6aace087367df894d1c82cf93dd300c8eb45` |
+| Harness image ID | `sha256:261165a67ce80a4a72272d1c8898ba57e4a1f688cc7200c825fdbdf6f682a6fc` | `sha256:2f2e2fcc7e42f67d83a52254dd06846d99a40e445b5b6b1f86672744de966d2b` |
+| Harness binary SHA-256 | `5f93b3418a9a644dde6945efd19c371e9fd6e0407ebea6b5cf11084649be706e` | `1864da96f327737e96ba7f25f2eafd9225b5e1701099baf478c96be5fb71257e` |
 | OCI revision | `74eaf505...2254` | `74eaf505...2254` |
 
-本轮共享 harness schema v2 新增 query conversion matrix，并重建两侧镜像；
-因此 image、binary 和 report identity 都相对 schema v1 改变。它是
+本轮共享 harness schema v3 新增 include error 与 PDSTRUCT info matrix，并重建
+两侧镜像；因此 image、binary 和 report identity 都相对 schema v2 改变。它是
 project-generated 研究入口的变化，不是上游对象变化。
 
 ## 复现与机器报告
@@ -85,17 +90,17 @@ python tools/upstream/compare_global_host_api_reports.py
 
 | Report | SHA-256 |
 | --- | --- |
-| [`global-host-api-qt5.json`](data/global-host-api-qt5.json) | `034e9cb78391d78c5607411b11ebdfefd46afe6e204e076b9f9279b9512a719e` |
-| [`global-host-api-qt6.json`](data/global-host-api-qt6.json) | `711c2615c5e5c45b32a4656239f69b5384d2c96decc669e932595aa0ca1810ed` |
-| [`global-host-api-qt5-qt6.json`](data/global-host-api-qt5-qt6.json) | `e63e0f8ab41b4eebd08082ec95676ff47cad49e5ebbb1ec560cda71b4e9f8328` |
+| [`global-host-api-qt5.json`](data/global-host-api-qt5.json) | `bd1071fa5d849c03826b872dd99302a6b433d500e2ad1b45a6793c320f1744e6` |
+| [`global-host-api-qt6.json`](data/global-host-api-qt6.json) | `8f9b5af2e51c9650b915a05a5b9fa80f00bee396388ef8453025befa1f37e4df` |
+| [`global-host-api-qt5-qt6.json`](data/global-host-api-qt5-qt6.json) | `d71f50357d119b09188e15d3eae821ce4519cb648575e66f1ddb4c7a367ac55e` |
 
 probe 在写报告前严格验证全部预期行为、非零退出、额外 stdout、身份漂移和
-非预期 JavaScript error。schema v2 把 stdout/stderr 原始字节以 Base64、长度和
+非预期 JavaScript error。schema v3 把 stdout/stderr 原始字节以 Base64、长度和
 SHA-256 保存并从中重放 observation；Qt 5 stderr 必须为空，Qt 6 stderr 必须
 逐字节等于两个 extra-argument warning。比较器再次重放两份输入，随后递归比较
 原始 observation，保留 missing key、类型和值的差异。
 
-报告有 59 个原始字段差异。这个数字不是 59 项独立语义：一个 error object 会
+报告有 77 个原始字段差异。这个数字不是 77 项独立语义：一个 error object 会
 引入 name/message/line/stack/type 等多个字段，必须按下列行为组解释。
 
 ## Global surface
@@ -139,7 +144,7 @@ string: Error: Insufficient arguments
 
 stack 分别指向对应 fixture 文件的第一行。error 作为 `QJSValue` 返回给 harness；
 进程仍 exit 0，stdout 是单个 JSON document；这四个调用本身不产生 warning，
-但同一 schema v2 进程的 extra-argument cases 会产生后述 stderr。Qt 5 static wrapper
+但同一 schema v3 进程的 extra-argument cases 会产生后述 stderr。Qt 5 static wrapper
 直接读取不存在的 `QScriptContext::argument(i)` 并调用 `toString()`，所以得到
 `"undefined"`；Qt 6 QObject wrapper 在进入 slot 前执行 arity 检查。
 
@@ -174,13 +179,35 @@ Qt 6 的 stderr 共 176 bytes，精确包含 fixture URL、行号和
 `Too many arguments, ignoring 1`。Rust primary Qt 5 profile 不得产生这些
 warning；未来 Qt 6 profile 若保留兼容模式，需要把诊断也纳入可观察契约。
 
-## 字符串转换与 encoding
+## Include error 传播
+
+fixture 新增一个单行 parse error include 和一个在赋值前后抛错的 runtime
+include。两侧都由 `includeScriptSlot()` 捕获内部 `evaluate()` 的 error value，
+并发出带 include 名、行号和 error string 的 `errorMessage`：
+
+| 观察 | Qt 5 | Qt 6 |
+| --- | --- | --- |
+| parse signal | `SyntaxError: Parse error` | `SyntaxError: Expected token \`}'` |
+| parse 外层调用 | `SyntaxError: Parse error` | undefined |
+| runtime signal | `Error: include-runtime-boom` | 相同 |
+| runtime 外层调用 | `Error: include-runtime-boom` | undefined |
+
+parse error 前的变量没有生效；runtime error 前的变量类型为 `number`，抛错后的
+变量保持 `undefined`。这证明两侧内部执行边界相同，但 Qt Script 的嵌套 engine
+exception 会决定外层返回值，而 QJSEngine QObject slot 只把错误留在 signal
+通道。Rust primary Qt 5 profile 必须同时复现 signal 与外层异常，不能把 include
+失败简化成单一返回码。
+
+## 字符串转换、PDSTRUCT 与 encoding
 
 `_log(42)` 两侧都发出 `"42"`。其余行为：
 
 | 调用/观察 | Qt 5 | Qt 6 |
 | --- | --- | --- |
-| `_log(null)` | `"null"` | `""` |
+| `_log()` 后 `sInfoString` | `"undefined"` | `""`（缺参未进入 slot） |
+| `_log(null)` signal / `sInfoString` | `"null"` / `"null"` | `""` / `""` |
+| `_log(42)` signal / `sInfoString` | `"42"` / `"42"` | `"42"` / `"42"` |
+| encoding 后 `sInfoString` | `"42"` | `"42"` |
 | `_encodingList()` return | boolean false | undefined |
 | Encoding message count | 104 | 0 |
 | Qt 5 first/last | `""` / `TIS-620` | 不适用 |
@@ -216,6 +243,10 @@ Qt 6 image 构建日期不同。该 raw 差异由 binary/image identity 保存�
   extra-argument cases 的非空 stderr；不能把整个进程概括为“空 stderr”。
 - query conversion 必须保留数组/对象的 runtime-specific coercion、throwing
   `toString`、空 type wildcard、孤立 surrogate 和 extra-argument diagnostics。
+- include parse/runtime error 必须分别比较 signal、外层 evaluation、已执行
+  side effect 和未执行 tail；Qt 5 与 Qt 6 不可共用同一个错误传播约定。
+- `_log` 必须同时测试 signal 和 `PDSTRUCT.sInfoString`，不能把它实现为纯日志；
+  encoding signal 又不能误写该字段。
 - raw differential 保留 build-date 字段；semantic projection 可以把它标为
   build identity，但需要显式规则，不能全局删除版本字符串。
 - format QObject 的首轮 arity/转换差分见
@@ -226,8 +257,7 @@ Qt 6 image 构建日期不同。该 raw 差异由 binary/image identity 保存�
 
 - 更复杂的 cyclic/proxy 对象、BigInt/Symbol、多个 invalid UTF-16 code unit、
   2^53 邻域和 qint32/qint64 typed return 边界；
-- `includeScript` 中 parse/runtime error 的两侧传播；
-- `_log` 对 PDSTRUCT info 的后续扫描可见性；
+- `PDSTRUCT.sInfoString` 在真实后续 scan consumer/callback 中的读取时机；
 - library=true 的可达宿主条件；
 - Qt 6 其他 minor、Windows 和 macOS；
 - 其余 format QObject 完整矩阵与逐规则 execution conformance。

@@ -121,8 +121,8 @@
     "qt6_only_record_paths": [],
     "sources": {
       "docs/research/data/engine-contract-linux-qt6.json": "e2f11d0f8d4070fa3359af0237eca948e6c8a36962bbf8cba59d48f0fe7ac18e",
-      "docs/research/data/global-host-api-qt5.json": "034e9cb78391d78c5607411b11ebdfefd46afe6e204e076b9f9279b9512a719e",
-      "docs/research/data/global-host-api-qt6.json": "711c2615c5e5c45b32a4656239f69b5384d2c96decc669e932595aa0ca1810ed"
+      "docs/research/data/global-host-api-qt5.json": "bd1071fa5d849c03826b872dd99302a6b433d500e2ad1b45a6793c320f1744e6",
+      "docs/research/data/global-host-api-qt6.json": "8f9b5af2e51c9650b915a05a5b9fa80f00bee396388ef8453025befa1f37e4df"
     }
   },
   "reports": {

@@ -21,6 +21,22 @@ SPEC.loader.exec_module(MODULE)
 
 
 EXPECTED_PATHS = {
+    "$.include.errors_after_parse[1]",
+    "$.include.errors_after_runtime[1]",
+    "$.include.parse_error.evaluation.backtrace",
+    "$.include.parse_error.evaluation.error_line",
+    "$.include.parse_error.evaluation.error_message",
+    "$.include.parse_error.evaluation.error_name",
+    "$.include.parse_error.evaluation.is_error",
+    "$.include.parse_error.evaluation.is_undefined",
+    "$.include.parse_error.evaluation.string",
+    "$.include.runtime_error.evaluation.backtrace",
+    "$.include.runtime_error.evaluation.error_line",
+    "$.include.runtime_error.evaluation.error_message",
+    "$.include.runtime_error.evaluation.error_name",
+    "$.include.runtime_error.evaluation.is_error",
+    "$.include.runtime_error.evaluation.is_undefined",
+    "$.include.runtime_error.evaluation.string",
     "$.info.encoding_call.evaluation.boolean",
     "$.info.encoding_call.evaluation.is_boolean",
     "$.info.encoding_call.evaluation.is_undefined",
@@ -37,6 +53,8 @@ EXPECTED_PATHS = {
     "$.info.missing.evaluation.is_error",
     "$.info.missing.evaluation.is_undefined",
     "$.info.missing.evaluation.string",
+    "$.info.pd_info_after_missing",
+    "$.info.pd_info_after_null",
     "$.missing_arguments.count.evaluation.backtrace",
     "$.missing_arguments.count.evaluation.error_line",
     "$.missing_arguments.count.evaluation.error_message",
@@ -147,7 +165,7 @@ class CompareGlobalHostApiReportsTests(unittest.TestCase):
         )
         report = json.loads(path.read_text(encoding="utf-8"))
         self.assertFalse(report["equal"])
-        self.assertEqual(report["difference_count"], 59)
+        self.assertEqual(report["difference_count"], 77)
         self.assertEqual(
             {item["path"] for item in report["differences"]},
             EXPECTED_PATHS,

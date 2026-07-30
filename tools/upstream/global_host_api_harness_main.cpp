@@ -108,6 +108,15 @@ QJsonArray recordSnapshot(const QList<XScanEngine::SCANSTRUCT> &records)
     return output;
 }
 
+QJsonArray messageSnapshot(const QStringList &messages)
+{
+    QJsonArray output;
+    for (const QString &message : messages) {
+        output.append(message);
+    }
+    return output;
+}
+
 class EngineFixture {
 public:
     explicit EngineFixture(bool firstWrapper = false)
@@ -499,13 +508,29 @@ QJsonObject stopObservations()
 QJsonObject includeObservations()
 {
     EngineFixture fixture;
-    XScanEngine::SIGNATURE_RECORD signature = {};
-    signature.fileType = XBinary::FT_UNKNOWN;
-    signature.sName = "probe-include";
-    signature.sText =
+    XScanEngine::SIGNATURE_RECORD normalSignature = {};
+    normalSignature.fileType = XBinary::FT_UNKNOWN;
+    normalSignature.sName = "probe-include";
+    normalSignature.sText =
         "var includedProbe = "
         "(typeof includedProbe === 'undefined' ? 1 : includedProbe + 1);";
-    fixture.signatures.append(signature);
+    fixture.signatures.append(normalSignature);
+
+    XScanEngine::SIGNATURE_RECORD parseErrorSignature = {};
+    parseErrorSignature.fileType = XBinary::FT_UNKNOWN;
+    parseErrorSignature.sName = "probe-include-parse-error";
+    parseErrorSignature.sText =
+        "var includeParseBefore = 1; function broken( {";
+    fixture.signatures.append(parseErrorSignature);
+
+    XScanEngine::SIGNATURE_RECORD runtimeErrorSignature = {};
+    runtimeErrorSignature.fileType = XBinary::FT_UNKNOWN;
+    runtimeErrorSignature.sName = "probe-include-runtime-error";
+    runtimeErrorSignature.sText =
+        "var includeRuntimeBefore = 1; "
+        "throw new Error('include-runtime-boom'); "
+        "var includeRuntimeAfter = 1;";
+    fixture.signatures.append(runtimeErrorSignature);
 
     QJsonObject first = step(
         &fixture,
@@ -532,44 +557,80 @@ QJsonObject includeObservations()
         "includeScript('missing-include')",
         "include-missing.js"
     );
-    QJsonArray errors;
-    for (const QString &message : fixture.errorMessages) {
-        errors.append(message);
-    }
+    QJsonArray errorsAfterMissing = messageSnapshot(fixture.errorMessages);
+    QJsonObject parseError = step(
+        &fixture,
+        "includeScript('probe-include-parse-error')",
+        "include-parse-error.js"
+    );
+    QJsonObject parseVisibility = step(
+        &fixture,
+        "typeof includeParseBefore",
+        "include-parse-visibility.js"
+    );
+    QJsonArray errorsAfterParse = messageSnapshot(fixture.errorMessages);
+    QJsonObject runtimeError = step(
+        &fixture,
+        "includeScript('probe-include-runtime-error')",
+        "include-runtime-error.js"
+    );
+    QJsonObject runtimeBeforeVisibility = step(
+        &fixture,
+        "typeof includeRuntimeBefore",
+        "include-runtime-before-visibility.js"
+    );
+    QJsonObject runtimeAfterVisibility = step(
+        &fixture,
+        "typeof includeRuntimeAfter",
+        "include-runtime-after-visibility.js"
+    );
+    QJsonArray errorsAfterRuntime = messageSnapshot(fixture.errorMessages);
     return QJsonObject{
         {"first", first},
         {"value_after_first", valueAfterFirst},
         {"second", second},
         {"value_after_second", valueAfterSecond},
         {"missing", missing},
-        {"error_messages", errors},
+        {"errors_after_missing", errorsAfterMissing},
+        {"parse_error", parseError},
+        {"parse_visibility", parseVisibility},
+        {"errors_after_parse", errorsAfterParse},
+        {"runtime_error", runtimeError},
+        {"runtime_before_visibility", runtimeBeforeVisibility},
+        {"runtime_after_visibility", runtimeAfterVisibility},
+        {"errors_after_runtime", errorsAfterRuntime},
     };
 }
 
 QJsonObject infoObservations()
 {
     EngineFixture fixture;
+    QString initialPdInfo = fixture.state.sInfoString;
     QJsonObject missing = step(
         &fixture,
         "_log()",
         "log-missing.js"
     );
+    QString pdInfoAfterMissing = fixture.state.sInfoString;
     QJsonObject nullValue = step(
         &fixture,
         "_log(null)",
         "log-null.js"
     );
+    QString pdInfoAfterNull = fixture.state.sInfoString;
     QJsonObject number = step(
         &fixture,
         "_log(42)",
         "log-number.js"
     );
+    QString pdInfoAfterNumber = fixture.state.sInfoString;
     qint32 beforeEncoding = fixture.infoMessages.count();
     QJsonObject encoding = step(
         &fixture,
         "_encodingList()",
         "encoding-list.js"
     );
+    QString pdInfoAfterEncoding = fixture.state.sInfoString;
     QStringList encodingMessages =
         fixture.infoMessages.mid(beforeEncoding);
     QByteArray encodingBytes;
@@ -588,6 +649,11 @@ QJsonObject infoObservations()
         {"null", nullValue},
         {"number", number},
         {"log_messages", logMessages},
+        {"pd_info_initial", initialPdInfo},
+        {"pd_info_after_missing", pdInfoAfterMissing},
+        {"pd_info_after_null", pdInfoAfterNull},
+        {"pd_info_after_number", pdInfoAfterNumber},
+        {"pd_info_after_encoding", pdInfoAfterEncoding},
         {"encoding_call", encoding},
         {"encoding_message_count", encodingMessages.count()},
         {
@@ -735,7 +801,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationVersion("9.9.9");
 
     QJsonObject output;
-    output.insert("schema_version", 2);
+    output.insert("schema_version", 3);
     output.insert("upstream_commit", UPSTREAM_COMMIT);
     output.insert("die_script_commit", DIE_SCRIPT_COMMIT);
     output.insert("rules_commit", RULES_COMMIT);

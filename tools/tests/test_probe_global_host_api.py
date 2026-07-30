@@ -124,6 +124,53 @@ class GlobalHostApiProbeTests(unittest.TestCase):
         self.assertEqual(throwing["error_message"], "conversion-boom")
         self.assertEqual(conversions["final_records"][-1]["type"], "\ud800")
 
+    def test_include_errors_and_pdstruct_side_effects_are_preserved(self):
+        qt5_include = self.observation["include"]
+        qt6_include = self.qt6_observation["include"]
+        self.assertTrue(
+            qt5_include["parse_error"]["evaluation"]["is_error"]
+        )
+        self.assertTrue(
+            qt5_include["runtime_error"]["evaluation"]["is_error"]
+        )
+        self.assertTrue(
+            qt6_include["parse_error"]["evaluation"]["is_undefined"]
+        )
+        self.assertTrue(
+            qt6_include["runtime_error"]["evaluation"]["is_undefined"]
+        )
+        for include in (qt5_include, qt6_include):
+            self.assertEqual(
+                include["parse_visibility"]["evaluation"]["string"],
+                "undefined",
+            )
+            self.assertEqual(
+                include["runtime_before_visibility"]["evaluation"]["string"],
+                "number",
+            )
+            self.assertEqual(
+                include["runtime_after_visibility"]["evaluation"]["string"],
+                "undefined",
+            )
+        self.assertEqual(
+            [
+                self.observation["info"]["pd_info_after_missing"],
+                self.observation["info"]["pd_info_after_null"],
+                self.observation["info"]["pd_info_after_number"],
+                self.observation["info"]["pd_info_after_encoding"],
+            ],
+            ["undefined", "null", "42", "42"],
+        )
+        self.assertEqual(
+            [
+                self.qt6_observation["info"]["pd_info_after_missing"],
+                self.qt6_observation["info"]["pd_info_after_null"],
+                self.qt6_observation["info"]["pd_info_after_number"],
+                self.qt6_observation["info"]["pd_info_after_encoding"],
+            ],
+            ["", "", "42", "42"],
+        )
+
     def test_raw_stream_drift_is_rejected(self):
         changed = json.loads(json.dumps(self.report["streams"]))
         changed["stdout"]["sha256"] = "0" * 64

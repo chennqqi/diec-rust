@@ -143,11 +143,13 @@ Qt 6 机器基线和逐字段差分分别见
 [`global-host-api-qt6.json`](data/global-host-api-qt6.json) 与
 [`global-host-api-qt5-qt6.json`](data/global-host-api-qt5-qt6.json)。Qt 6 对四个
 缺参调用抛出 `Insufficient arguments`，`_log(null)` 转为空串，且
-`_encodingList()` 因固定源码的 Qt 版本 guard 不发出消息；其余已测行为相同。
+`_encodingList()` 因固定源码的 Qt 版本 guard 不发出消息；include 内部错误的
+signal 相同但外层传播不同。
 完整实验身份、差分解释与限制见
 [`global-host-api-runtime-differential.md`](global-host-api-runtime-differential.md)。
-schema v2 又补齐 16 个 query conversion case，并把 raw stdout/stderr 以
-Base64、长度和 SHA-256 保存后重放。
+schema v3 又补齐 16 个 query conversion case、include parse/runtime error 和
+`PDSTRUCT.sInfoString` 副作用，并把 raw stdout/stderr 以 Base64、长度和
+SHA-256 保存后重放。
 
 复现：
 
@@ -199,6 +201,11 @@ python tools/upstream/probe_global_host_api.py
   只读取 `PDSTRUCT`；调用 `_breakScan()` 后 `_isStop()` 才变为 true；
 - `includeScript` 名称比较大小写不敏感，重复 include 会再次求值并修改共享 global；
   缺失脚本仍返回 `undefined`，只发出 `Cannot find: missing-include` error signal；
+- include parse/runtime error 两侧都发出精确 error signal；Qt 5 外层调用也成为
+  error，Qt 6 外层仍为 undefined；parse 前置语句不执行，runtime throw 前赋值
+  可见而 throw 后赋值不可见；
+- `_logSlot` 会把转换后的字符串直接覆盖 `PDSTRUCT.sInfoString`；
+  `_encodingList()` 后该字段仍保留最后一条 `_log` 文本；
 - console 目标中 application name 为 `die` 时 console=true、GUI/lite/library
   均为 false；`diel` 时 lite=true；
 - 请求把 application name 设为空后，Qt 恢复为可执行文件名
@@ -225,7 +232,7 @@ python tools/upstream/probe_global_host_api.py
 
 - Qt 5 仍缺 `_isResultPresent`/`_getNumberOfResults` 的 cyclic/proxy 对象、
   BigInt/Symbol、多个 invalid UTF-16 code unit 和 2^53 邻域；
-- Qt 5/Qt 6 native global 的 include error、`_log` PDSTRUCT 后续可见性及
+- `PDSTRUCT.sInfoString` 在真实后续 scan consumer/callback 中的读取时机，以及
   library=true 可达条件；
 - 两个拼写错误分支的 Qt 6/Windows/macOS 对照、不带 `--messages` 行为及
   多错误/后续规则传播；
