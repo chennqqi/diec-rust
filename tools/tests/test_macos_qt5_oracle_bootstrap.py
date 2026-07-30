@@ -40,6 +40,12 @@ DATABASE_COLLECTOR_PATH = (
 DATABASE_VALIDATOR_PATH = (
     ROOT / "tools/upstream/validate_macos_cli_database.py"
 )
+PATH_NESTED_COLLECTOR_PATH = (
+    ROOT / "tools/upstream/collect_macos_cli_path_nested.py"
+)
+PATH_NESTED_VALIDATOR_PATH = (
+    ROOT / "tools/upstream/validate_macos_cli_path_nested.py"
+)
 
 
 def load_module(name: str, path: Path):
@@ -100,6 +106,16 @@ DATABASE_VALIDATOR = load_module(
 DATABASE_HELPER = load_module(
     "collect_windows_cli_database_for_macos_test",
     ROOT / "tools/upstream/collect_windows_cli_database.py",
+)
+PATH_NESTED_COLLECTOR = load_module(
+    "collect_macos_cli_path_nested", PATH_NESTED_COLLECTOR_PATH
+)
+PATH_NESTED_VALIDATOR = load_module(
+    "validate_macos_cli_path_nested", PATH_NESTED_VALIDATOR_PATH
+)
+PATH_NESTED_HELPER = load_module(
+    "collect_windows_cli_path_nested_for_macos_test",
+    ROOT / "tools/upstream/collect_windows_cli_path_nested.py",
 )
 
 
@@ -1075,6 +1091,352 @@ def write_cli_database_candidate_bundle(directory: Path) -> Path:
     return report_path
 
 
+def write_cli_path_nested_candidate_bundle(directory: Path) -> Path:
+    oracle_path = directory / "oracle-candidate.json"
+    oracle = json.loads(oracle_path.read_bytes())
+    path_manifest_raw = (
+        ROOT / PATH_NESTED_COLLECTOR.PATH_MANIFEST
+    ).read_bytes()
+    path_manifest = json.loads(path_manifest_raw)
+    nested_manifest_raw = (
+        ROOT / PATH_NESTED_COLLECTOR.NESTED_MANIFEST
+    ).read_bytes()
+    nested_manifest = json.loads(nested_manifest_raw)
+    path_reference_raw = (
+        ROOT / PATH_NESTED_COLLECTOR.LINUX_PATH_REFERENCE
+    ).read_bytes()
+    path_reference = json.loads(path_reference_raw)
+    nested_reference_raw = (
+        ROOT / PATH_NESTED_COLLECTOR.LINUX_NESTED_REFERENCE
+    ).read_bytes()
+    nested_reference = json.loads(nested_reference_raw)
+    linux_path_cases = path_reference["path_corpus"]["cases"]
+    linux_nested_cases = nested_reference["nested_corpus"]["cases"]
+    source_dir = PurePosixPath(
+        oracle["local_paths"]["source_dir"]
+    )
+    path_corpus_dir = PurePosixPath("/private/tmp/path-corpus")
+    nested_corpus_dir = PurePosixPath(
+        "/private/tmp/nested-corpus"
+    )
+
+    path_cases = {}
+    path_observations = {}
+    determinism_failures = []
+    exit_failures = []
+    path_prefix_failures = []
+    nested_projection_failures = []
+    for case in MATRIX_DEFINITIONS.PATH_CASES:
+        linux_case = linux_path_cases[case.name]
+        linux_prefixes = (
+            PATH_NESTED_HELPER.normalized_linux_prefixes(
+                linux_case["left_filename_prefixes"]
+            )
+        )
+        prefix_bytes = b"".join(
+            (
+                str(path_corpus_dir)
+                + prefix.removeprefix("<paths>")
+                + ":\n"
+            ).encode("utf-8")
+            for prefix in linux_prefixes
+        )
+        if case.name.endswith("_json"):
+            body = b"{}"
+        elif case.name.endswith("_xml"):
+            body = b"<root/>"
+        else:
+            body = b"text"
+        observation = CLI_COMMON.Observation(
+            linux_case["left"]["exit_code"],
+            prefix_bytes + body,
+            b"",
+        )
+        path_observations[case.name] = (
+            observation,
+            observation,
+        )
+        entry = CLI_COLLECTOR.pair_report(
+            CLI_COMMON,
+            directory,
+            f"cli-path-nested/path/{case.name}",
+            observation,
+            observation,
+        )
+        report_arguments = PATH_NESTED_HELPER.translate_arguments(
+            case.arguments,
+            source_dir,
+            path_corpus_dir,
+            nested_corpus_dir,
+            report=True,
+        )
+        first_prefixes = (
+            PATH_NESTED_HELPER.relative_filename_prefixes(
+                observation.stdout, path_corpus_dir
+            )
+        )
+        entry.update(
+            {
+                "arguments": list(report_arguments),
+                "first_filename_prefixes": first_prefixes,
+                "second_filename_prefixes": first_prefixes,
+                "linux_qt5_filename_prefixes": linux_prefixes,
+                "linux_qt5_filename_prefixes_equal": (
+                    first_prefixes == linux_prefixes
+                ),
+                "linux_qt5_raw_differences": (
+                    PATH_NESTED_HELPER.raw_differences(
+                        observation.summary(),
+                        linux_case["left"],
+                    )
+                ),
+            }
+        )
+        if case.name.endswith("_json"):
+            valid = MATRIX_DEFINITIONS.document_is_valid(
+                observation.stdout, "json"
+            )
+            entry.update(
+                {
+                    "first_valid_json": valid,
+                    "second_valid_json": valid,
+                    "linux_qt5_valid_json": (
+                        linux_case["left_valid_json"]
+                    ),
+                }
+            )
+        elif case.name.endswith("_xml"):
+            valid = MATRIX_DEFINITIONS.document_is_valid(
+                observation.stdout, "xml"
+            )
+            entry.update(
+                {
+                    "first_valid_xml": valid,
+                    "second_valid_xml": valid,
+                    "linux_qt5_valid_xml": (
+                        linux_case["left_valid_xml"]
+                    ),
+                }
+            )
+        path_cases[case.name] = entry
+        if entry["determinism_differences"]:
+            determinism_failures.append(f"path.{case.name}")
+        if observation.exit_code != linux_case["left"]["exit_code"]:
+            exit_failures.append(f"path.{case.name}")
+        if first_prefixes != linux_prefixes:
+            path_prefix_failures.append(case.name)
+
+    tree = path_observations["tree_json"]
+    recursive = path_observations["tree_recursive_json"]
+    recursive_entry = path_cases["tree_recursive_json"]
+    recursive_entry["first_changes_from_tree_json"] = (
+        PATH_NESTED_HELPER.observation_differences(
+            tree[0], recursive[0]
+        )
+    )
+    recursive_entry["second_changes_from_tree_json"] = (
+        PATH_NESTED_HELPER.observation_differences(
+            tree[1], recursive[1]
+        )
+    )
+
+    nested_cases = {}
+    for sample in nested_manifest["samples"]:
+        sample_name = sample["name"]
+        sample_cases = {}
+        nested_cases[sample_name] = sample_cases
+        observations = {}
+        for case in MATRIX_DEFINITIONS.NESTED_MATRIX:
+            linux_case = linux_nested_cases[sample_name][case.name]
+            tree = linux_case["left_detect_tree"]
+            stdout = json.dumps(
+                {"detects": tree},
+                separators=(",", ":"),
+            ).encode("utf-8")
+            observation = CLI_COMMON.Observation(
+                linux_case["left"]["exit_code"], stdout, b""
+            )
+            observations[case.name] = (
+                observation,
+                observation,
+            )
+            entry = CLI_COLLECTOR.pair_report(
+                CLI_COMMON,
+                directory,
+                (
+                    "cli-path-nested/nested/"
+                    f"{sample_name}/{case.name}"
+                ),
+                observation,
+                observation,
+            )
+            arguments = (
+                *case.arguments,
+                f"/nested/{sample_name}",
+            )
+            report_arguments = (
+                PATH_NESTED_HELPER.translate_arguments(
+                    arguments,
+                    source_dir,
+                    path_corpus_dir,
+                    nested_corpus_dir,
+                    report=True,
+                )
+            )
+            projected = CLI_COMMON.json_detect_tree(stdout)
+            entry.update(
+                {
+                    "arguments": list(report_arguments),
+                    "first_detect_tree": projected,
+                    "second_detect_tree": projected,
+                    "linux_qt5_detect_tree": tree,
+                    "linux_qt5_detect_tree_equal": projected == tree,
+                    "linux_qt5_raw_differences": (
+                        PATH_NESTED_HELPER.raw_differences(
+                            observation.summary(),
+                            linux_case["left"],
+                        )
+                    ),
+                }
+            )
+            sample_cases[case.name] = entry
+            identity = f"nested.{sample_name}.{case.name}"
+            if entry["determinism_differences"]:
+                determinism_failures.append(identity)
+            if observation.exit_code != linux_case["left"]["exit_code"]:
+                exit_failures.append(identity)
+            if projected != tree:
+                nested_projection_failures.append(identity)
+        default = observations["default"]
+        for case_name, observation_pair in observations.items():
+            entry = sample_cases[case_name]
+            entry["first_changes_from_default"] = (
+                PATH_NESTED_HELPER.observation_differences(
+                    default[0], observation_pair[0]
+                )
+            )
+            entry["second_changes_from_default"] = (
+                PATH_NESTED_HELPER.observation_differences(
+                    default[1], observation_pair[1]
+                )
+            )
+
+    path_case_count = len(MATRIX_DEFINITIONS.PATH_CASES)
+    nested_case_count = len(nested_manifest["samples"]) * len(
+        MATRIX_DEFINITIONS.NESTED_MATRIX
+    )
+    case_count = path_case_count + nested_case_count
+    report = {
+        "schema_version": 1,
+        "result": "candidate",
+        "platform": PATH_NESTED_COLLECTOR.PLATFORM,
+        "generator": PATH_NESTED_COLLECTOR._generator_bindings(
+            ROOT
+        ),
+        "oracle_report": {
+            "path": "oracle-candidate.json",
+            "sha256": hashlib.sha256(
+                oracle_path.read_bytes()
+            ).hexdigest(),
+        },
+        "source": {
+            "repository": (
+                "https://github.com/horsicq/DIE-engine"
+            ),
+            "commit": VALIDATOR.UPSTREAM_COMMIT,
+            "recursive_submodule_count": 58,
+            "rules_commit": VALIDATOR.RULES_COMMIT,
+            "tracked_files_clean_before_and_after": True,
+        },
+        "qt": {
+            "version": oracle["qt"]["version"],
+            "qmake_spec": oracle["qt"]["qmake_spec"],
+            "qmake_sha256": oracle["qt"]["qmake_sha256"],
+            "qtcore_sha256": oracle["qt"]["qtcore_sha256"],
+            "qtscript_sha256": oracle["qt"]["qtscript_sha256"],
+        },
+        "binary": {
+            "size": oracle["artifact"]["size"],
+            "sha256": oracle["artifact"]["sha256"],
+            "relative_path": "build/release/diec",
+        },
+        "fixtures": {
+            "path": {
+                "manifest": PATH_NESTED_COLLECTOR.PATH_MANIFEST,
+                "sha256": hashlib.sha256(
+                    path_manifest_raw
+                ).hexdigest(),
+                "directories": path_manifest["directories"],
+                "entries": path_manifest["entries"],
+            },
+            "nested": {
+                "manifest": PATH_NESTED_COLLECTOR.NESTED_MANIFEST,
+                "sha256": hashlib.sha256(
+                    nested_manifest_raw
+                ).hexdigest(),
+                "samples": nested_manifest["samples"],
+            },
+        },
+        "linux_qt5_references": {
+            "path": {
+                "path": (
+                    PATH_NESTED_COLLECTOR.LINUX_PATH_REFERENCE
+                ),
+                "sha256": hashlib.sha256(
+                    path_reference_raw
+                ).hexdigest(),
+            },
+            "nested": {
+                "path": (
+                    PATH_NESTED_COLLECTOR.LINUX_NESTED_REFERENCE
+                ),
+                "sha256": hashlib.sha256(
+                    nested_reference_raw
+                ).hexdigest(),
+            },
+        },
+        "local_paths": {
+            "path_corpus_dir": str(path_corpus_dir),
+            "nested_corpus_dir": str(nested_corpus_dir),
+        },
+        "path": {"cases": path_cases},
+        "nested": {"cases": nested_cases},
+        "summary": {
+            "path_case_count": path_case_count,
+            "nested_sample_count": len(
+                nested_manifest["samples"]
+            ),
+            "nested_case_count": nested_case_count,
+            "case_count": case_count,
+            "execution_count": 2 * case_count,
+            "raw_stream_count": 4 * case_count,
+            "determinism_failures": determinism_failures,
+            "linux_exit_code_failures": exit_failures,
+            "path_prefix_failures": path_prefix_failures,
+            "nested_projection_failures": (
+                nested_projection_failures
+            ),
+            "deterministic": not determinism_failures,
+            "linux_exit_codes_equal": not exit_failures,
+            "path_prefixes_equal": not path_prefix_failures,
+            "nested_projections_equal": (
+                not nested_projection_failures
+            ),
+        },
+        "admission": {
+            "platform_admitted": False,
+            "capability_rows_admitted": 0,
+            "reason": PATH_NESTED_COLLECTOR.ADMISSION_REASON,
+        },
+        "limitations": PATH_NESTED_COLLECTOR.LIMITATIONS,
+    }
+    report_path = directory / "cli-path-nested-candidate.json"
+    report_path.write_text(
+        json.dumps(report, sort_keys=True), encoding="utf-8"
+    )
+    return report_path
+
+
 class MacosQt5OracleBootstrapTests(unittest.TestCase):
     def test_plan_is_exact_generator_output_and_source_bound(self):
         report = json.loads(PLAN_PATH.read_text(encoding="utf-8"))
@@ -1158,10 +1520,15 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             "generate_database_fixture.py",
             "collect_macos_cli_database.py",
             "validate_macos_cli_database.py",
+            "generate_path_corpus.py",
+            "generate_nested_corpus.py",
+            "collect_macos_cli_path_nested.py",
+            "validate_macos_cli_path_nested.py",
             "cli-baseline-candidate.json",
             "cli-matrix-candidate.json",
             "cli-remaining-candidate.json",
             "cli-database-candidate.json",
+            "cli-path-nested-candidate.json",
             "diec-macos-candidate-evidence/raw",
             (
                 "actions/checkout@"
@@ -1204,6 +1571,7 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
                 "cli-matrix-candidate.json",
                 "cli-remaining-candidate.json",
                 "cli-database-candidate.json",
+                "cli-path-nested-candidate.json",
             ],
         )
         self.assertEqual(
@@ -1213,10 +1581,13 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
             workflow["database_cli_execution_count"], 36
         )
         self.assertEqual(
-            workflow["general_cli_execution_count"], 1868
+            workflow["path_nested_cli_execution_count"], 92
         )
         self.assertEqual(
-            workflow["general_cli_raw_stream_count"], 3736
+            workflow["general_cli_execution_count"], 1960
+        )
+        self.assertEqual(
+            workflow["general_cli_raw_stream_count"], 3920
         )
 
     def test_cli_candidate_tools_are_bound_and_fail_closed(self):
@@ -1545,6 +1916,81 @@ class MacosQt5OracleBootstrapTests(unittest.TestCase):
                 "raw file inventory",
             ):
                 DATABASE_VALIDATOR.validate_report(
+                    report,
+                    report_path=report_path,
+                    oracle_path=oracle_path,
+                    root=ROOT,
+                )
+
+    def test_cli_path_nested_validator_recomputes_full_raw_matrix(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            oracle_path = directory / "oracle-candidate.json"
+            oracle_path.write_text(
+                json.dumps(candidate_report(), sort_keys=True),
+                encoding="utf-8",
+            )
+            report_path = write_cli_path_nested_candidate_bundle(
+                directory
+            )
+            report = CLI_VALIDATOR.load_json(report_path)[0]
+            PATH_NESTED_VALIDATOR.validate_report(
+                report,
+                report_path=report_path,
+                oracle_path=oracle_path,
+                root=ROOT,
+            )
+            self.assertEqual(report["summary"]["case_count"], 46)
+            self.assertEqual(
+                report["summary"]["execution_count"], 92
+            )
+            self.assertEqual(
+                report["summary"]["raw_stream_count"], 184
+            )
+
+            first = report["nested"]["cases"][
+                "pdf-member.zip"
+            ]["recursive"]["first"]
+            raw_path = directory / first["stdout_path"]
+            original = raw_path.read_bytes()
+            raw_path.write_bytes(b"tampered")
+            with self.assertRaisesRegex(
+                PATH_NESTED_VALIDATOR.ReportError,
+                "raw stream identity mismatch",
+            ):
+                PATH_NESTED_VALIDATOR.validate_report(
+                    report,
+                    report_path=report_path,
+                    oracle_path=oracle_path,
+                    root=ROOT,
+                )
+            raw_path.write_bytes(original)
+
+            report["admission"]["platform_admitted"] = True
+            with self.assertRaisesRegex(
+                PATH_NESTED_VALIDATOR.ReportError,
+                "must not admit",
+            ):
+                PATH_NESTED_VALIDATOR.validate_report(
+                    report,
+                    report_path=report_path,
+                    oracle_path=oracle_path,
+                    root=ROOT,
+                )
+            report["admission"]["platform_admitted"] = False
+
+            extra = (
+                directory
+                / "raw"
+                / "cli-path-nested"
+                / "undeclared"
+            )
+            extra.write_bytes(b"x")
+            with self.assertRaisesRegex(
+                PATH_NESTED_VALIDATOR.ReportError,
+                "raw file inventory",
+            ):
+                PATH_NESTED_VALIDATOR.validate_report(
                     report,
                     report_path=report_path,
                     oracle_path=oracle_path,
