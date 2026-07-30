@@ -49,3 +49,14 @@
 
 #### 测试状态
 - 全部 1554 测试通过，1 skipped，5078 subtests passed
+
+### 2026-07-30: P0-BLOCK-004 许可证范围修正
+
+#### 背景
+用户确认：Rust 从零重写，不复制/翻译/链接上游 C++ 源码。上游 GPL/UnRAR/Brotli/Zstandard 许可证不传染 Rust 二进制。
+
+#### 修正内容
+- P0-BLOCK-004 从"上游 C++ 许可证冲突"收窄为"规则资产分发许可 + Rust crate SBOM 方案"
+- 不再阻塞：XUCL GPL/MIT、RAR notice、Brotli/Zstandard 声明剥离、XArchive/XCapstone/XSIMD 编译闭包、Windows/macOS/Qt6 闭包
+- 仍需评审：db* 规则资产（2,268 文件、22 PNG）分发许可、YARA/PEiD/signatures 分发决策、NOTICE/SBOM 内容、Rust crate SBOM 方案
+- 更新 phase-0-review-preparation.md、phase-0-gate-review.md、phase-0-gate-review.json

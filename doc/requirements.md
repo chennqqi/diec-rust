@@ -8,3 +8,8 @@
 ## 2026-07-30: 并行推进 Phase 0 阻塞项
 - 并行推进 P0-BLOCK-004(许可证)、P0-BLOCK-002/003(设计/ADR)、P0-BLOCK-006(性能) 评审准备
 - macOS 基线 (P0-BLOCK-005) 留待 Darwin 主机执行
+
+## 2026-07-30: P0-BLOCK-004 许可证范围修正
+- Rust 从零重写，不复制/翻译/链接上游 C++ 源码，上游 GPL/UnRAR 等许可证不传染 Rust 二进制
+- P0-BLOCK-004 收窄为：规则资产分发许可 + Rust crate SBOM 方案
+- 更新 phase-0-review-preparation.md 和 phase-0-gate-review 反映修正后范围

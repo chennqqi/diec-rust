@@ -12,38 +12,60 @@ Last updated: 2026-07-30
 
 ## P0-BLOCK-004: 许可证审计
 
-### 已完成的技术证据
+### 实现方式与许可证边界
 
-| 证据 | 文档 | 状态 | 关键结论 |
-| --- | --- | --- | --- |
-| 58 组件根许可证清单 | `component-license-inventory.md` | Draft | 58/58 根 MIT；12 个不同 SHA-256；45 nested candidate |
-| XArchive 编译闭包 | `xarchive-license-closure.md` | Draft | 106 编译源/217 依赖；MIT/PD/bzip2/zlib 标记 |
-| XArchive 最终链接 | `xarchive-final-link-closure.md` | — | 85 source 最终贡献；仅 LzmaDec 进入 ELF |
-| XCapstone 最终 ELF | `xcapstone-license-closure.md` | In Review | 11 source/71 依赖；MIT+BSD-3+LLVM/NCSA |
-| XSIMD 最终 ELF | `xsimd-license-closure.md` | — | 3 member/6 依赖；全部 horsicq MIT |
-| XYara 构建闭包 | `yara-license-closure.md` | Draft | 51-obj/109-file；YARA BSD+Bison GPL+TLSH Apache/BSD；build-only |
-| XUCL 来源追溯 | `xucl-origin.md` | In Review | UCL 1.03 GPL-2.0-or-later；94.76% 12-token 覆盖 |
-| Runtime 规则资产 | `runtime-rule-assets-license.md` | Draft | 2,268 文件；根 MIT；1 条显式 MIT；22 PNG |
-| 规则资产来源 | `rule-asset-provenance.md` | — | YARA/PEiD/signatures 逐文件审计 |
-| 产品源码闭包 | `product-source-closure.md` | — | 237 compile source/14 根 LICENSE |
-| Linux install tree | `linux-cmake-install-tree.md` | — | 4,916 文件；仅 1 LICENSE candidate |
-| Linux release trees | `linux-release-trees.md` | — | AppImage/portable 无 LICENSE |
-| 嵌入压缩来源 | `embedded-compression-origins.md` | — | Brotli v1.2.0 MIT / Zstandard BSD+GPLv2 |
-| RAR decoder 来源 | `rar-decoder-provenance.md` | — | UnRAR 7.13 94.21% 覆盖；无 notice |
+本项目用 Rust 从零重写上游功能，不复制、翻译或链接上游 C++ 源码。上游二进制
+仅作为固定 oracle 运行。因此：
 
-### 剩余缺口（按优先级）
+- **上游 C++ 组件许可证不传染 Rust 二进制**：XUCL (GPL)、UnRAR、Brotli、
+  Zstandard 等组件的许可证约束仅适用于上游 C++ 编译产物，不影响独立重写的
+  Rust 实现。
+- **Rust 三方 crate 各自带许可证**：选用 `bzip2`、`lzma`、`zstd`、`brotli` 等
+  crate 时，按 crate 自身许可证评估，与 XArchive 剥离声明无关。
+- **上游 C++ 许可证审计仍有参考价值**：明确哪些组件不能直接复制代码，以及
+  上游发布物中存在哪些归属缺口。
 
-1. **XUCL MIT/GPL 组合书面评审**：`xucldecoder.cpp` 内嵌 UCL 1.03 GPL，
-   外层 MIT。需发布/法律责任人书面判定。
-2. **RAR decoder notice 缺失**：UnRAR 7.13 代码未保存 RARLAB notice。
-3. **Brotli/Zstandard 声明剥离**：XArchive 剥离版权声明，未保存 LICENSE。
-4. **db* 规则逐路径许可**：2,235 规则仅 1 条显式 MIT；22 PNG artwork 法律确认未完成。
-5. **Windows/macOS/Qt6 闭包**：当前仅覆盖 Linux Qt5 CMake Release。
-6. **Rust dependency SBOM**：候选 crate graph 未开始。
+### 上游 C++ 审计证据（参考性）
+
+| 证据 | 文档 | 关键结论 |
+| --- | --- | --- |
+| 58 组件根许可证清单 | `component-license-inventory.md` | 58/58 根 MIT；12 个不同 SHA-256 |
+| XUCL 来源追溯 | `xucl-origin.md` | UCL 1.03 GPL-2.0-or-later；不可复制到 Rust |
+| RAR decoder 来源 | `rar-decoder-provenance.md` | UnRAR 7.13 逐字节匹配；不可复制到 Rust |
+| 嵌入压缩来源 | `embedded-compression-origins.md` | Brotli MIT / Zstandard BSD+GPLv2；用 Rust crate 替代 |
+| 产品源码闭包 | `product-source-closure.md` | 237 compile source；仅参考，不约束 Rust |
+| XYara 构建闭包 | `yara-license-closure.md` | YARA build-only；不进入 `diec` CLI |
+
+### 剩余缺口（按实际影响排序）
+
+1. **db\* 规则资产分发许可**：2,268 个文件（2,235 个 `.sg` 规则 + 33 个
+   metadata/PNG）来自 `Detect-It-Easy@c2c17df`，根 LICENSE 为 MIT，但仅 1 条
+   规则含显式 MIT 声明。如果 Rust 项目原样分发完整 `db*` 树，需确认根 MIT
+   对全部历史贡献及 22 个 PNG artwork 的适用性。替代方案：通过 ADR 定义
+   最小分发树，用可重复实验证明 PNG 不可达后排除。
+2. **YARA/PEiD/signatures 资产分发许可**：这些资产不进入 `diec` CLI 的
+   扫描能力，但可能随发布包分发。逐文件证据不足以批准原样分发全部资产。
+   替代方案：Rust CLI 不分发这些资产。
+3. **NOTICE/SBOM 最终内容**：需在发布前确定 NOTICE 文件和 SBOM 的精确内容，
+   包括上游归属保留和 Rust crate 许可证清单。
+4. **Rust dependency SBOM**：候选 crate graph 需在 Phase 1 crate 选定后
+   构建。属于实现期任务，但需在 Phase 0 评审中确认 SBOM 方案和工具链。
+
+### 不再阻塞的事项
+
+- ~~XUCL MIT/GPL 组合~~：Rust 侧不引用 XUCL 代码，GPL 传染性不适用
+- ~~RAR decoder notice 缺失~~：Rust 侧用 `unrar` crate 或不支持 RAR 压缩
+- ~~Brotli/Zstandard 声明剥离~~：Rust 侧用对应 crate，各自带 LICENSE
+- ~~XArchive/XCapstone/XSIMD 编译闭包~~：不编译上游 C++ 组件
+- ~~Windows/macOS/Qt6 闭包~~：不编译上游，平台闭包无许可证意义
 
 ### 评审输入准备状态
 
-技术证据充分，可提交书面评审。约束：技术可行性不替代许可证结论；评审前不得复制受约束代码。
+核心问题已从"上游 C++ 许可证冲突"收窄为"规则资产可分发性确认"和"Rust crate
+SBOM 方案"。建议：
+- 规则资产分发许可提交发布/法律责任人书面评审
+- Rust crate SBOM 方案在 Phase 0 确认工具链，Phase 1 实现
+- 上游 C++ 审计证据保留为参考，不作为 Rust 二进制的许可证约束
 
 ## P0-BLOCK-002/003: 设计文档与 ADR 评审
 
