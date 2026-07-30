@@ -1968,8 +1968,8 @@
       "sha256": "5059e761e896b3e11f941ef56623b03651fe6aa323b16a9c568d666345b306e2"
     },
     "tools/upstream/global_host_api_harness_main.cpp": {
-      "bytes": 34398,
-      "sha256": "7edb30e433abf4e8f0626d2235f4157de09de49b04ee27105d233cb9c5ce5e2d"
+      "bytes": 36577,
+      "sha256": "8b6d402b153048c0936281317acc906277a2403fff2be9d2d2954dcb370bb63b"
     },
     "tools/upstream/probe_global_host_api.py": {
       "bytes": 30573,

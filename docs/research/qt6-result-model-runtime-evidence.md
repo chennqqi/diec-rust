@@ -35,7 +35,7 @@ observation。四条 Qt5-only runtime 差异均完整保留，不被当作共同
 机器报告：
 [`data/result-model-engine-qt6.json`](data/result-model-engine-qt6.json)，
 SHA-256
-`df0b2b9832da2f15513fef29a74a49ec1e8520c331bd7dd415ef68769689c3b1`。
+`0e9e728b97fa59db0028b502c8ef4176307e0b365479c4d12369586f93b84c81`。
 
 | Profile | Qt6 image ID | Binary SHA-256 | Cases / records |
 | --- | --- | --- | ---: |

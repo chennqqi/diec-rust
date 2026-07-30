@@ -610,7 +610,7 @@
         "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
       },
       "path": "docs/research/data/global-host-api-qt5.json",
-      "sha256": "087e4181562af80b3ff07d1cc501dc1b64db3c34d12bee236bf6b04a4accd96e"
+      "sha256": "475c38c4973a94d02c023e440bcd231c8aabdc458934e46a5243a092e77fcd78"
     },
     "qt6": {
       "binary": {
@@ -623,7 +623,7 @@
         "revision": "74eaf505c250ab47e709024e9dc41657cd8f2254"
       },
       "path": "docs/research/data/global-host-api-qt6.json",
-      "sha256": "983f1d717b4b459c98daafd70f45cdefb72a9644b5e0ae7c15a8dd32665cb197"
+      "sha256": "73e09874de1a6b332c0b67dcce3e9e62e30b368bb8c05a376a89b80dce821107"
     }
   },
   "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",

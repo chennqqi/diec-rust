@@ -98,9 +98,9 @@ python tools/upstream/compare_global_host_api_reports.py
 
 | Report | SHA-256 |
 | --- | --- |
-| [`global-host-api-qt5.json`](data/global-host-api-qt5.json) | `087e4181562af80b3ff07d1cc501dc1b64db3c34d12bee236bf6b04a4accd96e` |
-| [`global-host-api-qt6.json`](data/global-host-api-qt6.json) | `983f1d717b4b459c98daafd70f45cdefb72a9644b5e0ae7c15a8dd32665cb197` |
-| [`global-host-api-qt5-qt6.json`](data/global-host-api-qt5-qt6.json) | `467e6f3bb5dc66ed19d59144d5a9a707c52dfd0f134bb985d5002de667227a62` |
+| [`global-host-api-qt5.json`](data/global-host-api-qt5.json) | `475c38c4973a94d02c023e440bcd231c8aabdc458934e46a5243a092e77fcd78` |
+| [`global-host-api-qt6.json`](data/global-host-api-qt6.json) | `73e09874de1a6b332c0b67dcce3e9e62e30b368bb8c05a376a89b80dce821107` |
+| [`global-host-api-qt5-qt6.json`](data/global-host-api-qt5-qt6.json) | `c223e4a4773ca0734b0f5d8197366da4aeddb06bff806fb50597ddfd3c90a050` |
 
 probe 在写报告前严格验证全部预期行为、非零退出、额外 stdout、身份漂移和
 非预期 JavaScript error。schema v5 把父进程及六个隔离子进程的 stdout/stderr
