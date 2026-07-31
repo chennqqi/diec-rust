@@ -70,6 +70,13 @@
 - 创建 tools/tests/test_end_to_end_differential.py：验证收集→验证→审计报告全流程（3 测试）
 - 全部 126 Python 差分工具测试通过（原 123 + 新 3），cargo fmt/clippy/test/check-deps 全部通过
 
+## 2026-07-31: 上游规则同步、来源清单、完整性校验
+- 创建 xtask sync-rules 子命令：扫描 upstream/Detect-It-Easy 的 5 个规则树（db/db_extra/db_custom/dbs_min/dbs_special），生成 rule-source-manifest.json（schema=1，记录 repository/commit/component/synced_at + 每文件 relative_path/size/sha256）
+- 创建 xtask verify-rules 子命令：校验规则文件 size + SHA-256 与 manifest 一致
+- 在 diec-rules crate 定义 RuleSourceManifest/RuleTreeEntry/RuleFileEntry 类型骨架（MANIFEST_SCHEMA_VERSION=1）
+- 实际运行：sync-rules 生成 manifest（4539 文件，4453445 bytes），verify-rules 全部通过
+- cargo fmt/clippy/test/check-deps 全部通过
+
 ## P0-BLOCK-006 macOS 运行时基线采集 (deferred from Phase 0)
 - 通过 ssh macdevoa (macdev 别名) 继续完成 macOS 运行时基线采集
 - 复用 ~/dev/tmp/diec-macos-work 目录中已有数据 (DIE-engine-src/build/corpus/evidence 等)

@@ -11,6 +11,8 @@
 #![forbid(unsafe_code)]
 #![warn(missing_docs)]
 
+pub mod manifest;
+
 /// Placeholder for the future rule database and runtime. Phase 1 only
 /// establishes the crate boundary; the rule runtime lands in Phase 3.
 pub fn placeholder() -> &'static str {

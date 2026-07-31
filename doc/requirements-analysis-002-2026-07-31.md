@@ -46,3 +46,10 @@
 - 端到端审计测试 test_end_to_end_differential.py：收集→verify_raw_execution→审计报告全流程（3 测试：audit/content-addressed/missing-executable）
 - 验证：126 Python 测试通过（原 123 + 新 3），cargo 全套通过
 - 设计约束：Rust producer 不参与生成 upstream expected 值；框架审计性独立于检测是否匹配
+
+### 上游规则同步、来源清单、完整性校验
+- xtask sync-rules：扫描 upstream/Detect-It-Easy 的 5 个规则树（db/db_extra/db_custom/dbs_min/dbs_special），生成 rule-source-manifest.json（schema=1，记录 repository/commit/component/synced_at + 每文件 relative_path/size/sha256）
+- xtask verify-rules：校验规则文件 size + SHA-256 与 manifest 一致
+- diec-rules crate 定义 RuleSourceManifest/RuleTreeEntry/RuleFileEntry 类型骨架（MANIFEST_SCHEMA_VERSION=1），供后续 engine cache key 绑定
+- 实际运行：sync-rules 生成 manifest（4539 文件，4453445 bytes），verify-rules 全部通过
+- 设计约束（architecture.md section 9）：规则源文件不格式化/不手工修正；cache key 绑定 manifest 完整内容身份，不依赖 file count/total size/mtime
