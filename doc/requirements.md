@@ -248,6 +248,21 @@
   - includeScript 嵌套 include（level1 -> level2）
 - cargo fmt/clippy/test/check-deps 全部通过（306 个测试）
 
+## 2026-08-01: Phase 3 第五步 — 规则加载 conformance 测试
+- 新增 `tests/conformance.rs` 集成测试模块（22 个测试）:
+  - 规则加载: meta+detect、多结果、_setLang、无 detect 函数
+  - 签名检查: compare 匹配/不匹配、findSignature
+  - 读取: readByte、readWord、U8/U32 别名、getString
+  - 元数据: getSize、calculateEntropy
+  - 扫描模式: isDeepScan
+  - include: includeScript 加载 helper
+  - 全局函数: _getEngineVersion、_getOS
+  - 生命周期: factory 创建、shutdown 重置、cancellation
+  - 多规则: snapshot 中多个规则
+- `RquickjsRuntime::new` 改为 pub，新增 `register_host_api` 公开方法
+  供集成测试使用
+- cargo fmt/clippy/test/check-deps 全部通过（328 个测试）
+
 ## P0-BLOCK-006 macOS 运行时基线采集 (deferred from Phase 0)
 - 通过 ssh macdevoa (macdev 别名) 继续完成 macOS 运行时基线采集
 - 复用 ~/dev/tmp/diec-macos-work 目录中已有数据 (DIE-engine-src/build/corpus/evidence 等)

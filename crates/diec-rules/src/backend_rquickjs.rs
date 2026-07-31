@@ -86,7 +86,7 @@ pub struct RquickjsRuntime {
 
 impl RquickjsRuntime {
     /// Create a new rquickjs runtime with the given configuration.
-    fn new(config: RuntimeConfig) -> Result<Self, RuleError> {
+    pub fn new(config: RuntimeConfig) -> Result<Self, RuleError> {
         let runtime = Runtime::new().map_err(|e| RuleError::Backend {
             detail: format!("failed to create QuickJS runtime: {e}"),
         })?;
@@ -118,6 +118,16 @@ impl RquickjsRuntime {
             initialized: false,
             include_scripts: BTreeMap::new(),
         })
+    }
+
+    /// Register a host API bridge on the JavaScript context.
+    ///
+    /// This creates the `Binary`/`X`/`File` JavaScript objects that bridge
+    /// to the Rust `HostApi` trait. Must be called after `load_database`
+    /// and before `evaluate_rule`.
+    pub fn register_host_api(&self, host: Arc<dyn HostApi + Send + Sync>) -> Result<(), RuleError> {
+        let bridge = crate::host_api_bridge::HostApiBridge::new(host);
+        bridge.register(&self.context)
     }
 
     /// Register global host functions on the JavaScript context.
