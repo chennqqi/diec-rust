@@ -125,6 +125,14 @@ class PhaseZeroGateReviewTest(unittest.TestCase):
             },
             {"P0-BLOCK-001", "P0-BLOCK-002", "P0-BLOCK-003", "P0-BLOCK-004", "P0-BLOCK-006"},
         )
+        self.assertEqual(
+            {
+                blocker["id"]
+                for blocker in blockers
+                if blocker["status"] == "deferred"
+            },
+            {"P0-BLOCK-005"},
+        )
         for condition in exit_conditions:
             self.assertIn(
                 condition["status"],
@@ -134,7 +142,7 @@ class PhaseZeroGateReviewTest(unittest.TestCase):
                 self.assertTrue(condition["blockers"])
         for blocker in blockers:
             self.assertTrue(blocker["owner"])
-            self.assertIn(blocker["status"], {"open", "closed"})
+            self.assertIn(blocker["status"], {"open", "closed", "deferred"})
             self.assertTrue(blocker["closure_evidence"])
             self.assertIn(blocker["id"], self.document)
 
