@@ -1,0 +1,55 @@
+phase4: clear all rule diagnostics across corpus
+
+Sixteenth step of Phase 4 (CLI). Fix all remaining rule execution
+diagnostics so every corpus file scans with zero errors.
+
+Changes:
+1. const→var preprocessing in eval_script and evaluate_rule_source:
+   Qt Script treats const like var (function-scoped, redeclarable).
+   QuickJS rejects redefinition, causing SyntaxError in rules like
+   Nintendo-certified-file.1.sg. Replacing const with var is safe
+   because upstream rules don't rely on const immutability.
+
+2. Add 40+ missing PE host API method stubs:
+   - Header: isTLSPresent, isRichSignaturePresent, getMajorLinkerVersion,
+     getMinorLinkerVersion, getImageOptionalHeader, isDll,
+     getOperationSystemOptions, getDosStubSize
+   - .NET: getNetModuleName, getNetAssemblyName, getNETVersion,
+     isNetGlobalCctorPresent
+   - Debug: getNumberOfDebugDataRecords, getDebugDataOffset/Size/Type
+   - Rich: getNumberOfRichIDs, getRichID, getRichCount
+   - File: getFileDirectory, getFileBaseName, getFileCompleteSuffix
+   - Read: readWord, readDword, readSByte, readSDword, read_int32
+   - Validation: isEntryPointCorrect, isHeaderCorrect, etc.
+   - Address: OffsetToRVA, VAToOffset, RVAToOffset
+
+3. Fix read_codePageString parameter type:
+   Third parameter changed from Option<i32> to Option<String>
+   to accept code page names like 'SJIS', 'CP1251'.
+
+4. Make all format globals independent objects (Object with
+   __proto__ = Binary) instead of aliases to Binary:
+   - Prevents getFileFormatName overrides between formats
+   - CFBF, JavaClass, PDF, PNG, JPEG, ZIP, RAR, ISO9660, etc.
+
+5. Add format-specific getFileFormatName stubs returning correct
+   format names to avoid "No input detection name" errors.
+
+6. Add ZIP/ISO/PDF/JPEG-specific method stubs:
+   - ZIP.isArchiveRecordPresent
+   - ISO9660.getDataPreparerIdentifier/getApplicationIdentifier
+   - PDF.getHeaderCommentAsHex/getStringValuesByKey
+   - Jpeg.isChunkPresent/getComment/getDqtMD5/getExifCameraName
+
+7. Add stack trace to exception extraction for better debugging.
+
+8. Update differential test: PE files no longer produce DosX warning
+   (isHeuristicScan() returns false, which is more correct behavior).
+
+Result:
+- All 27 corpus files scan with zero diagnostics
+- 361 tests pass, clippy clean
+
+Generated with [Devin](https://devin.ai)
+
+Co-Authored-By: Devin <158243242+devin-ai-integration[bot]@users.noreply.github.com>

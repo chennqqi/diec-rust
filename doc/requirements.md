@@ -574,6 +574,22 @@
 
 - cargo fmt/clippy/test/check-deps 全部通过（360 个测试）
 
+## 2026-08-01: Phase 4 第十六步 — 清除所有规则诊断
+
+### 修复
+1. **const→var 预处理**：Qt Script 将 const 当作 var（函数作用域、可重声明），QuickJS 严格拒绝重声明。在 `eval_script` 和 `evaluate_rule_source` 中将 `const ` 替换为 `var `，修复 `Nintendo-certified-file.1.sg` 的 SyntaxError（影响所有文件）
+2. **PE host API stubs 补全**：添加 40+ 个缺失的 PE 方法 stub（`isTLSPresent`, `isRichSignaturePresent`, `getMajorLinkerVersion`, `getOperationSystemOptions`, `getNetModuleName`, `readWord/Dword/SByte/SDword`, `getDosStubSize`, `getNumberOfDebugDataRecords`, `getFileBaseName`, 地址转换等），修复 PE 规则的 37 个 TypeError
+3. **read_codePageString 参数类型修复**：第三个参数从 `Option<i32>` 改为 `Option<String>`，修复 `Binary/audio.1.sg` 的 string→i32 转换错误
+4. **格式全局对象独立化**：将所有格式全局对象（CFBF, JavaClass, PDF, PNG, JPEG, ZIP, RAR, ISO9660 等）从 Binary 别名改为独立对象（`__proto__ = Binary`），避免 `getFileFormatName` 互相覆盖
+5. **格式特定 stub 方法**：为 CFBF/JavaClass/PDF/PNG/JPEG/ZIP/RAR/ISO9660 等添加 `getFileFormatName` 返回正确格式名，修复 "No input detection name" 错误
+6. **ZIP/ISO/PDF/JPEG stubs**：添加 `isArchiveRecordPresent`, `getDataPreparerIdentifier`, `getHeaderCommentAsHex`, `isChunkPresent` 等格式特定方法
+
+### 结果
+- 所有语料库文件的诊断数降为 0
+- PE 文件不再有 DosX 警告（`isHeuristicScan()` 返回 false，更正确的行为）
+- 差分测试更新以匹配新行为
+- cargo fmt/clippy/test 全部通过（361 个测试）
+
 ## 2026-08-01: Phase 4 第十五步 — 实现差分测试 (对比上游 DIE 输出)
 
 ### 实现

@@ -379,13 +379,21 @@ impl RquickjsRuntime {
 
     /// Evaluate a script source in the context with sloppy mode (non-strict).
     fn eval_script(&self, source: &str) -> Result<(), RuleError> {
+        // Preprocess: convert `const` to `var` to match Qt Script behavior.
+        // Qt Script treats `const` like `var` (function-scoped, redeclarable).
+        // QuickJS treats `const` as block-scoped and rejects redefinition
+        // of variables declared with `var` in the same scope, causing
+        // SyntaxError in rules like Nintendo-certified-file.1.sg.
+        // This is safe because upstream rules don't rely on `const`
+        // immutability.
+        let processed = source.replace("const ", "var ");
         self.context.with(|ctx: Ctx<'_>| {
             // Use sloppy (non-strict) mode to match Qt Script behavior.
             // QuickJS defaults to strict mode, which rejects `delete` on
             // direct references and other sloppy-mode constructs.
             let mut options = rquickjs::context::EvalOptions::default();
             options.strict = false;
-            ctx.eval_with_options::<(), _>(source, options)
+            ctx.eval_with_options::<(), _>(processed.as_str(), options)
                 .map_err(|e| {
                     let message = match e {
                         rquickjs::Error::Exception => extract_exception_message(&ctx),
@@ -415,10 +423,16 @@ fn extract_exception_message(ctx: &Ctx<'_>) -> String {
         return format!("Exception ({type_name})");
     }
 
-    // Use JS to convert the exception to a string.
+    // Use JS to convert the exception to a string and get stack trace.
     let result: Result<String, _> = ctx.eval(
         r#"
-        try { String(__diec_exc); } catch(e) { "Exception"; }
+        try {
+            var msg = String(__diec_exc);
+            if (__diec_exc && __diec_exc.stack) {
+                msg += " stack: " + __diec_exc.stack;
+            }
+            msg;
+        } catch(e) { "Exception"; }
         "#,
     );
     let _ = globals.set("__diec_exc", rquickjs::Value::new_null(ctx.clone()));
@@ -575,6 +589,10 @@ impl RquickjsRuntime {
         // Clear previous results from the JS __diec_results array.
         self.clear_results()?;
 
+        // Preprocess: convert `const` to `var` to match Qt Script behavior.
+        // See eval_script() for details.
+        let processed_source = rule_source.replace("const ", "var ");
+
         // Wrap the rule source in an IIFE that captures `detect` and
         // calls it immediately. This isolates `const`/`function`/`var`
         // declarations from the global scope.
@@ -592,7 +610,7 @@ impl RquickjsRuntime {
                 }}
                 return undefined;
             }})();"#,
-            source = rule_source
+            source = processed_source
         );
 
         let eval_result: Result<(), rquickjs::Error> = self.context.with(|ctx: Ctx<'_>| {

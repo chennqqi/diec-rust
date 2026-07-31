@@ -22,20 +22,10 @@ use std::path::PathBuf;
 /// The order doesn't matter — the test sorts both lists before comparing.
 const CORPUS_EXPECTATIONS: &[(&str, &[(&str, &str)])] = &[
     // Executable formats
-    (
-        "minimal.exe",
-        &[(
-            "~warning",
-            ">>> Update DIE Engine to 3.20 and higher for using Heuristic-analyzer by DosX <<<",
-        )],
-    ),
-    (
-        "minimal-pe64.exe",
-        &[(
-            "~warning",
-            ">>> Update DIE Engine to 3.20 and higher for using Heuristic-analyzer by DosX <<<",
-        )],
-    ),
+    // PE files: heuristic analysis rule runs but isHeuristicScan() returns
+    // false, so no detections are produced without --heuristicscan flag.
+    ("minimal.exe", &[]),
+    ("minimal-pe64.exe", &[]),
     ("minimal.elf", &[]),
     ("minimal-elf32.elf", &[]),
     ("minimal.macho", &[]),

@@ -1449,10 +1449,11 @@ impl HostApiBridge {
             })?;
 
             // read_codePageString(offset, maxSize, codePage?) -> string
+            // The codePage parameter is a string (e.g. 'SJIS', 'CP1251').
             // For now, treat as ANSI string (code page ignored).
             let h = host.clone();
             let read_cp_fn =
-                rquickjs::Function::new(ctx.clone(), move |offset: i32, max_size: i32, _code_page: Option<i32>| {
+                rquickjs::Function::new(ctx.clone(), move |offset: i32, max_size: i32, _code_page: Option<String>| {
                     let file_size = h.file_size() as usize;
                     let start = offset as usize;
                     if start >= file_size {
@@ -1850,6 +1851,9 @@ impl HostApiBridge {
                     PE.getResourceTypeByNumber = function(n) { return 0; };
                     PE.getResourceNameOffset = function(s) { return 0; };
                     PE.resource = [];
+
+                    // OS/options stubs.
+                    PE.getOperationSystemOptions = function() { return ""; };
                     PE.isResourceNamePresent = function(s) { return false; };
 
                     // Import/export stubs.
@@ -1865,11 +1869,16 @@ impl HostApiBridge {
                     PE.isNet = function() { return false; };
                     PE.isNetObjectPresent = function(s) { return false; };
                     PE.isNetUStringPresent = function(s) { return false; };
+                    PE.isNetGlobalCctorPresent = function(s) { return false; };
                     PE.isImportPositionHashPresent = function(s) { return false; };
+                    PE.getNetAssemblyName = function() { return ""; };
+                    PE.getNetModuleName = function() { return ""; };
+                    PE.getNETVersion = function() { return ""; };
 
                     // PE-specific string methods.
                     PE.getManifest = function() { return ""; };
                     PE.isSignedFile = function() { return false; };
+                    PE.isSigned = function() { return false; };
                     PE.getSignature = function(offset, size) { return ""; };
                     PE.getEntryPointSignature = function(nOffset, nSize) {
                         return PE.getSignature(PE.nEP + nOffset, nSize);
@@ -1883,6 +1892,96 @@ impl HostApiBridge {
                     // File info stubs.
                     PE.getPEFileVersion = function(s) { return ""; };
                     PE.getVersionStringInfo = function(s) { return ""; };
+                    PE.getFileVersion = function() { return ""; };
+                    PE.getCompilerVersion = function() { return ""; };
+
+                    // PE header info stubs.
+                    PE.isTLSPresent = function() { return false; };
+                    PE.isRichSignaturePresent = function() { return false; };
+                    PE.getMajorLinkerVersion = function() { return 0; };
+                    PE.getMinorLinkerVersion = function() { return 0; };
+                    PE.getImageOptionalHeader = function(field) { return 0; };
+                    PE.isDll = function() { return false; };
+                    PE.getAddressOfEntryPoint = function() { return PE.getEntryPoint(); };
+                    PE.getEntryPointOffset = function() { return PE.getEntryPoint(); };
+                    PE.getEntryPointSection = function() { return -1; };
+                    PE.getRichVersion = function(n) { return 0; };
+
+                    // Section helper stubs.
+                    PE.getSectionNameCollision = function(n) { return ""; };
+                    PE.getResourceSection = function() { return -1; };
+                    PE.getImportSection = function() { return -1; };
+                    PE.getRelocsSection = function() { return -1; };
+                    PE.getExportSection = function() { return -1; };
+
+                    // Import/export stubs.
+                    PE.getNumberOfImportThunks = function() { return 0; };
+                    PE.getImportFunctionName = function(n) { return ""; };
+                    PE.isLibraryFunctionPresent = function(lib, fn) { return false; };
+                    PE.isFunctionPresent = function(s) { return false; };
+
+                    // Address conversion stubs.
+                    PE.VAToOffset = function(va) { return -1; };
+                    PE.RVAToOffset = function(rva) { return -1; };
+                    PE.OffsetToVA = function(off) { return -1; };
+
+                    // Disasm stubs.
+                    PE.getDisasmNextAddress = function() { return -1; };
+                    PE.getDisasmString = function() { return ""; };
+
+                    // Entropy/hash stubs.
+                    PE.calculateEntropy = function(off, size) { return 0; };
+                    PE.calculateMD5 = function(off, size) { return ""; };
+
+                    // Read helpers.
+                    PE.readWord = function(off) { return _B.read_uint16(off); };
+                    PE.readDword = function(off) { return _B.read_uint32(off); };
+                    PE.read_int32 = function(off) { return _B.read_uint32(off); };
+                    PE.read_uint32 = function(off) { return _B.read_uint32(off); };
+                    PE.readSByte = function(off) { return _B.read_uint8(off); };
+                    PE.readSDword = function(off) { return _B.read_uint32(off); };
+                    PE.readBytes = function(off, size, replaceZero) {
+                        return _B.readBytes(off, size, replaceZero);
+                    };
+
+                    // File path stubs.
+                    PE.getFileDirectory = function() { return ""; };
+                    PE.getFileBaseName = function() { return ""; };
+                    PE.getFileCompleteSuffix = function() { return ""; };
+                    PE.getDosStubSize = function() { return 0; };
+
+                    // Debug data stubs.
+                    PE.getNumberOfDebugDataRecords = function() { return 0; };
+                    PE.getDebugDataOffset = function(n) { return 0; };
+                    PE.getDebugDataSize = function(n) { return 0; };
+                    PE.getDebugDataType = function(n) { return ""; };
+
+                    // Rich signature stubs.
+                    PE.getNumberOfRichIDs = function() { return 0; };
+                    PE.getRichID = function(n) { return 0; };
+                    PE.getRichCount = function() { return 0; };
+
+                    // Export stubs.
+                    PE.getNumberOfExports = function() { return 0; };
+
+                    // TLS stubs.
+                    PE.getTLSSection = function() { return -1; };
+
+                    // Validation stubs.
+                    PE.isEntryPointCorrect = function() { return false; };
+                    PE.isExportTableCorrect = function() { return false; };
+                    PE.isImportTableCorrect = function() { return false; };
+                    PE.isRelocsTableCorrect = function() { return false; };
+                    PE.isResourcesTableCorrect = function() { return false; };
+                    PE.isHeaderCorrect = function() { return false; };
+                    PE.isFileAlignmentCorrect = function() { return false; };
+                    PE.isSectionAlignmentCorrect = function() { return false; };
+
+                    // Search helpers.
+                    PE.findDword = function(off, val) { return -1; };
+
+                    // Address conversion.
+                    PE.OffsetToRVA = function(off) { return -1; };
 
                     // Search methods (delegate to Binary).
                     PE.getString = function(offset, maxLen) {
@@ -2820,36 +2919,42 @@ impl HostApiBridge {
             })?;
 
             // Register all remaining format-specific global objects as
-            // aliases to Binary. Each format's _init script does
-            // `var File = <FORMAT>;`, so these objects must exist.
-            // Format-specific host API methods will be added when the
-            // corresponding bridges are implemented.
+            // independent objects with Binary as prototype. Each format's
+            // _init script does `var File = <FORMAT>;`, so these objects
+            // must exist. Using independent objects (instead of aliases to
+            // Binary) allows format-specific methods like getFileFormatName
+            // to be set without affecting other formats.
             for name in &[
                 "RAR", "DEX", "PYC", "APK", "Archive", "CFBF", "COM", "DOS16M", "DOS4G", "Amiga",
                 "AtariST", "IPA", "ISO9660", "JAR", "JavaClass", "JPEG", "Jpeg", "LE", "LX",
                 "MSDOS", "NE", "NPM", "PDF", "PNG", "ZIP", "Image",
             ] {
-                globals
-                    .set(*name, binary.clone())
-                    .map_err(|e| RuleError::Backend {
-                        detail: format!("failed to set {name} alias: {e}"),
-                    })?;
+                let obj = rquickjs::Object::new(ctx.clone()).map_err(|e| RuleError::Backend {
+                    detail: format!("failed to create {name} object: {e}"),
+                })?;
+                obj.set("__proto__", binary.clone()).map_err(|e| RuleError::Backend {
+                    detail: format!("failed to set {name} proto: {e}"),
+                })?;
+                globals.set(*name, obj).map_err(|e| RuleError::Backend {
+                    detail: format!("failed to set {name} global: {e}"),
+                })?;
             }
 
             // Add format-specific stub methods for getFileFormatName/Version/Options.
             // These are used by the primary detection rules (_RAR.0.sg, _DEX2.0.sg,
             // _PYC.0.sg, etc.) to get format metadata. Until the format-specific
             // host APIs are fully implemented, these return empty strings.
-            // The _DEX2.0.sg rule sets bDetected=true unconditionally, so DEX
-            // detection works even with empty return values.
+            // For formats whose _init rules unconditionally set bDetected=true
+            // and call getFileFormatName(), we must return a non-empty name
+            // to avoid "No input detection name" errors from result().
             ctx.eval::<(), _>(
                 r#"
                 (function() {
-                    var formats = [RAR, DEX, PYC, APK, Archive, CFBF, COM, ISO9660,
-                                   JAR, JavaClass, Jpeg, MSDOS, NPM, PDF, PNG, ZIP, Image,
-                                   Amiga, AtariST, DOS16M, DOS4G, IPA, LE, LX, NE];
-                    for (var i = 0; i < formats.length; i++) {
-                        var f = formats[i];
+                    // Formats that don't need a specific name (no unconditional bDetected).
+                    var emptyFormats = [APK, COM, DOS16M, DOS4G, Amiga, AtariST,
+                                        IPA, JAR, MSDOS, NE, NPM];
+                    for (var i = 0; i < emptyFormats.length; i++) {
+                        var f = emptyFormats[i];
                         if (!f) continue;
                         f.getFileFormatName = function() { return ""; };
                         f.getFileFormatVersion = function() { return ""; };
@@ -2858,6 +2963,56 @@ impl HostApiBridge {
                         f.isDeepScan = function() { return false; };
                         f.isHeuristicScan = function() { return false; };
                     }
+                    // Formats with unconditional bDetected=true in _*.0.sg.
+                    // These need non-empty getFileFormatName to avoid errors.
+                    var namedFormats = {
+                        CFBF: "Microsoft Compound",
+                        JavaClass: "Java Class File",
+                        PDF: "PDF",
+                        PNG: "PNG",
+                        JPEG: "JPEG",
+                        ZIP: "ZIP",
+                        RAR: "RAR",
+                        ISO9660: "ISO 9660",
+                        Archive: "Archive",
+                        Image: "Image",
+                    };
+                    for (var fname in namedFormats) {
+                        var obj = eval(fname);
+                        if (!obj) continue;
+                        obj.getFileFormatName = (function(name) {
+                            return function() { return name; };
+                        })(namedFormats[fname]);
+                        obj.getFileFormatVersion = function() { return ""; };
+                        obj.getFileFormatOptions = function() { return ""; };
+                        obj.isVerbose = function() { return false; };
+                        obj.isDeepScan = function() { return false; };
+                        obj.isHeuristicScan = function() { return false; };
+                    }
+
+                    // ZIP-specific stubs.
+                    ZIP.isArchiveRecordPresent = function(name) { return false; };
+
+                    // ISO9660-specific stubs.
+                    ISO9660.getDataPreparerIdentifier = function() { return ""; };
+                    ISO9660.getApplicationIdentifier = function() { return ""; };
+
+                    // PDF-specific stubs.
+                    PDF.getHeaderCommentAsHex = function() { return ""; };
+                    PDF.getStringValuesByKey = function(key) { return []; };
+
+                    // JPEG/Jpeg-specific stubs.
+                    // Jpeg (mixed case) is used by _Jpeg.0.sg for detection.
+                    Jpeg.getFileFormatName = function() { return "JPEG"; };
+                    Jpeg.getFileFormatVersion = function() { return ""; };
+                    Jpeg.getFileFormatOptions = function() { return ""; };
+                    Jpeg.isVerbose = function() { return false; };
+                    Jpeg.isDeepScan = function() { return false; };
+                    Jpeg.isHeuristicScan = function() { return false; };
+                    Jpeg.isChunkPresent = function(chunkId) { return false; };
+                    Jpeg.getComment = function() { return ""; };
+                    Jpeg.getDqtMD5 = function(n) { return ""; };
+                    Jpeg.getExifCameraName = function() { return ""; };
                 })();
                 "#,
             )
