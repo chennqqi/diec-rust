@@ -439,6 +439,37 @@
   - WAV: `audio: RIFF container/WAVE file` ✅
   - Java Class: `format: Java Class File (.CLASS) (Java SE 8)` ✅
 - cargo fmt/clippy/test/check-deps 全部通过（356 个测试）
+
+## 2026-08-01: Phase 4 第七步 — 实现 20+ 缺失 host API 函数
+- 实现缺失的 host API 函数（按使用频率排序）：
+  - `isVerbose()` → false（CLI 无 verbose 模式）
+  - `readByte(offset)` → u8 或 -1（越界）
+  - `findString(offset, size, pattern)` → 搜索字节数组
+  - `isDeepScan()` → false
+  - `getOverlayOffset()` → -1（无 overlay）
+  - `isSignaturePresent` → 已有
+  - `readWord(offset)` → u16 LE
+  - `isHeuristicScan()` → false
+  - `isOverlay()` → false
+  - `readDword(offset)` → u32 LE
+  - `isResource()` → false
+  - `cleanString(s)` → 原样返回
+  - `read_ansiString(offset, maxSize)` → ANSI 字符串（遇 null 停止）
+  - `read_unicodeString(offset, maxSize)` → UTF-16LE 字符串
+  - `findByte(offset, size, byte)` → 搜索字节
+  - `bytesCountToString(n)` → 人类可读大小
+  - `isPlainText()` → false
+  - `isText()` → false
+  - `isZeroFilled(offset, size)` → false
+  - `isDebugData()` → false
+  - `getScanID()` → 空字符串
+  - `getFileSuffix()` → 空字符串
+  - `getHeaderString()` → 空字符串
+- 修复 `readByte` 越界返回 -1（原返回 0）
+- 修复 `getFileBaseName` 重复注册覆盖问题
+- 语料库扫描新增检测：
+  - PDF: `format: PDF (1.4) [binary data]` ✅
+- cargo fmt/clippy/test/check-deps 全部通过（356 个测试）
 - 实现 `detect_rule_types` 函数：
   - 使用 `diec-formats` 的 `ProbeTable` 检测文件格式
   - PE32/MSDOS → 运行 PE + Binary 规则

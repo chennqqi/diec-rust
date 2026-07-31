@@ -988,6 +988,342 @@ impl HostApiBridge {
                     detail: format!("failed to set File alias: {e}"),
                 })?;
 
+            // Additional host API functions used by many rules.
+            // These are simple stubs or wrappers that return defaults
+            // for scan-mode queries.
+
+            // isVerbose() -> false (no verbose mode in CLI)
+            let is_verbose_fn = rquickjs::Function::new(ctx.clone(), || false)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("isVerbose: {e}"),
+                })?;
+            binary.set("isVerbose", is_verbose_fn).map_err(|e| RuleError::Backend {
+                detail: format!("isVerbose set: {e}"),
+            })?;
+
+            // isDeepScan() -> false
+            let is_deep_fn = rquickjs::Function::new(ctx.clone(), || false)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("isDeepScan: {e}"),
+                })?;
+            binary.set("isDeepScan", is_deep_fn).map_err(|e| RuleError::Backend {
+                detail: format!("isDeepScan set: {e}"),
+            })?;
+
+            // isHeuristicScan() -> false
+            let is_heur_fn = rquickjs::Function::new(ctx.clone(), || false)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("isHeuristicScan: {e}"),
+                })?;
+            binary.set("isHeuristicScan", is_heur_fn).map_err(|e| RuleError::Backend {
+                detail: format!("isHeuristicScan set: {e}"),
+            })?;
+
+            // isOverlay() -> false
+            let is_overlay_fn = rquickjs::Function::new(ctx.clone(), || false)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("isOverlay: {e}"),
+                })?;
+            binary.set("isOverlay", is_overlay_fn).map_err(|e| RuleError::Backend {
+                detail: format!("isOverlay set: {e}"),
+            })?;
+
+            // isResource() -> false (PE-specific, stub for Binary)
+            let is_resource_fn = rquickjs::Function::new(ctx.clone(), || false)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("isResource: {e}"),
+                })?;
+            binary.set("isResource", is_resource_fn).map_err(|e| RuleError::Backend {
+                detail: format!("isResource set: {e}"),
+            })?;
+
+            // isPlainText() -> false
+            let is_plain_fn = rquickjs::Function::new(ctx.clone(), || false)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("isPlainText: {e}"),
+                })?;
+            binary.set("isPlainText", is_plain_fn).map_err(|e| RuleError::Backend {
+                detail: format!("isPlainText set: {e}"),
+            })?;
+
+            // isText() -> false
+            let is_text_fn = rquickjs::Function::new(ctx.clone(), || false)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("isText: {e}"),
+                })?;
+            binary.set("isText", is_text_fn).map_err(|e| RuleError::Backend {
+                detail: format!("isText set: {e}"),
+            })?;
+
+            // isZeroFilled(offset, size) -> false
+            let is_zero_fn = rquickjs::Function::new(ctx.clone(), |_offset: i32, _size: i32| false)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("isZeroFilled: {e}"),
+                })?;
+            binary.set("isZeroFilled", is_zero_fn).map_err(|e| RuleError::Backend {
+                detail: format!("isZeroFilled set: {e}"),
+            })?;
+
+            // isDebugData() -> false
+            let is_debug_fn = rquickjs::Function::new(ctx.clone(), || false)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("isDebugData: {e}"),
+                })?;
+            binary.set("isDebugData", is_debug_fn).map_err(|e| RuleError::Backend {
+                detail: format!("isDebugData set: {e}"),
+            })?;
+
+            // getOverlayOffset() -> -1 (no overlay)
+            let get_overlay_fn = rquickjs::Function::new(ctx.clone(), || -1i32)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("getOverlayOffset: {e}"),
+                })?;
+            binary.set("getOverlayOffset", get_overlay_fn).map_err(|e| RuleError::Backend {
+                detail: format!("getOverlayOffset set: {e}"),
+            })?;
+
+            // getScanID() -> empty string
+            let get_scanid_fn = rquickjs::Function::new(ctx.clone(), String::new)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("getScanID: {e}"),
+                })?;
+            binary.set("getScanID", get_scanid_fn).map_err(|e| RuleError::Backend {
+                detail: format!("getScanID set: {e}"),
+            })?;
+
+            // getFileSuffix() -> empty string
+            let get_suffix_fn = rquickjs::Function::new(ctx.clone(), String::new)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("getFileSuffix: {e}"),
+                })?;
+            binary.set("getFileSuffix", get_suffix_fn).map_err(|e| RuleError::Backend {
+                detail: format!("getFileSuffix set: {e}"),
+            })?;
+
+            // readByte(offset) -> u8 or -1 on out-of-bounds
+            let h = host.clone();
+            let read_byte_fn = rquickjs::Function::new(ctx.clone(), move |offset: i32| {
+                h.read_u8(offset as u64).map(|v| v as i32).unwrap_or(-1)
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("readByte: {e}"),
+            })?;
+            binary.set("readByte", read_byte_fn).map_err(|e| RuleError::Backend {
+                detail: format!("readByte set: {e}"),
+            })?;
+
+            // readWord(offset) -> u16 LE (alias for U16)
+            let h = host.clone();
+            let read_word_fn = rquickjs::Function::new(ctx.clone(), move |offset: i32| {
+                h.read_u16_le(offset as u64).map(|v| v as i32).unwrap_or(0)
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("readWord: {e}"),
+            })?;
+            binary.set("readWord", read_word_fn).map_err(|e| RuleError::Backend {
+                detail: format!("readWord set: {e}"),
+            })?;
+
+            // readDword(offset) -> u32 LE (alias for U32)
+            let h = host.clone();
+            let read_dword_fn = rquickjs::Function::new(ctx.clone(), move |offset: i32| {
+                h.read_u32_le(offset as u64).unwrap_or(0)
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("readDword: {e}"),
+            })?;
+            binary.set("readDword", read_dword_fn).map_err(|e| RuleError::Backend {
+                detail: format!("readDword set: {e}"),
+            })?;
+
+            // read_ansiString(offset, maxSize) -> string
+            let h = host.clone();
+            let read_ansi_fn =
+                rquickjs::Function::new(ctx.clone(), move |offset: i32, max_size: i32| {
+                    let file_size = h.file_size() as usize;
+                    let start = offset as usize;
+                    if start >= file_size {
+                        return String::new();
+                    }
+                    let len = if max_size > 0 {
+                        max_size as usize
+                    } else {
+                        file_size.saturating_sub(start)
+                    };
+                    let end = start.saturating_add(len).min(file_size);
+                    let mut bytes = Vec::with_capacity(end - start);
+                    for i in start..end {
+                        match h.read_u8(i as u64) {
+                            Ok(b) => {
+                                if b == 0 {
+                                    break;
+                                }
+                                bytes.push(b);
+                            }
+                            Err(_) => break,
+                        }
+                    }
+                    String::from_utf8_lossy(&bytes).into_owned()
+                })
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("read_ansiString: {e}"),
+                })?;
+            binary.set("read_ansiString", read_ansi_fn).map_err(|e| RuleError::Backend {
+                detail: format!("read_ansiString set: {e}"),
+            })?;
+
+            // read_unicodeString(offset, maxSize) -> string (UTF-16LE)
+            let h = host.clone();
+            let read_unicode_fn =
+                rquickjs::Function::new(ctx.clone(), move |offset: i32, max_size: i32| {
+                    let file_size = h.file_size() as usize;
+                    let start = offset as usize;
+                    if start >= file_size {
+                        return String::new();
+                    }
+                    let len = if max_size > 0 {
+                        max_size as usize
+                    } else {
+                        file_size.saturating_sub(start)
+                    };
+                    let end = start.saturating_add(len).min(file_size);
+                    let mut result = String::new();
+                    let mut i = start;
+                    while i + 1 < end {
+                        let lo = match h.read_u8(i as u64) {
+                            Ok(b) => b,
+                            Err(_) => break,
+                        };
+                        let hi = match h.read_u8((i + 1) as u64) {
+                            Ok(b) => b,
+                            Err(_) => break,
+                        };
+                        if lo == 0 && hi == 0 {
+                            break;
+                        }
+                        let code = u16::from_le_bytes([lo, hi]);
+                        result.push(char::from_u32(code as u32).unwrap_or('\u{FFFD}'));
+                        i += 2;
+                    }
+                    result
+                })
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("read_unicodeString: {e}"),
+                })?;
+            binary.set("read_unicodeString", read_unicode_fn).map_err(|e| RuleError::Backend {
+                detail: format!("read_unicodeString set: {e}"),
+            })?;
+
+            // findString(offset, size, pattern) -> offset or -1
+            let h = host.clone();
+            let find_string_fn =
+                rquickjs::Function::new(ctx.clone(), move |offset: i32, size: i32, pattern: String| {
+                    let file_size = h.file_size() as usize;
+                    let start = offset as usize;
+                    if start >= file_size {
+                        return -1i32;
+                    }
+                    let end = if size > 0 {
+                        (start.saturating_add(size as usize)).min(file_size)
+                    } else {
+                        file_size
+                    };
+                    let needle = pattern.as_bytes();
+                    if needle.is_empty() {
+                        return offset;
+                    }
+                    let mut i = start;
+                    while i + needle.len() <= end {
+                        let mut found = true;
+                        for (j, &nb) in needle.iter().enumerate() {
+                            match h.read_u8((i + j) as u64) {
+                                Ok(b) if b == nb => {}
+                                _ => {
+                                    found = false;
+                                    break;
+                                }
+                            }
+                        }
+                        if found {
+                            return i as i32;
+                        }
+                        i += 1;
+                    }
+                    -1
+                })
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("findString: {e}"),
+                })?;
+            binary.set("findString", find_string_fn).map_err(|e| RuleError::Backend {
+                detail: format!("findString set: {e}"),
+            })?;
+
+            // findByte(offset, size, byte) -> offset or -1
+            let h = host.clone();
+            let find_byte_fn =
+                rquickjs::Function::new(ctx.clone(), move |offset: i32, size: i32, byte: i32| {
+                    let file_size = h.file_size() as usize;
+                    let start = offset as usize;
+                    if start >= file_size {
+                        return -1i32;
+                    }
+                    let end = if size > 0 {
+                        (start.saturating_add(size as usize)).min(file_size)
+                    } else {
+                        file_size
+                    };
+                    let target = byte as u8;
+                    for i in start..end {
+                        if h.read_u8(i as u64).unwrap_or(0) == target {
+                            return i as i32;
+                        }
+                    }
+                    -1
+                })
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("findByte: {e}"),
+                })?;
+            binary.set("findByte", find_byte_fn).map_err(|e| RuleError::Backend {
+                detail: format!("findByte set: {e}"),
+            })?;
+
+            // bytesCountToString(n) -> human-readable size string
+            let bcs_fn = rquickjs::Function::new(ctx.clone(), |n: f64| {
+                if n < 1024.0 {
+                    format!("{:.0} B", n)
+                } else if n < 1048576.0 {
+                    format!("{:.1} KB", n / 1024.0)
+                } else if n < 1073741824.0 {
+                    format!("{:.1} MB", n / 1048576.0)
+                } else {
+                    format!("{:.1} GB", n / 1073741824.0)
+                }
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("bytesCountToString: {e}"),
+            })?;
+            binary.set("bytesCountToString", bcs_fn).map_err(|e| RuleError::Backend {
+                detail: format!("bytesCountToString set: {e}"),
+            })?;
+
+            // cleanString(s) -> s (no-op for now)
+            let clean_fn = rquickjs::Function::new(ctx.clone(), |s: String| s)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("cleanString: {e}"),
+                })?;
+            binary.set("cleanString", clean_fn).map_err(|e| RuleError::Backend {
+                detail: format!("cleanString set: {e}"),
+            })?;
+
+            // getHeaderString() -> empty string
+            let get_header_fn = rquickjs::Function::new(ctx.clone(), String::new)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("getHeaderString: {e}"),
+                })?;
+            binary.set("getHeaderString", get_header_fn).map_err(|e| RuleError::Backend {
+                detail: format!("getHeaderString set: {e}"),
+            })?;
+
             // Register a PE global object as an alias to Binary with
             // PE-specific stub methods. The PE-specific methods (sections,
             // imports, exports, resources) return defaults until the full
