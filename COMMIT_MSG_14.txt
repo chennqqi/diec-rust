@@ -1,0 +1,53 @@
+phase3: rule runtime core types, ports and infrastructure
+
+First step of Phase 3 (rule compatibility runtime). Implement the
+diec-rules crate's core types, trait ports and infrastructure that
+the rquickjs backend and diec-engine adapter will build upon.
+
+New modules in diec-rules (60 unit tests):
+
+- error.rs: RuleError enum (Load, UnsupportedSyntax, Include,
+  IncludeCycle, IncludeBudgetExceeded, MissingDetect,
+  BudgetExceeded, Cancelled, HostApi, ScriptException, Backend)
+  + IncludeCause, IncludeLimit, RuleBudget types. Unknown syntax
+  produces explicit diagnostics, never silently skipped.
+
+- budget.rs: RuleBudgetProfile with Modern (32 MiB heap, 512 KiB
+  stack, 131072 fuel, 10s deadline, 16 include depth, 256
+  evaluations) and LegacyHighResource (256 MiB, 2 MiB, 1048576,
+  60s, 64, 4096) profiles per ADR 0006.
+
+- host_api.rs: HostApi trait defining the port that diec-engine
+  implements. Core read primitives (u8/u16/u24/u32/u64 LE+BE,
+  i8/i16/i32/i64), file_size, check_signature, find_signature,
+  read_string, file_name, entry_point, scan mode flags (deep/
+  heuristic/aggressive/recursive), entropy, md5, crc32.
+  + HostApiError (OutOfBounds, Truncated, InvalidSignature,
+  NotImplemented, Internal).
+
+- runtime.rs: RuleRuntime trait (load_database, init, evaluate_rule,
+  shutdown) + RuntimeConfig + RuleRuntimeFactory + NullRuntimeFactory
+  for testing + DatabaseSnapshot (immutable, ordered) + LoadedRule
+  + DetectionResult.
+
+- include_graph.rs: IncludeGraph (static include graph with DFS
+  cycle detection per ADR 0010) + IncludeStack (runtime active
+  stack with depth and total evaluations budget enforcement).
+  Ordinary duplicate includes allowed after exit; cycles rejected.
+
+- inventory.rs: RuleMetadata + extract_metadata (meta() call
+  parsing, includeScript() extraction, detect()/result() detection)
+  + build_inventory. Lightweight static scan, not full JS parse.
+
+- order_manifest.rs: OrderManifest + OrderEntry + RuleLayer per
+  ADR 0008. Pinned execution ordinals from build-time oracle.
+  validate_unique_ordinals and validate_contiguous_ordinals.
+  Runtime must not re-sort rules.
+
+cargo fmt/clippy/test/check-deps all pass (268 tests total:
+44 diec-core + 60 diec-rules + 156 diec-formats + 5 corpus + 3
+other).
+
+Generated with [Devin](https://devin.ai)
+
+Co-Authored-By: Devin <158243242+devin-ai-integration[bot]@users.noreply.github.com>

@@ -170,6 +170,30 @@
   - bounded include graph（ADR 0010）
   - 对未知语法产生明确诊断
 
+## 2026-07-31: Phase 3 第一步 — 规则运行时核心类型和 ports
+- 实现以下 diec-rules 模块（60 个单元测试）：
+  - `error.rs`: RuleError 枚举（Load/UnsupportedSyntax/Include/IncludeCycle/
+    IncludeBudgetExceeded/MissingDetect/BudgetExceeded/Cancelled/HostApi/
+    ScriptException/Backend）+ IncludeCause/IncludeLimit/RuleBudget
+  - `budget.rs`: RuleBudgetProfile（Modern 32MiB heap/512KiB stack/131072 fuel/
+    10s deadline/16 include depth/256 evaluations；LegacyHighResource 256MiB/
+    2MiB/1048576/60s/64/4096）
+  - `host_api.rs`: HostApi trait（read_u8/u16/u24/u32/u64/i8/i16/i32/i64 LE+BE,
+    file_size, check_signature, find_signature, read_string, file_name,
+    entry_point, is_deep/heuristic/aggressive/recursive, entropy, md5, crc32）
+    + HostApiError
+  - `runtime.rs`: RuleRuntime trait（load_database/init/evaluate_rule/shutdown）
+    + RuntimeConfig + RuleRuntimeFactory + NullRuntimeFactory + DatabaseSnapshot
+    + LoadedRule + DetectionResult
+  - `include_graph.rs`: IncludeGraph（静态 include 图 + DFS cycle 检测）
+    + IncludeStack（runtime active stack + depth/evaluations budget）
+  - `inventory.rs`: RuleMetadata + extract_metadata（meta() 调用解析 +
+    includeScript() 提取 + detect()/result() 检测）+ build_inventory
+  - `order_manifest.rs`: OrderManifest + OrderEntry + RuleLayer
+    （ADR 0008 pinned order）+ validate_unique_ordinals +
+    validate_contiguous_ordinals
+- cargo fmt/clippy/test/check-deps 全部通过（268 个测试）
+
 ## P0-BLOCK-006 macOS 运行时基线采集 (deferred from Phase 0)
 - 通过 ssh macdevoa (macdev 别名) 继续完成 macOS 运行时基线采集
 - 复用 ~/dev/tmp/diec-macos-work 目录中已有数据 (DIE-engine-src/build/corpus/evidence 等)

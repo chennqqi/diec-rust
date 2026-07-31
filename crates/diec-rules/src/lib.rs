@@ -11,20 +11,20 @@
 #![forbid(unsafe_code)]
 #![warn(missing_docs)]
 
+pub mod budget;
+pub mod error;
+pub mod host_api;
+pub mod include_graph;
+pub mod inventory;
 pub mod manifest;
-
-/// Placeholder for the future rule database and runtime. Phase 1 only
-/// establishes the crate boundary; the rule runtime lands in Phase 3.
-pub fn placeholder() -> &'static str {
-    "diec-rules skeleton"
-}
+pub mod order_manifest;
+pub mod runtime;
 
 #[cfg(test)]
 mod tests {
-    use super::placeholder;
-
     #[test]
-    fn skeleton_is_reachable() {
-        assert_eq!(placeholder(), "diec-rules skeleton");
+    fn crate_loads() {
+        // Smoke test: ensure all modules compile and link.
+        let _ = super::budget::RuleBudgetProfile::MODERN;
     }
 }
