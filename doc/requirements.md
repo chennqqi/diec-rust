@@ -491,7 +491,37 @@
 - 新增测试：`scan_rar_signature`, `detect_rule_types_elf`
 - cargo fmt/clippy/test/check-deps 全部通过（358 个测试）
 
-## 2026-08-01: Phase 4 第九步 — 更多 host API 函数 + X 快捷方式
+## 2026-08-01: Phase 4 第十步 — 修复 Mach-O FAT 误报 + 扩展规则目录
+
+### 问题分析
+- `minimal-fat.macho` 被误报为 Java Class File
+- 根因：CAFEBABE 是 Mach-O FAT 和 Java Class File 的共同 magic
+- 上游 DIE 的 `scanProcess` 使用 if-else-if 链，只为检测到的格式运行对应规则
+- `checkFileType(FT_UNKNOWN, FT_MACHOFAT)` 返回 false，Binary 规则不会为 Mach-O FAT 运行
+- 我们的实现错误地总是包含 Binary 规则
+
+### 修复
+1. **扩展 DatabaseBuilder 加载所有上游规则目录**（从 5 个扩展到 30 个）
+   - 新增: APK, Archive, CFBF, COM, DEX, DOS16M, DOS4G, Amiga, AtariST, IPA, ISO9660, JAR, JavaClass, JPEG, LE, LX, MSDOS, NE, NPM, PDF, PNG, PYC, RAR, ZIP, Image
+2. **重写 detect_rule_types 匹配上游行为**
+   - 可执行格式 (PE, ELF, MACH, MACHOFAT)：仅运行格式特定规则（不含 Binary）
+   - 非可执行格式 (JPEG, PNG, PDF, ZIP 等)：运行格式特定 + Binary 规则
+   - Java Class 优先于 Mach-O FAT 检查（CAFEBABE 歧义解决）
+3. **新增测试**
+   - `detect_rule_types_macho_fat`：验证 Mach-O FAT 不包含 Binary
+   - `detect_rule_types_jpeg_includes_binary`：验证 JPEG 包含 Binary
+   - 更新 `detect_rule_types_elf`：验证 ELF 不包含 Binary
+
+### 结果
+| 文件 | 修复前 | 修复后 |
+|------|--------|--------|
+| Minimal.class | Java Class File ✅ | Java Class File ✅ |
+| minimal-fat.macho | Java Class File ❌ 误报 | converter: lipo ✅ |
+| pixel.jpg | JPEG ✅ | JPEG ✅ |
+| pixel.png | PNG ✅ | PNG ✅ |
+| minimal.pdf | PDF ✅ | PDF ✅ |
+
+- cargo fmt/clippy/test/check-deps 全部通过（360 个测试）
 - 添加缺失的 host API 函数：
   - `crc16(offset, size)` → CRC-16 (Modbus)
   - `readBytes(offset, size, replaceZeroWithSpace?)` → 字节数组
@@ -546,3 +576,5 @@
 - 修复 collect_macos_database_cache_harness.py: macOS QStandardPaths test mode 不尊重 HOME，使用 NSSearchPathForDirectoriesInDomains；放宽 qttest marker 检查
 - cli-privilege-paths collector 因需 passwordless sudo 而 deferred（diec 不负责系统权限管理）
 - 所有 candidate report 已 sanitize 本地路径并提交至 docs/research/data/macos-qt5/
+
+- [2026-08-01] 在 macOS 主机 (macdev) 上完成 Phase 1 实现期门禁：macOS runtime benchmark、macOS release size benchmark、Rust 成对 benchmark

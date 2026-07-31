@@ -1,0 +1,37 @@
+phase4: fix Mach-O FAT false positive, expand rule directories
+
+Tenth step of Phase 4 (CLI). Fix the false positive where
+minimal-fat.macho was detected as Java Class File, and expand
+the database builder to load all upstream rule directories.
+
+Root cause: CAFEBABE is the magic for both Mach-O FAT and Java
+Class File. Upstream DIE's scanProcess uses an if-else-if chain
+that only runs rules for the detected format — Binary rules do
+NOT run when a specific format is detected. Our implementation
+incorrectly always included Binary rules.
+
+Changes:
+1. Expand DatabaseBuilder format_types from 5 to 30 directories,
+   matching the upstream db/ layout (APK, Archive, CFBF, COM,
+   DEX, JPEG, PNG, PDF, JavaClass, ZIP, RAR, ISO9660, etc.)
+2. Rewrite detect_rule_types to match upstream behavior:
+   - Executable formats (PE, ELF, MACH, MACHOFAT): only run
+     format-specific rules (no Binary) to avoid false positives
+   - Non-executable formats (JPEG, PNG, PDF, etc.): run both
+     format-specific and Binary rules (format-specific host APIs
+     not yet implemented, Binary rules provide detection)
+   - Java Class checked before Mach-O FAT to resolve CAFEBABE
+     ambiguity (JavaClassProbe validates major version >= 45)
+3. Add tests: detect_rule_types_macho_fat, detect_rule_types_
+   jpeg_includes_binary; update detect_rule_types_elf to verify
+   Binary is excluded for ELF files.
+
+Result: minimal-fat.macho now detected as "converter: lipo"
+(MACHOFAT rules) instead of "Java Class File" (false positive).
+All other detections preserved.
+
+360 tests pass, clippy clean, check-deps OK.
+
+Generated with [Devin](https://devin.ai)
+
+Co-Authored-By: Devin <158243242+devin-ai-integration[bot]@users.noreply.github.com>

@@ -123,3 +123,5 @@
 - 这是上游规则 bug，非 diec-rust 缺陷
 - 建议修复: 第 10 行改为 `var e;`（`tp` 已在第 15 行用 `const` 正确声明）
 - Bug 报告已写入 `docs/research/upstream-bug-const-redeclaration-nintendo-certified-file.md`
+
+- [2026-08-01] macOS Phase 1 benchmark 门禁：需在 macdev 主机上运行三类 benchmark（runtime warm baseline、release deployment size、Rust 成对 benchmark），复用 Linux Qt5 现有 plan/runner 工具链并适配 macOS 路径与环境

@@ -82,7 +82,39 @@ impl DatabaseBuilder {
         let mut ordinal = 0u64;
 
         // Collect rules from each format-type subdirectory.
-        let format_types = ["Binary", "PE", "ELF", "MACH", "MACHOFAT"];
+        // This must match the upstream Detect-It-Easy db/ directory layout.
+        let format_types = [
+            "Binary",
+            "PE",
+            "ELF",
+            "MACH",
+            "MACHOFAT",
+            "APK",
+            "Archive",
+            "CFBF",
+            "COM",
+            "DEX",
+            "DOS16M",
+            "DOS4G",
+            "Amiga",
+            "AtariST",
+            "IPA",
+            "ISO9660",
+            "JAR",
+            "JavaClass",
+            "JPEG",
+            "LE",
+            "LX",
+            "MSDOS",
+            "NE",
+            "NPM",
+            "PDF",
+            "PNG",
+            "PYC",
+            "RAR",
+            "ZIP",
+            "Image",
+        ];
         for ft in &format_types {
             let ft_dir = self.db_path.join(ft);
             if !ft_dir.is_dir() {

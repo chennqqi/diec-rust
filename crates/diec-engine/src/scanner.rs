@@ -16,14 +16,21 @@ use std::sync::Arc;
 /// Detect the file format and return the set of rule file types that
 /// should be run.
 ///
-/// Upstream DIE dispatches by detected format:
-/// - PE32/MSDOS → run "PE" rules + "Binary" rules
-/// - ELF → run "ELF" rules + "Binary" rules
-/// - Mach-O → run "MACH" rules + "Binary" rules
-/// - No specific format → run "Binary" rules only
+/// Upstream DIE's `scanProcess` uses an if-else-if chain that picks the
+/// first matching format and calls `_processDetect` with that specific
+/// file type. `checkFileType` then ensures only rules whose `fileType`
+/// matches the detected format are executed. Binary rules (FT_UNKNOWN)
+/// do NOT run when a specific format is detected.
 ///
-/// "Binary" rules always run because they contain generic archive,
-/// image, audio, and other format detections that apply to any file.
+/// This function mirrors that logic. For executable formats (PE, ELF,
+/// MACH, MACHOFAT), only the format-specific rules are run — Binary
+/// rules are excluded to avoid false positives from magic byte
+/// ambiguities (e.g., CAFEBABE is both Mach-O FAT and Java Class).
+///
+/// For non-executable formats (JPEG, PNG, PDF, ZIP, etc.), both
+/// format-specific and Binary rules are run, because the format-specific
+/// host APIs (Jpeg, Pdf, etc.) are not yet implemented and the Binary
+/// rules provide the actual detection logic using the generic API.
 fn detect_rule_types(data: &[u8]) -> Vec<&'static str> {
     let source = MemorySource::new(data);
     let range = ByteRange::new(0, source.len()).unwrap_or(ByteRange {
@@ -38,26 +45,98 @@ fn detect_rule_types(data: &[u8]) -> Vec<&'static str> {
     let table = ProbeTable::default_phase2();
     let (candidates, _errors) = table.probe_all(&view);
 
-    let mut types: Vec<&'static str> = vec!["Binary"];
+    // Collect all detected format names.
+    let detected: Vec<&str> = candidates
+        .iter()
+        .map(|c| c.file_type.name.as_str())
+        .collect();
 
-    for cand in &candidates {
-        match cand.file_type.name.as_str() {
-            "PE32" | "MSDOS" => {
-                if !types.contains(&"PE") {
-                    types.push("PE");
-                }
-            }
-            "ELF" | "ELF32" | "ELF64" => {
-                if !types.contains(&"ELF") {
-                    types.push("ELF");
-                }
-            }
-            "Mach-O" | "Mach-O 32" | "Mach-O 64" | "Mach-O FAT" if !types.contains(&"MACH") => {
-                types.push("MACH");
-            }
-            _ => {}
-        }
+    // Executable formats: only run format-specific rules (no Binary).
+    // This prevents false positives like CAFEBABE matching both Mach-O FAT
+    // and Java Class File.
+    if detected.iter().any(|&n| n == "PE32" || n == "PE64") {
+        return vec!["PE"];
     }
+    if detected
+        .iter()
+        .any(|&n| n == "ELF32" || n == "ELF64" || n == "ELF")
+    {
+        return vec!["ELF"];
+    }
+    if detected
+        .iter()
+        .any(|&n| n == "Mach-O 32" || n == "Mach-O" || n == "Mach-O 64")
+    {
+        return vec!["MACH"];
+    }
+    // Java Class must be checked BEFORE Mach-O FAT because CAFEBABE is
+    // the magic for both. The JavaClassProbe validates major version >= 45,
+    // so a real Java Class file will match both probes, but Java Class is
+    // the correct detection. A real Mach-O FAT file (nfat_arch < 45) will
+    // only match the Mach-O probe.
+    // Binary rules are included because the JavaClass-specific host API
+    // is not yet implemented, and the Binary rule (format_bin.Java.1.sg)
+    // provides detection via the generic API.
+    if detected.contains(&"Java Class") {
+        return vec!["JavaClass", "Binary"];
+    }
+    if detected
+        .iter()
+        .any(|&n| n == "Mach-O FAT" || n == "Mach-O FAT64")
+    {
+        return vec!["MACHOFAT"];
+    }
+
+    // Non-executable formats: run both format-specific and Binary rules.
+    // The format-specific host APIs are not yet implemented, so Binary
+    // rules provide the actual detection logic.
+    let mut types: Vec<&'static str> = Vec::new();
+
+    if detected.contains(&"MSDOS") {
+        types.push("MSDOS");
+    }
+    if detected.contains(&"APK") {
+        types.push("APK");
+    }
+    if detected.contains(&"JAR") {
+        types.push("JAR");
+    }
+    if detected.contains(&"ZIP") {
+        types.push("ZIP");
+    }
+    if detected.contains(&"DEX") {
+        types.push("DEX");
+    }
+    if detected.contains(&"PDF") {
+        types.push("PDF");
+    }
+    if detected.contains(&"CFBF") {
+        types.push("CFBF");
+    }
+    if detected.contains(&"RAR") {
+        types.push("RAR");
+    }
+    if detected.iter().any(|&n| n == "ISO 9660" || n == "ISO9660") {
+        types.push("ISO9660");
+    }
+    if detected.contains(&"JPEG") {
+        types.push("JPEG");
+    }
+    if detected.contains(&"PNG") {
+        types.push("PNG");
+    }
+    if detected
+        .iter()
+        .any(|&n| n == "Python Compiled" || n == "PYC")
+    {
+        types.push("PYC");
+    }
+    if detected.contains(&"NPM") {
+        types.push("NPM");
+    }
+
+    // Always include Binary rules for non-executable formats.
+    types.push("Binary");
 
     types
 }
@@ -452,6 +531,54 @@ mod tests {
         assert!(
             types.contains(&"ELF"),
             "Expected ELF in detected types, got: {:?}",
+            types
+        );
+        // ELF is an executable format — Binary rules should NOT run.
+        assert!(
+            !types.contains(&"Binary"),
+            "Binary should not be included for ELF files, got: {:?}",
+            types
+        );
+    }
+
+    #[test]
+    fn detect_rule_types_macho_fat() {
+        // Mach-O FAT magic is CAFEBABE — same as Java Class File.
+        // Binary rules must NOT run to avoid false positive.
+        let macho_fat_header: Vec<u8> = vec![0xCA, 0xFE, 0xBA, 0xBE, 0x00, 0x00, 0x00, 0x02];
+
+        let types = detect_rule_types(&macho_fat_header);
+        assert!(
+            types.contains(&"MACHOFAT"),
+            "Expected MACHOFAT in detected types, got: {:?}",
+            types
+        );
+        // Binary rules should NOT run for Mach-O FAT to avoid
+        // false positive Java Class File detection (CAFEBABE ambiguity).
+        assert!(
+            !types.contains(&"Binary"),
+            "Binary should not be included for Mach-O FAT files, got: {:?}",
+            types
+        );
+    }
+
+    #[test]
+    fn detect_rule_types_jpeg_includes_binary() {
+        // JPEG is a non-executable format — Binary rules SHOULD run
+        // because the JPEG host API is not yet implemented.
+        let jpeg_header: Vec<u8> = vec![
+            0xFF, 0xD8, 0xFF, 0xE0, 0x00, 0x10, 0x4A, 0x46, 0x49, 0x46, 0x00, 0x01,
+        ];
+
+        let types = detect_rule_types(&jpeg_header);
+        assert!(
+            types.contains(&"JPEG"),
+            "Expected JPEG in detected types, got: {:?}",
+            types
+        );
+        assert!(
+            types.contains(&"Binary"),
+            "Binary should be included for JPEG files, got: {:?}",
             types
         );
     }
