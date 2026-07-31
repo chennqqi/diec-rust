@@ -65,6 +65,11 @@
 - CI 遵循现有 workflow 安全风格：pinned action SHA、permissions: contents: read、concurrency cancel-in-progress、--locked
 - 本地验证：1.97.1 全套 + 1.88.0 build/test/clippy 全部通过
 
+## 2026-07-31: 差分测试基础设施（Rust producer 适配器 + 端到端审计）
+- 创建 tools/compat/collect_rust_execution.py：运行 diec CLI，捕获 stdout/stderr/exit/timing，产出 raw-execution-v1 格式记录和 content-addressed artifacts
+- 创建 tools/tests/test_end_to_end_differential.py：验证收集→验证→审计报告全流程（3 测试）
+- 全部 126 Python 差分工具测试通过（原 123 + 新 3），cargo fmt/clippy/test/check-deps 全部通过
+
 ## P0-BLOCK-006 macOS 运行时基线采集 (deferred from Phase 0)
 - 通过 ssh macdevoa (macdev 别名) 继续完成 macOS 运行时基线采集
 - 复用 ~/dev/tmp/diec-macos-work 目录中已有数据 (DIE-engine-src/build/corpus/evidence 等)

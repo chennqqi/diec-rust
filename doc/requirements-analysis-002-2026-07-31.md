@@ -40,3 +40,9 @@
   - msrv (1.88.0)：MSRV 声明 grep 断言、build/test/clippy --locked
 - 安全风格：pinned actions/checkout SHA、permissions: contents: read、concurrency cancel-in-progress、--locked
 - 本地验证：1.97.1 全套 + 1.88.0 build/test/clippy 全部通过
+
+### 差分测试基础设施
+- Rust producer 适配器 collect_rust_execution.py：运行 diec CLI，捕获 stdout/stderr/exit/timing，产出 raw-execution-v1 记录 + content-addressed artifacts (sha256/<digest>)
+- 端到端审计测试 test_end_to_end_differential.py：收集→verify_raw_execution→审计报告全流程（3 测试：audit/content-addressed/missing-executable）
+- 验证：126 Python 测试通过（原 123 + 新 3），cargo 全套通过
+- 设计约束：Rust producer 不参与生成 upstream expected 值；框架审计性独立于检测是否匹配
