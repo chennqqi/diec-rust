@@ -1,0 +1,15 @@
+[package]
+name = "diec-rules"
+description = "Rule database, syntax diagnostics, runtime/host ports and backend isolation."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+repository.workspace = true
+
+[dependencies]
+diec-core = { workspace = true }
+
+[lib]
+path = "src/lib.rs"

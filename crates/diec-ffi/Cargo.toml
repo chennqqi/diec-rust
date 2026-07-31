@@ -1,0 +1,17 @@
+[package]
+name = "diec-ffi"
+description = "Experimental C ABI: opaque handles, panic containment and lifetime management."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+repository.workspace = true
+
+[dependencies]
+diec-engine = { workspace = true }
+diec-output = { workspace = true }
+
+[lib]
+crate-type = ["staticlib", "rlib"]
+path = "src/lib.rs"

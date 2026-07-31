@@ -1,0 +1,30 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/diec-core",
+    "crates/diec-formats",
+    "crates/diec-rules",
+    "crates/diec-engine",
+    "crates/diec-output",
+    "crates/diec-cli",
+    "crates/diec-ffi",
+    "xtask",
+]
+
+[workspace.package]
+version = "0.0.0"
+edition = "2024"
+rust-version = "1.97.1"
+license = "MIT"
+publish = false
+repository = "https://github.com/chennqqi/diec-rust"
+
+# Internal crate versions are centralized so members reference them by
+# `{ workspace = true }`. The dependency DAG is enforced by
+# `xtask check-deps` and CI; see docs/design/architecture.md section 6.
+[workspace.dependencies]
+diec-core = { path = "crates/diec-core" }
+diec-formats = { path = "crates/diec-formats" }
+diec-rules = { path = "crates/diec-rules" }
+diec-engine = { path = "crates/diec-engine" }
+diec-output = { path = "crates/diec-output" }

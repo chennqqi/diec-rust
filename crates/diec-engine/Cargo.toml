@@ -1,0 +1,17 @@
+[package]
+name = "diec-engine"
+description = "Scan orchestration, candidate selection, bounded nested queue and result aggregation."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+repository.workspace = true
+
+[dependencies]
+diec-core = { workspace = true }
+diec-formats = { workspace = true }
+diec-rules = { workspace = true }
+
+[lib]
+path = "src/lib.rs"

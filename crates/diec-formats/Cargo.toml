@@ -1,0 +1,15 @@
+[package]
+name = "diec-formats"
+description = "Format probing and safe parsing, returning format facts via checked input."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+repository.workspace = true
+
+[dependencies]
+diec-core = { workspace = true }
+
+[lib]
+path = "src/lib.rs"
