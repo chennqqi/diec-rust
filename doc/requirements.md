@@ -522,7 +522,31 @@
 | minimal.pdf | PDF ✅ | PDF ✅ |
 
 - cargo fmt/clippy/test/check-deps 全部通过（360 个测试）
-- 添加缺失的 host API 函数：
+
+## 2026-08-01: Phase 4 第十一步 — 注册所有格式全局对象 + DEX/PYC 检测
+
+### 问题
+- RAR/DEX/PYC 的 `_init` 脚本引用 `RAR`/`DEX`/`PYC` 全局对象，未注册导致 `ReferenceError`
+- DEX/PYC 规则调用 `getFileFormatName()` 等格式特定方法，未实现导致 `TypeError: not a function`
+- DEX 规则还需要 `getMapItemsHash`、`isDexStringPresent` 等方法
+
+### 修复
+1. **注册所有格式全局对象**：RAR, DEX, PYC, APK, Archive, CFBF, COM, DOS16M, DOS4G, Amiga, AtariST, IPA, ISO9660, JAR, JavaClass, JPEG, Jpeg, LE, LX, MSDOS, NE, NPM, PDF, PNG, ZIP, Image
+2. **添加格式特定 stub 方法**：`getFileFormatName/Version/Options`, `isVerbose`, `isDeepScan`, `isHeuristicScan`
+3. **DEX/PYC 独立对象**：使用 `Object.create(Binary)` 创建独立副本，避免 `getFileFormatName` 交叉污染
+4. **DEX 特定方法**：`getMapItemsHash`, `getOperationSystemName/Version/Options`, `isDexStringPresent`, `isDexItemStringPresent`
+5. **PYC 特定方法**：`isConstPresent`
+6. **DEX/PYC getFileFormatName**：返回非空名称使 `result()` 不报错
+
+### 结果
+| 文件 | 修复前 | 修复后 |
+|------|--------|--------|
+| minimal.dex | no detections ❌ | format: Dalvik Executable (.DEX) ✅ |
+| minimal.pyc | no detections ❌ | format: Python bytecode compiled (.PYC) ✅ |
+| minimal.rar | no detections | no detections（语料库文件 21 字节 < 规则要求 64）|
+| payload.txt.gz | no detections | no detections（语料库 timestamp=0，规则 `ts <= 0 return false`）|
+
+- cargo fmt/clippy/test/check-deps 全部通过（360 个测试）
   - `crc16(offset, size)` → CRC-16 (Modbus)
   - `readBytes(offset, size, replaceZeroWithSpace?)` → 字节数组
   - `fSig(offset, size, signature)` → findSignature 别名

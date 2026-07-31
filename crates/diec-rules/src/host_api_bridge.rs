@@ -1826,6 +1826,91 @@ impl HostApiBridge {
                 detail: format!("MACH stubs: {e}"),
             })?;
 
+            // Register all remaining format-specific global objects as
+            // aliases to Binary. Each format's _init script does
+            // `var File = <FORMAT>;`, so these objects must exist.
+            // Format-specific host API methods will be added when the
+            // corresponding bridges are implemented.
+            for name in &[
+                "RAR", "DEX", "PYC", "APK", "Archive", "CFBF", "COM", "DOS16M", "DOS4G", "Amiga",
+                "AtariST", "IPA", "ISO9660", "JAR", "JavaClass", "JPEG", "Jpeg", "LE", "LX",
+                "MSDOS", "NE", "NPM", "PDF", "PNG", "ZIP", "Image",
+            ] {
+                globals
+                    .set(*name, binary.clone())
+                    .map_err(|e| RuleError::Backend {
+                        detail: format!("failed to set {name} alias: {e}"),
+                    })?;
+            }
+
+            // Add format-specific stub methods for getFileFormatName/Version/Options.
+            // These are used by the primary detection rules (_RAR.0.sg, _DEX2.0.sg,
+            // _PYC.0.sg, etc.) to get format metadata. Until the format-specific
+            // host APIs are fully implemented, these return empty strings.
+            // The _DEX2.0.sg rule sets bDetected=true unconditionally, so DEX
+            // detection works even with empty return values.
+            ctx.eval::<(), _>(
+                r#"
+                (function() {
+                    var formats = [RAR, DEX, PYC, APK, Archive, CFBF, COM, ISO9660,
+                                   JAR, JavaClass, Jpeg, MSDOS, NPM, PDF, PNG, ZIP, Image,
+                                   Amiga, AtariST, DOS16M, DOS4G, IPA, LE, LX, NE];
+                    for (var i = 0; i < formats.length; i++) {
+                        var f = formats[i];
+                        if (!f) continue;
+                        f.getFileFormatName = function() { return ""; };
+                        f.getFileFormatVersion = function() { return ""; };
+                        f.getFileFormatOptions = function() { return ""; };
+                        f.isVerbose = function() { return false; };
+                        f.isDeepScan = function() { return false; };
+                        f.isHeuristicScan = function() { return false; };
+                    }
+                })();
+                "#,
+            )
+            .map_err(|e| RuleError::Backend {
+                detail: format!("format stubs: {e}"),
+            })?;
+
+            // Add DEX-specific stub methods.
+            // DEX and PYC are aliases to the same Binary object, so we
+            // need to create separate copies to avoid cross-contamination
+            // of format-specific methods like getFileFormatName.
+            ctx.eval::<(), _>(
+                r#"
+                (function() {
+                    // Create independent copies for DEX and PYC.
+                    DEX = Object.create(Binary);
+                    PYC = Object.create(Binary);
+                    File = Binary; // Ensure File still points to Binary
+
+                    DEX.getMapItemsHash = function() { return ""; };
+                    DEX.getOperationSystemName = function() { return ""; };
+                    DEX.getOperationSystemVersion = function() { return ""; };
+                    DEX.getOperationSystemOptions = function() { return ""; };
+                    DEX.isDexStringPresent = function(s) { return false; };
+                    DEX.isDexItemStringPresent = function(s) { return false; };
+                    DEX.getFileFormatName = function() { return "Dalvik Executable (.DEX)"; };
+                    DEX.getFileFormatVersion = function() { return ""; };
+                    DEX.getFileFormatOptions = function() { return ""; };
+                    DEX.isVerbose = function() { return false; };
+                    DEX.isDeepScan = function() { return false; };
+                    DEX.isHeuristicScan = function() { return false; };
+
+                    PYC.isConstPresent = function(s) { return false; };
+                    PYC.getFileFormatName = function() { return "Python bytecode compiled (.PYC)"; };
+                    PYC.getFileFormatVersion = function() { return ""; };
+                    PYC.getFileFormatOptions = function() { return ""; };
+                    PYC.isVerbose = function() { return false; };
+                    PYC.isDeepScan = function() { return false; };
+                    PYC.isHeuristicScan = function() { return false; };
+                })();
+                "#,
+            )
+            .map_err(|e| RuleError::Backend {
+                detail: format!("DEX/PYC stubs: {e}"),
+            })?;
+
             // Override getString with a JS wrapper that handles missing 2nd arg.
             // The upstream getString(offset, maxLen?) accepts 1 or 2 args.
             // Also add compare wrapper: compare(signature, offset=0).
