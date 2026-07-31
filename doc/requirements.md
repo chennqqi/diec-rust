@@ -194,6 +194,28 @@
     validate_contiguous_ordinals
 - cargo fmt/clippy/test/check-deps 全部通过（268 个测试）
 
+## 2026-08-01: Phase 3 第二步 — rquickjs 后端集成
+- 集成 rquickjs@=0.12.1（vendored QuickJS-NG）到 diec-rules（ADR 0006）
+  - `=0.12.1` 精确版本锁定，`default-features = false`，`features = ["std"]`
+  - 所有 rquickjs/QuickJS 类型私有于 `backend_rquickjs` 模块，不进入
+    core/formats/engine/output/cli/ffi 或公共 C ABI
+- 实现 `RquickjsRuntime` + `RquickjsRuntimeFactory`：
+  - `Runtime::new()` + `set_memory_limit` + `set_max_stack_size` +
+    `set_interrupt_handler`（cooperative cancellation via CancelFlag）
+  - `Context::full()` 创建带完整 intrinsics 的 context
+  - `register_globals()`: 15 个全局宿主函数 + `meta()` 通过 JS eval 注册
+    （`_setResult`/`_setLang`/`_error`/`_log`/`_getEngineVersion`/
+    `_isStop`/`_isConsoleMode`/`_isLiteMode`/`_isGuiMode`/
+    `_isLibraryMode`/`_getOS`/`_getNumberOfResults`/`_isResultPresent`/
+    `_breakScan`/`_encodingList`/`_removeResult`）
+  - 结果收集通过 JS `__diec_results` 数组 + `read_results()`/`clear_results()`
+    避免 rquickjs `Function::new` 生命周期问题
+  - `load_database()` / `init()` / `evaluate_rule()` / `shutdown()`
+    实现 RuleRuntime trait
+  - `RuleRuntime` trait 移除 `Send` bound（ADR 0006: 单 worker 线程拥有）
+- 16 个新单元测试（runtime 创建/eval/异常/全局函数/规则加载/detect 调用）
+- cargo fmt/clippy/test/check-deps/doc 全部通过（284 个测试）
+
 ## P0-BLOCK-006 macOS 运行时基线采集 (deferred from Phase 0)
 - 通过 ssh macdevoa (macdev 别名) 继续完成 macOS 运行时基线采集
 - 复用 ~/dev/tmp/diec-macos-work 目录中已有数据 (DIE-engine-src/build/corpus/evidence 等)

@@ -20,6 +20,12 @@ pub mod manifest;
 pub mod order_manifest;
 pub mod runtime;
 
+/// rquickjs backend module (ADR 0006).
+///
+/// All rquickjs/QuickJS types are private to this module. They never
+/// appear in core, formats, engine, output, CLI, FFI or the public C ABI.
+pub mod backend_rquickjs;
+
 #[cfg(test)]
 mod tests {
     #[test]

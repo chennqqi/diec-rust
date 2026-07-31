@@ -94,7 +94,11 @@ impl DatabaseSnapshot {
 /// Implementations load rule scripts, execute them against host data, and
 /// collect detection results. The runtime must enforce resource budgets
 /// (ADR 0006) and include cycle detection (ADR 0010).
-pub trait RuleRuntime: Send {
+///
+/// The runtime is NOT required to be `Send`. Per ADR 0006, each scan uses
+/// a shared runtime/context owned by a single worker thread; cross-thread
+/// communication uses only cancel/deadline tokens, not live JS handles.
+pub trait RuleRuntime {
     /// Load a database snapshot into the runtime.
     ///
     /// This parses and compiles all rule scripts. Unknown syntax produces

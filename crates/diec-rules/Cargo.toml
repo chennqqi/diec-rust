@@ -10,6 +10,7 @@ repository.workspace = true
 
 [dependencies]
 diec-core = { workspace = true }
+rquickjs = { version = "=0.12.1", default-features = false, features = ["std"] }
 
 [lib]
 path = "src/lib.rs"
