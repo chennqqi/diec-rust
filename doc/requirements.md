@@ -77,6 +77,24 @@
 - 实际运行：sync-rules 生成 manifest（4539 文件，4453445 bytes），verify-rules 全部通过
 - cargo fmt/clippy/test/check-deps 全部通过
 
+## 2026-07-31: Phase 2 启动 — 受控字节读取层
+- 用户确认 P0-BLOCK-005 已由其他 Agent 完成，授权开始 Phase 2
+- ROADMAP.md: Phase 1 -> DONE，Phase 2 -> IN PROGRESS；AGENTS.md/README.md 同步更新
+- 实现 diec-core 受控字节读取层（ADR 0013 fail-closed）：
+  - IoError 扩展：ShortRead{offset,expected,actual}/NotSeekable/InvalidArgument
+  - ByteSource trait 添加 read_exact_at（正进展分块循环，零进展或 EOF 立即 ShortRead）
+  - 5 个 ByteSource 实现：MemorySource（借用 slice）/OwnedSource（Arc<[u8]>）/FileSource（seek+read）/ChunkedSource（测试分块设备）/EmptySource（测试空源）
+  - ByteView 添加 read_exact_at + typed integer reads（u8/u16_le/u16_be/u32_le/u32_be/u64_le/u64_be），view 边界裁剪确保不越过 [start,end)
+  - 35 个新增单元测试：ByteRange 溢出、MemorySource full/partial/EOF/empty、read_exact_at short read/overflow、ChunkedSource 分块循环、OwnedSource clone 共享、ByteView subview/boundary/typed reads、FileSource open/read
+- cargo fmt/clippy/test/check-deps 全部通过（37 diec-core 测试）
+
 ## P0-BLOCK-006 macOS 运行时基线采集 (deferred from Phase 0)
 - 通过 ssh macdevoa (macdev 别名) 继续完成 macOS 运行时基线采集
 - 复用 ~/dev/tmp/diec-macos-work 目录中已有数据 (DIE-engine-src/build/corpus/evidence 等)
+
+## 2026-07-31: P0-BLOCK-005 macOS 运行时基线采集完成
+- 通过 ssh macdevoa 在 Darwin x86_64 主机完成 17 个 candidate report 采集
+- 修复 build_macos_database_cache_harness.py: macOS qmake Makefile 使用 TARGET 而非 DESTDIR_TARGET；添加 xbinary.h CoreFoundation.h patch
+- 修复 collect_macos_database_cache_harness.py: macOS QStandardPaths test mode 不尊重 HOME，使用 NSSearchPathForDirectoriesInDomains；放宽 qttest marker 检查
+- cli-privilege-paths collector 因需 passwordless sudo 而 deferred（diec 不负责系统权限管理）
+- 所有 candidate report 已 sanitize 本地路径并提交至 docs/research/data/macos-qt5/
