@@ -122,6 +122,17 @@
 - fuzz invariant（testing.md section 14）：无 panic/abort/crash/越界/UB/leak，超限返回 typed limit，相同输入 deterministic
 - cargo fmt/clippy/test/check-deps 全部通过（44 diec-core + 73 diec-formats 测试）
 
+## 2026-07-31: Phase 2 逐格式差分验证
+- 创建 corpus/ 目录（由 generate_baseline_corpus.py 生成，27 个项目生成样本，无第三方字节）
+- 创建 crates/diec-formats/tests/corpus_differential.rs 集成测试：
+  - corpus_format_detection_matches_expected: 21 个格式样本（ELF32/64, PE32/64, Mach-O 32/64/FAT, DEX, Java Class, PNG, JPEG, PDF, CFBF, ZIP, APK, JAR, IPA, RAR, ISO9660, TAR, GZIP）全部匹配预期格式
+  - corpus_non_binary_produces_no_candidates: empty/text/BMP/WAV 不产生候选
+  - corpus_pe32_also_produces_msdos_weak: PE32 同时产生 MSDOS Weak + PE32 Strong
+  - corpus_pe64_also_produces_msdos_weak: PE64 同时产生 MSDOS Weak + PE64 Strong
+  - corpus_zip_based_formats_detect_zip: APK/JAR/IPA 检测为 ZIP（容器格式基础检测）
+- 使用 CARGO_MANIFEST_DIR 定位 corpus 目录，无需额外依赖
+- cargo fmt/clippy/test/check-deps 全部通过（44 diec-core + 73 diec-formats + 5 corpus differential 测试）
+
 ## P0-BLOCK-006 macOS 运行时基线采集 (deferred from Phase 0)
 - 通过 ssh macdevoa (macdev 别名) 继续完成 macOS 运行时基线采集
 - 复用 ~/dev/tmp/diec-macos-work 目录中已有数据 (DIE-engine-src/build/corpus/evidence 等)
