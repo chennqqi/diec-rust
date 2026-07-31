@@ -546,6 +546,48 @@ impl HostApiBridge {
                 detail: format!("I32 set: {e}"),
             })?;
 
+            // I16(offset) -> i16 LE
+            let h = host.clone();
+            let i16_fn = rquickjs::Function::new(ctx.clone(), move |offset: i32| {
+                h.read_u16_le(offset as u64).map(|v| v as i16 as i32).unwrap_or(0)
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("I16: {e}"),
+            })?;
+            binary.set("I16", i16_fn).map_err(|e| RuleError::Backend {
+                detail: format!("I16 set: {e}"),
+            })?;
+
+            // I24(offset) -> i24 LE
+            let h = host.clone();
+            let i24_fn = rquickjs::Function::new(ctx.clone(), move |offset: i32| {
+                h.read_u24_le(offset as u64).map(|v| {
+                    if v & 0x800000 != 0 {
+                        (v | 0xFF000000) as i32
+                    } else {
+                        v as i32
+                    }
+                }).unwrap_or(0)
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("I24: {e}"),
+            })?;
+            binary.set("I24", i24_fn).map_err(|e| RuleError::Backend {
+                detail: format!("I24 set: {e}"),
+            })?;
+
+            // I64(offset) -> i64 LE as f64
+            let h = host.clone();
+            let i64_fn = rquickjs::Function::new(ctx.clone(), move |offset: i32| {
+                h.read_u64_le(offset as u64).map(|v| v as i64 as f64).unwrap_or(0.0)
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("I64: {e}"),
+            })?;
+            binary.set("I64", i64_fn).map_err(|e| RuleError::Backend {
+                detail: format!("I64 set: {e}"),
+            })?;
+
             // --- File metadata ---
 
             // getSize() -> file size
@@ -603,7 +645,9 @@ impl HostApiBridge {
                     detail: format!("getString set: {e}"),
                 })?;
 
-            // findSignature(start, signature) -> offset or -1
+            // findSignature(start, signature) or findSignature(start, size, signature)
+            // -> offset or -1. The upstream API accepts both 2-arg and 3-arg forms.
+            // We register a 2-arg native and add a JS wrapper for the 3-arg form.
             let h = host.clone();
             let find_sig_fn =
                 rquickjs::Function::new(ctx.clone(), move |start: i32, signature: String| match h
@@ -616,9 +660,9 @@ impl HostApiBridge {
                     detail: format!("findSignature: {e}"),
                 })?;
             binary
-                .set("findSignature", find_sig_fn)
+                .set("__findSignature", find_sig_fn)
                 .map_err(|e| RuleError::Backend {
-                    detail: format!("findSignature set: {e}"),
+                    detail: format!("__findSignature set: {e}"),
                 })?;
 
             // isSignaturePresent(offset, size, signature) -> bool
@@ -1333,6 +1377,219 @@ impl HostApiBridge {
                 detail: format!("getHeaderString set: {e}"),
             })?;
 
+            // crc16(offset, size) -> u16 CRC-16 (CCITT)
+            let h = host.clone();
+            let crc16_fn =
+                rquickjs::Function::new(ctx.clone(), move |offset: i32, size: i32| {
+                    let file_size = h.file_size() as usize;
+                    let start = offset as usize;
+                    if start >= file_size {
+                        return 0i32;
+                    }
+                    let end = if size > 0 {
+                        (start.saturating_add(size as usize)).min(file_size)
+                    } else {
+                        file_size
+                    };
+                    let mut crc: u16 = 0xFFFF;
+                    for i in start..end {
+                        let byte = h.read_u8(i as u64).unwrap_or(0);
+                        crc ^= byte as u16;
+                        for _ in 0..8 {
+                            if crc & 1 != 0 {
+                                crc = (crc >> 1) ^ 0xA001;
+                            } else {
+                                crc >>= 1;
+                            }
+                        }
+                    }
+                    crc as i32
+                })
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("crc16: {e}"),
+                })?;
+            binary.set("crc16", crc16_fn).map_err(|e| RuleError::Backend {
+                detail: format!("crc16 set: {e}"),
+            })?;
+
+            // find_utf8String(offset, maxSize) -> string (UTF-8 string read)
+            let h = host.clone();
+            let find_utf8_fn =
+                rquickjs::Function::new(ctx.clone(), move |offset: i32, max_size: i32| {
+                    let file_size = h.file_size() as usize;
+                    let start = offset as usize;
+                    if start >= file_size {
+                        return String::new();
+                    }
+                    let len = if max_size > 0 {
+                        max_size as usize
+                    } else {
+                        file_size.saturating_sub(start)
+                    };
+                    let end = start.saturating_add(len).min(file_size);
+                    let mut bytes = Vec::with_capacity(end - start);
+                    for i in start..end {
+                        match h.read_u8(i as u64) {
+                            Ok(b) => {
+                                if b == 0 {
+                                    break;
+                                }
+                                bytes.push(b);
+                            }
+                            Err(_) => break,
+                        }
+                    }
+                    String::from_utf8_lossy(&bytes).into_owned()
+                })
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("find_utf8String: {e}"),
+                })?;
+            binary.set("find_utf8String", find_utf8_fn).map_err(|e| RuleError::Backend {
+                detail: format!("find_utf8String set: {e}"),
+            })?;
+
+            // read_codePageString(offset, maxSize, codePage?) -> string
+            // For now, treat as ANSI string (code page ignored).
+            let h = host.clone();
+            let read_cp_fn =
+                rquickjs::Function::new(ctx.clone(), move |offset: i32, max_size: i32, _code_page: Option<i32>| {
+                    let file_size = h.file_size() as usize;
+                    let start = offset as usize;
+                    if start >= file_size {
+                        return String::new();
+                    }
+                    let len = if max_size > 0 {
+                        max_size as usize
+                    } else {
+                        file_size.saturating_sub(start)
+                    };
+                    let end = start.saturating_add(len).min(file_size);
+                    let mut bytes = Vec::with_capacity(end - start);
+                    for i in start..end {
+                        match h.read_u8(i as u64) {
+                            Ok(b) => {
+                                if b == 0 {
+                                    break;
+                                }
+                                bytes.push(b);
+                            }
+                            Err(_) => break,
+                        }
+                    }
+                    String::from_utf8_lossy(&bytes).into_owned()
+                })
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("read_codePageString: {e}"),
+                })?;
+            binary.set("read_codePageString", read_cp_fn).map_err(|e| RuleError::Backend {
+                detail: format!("read_codePageString set: {e}"),
+            })?;
+
+            // read_ucsdString(offset) -> Pascal-style string (length-prefixed)
+            let h = host.clone();
+            let read_ucsd_fn = rquickjs::Function::new(ctx.clone(), move |offset: i32| {
+                let file_size = h.file_size() as usize;
+                let start = offset as usize;
+                if start >= file_size {
+                    return String::new();
+                }
+                let len = h.read_u8(start as u64).unwrap_or(0) as usize;
+                if len == 0 {
+                    return String::new();
+                }
+                let str_start = start + 1;
+                let end = str_start.saturating_add(len).min(file_size);
+                let mut bytes = Vec::with_capacity(end - str_start);
+                for i in str_start..end {
+                    bytes.push(h.read_u8(i as u64).unwrap_or(0));
+                }
+                String::from_utf8_lossy(&bytes).into_owned()
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("read_ucsdString: {e}"),
+            })?;
+            binary.set("read_ucsdString", read_ucsd_fn).map_err(|e| RuleError::Backend {
+                detail: format!("read_ucsdString set: {e}"),
+            })?;
+
+            // readBytes(offset, size, replaceZeroWithSpace?) -> array of byte values
+            // Native function takes 2 required args; JS wrapper handles optional 3rd.
+            let h = host.clone();
+            let read_bytes_fn =
+                rquickjs::Function::new(ctx.clone(), move |offset: i32, size: i32| {
+                    let file_size = h.file_size() as usize;
+                    let start = offset as usize;
+                    if start >= file_size || size <= 0 {
+                        return Vec::<i32>::new();
+                    }
+                    let end = start.saturating_add(size as usize).min(file_size);
+                    let mut result = Vec::with_capacity(end - start);
+                    for i in start..end {
+                        result.push(h.read_u8(i as u64).unwrap_or(0) as i32);
+                    }
+                    result
+                })
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("readBytes: {e}"),
+                })?;
+            binary.set("__readBytes", read_bytes_fn).map_err(|e| RuleError::Backend {
+                detail: format!("__readBytes set: {e}"),
+            })?;
+
+            // fSig(offset, size, signature) -> findSignature (offset or -1)
+            let h = host.clone();
+            let fsig_fn =
+                rquickjs::Function::new(ctx.clone(), move |offset: i32, size: i32, signature: String| {
+                    let file_size = h.file_size() as usize;
+                    let start = offset as usize;
+                    if start >= file_size {
+                        return -1i32;
+                    }
+                    let end = if size > 0 {
+                        (start.saturating_add(size as usize)).min(file_size)
+                    } else {
+                        file_size
+                    };
+                    // Parse the signature and search for it.
+                    match parse_signature(&signature) {
+                        Ok(elements) => {
+                            if elements.is_empty() {
+                                return offset;
+                            }
+                            let needle_len = elements.len();
+                            if start + needle_len > end {
+                                return -1;
+                            }
+                            // Read a window of bytes and match against elements.
+                            for i in start..=end.saturating_sub(needle_len) {
+                                let mut matched = true;
+                                for (j, elem) in elements.iter().enumerate() {
+                                    let byte = h.read_u8((i + j) as u64).unwrap_or(0);
+                                    match elem {
+                                        SigElement::Byte(b) if byte == *b => {}
+                                        SigElement::Any => {}
+                                        _ => {
+                                            matched = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                                if matched {
+                                    return i as i32;
+                                }
+                            }
+                            -1
+                        }
+                        Err(_) => -1,
+                    }
+                })
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("fSig: {e}"),
+                })?;
+            binary.set("fSig", fsig_fn).map_err(|e| RuleError::Backend {
+                detail: format!("fSig set: {e}"),
+            })?;
+
             // Register a PE global object as an alias to Binary with
             // PE-specific stub methods. The PE-specific methods (sections,
             // imports, exports, resources) return defaults until the full
@@ -1513,6 +1770,10 @@ impl HostApiBridge {
                         divu64: function(a, b) {
                             if (b === 0) return 0;
                             return Math.floor(a / b);
+                        },
+                        div64: function(a, b) {
+                            if (b === 0) return 0;
+                            return Math.floor(a / b);
                         }
                     };
                     (typeof globalThis !== 'undefined' ? globalThis : this).Util = Util;
@@ -1601,6 +1862,40 @@ impl HostApiBridge {
                     X.c = Binary.c;
                     File.c = Binary.c;
 
+                    // readBytes wrapper: readBytes(offset, size, replaceZeroWithSpace?)
+                    var _orig_rb = Binary.__readBytes;
+                    Binary.readBytes = function(offset, size, replace) {
+                        var bytes = _orig_rb(offset, size);
+                        if (replace) {
+                            for (var i = 0; i < bytes.length; i++) {
+                                if (bytes[i] === 0) bytes[i] = 0x20;
+                            }
+                        }
+                        return bytes;
+                    };
+                    X.readBytes = Binary.readBytes;
+                    File.readBytes = Binary.readBytes;
+
+                    // findSignature wrapper: findSignature(start, sig) or
+                    // findSignature(start, size, sig) -> offset or -1.
+                    var _orig_fs = Binary.__findSignature;
+                    Binary.findSignature = function(start, sizeOrSig, sig) {
+                        if (sig === undefined) {
+                            return _orig_fs(start, sizeOrSig);
+                        }
+                        // 3-arg form: search within [start, start+size).
+                        var size = sizeOrSig;
+                        var result = _orig_fs(start, sig);
+                        if (result >= 0 && (size < 0 || result < start + size)) {
+                            return result;
+                        }
+                        return -1;
+                    };
+                    X.findSignature = Binary.findSignature;
+                    File.findSignature = Binary.findSignature;
+                    ELF.findSignature = Binary.findSignature;
+                    MACH.findSignature = Binary.findSignature;
+
                     // Endianness wrappers: U16(offset, bigEndian?) etc.
                     // The native functions are LE-only; BE is handled by
                     // reading bytes and combining them in big-endian order.
@@ -1627,6 +1922,10 @@ impl HostApiBridge {
                     _wrapEndian("U24", null, _beU24);
                     _wrapEndian("U32", null, _beU32);
                     _wrapEndian("U64", null, _beU64);
+                    _wrapEndian("I16", null, _beU16);
+                    _wrapEndian("I24", null, _beU24);
+                    _wrapEndian("I32", null, _beU32);
+                    _wrapEndian("I64", null, _beU64);
 
                     // Also wrap read_uint16 etc. with optional bigEndian.
                     function _wrapReadEndian(name) {
@@ -1652,6 +1951,33 @@ impl HostApiBridge {
                     _wrapReadEndian("read_int32");
                     _wrapReadEndian("read_uint64");
                     _wrapReadEndian("read_int64");
+
+                    // Additional X shortcuts for string and float methods.
+                    X.fStr = Binary.findString;
+                    File.fStr = Binary.findString;
+                    X.BA = Binary.readBytes;
+                    File.BA = Binary.readBytes;
+                    X.SA = Binary.read_ansiString;
+                    File.SA = Binary.read_ansiString;
+                    X.SC = Binary.read_codePageString;
+                    File.SC = Binary.read_codePageString;
+                    X.SU8 = Binary.find_utf8String;
+                    File.SU8 = Binary.find_utf8String;
+                    X.SU16 = Binary.read_unicodeString;
+                    File.SU16 = Binary.read_unicodeString;
+                    X.UCSD = Binary.read_ucsdString;
+                    File.UCSD = Binary.read_ucsdString;
+
+                    // Float read stubs (return 0.0 for now; BE handled by wrapper).
+                    X.F16 = function(offset, bigEndian) { return 0.0; };
+                    X.F32 = function(offset, bigEndian) { return 0.0; };
+                    X.F64 = function(offset, bigEndian) { return 0.0; };
+                    Binary.F16 = X.F16;
+                    Binary.F32 = X.F32;
+                    Binary.F64 = X.F64;
+                    File.F16 = X.F16;
+                    File.F32 = X.F32;
+                    File.F64 = X.F64;
                 })();
                 "#,
             )

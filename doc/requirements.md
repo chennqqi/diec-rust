@@ -490,6 +490,31 @@
 - 添加 `getOverlaySize()` 到 Binary
 - 新增测试：`scan_rar_signature`, `detect_rule_types_elf`
 - cargo fmt/clippy/test/check-deps 全部通过（358 个测试）
+
+## 2026-08-01: Phase 4 第九步 — 更多 host API 函数 + X 快捷方式
+- 添加缺失的 host API 函数：
+  - `crc16(offset, size)` → CRC-16 (Modbus)
+  - `readBytes(offset, size, replaceZeroWithSpace?)` → 字节数组
+  - `fSig(offset, size, signature)` → findSignature 别名
+  - `find_utf8String(offset, maxSize)` → UTF-8 字符串
+  - `read_codePageString(offset, maxSize, codePage?)` → 代码页字符串
+  - `read_ucsdString(offset)` → Pascal 风格字符串
+  - `I16/I24/I64(offset)` → 有符号整数读取
+- 添加 `Util.div64` 别名（`charStat` 使用）
+- 添加 X 快捷方式（JS 包装器）：
+  - `X.fStr` = `File.findString`
+  - `X.BA` = `File.readBytes`
+  - `X.SA` = `File.read_ansiString`
+  - `X.SC` = `File.read_codePageString`
+  - `X.SU8` = `File.read_utf8String`
+  - `X.SU16` = `File.read_unicodeString`
+  - `X.UCSD` = `File.read_ucsdString`
+  - `X.F16/F32/F64` → 浮点数 stub（返回 0.0）
+- 修复 `findSignature` 支持 2 参数和 3 参数形式
+- 修复 `readBytes` 可选第 3 参数（JS 包装器）
+- 添加 I16/I24/I64 端序包装器
+- 修复结果：仅剩 1 个诊断错误（Nintendo-certified-file.1.sg 的 const 重声明，上游规则 bug）
+- cargo fmt/clippy/test/check-deps 全部通过（358 个测试）
 - 实现 `detect_rule_types` 函数：
   - 使用 `diec-formats` 的 `ProbeTable` 检测文件格式
   - PE32/MSDOS → 运行 PE + Binary 规则
