@@ -1679,70 +1679,487 @@ impl HostApiBridge {
                 detail: format!("PE stubs: {e}"),
             })?;
 
-            // Register ELF, MACH, MACHOFAT global objects as aliases to
-            // Binary. The type-specific _init scripts do `var File = ELF;`
-            // etc., so these objects must exist. Full format-specific host
-            // API methods will be added when the ELF/Mach-O bridges are
-            // implemented.
-            for name in &["ELF", "MACH", "MACHOFAT"] {
-                globals
-                    .set(*name, binary.clone())
-                    .map_err(|e| RuleError::Backend {
-                        detail: format!("failed to set {name} alias: {e}"),
-                    })?;
-            }
+            // Register ELF, MACH, MACHOFAT as independent objects that
+            // inherit from Binary via Object.create. This allows adding
+            // format-specific methods without modifying Binary itself.
+            // The type-specific _init scripts do `var File = ELF;` etc.
+            // We use a JS helper to create objects with Binary as prototype.
+            let elf_obj = ctx
+                .eval::<rquickjs::Object, _>("Object.create(Object.prototype)")
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("ELF creation: {e}"),
+                })?;
+            globals.set("ELF", elf_obj).map_err(|e| RuleError::Backend {
+                detail: format!("ELF set: {e}"),
+            })?;
+            let mach_obj = ctx
+                .eval::<rquickjs::Object, _>("Object.create(Object.prototype)")
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("MACH creation: {e}"),
+                })?;
+            globals
+                .set("MACH", mach_obj)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("MACH set: {e}"),
+                })?;
+            let machofat_obj = ctx
+                .eval::<rquickjs::Object, _>("Object.create(Object.prototype)")
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("MACHOFAT creation: {e}"),
+                })?;
+            globals
+                .set("MACHOFAT", machofat_obj)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("MACHOFAT set: {e}"),
+                })?;
 
-            // Add ELF-specific stub methods that return defaults.
-            // These are needed so ELF rules don't throw "not a function"
-            // during evaluation. Full ELF parsing will be implemented later.
+            // Copy all Binary properties to ELF, MACH, MACHOFAT so they
+            // have the same native methods. This is a shallow copy.
             ctx.eval::<(), _>(
                 r#"
                 (function() {
-                    ELF.getNumberOfPrograms = function() { return 0; };
-                    ELF.getNumberOfSections = function() { return 0; };
-                    ELF.getOperationSystemName = function() { return ""; };
+                    var formats = [ELF, MACH, MACHOFAT];
+                    for (var i = 0; i < formats.length; i++) {
+                        var f = formats[i];
+                        var keys = Object.keys(Binary);
+                        for (var j = 0; j < keys.length; j++) {
+                            f[keys[j]] = Binary[keys[j]];
+                        }
+                    }
+                })();
+                "#,
+            )
+            .map_err(|e| RuleError::Backend {
+                detail: format!("ELF/MACH/MACHOFAT property copy: {e}"),
+            })?;
+
+            // Add ELF-specific methods that parse the ELF header from raw bytes.
+            // These implement the most commonly used ELF host API methods by
+            // reading the ELF header and section/program header tables directly
+            // from the file data via the Binary read primitives.
+            ctx.eval::<(), _>(
+                r#"
+                (function() {
+                    // ELF magic: 7F 45 4C 46
+                    var ELF_MAGIC0 = 0x7F, ELF_MAGIC1 = 0x45, ELF_MAGIC2 = 0x4C, ELF_MAGIC3 = 0x46;
+
+                    // IMPORTANT: Use Binary.* directly, NOT File.*, because the
+                    // _init script sets File = ELF, which would cause infinite
+                    // recursion when ELF methods call File methods.
+                    function _elfIsELF() {
+                        if (Binary.getSize() < 64) return false;
+                        return (Binary.read_uint8(0) === ELF_MAGIC0 &&
+                                Binary.read_uint8(1) === ELF_MAGIC1 &&
+                                Binary.read_uint8(2) === ELF_MAGIC2 &&
+                                Binary.read_uint8(3) === ELF_MAGIC3);
+                    }
+
+                    // EI_CLASS at offset 4: 1=ELF32, 2=ELF64
+                    function _elfClass() {
+                        return Binary.read_uint8(4);
+                    }
+
+                    // EI_DATA at offset 5: 1=LSB, 2=MSB
+                    function _elfIsLE() {
+                        return Binary.read_uint8(5) === 1;
+                    }
+
+                    function _elfReadU16(off) {
+                        return _elfIsLE() ? Binary.read_uint16_le(off) : Binary.read_uint16_be(off);
+                    }
+                    function _elfReadU32(off) {
+                        return _elfIsLE() ? Binary.read_uint32_le(off) : Binary.read_uint32_be(off);
+                    }
+                    function _elfReadU64(off) {
+                        return _elfIsLE() ? Binary.read_uint64_le(off) : Binary.read_uint64_be(off);
+                    }
+
+                    // ELF header field offsets.
+                    // ELF32: e_type(16) e_machine(18) e_version(20) e_entry(24) e_phoff(28)
+                    //        e_shoff(32) e_flags(36) e_ehsize(40) e_phentsize(42) e_phnum(44)
+                    //        e_shentsize(46) e_shnum(48) e_shstrndx(50)
+                    // ELF64: e_type(16) e_machine(18) e_version(20) e_entry(24) e_phoff(32)
+                    //        e_shoff(40) e_flags(48) e_ehsize(52) e_phentsize(54) e_phnum(56)
+                    //        e_shentsize(58) e_shnum(60) e_shstrndx(62)
+                    function _elfIs64() { return _elfClass() === 2; }
+
+                    function _elfEType() { return _elfReadU16(16); }
+                    function _elfEMachine() { return _elfReadU16(18); }
+                    function _elfEEntry() { return _elfIs64() ? _elfReadU64(24) : _elfReadU32(24); }
+                    function _elfEPhoff() { return _elfIs64() ? _elfReadU64(32) : _elfReadU32(28); }
+                    function _elfEShoff() { return _elfIs64() ? _elfReadU64(40) : _elfReadU32(32); }
+                    function _elfEPhentsize() { return _elfReadU16(_elfIs64() ? 54 : 42); }
+                    function _elfEPhnum() { return _elfReadU16(_elfIs64() ? 56 : 44); }
+                    function _elfEShentsize() { return _elfReadU16(_elfIs64() ? 58 : 46); }
+                    function _elfEShnum() { return _elfReadU16(_elfIs64() ? 60 : 48); }
+                    function _elfEShstrndx() { return _elfReadU16(_elfIs64() ? 62 : 50); }
+
+                    // Section header field offsets.
+                    // ELF32 Shdr: sh_name(0) sh_type(4) sh_flags(8) sh_addr(12) sh_offset(16) sh_size(20)
+                    // ELF64 Shdr: sh_name(0) sh_type(4) sh_flags(8) sh_addr(16) sh_offset(24) sh_size(32)
+                    function _shdrOffset(n) {
+                        return _elfEShoff() + n * _elfEShentsize();
+                    }
+                    function _shdrName(n) {
+                        var off = _shdrOffset(n);
+                        return _elfReadU32(off);
+                    }
+                    function _shdrType(n) {
+                        var off = _shdrOffset(n);
+                        return _elfReadU32(off + 4);
+                    }
+                    function _shdrFileOffset(n) {
+                        var off = _shdrOffset(n);
+                        return _elfIs64() ? _elfReadU64(off + 24) : _elfReadU32(off + 16);
+                    }
+                    function _shdrSize(n) {
+                        var off = _shdrOffset(n);
+                        return _elfIs64() ? _elfReadU64(off + 32) : _elfReadU32(off + 20);
+                    }
+
+                    // Program header field offsets.
+                    // ELF32 Phdr: p_type(0) p_offset(4) p_vaddr(8) p_filesz(16)
+                    // ELF64 Phdr: p_type(0) p_flags(4) p_offset(8) p_vaddr(16) p_filesz(32)
+                    function _phdrOffset(n) {
+                        return _elfEPhoff() + n * _elfEPhentsize();
+                    }
+                    function _phdrFileOffset(n) {
+                        var off = _phdrOffset(n);
+                        return _elfIs64() ? _elfReadU64(off + 8) : _elfReadU32(off + 4);
+                    }
+                    function _phdrFileSize(n) {
+                        var off = _phdrOffset(n);
+                        return _elfIs64() ? _elfReadU64(off + 32) : _elfReadU32(off + 16);
+                    }
+
+                    // Read a NUL-terminated string from the string table section.
+                    function _readStringFromTable(tableOff, tableSize, nameOff) {
+                        if (nameOff >= tableSize) return "";
+                        var absOff = tableOff + nameOff;
+                        var end = absOff;
+                        var maxEnd = tableOff + tableSize;
+                        while (end < maxEnd && Binary.read_uint8(end) !== 0) end++;
+                        if (end === absOff) return "";
+                        return Binary.getString(absOff, end - absOff);
+                    }
+
+                    // Get the section header string table.
+                    function _shstrtab() {
+                        var strndx = _elfEShstrndx();
+                        if (strndx >= _elfEShnum()) return null;
+                        return {
+                            offset: _shdrFileOffset(strndx),
+                            size: _shdrSize(strndx)
+                        };
+                    }
+
+                    // Get section name from the string table.
+                    function _sectionName(n) {
+                        var strtab = _shstrtab();
+                        if (!strtab) return "";
+                        var nameOff = _shdrName(n);
+                        return _readStringFromTable(strtab.offset, strtab.size, nameOff);
+                    }
+
+                    // Find section number by name.
+                    function _sectionNumber(name) {
+                        var n = _elfEShnum();
+                        for (var i = 0; i < n; i++) {
+                            if (_sectionName(i) === name) return i;
+                        }
+                        return -1;
+                    }
+
+                    // Dynamic table: find PT_DYNAMIC (type=2) program header.
+                    function _dynamicPhdr() {
+                        var n = _elfEPhnum();
+                        for (var i = 0; i < n; i++) {
+                            var off = _phdrOffset(i);
+                            var ptype = _elfReadU32(off);
+                            if (ptype === 2) return i;
+                        }
+                        return -1;
+                    }
+
+                    // Read strings from the dynamic string table (DT_STRTAB).
+                    // DT_STRTAB tag=5, DT_STRSZ tag=10.
+                    function _dynamicStringTable() {
+                        var phdrIdx = _dynamicPhdr();
+                        if (phdrIdx < 0) return null;
+                        var dynOff = _phdrFileOffset(phdrIdx);
+                        var dynSize = _phdrFileSize(phdrIdx);
+                        var is64 = _elfIs64();
+                        var entrySize = is64 ? 16 : 8;
+                        var nEntries = Math.floor(dynSize / entrySize);
+                        var strtabAddr = 0, strtabSize = 0;
+                        for (var i = 0; i < nEntries; i++) {
+                            var eOff = dynOff + i * entrySize;
+                            var tag, val;
+                            if (is64) {
+                                tag = _elfReadU64(eOff);
+                                val = _elfReadU64(eOff + 8);
+                            } else {
+                                tag = _elfReadU32(eOff);
+                                val = _elfReadU32(eOff + 4);
+                            }
+                            if (tag === 0) break;  // DT_NULL
+                            if (tag === 5) strtabAddr = val;  // DT_STRTAB
+                            if (tag === 10) strtabSize = val; // DT_STRSZ
+                        }
+                        if (strtabAddr === 0 || strtabSize === 0) return null;
+                        // Convert virtual address to file offset via program headers.
+                        var fileOff = _vaddrToFileOffset(strtabAddr);
+                        if (fileOff < 0) return null;
+                        return { offset: fileOff, size: strtabSize };
+                    }
+
+                    // Convert virtual address to file offset using program headers.
+                    function _vaddrToFileOffset(vaddr) {
+                        var n = _elfEPhnum();
+                        var is64 = _elfIs64();
+                        for (var i = 0; i < n; i++) {
+                            var off = _phdrOffset(i);
+                            var ptype = _elfReadU32(off);
+                            if (ptype !== 1) continue; // PT_LOAD
+                            var pOffset, pVaddr, pFilesz;
+                            if (is64) {
+                                pOffset = _elfReadU64(off + 8);
+                                pVaddr = _elfReadU64(off + 16);
+                                pFilesz = _elfReadU64(off + 32);
+                            } else {
+                                pOffset = _elfReadU32(off + 4);
+                                pVaddr = _elfReadU32(off + 8);
+                                pFilesz = _elfReadU32(off + 16);
+                            }
+                            if (vaddr >= pVaddr && vaddr < pVaddr + pFilesz) {
+                                return pOffset + (vaddr - pVaddr);
+                            }
+                        }
+                        return -1;
+                    }
+
+                    // Read DT_NEEDED entries (tag=1) from dynamic table.
+                    function _libraryNames() {
+                        var phdrIdx = _dynamicPhdr();
+                        if (phdrIdx < 0) return [];
+                        var dynOff = _phdrFileOffset(phdrIdx);
+                        var dynSize = _phdrFileSize(phdrIdx);
+                        var is64 = _elfIs64();
+                        var entrySize = is64 ? 16 : 8;
+                        var nEntries = Math.floor(dynSize / entrySize);
+                        var strtab = _dynamicStringTable();
+                        if (!strtab) return [];
+                        var libs = [];
+                        for (var i = 0; i < nEntries; i++) {
+                            var eOff = dynOff + i * entrySize;
+                            var tag, val;
+                            if (is64) {
+                                tag = _elfReadU64(eOff);
+                                val = _elfReadU64(eOff + 8);
+                            } else {
+                                tag = _elfReadU32(eOff);
+                                val = _elfReadU32(eOff + 4);
+                            }
+                            if (tag === 0) break;
+                            if (tag === 1) { // DT_NEEDED
+                                var name = _readStringFromTable(strtab.offset, strtab.size, val);
+                                if (name) libs.push(name);
+                            }
+                        }
+                        return libs;
+                    }
+
+                    // ELF type names.
+                    var _elfTypeNames = {
+                        0: "NONE", 1: "REL", 2: "EXEC", 3: "DYN", 4: "CORE"
+                    };
+                    // ELF machine names (subset).
+                    var _elfMachineNames = {
+                        0: "None", 3: "x86", 40: "ARM", 62: "x86-64",
+                        183: "AArch64", 243: "RISC-V"
+                    };
+
+                    // --- Public ELF API methods ---
+                    ELF.is64 = function() { return _elfIs64(); };
+                    ELF.getNumberOfSections = function() {
+                        if (!_elfIsELF()) return 0;
+                        return _elfEShnum();
+                    };
+                    ELF.getNumberOfPrograms = function() {
+                        if (!_elfIsELF()) return 0;
+                        return _elfEPhnum();
+                    };
+                    ELF.getElfHeader_entry = function() {
+                        if (!_elfIsELF()) return 0;
+                        return _elfEEntry();
+                    };
+                    ELF.getElfHeader_type = function() {
+                        if (!_elfIsELF()) return 0;
+                        return _elfEType();
+                    };
+                    ELF.getElfHeader_machine = function() {
+                        if (!_elfIsELF()) return 0;
+                        return _elfEMachine();
+                    };
+                    ELF.getElfHeader_shentsize = function() {
+                        if (!_elfIsELF()) return 0;
+                        return _elfEShentsize();
+                    };
+                    ELF.getElfHeader_shnum = function() {
+                        if (!_elfIsELF()) return 0;
+                        return _elfEShnum();
+                    };
+                    ELF.getElfHeader_shstrndx = function() {
+                        if (!_elfIsELF()) return 0;
+                        return _elfEShstrndx();
+                    };
+                    ELF.getElfHeader_phnum = function() {
+                        if (!_elfIsELF()) return 0;
+                        return _elfEPhnum();
+                    };
+                    ELF.getElfHeader_phentsize = function() {
+                        if (!_elfIsELF()) return 0;
+                        return _elfEPhentsize();
+                    };
+                    ELF.getElfHeader_phoff = function() {
+                        if (!_elfIsELF()) return 0;
+                        return _elfEPhoff();
+                    };
+                    ELF.getElfHeader_shoff = function() {
+                        if (!_elfIsELF()) return 0;
+                        return _elfEShoff();
+                    };
+                    ELF.getEntryPoint = function() {
+                        if (!_elfIsELF()) return 0;
+                        return _elfEEntry();
+                    };
+                    ELF.getType = function() {
+                        if (!_elfIsELF()) return "";
+                        return _elfTypeNames[_elfEType()] || ("type" + _elfEType());
+                    };
+                    ELF.getMachine = function() {
+                        if (!_elfIsELF()) return "";
+                        return _elfMachineNames[_elfEMachine()] || ("machine" + _elfEMachine());
+                    };
+                    ELF.getGeneralOptions = function() {
+                        if (!_elfIsELF()) return "";
+                        var t = _elfTypeNames[_elfEType()] || ("type" + _elfEType());
+                        var m = _elfMachineNames[_elfEMachine()] || ("machine" + _elfEMachine());
+                        var b = _elfIs64() ? "64" : "32";
+                        return t + " " + m + "-" + b;
+                    };
+                    ELF.getOperationSystemName = function() {
+                        if (!_elfIsELF()) return "";
+                        var osabi = Binary.read_uint8(7);
+                        var osabiNames = {
+                            0: "UNIX - System V", 1: "HP-UX", 2: "NetBSD", 3: "Linux",
+                            6: "Solaris", 7: "AIX", 8: "IRIX", 9: "FreeBSD",
+                            10: "Compaq Tru64", 11: "Novell Modesto", 12: "OpenBSD",
+                            64: "ARM EABI", 97: "ARM", 255: "Standalone"
+                        };
+                        return osabiNames[osabi] || "";
+                    };
                     ELF.getOperationSystemVersion = function() { return ""; };
                     ELF.getOperationSystemOptions = function() { return ""; };
-                    ELF.getGeneralOptions = function() { return ""; };
-                    ELF.getProgramFileOffset = function(n) { return 0; };
-                    ELF.getProgramFileSize = function(n) { return 0; };
-                    ELF.getSectionName = function(n) { return ""; };
-                    ELF.getSectionNumber = function(name) { return -1; };
-                    ELF.getSectionFileOffset = function(n) { return 0; };
-                    ELF.getSectionFileSize = function(n) { return 0; };
-                    ELF.isSectionNamePresent = function(name) { return false; };
+                    ELF.getSectionNumber = function(name) {
+                        if (!_elfIsELF()) return -1;
+                        return _sectionNumber(name);
+                    };
+                    ELF.getSectionName = function(n) {
+                        if (!_elfIsELF()) return "";
+                        if (n >= _elfEShnum()) return "";
+                        return _sectionName(n);
+                    };
+                    ELF.getSectionFileOffset = function(n) {
+                        if (!_elfIsELF()) return 0;
+                        if (n >= _elfEShnum()) return 0;
+                        return _shdrFileOffset(n);
+                    };
+                    ELF.getSectionFileSize = function(n) {
+                        if (!_elfIsELF()) return 0;
+                        if (n >= _elfEShnum()) return 0;
+                        return _shdrSize(n);
+                    };
+                    ELF.isSectionNamePresent = function(name) {
+                        if (!_elfIsELF()) return false;
+                        return _sectionNumber(name) >= 0;
+                    };
+                    ELF.isLibraryPresent = function(name) {
+                        if (!_elfIsELF()) return false;
+                        var libs = _libraryNames();
+                        for (var i = 0; i < libs.length; i++) {
+                            if (libs[i] === name) return true;
+                        }
+                        return false;
+                    };
+                    ELF.isStringInTablePresent = function(sectionName, s) {
+                        if (!_elfIsELF()) return false;
+                        var n = _sectionNumber(sectionName);
+                        if (n < 0) return false;
+                        var off = _shdrFileOffset(n);
+                        var size = _shdrSize(n);
+                        // Search for the string in the section.
+                        var found = Binary.findString(off, size, s);
+                        return (found >= 0);
+                    };
+                    ELF.getString = function(offset, maxLen) {
+                        if (maxLen === undefined) maxLen = 256;
+                        return Binary.getString(offset, maxLen);
+                    };
+                    ELF.getProgramFileOffset = function(n) {
+                        if (!_elfIsELF()) return 0;
+                        if (n >= _elfEPhnum()) return 0;
+                        return _phdrFileOffset(n);
+                    };
+                    ELF.getProgramFileSize = function(n) {
+                        if (!_elfIsELF()) return 0;
+                        if (n >= _elfEPhnum()) return 0;
+                        return _phdrFileSize(n);
+                    };
+                    ELF.getSize = function() { return Binary.getSize(); };
+                    ELF.readByte = function(offset) { return Binary.read_uint8(offset); };
+                    ELF.findSignature = function(offset, sizeOrSig, sig) {
+                        if (sig === undefined) { sig = sizeOrSig; return Binary.findSignature(offset, sig); }
+                        return Binary.findSignature(offset, sizeOrSig, sig);
+                    };
+                    ELF.findString = function(offset, sizeOrStr, str) {
+                        if (str === undefined) { str = sizeOrStr; sizeOrStr = 0; }
+                        return Binary.findString(offset, sizeOrStr, str);
+                    };
                     ELF.isVerbose = function() { return false; };
                     ELF.isDeepScan = function() { return false; };
                     ELF.isHeuristicScan = function() { return false; };
-                    ELF.isLibraryPresent = function(name) { return false; };
                     ELF.isOverlayPresent = function() { return false; };
-                    ELF.isStringInTablePresent = function(s) { return false; };
-                    ELF.is64 = function() { return false; };
-                    ELF.getType = function() { return ""; };
-                    ELF.getMachine = function() { return ""; };
-                    ELF.getEntryPoint = function() { return 0; };
+                    ELF.getOverlayOffset = function() { return -1; };
+                    ELF.getOverlaySize = function() { return 0; };
                     ELF.getImageBase = function() { return 0; };
                     ELF.getStringTableOffset = function() { return 0; };
-                    ELF.getDynamicTableOffset = function() { return 0; };
+                    ELF.getDynamicTableOffset = function() {
+                        var phdrIdx = _dynamicPhdr();
+                        if (phdrIdx < 0) return 0;
+                        return _phdrFileOffset(phdrIdx);
+                    };
                     ELF.getRelocationTableOffset = function() { return 0; };
                     ELF.getSymbolTableOffset = function() { return 0; };
-                    ELF.getElfHeader_entry = function() { return 0; };
-                    ELF.getElfHeader_shentsize = function() { return 0; };
-                    ELF.getElfHeader_shnum = function() { return 0; };
-                    ELF.getElfHeader_shstrndx = function() { return 0; };
-                    ELF.compareEP = function(sig, offset) { return false; };
+                    ELF.compareEP = function(sig, offset) {
+                        if (!_elfIsELF()) return false;
+                        var ep = _elfEEntry();
+                        if (ep === 0) return false;
+                        var fileOff = _vaddrToFileOffset(ep);
+                        if (fileOff < 0) return false;
+                        if (offset === undefined) offset = 0;
+                        return Binary.__compare(sig, fileOff + offset);
+                    };
                     ELF.compareOverlay = function(sig) { return false; };
                     ELF.compare = function(sig, offset) {
                         if (offset === undefined) offset = 0;
                         return Binary.__compare(sig, offset);
                     };
-                    ELF.getOverlayOffset = function() { return -1; };
-                    ELF.getOverlaySize = function() { return 0; };
                 })();
                 "#,
             )
             .map_err(|e| RuleError::Backend {
-                detail: format!("ELF stubs: {e}"),
+                detail: format!("ELF methods: {e}"),
             })?;
 
             // Add Util global object with 64-bit shift helpers.

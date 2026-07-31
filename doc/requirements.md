@@ -523,7 +523,33 @@
 
 - cargo fmt/clippy/test/check-deps 全部通过（360 个测试）
 
-## 2026-08-01: Phase 4 第十一步 — 注册所有格式全局对象 + DEX/PYC 检测
+## 2026-08-01: Phase 4 第十二步 — 实现 ELF host API
+
+### 问题
+- ELF host API 方法全部为 stub（返回默认值 0/""/false），无法检测编译器、打包器、库等
+- ELF/MACH/MACHOFAT 全局对象与 Binary 共享同一引用，导致方法交叉污染和无限递归
+
+### 修复
+1. **ELF/MACH/MACHOFAT 独立对象**：使用 `Object.create(Object.prototype)` 创建独立对象，
+   复制 Binary 的所有属性，避免修改 Binary 本身
+2. **实现 ELF host API 方法**（JavaScript 实现，使用 Binary 读取原语解析 ELF 头）：
+   - 头部解析：`is64`, `getElfHeader_entry/type/machine/shnum/shstrndx/phnum/phoff/shoff`
+   - 节区解析：`getNumberOfSections`, `getSectionName/Number/FileOffset/FileSize`, `isSectionNamePresent`
+   - 程序头解析：`getNumberOfPrograms`, `getProgramFileOffset/FileSize`
+   - 动态链接：`isLibraryPresent`（解析 DT_NEEDED）, `getDynamicTableOffset`
+   - 字符串表：`isStringInTablePresent`, `getString`
+   - 入口点：`getEntryPoint`, `compareEP`（虚拟地址转文件偏移后比较签名）
+   - 其他：`getType`, `getMachine`, `getGeneralOptions`, `getOperationSystemName`
+   - 搜索：`findSignature`, `findString`（3参数兼容）
+3. **使用 Binary.* 而非 File.***：因为 _init 脚本设置 `File = ELF`，使用 File.* 会导致无限递归
+
+### 结果
+- ELF 规则不再产生 `RangeError: Maximum call stack size exceeded`
+- ELF 规则不再产生 `TypeError: not a function`
+- minimal-elf32.elf 和 minimal.elf 无检测（预期行为：最小化 ELF 文件无编译器/打包器签名）
+- 所有现有检测保持不变
+
+- cargo fmt/clippy/test/check-deps 全部通过（360 个测试）
 
 ### 问题
 - RAR/DEX/PYC 的 `_init` 脚本引用 `RAR`/`DEX`/`PYC` 全局对象，未注册导致 `ReferenceError`
