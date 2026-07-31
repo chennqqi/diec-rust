@@ -114,3 +114,12 @@
 - 工具修复: build_macos_database_cache_harness.py (TARGET vs DESTDIR_TARGET, xbinary.h patch), collect_macos_database_cache_harness.py (macOS QStandardPaths behavior)
 - Python 3.9 系统版本过旧, 使用 venv Python 3.14.6
 - 所有 report 已 sanitize /Users/chenq 路径为 <macos-work>/<macos-home> 占位符
+
+## 2026-07-31: 上游规则 bug 记录 — Nintendo-certified-file.1.sg const 重声明
+- 文件: `db/Binary/format_bin.Nintendo-certified-file.1.sg`，上游 commit `4b675ffd`
+- 第 10 行 `var tp, e;` 与第 15 行 `const tp` 在同一函数作用域重声明
+- QtScript (上游 DIE 使用的 JS 引擎) 允许此行为，QuickJS/ECMAScript 规范禁止
+- diec-rust 使用 QuickJS (rquickjs)，因此该规则加载失败
+- 这是上游规则 bug，非 diec-rust 缺陷
+- 建议修复: 第 10 行改为 `var e;`（`tp` 已在第 15 行用 `const` 正确声明）
+- Bug 报告已写入 `docs/research/upstream-bug-const-redeclaration-nintendo-certified-file.md`

@@ -514,6 +514,11 @@
 - 修复 `readBytes` 可选第 3 参数（JS 包装器）
 - 添加 I16/I24/I64 端序包装器
 - 修复结果：仅剩 1 个诊断错误（Nintendo-certified-file.1.sg 的 const 重声明，上游规则 bug）
+- 已记录上游 bug 报告：`docs/research/upstream-bug-const-redeclaration-nintendo-certified-file.md`
+  - 上游 commit `4b675ffd`，文件 `db/Binary/format_bin.Nintendo-certified-file.1.sg`
+  - 第 10 行 `var tp, e;` 与第 15 行 `const tp` 在同一作用域重声明
+  - QtScript 允许但 QuickJS/ECMAScript 规范禁止
+  - 建议修复：将第 10 行改为 `var e;`（`tp` 已在第 15 行用 `const` 正确声明）
 - cargo fmt/clippy/test/check-deps 全部通过（358 个测试）
 - 实现 `detect_rule_types` 函数：
   - 使用 `diec-formats` 的 `ProbeTable` 检测文件格式

@@ -1,0 +1,17 @@
+docs: record upstream rule bug — const redeclaration in Nintendo-certified-file.1.sg
+
+Document the upstream rule bug found during Phase 4 rule compatibility
+testing. The rule file `db/Binary/format_bin.Nintendo-certified-file.1.sg`
+(commit 4b675ffd) redeclares `tp` with `const` on line 15 after declaring
+it with `var` on line 10 in the same function scope.
+
+QtScript (used by upstream DIE) silently allows this, but QuickJS and the
+ECMAScript spec reject it as a SyntaxError. This is an upstream rule bug,
+not a diec-rust defect.
+
+Bug report written to docs/research/ for upstream feedback.
+Suggested fix: change line 10 from `var tp, e;` to `var e;`.
+
+Generated with [Devin](https://devin.ai)
+
+Co-Authored-By: Devin <158243242+devin-ai-integration[bot]@users.noreply.github.com>
