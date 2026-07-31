@@ -88,6 +88,20 @@
   - 35 个新增单元测试：ByteRange 溢出、MemorySource full/partial/EOF/empty、read_exact_at short read/overflow、ChunkedSource 分块循环、OwnedSource clone 共享、ByteView subview/boundary/typed reads、FileSource open/read
 - cargo fmt/clippy/test/check-deps 全部通过（37 diec-core 测试）
 
+## 2026-07-31: Phase 2 格式探测框架 + 首批格式
+- 实现 diec-formats 格式探测框架：
+  - FormatProbe trait（Debug + Send + Sync），probe 返回 Ok(Some)/Ok(None)/Err(ProbeError)
+  - ProbeError: Truncated{file_type,cause}/Io(IoError)/InvalidHeader{file_type,detail}
+  - ProbeTable: versioned ordered probe table（PROBE_TABLE_VERSION=1），probe_all 返回 (candidates, errors)
+  - default_phase2() 按 CAP-DISPATCH 顺序注册 MSDOS/PE/ELF/Mach-O 4 个 probe
+- 实现首批格式探测（magic + header 级别）：
+  - MsdosProbe: MZ magic (0x5A4D) -> Weak MSDOS（PE 文件也以 MZ 开头，PE probe 后续覆盖）
+  - PeProbe: MZ + e_lfanew + PE sig (PE\0\0) + opt magic (0x010B=PE32/0x020B=PE64) -> Strong deferred
+  - ElfProbe: \x7FELF + EI_CLASS (1=ELF32/2=ELF64) -> Strong deferred
+  - MachOProbe: 6 个 magic (MH_MAGIC_32/64 BE+LE, FAT, FAT64) -> Strong deferred
+- 32 个 diec-formats 测试：各格式 magic match/no-match/too-short/unknown-class/multi-candidate table
+- cargo fmt/clippy/test/check-deps 全部通过（37 diec-core + 32 diec-formats 测试）
+
 ## P0-BLOCK-006 macOS 运行时基线采集 (deferred from Phase 0)
 - 通过 ssh macdevoa (macdev 别名) 继续完成 macOS 运行时基线采集
 - 复用 ~/dev/tmp/diec-macos-work 目录中已有数据 (DIE-engine-src/build/corpus/evidence 等)
