@@ -56,6 +56,7 @@ dependencies = [
 name = "diec-cli"
 version = "0.0.0"
 dependencies = [
+ "diec-core",
  "diec-engine",
  "diec-output",
 ]
@@ -93,6 +94,7 @@ name = "diec-output"
 version = "0.0.0"
 dependencies = [
  "diec-core",
+ "diec-engine",
 ]
 
 [[package]]

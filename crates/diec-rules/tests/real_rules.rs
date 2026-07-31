@@ -212,7 +212,11 @@ impl HostApi for BufferHost {
                 }
             })?;
         let start = start as usize;
-        if elements.is_empty() || start + elements.len() > self.data.len() {
+        if elements.is_empty()
+            || start
+                .checked_add(elements.len())
+                .is_none_or(|end| end > self.data.len())
+        {
             return Ok(None);
         }
         for i in start..=self.data.len() - elements.len() {

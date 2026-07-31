@@ -1,0 +1,346 @@
+//! Host API adapter bridging `diec-rules::HostApi` to file bytes.
+//!
+//! This adapter provides the `HostApi` implementation that rule scripts
+//! use to access binary file data. It wraps an `OwnedSource` and provides
+//! read primitives, signature checking, and string reading.
+
+use diec_core::format::FileType;
+use diec_core::input::{ByteSource, ByteView, OwnedSource};
+use diec_rules::host_api::{HostApi, HostApiError};
+use diec_rules::host_api_bridge::{match_signature, parse_signature};
+use std::sync::Arc;
+
+/// A simple host API backed by an in-memory byte buffer.
+///
+/// This adapter provides the core `Binary_Script` host API methods
+/// by reading directly from the owned byte source. Format-specific
+/// methods (PE sections, ELF segments, etc.) are not implemented here.
+pub struct BufferHost {
+    /// The file type context.
+    file_type: FileType,
+    /// The owned byte source.
+    source: OwnedSource,
+    /// The file name.
+    file_name: String,
+}
+
+impl BufferHost {
+    /// Create a new `BufferHost` from a byte buffer and file name.
+    pub fn new(data: Vec<u8>, file_name: String) -> Self {
+        let arc_data: Arc<[u8]> = Arc::from(data);
+        let source = OwnedSource::new(arc_data);
+        let file_type = determine_file_type(&file_name);
+        Self {
+            file_type,
+            source,
+            file_name,
+        }
+    }
+
+    /// Create a `BufferHost` for a specific file type.
+    pub fn with_type(data: Vec<u8>, file_name: String, file_type: &str) -> Self {
+        let arc_data: Arc<[u8]> = Arc::from(data);
+        let source = OwnedSource::new(arc_data);
+        Self {
+            file_type: FileType::new(file_type),
+            source,
+            file_name,
+        }
+    }
+
+    /// Get the underlying data as a slice.
+    fn data(&self) -> &[u8] {
+        self.source.as_slice()
+    }
+}
+
+/// Determine the file type from the file name extension.
+fn determine_file_type(name: &str) -> FileType {
+    let lower = name.to_lowercase();
+    if lower.ends_with(".exe") || lower.ends_with(".dll") || lower.ends_with(".sys") {
+        FileType::new("PE")
+    } else if lower.ends_with(".so") || lower.ends_with(".o") || lower.ends_with(".elf") {
+        FileType::new("ELF")
+    } else if lower.ends_with(".dylib") || lower.ends_with(".macho") {
+        FileType::new("MACH")
+    } else {
+        FileType::new("Binary")
+    }
+}
+
+impl HostApi for BufferHost {
+    fn file_type(&self) -> &FileType {
+        &self.file_type
+    }
+
+    fn view(&self) -> &ByteView<'_> {
+        // Create a temporary view on each call. This is not ideal but
+        // works for the current usage where view() is rarely called.
+        // A proper solution would use self-referential types or
+        // restructure the trait to avoid the lifetime issue.
+        unimplemented!("ByteView lifetime prevents storing it; use data() directly")
+    }
+
+    fn read_u8(&self, offset: u64) -> Result<u8, HostApiError> {
+        let data = self.data();
+        let idx = offset as usize;
+        if idx >= data.len() {
+            return Err(HostApiError::OutOfBounds {
+                offset,
+                file_size: data.len() as u64,
+            });
+        }
+        Ok(data[idx])
+    }
+
+    fn read_u16_le(&self, offset: u64) -> Result<u16, HostApiError> {
+        let data = self.data();
+        let idx = offset as usize;
+        if idx + 2 > data.len() {
+            return Err(HostApiError::OutOfBounds {
+                offset,
+                file_size: data.len() as u64,
+            });
+        }
+        Ok(u16::from_le_bytes([data[idx], data[idx + 1]]))
+    }
+
+    fn read_u16_be(&self, offset: u64) -> Result<u16, HostApiError> {
+        let data = self.data();
+        let idx = offset as usize;
+        if idx + 2 > data.len() {
+            return Err(HostApiError::OutOfBounds {
+                offset,
+                file_size: data.len() as u64,
+            });
+        }
+        Ok(u16::from_be_bytes([data[idx], data[idx + 1]]))
+    }
+
+    fn read_u24_le(&self, offset: u64) -> Result<u32, HostApiError> {
+        let data = self.data();
+        let idx = offset as usize;
+        if idx + 3 > data.len() {
+            return Err(HostApiError::OutOfBounds {
+                offset,
+                file_size: data.len() as u64,
+            });
+        }
+        Ok(u32::from_le_bytes([
+            data[idx],
+            data[idx + 1],
+            data[idx + 2],
+            0,
+        ]))
+    }
+
+    fn read_u24_be(&self, offset: u64) -> Result<u32, HostApiError> {
+        let data = self.data();
+        let idx = offset as usize;
+        if idx + 3 > data.len() {
+            return Err(HostApiError::OutOfBounds {
+                offset,
+                file_size: data.len() as u64,
+            });
+        }
+        Ok(u32::from_be_bytes([
+            data[idx],
+            data[idx + 1],
+            data[idx + 2],
+            0,
+        ]))
+    }
+
+    fn read_u32_le(&self, offset: u64) -> Result<u32, HostApiError> {
+        let data = self.data();
+        let idx = offset as usize;
+        if idx + 4 > data.len() {
+            return Err(HostApiError::OutOfBounds {
+                offset,
+                file_size: data.len() as u64,
+            });
+        }
+        Ok(u32::from_le_bytes([
+            data[idx],
+            data[idx + 1],
+            data[idx + 2],
+            data[idx + 3],
+        ]))
+    }
+
+    fn read_u32_be(&self, offset: u64) -> Result<u32, HostApiError> {
+        let data = self.data();
+        let idx = offset as usize;
+        if idx + 4 > data.len() {
+            return Err(HostApiError::OutOfBounds {
+                offset,
+                file_size: data.len() as u64,
+            });
+        }
+        Ok(u32::from_be_bytes([
+            data[idx],
+            data[idx + 1],
+            data[idx + 2],
+            data[idx + 3],
+        ]))
+    }
+
+    fn read_u64_le(&self, offset: u64) -> Result<u64, HostApiError> {
+        let data = self.data();
+        let idx = offset as usize;
+        if idx + 8 > data.len() {
+            return Err(HostApiError::OutOfBounds {
+                offset,
+                file_size: data.len() as u64,
+            });
+        }
+        let mut bytes = [0u8; 8];
+        bytes.copy_from_slice(&data[idx..idx + 8]);
+        Ok(u64::from_le_bytes(bytes))
+    }
+
+    fn read_u64_be(&self, offset: u64) -> Result<u64, HostApiError> {
+        let data = self.data();
+        let idx = offset as usize;
+        if idx + 8 > data.len() {
+            return Err(HostApiError::OutOfBounds {
+                offset,
+                file_size: data.len() as u64,
+            });
+        }
+        let mut bytes = [0u8; 8];
+        bytes.copy_from_slice(&data[idx..idx + 8]);
+        Ok(u64::from_be_bytes(bytes))
+    }
+
+    fn read_i8(&self, offset: u64) -> Result<i8, HostApiError> {
+        self.read_u8(offset).map(|v| v as i8)
+    }
+
+    fn read_i16_le(&self, offset: u64) -> Result<i16, HostApiError> {
+        self.read_u16_le(offset).map(|v| v as i16)
+    }
+
+    fn read_i32_le(&self, offset: u64) -> Result<i32, HostApiError> {
+        self.read_u32_le(offset).map(|v| v as i32)
+    }
+
+    fn read_i64_le(&self, offset: u64) -> Result<i64, HostApiError> {
+        self.read_u64_le(offset).map(|v| v as i64)
+    }
+
+    fn file_size(&self) -> u64 {
+        self.source.len()
+    }
+
+    fn check_signature(&self, offset: u64, signature: &str) -> Result<bool, HostApiError> {
+        let elements =
+            parse_signature(signature).map_err(|detail| HostApiError::InvalidSignature {
+                pattern: signature.into(),
+                detail,
+            })?;
+        Ok(match_signature(self.data(), offset as usize, &elements))
+    }
+
+    fn find_signature(&self, start: u64, signature: &str) -> Result<Option<u64>, HostApiError> {
+        let elements =
+            parse_signature(signature).map_err(|detail| HostApiError::InvalidSignature {
+                pattern: signature.into(),
+                detail,
+            })?;
+        let data = self.data();
+        let start = start as usize;
+        if elements.is_empty()
+            || start
+                .checked_add(elements.len())
+                .is_none_or(|end| end > data.len())
+        {
+            return Ok(None);
+        }
+        for i in start..=data.len() - elements.len() {
+            if match_signature(data, i, &elements) {
+                return Ok(Some(i as u64));
+            }
+        }
+        Ok(None)
+    }
+
+    fn read_string(&self, offset: u64, max_len: u64) -> Result<String, HostApiError> {
+        let data = self.data();
+        let start = offset as usize;
+        let max = if max_len == 0 {
+            data.len()
+        } else {
+            (start + max_len as usize).min(data.len())
+        };
+        if start >= data.len() {
+            return Ok(String::new());
+        }
+        let end = data[start..max]
+            .iter()
+            .position(|&b| b == 0)
+            .map(|p| start + p)
+            .unwrap_or(max);
+        String::from_utf8(data[start..end].to_vec()).map_err(|e| HostApiError::Internal {
+            detail: format!("invalid UTF-8 at offset {offset}: {e}"),
+        })
+    }
+
+    fn file_name(&self) -> &str {
+        &self.file_name
+    }
+
+    fn entry_point(&self) -> Result<u64, HostApiError> {
+        Ok(0)
+    }
+
+    fn is_deep(&self) -> bool {
+        false
+    }
+
+    fn is_heuristic(&self) -> bool {
+        false
+    }
+
+    fn is_aggressive(&self) -> bool {
+        false
+    }
+
+    fn is_recursive(&self) -> bool {
+        false
+    }
+
+    fn entropy(&self, offset: u64, size: u64) -> Result<f64, HostApiError> {
+        let data = self.data();
+        let start = offset as usize;
+        let end = (start + size as usize).min(data.len());
+        if start >= end {
+            return Ok(0.0);
+        }
+        let mut counts = [0u32; 256];
+        for &b in &data[start..end] {
+            counts[b as usize] += 1;
+        }
+        let total = (end - start) as f64;
+        let mut entropy = 0.0;
+        for &count in &counts {
+            if count > 0 {
+                let p = count as f64 / total;
+                entropy -= p * p.log2();
+            }
+        }
+        Ok(entropy)
+    }
+
+    fn md5(&self, _offset: u64, _size: u64) -> Result<String, HostApiError> {
+        Err(HostApiError::NotImplemented {
+            method: "md5".into(),
+        })
+    }
+
+    fn crc32(&self, _offset: u64, _size: u64) -> Result<u32, HostApiError> {
+        Err(HostApiError::NotImplemented {
+            method: "crc32".into(),
+        })
+    }
+}

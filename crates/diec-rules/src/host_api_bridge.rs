@@ -146,7 +146,10 @@ pub fn parse_signature(signature: &str) -> Result<Vec<SigElement>, String> {
 
 /// Match a parsed signature against data at the given offset.
 pub fn match_signature(data: &[u8], offset: usize, elements: &[SigElement]) -> bool {
-    if offset + elements.len() > data.len() {
+    if offset
+        .checked_add(elements.len())
+        .is_none_or(|end| end > data.len())
+    {
         return false;
     }
     for (i, elem) in elements.iter().enumerate() {
@@ -667,7 +670,8 @@ impl HostApiBridge {
                 ctx.clone(),
                 move |offset: i32, size: i32, signature: String| {
                     if size <= 0 {
-                        h.check_signature(offset as u64, &signature).unwrap_or(false)
+                        h.check_signature(offset as u64, &signature)
+                            .unwrap_or(false)
                     } else {
                         h.find_signature(offset as u64, &signature)
                             .ok()
@@ -1332,7 +1336,10 @@ mod tests {
             if elements.is_empty() {
                 return Ok(None);
             }
-            if start + elements.len() > self.data.len() {
+            if start
+                .checked_add(elements.len())
+                .is_none_or(|end| end > self.data.len())
+            {
                 return Ok(None);
             }
             for i in start..=self.data.len() - elements.len() {

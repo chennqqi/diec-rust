@@ -11,18 +11,21 @@
 #![forbid(unsafe_code)]
 #![warn(missing_docs)]
 
-/// Placeholder for the future scan service. Phase 1 only establishes the crate
-/// boundary; the scan pipeline lands in Phase 2/3.
-pub fn placeholder() -> &'static str {
-    "diec-engine skeleton"
-}
+mod database;
+mod host;
+mod scanner;
+
+pub use database::{Database, DatabaseBuilder, DatabaseError};
+pub use host::BufferHost;
+pub use scanner::{ScanDetection, ScanError, ScanResult, scan_bytes, scan_once};
 
 #[cfg(test)]
 mod tests {
-    use super::placeholder;
+    use super::*;
 
     #[test]
-    fn skeleton_is_reachable() {
-        assert_eq!(placeholder(), "diec-engine skeleton");
+    fn engine_module_is_reachable() {
+        // Smoke test: ensure the engine module compiles and exports types.
+        let _ = DatabaseBuilder::default();
     }
 }

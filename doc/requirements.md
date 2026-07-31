@@ -350,6 +350,28 @@
   (0x314159265359) 至偏移 4
 - cargo fmt/clippy/test/check-deps 全部通过（341 个测试）
 
+## 2026-08-01: Phase 4 第一步 — diec-engine + diec-output + diec-cli 实现
+- 实现 `diec-engine` 扫描编排层：
+  - `DatabaseBuilder`: 从目录加载规则、init 脚本、include 脚本
+  - `Database`: 不可变数据库快照
+  - `BufferHost`: HostApi 适配器，桥接 OwnedSource 和规则运行时
+  - `scan_once`/`scan_bytes`: 扫描入口，每规则独立 runtime 实例
+  - 按规则文件类型过滤 type_init_scripts，避免 ELF/MACH 未定义错误
+  - 3 个集成测试：7z 检测、BZip2 检测、随机数据无误报
+- 实现 `diec-output` 渲染层：
+  - `render_json`: 手写 JSON 序列化（无 serde 依赖）
+  - `render_text`: 人类可读文本输出
+  - 4 个单元测试
+- 实现 `diec-cli` 命令行工具：
+  - 参数解析：`--db`、`--output`、`--version`、`--help`
+  - 自动查找数据库目录
+  - 退出码：0(成功)、2(用法)、3(数据库)、4(输入)
+  - 支持 text 和 json 输出格式
+  - 多目标批量扫描
+- 修复 `match_signature` 整数溢出：使用 `checked_add`
+- Phase 3 标记为 DONE，Phase 4 标记为 IN PROGRESS
+- cargo fmt/clippy/test/check-deps 全部通过（347 个测试）
+
 ## P0-BLOCK-006 macOS 运行时基线采集 (deferred from Phase 0)
 - 通过 ssh macdevoa (macdev 别名) 继续完成 macOS 运行时基线采集
 - 复用 ~/dev/tmp/diec-macos-work 目录中已有数据 (DIE-engine-src/build/corpus/evidence 等)

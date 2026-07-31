@@ -133,7 +133,7 @@ malformed/boundary/empty/fuzz/differential cases（见
 3 个 cargo-fuzz targets + 11 个 property tests + 5 个 corpus differential tests。
 总计 211 个测试全部通过，cargo fmt/clippy/check-deps 零警告。
 
-## Phase 3：规则兼容运行时 — IN PROGRESS
+## Phase 3：规则兼容运行时 — DONE
 
 - 原样加载固定版本上游规则。
 - 实现或集成经 Phase 0 验证的规则执行方案。
@@ -142,7 +142,18 @@ malformed/boundary/empty/fuzz/differential cases（见
 
 退出条件：目标规则集全部可加载；代表性语料的规则结果达到已定义的兼容标准；剩余差异均有精确记录和回归用例。
 
-## Phase 4：CLI — TODO
+**完成状态**：1184/1186 规则加载成功（99.8%）；6 个端到端检测测试通过；
+2 个剩余失败均有精确记录（1 个上游规则 bug，1 个需 PE 专属 API 实现）。
+rquickjs 后端 + Binary host API bridge + 签名解析器 + PE stub 完成。
+
+- 原样加载固定版本上游规则。
+- 实现或集成经 Phase 0 验证的规则执行方案。
+- 完整覆盖规则语法、内建函数和宿主数据访问接口。
+- 对未知或不支持语法产生明确诊断，不静默忽略。
+
+退出条件：目标规则集全部可加载；代表性语料的规则结果达到已定义的兼容标准；剩余差异均有精确记录和回归用例。
+
+## Phase 4：CLI — IN PROGRESS
 
 - 实现薄 CLI 层，不复制核心扫描逻辑。
 - 支持稳定的结构化输出和人类可读输出。
