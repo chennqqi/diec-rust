@@ -1118,6 +1118,19 @@ impl HostApiBridge {
                 detail: format!("PE stubs: {e}"),
             })?;
 
+            // Register ELF, MACH, MACHOFAT global objects as aliases to
+            // Binary. The type-specific _init scripts do `var File = ELF;`
+            // etc., so these objects must exist. Full format-specific host
+            // API methods will be added when the ELF/Mach-O bridges are
+            // implemented.
+            for name in &["ELF", "MACH", "MACHOFAT"] {
+                globals
+                    .set(*name, binary.clone())
+                    .map_err(|e| RuleError::Backend {
+                        detail: format!("failed to set {name} alias: {e}"),
+                    })?;
+            }
+
             // Override getString with a JS wrapper that handles missing 2nd arg.
             // The upstream getString(offset, maxLen?) accepts 1 or 2 args.
             // Also add compare wrapper: compare(signature, offset=0).

@@ -372,6 +372,20 @@
 - Phase 3 标记为 DONE，Phase 4 标记为 IN PROGRESS
 - cargo fmt/clippy/test/check-deps 全部通过（347 个测试）
 
+## 2026-08-01: Phase 4 第二步 — ELF/MACH host API + CLI 集成测试
+- 注册 ELF、MACH、MACHOFAT 全局对象为 Binary 别名：
+  - 消除所有 "ELF is not defined"、"MACH is not defined" 错误
+  - 类型 _init 脚本（`var File = ELF;` 等）现在可以正常执行
+  - CLI 输出不再包含 ELF/MACH 初始化错误诊断
+- 新增 CLI 集成测试（`crates/diec-cli/tests/cli_integration.rs`）：
+  - `cli_scans_7z_file`: 端到端 7z 文件扫描
+  - `cli_scans_bzip2_file`: 端到端 BZip2 文件扫描
+  - `cli_json_output`: JSON 输出格式验证
+  - `cli_version_flag`: --version 标志
+  - `cli_help_flag`: --help 标志
+  - `cli_no_args_exits_with_usage_error`: 无参数退出码
+- cargo fmt/clippy/test/check-deps 全部通过（353 个测试）
+
 ## P0-BLOCK-006 macOS 运行时基线采集 (deferred from Phase 0)
 - 通过 ssh macdevoa (macdev 别名) 继续完成 macOS 运行时基线采集
 - 复用 ~/dev/tmp/diec-macos-work 目录中已有数据 (DIE-engine-src/build/corpus/evidence 等)

@@ -1,0 +1,28 @@
+phase4: ELF/MACH host API aliases, CLI integration tests
+
+Second step of Phase 4 (CLI). Register ELF/MACH/MACHOFAT global
+objects as Binary aliases to eliminate "ELF is not defined" errors,
+and add end-to-end CLI integration tests.
+
+Host API bridge:
+- Register ELF, MACH, MACHOFAT as aliases to the Binary global object
+- The type-specific _init scripts (var File = ELF; etc.) now execute
+  without errors
+- CLI output no longer contains ELF/MACH initialization error
+  diagnostics
+- Full format-specific host API methods will be added when the
+  ELF/Mach-O bridges are implemented
+
+CLI integration tests (crates/diec-cli/tests/cli_integration.rs):
+- cli_scans_7z_file: end-to-end 7z file scanning
+- cli_scans_bzip2_file: end-to-end BZip2 file scanning
+- cli_json_output: JSON output format validation
+- cli_version_flag: --version flag
+- cli_help_flag: --help flag
+- cli_no_args_exits_with_usage_error: no-args exit code
+
+cargo fmt/clippy/test/check-deps all pass (353 tests total).
+
+Generated with [Devin](https://devin.ai)
+
+Co-Authored-By: Devin <158243242+devin-ai-integration[bot]@users.noreply.github.com>
