@@ -1,0 +1,46 @@
+phase3: signature parser, PE host API stubs, 99.8% overall loading
+
+Ninth step of Phase 3 (rule compatibility runtime). Implement proper
+DIE signature parser, fix compare argument order, add PE host API
+stubs, and achieve 99.8% overall rule loading across all formats.
+
+Signature parser (parse_signature/match_signature):
+- Single-quoted string literals ('7z' -> 0x37 0x7A)
+- Hex byte pairs (BCAF271C -> 0xBC 0xAF 0x27 0x1C)
+- Wildcards . and ? (match any nibble)
+- Spaces skipped
+- # and $ jump markers (treated as wildcards for now)
+
+Critical bug fixes:
+- compare(): upstream signature is compare(sSignature, nOffset=0)
+  but our implementation had args reversed (offset, signature).
+  This was causing all compare-based detections to fail silently.
+- isSignaturePresent(): upstream takes 3 args (offset, size, sig)
+  but we only accepted 2. Now properly searches within range.
+- getFileBaseName(): returns name without extension, not full name.
+
+PE host API stubs (30+ methods):
+- PE global registered as alias to Binary object
+- PE-specific methods (sections/resources/imports/exports) return
+  defaults (0, "", false, null as appropriate)
+- compareEP, isSignaturePresent, findString helpers
+- Does not override shared Binary methods (getFileBaseName etc.)
+
+New test module tests/batch_load_all.rs:
+- Tests all 5 format types: Binary, PE, ELF, MACH, MACHOFAT
+- Summary test reports combined loading statistics
+- Binary: 291/292 (99.7%)
+- PE: 833/834 (99.9%)
+- ELF: 46/46 (100%)
+- MACH: 12/12 (100%)
+- MACHOFAT: 2/2 (100%)
+- Overall: 1184/1186 (99.8%)
+
+BZip2 test data fix: added bzip2 block magic (0x314159265359) at
+offset 4 so the BZip2 rule can properly detect the format.
+
+cargo fmt/clippy/test/check-deps all pass (341 tests total).
+
+Generated with [Devin](https://devin.ai)
+
+Co-Authored-By: Devin <158243242+devin-ai-integration[bot]@users.noreply.github.com>

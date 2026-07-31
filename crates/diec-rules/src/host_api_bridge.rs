@@ -13,6 +13,154 @@
 use crate::error::RuleError;
 use crate::host_api::HostApi;
 use rquickjs::{Context, Ctx};
+
+/// A parsed signature element: either a literal byte or a wildcard.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum SigElement {
+    /// Exact byte match.
+    Byte(u8),
+    /// Wildcard: matches any single byte (`.` or `?` in signature).
+    Any,
+}
+
+/// Parse a DIE signature string into a sequence of signature elements.
+///
+/// DIE signature format:
+/// - Hex digit pairs match exact bytes: `AABBCC`
+/// - `.` and `?` match any single nibble (two needed for a full byte)
+/// - Single-quoted strings match literal ASCII: `'7z'`
+/// - Spaces are skipped
+/// - `#` and `$` are jump markers (not yet fully supported, treated as wildcards)
+///
+/// Returns `Err` if the signature is malformed.
+pub fn parse_signature(signature: &str) -> Result<Vec<SigElement>, String> {
+    let mut elements = Vec::new();
+    let chars: Vec<char> = signature.chars().collect();
+    let mut i = 0;
+
+    while i < chars.len() {
+        let c = chars[i];
+
+        if c.is_whitespace() {
+            i += 1;
+            continue;
+        }
+
+        if c == '\'' {
+            // String literal: read until closing quote.
+            i += 1;
+            while i < chars.len() && chars[i] != '\'' {
+                for b in chars[i].to_string().as_bytes() {
+                    elements.push(SigElement::Byte(*b));
+                }
+                i += 1;
+            }
+            if i >= chars.len() {
+                return Err("unterminated string literal in signature".into());
+            }
+            i += 1; // skip closing quote
+            continue;
+        }
+
+        if c == '#' || c == '$' {
+            // Jump markers: treat as wildcards for now.
+            // TODO: implement proper jump handling.
+            elements.push(SigElement::Any);
+            i += 1;
+            continue;
+        }
+
+        if c == '.' || c == '?' {
+            // Wildcard nibble: need two for a full byte.
+            let mut nibbles = 0u8;
+            let mut byte_val = 0u8;
+            while i < chars.len() && (chars[i] == '.' || chars[i] == '?') {
+                nibbles += 1;
+                byte_val <<= 4;
+                i += 1;
+            }
+            if nibbles == 1 {
+                // Single wildcard nibble + hex nibble
+                if i < chars.len() {
+                    let h = chars[i].to_digit(16);
+                    if let Some(h) = h {
+                        byte_val |= h as u8;
+                        elements.push(SigElement::Byte(byte_val));
+                        i += 1;
+                    } else {
+                        return Err("invalid hex after wildcard".into());
+                    }
+                } else {
+                    return Err("dangling wildcard nibble".into());
+                }
+            } else if nibbles == 2 {
+                elements.push(SigElement::Any);
+            } else if nibbles > 2 {
+                // Multiple bytes of wildcards
+                for _ in 0..(nibbles / 2) {
+                    elements.push(SigElement::Any);
+                }
+                if nibbles % 2 == 1 {
+                    // Odd nibble: combine with next hex digit if available
+                    if i < chars.len() {
+                        let h = chars[i].to_digit(16);
+                        if let Some(h) = h {
+                            elements.push(SigElement::Byte(h as u8));
+                            i += 1;
+                        }
+                    }
+                }
+            } else {
+                // Shouldn't happen since we enter the loop with at least one
+                return Err("invalid wildcard".into());
+            }
+            continue;
+        }
+
+        if c.is_ascii_hexdigit() {
+            // Hex byte: read two hex digits.
+            if i + 1 >= chars.len() {
+                return Err("odd number of hex digits".into());
+            }
+            let h1 = chars[i].to_digit(16).ok_or("invalid hex digit")?;
+            let h2 = chars[i + 1].to_digit(16).ok_or("invalid hex digit")?;
+            // Check if next is also a hex digit (not a wildcard or string)
+            if chars[i + 1].is_ascii_hexdigit() {
+                elements.push(SigElement::Byte((h1 * 16 + h2) as u8));
+                i += 2;
+            } else if chars[i + 1] == '.' || chars[i + 1] == '?' {
+                // Hex nibble + wildcard nibble
+                elements.push(SigElement::Byte((h1 * 16) as u8)); // partial - TODO
+                i += 1;
+            } else {
+                return Err("invalid hex digit pair".into());
+            }
+            continue;
+        }
+
+        return Err(format!("unexpected character '{c}' in signature"));
+    }
+
+    Ok(elements)
+}
+
+/// Match a parsed signature against data at the given offset.
+pub fn match_signature(data: &[u8], offset: usize, elements: &[SigElement]) -> bool {
+    if offset + elements.len() > data.len() {
+        return false;
+    }
+    for (i, elem) in elements.iter().enumerate() {
+        match elem {
+            SigElement::Byte(b) => {
+                if data[offset + i] != *b {
+                    return false;
+                }
+            }
+            SigElement::Any => {}
+        }
+    }
+    true
+}
 use std::sync::Arc;
 
 /// A wrapper around `HostApi` that can be shared with JavaScript callbacks.
@@ -511,26 +659,41 @@ impl HostApiBridge {
                     detail: format!("findSignature set: {e}"),
                 })?;
 
-            // isSignaturePresent(offset, signature) -> bool
+            // isSignaturePresent(offset, size, signature) -> bool
+            // Upstream: bool isSignaturePresent(qint64 nOffset, qint64 nSize, const QString &sSignature)
+            // Searches for signature within [offset, offset+size) range.
             let h = host.clone();
-            let is_sig_present_fn =
-                rquickjs::Function::new(ctx.clone(), move |offset: i32, signature: String| {
-                    h.check_signature(offset as u64, &signature)
-                        .unwrap_or(false)
-                })
-                .map_err(|e| RuleError::Backend {
-                    detail: format!("isSignaturePresent: {e}"),
-                })?;
+            let is_sig_present_fn = rquickjs::Function::new(
+                ctx.clone(),
+                move |offset: i32, size: i32, signature: String| {
+                    if size <= 0 {
+                        h.check_signature(offset as u64, &signature).unwrap_or(false)
+                    } else {
+                        h.find_signature(offset as u64, &signature)
+                            .ok()
+                            .flatten()
+                            .map(|found| {
+                                found >= offset as u64 && found < (offset as u64 + size as u64)
+                            })
+                            .unwrap_or(false)
+                    }
+                },
+            )
+            .map_err(|e| RuleError::Backend {
+                detail: format!("isSignaturePresent: {e}"),
+            })?;
             binary
                 .set("isSignaturePresent", is_sig_present_fn)
                 .map_err(|e| RuleError::Backend {
                     detail: format!("isSignaturePresent set: {e}"),
                 })?;
 
-            // compare(offset, signature) -> bool (alias for isSignaturePresent)
+            // compare(signature, offset=0) -> bool
+            // Upstream signature: bool compare(const QString &sSignature, qint64 nOffset = 0)
+            // We register a 2-arg native and a JS wrapper that defaults offset to 0.
             let h = host.clone();
             let compare_fn =
-                rquickjs::Function::new(ctx.clone(), move |offset: i32, signature: String| {
+                rquickjs::Function::new(ctx.clone(), move |signature: String, offset: i32| {
                     h.check_signature(offset as u64, &signature)
                         .unwrap_or(false)
                 })
@@ -538,7 +701,7 @@ impl HostApiBridge {
                     detail: format!("compare: {e}"),
                 })?;
             binary
-                .set("compare", compare_fn)
+                .set("__compare", compare_fn)
                 .map_err(|e| RuleError::Backend {
                     detail: format!("compare set: {e}"),
                 })?;
@@ -695,12 +858,17 @@ impl HostApiBridge {
             // --- File name/path ---
 
             let h = host.clone();
-            let get_file_base_name_fn =
-                rquickjs::Function::new(ctx.clone(), move || h.file_name().to_string()).map_err(
-                    |e| RuleError::Backend {
-                        detail: format!("getFileBaseName: {e}"),
-                    },
-                )?;
+            let get_file_base_name_fn = rquickjs::Function::new(ctx.clone(), move || {
+                // Return base name: file name without extension.
+                let name = h.file_name();
+                match name.rfind('.') {
+                    Some(pos) => name[..pos].to_string(),
+                    None => name.to_string(),
+                }
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("getFileBaseName: {e}"),
+            })?;
             binary
                 .set("getFileBaseName", get_file_base_name_fn)
                 .map_err(|e| RuleError::Backend {
@@ -852,28 +1020,127 @@ impl HostApiBridge {
                 })?;
 
             globals
-                .set("File", binary)
+                .set("File", binary.clone())
                 .map_err(|e| RuleError::Backend {
                     detail: format!("failed to set File alias: {e}"),
                 })?;
 
-            // Override getString with a JS wrapper that handles missing 2nd arg.
-            // The upstream getString(offset, maxLen?) accepts 1 or 2 args.
+            // Register a PE global object as an alias to Binary with
+            // PE-specific stub methods. The PE-specific methods (sections,
+            // imports, exports, resources) return defaults until the full
+            // PE host API is implemented.
+            globals
+                .set("PE", binary.clone())
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("failed to set PE alias: {e}"),
+                })?;
+
+            // Add PE-specific stub methods that return defaults.
+            // These are needed so PE rules that reference PE at the top
+            // level don't crash during loading.
             ctx.eval::<(), _>(
                 r#"
                 (function() {
-                    var _orig = Binary.getString;
-                    Binary.getString = function(offset, maxLen) {
-                        if (maxLen === undefined) maxLen = 0;
-                        return _orig(offset, maxLen);
+                    // compareEP: compare at entry point
+                    PE.compareEP = function(sig) {
+                        return PE.compare(sig, PE.nEP);
                     };
-                    X.getString = Binary.getString;
-                    File.getString = Binary.getString;
+
+                    // isSignaturePresent: search for signature in range
+                    PE.isSignaturePresent = function(offset, size, sig) {
+                        return PE.compare(sig, offset);
+                    };
+
+                    // Section/resource info stubs
+                    PE.getNumberOfSections = function() { return 0; };
+                    PE.getSectionName = function(n) { return ""; };
+                    PE.getSectionVirtualSize = function(n) { return 0; };
+                    PE.getSectionVirtualAddress = function(n) { return 0; };
+                    PE.getSectionFileSize = function(n) { return 0; };
+                    PE.getSectionFileOffset = function(n) { return 0; };
+                    PE.getSectionCharacteristics = function(n) { return 0; };
+                    PE.nLastSection = -1;
+                    PE.section = [];
+
+                    // Resource stubs
+                    PE.getNumberOfResources = function() { return 0; };
+                    PE.getResourceNameByNumber = function(n) { return ""; };
+                    PE.getResourceIdByNumber = function(n) { return 0; };
+                    PE.getResourceOffsetByNumber = function(n) { return 0; };
+                    PE.getResourceSizeByNumber = function(n) { return 0; };
+                    PE.getResourceTypeByNumber = function(n) { return 0; };
+                    PE.getResourceNameOffset = function(s) { return 0; };
+                    PE.resource = [];
+
+                    // Import/export stubs
+                    PE.getNumberOfImports = function() { return 0; };
+                    PE.getImportLibraryName = function(n) { return ""; };
+                    PE.getNumberOfExportFunctions = function() { return 0; };
+                    PE.getExportFunctionName = function(n) { return ""; };
+
+                    // PE header stubs
+                    PE.nEP = 0;
+                    PE.getEntryPoint = function() { return 0; };
+                    PE.getImageBase = function() { return 0; };
+                    PE.getSizeOfImage = function() { return 0; };
+                    PE.getGeneralOptions = function() { return ""; };
+                    PE.isConsole = function() { return false; };
+                    PE.getManifest = function() { return ""; };
+                    PE.isSignedFile = function() { return false; };
+                    PE.getSignature = function(offset, size) { return ""; };
+
+                    // PE-specific string methods
+                    PE.getEntryPointSignature = function(nOffset, nSize) {
+                        return PE.getSignature(PE.nEP + nOffset, nSize);
+                    };
+                    PE.getGeneralOptionsEx = function() { return ""; };
+                    PE.isLibraryPresentExp = function(p) { return null; };
+                    PE.isExportFunctionPresentExp = function(p) { return null; };
+                    PE.isSectionNamePresentExp = function(p) { return null; };
+                    PE.isResourceNamePresentExp = function(p) { return null; };
+                    PE.isResourceNamePresent = function(s) { return false; };
+                    PE.isSectionNamePresent = function(s) { return false; };
+                    PE.isLibraryPresent = function(s) { return false; };
+                    PE.isExportFunctionPresent = function(s) { return false; };
+
+                    // File info stubs (PE-specific methods not on Binary)
+                    PE.getPEFileVersion = function(s) { return ""; };
+                    PE.getVersionStringInfo = function(s) { return ""; };
+                    PE.findString = function(offset, size, s) { return -1; };
                 })();
                 "#,
             )
             .map_err(|e| RuleError::Backend {
-                detail: format!("getString wrapper: {e}"),
+                detail: format!("PE stubs: {e}"),
+            })?;
+
+            // Override getString with a JS wrapper that handles missing 2nd arg.
+            // The upstream getString(offset, maxLen?) accepts 1 or 2 args.
+            // Also add compare wrapper: compare(signature, offset=0).
+            ctx.eval::<(), _>(
+                r#"
+                (function() {
+                    var _orig_gs = Binary.getString;
+                    Binary.getString = function(offset, maxLen) {
+                        if (maxLen === undefined) maxLen = 0;
+                        return _orig_gs(offset, maxLen);
+                    };
+                    X.getString = Binary.getString;
+                    File.getString = Binary.getString;
+
+                    var _orig_cmp = Binary.__compare;
+                    Binary.compare = function(signature, offset) {
+                        if (offset === undefined) offset = 0;
+                        return _orig_cmp(signature, offset);
+                    };
+                    X.compare = Binary.compare;
+                    File.compare = Binary.compare;
+                    PE.compare = Binary.compare;
+                })();
+                "#,
+            )
+            .map_err(|e| RuleError::Backend {
+                detail: format!("getString/compare wrapper: {e}"),
             })?;
 
             Ok(())
@@ -1047,45 +1314,29 @@ mod tests {
         }
 
         fn check_signature(&self, offset: u64, signature: &str) -> Result<bool, HostApiError> {
-            // Simple hex signature check: 'AABBCC' format
-            let sig = signature.trim_matches('\'');
-            if !sig.len().is_multiple_of(2) {
-                return Err(HostApiError::InvalidSignature {
+            let elements =
+                parse_signature(signature).map_err(|detail| HostApiError::InvalidSignature {
                     pattern: signature.into(),
-                    detail: "odd number of hex digits".into(),
-                });
-            }
-            let bytes: Result<Vec<u8>, _> = (0..sig.len())
-                .step_by(2)
-                .map(|i| u8::from_str_radix(&sig[i..i + 2], 16))
-                .collect();
-            let sig_bytes = bytes.map_err(|e| HostApiError::InvalidSignature {
-                pattern: signature.into(),
-                detail: e.to_string(),
-            })?;
-            let start = offset as usize;
-            if start + sig_bytes.len() > self.data.len() {
-                return Ok(false);
-            }
-            Ok(&self.data[start..start + sig_bytes.len()] == sig_bytes.as_slice())
+                    detail,
+                })?;
+            Ok(match_signature(&self.data, offset as usize, &elements))
         }
 
         fn find_signature(&self, start: u64, signature: &str) -> Result<Option<u64>, HostApiError> {
-            let sig = signature.trim_matches('\'');
-            let bytes: Result<Vec<u8>, _> = (0..sig.len())
-                .step_by(2)
-                .map(|i| u8::from_str_radix(&sig[i..i + 2], 16))
-                .collect();
-            let sig_bytes = bytes.map_err(|e| HostApiError::InvalidSignature {
-                pattern: signature.into(),
-                detail: e.to_string(),
-            })?;
+            let elements =
+                parse_signature(signature).map_err(|detail| HostApiError::InvalidSignature {
+                    pattern: signature.into(),
+                    detail,
+                })?;
             let start = start as usize;
-            if start + sig_bytes.len() > self.data.len() {
+            if elements.is_empty() {
                 return Ok(None);
             }
-            for i in start..=self.data.len() - sig_bytes.len() {
-                if &self.data[i..i + sig_bytes.len()] == sig_bytes.as_slice() {
+            if start + elements.len() > self.data.len() {
+                return Ok(None);
+            }
+            for i in start..=self.data.len() - elements.len() {
+                if match_signature(&self.data, i, &elements) {
                     return Ok(Some(i as u64));
                 }
             }
@@ -1227,16 +1478,25 @@ mod tests {
     #[test]
     fn binary_compare_signature() {
         let (_rt, ctx, _bridge) = make_runtime_with_host(vec![0x4D, 0x5A, 0x90, 0x00]);
-        let val: bool = ctx.with(|c| c.eval("Binary.compare(0, '4D5A');").unwrap());
+        let val: bool = ctx.with(|c| c.eval("Binary.compare('4D5A', 0);").unwrap());
         assert!(val);
-        let val: bool = ctx.with(|c| c.eval("Binary.compare(0, '9090');").unwrap());
+        let val: bool = ctx.with(|c| c.eval("Binary.compare('9090', 0);").unwrap());
         assert!(!val);
+    }
+
+    #[test]
+    fn binary_compare_string_literal_signature() {
+        // 7z signature: '7z'BCAF271C
+        let data = vec![0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C, 0x00, 0x04];
+        let (_rt, ctx, _bridge) = make_runtime_with_host(data);
+        let val: bool = ctx.with(|c| c.eval("Binary.compare(\"'7z'BCAF271C\", 0);").unwrap());
+        assert!(val, "7z signature should match");
     }
 
     #[test]
     fn binary_is_signature_present() {
         let (_rt, ctx, _bridge) = make_runtime_with_host(vec![0x4D, 0x5A, 0x90, 0x00]);
-        let val: bool = ctx.with(|c| c.eval("Binary.isSignaturePresent(0, '4D5A');").unwrap());
+        let val: bool = ctx.with(|c| c.eval("Binary.isSignaturePresent(0, 4, '4D5A');").unwrap());
         assert!(val);
     }
 
@@ -1266,7 +1526,7 @@ mod tests {
     fn binary_get_file_base_name() {
         let (_rt, ctx, _bridge) = make_runtime_with_host(vec![0x00]);
         let val: String = ctx.with(|c| c.eval("Binary.getFileBaseName();").unwrap());
-        assert_eq!(val, "test.bin");
+        assert_eq!(val, "test"); // "test.bin" without extension
     }
 
     #[test]

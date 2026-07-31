@@ -189,44 +189,34 @@ impl HostApi for BufferHost {
     }
 
     fn check_signature(&self, offset: u64, signature: &str) -> Result<bool, HostApiError> {
-        let sig = signature.trim_matches('\'');
-        if !sig.len().is_multiple_of(2) {
-            return Err(HostApiError::InvalidSignature {
-                pattern: signature.into(),
-                detail: "odd number of hex digits".into(),
-            });
-        }
-        let bytes: Result<Vec<u8>, _> = (0..sig.len())
-            .step_by(2)
-            .map(|i| u8::from_str_radix(&sig[i..i + 2], 16))
-            .collect();
-        let sig_bytes = bytes.map_err(|e| HostApiError::InvalidSignature {
-            pattern: signature.into(),
-            detail: e.to_string(),
-        })?;
-        let start = offset as usize;
-        if start + sig_bytes.len() > self.data.len() {
-            return Ok(false);
-        }
-        Ok(&self.data[start..start + sig_bytes.len()] == sig_bytes.as_slice())
+        let elements =
+            diec_rules::host_api_bridge::parse_signature(signature).map_err(|detail| {
+                HostApiError::InvalidSignature {
+                    pattern: signature.into(),
+                    detail,
+                }
+            })?;
+        Ok(diec_rules::host_api_bridge::match_signature(
+            &self.data,
+            offset as usize,
+            &elements,
+        ))
     }
 
     fn find_signature(&self, start: u64, signature: &str) -> Result<Option<u64>, HostApiError> {
-        let sig = signature.trim_matches('\'');
-        let bytes: Result<Vec<u8>, _> = (0..sig.len())
-            .step_by(2)
-            .map(|i| u8::from_str_radix(&sig[i..i + 2], 16))
-            .collect();
-        let sig_bytes = bytes.map_err(|e| HostApiError::InvalidSignature {
-            pattern: signature.into(),
-            detail: e.to_string(),
-        })?;
+        let elements =
+            diec_rules::host_api_bridge::parse_signature(signature).map_err(|detail| {
+                HostApiError::InvalidSignature {
+                    pattern: signature.into(),
+                    detail,
+                }
+            })?;
         let start = start as usize;
-        if sig_bytes.is_empty() || start + sig_bytes.len() > self.data.len() {
+        if elements.is_empty() || start + elements.len() > self.data.len() {
             return Ok(None);
         }
-        for i in start..=self.data.len() - sig_bytes.len() {
-            if &self.data[i..i + sig_bytes.len()] == sig_bytes.as_slice() {
+        for i in start..=self.data.len() - elements.len() {
+            if diec_rules::host_api_bridge::match_signature(&self.data, i, &elements) {
                 return Ok(Some(i as u64));
             }
         }
@@ -513,8 +503,10 @@ fn real_rule_bzip_detects_signature() {
         }
     };
 
-    // BZip2 magic: "BZh" + level digit
+    // BZip2 magic: "BZh" + level digit + CRC block magic 314159265359
     let mut data = b"BZh9".to_vec();
+    // bzip2 block magic: 0x314159265359 (6 bytes) at offset 4
+    data.extend_from_slice(&[0x31, 0x41, 0x59, 0x26, 0x53, 0x59]);
     data.resize(64, 0);
 
     let results = run_real_rule(

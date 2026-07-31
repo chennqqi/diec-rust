@@ -322,6 +322,34 @@
     需要 PE 专属 host API，尚未实现）
 - cargo fmt/clippy/test/check-deps 全部通过（336 个测试）
 
+## 2026-08-01: Phase 3 第九步 — 签名解析器 + PE host API stub + 全格式 99.8%
+- 实现 DIE 签名解析器（`parse_signature`/`match_signature`）：
+  - 支持单引号字符串字面量（`'7z'` → 0x37 0x7A）
+  - 支持 hex 字节对（`BCAF271C` → 0xBC 0xAF 0x27 0x1C）
+  - 支持通配符 `.` 和 `?`（匹配任意 nibble）
+  - 支持空格跳过
+  - `#` 和 `$` 跳转标记暂作通配符处理
+- 修复 `compare` 参数顺序：上游签名 `compare(sSignature, nOffset=0)`
+  是签名在前、偏移在后，原实现参数顺序反了
+- 修复 `isSignaturePresent` 参数：上游需要 3 参数
+  `(nOffset, nSize, sSignature)`，原实现只有 2 参数
+- 修复 `getFileBaseName`：返回不含扩展名的文件名
+- 添加 PE host API stub（30+ 方法）：
+  - `PE` 全局对象注册为 `Binary` 的别名
+  - PE 专属方法（sections/resources/imports/exports）返回默认值
+  - `compareEP`/`isSignaturePresent`/`findString` 等
+  - 不覆盖 Binary 已有的共享方法
+- 新增 `tests/batch_load_all.rs` 全格式批量加载测试：
+  - Binary: 291/292 (99.7%)
+  - PE: 833/834 (99.9%)
+  - ELF: 46/46 (100%)
+  - MACH: 12/12 (100%)
+  - MACHOFAT: 2/2 (100%)
+  - **总计: 1184/1186 (99.8%)**
+- 修复 BZip2 测试数据：添加 bzip2 block magic
+  (0x314159265359) 至偏移 4
+- cargo fmt/clippy/test/check-deps 全部通过（341 个测试）
+
 ## P0-BLOCK-006 macOS 运行时基线采集 (deferred from Phase 0)
 - 通过 ssh macdevoa (macdev 别名) 继续完成 macOS 运行时基线采集
 - 复用 ~/dev/tmp/diec-macos-work 目录中已有数据 (DIE-engine-src/build/corpus/evidence 等)

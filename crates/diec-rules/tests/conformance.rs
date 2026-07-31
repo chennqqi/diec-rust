@@ -428,7 +428,7 @@ fn rule_with_signature_check() {
         r#"
         meta("info", "PECheck");
         function detect() {
-            if (Binary.compare(0, "4D5A")) {
+            if (Binary.compare("4D5A", 0)) {
                 _setResult("info", "PECheck", "1.0", "");
             }
         }
@@ -445,7 +445,7 @@ fn rule_with_signature_check_no_match() {
         r#"
         meta("info", "PECheck");
         function detect() {
-            if (Binary.compare(0, "4D5A")) {
+            if (Binary.compare("4D5A", 0)) {
                 _setResult("info", "PECheck", "1.0", "");
             }
         }
