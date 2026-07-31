@@ -386,6 +386,21 @@
   - `cli_no_args_exits_with_usage_error`: 无参数退出码
 - cargo fmt/clippy/test/check-deps 全部通过（353 个测试）
 
+## 2026-08-01: Phase 4 第三步 — 扫描性能优化（8x 加速）
+- 新增 `RquickjsRuntime::evaluate_rule_source` 方法：
+  - 将规则源码包装在 IIFE 中，隔离 `const`/`function`/`var` 声明
+  - 避免多规则共享 runtime 时的 `detect` 重声明冲突
+  - 支持在同一个 runtime 中按顺序评估多个规则
+- 重构 `scan_bytes` 按文件类型分组共享 runtime：
+  - 按文件类型（Binary/PE/ELF/MACH/MACHOFAT）分组规则
+  - 每组创建一个 runtime，加载框架脚本（init + type init + includes）
+  - 在同一 runtime 中用 IIFE 隔离评估每个规则
+  - 从每规则一个 runtime（~1186 个 runtime）减少到每类型一个（5 个）
+- 性能提升：
+  - 单文件扫描：~8s → ~1s（8x 加速）
+  - CLI 集成测试：8.56s → 1.23s（7x 加速）
+- cargo fmt/clippy/test/check-deps 全部通过（353 个测试）
+
 ## P0-BLOCK-006 macOS 运行时基线采集 (deferred from Phase 0)
 - 通过 ssh macdevoa (macdev 别名) 继续完成 macOS 运行时基线采集
 - 复用 ~/dev/tmp/diec-macos-work 目录中已有数据 (DIE-engine-src/build/corpus/evidence 等)

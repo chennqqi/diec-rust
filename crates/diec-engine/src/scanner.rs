@@ -107,8 +107,10 @@ pub fn scan_once(
 
 /// Scan a byte buffer against the database.
 ///
-/// Each rule is evaluated in its own runtime instance to avoid
-/// global scope pollution between rules.
+/// Rules are grouped by file type. One runtime is created per file
+/// type group, and each rule is evaluated in an isolated scope within
+/// that runtime. This avoids the overhead of creating a runtime per
+/// rule while preventing scope pollution between rules.
 pub fn scan_bytes(
     database: &Database,
     file_name: &str,
@@ -119,16 +121,24 @@ pub fn scan_bytes(
     let mut detections = Vec::new();
     let mut diagnostics = Vec::new();
 
+    // Group rules by file type.
+    let mut groups: std::collections::BTreeMap<&str, Vec<&diec_rules::runtime::LoadedRule>> =
+        std::collections::BTreeMap::new();
     for rule in &snapshot.rules {
+        groups.entry(&rule.file_type).or_default().push(rule);
+    }
+
+    // Process each file type group with a shared runtime.
+    for (file_type, rules) in &groups {
         if cancel.is_cancelled() {
             return Err(ScanError::Cancelled);
         }
 
-        // Create a fresh runtime for each rule.
+        // Create one runtime for this file type.
         let mut runtime = match RquickjsRuntime::new(RuntimeConfig::default()) {
             Ok(rt) => rt,
             Err(e) => {
-                diagnostics.push(format!("runtime create error: {e}"));
+                diagnostics.push(format!("runtime create error for {file_type}: {e}"));
                 continue;
             }
         };
@@ -136,61 +146,66 @@ pub fn scan_bytes(
         // Create a host with the file data.
         let host = Arc::new(BufferHost::new(data.clone(), file_name.to_string()));
         if let Err(e) = runtime.register_host_api(host.clone()) {
-            diagnostics.push(format!("host API error: {e}"));
+            diagnostics.push(format!("host API error for {file_type}: {e}"));
             continue;
         }
 
-        // Load a single-rule snapshot with the framework scripts.
-        // Only include the type init script that matches the rule's file type.
-        let rule_type_init: Vec<(String, String)> = snapshot
+        // Load the framework (init + type init + includes) with no rules.
+        // Only include the type init script that matches this file type.
+        let type_init: Vec<(String, String)> = snapshot
             .type_init_scripts
             .iter()
-            .filter(|(ft, _)| ft == &rule.file_type)
+            .filter(|(ft, _)| ft == file_type)
             .cloned()
             .collect();
-        let single_snapshot = DatabaseSnapshot {
-            rules: vec![rule.clone()],
+        let framework_snapshot = DatabaseSnapshot {
+            rules: Vec::new(),
             init_script: snapshot.init_script.clone(),
-            type_init_scripts: rule_type_init,
+            type_init_scripts: type_init,
             include_scripts: snapshot.include_scripts.clone(),
         };
 
-        if let Err(e) = runtime.load_database(&single_snapshot) {
-            // Skip rules that fail to load (e.g. syntax errors).
-            let _ = e;
+        if let Err(e) = runtime.load_database(&framework_snapshot) {
+            diagnostics.push(format!("load_database error for {file_type}: {e}"));
             continue;
         }
 
-        // Initialize the runtime (execute init scripts).
+        // Initialize the runtime (execute type init scripts).
         let host_ref: &dyn diec_rules::host_api::HostApi = &*host;
         if let Err(e) = runtime.init(host_ref) {
-            diagnostics.push(format!("init error in {}: {e}", rule.path));
+            diagnostics.push(format!("init error for {file_type}: {e}"));
             continue;
         }
 
-        // Evaluate the rule.
-        match runtime.evaluate_rule(rule, host_ref, cancel) {
-            Ok(results) => {
-                for result in results {
-                    detections.push(ScanDetection {
-                        file_type: rule.file_type.clone(),
-                        type_name: result.type_name,
-                        name: result.name,
-                        version: if result.version.is_empty() {
-                            None
-                        } else {
-                            Some(result.version)
-                        },
-                        options: if result.options.is_empty() {
-                            None
-                        } else {
-                            Some(result.options)
-                        },
-                    });
-                }
+        // Evaluate each rule in an isolated scope.
+        for rule in rules {
+            if cancel.is_cancelled() {
+                return Err(ScanError::Cancelled);
             }
-            Err(e) => {
-                diagnostics.push(format!("{}: {}", rule.path, e));
+
+            match runtime.evaluate_rule_source(&rule.path, &rule.source, cancel) {
+                Ok(results) => {
+                    for result in results {
+                        detections.push(ScanDetection {
+                            file_type: rule.file_type.clone(),
+                            type_name: result.type_name,
+                            name: result.name,
+                            version: if result.version.is_empty() {
+                                None
+                            } else {
+                                Some(result.version)
+                            },
+                            options: if result.options.is_empty() {
+                                None
+                            } else {
+                                Some(result.options)
+                            },
+                        });
+                    }
+                }
+                Err(e) => {
+                    diagnostics.push(format!("{}: {}", rule.path, e));
+                }
             }
         }
 

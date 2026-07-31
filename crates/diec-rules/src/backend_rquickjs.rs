@@ -530,6 +530,82 @@ impl RuleRuntime for RquickjsRuntime {
     }
 }
 
+impl RquickjsRuntime {
+    /// Evaluate a single rule source in an isolated scope and call its
+    /// `detect()` function.
+    ///
+    /// This method wraps the rule source in an IIFE so that `detect`
+    /// (whether declared as `function detect()`, `var detect`, or
+    /// `const detect`) does not leak into the global scope. This allows
+    /// multiple rules to be evaluated in the same runtime without
+    /// redeclaration conflicts.
+    ///
+    /// The runtime must be initialized (via `load_database` + `init`)
+    /// before calling this method.
+    pub fn evaluate_rule_source(
+        &mut self,
+        rule_path: &str,
+        rule_source: &str,
+        cancel: &CancellationToken,
+    ) -> Result<Vec<DetectionResult>, RuleError> {
+        if !self.initialized {
+            return Err(RuleError::Backend {
+                detail: "evaluate_rule_source called before init".into(),
+            });
+        }
+
+        // Reset cancel flag and link to external token.
+        self.cancel_flag.clear();
+        if cancel.is_cancelled() {
+            self.cancel_flag.set_cancelled();
+            return Err(RuleError::Cancelled);
+        }
+
+        // Clear previous results from the JS __diec_results array.
+        self.clear_results()?;
+
+        // Wrap the rule source in an IIFE that captures `detect` and
+        // calls it immediately. This isolates `const`/`function`/`var`
+        // declarations from the global scope.
+        //
+        // The wrapper:
+        // 1. Evaluates the rule source inside a function scope
+        // 2. Checks if `detect` was defined
+        // 3. Calls `detect()` if it exists
+        // 4. Returns the result
+        let wrapped = format!(
+            r#"(function() {{
+                {source}
+                if (typeof detect === 'function') {{
+                    return detect();
+                }}
+                return undefined;
+            }})();"#,
+            source = rule_source
+        );
+
+        let eval_result: Result<(), rquickjs::Error> = self.context.with(|ctx: Ctx<'_>| {
+            let mut options = rquickjs::context::EvalOptions::default();
+            options.strict = false;
+            ctx.eval_with_options::<(), _>(wrapped.as_str(), options)
+        });
+
+        match eval_result {
+            Ok(_) => self.read_results(),
+            Err(e) => {
+                if self.cancel_flag.is_cancelled() {
+                    Err(RuleError::Cancelled)
+                } else {
+                    Err(RuleError::ScriptException {
+                        path: rule_path.to_string(),
+                        message: e.to_string(),
+                    })
+                }
+            }
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
