@@ -92,18 +92,26 @@ ADR 全部 Accepted；六项 blocker 中五项 closed，`P0-BLOCK-005`（macOS �
 - 风险清单完整。
 - 后续每个开发阶段都有可测量的完成条件。
 
-## Phase 1：工程骨架与兼容测试基础设施 — IN PROGRESS
+## Phase 1：工程骨架与兼容测试基础设施 — DONE
 
 - 创建 Cargo workspace 和单向依赖边界。
 - 建立格式化、lint、测试和跨平台 CI。
 - 建立上游规则同步、来源清单和完整性校验。
 - 建立测试语料生成/获取、基线保存和差分报告工具。
 - 冻结首版内部结果模型，公共 ABI 仍保持实验状态。
-- 完成 `P0-BLOCK-005` deferred 项：macOS 运行时基线采集。
+- 完成 `P0-BLOCK-005` deferred 项：macOS 运行时基线采集。✅ 已关闭：17 个
+  candidate report 已在 Darwin x86_64 主机采集、校验、sanitize 并提交至
+  `docs/research/data/macos-qt5/`；`cli-privilege-paths` 因需 passwordless
+  sudo 而 deferred（diec 不负责系统权限管理）。
 
 退出条件：三大桌面平台 CI 通过；规则和上游基线可重复获取；差分框架能对最小样本给出可审计报告。
 
-## Phase 2：核心数据模型与格式识别 — TODO
+Phase 1 已于 2026-07-31 关闭。Cargo workspace 8 crate 骨架 + 依赖 DAG 校验、
+跨平台 CI（default 1.97.1 + MSRV 1.88）、Rust 执行收集器 + 端到端差分审计、
+规则同步/来源 manifest/完整性校验均已交付。`P0-BLOCK-005` macOS 运行时基线
+已关闭，17 个 candidate report 采集至 `docs/research/data/macos-qt5/`。
+
+## Phase 2：核心数据模型与格式识别 — IN PROGRESS
 
 - 实现受控字节读取和通用扫描上下文。
 - 按能力矩阵逐步实现格式探测与解析。
