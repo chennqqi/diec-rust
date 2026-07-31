@@ -1,0 +1,38 @@
+phase4: implement PE host API and fix endianness methods
+
+Fourteenth step of Phase 4 (CLI). Replace PE stub methods with real
+implementations that parse the PE header from raw bytes, and add
+missing endianness-aware read methods.
+
+Changes:
+1. Make PE an independent object (Object.create + __proto__ = Binary)
+   instead of an alias to Binary, allowing PE-specific methods without
+   modifying Binary
+2. Implement 30+ PE host API methods in JavaScript using _B (Binary
+   reference) read primitives:
+   - Header: is64, getMachine, getEntryPoint, getImageBase, getSizeOfImage,
+     getSubsystem, isConsole
+   - Sections: getNumberOfSections, getSectionName/VirtualSize/
+     VirtualAddress/FileSize/FileOffset/Characteristics, isSectionNamePresent
+   - Entry point: compareEP (RVA to file offset conversion via section table)
+   - Search: findSignature (2/3-arg), findString (2/3-arg), getString,
+     isSignatureInSectionPresent
+   - Metadata: getGeneralOptions, compare, compareOverlay
+3. Add explicit _le and _be variants for read_uint16/32/64 methods:
+   - read_uint16_le, read_uint16_be, read_uint32_le, read_uint32_be,
+     read_uint64_le, read_uint64_be
+   - Native functions are LE-only; BE implemented by reading bytes in
+     reverse order
+   - These are needed by PE/ELF/MACH host API methods
+
+Result:
+- PE _init script no longer throws "TypeError: not a function"
+- minimal-pe64.exe and minimal.exe restore DosX warning detection
+- minimal.jar now shows JAR tag in detection
+- All existing detections preserved
+
+360 tests pass, clippy clean, check-deps OK.
+
+Generated with [Devin](https://devin.ai)
+
+Co-Authored-By: Devin <158243242+devin-ai-integration[bot]@users.noreply.github.com>

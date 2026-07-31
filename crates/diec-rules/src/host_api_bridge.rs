@@ -1590,44 +1590,258 @@ impl HostApiBridge {
                 detail: format!("fSig set: {e}"),
             })?;
 
-            // Register a PE global object as an alias to Binary with
-            // PE-specific stub methods. The PE-specific methods (sections,
-            // imports, exports, resources) return defaults until the full
-            // PE host API is implemented.
-            globals
-                .set("PE", binary.clone())
+            // Register PE as an independent object (like ELF/MACH/MACHOFAT)
+            // with Binary properties copied in. This allows adding PE-specific
+            // methods without modifying Binary itself.
+            let pe_obj = ctx
+                .eval::<rquickjs::Object, _>("Object.create(Object.prototype)")
                 .map_err(|e| RuleError::Backend {
-                    detail: format!("failed to set PE alias: {e}"),
+                    detail: format!("PE creation: {e}"),
                 })?;
+            globals.set("PE", pe_obj).map_err(|e| RuleError::Backend {
+                detail: format!("PE set: {e}"),
+            })?;
 
-            // Add PE-specific stub methods that return defaults.
-            // These are needed so PE rules that reference PE at the top
-            // level don't crash during loading.
+            // Add PE-specific methods that parse the PE header from raw bytes.
+            // These implement the most commonly used PE host API methods by
+            // reading the DOS header, PE header, and section table directly
+            // from the file data via the Binary read primitives.
+            // IMPORTANT: Use Binary.* directly, NOT File.*, because the
+            // _init script sets File = PE, which would cause infinite
+            // recursion when PE methods call File methods.
             ctx.eval::<(), _>(
                 r#"
                 (function() {
-                    // compareEP: compare at entry point
-                    PE.compareEP = function(sig) {
-                        return PE.compare(sig, PE.nEP);
-                    };
+                    // Save Binary reference in a local variable to ensure
+                    // closures always access the correct object.
+                    var _B = Binary;
+                    // DOS header: e_lfanew at offset 0x3C (4 bytes, LE).
+                    function _peIsPE() {
+                        if (_B.getSize() < 64) return false;
+                        // Check MZ signature at offset 0.
+                        if (_B.read_uint8(0) !== 0x4D || _B.read_uint8(1) !== 0x5A) return false;
+                        var e_lfanew = _B.read_uint32_le(0x3C);
+                        if (e_lfanew + 4 > _B.getSize()) return false;
+                        // Check PE signature "PE\0\0" at e_lfanew.
+                        return (_B.read_uint8(e_lfanew) === 0x50 &&
+                                _B.read_uint8(e_lfanew + 1) === 0x45 &&
+                                _B.read_uint8(e_lfanew + 2) === 0x00 &&
+                                _B.read_uint8(e_lfanew + 3) === 0x00);
+                    }
 
-                    // isSignaturePresent: search for signature in range
-                    PE.isSignaturePresent = function(offset, size, sig) {
-                        return PE.compare(sig, offset);
-                    };
+                    function _peLfanew() { return _B.read_uint32_le(0x3C); }
 
-                    // Section/resource info stubs
-                    PE.getNumberOfSections = function() { return 0; };
-                    PE.getSectionName = function(n) { return ""; };
-                    PE.getSectionVirtualSize = function(n) { return 0; };
-                    PE.getSectionVirtualAddress = function(n) { return 0; };
-                    PE.getSectionFileSize = function(n) { return 0; };
-                    PE.getSectionFileOffset = function(n) { return 0; };
-                    PE.getSectionCharacteristics = function(n) { return 0; };
+                    // COFF header starts at e_lfanew + 4.
+                    // Machine(2) NumberOfSections(2) TimeDateStamp(4) PointerToSymbolTable(4)
+                    // NumberOfSymbols(4) SizeOfOptionalHeader(2) Characteristics(2)
+                    function _peMachine() { return _B.read_uint16_le(_peLfanew() + 4); }
+                    function _peNumberOfSections() { return _B.read_uint16_le(_peLfanew() + 6); }
+                    function _peSizeOfOptionalHeader() { return _B.read_uint16_le(_peLfanew() + 20); }
+
+                    // Optional header starts at e_lfanew + 24.
+                    // Magic(2): 0x10B = PE32, 0x20B = PE32+
+                    function _peOptHdrOff() { return _peLfanew() + 24; }
+                    function _peIs64() { return _B.read_uint16_le(_peOptHdrOff()) === 0x20B; }
+
+                    // PE32 Optional Header:
+                    // Magic(0) MajorLinkerVersion(2) MinorLinkerVersion(3)
+                    // SizeOfCode(4) SizeOfInitializedData(8) SizeOfUninitializedData(12)
+                    // AddressOfEntryPoint(16) BaseOfCode(20) BaseOfData(24)
+                    // ImageBase(28) SectionAlignment(32) FileAlignment(36)
+                    // ...
+                    // PE32+ Optional Header:
+                    // Same up to AddressOfEntryPoint(16) BaseOfCode(20)
+                    // ImageBase(24) SectionAlignment(32) ...
+                    function _peEntryPoint() { return _B.read_uint32_le(_peOptHdrOff() + 16); }
+                    function _peImageBase() {
+                        return _peIs64() ? _B.read_uint64_le(_peOptHdrOff() + 24) : _B.read_uint32_le(_peOptHdrOff() + 28);
+                    }
+                    function _peSizeOfImage() { return _B.read_uint32_le(_peOptHdrOff() + (_peIs64() ? 56 : 60)); }
+
+                    // Section table starts after optional header.
+                    function _peSectionTableOff() { return _peOptHdrOff() + _peSizeOfOptionalHeader(); }
+
+                    // Section header (40 bytes each):
+                    // Name(0) VirtualSize(4) VirtualAddress(8) SizeOfRawData(12)
+                    // PointerToRawData(16) ... Characteristics(36)
+                    function _peSecHdrOff(n) { return _peSectionTableOff() + n * 40; }
+
+                    function _peSectionName(n) {
+                        var off = _peSecHdrOff(n);
+                        var name = "";
+                        for (var i = 0; i < 8; i++) {
+                            var b = _B.read_uint8(off + i);
+                            if (b === 0) break;
+                            name += String.fromCharCode(b);
+                        }
+                        return name;
+                    }
+                    function _peSectionVirtualSize(n) { return _B.read_uint32_le(_peSecHdrOff(n) + 4); }
+                    function _peSectionVirtualAddress(n) { return _B.read_uint32_le(_peSecHdrOff(n) + 8); }
+                    function _peSectionFileSize(n) { return _B.read_uint32_le(_peSecHdrOff(n) + 12); }
+                    function _peSectionFileOffset(n) { return _B.read_uint32_le(_peSecHdrOff(n) + 16); }
+                    function _peSectionCharacteristics(n) { return _B.read_uint32_le(_peSecHdrOff(n) + 36); }
+
+                    function _peSectionNumber(name) {
+                        var n = _peNumberOfSections();
+                        for (var i = 0; i < n; i++) {
+                            if (_peSectionName(i) === name) return i;
+                        }
+                        return -1;
+                    }
+
+                    // Convert RVA to file offset using section table.
+                    function _peRvaToFileOffset(rva) {
+                        var n = _peNumberOfSections();
+                        for (var i = 0; i < n; i++) {
+                            var va = _peSectionVirtualAddress(i);
+                            var vs = _peSectionVirtualSize(i);
+                            var rawSize = _peSectionFileSize(i);
+                            var rawOff = _peSectionFileOffset(i);
+                            var size = vs < rawSize ? rawSize : vs;
+                            if (rva >= va && rva < va + size) {
+                                return rawOff + (rva - va);
+                            }
+                        }
+                        return -1;
+                    }
+
+                    // PE machine names.
+                    var _peMachineNames = {};
+                    _peMachineNames[0x14C] = "i386";
+                    _peMachineNames[0x8664] = "amd64";
+                    _peMachineNames[0x1C0] = "ARM";
+                    _peMachineNames[0xAA64] = "ARM64";
+                    _peMachineNames[0x200] = "IA64";
+                    _peMachineNames[0x1A2] = "RISC-V64";
+
+                    // Subsystem names.
+                    var _peSubsystemNames = {};
+                    _peSubsystemNames[1] = "Native";
+                    _peSubsystemNames[2] = "Windows GUI";
+                    _peSubsystemNames[3] = "Windows console";
+                    _peSubsystemNames[5] = "OS/2 character";
+                    _peSubsystemNames[7] = "Posix character";
+                    _peSubsystemNames[9] = "Windows CE GUI";
+                    _peSubsystemNames[10] = "EFI application";
+                    _peSubsystemNames[11] = "EFI boot service driver";
+                    _peSubsystemNames[12] = "EFI runtime driver";
+                    _peSubsystemNames[13] = "EFI ROM";
+                    _peSubsystemNames[14] = "XBOX";
+
+                    function _peSubsystem() {
+                        return _B.read_uint16_le(_peOptHdrOff() + (_peIs64() ? 68 : 68));
+                    }
+
+                    // --- Public PE API methods ---
+                    PE.is64 = function() {
+                        if (!_peIsPE()) return false;
+                        return _peIs64();
+                    };
+                    PE.getNumberOfSections = function() {
+                        if (!_peIsPE()) return 0;
+                        return _peNumberOfSections();
+                    };
+                    PE.getSectionName = function(n) {
+                        if (!_peIsPE()) return "";
+                        if (n >= _peNumberOfSections()) return "";
+                        return _peSectionName(n);
+                    };
+                    PE.getSectionVirtualSize = function(n) {
+                        if (!_peIsPE()) return 0;
+                        if (n >= _peNumberOfSections()) return 0;
+                        return _peSectionVirtualSize(n);
+                    };
+                    PE.getSectionVirtualAddress = function(n) {
+                        if (!_peIsPE()) return 0;
+                        if (n >= _peNumberOfSections()) return 0;
+                        return _peSectionVirtualAddress(n);
+                    };
+                    PE.getSectionFileSize = function(n) {
+                        if (!_peIsPE()) return 0;
+                        if (n >= _peNumberOfSections()) return 0;
+                        return _peSectionFileSize(n);
+                    };
+                    PE.getSectionFileOffset = function(n) {
+                        if (!_peIsPE()) return 0;
+                        if (n >= _peNumberOfSections()) return 0;
+                        return _peSectionFileOffset(n);
+                    };
+                    PE.getSectionCharacteristics = function(n) {
+                        if (!_peIsPE()) return 0;
+                        if (n >= _peNumberOfSections()) return 0;
+                        return _peSectionCharacteristics(n);
+                    };
+                    PE.isSectionNamePresent = function(name) {
+                        if (!_peIsPE()) return false;
+                        return _peSectionNumber(name) >= 0;
+                    };
                     PE.nLastSection = -1;
                     PE.section = [];
 
-                    // Resource stubs
+                    PE.getEntryPoint = function() {
+                        if (!_peIsPE()) return 0;
+                        return _peEntryPoint();
+                    };
+                    PE.nEP = 0; // Will be set below.
+                    PE.getImageBase = function() {
+                        if (!_peIsPE()) return 0;
+                        return _peImageBase();
+                    };
+                    PE.getSizeOfImage = function() {
+                        if (!_peIsPE()) return 0;
+                        return _peSizeOfImage();
+                    };
+                    PE.getMachine = function() {
+                        if (!_peIsPE()) return "";
+                        return _peMachineNames[_peMachine()] || "";
+                    };
+                    PE.getGeneralOptions = function() {
+                        if (!_peIsPE()) return "";
+                        var m = _peMachineNames[_peMachine()] || ("machine" + _peMachine());
+                        var b = _peIs64() ? "64" : "32";
+                        return m + "-" + b;
+                    };
+                    PE.isConsole = function() {
+                        if (!_peIsPE()) return false;
+                        return _peSubsystem() === 3;
+                    };
+                    PE.getSubsystem = function() {
+                        if (!_peIsPE()) return "";
+                        return _peSubsystemNames[_peSubsystem()] || "";
+                    };
+
+                    // compareEP: compare signature at entry point (RVA → file offset).
+                    PE.compareEP = function(sig, offset) {
+                        if (!_peIsPE()) return false;
+                        var ep = _peEntryPoint();
+                        if (ep === 0) return false;
+                        var fileOff = _peRvaToFileOffset(ep);
+                        if (fileOff < 0) return false;
+                        if (offset === undefined) offset = 0;
+                        return _B.__compare(sig, fileOff + offset);
+                    };
+
+                    // compareOverlay: compare at overlay (stub).
+                    PE.compareOverlay = function(sig) { return false; };
+                    PE.isOverlayPresent = function() { return false; };
+                    PE.getOverlayOffset = function() { return -1; };
+                    PE.getOverlaySize = function() { return 0; };
+
+                    // isSignaturePresent: search for signature in range.
+                    PE.isSignaturePresent = function(offset, size, sig) {
+                        return _B.__compare(sig, offset);
+                    };
+                    PE.isSignatureInSectionPresent = function(section, sig) {
+                        if (!_peIsPE()) return false;
+                        if (section >= _peNumberOfSections()) return false;
+                        var off = _peSectionFileOffset(section);
+                        var size = _peSectionFileSize(section);
+                        var found = _B.findSignature(off, sig);
+                        return (found >= 0 && found < off + size);
+                    };
+
+                    // Resource stubs.
                     PE.getNumberOfResources = function() { return 0; };
                     PE.getResourceNameByNumber = function(n) { return ""; };
                     PE.getResourceIdByNumber = function(n) { return 0; };
@@ -1636,25 +1850,27 @@ impl HostApiBridge {
                     PE.getResourceTypeByNumber = function(n) { return 0; };
                     PE.getResourceNameOffset = function(s) { return 0; };
                     PE.resource = [];
+                    PE.isResourceNamePresent = function(s) { return false; };
 
-                    // Import/export stubs
+                    // Import/export stubs.
                     PE.getNumberOfImports = function() { return 0; };
                     PE.getImportLibraryName = function(n) { return ""; };
+                    PE.getImportFunctionName = function(n) { return ""; };
                     PE.getNumberOfExportFunctions = function() { return 0; };
                     PE.getExportFunctionName = function(n) { return ""; };
+                    PE.isLibraryPresent = function(s) { return false; };
+                    PE.isExportFunctionPresent = function(s) { return false; };
 
-                    // PE header stubs
-                    PE.nEP = 0;
-                    PE.getEntryPoint = function() { return 0; };
-                    PE.getImageBase = function() { return 0; };
-                    PE.getSizeOfImage = function() { return 0; };
-                    PE.getGeneralOptions = function() { return ""; };
-                    PE.isConsole = function() { return false; };
+                    // .NET stubs.
+                    PE.isNet = function() { return false; };
+                    PE.isNetObjectPresent = function(s) { return false; };
+                    PE.isNetUStringPresent = function(s) { return false; };
+                    PE.isImportPositionHashPresent = function(s) { return false; };
+
+                    // PE-specific string methods.
                     PE.getManifest = function() { return ""; };
                     PE.isSignedFile = function() { return false; };
                     PE.getSignature = function(offset, size) { return ""; };
-
-                    // PE-specific string methods
                     PE.getEntryPointSignature = function(nOffset, nSize) {
                         return PE.getSignature(PE.nEP + nOffset, nSize);
                     };
@@ -1663,20 +1879,41 @@ impl HostApiBridge {
                     PE.isExportFunctionPresentExp = function(p) { return null; };
                     PE.isSectionNamePresentExp = function(p) { return null; };
                     PE.isResourceNamePresentExp = function(p) { return null; };
-                    PE.isResourceNamePresent = function(s) { return false; };
-                    PE.isSectionNamePresent = function(s) { return false; };
-                    PE.isLibraryPresent = function(s) { return false; };
-                    PE.isExportFunctionPresent = function(s) { return false; };
 
-                    // File info stubs (PE-specific methods not on Binary)
+                    // File info stubs.
                     PE.getPEFileVersion = function(s) { return ""; };
                     PE.getVersionStringInfo = function(s) { return ""; };
-                    PE.findString = function(offset, size, s) { return -1; };
+
+                    // Search methods (delegate to Binary).
+                    PE.getString = function(offset, maxLen) {
+                        if (maxLen === undefined) maxLen = 256;
+                        return _B.getString(offset, maxLen);
+                    };
+                    PE.getSize = function() { return _B.getSize(); };
+                    PE.readByte = function(offset) { return _B.read_uint8(offset); };
+                    PE.findSignature = function(offset, sizeOrSig, sig) {
+                        if (sig === undefined) { sig = sizeOrSig; return _B.findSignature(offset, sig); }
+                        return _B.findSignature(offset, sizeOrSig, sig);
+                    };
+                    PE.findString = function(offset, sizeOrStr, str) {
+                        if (str === undefined) { str = sizeOrStr; sizeOrStr = 0; }
+                        return _B.findString(offset, sizeOrStr, str);
+                    };
+                    PE.isVerbose = function() { return false; };
+                    PE.isDeepScan = function() { return false; };
+                    PE.isHeuristicScan = function() { return false; };
+                    PE.compare = function(sig, offset) {
+                        if (offset === undefined) offset = 0;
+                        return _B.__compare(sig, offset);
+                    };
+
+                    // Set nEP to the entry point file offset for backward compat.
+                    PE.nEP = 0; // Will be computed per-scan in rules.
                 })();
                 "#,
             )
             .map_err(|e| RuleError::Backend {
-                detail: format!("PE stubs: {e}"),
+                detail: format!("PE methods: {e}"),
             })?;
 
             // Register ELF, MACH, MACHOFAT as independent objects that
@@ -1713,24 +1950,22 @@ impl HostApiBridge {
                     detail: format!("MACHOFAT set: {e}"),
                 })?;
 
-            // Copy all Binary properties to ELF, MACH, MACHOFAT so they
-            // have the same native methods. This is a shallow copy.
+            // Set Binary as the prototype of PE, ELF, MACH, MACHOFAT so
+            // they inherit all native Binary methods. This is done by
+            // setting __proto__ directly, since Object.create(Binary)
+            // may not work with rquickjs native objects.
             ctx.eval::<(), _>(
                 r#"
                 (function() {
-                    var formats = [ELF, MACH, MACHOFAT];
+                    var formats = [PE, ELF, MACH, MACHOFAT];
                     for (var i = 0; i < formats.length; i++) {
-                        var f = formats[i];
-                        var keys = Object.keys(Binary);
-                        for (var j = 0; j < keys.length; j++) {
-                            f[keys[j]] = Binary[keys[j]];
-                        }
+                        formats[i].__proto__ = Binary;
                     }
                 })();
                 "#,
             )
             .map_err(|e| RuleError::Backend {
-                detail: format!("ELF/MACH/MACHOFAT property copy: {e}"),
+                detail: format!("PE/ELF/MACH/MACHOFAT proto set: {e}"),
             })?;
 
             // Add ELF-specific methods that parse the ELF header from raw bytes.
@@ -2794,6 +3029,31 @@ impl HostApiBridge {
                     _wrapReadEndian("read_int32");
                     _wrapReadEndian("read_uint64");
                     _wrapReadEndian("read_int64");
+
+                    // Add explicit _le and _be variants for use by
+                    // format-specific host API methods (PE/ELF/MACH).
+                    Binary.read_uint8_le = function(off) { return Binary.U8(off); };
+                    Binary.read_uint8_be = function(off) { return Binary.U8(off); };
+                    Binary.read_uint16_le = function(off) { return Binary.read_uint16(off); };
+                    Binary.read_uint16_be = function(off) { return _beU16(off); };
+                    Binary.read_uint24_le = function(off) { return Binary.read_uint24(off); };
+                    Binary.read_uint24_be = function(off) { return _beU24(off); };
+                    Binary.read_uint32_le = function(off) { return Binary.read_uint32(off); };
+                    Binary.read_uint32_be = function(off) { return _beU32(off); };
+                    Binary.read_uint64_le = function(off) { return Binary.read_uint64(off); };
+                    Binary.read_uint64_be = function(off) { return _beU64(off); };
+                    X.read_uint16_le = Binary.read_uint16_le;
+                    X.read_uint16_be = Binary.read_uint16_be;
+                    X.read_uint32_le = Binary.read_uint32_le;
+                    X.read_uint32_be = Binary.read_uint32_be;
+                    X.read_uint64_le = Binary.read_uint64_le;
+                    X.read_uint64_be = Binary.read_uint64_be;
+                    File.read_uint16_le = Binary.read_uint16_le;
+                    File.read_uint16_be = Binary.read_uint16_be;
+                    File.read_uint32_le = Binary.read_uint32_le;
+                    File.read_uint32_be = Binary.read_uint32_be;
+                    File.read_uint64_le = Binary.read_uint64_le;
+                    File.read_uint64_be = Binary.read_uint64_be;
 
                     // Additional X shortcuts for string and float methods.
                     X.fStr = Binary.findString;

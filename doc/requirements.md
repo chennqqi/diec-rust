@@ -574,7 +574,26 @@
 
 - cargo fmt/clippy/test/check-deps 全部通过（360 个测试）
 
-## 2026-08-01: Phase 4 第十三步 — 实现 Mach-O host API
+## 2026-08-01: Phase 4 第十四步 — 实现 PE host API + 修复 endianness 方法
+
+### 修复
+1. **PE 独立对象**：将 PE 从 Binary 别名改为独立对象（`Object.create(Object.prototype)` + `__proto__ = Binary`）
+2. **实现 PE host API 方法**（JavaScript 实现，使用 `_B`（Binary 引用）读取原语解析 PE 头）：
+   - 头部解析：`is64`, `getMachine`, `getEntryPoint`, `getImageBase`, `getSizeOfImage`, `getSubsystem`, `isConsole`
+   - 节区解析：`getNumberOfSections`, `getSectionName/VirtualSize/VirtualAddress/FileSize/FileOffset/Characteristics`, `isSectionNamePresent`
+   - 入口点：`compareEP`（RVA→文件偏移转换后比较签名）
+   - 搜索：`findSignature`（2/3参数）, `findString`（2/3参数）, `getString`, `isSignatureInSectionPresent`
+   - 其他：`getGeneralOptions`, `compare`, `compareOverlay`, `isOverlayPresent`
+3. **添加 endianness 方法**：`read_uint16_le/be`, `read_uint32_le/be`, `read_uint64_le/be` 等
+   - 原生函数只有 `read_uint32`（LE），BE 通过字节反转实现
+   - PE/ELF/MACH 代码使用 `_le/_be` 后缀方法
+
+### 结果
+- PE _init 脚本不再报 `TypeError: not a function`
+- minimal-pe64.exe 和 minimal.exe 恢复 DosX warning 检测
+- minimal.jar 新增 JAR 标签检测
+- 所有现有检测保持不变
+- cargo fmt/clippy/test/check-deps 全部通过（360 个测试）
 
 ### 修复
 1. **实现 Mach-O host API 方法**（JavaScript 实现，使用 Binary 读取原语解析 Mach-O 头）：

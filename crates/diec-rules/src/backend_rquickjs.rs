@@ -479,7 +479,11 @@ impl RuleRuntime for RquickjsRuntime {
         // These scripts set up aliases like `var File = Binary; var X = Binary;`
         // and include helper scripts like `includeScript("read")`.
         for (_type_name, init_source) in &self.type_init_scripts {
-            self.eval_script(init_source)?;
+            if let Err(e) = self.eval_script(init_source) {
+                return Err(RuleError::Backend {
+                    detail: format!("init error for {_type_name}: {e}"),
+                });
+            }
         }
 
         self.initialized = true;

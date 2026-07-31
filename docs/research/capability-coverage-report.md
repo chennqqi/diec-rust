@@ -134,7 +134,10 @@ raw 完全相同，7 个 PE64 case 只保留已知 Qt6 stderr；21 个 JSON tree
 - Linux Qt6 的 68 行已全部接纳为 runtime observed；
 - Windows 的独立 closure 为 68 complete/0 partial/0 missing，68 行已接纳为
   `runtime_observed`；
-- macOS 有 68 个 `platform_missing`，且尚无固定 oracle；
+- macOS 有 68 个 `platform_missing`；17 个 candidate report 已采集并提交至
+  `docs/research/data/macos-qt5/`，macOS Qt5 oracle candidate build 和 5 case
+  warm baseline benchmark 已完成，但 coverage 矩阵尚未重新生成以接纳为
+  `runtime_observed`；
 - `phase_0_coverage_complete` 必须保持 `false`。
 
 ## 5. 缺口映射
