@@ -1,0 +1,2341 @@
+{
+  "admission": {
+    "capability_rows_admitted": 0,
+    "platform_admitted": false,
+    "reason": "general CLI and baseline corpus candidate only; the complete 68-row macOS closure is missing"
+  },
+  "binary": {
+    "relative_path": "build/release/diec",
+    "sha256": "f4c69824399e3b27b1ec60924ef60555620c4e217a1f48cdae8c8db467d39317",
+    "size": 7452296
+  },
+  "cases": {
+    "database": {
+      "arguments": [
+        "--showdatabase",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/cases/database.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 545,
+        "stdout_path": "raw/cli-baseline/cases/database.first.stdout",
+        "stdout_sha256": "2fba59a3b8068cfd27403baad95ff3a95f711b85900cbd55e96399e2199bb7bc"
+      },
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/cases/database.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 545,
+        "stdout_path": "raw/cli-baseline/cases/database.second.stdout",
+        "stdout_sha256": "2fba59a3b8068cfd27403baad95ff3a95f711b85900cbd55e96399e2199bb7bc"
+      }
+    },
+    "help": {
+      "arguments": [
+        "--help"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/cases/help.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 2168,
+        "stdout_path": "raw/cli-baseline/cases/help.first.stdout",
+        "stdout_sha256": "25fa0a3d2985d2e0e431b3f25c58826c00fea87007b23b5cd0bbac5261d82da5"
+      },
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/cases/help.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 2168,
+        "stdout_path": "raw/cli-baseline/cases/help.second.stdout",
+        "stdout_sha256": "25fa0a3d2985d2e0e431b3f25c58826c00fea87007b23b5cd0bbac5261d82da5"
+      }
+    },
+    "missing": {
+      "arguments": [
+        "<binary-dir>/does-not-exist"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 1,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/cases/missing.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 28,
+        "stdout_path": "raw/cli-baseline/cases/missing.first.stdout",
+        "stdout_sha256": "643de39c737c357e029af1cb226e269350d78ab883a5441bdb50dc25d730b367"
+      },
+      "second": {
+        "exit_code": 1,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/cases/missing.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 28,
+        "stdout_path": "raw/cli-baseline/cases/missing.second.stdout",
+        "stdout_sha256": "643de39c737c357e029af1cb226e269350d78ab883a5441bdb50dc25d730b367"
+      }
+    },
+    "no_args": {
+      "arguments": [],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/cases/no_args.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 2168,
+        "stdout_path": "raw/cli-baseline/cases/no_args.first.stdout",
+        "stdout_sha256": "25fa0a3d2985d2e0e431b3f25c58826c00fea87007b23b5cd0bbac5261d82da5"
+      },
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/cases/no_args.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 2168,
+        "stdout_path": "raw/cli-baseline/cases/no_args.second.stdout",
+        "stdout_sha256": "25fa0a3d2985d2e0e431b3f25c58826c00fea87007b23b5cd0bbac5261d82da5"
+      }
+    },
+    "show_structs": {
+      "arguments": [
+        "--showstructs"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/cases/show_structs.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 47,
+        "stdout_path": "raw/cli-baseline/cases/show_structs.first.stdout",
+        "stdout_sha256": "2ef890e26c826858eb053be3db702a629de717c63f35f86432bc1be6181a0699"
+      },
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/cases/show_structs.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 47,
+        "stdout_path": "raw/cli-baseline/cases/show_structs.second.stdout",
+        "stdout_sha256": "2ef890e26c826858eb053be3db702a629de717c63f35f86432bc1be6181a0699"
+      }
+    },
+    "version": {
+      "arguments": [
+        "--version"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/cases/version.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 10,
+        "stdout_path": "raw/cli-baseline/cases/version.first.stdout",
+        "stdout_sha256": "641f88fbece5c6334703787fb6801826745620bd4189f0c0cc036e63d9e1d758"
+      },
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/cases/version.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 10,
+        "stdout_path": "raw/cli-baseline/cases/version.second.stdout",
+        "stdout_sha256": "641f88fbece5c6334703787fb6801826745620bd4189f0c0cc036e63d9e1d758"
+      }
+    }
+  },
+  "corpus": {
+    "Minimal.class": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/Minimal.class"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/Minimal.class.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 496,
+        "stdout_path": "raw/cli-baseline/corpus/Minimal.class.first.stdout",
+        "stdout_sha256": "e430a0c3b596a3990d5fba87948d94256912ed6f1fb1eee245c0ddb8b33b18e8"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "Java Class",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "59",
+          "values": [
+            {
+              "name": "Java Class",
+              "type": "format",
+              "version": "Java SE 8"
+            }
+          ]
+        }
+      ],
+      "intended_format": "Java Class",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "Java Class",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "59",
+          "values": [
+            {
+              "name": "Java Class",
+              "type": "format",
+              "version": "Java SE 8"
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "ed3af378f328281c21e5b56e495377c3e68ba667643c79abc53ad30edb685b9e",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/Minimal.class.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 496,
+        "stdout_path": "raw/cli-baseline/corpus/Minimal.class.second.stdout",
+        "stdout_sha256": "e430a0c3b596a3990d5fba87948d94256912ed6f1fb1eee245c0ddb8b33b18e8"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "Java Class",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "59",
+          "values": [
+            {
+              "name": "Java Class",
+              "type": "format",
+              "version": "Java SE 8"
+            }
+          ]
+        }
+      ]
+    },
+    "empty.bin": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/empty.bin"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/empty.bin.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 471,
+        "stdout_path": "raw/cli-baseline/corpus/empty.bin.first.stdout",
+        "stdout_sha256": "85d959957f5cdfc3b3e5d45d83f1d73e5cfe74d5d7906dc13cf3f0c1b351fe5a"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "0",
+          "values": [
+            {
+              "name": "Empty file",
+              "type": "format",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "empty",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "0",
+          "values": [
+            {
+              "name": "Empty file",
+              "type": "format",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/empty.bin.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 471,
+        "stdout_path": "raw/cli-baseline/corpus/empty.bin.second.stdout",
+        "stdout_sha256": "85d959957f5cdfc3b3e5d45d83f1d73e5cfe74d5d7906dc13cf3f0c1b351fe5a"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "0",
+          "values": [
+            {
+              "name": "Empty file",
+              "type": "format",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "minimal-elf32.elf": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal-elf32.elf"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal-elf32.elf.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 467,
+        "stdout_path": "raw/cli-baseline/corpus/minimal-elf32.elf.first.stdout",
+        "stdout_sha256": "f3b54d11d3fc57706c7add5bc72b0e385a65a5b9a3e924c4fd432b43dd0b8383"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "ELF32",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "52",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "ELF32",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "ELF32",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "52",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "75952e884b6d6d4c4ed1023df8a126a816973178160bea43b482ceec0fc1e75d",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal-elf32.elf.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 467,
+        "stdout_path": "raw/cli-baseline/corpus/minimal-elf32.elf.second.stdout",
+        "stdout_sha256": "f3b54d11d3fc57706c7add5bc72b0e385a65a5b9a3e924c4fd432b43dd0b8383"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "ELF32",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "52",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "minimal-fat.macho": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal-fat.macho"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal-fat.macho.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 471,
+        "stdout_path": "raw/cli-baseline/corpus/minimal-fat.macho.first.stdout",
+        "stdout_sha256": "978379072d1f74b81f78d2caac4e2f47e0788e1bca1b4a3ec196a4e7c7a39fe8"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "Mach-O FAT",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "360",
+          "values": [
+            {
+              "name": "lipo",
+              "type": "converter",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "Mach-O FAT",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "Mach-O FAT",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "360",
+          "values": [
+            {
+              "name": "lipo",
+              "type": "converter",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "ea343ae7de8a9ee2bdc00f0cc7f48f420e8609bd60510c927a75bed7b3470a67",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal-fat.macho.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 471,
+        "stdout_path": "raw/cli-baseline/corpus/minimal-fat.macho.second.stdout",
+        "stdout_sha256": "978379072d1f74b81f78d2caac4e2f47e0788e1bca1b4a3ec196a4e7c7a39fe8"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "Mach-O FAT",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "360",
+          "values": [
+            {
+              "name": "lipo",
+              "type": "converter",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "minimal-macho32.macho": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal-macho32.macho"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal-macho32.macho.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 470,
+        "stdout_path": "raw/cli-baseline/corpus/minimal-macho32.macho.first.stdout",
+        "stdout_sha256": "64ae03252f407bdd0888f668591205b44a87a57ef2d80391cdc78bd0eb2321fa"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "Mach-O32",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "84",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "Mach-O 32",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "Mach-O32",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "84",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "496974f2f66ce0be4a7ef4e05ddaaf1872b5ba6f4a772f729e86de3f9d4cc3b5",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal-macho32.macho.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 470,
+        "stdout_path": "raw/cli-baseline/corpus/minimal-macho32.macho.second.stdout",
+        "stdout_sha256": "64ae03252f407bdd0888f668591205b44a87a57ef2d80391cdc78bd0eb2321fa"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "Mach-O32",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "84",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "minimal-pe64.exe": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal-pe64.exe"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal-pe64.exe.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 467,
+        "stdout_path": "raw/cli-baseline/corpus/minimal-pe64.exe.first.stdout",
+        "stdout_sha256": "1b115a1554c59f2afc298ba759378ced161e940072cbc2f8acd7edb763ba690c"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PE64",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "512",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "PE64",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "PE64",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "512",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "63c706607b3d34624313df7356702ff99ce4080f09e6b07ec4b01dfe4dd5e1c3",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal-pe64.exe.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 467,
+        "stdout_path": "raw/cli-baseline/corpus/minimal-pe64.exe.second.stdout",
+        "stdout_sha256": "1b115a1554c59f2afc298ba759378ced161e940072cbc2f8acd7edb763ba690c"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PE64",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "512",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "minimal.apk": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal.apk"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal.apk.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 466,
+        "stdout_path": "raw/cli-baseline/corpus/minimal.apk.first.stdout",
+        "stdout_sha256": "60f6f34d539fb6f3f954d3e023fc45f9e0719da92174e4b9bdde88a12afca04e"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "APK",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "350",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "APK with manifest and DEX",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "APK",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "350",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "300eec1017b47ac5878bf21da0306b61a4a0dfc9e8249e9f0ff7e40c458ef557",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal.apk.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 466,
+        "stdout_path": "raw/cli-baseline/corpus/minimal.apk.second.stdout",
+        "stdout_sha256": "60f6f34d539fb6f3f954d3e023fc45f9e0719da92174e4b9bdde88a12afca04e"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "APK",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "350",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "minimal.cfbf": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal.cfbf"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal.cfbf.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 736,
+        "stdout_path": "raw/cli-baseline/corpus/minimal.cfbf.first.stdout",
+        "stdout_sha256": "ccf571f677a541c8f26ec0ce4fe8139880a9ef64b6ec1e1c1de81e444a0ec78f"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "CFBF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "512",
+          "values": [
+            {
+              "name": "CFBF",
+              "type": "format",
+              "version": "3.62"
+            },
+            {
+              "name": "Microsoft Office",
+              "type": "format",
+              "version": "1997-2003"
+            }
+          ]
+        }
+      ],
+      "intended_format": "CFBF",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "CFBF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "512",
+          "values": [
+            {
+              "name": "CFBF",
+              "type": "format",
+              "version": "3.62"
+            },
+            {
+              "name": "Microsoft Office",
+              "type": "format",
+              "version": "1997-2003"
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "bb973ef09e2e3bf7e6510e060960dd10a598c5595bfbe08fabc177d0b0911d37",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal.cfbf.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 736,
+        "stdout_path": "raw/cli-baseline/corpus/minimal.cfbf.second.stdout",
+        "stdout_sha256": "ccf571f677a541c8f26ec0ce4fe8139880a9ef64b6ec1e1c1de81e444a0ec78f"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "CFBF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "512",
+          "values": [
+            {
+              "name": "CFBF",
+              "type": "format",
+              "version": "3.62"
+            },
+            {
+              "name": "Microsoft Office",
+              "type": "format",
+              "version": "1997-2003"
+            }
+          ]
+        }
+      ]
+    },
+    "minimal.dex": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal.dex"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal.dex.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 464,
+        "stdout_path": "raw/cli-baseline/corpus/minimal.dex.first.stdout",
+        "stdout_sha256": "5b42ce5c748c9e66174989be4c56b14dfd03eccc9635fcd5b20fa3f60e2e5c98"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "DEX",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "112",
+          "values": [
+            {
+              "name": "DEX",
+              "type": "format",
+              "version": "035"
+            }
+          ]
+        }
+      ],
+      "intended_format": "DEX",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "DEX",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "112",
+          "values": [
+            {
+              "name": "DEX",
+              "type": "format",
+              "version": "035"
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "57cfe8878be74cad8bbc5e409b0964d4b13c35e8783d931ef7366881f8d548c2",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal.dex.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 464,
+        "stdout_path": "raw/cli-baseline/corpus/minimal.dex.second.stdout",
+        "stdout_sha256": "5b42ce5c748c9e66174989be4c56b14dfd03eccc9635fcd5b20fa3f60e2e5c98"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "DEX",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "112",
+          "values": [
+            {
+              "name": "DEX",
+              "type": "format",
+              "version": "035"
+            }
+          ]
+        }
+      ]
+    },
+    "minimal.elf": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal.elf"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal.elf.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 467,
+        "stdout_path": "raw/cli-baseline/corpus/minimal.elf.first.stdout",
+        "stdout_sha256": "8130d1163c063377eda3143c12a590c73e4ba5621a902b63c4afc455b4249515"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "ELF64",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "64",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "ELF64",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "ELF64",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "64",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "e717b57a377ce3486a932130454ee070fdd495d3c23a9d5a8a446ad32772e704",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal.elf.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 467,
+        "stdout_path": "raw/cli-baseline/corpus/minimal.elf.second.stdout",
+        "stdout_sha256": "8130d1163c063377eda3143c12a590c73e4ba5621a902b63c4afc455b4249515"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "ELF64",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "64",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "minimal.exe": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal.exe"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal.exe.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 467,
+        "stdout_path": "raw/cli-baseline/corpus/minimal.exe.first.stdout",
+        "stdout_sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PE32",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "512",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "PE32",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "PE32",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "512",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "afb1bcd812caa45095075a60ff49599c7d5e767c7732226c3e0007708cb198a2",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal.exe.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 467,
+        "stdout_path": "raw/cli-baseline/corpus/minimal.exe.second.stdout",
+        "stdout_sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PE32",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "512",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "minimal.ipa": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal.ipa"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal.ipa.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 499,
+        "stdout_path": "raw/cli-baseline/corpus/minimal.ipa.first.stdout",
+        "stdout_sha256": "f4e74ed3b429d0a46f53a4e16c306f6bbce6e2c3f2becba0fe00873e1a9caad5"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "300",
+          "values": [
+            {
+              "name": "Zip",
+              "type": "archive",
+              "version": "2.0"
+            }
+          ]
+        }
+      ],
+      "intended_format": "IPA with app Info.plist",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "300",
+          "values": [
+            {
+              "name": "Zip",
+              "type": "archive",
+              "version": "2.0"
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "142e16c353a59e152c6ee0b25d783dba0d6f6e9a8ca81b73d0d925dee1d54264",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal.ipa.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 499,
+        "stdout_path": "raw/cli-baseline/corpus/minimal.ipa.second.stdout",
+        "stdout_sha256": "f4e74ed3b429d0a46f53a4e16c306f6bbce6e2c3f2becba0fe00873e1a9caad5"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "300",
+          "values": [
+            {
+              "name": "Zip",
+              "type": "archive",
+              "version": "2.0"
+            }
+          ]
+        }
+      ]
+    },
+    "minimal.iso": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal.iso"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal.iso.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 473,
+        "stdout_path": "raw/cli-baseline/corpus/minimal.iso.first.stdout",
+        "stdout_sha256": "5a9ccc1bed88d5c23d54b47f99b910e37b635c759002096b944678aa5dc2f3b6"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "ISO 9660",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "36864",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "ISO9660 primary volume",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "ISO 9660",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "36864",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "8723a9cc5cd319414b88d32dcce58e8dc7668b927553f8cdf0bdf4f52f4da90a",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal.iso.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 473,
+        "stdout_path": "raw/cli-baseline/corpus/minimal.iso.second.stdout",
+        "stdout_sha256": "5a9ccc1bed88d5c23d54b47f99b910e37b635c759002096b944678aa5dc2f3b6"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "ISO 9660",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "36864",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "minimal.jar": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal.jar"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal.jar.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 466,
+        "stdout_path": "raw/cli-baseline/corpus/minimal.jar.first.stdout",
+        "stdout_sha256": "0fd4e7f109e634608e898ee774d934189dd8648c81198f6441ccade6fed6e571"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "JAR",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "324",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "JAR with manifest and class",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "JAR",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "324",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "a081dac459835af70f69de96b705764dc9b06bc356edcaa9857a8d6b630a7747",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal.jar.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 466,
+        "stdout_path": "raw/cli-baseline/corpus/minimal.jar.second.stdout",
+        "stdout_sha256": "0fd4e7f109e634608e898ee774d934189dd8648c81198f6441ccade6fed6e571"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "JAR",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "324",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "minimal.macho": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal.macho"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal.macho.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 471,
+        "stdout_path": "raw/cli-baseline/corpus/minimal.macho.first.stdout",
+        "stdout_sha256": "533ad66822e6737bb512b6963cecec6671c949333ec804db9f682f446cad995d"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "Mach-O64",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "104",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "Mach-O 64",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "Mach-O64",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "104",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "60a536a7dff9522a8e4af5ab73ff742ebeffc33a34837beb9c5ac4a1a7eb5968",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal.macho.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 471,
+        "stdout_path": "raw/cli-baseline/corpus/minimal.macho.second.stdout",
+        "stdout_sha256": "533ad66822e6737bb512b6963cecec6671c949333ec804db9f682f446cad995d"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "Mach-O64",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "104",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "minimal.pdf": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal.pdf"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal.pdf.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-baseline/corpus/minimal.pdf.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "intended_format": "PDF",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal.pdf.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-baseline/corpus/minimal.pdf.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ]
+    },
+    "minimal.pyc": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal.pyc"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal.pyc.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 503,
+        "stdout_path": "raw/cli-baseline/corpus/minimal.pyc.first.stdout",
+        "stdout_sha256": "99ab55c1bc9708149ca7bd5a896abf7e4860760c8ea855a641cc11ff1de17a4c"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "Python Bytecode",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "17",
+          "values": [
+            {
+              "name": "Python Bytecode",
+              "type": "format",
+              "version": "3.8b4"
+            }
+          ]
+        }
+      ],
+      "intended_format": "CPython 3.8 bytecode",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "Python Bytecode",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "17",
+          "values": [
+            {
+              "name": "Python Bytecode",
+              "type": "format",
+              "version": "3.8b4"
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "cb3c0319002c008adb69215aa4559e60ad7e333e33eed58ae918e0d32e241ecd",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal.pyc.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 503,
+        "stdout_path": "raw/cli-baseline/corpus/minimal.pyc.second.stdout",
+        "stdout_sha256": "99ab55c1bc9708149ca7bd5a896abf7e4860760c8ea855a641cc11ff1de17a4c"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "Python Bytecode",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "17",
+          "values": [
+            {
+              "name": "Python Bytecode",
+              "type": "format",
+              "version": "3.8b4"
+            }
+          ]
+        }
+      ]
+    },
+    "minimal.rar": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/minimal.rar"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal.rar.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 465,
+        "stdout_path": "raw/cli-baseline/corpus/minimal.rar.first.stdout",
+        "stdout_sha256": "5a19df75955d336f0f4573400e86909cf57f14655dc860d58d79dbb150d18574"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "RAR",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "21",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "RAR4 empty archive header",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "RAR",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "21",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "f7a8865876257ca1bc0ea30fbe8d1e82d3355ff7509c0dbc1ca01fe202795728",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/minimal.rar.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 465,
+        "stdout_path": "raw/cli-baseline/corpus/minimal.rar.second.stdout",
+        "stdout_sha256": "5a19df75955d336f0f4573400e86909cf57f14655dc860d58d79dbb150d18574"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "RAR",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "21",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "payload.tar": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/payload.tar"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/payload.tar.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 462,
+        "stdout_path": "raw/cli-baseline/corpus/payload.tar.first.stdout",
+        "stdout_sha256": "e7348f825810f6ec94cdcd262c830e2c04532882683827f9351bd7158c692515"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "2048",
+          "values": [
+            {
+              "name": "tar",
+              "type": "archive",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "TAR with text member",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "2048",
+          "values": [
+            {
+              "name": "tar",
+              "type": "archive",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "3af89e8d0f52e951a8ea4ad0bef3d10cf3464c06a5c7a0fc451abc0583289f2f",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/payload.tar.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 462,
+        "stdout_path": "raw/cli-baseline/corpus/payload.tar.second.stdout",
+        "stdout_sha256": "e7348f825810f6ec94cdcd262c830e2c04532882683827f9351bd7158c692515"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "2048",
+          "values": [
+            {
+              "name": "tar",
+              "type": "archive",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "payload.txt.gz": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/payload.txt.gz"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/payload.txt.gz.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 468,
+        "stdout_path": "raw/cli-baseline/corpus/payload.txt.gz.first.stdout",
+        "stdout_sha256": "9e1bf608c90e2ff6c0b07259ec8dc25aa8f705a38b66e2be7ca431ea76be2cde"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "54",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "GZIP with text member",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "54",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "f51df8f3b04ac2120ba283fbad7f22ec9aefce5a07c38a335deb771be560b39a",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/payload.txt.gz.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 468,
+        "stdout_path": "raw/cli-baseline/corpus/payload.txt.gz.second.stdout",
+        "stdout_sha256": "9e1bf608c90e2ff6c0b07259ec8dc25aa8f705a38b66e2be7ca431ea76be2cde"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "54",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "payload.zip": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/payload.zip"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/payload.zip.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 466,
+        "stdout_path": "raw/cli-baseline/corpus/payload.zip.first.stdout",
+        "stdout_sha256": "82fb2c4717f3b8063febe1e6f299a10da117f6c4909b63d31aeadc13d247ad31"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "ZIP",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "151",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "ZIP with text member",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "ZIP",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "151",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "c29a3445c289e061a11d4675b36763657d4e550c4941821ea74905593a29acfe",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/payload.zip.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 466,
+        "stdout_path": "raw/cli-baseline/corpus/payload.zip.second.stdout",
+        "stdout_sha256": "82fb2c4717f3b8063febe1e6f299a10da117f6c4909b63d31aeadc13d247ad31"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "ZIP",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "151",
+          "values": [
+            {
+              "name": "Unknown",
+              "type": "Unknown",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "pixel.bmp": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/pixel.bmp"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/pixel.bmp.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 504,
+        "stdout_path": "raw/cli-baseline/corpus/pixel.bmp.first.stdout",
+        "stdout_sha256": "35b3366ffdb2bc58375af7ac00183338547e42c799a3023ebecb4868bc922f92"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "58",
+          "values": [
+            {
+              "name": "Windows Bitmap",
+              "type": "image",
+              "version": "3"
+            }
+          ]
+        }
+      ],
+      "intended_format": "BMP",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "58",
+          "values": [
+            {
+              "name": "Windows Bitmap",
+              "type": "image",
+              "version": "3"
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "f7cbd816abfb19030d23b8de5435d0141443665a81ed5ba12114c70b5f53b610",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/pixel.bmp.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 504,
+        "stdout_path": "raw/cli-baseline/corpus/pixel.bmp.second.stdout",
+        "stdout_sha256": "35b3366ffdb2bc58375af7ac00183338547e42c799a3023ebecb4868bc922f92"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "58",
+          "values": [
+            {
+              "name": "Windows Bitmap",
+              "type": "image",
+              "version": "3"
+            }
+          ]
+        }
+      ]
+    },
+    "pixel.jpg": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/pixel.jpg"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/pixel.jpg.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 751,
+        "stdout_path": "raw/cli-baseline/corpus/pixel.jpg.first.stdout",
+        "stdout_sha256": "49910f50eee0b247031b60131b035229f31410d113253d665e714ac0074842a6"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "JPEG",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "56",
+          "values": [
+            {
+              "name": "JPEG",
+              "type": "format",
+              "version": "1.1"
+            },
+            {
+              "name": "DQT",
+              "type": "image",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "JPEG",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "JPEG",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "56",
+          "values": [
+            {
+              "name": "JPEG",
+              "type": "format",
+              "version": "1.1"
+            },
+            {
+              "name": "DQT",
+              "type": "image",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "69d4a48ed33b98f972561aa738a91b1d8cf76c876adee54d76e7b326df9276c5",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/pixel.jpg.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 751,
+        "stdout_path": "raw/cli-baseline/corpus/pixel.jpg.second.stdout",
+        "stdout_sha256": "49910f50eee0b247031b60131b035229f31410d113253d665e714ac0074842a6"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "JPEG",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "56",
+          "values": [
+            {
+              "name": "JPEG",
+              "type": "format",
+              "version": "1.1"
+            },
+            {
+              "name": "DQT",
+              "type": "image",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "pixel.png": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/pixel.png"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/pixel.png.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 489,
+        "stdout_path": "raw/cli-baseline/corpus/pixel.png.first.stdout",
+        "stdout_sha256": "2bbe198a5ab3a9dde62e778e62ad73bc836bb6241a61774cb1591b164fc73802"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PNG",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "72",
+          "values": [
+            {
+              "name": "PNG",
+              "type": "format",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "PNG",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "PNG",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "72",
+          "values": [
+            {
+              "name": "PNG",
+              "type": "format",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "9ba3d63896d81dc3a55b80c1165fefa4523888b67fcbd4a95cabd3d0ab7e66e2",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/pixel.png.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 489,
+        "stdout_path": "raw/cli-baseline/corpus/pixel.png.second.stdout",
+        "stdout_sha256": "2bbe198a5ab3a9dde62e778e62ad73bc836bb6241a61774cb1591b164fc73802"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PNG",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "72",
+          "values": [
+            {
+              "name": "PNG",
+              "type": "format",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "plain.txt": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/plain.txt"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/plain.txt.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 478,
+        "stdout_path": "raw/cli-baseline/corpus/plain.txt.first.stdout",
+        "stdout_sha256": "f354d8df85d30a257d89ed74805c60964bc7f65260fc9ba4e01040f845f7cdf7"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "31",
+          "values": [
+            {
+              "name": "Plain text",
+              "type": "format",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "intended_format": "text",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "31",
+          "values": [
+            {
+              "name": "Plain text",
+              "type": "format",
+              "version": ""
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "22b217bfba5795d402092bf48bfb28146c0ee4dd0036fd4d0c93e25bbe65e998",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/plain.txt.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 478,
+        "stdout_path": "raw/cli-baseline/corpus/plain.txt.second.stdout",
+        "stdout_sha256": "f354d8df85d30a257d89ed74805c60964bc7f65260fc9ba4e01040f845f7cdf7"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "31",
+          "values": [
+            {
+              "name": "Plain text",
+              "type": "format",
+              "version": ""
+            }
+          ]
+        }
+      ]
+    },
+    "tone.wav": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<corpus>/tone.wav"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/tone.wav.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 580,
+        "stdout_path": "raw/cli-baseline/corpus/tone.wav.first.stdout",
+        "stdout_sha256": "9464be930526a60dc86587c08089e3e42f5901f4fe51ffbce4b4ea3d1d89316e"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "46",
+          "values": [
+            {
+              "name": "RIFF container/WAVE file (.WAV)",
+              "type": "audio",
+              "version": "Microsoft PCM8U (uncompressed)/le"
+            }
+          ]
+        }
+      ],
+      "intended_format": "WAV PCM",
+      "linux_exit_code_equal": true,
+      "linux_projection_equal": true,
+      "linux_qt5_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "46",
+          "values": [
+            {
+              "name": "RIFF container/WAVE file (.WAV)",
+              "type": "audio",
+              "version": "Microsoft PCM8U (uncompressed)/le"
+            }
+          ]
+        }
+      ],
+      "sample_sha256": "373324023416a5dc3809e647e041fc48a13db20648d5782ac989cba17014203b",
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-baseline/corpus/tone.wav.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 580,
+        "stdout_path": "raw/cli-baseline/corpus/tone.wav.second.stdout",
+        "stdout_sha256": "9464be930526a60dc86587c08089e3e42f5901f4fe51ffbce4b4ea3d1d89316e"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "Binary",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "46",
+          "values": [
+            {
+              "name": "RIFF container/WAVE file (.WAV)",
+              "type": "audio",
+              "version": "Microsoft PCM8U (uncompressed)/le"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "corpus_manifest": {
+    "path": "docs/research/data/baseline-corpus.json",
+    "sample_count": 26,
+    "sha256": "f5adabeedeaf3bb69b8e52f8de20efd0f0b87bd4dcd247610d4e876b9266f329"
+  },
+  "generator": {
+    "path": "tools/upstream/collect_macos_cli_baseline.py",
+    "sha256": "113354cc888d132e6e2f666f886a1ba10bf3354ffcefab119eef50bc1e273113",
+    "shared_collector_path": "tools/upstream/collect_windows_cli_baseline.py",
+    "shared_collector_sha256": "73b486be50e0628c39a2bc7092e3a5c5f2e089b377484995e6b0566a887b1c3b",
+    "validator_path": "tools/upstream/validate_macos_cli_baseline.py",
+    "validator_sha256": "8bf54da3f25f1ef81d86edde5204cce2a850e7a4ff09301252bb465ae3f8088c"
+  },
+  "limitations": [
+    "the bundle covers general CLI identity, database listing, missing-path handling, and one default JSON scan per generated baseline sample",
+    "option, output, special, nested, filesystem, database error, and engine-only matrices require separate macOS evidence",
+    "every raw stdout and stderr stream is retained; only the named detection projection and exit code are compared with Linux Qt5"
+  ],
+  "linux_qt5_reference": {
+    "path": "docs/research/data/baseline-corpus-linux-qt5.json",
+    "sha256": "98ac3dd272efae72038c96c0e051355a0482978933e729abe8b20f0e82057e9f"
+  },
+  "oracle_report": {
+    "path": "oracle-candidate.json",
+    "sha256": "3e37bcef14b22887bd5525db8cc6f6d15a0cfe390f3eb7bc33ffabc37699696e"
+  },
+  "platform": "macos-x86_64-qt5",
+  "qt": {
+    "qmake_sha256": "14206b8303e6853e050277debc076be3460d11d4bc14821f7f55b1e27e67c8fe",
+    "qmake_spec": "macx-clang",
+    "qtcore_sha256": "86f54c3f81b7733bf7cda793094a213d5d7ce8562486b52285c846fc88ceaf9e",
+    "qtscript_sha256": "a566185119647f6b541f022950a3dda97197b5d9c23dc12ef2d872274d4ebf4d",
+    "version": "5.15.2"
+  },
+  "result": "candidate",
+  "schema_version": 1,
+  "source": {
+    "commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "recursive_submodule_count": 58,
+    "repository": "https://github.com/horsicq/DIE-engine",
+    "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+    "tracked_files_clean_before_and_after": true
+  },
+  "summary": {
+    "case_count": 6,
+    "corpus_count": 26,
+    "determinism_failures": [],
+    "deterministic": true,
+    "execution_count": 64,
+    "linux_projection_equal": true,
+    "linux_projection_failures": []
+  }
+}

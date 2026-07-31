@@ -465,15 +465,27 @@ impl HostApiBridge {
 
             // --- String and signature search ---
 
-            // getString(offset, maxLen) -> string
+            // getString(offset, maxLen?) -> string
+            // If maxLen is omitted or 0, read to end of file (matching upstream).
+            // We register a 2-arg native function and override it with a JS
+            // wrapper after the Binary global is registered (see end of register()).
             let h = host.clone();
             let get_string_fn =
                 rquickjs::Function::new(ctx.clone(), move |offset: i32, max_len: i32| {
-                    h.read_string(offset as u64, max_len as u64)
-                        .unwrap_or_default()
+                    let max = if max_len <= 0 {
+                        h.file_size()
+                    } else {
+                        max_len as u64
+                    };
+                    h.read_string(offset as u64, max).unwrap_or_default()
                 })
                 .map_err(|e| RuleError::Backend {
                     detail: format!("getString: {e}"),
+                })?;
+            binary
+                .set("getString", get_string_fn.clone())
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("getString set: {e}"),
                 })?;
             binary
                 .set("getString", get_string_fn)
@@ -695,6 +707,135 @@ impl HostApiBridge {
                     detail: format!("getFileBaseName set: {e}"),
                 })?;
 
+            // --- Short aliases (Sz, c, SA, SC, fStr, fSig, BA) ---
+
+            // Sz() -> file size (alias for getSize)
+            let h = host.clone();
+            let sz_fn = rquickjs::Function::new(ctx.clone(), move || h.file_size() as f64)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("Sz: {e}"),
+                })?;
+            binary.set("Sz", sz_fn).map_err(|e| RuleError::Backend {
+                detail: format!("Sz set: {e}"),
+            })?;
+
+            // c(signature, offset) -> bool (alias for compare, but args reversed)
+            let h = host.clone();
+            let c_fn =
+                rquickjs::Function::new(ctx.clone(), move |signature: String, offset: i32| {
+                    h.check_signature(offset as u64, &signature)
+                        .unwrap_or(false)
+                })
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("c: {e}"),
+                })?;
+            binary.set("c", c_fn).map_err(|e| RuleError::Backend {
+                detail: format!("c set: {e}"),
+            })?;
+
+            // SA(offset, maxSize) -> string (ANSI string read)
+            let h = host.clone();
+            let sa_fn = rquickjs::Function::new(ctx.clone(), move |offset: i32, max_size: i32| {
+                h.read_string(offset as u64, max_size as u64)
+                    .unwrap_or_default()
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("SA: {e}"),
+            })?;
+            binary.set("SA", sa_fn).map_err(|e| RuleError::Backend {
+                detail: format!("SA set: {e}"),
+            })?;
+
+            // SC(offset, maxByteSize, codePage) -> string (code page string)
+            // For now, just read as ANSI string (code page not implemented).
+            let h = host.clone();
+            let sc_fn = rquickjs::Function::new(
+                ctx.clone(),
+                move |offset: i32, max_size: i32, _code_page: String| {
+                    h.read_string(offset as u64, max_size as u64)
+                        .unwrap_or_default()
+                },
+            )
+            .map_err(|e| RuleError::Backend {
+                detail: format!("SC: {e}"),
+            })?;
+            binary.set("SC", sc_fn).map_err(|e| RuleError::Backend {
+                detail: format!("SC set: {e}"),
+            })?;
+
+            // fStr(offset, size, string) -> offset of found string or -1
+            let h = host.clone();
+            let fstr_fn = rquickjs::Function::new(
+                ctx.clone(),
+                move |offset: i32, _size: i32, needle: String| {
+                    // Search for ASCII string in file data
+                    let start = offset as usize;
+                    let needle_bytes = needle.as_bytes();
+                    if needle_bytes.is_empty()
+                        || start + needle_bytes.len() > h.file_size() as usize
+                    {
+                        return -1.0;
+                    }
+                    // Use find_signature with hex encoding of the string
+                    let hex: String = needle_bytes.iter().map(|b| format!("{b:02X}")).collect();
+                    match h.find_signature(start as u64, &hex) {
+                        Ok(Some(off)) => off as f64,
+                        _ => -1.0,
+                    }
+                },
+            )
+            .map_err(|e| RuleError::Backend {
+                detail: format!("fStr: {e}"),
+            })?;
+            binary
+                .set("fStr", fstr_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("fStr set: {e}"),
+                })?;
+
+            // fSig(offset, size, signature) -> offset or -1 (alias for findSignature with extra size param)
+            let h = host.clone();
+            let fsig_fn = rquickjs::Function::new(
+                ctx.clone(),
+                move |offset: i32, _size: i32, signature: String| match h
+                    .find_signature(offset as u64, &signature)
+                {
+                    Ok(Some(off)) => off as f64,
+                    _ => -1.0,
+                },
+            )
+            .map_err(|e| RuleError::Backend {
+                detail: format!("fSig: {e}"),
+            })?;
+            binary
+                .set("fSig", fsig_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("fSig set: {e}"),
+                })?;
+
+            // BA(offset, size, replaceZero?) -> array of bytes
+            let h = host.clone();
+            let ba_fn = rquickjs::Function::new(
+                ctx.clone(),
+                move |offset: i32, size: i32, _replace: bool| {
+                    let start = offset as usize;
+                    let end = (start + size as usize).min(h.file_size() as usize);
+                    if start >= end {
+                        return Vec::<i32>::new();
+                    }
+                    // Use read_u8 for each byte
+                    (start..end)
+                        .map(|i| h.read_u8(i as u64).map(|v| v as i32).unwrap_or(0))
+                        .collect::<Vec<i32>>()
+                },
+            )
+            .map_err(|e| RuleError::Backend {
+                detail: format!("BA: {e}"),
+            })?;
+            binary.set("BA", ba_fn).map_err(|e| RuleError::Backend {
+                detail: format!("BA set: {e}"),
+            })?;
+
             // --- Register the Binary object and aliases ---
 
             globals
@@ -715,6 +856,25 @@ impl HostApiBridge {
                 .map_err(|e| RuleError::Backend {
                     detail: format!("failed to set File alias: {e}"),
                 })?;
+
+            // Override getString with a JS wrapper that handles missing 2nd arg.
+            // The upstream getString(offset, maxLen?) accepts 1 or 2 args.
+            ctx.eval::<(), _>(
+                r#"
+                (function() {
+                    var _orig = Binary.getString;
+                    Binary.getString = function(offset, maxLen) {
+                        if (maxLen === undefined) maxLen = 0;
+                        return _orig(offset, maxLen);
+                    };
+                    X.getString = Binary.getString;
+                    File.getString = Binary.getString;
+                })();
+                "#,
+            )
+            .map_err(|e| RuleError::Backend {
+                detail: format!("getString wrapper: {e}"),
+            })?;
 
             Ok(())
         })?;

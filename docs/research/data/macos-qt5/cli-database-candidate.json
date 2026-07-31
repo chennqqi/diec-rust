@@ -1,0 +1,999 @@
+{
+  "admission": {
+    "capability_rows_admitted": 0,
+    "platform_admitted": false,
+    "reason": "database CLI candidate only; macOS runtime evidence has not been reviewed or projected into the 68-row capability closure"
+  },
+  "binary": {
+    "relative_path": "build/release/diec",
+    "sha256": "f4c69824399e3b27b1ec60924ef60555620c4e217a1f48cdae8c8db467d39317",
+    "size": 7452296
+  },
+  "cases": {
+    "entropy_missing_main_messages_json": {
+      "arguments": [
+        "--entropy",
+        "--json",
+        "--messages",
+        "--database",
+        "<dbfx>/missing-main",
+        "--extradatabase",
+        "<dbfx>/empty-extra",
+        "--customdatabase",
+        "<dbfx>/empty-custom",
+        "<dbfx>/input/plain.txt"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/entropy_missing_main_messages_json.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 350,
+        "stdout_path": "raw/cli-database/entropy_missing_main_messages_json.first.stdout",
+        "stdout_sha256": "7329327bf9cd12c49d73670ac82dbb068634f05acf79f7d6a0c1c924cc6f5a7a"
+      },
+      "first_reports_load_error": true,
+      "first_valid_json": false,
+      "linux_normalized_stdout_sha256": "5ad38aa824c0d700135846416dc631973a4ae2de3fdd9f2d49cb94be51d95326",
+      "linux_qt5_normalized_stdout_equal": true,
+      "linux_qt5_raw_differences": [
+        "stdout"
+      ],
+      "linux_qt5_reports_load_error": true,
+      "linux_qt5_reports_load_error_equal": true,
+      "linux_qt5_valid_json": false,
+      "linux_qt5_valid_json_equal": true,
+      "reports_parse_error": false,
+      "reports_runtime_error": false,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/entropy_missing_main_messages_json.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 350,
+        "stdout_path": "raw/cli-database/entropy_missing_main_messages_json.second.stdout",
+        "stdout_sha256": "7329327bf9cd12c49d73670ac82dbb068634f05acf79f7d6a0c1c924cc6f5a7a"
+      },
+      "second_reports_load_error": true,
+      "second_valid_json": false
+    },
+    "info_missing_main_messages_json": {
+      "arguments": [
+        "--info",
+        "--json",
+        "--messages",
+        "--database",
+        "<dbfx>/missing-main",
+        "--extradatabase",
+        "<dbfx>/empty-extra",
+        "--customdatabase",
+        "<dbfx>/empty-custom",
+        "<dbfx>/input/plain.txt"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/info_missing_main_messages_json.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 380,
+        "stdout_path": "raw/cli-database/info_missing_main_messages_json.first.stdout",
+        "stdout_sha256": "24ccb336ef6df9f5249d8f10572e130e938b9d847748f85fccc21395af3b94c9"
+      },
+      "first_reports_load_error": true,
+      "first_valid_json": false,
+      "linux_normalized_stdout_sha256": "c1a6dd12c3b3bb4fd0d202d851de621fa8fc1a11ccac785457ee9fb206ebbec1",
+      "linux_qt5_normalized_stdout_equal": true,
+      "linux_qt5_raw_differences": [
+        "stdout"
+      ],
+      "linux_qt5_reports_load_error": true,
+      "linux_qt5_reports_load_error_equal": true,
+      "linux_qt5_valid_json": false,
+      "linux_qt5_valid_json_equal": true,
+      "reports_parse_error": false,
+      "reports_runtime_error": false,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/info_missing_main_messages_json.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 380,
+        "stdout_path": "raw/cli-database/info_missing_main_messages_json.second.stdout",
+        "stdout_sha256": "24ccb336ef6df9f5249d8f10572e130e938b9d847748f85fccc21395af3b94c9"
+      },
+      "second_reports_load_error": true,
+      "second_valid_json": false
+    },
+    "scan_empty_main_json": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<dbfx>/empty-main",
+        "--extradatabase",
+        "<dbfx>/empty-extra",
+        "--customdatabase",
+        "<dbfx>/empty-custom",
+        "<dbfx>/input/plain.txt"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/scan_empty_main_json.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 468,
+        "stdout_path": "raw/cli-database/scan_empty_main_json.first.stdout",
+        "stdout_sha256": "83cbe006c9b24c93260312b75a213904e76b75b7fcdb17612c6640f37a20c78c"
+      },
+      "first_reports_load_error": false,
+      "first_valid_json": true,
+      "linux_normalized_stdout_sha256": "83cbe006c9b24c93260312b75a213904e76b75b7fcdb17612c6640f37a20c78c",
+      "linux_qt5_normalized_stdout_equal": true,
+      "linux_qt5_raw_differences": [],
+      "linux_qt5_reports_load_error": false,
+      "linux_qt5_reports_load_error_equal": true,
+      "linux_qt5_valid_json": true,
+      "linux_qt5_valid_json_equal": true,
+      "reports_parse_error": false,
+      "reports_runtime_error": false,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/scan_empty_main_json.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 468,
+        "stdout_path": "raw/cli-database/scan_empty_main_json.second.stdout",
+        "stdout_sha256": "83cbe006c9b24c93260312b75a213904e76b75b7fcdb17612c6640f37a20c78c"
+      },
+      "second_reports_load_error": false,
+      "second_valid_json": true
+    },
+    "scan_invalid_archive_json": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<dbfx>/not-a-database.bin",
+        "--extradatabase",
+        "<dbfx>/empty-extra",
+        "--customdatabase",
+        "<dbfx>/empty-custom",
+        "<dbfx>/input/plain.txt"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/scan_invalid_archive_json.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 468,
+        "stdout_path": "raw/cli-database/scan_invalid_archive_json.first.stdout",
+        "stdout_sha256": "83cbe006c9b24c93260312b75a213904e76b75b7fcdb17612c6640f37a20c78c"
+      },
+      "first_reports_load_error": false,
+      "first_valid_json": true,
+      "linux_normalized_stdout_sha256": "83cbe006c9b24c93260312b75a213904e76b75b7fcdb17612c6640f37a20c78c",
+      "linux_qt5_normalized_stdout_equal": true,
+      "linux_qt5_raw_differences": [],
+      "linux_qt5_reports_load_error": false,
+      "linux_qt5_reports_load_error_equal": true,
+      "linux_qt5_valid_json": true,
+      "linux_qt5_valid_json_equal": true,
+      "reports_parse_error": false,
+      "reports_runtime_error": false,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/scan_invalid_archive_json.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 468,
+        "stdout_path": "raw/cli-database/scan_invalid_archive_json.second.stdout",
+        "stdout_sha256": "83cbe006c9b24c93260312b75a213904e76b75b7fcdb17612c6640f37a20c78c"
+      },
+      "second_reports_load_error": false,
+      "second_valid_json": true
+    },
+    "scan_invalid_archive_messages_json": {
+      "arguments": [
+        "--json",
+        "--messages",
+        "--database",
+        "<dbfx>/not-a-database.bin",
+        "--extradatabase",
+        "<dbfx>/empty-extra",
+        "--customdatabase",
+        "<dbfx>/empty-custom",
+        "<dbfx>/input/plain.txt"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/scan_invalid_archive_messages_json.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 468,
+        "stdout_path": "raw/cli-database/scan_invalid_archive_messages_json.first.stdout",
+        "stdout_sha256": "83cbe006c9b24c93260312b75a213904e76b75b7fcdb17612c6640f37a20c78c"
+      },
+      "first_reports_load_error": false,
+      "first_valid_json": true,
+      "linux_normalized_stdout_sha256": "83cbe006c9b24c93260312b75a213904e76b75b7fcdb17612c6640f37a20c78c",
+      "linux_qt5_normalized_stdout_equal": true,
+      "linux_qt5_raw_differences": [],
+      "linux_qt5_reports_load_error": false,
+      "linux_qt5_reports_load_error_equal": true,
+      "linux_qt5_valid_json": true,
+      "linux_qt5_valid_json_equal": true,
+      "reports_parse_error": false,
+      "reports_runtime_error": false,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/scan_invalid_archive_messages_json.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 468,
+        "stdout_path": "raw/cli-database/scan_invalid_archive_messages_json.second.stdout",
+        "stdout_sha256": "83cbe006c9b24c93260312b75a213904e76b75b7fcdb17612c6640f37a20c78c"
+      },
+      "second_reports_load_error": false,
+      "second_valid_json": true
+    },
+    "scan_malformed_main_json": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<dbfx>/malformed-main",
+        "--extradatabase",
+        "<dbfx>/empty-extra",
+        "--customdatabase",
+        "<dbfx>/empty-custom",
+        "<dbfx>/input/plain.txt"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/scan_malformed_main_json.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 529,
+        "stdout_path": "raw/cli-database/scan_malformed_main_json.first.stdout",
+        "stdout_sha256": "23d44d1af431628410415d2bdd6027da51ec5adbe508f86b1bf3aa6c5e3dc006"
+      },
+      "first_reports_load_error": false,
+      "first_valid_json": false,
+      "linux_normalized_stdout_sha256": "23d44d1af431628410415d2bdd6027da51ec5adbe508f86b1bf3aa6c5e3dc006",
+      "linux_qt5_normalized_stdout_equal": true,
+      "linux_qt5_raw_differences": [],
+      "linux_qt5_reports_load_error": false,
+      "linux_qt5_reports_load_error_equal": true,
+      "linux_qt5_valid_json": false,
+      "linux_qt5_valid_json_equal": true,
+      "reports_parse_error": true,
+      "reports_runtime_error": false,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/scan_malformed_main_json.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 529,
+        "stdout_path": "raw/cli-database/scan_malformed_main_json.second.stdout",
+        "stdout_sha256": "23d44d1af431628410415d2bdd6027da51ec5adbe508f86b1bf3aa6c5e3dc006"
+      },
+      "second_reports_load_error": false,
+      "second_valid_json": false
+    },
+    "scan_missing_main_json": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<dbfx>/missing-main",
+        "--extradatabase",
+        "<dbfx>/empty-extra",
+        "--customdatabase",
+        "<dbfx>/empty-custom",
+        "<dbfx>/input/plain.txt"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/scan_missing_main_json.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 468,
+        "stdout_path": "raw/cli-database/scan_missing_main_json.first.stdout",
+        "stdout_sha256": "83cbe006c9b24c93260312b75a213904e76b75b7fcdb17612c6640f37a20c78c"
+      },
+      "first_reports_load_error": false,
+      "first_valid_json": true,
+      "linux_normalized_stdout_sha256": "83cbe006c9b24c93260312b75a213904e76b75b7fcdb17612c6640f37a20c78c",
+      "linux_qt5_normalized_stdout_equal": true,
+      "linux_qt5_raw_differences": [],
+      "linux_qt5_reports_load_error": false,
+      "linux_qt5_reports_load_error_equal": true,
+      "linux_qt5_valid_json": true,
+      "linux_qt5_valid_json_equal": true,
+      "reports_parse_error": false,
+      "reports_runtime_error": false,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/scan_missing_main_json.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 468,
+        "stdout_path": "raw/cli-database/scan_missing_main_json.second.stdout",
+        "stdout_sha256": "83cbe006c9b24c93260312b75a213904e76b75b7fcdb17612c6640f37a20c78c"
+      },
+      "second_reports_load_error": false,
+      "second_valid_json": true
+    },
+    "scan_missing_main_messages_json": {
+      "arguments": [
+        "--json",
+        "--messages",
+        "--database",
+        "<dbfx>/missing-main",
+        "--extradatabase",
+        "<dbfx>/empty-extra",
+        "--customdatabase",
+        "<dbfx>/empty-custom",
+        "<dbfx>/input/plain.txt"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/scan_missing_main_messages_json.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 557,
+        "stdout_path": "raw/cli-database/scan_missing_main_messages_json.first.stdout",
+        "stdout_sha256": "b4df95fe3f6665099b2029a05a1760250db59a089efa34da1ed7d225c6e71492"
+      },
+      "first_reports_load_error": true,
+      "first_valid_json": false,
+      "linux_normalized_stdout_sha256": "4fd0c46c1efd073314a0bb1d5d414f745c565a725802538a581d0366e8dfcfc6",
+      "linux_qt5_normalized_stdout_equal": true,
+      "linux_qt5_raw_differences": [
+        "stdout"
+      ],
+      "linux_qt5_reports_load_error": true,
+      "linux_qt5_reports_load_error_equal": true,
+      "linux_qt5_valid_json": false,
+      "linux_qt5_valid_json_equal": true,
+      "reports_parse_error": false,
+      "reports_runtime_error": false,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/scan_missing_main_messages_json.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 557,
+        "stdout_path": "raw/cli-database/scan_missing_main_messages_json.second.stdout",
+        "stdout_sha256": "b4df95fe3f6665099b2029a05a1760250db59a089efa34da1ed7d225c6e71492"
+      },
+      "second_reports_load_error": true,
+      "second_valid_json": false
+    },
+    "scan_throwing_main_json": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<dbfx>/throwing-main",
+        "--extradatabase",
+        "<dbfx>/empty-extra",
+        "--customdatabase",
+        "<dbfx>/empty-custom",
+        "<dbfx>/input/plain.txt"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/scan_throwing_main_json.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 526,
+        "stdout_path": "raw/cli-database/scan_throwing_main_json.first.stdout",
+        "stdout_sha256": "7ac9f3860721523342e3d6c5917c63d6025a31f6b183c0d5a22c477b9e7fb52f"
+      },
+      "first_reports_load_error": false,
+      "first_valid_json": false,
+      "linux_normalized_stdout_sha256": "7ac9f3860721523342e3d6c5917c63d6025a31f6b183c0d5a22c477b9e7fb52f",
+      "linux_qt5_normalized_stdout_equal": true,
+      "linux_qt5_raw_differences": [],
+      "linux_qt5_reports_load_error": false,
+      "linux_qt5_reports_load_error_equal": true,
+      "linux_qt5_valid_json": false,
+      "linux_qt5_valid_json_equal": true,
+      "reports_parse_error": false,
+      "reports_runtime_error": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/scan_throwing_main_json.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 526,
+        "stdout_path": "raw/cli-database/scan_throwing_main_json.second.stdout",
+        "stdout_sha256": "7ac9f3860721523342e3d6c5917c63d6025a31f6b183c0d5a22c477b9e7fb52f"
+      },
+      "second_reports_load_error": false,
+      "second_valid_json": false
+    },
+    "scan_valid_main_json": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<dbfx>/valid-main",
+        "--extradatabase",
+        "<dbfx>/empty-extra",
+        "--customdatabase",
+        "<dbfx>/empty-custom",
+        "<dbfx>/input/plain.txt"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/scan_valid_main_json.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 470,
+        "stdout_path": "raw/cli-database/scan_valid_main_json.first.stdout",
+        "stdout_sha256": "f4aba52e28e2dcc3bffc03eb016364485834d7501a0a0859fbfa4bee2593fa17"
+      },
+      "first_reports_load_error": false,
+      "first_valid_json": true,
+      "linux_normalized_stdout_sha256": "f4aba52e28e2dcc3bffc03eb016364485834d7501a0a0859fbfa4bee2593fa17",
+      "linux_qt5_normalized_stdout_equal": true,
+      "linux_qt5_raw_differences": [],
+      "linux_qt5_reports_load_error": false,
+      "linux_qt5_reports_load_error_equal": true,
+      "linux_qt5_valid_json": true,
+      "linux_qt5_valid_json_equal": true,
+      "reports_parse_error": false,
+      "reports_runtime_error": false,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/scan_valid_main_json.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 470,
+        "stdout_path": "raw/cli-database/scan_valid_main_json.second.stdout",
+        "stdout_sha256": "f4aba52e28e2dcc3bffc03eb016364485834d7501a0a0859fbfa4bee2593fa17"
+      },
+      "second_reports_load_error": false,
+      "second_valid_json": true
+    },
+    "scan_valid_main_missing_extra_json": {
+      "arguments": [
+        "--json",
+        "--messages",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<dbfx>/missing-extra",
+        "--customdatabase",
+        "<dbfx>/missing-custom",
+        "<dbfx>/input/plain.txt"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/scan_valid_main_missing_extra_json.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 478,
+        "stdout_path": "raw/cli-database/scan_valid_main_missing_extra_json.first.stdout",
+        "stdout_sha256": "f354d8df85d30a257d89ed74805c60964bc7f65260fc9ba4e01040f845f7cdf7"
+      },
+      "first_reports_load_error": false,
+      "first_valid_json": true,
+      "linux_normalized_stdout_sha256": "f354d8df85d30a257d89ed74805c60964bc7f65260fc9ba4e01040f845f7cdf7",
+      "linux_qt5_normalized_stdout_equal": true,
+      "linux_qt5_raw_differences": [],
+      "linux_qt5_reports_load_error": false,
+      "linux_qt5_reports_load_error_equal": true,
+      "linux_qt5_valid_json": true,
+      "linux_qt5_valid_json_equal": true,
+      "reports_parse_error": false,
+      "reports_runtime_error": false,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/scan_valid_main_missing_extra_json.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 478,
+        "stdout_path": "raw/cli-database/scan_valid_main_missing_extra_json.second.stdout",
+        "stdout_sha256": "f354d8df85d30a257d89ed74805c60964bc7f65260fc9ba4e01040f845f7cdf7"
+      },
+      "second_reports_load_error": false,
+      "second_valid_json": true
+    },
+    "show_database_empty_main": {
+      "arguments": [
+        "--showdatabase",
+        "--database",
+        "<dbfx>/empty-main",
+        "--extradatabase",
+        "<dbfx>/empty-extra",
+        "--customdatabase",
+        "<dbfx>/empty-custom"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/show_database_empty_main.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 246,
+        "stdout_path": "raw/cli-database/show_database_empty_main.first.stdout",
+        "stdout_sha256": "8c879350a014cbb6404c99f8dc7402d841f63103101808520b5adf7d4dd9e897"
+      },
+      "first_reports_load_error": false,
+      "linux_normalized_stdout_sha256": "487fa1d7353d6a15095c706ab6137aa4a9f60cc4d4a76416956664b71ea6bb82",
+      "linux_qt5_normalized_stdout_equal": true,
+      "linux_qt5_raw_differences": [
+        "stdout"
+      ],
+      "linux_qt5_reports_load_error": false,
+      "linux_qt5_reports_load_error_equal": true,
+      "reports_parse_error": false,
+      "reports_runtime_error": false,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/show_database_empty_main.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 246,
+        "stdout_path": "raw/cli-database/show_database_empty_main.second.stdout",
+        "stdout_sha256": "8c879350a014cbb6404c99f8dc7402d841f63103101808520b5adf7d4dd9e897"
+      },
+      "second_reports_load_error": false
+    },
+    "show_database_invalid_archive": {
+      "arguments": [
+        "--showdatabase",
+        "--database",
+        "<dbfx>/not-a-database.bin",
+        "--extradatabase",
+        "<dbfx>/empty-extra",
+        "--customdatabase",
+        "<dbfx>/empty-custom"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 3,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/show_database_invalid_archive.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 254,
+        "stdout_path": "raw/cli-database/show_database_invalid_archive.first.stdout",
+        "stdout_sha256": "fe2f260b57970e2df9ab1e35221c07c6ee9b0c9d3014dae34e6ffdf00bfc28ce"
+      },
+      "first_reports_load_error": false,
+      "linux_normalized_stdout_sha256": "26fa8ca5003f5f5d2ca2b83fac3335885d3d819dba0a2cc3a4cdaba06bb87b7f",
+      "linux_qt5_normalized_stdout_equal": true,
+      "linux_qt5_raw_differences": [
+        "stdout"
+      ],
+      "linux_qt5_reports_load_error": false,
+      "linux_qt5_reports_load_error_equal": true,
+      "reports_parse_error": false,
+      "reports_runtime_error": false,
+      "second": {
+        "exit_code": 3,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/show_database_invalid_archive.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 254,
+        "stdout_path": "raw/cli-database/show_database_invalid_archive.second.stdout",
+        "stdout_sha256": "fe2f260b57970e2df9ab1e35221c07c6ee9b0c9d3014dae34e6ffdf00bfc28ce"
+      },
+      "second_reports_load_error": false
+    },
+    "show_database_invalid_archive_messages": {
+      "arguments": [
+        "--showdatabase",
+        "--messages",
+        "--database",
+        "<dbfx>/not-a-database.bin",
+        "--extradatabase",
+        "<dbfx>/empty-extra",
+        "--customdatabase",
+        "<dbfx>/empty-custom"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 3,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/show_database_invalid_archive_messages.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 254,
+        "stdout_path": "raw/cli-database/show_database_invalid_archive_messages.first.stdout",
+        "stdout_sha256": "fe2f260b57970e2df9ab1e35221c07c6ee9b0c9d3014dae34e6ffdf00bfc28ce"
+      },
+      "first_reports_load_error": false,
+      "linux_normalized_stdout_sha256": "26fa8ca5003f5f5d2ca2b83fac3335885d3d819dba0a2cc3a4cdaba06bb87b7f",
+      "linux_qt5_normalized_stdout_equal": true,
+      "linux_qt5_raw_differences": [
+        "stdout"
+      ],
+      "linux_qt5_reports_load_error": false,
+      "linux_qt5_reports_load_error_equal": true,
+      "reports_parse_error": false,
+      "reports_runtime_error": false,
+      "second": {
+        "exit_code": 3,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/show_database_invalid_archive_messages.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 254,
+        "stdout_path": "raw/cli-database/show_database_invalid_archive_messages.second.stdout",
+        "stdout_sha256": "fe2f260b57970e2df9ab1e35221c07c6ee9b0c9d3014dae34e6ffdf00bfc28ce"
+      },
+      "second_reports_load_error": false
+    },
+    "show_database_malformed_main": {
+      "arguments": [
+        "--showdatabase",
+        "--database",
+        "<dbfx>/malformed-main",
+        "--extradatabase",
+        "<dbfx>/empty-extra",
+        "--customdatabase",
+        "<dbfx>/empty-custom"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/show_database_malformed_main.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 261,
+        "stdout_path": "raw/cli-database/show_database_malformed_main.first.stdout",
+        "stdout_sha256": "0d0cd3da3016287286704679732930c8aace6d7cadc06b6817467c46322319c1"
+      },
+      "first_reports_load_error": false,
+      "linux_normalized_stdout_sha256": "cd7a65c840a6f3243a388d972d161a0d430386b25a7011ce55c07fa1314c9ca7",
+      "linux_qt5_normalized_stdout_equal": true,
+      "linux_qt5_raw_differences": [
+        "stdout"
+      ],
+      "linux_qt5_reports_load_error": false,
+      "linux_qt5_reports_load_error_equal": true,
+      "reports_parse_error": false,
+      "reports_runtime_error": false,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/show_database_malformed_main.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 261,
+        "stdout_path": "raw/cli-database/show_database_malformed_main.second.stdout",
+        "stdout_sha256": "0d0cd3da3016287286704679732930c8aace6d7cadc06b6817467c46322319c1"
+      },
+      "second_reports_load_error": false
+    },
+    "show_database_missing_main": {
+      "arguments": [
+        "--showdatabase",
+        "--database",
+        "<dbfx>/missing-main",
+        "--extradatabase",
+        "<dbfx>/empty-extra",
+        "--customdatabase",
+        "<dbfx>/empty-custom"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 3,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/show_database_missing_main.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 248,
+        "stdout_path": "raw/cli-database/show_database_missing_main.first.stdout",
+        "stdout_sha256": "450cc7f7e0392ee6b2b28a407069e8c16f11492cbc2c01d2d374e09a298902ff"
+      },
+      "first_reports_load_error": false,
+      "linux_normalized_stdout_sha256": "0e3d2407088de45c3a0a805397dc47b2c3f3466e1729f6aa86ab263644888eb6",
+      "linux_qt5_normalized_stdout_equal": true,
+      "linux_qt5_raw_differences": [
+        "stdout"
+      ],
+      "linux_qt5_reports_load_error": false,
+      "linux_qt5_reports_load_error_equal": true,
+      "reports_parse_error": false,
+      "reports_runtime_error": false,
+      "second": {
+        "exit_code": 3,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/show_database_missing_main.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 248,
+        "stdout_path": "raw/cli-database/show_database_missing_main.second.stdout",
+        "stdout_sha256": "450cc7f7e0392ee6b2b28a407069e8c16f11492cbc2c01d2d374e09a298902ff"
+      },
+      "second_reports_load_error": false
+    },
+    "show_database_missing_main_messages": {
+      "arguments": [
+        "--showdatabase",
+        "--messages",
+        "--database",
+        "<dbfx>/missing-main",
+        "--extradatabase",
+        "<dbfx>/empty-extra",
+        "--customdatabase",
+        "<dbfx>/empty-custom"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 3,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/show_database_missing_main_messages.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 337,
+        "stdout_path": "raw/cli-database/show_database_missing_main_messages.first.stdout",
+        "stdout_sha256": "b95db7a642a8c7ab87967cd50892be54631b63c38da6b20c465a5ef38df2f71c"
+      },
+      "first_reports_load_error": true,
+      "linux_normalized_stdout_sha256": "863716eb1ebaa631a95dcd8c774ad9ec20d42137670441a5e4d3a54f292f2931",
+      "linux_qt5_normalized_stdout_equal": true,
+      "linux_qt5_raw_differences": [
+        "stdout"
+      ],
+      "linux_qt5_reports_load_error": true,
+      "linux_qt5_reports_load_error_equal": true,
+      "reports_parse_error": false,
+      "reports_runtime_error": false,
+      "second": {
+        "exit_code": 3,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/show_database_missing_main_messages.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 337,
+        "stdout_path": "raw/cli-database/show_database_missing_main_messages.second.stdout",
+        "stdout_sha256": "b95db7a642a8c7ab87967cd50892be54631b63c38da6b20c465a5ef38df2f71c"
+      },
+      "second_reports_load_error": true
+    },
+    "show_database_valid_main_missing_extra": {
+      "arguments": [
+        "--showdatabase",
+        "--messages",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<dbfx>/missing-extra",
+        "--customdatabase",
+        "<dbfx>/missing-custom"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/show_database_valid_main_missing_extra.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 529,
+        "stdout_path": "raw/cli-database/show_database_valid_main_missing_extra.first.stdout",
+        "stdout_sha256": "2df4c5d6f3374c6f42a033ee60d220823a7a99507882ffd41f819cb35827f581"
+      },
+      "first_reports_load_error": false,
+      "linux_normalized_stdout_sha256": "5b7d6c4f605f2a65c513e6eecbce2c47d00d638a804ec6d8936fba557534673f",
+      "linux_qt5_normalized_stdout_equal": true,
+      "linux_qt5_raw_differences": [
+        "stdout"
+      ],
+      "linux_qt5_reports_load_error": false,
+      "linux_qt5_reports_load_error_equal": true,
+      "reports_parse_error": false,
+      "reports_runtime_error": false,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-database/show_database_valid_main_missing_extra.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 529,
+        "stdout_path": "raw/cli-database/show_database_valid_main_missing_extra.second.stdout",
+        "stdout_sha256": "2df4c5d6f3374c6f42a033ee60d220823a7a99507882ffd41f819cb35827f581"
+      },
+      "second_reports_load_error": false
+    }
+  },
+  "fixture": {
+    "directories": [
+      "empty-main",
+      "empty-extra",
+      "empty-custom",
+      "malformed-main",
+      "malformed-main/Binary",
+      "throwing-main",
+      "throwing-main/Binary",
+      "valid-main",
+      "valid-main/Binary",
+      "input"
+    ],
+    "entries": [
+      {
+        "path": "input/plain.txt",
+        "purpose": "benign scan input",
+        "sha256": "22b217bfba5795d402092bf48bfb28146c0ee4dd0036fd4d0c93e25bbe65e998",
+        "size": 31,
+        "source": "project-generated"
+      },
+      {
+        "path": "not-a-database.bin",
+        "purpose": "invalid database archive",
+        "sha256": "9c77bc4db8b86e78cab9e99000dcec5616618d690311a7ec43a1a4e9affe5987",
+        "size": 19,
+        "source": "project-generated"
+      },
+      {
+        "path": "malformed-main/Binary/broken.1.sg",
+        "purpose": "JavaScript syntax error",
+        "sha256": "669f79431d84c5bda53be5dd121c2d46dae60830c5fa684f9384c49882aecf6c",
+        "size": 19,
+        "source": "project-generated"
+      },
+      {
+        "path": "throwing-main/Binary/throw.1.sg",
+        "purpose": "JavaScript runtime error",
+        "sha256": "9d19269590aa6a4cdaf8b8171613d8a71c11a80c9f06317b17d3888dd683f883",
+        "size": 63,
+        "source": "project-generated"
+      },
+      {
+        "path": "valid-main/Binary/fixture.1.sg",
+        "purpose": "deterministic successful detection",
+        "sha256": "488529e3e364d33a69f776872f4ec785756c043dadfd7d6a58d4a824d449f364",
+        "size": 85,
+        "source": "project-generated"
+      },
+      {
+        "path": "valid-main.zip",
+        "purpose": "valid ZIP database with one Binary rule",
+        "sha256": "afaed8e38839ac74650fc49248ca79bcfd38d5761d9e5aba9970d98fded12849",
+        "size": 221,
+        "source": "project-generated"
+      },
+      {
+        "path": "empty-main.zip",
+        "purpose": "valid empty ZIP database",
+        "sha256": "8739c76e681f900923b900c9df0ef75cf421d39cabb54650c4b9ad19b6a76d85",
+        "size": 22,
+        "source": "project-generated"
+      },
+      {
+        "path": "truncated-main.zip",
+        "purpose": "database ZIP with the 22-byte EOCD removed",
+        "sha256": "4782354405359f30e5b23ca38aa0768ae82faafc98c15f256e43fafb023fa603",
+        "size": 199,
+        "source": "project-generated"
+      },
+      {
+        "path": "local-only-main.zip",
+        "purpose": "database ZIP containing only local header and complete payload",
+        "sha256": "b673126ee96491d46ee46c76855218444edc2aa0c0e1b3d9654fd445b624ae76",
+        "size": 134,
+        "source": "project-generated"
+      },
+      {
+        "path": "payload-truncated-main.zip",
+        "purpose": "database ZIP truncated one byte before the rule payload ends",
+        "sha256": "2ecde2da23c2620735876c66ac70f0a40a8b6c628034f9bd6dca213c3ae0304b",
+        "size": 133,
+        "source": "project-generated"
+      },
+      {
+        "path": "payload-structure-truncated-main.zip",
+        "purpose": "database ZIP truncated before the rule closing brace and newline",
+        "sha256": "16280e85a67231cfa2795bac081bdff9e365964a17c9c782b60d05c4af325faf",
+        "size": 132,
+        "source": "project-generated"
+      },
+      {
+        "path": "local-header-truncated-main.zip",
+        "purpose": "database ZIP truncated inside the first local header",
+        "sha256": "d9ed9e96fafac05806b1ff3df9669a8250618dae01a8e61c4baa9fddfacf3b0d",
+        "size": 29,
+        "source": "project-generated"
+      },
+      {
+        "path": "duplicate-main.zip",
+        "purpose": "ZIP database with duplicate Binary entry names",
+        "sha256": "e67b4e6cf0fda02d4f529355740dd97a25b8b00a8f5a597361cd869e98b912b9",
+        "size": 443,
+        "source": "project-generated"
+      },
+      {
+        "path": "traversal-main.zip",
+        "purpose": "ZIP database with a Binary/../ rule entry name",
+        "sha256": "efd7a7d6b188051a4baa7c432d78ab84ca60bf897bcc76358baac06370054365",
+        "size": 237,
+        "source": "project-generated"
+      },
+      {
+        "path": "prefixed-main.zip",
+        "purpose": "ZIP database with an additional root directory prefix",
+        "sha256": "53c08f025601a664e4eabe4d619846b9da9936bdd1ba7ca434bc3c0164d8bb9c",
+        "size": 242,
+        "source": "project-generated"
+      }
+    ],
+    "manifest": "docs/research/data/database-fixture.json",
+    "sha256": "90b6ce18e5656fa30c2dfd55573df4612825a74e77cb9e2f4fc1baa81fd7223c"
+  },
+  "generator": {
+    "baseline_collector_path": "tools/upstream/collect_macos_cli_baseline.py",
+    "baseline_collector_sha256": "113354cc888d132e6e2f666f886a1ba10bf3354ffcefab119eef50bc1e273113",
+    "baseline_validator_path": "tools/upstream/validate_macos_cli_baseline.py",
+    "baseline_validator_sha256": "8bf54da3f25f1ef81d86edde5204cce2a850e7a4ff09301252bb465ae3f8088c",
+    "database_helper_path": "tools/upstream/collect_windows_cli_database.py",
+    "database_helper_sha256": "4eca18c06ec320d8ab9b99dddaae976b3fc3104321df0a762f312d6a32bbc8d3",
+    "matrix_definitions_path": "tools/upstream/compare_cli_oracles.py",
+    "matrix_definitions_sha256": "06e128b938f362978d983d3d984213535eabd02161b71886ef989e33838b15b4",
+    "path": "tools/upstream/collect_macos_cli_database.py",
+    "sha256": "087c4e99ccf12ba5855418dd1d1efa4746f6fb6526877bf848099555ead80d03",
+    "validator_path": "tools/upstream/validate_macos_cli_database.py",
+    "validator_sha256": "505c85819dbf4946cfafecd11bf53f9901ca690d34dbcb83584447f16854c378"
+  },
+  "limitations": [
+    "the candidate covers the 18 committed release-CLI database success, missing, empty, malformed, throwing, and layer cases",
+    "ZIP archive/cache boundaries, permission-denied databases, unreadable inputs, and engine-only cache controls remain open",
+    "raw streams remain authoritative; the named path and line-ending normalization is an additional Linux Qt5 comparison"
+  ],
+  "linux_qt5_reference": {
+    "path": "docs/research/data/cli-database-matrix-linux-qt5-qt6.json",
+    "sha256": "0bb7c6562e7d31604a6a16b3556fbc04ca70a02c089637be0f4849afa0006f4b"
+  },
+  "local_paths": {
+    "fixture_dir": "<macos-work>/database-fixture"
+  },
+  "normalization": {
+    "not_performed": [
+      "JSON parsing or reserialization",
+      "diagnostic removal or rewriting",
+      "record sorting",
+      "whitespace changes other than CRLF line endings"
+    ],
+    "operations": [
+      "replace each actual macOS path argument with the exact corresponding original Linux matrix argument",
+      "replace CRLF with LF"
+    ],
+    "purpose": "compare raw macOS output to the committed Linux Qt5 stdout hashes after only named platform transformations"
+  },
+  "oracle_report": {
+    "path": "oracle-candidate.json",
+    "sha256": "3e37bcef14b22887bd5525db8cc6f6d15a0cfe390f3eb7bc33ffabc37699696e"
+  },
+  "platform": "macos-x86_64-qt5",
+  "qt": {
+    "qmake_sha256": "14206b8303e6853e050277debc076be3460d11d4bc14821f7f55b1e27e67c8fe",
+    "qmake_spec": "macx-clang",
+    "qtcore_sha256": "86f54c3f81b7733bf7cda793094a213d5d7ce8562486b52285c846fc88ceaf9e",
+    "qtscript_sha256": "a566185119647f6b541f022950a3dda97197b5d9c23dc12ef2d872274d4ebf4d",
+    "version": "5.15.2"
+  },
+  "result": "candidate",
+  "schema_version": 1,
+  "source": {
+    "commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "recursive_submodule_count": 58,
+    "repository": "https://github.com/horsicq/DIE-engine",
+    "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+    "tracked_files_clean_before_and_after": true
+  },
+  "summary": {
+    "case_count": 18,
+    "determinism_failures": [],
+    "deterministic": true,
+    "execution_count": 36,
+    "linux_document_validity_equal": true,
+    "linux_document_validity_failures": [],
+    "linux_exit_code_failures": [],
+    "linux_exit_codes_equal": true,
+    "linux_load_error_failures": [],
+    "linux_load_errors_equal": true,
+    "linux_normalized_stdout_equal": true,
+    "linux_normalized_stdout_failures": [],
+    "raw_stream_count": 72
+  }
+}

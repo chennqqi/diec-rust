@@ -1,0 +1,97 @@
+{
+  "admission": {
+    "platform_admitted": false,
+    "reason": "candidate build identity only; paired runtime capability evidence and a reviewed toolchain lock are missing"
+  },
+  "artifact": {
+    "architectures": [
+      "x86_64"
+    ],
+    "file_description": "Mach-O 64-bit executable x86_64",
+    "otool_l": [
+      "<macos-work>/DIE-engine-src/build/release/diec:",
+      "\t@rpath/QtConcurrent.framework/Versions/5/QtConcurrent (compatibility version 5.15.0, current version 5.15.2)",
+      "\t@rpath/QtScript.framework/Versions/5/QtScript (compatibility version 5.15.0, current version 5.15.2)",
+      "\t@rpath/QtCore.framework/Versions/5/QtCore (compatibility version 5.15.0, current version 5.15.2)",
+      "\t/System/Library/Frameworks/DiskArbitration.framework/Versions/A/DiskArbitration (compatibility version 1.0.0, current version 1.0.0)",
+      "\t/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit (compatibility version 1.0.0, current version 275.0.0)",
+      "\t/usr/lib/libc++.1.dylib (compatibility version 1.0.0, current version 1300.36.0)",
+      "\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1319.0.0)"
+    ],
+    "sha256": "f4c69824399e3b27b1ec60924ef60555620c4e217a1f48cdae8c8db467d39317",
+    "size": 7452296,
+    "version_exit_code": 0,
+    "version_stdout": "die 4.0.0"
+  },
+  "build": {
+    "configuration": "release",
+    "elapsed_seconds": 248,
+    "jobs": 4,
+    "macos_build_fix": {
+      "applied": true,
+      "file": "Formats/xbinary.h",
+      "line": 114,
+      "original": "#include <CoreFoundation/CoreFoundation.h>  // Check",
+      "reason": "xdeflatedecoder.cpp amalgamation includes xbinary.h inside function scope; CoreFoundation.h CF_EXPORT typedefs fail; include is unused in xbinary.h"
+    },
+    "system": "qmake",
+    "targets": [
+      "sub-build_libs-make_first",
+      "sub-console_source-make_first"
+    ]
+  },
+  "host": {
+    "clang_version": [
+      "Apple clang version 14.0.0 (clang-1400.0.29.202)",
+      "Target: x86_64-apple-darwin21.6.0",
+      "Thread model: posix",
+      "InstalledDir: /Library/Developer/CommandLineTools/usr/bin"
+    ],
+    "cmake_version": "cmake version 3.27.7",
+    "cpu_brand": "Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz",
+    "logical_cpu_count": 8,
+    "sw_vers": [
+      "ProductName:\tmacOS",
+      "ProductVersion:\t12.7.6",
+      "BuildVersion:\t21H1320"
+    ],
+    "uname": "Darwin chenqdeMacBook-Pro.local 21.6.0 Darwin Kernel Version 21.6.0: Mon Jun 24 00:56:10 PDT 2024; root:xnu-8020.240.18.709.2~1/RELEASE_X86_64 x86_64",
+    "xcode_version": [
+      "CommandLineTools only (no full Xcode)"
+    ]
+  },
+  "local_paths": {
+    "artifact": "<macos-work>/DIE-engine-src/build/release/diec",
+    "build_dir": "<macos-work>/build",
+    "qt_dir": "<macos-work>/qt/5.15.2/clang_64",
+    "source_dir": "<macos-work>/DIE-engine-src"
+  },
+  "platform": "macos-x86_64-qt5",
+  "qt": {
+    "qmake_sha256": "14206b8303e6853e050277debc076be3460d11d4bc14821f7f55b1e27e67c8fe",
+    "qmake_spec": "macx-clang",
+    "qmake_version": [
+      "QMake version 3.1",
+      "Using Qt version 5.15.2 in <macos-work>/qt/5.15.2/clang_64/lib"
+    ],
+    "qtcore_sha256": "86f54c3f81b7733bf7cda793094a213d5d7ce8562486b52285c846fc88ceaf9e",
+    "qtscript_sha256": "a566185119647f6b541f022950a3dda97197b5d9c23dc12ef2d872274d4ebf4d",
+    "version": "5.15.2"
+  },
+  "result": "candidate",
+  "schema_version": 1,
+  "source": {
+    "commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "recursive_submodule_count": 58,
+    "repository": "https://github.com/horsicq/DIE-engine",
+    "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+    "tracked_files_clean_before_and_after": true
+  },
+  "source_files": {
+    ".github/workflows/builder.yml": "b8053dda9c53682b7c931230a427d6ef2880c20bf27fe023a3eb973409ab1d57",
+    "build.pri": "a1e09eda22d1e85a51d6d56e8a6669885e6a07a96c2fceb1948c1ce49ec28e1f",
+    "build_mac.sh": "b5055e2bfe3c9dd5da38629f88d4c89fd511288699c0ffa02b4d2423caee9512",
+    "console_source/console_source.pro": "29d00c74ae2c7d81f0deaa9443e0bb21f6f3e44ba44eb8fdde422896ed58d38c",
+    "die_source.pro": "9c888455d1e35276a7aad2069ebe04818e30be96a714383f00659449a6f0bf4b"
+  }
+}

@@ -1,0 +1,892 @@
+{
+  "admission": {
+    "capability_rows_admitted": 0,
+    "platform_admitted": false,
+    "reason": "enumeration/open TOCTOU candidate only; macOS runtime evidence has not been reviewed or projected into the 68-row capability closure"
+  },
+  "binary": {
+    "relative_path": "build/release/diec",
+    "sha256": "f4c69824399e3b27b1ec60924ef60555620c4e217a1f48cdae8c8db467d39317",
+    "size": 7452296
+  },
+  "cases": {
+    "remove_old_after_enumeration": {
+      "action": "unlink_symlink",
+      "arguments": [
+        "--entropy",
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/case"
+      ],
+      "attempts": {
+        "first": {
+          "after": {
+            "link_identity": null,
+            "link_target": null,
+            "target_identity": null
+          },
+          "before": {
+            "link_identity": {
+              "device": 16777222,
+              "inode": 2640531,
+              "mode": 41453,
+              "size": 18
+            },
+            "link_target": "../targets/old.bin",
+            "target_identity": {
+              "device": 16777222,
+              "inode": 2640529,
+              "mode": 33188,
+              "size": 0
+            }
+          },
+          "synchronization": {
+            "child_confirmed_stopped": true,
+            "first_line": "<macos-work>/toctou/case/a-blocker.bin:",
+            "mutation_while_stopped": true,
+            "resume_signal": 19,
+            "second_prefix_seen_before_mutation": false,
+            "stop_signal": 17,
+            "transport": "pty-with-oPOST-disabled"
+          }
+        },
+        "second": {
+          "after": {
+            "link_identity": null,
+            "link_target": null,
+            "target_identity": null
+          },
+          "before": {
+            "link_identity": {
+              "device": 16777222,
+              "inode": 2640537,
+              "mode": 41453,
+              "size": 18
+            },
+            "link_target": "../targets/old.bin",
+            "target_identity": {
+              "device": 16777222,
+              "inode": 2640535,
+              "mode": 33188,
+              "size": 0
+            }
+          },
+          "synchronization": {
+            "child_confirmed_stopped": true,
+            "first_line": "<macos-work>/toctou/case/a-blocker.bin:",
+            "mutation_while_stopped": true,
+            "resume_signal": 19,
+            "second_prefix_seen_before_mutation": false,
+            "stop_signal": 17,
+            "transport": "pty-with-oPOST-disabled"
+          }
+        }
+      },
+      "determinism_differences": [],
+      "expected_open_target": "missing",
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-toctou/remove_old_after_enumeration.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 421,
+        "stdout_path": "raw/cli-toctou/remove_old_after_enumeration.first.stdout",
+        "stdout_sha256": "a6daf144e18b85ec8560984643b8405bb82f242d59cd3ce86f81bdd3d448e600"
+      },
+      "first_documents": [
+        {
+          "records": [
+            {
+              "entropy": 0,
+              "name": "Data",
+              "offset": 0,
+              "size": 33554432,
+              "status": "not packed"
+            }
+          ],
+          "status": "not packed",
+          "total": 0
+        },
+        {
+          "records": [],
+          "status": "",
+          "total": 0
+        }
+      ],
+      "initial_target": "../targets/old.bin",
+      "linux_qt5_projection": {
+        "action": "unlink_symlink",
+        "blocker_document": {
+          "records": [
+            {
+              "entropy": 0,
+              "name": "Data",
+              "offset": 0,
+              "size": 33554432,
+              "status": "not packed"
+            }
+          ],
+          "status": "not packed",
+          "total": 0
+        },
+        "expected_open_target": "missing",
+        "link_document": {
+          "records": [],
+          "status": "",
+          "total": 0
+        }
+      },
+      "linux_qt5_semantic_equal": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-toctou/remove_old_after_enumeration.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 421,
+        "stdout_path": "raw/cli-toctou/remove_old_after_enumeration.second.stdout",
+        "stdout_sha256": "a6daf144e18b85ec8560984643b8405bb82f242d59cd3ce86f81bdd3d448e600"
+      },
+      "second_documents": [
+        {
+          "records": [
+            {
+              "entropy": 0,
+              "name": "Data",
+              "offset": 0,
+              "size": 33554432,
+              "status": "not packed"
+            }
+          ],
+          "status": "not packed",
+          "total": 0
+        },
+        {
+          "records": [],
+          "status": "",
+          "total": 0
+        }
+      ],
+      "state_transitions_valid": true,
+      "synchronization_valid": true,
+      "timeout_seconds": 60
+    },
+    "stable_new": {
+      "action": "none",
+      "arguments": [
+        "--entropy",
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/case"
+      ],
+      "attempts": {
+        "first": {
+          "after": {
+            "link_identity": {
+              "device": 16777222,
+              "inode": 2640497,
+              "mode": 41453,
+              "size": 18
+            },
+            "link_target": "../targets/new.bin",
+            "target_identity": {
+              "device": 16777222,
+              "inode": 2640496,
+              "mode": 33188,
+              "size": 4096
+            }
+          },
+          "before": {
+            "link_identity": {
+              "device": 16777222,
+              "inode": 2640497,
+              "mode": 41453,
+              "size": 18
+            },
+            "link_target": "../targets/new.bin",
+            "target_identity": {
+              "device": 16777222,
+              "inode": 2640496,
+              "mode": 33188,
+              "size": 4096
+            }
+          },
+          "synchronization": {
+            "child_confirmed_stopped": true,
+            "first_line": "<macos-work>/toctou/case/a-blocker.bin:",
+            "mutation_while_stopped": true,
+            "resume_signal": 19,
+            "second_prefix_seen_before_mutation": false,
+            "stop_signal": 17,
+            "transport": "pty-with-oPOST-disabled"
+          }
+        },
+        "second": {
+          "after": {
+            "link_identity": {
+              "device": 16777222,
+              "inode": 2640503,
+              "mode": 41453,
+              "size": 18
+            },
+            "link_target": "../targets/new.bin",
+            "target_identity": {
+              "device": 16777222,
+              "inode": 2640502,
+              "mode": 33188,
+              "size": 4096
+            }
+          },
+          "before": {
+            "link_identity": {
+              "device": 16777222,
+              "inode": 2640503,
+              "mode": 41453,
+              "size": 18
+            },
+            "link_target": "../targets/new.bin",
+            "target_identity": {
+              "device": 16777222,
+              "inode": 2640502,
+              "mode": 33188,
+              "size": 4096
+            }
+          },
+          "synchronization": {
+            "child_confirmed_stopped": true,
+            "first_line": "<macos-work>/toctou/case/a-blocker.bin:",
+            "mutation_while_stopped": true,
+            "resume_signal": 19,
+            "second_prefix_seen_before_mutation": false,
+            "stop_signal": 17,
+            "transport": "pty-with-oPOST-disabled"
+          }
+        }
+      },
+      "determinism_differences": [],
+      "expected_open_target": "new",
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-toctou/stable_new.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 583,
+        "stdout_path": "raw/cli-toctou/stable_new.first.stdout",
+        "stdout_sha256": "ef46d3069e44a36031b4299488b7ed4bffa75b82bfd0a0d12b16f04cd3a72386"
+      },
+      "first_documents": [
+        {
+          "records": [
+            {
+              "entropy": 0,
+              "name": "Data",
+              "offset": 0,
+              "size": 33554432,
+              "status": "not packed"
+            }
+          ],
+          "status": "not packed",
+          "total": 0
+        },
+        {
+          "records": [
+            {
+              "entropy": 8,
+              "name": "Data",
+              "offset": 0,
+              "size": 4096,
+              "status": "packed"
+            }
+          ],
+          "status": "packed",
+          "total": 8
+        }
+      ],
+      "initial_target": "../targets/new.bin",
+      "linux_qt5_projection": {
+        "action": "none",
+        "blocker_document": {
+          "records": [
+            {
+              "entropy": 0,
+              "name": "Data",
+              "offset": 0,
+              "size": 33554432,
+              "status": "not packed"
+            }
+          ],
+          "status": "not packed",
+          "total": 0
+        },
+        "expected_open_target": "new",
+        "link_document": {
+          "records": [
+            {
+              "entropy": 8,
+              "name": "Data",
+              "offset": 0,
+              "size": 4096,
+              "status": "packed"
+            }
+          ],
+          "status": "packed",
+          "total": 8
+        }
+      },
+      "linux_qt5_semantic_equal": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-toctou/stable_new.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 583,
+        "stdout_path": "raw/cli-toctou/stable_new.second.stdout",
+        "stdout_sha256": "ef46d3069e44a36031b4299488b7ed4bffa75b82bfd0a0d12b16f04cd3a72386"
+      },
+      "second_documents": [
+        {
+          "records": [
+            {
+              "entropy": 0,
+              "name": "Data",
+              "offset": 0,
+              "size": 33554432,
+              "status": "not packed"
+            }
+          ],
+          "status": "not packed",
+          "total": 0
+        },
+        {
+          "records": [
+            {
+              "entropy": 8,
+              "name": "Data",
+              "offset": 0,
+              "size": 4096,
+              "status": "packed"
+            }
+          ],
+          "status": "packed",
+          "total": 8
+        }
+      ],
+      "state_transitions_valid": true,
+      "synchronization_valid": true,
+      "timeout_seconds": 60
+    },
+    "stable_old": {
+      "action": "none",
+      "arguments": [
+        "--entropy",
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/case"
+      ],
+      "attempts": {
+        "first": {
+          "after": {
+            "link_identity": {
+              "device": 16777222,
+              "inode": 2640473,
+              "mode": 41453,
+              "size": 18
+            },
+            "link_target": "../targets/old.bin",
+            "target_identity": {
+              "device": 16777222,
+              "inode": 2640471,
+              "mode": 33188,
+              "size": 0
+            }
+          },
+          "before": {
+            "link_identity": {
+              "device": 16777222,
+              "inode": 2640473,
+              "mode": 41453,
+              "size": 18
+            },
+            "link_target": "../targets/old.bin",
+            "target_identity": {
+              "device": 16777222,
+              "inode": 2640471,
+              "mode": 33188,
+              "size": 0
+            }
+          },
+          "synchronization": {
+            "child_confirmed_stopped": true,
+            "first_line": "<macos-work>/toctou/case/a-blocker.bin:",
+            "mutation_while_stopped": true,
+            "resume_signal": 19,
+            "second_prefix_seen_before_mutation": false,
+            "stop_signal": 17,
+            "transport": "pty-with-oPOST-disabled"
+          }
+        },
+        "second": {
+          "after": {
+            "link_identity": {
+              "device": 16777222,
+              "inode": 2640487,
+              "mode": 41453,
+              "size": 18
+            },
+            "link_target": "../targets/old.bin",
+            "target_identity": {
+              "device": 16777222,
+              "inode": 2640485,
+              "mode": 33188,
+              "size": 0
+            }
+          },
+          "before": {
+            "link_identity": {
+              "device": 16777222,
+              "inode": 2640487,
+              "mode": 41453,
+              "size": 18
+            },
+            "link_target": "../targets/old.bin",
+            "target_identity": {
+              "device": 16777222,
+              "inode": 2640485,
+              "mode": 33188,
+              "size": 0
+            }
+          },
+          "synchronization": {
+            "child_confirmed_stopped": true,
+            "first_line": "<macos-work>/toctou/case/a-blocker.bin:",
+            "mutation_while_stopped": true,
+            "resume_signal": 19,
+            "second_prefix_seen_before_mutation": false,
+            "stop_signal": 17,
+            "transport": "pty-with-oPOST-disabled"
+          }
+        }
+      },
+      "determinism_differences": [],
+      "expected_open_target": "old",
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-toctou/stable_old.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 588,
+        "stdout_path": "raw/cli-toctou/stable_old.first.stdout",
+        "stdout_sha256": "c945181368e0234a1123d20e649ee4a58b59a2f98217a88b793b979fa0eaac60"
+      },
+      "first_documents": [
+        {
+          "records": [
+            {
+              "entropy": 0,
+              "name": "Data",
+              "offset": 0,
+              "size": 33554432,
+              "status": "not packed"
+            }
+          ],
+          "status": "not packed",
+          "total": 0
+        },
+        {
+          "records": [
+            {
+              "entropy": 0,
+              "name": "Data",
+              "offset": 0,
+              "size": 0,
+              "status": "not packed"
+            }
+          ],
+          "status": "not packed",
+          "total": 0
+        }
+      ],
+      "initial_target": "../targets/old.bin",
+      "linux_qt5_projection": {
+        "action": "none",
+        "blocker_document": {
+          "records": [
+            {
+              "entropy": 0,
+              "name": "Data",
+              "offset": 0,
+              "size": 33554432,
+              "status": "not packed"
+            }
+          ],
+          "status": "not packed",
+          "total": 0
+        },
+        "expected_open_target": "old",
+        "link_document": {
+          "records": [
+            {
+              "entropy": 0,
+              "name": "Data",
+              "offset": 0,
+              "size": 0,
+              "status": "not packed"
+            }
+          ],
+          "status": "not packed",
+          "total": 0
+        }
+      },
+      "linux_qt5_semantic_equal": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-toctou/stable_old.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 588,
+        "stdout_path": "raw/cli-toctou/stable_old.second.stdout",
+        "stdout_sha256": "c945181368e0234a1123d20e649ee4a58b59a2f98217a88b793b979fa0eaac60"
+      },
+      "second_documents": [
+        {
+          "records": [
+            {
+              "entropy": 0,
+              "name": "Data",
+              "offset": 0,
+              "size": 33554432,
+              "status": "not packed"
+            }
+          ],
+          "status": "not packed",
+          "total": 0
+        },
+        {
+          "records": [
+            {
+              "entropy": 0,
+              "name": "Data",
+              "offset": 0,
+              "size": 0,
+              "status": "not packed"
+            }
+          ],
+          "status": "not packed",
+          "total": 0
+        }
+      ],
+      "state_transitions_valid": true,
+      "synchronization_valid": true,
+      "timeout_seconds": 60
+    },
+    "swap_old_to_new": {
+      "action": "replace_symlink_with_new_target",
+      "arguments": [
+        "--entropy",
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/case"
+      ],
+      "attempts": {
+        "first": {
+          "after": {
+            "link_identity": {
+              "device": 16777222,
+              "inode": 2640514,
+              "mode": 41453,
+              "size": 18
+            },
+            "link_target": "../targets/new.bin",
+            "target_identity": {
+              "device": 16777222,
+              "inode": 2640512,
+              "mode": 33188,
+              "size": 4096
+            }
+          },
+          "before": {
+            "link_identity": {
+              "device": 16777222,
+              "inode": 2640513,
+              "mode": 41453,
+              "size": 18
+            },
+            "link_target": "../targets/old.bin",
+            "target_identity": {
+              "device": 16777222,
+              "inode": 2640511,
+              "mode": 33188,
+              "size": 0
+            }
+          },
+          "synchronization": {
+            "child_confirmed_stopped": true,
+            "first_line": "<macos-work>/toctou/case/a-blocker.bin:",
+            "mutation_while_stopped": true,
+            "resume_signal": 19,
+            "second_prefix_seen_before_mutation": false,
+            "stop_signal": 17,
+            "transport": "pty-with-oPOST-disabled"
+          }
+        },
+        "second": {
+          "after": {
+            "link_identity": {
+              "device": 16777222,
+              "inode": 2640521,
+              "mode": 41453,
+              "size": 18
+            },
+            "link_target": "../targets/new.bin",
+            "target_identity": {
+              "device": 16777222,
+              "inode": 2640519,
+              "mode": 33188,
+              "size": 4096
+            }
+          },
+          "before": {
+            "link_identity": {
+              "device": 16777222,
+              "inode": 2640520,
+              "mode": 41453,
+              "size": 18
+            },
+            "link_target": "../targets/old.bin",
+            "target_identity": {
+              "device": 16777222,
+              "inode": 2640518,
+              "mode": 33188,
+              "size": 0
+            }
+          },
+          "synchronization": {
+            "child_confirmed_stopped": true,
+            "first_line": "<macos-work>/toctou/case/a-blocker.bin:",
+            "mutation_while_stopped": true,
+            "resume_signal": 19,
+            "second_prefix_seen_before_mutation": false,
+            "stop_signal": 17,
+            "transport": "pty-with-oPOST-disabled"
+          }
+        }
+      },
+      "determinism_differences": [],
+      "expected_open_target": "new",
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-toctou/swap_old_to_new.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 583,
+        "stdout_path": "raw/cli-toctou/swap_old_to_new.first.stdout",
+        "stdout_sha256": "ef46d3069e44a36031b4299488b7ed4bffa75b82bfd0a0d12b16f04cd3a72386"
+      },
+      "first_documents": [
+        {
+          "records": [
+            {
+              "entropy": 0,
+              "name": "Data",
+              "offset": 0,
+              "size": 33554432,
+              "status": "not packed"
+            }
+          ],
+          "status": "not packed",
+          "total": 0
+        },
+        {
+          "records": [
+            {
+              "entropy": 8,
+              "name": "Data",
+              "offset": 0,
+              "size": 4096,
+              "status": "packed"
+            }
+          ],
+          "status": "packed",
+          "total": 8
+        }
+      ],
+      "initial_target": "../targets/old.bin",
+      "linux_qt5_projection": {
+        "action": "replace_symlink_with_new_target",
+        "blocker_document": {
+          "records": [
+            {
+              "entropy": 0,
+              "name": "Data",
+              "offset": 0,
+              "size": 33554432,
+              "status": "not packed"
+            }
+          ],
+          "status": "not packed",
+          "total": 0
+        },
+        "expected_open_target": "new",
+        "link_document": {
+          "records": [
+            {
+              "entropy": 8,
+              "name": "Data",
+              "offset": 0,
+              "size": 4096,
+              "status": "packed"
+            }
+          ],
+          "status": "packed",
+          "total": 8
+        }
+      },
+      "linux_qt5_semantic_equal": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-toctou/swap_old_to_new.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 583,
+        "stdout_path": "raw/cli-toctou/swap_old_to_new.second.stdout",
+        "stdout_sha256": "ef46d3069e44a36031b4299488b7ed4bffa75b82bfd0a0d12b16f04cd3a72386"
+      },
+      "second_documents": [
+        {
+          "records": [
+            {
+              "entropy": 0,
+              "name": "Data",
+              "offset": 0,
+              "size": 33554432,
+              "status": "not packed"
+            }
+          ],
+          "status": "not packed",
+          "total": 0
+        },
+        {
+          "records": [
+            {
+              "entropy": 8,
+              "name": "Data",
+              "offset": 0,
+              "size": 4096,
+              "status": "packed"
+            }
+          ],
+          "status": "packed",
+          "total": 8
+        }
+      ],
+      "state_transitions_valid": true,
+      "synchronization_valid": true,
+      "timeout_seconds": 60
+    }
+  },
+  "cli_baseline_report": {
+    "path": "cli-baseline-candidate.json",
+    "sha256": "02346b70493fb4cb0f11a8fecbaf38e645354dd1b61afe9e8f090b4f8c3c9433"
+  },
+  "fixture": {
+    "case_count": 4,
+    "live_preflight": {
+      "blocker_sha256": "83ee47245398adee79bd9c0a8bc57b821e92aba10f5f9ade8a5d1fae4d8c4302",
+      "blocker_size": 33554432,
+      "new_sha256": "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193",
+      "new_size": 4096,
+      "old_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "old_size": 0
+    },
+    "manifest": "docs/research/data/path-toctou-fixture.json",
+    "manifest_sha256": "aeb693989cf55e2a45209567fc7be03283139299c3dfe563cba86ad4f0e9fd55"
+  },
+  "generator": {
+    "baseline_collector_path": "tools/upstream/collect_macos_cli_baseline.py",
+    "baseline_collector_sha256": "113354cc888d132e6e2f666f886a1ba10bf3354ffcefab119eef50bc1e273113",
+    "baseline_validator_path": "tools/upstream/validate_macos_cli_baseline.py",
+    "baseline_validator_sha256": "8bf54da3f25f1ef81d86edde5204cce2a850e7a4ff09301252bb465ae3f8088c",
+    "fixture_generator_path": "tools/corpus/generate_path_toctou_fixture.py",
+    "fixture_generator_sha256": "4738de8ed21bbdec683dc3dc65a5231ed9bf37575a555633005d551520c720d3",
+    "path": "tools/upstream/collect_macos_cli_toctou.py",
+    "sha256": "cbe4941561ce7c3b5ec25978121c9272e628bacd1ad8b1d7200d110861d8b0c9",
+    "validator_path": "tools/upstream/validate_macos_cli_toctou.py",
+    "validator_sha256": "886449ed80188ae1b48dcf8de7313b7cac29e155f88be660adc2e981969e9e26"
+  },
+  "limitations": [
+    "the PTY, SIGSTOP, waitpid(WUNTRACED), mutation, and SIGCONT protocol covers one ordered two-entry directory and two symlink mutations; it is not a general scheduler proof",
+    "the collector fails if the second logical prefix is observable before the child is confirmed stopped, rather than accepting a timing-dependent result",
+    "the PTY intentionally changes stdout isatty state to obtain a portable line boundary; stable controls and semantic projection detect output drift, but this is not byte-equivalent to the ordinary pipe-based CLI baseline transport",
+    "the candidate records legacy release-CLI behavior only; it does not approve the Rust SafeCanonical policy or waive ADR 0014 post-open identity checks",
+    "no result is admitted until the native Darwin bundle, raw streams, filesystem identity changes, and Linux projection have been reviewed"
+  ],
+  "linux_qt5_reference": {
+    "path": "docs/research/data/path-toctou-engine-qt5.json",
+    "sha256": "733b136667c39f46e2d32bfb6a15c7da7077eee98232d7ff3a06a812f6913cf9"
+  },
+  "local_paths": {
+    "fixture_dir": "<macos-work>/toctou"
+  },
+  "oracle_report": {
+    "path": "oracle-candidate.json",
+    "sha256": "3e37bcef14b22887bd5525db8cc6f6d15a0cfe390f3eb7bc33ffabc37699696e"
+  },
+  "platform": "macos-x86_64-qt5",
+  "qt": {
+    "qmake_sha256": "14206b8303e6853e050277debc076be3460d11d4bc14821f7f55b1e27e67c8fe",
+    "qmake_spec": "macx-clang",
+    "qtcore_sha256": "86f54c3f81b7733bf7cda793094a213d5d7ce8562486b52285c846fc88ceaf9e",
+    "qtscript_sha256": "a566185119647f6b541f022950a3dda97197b5d9c23dc12ef2d872274d4ebf4d",
+    "version": "5.15.2"
+  },
+  "result": "candidate",
+  "schema_version": 1,
+  "selection": {
+    "case_names": [
+      "stable_old",
+      "stable_new",
+      "swap_old_to_new",
+      "remove_old_after_enumeration"
+    ],
+    "minimum_repetitions_per_case": 2
+  },
+  "source": {
+    "commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "recursive_submodule_count": 58,
+    "repository": "https://github.com/horsicq/DIE-engine",
+    "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+    "tracked_files_clean_before_and_after": true
+  },
+  "summary": {
+    "case_count": 4,
+    "determinism_failures": [],
+    "deterministic": true,
+    "execution_count": 8,
+    "linux_semantic_failures": [],
+    "linux_semantics_equal": true,
+    "raw_stream_count": 16,
+    "state_transition_failures": [],
+    "state_transitions_valid": true,
+    "synchronization_failures": [],
+    "synchronization_valid": true
+  }
+}

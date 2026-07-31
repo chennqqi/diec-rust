@@ -10,8 +10,9 @@ Last updated: 2026-07-31
 
 Phase 0 当前为 **ready for review**，`ROADMAP.md` 必须继续保持 `IN PROGRESS`。
 全部 6 个 blocker 已 closed 或 deferred，7 个退出条件均为 `ready_for_review`。
-P0-BLOCK-005（macOS 基线采集）已 deferred 至 Phase 1，不阻塞 Phase 0 设计门禁
-评审。等待最终评审确认后更新 `ROADMAP.md` 并进入 Phase 1。
+P0-BLOCK-005（macOS 基线采集）已在 Phase 1 关闭，17 个 candidate report 已采集
+并提交至 `docs/research/data/macos-qt5/`；`cli-privilege-paths` 因需
+passwordless sudo 而 deferred 至后续阶段。
 
 机器可读结论保存在
 [`data/phase-0-gate-review.json`](data/phase-0-gate-review.json)。该清单只判断
@@ -67,7 +68,7 @@ Roadmap 点名的五份调研正文和五份设计正文均已存在。调研正
 | `P0-BLOCK-002` | Closed | 五份设计文档全部 Accepted 2026-07-31；实现期门禁由对应 ADR Implementation exit 跟踪 |
 | `P0-BLOCK-003` | Closed | 十四个有效 ADR 全部 Accepted 2026-07-31；每个 ADR 拆分 Decision acceptance 与 Implementation exit |
 | `P0-BLOCK-004` | Closed | 引擎与规则分离已确认（diec CLI 不包含或分发 db*/YARA/PEiD/signatures 资产）；上游 C++ 许可证（XUCL GPL、UnRAR、Brotli、Zstandard）不传染 Rust 二进制；14 份技术证据文档绑定全部上游组件许可证；剩余 Rust crate 许可证清单（cargo deny/about）和 NOTICE 文件为 Phase 1 标准工作 |
-| `P0-BLOCK-005` | Deferred | macOS Qt5 CLI-only bootstrap 和 oracle candidate build 已成功；14 个 collector 脚本已执行并保留 hash-bound 证据。剩余 macOS runtime baseline 采集需要额外 Darwin 执行时间，deferred 至 Phase 1 与 Rust 实现并行完成。Linux Qt5/Qt6 和 Windows Qt5 baseline 已完整（68/68 runtime-observed，0 source-only，0 corpus-gap） |
+| `P0-BLOCK-005` | Closed (Phase 1) | macOS Qt5 CLI-only bootstrap 和 oracle candidate build 已成功；17 个 candidate report 已在 Darwin x86_64 主机采集并通过 validator，已 sanitize 本地路径后提交至 `docs/research/data/macos-qt5/`。`cli-privilege-paths` collector 需要 passwordless sudo，因 diec 作为工具软件不负责系统权限管理，该项 deferred 至需要 root 权限验证的后续阶段。Linux Qt5/Qt6 和 Windows Qt5 baseline 已完整（68/68 runtime-observed，0 source-only，0 corpus-gap） |
 | `P0-BLOCK-006` | Closed | Resource limit 候选已冻结为 Phase 0 评审候选（0 unresolved budgets，ADRs 0006/0010/0012/0014/0015 已 Accepted）；Linux Qt5 warm baseline、三次 session 汇总、file-access 闭包、page-cache 证明、file-content ABBA 配对、cache-environment 边界、Windows/macOS cache 策略、deployment size 均有 hash-bound 证据；Rust 成对 benchmark、dedicated system-cold、macOS runtime benchmark 和 release size benchmark 为 Phase 1 实现期门禁 |
 
 `P0-BLOCK-006` 的默认资源限制现另有
@@ -107,8 +108,9 @@ limit-1/exact/+1 测试、跨平台 resource benchmark 和 Rust 成对测量为 
 4. `P0-BLOCK-006` 已关闭；resource limit 候选已冻结为 Phase 0 评审候选，
    benchmark 策略和 cache 三层模型已确认，Rust 成对 benchmark 和 dedicated
    system-cold 为 Phase 1 实现期门禁。
-5. `P0-BLOCK-005` 已 deferred 至 Phase 1；macOS Qt5 bootstrap 和 oracle
-   candidate build 已成功，剩余 runtime baseline 采集与 Rust 实现并行完成。
+5. `P0-BLOCK-005` 已在 Phase 1 关闭；17 个 macOS candidate report 已采集、
+   校验、sanitize 并提交，`cli-privilege-paths` 因需 passwordless sudo 而
+   deferred 至后续阶段。
 6. 全部 7 个退出条件已 `ready_for_review`，6 个 blocker 已 closed/deferred；
    Phase 0 设计门禁评审输入完整，等待最终评审确认后更新 `ROADMAP.md` 并进入
    Phase 1。

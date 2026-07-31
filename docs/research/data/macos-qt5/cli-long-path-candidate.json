@@ -1,0 +1,1050 @@
+{
+  "admission": {
+    "capability_rows_admitted": 0,
+    "platform_admitted": false,
+    "reason": "long-path CLI candidate only; macOS runtime evidence has not been reviewed or projected into the 68-row capability closure"
+  },
+  "binary": {
+    "relative_path": "build/release/diec",
+    "sha256": "f4c69824399e3b27b1ec60924ef60555620c4e217a1f48cdae8c8db467d39317",
+    "size": 7452296
+  },
+  "cases": {
+    "component_directory": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/components"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/component_directory.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 2083,
+        "stdout_path": "raw/cli-long-path/component_directory.first.stdout",
+        "stdout_sha256": "66b13b39b4adc3ed4fa962190a4236e4e3a7acb042f60a3660fa7bf5dfd1a1e0"
+      },
+      "first_detect_tree": null,
+      "first_prefix_case_ids": [
+        "name_max_-1",
+        "name_max_+0"
+      ],
+      "first_timed_out": false,
+      "first_valid_json": false,
+      "fixture_case_id": null,
+      "minimal_pdf_detect_tree_equal": null,
+      "mode": "component_directory",
+      "reference_projection_applies": false,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/component_directory.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 2083,
+        "stdout_path": "raw/cli-long-path/component_directory.second.stdout",
+        "stdout_sha256": "66b13b39b4adc3ed4fa962190a4236e4e3a7acb042f60a3660fa7bf5dfd1a1e0"
+      },
+      "second_detect_tree": null,
+      "second_prefix_case_ids": [
+        "name_max_-1",
+        "name_max_+0"
+      ],
+      "second_timed_out": false,
+      "second_valid_json": false,
+      "timeout_seconds": 120
+    },
+    "control_explicit": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture-case:control>"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/control_explicit.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-long-path/control_explicit.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "first_prefix_case_ids": [],
+      "first_timed_out": false,
+      "first_valid_json": true,
+      "fixture_case_id": "control",
+      "minimal_pdf_detect_tree_equal": true,
+      "mode": "explicit",
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/control_explicit.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-long-path/control_explicit.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "second_prefix_case_ids": [],
+      "second_timed_out": false,
+      "second_valid_json": true,
+      "timeout_seconds": 120
+    },
+    "max_long_path_+0_discovery": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture-case:max_long_path_+0:discovery-root>"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/max_long_path_+0_discovery.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 0,
+        "stdout_path": "raw/cli-long-path/max_long_path_+0_discovery.first.stdout",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "first_detect_tree": null,
+      "first_prefix_case_ids": [],
+      "first_timed_out": false,
+      "first_valid_json": false,
+      "fixture_case_id": "max_long_path_+0",
+      "minimal_pdf_detect_tree_equal": false,
+      "mode": "discovery",
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/max_long_path_+0_discovery.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 0,
+        "stdout_path": "raw/cli-long-path/max_long_path_+0_discovery.second.stdout",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "second_detect_tree": null,
+      "second_prefix_case_ids": [],
+      "second_timed_out": false,
+      "second_valid_json": false,
+      "timeout_seconds": 120
+    },
+    "max_long_path_+0_explicit": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture-case:max_long_path_+0:absolute>"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 1,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/max_long_path_+0_explicit.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 8206,
+        "stdout_path": "raw/cli-long-path/max_long_path_+0_explicit.first.stdout",
+        "stdout_sha256": "0c400fa6327a8ddffa64be43798ba943def2071ee8e7503d92080b4b07f1e364"
+      },
+      "first_detect_tree": null,
+      "first_prefix_case_ids": [],
+      "first_timed_out": false,
+      "first_valid_json": false,
+      "fixture_case_id": "max_long_path_+0",
+      "minimal_pdf_detect_tree_equal": false,
+      "mode": "explicit",
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 1,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/max_long_path_+0_explicit.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 8206,
+        "stdout_path": "raw/cli-long-path/max_long_path_+0_explicit.second.stdout",
+        "stdout_sha256": "0c400fa6327a8ddffa64be43798ba943def2071ee8e7503d92080b4b07f1e364"
+      },
+      "second_detect_tree": null,
+      "second_prefix_case_ids": [],
+      "second_timed_out": false,
+      "second_valid_json": false,
+      "timeout_seconds": 120
+    },
+    "max_long_path_+1_discovery": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture-case:max_long_path_+1:discovery-root>"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/max_long_path_+1_discovery.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 0,
+        "stdout_path": "raw/cli-long-path/max_long_path_+1_discovery.first.stdout",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "first_detect_tree": null,
+      "first_prefix_case_ids": [],
+      "first_timed_out": false,
+      "first_valid_json": false,
+      "fixture_case_id": "max_long_path_+1",
+      "minimal_pdf_detect_tree_equal": false,
+      "mode": "discovery",
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/max_long_path_+1_discovery.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 0,
+        "stdout_path": "raw/cli-long-path/max_long_path_+1_discovery.second.stdout",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "second_detect_tree": null,
+      "second_prefix_case_ids": [],
+      "second_timed_out": false,
+      "second_valid_json": false,
+      "timeout_seconds": 120
+    },
+    "max_long_path_+1_explicit": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture-case:max_long_path_+1:absolute>"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 1,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/max_long_path_+1_explicit.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 8207,
+        "stdout_path": "raw/cli-long-path/max_long_path_+1_explicit.first.stdout",
+        "stdout_sha256": "d7b861695048c99909e760abdf94613d4662c505c556bb1d2bc05403f2f73ecb"
+      },
+      "first_detect_tree": null,
+      "first_prefix_case_ids": [],
+      "first_timed_out": false,
+      "first_valid_json": false,
+      "fixture_case_id": "max_long_path_+1",
+      "minimal_pdf_detect_tree_equal": false,
+      "mode": "explicit",
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 1,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/max_long_path_+1_explicit.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 8207,
+        "stdout_path": "raw/cli-long-path/max_long_path_+1_explicit.second.stdout",
+        "stdout_sha256": "d7b861695048c99909e760abdf94613d4662c505c556bb1d2bc05403f2f73ecb"
+      },
+      "second_detect_tree": null,
+      "second_prefix_case_ids": [],
+      "second_timed_out": false,
+      "second_valid_json": false,
+      "timeout_seconds": 120
+    },
+    "max_long_path_-1_discovery": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture-case:max_long_path_-1:discovery-root>"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/max_long_path_-1_discovery.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 0,
+        "stdout_path": "raw/cli-long-path/max_long_path_-1_discovery.first.stdout",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "first_detect_tree": null,
+      "first_prefix_case_ids": [],
+      "first_timed_out": false,
+      "first_valid_json": false,
+      "fixture_case_id": "max_long_path_-1",
+      "minimal_pdf_detect_tree_equal": false,
+      "mode": "discovery",
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/max_long_path_-1_discovery.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 0,
+        "stdout_path": "raw/cli-long-path/max_long_path_-1_discovery.second.stdout",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "second_detect_tree": null,
+      "second_prefix_case_ids": [],
+      "second_timed_out": false,
+      "second_valid_json": false,
+      "timeout_seconds": 120
+    },
+    "max_long_path_-1_explicit": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture-case:max_long_path_-1:absolute>"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 1,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/max_long_path_-1_explicit.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 8205,
+        "stdout_path": "raw/cli-long-path/max_long_path_-1_explicit.first.stdout",
+        "stdout_sha256": "5abd799aa5bfc01bfec4781c7ddf191240b15a7af899164fc84067168e4402b8"
+      },
+      "first_detect_tree": null,
+      "first_prefix_case_ids": [],
+      "first_timed_out": false,
+      "first_valid_json": false,
+      "fixture_case_id": "max_long_path_-1",
+      "minimal_pdf_detect_tree_equal": false,
+      "mode": "explicit",
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 1,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/max_long_path_-1_explicit.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 8205,
+        "stdout_path": "raw/cli-long-path/max_long_path_-1_explicit.second.stdout",
+        "stdout_sha256": "5abd799aa5bfc01bfec4781c7ddf191240b15a7af899164fc84067168e4402b8"
+      },
+      "second_detect_tree": null,
+      "second_prefix_case_ids": [],
+      "second_timed_out": false,
+      "second_valid_json": false,
+      "timeout_seconds": 120
+    },
+    "name_max_+0_explicit": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture-case:name_max_+0:absolute>"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/name_max_+0_explicit.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-long-path/name_max_+0_explicit.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "first_prefix_case_ids": [],
+      "first_timed_out": false,
+      "first_valid_json": true,
+      "fixture_case_id": "name_max_+0",
+      "minimal_pdf_detect_tree_equal": true,
+      "mode": "explicit",
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/name_max_+0_explicit.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-long-path/name_max_+0_explicit.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "second_prefix_case_ids": [],
+      "second_timed_out": false,
+      "second_valid_json": true,
+      "timeout_seconds": 120
+    },
+    "name_max_+1_explicit": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture-case:name_max_+1:absolute>"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 1,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/name_max_+1_explicit.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 328,
+        "stdout_path": "raw/cli-long-path/name_max_+1_explicit.first.stdout",
+        "stdout_sha256": "4830d8bc0a6c90125bef5ba86c32b61f064a6b37ab38afc4932c55ed9f9c401c"
+      },
+      "first_detect_tree": null,
+      "first_prefix_case_ids": [],
+      "first_timed_out": false,
+      "first_valid_json": false,
+      "fixture_case_id": "name_max_+1",
+      "minimal_pdf_detect_tree_equal": null,
+      "mode": "explicit",
+      "reference_projection_applies": false,
+      "second": {
+        "exit_code": 1,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/name_max_+1_explicit.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 328,
+        "stdout_path": "raw/cli-long-path/name_max_+1_explicit.second.stdout",
+        "stdout_sha256": "4830d8bc0a6c90125bef5ba86c32b61f064a6b37ab38afc4932c55ed9f9c401c"
+      },
+      "second_detect_tree": null,
+      "second_prefix_case_ids": [],
+      "second_timed_out": false,
+      "second_valid_json": false,
+      "timeout_seconds": 120
+    },
+    "name_max_-1_explicit": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture-case:name_max_-1:absolute>"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/name_max_-1_explicit.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-long-path/name_max_-1_explicit.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "first_prefix_case_ids": [],
+      "first_timed_out": false,
+      "first_valid_json": true,
+      "fixture_case_id": "name_max_-1",
+      "minimal_pdf_detect_tree_equal": true,
+      "mode": "explicit",
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/name_max_-1_explicit.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-long-path/name_max_-1_explicit.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "second_prefix_case_ids": [],
+      "second_timed_out": false,
+      "second_valid_json": true,
+      "timeout_seconds": 120
+    },
+    "path_max_+0_discovery": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture-case:path_max_+0:discovery-root>"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/path_max_+0_discovery.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 0,
+        "stdout_path": "raw/cli-long-path/path_max_+0_discovery.first.stdout",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "first_detect_tree": null,
+      "first_prefix_case_ids": [],
+      "first_timed_out": false,
+      "first_valid_json": false,
+      "fixture_case_id": "path_max_+0",
+      "minimal_pdf_detect_tree_equal": false,
+      "mode": "discovery",
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/path_max_+0_discovery.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 0,
+        "stdout_path": "raw/cli-long-path/path_max_+0_discovery.second.stdout",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "second_detect_tree": null,
+      "second_prefix_case_ids": [],
+      "second_timed_out": false,
+      "second_valid_json": false,
+      "timeout_seconds": 120
+    },
+    "path_max_+0_explicit": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture-case:path_max_+0:absolute>"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 1,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/path_max_+0_explicit.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 1038,
+        "stdout_path": "raw/cli-long-path/path_max_+0_explicit.first.stdout",
+        "stdout_sha256": "e9cdb2bf988d1290d9b7377595545bdc1c388137b53595281b67e1621a6f9acb"
+      },
+      "first_detect_tree": null,
+      "first_prefix_case_ids": [],
+      "first_timed_out": false,
+      "first_valid_json": false,
+      "fixture_case_id": "path_max_+0",
+      "minimal_pdf_detect_tree_equal": false,
+      "mode": "explicit",
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 1,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/path_max_+0_explicit.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 1038,
+        "stdout_path": "raw/cli-long-path/path_max_+0_explicit.second.stdout",
+        "stdout_sha256": "e9cdb2bf988d1290d9b7377595545bdc1c388137b53595281b67e1621a6f9acb"
+      },
+      "second_detect_tree": null,
+      "second_prefix_case_ids": [],
+      "second_timed_out": false,
+      "second_valid_json": false,
+      "timeout_seconds": 120
+    },
+    "path_max_+1_discovery": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture-case:path_max_+1:discovery-root>"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/path_max_+1_discovery.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 0,
+        "stdout_path": "raw/cli-long-path/path_max_+1_discovery.first.stdout",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "first_detect_tree": null,
+      "first_prefix_case_ids": [],
+      "first_timed_out": false,
+      "first_valid_json": false,
+      "fixture_case_id": "path_max_+1",
+      "minimal_pdf_detect_tree_equal": false,
+      "mode": "discovery",
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/path_max_+1_discovery.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 0,
+        "stdout_path": "raw/cli-long-path/path_max_+1_discovery.second.stdout",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "second_detect_tree": null,
+      "second_prefix_case_ids": [],
+      "second_timed_out": false,
+      "second_valid_json": false,
+      "timeout_seconds": 120
+    },
+    "path_max_+1_explicit": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture-case:path_max_+1:absolute>"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 1,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/path_max_+1_explicit.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 1039,
+        "stdout_path": "raw/cli-long-path/path_max_+1_explicit.first.stdout",
+        "stdout_sha256": "5722de28649faeda9b2acbc9922f6284506168c872c6983fa8531ded3d923c9c"
+      },
+      "first_detect_tree": null,
+      "first_prefix_case_ids": [],
+      "first_timed_out": false,
+      "first_valid_json": false,
+      "fixture_case_id": "path_max_+1",
+      "minimal_pdf_detect_tree_equal": false,
+      "mode": "explicit",
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 1,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/path_max_+1_explicit.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 1039,
+        "stdout_path": "raw/cli-long-path/path_max_+1_explicit.second.stdout",
+        "stdout_sha256": "5722de28649faeda9b2acbc9922f6284506168c872c6983fa8531ded3d923c9c"
+      },
+      "second_detect_tree": null,
+      "second_prefix_case_ids": [],
+      "second_timed_out": false,
+      "second_valid_json": false,
+      "timeout_seconds": 120
+    },
+    "path_max_-1_discovery": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture-case:path_max_-1:discovery-root>"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/path_max_-1_discovery.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-long-path/path_max_-1_discovery.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "first_prefix_case_ids": [],
+      "first_timed_out": false,
+      "first_valid_json": true,
+      "fixture_case_id": "path_max_-1",
+      "minimal_pdf_detect_tree_equal": true,
+      "mode": "discovery",
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/path_max_-1_discovery.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-long-path/path_max_-1_discovery.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "second_prefix_case_ids": [],
+      "second_timed_out": false,
+      "second_valid_json": true,
+      "timeout_seconds": 120
+    },
+    "path_max_-1_explicit": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture-case:path_max_-1:absolute>"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/path_max_-1_explicit.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-long-path/path_max_-1_explicit.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "first_prefix_case_ids": [],
+      "first_timed_out": false,
+      "first_valid_json": true,
+      "fixture_case_id": "path_max_-1",
+      "minimal_pdf_detect_tree_equal": true,
+      "mode": "explicit",
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-long-path/path_max_-1_explicit.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-long-path/path_max_-1_explicit.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "second_prefix_case_ids": [],
+      "second_timed_out": false,
+      "second_valid_json": true,
+      "timeout_seconds": 120
+    }
+  },
+  "cli_baseline_report": {
+    "path": "cli-baseline-candidate.json",
+    "sha256": "02346b70493fb4cb0f11a8fecbaf38e645354dd1b61afe9e8f090b4f8c3c9433"
+  },
+  "fixture_report": {
+    "path": "long-path-fixture-candidate.json",
+    "sha256": "a44e57d1fada3b772f647595a34fd583db3f189f5a40004bb5f38c6d5483c145"
+  },
+  "generator": {
+    "baseline_collector_path": "tools/upstream/collect_macos_cli_baseline.py",
+    "baseline_collector_sha256": "113354cc888d132e6e2f666f886a1ba10bf3354ffcefab119eef50bc1e273113",
+    "baseline_validator_path": "tools/upstream/validate_macos_cli_baseline.py",
+    "baseline_validator_sha256": "8bf54da3f25f1ef81d86edde5204cce2a850e7a4ff09301252bb465ae3f8088c",
+    "fixture_generator_path": "tools/corpus/generate_macos_long_path_fixture.py",
+    "fixture_generator_sha256": "5bad1a6efeae4841ac55092ce6fc0a867bd713b721d92d12b251ed280210a2d6",
+    "fixture_validator_path": "tools/corpus/validate_macos_long_path_fixture.py",
+    "fixture_validator_sha256": "5e27122117bef35b3212624cf33fcc1ab38faaab7ce48bf06737e667d99c1889",
+    "path": "tools/upstream/collect_macos_cli_long_paths.py",
+    "sha256": "95a85e8ecac44aecdb9adc63d97a6b24893b8ff011850a0b7776293d092191ad",
+    "validator_path": "tools/upstream/validate_macos_cli_long_paths.py",
+    "validator_sha256": "eeab8c9c7553c69e5c2b65c8512991a03eb9d4613a58a6e73fdc9da7bef31e13"
+  },
+  "limitations": [
+    "the matrix covers explicit and short-root discovery at public PATH_MAX and kernel-private MAXLONGPATHLEN -1/exact/+1",
+    "component cases cover NAME_MAX -1/exact/+1 and preserve create errno when a target cannot be materialized",
+    "ASCII-only names isolate byte length; Unicode normalization and multi-byte name limits remain covered by the special-path matrix",
+    "raw streams and fixture reports retain runner-local absolute paths and remain non-admitted review artifacts"
+  ],
+  "oracle_report": {
+    "path": "oracle-candidate.json",
+    "sha256": "3e37bcef14b22887bd5525db8cc6f6d15a0cfe390f3eb7bc33ffabc37699696e"
+  },
+  "platform": "macos-x86_64-qt5",
+  "qt": {
+    "qmake_sha256": "14206b8303e6853e050277debc076be3460d11d4bc14821f7f55b1e27e67c8fe",
+    "qmake_spec": "macx-clang",
+    "qtcore_sha256": "86f54c3f81b7733bf7cda793094a213d5d7ce8562486b52285c846fc88ceaf9e",
+    "qtscript_sha256": "a566185119647f6b541f022950a3dda97197b5d9c23dc12ef2d872274d4ebf4d",
+    "version": "5.15.2"
+  },
+  "result": "candidate",
+  "schema_version": 1,
+  "selection": {
+    "case_names": [
+      "control_explicit",
+      "path_max_-1_explicit",
+      "path_max_-1_discovery",
+      "path_max_+0_explicit",
+      "path_max_+0_discovery",
+      "path_max_+1_explicit",
+      "path_max_+1_discovery",
+      "max_long_path_-1_explicit",
+      "max_long_path_-1_discovery",
+      "max_long_path_+0_explicit",
+      "max_long_path_+0_discovery",
+      "max_long_path_+1_explicit",
+      "max_long_path_+1_discovery",
+      "name_max_-1_explicit",
+      "name_max_+0_explicit",
+      "name_max_+1_explicit",
+      "component_directory"
+    ],
+    "minimum_repetitions_per_case": 2
+  },
+  "source": {
+    "commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "recursive_submodule_count": 58,
+    "repository": "https://github.com/horsicq/DIE-engine",
+    "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+    "tracked_files_clean_before_and_after": true
+  },
+  "summary": {
+    "case_count": 17,
+    "determinism_failures": [],
+    "deterministic": true,
+    "execution_count": 34,
+    "raw_stream_count": 68,
+    "reference_projection_failures": [
+      "path_max_+0_explicit",
+      "path_max_+0_discovery",
+      "path_max_+1_explicit",
+      "path_max_+1_discovery",
+      "max_long_path_-1_explicit",
+      "max_long_path_-1_discovery",
+      "max_long_path_+0_explicit",
+      "max_long_path_+0_discovery",
+      "max_long_path_+1_explicit",
+      "max_long_path_+1_discovery"
+    ],
+    "reference_projections_equal": false,
+    "timeout_cases": []
+  }
+}

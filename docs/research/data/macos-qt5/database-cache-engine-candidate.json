@@ -1,0 +1,537 @@
+{
+  "admission": {
+    "capability_rows_admitted": 0,
+    "platform_admitted": false,
+    "reason": "database-cache engine candidate only; native macOS results have not been reviewed or projected into the 68-row capability closure"
+  },
+  "binary": {
+    "architectures": [
+      "x86_64"
+    ],
+    "file_description": "Mach-O 64-bit executable x86_64",
+    "otool_l": [
+      "database-cache-harness-candidate:",
+      "\t@rpath/QtConcurrent.framework/Versions/5/QtConcurrent (compatibility version 5.15.0, current version 5.15.2)",
+      "\t@rpath/QtScript.framework/Versions/5/QtScript (compatibility version 5.15.0, current version 5.15.2)",
+      "\t@rpath/QtCore.framework/Versions/5/QtCore (compatibility version 5.15.0, current version 5.15.2)",
+      "\t/System/Library/Frameworks/DiskArbitration.framework/Versions/A/DiskArbitration (compatibility version 1.0.0, current version 1.0.0)",
+      "\t/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit (compatibility version 1.0.0, current version 275.0.0)",
+      "\t/usr/lib/libc++.1.dylib (compatibility version 1.0.0, current version 1300.36.0)",
+      "\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1319.0.0)"
+    ],
+    "path": "database-cache-harness-candidate",
+    "sha256": "30bde6a106cc838ee60532e5ada12b1f10b3469e95963b80b98d609a87babe5f",
+    "size": 7468872
+  },
+  "build_report": {
+    "path": "database-cache-harness-build-candidate.json",
+    "sha256": "13bff8b5946624b9d06575549a42bcdc3cb256e2543f23b3911dbfc046374f47"
+  },
+  "fixture": {
+    "manifest": "docs/research/data/database-fixture.json",
+    "sha256": "90b6ce18e5656fa30c2dfd55573df4612825a74e77cb9e2f4fc1baa81fd7223c"
+  },
+  "generator": {
+    "baseline_collector_path": "tools/upstream/collect_macos_cli_baseline.py",
+    "baseline_collector_sha256": "113354cc888d132e6e2f666f886a1ba10bf3354ffcefab119eef50bc1e273113",
+    "baseline_validator_path": "tools/upstream/validate_macos_cli_baseline.py",
+    "baseline_validator_sha256": "8bf54da3f25f1ef81d86edde5204cce2a850e7a4ff09301252bb465ae3f8088c",
+    "build_validator_path": "tools/upstream/validate_macos_database_cache_harness_build.py",
+    "build_validator_sha256": "7ba66dcdb405ca40c036739bac80612474ceaa213c6bb0c4604a95d7a0c5a6e6",
+    "fixture_generator_path": "tools/corpus/generate_database_fixture.py",
+    "fixture_generator_sha256": "10aaa85de36126a2c33808b3be7f3e14eef60382b6048c8499e99ee5570a5fc1",
+    "linux_probe_path": "tools/upstream/probe_database_cache_harness.py",
+    "linux_probe_sha256": "2336303cf50a36d264ddac5c76b999ffbce29883bcdeb8bc04c1a14f8e68d87d",
+    "path": "tools/upstream/collect_macos_database_cache_harness.py",
+    "sha256": "922c1841b8150493f7137793199b177e7284d7ddceb5e02acbe8be1a6a5777be",
+    "validator_path": "tools/upstream/validate_macos_database_cache_harness.py",
+    "validator_sha256": "a5b27ed1c163aa8dccfa7558d3811eaee2a5290e9f3c47b0f882d8a859dc7345",
+    "windows_collector_path": "tools/upstream/collect_windows_database_cache_harness.py",
+    "windows_collector_sha256": "e2c54e487a43e7a8dfa54ce3e757f73bfba4d6f3e22105d77f217a9266baa0cb"
+  },
+  "limitations": [
+    "the shared harness reaches bUseCache=true through an engine entry point because the fixed release CLI has no cache option and always leaves bUseCache false",
+    "QStandardPaths test mode and a collector-owned HOME isolate cache writes from the ordinary Detect It Easy user namespace",
+    "POSIX mode denial is observed as the non-root hosted-runner user; root, macOS ACLs, ownership changes, sandbox profiles, network filesystems, and different-content writers remain open",
+    "raw streams remain authoritative; normalization changes only the fixed /tmp work paths and verified test HOME prefix"
+  ],
+  "linux_qt5_comparison": {
+    "cache_size_deltas": {
+      "bad_magic_fallback": 0,
+      "bad_version_fallback": 0,
+      "cache_write_recovery": 0,
+      "canceled_cache_hit": 0,
+      "canceled_cache_miss": 0,
+      "concurrent_identical_writers": 0,
+      "database_directory_permission_denied": 0,
+      "empty_cache_fallback": 0,
+      "initial_miss": 0,
+      "magic_only_fallback": 0,
+      "magic_version_only_fallback": 0,
+      "poisoned_empty_cache_hit": 0,
+      "record_tail_truncated_fallback": 0,
+      "same_stats_stale_hit": 0,
+      "stats_changed_rebuild": 0,
+      "truncated_record_fallback": 0,
+      "unchanged_hit": 0
+    },
+    "case_projection_differences": []
+  },
+  "linux_qt5_reference": {
+    "path": "docs/research/data/database-cache-engine-qt5.json",
+    "sha256": "a04b1ca26a2c51fc5801ecdbdea79dd6e2bd7f330007b8c70620bd09555c5fc0"
+  },
+  "local_paths": {
+    "home_dir": "<macos-work>/db-cache/home",
+    "working_dir": "<macos-work>/db-cache"
+  },
+  "normalization": {
+    "not_performed": [
+      "case removal or reordering",
+      "cache hash or size rewriting",
+      "scan result or error rewriting",
+      "raw stdout/stderr rewriting"
+    ],
+    "operations": [
+      "replace fixed /tmp harness database and rule paths with <work>",
+      "replace the verified collector-controlled HOME prefix with <qt-test-home>"
+    ]
+  },
+  "observation": {
+    "cache_path": "<qt-test-home>/Library/Application Support/NTInfo/die/db_cache/d9d5b944c079f4e6ef9d7421764295f7.cache",
+    "cases": [
+      {
+        "binary_signature_count": 1,
+        "cache": {
+          "exists": true,
+          "sha256": "1c80b4ef70e0ce7075179e971a38336319a5e3957a79ce9efe4d28037c494801",
+          "size": 399
+        },
+        "id": "initial_miss",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Fixture"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 1,
+        "cache": {
+          "exists": true,
+          "sha256": "1c80b4ef70e0ce7075179e971a38336319a5e3957a79ce9efe4d28037c494801",
+          "size": 399
+        },
+        "id": "unchanged_hit",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Fixture"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 1,
+        "cache": {
+          "exists": true,
+          "sha256": "1c80b4ef70e0ce7075179e971a38336319a5e3957a79ce9efe4d28037c494801",
+          "size": 399
+        },
+        "id": "same_stats_stale_hit",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Fixture"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 1,
+        "cache": {
+          "exists": true,
+          "sha256": "28675cca1c62e30f218613394656b74fd34bd12517a64be414b63163eef05595",
+          "size": 399
+        },
+        "id": "stats_changed_rebuild",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Changed"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 1,
+        "cache": {
+          "exists": true,
+          "sha256": "28675cca1c62e30f218613394656b74fd34bd12517a64be414b63163eef05595",
+          "size": 399
+        },
+        "id": "bad_magic_fallback",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Changed"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 1,
+        "cache": {
+          "exists": true,
+          "sha256": "28675cca1c62e30f218613394656b74fd34bd12517a64be414b63163eef05595",
+          "size": 399
+        },
+        "id": "bad_version_fallback",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Changed"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 1,
+        "cache": {
+          "exists": true,
+          "sha256": "28675cca1c62e30f218613394656b74fd34bd12517a64be414b63163eef05595",
+          "size": 399
+        },
+        "id": "empty_cache_fallback",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Changed"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 1,
+        "cache": {
+          "exists": true,
+          "sha256": "28675cca1c62e30f218613394656b74fd34bd12517a64be414b63163eef05595",
+          "size": 399
+        },
+        "id": "magic_only_fallback",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Changed"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 1,
+        "cache": {
+          "exists": true,
+          "sha256": "28675cca1c62e30f218613394656b74fd34bd12517a64be414b63163eef05595",
+          "size": 399
+        },
+        "id": "magic_version_only_fallback",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Changed"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 2,
+        "cache": {
+          "exists": true,
+          "sha256": "28675cca1c62e30f218613394656b74fd34bd12517a64be414b63163eef05595",
+          "size": 399
+        },
+        "id": "truncated_record_fallback",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Changed"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 2,
+        "cache": {
+          "exists": true,
+          "sha256": "28675cca1c62e30f218613394656b74fd34bd12517a64be414b63163eef05595",
+          "size": 399
+        },
+        "id": "record_tail_truncated_fallback",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Changed",
+          "Changed"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 1,
+        "cache": {
+          "exists": false,
+          "sha256": "",
+          "size": 0
+        },
+        "id": "cache_write_denied",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Changed"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 1,
+        "cache": {
+          "exists": true,
+          "sha256": "28675cca1c62e30f218613394656b74fd34bd12517a64be414b63163eef05595",
+          "size": 399
+        },
+        "id": "cache_write_recovery",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Changed"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 1,
+        "cache": {
+          "exists": true,
+          "sha256": "28675cca1c62e30f218613394656b74fd34bd12517a64be414b63163eef05595",
+          "size": 399
+        },
+        "id": "concurrent_identical_writers",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Changed"
+        ],
+        "stop_before_load": false,
+        "writer_count": 8,
+        "writer_loaded": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "writer_signature_counts": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "binary_signature_count": 0,
+        "cache": {
+          "exists": true,
+          "sha256": "30f861766f4c9a21d320fe36fa25a987feaa870e297643a1e44e9abe09144570",
+          "size": 42
+        },
+        "id": "database_directory_permission_denied",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Unknown"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 0,
+        "cache": {
+          "exists": false,
+          "sha256": "",
+          "size": 0
+        },
+        "id": "database_file_permission_denied",
+        "load_pd_not_canceled": true,
+        "loaded": false,
+        "scan_errors": [],
+        "scan_names": [
+          "Unknown"
+        ],
+        "stop_before_load": false
+      },
+      {
+        "binary_signature_count": 0,
+        "cache": {
+          "exists": true,
+          "sha256": "28675cca1c62e30f218613394656b74fd34bd12517a64be414b63163eef05595",
+          "size": 399
+        },
+        "id": "canceled_cache_hit",
+        "load_pd_not_canceled": false,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Unknown"
+        ],
+        "stop_before_load": true
+      },
+      {
+        "binary_signature_count": 0,
+        "cache": {
+          "exists": true,
+          "sha256": "9c6d8e481a2b89dcffc604dba21d08b6cad4e1731f0b7c6b76cbc70e21d4ffd2",
+          "size": 42
+        },
+        "id": "canceled_cache_miss",
+        "load_pd_not_canceled": false,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Unknown"
+        ],
+        "stop_before_load": true
+      },
+      {
+        "binary_signature_count": 0,
+        "cache": {
+          "exists": true,
+          "sha256": "9c6d8e481a2b89dcffc604dba21d08b6cad4e1731f0b7c6b76cbc70e21d4ffd2",
+          "size": 42
+        },
+        "id": "poisoned_empty_cache_hit",
+        "load_pd_not_canceled": true,
+        "loaded": true,
+        "scan_errors": [],
+        "scan_names": [
+          "Unknown"
+        ],
+        "stop_before_load": false
+      }
+    ],
+    "database_path": "<work>/database",
+    "effective_gid": 20,
+    "effective_uid": 501,
+    "fixed_mtime_nanoseconds": 123000000,
+    "fixed_mtime_seconds": 1700000000,
+    "rule_path": "<work>/database/Binary/fixture.1.sg",
+    "schema_version": 1,
+    "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "xscanengine_commit": "dfe4a419e4f491bb23688ba03c5a5bf39e34da83"
+  },
+  "oracle_report": {
+    "path": "oracle-candidate.json",
+    "sha256": "3e37bcef14b22887bd5525db8cc6f6d15a0cfe390f3eb7bc33ffabc37699696e"
+  },
+  "platform": "macos-x86_64-qt5",
+  "qt": {
+    "qmake_sha256": "14206b8303e6853e050277debc076be3460d11d4bc14821f7f55b1e27e67c8fe",
+    "qmake_spec": "macx-clang",
+    "qtcore_sha256": "86f54c3f81b7733bf7cda793094a213d5d7ce8562486b52285c846fc88ceaf9e",
+    "qtscript_sha256": "a566185119647f6b541f022950a3dda97197b5d9c23dc12ef2d872274d4ebf4d",
+    "version": "5.15.2"
+  },
+  "relationships": {
+    "all_scan_error_lists_are_empty": true,
+    "bad_magic_falls_back_and_rewrites": true,
+    "bad_version_falls_back_and_rewrites": true,
+    "cache_write_failure_is_silent_and_nonfatal": true,
+    "cache_write_recovers_after_permission_restore": true,
+    "canceled_cache_hit_reports_success_with_zero_records": true,
+    "canceled_miss_saves_empty_cache": true,
+    "concurrent_identical_writers_finish_with_valid_cache": true,
+    "harness_runs_without_root_privileges": true,
+    "header_truncations_fall_back_without_partial_records": true,
+    "initial_load_creates_one_record_cache": true,
+    "mtime_change_rebuilds_changed_rule": true,
+    "permission_denied_directory_is_silent_empty_success": true,
+    "permission_denied_file_is_silent_failure": true,
+    "record_truncation_injects_partial_record_before_fallback": true,
+    "same_size_mtime_content_change_is_stale_hit": true,
+    "tail_truncation_injects_partial_record_before_fallback": true,
+    "uncanceled_load_reuses_poisoned_empty_cache": true,
+    "unchanged_load_reuses_identical_cache": true
+  },
+  "result": "candidate",
+  "run": {
+    "determinism_differences": [],
+    "first": {
+      "exit_code": 0,
+      "stderr_bytes": 0,
+      "stderr_path": "raw/database-cache-engine/harness.first.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 10803,
+      "stdout_path": "raw/database-cache-engine/harness.first.stdout",
+      "stdout_sha256": "d676baeef5753198b1d995ff1ad7651b070f9bd3c0ec0ca4adcfd41900a86b28"
+    },
+    "second": {
+      "exit_code": 0,
+      "stderr_bytes": 0,
+      "stderr_path": "raw/database-cache-engine/harness.second.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 10803,
+      "stdout_path": "raw/database-cache-engine/harness.second.stdout",
+      "stdout_sha256": "d676baeef5753198b1d995ff1ad7651b070f9bd3c0ec0ca4adcfd41900a86b28"
+    }
+  },
+  "schema_version": 1,
+  "selection": {
+    "case_ids": [
+      "initial_miss",
+      "unchanged_hit",
+      "same_stats_stale_hit",
+      "stats_changed_rebuild",
+      "bad_magic_fallback",
+      "bad_version_fallback",
+      "empty_cache_fallback",
+      "magic_only_fallback",
+      "magic_version_only_fallback",
+      "truncated_record_fallback",
+      "record_tail_truncated_fallback",
+      "cache_write_denied",
+      "cache_write_recovery",
+      "concurrent_identical_writers",
+      "database_directory_permission_denied",
+      "database_file_permission_denied",
+      "canceled_cache_hit",
+      "canceled_cache_miss",
+      "poisoned_empty_cache_hit"
+    ],
+    "repetitions": 2,
+    "timeout_seconds": 120
+  },
+  "source": {
+    "commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "recursive_submodule_count": 58,
+    "repository": "https://github.com/horsicq/DIE-engine",
+    "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+    "tracked_files_clean_before_and_after": true
+  },
+  "summary": {
+    "case_count": 19,
+    "execution_count": 2,
+    "linux_case_projection_differences": [],
+    "normalized_outputs_equal": true,
+    "raw_determinism_failures": [],
+    "raw_stream_count": 4,
+    "relationship_failures": []
+  }
+}

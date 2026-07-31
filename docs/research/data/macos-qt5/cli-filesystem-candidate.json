@@ -1,0 +1,821 @@
+{
+  "admission": {
+    "capability_rows_admitted": 0,
+    "platform_admitted": false,
+    "reason": "filesystem-path CLI candidate only; macOS runtime evidence has not been reviewed or projected into the 68-row capability closure"
+  },
+  "binary": {
+    "relative_path": "build/release/diec",
+    "sha256": "f4c69824399e3b27b1ec60924ef60555620c4e217a1f48cdae8c8db467d39317",
+    "size": 7452296
+  },
+  "cases": {
+    "dangling_symlink": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/paths/symlink/dangling.pdf"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 1,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-filesystem/dangling_symlink.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 88,
+        "stdout_path": "raw/cli-filesystem/dangling_symlink.first.stdout",
+        "stdout_sha256": "22258ce609e49e7a18cd1b8fbbc1548ed55b5c90a39e1f5415012cbf193d6fd7"
+      },
+      "first_detect_tree": null,
+      "first_prefix_paths": [],
+      "first_stdout_summary": {
+        "cannot_find_count": 1,
+        "filename_prefix_count": 0,
+        "pdf_root_count": 0
+      },
+      "first_timed_out": false,
+      "linux_case": "dangling_symlink",
+      "linux_qt5_projection": {
+        "exit_code": 1,
+        "stdout_summary": {
+          "cannot_find_count": 1,
+          "filename_prefix_count": 0,
+          "pdf_root_count": 0
+        }
+      },
+      "linux_qt5_semantic_equal": true,
+      "minimal_pdf_detect_tree_equal": null,
+      "reference_tree_applies": false,
+      "second": {
+        "exit_code": 1,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-filesystem/dangling_symlink.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 88,
+        "stdout_path": "raw/cli-filesystem/dangling_symlink.second.stdout",
+        "stdout_sha256": "22258ce609e49e7a18cd1b8fbbc1548ed55b5c90a39e1f5415012cbf193d6fd7"
+      },
+      "second_detect_tree": null,
+      "second_prefix_paths": [],
+      "second_stdout_summary": {
+        "cannot_find_count": 1,
+        "filename_prefix_count": 0,
+        "pdf_root_count": 0
+      },
+      "second_timed_out": false,
+      "timeout_seconds": 120
+    },
+    "deep_64": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/paths/deep"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-filesystem/deep_64.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-filesystem/deep_64.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "first_prefix_paths": [],
+      "first_stdout_summary": {
+        "cannot_find_count": 0,
+        "filename_prefix_count": 0,
+        "pdf_root_count": 1
+      },
+      "first_timed_out": false,
+      "linux_case": "deep_64",
+      "linux_qt5_projection": {
+        "exit_code": 0,
+        "stdout_summary": {
+          "cannot_find_count": 0,
+          "filename_prefix_count": 0,
+          "pdf_root_count": 1
+        }
+      },
+      "linux_qt5_semantic_equal": true,
+      "minimal_pdf_detect_tree_equal": true,
+      "reference_tree_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-filesystem/deep_64.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-filesystem/deep_64.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "second_prefix_paths": [],
+      "second_stdout_summary": {
+        "cannot_find_count": 0,
+        "filename_prefix_count": 0,
+        "pdf_root_count": 1
+      },
+      "second_timed_out": false,
+      "timeout_seconds": 120
+    },
+    "denied_as_runner": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/paths/denied"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-filesystem/denied_as_runner.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 0,
+        "stdout_path": "raw/cli-filesystem/denied_as_runner.first.stdout",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "first_detect_tree": null,
+      "first_prefix_paths": [],
+      "first_stdout_summary": {
+        "cannot_find_count": 0,
+        "filename_prefix_count": 0,
+        "pdf_root_count": 0
+      },
+      "first_timed_out": false,
+      "linux_case": "denied_as_nobody",
+      "linux_qt5_projection": {
+        "exit_code": 0,
+        "stdout_summary": {
+          "cannot_find_count": 0,
+          "filename_prefix_count": 0,
+          "pdf_root_count": 0
+        }
+      },
+      "linux_qt5_semantic_equal": true,
+      "minimal_pdf_detect_tree_equal": null,
+      "reference_tree_applies": false,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-filesystem/denied_as_runner.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 0,
+        "stdout_path": "raw/cli-filesystem/denied_as_runner.second.stdout",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "second_detect_tree": null,
+      "second_prefix_paths": [],
+      "second_stdout_summary": {
+        "cannot_find_count": 0,
+        "filename_prefix_count": 0,
+        "pdf_root_count": 0
+      },
+      "second_timed_out": false,
+      "timeout_seconds": 120
+    },
+    "direct_control": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/paths/symlink/target.pdf"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-filesystem/direct_control.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-filesystem/direct_control.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "first_prefix_paths": [],
+      "first_stdout_summary": {
+        "cannot_find_count": 0,
+        "filename_prefix_count": 0,
+        "pdf_root_count": 1
+      },
+      "first_timed_out": false,
+      "linux_case": "direct_control",
+      "linux_qt5_projection": {
+        "exit_code": 0,
+        "stdout_summary": {
+          "cannot_find_count": 0,
+          "filename_prefix_count": 0,
+          "pdf_root_count": 1
+        }
+      },
+      "linux_qt5_semantic_equal": true,
+      "minimal_pdf_detect_tree_equal": true,
+      "reference_tree_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-filesystem/direct_control.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-filesystem/direct_control.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "second_prefix_paths": [],
+      "second_stdout_summary": {
+        "cannot_find_count": 0,
+        "filename_prefix_count": 0,
+        "pdf_root_count": 1
+      },
+      "second_timed_out": false,
+      "timeout_seconds": 120
+    },
+    "directory_symlink": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/paths/symlink/dir-link"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-filesystem/directory_symlink.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-filesystem/directory_symlink.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "first_prefix_paths": [],
+      "first_stdout_summary": {
+        "cannot_find_count": 0,
+        "filename_prefix_count": 0,
+        "pdf_root_count": 1
+      },
+      "first_timed_out": false,
+      "linux_case": "directory_symlink",
+      "linux_qt5_projection": {
+        "exit_code": 0,
+        "stdout_summary": {
+          "cannot_find_count": 0,
+          "filename_prefix_count": 0,
+          "pdf_root_count": 1
+        }
+      },
+      "linux_qt5_semantic_equal": true,
+      "minimal_pdf_detect_tree_equal": true,
+      "reference_tree_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-filesystem/directory_symlink.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-filesystem/directory_symlink.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "second_prefix_paths": [],
+      "second_stdout_summary": {
+        "cannot_find_count": 0,
+        "filename_prefix_count": 0,
+        "pdf_root_count": 1
+      },
+      "second_timed_out": false,
+      "timeout_seconds": 120
+    },
+    "file_symlink": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/paths/symlink/file-link.pdf"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-filesystem/file_symlink.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-filesystem/file_symlink.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "first_prefix_paths": [],
+      "first_stdout_summary": {
+        "cannot_find_count": 0,
+        "filename_prefix_count": 0,
+        "pdf_root_count": 1
+      },
+      "first_timed_out": false,
+      "linux_case": "file_symlink",
+      "linux_qt5_projection": {
+        "exit_code": 0,
+        "stdout_summary": {
+          "cannot_find_count": 0,
+          "filename_prefix_count": 0,
+          "pdf_root_count": 1
+        }
+      },
+      "linux_qt5_semantic_equal": true,
+      "minimal_pdf_detect_tree_equal": true,
+      "reference_tree_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-filesystem/file_symlink.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-filesystem/file_symlink.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "second_prefix_paths": [],
+      "second_stdout_summary": {
+        "cannot_find_count": 0,
+        "filename_prefix_count": 0,
+        "pdf_root_count": 1
+      },
+      "second_timed_out": false,
+      "timeout_seconds": 120
+    },
+    "self_cycle": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/paths/cycle"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-filesystem/self_cycle.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 28941,
+        "stdout_path": "raw/cli-filesystem/self_cycle.first.stdout",
+        "stdout_sha256": "bbcc067c3254e031caf47f0cee3b5ad783ca309f1e1e3fc0592b2d9f4133922a"
+      },
+      "first_detect_tree": null,
+      "first_prefix_paths": [
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/root.pdf",
+        "<fixture>/paths/cycle/root.pdf"
+      ],
+      "first_stdout_summary": {
+        "cannot_find_count": 0,
+        "filename_prefix_count": 33,
+        "pdf_root_count": 33
+      },
+      "first_timed_out": false,
+      "linux_case": "self_cycle",
+      "linux_qt5_projection": {
+        "exit_code": 0,
+        "stdout_summary": {
+          "cannot_find_count": 0,
+          "filename_prefix_count": 41,
+          "pdf_root_count": 41
+        }
+      },
+      "linux_qt5_semantic_equal": false,
+      "minimal_pdf_detect_tree_equal": null,
+      "reference_tree_applies": false,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-filesystem/self_cycle.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 28941,
+        "stdout_path": "raw/cli-filesystem/self_cycle.second.stdout",
+        "stdout_sha256": "bbcc067c3254e031caf47f0cee3b5ad783ca309f1e1e3fc0592b2d9f4133922a"
+      },
+      "second_detect_tree": null,
+      "second_prefix_paths": [
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/loop/root.pdf",
+        "<fixture>/paths/cycle/loop/root.pdf",
+        "<fixture>/paths/cycle/root.pdf"
+      ],
+      "second_stdout_summary": {
+        "cannot_find_count": 0,
+        "filename_prefix_count": 33,
+        "pdf_root_count": 33
+      },
+      "second_timed_out": false,
+      "timeout_seconds": 10
+    },
+    "symlink_tree": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/paths/symlink"
+      ],
+      "determinism_differences": [],
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-filesystem/symlink_tree.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 3225,
+        "stdout_path": "raw/cli-filesystem/symlink_tree.first.stdout",
+        "stdout_sha256": "58e4e83afac96af8a8c822f2b5b6609584a4160a27ea7bdb5f48c36d70f1a3d2"
+      },
+      "first_detect_tree": null,
+      "first_prefix_paths": [
+        "<fixture>/paths/symlink/dir-link/child.pdf",
+        "<fixture>/paths/symlink/dir-target/child.pdf",
+        "<fixture>/paths/symlink/file-link.pdf",
+        "<fixture>/paths/symlink/target.pdf"
+      ],
+      "first_stdout_summary": {
+        "cannot_find_count": 0,
+        "filename_prefix_count": 4,
+        "pdf_root_count": 4
+      },
+      "first_timed_out": false,
+      "linux_case": "symlink_tree",
+      "linux_qt5_projection": {
+        "exit_code": 0,
+        "stdout_summary": {
+          "cannot_find_count": 0,
+          "filename_prefix_count": 4,
+          "pdf_root_count": 4
+        }
+      },
+      "linux_qt5_semantic_equal": true,
+      "minimal_pdf_detect_tree_equal": null,
+      "reference_tree_applies": false,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-filesystem/symlink_tree.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 3225,
+        "stdout_path": "raw/cli-filesystem/symlink_tree.second.stdout",
+        "stdout_sha256": "58e4e83afac96af8a8c822f2b5b6609584a4160a27ea7bdb5f48c36d70f1a3d2"
+      },
+      "second_detect_tree": null,
+      "second_prefix_paths": [
+        "<fixture>/paths/symlink/dir-link/child.pdf",
+        "<fixture>/paths/symlink/dir-target/child.pdf",
+        "<fixture>/paths/symlink/file-link.pdf",
+        "<fixture>/paths/symlink/target.pdf"
+      ],
+      "second_stdout_summary": {
+        "cannot_find_count": 0,
+        "filename_prefix_count": 4,
+        "pdf_root_count": 4
+      },
+      "second_timed_out": false,
+      "timeout_seconds": 120
+    }
+  },
+  "cli_baseline_report": {
+    "path": "cli-baseline-candidate.json",
+    "sha256": "02346b70493fb4cb0f11a8fecbaf38e645354dd1b61afe9e8f090b4f8c3c9433"
+  },
+  "fixture": {
+    "archive_sha256": "c5b2e170e7032afd1e6297c7a9f501ec395f72cae2718a3fbbf91340c704037b",
+    "archive_size": 112640,
+    "entry_count": 79,
+    "live_preflight": {
+      "deep_component_count": 64,
+      "denied_mode": 0,
+      "denied_read_execute_access": false,
+      "effective_gid": 20,
+      "effective_uid": 501,
+      "symlink_targets": {
+        "cycle_link": ".",
+        "dangling_link": "missing.pdf",
+        "directory_link": "dir-target",
+        "file_link": "target.pdf"
+      }
+    },
+    "manifest": "docs/research/data/path-filesystem-fixture.json",
+    "manifest_sha256": "a763d4a3270f299f0bfb983cc5a204a4e0fd4247b74fabe247756d5bd962dedb"
+  },
+  "generator": {
+    "baseline_collector_path": "tools/upstream/collect_macos_cli_baseline.py",
+    "baseline_collector_sha256": "113354cc888d132e6e2f666f886a1ba10bf3354ffcefab119eef50bc1e273113",
+    "baseline_validator_path": "tools/upstream/validate_macos_cli_baseline.py",
+    "baseline_validator_sha256": "8bf54da3f25f1ef81d86edde5204cce2a850e7a4ff09301252bb465ae3f8088c",
+    "fixture_generator_path": "tools/corpus/generate_path_filesystem_fixture.py",
+    "fixture_generator_sha256": "68f4f43bd4d2711a9d02991ab467788f9d212a35af027df7f9286cb69b96021c",
+    "path": "tools/upstream/collect_macos_cli_filesystem.py",
+    "sha256": "827b82eea2aef5563aaebc91352fa78aba22d482a84f98554fd6a62ffe008eba",
+    "validator_path": "tools/upstream/validate_macos_cli_filesystem.py",
+    "validator_sha256": "7df202dda70fd8fbf487acd344780d34faa6adf3875cf886589ff5ea3007b534"
+  },
+  "limitations": [
+    "the deterministic fixture covers file and directory symbolic links, a dangling link, a self-cycle, a mode-000 directory, and a 64-component directory chain",
+    "permission behavior is observed as the non-root GitHub runner user; root, ACL, sandbox, SIP, network-volume, and ownership variants remain open",
+    "self-cycle execution is bounded to ten seconds; a timeout and its partial raw streams are retained as observations",
+    "Linux comparison uses named exit/count/detection projections; absolute paths and raw streams are intentionally not normalized"
+  ],
+  "linux_qt5_reference": {
+    "path": "docs/research/data/path-filesystem-engine-qt5.json",
+    "sha256": "97549da236a57cc5502b43a8157f81865fa6d9a0ab626035ebcf63df97792dbb"
+  },
+  "local_paths": {
+    "fixture_dir": "<macos-work>/filesystem"
+  },
+  "oracle_report": {
+    "path": "oracle-candidate.json",
+    "sha256": "3e37bcef14b22887bd5525db8cc6f6d15a0cfe390f3eb7bc33ffabc37699696e"
+  },
+  "platform": "macos-x86_64-qt5",
+  "qt": {
+    "qmake_sha256": "14206b8303e6853e050277debc076be3460d11d4bc14821f7f55b1e27e67c8fe",
+    "qmake_spec": "macx-clang",
+    "qtcore_sha256": "86f54c3f81b7733bf7cda793094a213d5d7ce8562486b52285c846fc88ceaf9e",
+    "qtscript_sha256": "a566185119647f6b541f022950a3dda97197b5d9c23dc12ef2d872274d4ebf4d",
+    "version": "5.15.2"
+  },
+  "result": "candidate",
+  "schema_version": 1,
+  "selection": {
+    "case_names": [
+      "direct_control",
+      "file_symlink",
+      "directory_symlink",
+      "symlink_tree",
+      "dangling_symlink",
+      "deep_64",
+      "denied_as_runner",
+      "self_cycle"
+    ],
+    "minimum_repetitions_per_case": 2
+  },
+  "source": {
+    "commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "recursive_submodule_count": 58,
+    "repository": "https://github.com/horsicq/DIE-engine",
+    "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+    "tracked_files_clean_before_and_after": true
+  },
+  "summary": {
+    "case_count": 8,
+    "determinism_failures": [],
+    "deterministic": true,
+    "execution_count": 16,
+    "linux_semantic_failures": [
+      "self_cycle"
+    ],
+    "linux_semantics_equal": false,
+    "raw_stream_count": 32,
+    "reference_projection_failures": [],
+    "reference_projections_equal": true,
+    "timeout_cases": []
+  }
+}

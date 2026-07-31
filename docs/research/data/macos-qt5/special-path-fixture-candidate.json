@@ -1,0 +1,204 @@
+{
+  "admission": {
+    "capability_rows_admitted": 0,
+    "fixture_admitted": false,
+    "reason": "filesystem fixture candidate only; no CLI or engine capability row is admitted"
+  },
+  "filesystem_observations": {
+    "case_distinct_names_materialized": false,
+    "lowercase_alias_exists_after_upper_create": true,
+    "lowercase_alias_is_same_file": true,
+    "nfc_nfd_distinct_names_materialized": true,
+    "nfd_alias_exists_after_nfc_create": false,
+    "nfd_alias_is_same_file": false
+  },
+  "fixture": {
+    "directories": [
+      "special",
+      "\u76ee\u5f55 \u7a7a\u683c",
+      "nonutf8"
+    ],
+    "directory_inventory_name_bytes_hex": {
+      "nonutf8": [],
+      "special": [
+        "206c656164696e672d73706163652e706466",
+        "6261636b736c6173685c6e616d652e706466",
+        "6c696e650a627265616b2e706466",
+        "747261696c696e672d73706163652e70646620",
+        "e4b8ade696872e706466",
+        "c3a92d6e66632e706466",
+        "412d636173652e706466",
+        "746162096e616d652e706466",
+        "65cc812d6e66642e706466",
+        "656d6f6a692df09f98802e706466",
+        "2d2d6c656164696e672d646173682e706466",
+        "7370616365206e616d652e706466",
+        "2e68696464656e2e706466",
+        "30302d61736369692e706466",
+        "636f6c6f6e3a6e616d652e706466"
+      ],
+      "\u76ee\u5f55 \u7a7a\u683c": [
+        "e5ad9020e69687e4bbb62e706466"
+      ]
+    },
+    "entries": [
+      {
+        "directory_name_bytes_hex": "30302d61736369692e706466",
+        "id": "ascii",
+        "path": "special/00-ascii.pdf",
+        "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+        "size": 331
+      },
+      {
+        "directory_name_bytes_hex": "412d636173652e706466",
+        "id": "upper_case",
+        "path": "special/A-case.pdf",
+        "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+        "size": 331
+      },
+      {
+        "directory_name_bytes_hex": "c3a92d6e66632e706466",
+        "id": "nfc",
+        "path": "special/\u00e9-nfc.pdf",
+        "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+        "size": 331
+      },
+      {
+        "directory_name_bytes_hex": "e4b8ade696872e706466",
+        "id": "cjk",
+        "path": "special/\u4e2d\u6587.pdf",
+        "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+        "size": 331
+      },
+      {
+        "directory_name_bytes_hex": "656d6f6a692df09f98802e706466",
+        "id": "emoji",
+        "path": "special/emoji-\ud83d\ude00.pdf",
+        "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+        "size": 331
+      },
+      {
+        "directory_name_bytes_hex": "7370616365206e616d652e706466",
+        "id": "space",
+        "path": "special/space name.pdf",
+        "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+        "size": 331
+      },
+      {
+        "directory_name_bytes_hex": "206c656164696e672d73706163652e706466",
+        "id": "leading_space",
+        "path": "special/ leading-space.pdf",
+        "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+        "size": 331
+      },
+      {
+        "directory_name_bytes_hex": "747261696c696e672d73706163652e70646620",
+        "id": "trailing_space",
+        "path": "special/trailing-space.pdf ",
+        "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+        "size": 331
+      },
+      {
+        "directory_name_bytes_hex": "746162096e616d652e706466",
+        "id": "tab",
+        "path": "special/tab\tname.pdf",
+        "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+        "size": 331
+      },
+      {
+        "directory_name_bytes_hex": "6c696e650a627265616b2e706466",
+        "id": "newline",
+        "path": "special/line\nbreak.pdf",
+        "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+        "size": 331
+      },
+      {
+        "directory_name_bytes_hex": "636f6c6f6e3a6e616d652e706466",
+        "id": "colon",
+        "path": "special/colon:name.pdf",
+        "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+        "size": 331
+      },
+      {
+        "directory_name_bytes_hex": "6261636b736c6173685c6e616d652e706466",
+        "id": "backslash",
+        "path": "special/backslash\\name.pdf",
+        "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+        "size": 331
+      },
+      {
+        "directory_name_bytes_hex": "2d2d6c656164696e672d646173682e706466",
+        "id": "leading_dash",
+        "path": "special/--leading-dash.pdf",
+        "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+        "size": 331
+      },
+      {
+        "directory_name_bytes_hex": "2e68696464656e2e706466",
+        "id": "dot_hidden",
+        "path": "special/.hidden.pdf",
+        "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+        "size": 331
+      },
+      {
+        "directory_name_bytes_hex": "e5ad9020e69687e4bbb62e706466",
+        "id": "unicode_child",
+        "path": "\u76ee\u5f55 \u7a7a\u683c/\u5b50 \u6587\u4ef6.pdf",
+        "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+        "size": 331
+      },
+      {
+        "directory_name_bytes_hex": "65cc812d6e66642e706466",
+        "id": "nfd",
+        "path": "special/e\u0301-nfd.pdf",
+        "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+        "size": 331
+      }
+    ],
+    "local_path": "<macos-work>/special-path",
+    "raw_attempts": [
+      {
+        "created": false,
+        "errno": 92,
+        "name_bytes_hex": "696e76616c69642d66662dff2e706466",
+        "sha256": null,
+        "size": null
+      },
+      {
+        "created": false,
+        "errno": 92,
+        "name_bytes_hex": "696e76616c69642d633061662dc0af2e706466",
+        "sha256": null,
+        "size": null
+      },
+      {
+        "created": false,
+        "errno": 92,
+        "name_bytes_hex": "7472756e63617465642d653238322de2822e706466",
+        "sha256": null,
+        "size": null
+      }
+    ]
+  },
+  "generator": {
+    "path": "tools/corpus/generate_macos_special_path_fixture.py",
+    "sha256": "2922916037fe069df428684d1139dc9e06ae0b2af5557edf4d9ec514872d866c",
+    "validator_path": "tools/corpus/validate_macos_special_path_fixture.py",
+    "validator_sha256": "bd206ba3e6f892a528d1d42b74bae2778174c655840ba735191a367aaccd66d2"
+  },
+  "limitations": [
+    "the candidate records the actual runner volume's case and NFC/NFD alias behavior instead of assuming an APFS mode",
+    "invalid UTF-8 byte names are attempted and their errno is retained when the host API rejects them",
+    "symlink cycles, permissions, long paths, large directories, TOCTOU, and CLI scan behavior require separate candidates"
+  ],
+  "platform": "macos-x86_64",
+  "result": "candidate",
+  "schema_version": 1,
+  "source": {
+    "manifest": "docs/research/data/baseline-corpus.json",
+    "manifest_sha256": "f5adabeedeaf3bb69b8e52f8de20efd0f0b87bd4dcd247610d4e876b9266f329",
+    "sample": "minimal.pdf",
+    "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+    "size": 331
+  }
+}

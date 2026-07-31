@@ -1,0 +1,1927 @@
+{
+  "admission": {
+    "capability_rows_admitted": 0,
+    "platform_admitted": false,
+    "reason": "special-path CLI candidate only; macOS runtime evidence has not been reviewed or projected into the 68-row capability closure"
+  },
+  "binary": {
+    "relative_path": "build/release/diec",
+    "sha256": "f4c69824399e3b27b1ec60924ef60555620c4e217a1f48cdae8c8db467d39317",
+    "size": 7452296
+  },
+  "cases": {
+    "directory_nonutf8": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/nonutf8"
+      ],
+      "cwd": "<binary-dir>",
+      "determinism_differences": [],
+      "expected_exit_code": 0,
+      "expected_exit_code_equal": true,
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/directory_nonutf8.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 0,
+        "stdout_path": "raw/cli-special-path/directory_nonutf8.first.stdout",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "first_detect_tree": null,
+      "first_prefix_tokens": [],
+      "first_valid_json": false,
+      "minimal_pdf_detect_tree_equal": null,
+      "reference_projection_applies": false,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/directory_nonutf8.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 0,
+        "stdout_path": "raw/cli-special-path/directory_nonutf8.second.stdout",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "second_detect_tree": null,
+      "second_prefix_tokens": [],
+      "second_valid_json": false
+    },
+    "directory_special": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/special"
+      ],
+      "cwd": "<binary-dir>",
+      "determinism_differences": [],
+      "expected_exit_code": 0,
+      "expected_exit_code_equal": true,
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/directory_special.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 11211,
+        "stdout_path": "raw/cli-special-path/directory_special.first.stdout",
+        "stdout_sha256": "a59ec05ba71a65e613f9b0513c89d9615218c2b328fc47f6c1c080bbbb0f24d2"
+      },
+      "first_detect_tree": null,
+      "first_prefix_tokens": [
+        "leading_space",
+        "leading_dash",
+        "ascii",
+        "upper_case",
+        "backslash",
+        "colon",
+        "emoji",
+        "newline",
+        "space",
+        "tab",
+        "trailing_space",
+        "nfc",
+        "cjk"
+      ],
+      "first_valid_json": false,
+      "minimal_pdf_detect_tree_equal": null,
+      "reference_projection_applies": false,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/directory_special.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 11211,
+        "stdout_path": "raw/cli-special-path/directory_special.second.stdout",
+        "stdout_sha256": "a59ec05ba71a65e613f9b0513c89d9615218c2b328fc47f6c1c080bbbb0f24d2"
+      },
+      "second_detect_tree": null,
+      "second_prefix_tokens": [
+        "leading_space",
+        "leading_dash",
+        "ascii",
+        "upper_case",
+        "backslash",
+        "colon",
+        "emoji",
+        "newline",
+        "space",
+        "tab",
+        "trailing_space",
+        "nfc",
+        "cjk"
+      ],
+      "second_valid_json": false
+    },
+    "directory_unicode": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/\u76ee\u5f55 \u7a7a\u683c"
+      ],
+      "cwd": "<binary-dir>",
+      "determinism_differences": [],
+      "expected_exit_code": 0,
+      "expected_exit_code_equal": true,
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/directory_unicode.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/directory_unicode.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "first_prefix_tokens": [],
+      "first_valid_json": true,
+      "minimal_pdf_detect_tree_equal": true,
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/directory_unicode.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/directory_unicode.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "second_prefix_tokens": [],
+      "second_valid_json": true
+    },
+    "explicit_order": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/special/emoji-\ud83d\ude00.pdf",
+        "<fixture>/special/\u00e9-nfc.pdf",
+        "<fixture>/special/00-ascii.pdf"
+      ],
+      "cwd": "<binary-dir>",
+      "determinism_differences": [],
+      "expected_exit_code": 0,
+      "expected_exit_code_equal": true,
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/explicit_order.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 2397,
+        "stdout_path": "raw/cli-special-path/explicit_order.first.stdout",
+        "stdout_sha256": "08ac5eca1b42c58277086a183ac88088a3c7affdcee6827e3934d359d83a58d6"
+      },
+      "first_detect_tree": null,
+      "first_prefix_tokens": [
+        "emoji",
+        "nfc",
+        "ascii"
+      ],
+      "first_valid_json": false,
+      "minimal_pdf_detect_tree_equal": null,
+      "reference_projection_applies": false,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/explicit_order.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 2397,
+        "stdout_path": "raw/cli-special-path/explicit_order.second.stdout",
+        "stdout_sha256": "08ac5eca1b42c58277086a183ac88088a3c7affdcee6827e3934d359d83a58d6"
+      },
+      "second_detect_tree": null,
+      "second_prefix_tokens": [
+        "emoji",
+        "nfc",
+        "ascii"
+      ],
+      "second_valid_json": false
+    },
+    "leading_dash_relative_escaped": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "--",
+        "--leading-dash.pdf"
+      ],
+      "cwd": "<fixture>/special",
+      "determinism_differences": [],
+      "expected_exit_code": 0,
+      "expected_exit_code_equal": true,
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/leading_dash_relative_escaped.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/leading_dash_relative_escaped.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "first_prefix_tokens": [],
+      "first_valid_json": true,
+      "minimal_pdf_detect_tree_equal": true,
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/leading_dash_relative_escaped.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/leading_dash_relative_escaped.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "second_prefix_tokens": [],
+      "second_valid_json": true
+    },
+    "leading_dash_relative_unescaped": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "--leading-dash.pdf"
+      ],
+      "cwd": "<fixture>/special",
+      "determinism_differences": [],
+      "expected_exit_code": 1,
+      "expected_exit_code_equal": true,
+      "first": {
+        "exit_code": 1,
+        "stderr_bytes": 40,
+        "stderr_path": "raw/cli-special-path/leading_dash_relative_unescaped.first.stderr",
+        "stderr_sha256": "ca8afaf3f0d7c0df735d67440bffcf7520f00c55f2b3b994df73ab6278d4153b",
+        "stdout_bytes": 0,
+        "stdout_path": "raw/cli-special-path/leading_dash_relative_unescaped.first.stdout",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "first_detect_tree": null,
+      "first_prefix_tokens": [],
+      "first_valid_json": false,
+      "minimal_pdf_detect_tree_equal": null,
+      "reference_projection_applies": false,
+      "second": {
+        "exit_code": 1,
+        "stderr_bytes": 40,
+        "stderr_path": "raw/cli-special-path/leading_dash_relative_unescaped.second.stderr",
+        "stderr_sha256": "ca8afaf3f0d7c0df735d67440bffcf7520f00c55f2b3b994df73ab6278d4153b",
+        "stdout_bytes": 0,
+        "stdout_path": "raw/cli-special-path/leading_dash_relative_unescaped.second.stdout",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "second_detect_tree": null,
+      "second_prefix_tokens": [],
+      "second_valid_json": false
+    },
+    "single_ascii": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/special/00-ascii.pdf"
+      ],
+      "cwd": "<binary-dir>",
+      "determinism_differences": [],
+      "expected_exit_code": 0,
+      "expected_exit_code_equal": true,
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_ascii.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_ascii.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "first_prefix_tokens": [],
+      "first_valid_json": true,
+      "minimal_pdf_detect_tree_equal": true,
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_ascii.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_ascii.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "second_prefix_tokens": [],
+      "second_valid_json": true
+    },
+    "single_backslash": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/special/backslash\\name.pdf"
+      ],
+      "cwd": "<binary-dir>",
+      "determinism_differences": [],
+      "expected_exit_code": 0,
+      "expected_exit_code_equal": true,
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_backslash.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_backslash.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "first_prefix_tokens": [],
+      "first_valid_json": true,
+      "minimal_pdf_detect_tree_equal": true,
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_backslash.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_backslash.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "second_prefix_tokens": [],
+      "second_valid_json": true
+    },
+    "single_cjk": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/special/\u4e2d\u6587.pdf"
+      ],
+      "cwd": "<binary-dir>",
+      "determinism_differences": [],
+      "expected_exit_code": 0,
+      "expected_exit_code_equal": true,
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_cjk.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_cjk.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "first_prefix_tokens": [],
+      "first_valid_json": true,
+      "minimal_pdf_detect_tree_equal": true,
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_cjk.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_cjk.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "second_prefix_tokens": [],
+      "second_valid_json": true
+    },
+    "single_colon": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/special/colon:name.pdf"
+      ],
+      "cwd": "<binary-dir>",
+      "determinism_differences": [],
+      "expected_exit_code": 0,
+      "expected_exit_code_equal": true,
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_colon.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_colon.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "first_prefix_tokens": [],
+      "first_valid_json": true,
+      "minimal_pdf_detect_tree_equal": true,
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_colon.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_colon.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "second_prefix_tokens": [],
+      "second_valid_json": true
+    },
+    "single_dot_hidden": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/special/.hidden.pdf"
+      ],
+      "cwd": "<binary-dir>",
+      "determinism_differences": [],
+      "expected_exit_code": 0,
+      "expected_exit_code_equal": true,
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_dot_hidden.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_dot_hidden.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "first_prefix_tokens": [],
+      "first_valid_json": true,
+      "minimal_pdf_detect_tree_equal": true,
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_dot_hidden.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_dot_hidden.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "second_prefix_tokens": [],
+      "second_valid_json": true
+    },
+    "single_emoji": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/special/emoji-\ud83d\ude00.pdf"
+      ],
+      "cwd": "<binary-dir>",
+      "determinism_differences": [],
+      "expected_exit_code": 0,
+      "expected_exit_code_equal": true,
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_emoji.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_emoji.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "first_prefix_tokens": [],
+      "first_valid_json": true,
+      "minimal_pdf_detect_tree_equal": true,
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_emoji.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_emoji.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "second_prefix_tokens": [],
+      "second_valid_json": true
+    },
+    "single_leading_dash": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/special/--leading-dash.pdf"
+      ],
+      "cwd": "<binary-dir>",
+      "determinism_differences": [],
+      "expected_exit_code": 0,
+      "expected_exit_code_equal": true,
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_leading_dash.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_leading_dash.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "first_prefix_tokens": [],
+      "first_valid_json": true,
+      "minimal_pdf_detect_tree_equal": true,
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_leading_dash.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_leading_dash.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "second_prefix_tokens": [],
+      "second_valid_json": true
+    },
+    "single_leading_space": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/special/ leading-space.pdf"
+      ],
+      "cwd": "<binary-dir>",
+      "determinism_differences": [],
+      "expected_exit_code": 0,
+      "expected_exit_code_equal": true,
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_leading_space.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_leading_space.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "first_prefix_tokens": [],
+      "first_valid_json": true,
+      "minimal_pdf_detect_tree_equal": true,
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_leading_space.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_leading_space.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "second_prefix_tokens": [],
+      "second_valid_json": true
+    },
+    "single_lower_case": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/special/a-case.pdf"
+      ],
+      "cwd": "<binary-dir>",
+      "determinism_differences": [],
+      "expected_exit_code": 0,
+      "expected_exit_code_equal": true,
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_lower_case.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_lower_case.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "first_prefix_tokens": [],
+      "first_valid_json": true,
+      "minimal_pdf_detect_tree_equal": true,
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_lower_case.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_lower_case.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "second_prefix_tokens": [],
+      "second_valid_json": true
+    },
+    "single_newline": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/special/line\nbreak.pdf"
+      ],
+      "cwd": "<binary-dir>",
+      "determinism_differences": [],
+      "expected_exit_code": 0,
+      "expected_exit_code_equal": true,
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_newline.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_newline.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "first_prefix_tokens": [],
+      "first_valid_json": true,
+      "minimal_pdf_detect_tree_equal": true,
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_newline.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_newline.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "second_prefix_tokens": [],
+      "second_valid_json": true
+    },
+    "single_nfc": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/special/\u00e9-nfc.pdf"
+      ],
+      "cwd": "<binary-dir>",
+      "determinism_differences": [],
+      "expected_exit_code": 0,
+      "expected_exit_code_equal": true,
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_nfc.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_nfc.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "first_prefix_tokens": [],
+      "first_valid_json": true,
+      "minimal_pdf_detect_tree_equal": true,
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_nfc.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_nfc.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "second_prefix_tokens": [],
+      "second_valid_json": true
+    },
+    "single_nfd": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/special/e\u0301-nfd.pdf"
+      ],
+      "cwd": "<binary-dir>",
+      "determinism_differences": [],
+      "expected_exit_code": 0,
+      "expected_exit_code_equal": true,
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_nfd.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_nfd.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "first_prefix_tokens": [],
+      "first_valid_json": true,
+      "minimal_pdf_detect_tree_equal": true,
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_nfd.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_nfd.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "second_prefix_tokens": [],
+      "second_valid_json": true
+    },
+    "single_space": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/special/space name.pdf"
+      ],
+      "cwd": "<binary-dir>",
+      "determinism_differences": [],
+      "expected_exit_code": 0,
+      "expected_exit_code_equal": true,
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_space.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_space.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "first_prefix_tokens": [],
+      "first_valid_json": true,
+      "minimal_pdf_detect_tree_equal": true,
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_space.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_space.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "second_prefix_tokens": [],
+      "second_valid_json": true
+    },
+    "single_tab": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/special/tab\tname.pdf"
+      ],
+      "cwd": "<binary-dir>",
+      "determinism_differences": [],
+      "expected_exit_code": 0,
+      "expected_exit_code_equal": true,
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_tab.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_tab.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "first_prefix_tokens": [],
+      "first_valid_json": true,
+      "minimal_pdf_detect_tree_equal": true,
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_tab.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_tab.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "second_prefix_tokens": [],
+      "second_valid_json": true
+    },
+    "single_trailing_space": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/special/trailing-space.pdf "
+      ],
+      "cwd": "<binary-dir>",
+      "determinism_differences": [],
+      "expected_exit_code": 0,
+      "expected_exit_code_equal": true,
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_trailing_space.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_trailing_space.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "first_prefix_tokens": [],
+      "first_valid_json": true,
+      "minimal_pdf_detect_tree_equal": true,
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_trailing_space.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_trailing_space.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "second_prefix_tokens": [],
+      "second_valid_json": true
+    },
+    "single_unicode_child": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/\u76ee\u5f55 \u7a7a\u683c/\u5b50 \u6587\u4ef6.pdf"
+      ],
+      "cwd": "<binary-dir>",
+      "determinism_differences": [],
+      "expected_exit_code": 0,
+      "expected_exit_code_equal": true,
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_unicode_child.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_unicode_child.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "first_prefix_tokens": [],
+      "first_valid_json": true,
+      "minimal_pdf_detect_tree_equal": true,
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_unicode_child.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_unicode_child.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "second_prefix_tokens": [],
+      "second_valid_json": true
+    },
+    "single_upper_case": {
+      "arguments": [
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/special/A-case.pdf"
+      ],
+      "cwd": "<binary-dir>",
+      "determinism_differences": [],
+      "expected_exit_code": 0,
+      "expected_exit_code_equal": true,
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_upper_case.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_upper_case.first.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "first_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "first_prefix_tokens": [],
+      "first_valid_json": true,
+      "minimal_pdf_detect_tree_equal": true,
+      "reference_projection_applies": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-special-path/single_upper_case.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 727,
+        "stdout_path": "raw/cli-special-path/single_upper_case.second.stdout",
+        "stdout_sha256": "5a475aa450326d3096db01352fe524bbda579173a645f0f502a74bba27a32e35"
+      },
+      "second_detect_tree": [
+        {
+          "filetype": "PDF",
+          "offset": "0",
+          "parentfilepart": "Header",
+          "size": "331",
+          "values": [
+            {
+              "name": "PDF",
+              "type": "format",
+              "version": "1.4"
+            },
+            {
+              "name": "HeaderComment",
+              "type": "complier",
+              "version": "e2e3cfd3"
+            }
+          ]
+        }
+      ],
+      "second_prefix_tokens": [],
+      "second_valid_json": true
+    }
+  },
+  "cli_baseline_report": {
+    "path": "cli-baseline-candidate.json",
+    "sha256": "02346b70493fb4cb0f11a8fecbaf38e645354dd1b61afe9e8f090b4f8c3c9433"
+  },
+  "findings": {
+    "case_alias_same_file": true,
+    "created_raw_name_count": 0,
+    "directory_nonutf8_sequence": [],
+    "directory_special_sequence": [
+      "leading_space",
+      "leading_dash",
+      "ascii",
+      "upper_case",
+      "backslash",
+      "colon",
+      "emoji",
+      "newline",
+      "space",
+      "tab",
+      "trailing_space",
+      "nfc",
+      "cjk"
+    ],
+    "explicit_target_order_is_preserved": true,
+    "explicit_target_sequence": [
+      "emoji",
+      "nfc",
+      "ascii"
+    ],
+    "leading_dash_requires_option_terminator_when_relative": true,
+    "logical_single_case_count": 17,
+    "unicode_alias_same_file": false
+  },
+  "fixture_report": {
+    "path": "special-path-fixture-candidate.json",
+    "sha256": "3bd4042d245b8bded2c75f1c8d9a37446aa3eece63fc6d44f3d9d605faac0343"
+  },
+  "generator": {
+    "baseline_collector_path": "tools/upstream/collect_macos_cli_baseline.py",
+    "baseline_collector_sha256": "113354cc888d132e6e2f666f886a1ba10bf3354ffcefab119eef50bc1e273113",
+    "baseline_validator_path": "tools/upstream/validate_macos_cli_baseline.py",
+    "baseline_validator_sha256": "8bf54da3f25f1ef81d86edde5204cce2a850e7a4ff09301252bb465ae3f8088c",
+    "fixture_generator_path": "tools/corpus/generate_macos_special_path_fixture.py",
+    "fixture_generator_sha256": "2922916037fe069df428684d1139dc9e06ae0b2af5557edf4d9ec514872d866c",
+    "fixture_validator_path": "tools/corpus/validate_macos_special_path_fixture.py",
+    "fixture_validator_sha256": "bd206ba3e6f892a528d1d42b74bae2778174c655840ba735191a367aaccd66d2",
+    "path": "tools/upstream/collect_macos_cli_special_paths.py",
+    "sha256": "75f0d405e1f9c5b8c009a2cada46e9f0b59f512d39227468941c0a97815ac422",
+    "validator_path": "tools/upstream/validate_macos_cli_special_paths.py",
+    "validator_sha256": "c33d3eea50f57f82df014c9b7d110f99ada45ad6d182a9d0f8848c9846b7dff8"
+  },
+  "limitations": [
+    "the candidate scans every logical UTF-8 spelling, including case and NFC/NFD aliases, plus three directory modes",
+    "invalid UTF-8 basenames are observed through directory scanning because they cannot be represented faithfully in a Unicode argv",
+    "symlink cycles, permissions, long paths, large directories, and TOCTOU remain separate path-profile candidates",
+    "raw streams and exact directory token order remain authoritative; only single-file detect trees use the macOS baseline projection"
+  ],
+  "oracle_report": {
+    "path": "oracle-candidate.json",
+    "sha256": "3e37bcef14b22887bd5525db8cc6f6d15a0cfe390f3eb7bc33ffabc37699696e"
+  },
+  "platform": "macos-x86_64-qt5",
+  "qt": {
+    "qmake_sha256": "14206b8303e6853e050277debc076be3460d11d4bc14821f7f55b1e27e67c8fe",
+    "qmake_spec": "macx-clang",
+    "qtcore_sha256": "86f54c3f81b7733bf7cda793094a213d5d7ce8562486b52285c846fc88ceaf9e",
+    "qtscript_sha256": "a566185119647f6b541f022950a3dda97197b5d9c23dc12ef2d872274d4ebf4d",
+    "version": "5.15.2"
+  },
+  "result": "candidate",
+  "schema_version": 1,
+  "selection": {
+    "case_names": [
+      "single_ascii",
+      "single_upper_case",
+      "single_nfc",
+      "single_cjk",
+      "single_emoji",
+      "single_space",
+      "single_leading_space",
+      "single_trailing_space",
+      "single_tab",
+      "single_newline",
+      "single_colon",
+      "single_backslash",
+      "single_leading_dash",
+      "single_dot_hidden",
+      "single_unicode_child",
+      "single_lower_case",
+      "single_nfd",
+      "directory_special",
+      "directory_unicode",
+      "directory_nonutf8",
+      "explicit_order",
+      "leading_dash_relative_unescaped",
+      "leading_dash_relative_escaped"
+    ],
+    "logical_entries": [
+      {
+        "id": "ascii",
+        "path": "special/00-ascii.pdf"
+      },
+      {
+        "id": "upper_case",
+        "path": "special/A-case.pdf"
+      },
+      {
+        "id": "nfc",
+        "path": "special/\u00e9-nfc.pdf"
+      },
+      {
+        "id": "cjk",
+        "path": "special/\u4e2d\u6587.pdf"
+      },
+      {
+        "id": "emoji",
+        "path": "special/emoji-\ud83d\ude00.pdf"
+      },
+      {
+        "id": "space",
+        "path": "special/space name.pdf"
+      },
+      {
+        "id": "leading_space",
+        "path": "special/ leading-space.pdf"
+      },
+      {
+        "id": "trailing_space",
+        "path": "special/trailing-space.pdf "
+      },
+      {
+        "id": "tab",
+        "path": "special/tab\tname.pdf"
+      },
+      {
+        "id": "newline",
+        "path": "special/line\nbreak.pdf"
+      },
+      {
+        "id": "colon",
+        "path": "special/colon:name.pdf"
+      },
+      {
+        "id": "backslash",
+        "path": "special/backslash\\name.pdf"
+      },
+      {
+        "id": "leading_dash",
+        "path": "special/--leading-dash.pdf"
+      },
+      {
+        "id": "dot_hidden",
+        "path": "special/.hidden.pdf"
+      },
+      {
+        "id": "unicode_child",
+        "path": "\u76ee\u5f55 \u7a7a\u683c/\u5b50 \u6587\u4ef6.pdf"
+      },
+      {
+        "id": "lower_case",
+        "path": "special/a-case.pdf"
+      },
+      {
+        "id": "nfd",
+        "path": "special/e\u0301-nfd.pdf"
+      }
+    ]
+  },
+  "source": {
+    "commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "recursive_submodule_count": 58,
+    "repository": "https://github.com/horsicq/DIE-engine",
+    "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+    "tracked_files_clean_before_and_after": true
+  },
+  "summary": {
+    "case_count": 23,
+    "determinism_failures": [],
+    "deterministic": true,
+    "execution_count": 46,
+    "expected_exit_failures": [],
+    "expected_exits_equal": true,
+    "raw_stream_count": 92,
+    "reference_projection_failures": [],
+    "reference_projections_equal": true
+  }
+}

@@ -82,6 +82,8 @@ pub struct RquickjsRuntime {
     include_stack: IncludeStack,
     /// Include script registry: name -> source text.
     include_scripts: BTreeMap<String, String>,
+    /// Type-specific init scripts, deferred to init() phase.
+    type_init_scripts: Vec<(String, String)>,
 }
 
 impl RquickjsRuntime {
@@ -117,13 +119,15 @@ impl RquickjsRuntime {
             database_loaded: false,
             initialized: false,
             include_scripts: BTreeMap::new(),
+            type_init_scripts: Vec::new(),
         })
     }
 
     /// Register a host API bridge on the JavaScript context.
     ///
     /// This creates the `Binary`/`X`/`File` JavaScript objects that bridge
-    /// to the Rust `HostApi` trait. Must be called after `load_database`
+    /// to the Rust `HostApi` trait. Must be called before `load_database`
+    /// (so that include scripts referencing `Binary` at top level work)
     /// and before `evaluate_rule`.
     pub fn register_host_api(&self, host: Arc<dyn HostApi + Send + Sync>) -> Result<(), RuleError> {
         let bridge = crate::host_api_bridge::HostApiBridge::new(host);
@@ -377,12 +381,51 @@ impl RquickjsRuntime {
     fn eval_script(&self, source: &str) -> Result<(), RuleError> {
         self.context.with(|ctx: Ctx<'_>| {
             // Use sloppy (non-strict) mode to match Qt Script behavior.
-            ctx.eval::<(), _>(source)
-                .map_err(|e| RuleError::ScriptException {
-                    path: "<eval>".into(),
-                    message: e.to_string(),
+            // QuickJS defaults to strict mode, which rejects `delete` on
+            // direct references and other sloppy-mode constructs.
+            let mut options = rquickjs::context::EvalOptions::default();
+            options.strict = false;
+            ctx.eval_with_options::<(), _>(source, options)
+                .map_err(|e| {
+                    let message = match e {
+                        rquickjs::Error::Exception => extract_exception_message(&ctx),
+                        other => other.to_string(),
+                    };
+                    RuleError::ScriptException {
+                        path: "<eval>".into(),
+                        message,
+                    }
                 })
         })
+    }
+}
+
+/// Extract a human-readable message from a JavaScript exception.
+/// Called after `ctx.eval` returns `Error::Exception`.
+fn extract_exception_message(ctx: &Ctx<'_>) -> String {
+    // The exception value is available via ctx.catch(), but rquickjs doesn't
+    // expose a way to convert it to a string directly. Instead, we store it
+    // as a global and use eval to call String() on it.
+    let exc = ctx.catch();
+    let type_name = exc.type_name();
+
+    // Store the exception as a global temporary.
+    let globals = ctx.globals();
+    if globals.set("__diec_exc", exc).is_err() {
+        return format!("Exception ({type_name})");
+    }
+
+    // Use JS to convert the exception to a string.
+    let result: Result<String, _> = ctx.eval(
+        r#"
+        try { String(__diec_exc); } catch(e) { "Exception"; }
+        "#,
+    );
+    let _ = globals.set("__diec_exc", rquickjs::Value::new_null(ctx.clone()));
+
+    match result {
+        Ok(s) if !s.is_empty() => s,
+        _ => format!("Exception ({type_name})"),
     }
 }
 
@@ -391,15 +434,18 @@ impl RuleRuntime for RquickjsRuntime {
         // Copy include scripts into the runtime before registering globals.
         self.include_scripts = snapshot.include_scripts.clone();
 
+        // Defer type init scripts to init() phase, after host API is registered.
+        self.type_init_scripts = snapshot.type_init_scripts.clone();
+
         self.register_globals()?;
 
         if let Some(init_source) = &snapshot.init_script {
             self.eval_script(init_source)?;
         }
 
-        for (_type_name, init_source) in &snapshot.type_init_scripts {
-            self.eval_script(init_source)?;
-        }
+        // Note: type init scripts are NOT run here because they may reference
+        // host API objects (Binary, X, File) that are only registered during
+        // init(). They are run in init() instead.
 
         for rule in &snapshot.rules {
             self.eval_script(&rule.source).map_err(|e| match e {
@@ -421,6 +467,14 @@ impl RuleRuntime for RquickjsRuntime {
                 detail: "init called before load_database".into(),
             });
         }
+
+        // Run type-specific init scripts now that the host API is registered.
+        // These scripts set up aliases like `var File = Binary; var X = Binary;`
+        // and include helper scripts like `includeScript("read")`.
+        for (_type_name, init_source) in &self.type_init_scripts {
+            self.eval_script(init_source)?;
+        }
+
         self.initialized = true;
         Ok(())
     }

@@ -1,0 +1,131 @@
+{
+  "admission": {
+    "capability_rows_admitted": 0,
+    "platform_admitted": false,
+    "reason": "database-cache engine harness build candidate only; no macOS runtime capability evidence is admitted"
+  },
+  "artifact": {
+    "architectures": [
+      "x86_64"
+    ],
+    "file_description": "Mach-O 64-bit executable x86_64",
+    "otool_l": [
+      "database-cache-harness-candidate:",
+      "\t@rpath/QtConcurrent.framework/Versions/5/QtConcurrent (compatibility version 5.15.0, current version 5.15.2)",
+      "\t@rpath/QtScript.framework/Versions/5/QtScript (compatibility version 5.15.0, current version 5.15.2)",
+      "\t@rpath/QtCore.framework/Versions/5/QtCore (compatibility version 5.15.0, current version 5.15.2)",
+      "\t/System/Library/Frameworks/DiskArbitration.framework/Versions/A/DiskArbitration (compatibility version 1.0.0, current version 1.0.0)",
+      "\t/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit (compatibility version 1.0.0, current version 275.0.0)",
+      "\t/usr/lib/libc++.1.dylib (compatibility version 1.0.0, current version 1300.36.0)",
+      "\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1319.0.0)"
+    ],
+    "path": "database-cache-harness-candidate",
+    "sha256": "30bde6a106cc838ee60532e5ada12b1f10b3469e95963b80b98d609a87babe5f",
+    "size": 7468872
+  },
+  "build": {
+    "console_makefile_sha256": "5a3a3b1ea14c2b53074d6aa3af405b5f0c24f0cf7f0dd301ee570356dbe7fc03",
+    "elapsed_milliseconds": 385340,
+    "exit_code": 0,
+    "inputs": {
+      "console_makefile": {
+        "bytes": 7453028,
+        "path": "build-input/database-cache-console.Makefile",
+        "sha256": "5a3a3b1ea14c2b53074d6aa3af405b5f0c24f0cf7f0dd301ee570356dbe7fc03"
+      },
+      "macos_adapter": {
+        "bytes": 488,
+        "path": "build-input/database_cache_harness_macos_adapter.cpp",
+        "sha256": "0aac56641935ee077ebd15401cc0a72fb5542dcda8498df5682f478dec3de4c6"
+      },
+      "patched_makefile": {
+        "bytes": 7452996,
+        "path": "build-input/database-cache-harness.Makefile",
+        "sha256": "4675c820f6e6d5550f23661dc3df907c884b5ac8f1a7642da0a2698a21604c52"
+      },
+      "shared_harness": {
+        "bytes": 17920,
+        "path": "build-input/database_cache_harness_main.cpp",
+        "sha256": "b26ba79a14fc26332c9e3030e6291dfcc600a03f97f4d38de7ca22b996fe792e"
+      }
+    },
+    "jobs": 2,
+    "patched_makefile_sha256": "4675c820f6e6d5550f23661dc3df907c884b5ac8f1a7642da0a2698a21604c52",
+    "replacements": {
+      "destination_target_replacements": 4,
+      "object_token_replacements": 3,
+      "replaced_object": "main_console.o",
+      "replaced_source": "main_console.cpp",
+      "replacement_object": "database_cache_harness_macos_adapter.o",
+      "replacement_source": "database_cache_harness_macos_adapter.cpp",
+      "source_token_replacements": 5,
+      "target_variable": "TARGET"
+    },
+    "stderr": {
+      "bytes": 15438277,
+      "path": "raw/database-cache-harness-build.stderr",
+      "sha256": "7fe8481e90c61d2f4f1941b16fd2b0d081ed8d63dea7ec7c6bd9dc66cb816bd3"
+    },
+    "stdout": {
+      "bytes": 2220602,
+      "path": "raw/database-cache-harness-build.stdout",
+      "sha256": "aa9f7f42d0a6af8d78451790950277376785b0ba8c0db99690a6f3c8bb62e4d0"
+    },
+    "system": "patched-qmake-makefile",
+    "tool": "make"
+  },
+  "cli": {
+    "relative_path": "build/release/diec",
+    "sha256": "f4c69824399e3b27b1ec60924ef60555620c4e217a1f48cdae8c8db467d39317",
+    "size": 7452296
+  },
+  "generator": {
+    "baseline_collector_path": "tools/upstream/collect_macos_cli_baseline.py",
+    "baseline_collector_sha256": "113354cc888d132e6e2f666f886a1ba10bf3354ffcefab119eef50bc1e273113",
+    "macos_adapter_path": "tools/upstream/database_cache_harness_macos_adapter.cpp",
+    "macos_adapter_sha256": "0aac56641935ee077ebd15401cc0a72fb5542dcda8498df5682f478dec3de4c6",
+    "oracle_validator_path": "tools/upstream/validate_macos_qt5_oracle_report.py",
+    "oracle_validator_sha256": "64891dc319bfd7d958406aeeae31b4424385868b40d462c7f841ebbc5a8ff2e7",
+    "path": "tools/upstream/build_macos_database_cache_harness.py",
+    "sha256": "44282ca1103ea792993e0bc52b56afa53df8089664141bfbb1d7adf9f8654139",
+    "shared_harness_path": "tools/upstream/database_cache_harness_main.cpp",
+    "shared_harness_sha256": "b26ba79a14fc26332c9e3030e6291dfcc600a03f97f4d38de7ca22b996fe792e",
+    "validator_path": "tools/upstream/validate_macos_database_cache_harness_build.py",
+    "validator_sha256": "7ba66dcdb405ca40c036739bac80612474ceaa213c6bb0c4604a95d7a0c5a6e6"
+  },
+  "limitations": [
+    "the builder replaces only the generated console main_console.cpp object and reuses the remaining fixed qmake object/link closure",
+    "the adapter changes only the entry point to enable QStandardPaths test mode before invoking the shared 19-case harness",
+    "a successful build is not runtime cache, permission, determinism, or Linux-semantic evidence"
+  ],
+  "local_paths": {
+    "build_dir": "<macos-work>/build",
+    "console_build_dir": "<macos-work>/build/console_source",
+    "local_artifact": "<macos-work>/build/console_source/database-cache-harness-candidate",
+    "original_makefile": "<macos-work>/build/console_source/Makefile",
+    "patched_makefile": "<macos-work>/build/console_source/Makefile.DiecDatabaseCacheHarness",
+    "qt_dir": "<macos-work>/qt/5.15.2/clang_64",
+    "source_dir": "<macos-work>/DIE-engine-src"
+  },
+  "oracle_report": {
+    "path": "oracle-candidate.json",
+    "sha256": "3e37bcef14b22887bd5525db8cc6f6d15a0cfe390f3eb7bc33ffabc37699696e"
+  },
+  "platform": "macos-x86_64-qt5",
+  "qt": {
+    "qmake_sha256": "14206b8303e6853e050277debc076be3460d11d4bc14821f7f55b1e27e67c8fe",
+    "qmake_spec": "macx-clang",
+    "qtcore_sha256": "86f54c3f81b7733bf7cda793094a213d5d7ce8562486b52285c846fc88ceaf9e",
+    "qtscript_sha256": "a566185119647f6b541f022950a3dda97197b5d9c23dc12ef2d872274d4ebf4d",
+    "version": "5.15.2"
+  },
+  "result": "candidate",
+  "schema_version": 1,
+  "source": {
+    "commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "recursive_submodule_count": 58,
+    "repository": "https://github.com/horsicq/DIE-engine",
+    "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+    "tracked_files_clean_before_and_after": true
+  }
+}

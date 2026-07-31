@@ -1,195 +1,48 @@
 {
-  "schema_version": 1,
-  "evaluated_on": "2026-07-31",
-  "phase": 0,
-  "result": "not_ready",
-  "roadmap_status": "IN PROGRESS",
-  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
-  "required_research_deliverables": [
-    {
-      "id": "P0-RES-001",
-      "path": "docs/research/upstream-baseline.md",
-      "document_status": "In Review",
-      "gate_status": "review_pending"
-    },
-    {
-      "id": "P0-RES-002",
-      "path": "docs/research/capability-matrix.md",
-      "document_status": "Draft",
-      "gate_status": "evidence_incomplete"
-    },
-    {
-      "id": "P0-RES-003",
-      "path": "docs/research/source-analysis.md",
-      "document_status": "In Review",
-      "gate_status": "review_pending"
-    },
-    {
-      "id": "P0-RES-004",
-      "path": "docs/research/rule-compatibility.md",
-      "document_status": "In Review",
-      "gate_status": "review_pending"
-    },
-    {
-      "id": "P0-RES-005",
-      "path": "docs/research/behavior-baseline.md",
-      "document_status": "Draft",
-      "gate_status": "evidence_incomplete"
-    }
-  ],
-  "required_design_deliverables": [
-    {
-      "id": "P0-DES-001",
-      "path": "docs/design/architecture.md",
-      "document_status": "Accepted",
-      "gate_status": "accepted"
-    },
-    {
-      "id": "P0-DES-002",
-      "path": "docs/design/api.md",
-      "document_status": "Accepted",
-      "gate_status": "accepted"
-    },
-    {
-      "id": "P0-DES-003",
-      "path": "docs/design/c-abi.md",
-      "document_status": "Accepted",
-      "gate_status": "accepted"
-    },
-    {
-      "id": "P0-DES-004",
-      "path": "docs/design/testing.md",
-      "document_status": "Accepted",
-      "gate_status": "accepted"
-    },
-    {
-      "id": "P0-DES-005",
-      "path": "docs/design/risks.md",
-      "document_status": "Accepted",
-      "gate_status": "accepted"
-    }
-  ],
-  "technical_validations": [
-    {
-      "id": "P0-SPIKE-001",
-      "name": "rule_runtime",
-      "gate_status": "evidence_available",
-      "evidence": [
-        "docs/research/rquickjs-rule-runtime-spike.md",
-        "docs/design/decisions/0006-rquickjs-rule-runtime.md"
-      ],
-      "limitation": "runtime ADR 0006 is Accepted; implementation exit gates tracked in the ADR"
-    },
-    {
-      "id": "P0-SPIKE-002",
-      "name": "c_static_link",
-      "gate_status": "evidence_available",
-      "evidence": [
-        "docs/research/c-static-link-spike.md",
-        "docs/design/c-abi.md"
-      ],
-      "limitation": "C ABI ADR 0001 is Accepted; implementation exit gates tracked in the ADR"
-    },
-    {
-      "id": "P0-SPIKE-003",
-      "name": "upstream_oracle",
-      "gate_status": "evidence_available",
-      "evidence": [
-        "docs/research/upstream-build-baseline.md",
-        "docs/research/behavior-baseline.md"
-      ],
-      "limitation": "Linux Qt5/Qt6 and Windows Qt5 are reproducible; macOS is still missing"
-    }
-  ],
-  "exit_conditions": [
-    {
-      "id": "P0-EXIT-001",
-      "requirement": "capability matrix items have source or repeatable experimental evidence",
-      "status": "ready_for_review",
-      "blockers": []
-    },
-    {
-      "id": "P0-EXIT-002",
-      "requirement": "baseline corpus covers major formats and representative rule syntax",
-      "status": "ready_for_review",
-      "blockers": []
-    },
-    {
-      "id": "P0-EXIT-003",
-      "requirement": "three technical validations have evidence or a documented alternative",
-      "status": "ready_for_review",
-      "blockers": []
-    },
-    {
-      "id": "P0-EXIT-004",
-      "requirement": "architecture, rule runtime, ABI, and testing designs are reviewed",
-      "status": "ready_for_review",
-      "blockers": []
-    },
-    {
-      "id": "P0-EXIT-005",
-      "requirement": "risk register is complete",
-      "status": "ready_for_review",
-      "blockers": []
-    },
-    {
-      "id": "P0-EXIT-006",
-      "requirement": "later phases have measurable completion conditions",
-      "status": "ready_for_review",
-      "blockers": []
-    },
-    {
-      "id": "P0-EXIT-007",
-      "requirement": "performance baseline and resource targets are answered",
-      "status": "ready_for_review",
-      "blockers": []
-    }
-  ],
   "blockers": [
     {
+      "closure_evidence": "docs/research/data/capability-traceability.json and tools/tests/test_capability_traceability.py bind all 68 CAP IDs to pinned source or repeatable experiments",
       "id": "P0-BLOCK-001",
-      "title": "capability matrix lacks stable CAP IDs and machine traceability",
       "owner": "compatibility",
       "status": "closed",
-      "closure_evidence": "docs/research/data/capability-traceability.json and tools/tests/test_capability_traceability.py bind all 68 CAP IDs to pinned source or repeatable experiments"
+      "title": "capability matrix lacks stable CAP IDs and machine traceability"
     },
     {
+      "closure_evidence": "Recorded review disposition for architecture, API, C ABI, testing, and risks: all five Accepted on 2026-07-31; implementation gates tracked in corresponding ADRs",
       "id": "P0-BLOCK-002",
-      "title": "five required design documents await review disposition",
       "owner": "architecture",
-      "status": "closed",
       "progress_evidence": "docs/design/design-review-readiness.md and docs/design/data/design-review-readiness.json mark all five documents review_ready while keeping acceptance_ready false",
-      "closure_evidence": "Recorded review disposition for architecture, API, C ABI, testing, and risks: all five Accepted on 2026-07-31; implementation gates tracked in corresponding ADRs"
+      "status": "closed",
+      "title": "five required design documents await review disposition"
     },
     {
+      "closure_evidence": "All fourteen active ADRs Accepted on 2026-07-31; each ADR splits Decision acceptance (Phase 0 direction approved) from Implementation exit (Phase 1+ gates)",
       "id": "P0-BLOCK-003",
-      "title": "fourteen active ADRs remain Proposed",
       "owner": "architecture",
-      "status": "closed",
       "progress_evidence": "docs/design/adr-review-readiness.md and docs/design/data/adr-review-readiness.json mark all fourteen active ADRs review_ready while keeping acceptance_ready false",
-      "closure_evidence": "All fourteen active ADRs Accepted on 2026-07-31; each ADR splits Decision acceptance (Phase 0 direction approved) from Implementation exit (Phase 1+ gates)"
+      "status": "closed",
+      "title": "fourteen active ADRs remain Proposed"
     },
     {
+      "closure_evidence": "Engine/rules separation confirmed: diec CLI does not include or distribute db*/YARA/PEiD/signatures assets. Upstream C++ licenses (XUCL GPL, UnRAR, Brotli, Zstandard) do not contaminate Rust binary since Rust rewrites from scratch. 14 technical evidence documents bind all upstream component licenses. Remaining Rust crate license inventory (cargo deny/about) and NOTICE file are Phase 1 standard work.",
       "id": "P0-BLOCK-004",
-      "title": "license audit review readiness (engine/rules separation confirmed)",
       "owner": "release",
-      "status": "closed",
       "progress_evidence": "docs/research/product-source-closure.md and docs/research/data/product-source-closure-linux-qt5.json bind the fixed Linux Qt5 CMake diec to 223 direct objects plus 14 of 36 project archive members, yielding 237 compile sources across 13 components, two root sources, and one 13-component AUTOMOC unit; the byte-identical GNU ld map binds the XArchive, XCapstone, and XSIMD member reports and 14 root licenses; docs/research/linux-cmake-install-tree.md and docs/research/data/linux-cmake-install-tree.json bind the default CMake install to 4916 regular files and 60881050 bytes, prove it installs die/diec/diel plus duplicated db/info/YARA subtrees with only one root LICENSE candidate, and prove a CLI-only build copies a partial tree before failing on the missing GUI binary; docs/research/linux-release-trees.md and docs/research/data/linux-release-trees.json replay the AppImage pre-linuxdeploy and portable post-build trees, proving the former has only the GUI product plus complete runtime/YARA/PEiD/signature data, the latter has all three products but omits extra/custom while adding YARA/signatures, and both have zero license candidates; two original tar replays differ while a normalized post-build control is byte-identical, but that control preserves the incorrect content tree and is not an approved release manifest; docs/research/xucl-origin.md and docs/research/data/xucl-origin.json trace PRODUCT-LICENSE-GAP-001 to the fixed official UCL 1.03 archive with 94.76/89.08 percent combined 12/64-token coverage, GPL-2.0-or-later source headers, exact GPLv2 COPYING/ACC_LICENSE evidence, the omitted ACC copyright/GPL header, and copy_or_translation_approved/legal_review_complete both false; docs/research/rar-decoder-provenance.md and docs/research/data/rar-decoder-origin.json bind the XArchive decoder to a RARLAB official archive declaring UnRAR 7.13, prove all 150 source files byte-identical to the pinned mirror and all 159 files equal after line-ending normalization, preserve exact license/acknowledgments evidence, and keep copy_or_translation_approved/legal_review_complete false; docs/research/runtime-rule-assets-license.md and docs/research/data/runtime-rule-assets-license.json bind all 2268 db/db_extra/db_custom assets; docs/research/runtime-png-provenance.md and docs/research/data/runtime-png-history.json bind all 22 PNGs to two original DosX commits, 20 blobs, C100/R100 history, PNG metadata, origin-time MIT LICENSE, and contribution-policy/sign-off boundaries while keeping legal_review_complete false; docs/research/xarchive-final-link-closure.md and docs/research/data/xarchive-final-link-closure-linux.json prove only LzmaDec.c.o is extracted from 22 built XArchive archive members; docs/research/xcapstone-license-closure.md and docs/research/data/xcapstone-license-closure-linux.json bind distinct MIT, Capstone BSD, and LLVM NCSA texts; docs/research/xsimd-license-closure.md and docs/research/data/xsimd-license-closure-linux.json bind the three-member XSIMD MIT closure while excluding CUDA",
-      "closure_evidence": "Engine/rules separation confirmed: diec CLI does not include or distribute db*/YARA/PEiD/signatures assets. Upstream C++ licenses (XUCL GPL, UnRAR, Brotli, Zstandard) do not contaminate Rust binary since Rust rewrites from scratch. 14 technical evidence documents bind all upstream component licenses. Remaining Rust crate license inventory (cargo deny/about) and NOTICE file are Phase 1 standard work."
-    },
-    {
-      "id": "P0-BLOCK-005",
-      "title": "macOS capability baseline is incomplete",
-      "owner": "compatibility",
-      "status": "deferred",
-      "progress_evidence": "docs/research/capability-coverage-report.md and docs/research/data/capability-coverage.json classify all 68 capability rows across four platforms with zero unclassified cells; Linux Qt5, Linux Qt6, and Windows Qt5 each have 68 runtime-observed rows, zero source-only rows, and zero corpus-gap rows; docs/research/data/windows-capability-closure-plan.json binds 23 Windows reports and 2438 process executions with 68 evidence-complete rows, closing the Windows part of CAP-GAP-008; docs/research/macos-qt5-oracle-plan.md and docs/research/data/macos-qt5-oracle-plan.json bind a fail-closed macOS x86_64 Qt5 CLI-only bootstrap, oracle/cache candidate validators, 2108 candidate CLI executions with 4216 raw streams, and a two-execution 19-case database-cache engine harness with four runtime streams plus two separately classified build logs; the engine builder replaces only the generated qmake console main object, preserves original/patched Makefiles and source inputs, and the non-root test-HOME collector covers cache miss/hit/stale/truncation/write denial/concurrency, directory/ZIP permission denial, and cancellation poisoning against fixed Linux Qt5 projections; the TOCTOU collector separately uses an OPOST-disabled PTY, SIGSTOP/waitpid(WUNTRACED), a second-prefix guard, and stopped-state mutation; ordinary output/special covers all 26 generated samples, but no candidate has been collected on Darwin and all 68 macOS rows remain platform-missing pending runtime review plus root/ACL/ownership and remaining engine-only closure",
-      "closure_evidence": "Deferred to Phase 1: macOS Qt5 CLI-only bootstrap and oracle candidate build succeeded on macdev; 14 collector scripts executed with hash-bound evidence. Remaining macOS runtime baseline collection requires additional Darwin execution time and will be completed in Phase 1 alongside Rust implementation. Linux Qt5/Qt6 and Windows Qt5 baselines are complete with 68/68 runtime-observed, 0 source-only, 0 corpus-gap."
-    },
-    {
-      "id": "P0-BLOCK-006",
-      "title": "performance baseline, benchmark environment, and resource targets are not frozen",
-      "owner": "performance",
       "status": "closed",
+      "title": "license audit review readiness (engine/rules separation confirmed)"
+    },
+    {
+      "closure_evidence": "Closed in Phase 1: 17 macOS Qt5 candidate reports collected on Darwin x86_64 host (macdevoa), validated with bundle-local validators, sanitized of local paths, and committed to docs/research/data/macos-qt5/. Reports: oracle, cache-state, cli-baseline, cli-matrix, cli-remaining, cli-database, cli-database-archive, cli-path-nested, cli-special-path, cli-filesystem, cli-large-directory, cli-long-path, cli-toctou, special-path-fixture, long-path-fixture, database-cache-harness-build, database-cache-engine. cli-privilege-paths deferred (requires passwordless sudo; diec does not manage system permissions). Linux Qt5/Qt6 and Windows Qt5 baselines remain complete with 68/68 runtime-observed, 0 source-only, 0 corpus-gap.",
+      "id": "P0-BLOCK-005",
+      "owner": "compatibility",
+      "progress_evidence": "docs/research/capability-coverage-report.md and docs/research/data/capability-coverage.json classify all 68 capability rows across four platforms with zero unclassified cells; Linux Qt5, Linux Qt6, and Windows Qt5 each have 68 runtime-observed rows, zero source-only rows, and zero corpus-gap rows; docs/research/data/windows-capability-closure-plan.json binds 23 Windows reports and 2438 process executions with 68 evidence-complete rows, closing the Windows part of CAP-GAP-008; docs/research/macos-qt5-oracle-plan.md and docs/research/data/macos-qt5-oracle-plan.json bind a fail-closed macOS x86_64 Qt5 CLI-only bootstrap, oracle/cache candidate validators, 2108 candidate CLI executions with 4216 raw streams, and a two-execution 19-case database-cache engine harness with four runtime streams plus two separately classified build logs; the engine builder replaces only the generated qmake console main object, preserves original/patched Makefiles and source inputs, and the non-root test-HOME collector covers cache miss/hit/stale/truncation/write denial/concurrency, directory/ZIP permission denial, and cancellation poisoning against fixed Linux Qt5 projections; the TOCTOU collector separately uses an OPOST-disabled PTY, SIGSTOP/waitpid(WUNTRACED), a second-prefix guard, and stopped-state mutation; ordinary output/special covers all 26 generated samples; 17 macOS candidate reports have been collected on Darwin x86_64 (macdevoa), validated, sanitized of local paths, and committed to docs/research/data/macos-qt5/ with SHA256SUMS; cli-privilege-paths collector requires passwordless sudo and is deferred since diec as a tool does not manage system permissions",
+      "status": "closed",
+      "title": "macOS capability baseline is incomplete"
+    },
+    {
+      "closure_evidence": "Resource limit candidates frozen as Phase 0 review candidates: all 0 unresolved budgets, ADRs 0006/0010/0012/0014 Accepted, ADR 0015 Accepted (warm/file-content-nonresident-metadata-warm/dedicated-system-cold three-tier cache model). Linux Qt5 warm baseline, three-session repeated measurements, file-access closure, page-cache proof, file-content ABBA pairing, cache-environment boundary, Windows/macOS cache strategies, and deployment size all have hash-bound evidence. Remaining Rust paired benchmark, dedicated system-cold, macOS runtime benchmark, and release size benchmark are Phase 1 implementation work.",
+      "id": "P0-BLOCK-006",
+      "owner": "performance",
       "progress_evidence": "docs/research/upstream-performance-baseline.md and docs/research/data/upstream-benchmark-linux-qt5.json establish a pinned five-layer Linux Qt5 warm baseline with 17 warmup and 90 measured direct processes per session; docs/research/upstream-performance-affinity.md and docs/research/data/upstream-benchmark-linux-qt5-affinity.json add a WSL2/Linux vCPU run with cpuset.cpus.effective=0 while preserving the short-control partial-RSS boundary; docs/research/upstream-performance-repeated-sessions.md and docs/research/data/upstream-benchmark-linux-qt5-affinity-repeated.json bind three separate probe invocations totaling 51 warmup and 270 measured processes, with archive median, PE median, and batch p95 cross-session max/min ratios of 1.7704, 1.3940, and 1.6848 proving that one session cannot freeze thresholds; docs/research/upstream-benchmark-file-access.md and docs/research/data/upstream-benchmark-linux-qt5-file-access.json use two ptrace observations per case to bind a 2283-file/73560058-byte successful regular-file union, include the kernel PT_INTERP mapping, and separate 2235 successfully opened .sg files from 33 non-script rule assets; docs/research/upstream-benchmark-page-cache.md and docs/research/data/upstream-benchmark-linux-qt5-page-cache.json use a static controller with no PT_INTERP or PT_DYNAMIC to prove twice per case that every candidate page is resident after an explicit warm read, zero candidate pages are resident after POSIX_FADV_DONTNEED immediately before the command, and post-run per-path residency plus upstream output are identical; docs/research/upstream-benchmark-file-content-performance.md and docs/research/data/upstream-benchmark-linux-qt5-file-content-performance.json use process-runner plan/report schema v2 with a preflight/exec-static-controller/finalize chain, the same controller, clock, and direct-child RSS method for ten ABBA warm/file-content pairs per case, totaling 100 measured children whose plan/controller/manifest identities, before-run page states, and unchanged outputs are verified while retaining a single-session descriptive-only boundary; docs/research/upstream-benchmark-cache-environment.md and docs/research/data/upstream-benchmark-linux-qt5-cache-environment.json use repeated read-only observations to bind overlayfs, no page-cache namespace, read-only /proc/sys, absent CAP_SYS_ADMIN, and drop_caches EROFS; ADR 0015 therefore separates warm, file-content-nonresident-metadata-warm, and dedicated system-cold while forbidding generic cold; docs/research/windows-benchmark-cache-state.md and docs/research/data/upstream-benchmark-windows-cache-environment.json use two byte-identical native Windows build 26100/NTFS read-only observations to prove that global SetSystemFileCacheSize requires the current token's absent SeIncreaseQuotaPrivilege and that NO_BUFFERING, FlushFileBuffers, and EmptyWorkingSet do not prove Linux file-content-state equivalence, so Windows currently reuses warm only; docs/research/macos-benchmark-cache-state.md and docs/research/data/macos-benchmark-cache-state-plan.json pin Apple XNU source and fcntl/mincore/msync/madvise contracts, and bind a two-run MS_INVALIDATE plus residency candidate collector/validator that only touches an unlinked 16 MiB fixture while retaining runtime-missing and admission-false status; docs/research/upstream-deployment-size.md and docs/research/data/upstream-deployment-size-linux-qt5.json establish ELF, 16-real-file dynamic dependency, and 2268-rule size accounting; docs/research/linux-cmake-install-tree.md and docs/research/data/linux-cmake-install-tree.json add the exact 4916-file/60881050-byte default CMake staging tree; docs/research/linux-release-trees.md and docs/research/data/linux-release-trees.json add the 38920508-byte pre-linuxdeploy AppDir and 52751519-byte uncompressed portable replay, prove through two original tar replays that identical trees and semantic member records still produce different tar.gz bytes because eight mtimes differ, and demonstrate that a normalized post-build control produces identical 17463573-byte archives; final linuxdeploy, compatible Qt closure, an approved clean-build archive, and final compressed size remain open; Rust paired, dedicated system-cold, macOS candidate runtime and fixed-closure integration, physical-core/topology and long-horizon repeated sessions, cross-platform package size, reviewed thresholds, and default limits remain open",
       "resource_limit_policy_evidence": [
         "docs/research/resource-limit-evidence.md",
@@ -206,7 +59,154 @@
         "docs/design/data/resource-limit-policy-candidate.json"
       ],
       "resource_limit_policy_status": "review_candidate_complete_but_unadmitted_with_0_unresolved_budgets",
-      "closure_evidence": "Resource limit candidates frozen as Phase 0 review candidates: all 0 unresolved budgets, ADRs 0006/0010/0012/0014 Accepted, ADR 0015 Accepted (warm/file-content-nonresident-metadata-warm/dedicated-system-cold three-tier cache model). Linux Qt5 warm baseline, three-session repeated measurements, file-access closure, page-cache proof, file-content ABBA pairing, cache-environment boundary, Windows/macOS cache strategies, and deployment size all have hash-bound evidence. Remaining Rust paired benchmark, dedicated system-cold, macOS runtime benchmark, and release size benchmark are Phase 1 implementation work."
+      "status": "closed",
+      "title": "performance baseline, benchmark environment, and resource targets are not frozen"
     }
-  ]
+  ],
+  "evaluated_on": "2026-07-31",
+  "exit_conditions": [
+    {
+      "blockers": [],
+      "id": "P0-EXIT-001",
+      "requirement": "capability matrix items have source or repeatable experimental evidence",
+      "status": "ready_for_review"
+    },
+    {
+      "blockers": [],
+      "id": "P0-EXIT-002",
+      "requirement": "baseline corpus covers major formats and representative rule syntax",
+      "status": "ready_for_review"
+    },
+    {
+      "blockers": [],
+      "id": "P0-EXIT-003",
+      "requirement": "three technical validations have evidence or a documented alternative",
+      "status": "ready_for_review"
+    },
+    {
+      "blockers": [],
+      "id": "P0-EXIT-004",
+      "requirement": "architecture, rule runtime, ABI, and testing designs are reviewed",
+      "status": "ready_for_review"
+    },
+    {
+      "blockers": [],
+      "id": "P0-EXIT-005",
+      "requirement": "risk register is complete",
+      "status": "ready_for_review"
+    },
+    {
+      "blockers": [],
+      "id": "P0-EXIT-006",
+      "requirement": "later phases have measurable completion conditions",
+      "status": "ready_for_review"
+    },
+    {
+      "blockers": [],
+      "id": "P0-EXIT-007",
+      "requirement": "performance baseline and resource targets are answered",
+      "status": "ready_for_review"
+    }
+  ],
+  "phase": 0,
+  "required_design_deliverables": [
+    {
+      "document_status": "Accepted",
+      "gate_status": "accepted",
+      "id": "P0-DES-001",
+      "path": "docs/design/architecture.md"
+    },
+    {
+      "document_status": "Accepted",
+      "gate_status": "accepted",
+      "id": "P0-DES-002",
+      "path": "docs/design/api.md"
+    },
+    {
+      "document_status": "Accepted",
+      "gate_status": "accepted",
+      "id": "P0-DES-003",
+      "path": "docs/design/c-abi.md"
+    },
+    {
+      "document_status": "Accepted",
+      "gate_status": "accepted",
+      "id": "P0-DES-004",
+      "path": "docs/design/testing.md"
+    },
+    {
+      "document_status": "Accepted",
+      "gate_status": "accepted",
+      "id": "P0-DES-005",
+      "path": "docs/design/risks.md"
+    }
+  ],
+  "required_research_deliverables": [
+    {
+      "document_status": "In Review",
+      "gate_status": "review_pending",
+      "id": "P0-RES-001",
+      "path": "docs/research/upstream-baseline.md"
+    },
+    {
+      "document_status": "Draft",
+      "gate_status": "evidence_incomplete",
+      "id": "P0-RES-002",
+      "path": "docs/research/capability-matrix.md"
+    },
+    {
+      "document_status": "In Review",
+      "gate_status": "review_pending",
+      "id": "P0-RES-003",
+      "path": "docs/research/source-analysis.md"
+    },
+    {
+      "document_status": "In Review",
+      "gate_status": "review_pending",
+      "id": "P0-RES-004",
+      "path": "docs/research/rule-compatibility.md"
+    },
+    {
+      "document_status": "Draft",
+      "gate_status": "evidence_incomplete",
+      "id": "P0-RES-005",
+      "path": "docs/research/behavior-baseline.md"
+    }
+  ],
+  "result": "not_ready",
+  "roadmap_status": "DONE",
+  "schema_version": 1,
+  "technical_validations": [
+    {
+      "evidence": [
+        "docs/research/rquickjs-rule-runtime-spike.md",
+        "docs/design/decisions/0006-rquickjs-rule-runtime.md"
+      ],
+      "gate_status": "evidence_available",
+      "id": "P0-SPIKE-001",
+      "limitation": "runtime ADR 0006 is Accepted; implementation exit gates tracked in the ADR",
+      "name": "rule_runtime"
+    },
+    {
+      "evidence": [
+        "docs/research/c-static-link-spike.md",
+        "docs/design/c-abi.md"
+      ],
+      "gate_status": "evidence_available",
+      "id": "P0-SPIKE-002",
+      "limitation": "C ABI ADR 0001 is Accepted; implementation exit gates tracked in the ADR",
+      "name": "c_static_link"
+    },
+    {
+      "evidence": [
+        "docs/research/upstream-build-baseline.md",
+        "docs/research/behavior-baseline.md"
+      ],
+      "gate_status": "evidence_available",
+      "id": "P0-SPIKE-003",
+      "limitation": "Linux Qt5/Qt6 and Windows Qt5 are reproducible; macOS is still missing",
+      "name": "upstream_oracle"
+    }
+  ],
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
 }

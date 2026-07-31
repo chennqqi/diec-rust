@@ -285,6 +285,27 @@
   - ZIP 签名检测：验证 `archive_ZIP.1.sg` 不崩溃
 - cargo fmt/clippy/test/check-deps 全部通过（331 个测试）
 
+## 2026-08-01: Phase 3 第七步 — 批量规则加载兼容性 99.7%
+- 修复 QuickJS strict mode 问题：使用 `eval_with_options(strict: false)`
+  匹配上游 QtScript sloppy mode 行为（`delete` 操作符等）
+- 修复 `getString(offset)` 单参数调用：注册 JS wrapper 处理 `maxLen`
+  省略情况（默认读至文件末尾）
+- 添加 Binary host API 短别名（7 个）：`Sz`/`c`/`SA`/`SC`/`fStr`/`fSig`/`BA`
+- 添加有符号读取方法：`readSWord`/`readSDword`/`readSQword`
+- 添加端序感知 `read_uintN`/`read_intN`（8/16/24/32/64 位）
+- 添加 `isVerbose()` 方法
+- 重构 type init scripts 延迟到 `init()` 阶段执行（Binary/_init 设置
+  `X = Binary` 别名 + `includeScript("read")`）
+- 支持目录形式的 include 脚本（`db/<dir>/<dir>` 文件）
+- 改进异常消息提取（通过 `ctx.catch()` + `String()` eval 获取
+  SyntaxError/TypeError 详细信息）
+- 新增 `tests/batch_load.rs` 批量加载测试：
+  - 加载全部 292 个 Binary 规则
+  - 291/292 成功（99.7%）
+  - 唯一失败：`format_bin.Nintendo-certified-file.1.sg`（上游规则 bug：
+    `const tp` 重声明 `var tp`，QuickJS 正确拒绝）
+- cargo fmt/clippy/test/check-deps 全部通过（334 个测试）
+
 ## P0-BLOCK-006 macOS 运行时基线采集 (deferred from Phase 0)
 - 通过 ssh macdevoa (macdev 别名) 继续完成 macOS 运行时基线采集
 - 复用 ~/dev/tmp/diec-macos-work 目录中已有数据 (DIE-engine-src/build/corpus/evidence 等)

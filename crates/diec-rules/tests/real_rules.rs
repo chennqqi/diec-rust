@@ -302,8 +302,12 @@ impl HostApi for BufferHost {
     }
 }
 
+/// Framework data: (init_script, type_init_scripts, includes).
+type FrameworkData = (String, Vec<(String, String)>, BTreeMap<String, String>);
+
 /// Load the upstream _init script and include scripts.
-fn load_upstream_framework() -> Option<(String, BTreeMap<String, String>)> {
+/// Returns (init_script, type_init_scripts, includes).
+fn load_upstream_framework() -> Option<FrameworkData> {
     let db = db_root();
     let init_path = format!("{db}/_init");
     let init_source = std::fs::read_to_string(&init_path).ok()?;
@@ -319,20 +323,27 @@ fn load_upstream_framework() -> Option<(String, BTreeMap<String, String>)> {
     }
 
     // Also load archive-file helper used by many rules.
-    for name in &["archive-file", "zip-file"] {
+    for name in &["archive-file", "zip-file", "read"] {
         let path = format!("{db}/{name}");
         if let Ok(source) = std::fs::read_to_string(&path) {
             includes.insert(name.to_string(), source);
         }
     }
 
-    Some((init_source, includes))
+    // Load the Binary type-specific _init script.
+    let binary_init = std::fs::read_to_string(format!("{db}/Binary/_init")).ok();
+    let type_init_scripts = binary_init
+        .map(|s| vec![("Binary".to_string(), s)])
+        .unwrap_or_default();
+
+    Some((init_source, type_init_scripts, includes))
 }
 
 /// Run a real rule file against a buffer.
 fn run_real_rule(
     rule_relative_path: &str,
     init_source: &str,
+    type_init_scripts: &[(String, String)],
     includes: &BTreeMap<String, String>,
     data: Vec<u8>,
 ) -> Option<Vec<DetectionResult>> {
@@ -348,15 +359,16 @@ fn run_real_rule(
             source,
         }],
         init_script: Some(init_source.to_string()),
-        type_init_scripts: Vec::new(),
+        type_init_scripts: type_init_scripts.to_vec(),
         include_scripts: includes.clone(),
     };
 
     let mut runtime = RquickjsRuntime::new(RuntimeConfig::default()).ok()?;
-    runtime.load_database(&snapshot).ok()?;
 
     let host = Arc::new(BufferHost::new(data));
     runtime.register_host_api(host.clone()).ok()?;
+
+    runtime.load_database(&snapshot).ok()?;
 
     let token = CancellationToken::new();
     let host_ref: &dyn HostApi = &*host;
@@ -369,7 +381,7 @@ fn run_real_rule(
 
 #[test]
 fn real_rule_7z_detects_signature() {
-    let (init_source, includes) = match load_upstream_framework() {
+    let (init_source, type_init_scripts, includes) = match load_upstream_framework() {
         Some(x) => x,
         None => {
             eprintln!("Skipping: upstream rules not found");
@@ -381,7 +393,13 @@ fn real_rule_7z_detects_signature() {
     let mut data = vec![0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C, 0x00, 0x04];
     data.resize(64, 0); // Pad to minimum size
 
-    let results = run_real_rule("Binary/archive_7z.1.sg", &init_source, &includes, data);
+    let results = run_real_rule(
+        "Binary/archive_7z.1.sg",
+        &init_source,
+        &type_init_scripts,
+        &includes,
+        data,
+    );
 
     if let Some(results) = results {
         // Should detect 7-Zip with version "0.4"
@@ -392,7 +410,7 @@ fn real_rule_7z_detects_signature() {
 
 #[test]
 fn real_rule_7z_no_match_on_random_data() {
-    let (init_source, includes) = match load_upstream_framework() {
+    let (init_source, type_init_scripts, includes) = match load_upstream_framework() {
         Some(x) => x,
         None => {
             eprintln!("Skipping: upstream rules not found");
@@ -403,7 +421,13 @@ fn real_rule_7z_no_match_on_random_data() {
     // Random data that doesn't match 7z signature
     let data = vec![0x00; 64];
 
-    let results = run_real_rule("Binary/archive_7z.1.sg", &init_source, &includes, data);
+    let results = run_real_rule(
+        "Binary/archive_7z.1.sg",
+        &init_source,
+        &type_init_scripts,
+        &includes,
+        data,
+    );
 
     if let Some(results) = results {
         // Should not detect 7-Zip
@@ -416,7 +440,7 @@ fn real_rule_7z_no_match_on_random_data() {
 
 #[test]
 fn real_rule_zip_detects_signature() {
-    let (init_source, includes) = match load_upstream_framework() {
+    let (init_source, type_init_scripts, includes) = match load_upstream_framework() {
         Some(x) => x,
         None => {
             eprintln!("Skipping: upstream rules not found");
@@ -428,7 +452,13 @@ fn real_rule_zip_detects_signature() {
     let mut data = vec![0x50, 0x4B, 0x03, 0x04];
     data.resize(64, 0);
 
-    let results = run_real_rule("Binary/archive_ZIP.1.sg", &init_source, &includes, data);
+    let results = run_real_rule(
+        "Binary/archive_ZIP.1.sg",
+        &init_source,
+        &type_init_scripts,
+        &includes,
+        data,
+    );
 
     if let Some(results) = results {
         // ZIP detection may or may not trigger depending on the zip-file helper

@@ -1,0 +1,86 @@
+{
+  "admission": {
+    "cache_state_admitted": false,
+    "reason": "temporary-file capability candidate only; the fixed benchmark closure, controller identity, direct-child measurement, output invariants, and review are missing"
+  },
+  "darwin_source": {
+    "fcntl_header_sha256": "0f93c8918a70ffafe20bfe9c72e671fde67438cbee9f9de8c2f87b5c704c9a9e",
+    "kern_descrip_sha256": "480cfed4e987be874bd71fb6933c254adf9fb1f36de8496dee8f351b18da13b1",
+    "xnu_commit": "f6217f891ac0bb64f3d375211650a4c1ff8ca1ea"
+  },
+  "generated_at": "2026-07-31T04:03:29+00:00",
+  "host": {
+    "clang_version": [
+      "Apple clang version 14.0.0 (clang-1400.0.29.202)",
+      "Target: x86_64-apple-darwin21.6.0",
+      "Thread model: posix",
+      "InstalledDir: /Library/Developer/CommandLineTools/usr/bin"
+    ],
+    "darwin_release": "21.6.0",
+    "machine": "x86_64",
+    "macos_build_version": "21H1320",
+    "macos_product_version": "12.7.6",
+    "temporary_filesystem": "/"
+  },
+  "observations": [
+    {
+      "after_f_nocache_resident_pages": 4096,
+      "after_msync_invalidate_resident_pages": 0,
+      "benchmark_files_touched": 0,
+      "checksum": 69632,
+      "fixture_bytes": 16777216,
+      "logical_pages": 4096,
+      "msync_flags": 18,
+      "page_size": 4096,
+      "schema_version": 1,
+      "system_cache_flush_executed": 0,
+      "temporary_fixture_unlinked_before_probe": 1,
+      "warm_resident_pages": 4096
+    },
+    {
+      "after_f_nocache_resident_pages": 4096,
+      "after_msync_invalidate_resident_pages": 0,
+      "benchmark_files_touched": 0,
+      "checksum": 69632,
+      "fixture_bytes": 16777216,
+      "logical_pages": 4096,
+      "msync_flags": 18,
+      "page_size": 4096,
+      "schema_version": 1,
+      "system_cache_flush_executed": 0,
+      "temporary_fixture_unlinked_before_probe": 1,
+      "warm_resident_pages": 4096
+    }
+  ],
+  "platform": "macos-x86_64-cache-state",
+  "probe": {
+    "binary_sha256": "7a8deb75c88bd81340f84a6652e62408dbca9ea560454a086b90a6279994cbb1",
+    "collector_sha256": "106af91160d71990ac48bcb3f6e09c9196ae2fb2d71bcc8fbe21cafa54a2aad3",
+    "compiler_arguments": [
+      "-std=c11",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror"
+    ],
+    "source_sha256": "4243aaf385bdf9a789ab76e4887dff174c76aede4878308e24d102370f7d07ea",
+    "validator_sha256": "c876453afd39d91523d98b727156c419414d1f53379fc5e58fd6dc779d97a569"
+  },
+  "relationships": {
+    "all_pages_warm_before_control": true,
+    "f_nocache_toggle_alone_evicted_all_pages": false,
+    "linux_file_content_semantic_candidate": true,
+    "msync_invalidate_produced_zero_resident_pages": true,
+    "two_observations_identical": true
+  },
+  "result": "candidate",
+  "schema_version": 1,
+  "scope": {
+    "benchmark_files_touched": false,
+    "performance_baseline": false,
+    "runtime_candidate_only": true,
+    "system_cache_flush_executed": false,
+    "temporary_unlinked_fixture_only": true
+  },
+  "upstream_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254"
+}

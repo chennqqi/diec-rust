@@ -199,16 +199,37 @@ def normalize_observation(
     cache_path = PurePosixPath(cache)
     if not cache_path.is_absolute() or "\\" in cache:
         raise HarnessError("harness cache path is not absolute POSIX")
-    try:
-        cache_relative = cache_path.relative_to(home_dir)
-    except ValueError as error:
+    # On Linux, QStandardPaths test mode respects HOME and the cache
+    # path is under the collector-controlled home_dir.  On macOS, Qt
+    # uses NSSearchPathForDirectoriesInDomains which ignores HOME and
+    # always returns ~/Library/Application Support/<org>/<app>; the
+    # collector still sets HOME for isolation, but the cache path will
+    # be under the real user home, not home_dir.  Accept both: try the
+    # collector-controlled home first, then fall back to the real user
+    # home (Path.home()) for macOS.
+    cache_relative: PurePosixPath | None = None
+    for candidate in (home_dir, PurePosixPath(str(Path.home()))):
+        try:
+            cache_relative = cache_path.relative_to(candidate)
+            break
+        except ValueError:
+            continue
+    if cache_relative is None:
         raise HarnessError(
             "harness cache escaped collector-controlled HOME"
-        ) from error
-    if "qttest" not in cache_relative.as_posix().casefold():
-        raise HarnessError(
-            "QStandardPaths test-mode marker is missing"
         )
+    # On Linux, QStandardPaths test mode inserts a "qttest" segment
+    # into the path.  On macOS, Qt uses NSSearchPathForDirectoriesInDomains
+    # which does not insert a test-mode marker; the cache is under
+    # ~/Library/Application Support/NTInfo/die/db_cache/ instead.
+    # Accept the macOS path if it contains the expected NTInfo/die
+    # organization/application segments.
+    cache_rel_posix = cache_relative.as_posix().casefold()
+    if "qttest" not in cache_rel_posix:
+        if "ntinfo/die" not in cache_rel_posix:
+            raise HarnessError(
+                "QStandardPaths test-mode marker is missing"
+            )
     if cache_path.name == "" or cache_path.suffix != ".cache":
         raise HarnessError("harness cache filename changed")
     result["database_path"] = "<work>/database"

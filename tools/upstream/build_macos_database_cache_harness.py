@@ -100,17 +100,72 @@ def patch_qmake_makefile(
     *,
     target: Path,
 ) -> tuple[bytes, dict[str, int | str]]:
+    """Patch a qmake-generated Makefile to build the cache harness instead.
+
+    On Linux and Windows, qmake emits a ``DESTDIR_TARGET`` variable that
+    combines ``DESTDIR`` and ``TARGET``.  On macOS (Qt 5.15.2, macx-clang),
+    qmake emits only ``TARGET`` with the full relative path and uses that
+    same explicit path as the build-rule prerequisite.  Both formats are
+    supported here.
+    """
     try:
         text = raw.decode("utf-8")
     except UnicodeDecodeError as error:
         raise BuildError("qmake makefile is not UTF-8") from error
     if any(character.isspace() for character in str(target)):
         raise BuildError("harness target path must not contain whitespace")
-    target_lines = list(
+
+    # Detect which target-variable convention the Makefile uses.
+    destdir_target_lines = list(
         re.finditer(r"(?m)^DESTDIR_TARGET\s*=.*$", text)
     )
-    if len(target_lines) != 1:
-        raise BuildError("expected one DESTDIR_TARGET assignment")
+    target_lines = list(
+        re.finditer(r"(?m)^TARGET\s*=.*$", text)
+    )
+    if len(destdir_target_lines) == 1:
+        target_variable = "DESTDIR_TARGET"
+        target_replacements = 1
+    elif (
+        len(destdir_target_lines) == 0
+        and len(target_lines) == 1
+    ):
+        # macOS qmake format: TARGET holds the full relative path and
+        # the build-rule prerequisite is the same explicit path.
+        target_variable = "TARGET"
+        target_replacements = 1
+        # Also patch the build-rule prerequisite line that uses the
+        # original TARGET value as an explicit path target.
+        original_target_match = re.search(
+            r"(?m)^TARGET\s*=\s*(.+)$", text
+        )
+        if original_target_match is None:
+            raise BuildError("TARGET assignment is malformed")
+        original_target_path = original_target_match.group(1).strip()
+        # Replace the build-rule prerequisite (e.g. the line
+        # "../../path/diec:  $(OBJECTS)") with the new target path
+        # so that `make <target.as_posix()>` can match the rule.
+        rule_pattern = re.compile(
+            re.escape(original_target_path) + r":\s+\$\(OBJECTS\)"
+        )
+        text, rule_replacement_count = rule_pattern.subn(
+            f"{target.as_posix()}: $(OBJECTS)", text
+        )
+        if rule_replacement_count != 1:
+            raise BuildError(
+                "expected one build-rule prerequisite with $(OBJECTS)"
+            )
+        # Remove the mkdir -p line that references the original DESTDIR
+        # directory, since the harness target is in the build directory.
+        mkdir_pattern = re.compile(
+            r"(?m)^\t@test -d [^\n]* \|\| mkdir -p [^\n]*\n",
+        )
+        text, mkdir_count = mkdir_pattern.subn("", text)
+        target_replacements += rule_replacement_count + mkdir_count
+    else:
+        raise BuildError(
+            "expected one DESTDIR_TARGET or one TARGET assignment"
+        )
+
     object_count = text.count("main_console.o")
     if object_count < 2:
         raise BuildError("main_console.o contract is missing")
@@ -128,8 +183,8 @@ def patch_qmake_makefile(
         "database_cache_harness_macos_adapter.o",
     )
     text = re.sub(
-        r"(?m)^DESTDIR_TARGET\s*=.*$",
-        f"DESTDIR_TARGET = {target.as_posix()}",
+        rf"(?m)^{target_variable}\s*=.*$",
+        f"{target_variable} = {target.as_posix()}",
         text,
         count=1,
     )
@@ -138,7 +193,8 @@ def patch_qmake_makefile(
     return text.encode("utf-8"), {
         "source_token_replacements": source_count,
         "object_token_replacements": object_count,
-        "destination_target_replacements": 1,
+        "destination_target_replacements": target_replacements,
+        "target_variable": target_variable,
         "replaced_source": "main_console.cpp",
         "replacement_source": (
             "database_cache_harness_macos_adapter.cpp"
@@ -311,6 +367,28 @@ def build(
     shutil.copyfile(root / MACOS_ADAPTER, local_adapter)
     patched_makefile.write_bytes(patched_raw)
 
+    # Apply the same macOS build fix as the oracle builder: xbinary.h
+    # line 114 includes CoreFoundation.h under Q_OS_MAC, which fails
+    # when xdeflatedecoder.cpp includes xbinary.h inside function scope.
+    # The include is unused in xbinary.h.  Restore via git checkout after.
+    xbinary_path = source_dir / "Formats" / "xbinary.h"
+    xbinary_patch_applied = False
+    if (
+        xbinary_path.is_file()
+        and b"#include <CoreFoundation/CoreFoundation.h>"
+        in xbinary_path.read_bytes()
+    ):
+        xbinary_original = xbinary_path.read_bytes()
+        xbinary_patched = xbinary_original.replace(
+            b"#include <CoreFoundation/CoreFoundation.h>  // Check",
+            b"// #include <CoreFoundation/CoreFoundation.h>"
+            b"  // macOS build fix: unused include causes"
+            b" CFMessagePort.h error in function scope",
+        )
+        if xbinary_patched != xbinary_original:
+            xbinary_path.write_bytes(xbinary_patched)
+            xbinary_patch_applied = True
+
     environment = os.environ.copy()
     environment["PATH"] = (
         str(qt_dir / "bin")
@@ -330,6 +408,13 @@ def build(
         environment=environment,
     )
     elapsed_ms = round((time.monotonic() - started) * 1000)
+
+    # Restore the patched xbinary.h so the source tree is clean again.
+    if xbinary_patch_applied:
+        _run(
+            ["git", "-C", str(source_dir / "Formats"), "checkout", "--",
+             "xbinary.h"],
+        )
     bundle = output_report.parent
     build_inputs = {
         "console_makefile": _write_raw(

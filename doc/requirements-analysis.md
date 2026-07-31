@@ -106,3 +106,11 @@
 - JSON manifests: 3 个清单全部更新，summary 反映 accepted_count=14, acceptance_ready=true
 - 测试: 3 个测试文件更新断言，从 Proposed/In Review 改为 Accepted，13 passed
 - Phase 0 仍为 not_ready: P0-BLOCK-004/005/006 仍 open
+
+## 2026-07-31: P0-BLOCK-005 关闭分析
+- macOS 基线采集范围: 18 个 candidate report (workflow plan 定义)
+- 已完成 17 个: oracle/cache-state/cli-baseline/cli-matrix/cli-remaining/cli-database/cli-database-archive/cli-path-nested/cli-special-path/cli-filesystem/cli-large-directory/cli-long-path/cli-toctou/special-path-fixture/long-path-fixture/database-cache-harness-build/database-cache-engine
+- 缺失 1 个: cli-privilege-paths (需 passwordless sudo, deferred)
+- 工具修复: build_macos_database_cache_harness.py (TARGET vs DESTDIR_TARGET, xbinary.h patch), collect_macos_database_cache_harness.py (macOS QStandardPaths behavior)
+- Python 3.9 系统版本过旧, 使用 venv Python 3.14.6
+- 所有 report 已 sanitize /Users/chenq 路径为 <macos-work>/<macos-home> 占位符

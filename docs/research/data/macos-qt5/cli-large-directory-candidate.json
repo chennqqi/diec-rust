@@ -1,0 +1,402 @@
+{
+  "admission": {
+    "capability_rows_admitted": 0,
+    "platform_admitted": false,
+    "reason": "large-directory CLI candidate only; macOS runtime evidence has not been reviewed or projected into the 68-row capability closure"
+  },
+  "binary": {
+    "relative_path": "build/release/diec",
+    "sha256": "f4c69824399e3b27b1ec60924ef60555620c4e217a1f48cdae8c8db467d39317",
+    "size": 7452296
+  },
+  "cases": {
+    "empty_0": {
+      "arguments": [
+        "--entropy",
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/empty_0"
+      ],
+      "complete_name_order_equal": true,
+      "determinism_differences": [],
+      "expected_name_order_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-large-directory/empty_0.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 0,
+        "stdout_path": "raw/cli-large-directory/empty_0.first.stdout",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "first_entropy_document_count": 0,
+      "first_prefix": null,
+      "first_prefix_count": 0,
+      "first_prefixes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first_timed_out": false,
+      "last_prefix": null,
+      "linux_qt5_projection": {
+        "entropy_document_count": 0,
+        "exit_code": 0,
+        "prefix_count": 0
+      },
+      "linux_qt5_semantic_equal": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-large-directory/empty_0.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 0,
+        "stdout_path": "raw/cli-large-directory/empty_0.second.stdout",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "second_entropy_document_count": 0,
+      "second_prefix_count": 0,
+      "second_prefixes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "second_timed_out": false,
+      "timeout_seconds": 60
+    },
+    "flat_256": {
+      "arguments": [
+        "--entropy",
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/flat_256"
+      ],
+      "complete_name_order_equal": true,
+      "determinism_differences": [],
+      "expected_name_order_sha256": "d7a2839bbfa6fb64503f35da14400be4f16bf81f664736f1c8e7217087fde37f",
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-large-directory/flat_256.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 77568,
+        "stdout_path": "raw/cli-large-directory/flat_256.first.stdout",
+        "stdout_sha256": "bf1537212abbe39f877863498149abf2a968b6e74458482a10d4d2186cf314e7"
+      },
+      "first_entropy_document_count": 256,
+      "first_prefix": "item-000000.empty",
+      "first_prefix_count": 256,
+      "first_prefixes_sha256": "d7a2839bbfa6fb64503f35da14400be4f16bf81f664736f1c8e7217087fde37f",
+      "first_timed_out": false,
+      "last_prefix": "item-000255.empty",
+      "linux_qt5_projection": {
+        "entropy_document_count": 256,
+        "exit_code": 0,
+        "prefix_count": 256
+      },
+      "linux_qt5_semantic_equal": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-large-directory/flat_256.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 77568,
+        "stdout_path": "raw/cli-large-directory/flat_256.second.stdout",
+        "stdout_sha256": "bf1537212abbe39f877863498149abf2a968b6e74458482a10d4d2186cf314e7"
+      },
+      "second_entropy_document_count": 256,
+      "second_prefix_count": 256,
+      "second_prefixes_sha256": "d7a2839bbfa6fb64503f35da14400be4f16bf81f664736f1c8e7217087fde37f",
+      "second_timed_out": false,
+      "timeout_seconds": 60
+    },
+    "flat_4096": {
+      "arguments": [
+        "--entropy",
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/flat_4096"
+      ],
+      "complete_name_order_equal": true,
+      "determinism_differences": [],
+      "expected_name_order_sha256": "5d16a0997fd3fadf9082c69f4ab1de0a5ebcee2b1cabad47fae3fd55880d42d8",
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-large-directory/flat_4096.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 1245184,
+        "stdout_path": "raw/cli-large-directory/flat_4096.first.stdout",
+        "stdout_sha256": "8a239fe2e9b777a46c74e2013b7aa8ab371bfb26491be3dbf1f0c15a10c275b2"
+      },
+      "first_entropy_document_count": 4096,
+      "first_prefix": "item-000000.empty",
+      "first_prefix_count": 4096,
+      "first_prefixes_sha256": "5d16a0997fd3fadf9082c69f4ab1de0a5ebcee2b1cabad47fae3fd55880d42d8",
+      "first_timed_out": false,
+      "last_prefix": "item-004095.empty",
+      "linux_qt5_projection": {
+        "entropy_document_count": 4096,
+        "exit_code": 0,
+        "prefix_count": 4096
+      },
+      "linux_qt5_semantic_equal": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-large-directory/flat_4096.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 1245184,
+        "stdout_path": "raw/cli-large-directory/flat_4096.second.stdout",
+        "stdout_sha256": "8a239fe2e9b777a46c74e2013b7aa8ab371bfb26491be3dbf1f0c15a10c275b2"
+      },
+      "second_entropy_document_count": 4096,
+      "second_prefix_count": 4096,
+      "second_prefixes_sha256": "5d16a0997fd3fadf9082c69f4ab1de0a5ebcee2b1cabad47fae3fd55880d42d8",
+      "second_timed_out": false,
+      "timeout_seconds": 60
+    },
+    "nested_4096": {
+      "arguments": [
+        "--entropy",
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/nested_4096"
+      ],
+      "complete_name_order_equal": true,
+      "determinism_differences": [],
+      "expected_name_order_sha256": "7129f651583c66ff527c3a3b8f8da38f05bca494e03715e44f117654f8326355",
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-large-directory/nested_4096.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 1298432,
+        "stdout_path": "raw/cli-large-directory/nested_4096.first.stdout",
+        "stdout_sha256": "b83efd1a443b960d0ad2cd6e0534a5dfffcd43116c3b45bc071554954ee63ab1"
+      },
+      "first_entropy_document_count": 4096,
+      "first_prefix": "bucket-000/item-000000.empty",
+      "first_prefix_count": 4096,
+      "first_prefixes_sha256": "7129f651583c66ff527c3a3b8f8da38f05bca494e03715e44f117654f8326355",
+      "first_timed_out": false,
+      "last_prefix": "bucket-015/item-000255.empty",
+      "linux_qt5_projection": {
+        "entropy_document_count": 4096,
+        "exit_code": 0,
+        "prefix_count": 4096
+      },
+      "linux_qt5_semantic_equal": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-large-directory/nested_4096.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 1298432,
+        "stdout_path": "raw/cli-large-directory/nested_4096.second.stdout",
+        "stdout_sha256": "b83efd1a443b960d0ad2cd6e0534a5dfffcd43116c3b45bc071554954ee63ab1"
+      },
+      "second_entropy_document_count": 4096,
+      "second_prefix_count": 4096,
+      "second_prefixes_sha256": "7129f651583c66ff527c3a3b8f8da38f05bca494e03715e44f117654f8326355",
+      "second_timed_out": false,
+      "timeout_seconds": 60
+    },
+    "single_1": {
+      "arguments": [
+        "--entropy",
+        "--json",
+        "--database",
+        "<source>/Detect-It-Easy/db",
+        "--extradatabase",
+        "<source>/Detect-It-Easy/db_extra",
+        "--customdatabase",
+        "<source>/Detect-It-Easy/db_custom",
+        "<fixture>/single_1"
+      ],
+      "complete_name_order_equal": true,
+      "determinism_differences": [],
+      "expected_name_order_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-large-directory/single_1.first.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 228,
+        "stdout_path": "raw/cli-large-directory/single_1.first.stdout",
+        "stdout_sha256": "dfffd893cea0ad3d9d925824f634b5ceaae92cb12bbbadad904e2e329cc9dc87"
+      },
+      "first_entropy_document_count": 1,
+      "first_prefix": null,
+      "first_prefix_count": 0,
+      "first_prefixes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first_timed_out": false,
+      "last_prefix": null,
+      "linux_qt5_projection": {
+        "entropy_document_count": 1,
+        "exit_code": 0,
+        "prefix_count": 0
+      },
+      "linux_qt5_semantic_equal": true,
+      "second": {
+        "exit_code": 0,
+        "stderr_bytes": 0,
+        "stderr_path": "raw/cli-large-directory/single_1.second.stderr",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 228,
+        "stdout_path": "raw/cli-large-directory/single_1.second.stdout",
+        "stdout_sha256": "dfffd893cea0ad3d9d925824f634b5ceaae92cb12bbbadad904e2e329cc9dc87"
+      },
+      "second_entropy_document_count": 1,
+      "second_prefix_count": 0,
+      "second_prefixes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "second_timed_out": false,
+      "timeout_seconds": 60
+    }
+  },
+  "cli_baseline_report": {
+    "path": "cli-baseline-candidate.json",
+    "sha256": "02346b70493fb4cb0f11a8fecbaf38e645354dd1b61afe9e8f090b4f8c3c9433"
+  },
+  "fixture": {
+    "case_count": 5,
+    "live_preflight": {
+      "empty_0": {
+        "file_count": 0,
+        "file_sequence_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "first_file": null,
+        "first_root_entry": null,
+        "last_file": null,
+        "last_root_entry": null,
+        "root_entry_count": 0,
+        "root_entry_sequence_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "flat_256": {
+        "file_count": 256,
+        "file_sequence_sha256": "d7a2839bbfa6fb64503f35da14400be4f16bf81f664736f1c8e7217087fde37f",
+        "first_file": "item-000000.empty",
+        "first_root_entry": "item-000000.empty",
+        "last_file": "item-000255.empty",
+        "last_root_entry": "item-000255.empty",
+        "root_entry_count": 256,
+        "root_entry_sequence_sha256": "d7a2839bbfa6fb64503f35da14400be4f16bf81f664736f1c8e7217087fde37f"
+      },
+      "flat_4096": {
+        "file_count": 4096,
+        "file_sequence_sha256": "5d16a0997fd3fadf9082c69f4ab1de0a5ebcee2b1cabad47fae3fd55880d42d8",
+        "first_file": "item-000000.empty",
+        "first_root_entry": "item-000000.empty",
+        "last_file": "item-004095.empty",
+        "last_root_entry": "item-004095.empty",
+        "root_entry_count": 4096,
+        "root_entry_sequence_sha256": "5d16a0997fd3fadf9082c69f4ab1de0a5ebcee2b1cabad47fae3fd55880d42d8"
+      },
+      "nested_4096": {
+        "file_count": 4096,
+        "file_sequence_sha256": "7129f651583c66ff527c3a3b8f8da38f05bca494e03715e44f117654f8326355",
+        "first_file": "bucket-000/item-000000.empty",
+        "first_root_entry": "bucket-000",
+        "last_file": "bucket-015/item-000255.empty",
+        "last_root_entry": "bucket-015",
+        "root_entry_count": 16,
+        "root_entry_sequence_sha256": "f98833214f7abe1063ab18b130b7881ec15201c7ccf7dda18629c93d29c2a4cf"
+      },
+      "single_1": {
+        "file_count": 1,
+        "file_sequence_sha256": "7a09f6b2c9f6a5e92c191b7c9d7d2e94bba69f1bfbcd6a6081654bd49458b535",
+        "first_file": "item-000000.empty",
+        "first_root_entry": "item-000000.empty",
+        "last_file": "item-000000.empty",
+        "last_root_entry": "item-000000.empty",
+        "root_entry_count": 1,
+        "root_entry_sequence_sha256": "7a09f6b2c9f6a5e92c191b7c9d7d2e94bba69f1bfbcd6a6081654bd49458b535"
+      }
+    },
+    "manifest": "docs/research/data/large-path-fixture.json",
+    "manifest_sha256": "67a29846d009f10b6448021f651d6b7e8bed0c16124f16c2b07f55085e2dd26a",
+    "materializer": "tools/corpus/materialize_large_path_fixture.py",
+    "planned_file_count": 8449
+  },
+  "generator": {
+    "baseline_collector_path": "tools/upstream/collect_macos_cli_baseline.py",
+    "baseline_collector_sha256": "113354cc888d132e6e2f666f886a1ba10bf3354ffcefab119eef50bc1e273113",
+    "baseline_validator_path": "tools/upstream/validate_macos_cli_baseline.py",
+    "baseline_validator_sha256": "8bf54da3f25f1ef81d86edde5204cce2a850e7a4ff09301252bb465ae3f8088c",
+    "fixture_generator_path": "tools/corpus/generate_large_path_fixture.py",
+    "fixture_generator_sha256": "d300e16c3eef06584499b58b1f867d7d14f5b193ef30b271c05b8723b7fdefc9",
+    "fixture_materializer_path": "tools/corpus/materialize_large_path_fixture.py",
+    "fixture_materializer_sha256": "a2b80e18748e88395360c6afff599c5d187c3d19cbf924028706803341db54ad",
+    "path": "tools/upstream/collect_macos_cli_large_directory.py",
+    "sha256": "ec189e0b466bb851d80d932c37b3fc7380a9d1a3b441b4dfdbe213b0af44ecc2",
+    "validator_path": "tools/upstream/validate_macos_cli_large_directory.py",
+    "validator_sha256": "c46e9392e1c05240a32fe75e80bddfe15ff88760d616a03a7a5960dbba10d31b"
+  },
+  "limitations": [
+    "the fixture covers 0, 1, 256, flat 4096, and 16-by-256 nested 4096 empty files; it does not establish an unlimited entry count",
+    "creation order is descending and observed output is compared with the complete ascending name-order projection",
+    "the release CLI still has no externally reachable cooperative cancellation channel during target expansion; each run is bounded by an external timeout",
+    "this is an entry-count and ordering fixture, not a long-path, large-payload, performance, TOCTOU, or memory-limit result"
+  ],
+  "linux_qt5_reference": {
+    "path": "docs/research/data/large-path-engine-qt5.json",
+    "sha256": "100562d79fa661055fd79e0efe6ce8f58a31b8e4faebedf410f80f51e817883b"
+  },
+  "local_paths": {
+    "fixture_dir": "<macos-work>/large-dir"
+  },
+  "oracle_report": {
+    "path": "oracle-candidate.json",
+    "sha256": "3e37bcef14b22887bd5525db8cc6f6d15a0cfe390f3eb7bc33ffabc37699696e"
+  },
+  "platform": "macos-x86_64-qt5",
+  "qt": {
+    "qmake_sha256": "14206b8303e6853e050277debc076be3460d11d4bc14821f7f55b1e27e67c8fe",
+    "qmake_spec": "macx-clang",
+    "qtcore_sha256": "86f54c3f81b7733bf7cda793094a213d5d7ce8562486b52285c846fc88ceaf9e",
+    "qtscript_sha256": "a566185119647f6b541f022950a3dda97197b5d9c23dc12ef2d872274d4ebf4d",
+    "version": "5.15.2"
+  },
+  "result": "candidate",
+  "schema_version": 1,
+  "selection": {
+    "case_names": [
+      "empty_0",
+      "single_1",
+      "flat_256",
+      "flat_4096",
+      "nested_4096"
+    ],
+    "minimum_repetitions_per_case": 2
+  },
+  "source": {
+    "commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+    "recursive_submodule_count": 58,
+    "repository": "https://github.com/horsicq/DIE-engine",
+    "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+    "tracked_files_clean_before_and_after": true
+  },
+  "summary": {
+    "case_count": 5,
+    "complete_name_order_equal": true,
+    "determinism_failures": [],
+    "deterministic": true,
+    "execution_count": 10,
+    "linux_semantic_failures": [],
+    "linux_semantics_equal": true,
+    "name_order_failures": [],
+    "raw_stream_count": 20,
+    "timeout_cases": []
+  }
+}
