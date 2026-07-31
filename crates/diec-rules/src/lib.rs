@@ -26,6 +26,12 @@ pub mod runtime;
 /// appear in core, formats, engine, output, CLI, FFI or the public C ABI.
 pub mod backend_rquickjs;
 
+/// Host API bridge for the rquickjs backend.
+///
+/// Bridges the Rust `HostApi` trait to JavaScript `Binary`/`X`/`File`
+/// objects with 155 Binary_Script methods.
+pub mod host_api_bridge;
+
 #[cfg(test)]
 mod tests {
     #[test]

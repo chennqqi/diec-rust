@@ -216,6 +216,22 @@
 - 16 个新单元测试（runtime 创建/eval/异常/全局函数/规则加载/detect 调用）
 - cargo fmt/clippy/test/check-deps/doc 全部通过（284 个测试）
 
+## 2026-08-01: Phase 3 第三步 — Binary_Script host API 桥接
+- 实现 `host_api_bridge.rs`: HostApiBridge 将 Rust `HostApi` trait 桥接到
+  JavaScript `Binary`/`X`/`File` 对象（155 Binary_Script 方法子集）
+  - 已实现的方法（20+）:
+    - 读取: readByte/readSByte/readWord/readDword/readQword
+    - 短别名: U8/I8/U16/U24/U32/U64/I32
+    - 元数据: getSize/getEntryPointOffset/getFileBaseName
+    - 搜索: getString/findSignature/isSignaturePresent/compare
+    - 扫描模式: isDeepScan/isHeuristicScan/isAggressiveScan/isRecursiveScan
+    - 架构: is8/is16/is32/is64
+    - 熵/哈希: calculateEntropy/calculateMD5/calculateCRC32
+  - `Binary`/`X`/`File` 为同一对象的别名（per file type binding）
+  - 未实现方法返回 `HostApiError::NotImplemented`（不静默 fallback）
+  - 17 个新单元测试（含 TestHost 内存缓冲区实现）
+- cargo fmt/clippy/test/check-deps 全部通过（301 个测试）
+
 ## P0-BLOCK-006 macOS 运行时基线采集 (deferred from Phase 0)
 - 通过 ssh macdevoa (macdev 别名) 继续完成 macOS 运行时基线采集
 - 复用 ~/dev/tmp/diec-macos-work 目录中已有数据 (DIE-engine-src/build/corpus/evidence 等)
