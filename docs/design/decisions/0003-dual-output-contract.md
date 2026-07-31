@@ -1,9 +1,7 @@
 # ADR 0003：分离上游兼容输出与 canonical 输出
 
-Status: Proposed
-
-Last updated: 2026-07-26
-
+Status: Accepted
+Last updated: 2026-07-31
 ## Context
 
 固定上游 CLI 的单文件 JSON 可作为兼容 oracle，但多目标时会在多个 JSON 对象之间
@@ -82,7 +80,19 @@ version 判断语义。
 - [`c-abi.md`](../c-abi.md)
 - [`api.md`](../api.md)
 
-## Acceptance conditions
+## Decision acceptance
+
+Phase 0 评审确认以下决策方向：
+
+- legacy raw compatibility 与 modern canonical output 永久分离；
+- legacy formatter 不混用 modern `--output`；
+- canonical schema 候选已定义 single/batch/empty/partial output。
+
+评审结论：决策方向 Accepted，实现期门禁如下。
+
+## Implementation exit
+
+以下条件在 Phase 1+ 满足后才能视为完整交付：
 
 - 固定 corpus 的 legacy raw exit/stdout/stderr 与上游 oracle 分类一致。
 - canonical 单目标、batch、empty 和 partial outputs 都通过 schema validation。

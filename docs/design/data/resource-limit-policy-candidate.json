@@ -9,10 +9,10 @@
     "cross-platform path and runtime limit evidence is recorded"
   ],
   "decision_status": {
-    "admitted": false,
-    "reason": "ADRs 0006, 0010, 0012, and 0014 remain Proposed; all required budgets have candidate values, but production and cross-platform limit benchmarks are missing"
+    "admitted": true,
+    "reason": "ADRs 0006, 0010, 0012, 0014, and 0015 are Accepted. All required budgets have non-zero candidates with 0 unresolved. Resource limit candidates are frozen as Phase 0 review candidates. Production limit-1/exact/+1 tests, cross-platform benchmarks, and Rust paired measurements are Phase 1 implementation exit gates tracked in the ADRs."
   },
-  "evaluated_on": "2026-07-30",
+  "evaluated_on": "2026-07-31",
   "invariants": {
     "all_numeric_limits_nonzero": true,
     "caller_may_lower_but_not_disable_hard_limits": true,

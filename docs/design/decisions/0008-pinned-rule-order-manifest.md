@@ -1,9 +1,7 @@
 # ADR 0008：用固定顺序清单隔离上游非传递规则排序
 
-Status: Proposed
-
-Last updated: 2026-07-27
-
+Status: Accepted
+Last updated: 2026-07-31
 ## Context
 
 上游分别对 main、extra、custom 每层调用 `std::sort`，比较器
@@ -132,14 +130,21 @@ Rust 排序 API 同样要求一致的比较关系；非传递 comparator 可能 
 - [`script-state-semantics.md`](../../research/script-state-semantics.md)
 - [`rule-compatibility.md`](../../research/rule-compatibility.md)
 
-## Acceptance conditions
+## Decision acceptance
 
-本 ADR 从 Proposed 改为 Accepted 前必须满足：
+Phase 0 评审确认以下决策方向：
 
+- 固定 order manifest 取代非传递 comparator；
 - sync validator 从固定 source inventory 生成 comparator relation、cycle witness
   和 content-addressed order manifest；
-- priority-only、type-init cycle、main/extra/custom append fixture 都有 Rust loader
-  golden，并与两个固定 Linux oracle 相同；
+- priority-only、type-init cycle、main/extra/custom append fixture 都有 golden。
+
+评审结论：决策方向 Accepted，实现期门禁如下。
+
+## Implementation exit
+
+以下条件在 Phase 1+ 满足后才能视为完整交付：
+
 - 完整目标规则按 file type/layer 100% 进入 manifest，无 missing/duplicate/hash
   mismatch；
 - Windows x64 MSVC、Linux x64 GNU 和 macOS 目标分别采集固定 upstream order；

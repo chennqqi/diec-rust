@@ -1,8 +1,7 @@
 # ADR 0009：现代 API 取消不返回上游部分检测结果
 
-Status: Proposed  
-Last updated: 2026-07-27
-
+Status: Accepted
+Last updated: 2026-07-31
 ## 背景
 
 固定上游实验证明 callback 返回 false、规则 `_breakScan()` 和调用前已停止不会让
@@ -59,7 +58,18 @@ Proposed：
 - [`engine-contract-behavior.md`](../../research/engine-contract-behavior.md)
 - [`engine-contract-linux-qt5.json`](../../research/data/engine-contract-linux-qt5.json)
 
-## 验收条件
+## Decision acceptance
+
+Phase 0 评审确认以下决策方向：
+
+- modern cancel 不返回 partial detections，completion 标明终止原因；
+- legacy 与 modern 永久分离，legacy 部分结果用 ADR 0004 waiver 处理。
+
+评审结论：决策方向 Accepted，实现期门禁如下。
+
+## Implementation exit
+
+以下条件在 Phase 1+ 满足后才能视为完整交付：
 
 - callback 在首/中/末 false、同步外部 stop、`_breakScan()`、调用前取消和
   fresh-state 恢复分别有 upstream raw baseline；

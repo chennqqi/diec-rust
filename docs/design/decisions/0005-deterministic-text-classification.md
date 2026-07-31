@@ -1,9 +1,7 @@
 # ADR 0005：文本分类不复制上游未初始化状态
 
-Status: Proposed
-
-Last updated: 2026-07-27
-
+Status: Accepted
+Last updated: 2026-07-31
 ## Context
 
 固定 XScanEngine
@@ -105,10 +103,20 @@ prefill。
   Rust native Host API 与 292-rule trace。
 - [`0004-evidence-bound-difference-waivers.md`](0004-evidence-bound-difference-waivers.md)。
 
-## Acceptance conditions
+## Decision acceptance
+
+Phase 0 评审确认以下决策方向：
+
+- deterministic text facts 取代未初始化状态；
+- `Binary.isUnicodeText` 和 `Binary.isText` 为 native Host API，不经过 fallback；
+- 292-rule 固定 trace 为 292/292 无异常且 fallback 为零。
+
+评审结论：决策方向 Accepted，实现期门禁如下。
+
+## Implementation exit
+
+以下条件在 Phase 1+ 满足后才能视为完整交付：
 
 - 固定 Qt5 probe 对 zero/one 普通二进制的相反结果和 UTF-16 的稳定结果做强断言。
 - Rust 测试证明普通二进制稳定返回 `false`，UTF-16 稳定返回 `true`。
-- `Binary.isUnicodeText` 和 `Binary.isText` 为 native Host API，不经过 fallback。
-- 292-rule 固定 trace 为 292/292 无异常且 fallback 为零。
 - Phase 1 差分框架拒绝范围超出上述字段和 case identity 的 waiver。

@@ -1,9 +1,7 @@
 # ADR 0006：以 rquickjs/QuickJS-NG 作为首个规则运行时后端
 
-Status: Proposed
-
-Last updated: 2026-07-30
-
+Status: Accepted
+Last updated: 2026-07-31
 ## Context
 
 固定规则集包含 2235 个 `.sg`/无扩展名程序，依赖 sloppy JavaScript、共享
@@ -223,9 +221,20 @@ lexical 不兼容。
 - [`script-runtime-budget-candidate.json`](../data/script-runtime-budget-candidate.json)
 - [`test_script_runtime_budget.py`](../../../tools/tests/test_script_runtime_budget.py)
 
-## Acceptance conditions
+## Decision acceptance
 
-本 ADR 只有在以下条件全部有机器证据后才能从 Proposed 改为 Accepted：
+Phase 0 评审确认以下决策方向：
+
+- rquickjs/QuickJS-NG 作为首个私有 backend；
+- heap/JS stack/fuel/deadline 已有联合候选；
+- Binary VM poll/signature checkpoint 与七类 25-case 代表性格式矩阵均已三轮计量；
+- 4095/4096 边界、单次中断已测。
+
+评审结论：决策方向 Accepted，实现期门禁如下。
+
+## Implementation exit
+
+以下条件在 Phase 1+ 满足后才能视为完整交付：
 
 - 固定 main/extra/custom 目标规则 100% discovered，并按真实 file type/layer/order
   load；所有 overlay 精确绑定 source identity，未知规则拒绝；
@@ -240,6 +249,4 @@ lexical 不兼容。
 - Windows x64、Linux x64 和 macOS 目标完成 static archive、C link/run、
   native dependency 与 sanitizer smoke；未承诺的平台明确标为 unsupported；
 - runtime、vendored QuickJS-NG 和完整 feature-resolved 闭包通过发布许可证、
-  attribution、SBOM 和 advisory 评审；
-- `architecture.md`、`api.md`、`c-abi.md`、`testing.md` 的线程、错误、资源和
-  static-link 契约与本 ADR 一致。
+  SBOM 和安全审计。

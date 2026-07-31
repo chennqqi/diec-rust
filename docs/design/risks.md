@@ -1,8 +1,8 @@
 # Phase 0 风险清单
 
-Status: In Review
+Status: Accepted
 
-Last updated: 2026-07-30
+Last updated: 2026-07-31
 
 ## 1. 用途与依据
 

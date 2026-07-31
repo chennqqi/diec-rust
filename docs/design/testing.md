@@ -1,8 +1,8 @@
 # 测试、差分与发布验证设计
 
-Status: In Review
+Status: Accepted
 
-Last updated: 2026-07-30
+Last updated: 2026-07-31
 
 ## 1. 状态与证据
 

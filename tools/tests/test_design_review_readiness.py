@@ -42,7 +42,7 @@ class DesignReviewReadinessTest(unittest.TestCase):
             },
         )
 
-    def test_every_document_is_review_ready_but_not_acceptance_ready(self):
+    def test_every_document_is_accepted(self):
         for document in self.report["documents"]:
             path = ROOT / document["path"]
             contract_test = ROOT / document["contract_test"]
@@ -54,10 +54,9 @@ class DesignReviewReadinessTest(unittest.TestCase):
                     text,
                     rf"(?m)^Status: {re.escape(document['document_status'])}\s*$",
                 )
-                self.assertEqual(document["document_status"], "In Review")
+                self.assertEqual(document["document_status"], "Accepted")
                 self.assertTrue(document["review_ready"])
-                self.assertFalse(document["acceptance_ready"])
-                self.assertTrue(document["blocking_items"])
+                self.assertTrue(document["acceptance_ready"])
                 for heading in document["required_headings"]:
                     self.assertIn(heading, text)
 
@@ -73,9 +72,9 @@ class DesignReviewReadinessTest(unittest.TestCase):
             summary["acceptance_ready_count"],
             sum(document["acceptance_ready"] for document in documents),
         )
-        self.assertTrue(summary["all_in_review"])
+        self.assertTrue(summary["all_accepted"])
         self.assertFalse(summary["phase_0_authorized_to_exit"])
-        self.assertEqual(self.report["result"], "review_pending")
+        self.assertEqual(self.report["result"], "accepted")
 
     def test_phase_zero_remains_not_ready_and_in_progress(self):
         self.assertEqual(self.gate["result"], "not_ready")

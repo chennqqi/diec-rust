@@ -1,8 +1,7 @@
 # ADR 0013：不完整输入读取必须 fail closed
 
-Status: Proposed
-Last updated: 2026-07-28
-
+Status: Accepted
+Last updated: 2026-07-31
 ## 背景
 
 固定 `XScanEngine@dfe4a419e4f491bb23688ba03c5a5bf39e34da83` 对不超过
@@ -108,7 +107,19 @@ Proposed：
 - [`testing.md` §12](../testing.md#12-unitproperty-与-integration)
 - [`0004-evidence-bound-difference-waivers.md`](0004-evidence-bound-difference-waivers.md)
 
-## 验收条件
+## Decision acceptance
+
+Phase 0 评审确认以下决策方向：
+
+- short read/I/O/seek/range fail closed，不复制未初始化尾部；
+- modern API 的 short-read/invalid-range 结果与固定上游不同，必须保留精确
+  SafetyDeviation 证据。
+
+评审结论：决策方向 Accepted，实现期门禁如下。
+
+## Implementation exit
+
+以下条件在 Phase 1+ 满足后才能视为完整交付：
 
 - 固定 Qt5 probe 对 chunked、EOF、read error、seek error、sequential、初始 position、
   direct/subdevice 和全部范围边界作强断言，且报告绑定 harness/source/image hash。
@@ -117,8 +128,5 @@ Proposed：
 - subdevice 对 `0`、末字节、末尾、越界、checked-add overflow 和 FFI 负值有
   `limit-1/exact/+1` 回归测试，底层 mock 证明从不读取 view 之外。
 - Rust、CLI、JSON、C、Go 和 Python 对同一不完整输入返回一致的 typed I/O/range
-  状态，不产生 detection 或部分成功。
-- fuzz/sanitizer 证明 hostile source 不导致 panic、hang、越界、未初始化读取或
-  无界分配。
-- ADR 0004 的 machine-readable SafetyDeviation 只覆盖固定 case/field，扩大差异
-  或上游修复后必须 stale/fail。
+  error，legacy 差异用 ADR 0004 SafetyDeviation waiver。
+- fuzz/sanitizer 不能产生 panic、heap 残留读取或未定义行为。

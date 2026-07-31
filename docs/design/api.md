@@ -1,8 +1,8 @@
 # Rust API、结果与 CLI 契约
 
-Status: In Review
+Status: Accepted
 
-Last updated: 2026-07-30
+Last updated: 2026-07-31
 
 ## 1. 状态与证据
 

@@ -1,8 +1,8 @@
 # C ABI 设计
 
-Status: In Review
+Status: Accepted
 
-Last updated: 2026-07-27
+Last updated: 2026-07-31
 
 ## 依据与状态
 

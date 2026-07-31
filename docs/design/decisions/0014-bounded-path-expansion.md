@@ -1,8 +1,7 @@
 # ADR 0014：路径展开采用有界、句柄校验的双策略
 
-Status: Proposed
-Last updated: 2026-07-28
-
+Status: Accepted
+Last updated: 2026-07-31
 ## 背景
 
 固定 Linux Qt5 上游通过 `XBinary::findFiles()` 无条件递归目录。9-case 双 Oracle
@@ -150,7 +149,18 @@ Proposed：
 - [`risks.md` R-019](../risks.md#r-019路径枚举和编码安全)
 - [`0004-evidence-bound-difference-waivers.md`](0004-evidence-bound-difference-waivers.md)
 
-## 验收条件
+## Decision acceptance
+
+Phase 0 评审确认以下决策方向：
+
+- safe canonical 不跟随枚举 link；legacy alias 仍受 cycle/TOCTOU/budget hard stop；
+- traversal 候选已机器统一但 metadata/open 次数未定。
+
+评审结论：决策方向 Accepted，实现期门禁如下。
+
+## Implementation exit
+
+以下条件在 Phase 1+ 满足后才能视为完整交付：
 
 - production `TargetExpander` 与 parser/rule engine 保持单向边界，所有 adapter
   消费同一 `ExpandedTarget`/diagnostic model；

@@ -1,8 +1,7 @@
 # ADR 0010：静态 include 图和运行时 active stack 必须有界
 
-Status: Proposed  
-Last updated: 2026-07-30
-
+Status: Accepted
+Last updated: 2026-07-31
 ## 背景
 
 固定上游 `includeScript()` 没有 cycle guard。self-cycle 和 two-node cycle 会
@@ -72,7 +71,18 @@ stack，不能作为安全边界。
 - [`include-graph-sizing.json`](../../research/data/include-graph-sizing.json)
 - `die_script@5d82316.../die_scriptengine.cpp::includeScriptSlot`
 
-## 验收条件
+## Decision acceptance
+
+Phase 0 评审确认以下决策方向：
+
+- include cycle 提前有界失败；
+- 全库 sizing 已提出 modern 16/256 与 legacy-high 64/4096 两组候选。
+
+评审结论：决策方向 Accepted，实现期门禁如下。
+
+## Implementation exit
+
+以下条件在 Phase 1+ 满足后才能视为完整交付：
 
 - self、two-node、long acyclic chain 和 dynamic cycle 各有 unit/system test；
 - `limit-1/exact/+1` 覆盖 include depth 和总 evaluation budget；

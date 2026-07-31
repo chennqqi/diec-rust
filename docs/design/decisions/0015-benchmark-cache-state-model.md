@@ -1,9 +1,7 @@
 # ADR 0015：显式区分 benchmark 的 warm、file-content 与 system-cold 状态
 
-Status: Proposed
-
-Last updated: 2026-07-30
-
+Status: Accepted
+Last updated: 2026-07-31
 ## Context
 
 process benchmark runner v1 只接受 `cache_state="warm"`，并显式拒绝含混的
@@ -174,16 +172,26 @@ load 对内容 I/O 的敏感性。
 - Linux kernel `drop_caches`、Linux man-pages namespaces/fadvise 与 Docker
   overlay2 page-cache 官方文档，链接见调研正文。
 
-## Acceptance conditions
+## Decision acceptance
 
+Phase 0 评审确认以下决策方向：
+
+- warm、file-content-nonresident-metadata-warm、dedicated system-cold 三层，
+  拒绝通用 cold；
 - cache-environment 报告在两个独立容器中逐字节重复；
 - runner 继续拒绝通用 `cold`；
 - runner-integrated file-content report 的 100 个 direct child 全部绑定
-  plan schema v2、同一 controller、ABBA 顺序、before-run 页状态和未变输出；
+  plan schema v2、同一 controller、ABBA 顺序、before-run 页状态和未变输出。
+
+评审结论：决策方向 Accepted，实现期门禁如下。
+
+## Implementation exit
+
+以下条件在 Phase 1+ 满足后才能视为完整交付：
+
 - file-content plan 逐 measured run 绑定 manifest、controller、preflight 与
   before-run 0-resident 证明；
 - future system-cold job 必须验证 dedicated authority/isolation；
 - testing design、风险和 Phase 0 gate 使用相同 taxonomy；
 - Windows/macOS 策略完成明确评审；macOS runtime candidate 仍须在 Darwin
-  执行并按结果保持 unsupported 或推进 closure integration；
-- 本 ADR 获得 Accepted/Rejected/Superseded 评审结论。
+  执行并按结果保持 unsupported 或推进 closure integration。

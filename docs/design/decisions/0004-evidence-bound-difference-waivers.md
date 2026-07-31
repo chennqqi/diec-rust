@@ -1,9 +1,7 @@
 # ADR 0004：兼容差异使用证据约束的精确 waiver
 
-Status: Proposed
-
-Last updated: 2026-07-27
-
+Status: Accepted
+Last updated: 2026-07-31
 ## Context
 
 diec-rust 以固定 DIE-engine 为兼容基线，但安全 hard limit、平台路径和已确认的上游
@@ -122,7 +120,19 @@ platform/capability/classification/waiver 做确定性汇总。engine-only/moder
 variant 和 release approval/signing 尚未接入；synthetic owner 字段同样不能
 替代真实 compatibility owner review 流程。
 
-## Acceptance conditions
+## Decision acceptance
+
+Phase 0 评审确认以下决策方向：
+
+- 默认拒绝且 evidence-bound 的精确 waiver 机制；
+- waiver 必须绑定 upstream commit、case identity 和差异字段；
+- SafetyDeviation 不得在 normalizer 中隐藏。
+
+评审结论：决策方向 Accepted，实现期门禁如下。
+
+## Implementation exit
+
+以下条件在 Phase 1+ 满足后才能视为完整交付：
 
 - waiver schema 和 validator 拒绝 wildcard、缺失 identity、expired 和 stale 记录。
 - 测试证明 diff 扩大、缩小、消失或换平台/commit 时旧 waiver 不会静默通过。

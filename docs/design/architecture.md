@@ -1,8 +1,8 @@
 # diec-rust 分层架构
 
-Status: In Review
+Status: Accepted
 
-Last updated: 2026-07-27
+Last updated: 2026-07-31
 
 ## 1. 状态与证据
 

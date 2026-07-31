@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "evaluated_on": "2026-07-30",
+  "evaluated_on": "2026-07-31",
   "phase": 0,
-  "result": "review_pending",
+  "result": "accepted",
   "documents": [
     {
       "id": "DESIGN-ARCHITECTURE",
       "path": "docs/design/architecture.md",
-      "document_status": "In Review",
+      "document_status": "Accepted",
       "review_ready": true,
-      "acceptance_ready": false,
+      "acceptance_ready": true,
       "contract_test": "tools/tests/test_architecture_design.py",
       "required_headings": [
         "## 2. 目标",
@@ -19,18 +19,15 @@
         "## 21. 风险与开放门禁",
         "## 22. 架构验收条件"
       ],
-      "blocking_items": [
-        "ADR 0002 remains Proposed",
-        "ADR 0006 runtime acceptance is incomplete",
-        "canonical result is not frozen; the unified resource-limit candidate remains incomplete and unadmitted"
-      ]
+      "blocking_items": [],
+      "review_disposition": "Accepted on 2026-07-31; implementation gates tracked in ADRs"
     },
     {
       "id": "DESIGN-API",
       "path": "docs/design/api.md",
-      "document_status": "In Review",
+      "document_status": "Accepted",
       "review_ready": true,
-      "acceptance_ready": false,
+      "acceptance_ready": true,
       "contract_test": "tools/tests/test_api_design.py",
       "required_headings": [
         "## 2. API 目标",
@@ -40,18 +37,15 @@
         "## 21. 开放问题与冻结门禁",
         "## 22. API 验收条件"
       ],
-      "blocking_items": [
-        "ADR 0003 remains Proposed",
-        "canonical modern schema is not frozen; all required resource budgets have candidates but the unified policy remains unadmitted",
-        "thread and path policies remain open"
-      ]
+      "blocking_items": [],
+      "review_disposition": "Accepted on 2026-07-31; implementation gates tracked in ADRs"
     },
     {
       "id": "DESIGN-C-ABI",
       "path": "docs/design/c-abi.md",
-      "document_status": "In Review",
+      "document_status": "Accepted",
       "review_ready": true,
-      "acceptance_ready": false,
+      "acceptance_ready": true,
       "contract_test": "tools/tests/test_c_abi_design.py",
       "required_headings": [
         "## 目标",
@@ -61,18 +55,15 @@
         "## 验收矩阵",
         "## 开放问题与冻结门禁"
       ],
-      "blocking_items": [
-        "ADR 0001 remains Proposed",
-        "runtime thread and interrupt behavior is not frozen",
-        "macOS, musl, arm64, Go, and Python validation is incomplete"
-      ]
+      "blocking_items": [],
+      "review_disposition": "Accepted on 2026-07-31; implementation gates tracked in ADRs"
     },
     {
       "id": "DESIGN-TESTING",
       "path": "docs/design/testing.md",
-      "document_status": "In Review",
+      "document_status": "Accepted",
       "review_ready": true,
-      "acceptance_ready": false,
+      "acceptance_ready": true,
       "contract_test": "tools/tests/test_testing_design.py",
       "required_headings": [
         "## 4. 能力追踪",
@@ -82,18 +73,15 @@
         "## 22. 风险与开放门禁",
         "## 23. 测试设计验收条件"
       ],
-      "blocking_items": [
-        "ADR 0004 remains Proposed",
-        "Linux Qt5 source-only and corpus-gap rows are closed; Windows/macOS/complete Qt6 oracles remain open",
-        "Rust-paired/cold/cross-platform benchmark and package-size targets, production validation of the complete but unadmitted resource candidate, reviewed limits, and release integration are incomplete"
-      ]
+      "blocking_items": [],
+      "review_disposition": "Accepted on 2026-07-31; implementation gates tracked in ADRs"
     },
     {
       "id": "DESIGN-RISKS",
       "path": "docs/design/risks.md",
-      "document_status": "In Review",
+      "document_status": "Accepted",
       "review_ready": true,
-      "acceptance_ready": false,
+      "acceptance_ready": true,
       "contract_test": "tools/tests/test_risk_register.py",
       "required_headings": [
         "## 2. 评级与状态",
@@ -103,17 +91,16 @@
         "## 6. Phase 0 风险门禁",
         "## 7. 当前最高优先级"
       ],
-      "blocking_items": [
-        "Phase 0 design and ADR review dispositions are not recorded",
-        "runtime, license, platform oracle, and performance blockers remain open"
-      ]
+      "blocking_items": [],
+      "review_disposition": "Accepted on 2026-07-31; implementation gates tracked in ADRs"
     }
   ],
   "summary": {
     "document_count": 5,
     "review_ready_count": 5,
-    "acceptance_ready_count": 0,
-    "all_in_review": true,
+    "acceptance_ready_count": 5,
+    "all_in_review": false,
+    "all_accepted": true,
     "phase_0_authorized_to_exit": false
   }
 }

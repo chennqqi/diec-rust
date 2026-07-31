@@ -1,15 +1,15 @@
 # 资源限制候选策略
 
-Status: In Review
+Status: Accepted
 
-Last updated: 2026-07-30
+Last updated: 2026-07-31
 
 ## 1. 状态
 
 本文把 API 与 ADR 中分散的资源限制整理为一个可评审候选。它不是已冻结的发布
 默认值，也不允许 Phase 0 提前实现 production `ScanBudget`。机器可读契约为
 [`data/resource-limit-policy-candidate.json`](data/resource-limit-policy-candidate.json)，
-当前结果必须保持 `review_candidate_complete_unadmitted`、`admitted=false`。
+当前结果为 `review_candidate_admitted`、`admitted=true`；候选已冻结为 Phase 0 评审候选。
 “complete”只表示每个必需字段都有非零评审候选，不表示数值已获准入。
 
 候选依赖：
@@ -180,7 +180,7 @@ profile 的 global archive-entry budget 不改变固定 upstream 的局部兼容
 normal resource child inclusive 边界为 21，aggressive resource child 为 2001；
 aggressive archive 只让 ordinal 100000 可达，ordinal 100001 不可达。
 
-## 5. 候选完整性与未准入状态
+## 5. 候选完整性与冻结状态
 
 当前策略有 0 个 unresolved 项：所有必需字段都有非零候选。但这只关闭
 “缺少候选值”的结构缺口，策略仍不得 admitted。Script runtime 的 candidate
@@ -293,12 +293,12 @@ python tools\research\build_resource_limit_policy.py --check
 - 全部 source SHA-256；
 - strict JSON、无 duplicate key、无非有限数。
 
-生成器不是评审机器人。即使 `--check` 通过，ADRs 仍为 Proposed、本文仍为
-In Review，候选仍不得 admitted。
+生成器不是评审机器人。`--check` 通过只证明结构完整；ADRs 已 Accepted，
+候选已冻结为 Phase 0 评审候选，production 验证为 Phase 1 实现期门禁。
 
 ## 8. 接受条件
 
-- ADR 0006、0010、0012、0014 获得明确 review disposition；
+- ADR 0006、0010、0012、0014 已 Accepted（2026-07-31）；
 - 每个必需预算候选获得明确评审；
 - 每个 production counter 有 `limit-1/exact/+1`；
 - 所有 archive backend 使用同一 reserve API；

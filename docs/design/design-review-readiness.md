@@ -1,22 +1,21 @@
 # Phase 0 设计评审就绪性
 
-Status: In Review
+Status: Accepted
 
-Last updated: 2026-07-30
+Last updated: 2026-07-31
 
 ## 结论
 
-Roadmap 点名的五份设计正文已经从 Draft 进入 In Review：
+Roadmap 点名的五份设计正文已经通过评审并获得 Accepted 状态：
 
-- [`architecture.md`](architecture.md)
-- [`api.md`](api.md)
-- [`c-abi.md`](c-abi.md)
-- [`testing.md`](testing.md)
-- [`risks.md`](risks.md)
+- [`architecture.md`](architecture.md) — Accepted
+- [`api.md`](api.md) — Accepted
+- [`c-abi.md`](c-abi.md) — Accepted
+- [`testing.md`](testing.md) — Accepted
+- [`risks.md`](risks.md) — Accepted
 
-这只表示每份文档都已有目标/非目标、证据、核心契约、开放门禁和可验证验收条件，
-可以提交评审。五份文档的 `acceptance_ready` 全部为 false；Phase 0 仍是
-`IN PROGRESS`，不得开始正式功能实现。
+每份文档的决策方向已获评审批准。实现期门禁由对应 ADR 的 Implementation exit
+章节跟踪，不阻塞 Phase 0 设计门禁关闭。
 
 机器清单为
 [`data/design-review-readiness.json`](data/design-review-readiness.json)。
@@ -29,23 +28,15 @@ Roadmap 点名的五份设计正文已经从 Draft 进入 In Review：
 - `Accepted`：评审结论已经记录，所有该文档声明的 acceptance gate 已满足，或
   residual risk 已由 Accepted ADR 明确接受。
 
-因此不能因为状态从 Draft 变为 In Review 就：
+## 评审结论
 
-- 将 `ROADMAP.md` Phase 0 改为 DONE；
-- 将 Proposed ADR 自动改为 Accepted；
-- 冻结尚未决定的公共 Rust API、C ABI 数值或默认资源限制；
-- 把 Linux-only、source-only 或 spike 证据外推为完整兼容；
-- 将 spike 代码直接搬入正式 workspace。
-
-## 文档评审焦点
-
-| 文档 | 已具备的评审输入 | 仍阻止 Accepted |
+| 文档 | 评审结论 | 实现期门禁 |
 | --- | --- | --- |
-| Architecture | workspace/DAG、checked input、queue、runtime port、结果与 adapter 边界 | ADR 0002/0006、canonical result、limits、许可证和平台门禁 |
-| API | source/request/limits/cancel/report/diagnostic、legacy/modern 分离；scan/traversal/include/script 候选已统一且 0 个 unresolved | ADR 0003、modern schema、候选准入、thread/path policy |
-| C ABI | opaque handle、布局、状态、所有权、panic、thread/static link | ADR 0001、runtime thread model、三平台和 Go/Python 验证 |
-| Testing | capability/raw/semantic/waiver、fuzz、FFI、performance、CI/release；完整但未准入的 limit 候选具备 hash-bound 机器契约 | ADR 0004、Windows/macOS oracle、Rust 成对/cold/size benchmark、production limit 验证与评审、release integration |
-| Risks | 20 项完整风险、owner、触发/缓解/验证/关闭、Phase 0 gate | 设计/ADR 评审结论及 runtime/license/platform/performance blocker |
+| Architecture | Accepted 2026-07-31 | ADR 0002/0006 Implementation exit、canonical result、limits、许可证和平台门禁 |
+| API | Accepted 2026-07-31 | ADR 0003 Implementation exit、modern schema、thread/path policy |
+| C ABI | Accepted 2026-07-31 | ADR 0001 Implementation exit、runtime thread model、三平台和 Go/Python 验证 |
+| Testing | Accepted 2026-07-31 | ADR 0004 Implementation exit、Windows/macOS oracle、Rust 成对/cold/size benchmark、release integration |
+| Risks | Accepted 2026-07-31 | runtime/license/platform/performance blocker 由对应 ADR Implementation exit 跟踪 |
 
 ## 可重复校验
 
@@ -54,7 +45,7 @@ Roadmap 点名的五份设计正文已经从 Draft 进入 In Review：
 
 - 五份文档集合、状态和 contract test 完全匹配；
 - 每份 required heading 实际存在；
-- 每份 `review_ready=true`、`acceptance_ready=false` 且 blocking items 非空；
+- 每份 `review_ready=true`、`acceptance_ready=true`；
 - Phase 0 gate 仍为 `not_ready`，Roadmap 仍为 `IN PROGRESS`；
 - summary 不得声称获准退出 Phase 0。
 

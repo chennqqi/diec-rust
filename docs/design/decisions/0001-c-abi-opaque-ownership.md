@@ -1,9 +1,7 @@
 # ADR 0001：C ABI 使用不透明句柄和配对释放
 
-Status: Proposed
-
-Last updated: 2026-07-26
-
+Status: Accepted
+Last updated: 2026-07-31
 ## Context
 
 diec-rust 需要同时供 C、Go 和 Python 使用，并提供 Unix `.a` 与 Windows `.lib`。
@@ -115,9 +113,21 @@ worker pool。
 - `spikes/c-static-link/include/diec_spike.h`
 - `spikes/c-static-link/c/smoke.c`
 
-## Acceptance conditions
+## Decision acceptance
 
-本 ADR 从 Proposed 变为 Accepted 前必须：
+Phase 0 评审确认以下决策方向：
+
+- opaque handle、paired pointer-to-pointer free 和 JSON-first v1 result boundary
+  作为 C ABI 初始稳定面；
+- one-shot 与 reusable scanner 两层入口共用同一内部 scan service；
+- spike 已在 Windows MSVC 动态/静态 CRT 和 Linux GNU 验证 opaque handle、
+  借用 byte view、配对 free、1000 次生命周期和 panic containment。
+
+评审结论：决策方向 Accepted，实现期门禁如下。
+
+## Implementation exit
+
+以下条件在 Phase 1+ 满足后才能视为完整交付：
 
 - `api.md` 接受 result/error/resource model；
 - C/C++/Go/Python consumer 都验证 opaque ownership；

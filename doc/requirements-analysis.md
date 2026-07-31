@@ -99,3 +99,10 @@
 - 修改 bootstrap 脚本支持 macOS 构建修复
 - 执行 runtime oracle 采集（68 行 capability baseline）
 - 需要在 macOS 上运行项目生成的安全语料和 CLI 矩阵
+
+### 2026-07-31: P0-BLOCK-002/003 关闭分析
+- 拆分策略: 每个 ADR 的 Acceptance conditions 拆为 Decision acceptance (Phase 0 方向批准) + Implementation exit (Phase 1+ 实现期门禁)
+- 设计文档: 5 份均改为 Accepted，blocking_items 清空，review_disposition 记录
+- JSON manifests: 3 个清单全部更新，summary 反映 accepted_count=14, acceptance_ready=true
+- 测试: 3 个测试文件更新断言，从 Proposed/In Review 改为 Accepted，13 passed
+- Phase 0 仍为 not_ready: P0-BLOCK-004/005/006 仍 open

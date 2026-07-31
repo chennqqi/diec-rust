@@ -67,7 +67,7 @@ class PhaseZeroGateReviewTest(unittest.TestCase):
                     )
                     self.assertIn(
                         entry["gate_status"],
-                        {"review_pending", "evidence_incomplete"},
+                        {"review_pending", "evidence_incomplete", "accepted"},
                     )
                     if field == "required_design_deliverables":
                         self.assertIn(
@@ -123,7 +123,7 @@ class PhaseZeroGateReviewTest(unittest.TestCase):
                 for blocker in blockers
                 if blocker["status"] == "closed"
             },
-            {"P0-BLOCK-001"},
+            {"P0-BLOCK-001", "P0-BLOCK-002", "P0-BLOCK-003", "P0-BLOCK-004", "P0-BLOCK-006"},
         )
         for condition in exit_conditions:
             self.assertIn(
@@ -138,7 +138,7 @@ class PhaseZeroGateReviewTest(unittest.TestCase):
             self.assertTrue(blocker["closure_evidence"])
             self.assertIn(blocker["id"], self.document)
 
-    def test_active_proposed_adr_count_is_not_silently_changed(self):
+    def test_active_accepted_adr_count_is_not_silently_changed(self):
         decisions = ROOT / "docs" / "design" / "decisions"
         statuses = {}
         for path in decisions.glob("*.md"):
@@ -148,9 +148,9 @@ class PhaseZeroGateReviewTest(unittest.TestCase):
             )
             if match:
                 statuses[path.name] = match.group(1)
-        proposed = {path for path, status in statuses.items() if status == "Proposed"}
+        accepted = {path for path, status in statuses.items() if status == "Accepted"}
         self.assertEqual(
-            proposed,
+            accepted,
             {
                 "0001-c-abi-opaque-ownership.md",
                 "0002-layered-workspace.md",

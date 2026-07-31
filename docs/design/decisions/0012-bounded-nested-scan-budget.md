@@ -1,8 +1,7 @@
 # ADR 0012：嵌套扫描采用全局有限资源预算
 
-Status: Proposed
-Last updated: 2026-07-30
-
+Status: Accepted
+Last updated: 2026-07-31
 ## 背景
 
 固定上游 archive scanner 有每层 entry 数量边界，却没有独立嵌套 depth 或全 scan
@@ -148,7 +147,20 @@ subprocess。进程隔离可作为服务部署的第二层防线，不能替代 
 - [`test_input_budget.py`](../../../tools/tests/test_input_budget.py)
 - [`test_allocation_budget.py`](../../../tools/tests/test_allocation_budget.py)
 
-## 验收条件
+## Decision acceptance
+
+Phase 0 评审确认以下决策方向：
+
+- 全 scan 嵌套预算有限，legacy high-resource 仍有 hard ceiling；
+- scan/traversal 候选已机器统一，diagnostic、root input、total allocation 与
+  script runtime 均有独立候选；
+- 必需字段已有 0 个 unresolved。
+
+评审结论：决策方向 Accepted，实现期门禁如下。
+
+## Implementation exit
+
+以下条件在 Phase 1+ 满足后才能视为完整交付：
 
 - production `ScanBudget` 对每个表列预算有 `limit-1/exact/+1` unit/property tests；
 - 每个 archive backend 通过相同的 cumulative reserve API，不能先分配后记账；

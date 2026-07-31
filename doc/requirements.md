@@ -39,3 +39,12 @@
 - 评审结论: 5 份设计文档结构完整、已进入 In Review，但 blocking items 未关闭，acceptance_ready=false；14 个 ADR 均为 Proposed，review_ready=true，acceptance conditions 尚未满足
 - 处置: P0-BLOCK-002/003 仍为 Open；本次完成"输入完整 + 结构审查"，不提前改为 Accepted
 - 关闭条件: 需 P0-BLOCK-004/005/006 关闭后，在 Phase 1 实现中逐项满足 acceptance conditions 并重新验证
+
+## 2026-07-31: P0-BLOCK-002/003 关闭 — 设计文档与 ADR Accepted
+- 5 份设计文档 (architecture/api/c-abi/testing/risks) 状态改为 Accepted
+- 14 个 ADR 状态改为 Accepted，每个 ADR 拆分 Decision acceptance (Phase 0 方向批准) 与 Implementation exit (Phase 1+ 实现期门禁)
+- 更新 JSON manifests: adr-review-readiness / design-review-readiness / phase-0-gate-review
+- 更新测试: test_adr_review_readiness / test_design_review_readiness / test_phase0_gate_review
+- 更新评审文档: adr-review-readiness.md / design-review-readiness.md / phase-0-gate-review.md
+- ROADMAP.md 设计交付物状态更新为 Accepted
+- 13 个测试全部通过

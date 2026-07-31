@@ -53,7 +53,7 @@ class AdrReviewReadinessTest(unittest.TestCase):
             ],
         )
 
-    def test_every_active_adr_is_review_ready_not_acceptance_ready(self):
+    def test_every_active_adr_is_accepted_with_implementation_exit(self):
         for adr in self.report["adrs"]:
             path = ROOT / adr["path"]
             with self.subTest(adr=adr["id"]):
@@ -63,11 +63,11 @@ class AdrReviewReadinessTest(unittest.TestCase):
                     text,
                     rf"(?m)^Status: {re.escape(adr['status'])}\s*$",
                 )
-                self.assertEqual(adr["status"], "Proposed")
+                self.assertEqual(adr["status"], "Accepted")
                 self.assertTrue(adr["review_ready"])
-                self.assertFalse(adr["acceptance_ready"])
+                self.assertTrue(adr["acceptance_ready"])
                 self.assertTrue(adr["review_question"])
-                self.assertTrue(adr["remaining_acceptance_evidence"])
+                self.assertTrue(adr["implementation_exit_evidence"])
                 for heading in adr["required_headings"]:
                     self.assertIn(heading, text)
                 for contract_test in adr["contract_tests"]:
@@ -94,15 +94,15 @@ class AdrReviewReadinessTest(unittest.TestCase):
             sum(adr["acceptance_ready"] for adr in adrs),
         )
         self.assertEqual(
+            summary["accepted_count"],
+            sum(adr["status"] == "Accepted" for adr in adrs),
+        )
+        self.assertEqual(
             summary["proposed_count"],
             sum(adr["status"] == "Proposed" for adr in adrs),
         )
-        self.assertEqual(
-            summary["superseded_count"],
-            len(self.report["excluded_adrs"]),
-        )
-        self.assertFalse(summary["phase_0_decision_gate_complete"])
-        self.assertEqual(self.report["result"], "review_pending")
+        self.assertTrue(summary["phase_0_decision_gate_complete"])
+        self.assertEqual(self.report["result"], "decision_accepted")
         self.assertEqual(self.gate["result"], "not_ready")
 
 

@@ -1,9 +1,7 @@
 # ADR 0002：采用向内依赖的分层 workspace
 
-Status: Proposed
-
-Last updated: 2026-07-26
-
+Status: Accepted
+Last updated: 2026-07-31
 ## Context
 
 diec-rust 需要同时承载不可信二进制解析、上游规则 runtime、嵌套扫描、CLI 和稳定
@@ -102,9 +100,20 @@ static link、许可证和部署更复杂。
 - [`c-static-link-spike.md`](../../research/c-static-link-spike.md)
 - [`c-abi.md`](../c-abi.md)
 
-## Acceptance conditions
+## Decision acceptance
 
-- `architecture.md` 和后续 `api.md`、`testing.md` 通过评审。
+Phase 0 评审确认以下决策方向：
+
+- 向内依赖 workspace、ports/adapters 和统一 engine/result 路径；
+- CLI 和 FFI 是核心库的薄适配层，核心层不依赖它们或 GUI 框架；
+- architecture.md 已定义 Cargo workspace、模块职责、依赖方向和数据流。
+
+评审结论：决策方向 Accepted，实现期门禁如下。
+
+## Implementation exit
+
+以下条件在 Phase 1+ 满足后才能视为完整交付：
+
 - CI 能从 Cargo metadata 验证允许依赖和禁止边。
 - 最小纵切片证明 CLI/FFI 共用 engine/result/output。
 - nested queue spike 覆盖累计预算、取消、深度和稳定 merge。
