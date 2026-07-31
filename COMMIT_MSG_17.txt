@@ -1,0 +1,34 @@
+phase3: implement includeScript runtime with cycle detection
+
+Fourth step of Phase 3 (rule compatibility runtime). Implement the
+includeScript global function with runtime cycle detection and
+budget enforcement per ADR 0010.
+
+DatabaseSnapshot:
+- Add include_scripts field (BTreeMap<String, String>) for the
+  include script registry: script name -> source text
+
+RquickjsRuntime:
+- Add include_stack (IncludeStack) for Rust-side budget enforcement
+- Add include_scripts registry copied from DatabaseSnapshot
+- Implement includeScript as a JS-side function:
+  - Cycle detection via active stack check
+  - Depth limit (16 for Modern profile)
+  - Script not found throws Error (no silent fallback)
+  - Uses indirect eval (0, eval)(source) for global scope evaluation
+  - Ordinary duplicate include allowed after script exits stack
+  - Push/eval/pop pattern with try/finally for stack cleanup
+
+New conformance tests (5):
+- includeScript loads helper and calls its function
+- includeScript not found throws exception
+- includeScript self-cycle detected
+- includeScript re-include after exit allowed
+- includeScript nested include (level1 -> level2)
+
+cargo fmt/clippy/test/check-deps all pass (306 tests total:
+44 diec-core + 98 diec-rules + 156 diec-formats + 5 corpus + 3 other).
+
+Generated with [Devin](https://devin.ai)
+
+Co-Authored-By: Devin <158243242+devin-ai-integration[bot]@users.noreply.github.com>

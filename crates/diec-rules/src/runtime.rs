@@ -61,6 +61,12 @@ pub struct DatabaseSnapshot {
     pub init_script: Option<String>,
     /// Type-specific init scripts (e.g. "PE" -> init source).
     pub type_init_scripts: Vec<(String, String)>,
+    /// Include script registry: script name -> source text.
+    ///
+    /// These are the shared helper scripts that rules include via
+    /// `includeScript("name")`. They are loaded into the runtime
+    /// and made available for runtime include evaluation.
+    pub include_scripts: std::collections::BTreeMap<String, String>,
 }
 
 impl DatabaseSnapshot {
@@ -70,6 +76,7 @@ impl DatabaseSnapshot {
             rules: Vec::new(),
             init_script: None,
             type_init_scripts: Vec::new(),
+            include_scripts: std::collections::BTreeMap::new(),
         }
     }
 
@@ -236,6 +243,7 @@ mod tests {
             ],
             init_script: None,
             type_init_scripts: Vec::new(),
+            include_scripts: std::collections::BTreeMap::new(),
         };
         let binary_rules: Vec<_> = snap.rules_for_type("Binary").collect();
         assert_eq!(binary_rules.len(), 2);

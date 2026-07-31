@@ -232,6 +232,22 @@
   - 17 个新单元测试（含 TestHost 内存缓冲区实现）
 - cargo fmt/clippy/test/check-deps 全部通过（301 个测试）
 
+## 2026-08-01: Phase 3 第四步 — includeScript 运行时实现
+- 在 `DatabaseSnapshot` 中添加 `include_scripts` 字段（name -> source）
+- 在 `RquickjsRuntime` 中实现 `includeScript` 全局函数：
+  - JS 端实现 cycle 检测（active stack 检查）+ depth limit (16)
+  - 使用 indirect eval `(0, eval)(source)` 在全局作用域求值
+  - 脚本不存在时抛出异常（不静默 fallback）
+  - ordinary duplicate include 在退出 active stack 后允许再次求值
+  - Rust 端 `IncludeStack` 已就位用于未来 hard budget 强制
+- 5 个新 conformance 测试:
+  - includeScript 加载 helper 并调用其函数
+  - includeScript 脚本不存在时抛出异常
+  - includeScript self-cycle 检测
+  - includeScript 退出后允许重复 include
+  - includeScript 嵌套 include（level1 -> level2）
+- cargo fmt/clippy/test/check-deps 全部通过（306 个测试）
+
 ## P0-BLOCK-006 macOS 运行时基线采集 (deferred from Phase 0)
 - 通过 ssh macdevoa (macdev 别名) 继续完成 macOS 运行时基线采集
 - 复用 ~/dev/tmp/diec-macos-work 目录中已有数据 (DIE-engine-src/build/corpus/evidence 等)

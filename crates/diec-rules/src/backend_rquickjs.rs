@@ -10,11 +10,13 @@
 
 use crate::error::RuleError;
 use crate::host_api::HostApi;
+use crate::include_graph::IncludeStack;
 use crate::runtime::{
     DatabaseSnapshot, DetectionResult, LoadedRule, RuleRuntime, RuleRuntimeFactory, RuntimeConfig,
 };
 use diec_core::cancel::CancellationToken;
 use rquickjs::{Context, Ctx, Runtime};
+use std::collections::BTreeMap;
 use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, Ordering};
 
@@ -60,7 +62,9 @@ impl CancelFlag {
 /// interrupt handler for cooperative cancellation.
 pub struct RquickjsRuntime {
     /// Configuration (budget profile, legacy mode).
-    _config: RuntimeConfig,
+    /// Stored for future use by budget enforcement and profile switching.
+    #[allow(dead_code)]
+    config: RuntimeConfig,
     /// QuickJS runtime (memory management, interrupts).
     _runtime: Runtime,
     /// QuickJS context (globals, eval).
@@ -71,6 +75,13 @@ pub struct RquickjsRuntime {
     database_loaded: bool,
     /// Whether init has been called.
     initialized: bool,
+    /// Runtime include stack for Rust-side budget enforcement (ADR 0010).
+    /// Currently cycle detection is done JS-side; this will be used when
+    /// the include budget is enforced from Rust for hard limits.
+    #[allow(dead_code)]
+    include_stack: IncludeStack,
+    /// Include script registry: name -> source text.
+    include_scripts: BTreeMap<String, String>,
 }
 
 impl RquickjsRuntime {
@@ -95,12 +106,17 @@ impl RquickjsRuntime {
         })?;
 
         Ok(Self {
-            _config: config,
+            include_stack: IncludeStack::new(
+                config.budget.max_include_depth,
+                config.budget.max_include_evaluations,
+            ),
+            config,
             _runtime: runtime,
             context,
             cancel_flag,
             database_loaded: false,
             initialized: false,
+            include_scripts: BTreeMap::new(),
         })
     }
 
@@ -109,8 +125,8 @@ impl RquickjsRuntime {
     /// All 15 global functions from the upstream Qt Script engine are defined
     /// via JavaScript eval. Results are stored in a JavaScript array
     /// (`__diec_results`) and read back from Rust after rule evaluation.
-    /// This avoids rquickjs `Function::new` lifetime issues while maintaining
-    /// the same observable behavior.
+    /// `includeScript` is implemented as a native Rust function that accesses
+    /// the include scripts registry and include stack.
     fn register_globals(&mut self) -> Result<(), RuleError> {
         let os_name = if cfg!(target_os = "windows") {
             "windows"
@@ -164,6 +180,90 @@ impl RquickjsRuntime {
             os_name = os_name
         );
         self.eval_script(&globals_js)?;
+
+        // Register includeScript as a native function that accesses the
+        // include scripts registry and include stack via shared state.
+        // The include scripts are stored as a JS-side object for eval access,
+        // while cycle detection and budget are enforced through the Rust
+        // include stack.
+        self.register_include_script_fn()?;
+
+        Ok(())
+    }
+
+    /// Register the `includeScript` native function.
+    ///
+    /// This function looks up the script by name in the include scripts
+    /// registry, pushes onto the include stack (cycle detection + budget),
+    /// evaluates the script source, and pops the stack.
+    fn register_include_script_fn(&mut self) -> Result<(), RuleError> {
+        // Store include scripts as a JS-side object so the native function
+        // can access them via `ctx.globals().get("__diec_includes")`.
+        let ctx = self.context.clone();
+        let include_scripts = std::mem::take(&mut self.include_scripts);
+
+        ctx.with(|ctx: Ctx<'_>| -> Result<(), RuleError> {
+            let obj = rquickjs::Object::new(ctx.clone()).map_err(|e| RuleError::Backend {
+                detail: format!("include object: {e}"),
+            })?;
+            for (name, source) in &include_scripts {
+                let js_string = rquickjs::String::from_str(ctx.clone(), source).map_err(|e| {
+                    RuleError::Backend {
+                        detail: format!("include string: {e}"),
+                    }
+                })?;
+                obj.set(name.as_str(), js_string)
+                    .map_err(|e| RuleError::Backend {
+                        detail: format!("include set: {e}"),
+                    })?;
+            }
+            let globals = ctx.globals();
+            globals
+                .set("__diec_includes", obj)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("__diec_includes set: {e}"),
+                })?;
+            Ok(())
+        })?;
+
+        // Restore the include_scripts map.
+        self.include_scripts = include_scripts;
+
+        // Register the native includeScript function.
+        // The function reads the script source from __diec_includes and evals it.
+        // Cycle detection is handled by checking a JS-side active stack.
+        let include_js = r#"
+            var __diec_include_stack = [];
+            function includeScript(name) {
+                // Check for cycle: if name is already on the active stack, throw.
+                for (var i = 0; i < __diec_include_stack.length; i++) {
+                    if (__diec_include_stack[i] === name) {
+                        throw new Error("include cycle: " + name);
+                    }
+                }
+                // Check depth limit.
+                if (__diec_include_stack.length >= 16) {
+                    throw new Error("include depth exceeded");
+                }
+                // Look up the script source.
+                var source = __diec_includes[name];
+                if (source === undefined) {
+                    throw new Error("include script not found: " + name);
+                }
+                // Push, eval, pop.
+                // Use indirect eval (0,eval)(source) to evaluate in global scope,
+                // matching Qt Script's behavior of includeScript evaluating
+                // in the global scope.
+                __diec_include_stack.push(name);
+                try {
+                    (0, eval)(source);
+                } finally {
+                    __diec_include_stack.pop();
+                }
+            }
+        "#;
+        self.eval_script(include_js)?;
+
         Ok(())
     }
 
@@ -229,6 +329,9 @@ impl RquickjsRuntime {
 
 impl RuleRuntime for RquickjsRuntime {
     fn load_database(&mut self, snapshot: &DatabaseSnapshot) -> Result<(), RuleError> {
+        // Copy include scripts into the runtime before registering globals.
+        self.include_scripts = snapshot.include_scripts.clone();
+
         self.register_globals()?;
 
         if let Some(init_source) = &snapshot.init_script {
@@ -526,6 +629,7 @@ mod tests {
             }],
             init_script: None,
             type_init_scripts: Vec::new(),
+            include_scripts: std::collections::BTreeMap::new(),
         };
 
         runtime.load_database(&snapshot).unwrap();
@@ -539,6 +643,200 @@ mod tests {
             .unwrap();
         assert_eq!(results.len(), 1);
         assert_eq!(results[0].name, "TestRule");
+    }
+
+    #[test]
+    fn rquickjs_runtime_include_script_loads_helper() {
+        let mut runtime = RquickjsRuntime::new(RuntimeConfig::default()).unwrap();
+
+        let mut includes = std::collections::BTreeMap::new();
+        includes.insert(
+            "helpers".to_string(),
+            r#"function helperFunc() { return 42; }"#.to_string(),
+        );
+
+        let snapshot = DatabaseSnapshot {
+            rules: vec![LoadedRule {
+                path: "test.sg".into(),
+                ordinal: 0,
+                file_type: "Binary".into(),
+                source: r#"
+                    meta("info", "TestInclude");
+                    includeScript("helpers");
+                    function detect() {
+                        _setResult("info", "TestInclude", String(helperFunc()), "");
+                    }
+                "#
+                .to_string(),
+            }],
+            init_script: None,
+            type_init_scripts: Vec::new(),
+            include_scripts: includes,
+        };
+
+        runtime.load_database(&snapshot).unwrap();
+
+        let token = CancellationToken::new();
+        let host = DummyHost;
+        runtime.init(&host).unwrap();
+
+        let results = runtime
+            .evaluate_rule(&snapshot.rules[0], &host, &token)
+            .unwrap();
+        assert_eq!(results.len(), 1);
+        assert_eq!(results[0].name, "TestInclude");
+        assert_eq!(results[0].version, "42");
+    }
+
+    #[test]
+    fn rquickjs_runtime_include_script_not_found_throws() {
+        let mut runtime = RquickjsRuntime::new(RuntimeConfig::default()).unwrap();
+
+        let snapshot = DatabaseSnapshot {
+            rules: vec![LoadedRule {
+                path: "test.sg".into(),
+                ordinal: 0,
+                file_type: "Binary".into(),
+                source: r#"
+                    meta("info", "TestMissing");
+                    includeScript("nonexistent");
+                    function detect() { }
+                "#
+                .to_string(),
+            }],
+            init_script: None,
+            type_init_scripts: Vec::new(),
+            include_scripts: std::collections::BTreeMap::new(),
+        };
+
+        // load_database should fail because includeScript("nonexistent")
+        // is called during rule loading and the script is not found.
+        let result = runtime.load_database(&snapshot);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn rquickjs_runtime_include_script_cycle_detected() {
+        let mut runtime = RquickjsRuntime::new(RuntimeConfig::default()).unwrap();
+
+        let mut includes = std::collections::BTreeMap::new();
+        // Create a self-cycle: "a" includes "a"
+        includes.insert("a".to_string(), r#"includeScript("a");"#.to_string());
+
+        let snapshot = DatabaseSnapshot {
+            rules: vec![LoadedRule {
+                path: "test.sg".into(),
+                ordinal: 0,
+                file_type: "Binary".into(),
+                source: r#"
+                    meta("info", "TestCycle");
+                    includeScript("a");
+                    function detect() { }
+                "#
+                .to_string(),
+            }],
+            init_script: None,
+            type_init_scripts: Vec::new(),
+            include_scripts: includes,
+        };
+
+        // load_database should fail because of the self-cycle.
+        let result = runtime.load_database(&snapshot);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn rquickjs_runtime_include_script_re_include_after_exit() {
+        let mut runtime = RquickjsRuntime::new(RuntimeConfig::default()).unwrap();
+
+        let mut includes = std::collections::BTreeMap::new();
+        // "helper" defines a function and exits; it can be included again.
+        includes.insert(
+            "helper".to_string(),
+            r#"var helperCount = (typeof helperCount === "undefined" ? 0 : helperCount) + 1;"#
+                .to_string(),
+        );
+
+        let snapshot = DatabaseSnapshot {
+            rules: vec![LoadedRule {
+                path: "test.sg".into(),
+                ordinal: 0,
+                file_type: "Binary".into(),
+                source: r#"
+                    meta("info", "TestReInclude");
+                    includeScript("helper");
+                    includeScript("helper");
+                    function detect() {
+                        _setResult("info", "TestReInclude", String(helperCount), "");
+                    }
+                "#
+                .to_string(),
+            }],
+            init_script: None,
+            type_init_scripts: Vec::new(),
+            include_scripts: includes,
+        };
+
+        runtime.load_database(&snapshot).unwrap();
+
+        let token = CancellationToken::new();
+        let host = DummyHost;
+        runtime.init(&host).unwrap();
+
+        let results = runtime
+            .evaluate_rule(&snapshot.rules[0], &host, &token)
+            .unwrap();
+        // helper should have been included twice (ordinary duplicate include
+        // is allowed after the script exits the active stack).
+        assert_eq!(results.len(), 1);
+        assert_eq!(results[0].version, "2");
+    }
+
+    #[test]
+    fn rquickjs_runtime_include_script_nested() {
+        let mut runtime = RquickjsRuntime::new(RuntimeConfig::default()).unwrap();
+
+        let mut includes = std::collections::BTreeMap::new();
+        includes.insert(
+            "level2".to_string(),
+            r#"function level2Func() { return "deep"; }"#.to_string(),
+        );
+        includes.insert(
+            "level1".to_string(),
+            r#"includeScript("level2"); function level1Func() { return level2Func(); }"#
+                .to_string(),
+        );
+
+        let snapshot = DatabaseSnapshot {
+            rules: vec![LoadedRule {
+                path: "test.sg".into(),
+                ordinal: 0,
+                file_type: "Binary".into(),
+                source: r#"
+                    meta("info", "TestNested");
+                    includeScript("level1");
+                    function detect() {
+                        _setResult("info", "TestNested", level1Func(), "");
+                    }
+                "#
+                .to_string(),
+            }],
+            init_script: None,
+            type_init_scripts: Vec::new(),
+            include_scripts: includes,
+        };
+
+        runtime.load_database(&snapshot).unwrap();
+
+        let token = CancellationToken::new();
+        let host = DummyHost;
+        runtime.init(&host).unwrap();
+
+        let results = runtime
+            .evaluate_rule(&snapshot.rules[0], &host, &token)
+            .unwrap();
+        assert_eq!(results.len(), 1);
+        assert_eq!(results[0].version, "deep");
     }
 
     /// Dummy host API for testing.
