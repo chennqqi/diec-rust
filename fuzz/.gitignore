@@ -1,0 +1,4 @@
+# Fuzz artifacts (not committed; corpus is managed separately)
+corpus/
+artifacts/
+target/

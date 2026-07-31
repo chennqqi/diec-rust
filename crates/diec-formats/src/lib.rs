@@ -163,4 +163,97 @@ mod tests {
         assert!(cands.is_empty());
         assert!(errs.is_empty());
     }
+
+    // --- Property-based tests (deterministic, no external dependency) ---
+    // These tests generate random byte sequences and verify that the probe
+    // table never panics, never hangs, and always returns a consistent
+    // (candidates, errors) pair. See testing.md section 14.
+
+    /// Simple xorshift64 PRNG.
+    fn xorshift64(state: &mut u64) -> u64 {
+        let mut x = *state;
+        x ^= x << 13;
+        x ^= x >> 7;
+        x ^= x << 17;
+        *state = x;
+        x
+    }
+
+    #[test]
+    fn property_probe_table_never_panics_on_random_input() {
+        let table = ProbeTable::default_phase2();
+        let mut state: u64 = 0xFEDCBA9876543210;
+        for _ in 0..2000 {
+            // Generate random-length input (0..512 bytes).
+            let len = (xorshift64(&mut state) % 512) as usize;
+            let mut data = vec![0u8; len];
+            for byte in &mut data {
+                *byte = (xorshift64(&mut state) & 0xFF) as u8;
+            }
+            let src = MemorySource::new(&data);
+            let view = view_of(&src);
+            let (cands, errs) = table.probe_all(&view);
+            // Invariant: candidates and errors are consistent.
+            // No candidate should have FormatStrength::None.
+            for c in &cands {
+                assert_ne!(
+                    c.strength,
+                    diec_core::format::FormatStrength::None,
+                    "candidate with None strength"
+                );
+            }
+            // Errors should only be Truncated or InvalidHeader, not Io with
+            // a memory source (which never produces I/O errors).
+            for e in &errs {
+                match e {
+                    probe::ProbeError::Truncated { .. }
+                    | probe::ProbeError::InvalidHeader { .. } => {}
+                    probe::ProbeError::Io(_) => {
+                        panic!("MemorySource should not produce Io errors: {e:?}");
+                    }
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn property_probe_table_deterministic() {
+        let table = ProbeTable::default_phase2();
+        let data: Vec<u8> = (0..128u8).collect();
+        let src1 = MemorySource::new(&data);
+        let view1 = view_of(&src1);
+        let (cands1, errs1) = table.probe_all(&view1);
+        // Run again on the same input.
+        let src2 = MemorySource::new(&data);
+        let view2 = view_of(&src2);
+        let (cands2, errs2) = table.probe_all(&view2);
+        assert_eq!(cands1, cands2);
+        assert_eq!(errs1, errs2);
+    }
+
+    #[test]
+    fn property_probe_table_all_zeros_no_match() {
+        let data = vec![0u8; 512];
+        let src = MemorySource::new(&data);
+        let view = view_of(&src);
+        let table = ProbeTable::default_phase2();
+        let (cands, errs) = table.probe_all(&view);
+        assert!(errs.is_empty(), "unexpected errors on all-zeros: {errs:?}");
+        // All-zeros should not match any format (MZ is 4D 5A, ELF is 7F 45 4C 46, etc.)
+        assert!(
+            cands.is_empty(),
+            "unexpected candidates on all-zeros: {cands:?}"
+        );
+    }
+
+    #[test]
+    fn property_probe_table_single_byte_no_panic() {
+        let table = ProbeTable::default_phase2();
+        for b in 0..=255u8 {
+            let data = [b];
+            let src = MemorySource::new(&data);
+            let view = view_of(&src);
+            let _ = table.probe_all(&view);
+        }
+    }
 }

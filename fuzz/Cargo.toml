@@ -1,0 +1,31 @@
+[package]
+name = "diec-fuzz"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+# This crate is NOT part of the workspace. It uses cargo-fuzz which requires
+# nightly Rust and libFuzzer. Run with:
+#   cd fuzz && cargo +nightly fuzz <target>
+#
+# The fuzz targets exercise the same code paths as the property-based tests
+# in the workspace crates, but with libFuzzer's coverage-guided mutation.
+
+[[bin]]
+name = "fuzz_byte_source"
+path = "fuzz_targets/fuzz_byte_source.rs"
+
+[[bin]]
+name = "fuzz_format_probe"
+path = "fuzz_targets/fuzz_format_probe.rs"
+
+[[bin]]
+name = "fuzz_byte_view_subview"
+path = "fuzz_targets/fuzz_byte_view_subview.rs"
+
+[dependencies]
+libfuzzer-sys = "0.4"
+diec-core = { path = "../crates/diec-core" }
+diec-formats = { path = "../crates/diec-formats" }
+
+[workspace]

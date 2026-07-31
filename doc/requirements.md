@@ -111,6 +111,17 @@
 - 37 个新增测试：各格式 magic match/no-match/too-short，RAR4/RAR5 区分，ISO9660 大偏移读取，DEX 多版本
 - cargo fmt/clippy/test/check-deps 全部通过（37 diec-core + 69 diec-formats 测试）
 
+## 2026-07-31: Phase 2 fuzz targets + property tests
+- 创建 fuzz/ 目录（独立 crate，不加入 workspace，使用 cargo-fuzz/libFuzzer）：
+  - fuzz_byte_source: ByteSource read_at/read_exact_at 不 panic/不越界
+  - fuzz_byte_view_subview: ByteView subview/read/typed integer reads 不 panic/不越界
+  - fuzz_format_probe: ProbeTable::default_phase2 对任意输入不 panic/不 hang
+- 添加 property-based tests（xorshift64 PRNG，无外部依赖）：
+  - diec-core: 7 个 property tests（memory_source_read/read_exact_at/byte_view_subview/read_bounds/chunked_source/typed_reads/empty_source）
+  - diec-formats: 4 个 property tests（random_input_never_panics/deterministic/all_zeros_no_match/single_byte_no_panic）
+- fuzz invariant（testing.md section 14）：无 panic/abort/crash/越界/UB/leak，超限返回 typed limit，相同输入 deterministic
+- cargo fmt/clippy/test/check-deps 全部通过（44 diec-core + 73 diec-formats 测试）
+
 ## P0-BLOCK-006 macOS 运行时基线采集 (deferred from Phase 0)
 - 通过 ssh macdevoa (macdev 别名) 继续完成 macOS 运行时基线采集
 - 复用 ~/dev/tmp/diec-macos-work 目录中已有数据 (DIE-engine-src/build/corpus/evidence 等)

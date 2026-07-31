@@ -919,4 +919,158 @@ mod tests {
         assert_eq!(out, [0x01, 0x02, 0x03, 0x04]);
         let _ = std::fs::remove_file(&path);
     }
+
+    // --- Property-based tests (deterministic, no external dependency) ---
+    // These tests use a simple xorshift PRNG to generate random offsets,
+    // lengths and buffer sizes, verifying that ByteSource and ByteView
+    // never panic, never read out of bounds, and always return typed errors
+    // for short reads. See testing.md section 14: "fuzz invariant: no panic,
+    // no out-of-bounds, deterministic, typed errors".
+
+    /// Simple xorshift64 PRNG for deterministic property tests.
+    fn xorshift64(state: &mut u64) -> u64 {
+        let mut x = *state;
+        x ^= x << 13;
+        x ^= x >> 7;
+        x ^= x << 17;
+        *state = x;
+        x
+    }
+
+    /// Generate a random u64 in [0, max).
+    fn rand_u64(state: &mut u64, max: u64) -> u64 {
+        if max == 0 {
+            return 0;
+        }
+        xorshift64(state) % max
+    }
+
+    #[test]
+    fn property_memory_source_read_never_panics() {
+        let data: Vec<u8> = (0..=255u8).collect();
+        let src = MemorySource::new(&data);
+        let mut state: u64 = 0x1234567890ABCDEF;
+        for _ in 0..1000 {
+            let offset = rand_u64(&mut state, 300);
+            let len = rand_u64(&mut state, 64) as usize;
+            let mut out = vec![0u8; len];
+            let _ = src.read_at(offset, &mut out);
+        }
+    }
+
+    #[test]
+    fn property_read_exact_at_never_panics() {
+        let data: Vec<u8> = (0..=199u8).collect();
+        let src = MemorySource::new(&data);
+        let mut state: u64 = 0xDEADBEEFCAFEBABE;
+        for _ in 0..1000 {
+            let offset = rand_u64(&mut state, 300);
+            let len = rand_u64(&mut state, 64) as usize;
+            let mut out = vec![0u8; len];
+            let result = src.read_exact_at(offset, &mut out);
+            // If Ok, the bytes must be within the source.
+            if let Ok(()) = result
+                && len > 0
+            {
+                let end = offset.checked_add(len as u64).unwrap();
+                assert!(
+                    end <= src.len(),
+                    "read_exact_at succeeded past source end: end={end}, src.len()={}",
+                    src.len()
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn property_byte_view_subview_never_panics() {
+        let data: Vec<u8> = (0..=127u8).collect();
+        let src = MemorySource::new(&data);
+        let range = ByteRange::new(0, 128).unwrap();
+        let view = ByteView::new(&src, range).unwrap();
+        let mut state: u64 = 0x4242424242424242;
+        for _ in 0..1000 {
+            let offset = rand_u64(&mut state, 200);
+            let length = rand_u64(&mut state, 200);
+            let _ = view.subview(offset, length);
+        }
+    }
+
+    #[test]
+    fn property_byte_view_read_never_exceeds_bounds() {
+        let data: Vec<u8> = (0..=99u8).collect();
+        let src = MemorySource::new(&data);
+        // View covers [10, 50) = 40 bytes.
+        let range = ByteRange::new(10, 40).unwrap();
+        let view = ByteView::new(&src, range).unwrap();
+        let mut state: u64 = 0x5555555555555555;
+        for _ in 0..1000 {
+            let offset = rand_u64(&mut state, 200);
+            let len = rand_u64(&mut state, 64) as usize;
+            let mut out = vec![0u8; len];
+            if let Ok(n) = view.read_at(offset, &mut out) {
+                // read_at must never return more bytes than the view has.
+                let view_remaining = 40_u64.saturating_sub(offset);
+                assert!(
+                    n as u64 <= view_remaining,
+                    "read_at returned {n} bytes but only {view_remaining} available in view"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn property_chunked_source_read_exact_consistent() {
+        let data: Vec<u8> = (0..=63u8).collect();
+        let mut state: u64 = 0x9999999999999999;
+        for chunk_size in [1, 2, 3, 5, 7, 16, 64] {
+            let src = ChunkedSource::new(&data, chunk_size).unwrap();
+            for _ in 0..100 {
+                let offset = rand_u64(&mut state, 64) as usize;
+                let max_len = 64 - offset;
+                let len = if max_len == 0 {
+                    0
+                } else {
+                    rand_u64(&mut state, max_len as u64) as usize + 1
+                };
+                let mut out = vec![0u8; len];
+                let result = src.read_exact_at(offset as u64, &mut out);
+                if let Ok(()) = result {
+                    assert_eq!(&out, &data[offset..offset + len]);
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn property_typed_integer_reads_never_panics() {
+        let data: Vec<u8> = (0..=31u8).collect();
+        let src = MemorySource::new(&data);
+        let range = ByteRange::new(0, 32).unwrap();
+        let view = ByteView::new(&src, range).unwrap();
+        let mut state: u64 = 0xAAAAAAAAAAAAAAAA;
+        for _ in 0..1000 {
+            let offset = rand_u64(&mut state, 64);
+            let _ = view.read_u8(offset);
+            let _ = view.read_u16_le(offset);
+            let _ = view.read_u16_be(offset);
+            let _ = view.read_u32_le(offset);
+            let _ = view.read_u32_be(offset);
+            let _ = view.read_u64_le(offset);
+            let _ = view.read_u64_be(offset);
+        }
+    }
+
+    #[test]
+    fn property_empty_source_never_panics() {
+        let src = EmptySource;
+        let mut state: u64 = 0x7777777777777777;
+        for _ in 0..1000 {
+            let offset = rand_u64(&mut state, 1000);
+            let len = rand_u64(&mut state, 64) as usize;
+            let mut out = vec![0u8; len];
+            let _ = src.read_at(offset, &mut out);
+            let _ = src.read_exact_at(offset, &mut out);
+        }
+    }
 }
