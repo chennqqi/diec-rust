@@ -48,3 +48,13 @@
 - 更新评审文档: adr-review-readiness.md / design-review-readiness.md / phase-0-gate-review.md
 - ROADMAP.md 设计交付物状态更新为 Accepted
 - 13 个测试全部通过
+
+## 2026-07-31: Phase 0 关闭，启动 Phase 1
+- 用户确认 Phase 0 除 macOS 性能基线 defer 外全部完成，授权开始 Phase 1
+- ROADMAP.md: Phase 0 -> DONE，Phase 1 -> IN PROGRESS；macOS 基线作为 Phase 1 deferred 项
+- AGENTS.md/README.md 当前阶段更新为 Phase 1
+- 本次会话范围：Cargo workspace 骨架 + 冻结 diec-core 首版内部结果模型（公共 ABI 仍实验状态）
+- 创建 8 个 crate：diec-core/formats/rules/engine/output/cli/ffi + xtask
+- diec-core 冻结结果模型：ByteSource/ByteView/ScanSource/ScanRequest/ScanLimits/ScriptLimits/DatabaseLimits/TraversalLimits/CancellationToken/ScanReport/ScanNode/Detection/Diagnostic/ScanError 等
+- xtask check-deps 实现依赖 DAG 边界校验（architecture.md section 6）
+- cargo fmt/clippy(-- -D warnings)/test --all-features 全部通过，check-deps 报告 DAG OK

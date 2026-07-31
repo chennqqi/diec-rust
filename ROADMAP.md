@@ -6,7 +6,12 @@
 - `IN PROGRESS`：正在进行。
 - `DONE`：退出条件已满足并完成评审。
 
-## Phase 0：上游调研与设计门禁 — IN PROGRESS
+## Phase 0：上游调研与设计门禁 — DONE
+
+设计门禁已于 2026-07-31 评审通过并关闭。五份调研正文、五份设计正文和十四个有效
+ADR 全部 Accepted；六项 blocker 中五项 closed，`P0-BLOCK-005`（macOS 运行时基线
+采集）deferred 至 Phase 1 与 Rust 实现并行完成。评审输入见
+[`docs/design/phase-0-gate-review.md`](docs/design/phase-0-gate-review.md)。
 
 在本阶段完成前，不开始正式功能开发。允许编写调研工具、上游构建脚本、基线采集工具、测试语料基础设施和验证性原型；验证性原型不得直接视为正式架构或稳定 API。
 
@@ -87,13 +92,14 @@
 - 风险清单完整。
 - 后续每个开发阶段都有可测量的完成条件。
 
-## Phase 1：工程骨架与兼容测试基础设施 — TODO
+## Phase 1：工程骨架与兼容测试基础设施 — IN PROGRESS
 
 - 创建 Cargo workspace 和单向依赖边界。
 - 建立格式化、lint、测试和跨平台 CI。
 - 建立上游规则同步、来源清单和完整性校验。
 - 建立测试语料生成/获取、基线保存和差分报告工具。
 - 冻结首版内部结果模型，公共 ABI 仍保持实验状态。
+- 完成 `P0-BLOCK-005` deferred 项：macOS 运行时基线采集。
 
 退出条件：三大桌面平台 CI 通过；规则和上游基线可重复获取；差分框架能对最小样本给出可审计报告。
 

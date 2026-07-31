@@ -4,7 +4,12 @@
 
 ## 当前阶段
 
-项目目前处于 Roadmap Phase 0。设计门禁通过前，只进行上游调研、可重复构建、基线采集、测试基础设施和技术 spike，不开始正式功能实现。调研正文写入 `docs/research/`，设计正文写入 `docs/design/`，不要堆积在本文件或 `README.md` 中。
+项目目前处于 Roadmap Phase 1。Phase 0 设计门禁已于 2026-07-31 评审通过并关闭，
+五份调研正文、五份设计正文和十四个有效 ADR 全部 Accepted；`P0-BLOCK-005`（macOS
+运行时基线采集）deferred 至 Phase 1 与 Rust 实现并行完成。Phase 1 建立工程骨架、
+跨平台 CI、规则同步、差分测试基础设施并冻结首版内部结果模型；公共 ABI 仍保持
+实验状态。调研正文写入 `docs/research/`，设计正文写入 `docs/design/`，不要堆积在
+本文件或 `README.md` 中。
 
 ## 兼容基线
 
