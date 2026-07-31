@@ -144,15 +144,33 @@ impl ProbeTable {
     ///
     /// The default table follows the upstream dispatch order from
     /// `capability-matrix.md` CAP-DISPATCH-001 through CAP-DISPATCH-008:
-    /// PE/MSDOS, ELF, Mach-O, then later formats. This constructor returns
-    /// the Phase 2 first-batch table (PE/MSDOS, ELF, Mach-O).
+    /// PE/MSDOS, ELF, Mach-O, Archive, DEX/Class/PYC, PDF/CFBF, Image.
     pub fn default_phase2() -> Self {
         let mut table = Self::new(PROBE_TABLE_VERSION);
         // Order mirrors XScanEngine::scanProcess dispatch.
+        // CAP-DISPATCH-001: PE/MSDOS, ELF, Mach-O
         table.push(Box::new(super::msdos::MsdosProbe));
         table.push(Box::new(super::pe::PeProbe));
         table.push(Box::new(super::elf::ElfProbe));
         table.push(Box::new(super::macho::MachOProbe));
+        // CAP-DISPATCH-004: Archive (ZIP, RAR, 7Z, GZIP, TAR, ISO9660, CAB)
+        table.push(Box::new(super::archive::ZipProbe));
+        table.push(Box::new(super::archive::RarProbe));
+        table.push(Box::new(super::archive::SevenZProbe));
+        table.push(Box::new(super::archive::GzipProbe));
+        table.push(Box::new(super::archive::TarProbe));
+        table.push(Box::new(super::archive::Iso9660Probe));
+        table.push(Box::new(super::archive::CabProbe));
+        // CAP-DISPATCH-005: DEX, Java Class, PYC
+        table.push(Box::new(super::dex_class_pyc::DexProbe));
+        table.push(Box::new(super::dex_class_pyc::JavaClassProbe));
+        table.push(Box::new(super::dex_class_pyc::PycProbe));
+        // CAP-DISPATCH-006: PDF, CFBF
+        table.push(Box::new(super::pdf_cfbf::PdfProbe));
+        table.push(Box::new(super::pdf_cfbf::CfbfProbe));
+        // CAP-DISPATCH-007: JPEG, PNG
+        table.push(Box::new(super::image::JpegProbe));
+        table.push(Box::new(super::image::PngProbe));
         table
     }
 }
@@ -195,9 +213,10 @@ mod tests {
     }
 
     #[test]
-    fn default_phase2_table_has_four_probes() {
+    fn default_phase2_table_has_all_probes() {
         let table = ProbeTable::default_phase2();
-        assert_eq!(table.len(), 4);
+        // 4 (PE/ELF/Mach-O) + 7 (Archive) + 3 (DEX/Class/PYC) + 2 (PDF/CFBF) + 2 (Image) = 18
+        assert_eq!(table.len(), 18);
         assert_eq!(table.version, PROBE_TABLE_VERSION);
     }
 

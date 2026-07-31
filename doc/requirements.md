@@ -102,6 +102,15 @@
 - 32 个 diec-formats 测试：各格式 magic match/no-match/too-short/unknown-class/multi-candidate table
 - cargo fmt/clippy/test/check-deps 全部通过（37 diec-core + 32 diec-formats 测试）
 
+## 2026-07-31: Phase 2 扩展格式探测
+- 实现 CAP-DISPATCH-004 Archive 格式：ZIP/RAR(RAR4+RAR5)/7Z/GZIP/TAR(USTAR)/ISO9660/CAB
+- 实现 CAP-DISPATCH-005 DEX/Java Class/PYC：DEX magic dex\n0XX\0、Java Class CAFEBABE+major>=45、PYC \r\n heuristic
+- 实现 CAP-DISPATCH-006 PDF/CFBF：PDF %PDF-、CFBF D0CF11E0A1B11AE1
+- 实现 CAP-DISPATCH-007 Image：JPEG FFD8FF、PNG 89PNG\r\n\x1A\n
+- ProbeTable::default_phase2 注册全部 18 个 probe（4 PE/ELF/Mach-O + 7 Archive + 3 DEX/Class/PYC + 2 PDF/CFBF + 2 Image）
+- 37 个新增测试：各格式 magic match/no-match/too-short，RAR4/RAR5 区分，ISO9660 大偏移读取，DEX 多版本
+- cargo fmt/clippy/test/check-deps 全部通过（37 diec-core + 69 diec-formats 测试）
+
 ## P0-BLOCK-006 macOS 运行时基线采集 (deferred from Phase 0)
 - 通过 ssh macdevoa (macdev 别名) 继续完成 macOS 运行时基线采集
 - 复用 ~/dev/tmp/diec-macos-work 目录中已有数据 (DIE-engine-src/build/corpus/evidence 等)
