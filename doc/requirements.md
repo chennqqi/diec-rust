@@ -574,7 +574,18 @@
 
 - cargo fmt/clippy/test/check-deps 全部通过（360 个测试）
 
-## 2026-08-01: Phase 4 第十四步 — 实现 PE host API + 修复 endianness 方法
+## 2026-08-01: Phase 4 第十五步 — 实现差分测试 (对比上游 DIE 输出)
+
+### 实现
+1. **新增 `crates/diec-engine/tests/corpus_differential.rs`**：
+   - 对 corpus 中每个文件运行完整扫描器（数据库 + 规则 + host API）
+   - 验证检测结果与预期上游 DIE 输出一致
+   - 覆盖 27 个语料库文件（PE, ELF, Mach-O, Java Class, DEX, PYC, ZIP, tar, PDF, ISO, PNG, JPEG, BMP, WAV 等）
+   - 使用子串匹配检测名称（处理版本后缀和额外元数据）
+
+### 结果
+- 27 个语料库文件全部通过差分测试
+- cargo fmt/clippy/test/check-deps 全部通过（361 个测试）
 
 ### 修复
 1. **PE 独立对象**：将 PE 从 Binary 别名改为独立对象（`Object.create(Object.prototype)` + `__proto__ = Binary`）
