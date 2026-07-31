@@ -1,0 +1,108 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Default toolchain (1.97.1): formatting, clippy, tests, build and the
+  # workspace dependency DAG guard. Runs on all three desktop platforms.
+  default:
+    name: default (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022, macos-14]
+    steps:
+      - name: Check out
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Verify rust-toolchain.toml resolves to 1.97.1
+        shell: bash
+        run: |
+          set -euo pipefail
+          # rustup honors rust-toolchain.toml; assert the active compiler is the
+          # pinned default per ADR 0011.
+          actual="$(rustc --version)"
+          echo "$actual"
+          case "$actual" in
+            *"1.97.1"*) echo "default toolchain OK" ;;
+            *) echo "expected rustc 1.97.1, got: $actual" >&2; exit 1 ;;
+          esac
+
+      - name: cargo fmt --check
+        shell: bash
+        run: cargo fmt --check
+
+      - name: cargo clippy
+        shell: bash
+        run: cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
+
+      - name: cargo test
+        shell: bash
+        run: cargo test --workspace --all-features --locked
+
+      - name: cargo build (release)
+        shell: bash
+        run: cargo build --workspace --all-targets --release --locked
+
+      - name: xtask check-deps
+        shell: bash
+        run: cargo run -p xtask --locked -- check-deps
+
+  # MSRV (1.88): build and test only, per ADR 0011. Clippy/fmt use the
+  # default toolchain. Runs on all three desktop platforms.
+  msrv:
+    name: msrv 1.88 (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022, macos-14]
+    steps:
+      - name: Check out
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Install Rust 1.88.0
+        shell: bash
+        run: |
+          set -euo pipefail
+          rustup toolchain install 1.88.0 --profile minimal --no-self-update
+          rustup component add --toolchain 1.88.0 clippy
+
+      - name: Verify MSRV declaration
+        shell: bash
+        run: |
+          set -euo pipefail
+          # The workspace rust-version must declare MSRV 1.88 per ADR 0011.
+          grep -E '^rust-version = "1\.88"' Cargo.toml
+
+      - name: cargo +1.88.0 build
+        shell: bash
+        run: cargo +1.88.0 build --workspace --all-targets --locked
+
+      - name: cargo +1.88.0 test
+        shell: bash
+        run: cargo +1.88.0 test --workspace --all-features --locked
+
+      - name: cargo +1.88.0 clippy
+        shell: bash
+        run: cargo +1.88.0 clippy --workspace --all-targets --all-features --locked -- -D warnings

@@ -29,7 +29,14 @@
 - 8 个单元测试通过（cancel 2 + formats/rules/engine/output/ffi 各 1 + cli/xtask 0）
 
 ### 后续 Phase 1 待办
-- 跨平台 CI（fmt/clippy/test/build，三桌面平台）
 - 上游规则同步、来源清单、完整性校验
 - 测试语料生成/获取、基线保存、差分报告工具
 - macOS 运行时基线采集 (P0-BLOCK-005 deferred)
+
+### 跨平台 CI
+- MSRV 修正：workspace rust-version 从 1.97.1 改为 1.88（ADR 0011 要求 MSRV 1.88，默认工具链仍由 rust-toolchain.toml 固定 1.97.1）
+- ci.yml 两条 job 矩阵覆盖 ubuntu-24.04/windows-2022/macos-14：
+  - default (1.97.1)：rustc 版本断言、fmt --check、clippy -- -D warnings、test --all-features、release build、xtask check-deps
+  - msrv (1.88.0)：MSRV 声明 grep 断言、build/test/clippy --locked
+- 安全风格：pinned actions/checkout SHA、permissions: contents: read、concurrency cancel-in-progress、--locked
+- 本地验证：1.97.1 全套 + 1.88.0 build/test/clippy 全部通过

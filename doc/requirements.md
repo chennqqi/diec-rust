@@ -58,3 +58,13 @@
 - diec-core 冻结结果模型：ByteSource/ByteView/ScanSource/ScanRequest/ScanLimits/ScriptLimits/DatabaseLimits/TraversalLimits/CancellationToken/ScanReport/ScanNode/Detection/Diagnostic/ScanError 等
 - xtask check-deps 实现依赖 DAG 边界校验（architecture.md section 6）
 - cargo fmt/clippy(-- -D warnings)/test --all-features 全部通过，check-deps 报告 DAG OK
+
+## 2026-07-31: 跨平台 CI + MSRV 修正
+- 修正 workspace rust-version 从 1.97.1 改为 1.88（ADR 0011 要求 MSRV 1.88，默认工具链仍由 rust-toolchain.toml 固定 1.97.1）
+- 创建 .github/workflows/ci.yml：default 1.97.1 job（fmt/clippy/test/release build/check-deps）+ MSRV 1.88 job（build/test/clippy），均覆盖 ubuntu-24.04/windows-2022/macos-14
+- CI 遵循现有 workflow 安全风格：pinned action SHA、permissions: contents: read、concurrency cancel-in-progress、--locked
+- 本地验证：1.97.1 全套 + 1.88.0 build/test/clippy 全部通过
+
+## P0-BLOCK-006 macOS 运行时基线采集 (deferred from Phase 0)
+- 通过 ssh macdevoa (macdev 别名) 继续完成 macOS 运行时基线采集
+- 复用 ~/dev/tmp/diec-macos-work 目录中已有数据 (DIE-engine-src/build/corpus/evidence 等)
