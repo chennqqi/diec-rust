@@ -470,6 +470,26 @@
 - 语料库扫描新增检测：
   - PDF: `format: PDF (1.4) [binary data]` ✅
 - cargo fmt/clippy/test/check-deps 全部通过（356 个测试）
+
+## 2026-08-01: Phase 4 第八步 — ELF/Mach-O 类型检测修复 + Util + ELF/MACH stubs
+- 修复 `detect_rule_types` 文件类型匹配：
+  - ELF probe 返回 "ELF32"/"ELF64"，但只匹配 "ELF" → 添加 "ELF32"/"ELF64"
+  - Mach-O probe 返回 "Mach-O 32"/"Mach-O 64"/"Mach-O FAT" → 添加这些变体
+  - 修复后 ELF/MACH 规则正确被激活
+- 添加 `Util` 全局对象：
+  - `shlu64(v, n)` — 64 位左移
+  - `shru64(v, n)` — 64 位右移
+  - `divu64(a, b)` — 64 位除法
+  - BitReader 在 `read` include 脚本中使用
+- 添加 ELF/MACH-specific stub 方法（30+ 个）：
+  - ELF: getNumberOfPrograms, getSectionNumber, getSectionFileOffset,
+    isSectionNamePresent, is64, getElfHeader_*, compareEP, compareOverlay 等
+  - MACH: getNumberOfSegments, getSectionNumber, getLibraryName,
+    isLibraryPresent, compareEP 等
+  - 所有 stub 返回默认值（0/空/false），完整实现待后续
+- 添加 `getOverlaySize()` 到 Binary
+- 新增测试：`scan_rar_signature`, `detect_rule_types_elf`
+- cargo fmt/clippy/test/check-deps 全部通过（358 个测试）
 - 实现 `detect_rule_types` 函数：
   - 使用 `diec-formats` 的 `ProbeTable` 检测文件格式
   - PE32/MSDOS → 运行 PE + Binary 规则

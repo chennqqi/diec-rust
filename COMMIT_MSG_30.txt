@@ -1,0 +1,39 @@
+phase4: fix ELF/Mach-O type detection, add Util, ELF/MACH stubs
+
+Eighth step of Phase 4 (CLI). Fix file type detection to properly
+match ELF and Mach-O variants, add Util global object for BitReader,
+and add ELF/MACH-specific stub methods.
+
+Fix detect_rule_types:
+- ELF probe returns "ELF32"/"ELF64" but code only matched "ELF"
+- Mach-O probe returns "Mach-O 32"/"Mach-O 64"/"Mach-O FAT"
+- Added all variants to the match arms
+- ELF/MACH rules are now properly activated
+
+Add Util global object:
+- shlu64(v, n) — 64-bit left shift
+- shru64(v, n) — 64-bit right shift
+- divu64(a, b) — 64-bit division
+- Used by BitReader in the "read" include script
+
+Add ELF-specific stub methods (30+):
+- getNumberOfPrograms, getNumberOfSections, getSectionNumber,
+  getSectionFileOffset, getSectionFileSize, isSectionNamePresent,
+  is64, getElfHeader_*, compareEP, compareOverlay, getGeneralOptions,
+  isLibraryPresent, isStringInTablePresent, etc.
+- All return defaults (0/empty/false) until full ELF host API
+
+Add MACH-specific stub methods (20+):
+- getNumberOfSegments, getSectionNumber, getLibraryName,
+  getLibraryCurrentVersion, isLibraryPresent, compareEP, etc.
+- All return defaults until full Mach-O host API
+
+Add getOverlaySize() to Binary (returns 0).
+
+New tests: scan_rar_signature, detect_rule_types_elf
+
+cargo fmt/clippy/test/check-deps all pass (358 tests total).
+
+Generated with [Devin](https://devin.ai)
+
+Co-Authored-By: Devin <158243242+devin-ai-integration[bot]@users.noreply.github.com>

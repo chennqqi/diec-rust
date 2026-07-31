@@ -1082,6 +1082,15 @@ impl HostApiBridge {
                 detail: format!("getOverlayOffset set: {e}"),
             })?;
 
+            // getOverlaySize() -> 0 (no overlay)
+            let get_overlay_size_fn = rquickjs::Function::new(ctx.clone(), || 0i32)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("getOverlaySize: {e}"),
+                })?;
+            binary.set("getOverlaySize", get_overlay_size_fn).map_err(|e| RuleError::Backend {
+                detail: format!("getOverlaySize set: {e}"),
+            })?;
+
             // getScanID() -> empty string
             let get_scanid_fn = rquickjs::Function::new(ctx.clone(), String::new)
                 .map_err(|e| RuleError::Backend {
@@ -1425,6 +1434,136 @@ impl HostApiBridge {
                         detail: format!("failed to set {name} alias: {e}"),
                     })?;
             }
+
+            // Add ELF-specific stub methods that return defaults.
+            // These are needed so ELF rules don't throw "not a function"
+            // during evaluation. Full ELF parsing will be implemented later.
+            ctx.eval::<(), _>(
+                r#"
+                (function() {
+                    ELF.getNumberOfPrograms = function() { return 0; };
+                    ELF.getNumberOfSections = function() { return 0; };
+                    ELF.getOperationSystemName = function() { return ""; };
+                    ELF.getOperationSystemVersion = function() { return ""; };
+                    ELF.getOperationSystemOptions = function() { return ""; };
+                    ELF.getGeneralOptions = function() { return ""; };
+                    ELF.getProgramFileOffset = function(n) { return 0; };
+                    ELF.getProgramFileSize = function(n) { return 0; };
+                    ELF.getSectionName = function(n) { return ""; };
+                    ELF.getSectionNumber = function(name) { return -1; };
+                    ELF.getSectionFileOffset = function(n) { return 0; };
+                    ELF.getSectionFileSize = function(n) { return 0; };
+                    ELF.isSectionNamePresent = function(name) { return false; };
+                    ELF.isVerbose = function() { return false; };
+                    ELF.isDeepScan = function() { return false; };
+                    ELF.isHeuristicScan = function() { return false; };
+                    ELF.isLibraryPresent = function(name) { return false; };
+                    ELF.isOverlayPresent = function() { return false; };
+                    ELF.isStringInTablePresent = function(s) { return false; };
+                    ELF.is64 = function() { return false; };
+                    ELF.getType = function() { return ""; };
+                    ELF.getMachine = function() { return ""; };
+                    ELF.getEntryPoint = function() { return 0; };
+                    ELF.getImageBase = function() { return 0; };
+                    ELF.getStringTableOffset = function() { return 0; };
+                    ELF.getDynamicTableOffset = function() { return 0; };
+                    ELF.getRelocationTableOffset = function() { return 0; };
+                    ELF.getSymbolTableOffset = function() { return 0; };
+                    ELF.getElfHeader_entry = function() { return 0; };
+                    ELF.getElfHeader_shentsize = function() { return 0; };
+                    ELF.getElfHeader_shnum = function() { return 0; };
+                    ELF.getElfHeader_shstrndx = function() { return 0; };
+                    ELF.compareEP = function(sig, offset) { return false; };
+                    ELF.compareOverlay = function(sig) { return false; };
+                    ELF.compare = function(sig, offset) {
+                        if (offset === undefined) offset = 0;
+                        return Binary.__compare(sig, offset);
+                    };
+                    ELF.getOverlayOffset = function() { return -1; };
+                    ELF.getOverlaySize = function() { return 0; };
+                })();
+                "#,
+            )
+            .map_err(|e| RuleError::Backend {
+                detail: format!("ELF stubs: {e}"),
+            })?;
+
+            // Add Util global object with 64-bit shift helpers.
+            // These are used by BitReader in the "read" include script.
+            // JavaScript's bitwise operators only work on 32-bit integers,
+            // so the upstream runtime provides Util.shlu64/shru64/divu64.
+            // We implement them using Math.pow and multiplication/division
+            // for simplicity (sufficient for BitReader's use cases).
+            ctx.eval::<(), _>(
+                r#"
+                (function() {
+                    var Util = {
+                        // Shift left unsigned 64-bit: (v << n) as a JS number.
+                        shlu64: function(v, n) {
+                            if (n <= 0) return v;
+                            if (n < 53) return v * Math.pow(2, n);
+                            return 0; // overflow
+                        },
+                        // Shift right unsigned 64-bit: (v >>> n) as a JS number.
+                        shru64: function(v, n) {
+                            if (n <= 0) return v;
+                            return Math.floor(v / Math.pow(2, n));
+                        },
+                        // Divide unsigned 64-bit.
+                        divu64: function(a, b) {
+                            if (b === 0) return 0;
+                            return Math.floor(a / b);
+                        }
+                    };
+                    (typeof globalThis !== 'undefined' ? globalThis : this).Util = Util;
+                })();
+                "#,
+            )
+            .map_err(|e| RuleError::Backend {
+                detail: format!("Util stubs: {e}"),
+            })?;
+
+            // Add Mach-O-specific stub methods.
+            ctx.eval::<(), _>(
+                r#"
+                (function() {
+                    MACH.getNumberOfSegments = function() { return 0; };
+                    MACH.getNumberOfSections = function() { return 0; };
+                    MACH.getNumberOfLibraries = function() { return 0; };
+                    MACH.getSegmentName = function(n) { return ""; };
+                    MACH.getSectionName = function(n) { return ""; };
+                    MACH.getSectionNumber = function(name) { return -1; };
+                    MACH.getSectionFileOffset = function(n) { return 0; };
+                    MACH.getSectionFileSize = function(n) { return 0; };
+                    MACH.getLibraryName = function(n) { return ""; };
+                    MACH.getLibraryVersion = function(n) { return 0; };
+                    MACH.getLibraryCurrentVersion = function(n) { return 0; };
+                    MACH.isSectionNamePresent = function(name) { return false; };
+                    MACH.isLibraryNamePresent = function(name) { return false; };
+                    MACH.isLibraryPresent = function(name) { return false; };
+                    MACH.isVerbose = function() { return false; };
+                    MACH.isDeepScan = function() { return false; };
+                    MACH.isHeuristicScan = function() { return false; };
+                    MACH.getType = function() { return ""; };
+                    MACH.getMachine = function() { return ""; };
+                    MACH.getEntryPoint = function() { return 0; };
+                    MACH.getImageBase = function() { return 0; };
+                    MACH.getOperationSystemName = function() { return ""; };
+                    MACH.getOperationSystemVersion = function() { return ""; };
+                    MACH.getOperationSystemOptions = function() { return ""; };
+                    MACH.compareEP = function(sig, offset) { return false; };
+                    MACH.compare = function(sig, offset) {
+                        if (offset === undefined) offset = 0;
+                        return Binary.__compare(sig, offset);
+                    };
+                    MACH.getOverlayOffset = function() { return -1; };
+                    MACH.getOverlaySize = function() { return 0; };
+                })();
+                "#,
+            )
+            .map_err(|e| RuleError::Backend {
+                detail: format!("MACH stubs: {e}"),
+            })?;
 
             // Override getString with a JS wrapper that handles missing 2nd arg.
             // The upstream getString(offset, maxLen?) accepts 1 or 2 args.

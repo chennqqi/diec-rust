@@ -47,12 +47,12 @@ fn detect_rule_types(data: &[u8]) -> Vec<&'static str> {
                     types.push("PE");
                 }
             }
-            "ELF" => {
+            "ELF" | "ELF32" | "ELF64" => {
                 if !types.contains(&"ELF") {
                     types.push("ELF");
                 }
             }
-            "Mach-O" if !types.contains(&"MACH") => {
+            "Mach-O" | "Mach-O 32" | "Mach-O 64" | "Mach-O FAT" if !types.contains(&"MACH") => {
                 types.push("MACH");
             }
             _ => {}
@@ -406,6 +406,53 @@ mod tests {
             found,
             "Expected JPEG detection, got: {:?}",
             result.detections
+        );
+    }
+
+    #[test]
+    fn scan_rar_signature() {
+        let db_path = db_root();
+        let database = match DatabaseBuilder::new(&db_path).build() {
+            Ok(db) => db,
+            Err(_) => {
+                eprintln!("Skipping: upstream database not found");
+                return;
+            }
+        };
+
+        // RAR v4 signature: Rar!\x1a\x07\x00 (needs >= 64 bytes)
+        let mut data: Vec<u8> = vec![
+            0x52, 0x61, 0x72, 0x21, 0x1A, 0x07, 0x00, 0xCF, 0x90, 0x73, 0x00, 0x00, 0x0D, 0x00,
+            0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
+        ];
+        data.resize(64, 0);
+
+        let cancel = CancellationToken::new();
+        let result = scan_bytes(&database, "test.rar", data, &cancel).unwrap();
+
+        let found = result.detections.iter().any(|d| d.name.contains("RAR"));
+        assert!(
+            found,
+            "Expected RAR detection, got: {:?}",
+            result.detections
+        );
+    }
+
+    #[test]
+    fn detect_rule_types_elf() {
+        let elf_header: Vec<u8> = vec![
+            0x7F, 0x45, 0x4C, 0x46, 0x02, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x02, 0x00, 0x3E, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x00,
+            0x38, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        ];
+
+        let types = detect_rule_types(&elf_header);
+        assert!(
+            types.contains(&"ELF"),
+            "Expected ELF in detected types, got: {:?}",
+            types
         );
     }
 }
