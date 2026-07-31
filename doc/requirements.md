@@ -401,6 +401,23 @@
   - CLI 集成测试：8.56s → 1.23s（7x 加速）
 - cargo fmt/clippy/test/check-deps 全部通过（353 个测试）
 
+## 2026-08-01: Phase 4 第四步 — 文件类型检测 + 误报过滤
+- 实现 `detect_rule_types` 函数：
+  - 使用 `diec-formats` 的 `ProbeTable` 检测文件格式
+  - PE32/MSDOS → 运行 PE + Binary 规则
+  - ELF → 运行 ELF + Binary 规则
+  - Mach-O → 运行 MACH + Binary 规则
+  - 无特定格式 → 仅运行 Binary 规则
+- 修改 `scan_bytes` 只运行匹配的规则类型：
+  - 过滤掉不匹配的规则组（如非 PE 文件不运行 PE 规则）
+  - 消除 MACHOFAT "converter: lipo" 等误报
+  - 进一步提升性能（0.88s vs 1.15s）
+- 验证结果：
+  - 7z 文件：仅输出 `archive: 7-Zip (0.4)`，无误报
+  - PE 文件：运行 PE 规则，输出 PE 检测
+  - ELF 文件：运行 ELF 规则，无特定检测（正确行为）
+- cargo fmt/clippy/test/check-deps 全部通过（353 个测试）
+
 ## P0-BLOCK-006 macOS 运行时基线采集 (deferred from Phase 0)
 - 通过 ssh macdevoa (macdev 别名) 继续完成 macOS 运行时基线采集
 - 复用 ~/dev/tmp/diec-macos-work 目录中已有数据 (DIE-engine-src/build/corpus/evidence 等)

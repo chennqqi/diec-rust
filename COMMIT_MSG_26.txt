@@ -1,0 +1,34 @@
+phase4: file type detection, false positive filtering
+
+Fourth step of Phase 4 (CLI). Use the diec-formats probe table to
+detect the file format before scanning, and only run rules matching
+the detected format. This eliminates false positives from unrelated
+rule types.
+
+New function detect_rule_types:
+- Uses diec-formats ProbeTable to probe the file format
+- PE32/MSDOS detected -> run PE + Binary rules
+- ELF detected -> run ELF + Binary rules
+- Mach-O detected -> run MACH + Binary rules
+- No specific format -> run Binary rules only
+- Binary rules always run (generic archive/image/audio detection)
+
+Scanner change (scan_bytes):
+- Filter rule groups by detected file types
+- Non-matching rule groups are skipped entirely
+- Eliminates MACHOFAT "converter: lipo" false positive on non-Mach-O
+  files
+- Further performance improvement (0.88s vs 1.15s, fewer rules
+  evaluated)
+
+Verification:
+- 7z file: only outputs "archive: 7-Zip (0.4)", no false positives
+- PE file: runs PE rules, outputs PE detections
+- ELF file: runs ELF rules, no specific detection (correct)
+- Random data: only Binary rules run, no false format detection
+
+cargo fmt/clippy/test/check-deps all pass (353 tests total).
+
+Generated with [Devin](https://devin.ai)
+
+Co-Authored-By: Devin <158243242+devin-ai-integration[bot]@users.noreply.github.com>

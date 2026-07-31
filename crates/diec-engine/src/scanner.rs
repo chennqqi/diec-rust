@@ -7,9 +7,60 @@
 use crate::database::Database;
 use crate::host::BufferHost;
 use diec_core::cancel::CancellationToken;
+use diec_core::input::{ByteRange, ByteSource, ByteView, MemorySource};
+use diec_formats::probe::ProbeTable;
 use diec_rules::backend_rquickjs::RquickjsRuntime;
 use diec_rules::runtime::{DatabaseSnapshot, RuleRuntime, RuntimeConfig};
 use std::sync::Arc;
+
+/// Detect the file format and return the set of rule file types that
+/// should be run.
+///
+/// Upstream DIE dispatches by detected format:
+/// - PE32/MSDOS → run "PE" rules + "Binary" rules
+/// - ELF → run "ELF" rules + "Binary" rules
+/// - Mach-O → run "MACH" rules + "Binary" rules
+/// - No specific format → run "Binary" rules only
+///
+/// "Binary" rules always run because they contain generic archive,
+/// image, audio, and other format detections that apply to any file.
+fn detect_rule_types(data: &[u8]) -> Vec<&'static str> {
+    let source = MemorySource::new(data);
+    let range = ByteRange::new(0, source.len()).unwrap_or(ByteRange {
+        start: 0,
+        length: 0,
+    });
+    let view = match ByteView::new(&source, range) {
+        Some(v) => v,
+        None => return vec!["Binary"],
+    };
+
+    let table = ProbeTable::default_phase2();
+    let (candidates, _errors) = table.probe_all(&view);
+
+    let mut types: Vec<&'static str> = vec!["Binary"];
+
+    for cand in &candidates {
+        match cand.file_type.name.as_str() {
+            "PE32" | "MSDOS" => {
+                if !types.contains(&"PE") {
+                    types.push("PE");
+                }
+            }
+            "ELF" => {
+                if !types.contains(&"ELF") {
+                    types.push("ELF");
+                }
+            }
+            "Mach-O" if !types.contains(&"MACH") => {
+                types.push("MACH");
+            }
+            _ => {}
+        }
+    }
+
+    types
+}
 
 /// Error type for scan operations.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -121,11 +172,17 @@ pub fn scan_bytes(
     let mut detections = Vec::new();
     let mut diagnostics = Vec::new();
 
-    // Group rules by file type.
+    // Detect the file format to determine which rule types to run.
+    let active_types = detect_rule_types(&data);
+
+    // Group rules by file type, but only for types that match the
+    // detected format.
     let mut groups: std::collections::BTreeMap<&str, Vec<&diec_rules::runtime::LoadedRule>> =
         std::collections::BTreeMap::new();
     for rule in &snapshot.rules {
-        groups.entry(&rule.file_type).or_default().push(rule);
+        if active_types.contains(&rule.file_type.as_str()) {
+            groups.entry(&rule.file_type).or_default().push(rule);
+        }
     }
 
     // Process each file type group with a shared runtime.
