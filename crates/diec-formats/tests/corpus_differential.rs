@@ -30,8 +30,11 @@ const CORPUS_EXPECTATIONS: &[(&str, &str)] = &[
     ("minimal-fat.macho", "Mach-O FAT"),
     ("minimal.dex", "DEX"),
     ("Minimal.class", "Java Class"),
+    ("minimal.pyc", "PYC"),
     ("pixel.png", "PNG"),
     ("pixel.jpg", "JPEG"),
+    ("pixel.bmp", "BMP"),
+    ("tone.wav", "WAV"),
     ("minimal.pdf", "PDF"),
     ("minimal.cfbf", "CFBF"),
     ("payload.zip", "ZIP"),
@@ -44,8 +47,8 @@ const CORPUS_EXPECTATIONS: &[(&str, &str)] = &[
     ("payload.txt.gz", "GZIP"),
 ];
 
-/// Samples that should produce no candidates (not probed or non-binary).
-const CORPUS_NO_MATCH: &[&str] = &["empty.bin", "plain.txt", "pixel.bmp", "tone.wav"];
+/// Samples that should produce no candidates (non-binary or empty).
+const CORPUS_NO_MATCH: &[&str] = &["empty.bin", "plain.txt"];
 
 /// Find the strongest candidate from a probe result.
 fn strongest(

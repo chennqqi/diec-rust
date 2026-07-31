@@ -120,4 +120,71 @@ mod tests {
         let probe = PngProbe;
         assert!(probe.probe(&view).unwrap().is_none());
     }
+
+    // --- Malformed / non-matching tests ---
+
+    #[test]
+    fn jpeg_non_jpeg_does_not_match() {
+        let data = [0xFFu8, 0xD8, 0x00, 0xE0]; // third byte should be 0xFF
+        let src = MemorySource::new(&data);
+        let view = view_of(&src);
+        let probe = JpegProbe;
+        assert!(probe.probe(&view).unwrap().is_none());
+    }
+
+    #[test]
+    fn png_non_png_does_not_match() {
+        let data = [0x89u8, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0B]; // last byte wrong
+        let src = MemorySource::new(&data);
+        let view = view_of(&src);
+        let probe = PngProbe;
+        assert!(probe.probe(&view).unwrap().is_none());
+    }
+
+    // --- Boundary tests: exact minimum size ---
+
+    #[test]
+    fn jpeg_boundary_exact_3_bytes_matches() {
+        let data = &JPEG_MAGIC;
+        let src = MemorySource::new(data);
+        let view = view_of(&src);
+        let probe = JpegProbe;
+        assert!(probe.probe(&view).unwrap().is_some());
+    }
+
+    #[test]
+    fn jpeg_boundary_2_bytes_does_not_match() {
+        let data = &JPEG_MAGIC[..2];
+        let src = MemorySource::new(data);
+        let view = view_of(&src);
+        let probe = JpegProbe;
+        assert!(probe.probe(&view).unwrap().is_none());
+    }
+
+    #[test]
+    fn png_boundary_exact_8_bytes_matches() {
+        let data = &PNG_MAGIC;
+        let src = MemorySource::new(data);
+        let view = view_of(&src);
+        let probe = PngProbe;
+        assert!(probe.probe(&view).unwrap().is_some());
+    }
+
+    #[test]
+    fn png_boundary_7_bytes_does_not_match() {
+        let data = &PNG_MAGIC[..7];
+        let src = MemorySource::new(data);
+        let view = view_of(&src);
+        let probe = PngProbe;
+        assert!(probe.probe(&view).unwrap().is_none());
+    }
+
+    #[test]
+    fn empty_input_does_not_match_any_image() {
+        let data: [u8; 0] = [];
+        let src = MemorySource::new(&data);
+        let view = view_of(&src);
+        assert!(JpegProbe.probe(&view).unwrap().is_none());
+        assert!(PngProbe.probe(&view).unwrap().is_none());
+    }
 }

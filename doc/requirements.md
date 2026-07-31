@@ -133,6 +133,27 @@
 - 使用 CARGO_MANIFEST_DIR 定位 corpus 目录，无需额外依赖
 - cargo fmt/clippy/test/check-deps 全部通过（44 diec-core + 73 diec-formats + 5 corpus differential 测试）
 
+## 2026-07-31: Phase 2 深化 — 完整测试覆盖 + header 字段提取 + BMP/WAV
+- 为每个格式补充 truncated/malformed/boundary/empty 测试：
+  - archive: +20 测试（non-match, boundary exact/one_short, empty_input）
+  - image: +7 测试（non-match, boundary, empty）
+  - macho: +10 测试（partial_magic, fat_wrong_suffix, boundary, empty, java_class_magic）
+  - msdos: +4 测试（boundary, empty, ZM_le）
+  - elf: +5 测试（boundary, class_zero, empty, short_header）
+  - pdf_cfbf: +8 测试（partial_magic, boundary, empty）
+  - pe: +7 测试（header fields, boundary, empty, machine_name）
+- 添加 BMP/WAV 格式探测（image_extra.rs）：
+  - BmpProbe: BM magic (2 bytes)
+  - WavProbe: RIFF + WAVE (12 bytes)
+  - 16 个 BMP/WAV 测试（positive/truncated/malformed/boundary/empty）
+- 添加 PYC 到 corpus 差分测试（之前被跳过）
+- 深化 PE header 解析：PeHeaderInfo { machine, sections, opt_magic, entry_point, size_of_code }
+- 深化 ELF header 解析：ElfHeaderInfo { class, data, osabi, e_type }（endian-aware）
+- 深化 Mach-O header 解析：MachOHeaderInfo { cpu_type, cpu_subtype, filetype }（endian-aware）
+- ProbeTable 从 18 扩展到 20 个 probe（+BMP +WAV）
+- 创建 docs/design/phase2-format-test-matrix.md 覆盖矩阵文档（traceability）
+- cargo fmt/clippy/test/check-deps 全部通过（44 diec-core + 156 diec-formats + 5 corpus differential = 205 测试）
+
 ## P0-BLOCK-006 macOS 运行时基线采集 (deferred from Phase 0)
 - 通过 ssh macdevoa (macdev 别名) 继续完成 macOS 运行时基线采集
 - 复用 ~/dev/tmp/diec-macos-work 目录中已有数据 (DIE-engine-src/build/corpus/evidence 等)

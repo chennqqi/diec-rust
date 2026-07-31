@@ -73,4 +73,43 @@ mod tests {
         let probe = MsdosProbe;
         assert!(probe.probe(&view).unwrap().is_none());
     }
+
+    // --- Boundary tests ---
+
+    #[test]
+    fn boundary_exact_2_bytes_matches() {
+        let data = [0x4Du8, 0x5A];
+        let src = MemorySource::new(&data);
+        let view = view_of(&src);
+        let probe = MsdosProbe;
+        assert!(probe.probe(&view).unwrap().is_some());
+    }
+
+    #[test]
+    fn boundary_1_byte_does_not_match() {
+        let data = [0x4Du8];
+        let src = MemorySource::new(&data);
+        let view = view_of(&src);
+        let probe = MsdosProbe;
+        assert!(probe.probe(&view).unwrap().is_none());
+    }
+
+    #[test]
+    fn empty_input_does_not_match() {
+        let data: [u8; 0] = [];
+        let src = MemorySource::new(&data);
+        let view = view_of(&src);
+        let probe = MsdosProbe;
+        assert!(probe.probe(&view).unwrap().is_none());
+    }
+
+    #[test]
+    fn zm_le_does_not_match() {
+        // ZM (little-endian) is not MZ.
+        let data = [0x5Au8, 0x4D];
+        let src = MemorySource::new(&data);
+        let view = view_of(&src);
+        let probe = MsdosProbe;
+        assert!(probe.probe(&view).unwrap().is_none());
+    }
 }

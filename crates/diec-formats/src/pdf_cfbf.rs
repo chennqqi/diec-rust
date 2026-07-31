@@ -140,4 +140,72 @@ mod tests {
         let probe = CfbfProbe;
         assert!(probe.probe(&view).unwrap().is_none());
     }
+
+    // --- Boundary tests ---
+
+    #[test]
+    fn pdf_boundary_exact_5_bytes_matches() {
+        let data = &PDF_MAGIC;
+        let src = MemorySource::new(data);
+        let view = view_of(&src);
+        let probe = PdfProbe;
+        assert!(probe.probe(&view).unwrap().is_some());
+    }
+
+    #[test]
+    fn pdf_boundary_4_bytes_does_not_match() {
+        let data = &PDF_MAGIC[..4];
+        let src = MemorySource::new(data);
+        let view = view_of(&src);
+        let probe = PdfProbe;
+        assert!(probe.probe(&view).unwrap().is_none());
+    }
+
+    #[test]
+    fn cfbf_boundary_exact_8_bytes_matches() {
+        let data = &CFBF_MAGIC;
+        let src = MemorySource::new(data);
+        let view = view_of(&src);
+        let probe = CfbfProbe;
+        assert!(probe.probe(&view).unwrap().is_some());
+    }
+
+    #[test]
+    fn cfbf_boundary_7_bytes_does_not_match() {
+        let data = &CFBF_MAGIC[..7];
+        let src = MemorySource::new(data);
+        let view = view_of(&src);
+        let probe = CfbfProbe;
+        assert!(probe.probe(&view).unwrap().is_none());
+    }
+
+    #[test]
+    fn empty_input_does_not_match_any() {
+        let data: [u8; 0] = [];
+        let src = MemorySource::new(&data);
+        let view = view_of(&src);
+        assert!(PdfProbe.probe(&view).unwrap().is_none());
+        assert!(CfbfProbe.probe(&view).unwrap().is_none());
+    }
+
+    #[test]
+    fn pdf_partial_magic_does_not_match() {
+        // First 4 bytes correct, 5th wrong.
+        let data = [0x25u8, 0x50, 0x44, 0x46, 0x00];
+        let src = MemorySource::new(&data);
+        let view = view_of(&src);
+        let probe = PdfProbe;
+        assert!(probe.probe(&view).unwrap().is_none());
+    }
+
+    #[test]
+    fn cfbf_partial_magic_does_not_match() {
+        // First 7 bytes correct, 8th wrong.
+        let mut data = CFBF_MAGIC;
+        data[7] = 0x00;
+        let src = MemorySource::new(&data);
+        let view = view_of(&src);
+        let probe = CfbfProbe;
+        assert!(probe.probe(&view).unwrap().is_none());
+    }
 }

@@ -168,9 +168,11 @@ impl ProbeTable {
         // CAP-DISPATCH-006: PDF, CFBF
         table.push(Box::new(super::pdf_cfbf::PdfProbe));
         table.push(Box::new(super::pdf_cfbf::CfbfProbe));
-        // CAP-DISPATCH-007: JPEG, PNG
+        // CAP-DISPATCH-007: JPEG, PNG, BMP, WAV
         table.push(Box::new(super::image::JpegProbe));
         table.push(Box::new(super::image::PngProbe));
+        table.push(Box::new(super::image_extra::BmpProbe));
+        table.push(Box::new(super::image_extra::WavProbe));
         table
     }
 }
@@ -215,8 +217,8 @@ mod tests {
     #[test]
     fn default_phase2_table_has_all_probes() {
         let table = ProbeTable::default_phase2();
-        // 4 (PE/ELF/Mach-O) + 7 (Archive) + 3 (DEX/Class/PYC) + 2 (PDF/CFBF) + 2 (Image) = 18
-        assert_eq!(table.len(), 18);
+        // 4 (PE/ELF/Mach-O) + 7 (Archive) + 3 (DEX/Class/PYC) + 2 (PDF/CFBF) + 4 (Image: JPEG/PNG/BMP/WAV) = 20
+        assert_eq!(table.len(), 20);
         assert_eq!(table.version, PROBE_TABLE_VERSION);
     }
 

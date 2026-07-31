@@ -400,4 +400,222 @@ mod tests {
         let outcome = probe.probe(&view).unwrap().unwrap();
         assert_eq!(outcome.candidate.file_type.name, "CAB");
     }
+
+    // --- Malformed / non-matching tests ---
+
+    #[test]
+    fn zip_non_zip_does_not_match() {
+        let data = [0x50u8, 0x4B, 0x05, 0x06]; // empty archive sig, not local file header
+        let src = MemorySource::new(&data);
+        let view = view_of(&src);
+        let probe = ZipProbe;
+        assert!(probe.probe(&view).unwrap().is_none());
+    }
+
+    #[test]
+    fn rar_non_rar_does_not_match() {
+        let data = [0x52u8, 0x61, 0x72, 0x21, 0x00, 0x00, 0x00, 0x00];
+        let src = MemorySource::new(&data);
+        let view = view_of(&src);
+        let probe = RarProbe;
+        assert!(probe.probe(&view).unwrap().is_none());
+    }
+
+    #[test]
+    fn sevenz_non_sevenz_does_not_match() {
+        let data = [0x37u8, 0x7A, 0x00, 0x00, 0x00, 0x00];
+        let src = MemorySource::new(&data);
+        let view = view_of(&src);
+        let probe = SevenZProbe;
+        assert!(probe.probe(&view).unwrap().is_none());
+    }
+
+    #[test]
+    fn sevenz_too_short_does_not_match() {
+        let data = &SEVENZ_MAGIC[..5];
+        let src = MemorySource::new(data);
+        let view = view_of(&src);
+        let probe = SevenZProbe;
+        assert!(probe.probe(&view).unwrap().is_none());
+    }
+
+    #[test]
+    fn gzip_non_gzip_does_not_match() {
+        let data = [0x1Fu8, 0x00, 0x08, 0x00];
+        let src = MemorySource::new(&data);
+        let view = view_of(&src);
+        let probe = GzipProbe;
+        assert!(probe.probe(&view).unwrap().is_none());
+    }
+
+    #[test]
+    fn gzip_too_short_does_not_match() {
+        let data = [0x1Fu8];
+        let src = MemorySource::new(&data);
+        let view = view_of(&src);
+        let probe = GzipProbe;
+        assert!(probe.probe(&view).unwrap().is_none());
+    }
+
+    #[test]
+    fn tar_non_ustar_does_not_match() {
+        let mut data = vec![0u8; 512];
+        // "gnuta" is not "ustar"
+        data[257..262].copy_from_slice(b"gnuta");
+        let src = MemorySource::new(&data);
+        let view = view_of(&src);
+        let probe = TarProbe;
+        assert!(probe.probe(&view).unwrap().is_none());
+    }
+
+    #[test]
+    fn tar_boundary_exact_262_bytes_matches() {
+        // Exactly enough bytes for ustar magic at offset 257 (257 + 5 = 262).
+        let mut data = vec![0u8; 262];
+        data[257..262].copy_from_slice(&USTAR_MAGIC);
+        let src = MemorySource::new(&data);
+        let view = view_of(&src);
+        let probe = TarProbe;
+        assert!(probe.probe(&view).unwrap().is_some());
+    }
+
+    #[test]
+    fn tar_boundary_261_bytes_does_not_match() {
+        // One byte short of the ustar magic end.
+        let mut data = vec![0u8; 261];
+        data[257..261].copy_from_slice(&USTAR_MAGIC[..4]);
+        let src = MemorySource::new(&data);
+        let view = view_of(&src);
+        let probe = TarProbe;
+        assert!(probe.probe(&view).unwrap().is_none());
+    }
+
+    #[test]
+    fn iso9660_non_iso_does_not_match() {
+        let mut data = vec![0u8; 0x8006];
+        data[0x8001..0x8006].copy_from_slice(b"BEER0");
+        let src = MemorySource::new(&data);
+        let view = view_of(&src);
+        let probe = Iso9660Probe;
+        assert!(probe.probe(&view).unwrap().is_none());
+    }
+
+    #[test]
+    fn iso9660_boundary_exact_magic_end_matches() {
+        // Exactly enough bytes: 0x8000 + 1 + 5 = 0x8006.
+        let mut data = vec![0u8; 0x8006];
+        data[0x8001..0x8006].copy_from_slice(&ISO9660_MAGIC);
+        let src = MemorySource::new(&data);
+        let view = view_of(&src);
+        let probe = Iso9660Probe;
+        assert!(probe.probe(&view).unwrap().is_some());
+    }
+
+    #[test]
+    fn iso9660_boundary_one_byte_short_does_not_match() {
+        let mut data = vec![0u8; 0x8005];
+        data[0x8001..0x8005].copy_from_slice(&ISO9660_MAGIC[..4]);
+        let src = MemorySource::new(&data);
+        let view = view_of(&src);
+        let probe = Iso9660Probe;
+        assert!(probe.probe(&view).unwrap().is_none());
+    }
+
+    #[test]
+    fn cab_non_cab_does_not_match() {
+        // MSCE instead of MSCF.
+        let data = [0x4Du8, 0x53, 0x43, 0x45, 0x00, 0x00, 0x00, 0x00];
+        let src = MemorySource::new(&data);
+        let view = view_of(&src);
+        let probe = CabProbe;
+        assert!(probe.probe(&view).unwrap().is_none());
+    }
+
+    #[test]
+    fn cab_too_short_does_not_match() {
+        let data = [0x4Du8, 0x53, 0x43];
+        let src = MemorySource::new(&data);
+        let view = view_of(&src);
+        let probe = CabProbe;
+        assert!(probe.probe(&view).unwrap().is_none());
+    }
+
+    // --- Boundary tests: exact minimum size ---
+
+    #[test]
+    fn zip_boundary_exact_4_bytes_matches() {
+        let data = ZIP_MAGIC;
+        let src = MemorySource::new(&data);
+        let view = view_of(&src);
+        let probe = ZipProbe;
+        assert!(probe.probe(&view).unwrap().is_some());
+    }
+
+    #[test]
+    fn zip_boundary_3_bytes_does_not_match() {
+        let data = &ZIP_MAGIC[..3];
+        let src = MemorySource::new(data);
+        let view = view_of(&src);
+        let probe = ZipProbe;
+        assert!(probe.probe(&view).unwrap().is_none());
+    }
+
+    #[test]
+    fn rar4_boundary_exact_7_bytes_matches() {
+        let data = &RAR4_MAGIC;
+        let src = MemorySource::new(data);
+        let view = view_of(&src);
+        let probe = RarProbe;
+        assert!(probe.probe(&view).unwrap().is_some());
+    }
+
+    #[test]
+    fn rar5_boundary_exact_8_bytes_matches() {
+        let data = &RAR5_MAGIC;
+        let src = MemorySource::new(data);
+        let view = view_of(&src);
+        let probe = RarProbe;
+        assert!(probe.probe(&view).unwrap().is_some());
+    }
+
+    #[test]
+    fn sevenz_boundary_exact_6_bytes_matches() {
+        let data = &SEVENZ_MAGIC;
+        let src = MemorySource::new(data);
+        let view = view_of(&src);
+        let probe = SevenZProbe;
+        assert!(probe.probe(&view).unwrap().is_some());
+    }
+
+    #[test]
+    fn gzip_boundary_exact_2_bytes_matches() {
+        let data = &GZIP_MAGIC;
+        let src = MemorySource::new(data);
+        let view = view_of(&src);
+        let probe = GzipProbe;
+        assert!(probe.probe(&view).unwrap().is_some());
+    }
+
+    #[test]
+    fn cab_boundary_exact_4_bytes_matches() {
+        let data = &CAB_MAGIC;
+        let src = MemorySource::new(data);
+        let view = view_of(&src);
+        let probe = CabProbe;
+        assert!(probe.probe(&view).unwrap().is_some());
+    }
+
+    #[test]
+    fn empty_input_does_not_match_any_archive() {
+        let data: [u8; 0] = [];
+        let src = MemorySource::new(&data);
+        let view = view_of(&src);
+        assert!(ZipProbe.probe(&view).unwrap().is_none());
+        assert!(RarProbe.probe(&view).unwrap().is_none());
+        assert!(SevenZProbe.probe(&view).unwrap().is_none());
+        assert!(GzipProbe.probe(&view).unwrap().is_none());
+        assert!(TarProbe.probe(&view).unwrap().is_none());
+        assert!(Iso9660Probe.probe(&view).unwrap().is_none());
+        assert!(CabProbe.probe(&view).unwrap().is_none());
+    }
 }

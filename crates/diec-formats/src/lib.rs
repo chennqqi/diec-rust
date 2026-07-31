@@ -14,6 +14,7 @@ pub mod archive;
 pub mod dex_class_pyc;
 pub mod elf;
 pub mod image;
+pub mod image_extra;
 pub mod macho;
 pub mod msdos;
 pub mod pdf_cfbf;
