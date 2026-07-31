@@ -401,7 +401,18 @@
   - CLI 集成测试：8.56s → 1.23s（7x 加速）
 - cargo fmt/clippy/test/check-deps 全部通过（353 个测试）
 
-## 2026-08-01: Phase 4 第四步 — 文件类型检测 + 误报过滤
+## 2026-08-01: Phase 4 第五步 — 目录递归扫描
+- 新增 `--recursive`/`-r` 选项：递归扫描目录下所有文件
+- 实现 `expand_target` 和 `collect_files` 函数：
+  - 目录 + `--recursive` → 递归收集所有文件（按名称排序，保证确定性）
+  - 目录 + 无 `--recursive` → 报错 "is a directory (use --recursive)"
+  - 不存在的路径 → 报错 "path not found"
+  - 空文件列表 → 退出码 4 (EXIT_INPUT)
+- 新增 2 个 CLI 集成测试：
+  - `cli_recursive_directory_scan`: 递归扫描含子目录的目录
+  - `cli_directory_without_recursive_errors`: 目录无 --recursive 报错
+- 更新 ROADMAP Phase 4 进展记录
+- cargo fmt/clippy/test/check-deps 全部通过（355 个测试）
 - 实现 `detect_rule_types` 函数：
   - 使用 `diec-formats` 的 `ProbeTable` 检测文件格式
   - PE32/MSDOS → 运行 PE + Binary 规则

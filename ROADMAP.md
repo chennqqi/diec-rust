@@ -160,6 +160,16 @@ rquickjs 后端 + Binary host API bridge + 签名解析器 + PE stub 完成。
 - 定义参数、退出码、递归扫描及资源限制行为。
 - 与上游 CLI 进行跨平台差分验证。
 
+**进展**：
+- diec-engine 扫描编排层完成（Database + Scanner + BufferHost）
+- diec-output JSON/text 渲染完成（无 serde 依赖）
+- diec-cli 参数解析 + 退出码 + 多目标批量扫描完成
+- ELF/MACH/MACHOFAT host API 别名注册完成
+- 6 个 CLI 集成测试通过
+- 扫描性能优化：按文件类型共享 runtime（8x 加速，~1s/文件）
+- 文件类型检测 + 误报过滤：使用 ProbeTable 分发规则
+- 353 个测试全部通过
+
 退出条件：能力矩阵中当前范围的 CLI 功能完成；自动化输出契约和错误行为有集成测试。
 
 ## Phase 5：C ABI 与语言集成 — TODO

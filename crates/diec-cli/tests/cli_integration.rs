@@ -186,3 +186,68 @@ fn cli_scans_bzip2_file() {
         "stdout should contain BZip detection: {stdout}"
     );
 }
+
+#[test]
+fn cli_recursive_directory_scan() {
+    if !std::path::Path::new(&db_root()).is_dir() {
+        eprintln!("Skipping: upstream database not found");
+        return;
+    }
+    if !std::path::Path::new(&diec_binary()).exists() {
+        eprintln!("Skipping: diec binary not built");
+        return;
+    }
+
+    // Create a temp directory with two test files.
+    let dir = std::env::temp_dir().join("diec_cli_dir_test");
+    std::fs::create_dir_all(&dir).ok();
+    let sub = dir.join("sub");
+    std::fs::create_dir_all(&sub).ok();
+
+    // 7z file in top dir
+    let mut data7z = vec![0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C, 0x00, 0x04];
+    data7z.resize(64, 0);
+    std::fs::write(dir.join("a.7z"), &data7z).ok();
+
+    // BZip2 file in subdir
+    let mut bz2 = b"BZh9".to_vec();
+    bz2.extend_from_slice(&[0x31, 0x41, 0x59, 0x26, 0x53, 0x59]);
+    bz2.resize(64, 0);
+    std::fs::write(sub.join("b.bz2"), &bz2).ok();
+
+    let dir_str = dir.to_str().unwrap();
+    let db = db_root();
+    let (success, stdout, stderr) = run_diec(&["--db", &db, "--recursive", dir_str]);
+
+    assert!(success, "diec should exit 0, stderr: {stderr}");
+    assert!(stdout.contains("7-Zip"), "should detect 7z: {stdout}");
+    assert!(
+        stdout.to_lowercase().contains("bzip"),
+        "should detect bzip2: {stdout}"
+    );
+
+    // Cleanup
+    std::fs::remove_dir_all(&dir).ok();
+}
+
+#[test]
+fn cli_directory_without_recursive_errors() {
+    if !std::path::Path::new(&diec_binary()).exists() {
+        eprintln!("Skipping: diec binary not built");
+        return;
+    }
+
+    let dir = std::env::temp_dir().join("diec_cli_norec_test");
+    std::fs::create_dir_all(&dir).ok();
+
+    let dir_str = dir.to_str().unwrap();
+    let (success, _stdout, stderr) = run_diec(&[dir_str]);
+
+    assert!(!success, "diec should fail without --recursive on a dir");
+    assert!(
+        stderr.contains("is a directory") || stderr.contains("--recursive"),
+        "stderr should mention directory: {stderr}"
+    );
+
+    std::fs::remove_dir_all(&dir).ok();
+}

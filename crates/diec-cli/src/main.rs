@@ -21,8 +21,49 @@ fn print_usage() {
     eprintln!("Options:");
     eprintln!("  --db <path>       Database directory (default: ./db)");
     eprintln!("  --output <format>  Output format: text (default) or json");
+    eprintln!("  --recursive, -r   Recursively scan directories");
     eprintln!("  --version         Print version and exit");
     eprintln!("  --help            Print this help and exit");
+}
+
+/// Expand a target path: if it's a directory and `recursive` is true,
+/// collect all files within it recursively. Otherwise return the path
+/// as-is (if it's a file) or report an error (if it's a directory and
+/// recursive is false).
+fn expand_target(target: &str, recursive: bool, files: &mut Vec<String>, errors: &mut Vec<String>) {
+    let path = std::path::Path::new(target);
+    if !path.exists() {
+        errors.push(format!("path not found: {target}"));
+        return;
+    }
+    if path.is_dir() {
+        if !recursive {
+            errors.push(format!("is a directory (use --recursive): {target}"));
+            return;
+        }
+        collect_files(path, files);
+    } else {
+        files.push(target.to_string());
+    }
+}
+
+/// Recursively collect all regular files under a directory.
+fn collect_files(dir: &std::path::Path, files: &mut Vec<String>) {
+    let Ok(entries) = std::fs::read_dir(dir) else {
+        return;
+    };
+    let mut sorted_entries: Vec<_> = entries.filter_map(|e| e.ok()).collect();
+    sorted_entries.sort_by_key(|e| e.path());
+    for entry in sorted_entries {
+        let path = entry.path();
+        if path.is_dir() {
+            collect_files(&path, files);
+        } else if path.is_file()
+            && let Some(s) = path.to_str()
+        {
+            files.push(s.to_string());
+        }
+    }
 }
 
 fn main() -> ExitCode {
@@ -30,6 +71,7 @@ fn main() -> ExitCode {
 
     let mut db_path = String::new();
     let mut output_format = "text".to_string();
+    let mut recursive = false;
     let mut targets: Vec<String> = Vec::new();
 
     let mut i = 1;
@@ -42,6 +84,9 @@ fn main() -> ExitCode {
             "--version" | "-V" => {
                 println!("diec {}", env!("CARGO_PKG_VERSION"));
                 return ExitCode::from(EXIT_OK);
+            }
+            "--recursive" | "-r" => {
+                recursive = true;
             }
             "--db" => {
                 i += 1;
@@ -80,6 +125,20 @@ fn main() -> ExitCode {
         return ExitCode::from(EXIT_USAGE);
     }
 
+    // Expand targets: directories are recursively scanned if --recursive.
+    let mut files = Vec::new();
+    let mut expand_errors = Vec::new();
+    for target in &targets {
+        expand_target(target, recursive, &mut files, &mut expand_errors);
+    }
+    for err in &expand_errors {
+        eprintln!("error: {err}");
+    }
+    if files.is_empty() {
+        eprintln!("error: no files to scan");
+        return ExitCode::from(EXIT_INPUT);
+    }
+
     // Find the database directory.
     if db_path.is_empty() {
         // Try common locations.
@@ -111,14 +170,14 @@ fn main() -> ExitCode {
     };
 
     let cancel = CancellationToken::new();
-    let mut had_error = false;
+    let mut had_error = !expand_errors.is_empty();
     let mut results = Vec::new();
 
-    for target in &targets {
-        match scan_once(&database, target, &cancel) {
+    for file in &files {
+        match scan_once(&database, file, &cancel) {
             Ok(result) => results.push(result),
             Err(e) => {
-                eprintln!("error: scanning {target}: {e}");
+                eprintln!("error: scanning {file}: {e}");
                 had_error = true;
             }
         }
