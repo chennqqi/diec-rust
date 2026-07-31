@@ -98,7 +98,7 @@ esac
 
 for command_name in \
     awk basename clang cmake cp date dirname file find git head lipo make \
-    mktemp otool python3 rm shasum stat sw_vers sysctl xcodebuild
+    mktemp otool python3 rm shasum stat sw_vers sysctl
 do
     require_command "$command_name"
 done
@@ -197,6 +197,20 @@ artifact="$source_dir/build/release/diec"
 [ ! -e "$artifact" ] ||
     fail "pre-existing CLI artifact would make the build ambiguous: $artifact"
 
+# --- macOS build fix: remove unused CoreFoundation.h include ---
+# xbinary.h line 114 includes CoreFoundation.h under Q_OS_MAC.
+# xdeflatedecoder.cpp (10581-line amalgamation) includes xbinary.h
+# inside function scope (9 unmatched braces at line 9482).
+# CFMessagePort.h CF_EXPORT (extern) typedefs are invalid in function
+# scope. The include is unused in xbinary.h (no CF types referenced).
+# Linux/Windows unaffected (Q_OS_MAC undefined).
+xbinary_path="$source_dir/Formats/xbinary.h"
+patch_applied=false
+if grep -q '#include <CoreFoundation/CoreFoundation.h>' "$xbinary_path" 2>/dev/null; then
+    sed -i '' 's|#include <CoreFoundation/CoreFoundation.h>  // Check|// #include <CoreFoundation/CoreFoundation.h>  // macOS build fix: unused include causes CFMessagePort.h error in function scope|' "$xbinary_path"
+    patch_applied=true
+fi
+
 started_at_epoch="$(date +%s)"
 (
     cd "$build_dir"
@@ -206,6 +220,11 @@ started_at_epoch="$(date +%s)"
 )
 finished_at_epoch="$(date +%s)"
 elapsed_seconds="$((finished_at_epoch - started_at_epoch))"
+
+# Restore the patched file so the source tree is clean again
+if $patch_applied; then
+    git -C "$source_dir/Formats" checkout -- xbinary.h
+fi
 
 [ -x "$artifact" ] || fail "diec CLI artifact was not produced: $artifact"
 artifact_archs="$(lipo -archs "$artifact")"
@@ -258,7 +277,7 @@ export DIEC_MAC_SW_VERS="$(sw_vers)"
 export DIEC_MAC_UNAME="$(uname -a)"
 export DIEC_MAC_CPU_BRAND="$(sysctl -n machdep.cpu.brand_string)"
 export DIEC_MAC_LOGICAL_CPU="$(sysctl -n hw.logicalcpu)"
-export DIEC_MAC_XCODE_VERSION="$(xcodebuild -version)"
+export DIEC_MAC_XCODE_VERSION="$(xcodebuild -version 2>/dev/null || echo 'CommandLineTools only (no full Xcode)')"
 export DIEC_MAC_CLANG_VERSION="$(clang --version)"
 export DIEC_MAC_CMAKE_VERSION="$(cmake --version | head -n 1)"
 export DIEC_MAC_QMAKE_VERSION="$("$qmake" -v 2>&1)"
@@ -271,6 +290,7 @@ export DIEC_MAC_CONSOLE_PRO_SHA256="$(
     sha256_file "$source_dir/console_source/console_source.pro"
 )"
 export DIEC_MAC_DIE_PRO_SHA256="$(sha256_file "$source_dir/die_source.pro")"
+export DIEC_MAC_BUILD_PATCH_APPLIED="$patch_applied"
 
 python3 - "$report_tmp" <<'PY'
 import json
@@ -339,6 +359,17 @@ report = {
             "sub-console_source-make_first",
         ],
         "elapsed_seconds": int(env("DIEC_MAC_ELAPSED_SECONDS")),
+        "macos_build_fix": {
+            "applied": env("DIEC_MAC_BUILD_PATCH_APPLIED") == "true",
+            "file": "Formats/xbinary.h",
+            "line": 114,
+            "original": "#include <CoreFoundation/CoreFoundation.h>  // Check",
+            "reason": (
+                "xdeflatedecoder.cpp amalgamation includes xbinary.h "
+                "inside function scope; CoreFoundation.h CF_EXPORT "
+                "typedefs fail; include is unused in xbinary.h"
+            ),
+        },
     },
     "artifact": {
         "size": int(env("DIEC_MAC_ARTIFACT_SIZE")),
