@@ -263,6 +263,28 @@
   供集成测试使用
 - cargo fmt/clippy/test/check-deps 全部通过（328 个测试）
 
+## 2026-08-01: Phase 3 第六步 — 上游全局函数兼容 + 端序支持 + 真实规则测试
+- 更新全局函数签名以匹配上游 `die_global_script.h` 声明：
+  - `_isResultPresent(sType, sName)` → bool（2 参数，大小写不敏感匹配）
+  - `_getNumberOfResults(sType)` → int（1 参数，按 type 计数）
+  - `_removeResult(sType, sName)` → void（2 参数，删除第一条匹配 +
+    加入 block list 防止重新添加）
+  - `_setResult` 添加 block list 检查（被 remove 的 type+name 不能重新加入）
+  - 新增 `_getQtVersion()` → "5.15.13"
+  - 新增端序常量 `_LE = 0` / `_BE = 1`
+- 扩展 Binary host API bridge（新增 15 个方法）：
+  - `readSWord`/`readSDword`/`readSQword`（有符号读取）
+  - `read_uint8`/`read_int8`/`read_uint16`/`read_int16`/`read_uint24`/
+    `read_uint32`/`read_int32`/`read_uint64`/`read_int64`（带端序参数）
+  - `isVerbose()`
+- 新增 `tests/real_rules.rs` 端到端测试（3 个测试）：
+  - 加载真实上游 `_init` 框架脚本 + `_debug`/`_runtime_helpers`/`language`
+    include 脚本
+  - 7z 签名检测：验证 `archive_7z.1.sg` 正确检测 7-Zip 格式
+  - 7z 无匹配：随机数据不产生误检
+  - ZIP 签名检测：验证 `archive_ZIP.1.sg` 不崩溃
+- cargo fmt/clippy/test/check-deps 全部通过（331 个测试）
+
 ## P0-BLOCK-006 macOS 运行时基线采集 (deferred from Phase 0)
 - 通过 ssh macdevoa (macdev 别名) 继续完成 macOS 运行时基线采集
 - 复用 ~/dev/tmp/diec-macos-work 目录中已有数据 (DIE-engine-src/build/corpus/evidence 等)

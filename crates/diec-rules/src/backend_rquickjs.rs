@@ -151,41 +151,90 @@ impl RquickjsRuntime {
         let globals_js = format!(
             r#"
             var __diec_results = [];
+            var __diec_block_list = [];
+            // Endian constants (used by read_uintN methods)
+            var _LE = 0;
+            var _BE = 1;
+            // Simple meta() placeholder; the real _init script overrides this.
             var __diec_meta = {{ type: "", name: "" }};
             function meta(type, name) {{
                 __diec_meta.type = type;
                 __diec_meta.name = name;
             }}
             function _setResult(type, name, version, options) {{
+                type = String(type);
+                name = String(name);
+                // Check block list (case-insensitive type+name match).
+                var typeLower = type.toLowerCase();
+                var nameLower = name.toLowerCase();
+                for (var i = 0; i < __diec_block_list.length; i++) {{
+                    if (__diec_block_list[i].type === typeLower &&
+                        __diec_block_list[i].name === nameLower) {{
+                        return;
+                    }}
+                }}
                 __diec_results.push({{
                     type: type,
                     name: name,
-                    version: version,
-                    options: options,
+                    version: String(version),
+                    options: String(options),
                     lang: "",
                     langVersion: ""
                 }});
             }}
             function _setLang(lang, langVersion) {{
                 if (__diec_results.length > 0) {{
-                    __diec_results[__diec_results.length - 1].lang = lang;
-                    __diec_results[__diec_results.length - 1].langVersion = langVersion;
+                    __diec_results[__diec_results.length - 1].lang = String(lang);
+                    __diec_results[__diec_results.length - 1].langVersion = String(langVersion || "");
                 }}
             }}
             function _error(msg) {{ throw new Error(msg); }}
             function _log(msg) {{ }}
             function _getEngineVersion() {{ return "3.10"; }}
+            function _getQtVersion() {{ return "5.15.13"; }}
             function _isStop() {{ return false; }}
             function _isConsoleMode() {{ return true; }}
             function _isLiteMode() {{ return false; }}
             function _isGuiMode() {{ return false; }}
             function _isLibraryMode() {{ return false; }}
             function _getOS() {{ return "{os_name}"; }}
-            function _getNumberOfResults() {{ return __diec_results.length; }}
-            function _isResultPresent() {{ return __diec_results.length > 0; }}
+            function _getNumberOfResults(sType) {{
+                if (sType === undefined) return __diec_results.length;
+                var typeLower = String(sType).toLowerCase();
+                var count = 0;
+                for (var i = 0; i < __diec_results.length; i++) {{
+                    if (__diec_results[i].type.toLowerCase() === typeLower) count++;
+                }}
+                return count;
+            }}
+            function _isResultPresent(sType, sName) {{
+                if (sType === undefined) return __diec_results.length > 0;
+                var typeLower = String(sType).toLowerCase();
+                var nameLower = sName !== undefined ? String(sName).toLowerCase() : null;
+                for (var i = 0; i < __diec_results.length; i++) {{
+                    if (__diec_results[i].type.toLowerCase() === typeLower) {{
+                        if (nameLower === null || __diec_results[i].name.toLowerCase() === nameLower) {{
+                            return true;
+                        }}
+                    }}
+                }}
+                return false;
+            }}
             function _breakScan() {{ }}
             function _encodingList() {{ return []; }}
-            function _removeResult(index) {{ }}
+            function _removeResult(sType, sName) {{
+                var typeLower = String(sType).toLowerCase();
+                var nameLower = String(sName).toLowerCase();
+                for (var i = 0; i < __diec_results.length; i++) {{
+                    if (__diec_results[i].type.toLowerCase() === typeLower &&
+                        __diec_results[i].name.toLowerCase() === nameLower) {{
+                        // Add to block list so the same type+name cannot be re-added.
+                        __diec_block_list.push({{ type: typeLower, name: nameLower }});
+                        __diec_results.splice(i, 1);
+                        return;
+                    }}
+                }}
+            }}
             "#,
             os_name = os_name
         );

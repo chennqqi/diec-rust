@@ -120,6 +120,236 @@ impl HostApiBridge {
                     detail: format!("readQword set: {e}"),
                 })?;
 
+            // readSWord(offset) -> i16 (little-endian)
+            let h = host.clone();
+            let read_sword_fn = rquickjs::Function::new(ctx.clone(), move |offset: i32| {
+                h.read_i16_le(offset as u64).map(|v| v as i32).unwrap_or(0)
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("readSWord: {e}"),
+            })?;
+            binary
+                .set("readSWord", read_sword_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("readSWord set: {e}"),
+                })?;
+
+            // readSDword(offset) -> i32 (little-endian)
+            let h = host.clone();
+            let read_sdword_fn = rquickjs::Function::new(ctx.clone(), move |offset: i32| {
+                h.read_i32_le(offset as u64).unwrap_or(0)
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("readSDword: {e}"),
+            })?;
+            binary
+                .set("readSDword", read_sdword_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("readSDword set: {e}"),
+                })?;
+
+            // readSQword(offset) -> i64 (little-endian) as f64
+            let h = host.clone();
+            let read_sqword_fn = rquickjs::Function::new(ctx.clone(), move |offset: i32| {
+                h.read_i64_le(offset as u64).unwrap_or(0) as f64
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("readSQword: {e}"),
+            })?;
+            binary
+                .set("readSQword", read_sqword_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("readSQword set: {e}"),
+                })?;
+
+            // --- read_uintN / read_intN with endian support ---
+            // _LE = 0 (default), _BE = 1
+
+            // read_uint8(offset) -> u8
+            let h = host.clone();
+            let read_uint8_fn = rquickjs::Function::new(ctx.clone(), move |offset: i32| {
+                h.read_u8(offset as u64).map(|v| v as i32).unwrap_or(-1)
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("read_uint8: {e}"),
+            })?;
+            binary
+                .set("read_uint8", read_uint8_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("read_uint8 set: {e}"),
+                })?;
+
+            // read_int8(offset) -> i8
+            let h = host.clone();
+            let read_int8_fn = rquickjs::Function::new(ctx.clone(), move |offset: i32| {
+                h.read_i8(offset as u64).map(|v| v as i32).unwrap_or(0)
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("read_int8: {e}"),
+            })?;
+            binary
+                .set("read_int8", read_int8_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("read_int8 set: {e}"),
+                })?;
+
+            // read_uint16(offset, endian?) -> u16
+            let h = host.clone();
+            let read_uint16_fn =
+                rquickjs::Function::new(ctx.clone(), move |offset: i32, endian: i32| {
+                    if endian == 1 {
+                        h.read_u16_be(offset as u64).map(|v| v as i32).unwrap_or(0)
+                    } else {
+                        h.read_u16_le(offset as u64).map(|v| v as i32).unwrap_or(0)
+                    }
+                })
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("read_uint16: {e}"),
+                })?;
+            binary
+                .set("read_uint16", read_uint16_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("read_uint16 set: {e}"),
+                })?;
+
+            // read_int16(offset, endian?) -> i16
+            let h = host.clone();
+            let read_int16_fn =
+                rquickjs::Function::new(ctx.clone(), move |offset: i32, endian: i32| {
+                    if endian == 1 {
+                        h.read_u16_be(offset as u64)
+                            .map(|v| v as i16 as i32)
+                            .unwrap_or(0)
+                    } else {
+                        h.read_u16_le(offset as u64)
+                            .map(|v| v as i16 as i32)
+                            .unwrap_or(0)
+                    }
+                })
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("read_int16: {e}"),
+                })?;
+            binary
+                .set("read_int16", read_int16_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("read_int16 set: {e}"),
+                })?;
+
+            // read_uint24(offset, endian?) -> u32
+            let h = host.clone();
+            let read_uint24_fn =
+                rquickjs::Function::new(ctx.clone(), move |offset: i32, endian: i32| {
+                    if endian == 1 {
+                        h.read_u24_be(offset as u64).unwrap_or(0)
+                    } else {
+                        h.read_u24_le(offset as u64).unwrap_or(0)
+                    }
+                })
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("read_uint24: {e}"),
+                })?;
+            binary
+                .set("read_uint24", read_uint24_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("read_uint24 set: {e}"),
+                })?;
+
+            // read_uint32(offset, endian?) -> u32
+            let h = host.clone();
+            let read_uint32_fn =
+                rquickjs::Function::new(ctx.clone(), move |offset: i32, endian: i32| {
+                    if endian == 1 {
+                        h.read_u32_be(offset as u64).unwrap_or(0)
+                    } else {
+                        h.read_u32_le(offset as u64).unwrap_or(0)
+                    }
+                })
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("read_uint32: {e}"),
+                })?;
+            binary
+                .set("read_uint32", read_uint32_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("read_uint32 set: {e}"),
+                })?;
+
+            // read_int32(offset, endian?) -> i32
+            let h = host.clone();
+            let read_int32_fn =
+                rquickjs::Function::new(ctx.clone(), move |offset: i32, endian: i32| {
+                    if endian == 1 {
+                        h.read_u32_be(offset as u64).map(|v| v as i32).unwrap_or(0)
+                    } else {
+                        h.read_u32_le(offset as u64).map(|v| v as i32).unwrap_or(0)
+                    }
+                })
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("read_int32: {e}"),
+                })?;
+            binary
+                .set("read_int32", read_int32_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("read_int32 set: {e}"),
+                })?;
+
+            // read_uint64(offset, endian?) -> u64 as f64
+            let h = host.clone();
+            let read_uint64_fn =
+                rquickjs::Function::new(ctx.clone(), move |offset: i32, endian: i32| {
+                    if endian == 1 {
+                        h.read_u64_be(offset as u64).unwrap_or(0) as f64
+                    } else {
+                        h.read_u64_le(offset as u64).unwrap_or(0) as f64
+                    }
+                })
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("read_uint64: {e}"),
+                })?;
+            binary
+                .set("read_uint64", read_uint64_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("read_uint64 set: {e}"),
+                })?;
+
+            // read_int64(offset, endian?) -> i64 as f64
+            let h = host.clone();
+            let read_int64_fn =
+                rquickjs::Function::new(ctx.clone(), move |offset: i32, endian: i32| {
+                    if endian == 1 {
+                        h.read_u64_be(offset as u64)
+                            .map(|v| v as i64 as f64)
+                            .unwrap_or(0.0)
+                    } else {
+                        h.read_u64_le(offset as u64)
+                            .map(|v| v as i64 as f64)
+                            .unwrap_or(0.0)
+                    }
+                })
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("read_int64: {e}"),
+                })?;
+            binary
+                .set("read_int64", read_int64_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("read_int64 set: {e}"),
+                })?;
+
+            // --- Scan mode flags (continued) ---
+
+            // isVerbose() -> bool (same as isDeepScan for now)
+            let h = host.clone();
+            let is_verbose_fn =
+                rquickjs::Function::new(ctx.clone(), move || h.is_deep()).map_err(|e| {
+                    RuleError::Backend {
+                        detail: format!("isVerbose: {e}"),
+                    }
+                })?;
+            binary
+                .set("isVerbose", is_verbose_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("isVerbose set: {e}"),
+                })?;
+
             // --- Short aliases (U8, U16, U24, U32, U64, I8, I16, I32, I64) ---
 
             // U8(offset) -> u8
