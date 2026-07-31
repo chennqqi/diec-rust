@@ -20,7 +20,7 @@ ENVIRONMENT = {
 }
 PRODUCER = {
     "implementation": "diec-rust Rust implementation (Phase 3)",
-    "source_commit": "paired-benchmark",
+    "source_commit": "9bb97c611f559dbebf805e4dd607c04aafa54468",
     "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
     "build_profile": "cargo release",
     "toolchain": "rustc 1.96.1 stable x86_64-apple-darwin",
@@ -109,7 +109,7 @@ def build_plans() -> dict[str, Any]:
     plans.append(
         base_plan(
             "rust.macos-cli-baseline-batch-json.v1",
-            [RUST_CLI, "--db", DB, "--output", "json", str(BENCH / "baseline")],
+            [RUST_CLI, "--db", DB, "--output", "json", "--recursive", str(BENCH / "baseline")],
             [artifact("baseline", s) for s in baseline_samples],
             total_bytes,
             "all files in generated baseline directory scanned once with JSON rendering (Rust)",

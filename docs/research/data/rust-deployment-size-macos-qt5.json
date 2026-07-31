@@ -1,0 +1,64 @@
+{
+  "binary": {
+    "bytes": 2365628,
+    "direct_needed": [
+      "/usr/lib/libSystem.B.dylib"
+    ],
+    "path": "<macos-work>/diec-rust-src/target/release/diec",
+    "sha256": "d6c67e677d238fcf0b5d9d960a340a2fa21f0363db5617a6fb9ef23a3a2b768e"
+  },
+  "dynamic_dependencies": {
+    "accounting": "unique resolved real files, symlink aliases deduplicated",
+    "closure_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "dependencies": [],
+    "file_count": 0,
+    "method": "otool -L plus otool -l rpath resolution on a trusted pinned Mach-O",
+    "system_shared_cache": [
+      {
+        "direct": true,
+        "requested_name": "/usr/lib/libSystem.B.dylib",
+        "requested_names": [
+          "/usr/lib/libSystem.B.dylib"
+        ]
+      }
+    ],
+    "system_shared_cache_note": "system frameworks and dylibs in the dyld shared cache have no on-disk binary file on macOS 12+",
+    "total_bytes": 0
+  },
+  "host": {
+    "machine": "x86_64",
+    "system": "Darwin"
+  },
+  "rules": {
+    "bytes": 2909316,
+    "combined_tree_sha256": "20f2b74effc2bdaf069e3b2e13060432b8890d38364511f5cde56a337348bfda",
+    "file_count": 2268,
+    "root": "<macos-work>/DIE-engine-src/Detect-It-Easy",
+    "trees": [
+      {
+        "bytes": 2832469,
+        "file_count": 2124,
+        "path": "db",
+        "tree_sha256": "8000138ce96a6a892aaa3cba8dee60960694c42dcfa24b3787f02c25858f1650"
+      },
+      {
+        "bytes": 76651,
+        "file_count": 142,
+        "path": "db_extra",
+        "tree_sha256": "77c4e0da796baa9a71ec1a699a37e61ed73783c0d3dc5d49044185dc80a38ec1"
+      },
+      {
+        "bytes": 196,
+        "file_count": 2,
+        "path": "db_custom",
+        "tree_sha256": "36c10cd4d87826c78f07a0c801c1ae374f4b6364936056d44a045e9150ba5815"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "totals": {
+    "binary_and_dependencies_bytes": 2365628,
+    "binary_and_rules_bytes": 5274944,
+    "full_closure_and_rules_bytes": 5274944
+  }
+}

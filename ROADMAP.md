@@ -110,6 +110,9 @@ Phase 1 已于 2026-07-31 关闭。Cargo workspace 8 crate 骨架 + 依赖 DAG �
 跨平台 CI（default 1.97.1 + MSRV 1.88）、Rust 执行收集器 + 端到端差分审计、
 规则同步/来源 manifest/完整性校验均已交付。`P0-BLOCK-005` macOS 运行时基线
 已关闭，17 个 candidate report 采集至 `docs/research/data/macos-qt5/`。
+macOS runtime benchmark（5 case warm baseline）、macOS deployment size、
+Rust 成对 benchmark（2 case）和 Rust deployment size 已完成并提交至
+`docs/research/data/`。
 
 ## Phase 2：核心数据模型与格式识别 — DONE
 

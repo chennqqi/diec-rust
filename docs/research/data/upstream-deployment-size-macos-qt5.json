@@ -1,0 +1,184 @@
+{
+  "binary": {
+    "bytes": 7452296,
+    "direct_needed": [
+      "@rpath/QtConcurrent.framework/Versions/5/QtConcurrent",
+      "@rpath/QtScript.framework/Versions/5/QtScript",
+      "@rpath/QtCore.framework/Versions/5/QtCore",
+      "/System/Library/Frameworks/DiskArbitration.framework/Versions/A/DiskArbitration",
+      "/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit",
+      "/usr/lib/libc++.1.dylib",
+      "/usr/lib/libSystem.B.dylib"
+    ],
+    "path": "<macos-work>/DIE-engine-src/build/release/diec",
+    "sha256": "f4c69824399e3b27b1ec60924ef60555620c4e217a1f48cdae8c8db467d39317"
+  },
+  "dynamic_dependencies": {
+    "accounting": "unique resolved real files, symlink aliases deduplicated",
+    "closure_sha256": "a124f6fed01fece667c862fa9ede836f854fa8b031f7caecf691ee5054f57815",
+    "dependencies": [
+      {
+        "bytes": 32980,
+        "direct": true,
+        "real_path": "<macos-work>/qt/5.15.2/clang_64/lib/QtConcurrent.framework/Versions/5/QtConcurrent",
+        "requested_names": [
+          "@rpath/QtConcurrent.framework/Versions/5/QtConcurrent"
+        ],
+        "resolved_paths": [
+          "<macos-work>/qt/5.15.2/clang_64/lib/QtConcurrent.framework/Versions/5/QtConcurrent"
+        ],
+        "sha256": "e9f1677f5a4f5279e84cbed787a5380eb6b73e6acd2706b20df83e26e82225ac"
+      },
+      {
+        "bytes": 6999312,
+        "direct": true,
+        "real_path": "<macos-work>/qt/5.15.2/clang_64/lib/QtCore.framework/Versions/5/QtCore",
+        "requested_names": [
+          "@rpath/QtCore.framework/Versions/5/QtCore"
+        ],
+        "resolved_paths": [
+          "<macos-work>/qt/5.15.2/clang_64/lib/QtCore.framework/Versions/5/QtCore"
+        ],
+        "sha256": "86f54c3f81b7733bf7cda793094a213d5d7ce8562486b52285c846fc88ceaf9e"
+      },
+      {
+        "bytes": 2338140,
+        "direct": true,
+        "real_path": "<macos-work>/qt/5.15.2/clang_64/lib/QtScript.framework/Versions/5/QtScript",
+        "requested_names": [
+          "@rpath/QtScript.framework/Versions/5/QtScript"
+        ],
+        "resolved_paths": [
+          "<macos-work>/qt/5.15.2/clang_64/lib/QtScript.framework/Versions/5/QtScript"
+        ],
+        "sha256": "a566185119647f6b541f022950a3dda97197b5d9c23dc12ef2d872274d4ebf4d"
+      }
+    ],
+    "file_count": 3,
+    "method": "otool -L plus otool -l rpath resolution on a trusted pinned Mach-O",
+    "system_shared_cache": [
+      {
+        "direct": false,
+        "requested_name": "/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit",
+        "requested_names": [
+          "/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit"
+        ]
+      },
+      {
+        "direct": false,
+        "requested_name": "/System/Library/Frameworks/ApplicationServices.framework/Versions/A/ApplicationServices",
+        "requested_names": [
+          "/System/Library/Frameworks/ApplicationServices.framework/Versions/A/ApplicationServices"
+        ]
+      },
+      {
+        "direct": false,
+        "requested_name": "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+        "requested_names": [
+          "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation"
+        ]
+      },
+      {
+        "direct": false,
+        "requested_name": "/System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices",
+        "requested_names": [
+          "/System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices"
+        ]
+      },
+      {
+        "direct": true,
+        "requested_name": "/System/Library/Frameworks/DiskArbitration.framework/Versions/A/DiskArbitration",
+        "requested_names": [
+          "/System/Library/Frameworks/DiskArbitration.framework/Versions/A/DiskArbitration"
+        ]
+      },
+      {
+        "direct": false,
+        "requested_name": "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+        "requested_names": [
+          "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation"
+        ]
+      },
+      {
+        "direct": true,
+        "requested_name": "/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit",
+        "requested_names": [
+          "/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit"
+        ]
+      },
+      {
+        "direct": false,
+        "requested_name": "/System/Library/Frameworks/Security.framework/Versions/A/Security",
+        "requested_names": [
+          "/System/Library/Frameworks/Security.framework/Versions/A/Security"
+        ]
+      },
+      {
+        "direct": true,
+        "requested_name": "/usr/lib/libSystem.B.dylib",
+        "requested_names": [
+          "/usr/lib/libSystem.B.dylib"
+        ]
+      },
+      {
+        "direct": true,
+        "requested_name": "/usr/lib/libc++.1.dylib",
+        "requested_names": [
+          "/usr/lib/libc++.1.dylib"
+        ]
+      },
+      {
+        "direct": false,
+        "requested_name": "/usr/lib/libobjc.A.dylib",
+        "requested_names": [
+          "/usr/lib/libobjc.A.dylib"
+        ]
+      },
+      {
+        "direct": false,
+        "requested_name": "/usr/lib/libz.1.dylib",
+        "requested_names": [
+          "/usr/lib/libz.1.dylib"
+        ]
+      }
+    ],
+    "system_shared_cache_note": "system frameworks and dylibs in the dyld shared cache have no on-disk binary file on macOS 12+",
+    "total_bytes": 9370432
+  },
+  "host": {
+    "machine": "x86_64",
+    "system": "Darwin"
+  },
+  "rules": {
+    "bytes": 2909316,
+    "combined_tree_sha256": "20f2b74effc2bdaf069e3b2e13060432b8890d38364511f5cde56a337348bfda",
+    "file_count": 2268,
+    "root": "<macos-work>/DIE-engine-src/Detect-It-Easy",
+    "trees": [
+      {
+        "bytes": 2832469,
+        "file_count": 2124,
+        "path": "db",
+        "tree_sha256": "8000138ce96a6a892aaa3cba8dee60960694c42dcfa24b3787f02c25858f1650"
+      },
+      {
+        "bytes": 76651,
+        "file_count": 142,
+        "path": "db_extra",
+        "tree_sha256": "77c4e0da796baa9a71ec1a699a37e61ed73783c0d3dc5d49044185dc80a38ec1"
+      },
+      {
+        "bytes": 196,
+        "file_count": 2,
+        "path": "db_custom",
+        "tree_sha256": "36c10cd4d87826c78f07a0c801c1ae374f4b6364936056d44a045e9150ba5815"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "totals": {
+    "binary_and_dependencies_bytes": 16822728,
+    "binary_and_rules_bytes": 10361612,
+    "full_closure_and_rules_bytes": 19732044
+  }
+}

@@ -23,12 +23,12 @@ Phase 0 设计门禁，不把 Phase 2—6 的实现期风险误当成当前必�
 | ID | 退出条件 | 当前判断 | 证据或缺口 |
 | --- | --- | --- | --- |
 | `P0-EXIT-001` | 能力矩阵每项有源码或可重复实验 | Ready for review | 68 个稳定 `CAP-*` 均绑定固定源码或可重复实验，并已投影到 272 个平台 cell；source-only/platform-missing 作为 EXIT-002 缺口保留 |
-| `P0-EXIT-002` | 基线覆盖主要格式和代表规则语法 | Ready for review | Linux Qt5/Qt6 与 Windows Qt5 的 68 项均为 runtime-observed，source-only 与 corpus-gap 均为 0；macOS 基线采集已 deferred 至 Phase 1 |
+| `P0-EXIT-002` | 基线覆盖主要格式和代表规则语法 | Ready for review | Linux Qt5/Qt6 与 Windows Qt5 的 68 项均为 runtime-observed，source-only 与 corpus-gap 均为 0；macOS 基线采集已完成（17 个 candidate report），`cli-privilege-paths` 因需 sudo 而 deferred |
 | `P0-EXIT-003` | 三项技术验证完成或记录替代 | Ready for review | rquickjs runtime、C static link 和固定 Linux upstream oracle 均有可重复证据及边界 |
 | `P0-EXIT-004` | 架构、规则 runtime、ABI 和测试方案完成评审 | Ready for review | 五份必需设计已 Accepted、十四个有效 ADR 已 Accepted；P0-BLOCK-004 许可证审计已 closed |
 | `P0-EXIT-005` | 风险清单完整 | Ready for review | 20 项风险均含触发、缓解、验证和关闭条件，但文档仍需评审 |
 | `P0-EXIT-006` | 后续阶段有可测完成条件 | Ready for review | `ROADMAP.md` 与 `testing.md` 已给出 Phase 1—6 的量化门禁 |
-| `P0-EXIT-007` | 性能基线与资源目标得到回答 | Ready for review | 固定 Linux Qt5 warm baseline、三次 session 汇总、file-access 闭包、page-cache 证明、file-content ABBA 配对、cache-environment 边界、Windows/macOS cache 策略、deployment size 和 resource limit 候选（0 unresolved）均已冻结为 Phase 0 评审候选；Rust 成对 benchmark、dedicated system-cold、macOS runtime 和 release size 为 Phase 1 实现期门禁 |
+| `P0-EXIT-007` | 性能基线与资源目标得到回答 | Ready for review | 固定 Linux Qt5 warm baseline、三次 session 汇总、file-access 闭包、page-cache 证明、file-content ABBA 配对、cache-environment 边界、Windows/macOS cache 策略、deployment size 和 resource limit 候选（0 unresolved）均已冻结为 Phase 0 评审候选；macOS runtime benchmark（5 case warm baseline）、macOS deployment size、Rust 成对 benchmark（2 case）和 Rust deployment size 已完成并提交至 `docs/research/data/`；dedicated system-cold 和 release size 为后续阶段门禁 |
 
 `Ready for review` 不等于 `Accepted`，也不允许把 Roadmap 状态改为 `DONE`。
 
@@ -56,7 +56,9 @@ Roadmap 点名的五份调研正文和五份设计正文均已存在。调研正
 2. C static link：Windows/Linux x64 的首轮 `.lib`/`.a`、C 调用、所有权、
    panic containment 和依赖证据已存在；它不是最终 C ABI 或三平台发布证明。
 3. upstream oracle：固定 SHA 的 Linux Qt5 qmake/CMake、Linux Qt6 与
-   Windows Qt5 oracle、生成语料和原始输出哈希可重复；macOS oracle 尚未固定。
+   Windows Qt5 oracle、生成语料和原始输出哈希可重复；macOS Qt5 oracle
+   candidate build 已完成，5 case warm baseline benchmark 和 deployment
+   size 已采集并提交。
 
 因此这三项可进入评审，但其受限范围必须原样保留。
 
@@ -106,11 +108,15 @@ limit-1/exact/+1 测试、跨平台 resource benchmark 和 Rust 成对测量为 
 3. `P0-BLOCK-004` 已关闭；引擎与规则分离已确认，上游 C++ 许可证不传染 Rust
    二进制，Rust crate 许可证清单和 NOTICE 文件为 Phase 1 标准工作。
 4. `P0-BLOCK-006` 已关闭；resource limit 候选已冻结为 Phase 0 评审候选，
-   benchmark 策略和 cache 三层模型已确认，Rust 成对 benchmark 和 dedicated
-   system-cold 为 Phase 1 实现期门禁。
+   benchmark 策略和 cache 三层模型已确认，macOS runtime benchmark（5 case
+   warm baseline）、macOS deployment size、Rust 成对 benchmark（2 case）
+   和 Rust deployment size 已完成并提交至 `docs/research/data/`；
+   dedicated system-cold 为后续阶段门禁。
 5. `P0-BLOCK-005` 已在 Phase 1 关闭；17 个 macOS candidate report 已采集、
    校验、sanitize 并提交，`cli-privilege-paths` 因需 passwordless sudo 而
-   deferred 至后续阶段。
+   deferred 至后续阶段。macOS benchmark harness 已构建（qmake Makefile
+   patch + xbinary.h CoreFoundation 修复），5 case warm baseline 已采集，
+   macOS deployment size inspector 已适配 otool 并运行。
 6. 全部 7 个退出条件已 `ready_for_review`，6 个 blocker 已 closed/deferred；
    Phase 0 设计门禁评审输入完整，等待最终评审确认后更新 `ROADMAP.md` 并进入
    Phase 1。

@@ -2201,35 +2201,376 @@ impl HostApiBridge {
                 detail: format!("Util stubs: {e}"),
             })?;
 
-            // Add Mach-O-specific stub methods.
+            // Add Mach-O-specific methods that parse the Mach-O header from
+            // raw bytes. These implement the most commonly used Mach-O host
+            // API methods by reading the Mach-O header and load commands
+            // directly from the file data via the Binary read primitives.
+            // IMPORTANT: Use Binary.* directly, NOT File.*, because the
+            // _init script sets File = MACH, which would cause infinite
+            // recursion when MACH methods call File methods.
             ctx.eval::<(), _>(
                 r#"
                 (function() {
-                    MACH.getNumberOfSegments = function() { return 0; };
-                    MACH.getNumberOfSections = function() { return 0; };
-                    MACH.getNumberOfLibraries = function() { return 0; };
-                    MACH.getSegmentName = function(n) { return ""; };
-                    MACH.getSectionName = function(n) { return ""; };
-                    MACH.getSectionNumber = function(name) { return -1; };
-                    MACH.getSectionFileOffset = function(n) { return 0; };
-                    MACH.getSectionFileSize = function(n) { return 0; };
-                    MACH.getLibraryName = function(n) { return ""; };
-                    MACH.getLibraryVersion = function(n) { return 0; };
-                    MACH.getLibraryCurrentVersion = function(n) { return 0; };
-                    MACH.isSectionNamePresent = function(name) { return false; };
-                    MACH.isLibraryNamePresent = function(name) { return false; };
-                    MACH.isLibraryPresent = function(name) { return false; };
+                    // Mach-O magic numbers.
+                    var MH_MAGIC_32 = 0xFEEDFACE;
+                    var MH_MAGIC_32_LE = 0xCEFAEDFE;
+                    var MH_MAGIC_64 = 0xFEEDFACF;
+                    var MH_MAGIC_64_LE = 0xCFFAEDFE;
+
+                    function _machIsMachO() {
+                        if (Binary.getSize() < 28) return false;
+                        var be = Binary.read_uint32_be(0);
+                        var le = Binary.read_uint32_le(0);
+                        return (be === MH_MAGIC_32 || be === MH_MAGIC_64 ||
+                                le === MH_MAGIC_32 || le === MH_MAGIC_64 ||
+                                le === MH_MAGIC_32_LE || le === MH_MAGIC_64_LE);
+                    }
+
+                    function _machIs64() {
+                        var be = Binary.read_uint32_be(0);
+                        var le = Binary.read_uint32_le(0);
+                        return (be === MH_MAGIC_64 || le === MH_MAGIC_64 ||
+                                le === MH_MAGIC_64_LE);
+                    }
+
+                    function _machIsLE() {
+                        var be = Binary.read_uint32_be(0);
+                        var le = Binary.read_uint32_le(0);
+                        // If LE reading matches the known magic, it's little-endian.
+                        return (le === MH_MAGIC_32 || le === MH_MAGIC_64 ||
+                                le === MH_MAGIC_32_LE || le === MH_MAGIC_64_LE);
+                    }
+
+                    function _machReadU32(off) {
+                        return _machIsLE() ? Binary.read_uint32_le(off) : Binary.read_uint32_be(off);
+                    }
+                    function _machReadU64(off) {
+                        return _machIsLE() ? Binary.read_uint64_le(off) : Binary.read_uint64_be(off);
+                    }
+
+                    // Mach-O header fields.
+                    // 32-bit: magic(0) cputype(4) cpusubtype(8) filetype(12) ncmds(16)
+                    //         sizeofcmds(20) flags(24) reserved(28)
+                    // 64-bit: magic(0) cputype(4) cpusubtype(8) filetype(12) ncmds(16)
+                    //         sizeofcmds(20) flags(24) reserved(28)
+                    // (64-bit header is 32 bytes, 32-bit is 28 bytes)
+                    function _machNCmds() { return _machReadU32(16); }
+                    function _machSizeOfCmds() { return _machReadU32(20); }
+                    function _machFileType() { return _machReadU32(12); }
+                    function _machCpuType() { return _machReadU32(4); }
+
+                    // Header size: 28 for 32-bit, 32 for 64-bit.
+                    function _machHeaderSize() { return _machIs64() ? 32 : 28; }
+
+                    // Iterate load commands. Each load command has:
+                    // cmd(4) cmdsize(4) ... (rest depends on cmd type)
+                    function _machLoadCmdOffset(n) {
+                        var off = _machHeaderSize();
+                        var ncmds = _machNCmds();
+                        if (n >= ncmds) return -1;
+                        for (var i = 0; i < n; i++) {
+                            var cmdsize = _machReadU32(off + 4);
+                            if (cmdsize === 0) return -1;
+                            off += cmdsize;
+                        }
+                        return off;
+                    }
+
+                    // LC_SEGMENT (cmd=1) or LC_SEGMENT_64 (cmd=0x19).
+                    // 32-bit segment: cmd(0) cmdsize(4) segname(8) vmaddr(24) vmsize(28)
+                    //   fileoff(32) filesize(36) nsects(40) flags(44)
+                    // 64-bit segment: cmd(0) cmdsize(4) segname(8) vmaddr(24) vmsize(32)
+                    //   fileoff(40) filesize(48) nsects(56) flags(60)
+                    var LC_SEGMENT = 1, LC_SEGMENT_64 = 0x19;
+                    var LC_LOAD_DYLIB = 0xC, LC_ID_DYLIB = 0xD;
+                    var LC_MAIN = 0x80000028;
+
+                    function _machIsSegment(cmd) {
+                        return cmd === LC_SEGMENT || cmd === LC_SEGMENT_64;
+                    }
+
+                    function _machSegmentIs64(cmd) { return cmd === LC_SEGMENT_64; }
+
+                    // Get segment name (16 bytes at cmd offset + 8).
+                    function _machSegmentName(cmdOff) {
+                        var name = "";
+                        for (var i = 0; i < 16; i++) {
+                            var b = Binary.read_uint8(cmdOff + 8 + i);
+                            if (b === 0) break;
+                            name += String.fromCharCode(b);
+                        }
+                        return name;
+                    }
+
+                    // Get segment file offset and size.
+                    function _machSegmentFileOff(cmdOff, is64) {
+                        return is64 ? _machReadU64(cmdOff + 40) : _machReadU32(cmdOff + 32);
+                    }
+                    function _machSegmentFileSize(cmdOff, is64) {
+                        return is64 ? _machReadU64(cmdOff + 48) : _machReadU32(cmdOff + 36);
+                    }
+                    function _machSegmentNsects(cmdOff, is64) {
+                        return is64 ? _machReadU32(cmdOff + 56) : _machReadU32(cmdOff + 40);
+                    }
+
+                    // Section header within a segment.
+                    // 32-bit section: sectname(0) segname(16) addr(32) size(36)
+                    //   offset(40) align(44) reloff(48) nreloc(52) flags(56)
+                    // 64-bit section: sectname(0) segname(16) addr(32) size(40)
+                    //   offset(48) align(52) reloff(56) nreloc(60) flags(64)
+                    function _machSectionHeaderSize(is64) { return is64 ? 80 : 68; }
+
+                    function _machSectionName(sectOff) {
+                        var name = "";
+                        for (var i = 0; i < 16; i++) {
+                            var b = Binary.read_uint8(sectOff + i);
+                            if (b === 0) break;
+                            name += String.fromCharCode(b);
+                        }
+                        return name;
+                    }
+                    function _machSectionOffset(sectOff, is64) {
+                        return is64 ? _machReadU32(sectOff + 48) : _machReadU32(sectOff + 40);
+                    }
+                    function _machSectionSize(sectOff, is64) {
+                        return is64 ? _machReadU64(sectOff + 40) : _machReadU32(sectOff + 36);
+                    }
+
+                    // Collect all sections from all segments.
+                    function _machAllSections() {
+                        var sections = [];
+                        var ncmds = _machNCmds();
+                        var off = _machHeaderSize();
+                        for (var i = 0; i < ncmds; i++) {
+                            var cmd = _machReadU32(off);
+                            var cmdsize = _machReadU32(off + 4);
+                            if (cmdsize === 0) break;
+                            if (_machIsSegment(cmd)) {
+                                var isSeg64 = _machSegmentIs64(cmd);
+                                var nsects = _machSegmentNsects(off, isSeg64);
+                                var sectHdrSize = _machSectionHeaderSize(isSeg64);
+                                var sectStart = off + (isSeg64 ? 72 : 56);
+                                for (var j = 0; j < nsects; j++) {
+                                    var sectOff = sectStart + j * sectHdrSize;
+                                    sections.push({
+                                        name: _machSectionName(sectOff),
+                                        offset: _machSectionOffset(sectOff, isSeg64),
+                                        size: _machSectionSize(sectOff, isSeg64)
+                                    });
+                                }
+                            }
+                            off += cmdsize;
+                        }
+                        return sections;
+                    }
+
+                    function _machSectionNumber(name) {
+                        var sections = _machAllSections();
+                        for (var i = 0; i < sections.length; i++) {
+                            if (sections[i].name === name) return i;
+                        }
+                        return -1;
+                    }
+
+                    // Collect library names from LC_LOAD_DYLIB commands.
+                    // LC_LOAD_DYLIB: cmd(0) cmdsize(4) name_offset(8) timestamp(12)
+                    //   current_version(16) compatible_version(20) name(24...)
+                    function _machLibraries() {
+                        var libs = [];
+                        var ncmds = _machNCmds();
+                        var off = _machHeaderSize();
+                        for (var i = 0; i < ncmds; i++) {
+                            var cmd = _machReadU32(off);
+                            var cmdsize = _machReadU32(off + 4);
+                            if (cmdsize === 0) break;
+                            if (cmd === LC_LOAD_DYLIB) {
+                                var nameOffset = _machReadU32(off + 8);
+                                // name is at off + nameOffset, NUL-terminated.
+                                var name = "";
+                                var maxLen = cmdsize - nameOffset;
+                                for (var j = 0; j < maxLen; j++) {
+                                    var b = Binary.read_uint8(off + nameOffset + j);
+                                    if (b === 0) break;
+                                    name += String.fromCharCode(b);
+                                }
+                                if (name) libs.push(name);
+                            }
+                            off += cmdsize;
+                        }
+                        return libs;
+                    }
+
+                    // Get entry point from LC_MAIN (cmd=0x80000028).
+                    // LC_MAIN: cmd(0) cmdsize(4) entryoff(8) stacksize(16)
+                    function _machEntryPoint() {
+                        var ncmds = _machNCmds();
+                        var off = _machHeaderSize();
+                        for (var i = 0; i < ncmds; i++) {
+                            var cmd = _machReadU32(off);
+                            var cmdsize = _machReadU32(off + 4);
+                            if (cmdsize === 0) break;
+                            if (cmd === LC_MAIN) {
+                                return _machReadU64(off + 8);
+                            }
+                            off += cmdsize;
+                        }
+                        return 0;
+                    }
+
+                    // Mach-O filetype names.
+                    var _machFileTypeNames = {
+                        1: "object", 2: "execute", 3: "fvmlib", 4: "core",
+                        5: "preload", 6: "dylib", 7: "dylinker", 8: "bundle",
+                        9: "dylib_stub", 10: "dsym", 11: "kext"
+                    };
+
+                    // CPU type names. 64-bit types have the 0x01000000 flag.
+                    var _machCpuNames = {};
+                    _machCpuNames[7] = "x86";
+                    _machCpuNames[7 + 0x01000000] = "x86_64";
+                    _machCpuNames[12] = "arm";
+                    _machCpuNames[12 + 0x01000000] = "arm64";
+                    _machCpuNames[18] = "ppc";
+                    _machCpuNames[18 + 0x01000000] = "ppc64";
+
+                    // --- Public MACH API methods ---
+                    MACH.is64 = function() { return _machIs64(); };
+                    MACH.getNumberOfSections = function() {
+                        if (!_machIsMachO()) return 0;
+                        return _machAllSections().length;
+                    };
+                    MACH.getNumberOfSegments = function() {
+                        if (!_machIsMachO()) return 0;
+                        var count = 0;
+                        var ncmds = _machNCmds();
+                        var off = _machHeaderSize();
+                        for (var i = 0; i < ncmds; i++) {
+                            var cmd = _machReadU32(off);
+                            var cmdsize = _machReadU32(off + 4);
+                            if (cmdsize === 0) break;
+                            if (_machIsSegment(cmd)) count++;
+                            off += cmdsize;
+                        }
+                        return count;
+                    };
+                    MACH.getNumberOfLibraries = function() {
+                        if (!_machIsMachO()) return 0;
+                        return _machLibraries().length;
+                    };
+                    MACH.getSectionName = function(n) {
+                        if (!_machIsMachO()) return "";
+                        var sections = _machAllSections();
+                        if (n >= sections.length) return "";
+                        return sections[n].name;
+                    };
+                    MACH.getSectionNumber = function(name) {
+                        if (!_machIsMachO()) return -1;
+                        return _machSectionNumber(name);
+                    };
+                    MACH.getSectionFileOffset = function(n) {
+                        if (!_machIsMachO()) return 0;
+                        var sections = _machAllSections();
+                        if (n >= sections.length) return 0;
+                        return sections[n].offset;
+                    };
+                    MACH.getSectionFileSize = function(n) {
+                        if (!_machIsMachO()) return 0;
+                        var sections = _machAllSections();
+                        if (n >= sections.length) return 0;
+                        return sections[n].size;
+                    };
+                    MACH.isSectionNamePresent = function(name) {
+                        if (!_machIsMachO()) return false;
+                        return _machSectionNumber(name) >= 0;
+                    };
+                    MACH.isLibraryNamePresent = function(name) {
+                        if (!_machIsMachO()) return false;
+                        var libs = _machLibraries();
+                        for (var i = 0; i < libs.length; i++) {
+                            if (libs[i] === name) return true;
+                        }
+                        return false;
+                    };
+                    MACH.isLibraryPresent = function(name) {
+                        if (!_machIsMachO()) return false;
+                        var libs = _machLibraries();
+                        for (var i = 0; i < libs.length; i++) {
+                            if (libs[i] === name) return true;
+                        }
+                        return false;
+                    };
+                    MACH.getLibraryCurrentVersion = function(name) {
+                        if (!_machIsMachO()) return 0;
+                        // Find LC_LOAD_DYLIB with matching name, return current_version.
+                        var ncmds = _machNCmds();
+                        var off = _machHeaderSize();
+                        for (var i = 0; i < ncmds; i++) {
+                            var cmd = _machReadU32(off);
+                            var cmdsize = _machReadU32(off + 4);
+                            if (cmdsize === 0) break;
+                            if (cmd === LC_LOAD_DYLIB) {
+                                var nameOffset = _machReadU32(off + 8);
+                                var libName = "";
+                                var maxLen = cmdsize - nameOffset;
+                                for (var j = 0; j < maxLen; j++) {
+                                    var b = Binary.read_uint8(off + nameOffset + j);
+                                    if (b === 0) break;
+                                    libName += String.fromCharCode(b);
+                                }
+                                if (libName === name) {
+                                    return _machReadU32(off + 16);
+                                }
+                            }
+                            off += cmdsize;
+                        }
+                        return 0;
+                    };
+                    MACH.getType = function() {
+                        if (!_machIsMachO()) return "";
+                        return _machFileTypeNames[_machFileType()] || "";
+                    };
+                    MACH.getMachine = function() {
+                        if (!_machIsMachO()) return "";
+                        var cputype = _machCpuType();
+                        return _machCpuNames[cputype] || "";
+                    };
+                    MACH.getEntryPoint = function() {
+                        if (!_machIsMachO()) return 0;
+                        return _machEntryPoint();
+                    };
+                    MACH.getGeneralOptions = function() {
+                        if (!_machIsMachO()) return "";
+                        var ft = _machFileTypeNames[_machFileType()] || "";
+                        return ft + (_machIs64() ? "64" : "32");
+                    };
+                    MACH.getOperationSystemName = function() { return "macOS"; };
+                    MACH.getOperationSystemVersion = function() { return ""; };
+                    MACH.getOperationSystemOptions = function() { return ""; };
+                    MACH.getString = function(offset, maxLen) {
+                        if (maxLen === undefined) maxLen = 256;
+                        return Binary.getString(offset, maxLen);
+                    };
+                    MACH.getSize = function() { return Binary.getSize(); };
+                    MACH.readByte = function(offset) { return Binary.read_uint8(offset); };
+                    MACH.findSignature = function(offset, sizeOrSig, sig) {
+                        if (sig === undefined) { sig = sizeOrSig; return Binary.findSignature(offset, sig); }
+                        return Binary.findSignature(offset, sizeOrSig, sig);
+                    };
+                    MACH.findString = function(offset, sizeOrStr, str) {
+                        if (str === undefined) { str = sizeOrStr; sizeOrStr = 0; }
+                        return Binary.findString(offset, sizeOrStr, str);
+                    };
                     MACH.isVerbose = function() { return false; };
                     MACH.isDeepScan = function() { return false; };
                     MACH.isHeuristicScan = function() { return false; };
-                    MACH.getType = function() { return ""; };
-                    MACH.getMachine = function() { return ""; };
-                    MACH.getEntryPoint = function() { return 0; };
                     MACH.getImageBase = function() { return 0; };
-                    MACH.getOperationSystemName = function() { return ""; };
-                    MACH.getOperationSystemVersion = function() { return ""; };
-                    MACH.getOperationSystemOptions = function() { return ""; };
-                    MACH.compareEP = function(sig, offset) { return false; };
+                    MACH.compareEP = function(sig, offset) {
+                        if (!_machIsMachO()) return false;
+                        var ep = _machEntryPoint();
+                        if (ep === 0) return false;
+                        if (offset === undefined) offset = 0;
+                        return Binary.__compare(sig, ep + offset);
+                    };
                     MACH.compare = function(sig, offset) {
                         if (offset === undefined) offset = 0;
                         return Binary.__compare(sig, offset);
@@ -2240,7 +2581,7 @@ impl HostApiBridge {
                 "#,
             )
             .map_err(|e| RuleError::Backend {
-                detail: format!("MACH stubs: {e}"),
+                detail: format!("MACH methods: {e}"),
             })?;
 
             // Register all remaining format-specific global objects as

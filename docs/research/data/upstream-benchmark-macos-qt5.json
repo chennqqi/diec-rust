@@ -1,0 +1,1891 @@
+{
+  "baseline_scope": "descriptive_upstream_only",
+  "case_reports": {
+    "upstream.macos-qt-process-control.v1": {
+      "benchmark_id": "upstream.macos-qt-process-control.v1",
+      "benchmark_report_schema": 1,
+      "executable": {
+        "bytes": 7432936,
+        "path": "<macos-work>/DIE-engine-src/build/release/diec-upstream-benchmark-harness",
+        "sha256": "170ec85117859e95375a80dec589ad689ea87939b0c22c0a10cb24db13bdcc1a"
+      },
+      "execution": {
+        "cache_state": "warm",
+        "command": [
+          "<macos-work>/DIE-engine-src/build/release/diec-upstream-benchmark-harness",
+          "--noop"
+        ],
+        "environment_override_keys": [
+          "DYLD_FRAMEWORK_PATH",
+          "LC_ALL",
+          "QT_HASH_SEED",
+          "TZ"
+        ],
+        "environment_overrides_sha256": "b9921ed793fcca42af780362cc3e13b5c71fe1ff8aa25681cff22108a692167b",
+        "environment_policy": "inherit_with_overrides",
+        "measured_runs": 30,
+        "measurement": {
+          "clock": "time.perf_counter_ns",
+          "peak_rss_method": "proc_pid_rusage resident_size polling",
+          "timed_process_scope": "direct process"
+        },
+        "notes": [
+          "runner executes on the pinned macOS host",
+          "each sample is a fresh direct upstream process",
+          "OS cache is warmed but not forcibly controlled"
+        ],
+        "timeout_ms": 10000,
+        "warmup_runs": 5,
+        "work_bytes": 1,
+        "work_definition": "one QCoreApplication process startup; throughput is not interpreted",
+        "working_directory": "."
+      },
+      "host": {
+        "clock": "time.perf_counter_ns",
+        "cpu_model": "i386",
+        "filesystem": "unavailable",
+        "logical_cpu_count": 8,
+        "machine": "x86_64",
+        "python": "3.14.6",
+        "release": "21.6.0",
+        "rss_method": "proc_pid_rusage resident_size polling",
+        "system": "Darwin",
+        "total_memory_bytes": 17179869184,
+        "version": "Darwin Kernel Version 21.6.0: Mon Jun 24 00:56:10 PDT 2024; root:xnu-8020.240.18.709.2~1/RELEASE_X86_64"
+      },
+      "input_artifacts": [],
+      "limitations": [
+        "warm cache state is declared but the OS cache is not forcibly controlled",
+        "peak RSS is sampled for the direct process, not an arbitrary descendant tree",
+        "thread scheduling, CPU affinity, power governor, and background load are not controlled",
+        "this report is a process-level benchmark, not a component profiler",
+        "timeouts terminate only the direct process; commands must not leave persistent descendants"
+      ],
+      "plan_artifact": {
+        "canonical_sha256": "e9c47f116be4291032040196a53f397017adeb52fe873882953535d38e30a0a7",
+        "sha256": "e2b1178dec356a60539c66497dd0c6215db55fdaf51f246d2e71919e556878a1"
+      },
+      "producer": {
+        "build_profile": "Release -O3 -DNDEBUG",
+        "implementation": "DIE-engine macOS Qt5 qmake oracle",
+        "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+        "source_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+        "toolchain": "Apple clang 14.0.0; Qt 5.15.2; qmake 3.1"
+      },
+      "result": "pass",
+      "runner": {
+        "name": "diec-process-benchmark",
+        "version": 2
+      },
+      "runs": [
+        {
+          "duration_ns": 25729686,
+          "exit_code": 0,
+          "peak_rss_bytes": 5931008,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 22604720,
+          "exit_code": 0,
+          "peak_rss_bytes": 5947392,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 23696456,
+          "exit_code": 0,
+          "peak_rss_bytes": 5877760,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 46542321,
+          "exit_code": 0,
+          "peak_rss_bytes": 5881856,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 24233836,
+          "exit_code": 0,
+          "peak_rss_bytes": 5951488,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 46077044,
+          "exit_code": 0,
+          "peak_rss_bytes": 5955584,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 43582364,
+          "exit_code": 0,
+          "peak_rss_bytes": 5906432,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 24677143,
+          "exit_code": 0,
+          "peak_rss_bytes": 4874240,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 22375271,
+          "exit_code": 0,
+          "peak_rss_bytes": 5873664,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 22364742,
+          "exit_code": 0,
+          "peak_rss_bytes": 5873664,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 22492331,
+          "exit_code": 0,
+          "peak_rss_bytes": 4894720,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 22648106,
+          "exit_code": 0,
+          "peak_rss_bytes": 5943296,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 22564404,
+          "exit_code": 0,
+          "peak_rss_bytes": 4857856,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 22816066,
+          "exit_code": 0,
+          "peak_rss_bytes": 5926912,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 27408293,
+          "exit_code": 0,
+          "peak_rss_bytes": 5939200,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 22684707,
+          "exit_code": 0,
+          "peak_rss_bytes": 5939200,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 47168748,
+          "exit_code": 0,
+          "peak_rss_bytes": 5898240,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 25417186,
+          "exit_code": 0,
+          "peak_rss_bytes": 5890048,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 27905771,
+          "exit_code": 0,
+          "peak_rss_bytes": 5906432,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 29105956,
+          "exit_code": 0,
+          "peak_rss_bytes": 5902336,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 22515375,
+          "exit_code": 0,
+          "peak_rss_bytes": 5890048,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 22590830,
+          "exit_code": 0,
+          "peak_rss_bytes": 5877760,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 22407412,
+          "exit_code": 0,
+          "peak_rss_bytes": 5005312,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 24521973,
+          "exit_code": 0,
+          "peak_rss_bytes": 5939200,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 22621514,
+          "exit_code": 0,
+          "peak_rss_bytes": 5935104,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 25672031,
+          "exit_code": 0,
+          "peak_rss_bytes": 5881856,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 23042922,
+          "exit_code": 0,
+          "peak_rss_bytes": 5910528,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 22573372,
+          "exit_code": 0,
+          "peak_rss_bytes": 5869568,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 40498081,
+          "exit_code": 0,
+          "peak_rss_bytes": 5935104,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        },
+        {
+          "duration_ns": 48024241,
+          "exit_code": 0,
+          "peak_rss_bytes": 5939200,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 16,
+            "sha256": "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+          }
+        }
+      ],
+      "summary": {
+        "duration_ns": {
+          "mad": 1462427,
+          "max": 48024241,
+          "median": 23965146,
+          "min": 22364742,
+          "p95_nearest_rank": 47168748
+        },
+        "peak_rss_bytes": {
+          "max": 5955584,
+          "median": 5904384,
+          "sample_count": 30
+        },
+        "sample_count": 30,
+        "stderr_unique_sha256": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "stdout_unique_sha256": [
+          "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+        ],
+        "throughput_bytes_per_second_at_median": 41.72726508738983
+      },
+      "warmup_validation": {
+        "run_count": 5,
+        "stderr_unique_sha256": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "stdout_unique_sha256": [
+          "2a4108ffe4b372898cb019ed78365b527438b60263fa0fa554c32503e7abb9dc"
+        ]
+      }
+    },
+    "upstream.macos-database-load.v1": {
+      "benchmark_id": "upstream.macos-database-load.v1",
+      "benchmark_report_schema": 1,
+      "executable": {
+        "bytes": 7432936,
+        "path": "<macos-work>/DIE-engine-src/build/release/diec-upstream-benchmark-harness",
+        "sha256": "170ec85117859e95375a80dec589ad689ea87939b0c22c0a10cb24db13bdcc1a"
+      },
+      "execution": {
+        "cache_state": "warm",
+        "command": [
+          "<macos-work>/DIE-engine-src/build/release/diec-upstream-benchmark-harness",
+          "--database-only"
+        ],
+        "environment_override_keys": [
+          "DYLD_FRAMEWORK_PATH",
+          "LC_ALL",
+          "QT_HASH_SEED",
+          "TZ"
+        ],
+        "environment_overrides_sha256": "b9921ed793fcca42af780362cc3e13b5c71fe1ff8aa25681cff22108a692167b",
+        "environment_policy": "inherit_with_overrides",
+        "measured_runs": 15,
+        "measurement": {
+          "clock": "time.perf_counter_ns",
+          "peak_rss_method": "proc_pid_rusage resident_size polling",
+          "timed_process_scope": "direct process"
+        },
+        "notes": [
+          "runner executes on the pinned macOS host",
+          "each sample is a fresh direct upstream process",
+          "OS cache is warmed but not forcibly controlled"
+        ],
+        "timeout_ms": 10000,
+        "warmup_runs": 3,
+        "work_bytes": 1,
+        "work_definition": "one full pinned main/extra/custom database load; throughput is not interpreted",
+        "working_directory": "."
+      },
+      "host": {
+        "clock": "time.perf_counter_ns",
+        "cpu_model": "i386",
+        "filesystem": "unavailable",
+        "logical_cpu_count": 8,
+        "machine": "x86_64",
+        "python": "3.14.6",
+        "release": "21.6.0",
+        "rss_method": "proc_pid_rusage resident_size polling",
+        "system": "Darwin",
+        "total_memory_bytes": 17179869184,
+        "version": "Darwin Kernel Version 21.6.0: Mon Jun 24 00:56:10 PDT 2024; root:xnu-8020.240.18.709.2~1/RELEASE_X86_64"
+      },
+      "input_artifacts": [],
+      "limitations": [
+        "warm cache state is declared but the OS cache is not forcibly controlled",
+        "peak RSS is sampled for the direct process, not an arbitrary descendant tree",
+        "thread scheduling, CPU affinity, power governor, and background load are not controlled",
+        "this report is a process-level benchmark, not a component profiler",
+        "timeouts terminate only the direct process; commands must not leave persistent descendants"
+      ],
+      "plan_artifact": {
+        "canonical_sha256": "5a78e7ab1f6566bd2c8686d9b36acbd3f84d723c42b408c3e3b1677e99f34f10",
+        "sha256": "a630b3f7c260836e57fa7476faee746fa6ef8e5724ec2669c38031bdabb76129"
+      },
+      "producer": {
+        "build_profile": "Release -O3 -DNDEBUG",
+        "implementation": "DIE-engine macOS Qt5 qmake oracle",
+        "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+        "source_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+        "toolchain": "Apple clang 14.0.0; Qt 5.15.2; qmake 3.1"
+      },
+      "result": "pass",
+      "runner": {
+        "name": "diec-process-benchmark",
+        "version": 2
+      },
+      "runs": [
+        {
+          "duration_ns": 200877173,
+          "exit_code": 0,
+          "peak_rss_bytes": 15646720,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 48,
+            "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+          }
+        },
+        {
+          "duration_ns": 229124977,
+          "exit_code": 0,
+          "peak_rss_bytes": 15757312,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 48,
+            "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+          }
+        },
+        {
+          "duration_ns": 187345217,
+          "exit_code": 0,
+          "peak_rss_bytes": 15704064,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 48,
+            "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+          }
+        },
+        {
+          "duration_ns": 197720512,
+          "exit_code": 0,
+          "peak_rss_bytes": 15626240,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 48,
+            "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+          }
+        },
+        {
+          "duration_ns": 180880825,
+          "exit_code": 0,
+          "peak_rss_bytes": 15691776,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 48,
+            "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+          }
+        },
+        {
+          "duration_ns": 180505184,
+          "exit_code": 0,
+          "peak_rss_bytes": 15790080,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 48,
+            "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+          }
+        },
+        {
+          "duration_ns": 180137470,
+          "exit_code": 0,
+          "peak_rss_bytes": 15650816,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 48,
+            "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+          }
+        },
+        {
+          "duration_ns": 184523571,
+          "exit_code": 0,
+          "peak_rss_bytes": 15638528,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 48,
+            "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+          }
+        },
+        {
+          "duration_ns": 209646582,
+          "exit_code": 0,
+          "peak_rss_bytes": 15785984,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 48,
+            "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+          }
+        },
+        {
+          "duration_ns": 198685637,
+          "exit_code": 0,
+          "peak_rss_bytes": 15679488,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 48,
+            "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+          }
+        },
+        {
+          "duration_ns": 202053151,
+          "exit_code": 0,
+          "peak_rss_bytes": 15732736,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 48,
+            "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+          }
+        },
+        {
+          "duration_ns": 186614298,
+          "exit_code": 0,
+          "peak_rss_bytes": 15675392,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 48,
+            "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+          }
+        },
+        {
+          "duration_ns": 178091123,
+          "exit_code": 0,
+          "peak_rss_bytes": 15691776,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 48,
+            "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+          }
+        },
+        {
+          "duration_ns": 188240053,
+          "exit_code": 0,
+          "peak_rss_bytes": 15814656,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 48,
+            "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+          }
+        },
+        {
+          "duration_ns": 194957754,
+          "exit_code": 0,
+          "peak_rss_bytes": 15749120,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 48,
+            "sha256": "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+          }
+        }
+      ],
+      "summary": {
+        "duration_ns": {
+          "mad": 8102583,
+          "max": 229124977,
+          "median": 188240053,
+          "min": 178091123,
+          "p95_nearest_rank": 229124977
+        },
+        "peak_rss_bytes": {
+          "max": 15814656,
+          "median": 15691776,
+          "sample_count": 15
+        },
+        "sample_count": 15,
+        "stderr_unique_sha256": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "stdout_unique_sha256": [
+          "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+        ],
+        "throughput_bytes_per_second_at_median": 5.312365695094656
+      },
+      "warmup_validation": {
+        "run_count": 3,
+        "stderr_unique_sha256": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "stdout_unique_sha256": [
+          "466a255845f2264887e8f8cc275b7bb47fa019e0a016cde05a4d1fd53b7f8c5c"
+        ]
+      }
+    },
+    "upstream.macos-cli-pe32-json.v1": {
+      "benchmark_id": "upstream.macos-cli-pe32-json.v1",
+      "benchmark_report_schema": 1,
+      "executable": {
+        "bytes": 7452296,
+        "path": "<macos-work>/DIE-engine-src/build/release/diec",
+        "sha256": "f4c69824399e3b27b1ec60924ef60555620c4e217a1f48cdae8c8db467d39317"
+      },
+      "execution": {
+        "cache_state": "warm",
+        "command": [
+          "<macos-work>/DIE-engine-src/build/release/diec",
+          "--json",
+          "--database",
+          "<macos-work>/DIE-engine-src/Detect-It-Easy/db",
+          "--extradatabase",
+          "<macos-work>/DIE-engine-src/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "<macos-work>/DIE-engine-src/Detect-It-Easy/db_custom",
+          "<macos-work>/bench/baseline/minimal.exe"
+        ],
+        "environment_override_keys": [
+          "DYLD_FRAMEWORK_PATH",
+          "LC_ALL",
+          "QT_HASH_SEED",
+          "TZ"
+        ],
+        "environment_overrides_sha256": "b9921ed793fcca42af780362cc3e13b5c71fe1ff8aa25681cff22108a692167b",
+        "environment_policy": "inherit_with_overrides",
+        "measured_runs": 15,
+        "measurement": {
+          "clock": "time.perf_counter_ns",
+          "peak_rss_method": "proc_pid_rusage resident_size polling",
+          "timed_process_scope": "direct process"
+        },
+        "notes": [
+          "runner executes on the pinned macOS host",
+          "each sample is a fresh direct upstream process",
+          "OS cache is warmed but not forcibly controlled"
+        ],
+        "timeout_ms": 10000,
+        "warmup_runs": 3,
+        "work_bytes": 512,
+        "work_definition": "minimal PE32 input bytes scanned once with JSON rendering",
+        "working_directory": "."
+      },
+      "host": {
+        "clock": "time.perf_counter_ns",
+        "cpu_model": "i386",
+        "filesystem": "unavailable",
+        "logical_cpu_count": 8,
+        "machine": "x86_64",
+        "python": "3.14.6",
+        "release": "21.6.0",
+        "rss_method": "proc_pid_rusage resident_size polling",
+        "system": "Darwin",
+        "total_memory_bytes": 17179869184,
+        "version": "Darwin Kernel Version 21.6.0: Mon Jun 24 00:56:10 PDT 2024; root:xnu-8020.240.18.709.2~1/RELEASE_X86_64"
+      },
+      "input_artifacts": [
+        {
+          "bytes": 512,
+          "path": "baseline/minimal.exe",
+          "sha256": "afb1bcd812caa45095075a60ff49599c7d5e767c7732226c3e0007708cb198a2"
+        }
+      ],
+      "limitations": [
+        "warm cache state is declared but the OS cache is not forcibly controlled",
+        "peak RSS is sampled for the direct process, not an arbitrary descendant tree",
+        "thread scheduling, CPU affinity, power governor, and background load are not controlled",
+        "this report is a process-level benchmark, not a component profiler",
+        "timeouts terminate only the direct process; commands must not leave persistent descendants"
+      ],
+      "plan_artifact": {
+        "canonical_sha256": "78eb9ca4a4ed49b883729b04e5a03ba53cb9c9a4cad350cbc5ad95e2a45a3c9c",
+        "sha256": "bff26a886d474e907b2e60cc053592b7b7431c9968da1347c06c67552e063c96"
+      },
+      "producer": {
+        "build_profile": "Release -O3 -DNDEBUG",
+        "implementation": "DIE-engine macOS Qt5 qmake oracle",
+        "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+        "source_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+        "toolchain": "Apple clang 14.0.0; Qt 5.15.2; qmake 3.1"
+      },
+      "result": "pass",
+      "runner": {
+        "name": "diec-process-benchmark",
+        "version": 2
+      },
+      "runs": [
+        {
+          "duration_ns": 301778701,
+          "exit_code": 0,
+          "peak_rss_bytes": 30437376,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 467,
+            "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+          }
+        },
+        {
+          "duration_ns": 299842346,
+          "exit_code": 0,
+          "peak_rss_bytes": 30461952,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 467,
+            "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+          }
+        },
+        {
+          "duration_ns": 310594522,
+          "exit_code": 0,
+          "peak_rss_bytes": 30310400,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 467,
+            "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+          }
+        },
+        {
+          "duration_ns": 290834664,
+          "exit_code": 0,
+          "peak_rss_bytes": 30470144,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 467,
+            "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+          }
+        },
+        {
+          "duration_ns": 305221720,
+          "exit_code": 0,
+          "peak_rss_bytes": 30334976,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 467,
+            "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+          }
+        },
+        {
+          "duration_ns": 307474361,
+          "exit_code": 0,
+          "peak_rss_bytes": 30416896,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 467,
+            "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+          }
+        },
+        {
+          "duration_ns": 285947056,
+          "exit_code": 0,
+          "peak_rss_bytes": 30437376,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 467,
+            "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+          }
+        },
+        {
+          "duration_ns": 304324402,
+          "exit_code": 0,
+          "peak_rss_bytes": 30142464,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 467,
+            "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+          }
+        },
+        {
+          "duration_ns": 295823470,
+          "exit_code": 0,
+          "peak_rss_bytes": 30285824,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 467,
+            "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+          }
+        },
+        {
+          "duration_ns": 296576126,
+          "exit_code": 0,
+          "peak_rss_bytes": 30433280,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 467,
+            "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+          }
+        },
+        {
+          "duration_ns": 303880681,
+          "exit_code": 0,
+          "peak_rss_bytes": 30375936,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 467,
+            "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+          }
+        },
+        {
+          "duration_ns": 289484683,
+          "exit_code": 0,
+          "peak_rss_bytes": 30281728,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 467,
+            "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+          }
+        },
+        {
+          "duration_ns": 292982528,
+          "exit_code": 0,
+          "peak_rss_bytes": 30343168,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 467,
+            "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+          }
+        },
+        {
+          "duration_ns": 361553589,
+          "exit_code": 0,
+          "peak_rss_bytes": 30588928,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 467,
+            "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+          }
+        },
+        {
+          "duration_ns": 295628984,
+          "exit_code": 0,
+          "peak_rss_bytes": 30244864,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 467,
+            "sha256": "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+          }
+        }
+      ],
+      "summary": {
+        "duration_ns": {
+          "mad": 5379374,
+          "max": 361553589,
+          "median": 299842346,
+          "min": 285947056,
+          "p95_nearest_rank": 361553589
+        },
+        "peak_rss_bytes": {
+          "max": 30588928,
+          "median": 30375936,
+          "sample_count": 15
+        },
+        "sample_count": 15,
+        "stderr_unique_sha256": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "stdout_unique_sha256": [
+          "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+        ],
+        "throughput_bytes_per_second_at_median": 1707.564014323714
+      },
+      "warmup_validation": {
+        "run_count": 3,
+        "stderr_unique_sha256": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "stdout_unique_sha256": [
+          "c94fa4d2fa5742c41a67681779d3fc179aaf0f6558d74d385c648c2dae9dddde"
+        ]
+      }
+    },
+    "upstream.macos-cli-baseline-batch-json.v1": {
+      "benchmark_id": "upstream.macos-cli-baseline-batch-json.v1",
+      "benchmark_report_schema": 1,
+      "executable": {
+        "bytes": 7452296,
+        "path": "<macos-work>/DIE-engine-src/build/release/diec",
+        "sha256": "f4c69824399e3b27b1ec60924ef60555620c4e217a1f48cdae8c8db467d39317"
+      },
+      "execution": {
+        "cache_state": "warm",
+        "command": [
+          "<macos-work>/DIE-engine-src/build/release/diec",
+          "--json",
+          "--database",
+          "<macos-work>/DIE-engine-src/Detect-It-Easy/db",
+          "--extradatabase",
+          "<macos-work>/DIE-engine-src/Detect-It-Easy/db_extra",
+          "--customdatabase",
+          "<macos-work>/DIE-engine-src/Detect-It-Easy/db_custom",
+          "<macos-work>/bench/baseline"
+        ],
+        "environment_override_keys": [
+          "DYLD_FRAMEWORK_PATH",
+          "LC_ALL",
+          "QT_HASH_SEED",
+          "TZ"
+        ],
+        "environment_overrides_sha256": "b9921ed793fcca42af780362cc3e13b5c71fe1ff8aa25681cff22108a692167b",
+        "environment_policy": "inherit_with_overrides",
+        "measured_runs": 15,
+        "measurement": {
+          "clock": "time.perf_counter_ns",
+          "peak_rss_method": "proc_pid_rusage resident_size polling",
+          "timed_process_scope": "direct process"
+        },
+        "notes": [
+          "runner executes on the pinned macOS host",
+          "each sample is a fresh direct upstream process",
+          "OS cache is warmed but not forcibly controlled"
+        ],
+        "timeout_ms": 10000,
+        "warmup_runs": 3,
+        "work_bytes": 43094,
+        "work_definition": "all files in generated baseline directory, including manifest.json, scanned once with JSON rendering",
+        "working_directory": "."
+      },
+      "host": {
+        "clock": "time.perf_counter_ns",
+        "cpu_model": "i386",
+        "filesystem": "unavailable",
+        "logical_cpu_count": 8,
+        "machine": "x86_64",
+        "python": "3.14.6",
+        "release": "21.6.0",
+        "rss_method": "proc_pid_rusage resident_size polling",
+        "system": "Darwin",
+        "total_memory_bytes": 17179869184,
+        "version": "Darwin Kernel Version 21.6.0: Mon Jun 24 00:56:10 PDT 2024; root:xnu-8020.240.18.709.2~1/RELEASE_X86_64"
+      },
+      "input_artifacts": [
+        {
+          "bytes": 0,
+          "path": "baseline/empty.bin",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "bytes": 31,
+          "path": "baseline/plain.txt",
+          "sha256": "22b217bfba5795d402092bf48bfb28146c0ee4dd0036fd4d0c93e25bbe65e998"
+        },
+        {
+          "bytes": 64,
+          "path": "baseline/minimal.elf",
+          "sha256": "e717b57a377ce3486a932130454ee070fdd495d3c23a9d5a8a446ad32772e704"
+        },
+        {
+          "bytes": 52,
+          "path": "baseline/minimal-elf32.elf",
+          "sha256": "75952e884b6d6d4c4ed1023df8a126a816973178160bea43b482ceec0fc1e75d"
+        },
+        {
+          "bytes": 512,
+          "path": "baseline/minimal.exe",
+          "sha256": "afb1bcd812caa45095075a60ff49599c7d5e767c7732226c3e0007708cb198a2"
+        },
+        {
+          "bytes": 512,
+          "path": "baseline/minimal-pe64.exe",
+          "sha256": "63c706607b3d34624313df7356702ff99ce4080f09e6b07ec4b01dfe4dd5e1c3"
+        },
+        {
+          "bytes": 104,
+          "path": "baseline/minimal.macho",
+          "sha256": "60a536a7dff9522a8e4af5ab73ff742ebeffc33a34837beb9c5ac4a1a7eb5968"
+        },
+        {
+          "bytes": 84,
+          "path": "baseline/minimal-macho32.macho",
+          "sha256": "496974f2f66ce0be4a7ef4e05ddaaf1872b5ba6f4a772f729e86de3f9d4cc3b5"
+        },
+        {
+          "bytes": 360,
+          "path": "baseline/minimal-fat.macho",
+          "sha256": "ea343ae7de8a9ee2bdc00f0cc7f48f420e8609bd60510c927a75bed7b3470a67"
+        },
+        {
+          "bytes": 112,
+          "path": "baseline/minimal.dex",
+          "sha256": "57cfe8878be74cad8bbc5e409b0964d4b13c35e8783d931ef7366881f8d548c2"
+        },
+        {
+          "bytes": 59,
+          "path": "baseline/Minimal.class",
+          "sha256": "ed3af378f328281c21e5b56e495377c3e68ba667643c79abc53ad30edb685b9e"
+        },
+        {
+          "bytes": 17,
+          "path": "baseline/minimal.pyc",
+          "sha256": "cb3c0319002c008adb69215aa4559e60ad7e333e33eed58ae918e0d32e241ecd"
+        },
+        {
+          "bytes": 72,
+          "path": "baseline/pixel.png",
+          "sha256": "9ba3d63896d81dc3a55b80c1165fefa4523888b67fcbd4a95cabd3d0ab7e66e2"
+        },
+        {
+          "bytes": 56,
+          "path": "baseline/pixel.jpg",
+          "sha256": "69d4a48ed33b98f972561aa738a91b1d8cf76c876adee54d76e7b326df9276c5"
+        },
+        {
+          "bytes": 58,
+          "path": "baseline/pixel.bmp",
+          "sha256": "f7cbd816abfb19030d23b8de5435d0141443665a81ed5ba12114c70b5f53b610"
+        },
+        {
+          "bytes": 331,
+          "path": "baseline/minimal.pdf",
+          "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92"
+        },
+        {
+          "bytes": 151,
+          "path": "baseline/payload.zip",
+          "sha256": "c29a3445c289e061a11d4675b36763657d4e550c4941821ea74905593a29acfe"
+        },
+        {
+          "bytes": 350,
+          "path": "baseline/minimal.apk",
+          "sha256": "300eec1017b47ac5878bf21da0306b61a4a0dfc9e8249e9f0ff7e40c458ef557"
+        },
+        {
+          "bytes": 324,
+          "path": "baseline/minimal.jar",
+          "sha256": "a081dac459835af70f69de96b705764dc9b06bc356edcaa9857a8d6b630a7747"
+        },
+        {
+          "bytes": 300,
+          "path": "baseline/minimal.ipa",
+          "sha256": "142e16c353a59e152c6ee0b25d783dba0d6f6e9a8ca81b73d0d925dee1d54264"
+        },
+        {
+          "bytes": 21,
+          "path": "baseline/minimal.rar",
+          "sha256": "f7a8865876257ca1bc0ea30fbe8d1e82d3355ff7509c0dbc1ca01fe202795728"
+        },
+        {
+          "bytes": 36864,
+          "path": "baseline/minimal.iso",
+          "sha256": "8723a9cc5cd319414b88d32dcce58e8dc7668b927553f8cdf0bdf4f52f4da90a"
+        },
+        {
+          "bytes": 2048,
+          "path": "baseline/payload.tar",
+          "sha256": "3af89e8d0f52e951a8ea4ad0bef3d10cf3464c06a5c7a0fc451abc0583289f2f"
+        },
+        {
+          "bytes": 54,
+          "path": "baseline/payload.txt.gz",
+          "sha256": "f51df8f3b04ac2120ba283fbad7f22ec9aefce5a07c38a335deb771be560b39a"
+        },
+        {
+          "bytes": 512,
+          "path": "baseline/minimal.cfbf",
+          "sha256": "bb973ef09e2e3bf7e6510e060960dd10a598c5595bfbe08fabc177d0b0911d37"
+        },
+        {
+          "bytes": 46,
+          "path": "baseline/tone.wav",
+          "sha256": "373324023416a5dc3809e647e041fc48a13db20648d5782ac989cba17014203b"
+        }
+      ],
+      "limitations": [
+        "warm cache state is declared but the OS cache is not forcibly controlled",
+        "peak RSS is sampled for the direct process, not an arbitrary descendant tree",
+        "thread scheduling, CPU affinity, power governor, and background load are not controlled",
+        "this report is a process-level benchmark, not a component profiler",
+        "timeouts terminate only the direct process; commands must not leave persistent descendants"
+      ],
+      "plan_artifact": {
+        "canonical_sha256": "3773d820a3a08425db91a8d63c5271e8f4a421553ec4830ec47f135337f4c4ce",
+        "sha256": "ef25183faad22c7ca7db5f575b3d8693c55fef6bf28a13c86ba5d71581ff4e22"
+      },
+      "producer": {
+        "build_profile": "Release -O3 -DNDEBUG",
+        "implementation": "DIE-engine macOS Qt5 qmake oracle",
+        "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+        "source_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+        "toolchain": "Apple clang 14.0.0; Qt 5.15.2; qmake 3.1"
+      },
+      "result": "pass",
+      "runner": {
+        "name": "diec-process-benchmark",
+        "version": 2
+      },
+      "runs": [
+        {
+          "duration_ns": 1905735321,
+          "exit_code": 0,
+          "peak_rss_bytes": 76079104,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 15503,
+            "sha256": "0fd968397fc25f357a1eb1bfb8a87f03748ffd6aab6e74dffb026d3bf275d8ca"
+          }
+        },
+        {
+          "duration_ns": 1992450414,
+          "exit_code": 0,
+          "peak_rss_bytes": 74702848,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 15503,
+            "sha256": "0fd968397fc25f357a1eb1bfb8a87f03748ffd6aab6e74dffb026d3bf275d8ca"
+          }
+        },
+        {
+          "duration_ns": 1928336242,
+          "exit_code": 0,
+          "peak_rss_bytes": 71946240,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 15503,
+            "sha256": "0fd968397fc25f357a1eb1bfb8a87f03748ffd6aab6e74dffb026d3bf275d8ca"
+          }
+        },
+        {
+          "duration_ns": 1968360521,
+          "exit_code": 0,
+          "peak_rss_bytes": 74633216,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 15503,
+            "sha256": "0fd968397fc25f357a1eb1bfb8a87f03748ffd6aab6e74dffb026d3bf275d8ca"
+          }
+        },
+        {
+          "duration_ns": 1989009709,
+          "exit_code": 0,
+          "peak_rss_bytes": 76304384,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 15503,
+            "sha256": "0fd968397fc25f357a1eb1bfb8a87f03748ffd6aab6e74dffb026d3bf275d8ca"
+          }
+        },
+        {
+          "duration_ns": 1948605159,
+          "exit_code": 0,
+          "peak_rss_bytes": 70533120,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 15503,
+            "sha256": "0fd968397fc25f357a1eb1bfb8a87f03748ffd6aab6e74dffb026d3bf275d8ca"
+          }
+        },
+        {
+          "duration_ns": 1948318375,
+          "exit_code": 0,
+          "peak_rss_bytes": 75190272,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 15503,
+            "sha256": "0fd968397fc25f357a1eb1bfb8a87f03748ffd6aab6e74dffb026d3bf275d8ca"
+          }
+        },
+        {
+          "duration_ns": 1909424751,
+          "exit_code": 0,
+          "peak_rss_bytes": 74543104,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 15503,
+            "sha256": "0fd968397fc25f357a1eb1bfb8a87f03748ffd6aab6e74dffb026d3bf275d8ca"
+          }
+        },
+        {
+          "duration_ns": 1942641008,
+          "exit_code": 0,
+          "peak_rss_bytes": 69988352,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 15503,
+            "sha256": "0fd968397fc25f357a1eb1bfb8a87f03748ffd6aab6e74dffb026d3bf275d8ca"
+          }
+        },
+        {
+          "duration_ns": 1989231525,
+          "exit_code": 0,
+          "peak_rss_bytes": 71213056,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 15503,
+            "sha256": "0fd968397fc25f357a1eb1bfb8a87f03748ffd6aab6e74dffb026d3bf275d8ca"
+          }
+        },
+        {
+          "duration_ns": 1995971396,
+          "exit_code": 0,
+          "peak_rss_bytes": 74944512,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 15503,
+            "sha256": "0fd968397fc25f357a1eb1bfb8a87f03748ffd6aab6e74dffb026d3bf275d8ca"
+          }
+        },
+        {
+          "duration_ns": 1914942987,
+          "exit_code": 0,
+          "peak_rss_bytes": 70311936,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 15503,
+            "sha256": "0fd968397fc25f357a1eb1bfb8a87f03748ffd6aab6e74dffb026d3bf275d8ca"
+          }
+        },
+        {
+          "duration_ns": 1966321497,
+          "exit_code": 0,
+          "peak_rss_bytes": 71938048,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 15503,
+            "sha256": "0fd968397fc25f357a1eb1bfb8a87f03748ffd6aab6e74dffb026d3bf275d8ca"
+          }
+        },
+        {
+          "duration_ns": 1990455156,
+          "exit_code": 0,
+          "peak_rss_bytes": 69967872,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 15503,
+            "sha256": "0fd968397fc25f357a1eb1bfb8a87f03748ffd6aab6e74dffb026d3bf275d8ca"
+          }
+        },
+        {
+          "duration_ns": 1991050075,
+          "exit_code": 0,
+          "peak_rss_bytes": 72855552,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 15503,
+            "sha256": "0fd968397fc25f357a1eb1bfb8a87f03748ffd6aab6e74dffb026d3bf275d8ca"
+          }
+        }
+      ],
+      "summary": {
+        "duration_ns": {
+          "mad": 24133659,
+          "max": 1995971396,
+          "median": 1966321497,
+          "min": 1905735321,
+          "p95_nearest_rank": 1995971396
+        },
+        "peak_rss_bytes": {
+          "max": 76304384,
+          "median": 72855552,
+          "sample_count": 15
+        },
+        "sample_count": 15,
+        "stderr_unique_sha256": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "stdout_unique_sha256": [
+          "0fd968397fc25f357a1eb1bfb8a87f03748ffd6aab6e74dffb026d3bf275d8ca"
+        ],
+        "throughput_bytes_per_second_at_median": 21916.0498757442
+      },
+      "warmup_validation": {
+        "run_count": 3,
+        "stderr_unique_sha256": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "stdout_unique_sha256": [
+          "0fd968397fc25f357a1eb1bfb8a87f03748ffd6aab6e74dffb026d3bf275d8ca"
+        ]
+      }
+    },
+    "upstream.macos-archive-depth16.v1": {
+      "benchmark_id": "upstream.macos-archive-depth16.v1",
+      "benchmark_report_schema": 1,
+      "executable": {
+        "bytes": 7432936,
+        "path": "<macos-work>/DIE-engine-src/build/release/diec-upstream-benchmark-harness",
+        "sha256": "170ec85117859e95375a80dec589ad689ea87939b0c22c0a10cb24db13bdcc1a"
+      },
+      "execution": {
+        "cache_state": "warm",
+        "command": [
+          "<macos-work>/DIE-engine-src/build/release/diec-upstream-benchmark-harness",
+          "--archive",
+          "<macos-work>/bench/archive/depth-16.zip"
+        ],
+        "environment_override_keys": [
+          "DYLD_FRAMEWORK_PATH",
+          "LC_ALL",
+          "QT_HASH_SEED",
+          "TZ"
+        ],
+        "environment_overrides_sha256": "b9921ed793fcca42af780362cc3e13b5c71fe1ff8aa25681cff22108a692167b",
+        "environment_policy": "inherit_with_overrides",
+        "measured_runs": 15,
+        "measurement": {
+          "clock": "time.perf_counter_ns",
+          "peak_rss_method": "proc_pid_rusage resident_size polling",
+          "timed_process_scope": "direct process"
+        },
+        "notes": [
+          "runner executes on the pinned macOS host",
+          "each sample is a fresh direct upstream process",
+          "OS cache is warmed but not forcibly controlled"
+        ],
+        "timeout_ms": 10000,
+        "warmup_runs": 3,
+        "work_bytes": 19816,
+        "work_definition": "cumulative uncompressed member bytes traversed through a single-member 16-level store-only ZIP chain",
+        "working_directory": "."
+      },
+      "host": {
+        "clock": "time.perf_counter_ns",
+        "cpu_model": "i386",
+        "filesystem": "unavailable",
+        "logical_cpu_count": 8,
+        "machine": "x86_64",
+        "python": "3.14.6",
+        "release": "21.6.0",
+        "rss_method": "proc_pid_rusage resident_size polling",
+        "system": "Darwin",
+        "total_memory_bytes": 17179869184,
+        "version": "Darwin Kernel Version 21.6.0: Mon Jun 24 00:56:10 PDT 2024; root:xnu-8020.240.18.709.2~1/RELEASE_X86_64"
+      },
+      "input_artifacts": [
+        {
+          "bytes": 2275,
+          "path": "archive/depth-16.zip",
+          "sha256": "ff7eb61595bf6b055d4125a8b2f32ddb2ffc977a9d3d410e6d77d8c2727206cc"
+        }
+      ],
+      "limitations": [
+        "warm cache state is declared but the OS cache is not forcibly controlled",
+        "peak RSS is sampled for the direct process, not an arbitrary descendant tree",
+        "thread scheduling, CPU affinity, power governor, and background load are not controlled",
+        "this report is a process-level benchmark, not a component profiler",
+        "timeouts terminate only the direct process; commands must not leave persistent descendants"
+      ],
+      "plan_artifact": {
+        "canonical_sha256": "389e2de65951c92cb93f26521e179fada26dccb5d63907f853ae04844bc0e48d",
+        "sha256": "92d572ab49df07b03046a416b43e03ea17433e321df0ed15c967bcd13069cd8d"
+      },
+      "producer": {
+        "build_profile": "Release -O3 -DNDEBUG",
+        "implementation": "DIE-engine macOS Qt5 qmake oracle",
+        "rules_commit": "c2c17dfa5ea4e078ba31eab55d87430c96622fb6",
+        "source_commit": "74eaf505c250ab47e709024e9dc41657cd8f2254",
+        "toolchain": "Apple clang 14.0.0; Qt 5.15.2; qmake 3.1"
+      },
+      "result": "pass",
+      "runner": {
+        "name": "diec-process-benchmark",
+        "version": 2
+      },
+      "runs": [
+        {
+          "duration_ns": 249231485,
+          "exit_code": 0,
+          "peak_rss_bytes": 18673664,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 97,
+            "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+          }
+        },
+        {
+          "duration_ns": 241654506,
+          "exit_code": 0,
+          "peak_rss_bytes": 18767872,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 97,
+            "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+          }
+        },
+        {
+          "duration_ns": 245987635,
+          "exit_code": 0,
+          "peak_rss_bytes": 18735104,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 97,
+            "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+          }
+        },
+        {
+          "duration_ns": 252162614,
+          "exit_code": 0,
+          "peak_rss_bytes": 18751488,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 97,
+            "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+          }
+        },
+        {
+          "duration_ns": 238225827,
+          "exit_code": 0,
+          "peak_rss_bytes": 18841600,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 97,
+            "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+          }
+        },
+        {
+          "duration_ns": 242149205,
+          "exit_code": 0,
+          "peak_rss_bytes": 18792448,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 97,
+            "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+          }
+        },
+        {
+          "duration_ns": 248083957,
+          "exit_code": 0,
+          "peak_rss_bytes": 18784256,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 97,
+            "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+          }
+        },
+        {
+          "duration_ns": 241329912,
+          "exit_code": 0,
+          "peak_rss_bytes": 18759680,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 97,
+            "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+          }
+        },
+        {
+          "duration_ns": 246717890,
+          "exit_code": 0,
+          "peak_rss_bytes": 18800640,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 97,
+            "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+          }
+        },
+        {
+          "duration_ns": 244144348,
+          "exit_code": 0,
+          "peak_rss_bytes": 18833408,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 97,
+            "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+          }
+        },
+        {
+          "duration_ns": 231829020,
+          "exit_code": 0,
+          "peak_rss_bytes": 18755584,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 97,
+            "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+          }
+        },
+        {
+          "duration_ns": 241392884,
+          "exit_code": 0,
+          "peak_rss_bytes": 18702336,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 97,
+            "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+          }
+        },
+        {
+          "duration_ns": 249421030,
+          "exit_code": 0,
+          "peak_rss_bytes": 18726912,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 97,
+            "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+          }
+        },
+        {
+          "duration_ns": 248621402,
+          "exit_code": 0,
+          "peak_rss_bytes": 18665472,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 97,
+            "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+          }
+        },
+        {
+          "duration_ns": 245442461,
+          "exit_code": 0,
+          "peak_rss_bytes": 18767872,
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 97,
+            "sha256": "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+          }
+        }
+      ],
+      "summary": {
+        "duration_ns": {
+          "mad": 3787955,
+          "max": 252162614,
+          "median": 245442461,
+          "min": 231829020,
+          "p95_nearest_rank": 252162614
+        },
+        "peak_rss_bytes": {
+          "max": 18841600,
+          "median": 18759680,
+          "sample_count": 15
+        },
+        "sample_count": 15,
+        "stderr_unique_sha256": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "stdout_unique_sha256": [
+          "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+        ],
+        "throughput_bytes_per_second_at_median": 80735.82671581833
+      },
+      "warmup_validation": {
+        "run_count": 3,
+        "stderr_unique_sha256": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "stdout_unique_sha256": [
+          "e9e93718cb1e6ce884643136dc0e9c37b924f75744897c66385d1a6feb613332"
+        ]
+      }
+    }
+  },
+  "plans_identity": {
+    "path": "<macos-work>/diec-rust/tools/benchmark/upstream-benchmark-macos-qt5-plans.json",
+    "sha256": "72c292694c1b0e26c707d7c4ef77791144e4c713f3b4092f970a05f0dd31ee24"
+  },
+  "runner_identity": {
+    "path": "<macos-work>/diec-rust/tools/benchmark/run_process_benchmark.py",
+    "sha256": "7a4e9e929e33e34a067360da4117051146d6101284267cbc89fc9a2e02853dbf"
+  }
+}
