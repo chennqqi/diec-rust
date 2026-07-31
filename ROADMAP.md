@@ -111,7 +111,7 @@ Phase 1 已于 2026-07-31 关闭。Cargo workspace 8 crate 骨架 + 依赖 DAG �
 规则同步/来源 manifest/完整性校验均已交付。`P0-BLOCK-005` macOS 运行时基线
 已关闭，17 个 candidate report 采集至 `docs/research/data/macos-qt5/`。
 
-## Phase 2：核心数据模型与格式识别 — IN PROGRESS
+## Phase 2：核心数据模型与格式识别 — DONE
 
 - 实现受控字节读取和通用扫描上下文。
 - 按能力矩阵逐步实现格式探测与解析。
@@ -120,7 +120,20 @@ Phase 1 已于 2026-07-31 关闭。Cargo workspace 8 crate 骨架 + 依赖 DAG �
 
 退出条件：本阶段范围内的能力矩阵全部通过差分测试，没有未解释的崩溃、无界分配或非确定性。
 
-## Phase 3：规则兼容运行时 — TODO
+Phase 2 已于 2026-07-31 关闭。受控字节读取层（ADR 0013 fail-closed）覆盖
+MemorySource/OwnedSource/FileSource/ChunkedSource/EmptySource + read_exact_at +
+typed integer reads + checked arithmetic。格式探测框架（FormatProbe trait +
+ProbeError + ProbeTable versioned ordered probe table）注册 20 个 probe，覆盖
+CAP-DISPATCH-001 至 007 全部组：PE/MSDOS、ELF32/64、Mach-O 32/64/FAT/FAT64、
+DEX/Java Class/PYC、PDF/CFBF、ZIP/RAR/7Z/GZIP/TAR/ISO9660/CAB、JPEG/PNG/BMP/WAV。
+PE/ELF/Mach-O 提取 header 字段（machine/class/data/osabi/e_type/cputype/
+filetype）作为下游规则匹配元数据。测试覆盖：每个格式有 positive/truncated/
+malformed/boundary/empty/fuzz/differential cases（见
+[`docs/design/phase2-format-test-matrix.md`](docs/design/phase2-format-test-matrix.md)）。
+3 个 cargo-fuzz targets + 11 个 property tests + 5 个 corpus differential tests。
+总计 211 个测试全部通过，cargo fmt/clippy/check-deps 零警告。
+
+## Phase 3：规则兼容运行时 — IN PROGRESS
 
 - 原样加载固定版本上游规则。
 - 实现或集成经 Phase 0 验证的规则执行方案。

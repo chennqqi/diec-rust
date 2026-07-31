@@ -154,6 +154,22 @@
 - 创建 docs/design/phase2-format-test-matrix.md 覆盖矩阵文档（traceability）
 - cargo fmt/clippy/test/check-deps 全部通过（44 diec-core + 156 diec-formats + 5 corpus differential = 205 测试）
 
+## 2026-07-31: Phase 2 关闭 + Phase 3 启动
+- Phase 2 退出条件全部满足：
+  - 每个实现格式有 positive/truncated/malformed/fuzz/differential cases（20 个格式）
+  - 范围内能力矩阵 100% traceable（phase2-format-test-matrix.md）
+  - 零 panic、hang、unbounded allocation（property + fuzz 验证）
+  - 未解释 semantic diff = 0（corpus differential 0 mismatch）
+- ROADMAP.md Phase 2 标记为 DONE，Phase 3 标记为 IN PROGRESS
+- AGENTS.md 和 README.md 更新为 Phase 3
+- Phase 3 目标：规则兼容运行时
+  - 原样加载固定版本上游规则（2235 个 .sg 文件）
+  - 集成 rquickjs@0.12.1 backend（ADR 0006 Accepted）
+  - 覆盖规则语法、内建函数和宿主数据访问接口（337 个 host methods）
+  - pinned rule order manifest（ADR 0008）
+  - bounded include graph（ADR 0010）
+  - 对未知语法产生明确诊断
+
 ## P0-BLOCK-006 macOS 运行时基线采集 (deferred from Phase 0)
 - 通过 ssh macdevoa (macdev 别名) 继续完成 macOS 运行时基线采集
 - 复用 ~/dev/tmp/diec-macos-work 目录中已有数据 (DIE-engine-src/build/corpus/evidence 等)
