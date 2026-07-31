@@ -443,6 +443,13 @@ impl RuleRuntime for RquickjsRuntime {
             self.eval_script(init_source)?;
         }
 
+        // Pre-load the "read" include script if present. This script
+        // defines global constants like _BE and _LE that many rules
+        // use without explicitly calling includeScript("read").
+        if let Some(read_source) = snapshot.include_scripts.get("read") {
+            self.eval_script(read_source)?;
+        }
+
         // Note: type init scripts are NOT run here because they may reference
         // host API objects (Binary, X, File) that are only registered during
         // init(). They are run in init() instead.
@@ -596,9 +603,15 @@ impl RquickjsRuntime {
                 if self.cancel_flag.is_cancelled() {
                     Err(RuleError::Cancelled)
                 } else {
+                    let message = match e {
+                        rquickjs::Error::Exception => self
+                            .context
+                            .with(|ctx: Ctx<'_>| extract_exception_message(&ctx)),
+                        other => other.to_string(),
+                    };
                     Err(RuleError::ScriptException {
                         path: rule_path.to_string(),
-                        message: e.to_string(),
+                        message,
                     })
                 }
             }

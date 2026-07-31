@@ -377,4 +377,35 @@ mod tests {
             result.detections
         );
     }
+
+    #[test]
+    fn scan_jpeg_signature() {
+        let db_path = db_root();
+        let database = match DatabaseBuilder::new(&db_path).build() {
+            Ok(db) => db,
+            Err(_) => {
+                eprintln!("Skipping: upstream database not found");
+                return;
+            }
+        };
+
+        // JPEG magic: FF D8 FF E0 + JFIF
+        let mut data = vec![
+            0xFF, 0xD8, 0xFF, 0xE0, 0x00, 0x10, 0x4A, 0x46, 0x49, 0x46, 0x00,
+        ];
+        data.resize(64, 0);
+
+        let cancel = CancellationToken::new();
+        let result = scan_bytes(&database, "test.jpg", data, &cancel).unwrap();
+
+        let found = result
+            .detections
+            .iter()
+            .any(|d| d.name.contains("JPEG") || d.name.contains("jpeg"));
+        assert!(
+            found,
+            "Expected JPEG detection, got: {:?}",
+            result.detections
+        );
+    }
 }

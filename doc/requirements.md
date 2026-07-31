@@ -413,6 +413,32 @@
   - `cli_directory_without_recursive_errors`: 目录无 --recursive 报错
 - 更新 ROADMAP Phase 4 进展记录
 - cargo fmt/clippy/test/check-deps 全部通过（355 个测试）
+
+## 2026-08-01: Phase 4 第六步 — _BE/_LE 全局常量 + 端序参数 + c() 可选偏移
+- 预加载 `read` include 脚本：
+  - 定义 `_BE = true, _LE = false` 全局常量
+  - 许多规则使用 `_BE`/`_LE` 但不显式 `includeScript("read")`
+  - 在 `load_database` 中 `_init` 之后立即 eval `read` 脚本
+- 添加端序感知 JS 包装器：
+  - U16/U24/U32/U64 和 read_uint16/read_int16/read_uint24/read_uint32/
+    read_int32/read_uint64/read_int64 现在支持可选 `bigEndian` 参数
+  - 原生函数保持 1 参数（LE），JS 包装器在 bigEndian=true 时用 BE 辅助函数
+  - BE 辅助函数通过 U8 逐字节读取并手动组合
+- 添加 `c()` 可选偏移包装器：
+  - `X.c("signature")` 等价于 `X.c("signature", 0)`
+  - 与 `compare()` 包装器一致
+- 修复 host.rs 整数溢出：
+  - 所有 read_u16/u24/u32/u64 方法使用 `checked_add` 防止 panic
+  - 修复扫描 corpus 时 `attempt to add with overflow` 崩溃
+- 改进异常消息提取：
+  - `evaluate_rule_source` 现在使用 `extract_exception_message` 而非 `e.to_string()`
+  - 提供实际的 JS 异常类型和消息（如 "TypeError: ..."）
+- 新增 `scan_jpeg_signature` 测试
+- 语料库扫描结果大幅改善：
+  - JPEG: `image: JPEG (1.01) [1x1, YCbCr]` ✅
+  - WAV: `audio: RIFF container/WAVE file` ✅
+  - Java Class: `format: Java Class File (.CLASS) (Java SE 8)` ✅
+- cargo fmt/clippy/test/check-deps 全部通过（356 个测试）
 - 实现 `detect_rule_types` 函数：
   - 使用 `diec-formats` 的 `ProbeTable` 检测文件格式
   - PE32/MSDOS → 运行 PE + Binary 规则

@@ -344,141 +344,98 @@ impl HostApiBridge {
                     detail: format!("read_int8 set: {e}"),
                 })?;
 
-            // read_uint16(offset, endian?) -> u16
+            // read_uint16(offset) -> u16 (LE; BE handled by JS wrapper)
             let h = host.clone();
-            let read_uint16_fn =
-                rquickjs::Function::new(ctx.clone(), move |offset: i32, endian: i32| {
-                    if endian == 1 {
-                        h.read_u16_be(offset as u64).map(|v| v as i32).unwrap_or(0)
-                    } else {
-                        h.read_u16_le(offset as u64).map(|v| v as i32).unwrap_or(0)
-                    }
-                })
-                .map_err(|e| RuleError::Backend {
-                    detail: format!("read_uint16: {e}"),
-                })?;
+            let read_uint16_fn = rquickjs::Function::new(ctx.clone(), move |offset: i32| {
+                h.read_u16_le(offset as u64).map(|v| v as i32).unwrap_or(0)
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("read_uint16: {e}"),
+            })?;
             binary
                 .set("read_uint16", read_uint16_fn)
                 .map_err(|e| RuleError::Backend {
                     detail: format!("read_uint16 set: {e}"),
                 })?;
 
-            // read_int16(offset, endian?) -> i16
+            // read_int16(offset) -> i16 (LE; BE handled by JS wrapper)
             let h = host.clone();
-            let read_int16_fn =
-                rquickjs::Function::new(ctx.clone(), move |offset: i32, endian: i32| {
-                    if endian == 1 {
-                        h.read_u16_be(offset as u64)
-                            .map(|v| v as i16 as i32)
-                            .unwrap_or(0)
-                    } else {
-                        h.read_u16_le(offset as u64)
-                            .map(|v| v as i16 as i32)
-                            .unwrap_or(0)
-                    }
-                })
-                .map_err(|e| RuleError::Backend {
-                    detail: format!("read_int16: {e}"),
-                })?;
+            let read_int16_fn = rquickjs::Function::new(ctx.clone(), move |offset: i32| {
+                h.read_u16_le(offset as u64).map(|v| v as i16 as i32).unwrap_or(0)
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("read_int16: {e}"),
+            })?;
             binary
                 .set("read_int16", read_int16_fn)
                 .map_err(|e| RuleError::Backend {
                     detail: format!("read_int16 set: {e}"),
                 })?;
 
-            // read_uint24(offset, endian?) -> u32
+            // read_uint24(offset) -> u32 (LE; BE handled by JS wrapper)
             let h = host.clone();
-            let read_uint24_fn =
-                rquickjs::Function::new(ctx.clone(), move |offset: i32, endian: i32| {
-                    if endian == 1 {
-                        h.read_u24_be(offset as u64).unwrap_or(0)
-                    } else {
-                        h.read_u24_le(offset as u64).unwrap_or(0)
-                    }
-                })
-                .map_err(|e| RuleError::Backend {
-                    detail: format!("read_uint24: {e}"),
-                })?;
+            let read_uint24_fn = rquickjs::Function::new(ctx.clone(), move |offset: i32| {
+                h.read_u24_le(offset as u64).unwrap_or(0)
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("read_uint24: {e}"),
+            })?;
             binary
                 .set("read_uint24", read_uint24_fn)
                 .map_err(|e| RuleError::Backend {
                     detail: format!("read_uint24 set: {e}"),
                 })?;
 
-            // read_uint32(offset, endian?) -> u32
+            // read_uint32(offset) -> u32 (LE; BE handled by JS wrapper)
             let h = host.clone();
-            let read_uint32_fn =
-                rquickjs::Function::new(ctx.clone(), move |offset: i32, endian: i32| {
-                    if endian == 1 {
-                        h.read_u32_be(offset as u64).unwrap_or(0)
-                    } else {
-                        h.read_u32_le(offset as u64).unwrap_or(0)
-                    }
-                })
-                .map_err(|e| RuleError::Backend {
-                    detail: format!("read_uint32: {e}"),
-                })?;
+            let read_uint32_fn = rquickjs::Function::new(ctx.clone(), move |offset: i32| {
+                h.read_u32_le(offset as u64).unwrap_or(0)
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("read_uint32: {e}"),
+            })?;
             binary
                 .set("read_uint32", read_uint32_fn)
                 .map_err(|e| RuleError::Backend {
                     detail: format!("read_uint32 set: {e}"),
                 })?;
 
-            // read_int32(offset, endian?) -> i32
+            // read_int32(offset) -> i32 (LE; BE handled by JS wrapper)
             let h = host.clone();
-            let read_int32_fn =
-                rquickjs::Function::new(ctx.clone(), move |offset: i32, endian: i32| {
-                    if endian == 1 {
-                        h.read_u32_be(offset as u64).map(|v| v as i32).unwrap_or(0)
-                    } else {
-                        h.read_u32_le(offset as u64).map(|v| v as i32).unwrap_or(0)
-                    }
-                })
-                .map_err(|e| RuleError::Backend {
-                    detail: format!("read_int32: {e}"),
-                })?;
+            let read_int32_fn = rquickjs::Function::new(ctx.clone(), move |offset: i32| {
+                h.read_u32_le(offset as u64).map(|v| v as i32).unwrap_or(0)
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("read_int32: {e}"),
+            })?;
             binary
                 .set("read_int32", read_int32_fn)
                 .map_err(|e| RuleError::Backend {
                     detail: format!("read_int32 set: {e}"),
                 })?;
 
-            // read_uint64(offset, endian?) -> u64 as f64
+            // read_uint64(offset) -> u64 as f64 (LE; BE handled by JS wrapper)
             let h = host.clone();
-            let read_uint64_fn =
-                rquickjs::Function::new(ctx.clone(), move |offset: i32, endian: i32| {
-                    if endian == 1 {
-                        h.read_u64_be(offset as u64).unwrap_or(0) as f64
-                    } else {
-                        h.read_u64_le(offset as u64).unwrap_or(0) as f64
-                    }
-                })
-                .map_err(|e| RuleError::Backend {
-                    detail: format!("read_uint64: {e}"),
-                })?;
+            let read_uint64_fn = rquickjs::Function::new(ctx.clone(), move |offset: i32| {
+                h.read_u64_le(offset as u64).unwrap_or(0) as f64
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("read_uint64: {e}"),
+            })?;
             binary
                 .set("read_uint64", read_uint64_fn)
                 .map_err(|e| RuleError::Backend {
                     detail: format!("read_uint64 set: {e}"),
                 })?;
 
-            // read_int64(offset, endian?) -> i64 as f64
+            // read_int64(offset) -> i64 as f64 (LE; BE handled by JS wrapper)
             let h = host.clone();
-            let read_int64_fn =
-                rquickjs::Function::new(ctx.clone(), move |offset: i32, endian: i32| {
-                    if endian == 1 {
-                        h.read_u64_be(offset as u64)
-                            .map(|v| v as i64 as f64)
-                            .unwrap_or(0.0)
-                    } else {
-                        h.read_u64_le(offset as u64)
-                            .map(|v| v as i64 as f64)
-                            .unwrap_or(0.0)
-                    }
-                })
-                .map_err(|e| RuleError::Backend {
-                    detail: format!("read_int64: {e}"),
-                })?;
+            let read_int64_fn = rquickjs::Function::new(ctx.clone(), move |offset: i32| {
+                h.read_u64_le(offset as u64).map(|v| v as i64 as f64).unwrap_or(0.0)
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("read_int64: {e}"),
+            })?;
             binary
                 .set("read_int64", read_int64_fn)
                 .map_err(|e| RuleError::Backend {
@@ -527,7 +484,9 @@ impl HostApiBridge {
                 detail: format!("I8 set: {e}"),
             })?;
 
-            // U16(offset) -> u16
+            // U16(offset, bigEndian?) -> u16
+            // Register a 1-arg version; the 2-arg version is handled by
+            // a JS wrapper added later that passes the endianness flag.
             let h = host.clone();
             let u16_fn = rquickjs::Function::new(ctx.clone(), move |offset: i32| {
                 h.read_u16_le(offset as u64).map(|v| v as i32).unwrap_or(0)
@@ -539,7 +498,7 @@ impl HostApiBridge {
                 detail: format!("U16 set: {e}"),
             })?;
 
-            // U24(offset) -> u32
+            // U24(offset, bigEndian?) -> u32
             let h = host.clone();
             let u24_fn = rquickjs::Function::new(ctx.clone(), move |offset: i32| {
                 h.read_u24_le(offset as u64).unwrap_or(0)
@@ -551,7 +510,7 @@ impl HostApiBridge {
                 detail: format!("U24 set: {e}"),
             })?;
 
-            // U32(offset) -> u32
+            // U32(offset, bigEndian?) -> u32
             let h = host.clone();
             let u32_fn = rquickjs::Function::new(ctx.clone(), move |offset: i32| {
                 h.read_u32_le(offset as u64).unwrap_or(0)
@@ -563,7 +522,7 @@ impl HostApiBridge {
                 detail: format!("U32 set: {e}"),
             })?;
 
-            // U64(offset) -> u64 as f64
+            // U64(offset) -> u64 as f64 (LE only; BE variant via wrapper)
             let h = host.clone();
             let u64_fn = rquickjs::Function::new(ctx.clone(), move |offset: i32| {
                 h.read_u64_le(offset as u64).unwrap_or(0) as f64
@@ -1134,6 +1093,10 @@ impl HostApiBridge {
             // Override getString with a JS wrapper that handles missing 2nd arg.
             // The upstream getString(offset, maxLen?) accepts 1 or 2 args.
             // Also add compare wrapper: compare(signature, offset=0).
+            // Also add endianness-aware wrappers for U16/U24/U32/U64 and
+            // read_uint16/read_int16/read_uint24/read_uint32/read_int32/
+            // read_uint64/read_int64 that accept an optional bigEndian
+            // boolean argument.
             ctx.eval::<(), _>(
                 r#"
                 (function() {
@@ -1153,11 +1116,72 @@ impl HostApiBridge {
                     X.compare = Binary.compare;
                     File.compare = Binary.compare;
                     PE.compare = Binary.compare;
+
+                    // Wrap c() to accept optional offset (default 0).
+                    var _orig_c = Binary.c;
+                    Binary.c = function(signature, offset) {
+                        if (offset === undefined) offset = 0;
+                        return _orig_c(signature, offset);
+                    };
+                    X.c = Binary.c;
+                    File.c = Binary.c;
+
+                    // Endianness wrappers: U16(offset, bigEndian?) etc.
+                    // The native functions are LE-only; BE is handled by
+                    // reading bytes and combining them in big-endian order.
+                    function _wrapEndian(name, leFn, beFn) {
+                        var orig = Binary[name];
+                        Binary[name] = function(offset, bigEndian) {
+                            if (bigEndian === undefined || !bigEndian) {
+                                return orig.call(this, offset);
+                            }
+                            return beFn.call(this, offset);
+                        };
+                        X[name] = Binary[name];
+                        File[name] = Binary[name];
+                    }
+                    // BE read functions: read bytes in reverse order.
+                    function _beU16(off) { return (Binary.U8(off) << 8) | Binary.U8(off + 1); }
+                    function _beU24(off) { return (Binary.U8(off) << 16) | (Binary.U8(off + 1) << 8) | Binary.U8(off + 2); }
+                    function _beU32(off) { return (Binary.U8(off) << 24) | (Binary.U8(off + 1) << 16) | (Binary.U8(off + 2) << 8) | Binary.U8(off + 3); }
+                    function _beU64(off) {
+                        var hi = _beU32(off), lo = _beU32(off + 4);
+                        return hi * 4294967296.0 + lo;
+                    }
+                    _wrapEndian("U16", null, _beU16);
+                    _wrapEndian("U24", null, _beU24);
+                    _wrapEndian("U32", null, _beU32);
+                    _wrapEndian("U64", null, _beU64);
+
+                    // Also wrap read_uint16 etc. with optional bigEndian.
+                    function _wrapReadEndian(name) {
+                        var orig = Binary[name];
+                        Binary[name] = function(offset, bigEndian) {
+                            if (bigEndian === undefined || !bigEndian) {
+                                return orig.call(this, offset);
+                            }
+                            // BE: use the BE helper
+                            if (name === "read_uint16" || name === "read_int16") return _beU16(offset);
+                            if (name === "read_uint24" || name === "read_int24") return _beU24(offset);
+                            if (name === "read_uint32" || name === "read_int32") return _beU32(offset);
+                            if (name === "read_uint64" || name === "read_int64") return _beU64(offset);
+                            return orig.call(this, offset);
+                        };
+                        X[name] = Binary[name];
+                        File[name] = Binary[name];
+                    }
+                    _wrapReadEndian("read_uint16");
+                    _wrapReadEndian("read_int16");
+                    _wrapReadEndian("read_uint24");
+                    _wrapReadEndian("read_uint32");
+                    _wrapReadEndian("read_int32");
+                    _wrapReadEndian("read_uint64");
+                    _wrapReadEndian("read_int64");
                 })();
                 "#,
             )
             .map_err(|e| RuleError::Backend {
-                detail: format!("getString/compare wrapper: {e}"),
+                detail: format!("getString/compare/endian wrapper: {e}"),
             })?;
 
             Ok(())

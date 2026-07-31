@@ -96,7 +96,11 @@ impl HostApi for BufferHost {
     fn read_u16_le(&self, offset: u64) -> Result<u16, HostApiError> {
         let data = self.data();
         let idx = offset as usize;
-        if idx + 2 > data.len() {
+        let end = idx.checked_add(2).ok_or(HostApiError::OutOfBounds {
+            offset,
+            file_size: data.len() as u64,
+        })?;
+        if end > data.len() {
             return Err(HostApiError::OutOfBounds {
                 offset,
                 file_size: data.len() as u64,
@@ -108,7 +112,11 @@ impl HostApi for BufferHost {
     fn read_u16_be(&self, offset: u64) -> Result<u16, HostApiError> {
         let data = self.data();
         let idx = offset as usize;
-        if idx + 2 > data.len() {
+        let end = idx.checked_add(2).ok_or(HostApiError::OutOfBounds {
+            offset,
+            file_size: data.len() as u64,
+        })?;
+        if end > data.len() {
             return Err(HostApiError::OutOfBounds {
                 offset,
                 file_size: data.len() as u64,
@@ -120,7 +128,11 @@ impl HostApi for BufferHost {
     fn read_u24_le(&self, offset: u64) -> Result<u32, HostApiError> {
         let data = self.data();
         let idx = offset as usize;
-        if idx + 3 > data.len() {
+        let end = idx.checked_add(3).ok_or(HostApiError::OutOfBounds {
+            offset,
+            file_size: data.len() as u64,
+        })?;
+        if end > data.len() {
             return Err(HostApiError::OutOfBounds {
                 offset,
                 file_size: data.len() as u64,
@@ -137,7 +149,11 @@ impl HostApi for BufferHost {
     fn read_u24_be(&self, offset: u64) -> Result<u32, HostApiError> {
         let data = self.data();
         let idx = offset as usize;
-        if idx + 3 > data.len() {
+        let end = idx.checked_add(3).ok_or(HostApiError::OutOfBounds {
+            offset,
+            file_size: data.len() as u64,
+        })?;
+        if end > data.len() {
             return Err(HostApiError::OutOfBounds {
                 offset,
                 file_size: data.len() as u64,
@@ -154,7 +170,11 @@ impl HostApi for BufferHost {
     fn read_u32_le(&self, offset: u64) -> Result<u32, HostApiError> {
         let data = self.data();
         let idx = offset as usize;
-        if idx + 4 > data.len() {
+        let end = idx.checked_add(4).ok_or(HostApiError::OutOfBounds {
+            offset,
+            file_size: data.len() as u64,
+        })?;
+        if end > data.len() {
             return Err(HostApiError::OutOfBounds {
                 offset,
                 file_size: data.len() as u64,
@@ -171,7 +191,11 @@ impl HostApi for BufferHost {
     fn read_u32_be(&self, offset: u64) -> Result<u32, HostApiError> {
         let data = self.data();
         let idx = offset as usize;
-        if idx + 4 > data.len() {
+        let end = idx.checked_add(4).ok_or(HostApiError::OutOfBounds {
+            offset,
+            file_size: data.len() as u64,
+        })?;
+        if end > data.len() {
             return Err(HostApiError::OutOfBounds {
                 offset,
                 file_size: data.len() as u64,
@@ -188,28 +212,36 @@ impl HostApi for BufferHost {
     fn read_u64_le(&self, offset: u64) -> Result<u64, HostApiError> {
         let data = self.data();
         let idx = offset as usize;
-        if idx + 8 > data.len() {
+        let end = idx.checked_add(8).ok_or(HostApiError::OutOfBounds {
+            offset,
+            file_size: data.len() as u64,
+        })?;
+        if end > data.len() {
             return Err(HostApiError::OutOfBounds {
                 offset,
                 file_size: data.len() as u64,
             });
         }
         let mut bytes = [0u8; 8];
-        bytes.copy_from_slice(&data[idx..idx + 8]);
+        bytes.copy_from_slice(&data[idx..end]);
         Ok(u64::from_le_bytes(bytes))
     }
 
     fn read_u64_be(&self, offset: u64) -> Result<u64, HostApiError> {
         let data = self.data();
         let idx = offset as usize;
-        if idx + 8 > data.len() {
+        let end = idx.checked_add(8).ok_or(HostApiError::OutOfBounds {
+            offset,
+            file_size: data.len() as u64,
+        })?;
+        if end > data.len() {
             return Err(HostApiError::OutOfBounds {
                 offset,
                 file_size: data.len() as u64,
             });
         }
         let mut bytes = [0u8; 8];
-        bytes.copy_from_slice(&data[idx..idx + 8]);
+        bytes.copy_from_slice(&data[idx..end]);
         Ok(u64::from_be_bytes(bytes))
     }
 
