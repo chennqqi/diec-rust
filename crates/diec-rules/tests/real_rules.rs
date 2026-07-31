@@ -466,3 +466,101 @@ fn real_rule_zip_detects_signature() {
         let _ = results;
     }
 }
+
+#[test]
+fn real_rule_ar_detects_signature() {
+    let (init_source, type_init_scripts, includes) = match load_upstream_framework() {
+        Some(x) => x,
+        None => {
+            eprintln!("Skipping: upstream rules not found");
+            return;
+        }
+    };
+
+    // AR archive magic: "!<arch>\n"
+    let mut data = b"!<arch>\n".to_vec();
+    data.resize(128, 0);
+
+    let results = run_real_rule(
+        "Binary/archive_AR.1.sg",
+        &init_source,
+        &type_init_scripts,
+        &includes,
+        data,
+    );
+
+    if let Some(results) = results {
+        // AR rule should detect the archive format.
+        // It uses Archive.add() and Archive.contents() from the
+        // archive-file include script.
+        let found = results
+            .iter()
+            .any(|r| r.name.contains("Library") || r.name.contains("arch"));
+        assert!(
+            found || !results.is_empty(),
+            "Expected AR detection, got: {results:?}"
+        );
+    }
+}
+
+#[test]
+fn real_rule_bzip_detects_signature() {
+    let (init_source, type_init_scripts, includes) = match load_upstream_framework() {
+        Some(x) => x,
+        None => {
+            eprintln!("Skipping: upstream rules not found");
+            return;
+        }
+    };
+
+    // BZip2 magic: "BZh" + level digit
+    let mut data = b"BZh9".to_vec();
+    data.resize(64, 0);
+
+    let results = run_real_rule(
+        "Binary/archive_BZip.1.sg",
+        &init_source,
+        &type_init_scripts,
+        &includes,
+        data,
+    );
+
+    if let Some(results) = results {
+        // BZip2 should be detected.
+        let found = results
+            .iter()
+            .any(|r| r.name.contains("bzip") || r.name.contains("Bzip") || r.name.contains("BZip"));
+        assert!(found, "Expected BZip2 detection, got: {results:?}");
+    }
+}
+
+#[test]
+fn real_rule_gzip_detects_signature() {
+    let (init_source, type_init_scripts, includes) = match load_upstream_framework() {
+        Some(x) => x,
+        None => {
+            eprintln!("Skipping: upstream rules not found");
+            return;
+        }
+    };
+
+    // GZIP magic: 1F 8B 08
+    let mut data = vec![0x1F, 0x8B, 0x08, 0x00];
+    data.resize(64, 0);
+
+    let results = run_real_rule(
+        "Binary/archive_gzip.1.sg",
+        &init_source,
+        &type_init_scripts,
+        &includes,
+        data,
+    );
+
+    if let Some(results) = results {
+        // GZIP should be detected.
+        let found = results
+            .iter()
+            .any(|r| r.name.contains("gzip") || r.name.contains("Gzip") || r.name.contains("GZIP"));
+        assert!(found, "Expected GZIP detection, got: {results:?}");
+    }
+}

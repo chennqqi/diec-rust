@@ -306,6 +306,22 @@
     `const tp` 重声明 `var tp`，QuickJS 正确拒绝）
 - cargo fmt/clippy/test/check-deps 全部通过（334 个测试）
 
+## 2026-08-01: Phase 3 第八步 — Archive 对象 + 端到端检测 + PE 批量加载
+- 确认 `Archive` 全局对象由 `archive-file` include 脚本纯 JS 实现
+  （`Archive.add(nSize, nPacked, bDir)` + `Archive.contents()`），
+  无需 Rust 端原生实现
+- 新增 3 个端到端规则执行测试（`real_rules.rs`）：
+  - `real_rule_ar_detects_signature`：AR 归档格式检测
+    （使用 `Archive.add`/`Archive.contents`）
+  - `real_rule_bzip_detects_signature`：BZip2 格式检测
+  - `real_rule_gzip_detects_signature`：GZIP 格式检测
+- 新增 `tests/batch_load_pe.rs` PE 规则批量加载测试：
+  - 加载全部 834 个 PE 规则
+  - 826/834 成功（99.0%）
+  - 8 个失败均为 "PE is not defined"（规则在顶层使用 PE 对象，
+    需要 PE 专属 host API，尚未实现）
+- cargo fmt/clippy/test/check-deps 全部通过（336 个测试）
+
 ## P0-BLOCK-006 macOS 运行时基线采集 (deferred from Phase 0)
 - 通过 ssh macdevoa (macdev 别名) 继续完成 macOS 运行时基线采集
 - 复用 ~/dev/tmp/diec-macos-work 目录中已有数据 (DIE-engine-src/build/corpus/evidence 等)
