@@ -1,0 +1,218 @@
+{
+  "timestamp": "2026-08-01T08:07:14.852005+00:00",
+  "quick": true,
+  "benchmarks": {
+    "diec_engine_scan": [
+      {
+        "benchmark": "scan_corpus/full_db/ELF64 minimal",
+        "lower_ns": 11067000.0,
+        "point_ns": 11171000.0,
+        "upper_ns": 11585000.0,
+        "point_human": "11.171 ms"
+      },
+      {
+        "benchmark": "scan_corpus/full_db/PE32 minimal",
+        "lower_ns": 70874000.0,
+        "point_ns": 71862000.0,
+        "upper_ns": 72109000.0,
+        "point_human": "71.862 ms"
+      },
+      {
+        "benchmark": "scan_corpus/full_db/Mach-O 64 minimal",
+        "lower_ns": 14666000.0,
+        "point_ns": 14831000.0,
+        "upper_ns": 15490000.0,
+        "point_human": "14.831 ms"
+      },
+      {
+        "benchmark": "scan_corpus/full_db/Zip archive",
+        "lower_ns": 164710000.0,
+        "point_ns": 170240000.0,
+        "upper_ns": 171620000.0,
+        "point_human": "170.24 ms"
+      },
+      {
+        "benchmark": "scan_corpus/full_db/tar archive",
+        "lower_ns": 144820000.0,
+        "point_ns": 152200000.0,
+        "upper_ns": 154050000.0,
+        "point_human": "152.20 ms"
+      },
+      {
+        "benchmark": "scan_corpus/full_db/PDF document",
+        "lower_ns": 101640000.0,
+        "point_ns": 102160000.0,
+        "upper_ns": 104230000.0,
+        "point_human": "102.16 ms"
+      },
+      {
+        "benchmark": "scan_corpus/full_db/PNG image",
+        "lower_ns": 99562000.0,
+        "point_ns": 101150000.0,
+        "upper_ns": 101550000.0,
+        "point_human": "101.15 ms"
+      },
+      {
+        "benchmark": "scan_corpus/full_db/Java class",
+        "lower_ns": 91987000.0,
+        "point_ns": 92051000.0,
+        "upper_ns": 92309000.0,
+        "point_human": "92.051 ms"
+      },
+      {
+        "benchmark": "scan_corpus/full_db/DEX",
+        "lower_ns": 93600000.0,
+        "point_ns": 95549000.0,
+        "upper_ns": 103340000.0,
+        "point_human": "95.549 ms"
+      },
+      {
+        "benchmark": "scan_flags/default",
+        "lower_ns": 87566000.0,
+        "point_ns": 87633000.0,
+        "upper_ns": 87900000.0,
+        "point_human": "87.633 ms"
+      },
+      {
+        "benchmark": "scan_flags/heuristic",
+        "lower_ns": 90122000.0,
+        "point_ns": 90185000.0,
+        "upper_ns": 90436000.0,
+        "point_human": "90.185 ms"
+      },
+      {
+        "benchmark": "scan_flags/all_types",
+        "lower_ns": 284410000.0,
+        "point_ns": 288380000.0,
+        "upper_ns": 289370000.0,
+        "point_human": "288.38 ms"
+      },
+      {
+        "benchmark": "scan_flags/deep",
+        "lower_ns": 82887000.0,
+        "point_ns": 86235000.0,
+        "upper_ns": 87072000.0,
+        "point_human": "86.235 ms"
+      },
+      {
+        "benchmark": "database_load/full_load",
+        "lower_ns": 160240000.0,
+        "point_ns": 160590000.0,
+        "upper_ns": 160670000.0,
+        "point_human": "160.59 ms"
+      }
+    ],
+    "diec_formats_probe": [
+      {
+        "benchmark": "probe_corpus/probe_all/ELF64",
+        "lower_ns": 334.5,
+        "point_ns": 335.2,
+        "upper_ns": 337.9,
+        "point_human": "335.20 ns"
+      },
+      {
+        "benchmark": "probe_corpus/probe_all/PE32",
+        "lower_ns": 394.5,
+        "point_ns": 407.3,
+        "upper_ns": 410.5,
+        "point_human": "407.27 ns"
+      },
+      {
+        "benchmark": "probe_corpus/probe_all/Mach-O 64",
+        "lower_ns": 323.6,
+        "point_ns": 324.3,
+        "upper_ns": 326.8,
+        "point_human": "324.28 ns"
+      },
+      {
+        "benchmark": "probe_corpus/probe_all/Zip",
+        "lower_ns": 282.4,
+        "point_ns": 284.6,
+        "upper_ns": 293.4,
+        "point_human": "284.61 ns"
+      },
+      {
+        "benchmark": "probe_corpus/probe_all/tar",
+        "lower_ns": 299.0,
+        "point_ns": 302.1,
+        "upper_ns": 314.6,
+        "point_human": "302.12 ns"
+      },
+      {
+        "benchmark": "probe_corpus/probe_all/PDF",
+        "lower_ns": 306.7,
+        "point_ns": 309.7,
+        "upper_ns": 321.6,
+        "point_human": "309.70 ns"
+      },
+      {
+        "benchmark": "probe_corpus/probe_all/PNG",
+        "lower_ns": 287.1,
+        "point_ns": 289.0,
+        "upper_ns": 289.5,
+        "point_human": "289.01 ns"
+      },
+      {
+        "benchmark": "probe_corpus/probe_all/JPEG",
+        "lower_ns": 292.8,
+        "point_ns": 295.4,
+        "upper_ns": 296.1,
+        "point_human": "295.45 ns"
+      },
+      {
+        "benchmark": "probe_corpus/probe_all/Java Class",
+        "lower_ns": 376.9,
+        "point_ns": 378.8,
+        "upper_ns": 386.4,
+        "point_human": "378.76 ns"
+      },
+      {
+        "benchmark": "probe_corpus/probe_all/DEX",
+        "lower_ns": 364.9,
+        "point_ns": 366.3,
+        "upper_ns": 371.9,
+        "point_human": "366.31 ns"
+      },
+      {
+        "benchmark": "probe_corpus/probe_all/ISO 9660",
+        "lower_ns": 330.3,
+        "point_ns": 337.1,
+        "upper_ns": 338.8,
+        "point_human": "337.06 ns"
+      },
+      {
+        "benchmark": "probe_corpus/probe_all/empty",
+        "lower_ns": 59.4,
+        "point_ns": 59.6,
+        "upper_ns": 60.0,
+        "point_human": "59.552 ns"
+      },
+      {
+        "benchmark": "probe_corpus/probe_all/text",
+        "lower_ns": 212.7,
+        "point_ns": 213.2,
+        "upper_ns": 215.6,
+        "point_human": "213.23 ns"
+      },
+      {
+        "benchmark": "probe_table_default_phase2",
+        "lower_ns": 226.5,
+        "point_ns": 257.4,
+        "upper_ns": 265.1,
+        "point_human": "257.42 ns"
+      }
+    ],
+    "database_load_cli": {
+      "runs_ms": [
+        1588.7,
+        455.5,
+        475.0,
+        517.7,
+        499.0
+      ],
+      "avg_ms": 707.2,
+      "min_ms": 455.5,
+      "max_ms": 1588.7
+    }
+  }
+}

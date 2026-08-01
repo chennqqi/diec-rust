@@ -1,0 +1,2234 @@
+{
+  "timestamp": "2026-08-01T08:12:04.325845+00:00",
+  "db_path": "I:\\github.com\\chennqqi\\diec-rust\\upstream\\Detect-It-Easy\\db",
+  "db_exists": true,
+  "rule_database": {
+    "total_sg": 2037,
+    "by_type": {
+      "Amiga": 96,
+      "APK": 52,
+      "Archive": 1,
+      "AtariST": 1,
+      "Binary": 292,
+      "CFBF": 3,
+      "COM": 245,
+      "DEX": 29,
+      "DOS16M": 2,
+      "DOS4G": 2,
+      "ELF": 46,
+      "Image": 1,
+      "ISO9660": 23,
+      "JAR": 2,
+      "JavaClass": 1,
+      "JPEG": 5,
+      "LE": 3,
+      "LX": 5,
+      "MACH": 12,
+      "MACHOFAT": 2,
+      "MSDOS": 349,
+      "NE": 13,
+      "NPM": 4,
+      "PDF": 7,
+      "PE": 834,
+      "PNG": 1,
+      "PYC": 2,
+      "RAR": 1,
+      "ZIP": 3
+    }
+  },
+  "corpus": {
+    "baseline": 27,
+    "edge": 21,
+    "total_bytes": 53737
+  },
+  "tests": {
+    "total_passed": 414,
+    "total_failed": 0,
+    "suites": [
+      {
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "status": "ok",
+        "passed": 24,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "status": "ok",
+        "passed": 44,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "status": "ok",
+        "passed": 9,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "status": "ok",
+        "passed": 7,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "status": "ok",
+        "passed": 12,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "status": "ok",
+        "passed": 16,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "status": "ok",
+        "passed": 156,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "status": "ok",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "status": "ok",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "status": "ok",
+        "passed": 99,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "status": "ok",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "status": "ok",
+        "passed": 22,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "status": "ok",
+        "passed": 6,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0
+      }
+    ],
+    "exit_code": 0
+  },
+  "clippy": {
+    "exit_code": 0,
+    "passed": true,
+    "warnings": 0
+  },
+  "corpus_scans": [
+    {
+      "file": "Minimal.class",
+      "detection_count": 10,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Java Class File (.CLASS)"
+        },
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "empty.bin",
+      "detection_count": 10,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Empty file"
+        },
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "minimal-elf32.elf",
+      "detection_count": 9,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "minimal-fat.macho",
+      "detection_count": 10,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Java Class File (.CLASS)"
+        },
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "minimal-macho32.macho",
+      "detection_count": 9,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "minimal-pe64.exe",
+      "detection_count": 9,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "minimal.apk",
+      "detection_count": 11,
+      "detections": [
+        {
+          "type": "archive",
+          "name": "Zip"
+        },
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "archive",
+          "name": "Zip"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "minimal.cfbf",
+      "detection_count": 10,
+      "detections": [
+        {
+          "type": "archive",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "minimal.dex",
+      "detection_count": 9,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "minimal.elf",
+      "detection_count": 9,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "minimal.exe",
+      "detection_count": 9,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "minimal.ipa",
+      "detection_count": 11,
+      "detections": [
+        {
+          "type": "archive",
+          "name": "Zip"
+        },
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "archive",
+          "name": "Zip"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "minimal.iso",
+      "detection_count": 10,
+      "detections": [
+        {
+          "type": "format",
+          "name": "ISO 9660"
+        },
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "minimal.jar",
+      "detection_count": 11,
+      "detections": [
+        {
+          "type": "archive",
+          "name": "Zip"
+        },
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "archive",
+          "name": "Zip"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "minimal.macho",
+      "detection_count": 9,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "minimal.pdf",
+      "detection_count": 10,
+      "detections": [
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "minimal.pyc",
+      "detection_count": 9,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "minimal.rar",
+      "detection_count": 9,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "payload.tar",
+      "detection_count": 10,
+      "detections": [
+        {
+          "type": "archive",
+          "name": "tar"
+        },
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "payload.txt.gz",
+      "detection_count": 9,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "payload.zip",
+      "detection_count": 11,
+      "detections": [
+        {
+          "type": "archive",
+          "name": "Zip"
+        },
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "archive",
+          "name": "Zip"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "pixel.bmp",
+      "detection_count": 10,
+      "detections": [
+        {
+          "type": "image",
+          "name": "Windows Bitmap"
+        },
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "pixel.jpg",
+      "detection_count": 10,
+      "detections": [
+        {
+          "type": "image",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "pixel.png",
+      "detection_count": 10,
+      "detections": [
+        {
+          "type": "image",
+          "name": "Portable Network Graphics (.PNG)"
+        },
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "plain.txt",
+      "detection_count": 9,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "tone.wav",
+      "detection_count": 10,
+      "detections": [
+        {
+          "type": "audio",
+          "name": "RIFF container/WAVE file (.WAV)"
+        },
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    }
+  ],
+  "edge_corpus_scans": [
+    {
+      "file": "empty-tar-header.bin",
+      "detection_count": 10,
+      "detections": [
+        {
+          "type": "archive",
+          "name": "tar"
+        },
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "empty-zip-eocd.bin",
+      "detection_count": 9,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "ff-256.bin",
+      "detection_count": 9,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "malformed-elf-bad-class.bin",
+      "detection_count": 9,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "malformed-pe-bad-lfanew.bin",
+      "detection_count": 9,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "oversized-zip-fields.bin",
+      "detection_count": 10,
+      "detections": [
+        {
+          "type": "archive",
+          "name": "Zip"
+        },
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "random-256.bin",
+      "detection_count": 9,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "single-byte.bin",
+      "detection_count": 9,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "truncated-class-magic.bin",
+      "detection_count": 9,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "truncated-dex-magic.bin",
+      "detection_count": 9,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "truncated-elf-4bytes.bin",
+      "detection_count": 9,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "truncated-gzip-header.bin",
+      "detection_count": 9,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "truncated-jpeg-soi.bin",
+      "detection_count": 9,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "truncated-macho-magic.bin",
+      "detection_count": 9,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "truncated-pdf-header.bin",
+      "detection_count": 10,
+      "detections": [
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "truncated-pe-mz-only.bin",
+      "detection_count": 9,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "truncated-png-sig.bin",
+      "detection_count": 9,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "truncated-zip-sig.bin",
+      "detection_count": 10,
+      "detections": [
+        {
+          "type": "archive",
+          "name": "Zip"
+        },
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "two-bytes.bin",
+      "detection_count": 9,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    },
+    {
+      "file": "zeros-256.bin",
+      "detection_count": 9,
+      "detections": [
+        {
+          "type": "format",
+          "name": "Microsoft Compound"
+        },
+        {
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        },
+        {
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "type": "format",
+          "name": "JPEG"
+        },
+        {
+          "type": "format",
+          "name": "Java Class File"
+        },
+        {
+          "type": "converter",
+          "name": "lipo"
+        },
+        {
+          "type": "format",
+          "name": "PDF"
+        },
+        {
+          "type": "format",
+          "name": "PNG"
+        },
+        {
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ]
+    }
+  ]
+}
