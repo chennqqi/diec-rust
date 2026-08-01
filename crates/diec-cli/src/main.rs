@@ -321,19 +321,21 @@ fn main() -> ExitCode {
     if db_path.is_empty() {
         // 1. DIEC_DB_PATH environment variable (highest priority).
         if let Ok(env_path) = std::env::var("DIEC_DB_PATH")
-            && std::path::Path::new(&env_path).is_dir() {
-                db_path = env_path;
-            }
+            && std::path::Path::new(&env_path).is_dir()
+        {
+            db_path = env_path;
+        }
 
         // 2. db/ directory adjacent to the executable (release layout).
         if db_path.is_empty()
             && let Ok(exe) = std::env::current_exe()
-                && let Some(exe_dir) = exe.parent() {
-                    let adjacent = exe_dir.join("db");
-                    if adjacent.is_dir() {
-                        db_path = adjacent.to_string_lossy().to_string();
-                    }
-                }
+            && let Some(exe_dir) = exe.parent()
+        {
+            let adjacent = exe_dir.join("db");
+            if adjacent.is_dir() {
+                db_path = adjacent.to_string_lossy().to_string();
+            }
+        }
 
         // 3. System-wide install paths.
         if db_path.is_empty() {
