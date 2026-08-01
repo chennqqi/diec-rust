@@ -497,3 +497,59 @@ fn cli_messages_flag() {
     let (success, _stdout, _stderr) = run_diec(&["--db", &db_root(), "--messages", &path]);
     assert!(success, "diec with --messages should exit 0");
 }
+
+#[test]
+fn cli_entropy_mode() {
+    if !std::path::Path::new(&diec_binary()).exists() {
+        eprintln!("Skipping: diec binary not built");
+        return;
+    }
+
+    let mut data = vec![0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C, 0x00, 0x04];
+    data.resize(64, 0);
+    let path = write_temp_file("test_cli_entropy.7z", &data);
+
+    let (success, stdout, _stderr) = run_diec(&["--entropy", &path]);
+    assert!(success, "diec --entropy should exit 0");
+    assert!(
+        stdout.contains("entropy"),
+        "entropy output should contain 'entropy': {stdout}"
+    );
+}
+
+#[test]
+fn cli_entropy_json_mode() {
+    if !std::path::Path::new(&diec_binary()).exists() {
+        eprintln!("Skipping: diec binary not built");
+        return;
+    }
+
+    let mut data = vec![0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C, 0x00, 0x04];
+    data.resize(64, 0);
+    let path = write_temp_file("test_cli_entropy_json.7z", &data);
+
+    let (success, stdout, _stderr) = run_diec(&["--entropy", "--output", "json", &path]);
+    assert!(success, "diec --entropy --output json should exit 0");
+    assert!(
+        stdout.contains("\"entropy\""),
+        "JSON entropy output should contain 'entropy' key: {stdout}"
+    );
+}
+
+#[test]
+fn cli_info_mode() {
+    if !std::path::Path::new(&diec_binary()).exists() {
+        eprintln!("Skipping: diec binary not built");
+        return;
+    }
+
+    let data = b"hello world".to_vec();
+    let path = write_temp_file("test_cli_info.txt", &data);
+
+    let (success, stdout, _stderr) = run_diec(&["--info", &path]);
+    assert!(success, "diec --info should exit 0");
+    assert!(
+        stdout.contains("size"),
+        "info output should contain 'size': {stdout}"
+    );
+}

@@ -31,6 +31,8 @@ fn print_usage() {
     eprintln!("  --format             Format the output result (spacing)");
     eprintln!("  --profiling          Profile signatures during scan");
     eprintln!("  --messages           Display scan messages and warnings");
+    eprintln!("  --entropy            Show entropy information");
+    eprintln!("  --info               Show file info");
     eprintln!("  --version            Print version and exit");
     eprintln!("  --help               Print this help and exit");
 }
@@ -75,6 +77,26 @@ fn collect_files(dir: &std::path::Path, files: &mut Vec<String>) {
     }
 }
 
+/// Compute Shannon entropy of a byte buffer (0.0 to 8.0).
+fn compute_entropy(data: &[u8]) -> f64 {
+    if data.is_empty() {
+        return 0.0;
+    }
+    let mut counts = [0u64; 256];
+    for &b in data {
+        counts[b as usize] += 1;
+    }
+    let len = data.len() as f64;
+    let mut entropy = 0.0;
+    for &count in &counts {
+        if count > 0 {
+            let p = count as f64 / len;
+            entropy -= p * p.log2();
+        }
+    }
+    entropy
+}
+
 fn main() -> ExitCode {
     let args: Vec<String> = std::env::args().collect();
 
@@ -85,6 +107,8 @@ fn main() -> ExitCode {
     let mut format_result = false;
     let mut profiling = false;
     let mut messages = false;
+    let mut entropy_mode = false;
+    let mut info_mode = false;
     let mut targets: Vec<String> = Vec::new();
 
     let mut i = 1;
@@ -127,6 +151,12 @@ fn main() -> ExitCode {
             }
             "--messages" => {
                 messages = true;
+            }
+            "--entropy" => {
+                entropy_mode = true;
+            }
+            "--info" => {
+                info_mode = true;
             }
             "--db" => {
                 i += 1;
@@ -180,6 +210,55 @@ fn main() -> ExitCode {
     if files.is_empty() {
         eprintln!("error: no files to scan");
         return ExitCode::from(EXIT_INPUT);
+    }
+
+    // --entropy mode: compute and display file entropy, no rule database needed.
+    if entropy_mode {
+        for file in &files {
+            let data = match std::fs::read(file) {
+                Ok(d) => d,
+                Err(e) => {
+                    eprintln!("error: reading {file}: {e}");
+                    continue;
+                }
+            };
+            let entropy = compute_entropy(&data);
+            match output_format.as_str() {
+                "json" => {
+                    println!(
+                        "{{\"path\":\"{file}\",\"entropy\":{entropy:.6},\"size\":{}}}",
+                        data.len()
+                    );
+                }
+                _ => {
+                    println!("{file}: entropy: {entropy:.6} ({})", data.len());
+                }
+            }
+        }
+        return ExitCode::from(EXIT_OK);
+    }
+
+    // --info mode: display file info, no rule database needed.
+    if info_mode {
+        for file in &files {
+            let metadata = match std::fs::metadata(file) {
+                Ok(m) => m,
+                Err(e) => {
+                    eprintln!("error: reading metadata {file}: {e}");
+                    continue;
+                }
+            };
+            let size = metadata.len();
+            match output_format.as_str() {
+                "json" => {
+                    println!("{{\"path\":\"{file}\",\"size\":{size}}}");
+                }
+                _ => {
+                    println!("{file}: size: {size}");
+                }
+            }
+        }
+        return ExitCode::from(EXIT_OK);
     }
 
     // Find the database directory.
