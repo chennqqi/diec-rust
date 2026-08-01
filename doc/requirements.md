@@ -696,3 +696,11 @@
 - 更新 ROADMAP.md/AGENTS.md Phase 4 进展
 - CLI 参数与上游对齐 (--heuristicscan/--deepscan/--verbose/--aggressivescan/--alltypes/--hideunknown)
 - 评估 Phase 4 退出条件是否满足
+
+## 2026-08-01: Phase 4 继续 — 输出格式与专用模式
+- 添加 XML/CSV/TSV 输出格式
+- 实现 --format、--profiling、--messages 选项
+- 实现 --entropy、--info 专用模式
+- 添加多数据库支持 (--extradb/--customdb)
+- 实现 --showdatabase、--showstructs 信息查询
+- 24 个 CLI 集成测试，374 个测试全部通过

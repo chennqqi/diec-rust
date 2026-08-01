@@ -173,6 +173,7 @@ rquickjs 后端 + Binary host API bridge + 签名解析器 + PE stub 完成。
   - --hideunknown 过滤空名和 "Unknown" 检测
 - CLI 输出控制：--format（格式化空格）、--profiling（计时）、--messages（诊断输出）
 - CLI 专用模式：--entropy（Shannon 熵）、--info（文件信息）
+- CLI 数据库功能：--extradb、--customdb（多数据库合并）、--showdatabase（规则统计）、--showstructs（结构方法列表）
 - 5 种输出格式：text（默认）、json、xml、csv、tsv
 - 文件类型检测 + 误报过滤：使用 ProbeTable 分发规则，匹配上游 scanProcess 行为
   - 可执行格式（PE/ELF/MACH/MACHOFAT）仅运行格式特定规则
@@ -187,14 +188,11 @@ rquickjs 后端 + Binary host API bridge + 签名解析器 + PE stub 完成。
 - 27 个语料库文件诊断数降为 0
 - 差分测试：corpus_differential.rs 27 文件全部通过
 - 扫描性能优化：按文件类型共享 runtime（8x 加速，~1s/文件）
-- 21 个 CLI 集成测试覆盖输出格式、扫描标志、专用模式、退出码、递归扫描
+- 24 个 CLI 集成测试覆盖输出格式、扫描标志、专用模式、退出码、递归扫描、数据库查询
 - 374 个测试全部通过，cargo fmt/clippy/check-deps 零警告
 
 **尚未实现**（低优先级，不影响核心功能）：
-- --struct、--showstructs 结构信息查询
-- --extradatabase、--customdatabase 多数据库支持
-- --showdatabase 数据库信息查询
-- --test、--createtest 测试入口
+- --test、--createtest 测试入口（上游也标记为 TODO）
 
 退出条件：能力矩阵中当前范围的 CLI 功能完成；自动化输出契约和错误行为有集成测试。
 
