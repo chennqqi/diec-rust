@@ -141,16 +141,17 @@ jobs:
         if: runner.os == 'Windows'
         shell: cmd
         run: |
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
           cl /I include tests/c/smoke.c /Fe:target\smoke.exe /link target\release\diec_ffi.lib
 
       - name: Run C smoke test
         shell: bash
         run: |
-          # The smoke test needs the upstream database (submodule).
           if [ ! -d upstream/Detect-It-Easy/db ]; then
             echo "SKIP: upstream database not found"
             exit 0
           fi
+          export DIEC_DB_PATH="$PWD/upstream/Detect-It-Easy/db"
           if [ "${{ runner.os }}" = "Windows" ]; then
             export PATH="$PWD/target/release:$PATH"
             target/smoke.exe

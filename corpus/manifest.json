@@ -1,0 +1,163 @@
+{
+  "generator": "tools/corpus/generate_baseline_corpus.py",
+  "license": "project-generated; no third-party sample bytes",
+  "samples": [
+    {
+      "intended_format": "empty",
+      "name": "empty.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "intended_format": "text",
+      "name": "plain.txt",
+      "sha256": "22b217bfba5795d402092bf48bfb28146c0ee4dd0036fd4d0c93e25bbe65e998",
+      "size": 31
+    },
+    {
+      "intended_format": "ELF64",
+      "name": "minimal.elf",
+      "sha256": "e717b57a377ce3486a932130454ee070fdd495d3c23a9d5a8a446ad32772e704",
+      "size": 64
+    },
+    {
+      "intended_format": "ELF32",
+      "name": "minimal-elf32.elf",
+      "sha256": "75952e884b6d6d4c4ed1023df8a126a816973178160bea43b482ceec0fc1e75d",
+      "size": 52
+    },
+    {
+      "intended_format": "PE32",
+      "name": "minimal.exe",
+      "sha256": "afb1bcd812caa45095075a60ff49599c7d5e767c7732226c3e0007708cb198a2",
+      "size": 512
+    },
+    {
+      "intended_format": "PE64",
+      "name": "minimal-pe64.exe",
+      "sha256": "63c706607b3d34624313df7356702ff99ce4080f09e6b07ec4b01dfe4dd5e1c3",
+      "size": 512
+    },
+    {
+      "intended_format": "Mach-O 64",
+      "name": "minimal.macho",
+      "sha256": "60a536a7dff9522a8e4af5ab73ff742ebeffc33a34837beb9c5ac4a1a7eb5968",
+      "size": 104
+    },
+    {
+      "intended_format": "Mach-O 32",
+      "name": "minimal-macho32.macho",
+      "sha256": "496974f2f66ce0be4a7ef4e05ddaaf1872b5ba6f4a772f729e86de3f9d4cc3b5",
+      "size": 84
+    },
+    {
+      "intended_format": "Mach-O FAT",
+      "name": "minimal-fat.macho",
+      "sha256": "ea343ae7de8a9ee2bdc00f0cc7f48f420e8609bd60510c927a75bed7b3470a67",
+      "size": 360
+    },
+    {
+      "intended_format": "DEX",
+      "name": "minimal.dex",
+      "sha256": "57cfe8878be74cad8bbc5e409b0964d4b13c35e8783d931ef7366881f8d548c2",
+      "size": 112
+    },
+    {
+      "intended_format": "Java Class",
+      "name": "Minimal.class",
+      "sha256": "ed3af378f328281c21e5b56e495377c3e68ba667643c79abc53ad30edb685b9e",
+      "size": 59
+    },
+    {
+      "intended_format": "CPython 3.8 bytecode",
+      "name": "minimal.pyc",
+      "sha256": "cb3c0319002c008adb69215aa4559e60ad7e333e33eed58ae918e0d32e241ecd",
+      "size": 17
+    },
+    {
+      "intended_format": "PNG",
+      "name": "pixel.png",
+      "sha256": "9ba3d63896d81dc3a55b80c1165fefa4523888b67fcbd4a95cabd3d0ab7e66e2",
+      "size": 72
+    },
+    {
+      "intended_format": "JPEG",
+      "name": "pixel.jpg",
+      "sha256": "69d4a48ed33b98f972561aa738a91b1d8cf76c876adee54d76e7b326df9276c5",
+      "size": 56
+    },
+    {
+      "intended_format": "BMP",
+      "name": "pixel.bmp",
+      "sha256": "f7cbd816abfb19030d23b8de5435d0141443665a81ed5ba12114c70b5f53b610",
+      "size": 58
+    },
+    {
+      "intended_format": "PDF",
+      "name": "minimal.pdf",
+      "sha256": "47bd96bd99d3fd9d9edf09151f7c62999aaf71ed599bd975db9e46c4d6ef5d92",
+      "size": 331
+    },
+    {
+      "intended_format": "ZIP with text member",
+      "name": "payload.zip",
+      "sha256": "c29a3445c289e061a11d4675b36763657d4e550c4941821ea74905593a29acfe",
+      "size": 151
+    },
+    {
+      "intended_format": "APK with manifest and DEX",
+      "name": "minimal.apk",
+      "sha256": "300eec1017b47ac5878bf21da0306b61a4a0dfc9e8249e9f0ff7e40c458ef557",
+      "size": 350
+    },
+    {
+      "intended_format": "JAR with manifest and class",
+      "name": "minimal.jar",
+      "sha256": "a081dac459835af70f69de96b705764dc9b06bc356edcaa9857a8d6b630a7747",
+      "size": 324
+    },
+    {
+      "intended_format": "IPA with app Info.plist",
+      "name": "minimal.ipa",
+      "sha256": "142e16c353a59e152c6ee0b25d783dba0d6f6e9a8ca81b73d0d925dee1d54264",
+      "size": 300
+    },
+    {
+      "intended_format": "RAR4 empty archive header",
+      "name": "minimal.rar",
+      "sha256": "f7a8865876257ca1bc0ea30fbe8d1e82d3355ff7509c0dbc1ca01fe202795728",
+      "size": 21
+    },
+    {
+      "intended_format": "ISO9660 primary volume",
+      "name": "minimal.iso",
+      "sha256": "8723a9cc5cd319414b88d32dcce58e8dc7668b927553f8cdf0bdf4f52f4da90a",
+      "size": 36864
+    },
+    {
+      "intended_format": "TAR with text member",
+      "name": "payload.tar",
+      "sha256": "3af89e8d0f52e951a8ea4ad0bef3d10cf3464c06a5c7a0fc451abc0583289f2f",
+      "size": 2048
+    },
+    {
+      "intended_format": "GZIP with text member",
+      "name": "payload.txt.gz",
+      "sha256": "f51df8f3b04ac2120ba283fbad7f22ec9aefce5a07c38a335deb771be560b39a",
+      "size": 54
+    },
+    {
+      "intended_format": "CFBF",
+      "name": "minimal.cfbf",
+      "sha256": "bb973ef09e2e3bf7e6510e060960dd10a598c5595bfbe08fabc177d0b0911d37",
+      "size": 512
+    },
+    {
+      "intended_format": "WAV PCM",
+      "name": "tone.wav",
+      "sha256": "373324023416a5dc3809e647e041fc48a13db20648d5782ac989cba17014203b",
+      "size": 46
+    }
+  ],
+  "schema_version": 1
+}

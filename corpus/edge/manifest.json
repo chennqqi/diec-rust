@@ -1,0 +1,127 @@
+{
+  "generator": "tools/corpus/generate_edge_corpus.py",
+  "license": "project-generated; no third-party sample bytes",
+  "category": "edge cases: truncated, malformed, oversized, empty",
+  "samples": [
+    {
+      "name": "truncated-elf-4bytes.bin",
+      "size": 4,
+      "sha256": "3bdbb4fe8397cd2b842430b39ccff01a8663c751945ef5e9a09e267fb8b1d359",
+      "category": "edge"
+    },
+    {
+      "name": "truncated-pe-mz-only.bin",
+      "size": 64,
+      "sha256": "014b8ce9fed0aaf124de966f635da95bf7025bee91d1a1c12d6ff5854eba3307",
+      "category": "edge"
+    },
+    {
+      "name": "truncated-macho-magic.bin",
+      "size": 4,
+      "sha256": "d2238b6d7c34ad608a5f6caddf95928d741307fea41f0336302e390109311d72",
+      "category": "edge"
+    },
+    {
+      "name": "truncated-zip-sig.bin",
+      "size": 4,
+      "sha256": "8dcc7e601606217f3b754766511182a916b17e9a26a94c9d887104eba92e9bb2",
+      "category": "edge"
+    },
+    {
+      "name": "malformed-elf-bad-class.bin",
+      "size": 65,
+      "sha256": "0b13ab7014fcf8aa2b57cce3ff63efaa67a719ba5e3be08f7daff53a46987a81",
+      "category": "edge"
+    },
+    {
+      "name": "malformed-pe-bad-lfanew.bin",
+      "size": 256,
+      "sha256": "5bd52fdc24f9b7f8c2924a98c510a23ae026f9a99dc7ca7ea02726a4ce30515f",
+      "category": "edge"
+    },
+    {
+      "name": "oversized-zip-fields.bin",
+      "size": 30,
+      "sha256": "b73839c9b65d2484b1a6bb99c74e5fb5d98c6b508e826b712b6148de9e4a0de7",
+      "category": "edge"
+    },
+    {
+      "name": "empty-zip-eocd.bin",
+      "size": 22,
+      "sha256": "8739c76e681f900923b900c9df0ef75cf421d39cabb54650c4b9ad19b6a76d85",
+      "category": "edge"
+    },
+    {
+      "name": "truncated-pdf-header.bin",
+      "size": 9,
+      "sha256": "e5c62df5dab5c87b6a015ef3d43597074d1eec433b15f51aec63b8582d0e4ab4",
+      "category": "edge"
+    },
+    {
+      "name": "truncated-png-sig.bin",
+      "size": 8,
+      "sha256": "4c4b6a3be1314ab86138bef4314dde022e600960d8689a2c8f8631802d20dab6",
+      "category": "edge"
+    },
+    {
+      "name": "truncated-jpeg-soi.bin",
+      "size": 2,
+      "sha256": "71563ad80061407ede9c6f316836284bd3710a520c5a792b5eda1cb703690815",
+      "category": "edge"
+    },
+    {
+      "name": "truncated-class-magic.bin",
+      "size": 4,
+      "sha256": "65ab12a8ff3263fbc257e5ddf0aa563c64573d0bab1f1115b9b107834cfa6971",
+      "category": "edge"
+    },
+    {
+      "name": "truncated-dex-magic.bin",
+      "size": 4,
+      "sha256": "1e6d899959738b60a52d72d5fa2935abe9fac4a9cd1d209ae2b853158e842319",
+      "category": "edge"
+    },
+    {
+      "name": "random-256.bin",
+      "size": 256,
+      "sha256": "40aff2e9d2d8922e47afd4648e6967497158785fbd1da870e7110266bf944880",
+      "category": "edge"
+    },
+    {
+      "name": "zeros-256.bin",
+      "size": 256,
+      "sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+      "category": "edge"
+    },
+    {
+      "name": "ff-256.bin",
+      "size": 256,
+      "sha256": "3d6876a0146de8576eb2395a858de1213d1b92c65b779df3a331cfd5a4584546",
+      "category": "edge"
+    },
+    {
+      "name": "single-byte.bin",
+      "size": 1,
+      "sha256": "df7e70e5021544f4834bbee64a9e3789febc4be81470df629cad6ddb03320a5c",
+      "category": "edge"
+    },
+    {
+      "name": "two-bytes.bin",
+      "size": 2,
+      "sha256": "768921a22b8e190c2cfafeb0688f0d58a5f76ee4c7fb369758a208c7ba5e9acb",
+      "category": "edge"
+    },
+    {
+      "name": "empty-tar-header.bin",
+      "size": 512,
+      "sha256": "1b07b8abe936115d1838f8eab6ea8551bc1418c262b66695eb050e193fe96f3e",
+      "category": "edge"
+    },
+    {
+      "name": "truncated-gzip-header.bin",
+      "size": 10,
+      "sha256": "9d1011ce9a9221ec2cbde2cc63ce50401fda24a6ffbf96a97b55552cc9e035e3",
+      "category": "edge"
+    }
+  ]
+}

@@ -52,7 +52,10 @@ int main(void) {
     failures += check_status("database_builder_new",
         diec_v1_database_builder_new(&builder, &error));
 
-    const char *db_path = "../../upstream/Detect-It-Easy/db";
+    const char *db_path = getenv("DIEC_DB_PATH");
+    if (!db_path || !*db_path) {
+        db_path = "../../upstream/Detect-It-Easy/db";
+    }
     uint64_t path_len = strlen(db_path);
     failures += check_status("database_builder_add_path",
         diec_v1_database_builder_add_path_utf8(builder, DIEC_DATABASE_KIND_MAIN,
