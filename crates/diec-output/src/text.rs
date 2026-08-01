@@ -41,3 +41,40 @@ pub fn render_text(result: &ScanResult) -> String {
 
     out
 }
+
+/// Render a scan result as formatted text (--format flag).
+///
+/// Upstream `--format` adds extra spacing around separators for
+/// improved readability. The display strings have additional spaces
+/// around the type separator and version/option brackets.
+pub fn render_text_formatted(result: &ScanResult) -> String {
+    let mut out = String::new();
+
+    if result.detections.is_empty() {
+        out.push_str(&format!("{}: no detections\n", result.path));
+    } else {
+        for det in &result.detections {
+            out.push_str(&format!("{}:  ", result.path));
+            out.push_str(&det.type_name);
+            out.push_str(" :  ");
+            out.push_str(&det.name);
+            if let Some(v) = &det.version
+                && !v.is_empty()
+            {
+                out.push_str("  (");
+                out.push_str(v);
+                out.push_str(") ");
+            }
+            if let Some(o) = &det.options
+                && !o.is_empty()
+            {
+                out.push_str("  [");
+                out.push_str(o);
+                out.push_str("] ");
+            }
+            out.push('\n');
+        }
+    }
+
+    out
+}

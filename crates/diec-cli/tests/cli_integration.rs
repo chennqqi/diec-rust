@@ -422,3 +422,78 @@ fn cli_heuristicscan_flag_accepted() {
     let (success, _stdout, stderr) = run_diec(&["--db", &db_root(), "--heuristicscan", &path]);
     assert!(success, "diec with --heuristicscan should exit 0: {stderr}");
 }
+
+#[test]
+fn cli_format_flag() {
+    if !std::path::Path::new(&db_root()).is_dir() {
+        eprintln!("Skipping: upstream database not found");
+        return;
+    }
+    if !std::path::Path::new(&diec_binary()).exists() {
+        eprintln!("Skipping: diec binary not built");
+        return;
+    }
+
+    let mut data = vec![0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C, 0x00, 0x04];
+    data.resize(64, 0);
+    let path = write_temp_file("test_cli_format.7z", &data);
+
+    let (success, stdout_normal, _) = run_diec(&["--db", &db_root(), &path]);
+    let (success_fmt, stdout_fmt, _) = run_diec(&["--db", &db_root(), "--format", &path]);
+
+    assert!(success, "diec should exit 0");
+    assert!(success_fmt, "diec with --format should exit 0");
+    // Formatted output should differ from normal (extra spacing).
+    assert_ne!(
+        stdout_normal, stdout_fmt,
+        "--format should change output spacing"
+    );
+    assert!(
+        stdout_fmt.contains("7-Zip"),
+        "formatted output should contain 7-Zip: {stdout_fmt}"
+    );
+}
+
+#[test]
+fn cli_profiling_flag() {
+    if !std::path::Path::new(&db_root()).is_dir() {
+        eprintln!("Skipping: upstream database not found");
+        return;
+    }
+    if !std::path::Path::new(&diec_binary()).exists() {
+        eprintln!("Skipping: diec binary not built");
+        return;
+    }
+
+    let mut data = vec![0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C, 0x00, 0x04];
+    data.resize(64, 0);
+    let path = write_temp_file("test_cli_prof.7z", &data);
+
+    let (success, _stdout, stderr) = run_diec(&["--db", &db_root(), "--profiling", &path]);
+    assert!(success, "diec with --profiling should exit 0: {stderr}");
+    // Profiling info goes to stderr.
+    assert!(
+        stderr.contains("Scanned") && stderr.contains("s"),
+        "profiling output should contain timing: {stderr}"
+    );
+}
+
+#[test]
+fn cli_messages_flag() {
+    if !std::path::Path::new(&db_root()).is_dir() {
+        eprintln!("Skipping: upstream database not found");
+        return;
+    }
+    if !std::path::Path::new(&diec_binary()).exists() {
+        eprintln!("Skipping: diec binary not built");
+        return;
+    }
+
+    let mut data = vec![0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C, 0x00, 0x04];
+    data.resize(64, 0);
+    let path = write_temp_file("test_cli_msg.7z", &data);
+
+    // --messages should be accepted and not cause errors.
+    let (success, _stdout, _stderr) = run_diec(&["--db", &db_root(), "--messages", &path]);
+    assert!(success, "diec with --messages should exit 0");
+}

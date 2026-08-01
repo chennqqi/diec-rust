@@ -28,6 +28,9 @@ fn print_usage() {
     eprintln!("  --aggressivescan     Enable aggressive scan mode");
     eprintln!("  --alltypes           Scan all format types");
     eprintln!("  --hideunknown        Hide unknown detections");
+    eprintln!("  --format             Format the output result (spacing)");
+    eprintln!("  --profiling          Profile signatures during scan");
+    eprintln!("  --messages           Display scan messages and warnings");
     eprintln!("  --version            Print version and exit");
     eprintln!("  --help               Print this help and exit");
 }
@@ -79,6 +82,9 @@ fn main() -> ExitCode {
     let mut output_format = "text".to_string();
     let mut recursive = false;
     let mut flags = ScanFlags::default();
+    let mut format_result = false;
+    let mut profiling = false;
+    let mut messages = false;
     let mut targets: Vec<String> = Vec::new();
 
     let mut i = 1;
@@ -112,6 +118,15 @@ fn main() -> ExitCode {
             }
             "--hideunknown" => {
                 flags.hide_unknown = true;
+            }
+            "--format" => {
+                format_result = true;
+            }
+            "--profiling" => {
+                profiling = true;
+            }
+            "--messages" => {
+                messages = true;
             }
             "--db" => {
                 i += 1;
@@ -201,6 +216,7 @@ fn main() -> ExitCode {
     let mut had_error = !expand_errors.is_empty();
     let mut results = Vec::new();
 
+    let scan_start = std::time::Instant::now();
     for file in &files {
         match scan_once(&database, file, flags, &cancel) {
             Ok(result) => results.push(result),
@@ -209,6 +225,25 @@ fn main() -> ExitCode {
                 had_error = true;
             }
         }
+    }
+    let scan_elapsed = scan_start.elapsed();
+
+    // --messages: print diagnostics to stderr.
+    if messages {
+        for r in &results {
+            for diag in &r.diagnostics {
+                eprintln!("{diag}");
+            }
+        }
+    }
+
+    // --profiling: print timing information to stderr.
+    if profiling {
+        eprintln!(
+            "Scanned {} files in {:.3}s",
+            results.len(),
+            scan_elapsed.as_secs_f64()
+        );
     }
 
     // Render output.
@@ -245,7 +280,11 @@ fn main() -> ExitCode {
         }
         _ => {
             for r in &results {
-                print!("{}", diec_output::render_text(r));
+                if format_result {
+                    print!("{}", diec_output::render_text_formatted(r));
+                } else {
+                    print!("{}", diec_output::render_text(r));
+                }
             }
         }
     }
