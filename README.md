@@ -23,7 +23,7 @@ multi-language bindings.
 ## Benchmark
 
 Database load: **160ms** (parallel) vs **480ms** (sequential before
-optimization) — **3x improvement**. Format probing: **60-407ns** per file.
+optimization) — **300% improvement**. Format probing: **60-407ns** per file.
 
 Test method and raw data: [tools/benchmark/](tools/benchmark/) ·
 [benchmark_results.json](tools/benchmark/results/benchmark_results.json)
