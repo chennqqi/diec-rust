@@ -78,6 +78,7 @@ dependencies = [
 name = "diec-ffi"
 version = "0.0.0"
 dependencies = [
+ "diec-core",
  "diec-engine",
  "diec-output",
 ]
