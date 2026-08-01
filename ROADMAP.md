@@ -165,8 +165,12 @@ rquickjs 后端 + Binary host API bridge + 签名解析器 + PE stub 完成。
 
 **进展**：
 - diec-engine 扫描编排层完成（Database + Scanner + BufferHost）
-- diec-output JSON/text 渲染完成（无 serde 依赖）
+- diec-output JSON/text/XML/CSV/TSV 渲染完成（无 serde 依赖）
 - diec-cli 参数解析 + 退出码 + 多目标批量扫描 + 递归扫描完成
+- CLI 扫描控制标志：--deepscan, --heuristicscan, --verbose, --aggressivescan, --alltypes, --hideunknown
+  - 标志通过 ScanFlags → BufferHost → HostApi 传递到规则运行时
+  - --alltypes 运行所有文件类型规则（匹配上游 bIsAllTypesScan）
+  - --hideunknown 过滤空名和 "Unknown" 检测
 - 文件类型检测 + 误报过滤：使用 ProbeTable 分发规则，匹配上游 scanProcess 行为
   - 可执行格式（PE/ELF/MACH/MACHOFAT）仅运行格式特定规则
   - 非可执行格式运行格式特定 + Binary 规则
@@ -180,7 +184,15 @@ rquickjs 后端 + Binary host API bridge + 签名解析器 + PE stub 完成。
 - 27 个语料库文件诊断数降为 0
 - 差分测试：corpus_differential.rs 27 文件全部通过
 - 扫描性能优化：按文件类型共享 runtime（8x 加速，~1s/文件）
-- 361 个测试全部通过，cargo fmt/clippy/check-deps 零警告
+- 15 个 CLI 集成测试覆盖输出格式、扫描标志、退出码、递归扫描
+- 368 个测试全部通过，cargo fmt/clippy/check-deps 零警告
+
+**尚未实现**（低优先级，不影响核心功能）：
+- --format（显示空格格式化）、--profiling（性能分析）、--messages（扫描消息）
+- --entropy、--info、--struct 专用模式
+- --extradatabase、--customdatabase 多数据库支持
+- --showdatabase、--showstructs 信息查询命令
+- --test、--createtest 测试入口
 
 退出条件：能力矩阵中当前范围的 CLI 功能完成；自动化输出契约和错误行为有集成测试。
 
