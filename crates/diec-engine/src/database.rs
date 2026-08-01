@@ -44,37 +44,37 @@ impl std::fmt::Display for DatabaseError {
 impl std::error::Error for DatabaseError {}
 
 /// Builder for constructing a `Database` from rule directories.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct DatabaseBuilder {
-    db_path: PathBuf,
-}
-
-impl Default for DatabaseBuilder {
-    fn default() -> Self {
-        Self {
-            db_path: PathBuf::new(),
-        }
-    }
+    db_paths: Vec<PathBuf>,
 }
 
 impl DatabaseBuilder {
     /// Create a new builder pointing at the given database directory.
     pub fn new(path: impl Into<PathBuf>) -> Self {
         Self {
-            db_path: path.into(),
+            db_paths: vec![path.into()],
         }
+    }
+
+    /// Add an extra database directory (e.g. db_extra, db_custom).
+    /// Rules from all directories are merged together.
+    pub fn with_extra(mut self, path: impl Into<PathBuf>) -> Self {
+        self.db_paths.push(path.into());
+        self
     }
 
     /// Build the immutable `Database` by reading and parsing all rules.
     pub fn build(self) -> Result<Database, DatabaseError> {
-        if self.db_path.as_os_str().is_empty() {
+        if self.db_paths.is_empty() || self.db_paths[0].as_os_str().is_empty() {
             return Err(DatabaseError::NotFound {
                 path: "(empty path)".into(),
             });
         }
-        if !self.db_path.is_dir() {
+        let main_path = &self.db_paths[0];
+        if !main_path.is_dir() {
             return Err(DatabaseError::NotFound {
-                path: self.db_path.display().to_string(),
+                path: main_path.display().to_string(),
             });
         }
 
@@ -115,28 +115,36 @@ impl DatabaseBuilder {
             "ZIP",
             "Image",
         ];
-        for ft in &format_types {
-            let ft_dir = self.db_path.join(ft);
-            if !ft_dir.is_dir() {
+
+        // Load rules from all database directories (main + extra + custom).
+        for db_path in &self.db_paths {
+            if !db_path.is_dir() {
                 continue;
             }
-            if let Ok(entries) = std::fs::read_dir(&ft_dir) {
-                for entry in entries.flatten() {
-                    let path = entry.path();
-                    if path.extension().and_then(|e| e.to_str()) == Some("sg") {
-                        let source =
-                            std::fs::read_to_string(&path).map_err(|e| DatabaseError::IoError {
-                                path: path.display().to_string(),
-                                detail: e.to_string(),
+            for ft in &format_types {
+                let ft_dir = db_path.join(ft);
+                if !ft_dir.is_dir() {
+                    continue;
+                }
+                if let Ok(entries) = std::fs::read_dir(&ft_dir) {
+                    for entry in entries.flatten() {
+                        let path = entry.path();
+                        if path.extension().and_then(|e| e.to_str()) == Some("sg") {
+                            let source = std::fs::read_to_string(&path).map_err(|e| {
+                                DatabaseError::IoError {
+                                    path: path.display().to_string(),
+                                    detail: e.to_string(),
+                                }
                             })?;
-                        let name = path.file_name().and_then(|n| n.to_str()).unwrap_or("?");
-                        rules.push(LoadedRule {
-                            path: format!("{ft}/{name}"),
-                            ordinal,
-                            file_type: ft.to_string(),
-                            source,
-                        });
-                        ordinal += 1;
+                            let name = path.file_name().and_then(|n| n.to_str()).unwrap_or("?");
+                            rules.push(LoadedRule {
+                                path: format!("{ft}/{name}"),
+                                ordinal,
+                                file_type: ft.to_string(),
+                                source,
+                            });
+                            ordinal += 1;
+                        }
                     }
                 }
             }
@@ -146,23 +154,34 @@ impl DatabaseBuilder {
             return Err(DatabaseError::Empty);
         }
 
-        // Load the global _init script.
-        let init_script = std::fs::read_to_string(self.db_path.join("_init")).ok();
+        // Load the global _init script from the main database.
+        let init_script = std::fs::read_to_string(main_path.join("_init")).ok();
 
-        // Load all include scripts (files without extensions at the root).
+        // Load all include scripts from all databases (main first, then extras).
         let mut include_scripts: BTreeMap<String, String> = BTreeMap::new();
-        load_include_scripts(&self.db_path, &mut include_scripts);
-
-        // Load type-specific _init scripts.
-        let mut type_init_scripts: Vec<(String, String)> = Vec::new();
-        for ft in &format_types {
-            let init_path = self.db_path.join(ft).join("_init");
-            if init_path.is_file()
-                && let Ok(source) = std::fs::read_to_string(&init_path)
-            {
-                type_init_scripts.push((ft.to_string(), source));
+        for db_path in &self.db_paths {
+            if db_path.is_dir() {
+                load_include_scripts(db_path, &mut include_scripts);
             }
         }
+
+        // Load type-specific _init scripts from all databases.
+        let mut type_init_scripts: BTreeMap<String, String> = BTreeMap::new();
+        for db_path in &self.db_paths {
+            if !db_path.is_dir() {
+                continue;
+            }
+            for ft in &format_types {
+                let init_path = db_path.join(ft).join("_init");
+                if type_init_scripts.contains_key(*ft) {
+                    continue;
+                }
+                if let Ok(source) = std::fs::read_to_string(&init_path) {
+                    type_init_scripts.insert(ft.to_string(), source);
+                }
+            }
+        }
+        let type_init_scripts: Vec<(String, String)> = type_init_scripts.into_iter().collect();
 
         Ok(Database {
             snapshot: DatabaseSnapshot {
@@ -171,7 +190,7 @@ impl DatabaseBuilder {
                 type_init_scripts,
                 include_scripts,
             },
-            db_path: self.db_path,
+            db_path: self.db_paths.into_iter().next().unwrap_or_default(),
         })
     }
 }
@@ -244,5 +263,10 @@ impl Database {
     /// Get the number of rules in the database.
     pub fn rule_count(&self) -> usize {
         self.snapshot.rules.len()
+    }
+
+    /// Get an iterator over the loaded rules.
+    pub fn rules(&self) -> &[LoadedRule] {
+        &self.snapshot.rules
     }
 }

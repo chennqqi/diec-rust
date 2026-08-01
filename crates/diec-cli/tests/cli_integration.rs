@@ -553,3 +553,66 @@ fn cli_info_mode() {
         "info output should contain 'size': {stdout}"
     );
 }
+
+#[test]
+fn cli_showdatabase() {
+    if !std::path::Path::new(&db_root()).is_dir() {
+        eprintln!("Skipping: upstream database not found");
+        return;
+    }
+    if !std::path::Path::new(&diec_binary()).exists() {
+        eprintln!("Skipping: diec binary not built");
+        return;
+    }
+
+    let (success, stdout, _stderr) = run_diec(&["--db", &db_root(), "--showdatabase"]);
+    assert!(success, "diec --showdatabase should exit 0");
+    assert!(
+        stdout.contains("Main database"),
+        "showdatabase should show main database: {stdout}"
+    );
+    assert!(
+        stdout.contains("Binary"),
+        "showdatabase should list file types: {stdout}"
+    );
+}
+
+#[test]
+fn cli_showstructs() {
+    if !std::path::Path::new(&diec_binary()).exists() {
+        eprintln!("Skipping: diec binary not built");
+        return;
+    }
+
+    let (success, stdout, _stderr) = run_diec(&["--showstructs"]);
+    assert!(success, "diec --showstructs should exit 0");
+    assert!(
+        stdout.contains("Structures"),
+        "showstructs should list structures: {stdout}"
+    );
+    assert!(
+        stdout.contains("isSignaturePresent"),
+        "showstructs should list struct methods: {stdout}"
+    );
+}
+
+#[test]
+fn cli_extradb_flag() {
+    if !std::path::Path::new(&db_root()).is_dir() {
+        eprintln!("Skipping: upstream database not found");
+        return;
+    }
+    if !std::path::Path::new(&diec_binary()).exists() {
+        eprintln!("Skipping: diec binary not built");
+        return;
+    }
+
+    let mut data = vec![0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C, 0x00, 0x04];
+    data.resize(64, 0);
+    let path = write_temp_file("test_cli_extradb.7z", &data);
+
+    // --extradb with a non-existent path should still work (just skipped).
+    let (success, _stdout, _stderr) =
+        run_diec(&["--db", &db_root(), "--extradb", "/nonexistent/path", &path]);
+    assert!(success, "diec with --extradb should exit 0");
+}

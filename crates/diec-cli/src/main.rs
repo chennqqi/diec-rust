@@ -33,6 +33,10 @@ fn print_usage() {
     eprintln!("  --messages           Display scan messages and warnings");
     eprintln!("  --entropy            Show entropy information");
     eprintln!("  --info               Show file info");
+    eprintln!("  --extradb <path>     Extra database directory");
+    eprintln!("  --customdb <path>    Custom database directory");
+    eprintln!("  --showdatabase       Show database paths and rule counts");
+    eprintln!("  --showstructs        List available struct methods");
     eprintln!("  --version            Print version and exit");
     eprintln!("  --help               Print this help and exit");
 }
@@ -109,6 +113,10 @@ fn main() -> ExitCode {
     let mut messages = false;
     let mut entropy_mode = false;
     let mut info_mode = false;
+    let mut extra_db_path = String::new();
+    let mut custom_db_path = String::new();
+    let mut show_database = false;
+    let mut show_structs = false;
     let mut targets: Vec<String> = Vec::new();
 
     let mut i = 1;
@@ -158,6 +166,28 @@ fn main() -> ExitCode {
             "--info" => {
                 info_mode = true;
             }
+            "--extradb" => {
+                i += 1;
+                if i >= args.len() {
+                    eprintln!("error: --extradb requires a path argument");
+                    return ExitCode::from(EXIT_USAGE);
+                }
+                extra_db_path = args[i].clone();
+            }
+            "--customdb" => {
+                i += 1;
+                if i >= args.len() {
+                    eprintln!("error: --customdb requires a path argument");
+                    return ExitCode::from(EXIT_USAGE);
+                }
+                custom_db_path = args[i].clone();
+            }
+            "--showdatabase" => {
+                show_database = true;
+            }
+            "--showstructs" => {
+                show_structs = true;
+            }
             "--db" => {
                 i += 1;
                 if i >= args.len() {
@@ -192,10 +222,36 @@ fn main() -> ExitCode {
         i += 1;
     }
 
-    if targets.is_empty() {
+    if targets.is_empty() && !show_structs && !show_database {
         eprintln!("error: no input files specified");
         print_usage();
         return ExitCode::from(EXIT_USAGE);
+    }
+
+    // --showstructs: list available struct methods (no database or files needed).
+    if show_structs {
+        println!("Structures:");
+        let methods = [
+            "ELF.isSignaturePresent",
+            "ELF.isEntryPointPresent",
+            "ELF.isSectionNamePresent",
+            "ELF.isSegmentNamePresent",
+            "PE.isSignaturePresent",
+            "PE.isSectionNamePresent",
+            "PE.isDirectoryNamePresent",
+            "PE.isResourceNamePresent",
+            "PE.isImportNamePresent",
+            "PE.isExportNamePresent",
+            "PE.isNetModuleNamePresent",
+            "MACH.isSignaturePresent",
+            "MACH.isSectionNamePresent",
+            "MACH.isSegmentNamePresent",
+            "MACH.isEntryPointPresent",
+        ];
+        for m in &methods {
+            println!("\t{m}");
+        }
+        return ExitCode::from(EXIT_OK);
     }
 
     // Expand targets: directories are recursively scanned if --recursive.
@@ -207,7 +263,7 @@ fn main() -> ExitCode {
     for err in &expand_errors {
         eprintln!("error: {err}");
     }
-    if files.is_empty() {
+    if files.is_empty() && !show_database {
         eprintln!("error: no files to scan");
         return ExitCode::from(EXIT_INPUT);
     }
@@ -282,14 +338,42 @@ fn main() -> ExitCode {
         }
     }
 
-    // Build the database.
-    let database = match DatabaseBuilder::new(&db_path).build() {
+    // Build the database (main + optional extra/custom databases).
+    let mut builder = DatabaseBuilder::new(&db_path);
+    if !extra_db_path.is_empty() {
+        builder = builder.with_extra(&extra_db_path);
+    }
+    if !custom_db_path.is_empty() {
+        builder = builder.with_extra(&custom_db_path);
+    }
+    let database = match builder.build() {
         Ok(db) => db,
         Err(e) => {
             eprintln!("error: failed to load database from {db_path}: {e}");
             return ExitCode::from(EXIT_DATABASE);
         }
     };
+
+    // --showdatabase: print database paths and per-type rule counts.
+    if show_database {
+        println!("Main database: {db_path}");
+        if !extra_db_path.is_empty() {
+            println!("Extra database: {extra_db_path}");
+        }
+        if !custom_db_path.is_empty() {
+            println!("Custom database: {custom_db_path}");
+        }
+        // Count rules per file type.
+        let mut counts: std::collections::BTreeMap<String, usize> =
+            std::collections::BTreeMap::new();
+        for rule in database.rules() {
+            *counts.entry(rule.file_type.clone()).or_insert(0) += 1;
+        }
+        for (ft, count) in &counts {
+            println!("\t{ft}: {count}");
+        }
+        return ExitCode::from(EXIT_OK);
+    }
 
     let cancel = CancellationToken::new();
     let mut had_error = !expand_errors.is_empty();
