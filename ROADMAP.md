@@ -289,3 +289,11 @@ rquickjs 后端 + Binary host API bridge + 签名解析器 + PE stub 完成。
 ## Future：GUI — TODO
 
 GUI 明确不属于当前交付范围。核心库、CLI 和 C ABI 稳定后，另行调研 GUI 技术栈、交互需求和跨平台发布方案；当前阶段禁止为假设中的 GUI 引入框架依赖或反向耦合。
+
+## 后续改进项
+
+### CI/CD 维护
+
+- **升级 GitHub Actions 到 Node.js 24**：`actions/checkout@v4`、`actions/upload-artifact@v4`、`actions/download-artifact@v4` 仍基于 Node.js 20（已 deprecated）。待 `actions/checkout@v5` 等正式发布后升级，消除 deprecation warning。
+- **Windows FFI C smoke test 链接**：Rust staticlib 在 Windows 上需要大量系统库（ws2_32、userenv、bcrypt 等），当前用 `continue-on-error` 跳过。后续可用 `cargo build` 生成的 `.d` 文件自动提取依赖库列表，或改用 dynamic library 链接方式。
+- **macOS x86_64 构建矩阵**：`macos-13` runner 为 Intel 实例，费用较高且可能逐步下线。评估是否在 arm64 runner 上交叉编译 x86_64 目标。
