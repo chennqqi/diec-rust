@@ -59,9 +59,9 @@ jobs:
         run: |
           cargo build --workspace --release --locked --target ${{ matrix.target }}
 
-      - name: Run tests
+      - name: Run tests (native target only)
         shell: bash
-        run: cargo test --workspace --all-features --locked
+        run: cargo test --workspace --all-features --locked --target ${{ matrix.target }}
 
       - name: Prepare release artifacts (Unix)
         if: runner.os != 'Windows'
@@ -163,12 +163,13 @@ jobs:
     needs: build
     runs-on: ubuntu-24.04
     timeout-minutes: 10
+    permissions:
+      contents: write
     steps:
       - name: Check out
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           fetch-depth: 1
-          persist-credentials: false
 
       - name: Determine version
         id: version

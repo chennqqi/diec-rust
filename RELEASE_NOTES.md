@@ -1,8 +1,8 @@
 # Release Notes
 
-## diec-rust v0.1.0
+## diec-rust v0.1.1
 
-First release of diec-rust, a Rust reimplementation of Detect It Easy.
+First public release of diec-rust, a Rust reimplementation of Detect It Easy.
 
 ### Features
 
