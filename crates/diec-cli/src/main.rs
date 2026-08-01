@@ -319,21 +319,57 @@ fn main() -> ExitCode {
 
     // Find the database directory.
     if db_path.is_empty() {
-        // Try common locations.
-        let candidates = [
-            "upstream/Detect-It-Easy/db",
-            "../upstream/Detect-It-Easy/db",
-            "../../upstream/Detect-It-Easy/db",
-            "db",
-        ];
-        for c in &candidates {
-            if std::path::Path::new(c).is_dir() {
-                db_path = c.to_string();
-                break;
+        // 1. DIEC_DB_PATH environment variable (highest priority).
+        if let Ok(env_path) = std::env::var("DIEC_DB_PATH")
+            && std::path::Path::new(&env_path).is_dir() {
+                db_path = env_path;
+            }
+
+        // 2. db/ directory adjacent to the executable (release layout).
+        if db_path.is_empty()
+            && let Ok(exe) = std::env::current_exe()
+                && let Some(exe_dir) = exe.parent() {
+                    let adjacent = exe_dir.join("db");
+                    if adjacent.is_dir() {
+                        db_path = adjacent.to_string_lossy().to_string();
+                    }
+                }
+
+        // 3. System-wide install paths.
+        if db_path.is_empty() {
+            let system_paths = [
+                "/usr/share/diec/db",
+                "/usr/local/share/diec/db",
+                "/opt/diec/db",
+            ];
+            for c in &system_paths {
+                if std::path::Path::new(c).is_dir() {
+                    db_path = c.to_string();
+                    break;
+                }
             }
         }
+
+        // 4. Development environment paths (lowest priority).
         if db_path.is_empty() {
-            eprintln!("error: database directory not found. Use --db <path>");
+            let candidates = [
+                "upstream/Detect-It-Easy/db",
+                "../upstream/Detect-It-Easy/db",
+                "../../upstream/Detect-It-Easy/db",
+                "db",
+            ];
+            for c in &candidates {
+                if std::path::Path::new(c).is_dir() {
+                    db_path = c.to_string();
+                    break;
+                }
+            }
+        }
+
+        if db_path.is_empty() {
+            eprintln!("error: database directory not found.");
+            eprintln!("  Set DIEC_DB_PATH or use --db <path>");
+            eprintln!("  Or place rules in a 'db/' directory next to the executable.");
             return ExitCode::from(EXIT_DATABASE);
         }
     }

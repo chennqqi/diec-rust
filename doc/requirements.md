@@ -748,3 +748,14 @@
 - 发布检查清单 RELEASE.md
 - 更新 AGENTS.md 反映 Phase 6 进展
 - 414 个测试全部通过
+
+## 2026-08-01: Phase 6 继续 — 发布准备
+- 规则分发策略 ADR 0012：打包固定快照 + --customdb/DIEC_DB_PATH 覆盖
+- CLI 数据库搜索路径增强：DIEC_DB_PATH 环境变量 + 可执行文件相邻 db/ 目录
+- 双语 README：README.md（英文默认）+ README.zh-CN.md（中文）
+- 多平台构建发布 workflow：.github/workflows/release.yml
+  - 4 个构建目标：Linux x86_64、Windows x86_64、macOS arm64、macOS x86_64
+  - tag 触发自动构建并发布到 GitHub Releases
+  - 发布物包含 CLI、FFI 库、C 头文件、规则数据库、语言绑定
+- 发布说明模板 RELEASE_NOTES.md
+- 414 个测试全部通过

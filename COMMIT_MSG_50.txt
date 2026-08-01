@@ -1,0 +1,55 @@
+phase6: bilingual README, release workflow, rule distribution strategy
+
+Prepare first release with documentation, CI, and rule distribution.
+
+Changes:
+1. Rule distribution strategy (decisions/0012-rule-distribution.md):
+   - Decision: bundle pinned rule snapshot in release artifacts
+   - Rationale: reproducibility, offline operation, small size (2.7MB)
+   - Override: --customdb flag and DIEC_DB_PATH env var
+   - Alternatives considered and rejected: runtime download,
+     install-time download
+
+2. CLI database path search enhancement (crates/diec-cli/src/main.rs):
+   - Add DIEC_DB_PATH environment variable (highest priority)
+   - Add db/ directory adjacent to executable (release layout)
+   - Add system-wide paths (/usr/share/diec/db, /opt/diec/db)
+   - Keep development paths as lowest priority fallback
+   - Improved error message with usage hints
+
+3. Bilingual README:
+   - README.md: English (default), links to Chinese version
+   - README.zh-CN.md: Chinese, links to English version
+   - Both include: features, quick start, CLI/C/Python/Go usage,
+     database search order, project status, testing instructions
+
+4. Multi-platform release workflow (.github/workflows/release.yml):
+   - Triggered by version tags (v*) or manual dispatch
+   - 4 build targets:
+     - Linux x86_64 (tar.gz)
+     - Windows x86_64 (zip)
+     - macOS arm64 (tar.gz)
+     - macOS x86_64 (tar.gz)
+   - Each artifact contains:
+     - bin/diec: CLI binary
+     - lib/: static and dynamic FFI libraries
+     - include/diec.h: C header
+     - db/: pinned rule database
+     - bindings/python/diec.py: Python binding
+     - bindings/go/diec/diec.go: Go binding
+     - README.md, LICENSE, NOTICES.md
+   - Release job: creates GitHub release with all artifacts
+
+5. Release notes template (RELEASE_NOTES.md):
+   - v0.1.0 first release template
+   - Features, performance, artifacts, rule database, testing
+
+6. Update ROADMAP.md and requirements.md
+
+Result:
+- 414 tests pass, clippy clean
+- Release infrastructure ready for v0.1.0
+
+Generated with [Devin](https://devin.ai)
+
+Co-Authored-By: Devin <158243242+devin-ai-integration[bot]@users.noreply.github.com>

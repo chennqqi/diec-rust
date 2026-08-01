@@ -276,6 +276,16 @@ rquickjs 后端 + Binary host API bridge + 签名解析器 + PE stub 完成。
 
 退出条件：既定兼容指标、性能目标和发布检查全部满足；已知差异均公开、精确且可复现。
 
+**发布准备**：
+- 双语 README：`README.md`（英文默认）+ `README.zh-CN.md`（中文）
+- 多平台构建发布 workflow：`.github/workflows/release.yml`
+  - 4 个构建目标：Linux x86_64、Windows x86_64、macOS arm64、macOS x86_64
+  - tag 触发自动构建并发布到 GitHub Releases
+  - 发布物包含 CLI、FFI 库、C 头文件、规则数据库、语言绑定
+- 规则分发策略 ADR 0012：打包固定快照 + `--customdb`/`DIEC_DB_PATH` 覆盖
+- CLI 数据库搜索路径增强：`DIEC_DB_PATH` 环境变量 + 可执行文件相邻 `db/` 目录
+- 发布说明模板 `RELEASE_NOTES.md`
+
 ## Future：GUI — TODO
 
 GUI 明确不属于当前交付范围。核心库、CLI 和 C ABI 稳定后，另行调研 GUI 技术栈、交互需求和跨平台发布方案；当前阶段禁止为假设中的 GUI 引入框架依赖或反向耦合。

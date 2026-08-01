@@ -1,0 +1,212 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version tag (e.g. v0.1.0)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  # Build CLI binary and FFI libraries for each platform.
+  build:
+    name: Build (${{ matrix.target }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            target: x86_64-unknown-linux-gnu
+            artifact_name: diec-linux-x86_64
+            archive_ext: tar.gz
+          - os: windows-2022
+            target: x86_64-pc-windows-msvc
+            artifact_name: diec-windows-x86_64
+            archive_ext: zip
+          - os: macos-14
+            target: aarch64-apple-darwin
+            artifact_name: diec-macos-arm64
+            archive_ext: tar.gz
+          - os: macos-13
+            target: x86_64-apple-darwin
+            artifact_name: diec-macos-x86_64
+            archive_ext: tar.gz
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Install Rust target
+        shell: bash
+        run: |
+          rustup target add ${{ matrix.target }}
+          rustup component add clippy
+
+      - name: Build CLI and FFI (release)
+        shell: bash
+        run: |
+          cargo build --workspace --release --locked --target ${{ matrix.target }}
+
+      - name: Run tests
+        shell: bash
+        run: cargo test --workspace --all-features --locked
+
+      - name: Prepare release artifacts (Unix)
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          version="${{ inputs.version || github.ref_name }}"
+          staging="diec-${version}-${{ matrix.artifact_name }}"
+          mkdir -p "$staging/bin"
+          mkdir -p "$staging/lib"
+          mkdir -p "$staging/include"
+          mkdir -p "$staging/db"
+
+          # CLI binary
+          cp target/${{ matrix.target }}/release/diec "$staging/bin/"
+
+          # FFI static library
+          cp target/${{ matrix.target }}/release/libdiec_ffi.a "$staging/lib/" 2>/dev/null || true
+
+          # FFI dynamic library
+          cp target/${{ matrix.target }}/release/libdiec_ffi.so "$staging/lib/" 2>/dev/null || true
+          cp target/${{ matrix.target }}/release/libdiec_ffi.dylib "$staging/lib/" 2>/dev/null || true
+
+          # C header
+          cp include/diec.h "$staging/include/"
+
+          # Rule database (pinned snapshot)
+          cp -r upstream/Detect-It-Easy/db/* "$staging/db/" 2>/dev/null || true
+
+          # Language bindings
+          mkdir -p "$staging/bindings/python"
+          mkdir -p "$staging/bindings/go/diec"
+          cp bindings/python/diec.py "$staging/bindings/python/"
+          cp bindings/go/diec/diec.go "$staging/bindings/go/diec/"
+          cp bindings/go/go.mod "$staging/bindings/go/"
+
+          # Documentation
+          cp README.md "$staging/"
+          cp LICENSE "$staging/"
+          cp NOTICES.md "$staging/"
+
+          # Create archive
+          tar czf "${staging}.tar.gz" "$staging"
+          echo "ARTIFACT=${staging}.tar.gz" >> $GITHUB_ENV
+
+      - name: Prepare release artifacts (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $version = "${{ inputs.version || github.ref_name }}"
+          $staging = "diec-$version-${{ matrix.artifact_name }}"
+          New-Item -ItemType Directory -Force -Path "$staging/bin"
+          New-Item -ItemType Directory -Force -Path "$staging/lib"
+          New-Item -ItemType Directory -Force -Path "$staging/include"
+          New-Item -ItemType Directory -Force -Path "$staging/db"
+
+          # CLI binary
+          Copy-Item "target/${{ matrix.target }}/release/diec.exe" "$staging/bin/"
+
+          # FFI static library
+          Copy-Item "target/${{ matrix.target }}/release/diec_ffi.lib" "$staging/lib/" -ErrorAction SilentlyContinue
+
+          # FFI dynamic library
+          Copy-Item "target/${{ matrix.target }}/release/diec_ffi.dll" "$staging/lib/" -ErrorAction SilentlyContinue
+
+          # C header
+          Copy-Item "include/diec.h" "$staging/include/"
+
+          # Rule database (pinned snapshot)
+          if (Test-Path "upstream/Detect-It-Easy/db") {
+            Copy-Item "upstream/Detect-It-Easy/db/*" "$staging/db/" -Recurse -Force
+          }
+
+          # Language bindings
+          New-Item -ItemType Directory -Force -Path "$staging/bindings/python"
+          New-Item -ItemType Directory -Force -Path "$staging/bindings/go/diec"
+          Copy-Item "bindings/python/diec.py" "$staging/bindings/python/"
+          Copy-Item "bindings/go/diec/diec.go" "$staging/bindings/go/diec/"
+          Copy-Item "bindings/go/go.mod" "$staging/bindings/go/"
+
+          # Documentation
+          Copy-Item "README.md" "$staging/"
+          Copy-Item "LICENSE" "$staging/"
+          Copy-Item "NOTICES.md" "$staging/"
+
+          # Create archive
+          Compress-Archive -Path "$staging" -DestinationPath "$staging.zip"
+          "ARTIFACT=$staging.zip" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@b4b15b8c7c6ac0ea253dfdc0c52a98f244b1c3e9
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: ${{ env.ARTIFACT }}
+          retention-days: 30
+
+  # Create GitHub release with all artifacts.
+  release:
+    name: Create release
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Determine version
+        id: version
+        shell: bash
+        run: |
+          if [ -n "${{ inputs.version }}" ]; then
+            echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "version=${GITHUB_REF_NAME}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@fa0a91b85d4f404e444e88eaa5b8d3a8f57e2fbc
+        with:
+          path: artifacts
+
+      - name: List artifacts
+        shell: bash
+        run: |
+          find artifacts -type f
+          ls -la artifacts/*/ || true
+
+      - name: Create release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version="${{ steps.version.outputs.version }}"
+          tag="${{ inputs.version || github.ref_name }}"
+
+          # Check if release already exists
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo "Release $tag already exists, uploading artifacts"
+            gh release upload "$tag" artifacts/*/* --clobber
+          else
+            echo "Creating release $tag"
+            gh release create "$tag" \
+              --title "diec-rust $version" \
+              --notes-file RELEASE_NOTES.md \
+              artifacts/*/*
+          fi

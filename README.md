@@ -1,52 +1,151 @@
 # diec-rust
 
-使用 Rust 重新实现 [horsicq/DIE-engine](https://github.com/horsicq/DIE-engine)。
+A Rust reimplementation of [horsicq/DIE-engine](https://github.com/horsicq/DIE-engine)
+— Detect It Easy.
 
-项目目标是在保持上游检测能力和规则语义兼容的前提下，改善架构、代码质量、性能、依赖规模与可移植性。“Rust 重写”不表示逐行翻译 C++：兼容的是能力、规则语义、输入输出和边界行为，内部设计采用清晰、安全、可测试的 Rust 架构。
+[中文文档](README.zh-CN.md)
 
-## 目标
+## Overview
 
-- 与固定版本 DIE-engine 的检测能力及可观察行为一致。
-- 原样复用上游检测规则，并保持来源、版本和内容可追溯。
-- 提供无 GUI 的命令行程序，包括适合自动化使用的结构化输出。
-- 提供稳定 C ABI，可构建静态 `.a`（Windows 对应 `.lib`），供 C、Go 和 Python 调用。
-- 通过单元、集成、差分、FFI、模糊、性能及跨平台测试证明兼容性和可靠性。
+diec-rust is a from-scratch Rust implementation of the Detect It Easy
+file identification engine. It maintains detection capability and rule
+semantics compatibility with a fixed upstream version while improving
+architecture, code quality, performance, dependency footprint, and
+portability.
 
-## 当前范围
+"Rust rewrite" does not mean line-by-line translation from C++.
+What is compatible: capabilities, rule semantics, I/O behavior, and
+boundary conditions. What is new: clean, safe, testable Rust architecture.
 
-Phase 0 设计门禁已通过，Phase 1 工程骨架与兼容测试基础设施已关闭，Phase 2 核心
-数据模型与格式识别已关闭（20 个格式 probe、211 个测试）。项目现处于 Phase 3，
-实现规则兼容运行时：原样加载固定版本上游规则，覆盖规则语法、内建函数和宿主数据
-访问接口。公共 C ABI 仍保持实验状态。
+## Features
 
-GUI 不在当前交付范围内，作为未来计划保留。
+- **Format detection**: 20 format probes (PE, ELF, Mach-O, DEX, Java
+  class, ZIP, tar, PDF, PNG, JPEG, BMP, WAV, ISO 9660, CFBF, and more)
+- **Rule compatibility**: loads 1184/1186 upstream rules verbatim (99.83%)
+- **CLI**: full-featured command-line tool with JSON/XML/CSV/TSV output
+- **C ABI**: stable versioned C ABI with opaque handles for FFI
+- **Language bindings**: Go/cgo and Python ctypes
+- **Cross-platform**: Linux, macOS, Windows (MSRV 1.88)
+- **Safe**: no `unsafe` in core, panic containment at FFI boundary
+- **Fast**: parallel database loading (~400ms), sub-microsecond format
+  probing
 
-## 设计方向
+## Quick Start
 
-计划采用 Cargo workspace，分离以下职责：
+### Build
 
-- 核心扫描编排和公共数据模型。
-- PE、ELF、Mach-O、DEX、archive 等格式解析。
-- 上游规则加载、解析、编译与执行。
-- C ABI 和内存生命周期管理。
-- CLI 表示层。
-- 规则同步、基线采集和差分测试工具。
+```sh
+git clone https://github.com/chennqqi/diec-rust.git
+cd diec-rust
+cargo build --workspace --release
+```
 
-最终 crate 划分将在上游调研和架构评审后确定，不以本节作为未经验证的实现承诺。
+### CLI Usage
 
-## 项目文档
+```sh
+# Scan a single file
+./target/release/diec file.exe
 
-- [ROADMAP.md](ROADMAP.md)：调研门禁、阶段计划、交付物和未来方向。
-- [AGENTS.md](AGENTS.md)：开发和评审必须遵守的工程约束。
-- `docs/research/`：上游事实与实验结果。
-- `docs/design/`：架构、API、ABI、测试方案与决策记录。
-- `upstream/DIE-engine/`：固定 SHA 的上游主仓库 subtree，仅用于参考和变更跟踪。
-- `upstream/Detect-It-Easy/`：与主仓库 gitlink 一致的规则/发布数据 sibling subtree。
-- `upstream/components.lock.toml`：主仓库与关键组件的 SHA、角色和物化方式。
+# JSON output
+./target/release/diec --output json file.exe
 
-## 上游与许可证
+# Recursive directory scan
+./target/release/diec --recursive /path/to/dir/
 
-- 上游项目：<https://github.com/horsicq/DIE-engine>
-- DIE-engine 仓库当前标注为 MIT License。
+# Use custom database
+./target/release/diec --customdb /path/to/rules/ file.exe
+```
 
-导入上游代码、规则、子模块或测试样本前，仍需逐项核对来源和许可证，并保留归属信息。规则同步必须固定到具体 commit，不使用含义不明确的“最新版”作为兼容基线。
+### Database
+
+The rule database is bundled in release artifacts. The CLI searches
+for it in this order:
+
+1. `--db <path>` flag
+2. `DIEC_DB_PATH` environment variable
+3. `db/` directory adjacent to the executable
+4. System paths (`/usr/share/diec/db`, `/opt/diec/db`)
+5. Development paths (`upstream/Detect-It-Easy/db`)
+
+To use updated rules, download a newer release or use `--customdb`.
+
+### C ABI
+
+```c
+#include "diec.h"
+
+DiecDatabaseHandle db;
+diec_v1_database_builder_new(&builder, &error);
+diec_v1_database_builder_add_path_utf8(builder, 0, db_path, len, 0, &error);
+diec_v1_database_builder_build(builder, &db, &error);
+
+DiecResultHandle result;
+diec_v1_scan_bytes(db, data, size, NULL, NULL, &result, &error);
+```
+
+### Python
+
+```python
+from diec import Database, scan_bytes
+
+db = Database("/path/to/db")
+result = scan_bytes(db, b"file data")
+print(result.detections)
+```
+
+### Go
+
+```go
+db, err := diec.NewDatabase("/path/to/db")
+result, err := diec.ScanBytes(db, []byte("file data"))
+```
+
+## Project Status
+
+| Phase | Status | Description |
+|-------|--------|-------------|
+| 0 | Done | Design gate |
+| 1 | Done | Engineering scaffold & test infrastructure |
+| 2 | Done | Core data model & format detection |
+| 3 | Done | Rule compatibility runtime |
+| 4 | Done | CLI feature parity |
+| 5 | Done | C ABI & language integration |
+| 6 | In progress | Compatibility, performance & release prep |
+
+See [ROADMAP.md](ROADMAP.md) for detailed progress.
+
+## Documentation
+
+- [ROADMAP.md](ROADMAP.md) — Phase plan, deliverables, and milestones
+- [AGENTS.md](AGENTS.md) — Engineering constraints for development
+- [COMPATIBILITY.md](COMPATIBILITY.md) — Compatibility report
+- [RELEASE.md](RELEASE.md) — Release checklist
+- [NOTICES.md](NOTICES.md) — Third-party attribution
+- [AUDIT.md](AUDIT.md) — Supply chain audit
+- `docs/design/` — Architecture, API, ABI, and testing design
+- `docs/research/` — Upstream analysis and experiment results
+
+## Testing
+
+```sh
+# Run all tests
+cargo test --workspace --all-features
+
+# Run benchmarks
+cargo bench -p diec-engine
+cargo bench -p diec-formats
+
+# Run clippy
+cargo clippy --workspace --all-targets --all-features -- -D warnings
+```
+
+414 tests, 6 fuzz targets, 0 failures.
+
+## Upstream & License
+
+- Upstream: <https://github.com/horsicq/DIE-engine>
+- License: MIT (same as upstream)
+- Rules: MIT licensed, bundled from upstream at a fixed commit
+
+See [NOTICES.md](NOTICES.md) for full attribution and [AUDIT.md](AUDIT.md)
+for supply chain details.
