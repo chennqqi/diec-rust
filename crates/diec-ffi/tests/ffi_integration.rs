@@ -5,6 +5,7 @@
 //! and handle cleanup.
 
 #![allow(unsafe_code)]
+#![allow(clippy::unnecessary_safety_comment)]
 
 use diec_ffi::*;
 

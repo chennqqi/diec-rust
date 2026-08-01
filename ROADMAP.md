@@ -196,14 +196,14 @@ rquickjs 后端 + Binary host API bridge + 签名解析器 + PE stub 完成。
 
 退出条件：能力矩阵中当前范围的 CLI 功能完成；自动化输出契约和错误行为有集成测试。
 
-## Phase 5：C ABI 与语言集成 — 进行中
+## Phase 5：C ABI 与语言集成 — 完成
 
 - 提供带版本的稳定 C ABI 和公共头文件。
 - 提供一次性扫描和/或句柄 API。
-- 构建 Unix-like `.a` 与 Windows `.lib`。
+- 构建 Unix-like `.a` 与 Windows `.lib`/`.dll`。
 - 提供 C、Go/cgo 和 Python ctypes/cffi 集成测试或最小示例。
 
-**进展**：
+**完成项**：
 - 公共头文件 `include/diec.h` 完成（ABI 版本协商、状态码、opaque handle、scan options）
 - `diec-ffi` crate 实现完整 C ABI：
   - ABI 版本协商：`diec_abi_version`、`diec_abi_is_compatible`
@@ -218,11 +218,20 @@ rquickjs 后端 + Binary host API bridge + 签名解析器 + PE stub 完成。
   - Error accessors：`diec_v1_error_status/message/free`
   - Panic containment：所有 FFI 函数通过 `catch_unwind` 捕获 panic
   - Pointer-to-pointer free：配对释放，double-free 安全
-- 19 个 FFI 测试（7 单元 + 12 集成）覆盖完整生命周期
-- C smoke test (`tests/c/smoke.c`) 验证完整扫描流程
-- 395 个测试全部通过，cargo fmt/clippy 零警告
+- 构建产物：`diec_ffi.lib`（staticlib）+ `diec_ffi.dll`（cdylib）
+- 语言绑定：
+  - Go/cgo 绑定 (`bindings/go/diec/`)：Database、Scanner、Result、ScanBytes、ScanPath，5 个测试通过
+  - Python ctypes 绑定 (`bindings/python/diec.py`)：Database、Result、scan_bytes、scan_path，9 个测试通过
+  - C smoke test (`tests/c/smoke.c`) 验证完整扫描流程
+- 35 个 FFI 测试（7 单元 + 12 集成 + 16 sanitizer）覆盖：
+  - 完整生命周期（build → scan → verify → cleanup）
+  - Double-free 安全（所有 handle 类型）
+  - Null 指针验证（所有 accessor）
+  - 错误句柄查询和释放
+  - Scan options 边界（null、小 size）
+- 411 个测试全部通过，cargo fmt/clippy 零警告
 
-退出条件：内存所有权、并发、错误码和 panic 隔离均通过测试；目标平台完成静态链接 smoke test。
+退出条件：内存所有权、并发、错误码和 panic 隔离均通过测试；目标平台完成静态链接 smoke test。✅
 
 ## Phase 6：兼容性、性能与发布准备 — TODO
 

@@ -705,7 +705,7 @@
 - 实现 --showdatabase、--showstructs 信息查询
 - 24 个 CLI 集成测试，374 个测试全部通过
 
-## 2026-08-01: Phase 5 开始 — C ABI 与语言集成
+## 2026-08-01: Phase 5 完成 — C ABI 与语言集成
 - 创建公共头文件 include/diec.h（ABI 版本、状态码、opaque handle、scan options）
 - 实现 diec-ffi crate 完整 C ABI：
   - ABI 版本协商、状态码查询
@@ -713,6 +713,9 @@
   - One-shot 和 reusable scanner 两层入口
   - Panic containment (catch_unwind)
   - Pointer-to-pointer 配对释放
-- 19 个 FFI 测试（7 单元 + 12 集成）
+- 构建产物：diec_ffi.lib (staticlib) + diec_ffi.dll (cdylib)
+- Go/cgo 绑定 (bindings/go/diec/)：5 个测试通过
+- Python ctypes 绑定 (bindings/python/diec.py)：9 个测试通过
+- 35 个 FFI 测试（7 单元 + 12 集成 + 16 sanitizer）
 - C smoke test (tests/c/smoke.c)
-- 395 个测试全部通过
+- 411 个测试全部通过

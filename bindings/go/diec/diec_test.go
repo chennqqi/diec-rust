@@ -1,0 +1,101 @@
+// Package diec_test verifies the Go bindings against the diec-rust C ABI.
+//
+// This test builds the database, scans a 7-Zip header, and verifies
+// the result JSON contains "7-Zip".
+//
+// Run:
+//   go test -v ./...
+//
+// The static library must be built first:
+//   cargo build -p diec-ffi --release
+//
+// On Windows, link against target/release/diec_ffi.lib.
+// On Linux/macOS, link against target/release/libdiec_ffi.a.
+package diec_test
+
+import (
+	"strings"
+	"testing"
+
+	diec "github.com/chennqqi/diec-rust/bindings/go/diec"
+)
+
+// sevenZipHeader returns a minimal 7-Zip file header (64 bytes).
+func sevenZipHeader() []byte {
+	data := []byte{0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C, 0x00, 0x04}
+	for len(data) < 64 {
+		data = append(data, 0)
+	}
+	return data
+}
+
+const dbPath = "../../../upstream/Detect-It-Easy/db"
+
+func TestAbiVersion(t *testing.T) {
+	ver := diec.AbiVersion()
+	if ver != 0x00010000 {
+		t.Fatalf("ABI version = 0x%08x, want 0x00010000", ver)
+	}
+}
+
+func TestAbiCompatible(t *testing.T) {
+	if !diec.AbiCompatible(0x00010000) {
+		t.Fatal("library should be compatible with v1.0")
+	}
+	if diec.AbiCompatible(0x00020000) {
+		t.Fatal("library should not be compatible with v2.0")
+	}
+}
+
+func TestScanBytes(t *testing.T) {
+	db, err := diec.NewDatabase(dbPath)
+	if err != nil {
+		t.Skipf("Skipping: cannot load database: %v", err)
+	}
+	defer db.Close()
+
+	result, err := diec.ScanBytes(db, sevenZipHeader(), 0)
+	if err != nil {
+		t.Fatalf("ScanBytes failed: %v", err)
+	}
+	defer result.Close()
+
+	json := result.JSON()
+	if !strings.Contains(json, "7-Zip") {
+		t.Errorf("JSON does not contain 7-Zip: %s", json)
+	}
+
+	count := result.DetectionCount()
+	if count == 0 {
+		t.Error("DetectionCount is 0")
+	}
+}
+
+func TestScanPath(t *testing.T) {
+	db, err := diec.NewDatabase(dbPath)
+	if err != nil {
+		t.Skipf("Skipping: cannot load database: %v", err)
+	}
+	defer db.Close()
+
+	// Write a temp file with 7-Zip header.
+	// (In a real test we'd use t.TempDir, but for simplicity we scan
+	// an existing corpus file if available.)
+	result, err := diec.ScanPath(db, "../../../corpus/payload.zip", 0)
+	if err != nil {
+		t.Skipf("Skipping: cannot scan corpus file: %v", err)
+	}
+	defer result.Close()
+
+	json := result.JSON()
+	if !strings.Contains(json, "Zip") {
+		t.Errorf("JSON does not contain Zip: %s", json)
+	}
+}
+
+func TestNullDatabasePath(t *testing.T) {
+	_, err := diec.NewDatabase("/nonexistent/path/that/does/not/exist")
+	if err == nil {
+		t.Fatal("expected error for nonexistent path")
+	}
+}

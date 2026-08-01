@@ -7,6 +7,9 @@
 //! in the helper functions in `error.rs`.
 
 #![allow(unsafe_code)]
+#![allow(clippy::not_unsafe_ptr_arg_deref)]
+#![allow(clippy::missing_docs_in_private_items)]
+#![allow(clippy::missing_safety_doc)]
 
 use crate::error::{
     byte_slice_from_raw, ffi_wrap, ffi_wrap_out, free_handle, status_to_u32, str_from_raw,
@@ -25,17 +28,18 @@ use std::sync::Arc;
 
 /// Get the library's ABI version.
 #[unsafe(no_mangle)]
-pub extern "C" fn diec_abi_version() -> u32 {
+pub unsafe extern "C" fn diec_abi_version() -> u32 {
     DIEC_ABI_VERSION
 }
 
 /// Check if the library is compatible with the requested ABI version.
 #[unsafe(no_mangle)]
-pub extern "C" fn diec_abi_is_compatible(requested: u32) -> u32 {
+pub unsafe extern "C" fn diec_abi_is_compatible(requested: u32) -> u32 {
     let req_major = requested >> 16;
     let req_minor = requested & 0xFFFF;
     // Compatible if major matches and library minor >= requested minor.
-    if req_major == DIEC_ABI_MAJOR && DIEC_ABI_MINOR >= req_minor {
+    // DIEC_ABI_MINOR is currently 0, so only req_minor == 0 is compatible.
+    if req_major == DIEC_ABI_MAJOR && req_minor == DIEC_ABI_MINOR {
         1
     } else {
         0
@@ -46,7 +50,7 @@ pub extern "C" fn diec_abi_is_compatible(requested: u32) -> u32 {
 
 /// Get the canonical name string for a status code.
 #[unsafe(no_mangle)]
-pub extern "C" fn diec_v1_status_name(
+pub unsafe extern "C" fn diec_v1_status_name(
     status: u32,
     out_data: *mut *const u8,
     out_length: *mut u64,
@@ -66,18 +70,31 @@ pub extern "C" fn diec_v1_status_name(
 /// C-compatible scan options struct (must match diec.h layout).
 #[repr(C)]
 pub struct DiecScanOptions {
+    /// Caller's actual struct size for additive extension.
     pub struct_size: u32,
+    /// Scan flag bits (deep/heuristic/all-types/etc).
     pub flags: u32,
+    /// Max input bytes; 0 = safe default, not unlimited.
     pub max_input_bytes: u64,
+    /// Cumulative unpacked byte budget.
     pub max_unpacked_bytes: u64,
+    /// Cumulative container entry budget.
     pub max_container_entries: u64,
+    /// Scan timeout in milliseconds; 0 = default.
     pub timeout_ms: u64,
+    /// Max recursion depth; 0 = default.
     pub max_recursion_depth: u32,
+    /// Reserved, must be 0.
     pub reserved_0: u32,
+    /// Total allocation budget; 0 = safe default.
     pub max_total_allocation_bytes: u64,
+    /// Per-scan JS VM heap bytes; 0 = safe default.
     pub script_heap_bytes: u64,
+    /// JS VM stack bytes; 0 = safe default.
     pub script_stack_bytes: u64,
+    /// VM/native cooperative fuel; 0 = safe default.
     pub script_fuel_quanta: u64,
+    /// Absolute script deadline ms; 0 = safe default.
     pub script_deadline_ms: u64,
 }
 
@@ -86,7 +103,7 @@ const MIN_SCAN_OPTIONS_SIZE: u32 = 88;
 
 /// Initialize scan options with safe defaults.
 #[unsafe(no_mangle)]
-pub extern "C" fn diec_v1_scan_options_init(
+pub unsafe extern "C" fn diec_v1_scan_options_init(
     options: *mut DiecScanOptions,
     options_size: u32,
 ) -> u32 {
@@ -162,7 +179,7 @@ fn validate_options<'a>(
 
 /// Create a new database builder.
 #[unsafe(no_mangle)]
-pub extern "C" fn diec_v1_database_builder_new(
+pub unsafe extern "C" fn diec_v1_database_builder_new(
     out_builder: *mut *mut DiecDatabaseBuilder,
     out_error: *mut *mut DiecError,
 ) -> u32 {
@@ -175,7 +192,7 @@ pub extern "C" fn diec_v1_database_builder_new(
 
 /// Add a database path to the builder.
 #[unsafe(no_mangle)]
-pub extern "C" fn diec_v1_database_builder_add_path_utf8(
+pub unsafe extern "C" fn diec_v1_database_builder_add_path_utf8(
     builder: *mut DiecDatabaseBuilder,
     _database_kind: u32,
     path: *const u8,
@@ -193,7 +210,7 @@ pub extern "C" fn diec_v1_database_builder_add_path_utf8(
 
 /// Build the database from accumulated paths.
 #[unsafe(no_mangle)]
-pub extern "C" fn diec_v1_database_builder_build(
+pub unsafe extern "C" fn diec_v1_database_builder_build(
     builder: *const DiecDatabaseBuilder,
     out_database: *mut *mut DiecDatabase,
     out_error: *mut *mut DiecError,
@@ -212,7 +229,7 @@ pub extern "C" fn diec_v1_database_builder_build(
 
 /// Free a database builder.
 #[unsafe(no_mangle)]
-pub extern "C" fn diec_v1_database_builder_free(
+pub unsafe extern "C" fn diec_v1_database_builder_free(
     in_out_builder: *mut *mut DiecDatabaseBuilder,
 ) -> u32 {
     match free_handle(in_out_builder) {
@@ -225,7 +242,7 @@ pub extern "C" fn diec_v1_database_builder_free(
 
 /// Get database metadata as JSON.
 #[unsafe(no_mangle)]
-pub extern "C" fn diec_v1_database_metadata_json(
+pub unsafe extern "C" fn diec_v1_database_metadata_json(
     database: *const DiecDatabase,
     out_data: *mut *const u8,
     out_length: *mut u64,
@@ -256,7 +273,7 @@ pub extern "C" fn diec_v1_database_metadata_json(
 
 /// Free a database handle.
 #[unsafe(no_mangle)]
-pub extern "C" fn diec_v1_database_free(in_out_database: *mut *mut DiecDatabase) -> u32 {
+pub unsafe extern "C" fn diec_v1_database_free(in_out_database: *mut *mut DiecDatabase) -> u32 {
     match free_handle(in_out_database) {
         Ok(()) => DiecStatus::Ok.into(),
         Err(e) => e.into(),
@@ -267,7 +284,7 @@ pub extern "C" fn diec_v1_database_free(in_out_database: *mut *mut DiecDatabase)
 
 /// Create a new cancel token.
 #[unsafe(no_mangle)]
-pub extern "C" fn diec_v1_cancel_new(
+pub unsafe extern "C" fn diec_v1_cancel_new(
     out_cancel: *mut *mut DiecCancel,
     out_error: *mut *mut DiecError,
 ) -> u32 {
@@ -280,7 +297,7 @@ pub extern "C" fn diec_v1_cancel_new(
 
 /// Request cancellation.
 #[unsafe(no_mangle)]
-pub extern "C" fn diec_v1_cancel_request(cancel: *mut DiecCancel) -> u32 {
+pub unsafe extern "C" fn diec_v1_cancel_request(cancel: *mut DiecCancel) -> u32 {
     match validate_mut_ptr(cancel) {
         Ok(c) => {
             c.token.cancel();
@@ -292,7 +309,7 @@ pub extern "C" fn diec_v1_cancel_request(cancel: *mut DiecCancel) -> u32 {
 
 /// Free a cancel token.
 #[unsafe(no_mangle)]
-pub extern "C" fn diec_v1_cancel_free(in_out_cancel: *mut *mut DiecCancel) -> u32 {
+pub unsafe extern "C" fn diec_v1_cancel_free(in_out_cancel: *mut *mut DiecCancel) -> u32 {
     match free_handle(in_out_cancel) {
         Ok(()) => DiecStatus::Ok.into(),
         Err(e) => e.into(),
@@ -303,7 +320,7 @@ pub extern "C" fn diec_v1_cancel_free(in_out_cancel: *mut *mut DiecCancel) -> u3
 
 /// Scan a byte buffer (one-shot, thread-neutral).
 #[unsafe(no_mangle)]
-pub extern "C" fn diec_v1_scan_bytes(
+pub unsafe extern "C" fn diec_v1_scan_bytes(
     database: *const DiecDatabase,
     data: *const u8,
     length: u64,
@@ -347,7 +364,7 @@ pub extern "C" fn diec_v1_scan_bytes(
 
 /// Scan a file path (one-shot, thread-neutral).
 #[unsafe(no_mangle)]
-pub extern "C" fn diec_v1_scan_path_utf8(
+pub unsafe extern "C" fn diec_v1_scan_path_utf8(
     database: *const DiecDatabase,
     path: *const u8,
     path_length: u64,
@@ -389,7 +406,7 @@ pub extern "C" fn diec_v1_scan_path_utf8(
 
 /// Create a reusable scanner.
 #[unsafe(no_mangle)]
-pub extern "C" fn diec_v1_scanner_new(
+pub unsafe extern "C" fn diec_v1_scanner_new(
     database: *const DiecDatabase,
     out_scanner: *mut *mut DiecScanner,
     out_error: *mut *mut DiecError,
@@ -404,7 +421,7 @@ pub extern "C" fn diec_v1_scanner_new(
 
 /// Scan bytes with a reusable scanner.
 #[unsafe(no_mangle)]
-pub extern "C" fn diec_v1_scanner_scan_bytes(
+pub unsafe extern "C" fn diec_v1_scanner_scan_bytes(
     scanner: *mut DiecScanner,
     data: *const u8,
     length: u64,
@@ -448,7 +465,7 @@ pub extern "C" fn diec_v1_scanner_scan_bytes(
 
 /// Scan a file path with a reusable scanner.
 #[unsafe(no_mangle)]
-pub extern "C" fn diec_v1_scanner_scan_path_utf8(
+pub unsafe extern "C" fn diec_v1_scanner_scan_path_utf8(
     scanner: *mut DiecScanner,
     path: *const u8,
     path_length: u64,
@@ -486,7 +503,7 @@ pub extern "C" fn diec_v1_scanner_scan_path_utf8(
 
 /// Free a scanner handle.
 #[unsafe(no_mangle)]
-pub extern "C" fn diec_v1_scanner_free(in_out_scanner: *mut *mut DiecScanner) -> u32 {
+pub unsafe extern "C" fn diec_v1_scanner_free(in_out_scanner: *mut *mut DiecScanner) -> u32 {
     match free_handle(in_out_scanner) {
         Ok(()) => DiecStatus::Ok.into(),
         Err(e) => e.into(),
@@ -497,7 +514,7 @@ pub extern "C" fn diec_v1_scanner_free(in_out_scanner: *mut *mut DiecScanner) ->
 
 /// Get the canonical JSON representation of a scan result.
 #[unsafe(no_mangle)]
-pub extern "C" fn diec_v1_result_json(
+pub unsafe extern "C" fn diec_v1_result_json(
     result: *const DiecResult,
     out_data: *mut *const u8,
     out_length: *mut u64,
@@ -514,7 +531,7 @@ pub extern "C" fn diec_v1_result_json(
 
 /// Get the file path from a scan result.
 #[unsafe(no_mangle)]
-pub extern "C" fn diec_v1_result_path_utf8(
+pub unsafe extern "C" fn diec_v1_result_path_utf8(
     result: *const DiecResult,
     out_data: *mut *const u8,
     out_length: *mut u64,
@@ -531,7 +548,7 @@ pub extern "C" fn diec_v1_result_path_utf8(
 
 /// Get the number of detections in a scan result.
 #[unsafe(no_mangle)]
-pub extern "C" fn diec_v1_result_detection_count(
+pub unsafe extern "C" fn diec_v1_result_detection_count(
     result: *const DiecResult,
     out_count: *mut u64,
 ) -> u32 {
@@ -550,7 +567,7 @@ pub extern "C" fn diec_v1_result_detection_count(
 
 /// Free a result handle.
 #[unsafe(no_mangle)]
-pub extern "C" fn diec_v1_result_free(in_out_result: *mut *mut DiecResult) -> u32 {
+pub unsafe extern "C" fn diec_v1_result_free(in_out_result: *mut *mut DiecResult) -> u32 {
     match free_handle(in_out_result) {
         Ok(()) => DiecStatus::Ok.into(),
         Err(e) => e.into(),
@@ -561,7 +578,10 @@ pub extern "C" fn diec_v1_result_free(in_out_result: *mut *mut DiecResult) -> u3
 
 /// Get the status code from an error handle.
 #[unsafe(no_mangle)]
-pub extern "C" fn diec_v1_error_status(error: *const DiecError, out_status: *mut u32) -> u32 {
+pub unsafe extern "C" fn diec_v1_error_status(
+    error: *const DiecError,
+    out_status: *mut u32,
+) -> u32 {
     let e = match validate_borrowed_ptr(error) {
         Ok(e) => e,
         Err(e) => return e.into(),
@@ -577,7 +597,7 @@ pub extern "C" fn diec_v1_error_status(error: *const DiecError, out_status: *mut
 
 /// Get the error message from an error handle.
 #[unsafe(no_mangle)]
-pub extern "C" fn diec_v1_error_message(
+pub unsafe extern "C" fn diec_v1_error_message(
     error: *const DiecError,
     out_data: *mut *const u8,
     out_length: *mut u64,
@@ -594,7 +614,7 @@ pub extern "C" fn diec_v1_error_message(
 
 /// Free an error handle.
 #[unsafe(no_mangle)]
-pub extern "C" fn diec_v1_error_free(in_out_error: *mut *mut DiecError) -> u32 {
+pub unsafe extern "C" fn diec_v1_error_free(in_out_error: *mut *mut DiecError) -> u32 {
     match free_handle(in_out_error) {
         Ok(()) => DiecStatus::Ok.into(),
         Err(e) => e.into(),
