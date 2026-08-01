@@ -730,3 +730,14 @@
 - FFI 跨平台 CI：ffi-smoke job + python-binding job (Linux/macOS/Windows)
 - 许可证和供应链审计：LICENSE、NOTICES.md、AUDIT.md
 - 414 个测试全部通过
+
+## 2026-08-01: Phase 6 继续 — Fuzz 扩展和兼容性报告
+- 新增 3 个 fuzz targets（共 6 个）：
+  - fuzz_scan_engine：完整扫描流程（default/heuristic/all_types）
+  - fuzz_output_render：JSON/text/XML/CSV/TSV 渲染 + JSON 可解析验证
+  - fuzz_scan_ffi：C ABI 边界 + double-free 安全
+- 兼容性报告模板 COMPATIBILITY.md：
+  - 规则加载兼容性、语料差分矩阵、CLI/ABI 兼容性清单
+  - 性能基线数据、测试统计
+- 更新 docs/design/testing.md 记录已实现 fuzz targets
+- 414 个测试全部通过

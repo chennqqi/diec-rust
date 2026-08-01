@@ -23,9 +23,24 @@ path = "fuzz_targets/fuzz_format_probe.rs"
 name = "fuzz_byte_view_subview"
 path = "fuzz_targets/fuzz_byte_view_subview.rs"
 
+[[bin]]
+name = "fuzz_scan_engine"
+path = "fuzz_targets/fuzz_scan_engine.rs"
+
+[[bin]]
+name = "fuzz_output_render"
+path = "fuzz_targets/fuzz_output_render.rs"
+
+[[bin]]
+name = "fuzz_scan_ffi"
+path = "fuzz_targets/fuzz_scan_ffi.rs"
+
 [dependencies]
 libfuzzer-sys = "0.4"
 diec-core = { path = "../crates/diec-core" }
 diec-formats = { path = "../crates/diec-formats" }
+diec-engine = { path = "../crates/diec-engine" }
+diec-output = { path = "../crates/diec-output" }
+serde_json = "1.0"
 
 [workspace]

@@ -258,6 +258,19 @@ rquickjs 后端 + Binary host API bridge + 签名解析器 + PE stub 完成。
   - `NOTICES.md`：第三方归属（上游 DIE-engine、QuickJS、所有 Rust 依赖）
   - `AUDIT.md`：供应链安全审计（依赖策略、CI 安全、已知风险）
 - 414 个测试全部通过，cargo fmt/clippy 零警告
+- Fuzz targets 扩展（6 个）：
+  - `fuzz_byte_source`、`fuzz_byte_view_subview`（diec-core 层）
+  - `fuzz_format_probe`（diec-formats 层）
+  - `fuzz_scan_engine`（diec-engine 层，default/heuristic/all_types 三种 flag）
+  - `fuzz_output_render`（diec-output 层，JSON/text/XML/CSV/TSV 渲染）
+  - `fuzz_scan_ffi`（diec-ffi 层，C ABI 边界 + double-free 安全）
+- 兼容性报告模板 `COMPATIBILITY.md`：
+  - 规则加载兼容性（1184/1186 = 99.83%）
+  - 语料差分测试矩阵（27 样本 + 20 边缘样本）
+  - CLI 功能兼容性清单
+  - C ABI 兼容性清单
+  - 性能基线数据
+  - 测试统计
 
 退出条件：既定兼容指标、性能目标和发布检查全部满足；已知差异均公开、精确且可复现。
 

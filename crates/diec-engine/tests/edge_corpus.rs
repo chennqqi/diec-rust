@@ -160,17 +160,18 @@ fn edge_corpus_no_spurious_detections() {
         };
 
         if let Ok(result) = scan_bytes(&database, filename, data, ScanFlags::default(), &cancel)
-            && !result.detections.is_empty() {
-                let detections: Vec<String> = result
-                    .detections
-                    .iter()
-                    .map(|d| format!("{}:{}", d.type_name, d.name))
-                    .collect();
-                spurious.push(format!(
-                    "{filename}: expected no detections, got: [{}]",
-                    detections.join(", ")
-                ));
-            }
+            && !result.detections.is_empty()
+        {
+            let detections: Vec<String> = result
+                .detections
+                .iter()
+                .map(|d| format!("{}:{}", d.type_name, d.name))
+                .collect();
+            spurious.push(format!(
+                "{filename}: expected no detections, got: [{}]",
+                detections.join(", ")
+            ));
+        }
         tested += 1;
     }
 
