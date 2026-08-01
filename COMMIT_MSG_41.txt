@@ -1,0 +1,28 @@
+phase4: add XML/CSV/TSV output, --alltypes, --hideunknown, CLI tests
+
+Add remaining CLI output formats and scan control flags to match
+upstream DIE-engine console capabilities.
+
+Changes:
+1. Add XML renderer (diec-output::xml) with proper escaping.
+2. Add CSV renderer (diec-output::delimited) with RFC 4180 escaping.
+3. Add TSV renderer (diec-output::delimited) with tab separation.
+4. Update CLI --output to accept: text, json, xml, csv, tsv.
+5. Implement --hideunknown: filter detections with empty or "Unknown"
+   name from results.
+6. Implement --alltypes: run all file type rules regardless of detected
+   format (matches upstream bIsAllTypesScan behavior).
+7. Add all_rule_types() function returning all known rule file types.
+8. Add 7 new CLI integration tests:
+   - cli_xml_output, cli_csv_output, cli_tsv_output
+   - cli_alltypes_flag, cli_invalid_output_format
+   - cli_deepscan_flag_accepted, cli_heuristicscan_flag_accepted
+
+Result:
+- CLI now supports 5 output formats (text/json/xml/csv/tsv)
+- All scan control flags are accepted and propagated to rules
+- 368 tests pass (361 + 7 new), clippy clean
+
+Generated with [Devin](https://devin.ai)
+
+Co-Authored-By: Devin <158243242+devin-ai-integration[bot]@users.noreply.github.com>

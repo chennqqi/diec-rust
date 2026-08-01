@@ -20,7 +20,7 @@ fn print_usage() {
     eprintln!();
     eprintln!("Options:");
     eprintln!("  --db <path>          Database directory (default: ./db)");
-    eprintln!("  --output <format>    Output format: text (default) or json");
+    eprintln!("  --output <format>    Output format: text (default), json, xml, csv, tsv");
     eprintln!("  --recursive, -r      Recursively scan directories");
     eprintln!("  --deepscan           Enable deep scan mode");
     eprintln!("  --heuristicscan      Enable heuristic scan mode");
@@ -128,7 +128,10 @@ fn main() -> ExitCode {
                     return ExitCode::from(EXIT_USAGE);
                 }
                 output_format = args[i].clone();
-                if output_format != "text" && output_format != "json" {
+                if !matches!(
+                    output_format.as_str(),
+                    "text" | "json" | "xml" | "csv" | "tsv"
+                ) {
                     eprintln!("error: unsupported output format: {output_format}");
                     return ExitCode::from(EXIT_USAGE);
                 }
@@ -223,6 +226,21 @@ fn main() -> ExitCode {
                     print!("{}", diec_output::render_json(r));
                 }
                 println!("]");
+            }
+        }
+        "xml" => {
+            for r in &results {
+                print!("{}", diec_output::render_xml(r));
+            }
+        }
+        "csv" => {
+            for r in &results {
+                print!("{}", diec_output::render_csv(r));
+            }
+        }
+        "tsv" => {
+            for r in &results {
+                print!("{}", diec_output::render_tsv(r));
             }
         }
         _ => {

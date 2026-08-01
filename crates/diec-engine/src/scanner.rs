@@ -192,6 +192,33 @@ impl std::fmt::Display for ScanError {
 
 impl std::error::Error for ScanError {}
 
+/// Return all known rule file types for --alltypes mode.
+/// This matches upstream bIsAllTypesScan behavior where all format
+/// rules are evaluated regardless of detected format.
+fn all_rule_types() -> Vec<&'static str> {
+    vec![
+        "PE",
+        "ELF",
+        "MACH",
+        "MACHOFAT",
+        "MSDOS",
+        "Binary",
+        "APK",
+        "JAR",
+        "ZIP",
+        "RAR",
+        "DEX",
+        "PDF",
+        "CFBF",
+        "ISO9660",
+        "JPEG",
+        "PNG",
+        "PYC",
+        "NPM",
+        "JavaClass",
+    ]
+}
+
 /// A single detection result from scanning.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ScanDetection {
@@ -254,7 +281,13 @@ pub fn scan_bytes(
     let mut diagnostics = Vec::new();
 
     // Detect the file format to determine which rule types to run.
-    let active_types = detect_rule_types(&data);
+    // With --alltypes, all file type rules are run (matching upstream
+    // bIsAllTypesScan behavior: minimal PE32 also reports MSDOS).
+    let active_types = if flags.all_types {
+        all_rule_types()
+    } else {
+        detect_rule_types(&data)
+    };
 
     // Group rules by file type, but only for types that match the
     // detected format.
@@ -348,6 +381,11 @@ pub fn scan_bytes(
         }
 
         runtime.shutdown();
+    }
+
+    // Apply --hideunknown filter: remove detections with empty or "Unknown" name.
+    if flags.hide_unknown {
+        detections.retain(|d| !d.name.is_empty() && d.name != "Unknown");
     }
 
     Ok(ScanResult {

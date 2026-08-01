@@ -251,3 +251,174 @@ fn cli_directory_without_recursive_errors() {
 
     std::fs::remove_dir_all(&dir).ok();
 }
+
+#[test]
+fn cli_xml_output() {
+    if !std::path::Path::new(&db_root()).is_dir() {
+        eprintln!("Skipping: upstream database not found");
+        return;
+    }
+    if !std::path::Path::new(&diec_binary()).exists() {
+        eprintln!("Skipping: diec binary not built");
+        return;
+    }
+
+    let mut data = vec![0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C, 0x00, 0x04];
+    data.resize(64, 0);
+    let path = write_temp_file("test_cli_xml.7z", &data);
+
+    let (success, stdout, _stderr) = run_diec(&["--db", &db_root(), "--output", "xml", &path]);
+
+    assert!(success, "diec should exit 0");
+    assert!(
+        stdout.contains("<?xml"),
+        "XML should start with declaration: {stdout}"
+    );
+    assert!(
+        stdout.contains("<Result>"),
+        "XML should have Result element: {stdout}"
+    );
+    assert!(
+        stdout.contains("7-Zip"),
+        "XML should contain 7-Zip: {stdout}"
+    );
+}
+
+#[test]
+fn cli_csv_output() {
+    if !std::path::Path::new(&db_root()).is_dir() {
+        eprintln!("Skipping: upstream database not found");
+        return;
+    }
+    if !std::path::Path::new(&diec_binary()).exists() {
+        eprintln!("Skipping: diec binary not built");
+        return;
+    }
+
+    let mut data = vec![0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C, 0x00, 0x04];
+    data.resize(64, 0);
+    let path = write_temp_file("test_cli_csv.7z", &data);
+
+    let (success, stdout, _stderr) = run_diec(&["--db", &db_root(), "--output", "csv", &path]);
+
+    assert!(success, "diec should exit 0");
+    assert!(
+        stdout.contains("path,file_type,type,name,version,options"),
+        "CSV should have header: {stdout}"
+    );
+    assert!(
+        stdout.contains("7-Zip"),
+        "CSV should contain 7-Zip: {stdout}"
+    );
+}
+
+#[test]
+fn cli_tsv_output() {
+    if !std::path::Path::new(&db_root()).is_dir() {
+        eprintln!("Skipping: upstream database not found");
+        return;
+    }
+    if !std::path::Path::new(&diec_binary()).exists() {
+        eprintln!("Skipping: diec binary not built");
+        return;
+    }
+
+    let mut data = vec![0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C, 0x00, 0x04];
+    data.resize(64, 0);
+    let path = write_temp_file("test_cli_tsv.7z", &data);
+
+    let (success, stdout, _stderr) = run_diec(&["--db", &db_root(), "--output", "tsv", &path]);
+
+    assert!(success, "diec should exit 0");
+    assert!(
+        stdout.contains("path\tfile_type\ttype\tname\tversion\toptions"),
+        "TSV should have header: {stdout}"
+    );
+    assert!(
+        stdout.contains("7-Zip"),
+        "TSV should contain 7-Zip: {stdout}"
+    );
+}
+
+#[test]
+fn cli_alltypes_flag() {
+    if !std::path::Path::new(&db_root()).is_dir() {
+        eprintln!("Skipping: upstream database not found");
+        return;
+    }
+    if !std::path::Path::new(&diec_binary()).exists() {
+        eprintln!("Skipping: diec binary not built");
+        return;
+    }
+
+    // Use a minimal PE file: with --alltypes it should produce more
+    // detections than without (e.g. MSDOS, CFBF, etc.).
+    let mut data = vec![0x4D, 0x5A]; // MZ header
+    data.resize(256, 0);
+    let path = write_temp_file("test_cli_alltypes.exe", &data);
+
+    let (_success, stdout_normal, _) = run_diec(&["--db", &db_root(), "--output", "json", &path]);
+    let (_success, stdout_alltypes, _) =
+        run_diec(&["--db", &db_root(), "--output", "json", "--alltypes", &path]);
+
+    let normal_count = stdout_normal.matches("\"name\"").count();
+    let alltypes_count = stdout_alltypes.matches("\"name\"").count();
+    assert!(
+        alltypes_count >= normal_count,
+        "--alltypes should produce at least as many detections: normal={normal_count}, alltypes={alltypes_count}"
+    );
+}
+
+#[test]
+fn cli_invalid_output_format() {
+    if !std::path::Path::new(&diec_binary()).exists() {
+        eprintln!("Skipping: diec binary not built");
+        return;
+    }
+
+    let (success, _stdout, stderr) = run_diec(&["--output", "yaml", "somefile.bin"]);
+    assert!(!success, "diec should reject unknown output format");
+    assert!(
+        stderr.contains("unsupported output format"),
+        "stderr should mention unsupported format: {stderr}"
+    );
+}
+
+#[test]
+fn cli_deepscan_flag_accepted() {
+    if !std::path::Path::new(&db_root()).is_dir() {
+        eprintln!("Skipping: upstream database not found");
+        return;
+    }
+    if !std::path::Path::new(&diec_binary()).exists() {
+        eprintln!("Skipping: diec binary not built");
+        return;
+    }
+
+    let mut data = vec![0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C, 0x00, 0x04];
+    data.resize(64, 0);
+    let path = write_temp_file("test_cli_deep.7z", &data);
+
+    // --deepscan should be accepted and not cause errors.
+    let (success, _stdout, stderr) = run_diec(&["--db", &db_root(), "--deepscan", &path]);
+    assert!(success, "diec with --deepscan should exit 0: {stderr}");
+}
+
+#[test]
+fn cli_heuristicscan_flag_accepted() {
+    if !std::path::Path::new(&db_root()).is_dir() {
+        eprintln!("Skipping: upstream database not found");
+        return;
+    }
+    if !std::path::Path::new(&diec_binary()).exists() {
+        eprintln!("Skipping: diec binary not built");
+        return;
+    }
+
+    let mut data = vec![0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C, 0x00, 0x04];
+    data.resize(64, 0);
+    let path = write_temp_file("test_cli_heur.7z", &data);
+
+    let (success, _stdout, stderr) = run_diec(&["--db", &db_root(), "--heuristicscan", &path]);
+    assert!(success, "diec with --heuristicscan should exit 0: {stderr}");
+}

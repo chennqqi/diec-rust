@@ -8,11 +8,15 @@
 #![forbid(unsafe_code)]
 #![warn(missing_docs)]
 
+mod delimited;
 mod json;
 mod text;
+mod xml;
 
+pub use delimited::{render_csv, render_tsv};
 pub use json::render_json;
 pub use text::render_text;
+pub use xml::render_xml;
 
 #[cfg(test)]
 mod tests {

@@ -691,3 +691,8 @@
 - 所有 candidate report 已 sanitize 本地路径并提交至 docs/research/data/macos-qt5/
 
 - [2026-08-01] 在 macOS 主机 (macdev) 上完成 Phase 1 实现期门禁：macOS runtime benchmark、macOS release size benchmark、Rust 成对 benchmark
+
+## 2026-08-01: Phase 4 继续 — CLI 参数对齐与退出条件评估
+- 更新 ROADMAP.md/AGENTS.md Phase 4 进展
+- CLI 参数与上游对齐 (--heuristicscan/--deepscan/--verbose/--aggressivescan/--alltypes/--hideunknown)
+- 评估 Phase 4 退出条件是否满足
