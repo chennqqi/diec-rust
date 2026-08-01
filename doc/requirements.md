@@ -736,8 +736,15 @@
   - fuzz_scan_engine：完整扫描流程（default/heuristic/all_types）
   - fuzz_output_render：JSON/text/XML/CSV/TSV 渲染 + JSON 可解析验证
   - fuzz_scan_ffi：C ABI 边界 + double-free 安全
-- 兼容性报告模板 COMPATIBILITY.md：
-  - 规则加载兼容性、语料差分矩阵、CLI/ABI 兼容性清单
-  - 性能基线数据、测试统计
+- 兼容性报告模板 COMPATIBILITY.md
 - 更新 docs/design/testing.md 记录已实现 fuzz targets
+- 414 个测试全部通过
+
+## 2026-08-01: Phase 6 继续 — 种子语料、性能优化、发布清单
+- Fuzz 种子语料：tools/corpus/generate_fuzz_seeds.py 生成 165 个种子
+- 性能优化：database_load 从 ~1.2s 优化到 ~400ms（3x 加速）
+  - 并行文件 I/O via std::thread::scope（无新依赖）
+  - 三阶段加载：收集路径 → 并行读取 → 组装规则
+- 发布检查清单 RELEASE.md
+- 更新 AGENTS.md 反映 Phase 6 进展
 - 414 个测试全部通过

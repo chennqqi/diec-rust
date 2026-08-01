@@ -107,17 +107,17 @@ Last updated: 2026-08-01
 
 | Benchmark | Time (release) | Notes |
 |-----------|----------------|-------|
-| scan_corpus/ELF64 | ~115ms | minimal ELF |
-| scan_corpus/PE32 | ~115ms | minimal PE |
-| scan_corpus/Zip | ~117ms | payload.zip |
-| scan_corpus/DEX | ~256ms | minimal DEX |
-| scan_flags/default | ~117ms | payload.zip |
-| scan_flags/heuristic | ~117ms | payload.zip |
-| scan_flags/all_types | ~320ms | payload.zip |
-| scan_flags/deep | ~115ms | payload.zip |
-| database_load | ~1.0s | full database |
-| probe_corpus/ELF64 | <1ms | format probe only |
-| probe_corpus/Zip | <1ms | format probe only |
+| scan_corpus/ELF64 | ~19ms | minimal ELF |
+| scan_corpus/PE32 | ~165ms | minimal PE |
+| scan_corpus/Zip | ~190ms | payload.zip |
+| scan_corpus/DEX | ~203ms | minimal DEX |
+| scan_flags/default | ~190ms | payload.zip |
+| scan_flags/heuristic | ~176ms | payload.zip |
+| scan_flags/all_types | ~464ms | payload.zip |
+| scan_flags/deep | ~178ms | payload.zip |
+| database_load | ~400ms | full database (optimized from ~1.2s) |
+| probe_corpus/ELF64 | ~345ns | format probe only |
+| probe_corpus/Zip | ~950ns | format probe only |
 
 ## Test Summary
 

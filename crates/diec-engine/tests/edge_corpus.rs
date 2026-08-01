@@ -29,12 +29,6 @@ const NO_DETECTION_SAMPLES: &[&str] = &[
     "two-bytes.bin",
 ];
 
-/// Samples that may produce a weak detection (valid magic but truncated).
-const WEAK_DETECTION_SAMPLES: &[&str] = &[
-    "empty-zip-eocd.bin",   // EOCD signature present
-    "empty-tar-header.bin", // ustar magic present
-];
-
 /// Resolve the edge corpus directory.
 fn edge_corpus_dir() -> PathBuf {
     let manifest_dir = env!("CARGO_MANIFEST_DIR");

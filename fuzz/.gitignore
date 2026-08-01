@@ -1,4 +1,9 @@
 # Fuzz artifacts (not committed; corpus is managed separately)
-corpus/
+# Seed corpora are committed for reproducibility.
+corpus/artifacts/
+corpus/crash-*
+corpus/oom-*
+corpus/timeout-*
+corpus/leak-*
 artifacts/
 target/

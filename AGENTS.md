@@ -4,21 +4,25 @@
 
 ## 当前阶段
 
-项目目前处于 Roadmap Phase 5（C ABI）。Phase 0-4 已全部关闭：
+项目目前处于 Roadmap Phase 6（兼容性、性能与发布准备）。Phase 0-5 已全部关闭：
 - Phase 0 设计门禁于 2026-07-31 评审通过并关闭。
 - Phase 1 工程骨架与兼容测试基础设施于 2026-07-31 关闭。
 - Phase 2 核心数据模型与格式识别于 2026-07-31 关闭（20 个格式 probe、211 个测试、3 个 fuzz targets、完整覆盖矩阵）。
 - Phase 3 规则兼容运行时于 2026-07-31 关闭（1184/1186 规则加载成功，rquickjs 后端 + Binary host API bridge）。
 - Phase 4 CLI 功能对齐于 2026-08-01 关闭（24 个 CLI 集成测试，374 个测试全部通过）。
+- Phase 5 C ABI 与语言集成于 2026-08-01 关闭（35 个 FFI 测试、Go/cgo 绑定、Python ctypes 绑定、411 个测试全部通过）。
 
-Phase 5 实现带版本的稳定 C ABI 和公共头文件，提供 one-shot 和 reusable scanner
-两层入口，确保内存所有权、并发、错误码和 panic 隔离均通过测试。当前进展：
-- 公共头文件 include/diec.h 完成
-- diec-ffi crate 实现完整 C ABI（opaque handle、panic containment、配对释放）
-- 19 个 FFI 测试覆盖完整生命周期
-- 395 个测试全部通过
-- 27 个语料库文件诊断数为 0，361 个测试全部通过
-- 差分测试 corpus_differential.rs 全部通过
+Phase 6 扩大差分测试语料和跨平台矩阵，建立持续 fuzz 和历史回归语料，
+依据固定基准优化运行时间和峰值内存，完成许可证、归属、供应链和发布物审计。当前进展：
+- Benchmark 基础设施（criterion 0.5）：scan_corpus、scan_flags、database_load、probe_corpus
+- 边缘语料差分测试：20 个边缘样本 + 3 个测试（no-crash/no-spurious/no-hang）
+- FFI 跨平台 CI：ffi-smoke job + python-binding job（Linux/macOS/Windows）
+- 许可证和供应链审计：LICENSE、NOTICES.md、AUDIT.md
+- 6 个 fuzz targets（core/formats/engine/output/ffi 层）+ 165 个种子语料
+- 兼容性报告模板 COMPATIBILITY.md
+- 发布检查清单 RELEASE.md
+- database_load 优化：1.2s → 400ms（3x 加速，并行文件 I/O）
+- 414 个测试全部通过
 
 调研正文写入 `docs/research/`，设计正文写入 `docs/design/`，不要堆积在
 本文件或 `README.md` 中。

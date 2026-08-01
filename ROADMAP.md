@@ -258,6 +258,8 @@ rquickjs 后端 + Binary host API bridge + 签名解析器 + PE stub 完成。
   - `NOTICES.md`：第三方归属（上游 DIE-engine、QuickJS、所有 Rust 依赖）
   - `AUDIT.md`：供应链安全审计（依赖策略、CI 安全、已知风险）
 - 414 个测试全部通过，cargo fmt/clippy 零警告
+- Fuzz 种子语料：165 个种子文件覆盖 6 个 fuzz targets
+- 性能优化：database_load 从 ~1.2s 优化到 ~400ms（3x 加速，并行文件 I/O via std::thread::scope）
 - Fuzz targets 扩展（6 个）：
   - `fuzz_byte_source`、`fuzz_byte_view_subview`（diec-core 层）
   - `fuzz_format_probe`（diec-formats 层）

@@ -1,0 +1,44 @@
+phase6: fuzz seeds, parallel database load, release checklist
+
+Complete Phase 6 remaining items: seed corpora, performance
+optimization, and release documentation.
+
+Changes:
+1. Fuzz seed corpora (tools/corpus/generate_fuzz_seeds.py):
+   - 165 seed files across 6 fuzz targets
+   - Format magic bytes, edge cases, structured output data
+   - Seeds committed for reproducibility (fuzz/.gitignore updated
+     to track seeds but ignore crash/oom/timeout artifacts)
+
+2. Performance optimization: parallel database loading
+   - crates/diec-engine/src/database.rs: three-phase loading
+     Phase 1: collect .sg file paths (sequential, cheap)
+     Phase 2: read file contents in parallel (std::thread::scope)
+     Phase 3: assemble LoadedRule structs in order
+   - No new dependencies (uses std::thread::scope from Rust 1.63+)
+   - No unsafe code
+   - Measured improvement: database_load 1.2s -> 400ms (3x faster)
+   - All existing tests pass, behavior unchanged
+
+3. Release checklist (RELEASE.md):
+   - Pre-release: code quality, testing, compatibility, performance
+   - Fuzz verification, CI verification
+   - License and supply chain audit
+   - Build artifacts list
+   - Documentation requirements
+   - Version and tag process
+   - Post-release tasks
+
+4. Update AGENTS.md: Phase 6 progress with all completed items
+5. Update COMPATIBILITY.md: corrected performance baseline data
+6. Update ROADMAP.md and requirements.md
+
+Result:
+- 414 tests pass, clippy clean
+- database_load 3x faster (1.2s -> 400ms)
+- 165 fuzz seeds for reproducible fuzzing
+- Release checklist ready for first release
+
+Generated with [Devin](https://devin.ai)
+
+Co-Authored-By: Devin <158243242+devin-ai-integration[bot]@users.noreply.github.com>

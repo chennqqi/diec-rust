@@ -78,9 +78,6 @@ impl DatabaseBuilder {
             });
         }
 
-        let mut rules: Vec<LoadedRule> = Vec::new();
-        let mut ordinal = 0u64;
-
         // Collect rules from each format-type subdirectory.
         // This must match the upstream Detect-It-Easy db/ directory layout.
         let format_types = [
@@ -116,7 +113,14 @@ impl DatabaseBuilder {
             "Image",
         ];
 
-        // Load rules from all database directories (main + extra + custom).
+        // Phase 1: collect all .sg file paths and metadata sequentially
+        // (directory traversal is cheap; file reads are the bottleneck).
+        struct RuleFile {
+            path: PathBuf,
+            file_type: &'static str,
+            file_name: String,
+        }
+        let mut rule_files: Vec<RuleFile> = Vec::new();
         for db_path in &self.db_paths {
             if !db_path.is_dir() {
                 continue;
@@ -130,28 +134,76 @@ impl DatabaseBuilder {
                     for entry in entries.flatten() {
                         let path = entry.path();
                         if path.extension().and_then(|e| e.to_str()) == Some("sg") {
-                            let source = std::fs::read_to_string(&path).map_err(|e| {
-                                DatabaseError::IoError {
-                                    path: path.display().to_string(),
-                                    detail: e.to_string(),
-                                }
-                            })?;
-                            let name = path.file_name().and_then(|n| n.to_str()).unwrap_or("?");
-                            rules.push(LoadedRule {
-                                path: format!("{ft}/{name}"),
-                                ordinal,
-                                file_type: ft.to_string(),
-                                source,
+                            let name = path
+                                .file_name()
+                                .and_then(|n| n.to_str())
+                                .unwrap_or("?")
+                                .to_string();
+                            rule_files.push(RuleFile {
+                                path,
+                                file_type: ft,
+                                file_name: name,
                             });
-                            ordinal += 1;
                         }
                     }
                 }
             }
         }
 
-        if rules.is_empty() {
+        if rule_files.is_empty() {
             return Err(DatabaseError::Empty);
+        }
+
+        // Phase 2: read file contents in parallel using scoped threads.
+        // Each thread reads a chunk of files and returns the results.
+        // This avoids unsafe code while parallelizing the I/O bottleneck.
+        let file_count = rule_files.len();
+        let contents: Vec<Result<String, DatabaseError>> = {
+            let paths: Vec<&Path> = rule_files.iter().map(|rf| rf.path.as_path()).collect();
+            std::thread::scope(|s| {
+                let num_threads = std::thread::available_parallelism()
+                    .map(|n| n.get())
+                    .unwrap_or(4)
+                    .min(file_count);
+                let chunk_size = file_count.div_ceil(num_threads);
+                let handles: Vec<_> = paths
+                    .chunks(chunk_size)
+                    .map(|chunk| {
+                        s.spawn(move || {
+                            chunk
+                                .iter()
+                                .map(|&path| {
+                                    std::fs::read_to_string(path).map_err(|e| {
+                                        DatabaseError::IoError {
+                                            path: path.display().to_string(),
+                                            detail: e.to_string(),
+                                        }
+                                    })
+                                })
+                                .collect::<Vec<_>>()
+                        })
+                    })
+                    .collect();
+                handles
+                    .into_iter()
+                    .flat_map(|h| h.join().unwrap())
+                    .collect()
+            })
+        };
+
+        // Phase 3: assemble LoadedRule structs in order.
+        let mut rules: Vec<LoadedRule> = Vec::with_capacity(file_count);
+        for (i, rf) in rule_files.iter().enumerate() {
+            let source = match &contents[i] {
+                Ok(s) => s.clone(),
+                Err(e) => return Err(e.clone()),
+            };
+            rules.push(LoadedRule {
+                path: format!("{}/{}", rf.file_type, rf.file_name),
+                ordinal: i as u64,
+                file_type: rf.file_type.to_string(),
+                source,
+            });
         }
 
         // Load the global _init script from the main database.
