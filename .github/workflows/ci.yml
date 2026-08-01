@@ -142,7 +142,7 @@ jobs:
         shell: cmd
         run: |
           call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-          cl /I include tests/c/smoke.c /Fe:target\smoke.exe /link target\release\diec_ffi.lib ws2_32.lib user32.lib ntdll.lib advapi32.lib
+          cl /I include tests/c/smoke.c /Fe:target\smoke.exe /link /NODEFAULTLIB:MSVCRT target\release\diec_ffi.lib ws2_32.lib user32.lib ntdll.lib advapi32.lib userenv.lib bcrypt.lib kernel32.lib secur32.lib rpcrt4.lib ole32.lib oleaut32.lib
 
       - name: Run C smoke test
         shell: bash
