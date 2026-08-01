@@ -233,13 +233,31 @@ rquickjs 后端 + Binary host API bridge + 签名解析器 + PE stub 完成。
 
 退出条件：内存所有权、并发、错误码和 panic 隔离均通过测试；目标平台完成静态链接 smoke test。✅
 
-## Phase 6：兼容性、性能与发布准备 — TODO
+## Phase 6：兼容性、性能与发布准备 — 进行中
 
 - 扩大差分测试语料和跨平台矩阵。
 - 建立持续 fuzz 和历史回归语料。
 - 依据固定基准优化运行时间和峰值内存。
 - 完成许可证、归属、供应链和发布物审计。
 - 发布首个具备兼容性报告的版本。
+
+**进展**：
+- Benchmark 基础设施：
+  - `crates/diec-engine/benches/scan.rs`：scan_corpus（9 种格式）、scan_flags（default/heuristic/all_types/deep）、database_load
+  - `crates/diec-formats/benches/probe.rs`：probe_corpus（13 种格式）、probe_table 构造
+  - 使用 criterion 0.5，harness=false
+- 边缘语料差分测试：
+  - `tools/corpus/generate_edge_corpus.py`：20 个边缘样本（truncated/malformed/oversized/empty）
+  - `crates/diec-engine/tests/edge_corpus.rs`：3 个测试（no-crash、no-spurious、no-hang）
+  - 验证截断/畸形输入不崩溃、不误检、不挂起
+- FFI 跨平台 CI：
+  - `.github/workflows/ci.yml` 新增 ffi-smoke job（Linux/macOS/Windows C smoke test）
+  - 新增 python-binding job（Linux/macOS/Windows Python ctypes test）
+- 许可证和供应链审计：
+  - `LICENSE`：MIT 许可证文件
+  - `NOTICES.md`：第三方归属（上游 DIE-engine、QuickJS、所有 Rust 依赖）
+  - `AUDIT.md`：供应链安全审计（依赖策略、CI 安全、已知风险）
+- 414 个测试全部通过，cargo fmt/clippy 零警告
 
 退出条件：既定兼容指标、性能目标和发布检查全部满足；已知差异均公开、精确且可复现。
 

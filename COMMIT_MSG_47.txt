@@ -1,0 +1,46 @@
+phase6: add benchmarks, edge corpus, FFI CI matrix, license audit
+
+Begin Phase 6: compatibility, performance, and release preparation.
+
+Changes:
+1. Benchmark infrastructure (criterion 0.5):
+   - diec-engine/benches/scan.rs: scan_corpus (9 formats), scan_flags
+     (default/heuristic/all_types/deep), database_load
+   - diec-formats/benches/probe.rs: probe_corpus (13 formats),
+     probe_table construction
+   - Verified with real measurements (scan ~117ms, db load ~1s)
+
+2. Edge-case corpus and differential tests:
+   - tools/corpus/generate_edge_corpus.py: 20 edge samples
+     (truncated headers, malformed structures, oversized fields,
+     empty containers, random/zeros/ff bytes)
+   - crates/diec-engine/tests/edge_corpus.rs: 3 tests
+     - no_crash_on_malformed: scanner completes on all edge inputs
+     - no_spurious_detections: no false positives on non-magic inputs
+     - truncated_does_not_hang: truncated samples complete < 5s
+
+3. FFI cross-platform CI matrix (.github/workflows/ci.yml):
+   - ffi-smoke job: build diec-ffi, compile and run C smoke test
+     on Linux, macOS, Windows
+   - python-binding job: build cdylib, run Python ctypes tests
+     on all three platforms
+
+4. License, attribution, and supply chain audit:
+   - LICENSE: MIT license file
+   - NOTICES.md: third-party attribution (DIE-engine, QuickJS,
+     all Rust dependencies with license and purpose)
+   - AUDIT.md: supply chain security audit (dependency policy,
+     CI security, submodule security, known risks)
+
+5. Update ROADMAP.md and requirements.md for Phase 6 progress.
+
+Result:
+- 414 tests pass (411 + 3 edge corpus), clippy clean
+- Benchmarks provide baseline performance measurements
+- Edge corpus verifies robustness against malformed input
+- CI verifies FFI on all three desktop platforms
+- License audit complete with no copyleft dependencies
+
+Generated with [Devin](https://devin.ai)
+
+Co-Authored-By: Devin <158243242+devin-ai-integration[bot]@users.noreply.github.com>

@@ -11,5 +11,12 @@ repository.workspace = true
 [dependencies]
 diec-core = { workspace = true }
 
+[dev-dependencies]
+criterion = { workspace = true }
+
 [lib]
 path = "src/lib.rs"
+
+[[bench]]
+name = "probe"
+harness = false

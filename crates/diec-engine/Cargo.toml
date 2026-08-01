@@ -13,5 +13,12 @@ diec-core = { workspace = true }
 diec-formats = { workspace = true }
 diec-rules = { workspace = true }
 
+[dev-dependencies]
+criterion = { workspace = true }
+
 [lib]
 path = "src/lib.rs"
+
+[[bench]]
+name = "scan"
+harness = false

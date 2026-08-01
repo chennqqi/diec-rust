@@ -106,3 +106,93 @@ jobs:
       - name: cargo +1.88.0 clippy
         shell: bash
         run: cargo +1.88.0 clippy --workspace --all-targets --all-features --locked -- -D warnings
+
+  # FFI smoke test: build the C ABI and run the C smoke test on each
+  # platform. Verifies cross-platform static/dynamic linking and the
+  # complete scan lifecycle from C.
+  ffi-smoke:
+    name: FFI smoke test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022, macos-14]
+    steps:
+      - name: Check out
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: recursive
+
+      - name: Build diec-ffi (release)
+        shell: bash
+        run: cargo build -p diec-ffi --release --locked
+
+      - name: Build C smoke test (Linux/macOS)
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          cc -I include tests/c/smoke.c \
+            -L target/release -ldiec_ffi \
+            -o target/smoke -lpthread -ldl -lm
+
+      - name: Build C smoke test (Windows)
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: |
+          cl /I include tests/c/smoke.c /Fe:target\smoke.exe /link target\release\diec_ffi.lib
+
+      - name: Run C smoke test
+        shell: bash
+        run: |
+          # The smoke test needs the upstream database (submodule).
+          if [ ! -d upstream/Detect-It-Easy/db ]; then
+            echo "SKIP: upstream database not found"
+            exit 0
+          fi
+          if [ "${{ runner.os }}" = "Windows" ]; then
+            export PATH="$PWD/target/release:$PATH"
+            target/smoke.exe
+          else
+            export LD_LIBRARY_PATH="$PWD/target/release:$LD_LIBRARY_PATH"
+            target/smoke
+          fi
+
+  # Python binding smoke test: verify the ctypes binding loads and scans.
+  python-binding:
+    name: Python binding (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022, macos-14]
+    steps:
+      - name: Check out
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: recursive
+
+      - name: Build diec-ffi (release cdylib)
+        shell: bash
+        run: cargo build -p diec-ffi --release --locked
+
+      - name: Run Python tests
+        shell: bash
+        run: |
+          if [ ! -d upstream/Detect-It-Easy/db ]; then
+            echo "SKIP: upstream database not found"
+            exit 0
+          fi
+          if [ "${{ runner.os }}" = "Windows" ]; then
+            export DIEC_LIB_PATH="$PWD/target/release/diec_ffi.dll"
+          elif [ "${{ runner.os }}" = "macOS" ]; then
+            export DIEC_LIB_PATH="$PWD/target/release/libdiec_ffi.dylib"
+          else
+            export DIEC_LIB_PATH="$PWD/target/release/libdiec_ffi.so"
+          fi
+          python3 bindings/python/test_diec.py

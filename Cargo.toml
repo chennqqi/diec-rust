@@ -28,3 +28,4 @@ diec-formats = { path = "crates/diec-formats" }
 diec-rules = { path = "crates/diec-rules" }
 diec-engine = { path = "crates/diec-engine" }
 diec-output = { path = "crates/diec-output" }
+criterion = "0.5"

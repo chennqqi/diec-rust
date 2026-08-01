@@ -719,3 +719,14 @@
 - 35 个 FFI 测试（7 单元 + 12 集成 + 16 sanitizer）
 - C smoke test (tests/c/smoke.c)
 - 411 个测试全部通过
+
+## 2026-08-01: Phase 6 开始 — 兼容性、性能与发布准备
+- Benchmark 基础设施 (criterion 0.5)：
+  - diec-engine benches/scan.rs：scan_corpus、scan_flags、database_load
+  - diec-formats benches/probe.rs：probe_corpus、probe_table 构造
+- 边缘语料差分测试：
+  - tools/corpus/generate_edge_corpus.py：20 个边缘样本
+  - crates/diec-engine/tests/edge_corpus.rs：3 个测试（no-crash/no-spurious/no-hang）
+- FFI 跨平台 CI：ffi-smoke job + python-binding job (Linux/macOS/Windows)
+- 许可证和供应链审计：LICENSE、NOTICES.md、AUDIT.md
+- 414 个测试全部通过
