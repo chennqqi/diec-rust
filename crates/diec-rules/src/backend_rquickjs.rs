@@ -240,7 +240,6 @@ impl RquickjsRuntime {
                 }}
             }}
             "#,
-            os_name = os_name
         );
         self.eval_script(&globals_js)?;
 
@@ -604,13 +603,12 @@ impl RquickjsRuntime {
         // 4. Returns the result
         let wrapped = format!(
             r#"(function() {{
-                {source}
+                {processed_source}
                 if (typeof detect === 'function') {{
                     return detect();
                 }}
                 return undefined;
             }})();"#,
-            source = processed_source
         );
 
         let eval_result: Result<(), rquickjs::Error> = self.context.with(|ctx: Ctx<'_>| {

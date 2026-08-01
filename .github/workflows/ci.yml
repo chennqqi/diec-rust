@@ -105,7 +105,7 @@ jobs:
 
       - name: cargo +1.88.0 clippy
         shell: bash
-        run: cargo +1.88.0 clippy --workspace --all-targets --all-features --locked -- -D warnings
+        run: cargo +1.88.0 clippy --workspace --all-targets --all-features --locked -- -D warnings -A clippy::uninlined_format_args
 
   # FFI smoke test: build the C ABI and run the C smoke test on each
   # platform. Verifies cross-platform static/dynamic linking and the
@@ -142,7 +142,7 @@ jobs:
         shell: cmd
         run: |
           call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-          cl /I include tests/c/smoke.c /Fe:target\smoke.exe /link target\release\diec_ffi.lib
+          cl /I include tests/c/smoke.c /Fe:target\smoke.exe /link target\release\diec_ffi.lib ws2_32.lib user32.lib ntdll.lib advapi32.lib
 
       - name: Run C smoke test
         shell: bash

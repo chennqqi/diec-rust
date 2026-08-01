@@ -1327,7 +1327,7 @@ impl HostApiBridge {
             // bytesCountToString(n) -> human-readable size string
             let bcs_fn = rquickjs::Function::new(ctx.clone(), |n: f64| {
                 if n < 1024.0 {
-                    format!("{:.0} B", n)
+                    format!("{n:.0} B")
                 } else if n < 1048576.0 {
                     format!("{:.1} KB", n / 1024.0)
                 } else if n < 1073741824.0 {
