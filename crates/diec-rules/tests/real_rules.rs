@@ -258,6 +258,10 @@ impl HostApi for BufferHost {
         false
     }
 
+    fn is_verbose(&self) -> bool {
+        false
+    }
+
     fn is_recursive(&self) -> bool {
         false
     }

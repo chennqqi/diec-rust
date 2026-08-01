@@ -108,6 +108,9 @@ pub trait HostApi {
     /// Check if the scan is in "aggressive" mode.
     fn is_aggressive(&self) -> bool;
 
+    /// Check if the scan is in "verbose" mode.
+    fn is_verbose(&self) -> bool;
+
     /// Check if the scan is in "recursive" mode.
     fn is_recursive(&self) -> bool;
 

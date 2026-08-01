@@ -166,12 +166,21 @@ rquickjs 后端 + Binary host API bridge + 签名解析器 + PE stub 完成。
 **进展**：
 - diec-engine 扫描编排层完成（Database + Scanner + BufferHost）
 - diec-output JSON/text 渲染完成（无 serde 依赖）
-- diec-cli 参数解析 + 退出码 + 多目标批量扫描完成
-- ELF/MACH/MACHOFAT host API 别名注册完成
-- 6 个 CLI 集成测试通过
+- diec-cli 参数解析 + 退出码 + 多目标批量扫描 + 递归扫描完成
+- 文件类型检测 + 误报过滤：使用 ProbeTable 分发规则，匹配上游 scanProcess 行为
+  - 可执行格式（PE/ELF/MACH/MACHOFAT）仅运行格式特定规则
+  - 非可执行格式运行格式特定 + Binary 规则
+  - Java Class 优先于 Mach-O FAT 检查（解决 CAFEBABE 歧义）
+- ELF host API 完整实现（30+ 方法，真实 ELF 解析替代 stub）
+- Mach-O host API 完整实现（25+ 方法，真实 Mach-O 解析替代 stub）
+- PE host API 完整实现（30+ 方法，真实 PE 解析 + 40+ stub 方法）
+- 所有格式全局对象独立化（__proto__ = Binary，避免方法覆盖）
+- const→var 预处理（匹配 Qt Script 行为，修复 SyntaxError）
+- 端序方法补全（read_uint16/32/64_le/be）
+- 27 个语料库文件诊断数降为 0
+- 差分测试：corpus_differential.rs 27 文件全部通过
 - 扫描性能优化：按文件类型共享 runtime（8x 加速，~1s/文件）
-- 文件类型检测 + 误报过滤：使用 ProbeTable 分发规则
-- 353 个测试全部通过
+- 361 个测试全部通过，cargo fmt/clippy/check-deps 零警告
 
 退出条件：能力矩阵中当前范围的 CLI 功能完成；自动化输出契约和错误行为有集成测试。
 

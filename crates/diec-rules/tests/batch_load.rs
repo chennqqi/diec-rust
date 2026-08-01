@@ -103,6 +103,9 @@ impl HostApi for DummyHost {
     fn is_aggressive(&self) -> bool {
         false
     }
+    fn is_verbose(&self) -> bool {
+        false
+    }
     fn is_recursive(&self) -> bool {
         false
     }

@@ -6,7 +6,7 @@
 #![forbid(unsafe_code)]
 
 use diec_core::cancel::CancellationToken;
-use diec_engine::{DatabaseBuilder, scan_once};
+use diec_engine::{DatabaseBuilder, ScanFlags, scan_once};
 use std::process::ExitCode;
 
 /// CLI exit codes (see docs/design/api.md section 16).
@@ -19,11 +19,17 @@ fn print_usage() {
     eprintln!("Usage: diec [OPTIONS] <file>...");
     eprintln!();
     eprintln!("Options:");
-    eprintln!("  --db <path>       Database directory (default: ./db)");
-    eprintln!("  --output <format>  Output format: text (default) or json");
-    eprintln!("  --recursive, -r   Recursively scan directories");
-    eprintln!("  --version         Print version and exit");
-    eprintln!("  --help            Print this help and exit");
+    eprintln!("  --db <path>          Database directory (default: ./db)");
+    eprintln!("  --output <format>    Output format: text (default) or json");
+    eprintln!("  --recursive, -r      Recursively scan directories");
+    eprintln!("  --deepscan           Enable deep scan mode");
+    eprintln!("  --heuristicscan      Enable heuristic scan mode");
+    eprintln!("  --verbose            Enable verbose output");
+    eprintln!("  --aggressivescan     Enable aggressive scan mode");
+    eprintln!("  --alltypes           Scan all format types");
+    eprintln!("  --hideunknown        Hide unknown detections");
+    eprintln!("  --version            Print version and exit");
+    eprintln!("  --help               Print this help and exit");
 }
 
 /// Expand a target path: if it's a directory and `recursive` is true,
@@ -72,6 +78,7 @@ fn main() -> ExitCode {
     let mut db_path = String::new();
     let mut output_format = "text".to_string();
     let mut recursive = false;
+    let mut flags = ScanFlags::default();
     let mut targets: Vec<String> = Vec::new();
 
     let mut i = 1;
@@ -87,6 +94,24 @@ fn main() -> ExitCode {
             }
             "--recursive" | "-r" => {
                 recursive = true;
+            }
+            "--deepscan" => {
+                flags.deep = true;
+            }
+            "--heuristicscan" => {
+                flags.heuristic = true;
+            }
+            "--verbose" => {
+                flags.verbose = true;
+            }
+            "--aggressivescan" => {
+                flags.aggressive = true;
+            }
+            "--alltypes" => {
+                flags.all_types = true;
+            }
+            "--hideunknown" => {
+                flags.hide_unknown = true;
             }
             "--db" => {
                 i += 1;
@@ -174,7 +199,7 @@ fn main() -> ExitCode {
     let mut results = Vec::new();
 
     for file in &files {
-        match scan_once(&database, file, &cancel) {
+        match scan_once(&database, file, flags, &cancel) {
             Ok(result) => results.push(result),
             Err(e) => {
                 eprintln!("error: scanning {file}: {e}");

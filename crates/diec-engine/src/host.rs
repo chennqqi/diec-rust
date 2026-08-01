@@ -15,6 +15,27 @@ use std::sync::Arc;
 /// This adapter provides the core `Binary_Script` host API methods
 /// by reading directly from the owned byte source. Format-specific
 /// methods (PE sections, ELF segments, etc.) are not implemented here.
+/// Scan options that control rule behavior (deep, heuristic, verbose, etc.).
+/// These map to upstream CLI flags: --deepscan, --heuristicscan, --verbose,
+/// --aggressivescan, --alltypes, --hideunknown.
+#[derive(Debug, Clone, Copy, Default)]
+pub struct ScanFlags {
+    /// Deep scan mode (--deepscan).
+    pub deep: bool,
+    /// Heuristic scan mode (--heuristicscan).
+    pub heuristic: bool,
+    /// Verbose output (--verbose).
+    pub verbose: bool,
+    /// Aggressive scan mode (--aggressivescan).
+    pub aggressive: bool,
+    /// All types scan mode (--alltypes).
+    pub all_types: bool,
+    /// Hide unknown detections (--hideunknown).
+    pub hide_unknown: bool,
+}
+
+/// A host API implementation backed by an in-memory byte buffer.
+/// Provides file data access and scan mode flags to the rule runtime.
 pub struct BufferHost {
     /// The file type context.
     file_type: FileType,
@@ -22,6 +43,8 @@ pub struct BufferHost {
     source: OwnedSource,
     /// The file name.
     file_name: String,
+    /// Scan flags controlling rule behavior.
+    flags: ScanFlags,
 }
 
 impl BufferHost {
@@ -34,6 +57,7 @@ impl BufferHost {
             file_type,
             source,
             file_name,
+            flags: ScanFlags::default(),
         }
     }
 
@@ -45,7 +69,14 @@ impl BufferHost {
             file_type: FileType::new(file_type),
             source,
             file_name,
+            flags: ScanFlags::default(),
         }
+    }
+
+    /// Set scan flags on this host.
+    pub fn with_flags(mut self, flags: ScanFlags) -> Self {
+        self.flags = flags;
+        self
     }
 
     /// Get the underlying data as a slice.
@@ -327,15 +358,19 @@ impl HostApi for BufferHost {
     }
 
     fn is_deep(&self) -> bool {
-        false
+        self.flags.deep
     }
 
     fn is_heuristic(&self) -> bool {
-        false
+        self.flags.heuristic
     }
 
     fn is_aggressive(&self) -> bool {
-        false
+        self.flags.aggressive
+    }
+
+    fn is_verbose(&self) -> bool {
+        self.flags.verbose
     }
 
     fn is_recursive(&self) -> bool {

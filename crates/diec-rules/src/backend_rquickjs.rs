@@ -1155,6 +1155,9 @@ mod tests {
         fn is_aggressive(&self) -> bool {
             false
         }
+        fn is_verbose(&self) -> bool {
+            false
+        }
         fn is_recursive(&self) -> bool {
             false
         }

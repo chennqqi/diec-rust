@@ -126,7 +126,13 @@ fn corpus_differential_detections() {
             }
         };
 
-        let result = match scan_bytes(&database, filename, data, &cancel) {
+        let result = match scan_bytes(
+            &database,
+            filename,
+            data,
+            diec_engine::ScanFlags::default(),
+            &cancel,
+        ) {
             Ok(r) => r,
             Err(e) => {
                 mismatches.push(format!("{filename}: scan error: {e}"));

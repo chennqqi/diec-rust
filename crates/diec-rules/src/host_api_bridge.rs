@@ -751,6 +751,17 @@ impl HostApiBridge {
                 })?;
 
             let h = host.clone();
+            let is_verbose_fn = rquickjs::Function::new(ctx.clone(), move || h.is_verbose())
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("isVerbose: {e}"),
+                })?;
+            binary
+                .set("isVerbose", is_verbose_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("isVerbose set: {e}"),
+                })?;
+
+            let h = host.clone();
             let is_recursive_fn = rquickjs::Function::new(ctx.clone(), move || h.is_recursive())
                 .map_err(|e| RuleError::Backend {
                     detail: format!("isRecursiveScan: {e}"),
@@ -1033,35 +1044,8 @@ impl HostApiBridge {
                 })?;
 
             // Additional host API functions used by many rules.
-            // These are simple stubs or wrappers that return defaults
-            // for scan-mode queries.
-
-            // isVerbose() -> false (no verbose mode in CLI)
-            let is_verbose_fn = rquickjs::Function::new(ctx.clone(), || false)
-                .map_err(|e| RuleError::Backend {
-                    detail: format!("isVerbose: {e}"),
-                })?;
-            binary.set("isVerbose", is_verbose_fn).map_err(|e| RuleError::Backend {
-                detail: format!("isVerbose set: {e}"),
-            })?;
-
-            // isDeepScan() -> false
-            let is_deep_fn = rquickjs::Function::new(ctx.clone(), || false)
-                .map_err(|e| RuleError::Backend {
-                    detail: format!("isDeepScan: {e}"),
-                })?;
-            binary.set("isDeepScan", is_deep_fn).map_err(|e| RuleError::Backend {
-                detail: format!("isDeepScan set: {e}"),
-            })?;
-
-            // isHeuristicScan() -> false
-            let is_heur_fn = rquickjs::Function::new(ctx.clone(), || false)
-                .map_err(|e| RuleError::Backend {
-                    detail: format!("isHeuristicScan: {e}"),
-                })?;
-            binary.set("isHeuristicScan", is_heur_fn).map_err(|e| RuleError::Backend {
-                detail: format!("isHeuristicScan set: {e}"),
-            })?;
+            // isVerbose/isDeepScan/isHeuristicScan are already set above
+            // using host methods. Only add remaining stubs here.
 
             // isOverlay() -> false
             let is_overlay_fn = rquickjs::Function::new(ctx.clone(), || false)
@@ -3469,6 +3453,9 @@ mod tests {
             false
         }
         fn is_aggressive(&self) -> bool {
+            false
+        }
+        fn is_verbose(&self) -> bool {
             false
         }
         fn is_recursive(&self) -> bool {

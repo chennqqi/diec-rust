@@ -4,12 +4,19 @@
 
 ## 当前阶段
 
-项目目前处于 Roadmap Phase 3。Phase 0 设计门禁已于 2026-07-31 评审通过并关闭，
-Phase 1 工程骨架与兼容测试基础设施已于 2026-07-31 关闭，Phase 2 核心数据模型
-与格式识别已于 2026-07-31 关闭（20 个格式 probe、211 个测试、3 个 fuzz targets、
-完整覆盖矩阵）。Phase 3 实现规则兼容运行时：原样加载固定版本上游规则，实现或
-集成规则执行方案，覆盖规则语法、内建函数和宿主数据访问接口。调研正文写入
-`docs/research/`，设计正文写入 `docs/design/`，不要堆积在
+项目目前处于 Roadmap Phase 4（CLI）。Phase 0-3 已全部关闭：
+- Phase 0 设计门禁于 2026-07-31 评审通过并关闭。
+- Phase 1 工程骨架与兼容测试基础设施于 2026-07-31 关闭。
+- Phase 2 核心数据模型与格式识别于 2026-07-31 关闭（20 个格式 probe、211 个测试、3 个 fuzz targets、完整覆盖矩阵）。
+- Phase 3 规则兼容运行时于 2026-07-31 关闭（1184/1186 规则加载成功，rquickjs 后端 + Binary host API bridge）。
+
+Phase 4 实现薄 CLI 层和结构化输出，与上游 CLI 进行差分验证。当前进展：
+- diec-engine 扫描编排 + diec-output JSON/text 渲染 + diec-cli 参数解析完成
+- ELF/Mach-O/PE host API 完整实现（真实解析替代 stub）
+- 27 个语料库文件诊断数为 0，361 个测试全部通过
+- 差分测试 corpus_differential.rs 全部通过
+
+调研正文写入 `docs/research/`，设计正文写入 `docs/design/`，不要堆积在
 本文件或 `README.md` 中。
 
 ## 兼容基线

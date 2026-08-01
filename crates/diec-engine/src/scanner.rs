@@ -225,6 +225,7 @@ pub struct ScanResult {
 pub fn scan_once(
     database: &Database,
     path: &str,
+    flags: crate::host::ScanFlags,
     cancel: &CancellationToken,
 ) -> Result<ScanResult, ScanError> {
     let data = std::fs::read(path).map_err(|e| ScanError::Input {
@@ -232,7 +233,7 @@ pub fn scan_once(
         detail: e.to_string(),
     })?;
 
-    scan_bytes(database, path, data, cancel)
+    scan_bytes(database, path, data, flags, cancel)
 }
 
 /// Scan a byte buffer against the database.
@@ -245,6 +246,7 @@ pub fn scan_bytes(
     database: &Database,
     file_name: &str,
     data: Vec<u8>,
+    flags: crate::host::ScanFlags,
     cancel: &CancellationToken,
 ) -> Result<ScanResult, ScanError> {
     let snapshot = database.snapshot();
@@ -279,8 +281,8 @@ pub fn scan_bytes(
             }
         };
 
-        // Create a host with the file data.
-        let host = Arc::new(BufferHost::new(data.clone(), file_name.to_string()));
+        // Create a host with the file data and scan flags.
+        let host = Arc::new(BufferHost::new(data.clone(), file_name.to_string()).with_flags(flags));
         if let Err(e) = runtime.register_host_api(host.clone()) {
             diagnostics.push(format!("host API error for {file_type}: {e}"));
             continue;
@@ -388,7 +390,14 @@ mod tests {
         data.resize(64, 0);
 
         let cancel = CancellationToken::new();
-        let result = scan_bytes(&database, "test.7z", data, &cancel).unwrap();
+        let result = scan_bytes(
+            &database,
+            "test.7z",
+            data,
+            crate::host::ScanFlags::default(),
+            &cancel,
+        )
+        .unwrap();
 
         let found = result.detections.iter().any(|d| d.name == "7-Zip");
         assert!(
@@ -415,7 +424,14 @@ mod tests {
         data.resize(64, 0);
 
         let cancel = CancellationToken::new();
-        let result = scan_bytes(&database, "test.bz2", data, &cancel).unwrap();
+        let result = scan_bytes(
+            &database,
+            "test.bz2",
+            data,
+            crate::host::ScanFlags::default(),
+            &cancel,
+        )
+        .unwrap();
 
         let found = result
             .detections
@@ -443,7 +459,14 @@ mod tests {
         let data: Vec<u8> = (0..128).map(|i| (i * 7 + 13) as u8).collect();
 
         let cancel = CancellationToken::new();
-        let result = scan_bytes(&database, "random.bin", data, &cancel).unwrap();
+        let result = scan_bytes(
+            &database,
+            "random.bin",
+            data,
+            crate::host::ScanFlags::default(),
+            &cancel,
+        )
+        .unwrap();
 
         // Random data should not produce specific format detections.
         let has_specific = result
@@ -475,7 +498,14 @@ mod tests {
         data.resize(64, 0);
 
         let cancel = CancellationToken::new();
-        let result = scan_bytes(&database, "test.jpg", data, &cancel).unwrap();
+        let result = scan_bytes(
+            &database,
+            "test.jpg",
+            data,
+            crate::host::ScanFlags::default(),
+            &cancel,
+        )
+        .unwrap();
 
         let found = result
             .detections
@@ -507,7 +537,14 @@ mod tests {
         data.resize(64, 0);
 
         let cancel = CancellationToken::new();
-        let result = scan_bytes(&database, "test.rar", data, &cancel).unwrap();
+        let result = scan_bytes(
+            &database,
+            "test.rar",
+            data,
+            crate::host::ScanFlags::default(),
+            &cancel,
+        )
+        .unwrap();
 
         let found = result.detections.iter().any(|d| d.name.contains("RAR"));
         assert!(
