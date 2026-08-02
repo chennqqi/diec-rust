@@ -212,7 +212,7 @@ dependencies = [
 
 [[package]]
 name = "diec-cli"
-version = "0.1.2"
+version = "0.1.3"
 dependencies = [
  "diec-core",
  "diec-engine",
@@ -221,11 +221,11 @@ dependencies = [
 
 [[package]]
 name = "diec-core"
-version = "0.1.2"
+version = "0.1.3"
 
 [[package]]
 name = "diec-engine"
-version = "0.1.2"
+version = "0.1.3"
 dependencies = [
  "criterion",
  "diec-core",
@@ -235,7 +235,7 @@ dependencies = [
 
 [[package]]
 name = "diec-ffi"
-version = "0.1.2"
+version = "0.1.3"
 dependencies = [
  "diec-core",
  "diec-engine",
@@ -244,7 +244,7 @@ dependencies = [
 
 [[package]]
 name = "diec-formats"
-version = "0.1.2"
+version = "0.1.3"
 dependencies = [
  "criterion",
  "diec-core",
@@ -252,7 +252,7 @@ dependencies = [
 
 [[package]]
 name = "diec-output"
-version = "0.1.2"
+version = "0.1.3"
 dependencies = [
  "diec-core",
  "diec-engine",
@@ -260,7 +260,7 @@ dependencies = [
 
 [[package]]
 name = "diec-rules"
-version = "0.1.2"
+version = "0.1.3"
 dependencies = [
  "diec-core",
  "rquickjs",
@@ -799,7 +799,7 @@ dependencies = [
 
 [[package]]
 name = "xtask"
-version = "0.1.2"
+version = "0.1.3"
 dependencies = [
  "serde",
  "serde_json",

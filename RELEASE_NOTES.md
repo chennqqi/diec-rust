@@ -1,6 +1,6 @@
 # Release Notes
 
-## diec-rust v0.1.2
+## diec-rust v0.1.3
 
 First public release of diec-rust, a Rust reimplementation of Detect It Easy.
 
