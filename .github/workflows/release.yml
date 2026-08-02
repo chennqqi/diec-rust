@@ -64,7 +64,7 @@ jobs:
           cargo build --workspace --release --locked --target ${{ matrix.target }}
 
       - name: Run tests (native target only)
-        if: !matrix.cross_compile
+        if: matrix.cross_compile == false
         shell: bash
         run: cargo test --workspace --all-features --locked --target ${{ matrix.target }}
 
