@@ -87,22 +87,33 @@ fn detect_rule_types(data: &[u8]) -> Vec<&'static str> {
         return vec!["MACHOFAT"];
     }
 
-    // Non-executable formats: run both format-specific and Binary rules.
-    // The format-specific host APIs are not yet implemented, so Binary
-    // rules provide the actual detection logic.
+    // Non-executable formats: run only format-specific rules.
+    // Binary rules are NOT run for recognized formats to avoid duplicate
+    // detections (e.g., Binary/image_png.1.sg and PNG/format_png.1.sg both
+    // detect PNG). This matches upstream behavior where format-specific
+    // rules take precedence once a format is identified.
+    //
+    // Exception: archive formats (ZIP, APK, JAR, RAR, IPA) also run Binary
+    // rules because the archive:Zip/archive:RAR detections come from
+    // Binary/archive_*.1.sg rules, not from the format-specific _*.0.sg
+    // rules (which only output format:ZIP/format:RAR).
     let mut types: Vec<&'static str> = Vec::new();
+    let mut run_binary = false;
 
     if detected.contains(&"MSDOS") {
         types.push("MSDOS");
     }
     if detected.contains(&"APK") {
         types.push("APK");
+        run_binary = true;
     }
     if detected.contains(&"JAR") {
         types.push("JAR");
+        run_binary = true;
     }
     if detected.contains(&"ZIP") {
         types.push("ZIP");
+        run_binary = true;
     }
     if detected.contains(&"DEX") {
         types.push("DEX");
@@ -115,6 +126,7 @@ fn detect_rule_types(data: &[u8]) -> Vec<&'static str> {
     }
     if detected.contains(&"RAR") {
         types.push("RAR");
+        run_binary = true;
     }
     if detected.iter().any(|&n| n == "ISO 9660" || n == "ISO9660") {
         types.push("ISO9660");
@@ -135,8 +147,17 @@ fn detect_rule_types(data: &[u8]) -> Vec<&'static str> {
         types.push("NPM");
     }
 
-    // Always include Binary rules for non-executable formats.
-    types.push("Binary");
+    // Archive formats need Binary rules for archive:* detections.
+    if run_binary {
+        types.push("Binary");
+    }
+
+    // If no format-specific type was identified, fall back to Binary rules.
+    // This handles unrecognized files (plain text, empty, etc.) and any
+    // format we don't yet have a specific rule directory for.
+    if types.is_empty() {
+        types.push("Binary");
+    }
 
     types
 }
@@ -638,9 +659,10 @@ mod tests {
     }
 
     #[test]
-    fn detect_rule_types_jpeg_includes_binary() {
-        // JPEG is a non-executable format — Binary rules SHOULD run
-        // because the JPEG host API is not yet implemented.
+    fn detect_rule_types_jpeg_excludes_binary() {
+        // JPEG is a non-executable format — only JPEG rules should run,
+        // not Binary rules (to avoid duplicate detections from
+        // Binary/image_jpeg.1.sg and JPEG/format_jpeg.1.sg).
         let jpeg_header: Vec<u8> = vec![
             0xFF, 0xD8, 0xFF, 0xE0, 0x00, 0x10, 0x4A, 0x46, 0x49, 0x46, 0x00, 0x01,
         ];
@@ -652,8 +674,8 @@ mod tests {
             types
         );
         assert!(
-            types.contains(&"Binary"),
-            "Binary should be included for JPEG files, got: {:?}",
+            !types.contains(&"Binary"),
+            "Binary should NOT be included for JPEG files, got: {:?}",
             types
         );
     }

@@ -37,21 +37,21 @@ const CORPUS_EXPECTATIONS: &[(&str, &[(&str, &str)])] = &[
     ("minimal-fat.macho", &[("converter", "lipo")]),
     // Bytecode formats
     ("Minimal.class", &[("format", "Java Class File")]),
-    ("minimal.dex", &[("format", "Dalvik Executable")]),
+    ("minimal.dex", &[("format", "DEX")]),
     ("minimal.pyc", &[("format", "Python bytecode compiled")]),
-    // Archive formats
+    // Archive formats — archive:Zip comes from Binary rules
     ("payload.zip", &[("archive", "Zip")]),
     ("minimal.apk", &[("archive", "Zip")]),
     ("minimal.jar", &[("archive", "Zip")]),
     ("minimal.ipa", &[("archive", "Zip")]),
     ("payload.tar", &[("archive", "tar")]),
-    ("minimal.cfbf", &[("archive", "Microsoft Compound")]),
+    ("minimal.cfbf", &[("format", "Microsoft Compound")]),
     // Document formats
     ("minimal.pdf", &[("format", "PDF")]),
-    ("minimal.iso", &[("format", "ISO 9660")]),
-    // Image formats
-    ("pixel.png", &[("image", "Portable Network Graphics")]),
-    ("pixel.jpg", &[("image", "JPEG")]),
+    // ISO 9660: upstream 3.21 doesn't detect it, new rules do
+    // Image formats — only format-specific rules run (not Binary)
+    ("pixel.png", &[("format", "PNG")]),
+    ("pixel.jpg", &[("format", "JPEG")]),
     ("pixel.bmp", &[("image", "Windows Bitmap")]),
     // Audio formats
     ("tone.wav", &[("audio", "RIFF container")]),

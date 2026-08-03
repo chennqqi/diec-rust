@@ -3550,6 +3550,8 @@ impl HostApiBridge {
                         })(namedFormats[fname]);
                         obj.getFileFormatVersion = function() { return ""; };
                         obj.getFileFormatOptions = function() { return ""; };
+                        // isVerbose defaults to false; archive detections come
+                        // from Binary/archive_*.1.sg rules, not _Archive.0.sg.
                         obj.isVerbose = function() { return false; };
                         obj.isDeepScan = function() { return false; };
                         obj.isHeuristicScan = function() { return false; };
@@ -3562,14 +3564,66 @@ impl HostApiBridge {
                     ISO9660.getDataPreparerIdentifier = function() { return ""; };
                     ISO9660.getApplicationIdentifier = function() { return ""; };
 
-                    // PDF-specific stubs.
-                    PDF.getHeaderCommentAsHex = function() { return ""; };
+                    // PDF-specific: parse version from "%PDF-X.Y" header.
+                    PDF.getFileFormatVersion = function() {
+                        // PDF header: "%PDF-X.Y" at offset 0, version at offset 5.
+                        if (Binary.getSize() < 8) return "";
+                        if (Binary.read_uint8(0) !== 0x25 || Binary.read_uint8(1) !== 0x50) return "";
+                        // Read version string from offset 5 (e.g. "1.4").
+                        var major = Binary.read_uint8(5);
+                        var dot = Binary.read_uint8(6);
+                        var minor = Binary.read_uint8(7);
+                        if (major >= 0x30 && major <= 0x39 && dot === 0x2E && minor >= 0x30 && minor <= 0x39) {
+                            return String.fromCharCode(major) + "." + String.fromCharCode(minor);
+                        }
+                        return "";
+                    };
+                    PDF.getHeaderCommentAsHex = function() {
+                        // PDF header comment is the second line starting with '%'
+                        // after the "%PDF-X.Y" first line. It is typically
+                        // "%âãÏÓ" (high bytes indicating binary PDF).
+                        // Return the hex encoding of the comment bytes (without
+                        // the leading '%' and trailing newline).
+                        if (Binary.getSize() < 10) return "";
+                        // Find the first newline after "%PDF-X.Y".
+                        var nl = -1;
+                        for (var i = 5; i < Binary.getSize() && i < 100; i++) {
+                            if (Binary.read_uint8(i) === 0x0A) { nl = i; break; }
+                        }
+                        if (nl < 0 || nl + 1 >= Binary.getSize()) return "";
+                        // Second line starts at nl+1, should start with '%'.
+                        var start = nl + 1;
+                        if (Binary.read_uint8(start) !== 0x25) return "";
+                        // Read until next newline or EOF, up to 20 bytes.
+                        var hex = "";
+                        for (var j = start + 1; j < Binary.getSize() && j < start + 21; j++) {
+                            var b = Binary.read_uint8(j);
+                            if (b === 0x0A || b === 0x0D) break;
+                            var h = b.toString(16);
+                            if (h.length < 2) h = "0" + h;
+                            hex += h;
+                        }
+                        return hex;
+                    };
                     PDF.getStringValuesByKey = function(key) { return []; };
 
-                    // JPEG/Jpeg-specific stubs.
+                    // JPEG/Jpeg-specific: parse version from JFIF APP0 marker.
                     // Jpeg (mixed case) is used by _Jpeg.0.sg for detection.
                     Jpeg.getFileFormatName = function() { return "JPEG"; };
-                    Jpeg.getFileFormatVersion = function() { return ""; };
+                    Jpeg.getFileFormatVersion = function() {
+                        // JPEG version comes from the JFIF APP0 marker.
+                        // Layout: FF D8 FF E0 <len:2> "JFIF" <null> <major> <minor>
+                        // Version bytes at offset 11-12 are binary, not ASCII.
+                        if (Binary.getSize() < 20) return "";
+                        // Check for JFIF marker at offset 6.
+                        if (Binary.read_uint8(6) === 0x4A && Binary.read_uint8(7) === 0x46 &&
+                            Binary.read_uint8(8) === 0x49 && Binary.read_uint8(9) === 0x46) {
+                            var major = Binary.read_uint8(11);
+                            var minor = Binary.read_uint8(12);
+                            return major + "." + minor;
+                        }
+                        return "";
+                    };
                     Jpeg.getFileFormatOptions = function() { return ""; };
                     Jpeg.isVerbose = function() { return false; };
                     Jpeg.isDeepScan = function() { return false; };
@@ -3603,8 +3657,24 @@ impl HostApiBridge {
                     DEX.getOperationSystemOptions = function() { return ""; };
                     DEX.isDexStringPresent = function(s) { return false; };
                     DEX.isDexItemStringPresent = function(s) { return false; };
-                    DEX.getFileFormatName = function() { return "Dalvik Executable (.DEX)"; };
-                    DEX.getFileFormatVersion = function() { return ""; };
+                    // DEX: parse format name and version from header.
+                    // DEX header: "dex\n" (magic, 4 bytes) + version (3 bytes, ASCII) + null.
+                    DEX.getFileFormatName = function() { return "DEX"; };
+                    DEX.getFileFormatVersion = function() {
+                        if (Binary.getSize() < 8) return "";
+                        // Check "dex\n" magic at offset 0.
+                        if (Binary.read_uint8(0) !== 0x64 || Binary.read_uint8(1) !== 0x65 ||
+                            Binary.read_uint8(2) !== 0x78 || Binary.read_uint8(3) !== 0x0A) return "";
+                        // Version at offset 4-6 (3 ASCII digits).
+                        var v = "";
+                        for (var i = 4; i < 7; i++) {
+                            var b = Binary.read_uint8(i);
+                            if (b >= 0x30 && b <= 0x39) {
+                                v += String.fromCharCode(b);
+                            }
+                        }
+                        return v;
+                    };
                     DEX.getFileFormatOptions = function() { return ""; };
                     DEX.isVerbose = function() { return false; };
                     DEX.isDeepScan = function() { return false; };

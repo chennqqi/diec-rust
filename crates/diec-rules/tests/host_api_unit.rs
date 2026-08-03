@@ -478,7 +478,7 @@ function detect() {{
 ///   pe_offset: PE signature + COFF header + optional header + section
 fn build_minimal_pe(
     rich_entries: &[(u16, u16, u32)], // (product_id, version, count)
-    debug_entries: &[u32],          // debug types
+    debug_entries: &[u32],            // debug types
     has_security: bool,
 ) -> Vec<u8> {
     // DOS header at 0x00, PE header at 0x80 (128 bytes for DOS stub + Rich)
