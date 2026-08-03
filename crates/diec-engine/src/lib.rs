@@ -12,7 +12,7 @@
 #![warn(missing_docs)]
 
 mod database;
-mod host;
+pub mod host;
 mod scanner;
 
 pub use database::{Database, DatabaseBuilder, DatabaseError};

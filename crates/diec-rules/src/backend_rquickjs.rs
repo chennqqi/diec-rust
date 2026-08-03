@@ -1131,6 +1131,14 @@ mod tests {
         ) -> Result<Option<u64>, crate::host_api::HostApiError> {
             unimplemented!()
         }
+        fn find_signature_in_range(
+            &self,
+            _start: u64,
+            _end: u64,
+            _signature: &str,
+        ) -> Result<Option<u64>, crate::host_api::HostApiError> {
+            unimplemented!()
+        }
         fn read_string(
             &self,
             _offset: u64,
@@ -1167,6 +1175,15 @@ mod tests {
         }
         fn crc32(&self, _offset: u64, _size: u64) -> Result<u32, crate::host_api::HostApiError> {
             unimplemented!()
+        }
+        fn pe_import_libraries(&self) -> Vec<String> {
+            Vec::new()
+        }
+        fn pe_import_functions(&self) -> Vec<String> {
+            Vec::new()
+        }
+        fn pe_export_names(&self) -> Vec<String> {
+            Vec::new()
         }
     }
 }

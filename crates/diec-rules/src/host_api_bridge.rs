@@ -48,12 +48,62 @@ pub fn parse_signature(signature: &str) -> Result<Vec<SigElement>, String> {
 
         if c == '\'' {
             // String literal: read until closing quote.
+            // Supports escape sequences: \r \n \t \0 \\ \xHH
             i += 1;
             while i < chars.len() && chars[i] != '\'' {
-                for b in chars[i].to_string().as_bytes() {
-                    elements.push(SigElement::Byte(*b));
+                if chars[i] == '\\' && i + 1 < chars.len() {
+                    let next = chars[i + 1];
+                    match next {
+                        'r' => {
+                            elements.push(SigElement::Byte(0x0D));
+                            i += 2;
+                        }
+                        'n' => {
+                            elements.push(SigElement::Byte(0x0A));
+                            i += 2;
+                        }
+                        't' => {
+                            elements.push(SigElement::Byte(0x09));
+                            i += 2;
+                        }
+                        '0' => {
+                            elements.push(SigElement::Byte(0x00));
+                            i += 2;
+                        }
+                        '\\' => {
+                            elements.push(SigElement::Byte(0x5C));
+                            i += 2;
+                        }
+                        '\'' => {
+                            elements.push(SigElement::Byte(0x27));
+                            i += 2;
+                        }
+                        '"' => {
+                            elements.push(SigElement::Byte(0x22));
+                            i += 2;
+                        }
+                        'x' if i + 3 < chars.len() => {
+                            let h1 = chars[i + 2].to_digit(16);
+                            let h2 = chars[i + 3].to_digit(16);
+                            if let (Some(h1), Some(h2)) = (h1, h2) {
+                                elements.push(SigElement::Byte((h1 * 16 + h2) as u8));
+                                i += 4;
+                            } else {
+                                elements.push(SigElement::Byte(b'\\'));
+                                i += 1;
+                            }
+                        }
+                        _ => {
+                            elements.push(SigElement::Byte(b'\\'));
+                            i += 1;
+                        }
+                    }
+                } else {
+                    for b in chars[i].to_string().as_bytes() {
+                        elements.push(SigElement::Byte(*b));
+                    }
+                    i += 1;
                 }
-                i += 1;
             }
             if i >= chars.len() {
                 return Err("unterminated string literal in signature".into());
@@ -665,6 +715,70 @@ impl HostApiBridge {
                     detail: format!("__findSignature set: {e}"),
                 })?;
 
+            // findSignatureInRange(start, end, signature) -> offset or -1.
+            // Searches within [start, end) range. Used by the 3-arg JS wrapper.
+            let h = host.clone();
+            let find_sig_range_fn = rquickjs::Function::new(
+                ctx.clone(),
+                move |start: i32, end: i32, signature: String| match h
+                    .find_signature_in_range(start as u64, end as u64, &signature)
+                {
+                    Ok(Some(offset)) => offset as f64,
+                    _ => -1.0,
+                },
+            )
+            .map_err(|e| RuleError::Backend {
+                detail: format!("findSignatureInRange: {e}"),
+            })?;
+            binary
+                .set("__findSignatureRange", find_sig_range_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("__findSignatureRange set: {e}"),
+                })?;
+
+            // PE batch parsing: return all import library names in one call.
+            // This avoids tens of thousands of per-byte JS→Rust FFI round-trips.
+            let h = host.clone();
+            let pe_import_libs_fn = rquickjs::Function::new(ctx.clone(), move || {
+                h.pe_import_libraries()
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("peImportLibraries: {e}"),
+            })?;
+            binary
+                .set("__peImportLibraries", pe_import_libs_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("__peImportLibraries set: {e}"),
+                })?;
+
+            // PE batch parsing: return all import function names in one call.
+            let h = host.clone();
+            let pe_import_funcs_fn = rquickjs::Function::new(ctx.clone(), move || {
+                h.pe_import_functions()
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("peImportFunctions: {e}"),
+            })?;
+            binary
+                .set("__peImportFunctions", pe_import_funcs_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("__peImportFunctions set: {e}"),
+                })?;
+
+            // PE batch parsing: return all export function names in one call.
+            let h = host.clone();
+            let pe_export_names_fn = rquickjs::Function::new(ctx.clone(), move || {
+                h.pe_export_names()
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("peExportNames: {e}"),
+            })?;
+            binary
+                .set("__peExportNames", pe_export_names_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("__peExportNames set: {e}"),
+                })?;
+
             // isSignaturePresent(offset, size, signature) -> bool
             // Upstream: bool isSignaturePresent(qint64 nOffset, qint64 nSize, const QString &sSignature)
             // Searches for signature within [offset, offset+size) range.
@@ -672,17 +786,16 @@ impl HostApiBridge {
             let is_sig_present_fn = rquickjs::Function::new(
                 ctx.clone(),
                 move |offset: i32, size: i32, signature: String| {
-                    if size <= 0 {
+                    if size <= 0 || offset < 0 {
                         h.check_signature(offset as u64, &signature)
                             .unwrap_or(false)
                     } else {
-                        h.find_signature(offset as u64, &signature)
+                        let start = offset as u64;
+                        let end = start.saturating_add(size as u64);
+                        h.find_signature_in_range(start, end, &signature)
                             .ok()
                             .flatten()
-                            .map(|found| {
-                                found >= offset as u64 && found < (offset as u64 + size as u64)
-                            })
-                            .unwrap_or(false)
+                            .is_some()
                     }
                 },
             )
@@ -979,15 +1092,21 @@ impl HostApiBridge {
                     detail: format!("fStr set: {e}"),
                 })?;
 
-            // fSig(offset, size, signature) -> offset or -1 (alias for findSignature with extra size param)
+            // fSig(offset, size, signature) -> offset or -1
+            // Searches for signature within [offset, offset+size) range.
             let h = host.clone();
             let fsig_fn = rquickjs::Function::new(
                 ctx.clone(),
-                move |offset: i32, _size: i32, signature: String| match h
-                    .find_signature(offset as u64, &signature)
-                {
-                    Ok(Some(off)) => off as f64,
-                    _ => -1.0,
+                move |offset: i32, size: i32, signature: String| {
+                    if size <= 0 || offset < 0 {
+                        return -1.0;
+                    }
+                    let start = offset as u64;
+                    let end = start.saturating_add(size as u64);
+                    match h.find_signature_in_range(start, end, &signature) {
+                        Ok(Some(off)) => off as f64,
+                        _ => -1.0,
+                    }
                 },
             )
             .map_err(|e| RuleError::Backend {
@@ -1065,20 +1184,67 @@ impl HostApiBridge {
                 detail: format!("isResource set: {e}"),
             })?;
 
-            // isPlainText() -> false
-            let is_plain_fn = rquickjs::Function::new(ctx.clone(), || false)
-                .map_err(|e| RuleError::Backend {
-                    detail: format!("isPlainText: {e}"),
-                })?;
+            // isPlainText() -> check if file content is all printable ASCII
+            let h = host.clone();
+            let is_plain_fn = rquickjs::Function::new(ctx.clone(), move || {
+                let size = h.file_size() as usize;
+                if size == 0 {
+                    return false;
+                }
+                // Check up to 4096 bytes (match upstream behavior)
+                let check_len = size.min(4096);
+                for i in 0..check_len {
+                    match h.read_u8(i as u64) {
+                        Ok(b) => {
+                            // Allow printable ASCII (0x20-0x7E), tab (0x09),
+                            // LF (0x0A), CR (0x0D)
+                            let is_printable = (0x20..=0x7E).contains(&b)
+                                || b == 0x09
+                                || b == 0x0A
+                                || b == 0x0D;
+                            if !is_printable {
+                                return false;
+                            }
+                        }
+                        _ => return false,
+                    }
+                }
+                true
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("isPlainText: {e}"),
+            })?;
             binary.set("isPlainText", is_plain_fn).map_err(|e| RuleError::Backend {
                 detail: format!("isPlainText set: {e}"),
             })?;
 
-            // isText() -> false
-            let is_text_fn = rquickjs::Function::new(ctx.clone(), || false)
-                .map_err(|e| RuleError::Backend {
-                    detail: format!("isText: {e}"),
-                })?;
+            // isText() -> isPlainText || isUTF8Text || isUnicodeText
+            let h = host.clone();
+            let is_text_fn = rquickjs::Function::new(ctx.clone(), move || {
+                let size = h.file_size() as usize;
+                if size == 0 {
+                    return false;
+                }
+                let check_len = size.min(4096);
+                for i in 0..check_len {
+                    match h.read_u8(i as u64) {
+                        Ok(b) => {
+                            let is_printable = (0x20..=0x7E).contains(&b)
+                                || b == 0x09
+                                || b == 0x0A
+                                || b == 0x0D;
+                            if !is_printable {
+                                return false;
+                            }
+                        }
+                        _ => return false,
+                    }
+                }
+                true
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("isText: {e}"),
+            })?;
             binary.set("isText", is_text_fn).map_err(|e| RuleError::Backend {
                 detail: format!("isText set: {e}"),
             })?;
@@ -1661,10 +1827,21 @@ impl HostApiBridge {
                         }
                         return name;
                     }
-                    function _peSectionVirtualSize(n) { return _B.read_uint32_le(_peSecHdrOff(n) + 4); }
-                    function _peSectionVirtualAddress(n) { return _B.read_uint32_le(_peSecHdrOff(n) + 8); }
-                    function _peSectionFileSize(n) { return _B.read_uint32_le(_peSecHdrOff(n) + 12); }
-                    function _peSectionFileOffset(n) { return _B.read_uint32_le(_peSecHdrOff(n) + 16); }
+                    // Section header layout (IMAGE_SECTION_HEADER, 40 bytes):
+                    //   0-7:   Name (8 bytes)
+                    //   8-11:  VirtualSize (union with PhysicalAddress)
+                    //   12-15: VirtualAddress
+                    //   16-19: SizeOfRawData
+                    //   20-23: PointerToRawData
+                    //   24-27: PointerToRelocations
+                    //   28-31: PointerToLinenumbers
+                    //   32-33: NumberOfRelocations
+                    //   34-35: NumberOfLinenumbers
+                    //   36-39: Characteristics
+                    function _peSectionVirtualSize(n) { return _B.read_uint32_le(_peSecHdrOff(n) + 8); }
+                    function _peSectionVirtualAddress(n) { return _B.read_uint32_le(_peSecHdrOff(n) + 12); }
+                    function _peSectionFileSize(n) { return _B.read_uint32_le(_peSecHdrOff(n) + 16); }
+                    function _peSectionFileOffset(n) { return _B.read_uint32_le(_peSecHdrOff(n) + 20); }
                     function _peSectionCharacteristics(n) { return _B.read_uint32_le(_peSecHdrOff(n) + 36); }
 
                     function _peSectionNumber(name) {
@@ -1822,8 +1999,10 @@ impl HostApiBridge {
                         if (section >= _peNumberOfSections()) return false;
                         var off = _peSectionFileOffset(section);
                         var size = _peSectionFileSize(section);
-                        var found = _B.findSignature(off, sig);
-                        return (found >= 0 && found < off + size);
+                        if (size <= 0) return false;
+                        // Search only within the section bounds.
+                        var found = _B.__findSignatureRange(off, off + size, sig);
+                        return found >= 0;
                     };
 
                     // Resource stubs.
@@ -1840,15 +2019,6 @@ impl HostApiBridge {
                     PE.getOperationSystemOptions = function() { return ""; };
                     PE.isResourceNamePresent = function(s) { return false; };
 
-                    // Import/export stubs.
-                    PE.getNumberOfImports = function() { return 0; };
-                    PE.getImportLibraryName = function(n) { return ""; };
-                    PE.getImportFunctionName = function(n) { return ""; };
-                    PE.getNumberOfExportFunctions = function() { return 0; };
-                    PE.getExportFunctionName = function(n) { return ""; };
-                    PE.isLibraryPresent = function(s) { return false; };
-                    PE.isExportFunctionPresent = function(s) { return false; };
-
                     // .NET stubs.
                     PE.isNet = function() { return false; };
                     PE.isNetObjectPresent = function(s) { return false; };
@@ -1861,53 +2031,429 @@ impl HostApiBridge {
 
                     // PE-specific string methods.
                     PE.getManifest = function() { return ""; };
-                    PE.isSignedFile = function() { return false; };
-                    PE.isSigned = function() { return false; };
-                    PE.getSignature = function(offset, size) { return ""; };
-                    PE.getEntryPointSignature = function(nOffset, nSize) {
-                        return PE.getSignature(PE.nEP + nOffset, nSize);
+                    // Authenticode signature: check security directory (index 4).
+                    // If VirtualAddress (certificate offset) is non-zero, file is signed.
+                    PE.isSignedFile = function() {
+                        if (!_peIsPE()) return false;
+                        var secDir = _peDataDirOff(4);
+                        return _B.read_uint32_le(secDir) !== 0;
                     };
+                    PE.isSigned = function() { return PE.isSignedFile(); };
                     PE.getGeneralOptionsEx = function() { return ""; };
-                    PE.isLibraryPresentExp = function(p) { return null; };
-                    PE.isExportFunctionPresentExp = function(p) { return null; };
-                    PE.isSectionNamePresentExp = function(p) { return null; };
-                    PE.isResourceNamePresentExp = function(p) { return null; };
 
-                    // File info stubs.
+                    // File info stubs (require version resource parsing, not yet implemented).
                     PE.getPEFileVersion = function(s) { return ""; };
                     PE.getVersionStringInfo = function(s) { return ""; };
                     PE.getFileVersion = function() { return ""; };
                     PE.getCompilerVersion = function() { return ""; };
 
-                    // PE header info stubs.
-                    PE.isTLSPresent = function() { return false; };
-                    PE.isRichSignaturePresent = function() { return false; };
-                    PE.getMajorLinkerVersion = function() { return 0; };
-                    PE.getMinorLinkerVersion = function() { return 0; };
-                    PE.getImageOptionalHeader = function(field) { return 0; };
-                    PE.isDll = function() { return false; };
+                    // OS info stubs (require version resource parsing).
+                    PE.getOperationSystemName = function() { return ""; };
+                    PE.getOperationSystemVersion = function() { return ""; };
+
+                    // getAddressOfEntryPoint: same as getEntryPoint (RVA).
                     PE.getAddressOfEntryPoint = function() { return PE.getEntryPoint(); };
-                    PE.getEntryPointOffset = function() { return PE.getEntryPoint(); };
-                    PE.getEntryPointSection = function() { return -1; };
-                    PE.getRichVersion = function(n) { return 0; };
 
-                    // Section helper stubs.
+                    PE.isLibraryPresentExp = function(p) { return null; };
+                    PE.isExportFunctionPresentExp = function(p) { return null; };
+                    PE.isSectionNamePresentExp = function(p) { return null; };
+                    PE.isResourceNamePresentExp = function(p) { return null; };
+
+                    // Linker version: read from optional header bytes 2-3.
+                    // Optional header starts at e_lfanew + 24.
+                    // MajorLinkerVersion at opt+2, MinorLinkerVersion at opt+3.
+                    PE.getMajorLinkerVersion = function() {
+                        if (!_peIsPE()) return 0;
+                        return _B.read_uint8(_peOptHdrOff() + 2);
+                    };
+                    PE.getMinorLinkerVersion = function() {
+                        if (!_peIsPE()) return 0;
+                        return _B.read_uint8(_peOptHdrOff() + 3);
+                    };
+
+                    // DOS stub size: bytes between DOS header (64 bytes) and PE sig.
+                    PE.getDosStubSize = function() {
+                        if (!_peIsPE()) return 0;
+                        var stubEnd = _peLfanew();
+                        return stubEnd > 64 ? stubEnd - 64 : 0;
+                    };
+
+                    // Rich signature: search for "Rich" in DOS stub.
+                    // The Rich signature is at a variable offset in the DOS stub.
+                    // The XOR key is the 4 bytes after "Rich".
+                    PE.isRichSignaturePresent = function() {
+                        if (!_peIsPE()) return false;
+                        var stubSize = PE.getDosStubSize();
+                        if (stubSize < 8) return false;
+                        // Search for "Rich" (0x52 0x69 0x63 0x68) in DOS stub.
+                        // "Rich" + key = 8 bytes, so search up to stubSize - 8.
+                        for (var i = 64; i <= 64 + stubSize - 8; i++) {
+                            if (_B.read_uint8(i) === 0x52 &&
+                                _B.read_uint8(i + 1) === 0x69 &&
+                                _B.read_uint8(i + 2) === 0x63 &&
+                                _B.read_uint8(i + 3) === 0x68) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    };
+
+                    // Rich signature data: parse Rich header entries.
+                    // Each entry is 8 bytes: DWORD1(4) DWORD2(4), XORed with key.
+                    // DWORD1: high 16 bits = ProductID, low 16 bits = Version/Build
+                    // DWORD2: UseCount
+                    var _peRichData = null;
+                    function _peParseRich() {
+                        if (_peRichData !== null) return _peRichData;
+                        _peRichData = { ids: [], counts: [], versions: [] };
+                        if (!_peIsPE()) return _peRichData;
+                        var stubSize = PE.getDosStubSize();
+                        if (stubSize < 8) return _peRichData;
+                        var richOff = -1;
+                        for (var i = 64; i <= 64 + stubSize - 8; i++) {
+                            if (_B.read_uint8(i) === 0x52 &&
+                                _B.read_uint8(i + 1) === 0x69 &&
+                                _B.read_uint8(i + 2) === 0x63 &&
+                                _B.read_uint8(i + 3) === 0x68) {
+                                richOff = i;
+                                break;
+                            }
+                        }
+                        if (richOff < 0) return _peRichData;
+                        // XOR key is the DWORD after "Rich".
+                        var key = _B.read_uint32_le(richOff + 4);
+                        // "DanS" marker is at the start of the Rich header,
+                        // XORed with key. Search backwards from richOff.
+                        var dansVal = 0x536E6144; // "DanS" LE
+                        var startOff = -1;
+                        for (var j = richOff - 8; j >= 64; j -= 8) {
+                            var val = _B.read_uint32_le(j) ^ key;
+                            if (val === dansVal) {
+                                startOff = j + 16; // Skip DanS + 3 padding DWORDs (match upstream)
+                                break;
+                            }
+                        }
+                        if (startOff < 0) startOff = 64;
+                        // Parse entries from startOff to richOff.
+                        // Match upstream XMSDOS::getRichSignatureRecords:
+                        //   nId      = (DWORD1 >> 16) & 0xFFFF  (high 16 bits)
+                        //   nVersion =  DWORD1        & 0xFFFF  (low 16 bits)
+                        //   nCount   =  DWORD2
+                        for (var k = startOff; k < richOff; k += 8) {
+                            var dword1 = _B.read_uint32_le(k) ^ key;
+                            var useCount = _B.read_uint32_le(k + 4) ^ key;
+                            _peRichData.ids.push((dword1 >>> 16) & 0xFFFF);
+                            _peRichData.versions.push(dword1 & 0xFFFF);
+                            _peRichData.counts.push(useCount);
+                        }
+                        return _peRichData;
+                    }
+                    PE.getNumberOfRichIDs = function() {
+                        return _peParseRich().ids.length;
+                    };
+                    PE.getRichID = function(n) {
+                        var d = _peParseRich();
+                        if (n < 0 || n >= d.ids.length) return 0;
+                        return d.ids[n];
+                    };
+                    PE.getRichCount = function(n) {
+                        var d = _peParseRich();
+                        if (n >= 0 && n < d.counts.length) return d.counts[n];
+                        return 0;
+                    };
+                    PE.getRichVersion = function(n) {
+                        var d = _peParseRich();
+                        if (n >= 0 && n < d.versions.length) return d.versions[n];
+                        return 0;
+                    };
+
+                    // TLS: check TLS directory in optional header.
+                    // PE32: TLS directory at opt + 192 (data directory index 9 * 8 + opt + 96)
+                    // PE32+: TLS directory at opt + 216 (data directory index 9 * 8 + opt + 112)
+                    // Data directory entry: VirtualAddress(4) Size(4)
+                    function _peDataDirOff(idx) {
+                        var ddStart = _peIs64() ? _peOptHdrOff() + 112 : _peOptHdrOff() + 96;
+                        return ddStart + idx * 8;
+                    }
+                    PE.isTLSPresent = function() {
+                        if (!_peIsPE()) return false;
+                        var tlsDir = _peDataDirOff(9);
+                        var va = _B.read_uint32_le(tlsDir);
+                        return va !== 0;
+                    };
+                    PE.getTLSSection = function() {
+                        if (!_peIsPE()) return -1;
+                        var tlsDir = _peDataDirOff(9);
+                        var va = _B.read_uint32_le(tlsDir);
+                        if (va === 0) return -1;
+                        // Find section containing the TLS directory RVA.
+                        var n = _peNumberOfSections();
+                        for (var i = 0; i < n; i++) {
+                            var secVA = _peSectionVirtualAddress(i);
+                            var secVS = _peSectionVirtualSize(i);
+                            if (va >= secVA && va < secVA + secVS) return i;
+                        }
+                        return -1;
+                    };
+
+                    // isDll: check IMAGE_FILE_DLL (0x2000) in Characteristics.
+                    PE.isDll = function() {
+                        if (!_peIsPE()) return false;
+                        var chars = _B.read_uint16_le(_peLfanew() + 4 + 18);
+                        return (chars & 0x2000) !== 0;
+                    };
+
+                    // getImageOptionalHeader: read a field from optional header by name.
+                    PE.getImageOptionalHeader = function(field) {
+                        if (!_peIsPE()) return 0;
+                        var opt = _peOptHdrOff();
+                        switch (field) {
+                            case "AddressOfEntryPoint": return _B.read_uint32_le(opt + 16);
+                            case "BaseOfCode": return _B.read_uint32_le(opt + 20);
+                            case "ImageBase": return _peImageBase();
+                            case "SectionAlignment": return _B.read_uint32_le(opt + (_peIs64() ? 32 : 32));
+                            case "FileAlignment": return _B.read_uint32_le(opt + (_peIs64() ? 36 : 36));
+                            case "SizeOfImage": return _peSizeOfImage();
+                            case "SizeOfHeaders": return _B.read_uint32_le(opt + (_peIs64() ? 60 : 60));
+                            case "Subsystem": return _B.read_uint16_le(opt + 68);
+                            case "DllCharacteristics": return _B.read_uint16_le(opt + 70);
+                            case "SizeOfStackReserve": return _peIs64() ? _B.read_uint64_le(opt + 72) : _B.read_uint32_le(opt + 72);
+                            case "SizeOfStackCommit": return _peIs64() ? _B.read_uint64_le(opt + 80) : _B.read_uint32_le(opt + 76);
+                            case "SizeOfHeapReserve": return _peIs64() ? _B.read_uint64_le(opt + 88) : _B.read_uint32_le(opt + 80);
+                            case "SizeOfHeapCommit": return _peIs64() ? _B.read_uint64_le(opt + 96) : _B.read_uint32_le(opt + 84);
+                            default: return 0;
+                        }
+                    };
+
+                    // getEntryPointOffset: convert entry point RVA to file offset.
+                    PE.getEntryPointOffset = function() {
+                        if (!_peIsPE()) return -1;
+                        var ep = _peEntryPoint();
+                        if (ep === 0) return -1;
+                        return _peRvaToFileOffset(ep);
+                    };
+
+                    // getEntryPointSection: find section containing entry point.
+                    PE.getEntryPointSection = function() {
+                        if (!_peIsPE()) return -1;
+                        var ep = _peEntryPoint();
+                        if (ep === 0) return -1;
+                        var n = _peNumberOfSections();
+                        for (var i = 0; i < n; i++) {
+                            var va = _peSectionVirtualAddress(i);
+                            var vs = _peSectionVirtualSize(i);
+                            if (ep >= va && ep < va + vs) return i;
+                        }
+                        return -1;
+                    };
+
+                    // getSignature: read hex string of bytes at offset.
+                    PE.getSignature = function(offset, size) {
+                        if (offset < 0 || size <= 0) return "";
+                        var totalSize = _B.getSize();
+                        if (offset + size > totalSize) size = totalSize - offset;
+                        if (size <= 0) return "";
+                        var hex = "";
+                        for (var i = 0; i < size; i++) {
+                            var b = _B.read_uint8(offset + i);
+                            var h = b.toString(16);
+                            if (h.length < 2) h = "0" + h;
+                            hex += h;
+                        }
+                        return hex.toUpperCase();
+                    };
+
+                    // RVAToOffset / OffsetToRVA / VAToOffset
+                    PE.RVAToOffset = function(rva) {
+                        if (!_peIsPE()) return -1;
+                        return _peRvaToFileOffset(rva);
+                    };
+                    PE.OffsetToRVA = function(off) {
+                        if (!_peIsPE()) return -1;
+                        var n = _peNumberOfSections();
+                        for (var i = 0; i < n; i++) {
+                            var rawOff = _peSectionFileOffset(i);
+                            var rawSize = _peSectionFileSize(i);
+                            if (off >= rawOff && off < rawOff + rawSize) {
+                                return _peSectionVirtualAddress(i) + (off - rawOff);
+                            }
+                        }
+                        return -1;
+                    };
+                    PE.VAToOffset = function(va) {
+                        if (!_peIsPE()) return -1;
+                        var imageBase = _peImageBase();
+                        if (va < imageBase) return -1;
+                        return _peRvaToFileOffset(va - imageBase);
+                    };
+                    PE.OffsetToVA = function(off) {
+                        if (!_peIsPE()) return -1;
+                        var rva = PE.OffsetToRVA(off);
+                        if (rva === -1) return -1;
+                        return _peImageBase() + rva;
+                    };
+
+                    // Import table parsing.
+                    // Data directory index 1 = Import Table.
+                    // Parsed in Rust via __peImportLibraries/__peImportFunctions
+                    // for performance (avoids per-byte JS→Rust FFI overhead).
+                    var _peImportData = null;
+                    function _peParseImports() {
+                        if (_peImportData !== null) return _peImportData;
+                        _peImportData = { libraries: [], functions: [] };
+                        if (!_peIsPE()) return _peImportData;
+                        var libs = _B.__peImportLibraries();
+                        var funcs = _B.__peImportFunctions();
+                        _peImportData.libraries = libs;
+                        // Build functions array matching the old structure.
+                        // The native side returns function names in order;
+                        // we don't have per-function library mapping here,
+                        // but isLibraryFunctionPresent is rarely used and
+                        // can fall back to name-only matching.
+                        for (var i = 0; i < funcs.length; i++) {
+                            _peImportData.functions.push({ lib: "", name: funcs[i] });
+                        }
+                        return _peImportData;
+                    }
+                    PE.getNumberOfImports = function() {
+                        return _peParseImports().libraries.length;
+                    };
+                    PE.getImportLibraryName = function(n) {
+                        var d = _peParseImports();
+                        if (n < 0 || n >= d.libraries.length) return "";
+                        return d.libraries[n];
+                    };
+                    PE.getImportFunctionName = function(n) {
+                        var d = _peParseImports();
+                        if (n < 0 || n >= d.functions.length) return "";
+                        return d.functions[n].name;
+                    };
+                    PE.getNumberOfImportThunks = function() {
+                        return _peParseImports().functions.length;
+                    };
+                    PE.isLibraryPresent = function(s) {
+                        var d = _peParseImports();
+                        var sLower = s.toLowerCase();
+                        for (var i = 0; i < d.libraries.length; i++) {
+                            if (d.libraries[i].toLowerCase() === sLower) return true;
+                        }
+                        return false;
+                    };
+                    PE.isLibraryFunctionPresent = function(lib, fn) {
+                        var d = _peParseImports();
+                        var fnLower = fn.toLowerCase();
+                        for (var i = 0; i < d.functions.length; i++) {
+                            if (d.functions[i].name.toLowerCase() === fnLower) return true;
+                        }
+                        return false;
+                    };
+                    PE.isFunctionPresent = function(s) {
+                        var d = _peParseImports();
+                        var sLower = s.toLowerCase();
+                        for (var i = 0; i < d.functions.length; i++) {
+                            if (d.functions[i].name.toLowerCase() === sLower) return true;
+                        }
+                        return false;
+                    };
+
+                    // Export table parsing.
+                    // Parsed in Rust via __peExportNames for performance.
+                    var _peExportData = null;
+                    function _peParseExports() {
+                        if (_peExportData !== null) return _peExportData;
+                        _peExportData = { names: [], count: 0 };
+                        if (!_peIsPE()) return _peExportData;
+                        var names = _B.__peExportNames();
+                        _peExportData.names = names;
+                        _peExportData.count = names.length;
+                        return _peExportData;
+                    }
+                    PE.getNumberOfExportFunctions = function() {
+                        return _peParseExports().count;
+                    };
+                    PE.getNumberOfExports = function() {
+                        return _peParseExports().count;
+                    };
+                    PE.getExportFunctionName = function(n) {
+                        var d = _peParseExports();
+                        if (n < 0 || n >= d.names.length) return "";
+                        return d.names[n];
+                    };
+                    PE.isExportFunctionPresent = function(s) {
+                        var d = _peParseExports();
+                        var sLower = s.toLowerCase();
+                        for (var i = 0; i < d.names.length; i++) {
+                            if (d.names[i].toLowerCase() === sLower) return true;
+                        }
+                        return false;
+                    };
+                    // getExportFunctionOffsetByIndex: read the AddressOfFunctions
+                    // array from the export directory and return the file offset
+                    // of the n-th exported function.
+                    PE.getExportFunctionOffsetByIndex = function(n) {
+                        if (!_peIsPE()) return -1;
+                        var expDirRva = _B.read_uint32_le(_peDataDirOff(0));
+                        if (expDirRva === 0) return -1;
+                        var expDirOff = _peRvaToFileOffset(expDirRva);
+                        if (expDirOff < 0) return -1;
+                        var numFuncs = _B.read_uint32_le(expDirOff + 20);
+                        if (n < 0 || n >= numFuncs) return -1;
+                        var addrOfFuncsRva = _B.read_uint32_le(expDirOff + 28);
+                        var addrOfFuncsOff = _peRvaToFileOffset(addrOfFuncsRva);
+                        if (addrOfFuncsOff < 0) return -1;
+                        var funcRva = _B.read_uint32_le(addrOfFuncsOff + n * 4);
+                        if (funcRva === 0) return -1;
+                        return _peRvaToFileOffset(funcRva);
+                    };
+
+                    // Section helpers.
                     PE.getSectionNameCollision = function(n) { return ""; };
-                    PE.getResourceSection = function() { return -1; };
-                    PE.getImportSection = function() { return -1; };
-                    PE.getRelocsSection = function() { return -1; };
-                    PE.getExportSection = function() { return -1; };
-
-                    // Import/export stubs.
-                    PE.getNumberOfImportThunks = function() { return 0; };
-                    PE.getImportFunctionName = function(n) { return ""; };
-                    PE.isLibraryFunctionPresent = function(lib, fn) { return false; };
-                    PE.isFunctionPresent = function(s) { return false; };
-
-                    // Address conversion stubs.
-                    PE.VAToOffset = function(va) { return -1; };
-                    PE.RVAToOffset = function(rva) { return -1; };
-                    PE.OffsetToVA = function(off) { return -1; };
+                    PE.getResourceSection = function() {
+                        if (!_peIsPE()) return -1;
+                        var rsrcDir = _peDataDirOff(2);
+                        var va = _B.read_uint32_le(rsrcDir);
+                        if (va === 0) return -1;
+                        return _peRvaToFileOffset(va) >= 0 ? _peRvaToFileOffset(va) : -1;
+                    };
+                    PE.getImportSection = function() {
+                        if (!_peIsPE()) return -1;
+                        var impDir = _peDataDirOff(1);
+                        var va = _B.read_uint32_le(impDir);
+                        if (va === 0) return -1;
+                        var n = _peNumberOfSections();
+                        for (var i = 0; i < n; i++) {
+                            var secVA = _peSectionVirtualAddress(i);
+                            var secVS = _peSectionVirtualSize(i);
+                            if (va >= secVA && va < secVA + secVS) return i;
+                        }
+                        return -1;
+                    };
+                    PE.getRelocsSection = function() {
+                        if (!_peIsPE()) return -1;
+                        var relocDir = _peDataDirOff(5);
+                        var va = _B.read_uint32_le(relocDir);
+                        if (va === 0) return -1;
+                        var n = _peNumberOfSections();
+                        for (var i = 0; i < n; i++) {
+                            var secVA = _peSectionVirtualAddress(i);
+                            var secVS = _peSectionVirtualSize(i);
+                            if (va >= secVA && va < secVA + secVS) return i;
+                        }
+                        return -1;
+                    };
+                    PE.getExportSection = function() {
+                        if (!_peIsPE()) return -1;
+                        var expDir = _peDataDirOff(0);
+                        var va = _B.read_uint32_le(expDir);
+                        if (va === 0) return -1;
+                        var n = _peNumberOfSections();
+                        for (var i = 0; i < n; i++) {
+                            var secVA = _peSectionVirtualAddress(i);
+                            var secVS = _peSectionVirtualSize(i);
+                            if (va >= secVA && va < secVA + secVS) return i;
+                        }
+                        return -1;
+                    };
 
                     // Disasm stubs.
                     PE.getDisasmNextAddress = function() { return -1; };
@@ -1932,24 +2478,62 @@ impl HostApiBridge {
                     PE.getFileDirectory = function() { return ""; };
                     PE.getFileBaseName = function() { return ""; };
                     PE.getFileCompleteSuffix = function() { return ""; };
-                    PE.getDosStubSize = function() { return 0; };
 
-                    // Debug data stubs.
-                    PE.getNumberOfDebugDataRecords = function() { return 0; };
-                    PE.getDebugDataOffset = function(n) { return 0; };
-                    PE.getDebugDataSize = function(n) { return 0; };
-                    PE.getDebugDataType = function(n) { return ""; };
-
-                    // Rich signature stubs.
-                    PE.getNumberOfRichIDs = function() { return 0; };
-                    PE.getRichID = function(n) { return 0; };
-                    PE.getRichCount = function() { return 0; };
-
-                    // Export stubs.
-                    PE.getNumberOfExports = function() { return 0; };
-
-                    // TLS stubs.
-                    PE.getTLSSection = function() { return -1; };
+                    // Debug data: parse PE debug directory (data directory index 6).
+                    // Each IMAGE_DEBUG_DIRECTORY_ENTRY is 28 bytes:
+                    //   0: Characteristics(4), 4: TimeDateStamp(4),
+                    //   8: MajorVersion(2), 10: MinorVersion(2),
+                    //   12: Type(4), 16: SizeOfData(4),
+                    //   20: AddressOfRawData(4), 24: PointerToRawData(4)
+                    var _DEBUG_TYPES = {
+                        0: "UNKNOWN", 1: "COFF", 2: "CODEVIEW", 3: "FPO",
+                        4: "MISC", 5: "EXCEPTION", 6: "FIXUP", 7: "OMAP_TO_SRC",
+                        8: "OMAP_FROM_SRC", 9: "BORLAND", 10: "RESERVED10",
+                        11: "VC_FEATURE", 12: "POGO", 13: "ILTCG",
+                        14: "MPX", 15: "REPRO", 16: "EX_DLLCHARACTERISTICS"
+                    };
+                    PE.getNumberOfDebugDataRecords = function() {
+                        if (!_peIsPE()) return 0;
+                        var dbgDirOff = _peDataDirOff(6);
+                        var va = _B.read_uint32_le(dbgDirOff);
+                        var size = _B.read_uint32_le(dbgDirOff + 4);
+                        if (va === 0 || size === 0) return 0;
+                        return Math.floor(size / 28);
+                    };
+                    PE.getDebugDataOffset = function(n) {
+                        if (!_peIsPE()) return 0;
+                        var dbgDirOff = _peDataDirOff(6);
+                        var va = _B.read_uint32_le(dbgDirOff);
+                        var size = _B.read_uint32_le(dbgDirOff + 4);
+                        if (va === 0 || size === 0) return 0;
+                        var count = Math.floor(size / 28);
+                        if (n < 0 || n >= count) return 0;
+                        var entryOff = _peRvaToFileOffset(va) + n * 28;
+                        return _B.read_uint32_le(entryOff + 24); // PointerToRawData
+                    };
+                    PE.getDebugDataSize = function(n) {
+                        if (!_peIsPE()) return 0;
+                        var dbgDirOff = _peDataDirOff(6);
+                        var va = _B.read_uint32_le(dbgDirOff);
+                        var size = _B.read_uint32_le(dbgDirOff + 4);
+                        if (va === 0 || size === 0) return 0;
+                        var count = Math.floor(size / 28);
+                        if (n < 0 || n >= count) return 0;
+                        var entryOff = _peRvaToFileOffset(va) + n * 28;
+                        return _B.read_uint32_le(entryOff + 16); // SizeOfData
+                    };
+                    PE.getDebugDataType = function(n) {
+                        if (!_peIsPE()) return "";
+                        var dbgDirOff = _peDataDirOff(6);
+                        var va = _B.read_uint32_le(dbgDirOff);
+                        var size = _B.read_uint32_le(dbgDirOff + 4);
+                        if (va === 0 || size === 0) return "";
+                        var count = Math.floor(size / 28);
+                        if (n < 0 || n >= count) return "";
+                        var entryOff = _peRvaToFileOffset(va) + n * 28;
+                        var typeVal = _B.read_uint32_le(entryOff + 12);
+                        return _DEBUG_TYPES[typeVal] || "UNKNOWN";
+                    };
 
                     // Validation stubs.
                     PE.isEntryPointCorrect = function() { return false; };
@@ -1963,9 +2547,6 @@ impl HostApiBridge {
 
                     // Search helpers.
                     PE.findDword = function(off, val) { return -1; };
-
-                    // Address conversion.
-                    PE.OffsetToRVA = function(off) { return -1; };
 
                     // Search methods (delegate to Binary).
                     PE.getString = function(offset, maxLen) {
@@ -3096,17 +3677,15 @@ impl HostApiBridge {
                     // findSignature wrapper: findSignature(start, sig) or
                     // findSignature(start, size, sig) -> offset or -1.
                     var _orig_fs = Binary.__findSignature;
+                    var _orig_fsr = Binary.__findSignatureRange;
                     Binary.findSignature = function(start, sizeOrSig, sig) {
                         if (sig === undefined) {
                             return _orig_fs(start, sizeOrSig);
                         }
                         // 3-arg form: search within [start, start+size).
                         var size = sizeOrSig;
-                        var result = _orig_fs(start, sig);
-                        if (result >= 0 && (size < 0 || result < start + size)) {
-                            return result;
-                        }
-                        return -1;
+                        if (size <= 0) return -1;
+                        return _orig_fsr(start, start + size, sig);
                     };
                     X.findSignature = Binary.findSignature;
                     File.findSignature = Binary.findSignature;
@@ -3430,6 +4009,30 @@ mod tests {
             Ok(None)
         }
 
+        fn find_signature_in_range(
+            &self,
+            start: u64,
+            end: u64,
+            signature: &str,
+        ) -> Result<Option<u64>, HostApiError> {
+            let elements =
+                parse_signature(signature).map_err(|detail| HostApiError::InvalidSignature {
+                    pattern: signature.into(),
+                    detail,
+                })?;
+            let start = start as usize;
+            let end = (end as usize).min(self.data.len());
+            if elements.is_empty() || start >= end || end < elements.len() {
+                return Ok(None);
+            }
+            for i in start..=end - elements.len() {
+                if match_signature(&self.data, i, &elements) {
+                    return Ok(Some(i as u64));
+                }
+            }
+            Ok(None)
+        }
+
         fn read_string(&self, offset: u64, max_len: u64) -> Result<String, HostApiError> {
             let start = offset as usize;
             let end = (start + max_len as usize).min(self.data.len());
@@ -3493,6 +4096,16 @@ mod tests {
             Err(HostApiError::NotImplemented {
                 method: "crc32".into(),
             })
+        }
+
+        fn pe_import_libraries(&self) -> Vec<String> {
+            Vec::new()
+        }
+        fn pe_import_functions(&self) -> Vec<String> {
+            Vec::new()
+        }
+        fn pe_export_names(&self) -> Vec<String> {
+            Vec::new()
         }
     }
 

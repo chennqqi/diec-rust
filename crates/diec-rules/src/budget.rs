@@ -33,12 +33,12 @@ impl RuleBudgetProfile {
     ///
     /// Suitable for most production scans. Derived from ADR 0006.
     pub const MODERN: Self = Self {
-        max_heap: 32 * 1024 * 1024, // 32 MiB
-        max_stack: 512 * 1024,      // 512 KiB
-        max_fuel: 131_072,          // 2^17
-        deadline_ms: 10_000,        // 10 s
-        max_include_depth: 16,
-        max_include_evaluations: 256,
+        max_heap: 128 * 1024 * 1024, // 128 MiB (sufficient for PE rules)
+        max_stack: 1024 * 1024,      // 1 MiB
+        max_fuel: 524_288,           // 2^19
+        deadline_ms: 30_000,         // 30 s
+        max_include_depth: 32,
+        max_include_evaluations: 1024,
     };
 
     /// Legacy high-resource profile.
@@ -67,12 +67,12 @@ mod tests {
     #[test]
     fn modern_profile_defaults() {
         let p = RuleBudgetProfile::MODERN;
-        assert_eq!(p.max_heap, 32 * 1024 * 1024);
-        assert_eq!(p.max_stack, 512 * 1024);
-        assert_eq!(p.max_fuel, 131_072);
-        assert_eq!(p.deadline_ms, 10_000);
-        assert_eq!(p.max_include_depth, 16);
-        assert_eq!(p.max_include_evaluations, 256);
+        assert_eq!(p.max_heap, 128 * 1024 * 1024);
+        assert_eq!(p.max_stack, 1024 * 1024);
+        assert_eq!(p.max_fuel, 524_288);
+        assert_eq!(p.deadline_ms, 30_000);
+        assert_eq!(p.max_include_depth, 32);
+        assert_eq!(p.max_include_evaluations, 1024);
     }
 
     #[test]

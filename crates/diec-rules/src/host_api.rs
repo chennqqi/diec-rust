@@ -87,6 +87,15 @@ pub trait HostApi {
     /// given offset. Returns the offset of the match, or `None` if not found.
     fn find_signature(&self, start: u64, signature: &str) -> Result<Option<u64>, HostApiError>;
 
+    /// Find the first occurrence of a signature pattern within the range
+    /// `[start, end)`. Returns the offset of the match, or `None` if not found.
+    fn find_signature_in_range(
+        &self,
+        start: u64,
+        end: u64,
+        signature: &str,
+    ) -> Result<Option<u64>, HostApiError>;
+
     /// Read a NUL-terminated ASCII string starting at the given offset,
     /// up to `max_len` bytes.
     fn read_string(&self, offset: u64, max_len: u64) -> Result<String, HostApiError>;
@@ -124,6 +133,23 @@ pub trait HostApi {
 
     /// Calculate CRC32 of a byte range.
     fn crc32(&self, offset: u64, size: u64) -> Result<u32, HostApiError>;
+
+    // --- PE batch parsing (performance-critical) ---
+    //
+    // These methods parse PE import/export tables in a single Rust call,
+    // avoiding tens of thousands of per-byte JS→Rust FFI round-trips.
+
+    /// Parse the PE import table and return all imported library names.
+    /// Returns an empty vector for non-PE files or files without imports.
+    fn pe_import_libraries(&self) -> Vec<String>;
+
+    /// Parse the PE import table and return all imported function names.
+    /// Returns an empty vector for non-PE files or files without imports.
+    fn pe_import_functions(&self) -> Vec<String>;
+
+    /// Parse the PE export table and return all exported function names.
+    /// Returns an empty vector for non-PE files or files without exports.
+    fn pe_export_names(&self) -> Vec<String>;
 }
 
 /// Error returned by host API methods.
