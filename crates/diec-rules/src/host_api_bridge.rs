@@ -3162,18 +3162,77 @@ impl HostApiBridge {
                     ELF.isVerbose = function() { return false; };
                     ELF.isDeepScan = function() { return false; };
                     ELF.isHeuristicScan = function() { return false; };
-                    ELF.isOverlayPresent = function() { return false; };
-                    ELF.getOverlayOffset = function() { return -1; };
-                    ELF.getOverlaySize = function() { return 0; };
-                    ELF.getImageBase = function() { return 0; };
-                    ELF.getStringTableOffset = function() { return 0; };
-                    ELF.getDynamicTableOffset = function() {
-                        var phdrIdx = _dynamicPhdr();
-                        if (phdrIdx < 0) return 0;
-                        return _phdrFileOffset(phdrIdx);
+                    // Overlay: data after the last segment's file data.
+                    ELF.getOverlayOffset = function() {
+                        if (!_elfIsELF()) return -1;
+                        var n = _elfEPhnum();
+                        var maxEnd = 0;
+                        for (var i = 0; i < n; i++) {
+                            var off = _phdrFileOffset(i);
+                            var size = _phdrFileSize(i);
+                            var end = off + size;
+                            if (end > maxEnd) maxEnd = end;
+                        }
+                        if (maxEnd >= Binary.getSize()) return -1;
+                        return maxEnd;
                     };
-                    ELF.getRelocationTableOffset = function() { return 0; };
-                    ELF.getSymbolTableOffset = function() { return 0; };
+                    ELF.isOverlayPresent = function() {
+                        return ELF.getOverlayOffset() !== -1;
+                    };
+                    ELF.getOverlaySize = function() {
+                        var off = ELF.getOverlayOffset();
+                        if (off < 0) return 0;
+                        return Binary.getSize() - off;
+                    };
+                    // Image base: lowest p_vaddr among PT_LOAD segments.
+                    ELF.getImageBase = function() {
+                        if (!_elfIsELF()) return 0;
+                        var n = _elfEPhnum();
+                        var base = -1;
+                        for (var i = 0; i < n; i++) {
+                            var off = _phdrOffset(i);
+                            var ptype = _elfReadU32(off);
+                            if (ptype === 1) { // PT_LOAD
+                                var vaddr = _elfIs64() ? _elfReadU64(off + 16) : _elfReadU32(off + 8);
+                                if (base < 0 || vaddr < base) base = vaddr;
+                            }
+                        }
+                        return base < 0 ? 0 : base;
+                    };
+                    // String table: section with SHT_STRTAB type (3).
+                    ELF.getStringTableOffset = function() {
+                        if (!_elfIsELF()) return 0;
+                        var n = _elfEShnum();
+                        for (var i = 0; i < n; i++) {
+                            if (_shdrType(i) === 3) { // SHT_STRTAB
+                                return _shdrFileOffset(i);
+                            }
+                        }
+                        return 0;
+                    };
+                    // Symbol table: section with SHT_SYMTAB type (2).
+                    ELF.getSymbolTableOffset = function() {
+                        if (!_elfIsELF()) return 0;
+                        var n = _elfEShnum();
+                        for (var i = 0; i < n; i++) {
+                            if (_shdrType(i) === 2) { // SHT_SYMTAB
+                                return _shdrFileOffset(i);
+                            }
+                        }
+                        return 0;
+                    };
+                    // Relocation table: section with SHT_REL (9) or SHT_RELA (4).
+                    ELF.getRelocationTableOffset = function() {
+                        if (!_elfIsELF()) return 0;
+                        var n = _elfEShnum();
+                        for (var i = 0; i < n; i++) {
+                            var t = _shdrType(i);
+                            if (t === 9 || t === 4) { // SHT_REL or SHT_RELA
+                                return _shdrFileOffset(i);
+                            }
+                        }
+                        return 0;
+                    };
                     ELF.compareEP = function(sig, offset) {
                         if (!_elfIsELF()) return false;
                         var ep = _elfEEntry();
@@ -3596,7 +3655,26 @@ impl HostApiBridge {
                     MACH.isVerbose = function() { return false; };
                     MACH.isDeepScan = function() { return false; };
                     MACH.isHeuristicScan = function() { return false; };
-                    MACH.getImageBase = function() { return 0; };
+                    // Image base: lowest VM address from LC_SEGMENT/LC_SEGMENT_64.
+                    MACH.getImageBase = function() {
+                        if (!_machIsMachO()) return 0;
+                        var is64 = _machIs64();
+                        var nCmds = _machNCmds();
+                        var off = _machHeaderSize();
+                        var base = -1;
+                        var LC_SEGMENT = 1;
+                        var LC_SEGMENT_64 = 0x19;
+                        for (var i = 0; i < nCmds; i++) {
+                            var cmd = _machReadU32(off);
+                            var cmdSize = _machReadU32(off + 4);
+                            if (cmd === LC_SEGMENT || cmd === LC_SEGMENT_64) {
+                                var vmaddr = is64 ? _machReadU64(off + 24) : _machReadU32(off + 16);
+                                if (base < 0 || vmaddr < base) base = vmaddr;
+                            }
+                            off += cmdSize;
+                        }
+                        return base < 0 ? 0 : base;
+                    };
                     MACH.compareEP = function(sig, offset) {
                         if (!_machIsMachO()) return false;
                         var ep = _machEntryPoint();
@@ -3608,8 +3686,34 @@ impl HostApiBridge {
                         if (offset === undefined) offset = 0;
                         return Binary.__compare(sig, offset);
                     };
-                    MACH.getOverlayOffset = function() { return -1; };
-                    MACH.getOverlaySize = function() { return 0; };
+                    // Overlay: data after the last segment's file data.
+                    MACH.getOverlayOffset = function() {
+                        if (!_machIsMachO()) return -1;
+                        var is64 = _machIs64();
+                        var nCmds = _machNCmds();
+                        var off = _machHeaderSize();
+                        var maxEnd = 0;
+                        var LC_SEGMENT = 1;
+                        var LC_SEGMENT_64 = 0x19;
+                        for (var i = 0; i < nCmds; i++) {
+                            var cmd = _machReadU32(off);
+                            var cmdSize = _machReadU32(off + 4);
+                            if (cmd === LC_SEGMENT || cmd === LC_SEGMENT_64) {
+                                var fileOff = _machSegmentFileOff(off, is64);
+                                var fileSize = _machSegmentFileSize(off, is64);
+                                var end = fileOff + fileSize;
+                                if (end > maxEnd) maxEnd = end;
+                            }
+                            off += cmdSize;
+                        }
+                        if (maxEnd >= Binary.getSize()) return -1;
+                        return maxEnd;
+                    };
+                    MACH.getOverlaySize = function() {
+                        var off = MACH.getOverlayOffset();
+                        if (off < 0) return 0;
+                        return Binary.getSize() - off;
+                    };
                 })();
                 "#,
             )
