@@ -1054,3 +1054,118 @@ fn is_text_alias_works() {
         assert!(found, "Expected IsText detection, got: {results:?}");
     }
 }
+
+// =====================================================================
+// Disassembly (getDisasmString / getDisasmNextAddress) tests
+// =====================================================================
+
+#[test]
+fn pe_get_disasm_string_returns_int3_for_cc_bytes() {
+    // build_minimal_pe creates a .text section filled with 0xCC (INT3).
+    // Entry point RVA = 0x1000, ImageBase = 0x400000, so VA = 0x401000.
+    // File offset of .text = 0x200.
+    let pe = build_minimal_pe(&[], &[], false);
+
+    let results = run_js_pe(
+        r#"var da = PE.getDisasmString(0x401000);
+if (da && da.length > 0) {
+    bDetected = true;
+    sName = "DisasmTest";
+    sVersion = da;
+}"#,
+        pe,
+    );
+
+    let results = results.expect("run_js_pe returned None");
+    let det = results
+        .iter()
+        .find(|r| r.name == "DisasmTest")
+        .expect("expected DisasmTest detection");
+    // 0xCC = INT3 in x86. Capstone renders it as "INT3" (uppercase).
+    assert_eq!(
+        det.version.to_uppercase(),
+        "INT3",
+        "Expected INT3 for 0xCC byte, got: {}",
+        det.version
+    );
+}
+
+#[test]
+fn pe_get_disasm_string_returns_push_for_55_byte() {
+    // Modify the .text section to start with PUSH EBP (0x55).
+    let mut pe = build_minimal_pe(&[], &[], false);
+    // .text section raw data starts at file offset 0x200.
+    pe[0x200] = 0x55; // PUSH EBP
+
+    let results = run_js_pe(
+        r#"var da = PE.getDisasmString(0x401000);
+if (da && da.length > 0) {
+    bDetected = true;
+    sName = "DisasmPush";
+    sVersion = da;
+}"#,
+        pe,
+    );
+
+    let results = results.expect("run_js_pe returned None");
+    let det = results
+        .iter()
+        .find(|r| r.name == "DisasmPush")
+        .expect("expected DisasmPush detection");
+    assert!(
+        det.version.to_uppercase().contains("PUSH"),
+        "Expected PUSH in disasm, got: {}",
+        det.version
+    );
+}
+
+#[test]
+fn pe_get_disasm_next_address_returns_next_va() {
+    // 0xCC (INT3) is a 1-byte instruction.
+    // VA 0x401000 -> next VA should be 0x401001.
+    let pe = build_minimal_pe(&[], &[], false);
+
+    let results = run_js_pe(
+        r#"var next = PE.getDisasmNextAddress(0x401000);
+if (next > 0) {
+    bDetected = true;
+    sName = "NextAddr";
+    sVersion = String(next);
+}"#,
+        pe,
+    );
+
+    let results = results.expect("run_js_pe returned None");
+    let det = results
+        .iter()
+        .find(|r| r.name == "NextAddr")
+        .expect("expected NextAddr detection");
+    // INT3 is 1 byte, so next address = 0x401001 = 4198401.
+    assert_eq!(
+        det.version, "4198401",
+        "Expected next address 0x401001 (4198401), got: {}",
+        det.version
+    );
+}
+
+#[test]
+fn pe_get_disasm_string_returns_empty_for_invalid_va() {
+    // VA not in any section should return empty string.
+    let pe = build_minimal_pe(&[], &[], false);
+
+    let results = run_js_pe(
+        r#"var da = PE.getDisasmString(0xDEADBEEF);
+if (!da || da.length === 0) {
+    bDetected = true;
+    sName = "InvalidVA";
+}"#,
+        pe,
+    );
+
+    let results = results.expect("run_js_pe returned None");
+    let found = results.iter().any(|r| r.name == "InvalidVA");
+    assert!(
+        found,
+        "Expected InvalidVA detection for out-of-range VA, got: {results:?}"
+    );
+}

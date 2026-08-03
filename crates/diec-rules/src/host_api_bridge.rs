@@ -1753,6 +1753,49 @@ impl HostApiBridge {
                 detail: format!("PE set: {e}"),
             })?;
 
+            // Register native disassembly functions on PE object.
+            // These use Capstone to disassemble x86/x64 instructions at
+            // the given virtual address, returning the mnemonic string
+            // and next instruction address respectively.
+            let pe_handle = host.clone();
+            let disasm_str_fn = rquickjs::Function::new(ctx.clone(), move |va: i64| -> String {
+                disasm_at_va(&pe_handle, va as u64, false)
+                    .unwrap_or_default()
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("getDisasmString: {e}"),
+            })?;
+            let pe_obj_ref = globals.get::<_, rquickjs::Object>("PE").map_err(|e| {
+                RuleError::Backend {
+                    detail: format!("PE get: {e}"),
+                }
+            })?;
+            pe_obj_ref.set("getDisasmString", disasm_str_fn).map_err(|e| {
+                RuleError::Backend {
+                    detail: format!("getDisasmString set: {e}"),
+                }
+            })?;
+
+            let pe_handle2 = host.clone();
+            let disasm_next_fn = rquickjs::Function::new(ctx.clone(), move |va: i64| -> i64 {
+                disasm_at_va(&pe_handle2, va as u64, true)
+                    .map(|s| {
+                        // Parse next address from the disasm result.
+                        // disasm_at_va with return_next=true returns
+                        // "next_addr" as a string.
+                        s.parse::<i64>().unwrap_or(-1)
+                    })
+                    .unwrap_or(-1)
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("getDisasmNextAddress: {e}"),
+            })?;
+            pe_obj_ref.set("getDisasmNextAddress", disasm_next_fn).map_err(|e| {
+                RuleError::Backend {
+                    detail: format!("getDisasmNextAddress set: {e}"),
+                }
+            })?;
+
             // Add PE-specific methods that parse the PE header from raw bytes.
             // These implement the most commonly used PE host API methods by
             // reading the DOS header, PE header, and section table directly
@@ -2455,9 +2498,9 @@ impl HostApiBridge {
                         return -1;
                     };
 
-                    // Disasm stubs.
-                    PE.getDisasmNextAddress = function() { return -1; };
-                    PE.getDisasmString = function() { return ""; };
+                    // Disasm: getDisasmString and getDisasmNextAddress are
+                    // registered as native Rust functions (using Capstone)
+                    // earlier in register(). Do not override them here.
 
                     // Entropy/hash stubs.
                     PE.calculateEntropy = function(off, size) { return 0; };
@@ -3880,6 +3923,155 @@ impl HostApiBridge {
         })?;
 
         Ok(())
+    }
+}
+
+// =====================================================================
+// Disassembly support via Capstone
+// =====================================================================
+
+/// Disassemble a single instruction at the given virtual address (VA).
+///
+/// Returns the instruction mnemonic string (e.g. "PUSH EBP") when
+/// `return_next` is false, or the next instruction address as a string
+/// (e.g. "0x1001") when `return_next` is true.
+///
+/// This reads the PE header from the host API to determine:
+/// - Whether the PE is 32-bit or 64-bit (selects Capstone mode)
+/// - The image base (to convert VA to file offset via section table)
+/// - Section table entries (VA → file offset mapping)
+fn disasm_at_va(
+    host: &Arc<dyn HostApi + Send + Sync>,
+    va: u64,
+    return_next: bool,
+) -> Result<String, String> {
+    use capstone::arch::{BuildsCapstone, BuildsCapstoneSyntax};
+    use capstone::{Capstone, Insn};
+
+    // Read PE header fields via host API.
+    // e_lfanew at offset 0x3C.
+    let e_lfanew = host
+        .read_u32_le(0x3C)
+        .map_err(|e| format!("e_lfanew: {e:?}"))?;
+    if host.file_size() < e_lfanew as u64 + 24 {
+        return Err("file too small for PE header".into());
+    }
+
+    // PE signature at e_lfanew, COFF header at e_lfanew+4.
+    let coff_off = e_lfanew as u64 + 4;
+    let machine = host
+        .read_u16_le(coff_off)
+        .map_err(|e| format!("machine: {e:?}"))?;
+    let num_sections = host
+        .read_u16_le(coff_off + 2)
+        .map_err(|e| format!("num_sections: {e:?}"))?;
+    let size_of_opt_hdr = host
+        .read_u16_le(coff_off + 16)
+        .map_err(|e| format!("size_of_opt_hdr: {e:?}"))?;
+
+    // Optional header at e_lfanew + 24.
+    let opt_off = e_lfanew as u64 + 24;
+    let magic = host
+        .read_u16_le(opt_off)
+        .map_err(|e| format!("opt magic: {e:?}"))?;
+
+    // Determine architecture and image base.
+    let is_64 = magic == 0x20B; // PE32+ magic
+    let image_base = if is_64 {
+        host.read_u64_le(opt_off + 24)
+            .map_err(|e| format!("image_base: {e:?}"))?
+    } else {
+        host.read_u32_le(opt_off + 28)
+            .map_err(|e| format!("image_base: {e:?}"))? as u64
+    };
+
+    // Section table starts after optional header.
+    let sec_table_off = opt_off + size_of_opt_hdr as u64;
+
+    // Find the section containing this VA.
+    let rva = va.checked_sub(image_base).ok_or("VA below image base")?;
+    let mut file_off = None;
+    for i in 0..num_sections as u64 {
+        let sec_off = sec_table_off + i * 40;
+        // Section header: Name(8) + VirtualSize(4) + VirtualAddress(4) +
+        // SizeOfRawData(4) + PointerToRawData(4)
+        let sec_va = host
+            .read_u32_le(sec_off + 12)
+            .map_err(|e| format!("sec_va: {e:?}"))?;
+        let sec_vsize = host
+            .read_u32_le(sec_off + 8)
+            .map_err(|e| format!("sec_vsize: {e:?}"))?;
+        let sec_rawsize = host
+            .read_u32_le(sec_off + 16)
+            .map_err(|e| format!("sec_rawsize: {e:?}"))?;
+        let sec_rawoff = host
+            .read_u32_le(sec_off + 20)
+            .map_err(|e| format!("sec_rawoff: {e:?}"))?;
+        let size = sec_vsize.max(sec_rawsize) as u64;
+        if rva >= sec_va as u64 && rva < sec_va as u64 + size {
+            file_off = Some(sec_rawoff as u64 + (rva - sec_va as u64));
+            break;
+        }
+    }
+    let file_off = file_off.ok_or("VA not in any section")?;
+
+    // Read up to 16 bytes at the file offset for disassembly.
+    let read_size = 16u64.min(host.file_size().saturating_sub(file_off));
+    if read_size == 0 {
+        return Err("no bytes to read at VA".into());
+    }
+    let mut code = Vec::with_capacity(read_size as usize);
+    for i in 0..read_size {
+        code.push(
+            host.read_u8(file_off + i)
+                .map_err(|e| format!("read code byte: {e:?}"))?,
+        );
+    }
+
+    // Create Capstone instance.
+    let cs = if machine == 0x8664 {
+        Capstone::new()
+            .x86()
+            .mode(capstone::arch::x86::ArchMode::Mode64)
+            .syntax(capstone::arch::x86::ArchSyntax::Intel)
+            .detail(true)
+            .build()
+    } else {
+        Capstone::new()
+            .x86()
+            .mode(capstone::arch::x86::ArchMode::Mode32)
+            .syntax(capstone::arch::x86::ArchSyntax::Intel)
+            .detail(true)
+            .build()
+    }
+    .map_err(|e| format!("capstone init: {e}"))?;
+
+    // Disassemble one instruction.
+    let insns = cs
+        .disasm_count(&code, va, 1)
+        .map_err(|e| format!("disasm: {e}"))?;
+
+    if insns.is_empty() {
+        return Err("no instructions decoded".into());
+    }
+
+    let insn: &Insn = insns.iter().next().unwrap();
+
+    if return_next {
+        // Return next instruction address as string.
+        let next = insn.address() + insn.bytes().len() as u64;
+        Ok(format!("{}", next))
+    } else {
+        // Return the full instruction string (mnemonic + operands).
+        // Capstone's mnem + op_str concatenated with a space, matching
+        // upstream's format (e.g. "PUSH EBP", "MOV EAX, EBX").
+        let mnem = insn.mnemonic().unwrap_or("");
+        let op_str = insn.op_str().unwrap_or("");
+        if op_str.is_empty() {
+            Ok(mnem.to_uppercase())
+        } else {
+            Ok(format!("{} {}", mnem.to_uppercase(), op_str.to_uppercase()))
+        }
     }
 }
 
