@@ -3574,8 +3574,8 @@ impl HostApiBridge {
                     // Formats with unconditional bDetected=true in _*.0.sg.
                     // These need non-empty getFileFormatName to avoid errors.
                     var namedFormats = {
-                        CFBF: "Microsoft Compound",
-                        JavaClass: "Java Class File",
+                        CFBF: "CFBF",
+                        JavaClass: "Java Class",
                         PDF: "PDF",
                         PNG: "PNG",
                         JPEG: "JPEG",
@@ -3599,6 +3599,61 @@ impl HostApiBridge {
                         obj.isDeepScan = function() { return false; };
                         obj.isHeuristicScan = function() { return false; };
                     }
+
+                    // JavaClass-specific: parse version from class file header.
+                    // Class file: magic (4 bytes, 0xCAFEBABE) + minor (2 bytes, BE) +
+                    // major (2 bytes, BE). Map major version to Java SE string.
+                    JavaClass.getFileFormatVersion = function() {
+                        if (Binary.getSize() < 8) return "";
+                        // Verify CAFEBABE magic.
+                        if (Binary.read_uint8(0) !== 0xCA || Binary.read_uint8(1) !== 0xFE ||
+                            Binary.read_uint8(2) !== 0xBA || Binary.read_uint8(3) !== 0xBE) return "";
+                        // Major version at offset 6-7 (big-endian).
+                        var major = Binary.read_uint8(6) * 256 + Binary.read_uint8(7);
+                        // Map major version to Java SE version string.
+                        var versionMap = {
+                            45: "Java SE 1.1",
+                            46: "Java SE 2",
+                            47: "Java SE 3",
+                            48: "Java SE 4",
+                            49: "Java SE 5",
+                            50: "Java SE 6",
+                            51: "Java SE 7",
+                            52: "Java SE 8",
+                            53: "Java SE 9",
+                            54: "Java SE 10",
+                            55: "Java SE 11",
+                            56: "Java SE 12",
+                            57: "Java SE 13",
+                            58: "Java SE 14",
+                            59: "Java SE 15",
+                            60: "Java SE 16",
+                            61: "Java SE 17",
+                            62: "Java SE 18",
+                            63: "Java SE 19",
+                            64: "Java SE 20",
+                            65: "Java SE 21",
+                        };
+                        return versionMap[major] || "";
+                    };
+
+                    // CFBF-specific: parse version from header.
+                    // CFBF header: signature (8 bytes) + CLSID (16 bytes) +
+                    // MinorVersion (2 bytes, LE, offset 0x18) +
+                    // MajorVersion (2 bytes, LE, offset 0x1A).
+                    // Version string = "major.minor" (e.g. "3.62").
+                    CFBF.getFileFormatVersion = function() {
+                        if (Binary.getSize() < 0x1C) return "";
+                        // Verify CFBF signature D0CF11E0A1B11AE1.
+                        if (Binary.read_uint8(0) !== 0xD0 || Binary.read_uint8(1) !== 0xCF ||
+                            Binary.read_uint8(2) !== 0x11 || Binary.read_uint8(3) !== 0xE0 ||
+                            Binary.read_uint8(4) !== 0xA1 || Binary.read_uint8(5) !== 0xB1 ||
+                            Binary.read_uint8(6) !== 0x1A || Binary.read_uint8(7) !== 0xE1) return "";
+                        var minor = Binary.read_uint16_le(0x18);
+                        var major = Binary.read_uint16_le(0x1A);
+                        if (major !== 3 && major !== 4) return "";
+                        return major + "." + minor;
+                    };
 
                     // ZIP-specific stubs.
                     ZIP.isArchiveRecordPresent = function(name) { return false; };

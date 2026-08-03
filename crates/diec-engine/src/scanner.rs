@@ -74,11 +74,11 @@ fn detect_rule_types(data: &[u8]) -> Vec<&'static str> {
     // so a real Java Class file will match both probes, but Java Class is
     // the correct detection. A real Mach-O FAT file (nfat_arch < 45) will
     // only match the Mach-O probe.
-    // Binary rules are included because the JavaClass-specific host API
-    // is not yet implemented, and the Binary rule (format_bin.Java.1.sg)
-    // provides detection via the generic API.
+    // JavaClass host API is now implemented (getFileFormatName/Version),
+    // so only JavaClass rules are run. Binary rules are excluded to avoid
+    // duplicate detections (format_bin.Java.1.sg outputs a different name).
     if detected.contains(&"Java Class") {
-        return vec!["JavaClass", "Binary"];
+        return vec!["JavaClass"];
     }
     if detected
         .iter()

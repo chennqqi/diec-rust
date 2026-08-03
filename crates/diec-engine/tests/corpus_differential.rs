@@ -36,7 +36,7 @@ const CORPUS_EXPECTATIONS: &[(&str, &[(&str, &str)])] = &[
     ("minimal-macho32.macho", &[]),
     ("minimal-fat.macho", &[("converter", "lipo")]),
     // Bytecode formats
-    ("Minimal.class", &[("format", "Java Class File")]),
+    ("Minimal.class", &[("format", "Java Class")]),
     ("minimal.dex", &[("format", "DEX")]),
     ("minimal.pyc", &[("format", "Python bytecode compiled")]),
     // Archive formats — archive:Zip comes from Binary rules
@@ -45,7 +45,7 @@ const CORPUS_EXPECTATIONS: &[(&str, &[(&str, &str)])] = &[
     ("minimal.jar", &[("archive", "Zip")]),
     ("minimal.ipa", &[("archive", "Zip")]),
     ("payload.tar", &[("archive", "tar")]),
-    ("minimal.cfbf", &[("format", "Microsoft Compound")]),
+    ("minimal.cfbf", &[("format", "CFBF"), ("format", "Microsoft Office")]),
     // Document formats
     ("minimal.pdf", &[("format", "PDF")]),
     // ISO 9660: upstream 3.21 doesn't detect it, new rules do
