@@ -3930,6 +3930,65 @@ impl HostApiBridge {
 // Disassembly support via Capstone
 // =====================================================================
 
+use std::cell::RefCell;
+
+thread_local! {
+    /// Cached Capstone instances for 32-bit and 64-bit x86 modes.
+    /// Creating a Capstone instance is expensive (~1ms), so we cache
+    /// them per-thread to avoid repeated initialization during
+    /// protector rule scanning (which may call getDisasmString 1000+ times).
+    static CS_CACHE_32: RefCell<Option<capstone::Capstone>> = const { RefCell::new(None) };
+    static CS_CACHE_64: RefCell<Option<capstone::Capstone>> = const { RefCell::new(None) };
+}
+
+/// Get a cached Capstone instance for the given machine type.
+fn get_capstone(machine: u16) -> Result<capstone::Capstone, String> {
+    use capstone::Capstone;
+    use capstone::arch::{BuildsCapstone, BuildsCapstoneSyntax};
+    let is_64 = machine == 0x8664;
+    if is_64 {
+        CS_CACHE_64.with(|c| {
+            if c.borrow().is_none() {
+                let cs = Capstone::new()
+                    .x86()
+                    .mode(capstone::arch::x86::ArchMode::Mode64)
+                    .syntax(capstone::arch::x86::ArchSyntax::Intel)
+                    .detail(true)
+                    .build()
+                    .map_err(|e| format!("capstone init: {e}"))?;
+                *c.borrow_mut() = Some(cs);
+            }
+            Ok(c.borrow_mut().take().unwrap())
+        })
+    } else {
+        CS_CACHE_32.with(|c| {
+            if c.borrow().is_none() {
+                let cs = Capstone::new()
+                    .x86()
+                    .mode(capstone::arch::x86::ArchMode::Mode32)
+                    .syntax(capstone::arch::x86::ArchSyntax::Intel)
+                    .detail(true)
+                    .build()
+                    .map_err(|e| format!("capstone init: {e}"))?;
+                *c.borrow_mut() = Some(cs);
+            }
+            Ok(c.borrow_mut().take().unwrap())
+        })
+    }
+}
+
+/// Return a Capstone instance to the cache for reuse.
+fn return_capstone(machine: u16, cs: capstone::Capstone) {
+    let cache = if machine == 0x8664 {
+        &CS_CACHE_64
+    } else {
+        &CS_CACHE_32
+    };
+    cache.with(|c| {
+        *c.borrow_mut() = Some(cs);
+    });
+}
+
 /// Disassemble a single instruction at the given virtual address (VA).
 ///
 /// Returns the instruction mnemonic string (e.g. "PUSH EBP") when
@@ -3945,9 +4004,6 @@ fn disasm_at_va(
     va: u64,
     return_next: bool,
 ) -> Result<String, String> {
-    use capstone::arch::{BuildsCapstone, BuildsCapstoneSyntax};
-    use capstone::{Capstone, Insn};
-
     // Read PE header fields via host API.
     // e_lfanew at offset 0x3C.
     let e_lfanew = host
@@ -4028,51 +4084,38 @@ fn disasm_at_va(
         );
     }
 
-    // Create Capstone instance.
-    let cs = if machine == 0x8664 {
-        Capstone::new()
-            .x86()
-            .mode(capstone::arch::x86::ArchMode::Mode64)
-            .syntax(capstone::arch::x86::ArchSyntax::Intel)
-            .detail(true)
-            .build()
-    } else {
-        Capstone::new()
-            .x86()
-            .mode(capstone::arch::x86::ArchMode::Mode32)
-            .syntax(capstone::arch::x86::ArchSyntax::Intel)
-            .detail(true)
-            .build()
-    }
-    .map_err(|e| format!("capstone init: {e}"))?;
+    // Get cached Capstone instance (or create if first call on this thread).
+    let cs = get_capstone(machine)?;
 
-    // Disassemble one instruction.
-    let insns = cs
-        .disasm_count(&code, va, 1)
-        .map_err(|e| format!("disasm: {e}"))?;
+    // Disassemble and extract result in a scope so `insns` (which borrows
+    // `cs`) is dropped before we return `cs` to the cache.
+    let result = {
+        let insns = cs
+            .disasm_count(&code, va, 1)
+            .map_err(|e| format!("disasm: {e}"))?;
 
-    if insns.is_empty() {
-        return Err("no instructions decoded".into());
-    }
-
-    let insn: &Insn = insns.iter().next().unwrap();
-
-    if return_next {
-        // Return next instruction address as string.
-        let next = insn.address() + insn.bytes().len() as u64;
-        Ok(format!("{}", next))
-    } else {
-        // Return the full instruction string (mnemonic + operands).
-        // Capstone's mnem + op_str concatenated with a space, matching
-        // upstream's format (e.g. "PUSH EBP", "MOV EAX, EBX").
-        let mnem = insn.mnemonic().unwrap_or("");
-        let op_str = insn.op_str().unwrap_or("");
-        if op_str.is_empty() {
-            Ok(mnem.to_uppercase())
-        } else {
-            Ok(format!("{} {}", mnem.to_uppercase(), op_str.to_uppercase()))
+        if insns.is_empty() {
+            return Err("no instructions decoded".into());
         }
-    }
+
+        let insn = insns.iter().next().unwrap();
+        if return_next {
+            let next = insn.address() + insn.bytes().len() as u64;
+            Ok(format!("{}", next))
+        } else {
+            let mnem = insn.mnemonic().unwrap_or("");
+            let op_str = insn.op_str().unwrap_or("");
+            if op_str.is_empty() {
+                Ok(mnem.to_uppercase())
+            } else {
+                Ok(format!("{} {}", mnem.to_uppercase(), op_str.to_uppercase()))
+            }
+        }
+    };
+
+    // Return Capstone instance to thread-local cache for reuse.
+    return_capstone(machine, cs);
+    result
 }
 
 #[cfg(test)]
