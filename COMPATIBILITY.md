@@ -121,8 +121,16 @@ These are NOT engine bugs:
 | PE Rich signature | ✅ | |
 | PE debug data | ✅ | |
 | PE.isSigned | ✅ | Authenticode |
+| PE validation (is*Correct) | ✅ | 8 methods for heuristic scan |
+| PE overlay | ✅ | getOverlayOffset/Size/compareOverlay |
+| PE.isNet | ✅ | CLR header detection |
 | ELF | ✅ | Full implementation |
+| ELF overlay | ✅ | getOverlayOffset/Size |
+| ELF.getImageBase | ✅ | Lowest PT_LOAD p_vaddr |
+| ELF table offsets | ✅ | String/Symbol/Relocation table |
 | Mach-O | ✅ | Full implementation |
+| Mach-O overlay | ✅ | getOverlayOffset/Size |
+| Mach-O.getImageBase | ✅ | Lowest LC_SEGMENT vmaddr |
 | PDF (version, header comment) | ✅ | |
 | JPEG (version from JFIF) | ✅ | |
 | DEX (version from header) | ✅ | |

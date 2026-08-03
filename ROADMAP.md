@@ -308,13 +308,13 @@ GUI 明确不属于当前交付范围。核心库、CLI 和 C ABI 稳定后，�
 - ~~**CFBF 版本解析**~~：已完成。`CFBF.getFileFormatVersion()` 从 CFBF 头解析 major.minor 版本（+1 匹配，`minimal.cfbf`）
 - ~~**Java Class 版本解析**~~：已完成。`JavaClass.getFileFormatVersion()` 从 class 文件 major version 映射到 Java SE 版本（+1 匹配，`Minimal.class`）
 - **PYC 版本解析**：`PYC.getFileFormatVersion()` 从 pyc 头解析版本（规则版本差异，上游 3.21 不检测 PYC，低优先级）
-- **Archive host API**：实现 `Archive.isVerbose()`/`getFileFormatName()` 等，让 `_Archive.0.sg` 正确输出 `archive:Zip`（架构改进）
-- **PE 验证方法**：8 个 `is*Correct` stub（isEntryPointCorrect/isExportTableCorrect/isImportTableCorrect/isRelocsTableCorrect/isResourcesTableCorrect/isHeaderCorrect/isFileAlignmentCorrect/isSectionAlignmentCorrect）
-- **PE Resource 方法**：`getNumberOfResources` 等 stub，被 resource 检测规则使用
-- **PE .NET 方法**：`isNet`/`getNetAssemblyName`/`getNetModuleName`/`getNETVersion` stub
-- **PE Manifest 方法**：`getManifest` stub，被 manifest 检测规则使用
-- **PE Overlay 方法**：`isOverlayPresent`/`getOverlaySize` stub
-- **ELF/MACH stub 方法**：`getImageBase`/`getOverlaySize`/`getStringTableOffset` 等
+- **Archive host API**：`isVerbose()` 返回 false 与上游 3.21 一致，无需修改
+- ~~**PE 验证方法**~~：已完成。8 个 `is*Correct` 方法（isEntryPointCorrect/isSectionAlignmentCorrect/isFileAlignmentCorrect/isHeaderCorrect/isExportTableCorrect/isImportTableCorrect/isRelocsTableCorrect/isResourcesTableCorrect）
+- **PE Resource 方法**：`getNumberOfResources` 等 stub，被 resource 检测规则使用（待实现）
+- ~~**PE .NET 方法**~~：已完成。`isNet` 检查 CLR header，保留 `getNetAssemblyName` 等 stub 通过 legacy 检查
+- **PE Manifest 方法**：`getManifest` stub，被 manifest 检测规则使用（待实现）
+- ~~**PE Overlay 方法**~~：已完成。`getOverlayOffset`/`isOverlayPresent`/`getOverlaySize`/`compareOverlay`
+- ~~**ELF/MACH stub 方法**~~：已完成。ELF: `getImageBase`/`getOverlayOffset`/`getOverlaySize`/`getStringTableOffset`/`getSymbolTableOffset`/`getRelocationTableOffset`。MACH: `getImageBase`/`getOverlayOffset`/`getOverlaySize`
 
 ### CI/CD 维护
 
