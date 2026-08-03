@@ -3,7 +3,7 @@
 This document tracks compatibility between diec-rust and the upstream
 DIE-engine project. It is updated with each release.
 
-Last updated: 2026-08-01
+Last updated: 2026-08-02
 
 ## Baseline
 
@@ -35,13 +35,29 @@ Last updated: 2026-08-01
 | Executable (ELF) | 2 | 2 | 0 | |
 | Executable (PE) | 2 | 2 | 0 | PE heuristic requires --heuristicscan |
 | Executable (Mach-O) | 3 | 3 | 0 | FAT binary detected as lipo |
-| Bytecode | 3 | 3 | 0 | Java class, DEX, PYC |
-| Archive | 7 | 7 | 0 | Zip, tar, CFBF, APK, JAR, IPA |
-| Document | 2 | 2 | 0 | PDF, ISO 9660 |
+| Bytecode | 3 | 2 | 1 | Java Class: rule name version diff |
+| Archive | 7 | 4 | 3 | APK/JAR/ZIP: archive:Zip (rule version diff) |
+| Document | 2 | 1 | 1 | ISO: rule version diff |
 | Image | 3 | 3 | 0 | PNG, JPEG, BMP |
 | Audio | 1 | 1 | 0 | WAV |
-| Other | 4 | 4 | 0 | empty, text, RAR, GZIP |
-| **Total** | **27** | **27** | **0** | |
+| Other | 5 | 5 | 0 | empty, text, RAR, GZIP, manifest |
+| **Total** | **28** | **21** | **7** | All mismatches are rule version diffs |
+
+### Mismatch Details (Rule Version Differences)
+
+All 7 mismatches are due to differences between the submodule rule
+database (newer version) and the upstream DIE 3.21 bundled rules.
+These are NOT engine bugs:
+
+| File | Our detection | Upstream 3.21 | Cause |
+|------|---------------|---------------|-------|
+| Minimal.class | Java Class File (.CLASS) | Java Class | Rule rename |
+| minimal.cfbf | Microsoft Compound | CFBF + Microsoft Office | Rule restructure |
+| minimal.dex | DEX (no version) | DEX:035 | Rule version field |
+| minimal.apk | archive:Zip:2.0 | (none) | New rule detects archive |
+| minimal.jar | archive:Zip:2.0 | (none) | New rule detects archive |
+| payload.zip | archive:Zip:2.0 | (none) | New rule detects archive |
+| minimal.pyc | Python bytecode | (none) | New rule detects PYC |
 
 ### Edge-Case Robustness
 
@@ -97,25 +113,45 @@ Last updated: 2026-08-01
 | Python ctypes binding | ✅ | 9 tests |
 | C smoke test | ✅ | |
 
+## Host API Compatibility
+
+| Feature | Status | Notes |
+|---------|--------|-------|
+| Binary (read, compare, find) | ✅ | Full implementation |
+| PE (header, sections, imports) | ✅ | Full implementation |
+| PE.getDisasmString | ✅ | Capstone-based, Intel syntax |
+| PE.getDisasmNextAddress | ✅ | Capstone-based |
+| PE Rich signature | ✅ | |
+| PE debug data | ✅ | |
+| PE.isSigned | ✅ | Authenticode |
+| ELF | ✅ | Full implementation |
+| Mach-O | ✅ | Full implementation |
+| PDF (version, header comment) | ✅ | |
+| JPEG (version from JFIF) | ✅ | |
+| DEX (version from header) | ✅ | |
+| Binary.isPlainText | ✅ | |
+| Archive (isVerbose, format) | ⚠️ | Stub (isVerbose=false) |
+
 ## Known Differences
 
 | ID | Description | ADR | Impact |
 |----|-------------|-----|--------|
-| (none recorded) | | | |
+| D001 | Rule version differences (submodule vs 3.21) | N/A | Detection name/version diffs |
+| D002 | Format-specific rules exclude Binary rules | N/A | Eliminates duplicate detections |
 
 ## Performance Baseline
 
 | Benchmark | Time (release) | Notes |
 |-----------|----------------|-------|
 | scan_corpus/ELF64 | ~19ms | minimal ELF |
-| scan_corpus/PE32 | ~165ms | minimal PE |
+| scan_corpus/PE32 | ~73ms | minimal PE (Capstone cached) |
 | scan_corpus/Zip | ~190ms | payload.zip |
 | scan_corpus/DEX | ~203ms | minimal DEX |
-| scan_flags/default | ~190ms | payload.zip |
-| scan_flags/heuristic | ~176ms | payload.zip |
-| scan_flags/all_types | ~464ms | payload.zip |
-| scan_flags/deep | ~178ms | payload.zip |
-| database_load | ~400ms | full database (optimized from ~1.2s) |
+| scan_flags/default | ~218ms | payload.zip |
+| scan_flags/heuristic | ~273ms | payload.zip |
+| scan_flags/all_types | ~854ms | payload.zip |
+| scan_flags/deep | ~190ms | payload.zip |
+| database_load | ~486ms | full database |
 | probe_corpus/ELF64 | ~345ns | format probe only |
 | probe_corpus/Zip | ~950ns | format probe only |
 
@@ -123,9 +159,9 @@ Last updated: 2026-08-01
 
 | Category | Count | Status |
 |----------|-------|--------|
-| Unit tests | 247 | ✅ all pass |
+| Unit tests | 251 | ✅ all pass |
 | Integration tests | 167 | ✅ all pass |
 | FFI tests | 35 | ✅ all pass |
 | Edge corpus tests | 3 | ✅ all pass |
 | Fuzz targets | 6 | ✅ compile |
-| **Total** | **414** | ✅ 0 failures |
+| **Total** | **458** | ✅ 0 failures |

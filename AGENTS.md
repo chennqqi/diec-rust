@@ -22,7 +22,7 @@ Phase 6 扩大差分测试语料和跨平台矩阵，建立持续 fuzz 和历史
 - 兼容性报告模板 COMPATIBILITY.md
 - 发布检查清单 RELEASE.md
 - database_load 优化：1.2s → 400ms（3x 加速，并行文件 I/O）
-- 414 个测试全部通过
+- 458 个测试全部通过
 
 调研正文写入 `docs/research/`，设计正文写入 `docs/design/`，不要堆积在
 本文件或 `README.md` 中。

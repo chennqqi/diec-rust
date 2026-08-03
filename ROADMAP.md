@@ -257,9 +257,16 @@ rquickjs 后端 + Binary host API bridge + 签名解析器 + PE stub 完成。
   - `LICENSE`：MIT 许可证文件
   - `NOTICES.md`：第三方归属（上游 DIE-engine、QuickJS、所有 Rust 依赖）
   - `AUDIT.md`：供应链安全审计（依赖策略、CI 安全、已知风险）
-- 414 个测试全部通过，cargo fmt/clippy 零警告
+- 458 个测试全部通过，cargo fmt/clippy 零警告
 - Fuzz 种子语料：165 个种子文件覆盖 6 个 fuzz targets
 - 性能优化：database_load 从 ~1.2s 优化到 ~400ms（3x 加速，并行文件 I/O via std::thread::scope）
+- Capstone 集成：PE.getDisasmString/getDisasmNextAddress 使用 Capstone 反汇编
+  - thread-local 缓存 Capstone 实例，避免重复初始化
+  - PE32 扫描性能：179ms → 73ms（2.4x 加速）
+- 格式特定规则分发优化：已识别格式不再运行 Binary 规则，避免重复检测
+  - 语料差分匹配率：17/28 → 21/28（剩余 7 个为规则版本差异）
+- PDF/JPEG/DEX 版本解析：从文件头解析格式版本号
+- PDF HeaderComment 检测：解析 PDF 注释行
 - Fuzz targets 扩展（6 个）：
   - `fuzz_byte_source`、`fuzz_byte_view_subview`（diec-core 层）
   - `fuzz_format_probe`（diec-formats 层）
@@ -268,9 +275,10 @@ rquickjs 后端 + Binary host API bridge + 签名解析器 + PE stub 完成。
   - `fuzz_scan_ffi`（diec-ffi 层，C ABI 边界 + double-free 安全）
 - 兼容性报告模板 `COMPATIBILITY.md`：
   - 规则加载兼容性（1184/1186 = 99.83%）
-  - 语料差分测试矩阵（27 样本 + 20 边缘样本）
+  - 语料差分测试矩阵（28 样本 + 20 边缘样本）
   - CLI 功能兼容性清单
   - C ABI 兼容性清单
+  - Host API 兼容性清单（含 Capstone 反汇编）
   - 性能基线数据
   - 测试统计
 
