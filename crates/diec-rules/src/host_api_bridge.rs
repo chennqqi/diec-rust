@@ -2027,11 +2027,45 @@ impl HostApiBridge {
                         return _B.__compare(sig, fileOff + offset);
                     };
 
-                    // compareOverlay: compare at overlay (stub).
-                    PE.compareOverlay = function(sig) { return false; };
-                    PE.isOverlayPresent = function() { return false; };
-                    PE.getOverlayOffset = function() { return -1; };
-                    PE.getOverlaySize = function() { return 0; };
+                    // Overlay: data after the last section's raw data.
+                    // Overlay offset = max(PointerToRawData + SizeOfRawData)
+                    // across all sections. Overlay size = fileSize - overlayOffset.
+                    PE.getOverlayOffset = function() {
+                        if (!_peIsPE()) return -1;
+                        var n = _peNumberOfSections();
+                        var maxEnd = 0;
+                        for (var i = 0; i < n; i++) {
+                            var rawOff = _peSectionFileOffset(i);
+                            var rawSize = _peSectionFileSize(i);
+                            var end = rawOff + rawSize;
+                            if (end > maxEnd) maxEnd = end;
+                        }
+                        // Also consider security directory (index 4) for
+                        // Authenticode-signed files: overlay is before signature.
+                        var secDir = _peDataDirOff(4);
+                        var secOff = _B.read_uint32_le(secDir);
+                        var secSize = _B.read_uint32_le(secDir + 4);
+                        if (secOff > 0 && secSize > 0 && secOff > maxEnd) {
+                            // Signature is in overlay area; overlay starts
+                            // after last section but before signature.
+                            return maxEnd;
+                        }
+                        if (maxEnd >= _B.getSize()) return -1;
+                        return maxEnd;
+                    };
+                    PE.isOverlayPresent = function() {
+                        return PE.getOverlayOffset() !== -1;
+                    };
+                    PE.getOverlaySize = function() {
+                        var off = PE.getOverlayOffset();
+                        if (off < 0) return 0;
+                        return _B.getSize() - off;
+                    };
+                    PE.compareOverlay = function(sig) {
+                        var off = PE.getOverlayOffset();
+                        if (off < 0) return false;
+                        return _B.__compare(sig, off);
+                    };
 
                     // isSignaturePresent: search for signature in range.
                     PE.isSignaturePresent = function(offset, size, sig) {
@@ -2062,8 +2096,14 @@ impl HostApiBridge {
                     PE.getOperationSystemOptions = function() { return ""; };
                     PE.isResourceNamePresent = function(s) { return false; };
 
-                    // .NET stubs.
-                    PE.isNet = function() { return false; };
+                    // .NET detection: check CLR header (data directory index 14).
+                    PE.isNet = function() {
+                        if (!_peIsPE()) return false;
+                        var clr_rva = _B.read_uint32_le(_peDataDirOff(14));
+                        var clr_size = _B.read_uint32_le(_peDataDirOff(14) + 4);
+                        return clr_rva !== 0 && clr_size !== 0;
+                    };
+                    // .NET stubs (needed to pass stubForLegacyEngines check).
                     PE.isNetObjectPresent = function(s) { return false; };
                     PE.isNetUStringPresent = function(s) { return false; };
                     PE.isNetGlobalCctorPresent = function(s) { return false; };
@@ -2578,15 +2618,66 @@ impl HostApiBridge {
                         return _DEBUG_TYPES[typeVal] || "UNKNOWN";
                     };
 
-                    // Validation stubs.
-                    PE.isEntryPointCorrect = function() { return false; };
-                    PE.isExportTableCorrect = function() { return false; };
-                    PE.isImportTableCorrect = function() { return false; };
-                    PE.isRelocsTableCorrect = function() { return false; };
-                    PE.isResourcesTableCorrect = function() { return false; };
-                    PE.isHeaderCorrect = function() { return false; };
-                    PE.isFileAlignmentCorrect = function() { return false; };
-                    PE.isSectionAlignmentCorrect = function() { return false; };
+                    // Validation methods: check PE header field validity.
+                    // These are used by __GenericHeuristicAnalysis_By_DosX.7.sg
+                    // under --heuristicscan mode to detect damaged/modified PEs.
+                    PE.isEntryPointCorrect = function() {
+                        if (!_peIsPE()) return false;
+                        var entry_rva = _peEntryPoint();
+                        // Entry point is correct if RVA is 0 (no entry) or
+                        // within a section's virtual range.
+                        if (entry_rva === 0) return true;
+                        return _peRvaToFileOffset(entry_rva) !== -1;
+                    };
+                    PE.isSectionAlignmentCorrect = function() {
+                        if (!_peIsPE()) return false;
+                        var sa = _B.read_uint32_le(_peOptHdrOff() + 32);
+                        // SectionAlignment must be power of 2, >= 512.
+                        if (sa < 512) return false;
+                        return (sa & (sa - 1)) === 0;
+                    };
+                    PE.isFileAlignmentCorrect = function() {
+                        if (!_peIsPE()) return false;
+                        var fa = _B.read_uint32_le(_peOptHdrOff() + 36);
+                        // FileAlignment must be power of 2, >= 512, <= 65536.
+                        if (fa < 512 || fa > 65536) return false;
+                        return (fa & (fa - 1)) === 0;
+                    };
+                    PE.isHeaderCorrect = function() {
+                        if (!_peIsPE()) return false;
+                        var coff_off = _peLfanew() + 4;
+                        var num_sec = _B.read_uint16_le(coff_off + 2);
+                        var size_opt = _B.read_uint16_le(coff_off + 16);
+                        var chars = _B.read_uint16_le(coff_off + 18);
+                        if (num_sec === 0) return false;
+                        if (size_opt < 24) return false;
+                        if (chars === 0) return false;
+                        return true;
+                    };
+                    PE.isExportTableCorrect = function() {
+                        if (!_peIsPE()) return false;
+                        var export_rva = _B.read_uint32_le(_peDataDirOff(0));
+                        if (export_rva === 0) return true;
+                        return _peRvaToFileOffset(export_rva) !== -1;
+                    };
+                    PE.isImportTableCorrect = function() {
+                        if (!_peIsPE()) return false;
+                        var import_rva = _B.read_uint32_le(_peDataDirOff(1));
+                        if (import_rva === 0) return true;
+                        return _peRvaToFileOffset(import_rva) !== -1;
+                    };
+                    PE.isRelocsTableCorrect = function() {
+                        if (!_peIsPE()) return false;
+                        var reloc_rva = _B.read_uint32_le(_peDataDirOff(5));
+                        if (reloc_rva === 0) return true;
+                        return _peRvaToFileOffset(reloc_rva) !== -1;
+                    };
+                    PE.isResourcesTableCorrect = function() {
+                        if (!_peIsPE()) return false;
+                        var res_rva = _B.read_uint32_le(_peDataDirOff(2));
+                        if (res_rva === 0) return true;
+                        return _peRvaToFileOffset(res_rva) !== -1;
+                    };
 
                     // Search helpers.
                     PE.findDword = function(off, val) { return -1; };

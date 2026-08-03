@@ -45,7 +45,10 @@ const CORPUS_EXPECTATIONS: &[(&str, &[(&str, &str)])] = &[
     ("minimal.jar", &[("archive", "Zip")]),
     ("minimal.ipa", &[("archive", "Zip")]),
     ("payload.tar", &[("archive", "tar")]),
-    ("minimal.cfbf", &[("format", "CFBF"), ("format", "Microsoft Office")]),
+    (
+        "minimal.cfbf",
+        &[("format", "CFBF"), ("format", "Microsoft Office")],
+    ),
     // Document formats
     ("minimal.pdf", &[("format", "PDF")]),
     // ISO 9660: upstream 3.21 doesn't detect it, new rules do
