@@ -759,3 +759,73 @@
   - 发布物包含 CLI、FFI 库、C 头文件、规则数据库、语言绑定
 - 发布说明模板 RELEASE_NOTES.md
 - 414 个测试全部通过
+
+## 2026-08-03: 深刻反思 — 测试方法系统性缺陷
+- 错误结论: 之前声称'1:1兼容'和'具备发布条件', 实际从未做过差分测试, 测试集有巨大盲区
+- 根本问题: 把'测试通过'等同于'功能正确', 把'有检测结果'等同于'检测结果正确'
+- 详细反思见 doc/retrospective-2026-08-03.md
+
+## 2026-08-03: 新增强制规则 — 测试纪律与结论约束
+- 创建 .devin/rules/testing-discipline.md: 6条强制测试纪律规则
+- 创建 .devin/rules/claim-discipline.md: 6条结论约束规则
+- AGENTS.md新增引用章节, 确保规则被注意到
+- 规则核心: 测试通过!=功能正确/修bug必须先写复现测试/禁止无证据下结论/宣布发布必须通过5道门禁
+
+## 2026-08-03: 测试集深度改进 — 填补PE测试盲区
+- edge_corpus超时阈值从5s降到2s, 防止性能退化不可见
+- 新增corpus/with-tables.exe: 有真实import(kernel32.dll)/export(ExportA/ExportB)表的PE32样本
+- 新增tools/corpus/generate_pe_with_tables.py: 可重复生成的PE样本生成器
+- batch_load_pe.rs新增RealPeHost测试: 用真实PE数据+PE _init加载834个PE规则, 100%加载成功, 833/834执行成功
+- pe_rule_e2e.rs新增5个测试: 合成PE不崩溃/with-tables.exe性能/真实diec.exe检测linker/import-export验证
+- pe_table_parsing.rs新增10个测试: PE表解析正确性/边界/性能回归(1515exports<100ms)
+- corpus_differential.rs添加with-tables.exe到期望列表
+- 总测试数: 414 -> 430 (新增16个), 全部通过
+
+## 2026-08-03: real_rules扩展+差分测试框架
+- real_rules.rs从6个Binary测试扩展到11个(新增5个PE/ELF/MACH端到端测试)
+- 新增load_upstream_framework_for_type()支持加载任意类型的_init脚本
+- 新增run_real_rule_typed()支持指定file_type
+- PE测试: _init加载/with-tables.exe规则执行/diec.exe检测Microsoft Linker
+- ELF测试: _init加载/minimal.elf规则执行
+- MACH测试: _init加载/minimal.macho规则执行
+- 新增tools/compat/collect_differential_baseline.py: 收集28个corpus文件的检测基线
+- 新增tools/compat/test_differential_regression.py: 差分回归测试(对比基线)
+- 新增tools/compat/differential-baseline.json: 当前基线(28文件,0错误,17有检测)
+- 总测试数: 430 -> 435 (新增5个), 全部通过
+
+## 2026-08-03: 修复PE规则TypeError + 实现OffsetToVA/getExportFunctionOffsetByIndex
+- 修复protector_Arxan.2.sg和protector_PELock.2.sg的TypeError: not a function
+- 根因: PE.OffsetToVA未实现(缺ImageBase+RVA转换)
+- 实现PE.OffsetToVA(off) = ImageBase + OffsetToRVA(off)
+- 实现PE.getExportFunctionOffsetByIndex(n): 读取export directory的AddressOfFunctions数组
+- 诊断从2个降到0个(28个corpus文件全部无诊断错误)
+- 50个System32 DLL扫描全部无诊断错误
+- 差分基线更新: 28文件, 0错误, 0诊断, 17有检测
+- 435个测试全部通过
+
+## 2026-08-03: 上游差分测试 + 修复3个PE host API bug
+- 下载上游 DIE 3.21 Windows便携版, 建立差分对比工具 compare_upstream.py
+- 差分测试发现3个bug:
+  1. Rich signature解析bug: getRichID返回完整32位值而非高16位ProductID, getRichVersion返回useCount而非低16位version -> 修复后linker/compiler/tool检测从2个增到4个且版本号正确
+  2. PE debug data records未实现: getNumberOfDebugDataRecords/getDebugDataType/getDebugDataOffset/getDebugDataSize -> 实现后debug data:Records检测出现
+  3. PE.isSigned未实现: Authenticode签名检测缺失 -> 检查security directory(索引4)非零
+- diec.exe差分: 修复前2/5匹配, 修复后5/5完全匹配(含版本号)
+- 6个大文件(0.5-61MB)差分: 全部完全匹配, 性能<2.5s
+- 上游getDisasmString用Capstone反汇编器实现, 我们返回空字符串 -> 4个protector规则(PELock/Arxan/VMProtect/GenericHeuristic)漏检测, 需引入capstone-rs才能修复
+- corpus差分: 28文件中15匹配, 13差异(主要是规则版本差异: 上游3.21有CFBF目录我们没有, 名称/版本号差异)
+- 435个测试全部通过
+
+## 2026-08-03: 实现isPlainText + 上游规则差分对比
+- 实现Binary.isPlainText(): 检查前4096字节是否全为可打印ASCII(0x20-0x7E+tab/lf/cr)
+- 实现Binary.isText(): 同isPlainText逻辑
+- corpus差分(用上游3.21规则): 17/28匹配(从15提升), 11个差异
+- 修复edge_corpus: single-byte.bin和two-bytes.bin改为非可打印字节(0x00/0x01), 避免被isPlainText误判
+- 剩余11个差异分析: 6个是format类型重复检测(我们多输出format:XXX), 3个是名称差异(规则版本), 1个HeaderComment缺失, 1个JPEG版本差异
+- 435个测试全部通过
+
+## 2026-08-03: 添加host API单元测试 + 修复section header偏移bug
+- 新增 crates/diec-rules/tests/host_api_unit.rs: 19个直接单元测试覆盖Rich signature/debug data/isSigned/isPlainText
+- 测试发现section header字段偏移bug: Name字段是8字节但代码按4字节偏移, 导致VirtualSize/VirtualAddress/SizeOfRawData/PointerToRawData全部偏移4字节
+- 修复后debug data type检测从UNKNOWN变为CODEVIEW(正确)
+- 大文件差分仍然完全匹配(section header bug被VirtualSize=0时fallback到RawSize掩盖)
+- 454个测试全部通过(从435增加19)

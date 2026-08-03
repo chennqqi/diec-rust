@@ -3,3 +3,10 @@
 __pycache__/
 *.py[cod]
 /aqtinstall.log
+
+# Upstream DIE binary (downloaded for differential testing, not committed)
+/tools/upstream-die/
+
+# Temporary commit message files
+/COMMIT_MSG_*.txt
+

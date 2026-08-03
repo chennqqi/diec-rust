@@ -1,0 +1,369 @@
+{
+  "tool": "diec-rust",
+  "version": "diec 0.1.4",
+  "collected_at": "2026-08-03T05:02:46.326126+00:00",
+  "corpus_dir": "I:\\github.com\\chennqqi\\diec-rust\\corpus",
+  "file_count": 28,
+  "results": [
+    {
+      "file": "Minimal.class",
+      "size": 59,
+      "detections": [
+        {
+          "file_type": "Binary",
+          "type": "format",
+          "name": "Java Class File (.CLASS)",
+          "version": "Java SE 8"
+        },
+        {
+          "file_type": "JavaClass",
+          "type": "format",
+          "name": "Java Class File"
+        }
+      ],
+      "diagnostics": [],
+      "elapsed_ms": 315.3
+    },
+    {
+      "file": "empty.bin",
+      "size": 0,
+      "detections": [
+        {
+          "file_type": "Binary",
+          "type": "format",
+          "name": "Empty file"
+        }
+      ],
+      "diagnostics": [],
+      "elapsed_ms": 316.5
+    },
+    {
+      "file": "manifest.json",
+      "size": 4971,
+      "detections": [
+        {
+          "file_type": "Binary",
+          "type": "format",
+          "name": "Plain text",
+          "options": "LF"
+        }
+      ],
+      "diagnostics": [],
+      "elapsed_ms": 314.1
+    },
+    {
+      "file": "minimal-elf32.elf",
+      "size": 52,
+      "detections": [],
+      "diagnostics": [],
+      "elapsed_ms": 219.9
+    },
+    {
+      "file": "minimal-fat.macho",
+      "size": 360,
+      "detections": [
+        {
+          "file_type": "MACHOFAT",
+          "type": "converter",
+          "name": "lipo"
+        }
+      ],
+      "diagnostics": [],
+      "elapsed_ms": 222.6
+    },
+    {
+      "file": "minimal-macho32.macho",
+      "size": 84,
+      "detections": [],
+      "diagnostics": [],
+      "elapsed_ms": 229.0
+    },
+    {
+      "file": "minimal-pe64.exe",
+      "size": 512,
+      "detections": [],
+      "diagnostics": [],
+      "elapsed_ms": 289.2
+    },
+    {
+      "file": "minimal.apk",
+      "size": 350,
+      "detections": [
+        {
+          "file_type": "Binary",
+          "type": "archive",
+          "name": "Zip",
+          "version": "2.0",
+          "options": "100.0%, 2 files"
+        }
+      ],
+      "diagnostics": [],
+      "elapsed_ms": 347.1
+    },
+    {
+      "file": "minimal.cfbf",
+      "size": 512,
+      "detections": [
+        {
+          "file_type": "Binary",
+          "type": "archive",
+          "name": "Microsoft Compound",
+          "version": "Office, 1997-2003"
+        },
+        {
+          "file_type": "CFBF",
+          "type": "format",
+          "name": "Microsoft Compound"
+        }
+      ],
+      "diagnostics": [],
+      "elapsed_ms": 335.5
+    },
+    {
+      "file": "minimal.dex",
+      "size": 112,
+      "detections": [
+        {
+          "file_type": "DEX",
+          "type": "format",
+          "name": "Dalvik Executable (.DEX)"
+        }
+      ],
+      "diagnostics": [],
+      "elapsed_ms": 322.8
+    },
+    {
+      "file": "minimal.elf",
+      "size": 64,
+      "detections": [],
+      "diagnostics": [],
+      "elapsed_ms": 234.1
+    },
+    {
+      "file": "minimal.exe",
+      "size": 512,
+      "detections": [],
+      "diagnostics": [],
+      "elapsed_ms": 288.3
+    },
+    {
+      "file": "minimal.ipa",
+      "size": 300,
+      "detections": [
+        {
+          "file_type": "Binary",
+          "type": "archive",
+          "name": "Zip",
+          "version": "2.0",
+          "options": "100.0%, 1 file"
+        }
+      ],
+      "diagnostics": [],
+      "elapsed_ms": 332.2
+    },
+    {
+      "file": "minimal.iso",
+      "size": 36864,
+      "detections": [
+        {
+          "file_type": "Binary",
+          "type": "format",
+          "name": "ISO 9660"
+        }
+      ],
+      "diagnostics": [],
+      "elapsed_ms": 328.7
+    },
+    {
+      "file": "minimal.jar",
+      "size": 324,
+      "detections": [
+        {
+          "file_type": "Binary",
+          "type": "archive",
+          "name": "Zip",
+          "version": "2.0",
+          "options": "JAR, 100.0%, 2 files"
+        }
+      ],
+      "diagnostics": [],
+      "elapsed_ms": 332.1
+    },
+    {
+      "file": "minimal.macho",
+      "size": 104,
+      "detections": [],
+      "diagnostics": [],
+      "elapsed_ms": 246.1
+    },
+    {
+      "file": "minimal.pdf",
+      "size": 331,
+      "detections": [
+        {
+          "file_type": "Binary",
+          "type": "format",
+          "name": "PDF",
+          "version": "1.4",
+          "options": "binary data"
+        },
+        {
+          "file_type": "PDF",
+          "type": "format",
+          "name": "PDF"
+        }
+      ],
+      "diagnostics": [],
+      "elapsed_ms": 337.5
+    },
+    {
+      "file": "minimal.pyc",
+      "size": 17,
+      "detections": [
+        {
+          "file_type": "PYC",
+          "type": "format",
+          "name": "Python bytecode compiled (.PYC)"
+        }
+      ],
+      "diagnostics": [],
+      "elapsed_ms": 311.1
+    },
+    {
+      "file": "minimal.rar",
+      "size": 21,
+      "detections": [],
+      "diagnostics": [],
+      "elapsed_ms": 311.1
+    },
+    {
+      "file": "payload.tar",
+      "size": 2048,
+      "detections": [
+        {
+          "file_type": "Binary",
+          "type": "archive",
+          "name": "tar"
+        }
+      ],
+      "diagnostics": [],
+      "elapsed_ms": 324.0
+    },
+    {
+      "file": "payload.txt.gz",
+      "size": 54,
+      "detections": [],
+      "diagnostics": [],
+      "elapsed_ms": 340.7
+    },
+    {
+      "file": "payload.zip",
+      "size": 151,
+      "detections": [
+        {
+          "file_type": "Binary",
+          "type": "archive",
+          "name": "Zip",
+          "version": "2.0",
+          "options": "100.0%, 1 file"
+        }
+      ],
+      "diagnostics": [],
+      "elapsed_ms": 329.6
+    },
+    {
+      "file": "pixel.bmp",
+      "size": 58,
+      "detections": [
+        {
+          "file_type": "Binary",
+          "type": "image",
+          "name": "Windows Bitmap",
+          "version": "3",
+          "options": "1x1, 24bpp"
+        }
+      ],
+      "diagnostics": [],
+      "elapsed_ms": 304.7
+    },
+    {
+      "file": "pixel.jpg",
+      "size": 56,
+      "detections": [
+        {
+          "file_type": "Binary",
+          "type": "image",
+          "name": "JPEG",
+          "version": "1.01",
+          "options": "1x1, YCbCr"
+        },
+        {
+          "file_type": "JPEG",
+          "type": "image",
+          "name": "DQT"
+        },
+        {
+          "file_type": "JPEG",
+          "type": "format",
+          "name": "JPEG"
+        }
+      ],
+      "diagnostics": [],
+      "elapsed_ms": 330.6
+    },
+    {
+      "file": "pixel.png",
+      "size": 72,
+      "detections": [
+        {
+          "file_type": "Binary",
+          "type": "image",
+          "name": "Portable Network Graphics (.PNG)",
+          "options": "RGB"
+        },
+        {
+          "file_type": "PNG",
+          "type": "format",
+          "name": "PNG"
+        }
+      ],
+      "diagnostics": [],
+      "elapsed_ms": 307.4
+    },
+    {
+      "file": "plain.txt",
+      "size": 31,
+      "detections": [
+        {
+          "file_type": "Binary",
+          "type": "format",
+          "name": "Plain text",
+          "options": "LF"
+        }
+      ],
+      "diagnostics": [],
+      "elapsed_ms": 306.1
+    },
+    {
+      "file": "tone.wav",
+      "size": 46,
+      "detections": [
+        {
+          "file_type": "Binary",
+          "type": "audio",
+          "name": "RIFF container/WAVE file (.WAV)",
+          "version": "Microsoft PCM8U (uncompressed)/le"
+        }
+      ],
+      "diagnostics": [],
+      "elapsed_ms": 301.2
+    },
+    {
+      "file": "with-tables.exe",
+      "size": 2048,
+      "detections": [],
+      "diagnostics": [],
+      "elapsed_ms": 276.6
+    }
+  ]
+}
