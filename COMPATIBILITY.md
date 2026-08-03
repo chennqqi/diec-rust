@@ -35,25 +35,22 @@ Last updated: 2026-08-02
 | Executable (ELF) | 2 | 2 | 0 | |
 | Executable (PE) | 2 | 2 | 0 | PE heuristic requires --heuristicscan |
 | Executable (Mach-O) | 3 | 3 | 0 | FAT binary detected as lipo |
-| Bytecode | 3 | 2 | 1 | Java Class: rule name version diff |
+| Bytecode | 3 | 3 | 0 | Java Class, DEX, PYC (PYC is rule version diff) |
 | Archive | 7 | 4 | 3 | APK/JAR/ZIP: archive:Zip (rule version diff) |
-| Document | 2 | 1 | 1 | ISO: rule version diff |
+| Document | 2 | 2 | 0 | PDF, CFBF (Microsoft Office) |
 | Image | 3 | 3 | 0 | PNG, JPEG, BMP |
 | Audio | 1 | 1 | 0 | WAV |
 | Other | 5 | 5 | 0 | empty, text, RAR, GZIP, manifest |
-| **Total** | **28** | **21** | **7** | All mismatches are rule version diffs |
+| **Total** | **28** | **24** | **4** | All mismatches are rule version diffs |
 
 ### Mismatch Details (Rule Version Differences)
 
-All 7 mismatches are due to differences between the submodule rule
+All 4 mismatches are due to differences between the submodule rule
 database (newer version) and the upstream DIE 3.21 bundled rules.
 These are NOT engine bugs:
 
 | File | Our detection | Upstream 3.21 | Cause |
 |------|---------------|---------------|-------|
-| Minimal.class | Java Class File (.CLASS) | Java Class | Rule rename |
-| minimal.cfbf | Microsoft Compound | CFBF + Microsoft Office | Rule restructure |
-| minimal.dex | DEX (no version) | DEX:035 | Rule version field |
 | minimal.apk | archive:Zip:2.0 | (none) | New rule detects archive |
 | minimal.jar | archive:Zip:2.0 | (none) | New rule detects archive |
 | payload.zip | archive:Zip:2.0 | (none) | New rule detects archive |
@@ -129,6 +126,8 @@ These are NOT engine bugs:
 | PDF (version, header comment) | ✅ | |
 | JPEG (version from JFIF) | ✅ | |
 | DEX (version from header) | ✅ | |
+| CFBF (version from header) | ✅ | major.minor format |
+| Java Class (version from header) | ✅ | Java SE version mapping |
 | Binary.isPlainText | ✅ | |
 | Archive (isVerbose, format) | ⚠️ | Stub (isVerbose=false) |
 
@@ -138,6 +137,7 @@ These are NOT engine bugs:
 |----|-------------|-----|--------|
 | D001 | Rule version differences (submodule vs 3.21) | N/A | Detection name/version diffs |
 | D002 | Format-specific rules exclude Binary rules | N/A | Eliminates duplicate detections |
+| D003 | JavaClass no longer runs Binary rules | N/A | Host API now complete |
 
 ## Performance Baseline
 

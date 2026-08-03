@@ -264,9 +264,10 @@ rquickjs 后端 + Binary host API bridge + 签名解析器 + PE stub 完成。
   - thread-local 缓存 Capstone 实例，避免重复初始化
   - PE32 扫描性能：179ms → 73ms（2.4x 加速）
 - 格式特定规则分发优化：已识别格式不再运行 Binary 规则，避免重复检测
-  - 语料差分匹配率：17/28 → 21/28（剩余 7 个为规则版本差异）
-- PDF/JPEG/DEX 版本解析：从文件头解析格式版本号
+  - 语料差分匹配率：17/28 → 24/28（剩余 4 个为规则版本差异）
+- PDF/JPEG/DEX/CFBF/JavaClass 版本解析：从文件头解析格式版本号
 - PDF HeaderComment 检测：解析 PDF 注释行
+- JavaClass 不再运行 Binary 规则（host API 已完整实现）
 - Fuzz targets 扩展（6 个）：
   - `fuzz_byte_source`、`fuzz_byte_view_subview`（diec-core 层）
   - `fuzz_format_probe`（diec-formats 层）
@@ -304,9 +305,9 @@ GUI 明确不属于当前交付范围。核心库、CLI 和 C ABI 稳定后，�
 
 以下 stub 方法影响差分测试匹配率，按预期收益排序：
 
-- **CFBF 版本解析**：实现 `CFBF.getFileFormatVersion()` 从 CFBF 头解析版本（预期 +1 匹配，`minimal.cfbf`）
-- **Java Class 版本解析**：实现 `JavaClass.getFileFormatVersion()` 从 class 文件 major version 映射到 Java SE 版本（预期 +1 匹配，`Minimal.class`）
-- **PYC 版本解析**：实现 `PYC.getFileFormatVersion()` 从 pyc 头解析版本（可能 +1 匹配，`minimal.pyc`）
+- ~~**CFBF 版本解析**~~：已完成。`CFBF.getFileFormatVersion()` 从 CFBF 头解析 major.minor 版本（+1 匹配，`minimal.cfbf`）
+- ~~**Java Class 版本解析**~~：已完成。`JavaClass.getFileFormatVersion()` 从 class 文件 major version 映射到 Java SE 版本（+1 匹配，`Minimal.class`）
+- **PYC 版本解析**：`PYC.getFileFormatVersion()` 从 pyc 头解析版本（规则版本差异，上游 3.21 不检测 PYC，低优先级）
 - **Archive host API**：实现 `Archive.isVerbose()`/`getFileFormatName()` 等，让 `_Archive.0.sg` 正确输出 `archive:Zip`（架构改进）
 - **PE 验证方法**：8 个 `is*Correct` stub（isEntryPointCorrect/isExportTableCorrect/isImportTableCorrect/isRelocsTableCorrect/isResourcesTableCorrect/isHeaderCorrect/isFileAlignmentCorrect/isSectionAlignmentCorrect）
 - **PE Resource 方法**：`getNumberOfResources` 等 stub，被 resource 检测规则使用
