@@ -302,6 +302,6 @@ GUI 明确不属于当前交付范围。核心库、CLI 和 C ABI 稳定后，�
 
 ### CI/CD 维护
 
-- **升级 GitHub Actions 到 Node.js 24**：`actions/checkout@v4`、`actions/upload-artifact@v4`、`actions/download-artifact@v4` 仍基于 Node.js 20（已 deprecated）。待 `actions/checkout@v5` 等正式发布后升级，消除 deprecation warning。
+- ~~**升级 GitHub Actions 到 Node.js 24**~~：已完成。`actions/checkout@v5`、`actions/upload-artifact@v5`、`actions/download-artifact@v5` 已升级，支持 Node.js 24。
 - **Windows FFI C smoke test 链接**：Rust staticlib 在 Windows 上需要大量系统库（ws2_32、userenv、bcrypt 等），当前用 `continue-on-error` 跳过。后续可用 `cargo build` 生成的 `.d` 文件自动提取依赖库列表，或改用 dynamic library 链接方式。
 - **macOS x86_64 构建矩阵**：`macos-13` runner 为 Intel 实例，费用较高且可能逐步下线。评估是否在 arm64 runner 上交叉编译 x86_64 目标。
