@@ -227,6 +227,34 @@ impl HostApi for BufferHost {
         Ok(None)
     }
 
+    fn find_signature_in_range(
+        &self,
+        start: u64,
+        end: u64,
+        signature: &str,
+    ) -> Result<Option<u64>, HostApiError> {
+        let sig = signature.trim_matches('\'');
+        let bytes: Result<Vec<u8>, _> = (0..sig.len())
+            .step_by(2)
+            .map(|i| u8::from_str_radix(&sig[i..i + 2], 16))
+            .collect();
+        let sig_bytes = bytes.map_err(|e| HostApiError::InvalidSignature {
+            pattern: signature.into(),
+            detail: e.to_string(),
+        })?;
+        let start = start as usize;
+        let end = (end as usize).min(self.data.len());
+        if sig_bytes.is_empty() || start >= end || end < sig_bytes.len() {
+            return Ok(None);
+        }
+        for i in start..=end - sig_bytes.len() {
+            if &self.data[i..i + sig_bytes.len()] == sig_bytes.as_slice() {
+                return Ok(Some(i as u64));
+            }
+        }
+        Ok(None)
+    }
+
     fn read_string(&self, offset: u64, max_len: u64) -> Result<String, HostApiError> {
         let start = offset as usize;
         let end = (start + max_len as usize).min(self.data.len());
@@ -297,6 +325,16 @@ impl HostApi for BufferHost {
         Err(HostApiError::NotImplemented {
             method: "crc32".into(),
         })
+    }
+
+    fn pe_import_libraries(&self) -> Vec<String> {
+        Vec::new()
+    }
+    fn pe_import_functions(&self) -> Vec<String> {
+        Vec::new()
+    }
+    fn pe_export_names(&self) -> Vec<String> {
+        Vec::new()
     }
 }
 

@@ -85,6 +85,14 @@ impl HostApi for DummyHost {
     fn find_signature(&self, _start: u64, _signature: &str) -> Result<Option<u64>, HostApiError> {
         Ok(None)
     }
+    fn find_signature_in_range(
+        &self,
+        _start: u64,
+        _end: u64,
+        _signature: &str,
+    ) -> Result<Option<u64>, HostApiError> {
+        Ok(None)
+    }
     fn read_string(&self, _offset: u64, _max_len: u64) -> Result<String, HostApiError> {
         Ok(String::new())
     }
@@ -121,6 +129,15 @@ impl HostApi for DummyHost {
         Err(HostApiError::NotImplemented {
             method: "crc32".into(),
         })
+    }
+    fn pe_import_libraries(&self) -> Vec<String> {
+        Vec::new()
+    }
+    fn pe_import_functions(&self) -> Vec<String> {
+        Vec::new()
+    }
+    fn pe_export_names(&self) -> Vec<String> {
+        Vec::new()
     }
 }
 

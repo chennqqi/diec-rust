@@ -225,10 +225,13 @@ fn edge_corpus_truncated_does_not_hang() {
         let _ = scan_bytes(&database, filename, data, ScanFlags::default(), &cancel);
 
         let elapsed = start.elapsed();
-        // Truncated samples should complete in under 5 seconds.
+        // Truncated samples should complete in under 2 seconds.
+        // This is a regression guard: before the batch PE parsing
+        // optimization, even small files could take >60s due to
+        // per-byte JS→Rust FFI overhead in import/export parsing.
         assert!(
-            elapsed.as_secs() < 5,
-            "{filename} took {elapsed:?} (expected < 5s)"
+            elapsed.as_secs() < 2,
+            "{filename} took {elapsed:?} (expected < 2s)"
         );
         tested += 1;
     }

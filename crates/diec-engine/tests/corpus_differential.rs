@@ -26,6 +26,10 @@ const CORPUS_EXPECTATIONS: &[(&str, &[(&str, &str)])] = &[
     // false, so no detections are produced without --heuristicscan flag.
     ("minimal.exe", &[]),
     ("minimal-pe64.exe", &[]),
+    // with-tables.exe has import/export tables but no DOS stub or Rich
+    // signature, so linker rules don't match. It's used to verify that
+    // PE table parsing doesn't crash or produce spurious detections.
+    ("with-tables.exe", &[]),
     ("minimal.elf", &[]),
     ("minimal-elf32.elf", &[]),
     ("minimal.macho", &[]),
@@ -53,8 +57,8 @@ const CORPUS_EXPECTATIONS: &[(&str, &[(&str, &str)])] = &[
     ("tone.wav", &[("audio", "RIFF container")]),
     // No detections expected
     ("empty.bin", &[("format", "Empty file")]),
-    ("plain.txt", &[]),
-    ("manifest.json", &[]),
+    ("plain.txt", &[("format", "Plain text")]),
+    ("manifest.json", &[("format", "Plain text")]),
     ("minimal.rar", &[]),
     ("payload.txt.gz", &[]),
 ];
