@@ -125,3 +125,8 @@
 - Bug 报告已写入 `docs/research/upstream-bug-const-redeclaration-nintendo-certified-file.md`
 
 - [2026-08-01] macOS Phase 1 benchmark 门禁：需在 macdev 主机上运行三类 benchmark（runtime warm baseline、release deployment size、Rust 成对 benchmark），复用 Linux Qt5 现有 plan/runner 工具链并适配 macOS 路径与环境
+
+## 2026-08-02: Host API 完善
+- 分析：78 个 stub 方法，按差分收益排序
+- 优先级：CFBF(+1) > JavaClass(+1) > PYC(+1) > Archive(架构) > PE验证/Resource/.NET/Manifest
+- 当前差分：22/28 匹配，6 个差异全为规则版本差异

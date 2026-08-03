@@ -300,6 +300,21 @@ GUI 明确不属于当前交付范围。核心库、CLI 和 C ABI 稳定后，�
 
 ## 后续改进项
 
+### Host API 完善（差分兼容性）
+
+以下 stub 方法影响差分测试匹配率，按预期收益排序：
+
+- **CFBF 版本解析**：实现 `CFBF.getFileFormatVersion()` 从 CFBF 头解析版本（预期 +1 匹配，`minimal.cfbf`）
+- **Java Class 版本解析**：实现 `JavaClass.getFileFormatVersion()` 从 class 文件 major version 映射到 Java SE 版本（预期 +1 匹配，`Minimal.class`）
+- **PYC 版本解析**：实现 `PYC.getFileFormatVersion()` 从 pyc 头解析版本（可能 +1 匹配，`minimal.pyc`）
+- **Archive host API**：实现 `Archive.isVerbose()`/`getFileFormatName()` 等，让 `_Archive.0.sg` 正确输出 `archive:Zip`（架构改进）
+- **PE 验证方法**：8 个 `is*Correct` stub（isEntryPointCorrect/isExportTableCorrect/isImportTableCorrect/isRelocsTableCorrect/isResourcesTableCorrect/isHeaderCorrect/isFileAlignmentCorrect/isSectionAlignmentCorrect）
+- **PE Resource 方法**：`getNumberOfResources` 等 stub，被 resource 检测规则使用
+- **PE .NET 方法**：`isNet`/`getNetAssemblyName`/`getNetModuleName`/`getNETVersion` stub
+- **PE Manifest 方法**：`getManifest` stub，被 manifest 检测规则使用
+- **PE Overlay 方法**：`isOverlayPresent`/`getOverlaySize` stub
+- **ELF/MACH stub 方法**：`getImageBase`/`getOverlaySize`/`getStringTableOffset` 等
+
 ### CI/CD 维护
 
 - ~~**升级 GitHub Actions 到 Node.js 24**~~：已完成。`actions/checkout@v5`、`actions/upload-artifact@v5`、`actions/download-artifact@v5` 已升级，支持 Node.js 24。

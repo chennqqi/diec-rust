@@ -829,3 +829,9 @@
 - 修复后debug data type检测从UNKNOWN变为CODEVIEW(正确)
 - 大文件差分仍然完全匹配(section header bug被VirtualSize=0时fallback到RawSize掩盖)
 - 454个测试全部通过(从435增加19)
+
+## 2026-08-02: Host API 完善（差分兼容性）
+- 实现 CFBF/JavaClass/PYC 版本解析，提升差分匹配率
+- 实现 Archive host API（isVerbose 等）
+- 实现 PE 验证/Resource/.NET/Manifest/Overlay 方法
+- 实现 ELF/MACH stub 方法
