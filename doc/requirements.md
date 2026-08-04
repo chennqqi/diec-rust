@@ -838,3 +838,4 @@
 [2026-08-04] 用户询问接下来做什么（原生PE/ELF/Mach-O解析重构完成后）
 [2026-08-04] 运行差分测试和性能基准，验证原生PE/ELF/Mach-O解析重构效果，更新COMPATIBILITY.md
 [2026-08-04] 更新NOTICES.md（新增pelite/goblin归属），按RELEASE.md做发布前检查验证
+[2026-08-04] 顺序执行剩余工作项：1.扩大差分测试语料 2.PYC版本解析 3.Windows FFI C smoke test链接 4.macOS x86_64构建矩阵 5.发布前检查

@@ -32,16 +32,16 @@ Last updated: 2026-08-04
 
 | Category | Samples | Matched | Mismatched | Notes |
 |----------|---------|---------|------------|-------|
-| Executable (ELF) | 2 | 2 | 0 | |
-| Executable (PE) | 2 | 2 | 0 | PE heuristic requires --heuristicscan |
-| Executable (Mach-O) | 3 | 3 | 0 | FAT binary detected as lipo |
+| Executable (ELF) | 4 | 4 | 0 | 2 minimal + 2 with DT_NEEDED deps |
+| Executable (PE) | 5 | 5 | 0 | 2 minimal + with-tables + resources + .NET |
+| Executable (Mach-O) | 4 | 4 | 0 | FAT binary detected as lipo; +1 with LC_LOAD_DYLIB |
 | Bytecode | 3 | 3 | 0 | Java Class, DEX, PYC (PYC is rule version diff) |
 | Archive | 7 | 4 | 3 | APK/JAR/ZIP: archive:Zip (rule version diff) |
 | Document | 2 | 2 | 0 | PDF, CFBF (Microsoft Office) |
 | Image | 3 | 3 | 0 | PNG, JPEG, BMP |
 | Audio | 1 | 1 | 0 | WAV |
 | Other | 5 | 5 | 0 | empty, text, RAR, GZIP, manifest |
-| **Total** | **28** | **24** | **4** | All mismatches are rule version diffs |
+| **Total** | **31** | **27** | **4** | All mismatches are rule version diffs |
 
 ### Mismatch Details (Rule Version Differences)
 

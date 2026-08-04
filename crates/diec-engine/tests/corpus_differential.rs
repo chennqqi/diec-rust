@@ -30,6 +30,13 @@ const CORPUS_EXPECTATIONS: &[(&str, &[(&str, &str)])] = &[
     // signature, so linker rules don't match. It's used to verify that
     // PE table parsing doesn't crash or produce spurious detections.
     ("with-tables.exe", &[]),
+    // Expanded corpus: PE with resources/manifest, PE with .NET CLR header,
+    // ELF with DT_NEEDED deps, Mach-O with LC_LOAD_DYLIB.
+    // These verify native parsers handle richer structures without crashes.
+    ("pe-with-resources.exe", &[]),
+    ("pe-dotnet.exe", &[]),
+    ("elf-with-deps.elf", &[]),
+    ("macho-with-dylib.macho", &[]),
     ("minimal.elf", &[]),
     ("minimal-elf32.elf", &[]),
     ("minimal.macho", &[]),
