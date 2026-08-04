@@ -257,7 +257,13 @@ rquickjs 后端 + Binary host API bridge + 签名解析器 + PE stub 完成。
   - `LICENSE`：MIT 许可证文件
   - `NOTICES.md`：第三方归属（上游 DIE-engine、QuickJS、所有 Rust 依赖）
   - `AUDIT.md`：供应链安全审计（依赖策略、CI 安全、已知风险）
-- 458 个测试全部通过，cargo fmt/clippy 零警告
+- 459 个测试全部通过，cargo fmt/clippy 零警告
+- 原生 PE/ELF/Mach-O 解析重构：使用 pelite（PE）和 goblin（ELF/Mach-O）替换手写 JavaScript 解析
+  - 新增 pe_native.rs、elf_native.rs、macho_native.rs 三个模块
+  - PE：imports/exports/resources/manifest/version info/.NET/ Authenticode/overlay
+  - ELF：DT_NEEDED/sections/entry point/image base/overlay
+  - Mach-O：LC_LOAD_DYLIB/sections/segments/entry point/image base/overlay
+  - 消除逐字节 JS→Rust FFI 往返，提升性能和正确性
 - Fuzz 种子语料：165 个种子文件覆盖 6 个 fuzz targets
 - 性能优化：database_load 从 ~1.2s 优化到 ~400ms（3x 加速，并行文件 I/O via std::thread::scope）
 - Capstone 集成：PE.getDisasmString/getDisasmNextAddress 使用 Capstone 反汇编
@@ -310,9 +316,12 @@ GUI 明确不属于当前交付范围。核心库、CLI 和 C ABI 稳定后，�
 - **PYC 版本解析**：`PYC.getFileFormatVersion()` 从 pyc 头解析版本（规则版本差异，上游 3.21 不检测 PYC，低优先级）
 - **Archive host API**：`isVerbose()` 返回 false 与上游 3.21 一致，无需修改
 - ~~**PE 验证方法**~~：已完成。8 个 `is*Correct` 方法（isEntryPointCorrect/isSectionAlignmentCorrect/isFileAlignmentCorrect/isHeaderCorrect/isExportTableCorrect/isImportTableCorrect/isRelocsTableCorrect/isResourcesTableCorrect）
-- **PE Resource 方法**：`getNumberOfResources` 等 stub，被 resource 检测规则使用（待实现）
+- ~~**PE Resource 方法**~~：已完成。`getNumberOfResources`/`isResourceNamePresent`/`getResourceSection` 使用 pelite 原生解析
 - ~~**PE .NET 方法**~~：已完成。`isNet` 检查 CLR header，保留 `getNetAssemblyName` 等 stub 通过 legacy 检查
-- **PE Manifest 方法**：`getManifest` stub，被 manifest 检测规则使用（待实现）
+- ~~**PE Manifest 方法**~~：已完成。`getManifest` 使用 pelite 原生解析 resource 目录
+- ~~**PE Version Info 方法**~~：已完成。`getFileVersion`/`getProductVersion`/`getVersionStringInfo`/`getPEFileVersion` 使用 pelite 原生解析 VS_FIXEDFILEINFO 和 StringFileInfo
+- ~~**PE Authenticode 签名检测**~~：已完成。`isSignedFile`/`isSigned` 使用 pelite 检查 security directory
+- ~~**原生 PE/ELF/Mach-O 解析重构**~~：已完成。使用 pelite（PE）和 goblin（ELF/Mach-O）替换手写 JavaScript 解析，消除逐字节 JS→Rust FFI 往返
 - ~~**PE Overlay 方法**~~：已完成。`getOverlayOffset`/`isOverlayPresent`/`getOverlaySize`/`compareOverlay`
 - ~~**ELF/MACH stub 方法**~~：已完成。ELF: `getImageBase`/`getOverlayOffset`/`getOverlaySize`/`getStringTableOffset`/`getSymbolTableOffset`/`getRelocationTableOffset`。MACH: `getImageBase`/`getOverlayOffset`/`getOverlaySize`
 

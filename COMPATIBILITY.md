@@ -3,7 +3,7 @@
 This document tracks compatibility between diec-rust and the upstream
 DIE-engine project. It is updated with each release.
 
-Last updated: 2026-08-02
+Last updated: 2026-08-04
 
 ## Baseline
 
@@ -115,20 +115,23 @@ These are NOT engine bugs:
 | Feature | Status | Notes |
 |---------|--------|-------|
 | Binary (read, compare, find) | ✅ | Full implementation |
-| PE (header, sections, imports) | ✅ | Full implementation |
+| PE (header, sections, imports) | ✅ | Native pelite-backed |
 | PE.getDisasmString | ✅ | Capstone-based, Intel syntax |
 | PE.getDisasmNextAddress | ✅ | Capstone-based |
 | PE Rich signature | ✅ | |
 | PE debug data | ✅ | |
-| PE.isSigned | ✅ | Authenticode |
+| PE.isSigned | ✅ | Native pelite security directory check |
 | PE validation (is*Correct) | ✅ | 8 methods for heuristic scan |
 | PE overlay | ✅ | getOverlayOffset/Size/compareOverlay |
-| PE.isNet | ✅ | CLR header detection |
-| ELF | ✅ | Full implementation |
+| PE.isNet | ✅ | Native pelite CLR header detection |
+| PE.getManifest | ✅ | Native pelite resource directory |
+| PE version info | ✅ | getFileVersion/getProductVersion/getVersionStringInfo (VS_FIXEDFILEINFO + StringFileInfo) |
+| PE resources | ✅ | getNumberOfResources/isResourceNamePresent (native pelite) |
+| ELF | ✅ | Native goblin-backed |
 | ELF overlay | ✅ | getOverlayOffset/Size |
 | ELF.getImageBase | ✅ | Lowest PT_LOAD p_vaddr |
 | ELF table offsets | ✅ | String/Symbol/Relocation table |
-| Mach-O | ✅ | Full implementation |
+| Mach-O | ✅ | Native goblin-backed |
 | Mach-O overlay | ✅ | getOverlayOffset/Size |
 | Mach-O.getImageBase | ✅ | Lowest LC_SEGMENT vmaddr |
 | PDF (version, header comment) | ✅ | |
@@ -168,8 +171,8 @@ These are NOT engine bugs:
 | Category | Count | Status |
 |----------|-------|--------|
 | Unit tests | 251 | ✅ all pass |
-| Integration tests | 167 | ✅ all pass |
+| Integration tests | 168 | ✅ all pass |
 | FFI tests | 35 | ✅ all pass |
 | Edge corpus tests | 3 | ✅ all pass |
 | Fuzz targets | 6 | ✅ compile |
-| **Total** | **458** | ✅ 0 failures |
+| **Total** | **459** | ✅ 0 failures |
