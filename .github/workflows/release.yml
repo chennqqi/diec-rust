@@ -72,44 +72,54 @@ jobs:
         if: runner.os != 'Windows'
         shell: bash
         run: |
+          set -euo pipefail
           version="${{ inputs.version || github.ref_name }}"
           staging="diec-${version}-${{ matrix.artifact_name }}"
-          mkdir -p "$staging/bin"
+          mkdir -p "$staging/base/db"
+          mkdir -p "$staging/base/db_extra"
+          mkdir -p "$staging/base/db_custom"
           mkdir -p "$staging/lib"
           mkdir -p "$staging/include"
-          mkdir -p "$staging/db"
-
-          # CLI binary
-          cp target/${{ matrix.target }}/release/diec "$staging/bin/"
-
-          # FFI static library
-          cp target/${{ matrix.target }}/release/libdiec_ffi.a "$staging/lib/" 2>/dev/null || true
-
-          # FFI dynamic library
-          cp target/${{ matrix.target }}/release/libdiec_ffi.so "$staging/lib/" 2>/dev/null || true
-          cp target/${{ matrix.target }}/release/libdiec_ffi.dylib "$staging/lib/" 2>/dev/null || true
-
-          # C header
-          cp include/diec.h "$staging/include/"
-
-          # Rule database (pinned snapshot)
-          cp -r upstream/Detect-It-Easy/db/* "$staging/db/" 2>/dev/null || true
-
-          # Language bindings
           mkdir -p "$staging/bindings/python"
           mkdir -p "$staging/bindings/go/diec"
-          cp bindings/python/diec.py "$staging/bindings/python/"
-          cp bindings/go/diec/diec.go "$staging/bindings/go/diec/"
-          cp bindings/go/go.mod "$staging/bindings/go/"
 
-          # Documentation
-          cp README.md "$staging/"
-          cp LICENSE "$staging/"
-          cp NOTICES.md "$staging/"
+          # CLI binary lives in base/, matching upstream portable tree.
+          cp "target/${{ matrix.target }}/release/diec" "$staging/base/"
 
-          # Create archive
+          # Full three-tier rule database.
+          if [ -d "upstream/Detect-It-Easy/db" ]; then
+            cp -r "upstream/Detect-It-Easy/db/." "$staging/base/db/"
+          fi
+          if [ -d "upstream/Detect-It-Easy/db_extra" ]; then
+            cp -r "upstream/Detect-It-Easy/db_extra/." "$staging/base/db_extra/"
+          fi
+          if [ -d "upstream/Detect-It-Easy/db_custom" ]; then
+            cp -r "upstream/Detect-It-Easy/db_custom/." "$staging/base/db_custom/"
+          fi
+
+          # FFI libraries and header.
+          cp "target/${{ matrix.target }}/release/libdiec_ffi.a" "$staging/lib/" 2>/dev/null || true
+          cp "target/${{ matrix.target }}/release/libdiec_ffi.so" "$staging/lib/" 2>/dev/null || true
+          cp "target/${{ matrix.target }}/release/libdiec_ffi.dylib" "$staging/lib/" 2>/dev/null || true
+          cp "include/diec.h" "$staging/include/"
+
+          # Language bindings.
+          cp "bindings/python/diec.py" "$staging/bindings/python/"
+          cp "bindings/go/diec/diec.go" "$staging/bindings/go/diec/"
+          cp "bindings/go/go.mod" "$staging/bindings/go/"
+
+          # Documentation and attribution.
+          cp "README.md" "$staging/"
+          cp "LICENSE" "$staging/"
+          cp "NOTICES.md" "$staging/"
+
+          # Top-level launcher, matching upstream portable launchers.
+          printf '%s\n' '#!/bin/sh' 'CWD=$(dirname "$0")' 'exec "$CWD/base/diec" "$@"' > "$staging/diec"
+          chmod +x "$staging/diec"
+
+          # Create archive.
           tar czf "${staging}.tar.gz" "$staging"
-          echo "ARTIFACT=${staging}.tar.gz" >> $GITHUB_ENV
+          echo "ARTIFACT=${staging}.tar.gz" >> "$GITHUB_ENV"
 
       - name: Prepare release artifacts (Windows)
         if: runner.os == 'Windows'
@@ -117,39 +127,45 @@ jobs:
         run: |
           $version = "${{ inputs.version || github.ref_name }}"
           $staging = "diec-$version-${{ matrix.artifact_name }}"
-          New-Item -ItemType Directory -Force -Path "$staging/bin"
-          New-Item -ItemType Directory -Force -Path "$staging/lib"
-          New-Item -ItemType Directory -Force -Path "$staging/include"
-          New-Item -ItemType Directory -Force -Path "$staging/db"
+          New-Item -ItemType Directory -Force -Path "$staging/base/db" | Out-Null
+          New-Item -ItemType Directory -Force -Path "$staging/base/db_extra" | Out-Null
+          New-Item -ItemType Directory -Force -Path "$staging/base/db_custom" | Out-Null
+          New-Item -ItemType Directory -Force -Path "$staging/lib" | Out-Null
+          New-Item -ItemType Directory -Force -Path "$staging/include" | Out-Null
+          New-Item -ItemType Directory -Force -Path "$staging/bindings/python" | Out-Null
+          New-Item -ItemType Directory -Force -Path "$staging/bindings/go/diec" | Out-Null
 
-          # CLI binary
-          Copy-Item "target/${{ matrix.target }}/release/diec.exe" "$staging/bin/"
+          # CLI binary lives in base/, matching upstream portable tree.
+          Copy-Item "target/${{ matrix.target }}/release/diec.exe" "$staging/base/"
 
-          # FFI static library
-          Copy-Item "target/${{ matrix.target }}/release/diec_ffi.lib" "$staging/lib/" -ErrorAction SilentlyContinue
-
-          # FFI dynamic library
-          Copy-Item "target/${{ matrix.target }}/release/diec_ffi.dll" "$staging/lib/" -ErrorAction SilentlyContinue
-
-          # C header
-          Copy-Item "include/diec.h" "$staging/include/"
-
-          # Rule database (pinned snapshot)
+          # Full three-tier rule database.
           if (Test-Path "upstream/Detect-It-Easy/db") {
-            Copy-Item "upstream/Detect-It-Easy/db/*" "$staging/db/" -Recurse -Force
+            Copy-Item "upstream/Detect-It-Easy/db/*" "$staging/base/db/" -Recurse -Force -ErrorAction SilentlyContinue
+          }
+          if (Test-Path "upstream/Detect-It-Easy/db_extra") {
+            Copy-Item "upstream/Detect-It-Easy/db_extra/*" "$staging/base/db_extra/" -Recurse -Force -ErrorAction SilentlyContinue
+          }
+          if (Test-Path "upstream/Detect-It-Easy/db_custom") {
+            Copy-Item "upstream/Detect-It-Easy/db_custom/*" "$staging/base/db_custom/" -Recurse -Force -ErrorAction SilentlyContinue
           }
 
-          # Language bindings
-          New-Item -ItemType Directory -Force -Path "$staging/bindings/python"
-          New-Item -ItemType Directory -Force -Path "$staging/bindings/go/diec"
+          # FFI libraries and header.
+          Copy-Item "target/${{ matrix.target }}/release/diec_ffi.lib" "$staging/lib/" -ErrorAction SilentlyContinue
+          Copy-Item "target/${{ matrix.target }}/release/diec_ffi.dll" "$staging/lib/" -ErrorAction SilentlyContinue
+          Copy-Item "include/diec.h" "$staging/include/"
+
+          # Language bindings.
           Copy-Item "bindings/python/diec.py" "$staging/bindings/python/"
           Copy-Item "bindings/go/diec/diec.go" "$staging/bindings/go/diec/"
           Copy-Item "bindings/go/go.mod" "$staging/bindings/go/"
 
-          # Documentation
+          # Documentation and attribution.
           Copy-Item "README.md" "$staging/"
           Copy-Item "LICENSE" "$staging/"
           Copy-Item "NOTICES.md" "$staging/"
+
+          # Top-level launcher, matching upstream portable launchers.
+          Set-Content -Path "$staging/diec.cmd" -Value "@echo off`n`"%~dp0base\diec.exe`" %*" -Encoding ascii
 
           # Create archive
           Compress-Archive -Path "$staging" -DestinationPath "$staging.zip"

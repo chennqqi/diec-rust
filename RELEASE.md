@@ -57,10 +57,12 @@ for diec-rust. Every item must be verified before publishing a release.
 
 ## Build Artifacts
 - [ ] Release build: `cargo build --workspace --all-targets --release --locked`
-- [ ] CLI binary: `target/release/diec` (or .exe on Windows)
-- [ ] Static library: `target/release/libdiec_ffi.a` (Unix) / `diec_ffi.lib` (Windows)
-- [ ] Dynamic library: `target/release/libdiec_ffi.so` / `.dylib` / `diec_ffi.dll`
+- [ ] CLI binary: `base/diec` (or `base/diec.exe` on Windows)
+- [ ] Top-level launcher: `diec` (Unix) / `diec.cmd` (Windows)
+- [ ] Static library: `lib/libdiec_ffi.a` (Unix) / `lib/diec_ffi.lib` (Windows)
+- [ ] Dynamic library: `lib/libdiec_ffi.so` / `.dylib` / `lib/diec_ffi.dll`
 - [ ] C header: `include/diec.h`
+- [ ] Rule database: `base/db`, `base/db_extra`, `base/db_custom`
 - [ ] Go binding: `bindings/go/diec/diec.go`
 - [ ] Python binding: `bindings/python/diec.py`
 - [ ] All artifacts verified on at least one platform

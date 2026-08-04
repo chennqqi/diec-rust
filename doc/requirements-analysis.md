@@ -130,3 +130,17 @@
 - 分析：78 个 stub 方法，按差分收益排序
 - 优先级：CFBF(+1) > JavaClass(+1) > PYC(+1) > Archive(架构) > PE验证/Resource/.NET/Manifest
 - 当前差分：22/28 匹配，6 个差异全为规则版本差异
+
+## 2026-08-04: CLI 参数差异分析
+- 定位: crates/diec-cli/src/main.rs vs upstream/DIE-engine/console_source/main_console.cpp
+- 差异: --output <format> 与上游独立开关 --json/--xml/--csv/--tsv/--plaintext 风格不同; --extradb/--customdb 与上游 --extradatabase/--customdatabase 命名不同; --showstructs 与上游 --showmethods 命名不同; 缺少 --database 别名; 上游存在 --test/--addtest/--special/--nohighlight 等未实现
+
+## 2026-08-04: 发布包目录结构差异分析
+- 上游 DIE-engine build_linux_portable.sh 产物: 顶层为 die/diec/diel 启动器，base/ 目录含产品 ELF 与 db 等数据
+- 当前 release.yml: 采用标准 bin/lib/include 布局，仅复制 db，无 db_extra/db_custom 分层，无顶层启动器
+- 调整: 将 diec 可执行文件与三层规则库移入 base/，顶层提供 diec/diec.cmd 启动器，保留 lib/include/bindings 在顶层
+
+## 2026-08-04: 0.2.1 发布分析
+- 当前版本 0.2.0，已有 CLI 与 release 包结构改动未提交
+- fmt/clippy/test 通过，版本 bump 至 0.2.1
+- 待执行：提交、打 tag、推送触发 GitHub release workflow

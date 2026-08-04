@@ -19,26 +19,34 @@ fn print_usage() {
     eprintln!("Usage: diec [OPTIONS] <file>...");
     eprintln!();
     eprintln!("Options:");
-    eprintln!("  --db <path>          Database directory (default: ./db)");
-    eprintln!("  --output <format>    Output format: text (default), json, xml, csv, tsv");
-    eprintln!("  --recursive, -r      Recursively scan directories");
-    eprintln!("  --deepscan           Enable deep scan mode");
-    eprintln!("  --heuristicscan      Enable heuristic scan mode");
-    eprintln!("  --verbose            Enable verbose output");
-    eprintln!("  --aggressivescan     Enable aggressive scan mode");
-    eprintln!("  --alltypes           Scan all format types");
-    eprintln!("  --hideunknown        Hide unknown detections");
-    eprintln!("  --format             Format the output result (spacing)");
-    eprintln!("  --profiling          Profile signatures during scan");
-    eprintln!("  --messages           Display scan messages and warnings");
-    eprintln!("  --entropy            Show entropy information");
-    eprintln!("  --info               Show file info");
-    eprintln!("  --extradb <path>     Extra database directory");
-    eprintln!("  --customdb <path>    Custom database directory");
-    eprintln!("  --showdatabase       Show database paths and rule counts");
-    eprintln!("  --showstructs        List available struct methods");
-    eprintln!("  --version            Print version and exit");
-    eprintln!("  --help               Print this help and exit");
+    eprintln!("  --database, --db <path>   Database directory (default: ./db)");
+    eprintln!("  --extradatabase, --extradb <path>");
+    eprintln!("                            Extra database directory");
+    eprintln!("  --customdatabase, --customdb <path>");
+    eprintln!("                            Custom database directory");
+    eprintln!("  --json                    Output as JSON");
+    eprintln!("  --xml                     Output as XML");
+    eprintln!("  --csv                     Output as CSV");
+    eprintln!("  --tsv                     Output as TSV");
+    eprintln!("  --plaintext               Output as plain text");
+    eprintln!("  --output <format>         Output format: text, json, xml, csv, tsv, plaintext");
+    eprintln!("  --recursive, -r           Recursively scan directories");
+    eprintln!("  --deepscan, -d            Enable deep scan mode");
+    eprintln!("  --heuristicscan           Enable heuristic scan mode");
+    eprintln!("  --verbose                 Enable verbose output");
+    eprintln!("  --aggressivescan, -a      Enable aggressive scan mode");
+    eprintln!("  --alltypes                Scan all format types");
+    eprintln!("  --hideunknown             Hide unknown detections");
+    eprintln!("  --format                  Format the output result (spacing)");
+    eprintln!("  --profiling               Profile signatures during scan");
+    eprintln!("  --messages                Display scan messages and warnings");
+    eprintln!("  --entropy                 Show entropy information");
+    eprintln!("  --info                    Show file info");
+    eprintln!("  --showdatabase            Show database paths and rule counts");
+    eprintln!("  --showmethods, --showstructs");
+    eprintln!("                            List available struct methods");
+    eprintln!("  --version, -v             Print version and exit");
+    eprintln!("  --help, -h                Print this help and exit");
 }
 
 /// Expand a target path: if it's a directory and `recursive` is true,
@@ -122,18 +130,18 @@ fn main() -> ExitCode {
     let mut i = 1;
     while i < args.len() {
         match args[i].as_str() {
-            "--help" | "-h" => {
+            "--help" | "-h" | "-?" => {
                 print_usage();
                 return ExitCode::from(EXIT_OK);
             }
-            "--version" | "-V" => {
+            "--version" | "-V" | "-v" => {
                 println!("diec {}", env!("CARGO_PKG_VERSION"));
                 return ExitCode::from(EXIT_OK);
             }
             "--recursive" | "-r" => {
                 recursive = true;
             }
-            "--deepscan" => {
+            "--deepscan" | "-d" => {
                 flags.deep = true;
             }
             "--heuristicscan" => {
@@ -142,7 +150,7 @@ fn main() -> ExitCode {
             "--verbose" => {
                 flags.verbose = true;
             }
-            "--aggressivescan" => {
+            "--aggressivescan" | "-a" => {
                 flags.aggressive = true;
             }
             "--alltypes" => {
@@ -166,7 +174,7 @@ fn main() -> ExitCode {
             "--info" => {
                 info_mode = true;
             }
-            "--extradb" => {
+            "--extradb" | "--extradatabase" => {
                 i += 1;
                 if i >= args.len() {
                     eprintln!("error: --extradb requires a path argument");
@@ -174,7 +182,7 @@ fn main() -> ExitCode {
                 }
                 extra_db_path = args[i].clone();
             }
-            "--customdb" => {
+            "--customdb" | "--customdatabase" => {
                 i += 1;
                 if i >= args.len() {
                     eprintln!("error: --customdb requires a path argument");
@@ -185,16 +193,31 @@ fn main() -> ExitCode {
             "--showdatabase" => {
                 show_database = true;
             }
-            "--showstructs" => {
+            "--showstructs" | "--showmethods" => {
                 show_structs = true;
             }
-            "--db" => {
+            "--db" | "--database" => {
                 i += 1;
                 if i >= args.len() {
                     eprintln!("error: --db requires a path argument");
                     return ExitCode::from(EXIT_USAGE);
                 }
                 db_path = args[i].clone();
+            }
+            "--json" => {
+                output_format = "json".to_string();
+            }
+            "--xml" => {
+                output_format = "xml".to_string();
+            }
+            "--csv" => {
+                output_format = "csv".to_string();
+            }
+            "--tsv" => {
+                output_format = "tsv".to_string();
+            }
+            "--plaintext" => {
+                output_format = "text".to_string();
             }
             "--output" => {
                 i += 1;
@@ -203,6 +226,9 @@ fn main() -> ExitCode {
                     return ExitCode::from(EXIT_USAGE);
                 }
                 output_format = args[i].clone();
+                if output_format == "plaintext" {
+                    output_format = "text".to_string();
+                }
                 if !matches!(
                     output_format.as_str(),
                     "text" | "json" | "xml" | "csv" | "tsv"

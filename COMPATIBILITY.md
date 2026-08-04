@@ -79,26 +79,27 @@ These are NOT engine bugs:
 | Feature | Status | Notes |
 |---------|--------|-------|
 | Basic scan | ✅ | |
-| --recursive | ✅ | |
-| --deepscan | ✅ | |
+| --database / --db | ✅ | |
+| --recursive / -r | ✅ | |
+| --deepscan / -d | ✅ | |
 | --heuristicscan | ✅ | |
 | --verbose | ✅ | |
-| --aggressivescan | ✅ | |
+| --aggressivescan / -a | ✅ | |
 | --alltypes | ✅ | |
 | --hideunknown | ✅ | |
-| --output (json) | ✅ | |
-| --output (xml) | ✅ | |
-| --output (csv) | ✅ | |
-| --output (tsv) | ✅ | |
+| --output | ✅ | accepts: text, json, xml, csv, tsv, plaintext |
+| --json / --xml / --csv / --tsv / --plaintext | ✅ | upstream-style independent format switches |
 | --format | ✅ | |
 | --profiling | ✅ | |
 | --messages | ✅ | |
 | --entropy | ✅ | |
 | --info | ✅ | |
-| --extradatabase | ✅ | |
-| --customdatabase | ✅ | |
+| --extradatabase / --extradb | ✅ | |
+| --customdatabase / --customdb | ✅ | |
 | --showdatabase | ✅ | |
-| --showstructs | ✅ | |
+| --showmethods / --showstructs | ✅ | |
+| --version / -v / -V | ✅ | |
+| --help / -h | ✅ | |
 
 ## C ABI Compatibility
 

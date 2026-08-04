@@ -839,3 +839,16 @@
 [2026-08-04] 运行差分测试和性能基准，验证原生PE/ELF/Mach-O解析重构效果，更新COMPATIBILITY.md
 [2026-08-04] 更新NOTICES.md（新增pelite/goblin归属），按RELEASE.md做发布前检查验证
 [2026-08-04] 顺序执行剩余工作项：1.扩大差分测试语料 2.PYC版本解析 3.Windows FFI C smoke test链接 4.macOS x86_64构建矩阵 5.发布前检查
+
+## 2026-08-04: CLI 参数与上游 diec 1:1 对齐
+- 反馈：人工使用后发现当前 diec 命令行参数未与上游原版 diec 完全一致
+- 需求：补齐/修正 CLI 选项名与别名，使其与 upstream DIE-engine console_source/main_console.cpp 保持兼容
+
+## 2026-08-04: GitHub Actions tar 包目录结构与上游一致
+- 反馈：GitHub Actions 打的 tar 包目录结构希望与上游 DIE-engine 发布树一致
+- 需求：release.yml 打包布局采用 upstream portable 的 base/ 结构，补齐 db/db_extra/db_custom 三层目录，顶层提供 diec 启动器
+
+## 2026-08-04: release 新版本 0.2.1
+- 需求：发布包含 CLI 参数与 tar 包结构对齐改动的新版本
+- 版本：0.2.1
+- 预期：推送 v0.2.1 tag 触发 release.yml 构建发布物

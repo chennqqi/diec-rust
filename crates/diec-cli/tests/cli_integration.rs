@@ -616,3 +616,157 @@ fn cli_extradb_flag() {
         run_diec(&["--db", &db_root(), "--extradb", "/nonexistent/path", &path]);
     assert!(success, "diec with --extradb should exit 0");
 }
+
+#[test]
+fn cli_upstream_json_format_flag() {
+    if !std::path::Path::new(&db_root()).is_dir() {
+        eprintln!("Skipping: upstream database not found");
+        return;
+    }
+    if !std::path::Path::new(&diec_binary()).exists() {
+        eprintln!("Skipping: diec binary not built");
+        return;
+    }
+
+    let mut data = vec![0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C, 0x00, 0x04];
+    data.resize(64, 0);
+    let path = write_temp_file("test_cli_upstream_json.7z", &data);
+
+    let (success, stdout, _stderr) = run_diec(&["--database", &db_root(), "--json", &path]);
+    assert!(success, "diec --json should exit 0");
+    assert!(
+        stdout.contains("\"7-Zip\""),
+        "JSON output should contain 7-Zip: {stdout}"
+    );
+    assert!(
+        stdout.trim_start().starts_with('{'),
+        "JSON should start with {{: {stdout}"
+    );
+}
+
+#[test]
+fn cli_upstream_xml_format_flag() {
+    if !std::path::Path::new(&db_root()).is_dir() {
+        eprintln!("Skipping: upstream database not found");
+        return;
+    }
+    if !std::path::Path::new(&diec_binary()).exists() {
+        eprintln!("Skipping: diec binary not built");
+        return;
+    }
+
+    let mut data = vec![0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C, 0x00, 0x04];
+    data.resize(64, 0);
+    let path = write_temp_file("test_cli_upstream_xml.7z", &data);
+
+    let (success, stdout, _stderr) = run_diec(&["--database", &db_root(), "--xml", &path]);
+    assert!(success, "diec --xml should exit 0");
+    assert!(
+        stdout.contains("<?xml"),
+        "XML should start with declaration: {stdout}"
+    );
+    assert!(
+        stdout.contains("7-Zip"),
+        "XML should contain 7-Zip: {stdout}"
+    );
+}
+
+#[test]
+fn cli_upstream_csv_tsv_plaintext_flags() {
+    if !std::path::Path::new(&db_root()).is_dir() {
+        eprintln!("Skipping: upstream database not found");
+        return;
+    }
+    if !std::path::Path::new(&diec_binary()).exists() {
+        eprintln!("Skipping: diec binary not built");
+        return;
+    }
+
+    let mut data = vec![0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C, 0x00, 0x04];
+    data.resize(64, 0);
+    let path_csv = write_temp_file("test_cli_upstream_csv.7z", &data);
+    let path_tsv = write_temp_file("test_cli_upstream_tsv.7z", &data);
+    let path_plain = write_temp_file("test_cli_upstream_plain.7z", &data);
+
+    let (success, stdout, _stderr) = run_diec(&["--database", &db_root(), "--csv", &path_csv]);
+    assert!(success, "diec --csv should exit 0");
+    assert!(
+        stdout.contains("path,file_type,type,name,version,options"),
+        "CSV should have header: {stdout}"
+    );
+
+    let (success, stdout, _stderr) = run_diec(&["--database", &db_root(), "--tsv", &path_tsv]);
+    assert!(success, "diec --tsv should exit 0");
+    assert!(
+        stdout.contains("path\tfile_type\ttype\tname\tversion\toptions"),
+        "TSV should have header: {stdout}"
+    );
+
+    let (success, stdout, _stderr) =
+        run_diec(&["--database", &db_root(), "--plaintext", &path_plain]);
+    assert!(success, "diec --plaintext should exit 0");
+    assert!(
+        stdout.contains("7-Zip"),
+        "plain text should contain 7-Zip: {stdout}"
+    );
+}
+
+#[test]
+fn cli_upstream_database_and_struct_aliases() {
+    if !std::path::Path::new(&db_root()).is_dir() {
+        eprintln!("Skipping: upstream database not found");
+        return;
+    }
+    if !std::path::Path::new(&diec_binary()).exists() {
+        eprintln!("Skipping: diec binary not built");
+        return;
+    }
+
+    let mut data = vec![0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C, 0x00, 0x04];
+    data.resize(64, 0);
+    let path = write_temp_file("test_cli_upstream_aliases.7z", &data);
+
+    // Upstream-style database switches should be accepted as aliases.
+    let (success, _stdout, _stderr) = run_diec(&[
+        "--database",
+        &db_root(),
+        "--extradatabase",
+        "/nonexistent/extra",
+        "--customdatabase",
+        "/nonexistent/custom",
+        "-d",
+        "-a",
+        &path,
+    ]);
+    assert!(
+        success,
+        "diec with upstream database aliases and -d/-a should exit 0"
+    );
+
+    // Upstream uses --showmethods rather than --showstructs.
+    let (success, stdout, _stderr) = run_diec(&["--showmethods"]);
+    assert!(success, "diec --showmethods should exit 0");
+    assert!(
+        stdout.contains("isSignaturePresent"),
+        "--showmethods should list methods: {stdout}"
+    );
+}
+
+#[test]
+fn cli_short_version_and_help_flags() {
+    if !std::path::Path::new(&diec_binary()).exists() {
+        eprintln!("Skipping: diec binary not built");
+        return;
+    }
+
+    let (success, stdout, _stderr) = run_diec(&["-v"]);
+    assert!(success, "diec -v should exit 0");
+    assert!(stdout.starts_with("diec "), "version output: {stdout}");
+
+    let (success, _stdout, stderr) = run_diec(&["-h"]);
+    assert!(success, "diec -h should exit 0");
+    assert!(
+        stderr.contains("Usage:"),
+        "help should contain Usage: {stderr}"
+    );
+}
