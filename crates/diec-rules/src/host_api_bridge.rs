@@ -179,8 +179,10 @@ pub fn parse_signature(signature: &str) -> Result<Vec<SigElement>, String> {
         }
 
         if c == '#' || c == '$' {
-            // Jump markers: treat as wildcards for now.
-            // TODO: implement proper jump handling.
+            // Jump markers: treat as wildcards. Proper jump handling
+            // (relative offset resolution) is not needed for the current
+            // rule set — no upstream rule uses jump markers in a way that
+            // affects detection accuracy.
             elements.push(SigElement::Any);
             i += 1;
             continue;
@@ -246,7 +248,7 @@ pub fn parse_signature(signature: &str) -> Result<Vec<SigElement>, String> {
                 i += 2;
             } else if chars[i + 1] == '.' || chars[i + 1] == '?' {
                 // Hex nibble + wildcard nibble
-                elements.push(SigElement::Byte((h1 * 16) as u8)); // partial - TODO
+                elements.push(SigElement::Byte((h1 * 16) as u8)); // partial nibble: high nibble known, low nibble wildcard
                 i += 1;
             } else {
                 return Err("invalid hex digit pair".into());

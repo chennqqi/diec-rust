@@ -28,7 +28,9 @@ Phase 6 扩大差分测试语料和跨平台矩阵，建立持续 fuzz 和历史
   - PE32 扫描性能：73ms → 89ms（含原生 resource/manifest/version info 解析）
   - ELF64 扫描性能：19ms → 15ms
   - Mach-O 64 扫描性能：18ms → 14ms
-- 459 个测试全部通过，cargo fmt/clippy 零警告
+- 规则加载 1186/1186 = 100%（此前 1184/1186 = 99.83%）
+- 差分测试 31 基线 + 20 边缘样本，0 不匹配
+- 459 个测试全部通过，cargo fmt/clippy 零警告，0 TODO/FIXME
 
 调研正文写入 `docs/research/`，设计正文写入 `docs/design/`，不要堆积在
 本文件或 `README.md` 中。

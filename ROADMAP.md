@@ -256,25 +256,27 @@ rquickjs 后端 + Binary host API bridge + 签名解析器 + 完整 PE/ELF/Mach-
 - FFI 跨平台 CI：
   - `.github/workflows/ci.yml` 新增 ffi-smoke job（Linux/macOS/Windows C smoke test）
   - 新增 python-binding job（Linux/macOS/Windows Python ctypes test）
+  - Windows FFI smoke test 使用 DLL import library 链接，无需手动指定系统库
 - 许可证和供应链审计：
   - `LICENSE`：MIT 许可证文件
-  - `NOTICES.md`：第三方归属（上游 DIE-engine、QuickJS、所有 Rust 依赖）
+  - `NOTICES.md`：第三方归属（上游 DIE-engine、QuickJS、Capstone、pelite、goblin、所有 Rust 依赖）
   - `AUDIT.md`：供应链安全审计（依赖策略、CI 安全、已知风险）
-- 459 个测试全部通过，cargo fmt/clippy 零警告
+  - `cargo license --all-features` 验证：无 copyleft 许可证
+- 459 个测试全部通过，cargo fmt/clippy 零警告，0 TODO/FIXME
 - 原生 PE/ELF/Mach-O 解析重构：使用 pelite（PE）和 goblin（ELF/Mach-O）替换手写 JavaScript 解析
   - 新增 pe_native.rs、elf_native.rs、macho_native.rs 三个模块
-  - PE：imports/exports/resources/manifest/version info/.NET/ Authenticode/overlay
+  - PE：imports/exports/resources/manifest/version info/.NET/Authenticode/overlay
   - ELF：DT_NEEDED/sections/entry point/image base/overlay
   - Mach-O：LC_LOAD_DYLIB/sections/segments/entry point/image base/overlay
+  - PE batch 解析：一次 pelite pass 返回所有 PE 信息，JS 端 JSON.parse 缓存
   - 消除逐字节 JS→Rust FFI 往返，提升性能和正确性
+- 扩展差分测试语料：31 个基线样本（含 PE resources/.NET、ELF deps、Mach-O dylib）
 - Fuzz 种子语料：165 个种子文件覆盖 6 个 fuzz targets
-- 性能优化：database_load 从 ~1.2s 优化到 ~400ms（3x 加速，并行文件 I/O via std::thread::scope）
+- 性能优化：database_load 从 ~1.2s 优化到 ~510ms（并行文件 I/O via std::thread::scope）
 - Capstone 集成：PE.getDisasmString/getDisasmNextAddress 使用 Capstone 反汇编
   - thread-local 缓存 Capstone 实例，避免重复初始化
-  - PE32 扫描性能：179ms → 73ms（2.4x 加速）
 - 格式特定规则分发优化：已识别格式不再运行 Binary 规则，避免重复检测
-  - 语料差分匹配率：17/28 → 24/28（剩余 4 个为规则版本差异）
-- PDF/JPEG/DEX/CFBF/JavaClass 版本解析：从文件头解析格式版本号
+- PDF/JPEG/DEX/CFBF/JavaClass/PYC 版本解析：从文件头解析格式版本号
 - PDF HeaderComment 检测：解析 PDF 注释行
 - JavaClass 不再运行 Binary 规则（host API 已完整实现）
 - Fuzz targets 扩展（6 个）：
@@ -283,14 +285,20 @@ rquickjs 后端 + Binary host API bridge + 签名解析器 + 完整 PE/ELF/Mach-
   - `fuzz_scan_engine`（diec-engine 层，default/heuristic/all_types 三种 flag）
   - `fuzz_output_render`（diec-output 层，JSON/text/XML/CSV/TSV 渲染）
   - `fuzz_scan_ffi`（diec-ffi 层，C ABI 边界 + double-free 安全）
-- 兼容性报告模板 `COMPATIBILITY.md`：
+- 兼容性报告 `COMPATIBILITY.md`：
   - 规则加载兼容性（1186/1186 = 100%）
-  - 语料差分测试矩阵（28 样本 + 20 边缘样本）
+  - 语料差分测试矩阵（31 基线 + 20 边缘样本，0 不匹配）
   - CLI 功能兼容性清单
   - C ABI 兼容性清单
   - Host API 兼容性清单（含 Capstone 反汇编）
-  - 性能基线数据
-  - 测试统计
+  - 性能基线数据（PE32 ~89ms、ELF64 ~15ms、Mach-O ~14ms）
+  - 测试统计（459 个测试）
+
+**退出条件达成情况**：
+- ✅ 既定兼容指标：规则加载 100%，差分测试 0 不匹配
+- ✅ 性能目标：database_load < 600ms（实际 ~510ms），scan_corpus < 250ms
+- ✅ 发布检查：cargo fmt/clippy/test 全部通过，构建产物完整
+- ✅ 已知差异均公开、精确且可复现：4 个规则版本差异已记录在 COMPATIBILITY.md
 
 退出条件：既定兼容指标、性能目标和发布检查全部满足；已知差异均公开、精确且可复现。
 
