@@ -1176,6 +1176,9 @@ mod tests {
         fn crc32(&self, _offset: u64, _size: u64) -> Result<u32, crate::host_api::HostApiError> {
             unimplemented!()
         }
+        fn pe_batch(&self) -> Option<crate::pe_native::PeBatchInfo> {
+            None
+        }
         fn pe_import_libraries(&self) -> Vec<String> {
             Vec::new()
         }

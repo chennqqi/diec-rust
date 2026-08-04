@@ -154,15 +154,20 @@ These are NOT engine bugs:
 
 | Benchmark | Time (release) | Notes |
 |-----------|----------------|-------|
-| scan_corpus/ELF64 | ~19ms | minimal ELF |
-| scan_corpus/PE32 | ~73ms | minimal PE (Capstone cached) |
-| scan_corpus/Zip | ~190ms | payload.zip |
-| scan_corpus/DEX | ~203ms | minimal DEX |
-| scan_flags/default | ~218ms | payload.zip |
-| scan_flags/heuristic | ~273ms | payload.zip |
-| scan_flags/all_types | ~854ms | payload.zip |
-| scan_flags/deep | ~190ms | payload.zip |
-| database_load | ~486ms | full database |
+| scan_corpus/ELF64 | ~15ms | minimal ELF (native goblin) |
+| scan_corpus/PE32 | ~89ms | minimal PE (native pelite + batch cache) |
+| scan_corpus/Mach-O 64 | ~14ms | minimal Mach-O (native goblin) |
+| scan_corpus/Zip | ~176ms | payload.zip |
+| scan_corpus/tar | ~154ms | payload.tar |
+| scan_corpus/PDF | ~12ms | minimal PDF |
+| scan_corpus/PNG | ~13ms | pixel.png |
+| scan_corpus/Java class | ~12ms | Minimal.class |
+| scan_corpus/DEX | ~12ms | minimal DEX |
+| scan_flags/default | ~187ms | payload.zip |
+| scan_flags/heuristic | ~175ms | payload.zip |
+| scan_flags/all_types | ~509ms | payload.zip |
+| scan_flags/deep | ~170ms | payload.zip |
+| database_load | ~510ms | full database |
 | probe_corpus/ELF64 | ~345ns | format probe only |
 | probe_corpus/Zip | ~950ns | format probe only |
 

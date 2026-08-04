@@ -440,6 +440,10 @@ impl HostApi for BufferHost {
         })
     }
 
+    fn pe_batch(&self) -> Option<diec_rules::pe_native::PeBatchInfo> {
+        diec_rules::pe_native::parse_batch(self.data())
+    }
+
     fn pe_import_libraries(&self) -> Vec<String> {
         diec_rules::pe_native::get_import_libraries(self.data())
     }

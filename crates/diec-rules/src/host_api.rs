@@ -139,6 +139,10 @@ pub trait HostApi {
     // These methods parse PE import/export tables in a single Rust call,
     // avoiding tens of thousands of per-byte JS→Rust FFI round-trips.
 
+    /// Parse all PE information in a single pass (imports, exports, resources,
+    /// manifest, version info, .NET, Authenticode). Returns None for non-PE.
+    fn pe_batch(&self) -> Option<crate::pe_native::PeBatchInfo>;
+
     /// Parse the PE import table and return all imported library names.
     /// Returns an empty vector for non-PE files or files without imports.
     fn pe_import_libraries(&self) -> Vec<String>;

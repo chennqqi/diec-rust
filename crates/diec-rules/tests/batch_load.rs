@@ -130,6 +130,9 @@ impl HostApi for DummyHost {
             method: "crc32".into(),
         })
     }
+    fn pe_batch(&self) -> Option<diec_rules::pe_native::PeBatchInfo> {
+        None
+    }
     fn pe_import_libraries(&self) -> Vec<String> {
         Vec::new()
     }

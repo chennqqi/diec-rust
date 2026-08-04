@@ -287,6 +287,9 @@ impl HostApi for BufferHost {
             method: "crc32".into(),
         })
     }
+    fn pe_batch(&self) -> Option<diec_rules::pe_native::PeBatchInfo> {
+        diec_rules::pe_native::parse_batch(&self.data)
+    }
     fn pe_import_libraries(&self) -> Vec<String> {
         Vec::new()
     }

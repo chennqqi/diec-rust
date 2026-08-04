@@ -32,6 +32,72 @@ pub enum SigElement {
 /// - Spaces are skipped
 /// - `#` and `$` are jump markers (not yet fully supported, treated as wildcards)
 ///
+/// Format a PeBatchInfo as a JSON string for JS consumption.
+fn format_pe_batch_json(info: &crate::pe_native::PeBatchInfo) -> String {
+    let mut s = String::with_capacity(256);
+    s.push('{');
+    // libraries
+    s.push_str("\"libraries\":[");
+    for (i, lib) in info.libraries.iter().enumerate() {
+        if i > 0 {
+            s.push(',');
+        }
+        push_json_string(&mut s, lib);
+    }
+    s.push(']');
+    // functions
+    s.push_str(",\"functions\":[");
+    for (i, func) in info.functions.iter().enumerate() {
+        if i > 0 {
+            s.push(',');
+        }
+        push_json_string(&mut s, func);
+    }
+    s.push(']');
+    // exports
+    s.push_str(",\"exports\":[");
+    for (i, exp) in info.exports.iter().enumerate() {
+        if i > 0 {
+            s.push(',');
+        }
+        push_json_string(&mut s, exp);
+    }
+    s.push(']');
+    s.push_str(",\"isNet\":");
+    s.push_str(if info.is_net { "true" } else { "false" });
+    s.push_str(",\"isSigned\":");
+    s.push_str(if info.is_signed { "true" } else { "false" });
+    s.push_str(",\"manifest\":");
+    push_json_string(&mut s, &info.manifest);
+    s.push_str(",\"fileVersion\":");
+    push_json_string(&mut s, &info.file_version);
+    s.push_str(",\"productVersion\":");
+    push_json_string(&mut s, &info.product_version);
+    s.push_str(",\"numberOfResources\":");
+    s.push_str(&info.number_of_resources.to_string());
+    s.push('}');
+    s
+}
+
+/// Push a JSON-escaped string into the buffer.
+fn push_json_string(buf: &mut String, s: &str) {
+    buf.push('"');
+    for c in s.chars() {
+        match c {
+            '"' => buf.push_str("\\\""),
+            '\\' => buf.push_str("\\\\"),
+            '\n' => buf.push_str("\\n"),
+            '\r' => buf.push_str("\\r"),
+            '\t' => buf.push_str("\\t"),
+            c if (c as u32) < 0x20 => {
+                buf.push_str(&format!("\\u{:04x}", c as u32));
+            }
+            c => buf.push(c),
+        }
+    }
+    buf.push('"');
+}
+
 /// Returns `Err` if the signature is malformed.
 pub fn parse_signature(signature: &str) -> Result<Vec<SigElement>, String> {
     let mut elements = Vec::new();
@@ -736,8 +802,26 @@ impl HostApiBridge {
                     detail: format!("__findSignatureRange set: {e}"),
                 })?;
 
-            // PE batch parsing: return all import library names in one call.
-            // This avoids tens of thousands of per-byte JS→Rust FFI round-trips.
+            // PE batch parsing: return all PE info in one pelite pass.
+            // This avoids repeated PeFile::from_bytes construction.
+            // Returns a JSON string parsed on the JS side via JSON.parse.
+            let h = host.clone();
+            let pe_batch_fn = rquickjs::Function::new(ctx.clone(), move || {
+                match h.pe_batch() {
+                    Some(info) => format_pe_batch_json(&info),
+                    None => "{}".to_string(),
+                }
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("peBatch: {e}"),
+            })?;
+            binary
+                .set("__peBatch", pe_batch_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("__peBatch set: {e}"),
+                })?;
+
+            // Keep individual functions for backward compatibility (tests may call them directly).
             let h = host.clone();
             let pe_import_libs_fn = rquickjs::Function::new(ctx.clone(), move || {
                 h.pe_import_libraries()
@@ -2265,7 +2349,7 @@ impl HostApiBridge {
                     };
 
                     // Resource methods: native pelite-backed resource enumeration.
-                    PE.getNumberOfResources = function() { return _B.__peNumberOfResources(); };
+                    PE.getNumberOfResources = function() { return _peGetBatch().numberOfResources; };
                     PE.getResourceNameByNumber = function(n) { return ""; };
                     PE.getResourceIdByNumber = function(n) { return 0; };
                     PE.getResourceOffsetByNumber = function(n) { return 0; };
@@ -2282,7 +2366,7 @@ impl HostApiBridge {
 
                     // .NET detection: native pelite-backed CLR header check.
                     PE.isNet = function() {
-                        return _B.__peIsNet();
+                        return _peGetBatch().isNet;
                     };
                     // .NET stubs (needed to pass stubForLegacyEngines check).
                     PE.isNetObjectPresent = function(s) { return false; };
@@ -2294,20 +2378,20 @@ impl HostApiBridge {
                     PE.getNETVersion = function() { return ""; };
 
                     // PE-specific string methods.
-                    // Manifest: parsed natively via pelite resources.
-                    PE.getManifest = function() { return _B.__peManifest(); };
+                    // Manifest: parsed natively via pelite resources (batch cache).
+                    PE.getManifest = function() { return _peGetBatch().manifest; };
                     // Authenticode signature: native pelite-backed security directory check.
-                    PE.isSignedFile = function() { return _B.__peIsSigned(); };
+                    PE.isSignedFile = function() { return _peGetBatch().isSigned; };
                     PE.isSigned = function() { return PE.isSignedFile(); };
                     PE.getGeneralOptionsEx = function() { return ""; };
 
                     // File info: native pelite-backed version info parsing.
                     PE.getPEFileVersion = function(s) {
-                        if (!s) return _B.__peFileVersion();
+                        if (!s) return _peGetBatch().fileVersion;
                         return _B.__peVersionString(s);
                     };
                     PE.getVersionStringInfo = function(s) { return _B.__peVersionString(s); };
-                    PE.getFileVersion = function() { return _B.__peFileVersion(); };
+                    PE.getFileVersion = function() { return _peGetBatch().fileVersion; };
                     PE.getCompilerVersion = function() { return ""; };
 
                     // OS info stubs (require version resource parsing).
@@ -2558,23 +2642,34 @@ impl HostApiBridge {
 
                     // Import table parsing.
                     // Data directory index 1 = Import Table.
-                    // Parsed in Rust via __peImportLibraries/__peImportFunctions
-                    // for performance (avoids per-byte JS→Rust FFI overhead).
+                    // All PE info parsed in a single pelite pass via __peBatch
+                    // for performance (avoids repeated PeFile construction).
+                    var _peBatchCache = null;
+                    function _peGetBatch() {
+                        if (_peBatchCache !== null) return _peBatchCache;
+                        var json = _B.__peBatch();
+                        _peBatchCache = JSON.parse(json);
+                        if (!_peBatchCache.libraries) _peBatchCache.libraries = [];
+                        if (!_peBatchCache.functions) _peBatchCache.functions = [];
+                        if (!_peBatchCache.exports) _peBatchCache.exports = [];
+                        if (_peBatchCache.isNet === undefined) _peBatchCache.isNet = false;
+                        if (_peBatchCache.isSigned === undefined) _peBatchCache.isSigned = false;
+                        if (_peBatchCache.manifest === undefined) _peBatchCache.manifest = "";
+                        if (_peBatchCache.fileVersion === undefined) _peBatchCache.fileVersion = "";
+                        if (_peBatchCache.productVersion === undefined) _peBatchCache.productVersion = "";
+                        if (_peBatchCache.numberOfResources === undefined) _peBatchCache.numberOfResources = 0;
+                        return _peBatchCache;
+                    }
                     var _peImportData = null;
                     function _peParseImports() {
                         if (_peImportData !== null) return _peImportData;
                         _peImportData = { libraries: [], functions: [] };
                         if (!_peIsPE()) return _peImportData;
-                        var libs = _B.__peImportLibraries();
-                        var funcs = _B.__peImportFunctions();
-                        _peImportData.libraries = libs;
+                        var batch = _peGetBatch();
+                        _peImportData.libraries = batch.libraries;
                         // Build functions array matching the old structure.
-                        // The native side returns function names in order;
-                        // we don't have per-function library mapping here,
-                        // but isLibraryFunctionPresent is rarely used and
-                        // can fall back to name-only matching.
-                        for (var i = 0; i < funcs.length; i++) {
-                            _peImportData.functions.push({ lib: "", name: funcs[i] });
+                        for (var i = 0; i < batch.functions.length; i++) {
+                            _peImportData.functions.push({ lib: "", name: batch.functions[i] });
                         }
                         return _peImportData;
                     }
@@ -2620,15 +2715,15 @@ impl HostApiBridge {
                     };
 
                     // Export table parsing.
-                    // Parsed in Rust via __peExportNames for performance.
+                    // Uses batch cache from __peBatch for performance.
                     var _peExportData = null;
                     function _peParseExports() {
                         if (_peExportData !== null) return _peExportData;
                         _peExportData = { names: [], count: 0 };
                         if (!_peIsPE()) return _peExportData;
-                        var names = _B.__peExportNames();
-                        _peExportData.names = names;
-                        _peExportData.count = names.length;
+                        var batch = _peGetBatch();
+                        _peExportData.names = batch.exports;
+                        _peExportData.count = batch.exports.length;
                         return _peExportData;
                     }
                     PE.getNumberOfExportFunctions = function() {
@@ -4791,6 +4886,9 @@ mod tests {
             })
         }
 
+        fn pe_batch(&self) -> Option<crate::pe_native::PeBatchInfo> {
+            None
+        }
         fn pe_import_libraries(&self) -> Vec<String> {
             Vec::new()
         }

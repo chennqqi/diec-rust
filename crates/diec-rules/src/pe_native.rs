@@ -443,6 +443,221 @@ pub fn is_net(data: &[u8]) -> bool {
     false
 }
 
+/// Batch PE parse result: imports, exports, and metadata in one pass.
+pub struct PeBatchInfo {
+    /// Imported library (DLL) names.
+    pub libraries: Vec<String>,
+    /// Imported function names.
+    pub functions: Vec<String>,
+    /// Exported function names.
+    pub exports: Vec<String>,
+    /// Whether the PE has a .NET CLR header.
+    pub is_net: bool,
+    /// Whether the PE has an Authenticode security directory.
+    pub is_signed: bool,
+    /// PE manifest XML string from resources.
+    pub manifest: String,
+    /// File version string from VS_FIXEDFILEINFO.
+    pub file_version: String,
+    /// Product version string from VS_FIXEDFILEINFO.
+    pub product_version: String,
+    /// Total number of resource data entries.
+    pub number_of_resources: usize,
+}
+
+/// Parse all PE information in a single pass to avoid repeated PeFile construction.
+///
+/// Returns None if not a valid PE.
+pub fn parse_batch(data: &[u8]) -> Option<PeBatchInfo> {
+    // Try PE64 first.
+    if let Some(file) = pe64_from_bytes(data) {
+        return Some(parse_batch_pe64(file));
+    }
+    // Try PE32.
+    if let Some(file) = pe32_from_bytes(data) {
+        return Some(parse_batch_pe32(file));
+    }
+    None
+}
+
+/// Parse batch info from a PE64 file.
+fn parse_batch_pe64(file: pelite::pe64::PeFile<'_>) -> PeBatchInfo {
+    let mut libraries = Vec::new();
+    let mut functions = Vec::new();
+    if let Ok(imports) = file.imports() {
+        for desc in imports.iter() {
+            if let Ok(name) = desc.dll_name()
+                && let Ok(s) = name.to_str()
+                && !libraries.contains(&s.to_string())
+            {
+                libraries.push(s.to_string());
+            }
+            if let Ok(int) = desc.int() {
+                for imp in int {
+                    if let Ok(pelite::pe64::imports::Import::ByName { name, .. }) = imp
+                        && let Ok(s) = name.to_str()
+                    {
+                        functions.push(s.to_string());
+                    }
+                }
+            }
+        }
+    }
+
+    let mut exports = Vec::new();
+    if let Ok(exp) = file.exports()
+        && let Ok(by) = exp.by()
+    {
+        for (name, _) in by.iter_names() {
+            if let Ok(n) = name
+                && let Ok(s) = n.to_str()
+            {
+                exports.push(s.to_string());
+            }
+        }
+    }
+
+    let is_net = file.data_directory().get(14).is_some_and(|d| d.Size != 0);
+    let is_signed = file
+        .data_directory()
+        .get(4)
+        .is_some_and(|d| d.VirtualAddress != 0);
+
+    let (manifest, file_version, product_version, number_of_resources) =
+        parse_resource_info_pe64(&file);
+
+    PeBatchInfo {
+        libraries,
+        functions,
+        exports,
+        is_net,
+        is_signed,
+        manifest,
+        file_version,
+        product_version,
+        number_of_resources,
+    }
+}
+
+/// Parse batch info from a PE32 file.
+fn parse_batch_pe32(file: pelite::pe32::PeFile<'_>) -> PeBatchInfo {
+    let mut libraries = Vec::new();
+    let mut functions = Vec::new();
+    if let Ok(imports) = file.imports() {
+        for desc in imports.iter() {
+            if let Ok(name) = desc.dll_name()
+                && let Ok(s) = name.to_str()
+                && !libraries.contains(&s.to_string())
+            {
+                libraries.push(s.to_string());
+            }
+            if let Ok(int) = desc.int() {
+                for imp in int {
+                    if let Ok(pelite::pe32::imports::Import::ByName { name, .. }) = imp
+                        && let Ok(s) = name.to_str()
+                    {
+                        functions.push(s.to_string());
+                    }
+                }
+            }
+        }
+    }
+
+    let mut exports = Vec::new();
+    if let Ok(exp) = file.exports()
+        && let Ok(by) = exp.by()
+    {
+        for (name, _) in by.iter_names() {
+            if let Ok(n) = name
+                && let Ok(s) = n.to_str()
+            {
+                exports.push(s.to_string());
+            }
+        }
+    }
+
+    let is_net = file.data_directory().get(14).is_some_and(|d| d.Size != 0);
+    let is_signed = file
+        .data_directory()
+        .get(4)
+        .is_some_and(|d| d.VirtualAddress != 0);
+
+    let (manifest, file_version, product_version, number_of_resources) =
+        parse_resource_info_pe32(&file);
+
+    PeBatchInfo {
+        libraries,
+        functions,
+        exports,
+        is_net,
+        is_signed,
+        manifest,
+        file_version,
+        product_version,
+        number_of_resources,
+    }
+}
+
+/// Extract resource info (manifest, version, resource count) from a PE file.
+fn parse_resource_info_pe64(file: &pelite::pe64::PeFile<'_>) -> (String, String, String, usize) {
+    let Ok(res) = file.resources() else {
+        return (String::new(), String::new(), String::new(), 0);
+    };
+    let manifest = res.manifest().map(String::from).unwrap_or_default();
+    let (file_version, product_version) = if let Ok(vi) = res.version_info() {
+        let fv = vi
+            .fixed()
+            .map(|f| format_version(&f.dwFileVersion))
+            .unwrap_or_default();
+        let pv = vi
+            .fixed()
+            .map(|f| format_version(&f.dwProductVersion))
+            .unwrap_or_default();
+        (fv, pv)
+    } else {
+        (String::new(), String::new())
+    };
+    let number_of_resources = if let Ok(root) = res.root() {
+        let count = std::cell::Cell::new(0usize);
+        let visit = CountResources(&count);
+        count_resources_dir(&root, &visit);
+        count.get()
+    } else {
+        0
+    };
+    (manifest, file_version, product_version, number_of_resources)
+}
+
+/// Extract resource info from a PE32 file.
+fn parse_resource_info_pe32(file: &pelite::pe32::PeFile<'_>) -> (String, String, String, usize) {
+    let Ok(res) = file.resources() else {
+        return (String::new(), String::new(), String::new(), 0);
+    };
+    let manifest = res.manifest().map(String::from).unwrap_or_default();
+    let (file_version, product_version) = if let Ok(vi) = res.version_info() {
+        let fv = vi
+            .fixed()
+            .map(|f| format_version(&f.dwFileVersion))
+            .unwrap_or_default();
+        let pv = vi
+            .fixed()
+            .map(|f| format_version(&f.dwProductVersion))
+            .unwrap_or_default();
+        (fv, pv)
+    } else {
+        (String::new(), String::new())
+    };
+    let number_of_resources = if let Ok(root) = res.root() {
+        let count = std::cell::Cell::new(0usize);
+        let visit = CountResources(&count);
+        count_resources_dir(&root, &visit);
+        count.get()
+    } else {
+        0
+    };
+    (manifest, file_version, product_version, number_of_resources)
+}
+
 /// Get the PE import library names.
 ///
 /// Returns empty vector if not a valid PE or no imports.
@@ -770,14 +985,16 @@ fn version_info_from_bytes(
 ) -> Option<pelite::resources::version_info::VersionInfo<'_>> {
     if let Some(file) = pe64_from_bytes(data)
         && let Ok(res) = file.resources()
-            && let Ok(vi) = res.version_info() {
-                return Some(vi);
-            }
+        && let Ok(vi) = res.version_info()
+    {
+        return Some(vi);
+    }
     if let Some(file) = pe32_from_bytes(data)
         && let Ok(res) = file.resources()
-            && let Ok(vi) = res.version_info() {
-                return Some(vi);
-            }
+        && let Ok(vi) = res.version_info()
+    {
+        return Some(vi);
+    }
     None
 }
 
@@ -791,9 +1008,10 @@ fn format_version(v: &pelite::image::VS_VERSION) -> String {
 /// Returns empty string if not a valid PE or no version info.
 pub fn get_file_version(data: &[u8]) -> String {
     if let Some(vi) = version_info_from_bytes(data)
-        && let Some(fixed) = vi.fixed() {
-            return format_version(&fixed.dwFileVersion);
-        }
+        && let Some(fixed) = vi.fixed()
+    {
+        return format_version(&fixed.dwFileVersion);
+    }
     String::new()
 }
 
@@ -802,9 +1020,10 @@ pub fn get_file_version(data: &[u8]) -> String {
 /// Returns empty string if not a valid PE or no version info.
 pub fn get_product_version(data: &[u8]) -> String {
     if let Some(vi) = version_info_from_bytes(data)
-        && let Some(fixed) = vi.fixed() {
-            return format_version(&fixed.dwProductVersion);
-        }
+        && let Some(fixed) = vi.fixed()
+    {
+        return format_version(&fixed.dwProductVersion);
+    }
     String::new()
 }
 
@@ -870,14 +1089,16 @@ pub fn get_number_of_resources(data: &[u8]) -> usize {
     let visit = CountResources(&count);
     if let Some(file) = pe64_from_bytes(data) {
         if let Ok(res) = file.resources()
-            && let Ok(root) = res.root() {
-                count_resources_dir(&root, &visit);
-            }
+            && let Ok(root) = res.root()
+        {
+            count_resources_dir(&root, &visit);
+        }
     } else if let Some(file) = pe32_from_bytes(data)
         && let Ok(res) = file.resources()
-            && let Ok(root) = res.root() {
-                count_resources_dir(&root, &visit);
-            }
+        && let Ok(root) = res.root()
+    {
+        count_resources_dir(&root, &visit);
+    }
     count.get()
 }
 
@@ -917,16 +1138,16 @@ pub fn is_resource_name_present(data: &[u8], name: &str) -> bool {
     }
     if let Some(file) = pe32_from_bytes(data)
         && let Ok(res) = file.resources()
-            && let Ok(root) = res.root()
-        {
-            for entry in root.entries() {
-                if let Ok(n) = entry.name()
-                    && n == *name
-                {
-                    return true;
-                }
+        && let Ok(root) = res.root()
+    {
+        for entry in root.entries() {
+            if let Ok(n) = entry.name()
+                && n == *name
+            {
+                return true;
             }
         }
+    }
     false
 }
 

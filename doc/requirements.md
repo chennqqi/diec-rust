@@ -835,3 +835,5 @@
 - 实现 Archive host API（isVerbose 等）
 - 实现 PE 验证/Resource/.NET/Manifest/Overlay 方法
 - 实现 ELF/MACH stub 方法
+[2026-08-04] 用户询问接下来做什么（原生PE/ELF/Mach-O解析重构完成后）
+[2026-08-04] 运行差分测试和性能基准，验证原生PE/ELF/Mach-O解析重构效果，更新COMPATIBILITY.md
