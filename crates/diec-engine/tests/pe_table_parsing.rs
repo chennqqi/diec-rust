@@ -149,7 +149,11 @@ fn build_pe32_with_tables(import_libs: &[&str], export_names: &[&str]) -> Vec<u8
             // Name RVA
             let name_rva = lib_names_rva + i as u32 * 0x40;
             buf[desc_off + 12..desc_off + 16].copy_from_slice(&name_rva.to_le_bytes());
-            // FirstThunk = 0 (no thunks for simplicity)
+            // FirstThunk: set to a non-zero RVA so pelite doesn't treat
+            // this descriptor as the null terminator. Point to a dummy
+            // thunk array that we place after the library names.
+            let thunk_rva = rdata_rva + 0x800 + i as u32 * 8;
+            buf[desc_off + 16..desc_off + 20].copy_from_slice(&thunk_rva.to_le_bytes());
             // Write library name
             let name_off = lib_names_off + i * 0x40;
             let name_bytes = lib.as_bytes();

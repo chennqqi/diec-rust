@@ -32,6 +32,13 @@ pub mod backend_rquickjs;
 /// objects with 155 Binary_Script methods.
 pub mod host_api_bridge;
 
+/// Native PE host API methods backed by `pelite`.
+///
+/// Replaces hand-written JavaScript PE parsing with native Rust.
+pub mod elf_native;
+pub mod macho_native;
+pub mod pe_native;
+
 #[cfg(test)]
 mod tests {
     #[test]

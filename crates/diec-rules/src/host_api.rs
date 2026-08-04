@@ -150,6 +150,68 @@ pub trait HostApi {
     /// Parse the PE export table and return all exported function names.
     /// Returns an empty vector for non-PE files or files without exports.
     fn pe_export_names(&self) -> Vec<String>;
+
+    // --- ELF batch parsing (performance-critical) ---
+    //
+    // These methods parse ELF dynamic imports/sections in a single Rust
+    // call, avoiding per-byte JS->Rust FFI round-trips.
+
+    /// Parse the ELF dynamic table and return all DT_NEEDED library names.
+    /// Returns an empty vector for non-ELF files or files without imports.
+    fn elf_import_libraries(&self) -> Vec<String>;
+
+    /// Parse the ELF section headers and return all section names.
+    /// Returns an empty vector for non-ELF files or files without sections.
+    fn elf_section_names(&self) -> Vec<String>;
+
+    // --- Mach-O batch parsing (performance-critical) ---
+
+    /// Parse the Mach-O load commands and return all LC_LOAD_DYLIB library names.
+    /// Returns an empty vector for non-Mach-O files or files without imports.
+    fn macho_import_libraries(&self) -> Vec<String>;
+
+    /// Parse the Mach-O segments and return all section names.
+    /// Returns an empty vector for non-Mach-O files or files without sections.
+    fn macho_section_names(&self) -> Vec<String>;
+
+    // --- PE resource/version info (native pelite-backed) ---
+
+    /// Get the PE manifest XML string from resources.
+    /// Returns empty string if no manifest or not a valid PE.
+    fn pe_manifest(&self) -> String;
+
+    /// Check if the PE has a .NET CLR header.
+    fn pe_is_net(&self) -> bool;
+
+    /// Get the PE file version string (from VS_FIXEDFILEINFO).
+    /// Returns empty string if no version info or not a valid PE.
+    fn pe_file_version(&self) -> String;
+
+    /// Get the PE product version string (from VS_FIXEDFILEINFO).
+    /// Returns empty string if no version info or not a valid PE.
+    fn pe_product_version(&self) -> String;
+
+    /// Get a string value from the PE version info's StringFileInfo table.
+    /// Common keys: CompanyName, FileDescription, FileVersion, InternalName,
+    /// LegalCopyright, OriginalFilename, ProductName, ProductVersion, Comments.
+    /// Returns empty string if not found or not a valid PE.
+    fn pe_version_string(&self, key: &str) -> String;
+
+    /// Count the total number of resource data entries.
+    /// Returns 0 if not a valid PE or no resources.
+    fn pe_number_of_resources(&self) -> usize;
+
+    /// Check if a resource name is present in the resource directory.
+    /// Returns false if not a valid PE or resource not found.
+    fn pe_is_resource_name_present(&self, name: &str) -> bool;
+
+    /// Get the resource section file offset (data directory index 2).
+    /// Returns -1 if not a valid PE or no resource section.
+    fn pe_resource_section_offset(&self) -> i64;
+
+    /// Check if the PE file is signed (has a certificate/security directory).
+    /// Returns false if not a valid PE or not signed.
+    fn pe_is_signed(&self) -> bool;
 }
 
 /// Error returned by host API methods.

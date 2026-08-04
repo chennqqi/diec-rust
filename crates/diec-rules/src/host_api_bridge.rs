@@ -779,6 +779,188 @@ impl HostApiBridge {
                     detail: format!("__peExportNames set: {e}"),
                 })?;
 
+            // ELF batch parsing: return all DT_NEEDED library names in one call.
+            let h = host.clone();
+            let elf_import_libs_fn = rquickjs::Function::new(ctx.clone(), move || {
+                h.elf_import_libraries()
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("elfImportLibraries: {e}"),
+            })?;
+            binary
+                .set("__elfImportLibraries", elf_import_libs_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("__elfImportLibraries set: {e}"),
+                })?;
+
+            // ELF batch parsing: return all section names in one call.
+            let h = host.clone();
+            let elf_section_names_fn = rquickjs::Function::new(ctx.clone(), move || {
+                h.elf_section_names()
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("elfSectionNames: {e}"),
+            })?;
+            binary
+                .set("__elfSectionNames", elf_section_names_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("__elfSectionNames set: {e}"),
+                })?;
+
+            // Mach-O batch parsing: return all LC_LOAD_DYLIB library names.
+            let h = host.clone();
+            let macho_import_libs_fn = rquickjs::Function::new(ctx.clone(), move || {
+                h.macho_import_libraries()
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("machoImportLibraries: {e}"),
+            })?;
+            binary
+                .set("__machoImportLibraries", macho_import_libs_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("__machoImportLibraries set: {e}"),
+                })?;
+
+            // Mach-O batch parsing: return all section names.
+            let h = host.clone();
+            let macho_section_names_fn = rquickjs::Function::new(ctx.clone(), move || {
+                h.macho_section_names()
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("machoSectionNames: {e}"),
+            })?;
+            binary
+                .set("__machoSectionNames", macho_section_names_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("__machoSectionNames set: {e}"),
+                })?;
+
+            // PE resource/version info: manifest.
+            let h = host.clone();
+            let pe_manifest_fn = rquickjs::Function::new(ctx.clone(), move || {
+                h.pe_manifest()
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("peManifest: {e}"),
+            })?;
+            binary
+                .set("__peManifest", pe_manifest_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("__peManifest set: {e}"),
+                })?;
+
+            // PE .NET detection.
+            let h = host.clone();
+            let pe_is_net_fn = rquickjs::Function::new(ctx.clone(), move || {
+                h.pe_is_net()
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("peIsNet: {e}"),
+            })?;
+            binary
+                .set("__peIsNet", pe_is_net_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("__peIsNet set: {e}"),
+                })?;
+
+            // PE file version.
+            let h = host.clone();
+            let pe_file_version_fn = rquickjs::Function::new(ctx.clone(), move || {
+                h.pe_file_version()
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("peFileVersion: {e}"),
+            })?;
+            binary
+                .set("__peFileVersion", pe_file_version_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("__peFileVersion set: {e}"),
+                })?;
+
+            // PE product version.
+            let h = host.clone();
+            let pe_product_version_fn = rquickjs::Function::new(ctx.clone(), move || {
+                h.pe_product_version()
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("peProductVersion: {e}"),
+            })?;
+            binary
+                .set("__peProductVersion", pe_product_version_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("__peProductVersion set: {e}"),
+                })?;
+
+            // PE version string by key.
+            let h = host.clone();
+            let pe_version_string_fn = rquickjs::Function::new(ctx.clone(), move |key: String| {
+                h.pe_version_string(&key)
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("peVersionString: {e}"),
+            })?;
+            binary
+                .set("__peVersionString", pe_version_string_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("__peVersionString set: {e}"),
+                })?;
+
+            // PE number of resources.
+            let h = host.clone();
+            let pe_num_resources_fn = rquickjs::Function::new(ctx.clone(), move || {
+                h.pe_number_of_resources()
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("peNumberOfResources: {e}"),
+            })?;
+            binary
+                .set("__peNumberOfResources", pe_num_resources_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("__peNumberOfResources set: {e}"),
+                })?;
+
+            // PE resource name present.
+            let h = host.clone();
+            let pe_is_resource_name_fn = rquickjs::Function::new(ctx.clone(), move |name: String| {
+                h.pe_is_resource_name_present(&name)
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("peIsResourceNamePresent: {e}"),
+            })?;
+            binary
+                .set("__peIsResourceNamePresent", pe_is_resource_name_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("__peIsResourceNamePresent set: {e}"),
+                })?;
+
+            // PE resource section offset.
+            let h = host.clone();
+            let pe_resource_section_fn = rquickjs::Function::new(ctx.clone(), move || {
+                h.pe_resource_section_offset()
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("peResourceSectionOffset: {e}"),
+            })?;
+            binary
+                .set("__peResourceSectionOffset", pe_resource_section_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("__peResourceSectionOffset set: {e}"),
+                })?;
+
+            // PE is signed.
+            let h = host.clone();
+            let pe_is_signed_fn = rquickjs::Function::new(ctx.clone(), move || {
+                h.pe_is_signed()
+            })
+            .map_err(|e| RuleError::Backend {
+                detail: format!("peIsSigned: {e}"),
+            })?;
+            binary
+                .set("__peIsSigned", pe_is_signed_fn)
+                .map_err(|e| RuleError::Backend {
+                    detail: format!("__peIsSigned set: {e}"),
+                })?;
+
             // isSignaturePresent(offset, size, signature) -> bool
             // Upstream: bool isSignaturePresent(qint64 nOffset, qint64 nSize, const QString &sSignature)
             // Searches for signature within [offset, offset+size) range.
@@ -2082,8 +2264,8 @@ impl HostApiBridge {
                         return found >= 0;
                     };
 
-                    // Resource stubs.
-                    PE.getNumberOfResources = function() { return 0; };
+                    // Resource methods: native pelite-backed resource enumeration.
+                    PE.getNumberOfResources = function() { return _B.__peNumberOfResources(); };
                     PE.getResourceNameByNumber = function(n) { return ""; };
                     PE.getResourceIdByNumber = function(n) { return 0; };
                     PE.getResourceOffsetByNumber = function(n) { return 0; };
@@ -2094,14 +2276,13 @@ impl HostApiBridge {
 
                     // OS/options stubs.
                     PE.getOperationSystemOptions = function() { return ""; };
-                    PE.isResourceNamePresent = function(s) { return false; };
+                    PE.isResourceNamePresent = function(s) {
+                        return _B.__peIsResourceNamePresent(s);
+                    };
 
-                    // .NET detection: check CLR header (data directory index 14).
+                    // .NET detection: native pelite-backed CLR header check.
                     PE.isNet = function() {
-                        if (!_peIsPE()) return false;
-                        var clr_rva = _B.read_uint32_le(_peDataDirOff(14));
-                        var clr_size = _B.read_uint32_le(_peDataDirOff(14) + 4);
-                        return clr_rva !== 0 && clr_size !== 0;
+                        return _B.__peIsNet();
                     };
                     // .NET stubs (needed to pass stubForLegacyEngines check).
                     PE.isNetObjectPresent = function(s) { return false; };
@@ -2113,21 +2294,20 @@ impl HostApiBridge {
                     PE.getNETVersion = function() { return ""; };
 
                     // PE-specific string methods.
-                    PE.getManifest = function() { return ""; };
-                    // Authenticode signature: check security directory (index 4).
-                    // If VirtualAddress (certificate offset) is non-zero, file is signed.
-                    PE.isSignedFile = function() {
-                        if (!_peIsPE()) return false;
-                        var secDir = _peDataDirOff(4);
-                        return _B.read_uint32_le(secDir) !== 0;
-                    };
+                    // Manifest: parsed natively via pelite resources.
+                    PE.getManifest = function() { return _B.__peManifest(); };
+                    // Authenticode signature: native pelite-backed security directory check.
+                    PE.isSignedFile = function() { return _B.__peIsSigned(); };
                     PE.isSigned = function() { return PE.isSignedFile(); };
                     PE.getGeneralOptionsEx = function() { return ""; };
 
-                    // File info stubs (require version resource parsing, not yet implemented).
-                    PE.getPEFileVersion = function(s) { return ""; };
-                    PE.getVersionStringInfo = function(s) { return ""; };
-                    PE.getFileVersion = function() { return ""; };
+                    // File info: native pelite-backed version info parsing.
+                    PE.getPEFileVersion = function(s) {
+                        if (!s) return _B.__peFileVersion();
+                        return _B.__peVersionString(s);
+                    };
+                    PE.getVersionStringInfo = function(s) { return _B.__peVersionString(s); };
+                    PE.getFileVersion = function() { return _B.__peFileVersion(); };
                     PE.getCompilerVersion = function() { return ""; };
 
                     // OS info stubs (require version resource parsing).
@@ -2492,11 +2672,7 @@ impl HostApiBridge {
                     // Section helpers.
                     PE.getSectionNameCollision = function(n) { return ""; };
                     PE.getResourceSection = function() {
-                        if (!_peIsPE()) return -1;
-                        var rsrcDir = _peDataDirOff(2);
-                        var va = _B.read_uint32_le(rsrcDir);
-                        if (va === 0) return -1;
-                        return _peRvaToFileOffset(va) >= 0 ? _peRvaToFileOffset(va) : -1;
+                        return _B.__peResourceSectionOffset();
                     };
                     PE.getImportSection = function() {
                         if (!_peIsPE()) return -1;
@@ -2887,18 +3063,21 @@ impl HostApiBridge {
                     }
 
                     // Get section name from the string table.
+                    // Parsed in Rust via __elfSectionNames for performance.
+                    var _elfSectionNamesCache = null;
                     function _sectionName(n) {
-                        var strtab = _shstrtab();
-                        if (!strtab) return "";
-                        var nameOff = _shdrName(n);
-                        return _readStringFromTable(strtab.offset, strtab.size, nameOff);
+                        if (_elfSectionNamesCache === null) {
+                            _elfSectionNamesCache = _B.__elfSectionNames();
+                        }
+                        if (n < 0 || n >= _elfSectionNamesCache.length) return "";
+                        return _elfSectionNamesCache[n];
                     }
 
                     // Find section number by name.
                     function _sectionNumber(name) {
-                        var n = _elfEShnum();
-                        for (var i = 0; i < n; i++) {
-                            if (_sectionName(i) === name) return i;
+                        var names = _B.__elfSectionNames();
+                        for (var i = 0; i < names.length; i++) {
+                            if (names[i] === name) return i;
                         }
                         return -1;
                     }
@@ -2972,34 +3151,12 @@ impl HostApiBridge {
                     }
 
                     // Read DT_NEEDED entries (tag=1) from dynamic table.
+                    // Parsed in Rust via __elfImportLibraries for performance.
+                    var _elfLibsCache = null;
                     function _libraryNames() {
-                        var phdrIdx = _dynamicPhdr();
-                        if (phdrIdx < 0) return [];
-                        var dynOff = _phdrFileOffset(phdrIdx);
-                        var dynSize = _phdrFileSize(phdrIdx);
-                        var is64 = _elfIs64();
-                        var entrySize = is64 ? 16 : 8;
-                        var nEntries = Math.floor(dynSize / entrySize);
-                        var strtab = _dynamicStringTable();
-                        if (!strtab) return [];
-                        var libs = [];
-                        for (var i = 0; i < nEntries; i++) {
-                            var eOff = dynOff + i * entrySize;
-                            var tag, val;
-                            if (is64) {
-                                tag = _elfReadU64(eOff);
-                                val = _elfReadU64(eOff + 8);
-                            } else {
-                                tag = _elfReadU32(eOff);
-                                val = _elfReadU32(eOff + 4);
-                            }
-                            if (tag === 0) break;
-                            if (tag === 1) { // DT_NEEDED
-                                var name = _readStringFromTable(strtab.offset, strtab.size, val);
-                                if (name) libs.push(name);
-                            }
-                        }
-                        return libs;
+                        if (_elfLibsCache !== null) return _elfLibsCache;
+                        _elfLibsCache = _B.__elfImportLibraries();
+                        return _elfLibsCache;
                     }
 
                     // ELF type names.
@@ -3457,39 +3614,20 @@ impl HostApiBridge {
                     }
 
                     function _machSectionNumber(name) {
-                        var sections = _machAllSections();
-                        for (var i = 0; i < sections.length; i++) {
-                            if (sections[i].name === name) return i;
+                        var names = _B.__machoSectionNames();
+                        for (var i = 0; i < names.length; i++) {
+                            if (names[i] === name) return i;
                         }
                         return -1;
                     }
 
                     // Collect library names from LC_LOAD_DYLIB commands.
-                    // LC_LOAD_DYLIB: cmd(0) cmdsize(4) name_offset(8) timestamp(12)
-                    //   current_version(16) compatible_version(20) name(24...)
+                    // Parsed in Rust via __machoImportLibraries for performance.
+                    var _machLibsCache = null;
                     function _machLibraries() {
-                        var libs = [];
-                        var ncmds = _machNCmds();
-                        var off = _machHeaderSize();
-                        for (var i = 0; i < ncmds; i++) {
-                            var cmd = _machReadU32(off);
-                            var cmdsize = _machReadU32(off + 4);
-                            if (cmdsize === 0) break;
-                            if (cmd === LC_LOAD_DYLIB) {
-                                var nameOffset = _machReadU32(off + 8);
-                                // name is at off + nameOffset, NUL-terminated.
-                                var name = "";
-                                var maxLen = cmdsize - nameOffset;
-                                for (var j = 0; j < maxLen; j++) {
-                                    var b = Binary.read_uint8(off + nameOffset + j);
-                                    if (b === 0) break;
-                                    name += String.fromCharCode(b);
-                                }
-                                if (name) libs.push(name);
-                            }
-                            off += cmdsize;
-                        }
-                        return libs;
+                        if (_machLibsCache !== null) return _machLibsCache;
+                        _machLibsCache = _B.__machoImportLibraries();
+                        return _machLibsCache;
                     }
 
                     // Get entry point from LC_MAIN (cmd=0x80000028).
@@ -4661,6 +4799,45 @@ mod tests {
         }
         fn pe_export_names(&self) -> Vec<String> {
             Vec::new()
+        }
+        fn elf_import_libraries(&self) -> Vec<String> {
+            Vec::new()
+        }
+        fn elf_section_names(&self) -> Vec<String> {
+            Vec::new()
+        }
+        fn macho_import_libraries(&self) -> Vec<String> {
+            Vec::new()
+        }
+        fn macho_section_names(&self) -> Vec<String> {
+            Vec::new()
+        }
+        fn pe_manifest(&self) -> String {
+            String::new()
+        }
+        fn pe_is_net(&self) -> bool {
+            false
+        }
+        fn pe_file_version(&self) -> String {
+            String::new()
+        }
+        fn pe_product_version(&self) -> String {
+            String::new()
+        }
+        fn pe_version_string(&self, _key: &str) -> String {
+            String::new()
+        }
+        fn pe_number_of_resources(&self) -> usize {
+            0
+        }
+        fn pe_is_resource_name_present(&self, _name: &str) -> bool {
+            false
+        }
+        fn pe_resource_section_offset(&self) -> i64 {
+            -1
+        }
+        fn pe_is_signed(&self) -> bool {
+            false
         }
     }
 

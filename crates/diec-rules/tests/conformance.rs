@@ -336,6 +336,45 @@ impl HostApi for BufferHost {
     fn pe_export_names(&self) -> Vec<String> {
         Vec::new()
     }
+    fn elf_import_libraries(&self) -> Vec<String> {
+        Vec::new()
+    }
+    fn elf_section_names(&self) -> Vec<String> {
+        Vec::new()
+    }
+    fn macho_import_libraries(&self) -> Vec<String> {
+        Vec::new()
+    }
+    fn macho_section_names(&self) -> Vec<String> {
+        Vec::new()
+    }
+    fn pe_manifest(&self) -> String {
+        String::new()
+    }
+    fn pe_is_net(&self) -> bool {
+        false
+    }
+    fn pe_file_version(&self) -> String {
+        String::new()
+    }
+    fn pe_product_version(&self) -> String {
+        String::new()
+    }
+    fn pe_version_string(&self, _key: &str) -> String {
+        String::new()
+    }
+    fn pe_number_of_resources(&self) -> usize {
+        0
+    }
+    fn pe_is_resource_name_present(&self, _name: &str) -> bool {
+        false
+    }
+    fn pe_resource_section_offset(&self) -> i64 {
+        -1
+    }
+    fn pe_is_signed(&self) -> bool {
+        false
+    }
 }
 
 /// Helper to create a simple rule snapshot with one rule.
