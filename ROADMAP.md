@@ -329,4 +329,4 @@ GUI 明确不属于当前交付范围。核心库、CLI 和 C ABI 稳定后，�
 
 - ~~**升级 GitHub Actions 到 Node.js 24**~~：已完成。`actions/checkout@v5`、`actions/upload-artifact@v5`、`actions/download-artifact@v5` 已升级，支持 Node.js 24。
 - ~~**Windows FFI C smoke test 链接**~~：已完成。改用 DLL import library（`diec_ffi.dll.lib`）替代 staticlib（`diec_ffi.lib`），避免手动指定大量 Windows 系统库。移除 `continue-on-error`，Windows smoke test 现在在 CI 中正常运行。
-- **macOS x86_64 构建矩阵**：`macos-13` runner 为 Intel 实例，费用较高且可能逐步下线。评估是否在 arm64 runner 上交叉编译 x86_64 目标。
+- ~~**macOS x86_64 构建矩阵**~~：已完成。使用 `macos-14`（arm64 runner）交叉编译 `x86_64-apple-darwin` 目标，避免使用费用较高的 `macos-13` Intel runner。交叉编译构建跳过原生测试（arm64 无法运行 x86_64 二进制），arm64 原生构建仍运行完整测试。
