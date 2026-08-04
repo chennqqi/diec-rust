@@ -4208,7 +4208,39 @@ impl HostApiBridge {
 
                     PYC.isConstPresent = function(s) { return false; };
                     PYC.getFileFormatName = function() { return "Python bytecode compiled (.PYC)"; };
-                    PYC.getFileFormatVersion = function() { return ""; };
+                    // Parse PYC magic number to determine Python version.
+                    // Magic numbers from CPython source (Lib/importlib/_bootstrap_external.py).
+                    PYC.getFileFormatVersion = function() {
+                        if (Binary.getSize() < 4) return "";
+                        var magic = Binary.read_uint16_le(0);
+                        // Map magic number to Python version string.
+                        var versions = {
+                            62211: "2.7",
+                            3000: "3.0", 3010: "3.1", 3020: "3.2",
+                            3030: "3.3", 3310: "3.4", 3350: "3.5",
+                            3373: "3.6", 3390: "3.7", 3394: "3.7",
+                            3400: "3.8", 3410: "3.8", 3413: "3.8",
+                            3420: "3.8", 3423: "3.8", 3424: "3.8",
+                            3430: "3.9", 3434: "3.9", 3438: "3.9",
+                            3439: "3.9", 3440: "3.9",
+                            3450: "3.10", 3456: "3.10", 3460: "3.10",
+                            3465: "3.10", 3468: "3.10", 3469: "3.10",
+                            3470: "3.10", 3473: "3.10", 3475: "3.10",
+                            3480: "3.11", 3488: "3.11", 3490: "3.11",
+                            3494: "3.11", 3495: "3.11", 3498: "3.11",
+                            3500: "3.11", 3501: "3.11", 3505: "3.11",
+                            3510: "3.11", 3515: "3.11",
+                            3520: "3.12", 3525: "3.12", 3530: "3.12",
+                            3531: "3.12", 3532: "3.12", 3533: "3.12",
+                            3550: "3.13", 3560: "3.13", 3570: "3.13",
+                            3580: "3.13", 3590: "3.13",
+                            3600: "3.14", 3610: "3.14"
+                        };
+                        if (versions[magic] !== undefined) {
+                            return versions[magic];
+                        }
+                        return "";
+                    };
                     PYC.getFileFormatOptions = function() { return ""; };
                     PYC.isVerbose = function() { return false; };
                     PYC.isDeepScan = function() { return false; };

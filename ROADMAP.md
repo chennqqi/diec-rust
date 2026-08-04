@@ -313,7 +313,7 @@ GUI 明确不属于当前交付范围。核心库、CLI 和 C ABI 稳定后，�
 
 - ~~**CFBF 版本解析**~~：已完成。`CFBF.getFileFormatVersion()` 从 CFBF 头解析 major.minor 版本（+1 匹配，`minimal.cfbf`）
 - ~~**Java Class 版本解析**~~：已完成。`JavaClass.getFileFormatVersion()` 从 class 文件 major version 映射到 Java SE 版本（+1 匹配，`Minimal.class`）
-- **PYC 版本解析**：`PYC.getFileFormatVersion()` 从 pyc 头解析版本（规则版本差异，上游 3.21 不检测 PYC，低优先级）
+- ~~**PYC 版本解析**~~：已完成。`PYC.getFileFormatVersion()` 从 pyc 头解析 magic number 映射到 Python 版本（2.7-3.14）
 - **Archive host API**：`isVerbose()` 返回 false 与上游 3.21 一致，无需修改
 - ~~**PE 验证方法**~~：已完成。8 个 `is*Correct` 方法（isEntryPointCorrect/isSectionAlignmentCorrect/isFileAlignmentCorrect/isHeaderCorrect/isExportTableCorrect/isImportTableCorrect/isRelocsTableCorrect/isResourcesTableCorrect）
 - ~~**PE Resource 方法**~~：已完成。`getNumberOfResources`/`isResourceNamePresent`/`getResourceSection` 使用 pelite 原生解析
