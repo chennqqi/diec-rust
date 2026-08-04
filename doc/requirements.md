@@ -837,3 +837,4 @@
 - 实现 ELF/MACH stub 方法
 [2026-08-04] 用户询问接下来做什么（原生PE/ELF/Mach-O解析重构完成后）
 [2026-08-04] 运行差分测试和性能基准，验证原生PE/ELF/Mach-O解析重构效果，更新COMPATIBILITY.md
+[2026-08-04] 更新NOTICES.md（新增pelite/goblin归属），按RELEASE.md做发布前检查验证

@@ -21,8 +21,14 @@ Phase 6 扩大差分测试语料和跨平台矩阵，建立持续 fuzz 和历史
 - 6 个 fuzz targets（core/formats/engine/output/ffi 层）+ 165 个种子语料
 - 兼容性报告模板 COMPATIBILITY.md
 - 发布检查清单 RELEASE.md
-- database_load 优化：1.2s → 400ms（3x 加速，并行文件 I/O）
-- 458 个测试全部通过
+- database_load 优化：1.2s → 510ms（并行文件 I/O）
+- 原生 PE/ELF/Mach-O 解析重构：使用 pelite（PE）和 goblin（ELF/Mach-O）替换手写 JavaScript 解析
+  - 新增 pe_native.rs、elf_native.rs、macho_native.rs 三个模块
+  - PE batch 解析：一次 pelite pass 返回所有 PE 信息，JS 端 JSON.parse 缓存
+  - PE32 扫描性能：73ms → 89ms（含原生 resource/manifest/version info 解析）
+  - ELF64 扫描性能：19ms → 15ms
+  - Mach-O 64 扫描性能：18ms → 14ms
+- 459 个测试全部通过，cargo fmt/clippy 零警告
 
 调研正文写入 `docs/research/`，设计正文写入 `docs/design/`，不要堆积在
 本文件或 `README.md` 中。

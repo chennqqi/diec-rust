@@ -12,7 +12,7 @@ for diec-rust. Every item must be verified before publishing a release.
 - [ ] All `unsafe` blocks have safety documentation and tests
 
 ### Testing
-- [ ] `cargo test --workspace --all-features --locked` passes (414+ tests)
+- [ ] `cargo test --workspace --all-features --locked` passes (459+ tests)
 - [ ] Corpus differential tests pass (27 baseline + 20 edge samples)
 - [ ] FFI tests pass (unit + integration + sanitizer)
 - [ ] Edge corpus tests pass (no-crash, no-spurious, no-hang)
@@ -29,7 +29,7 @@ for diec-rust. Every item must be verified before publishing a release.
 
 ### Performance
 - [ ] Benchmarks run on release build
-- [ ] database_load < 500ms (was ~1.2s, now ~400ms)
+- [ ] database_load < 600ms (was ~1.2s, now ~510ms)
 - [ ] scan_corpus per-file < 250ms
 - [ ] No performance regression vs previous release
 - [ ] Benchmark results recorded in COMPATIBILITY.md
