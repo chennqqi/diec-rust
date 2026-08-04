@@ -13,7 +13,7 @@ for diec-rust. Every item must be verified before publishing a release.
 
 ### Testing
 - [ ] `cargo test --workspace --all-features --locked` passes (459+ tests)
-- [ ] Corpus differential tests pass (27 baseline + 20 edge samples)
+- [ ] Corpus differential tests pass (31 baseline + 20 edge samples)
 - [ ] FFI tests pass (unit + integration + sanitizer)
 - [ ] Edge corpus tests pass (no-crash, no-spurious, no-hang)
 - [ ] Go binding tests pass (5 tests)
