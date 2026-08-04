@@ -145,9 +145,12 @@ malformed/boundary/empty/fuzz/differential cases（见
 
 退出条件：目标规则集全部可加载；代表性语料的规则结果达到已定义的兼容标准；剩余差异均有精确记录和回归用例。
 
-**完成状态**：1184/1186 规则加载成功（99.8%）；6 个端到端检测测试通过；
-2 个剩余失败均有精确记录（1 个上游规则 bug，1 个需 PE 专属 API 实现）。
-rquickjs 后端 + Binary host API bridge + 签名解析器 + PE stub 完成。
+**完成状态**：1186/1186 规则加载成功（100%）；6 个端到端检测测试通过；
+此前 2 个失败均已修复：
+1. `Binary/format_bin.Nintendo-certified-file.1.sg`（上游规则 bug：`const` 重声明）—
+   通过 `const` → `var` 预处理修复，匹配 Qt Script 行为。
+2. PE 规则需 PE 专属 API — 通过原生 `pelite` 解析实现完整 PE host API 修复。
+rquickjs 后端 + Binary host API bridge + 签名解析器 + 完整 PE/ELF/Mach-O 原生解析完成。
 
 - 原样加载固定版本上游规则。
 - 实现或集成经 Phase 0 验证的规则执行方案。
@@ -281,7 +284,7 @@ rquickjs 后端 + Binary host API bridge + 签名解析器 + PE stub 完成。
   - `fuzz_output_render`（diec-output 层，JSON/text/XML/CSV/TSV 渲染）
   - `fuzz_scan_ffi`（diec-ffi 层，C ABI 边界 + double-free 安全）
 - 兼容性报告模板 `COMPATIBILITY.md`：
-  - 规则加载兼容性（1184/1186 = 99.83%）
+  - 规则加载兼容性（1186/1186 = 100%）
   - 语料差分测试矩阵（28 样本 + 20 边缘样本）
   - CLI 功能兼容性清单
   - C ABI 兼容性清单

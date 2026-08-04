@@ -8,7 +8,7 @@
 - Phase 0 设计门禁于 2026-07-31 评审通过并关闭。
 - Phase 1 工程骨架与兼容测试基础设施于 2026-07-31 关闭。
 - Phase 2 核心数据模型与格式识别于 2026-07-31 关闭（20 个格式 probe、211 个测试、3 个 fuzz targets、完整覆盖矩阵）。
-- Phase 3 规则兼容运行时于 2026-07-31 关闭（1184/1186 规则加载成功，rquickjs 后端 + Binary host API bridge）。
+- Phase 3 规则兼容运行时于 2026-07-31 关闭（1186/1186 规则加载成功，rquickjs 后端 + Binary host API bridge）。
 - Phase 4 CLI 功能对齐于 2026-08-01 关闭（24 个 CLI 集成测试，374 个测试全部通过）。
 - Phase 5 C ABI 与语言集成于 2026-08-01 关闭（35 个 FFI 测试、Go/cgo 绑定、Python ctypes 绑定、411 个测试全部通过）。
 

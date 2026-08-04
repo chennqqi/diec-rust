@@ -16,15 +16,22 @@ Last updated: 2026-08-04
 | Metric | Result |
 |--------|--------|
 | Total rules in database | 1186 |
-| Successfully loaded | 1184 |
-| Failed to load | 2 |
-| Load success rate | 99.83% |
+| Successfully loaded | 1186 |
+| Failed to load | 0 |
+| Load success rate | 100.0% |
 
 ### Known Load Failures
 
-| Rule path | Error | Status |
-|-----------|-------|--------|
-| (record specific failures here) | | |
+All 1186 upstream rules load and execute successfully.
+
+Previously, 2 rules failed to load:
+1. `Binary/format_bin.Nintendo-certified-file.1.sg` — upstream rule bug
+   (`const tp` redeclares `var tp` in same scope). Fixed by preprocessing
+   `const` → `var` in `eval_script` to match Qt Script behavior (see
+   `docs/research/upstream-bug-const-redeclaration-nintendo-certified-file.md`).
+2. PE rule requiring PE-specific host API — fixed by implementing full PE
+   host API (imports, exports, resources, manifest, version info, .NET,
+   Authenticode) via native `pelite` parsing.
 
 ## Format Detection Compatibility
 

@@ -8,7 +8,7 @@ First public release of diec-rust, a Rust reimplementation of Detect It Easy.
 
 - **Format detection**: 20 format probes (PE, ELF, Mach-O, DEX, Java
   class, ZIP, tar, PDF, PNG, JPEG, BMP, WAV, ISO 9660, CFBF, and more)
-- **Rule compatibility**: 1184/1186 upstream rules loaded (99.83%)
+- **Rule compatibility**: 1186/1186 upstream rules loaded (100%)
 - **CLI**: full-featured with JSON/XML/CSV/TSV output, recursive scan,
   entropy analysis, profiling, custom databases
 - **C ABI**: stable versioned C ABI with opaque handles
