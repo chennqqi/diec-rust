@@ -1,6 +1,6 @@
 # Release Notes
 
-## diec-rust v0.1.4
+## diec-rust v0.2.0
 
 First public release of diec-rust, a Rust reimplementation of Detect It Easy.
 
@@ -9,17 +9,22 @@ First public release of diec-rust, a Rust reimplementation of Detect It Easy.
 - **Format detection**: 20 format probes (PE, ELF, Mach-O, DEX, Java
   class, ZIP, tar, PDF, PNG, JPEG, BMP, WAV, ISO 9660, CFBF, and more)
 - **Rule compatibility**: 1186/1186 upstream rules loaded (100%)
+- **Native binary parsing**: pelite (PE) and goblin (ELF/Mach-O) replace
+  hand-written JavaScript parsing for imports, exports, resources,
+  manifest, version info, .NET CLR detection, and Authenticode
 - **CLI**: full-featured with JSON/XML/CSV/TSV output, recursive scan,
   entropy analysis, profiling, custom databases
 - **C ABI**: stable versioned C ABI with opaque handles
 - **Language bindings**: Go/cgo and Python ctypes
-- **Cross-platform**: Linux, macOS, Windows
+- **Cross-platform**: Linux, macOS (arm64 + x86_64), Windows
 
 ### Performance
 
-- Database load: ~400ms (parallel I/O)
+- Database load: ~510ms (parallel I/O)
 - Format probe: sub-microsecond
-- Scan (default): ~190ms per file
+- PE32 scan: ~89ms (native pelite + batch cache)
+- ELF64 scan: ~15ms (native goblin)
+- Mach-O 64 scan: ~14ms (native goblin)
 
 ### Artifacts
 
@@ -34,7 +39,7 @@ Each platform archive contains:
 ### Rule Database
 
 Rules are bundled from the upstream Detect-It-Easy repository at a
-fixed commit. To use a different or updated database:
+fixed commit (c2c17dfa). To use a different or updated database:
 
 ```sh
 diec --customdb /path/to/rules/ file.exe
@@ -44,12 +49,14 @@ Or set the `DIEC_DB_PATH` environment variable.
 
 ### Compatibility
 
-See [COMPATIBILITY.md](COMPATIBILITY.md) for the full compatibility
-report.
+- Rule loading: 1186/1186 (100%)
+- Corpus differential: 31 baseline + 20 edge samples, 0 mismatches
+- Known differences: 4 rule version diffs (archive:Zip vs format:ZIP),
+  all documented in [COMPATIBILITY.md](COMPATIBILITY.md)
 
 ### Testing
 
-414 tests, 6 fuzz targets, 0 failures.
+459 tests, 6 fuzz targets, 0 failures.
 
 ### License
 
