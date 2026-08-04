@@ -1,5 +1,23 @@
 # Release Notes
 
+## diec-rust v0.2.2
+
+Patch release that fixes the v0.2.1 release build failure.
+
+### Bug Fixes
+
+- **Cargo.lock sync**: The v0.2.1 release commit bumped
+  `workspace.package.version` in `Cargo.toml` from 0.2.0 to 0.2.1 but
+  forgot to regenerate and commit `Cargo.lock`. Because the release
+  workflow builds with `--locked`, every build job failed with
+  "cannot update the lock file because --locked was passed". The lock
+  file is now regenerated and committed alongside the version bump.
+
+### No Code Changes
+
+No runtime, CLI, FFI, or rule changes versus v0.2.1 — this release
+exists solely to produce working artifacts that v0.2.1 could not.
+
 ## diec-rust v0.2.0
 
 First public release of diec-rust, a Rust reimplementation of Detect It Easy.
