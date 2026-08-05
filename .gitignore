@@ -10,3 +10,7 @@ __pycache__/
 # Temporary commit message files
 /COMMIT_MSG_*.txt
 
+# Playwright MCP test artifacts (screenshots, snapshots, console logs)
+/.playwright-mcp/
+/diec-gui-scan-tab.png
+
