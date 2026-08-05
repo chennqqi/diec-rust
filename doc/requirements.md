@@ -874,3 +874,13 @@
 - 补充 died API 文档（curl/PowerShell/Python/Go 客户端示例）
 - 版本号 0.2.2 → 0.3.0
 - 更新 README/ROADMAP/RELEASE_NOTES/AGENTS/RELEASE 文档
+
+## 2026-08-05: GUI 设计文档评审
+- 需求：对 `docs/research/upstream-gui-analysis.md`、`docs/design/decisions/0018-tauri-gui-framework.md`、`docs/design/phase7-gui.md` 进行评审并保存评审结果
+
+## 2026-08-05: Phase 8 GUI 实现 7A-0 启动
+- 创建 diec-gui crate 骨架（Tauri v2 + React + TypeScript）
+- Rust 后端：main.rs/commands.rs/state.rs/settings.rs
+- 前端：package.json/vite/tsconfig/index.html/src/main.tsx
+- 加入 workspace Cargo.toml + xtask 依赖 DAG
+

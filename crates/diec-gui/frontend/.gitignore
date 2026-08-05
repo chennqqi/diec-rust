@@ -1,0 +1,10 @@
+# Frontend build artifacts
+dist/
+node_modules/
+
+# Tauri build artifacts
+src-tauri/target/
+
+# Logs
+*.log
+npm-debug.log*

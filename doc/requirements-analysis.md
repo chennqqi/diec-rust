@@ -168,3 +168,18 @@
 - 安全边界：allow_root 路径校验、max_file_size/max_request_size 限制、scan_timeout 取消
 - 依赖：axum 0.8.8 + tokio + serde + tower-http (limit)，无 gRPC 重依赖
 - Scanner !Send 限制：服务层当前用无状态 scan_bytes，runtime 复用留作 worker 线程后续优化
+
+## 2026-08-05: GUI 设计文档评审分析
+- 基于 `AGENTS.md` 阶段定义，识别到 `docs/design/phase7-gui.md` 阶段命名与 `Phase 8 GUI` 冲突
+- 评审关注：Tauri 架构与核心库依赖边界、前端入口命名、`ScanFlags` 完整性、上游 submodule 可复现性、GUI 测试策略
+- 评审结论：文档 Proposed 状态保持不变，修正阶段命名、crate 命名、入口文件、标志位、测试策略后可进入 Accepted
+- 评审结果保存于 `docs/reviews/gui-design-review.md`
+
+## 2026-08-05: Phase 8 GUI 7A-0 骨架
+- 环境：fnm multishell，需 nm env --shell powershell 初始化 PATH（node v24.18.0/npm 12.0.1）
+- Tauri v2 依赖：tauri/tauri-build/tauri-plugin-{dialog,fs,single-instance,store}
+- 前端栈：React 18 + TypeScript 5 + Vite 5 + Tailwind 3 + Zustand 4 + CodeMirror 6 + i18next
+- IPC 命令骨架：scan_file/scan_bytes/stop_scan/list_signatures/get_signature_source/run_signature/scan_directory/demangle/get_settings/save_settings/get_database_info
+- 结构化错误：GuiError { code, message }
+- ScanFlagsDto 含 first_wrapper_only/hide_unknown
+

@@ -26,6 +26,7 @@ const RUNTIME_CRATES: &[&str] = &[
     "diec-cli",
     "diec-ffi",
     "diec-server",
+    "diec-gui",
 ];
 
 /// Upstream rule trees tracked by the manifest.
@@ -64,6 +65,14 @@ fn allowed_deps() -> BTreeMap<&'static str, BTreeSet<&'static str>> {
     m.insert(
         "diec-server",
         ["diec-engine", "diec-core"].into_iter().collect(),
+    );
+    // diec-gui is a Tauri v2 adapter over diec-engine (ADR 0018).
+    // It does not depend on diec-cli, diec-ffi, or diec-server.
+    m.insert(
+        "diec-gui",
+        ["diec-engine", "diec-core", "diec-output"]
+            .into_iter()
+            .collect(),
     );
     m
 }
