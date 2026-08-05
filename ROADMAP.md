@@ -353,11 +353,22 @@ DIE-engine 规则与 host API 变化，并保持发布物健康度。
 退出条件：无固定退出条件；维护阶段持续直到项目所有者决定启动 GUI 阶段或
 停止维护。
 
-## Phase 8：GUI（Tauri v2）— TODO
+## Phase 8：GUI（Tauri v2）— IN PROGRESS
 
-用 Tauri v2 实现功能对齐上游 `die` 完整 GUI 的图形界面程序 `die-gui`，
+用 Tauri v2 实现功能对齐上游 `die` 完整 GUI 的图形界面程序 `diec-gui`，
 覆盖扫描、签名浏览、目录扫描、Hex 查看器、Demangle、设置、多语言和主题
 等全部功能。
+
+### 实现进展
+
+- **7A-0**（DONE）：`diec-gui` crate 骨架（Tauri v2 + React 18 + TypeScript）
+- **7A-1**（DONE）：前端依赖安装 + `cargo tauri build --no-bundle` 端到端构建通过
+- **7A-2**（DONE）：GUI 应用启动验证（修复窗口 label + 数据库路径解析）
+- **7A-3**（DONE）：功能验证 — 文件选择 → 扫描 → 检测结果显示
+- **7A-4**（DONE）：拖放支持 + 停止扫描 + 设置持久化 + 目录扫描
+- **7B**（DONE）：高级功能 — Hex 查看器 + 反汇编器（iced-x86）+ Demangle（cpp_demangle + rustc-demangle）+ 签名浏览器
+- **7C**（DONE）：扩展功能 — YARA 扫描（yara-x）+ PEID 扫描 + 在线威胁情报查询
+- **CI**（DONE）：diec-gui 构建加入 release workflow（Windows）
 
 ### 调研与设计交付物
 
