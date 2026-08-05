@@ -1,11 +1,11 @@
-# Phase 7：GUI 设计文档
+# Phase 8：GUI 设计文档
 
-Status: Proposed
+Status: Accepted
 Last updated: 2026-08-05
 
 ## 目标
 
-用 Tauri v2 实现功能对齐上游 `die` 完整 GUI 的图形界面程序 `die-gui`，
+用 Tauri v2 实现功能对齐上游 `die` 完整 GUI 的图形界面程序 `diec-gui`，
 覆盖扫描、签名浏览、目录扫描、Hex 查看器、Demangle、设置、多语言和主题
 等全部功能。
 
@@ -91,6 +91,27 @@ Frontend (React)  ←→  Tauri IPC  ←→  Rust Commands  ←→  diec-engine
 #### 7A-3 扫描命令
 
 ```rust
+/// Structured error DTO for all IPC commands.
+/// Replaces bare `String` errors to enable frontend error
+/// classification, i18n, and logging.
+#[derive(Serialize, Deserialize)]
+pub struct GuiError {
+    /// Machine-readable error code (e.g. "DATABASE_LOAD_FAILED").
+    pub code: String,
+    /// Human-readable message (English, frontend i18n translates).
+    pub message: String,
+}
+
+/// Scan flags mirroring upstream `XScanEngine::SF_*` and `comboBoxFlags`.
+///
+/// Field mapping to `diec-engine::ScanFlags`:
+/// - `deep`/`heuristic`/`verbose`/`aggressive`/`all_types`/`hide_unknown`
+///   map directly to `ScanFlags` fields.
+/// - `recursive`/`overlay`/`resources`/`archives`/`first_wrapper_only`
+///   control nested-scan behavior in the engine's work-queue; they are
+///   passed as scan-options metadata rather than `ScanFlags` struct fields.
+///   When the engine exposes them as `ScanFlags` fields in the future,
+///   the DTO mapping becomes 1:1.
 #[derive(Serialize, Deserialize)]
 pub struct ScanFlagsDto {
     pub recursive: bool,
@@ -102,6 +123,8 @@ pub struct ScanFlagsDto {
     pub overlay: bool,
     pub resources: bool,
     pub archives: bool,
+    pub first_wrapper_only: bool,
+    pub hide_unknown: bool,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -138,7 +161,7 @@ async fn scan_file(
     path: String,
     flags: ScanFlagsDto,
     on_progress: tauri::ipc::Channel<ScanProgress>,
-) -> Result<ScanResultDto, String>;
+) -> Result<ScanResultDto, GuiError>;
 
 #[tauri::command]
 async fn scan_bytes(
@@ -146,10 +169,10 @@ async fn scan_bytes(
     file_name: String,
     data: Vec<u8>,
     flags: ScanFlagsDto,
-) -> Result<ScanResultDto, String>;
+) -> Result<ScanResultDto, GuiError>;
 
 #[tauri::command]
-async fn stop_scan(state: tauri::State<'_, AppState>) -> Result<(), String>;
+async fn stop_scan(state: tauri::State<'_, AppState>) -> Result<(), GuiError>;
 ```
 
 #### 7A-4 设置持久化
@@ -183,14 +206,14 @@ async fn stop_scan(state: tauri::State<'_, AppState>) -> Result<(), String>;
 #[tauri::command]
 async fn list_signatures(
     state: tauri::State<'_, AppState>,
-) -> Result<Vec<SignatureGroupDto>, String>;
+) -> Result<Vec<SignatureGroupDto>, GuiError>;
 
 #[tauri::command]
 async fn get_signature_source(
     state: tauri::State<'_, AppState>,
     file_type: String,
     name: String,
-) -> Result<SignatureSourceDto, String>;
+) -> Result<SignatureSourceDto, GuiError>;
 
 #[tauri::command]
 async fn run_signature(
@@ -199,7 +222,7 @@ async fn run_signature(
     file_type: String,
     signature_name: String,
     debug: bool,
-) -> Result<ScanResultDto, String>;
+) -> Result<ScanResultDto, GuiError>;
 ```
 
 #### 7B-2 目录扫描
@@ -220,7 +243,7 @@ async fn scan_directory(
     flags: ScanFlagsDto,
     subdirectories: bool,
     on_progress: tauri::ipc::Channel<DirectoryScanProgress>,
-) -> Result<Vec<ScanResultDto>, String>;
+) -> Result<Vec<ScanResultDto>, GuiError>;
 ```
 
 #### 7B-3 签名 Profiling
@@ -239,7 +262,15 @@ async fn scan_directory(
 | 搜索 | `XHexView` search | 前端 search |
 | 跳转偏移 | `XHexView` goto | 前端 input |
 
-候选前端库：`hexyjs`、`react-hex-editor` 或自实现。
+**实现选型**：
+
+- 前端组件：`react-hex-editor`（React 原生，支持虚拟滚动和大文件）
+  — 备选 `@uiw/react-textarea-code-editor` + 自定义 hex 渲染
+- 大文件分块：Rust 后端通过 `tauri::ipc::Channel<&[u8]>` 流式推送文件
+  分块（参考 Tauri 官方 `load_image` channel 示例），前端虚拟滚动
+  仅渲染可见行
+- 搜索：Rust 后端 `search_bytes(pattern, offset)` 命令返回匹配偏移列表，
+  前端高亮跳转（避免前端加载全文件）
 
 #### 7B-5 Demangle
 
@@ -247,10 +278,21 @@ async fn scan_directory(
 | --- | --- | --- |
 | C++ 符号 demangle | `XDemangle` | Rust `cpp_demangle` crate |
 | GCC/MSVC/Itanium ABI | `XCppfilt` | `cpp_demangle` (Itanium) + `msvc-demangle` |
+| Rust 符号 demangle | 无（上游无） | `rustc-demangle` crate（增值功能） |
+
+**实现选型**：
+
+| 依赖 | 版本 | 许可证 | 用途 |
+| --- | --- | --- | --- |
+| `cpp_demangle` | 0.4 | Apache-2.0/MIT | Itanium ABI C++ demangle |
+| `msvc-demangle` | 0.9 | MIT | MSVC ABI C++ demangle |
+| `rustc-demangle` | 0.1 | MIT/Apache-2.0 | Rust 符号 demangle（增值） |
+
+三个 crate 均为纯 Rust，无 native 依赖，符合 AGENTS.md 约束。
 
 ```rust
 #[tauri::command]
-async fn demangle(symbol: String, compiler: String) -> Result<String, String>;
+async fn demangle(symbol: String, compiler: String) -> Result<String, GuiError>;
 ```
 
 #### 7B-6 Options 对话框
@@ -320,23 +362,88 @@ async fn demangle(symbol: String, compiler: String) -> Result<String, String>;
 
 ## 测试策略
 
-### 单元测试
+AGENTS.md 要求"每项能力包含单元/集成测试，并按风险补充差分、FFI、fuzz、
+性能和跨平台测试"。GUI 阶段按 7A/7B/7C 分阶段补充测试：
 
-- IPC 命令的 Rust 端单元测试（mock `AppState`）
-- 设置序列化/反序列化测试
-- DTO 转换测试（`ScanResult` → `ScanResultDto`）
+### 7A 阶段测试
 
-### 集成测试
+**单元测试（Rust 端）**：
 
-- Tauri WebView smoke test（三平台 CI）
-- 端到端：打开文件 → 扫描 → 结果展示 → 签名查看
-- 目录扫描端到端
-- 设置持久化往返测试
+- IPC 命令单元测试：mock `AppState`（in-memory `Database`），验证
+  `scan_file`/`scan_bytes`/`stop_scan` 返回值和 `GuiError` 错误码
+- DTO 转换测试：`ScanResult` → `ScanResultDto` 字段映射完整性
+- `ScanFlagsDto` → `diec-engine::ScanFlags` 映射测试（含
+  `first_wrapper_only` 等扩展字段的传递路径）
+- 设置序列化/反序列化往返测试（`settings.json` 读写）
+- `GuiError` 序列化测试（`code`/`message` 字段完整性）
+
+**前端组件测试**：
+
+- React 组件单元测试：`@testing-library/react` 测试结果树渲染、
+  Flags/Databases 下拉交互、Scan/Stop 按钮状态
+- IPC mock：`vi.mock('@tauri-apps/api/core')` 模拟 `invoke` 返回
+
+**集成测试**：
+
+- Tauri WebView smoke test（三平台 CI）：应用启动 → 窗口可见 →
+  无 console error
+- 端到端：打开文件 → 扫描 → 结果树展示 → 点击 Signature →
+  签名源码显示
+- 设置持久化往返：修改设置 → 重启应用 → 设置恢复
+
+### 7B 阶段测试
+
+**签名浏览器**：
+
+- `list_signatures` 返回的树结构与上游 `DialogDIESignatures` 分组对齐
+- `run_signature` 单签名执行结果与 CLI 对应规则输出差分
+- 签名源码编辑 → 保存 → 重新加载一致性
+
+**目录扫描**：
+
+- `scan_directory` 批量扫描结果与 CLI `--recursive` 输出差分
+- 子目录递归开关行为验证
+- `Channel<DirectoryScanProgress>` 进度事件顺序和完整性
+
+**Hex 查看器**：
+
+- 大文件分块加载：`Channel<&[u8]>` 流式推送的正确性
+- 搜索：`search_bytes` 返回的偏移列表准确性
+- 跳转偏移边界测试（0、文件末尾、超出范围）
+
+**Demangle**：
+
+- Itanium ABI：`_ZN3foo3barEv` → `foo::bar()`
+- MSVC ABI：`?bar@foo@@QEAAHXZ` → `int foo::bar()`
+- Rust 符号：`_RNvCs1234_4test4main` → `test::main`
+- 无效符号输入返回 `GuiError` 而非 panic
+
+**多语言**：
+
+- 所有 UI 字符串通过 i18n key 引用（无硬编码英文）
+- 切换语言后 UI 即时更新
+- 翻译文件 key 完整性检查（en vs zh-CN vs 其他语言）
+
+**主题**：
+
+- light/dark/system 三种主题切换
+- CSS 变量覆盖完整性
+- 主题持久化往返
+
+### 7C 阶段测试
+
+- 各扩展功能按各自 ADR 定义的测试策略
+- native 依赖（Capstone/YARA）的 unsafe 边界测试
 
 ### 差分测试
 
-- GUI 扫描结果与 CLI `diec` 输出差分（同一文件、同一 flags）
-- 签名列表与上游 `DialogDIESignatures` 树结构对齐
+- **GUI vs CLI 差分**：同一文件、同一 flags 下，GUI `scan_file` 返回的
+  `ScanResultDto.detections` 与 CLI `diec --json` 输出的 detections
+  逐字段对比，0 不匹配
+- **签名列表差分**：`list_signatures` 返回的签名分组和名称与上游
+  `DialogDIESignatures` 树结构对齐（固定到 `DIE-engine@ab0ea3e`）
+- **截图验收**（可选）：关键界面截图与上游 `die` 截图对比，记录 UI/UX
+  差异（不要求像素级一致，验证功能等价性）
 
 ### 跨平台 CI
 
@@ -344,7 +451,19 @@ async fn demangle(symbol: String, compiler: String) -> Result<String, String>;
 
 - `gui-build` job：Linux/Windows/macOS 构建 `diec-gui`
 - `gui-smoke` job：WebView 启动 + 基本交互 smoke test
-- Linux 需安装 `libwebkit2gtk-4.1-dev`、`libgtk-3-dev`、`libayatana-appindicator3-dev`
+- `gui-diff` job：GUI vs CLI 差分测试
+- Linux 需安装 `libwebkit2gtk-4.1-dev`、`libgtk-3-dev`、
+  `libayatana-appindicator3-dev`
+- Windows 需 WebView2 bootstrapper
+- macOS 使用系统 WKWebView（无额外依赖）
+
+### WebView 渲染一致性
+
+- 三平台 WebView 引擎差异（Windows WebView2/Chromium、macOS WKWebView/
+  Safari、Linux WebKitGTK）可能导致 CSS 兼容性问题
+- CI 中运行 WebView smoke test 检测启动失败和 JS console error
+- CSS 使用标准化子集（避免 `-webkit-` 前缀等引擎特有特性）
+- 关键布局在三平台手动验证或截图对比
 
 ## 交付物
 
@@ -359,16 +478,16 @@ async fn demangle(symbol: String, compiler: String) -> Result<String, String>;
 
 ### 文档
 
-- `docs/design/phase7-gui.md`（本文）
+- `docs/design/phase8-gui.md`（本文）
 - `docs/design/decisions/0018-tauri-gui-framework.md`
 - `docs/research/upstream-gui-analysis.md`
-- 更新 `ROADMAP.md` Phase 7
+- 更新 `ROADMAP.md` Phase 8
 - 更新 `README.md` GUI 章节
 
 ### CI/CD
 
 - `.github/workflows/gui-build.yml` — GUI 构建矩阵
-- 发布物包含 `die-gui` 可执行文件（三平台）
+- 发布物包含 `diec-gui` 可执行文件（三平台）
 
 ## 退出条件
 

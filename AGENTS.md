@@ -42,8 +42,8 @@ Phase 7 在不破坏兼容基线的前提下持续跟进上游 DIE-engine 规则
   - API 文档含 curl/PowerShell/Python/Go 客户端示例
 - Phase 8 GUI 规划已交付（TODO，尚未开始实现）：
   - 上游 GUI 源码分析：`docs/research/upstream-gui-analysis.md`
-  - ADR 0018：Tauri v2 GUI 框架选型（Proposed）
-  - Phase 8 设计文档：`docs/design/phase7-gui.md`
+  - ADR 0018：Tauri v2 GUI 框架选型（Accepted）
+  - Phase 8 设计文档：`docs/design/phase8-gui.md`
   - 功能对齐上游 `die` 完整 GUI（7A 核心 + 7B 高级 + 7C 扩展）
 
 调研正文写入 `docs/research/`，设计正文写入 `docs/design/`，不要堆积在

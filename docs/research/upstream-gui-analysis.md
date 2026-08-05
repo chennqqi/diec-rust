@@ -1,6 +1,6 @@
 # 上游 GUI 源码分析
 
-Status: In Review
+Status: Accepted
 Upstream: `horsicq/DIE-engine@ab0ea3e2764c9c5616362070be5c85404e3f7756` (master)
 Last updated: 2026-08-05
 
@@ -10,9 +10,20 @@ Last updated: 2026-08-05
 功能清单、交互流程和组件依赖关系，为 diec-rust Phase 7 GUI 实现提供功能对齐
 基线。分析对象固定到上述 commit，所有结论附上游源码位置。
 
-子模块 `die_widget`、`XOptions`、`XScanEngine` 的源码来自各自 master 分支
-（`die_widget@5b48377`、`XOptions`、`XScanEngine`），通过 `git clone --depth 1`
-获取后分析。
+子模块 `die_widget`、`XOptions`、`XScanEngine` 的源码来自各自 master 分支，
+通过以下可复现命令获取后分析：
+
+```sh
+git clone --depth 1 https://github.com/horsicq/die_widget.git
+cd die_widget && git checkout 5b483772edde713fb872bc3ca86cfde4c00ea42c
+
+git clone --depth 1 https://github.com/horsicq/XOptions.git
+git clone --depth 1 https://github.com/horsicq/XScanEngine.git
+```
+
+`die_widget` 固定到 commit `5b483772edde713fb872bc3ca86cfde4c00ea42c`
+（master HEAD at analysis time）。`XOptions` 和 `XScanEngine` 使用分析时
+的 master HEAD（无 tag/release 锚点，后续同步需记录新 commit）。
 
 ## 三个变体
 

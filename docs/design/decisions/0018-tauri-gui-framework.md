@@ -1,6 +1,6 @@
 # ADR 0018：Tauri GUI 框架选型
 
-Status: Proposed
+Status: Accepted
 Last updated: 2026-08-05
 
 ## Context
@@ -32,7 +32,7 @@ AGENTS.md 架构约束：
 
 ### 用户决策
 
-用户在 Phase 7 规划评审中选择 **Tauri**，理由：
+用户在 Phase 8 GUI 规划评审中选择 **Tauri**，理由：
 
 - Web 前端技术栈（HTML/CSS/JS）成熟，UI/UX 表达力强，适合复杂布局
   （TreeView、Splitter、多面板、主题切换）
@@ -78,7 +78,7 @@ crates/diec-gui/
 ├── frontend/           # Web 前端
 │   ├── package.json
 │   ├── src/
-│   │   ├── main.ts     # 前端入口
+│   │   ├── main.tsx    # 前端入口（React + TSX）
 │   │   ├── App.tsx     # 主组件
 │   │   ├── components/ # UI 组件
 │   │   ├── hooks/      # 自定义 hooks
@@ -133,11 +133,22 @@ async fn scan_directory(
 
 ### 前端技术栈
 
-- **框架**：React + TypeScript（生态成熟，组件丰富）
+- **框架**：React 19 + TypeScript（生态成熟，组件丰富）
 - **构建**：Vite（快速 HMR，Tauri 官方推荐）
-- **UI 库**：待定（候选：shadcn/ui、Ant Design、MUI）
-- **状态管理**：Zustand（轻量）或 Redux Toolkit
+- **UI 库**：shadcn/ui（基于 Radix UI，无运行时样式注入，CSS 变量
+  原生支持主题切换，组件源码复制到项目内可自由修改）
+- **状态管理**：Zustand（轻量，无 boilerplate，适合 Tauri IPC 异步
+  状态；避免 Redux Toolkit 的额外抽象层和包体积）
 - **i18n**：react-i18next
+- **代码编辑器**：CodeMirror 6（签名浏览器源码查看，轻量于 Monaco）
+
+**选型理由**：
+
+| 选型 | 理由 |
+| --- | --- |
+| shadcn/ui | CSS 变量原生主题切换（对齐上游 QSS 主题）；组件源码可控；无运行时 CSS-in-JS 开销；TreeView/Dialog/Dropdown 等组件覆盖 GUI 需求 |
+| Zustand | Tauri IPC 异步状态管理简单（`create((set) => ({ scanResult: ... }))`）；无 provider 嵌套；包体积 ~1KB |
+| CodeMirror 6 | 签名源码查看只需高亮和只读模式，CodeMirror 6 按需加载 ~50KB vs Monaco ~2MB |
 
 ### 设置持久化
 

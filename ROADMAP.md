@@ -365,12 +365,12 @@ DIE-engine 规则与 host API 变化，并保持发布物健康度。
   上游 `die`/`diel`/`diec` 三变体的程序结构、功能清单、组件依赖和交互流程
   分析，固定到 `DIE-engine@ab0ea3e`。
 - [`docs/design/decisions/0018-tauri-gui-framework.md`](docs/design/decisions/0018-tauri-gui-framework.md)：
-  Tauri v2 框架选型 ADR（Proposed）。选择 Tauri v2 而非 egui/Slint/Iced/GTK-rs，
+  Tauri v2 框架选型 ADR（Accepted）。选择 Tauri v2 而非 egui/Slint/Iced/GTK-rs，
   理由：Web 前端 UI 表达力强、Rust 后端直接调用核心库、二进制体积小、
   跨平台 CI 对齐。
-- [`docs/design/phase7-gui.md`](docs/design/phase7-gui.md)：Phase 8 GUI 设计文档
+- [`docs/design/phase8-gui.md`](docs/design/phase8-gui.md)：Phase 8 GUI 设计文档
   （Proposed），含 IPC 架构、功能规格（7A 核心 + 7B 高级 + 7C 扩展）、
-  测试策略和实现顺序。
+  测试策略和实现顺序（Accepted）。
 
 ### 功能范围
 

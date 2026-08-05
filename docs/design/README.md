@@ -32,9 +32,9 @@ Phase 0 计划形成：
 - [`adr-review-readiness.md`](adr-review-readiness.md)：十四个有效 Proposed ADR 的
   评审问题、剩余 acceptance evidence 和防止自动接受的机器清单（In Review）。
 - [`upstream-sync.md`](upstream-sync.md)：DIE-engine subtree 和组件锁定策略（Accepted）。
-- [`phase7-gui.md`](phase7-gui.md)：Phase 8 GUI 设计文档，Tauri v2 实现
+- [`phase8-gui.md`](phase8-gui.md)：Phase 8 GUI 设计文档，Tauri v2 实现
   功能对齐上游 `die` 完整 GUI 的 `die-gui` 程序，含 IPC 架构、功能规格
-  （7A 核心 + 7B 高级 + 7C 扩展）、测试策略和实现顺序（Proposed）。
+  （7A 核心 + 7B 高级 + 7C 扩展）、测试策略和实现顺序（Accepted）。
 - [`decisions/`](decisions/)：重大决策的 ADR。
 
 设计文档必须链接所依据的 `docs/research/` 文档。被后续设计取代时保留历史内容并将状态改为 `Superseded`，同时链接替代文档或 ADR。

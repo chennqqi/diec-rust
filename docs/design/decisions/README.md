@@ -59,4 +59,4 @@
   常驻进程避免重复 database load（Accepted, 2026-08-04）。
 - [`0018-tauri-gui-framework.md`](0018-tauri-gui-framework.md)：
   Tauri v2 作为 diec-rust GUI 框架，新增 `diec-gui` crate 作为薄适配层，
-  Web 前端 + Rust 后端直接调用 `diec-engine`（Proposed）。
+  Web 前端 + Rust 后端直接调用 `diec-engine`（Accepted, 2026-08-05）。
