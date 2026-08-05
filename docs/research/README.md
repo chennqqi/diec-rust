@@ -717,5 +717,9 @@ Phase 0 计划形成：
   Windows 可表示 Unicode/空格/Hidden 路径和不可表示 Linux 控制的固定清单。
 - [`data/windows-qt5-cli-special-paths.json`](data/windows-qt5-cli-special-paths.json)：
   17-case Windows Unicode/特殊路径矩阵的 34 次原生 Qt5 执行。
+- [`upstream-gui-analysis.md`](upstream-gui-analysis.md)：上游 DIE-engine
+  三个 GUI 变体（`die`/`diel`/`diec`）的程序结构、功能清单、组件依赖和
+  交互流程分析，固定到 `DIE-engine@ab0ea3e`，含 `die_widget`/`XOptions`/
+  `XScanEngine` submodule 源码分析（In Review）。
 
 每份文档遵守 [`../README.md`](../README.md) 的证据和状态约定。实验附件如需版本化，应使用文本格式并放入主题对应的子目录。

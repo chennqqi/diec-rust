@@ -236,7 +236,7 @@ rquickjs 后端 + Binary host API bridge + 签名解析器 + 完整 PE/ELF/Mach-
 
 退出条件：内存所有权、并发、错误码和 panic 隔离均通过测试；目标平台完成静态链接 smoke test。✅
 
-## Phase 6：兼容性、性能与发布准备 — 进行中
+## Phase 6：兼容性、性能与发布准备 — 已关闭 (2026-08-05)
 
 - 扩大差分测试语料和跨平台矩阵。
 - 建立持续 fuzz 和历史回归语料。
@@ -312,7 +312,14 @@ rquickjs 后端 + Binary host API bridge + 签名解析器 + 完整 PE/ELF/Mach-
 - ✅ 发布检查：cargo fmt/clippy/test 全部通过，构建产物完整
 - ✅ 已知差异均公开、精确且可复现：4 个规则版本差异已记录在 COMPATIBILITY.md
 
-退出条件：既定兼容指标、性能目标和发布检查全部满足；已知差异均公开、精确且可复现。
+退出条件：既定兼容指标、性能目标和发布检查全部满足；已知差异均公开、精确且可复现。✅ (2026-08-05)
+
+**关闭记录**：
+- v0.3.0 已 tag 并发布（annotated tag，commit `ca656ea79`，4 平台发布物已上传并验证）
+- 退出条件全部达成：规则加载 100%，差分 0 引擎不匹配，database_load ~510ms < 600ms
+- Fuzz 收尾：种子语料回放（165 seeds × 6 harnesses）在 stable Rust 上 7 测试 0 失败；
+  覆盖引导 libFuzzer 5 min/target 委托给 CI fuzz workflow（`.github/workflows/fuzz.yml`）
+- 文档收尾：COMPATIBILITY.md / AUDIT.md / RELEASE.md 已按实际状态修正并签字
 
 **发布准备**：
 - 双语 README：`README.md`（英文默认）+ `README.zh-CN.md`（中文）
@@ -324,9 +331,84 @@ rquickjs 后端 + Binary host API bridge + 签名解析器 + 完整 PE/ELF/Mach-
 - CLI 数据库搜索路径增强：`DIEC_DB_PATH` 环境变量 + 可执行文件相邻 `db/` 目录
 - 发布说明模板 `RELEASE_NOTES.md`
 
-## Future：GUI — TODO
+## Phase 7：维护与上游同步 — 进行中
 
-GUI 明确不属于当前交付范围。核心库、CLI 和 C ABI 稳定后，另行调研 GUI 技术栈、交互需求和跨平台发布方案；当前阶段禁止为假设中的 GUI 引入框架依赖或反向耦合。
+Phase 6 关闭后进入维护阶段，目标是在不破坏兼容基线的前提下持续跟进上游
+DIE-engine 规则与 host API 变化，并保持发布物健康度。
+
+- **上游规则同步**：定期将 `upstream/Detect-It-Easy` subtree 更新到新的上游
+  commit，记录来源 commit、哈希和时间；同步后重跑差分测试矩阵，确认 0 引擎
+  不匹配或新增差异均用 ADR 记录。
+- **CI fuzz 持续化**：`.github/workflows/fuzz.yml` 在每次 push 到 main 和 PR
+  上运行 6 个 target 的覆盖引导 fuzz（5 min/target）；发现崩溃立即隔离、修复
+  并补充回归种子。
+- **发布节奏**：按需发布 patch/minor 版本；每次发布前过一遍 `RELEASE.md`
+  检查清单并更新 `COMPATIBILITY.md` 性能基线与测试统计。
+- **依赖与供应链**：定期审查 `cargo license`、`cargo audit`，更新 `NOTICES.md`
+  和 `AUDIT.md`；新依赖遵守最低发布 7 天和许可证策略。
+- ~~**GUI 前置调研**~~：已完成。上游 Qt GUI 源码分析见
+  [`docs/research/upstream-gui-analysis.md`](docs/research/upstream-gui-analysis.md)，
+  框架选型 ADR 0018（Tauri v2）和 Phase 8 设计文档已交付。
+
+退出条件：无固定退出条件；维护阶段持续直到项目所有者决定启动 GUI 阶段或
+停止维护。
+
+## Phase 8：GUI（Tauri v2）— TODO
+
+用 Tauri v2 实现功能对齐上游 `die` 完整 GUI 的图形界面程序 `die-gui`，
+覆盖扫描、签名浏览、目录扫描、Hex 查看器、Demangle、设置、多语言和主题
+等全部功能。
+
+### 调研与设计交付物
+
+- [`docs/research/upstream-gui-analysis.md`](docs/research/upstream-gui-analysis.md)：
+  上游 `die`/`diel`/`diec` 三变体的程序结构、功能清单、组件依赖和交互流程
+  分析，固定到 `DIE-engine@ab0ea3e`。
+- [`docs/design/decisions/0018-tauri-gui-framework.md`](docs/design/decisions/0018-tauri-gui-framework.md)：
+  Tauri v2 框架选型 ADR（Proposed）。选择 Tauri v2 而非 egui/Slint/Iced/GTK-rs，
+  理由：Web 前端 UI 表达力强、Rust 后端直接调用核心库、二进制体积小、
+  跨平台 CI 对齐。
+- [`docs/design/phase7-gui.md`](docs/design/phase7-gui.md)：Phase 8 GUI 设计文档
+  （Proposed），含 IPC 架构、功能规格（7A 核心 + 7B 高级 + 7C 扩展）、
+  测试策略和实现顺序。
+
+### 功能范围
+
+**7A 核心扫描 GUI**（对标 diel + die 基础）：
+
+- 主窗口：文件输入、拖放、Recent files、Advanced 切换、全屏、单实例
+- 扫描 widget：结果树（String/Signature/Info 3 列）、Flags/Databases 下拉、
+  Scan/Stop、异步扫描 + Channel 进度、耗时显示、复制结果、上下文菜单
+- 设置持久化：View/File/Scan/Database/Engine 分类，JSON 持久化
+
+**7B 高级功能**（对标 die 完整 GUI）：
+
+- 签名浏览器：签名树、源码查看/编辑、运行/调试单个签名、文本搜索
+- 目录扫描：选择目录、批量扫描、子目录递归、结果累积、清除/保存
+- 签名 Profiling：每签名耗时、排序
+- Hex 查看器：Hex dump、偏移/ASCII/Hex 列、搜索、跳转
+- Demangle：C++ 符号 demangle（Itanium/MSVC ABI）
+- Options 对话框：扫描引擎/签名搜索/Hex/反汇编/在线工具/InfoDB 选项
+- 多语言：react-i18next，对齐上游 XTranslation 支持的语言
+- 主题样式：CSS 变量，light/dark/system + 自定义
+- 快捷键：Open/Exit/Fullscreen 全局 + Hex/Disasm/Table 分组
+- 自动更新：tauri-plugin-updater，GitHub Releases 签名更新
+
+**7C 扩展功能**（需独立 ADR）：
+
+- 反汇编视图（Capstone，ADR 0019）、YARA 规则（ADR 0020）、PEID 签名
+  （ADR 0021）、NFD 视图（ADR 0022）、在线工具（ADR 0023）
+- 熵视图、哈希视图、内存映射视图、区段视图、符号表视图、归档视图、
+  数据转换器、提取器
+
+### 退出条件
+
+- 功能对齐上游 `die` 完整 GUI（7A + 7B）
+- 三平台（Linux/Windows/macOS）构建通过
+- GUI 扫描结果与 CLI 差分 0 不匹配
+- `cargo fmt --check` + `cargo clippy --workspace --all-targets --all-features -- -D warnings` 通过
+- `cargo test --workspace --all-features` 通过
+- 7C 扩展功能可 deferred 到后续 Phase
 
 ## 后续改进项
 

@@ -57,3 +57,6 @@
 - [`0017-scan-service-layer.md`](0017-scan-service-layer.md)：
   died (diec-server crate) HTTP/JSON 扫描服务层，支持本地路径和远程内容双模式，
   常驻进程避免重复 database load（Accepted, 2026-08-04）。
+- [`0018-tauri-gui-framework.md`](0018-tauri-gui-framework.md)：
+  Tauri v2 作为 diec-rust GUI 框架，新增 `diec-gui` crate 作为薄适配层，
+  Web 前端 + Rust 后端直接调用 `diec-engine`（Proposed）。

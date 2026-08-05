@@ -4,23 +4,27 @@
 
 ## 当前阶段
 
-项目目前处于 Roadmap Phase 6（兼容性、性能与发布准备）。Phase 0-5 已全部关闭：
+项目目前处于 Roadmap Phase 7（维护与上游同步）。Phase 0-6 已全部关闭：
 - Phase 0 设计门禁于 2026-07-31 评审通过并关闭。
 - Phase 1 工程骨架与兼容测试基础设施于 2026-07-31 关闭。
 - Phase 2 核心数据模型与格式识别于 2026-07-31 关闭（20 个格式 probe、211 个测试、3 个 fuzz targets、完整覆盖矩阵）。
 - Phase 3 规则兼容运行时于 2026-07-31 关闭（1186/1186 规则加载成功，rquickjs 后端 + Binary host API bridge）。
 - Phase 4 CLI 功能对齐于 2026-08-01 关闭（24 个 CLI 集成测试，374 个测试全部通过）。
 - Phase 5 C ABI 与语言集成于 2026-08-01 关闭（35 个 FFI 测试、Go/cgo 绑定、Python ctypes 绑定、411 个测试全部通过）。
+- Phase 6 兼容性、性能与发布准备于 2026-08-05 关闭（v0.3.0 已发布，477 个测试，规则加载 100%，差分 0 引擎不匹配，database_load ~510ms）。
 
-Phase 6 扩大差分测试语料和跨平台矩阵，建立持续 fuzz 和历史回归语料，
-依据固定基准优化运行时间和峰值内存，完成许可证、归属、供应链和发布物审计。当前进展：
+Phase 7 在不破坏兼容基线的前提下持续跟进上游 DIE-engine 规则与 host API 变化，
+保持发布物健康度。当前进展：
+- 上游规则同步：`upstream/Detect-It-Easy` 为 vendored subtree（非 submodule），固定到 commit `c2c17dfa5`
+- CI fuzz 持续化：`.github/workflows/fuzz.yml` 在 push/PR 上运行 6 个 target 的覆盖引导 fuzz（5 min/target）+ 种子语料回放（三平台 stable Rust）
+- 种子语料回放：165 seeds × 6 harnesses，`cd fuzz && cargo test --no-default-features --features replay`
+- 发布物：v0.3.0（4 平台：Linux/Windows/macOS arm64/macOS x86_64），含 CLI、died、FFI 库、C 头文件、规则数据库、语言绑定
 - Benchmark 基础设施（criterion 0.5）：scan_corpus、scan_flags、database_load、probe_corpus
 - 边缘语料差分测试：20 个边缘样本 + 3 个测试（no-crash/no-spurious/no-hang）
 - FFI 跨平台 CI：ffi-smoke job + python-binding job（Linux/macOS/Windows）
 - 许可证和供应链审计：LICENSE、NOTICES.md、AUDIT.md
 - 6 个 fuzz targets（core/formats/engine/output/ffi 层）+ 165 个种子语料
-- 兼容性报告模板 COMPATIBILITY.md
-- 发布检查清单 RELEASE.md
+- 兼容性报告 COMPATIBILITY.md、发布检查清单 RELEASE.md（v0.3.0 已签字）
 - database_load 优化：1.2s → 510ms（并行文件 I/O）
 - 原生 PE/ELF/Mach-O 解析重构：使用 pelite（PE）和 goblin（ELF/Mach-O）替换手写 JavaScript 解析
   - 新增 pe_native.rs、elf_native.rs、macho_native.rs 三个模块
@@ -36,6 +40,11 @@ Phase 6 扩大差分测试语料和跨平台矩阵，建立持续 fuzz 和历史
   - 三个端点：/health、/scan/path、/scan/bytes
   - Windows 服务安装/卸载 + DEB/RPM/MSI 打包配置
   - API 文档含 curl/PowerShell/Python/Go 客户端示例
+- Phase 8 GUI 规划已交付（TODO，尚未开始实现）：
+  - 上游 GUI 源码分析：`docs/research/upstream-gui-analysis.md`
+  - ADR 0018：Tauri v2 GUI 框架选型（Proposed）
+  - Phase 8 设计文档：`docs/design/phase7-gui.md`
+  - 功能对齐上游 `die` 完整 GUI（7A 核心 + 7B 高级 + 7C 扩展）
 
 调研正文写入 `docs/research/`，设计正文写入 `docs/design/`，不要堆积在
 本文件或 `README.md` 中。
