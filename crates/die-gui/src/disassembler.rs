@@ -1,4 +1,4 @@
-//! Disassembler backend for diec-gui.
+//! Disassembler backend for die-gui.
 //!
 //! Uses `iced-x86` (pure Rust, no C dependency) to disassemble
 //! x86/x64 code. Supports Intel, AT&T, and NASM syntax.

@@ -1,4 +1,4 @@
-//! Tauri IPC commands for diec-gui.
+//! Tauri IPC commands for die-gui.
 //!
 //! These commands are the bridge between the React frontend and the
 //! `diec-engine` Rust backend. The frontend calls them via

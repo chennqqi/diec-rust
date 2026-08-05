@@ -12,5 +12,5 @@ __pycache__/
 
 # Playwright MCP test artifacts (screenshots, snapshots, console logs)
 /.playwright-mcp/
-/diec-gui-scan-tab.png
+/*.png
 

@@ -1,4 +1,4 @@
-//! `diec-gui` is the Tauri v2 GUI adapter binary for diec.
+//! `die-gui` is the Tauri v2 GUI adapter binary for diec.
 //!
 //! It owns the Tauri application lifecycle, IPC command registration,
 //! and managed state. It depends on `diec-engine` for scan logic and
@@ -18,7 +18,7 @@ mod yara_scanner;
 use state::AppState;
 use tauri::Manager;
 
-/// Entry point for the diec-gui Tauri application.
+/// Entry point for the die-gui Tauri application.
 fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
@@ -50,5 +50,5 @@ fn main() {
             commands::peid_scan,
         ])
         .run(tauri::generate_context!())
-        .expect("error while running diec-gui application");
+        .expect("error while running DIE application");
 }

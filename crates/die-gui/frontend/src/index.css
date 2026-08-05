@@ -1,0 +1,209 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* DIE dark theme — inspired by upstream DIE-engine dark QSS.
+   Color palette: dark blue-gray background, lighter panels,
+   blue accent, monospace for hex/data. */
+:root {
+  /* Dark theme (default, matching upstream DIE) */
+  --bg-window: 30 33 40;          /* #1e2128 main window */
+  --bg-panel: 38 42 51;           /* #262a33 panels/sidebar */
+  --bg-input: 22 25 31;           /* #16191f input fields */
+  --bg-hover: 48 53 64;           /* #303540 hover state */
+  --bg-selected: 50 90 140;       /* #325a8c selection */
+  --bg-accent: 40 80 130;         /* #285082 accent blue */
+  --fg-primary: 210 215 225;      /* #d2d7e1 primary text */
+  --fg-secondary: 140 148 160;    /* #8c94a0 secondary text */
+  --fg-muted: 90 98 112;          /* #5a6270 muted text */
+  --border-color: 55 62 75;       /* #373e4b borders */
+  --border-light: 70 78 92;       /* #464e5c lighter borders */
+  --accent-blue: 70 130 210;      /* #4682d2 blue accent */
+  --accent-green: 80 180 100;     /* #50b464 success/detect */
+  --accent-red: 220 80 80;        /* #dc5050 error/stop */
+  --accent-yellow: 220 180 60;    /* #dcb43c warning */
+  --accent-purple: 160 110 220;   /* #a06edc special */
+}
+
+/* Light theme (optional, toggled by settings) */
+.light {
+  --bg-window: 245 247 250;
+  --bg-panel: 255 255 255;
+  --bg-input: 240 242 245;
+  --bg-hover: 235 238 242;
+  --bg-selected: 200 220 245;
+  --bg-accent: 70 130 210;
+  --fg-primary: 30 35 45;
+  --fg-secondary: 100 110 125;
+  --fg-muted: 140 150 160;
+  --border-color: 220 225 232;
+  --border-light: 200 207 216;
+  --accent-blue: 50 100 180;
+  --accent-green: 40 160 70;
+  --accent-red: 200 50 50;
+  --accent-yellow: 180 140 20;
+  --accent-purple: 130 70 200;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  font-size: 13px;
+  background: rgb(var(--bg-window));
+  color: rgb(var(--fg-primary));
+  user-select: none;
+  -webkit-user-select: none;
+  overflow: hidden;
+}
+
+/* Monospace font for hex/data displays */
+.mono {
+  font-family: "Cascadia Code", "JetBrains Mono", "Consolas", "Courier New", monospace;
+  font-size: 12px;
+}
+
+/* Custom scrollbar — thin, dark, subtle */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgb(var(--bg-window));
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--border-light));
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--fg-muted));
+}
+
+/* Tree view styles */
+.tree-row {
+  display: flex;
+  align-items: center;
+  padding: 2px 8px;
+  cursor: default;
+  white-space: nowrap;
+  border-radius: 2px;
+}
+.tree-row:hover {
+  background: rgb(var(--bg-hover));
+}
+.tree-row.selected {
+  background: rgb(var(--bg-selected));
+  color: white;
+}
+.tree-row .tree-icon {
+  width: 16px;
+  margin-right: 4px;
+  flex-shrink: 0;
+}
+.tree-children {
+  margin-left: 20px;
+}
+
+/* Progress bar */
+.progress-bar {
+  height: 4px;
+  background: rgb(var(--bg-input));
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: rgb(var(--accent-blue));
+  transition: width 0.2s ease;
+}
+
+/* Tab bar */
+.tab-active {
+  border-bottom: 2px solid rgb(var(--accent-blue));
+  color: rgb(var(--fg-primary));
+}
+.tab-inactive {
+  border-bottom: 2px solid transparent;
+  color: rgb(var(--fg-secondary));
+}
+.tab-inactive:hover {
+  color: rgb(var(--fg-primary));
+  background: rgb(var(--bg-hover));
+}
+
+/* Button styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border: 1px solid rgb(var(--border-color));
+  border-radius: 3px;
+  background: rgb(var(--bg-panel));
+  color: rgb(var(--fg-primary));
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.btn:hover:not(:disabled) {
+  background: rgb(var(--bg-hover));
+  border-color: rgb(var(--border-light));
+}
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.btn-primary {
+  background: rgb(var(--bg-accent));
+  border-color: rgb(var(--accent-blue));
+  color: white;
+}
+.btn-primary:hover:not(:disabled) {
+  background: rgb(var(--accent-blue));
+}
+.btn-danger {
+  border-color: rgb(var(--accent-red));
+  color: rgb(var(--accent-red));
+}
+.btn-danger:hover:not(:disabled) {
+  background: rgba(var(--accent-red), 0.15);
+}
+
+/* Input fields */
+.input {
+  background: rgb(var(--bg-input));
+  border: 1px solid rgb(var(--border-color));
+  border-radius: 3px;
+  padding: 4px 8px;
+  color: rgb(var(--fg-primary));
+  font-size: 12px;
+  outline: none;
+}
+.input:focus {
+  border-color: rgb(var(--accent-blue));
+}
+
+/* Panel/card */
+.panel {
+  background: rgb(var(--bg-panel));
+  border: 1px solid rgb(var(--border-color));
+  border-radius: 4px;
+}
+
+/* Status bar */
+.statusbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 2px 8px;
+  background: rgb(var(--bg-panel));
+  border-top: 1px solid rgb(var(--border-color));
+  font-size: 11px;
+  color: rgb(var(--fg-secondary));
+  height: 22px;
+}
+
+/* Selectable text in results/data areas */
+.selectable {
+  user-select: text;
+  -webkit-user-select: text;
+}

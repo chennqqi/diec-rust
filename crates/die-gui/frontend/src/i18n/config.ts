@@ -5,7 +5,7 @@ i18n.use(initReactI18next).init({
   resources: {
     en: {
       translation: {
-        app: { title: "diec-gui", subtitle: "Detect It Easy" },
+        app: { title: "DIE", subtitle: "Detect It Easy" },
         scan: {
           select: "Select a file to scan...",
           browse: "Browse",
@@ -17,7 +17,7 @@ i18n.use(initReactI18next).init({
     },
     "zh-CN": {
       translation: {
-        app: { title: "diec-gui", subtitle: "Detect It Easy" },
+        app: { title: "DIE", subtitle: "Detect It Easy" },
         scan: {
           select: "选择要扫描的文件...",
           browse: "浏览",

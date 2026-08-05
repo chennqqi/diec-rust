@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "diec-gui",
+  "productName": "Detect It Easy",
   "version": "0.3.0",
-  "identifier": "com.diec-rust.gui",
+  "identifier": "com.die.gui",
   "build": {
     "frontendDist": "frontend/dist",
     "devUrl": "http://localhost:1420",
@@ -13,7 +13,7 @@
     "windows": [
       {
         "label": "main",
-        "title": "diec-gui — Detect It Easy",
+        "title": "Detect It Easy",
         "width": 900,
         "height": 600,
         "resizable": true,

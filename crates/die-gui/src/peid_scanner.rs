@@ -1,4 +1,4 @@
-//! PEID scanner backend for diec-gui.
+//! PEID scanner backend for die-gui.
 //!
 //! PEID (PE iDentifier) detects PE packers and compilers by
 //! matching byte signatures from a userdb.txt file. The database

@@ -1,6 +1,6 @@
 [package]
-name = "diec-gui"
-description = "Tauri v2 GUI for diec (Detect It Easy) — ADR 0018."
+name = "die-gui"
+description = "Detect It Easy — Tauri v2 GUI (ADR 0018)."
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -9,7 +9,7 @@ publish.workspace = true
 repository.workspace = true
 
 [[bin]]
-name = "diec-gui"
+name = "die"
 path = "src/main.rs"
 
 [dependencies]
@@ -39,5 +39,5 @@ tauri-build = { version = "2", features = [] }
 # ---------------------------------------------------------------------------
 # The frontend is built separately via `npm run build` in `frontend/`.
 # Tauri embeds the `frontend/dist/` directory into the binary.
-# Build: cd crates/diec-gui/frontend && npm install && npm run build
-#        cargo tauri build  (or)  cargo build -p diec-gui
+# Build: cd crates/die-gui/frontend && npm install && npm run build
+#        cargo tauri build  (or)  cargo build -p die-gui

@@ -1,4 +1,4 @@
-//! Hex viewer backend for diec-gui.
+//! Hex viewer backend for die-gui.
 //!
 //! Reads a range of bytes from a file and returns a structured hex
 //! dump for the frontend to render.

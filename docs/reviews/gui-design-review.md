@@ -34,8 +34,8 @@
 ### 2. 程序/ crate 命名不一致（中）
 
 - `docs/design/phase7-gui.md` 目标写 "图形界面程序 `die-gui`"。
-- 后文 crate、架构、Workspace 集成均使用 `diec-gui`。
-- **建议**：统一使用 `diec-gui`，与项目 `diec-*` 前缀一致。
+- 后文 crate、架构、Workspace 集成均使用 `die-gui`。
+- **建议**：统一使用 `die-gui`，与项目 `diec-*` 前缀一致。
 
 ### 3. 前端入口文件命名不一致（中）
 
@@ -94,7 +94,7 @@
 | # | 发现 | 修复 |
 | --- | --- | --- |
 | 1 | 阶段命名不一致 | 文件重命名 `phase7-gui.md` → `phase8-gui.md`，标题改为 Phase 8，更新 ROADMAP/AGENTS/README 引用 |
-| 2 | 程序命名不一致 | 统一使用 `diec-gui`（目标章节 + CI/CD 发布物） |
+| 2 | 程序命名不一致 | 统一使用 `die-gui`（目标章节 + CI/CD 发布物） |
 | 3 | 前端入口命名 | `main.ts` → `main.tsx`（ADR 0018 crate 结构） |
 | 4 | ScanFlagsDto 缺字段 | 补齐 `first_wrapper_only` + `hide_unknown`，添加与 `diec-engine::ScanFlags` 的映射说明 |
 | 5 | submodule 获取不可复现 | 补充 `git clone` + `git checkout 5b48377` 可复现命令 |

@@ -41,7 +41,7 @@ class ArchitectureDesignTest(unittest.TestCase):
         ):
             self.assertIn(f"`{crate}`", self.architecture)
 
-        self.assertIn("当前 workspace 不包含 `diec-gui`", self.architecture)
+        self.assertIn("当前 workspace 不包含 `die-gui`", self.architecture)
         self.assertIn("CLI、FFI 和 output crate 不得复制", self.architecture)
 
     def test_dependency_direction_and_forbidden_edges_are_explicit(self) -> None:

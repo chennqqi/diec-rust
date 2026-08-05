@@ -9,7 +9,7 @@ members = [
     "crates/diec-cli",
     "crates/diec-ffi",
     "crates/diec-server",
-    "crates/diec-gui",
+    "crates/die-gui",
     "xtask",
 ]
 

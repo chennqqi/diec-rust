@@ -1,4 +1,4 @@
-//! Demangle backend for diec-gui.
+//! Demangle backend for die-gui.
 //!
 //! Demangles C++ (Itanium ABI) and Rust mangled symbols using
 //! `cpp_demangle` and `rustc-demangle` crates.

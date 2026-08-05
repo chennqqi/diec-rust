@@ -40,7 +40,7 @@ runtime 隔离。公共 Rust API、CLI 契约和完整结果字段仍由后续 `
 ## 3. 非目标
 
 - Phase 0 不实现正式检测功能，只允许可丢弃的技术 spike 和测试基础设施。
-- 当前 workspace 不包含 `diec-gui`，也不依赖 Qt 或其他 GUI 框架。
+- 当前 workspace 不包含 `die-gui`，也不依赖 Qt 或其他 GUI 框架。
 - 不设计稳定的 Rust ABI、动态插件 ABI 或进程内第三方插件系统。
 - 不承诺复刻上游内部类层次、全局状态或线程模型；只兼容可观察行为。
 - 不将派生规则缓存格式、调试内部对象或第三方 runtime 类型作为稳定 API。

@@ -1,4 +1,4 @@
-//! YARA scanning backend for diec-gui.
+//! YARA scanning backend for die-gui.
 //!
 //! Uses `yara-x` (pure Rust YARA implementation) to compile and
 //! run YARA rules against file data.

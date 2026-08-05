@@ -1,5 +1,5 @@
 {
-  "name": "diec-gui-frontend",
+  "name": "die-gui-frontend",
   "private": true,
   "version": "0.3.0",
   "type": "module",
@@ -35,5 +35,8 @@
     "tailwindcss": "^3.4.15",
     "typescript": "^5.6.3",
     "vite": "^5.4.11"
+  },
+  "allowScripts": {
+    "esbuild@0.21.5": true
   }
 }

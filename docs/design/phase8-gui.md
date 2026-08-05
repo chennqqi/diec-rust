@@ -5,7 +5,7 @@ Last updated: 2026-08-05
 
 ## 目标
 
-用 Tauri v2 实现功能对齐上游 `die` 完整 GUI 的图形界面程序 `diec-gui`，
+用 Tauri v2 实现功能对齐上游 `die` 完整 GUI 的图形界面程序 `die-gui`，
 覆盖扫描、签名浏览、目录扫描、Hex 查看器、Demangle、设置、多语言和主题
 等全部功能。
 
@@ -20,7 +20,7 @@ Last updated: 2026-08-05
 
 ### crate 定位
 
-`diec-gui` 是 Tauri 应用 crate，属于适配层，依赖 `diec-engine`/`diec-output`/
+`die-gui` 是 Tauri 应用 crate，属于适配层，依赖 `diec-engine`/`diec-output`/
 `diec-core`，核心层不反向依赖。与 `diec-cli`/`diec-ffi`/`diec-server` 平级。
 
 ### workspace 集成
@@ -36,13 +36,13 @@ members = [
     "crates/diec-cli",
     "crates/diec-ffi",
     "crates/diec-server",
-    "crates/diec-gui",       # ← 新增
+    "crates/die-gui",       # ← 新增
     "xtask",
 ]
 ```
 
-`diec-gui` 不加入 `diec-ffi`/`diec-server` 的依赖图，`xtask check-deps`
-需更新依赖 DAG 规则以允许 `diec-gui` 依赖 `tauri`。
+`die-gui` 不加入 `diec-ffi`/`diec-server` 的依赖图，`xtask check-deps`
+需更新依赖 DAG 规则以允许 `die-gui` 依赖 `tauri`。
 
 ### IPC 架构
 
@@ -449,7 +449,7 @@ AGENTS.md 要求"每项能力包含单元/集成测试，并按风险补充差�
 
 扩展现有 `.github/workflows/`：
 
-- `gui-build` job：Linux/Windows/macOS 构建 `diec-gui`
+- `gui-build` job：Linux/Windows/macOS 构建 `die-gui`
 - `gui-smoke` job：WebView 启动 + 基本交互 smoke test
 - `gui-diff` job：GUI vs CLI 差分测试
 - Linux 需安装 `libwebkit2gtk-4.1-dev`、`libgtk-3-dev`、
@@ -469,12 +469,12 @@ AGENTS.md 要求"每项能力包含单元/集成测试，并按风险补充差�
 
 ### 代码
 
-- `crates/diec-gui/` — Tauri 应用 crate
-- `crates/diec-gui/src/commands.rs` — IPC 命令
-- `crates/diec-gui/src/state.rs` — AppState（Database 缓存）
-- `crates/diec-gui/src/settings.rs` — 设置持久化
-- `crates/diec-gui/frontend/` — React 前端
-- `crates/diec-gui/tauri.conf.json` — Tauri 配置
+- `crates/die-gui/` — Tauri 应用 crate
+- `crates/die-gui/src/commands.rs` — IPC 命令
+- `crates/die-gui/src/state.rs` — AppState（Database 缓存）
+- `crates/die-gui/src/settings.rs` — 设置持久化
+- `crates/die-gui/frontend/` — React 前端
+- `crates/die-gui/tauri.conf.json` — Tauri 配置
 
 ### 文档
 
@@ -487,7 +487,7 @@ AGENTS.md 要求"每项能力包含单元/集成测试，并按风险补充差�
 ### CI/CD
 
 - `.github/workflows/gui-build.yml` — GUI 构建矩阵
-- 发布物包含 `diec-gui` 可执行文件（三平台）
+- 发布物包含 `die-gui` 可执行文件（三平台）
 
 ## 退出条件
 
@@ -501,7 +501,7 @@ AGENTS.md 要求"每项能力包含单元/集成测试，并按风险补充差�
 
 ## 实现顺序
 
-1. **7A-0**：创建 `diec-gui` crate 骨架 + Tauri 配置 + workspace 集成
+1. **7A-0**：创建 `die-gui` crate 骨架 + Tauri 配置 + workspace 集成
 2. **7A-1**：主窗口 + 文件输入 + 拖放
 3. **7A-2**：扫描命令 + 结果树 + Flags/Databases 控件
 4. **7A-3**：异步扫描 + Channel 进度 + Stop

@@ -184,7 +184,7 @@ jobs:
           path: ${{ env.ARTIFACT }}
           retention-days: 30
 
-  # Build diec-gui (Tauri v2) desktop application.
+  # Build die-gui (Tauri v2) desktop application.
   # Requires Node.js for frontend build + Rust for backend.
   # Currently Windows-only; Linux/macOS require additional system
   # dependencies (webkit2gtk, etc.) that can be added later.
@@ -197,7 +197,7 @@ jobs:
       matrix:
         include:
           - os: windows-2022
-            artifact_name: diec-gui-windows-x86_64
+            artifact_name: die-gui-windows-x86_64
             archive_ext: zip
 
     steps:
@@ -220,28 +220,28 @@ jobs:
 
       - name: Install frontend dependencies
         shell: bash
-        working-directory: crates/diec-gui/frontend
+        working-directory: crates/die-gui/frontend
         run: npm install
 
       - name: Build frontend
         shell: bash
-        working-directory: crates/diec-gui/frontend
+        working-directory: crates/die-gui/frontend
         run: npm run build
 
       - name: Build GUI binary (release)
         shell: bash
-        run: cargo build -p diec-gui --release --locked
+        run: cargo build -p die-gui --release --locked
 
       - name: Prepare GUI artifacts (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
           $version = "${{ inputs.version || github.ref_name }}"
-          $staging = "diec-gui-$version-windows-x86_64"
+          $staging = "die-gui-$version-windows-x86_64"
           New-Item -ItemType Directory -Force -Path "$staging" | Out-Null
 
           # GUI binary.
-          Copy-Item "target/release/diec-gui.exe" "$staging/"
+          Copy-Item "target/release/die.exe" "$staging/"
 
           # Rule database (GUI needs it at runtime).
           if (Test-Path "upstream/Detect-It-Easy/db") {

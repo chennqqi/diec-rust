@@ -183,3 +183,9 @@
 - 结构化错误：GuiError { code, message }
 - ScanFlagsDto 含 first_wrapper_only/hide_unknown
 
+
+## 2026-08-05 GUI 改进需求分析
+- 命名：crate diec-gui -> die-gui, 二进制名 die, 与上游对齐
+- UI：当前仅 Tailwind 裸元素堆砌，缺深色主题/图标/TreeView/状态栏/进度条
+- 功能差距：对比上游 die 完整GUI，缺熵/哈希/区段/符号表/可视化/提取器/Advanced模式/Recent Files/快捷键等
+- 策略：UI+功能并行推进，参考 docs/research/upstream-gui-analysis.md

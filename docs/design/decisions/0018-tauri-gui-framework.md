@@ -43,14 +43,14 @@ AGENTS.md 架构约束：
 
 ## Decision
 
-Proposed：选择 **Tauri v2** 作为 diec-rust GUI 框架，新增 `diec-gui` crate
+Proposed：选择 **Tauri v2** 作为 diec-rust GUI 框架，新增 `die-gui` crate
 作为薄适配层。
 
 ### 架构
 
 ```
 ┌─────────────────────────────────────────────┐
-│  diec-gui (Tauri app)                       │
+│  die-gui (Tauri app)                       │
 │  ┌───────────────┐  ┌─────────────────────┐ │
 │  │  Frontend     │  │  Rust Backend       │ │
 │  │  (HTML/CSS/JS)│←→│  (tauri::commands)  │ │
@@ -60,14 +60,14 @@ Proposed：选择 **Tauri v2** 作为 diec-rust GUI 框架，新增 `diec-gui` c
 │  └───────────────┘  │  diec-core          │ │
 │                     └─────────────────────┘ │
 └─────────────────────────────────────────────┘
-        ↓ 依赖方向：diec-gui → diec-engine
-        diec-engine 不反向依赖 diec-gui
+        ↓ 依赖方向：die-gui → diec-engine
+        diec-engine 不反向依赖 die-gui
 ```
 
 ### crate 结构
 
 ```
-crates/diec-gui/
+crates/die-gui/
 ├── Cargo.toml          # tauri + diec-engine 依赖
 ├── tauri.conf.json     # Tauri 配置
 ├── src/
@@ -175,7 +175,7 @@ Tauri v2 使用系统 WebView：
 - **缺点**：依赖系统 WebView，Linux 需安装 WebKitGTK；不同平台 WebView
   引擎差异可能导致 CSS 兼容性问题；WebView FFI 涉及 `unsafe`
 - **缓解**：CI 矩阵覆盖三平台 WebView；CSS 使用标准化子集；unsafe 限制
-  在 Tauri 框架内部，diec-gui 自身代码 `#![forbid(unsafe_code)]`
+  在 Tauri 框架内部，die-gui 自身代码 `#![forbid(unsafe_code)]`
 
 ### 与上游 Qt 的差异
 
@@ -195,7 +195,7 @@ Tauri v2 使用系统 WebView：
 
 ### unsafe 审计
 
-Tauri 框架内部使用 `unsafe` 与系统 WebView FFI 交互。diec-gui crate 自身
+Tauri 框架内部使用 `unsafe` 与系统 WebView FFI 交互。die-gui crate 自身
 代码保持 `#![forbid(unsafe_code)]`，所有 unsafe 限制在 Tauri 依赖内部。
 这与 diec-rust 现有策略一致（`pelite`/`goblin` 等依赖内部有 unsafe，
 核心 crate 自身 forbid unsafe）。
@@ -265,7 +265,7 @@ Tauri 框架内部使用 `unsafe` 与系统 WebView FFI 交互。diec-gui crate 
 
 - **缓解**：
   - CI 三平台覆盖 WebView 差异
-  - diec-gui crate `#![forbid(unsafe_code)]`
+  - die-gui crate `#![forbid(unsafe_code)]`
   - npm 依赖固定版本，定期审计
   - CSS 使用标准化子集，避免引擎特有特性
 
@@ -275,5 +275,5 @@ Tauri 框架内部使用 `unsafe` 与系统 WebView FFI 交互。diec-gui crate 
 - Tauri v2 文档：https://v2.tauri.app/
 - Tauri v2 IPC Channel：`tauri::ipc::Channel` 流式事件
 - diec-rust 现有架构：`docs/design/architecture.md` section 3 非目标
-  "当前 workspace 不包含 `diec-gui`，也不依赖 Qt 或其他 GUI 框架"
+  "当前 workspace 不包含 `die-gui`，也不依赖 Qt 或其他 GUI 框架"
   — 本 ADR 解除该非目标限制

@@ -1,4 +1,4 @@
-//! Settings persistence for diec-gui.
+//! Settings persistence for die-gui.
 //!
 //! Settings are stored as JSON in the Tauri app config directory.
 //! This module defines the settings structure and provides

@@ -1274,6 +1274,28 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c2ea6706d74fca54e15f1d40b5cf7fe7f764aaec61352a9fcec58fe27e042fc8"
 
 [[package]]
+name = "die-gui"
+version = "0.3.0"
+dependencies = [
+ "cpp_demangle",
+ "diec-core",
+ "diec-engine",
+ "diec-output",
+ "iced-x86",
+ "rustc-demangle",
+ "serde",
+ "serde_json",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-dialog",
+ "tauri-plugin-fs",
+ "tauri-plugin-single-instance",
+ "tauri-plugin-store",
+ "tokio",
+ "yara-x",
+]
+
+[[package]]
 name = "diec-cli"
 version = "0.3.0"
 dependencies = [
@@ -1311,28 +1333,6 @@ version = "0.3.0"
 dependencies = [
  "criterion",
  "diec-core",
-]
-
-[[package]]
-name = "diec-gui"
-version = "0.3.0"
-dependencies = [
- "cpp_demangle",
- "diec-core",
- "diec-engine",
- "diec-output",
- "iced-x86",
- "rustc-demangle",
- "serde",
- "serde_json",
- "tauri",
- "tauri-build",
- "tauri-plugin-dialog",
- "tauri-plugin-fs",
- "tauri-plugin-single-instance",
- "tauri-plugin-store",
- "tokio",
- "yara-x",
 ]
 
 [[package]]

@@ -879,8 +879,13 @@
 - 需求：对 `docs/research/upstream-gui-analysis.md`、`docs/design/decisions/0018-tauri-gui-framework.md`、`docs/design/phase7-gui.md` 进行评审并保存评审结果
 
 ## 2026-08-05: Phase 8 GUI 实现 7A-0 启动
-- 创建 diec-gui crate 骨架（Tauri v2 + React + TypeScript）
+- 创建 die-gui crate 骨架（Tauri v2 + React + TypeScript）
 - Rust 后端：main.rs/commands.rs/state.rs/settings.rs
 - 前端：package.json/vite/tsconfig/index.html/src/main.tsx
 - 加入 workspace Cargo.toml + xtask 依赖 DAG
 
+
+## 2026-08-05
+- diec-gui 命名与上游项目不一致，需改为 die / die-gui
+- GUI 外观丑陋，缺乏设计，无法比拟原版程序
+- 功能上与原版 die 完整 GUI 差距很大

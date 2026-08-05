@@ -1,4 +1,4 @@
-//! Managed application state for the diec-gui Tauri backend.
+//! Managed application state for the die-gui Tauri backend.
 //!
 //! `AppState` holds the scan engine `Database` (loaded once, reused
 //! across scans via `Arc`) and the current `CancellationToken` for
