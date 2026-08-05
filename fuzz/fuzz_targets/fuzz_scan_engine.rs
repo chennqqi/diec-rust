@@ -12,7 +12,7 @@
 #![no_main]
 
 use diec_core::cancel::CancellationToken;
-use diec_engine::{DatabaseBuilder, ScanFlags, scan_bytes};
+use diec_engine::{scan_bytes, DatabaseBuilder, ScanFlags};
 use libfuzzer_sys::fuzz_target;
 use std::sync::OnceLock;
 
@@ -50,7 +50,13 @@ fuzz_target!(|data: &[u8]| {
     let cancel = CancellationToken::new();
 
     // Scan with default flags - must not panic or hang.
-    let result = scan_bytes(db, "fuzz_input", data.to_vec(), ScanFlags::default(), &cancel);
+    let result = scan_bytes(
+        db,
+        "fuzz_input",
+        data.to_vec(),
+        ScanFlags::default(),
+        &cancel,
+    );
     if let Ok(result) = result {
         // Invariant: detections have non-empty type_name and name.
         for d in &result.detections {

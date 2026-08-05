@@ -1,0 +1,103 @@
+name: fuzz
+
+# Coverage-guided fuzzing with libFuzzer. Runs the seed-corpus replay
+# (stable Rust, all platforms via ci.yml) plus a short libFuzzer run
+# (nightly + cargo-fuzz, Linux only) on every push to main and on PRs.
+#
+# The short run (5 min per target) acts as the continuous-fuzz gate
+# referenced by RELEASE.md "Fuzz". Crashes are uploaded as artifacts.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      duration:
+        description: "Seconds per fuzz target"
+        required: false
+        default: "300"
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fuzz-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Seed-corpus replay on stable Rust: verifies all committed seeds are
+  # crash-free without requiring nightly or libFuzzer. Cheap, runs everywhere.
+  replay:
+    name: seed replay (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022, macos-14]
+    steps:
+      - name: Check out
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Run seed-corpus replay
+        shell: bash
+        run: |
+          cd fuzz
+          cargo test --no-default-features --features replay
+
+  # Coverage-guided libFuzzer run (Linux only, nightly + cargo-fuzz).
+  # 5 minutes per target by default; overridable via workflow_dispatch.
+  libfuzzer:
+    name: libFuzzer (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - fuzz_byte_source
+          - fuzz_byte_view_subview
+          - fuzz_format_probe
+          - fuzz_scan_engine
+          - fuzz_output_render
+          - fuzz_scan_ffi
+    steps:
+      - name: Check out
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Install nightly Rust
+        run: |
+          rustup toolchain install nightly --component rust-src
+          rustup default nightly
+
+      - name: Install cargo-fuzz
+        run: cargo install cargo-fuzz --locked
+
+      - name: Run libFuzzer
+        shell: bash
+        run: |
+          set -euo pipefail
+          duration="${{ inputs.duration || '300' }}"
+          cd fuzz
+          mkdir -p artifacts/${{ matrix.target }}
+          # cargo-fuzz runs each target for `duration` seconds against the
+          # committed seed corpus. `-max_total_time` caps wall-clock time.
+          cargo +nightly fuzz run ${{ matrix.target }} \
+            -- -max_total_time="${duration}" -artifact_prefix=artifacts/${{ matrix.target }}/
+
+      - name: Upload crash artifacts
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: fuzz-crashes-${{ matrix.target }}
+          path: fuzz/artifacts/${{ matrix.target }}/
+          if-no-files-found: ignore
+          retention-days: 30

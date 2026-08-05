@@ -10,37 +10,58 @@ publish = false
 #
 # The fuzz targets exercise the same code paths as the property-based tests
 # in the workspace crates, but with libFuzzer's coverage-guided mutation.
+#
+# Seed-corpus replay (no nightly/libFuzzer required):
+#   cd fuzz && cargo test --no-default-features --features replay
 
 [[bin]]
 name = "fuzz_byte_source"
 path = "fuzz_targets/fuzz_byte_source.rs"
+required-features = ["libfuzzer"]
 
 [[bin]]
 name = "fuzz_format_probe"
 path = "fuzz_targets/fuzz_format_probe.rs"
+required-features = ["libfuzzer"]
 
 [[bin]]
 name = "fuzz_byte_view_subview"
 path = "fuzz_targets/fuzz_byte_view_subview.rs"
+required-features = ["libfuzzer"]
 
 [[bin]]
 name = "fuzz_scan_engine"
 path = "fuzz_targets/fuzz_scan_engine.rs"
+required-features = ["libfuzzer"]
 
 [[bin]]
 name = "fuzz_output_render"
 path = "fuzz_targets/fuzz_output_render.rs"
+required-features = ["libfuzzer"]
 
 [[bin]]
 name = "fuzz_scan_ffi"
 path = "fuzz_targets/fuzz_scan_ffi.rs"
+required-features = ["libfuzzer"]
 
 [dependencies]
-libfuzzer-sys = "0.4"
+libfuzzer-sys = { version = "0.4", optional = true }
 diec-core = { path = "../crates/diec-core" }
 diec-formats = { path = "../crates/diec-formats" }
 diec-engine = { path = "../crates/diec-engine" }
 diec-output = { path = "../crates/diec-output" }
 serde_json = "1.0"
+
+[dev-dependencies]
+diec-ffi = { path = "../crates/diec-ffi" }
+
+[features]
+default = ["libfuzzer"]
+libfuzzer = ["dep:libfuzzer-sys"]
+
+# Seed-corpus replay mode: build fuzz harness bodies as a normal test
+# target on stable Rust (no libFuzzer/nightly required). Used by CI and
+# the release sign-off to verify all seed corpora are crash-free.
+replay = []
 
 [workspace]
