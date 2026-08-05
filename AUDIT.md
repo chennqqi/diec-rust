@@ -2,7 +2,7 @@
 
 This document records the supply chain security audit for diec-rust.
 
-Last updated: 2026-08-01
+Last updated: 2026-08-05
 
 ## Dependency Policy
 
@@ -24,22 +24,28 @@ Last updated: 2026-08-01
 - [x] Upstream DIE-engine is MIT licensed
 - [x] Corpus is project-generated (no third-party bytes)
 - [x] No secrets, API keys, or credentials in repository
-- [x] CI uses pinned action versions (SHA-pinned)
+- [x] CI uses pinned action major versions (e.g. `actions/checkout@v5`)
 - [x] `Cargo.lock` is committed and verified with `--locked`
 
 ## CI Security
 
-- GitHub Actions are pinned to specific commit SHAs (not tags)
+- GitHub Actions are pinned to major-version tags (e.g.
+  `actions/checkout@v5`, `actions/upload-artifact@v5`,
+  `actions/download-artifact@v5`). They are NOT pinned to full commit
+  SHAs; this is a tracked deviation from the original "SHA-pinned"
+  statement and should be revisited if stricter pinning is required.
 - `persist-credentials: false` on all checkout steps
-- `permissions: contents: read` (minimal scope)
+- `permissions: contents: read` (minimal scope; `contents: write` only
+  on the release workflow's release-creation job)
 - Concurrency group prevents redundant CI runs
 
-## Submodule Security
+## Upstream Source Security
 
-- `upstream/Detect-It-Easy` is a git submodule pointing to the fixed
-  upstream DIE-engine repository
-- The submodule is pinned to a specific commit SHA
-- Rules are loaded verbatim; no modifications to upstream files
+- `upstream/Detect-It-Easy` is a vendored subtree (squashed merge at
+  `e0bcca000` on 2026-07-25), NOT a git submodule — there is no
+  `.gitmodules` entry. The upstream content is pinned to upstream
+  commit `c2c17dfa5`.
+- Rules are loaded verbatim; no modifications to upstream files.
 
 ## Known Risks
 

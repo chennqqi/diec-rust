@@ -3,12 +3,14 @@
 This document tracks compatibility between diec-rust and the upstream
 DIE-engine project. It is updated with each release.
 
-Last updated: 2026-08-04
+Last updated: 2026-08-05
 
 ## Baseline
 
 - **Upstream**: https://github.com/horsicq/DIE-engine
-- **Fixed commit**: recorded in `upstream/Detect-It-Easy` submodule
+- **Fixed commit**: `c2c17dfa5` (recorded at the squashed subtree merge
+  `e0bcca000` on 2026-07-25; `upstream/Detect-It-Easy` is a vendored
+  subtree, not a git submodule — there is no `.gitmodules` entry)
 - **Rule database**: loaded verbatim from upstream, no modifications
 
 ## Rule Loading Compatibility
@@ -148,7 +150,7 @@ These are NOT engine bugs:
 | CFBF (version from header) | ✅ | major.minor format |
 | Java Class (version from header) | ✅ | Java SE version mapping |
 | Binary.isPlainText | ✅ | |
-| Archive (isVerbose, format) | ⚠️ | Stub (isVerbose=false) |
+| Archive (isVerbose, format) | ✅ | `isVerbose()` returns false, matching upstream DIE 3.21 (decision recorded in ROADMAP.md "后续改进项") |
 
 ## Known Differences
 
@@ -184,8 +186,8 @@ These are NOT engine bugs:
 | Category | Count | Status |
 |----------|-------|--------|
 | Unit tests | 251 | ✅ all pass |
-| Integration tests | 168 | ✅ all pass |
+| Integration tests | 182 | ✅ all pass (+14 Scanner/Database version/Server) |
 | FFI tests | 35 | ✅ all pass |
 | Edge corpus tests | 3 | ✅ all pass |
 | Fuzz targets | 6 | ✅ compile |
-| **Total** | **459** | ✅ 0 failures |
+| **Total** | **477** | ✅ 0 failures |
