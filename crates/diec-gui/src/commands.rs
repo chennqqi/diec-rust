@@ -153,7 +153,7 @@ impl From<ScanResult> for ScanResultDto {
 /// Reserved for 7A-1 streaming scan progress; not yet wired into
 /// `scan_file`/`scan_bytes_cmd`.
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(tag = "event", content = "data")]
+#[serde(tag = "event", content = "data", rename_all = "snake_case")]
 #[allow(dead_code)]
 pub enum ScanProgress {
     /// Scan started.
@@ -213,7 +213,7 @@ pub struct SignatureSourceDto {
 
 /// Directory scan progress events.
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(tag = "event", content = "data")]
+#[serde(tag = "event", content = "data", rename_all = "snake_case")]
 pub enum DirectoryScanProgress {
     /// Directory scan started.
     Started {
@@ -380,17 +380,94 @@ pub async fn run_signature(
 /// Scan a directory recursively.
 #[tauri::command]
 pub async fn scan_directory(
-    _state: tauri::State<'_, AppState>,
-    _dir: String,
-    _flags: ScanFlagsDto,
-    _subdirectories: bool,
-    _on_progress: tauri::ipc::Channel<DirectoryScanProgress>,
+    state: tauri::State<'_, AppState>,
+    dir: String,
+    flags: ScanFlagsDto,
+    subdirectories: bool,
+    on_progress: tauri::ipc::Channel<DirectoryScanProgress>,
 ) -> Result<Vec<ScanResultDto>, GuiError> {
-    // TODO: implement directory scanning
-    Err(GuiError::new(
-        "NOT_IMPLEMENTED",
-        "scan_directory is not yet implemented",
-    ))
+    let db_path = resolve_db_path();
+    let db = state
+        .database(&db_path)
+        .map_err(|e| GuiError::new("DATABASE_LOAD_FAILED", e))?;
+    let cancel = state.start_scan();
+    let engine_flags: ScanFlags = flags.into();
+
+    // Collect files to scan.
+    let files = collect_files(&dir, subdirectories);
+    let total = files.len();
+    let _ = on_progress.send(DirectoryScanProgress::Started { total_files: total });
+
+    let mut results = Vec::with_capacity(total);
+    for (index, file_path) in files.into_iter().enumerate() {
+        if cancel.is_cancelled() {
+            let _ = on_progress.send(DirectoryScanProgress::Error {
+                message: "Cancelled".to_string(),
+            });
+            break;
+        }
+
+        let db = Arc::clone(&db);
+        let cancel = cancel.clone();
+        let path_str = file_path.to_string_lossy().to_string();
+        let scan_result =
+            tokio::task::spawn_blocking(move || scan_once(&db, &path_str, engine_flags, &cancel))
+                .await
+                .map_err(|e| GuiError::new("TASK_JOIN_FAILED", e.to_string()))?;
+
+        match scan_result {
+            Ok(r) => {
+                let dto: ScanResultDto = r.into();
+                let _ = on_progress.send(DirectoryScanProgress::FileScanned {
+                    index,
+                    file_path: dto.path.clone(),
+                    result: dto.clone(),
+                });
+                results.push(dto);
+            }
+            Err(e) => {
+                let err_msg = e.to_string();
+                let _ = on_progress.send(DirectoryScanProgress::Error {
+                    message: format!("{}: {}", file_path.display(), err_msg),
+                });
+            }
+        }
+    }
+
+    let _ = on_progress.send(DirectoryScanProgress::Finished {
+        total: results.len(),
+    });
+    Ok(results)
+}
+
+/// Collect files in a directory, optionally recursing into subdirectories.
+fn collect_files(dir: &str, recursive: bool) -> Vec<std::path::PathBuf> {
+    let mut files = Vec::new();
+    collect_files_inner(std::path::Path::new(dir), recursive, &mut files);
+    files
+}
+
+/// Recursive helper for `collect_files`.
+/// Silently skips directories with permission errors.
+fn collect_files_inner(
+    dir: &std::path::Path,
+    recursive: bool,
+    files: &mut Vec<std::path::PathBuf>,
+) {
+    let Ok(entries) = std::fs::read_dir(dir) else {
+        // Permission denied or other I/O error — skip this directory.
+        return;
+    };
+    for entry in entries.flatten() {
+        let path = entry.path();
+        if path.is_dir() {
+            if recursive {
+                collect_files_inner(&path, recursive, files);
+            }
+        } else if path.is_file() {
+            files.push(path);
+        }
+    }
 }
 
 /// Demangle a C++ or Rust symbol.
@@ -401,19 +478,33 @@ pub async fn demangle(symbol: String, compiler: String) -> Result<String, GuiErr
     Ok(symbol)
 }
 
-/// Get application settings.
+/// Get application settings from the persistent store.
 #[tauri::command]
-pub async fn get_settings(_state: tauri::State<'_, AppState>) -> Result<AppSettings, GuiError> {
-    Ok(AppSettings::default())
+pub async fn get_settings(app: tauri::AppHandle) -> Result<AppSettings, GuiError> {
+    use tauri_plugin_store::StoreExt;
+    let store = app
+        .store("settings.json")
+        .map_err(|e| GuiError::new("STORE_ERROR", e.to_string()))?;
+    match store.get("app_settings") {
+        Some(val) => serde_json::from_value::<AppSettings>(val)
+            .map_err(|e| GuiError::new("SETTINGS_PARSE_ERROR", e.to_string())),
+        None => Ok(AppSettings::default()),
+    }
 }
 
-/// Save application settings.
+/// Save application settings to the persistent store.
 #[tauri::command]
-pub async fn save_settings(
-    _state: tauri::State<'_, AppState>,
-    _settings: AppSettings,
-) -> Result<(), GuiError> {
-    // TODO: persist settings via tauri-plugin-store
+pub async fn save_settings(app: tauri::AppHandle, settings: AppSettings) -> Result<(), GuiError> {
+    use tauri_plugin_store::StoreExt;
+    let store = app
+        .store("settings.json")
+        .map_err(|e| GuiError::new("STORE_ERROR", e.to_string()))?;
+    let val = serde_json::to_value(&settings)
+        .map_err(|e| GuiError::new("SETTINGS_SERIALIZE_ERROR", e.to_string()))?;
+    store.set("app_settings", val);
+    store
+        .save()
+        .map_err(|e| GuiError::new("STORE_SAVE_ERROR", e.to_string()))?;
     Ok(())
 }
 

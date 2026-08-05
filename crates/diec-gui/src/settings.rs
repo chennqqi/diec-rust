@@ -61,6 +61,9 @@ pub struct ScanSettings {
 }
 
 /// Default scan flag values (upstream `XOptions::ID_SCAN_FLAG_*`).
+///
+/// Field names match `ScanFlagsDto` in `commands.rs` for direct
+/// frontend-to-backend round-trip without renaming.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScanFlagDefaults {
     pub recursive: bool,
@@ -68,11 +71,12 @@ pub struct ScanFlagDefaults {
     pub heuristic: bool,
     pub verbose: bool,
     pub aggressive: bool,
-    pub all_types: bool,
+    pub alltypes: bool,
     pub overlay: bool,
     pub resources: bool,
     pub archives: bool,
     pub first_wrapper_only: bool,
+    pub hide_unknown: bool,
 }
 
 /// Database path settings (upstream `XOptions::ID_SCAN_DIE_DATABASE_*`).
@@ -128,11 +132,12 @@ impl Default for AppSettings {
                     heuristic: false,
                     verbose: false,
                     aggressive: false,
-                    all_types: false,
+                    alltypes: false,
                     overlay: true,
                     resources: true,
                     archives: true,
                     first_wrapper_only: false,
+                    hide_unknown: false,
                 },
             },
             database: DatabaseSettings {
