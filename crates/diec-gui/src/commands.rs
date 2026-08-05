@@ -258,6 +258,20 @@ pub struct DatabaseInfoDto {
 // IPC Commands
 // ---------------------------------------------------------------------------
 
+/// Resolve the database directory by checking candidate paths in order.
+///
+/// Candidates: user-configured path (TODO: from settings), then
+/// `./db`, then `upstream/Detect-It-Easy/db` (development layout).
+fn resolve_db_path() -> String {
+    let candidates = ["./db", "upstream/Detect-It-Easy/db"];
+    for c in &candidates {
+        if std::path::Path::new(c).is_dir() {
+            return c.to_string();
+        }
+    }
+    "./db".to_string()
+}
+
 /// Scan a file by path.
 #[tauri::command]
 pub async fn scan_file(
@@ -265,9 +279,9 @@ pub async fn scan_file(
     path: String,
     flags: ScanFlagsDto,
 ) -> Result<ScanResultDto, GuiError> {
-    let db_path = "./db"; // TODO: read from settings
+    let db_path = resolve_db_path();
     let db = state
-        .database(db_path)
+        .database(&db_path)
         .map_err(|e| GuiError::new("DATABASE_LOAD_FAILED", e))?;
     let cancel = state.start_scan();
     let engine_flags: ScanFlags = flags.into();
@@ -295,9 +309,9 @@ pub async fn scan_bytes_cmd(
     data: Vec<u8>,
     flags: ScanFlagsDto,
 ) -> Result<ScanResultDto, GuiError> {
-    let db_path = "./db";
+    let db_path = resolve_db_path();
     let db = state
-        .database(db_path)
+        .database(&db_path)
         .map_err(|e| GuiError::new("DATABASE_LOAD_FAILED", e))?;
     let cancel = state.start_scan();
     let engine_flags: ScanFlags = flags.into();
@@ -408,9 +422,9 @@ pub async fn save_settings(
 pub async fn get_database_info(
     state: tauri::State<'_, AppState>,
 ) -> Result<DatabaseInfoDto, GuiError> {
-    let db_path = "./db";
+    let db_path = resolve_db_path();
     let db = state
-        .database(db_path)
+        .database(&db_path)
         .map_err(|e| GuiError::new("DATABASE_LOAD_FAILED", e))?;
     let version = db.version();
     Ok(DatabaseInfoDto {

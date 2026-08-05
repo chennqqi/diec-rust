@@ -25,7 +25,7 @@ impl AppState {
         Self {
             database: Mutex::new(None),
             cancel_token: Mutex::new(None),
-            db_path: Mutex::new("./db".to_string()),
+            db_path: Mutex::new(String::new()),
         }
     }
 
