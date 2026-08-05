@@ -184,10 +184,89 @@ jobs:
           path: ${{ env.ARTIFACT }}
           retention-days: 30
 
+  # Build diec-gui (Tauri v2) desktop application.
+  # Requires Node.js for frontend build + Rust for backend.
+  # Currently Windows-only; Linux/macOS require additional system
+  # dependencies (webkit2gtk, etc.) that can be added later.
+  build-gui:
+    name: Build GUI (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-2022
+            artifact_name: diec-gui-windows-x86_64
+            archive_ext: zip
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Install Rust target
+        shell: bash
+        run: |
+          rustup target add x86_64-pc-windows-msvc
+          rustup component add clippy
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+
+      - name: Install frontend dependencies
+        shell: bash
+        working-directory: crates/diec-gui/frontend
+        run: npm install
+
+      - name: Build frontend
+        shell: bash
+        working-directory: crates/diec-gui/frontend
+        run: npm run build
+
+      - name: Build GUI binary (release)
+        shell: bash
+        run: cargo build -p diec-gui --release --locked
+
+      - name: Prepare GUI artifacts (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $version = "${{ inputs.version || github.ref_name }}"
+          $staging = "diec-gui-$version-windows-x86_64"
+          New-Item -ItemType Directory -Force -Path "$staging" | Out-Null
+
+          # GUI binary.
+          Copy-Item "target/release/diec-gui.exe" "$staging/"
+
+          # Rule database (GUI needs it at runtime).
+          if (Test-Path "upstream/Detect-It-Easy/db") {
+            New-Item -ItemType Directory -Force -Path "$staging/db" | Out-Null
+            Copy-Item "upstream/Detect-It-Easy/db/*" "$staging/db/" -Recurse -Force
+          }
+
+          # Documentation.
+          Copy-Item "README.md" "$staging/"
+          Copy-Item "LICENSE" "$staging/"
+
+          Compress-Archive -Path "$staging" -DestinationPath "$staging.zip"
+          "GUI_ARTIFACT=$staging.zip" >> $env:GITHUB_ENV
+
+      - name: Upload GUI artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: ${{ env.GUI_ARTIFACT }}
+          retention-days: 30
+
   # Create GitHub release with all artifacts.
   release:
     name: Create release
-    needs: build
+    needs: [build, build-gui]
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
