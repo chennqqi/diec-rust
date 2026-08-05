@@ -7,6 +7,9 @@
 #![forbid(unsafe_code)]
 
 mod commands;
+mod demangle;
+mod disassembler;
+mod hex_viewer;
 mod settings;
 mod state;
 
@@ -36,6 +39,8 @@ fn main() {
             commands::run_signature,
             commands::scan_directory,
             commands::demangle,
+            commands::read_hex,
+            commands::disassemble,
             commands::get_settings,
             commands::save_settings,
             commands::get_database_info,

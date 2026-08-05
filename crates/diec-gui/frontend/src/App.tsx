@@ -2,6 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import { invoke, Channel } from "@tauri-apps/api/core";
 import { open as openDialog } from "@tauri-apps/plugin-dialog";
 import { getCurrentWebview } from "@tauri-apps/api/webview";
+import { HexViewer } from "./components/HexViewer";
+import { Disassembler } from "./components/Disassembler";
+import { DemangleTool } from "./components/DemangleTool";
+import { SignatureBrowser } from "./components/SignatureBrowser";
 
 interface ScanDetectionDto {
   file_type: string;
@@ -95,6 +99,7 @@ export default function App() {
   const [settings, setSettings] = useState<AppSettings>(defaultSettings);
   const [flags, setFlags] = useState<ScanFlagsDto>(defaultFlags);
   const [dirProgress, setDirProgress] = useState<{ current: number; total: number } | null>(null);
+  const [activeTab, setActiveTab] = useState<"scan" | "hex" | "disasm" | "demangle" | "sigs">("scan");
   const dragCounter = useRef(0);
 
   // Load settings on mount.
@@ -382,44 +387,70 @@ export default function App() {
         </div>
       )}
 
-      {result && (
-        <section className="border border-border rounded p-4 mb-4">
-          <div className="flex justify-between mb-3">
-            <h2 className="font-medium text-sm">{result.path}</h2>
-            <span className="text-xs text-muted-foreground">{result.scan_time_ms} ms</span>
-          </div>
-          <DetectionTable detections={result.detections} />
-          {result.diagnostics.length > 0 && (
-            <details className="mt-3 text-xs">
-              <summary className="cursor-pointer text-muted-foreground">
-                Diagnostics ({result.diagnostics.length})
-              </summary>
-              <pre className="mt-2 p-2 bg-muted rounded overflow-x-auto">
-                {result.diagnostics.join("\n")}
-              </pre>
-            </details>
+      {/* Tab navigation */}
+      <div className="flex gap-1 mb-3 border-b border-border">
+        {(["scan", "hex", "disasm", "demangle", "sigs"] as const).map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`px-3 py-1 text-sm rounded-t ${
+              activeTab === tab
+                ? "bg-background border border-border border-b-background -mb-px font-medium"
+                : "text-muted-foreground hover:bg-muted"
+            }`}
+          >
+            {tab === "scan" ? "Scan" : tab === "hex" ? "Hex" : tab === "disasm" ? "Disasm" : tab === "demangle" ? "Demangle" : "Signatures"}
+          </button>
+        ))}
+      </div>
+
+      {activeTab === "scan" && (
+        <>
+          {result && (
+            <section className="border border-border rounded p-4 mb-4">
+              <div className="flex justify-between mb-3">
+                <h2 className="font-medium text-sm">{result.path}</h2>
+                <span className="text-xs text-muted-foreground">{result.scan_time_ms} ms</span>
+              </div>
+              <DetectionTable detections={result.detections} />
+              {result.diagnostics.length > 0 && (
+                <details className="mt-3 text-xs">
+                  <summary className="cursor-pointer text-muted-foreground">
+                    Diagnostics ({result.diagnostics.length})
+                  </summary>
+                  <pre className="mt-2 p-2 bg-muted rounded overflow-x-auto">
+                    {result.diagnostics.join("\n")}
+                  </pre>
+                </details>
+              )}
+            </section>
           )}
-        </section>
+
+          {dirResults.length > 0 && (
+            <section className="border border-border rounded p-4">
+              <h2 className="font-medium text-sm mb-3">
+                Directory Results ({dirResults.length} files)
+              </h2>
+              <div className="space-y-2">
+                {dirResults.map((r, i) => (
+                  <div key={i} className="border-b border-border pb-2">
+                    <div className="flex justify-between text-xs">
+                      <span className="font-mono">{r.path}</span>
+                      <span className="text-muted-foreground">{r.scan_time_ms} ms</span>
+                    </div>
+                    <DetectionTable detections={r.detections} compact />
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+        </>
       )}
 
-      {dirResults.length > 0 && (
-        <section className="border border-border rounded p-4">
-          <h2 className="font-medium text-sm mb-3">
-            Directory Results ({dirResults.length} files)
-          </h2>
-          <div className="space-y-2">
-            {dirResults.map((r, i) => (
-              <div key={i} className="border-b border-border pb-2">
-                <div className="flex justify-between text-xs">
-                  <span className="font-mono">{r.path}</span>
-                  <span className="text-muted-foreground">{r.scan_time_ms} ms</span>
-                </div>
-                <DetectionTable detections={r.detections} compact />
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
+      {activeTab === "hex" && filePath && <HexViewer path={filePath} />}
+      {activeTab === "disasm" && filePath && <Disassembler path={filePath} />}
+      {activeTab === "demangle" && <DemangleTool />}
+      {activeTab === "sigs" && <SignatureBrowser />}
     </div>
   );
 }

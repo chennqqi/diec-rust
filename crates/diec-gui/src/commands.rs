@@ -343,21 +343,75 @@ pub async fn stop_scan(state: tauri::State<'_, AppState>) -> Result<(), GuiError
 pub async fn list_signatures(
     _state: tauri::State<'_, AppState>,
 ) -> Result<Vec<SignatureGroupDto>, GuiError> {
-    // TODO: implement signature listing from database
-    Ok(Vec::new())
+    let db_path = resolve_db_path();
+    let db_dir = std::path::Path::new(&db_path);
+    let mut groups = Vec::new();
+
+    let Ok(entries) = std::fs::read_dir(db_dir) else {
+        return Ok(groups);
+    };
+
+    for entry in entries.flatten() {
+        let path = entry.path();
+        if !path.is_dir() {
+            continue;
+        }
+        let file_type = entry.file_name().to_string_lossy().to_string();
+        // Skip non-signature directories (e.g. _icons, .vscode).
+        if file_type.starts_with('_') || file_type.starts_with('.') {
+            continue;
+        }
+
+        let mut sigs = Vec::new();
+        if let Ok(sig_entries) = std::fs::read_dir(&path) {
+            for sig_entry in sig_entries.flatten() {
+                let sig_path = sig_entry.path();
+                if !sig_path.is_file() {
+                    continue;
+                }
+                let ext = sig_path
+                    .extension()
+                    .map(|e| e.to_string_lossy().to_string())
+                    .unwrap_or_default();
+                if ext != "sg" {
+                    continue;
+                }
+                let name = sig_entry.file_name().to_string_lossy().to_string();
+                let rel_path = format!("{}/{}", file_type, name);
+                sigs.push(SignatureInfoDto {
+                    name,
+                    file_path: rel_path,
+                });
+            }
+        }
+
+        if !sigs.is_empty() {
+            sigs.sort_by(|a, b| a.name.cmp(&b.name));
+            groups.push(SignatureGroupDto {
+                file_type,
+                signatures: sigs,
+            });
+        }
+    }
+
+    groups.sort_by(|a, b| a.file_type.cmp(&b.file_type));
+    Ok(groups)
 }
 
 /// Get the source code of a specific signature.
 #[tauri::command]
 pub async fn get_signature_source(
     _state: tauri::State<'_, AppState>,
-    _file_type: String,
-    _name: String,
+    file_type: String,
+    name: String,
 ) -> Result<SignatureSourceDto, GuiError> {
-    // TODO: implement signature source retrieval
+    let db_path = resolve_db_path();
+    let file_path = format!("{}/{}/{}", db_path, file_type, name);
+    let source = std::fs::read_to_string(&file_path)
+        .map_err(|e| GuiError::new("SIGNATURE_READ_ERROR", e.to_string()))?;
     Ok(SignatureSourceDto {
-        source: String::new(),
-        file_path: String::new(),
+        source,
+        file_path: format!("{}/{}", file_type, name),
     })
 }
 
@@ -473,9 +527,35 @@ fn collect_files_inner(
 /// Demangle a C++ or Rust symbol.
 #[tauri::command]
 pub async fn demangle(symbol: String, compiler: String) -> Result<String, GuiError> {
-    // TODO: integrate cpp_demangle / msvc-demangle / rustc-demangle
-    let _ = compiler;
-    Ok(symbol)
+    Ok(crate::demangle::demangle_symbol(&symbol, &compiler))
+}
+
+/// Read a hex dump of a file region.
+#[tauri::command]
+pub async fn read_hex(
+    path: String,
+    offset: u64,
+    max_bytes: Option<usize>,
+) -> Result<crate::hex_viewer::HexDump, GuiError> {
+    let max = max_bytes.unwrap_or(4096);
+    crate::hex_viewer::read_hex_dump(&path, offset, max)
+        .map_err(|e| GuiError::new("HEX_READ_ERROR", e))
+}
+
+/// Disassemble a byte range from a file.
+#[tauri::command]
+pub async fn disassemble(
+    path: String,
+    offset: u64,
+    max_bytes: Option<usize>,
+    bitness: Option<u32>,
+    syntax: Option<crate::disassembler::Syntax>,
+) -> Result<crate::disassembler::DisassemblyResult, GuiError> {
+    let max = max_bytes.unwrap_or(256);
+    let bits = bitness.unwrap_or(64);
+    let syn = syntax.unwrap_or(crate::disassembler::Syntax::Intel);
+    crate::disassembler::disassemble_file(&path, offset, max, bits, syn)
+        .map_err(|e| GuiError::new("DISASM_ERROR", e))
 }
 
 /// Get application settings from the persistent store.
