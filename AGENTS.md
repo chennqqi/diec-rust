@@ -40,11 +40,19 @@ Phase 7 在不破坏兼容基线的前提下持续跟进上游 DIE-engine 规则
   - 三个端点：/health、/scan/path、/scan/bytes
   - Windows 服务安装/卸载 + DEB/RPM/MSI 打包配置
   - API 文档含 curl/PowerShell/Python/Go 客户端示例
-- Phase 8 GUI 规划已交付（TODO，尚未开始实现）：
+- Phase 8 GUI 实现进行中：
   - 上游 GUI 源码分析：`docs/research/upstream-gui-analysis.md`
   - ADR 0018：Tauri v2 GUI 框架选型（Accepted）
   - Phase 8 设计文档：`docs/design/phase8-gui.md`
   - 功能对齐上游 `die` 完整 GUI（7A 核心 + 7B 高级 + 7C 扩展）
+  - 7A-0 已完成：`diec-gui` crate 骨架（Tauri v2 + React 18 + TypeScript）
+  - 7A-1 已完成：前端依赖安装 + `cargo tauri build --no-bundle` 端到端构建通过
+  - GUI 构建步骤（fnm 环境）：
+    1. `cd crates/diec-gui/frontend && cnpm install`
+    2. `npm run build`（生成 frontend/dist/）
+    3. `cargo tauri build --no-bundle`（或 `cargo build -p diec-gui --release`）
+  - beforeBuildCommand 留空：fnm multishell PATH 不被子进程继承，
+    前端构建需手动执行
 
 调研正文写入 `docs/research/`，设计正文写入 `docs/design/`，不要堆积在
 本文件或 `README.md` 中。
