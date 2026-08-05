@@ -605,3 +605,28 @@ pub async fn get_database_info(
         synced_at: version.synced_at,
     })
 }
+
+/// Scan a file with YARA rules.
+#[tauri::command]
+pub async fn yara_scan(
+    rules_source: String,
+    file_path: String,
+) -> Result<crate::yara_scanner::YaraScanResult, GuiError> {
+    // yara-x types are !Send, so run in spawn_blocking.
+    let result = tokio::task::spawn_blocking(move || {
+        crate::yara_scanner::scan_with_yara(&rules_source, &file_path)
+    })
+    .await
+    .map_err(|e| GuiError::new("TASK_JOIN_FAILED", e.to_string()))?;
+    result.map_err(|e| GuiError::new("YARA_ERROR", e))
+}
+
+/// Scan a PE file with PEID signatures.
+#[tauri::command]
+pub async fn peid_scan(
+    userdb_path: String,
+    file_path: String,
+) -> Result<crate::peid_scanner::PeidScanResult, GuiError> {
+    crate::peid_scanner::scan_with_peid(&userdb_path, &file_path)
+        .map_err(|e| GuiError::new("PEID_ERROR", e))
+}

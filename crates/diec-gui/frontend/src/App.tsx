@@ -6,6 +6,9 @@ import { HexViewer } from "./components/HexViewer";
 import { Disassembler } from "./components/Disassembler";
 import { DemangleTool } from "./components/DemangleTool";
 import { SignatureBrowser } from "./components/SignatureBrowser";
+import { YaraScanner } from "./components/YaraScanner";
+import { PeidScanner } from "./components/PeidScanner";
+import { OnlineTools } from "./components/OnlineTools";
 
 interface ScanDetectionDto {
   file_type: string;
@@ -99,7 +102,7 @@ export default function App() {
   const [settings, setSettings] = useState<AppSettings>(defaultSettings);
   const [flags, setFlags] = useState<ScanFlagsDto>(defaultFlags);
   const [dirProgress, setDirProgress] = useState<{ current: number; total: number } | null>(null);
-  const [activeTab, setActiveTab] = useState<"scan" | "hex" | "disasm" | "demangle" | "sigs">("scan");
+  const [activeTab, setActiveTab] = useState<"scan" | "hex" | "disasm" | "demangle" | "sigs" | "yara" | "peid" | "online">("scan");
   const dragCounter = useRef(0);
 
   // Load settings on mount.
@@ -389,7 +392,7 @@ export default function App() {
 
       {/* Tab navigation */}
       <div className="flex gap-1 mb-3 border-b border-border">
-        {(["scan", "hex", "disasm", "demangle", "sigs"] as const).map((tab) => (
+        {(["scan", "hex", "disasm", "demangle", "sigs", "yara", "peid", "online"] as const).map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -399,7 +402,7 @@ export default function App() {
                 : "text-muted-foreground hover:bg-muted"
             }`}
           >
-            {tab === "scan" ? "Scan" : tab === "hex" ? "Hex" : tab === "disasm" ? "Disasm" : tab === "demangle" ? "Demangle" : "Signatures"}
+            {tab === "scan" ? "Scan" : tab === "hex" ? "Hex" : tab === "disasm" ? "Disasm" : tab === "demangle" ? "Demangle" : tab === "sigs" ? "Signatures" : tab === "yara" ? "YARA" : tab === "peid" ? "PEID" : "Online"}
           </button>
         ))}
       </div>
@@ -451,6 +454,9 @@ export default function App() {
       {activeTab === "disasm" && filePath && <Disassembler path={filePath} />}
       {activeTab === "demangle" && <DemangleTool />}
       {activeTab === "sigs" && <SignatureBrowser />}
+      {activeTab === "yara" && filePath && <YaraScanner path={filePath} />}
+      {activeTab === "peid" && filePath && <PeidScanner path={filePath} />}
+      {activeTab === "online" && <OnlineTools hash="" />}
     </div>
   );
 }

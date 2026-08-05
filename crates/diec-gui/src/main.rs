@@ -10,8 +10,10 @@ mod commands;
 mod demangle;
 mod disassembler;
 mod hex_viewer;
+mod peid_scanner;
 mod settings;
 mod state;
+mod yara_scanner;
 
 use state::AppState;
 use tauri::Manager;
@@ -44,6 +46,8 @@ fn main() {
             commands::get_settings,
             commands::save_settings,
             commands::get_database_info,
+            commands::yara_scan,
+            commands::peid_scan,
         ])
         .run(tauri::generate_context!())
         .expect("error while running diec-gui application");

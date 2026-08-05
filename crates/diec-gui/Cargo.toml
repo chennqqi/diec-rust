@@ -28,6 +28,8 @@ tokio = { version = "1", features = ["rt-multi-thread", "sync"] }
 cpp_demangle = "0.4"
 rustc-demangle = "0.1"
 iced-x86 = { version = "1.21", default-features = false, features = ["std", "decoder", "intel", "gas", "nasm"] }
+# 7C extended features
+yara-x = "1.19"
 
 [build-dependencies]
 tauri-build = { version = "2", features = [] }
