@@ -4,6 +4,27 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>diec-gui</title>
+    <!-- Dev-only Tauri API mock: enables browser testing via Vite dev server.
+         In Tauri production builds, __TAURI_INTERNALS__ is provided by the
+         webview and this mock is never triggered. -->
+    <script>
+      if (!window.__TAURI_INTERNALS__) {
+        // Minimal mock to allow UI rendering in browser dev mode.
+        // IPC calls will reject — only layout/visual testing works.
+        window.__TAURI_INTERNALS__ = {
+          metadata: {
+            currentWindow: { label: "main" },
+            currentWebview: { label: "main", windowLabel: "main" },
+          },
+          invoke: () => Promise.reject(new Error("Mock: not in Tauri")),
+          convertFileSrc: (path) => path,
+          transformCallback: (callback, once) => {
+            const id = Math.floor(Math.random() * 1e9);
+            return id;
+          },
+        };
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
