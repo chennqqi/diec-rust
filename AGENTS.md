@@ -30,7 +30,12 @@ Phase 6 扩大差分测试语料和跨平台矩阵，建立持续 fuzz 和历史
   - Mach-O 64 扫描性能：18ms → 14ms
 - 规则加载 1186/1186 = 100%（此前 1184/1186 = 99.83%）
 - 差分测试 31 基线 + 20 边缘样本，0 不匹配
-- 459 个测试全部通过，cargo fmt/clippy 零警告，0 TODO/FIXME
+- 477 个测试全部通过，cargo fmt/clippy 零警告，0 TODO/FIXME
+- ADR 0016：Scanner per-file_type runtime 跨文件复用（Accepted）
+- ADR 0017：died (die daemon) HTTP/JSON 扫描服务层（Accepted）
+  - 三个端点：/health、/scan/path、/scan/bytes
+  - Windows 服务安装/卸载 + DEB/RPM/MSI 打包配置
+  - API 文档含 curl/PowerShell/Python/Go 客户端示例
 
 调研正文写入 `docs/research/`，设计正文写入 `docs/design/`，不要堆积在
 本文件或 `README.md` 中。

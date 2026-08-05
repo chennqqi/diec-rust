@@ -8,11 +8,12 @@ members = [
     "crates/diec-output",
     "crates/diec-cli",
     "crates/diec-ffi",
+    "crates/diec-server",
     "xtask",
 ]
 
 [workspace.package]
-version = "0.2.2"
+version = "0.3.0"
 edition = "2024"
 rust-version = "1.88"
 license = "MIT"

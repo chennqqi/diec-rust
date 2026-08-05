@@ -1,5 +1,66 @@
 # Release Notes
 
+## diec-rust v0.3.0
+
+Minor release adding the died (die daemon) HTTP/JSON scan service and
+runtime reuse optimization for batch scanning.
+
+### New Features
+
+- **died (die daemon) HTTP/JSON service** (ADR 0017):
+  - `GET /health` — service status and version info
+  - `POST /scan/path` — scan local file by path
+  - `POST /scan/bytes` — scan uploaded file content
+  - Security: `--allow-root` path restriction, `--max-file-size`,
+    `--max-request-size`, `--scan-timeout`
+  - Windows service support: `died install` / `died uninstall` via `sc.exe`
+  - Linux systemd unit template generation
+  - Packaging: DEB (cargo-deb), RPM (spec), MSI (cargo-wix)
+  - API documentation with curl/PowerShell/Python/Go client examples
+    ([docs/died-api.md](docs/died-api.md))
+
+- **Scanner runtime reuse** (ADR 0016):
+  - `diec_engine::Scanner` — stateful scanner that reuses QuickJS
+    runtimes across files of the same file type
+  - `RquickjsRuntime::reinit()` — clears results and re-runs type init
+    scripts to update host aliases for a new file
+  - Differential verification: reuse vs no-reuse 0 mismatches
+  - BudgetExceeded error evicts the runtime for fresh creation
+
+- **Database::version()** (ADR 0017):
+  - Loads commit/synced_at from `rule-source-manifest.json`
+  - Fallback to `DatabaseVersion::unknown(rule_count)` when manifest
+    is not available
+
+### Improvements
+
+- Rule count: 2037 rules loaded (up from 1186 — includes db_extra)
+- Test count: 477 tests (up from 459)
+- New crate: `diec-server` (thin adapter over `diec-engine`, no core
+  layer dependency on CLI or FFI)
+
+### Artifacts
+
+Each platform archive now also includes:
+- `bin/died` — HTTP/JSON scan service daemon
+- `bin/died.exe` (Windows) — with Windows service support
+
+### Documentation
+
+- [docs/died-api.md](docs/died-api.md) — full API reference with client
+  examples in curl, PowerShell, Python, and Go
+- [crates/diec-server/packaging/README.md](crates/diec-server/packaging/README.md)
+  — DEB/RPM/MSI packaging guide
+- ADR 0016 (runtime reuse) and ADR 0017 (scan service layer) — Accepted
+
+### Testing
+
+477 tests, 6 fuzz targets, 0 failures.
+
+### License
+
+MIT — see [LICENSE](LICENSE) and [NOTICES.md](NOTICES.md)
+
 ## diec-rust v0.2.2
 
 Patch release that fixes the v0.2.1 release build failure.

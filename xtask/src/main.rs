@@ -25,6 +25,7 @@ const RUNTIME_CRATES: &[&str] = &[
     "diec-output",
     "diec-cli",
     "diec-ffi",
+    "diec-server",
 ];
 
 /// Upstream rule trees tracked by the manifest.
@@ -57,6 +58,12 @@ fn allowed_deps() -> BTreeMap<&'static str, BTreeSet<&'static str>> {
     m.insert(
         "diec-ffi",
         ["diec-engine", "diec-output"].into_iter().collect(),
+    );
+    // diec-server is a thin adapter over diec-engine (ADR 0017).
+    // It does not depend on diec-cli or diec-ffi.
+    m.insert(
+        "diec-server",
+        ["diec-engine", "diec-core"].into_iter().collect(),
     );
     m
 }

@@ -52,7 +52,7 @@ python tools/benchmark/run_benchmarks.py --quick
 
 ## Compatibility
 
-**454 tests pass**, upstream rules loaded, 28 baseline + 20 edge-case
+**477 tests pass**, upstream rules loaded, 28 baseline + 20 edge-case
 corpus files verified — no crashes, no spurious detections, no hangs.
 
 Differential testing against upstream DIE 3.21:
@@ -81,6 +81,24 @@ cd diec-rust && cargo build --workspace --release
 
 Python / Go / C bindings: see [README.zh-CN.md](README.zh-CN.md) or
 [bindings/](bindings/).
+
+## died (Scan Service)
+
+died (die daemon) is an HTTP/JSON scan service for batch file
+identification. It loads the rule database once and reuses it across
+requests, avoiding the 160ms per-process database load overhead.
+
+```sh
+# Build and start the server
+cargo build --release --package diec-server
+./target/release/died --db upstream/Detect-It-Easy/db --bind 127.0.0.1:18080
+```
+
+Client examples (curl, PowerShell, Python, Go) and full API reference:
+[docs/died-api.md](docs/died-api.md).
+
+Windows service installation, Linux systemd setup, and DEB/RPM/MSI
+packaging: [crates/diec-server/packaging/README.md](crates/diec-server/packaging/README.md).
 
 ## License
 

@@ -293,6 +293,18 @@ rquickjs 后端 + Binary host API bridge + 签名解析器 + 完整 PE/ELF/Mach-
   - Host API 兼容性清单（含 Capstone 反汇编）
   - 性能基线数据（PE32 ~89ms、ELF64 ~15ms、Mach-O ~14ms）
   - 测试统计（459 个测试）
+- **ADR 0016：同一 file_type 的规则运行时跨文件复用**（Accepted）：
+  - `Scanner` 有状态对象，per-file_type runtime 缓存 + `reinit` 重置 host 别名
+  - 持久状态审计：框架 `result()` 重置全局变量，复用安全
+  - 差分验证：复用 vs 非复用 0 不匹配
+- **ADR 0017：died (die daemon) HTTP/JSON 扫描服务层**（Accepted）：
+  - `GET /health`、`POST /scan/path`、`POST /scan/bytes` 三个端点
+  - `Database::version()` 从 manifest 加载 commit/synced_at
+  - 安全边界：allow_root、max_file_size、max_request_size、scan_timeout
+  - Windows 服务安装/卸载（sc.exe 集成）
+  - 打包：DEB（cargo-deb）、RPM（spec）、MSI（cargo-wix）
+  - API 文档含 curl/PowerShell/Python/Go 客户端示例
+- 测试统计更新：477 个测试（+14 个 Scanner/Database version/Server 集成测试）
 
 **退出条件达成情况**：
 - ✅ 既定兼容指标：规则加载 100%，差分测试 0 不匹配

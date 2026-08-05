@@ -637,6 +637,43 @@ impl RquickjsRuntime {
             }
         }
     }
+
+    /// Re-initialize the runtime for a new file scan, reusing the already
+    /// loaded framework (globals, init script, read include).
+    ///
+    /// This is used by `Scanner` (ADR 0016) to avoid the cost of creating
+    /// a new runtime and reloading the framework for each file. After
+    /// `register_host_api` is called with the new file's host, this method
+    /// re-runs the type-specific init scripts so that aliases like
+    /// `var File = PE; var X = PE;` point to the newly registered host
+    /// object instead of the previous file's host.
+    ///
+    /// The runtime must have been previously initialized via `load_database`
+    /// + `init`. Results from the previous scan are cleared.
+    pub fn reinit(&mut self) -> Result<(), RuleError> {
+        if !self.database_loaded {
+            return Err(RuleError::Backend {
+                detail: "reinit called before load_database".into(),
+            });
+        }
+
+        // Clear any leftover results from the previous file's rules.
+        self.clear_results()?;
+
+        // Re-run type-specific init scripts to update host aliases
+        // (e.g. `var File = PE; var X = PE;`). These scripts set globals
+        // like File/X to point at the host API object that was just
+        // re-registered via register_host_api.
+        for (type_name, init_source) in &self.type_init_scripts {
+            if let Err(e) = self.eval_script(init_source) {
+                return Err(RuleError::Backend {
+                    detail: format!("reinit error for {type_name}: {e}"),
+                });
+            }
+        }
+
+        Ok(())
+    }
 }
 
 #[cfg(test)]

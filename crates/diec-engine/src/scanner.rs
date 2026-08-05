@@ -3,6 +3,10 @@
 //! The scanner creates a rule runtime per rule, loads the database
 //! framework (init + includes), and evaluates each rule in isolation.
 //! Results are aggregated into a `ScanResult`.
+//!
+//! For batch scanning, [`Scanner`] reuses runtimes across files of the
+//! same file type (ADR 0016), avoiding repeated runtime creation and
+//! framework loading.
 
 use crate::database::Database;
 use crate::host::BufferHost;
@@ -10,7 +14,8 @@ use diec_core::cancel::CancellationToken;
 use diec_core::input::{ByteRange, ByteSource, ByteView, MemorySource};
 use diec_formats::probe::ProbeTable;
 use diec_rules::backend_rquickjs::RquickjsRuntime;
-use diec_rules::runtime::{DatabaseSnapshot, RuleRuntime, RuntimeConfig};
+use diec_rules::runtime::{DatabaseSnapshot, LoadedRule, RuleRuntime, RuntimeConfig};
+use std::collections::BTreeMap;
 use std::sync::Arc;
 
 /// Detect the file format and return the set of rule file types that
@@ -416,6 +421,284 @@ pub fn scan_bytes(
     })
 }
 
+// ---------------------------------------------------------------------------
+// Scanner: stateful scanner with per-file-type runtime reuse (ADR 0016)
+// ---------------------------------------------------------------------------
+
+/// A cached runtime for a specific file type, ready to be reused across
+/// multiple file scans.
+///
+/// The runtime has the framework loaded (globals + init + read include +
+/// type init). To scan a new file, call `register_host_api` with the new
+/// file's host, then `reinit` to update host aliases, then evaluate rules.
+struct CachedRuntime {
+    /// The QuickJS runtime with framework already loaded.
+    runtime: RquickjsRuntime,
+}
+
+/// A stateful scanner that reuses rule runtimes across files of the same
+/// file type.
+///
+/// The free function [`scan_bytes`] creates a new runtime for each file
+/// type group on every call. `Scanner` instead caches one runtime per file
+/// type and reuses it for subsequent files, avoiding the cost of runtime
+/// creation and framework loading (ADR 0016).
+///
+/// **Safety**: the framework's `result()` function resets global detection
+/// variables (`bDetected`, `sName`, `sVersion`, etc.) after each rule.
+/// Rule-specific bare assignments are low risk because they are initialized
+/// before use within each rule's `detect()` function. See
+/// `docs/research/runtime-reuse-state-audit.md` for the full audit.
+///
+/// If a runtime encounters an error (OOM, uncaught exception), it is
+/// evicted from the cache and a fresh one is created for the next file.
+///
+/// `Scanner` is not `Send` because `RquickjsRuntime` is not `Send` (QuickJS
+/// contexts are thread-local). For multi-threaded use (e.g. the server
+/// layer), each worker thread should own its own `Scanner`.
+pub struct Scanner {
+    /// The immutable database shared across all scans.
+    database: Arc<Database>,
+    /// Cached runtimes keyed by file type (e.g. "PE", "ELF", "Binary").
+    cache: BTreeMap<String, CachedRuntime>,
+}
+
+impl Scanner {
+    /// Create a new `Scanner` with the given database.
+    ///
+    /// The database is wrapped in `Arc` for sharing. Runtimes are created
+    /// lazily on the first scan of each file type.
+    pub fn new(database: Arc<Database>) -> Self {
+        Self {
+            database,
+            cache: BTreeMap::new(),
+        }
+    }
+
+    /// Clear all cached runtimes, forcing fresh runtime creation on the
+    /// next scan.
+    ///
+    /// Call this after a database reload or when memory usage from cached
+    /// runtimes needs to be reclaimed.
+    pub fn reset(&mut self) {
+        self.cache.clear();
+    }
+
+    /// Scan a single file by path, reusing cached runtimes.
+    ///
+    /// This is the stateful equivalent of [`scan_once`]. It reads the file
+    /// from disk and delegates to [`Scanner::scan_bytes`].
+    pub fn scan_file(
+        &mut self,
+        path: &str,
+        flags: crate::host::ScanFlags,
+        cancel: &CancellationToken,
+    ) -> Result<ScanResult, ScanError> {
+        let data = std::fs::read(path).map_err(|e| ScanError::Input {
+            path: path.to_string(),
+            detail: e.to_string(),
+        })?;
+        self.scan_bytes(path, data, flags, cancel)
+    }
+
+    /// Scan a byte buffer, reusing cached runtimes.
+    ///
+    /// This is the stateful equivalent of [`scan_bytes`]. The detection
+    /// logic is identical; the only difference is that runtimes are cached
+    /// per file type and reused across calls.
+    pub fn scan_bytes(
+        &mut self,
+        file_name: &str,
+        data: Vec<u8>,
+        flags: crate::host::ScanFlags,
+        cancel: &CancellationToken,
+    ) -> Result<ScanResult, ScanError> {
+        let snapshot = self.database.snapshot();
+        let mut detections = Vec::new();
+        let mut diagnostics = Vec::new();
+
+        // Detect the file format to determine which rule types to run.
+        let active_types = if flags.all_types {
+            all_rule_types()
+        } else {
+            detect_rule_types(&data)
+        };
+
+        // Group rules by file type.
+        let mut groups: BTreeMap<&str, Vec<&LoadedRule>> = BTreeMap::new();
+        for rule in &snapshot.rules {
+            if active_types.contains(&rule.file_type.as_str()) {
+                groups.entry(&rule.file_type).or_default().push(rule);
+            }
+        }
+
+        // Process each file type group.
+        for (file_type, rules) in &groups {
+            if cancel.is_cancelled() {
+                return Err(ScanError::Cancelled);
+            }
+
+            // Try to get a cached runtime for this file type, or create one.
+            let need_create = !self.cache.contains_key(*file_type);
+
+            if need_create {
+                let runtime = match self.create_runtime_for_type(snapshot, file_type) {
+                    Ok(rt) => rt,
+                    Err(e) => {
+                        diagnostics.push(format!("runtime create error for {file_type}: {e}"));
+                        continue;
+                    }
+                };
+                self.cache
+                    .insert(file_type.to_string(), CachedRuntime { runtime });
+            }
+
+            // Get the cached runtime (mutable).
+            let cached = self
+                .cache
+                .get_mut(*file_type)
+                .expect("just inserted or existed");
+
+            // Register the new file's host API, overwriting the previous one.
+            let host =
+                Arc::new(BufferHost::new(data.clone(), file_name.to_string()).with_flags(flags));
+            if let Err(e) = cached.runtime.register_host_api(host.clone()) {
+                diagnostics.push(format!("host API error for {file_type}: {e}"));
+                // Evict the broken runtime so next scan creates a fresh one.
+                self.cache.remove(*file_type);
+                continue;
+            }
+
+            // Re-run type init scripts to update host aliases
+            // (e.g. `var File = PE; var X = PE;`).
+            if let Err(e) = cached.runtime.reinit() {
+                diagnostics.push(format!("reinit error for {file_type}: {e}"));
+                self.cache.remove(*file_type);
+                continue;
+            }
+
+            // Evaluate each rule in an isolated scope.
+            let mut runtime_error = false;
+            for rule in rules {
+                if cancel.is_cancelled() {
+                    return Err(ScanError::Cancelled);
+                }
+
+                match cached
+                    .runtime
+                    .evaluate_rule_source(&rule.path, &rule.source, cancel)
+                {
+                    Ok(results) => {
+                        for result in results {
+                            detections.push(ScanDetection {
+                                file_type: rule.file_type.clone(),
+                                type_name: result.type_name,
+                                name: result.name,
+                                version: if result.version.is_empty() {
+                                    None
+                                } else {
+                                    Some(result.version)
+                                },
+                                options: if result.options.is_empty() {
+                                    None
+                                } else {
+                                    Some(result.options)
+                                },
+                            });
+                        }
+                    }
+                    Err(e) => {
+                        diagnostics.push(format!("{}: {}", rule.path, e));
+                        // A script exception does not corrupt the runtime;
+                        // continue with the next rule. Only OOM/limit errors
+                        // require eviction (checked below).
+                        if matches!(e, diec_rules::error::RuleError::BudgetExceeded { .. }) {
+                            runtime_error = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // If the runtime hit a budget limit, evict it.
+            if runtime_error {
+                self.cache.remove(*file_type);
+            }
+        }
+
+        // Apply --hideunknown filter.
+        if flags.hide_unknown {
+            detections.retain(|d| !d.name.is_empty() && d.name != "Unknown");
+        }
+
+        Ok(ScanResult {
+            path: file_name.to_string(),
+            detections,
+            diagnostics,
+        })
+    }
+
+    /// Create a new runtime for a file type, load the framework, and
+    /// initialize it with a placeholder host.
+    ///
+    /// The host API is registered later by the caller (before `reinit`).
+    /// However, `init()` requires a host to be registered first. We
+    /// register a dummy host here, then the caller overwrites it.
+    fn create_runtime_for_type(
+        &self,
+        snapshot: &DatabaseSnapshot,
+        file_type: &str,
+    ) -> Result<RquickjsRuntime, ScanError> {
+        let mut runtime = RquickjsRuntime::new(RuntimeConfig::default()).map_err(|e| {
+            ScanError::DatabaseInit {
+                detail: e.to_string(),
+            }
+        })?;
+
+        // Load the framework (init + type init + includes) with no rules.
+        let type_init: Vec<(String, String)> = snapshot
+            .type_init_scripts
+            .iter()
+            .filter(|(ft, _)| ft == file_type)
+            .cloned()
+            .collect();
+        let framework_snapshot = DatabaseSnapshot {
+            rules: Vec::new(),
+            init_script: snapshot.init_script.clone(),
+            type_init_scripts: type_init,
+            include_scripts: snapshot.include_scripts.clone(),
+        };
+
+        runtime
+            .load_database(&framework_snapshot)
+            .map_err(|e| ScanError::DatabaseInit {
+                detail: e.to_string(),
+            })?;
+
+        // Register a placeholder host so init() can run type_init scripts
+        // that reference host objects (e.g. `var File = Binary;`).
+        // The caller will overwrite this with the real file's host.
+        let dummy_host = Arc::new(
+            BufferHost::new(Vec::new(), "__init__".to_string())
+                .with_flags(crate::host::ScanFlags::default()),
+        );
+        runtime
+            .register_host_api(dummy_host.clone())
+            .map_err(|e| ScanError::HostApi {
+                detail: e.to_string(),
+            })?;
+
+        let host_ref: &dyn diec_rules::host_api::HostApi = &*dummy_host;
+        runtime
+            .init(host_ref)
+            .map_err(|e| ScanError::DatabaseInit {
+                detail: e.to_string(),
+            })?;
+
+        Ok(runtime)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -678,5 +961,213 @@ mod tests {
             "Binary should NOT be included for JPEG files, got: {:?}",
             types
         );
+    }
+
+    // --- Scanner (ADR 0016) tests ---
+
+    /// Helper: build a database or skip the test if upstream db is missing.
+    fn build_db() -> Option<Database> {
+        let db_path = db_root();
+        match DatabaseBuilder::new(&db_path).build() {
+            Ok(db) => Some(db),
+            Err(_) => {
+                eprintln!("Skipping: upstream database not found");
+                None
+            }
+        }
+    }
+
+    /// Test data samples for differential testing: each sample targets a
+    /// different file type to exercise different runtime caches.
+    fn differential_samples() -> Vec<(&'static str, Vec<u8>)> {
+        vec![
+            // 7z archive (Binary rules)
+            ("test.7z", {
+                let mut d = vec![0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C, 0x00, 0x04];
+                d.resize(64, 0);
+                d
+            }),
+            // JPEG image (JPEG rules)
+            ("test.jpg", {
+                let mut d = vec![
+                    0xFF, 0xD8, 0xFF, 0xE0, 0x00, 0x10, 0x4A, 0x46, 0x49, 0x46, 0x00,
+                ];
+                d.resize(64, 0);
+                d
+            }),
+            // RAR archive (Binary rules)
+            ("test.rar", {
+                let mut d: Vec<u8> = vec![
+                    0x52, 0x61, 0x72, 0x21, 0x1A, 0x07, 0x00, 0xCF, 0x90, 0x73, 0x00, 0x00, 0x0D,
+                    0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
+                ];
+                d.resize(64, 0);
+                d
+            }),
+            // Random data (Binary rules, no detection expected)
+            ("random.bin", (0..128).map(|i| (i * 7 + 13) as u8).collect()),
+        ]
+    }
+
+    #[test]
+    fn scanner_differential_reuse_vs_no_reuse() {
+        let database = match build_db() {
+            Some(db) => db,
+            None => return,
+        };
+        let database = Arc::new(database);
+        let cancel = CancellationToken::new();
+        let flags = crate::host::ScanFlags::default();
+
+        // Scan all samples with the free function (no reuse, fresh runtime
+        // per file per file_type).
+        let mut baseline_results: Vec<(String, ScanResult)> = Vec::new();
+        for (name, data) in differential_samples() {
+            let result = scan_bytes(&database, name, data.clone(), flags, &cancel)
+                .expect("scan_bytes should not fail");
+            baseline_results.push((name.to_string(), result));
+        }
+
+        // Scan the same samples with Scanner (runtime reuse across files).
+        let mut scanner = Scanner::new(database.clone());
+        for (name, data) in differential_samples() {
+            let result = scanner
+                .scan_bytes(name, data.clone(), flags, &cancel)
+                .expect("Scanner::scan_bytes should not fail");
+            // Find the baseline result for this sample.
+            let baseline = baseline_results
+                .iter()
+                .find(|(n, _)| n == name)
+                .map(|(_, r)| r)
+                .expect("baseline result should exist");
+
+            // The detections must match exactly.
+            assert_eq!(
+                result.detections, baseline.detections,
+                "Scanner (reuse) vs scan_bytes (no reuse) mismatch for '{name}':\n\
+                 reuse:     {:?}\n\
+                 no-reuse:  {:?}",
+                result.detections, baseline.detections
+            );
+        }
+    }
+
+    #[test]
+    fn scanner_differential_same_file_twice() {
+        // Scanning the same file twice with a reused runtime should produce
+        // identical results. This verifies that stale global state from the
+        // first scan does not affect the second.
+        let database = match build_db() {
+            Some(db) => db,
+            None => return,
+        };
+        let database = Arc::new(database);
+        let cancel = CancellationToken::new();
+        let flags = crate::host::ScanFlags::default();
+
+        let mut scanner = Scanner::new(database);
+
+        // Scan a 7z file twice.
+        let mut data = vec![0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C, 0x00, 0x04];
+        data.resize(64, 0);
+
+        let result1 = scanner
+            .scan_bytes("test.7z", data.clone(), flags, &cancel)
+            .unwrap();
+        let result2 = scanner
+            .scan_bytes("test.7z", data.clone(), flags, &cancel)
+            .unwrap();
+
+        assert_eq!(
+            result1.detections, result2.detections,
+            "Scanning the same file twice should produce identical results:\n\
+             first:  {:?}\n\
+             second: {:?}",
+            result1.detections, result2.detections
+        );
+    }
+
+    #[test]
+    fn scanner_differential_multiple_formats_sequence() {
+        // Scan files of different formats in sequence to verify that
+        // switching between file types (and thus different runtime caches)
+        // does not cause cross-contamination.
+        let database = match build_db() {
+            Some(db) => db,
+            None => return,
+        };
+        let database = Arc::new(database);
+        let cancel = CancellationToken::new();
+        let flags = crate::host::ScanFlags::default();
+
+        let samples = differential_samples();
+
+        // Baseline: no reuse.
+        let mut baseline: Vec<(String, ScanResult)> = Vec::new();
+        for (name, data) in &samples {
+            let r = scan_bytes(&database, name, data.clone(), flags, &cancel).unwrap();
+            baseline.push((name.to_string(), r));
+        }
+
+        // Scanner: reuse, scan in the same order.
+        let mut scanner = Scanner::new(database.clone());
+        for (name, data) in &samples {
+            let r = scanner
+                .scan_bytes(name, data.clone(), flags, &cancel)
+                .unwrap();
+            let b = baseline
+                .iter()
+                .find(|(n, _)| n == name)
+                .map(|(_, r)| r)
+                .unwrap();
+            assert_eq!(
+                r.detections, b.detections,
+                "Mismatch for '{name}' in multi-format sequence"
+            );
+        }
+
+        // Scan again in REVERSE order to catch any order-dependent state.
+        for (name, data) in samples.iter().rev() {
+            let r = scanner
+                .scan_bytes(name, data.clone(), flags, &cancel)
+                .unwrap();
+            let b = baseline
+                .iter()
+                .find(|(n, _)| n == name)
+                .map(|(_, r)| r)
+                .unwrap();
+            assert_eq!(
+                r.detections, b.detections,
+                "Mismatch for '{name}' in reverse-order scan (order-dependent state leak)"
+            );
+        }
+    }
+
+    #[test]
+    fn scanner_reset_clears_cache() {
+        let database = match build_db() {
+            Some(db) => db,
+            None => return,
+        };
+        let database = Arc::new(database);
+        let cancel = CancellationToken::new();
+        let flags = crate::host::ScanFlags::default();
+
+        let mut scanner = Scanner::new(database);
+
+        // Scan a file to populate the cache.
+        let mut data = vec![0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C, 0x00, 0x04];
+        data.resize(64, 0);
+        let _ = scanner
+            .scan_bytes("test.7z", data.clone(), flags, &cancel)
+            .unwrap();
+
+        // Reset should clear the cache (no panic, no error).
+        scanner.reset();
+
+        // Scanning after reset should work (creates fresh runtime).
+        let result = scanner.scan_bytes("test.7z", data, flags, &cancel).unwrap();
+        let found = result.detections.iter().any(|d| d.name == "7-Zip");
+        assert!(found, "Expected 7-Zip detection after reset");
     }
 }

@@ -1,0 +1,279 @@
+//! Request handlers for the scan service (ADR 0017).
+
+use std::path::Path;
+use std::sync::Arc;
+
+use axum::Json;
+use axum::extract::State;
+use serde::{Deserialize, Serialize};
+
+use crate::AppState;
+use crate::error::ServerError;
+
+/// Scan flags passed by the client, mirroring `diec_engine::ScanFlags`.
+#[derive(Debug, Clone, Default, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ScanFlagsRequest {
+    /// Enable all file type rules (--alltypes).
+    #[serde(default)]
+    pub all_types: bool,
+    /// Enable deep scan mode.
+    #[serde(default)]
+    pub deep: bool,
+    /// Enable heuristic scan mode.
+    #[serde(default)]
+    pub heuristic: bool,
+    /// Enable aggressive scan mode.
+    #[serde(default)]
+    pub aggressive: bool,
+    /// Hide unknown detections.
+    #[serde(default)]
+    pub hide_unknown: bool,
+    /// Enable verbose output.
+    #[serde(default)]
+    pub verbose: bool,
+}
+
+impl From<ScanFlagsRequest> for diec_engine::ScanFlags {
+    fn from(req: ScanFlagsRequest) -> Self {
+        diec_engine::ScanFlags {
+            all_types: req.all_types,
+            deep: req.deep,
+            heuristic: req.heuristic,
+            aggressive: req.aggressive,
+            hide_unknown: req.hide_unknown,
+            verbose: req.verbose,
+        }
+    }
+}
+
+/// Request body for `/scan/path`.
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ScanPathRequest {
+    /// Absolute or relative file path on the server.
+    pub path: String,
+    /// Scan flags.
+    #[serde(default)]
+    pub flags: ScanFlagsRequest,
+}
+
+/// A single detection in the response.
+#[derive(Debug, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct DetectionResponse {
+    pub file_type: String,
+    #[serde(rename = "type")]
+    pub type_name: String,
+    pub name: String,
+    pub version: Option<String>,
+    pub options: Option<String>,
+}
+
+/// Database version info in the response.
+#[derive(Debug, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct DatabaseVersionResponse {
+    pub commit: String,
+    pub rule_count: usize,
+    pub synced_at: String,
+}
+
+/// Health check response.
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct HealthResponse {
+    pub status: String,
+    pub program_version: String,
+    pub db_version: DatabaseVersionResponse,
+}
+
+/// Scan result response (used by both `/scan/path` and `/scan/bytes`).
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ScanResponse {
+    pub path: String,
+    pub detections: Vec<DetectionResponse>,
+    pub diagnostics: Vec<String>,
+    pub program_version: String,
+    pub db_version: DatabaseVersionResponse,
+}
+
+/// `GET /health` — return service status and version info.
+pub async fn health(State(state): State<Arc<AppState>>) -> Json<HealthResponse> {
+    let db_version = state.database.version();
+    Json(HealthResponse {
+        status: "ok".to_string(),
+        program_version: env!("CARGO_PKG_VERSION").to_string(),
+        db_version: DatabaseVersionResponse {
+            commit: db_version.commit,
+            rule_count: db_version.rule_count,
+            synced_at: db_version.synced_at,
+        },
+    })
+}
+
+/// `POST /scan/path` — scan a local file by path.
+pub async fn scan_path(
+    State(state): State<Arc<AppState>>,
+    Json(req): Json<ScanPathRequest>,
+) -> Result<Json<ScanResponse>, ServerError> {
+    // Validate and canonicalize the path.
+    let path = Path::new(&req.path);
+    if !path.exists() {
+        return Err(ServerError::NotFound(req.path.clone()));
+    }
+
+    // Canonicalize to resolve symlinks and `..`.
+    let canonical = path
+        .canonicalize()
+        .map_err(|e| ServerError::IoError(format!("canonicalize {}: {e}", req.path)))?;
+
+    // Check allowed root if configured.
+    if let Some(ref allow_root) = state.config.allow_root {
+        let allow_canonical = allow_root
+            .canonicalize()
+            .map_err(|e| ServerError::IoError(format!("canonicalize allow_root: {e}")))?;
+        if !canonical.starts_with(&allow_canonical) {
+            return Err(ServerError::PathNotAllowed(req.path.clone()));
+        }
+    }
+
+    // Check file size.
+    let metadata = std::fs::metadata(&canonical)
+        .map_err(|e| ServerError::IoError(format!("metadata {}: {e}", req.path)))?;
+    let file_size = metadata.len() as usize;
+    if file_size > state.config.max_file_size {
+        return Err(ServerError::FileTooLarge {
+            path: req.path.clone(),
+            size: metadata.len(),
+            max: state.config.max_file_size,
+        });
+    }
+
+    // Read the file content.
+    let data = std::fs::read(&canonical)
+        .map_err(|e| ServerError::IoError(format!("read {}: {e}", req.path)))?;
+
+    let file_name = canonical
+        .file_name()
+        .and_then(|n| n.to_str())
+        .unwrap_or(&req.path)
+        .to_string();
+
+    let flags = diec_engine::ScanFlags::from(req.flags);
+
+    // Run the scan on a blocking thread.
+    let database = state.database.clone();
+    let timeout_secs = state.config.scan_timeout_secs;
+    let scan_file_name = file_name.clone();
+    let result = tokio::task::spawn_blocking(move || {
+        let cancel = diec_core::cancel::CancellationToken::new();
+        let cancel_clone = cancel.clone();
+
+        // Spawn a timeout thread that cancels the scan.
+        let timeout_handle = std::thread::spawn(move || {
+            std::thread::sleep(std::time::Duration::from_secs(timeout_secs));
+            cancel_clone.cancel();
+        });
+
+        let result = diec_engine::scan_bytes(&database, &scan_file_name, data, flags, &cancel);
+        // The timeout thread may still be sleeping; we don't need to join it.
+        drop(timeout_handle);
+        result
+    })
+    .await
+    .map_err(|e| ServerError::ScanError(format!("blocking task panicked: {e}")))?
+    .map_err(|e| ServerError::ScanError(e.to_string()))?;
+
+    let db_version = state.database.version();
+    Ok(Json(build_scan_response(&file_name, result, &db_version)))
+}
+
+/// `POST /scan/bytes` — scan uploaded file content.
+///
+/// The request body is the raw file bytes (`application/octet-stream`).
+/// Scan flags are passed as query parameters.
+pub async fn scan_bytes(
+    State(state): State<Arc<AppState>>,
+    axum::extract::Query(params): axum::extract::Query<ScanBytesQuery>,
+    body: axum::body::Bytes,
+) -> Result<Json<ScanResponse>, ServerError> {
+    let data = body.to_vec();
+
+    let flags = diec_engine::ScanFlags {
+        all_types: params.all_types.unwrap_or(false),
+        deep: params.deep.unwrap_or(false),
+        heuristic: params.heuristic.unwrap_or(false),
+        aggressive: params.aggressive.unwrap_or(false),
+        hide_unknown: params.hide_unknown.unwrap_or(false),
+        verbose: params.verbose.unwrap_or(false),
+    };
+
+    let file_name = params.name.unwrap_or_else(|| "uploaded.bin".to_string());
+
+    // Run the scan on a blocking thread.
+    let database = state.database.clone();
+    let timeout_secs = state.config.scan_timeout_secs;
+    let file_name_clone = file_name.clone();
+    let result = tokio::task::spawn_blocking(move || {
+        let cancel = diec_core::cancel::CancellationToken::new();
+        let cancel_clone = cancel.clone();
+
+        let timeout_handle = std::thread::spawn(move || {
+            std::thread::sleep(std::time::Duration::from_secs(timeout_secs));
+            cancel_clone.cancel();
+        });
+
+        let result = diec_engine::scan_bytes(&database, &file_name_clone, data, flags, &cancel);
+        drop(timeout_handle);
+        result
+    })
+    .await
+    .map_err(|e| ServerError::ScanError(format!("blocking task panicked: {e}")))?
+    .map_err(|e| ServerError::ScanError(e.to_string()))?;
+
+    let db_version = state.database.version();
+    Ok(Json(build_scan_response(&file_name, result, &db_version)))
+}
+
+/// Query parameters for `/scan/bytes`.
+#[derive(Debug, Deserialize)]
+pub struct ScanBytesQuery {
+    pub name: Option<String>,
+    pub all_types: Option<bool>,
+    pub deep: Option<bool>,
+    pub heuristic: Option<bool>,
+    pub aggressive: Option<bool>,
+    pub hide_unknown: Option<bool>,
+    pub verbose: Option<bool>,
+}
+
+/// Build a `ScanResponse` from a `ScanResult`.
+fn build_scan_response(
+    file_name: &str,
+    result: diec_engine::ScanResult,
+    db_version: &diec_engine::DatabaseVersion,
+) -> ScanResponse {
+    ScanResponse {
+        path: file_name.to_string(),
+        detections: result
+            .detections
+            .into_iter()
+            .map(|d| DetectionResponse {
+                file_type: d.file_type,
+                type_name: d.type_name,
+                name: d.name,
+                version: d.version,
+                options: d.options,
+            })
+            .collect(),
+        diagnostics: result.diagnostics,
+        program_version: env!("CARGO_PKG_VERSION").to_string(),
+        db_version: DatabaseVersionResponse {
+            commit: db_version.commit.clone(),
+            rule_count: db_version.rule_count,
+            synced_at: db_version.synced_at.clone(),
+        },
+    }
+}

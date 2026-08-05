@@ -1,0 +1,22 @@
+[Unit]
+Description=diec scan daemon (died)
+Documentation=https://github.com/chennqqi/diec-rust
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/died --db /usr/share/diec/db --bind 127.0.0.1:18080
+Restart=on-failure
+RestartSec=5
+# Run as a dedicated user for security
+User=died
+Group=died
+# Hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/var/lib/died
+
+[Install]
+WantedBy=multi-user.target

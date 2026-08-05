@@ -15,9 +15,9 @@ mod database;
 pub mod host;
 mod scanner;
 
-pub use database::{Database, DatabaseBuilder, DatabaseError};
+pub use database::{Database, DatabaseBuilder, DatabaseError, DatabaseVersion};
 pub use host::{BufferHost, ScanFlags};
-pub use scanner::{ScanDetection, ScanError, ScanResult, scan_bytes, scan_once};
+pub use scanner::{ScanDetection, ScanError, ScanResult, Scanner, scan_bytes, scan_once};
 
 #[cfg(test)]
 mod tests {

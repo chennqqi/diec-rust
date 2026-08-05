@@ -12,7 +12,7 @@ for diec-rust. Every item must be verified before publishing a release.
 - [ ] All `unsafe` blocks have safety documentation and tests
 
 ### Testing
-- [ ] `cargo test --workspace --all-features --locked` passes (459+ tests)
+- [ ] `cargo test --workspace --all-features --locked` passes (477+ tests)
 - [ ] Corpus differential tests pass (31 baseline + 20 edge samples)
 - [ ] FFI tests pass (unit + integration + sanitizer)
 - [ ] Edge corpus tests pass (no-crash, no-spurious, no-hang)
@@ -58,6 +58,7 @@ for diec-rust. Every item must be verified before publishing a release.
 ## Build Artifacts
 - [ ] Release build: `cargo build --workspace --all-targets --release --locked`
 - [ ] CLI binary: `base/diec` (or `base/diec.exe` on Windows)
+- [ ] Server binary: `base/died` (or `base/died.exe` on Windows)
 - [ ] Top-level launcher: `diec` (Unix) / `diec.cmd` (Windows)
 - [ ] Static library: `lib/libdiec_ffi.a` (Unix) / `lib/diec_ffi.lib` (Windows)
 - [ ] Dynamic library: `lib/libdiec_ffi.so` / `.dylib` / `lib/diec_ffi.dll`

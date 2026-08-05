@@ -235,6 +235,12 @@ impl DatabaseBuilder {
         }
         let type_init_scripts: Vec<(String, String)> = type_init_scripts.into_iter().collect();
 
+        let db_path = self.db_paths.into_iter().next().unwrap_or_default();
+
+        // Load version info from rule-source-manifest.json if it exists
+        // alongside the database directory (ADR 0017).
+        let version = load_version_from_manifest(&db_path, rules.len());
+
         Ok(Database {
             snapshot: DatabaseSnapshot {
                 rules,
@@ -242,9 +248,75 @@ impl DatabaseBuilder {
                 type_init_scripts,
                 include_scripts,
             },
-            db_path: self.db_paths.into_iter().next().unwrap_or_default(),
+            db_path,
+            version,
         })
     }
+}
+
+/// Try to load `DatabaseVersion` from `rule-source-manifest.json`.
+///
+/// The manifest is expected at the parent of the db directory (e.g.
+/// `upstream/rule-source-manifest.json` when db is at
+/// `upstream/Detect-It-Easy/db`). Falls back to `DatabaseVersion::unknown`
+/// if the manifest is not found or cannot be parsed.
+fn load_version_from_manifest(db_path: &Path, rule_count: usize) -> Option<DatabaseVersion> {
+    // Look for rule-source-manifest.json in several candidate locations:
+    // 1. The db directory itself
+    // 2. The parent of the db directory (e.g. upstream/Detect-It-Easy/)
+    // 3. The grandparent (e.g. upstream/)
+    let candidates: Vec<PathBuf> = [
+        Some(db_path.join("rule-source-manifest.json")),
+        db_path
+            .parent()
+            .map(|p| p.join("rule-source-manifest.json")),
+        db_path
+            .parent()
+            .and_then(|p| p.parent())
+            .map(|p| p.join("rule-source-manifest.json")),
+    ]
+    .into_iter()
+    .flatten()
+    .collect();
+
+    let manifest_path = candidates.into_iter().find(|p| p.is_file())?;
+
+    let content = match std::fs::read_to_string(&manifest_path) {
+        Ok(s) => s,
+        Err(_) => return None,
+    };
+
+    // Minimal JSON parsing without serde dependency: extract commit and
+    // synced_at fields. This avoids adding serde as a dependency to
+    // diec-engine just for manifest parsing.
+    let commit = extract_json_string(&content, "commit").unwrap_or_else(|| "unknown".to_string());
+    let synced_at =
+        extract_json_string(&content, "synced_at").unwrap_or_else(|| "unknown".to_string());
+
+    Some(DatabaseVersion {
+        commit,
+        rule_count,
+        synced_at,
+    })
+}
+
+/// Extract a string value for a key from a JSON object (minimal parser).
+///
+/// Handles simple `"key": "value"` patterns. Returns the first match.
+/// This is sufficient for the manifest format which has flat top-level
+/// string fields.
+fn extract_json_string(json: &str, key: &str) -> Option<String> {
+    let pattern = format!("\"{key}\"");
+    let pos = json.find(&pattern)?;
+    let after_key = &json[pos + pattern.len()..];
+    // Skip whitespace and colon.
+    let after_colon = after_key.trim_start();
+    let after_colon = after_colon.strip_prefix(':')?;
+    let after_colon = after_colon.trim_start();
+    // Expect a string value.
+    let after_quote = after_colon.strip_prefix('"')?;
+    let end = after_quote.find('"')?;
+    Some(after_quote[..end].to_string())
 }
 
 /// Recursively load include scripts from the database root.
@@ -304,6 +376,34 @@ pub struct Database {
     pub snapshot: DatabaseSnapshot,
     /// The path the database was loaded from.
     pub db_path: PathBuf,
+    /// Optional version info loaded from `rule-source-manifest.json`.
+    version: Option<DatabaseVersion>,
+}
+
+/// Database version information for service responses (ADR 0017).
+///
+/// Loaded from `rule-source-manifest.json` if present alongside the
+/// database directory. Falls back to `rule_count` with `"unknown"`
+/// commit/synced_at when the manifest is not available.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct DatabaseVersion {
+    /// Upstream commit SHA (40-hex lowercase), or `"unknown"`.
+    pub commit: String,
+    /// Number of rules loaded in this database.
+    pub rule_count: usize,
+    /// ISO-8601 sync timestamp (UTC), or `"unknown"`.
+    pub synced_at: String,
+}
+
+impl DatabaseVersion {
+    /// Create a version with `"unknown"` commit and synced_at.
+    pub fn unknown(rule_count: usize) -> Self {
+        Self {
+            commit: "unknown".to_string(),
+            rule_count,
+            synced_at: "unknown".to_string(),
+        }
+    }
 }
 
 impl Database {
@@ -320,5 +420,88 @@ impl Database {
     /// Get an iterator over the loaded rules.
     pub fn rules(&self) -> &[LoadedRule] {
         &self.snapshot.rules
+    }
+
+    /// Get the database version information (ADR 0017).
+    ///
+    /// Returns the version loaded from `rule-source-manifest.json` if
+    /// available, otherwise a fallback with `"unknown"` commit/synced_at
+    /// and the actual rule count.
+    pub fn version(&self) -> DatabaseVersion {
+        self.version
+            .clone()
+            .unwrap_or_else(|| DatabaseVersion::unknown(self.rule_count()))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn database_version_unknown_has_correct_defaults() {
+        let v = DatabaseVersion::unknown(42);
+        assert_eq!(v.commit, "unknown");
+        assert_eq!(v.rule_count, 42);
+        assert_eq!(v.synced_at, "unknown");
+    }
+
+    #[test]
+    fn extract_json_string_finds_value() {
+        let json = r#"{"commit": "abc123", "synced_at": "2026-07-31"}"#;
+        assert_eq!(
+            extract_json_string(json, "commit"),
+            Some("abc123".to_string())
+        );
+        assert_eq!(
+            extract_json_string(json, "synced_at"),
+            Some("2026-07-31".to_string())
+        );
+    }
+
+    #[test]
+    fn extract_json_string_returns_none_for_missing_key() {
+        let json = r#"{"commit": "abc123"}"#;
+        assert_eq!(extract_json_string(json, "missing"), None);
+    }
+
+    #[test]
+    fn extract_json_string_handles_whitespace() {
+        let json = r#"{ "commit" : "abc123" }"#;
+        assert_eq!(
+            extract_json_string(json, "commit"),
+            Some("abc123".to_string())
+        );
+    }
+
+    #[test]
+    fn database_version_loads_from_manifest() {
+        let db_path = std::env::var("CARGO_MANIFEST_DIR")
+            .map(PathBuf::from)
+            .ok()
+            .and_then(|p| p.parent().and_then(|p| p.parent()).map(|p| p.to_path_buf()))
+            .expect("workspace root");
+        let db_dir = db_path.join("upstream/Detect-It-Easy/db");
+        if !db_dir.is_dir() {
+            eprintln!("Skipping: upstream database not found");
+            return;
+        }
+        let database = DatabaseBuilder::new(&db_dir)
+            .build()
+            .expect("build should succeed");
+        let version = database.version();
+        // If manifest exists, commit should not be "unknown".
+        let manifest_exists = db_path.join("upstream/rule-source-manifest.json").is_file();
+        if manifest_exists {
+            assert_ne!(
+                version.commit, "unknown",
+                "commit should be loaded from manifest"
+            );
+            assert_ne!(
+                version.synced_at, "unknown",
+                "synced_at should be loaded from manifest"
+            );
+        }
+        assert!(version.rule_count > 0, "rule_count should be positive");
     }
 }

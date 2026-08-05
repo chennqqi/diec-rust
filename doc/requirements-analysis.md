@@ -144,3 +144,27 @@
 - 当前版本 0.2.0，已有 CLI 与 release 包结构改动未提交
 - fmt/clippy/test 通过，版本 bump 至 0.2.1
 - 待执行：提交、打 tag、推送触发 GitHub release workflow
+
+## 2026-08-04: 规则加载开销与服务化方案分析
+- 现状: Database 构建后 immutable，Arc 共享；CLI 单次调用内只 build 一次，循环 scan 多文件复用
+- 累计开销来源: 每次 CLI 进程启动都要重新 build database（160ms 并行），scan_bytes 内每文件每 file_type 创建新 RquickjsRuntime + load framework
+- 服务化收益: 常驻进程避免重复 160ms database load；但 scan_bytes 内 runtime 创建开销仍存在，需评估是否池化
+- 架构约束: 服务层须为薄适配层，核心层不得依赖；gRPC(tonic)/HTTP(axum) 引入较重依赖须记录权衡
+- db 版本: 当前 Database 无 version 字段，需从 rule-source-manifest.json 或规则目录推导
+- 本地/远程区分合理: 本地避免大文件传输，远程适合跨机；本地模式需路径安全校验
+
+## 2026-08-04: ADR 0016/0017 起草
+- ADR-0016: 同一 file_type runtime 跨文件复用，persistent state audit + 差分验证约束安全性
+- ADR-0017: diec-server HTTP/JSON 服务层，本地路径+远程内容双模式，axum 纯 Rust 依赖
+- 两者关系: ADR-0016 是 ADR-0017 的性能基础，可独立先做
+- 待评审: 两份 ADR 均为 Proposed，需评审确认决策方向后进入实现
+
+## 2026-08-04 gRPC/HTTP 识别服务
+- 问题：CLI 重复调用单文件时 Database 重建开销 160ms/次；scan_bytes 内每个 file_type 创建 RquickjsRuntime
+- 方案A (ADR-0016): Scanner 有状态对象，per-file_type runtime 复用 + reinit 重置 host 别名
+- 方案B (ADR-0017): diec-server HTTP/JSON 服务，Database 启动时加载一次，Arc 共享
+- 持久状态审计：框架 result() 重置 bDetected/sName/sVersion 等全局变量，复用安全
+- 差分验证：复用 vs 非复用 0 不匹配；同文件两次扫描结果一致；多格式顺序+逆序无交叉污染
+- 安全边界：allow_root 路径校验、max_file_size/max_request_size 限制、scan_timeout 取消
+- 依赖：axum 0.8.8 + tokio + serde + tower-http (limit)，无 gRPC 重依赖
+- Scanner !Send 限制：服务层当前用无状态 scan_bytes，runtime 复用留作 worker 线程后续优化

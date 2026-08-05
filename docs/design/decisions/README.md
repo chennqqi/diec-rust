@@ -51,3 +51,9 @@
 - [`0015-benchmark-cache-state-model.md`](0015-benchmark-cache-state-model.md)：
   显式区分 warm、file-content-nonresident-metadata-warm 与 dedicated
   system-cold，永久禁止含混的 cold 标签（Proposed）。
+- [`0016-runtime-reuse-across-files.md`](0016-runtime-reuse-across-files.md)：
+  同一 file_type 的规则运行时跨文件复用，以 persistent state audit 和
+  差分验证约束复用安全性（Accepted, 2026-08-04）。
+- [`0017-scan-service-layer.md`](0017-scan-service-layer.md)：
+  died (diec-server crate) HTTP/JSON 扫描服务层，支持本地路径和远程内容双模式，
+  常驻进程避免重复 database load（Accepted, 2026-08-04）。

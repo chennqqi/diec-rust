@@ -852,3 +852,25 @@
 - 需求：发布包含 CLI 参数与 tar 包结构对齐改动的新版本
 - 版本：0.2.1
 - 预期：推送 v0.2.1 tag 触发 release.yml 构建发布物
+
+## 2026-08-04: 规则加载开销与服务化方案
+- 场景: 生产环境大量文件需 diec 识别，担心每次加载规则的累计开销
+- 提议: 启动常驻 gRPC/HTTP 服务
+  - 本地请求: 发送文件路径，返回 JSON 识别结果 + 程序版本 + db 版本
+  - 远程请求: 发送文件内容，返回 JSON 识别结果 + 程序版本 + db 版本
+
+## 2026-08-04 gRPC/HTTP 识别服务
+- 实现 HTTP/JSON 服务，本地请求发送文件路径返回识别结果+程序版本+数据库版本
+- 远程请求发送文件内容返回识别结果+程序版本+数据库版本
+- 解决批量文件识别时重复加载规则的累积开销
+- 优化 scan_bytes 复用 RquickjsRuntime（per-file_type）
+
+## 2026-08-04 died 重命名 + 打包
+- 二进制名 diec-server → died（die daemon），crate 名保留 diec-server
+- Windows 服务安装/卸载子命令（install/uninstall，sc.exe 集成）
+- RPM/DEB/MSI 打包配置（cargo-deb + spec + cargo-wix）
+
+## 2026-08-05 0.3.0 发布
+- 补充 died API 文档（curl/PowerShell/Python/Go 客户端示例）
+- 版本号 0.2.2 → 0.3.0
+- 更新 README/ROADMAP/RELEASE_NOTES/AGENTS/RELEASE 文档
