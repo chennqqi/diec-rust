@@ -86,6 +86,9 @@ jobs:
           # CLI binary lives in base/, matching upstream portable tree.
           cp "target/${{ matrix.target }}/release/diec" "$staging/base/"
 
+          # died (die daemon) scan service binary.
+          cp "target/${{ matrix.target }}/release/died" "$staging/base/" 2>/dev/null || true
+
           # Full three-tier rule database.
           if [ -d "upstream/Detect-It-Easy/db" ]; then
             cp -r "upstream/Detect-It-Easy/db/." "$staging/base/db/"
@@ -137,6 +140,9 @@ jobs:
 
           # CLI binary lives in base/, matching upstream portable tree.
           Copy-Item "target/${{ matrix.target }}/release/diec.exe" "$staging/base/"
+
+          # died (die daemon) scan service binary.
+          Copy-Item "target/${{ matrix.target }}/release/died.exe" "$staging/base/" -ErrorAction SilentlyContinue
 
           # Full three-tier rule database.
           if (Test-Path "upstream/Detect-It-Easy/db") {
