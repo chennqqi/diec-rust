@@ -34,7 +34,30 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ]
+    ],
+    "resources": {
+      "db/": "db/"
+    },
+    "windows": {
+      "nsis": {
+        "installMode": "perMachine"
+      }
+    },
+    "linux": {
+      "deb": {
+        "files": {
+          "/usr/share/die/README.md": "../../README.md",
+          "/usr/share/die/LICENSE": "../../LICENSE"
+        }
+      },
+      "rpm": {
+        "release": "1",
+        "files": {
+          "/usr/share/die/README.md": "../../README.md",
+          "/usr/share/die/LICENSE": "../../LICENSE"
+        }
+      }
+    }
   },
   "plugins": {}
 }

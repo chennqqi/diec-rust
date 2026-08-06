@@ -941,4 +941,13 @@
   - 命令行参数：die.exe "%1" 从右键菜单启动时自动加载文件（context-menu-file 事件）
   - 非Windows平台显示"仅支持 Windows"提示
 
+## 2026-08-06: GUI 安装包支持（MSI/NSIS/DEB/RPM/DMG）
+- 需求：提供原生安装包（MSI/NSIS for Windows, DEB/RPM/AppImage for Linux, DMG for macOS）+ 便携版
+- 落地：
+  - tauri.conf.json 配置 bundle.resources（db/）、windows.nsis（perMachine）、linux.deb/rpm（files）
+  - CI release.yml build-gui job 重写：先复制 db 到 crates/die-gui/db/，再 cargo tauri build --bundles 生成安装包
+  - 每平台产出两种产物：portable（zip/tar.gz）+ installers（MSI+NSIS / DEB+RPM+AppImage / DMG+app）
+  - .gitignore 排除 crates/die-gui/db/（构建时复制，不入库）
+- 验证：本地 cargo tauri build --bundles msi 生成 14MB MSI，--bundles nsis 生成 8.5MB NSIS exe，db 目录正确打包
+
 

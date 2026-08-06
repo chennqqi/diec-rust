@@ -3,6 +3,8 @@
 __pycache__/
 *.py[cod]
 /aqtinstall.log
+# die-gui: copied db for installer bundling (not source-controlled)
+/crates/die-gui/db/
 
 # Upstream DIE binary (downloaded for differential testing, not committed)
 /tools/upstream-die/

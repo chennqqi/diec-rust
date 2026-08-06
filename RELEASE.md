@@ -73,6 +73,23 @@ for diec-rust. Every item must be verified before publishing a release.
 - [x] Python binding: `bindings/python/diec.py`
 - [x] All artifacts verified on at least one platform
 
+### GUI Artifacts (v0.4.0+)
+- [ ] GUI portable: `die-gui-<version>-<platform>-portable.zip/.tar.gz`
+  - Windows: `die.exe` + `db/` + README + LICENSE
+  - Linux: `die` + `db/` + README + LICENSE
+  - macOS: `die` + `db/` + README + LICENSE
+- [ ] GUI installer (Windows): `die-gui-<version>-windows-x86_64-installers.zip`
+  - MSI: `Detect It Easy_<version>_x64_en-US.msi` (~14MB, perMachine)
+  - NSIS: `Detect It Easy_<version>_x64-setup.exe` (~8.5MB, perMachine)
+- [ ] GUI installer (Linux): `die-gui-<version>-linux-x86_64-installers.tar.gz`
+  - DEB: `detect-it-easy_<version>_amd64.deb`
+  - RPM: `detect-it-easy-<version>-1.x86_64.rpm`
+  - AppImage: `Detect It Easy_<version>_amd64.AppImage`
+- [ ] GUI installer (macOS): `die-gui-<version>-macos-arm64-installers.tar.gz`
+  - DMG: `Detect It Easy_<version>_aarch64.dmg`
+  - App: `Detect It Easy.app`
+- [ ] Rule database bundled in all installers via `tauri.conf.json > bundle.resources`
+
 ## Documentation
 - [x] `ROADMAP.md` updated with release status
 - [x] `COMPATIBILITY.md` updated with final metrics

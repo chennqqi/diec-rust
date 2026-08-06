@@ -42,6 +42,42 @@ diec-rust. It is maintained manually and verified via `cargo license`.
 | no-std-compat | MIT | no_std compatibility for pelite |
 | log | Apache-2.0 OR MIT | Logging facade |
 
+### GUI Dependencies (die-gui crate, v0.4.0+)
+
+| Crate | License | Purpose |
+|-------|---------|---------|
+| tauri | Apache-2.0 OR MIT | Tauri v2 application framework |
+| tauri-plugin-dialog | Apache-2.0 OR MIT | Native file dialog plugin |
+| tauri-plugin-fs | Apache-2.0 OR MIT | File system access plugin |
+| tauri-plugin-single-instance | Apache-2.0 OR MIT | Single instance enforcement |
+| tauri-plugin-store | Apache-2.0 OR MIT | Key-value store plugin |
+| iced-x86 | MIT | x86/x64 disassembler (Intel/GAS/NASM) |
+| cpp_demangle | Apache-2.0 OR MIT | C++ symbol demangling (Itanium ABI) |
+| rustc-demangle | Apache-2.0 OR MIT | Rust symbol demangling |
+| yara-x | BSD-3-Clause | YARA rule engine (Rust) |
+| sha1 | Apache-2.0 OR MIT | SHA-1 hashing |
+| md-5 | Apache-2.0 OR MIT | MD5 hashing |
+| hex | Apache-2.0 OR MIT | Hex encoding/decoding |
+| zip | MIT | ZIP archive reading |
+| winreg | MIT | Windows registry access (context menu) |
+
+### GUI Frontend Dependencies (npm)
+
+| Package | License | Purpose |
+|---------|---------|---------|
+| react | MIT | UI framework |
+| react-dom | MIT | React DOM renderer |
+| react-i18next | MIT | i18n integration for React |
+| i18next | MIT | Internationalization framework |
+| @tauri-apps/api | Apache-2.0 OR MIT | Tauri JavaScript API |
+| @tauri-apps/plugin-dialog | Apache-2.0 OR MIT | Dialog plugin JS bindings |
+| @tauri-apps/plugin-fs | Apache-2.0 OR MIT | FS plugin JS bindings |
+| lucide-react | ISC | Icon library |
+| iced-x86 | MIT | x86 disassembler (WASM/JS) |
+| typescript | Apache-2.0 | TypeScript compiler |
+| vite | MIT | Build tool |
+| tailwindcss | MIT | CSS framework |
+
 ### Development Dependencies (build/test/bench only)
 
 | Crate | License | Purpose |
