@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { invoke } from "@tauri-apps/api/core";
 
 interface HexLine {
@@ -14,6 +15,7 @@ interface HexDump {
 }
 
 export function HexViewer({ path }: { path: string }) {
+  const { t } = useTranslation();
   const [dump, setDump] = useState<HexDump | null>(null);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -53,7 +55,7 @@ export function HexViewer({ path }: { path: string }) {
   return (
     <div className="border border-border rounded p-3 mt-3">
       <div className="flex items-center gap-2 mb-2">
-        <h3 className="text-sm font-medium">Hex Viewer</h3>
+        <h3 className="text-sm font-medium">{t("hex.title")}</h3>
         <span className="text-xs text-muted-foreground">
           {dump && `${dump.file_size} bytes`}
         </span>
@@ -63,7 +65,7 @@ export function HexViewer({ path }: { path: string }) {
           disabled={offset === 0 || loading}
           className="px-2 py-0.5 text-xs border border-border rounded disabled:opacity-50"
         >
-          Prev
+          {t("hex.prev")}
         </button>
         <span className="text-xs text-muted-foreground">
           {`0x${offset.toString(16).toUpperCase()}`}
@@ -73,7 +75,7 @@ export function HexViewer({ path }: { path: string }) {
           disabled={!dump || offset + pageSize >= dump.file_size || loading}
           className="px-2 py-0.5 text-xs border border-border rounded disabled:opacity-50"
         >
-          Next
+          {t("hex.next")}
         </button>
       </div>
       {error && <div className="text-xs text-red-600 mb-2">{error}</div>}

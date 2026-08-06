@@ -38,6 +38,9 @@ hex = "0.4"
 goblin = { version = "0.9" }
 zip = { version = "8.6", default-features = false, features = ["deflate"] }
 
+[target.'cfg(windows)'.dependencies]
+winreg = "0.55"
+
 [dev-dependencies]
 diec-engine = { workspace = true }
 diec-core = { workspace = true }

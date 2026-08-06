@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { invoke } from "@tauri-apps/api/core";
 import {
   FileText,
@@ -47,6 +48,7 @@ interface FileInfo {
 type SubTab = "info" | "sections" | "symbols" | "entropy";
 
 export function FileInfoPanel({ path }: { path: string }) {
+  const { t } = useTranslation();
   const [info, setInfo] = useState<FileInfo | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -73,7 +75,7 @@ export function FileInfoPanel({ path }: { path: string }) {
     return (
       <div className="flex items-center justify-center h-full text-fg-secondary text-xs">
         <div className="w-4 h-4 border-2 border-accent-blue border-t-transparent rounded-full animate-spin mr-2" />
-        Analyzing file...
+        {t("fileInfo.title")}...
       </div>
     );
   }
@@ -87,7 +89,7 @@ export function FileInfoPanel({ path }: { path: string }) {
   if (!info) {
     return (
       <div className="flex items-center justify-center h-full text-fg-muted text-xs">
-        No file loaded
+        {t("scan.openToBegin")}
       </div>
     );
   }
@@ -99,29 +101,29 @@ export function FileInfoPanel({ path }: { path: string }) {
         className="flex items-center gap-0 px-1 border-b border-border-c"
         style={{ background: "rgb(var(--bg-panel))" }}
       >
-        <SubTabButton active={subTab === "info"} onClick={() => setSubTab("info")} icon={FileText} label="Info" />
-        <SubTabButton active={subTab === "sections"} onClick={() => setSubTab("sections")} icon={Layers} label={`Sections (${info.sections.length})`} />
-        <SubTabButton active={subTab === "symbols"} onClick={() => setSubTab("symbols")} icon={Code2} label={`Symbols (${info.symbols.length})`} />
-        <SubTabButton active={subTab === "entropy"} onClick={() => setSubTab("entropy")} icon={Activity} label="Entropy" />
+        <SubTabButton active={subTab === "info"} onClick={() => setSubTab("info")} icon={FileText} label={t("fileInfo.title")} />
+        <SubTabButton active={subTab === "sections"} onClick={() => setSubTab("sections")} icon={Layers} label={`${t("fileInfo.sections")} (${info.sections.length})`} />
+        <SubTabButton active={subTab === "symbols"} onClick={() => setSubTab("symbols")} icon={Code2} label={`${t("fileInfo.symbols")} (${info.symbols.length})`} />
+        <SubTabButton active={subTab === "entropy"} onClick={() => setSubTab("entropy")} icon={Activity} label={t("fileInfo.entropy")} />
       </div>
 
       {/* Content */}
       <div className="flex-1 overflow-auto p-3 selectable">
         {subTab === "info" && (
           <div className="space-y-3 text-xs">
-            <InfoRow label="File" value={info.file_name} />
-            <InfoRow label="Path" value={info.path} mono />
-            <InfoRow label="Size" value={`${info.size_human} (${info.size.toLocaleString()} bytes)`} />
-            <InfoRow label="Format" value={info.format} />
+            <InfoRow label={t("fileInfo.name")} value={info.file_name} />
+            <InfoRow label={t("fileInfo.title")} value={info.path} mono />
+            <InfoRow label={t("fileInfo.size")} value={`${info.size_human} (${info.size.toLocaleString()} bytes)`} />
+            <InfoRow label={t("fileInfo.format")} value={info.format} />
             <InfoRow
-              label="Entropy"
+              label={t("fileInfo.entropy")}
               value={`${info.entropy.toFixed(4)} ${entropyLabel(info.entropy)}`}
             />
 
             <div className="pt-2 border-t border-border-c">
               <div className="flex items-center gap-1.5 mb-2 text-fg-secondary">
                 <Hash size={13} />
-                <span className="font-medium">Hashes</span>
+                <span className="font-medium">{t("fileInfo.hashes")}</span>
               </div>
               <HashRow
                 label="MD5"
@@ -148,17 +150,17 @@ export function FileInfoPanel({ path }: { path: string }) {
         {subTab === "sections" && (
           <div className="text-xs">
             {info.sections.length === 0 ? (
-              <p className="text-fg-muted">No sections (not a recognized binary format).</p>
+              <p className="text-fg-muted">{t("fileInfo.sections")} — N/A</p>
             ) : (
               <table className="w-full mono">
                 <thead>
                   <tr className="text-left text-fg-secondary border-b border-border-c">
-                    <th className="py-1 pr-3">Name</th>
-                    <th className="py-1 pr-3">VAddr</th>
-                    <th className="py-1 pr-3">VSize</th>
-                    <th className="py-1 pr-3">Raw Off</th>
-                    <th className="py-1 pr-3">Raw Size</th>
-                    <th className="py-1">Entropy</th>
+                    <th className="py-1 pr-3">{t("fileInfo.name")}</th>
+                    <th className="py-1 pr-3">{t("fileInfo.vaddr")}</th>
+                    <th className="py-1 pr-3">{t("fileInfo.vsize")}</th>
+                    <th className="py-1 pr-3">{t("fileInfo.rawOff")}</th>
+                    <th className="py-1 pr-3">{t("fileInfo.rawSize")}</th>
+                    <th className="py-1">{t("fileInfo.entropy")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -185,15 +187,15 @@ export function FileInfoPanel({ path }: { path: string }) {
         {subTab === "symbols" && (
           <div className="text-xs">
             {info.symbols.length === 0 ? (
-              <p className="text-fg-muted">No symbols (stripped or not a recognized binary format).</p>
+              <p className="text-fg-muted">{t("fileInfo.symbols")} — N/A</p>
             ) : (
               <table className="w-full mono">
                 <thead>
                   <tr className="text-left text-fg-secondary border-b border-border-c">
-                    <th className="py-1 pr-3">Address</th>
-                    <th className="py-1 pr-3">Kind</th>
-                    <th className="py-1 pr-3">Size</th>
-                    <th className="py-1">Name</th>
+                    <th className="py-1 pr-3">{t("fileInfo.address")}</th>
+                    <th className="py-1 pr-3">{t("fileInfo.kind")}</th>
+                    <th className="py-1 pr-3">{t("fileInfo.size")}</th>
+                    <th className="py-1">{t("fileInfo.name")}</th>
                   </tr>
                 </thead>
                 <tbody>

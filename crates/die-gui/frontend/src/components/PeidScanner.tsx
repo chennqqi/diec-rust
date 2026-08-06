@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { invoke } from "@tauri-apps/api/core";
 import { open as openDialog } from "@tauri-apps/plugin-dialog";
 
@@ -13,6 +14,7 @@ interface PeidScanResult {
 }
 
 export function PeidScanner({ path }: { path: string }) {
+  const { t } = useTranslation();
   const [userdbPath, setUserdbPath] = useState("");
   const [result, setResult] = useState<PeidScanResult | null>(null);
   const [loading, setLoading] = useState(false);
@@ -54,7 +56,7 @@ export function PeidScanner({ path }: { path: string }) {
   return (
     <div className="border border-border rounded p-3 mt-3">
       <div className="flex items-center gap-2 mb-2">
-        <h3 className="text-sm font-medium">PEID Scanner</h3>
+        <h3 className="text-sm font-medium">{t("peid.title")}</h3>
       </div>
       <div className="flex items-center gap-2 mb-2">
         <input
@@ -75,7 +77,7 @@ export function PeidScanner({ path }: { path: string }) {
           disabled={loading || !userdbPath}
           className="px-3 py-1 text-xs bg-primary text-background rounded disabled:opacity-50"
         >
-          {loading ? "Scanning..." : "Scan"}
+          {loading ? t("peid.scanning") : t("peid.scan")}
         </button>
       </div>
       {error && <div className="text-xs text-red-600 mb-2">{error}</div>}

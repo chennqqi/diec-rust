@@ -933,4 +933,12 @@
 - 测试统计：480 个测试全部通过（+2 个 GUI 差分测试），cargo fmt/clippy 零警告
 - Phase 8 退出条件全部达成，标记为 DONE
 
+## 2026-08-06: i18n 补全 + 右键菜单集成
+- i18n 补全：HexViewer、Disassembler、DemangleTool、YaraScanner、PeidScanner、FileInfoPanel、OnlineTools、AdvancedToolbar、DirectoryResultsView、SignatureSourcePanel 全部接入 useTranslation
+- 右键菜单集成：Settings 面板新增"右键菜单集成"区块，支持一键添加/取消 Windows 资源管理器右键菜单"Scan with DIE"
+  - 后端：add_context_menu/remove_context_menu/get_context_menu_status 三个 Tauri 命令（winreg crate）
+  - 注册表：HKCU\Software\Classes\*\shell\DIE + Directory\shell\DIE + Directory\Background\shell\DIE
+  - 命令行参数：die.exe "%1" 从右键菜单启动时自动加载文件（context-menu-file 事件）
+  - 非Windows平台显示"仅支持 Windows"提示
+
 

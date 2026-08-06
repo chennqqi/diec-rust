@@ -834,3 +834,188 @@ pub async fn list_archive(path: String) -> Result<ArchiveResultDto, GuiError> {
 
     Ok(result)
 }
+
+// ---------------------------------------------------------------------------
+// Context menu integration (Windows registry-based file/dir shell entries)
+// ---------------------------------------------------------------------------
+
+/// Result DTO for context menu status check.
+#[derive(Debug, Clone, Serialize)]
+pub struct ContextMenuStatus {
+    /// Whether the context menu entry is currently installed.
+    pub installed: bool,
+    /// The exe path that would be invoked (current binary).
+    pub exe_path: String,
+    /// Platform support: "windows", "linux", "macos", or "unsupported".
+    pub platform: String,
+}
+
+/// Registry sub-key path for the DIE context menu entry (file context).
+#[cfg(windows)]
+const REG_FILE_KEY: &str = "Software\\Classes\\*\\shell\\DIE";
+/// Registry sub-key path for the DIE context menu entry (directory context).
+#[cfg(windows)]
+const REG_DIR_KEY: &str = "Software\\Classes\\Directory\\shell\\DIE";
+/// Registry sub-key path for the DIE context menu entry (directory background).
+#[cfg(windows)]
+const REG_DIR_BG_KEY: &str = "Software\\Classes\\Directory\\Background\\shell\\DIE";
+
+/// Get the current context menu integration status.
+#[tauri::command]
+pub async fn get_context_menu_status() -> Result<ContextMenuStatus, GuiError> {
+    let exe_path = std::env::current_exe()
+        .map(|p| p.display().to_string())
+        .unwrap_or_default();
+
+    let platform = if cfg!(target_os = "windows") {
+        "windows"
+    } else if cfg!(target_os = "linux") {
+        "linux"
+    } else if cfg!(target_os = "macos") {
+        "macos"
+    } else {
+        "unsupported"
+    };
+
+    let installed = cfg!(windows) && is_context_menu_installed();
+
+    Ok(ContextMenuStatus {
+        installed,
+        exe_path,
+        platform: platform.to_string(),
+    })
+}
+
+/// Add "Scan with DIE" to the Windows Explorer context menu for files and
+/// directories. On non-Windows platforms, returns an error.
+#[tauri::command]
+pub async fn add_context_menu() -> Result<(), GuiError> {
+    if !cfg!(target_os = "windows") {
+        return Err(GuiError::new(
+            "PLATFORM_UNSUPPORTED",
+            "Context menu integration is only supported on Windows",
+        ));
+    }
+
+    #[cfg(windows)]
+    {
+        use winreg::RegKey;
+        use winreg::enums::*;
+
+        let exe_path =
+            std::env::current_exe().map_err(|e| GuiError::new("EXE_PATH_FAILED", e.to_string()))?;
+        let exe_str = exe_path.display().to_string();
+        let command = format!("\"{}\" \"%1\"", exe_str);
+
+        let hkcu = RegKey::predef(HKEY_CURRENT_USER);
+
+        // File context menu: right-click on any file → "Scan with DIE"
+        let (file_key, _) = hkcu
+            .create_subkey(REG_FILE_KEY)
+            .map_err(|e| GuiError::new("REG_WRITE_FAILED", e.to_string()))?;
+        file_key
+            .set_value("MUIVerb", &"Scan with DIE")
+            .map_err(|e| GuiError::new("REG_WRITE_FAILED", e.to_string()))?;
+        file_key
+            .set_value("Icon", &exe_str)
+            .map_err(|e| GuiError::new("REG_WRITE_FAILED", e.to_string()))?;
+        let (file_cmd, _) = file_key
+            .create_subkey("command")
+            .map_err(|e| GuiError::new("REG_WRITE_FAILED", e.to_string()))?;
+        file_cmd
+            .set_value("", &command)
+            .map_err(|e| GuiError::new("REG_WRITE_FAILED", e.to_string()))?;
+
+        // Directory context menu: right-click on a folder → "Scan with DIE"
+        let (dir_key, _) = hkcu
+            .create_subkey(REG_DIR_KEY)
+            .map_err(|e| GuiError::new("REG_WRITE_FAILED", e.to_string()))?;
+        dir_key
+            .set_value("MUIVerb", &"Scan with DIE")
+            .map_err(|e| GuiError::new("REG_WRITE_FAILED", e.to_string()))?;
+        dir_key
+            .set_value("Icon", &exe_str)
+            .map_err(|e| GuiError::new("REG_WRITE_FAILED", e.to_string()))?;
+        let (dir_cmd, _) = dir_key
+            .create_subkey("command")
+            .map_err(|e| GuiError::new("REG_WRITE_FAILED", e.to_string()))?;
+        dir_cmd
+            .set_value("", &command)
+            .map_err(|e| GuiError::new("REG_WRITE_FAILED", e.to_string()))?;
+
+        // Directory background: right-click inside a folder → "Scan with DIE"
+        let (bg_key, _) = hkcu
+            .create_subkey(REG_DIR_BG_KEY)
+            .map_err(|e| GuiError::new("REG_WRITE_FAILED", e.to_string()))?;
+        bg_key
+            .set_value("MUIVerb", &"Scan with DIE")
+            .map_err(|e| GuiError::new("REG_WRITE_FAILED", e.to_string()))?;
+        bg_key
+            .set_value("Icon", &exe_str)
+            .map_err(|e| GuiError::new("REG_WRITE_FAILED", e.to_string()))?;
+        let (bg_cmd, _) = bg_key
+            .create_subkey("command")
+            .map_err(|e| GuiError::new("REG_WRITE_FAILED", e.to_string()))?;
+        // %V = current folder when right-clicking in directory background
+        let bg_command = format!("\"{}\" \"%V\"", exe_str);
+        bg_cmd
+            .set_value("", &bg_command)
+            .map_err(|e| GuiError::new("REG_WRITE_FAILED", e.to_string()))?;
+    }
+
+    Ok(())
+}
+
+/// Remove "Scan with DIE" from the Windows Explorer context menu.
+/// On non-Windows platforms, returns an error.
+#[tauri::command]
+pub async fn remove_context_menu() -> Result<(), GuiError> {
+    if !cfg!(target_os = "windows") {
+        return Err(GuiError::new(
+            "PLATFORM_UNSUPPORTED",
+            "Context menu integration is only supported on Windows",
+        ));
+    }
+
+    #[cfg(windows)]
+    {
+        use winreg::RegKey;
+        use winreg::enums::*;
+
+        let hkcu = RegKey::predef(HKEY_CURRENT_USER);
+
+        // Delete file context menu key (recursively).
+        delete_reg_tree(&hkcu, REG_FILE_KEY);
+        // Delete directory context menu key.
+        delete_reg_tree(&hkcu, REG_DIR_KEY);
+        // Delete directory background context menu key.
+        delete_reg_tree(&hkcu, REG_DIR_BG_KEY);
+    }
+
+    Ok(())
+}
+
+/// Check if the context menu entry is currently installed.
+#[cfg(windows)]
+fn is_context_menu_installed() -> bool {
+    use winreg::RegKey;
+    use winreg::enums::*;
+
+    let hkcu = RegKey::predef(HKEY_CURRENT_USER);
+    hkcu.open_subkey(REG_FILE_KEY).is_ok()
+}
+
+/// Recursively delete a registry key and all its subkeys.
+#[cfg(windows)]
+fn delete_reg_tree(root: &winreg::RegKey, path: &str) {
+    // First delete subkeys recursively.
+    if let Ok(key) = root.open_subkey(path) {
+        let subkeys: Vec<String> = key.enum_keys().filter_map(|k| k.ok()).collect();
+        for sub in subkeys {
+            let full = format!("{}\\{}", path, sub);
+            delete_reg_tree(root, &full);
+        }
+    }
+    // Then delete the key itself.
+    let _ = root.delete_subkey(path);
+}

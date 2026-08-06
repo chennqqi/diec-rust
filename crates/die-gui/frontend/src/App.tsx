@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { invoke, Channel } from "@tauri-apps/api/core";
+import { listen } from "@tauri-apps/api/event";
 import { open as openDialog } from "@tauri-apps/plugin-dialog";
 import { getCurrentWebview } from "@tauri-apps/api/webview";
 import { getCurrentWindow } from "@tauri-apps/api/window";
@@ -162,6 +163,8 @@ export default function App() {
   const [settings, setSettings] = useState<AppSettings>(defaultSettings);
   const [flags, setFlags] = useState<ScanFlagsDto>(defaultFlags);
   const [dirProgress, setDirProgress] = useState<{ current: number; total: number } | null>(null);
+  const [ctxMenuStatus, setCtxMenuStatus] = useState<"installed" | "not_installed" | "checking" | "unsupported">("checking");
+  const [ctxMenuMsg, setCtxMenuMsg] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<TabId>("scan");
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
   const [selectedDetection, setSelectedDetection] = useState<ScanDetectionDto | null>(null);
@@ -192,6 +195,48 @@ export default function App() {
     }
   }, [settings.view.language, i18n]);
 
+  // Check context menu integration status when settings panel opens.
+  useEffect(() => {
+    if (!showSettings) return;
+    setCtxMenuStatus("checking");
+    setCtxMenuMsg(null);
+    invoke<{ installed: boolean; exe_path: string; platform: string }>("get_context_menu_status")
+      .then((res) => {
+        if (res.platform === "windows") {
+          setCtxMenuStatus(res.installed ? "installed" : "not_installed");
+        } else {
+          setCtxMenuStatus("unsupported");
+        }
+      })
+      .catch(() => setCtxMenuStatus("unsupported"));
+  }, [showSettings]);
+
+  // Add context menu integration.
+  const addContextMenu = useCallback(async () => {
+    setCtxMenuMsg(null);
+    try {
+      await invoke("add_context_menu");
+      setCtxMenuStatus("installed");
+      setCtxMenuMsg(t("settings.contextMenuAddSuccess"));
+    } catch (e) {
+      const err = e as GuiError;
+      setCtxMenuMsg(t("settings.contextMenuError", { error: err.message ?? String(e) }));
+    }
+  }, [t]);
+
+  // Remove context menu integration.
+  const removeContextMenu = useCallback(async () => {
+    setCtxMenuMsg(null);
+    try {
+      await invoke("remove_context_menu");
+      setCtxMenuStatus("not_installed");
+      setCtxMenuMsg(t("settings.contextMenuRemoveSuccess"));
+    } catch (e) {
+      const err = e as GuiError;
+      setCtxMenuMsg(t("settings.contextMenuError", { error: err.message ?? String(e) }));
+    }
+  }, [t]);
+
   // Register drag-drop event listener (Tauri only; silently ignored in browser).
   useEffect(() => {
     const webview = getCurrentWebview();
@@ -212,6 +257,24 @@ export default function App() {
       }
     }).catch(() => {
       // Not in Tauri environment (e.g. browser dev mode) — drag-drop disabled.
+    });
+    return () => {
+      unlisten.then((fn) => { if (typeof fn === "function") fn(); }).catch(() => {});
+    };
+  }, []);
+
+  // Listen for context-menu-file event (launched from Explorer right-click).
+  useEffect(() => {
+    const unlisten = listen<string>("context-menu-file", (event) => {
+      const path = event.payload;
+      if (path) {
+        setFilePath(path);
+        setResult(null);
+        setDirResults([]);
+        setError(null);
+      }
+    }).catch(() => {
+      // Not in Tauri environment — event listener disabled.
     });
     return () => {
       unlisten.then((fn) => { if (typeof fn === "function") fn(); }).catch(() => {});
@@ -633,7 +696,7 @@ export default function App() {
               style={{ background: "rgb(var(--bg-panel))" }}
             >
               <div className="text-xs font-medium text-fg-secondary px-3 py-1.5 border-b border-border-c">
-                Recent Files
+                {t("recent.title")}
               </div>
               {settings.file.recent_files.map((p, i) => {
                 const name = p.split(/[\\/]/).pop() || p;
@@ -727,6 +790,46 @@ export default function App() {
               {t("settings.advanced")}
             </label>
           </div>
+          {/* Context menu integration */}
+          <div className="border-t border-border-c pt-2 space-y-1.5">
+            <div className="text-xs font-medium text-fg-secondary">{t("settings.contextMenu")}</div>
+            {ctxMenuStatus === "unsupported" ? (
+              <p className="text-xs text-fg-muted">{t("settings.contextMenuUnsupported")}</p>
+            ) : (
+              <>
+                <p className="text-xs text-fg-muted">{t("settings.contextMenuDesc")}</p>
+                <div className="flex items-center gap-2 text-xs">
+                  <span className="text-fg-muted">
+                    {ctxMenuStatus === "checking" && t("settings.contextMenuChecking")}
+                    {ctxMenuStatus === "installed" && `✓ ${t("settings.contextMenuInstalled")}`}
+                    {ctxMenuStatus === "not_installed" && t("settings.contextMenuNotInstalled")}
+                  </span>
+                  <div className="flex-1" />
+                  {ctxMenuStatus === "installed" ? (
+                    <button
+                      onClick={removeContextMenu}
+                      className="px-2 py-0.5 text-xs border border-border-c rounded hover:bg-hover"
+                    >
+                      {t("settings.contextMenuRemove")}
+                    </button>
+                  ) : (
+                    <button
+                      onClick={addContextMenu}
+                      disabled={ctxMenuStatus === "checking"}
+                      className="px-2 py-0.5 text-xs bg-primary text-background rounded disabled:opacity-50"
+                    >
+                      {t("settings.contextMenuAdd")}
+                    </button>
+                  )}
+                </div>
+                {ctxMenuMsg && (
+                  <p className={`text-xs ${ctxMenuMsg.includes("失败") || ctxMenuMsg.includes("Failed") ? "text-accent-red" : "text-accent-green"}`}>
+                    {ctxMenuMsg}
+                  </p>
+                )}
+              </>
+            )}
+          </div>
           <div className="flex gap-2 pt-1">
             <button onClick={saveSettings} className="btn btn-primary">{t("settings.save")}</button>
             <button onClick={() => setShowSettings(false)} className="btn">{t("settings.cancel")}</button>
@@ -783,9 +886,9 @@ export default function App() {
                 {result && (
                   <>
                     <div className="w-px h-3 bg-border-c" />
-                    <span className="text-fg-muted">{totalDetections} detections</span>
+                    <span className="text-fg-muted">{totalDetections} {t("scan.detections")}</span>
                     {totalDiags > 0 && (
-                      <span className="text-accent-yellow">{totalDiags} diagnostics</span>
+                      <span className="text-accent-yellow">{totalDiags} {t("scan.diagnostics")}</span>
                     )}
                     <div className="flex-1" />
                     <span className="flex items-center gap-1 text-fg-muted">
@@ -954,7 +1057,7 @@ export default function App() {
         ) : error ? (
           <>
             <XCircle size={12} className="text-accent-red" />
-            <span>{t("scan.ready")}</span>
+            <span>{t("scan.error")}</span>
           </>
         ) : (
           <>
@@ -987,11 +1090,12 @@ function DetectionTreeView({
   onSelect: (d: ScanDetectionDto) => void;
   onContextMenu: (x: number, y: number, d: ScanDetectionDto) => void;
 }) {
+  const { t } = useTranslation();
   if (result.detections.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-fg-muted">
         <Info size={32} className="mb-2 opacity-40" />
-        <p className="text-sm">No detections</p>
+        <p className="text-sm">{t("scan.noDetections")}</p>
       </div>
     );
   }
@@ -1112,6 +1216,7 @@ function DetectionTreeView({
 
 /** Directory scan results — compact list view. */
 function DirectoryResultsView({ results }: { results: ScanResultDto[] }) {
+  const { t } = useTranslation();
   return (
     <div className="p-2 space-y-1 selectable">
       <div className="text-xs font-medium text-fg-secondary mb-2">
@@ -1146,7 +1251,7 @@ function DirectoryResultsView({ results }: { results: ScanResultDto[] }) {
                   </span>
                 ))}
                 {r.detections.length > 5 && (
-                  <span className="text-fg-muted"> +{r.detections.length - 5} more</span>
+                  <span className="text-fg-muted"> +{r.detections.length - 5} {t("scan.more")}</span>
                 )}
               </div>
             )}
@@ -1159,6 +1264,7 @@ function DirectoryResultsView({ results }: { results: ScanResultDto[] }) {
 
 /** Advanced mode: signature source code panel for the selected detection. */
 function SignatureSourcePanel({ detection }: { detection: ScanDetectionDto }) {
+  const { t } = useTranslation();
   const [source, setSource] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -1166,7 +1272,7 @@ function SignatureSourcePanel({ detection }: { detection: ScanDetectionDto }) {
   useEffect(() => {
     if (!detection.signature_path) {
       setSource(null);
-      setError("No signature path associated with this detection.");
+      setError(t("sigSource.noPath"));
       return;
     }
     setLoading(true);
@@ -1224,44 +1330,55 @@ function AdvancedToolbar({
   flags: ScanFlagsDto;
   onFlagsChange: (f: ScanFlagsDto) => void;
 }) {
+  const { t } = useTranslation();
   // Preset flag combinations matching upstream comboBoxFlags items.
-  const flagPresets: { label: string; apply: Partial<ScanFlagsDto> }[] = [
-    { label: "Default", apply: {} },
-    { label: "Deep", apply: { deep: true, heuristic: false, aggressive: false } },
-    { label: "Heuristic", apply: { deep: false, heuristic: true, aggressive: false } },
-    { label: "Aggressive", apply: { deep: true, heuristic: true, aggressive: true } },
-    { label: "All Types", apply: { alltypes: true } },
+  const flagPresets: { labelKey: string; apply: Partial<ScanFlagsDto> }[] = [
+    { labelKey: "advancedToolbar.default", apply: {} },
+    { labelKey: "advancedToolbar.deep", apply: { deep: true, heuristic: false, aggressive: false } },
+    { labelKey: "advancedToolbar.heuristic", apply: { deep: false, heuristic: true, aggressive: false } },
+    { labelKey: "advancedToolbar.aggressive", apply: { deep: true, heuristic: true, aggressive: true } },
+    { labelKey: "advancedToolbar.allTypes", apply: { alltypes: true } },
   ];
 
   // File type options matching upstream comboBoxType.
-  const typeOptions = ["Auto", "PE", "ELF", "Mach-O", "Archive", "Image", "Text"];
+  const typeOptions = [
+    { key: "advancedToolbar.auto", value: "Auto" },
+    { value: "PE" },
+    { value: "ELF" },
+    { value: "Mach-O" },
+    { value: "Archive" },
+    { value: "Image" },
+    { value: "Text" },
+  ];
 
   return (
     <div
       className="flex items-center gap-2 px-3 py-1 border-b border-border-c text-xs"
       style={{ background: "rgb(var(--bg-panel))" }}
     >
-      <span className="text-fg-muted">Type:</span>
+      <span className="text-fg-muted">{t("advancedToolbar.type")}</span>
       <select className="input py-0.5 px-1.5" defaultValue="Auto" style={{ width: "90px" }}>
-        {typeOptions.map((t) => (
-          <option key={t} value={t}>{t}</option>
+        {typeOptions.map((opt) => (
+          <option key={opt.value} value={opt.value}>
+            {opt.key ? t(opt.key) : opt.value}
+          </option>
         ))}
       </select>
 
       <div className="w-px h-3 bg-border-c" />
 
-      <span className="text-fg-muted">Flags:</span>
+      <span className="text-fg-muted">{t("advancedToolbar.flags")}</span>
       <select
         className="input py-0.5 px-1.5"
-        defaultValue="Default"
+        defaultValue={t("advancedToolbar.default")}
         style={{ width: "100px" }}
         onChange={(e) => {
-          const preset = flagPresets.find((p) => p.label === e.target.value);
+          const preset = flagPresets.find((p) => t(p.labelKey) === e.target.value);
           if (preset) onFlagsChange({ ...flags, ...preset.apply });
         }}
       >
         {flagPresets.map((p) => (
-          <option key={p.label} value={p.label}>{p.label}</option>
+          <option key={p.labelKey} value={t(p.labelKey)}>{t(p.labelKey)}</option>
         ))}
       </select>
 
@@ -1275,7 +1392,7 @@ function AdvancedToolbar({
           onChange={(e) => onFlagsChange({ ...flags, deep: e.target.checked })}
           className="accent-blue-500"
         />
-        Deep
+        {t("advancedToolbar.deep")}
       </label>
       <label className="flex items-center gap-1 cursor-pointer hover:text-fg-primary">
         <input
@@ -1284,7 +1401,7 @@ function AdvancedToolbar({
           onChange={(e) => onFlagsChange({ ...flags, heuristic: e.target.checked })}
           className="accent-blue-500"
         />
-        Heuristic
+        {t("advancedToolbar.heuristic")}
       </label>
       <label className="flex items-center gap-1 cursor-pointer hover:text-fg-primary">
         <input
@@ -1293,7 +1410,7 @@ function AdvancedToolbar({
           onChange={(e) => onFlagsChange({ ...flags, alltypes: e.target.checked })}
           className="accent-blue-500"
         />
-        All Types
+        {t("advancedToolbar.allTypes")}
       </label>
     </div>
   );

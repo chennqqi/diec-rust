@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface OnlineService {
   name: string;
@@ -33,22 +34,23 @@ const services: OnlineService[] = [
 ];
 
 export function OnlineTools({ hash }: { hash: string }) {
+  const { t } = useTranslation();
   const [customHash, setCustomHash] = useState("");
   const effectiveHash = hash || customHash;
 
   if (!effectiveHash) {
     return (
       <div className="border border-border rounded p-3 mt-3">
-        <h3 className="text-sm font-medium mb-2">Online Lookup</h3>
+        <h3 className="text-sm font-medium mb-2">{t("online.title")}</h3>
         <input
           type="text"
           value={customHash}
           onChange={(e) => setCustomHash(e.target.value)}
-          placeholder="Enter file hash (MD5/SHA1/SHA256)..."
+          placeholder={t("online.enterHash")}
           className="w-full text-xs font-mono border border-border rounded px-2 py-1"
         />
         <p className="text-xs text-muted-foreground mt-2">
-          Enter a hash to generate lookup links for online threat intelligence services.
+          {t("online.hint")}
         </p>
       </div>
     );
@@ -56,7 +58,7 @@ export function OnlineTools({ hash }: { hash: string }) {
 
   return (
     <div className="border border-border rounded p-3 mt-3">
-      <h3 className="text-sm font-medium mb-2">Online Lookup</h3>
+      <h3 className="text-sm font-medium mb-2">{t("online.title")}</h3>
       <div className="flex items-center gap-2 mb-2">
         <input
           type="text"

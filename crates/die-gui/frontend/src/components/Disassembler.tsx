@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { invoke } from "@tauri-apps/api/core";
 
 interface Instruction {
@@ -16,6 +17,7 @@ interface DisassemblyResult {
 type Syntax = "intel" | "gas" | "nasm";
 
 export function Disassembler({ path }: { path: string }) {
+  const { t } = useTranslation();
   const [result, setResult] = useState<DisassemblyResult | null>(null);
   const [offset, setOffset] = useState(0);
   const [bitness, setBitness] = useState(64);
@@ -48,7 +50,7 @@ export function Disassembler({ path }: { path: string }) {
   return (
     <div className="border border-border rounded p-3 mt-3">
       <div className="flex items-center gap-2 mb-2">
-        <h3 className="text-sm font-medium">Disassembler</h3>
+        <h3 className="text-sm font-medium">{t("disasm.title")}</h3>
         <div className="flex-1" />
         <select
           value={bitness}
@@ -64,9 +66,9 @@ export function Disassembler({ path }: { path: string }) {
           onChange={(e) => setSyntax(e.target.value as Syntax)}
           className="text-xs border border-border rounded px-1 py-0.5"
         >
-          <option value="intel">Intel</option>
-          <option value="gas">AT&T</option>
-          <option value="nasm">NASM</option>
+          <option value="intel">{t("disasm.intel")}</option>
+          <option value="gas">{t("disasm.gas")}</option>
+          <option value="nasm">{t("disasm.nasm")}</option>
         </select>
         <input
           type="text"
@@ -80,7 +82,7 @@ export function Disassembler({ path }: { path: string }) {
           disabled={loading}
           className="px-2 py-0.5 text-xs bg-primary text-background rounded disabled:opacity-50"
         >
-          Disasm
+          {t("disasm.disassemble")}
         </button>
       </div>
       {error && <div className="text-xs text-red-600 mb-2">{error}</div>}

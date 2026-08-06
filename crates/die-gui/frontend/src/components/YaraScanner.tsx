@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { invoke } from "@tauri-apps/api/core";
 import { open as openDialog } from "@tauri-apps/plugin-dialog";
 
@@ -14,6 +15,7 @@ interface YaraScanResult {
 }
 
 export function YaraScanner({ path }: { path: string }) {
+  const { t } = useTranslation();
   const [rules, setRules] = useState(
     'rule test_rule { strings: $a = "test" condition: $a }'
   );
@@ -59,33 +61,33 @@ export function YaraScanner({ path }: { path: string }) {
   return (
     <div className="border border-border rounded p-3 mt-3">
       <div className="flex items-center gap-2 mb-2">
-        <h3 className="text-sm font-medium">YARA Scanner</h3>
+        <h3 className="text-sm font-medium">{t("yara.title")}</h3>
         <div className="flex-1" />
         <button
           onClick={loadRules}
           className="px-2 py-0.5 text-xs border border-border rounded"
         >
-          Load .yar
+          {t("yara.loadFile")}
         </button>
         <button
           onClick={scan}
           disabled={loading}
           className="px-3 py-0.5 text-xs bg-primary text-background rounded disabled:opacity-50"
         >
-          {loading ? "Scanning..." : "Scan"}
+          {loading ? t("yara.scanning") : t("yara.scan")}
         </button>
       </div>
       <textarea
         value={rules}
         onChange={(e) => setRules(e.target.value)}
         className="w-full h-32 text-xs font-mono border border-border rounded p-2 mb-2"
-        placeholder="Enter YARA rules..."
+        placeholder={t("yara.placeholder")}
       />
       {error && <div className="text-xs text-red-600 mb-2">{error}</div>}
       {result && (
         <div>
           <p className="text-xs text-muted-foreground mb-1">
-            {result.match_count} match(es)
+            {result.match_count} {t("yara.matches")}
           </p>
           {result.matches.length > 0 && (
             <table className="w-full text-xs">

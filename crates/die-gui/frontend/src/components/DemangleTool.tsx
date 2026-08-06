@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { invoke } from "@tauri-apps/api/core";
 
 export function DemangleTool() {
+  const { t } = useTranslation();
   const [symbol, setSymbol] = useState("");
   const [compiler, setCompiler] = useState("auto");
   const [result, setResult] = useState("");
@@ -23,7 +25,7 @@ export function DemangleTool() {
 
   return (
     <div className="border border-border rounded p-3 mt-3">
-      <h3 className="text-sm font-medium mb-2">Demangle</h3>
+      <h3 className="text-sm font-medium mb-2">{t("demangle.title")}</h3>
       <div className="flex items-center gap-2 mb-2">
         <input
           type="text"
@@ -46,7 +48,7 @@ export function DemangleTool() {
           disabled={!symbol}
           className="px-3 py-1 text-xs bg-primary text-background rounded disabled:opacity-50"
         >
-          Demangle
+          {t("demangle.button")}
         </button>
       </div>
       {error && <div className="text-xs text-red-600">{error}</div>}
